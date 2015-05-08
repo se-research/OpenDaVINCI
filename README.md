@@ -1,2 +1,0 @@
-# OpenDaVINCI
-OpenDaVINCI
