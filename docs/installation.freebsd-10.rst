@@ -1,5 +1,5 @@
 Compiling OpenDaVINCI on FreeBSD 10.1 (32bit and 64bit)
-=============================================================
+=======================================================
 
 Download and install FreeBSD 10.1 and update the packages list as root (FreeBSD will install automatically the package management tool, simply press 'y' to accept)::
 

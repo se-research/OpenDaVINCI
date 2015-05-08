@@ -19,6 +19,7 @@ Contents:
    installation.dragonfly-4.0.5
    installation.freebsd-10
    installation.macosx-10
+   installation.netbsd-6.1.5
 
 
 
