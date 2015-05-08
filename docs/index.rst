@@ -18,6 +18,7 @@ Contents:
    installation.ubuntu-14.04
    installation.dragonfly-4.0.5
    installation.freebsd-10
+   installation.macosx-10
 
 
 
