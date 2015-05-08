@@ -17,6 +17,7 @@ Contents:
 
    installation.ubuntu-14.04
    installation.dragonfly-4.0.5
+   installation.freebsd-10
 
 
 
