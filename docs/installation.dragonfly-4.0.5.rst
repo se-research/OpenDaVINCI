@@ -1,23 +1,6 @@
 Compiling OpenDaVINCI on DragonFlyBSD 4.0.5 (64bit)
 ===================================================
 
-Download and install Ubuntu 14.04 LTS and install its latest package updates::
-
-   $ sudo apt-get update
-   $ sudo apt-get upgrade
-   $ sudo apt-get dist-upgrade
-
-Install development packages for OpenDaVINCI sources::
-
-   $ sudo apt-get install build-essential cmake git
-
-Clean up installation::
-
-   $ sudo apt-get clean
-   $ sudo apt-get autoremove
-
-
-
 Download and install DragonFlyBSD 4.0.5 and update the packages list as root::
 
    # pkg update
