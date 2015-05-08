@@ -15,6 +15,8 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   installation.ubuntu-14.04
+
 
 
 Indices and tables
