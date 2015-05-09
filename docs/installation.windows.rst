@@ -16,7 +16,7 @@ Download the latest OpenDaVINCI sources: http://opendavinci.cse.chalmers.se:8000
 
 Change your source folder, create a build directory, and create data structures::
 
-   $ cd OpenDaVINCI && md build && generateDataStructures.bat
+   $ cd OpenDaVINCI && md build && java -jar _buildtools/DataStructureGenerator-r9.jar --withCMake Data.odvd
 
 Use cmake to create the build scripts for your build folder (NMake files for building on console)::
 
