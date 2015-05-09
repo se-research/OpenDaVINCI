@@ -21,6 +21,7 @@ Contents:
    installation.macosx-10
    installation.netbsd-6.1.5
    installation.openbsd-5.7
+   installation.windows
 
 
 
