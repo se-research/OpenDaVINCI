@@ -22,6 +22,8 @@ Contents:
    installation.opensuse-13.2
    installation.scientificlinux-7
    installation.ubuntu-14.04
+   installation.ubuntu-15.04
+   installation.zorin-9.1
 
    installation.dragonfly-4.0.5
    installation.freebsd-10
