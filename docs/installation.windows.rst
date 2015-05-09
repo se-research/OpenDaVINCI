@@ -12,32 +12,6 @@ Install Java to generate data structures: http://java.com/en/download/
 
 Download and install Visual Studio 2013 Community Edition: http://go.microsoft.com/fwlink/?LinkId=517284
 
-
-
-  <pre><code>
-   $nmake
-  </code></pre>
-
-   Next, run the tests:
-  <pre><code>
-   $nmake test
-  </code></pre>
-
-  Install the binaries, libraries, and header files to /opt/odv:
-  <pre><code>
-   $nmake install
-  </code></pre>
- </li>
-
- <li>Use cmake to create the build scripts for your build folder (Visual Studio build environment):
-  <pre><code>
-   $cd build
-   $cmake -G "Visual Studio 12 2013" -D CMAKE_INSTALL_PREFIX=../myInstallDir ..
-  </code></pre>
-
-   Hereby, myInstallDir is the final install folder. Now, you can open the OPENDAVINCI.sln solution file in Visual Studio and trigger the build there.
- </li>
-
 Download the latest OpenDaVINCI sources: http://opendavinci.cse.chalmers.se:8000/www/#download
 
 Change your source folder, create a build directory, and create data structures::
@@ -60,3 +34,8 @@ Run the tests for OpenDaVINCI::
 Install the binaries, libraries, and header files to /usr/local::
 
    $ nmake install
+
+If you want to use Visual Studio for editing, let cmake create the build scripts::
+
+   $ cd build
+   $ cmake -G "Visual Studio 12 2013" -D CMAKE_INSTALL_PREFIX=../myInstallDir ..
