@@ -10,6 +10,8 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   installation.archlinux
+   installation.centos7
    installation.ubuntu-14.04
 
    installation.dragonfly-4.0.5
