@@ -15,7 +15,7 @@ Install the required development packages for OpenDaVINCI sources::
 
    $ sudo pacman -S cmake gcc git make python2
    
-Add a missing symbolic link:
+Add a missing symbolic link::
 
    $ sudo ln -sf /usr/bin/python2.7 /usr/bin/python
   

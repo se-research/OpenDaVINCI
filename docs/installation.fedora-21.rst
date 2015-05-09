@@ -32,7 +32,7 @@ Clean up installation::
    $ sudo yum autoremove
    $ sudo yum clean all
   
-Add two missing symbolic links:
+.. Add two missing symbolic links::
 
    $sudo ln -sf /usr/include/qwt5-qt4 /usr/include/qwt-qt4
    $sudo ln -sf /usr/lib64/libqwt5-qt4.so /usr/lib64/libqwt-qt4.so
