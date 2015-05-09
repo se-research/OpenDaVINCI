@@ -16,6 +16,7 @@ Contents:
    installation.elementaryos
    installation.fedora-20
    installation.fedora-21
+   installation.mageia
    installation.mint-17
    installation.ubuntu-14.04
 
