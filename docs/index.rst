@@ -18,6 +18,8 @@ Contents:
    installation.fedora-21
    installation.mageia
    installation.mint-17
+   installation.opensuse-13.1
+   installation.opensuse-13.2
    installation.ubuntu-14.04
 
    installation.dragonfly-4.0.5
