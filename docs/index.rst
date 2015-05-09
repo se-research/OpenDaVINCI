@@ -14,6 +14,8 @@ Contents:
    installation.centos7
    installation.debian-7.8
    installation.elementaryos
+   installation.fedora-20
+   installation.fedora-21
    installation.ubuntu-14.04
 
    installation.dragonfly-4.0.5
