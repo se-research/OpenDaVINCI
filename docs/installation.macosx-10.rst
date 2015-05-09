@@ -1,11 +1,13 @@
 Compiling OpenDaVINCI on MacOSX 10
 ==================================
 
-Install Xcode for MacOSX: https://developer.apple.com/xcode/downloads/
+Install Xcode: https://developer.apple.com/xcode/downloads/
 
-Install CMake for MacOSX: http://www.cmake.org/download/
+Install CMake: http://www.cmake.org/download/
 
-Install Python 2.79 for MacOSX: https://www.python.org/downloads/mac-osx/
+Install Java to generate data structures: http://java.com/en/download/
+
+Install Python 2.79: https://www.python.org/downloads/mac-osx/
   
 Download the latest OpenDaVINCI sources: http://opendavinci.cse.chalmers.se:8000/www/#download
 

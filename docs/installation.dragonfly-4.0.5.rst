@@ -19,6 +19,11 @@ Install the compiler::
    # pkg install devel/cmake
    # pkg install devel/git
    # pkg install lang/python
+
+Install Java to generate data structures::
+   # pkg install java/openjdk7
+
+.. Install Java to generate data structures::
    # pkg install devel/apache-ant
    # pkg install java/openjdk7
   

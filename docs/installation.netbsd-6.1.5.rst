@@ -15,10 +15,11 @@ Change the shell by running::
   
 Set up the right locale::
 
-   $ cat >.profile
+   $ cat >.profile <<EOF
    export LANG="en_US.UTF-8"
    export LC_CTYPE="en_US.UTF-8"
    export LC_ALL=""
+   EOF
   
 Install the compiler::
 
@@ -31,9 +32,8 @@ Add a symbolic link to python as root user::
 
    #ln -sf /usr/pkg/bin/python2.7 /usr/bin/python
 
-Install Java::
+Install Java to generate data structures::
 
-   # cd /usr/pkgsrc/distfiles && wget http://ftp.osuosl.org/pub/funtoo/distfiles/oracle-java/jre-7u72-linux-i586.tar.gz
    # cd /usr/pkgsrc/distfiles && wget http://ftp.osuosl.org/pub/funtoo/distfiles/oracle-java/jdk-7u72-linux-i586.tar.gz
    # cd /usr/pkgsrc/emulators/suse121_base && make install clean
    # cd /usr/pkgsrc/emulators/suse121_x11 && make install clean

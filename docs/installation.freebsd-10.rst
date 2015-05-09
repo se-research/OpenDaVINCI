@@ -5,7 +5,7 @@ Download and install FreeBSD 10.1 and update the packages list as root (FreeBSD 
 
    # pkg update
   
-Install the bash shell::
+Install the bash shell for more convenient typing::
 
    # pkg install shells/bash
   
@@ -28,6 +28,10 @@ Install the compiler::
 Add a symbolic link to python as root user::
 
    # ln -sf /usr/local/bin/python /usr/bin/python
+
+Install Java to generate data structures::
+
+   # pkg install openjdk
   
 Download the latest OpenDaVINCI sources: http://opendavinci.cse.chalmers.se:8000/www/#download
 

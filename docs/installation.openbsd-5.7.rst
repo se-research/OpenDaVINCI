@@ -27,7 +27,12 @@ Install the compiler::
    # pkg_add -v -i git
    # pkg_add -v -i gcc # (should be installed automatically via comp56.tgz)
   
-Install the Java::
+Install Java to generate data structures::
+
+   # pkg_add -v -i jre
+   # cd /usr/local/bin && ln -sf /usr/local/jdk-1.7.0/bin/java java
+  
+.. Install the Java::
 
    # pkg_add -v -i apache-ant
    # pkg_add -v -i jdk

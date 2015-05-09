@@ -23,6 +23,10 @@ Install development packages for OpenDaVINCI sources::
 
    $ sudo apt-get install ant openjdk-7-jdk
 
+Install Java to generate data structures::
+
+   $ sudo apt-get install ant openjdk-7-jre
+
 Clean up installation::
 
    $ sudo apt-get clean
