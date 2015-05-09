@@ -13,6 +13,7 @@ Contents:
    installation.archlinux
    installation.centos7
    installation.debian-7.8
+   installation.elementaryos
    installation.ubuntu-14.04
 
    installation.dragonfly-4.0.5
