@@ -11,14 +11,13 @@ simply call the following method from with your module deriving from
 
    void toLogger(const core::LogMessage::LogLevel &logLevel, const string &msg);
 
-Example:
+Example::
 
    toLogger(core::LogMessage::INFO, "this is an info message");
 
-By using this method, the supplied message in the parameter ``"this is an
-info message"`` is sent to the UDP multicast conference using the logging
-level ``logLevel``. The ``logLevel`` can be either ``core::LogMessage::NONE``,
-``core::LogMessage::INFO``, ``core::LogMessage::WARN``, or ``core::LogMessage::DEBUG``.
+By using this method, the ``"this is an info message"`` is sent to the UDP
+multicast conference using the logging level ``logLevel``. The ``logLevel`` can
+be either ``core::LogMessage::NONE``, ``core::LogMessage::INFO``, ``core::LogMessage::WARN``, or ``core::LogMessage::DEBUG``.
 
 On startup of ``odsupercomponent``, you need to specify the following
 command line parameters to setup the logging:
