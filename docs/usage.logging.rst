@@ -42,4 +42,4 @@ Example::
 
    $ odsupercomponent --cid=111 --loglevel=info --logfile=mylogfile.log
 
-This feature was contributed by Ashfaq Farooqi (https://twitter.com/me_rafiki) and will be available from release 1.3.0.
+This feature was contributed by Ashfaq Hussain Farooqui (https://twitter.com/me_rafiki) and will be available from release 1.3.0.
