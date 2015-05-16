@@ -34,5 +34,6 @@ Contents:
 
    installation.windows
 
+   usage.logging.rst
 
 
