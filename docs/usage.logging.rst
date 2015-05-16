@@ -6,7 +6,7 @@ realized by ``odsupercomponent`` as it is required to start a communication
 session for distributed modules anyways.
 
 In order to use the logging engine in a user-supplied module, you can
-simply call the following method from with your module deriving from
+simply call the following method from within your module deriving from
 ``DataTriggeredConferenceClientModule`` or ``TimeTriggeredConferenceClientModule``::
 
    void toLogger(const core::LogMessage::LogLevel &logLevel, const string &msg);
@@ -15,9 +15,11 @@ Example::
 
    toLogger(core::LogMessage::INFO, "this is an info message");
 
-By using this method, the ``"this is an info message"`` is sent to the UDP
+By using this method, ``"this is an info message"`` is sent to the UDP
 multicast conference using the logging level ``logLevel``. The ``logLevel`` can
-be either ``core::LogMessage::NONE``, ``core::LogMessage::INFO``, ``core::LogMessage::WARN``, or ``core::LogMessage::DEBUG``.
+be either ``core::LogMessage::NONE``, ``core::LogMessage::INFO``, ``core::LogMessage::WARN``, or ``core::LogMessage::DEBUG``. ``odsupercomponent``
+is receiving the log data and storing it to a file depending on its
+command line parameters.
 
 On startup of ``odsupercomponent``, you need to specify the following
 command line parameters to setup the logging:
