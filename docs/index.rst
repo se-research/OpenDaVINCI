@@ -1,8 +1,3 @@
-.. OpenDaVINCI documentation master file, created by
-   sphinx-quickstart on Thu May  7 23:56:03 2015.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 Welcome to OpenDaVINCI's documentation!
 =======================================
 
@@ -15,12 +10,30 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   installation.archlinux
+   installation.centos7
+   installation.debian-7.8
+   installation.elementaryos
+   installation.fedora-20
+   installation.fedora-21
+   installation.mageia
+   installation.mint-17
+   installation.opensuse-13.1
+   installation.opensuse-13.2
+   installation.scientificlinux-7
+   installation.ubuntu-14.04
+   installation.ubuntu-15.04
+   installation.zorin-9.1
 
+   installation.dragonfly-4.0.5
+   installation.freebsd-10
+   installation.netbsd-6.1.5
+   installation.openbsd-5.7
 
-Indices and tables
-==================
+   installation.macosx-10
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   installation.windows
+
+   usage.logging.rst
+
 
