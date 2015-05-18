@@ -35,7 +35,7 @@ Clean up installation::
 
    $ sudo zypper clean
   
-Download the latest OpenDaVINCI sources: http://opendavinci.cse.chalmers.se:8000/www/#download
+Download the latest OpenDaVINCI sources: http://opendavinci.cse.chalmers.se/www/OpenDaVINCI-latest.tar.gz
 
 Change your source folder, create a build directory, and create data structures::
 

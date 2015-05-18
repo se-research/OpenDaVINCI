@@ -12,11 +12,11 @@ Install Java to generate data structures: http://java.com/en/download/
 
 Download and install Visual Studio 2013 Community Edition: http://go.microsoft.com/fwlink/?LinkId=517284
 
-Download the latest OpenDaVINCI sources: http://opendavinci.cse.chalmers.se:8000/www/#download
+Download the latest OpenDaVINCI sources: http://opendavinci.cse.chalmers.se/www/OpenDaVINCI-latest.tar.gz
 
 Change your source folder, create a build directory, and create data structures::
 
-   $ cd OpenDaVINCI && md build && java -jar _buildtools/DataStructureGenerator-r9.jar --withCMake Data.odvd
+   $ cd OpenDaVINCI && md build && generateDataStructures.bat
 
 Use cmake to create the build scripts for your build folder (NMake files for building on console)::
 

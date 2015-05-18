@@ -34,7 +34,7 @@ Install Java to generate data structures::
 
    $sudo urpmi java-1.7.0-openjdk-devel ant ant-junit
    
-Download the latest OpenDaVINCI sources: http://opendavinci.cse.chalmers.se:8000/www/#download
+Download the latest OpenDaVINCI sources: http://opendavinci.cse.chalmers.se/www/OpenDaVINCI-latest.tar.gz
 
 Change your source folder, create a build directory, and create data structures::
 
