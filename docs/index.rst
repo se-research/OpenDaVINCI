@@ -10,6 +10,8 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   tutorial.service
+
    installation.archlinux
    installation.centos7
    installation.debian-7.8
