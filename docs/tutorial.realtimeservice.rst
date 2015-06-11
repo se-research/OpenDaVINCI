@@ -23,10 +23,10 @@ a simple example below:
             MyRealtimeService(const enum PERIOD &period) :
                 core::base::RealtimeService(period) {}
 
-        // Your class needs to implement the method void nextTimeSlice().
-        virtual void nextTimeSlice() {
-            cout << "This message is printed every 100 ms." << endl;        
-        }
+            // Your class needs to implement the method void nextTimeSlice().
+            virtual void nextTimeSlice() {
+                cout << "This message is printed every 100 ms." << endl;        
+            }
     };
 
     int32_t main(int32_t argc, char **argv) {
@@ -56,53 +56,19 @@ The resulting program can be run as superuser (as the scheduling properties will
 adjusted) and will print the following on the console::
 
     $ sudo ./Tutorial-RTThread
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
-This message is printed every 100 ms.
+    This message is printed every 100 ms.
+    This message is printed every 100 ms.
+    This message is printed every 100 ms.
+    This message is printed every 100 ms.
+    This message is printed every 100 ms.
+    This message is printed every 100 ms.
+    This message is printed every 100 ms.
+    This message is printed every 100 ms.
+    This message is printed every 100 ms.
+    This message is printed every 100 ms.
+    This message is printed every 100 ms.
+    This message is printed every 100 ms.
+    This message is printed every 100 ms.
+    This message is printed every 100 ms.
+    This message is printed every 100 ms.
+    This message is printed every 100 ms.
