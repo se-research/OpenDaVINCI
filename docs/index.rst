@@ -11,6 +11,7 @@ Contents:
    :maxdepth: 2
 
    tutorial.service
+   tutorial.realtimeservice
 
    installation.archlinux
    installation.centos7

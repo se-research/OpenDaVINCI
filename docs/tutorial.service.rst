@@ -82,7 +82,7 @@ structures that are need from a deriving class are set up and ready.
 You can compile and link the example assuming the file is called Tutorial-Thread.cpp::
 
    g++ -I /usr/include/opendavinci -c Tutorial-Thread.cpp -o Tutorial-Thread.o
-   g++ -o Tutorial-Thread Tutorial-Thread.o -lopendavinci -lpthread -lrt
+   g++ -o Tutorial-Thread Tutorial-Thread.o -lopendavinci -lpthread
 
 Running the example above will print the following on the console::
 
