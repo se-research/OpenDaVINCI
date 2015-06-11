@@ -6,7 +6,10 @@ realized on Linux-based and BSD-based operating systems using pthreads and on Wi
 by using C++11 features.
 
 In order to use concurrency in a user-supplied module, you will find a simple example
-below::
+below:
+
+.. code-block:: c++
+   :linenos:
 
     #include <iostream>
     #include <core/base/Service.h>
