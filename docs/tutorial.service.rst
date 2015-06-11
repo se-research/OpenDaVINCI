@@ -63,19 +63,20 @@ below:
         s.stop();
     }
 
-Your class needs to derive from ``core::base::Service`` which is provided in
+Your class needs to derive from ``core::base::Service``, which is provided in
 ``#include <core/base/Service.h>`` in the include directory ``opendavinci``.
 This class provides two methods that need to be implemented in deriving classes:
-(a) ``void beforeStop()`` and (b) ``void run()``. The former method is called
+``void beforeStop()`` and ``void run()``. The former method is called
 from an outside thread intending to stop the concurrently executing thread; thus
-any shared resources can be released properly for example. The latter methods will
+any shared resources can be released properly for example. The latter method will
 be executed in a new thread running concurrently to the calling thread.
 
 To detach the execution of the newly created thread from the calling one, the
 method ``serviceReady()`` as shown in line 28 needs to be called to signal to
-the calling thread that the new thread is ready; this synchronization dependency
-ensures that (a) any resources that need to be provided by the operating system
-to run a thread are available and ready, and (b) any shared resources like data
+the calling thread that the new thread is ready; the calling thread is blocked
+from any further execution until this method is called. This synchronization dependency
+ensures that both any resources that need to be provided by the operating system
+to run a thread are available and ready, and any shared resources like data
 structures that are need from a deriving class are set up and ready.
 
 You can compile and link the example assuming the file is called Tutorial-Thread.cpp::
