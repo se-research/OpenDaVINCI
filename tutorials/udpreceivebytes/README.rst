@@ -19,7 +19,7 @@ UDPReceiveBytes.hpp:
     // This class will handle the bytes received via a UDP socket.
     class UDPReceiveBytes : public core::wrapper::StringListener {
 
-        // Your class needs to implement the method void nextString(const string &s).
+        // Your class needs to implement the method void nextString(const std::string &s).
         virtual void nextString(const std::string &s);
     };
 
