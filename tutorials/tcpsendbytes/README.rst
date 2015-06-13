@@ -1,4 +1,4 @@
-How to send bytes to a TCP server
+How to send bytes to a UDP server
 =================================
 
 OpenDaVINCI has a built-in TCP connection handling engine realized on Linux-based
@@ -48,7 +48,7 @@ To send bytes over a TCP link to a TCP server, your application needs to include
 ``<core/base/TCPConnection.h>`` and ``<core/base/TCPFactory.h>`` that encapsulate
 the platform-specific implementations.
 
-``TCPFactory`` provides a static methods called ``createTCPConnectionTo`` that
+``TCPFactory`` provides a static method called ``createTCPConnectionTo`` that
 tries to connect to the specified TCP server. On success, this call will return
 a pointer to a ``TCPConnection`` instance that is used to handle the data transfer.
 On failure, the method ``createTCPConnectionTo`` will throw an exception of type
