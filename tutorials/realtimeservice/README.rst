@@ -1,5 +1,5 @@
-How to use realtime concurrency in OpenDaVINCI
-==============================================
+How to use realtime concurrency
+===============================
 
 OpenDaVINCI has a built-in realtime concurrency engine available only on Linux
 platforms with rt-preempt kernels. The sources for this example are available
