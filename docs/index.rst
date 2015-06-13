@@ -14,6 +14,7 @@ Contents:
    tutorial.realtimeservice
    tutorial.udpsendbytes
    tutorial.udpreceivebytes
+   tutorial.udpreceivepackets
    tutorial.tcpsendbytes
 
    installation.archlinux
