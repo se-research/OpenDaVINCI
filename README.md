@@ -14,11 +14,12 @@ packages in .deb and .rpm format for x86, x86_64, and armfh.
 
 ### Using our Docker images
 
-We also provide pre-built Docker images for x86_64 and armhf:
+We also provide pre-built Docker images for x86_64 and armhf. These images will be automatically updated whenever
+we release new features or patches.
 
-* Ubuntu/x86_64: docker pull seresearch/opendavinci-ubuntu-amd64
+* Ubuntu/x86_64: docker pull seresearch/opendavinci-ubuntu-amd64 (https://registry.hub.docker.com/u/seresearch/opendavinci-ubuntu-amd64/)
 
-* Ubuntu/armhf: docker pull seresearch/opendavinci-ubuntu-armhf
+* Ubuntu/armhf: docker pull seresearch/opendavinci-ubuntu-armhf (https://registry.hub.docker.com/u/seresearch/opendavinci-ubuntu-armhf/)
 
 ### Adding OpenDaVINCI to your Ubuntu Linux distribution
 
