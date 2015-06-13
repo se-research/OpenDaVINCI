@@ -12,7 +12,15 @@ You will find different projects that are using OpenDaVINCI here: http://opendav
 To explore the features of OpenDaVINCI and to use it in your own projects, we provide pre-compiled
 packages in .deb and .rpm format for x86, x86_64, and armfh.
 
-### Adding OpenDaVINCI to your Ubuntu Linux distribution:
+### Using our Docker images
+
+We also provide pre-built Docker images for x86_64 and armhf:
+
+* Ubuntu/x86_64: docker pull seresearch/opendavinci-ubuntu-amd64
+
+* Ubuntu/armhf: docker pull seresearch/opendavinci-ubuntu-armhf
+
+### Adding OpenDaVINCI to your Ubuntu Linux distribution
 
 To explore the features of OpenDaVINCI and to use it in your own projects, you can add our .deb repository. We provide
 packages for x86, x86_64, and armfh.
@@ -34,7 +42,7 @@ packages for x86, x86_64, and armfh.
     $ sudo apt-get install opendavinci-lib opendavinci-tools opendavinci-supercomponent
 
 
-### Adding OpenDaVINCI to your Debian Linux distribution:
+### Adding OpenDaVINCI to your Debian Linux distribution
 
 1. Add the public key from our repository:
 
@@ -53,7 +61,7 @@ packages for x86, x86_64, and armfh.
     $ sudo apt-get install opendavinci-lib opendavinci-tools opendavinci-supercomponent
 
 
-### Adding OpenDaVINCI to your Fedora Linux distribution:
+### Adding OpenDaVINCI to your Fedora Linux distribution
 
 1. Add our repository itself to your sources.list:
 
@@ -68,7 +76,7 @@ packages for x86, x86_64, and armfh.
    $ sudo yum --nogpgcheck install opendavinci-lib opendavinci-tools opendavinci-supercomponent
    
    
-### Adding OpenDaVINCI to your openSuse Linux distribution:
+### Adding OpenDaVINCI to your openSuse Linux distribution
 
 1. Add the public key from our repository:
 
