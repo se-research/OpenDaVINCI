@@ -1,4 +1,4 @@
-How to send bytes to a UDP server
+How to send bytes to a TCP server
 =================================
 
 OpenDaVINCI has a built-in TCP connection handling engine realized on Linux-based
