@@ -21,49 +21,28 @@
 #include <iostream>
 #include <string>
 #include <core/SharedPointer.h>
-#include <core/base/Thread.h>
-#include <core/wrapper/UDPReceiver.h>
-#include <core/wrapper/UDPFactory.h>
-
-#include "UDPReceiveBytes.hpp"
+#include <core/wrapper/SerialPort.h>
+#include <core/wrapper/SerialPortFactory.h>
 
 using namespace std;
-
-void UDPReceiveBytes::nextString(const string &s) {
-    cout << "Received " << s.length() << " bytes containing '" << s << "'" << endl;
-}
 
 // We add some of OpenDaVINCI's namespaces for the sake of readability.
 using namespace core;
 using namespace core::wrapper;
 
 int32_t main(int32_t argc, char **argv) {
-    const string RECEIVER = "0.0.0.0";
-    const uint32_t PORT = 1234;
+    const string SERIAL_PORT = "/dev/pts/14";
+    const uint32_t BAUD_RATE = 19200;
 
     // We are using OpenDaVINCI's SharedPointer to automatically
     // release any acquired resources.
     try {
-        SharedPointer<UDPReceiver>
-            udpreceiver(UDPFactory::createUDPReceiver(RECEIVER, PORT));
+        SharedPointer<SerialPort> serial(SerialPortFactory::createSerialPort(SERIAL_PORT, BAUD_RATE));
 
-        // This instance will handle any bytes that are received
-        // by our UDP socket.
-        UDPReceiveBytes handler;
-        udpreceiver->setStringListener(&handler);
-
-        // Start receiving bytes.
-        udpreceiver->start();
-
-        const uint32_t ONE_SECOND = 1000 * 1000;
-        core::base::Thread::usleepFor(10 * ONE_SECOND);
-
-        // Stop receiving bytes and unregister our handler.
-        udpreceiver->stop();
-        udpreceiver->setStringListener(NULL);
+        serial->send("Hello World\r\n");
     }
     catch(string &exception) {
-        cerr << "Error while creating UDP receiver: " << exception << endl;
+        cerr << "Serial port could not be created: " << exception << endl;
     }
 }
 

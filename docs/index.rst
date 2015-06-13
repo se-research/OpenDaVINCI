@@ -12,6 +12,7 @@ Contents:
 
    tutorial.service
    tutorial.realtimeservice
+   tutorial.serialsendbytes
    tutorial.udpsendbytes
    tutorial.udpreceivebytes
    tutorial.udpreceivepackets
