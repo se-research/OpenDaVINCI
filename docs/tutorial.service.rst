@@ -86,7 +86,7 @@ any shared resources can be released properly for example. The latter method wil
 be executed in a new thread running concurrently to the calling thread.
 
 To detach the execution of the newly created thread from the calling one, the
-method ``serviceReady()`` as shown in line 24 needs to be called to signal to
+method ``serviceReady()`` as shown in line 25 needs to be called to signal to
 the calling thread that the new thread is ready; the calling thread is blocked
 from any further execution until this method is called. This synchronization dependency
 ensures that both any resources that need to be provided by the operating system
