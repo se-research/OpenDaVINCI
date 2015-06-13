@@ -11,7 +11,6 @@ a simple example below.
 MyRealtimeService.hpp:
 
 .. code-block:: c++
-   :linenos:
 
     #include <core/base/RealtimeService.h>
 
@@ -29,7 +28,6 @@ MyRealtimeService.hpp:
 MyRealtimeService.cpp:
 
 .. code-block:: c++
-   :linenos:
 
     #include <stdint.h>
     #include <iostream>

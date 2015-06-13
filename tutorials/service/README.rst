@@ -12,7 +12,6 @@ below.
 MyService.hpp:
 
 .. code-block:: c++
-   :linenos:
 
     #include <core/base/Service.h>
 
@@ -30,7 +29,6 @@ MyService.hpp:
 MyService.cpp:
 
 .. code-block:: c++
-   :linenos:
 
     #include <stdint.h>
     #include <iostream>
@@ -86,8 +84,8 @@ any shared resources can be released properly for example. The latter method wil
 be executed in a new thread running concurrently to the calling thread.
 
 To detach the execution of the newly created thread from the calling one, the
-method ``serviceReady()`` as shown in line 25 needs to be called to signal to
-the calling thread that the new thread is ready; the calling thread is blocked
+method ``serviceReady()`` needs to be called to signal to the calling thread that
+the new thread is initialized and will now enter, e.g., its main processing loop; the calling thread is blocked
 from any further execution until this method is called. This synchronization dependency
 ensures that both any resources that need to be provided by the operating system
 to run a thread are available and ready, and any shared resources like data

@@ -12,7 +12,6 @@ below.
 UDPReceiveBytes.hpp:
 
 .. code-block:: c++
-   :linenos:
 
     #include <core/wrapper/StringListener.h>
 
@@ -30,7 +29,6 @@ our UDP socket that we create later.
 UDPReceiveBytes.cpp:
 
 .. code-block:: c++
-   :linenos:
 
     #include <stdint.h>
     #include <iostream>

@@ -12,7 +12,6 @@ below.
 TCPSendBytes.cpp:
 
 .. code-block:: c++
-   :linenos:
 
     #include <stdint.h>
     #include <iostream>
