@@ -12,8 +12,6 @@ below.
 UDPSendBytes.cpp:
 
 .. code-block:: c++
-   :linenos:
-
     #include <stdint.h>
     #include <iostream>
     #include <string>

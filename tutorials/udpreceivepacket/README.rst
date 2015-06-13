@@ -108,6 +108,9 @@ To conveniently handle the resource management of releasing the acquired system
 resources, a ``SharedPointer`` is used that automatically releases memory that
 is no longer used.
 
+Please note that once you have stopped ``UDPReceiver`` you cannot reuse it and
+thus, you need to create a new one.
+
 You can compile and link the example::
 
    g++ -I /usr/include/opendavinci -c UDPReceivePackets.cpp -o UDPReceivePackets.o
