@@ -95,19 +95,19 @@ On failure, the method ``createUDPReceiver`` will throw an exception of type
 If the UDP socket could be successfully created, we register our ``StringListener``
 at the newly created ``UDPReceiver`` to be invoked when new bytes are available.
 Handling the bytes between the UDP socket and the ``StringListener`` notification
-is separated in different threads to avoid blocking the receiving threads in
-``UDPReceiver`` (``StringPipeline``): When new bytes are available, the
+is separated in different threads to avoid blocking the receiving thread in
+``UDPReceiver`` (realizing a concurrent ``StringPipeline``): When new bytes are available, the
 ``UDPReceiver`` will enqueue them as ``string`` into a FIFO queue; the
 ``StringPipeline`` class has an own thread sleeping on a condition awaiting new
 entries to be entered into the FIFO queue. Whenever a new entry is present, this
-thread will be awaken and process all available entries (and thus, the newest
-bytes) by calling the user-supplied ``StringListener`` delivering the data.
+thread will be automatically awaken and process all available entries 
+by calling the user-supplied ``StringListener`` to deliver the data.
 This mechanism ensures that the thread handling the lower level UDP socket is not
-unnecessarily delayed by the user-function.
+unnecessarily delayed by a user-supplied handling function.
 
 Once we have registered our ``StringListener``, the ``UDPReceiver`` is simply
 started and the main thread is falling asleep for a while in our example. After some
-time, the program will stop receiving bytes, unregistered the ``StringListener``,
+time, the program will stop receiving bytes, unregister the ``StringListener``,
 and release the system resources.
 
 To conveniently handle the resource management of releasing the acquired system
