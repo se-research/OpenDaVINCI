@@ -3,7 +3,7 @@ How to use concurrency in OpenDaVINCI
 
 OpenDaVINCI has a built-in platform-independent concurrency engine. Concurrency is
 realized on Linux-based and BSD-based operating systems using pthreads and on Windows
-by using C++11 features. The sources to this example are available at
+by using C++11 features. The sources for this example are available at
 https://github.com/se-research/OpenDaVINCI/tree/master/tutorials/service
 
 In order to use concurrency in a user-supplied module, you will find a simple example

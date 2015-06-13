@@ -3,7 +3,7 @@ How to send bytes to a UDP server
 
 OpenDaVINCI has a built-in UDP handling engine realized on Linux-based
 and BSD-based operating systems using POSIX sockets and on Windows using WinSock.
-The sources to this example are available at
+The sources for this example are available at
 https://github.com/se-research/OpenDaVINCI/tree/master/tutorials/udpsendbytes
 
 In order to send bytes to a UDP server, you will find a simple example
@@ -30,7 +30,7 @@ UDPSendBytes.cpp:
         const string RECEIVER = "127.0.0.1";
         const uint32_t PORT = 1234;
 
-        // We are using OpenDaVINCI's SharedPointer to automagically
+        // We are using OpenDaVINCI's SharedPointer to automatically
         // released any acquired resources.
         try {
             SharedPointer<UDPSender> udpsender(UDPFactory::createUDPSender(RECEIVER, PORT));
@@ -75,5 +75,5 @@ The resulting program can be run::
     $
 
 The tool ``nc`` will print ``Hello World`` and then terminate as the connection
-is closed on exiting ``tcpsendbytes``.
+is closed on exiting ``udpsendbytes``.
 

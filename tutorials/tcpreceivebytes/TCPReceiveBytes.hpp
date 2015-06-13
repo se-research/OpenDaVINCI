@@ -17,32 +17,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <stdint.h>
-#include <iostream>
-#include <string>
-#include <core/SharedPointer.h>
+#include <core/wrapper/ConnectionListener.h>
+#include <core/wrapper/StringListener.h>
+#include <core/wrapper/TCPAcceptorListener.h>
 #include <core/wrapper/TCPConnection.h>
-#include <core/wrapper/TCPFactory.h>
 
-using namespace std;
+// This class will handle newly accepted TCP connections.
+class TCPReceiveBytes : 
+    public core::wrapper::ConnectionListener,
+    public core::wrapper::StringListener,
+    public core::wrapper::TCPAcceptorListener {
 
-// We add some of OpenDaVINCI's namespaces for the sake of readability.
-using namespace core;
-using namespace core::wrapper;
+    // Your class needs to implement the method void nextString(const std::string &s).
+    virtual void nextString(const std::string &s);
 
-int32_t main(int32_t argc, char **argv) {
-    const string RECEIVER = "127.0.0.1";
-    const uint32_t PORT = 1234;
+    // Your class needs to implement the method void onNewConnection(core::wrapper::TCPConnection* connection).
+    virtual void onNewConnection(core::wrapper::TCPConnection* connection);
 
-    // We are using OpenDaVINCI's SharedPointer to automatically
-    // released any acquired resources.
-    try {
-        SharedPointer<TCPConnection> connection(TCPFactory::createTCPConnectionTo(RECEIVER, PORT));
-
-        connection->send("Hello World\r\n");
-    }
-    catch(string &exception) {
-        cerr << "Data could not be sent: " << exception << endl;
-    }
-}
+    // Your class should implement the method void handleConnectionError() to handle connection errors.
+    virtual void handleConnectionError();
+};
 

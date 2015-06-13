@@ -3,7 +3,7 @@ How to send bytes to a TCP server
 
 OpenDaVINCI has a built-in TCP connection handling engine realized on Linux-based
 and BSD-based operating systems using POSIX sockets and on Windows using WinSock.
-The sources to this example are available at
+The sources for this example are available at
 https://github.com/se-research/OpenDaVINCI/tree/master/tutorials/tcpsendbytes
 
 In order to send bytes to an existing TCP server, you will find a simple example
@@ -30,8 +30,8 @@ TCPSendBytes.cpp:
         const string RECEIVER = "127.0.0.1";
         const uint32_t PORT = 1234;
 
-        // We are using OpenDaVINCI's SharedPointer to automagically
-        // released any acquired resources.
+        // We are using OpenDaVINCI's SharedPointer to automatically
+        // release any acquired resources.
         try {
             SharedPointer<TCPConnection>
                 connection(TCPFactory::createTCPConnectionTo(RECEIVER, PORT));

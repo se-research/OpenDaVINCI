@@ -3,8 +3,8 @@ How to receive packets as a UDP server
 
 OpenDaVINCI has a built-in UDP handling engine realized on Linux-based
 and BSD-based operating systems using POSIX sockets and on Windows using WinSock.
-The sources to this example are available at
-https://github.com/se-research/OpenDaVINCI/tree/master/tutorials/udpreceivebytes
+The sources for this example are available at
+https://github.com/se-research/OpenDaVINCI/tree/master/tutorials/udpreceivepackets
 
 In order to receive packets as a UDP server, you will find a simple example
 below.
@@ -56,7 +56,7 @@ UDPReceivePackets.cpp:
         const string RECEIVER = "0.0.0.0";
         const uint32_t PORT = 1234;
 
-        // We are using OpenDaVINCI's SharedPointer to automagically
+        // We are using OpenDaVINCI's SharedPointer to automatically
         // released any acquired resources.
         try {
             SharedPointer<UDPReceiver>

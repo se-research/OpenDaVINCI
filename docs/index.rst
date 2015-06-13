@@ -16,6 +16,7 @@ Contents:
    tutorial.udpreceivebytes
    tutorial.udpreceivepackets
    tutorial.tcpsendbytes
+   tutorial.tcpreceivebytes
 
    installation.archlinux
    installation.centos7

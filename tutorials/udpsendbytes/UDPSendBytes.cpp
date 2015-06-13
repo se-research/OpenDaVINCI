@@ -34,7 +34,7 @@ int32_t main(int32_t argc, char **argv) {
     const string RECEIVER = "127.0.0.1";
     const uint32_t PORT = 1234;
 
-    // We are using OpenDaVINCI's SharedPointer to automagically
+    // We are using OpenDaVINCI's SharedPointer to automatically
     // released any acquired resources.
     try {
         SharedPointer<UDPSender> udpsender(UDPFactory::createUDPSender(RECEIVER, PORT));
