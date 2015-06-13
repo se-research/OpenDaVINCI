@@ -10,6 +10,7 @@ In order to use concurrency in a user-supplied module, you will find a simple ex
 below.
 
 MyService.hpp:
+
 .. code-block:: c++
    :linenos:
 
@@ -27,6 +28,7 @@ MyService.hpp:
     };
 
 MyService.cpp:
+
 .. code-block:: c++
    :linenos:
 

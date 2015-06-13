@@ -9,6 +9,7 @@ In order to use realtime concurrency in a user-supplied module, you will find
 a simple example below.
 
 MyRealtimeService.hpp:
+
 .. code-block:: c++
    :linenos:
 
@@ -26,6 +27,7 @@ MyRealtimeService.hpp:
     };
 
 MyRealtimeService.cpp:
+
 .. code-block:: c++
    :linenos:
 
