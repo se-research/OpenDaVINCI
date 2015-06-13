@@ -12,6 +12,7 @@ Contents:
 
    tutorial.service
    tutorial.realtimeservice
+   tutorial.tcpsendbytes
 
    installation.archlinux
    installation.centos7
