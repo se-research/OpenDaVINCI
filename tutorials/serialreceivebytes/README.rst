@@ -27,7 +27,7 @@ To receive any data, we firstly declare a class that implements the interface
 to ``StringListener``, though, this different interface was provided to indicate that
 the bytes received via this interface need to be further processed as part of a
 user-supplied protocol. This class will be registered as listener to our serial
-that we create later.
+port that we create later.
 
 SerialReceiveBytes.cpp:
 
