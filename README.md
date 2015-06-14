@@ -7,6 +7,9 @@ You will find its full documentation and getting started guides here: http://ope
 
 You will find different projects that are using OpenDaVINCI here: http://opendavinci.cse.chalmers.se/www/index.html
 
+Overview build status:
+* Documentation: [![Documentation Status](https://readthedocs.org/projects/opendavinci/badge/?version=latest)](https://readthedocs.org/projects/opendavinci/badge/?version=latest)
+
 ## Using OpenDaVINCI in your Projects
 
 To explore the features of OpenDaVINCI and to use it in your own projects, we provide pre-compiled
