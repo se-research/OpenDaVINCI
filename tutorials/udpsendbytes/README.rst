@@ -1,5 +1,5 @@
 How to send bytes to a UDP server
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+"""""""""""""""""""""""""""""""""
 
 OpenDaVINCI has a built-in UDP handling engine realized on Linux-based
 and BSD-based operating systems using POSIX sockets and on Windows using WinSock.
