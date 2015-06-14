@@ -1,5 +1,5 @@
 Compiling OpenDaVINCI on Zorin 9.1
-==================================
+----------------------------------
 
 Download and install Zorin 9.1 and install its latest package updates::
 

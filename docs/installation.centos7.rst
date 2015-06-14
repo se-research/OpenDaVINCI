@@ -1,5 +1,5 @@
 Compiling OpenDaVINCI on CentOS7
-================================
+--------------------------------
 
 Download and install CentOS 7 and install its latest package updates::
 

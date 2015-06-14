@@ -1,5 +1,5 @@
 Compiling OpenDaVINCI on Ubuntu 15.04
-=====================================
+-------------------------------------
 
 Download and install Ubuntu 15.04 and install its latest package updates::
 

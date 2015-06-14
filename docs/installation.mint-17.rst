@@ -1,5 +1,5 @@
 Compiling OpenDaVINCI on Linux Mint 17 (32bit and 64bit)
-========================================================
+--------------------------------------------------------
 
 Download and install Linux Mint 17 and install its latest package updates::
 

@@ -1,5 +1,5 @@
 Using the logging interface in OpenDaVINCI
-==========================================
+------------------------------------------
 
 OpenDaVINCI has a built-in logging engine. Its fundamental concept is
 realized by ``odsupercomponent`` as it is required to start a communication

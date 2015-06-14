@@ -1,5 +1,6 @@
 How to receive bytes as a TCP server
-====================================
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 
 OpenDaVINCI has a built-in TCP handling engine realized on Linux-based
 and BSD-based operating systems using POSIX sockets and on Windows using WinSock.

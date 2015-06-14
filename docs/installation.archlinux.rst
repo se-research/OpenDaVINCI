@@ -1,5 +1,5 @@
 Compiling OpenDaVINCI on ArchLinux
-==================================
+----------------------------------
 
 Download and install ArchLinux and install using the following instructions: https://wiki.archlinux.org/index.php/Installation_guide
 

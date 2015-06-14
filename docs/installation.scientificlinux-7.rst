@@ -1,5 +1,5 @@
 Compiling OpenDaVINCI on Scientific Linux 7
-===========================================
+-------------------------------------------
 
 Download and install Scientific Linux 7 and install its latest package updates::
 

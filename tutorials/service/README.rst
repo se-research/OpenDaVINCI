@@ -1,5 +1,5 @@
 How to use concurrency
-======================
+^^^^^^^^^^^^^^^^^^^^^^
 
 OpenDaVINCI has a built-in platform-independent concurrency engine. Concurrency is
 realized on Linux-based and BSD-based operating systems using pthreads and on Windows

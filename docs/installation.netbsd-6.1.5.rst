@@ -1,5 +1,5 @@
 Compiling OpenDaVINCI on NetBSD 6.1.5 (32bit and 64bit)
-=======================================================
+-------------------------------------------------------
 
 Download and install NetBSD 6.1.4 and update the packages list as root::
 

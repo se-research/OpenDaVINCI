@@ -1,5 +1,5 @@
 Compiling OpenDaVINCI on MacOSX 10
-==================================
+----------------------------------
 
 Install Xcode: https://developer.apple.com/xcode/downloads/
 

@@ -1,5 +1,6 @@
 How to receive bytes from a serial connection
-=============================================
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 
 OpenDaVINCI has a built-in serial port handling enging based on
 https://github.com/wjwwood/serial. This library realizes serial communication on

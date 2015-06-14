@@ -1,5 +1,5 @@
 Compiling OpenDaVINCI on Mageia
-===============================
+-------------------------------
 
 Download and install Mageia and install its latest package updates::
 

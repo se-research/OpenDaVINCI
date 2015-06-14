@@ -1,5 +1,5 @@
 Compiling OpenDaVINCI on Debian 7.8
-===================================
+-----------------------------------
 
 Download and install Debian 7.8 and install its latest package updates::
 

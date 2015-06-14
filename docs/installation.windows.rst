@@ -1,5 +1,5 @@
 Compiling OpenDaVINCI on Windows 7, 8.1, and 10 (32bit and 64bit)
-=================================================================
+-----------------------------------------------------------------
 
 
 Download and install CMake for Windows (let the install add the CMake binary to the all users' path): http://www.cmake.org/files/v3.0/cmake-3.0.0-win32-x86.exe

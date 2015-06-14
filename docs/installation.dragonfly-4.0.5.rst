@@ -1,5 +1,5 @@
 Compiling OpenDaVINCI on DragonFlyBSD 4.0.5 (64bit)
-===================================================
+---------------------------------------------------
 
 Download and install DragonFlyBSD 4.0.5 and update the packages list as root::
 

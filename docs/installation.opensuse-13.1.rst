@@ -1,5 +1,5 @@
 Compiling OpenDaVINCI on OpenSuSE 13.1
-======================================
+--------------------------------------
 
 Download and install openSuSE 13.1 and install its latest package updates::
 

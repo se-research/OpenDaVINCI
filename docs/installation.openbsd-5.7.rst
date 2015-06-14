@@ -1,5 +1,5 @@
 Compiling OpenDaVINCI on OpenBSD 5.7 (32bit and 64bit)
-======================================================
+------------------------------------------------------
 
 Download and install OpenBSD 5.5.
 

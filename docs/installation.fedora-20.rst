@@ -1,5 +1,5 @@
 Compiling OpenDaVINCI on Fedora 20
-==================================
+----------------------------------
 
 Download and install Fedora 20 and install its latest package updates::
 

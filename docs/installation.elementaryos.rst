@@ -1,5 +1,5 @@
 Compiling OpenDaVINCI on Elementary OS
-======================================
+--------------------------------------
 
 Download and install Elementary OS and install its latest package updates::
 

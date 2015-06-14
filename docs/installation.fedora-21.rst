@@ -1,5 +1,5 @@
 Compiling OpenDaVINCI on Fedora 21
-==================================
+----------------------------------
 
 Download and install Fedora 21 and install its latest package updates::
 
