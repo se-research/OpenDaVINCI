@@ -6,7 +6,7 @@ It runs on a variety of POSIX-compatible OS. And Windows.
 
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 4
 
    installation.pre-compiled
 
