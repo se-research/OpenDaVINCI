@@ -10,6 +10,8 @@ Contents:
 .. toctree::
    :maxdepth: 3
 
+   installation.pre-compiled
+
    tutorials
 
    installation
