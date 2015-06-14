@@ -29,9 +29,8 @@
 
 using namespace std;
 
-void SerialReceiveBytes::receivedPartialString(const string &s) {
-    cout << "Received partial string of length "
-         << s.length() << " bytes containing '" << s << "'" << endl;
+void SerialReceiveBytes::nextString(const string &s) {
+    cout << "Received " << s.length() << " bytes containing '" << s << "'" << endl;
 }
 
 // We add some of OpenDaVINCI's namespaces for the sake of readability.
@@ -51,7 +50,7 @@ int32_t main(int32_t argc, char **argv) {
         // This instance will handle any bytes that are received
         // from our serial port.
         SerialReceiveBytes handler;
-        serial->setPartialStringReceiver(&handler);
+        serial->setStringListener(&handler);
 
         // Start receiving bytes.
         serial->start();
@@ -61,7 +60,7 @@ int32_t main(int32_t argc, char **argv) {
 
         // Stop receiving bytes and unregister our handler.
         serial->stop();
-        serial->setPartialStringReceiver(NULL);
+        serial->setStringListener(NULL);
     }
     catch(string &exception) {
         cerr << "Error while creating serial port: " << exception << endl;

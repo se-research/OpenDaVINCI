@@ -14,21 +14,19 @@ SerialReceiveBytes.hpp:
 
 .. code-block:: c++
 
-    #include <core/wrapper/PartialStringReceiver.h>
+    #include <core/wrapper/StringListener.h>
 
     // This class will handle the bytes received via a serial link.
-    class SerialReceiveBytes : public core::wrapper::PartialStringReceiver {
+    class SerialReceiveBytes : public core::wrapper::StringListener {
 
-        // Your class needs to implement the method void receivedPartialString(const std::string &s).
-        virtual void receivedPartialString(const std::string &s);
+        // Your class needs to implement the method void nextString(const std::string &s).
+        virtual void nextString(const std::string &s);
     };
 
 To receive any data, we firstly declare a class that implements the interface
-``core::wrapper::PartialStringReceiver``. The signature of this method is identical
-to ``StringListener``, though, this different interface was provided to indicate that
-the bytes received via this interface need to be further processed as part of a
-user-supplied protocol. This class will be registered as listener to our serial
-port that we create later.
+``core::wrapper::StringListener``. This method will handle any bytes received
+from the low level ``SerialPort``. Here, your application should realize an
+application-specific protocol.
 
 SerialReceiveBytes.cpp:
 
@@ -46,9 +44,8 @@ SerialReceiveBytes.cpp:
 
     using namespace std;
 
-    void SerialReceiveBytes::receivedPartialString(const string &s) {
-        cout << "Received partial string of length "
-             << s.length() << " bytes containing '" << s << "'" << endl;
+    void SerialReceiveBytes::nextString(const string &s) {
+        cout << "Received " << s.length() << " bytes containing '" << s << "'" << endl;
     }
 
     // We add some of OpenDaVINCI's namespaces for the sake of readability.
@@ -68,7 +65,7 @@ SerialReceiveBytes.cpp:
             // This instance will handle any bytes that are received
             // from our serial port.
             SerialReceiveBytes handler;
-            serial->setPartialStringReceiver(&handler);
+            serial->setStringListener(&handler);
 
             // Start receiving bytes.
             serial->start();
@@ -78,7 +75,7 @@ SerialReceiveBytes.cpp:
 
             // Stop receiving bytes and unregister our handler.
             serial->stop();
-            serial->setPartialStringReceiver(NULL);
+            serial->setStringListener(NULL);
         }
         catch(string &exception) {
             cerr << "Error while creating serial port: " << exception << endl;
@@ -95,13 +92,13 @@ a pointer to a ``SerialPort`` instance that is used to handle the data transfer.
 On failure, the method ``createSerialPort`` will throw an exception of type
 ``string`` with an error message.
 
-If the serial port could be successfully created, we register our ``PartialStringReceiver``
+If the serial port could be successfully created, we register our ``StringListener``
 at the newly created ``SerialPort`` to be invoked when new bytes are available to
 be interpreted by a user-supplied protocol.
 
-Once we have registered our ``PartialStringReceiver``, the ``SerialPort`` is simply
+Once we have registered our ``StringListener``, the ``SerialPort`` is simply
 started and the main thread is falling asleep for a while in our example. After some
-time, the program will stop receiving bytes, unregister the ``PartialStringReceiver``,
+time, the program will stop receiving bytes, unregister the ``StringListener``,
 and release the system resources.
 
 To conveniently handle the resource management of releasing the acquired system

@@ -17,12 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <core/wrapper/PartialStringReceiver.h>
+#include <core/wrapper/StringListener.h>
 
 // This class will handle the bytes received via a serial link.
-class SerialReceiveBytes : public core::wrapper::PartialStringReceiver {
+class SerialReceiveBytes : public core::wrapper::StringListener {
 
-    // Your class needs to implement the method void receivedPartialString(const std::string &s).
-    virtual void receivedPartialString(const std::string &s);
+    // Your class needs to implement the method void nextString(const std::string &s).
+    virtual void nextString(const std::string &s);
 };
 
