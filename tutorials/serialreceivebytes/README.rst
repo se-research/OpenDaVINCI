@@ -82,7 +82,7 @@ SerialReceiveBytes.cpp:
     }
 
 To receive bytes from a serial link, your application needs to include
-``<core/base/SerialPort.h>`` and ``<core/base/SerialPortFactory.h>`` that
+``<core/wrapper/SerialPort.h>`` and ``<core/wrapper/SerialPortFactory.h>`` that
 encapsulate the platform-specific implementations.
 
 ``SerialPortFactory`` provides a static method called ``createSerialPort`` that allows

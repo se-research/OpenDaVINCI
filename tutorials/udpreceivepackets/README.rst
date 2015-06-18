@@ -84,7 +84,7 @@ UDPReceivePackets.cpp:
     }
 
 To receive a packet from a UDP socket, your application needs to include
-``<core/base/UDPReceiver.h>`` and ``<core/base/UDPFactory.h>`` that encapsulate
+``<core/wrapper/UDPReceiver.h>`` and ``<core/wrapper/UDPFactory.h>`` that encapsulate
 the platform-specific implementations.
 
 ``UDPFactory`` provides a static method called ``createUDPReceiver`` that allows

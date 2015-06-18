@@ -136,7 +136,7 @@ new connections in a ``vector`` for instance and manage their individual
 connection status properly.
  
 To receive bytes from a TCP socket, your application needs to include
-``<core/base/TCPAcceptor.h>`` and ``<core/base/TCPFactory.h>`` that encapsulate
+``<core/wrapper/TCPAcceptor.h>`` and ``<core/wrapper/TCPFactory.h>`` that encapsulate
 the platform-specific implementations.
 
 ``TCPFactory`` provides a static method called ``createTCPAcceptor`` that allows

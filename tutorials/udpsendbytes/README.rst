@@ -43,7 +43,7 @@ UDPSendBytes.cpp:
     }
 
 To send bytes over UDP to a UDP socket, your application needs to include
-``<core/base/UDPSender.h>`` and ``<core/base/UDPFactory.h>`` that encapsulate
+``<core/wrapper/UDPSender.h>`` and ``<core/wrapper/UDPFactory.h>`` that encapsulate
 the platform-specific implementations.
 
 ``UDPFactory`` provides a static method called ``createUDPSender`` that

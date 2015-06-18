@@ -44,7 +44,7 @@ TCPSendBytes.cpp:
     }
 
 To send bytes over a TCP link to a TCP server, your application needs to include
-``<core/base/TCPConnection.h>`` and ``<core/base/TCPFactory.h>`` that encapsulate
+``<core/wrapper/TCPConnection.h>`` and ``<core/wrapper/TCPFactory.h>`` that encapsulate
 the platform-specific implementations.
 
 ``TCPFactory`` provides a static method called ``createTCPConnectionTo`` that
