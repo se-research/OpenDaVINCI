@@ -1,5 +1,5 @@
 How to exchange data between processes
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+""""""""""""""""""""""""""""""""""""""
 
 OpenDaVINCI has a built-in interprocess communication engine realized with
 shared memory and semaphores. The sources for this example are available at
