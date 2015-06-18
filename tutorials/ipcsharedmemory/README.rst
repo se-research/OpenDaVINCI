@@ -79,7 +79,8 @@ Once you have the ``SharedPointer`` at hand, you can check its validity by calli
 ``bool isValid()``. If the shared memory is valid, you can request exclusive access
 to it by calling ``void lock()``, which blocks until the shared memory is available.
 As soon as it gets available, you can access it by calling ``getSharedMemory()``
-returning a ``char*``.
+returning a ``char*``. Once you have completed accessing the data, you need to call
+``unlock()`` to release other processes waiting for the resources.
 
 You can compile and link the producer example as follows::
 
@@ -153,7 +154,8 @@ Once you have the ``SharedPointer`` at hand, you can check its validity by calli
 ``bool isValid()``. If the shared memory is valid, you can request exclusive access
 to it by calling ``void lock()``, which blocks until the shared memory is available.
 As soon as it gets available, you can access it by calling ``getSharedMemory()``
-returning a ``char*``.
+returning a ``char*``. Once you have completed accessing the data, you need to call
+``unlock()`` to release other processes waiting for the resources.
 
 You can compile and link the consumer example as follows::
 
