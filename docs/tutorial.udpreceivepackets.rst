@@ -1,1 +1,1 @@
-../tutorials/udpreceivepacket/README.rst
+../tutorials/udpreceivepackets/README.rst

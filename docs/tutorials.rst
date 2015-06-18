@@ -9,6 +9,10 @@ How to use concurrency
 How to exchange data in distributed processes
 ---------------------------------------------
 
+Using shared memory for processes on the same machine
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. include:: tutorial.ipcsharedmemory.rst
+
 Serial connection
 ^^^^^^^^^^^^^^^^^
 .. include:: tutorial.serialsendbytes.rst
