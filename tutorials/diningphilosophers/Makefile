@@ -5,7 +5,7 @@ CPPFLAGS=-Wall $(INCLUDES)
 LDLIBS=-lopendavinci -lpthread
 
 BIN=diningphilosophers
-SRCS=DiningPhilosophers.cpp
+SRCS=DiningPhilosopher.cpp
 OBJS=$(subst .cpp,.o,$(SRCS))
 
 all: $(BIN)
