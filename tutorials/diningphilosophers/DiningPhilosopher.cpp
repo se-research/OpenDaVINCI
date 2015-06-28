@@ -53,57 +53,52 @@ void DiningPhilosopher::run() {
         core::base::Thread::usleepFor(ONE_SECOND * (1.0 + (rand()/(float)RAND_MAX)));
         cout << "done." << endl;
 
-        {
-            cout << "Philosopher " << m_id << " is trying to grab left fork...";
-            Lock left(*m_silverware[m_id]);
-            cout << "success." << endl;
+        cout << "Philosopher " << m_id << " is trying to grab left fork...";
+        Lock left(*m_silverware[m_id]);
+        cout << "success." << endl;
 
-            {
-                cout << "Philosopher " << m_id << " is trying to grab right fork...";
-                Lock right(*m_silverware[(m_id + 1)%m_numberOfPhilosophers]);
-                cout << "success." << endl;
+        cout << "Philosopher " << m_id << " is trying to grab right fork...";
+        Lock right(*m_silverware[(m_id + 1)%m_numberOfPhilosophers]);
+        cout << "success." << endl;
 
-                core::base::Thread::usleepFor(ONE_SECOND * (1.0 + (rand()/(float)RAND_MAX)));
-
-                cout << "Philosopher " << m_id << " is eating..." << endl;        
-                core::base::Thread::usleepFor(ONE_SECOND * (1.0 + (rand()/(float)RAND_MAX)));
-                cout << "done." << endl;
-            }
-        }
+        cout << "Philosopher " << m_id << " is eating..." << endl;        
+        core::base::Thread::usleepFor(ONE_SECOND * (1.0 + (rand()/(float)RAND_MAX)));
+        cout << "done." << endl;
     }
 }
 
 int32_t main(int32_t argc, char **argv) {
+    const uint32_t ONE_SECOND = 1000 * 1000;
     const uint32_t PHILOSOPHERS = 5;
 
+    // Create silverware.
     vector<Mutex*> silverware;
     for (uint32_t i = 0; i < PHILOSOPHERS; i++) {
         silverware.push_back(new Mutex());
     }
 
-    {
-        vector<DiningPhilosopher*> philosophers;
+    // Create dining philosophers.
+    vector<DiningPhilosopher*> philosophers;
+    for (uint32_t i = 0; i < PHILOSOPHERS; i++) {
+        philosophers.push_back(new DiningPhilosopher(PHILOSOPHERS, i,   silverware));
+    }
 
-        for (uint32_t i = 0; i < PHILOSOPHERS; i++) {
-            philosophers.push_back(new DiningPhilosopher(PHILOSOPHERS, i,   silverware));
-        }
+    // Start the dinner.
+    for (uint32_t i = 0; i < PHILOSOPHERS; i++) {
+        philosophers[i]->start();
+    }
 
-        const uint32_t ONE_SECOND = 1000 * 1000;
+    // Wait for ten seconds.
+    core::base::Thread::usleepFor(10 * ONE_SECOND);
 
-        for (uint32_t i = 0; i < PHILOSOPHERS; i++) {
-            philosophers[i]->start();
-            core::base::Thread::usleepFor(2 * ONE_SECOND);
-        }
+    // Stop dinner.
+    for (uint32_t i = 0; i < PHILOSOPHERS; i++) {
+        philosophers[i]->stop();
+    }
 
-        core::base::Thread::usleepFor(10 * ONE_SECOND);
-
-        for (uint32_t i = 0; i < PHILOSOPHERS; i++) {
-            philosophers[i]->stop();
-        }
-
-        for (uint32_t i = 0; i < PHILOSOPHERS; i++) {
-            delete philosophers[i];
-        }
+    // Clean up dinner.
+    for (uint32_t i = 0; i < PHILOSOPHERS; i++) {
+        delete philosophers[i];
     }
 
     for (uint32_t i = 0; i < PHILOSOPHERS; i++) {
