@@ -5,6 +5,7 @@ How to use concurrency
 ----------------------
 .. include:: tutorial.service.rst
 .. include:: tutorial.realtimeservice.rst
+.. include:: tutorial.diningphilosophers.rst
 
 How to exchange data in distributed processes
 ---------------------------------------------

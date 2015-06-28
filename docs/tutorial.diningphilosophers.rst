@@ -1,0 +1,1 @@
+../tutorials/diningphilosophers/README.rst
