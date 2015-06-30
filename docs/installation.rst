@@ -21,6 +21,7 @@ How to install OpenDaVINCI on Linux-based Platforms
 How to install OpenDaVINCI on BSD-based Platforms
 =================================================
 .. include:: installation.dragonfly-4.0.5.rst
+.. include:: installation.dragonfly-4.2.rst
 .. include:: installation.freebsd-10.rst
 .. include:: installation.netbsd-6.1.5.rst
 .. include:: installation.openbsd-5.7.rst
