@@ -30,7 +30,6 @@ Install Java to generate data structures::
   
 Add the following lines to /etc/fstab::
 
-   fdesc   /dev/fd     fdescfs     rw  0   0
    proc    /proc       procfs      rw  0   0
   
 Add a symbolic link to python as root user::
