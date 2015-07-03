@@ -21,6 +21,7 @@
 #include <iostream>
 #include <string>
 #include <core/SharedPointer.h>
+#include <core/base/Lock.h>
 #include <core/base/Thread.h>
 #include <core/wrapper/SharedMemory.h>
 #include <core/wrapper/SharedMemoryFactory.h>
@@ -42,12 +43,13 @@ int32_t main(int32_t argc, char **argv) {
         if (sharedMemory->isValid()) {
             uint32_t counter = 10;
             while (counter-- > 0) {
-                // Lock shared memory.
-                sharedMemory->lock();
+                string s;
+                {
+                    // Using a scoped lock to lock and automatically unlock a shared memory segment.
+                    core::base::Lock l(sharedMemory);
                     char *p = static_cast<char*>(sharedMemory->getSharedMemory());
-                    string s(p, sharedMemory->getSize());
-                // Unlock memory.
-                sharedMemory->unlock();
+                    s = string(p);
+                }
 
                 cout << "Content of shared memory: '" << s << "'" << endl;
 

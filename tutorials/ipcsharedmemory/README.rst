@@ -19,6 +19,7 @@ ipcsharedmemoryproducer.cpp:
     #include <iostream>
     #include <string>
     #include <core/SharedPointer.h>
+    #include <core/base/Lock.h>
     #include <core/base/Thread.h>
     #include <core/wrapper/SharedMemory.h>
     #include <core/wrapper/SharedMemoryFactory.h>
@@ -41,15 +42,15 @@ ipcsharedmemoryproducer.cpp:
             if (sharedMemory->isValid()) {
                 uint32_t counter = 20;
                 while (counter-- > 0) {
-                    // Lock shared memory.
-                    sharedMemory->lock();
+                    {
+                        // Using a scoped lock to lock and automatically unlock a shared memory segment.
+                        core::base::Lock l(sharedMemory);
                         char *p = static_cast<char*>(sharedMemory->getSharedMemory());
                         for (uint32_t i = 0; i < sharedMemory->getSize(); i++) {
                             char c = (char) (65 + ((i+counter)%26));
                             p[i] = c;
                         }
-                    // Unlock memory.
-                    sharedMemory->unlock();
+                    }
 
                     // Sleep some time.
                     const uint32_t ONE_SECOND = 1000 * 1000;
@@ -77,10 +78,10 @@ your program.
 
 Once you have the ``SharedPointer`` at hand, you can check its validity by calling
 ``bool isValid()``. If the shared memory is valid, you can request exclusive access
-to it by calling ``void lock()``, which blocks until the shared memory is available.
-As soon as it gets available, you can access it by calling ``getSharedMemory()``
-returning a ``char*``. Once you have completed accessing the data, you need to call
-``unlock()`` to release other processes waiting for the resources.
+to it by using a scoped lock provided by the class ``core::base::Lock``. A scoped
+lock will automatically release a concurrently accessed resource when the current
+scope is left. As soon as it gets available, you can access it by calling ``getSharedMemory()``
+returning a ``char*``.
 
 You can compile and link the producer example as follows::
 
@@ -95,6 +96,7 @@ ipcsharedmemoryconsumer.cpp:
     #include <iostream>
     #include <string>
     #include <core/SharedPointer.h>
+    #include <core/base/Lock.h>
     #include <core/base/Thread.h>
     #include <core/wrapper/SharedMemory.h>
     #include <core/wrapper/SharedMemoryFactory.h>
@@ -116,12 +118,13 @@ ipcsharedmemoryconsumer.cpp:
             if (sharedMemory->isValid()) {
                 uint32_t counter = 10;
                 while (counter-- > 0) {
-                    // Lock shared memory.
-                    sharedMemory->lock();
+                    string s;
+                    {
+                        // Using a scoped lock to lock and automatically unlock a shared memory segment.
+                        core::base::Lock l(sharedMemory);
                         char *p = static_cast<char*>(sharedMemory->getSharedMemory());
-                        string s(p, sharedMemory->getSize());
-                    // Unlock memory.
-                    sharedMemory->unlock();
+                        s = string(p);
+                    }
 
                     cout << "Content of shared memory: '" << s << "'" << endl;
 
@@ -152,10 +155,10 @@ your program.
 
 Once you have the ``SharedPointer`` at hand, you can check its validity by calling
 ``bool isValid()``. If the shared memory is valid, you can request exclusive access
-to it by calling ``void lock()``, which blocks until the shared memory is available.
-As soon as it gets available, you can access it by calling ``getSharedMemory()``
-returning a ``char*``. Once you have completed accessing the data, you need to call
-``unlock()`` to release other processes waiting for the resources.
+to it by using a scoped lock provided by the class ``core::base::Lock``. A scoped
+lock will automatically release a concurrently accessed resource when the current
+scope is left. As soon as it gets available, you can access it by calling ``getSharedMemory()``
+returning a ``char*``.
 
 You can compile and link the consumer example as follows::
 
