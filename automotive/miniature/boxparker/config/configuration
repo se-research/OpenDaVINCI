@@ -1,0 +1,192 @@
+# This is the "one-and-only" configuration for OpenDaVINCI.
+# Its format is like:
+#
+# section.key=value
+#
+# If you have several modules of the same type, the following configuration
+# scheme applies:
+#
+# global.key=value # <-- This configuration applies for all modules.
+#
+# section.key=value # <-- This configuration applies for all modules of type "section".
+#
+# section:ID.key=value # <-- This configuration applies for the module "ID" of type "section".
+
+
+###############################################################################
+###############################################################################
+#
+# GLOBAL CONFIGURATION
+#
+global.car = Scenarios/Models/FordEscape.objx
+global.scenario = file://Parking-boxes-1.scnx
+global.showGrid = 0
+
+# The following attributes define the buffer sizes for recording and
+# replaying. You need to adjust these parameters depending on the
+# camera resolution for example (640x480x3 --> 1000000 for memorySegment,
+# 1280x720x3 --> 2800000).
+global.buffer.memorySegmentSize = 2800000 # Size of a memory segment in bytes.
+global.buffer.numberOfMemorySegments = 20 # Number of memory segments.
+
+
+###############################################################################
+###############################################################################
+#
+# NEXT, THE CONFIGURATION FOR OpenDaVINCI TOOLS FOLLOWS. 
+#
+###############################################################################
+###############################################################################
+#
+# CONFIGURATION FOR ODSUPERCOMPONENT
+#
+
+# If the managed level is pulse_shift, all connected modules will be informed
+# about the supercomponent's real time by this increment per module. Thus, the
+# execution times per modules are better aligned with supercomponent and the
+# data exchange is somewhat more predictable.
+odsupercomponent.pulseshift.shift = 10000 # (in microseconds)
+
+# If the managed level is pulse_time_ack, this is the timeout for waiting for
+# an ACK message from a connected client.
+odsupercomponent.pulsetimeack.timeout = 5000 # (in milliseconds)
+
+# If the managed level is pulse_time_ack, the modules are triggered sequentially
+# by sending pulses and waiting for acknowledgment messages. To allow the modules
+# to deliver their respective containers, this yielding time is used to sleep
+# before supercomponent sends the pulse messages the next module in this execution
+# cycle. This value needs to be adjusted for networked simulations to ensure
+# deterministic execution. 
+odsupercomponent.pulsetimeack.yield = 5000 # (in microseconds)
+
+# List of modules (without blanks) that will not get a pulse message from odsupercomponent.
+supercomponent.pulsetimeack.exclude = cockpit,monitor
+
+
+###############################################################################
+###############################################################################
+#
+# CONFIGURATION FOR ODPLAYER
+#
+odplayer.input = file://recording.rec
+odplayer.autoRewind = 0 # 0 = no rewind in the case of EOF, 1 = rewind.
+odplayer.remoteControl = 0 # 0 = no remote control, 1 = allowing remote control (i.e. play, pause, rewind, step_forward)
+odplayer.timeScale = 1.0 # A time scale factor of 1.0 means real time, a factor of 0 means as fast as possible. The smaller the time scale factor is the faster runs the replay.
+
+
+###############################################################################
+###############################################################################
+#
+# CONFIGURATION FOR RECORDER
+#
+odrecorder.output = file://recording.rec
+odrecorder.remoteControl = 0 # 0 = no remote control, 1 = allowing remote control (i.e. start and stop recording)
+odrecorder.dumpSharedData = 1 # 0 = do not dump shared images and shared images, 1 = otherwise
+
+
+###############################################################################
+###############################################################################
+#
+# CONFIGURATION FOR ODRECINTEGRITY
+#
+odrecintegrity.input = file:///dev/stdin
+
+
+###############################################################################
+###############################################################################
+#
+# NEXT, THE CONFIGURATION FOR OpenDaVINCI SIMULATION TOOLS FOLLOWS. 
+#
+###############################################################################
+###############################################################################
+#
+# CONFIGURATION FOR IRUS (Infrared and ultrasonic simulation)
+#
+irus.numberOfSensors = 6                   # Number of configured sensors.
+irus.showPolygons = 1                      # Show explicitly all polygons.
+
+irus.sensor0.id = 0                        # This ID is used in SensorBoardData structure.
+irus.sensor0.name = Infrared_FrontRight    # Name of the sensor
+irus.sensor0.rotZ = -90                    # Rotation of the sensor around the Z-axis in degrees, positive = counterclockwise, negative = clockwise, 0 = 12am, -90 = 3pm, ...
+irus.sensor0.translation = (1.0;-1.0;0.0)  # Translation (X;Y;Z) w.r.t. vehicle's center
+irus.sensor0.angleFOV = 5                  # In degrees.
+irus.sensor0.distanceFOV = 3               # In meters.
+irus.sensor0.clampDistance = 2.9           # Any distances greater than this distance will be ignored and -1 will be returned.
+irus.sensor0.showFOV = 1                   # Show FOV in monitor.
+
+irus.sensor1.id = 1                        # This ID is used in SensorBoardData structure.
+irus.sensor1.name = Infrared_Rear          # Name of the sensor
+irus.sensor1.rotZ = -180                   # Rotation of the sensor around the Z-axis in degrees, positive = counterclockwise, negative = clockwise, 0 = 12am, -90 = 3pm, ...
+irus.sensor1.translation = (-1.0;0.0;0.0)  # Translation (X;Y;Z) w.r.t. vehicle's center
+irus.sensor1.angleFOV = 5                  # In degrees.
+irus.sensor1.distanceFOV = 3               # In meters.
+irus.sensor1.clampDistance = 2.9           # Any distances greater than this distance will be ignored and -1 will be returned.
+irus.sensor1.showFOV = 1                   # Show FOV in monitor.
+
+irus.sensor2.id = 2                        # This ID is used in SensorBoardData structure.
+irus.sensor2.name = Infrared_RearRight     # Name of the sensor
+irus.sensor2.rotZ = -90                    # Rotation of the sensor around the Z-axis in degrees, positive = counterclockwise, negative = clockwise, 0 = 12am, -90 = 3pm, ...
+irus.sensor2.translation = (-1.0;-1.0;0.0) # Translation (X;Y;Z) w.r.t. vehicle's center
+irus.sensor2.angleFOV = 5                  # In degrees.
+irus.sensor2.distanceFOV = 3               # In meters.
+irus.sensor2.clampDistance = 2.9           # Any distances greater than this distance will be ignored and -1 will be returned.
+irus.sensor2.showFOV = 1                   # Show FOV in monitor.
+
+irus.sensor3.id = 3                        # This ID is used in SensorBoardData structure.
+irus.sensor3.name = UltraSonic_FrontCenter # Name of the sensor
+irus.sensor3.rotZ = 0                      # Rotation of the sensor around the Z-axis in degrees, positive = counterclockwise, negative = clockwise, 0 = 12am, -90 = 3pm, ...
+irus.sensor3.translation = (1.0;0.0;0.0)   # Translation (X;Y;Z) w.r.t. vehicle's center
+irus.sensor3.angleFOV = 20                 # In degrees.
+irus.sensor3.distanceFOV = 40              # In meters.
+irus.sensor3.clampDistance = 39            # Any distances greater than this distance will be ignored and -1 will be returned.
+irus.sensor3.showFOV = 1                   # Show FOV in monitor.
+
+irus.sensor4.id = 4                        # This ID is used in SensorBoardData structure.
+irus.sensor4.name = UltraSonic_FrontRight  # Name of the sensor
+irus.sensor4.rotZ = -45                    # Rotation of the sensor around the Z-axis in degrees, positive = counterclockwise, negative = clockwise, 0 = 12am, -90 = 3pm, ...
+irus.sensor4.translation = (1.0;-1.0;0.0)  # Translation (X;Y;Z) w.r.t. vehicle's center
+irus.sensor4.angleFOV = 20                 # In degrees.
+irus.sensor4.distanceFOV = 40              # In meters.
+irus.sensor4.clampDistance = 39            # Any distances greater than this distance will be ignored and -1 will be returned.
+irus.sensor4.showFOV = 1                   # Show FOV in monitor.
+
+irus.sensor5.id = 5                        # This ID is used in SensorBoardData structure.
+irus.sensor5.name = UltraSonic_RearRight   # Name of the sensor
+irus.sensor5.rotZ = -135                   # Rotation of the sensor around the Z-axis in degrees, positive = counterclockwise, negative = clockwise, 0 = 12am, -90 = 3pm, ...
+irus.sensor5.translation = (-1.0;-1.0;0.0) # Translation (X;Y;Z) w.r.t. vehicle's center
+irus.sensor5.angleFOV = 20                 # In degrees.
+irus.sensor5.distanceFOV = 40              # In meters.
+irus.sensor5.clampDistance = 39            # Any distances greater than this distance will be ignored and -1 will be returned.
+irus.sensor5.showFOV = 1                   # Show FOV in monitor.
+
+
+###############################################################################
+###############################################################################
+#
+# CONFIGURATION FOR VEHICLE
+#
+Vehicle.posX = 0                     # Initial position X in cartesian coordinates.
+Vehicle.posY = 0                     # Initial position Y in cartesian coordinates.
+Vehicle.headingDEG = 90
+Vehicle.model=LinearBicycleModelNew  # Which motion model to be used: LinearBicycleModelNew or LinearBicycleModel (for CaroloCup 2013!).
+Vehicle.LinearBicycleModelNew.withSpeedController=1          # iff 1: use the VehicleControl.m_speed field; otherwise, ignore m_speed and use VehicleControl.m_acceleration field
+Vehicle.LinearBicycleModelNew.minimumTurningRadiusLeft=4.85  # Minimum turning radius to the left (for calculating maximum steering angle to the left); Attention! we used data from the miniature vehicle Meili and thus, all values are scaled by factor 10 to be compatible with the simulation!
+Vehicle.LinearBicycleModelNew.minimumTurningRadiusRight=5.32 # Minimum turning radius to the right (for calculating maximum steering angle to the right); Attention! we used data from the miniature vehicle Meili and thus, all values are scaled by factor 10 to be compatible with the simulation!
+Vehicle.LinearBicycleModelNew.wheelbase=2.65                 # Wheelbase; Attention! we used data from the miniature vehicle Meili and thus, all values are scaled by factor 10 to be compatible with the simulation!
+Vehicle.LinearBicycleModelNew.invertedSteering=0             # iff 0: interpret neg. steering wheel angles as steering to the left; iff 1: otherwise
+Vehicle.LinearBicycleModelNew.maxSpeed=2.0                   # maxium speed in m/ss
+
+
+###############################################################################
+###############################################################################
+#
+# NEXT, THE CONFIGURATION FOR USER APPLICATIONS FOLLOWS. 
+#
+###############################################################################
+###############################################################################
+#
+# CONFIGURATION FOR LANEDETECTOR
+#
+lanedetector.debug = 1      # set to 0 to disable any windows and further output
+
+
