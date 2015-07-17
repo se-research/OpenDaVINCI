@@ -62,7 +62,7 @@ packages for x86, x86_64, and armfh.
 
 4. Install OpenDaVINCI:
 
-    $ sudo apt-get install opendavinci-lib opendavinci-tools opendavinci-supercomponent
+    $ sudo apt-get install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent opendavinci-odautomotivedata
 
 
 ### Adding OpenDaVINCI to your Debian Linux distribution
@@ -81,7 +81,7 @@ packages for x86, x86_64, and armfh.
 
 4. Install OpenDaVINCI:
 
-    $ sudo apt-get install opendavinci-lib opendavinci-tools opendavinci-supercomponent
+    $ sudo apt-get install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent opendavinci-odautomotivedata
 
 
 ### Adding OpenDaVINCI to your Fedora Linux distribution
@@ -96,7 +96,7 @@ packages for x86, x86_64, and armfh.
 
 3. Install OpenDaVINCI:
 
-   $ sudo yum --nogpgcheck install opendavinci-lib opendavinci-tools opendavinci-supercomponent
+   $ sudo yum --nogpgcheck install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent opendavinci-odautomotivedata
    
    
 ### Adding OpenDaVINCI to your openSuse Linux distribution
@@ -115,5 +115,5 @@ packages for x86, x86_64, and armfh.
 
 4. Install OpenDaVINCI:
 
-   $ sudo zypper --no-gpg-checks install opendavinci-lib opendavinci-tools opendavinci-supercomponent
+   $ sudo zypper --no-gpg-checks install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent opendavinci-odautomotivedata
    
