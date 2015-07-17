@@ -11,7 +11,7 @@ You will find different projects that are using OpenDaVINCI here: http://opendav
 
 *Documentation:* [![Documentation Status](https://readthedocs.org/projects/opendavinci/badge/?version=latest)](http://opendavinci.readthedocs.org/en/latest/)
 
-*Last deployment:* [![Deployment Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-Deployment/badge/icon)](https://github.com/se-research/OpenDaVINCI)
+*Last deployment:* [![Deployment Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-Deployment-PackageServer/badge/icon)](https://github.com/se-research/OpenDaVINCI)
 
 Architecture  | FreeBSD 10.1 | OpenBSD 5.7 | Mac OS X
 ------------- | ------------ | ----------- | --------
@@ -62,7 +62,7 @@ packages for x86, x86_64, and armfh.
 
 4. Install OpenDaVINCI:
 
-    $ sudo apt-get install opendavinci-lib opendavinci-tools opendavinci-supercomponent
+    $ sudo apt-get install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent opendavinci-odautomotivedata
 
 
 ### Adding OpenDaVINCI to your Debian Linux distribution
@@ -81,7 +81,7 @@ packages for x86, x86_64, and armfh.
 
 4. Install OpenDaVINCI:
 
-    $ sudo apt-get install opendavinci-lib opendavinci-tools opendavinci-supercomponent
+    $ sudo apt-get install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent opendavinci-odautomotivedata
 
 
 ### Adding OpenDaVINCI to your Fedora Linux distribution
@@ -96,7 +96,7 @@ packages for x86, x86_64, and armfh.
 
 3. Install OpenDaVINCI:
 
-   $ sudo yum --nogpgcheck install opendavinci-lib opendavinci-tools opendavinci-supercomponent
+   $ sudo yum --nogpgcheck install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent opendavinci-odautomotivedata
    
    
 ### Adding OpenDaVINCI to your openSuse Linux distribution
@@ -115,5 +115,5 @@ packages for x86, x86_64, and armfh.
 
 4. Install OpenDaVINCI:
 
-   $ sudo zypper --no-gpg-checks install opendavinci-lib opendavinci-tools opendavinci-supercomponent
+   $ sudo zypper --no-gpg-checks install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent opendavinci-odautomotivedata
    
