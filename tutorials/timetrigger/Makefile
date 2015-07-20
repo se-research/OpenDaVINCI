@@ -2,7 +2,7 @@ CXX=g++
 RM=rm -f
 INCLUDES=-I/usr/include/opendavinci
 CPPFLAGS=-Wall $(INCLUDES)
-LDLIBS=-lopendavinci -lpthread
+LDLIBS=-lopendavinci -lpthread -lrt
 
 BIN=timetriggerexample
 SRCS=TimeTriggerExample.cpp

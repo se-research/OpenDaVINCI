@@ -380,10 +380,16 @@ algorithms requiring hard real-time, the Linux kernel with the CONFIG_PREEMPT_RT
 configuration item enabled can be used. More information is available here:
 https://rt.wiki.kernel.org/index.php/RT_PREEMPT_HOWTO.
 
-To run an application with real-time prioritization, simply specify the parameter
-``--realtime=`` from within the range [1,49] to enable real-time scheduling
-transparently. In addition, you need to run the application with superuser
-privileges to allow the configuration of the correct scheduling priority as follows::
+To run an application with real-time prioritization, it must be linked with the
+real-time library ``rt``::
+
+   $ g++ -I /usr/include/opendavinci -c TimeTriggerExample.cpp -o TimeTriggerExample.o
+   $ g++ -o timetriggerexample TimeTriggerExample.o -lopendavinci -lpthread -lrt
+
+On execution, simply specify the parameter ``--realtime=`` from within the range
+[1,49] to enable real-time scheduling transparently. In addition, you need to run
+the application with superuser privileges to allow the configuration of the correct
+scheduling priority as follows::
 
     $ sudo ./timetriggerexample --cid=111 --freq=10 --realtime=20 --verbose=1
 
