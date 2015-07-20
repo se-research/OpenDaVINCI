@@ -90,9 +90,10 @@ Leave the build directory:
 
 ## Prepare configuration
 
-The repository contains a configuration file and two test scenarios. As the
-simulation environment is provided as a Docker image, this configuration
-needs to be prepared so that we can simply start the Docker image later.
+The repository contains a configuration file and two test scenarios in
+the directory "config". As the simulation environment is provided as a
+Docker image, this configuration needs to be prepared so that we can
+simply start the Docker image later.
 
 Create a symbolic link in your $HOME folder:
 
