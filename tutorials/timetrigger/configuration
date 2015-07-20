@@ -1,0 +1,10 @@
+# This is an example configuration file.
+
+timetriggerexample.key1 = value1
+timetriggerexample.key2 = 1234
+timetriggerexample.key3 = 42.32
+
+timetriggerexample.key4 = Default
+timetriggerexample:1.key4 = ValueForComponent1
+timetriggerexample:2.key4 = ValueForComponent2
+

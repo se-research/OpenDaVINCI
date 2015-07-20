@@ -30,3 +30,7 @@ TCP connection
 .. include:: tutorial.tcpsendbytes.rst
 .. include:: tutorial.tcpreceivebytes.rst
 
+How to design distributed software systems
+----------------------
+.. include:: tutorial.timetrigger.rst
+
