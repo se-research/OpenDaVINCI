@@ -68,7 +68,7 @@ namespace automotive {
 		        Container containerVehicleData = getKeyValueDataStore().get(Container::VEHICLEDATA);
 		        VehicleData vd = containerVehicleData.getData<VehicleData> ();
 
-		        // 2. Get most recent sensor board data:
+		        // 2. Get most recent sensor board data describing virtual sensor data:
 		        Container containerSensorBoardData = getKeyValueDataStore().get(Container::USER_DATA_0);
 		        SensorBoardData sbd = containerSensorBoardData.getData<SensorBoardData> ();
 
@@ -122,9 +122,9 @@ namespace automotive {
                     break;
                     case 1:
                         {
-                            // Checking for sequence +, -.
+                            // Checking for distance sequence +, -.
                             if ((distanceOld > 0) && (sbd.getValueForKey_MapOfDistances(2) < 0)) {
-                                // Found sequence +, -.
+                                // Found distance sequence +, -.
                                 stageMeasuring = 2;
                                 absPathStart = vd.getAbsTraveledPath();
                             }
@@ -133,14 +133,13 @@ namespace automotive {
                     break;
                     case 2:
                         {
-                            // Checking for sequence -, +.
+                            // Checking for distance sequence -, +.
                             if ((distanceOld < 0) && (sbd.getValueForKey_MapOfDistances(2) > 0)) {
-                                // Found sequence -, +.
+                                // Found distance sequence -, +.
                                 stageMeasuring = 1;
                                 absPathEnd = vd.getAbsTraveledPath();
 
                                 const double GAP_SIZE = (absPathEnd - absPathStart);
-
                                 cerr << "Size = " << GAP_SIZE << endl;
 
                                 if ((stageMoving < 1) && (GAP_SIZE > 3.5)) {
