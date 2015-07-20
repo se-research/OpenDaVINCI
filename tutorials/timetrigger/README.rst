@@ -433,5 +433,7 @@ The output of the application would look like::
     Inside the main processing loop.
     ...
 
+Please observe that your implementation within the ``body()`` shall not allocate
+further memory to avoid unexpected page faults resulting in a risk to miss deadlines.
 
 
