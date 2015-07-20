@@ -42,7 +42,7 @@ void TimeTriggerExample::tearDown() {
 
 ModuleState::MODULE_EXITCODE TimeTriggerExample::body() {
     cout << "Hello OpenDaVINCI World!" << endl;
-/*
+
     cout << "This is my name: " << getName() << endl;
     cout << "This is my execution frequency: " << getFrequency() << endl;
     cout << "This is my identifier: " << getIdentifier() << endl;
@@ -55,7 +55,7 @@ ModuleState::MODULE_EXITCODE TimeTriggerExample::body() {
 	while (getModuleStateAndWaitForRemainingTimeInTimeslice() == ModuleState::RUNNING) {
         cout << "Inside the main processing loop." << endl;
     }
-*/
+
     return ModuleState::OKAY;
 }
 

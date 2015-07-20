@@ -171,6 +171,7 @@ will be thrown::
 If no ``odsupercomponent`` is running, the application will exit with return code 4.
 
 
+
 Adding configuration parameters
 """""""""""""""""""""""""""""""
 
@@ -289,4 +290,148 @@ the identifier 1::
     $ ./timetriggerexample --cid=111 --id=2
 
 the request would the value ``ValueForComponent2``.
+
+
+
+Adding time-based algorithm triggering
+""""""""""""""""""""""""""""""""""""""
+
+The next example demonstrates how to use frequency-based algorithm execution. Therefore,
+the implementation of ``body()`` is changed to add a loop that is intended to be executed
+until the module is stopped.
+
+TimeTriggerExample.cpp:
+
+.. code-block:: c++
+
+    #include <iostream>
+
+    #include "TimeTriggerExample.h"
+
+    using namespace std;
+
+    // We add some of OpenDaVINCI's namespaces for the sake of readability.
+    using namespace core::base;
+
+    TimeTriggerExample::TimeTriggerExample(const int32_t &argc, char **argv) :
+        TimeTriggeredConferenceClientModule(argc, argv, "TimeTriggerExample")
+        {}
+
+    TimeTriggerExample::~TimeTriggerExample() {}
+
+    void TimeTriggerExample::setUp() {
+        cout << "This method is called before the component's body is executed." << endl;
+    }
+
+    void TimeTriggerExample::tearDown() {
+        cout << "This method is called after the program flow returns from the component's body." << endl;
+    }
+
+    ModuleState::MODULE_EXITCODE TimeTriggerExample::body() {
+        cout << "Hello OpenDaVINCI World!" << endl;
+
+        cout << "This is my name: " << getName() << endl;
+        cout << "This is my execution frequency: " << getFrequency() << endl;
+        cout << "This is my identifier: " << getIdentifier() << endl;
+
+        cout << "  " << getKeyValueConfiguration().getValue<string>("timetriggerexample.key1") << endl;
+        cout << "  " << getKeyValueConfiguration().getValue<uint32_t>("timetriggerexample.key2") << endl;
+        cout << "  " << getKeyValueConfiguration().getValue<float>("timetriggerexample.key3") << endl;
+        cout << "  " << getKeyValueConfiguration().getValue<string>("timetriggerexample.key4") << endl;
+
+	    while (getModuleStateAndWaitForRemainingTimeInTimeslice() == ModuleState::RUNNING) {
+            cout << "Inside the main processing loop." << endl;
+        }
+
+        return ModuleState::OKAY;
+    }
+
+    int32_t main(int32_t argc, char **argv) {
+        TimeTriggerExample tte(argc, argv);
+
+        return tte.runModule();
+    }
+
+The method ``getModuleStateAndWaitForRemainingTimeInTimeslice()`` is provided from
+the super-classes and enforces a specific runtime execution frequency. The frequency
+can be specified by the commandline parameter ``--freq=`` in Hertz. For example, running
+the program as follows::
+
+    $ ./timetriggerexample --cid=111 --freq=2
+
+would print ``Inside the main processing loop.`` two times per second. Thus, the method
+``getModuleStateAndWaitForRemainingTimeInTimeslice()`` calculates how much time from the
+current time slice has been consumed (in this case, 500ms would be available per time
+slice) from the algorithm in the while-loop body, and would simply sleep for the rest of
+the current time slice.
+
+The program can be terminated by pressing Ctrl-C, which would result in setting the
+module state to not running, leaving the while-loop body, and calling the method
+``tearDown()``. Furthermore, stopping ``odsupercomponent`` would also result in
+stopping automatically all dependent software components.
+
+
+
+Real-time scheduling
+""""""""""""""""""""
+
+The standard Linux kernel can meet soft real-time requirements. For time-critical
+algorithms requiring hard real-time, the Linux kernel with the CONFIG_PREEMPT_RT
+configuration item enabled can be used. More information is available here:
+https://rt.wiki.kernel.org/index.php/RT_PREEMPT_HOWTO.
+
+To run an application with real-time prioritization, simply specify the parameter
+``--realtime=`` from within the range [1,49] to enable real-time scheduling
+transparently. In addition, you need to run the application with superuser
+privileges to allow the configuration of the correct scheduling priority as follows::
+
+    $ sudo ./timetriggerexample --cid=111 --freq=10 --realtime=20 --verbose=1
+
+The output of the application would look like::
+
+    Creating multicast UDP receiver at 225.0.0.111:12175.
+    Creating multicast UDP receiver at 225.0.0.111:19751.
+    (ClientModule) discovering supercomponent...
+    (ClientModule) supercomponent found at IP: 10.0.2.15, Port: 19866, managedLevel: 0
+    (ClientModule) connecting to supercomponent...
+    (DMCP-ConnectionClient) sending configuration request...IP: 10.0.2.15, Port: 19866, managedLevel: 0
+    (DMCP-Client) Received Configuration
+    timetriggerexample.key1=value1
+    timetriggerexample.key2=1234
+    timetriggerexample.key3=42.32
+    timetriggerexample.key4=Default
+
+    (ClientModule) connecting to supercomponent...done - managed level: 0
+    This method is called before the component's body is executed.
+    Hello OpenDaVINCI World!
+    This is my name: TimeTriggerExample
+    This is my execution frequency: 10
+    This is my identifier: 
+      value1
+      1234
+      42.32
+      Default
+    Starting next cycle at 1437420074s/101149us.
+    Inside the main processing loop.
+    Starting next cycle at 1437420074s/201230us.
+    Inside the main processing loop.
+    Starting next cycle at 1437420074s/301194us.
+    Inside the main processing loop.
+    Starting next cycle at 1437420074s/400376us.
+    Inside the main processing loop.
+    Starting next cycle at 1437420074s/501003us.
+    Inside the main processing loop.
+    Starting next cycle at 1437420074s/601151us.
+    Inside the main processing loop.
+    Starting next cycle at 1437420074s/700427us.
+    Inside the main processing loop.
+    Starting next cycle at 1437420074s/800241us.
+    Inside the main processing loop.
+    Starting next cycle at 1437420074s/900387us.
+    Inside the main processing loop.
+    Starting next cycle at 1437420075s/209us.
+    Inside the main processing loop.
+    ...
+
+
 
