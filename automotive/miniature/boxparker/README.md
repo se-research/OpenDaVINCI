@@ -110,11 +110,11 @@ Start "odsupercomponent" for the software component lifecycle management (this s
 
 Next, start the vehicle dynamics simulation "vehicle":
 
-    $ docker run --rm=true --net host -v /home/$USER/config:/o/data -w "/opt/data" -t -i seresearch/odsimulation:latest /opt/sim/bin/vehicle --cid=111 --freq=10
+    $ docker run --rm=true --net host -v /home/$USER/config:/opt/data -w "/opt/data" -t -i seresearch/odsimulation:latest /opt/sim/bin/vehicle --cid=111 --freq=10
 
 Now, we start the sensor simulation "irus":
 
-    $ docker run --rm=true --net host -v /home/$USER/config:/o/data -w "/opt/data" -t -i seresearch/odsimulation:latest /opt/sim/bin/irus --cid=111 --freq=10
+    $ docker run --rm=true --net host -v /home/$USER/config:/opt/data -w "/opt/data" -t -i seresearch/odsimulation:latest /opt/sim/bin/irus --cid=111 --freq=10
 
 Start the visualization environment "cockpit" (the first command grants access to your Xserver):
 
