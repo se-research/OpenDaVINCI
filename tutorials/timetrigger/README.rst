@@ -170,3 +170,123 @@ will be thrown::
 
 If no ``odsupercomponent`` is running, the application will exit with return code 4.
 
+
+Adding configuration parameters
+"""""""""""""""""""""""""""""""
+
+The next example demonstrates how to specify and use configuration parameters.
+Therefore, the implementation of ``body()`` is changed to firstly print further
+information about the runtime configuration and secondly, to access configuration
+data.
+
+TimeTriggerExample.cpp:
+
+.. code-block:: c++
+
+    #include <iostream>
+
+    #include "TimeTriggerExample.h"
+
+    using namespace std;
+
+    // We add some of OpenDaVINCI's namespaces for the sake of readability.
+    using namespace core::base;
+
+    TimeTriggerExample::TimeTriggerExample(const int32_t &argc, char **argv) :
+        TimeTriggeredConferenceClientModule(argc, argv, "TimeTriggerExample")
+        {}
+
+    TimeTriggerExample::~TimeTriggerExample() {}
+
+    void TimeTriggerExample::setUp() {
+        cout << "This method is called before the component's body is executed." << endl;
+    }
+
+    void TimeTriggerExample::tearDown() {
+        cout << "This method is called after the program flow returns from the component's body." << endl;
+    }
+
+    ModuleState::MODULE_EXITCODE TimeTriggerExample::body() {
+        cout << "Hello OpenDaVINCI World!" << endl;
+
+        cout << "This is my name: " << getName() << endl;
+        cout << "This is my execution frequency: " << getFrequency() << endl;
+        cout << "This is my identifier: " << getIdentifier() << endl;
+
+        cout << "  " << getKeyValueConfiguration().getValue<string>("timetriggerexample.key1") << endl;
+        cout << "  " << getKeyValueConfiguration().getValue<uint32_t>("timetriggerexample.key2") << endl;
+        cout << "  " << getKeyValueConfiguration().getValue<float>("timetriggerexample.key3") << endl;
+        cout << "  " << getKeyValueConfiguration().getValue<string>("timetriggerexample.key4") << endl;
+
+        return ModuleState::OKAY;
+    }
+
+    int32_t main(int32_t argc, char **argv) {
+        TimeTriggerExample tte(argc, argv);
+
+        return tte.runModule();
+    }
+
+The super-classes provide methods to get information about the runtime configuration
+of a software component. ``getName()`` simply returns the name as specified to the
+constructor ``TimeTriggeredConferenceClientModule``. ``getFrequency()`` returns the
+execution frequency for the software component; its value can be adjusted by specifying
+the commandline parameter ``--freq=`` to the software component. The last method
+``getIdentifier()`` returns a unique identifier that can be specified at commandline
+by using the parameter ``--id=`` to distinguish several instances of the same software
+component; its use is shown for the configuration parameter ``timetriggerexample.key4``
+below.
+
+The configuration file is adjusted as follows as an example::
+
+    # This is an example configuration file.
+    timetriggerexample.key1 = value1
+    timetriggerexample.key2 = 1234
+    timetriggerexample.key3 = 42.32
+
+    timetriggerexample.key4 = Default
+    timetriggerexample:1.key4 = ValueForComponent1
+    timetriggerexample:2.key4 = ValueForComponent2
+
+This configuration file is parsed by ``odsupercomponent`` and used to provided
+component-dependent subsets from this file. The general format is::
+
+    <application name> . <key> [:<identifier>] = <value>
+
+The application name is used to structure the content of the file; in this example,
+``timetriggerexample`` specifies all parameters that are provided from ``odsupercomponent``
+to our application. The application itself uses the template method
+``getKeyValueConfiguration().getValue<T>(const string &key)`` to retrieve values
+provided in the required data type. To access the numerical value for the second
+key, the application would access the value as follows:
+
+.. code-block:: c++
+
+    uint32_t value = getKeyValueConfiguration().getValue<uint32_t>("timetriggerexample.key2");
+
+The object handling the application-specific key-value-configuration is case-insensitive
+regarding the keys; in any case, the application's name needs to precede a key's name.
+
+In the configuration, a special section can be specified using the name ``global.`` preceding
+a set of keys. All keys with this preceding name are provided to all applications and thus,
+shared among them.
+
+If the same software component needs to be used with different configuration parameters,
+OpenDaVINCI offers the commandline parameter ``--id=`` so that different instances of the
+same application can be distinguished in the configuration. In our example, the key named
+``timetriggerexample.key4`` provides different values regarding the commandline parameters.
+For example, if the application is started as follows::
+
+    $ ./timetriggerexample --cid=111
+
+the following request::
+
+    cout << "  " << getKeyValueConfiguration().getValue<string>("timetriggerexample.key4") << endl;
+
+would return the value ``Default``. If, in contrast, the application is started by specifying
+the identifier 1::
+
+    $ ./timetriggerexample --cid=111 --id=2
+
+the request would the value ``ValueForComponent2``.
+
