@@ -92,11 +92,11 @@ Add our repository itself to your sources.list:
 
 Update your package database:
 
-   $ sudo yum -y update
+    $ sudo yum -y update
 
 Install OpenDaVINCI:
 
-   $ sudo yum --nogpgcheck install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent opendavinci-odautomotivedata
+    $ sudo yum --nogpgcheck install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent opendavinci-odautomotivedata
    
    
 ### Adding OpenDaVINCI to your openSuse Linux distribution
@@ -115,5 +115,5 @@ Update your package database:
 
 Install OpenDaVINCI:
 
-   $ sudo zypper --no-gpg-checks install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent opendavinci-odautomotivedata
+    $ sudo zypper --no-gpg-checks install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent opendavinci-odautomotivedata
 
