@@ -52,4 +52,4 @@ Run the tests for OpenDaVINCI::
 
 Install the binaries, libraries, and header files to /usr/local::
 
-   $ make install
+   $ sudo make install
