@@ -14,7 +14,7 @@ Adding OpenDaVINCI to your Ubuntu Linux distribution
 
 2. Add our repository itself to your sources.list::
 
-    $ sudo echo "deb http://opendavinci.cse.chalmers.se/ubuntu/ trusty main" >> /etc/apt/sources.list
+    $ sudo sh -c 'echo "deb http://opendavinci.cse.chalmers.se/ubuntu/ trusty main" >> /etc/apt/sources.list'
 
 3. Update your package database::
 
