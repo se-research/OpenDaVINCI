@@ -10,7 +10,7 @@ Adding OpenDaVINCI to your Ubuntu Linux distribution
 
 1. Add the public key from our repository::
 
-    $ sudo wget -O - -q http://opendavinci.cse.chalmers.se/opendavinci.cse.chalmers.se.gpg.key | sudo apt-key add -
+    $ wget -O - -q http://opendavinci.cse.chalmers.se/opendavinci.cse.chalmers.se.gpg.key | sudo apt-key add -
 
 2. Add our repository itself to your sources.list::
 
