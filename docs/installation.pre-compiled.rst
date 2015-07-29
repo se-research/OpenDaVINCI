@@ -30,11 +30,11 @@ Adding OpenDaVINCI to your Debian Linux distribution
 
 1. Add the public key from our repository::
 
-    $ sudo wget -O - -q http://opendavinci.cse.chalmers.se/opendavinci.cse.chalmers.se.gpg.key | sudo apt-key add -
+    $ wget -O - -q http://opendavinci.cse.chalmers.se/opendavinci.cse.chalmers.se.gpg.key | sudo apt-key add -
 
 2. Add our repository itself to your sources.list::
 
-    $ sudo echo "deb http://opendavinci.cse.chalmers.se/debian/ wheezy main" >> /etc/apt/sources.list
+    $ sudo echo "deb http://opendavinci.cse.chalmers.se/debian/ jessie main" >> /etc/apt/sources.list
 
 3. Update your package database::
 
@@ -94,6 +94,4 @@ For Ubuntu/x86_64 (https://registry.hub.docker.com/u/seresearch/opendavinci-ubun
 For Ubuntu/armhf (https://registry.hub.docker.com/u/seresearch/opendavinci-ubuntu-armhf/)::
 
     $ docker pull seresearch/opendavinci-ubuntu-armhf
-
-
 
