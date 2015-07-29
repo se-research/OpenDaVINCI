@@ -50,7 +50,7 @@ packages for x86, x86_64, and armfh.
 
 Add the public key from our repository:
 
-    $ sudo wget -O - -q http://opendavinci.cse.chalmers.se/opendavinci.cse.chalmers.se.gpg.key | sudo apt-key add -
+    $ wget -O - -q http://opendavinci.cse.chalmers.se/opendavinci.cse.chalmers.se.gpg.key | sudo apt-key add -
 
 Add our repository itself to your sources.list:
 
@@ -69,7 +69,7 @@ Install OpenDaVINCI:
 
 Add the public key from our repository:
 
-    $ sudo wget -O - -q http://opendavinci.cse.chalmers.se/opendavinci.cse.chalmers.se.gpg.key | sudo apt-key add -
+    $ wget -O - -q http://opendavinci.cse.chalmers.se/opendavinci.cse.chalmers.se.gpg.key | sudo apt-key add -
 
 Add our repository itself to your sources.list:
 
