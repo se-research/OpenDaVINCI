@@ -14,7 +14,7 @@ https://github.com/se-research/OpenDaVINCI/tree/master/tutorials/timetrigger
 """""""""""""""""""""
 
 A time-triggered software component is derived from ``core::base::TimeTriggeredConferenceClientModule``,
-provided in ``<core/base/TimeTriggeredConferenceClientModule.h>``.
+provided in ``<core/base/module/TimeTriggeredConferenceClientModule.h>``.
 
 TimeTriggerExample.h:
 
@@ -22,7 +22,7 @@ TimeTriggerExample.h:
 
     #include <core/base/TimeTriggeredConferenceClientModule.h>
 
-    class TimeTriggerExample : public core::base::TimeTriggeredConferenceClientModule {
+    class TimeTriggerExample : public core::base::module::TimeTriggeredConferenceClientModule {
         private:
             TimeTriggerExample(const TimeTriggerExample &/*obj*/);
             TimeTriggerExample& operator=(const TimeTriggerExample &/*obj*/);
@@ -38,7 +38,7 @@ TimeTriggerExample.h:
 
             virtual ~TimeTriggerExample();
 
-            core::base::ModuleState::MODULE_EXITCODE body();
+            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
         private:
             virtual void setUp();
@@ -46,7 +46,7 @@ TimeTriggerExample.h:
             virtual void tearDown();
     };
 
-The class ``core::base::TimeTriggeredConferenceClientModule`` provides three methods
+The class ``core::base::module::TimeTriggeredConferenceClientModule`` provides three methods
 that need to be implemented by the user: ``setUp()``, ``body()``, and ``tearDown()``.
 These methods reflect the basic runtime cycle of a software component: An initialization
 phase, followed by a time-triggered execution of an algorithm implemented in the
@@ -70,7 +70,7 @@ TimeTriggerExample.cpp:
     using namespace std;
 
     // We add some of OpenDaVINCI's namespaces for the sake of readability.
-    using namespace core::base;
+    using namespace core::base::module;
 
     TimeTriggerExample::TimeTriggerExample(const int32_t &argc, char **argv) :
         TimeTriggeredConferenceClientModule(argc, argv, "TimeTriggerExample")
@@ -86,10 +86,10 @@ TimeTriggerExample.cpp:
         cout << "This method is called after the program flow returns from the component's body." << endl;
     }
 
-    ModuleState::MODULE_EXITCODE TimeTriggerExample::body() {
+    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode TimeTriggerExample::body() {
         cout << "Hello OpenDaVINCI World!" << endl;
 
-        return ModuleState::OKAY;
+        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
     }
 
     int32_t main(int32_t argc, char **argv) {
@@ -207,7 +207,7 @@ TimeTriggerExample.cpp:
         cout << "This method is called after the program flow returns from the component's body." << endl;
     }
 
-    ModuleState::MODULE_EXITCODE TimeTriggerExample::body() {
+    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode TimeTriggerExample::body() {
         cout << "Hello OpenDaVINCI World!" << endl;
 
         cout << "This is my name: " << getName() << endl;
@@ -219,7 +219,7 @@ TimeTriggerExample.cpp:
         cout << "  " << getKeyValueConfiguration().getValue<float>("timetriggerexample.key3") << endl;
         cout << "  " << getKeyValueConfiguration().getValue<string>("timetriggerexample.key4") << endl;
 
-        return ModuleState::OKAY;
+        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
     }
 
     int32_t main(int32_t argc, char **argv) {
@@ -327,7 +327,7 @@ TimeTriggerExample.cpp:
         cout << "This method is called after the program flow returns from the component's body." << endl;
     }
 
-    ModuleState::MODULE_EXITCODE TimeTriggerExample::body() {
+    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode TimeTriggerExample::body() {
         cout << "Hello OpenDaVINCI World!" << endl;
 
         cout << "This is my name: " << getName() << endl;
@@ -339,11 +339,11 @@ TimeTriggerExample.cpp:
         cout << "  " << getKeyValueConfiguration().getValue<float>("timetriggerexample.key3") << endl;
         cout << "  " << getKeyValueConfiguration().getValue<string>("timetriggerexample.key4") << endl;
 
-	    while (getModuleStateAndWaitForRemainingTimeInTimeslice() == ModuleState::RUNNING) {
+	    while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
             cout << "Inside the main processing loop." << endl;
         }
 
-        return ModuleState::OKAY;
+        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
     }
 
     int32_t main(int32_t argc, char **argv) {

@@ -24,7 +24,7 @@
 using namespace std;
 
 // We add some of OpenDaVINCI's namespaces for the sake of readability.
-using namespace core::base;
+using namespace core::base::module;
 
 TimeTriggerExample::TimeTriggerExample(const int32_t &argc, char **argv) :
     TimeTriggeredConferenceClientModule(argc, argv, "TimeTriggerExample")
@@ -40,7 +40,7 @@ void TimeTriggerExample::tearDown() {
     cout << "This method is called after the program flow returns from the component's body." << endl;
 }
 
-ModuleState::MODULE_EXITCODE TimeTriggerExample::body() {
+coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode TimeTriggerExample::body() {
     cout << "Hello OpenDaVINCI World!" << endl;
 
     cout << "This is my name: " << getName() << endl;
@@ -52,11 +52,11 @@ ModuleState::MODULE_EXITCODE TimeTriggerExample::body() {
     cout << "  " << getKeyValueConfiguration().getValue<float>("timetriggerexample.key3") << endl;
     cout << "  " << getKeyValueConfiguration().getValue<string>("timetriggerexample.key4") << endl;
 
-	while (getModuleStateAndWaitForRemainingTimeInTimeslice() == ModuleState::RUNNING) {
+	while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
         cout << "Inside the main processing loop." << endl;
     }
 
-    return ModuleState::OKAY;
+    return coredata::dmcp::ModuleExitCodeMessage::OKAY;
 }
 
 int32_t main(int32_t argc, char **argv) {

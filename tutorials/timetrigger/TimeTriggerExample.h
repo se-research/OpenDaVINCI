@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <core/base/TimeTriggeredConferenceClientModule.h>
+#include <core/base/module/TimeTriggeredConferenceClientModule.h>
 
-class TimeTriggerExample : public core::base::TimeTriggeredConferenceClientModule {
+class TimeTriggerExample : public core::base::module::TimeTriggeredConferenceClientModule {
     private:
         /**
          * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -51,7 +51,7 @@ class TimeTriggerExample : public core::base::TimeTriggeredConferenceClientModul
 
         virtual ~TimeTriggerExample();
 
-        core::base::ModuleState::MODULE_EXITCODE body();
+        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
     private:
         virtual void setUp();
