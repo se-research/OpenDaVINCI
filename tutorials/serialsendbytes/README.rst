@@ -27,7 +27,7 @@ SerialSendBytes.cpp:
     using namespace core::wrapper;
 
     int32_t main(int32_t argc, char **argv) {
-        const string SERIAL_PORT = "/dev/pts/14";
+        const string SERIAL_PORT = "/dev/pts/19";
         const uint32_t BAUD_RATE = 19200;
 
         // We are using OpenDaVINCI's SharedPointer to automatically
@@ -68,11 +68,11 @@ To test the program, we create a simple virtual serial port on Linux using the
 tool ``socat``::
 
     $ socat -d -d pty,raw,echo=0 pty,raw,echo=0
-    2015/06/13 11:17:17 socat[2737] N PTY is /dev/pts/14
+    2015/06/13 11:17:17 socat[2737] N PTY is /dev/pts/19
     2015/06/13 11:17:17 socat[2737] N PTY is /dev/pts/20
     2015/06/13 11:17:17 socat[2737] N starting data transfer loop with FDs [3,3] and [5,5]
 
-Please note that the tutorial program uses ``/dev/pts/14`` to send data to; in
+Please note that the tutorial program uses ``/dev/pts/19`` to send data to; in
 the case that your setup has a different ``pts`` from ``socat``, you need to adjust
 the source code.
 

@@ -31,7 +31,7 @@ using namespace core;
 using namespace core::wrapper;
 
 int32_t main(int32_t argc, char **argv) {
-    const string SERIAL_PORT = "/dev/pts/14";
+    const string SERIAL_PORT = "/dev/pts/19";
     const uint32_t BAUD_RATE = 19200;
 
     // We are using OpenDaVINCI's SharedPointer to automatically

@@ -116,7 +116,7 @@ To test the program, we create a simple virtual serial port on Linux using the
 tool ``socat``::
 
     $ socat -d -d pty,raw,echo=0 pty,raw,echo=0
-    2015/06/13 11:17:17 socat[2737] N PTY is /dev/pts/14
+    2015/06/13 11:17:17 socat[2737] N PTY is /dev/pts/19
     2015/06/13 11:17:17 socat[2737] N PTY is /dev/pts/20
     2015/06/13 11:17:17 socat[2737] N starting data transfer loop with FDs [3,3] and [5,5]
 
@@ -130,7 +130,7 @@ Now, you can start the resulting program to listen for data::
 
 Next, we simply pipe some data through the other end of the virtual port::
 
-    $ echo "Hello World" > /dev/pts/14
+    $ echo "Hello World" > /dev/pts/19
 
 The resulting program will print::
 
