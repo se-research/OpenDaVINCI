@@ -21,14 +21,14 @@
 #include <iostream>
 #include <string>
 #include <core/SharedPointer.h>
-#include <core/wrapper/UDPSender.h>
-#include <core/wrapper/UDPFactory.h>
+#include <core/io/udp/UDPSender.h>
+#include <core/io/udp/UDPFactory.h>
 
 using namespace std;
 
 // We add some of OpenDaVINCI's namespaces for the sake of readability.
 using namespace core;
-using namespace core::wrapper;
+using namespace core::io::udp;
 
 int32_t main(int32_t argc, char **argv) {
     const string RECEIVER = "127.0.0.1";
