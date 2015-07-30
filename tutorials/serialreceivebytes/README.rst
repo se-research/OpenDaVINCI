@@ -13,17 +13,17 @@ SerialReceiveBytes.hpp:
 
 .. code-block:: c++
 
-    #include <core/wrapper/StringListener.h>
+    #include <core/io/StringListener.h>
 
     // This class will handle the bytes received via a serial link.
-    class SerialReceiveBytes : public core::wrapper::StringListener {
+    class SerialReceiveBytes : public core::io::StringListener {
 
         // Your class needs to implement the method void nextString(const std::string &s).
         virtual void nextString(const std::string &s);
     };
 
 To receive any data, we firstly declare a class that implements the interface
-``core::wrapper::StringListener``. This method will handle any bytes received
+``core::io::StringListener``. This method will handle any bytes received
 from the low level ``SerialPort``. Here, your application should realize an
 application-specific protocol.
 
