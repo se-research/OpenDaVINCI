@@ -17,12 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <core/wrapper/PacketListener.h>
+#include <core/io/PacketListener.h>
 
 // This class will handle packets received via a UDP socket.
-class UDPReceivePackets : public core::wrapper::PacketListener {
+class UDPReceivePackets : public core::io::PacketListener {
 
-    // Your class needs to implement the method void void nextPacket(const core::wrapper::Packet &p).
-    virtual void nextPacket(const core::wrapper::Packet &p);
+    // Your class needs to implement the method void void nextPacket(const core::io::Packet &p).
+    virtual void nextPacket(const core::io::Packet &p);
 };
 

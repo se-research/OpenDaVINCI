@@ -22,14 +22,14 @@
 #include <string>
 #include <core/SharedPointer.h>
 #include <core/base/Thread.h>
-#include <core/wrapper/UDPReceiver.h>
-#include <core/wrapper/UDPFactory.h>
+#include <core/io/udp/UDPReceiver.h>
+#include <core/io/udp/UDPFactory.h>
 
 #include "UDPReceivePackets.hpp"
 
 using namespace std;
 
-void UDPReceivePackets::nextPacket(const core::wrapper::Packet &p) {
+void UDPReceivePackets::nextPacket(const core::io::Packet &p) {
     cout << "Received a packet from " << p.getSender() << ", "
          << "with " << p.getData().length() << " bytes containing '"
          << p.getData() << "'" << endl;
@@ -37,7 +37,8 @@ void UDPReceivePackets::nextPacket(const core::wrapper::Packet &p) {
 
 // We add some of OpenDaVINCI's namespaces for the sake of readability.
 using namespace core;
-using namespace core::wrapper;
+using namespace core::io;
+using namespace core::io::udp;
 
 int32_t main(int32_t argc, char **argv) {
     const string RECEIVER = "0.0.0.0";
