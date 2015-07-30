@@ -20,7 +20,7 @@
 #ifndef BOXPARKER_H_
 #define BOXPARKER_H_
 
-#include "core/base/TimeTriggeredConferenceClientModule.h"
+#include "core/base/module/TimeTriggeredConferenceClientModule.h"
 
 namespace automotive {
     namespace miniature {
@@ -31,7 +31,7 @@ namespace automotive {
          * This class is an example demonstrating how to park a simulated vehicle
          * using OpenDaVINCI's driving dynamics simulation.
          */
-        class BoxParker : public core::base::TimeTriggeredConferenceClientModule {
+        class BoxParker : public core::base::module::TimeTriggeredConferenceClientModule {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -63,7 +63,7 @@ namespace automotive {
 
                 virtual ~BoxParker();
 
-                core::base::ModuleState::MODULE_EXITCODE body();
+                coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
             private:
                 virtual void setUp();

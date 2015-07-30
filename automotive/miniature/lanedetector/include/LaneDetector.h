@@ -23,7 +23,7 @@
 #include <opencv/cv.h>
 
 #include "core/SharedPointer.h"
-#include "core/base/TimeTriggeredConferenceClientModule.h"
+#include "core/base/module/TimeTriggeredConferenceClientModule.h"
 #include "core/wrapper/SharedMemory.h"
 
 namespace automotive {
@@ -34,7 +34,7 @@ namespace automotive {
         /**
          * This class is an exemplary skeleton for processing video data with OpenDaVINCI.
          */
-        class LaneDetector: public core::base::TimeTriggeredConferenceClientModule {
+        class LaneDetector: public core::base::module::TimeTriggeredConferenceClientModule {
             private:
 	            /**
 	             * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -66,7 +66,7 @@ namespace automotive {
 
 	            virtual ~LaneDetector();
 
-	            core::base::ModuleState::MODULE_EXITCODE body();
+	            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
             protected:
 	            /**

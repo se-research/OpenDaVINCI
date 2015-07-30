@@ -17,13 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <cstdio>
-#include <cmath>
-
-#include "core/io/ContainerConference.h"
 #include "core/data/Container.h"
-#include "core/data/Constants.h"
-#include "core/data/environment/VehicleData.h"
 
 #include "GeneratedHeaders_CoreData.h"
 #include "GeneratedHeaders_AutomotiveData.h"
@@ -35,10 +29,9 @@ namespace automotive {
 
         using namespace std;
         using namespace core::base;
+        using namespace core::base::module;
         using namespace core::data;
-        using namespace core::data::environment;
-        using namespace coredata::control;
-        using namespace msv;
+        using namespace automotive;
 
         BoxParker::BoxParker(const int32_t &argc, char **argv) :
 	        TimeTriggeredConferenceClientModule(argc, argv, "BoxParker") {
@@ -55,7 +48,7 @@ namespace automotive {
         }
 
         // This method will do the main data processing job.
-        ModuleState::MODULE_EXITCODE BoxParker::body() {
+        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode BoxParker::body() {
             double distanceOld = 0;
             double absPathStart = 0;
             double absPathEnd = 0;
@@ -63,7 +56,7 @@ namespace automotive {
             int stageMoving = 0;
             int stageMeasuring = 0;
 
-	        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == ModuleState::RUNNING) {
+	        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
 		        // 1. Get most recent vehicle data:
 		        Container containerVehicleData = getKeyValueDataStore().get(Container::VEHICLEDATA);
 		        VehicleData vd = containerVehicleData.getData<VehicleData> ();
@@ -157,7 +150,7 @@ namespace automotive {
 		        getConference().send(c);
 	        }
 
-	        return ModuleState::OKAY;
+	        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
     } // miniature

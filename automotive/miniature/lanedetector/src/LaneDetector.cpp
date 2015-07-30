@@ -26,7 +26,6 @@
 #include "core/base/KeyValueConfiguration.h"
 #include "core/base/Lock.h"
 #include "core/data/Container.h"
-#include "core/io/ContainerConference.h"
 #include "core/wrapper/SharedMemoryFactory.h"
 
 #include "tools/player/Player.h"
@@ -41,10 +40,11 @@ namespace automotive {
 
         using namespace std;
         using namespace core::base;
+        using namespace core::base::module;
         using namespace core::data;
         using namespace coredata::image;
         using namespace tools::player;
-        using namespace msv;
+        using namespace automotive;
 
         LaneDetector::LaneDetector(const int32_t &argc, char **argv) :
             TimeTriggeredConferenceClientModule(argc, argv, "LaneDetector"),
@@ -144,7 +144,7 @@ namespace automotive {
 
         // This method will do the main data processing job.
         // Therefore, it tries to open the real camera first. If that fails, the virtual camera images from camgen are used.
-        ModuleState::MODULE_EXITCODE LaneDetector::body() {
+        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode LaneDetector::body() {
 	        // Get configuration data.
 	        KeyValueConfiguration kv = getKeyValueConfiguration();
 	        m_debug = kv.getValue<int32_t> ("lanedetector.debug") == 1;
@@ -171,7 +171,7 @@ namespace automotive {
 */
 
             // Main data processing loop.
-	        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == ModuleState::RUNNING) {
+	        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
 		        bool has_next_frame = false;
 
 		        // Use the shared memory image.
@@ -196,7 +196,7 @@ namespace automotive {
 		        }
 	        }
 
-	        return ModuleState::OKAY;
+	        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
     } // miniature
