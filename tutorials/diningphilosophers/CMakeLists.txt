@@ -17,7 +17,7 @@
 
 CMAKE_MINIMUM_REQUIRED (VERSION 2.8)
 
-PROJECT (service)
+PROJECT (diningphilosophers)
 
 ###########################################################################
 # Find OpenDaVINCI.

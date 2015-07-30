@@ -1,4 +1,4 @@
-# ipcsharedmemory - Sample application
+# realtimeservice - Sample application
 # Copyright (C) 2015 Christian Berger
 #
 # This program is free software; you can redistribute it and/or
@@ -17,7 +17,7 @@
 
 CMAKE_MINIMUM_REQUIRED (VERSION 2.8)
 
-PROJECT (ipcsharedmemory)
+PROJECT (realtimeservice)
 
 ###########################################################################
 # Find OpenDaVINCI.
@@ -31,14 +31,10 @@ INCLUDE_DIRECTORIES(include)
 
 ###############################################################################
 # Build this project.
-ADD_EXECUTABLE (ipcsharedmemoryconsumer "ipcsharedmemoryconsumer.cpp")
-TARGET_LINK_LIBRARIES (ipcsharedmemoryconsumer ${OPENDAVINCI_LIBRARIES}) 
-
-ADD_EXECUTABLE (ipcsharedmemoryproducer "ipcsharedmemoryproducer.cpp")
-TARGET_LINK_LIBRARIES (ipcsharedmemoryproducer ${OPENDAVINCI_LIBRARIES}) 
+ADD_EXECUTABLE (realtimeservice "MyRealtimeService.cpp")
+TARGET_LINK_LIBRARIES (realtimeservice ${OPENDAVINCI_LIBRARIES}) 
 
 ###############################################################################
 # Install this project.
-INSTALL(TARGETS ipcsharedmemoryconsumer RUNTIME DESTINATION bin COMPONENT tutorials)
-INSTALL(TARGETS ipcsharedmemoryproducer RUNTIME DESTINATION bin COMPONENT tutorials)
+INSTALL(TARGETS realtimeservice RUNTIME DESTINATION bin COMPONENT tutorials)
 

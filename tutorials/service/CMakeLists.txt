@@ -31,10 +31,10 @@ INCLUDE_DIRECTORIES(include)
 
 ###############################################################################
 # Build this project.
-ADD_EXECUTABLE (MyService "MyService.cpp")
-TARGET_LINK_LIBRARIES (MyService ${OPENDAVINCI_LIBRARIES}) 
+ADD_EXECUTABLE (service "MyService.cpp")
+TARGET_LINK_LIBRARIES (service ${OPENDAVINCI_LIBRARIES}) 
 
 ###############################################################################
 # Install this project.
-INSTALL(TARGETS MyService RUNTIME DESTINATION bin COMPONENT tutorials)
+INSTALL(TARGETS service RUNTIME DESTINATION bin COMPONENT tutorials)
 
