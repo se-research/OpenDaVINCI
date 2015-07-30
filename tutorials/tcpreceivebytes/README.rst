@@ -13,32 +13,32 @@ TCPReceiveBytes.hpp:
 
 .. code-block:: c++
 
-    #include <core/wrapper/ConnectionListener.h>
-    #include <core/wrapper/StringListener.h>
-    #include <core/wrapper/TCPAcceptorListener.h>
-    #include <core/wrapper/TCPConnection.h>
+    #include <core/io/ConnectionListener.h>
+    #include <core/io/StringListener.h>
+    #include <core/io/TCPAcceptorListener.h>
+    #include <core/io/TCPConnection.h>
 
     // This class will handle newly accepted TCP connections.
     class TCPReceiveBytes : 
-        public core::wrapper::ConnectionListener,
-        public core::wrapper::StringListener,
-        public core::wrapper::TCPAcceptorListener {
+        public core::io::ConnectionListener,
+        public core::io::StringListener,
+        public core::io::tcp::TCPAcceptorListener {
 
         // Your class needs to implement the method void nextString(const std::string &s).
         virtual void nextString(const std::string &s);
 
-        // Your class needs to implement the method void onNewConnection(core::wrapper::TCPConnection* connection).
-        virtual void onNewConnection(core::wrapper::TCPConnection* connection);
+        // Your class needs to implement the method void onNewConnection(core::SharedPointer<core::io::tcp::TCPConnection> connection).
+        virtual void onNewConnection(core::SharedPointer<core::io::tcp::TCPConnection> connection);
 
         // Your class should implement the method void handleConnectionError() to handle connection errors (like terminated connections).
         virtual void handleConnectionError();
     };
 
 To receive any data, we firstly declare a class that implements the interfaces
-``core::wrapper::StringListener`` to receive bytes and
-``core::wrapper::TCPAcceptorListener`` where any newly accepted connections will
+``core::io::StringListener`` to receive bytes and
+``core::io::tcp::TCPAcceptorListener`` where any newly accepted connections will
 be reported to. This class will be registered as listener to our accepting TCP
-socket that we create later. In addition, we also register a ``core::wrapper::ConnectionLister``
+socket that we create later. In addition, we also register a ``core::io::ConnectionLister``
 that is invoked in the case of any connection error like the connecting client
 has closed the connection.
 
@@ -51,8 +51,8 @@ TCPReceiveBytes.cpp:
     #include <string>
     #include <core/SharedPointer.h>
     #include <core/base/Thread.h>
-    #include <core/wrapper/TCPAcceptor.h>
-    #include <core/wrapper/TCPFactory.h>
+    #include <core/io/tcp/TCPAcceptor.h>
+    #include <core/io/tcp/TCPFactory.h>
 
     #include "TCPReceiveBytes.hpp"
 
@@ -60,7 +60,8 @@ TCPReceiveBytes.cpp:
 
     // We add some of OpenDaVINCI's namespaces for the sake of readability.
     using namespace core;
-    using namespace core::wrapper;
+    using namespace core::io;
+    using namespace core::io:tcp;
 
     void TCPReceiveBytes::handleConnectionError() {
         cout << "Connection terminated." << endl;
@@ -70,8 +71,8 @@ TCPReceiveBytes.cpp:
         cout << "Received " << s.length() << " bytes containing '" << s << "'" << endl;
     }
 
-    void TCPReceiveBytes::onNewConnection(core::wrapper::TCPConnection* connection) {
-        if (connection != NULL) {
+    void TCPReceiveBytes::onNewConnection(core::SharedPointer<core::io::tcp::TCPConnection> connection) {
+        if (connection.isValid()) {
             cout << "Handle a new connection." << endl;
 
             // Set this class as StringListener to receive
@@ -96,9 +97,6 @@ TCPReceiveBytes.cpp:
             // Unregister the listeners.
             connection->setStringListener(NULL);
             connection->setConnectionListener(NULL);
-
-            // Delete connection.
-            delete connection;
         }
     }
 
@@ -136,7 +134,7 @@ new connections in a ``vector`` for instance and manage their individual
 connection status properly.
  
 To receive bytes from a TCP socket, your application needs to include
-``<core/wrapper/TCPAcceptor.h>`` and ``<core/wrapper/TCPFactory.h>`` that encapsulate
+``<core/io/tcp/TCPAcceptor.h>`` and ``<core/io/tcp/TCPFactory.h>`` that encapsulate
 the platform-specific implementations.
 
 ``TCPFactory`` provides a static method called ``createTCPAcceptor`` that allows

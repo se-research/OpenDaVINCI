@@ -17,22 +17,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <core/wrapper/ConnectionListener.h>
-#include <core/wrapper/StringListener.h>
-#include <core/wrapper/TCPAcceptorListener.h>
-#include <core/wrapper/TCPConnection.h>
+#include <core/io/ConnectionListener.h>
+#include <core/io/StringListener.h>
+#include <core/io/tcp/TCPAcceptorListener.h>
+#include <core/io/tcp/TCPConnection.h>
 
 // This class will handle newly accepted TCP connections.
 class TCPReceiveBytes : 
-    public core::wrapper::ConnectionListener,
-    public core::wrapper::StringListener,
-    public core::wrapper::TCPAcceptorListener {
+    public core::io::ConnectionListener,
+    public core::io::StringListener,
+    public core::io::tcp::TCPAcceptorListener {
 
     // Your class needs to implement the method void nextString(const std::string &s).
     virtual void nextString(const std::string &s);
 
-    // Your class needs to implement the method void onNewConnection(core::wrapper::TCPConnection* connection).
-    virtual void onNewConnection(core::wrapper::TCPConnection* connection);
+    // Your class needs to implement the method void onNewConnection(core::SharedPointer<core::io::tcp::TCPConnection> connection).
+    virtual void onNewConnection(core::SharedPointer<core::io::tcp::TCPConnection> connection);
 
     // Your class should implement the method void handleConnectionError() to handle connection errors.
     virtual void handleConnectionError();

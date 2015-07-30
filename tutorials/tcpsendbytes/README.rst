@@ -17,14 +17,14 @@ TCPSendBytes.cpp:
     #include <iostream>
     #include <string>
     #include <core/SharedPointer.h>
-    #include <core/wrapper/TCPConnection.h>
-    #include <core/wrapper/TCPFactory.h>
+    #include <core/io/tcp/TCPConnection.h>
+    #include <core/io/tcp/TCPFactory.h>
 
     using namespace std;
 
     // We add some of OpenDaVINCI's namespaces for the sake of readability.
     using namespace core;
-    using namespace core::wrapper;
+    using namespace core::io::tcp;
 
     int32_t main(int32_t argc, char **argv) {
         const string RECEIVER = "127.0.0.1";
@@ -44,7 +44,7 @@ TCPSendBytes.cpp:
     }
 
 To send bytes over a TCP link to a TCP server, your application needs to include
-``<core/wrapper/TCPConnection.h>`` and ``<core/wrapper/TCPFactory.h>`` that encapsulate
+``<core/io/tcp/TCPConnection.h>`` and ``<core/io/tcp/TCPFactory.h>`` that encapsulate
 the platform-specific implementations.
 
 ``TCPFactory`` provides a static method called ``createTCPConnectionTo`` that

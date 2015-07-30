@@ -22,8 +22,8 @@
 #include <string>
 #include <core/SharedPointer.h>
 #include <core/base/Thread.h>
-#include <core/wrapper/TCPAcceptor.h>
-#include <core/wrapper/TCPFactory.h>
+#include <core/io/tcp/TCPAcceptor.h>
+#include <core/io/tcp/TCPFactory.h>
 
 #include "TCPReceiveBytes.hpp"
 
@@ -31,7 +31,8 @@ using namespace std;
 
 // We add some of OpenDaVINCI's namespaces for the sake of readability.
 using namespace core;
-using namespace core::wrapper;
+using namespace core::io;
+using namespace core::io::tcp;
 
 void TCPReceiveBytes::handleConnectionError() {
     cout << "Connection terminated." << endl;
@@ -41,8 +42,8 @@ void TCPReceiveBytes::nextString(const std::string &s) {
     cout << "Received " << s.length() << " bytes containing '" << s << "'" << endl;
 }
 
-void TCPReceiveBytes::onNewConnection(core::wrapper::TCPConnection* connection) {
-    if (connection != NULL) {
+void TCPReceiveBytes::onNewConnection(core::SharedPointer<core::io::tcp::TCPConnection> connection) {
+    if (connection.isValid()) {
         cout << "Handle a new connection." << endl;
 
         // Set this class as StringListener to receive
@@ -67,9 +68,6 @@ void TCPReceiveBytes::onNewConnection(core::wrapper::TCPConnection* connection) 
         // Unregister the listeners.
         connection->setStringListener(NULL);
         connection->setConnectionListener(NULL);
-
-        // Delete connection.
-        delete connection;
     }
 }
 
