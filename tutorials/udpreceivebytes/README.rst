@@ -13,17 +13,17 @@ UDPReceiveBytes.hpp:
 
 .. code-block:: c++
 
-    #include <core/wrapper/StringListener.h>
+    #include <core/io/StringListener.h>
 
     // This class will handle the bytes received via a UDP socket.
-    class UDPReceiveBytes : public core::wrapper::StringListener {
+    class UDPReceiveBytes : public core::io::StringListener {
 
         // Your class needs to implement the method void nextString(const std::string &s).
         virtual void nextString(const std::string &s);
     };
 
 To receive any data, we firstly declare a class that implements the interface
-``core::wrapper::StringListener``. This class will be registered as listener to
+``core::io::StringListener``. This class will be registered as listener to
 our UDP socket that we create later.
 
 UDPReceiveBytes.cpp:
@@ -35,8 +35,8 @@ UDPReceiveBytes.cpp:
     #include <string>
     #include <core/SharedPointer.h>
     #include <core/base/Thread.h>
-    #include <core/wrapper/UDPReceiver.h>
-    #include <core/wrapper/UDPFactory.h>
+    #include <core/io/udp/UDPReceiver.h>
+    #include <core/io/udp/UDPFactory.h>
 
     #include "UDPReceiveBytes.hpp"
 
@@ -48,7 +48,8 @@ UDPReceiveBytes.cpp:
 
     // We add some of OpenDaVINCI's namespaces for the sake of readability.
     using namespace core;
-    using namespace core::wrapper;
+    using namespace core::io;
+    using namespace core::io::udp;
 
     int32_t main(int32_t argc, char **argv) {
         const string RECEIVER = "0.0.0.0";
@@ -81,7 +82,7 @@ UDPReceiveBytes.cpp:
     }
 
 To receive bytes from a UDP socket, your application needs to include
-``<core/wrapper/UDPReceiver.h>`` and ``<core/wrapper/UDPFactory.h>`` that encapsulate
+``<core/io/udp/UDPReceiver.h>`` and ``<core/io/udp/UDPFactory.h>`` that encapsulate
 the platform-specific implementations.
 
 ``UDPFactory`` provides a static method called ``createUDPReceiver`` that allows
