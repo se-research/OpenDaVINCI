@@ -13,10 +13,10 @@ You will find different projects that are using OpenDaVINCI here: http://opendav
 
 *Last deployment:* [![Deployment Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-Deployment-PackageServer/badge/icon)](https://github.com/se-research/OpenDaVINCI)
 
-Architecture  | FreeBSD 10.1 | OpenBSD 5.7 | Mac OS X
-------------- | ------------ | ----------- | --------
-32bit         | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-FreeBSD10-32/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-OpenBSD57-32/badge/icon)](https://github.com/se-research/OpenDaVINCI) | -
-64bit         | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-FreeBSD10/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-OpenBSD57/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-MacOSX/badge/icon)](https://github.com/se-research/OpenDaVINCI)
+Architecture  | FreeBSD 10.1 | NetBSD 6.1.5 | OpenBSD 5.7 | Mac OS X
+------------- | ------------ | ------------ | ----------- | --------
+32bit         | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-FreeBSD10-32/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-NetBSD-6.1.5-32/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-OpenBSD57-32/badge/icon)](https://github.com/se-research/OpenDaVINCI) | -
+64bit         | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-FreeBSD10/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-NetBSD-6.1.5/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-OpenBSD57/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-MacOSX/badge/icon)](https://github.com/se-research/OpenDaVINCI)
 
 Architecture  | Debian 8.1 | Fedora 22 | openSuSE 13.2 | Scientific Linux 7 | Ubuntu 14.04
 ------------- | ---------- | --------- | ------------- | ------------------ | ------------
