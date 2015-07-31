@@ -62,7 +62,7 @@ Update your package database:
 
 Install OpenDaVINCI:
 
-    $ sudo apt-get install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent opendavinci-odautomotivedata
+    $ sudo apt-get install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent libautomotivedata
 
 
 ### Adding OpenDaVINCI to your Debian Linux distribution
@@ -73,7 +73,7 @@ Add the public key from our repository:
 
 Add our repository itself to your sources.list:
 
-    $ sudo echo "deb http://opendavinci.cse.chalmers.se/debian/ wheezy main" >> /etc/apt/sources.list
+    $ sudo echo "deb http://opendavinci.cse.chalmers.se/debian/ jessie main" >> /etc/apt/sources.list
 
 Update your package database:
 
@@ -81,7 +81,7 @@ Update your package database:
 
 Install OpenDaVINCI:
 
-    $ sudo apt-get install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent opendavinci-odautomotivedata
+    $ sudo apt-get install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent libautomotivedata
 
 
 ### Adding OpenDaVINCI to your Fedora Linux distribution
@@ -96,7 +96,7 @@ Update your package database:
 
 Install OpenDaVINCI:
 
-    $ sudo yum --nogpgcheck install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent opendavinci-odautomotivedata
+    $ sudo yum --nogpgcheck install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent libautomotivedata
    
    
 ### Adding OpenDaVINCI to your openSuse Linux distribution
@@ -115,5 +115,5 @@ Update your package database:
 
 Install OpenDaVINCI:
 
-    $ sudo zypper --no-gpg-checks install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent opendavinci-odautomotivedata
+    $ sudo zypper --no-gpg-checks install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent libautomotivedata
 

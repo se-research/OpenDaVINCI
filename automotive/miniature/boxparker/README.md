@@ -39,7 +39,7 @@ Install the OpenDaVINCI library:
 
 Install the automotive data structures:
 
-    $ sudo apt-get install opendavinci-odautomotivedata
+    $ sudo apt-get install libautomotivedata
 
 
 
@@ -107,21 +107,21 @@ Now, the simulation as provided in a Docker image can be started:
 
 Start "odsupercomponent" for the software component lifecycle management (this step will download the Docker image):
 
-    $ docker run --rm=true --net host -v /home/$USER/config:/opt/data -w "/opt/data" -t -i seresearch/odsimulation:latest /opt/sim/bin/odsupercomponent --cid=111 --verbose=1
+    $ docker run --rm=true --net host -v /home/$USER/config:/opt/data -w "/opt/data" -t -i seresearch/odsimulation:latest odsupercomponent --cid=111 --verbose=1
 
 Next, start the vehicle dynamics simulation "vehicle":
 
-    $ docker run --rm=true --net host -v /home/$USER/config:/opt/data -w "/opt/data" -t -i seresearch/odsimulation:latest /opt/sim/bin/vehicle --cid=111 --freq=10
+    $ docker run --rm=true --net host -v /home/$USER/config:/opt/data -w "/opt/data" -t -i seresearch/odsimulation:latest odsimvehicle --cid=111 --freq=10
 
 Now, we start the sensor simulation "irus":
 
-    $ docker run --rm=true --net host -v /home/$USER/config:/opt/data -w "/opt/data" -t -i seresearch/odsimulation:latest /opt/sim/bin/irus --cid=111 --freq=10
+    $ docker run --rm=true --net host -v /home/$USER/config:/opt/data -w "/opt/data" -t -i seresearch/odsimulation:latest odsimirus --cid=111 --freq=10
 
 Start the visualization environment "cockpit" (the first command grants access to your Xserver):
 
     $ xhost +
 
-    $ docker run --rm=true --net host -w "/opt/data" -t -i -e DISPLAY=$DISPLAY -e QT_X11_NO_MITSHM=1 -v /home/$USER/config:/opt/data -v /tmp/.X11-unix:/tmp/.X11-unix seresearch/odsimulation:latest /opt/sim/bin/cockpit --cid=111
+    $ docker run --rm=true --net host -w "/opt/data" -t -i -e DISPLAY=$DISPLAY -e QT_X11_NO_MITSHM=1 -v /home/$USER/config:/opt/data -v /tmp/.X11-unix:/tmp/.X11-unix seresearch/odsimulation:latest odcockpit --cid=111
 
 Start the "BirdsEyeMap" plugin.
 
