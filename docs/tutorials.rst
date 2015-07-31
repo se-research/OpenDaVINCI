@@ -33,4 +33,5 @@ TCP connection
 How to design distributed software systems
 ----------------------
 .. include:: tutorial.timetrigger.rst
+.. include:: tutorial.datatrigger.rst
 
