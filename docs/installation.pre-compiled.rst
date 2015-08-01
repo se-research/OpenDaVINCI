@@ -22,7 +22,7 @@ Adding OpenDaVINCI to your Ubuntu Linux distribution
 
 4. Install OpenDaVINCI::
 
-    $ sudo apt-get install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent opendavinci-odautomotivedata
+    $ sudo apt-get install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
 
 
 Adding OpenDaVINCI to your Debian Linux distribution
@@ -42,7 +42,7 @@ Adding OpenDaVINCI to your Debian Linux distribution
 
 4. Install OpenDaVINCI::
 
-    $ sudo apt-get install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent opendavinci-odautomotivedata
+    $ sudo apt-get install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
 
 
 Adding OpenDaVINCI to your Fedora Linux distribution
@@ -58,7 +58,7 @@ Adding OpenDaVINCI to your Fedora Linux distribution
 
 3. Install OpenDaVINCI::
 
-   $ sudo yum --nogpgcheck install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent opendavinci-odautomotivedata
+   $ sudo yum --nogpgcheck install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
    
    
 Adding OpenDaVINCI to your openSuse Linux distribution
@@ -78,7 +78,7 @@ Adding OpenDaVINCI to your openSuse Linux distribution
 
 4. Install OpenDaVINCI::
 
-   $ sudo zypper --no-gpg-checks install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent opendavinci-odautomotivedata
+   $ sudo zypper --no-gpg-checks install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
 
 
 Using our Docker images
