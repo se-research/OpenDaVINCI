@@ -115,7 +115,7 @@ open peripheral components like cameras or sensors.
 
 The main method ``body()`` is meant to be used for the implementation of the main
 data processing algorithm. In this example, it simply prints an explanatory message.
-The main method returns the return code 0 encoded as ``ModuleState::OKAY``.
+The main method returns the return code 0 encoded as ``OKAY``.
 
 The main function is simply instantiating an object of the class ``TimeTriggerExample``
 and runs it by calling the method ``runModule()`` that is provided from its
@@ -218,6 +218,7 @@ TimeTriggerExample.cpp:
         cout << "  " << getKeyValueConfiguration().getValue<uint32_t>("timetriggerexample.key2") << endl;
         cout << "  " << getKeyValueConfiguration().getValue<float>("timetriggerexample.key3") << endl;
         cout << "  " << getKeyValueConfiguration().getValue<string>("timetriggerexample.key4") << endl;
+        cout << "  " << (getKeyValueConfiguration().getValue<bool>("timetriggerexample.key5") == 1) << endl;
 
         return coredata::dmcp::ModuleExitCodeMessage::OKAY;
     }
@@ -248,6 +249,8 @@ The configuration file is adjusted as follows as an example::
     timetriggerexample.key4 = Default
     timetriggerexample:1.key4 = ValueForComponent1
     timetriggerexample:2.key4 = ValueForComponent2
+
+    timetriggerexample.key5 = 1
 
 This configuration file is parsed by ``odsupercomponent`` and used to provided
 component-dependent subsets from this file. The general format is::
@@ -338,8 +341,9 @@ TimeTriggerExample.cpp:
         cout << "  " << getKeyValueConfiguration().getValue<uint32_t>("timetriggerexample.key2") << endl;
         cout << "  " << getKeyValueConfiguration().getValue<float>("timetriggerexample.key3") << endl;
         cout << "  " << getKeyValueConfiguration().getValue<string>("timetriggerexample.key4") << endl;
+        cout << "  " << (getKeyValueConfiguration().getValue<bool>("timetriggerexample.key5") == 1) << endl;
 
-	    while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
             cout << "Inside the main processing loop." << endl;
         }
 
@@ -406,6 +410,7 @@ The output of the application would look like::
     timetriggerexample.key2=1234
     timetriggerexample.key3=42.32
     timetriggerexample.key4=Default
+    timetriggerexample.key5=1
 
     (ClientModule) connecting to supercomponent...done - managed level: 0
     This method is called before the component's body is executed.

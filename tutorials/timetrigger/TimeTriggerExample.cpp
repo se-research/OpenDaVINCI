@@ -51,6 +51,7 @@ coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode TimeTriggerExample::body()
     cout << "  " << getKeyValueConfiguration().getValue<uint32_t>("timetriggerexample.key2") << endl;
     cout << "  " << getKeyValueConfiguration().getValue<float>("timetriggerexample.key3") << endl;
     cout << "  " << getKeyValueConfiguration().getValue<string>("timetriggerexample.key4") << endl;
+    cout << "  " << (getKeyValueConfiguration().getValue<bool>("timetriggerexample.key5") == 1) << endl;
 
 	while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
         cout << "Inside the main processing loop." << endl;
