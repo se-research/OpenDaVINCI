@@ -91,9 +91,9 @@ Install OpenDaVINCI:
 
 ### Adding OpenDaVINCI to your Fedora Linux distribution
 
-Add our repository itself to your sources.list:
+Add our repository to your sources.list:
 
-    $ sudo echo "[myrepo]\r\nname=My Repository\r\nbaseurl=deb http://opendavinci.cse.chalmers.se/rpm-x86_64/repo\r\nenabled=1" >> etc/yum.repos.d/my.repo
+    $ cd /etc/yum.repos.d && sudo wget http://opendavinci.cse.chalmers.se/OpenDaVINCI-x86_64.repo
 
 Update your package database:
 
@@ -101,24 +101,20 @@ Update your package database:
 
 Install OpenDaVINCI:
 
-    $ sudo yum --nogpgcheck install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent libautomotivedata
+    $ sudo yum install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
    
    
 ### Adding OpenDaVINCI to your openSuse Linux distribution
 
-Add the public key from our repository:
+Add our repository to your sources.list:
 
-    $ sudo zypper --no-gpg-checks ar -f http://opendavinci.cse.chalmers.se/rpm-x86_64/repo OpenDaVINCI
-
-Add our repository itself to your sources.list:
-
-    $ sudo zypper --non-interactive --no-gpg-checks ar -f http://opendavinci.cse.chalmers.se/rpm-x86_64/repo OpenDaVINCI
+    $ cd /etc/zypp/repos.d && sudo wget http://opendavinci.cse.chalmers.se/OpenDaVINCI-x86_64.repo
 
 Update your package database:
 
-    $ sudo zypper --no-gpg-checks update
+    $ sudo zypper --no-gpg-checks refresh
 
 Install OpenDaVINCI:
 
-    $ sudo zypper --no-gpg-checks install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
+    $ sudo zypper install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
 
