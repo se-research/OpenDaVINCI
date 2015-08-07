@@ -11,7 +11,7 @@ You will find different projects that are using OpenDaVINCI here: http://opendav
 
 *Documentation:* [![Documentation Status](https://readthedocs.org/projects/opendavinci/badge/?version=latest)](http://opendavinci.readthedocs.org/en/latest/)
 
-*Last deployment:* [![Deployment Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-Deployment-PackageServer/badge/icon)](https://github.com/se-research/OpenDaVINCI)
+*Last deployment:* [![Deployment Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-Deployment/badge/icon)](https://github.com/se-research/OpenDaVINCI)
 
 Architecture  | DragonFlyBSD 4.2 | FreeBSD 10.1 | NetBSD 6.1.5 | OpenBSD 5.7 | Mac OS X
 ------------- | ---------------- | ------------ | ------------ | ----------- | --------
