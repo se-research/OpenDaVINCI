@@ -48,9 +48,9 @@ Adding OpenDaVINCI to your Debian Linux distribution
 Adding OpenDaVINCI to your Fedora Linux distribution
 ----------------------------------------------------
 
-1. Add our repository itself to your sources.list::
+1. Add our repository::
 
-    $ sudo echo "[myrepo]\r\nname=My Repository\r\nbaseurl=deb http://opendavinci.cse.chalmers.se/rpm-x86_64/repo\r\nenabled=1" >> etc/yum.repos.d/my.repo
+    $ cd /etc/yum.repos.d && sudo wget http://opendavinci.cse.chalmers.se/OpenDaVINCI-x86_64.repo
 
 2. Update your package database::
 
@@ -58,27 +58,23 @@ Adding OpenDaVINCI to your Fedora Linux distribution
 
 3. Install OpenDaVINCI::
 
-   $ sudo yum --nogpgcheck install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
+   $ sudo yum install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
    
    
 Adding OpenDaVINCI to your openSuse Linux distribution
 ------------------------------------------------------
 
-1. Add the public key from our repository::
+1. Add our repository::
 
-    $ sudo zypper --no-gpg-checks ar -f http://opendavinci.cse.chalmers.se/rpm-x86_64/repo OpenDaVINCI
+    $ cd /etc/zypp/repos.d && sudo wget http://opendavinci.cse.chalmers.se/OpenDaVINCI-x86_64.repo
 
-2. Add our repository itself to your sources.list::
+2. Update your package database::
 
-    $ sudo zypper --non-interactive --no-gpg-checks ar -f http://opendavinci.cse.chalmers.se/rpm-x86_64/repo OpenDaVINCI
+    $ sudo zypper --no-gpg-checks refresh
 
-3. Update your package database::
+3. Install OpenDaVINCI::
 
-    $ sudo zypper --no-gpg-checks update
-
-4. Install OpenDaVINCI::
-
-   $ sudo zypper --no-gpg-checks install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
+   $ sudo zypper install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
 
 
 Using our Docker images
