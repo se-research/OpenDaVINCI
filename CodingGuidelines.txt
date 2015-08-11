@@ -1,0 +1,43 @@
+Coding Guidelines for OpenDaVINCI
+=================================
+
+1. General Remarks
+
+1.1 Spacing.
+1.1.1 Do not use tabs; use 4 spaces instead.
+1.1.2 Do not modify the default compiler settings as declared in the CMakeLists.txt.
+
+1.2 Keyword const.
+1.2.1 Use const whenever possible to let the compiler warn about unintended use: void myMethod(const uint32_t &parameter) const;
+
+1.3 Private copy constructor and assignment operator.
+1.3.1 Always define a copy constructor and an assignment operator (no implementation required) and declare them as private to let the compiler warn you about unintended use.
+
+1.4 Pointers and references.
+1.4.1 Use const references as preferred interface to your method, e.g.: void myMethod(const uint32_t &parameter);
+1.4.2 Whenever you create a new pointer, wrap it into a C++ auto_ptr<T> if you are sure that your point will NOT be shared outside your method's or class' scope.
+1.4.3 Whenever you create a new pointer that is shared outside your method's or class' scope, wrap it into a core::SharedPointer<T>.
+
+1.5 Exception handling.
+1.5.1 Use exception handling sparsely (might be removed in future version).
+1.5.2 Always catch by reference and throw by value.
+
+1.6 Namespaces.
+1.6.1 It is okay to specify using namespace std; with the nested namespaces in a header.
+1.6.2 Other namespaces must not be specified in header files and full namespace must be included in class names and the like to avoid name clashing.
+
+1.7 Types.
+1.7.1 Primitive data types (boolean, integral, floating point types) must be explicit like uint32_t (cf. stdint.h for details); avoid using types like int or long as their dimensions might vary on different platforms.
+
+
+2. Branching.
+
+2.1 Refactoring/Maintenance branches.
+2.1.1 Refactoring and maintenance need to be carried out in a new maintenance branch; its name shall be YYYYQq.refactoring.WHAT.WHERE. Example: 2015Q3.refactoring.pointers.wrapper.udp --> in quarter 3 of 2015, refactoring was conducted to maintain pointers in package wrapper (more specifically: UDP related implementation).
+2.1.2 Before the maintainence branch is merged with master, it must pass all testsuites.
+
+
+3. Testing.
+2.1 All newly added features must have test cases.   
+
+

@@ -1,0 +1,254 @@
+/*
+ * CoreData.odvd - Core data structures for OpenDaVINCI.
+ * Copyright (C) 2015 Christian Berger
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+
+// The optional parameter fourbyteid for the attributes is specified
+// to ensure backwards compatibility with existing recordings.
+
+///////////////////////////////////////////////////////////////////////////////
+// Logging messages.
+message coredata.LogMessage [id = 100] {
+    enum LogLevel {
+        NONE = 0,
+        INFO = 1,
+        WARN = 2,
+        DEBUG = 3,
+    };
+    LogLevel logLevel [id = 1];
+    string logMessage [id = 2];
+    string componentName [id = 3];
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Reflection messages.
+
+// This message serves as the base class for a message's field description.
+message coredata.reflection.AbstractField [id = 70] {
+    enum FIELDDATATYPE {
+        BOOL_T              = 0,
+        INTEGERS_START      = 1,
+        UINT8_T             = 2,
+        INT8_T              = 3,
+        UINT16_T            = 4,
+        INT16_T             = 5,
+        UINT32_T            = 6,
+        INT32_T             = 7,
+        UINT64_T            = 8,
+        INT64_T             = 9,
+        INTEGERS_END        = 10,
+        CHAR_T              = 11,
+        UCHAR_T             = 12,
+        FLOAT_T             = 13,
+        DOUBLE_T            = 14,
+        NON_PRIMITIVE_START = 50,
+        STRING_T            = 51,
+        DATA_T              = 52,
+        SERIALIZABLE_T      = 53,
+        NON_PRIMITIVE_END   = 54,
+    };
+    uint32 longIdentifier [ id = 1 ];
+    uint8 shortIdentifier [ id = 2 ];
+    string longName [ id = 3 ];
+    string shortName [ id = 4 ];
+    FIELDDATATYPE fieldDataType [ id = 5 ];
+    int8 size [ default = -1, id = 6 ];
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+// DMCP messages.
+
+// This message contains all constants for the Dynamic Module Configuration Protocol (DMCP).
+message coredata.dmcp.Constants [id = 110] {
+    enum DMCP {
+        CONNECTIONSERVER_PORT_BASE = 19755, // This is the base port for the TCP control connection.
+        BROADCAST_PORT_SERVER = 19750,      // This port is the server listening for the DMCP client discovery.
+        BROADCAST_PORT_CLIENT = 19751,      // This port is the client listening for the DMCP server response.
+        CONNECTION_TIMEOUT = 1000,
+        CONNECTION_RETRIES = 5,
+        CONFIGURATION_TIMEOUT = 1000,
+        DISCOVER_TIMEOUT = 1000,
+    };
+}
+
+// This message contains all constants for the test cases for the Dynamic Module Configuration Protocol (DMCP).
+message coredata.dmcp.TestConstants [id = 111] {
+    const string DMCPCONFIG_TEST_GROUP = "225.0.0.250";
+    const uint32 DMCPCONFIG_TEST_SERVERPORT = 25000;
+    const uint32 DMCPCONFIG_TEST_CLIENTPORT = 25100;
+}
+
+// This message describes the DMCP server.
+message coredata.dmcp.ServerInformation [id = 112] { 
+    enum ManagedLevel {
+        ML_NONE = 0,
+        ML_PULSE = 1,
+        ML_PULSE_SHIFT = 2,
+        ML_PULSE_TIME = 3,
+        ML_PULSE_TIME_ACK = 4,
+        ML_SIMULATION_RT = 5,
+        ML_SIMULATION = 6,
+    };
+    string IP [id = 1];
+    uint32 port [id = 2];
+    ManagedLevel managedLevel [id = 3];
+}
+
+// This message belongs to the handshake of the DMCP protocol.
+message coredata.dmcp.DiscoverMessage [id = 3] {
+    enum Type {
+        UNDEFINED = 0,
+        DISCOVER = 1,
+        RESPONSE = 2,
+    };
+    Type type [id = 1];
+    coredata.dmcp.ServerInformation serverInformation [id = 2];
+    string moduleName [id = 3];
+}
+
+// This message describes a connected software component.
+message coredata.dmcp.ModuleDescriptor [id = 113] {
+    string name [id = 1];
+    string identifier [id = 2];
+    string version [id = 3];
+    float frequency [id = 4];
+}
+
+// This message describes information about a software component's time slice consumption.
+message coredata.dmcp.RuntimeStatistic [id = 9] {
+    double sliceConsumption [id = 1, fourbyteid = 0x04C11DD4];
+}
+
+// This message describes runtime statistics about a software component.
+message coredata.dmcp.ModuleStatistic [id = 114] {
+    coredata.dmcp.ModuleDescriptor module [id = 1];
+    coredata.dmcp.RuntimeStatistic runtimeStatistic [id = 2];
+}
+
+// This message describes runtime statistics about a software component.
+message coredata.dmcp.ModuleStatistics [id = 8] {
+    map<string, coredata.dmcp.ModuleStatistic> moduleStatistics [id = 1];
+}
+
+// This message describes a software module's current state.
+message coredata.dmcp.ModuleStateMessage [id = 6] {
+    enum ModuleState {
+        NOT_RUNNING = 0,
+        RUNNING = 1,
+        UNDEFINED_STATE = 2,
+    };
+
+    ModuleState moduleState [id = 1];
+}
+
+// This message describes the software module's exit code.
+message coredata.dmcp.ModuleExitCodeMessage [id = 7] {
+    enum ModuleExitCode {
+        OKAY = 0,
+        EXCEPTION_CAUGHT = 1,
+        SERIOUS_ERROR = 2,
+        CONNECTION_LOST = 3,
+        NO_SUPERCOMPONENT = 4,
+        UNDEFINED_EXITCODE = 5,
+    };
+
+    ModuleExitCode moduleExitCode [id = 1];
+}
+
+// This message is part of centralized scheduling coordinated by supercomponent.
+message coredata.dmcp.PulseMessage [id = 101] {
+    core::data::TimeStamp realTimeFromSupercomponent [id = 1];
+    uint32 nominalTimeSlice [id = 2];
+    uint32 cumulatedTimeSlice [id = 3];
+    list<core::data::Container> containers [id = 4];
+}
+
+// This message is part of centralized scheduling coordinated by supercomponent.
+message coredata.dmcp.PulseAckMessage [id = 102] {}
+
+// This message is part of centralized scheduling coordinated by supercomponent.
+message coredata.dmcp.PulseAckContainersMessage [id = 103] {
+    list<core::data::Container> containers [id = 1];
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Configuration message.
+message coredata.Configuration [id = 2] {
+    core::base::KeyValueConfiguration keyValueConfiguration [id = 1];
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+// odplayer and odrecorder messages.
+
+// This message is used to describe memory segments to handle binary large objects like SharedImages or SharedData.
+message coredata.buffer.MemorySegment [id = 17] {
+    core::data::Container header [id = 1];
+    uint32 size [id = 2];
+    uint32 consumedSize [id = 3];
+    uint16 identifier [id = 4];
+}
+
+// This message is used to remotely control the odplayer component.
+message coredata.player.PlayerCommand [id = 10] {
+    enum Command {
+        PLAY=0,
+        PAUSE=1,
+        REWIND=2,
+        STEP_FORWARD=3,
+    };
+    Command command [id = 1, fourbyteid = 0x1304776F];
+}
+
+// This message is used to remotely control the odrecorder component.
+message coredata.recorder.RecorderCommand [id = 11] {
+    enum Command {
+        RECORD=0,
+        STOP=1,
+    };
+    Command command [id = 1, fourbyteid = 0x1304776F];
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Shared BLOB messages.
+
+// This message describes
+message coredata.SharedData [id = 13] {
+    string name [id = 1, fourbyteid = 0x09823BC4];
+    uint32 size [id = 2, fourbyteid = 0x0E435993];
+}
+
+message coredata.image.SharedImage extends coredata.SharedData [id = 14] {
+    uint32 width [id = 1, fourbyteid = 0x0E43598A];
+    uint32 height [id = 2, fourbyteid = 0x0E4359BD];
+    uint32 bytesPerPixel [id = 3, fourbyteid = 0x09823BBC];
+}
+
+// This message is not complete as dynamic sized arrays are not available yet.
+message coredata.image.CompressedImage [id = 16] { // TO BE INTEGRATED
+    string name [id = 1];
+    uint16 width [id = 2];
+    uint16 height [id = 3];
+    uint8 bytesPerPixel [id = 4];
+    uint16 compressedSize [id = 5];
+//    uint8 *imageData [id = 6]; // Dynamically sized arrays are not available yet.
+}
+

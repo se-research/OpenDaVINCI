@@ -1,0 +1,9 @@
+message Test3 [ id = 3 ] {
+	bool attribute1;
+	char attribute2;
+	int32 attribute3;
+	uint32 attribute4;
+	float attribute5;
+	double attribute6;
+	string attribute7;
+}

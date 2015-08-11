@@ -21,6 +21,7 @@ PROJECT (tutorials)
 
 ###########################################################################
 # Add subdirectories.
+ADD_SUBDIRECTORY (datatrigger)
 ADD_SUBDIRECTORY (diningphilosophers)
 ADD_SUBDIRECTORY (ipcsharedmemory)
 ADD_SUBDIRECTORY (realtimeservice)
@@ -54,7 +55,10 @@ MACRO (setup_package_version_variables _packageName)
 ENDMACRO()
 setup_package_version_variables(${BUILD_NUMBER})
 
-IF(UNIX)
+IF(    (UNIX)
+   AND (NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "DragonFly")
+   AND (NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "OpenBSD")
+   AND (NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "NetBSD") )
     SET(CPACK_GENERATOR "DEB;RPM")
 
     SET(CPACK_PACKAGE_CONTACT "Christian Berger")

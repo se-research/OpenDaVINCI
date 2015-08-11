@@ -1,1 +1,8 @@
+2.0.8 - Added some compiling fixes for Darwin
+2.0.7 - Added some compiling fixes for Windows 7
+2.0.6 - Updating zlib to 1.2.8
+2.0.5 - Docker image creation test
+2.0.4 - Unifying Docker image creation
+2.0.3 - Added some compiling fixes for BSD-based platforms
+2.0.2 - Added support for i686 platform
 2.0.1 - Tutorials for OpenDaVINCI

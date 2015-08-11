@@ -1,0 +1,11 @@
+model
+obj
+plugin.xml
+src-gen
+xtend-gen
+src/generated
+include
+testsuites
+libtest*
+TEST-*
+odDataStructureGenerator-latest.jar

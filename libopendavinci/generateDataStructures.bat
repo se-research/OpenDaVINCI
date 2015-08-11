@@ -1,0 +1,12 @@
+@echo off
+set GENERATOR=_buildtools/od-DataStructureGenerator-latest.jar
+
+set Java_JAVA_EXECUTABLE=%1
+set ODDATASTRUCTUREGENERATOR_EXECUTABLE=%2
+set ODVD_FILE=%3
+set DESTINATION_DIR=%4
+
+cmake -E remove_directory %DESTINATION_DIR%
+cmake -E make_directory %DESTINATION_DIR%
+cd %DESTINATION_DIR%
+%Java_JAVA_EXECUTABLE% -jar "%ODDATASTRUCTUREGENERATOR_EXECUTABLE%" %ODVD_FILE%

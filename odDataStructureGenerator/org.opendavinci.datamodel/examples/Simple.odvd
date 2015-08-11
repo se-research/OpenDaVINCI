@@ -1,0 +1,4 @@
+message SimpleDataStructure {
+   uint32 data1;
+   float data2;
+}

@@ -1,0 +1,51 @@
+diff --git a/sources/OpenDaVINCI-msv/3rdParty/wjwwood-serial-1.2.1/include/serial/serial.h b/sources/OpenDaVINCI-msv/3rdParty/wjwwood-serial-1.2.1/include/serial/serial.h
+index 82dc299..21866b7 100644
+--- a/sources/OpenDaVINCI-msv/3rdParty/wjwwood-serial-1.2.1/include/serial/serial.h
++++ b/sources/OpenDaVINCI-msv/3rdParty/wjwwood-serial-1.2.1/include/serial/serial.h
+@@ -678,7 +678,7 @@ public:
+       ss << "SerialException " << description << " failed.";
+       e_what_ = ss.str();
+   }
+-  SerialException (const SerialException& other) : e_what_(other.e_what_) {}
++  SerialException (const SerialException& other) : std::exception(other), e_what_(other.e_what_) {}
+   virtual ~SerialException() throw() {}
+   virtual const char* what () const throw () {
+     return e_what_.c_str();
+@@ -715,7 +715,7 @@ public:
+       e_what_ = ss.str();
+   }
+   virtual ~IOException() throw() {}
+-  IOException (const IOException& other) : line_(other.line_), e_what_(other.e_what_), errno_(other.errno_) {}
++  IOException (const IOException& other) : std::exception(other), line_(other.line_), e_what_(other.e_what_), errno_(other.errno_) {}
+ 
+   int getErrorNumber () { return errno_; }
+ 
+@@ -735,7 +735,7 @@ public:
+       ss << "PortNotOpenedException " << description << " failed.";
+       e_what_ = ss.str();
+   }
+-  PortNotOpenedException (const PortNotOpenedException& other) : e_what_(other.e_what_) {}
++  PortNotOpenedException (const PortNotOpenedException& other) : std::exception(other), e_what_(other.e_what_) {}
+   virtual ~PortNotOpenedException() throw() {}
+   virtual const char* what () const throw () {
+     return e_what_.c_str();
+diff --git a/sources/OpenDaVINCI-msv/3rdParty/wjwwood-serial-1.2.1/src/serial.cc b/sources/OpenDaVINCI-msv/3rdParty/wjwwood-serial-1.2.1/src/serial.cc
+index 7b2d2a4..cf33957 100755
+--- a/sources/OpenDaVINCI-msv/3rdParty/wjwwood-serial-1.2.1/src/serial.cc
++++ b/sources/OpenDaVINCI-msv/3rdParty/wjwwood-serial-1.2.1/src/serial.cc
+@@ -1,8 +1,13 @@
+ /* Copyright 2012 William Woodall and John Harrison */
+ #include <algorithm>
+ 
+-#if !defined(_WIN32) && !defined(__OpenBSD__)
+-# include <alloca.h>
++#if !defined(_WIN32)
++  #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
++    #include <sys/param.h>
++    #if !defined(BSD)
++      #include <alloca.h>
++    #endif
++  #endif
+ #endif
+ 
+ #if defined (__MINGW32__)
