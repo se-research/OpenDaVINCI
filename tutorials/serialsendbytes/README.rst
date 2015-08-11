@@ -1,7 +1,7 @@
 How to send bytes over a serial link
 """"""""""""""""""""""""""""""""""""
 
-OpenDaVINCI has a built-in serial port handling enging based on
+OpenDaVINCI has a built-in serial port handling engine based on
 https://github.com/wjwwood/serial. This library realizes serial communication on
 Linux- and BSD-based platforms as well as on Windows. The sources for this
 example are available at

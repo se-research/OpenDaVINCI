@@ -139,7 +139,7 @@ principle:
 configuration over distributed and undocumented commandline parameters**
 
 The third parameter to the constructor of ``TimeTriggeredConferenceClientModule``
-is the name of this module, which is used structure the centrally maintained
+is the name of this module, which is used to structure the centrally maintained
 configuration file.
 
 The implementation of the methods ``setUp()`` and ``tearDown()`` simply contain
@@ -148,9 +148,9 @@ open peripheral components like cameras or sensors.
 
 The main method ``body()`` is meant to be used for the implementation of the main
 data processing algorithm. The main while-loop is executed based on the specified
-runtime frequency of the software component. The send data with OpenDaVINCI, it
+runtime frequency of the software component. To send data with OpenDaVINCI, it
 must be packed into a ``Container`` that adds additional information like
-information about the contained payload, the sent time point when the container
+type of the contained payload, the sent time point when the container
 left the sending software computer (for instance a sending computer), and the
 time point, when the container was received at the other end (e.g. another computer).
 
@@ -302,7 +302,7 @@ principle:
 configuration over distributed and undocumented commandline parameters**
 
 The third parameter to the constructor of ``DataTriggeredConferenceClientModule``
-is the name of this module, which is used structure the centrally maintained
+is the name of this module, which is used to structure the centrally maintained
 configuration file.
 
 The implementation of the methods ``setUp()`` and ``tearDown()`` simply contain
@@ -316,7 +316,7 @@ enum-encoded number, time stamp when the container left the sending software
 component, and the time stamp when it was received at our end. As we are interested
 in data of type ``Container::TIMESTAMP``, we are checking for that type.
 
-Once we have received the data of interest, the contents of the container is
+Once we have received the data of interest, the content of the container is
 unpacked by using the template method ``Container::getData<T>()`` where we
 specify with T the desired type. In our case, we access its content by specifying
 the type ``TimeStamp``. Finally, the values of ``TimeStamp`` are printed to

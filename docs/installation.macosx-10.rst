@@ -9,11 +9,12 @@ Install Java to generate data structures: http://java.com/en/download/
 
 Install Python 2.79: https://www.python.org/downloads/mac-osx/
   
-Download the latest OpenDaVINCI sources: http://opendavinci.cse.chalmers.se/www/OpenDaVINCI-latest.tar.gz
+Clone the latest OpenDaVINCI sources from https://github.com/se-research/OpenDaVINCI or download
+the latest OpenDaVINCI sources as zip file: https://github.com/se-research/OpenDaVINCI/archive/master.zip.
 
-Change your source folder, create a build directory, and create data structures::
+Change your source folder and create a build directory::
 
-   $ cd OpenDaVINCI && mkdir build && ./generateDataStructures.sh
+   $ cd OpenDaVINCI && mkdir build
 
 Use cmake to create the build scripts for your build folder::
 

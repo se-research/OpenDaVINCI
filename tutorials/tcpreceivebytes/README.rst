@@ -138,7 +138,7 @@ To receive bytes from a TCP socket, your application needs to include
 the platform-specific implementations.
 
 ``TCPFactory`` provides a static method called ``createTCPAcceptor`` that allows
-you to accept new TCP connections. Every new connection is wrapper into a pointer
+you to accept new TCP connections. Every new connection is wrapped into a pointer
 to an instance of ``TCPConnection`` that needs to be handled by a ``TCPAcceptorListener``.
 The task for the ``TCPAcceptorListener`` is to get the new ``TCPConnection``,
 register a ``StringListener`` to receive bytes and a ``ConnectionListener``

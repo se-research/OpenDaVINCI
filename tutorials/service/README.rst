@@ -89,7 +89,7 @@ the new thread is initialized and will now enter, e.g., its main processing loop
 from any further execution until this method is called. This synchronization dependency
 ensures that both any resources that need to be provided by the operating system
 to run a thread are available and ready, and any shared resources like data
-structures that are need from a deriving class are set up and ready.
+structures that are needed from a deriving class are set up and ready.
 
 You can compile and link the example assuming the file is called Tutorial-Thread.cpp::
 

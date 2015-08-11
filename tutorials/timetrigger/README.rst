@@ -106,7 +106,7 @@ principle:
 configuration over distributed and undocumented commandline parameters**
 
 The third parameter to the constructor of ``TimeTriggeredConferenceClientModule``
-is the name of this module, which is used structure the centrally maintained
+is the name of this module, which is used to structure the centrally maintained
 configuration file.
 
 The implementation of the methods ``setUp()`` and ``tearDown()`` simply contain
@@ -252,7 +252,7 @@ The configuration file is adjusted as follows as an example::
 
     timetriggerexample.key5 = 1
 
-This configuration file is parsed by ``odsupercomponent`` and used to provided
+This configuration file is parsed by ``odsupercomponent`` and used to provide
 component-dependent subsets from this file. The general format is::
 
     <application name> . <key> [:<identifier>] = <value>

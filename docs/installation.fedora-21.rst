@@ -37,11 +37,12 @@ Clean up installation::
    $sudo ln -sf /usr/include/qwt5-qt4 /usr/include/qwt-qt4
    $sudo ln -sf /usr/lib64/libqwt5-qt4.so /usr/lib64/libqwt-qt4.so
     
-Download the latest OpenDaVINCI sources: http://opendavinci.cse.chalmers.se/www/OpenDaVINCI-latest.tar.gz
+Clone the latest OpenDaVINCI sources from https://github.com/se-research/OpenDaVINCI or download
+the latest OpenDaVINCI sources as zip file: https://github.com/se-research/OpenDaVINCI/archive/master.zip.
 
-Change your source folder, create a build directory, and create data structures::
+Change your source folder and create a build directory::
 
-   $ cd OpenDaVINCI && mkdir build && ./generateDataStructures.sh
+   $ cd OpenDaVINCI && mkdir build
 
 Use cmake to create the build scripts for your build folder::
 
