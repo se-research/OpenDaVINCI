@@ -30,7 +30,9 @@ namespace core {
         Message::Message() :
             m_fields() {}
 
-        Message::Message(const Message &obj) : m_fields(obj.m_fields) {}
+        Message::Message(const Message &obj) : 
+            Visitable(obj),
+            m_fields(obj.m_fields) {}
 
         Message::~Message() {}
 

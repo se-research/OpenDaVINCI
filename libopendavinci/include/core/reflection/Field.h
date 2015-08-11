@@ -50,7 +50,9 @@ namespace core {
                  *
                  * @param obj Reference to an object of this class.
                  */
-                Field(const Field<T> &obj) : m_value(obj.m_value) {}
+                Field(const Field<T> &obj) : 
+                    coredata::reflection::AbstractField(obj),
+                    m_value(obj.m_value) {}
 
                 virtual ~Field() {}
 
