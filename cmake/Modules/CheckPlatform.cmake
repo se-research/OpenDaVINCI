@@ -42,26 +42,26 @@ FIND_PACKAGE (LibRT)
 
 ###########################################################################
 # Find and configure OpenCV.
-SET(OpenCV_DIR "/usr")
-FIND_PACKAGE (OpenCV)
+#SET(OpenCV_DIR "/usr")
+#FIND_PACKAGE (OpenCV)
 
 ###########################################################################
 # Find Boost (required for libodsimulation).
-FIND_PACKAGE (Boost)
+#FIND_PACKAGE (Boost)
 
 ###########################################################################
 # Find OpenGL (required for libodsimulation).
-FIND_PACKAGE (OpenGL)
+#FIND_PACKAGE (OpenGL)
 
 ###########################################################################
 # Find GLUT (required for libodsimulation).
-FIND_PACKAGE (GLUT)
+#FIND_PACKAGE (GLUT)
 
 ###########################################################################
 # Find Qt (required for odcockpit).
-FIND_PACKAGE (Qt)
+#FIND_PACKAGE (Qt)
 
 ###########################################################################
 # Find Qwt5Qt4 (required for odcockpit).
-FIND_PACKAGE (Qwt5Qt4)
+#FIND_PACKAGE (Qwt5Qt4)
 

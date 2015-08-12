@@ -62,19 +62,19 @@ MESSAGE(STATUS "Using ${ODDATASTRUCTUREGENERATOR_EXECUTABLE} to generate code fr
 # Next, if we get here, we have all the requirements to to model and generate code from data structures.
 IF(     NOT("${CMAKE_C_COMPILER}" STREQUAL "")
     AND NOT("${CMAKE_CXX_COMPILER}" STREQUAL "") )
-    MESSAGE(STATUS "Found C and C++ compiler:                                      Building opendavinci-lib")
+    MESSAGE(STATUS "Found C and C++ compiler:                       Building opendavinci-lib")
     SET(BUILD_OPENDAVINCI 1)
 
-    MESSAGE(STATUS "Found C++ compiler:                                            Building opendavinci-odsupercomponent")
+    MESSAGE(STATUS "Found C++ compiler:                             Building opendavinci-odsupercomponent")
     SET(BUILD_ODSUPERCOMPONENT 1)
 
-    MESSAGE(STATUS "Found C++ compiler:                                            Building opendavinci-odtools")
+    MESSAGE(STATUS "Found C++ compiler:                             Building opendavinci-odtools")
     SET(BUILD_ODTOOLS 1)
 
-    MESSAGE(STATUS "Found C++ compiler:                                            Building opendavinci-automotivedata")
+    MESSAGE(STATUS "Found C++ compiler:                             Building opendavinci-automotivedata")
     SET(BUILD_AUTOMOTIVEDATA 1)
 
-    MESSAGE(STATUS "Found C++ compiler:                                            Building opendavinci-tutorials")
+    MESSAGE(STATUS "Found C++ compiler:                             Building opendavinci-tutorials")
     SET(BUILD_TUTORIALS 1)
 ENDIF()
 
@@ -90,7 +90,7 @@ ELSE()
     SET(MAKE_PACKAGE install)
 ENDIF()
 
-MESSAGE(STATUS "Installing artifacts to:                                       ${INSTALL_DIR}")
+MESSAGE(STATUS "Installing artifacts to:                             ${INSTALL_DIR}")
 MESSAGE("")
 
 ###########################################################################
