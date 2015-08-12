@@ -36,7 +36,7 @@ ENDIF()
 FIND_FILE(ANT_EXECUTABLE NAMES ant)
 MARK_AS_ADVANCED(ANT_EXECUTABLE)
 
-IF(NOT ANT_EXECUTABLE)
+IF("${ANT_EXECUTABLE}" STREQUAL "ANT_EXECUTABLE-NOTFOUND")
     MESSAGE(WARNING "Could not find ant executable that is required to build odDataStructureGenerator from sources.")
 ELSE()
     MESSAGE(STATUS "Found ant executable: ${ANT_EXECUTABLE}")

@@ -38,7 +38,7 @@ MESSAGE("")
 MESSAGE("Platform configuration for building the complete source tree:")
 
 # First, display everything that is required to model and generate code from data structures.
-IF(NOT ANT_EXECUTABLE)
+IF("${ANT_EXECUTABLE}" STREQUAL "ANT_EXECUTABLE-NOTFOUND")
     # As we could not find ant, we cannot build odDataStructureGenerator-latest.jar from sources.
     SET(BUILD_ODDATASTRUCTUREGENERATOR 0)
     IF(${HAVE_JAVA})
@@ -80,8 +80,8 @@ ENDIF()
 
 # If dpkg and rpmbuild are available, .deb and .rpm packages will be
 # created. Otherwise, the software is simply installed.
-IF(     NOT("${DPKG_EXECUTABLE}" STREQUAL "")
-    AND NOT("${RPMBUILD_EXECUTABLE}" STREQUAL "") )
+IF(     NOT("${DPKG_EXECUTABLE}" STREQUAL "DPKG_EXECUTABLE-NOTFOUND")
+    AND NOT("${RPMBUILD_EXECUTABLE}" STREQUAL "RPMBUILD_EXECUTABLE-NOTFOUND") )
     MESSAGE(STATUS "Enabling building .deb and .rpm packages.")
     SET(MAKE_PACKAGE package)
 ELSE()
