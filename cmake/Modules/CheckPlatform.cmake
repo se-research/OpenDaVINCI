@@ -32,6 +32,10 @@ INCLUDE (CheckCxxTestEnvironment)
 INCLUDE (CheckJavaBuildEnvironment)
 
 ###########################################################################
+# Check for the possibility to build .deb and .rpm packages.
+INCLUDE (CheckBuildPackages)
+
+###########################################################################
 # Check for a working threading and potential realtime library environment.
 FIND_PACKAGE (Threads REQUIRED)
 FIND_PACKAGE (LibRT)
