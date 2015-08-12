@@ -90,7 +90,7 @@ ELSE()
     SET(MAKE_PACKAGE install)
 ENDIF()
 
-MESSAGE(STATUS "Installing artifacts to:                             ${INSTALL_DIR}")
+MESSAGE(STATUS "Installing artifacts to:                        ${INSTALL_DIR}")
 MESSAGE("")
 
 ###########################################################################
