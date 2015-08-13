@@ -8,6 +8,8 @@ You will find its full documentation and getting started guides here: http://ope
 
 You will find different projects that are using OpenDaVINCI here: http://opendavinci.cse.chalmers.se/www/index.html
 
+<a href="https://twitter.com/OpenDaVINCI" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @OpenDaVINCI on Twitter</a>
+
 **Overview build status:**
 
 *Documentation:* [![Documentation Status](https://readthedocs.org/projects/opendavinci/badge/?version=latest)](http://opendavinci.readthedocs.org/en/latest/)
