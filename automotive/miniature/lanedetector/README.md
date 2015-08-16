@@ -39,7 +39,7 @@ Install the OpenDaVINCI library:
 
 Install the automotive data structures:
 
-    $ sudo apt-get install opendavinci-odautomotivedata
+    $ sudo apt-get install libautomotivedata
 
 
 
