@@ -62,6 +62,8 @@ MESSAGE(STATUS "Using ${ODDATASTRUCTUREGENERATOR_EXECUTABLE} to generate code fr
 # Next, if we get here, we have all the requirements to to model and generate code from data structures.
 IF(     NOT("${CMAKE_C_COMPILER}" STREQUAL "")
     AND NOT("${CMAKE_CXX_COMPILER}" STREQUAL "") )
+    SET(BUILD_LIBODSIMULATION 0)
+
     MESSAGE(STATUS "Found C and C++ compiler:                       Building opendavinci-lib")
     SET(BUILD_OPENDAVINCI 1)
 
@@ -76,6 +78,15 @@ IF(     NOT("${CMAKE_C_COMPILER}" STREQUAL "")
 
     MESSAGE(STATUS "Found C++ compiler:                             Building opendavinci-tutorials")
     SET(BUILD_TUTORIALS 1)
+
+    IF (OpenCV_FOUND)
+        IF (    OPENGL_FOUND
+            AND GLUT_FOUND
+            AND Boost_FOUND)
+            MESSAGE(STATUS "Found C++ compiler, OpenCV, OpenGL, GLUT, and Boost: Building libodsimulation")
+            SET(BUILD_LIBODSIMULATION 1)
+        ENDIF()
+    ENDIF()
 ENDIF()
 
 # If dpkg and rpmbuild are available, .deb and .rpm packages will be
@@ -190,6 +201,18 @@ IF("${CMAKE_TOOLCHAIN_FILE}" STREQUAL "")
             TEST_BEFORE_INSTALL 1
             INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libautomotivedata-prefix/src/libautomotivedata-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libautomotivedata-prefix/src/libautomotivedata-build --target ${MAKE_PACKAGE})
     ENDIF()
+
+    # Next, build libodsimulation.
+    IF(${BUILD_LIBODSIMULATION})
+        ExternalProject_Add (libodsimulation
+            DEPENDS libautomotivedata
+            DOWNLOAD_COMMAND ""
+            UPDATE_COMMAND ""
+            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libodsimulation"
+            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
+            TEST_BEFORE_INSTALL 1
+            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodsimulation-prefix/src/libodsimulation-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodsimulation-prefix/src/libodsimulation-build --target ${MAKE_PACKAGE})
+    ENDIF()
 ENDIF()
 
 ###########################################################################
@@ -284,6 +307,19 @@ IF(    NOT("${CMAKE_TOOLCHAIN_FILE}" STREQUAL "")
             TEST_BEFORE_INSTALL 1
             INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libautomotivedata-prefix/src/libautomotivedata-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libautomotivedata-prefix/src/libautomotivedata-build --target ${MAKE_PACKAGE})
     ENDIF()
+
+    # Next, build libodsimulation.
+    IF(${BUILD_LIBODSIMULATION})
+        ExternalProject_Add (libodsimulation
+            DEPENDS libautomotivedata
+            DOWNLOAD_COMMAND ""
+            UPDATE_COMMAND ""
+            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libodsimulation"
+            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
+            CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
+            TEST_BEFORE_INSTALL 1
+            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodsimulation-prefix/src/libodsimulation-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodsimulation-prefix/src/libodsimulation-build --target ${MAKE_PACKAGE})
+    ENDIF()
 ENDIF()
 
 ###########################################################################
@@ -377,5 +413,18 @@ IF(    NOT("${CMAKE_TOOLCHAIN_FILE}" STREQUAL "")
             CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
             TEST_COMMAND ""
             INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libautomotivedata-prefix/src/libautomotivedata-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libautomotivedata-prefix/src/libautomotivedata-build --target ${MAKE_PACKAGE})
+    ENDIF()
+
+    # Next, build libodsimulation.
+    IF(${BUILD_LIBODSIMULATION})
+        ExternalProject_Add (libodsimulation
+            DEPENDS libautomotivedata
+            DOWNLOAD_COMMAND ""
+            UPDATE_COMMAND ""
+            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libodsimulation"
+            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
+            CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
+            TEST_COMMAND ""
+            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodsimulation-prefix/src/libodsimulation-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodsimulation-prefix/src/libodsimulation-build --target ${MAKE_PACKAGE})
     ENDIF()
 ENDIF()
