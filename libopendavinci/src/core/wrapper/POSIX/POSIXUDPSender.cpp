@@ -36,7 +36,7 @@ namespace core {
                 m_socketMutex = auto_ptr<Mutex>(MutexFactory::createMutex());
                 if (m_socketMutex.get() == NULL) {
                     stringstream s;
-                    s << "[core::wrapper::POSIXUDPSender] Error creating mutex at " << __FILE__ << ": " << __LINE__;
+                    s << "[core::wrapper::POSIXUDPSender] Error creating mutex: " << strerror(errno);
                     throw s.str();
                 }
 
@@ -44,7 +44,7 @@ namespace core {
                 m_fd = socket(PF_INET, SOCK_DGRAM, 0);
                 if (m_fd < 0) {
                     stringstream s;
-                    s << "[core::wrapper::POSIXUDPSender] Error while creating socket at " << __FILE__ << ": " << __LINE__ << ": " << strerror(errno);
+                    s << "[core::wrapper::POSIXUDPSender] Error while creating socket: " << strerror(errno);
                     throw s.str();
                 }
 
@@ -66,7 +66,7 @@ namespace core {
             void POSIXUDPSender::send(const string &data) const {
                 if (data.length() > POSIXUDPSender::MAX_UDP_PACKET_SIZE) {
                     stringstream s;
-                    s << "[core::wrapper::POSIXUDPSender] Data to be sent is too large (" << data.length() << " > " << POSIXUDPSender::MAX_UDP_PACKET_SIZE << ") at " << __FILE__ << ": " << __LINE__;
+                    s << "[core::wrapper::POSIXUDPSender] Data to be sent is too large (" << data.length() << " > " << POSIXUDPSender::MAX_UDP_PACKET_SIZE << ").";
                     throw s.str();
                 }
 

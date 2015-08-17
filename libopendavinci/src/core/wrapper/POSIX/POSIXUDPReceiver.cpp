@@ -40,7 +40,7 @@ namespace core {
                 m_buffer = new char[BUFFER_SIZE];
                 if (m_buffer == NULL) {
                     stringstream s;
-                    s << "[POSIXUDPReceiver] Error while allocating memory for buffer at " << __FILE__ << ": " << __LINE__ << ": " << strerror(errno);
+                    s << "[POSIXUDPReceiver] Error while allocating memory for buffer: " << strerror(errno);
                     throw s.str();
                 }
 
@@ -48,7 +48,7 @@ namespace core {
                 m_fd = socket(PF_INET, SOCK_DGRAM, 0);
                 if (m_fd < 0) {
                     stringstream s;
-                    s << "[POSIXUDPReceiver] Error while creating socket at " << __FILE__ << ": " << __LINE__ << ": " << strerror(errno);
+                    s << "[POSIXUDPReceiver] Error while creating socket: " << strerror(errno);
                     throw s.str();
                 }
 
@@ -56,7 +56,7 @@ namespace core {
                 uint32_t yes = 1;
                 if (setsockopt(m_fd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) < 0) {
                     stringstream s;
-                    s << "[POSIXUDPReceiver] Error while setting socket options at " << __FILE__ << ": " << __LINE__ << ": " << strerror(errno);
+                    s << "[POSIXUDPReceiver] Error while setting socket options: " << strerror(errno);
                     throw s.str();
                 }
 
@@ -70,7 +70,7 @@ namespace core {
                 // Bind to receive address/port.
                 if (bind(m_fd, reinterpret_cast<struct sockaddr *>(&m_address), sizeof(m_address)) < 0) {
                     stringstream s;
-                    s << "[POSIXUDPReceiver] Error while binding socket at " << __FILE__ << ": " << __LINE__ << ": " << strerror(errno);
+                    s << "[POSIXUDPReceiver] Error while binding socket: " << strerror(errno);
                     throw s.str();
                 }
 
@@ -80,7 +80,7 @@ namespace core {
                     m_mreq.imr_interface.s_addr = htonl(INADDR_ANY);
                     if (setsockopt(m_fd, IPPROTO_IP, IP_ADD_MEMBERSHIP, &m_mreq, sizeof(m_mreq)) < 0) {
                         stringstream s;
-                        s << "[POSIXUDPReceiver] Error while joining multicast group at " << __FILE__ << ": " << __LINE__ << ": " << strerror(errno);
+                        s << "[POSIXUDPReceiver] Error while joining multicast group: " << strerror(errno);
                         throw s.str();
                     }
                 }
@@ -89,7 +89,7 @@ namespace core {
                 m_thread = auto_ptr<Thread>(ConcurrencyFactory::createThread(*this));
                 if (m_thread.get() == NULL) {
                     stringstream s;
-                    s << "[POSIXUDPReceiver] Error creating thread at " << __FILE__ << ": " << __LINE__;
+                    s << "[POSIXUDPReceiver] Error creating thread: " << strerror(errno);
                     throw s.str();
                 }
             }

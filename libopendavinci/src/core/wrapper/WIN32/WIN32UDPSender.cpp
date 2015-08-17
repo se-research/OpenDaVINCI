@@ -33,7 +33,7 @@ namespace core {
                 m_socketMutex = auto_ptr<Mutex>(MutexFactory::createMutex());
                 if (m_socketMutex.get() == NULL) {
                     stringstream s;
-                    s << "[core::wrapper::WIN32UDPSender] Error while creating mutex at " << __FILE__ << ": " << __LINE__;
+                    s << "[core::wrapper::WIN32UDPSender] Error while creating mutex.";
                     throw s.str();
                 }
 
@@ -42,7 +42,7 @@ namespace core {
 				if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
 					stringstream s;
 					const int retcode = WSAGetLastError();
-					s << "[core::wrapper::WIN32UDPSender] Error while calling WSAStartUp at " << __FILE__ << ": " << __LINE__ << ": " << retcode;
+					s << "[core::wrapper::WIN32UDPSender] Error while calling WSAStartUp: " << retcode;
 					throw s.str();
 				}
 
@@ -51,7 +51,7 @@ namespace core {
                 if (m_fd < 0) {
                     stringstream s;
 					const int retcode = WSAGetLastError();
-					s << "[core::wrapper::WIN32UDPSender] Error while creating file descriptor at " << __FILE__ << ": " << __LINE__ << ": " << retcode;
+					s << "[core::wrapper::WIN32UDPSender] Error while creating file descriptor: " << retcode;
 
 					// Decrement Winsock 2.2 DLL access counter.
 					WSACleanup();
@@ -80,7 +80,7 @@ namespace core {
             void WIN32UDPSender::send(const string &data) const {
                 if (data.length() > WIN32UDPSender::MAX_UDP_PACKET_SIZE) {
                     stringstream s;
-                    s << "[core::wrapper::WIN32UDPSender] Data to be sent is too large at " << __FILE__ << ": " << __LINE__;
+                    s << "[core::wrapper::WIN32UDPSender] Data to be sent is too large.";
                     throw s.str();
                 }
 

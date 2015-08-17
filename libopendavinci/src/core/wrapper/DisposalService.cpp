@@ -43,28 +43,28 @@ namespace core {
             m_queueCondition = ConditionFactory::createCondition();
             if (!m_queueCondition.isValid()) {
                 stringstream s;
-                s << "[core::wrapper::DisposalServer] Error while creating condition at " << __FILE__ << ": " << __LINE__;
+                s << "[core::wrapper::DisposalServer] Error while creating condition.";
                 throw s.str();
             }
 
             m_finalRemovalMutex = auto_ptr<Mutex>(MutexFactory::createMutex());
             if (m_finalRemovalMutex.get() == NULL) {
                 stringstream s;
-                s << "[core::wrapper::DisposalServer] Error while creating mutex at " << __FILE__ << ": " << __LINE__;
+                s << "[core::wrapper::DisposalServer] Error while creating mutex.";
                 throw s.str();
             }
 
             m_queueMutex = auto_ptr<Mutex>(MutexFactory::createMutex());
             if (m_queueMutex.get() == NULL) {
                 stringstream s;
-                s << "[core::wrapper::DisposalServer] Error while creating mutex at " << __FILE__ << ": " << __LINE__;
+                s << "[core::wrapper::DisposalServer] Error while creating mutex.";
                 throw s.str();
             }
 
             m_queueCleaner = new DisposalService::QueueCleaner(m_queueCondition, *m_finalRemovalMutex, *m_queueMutex, m_queueForRegularRemoval);
             if (m_queueCleaner == NULL) {
                 stringstream s;
-                s << "[core::wrapper::DisposalServer] Error while creating queue cleaner at " << __FILE__ << ": " << __LINE__;
+                s << "[core::wrapper::DisposalServer] Error while creating queue cleaner.";
                 throw s.str();
             }
 
@@ -74,7 +74,7 @@ namespace core {
             m_thread = auto_ptr<Thread>(ConcurrencyFactory::createThread(*m_queueCleaner));
             if (m_thread.get() == NULL) {
                 stringstream s;
-                s << "[core::wrapper::DisposalServer] Error while creating thread at " << __FILE__ << ": " << __LINE__;
+                s << "[core::wrapper::DisposalServer] Error while creating thread.";
                 throw s.str();
             }
 
@@ -188,7 +188,7 @@ namespace core {
             m_threadStateMutex = auto_ptr<Mutex>(MutexFactory::createMutex());
             if (m_threadStateMutex.get() == NULL) {
                 stringstream s;
-                s << "[core::wrapper::DisposalServer] Error while creating mutex at " << __FILE__ << ": " << __LINE__;
+                s << "[core::wrapper::DisposalServer] Error while creating mutex.";
                 throw s.str();
             }
         }

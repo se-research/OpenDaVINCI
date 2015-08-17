@@ -37,10 +37,10 @@ namespace core {
                 try {
                     runnable->run();
                 } catch (string &s) {
-                    CLOG3 << "[core::wrapper::POSIXThread] Exception caught at " << __FILE__ << ":" << __LINE__ << ": " << s << endl;
+                    CLOG3 << "[core::wrapper::POSIXThread] Exception caught: " << s << endl;
                     throw;
                 } catch (...) {
-                    CLOG3 << "[core::wrapper::POSIXThread] Unknown exception caught at " << __FILE__ << ":" << __LINE__ << "." << endl;
+                    CLOG3 << "[core::wrapper::POSIXThread] Unknown exception caught." << endl;
                     throw;
                 }
 
@@ -58,7 +58,7 @@ namespace core {
                 m_threadStateMutex = auto_ptr<Mutex>(MutexFactory::createMutex());
                 if (m_threadStateMutex.get() == NULL) {
                     stringstream s;
-                    s << "[core::wrapper::POSIXThread] Error creating mutex at " << __FILE__ << ": " << __LINE__;
+                    s << "[core::wrapper::POSIXThread] Error creating mutex: " << strerror(errno);
                     throw s.str();
                 }
             }

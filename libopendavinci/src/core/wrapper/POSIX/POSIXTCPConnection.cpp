@@ -63,7 +63,7 @@ namespace core {
                     freeaddrinfo(res);
 
                     stringstream s;
-                    s << "[core::wrapper::POSIXTCPConnection] Error while getting info at " << __FILE__ << ": " << __LINE__ << ": " << strerror(errno);
+                    s << "[core::wrapper::POSIXTCPConnection] Error while getting info: " << strerror(errno);
                     throw s.str();
                 }
 
@@ -72,7 +72,7 @@ namespace core {
                     freeaddrinfo(res);
 
                     stringstream s;
-                    s << "[core::wrapper::POSIXTCPConnection] Error while creating socket at " << __FILE__ << ": " << __LINE__ << ": " << strerror(errno);
+                    s << "[core::wrapper::POSIXTCPConnection] Error while creating socket: " << strerror(errno);
                     throw s.str();
                 }
 
@@ -80,7 +80,7 @@ namespace core {
                     freeaddrinfo(res);
 
                     stringstream s;
-                    s << "[core::wrapper::POSIXTCPConnection] Error connecting to socket at " << __FILE__ << ": " << __LINE__ << ": " << strerror(errno);
+                    s << "[core::wrapper::POSIXTCPConnection] Error connecting to socket: " << strerror(errno);
                     throw s.str();
                 }
 
@@ -153,14 +153,14 @@ namespace core {
                 m_thread = auto_ptr<Thread>(ConcurrencyFactory::createThread(*this));
                 if (m_thread.get() == NULL) {
                     stringstream s;
-                    s << "[core::wrapper::POSIXTCPConnection] Error creating thread at " << __FILE__ << ": " << __LINE__;
+                    s << "[core::wrapper::POSIXTCPConnection] Error creating thread: " << strerror(errno);
                     throw s.str();
                 }
 
                 m_socketMutex = auto_ptr<Mutex>(MutexFactory::createMutex());
                 if (m_socketMutex.get() == NULL) {
                     stringstream s;
-                    s << "[core::wrapper::POSIXTCPConnection] Error creating mutex at " << __FILE__ << ": " << __LINE__;
+                    s << "[core::wrapper::POSIXTCPConnection] Error creating mutex: " << strerror(errno);
                     throw s.str();
                 }
             }

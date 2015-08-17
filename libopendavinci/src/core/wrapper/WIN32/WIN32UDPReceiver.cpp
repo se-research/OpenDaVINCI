@@ -38,7 +38,7 @@ namespace core {
                 m_buffer = new char[BUFFER_SIZE];
                 if (m_buffer == NULL) {
                     stringstream s;
-                    s << "[core::wrapper::WIN32UDPReceiver] Error while allocating memory for buffer at " << __FILE__ << ": " << __LINE__;
+                    s << "[core::wrapper::WIN32UDPReceiver] Error while allocating memory for buffer.";
                     throw s.str();
                 }
 
@@ -47,7 +47,7 @@ namespace core {
 				if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
 					stringstream s;
 					const int retcode = WSAGetLastError();
-					s << "[core::wrapper::WIN32UDPReceiver] Error while calling WSAStartUp at " << __FILE__ << ": " << __LINE__ << ": " << retcode;
+					s << "[core::wrapper::WIN32UDPReceiver] Error while calling WSAStartUp: " << retcode;
 					throw s.str();
 				}
 				
@@ -56,7 +56,7 @@ namespace core {
                 if (m_fd < 0) {
 					stringstream s;
 					const int retcode = WSAGetLastError();
-					s << "[core::wrapper::WIN32UDPReceiver] Error while creating file descriptor at " << __FILE__ << ": " << __LINE__ << ": " << retcode;
+					s << "[core::wrapper::WIN32UDPReceiver] Error while creating file descriptor: " << retcode;
 
 					// Decrement Winsock 2.2 DLL access counter.
 					WSACleanup();
@@ -69,7 +69,7 @@ namespace core {
                 if (::setsockopt(m_fd, SOL_SOCKET, SO_REUSEADDR, (char*)&yes, sizeof(yes)) < 0) {
 					stringstream s;
 					const int retcode = WSAGetLastError();
-					s << "[core::wrapper::WIN32UDPReceiver] Error while setting socket options at " << __FILE__ << ": " << __LINE__ << ": " << retcode;
+					s << "[core::wrapper::WIN32UDPReceiver] Error while setting socket options: " << retcode;
 
 					// Decrement Winsock 2.2 DLL access counter.
 					WSACleanup();
@@ -88,7 +88,7 @@ namespace core {
                 if (::bind(m_fd, (struct sockaddr *) &m_address, sizeof(m_address)) < 0) {
 					stringstream s;
 					const int retcode = WSAGetLastError();
-					s << "[core::wrapper::WIN32UDPReceiver] Error while binding at " << __FILE__ << ": " << __LINE__ << ": " << retcode;
+					s << "[core::wrapper::WIN32UDPReceiver] Error while binding: " << retcode;
 
 					// Decrement Winsock 2.2 DLL access counter.
 					WSACleanup();
@@ -103,7 +103,7 @@ namespace core {
                     if (::setsockopt(m_fd, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char*)&m_mreq, sizeof(m_mreq)) < 0) {
 						stringstream s;
 						const int retcode = WSAGetLastError();
-						s << "[core::wrapper::WIN32UDPReceiver] Error while joining multicast group at " << __FILE__ << ": " << __LINE__ << ": " << retcode;
+						s << "[core::wrapper::WIN32UDPReceiver] Error while joining multicast group: " << retcode;
 
 						// Decrement Winsock 2.2 DLL access counter.
 						WSACleanup();
@@ -116,7 +116,7 @@ namespace core {
                 m_thread = auto_ptr<Thread>(ConcurrencyFactory::createThread(*this));
                 if (m_thread.get() == NULL) {
                     stringstream s;
-                    s << "[core::wrapper::WIN32UDPReceiver] Error while creating thread at " << __FILE__ << ": " << __LINE__;
+                    s << "[core::wrapper::WIN32UDPReceiver] Error while creating thread.";
 
 					// Decrement Winsock 2.2 DLL access counter.
 					WSACleanup();
@@ -150,7 +150,7 @@ namespace core {
 				srcaddr.sin_family = af;
 				if (WSAAddressToString((struct sockaddr*) &srcaddr, sizeof(struct sockaddr_in), 0, dst, (LPDWORD)&cnt) != 0) {
 					const int retcode = WSAGetLastError();
-					CLOG3 << "[core::wrapper::WIN32UDPReceiver] Error while calling WSAAddressToString at " << __FILE__ << ": " << __LINE__ << ": " << retcode;
+					CLOG3 << "[core::wrapper::WIN32UDPReceiver] Error while calling WSAAddressToString: " << retcode;
 					return NULL;
 				}
 				return dst;

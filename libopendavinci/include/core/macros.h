@@ -24,7 +24,7 @@
 #define OPENDAVINCI_CORE_DECLARE_EXCEPTION(ExceptionName) class OPENDAVINCI_API ExceptionName : public Exceptions { public: ExceptionName(const string &exceptionMessage, const string &fileName, const uint32_t &lineNumber) : Exceptions(exceptionMessage, fileName, lineNumber) {}; const string getExceptionName() const { return "" #ExceptionName ""; } };
 
 /* This macro eases the usage of exceptions. */
-#define OPENDAVINCI_CORE_THROW_EXCEPTION(ExceptionClass, ExceptionMessage) do { throw core::exceptions::ExceptionClass(ExceptionMessage, __FILE__, __LINE__); } while (false)
+#define OPENDAVINCI_CORE_THROW_EXCEPTION(ExceptionClass, ExceptionMessage) do { throw core::exceptions::ExceptionClass(ExceptionMessage, "", 0); } while (false)
 
 /* This macro eases the usage of freeing a pointer. */
 #define OPENDAVINCI_CORE_FREE_POINTER(ptr) do { if (ptr != NULL) { free(ptr); }; ptr = NULL; } while (false)

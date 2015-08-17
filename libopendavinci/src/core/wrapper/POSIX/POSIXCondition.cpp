@@ -34,7 +34,7 @@ namespace core {
                 // Initialize condition based on pthread.
                 if (pthread_cond_init(&m_condition, NULL) != 0) {
                     stringstream s;
-                    s << "[core::wrapper::POSIXCondition] Error while creating condition at " << __FILE__ << ": " << __LINE__ << ": " << strerror(errno);
+                    s << "[core::wrapper::POSIXCondition] Error while creating condition: " << strerror(errno);
                     throw s.str();
                 }
             }
@@ -94,4 +94,4 @@ namespace core {
 
         }
     }
-} // core::wrapper::Boost
+} // core::wrapper::POSIX

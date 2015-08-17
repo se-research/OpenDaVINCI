@@ -49,7 +49,7 @@ namespace core {
 				if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
 					stringstream s;
 					const int retcode = WSAGetLastError();
-					s << "[core::wrapper::WIN32TCPAcceptor] Error while calling WSAStartUp at " << __FILE__ << ": " << __LINE__ << ": " << retcode;
+					s << "[core::wrapper::WIN32TCPAcceptor] Error while calling WSAStartUp: " << retcode;
 					throw s.str();
 				}
 				
@@ -58,7 +58,7 @@ namespace core {
                 if (m_fileDescriptor < 0) {
 					stringstream s;
 					const int retcode = WSAGetLastError();
-					s << "[core::wrapper::WIN32TCPAcceptor] Error while creating file descriptor at " << __FILE__ << ": " << __LINE__ << ": " << retcode;
+					s << "[core::wrapper::WIN32TCPAcceptor] Error while creating file descriptor: " << retcode;
 
 					// Decrement Winsock 2.2 DLL access counter.
 					WSACleanup();
@@ -76,7 +76,7 @@ namespace core {
                 if (retval < 0) {
 					stringstream s;
 					const int retcode = WSAGetLastError();
-					s << "[core::wrapper::WIN32TCPAcceptor] Error while setting socket options at " << __FILE__ << ": " << __LINE__ << ": " << retcode;
+					s << "[core::wrapper::WIN32TCPAcceptor] Error while setting socket options: " << retcode;
 
 					// Decrement Winsock 2.2 DLL access counter.
 					WSACleanup();
@@ -95,7 +95,7 @@ namespace core {
                 if (::bind(m_fileDescriptor, (struct sockaddr *) &address, sizeof(address)) == -1) {
 					stringstream s;
 					const int retcode = WSAGetLastError();
-					s << "[core::wrapper::WIN32TCPAcceptor] Error while binding at " << __FILE__ << ": " << __LINE__ << ": " << retcode;
+					s << "[core::wrapper::WIN32TCPAcceptor] Error while binding: " << retcode;
 
 					// Decrement Winsock 2.2 DLL access counter.
 					WSACleanup();
@@ -106,7 +106,7 @@ namespace core {
                 if (::listen(m_fileDescriptor, WIN32TCPAcceptor::BACKLOG) == -1) {
 					stringstream s;
 					const int retcode = WSAGetLastError();
-					s << "[core::wrapper::WIN32TCPAcceptor] Error while listening at " << __FILE__ << ": " << __LINE__ << ": " << retcode;
+					s << "[core::wrapper::WIN32TCPAcceptor] Error while listening: " << retcode;
 
 					// Decrement Winsock 2.2 DLL access counter.
 					WSACleanup();

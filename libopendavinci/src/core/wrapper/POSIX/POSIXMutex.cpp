@@ -32,7 +32,7 @@ namespace core {
                 // Initialize mutex based on pthread.
                 if (pthread_mutex_init(&m_mutex, NULL) != 0) {
                     stringstream s;
-                    s << "[core::wrapper::POSIXMutex] Error while creating mutex at " << __FILE__ << ": " << __LINE__ << ": " << strerror(errno);
+                    s << "[core::wrapper::POSIXMutex] Error while creating mutex: " << strerror(errno);
                     throw s.str();
                 }
             }

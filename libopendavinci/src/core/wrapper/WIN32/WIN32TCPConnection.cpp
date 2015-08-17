@@ -51,7 +51,7 @@ namespace core {
 				if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
 					stringstream s;
 					const int retcode = WSAGetLastError();
-					s << "[core::wrapper::WIN32TCPConnection] Error while calling WSAStartUp at " << __FILE__ << ": " << __LINE__ << ": " << retcode;
+					s << "[core::wrapper::WIN32TCPConnection] Error while calling WSAStartUp: " << retcode;
 					throw s.str();
 				}
 				
@@ -69,7 +69,7 @@ namespace core {
                     ::freeaddrinfo(res);
 					stringstream s;
 					const int retcode = WSAGetLastError();
-					s << "[core::wrapper::WIN32TCPConnection] Error while getting info at " << __FILE__ << ": " << __LINE__ << ": " << retcode;
+					s << "[core::wrapper::WIN32TCPConnection] Error while getting info: " << retcode;
 
 					// Decrement Winsock 2.2 DLL access counter.
 					WSACleanup();
@@ -82,7 +82,7 @@ namespace core {
                     ::freeaddrinfo(res);
 					stringstream s;
 					const int retcode = WSAGetLastError();
-					s << "[core::wrapper::WIN32TCPConnection] Error creating socket at " << __FILE__ << ": " << __LINE__ << ": " << retcode;
+					s << "[core::wrapper::WIN32TCPConnection] Error creating socket: " << retcode;
 
 					// Decrement Winsock 2.2 DLL access counter.
 					WSACleanup();
@@ -94,7 +94,7 @@ namespace core {
                     ::freeaddrinfo(res);
 					stringstream s;
 					const int retcode = WSAGetLastError();
-					s << "[core::wrapper::WIN32TCPConnection] Error connecting to socket at " << __FILE__ << ": " << __LINE__ << ": " << retcode;
+					s << "[core::wrapper::WIN32TCPConnection] Error connecting to socket: " << retcode;
 
 					// Decrement Winsock 2.2 DLL access counter.
 					WSACleanup();

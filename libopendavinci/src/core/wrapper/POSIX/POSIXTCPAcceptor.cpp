@@ -40,14 +40,14 @@ namespace core {
                 m_thread = auto_ptr<Thread>(ConcurrencyFactory::createThread(*this));
                 if (m_thread.get() == NULL) {
                     stringstream s;
-                    s << "[core::wrapper::POSIXTCPAcceptor] Error creating thread at " << __FILE__ << ": " << __LINE__;
+                    s << "[core::wrapper::POSIXTCPAcceptor] Error creating thread: " << strerror(errno);
                     throw s.str();
                 }
 
                 m_listenerMutex = auto_ptr<Mutex>(MutexFactory::createMutex());
                 if (m_listenerMutex.get() == NULL) {
                     stringstream s;
-                    s << "[POSIXTCPConnection] Error creating mutex at " << __FILE__ << ": " << __LINE__;
+                    s << "[POSIXTCPConnection] Error creating mutex: " << strerror(errno);
                     throw s.str();
                 }
 
@@ -55,7 +55,7 @@ namespace core {
                 m_fileDescriptor = socket(AF_INET, SOCK_STREAM, 0);
                 if (m_fileDescriptor < 0) {
                     stringstream s;
-                    s << "[core::wrapper::POSIXTCPAcceptor] Error while creating socket at " << __FILE__ << ": " << __LINE__ << ": " << strerror(errno);
+                    s << "[core::wrapper::POSIXTCPAcceptor] Error while creating socket: " << strerror(errno);
                     throw s.str();
                 }
 
@@ -68,7 +68,7 @@ namespace core {
                                             sizeof(yes));
                 if (retval < 0) {
                     stringstream s;
-                    s << "[core::wrapper::POSIXTCPAcceptor] Error while setting socket options at " << __FILE__ << ": " << __LINE__ << ": " << strerror(errno);
+                    s << "[core::wrapper::POSIXTCPAcceptor] Error while setting socket options: " << strerror(errno);
                     throw s.str();
                 }
 
@@ -82,13 +82,13 @@ namespace core {
                 // Bind handle.
                 if (bind(m_fileDescriptor, reinterpret_cast<struct sockaddr *>(&address), sizeof(address)) == -1) {
                     stringstream s;
-                    s << "[core::wrapper::POSIXTCPAcceptor] Error while binding socket at " << __FILE__ << ": " << __LINE__ << ": " << strerror(errno);
+                    s << "[core::wrapper::POSIXTCPAcceptor] Error while binding socket: " << strerror(errno);
                     throw s.str();
                 }
 
                 if (listen(m_fileDescriptor, POSIXTCPAcceptor::BACKLOG) == -1) {
                     stringstream s;
-                    s << "[core::wrapper::POSIXTCPAcceptor] Listen failed at " << __FILE__ << ": " << __LINE__ << ": " << strerror(errno);
+                    s << "[core::wrapper::POSIXTCPAcceptor] Listen failed: " << strerror(errno);
                     throw s.str();
                 }
             }
