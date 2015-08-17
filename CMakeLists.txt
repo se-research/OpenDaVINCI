@@ -64,19 +64,19 @@ IF(     NOT("${CMAKE_C_COMPILER}" STREQUAL "")
     AND NOT("${CMAKE_CXX_COMPILER}" STREQUAL "") )
     SET(BUILD_LIBODSIMULATION 0)
 
-    MESSAGE(STATUS "Found C and C++ compiler:                       Building opendavinci-lib")
+    MESSAGE(STATUS "Found C and C++ compiler:                            Building opendavinci-lib")
     SET(BUILD_OPENDAVINCI 1)
 
-    MESSAGE(STATUS "Found C++ compiler:                             Building opendavinci-odsupercomponent")
+    MESSAGE(STATUS "Found C++ compiler:                                  Building opendavinci-odsupercomponent")
     SET(BUILD_ODSUPERCOMPONENT 1)
 
-    MESSAGE(STATUS "Found C++ compiler:                             Building opendavinci-odtools")
+    MESSAGE(STATUS "Found C++ compiler:                                  Building opendavinci-odtools")
     SET(BUILD_ODTOOLS 1)
 
-    MESSAGE(STATUS "Found C++ compiler:                             Building opendavinci-automotivedata")
+    MESSAGE(STATUS "Found C++ compiler:                                  Building opendavinci-automotivedata")
     SET(BUILD_AUTOMOTIVEDATA 1)
 
-    MESSAGE(STATUS "Found C++ compiler:                             Building opendavinci-tutorials")
+    MESSAGE(STATUS "Found C++ compiler:                                  Building opendavinci-tutorials")
     SET(BUILD_TUTORIALS 1)
 
     IF (OpenCV_FOUND)
@@ -101,7 +101,7 @@ ELSE()
     SET(MAKE_PACKAGE install)
 ENDIF()
 
-MESSAGE(STATUS "Installing artifacts to:                        ${INSTALL_DIR}")
+MESSAGE(STATUS "Installing artifacts to:                             ${INSTALL_DIR}")
 MESSAGE("")
 
 ###########################################################################
