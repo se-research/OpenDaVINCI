@@ -136,7 +136,7 @@ namespace vehiclecontext {
         void CameraModel::setup() {
             CameraModel::m_singleton = this;
 
-            string argv0("camgen");
+            string argv0("odsimcamera");
             int32_t argc = 1;
             char **argv;
             argv = new char*[1];
@@ -165,7 +165,7 @@ namespace vehiclecontext {
             glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE| GLUT_RGB);
             glutInitWindowPosition(50, 50);
             glutInitWindowSize(640, 480);
-            m_renderWindow = glutCreateWindow("CameraModel");
+            m_renderWindow = glutCreateWindow("odsimcamera");
             glutDisplayFunc(display_func);
             glutIdleFunc(idle_func);
             glutReshapeFunc(resize_func);
@@ -191,7 +191,7 @@ namespace vehiclecontext {
                 m_sharedImage.setHeight(m_image->getHeight());
                 // TODO: Refactor me!
                 m_sharedImage.setBytesPerPixel(3);
-                m_sharedImage.setName("CamGen");
+                m_sharedImage.setName("odsimcamera");
             }
 
             if ((frameCounter % 20) == 0) {

@@ -106,21 +106,21 @@ namespace vehiclecontext {
 
         void SimplifiedBicycleModel::setup() {
             // Setup initial position.
-            m_oldPosition = Point3(m_kvc.getValue<double>("Vehicle.posX"), m_kvc.getValue<double>("Vehicle.posY"), 0);
-            m_heading = cartesian::Constants::DEG2RAD * m_kvc.getValue<double>("Vehicle.headingDEG");
+            m_oldPosition = Point3(m_kvc.getValue<double>("odsimvehicle.posX"), m_kvc.getValue<double>("odsimvehicle.posY"), 0);
+            m_heading = cartesian::Constants::DEG2RAD * m_kvc.getValue<double>("odsimvehicle.headingDEG");
 
             // Calculate maximum steering wheel angles to left and right.
-            m_wheelbase = m_kvc.getValue<double>("Vehicle.LinearBicycleModelNew.wheelbase");
-            m_maxSteeringLeftRad = atan(m_wheelbase/m_kvc.getValue<double>("Vehicle.LinearBicycleModelNew.minimumTurningRadiusLeft") );
-            m_maxSteeringRightRad = atan(m_wheelbase/m_kvc.getValue<double>("Vehicle.LinearBicycleModelNew.minimumTurningRadiusRight"));
+            m_wheelbase = m_kvc.getValue<double>("odsimvehicle.LinearBicycleModelNew.wheelbase");
+            m_maxSteeringLeftRad = atan(m_wheelbase/m_kvc.getValue<double>("odsimvehicle.LinearBicycleModelNew.minimumTurningRadiusLeft") );
+            m_maxSteeringRightRad = atan(m_wheelbase/m_kvc.getValue<double>("odsimvehicle.LinearBicycleModelNew.minimumTurningRadiusRight"));
 
-            m_invertedSteering = (m_kvc.getValue<int32_t>("Vehicle.LinearBicycleModelNew.invertedSteering") == 0) ? -1 : 1;
-            m_maxSpeed = fabs(m_kvc.getValue<double>("Vehicle.LinearBicycleModelNew.maxspeed"));
+            m_invertedSteering = (m_kvc.getValue<int32_t>("odsimvehicle.LinearBicycleModelNew.invertedSteering") == 0) ? -1 : 1;
+            m_maxSpeed = fabs(m_kvc.getValue<double>("odsimvehicle.LinearBicycleModelNew.maxspeed"));
 
-            m_useSpeedControl = (m_kvc.getValue<int32_t>("Vehicle.LinearBicycleModelNew.withSpeedController") == 1) ? true: false;
+            m_useSpeedControl = (m_kvc.getValue<int32_t>("odsimvehicle.LinearBicycleModelNew.withSpeedController") == 1) ? true: false;
 
             try {
-                m_faultModelNoise = m_kvc.getValue<double>("Vehicle.LinearBicycleModelNew.faultModel.noise");
+                m_faultModelNoise = m_kvc.getValue<double>("odsimvehicle.LinearBicycleModelNew.faultModel.noise");
             }
             catch (const core::exceptions::ValueForKeyNotFoundException &e) {
             }

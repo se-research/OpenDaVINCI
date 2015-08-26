@@ -76,7 +76,7 @@ namespace vehiclecontext {
                     m_root->addChild(new Grid(NodeDescriptor("Grid"), 10, 2));
                 }
 
-                m_sharedMemory = core::wrapper::SharedMemoryFactory::createSharedMemory("CamGen", 640 * 480 * 3);
+                m_sharedMemory = core::wrapper::SharedMemoryFactory::createSharedMemory("odsimcamera", 640 * 480 * 3);
 
                 m_image = core::SharedPointer<core::wrapper::Image>(core::wrapper::ImageFactory::getInstance().getImage(640, 480, core::wrapper::Image::BGR_24BIT, static_cast<char*>(m_sharedMemory->getSharedMemory())));
 

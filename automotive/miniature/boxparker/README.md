@@ -95,6 +95,10 @@ the directory "config". As the simulation environment is provided as a
 Docker image, this configuration needs to be prepared so that we can
 simply start the Docker image later.
 
+Move up to the /miniature directory:
+
+    $ cd ..
+
 Create a symbolic link in your $HOME folder:
 
     $ ln -sf $PWD/config $HOME/config
@@ -109,15 +113,15 @@ Start "odsupercomponent" for the software component lifecycle management (this s
 
     $ docker run --rm=true --net host -v /home/$USER/config:/opt/data -w "/opt/data" -t -i seresearch/odsimulation:latest odsupercomponent --cid=111 --verbose=1
 
-Next, start the vehicle dynamics simulation "vehicle":
+Next, open a new terminal tab and start the vehicle dynamics simulation "vehicle":
 
     $ docker run --rm=true --net host -v /home/$USER/config:/opt/data -w "/opt/data" -t -i seresearch/odsimulation:latest odsimvehicle --cid=111 --freq=10
 
-Now, we start the sensor simulation "irus":
+Now, open a new terminal tab and start the sensor simulation "irus":
 
     $ docker run --rm=true --net host -v /home/$USER/config:/opt/data -w "/opt/data" -t -i seresearch/odsimulation:latest odsimirus --cid=111 --freq=10
 
-Start the visualization environment "cockpit" (the first command grants access to your Xserver):
+Open a new terminal tab and start the visualization environment "cockpit" (the first command grants access to your Xserver):
 
     $ xhost +
 
@@ -129,9 +133,9 @@ Start the "BirdsEyeMap" plugin.
 
 ## Start boxparker
 
-Next, change the build directory and start the boxparker component:
+Next, open a new terminal tab and change the build directory to start the boxparker component:
 
-    $ cd build
+    $ cd boxparker/build/
 
     $ ./boxparker --cid=111 --freq=10 --verbose=1
 
