@@ -139,44 +139,44 @@ namespace vehiclecontext {
             }
 
             // Setup all point sensors.
-            for (uint32_t i = 0; i < m_kvc.getValue<uint32_t>("irus.numberOfSensors"); i++) {
+            for (uint32_t i = 0; i < m_kvc.getValue<uint32_t>("odsimirus.numberOfSensors"); i++) {
                 stringstream sensorID;
-                sensorID << "irus.sensor" << i << ".id";
+                sensorID << "odsimirus.sensor" << i << ".id";
                 uint16_t id(m_kvc.getValue<uint16_t>(sensorID.str()));
 
                 stringstream sensorName;
-                sensorName << "irus.sensor" << i << ".name";
+                sensorName << "odsimirus.sensor" << i << ".name";
                 string name(m_kvc.getValue<string>(sensorName.str()));
                 
                 stringstream sensorTranslation;
-                sensorTranslation << "irus.sensor" << i << ".translation";
+                sensorTranslation << "odsimirus.sensor" << i << ".translation";
                 Point3 translation(m_kvc.getValue<string>(sensorTranslation.str()));
 
                 stringstream sensorRotZ;
-                sensorRotZ << "irus.sensor" << i << ".rotZ";
+                sensorRotZ << "odsimirus.sensor" << i << ".rotZ";
                 const double rotZ = m_kvc.getValue<double>(sensorRotZ.str());
                 
                 stringstream sensorAngleFOV;
-                sensorAngleFOV << "irus.sensor" << i << ".angleFOV";
+                sensorAngleFOV << "odsimirus.sensor" << i << ".angleFOV";
                 const double angleFOV = m_kvc.getValue<double>(sensorAngleFOV.str());
                 
                 stringstream sensorDistanceFOV;
-                sensorDistanceFOV << "irus.sensor" << i << ".distanceFOV";
+                sensorDistanceFOV << "odsimirus.sensor" << i << ".distanceFOV";
                 const double distanceFOV = m_kvc.getValue<double>(sensorDistanceFOV.str());
                 
                 stringstream sensorClampDistance;
-                sensorClampDistance << "irus.sensor" << i << ".clampDistance";
+                sensorClampDistance << "odsimirus.sensor" << i << ".clampDistance";
                 const double clampDistance = m_kvc.getValue<double>(sensorClampDistance.str());
                 
                 stringstream sensorShowFOV;
-                sensorShowFOV << "irus.sensor" << i << ".showFOV";
+                sensorShowFOV << "odsimirus.sensor" << i << ".showFOV";
                 const bool showFOV = m_kvc.getValue<bool>(sensorShowFOV.str());
 
                 // Don't skip any values as default.
                 double faultModelSkip = 0;
                 try {
                     stringstream faultModelSkipStr;
-                    faultModelSkipStr << "irus.sensor" << i << ".faultModel.skip";
+                    faultModelSkipStr << "odsimirus.sensor" << i << ".faultModel.skip";
                     faultModelSkip = m_kvc.getValue<double>(faultModelSkipStr.str());
 
                     if (faultModelSkip < 0) {
@@ -193,7 +193,7 @@ namespace vehiclecontext {
                 double faultModelNoise = 0;
                 try {
                     stringstream faultModelNoiseStr;
-                    faultModelNoiseStr << "irus.sensor" << i << ".faultModel.noise";
+                    faultModelNoiseStr << "odsimirus.sensor" << i << ".faultModel.noise";
                     faultModelNoise = m_kvc.getValue<double>(faultModelNoiseStr.str());
                 }
                 catch (const core::exceptions::ValueForKeyNotFoundException &e) {

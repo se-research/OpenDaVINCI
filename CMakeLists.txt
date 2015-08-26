@@ -63,6 +63,7 @@ MESSAGE(STATUS "Using ${ODDATASTRUCTUREGENERATOR_EXECUTABLE} to generate code fr
 IF(     NOT("${CMAKE_C_COMPILER}" STREQUAL "")
     AND NOT("${CMAKE_CXX_COMPILER}" STREQUAL "") )
     SET(BUILD_LIBODSIMULATION 0)
+    SET(BUILD_ODSIMULATION 0)
 
     MESSAGE(STATUS "Found C and C++ compiler:                            Building opendavinci-lib")
     SET(BUILD_OPENDAVINCI 1)
@@ -85,6 +86,9 @@ IF(     NOT("${CMAKE_C_COMPILER}" STREQUAL "")
             AND Boost_FOUND)
             MESSAGE(STATUS "Found C++ compiler, OpenCV, OpenGL, GLUT, and Boost: Building libodsimulation")
             SET(BUILD_LIBODSIMULATION 1)
+
+            MESSAGE(STATUS "Found C++ compiler, OpenCV, OpenGL, GLUT, and Boost: Building odsimulation")
+            SET(BUILD_ODSIMULATION 1)
         ENDIF()
     ENDIF()
 ENDIF()
@@ -213,6 +217,18 @@ IF("${CMAKE_TOOLCHAIN_FILE}" STREQUAL "")
             TEST_BEFORE_INSTALL 1
             INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodsimulation-prefix/src/libodsimulation-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodsimulation-prefix/src/libodsimulation-build --target ${MAKE_PACKAGE})
     ENDIF()
+
+    # Next, build odsimulation.
+    IF(${BUILD_ODSIMULATION})
+        ExternalProject_Add (odsimulation
+            DEPENDS libodsimulation
+            DOWNLOAD_COMMAND ""
+            UPDATE_COMMAND ""
+            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odsimulation"
+            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
+            TEST_BEFORE_INSTALL 1
+            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odsimulation-prefix/src/odsimulation-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odsimulation-prefix/src/odsimulation-build --target ${MAKE_PACKAGE})
+    ENDIF()
 ENDIF()
 
 ###########################################################################
@@ -320,6 +336,19 @@ IF(    NOT("${CMAKE_TOOLCHAIN_FILE}" STREQUAL "")
             TEST_BEFORE_INSTALL 1
             INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodsimulation-prefix/src/libodsimulation-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodsimulation-prefix/src/libodsimulation-build --target ${MAKE_PACKAGE})
     ENDIF()
+
+    # Next, build odsimulation.
+    IF(${BUILD_ODSIMULATION})
+        ExternalProject_Add (odsimulation
+            DEPENDS libodsimulation
+            DOWNLOAD_COMMAND ""
+            UPDATE_COMMAND ""
+            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odsimulation"
+            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
+            CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
+            TEST_BEFORE_INSTALL 1
+            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odsimulation-prefix/src/odsimulation-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odsimulation-prefix/src/odsimulation-build --target ${MAKE_PACKAGE})
+    ENDIF()
 ENDIF()
 
 ###########################################################################
@@ -426,5 +455,18 @@ IF(    NOT("${CMAKE_TOOLCHAIN_FILE}" STREQUAL "")
             CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
             TEST_COMMAND ""
             INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodsimulation-prefix/src/libodsimulation-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodsimulation-prefix/src/libodsimulation-build --target ${MAKE_PACKAGE})
+    ENDIF()
+
+    # Next, build odsimulation.
+    IF(${BUILD_ODSIMULATION})
+        ExternalProject_Add (odsimulation
+            DEPENDS libodsimulation
+            DOWNLOAD_COMMAND ""
+            UPDATE_COMMAND ""
+            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odsimulation"
+            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
+            CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
+            TEST_COMMAND ""
+            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odsimulation-prefix/src/odsimulation-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odsimulation-prefix/src/odsimulation-build --target ${MAKE_PACKAGE})
     ENDIF()
 ENDIF()
