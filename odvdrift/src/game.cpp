@@ -809,56 +809,71 @@ coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 
 		PROFILER.endCycle();
 
+
         // Shared image from renderer.
-        coredata::image::SharedImage si = dynamic_cast<GraphicsGL2*>(graphics)->getSharedImage();
-        core::data::Container c(core::data::Container::SHARED_IMAGE, si);
-        getConference().send(c);
+        {
+            coredata::image::SharedImage si = dynamic_cast<GraphicsGL2*>(graphics)->getSharedImage();
+            core::data::Container c(core::data::Container::SHARED_IMAGE, si);
+            getConference().send(c);
+        }
 
+        // Get data for "EgoCar".
         CarDynamics &car = car_dynamics[0];
-        btVector3 pos = car.GetPosition();
-        info_output << "Pos: " << pos.m_floats[0] << ", " << pos.m_floats[1] << ", " << pos.m_floats[2] << ", " << std::endl;
-        
-        automotive::VehicleData vd;
-//        vd.setPosition();
-        cartesian::Point2 p2;
-        Map<Vector2f> _pos(p2.getP()); // Map the data field from Point2.
-        _pos << pos.m_floats[0], pos.m_floats[1]; // Set values.
+        btVector3 car_position = car.GetCenterOfMass();
+        btVector3 car_orientation = quatRotate(car.GetOrientation(), Direction::forward);
+        // Clamp car's direction to the horizontal plane.
+        car_orientation[2] = 0;
+        car_orientation.normalize();
 
-        // Set values to VehicleData
-        vd.setPosition(p2);
-//        vd.setVelocity(vel);
-        vd.setHeading(car.GetOrientation().getAngle());
-        vd.setSpeed(car.GetSpeedMPS());
-        vd.setV_log(0);
-        vd.setV_batt(0);
+        {
+            // Setup vehicle data structure.
+            automotive::VehicleData vd;
 
-        info_output << "VD: " << vd.toString() << std::endl;
+            // Position.
+            cartesian::Point2 pos;
+            Map<Vector2f> _pos(pos.getP()); // Map the data field from Point2.
+            _pos << car_position.m_floats[0], car_position.m_floats[1]; // Set values.
 
-        core::data::Container c2(core::data::Container::VEHICLEDATA, vd);
-        getConference().send(c2);
+            // Velocity.
+            cartesian::Point2 vel;
+            Map<Vector2f> _vel(vel.getP()); // Map the data field from Point2.
+            _vel << car.GetVelocity().m_floats[0], car.GetVelocity().m_floats[1]; // Set values.
 
-        hesperia::data::environment::EgoState es;
+            // Set values to VehicleData.
+            vd.setPosition(pos);
+            vd.setVelocity(vel);
+            vd.setHeading(car.GetOrientation().getAngle()); // The orientation is not correct yet.
+            vd.setSpeed(car.GetSpeedMPS());
+            vd.setV_log(0);
+            vd.setV_batt(0);
 
-        hesperia::data::environment::Point3 p(pos.m_floats[0], pos.m_floats[1], 0);
-        es.setPosition(p);
+            info_output << "VD: " << vd.toString() << std::endl;
 
-        cartesian::Point2 orientation;
-        Map<Vector2f> _orientation(orientation.getP()); // Map the data field.
-        _orientation << 1, 0;
-        Rotation2D<float> rotationZ(90*cartesian::Constants::DEG2RAD + car.GetOrientation().getAngle());
-        _orientation = rotationZ * _orientation;
-        _orientation.normalize();
+            core::data::Container c2(core::data::Container::VEHICLEDATA, vd);
+            getConference().send(c2);
+        }
 
-        hesperia::data::environment::Point3 o(orientation.getP()[0], orientation.getP()[1], 0);
-        es.setRotation(o);
+        {
+            // Setup vehicle data structure.
+            hesperia::data::environment::EgoState es;
 
-        hesperia::data::environment::Point3 velocity(car.GetVelocity().m_floats[0], car.GetVelocity().m_floats[1], 0);
-        es.setVelocity(velocity);
+            // Position.
+            hesperia::data::environment::Point3 p(car_position[0], car_position[1], 0);
+            es.setPosition(p);
 
-        info_output << "ES: " << es.toString() << std::endl;
+            // Orientation.
+            hesperia::data::environment::Point3 o(car_orientation[0], car_orientation[1], 0);
+            es.setRotation(o);
 
-        core::data::Container c3(core::data::Container::EGOSTATE, es);
-        getConference().send(c3);
+            // Velocity.
+            hesperia::data::environment::Point3 velocity(car.GetVelocity().m_floats[0], car.GetVelocity().m_floats[1], 0);
+            es.setVelocity(velocity);
+
+            info_output << "ES: " << es.toString() << std::endl;
+
+            core::data::Container c3(core::data::Container::EGOSTATE, es);
+            getConference().send(c3);
+        }
 
 		displayframe++;
 	}
