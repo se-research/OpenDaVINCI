@@ -1,5 +1,6 @@
-2.0.8 - Added some compiling fixe2.0.9 - Refactored exception message composition
-s for Darwin
+2.0.10 - Refactored odsimulation binaries to have prefix odsim
+2.0.9 - Refactored exception message composition
+2.0.8 - Added some compiling fixes for Darwin
 2.0.7 - Added some compiling fixes for Windows 7
 2.0.6 - Updating zlib to 1.2.8
 2.0.5 - Docker image creation test
