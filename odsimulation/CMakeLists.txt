@@ -76,12 +76,13 @@ IF(    (UNIX)
 
     SET(CPACK_PACKAGE_CONTACT "Christian Berger")
     SET(CPACK_PACKAGE_VENDOR "${CPACK_PACKAGE_CONTACT}")
-    SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "odvdrift combines the open source racing simulation VDrift with OpenDaVINCI.")
-    SET(CPACK_PACKAGE_NAME "odvdrift")
+    SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "odsimtools contains a set of tools for simulations for distributed software systems realized with OpenDaVINCI.")
+    SET(CPACK_PACKAGE_NAME "odsimulation")
     SET(CPACK_PACKAGE_VERSION_MAJOR "${MAJOR}")
     SET(CPACK_PACKAGE_VERSION_MINOR "${MINOR}")
     SET(CPACK_PACKAGE_VERSION_PATCH "${PATCH}")
     SET(CPACK_PACKAGE_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}")
+    SET(CPACK_COMPONENTS_ALL odsimtools scenarios)
 
     # Debian packages:
     SET(CPACK_DEBIAN_PACKAGE_SECTION "devel")
@@ -96,6 +97,7 @@ IF(    (UNIX)
         ENDIF()
     ENDIF()
     SET(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "${ARCH}")
+    SET(CPACK_DEB_COMPONENT_INSTALL ON)
     SET(CPACK_DEBIAN_PACKAGE_DEPENDS "opendavinci-odlib,odsimulation-odsimlib,libautomotivedata")
 
     # RPM packages:
@@ -109,6 +111,7 @@ IF(    (UNIX)
         ENDIF()
     ENDIF()
     SET(CPACK_RPM_PACKAGE_BUILDARCH "Buildarch: ${CPACK_RPM_PACKAGE_ARCHITECTURE}")
+    SET(CPACK_RPM_COMPONENT_INSTALL ON)
     SET(CPACK_RPM_PACKAGE_LICENSE "GPL")
     SET(CPACK_RPM_PACKAGE_REQUIRES "opendavinci-odlib, odsimulation-odsimlib, libautomotivedata")
 
