@@ -8,6 +8,7 @@ OpenDaVINCI are available here: http://opendavinci.readthedocs.org/en/latest.
 
 Further background about this project is provided here: http://arxiv.org/abs/1406.7768
 
+Updated installation instructions for Docker can be found here: http://blog.docker.com/2015/07/new-apt-and-yum-repos/
 
 ### Adding OpenDaVINCI to your Ubuntu Linux distribution
 
@@ -95,11 +96,11 @@ the directory "config". As the simulation environment is provided as a
 Docker image, this configuration needs to be prepared so that we can
 simply start the Docker image later.
 
-Move up to the /miniature directory:
+Move up to the /miniature directory (ie. $PWD should point to automotive/miniature/config):
 
     $ cd ..
 
-Create a symbolic link in your $HOME folder:
+Create a symbolic link in your $HOME folder to automotive/miniature/config:
 
     $ ln -sf $PWD/config $HOME/config
 
