@@ -80,6 +80,8 @@ private:
     coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
     virtual void setUp();
     virtual void tearDown();
+	std::vector <float> inputFromOpenDaVINCI;
+
 
 	void End();
 
@@ -100,6 +102,8 @@ private:
 	void Test();
 
 	void Tick(float dt);
+
+	void TickOpenDaVINCI(float dt);
 
 	void Draw();
 

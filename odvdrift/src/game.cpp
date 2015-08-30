@@ -94,6 +94,7 @@ static std::string GetTimeString(float time)
 
 Game::Game(int argc, char **argv, std::ostream & info_out, std::ostream & error_out) :
     core::base::module::TimeTriggeredConferenceClientModule(argc, argv, "vdrift"),
+    inputFromOpenDaVINCI(CarInput::INVALID, 0.0), // Initialize inputFromOpenDaVINCI with CarInput::INVALID elements initialized with 0.0
 	info_output(info_out),
 	error_output(error_out),
 	frame(0),
@@ -790,7 +791,7 @@ void Game::tearDown() {
 coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 //	while (!eventsystem.GetQuit())
     while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING)
-	{
+	{        
 		CalculateFPS();
 
 //        float dt = eventsystem.Get_dt();
@@ -801,7 +802,37 @@ coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 		eventsystem.BeginFrame();
 
 		// Do CPU intensive stuff in parallel with the GPU...
-		Tick(dt);
+//		Tick(dt);
+
+        {
+            // Get commands from OpenDaVINCI.
+            core::data::Container c = getKeyValueDataStore().get(core::data::Container::VEHICLECONTROL);
+            automotive::VehicleControl vc = c.getData<automotive::VehicleControl>();
+            info_output << "VehicleControl: '" << vc.toString() << "'" << std::endl;
+
+            CarDynamics &car = car_dynamics[0];
+	        if (car.GetEngine().GetRPM() < car.GetEngine().GetStallRPM())
+		        inputFromOpenDaVINCI[CarInput::START_ENGINE] = 1.0;
+	        else
+		        inputFromOpenDaVINCI[CarInput::START_ENGINE] = 0.0;
+
+		    inputFromOpenDaVINCI[CarInput::THROTTLE] = vc.getAcceleration();
+		    inputFromOpenDaVINCI[CarInput::BRAKE] = 0.0;
+
+	        float steer_value = vc.getSteeringWheelAngle() / car.GetMaxSteeringAngle();
+	        if (steer_value > 1.0) steer_value = 1.0;
+	        else if (steer_value < -1.0) steer_value = -1.0;
+
+	        inputFromOpenDaVINCI[CarInput::STEER_RIGHT] = steer_value;
+
+            info_output << inputFromOpenDaVINCI[CarInput::START_ENGINE] << ";"
+                        << inputFromOpenDaVINCI[CarInput::THROTTLE] << ";"
+                        << inputFromOpenDaVINCI[CarInput::BRAKE] << ";"
+                        << inputFromOpenDaVINCI[CarInput::STEER_RIGHT] << std::endl;
+        }
+
+
+        TickOpenDaVINCI(dt);
 
 		Draw(dt);
 
@@ -809,7 +840,7 @@ coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 
 		PROFILER.endCycle();
 
-
+        ///////////////////////////////////////////////////////////////////////
         // Shared image from renderer.
         {
             coredata::image::SharedImage si = dynamic_cast<GraphicsGL2*>(graphics)->getSharedImage();
@@ -887,6 +918,138 @@ void Game::MainLoop()
 {
     info_output << "Calling runModule()" << std::endl;
     runModule();
+}
+
+void Game::TickOpenDaVINCI(float deltat) {
+	// This is the minimum fps the game will run at before it starts slowing down time.
+	const float minfps = 10.0f;
+	// Slow the game down if we can't process fast enough.
+	const unsigned int maxticks = (int) (1.0f / (minfps * timestep));
+	// Slow the game down if we can't process fast enough.
+	const float maxtime = 1.0 / minfps;
+	unsigned int curticks = 0;
+
+	// Throw away wall clock time if necessary to keep the framerate above the minimum.
+	if (deltat > maxtime)
+        deltat = maxtime;
+
+	target_time += deltat;
+
+//	http.Tick();
+
+	// Increment game logic by however many tick periods have passed since the last GAME::Tick...
+	while (target_time - timestep * frame > timestep && curticks < maxticks)
+	{
+		frame++;
+
+//		AdvanceGameLogic();
+        {
+	        eventsystem.ProcessEvents();
+
+	        float car_speed = 0;
+	        if (carcontrols_local.first)
+		        car_speed = carcontrols_local.first->GetSpeed();
+
+	        carcontrols_local.second.ProcessInput(
+			        settings.GetJoyType(),
+			        eventsystem,
+			        timestep,
+			        settings.GetJoy200(),
+			        car_speed,
+			        settings.GetSpeedSensitivity(),
+			        window.GetW(),
+			        window.GetH(),
+			        settings.GetButtonRamp(),
+			        settings.GetHGateShifter());
+
+	        ProcessGUIInputs();
+
+	        ProcessGameInputs();
+
+	        //PROFILER.endBlock("input-processing");
+
+	        if (!pause)
+	        {
+		        PROFILER.beginBlock("ai");
+		        ai.Visualize();
+		        ai.Update(timestep, &car_dynamics[0], car_dynamics.size());
+		        PROFILER.endBlock("ai");
+
+		        //PROFILER.beginBlock("input");
+//		        for (int i = 0; i < car_dynamics.size(); ++i)
+//			        ProcessCarInputs(i);
+		        //PROFILER.endBlock("input");
+
+                // Get data for "EgoCar".
+                CarDynamics &car = car_dynamics[0];
+                car.Update(inputFromOpenDaVINCI);
+
+
+
+		        PROFILER.beginBlock("physics");
+		        dynamics.update(timestep);
+		        PROFILER.endBlock("physics");
+
+		        PROFILER.beginBlock("car");
+		        ProcessCameraInputs();
+		        UpdateCars(timestep);
+		        PROFILER.endBlock("car");
+
+		        // Update dynamic track objects.
+		        track.Update();
+
+		        //PROFILER.beginBlock("timer");
+		        UpdateTimer();
+		        //PROFILER.endBlock("timer");
+
+		        //PROFILER.beginBlock("particles");
+		        UpdateParticles(timestep);
+		        //PROFILER.endBlock("particles");
+
+		        //PROFILER.beginBlock("trackmap-update");
+		        UpdateTrackMap();
+		        //PROFILER.endBlock("trackmap-update");
+	        }
+
+	        if (sound.Enabled())
+	        {
+		        PROFILER.beginBlock("sound");
+		        Vec3 pos;
+		        Quat rot;
+		        if (active_camera)
+		        {
+			        pos = active_camera->GetPosition();
+			        rot = active_camera->GetOrientation();
+		        }
+		        sound.SetListenerPosition(pos[0], pos[1], pos[2]);
+		        sound.SetListenerRotation(rot[0], rot[1], rot[2], rot[3]);
+		        sound.Update(pause);
+		        PROFILER.endBlock("sound");
+	        }
+
+	        //PROFILER.beginBlock("force-feedback");
+	        UpdateForceFeedback(timestep);
+	        //PROFILER.endBlock("force-feedback");
+        }
+
+		curticks++;
+	}
+
+	// Debug draw dynamics
+	if (dynamics_drawmode && track.Loaded())
+	{
+		dynamicsdraw.clear();
+		dynamics.debugDrawWorld();
+	}
+
+	if (dumpfps && curticks > 0 && frame % 100 == 0)
+	{
+		info_output << "Current FPS: " << eventsystem.GetFPS() << std::endl;
+	}
+
+	UpdateParticleGraphics();
+
+	gui.Update(eventsystem.Get_dt());
 }
 
 /* Deltat is in seconds... */
