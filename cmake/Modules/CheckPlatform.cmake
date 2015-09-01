@@ -59,9 +59,9 @@ FIND_PACKAGE (GLUT)
 
 ###########################################################################
 # Find Qt (required for odcockpit).
-#FIND_PACKAGE (Qt)
+FIND_PACKAGE (Qt)
 
 ###########################################################################
 # Find Qwt5Qt4 (required for odcockpit).
-#FIND_PACKAGE (Qwt5Qt4)
+FIND_PACKAGE (Qwt5Qt4)
 

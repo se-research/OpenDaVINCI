@@ -121,4 +121,4 @@ Install OpenDaVINCI:
 
     $ sudo zypper install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
 
-![Screenshot](https://github.com/se-research/OpenDaVINCI/blob/master/Screenshot.png)
+![Screenshot](https://github.com/se-research/OpenDaVINCI/blob/master/docs/Screenshot.png)

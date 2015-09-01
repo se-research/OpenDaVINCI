@@ -60,7 +60,7 @@ odsupercomponent.pulsetimeack.timeout = 5000 # (in milliseconds)
 odsupercomponent.pulsetimeack.yield = 5000 # (in microseconds)
 
 # List of modules (without blanks) that will not get a pulse message from odsupercomponent.
-odsupercomponent.pulsetimeack.exclude = cockpit,monitor
+odsupercomponent.pulsetimeack.exclude = odcockpit
 
 
 ###############################################################################

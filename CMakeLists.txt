@@ -64,20 +64,21 @@ IF(     NOT("${CMAKE_C_COMPILER}" STREQUAL "")
     AND NOT("${CMAKE_CXX_COMPILER}" STREQUAL "") )
     SET(BUILD_LIBODSIMULATION 0)
     SET(BUILD_ODSIMULATION 0)
+    SET(BUILD_ODCOCKPIT 0)
 
-    MESSAGE(STATUS "Found C and C++ compiler:                            Building opendavinci-lib")
+    MESSAGE(STATUS "Found C and C++ compiler:   Building opendavinci-lib")
     SET(BUILD_OPENDAVINCI 1)
 
-    MESSAGE(STATUS "Found C++ compiler:                                  Building opendavinci-odsupercomponent")
+    MESSAGE(STATUS "Found C++ compiler:         Building opendavinci-odsupercomponent")
     SET(BUILD_ODSUPERCOMPONENT 1)
 
-    MESSAGE(STATUS "Found C++ compiler:                                  Building opendavinci-odtools")
+    MESSAGE(STATUS "Found C++ compiler:         Building opendavinci-odtools")
     SET(BUILD_ODTOOLS 1)
 
-    MESSAGE(STATUS "Found C++ compiler:                                  Building opendavinci-automotivedata")
+    MESSAGE(STATUS "Found C++ compiler:         Building opendavinci-automotivedata")
     SET(BUILD_AUTOMOTIVEDATA 1)
 
-    MESSAGE(STATUS "Found C++ compiler:                                  Building opendavinci-tutorials")
+    MESSAGE(STATUS "Found C++ compiler:         Building opendavinci-tutorials")
     SET(BUILD_TUTORIALS 1)
 
     IF (OpenCV_FOUND)
@@ -89,6 +90,13 @@ IF(     NOT("${CMAKE_C_COMPILER}" STREQUAL "")
 
             MESSAGE(STATUS "Found C++ compiler, OpenCV, OpenGL, GLUT, and Boost: Building odsimulation")
             SET(BUILD_ODSIMULATION 1)
+
+            IF (Qt4_FOUND)
+                IF (QWT5QT4_FOUND)
+                    MESSAGE(STATUS "Found C++ compiler, OpenCV, OpenGL, GLUT, Boost, QT4, and Qwt: Building odcockpit")
+                    SET(BUILD_ODCOCKPIT 1)
+                ENDIF()
+            ENDIF()
         ENDIF()
     ENDIF()
 ENDIF()
@@ -105,7 +113,7 @@ ELSE()
     SET(MAKE_PACKAGE install)
 ENDIF()
 
-MESSAGE(STATUS "Installing artifacts to:                             ${INSTALL_DIR}")
+MESSAGE(STATUS "Installing artifacts to:    ${INSTALL_DIR}")
 MESSAGE("")
 
 ###########################################################################
@@ -229,6 +237,18 @@ IF("${CMAKE_TOOLCHAIN_FILE}" STREQUAL "")
             TEST_BEFORE_INSTALL 1
             INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odsimulation-prefix/src/odsimulation-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odsimulation-prefix/src/odsimulation-build --target ${MAKE_PACKAGE})
     ENDIF()
+
+    # Next, build odcockpit.
+    IF(${BUILD_ODCOCKPIT})
+        ExternalProject_Add (odcockpit
+            DEPENDS libodsimulation
+            DOWNLOAD_COMMAND ""
+            UPDATE_COMMAND ""
+            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odcockpit"
+            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
+            TEST_BEFORE_INSTALL 1
+            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcockpit-prefix/src/odcockpit-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcockpit-prefix/src/odcockpit-build --target ${MAKE_PACKAGE})
+    ENDIF()
 ENDIF()
 
 ###########################################################################
@@ -349,6 +369,19 @@ IF(    NOT("${CMAKE_TOOLCHAIN_FILE}" STREQUAL "")
             TEST_BEFORE_INSTALL 1
             INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odsimulation-prefix/src/odsimulation-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odsimulation-prefix/src/odsimulation-build --target ${MAKE_PACKAGE})
     ENDIF()
+
+    # Next, build odcockpit.
+    IF(${BUILD_ODCOCKPIT})
+        ExternalProject_Add (odcockpit
+            DEPENDS libodsimulation
+            DOWNLOAD_COMMAND ""
+            UPDATE_COMMAND ""
+            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odcockpit"
+            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
+            CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
+            TEST_BEFORE_INSTALL 1
+            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcockpit-prefix/src/odcockpit-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcockpit-prefix/src/odcockpit-build --target ${MAKE_PACKAGE})
+    ENDIF()
 ENDIF()
 
 ###########################################################################
@@ -468,5 +501,18 @@ IF(    NOT("${CMAKE_TOOLCHAIN_FILE}" STREQUAL "")
             CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
             TEST_COMMAND ""
             INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odsimulation-prefix/src/odsimulation-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odsimulation-prefix/src/odsimulation-build --target ${MAKE_PACKAGE})
+    ENDIF()
+
+    # Next, build odcockpit.
+    IF(${BUILD_ODCOCKPIT})
+        ExternalProject_Add (odcockpit
+            DEPENDS libodsimulation
+            DOWNLOAD_COMMAND ""
+            UPDATE_COMMAND ""
+            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odcockpit"
+            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
+            CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
+            TEST_COMMAND ""
+            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcockpit-prefix/src/odcockpit-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcockpit-prefix/src/odcockpit-build --target ${MAKE_PACKAGE})
     ENDIF()
 ENDIF()
