@@ -1,4 +1,4 @@
-# lanedetector - Sample application for detecting lane markings
+# lanefollower - Sample application for following lane markings
 # Copyright (C) 2012 - 2015  Christian Berger
 #
 # This program is free software; you can redistribute it and/or
@@ -17,7 +17,7 @@
 
 CMAKE_MINIMUM_REQUIRED (VERSION 2.8)
 
-PROJECT (lanedetector)
+PROJECT (VCR)
 
 ###########################################################################
 # Set the search path for .cmake files.
@@ -47,24 +47,17 @@ SET(OPENDAVINCI_DIR "${CMAKE_INSTALL_PREFIX}")
 FIND_PACKAGE (OpenDaVINCI REQUIRED)
 
 ###########################################################################
-# Find AutomotiveData.
-SET(AUTOMOTIVEDATA_DIR "${CMAKE_INSTALL_PREFIX}")
-FIND_PACKAGE (AutomotiveData REQUIRED)
-
-###########################################################################
 # Find OpenCV.
 SET(OpenCV_DIR "/usr")
 FIND_PACKAGE (OpenCV REQUIRED)
 
 ###########################################################################
 # Set linking libraries to successfully link test suites and binaries.
-SET (LIBRARIES ${OPENDAVINCI_LIBRARIES} ${AUTOMOTIVEDATA_LIBRARIES} ${OpenCV_LIBS})
+SET (LIBRARIES ${OPENDAVINCI_LIBRARIES} ${OpenCV_LIBS})
 
 ###########################################################################
 # Set header files from OpenDaVINCI.
 INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS}/opendavinci)
-# Set header files from AutomotiveData.
-INCLUDE_DIRECTORIES (${AUTOMOTIVEDATA_INCLUDE_DIRS}/automotivedata)
 # Set header files from OpenCV.
 INCLUDE_DIRECTORIES (${OpenCV_INCLUDE_DIR})
 # Set include directory.
@@ -81,7 +74,7 @@ TARGET_LINK_LIBRARIES (${PROJECT_NAME} ${PROJECT_NAME}lib-static ${LIBRARIES})
 # Enable CxxTest for all available testsuites.
 IF(CXXTEST_FOUND)
     FILE(GLOB thisproject-testsuites "${CMAKE_CURRENT_SOURCE_DIR}/testsuites/*.h")
-
+    
     FOREACH(testsuite ${thisproject-testsuites})
         STRING(REPLACE "/" ";" testsuite-list ${testsuite})
 

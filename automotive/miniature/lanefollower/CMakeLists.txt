@@ -1,4 +1,4 @@
-# lanedetector - Sample application for detecting lane markings
+# lanefollower - Sample application for following lane markings
 # Copyright (C) 2012 - 2015  Christian Berger
 #
 # This program is free software; you can redistribute it and/or
@@ -17,7 +17,7 @@
 
 CMAKE_MINIMUM_REQUIRED (VERSION 2.8)
 
-PROJECT (lanedetector)
+PROJECT (lanefollower)
 
 ###########################################################################
 # Set the search path for .cmake files.
@@ -81,7 +81,7 @@ TARGET_LINK_LIBRARIES (${PROJECT_NAME} ${PROJECT_NAME}lib-static ${LIBRARIES})
 # Enable CxxTest for all available testsuites.
 IF(CXXTEST_FOUND)
     FILE(GLOB thisproject-testsuites "${CMAKE_CURRENT_SOURCE_DIR}/testsuites/*.h")
-
+    
     FOREACH(testsuite ${thisproject-testsuites})
         STRING(REPLACE "/" ";" testsuite-list ${testsuite})
 

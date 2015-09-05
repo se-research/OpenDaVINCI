@@ -1,4 +1,4 @@
-# lanedetector - Sample application for detecting lane markings
+# overtaker - Sample application for overtaking obstacles.
 # Copyright (C) 2012 - 2015  Christian Berger
 #
 # This program is free software; you can redistribute it and/or
@@ -17,7 +17,7 @@
 
 CMAKE_MINIMUM_REQUIRED (VERSION 2.8)
 
-PROJECT (lanedetector)
+PROJECT (overtaker)
 
 ###########################################################################
 # Set the search path for .cmake files.
@@ -52,21 +52,10 @@ SET(AUTOMOTIVEDATA_DIR "${CMAKE_INSTALL_PREFIX}")
 FIND_PACKAGE (AutomotiveData REQUIRED)
 
 ###########################################################################
-# Find OpenCV.
-SET(OpenCV_DIR "/usr")
-FIND_PACKAGE (OpenCV REQUIRED)
-
-###########################################################################
-# Set linking libraries to successfully link test suites and binaries.
-SET (LIBRARIES ${OPENDAVINCI_LIBRARIES} ${AUTOMOTIVEDATA_LIBRARIES} ${OpenCV_LIBS})
-
-###########################################################################
 # Set header files from OpenDaVINCI.
 INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS}/opendavinci)
 # Set header files from AutomotiveData.
 INCLUDE_DIRECTORIES (${AUTOMOTIVEDATA_INCLUDE_DIRS}/automotivedata)
-# Set header files from OpenCV.
-INCLUDE_DIRECTORIES (${OpenCV_INCLUDE_DIR})
 # Set include directory.
 INCLUDE_DIRECTORIES(include)
 
@@ -75,13 +64,13 @@ INCLUDE_DIRECTORIES(include)
 FILE(GLOB_RECURSE thisproject-sources "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 ADD_LIBRARY (${PROJECT_NAME}lib-static STATIC ${thisproject-sources})
 ADD_EXECUTABLE (${PROJECT_NAME} "${CMAKE_CURRENT_SOURCE_DIR}/apps/${PROJECT_NAME}.cpp")
-TARGET_LINK_LIBRARIES (${PROJECT_NAME} ${PROJECT_NAME}lib-static ${LIBRARIES}) 
+TARGET_LINK_LIBRARIES (${PROJECT_NAME} ${PROJECT_NAME}lib-static ${OPENDAVINCI_LIBRARIES} ${AUTOMOTIVEDATA_LIBRARIES}) 
 
 ###########################################################################
 # Enable CxxTest for all available testsuites.
 IF(CXXTEST_FOUND)
     FILE(GLOB thisproject-testsuites "${CMAKE_CURRENT_SOURCE_DIR}/testsuites/*.h")
-
+    
     FOREACH(testsuite ${thisproject-testsuites})
         STRING(REPLACE "/" ";" testsuite-list ${testsuite})
 
@@ -104,7 +93,7 @@ IF(CXXTEST_FOUND)
             SET_SOURCE_FILES_PROPERTIES(${testsuite-short}-TestSuite.cpp PROPERTIES COMPILE_FLAGS "")
         ENDIF()
         SET_TESTS_PROPERTIES(${testsuite-short}-TestSuite PROPERTIES TIMEOUT 3000)
-        TARGET_LINK_LIBRARIES(${testsuite-short}-TestSuite ${PROJECT_NAME}lib-static ${LIBRARIES})
+        TARGET_LINK_LIBRARIES(${testsuite-short}-TestSuite ${PROJECT_NAME}lib-static ${OPENDAVINCI_LIBRARIES} ${AUTOMOTIVEDATA_LIBRARIES})
     ENDFOREACH()
 ENDIF(CXXTEST_FOUND)
 
