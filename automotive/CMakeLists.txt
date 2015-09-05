@@ -39,20 +39,26 @@ INCLUDE (CheckCxxTestEnvironment)
 ###########################################################################
 # Download and build Peak Systems CAN driver and library.
 IF(UNIX)
-    # This library requires "libpopt-dev" to be installed.
-    ExternalProject_Add (peak-linux-driver
-        URL http://www.peak-system.com/fileadmin/media/linux/files/peak-linux-driver-7.15.2.tar.gz
-        UPDATE_COMMAND ""
-        PATCH_COMMAND ""
-        CONFIGURE_COMMAND ""
-        BUILD_IN_SOURCE 1
-        BUILD_COMMAND make
-        TEST_COMMAND ""
-        INSTALL_COMMAND DESTDIR=${INSTALL_DIR} make install
-    )
+    ###########################################################################
+    # Find popt library.
+    FIND_PACKAGE (popt REQUIRED)
 
-###########################################################################
-# Add subdirectories.
-    ADD_SUBDIRECTORY (canproxy)
+    IF(POPT_FOUND)
+        # This library requires "libpopt-dev" to be installed.
+        ExternalProject_Add (peak-linux-driver
+            URL http://www.peak-system.com/fileadmin/media/linux/files/peak-linux-driver-7.15.2.tar.gz
+            UPDATE_COMMAND ""
+            PATCH_COMMAND ""
+            CONFIGURE_COMMAND ""
+            BUILD_IN_SOURCE 1
+            BUILD_COMMAND make
+            TEST_COMMAND ""
+            INSTALL_COMMAND DESTDIR=${INSTALL_DIR} make install
+        )
+
+        ###########################################################################
+        # Add subdirectories.
+        ADD_SUBDIRECTORY (canproxy)
+    ENDIF()
 ENDIF()
 
