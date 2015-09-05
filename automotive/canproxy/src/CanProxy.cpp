@@ -19,6 +19,8 @@
 
 #include <iostream>
 
+#include <libpcan.h>
+
 #include "core/data/Container.h"
 
 #include "CanProxy.h"
