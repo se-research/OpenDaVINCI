@@ -20,11 +20,35 @@ CMAKE_MINIMUM_REQUIRED (VERSION 2.8)
 PROJECT (boxparker)
 
 ###########################################################################
+# Set the search path for .cmake files.
+SET (CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmake.Modules" ${CMAKE_MODULE_PATH})
+
+# Add a local CMake module search path dependent on the desired installation destination.
+# Thus, artifacts from the complete source build can be given precendence over any installed versions.
+IF(UNIX)
+    SET (CMAKE_MODULE_PATH "${CMAKE_INSTALL_PREFIX}/share/cmake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules" ${CMAKE_MODULE_PATH})
+ENDIF()
+IF(WIN32)
+    SET (CMAKE_MODULE_PATH "${CMAKE_INSTALL_PREFIX}/CMake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules" ${CMAKE_MODULE_PATH})
+ENDIF()
+
+###########################################################################
+# Include flags for compiling.
+INCLUDE (CompileFlags)
+
+###########################################################################
+# Find and configure CxxTest.
+SET (CXXTEST_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../../cxxtest") 
+INCLUDE (CheckCxxTestEnvironment)
+
+###########################################################################
 # Find OpenDaVINCI.
+SET(OPENDAVINCI_DIR "${CMAKE_INSTALL_PREFIX}")
 FIND_PACKAGE (OpenDaVINCI REQUIRED)
 
 ###########################################################################
 # Find AutomotiveData.
+SET(AUTOMOTIVEDATA_DIR "${CMAKE_INSTALL_PREFIX}")
 FIND_PACKAGE (AutomotiveData REQUIRED)
 
 ###########################################################################
@@ -45,6 +69,37 @@ FILE(GLOB_RECURSE thisproject-sources "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 ADD_LIBRARY (${PROJECT_NAME}lib-static STATIC ${thisproject-sources})
 ADD_EXECUTABLE (${PROJECT_NAME} "${CMAKE_CURRENT_SOURCE_DIR}/apps/${PROJECT_NAME}.cpp")
 TARGET_LINK_LIBRARIES (${PROJECT_NAME} ${PROJECT_NAME}lib-static ${LIBRARIES}) 
+
+###########################################################################
+# Enable CxxTest for all available testsuites.
+IF(CXXTEST_FOUND)
+    FILE(GLOB thisproject-testsuites "${CMAKE_CURRENT_SOURCE_DIR}/testsuites/*.h")
+
+    FOREACH(testsuite ${thisproject-testsuites})
+        STRING(REPLACE "/" ";" testsuite-list ${testsuite})
+
+        LIST(LENGTH testsuite-list len)
+        MATH(EXPR lastItem "${len}-1")
+        LIST(GET testsuite-list "${lastItem}" testsuite-short)
+
+        SET(CXXTEST_TESTGEN_ARGS ${CXXTEST_TESTGEN_ARGS} --world=${PROJECT_NAME}-${testsuite-short})
+        CXXTEST_ADD_TEST(${testsuite-short}-TestSuite ${testsuite-short}-TestSuite.cpp ${testsuite})
+        IF(UNIX)        
+            IF(   ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+               OR ("${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD")
+               OR ("${CMAKE_SYSTEM_NAME}" STREQUAL "DragonFly") )
+                SET_SOURCE_FILES_PROPERTIES(${testsuite-short}-TestSuite.cpp PROPERTIES COMPILE_FLAGS "-Wno-effc++ -Wno-float-equal -Wno-error=suggest-attribute=noreturn")
+            ELSE()
+                SET_SOURCE_FILES_PROPERTIES(${testsuite-short}-TestSuite.cpp PROPERTIES COMPILE_FLAGS "-Wno-effc++ -Wno-float-equal")
+            ENDIF()
+        ENDIF()
+        IF(WIN32)
+            SET_SOURCE_FILES_PROPERTIES(${testsuite-short}-TestSuite.cpp PROPERTIES COMPILE_FLAGS "")
+        ENDIF()
+        SET_TESTS_PROPERTIES(${testsuite-short}-TestSuite PROPERTIES TIMEOUT 3000)
+        TARGET_LINK_LIBRARIES(${testsuite-short}-TestSuite ${PROJECT_NAME}lib-static ${LIBRARIES})
+    ENDFOREACH()
+ENDIF(CXXTEST_FOUND)
 
 ###########################################################################
 # Install this project.

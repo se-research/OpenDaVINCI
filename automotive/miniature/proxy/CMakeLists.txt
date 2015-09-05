@@ -1,4 +1,6 @@
-# lanedetector - Sample application for detecting lane markings
+# proxy - proxy is an example application to demonstrate how to 
+#         abstract from embedded software realized on Arudino or
+#         STM32F4 Discovery Board with OpenDaVINCI
 # Copyright (C) 2012 - 2015  Christian Berger
 #
 # This program is free software; you can redistribute it and/or
@@ -17,7 +19,7 @@
 
 CMAKE_MINIMUM_REQUIRED (VERSION 2.8)
 
-PROJECT (lanedetector)
+PROJECT (proxy)
 
 ###########################################################################
 # Set the search path for .cmake files.
@@ -57,8 +59,17 @@ SET(OpenCV_DIR "/usr")
 FIND_PACKAGE (OpenCV REQUIRED)
 
 ###########################################################################
+# Find uEye drivers.
+SET(UEYE_PATH "/usr/local")
+FIND_PACKAGE(UEYE)
+
+###########################################################################
 # Set linking libraries to successfully link test suites and binaries.
-SET (LIBRARIES ${OPENDAVINCI_LIBRARIES} ${AUTOMOTIVEDATA_LIBRARIES} ${OpenCV_LIBS})
+IF(UEYE_FOUND)
+    SET (LIBRARIES ${OPENDAVINCI_LIBRARIES} ${AUTOMOTIVEDATA_LIBRARIES} ${OpenCV_LIBS} ${UEYE_LIBRARIES})
+ELSE()
+    SET (LIBRARIES ${OPENDAVINCI_LIBRARIES} ${AUTOMOTIVEDATA_LIBRARIES} ${OpenCV_LIBS})
+ENDIF()
 
 ###########################################################################
 # Set header files from OpenDaVINCI.
@@ -67,6 +78,11 @@ INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS}/opendavinci)
 INCLUDE_DIRECTORIES (${AUTOMOTIVEDATA_INCLUDE_DIRS}/automotivedata)
 # Set header files from OpenCV.
 INCLUDE_DIRECTORIES (${OpenCV_INCLUDE_DIR})
+IF(UEYE_FOUND)
+    SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DHAVE_UEYE")
+    # Set header files from uEye.
+    INCLUDE_DIRECTORIES (${UEYE_INCLUDE_DIR})
+ENDIF()
 # Set include directory.
 INCLUDE_DIRECTORIES(include)
 
@@ -81,7 +97,7 @@ TARGET_LINK_LIBRARIES (${PROJECT_NAME} ${PROJECT_NAME}lib-static ${LIBRARIES})
 # Enable CxxTest for all available testsuites.
 IF(CXXTEST_FOUND)
     FILE(GLOB thisproject-testsuites "${CMAKE_CURRENT_SOURCE_DIR}/testsuites/*.h")
-
+    
     FOREACH(testsuite ${thisproject-testsuites})
         STRING(REPLACE "/" ";" testsuite-list ${testsuite})
 
