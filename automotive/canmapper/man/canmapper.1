@@ -1,32 +1,21 @@
-.\" Manpage for canproxy
+.\" Manpage for canmapper
 .\" Author: Christian Berger <christian.berger@gu.se>.
 
-.TH canproxy 1 "05 September 2015" "2.0.13" "canproxy man page"
+.TH canmapper 1 "05 September 2015" "2.0.13" "canmapper man page"
 
 .SH NAME
-canproxy \- This tool wraps a CAN interface to map data into a generic data representation.
+canmapper \- This tool maps a generic CAN messages to high-level C++ data structures and vice-versa.
 
 
 
 .SH SYNOPSIS
-.B canproxy --cid=<CID> [OPTIONS]
+.B canmapper --cid=<CID> [OPTIONS]
 
 
 
 .SH DESCRIPTION
-canproxy is a tool to wrap data received from a CAN interface into a generic data
-representation to be used with OpenDaVINCI. The tool canmapper(1) maps a generic
-data representation into a high-level C++ message.
-
-The following parameters need to be present in the configuration file supplied by
-odsupercomponent(1) to correctly configure canproxy:
-
-.RS
-.B canproxy.devicenode = /dev/pcan0
-.RE
-
-The parameter 'canproxy.devicenode' defines, which CAN device shall be used to read
-and write the data.
+canmapper is a tool to map low-level CAN messages to high-level C++ data structures
+to be used with OpenDaVINCI. It needs to be used with canproxy(1).
 
 This tool can only be used within an existing OpenDaVINCI container conference session
 created by odsupercomponent(1).
@@ -44,18 +33,18 @@ odsupercomponent(1).
 
 .B --freq=<FREQ>
 .RS
-This parameter specifies the runtime frequency in Hz that is used to run canproxy.
+This parameter specifies the runtime frequency in Hz that is used to run canmapper.
 If this parameter is omitted, a runtime frequency of 1 Hz is used.
 .RE
 
 
 .B --realtime=<0..49>
 .RS
-This parameter will schedule canproxy to use the SCHED_FIFO soft realtime
+This parameter will schedule canmapper to use the SCHED_FIFO soft realtime
 scheduler. The parameter specifies the scheduling priority.
 
 Please note that this feature is only available on Linux-based systems having a
-CONFIG_PREEMPT_RT kernel. In addition, canproxy needs to be executed with
+CONFIG_PREEMPT_RT kernel. In addition, canmapper needs to be executed with
 superuser privileges.
 
 This parameter has no effect if odsupercomponent(1) is started using the
@@ -73,12 +62,12 @@ This parameter specifies the verbosity level that is used to print some informat
 .SH EXAMPLES
 The following command runs the program at 10 Hz.
 
-.B canproxy --cid=111 --freq=10
+.B canmapper --cid=111 --freq=10
 
 
 
 .SH SEE ALSO
-canmapper(1), odsupercomponent(1)
+canproxy(1), odsupercomponent(1)
 
 
 

@@ -59,6 +59,7 @@ IF(UNIX)
         ###########################################################################
         # Add subdirectories.
         ADD_SUBDIRECTORY (canproxy)
+        ADD_SUBDIRECTORY (canmapper)
     ENDIF()
 ENDIF()
 

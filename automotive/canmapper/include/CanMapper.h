@@ -1,5 +1,6 @@
 /**
- * canproxy - Tool wrapping a CAN interface.
+ * canmapper - Tool for mapping GenericCANMessages to
+ *             high-level C++ data structures and vice-versa
  * Copyright (C) 2015 Christian Berger
  *
  * This program is free software; you can redistribute it and/or
@@ -17,23 +18,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef CANPROXY_H_
-#define CANPROXY_H_
+#ifndef CANMAPPER_H_
+#define CANMAPPER_H_
 
-#include <libpcan.h>
-
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "tools/recorder/Recorder.h"
+#include <core/base/module/DataTriggeredConferenceClientModule.h>
 
 namespace automotive {
 
     using namespace std;
 
     /**
-     * This class can be used to simply display data distributed
-     * using a conference.
+     * This class can be used to map GenericCANMessages to high-level C++ messages.
      */
-    class CanProxy : public core::base::module::TimeTriggeredConferenceClientModule {
+    class CanMapper : public core::base::module::DataTriggeredConferenceClientModule {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -42,7 +39,7 @@ namespace automotive {
              *
              * @param obj Reference to an object of this class.
              */
-            CanProxy(const CanProxy &/*obj*/);
+            CanMapper(const CanMapper &/*obj*/);
 
             /**
              * "Forbidden" assignment operator. Goal: The compiler should warn
@@ -52,7 +49,7 @@ namespace automotive {
              * @param obj Reference to an object of this class.
              * @return Reference to this instance.
              */
-            CanProxy& operator=(const CanProxy &/*obj*/);
+            CanMapper& operator=(const CanMapper &/*obj*/);
 
         public:
             /**
@@ -61,23 +58,18 @@ namespace automotive {
              * @param argc Number of command line arguments.
              * @param argv Command line arguments.
              */
-            CanProxy(const int32_t &argc, char **argv);
+            CanMapper(const int32_t &argc, char **argv);
 
-            virtual ~CanProxy();
+            virtual ~CanMapper();
 
-            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+            virtual void nextContainer(core::data::Container &c);
 
         private:
             virtual void setUp();
 
             virtual void tearDown();
-
-        private:
-            auto_ptr<tools::recorder::Recorder> m_recorder;
-            string m_deviceNode;
-            HANDLE m_handle;
     };
 
 } // automotive
 
-#endif /*CANPROXY_H_*/
+#endif /*CANMAPPER_H_*/

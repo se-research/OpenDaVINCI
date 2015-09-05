@@ -197,6 +197,8 @@ namespace core {
                     return "Draw line";
                 case VEHICLECONTROL:
                     return "VehicleControl";
+                case GENERIC_CAN_MESSAGE:
+                    return "GenericCANMessage";
                 case USER_BUTTON:
                     return "User Button";
                 case LOG_MESSAGE:

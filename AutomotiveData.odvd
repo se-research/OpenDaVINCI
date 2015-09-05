@@ -119,3 +119,13 @@ message automotive.miniature.SensorBoardData [id = 81] {
     map<uint32, double> distances;
 }
 
+
+///////////////////////////////////////////////////////////////////////////////
+// Vehicle messages.
+message automotive.GenericCANMessage [id = 71] {
+    core::data::TimeStamp driverTimeStamp; // TimeStamp from CAN driver.
+    uint64 identifier;                     // ID of the CAN message. 
+    uint8 length;                          // Number of data bytes (1-8).
+    uint64 data;                           // Payload of the CAN message.
+}
+

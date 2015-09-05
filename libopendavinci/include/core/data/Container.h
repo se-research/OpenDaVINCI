@@ -68,6 +68,8 @@ namespace core {
                     DRAW_LINE                    = 40,
                     VEHICLECONTROL               = 41,
 
+                    GENERIC_CAN_MESSAGE          = 71,
+
                     LOG_MESSAGE                  = 100,
                     DMCP_PULSE_MESSAGE           = 101,
                     DMCP_PULSE_ACK_MESSAGE       = 102,
