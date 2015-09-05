@@ -37,10 +37,6 @@ SET (CXXTEST_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../cxxtest")
 INCLUDE (CheckCxxTestEnvironment)
 
 ###########################################################################
-# Add subdirectories.
-ADD_SUBDIRECTORY (miniature)
-
-###########################################################################
 # Download and build Peak Systems CAN driver and library.
 IF(UNIX)
     # This library requires "libpopt-dev" to be installed.
@@ -54,5 +50,9 @@ IF(UNIX)
         TEST_COMMAND ""
         INSTALL_COMMAND DESTDIR=${INSTALL_DIR} make install
     )
+
+###########################################################################
+# Add subdirectories.
+    ADD_SUBDIRECTORY (canproxy)
 ENDIF()
 
