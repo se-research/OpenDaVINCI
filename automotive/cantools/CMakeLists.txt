@@ -33,7 +33,7 @@ SET(INSTALL_DIR ${CMAKE_INSTALL_PREFIX})
 
 ###########################################################################
 # Find and configure CxxTest.
-SET (CXXTEST_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../cxxtest") 
+SET (CXXTEST_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../cxxtest") 
 INCLUDE (CheckCxxTestEnvironment)
 
 ###########################################################################
