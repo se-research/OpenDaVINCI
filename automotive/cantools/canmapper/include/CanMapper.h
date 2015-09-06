@@ -23,6 +23,10 @@
 
 #include <core/base/module/DataTriggeredConferenceClientModule.h>
 
+#include "GeneratedHeaders_AutomotiveData.h"
+
+#include "DataMapper.h"
+
 namespace automotive {
 
     using namespace std;
@@ -68,6 +72,9 @@ namespace automotive {
             virtual void setUp();
 
             virtual void tearDown();
+
+        private:
+            DataMapper m_dataMapper;
     };
 
 } // automotive

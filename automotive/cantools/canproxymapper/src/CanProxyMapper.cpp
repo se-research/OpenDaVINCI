@@ -1,6 +1,5 @@
 /**
- * canmapper - Tool for mapping GenericCANMessages to
- *             high-level C++ data structures and vice-versa
+ * canproxymapper - Tool combining canproxy and canmapper
  * Copyright (C) 2015 Christian Berger
  *
  * This program is free software; you can redistribute it and/or
@@ -22,8 +21,9 @@
 
 #include "core/data/Container.h"
 #include "core/data/TimeStamp.h"
+#include "GeneratedHeaders_AutomotiveData.h"
 
-#include "CanMapper.h"
+#include "CanProxyMapper.h"
 
 namespace automotive {
 
@@ -31,27 +31,19 @@ namespace automotive {
     using namespace core::base;
     using namespace core::data;
 
-    CanMapper::CanMapper(const int32_t &argc, char **argv) :
-        DataTriggeredConferenceClientModule(argc, argv, "canmapper"),
+    CanProxyMapper::CanProxyMapper(const int32_t &argc, char **argv) :
+        CanProxy(argc, argv),
         m_dataMapper() {}
 
-    CanMapper::~CanMapper() {}
+    CanProxyMapper::~CanProxyMapper() {}
 
-    void CanMapper::setUp() {}
-
-    void CanMapper::tearDown() {}
-
-    void CanMapper::nextContainer(Container &c) {
-        if (c.getDataType() == Container::GENERIC_CAN_MESSAGE) {
-            GenericCANMessage gcm = c.getData<GenericCANMessage>();
-
-            // Try to get complete message with this additional information.
-            Container result = m_dataMapper.mapNext(gcm);
-            if (result.getDataType() != Container::UNDEFINEDDATA) {
-                // Last GenericCANMessage resulted in a complete decoding
-                // and mapping of valid high-level C++ message.
-                getConference().send(result);
-            }
+    void CanProxyMapper::nextGenericCANMessage(const GenericCANMessage &gcm) {
+        // Try to get complete message with this additional information.
+        Container result = m_dataMapper.mapNext(gcm);
+        if (result.getDataType() != Container::UNDEFINEDDATA) {
+            // Last GenericCANMessage resulted in a complete decoding
+            // and mapping of valid high-level C++ message.
+            getConference().send(result);
         }
     }
 

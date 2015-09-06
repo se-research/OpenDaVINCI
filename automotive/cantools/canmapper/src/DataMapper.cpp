@@ -1,5 +1,5 @@
 /**
- * canmapper - Tool for mapping GenericCANMessages to
+ * DataMapper - Tool for mapping GenericCANMessages to
  *             high-level C++ data structures and vice-versa
  * Copyright (C) 2015 Christian Berger
  *
@@ -20,10 +20,7 @@
 
 #include <iostream>
 
-#include "core/data/Container.h"
-#include "core/data/TimeStamp.h"
-
-#include "CanMapper.h"
+#include "DataMapper.h"
 
 namespace automotive {
 
@@ -31,28 +28,22 @@ namespace automotive {
     using namespace core::base;
     using namespace core::data;
 
-    CanMapper::CanMapper(const int32_t &argc, char **argv) :
-        DataTriggeredConferenceClientModule(argc, argv, "canmapper"),
-        m_dataMapper() {}
+    DataMapper::DataMapper() {}
 
-    CanMapper::~CanMapper() {}
+    DataMapper::~DataMapper() {}
 
-    void CanMapper::setUp() {}
+    Container DataMapper::mapNext(const GenericCANMessage &gcm) {
+        Container c;
 
-    void CanMapper::tearDown() {}
+        cout << "Received GenericCANMessage" <<
+                                  " sent at " << c.getSentTimeStamp().getYYYYMMDD_HHMMSSms() <<
+                              " received at " << c.getReceivedTimeStamp().getYYYYMMDD_HHMMSSms() <<
+                ", " << gcm.toString() << endl;
 
-    void CanMapper::nextContainer(Container &c) {
-        if (c.getDataType() == Container::GENERIC_CAN_MESSAGE) {
-            GenericCANMessage gcm = c.getData<GenericCANMessage>();
+        // TODO: Serve internal state machines and return valid container (i.e. Container::UNDEFINEDDATA)
+        //       or just the incomplete Container as default.
 
-            // Try to get complete message with this additional information.
-            Container result = m_dataMapper.mapNext(gcm);
-            if (result.getDataType() != Container::UNDEFINEDDATA) {
-                // Last GenericCANMessage resulted in a complete decoding
-                // and mapping of valid high-level C++ message.
-                getConference().send(result);
-            }
-        }
+        return c;
     }
 
 } // automotive

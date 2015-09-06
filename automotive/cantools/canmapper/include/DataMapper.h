@@ -1,5 +1,6 @@
 /**
- * canproxy - Tool wrapping a CAN interface.
+ * canmapper - Tool for mapping GenericCANMessages to
+ *             high-level C++ data structures and vice-versa
  * Copyright (C) 2015 Christian Berger
  *
  * This program is free software; you can redistribute it and/or
@@ -17,26 +18,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef CANPROXY_H_
-#define CANPROXY_H_
+#ifndef DATAMAPPER_H_
+#define DATAMAPPER_H_
 
-#include <libpcan.h>
+#include <core/data/Container.h>
 
-#include "core/base/FIFOQueue.h"
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "tools/recorder/Recorder.h"
-
-#include "GenericCANMessageListener.h"
+#include "GeneratedHeaders_AutomotiveData.h"
 
 namespace automotive {
 
     using namespace std;
 
     /**
-     * This class wraps a CAN device node to wrap low-level CAN messages into GenericCANMessages.
+     * This class can be used to map GenericCANMessages to high-level C++ messages.
      */
-    class CanProxy : public core::base::module::TimeTriggeredConferenceClientModule,
-                     public GenericCANMessageListener {
+    class DataMapper {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -45,7 +41,7 @@ namespace automotive {
              *
              * @param obj Reference to an object of this class.
              */
-            CanProxy(const CanProxy &/*obj*/);
+            DataMapper(const DataMapper &/*obj*/);
 
             /**
              * "Forbidden" assignment operator. Goal: The compiler should warn
@@ -55,35 +51,25 @@ namespace automotive {
              * @param obj Reference to an object of this class.
              * @return Reference to this instance.
              */
-            CanProxy& operator=(const CanProxy &/*obj*/);
+            DataMapper& operator=(const DataMapper &/*obj*/);
 
         public:
+            DataMapper();
+
+            virtual ~DataMapper();
+
             /**
-             * Constructor.
+             * This method adds the given GenericCANMessage to the internal
+             * CAN message decoder. If this message could be decoded (or
+             * including the previous sequence, this method returns a valid
+             * Container (ie. Container::UNDEFINEDDATA).
              *
-             * @param argc Number of command line arguments.
-             * @param argv Command line arguments.
+             * @param gcm Next GenericCANMessage.
+             * @return Container, where the type needs to be checked to determine invalidity (i.e. !Container::UNDEFINEDDATA).
              */
-            CanProxy(const int32_t &argc, char **argv);
-
-            virtual ~CanProxy();
-
-            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
-
-            virtual void nextGenericCANMessage(const GenericCANMessage &gcm);
-
-        private:
-            virtual void setUp();
-
-            virtual void tearDown();
-
-        private:
-            core::base::FIFOQueue m_fifo;
-            auto_ptr<tools::recorder::Recorder> m_recorder;
-            string m_deviceNode;
-            HANDLE m_handle;
+            core::data::Container mapNext(const GenericCANMessage &gcm);
     };
 
 } // automotive
 
-#endif /*CANPROXY_H_*/
+#endif /*DATAMAPPER_H_*/
