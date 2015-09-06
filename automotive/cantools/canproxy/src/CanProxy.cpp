@@ -20,10 +20,10 @@
 #include <iostream>
 
 #include "core/data/Container.h"
-#include "core/data/TimeStamp.h"
 #include "GeneratedHeaders_AutomotiveData.h"
 
 #include "CanProxy.h"
+#include "ReadCanMessageService.h"
 
 namespace automotive {
 
@@ -33,6 +33,8 @@ namespace automotive {
 
     CanProxy::CanProxy(const int32_t &argc, char **argv) :
         TimeTriggeredConferenceClientModule(argc, argv, "canproxy"),
+        GenericCANMessageListener(),
+        m_fifo(),
         m_recorder(),
         m_deviceNode(),
         m_handle(NULL) {}
@@ -43,8 +45,8 @@ namespace automotive {
         m_deviceNode = getKeyValueConfiguration().getValue<string>("canproxy.devicenode");
 
         CLOG << "[CanProxy] Opening " << m_deviceNode << "... ";
-		m_handle = LINUX_CAN_Open(m_deviceNode.c_str(), O_RDWR);
-		if (!m_handle) {
+        m_handle = LINUX_CAN_Open(m_deviceNode.c_str(), O_RDWR);
+        if (m_handle == NULL) {
             CLOG << "failed." << endl;
         }
         else {
@@ -75,31 +77,20 @@ namespace automotive {
         CLOG << "done." << endl;
     }
 
+    void CanProxy::nextGenericCANMessage(const GenericCANMessage &gcm) {
+        Container c(Container::GENERIC_CAN_MESSAGE, gcm);
+        m_fifo.add(c);
+    }
+
     coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode CanProxy::body() {
+        // Start a thread to receive CAN messages concurrently.
+        ReadCanMessageService reader(m_handle, *this);
+        reader.start();
+
         while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
-            TPCANRdMsg message;
-            int32_t errorCode = LINUX_CAN_Read(m_handle, &message);
-
-            if (errorCode == 0) {
-                cout << "[CanProxy] ID = " << message.Msg.ID << ", LEN = " << message.Msg.LEN << ", DATA = ";
-
-                // Set time stamp from driver.
-                TimeStamp driverTimeStamp(message.dwTime, message.wUsec);
-
-                // Create generic CAN message representation.
-                GenericCANMessage gcm;
-                gcm.setDriverTimeStamp(driverTimeStamp);
-                gcm.setIdentifier(message.Msg.ID);
-                gcm.setLength(message.Msg.LEN);
-                uint64_t data = 0;
-                for (uint8_t i = 0; i < message.Msg.LEN; i++) {
-                    cout << static_cast<uint32_t>(message.Msg.DATA[i]) << " ";
-                    data |= (message.Msg.DATA[i] << (i*8));
-                }
-                cout << endl;
-                gcm.setData(data);
-
-                Container c(Container::GENERIC_CAN_MESSAGE, gcm);
+            const uint32_t ENTRIES = m_fifo.getSize();
+            for (uint32_t i = 0; i < ENTRIES; i++) {
+                Container c = m_fifo.leave();
 
                 // Store container to dump file.
                 if (m_recorder.get() != NULL) {
@@ -109,11 +100,9 @@ namespace automotive {
                 // Send container with GenericCANMessage.
                 getConference().send(c);
             }
-            else {
-                cerr << "[CanProxy] Error receiving data, error code " << errno << ", " << strerror(errno) << endl;
-                break;
-            }
         }
+
+        reader.stop();
 
         return coredata::dmcp::ModuleExitCodeMessage::OKAY;
     }

@@ -1,0 +1,92 @@
+.\" Manpage for canproxy
+.\" Author: Christian Berger <christian.berger@gu.se>.
+
+.TH canproxy 1 "05 September 2015" "2.0.13" "canproxy man page"
+
+.SH NAME
+canproxy \- This tool wraps a CAN interface to map data into a generic data representation.
+
+
+
+.SH SYNOPSIS
+.B canproxy --cid=<CID> [OPTIONS]
+
+
+
+.SH DESCRIPTION
+canproxy is a tool to wrap data received from a CAN interface into a generic data
+representation to be used with OpenDaVINCI. The tool canmapper(1) maps a generic
+data representation into a high-level C++ message.
+
+The following parameters need to be present in the configuration file supplied by
+odsupercomponent(1) to correctly configure canproxy:
+
+.RS
+.B canproxy.devicenode = /dev/pcan0
+.RE
+
+The parameter 'canproxy.devicenode' defines, which CAN device shall be used to read
+and write the data.
+
+This tool can only be used within an existing OpenDaVINCI container conference session
+created by odsupercomponent(1).
+
+
+
+.SH OPTIONS
+.B --cid=<CID>
+.RS
+This parameter specifies the conference identifier (CID) that is used to join a
+running container conference session. The session itself needs to be created by
+odsupercomponent(1).
+.RE
+
+
+.B --freq=<FREQ>
+.RS
+This parameter specifies the runtime frequency in Hz that is used to run canproxy.
+If this parameter is omitted, a runtime frequency of 1 Hz is used.
+.RE
+
+
+.B --realtime=<0..49>
+.RS
+This parameter will schedule canproxy to use the SCHED_FIFO soft realtime
+scheduler. The parameter specifies the scheduling priority.
+
+Please note that this feature is only available on Linux-based systems having a
+CONFIG_PREEMPT_RT kernel. In addition, canproxy needs to be executed with
+superuser privileges.
+
+This parameter has no effect if odsupercomponent(1) is started using the
+parameter '--managed'.
+.RE
+
+
+.B --verbose=<0..10>
+.RS
+This parameter specifies the verbosity level that is used to print some information to stdlog.
+.RE
+
+
+
+.SH EXAMPLES
+The following command runs the program at 10 Hz.
+
+.B canproxy --cid=111 --freq=10
+
+
+
+.SH SEE ALSO
+canmapper(1), canproxymapper(1), odsupercomponent(1)
+
+
+
+.SH BUGS
+No known bugs.
+
+
+
+.SH AUTHOR
+Christian Berger (christian.berger@gu.se)
+

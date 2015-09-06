@@ -1,6 +1,5 @@
 /**
- * canmapper - Tool for mapping GenericCANMessages to
- *             high-level C++ data structures and vice-versa
+ * canproxymapper - Tool combining canproxy and canmapper
  * Copyright (C) 2015 Christian Berger
  *
  * This program is free software; you can redistribute it and/or
@@ -18,10 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef CANMAPPER_H_
-#define CANMAPPER_H_
+#ifndef CANPROXYMAPPER_H_
+#define CANPROXYMAPPER_H_
 
-#include <core/base/module/DataTriggeredConferenceClientModule.h>
+#include "CanProxy.h"
+#include "DataMapper.h"
 
 namespace automotive {
 
@@ -30,7 +30,7 @@ namespace automotive {
     /**
      * This class can be used to map GenericCANMessages to high-level C++ messages.
      */
-    class CanMapper : public core::base::module::DataTriggeredConferenceClientModule {
+    class CanProxyMapper : public CanProxy {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -39,7 +39,7 @@ namespace automotive {
              *
              * @param obj Reference to an object of this class.
              */
-            CanMapper(const CanMapper &/*obj*/);
+            CanProxyMapper(const CanProxyMapper &/*obj*/);
 
             /**
              * "Forbidden" assignment operator. Goal: The compiler should warn
@@ -49,7 +49,7 @@ namespace automotive {
              * @param obj Reference to an object of this class.
              * @return Reference to this instance.
              */
-            CanMapper& operator=(const CanMapper &/*obj*/);
+            CanProxyMapper& operator=(const CanProxyMapper &/*obj*/);
 
         public:
             /**
@@ -58,18 +58,17 @@ namespace automotive {
              * @param argc Number of command line arguments.
              * @param argv Command line arguments.
              */
-            CanMapper(const int32_t &argc, char **argv);
+            CanProxyMapper(const int32_t &argc, char **argv);
 
-            virtual ~CanMapper();
+            virtual ~CanProxyMapper();
 
-            virtual void nextContainer(core::data::Container &c);
+            virtual void nextGenericCANMessage(const GenericCANMessage &gcm);
 
         private:
-            virtual void setUp();
+            DataMapper m_dataMapper;
 
-            virtual void tearDown();
     };
 
 } // automotive
 
-#endif /*CANMAPPER_H_*/
+#endif /*CANPROXYMAPPER_H_*/

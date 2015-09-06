@@ -39,7 +39,7 @@ INCLUDE (CompileFlags)
 
 ###########################################################################
 # Find and configure CxxTest.
-SET (CXXTEST_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../cxxtest") 
+SET (CXXTEST_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../../cxxtest") 
 INCLUDE (CheckCxxTestEnvironment)
 
 ###########################################################################
@@ -105,6 +105,6 @@ ENDIF(CXXTEST_FOUND)
 
 ###############################################################################
 # Install this project.
-INSTALL(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin COMPONENT canmapper)
-INSTALL(FILES man/${PROJECT_NAME}.1 DESTINATION man/man1 COMPONENT canmapper)
+INSTALL(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin COMPONENT cantools)
+INSTALL(FILES man/${PROJECT_NAME}.1 DESTINATION man/man1 COMPONENT cantools)
 

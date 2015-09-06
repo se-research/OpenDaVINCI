@@ -1,4 +1,5 @@
-# canproxy - Tool wrapping a CAN interface.
+# canmapper - Tool for mapping GenericCANMessages to high-level
+#             C++ data structures and vice-versa.
 # Copyright (C) 2015 Christian Berger
 #
 # This program is free software; you can redistribute it and/or
@@ -17,7 +18,7 @@
 
 CMAKE_MINIMUM_REQUIRED (VERSION 2.8)
 
-PROJECT (canproxy)
+PROJECT (canproxymapper)
 
 ###########################################################################
 # Set the search path for .cmake files.
@@ -38,7 +39,7 @@ INCLUDE (CompileFlags)
 
 ###########################################################################
 # Find and configure CxxTest.
-SET (CXXTEST_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../cxxtest") 
+SET (CXXTEST_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../../cxxtest") 
 INCLUDE (CheckCxxTestEnvironment)
 
 ###########################################################################
@@ -56,6 +57,10 @@ FIND_PACKAGE (AutomotiveData REQUIRED)
 INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS}/opendavinci)
 # Set header files from AutomotiveData.
 INCLUDE_DIRECTORIES (${AUTOMOTIVEDATA_INCLUDE_DIRS}/automotivedata)
+# Set include directory from canmapper.
+INCLUDE_DIRECTORIES(${canmapper_SOURCE_DIR}/include)
+# Set include directory from canproxy.
+INCLUDE_DIRECTORIES(${canproxy_SOURCE_DIR}/include)
 # Set header files from CAN driver.
 INCLUDE_DIRECTORIES (${CMAKE_INSTALL_PREFIX}/usr/include)
 # Set include directory.
@@ -63,7 +68,9 @@ INCLUDE_DIRECTORIES(include)
 
 ###########################################################################
 # Set linking libraries to successfully link test suites and binaries.
-SET (LIBRARIES ${OPENDAVINCI_LIBRARIES}
+SET (LIBRARIES ${canmapper_BINARY_DIR}/libcanmapperlib-static.a
+               ${canproxy_BINARY_DIR}/libcanproxylib-static.a
+               ${OPENDAVINCI_LIBRARIES}
                ${AUTOMOTIVEDATA_LIBRARIES}
                ${CMAKE_INSTALL_PREFIX}/usr/lib/libpcan.so)
 
@@ -107,6 +114,6 @@ ENDIF(CXXTEST_FOUND)
 
 ###############################################################################
 # Install this project.
-INSTALL(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin COMPONENT canproxy)
-INSTALL(FILES man/${PROJECT_NAME}.1 DESTINATION man/man1 COMPONENT canproxy)
+INSTALL(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin COMPONENT cantools)
+INSTALL(FILES man/${PROJECT_NAME}.1 DESTINATION man/man1 COMPONENT cantools)
 

@@ -17,24 +17,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef CANPROXY_H_
-#define CANPROXY_H_
+#ifndef READCANMESSAGESERVICE_H_
+#define READCANMESSAGESERVICE_H_
 
 #include <libpcan.h>
 
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "tools/recorder/Recorder.h"
+#include <core/base/Service.h>
+
+#include "GenericCANMessageListener.h"
 
 namespace automotive {
 
     using namespace std;
 
     /**
-     * This class can be used to simply display data distributed
-     * using a conference.
+     * This class encapsulates the service for reading low-level CAN message to be
+     * wrapped into a GenericCANMessage.
      */
-    class CanProxy : public core::base::module::TimeTriggeredConferenceClientModule {
-        private:
+    class ReadCanMessageService : public core::base::Service {
+       private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
              * already at compile time for unwanted bugs caused by any misuse
@@ -42,7 +43,7 @@ namespace automotive {
              *
              * @param obj Reference to an object of this class.
              */
-            CanProxy(const CanProxy &/*obj*/);
+            ReadCanMessageService(const ReadCanMessageService &/*obj*/);
 
             /**
              * "Forbidden" assignment operator. Goal: The compiler should warn
@@ -52,32 +53,28 @@ namespace automotive {
              * @param obj Reference to an object of this class.
              * @return Reference to this instance.
              */
-            CanProxy& operator=(const CanProxy &/*obj*/);
+            ReadCanMessageService& operator=(const ReadCanMessageService &/*obj*/);
 
         public:
             /**
              * Constructor.
              *
-             * @param argc Number of command line arguments.
-             * @param argv Command line arguments.
+             * @param handle Handle referring to a successully opened CAN device.
+             * @param listener Listener that will received wrapped GenericCANMessages.
              */
-            CanProxy(const int32_t &argc, char **argv);
+            ReadCanMessageService(HANDLE handle, GenericCANMessageListener &listener);
 
-            virtual ~CanProxy();
+            virtual ~ReadCanMessageService();
 
-            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+            virtual void beforeStop();
 
-        private:
-            virtual void setUp();
-
-            virtual void tearDown();
+            virtual void run();
 
         private:
-            auto_ptr<tools::recorder::Recorder> m_recorder;
-            string m_deviceNode;
             HANDLE m_handle;
+            GenericCANMessageListener &m_listener;
     };
 
 } // automotive
 
-#endif /*CANPROXY_H_*/
+#endif /*READCANMESSAGESERVICE_H_*/
