@@ -26,46 +26,22 @@
 #include "../include/RecIntegrity.h"
 
 using namespace std;
-using namespace core::data;
 using namespace odrecintegrity;
-
-/**
- * This class derives from RecIntegrity to allow access to protected methods.
- */
-class RecIntegrityTestling : public RecIntegrity {
-    private:
-        RecIntegrityTestling();
-    
-    public:
-        RecIntegrityTestling(const int32_t &argc, char **argv) :
-            RecIntegrity(argc, argv) {}
-
-        // Here, you need to add all methods which are protected in RecIntegrity and which are needed for the test cases.
-};
 
 /**
  * The actual testsuite starts here.
  */
 class RecIntegrityTest : public CxxTest::TestSuite {
     private:
-        RecIntegrityTestling *dt;
+        RecIntegrity *dt;
 
     public:
         /**
          * This method will be called before each testXYZ-method.
          */
         void setUp() {
-            // Prepare the data that would be available from commandline.
-            string argv0("odrecintegrity");
-            string argv1("--cid=100");
-            int32_t argc = 2;
-            char **argv;
-            argv = new char*[2];
-            argv[0] = const_cast<char*>(argv0.c_str());
-            argv[1] = const_cast<char*>(argv1.c_str());
-
             // Create an instance of sensorboard through SensorBoardTestling which will be deleted in tearDown().
-            dt = new RecIntegrityTestling(argc, argv);
+            dt = new RecIntegrity();
         }
 
         /**

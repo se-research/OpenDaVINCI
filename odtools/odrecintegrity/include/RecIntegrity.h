@@ -20,7 +20,7 @@
 #ifndef RECINTEGRITY_H_
 #define RECINTEGRITY_H_
 
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "core/platform.h"
 
 namespace odrecintegrity {
 
@@ -29,7 +29,7 @@ namespace odrecintegrity {
     /**
      * This class can be used to inspect the integrity of recorded data.
      */
-    class RecIntegrity : public core::base::module::TimeTriggeredConferenceClientModule {
+    class RecIntegrity {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -51,22 +51,18 @@ namespace odrecintegrity {
             RecIntegrity& operator=(const RecIntegrity &/*obj*/);
 
         public:
-            /**
-             * Constructor.
-             *
-             * @param argc Number of command line arguments.
-             * @param argv Command line arguments.
-             */
-            RecIntegrity(const int32_t &argc, char **argv);
+            RecIntegrity();
 
             virtual ~RecIntegrity();
 
-            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
-
-        private:
-            virtual void setUp();
-
-            virtual void tearDown();
+            /**
+             * This method validates a specified file regarding integrity.
+             *
+             * @param argc Number of command line arguments.
+             * @param argv Command line arguments.
+             * @return 0 if specified file is integer, 1 if the file is not integer, and 255 if the file could not be opened.
+             */
+            int32_t run(const int32_t &argc, char **argv);
     };
 
 } // odrecintegrity
