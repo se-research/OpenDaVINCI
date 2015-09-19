@@ -20,6 +20,6 @@
 #include "RecIntegrity.h"
 
 int32_t main(int32_t argc, char **argv) {
-    odrecintegrity::RecIntegrity ri(argc, argv);
-    return ri.runModule();
+    odrecintegrity::RecIntegrity ri;
+    return ri.run(argc, argv);
 }

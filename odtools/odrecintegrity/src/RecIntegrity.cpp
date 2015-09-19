@@ -17,12 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <fstream>
 #include <iostream>
 
 #include "core/SharedPointer.h"
 #include "core/data/Container.h"
-#include "core/io/StreamFactory.h"
-#include "core/io/URL.h"
 
 #include "GeneratedHeaders_CoreData.h"
 
@@ -34,76 +33,83 @@ namespace odrecintegrity {
     using namespace core;
     using namespace core::base;
     using namespace core::data;
-    using namespace core::io;
 
-    RecIntegrity::RecIntegrity(const int32_t &argc, char **argv) :
-        TimeTriggeredConferenceClientModule(argc, argv, "odrecintegrity")
-        {}
+    RecIntegrity::RecIntegrity() {}
 
     RecIntegrity::~RecIntegrity() {}
 
-    void RecIntegrity::setUp() {}
+    int32_t RecIntegrity::run(const int32_t &argc, char **argv) {
+        enum RETURN_CODE { CORRECT = 0,
+                           FILE_CORRUPT = 1,
+                           FILE_COULD_NOT_BE_OPENED = 255 };
 
-    void RecIntegrity::tearDown() {}
+        RETURN_CODE retVal = CORRECT;
 
-    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode RecIntegrity::body() {
-        // Read the URL of the file to replay.
-        URL url(getKeyValueConfiguration().getValue<string>("odrecintegrity.input"));
+        if (argc == 2) {
+            const string FILENAME(argv[1]);
+            fstream fin;
+            fin.open(FILENAME.c_str(), ios_base::in|ios_base::binary);
 
-        // Get the stream using the StreamFactory with the given URL.
-        SharedPointer<istream> in = StreamFactory::getInstance().getInputStream(url);
+            if (fin.good()) {
+                // Determine file size.
+                fin.seekg(0, fin.end);
+                int32_t length = fin.tellg();
+                fin.seekg(0, fin.beg);
 
-        if (in->good()) {
-            // Determine file size.
-            in->seekg(0, in->end);
-            int32_t length = in->tellg();
-            in->seekg(0, in->beg);
+                int32_t oldPercentage = -1;
+                bool fileNotCorrupt = true;
+                uint32_t numberOfSharedImages = 0;
+                uint32_t numberOfSharedData = 0;
+                while (fin.good()) {
+                    Container c;
+                    fin >> c;
 
-            int32_t oldPercentage = -1;
-            bool fileNotCorrupt = true;
-            uint32_t numberOfSharedImages = 0;
-            uint32_t numberOfSharedData = 0;
-            while (in->good()) {
-                Container c;
-                (*in) >> c;
+                    if (fin.gcount() > 0) {
+                        int32_t currPos = fin.tellg();
 
-                if (in->gcount() > 0) {
-                    int32_t currPos = in->tellg();
+                        fileNotCorrupt &= (c.getDataType() != Container::UNDEFINEDDATA) && (currPos > 0);
 
-                    fileNotCorrupt &= (c.getDataType() != Container::UNDEFINEDDATA) && (currPos > 0);
+                        // If the data is from SHARED_IMAGE, skip the raw data from the shared memory segment.
+                        if (c.getDataType() == Container::SHARED_IMAGE) {
+                            coredata::image::SharedImage si = c.getData<coredata::image::SharedImage>();
 
-                    // If the data is from SHARED_IMAGE, skip the raw data from the shared memory segment.
-                    if (c.getDataType() == Container::SHARED_IMAGE) {
-                        coredata::image::SharedImage si = c.getData<coredata::image::SharedImage>();
+                            uint32_t lengthToSkip = si.getSize();
+                            if (lengthToSkip == 0) {
+                                lengthToSkip = si.getWidth() * si.getHeight() * si.getBytesPerPixel();
+                            }
 
-                        uint32_t lengthToSkip = si.getSize();
+                            fin.seekg(currPos + lengthToSkip);
+                            cout << "[RecIntegrity]: Found SHARED_IMAGE '" << si.getName() << "' (" << lengthToSkip << " bytes)" << endl;
+                            numberOfSharedImages++;
+                        }
+                        else if (c.getDataType() == Container::SHARED_DATA) {
+                            coredata::SharedData sd = c.getData<coredata::SharedData>();
 
-                        in->seekg(currPos + lengthToSkip);
-                        cout << "[" << getName() << "(" << getIdentifier() << ")]: Found SHARED_IMAGE '" << si.getName() << "' (" << lengthToSkip << " bytes)" << endl;
-                        numberOfSharedImages++;
-                    }
-                    else if (c.getDataType() == Container::SHARED_DATA) {
-                        coredata::SharedData sd = c.getData<coredata::SharedData>();
+                            uint32_t lengthToSkip = sd.getSize();
 
-                        uint32_t lengthToSkip = sd.getSize();
+                            fin.seekg(currPos + lengthToSkip);
+                            cout << "[RecIntegrity]: Found SHARED_DATA '" << sd.getName() << "' (" << lengthToSkip << " bytes)" << endl;
+                            numberOfSharedData++;
+                        }
 
-                        in->seekg(currPos + lengthToSkip);
-                        cout << "[" << getName() << "(" << getIdentifier() << ")]: Found SHARED_DATA '" << sd.getName() << "' (" << lengthToSkip << " bytes)" << endl;
-                        numberOfSharedData++;
-                    }
+                        float percentage = (float)(currPos*100.0)/(float)length;
 
-                    float percentage = (float)(currPos*100.0)/(float)length;
-
-                    if ( ((int32_t)percentage % 5 == 0) && ((int32_t)percentage != oldPercentage) ) {
-                        cout << "[" << getName() << "(" << getIdentifier() << ")]: " << percentage << "% (" << currPos << "/" << length << " bytes processed)." << endl;
-                        oldPercentage = (int32_t)percentage;
+                        if ( ((int32_t)percentage % 5 == 0) && ((int32_t)percentage != oldPercentage) ) {
+                            cout << "[RecIntegrity]: " << percentage << "% (" << currPos << "/" << length << " bytes processed)." << endl;
+                            oldPercentage = (int32_t)percentage;
+                        }
                     }
                 }
+                cout << "[RecIntegrity]: Input file is " << ((fileNotCorrupt) ? "not " : "") << "corrupt, contains " << numberOfSharedImages << " shared images and " << numberOfSharedData << " shared data segments." << endl;
+
+                retVal = ((fileNotCorrupt) ? CORRECT : FILE_CORRUPT);
             }
-            cout << "[" << getName() << "(" << getIdentifier() << ")]: Input file is " << ((fileNotCorrupt) ? "not " : "") << "corrupt, contains " << numberOfSharedImages << " shared images and " << numberOfSharedData << " shared data segments." << endl;
+            else {
+                retVal = FILE_COULD_NOT_BE_OPENED;
+            }
         }
 
-        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+        return retVal;
     }
 
 } // odrecintegrity

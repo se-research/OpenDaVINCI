@@ -1,7 +1,7 @@
 .\" Manpage for odrecintegrity
 .\" Author: Christian Berger <christian.berger@gu.se>.
 
-.TH odrecintegrity 1 "01 September 2015" "2.0.13" "odrecintegrity man page"
+.TH odrecintegrity 1 "13 September 2015" "2.0.15" "odrecintegrity man page"
 
 .SH NAME
 odrecintegrity \- This tool verifies if an existing recording file contains valid container data.
@@ -9,7 +9,7 @@ odrecintegrity \- This tool verifies if an existing recording file contains vali
 
 
 .SH SYNOPSIS
-.B odrecintegrity --cid=<CID> [OPTIONS]
+.B odrecintegrity <FILENAME>
 
 
 
@@ -17,61 +17,23 @@ odrecintegrity \- This tool verifies if an existing recording file contains vali
 odrecintegrity belongs to OpenDaVINCI and is a tool to verify the integrity of a
 recording file containing dumps from an OpenDaVINCI container conference session.
 
-The following parameter needs to be present in the configuration file supplied by
-odsupercomponent(1) pointing to a recording file:
-
-.RS
-.B recintegrity.input = file://myRecording.rec # File to be verified.
-.RE
-
-This tool can only be used within an existing OpenDaVINCI container conference session
-created by odsupercomponent(1).
-
-
 
 .SH OPTIONS
-.B --cid=<CID>
+.B <FILENAME>
 .RS
-This parameter specifies the conference identifier (CID) that is used to join a
-running container conference session. The session itself needs to be created by
-odsupercomponent(1).
-.RE
-
-
-.B --freq=<FREQ>
-.RS
-This parameter specifies the runtime frequency in Hz that is used to run odrecintegrity.
-If this parameter is omitted, a runtime frequency of 1 Hz is used.
-.RE
-
-
-.B --realtime=<0..49>
-.RS
-This parameter will schedule odrecintegrity to use the SCHED_FIFO soft realtime
-scheduler. The parameter specifies the scheduling priority.
-
-Please note that this feature is only available on Linux-based systems having a
-CONFIG_PREEMPT_RT kernel. In addition, odrecintegrity needs to be executed with
-superuser privileges.
-
-This parameter has no effect if odsupercomponent(1) is started using the
-parameter '--managed'.
-.RE
-
-
-.B --verbose=<0..10>
-.RS
-This parameter specifies the verbosity level that is used to print some information to stdlog.
+This parameter specifies the file to be checked.
 .RE
 
 
 
 .SH EXAMPLES
-The following command verifies the content for the file specified in the configuration file
-using a frequency of 10 Hz.
+The following command verifies the content for the file specified as commandline parameter.
 
-.B odrecintegrity --cid=111 --freq=10
+.B odrecintegrity myRecording.rec
 
+The following command verifies the content for the file containing dumps from shared images specified as commandline parameter.
+
+.B odrecintegrity myRecording.rec.mem
 
 
 .SH SEE ALSO
