@@ -63,7 +63,7 @@ namespace automotive {
             msg.LEN = LENGTH;
             uint64_t data = gcm.getData();
             for (uint8_t i = 0; i < LENGTH; i++) {
-                msg.DATA[(LENGTH-1) - i] = (data & 0xFF);
+                msg.DATA[i] = (data & 0xFF);
                 data = data >> 8;
             }
             int32_t errorCode = CAN_Write(m_handle, &msg);
