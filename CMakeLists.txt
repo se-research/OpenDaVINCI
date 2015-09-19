@@ -399,19 +399,6 @@ IF(    NOT("${CMAKE_TOOLCHAIN_FILE}" STREQUAL "")
             TEST_BEFORE_INSTALL 1
             INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcockpit-prefix/src/odcockpit-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcockpit-prefix/src/odcockpit-build --target ${MAKE_PACKAGE})
     ENDIF()
-
-    # Next, build automotive/cantools.
-    IF(${BUILD_AUTOMOTIVE_CANTOOLS})
-        ExternalProject_Add (automotive_cantools
-            DEPENDS libautomotivedata
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/automotive/cantools"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
-            TEST_BEFORE_INSTALL 1
-            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/automotive_cantools-prefix/src/automotive_cantools-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/automotive_cantools-prefix/src/automotive_cantools-build --target ${MAKE_PACKAGE})
-    ENDIF()
 ENDIF()
 
 ###########################################################################
@@ -544,18 +531,5 @@ IF(    NOT("${CMAKE_TOOLCHAIN_FILE}" STREQUAL "")
             CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
             TEST_COMMAND ""
             INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcockpit-prefix/src/odcockpit-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcockpit-prefix/src/odcockpit-build --target ${MAKE_PACKAGE})
-    ENDIF()
-
-    # Next, build automotive/cantools.
-    IF(${BUILD_AUTOMOTIVE_CANTOOLS})
-        ExternalProject_Add (automotive_cantools
-            DEPENDS libautomotivedata
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/automotive/cantools"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
-            TEST_BEFORE_INSTALL 1
-            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/automotive_cantools-prefix/src/automotive_cantools-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/automotive_cantools-prefix/src/automotive_cantools-build --target ${MAKE_PACKAGE})
     ENDIF()
 ENDIF()
