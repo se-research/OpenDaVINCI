@@ -72,6 +72,13 @@ namespace automotive {
 
             virtual void nextGenericCANMessage(const GenericCANMessage &gcm);
 
+            /**
+             * This methods writes a GenericCANMessage to the device.
+             *
+             * @param gcm GenericCANMessage to be written.
+             */
+            void writeGenericCANMessage(const GenericCANMessage &gcm);
+
         private:
             virtual void setUp();
 

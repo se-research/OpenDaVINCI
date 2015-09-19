@@ -82,6 +82,22 @@ namespace automotive {
         m_fifo.add(c);
     }
 
+    void CanProxy::writeGenericCANMessage(const GenericCANMessage &gcm) {
+        if (m_handle != NULL) {
+            TPCANMsg msg;
+            const uint8_t LENGTH = gcm.getLength();
+            msg.ID = gcm.getIdentifier();
+            msg.MSGTYPE = MSGTYPE_STANDARD;
+            msg.LEN = LENGTH;
+            uint64_t data = gcm.getData();
+            for (uint8_t i = 0; i < LENGTH; i++) {
+                msg.DATA[(LENGTH-1) - i] = (data & 0xFF);
+                data = data >> 8;
+            }
+            CAN_Write(m_handle, &msg);
+        }
+    }
+
     coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode CanProxy::body() {
         // Start a thread to receive CAN messages concurrently.
         ReadCanMessageService reader(m_handle, *this);

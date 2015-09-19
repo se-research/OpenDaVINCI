@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include "core/base/module/TimeTriggeredConferenceClientModule.h"
 #include "core/data/TimeStamp.h"
 
 #include "ReadCanMessageService.h"
@@ -24,6 +25,7 @@
 namespace automotive {
 
     using namespace std;
+    using namespace core::base::module;
     using namespace core::data;
 
     ReadCanMessageService::ReadCanMessageService(HANDLE handle, GenericCANMessageListener &listener) :
@@ -40,10 +42,11 @@ namespace automotive {
         while ( (m_handle != NULL) && 
                 isRunning() ) {
             TPCANRdMsg message;
-            int32_t errorCode = LINUX_CAN_Read(m_handle, &message);
+            const int32_t TIMEOUT_IN_MICROSECONDS = 1000*1000;
+            int32_t errorCode = LINUX_CAN_Read_Timeout(m_handle, &message, TIMEOUT_IN_MICROSECONDS);
 
-            if (errorCode == 0) {
-                cout << "[CanProxy] ID = " << message.Msg.ID << ", LEN = " << message.Msg.LEN << ", DATA = ";
+            if ( !(errorCode < 0) && (errorCode != CAN_ERR_QRCVEMPTY) ) {
+                CLOG1 << "[CanProxy] ID = " << message.Msg.ID << ", LEN = " << message.Msg.LEN << ", DATA = ";
 
                 // Set time stamp from driver.
                 TimeStamp driverTimeStamp(message.dwTime, message.wUsec);
@@ -55,10 +58,10 @@ namespace automotive {
                 gcm.setLength(message.Msg.LEN);
                 uint64_t data = 0;
                 for (uint8_t i = 0; i < message.Msg.LEN; i++) {
-                    cout << static_cast<uint32_t>(message.Msg.DATA[i]) << " ";
+                    CLOG1 << static_cast<uint32_t>(message.Msg.DATA[i]) << " ";
                     data |= (message.Msg.DATA[i] << (i*8));
                 }
-                cout << endl;
+                CLOG1 << endl;
                 gcm.setData(data);
 
                 // Propagate GenericCANMessage.
