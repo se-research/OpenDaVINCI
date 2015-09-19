@@ -77,27 +77,17 @@ namespace automotive {
                     data |= (static_cast<uint64_t>(value) << (i*8));
                 }
 
-                // Create GenericCANMessage.
+                // Create GenericCANMessage from parsed data.
                 GenericCANMessage gcm;
                 gcm.setIdentifier(identifier);
                 gcm.setLength(length);
                 gcm.setData(data);
-                cout << gcm.toString() << endl;
 
-                uint64_t data2 = gcm.getData();
-                uint8_t val2[8];
-                for (uint8_t i = 0; i < length; i++) {
-                    val2[i] = (data2 & 0xFF);
-                    data2 = data2 >> 8;
-                }
-                cout << "Data2: " << hex << (int)val2[0] << " "
-                                  << hex << (int)val2[1] << " "
-                                  << hex << (int)val2[2] << " "
-                                  << hex << (int)val2[3] << " "
-                                  << hex << (int)val2[4] << " "
-                                  << hex << (int)val2[5] << " "
-                                  << hex << (int)val2[6] << " "
-                                  << hex << (int)val2[7] << endl;
+                CLOG1 << gcm.toString() << endl;
+
+                // Distribute data.
+                Container c(Container::GENERIC_CAN_MESSAGE, gcm);
+                getConference().send(c);
             }
         }
 

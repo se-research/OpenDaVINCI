@@ -43,6 +43,16 @@ namespace automotive {
         // TODO: Serve internal state machines and return valid container (i.e. Container::UNDEFINEDDATA)
         //       or just the incomplete Container as default.
 
+        // Example:
+        if (gcm.getIdentifier() == 0x78c) {
+            // Position X.
+            uint64_t data = gcm.getData();
+            stringstream sstr((char*)(&data));
+            double positionX = 0;
+            sstr >> positionX;
+            cout << "PositionX = " << positionX << endl;
+        }
+
         return c;
     }
 
