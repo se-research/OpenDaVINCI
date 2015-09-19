@@ -58,6 +58,7 @@ IF(UNIX)
 
         ###########################################################################
         # Add subdirectories.
+        ADD_SUBDIRECTORY (canascreplay)
         ADD_SUBDIRECTORY (canproxy)
         ADD_SUBDIRECTORY (canmapper)
         ADD_SUBDIRECTORY (canbridge)
