@@ -1,5 +1,7 @@
 /**
- * canproxy - Tool wrapping a CAN interface.
+ * canbridge - Tool for bridging between two CAN devices and for
+ *             mapping the low-level CAN messages to high-level
+ *             C++ data structures and vice-versa.
  * Copyright (C) 2015 Christian Berger
  *
  * This program is free software; you can redistribute it and/or
@@ -20,39 +22,53 @@
 #include <iostream>
 
 #include "core/data/Container.h"
+#include "core/data/TimeStamp.h"
 #include "GeneratedHeaders_AutomotiveData.h"
 
-#include "CANProxy.h"
-#include "CANDevice.h"
+#include "CANBridge.h"
 
 namespace automotive {
 
     using namespace std;
+    using namespace core;
     using namespace core::base;
     using namespace core::data;
 
-    CANProxy::CANProxy(const int32_t &argc, char **argv) :
-        TimeTriggeredConferenceClientModule(argc, argv, "canproxy"),
-        GenericCANMessageListener(),
+    CANBridge::CANBridge(const int32_t &argc, char **argv) :
+        TimeTriggeredConferenceClientModule(argc, argv, "canbridge"),
         m_fifo(),
         m_recorder(),
-        m_device(),
-        m_deviceNode() {}
+        m_deviceA(),
+        m_deviceNodeA(),
+        m_deviceB(),
+        m_deviceNodeB(),
+        m_replicatorFromAtoB(*this),
+        m_replicatorFromBtoA(*this),
+        m_dataMapper() {}
 
-    CANProxy::~CANProxy() {}
+    CANBridge::~CANBridge() {}
 
-    void CANProxy::setUp() {
-        // Get CAN device node from configuration.
-        m_deviceNode = getKeyValueConfiguration().getValue<string>("canproxy.devicenode");
+    void CANBridge::setUp() {
+        // Get CAN device node A from configuration.
+        m_deviceNodeA = getKeyValueConfiguration().getValue<string>("canbridge.devicenodeA");
+        // Get CAN device node B from configuration.
+        m_deviceNodeB = getKeyValueConfiguration().getValue<string>("canbridge.devicenodeB");
 
-        // Try to open CAN device and register this instance as receiver for GenericCANMessages.
-        m_device = auto_ptr<CANDevice>(new CANDevice(m_deviceNode, *this));
+        // Try to open CAN device A and register this instance as receiver for GenericCANMessages.
+        m_deviceA = SharedPointer<CANDevice>(new CANDevice(m_deviceNodeA, m_replicatorFromAtoB));
+        // Try to open CAN device B and register this instance as receiver for GenericCANMessages.
+        m_deviceB = SharedPointer<CANDevice>(new CANDevice(m_deviceNodeB, m_replicatorFromBtoA));
 
         // If the device could be successfully opened, create a recording file with a dump of the data.
-        if (m_device->isOpen()) {
+        if (m_deviceA->isOpen() &&
+            m_deviceB->isOpen()) {
+            // Set the CAN devices to the replicators.
+            m_replicatorFromAtoB.setCANDevice(m_deviceB);
+            m_replicatorFromBtoA.setCANDevice(m_deviceA);
+
             // URL for storing containers.
             stringstream recordingURL;
-            recordingURL << "file://" << "canproxy_" << TimeStamp().getYYYYMMDD_HHMMSS() << ".rec";
+            recordingURL << "file://" << "canbridge_" << TimeStamp().getYYYYMMDD_HHMMSS() << ".rec";
             // Size of memory segments.
             const uint32_t MEMORY_SEGMENT_SIZE = 0;
             // Number of memory segments.
@@ -67,20 +83,26 @@ namespace automotive {
         }
     }
 
-    void CANProxy::tearDown() {}
+    void CANBridge::tearDown() {}
 
-    void CANProxy::nextGenericCANMessage(const GenericCANMessage &gcm) {
+    void CANBridge::nextGenericCANMessage(const GenericCANMessage &gcm) {
+        // Pass the received GenericCANMessage to the recorder.
         Container c(Container::GENERIC_CAN_MESSAGE, gcm);
         m_fifo.add(c);
+
+        // Next, try to get complete message with this additional information.
+        Container result = m_dataMapper.mapNext(gcm);
+        if (result.getDataType() != Container::UNDEFINEDDATA) {
+            // Last GenericCANMessage resulted in a complete decoding
+            // and mapping of valid high-level C++ message.
+            getConference().send(result);
+        }
     }
 
-    void CANProxy::writeGenericCANMessage(const GenericCANMessage &gcm) {
-        m_device->write(gcm);
-    }
-
-    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode CANProxy::body() {
-        // Start the wrapped CAN device to receive CAN messages concurrently.
-        m_device->start();
+    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode CANBridge::body() {
+        // Start the wrapped CAN devices to receive CAN messages concurrently.
+        m_deviceA->start();
+        m_deviceB->start();
 
         while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
             const uint32_t ENTRIES = m_fifo.getSize();
@@ -97,7 +119,8 @@ namespace automotive {
             }
         }
 
-        m_device->stop();
+        m_deviceA->stop();
+        m_deviceB->stop();
 
         return coredata::dmcp::ModuleExitCodeMessage::OKAY;
     }

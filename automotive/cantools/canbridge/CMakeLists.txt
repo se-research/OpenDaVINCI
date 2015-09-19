@@ -1,4 +1,6 @@
-# canproxymapper - Tool combining canproxy and canmapper.
+# canbridge - Tool for bridging between two CAN devices and for
+#             mapping the low-level CAN messages to high-level
+#             C++ data structures and vice-versa.
 # Copyright (C) 2015 Christian Berger
 #
 # This program is free software; you can redistribute it and/or
@@ -17,7 +19,7 @@
 
 CMAKE_MINIMUM_REQUIRED (VERSION 2.8)
 
-PROJECT (canproxymapper)
+PROJECT (canbridge)
 
 ###########################################################################
 # Set the search path for .cmake files.
