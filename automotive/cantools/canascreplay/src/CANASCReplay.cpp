@@ -45,38 +45,39 @@ namespace automotive {
         // Structure of an ASC entry: 'Timestamp Channel  ID             Rx   d Length 00 11 22 33 44 55 66 77'
         char buffer[100];
         while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+            // Read next line from STDIN.
             cin.getline(buffer, 100);
-            const string line(buffer);
-            vector<string> tokens = StringToolbox::split(line, ' ');
+
+            // Tokenize the read line.
+            vector<string> tokens = StringToolbox::split(string(buffer), ' ');
+
+            // Do we have a valid line?
             if ( (tokens.size() >= 7) &&
                  (StringToolbox::equalsIgnoreCase(tokens[3], "rx")) ) {
-                stringstream _identifier; uint64_t identifier = 0;
-                stringstream _length; uint16_t length = 0;
-
+                // Read CAN identifier.
+                stringstream _identifier;
+                uint64_t identifier = 0;
                 _identifier << tokens[2]; _identifier >> hex >> identifier;
+
+                // Read payload length (1-8).
+                stringstream _length;
+                uint16_t length = 0;
                 _length << tokens[5]; _length >> dec >> length;
 
+                // Read payload.
                 uint64_t data = 0;
-                uint8_t val[8];
                 for (uint16_t i = 0; i < length; i++) {
+                    // Put next data byte into stringstream.
                     stringstream _data;
-                    _data << "0x" << tokens[6 + i];
-                    uint32_t value = 0;
-                    _data >> hex >> value;
-                    uint8_t _val = value & 0xFF;
-                    data |= (((uint64_t)value) << (i*8));
-                    val[i] = _val;
-                }
-                cout << endl;
-                cout << "Data: " << hex << (int)val[0] << " "
-                                 << hex << (int)val[1] << " "
-                                 << hex << (int)val[2] << " "
-                                 << hex << (int)val[3] << " "
-                                 << hex << (int)val[4] << " "
-                                 << hex << (int)val[5] << " "
-                                 << hex << (int)val[6] << " "
-                                 << hex << (int)val[7] << endl;
+                    _data << tokens[6 + i];
 
+                    // Read next data byte.
+                    uint16_t value = 0;
+                    _data >> hex >> value;
+                    data |= (static_cast<uint64_t>(value) << (i*8));
+                }
+
+                // Create GenericCANMessage.
                 GenericCANMessage gcm;
                 gcm.setIdentifier(identifier);
                 gcm.setLength(length);
