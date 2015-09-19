@@ -65,3 +65,7 @@ FIND_PACKAGE (Qt)
 # Find Qwt5Qt4 (required for odcockpit).
 FIND_PACKAGE (Qwt5Qt4)
 
+###########################################################################
+# Find popt-dev (required for automotive/cantools).
+FIND_PACKAGE (popt)
+
