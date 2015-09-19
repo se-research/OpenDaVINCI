@@ -1,5 +1,5 @@
 /**
- * canproxymapper - Tool combining canproxy and canmapper
+ * canproxy - Tool wrapping a CAN interface.
  * Copyright (C) 2015 Christian Berger
  *
  * This program is free software; you can redistribute it and/or
@@ -17,20 +17,27 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef CANPROXYMAPPER_H_
-#define CANPROXYMAPPER_H_
+#ifndef CANPROXY_H_
+#define CANPROXY_H_
 
-#include "CanProxy.h"
-#include "DataMapper.h"
+#include <libpcan.h>
+
+#include "core/base/FIFOQueue.h"
+#include "core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "tools/recorder/Recorder.h"
+
+#include "CANDevice.h"
+#include "GenericCANMessageListener.h"
 
 namespace automotive {
 
     using namespace std;
 
     /**
-     * This class can be used to map GenericCANMessages to high-level C++ messages.
+     * This class wraps a CAN device node to wrap low-level CAN messages into GenericCANMessages.
      */
-    class CanProxyMapper : public CanProxy {
+    class CANProxy : public core::base::module::TimeTriggeredConferenceClientModule,
+                     public GenericCANMessageListener {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -39,7 +46,7 @@ namespace automotive {
              *
              * @param obj Reference to an object of this class.
              */
-            CanProxyMapper(const CanProxyMapper &/*obj*/);
+            CANProxy(const CANProxy &/*obj*/);
 
             /**
              * "Forbidden" assignment operator. Goal: The compiler should warn
@@ -49,7 +56,7 @@ namespace automotive {
              * @param obj Reference to an object of this class.
              * @return Reference to this instance.
              */
-            CanProxyMapper& operator=(const CanProxyMapper &/*obj*/);
+            CANProxy& operator=(const CANProxy &/*obj*/);
 
         public:
             /**
@@ -58,17 +65,33 @@ namespace automotive {
              * @param argc Number of command line arguments.
              * @param argv Command line arguments.
              */
-            CanProxyMapper(const int32_t &argc, char **argv);
+            CANProxy(const int32_t &argc, char **argv);
 
-            virtual ~CanProxyMapper();
+            virtual ~CANProxy();
+
+            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
             virtual void nextGenericCANMessage(const GenericCANMessage &gcm);
 
-        private:
-            DataMapper m_dataMapper;
+            /**
+             * This methods writes a GenericCANMessage to the device.
+             *
+             * @param gcm GenericCANMessage to be written.
+             */
+            void writeGenericCANMessage(const GenericCANMessage &gcm);
 
+        private:
+            virtual void setUp();
+
+            virtual void tearDown();
+
+        private:
+            core::base::FIFOQueue m_fifo;
+            auto_ptr<tools::recorder::Recorder> m_recorder;
+            auto_ptr<CANDevice> m_device;
+            string m_deviceNode;
     };
 
 } // automotive
 
-#endif /*CANPROXYMAPPER_H_*/
+#endif /*CANPROXY_H_*/

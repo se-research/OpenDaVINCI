@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef READCANMESSAGESERVICE_H_
-#define READCANMESSAGESERVICE_H_
+#ifndef CANDEVICE_H_
+#define CANDEVICE_H_
 
 #include <libpcan.h>
 
@@ -32,9 +32,10 @@ namespace automotive {
 
     /**
      * This class encapsulates the service for reading low-level CAN message to be
-     * wrapped into a GenericCANMessage.
+     * wrapped into a GenericCANMessage and for writing a GenericCANDevice to the
+     * device node represented by this class.
      */
-    class ReadCanMessageService : public core::base::Service {
+    class CANDevice : public core::base::Service {
        private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -43,7 +44,7 @@ namespace automotive {
              *
              * @param obj Reference to an object of this class.
              */
-            ReadCanMessageService(const ReadCanMessageService &/*obj*/);
+            CANDevice(const CANDevice &/*obj*/);
 
             /**
              * "Forbidden" assignment operator. Goal: The compiler should warn
@@ -53,28 +54,43 @@ namespace automotive {
              * @param obj Reference to an object of this class.
              * @return Reference to this instance.
              */
-            ReadCanMessageService& operator=(const ReadCanMessageService &/*obj*/);
+            CANDevice& operator=(const CANDevice &/*obj*/);
 
         public:
             /**
              * Constructor.
              *
-             * @param handle Handle referring to a successully opened CAN device.
-             * @param listener Listener that will received wrapped GenericCANMessages.
+             * @param deviceNode CAN device node.
+             * @param listener Listener that will receive wrapped GenericCANMessages.
              */
-            ReadCanMessageService(HANDLE handle, GenericCANMessageListener &listener);
+            CANDevice(const string &deviceNode, GenericCANMessageListener &listener);
 
-            virtual ~ReadCanMessageService();
+            virtual ~CANDevice();
+
+            /**
+             * This method returns true if the device was successfully initialized.
+             *
+             * @return true if the device could be successfully openend.
+             */
+            bool isOpen() const;
+
+            /**
+             * This methods writes a GenericCANMessage to the device.
+             *
+             * @param gcm GenericCANMessage to be written.
+             */
+            void write(const GenericCANMessage &gcm);
 
             virtual void beforeStop();
 
             virtual void run();
 
         private:
+            string m_deviceNode;
             HANDLE m_handle;
             GenericCANMessageListener &m_listener;
     };
 
 } // automotive
 
-#endif /*READCANMESSAGESERVICE_H_*/
+#endif /*CANDEVICE_H_*/

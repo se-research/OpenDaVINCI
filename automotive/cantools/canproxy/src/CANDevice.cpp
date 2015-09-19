@@ -20,7 +20,7 @@
 #include "core/base/module/TimeTriggeredConferenceClientModule.h"
 #include "core/data/TimeStamp.h"
 
-#include "ReadCanMessageService.h"
+#include "CANDevice.h"
 
 namespace automotive {
 
@@ -28,15 +28,53 @@ namespace automotive {
     using namespace core::base::module;
     using namespace core::data;
 
-    ReadCanMessageService::ReadCanMessageService(HANDLE handle, GenericCANMessageListener &listener) :
-        m_handle(handle),
-        m_listener(listener) {}
+    CANDevice::CANDevice(const string &deviceNode, GenericCANMessageListener &listener) :
+        m_deviceNode(deviceNode),
+        m_handle(NULL),
+        m_listener(listener) {
+        CLOG << "[CANDevice] Opening " << m_deviceNode << "... ";
+        m_handle = LINUX_CAN_Open(m_deviceNode.c_str(), O_RDWR);
+        if (m_handle == NULL) {
+            CLOG << "failed." << endl;
+        }
+        else {
+            CLOG << "done." << endl;
+        }
+    }
 
-    ReadCanMessageService::~ReadCanMessageService() {}
+    CANDevice::~CANDevice() {
+        CLOG << "[CANDevice] Closing " << m_deviceNode << "... ";
+        if (m_handle != NULL) {
+            CAN_Close(m_handle);
+        }
+        CLOG << "done." << endl;
+    }
 
-    void ReadCanMessageService::beforeStop() {}
+    bool CANDevice::isOpen() const {
+        return (m_handle != NULL);
+    }
 
-    void ReadCanMessageService::run() {
+    void CANDevice::write(const GenericCANMessage &gcm) {
+        if (m_handle != NULL) {
+            TPCANMsg msg;
+            const uint8_t LENGTH = gcm.getLength();
+            msg.ID = gcm.getIdentifier();
+            msg.MSGTYPE = MSGTYPE_STANDARD;
+            msg.LEN = LENGTH;
+            uint64_t data = gcm.getData();
+            for (uint8_t i = 0; i < LENGTH; i++) {
+                msg.DATA[(LENGTH-1) - i] = (data & 0xFF);
+                data = data >> 8;
+            }
+            int32_t errorCode = CAN_Write(m_handle, &msg);
+
+            CLOG1 << "[CANDevice] Writing ID = " << msg.ID << ", LEN = " << msg.LEN << ", errorCode = " << errorCode << endl;
+        }
+    }
+
+    void CANDevice::beforeStop() {}
+
+    void CANDevice::run() {
         serviceReady();
 
         while ( (m_handle != NULL) && 
@@ -46,7 +84,7 @@ namespace automotive {
             int32_t errorCode = LINUX_CAN_Read_Timeout(m_handle, &message, TIMEOUT_IN_MICROSECONDS);
 
             if ( !(errorCode < 0) && (errorCode != CAN_ERR_QRCVEMPTY) ) {
-                CLOG1 << "[CanProxy] ID = " << message.Msg.ID << ", LEN = " << message.Msg.LEN << ", DATA = ";
+                CLOG1 << "[CANDevice] ID = " << message.Msg.ID << ", LEN = " << message.Msg.LEN << ", DATA = ";
 
                 // Set time stamp from driver.
                 TimeStamp driverTimeStamp(message.dwTime, message.wUsec);

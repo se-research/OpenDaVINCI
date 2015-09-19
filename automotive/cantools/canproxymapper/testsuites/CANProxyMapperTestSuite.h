@@ -23,7 +23,7 @@
 #include "cxxtest/TestSuite.h"
 
 // Include local header files.
-#include "../include/CanProxyMapper.h"
+#include "../include/CANProxyMapper.h"
 
 using namespace std;
 using namespace core::data;
@@ -32,23 +32,23 @@ using namespace automotive;
 /**
  * This class derives from SensorBoard to allow access to protected methods.
  */
-class CanProxyMapperTestling : public CanProxyMapper {
+class CANProxyMapperTestling : public CANProxyMapper {
     private:
-        CanProxyMapperTestling();
+        CANProxyMapperTestling();
     
     public:
-        CanProxyMapperTestling(const int32_t &argc, char **argv) :
-            CanProxyMapper(argc, argv) {}
+        CANProxyMapperTestling(const int32_t &argc, char **argv) :
+            CANProxyMapper(argc, argv) {}
 
-        // Here, you need to add all methods which are protected in CanProxyMapper and which are needed for the test cases.
+        // Here, you need to add all methods which are protected in CANProxyMapper and which are needed for the test cases.
 };
 
 /**
  * The actual testsuite starts here.
  */
-class CanProxyMapperTest : public CxxTest::TestSuite {
+class CANProxyMapperTest : public CxxTest::TestSuite {
     private:
-        CanProxyMapperTestling *dt;
+        CANProxyMapperTestling *dt;
 
     public:
         /**
@@ -65,7 +65,7 @@ class CanProxyMapperTest : public CxxTest::TestSuite {
             argv[1] = const_cast<char*>(argv1.c_str());
 
             // Create an instance of sensorboard through SensorBoardTestling which will be deleted in tearDown().
-            dt = new CanProxyMapperTestling(argc, argv);
+            dt = new CANProxyMapperTestling(argc, argv);
         }
 
         /**
@@ -80,7 +80,7 @@ class CanProxyMapperTest : public CxxTest::TestSuite {
         // Below this line the actual testcases are defined.
         ////////////////////////////////////////////////////////////////////////////////////
 
-        void testCanProxyMapperSuccessfullyCreated() {
+        void testCANProxyMapperSuccessfullyCreated() {
             TS_ASSERT(dt != NULL);
         }
 
@@ -95,7 +95,7 @@ class CanProxyMapperTest : public CxxTest::TestSuite {
         /**
          * This constructor is only necessary to initialize the pointer variable.
          */
-        CanProxyMapperTest() : dt(NULL) {}
+        CANProxyMapperTest() : dt(NULL) {}
 
     private:
         /**
@@ -105,7 +105,7 @@ class CanProxyMapperTest : public CxxTest::TestSuite {
          *
          * @param obj Reference to an object of this class.
          */
-        CanProxyMapperTest(const CanProxyMapperTest &/*obj*/);
+        CANProxyMapperTest(const CANProxyMapperTest &/*obj*/);
 
         /**
          * "Forbidden" assignment operator. Goal: The compiler should warn
@@ -115,7 +115,7 @@ class CanProxyMapperTest : public CxxTest::TestSuite {
          * @param obj Reference to an object of this class.
          * @return Reference to this instance.
          */
-        CanProxyMapperTest& operator=(const CanProxyMapperTest &/*obj*/);
+        CANProxyMapperTest& operator=(const CANProxyMapperTest &/*obj*/);
 
 };
 

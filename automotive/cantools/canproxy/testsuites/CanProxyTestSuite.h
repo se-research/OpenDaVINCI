@@ -23,7 +23,7 @@
 #include "cxxtest/TestSuite.h"
 
 // Include local header files.
-#include "../include/CanProxy.h"
+#include "../include/CANProxy.h"
 
 using namespace std;
 using namespace core::data;
@@ -32,23 +32,23 @@ using namespace automotive;
 /**
  * This class derives from SensorBoard to allow access to protected methods.
  */
-class CanProxyTestling : public CanProxy {
+class CANProxyTestling : public CANProxy {
     private:
-        CanProxyTestling();
+        CANProxyTestling();
     
     public:
-        CanProxyTestling(const int32_t &argc, char **argv) :
-            CanProxy(argc, argv) {}
+        CANProxyTestling(const int32_t &argc, char **argv) :
+            CANProxy(argc, argv) {}
 
-        // Here, you need to add all methods which are protected in CanProxy and which are needed for the test cases.
+        // Here, you need to add all methods which are protected in CANProxy and which are needed for the test cases.
 };
 
 /**
  * The actual testsuite starts here.
  */
-class CanProxyTest : public CxxTest::TestSuite {
+class CANProxyTest : public CxxTest::TestSuite {
     private:
-        CanProxyTestling *dt;
+        CANProxyTestling *dt;
 
     public:
         /**
@@ -65,7 +65,7 @@ class CanProxyTest : public CxxTest::TestSuite {
             argv[1] = const_cast<char*>(argv1.c_str());
 
             // Create an instance of sensorboard through SensorBoardTestling which will be deleted in tearDown().
-            dt = new CanProxyTestling(argc, argv);
+            dt = new CANProxyTestling(argc, argv);
         }
 
         /**
@@ -80,7 +80,7 @@ class CanProxyTest : public CxxTest::TestSuite {
         // Below this line the actual testcases are defined.
         ////////////////////////////////////////////////////////////////////////////////////
 
-        void testCanProxySuccessfullyCreated() {
+        void testCANProxySuccessfullyCreated() {
             TS_ASSERT(dt != NULL);
         }
 
@@ -95,7 +95,7 @@ class CanProxyTest : public CxxTest::TestSuite {
         /**
          * This constructor is only necessary to initialize the pointer variable.
          */
-        CanProxyTest() : dt(NULL) {}
+        CANProxyTest() : dt(NULL) {}
 
     private:
         /**
@@ -105,7 +105,7 @@ class CanProxyTest : public CxxTest::TestSuite {
          *
          * @param obj Reference to an object of this class.
          */
-        CanProxyTest(const CanProxyTest &/*obj*/);
+        CANProxyTest(const CANProxyTest &/*obj*/);
 
         /**
          * "Forbidden" assignment operator. Goal: The compiler should warn
@@ -115,7 +115,7 @@ class CanProxyTest : public CxxTest::TestSuite {
          * @param obj Reference to an object of this class.
          * @return Reference to this instance.
          */
-        CanProxyTest& operator=(const CanProxyTest &/*obj*/);
+        CANProxyTest& operator=(const CANProxyTest &/*obj*/);
 
 };
 

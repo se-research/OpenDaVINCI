@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "CanProxyMapper.h"
+#include "CANProxyMapper.h"
 
 int32_t main(int32_t argc, char **argv) {
-    automotive::CanProxyMapper cpm(argc, argv);
+    automotive::CANProxyMapper cpm(argc, argv);
     return cpm.runModule();
 }
