@@ -1,7 +1,7 @@
 .\" Manpage for canproxymapper
 .\" Author: Christian Berger <christian.berger@gu.se>.
 
-.TH canproxymapper 1 "13 September 2015" "2.0.15" "canproxymapper man page"
+.TH canproxymapper 1 "19 September 2015" "2.0.16" "canproxymapper man page"
 
 .SH NAME
 canproxymapper \- This tool maps a generic CAN messages to high-level C++ data structures and vice-versa.
@@ -27,6 +27,9 @@ odsupercomponent(1) to correctly configure canproxy:
 
 The parameter 'canproxy.devicenode' defines, which CAN device shall be used to read
 and write the data.
+
+canproxymapper will automatically create a recording from all data received from the device
+node.
 
 This tool can only be used within an existing OpenDaVINCI container conference session
 created by odsupercomponent(1).
@@ -78,7 +81,7 @@ The following command runs the program at 10 Hz.
 
 
 .SH SEE ALSO
-canmapper(1), canproxy(1), odsupercomponent(1)
+canbridge(1), canmapper(1), canproxy(1), canproxymapper(1), odsupercomponent(1)
 
 
 

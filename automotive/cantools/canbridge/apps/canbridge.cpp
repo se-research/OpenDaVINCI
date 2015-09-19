@@ -1,5 +1,7 @@
 /**
- * canproxymapper - Tool combining canproxy and canmapper
+ * canbridge - Tool for bridging between two CAN devices and for
+ *             mapping the low-level CAN messages to high-level
+ *             C++ data structures and vice-versa.
  * Copyright (C) 2015 Christian Berger
  *
  * This program is free software; you can redistribute it and/or
@@ -17,9 +19,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "CANProxyMapper.h"
+#include "CANBridge.h"
 
 int32_t main(int32_t argc, char **argv) {
-    automotive::CANProxyMapper cpm(argc, argv);
-    return cpm.runModule();
+    automotive::CANBridge cb(argc, argv);
+    return cb.runModule();
 }

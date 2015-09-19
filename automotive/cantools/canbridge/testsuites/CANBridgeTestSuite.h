@@ -1,5 +1,7 @@
 /**
- * canproxy - Tool wrapping a CAN interface.
+ * canbridge - Tool for bridging between two CAN devices and for
+ *             mapping the low-level CAN messages to high-level
+ *             C++ data structures and vice-versa.
  * Copyright (C) 2015 Christian Berger
  *
  * This program is free software; you can redistribute it and/or
@@ -17,13 +19,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef CANPROXYTESTSUITE_H_
-#define CANPROXYTESTSUITE_H_
+#ifndef CANBRDIGETESTSUITE_H_
+#define CANBRDIGETESTSUITE_H_
 
 #include "cxxtest/TestSuite.h"
 
 // Include local header files.
-#include "../include/CanProxy.h"
+#include "../include/CANBridge.h"
 
 using namespace std;
 using namespace core::data;
@@ -32,23 +34,23 @@ using namespace automotive;
 /**
  * This class derives from SensorBoard to allow access to protected methods.
  */
-class CanProxyTestling : public CanProxy {
+class CANBridgeTestling : public CANBridge {
     private:
-        CanProxyTestling();
+        CANBridgeTestling();
     
     public:
-        CanProxyTestling(const int32_t &argc, char **argv) :
-            CanProxy(argc, argv) {}
+        CANBridgeTestling(const int32_t &argc, char **argv) :
+            CANBridge(argc, argv) {}
 
-        // Here, you need to add all methods which are protected in CanProxy and which are needed for the test cases.
+        // Here, you need to add all methods which are protected in CANBridge and which are needed for the test cases.
 };
 
 /**
  * The actual testsuite starts here.
  */
-class CanProxyTest : public CxxTest::TestSuite {
+class CANBridgeTest : public CxxTest::TestSuite {
     private:
-        CanProxyTestling *dt;
+        CANBridgeTestling *dt;
 
     public:
         /**
@@ -65,7 +67,7 @@ class CanProxyTest : public CxxTest::TestSuite {
             argv[1] = const_cast<char*>(argv1.c_str());
 
             // Create an instance of sensorboard through SensorBoardTestling which will be deleted in tearDown().
-            dt = new CanProxyTestling(argc, argv);
+            dt = new CANBridgeTestling(argc, argv);
         }
 
         /**
@@ -80,7 +82,7 @@ class CanProxyTest : public CxxTest::TestSuite {
         // Below this line the actual testcases are defined.
         ////////////////////////////////////////////////////////////////////////////////////
 
-        void testCanProxySuccessfullyCreated() {
+        void testCANBridgeSuccessfullyCreated() {
             TS_ASSERT(dt != NULL);
         }
 
@@ -95,7 +97,7 @@ class CanProxyTest : public CxxTest::TestSuite {
         /**
          * This constructor is only necessary to initialize the pointer variable.
          */
-        CanProxyTest() : dt(NULL) {}
+        CANBridgeTest() : dt(NULL) {}
 
     private:
         /**
@@ -105,7 +107,7 @@ class CanProxyTest : public CxxTest::TestSuite {
          *
          * @param obj Reference to an object of this class.
          */
-        CanProxyTest(const CanProxyTest &/*obj*/);
+        CANBridgeTest(const CANBridgeTest &/*obj*/);
 
         /**
          * "Forbidden" assignment operator. Goal: The compiler should warn
@@ -115,9 +117,9 @@ class CanProxyTest : public CxxTest::TestSuite {
          * @param obj Reference to an object of this class.
          * @return Reference to this instance.
          */
-        CanProxyTest& operator=(const CanProxyTest &/*obj*/);
+        CANBridgeTest& operator=(const CANBridgeTest &/*obj*/);
 
 };
 
-#endif /*CANPROXYTESTSUITE_H_*/
+#endif /*CANBRDIGETESTSUITE_H_*/
 

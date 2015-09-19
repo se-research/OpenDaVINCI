@@ -1,5 +1,7 @@
 /**
- * canproxy - Tool wrapping a CAN interface.
+ * canbridge - Tool for bridging between two CAN devices and for
+ *             mapping the low-level CAN messages to high-level
+ *             C++ data structures and vice-versa.
  * Copyright (C) 2015 Christian Berger
  *
  * This program is free software; you can redistribute it and/or
@@ -17,25 +19,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef READCANMESSAGESERVICE_H_
-#define READCANMESSAGESERVICE_H_
+#ifndef CANMESSAGEREPLICATOR_H_
+#define CANMESSAGEREPLICATOR_H_
 
-#include <libpcan.h>
-
-#include <core/base/Service.h>
+#include <core/SharedPointer.h>
 
 #include "GenericCANMessageListener.h"
+#include "CANDevice.h"
 
 namespace automotive {
 
     using namespace std;
 
     /**
-     * This class encapsulates the service for reading low-level CAN message to be
-     * wrapped into a GenericCANMessage.
+     * This class replicates a GenericCANMessage to another CAN device.
      */
-    class ReadCanMessageService : public core::base::Service {
-       private:
+    class CANMessageReplicator : public GenericCANMessageListener {
+        private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
              * already at compile time for unwanted bugs caused by any misuse
@@ -43,7 +43,7 @@ namespace automotive {
              *
              * @param obj Reference to an object of this class.
              */
-            ReadCanMessageService(const ReadCanMessageService &/*obj*/);
+            CANMessageReplicator(const CANMessageReplicator &/*obj*/);
 
             /**
              * "Forbidden" assignment operator. Goal: The compiler should warn
@@ -53,28 +53,32 @@ namespace automotive {
              * @param obj Reference to an object of this class.
              * @return Reference to this instance.
              */
-            ReadCanMessageService& operator=(const ReadCanMessageService &/*obj*/);
+            CANMessageReplicator& operator=(const CANMessageReplicator &/*obj*/);
 
         public:
             /**
              * Constructor.
              *
-             * @param handle Handle referring to a successully opened CAN device.
-             * @param listener Listener that will received wrapped GenericCANMessages.
+             * @param conference Reference to the gateway to the OpenDaVINCI conference where the received messages shall be mapped into high-level C++ messages.
              */
-            ReadCanMessageService(HANDLE handle, GenericCANMessageListener &listener);
+            CANMessageReplicator(GenericCANMessageListener &conference);
 
-            virtual ~ReadCanMessageService();
+            /**
+             * This method sets the CAN device to replicate the data to.
+             *
+             * @param CANDeviceToReplicateTo SharedPointer to the CAN device where GenericCANMessages received from this listener shall be replicated.
+             */
+            void setCANDevice(core::SharedPointer<CANDevice> CANDeviceToReplicateTo);
 
-            virtual void beforeStop();
+            virtual ~CANMessageReplicator();
 
-            virtual void run();
+            virtual void nextGenericCANMessage(const GenericCANMessage &gcm);
 
         private:
-            HANDLE m_handle;
-            GenericCANMessageListener &m_listener;
+            core::SharedPointer<CANDevice> m_CANDeviceToReplicateTo;
+            GenericCANMessageListener &m_conference;
     };
 
 } // automotive
 
-#endif /*READCANMESSAGESERVICE_H_*/
+#endif /*CANMESSAGEREPLICATOR_H_*/

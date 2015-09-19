@@ -20,7 +20,7 @@
 #ifndef CANPROXYMAPPER_H_
 #define CANPROXYMAPPER_H_
 
-#include "CanProxy.h"
+#include "CANProxy.h"
 #include "DataMapper.h"
 
 namespace automotive {
@@ -30,7 +30,7 @@ namespace automotive {
     /**
      * This class can be used to map GenericCANMessages to high-level C++ messages.
      */
-    class CanProxyMapper : public CanProxy {
+    class CANProxyMapper : public CANProxy {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -39,7 +39,7 @@ namespace automotive {
              *
              * @param obj Reference to an object of this class.
              */
-            CanProxyMapper(const CanProxyMapper &/*obj*/);
+            CANProxyMapper(const CANProxyMapper &/*obj*/);
 
             /**
              * "Forbidden" assignment operator. Goal: The compiler should warn
@@ -49,7 +49,7 @@ namespace automotive {
              * @param obj Reference to an object of this class.
              * @return Reference to this instance.
              */
-            CanProxyMapper& operator=(const CanProxyMapper &/*obj*/);
+            CANProxyMapper& operator=(const CANProxyMapper &/*obj*/);
 
         public:
             /**
@@ -58,9 +58,9 @@ namespace automotive {
              * @param argc Number of command line arguments.
              * @param argv Command line arguments.
              */
-            CanProxyMapper(const int32_t &argc, char **argv);
+            CANProxyMapper(const int32_t &argc, char **argv);
 
-            virtual ~CanProxyMapper();
+            virtual ~CANProxyMapper();
 
             virtual void nextGenericCANMessage(const GenericCANMessage &gcm);
 

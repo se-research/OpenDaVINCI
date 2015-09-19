@@ -23,7 +23,7 @@
 #include "core/data/TimeStamp.h"
 #include "GeneratedHeaders_AutomotiveData.h"
 
-#include "CanProxyMapper.h"
+#include "CANProxyMapper.h"
 
 namespace automotive {
 
@@ -31,13 +31,13 @@ namespace automotive {
     using namespace core::base;
     using namespace core::data;
 
-    CanProxyMapper::CanProxyMapper(const int32_t &argc, char **argv) :
-        CanProxy(argc, argv),
+    CANProxyMapper::CANProxyMapper(const int32_t &argc, char **argv) :
+        CANProxy(argc, argv),
         m_dataMapper() {}
 
-    CanProxyMapper::~CanProxyMapper() {}
+    CANProxyMapper::~CANProxyMapper() {}
 
-    void CanProxyMapper::nextGenericCANMessage(const GenericCANMessage &gcm) {
+    void CANProxyMapper::nextGenericCANMessage(const GenericCANMessage &gcm) {
         // Try to get complete message with this additional information.
         Container result = m_dataMapper.mapNext(gcm);
         if (result.getDataType() != Container::UNDEFINEDDATA) {

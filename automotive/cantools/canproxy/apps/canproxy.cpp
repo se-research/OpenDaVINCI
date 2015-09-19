@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "CanProxy.h"
+#include "CANProxy.h"
 
 int32_t main(int32_t argc, char **argv) {
-    automotive::CanProxy cp(argc, argv);
+    automotive::CANProxy cp(argc, argv);
     return cp.runModule();
 }

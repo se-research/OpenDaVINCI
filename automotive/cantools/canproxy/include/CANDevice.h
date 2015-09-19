@@ -17,14 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef CANPROXY_H_
-#define CANPROXY_H_
+#ifndef CANDEVICE_H_
+#define CANDEVICE_H_
 
 #include <libpcan.h>
 
-#include "core/base/FIFOQueue.h"
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "tools/recorder/Recorder.h"
+#include <core/base/Service.h>
 
 #include "GenericCANMessageListener.h"
 
@@ -33,11 +31,12 @@ namespace automotive {
     using namespace std;
 
     /**
-     * This class wraps a CAN device node to wrap low-level CAN messages into GenericCANMessages.
+     * This class encapsulates the service for reading low-level CAN message to be
+     * wrapped into a GenericCANMessage and for writing a GenericCANDevice to the
+     * device node represented by this class.
      */
-    class CanProxy : public core::base::module::TimeTriggeredConferenceClientModule,
-                     public GenericCANMessageListener {
-        private:
+    class CANDevice : public core::base::Service {
+       private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
              * already at compile time for unwanted bugs caused by any misuse
@@ -45,7 +44,7 @@ namespace automotive {
              *
              * @param obj Reference to an object of this class.
              */
-            CanProxy(const CanProxy &/*obj*/);
+            CANDevice(const CANDevice &/*obj*/);
 
             /**
              * "Forbidden" assignment operator. Goal: The compiler should warn
@@ -55,35 +54,43 @@ namespace automotive {
              * @param obj Reference to an object of this class.
              * @return Reference to this instance.
              */
-            CanProxy& operator=(const CanProxy &/*obj*/);
+            CANDevice& operator=(const CANDevice &/*obj*/);
 
         public:
             /**
              * Constructor.
              *
-             * @param argc Number of command line arguments.
-             * @param argv Command line arguments.
+             * @param deviceNode CAN device node.
+             * @param listener Listener that will receive wrapped GenericCANMessages.
              */
-            CanProxy(const int32_t &argc, char **argv);
+            CANDevice(const string &deviceNode, GenericCANMessageListener &listener);
 
-            virtual ~CanProxy();
+            virtual ~CANDevice();
 
-            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+            /**
+             * This method returns true if the device was successfully initialized.
+             *
+             * @return true if the device could be successfully openend.
+             */
+            bool isOpen() const;
 
-            virtual void nextGenericCANMessage(const GenericCANMessage &gcm);
+            /**
+             * This methods writes a GenericCANMessage to the device.
+             *
+             * @param gcm GenericCANMessage to be written.
+             */
+            void write(const GenericCANMessage &gcm);
+
+            virtual void beforeStop();
+
+            virtual void run();
 
         private:
-            virtual void setUp();
-
-            virtual void tearDown();
-
-        private:
-            core::base::FIFOQueue m_fifo;
-            auto_ptr<tools::recorder::Recorder> m_recorder;
             string m_deviceNode;
             HANDLE m_handle;
+            GenericCANMessageListener &m_listener;
     };
 
 } // automotive
 
-#endif /*CANPROXY_H_*/
+#endif /*CANDEVICE_H_*/
