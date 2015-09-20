@@ -77,6 +77,11 @@ namespace automotive {
              * @param data to be printed.
              */
             void printPayload(uint64_t payload) const;
+
+            // This method is an example to demonstrate the steps that are needed
+            // to decode from a GenericCANMessage to a valid Container with a
+            // named high-level message as payload.
+            core::data::Container decodeWheelSpeed(const GenericCANMessage &gcm);
     };
 
 } // automotive
