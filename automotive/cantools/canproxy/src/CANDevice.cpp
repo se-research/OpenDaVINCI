@@ -31,7 +31,8 @@ namespace automotive {
     CANDevice::CANDevice(const string &deviceNode, GenericCANMessageListener &listener) :
         m_deviceNode(deviceNode),
         m_handle(NULL),
-        m_listener(listener) {
+        m_listener(listener),
+        m_messageToCANDataStore() {
         CLOG << "[CANDevice] Opening " << m_deviceNode << "... ";
         m_handle = LINUX_CAN_Open(m_deviceNode.c_str(), O_RDWR);
         if (m_handle == NULL) {
@@ -40,6 +41,11 @@ namespace automotive {
         else {
             CLOG << "done." << endl;
         }
+
+        // Create the MessageToCANDataStore to write Containers to the CAN bus.
+        // This needs to be an auto_ptr due to the circular dependencies between
+        // the two classes.
+        m_messageToCANDataStore = auto_ptr<MessageToCANDataStore>(new MessageToCANDataStore(*this));
     }
 
     CANDevice::~CANDevice() {
@@ -48,6 +54,10 @@ namespace automotive {
             CAN_Close(m_handle);
         }
         CLOG << "done." << endl;
+    }
+
+    MessageToCANDataStore& CANDevice::getMessageToCANDataStore() {
+        return *m_messageToCANDataStore;
     }
 
     bool CANDevice::isOpen() const {
