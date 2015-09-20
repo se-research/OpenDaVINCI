@@ -68,6 +68,15 @@ namespace automotive {
              * @return Container, where the type needs to be checked to determine invalidity (i.e. !Container::UNDEFINEDDATA).
              */
             core::data::Container mapNext(const GenericCANMessage &gcm);
+
+        private:
+            /**
+             * This method prints the payload of the low-level CAN message
+             * to STDOUT for debug purposes.
+             *
+             * @param data to be printed.
+             */
+            void printPayload(uint64_t payload) const;
     };
 
 } // automotive
