@@ -128,6 +128,10 @@ namespace cockpit {
                        return container.getData<core::data::TimeStamp> ().toString();
                     case Container::USER_BUTTON:
                        return container.getData<automotive::miniature::UserButtonData> ().toString();
+                    case Container::GENERIC_CAN_MESSAGE:
+                       return container.getData<automotive::GenericCANMessage> ().toString();
+                    case Container::WHEELSPEED:
+                       return container.getData<automotive::vehicle::WheelSpeed> ().toString();
                     default :
                        cs << container;
                        return cs.str();
