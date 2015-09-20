@@ -213,8 +213,15 @@ namespace automotive {
                 // 9. Letting the high-level message accept the visitor to enter the values.
                 wheelSpeed.accept(mtvv);
 
-                // Optional: Just print the content for convenience purposes.
-                cout << wheelSpeed.toString() << endl;
+                {
+                    // Optional: Showing how to use the MessagePrettyPrinterVisitor to print the content of the unnamed message.
+                    MessagePrettyPrinterVisitor mppv;
+                    message.accept(mppv);
+                    mppv.getOutput(cout);
+
+                    // Optional: Just print the content for convenience purposes.
+                    cout << wheelSpeed.toString() << endl;
+                }
 
                 // 10. Create the resulting container carrying a valid payload.
                 c = Container(Container::WHEELSPEED, wheelSpeed);
