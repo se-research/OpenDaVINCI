@@ -129,3 +129,10 @@ message automotive.GenericCANMessage [id = 71] {
     uint64 data;                           // Payload of the CAN message.
 }
 
+message automotive.vehicle.WheelSpeed [id = 75] {
+    float frontLeft [id = 1];
+    float frontRight [id = 2];
+    float rearLeft [id = 3];
+    float rearRight [id = 4];
+}
+

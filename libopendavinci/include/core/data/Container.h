@@ -69,6 +69,7 @@ namespace core {
                     VEHICLECONTROL               = 41,
 
                     GENERIC_CAN_MESSAGE          = 71,
+                    WHEELSPEED                   = 75,
 
                     LOG_MESSAGE                  = 100,
                     DMCP_PULSE_MESSAGE           = 101,
