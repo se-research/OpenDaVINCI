@@ -79,6 +79,10 @@ namespace automotive {
     }
 
     coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode CANProxy::body() {
+        // Register the CAN device as receiver for all Containers to be
+        // potentially written to the CAN bus.
+        addDataStoreFor(m_device->getMessageToCANDataStore());
+
         // Start the wrapped CAN device to receive CAN messages concurrently.
         m_device->start();
 

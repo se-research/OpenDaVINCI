@@ -66,6 +66,14 @@ namespace automotive {
             m_replicatorFromAtoB.setCANDevice(m_deviceB);
             m_replicatorFromBtoA.setCANDevice(m_deviceA);
 
+            // Set receivers for OpenDaVINCI Containers to be translated as CAN messages.
+            if (getKeyValueConfiguration().getValue<int>("canbridge.devicenodeA.receivesContainers") == 1) {
+                addDataStoreFor(m_deviceA->getMessageToCANDataStore());
+            }
+            if (getKeyValueConfiguration().getValue<int>("canbridge.devicenodeB.receivesContainers") == 1) {
+                addDataStoreFor(m_deviceB->getMessageToCANDataStore());
+            }
+
             // URL for storing containers.
             stringstream recordingURL;
             recordingURL << "file://" << "canbridge_" << TimeStamp().getYYYYMMDD_HHMMSS() << ".rec";

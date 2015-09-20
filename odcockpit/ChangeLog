@@ -1,3 +1,4 @@
+2.0.19 - Added DataStore interface to write Containers to CAN bus.
 2.0.18 - Re-packaging docker images
 2.0.17 - Refactoring canmapper example; odcockpit/spy is printing GenericCANMessages
 2.0.16 - Added cantools
