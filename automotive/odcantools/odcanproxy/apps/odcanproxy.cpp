@@ -20,6 +20,6 @@
 #include "CANProxy.h"
 
 int32_t main(int32_t argc, char **argv) {
-    automotive::CANProxy cp(argc, argv);
+    automotive::odcantools::CANProxy cp(argc, argv);
     return cp.runModule();
 }

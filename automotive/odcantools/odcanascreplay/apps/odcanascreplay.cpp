@@ -20,6 +20,6 @@
 #include "CANASCReplay.h"
 
 int32_t main(int32_t argc, char **argv) {
-    automotive::CANASCReplay cr(argc, argv);
+    automotive::odcantools::CANASCReplay cr(argc, argv);
     return cr.runModule();
 }

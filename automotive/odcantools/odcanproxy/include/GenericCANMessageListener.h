@@ -23,26 +23,28 @@
 #include "GeneratedHeaders_AutomotiveData.h"
 
 namespace automotive {
+    namespace odcantools {
 
-    using namespace std;
+        using namespace std;
 
-    /**
-     * This interface is called whenever a low-level CAN message was received and
-     * successfully wrapped into a GenericCANMessage.
-     */
-    class GenericCANMessageListener {
-        public:
-            virtual ~GenericCANMessageListener();
+        /**
+         * This interface is called whenever a low-level CAN message was received and
+         * successfully wrapped into a GenericCANMessage.
+         */
+        class GenericCANMessageListener {
+            public:
+                virtual ~GenericCANMessageListener();
 
-            /**
-             * This method is called whenever a low-level CAN message was
-             * successfully transformed into a GenericCANMessage.
-             *
-             * @param gcm GenericCANMessage
-             */
-            virtual void nextGenericCANMessage(const GenericCANMessage &gcm) = 0;
-    };
+                /**
+                 * This method is called whenever a low-level CAN message was
+                 * successfully transformed into a GenericCANMessage.
+                 *
+                 * @param gcm GenericCANMessage
+                 */
+                virtual void nextGenericCANMessage(const GenericCANMessage &gcm) = 0;
+        };
 
+    } // odcantools
 } // automotive
 
 #endif /*GENERICCANMESSAGELISTENER_H_*/

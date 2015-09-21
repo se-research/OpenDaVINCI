@@ -28,57 +28,59 @@
 #include "CANDevice.h"
 
 namespace automotive {
+    namespace odcantools {
 
-    using namespace std;
+        using namespace std;
 
-    /**
-     * This class replicates a GenericCANMessage to another CAN device.
-     */
-    class CANMessageReplicator : public GenericCANMessageListener {
-        private:
-            /**
-             * "Forbidden" copy constructor. Goal: The compiler should warn
-             * already at compile time for unwanted bugs caused by any misuse
-             * of the copy constructor.
-             *
-             * @param obj Reference to an object of this class.
-             */
-            CANMessageReplicator(const CANMessageReplicator &/*obj*/);
+        /**
+         * This class replicates a GenericCANMessage to another CAN device.
+         */
+        class CANMessageReplicator : public GenericCANMessageListener {
+            private:
+                /**
+                 * "Forbidden" copy constructor. Goal: The compiler should warn
+                 * already at compile time for unwanted bugs caused by any misuse
+                 * of the copy constructor.
+                 *
+                 * @param obj Reference to an object of this class.
+                 */
+                CANMessageReplicator(const CANMessageReplicator &/*obj*/);
 
-            /**
-             * "Forbidden" assignment operator. Goal: The compiler should warn
-             * already at compile time for unwanted bugs caused by any misuse
-             * of the assignment operator.
-             *
-             * @param obj Reference to an object of this class.
-             * @return Reference to this instance.
-             */
-            CANMessageReplicator& operator=(const CANMessageReplicator &/*obj*/);
+                /**
+                 * "Forbidden" assignment operator. Goal: The compiler should warn
+                 * already at compile time for unwanted bugs caused by any misuse
+                 * of the assignment operator.
+                 *
+                 * @param obj Reference to an object of this class.
+                 * @return Reference to this instance.
+                 */
+                CANMessageReplicator& operator=(const CANMessageReplicator &/*obj*/);
 
-        public:
-            /**
-             * Constructor.
-             *
-             * @param conference Reference to the gateway to the OpenDaVINCI conference where the received messages shall be mapped into high-level C++ messages.
-             */
-            CANMessageReplicator(GenericCANMessageListener &conference);
+            public:
+                /**
+                 * Constructor.
+                 *
+                 * @param conference Reference to the gateway to the OpenDaVINCI conference where the received messages shall be mapped into high-level C++ messages.
+                 */
+                CANMessageReplicator(GenericCANMessageListener &conference);
 
-            /**
-             * This method sets the CAN device to replicate the data to.
-             *
-             * @param CANDeviceToReplicateTo SharedPointer to the CAN device where GenericCANMessages received from this listener shall be replicated.
-             */
-            void setCANDevice(core::SharedPointer<CANDevice> CANDeviceToReplicateTo);
+                /**
+                 * This method sets the CAN device to replicate the data to.
+                 *
+                 * @param CANDeviceToReplicateTo SharedPointer to the CAN device where GenericCANMessages received from this listener shall be replicated.
+                 */
+                void setCANDevice(core::SharedPointer<CANDevice> CANDeviceToReplicateTo);
 
-            virtual ~CANMessageReplicator();
+                virtual ~CANMessageReplicator();
 
-            virtual void nextGenericCANMessage(const GenericCANMessage &gcm);
+                virtual void nextGenericCANMessage(const GenericCANMessage &gcm);
 
-        private:
-            core::SharedPointer<CANDevice> m_CANDeviceToReplicateTo;
-            GenericCANMessageListener &m_conference;
-    };
+            private:
+                core::SharedPointer<CANDevice> m_CANDeviceToReplicateTo;
+                GenericCANMessageListener &m_conference;
+        };
 
+    } // odcantools
 } // automotive
 
 #endif /*CANMESSAGEREPLICATOR_H_*/

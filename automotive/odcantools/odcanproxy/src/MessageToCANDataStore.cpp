@@ -20,34 +20,36 @@
 #include "MessageToCANDataStore.h"
 
 namespace automotive {
+    namespace odcantools {
 
-    using namespace core::data;
+        using namespace core::data;
 
-    MessageToCANDataStore::MessageToCANDataStore(CANDevice &canDevice) :
-        m_canDevice(canDevice) {}
+        MessageToCANDataStore::MessageToCANDataStore(CANDevice &canDevice) :
+            m_canDevice(canDevice) {}
 
-    MessageToCANDataStore::~MessageToCANDataStore() {}
+        MessageToCANDataStore::~MessageToCANDataStore() {}
 
-    void MessageToCANDataStore::add(const core::data::Container &container) {
-        // TODO: Here, we need to check for which Containers we have specified a mapping to CAN messages.
-        if (container.getDataType() == Container::VEHICLECONTROL) {
-            // TODO: Use the Visitor-pattern to transform a Container into the CAN message.
-            // The visitor would have to transform the container into a set of GenericCANMessages
-            // that are subsequently written via the CAN device.
-            GenericCANMessage gcm;
-            m_canDevice.write(gcm);
+        void MessageToCANDataStore::add(const core::data::Container &container) {
+            // TODO: Here, we need to check for which Containers we have specified a mapping to CAN messages.
+            if (container.getDataType() == Container::VEHICLECONTROL) {
+                // TODO: Use the Visitor-pattern to transform a Container into the CAN message.
+                // The visitor would have to transform the container into a set of GenericCANMessages
+                // that are subsequently written via the CAN device.
+                GenericCANMessage gcm;
+                m_canDevice.write(gcm);
+            }
         }
-    }
 
-    void MessageToCANDataStore::clear() {}
+        void MessageToCANDataStore::clear() {}
 
-    uint32_t MessageToCANDataStore::getSize() const {
-        return 0;
-    }
+        uint32_t MessageToCANDataStore::getSize() const {
+            return 0;
+        }
 
-    bool MessageToCANDataStore::isEmpty() const {
-        return true;
-    }
+        bool MessageToCANDataStore::isEmpty() const {
+            return true;
+        }
 
+    } // odcantools
 } // automotive
 

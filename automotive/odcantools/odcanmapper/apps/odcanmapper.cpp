@@ -21,6 +21,6 @@
 #include "CanMapper.h"
 
 int32_t main(int32_t argc, char **argv) {
-    automotive::CanMapper cm(argc, argv);
+    automotive::odcantools::CanMapper cm(argc, argv);
     return cm.runModule();
 }

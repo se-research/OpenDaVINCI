@@ -30,68 +30,70 @@
 #include "GenericCANMessageListener.h"
 
 namespace automotive {
+    namespace odcantools {
 
-    using namespace std;
+        using namespace std;
 
-    /**
-     * This class wraps a CAN device node to wrap low-level CAN messages into GenericCANMessages.
-     */
-    class CANProxy : public core::base::module::TimeTriggeredConferenceClientModule,
-                     public GenericCANMessageListener {
-        private:
-            /**
-             * "Forbidden" copy constructor. Goal: The compiler should warn
-             * already at compile time for unwanted bugs caused by any misuse
-             * of the copy constructor.
-             *
-             * @param obj Reference to an object of this class.
-             */
-            CANProxy(const CANProxy &/*obj*/);
+        /**
+         * This class wraps a CAN device node to wrap low-level CAN messages into GenericCANMessages.
+         */
+        class CANProxy : public core::base::module::TimeTriggeredConferenceClientModule,
+                         public GenericCANMessageListener {
+            private:
+                /**
+                 * "Forbidden" copy constructor. Goal: The compiler should warn
+                 * already at compile time for unwanted bugs caused by any misuse
+                 * of the copy constructor.
+                 *
+                 * @param obj Reference to an object of this class.
+                 */
+                CANProxy(const CANProxy &/*obj*/);
 
-            /**
-             * "Forbidden" assignment operator. Goal: The compiler should warn
-             * already at compile time for unwanted bugs caused by any misuse
-             * of the assignment operator.
-             *
-             * @param obj Reference to an object of this class.
-             * @return Reference to this instance.
-             */
-            CANProxy& operator=(const CANProxy &/*obj*/);
+                /**
+                 * "Forbidden" assignment operator. Goal: The compiler should warn
+                 * already at compile time for unwanted bugs caused by any misuse
+                 * of the assignment operator.
+                 *
+                 * @param obj Reference to an object of this class.
+                 * @return Reference to this instance.
+                 */
+                CANProxy& operator=(const CANProxy &/*obj*/);
 
-        public:
-            /**
-             * Constructor.
-             *
-             * @param argc Number of command line arguments.
-             * @param argv Command line arguments.
-             */
-            CANProxy(const int32_t &argc, char **argv);
+            public:
+                /**
+                 * Constructor.
+                 *
+                 * @param argc Number of command line arguments.
+                 * @param argv Command line arguments.
+                 */
+                CANProxy(const int32_t &argc, char **argv);
 
-            virtual ~CANProxy();
+                virtual ~CANProxy();
 
-            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+                coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
-            virtual void nextGenericCANMessage(const GenericCANMessage &gcm);
+                virtual void nextGenericCANMessage(const GenericCANMessage &gcm);
 
-            /**
-             * This methods writes a GenericCANMessage to the device.
-             *
-             * @param gcm GenericCANMessage to be written.
-             */
-            void writeGenericCANMessage(const GenericCANMessage &gcm);
+                /**
+                 * This methods writes a GenericCANMessage to the device.
+                 *
+                 * @param gcm GenericCANMessage to be written.
+                 */
+                void writeGenericCANMessage(const GenericCANMessage &gcm);
 
-        private:
-            virtual void setUp();
+            private:
+                virtual void setUp();
 
-            virtual void tearDown();
+                virtual void tearDown();
 
-        private:
-            core::base::FIFOQueue m_fifo;
-            auto_ptr<tools::recorder::Recorder> m_recorder;
-            auto_ptr<CANDevice> m_device;
-            string m_deviceNode;
-    };
+            private:
+                core::base::FIFOQueue m_fifo;
+                auto_ptr<tools::recorder::Recorder> m_recorder;
+                auto_ptr<CANDevice> m_device;
+                string m_deviceNode;
+        };
 
+    } // odcantools
 } // automotive
 
 #endif /*CANPROXY_H_*/

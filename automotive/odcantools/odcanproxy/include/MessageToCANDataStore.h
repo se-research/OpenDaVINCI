@@ -27,58 +27,60 @@
 #include "CANDevice.h"
 
 namespace automotive {
+    namespace odcantools {
 
-    using namespace std;
+        using namespace std;
 
-    // Forward declaration due to circular dependency.
-    class CANDevice;
+        // Forward declaration due to circular dependency.
+        class CANDevice;
 
-    /**
-     * This class is waiting for Containers to be written to a CAN bus.
-     */
-    class MessageToCANDataStore : public core::base::AbstractDataStore {
-        private:
-            /**
-             * "Forbidden" copy constructor. Goal: The compiler should warn
-             * already at compile time for unwanted bugs caused by any misuse
-             * of the copy constructor.
-             *
-             * @param obj Reference to an object of this class.
-             */
-            MessageToCANDataStore(const MessageToCANDataStore &/*obj*/);
+        /**
+         * This class is waiting for Containers to be written to a CAN bus.
+         */
+        class MessageToCANDataStore : public core::base::AbstractDataStore {
+            private:
+                /**
+                 * "Forbidden" copy constructor. Goal: The compiler should warn
+                 * already at compile time for unwanted bugs caused by any misuse
+                 * of the copy constructor.
+                 *
+                 * @param obj Reference to an object of this class.
+                 */
+                MessageToCANDataStore(const MessageToCANDataStore &/*obj*/);
 
-            /**
-             * "Forbidden" assignment operator. Goal: The compiler should warn
-             * already at compile time for unwanted bugs caused by any misuse
-             * of the assignment operator.
-             *
-             * @param obj Reference to an object of this class.
-             * @return Reference to this instance.
-             */
-            MessageToCANDataStore& operator=(const MessageToCANDataStore &/*obj*/);
+                /**
+                 * "Forbidden" assignment operator. Goal: The compiler should warn
+                 * already at compile time for unwanted bugs caused by any misuse
+                 * of the assignment operator.
+                 *
+                 * @param obj Reference to an object of this class.
+                 * @return Reference to this instance.
+                 */
+                MessageToCANDataStore& operator=(const MessageToCANDataStore &/*obj*/);
 
-        public:
-            /**
-             * Constructor.
-             *
-             * @param canDevice Reference to the CAN device used for sending the data.
-             */
-            MessageToCANDataStore(CANDevice &canDevice);
+            public:
+                /**
+                 * Constructor.
+                 *
+                 * @param canDevice Reference to the CAN device used for sending the data.
+                 */
+                MessageToCANDataStore(CANDevice &canDevice);
 
-            virtual ~MessageToCANDataStore();
+                virtual ~MessageToCANDataStore();
 
-            virtual void add(const core::data::Container &container);
+                virtual void add(const core::data::Container &container);
 
-            virtual void clear();
+                virtual void clear();
 
-            virtual uint32_t getSize() const;
+                virtual uint32_t getSize() const;
 
-            virtual bool isEmpty() const;
+                virtual bool isEmpty() const;
 
-        private:
-            CANDevice &m_canDevice;
-    };
+            private:
+                CANDevice &m_canDevice;
+        };
 
+    } // odcantools
 } // automotive
 
 #endif /*MESSAGETOCANDATASTORE_H_*/

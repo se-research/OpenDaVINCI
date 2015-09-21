@@ -22,6 +22,6 @@
 #include "CANBridge.h"
 
 int32_t main(int32_t argc, char **argv) {
-    automotive::CANBridge cb(argc, argv);
+    automotive::odcantools::CANBridge cb(argc, argv);
     return cb.runModule();
 }

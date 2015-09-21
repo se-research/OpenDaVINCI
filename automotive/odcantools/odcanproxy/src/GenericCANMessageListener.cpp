@@ -20,8 +20,10 @@
 #include "GenericCANMessageListener.h"
 
 namespace automotive {
+    namespace odcantools {
 
-    GenericCANMessageListener::~GenericCANMessageListener() {}
+        GenericCANMessageListener::~GenericCANMessageListener() {}
 
+    } // odcantools
 } // automotive
 

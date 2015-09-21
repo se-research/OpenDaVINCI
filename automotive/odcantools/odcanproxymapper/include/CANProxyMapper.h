@@ -24,51 +24,52 @@
 #include "DataMapper.h"
 
 namespace automotive {
+    namespace odcantools {
 
-    using namespace std;
+        using namespace std;
 
-    /**
-     * This class can be used to map GenericCANMessages to high-level C++ messages.
-     */
-    class CANProxyMapper : public CANProxy {
-        private:
-            /**
-             * "Forbidden" copy constructor. Goal: The compiler should warn
-             * already at compile time for unwanted bugs caused by any misuse
-             * of the copy constructor.
-             *
-             * @param obj Reference to an object of this class.
-             */
-            CANProxyMapper(const CANProxyMapper &/*obj*/);
+        /**
+         * This class can be used to map GenericCANMessages to high-level C++ messages.
+         */
+        class CANProxyMapper : public CANProxy {
+            private:
+                /**
+                 * "Forbidden" copy constructor. Goal: The compiler should warn
+                 * already at compile time for unwanted bugs caused by any misuse
+                 * of the copy constructor.
+                 *
+                 * @param obj Reference to an object of this class.
+                 */
+                CANProxyMapper(const CANProxyMapper &/*obj*/);
 
-            /**
-             * "Forbidden" assignment operator. Goal: The compiler should warn
-             * already at compile time for unwanted bugs caused by any misuse
-             * of the assignment operator.
-             *
-             * @param obj Reference to an object of this class.
-             * @return Reference to this instance.
-             */
-            CANProxyMapper& operator=(const CANProxyMapper &/*obj*/);
+                /**
+                 * "Forbidden" assignment operator. Goal: The compiler should warn
+                 * already at compile time for unwanted bugs caused by any misuse
+                 * of the assignment operator.
+                 *
+                 * @param obj Reference to an object of this class.
+                 * @return Reference to this instance.
+                 */
+                CANProxyMapper& operator=(const CANProxyMapper &/*obj*/);
 
-        public:
-            /**
-             * Constructor.
-             *
-             * @param argc Number of command line arguments.
-             * @param argv Command line arguments.
-             */
-            CANProxyMapper(const int32_t &argc, char **argv);
+            public:
+                /**
+                 * Constructor.
+                 *
+                 * @param argc Number of command line arguments.
+                 * @param argv Command line arguments.
+                 */
+                CANProxyMapper(const int32_t &argc, char **argv);
 
-            virtual ~CANProxyMapper();
+                virtual ~CANProxyMapper();
 
-            virtual void nextGenericCANMessage(const GenericCANMessage &gcm);
+                virtual void nextGenericCANMessage(const GenericCANMessage &gcm);
 
-        private:
-            DataMapper m_dataMapper;
+            private:
+                DataMapper m_dataMapper;
+        };
 
-    };
-
+    } //odcantools
 } // automotive
 
 #endif /*CANPROXYMAPPER_H_*/

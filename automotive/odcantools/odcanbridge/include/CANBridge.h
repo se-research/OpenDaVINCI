@@ -33,66 +33,68 @@
 #include "DataMapper.h"
 
 namespace automotive {
+    namespace odcantools {
 
-    using namespace std;
+        using namespace std;
 
-    /**
-     * This class bridges between two CAN devices and maps GenericCANMessages to high-level C++ messages.
-     */
-    class CANBridge : public core::base::module::TimeTriggeredConferenceClientModule,
-                      public GenericCANMessageListener {
-        private:
-            /**
-             * "Forbidden" copy constructor. Goal: The compiler should warn
-             * already at compile time for unwanted bugs caused by any misuse
-             * of the copy constructor.
-             *
-             * @param obj Reference to an object of this class.
-             */
-            CANBridge(const CANBridge &/*obj*/);
+        /**
+         * This class bridges between two CAN devices and maps GenericCANMessages to high-level C++ messages.
+         */
+        class CANBridge : public core::base::module::TimeTriggeredConferenceClientModule,
+                          public GenericCANMessageListener {
+            private:
+                /**
+                 * "Forbidden" copy constructor. Goal: The compiler should warn
+                 * already at compile time for unwanted bugs caused by any misuse
+                 * of the copy constructor.
+                 *
+                 * @param obj Reference to an object of this class.
+                 */
+                CANBridge(const CANBridge &/*obj*/);
 
-            /**
-             * "Forbidden" assignment operator. Goal: The compiler should warn
-             * already at compile time for unwanted bugs caused by any misuse
-             * of the assignment operator.
-             *
-             * @param obj Reference to an object of this class.
-             * @return Reference to this instance.
-             */
-            CANBridge& operator=(const CANBridge &/*obj*/);
+                /**
+                 * "Forbidden" assignment operator. Goal: The compiler should warn
+                 * already at compile time for unwanted bugs caused by any misuse
+                 * of the assignment operator.
+                 *
+                 * @param obj Reference to an object of this class.
+                 * @return Reference to this instance.
+                 */
+                CANBridge& operator=(const CANBridge &/*obj*/);
 
-        public:
-            /**
-             * Constructor.
-             *
-             * @param argc Number of command line arguments.
-             * @param argv Command line arguments.
-             */
-            CANBridge(const int32_t &argc, char **argv);
+            public:
+                /**
+                 * Constructor.
+                 *
+                 * @param argc Number of command line arguments.
+                 * @param argv Command line arguments.
+                 */
+                CANBridge(const int32_t &argc, char **argv);
 
-            virtual ~CANBridge();
+                virtual ~CANBridge();
 
-            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+                coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
-            virtual void nextGenericCANMessage(const GenericCANMessage &gcm);
+                virtual void nextGenericCANMessage(const GenericCANMessage &gcm);
 
-        private:
-            virtual void setUp();
+            private:
+                virtual void setUp();
 
-            virtual void tearDown();
+                virtual void tearDown();
 
-        private:
-            core::base::FIFOQueue m_fifo;
-            auto_ptr<tools::recorder::Recorder> m_recorder;
-            core::SharedPointer<CANDevice> m_deviceA;
-            string m_deviceNodeA;
-            core::SharedPointer<CANDevice> m_deviceB;
-            string m_deviceNodeB;
-            CANMessageReplicator m_replicatorFromAtoB;
-            CANMessageReplicator m_replicatorFromBtoA;
-            DataMapper m_dataMapper;
-    };
+            private:
+                core::base::FIFOQueue m_fifo;
+                auto_ptr<tools::recorder::Recorder> m_recorder;
+                core::SharedPointer<CANDevice> m_deviceA;
+                string m_deviceNodeA;
+                core::SharedPointer<CANDevice> m_deviceB;
+                string m_deviceNodeB;
+                CANMessageReplicator m_replicatorFromAtoB;
+                CANMessageReplicator m_replicatorFromBtoA;
+                DataMapper m_dataMapper;
+        };
 
+    } // odcantools
 } // automotive
 
 #endif /*CANBRIDGE_H_*/

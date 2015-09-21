@@ -23,53 +23,55 @@
 #include "core/base/module/TimeTriggeredConferenceClientModule.h"
 
 namespace automotive {
+    namespace odcantools {
 
-    using namespace std;
+        using namespace std;
 
-    /**
-     * This class plays back data from an ASC file.
-     */
-    class CANASCReplay : public core::base::module::TimeTriggeredConferenceClientModule {
-        private:
-            /**
-             * "Forbidden" copy constructor. Goal: The compiler should warn
-             * already at compile time for unwanted bugs caused by any misuse
-             * of the copy constructor.
-             *
-             * @param obj Reference to an object of this class.
-             */
-            CANASCReplay(const CANASCReplay &/*obj*/);
+        /**
+         * This class plays back data from an ASC file.
+         */
+        class CANASCReplay : public core::base::module::TimeTriggeredConferenceClientModule {
+            private:
+                /**
+                 * "Forbidden" copy constructor. Goal: The compiler should warn
+                 * already at compile time for unwanted bugs caused by any misuse
+                 * of the copy constructor.
+                 *
+                 * @param obj Reference to an object of this class.
+                 */
+                CANASCReplay(const CANASCReplay &/*obj*/);
 
-            /**
-             * "Forbidden" assignment operator. Goal: The compiler should warn
-             * already at compile time for unwanted bugs caused by any misuse
-             * of the assignment operator.
-             *
-             * @param obj Reference to an object of this class.
-             * @return Reference to this instance.
-             */
-            CANASCReplay& operator=(const CANASCReplay &/*obj*/);
+                /**
+                 * "Forbidden" assignment operator. Goal: The compiler should warn
+                 * already at compile time for unwanted bugs caused by any misuse
+                 * of the assignment operator.
+                 *
+                 * @param obj Reference to an object of this class.
+                 * @return Reference to this instance.
+                 */
+                CANASCReplay& operator=(const CANASCReplay &/*obj*/);
 
-        public:
-            /**
-             * Constructor.
-             *
-             * @param argc Number of command line arguments.
-             * @param argv Command line arguments.
-             */
-            CANASCReplay(const int32_t &argc, char **argv);
+            public:
+                /**
+                 * Constructor.
+                 *
+                 * @param argc Number of command line arguments.
+                 * @param argv Command line arguments.
+                 */
+                CANASCReplay(const int32_t &argc, char **argv);
 
-            virtual ~CANASCReplay();
+                virtual ~CANASCReplay();
 
-            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
-        private:
-            virtual void setUp();
+                coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+            private:
+                virtual void setUp();
 
-            virtual void tearDown();
+                virtual void tearDown();
 
-        private:
-    };
+            private:
+        };
 
+    } // odcantools
 } // automotive
 
 #endif /*CANASCREPLAY_H_*/

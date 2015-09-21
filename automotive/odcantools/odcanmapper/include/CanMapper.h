@@ -28,55 +28,57 @@
 #include "DataMapper.h"
 
 namespace automotive {
+    namespace odcantools {
 
-    using namespace std;
+        using namespace std;
 
-    /**
-     * This class can be used to map GenericCANMessages to high-level C++ messages.
-     */
-    class CanMapper : public core::base::module::DataTriggeredConferenceClientModule {
-        private:
-            /**
-             * "Forbidden" copy constructor. Goal: The compiler should warn
-             * already at compile time for unwanted bugs caused by any misuse
-             * of the copy constructor.
-             *
-             * @param obj Reference to an object of this class.
-             */
-            CanMapper(const CanMapper &/*obj*/);
+        /**
+         * This class can be used to map GenericCANMessages to high-level C++ messages.
+         */
+        class CanMapper : public core::base::module::DataTriggeredConferenceClientModule {
+            private:
+                /**
+                 * "Forbidden" copy constructor. Goal: The compiler should warn
+                 * already at compile time for unwanted bugs caused by any misuse
+                 * of the copy constructor.
+                 *
+                 * @param obj Reference to an object of this class.
+                 */
+                CanMapper(const CanMapper &/*obj*/);
 
-            /**
-             * "Forbidden" assignment operator. Goal: The compiler should warn
-             * already at compile time for unwanted bugs caused by any misuse
-             * of the assignment operator.
-             *
-             * @param obj Reference to an object of this class.
-             * @return Reference to this instance.
-             */
-            CanMapper& operator=(const CanMapper &/*obj*/);
+                /**
+                 * "Forbidden" assignment operator. Goal: The compiler should warn
+                 * already at compile time for unwanted bugs caused by any misuse
+                 * of the assignment operator.
+                 *
+                 * @param obj Reference to an object of this class.
+                 * @return Reference to this instance.
+                 */
+                CanMapper& operator=(const CanMapper &/*obj*/);
 
-        public:
-            /**
-             * Constructor.
-             *
-             * @param argc Number of command line arguments.
-             * @param argv Command line arguments.
-             */
-            CanMapper(const int32_t &argc, char **argv);
+            public:
+                /**
+                 * Constructor.
+                 *
+                 * @param argc Number of command line arguments.
+                 * @param argv Command line arguments.
+                 */
+                CanMapper(const int32_t &argc, char **argv);
 
-            virtual ~CanMapper();
+                virtual ~CanMapper();
 
-            virtual void nextContainer(core::data::Container &c);
+                virtual void nextContainer(core::data::Container &c);
 
-        private:
-            virtual void setUp();
+            private:
+                virtual void setUp();
 
-            virtual void tearDown();
+                virtual void tearDown();
 
-        private:
-            DataMapper m_dataMapper;
-    };
+            private:
+                DataMapper m_dataMapper;
+        };
 
+    } // odcantools
 } // automotive
 
 #endif /*CANMAPPER_H_*/

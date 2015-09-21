@@ -26,25 +26,27 @@
 #include "CANProxyMapper.h"
 
 namespace automotive {
+    namespace odcantools {
 
-    using namespace std;
-    using namespace core::base;
-    using namespace core::data;
+        using namespace std;
+        using namespace core::base;
+        using namespace core::data;
 
-    CANProxyMapper::CANProxyMapper(const int32_t &argc, char **argv) :
-        CANProxy(argc, argv),
-        m_dataMapper() {}
+        CANProxyMapper::CANProxyMapper(const int32_t &argc, char **argv) :
+            CANProxy(argc, argv),
+            m_dataMapper() {}
 
-    CANProxyMapper::~CANProxyMapper() {}
+        CANProxyMapper::~CANProxyMapper() {}
 
-    void CANProxyMapper::nextGenericCANMessage(const GenericCANMessage &gcm) {
-        // Try to get complete message with this additional information.
-        Container result = m_dataMapper.mapNext(gcm);
-        if (result.getDataType() != Container::UNDEFINEDDATA) {
-            // Last GenericCANMessage resulted in a complete decoding
-            // and mapping of valid high-level C++ message.
-            getConference().send(result);
+        void CANProxyMapper::nextGenericCANMessage(const GenericCANMessage &gcm) {
+            // Try to get complete message with this additional information.
+            Container result = m_dataMapper.mapNext(gcm);
+            if (result.getDataType() != Container::UNDEFINEDDATA) {
+                // Last GenericCANMessage resulted in a complete decoding
+                // and mapping of valid high-level C++ message.
+                getConference().send(result);
+            }
         }
-    }
 
+    } // odcantools
 } // automotive

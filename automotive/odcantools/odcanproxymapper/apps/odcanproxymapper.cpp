@@ -20,6 +20,6 @@
 #include "CANProxyMapper.h"
 
 int32_t main(int32_t argc, char **argv) {
-    automotive::CANProxyMapper cpm(argc, argv);
+    automotive::odcantools::CANProxyMapper cpm(argc, argv);
     return cpm.runModule();
 }

@@ -26,33 +26,35 @@
 #include "CanMapper.h"
 
 namespace automotive {
+    namespace odcantools {
 
-    using namespace std;
-    using namespace core::base;
-    using namespace core::data;
+        using namespace std;
+        using namespace core::base;
+        using namespace core::data;
 
-    CanMapper::CanMapper(const int32_t &argc, char **argv) :
-        DataTriggeredConferenceClientModule(argc, argv, "odcanmapper"),
-        m_dataMapper() {}
+        CanMapper::CanMapper(const int32_t &argc, char **argv) :
+            DataTriggeredConferenceClientModule(argc, argv, "odcanmapper"),
+            m_dataMapper() {}
 
-    CanMapper::~CanMapper() {}
+        CanMapper::~CanMapper() {}
 
-    void CanMapper::setUp() {}
+        void CanMapper::setUp() {}
 
-    void CanMapper::tearDown() {}
+        void CanMapper::tearDown() {}
 
-    void CanMapper::nextContainer(Container &c) {
-        if (c.getDataType() == Container::GENERIC_CAN_MESSAGE) {
-            GenericCANMessage gcm = c.getData<GenericCANMessage>();
+        void CanMapper::nextContainer(Container &c) {
+            if (c.getDataType() == Container::GENERIC_CAN_MESSAGE) {
+                GenericCANMessage gcm = c.getData<GenericCANMessage>();
 
-            // Try to get complete message with this additional information.
-            Container result = m_dataMapper.mapNext(gcm);
-            if (result.getDataType() != Container::UNDEFINEDDATA) {
-                // Last GenericCANMessage resulted in a complete decoding
-                // and mapping of valid high-level C++ message.
-                getConference().send(result);
+                // Try to get complete message with this additional information.
+                Container result = m_dataMapper.mapNext(gcm);
+                if (result.getDataType() != Container::UNDEFINEDDATA) {
+                    // Last GenericCANMessage resulted in a complete decoding
+                    // and mapping of valid high-level C++ message.
+                    getConference().send(result);
+                }
             }
         }
-    }
 
+    } // odcantools
 } // automotive

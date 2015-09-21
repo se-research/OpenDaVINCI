@@ -29,7 +29,7 @@
 
 using namespace std;
 using namespace core::data;
-using namespace automotive;
+using namespace automotive::odcantools;
 
 /**
  * This class derives from SensorBoard to allow access to protected methods.

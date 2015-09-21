@@ -22,28 +22,30 @@
 #include "CANMessageReplicator.h"
 
 namespace automotive {
+    namespace odcantools {
 
-    using namespace std;
+        using namespace std;
 
-    CANMessageReplicator::CANMessageReplicator(GenericCANMessageListener &conference) :
-        m_CANDeviceToReplicateTo(),
-        m_conference(conference) {}
+        CANMessageReplicator::CANMessageReplicator(GenericCANMessageListener &conference) :
+            m_CANDeviceToReplicateTo(),
+            m_conference(conference) {}
 
-    CANMessageReplicator::~CANMessageReplicator() {}
+        CANMessageReplicator::~CANMessageReplicator() {}
 
-    void CANMessageReplicator::setCANDevice(core::SharedPointer<CANDevice> CANDeviceToReplicateTo) {
-        m_CANDeviceToReplicateTo = CANDeviceToReplicateTo;
-    }
-
-    void CANMessageReplicator::nextGenericCANMessage(const GenericCANMessage &gcm) {
-        // Replicate the received GenericCANMessage on the specified device.
-        if (m_CANDeviceToReplicateTo.isValid()) {
-            m_CANDeviceToReplicateTo->write(gcm);
+        void CANMessageReplicator::setCANDevice(core::SharedPointer<CANDevice> CANDeviceToReplicateTo) {
+            m_CANDeviceToReplicateTo = CANDeviceToReplicateTo;
         }
 
-        // Replicate the received GenericCANMessage to OpenDaVINCI for mapping to the high-level C++ structure.
-        m_conference.nextGenericCANMessage(gcm);
-    }
+        void CANMessageReplicator::nextGenericCANMessage(const GenericCANMessage &gcm) {
+            // Replicate the received GenericCANMessage on the specified device.
+            if (m_CANDeviceToReplicateTo.isValid()) {
+                m_CANDeviceToReplicateTo->write(gcm);
+            }
 
+            // Replicate the received GenericCANMessage to OpenDaVINCI for mapping to the high-level C++ structure.
+            m_conference.nextGenericCANMessage(gcm);
+        }
+
+    } // odcantools
 } // automotive
 

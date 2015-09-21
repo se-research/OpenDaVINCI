@@ -26,72 +26,74 @@
 #include "CANASCReplay.h"
 
 namespace automotive {
+    namespace odcantools {
 
-    using namespace std;
-    using namespace core::base;
-    using namespace core::data;
-    using namespace core::strings;
+        using namespace std;
+        using namespace core::base;
+        using namespace core::data;
+        using namespace core::strings;
 
-    CANASCReplay::CANASCReplay(const int32_t &argc, char **argv) :
-        TimeTriggeredConferenceClientModule(argc, argv, "odcanascreplay") {}
+        CANASCReplay::CANASCReplay(const int32_t &argc, char **argv) :
+            TimeTriggeredConferenceClientModule(argc, argv, "odcanascreplay") {}
 
-    CANASCReplay::~CANASCReplay() {}
+        CANASCReplay::~CANASCReplay() {}
 
-    void CANASCReplay::setUp() {}
+        void CANASCReplay::setUp() {}
 
-    void CANASCReplay::tearDown() {}
+        void CANASCReplay::tearDown() {}
 
-    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode CANASCReplay::body() {
-        // Structure of an ASC entry: 'Timestamp Channel  ID             Rx   d Length 00 11 22 33 44 55 66 77'
-        char buffer[100];
-        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
-            // Read next line from STDIN.
-            cin.getline(buffer, 100);
+        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode CANASCReplay::body() {
+            // Structure of an ASC entry: 'Timestamp Channel  ID             Rx   d Length 00 11 22 33 44 55 66 77'
+            char buffer[100];
+            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+                // Read next line from STDIN.
+                cin.getline(buffer, 100);
 
-            // Tokenize the read line.
-            vector<string> tokens = StringToolbox::split(string(buffer), ' ');
+                // Tokenize the read line.
+                vector<string> tokens = StringToolbox::split(string(buffer), ' ');
 
-            // Do we have a valid line?
-            if ( (tokens.size() >= 7) &&
-                 (StringToolbox::equalsIgnoreCase(tokens[3], "rx")) ) {
-                // Read CAN identifier.
-                stringstream _identifier;
-                uint64_t identifier = 0;
-                _identifier << tokens[2]; _identifier >> hex >> identifier;
+                // Do we have a valid line?
+                if ( (tokens.size() >= 7) &&
+                     (StringToolbox::equalsIgnoreCase(tokens[3], "rx")) ) {
+                    // Read CAN identifier.
+                    stringstream _identifier;
+                    uint64_t identifier = 0;
+                    _identifier << tokens[2]; _identifier >> hex >> identifier;
 
-                // Read payload length (1-8).
-                stringstream _length;
-                uint16_t length = 0;
-                _length << tokens[5]; _length >> dec >> length;
+                    // Read payload length (1-8).
+                    stringstream _length;
+                    uint16_t length = 0;
+                    _length << tokens[5]; _length >> dec >> length;
 
-                // Read payload.
-                uint64_t data = 0;
-                for (uint16_t i = 0; i < length; i++) {
-                    // Put next data byte into stringstream.
-                    stringstream _data;
-                    _data << tokens[6 + i];
+                    // Read payload.
+                    uint64_t data = 0;
+                    for (uint16_t i = 0; i < length; i++) {
+                        // Put next data byte into stringstream.
+                        stringstream _data;
+                        _data << tokens[6 + i];
 
-                    // Read next data byte.
-                    uint16_t value = 0;
-                    _data >> hex >> value;
-                    data |= (static_cast<uint64_t>(value) << (i*8));
+                        // Read next data byte.
+                        uint16_t value = 0;
+                        _data >> hex >> value;
+                        data |= (static_cast<uint64_t>(value) << (i*8));
+                    }
+
+                    // Create GenericCANMessage from parsed data.
+                    GenericCANMessage gcm;
+                    gcm.setIdentifier(identifier);
+                    gcm.setLength(length);
+                    gcm.setData(data);
+
+                    CLOG1 << gcm.toString() << endl;
+
+                    // Distribute data.
+                    Container c(Container::GENERIC_CAN_MESSAGE, gcm);
+                    getConference().send(c);
                 }
-
-                // Create GenericCANMessage from parsed data.
-                GenericCANMessage gcm;
-                gcm.setIdentifier(identifier);
-                gcm.setLength(length);
-                gcm.setData(data);
-
-                CLOG1 << gcm.toString() << endl;
-
-                // Distribute data.
-                Container c(Container::GENERIC_CAN_MESSAGE, gcm);
-                getConference().send(c);
             }
+
+            return coredata::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
-        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
-    }
-
+    } // odcantools
 } // automotive
