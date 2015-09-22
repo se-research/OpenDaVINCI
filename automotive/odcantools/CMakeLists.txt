@@ -38,7 +38,9 @@ INCLUDE (CheckCxxTestEnvironment)
 
 ###########################################################################
 # Download and build Peak Systems CAN driver and library.
-IF(UNIX)
+IF(    (UNIX)
+   AND (NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "DragonFly")
+   AND (NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD") )
     ###########################################################################
     # Find popt library.
     FIND_PACKAGE (popt REQUIRED)
