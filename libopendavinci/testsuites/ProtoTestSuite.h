@@ -240,7 +240,7 @@ class ProtoTest : public CxxTest::TestSuite {
             sd.setName("Hello World!");
             sd.setSize(42);
 
-            // Create an LCM serialization visitor.
+            // Create a Proto serialization visitor.
             ProtoSerializerVisitor protoSerializerVisitor;
             sd.accept(protoSerializerVisitor);
 
@@ -249,7 +249,7 @@ class ProtoTest : public CxxTest::TestSuite {
             protoSerializerVisitor.getSerializedData(out);
 
 
-            // Create an LCM deserialization visitor.
+            // Create a Proto deserialization visitor.
             ProtoDeserializerVisitor protoDeserializerVisitor;
             protoDeserializerVisitor.deserializeDataFrom(out);
 
@@ -269,7 +269,7 @@ class ProtoTest : public CxxTest::TestSuite {
             si.setHeight(21);
             si.setBytesPerPixel(1);
 
-            // Create an LCM serialization visitor.
+            // Create a Proto serialization visitor.
             ProtoSerializerVisitor protoSerializerVisitor;
             si.accept(protoSerializerVisitor);
 
@@ -277,7 +277,7 @@ class ProtoTest : public CxxTest::TestSuite {
             stringstream out;
             protoSerializerVisitor.getSerializedData(out);
 
-            // Create an LCM deserialization visitor.
+            // Create a Proto deserialization visitor.
             ProtoDeserializerVisitor protoDeserializerVisitor;
             protoDeserializerVisitor.deserializeDataFrom(out);
 
@@ -299,7 +299,7 @@ class ProtoTest : public CxxTest::TestSuite {
             md.setVersion("2");
             md.setFrequency(1.234);
 
-            // Create an LCM serialization visitor.
+            // Create a Proto serialization visitor.
             ProtoSerializerVisitor protoSerializerVisitor;
             md.accept(protoSerializerVisitor);
 
@@ -307,7 +307,7 @@ class ProtoTest : public CxxTest::TestSuite {
             stringstream out;
             protoSerializerVisitor.getSerializedData(out);
 
-            // Create an LCM deserialization visitor.
+            // Create a Proto deserialization visitor.
             ProtoDeserializerVisitor protoDeserializerVisitor;
             protoDeserializerVisitor.deserializeDataFrom(out);
 

@@ -127,20 +127,19 @@ MESSAGE(STATUS "Installing artifacts to:    ${INSTALL_DIR}")
 MESSAGE("")
 
 ###########################################################################
-# Build data structure generator.
-IF(${BUILD_ODDATASTRUCTUREGENERATOR})
-    ExternalProject_Add (odDataStructureGenerator
-        DOWNLOAD_COMMAND ""
-        UPDATE_COMMAND ""
-        SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odDataStructureGenerator"
-        CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-        INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odDataStructureGenerator-prefix/src/odDataStructureGenerator-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odDataStructureGenerator-prefix/src/odDataStructureGenerator-build --target ${MAKE_PACKAGE})
-ENDIF()
-
-###########################################################################
 # Next, all projects for a complete build of the sources tree are listed.
 # This section is for non-cross-compiling builds.
 IF("${CMAKE_TOOLCHAIN_FILE}" STREQUAL "")
+    # Build data structure generator.
+    IF(${BUILD_ODDATASTRUCTUREGENERATOR})
+        ExternalProject_Add (odDataStructureGenerator
+            DOWNLOAD_COMMAND ""
+            UPDATE_COMMAND ""
+            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odDataStructureGenerator"
+            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
+            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odDataStructureGenerator-prefix/src/odDataStructureGenerator-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odDataStructureGenerator-prefix/src/odDataStructureGenerator-build --target ${MAKE_PACKAGE})
+    ENDIF()
+
     # Next, build libopendavinci.
     IF(${BUILD_OPENDAVINCI})
         ExternalProject_Add (libopendavinci
@@ -277,6 +276,17 @@ ENDIF()
 # This section is for i686-cross-compiling builds.
 IF(    NOT("${CMAKE_TOOLCHAIN_FILE}" STREQUAL "")
    AND NOT("${ARMHF}") )
+    # Build data structure generator.
+    IF(${BUILD_ODDATASTRUCTUREGENERATOR})
+        ExternalProject_Add (odDataStructureGenerator
+            DOWNLOAD_COMMAND ""
+            UPDATE_COMMAND ""
+            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odDataStructureGenerator"
+            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
+            CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
+            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odDataStructureGenerator-prefix/src/odDataStructureGenerator-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odDataStructureGenerator-prefix/src/odDataStructureGenerator-build --target ${MAKE_PACKAGE})
+    ENDIF()
+
     # Next, build libopendavinci.
     IF(${BUILD_OPENDAVINCI})
         ExternalProject_Add (libopendavinci
@@ -410,6 +420,17 @@ ENDIF()
 # This section is for armhf-cross-compiling builds.
 IF(    NOT("${CMAKE_TOOLCHAIN_FILE}" STREQUAL "")
    AND ("${ARMHF}") )
+    # Build data structure generator.
+    IF(${BUILD_ODDATASTRUCTUREGENERATOR})
+        ExternalProject_Add (odDataStructureGenerator
+            DOWNLOAD_COMMAND ""
+            UPDATE_COMMAND ""
+            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odDataStructureGenerator"
+            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
+            CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
+            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odDataStructureGenerator-prefix/src/odDataStructureGenerator-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odDataStructureGenerator-prefix/src/odDataStructureGenerator-build --target ${MAKE_PACKAGE})
+    ENDIF()
+
     # Next, build libopendavinci.
     IF(${BUILD_OPENDAVINCI})
         ExternalProject_Add (libopendavinci

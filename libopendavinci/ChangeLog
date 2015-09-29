@@ -1,3 +1,4 @@
+2.0.21 - Added odDataStructureGenerator build and more examples for AutomotiveData.odvd
 2.0.20 - Refactored cantools to odcantools
 2.0.19 - Added DataStore interface to write Containers to CAN bus.
 2.0.18 - Re-packaging docker images
