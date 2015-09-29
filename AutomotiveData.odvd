@@ -96,6 +96,11 @@ message automotive.miniature.SteeringData [id = 80] {
     double exampleData;
 }
 
+message automotive.miniature.SensorBoardData [id = 81] {
+    uint32 numberOfSensors;
+    map<uint32, double> distances;
+}
+
 message automotive.miniature.STM32F4Control [id = 82] {
     uint32 dataFeed;
 }
@@ -114,11 +119,18 @@ message automotive.miniature.UserButtonData [id = 84] {
     double duration;
 }
 
-message automotive.miniature.SensorBoardData [id = 81] {
-    uint32 numberOfSensors;
-    map<uint32, double> distances;
+message automotive.carolocup.Sensors [id = 87] {
+    uint16 usFront [id = 1];
+    uint16 usRear [id = 2];
+    uint16 irFrontRight [id = 3];
+    uint16 irRearRight [id = 4];
+    uint16 wheel [id = 5];
 }
 
+message automotive.carolocup.Control [id = 88] {
+    uint16 steering [id = 1];
+    uint16 acceleration [id = 2];
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Vehicle messages.
