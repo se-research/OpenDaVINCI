@@ -29,6 +29,17 @@ namespace core {
 
         ProtoDeserializerVisitor::~ProtoDeserializerVisitor() {}
 
+        void ProtoDeserializerVisitor::deserializeDataFromNoHeader(istream &in) {
+            // Reset internal states as this deserializer could be reused.
+            m_size = 0;
+            m_buffer.str("");
+
+            while (in.good()) {
+                char c = in.get();
+                m_buffer.put(c);
+            }
+        }
+
         void ProtoDeserializerVisitor::deserializeDataFrom(istream &in) {
             // Reset internal states as this deserializer could be reused.
             m_size = 0;
@@ -45,7 +56,7 @@ namespace core {
 
                 while (in.good()) {
                     char c = in.get();
-                    m_buffer.put(c);            
+                    m_buffer.put(c);
                 }
             }
             else {

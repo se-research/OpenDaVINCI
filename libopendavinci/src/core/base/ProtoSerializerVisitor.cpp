@@ -28,11 +28,15 @@ namespace core {
 
         ProtoSerializerVisitor::~ProtoSerializerVisitor() {}
 
+        void ProtoSerializerVisitor::getSerializedDataNoHeader(ostream &o) {
+            o << m_buffer.str();
+        }
+
         void ProtoSerializerVisitor::getSerializedData(ostream &o) {
             uint16_t magicNumber = 0xAABB;
             encodeVarInt(o, magicNumber);
             encodeVarInt(o, m_size);
-            o << m_buffer.str();
+            getSerializedDataNoHeader(o);
         }
 
         uint32_t ProtoSerializerVisitor::getKey(const uint32_t &fieldNumber, const uint8_t &protoType) {
