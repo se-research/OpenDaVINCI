@@ -23,12 +23,22 @@
 
 #include "cxxtest/TestSuite.h"
 
+#include <core/SharedPointer.h>
+#include <core/reflection/Message.h>
+#include <core/reflection/MessageToVisitableVisitor.h>
+#include <core/reflection/MessagePrettyPrinterVisitor.h>
+
+#include "GeneratedHeaders_AutomotiveData.h"
+
 // Include local header files.
 #include "../include/CanMapper.h"
 
 using namespace std;
+using namespace core;
 using namespace core::data;
 using namespace automotive::odcantools;
+using namespace core::reflection;
+using namespace coredata::reflection;
 
 /**
  * This class derives from SensorBoard to allow access to protected methods.
@@ -83,6 +93,103 @@ class CanMapperTest : public CxxTest::TestSuite {
 
         void testCanMapperSuccessfullyCreated() {
             TS_ASSERT(dt != NULL);
+        }
+
+        void testMessageToWheelSpeed() {
+            Message message;
+
+            // First, we transfer all fields as double into a generic message.
+            {
+                uint16_t _wheel1 = 11;
+
+                const double SCALE = 0.01;
+                double v = _wheel1 * SCALE;
+
+                Field<double> *f = new Field<double>(v);
+                f->setLongIdentifier(1); // The identifiers specified here must match with the ones defined in the .odvd file!
+                f->setShortIdentifier(1); // The identifiers specified here must match with the ones defined in the .odvd file!
+                f->setLongName("WheelSpeed.frontLeft");
+                f->setShortName("frontLeft");
+                f->setFieldDataType(coredata::reflection::AbstractField::DOUBLE_T);
+                f->setSize(sizeof(v));
+
+                message.addField(SharedPointer<AbstractField>(f));
+            }
+
+            {
+                uint16_t _wheel2 = 12;
+
+                const double SCALE = 0.01;
+                double v = _wheel2 * SCALE;
+
+                Field<double> *f = new Field<double>(v);
+                f->setLongIdentifier(2); // The identifiers specified here must match with the ones defined in the .odvd file!
+                f->setShortIdentifier(2); // The identifiers specified here must match with the ones defined in the .odvd file!
+                f->setLongName("WheelSpeed.frontRight");
+                f->setShortName("frontRight");
+                f->setFieldDataType(coredata::reflection::AbstractField::DOUBLE_T);
+                f->setSize(sizeof(v));
+
+                message.addField(SharedPointer<AbstractField>(f));
+            }
+
+            {
+                uint16_t _wheel3 = 13;
+
+                const double SCALE = 0.01;
+                double v = _wheel3 * SCALE;
+
+                Field<double> *f = new Field<double>(v);
+                f->setLongIdentifier(3); // The identifiers specified here must match with the ones defined in the .odvd file!
+                f->setShortIdentifier(3); // The identifiers specified here must match with the ones defined in the .odvd file!
+                f->setLongName("WheelSpeed.rearLeft");
+                f->setShortName("rearLeft");
+                f->setFieldDataType(coredata::reflection::AbstractField::DOUBLE_T);
+                f->setSize(sizeof(v));
+
+                message.addField(SharedPointer<AbstractField>(f));
+            }
+
+            {
+                uint16_t _wheel4 = 15;
+
+                const double SCALE = 0.01;
+                double v = _wheel4 * SCALE;
+
+                Field<double> *f = new Field<double>(v);
+                f->setLongIdentifier(4); // The identifiers specified here must match with the ones defined in the .odvd file!
+                f->setShortIdentifier(4); // The identifiers specified here must match with the ones defined in the .odvd file!
+                f->setLongName("WheelSpeed.rearRight");
+                f->setShortName("rearRight");
+                f->setFieldDataType(coredata::reflection::AbstractField::DOUBLE_T);
+                f->setSize(sizeof(v));
+
+                message.addField(SharedPointer<AbstractField>(f));
+            }
+
+            MessageToVisitableVisitor mtvv(message);
+
+            // However, the high-level message as floats as data type and not double;
+            // thus, we let the MessageToVisitableVisitor do the implicit compiler cast for us.
+            automotive::vehicle::WheelSpeed wheelSpeed;
+
+            wheelSpeed.accept(mtvv);
+
+            {
+                // Optional: Showing how to use the MessagePrettyPrinterVisitor to print the content of the unnamed message.
+                MessagePrettyPrinterVisitor mppv;
+                message.accept(mppv);
+                mppv.getOutput(cout);
+
+                // Optional: Just print the content for convenience purposes.
+                cout << wheelSpeed.toString() << endl;
+            }
+
+            // Do the validation.
+            TS_ASSERT_DELTA(wheelSpeed.getFrontLeft(), 0.11, 1e-3);
+            TS_ASSERT_DELTA(wheelSpeed.getFrontRight(), 0.12, 1e-3);
+            TS_ASSERT_DELTA(wheelSpeed.getRearLeft(), 0.13, 1e-3);
+            TS_ASSERT_DELTA(wheelSpeed.getRearRight(), 0.15, 1e-3);
         }
 
         ////////////////////////////////////////////////////////////////////////////////////
