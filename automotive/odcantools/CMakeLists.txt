@@ -53,7 +53,7 @@ IF(    (UNIX)
             PATCH_COMMAND ""
             CONFIGURE_COMMAND ""
             BUILD_IN_SOURCE 1
-            BUILD_COMMAND make
+            BUILD_COMMAND make NET=NO
             TEST_COMMAND ""
             INSTALL_COMMAND DESTDIR=${INSTALL_DIR} make install
         )
