@@ -67,6 +67,14 @@ namespace core {
                 virtual void getSerializedData(ostream &o);
 
                 /**
+                 * This method serializes the data to the given ostream
+                 * without adding header information.
+                 *
+                 * @param o Stream to serialize data to.
+                 */
+                void getSerializedDataNoHeader(ostream &o);
+
+                /**
                  * This method encodes a given value using the varint encoding.
                  *
                  * @param out Output stream to be written to.

@@ -59,6 +59,15 @@ namespace core {
                 virtual void deserializeDataFrom(istream &in);
 
                 /**
+                 * This method deserializes a Proto stream where no
+                 * additional header information is preceding the
+                 * serialized data.
+                 *
+                 * @param in Stream to serialize from.
+                 */
+                void deserializeDataFromNoHeader(istream &in);
+
+                /**
                  * This method decodes a value from a given varint encoding.
                  *
                  * @param in Input stream used for reading from.
