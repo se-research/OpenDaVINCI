@@ -120,16 +120,20 @@ message automotive.miniature.UserButtonData [id = 84] {
 }
 
 message automotive.carolocup.Sensors [id = 87] {
-    uint16 usFront [id = 1];
-    uint16 usRear [id = 2];
-    uint16 irFrontRight [id = 3];
-    uint16 irRearRight [id = 4];
-    uint16 wheel [id = 5];
+    uint32 usFront [id = 1];
+    uint32 usRear [id = 2];
+    uint32 irFrontRight [id = 3];
+    uint32 irRearRight [id = 4];
+    uint32 irBackLeft [id = 5];
+    uint32 irBackRight [id = 6];
+    uint32 wheelFrontLeft [id = 7];
+    uint32 wheelRearRight [id = 8];
 }
 
 message automotive.carolocup.Control [id = 88] {
-    uint16 steering [id = 1];
-    uint16 acceleration [id = 2];
+    uint32 steering [id = 1];
+    uint32 acceleration [id = 2];
+    uint32 lights [id = 3]; // 0 = no lights, 1 = brake lights, 2 = blinking left, 4 = blinking right, 8 = emergency light
 }
 
 ///////////////////////////////////////////////////////////////////////////////
