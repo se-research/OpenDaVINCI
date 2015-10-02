@@ -36,6 +36,7 @@ After a successful compilation, all the OpenDaVINCI binaries will be found in /o
 ### Install third-party packages for odcockpit
 
 Some tools in this folder require the odcockpit visualization environment, which is dependent on a number of third-party packages. Run
+
     $ sudo apt-get install libcv-dev libhighgui-dev freeglut3 libqt4-dev libqwt5-qt4-dev libqwt5-qt4 libqt4-opengl-dev freeglut3-dev qt4-dev-tools libboost-dev
 
 ### Replay raw CAN data in asc format using odcanascreplay
