@@ -71,7 +71,15 @@ odcanproxy is an application that opens a concrete CAN device, maps the low-leve
 
 First, connect your laptop with the diagnostic interface of a car via a CAN adapter. If you use virtual machine, e.g. VirtualBox, go to the menu Devices->USB->... And then tick the CAN adapter to get it mounted in the guest operating system.
 
-Open the configuration file in /opt/od/bin/. At the last line add:
+Check if the device driver has successfully detected the CAN adapter:
+
+    $ dmesg
+    
+Check the correct device number of the CAN adapter:
+
+    $ ls -l /dev/pcan*
+
+For this test, the device number is pcan32. Open the configuration file in /opt/od/bin/. At the last line add this device number:
 
     $  odcanproxy.devicenode=/dev/pcan32
     
