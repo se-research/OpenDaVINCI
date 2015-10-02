@@ -1,5 +1,5 @@
 /**
- * CANDataStructureGenerator - IDL tool to describe mapping from
+ * CANDataStructureGenerator - IDL tool to describe the mapping from
  *                             CAN data to high-level messages.
  * Copyright (C) 2015 Christian Berger
  *
@@ -24,73 +24,24 @@ grammar org.opendavinci.CANDataModel
 generate canDataModel "http://www.opendavinci.org/CANDataModel"
 
 Model:
-    PackageDeclaration
-    messages += Message*;
-    
-PackageDeclaration:
-    {PackageDeclaration}
-    ('package' package = PackageIdentifier ';')?;
+    cansignals        += CANSignal+
+    cansignalmappings += CANSignalMapping*;
 
-PackageIdentifier:
-    ID (('.') ID)*;
+CANSignal:
+	cansignal = MessageIdentifier 'in' canIdentifier = HEXNUMBER 'at' 'bit' startBit = UNSIGNEDNUMBER 'for' length = UNSIGNEDNUMBER 'bits' ';';
 
-Message:
-    'message' message = MessageIdentifier ('extends' superMessage = MessageIdentifier)? ('[' 'id' '=' id=NUMBER ']') '{'
-        attributes += Attribute*
+CANSignalMapping:
+    'message' message = MessageIdentifier '{'
+    	mappings += Mapping*
     '}';
+
+Mapping:
+	cansignal = MessageIdentifier ':' messageIdentifier = UNSIGNEDNUMBER ';';
 
 MessageIdentifier:
     ID (('.') ID)*;
 
-TypeIdentifier:
-    ID (InternalType* | ExternalType*);
-
-InternalType:
-    '.' ID;
-
-ExternalType:
-    '::' ID;
-
-Attribute:
-    (scalar = ScalarDeclaration |
-     list = ListDeclaration | 
-     map = MapDeclaration | 
-     enumdec = EnumDeclaration |
-     fixedarray = FixedArrayDeclaration |
-     const = ConstDeclaration
-    ) ';';
-
-ScalarDeclaration:
-    type=(TYPE | TypeIdentifier) (isPointer = '*')? name=ID
-    ('[' ('default' '=' value=(BOOL | NUMBER | STRING | ID))? (',')? ('id' '=' id=NUMBER)? (',')? ('fourbyteid' '=' fourbyteid=(NUMBER|HEXNUMBER))? ']')?;
-
-ListDeclaration:
-    modifier=('list') '<' type=(TYPE | TypeIdentifier) '>' name=ID
-    ('['  ('id' '=' id=NUMBER)? (',')? ('fourbyteid' '=' fourbyteid=(NUMBER|HEXNUMBER))? ']')?;
-
-MapDeclaration:
-    modifier=('map') '<' primaryType=TYPE ',' secondaryType=(TYPE | TypeIdentifier) '>' name=ID
-    ('['  ('id' '=' id=NUMBER)? (',')? ('fourbyteid' '=' fourbyteid=(NUMBER|HEXNUMBER))? ']')?;
-
-EnumDeclaration:
-    modifier=('enum') name=ID '{' enumerators += EnumEntry+ '}';
-
-EnumEntry:
-    enum_name=ID '=' enum_value=NUMBER ',';
-
-FixedArrayDeclaration:
-    type=(TYPE | TypeIdentifier) name=ID '[' size=NUMBER ']'
-    ('[' ('id' '=' id=NUMBER)? (',')? ('fourbyteid' '=' fourbyteid=(NUMBER|HEXNUMBER))? ']')?;
-
-ConstDeclaration:
-    'const' type=TYPE name=ID '=' value=(BOOL | NUMBER | STRING);
-
-TYPE:
-    'bool' | 'char' | 'int8' | 'uint8' | 'int16' | 'uint16' | 'int32' | 'uint32' | 'float' | 'double' | 'string';
-
-terminal BOOL: 'true' | 'false';
-terminal fragment SIGN: ('+'|'-');
 terminal fragment DIGIT: ('0' .. '9');
 terminal fragment HEXDIGIT: '0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9'|'a'|'b'|'c'|'d'|'e'|'f'|'A'|'B'|'C'|'D'|'E'|'F';
-terminal NUMBER: SIGN? DIGIT+ (('.') DIGIT+)?;
+terminal UNSIGNEDNUMBER: DIGIT+ (('.') DIGIT+)?;
 terminal HEXNUMBER: '0x' HEXDIGIT+;
