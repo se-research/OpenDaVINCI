@@ -74,9 +74,15 @@ namespace core {
                 virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, void *data, const uint32_t &size);
 
             private:
+#ifndef WIN32
+# if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#  pragma GCC diagnostic push
+# endif
+# pragma GCC diagnostic ignored "-Wfloat-equal"
+#endif
                 /**
                  * This method retrieves the current value from the list of
-                 * fields, visits the value, and updates it in the case that
+                 * fields, visits the value, and updates it in the if (f->getFieldDataType() == that
                  * the Visitor might have altered the value.
                  *
                  * @param v Visitor.
@@ -84,9 +90,23 @@ namespace core {
                  */
                 template<typename T>
                 void visitPrimitiveDataType(core::SharedPointer<coredata::reflection::AbstractField> &f, T &v) {
-                    // Set value from f to v.
-                    v = dynamic_cast<core::reflection::Field<T>*>(f.operator->())->getValue();
+                    // If T is != double but f->getFieldDataType() == double, we require a compiler cast.
+                    double _v = 0;
+                    if (f->getFieldDataType() == coredata::reflection::AbstractField::DOUBLE_T) {
+                        _v = dynamic_cast<core::reflection::Field<double>*>(f.operator->())->getValue();
+                    }
+
+                    // Set value from f to v (default case).
+                    if (f->getFieldDataType() != coredata::reflection::AbstractField::DOUBLE_T) {
+                        v = dynamic_cast<core::reflection::Field<T>*>(f.operator->())->getValue();
+                    }
+                    else { v = _v; }
                 }
+#ifndef WIN32
+# if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#  pragma GCC diagnostic pop
+# endif
+#endif
 
             private:
                 Message m_message;
