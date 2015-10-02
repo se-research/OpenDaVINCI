@@ -1,6 +1,7 @@
 /**
- * CANDataStructureGenerator- IDL tool to describe exchangeable data.
- * Copyright (C) 2014 - 2015 Christian Berger
+ * CANDataStructureGenerator - IDL tool to describe mapping from
+ *                             CAN data to high-level messages.
+ * Copyright (C) 2015 Christian Berger
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
