@@ -1,0 +1,9 @@
+message subpackage.Test14Simple [ id = 14 ] {
+	enum ButtonState {
+		UNDEFINED = -1,
+		NOT_PRESSED = 0,
+		PRESSED = 1,
+	};
+
+	ButtonState buttonState [default = UNDEFINED];
+}

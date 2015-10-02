@@ -1,0 +1,14 @@
+message Test20a [ id = 20 ] {
+//	uint32 *ptr;
+	uint32 val1;
+	core::data::TimeStamp timeStamp;
+}
+
+message sub.structure.Test20b [ id = 21 ] {
+	uint32 val2;
+}
+
+message sub.structure2.Test20c [ id = 22 ] {
+	uint32 val3;
+	sub.structure.Test20b val4;
+}

@@ -1,0 +1,22 @@
+package Data.Test;
+
+message ComplexDataStructure1 {
+   uint32 data1;
+   float data2;
+}
+
+message ComplexDataStructure2 {
+   uint32 data1 [default = 42];
+   uint32 data2 [default = 0];
+   uint32 data1 [default = -0];
+   uint32 data4 [default = -7];
+   float data5 [default = 32.5];
+   float data6 [default = -32.5];
+   bool active [default = false];
+   bool dactive [default = true];
+   listOf float myFloats;
+   string dataString;
+   string dataString2 [default = "Hello World."];
+   required ComplexDataStructure1 cds1;
+}
+
