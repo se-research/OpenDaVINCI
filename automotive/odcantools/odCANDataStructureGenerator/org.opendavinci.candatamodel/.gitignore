@@ -8,4 +8,4 @@ include
 testsuites
 libtest*
 TEST-*
-odDataStructureGenerator-latest.jar
+odCANDataStructureGenerator-latest.jar

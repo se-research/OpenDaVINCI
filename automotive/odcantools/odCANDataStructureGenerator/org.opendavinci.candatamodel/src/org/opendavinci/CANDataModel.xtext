@@ -1,6 +1,7 @@
 /**
- * DataStructureGenerator- IDL tool to describe exchangeable data.
- * Copyright (C) 2014 - 2015 Christian Berger
+ * CANDataStructureGenerator - IDL tool to describe mapping from
+ *                             CAN data to high-level messages.
+ * Copyright (C) 2015 Christian Berger
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,69 +24,69 @@ grammar org.opendavinci.CANDataModel
 generate canDataModel "http://www.opendavinci.org/CANDataModel"
 
 Model:
-	PackageDeclaration
-	messages += Message*;
-	
+    PackageDeclaration
+    messages += Message*;
+    
 PackageDeclaration:
-	{PackageDeclaration}
-	('package' package = PackageIdentifier ';')?;
+    {PackageDeclaration}
+    ('package' package = PackageIdentifier ';')?;
 
 PackageIdentifier:
-	ID (('.') ID)*;
+    ID (('.') ID)*;
 
 Message:
-	'message' message = MessageIdentifier ('extends' superMessage = MessageIdentifier)? ('[' 'id' '=' id=NUMBER ']') '{'
-		attributes += Attribute*
-	'}';
+    'message' message = MessageIdentifier ('extends' superMessage = MessageIdentifier)? ('[' 'id' '=' id=NUMBER ']') '{'
+        attributes += Attribute*
+    '}';
 
 MessageIdentifier:
-	ID (('.') ID)*;
+    ID (('.') ID)*;
 
 TypeIdentifier:
-	ID (InternalType* | ExternalType*);
+    ID (InternalType* | ExternalType*);
 
 InternalType:
-	'.' ID;
+    '.' ID;
 
 ExternalType:
-	'::' ID;
+    '::' ID;
 
 Attribute:
-	(scalar = ScalarDeclaration |
-	 list = ListDeclaration | 
-	 map = MapDeclaration | 
-	 enumdec = EnumDeclaration |
-	 fixedarray = FixedArrayDeclaration |
-	 const = ConstDeclaration
-	) ';';
+    (scalar = ScalarDeclaration |
+     list = ListDeclaration | 
+     map = MapDeclaration | 
+     enumdec = EnumDeclaration |
+     fixedarray = FixedArrayDeclaration |
+     const = ConstDeclaration
+    ) ';';
 
 ScalarDeclaration:
-	type=(TYPE | TypeIdentifier) (isPointer = '*')? name=ID
-	('[' ('default' '=' value=(BOOL | NUMBER | STRING | ID))? (',')? ('id' '=' id=NUMBER)? (',')? ('fourbyteid' '=' fourbyteid=(NUMBER|HEXNUMBER))? ']')?;
+    type=(TYPE | TypeIdentifier) (isPointer = '*')? name=ID
+    ('[' ('default' '=' value=(BOOL | NUMBER | STRING | ID))? (',')? ('id' '=' id=NUMBER)? (',')? ('fourbyteid' '=' fourbyteid=(NUMBER|HEXNUMBER))? ']')?;
 
 ListDeclaration:
-	modifier=('list') '<' type=(TYPE | TypeIdentifier) '>' name=ID
-	('['  ('id' '=' id=NUMBER)? (',')? ('fourbyteid' '=' fourbyteid=(NUMBER|HEXNUMBER))? ']')?;
+    modifier=('list') '<' type=(TYPE | TypeIdentifier) '>' name=ID
+    ('['  ('id' '=' id=NUMBER)? (',')? ('fourbyteid' '=' fourbyteid=(NUMBER|HEXNUMBER))? ']')?;
 
 MapDeclaration:
-	modifier=('map') '<' primaryType=TYPE ',' secondaryType=(TYPE | TypeIdentifier) '>' name=ID
-	('['  ('id' '=' id=NUMBER)? (',')? ('fourbyteid' '=' fourbyteid=(NUMBER|HEXNUMBER))? ']')?;
+    modifier=('map') '<' primaryType=TYPE ',' secondaryType=(TYPE | TypeIdentifier) '>' name=ID
+    ('['  ('id' '=' id=NUMBER)? (',')? ('fourbyteid' '=' fourbyteid=(NUMBER|HEXNUMBER))? ']')?;
 
 EnumDeclaration:
-	modifier=('enum') name=ID '{' enumerators += EnumEntry+ '}';
+    modifier=('enum') name=ID '{' enumerators += EnumEntry+ '}';
 
 EnumEntry:
-	enum_name=ID '=' enum_value=NUMBER ',';
+    enum_name=ID '=' enum_value=NUMBER ',';
 
 FixedArrayDeclaration:
-	type=(TYPE | TypeIdentifier) name=ID '[' size=NUMBER ']'
-	('[' ('id' '=' id=NUMBER)? (',')? ('fourbyteid' '=' fourbyteid=(NUMBER|HEXNUMBER))? ']')?;
+    type=(TYPE | TypeIdentifier) name=ID '[' size=NUMBER ']'
+    ('[' ('id' '=' id=NUMBER)? (',')? ('fourbyteid' '=' fourbyteid=(NUMBER|HEXNUMBER))? ']')?;
 
 ConstDeclaration:
-	'const' type=TYPE name=ID '=' value=(BOOL | NUMBER | STRING);
+    'const' type=TYPE name=ID '=' value=(BOOL | NUMBER | STRING);
 
 TYPE:
-	'bool' | 'char' | 'int8' | 'uint8' | 'int16' | 'uint16' | 'int32' | 'uint32' | 'float' | 'double' | 'string';
+    'bool' | 'char' | 'int8' | 'uint8' | 'int16' | 'uint16' | 'int32' | 'uint32' | 'float' | 'double' | 'string';
 
 terminal BOOL: 'true' | 'false';
 terminal fragment SIGN: ('+'|'-');
