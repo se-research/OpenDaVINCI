@@ -81,6 +81,10 @@ Download the driver of the CAN adapter: http://www.peak-system.com/fileadmin/med
 
     $ make NET=NO
     
+ Install the driver:
+ 
+     $ sudo make install   
+    
 Go to /opt/od/bin and start odsupercomponent:
 
     $ ./odsupercomponent --cid=111
