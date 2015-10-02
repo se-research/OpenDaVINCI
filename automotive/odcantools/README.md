@@ -31,12 +31,11 @@ Build OpenDaVINCI:
 
     $ make
     
-After a successful compile, all the OpenDaVINCI binaries will be found in /opt/od/bin/.
+After a successful compilation, all the OpenDaVINCI binaries will be found in /opt/od/bin/.
 
-### Install odcockpit
+### Install third-party packages for odcockpit
 
-Some tools in this folder require the odcockpit visualization environment. By default, odcockpit is not installed. The installation of odcockpit is dependent on a number of third-party packages. To install odcockpit, run
-
+Some tools in this folder require the odcockpit visualization environment, which is dependent on a number of third-party packages. Run
     $ sudo apt-get install libcv-dev libhighgui-dev freeglut3 libqt4-dev libqwt5-qt4-dev libqwt5-qt4 libqt4-opengl-dev freeglut3-dev qt4-dev-tools libboost-dev
 
 ### Replay raw CAN data in asc format using odcanascreplay
@@ -69,9 +68,9 @@ Open the plugin "spy" in odcockpit and you should be able to see the replayed CA
 
 odcanproxy is an application that opens a concrete CAN device, maps the low-level CAN message to a generic presentation. It also produces recording files. Recording raw CAN data requires a CAN adapter. The following instructions are tested with PCAN-USB from PEAK System (http://www.peak-system.com/Home.59.0.html?&L=1).
 
-First, connect the CAN adapter to your laptop via a USB port. If you use virtual machine, e.g. VirtualBox, go to the menu Devices->USB->? And then tick the CAN adapter to get it mounted in the guest operating system.
+First, connect your laptop with the diagnostic interface of a car via a CAN adapter. If you use virtual machine, e.g. VirtualBox, go to the menu Devices->USB->... And then tick the CAN adapter to get it mounted in the guest operating system.
 
-Open the configuration file in /opt/od/bin/, at the last line add:
+Open the configuration file in /opt/od/bin/. At the last line add:
 
     $  odcanproxy.devicenode=/dev/pcan32
     
@@ -105,4 +104,4 @@ Open a new terminal and start odcockpit:
 
     $ ./odcockpit --cid=111
     
-Open the Player window. Click ?Load recording? to load a rec file which will can then be replayed.
+Open the Player window. Click "Load recording" to load a rec file which will can then be replayed.
