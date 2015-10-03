@@ -71,19 +71,19 @@ namespace cockpit {
 
 #ifndef PANDABOARD
                 // Setup point distance sensors.
-                for (uint32_t i = 0; i < kvc.getValue<uint32_t>("irus.numberOfSensors"); i++) {
+                for (uint32_t i = 0; i < kvc.getValue<uint32_t>("odsimirus.numberOfSensors"); i++) {
                     stringstream sensorID;
-                    sensorID << "irus.sensor" << i << ".id";
+                    sensorID << "odsimirus.sensor" << i << ".id";
                     uint16_t id(kvc.getValue<uint16_t>(sensorID.str()));
 
                     stringstream sensorName;
-                    sensorName << "irus.sensor" << i << ".name";
+                    sensorName << "odsimirus.sensor" << i << ".name";
                     string name(kvc.getValue<string>(sensorName.str()));
 
                     m_mapOfSensors[id] = name;
 
                     stringstream sensorDistanceFOV;
-                    sensorDistanceFOV << "irus.sensor" << i << ".distanceFOV";
+                    sensorDistanceFOV << "odsimirus.sensor" << i << ".distanceFOV";
                     const double distanceFOV = kvc.getValue<double>(sensorDistanceFOV.str());
 
                     stringstream desc;
