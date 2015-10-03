@@ -55,33 +55,33 @@ namespace cockpit {
                 m_sensorBoardData() {
 
                 // Setup all point sensors.
-                for (uint32_t i = 0; i < kvc.getValue<uint32_t>("irus.numberOfSensors"); i++) {
+                for (uint32_t i = 0; i < kvc.getValue<uint32_t>("odsimirus.numberOfSensors"); i++) {
                     stringstream sensorID;
-                    sensorID << "irus.sensor" << i << ".id";
+                    sensorID << "odsimirus.sensor" << i << ".id";
                     uint16_t id(kvc.getValue<uint16_t>(sensorID.str()));
 
                     stringstream sensorName;
-                    sensorName << "irus.sensor" << i << ".name";
+                    sensorName << "odsimirus.sensor" << i << ".name";
                     string name(kvc.getValue<string>(sensorName.str()));
                     
                     stringstream sensorTranslation;
-                    sensorTranslation << "irus.sensor" << i << ".translation";
+                    sensorTranslation << "odsimirus.sensor" << i << ".translation";
                     Point3 translation(kvc.getValue<string>(sensorTranslation.str()));
 
                     stringstream sensorRotZ;
-                    sensorRotZ << "irus.sensor" << i << ".rotZ";
+                    sensorRotZ << "odsimirus.sensor" << i << ".rotZ";
                     const double rotZ = kvc.getValue<double>(sensorRotZ.str());
                     
                     stringstream sensorAngleFOV;
-                    sensorAngleFOV << "irus.sensor" << i << ".angleFOV";
+                    sensorAngleFOV << "odsimirus.sensor" << i << ".angleFOV";
                     const double angleFOV = kvc.getValue<double>(sensorAngleFOV.str());
                     
                     stringstream sensorDistanceFOV;
-                    sensorDistanceFOV << "irus.sensor" << i << ".distanceFOV";
+                    sensorDistanceFOV << "odsimirus.sensor" << i << ".distanceFOV";
                     const double distanceFOV = kvc.getValue<double>(sensorDistanceFOV.str());
                     
                     stringstream sensorClampDistance;
-                    sensorClampDistance << "irus.sensor" << i << ".clampDistance";
+                    sensorClampDistance << "odsimirus.sensor" << i << ".clampDistance";
                     const double clampDistance = kvc.getValue<double>(sensorClampDistance.str());
 
                     PointSensor *ps = new PointSensor(id, name, translation, rotZ, angleFOV, distanceFOV, clampDistance);

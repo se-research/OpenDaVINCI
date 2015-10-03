@@ -1,3 +1,5 @@
+2.0.26 - Fixing configuration handling for odcockpit in odsupercomponent
+2.0.25 - Fixing irus -> odsimirus in odcockpit
 2.0.24 - Compile fix for OpenBSD and NetBSD
 2.0.23 - Adding *NoHeader method to Proto serializers and deserializers
 2.0.22 - Updating data types for CaroloCup in AutomotiveData

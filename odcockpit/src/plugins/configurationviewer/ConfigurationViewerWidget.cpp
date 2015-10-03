@@ -52,7 +52,7 @@ namespace cockpit {
 
                 // Get textual representation.
                 stringstream configurationText;
-                configurationText << kvc;
+                kvc.writeTo(configurationText);
 
                 m_configurationDataText->append(QString(configurationText.str().c_str()));
                 m_configurationDataText->setReadOnly(true);
