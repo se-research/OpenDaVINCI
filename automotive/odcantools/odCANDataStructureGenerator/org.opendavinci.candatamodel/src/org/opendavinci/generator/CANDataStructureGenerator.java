@@ -1,5 +1,5 @@
 /**
- * CANDataStructureGenerator - IDL tool to describe mapping from
+ * CANDataStructureGenerator - IDL tool to describe the mapping from
  *                             CAN data to high-level messages.
  * Copyright (C) 2015 Christian Berger
  *
@@ -40,11 +40,7 @@ import org.eclipse.xtext.util.CancelIndicator;
 import org.eclipse.xtext.validation.NamesAreUniqueValidationHelper;
 import org.eclipse.xtext.validation.NamesAreUniqueValidator;
 import org.opendavinci.CANDataModelStandaloneSetup;
-import org.opendavinci.canDataModel.Attribute;
-import org.opendavinci.canDataModel.ListDeclaration;
-import org.opendavinci.canDataModel.MapDeclaration;
-import org.opendavinci.canDataModel.Message;
-import org.opendavinci.canDataModel.ScalarDeclaration;
+import org.opendavinci.canDataModel.CANSignal;
 
 import com.google.inject.Injector;
 
@@ -77,20 +73,9 @@ public class CANDataStructureGenerator {
         
         public void acceptError(String message, EObject object, EStructuralFeature feature, int index, String code,
                 String... issueData) {
-            if (object instanceof ScalarDeclaration) {
-                ScalarDeclaration att = (ScalarDeclaration)object;
-                Message mes = (Message)att.eContainer().eContainer();
-                listOfClashingNames.add(mes.getMessage().toString() + "." + att.getName());
-            }
-            if (object instanceof ListDeclaration) {
-                ListDeclaration att = (ListDeclaration)object;
-                Message mes = (Message)att.eContainer().eContainer();
-                listOfClashingNames.add(mes.getMessage().toString() + "." + att.getName());
-            }
-            if (object instanceof MapDeclaration) {
-                MapDeclaration att = (MapDeclaration)object;
-                Message mes = (Message)att.eContainer().eContainer();
-                listOfClashingNames.add(mes.getMessage().toString() + "." + att.getName());
+            if (object instanceof CANSignal) {
+                CANSignal cs = (CANSignal)object;
+                listOfClashingNames.add(cs.getCansignal().toString());
             }
         }
     }
@@ -186,8 +171,9 @@ public class CANDataStructureGenerator {
     public void generateCMakeModulesCompileFlags() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("# CANDataStructureGenerator- IDL tool to describe exchangeable data."); sb.append("\r\n");
-        sb.append("# Copyright (C) 2008 - 2015  Christian Berger"); sb.append("\r\n");
+        sb.append("# CANDataStructureGenerator - IDL tool to describe the mapping from"); sb.append("\r\n");
+        sb.append("#                             CAN data to high-level messages."); sb.append("\r\n");
+        sb.append("# Copyright (C) 2008 - 2015 Christian Berger"); sb.append("\r\n");
         sb.append("#"); sb.append("\r\n");
         sb.append("# This program is free software; you can redistribute it and/or"); sb.append("\r\n");
         sb.append("# modify it under the terms of the GNU General Public License"); sb.append("\r\n");
@@ -203,14 +189,14 @@ public class CANDataStructureGenerator {
         sb.append("# along with this program; if not, write to the Free Software"); sb.append("\r\n");
         sb.append("# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA."); sb.append("\r\n");
 
-                sb.append("IF(WIN32)"); sb.append("\r\n");
-                sb.append("    ADD_DEFINITIONS(-DNOMINMAX)"); sb.append("\r\n");
-                sb.append("ENDIF()"); sb.append("\r\n");
+        sb.append("IF(WIN32)"); sb.append("\r\n");
+        sb.append("    ADD_DEFINITIONS(-DNOMINMAX)"); sb.append("\r\n");
+        sb.append("ENDIF()"); sb.append("\r\n");
 
         sb.append("IF(UNIX)"); sb.append("\r\n");
-                sb.append("    IF(\"${CMAKE_SYSTEM_NAME}\" STREQUAL \"Darwin\")"); sb.append("\r\n");
-                sb.append("        SET(CMAKE_MACOSX_RPATH 1)"); sb.append("\r\n");
-                sb.append("    ENDIF()"); sb.append("\r\n");
+        sb.append("    IF(\"${CMAKE_SYSTEM_NAME}\" STREQUAL \"Darwin\")"); sb.append("\r\n");
+        sb.append("        SET(CMAKE_MACOSX_RPATH 1)"); sb.append("\r\n");
+        sb.append("    ENDIF()"); sb.append("\r\n");
         sb.append("    SET (CXX_OPTIONS       \"-Wno-deprecated -Wall -Wshadow -Wextra -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wpacked\")"); sb.append("\r\n");
         sb.append("    SET (CXX_OPTION_ANSI   \"-ansi\")"); sb.append("\r\n");
         sb.append("    SET (CXX_EFFECTIVE_CXX \"-Wmissing-format-attribute -Wredundant-decls -Weffc++\")"); sb.append("\r\n");
@@ -264,8 +250,9 @@ public class CANDataStructureGenerator {
     public void generateCMakeModulesCheckCxxTestEnvironment() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("# CANDataStructureGenerator- IDL tool to describe exchangeable data."); sb.append("\r\n");
-        sb.append("# Copyright (C) 2008 - 2015  Christian Berger"); sb.append("\r\n");
+        sb.append("# CANDataStructureGenerator - IDL tool to describe the mapping from"); sb.append("\r\n");
+        sb.append("#                             CAN data to high-level messages."); sb.append("\r\n");
+        sb.append("# Copyright (C) 2008 - 2015 Christian Berger"); sb.append("\r\n");
         sb.append("#"); sb.append("\r\n");
         sb.append("# This program is free software; you can redistribute it and/or"); sb.append("\r\n");
         sb.append("# modify it under the terms of the GNU General Public License"); sb.append("\r\n");
@@ -314,8 +301,9 @@ public class CANDataStructureGenerator {
 
     public void generateCMakeFile() {
         StringBuilder sb = new StringBuilder();
-        sb.append("# CANDataStructureGenerator- IDL tool to describe exchangeable data."); sb.append("\r\n");
-        sb.append("# Copyright (C) 2008 - 2015  Christian Berger"); sb.append("\r\n");
+        sb.append("# CANDataStructureGenerator - IDL tool to describe the mapping from"); sb.append("\r\n");
+        sb.append("#                             CAN data to high-level messages."); sb.append("\r\n");
+        sb.append("# Copyright (C) 2008 - 2015 Christian Berger"); sb.append("\r\n");
         sb.append("#"); sb.append("\r\n");
         sb.append("# This program is free software; you can redistribute it and/or"); sb.append("\r\n");
         sb.append("# modify it under the terms of the GNU General Public License"); sb.append("\r\n");
@@ -497,7 +485,7 @@ public class CANDataStructureGenerator {
     public void generateCMakeModulesFindLibrary() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("# " + odvdFilename + " - Data structure library generated by CANDataStructureGenerator."); sb.append("\r\n");
+        sb.append("# " + odvdFilename + " - CAN data mapping generated by CANDataStructureGenerator."); sb.append("\r\n");
 
         sb.append("###########################################################################"); sb.append("\r\n");
         sb.append("# Try to find " + odvdFilename + " library."); sb.append("\r\n");
