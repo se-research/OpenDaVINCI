@@ -1,3 +1,4 @@
+2.0.27 - Added odcockpit's LiveFeed plugin
 2.0.24 - Compile fix for OpenBSD and NetBSD
 2.0.23 - Adding *NoHeader method to Proto serializers and deserializers
 2.0.22 - Updating data types for CaroloCup in AutomotiveData
