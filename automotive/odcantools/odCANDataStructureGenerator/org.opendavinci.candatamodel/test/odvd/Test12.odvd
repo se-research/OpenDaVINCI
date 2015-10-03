@@ -1,0 +1,99 @@
+message Test12Simple [ id = 11 ] {
+	bool attribute1 [fourbyteid=1];
+	char attribute2 [fourbyteid=2];
+	int32 attribute3 [fourbyteid=3];
+	uint32 attribute4 [fourbyteid=4];
+	float attribute5 [fourbyteid=5];
+	double attribute6 [fourbyteid=6];
+	string attribute7 [fourbyteid=7];
+}
+
+message Test12Complex [ id = 12 ] {
+	bool attribute1 [default = true, id=1];
+	char attribute2 [default = 'c', id=2];
+	int32 attribute3 [default = -12, id=3];
+	uint32 attribute4 [default = +45, id=4];
+	float attribute5 [default = -0.12, id=5];
+	double attribute6 [default = +0.45678, id=6];
+	string attribute7 [default = "Hello World.", id=7];
+}
+
+message Test12Lists [ id = 13 ] {
+	list<bool> myBoolList [fourbyteid=1];
+	list<char> myCharList [fourbyteid=2];
+	list<int32> myInt32List [fourbyteid=3];
+	list<uint32> myUint32List [fourbyteid=4];
+	list<float> myFloatList [fourbyteid=5];
+	list<double> myDoubleList [fourbyteid=6];
+	list<string> myStringList [fourbyteid=7];
+}
+
+message Test12MapBool [ id = 14 ] {
+	map<bool, bool> myBoolBoolMap [fourbyteid=1];
+	map<bool, char> myBoolCharMap [fourbyteid=2];
+	map<bool, int32> myBoolInt32Map [fourbyteid=3];
+	map<bool, uint32> myBoolUint32Map [fourbyteid=4];
+	map<bool, float> myBoolFloatMap [fourbyteid=5];
+	map<bool, double> myBoolDoubleMap [fourbyteid=6];
+	map<bool, string> myBoolStringMap [fourbyteid=7];
+}
+
+message Test12MapChar [ id = 15 ] {
+	map<char, bool> myCharBoolMap [fourbyteid=1];
+	map<char, char> myCharCharMap [fourbyteid=2];
+	map<char, int32> myCharInt32Map [fourbyteid=3];
+	map<char, uint32> myCharUint32Map [fourbyteid=4];
+	map<char, float> myCharFloatMap [fourbyteid=5];
+	map<char, double> myCharDoubleMap [fourbyteid=6];
+	map<char, string> myCharStringMap [fourbyteid=7];
+}
+
+message Test12MapInt32 [ id = 16 ] {
+	map<int32, bool> myInt32BoolMap [fourbyteid=1];
+	map<int32, char> myInt32CharMap [fourbyteid=2];
+	map<int32, int32> myInt32Int32Map [fourbyteid=3];
+	map<int32, uint32> myInt32Uint32Map [fourbyteid=4];
+	map<int32, float> myInt32FloatMap [fourbyteid=5];
+	map<int32, double> myInt32DoubleMap [fourbyteid=6];
+	map<int32, string> myInt32StringMap [fourbyteid=7];
+}
+
+message Test12MapUint32 [ id = 17 ] {
+	map<uint32, bool> myUint32BoolMap [fourbyteid=1];
+	map<uint32, char> myUint32CharMap [fourbyteid=2];
+	map<uint32, int32> myUint32Int32Map [fourbyteid=3];
+	map<uint32, uint32> myUint32Uint32Map [fourbyteid=4];
+	map<uint32, float> myUint32FloatMap [fourbyteid=5];
+	map<uint32, double> myUint32DoubleMap [fourbyteid=6];
+	map<uint32, string> myUint32StringMap [fourbyteid=7];
+}
+
+message Test12MapFloat [ id = 18 ] {
+	map<float, bool> myFloatBoolMap [fourbyteid=1];
+	map<float, char> myFloatCharMap [fourbyteid=2];
+	map<float, int32> myFloatInt32Map [fourbyteid=3];
+	map<float, uint32> myFloatUint32Map [fourbyteid=4];
+	map<float, float> myFloatFloatMap [fourbyteid=5];
+	map<float, double> myFloatDoubleMap [fourbyteid=6];
+	map<float, string> myFloatStringMap [fourbyteid=7];
+}
+
+message Test12MapDouble [ id = 19 ] {
+	map<double, bool> myDoubleBoolMap [fourbyteid=1];
+	map<double, char> myDoubleCharMap [fourbyteid=2];
+	map<double, int32> myDoubleInt32Map [fourbyteid=3];
+	map<double, uint32> myDoubleUint32Map [fourbyteid=4];
+	map<double, float> myDoubleFloatMap [fourbyteid=5];
+	map<double, double> myDoubleDoubleMap [fourbyteid=6];
+	map<double, string> myDoubleStringMap [fourbyteid=7];
+}
+
+message Test12MapString [ id = 20 ] {
+	map<string, bool> myStringBoolMap [fourbyteid=1];
+	map<string, char> myStringCharMap [fourbyteid=2];
+	map<string, int32> myStringInt32Map [fourbyteid=3];
+	map<string, uint32> myStringUint32Map [fourbyteid=4];
+	map<string, float> myStringFloatMap [fourbyteid=5];
+	map<string, double> myStringDoubleMap [fourbyteid=6];
+	map<string, string> myStringStringMap [fourbyteid=7];
+}

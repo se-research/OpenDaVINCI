@@ -1,0 +1,84 @@
+message Test11Simple [ id = 11 ] {
+	uint32 data1;
+	uint32 data2;	
+}
+
+message Test11Lists [ id = 12 ] {
+	list<bool> myBoolList;
+	list<char> myCharList;
+	list<int32> myInt32List;
+	list<uint32> myUint32List;
+	list<float> myFloatList;
+	list<double> myDoubleList;
+	list<string> myStringList;
+}
+
+message Test11MapBool [ id = 13 ] {
+	map<bool, bool> myBoolBoolMap;
+	map<bool, char> myBoolCharMap;
+	map<bool, int32> myBoolInt32Map;
+	map<bool, uint32> myBoolUint32Map;
+	map<bool, float> myBoolFloatMap;
+	map<bool, double> myBoolDoubleMap;
+	map<bool, string> myBoolStringMap;
+}
+
+message Test11MapChar [ id = 14 ] {
+	map<char, bool> myCharBoolMap;
+	map<char, char> myCharCharMap;
+	map<char, int32> myCharInt32Map;
+	map<char, uint32> myCharUint32Map;
+	map<char, float> myCharFloatMap;
+	map<char, double> myCharDoubleMap;
+	map<char, string> myCharStringMap;
+}
+
+message Test11MapInt32 [ id = 15 ] {
+	map<int32, bool> myInt32BoolMap;
+	map<int32, char> myInt32CharMap;
+	map<int32, int32> myInt32Int32Map;
+	map<int32, uint32> myInt32Uint32Map;
+	map<int32, float> myInt32FloatMap;
+	map<int32, double> myInt32DoubleMap;
+	map<int32, string> myInt32StringMap;
+}
+
+message Test11MapUint32 [ id = 16 ] {
+	map<uint32, bool> myUint32BoolMap;
+	map<uint32, char> myUint32CharMap;
+	map<uint32, int32> myUint32Int32Map;
+	map<uint32, uint32> myUint32Uint32Map;
+	map<uint32, float> myUint32FloatMap;
+	map<uint32, double> myUint32DoubleMap;
+	map<uint32, string> myUint32StringMap;
+}
+
+message Test11MapFloat [ id = 17 ] {
+	map<float, bool> myFloatBoolMap;
+	map<float, char> myFloatCharMap;
+	map<float, int32> myFloatInt32Map;
+	map<float, uint32> myFloatUint32Map;
+	map<float, float> myFloatFloatMap;
+	map<float, double> myFloatDoubleMap;
+	map<float, string> myFloatStringMap;
+}
+
+message Test11MapDouble [ id = 18 ] {
+	map<double, bool> myDoubleBoolMap;
+	map<double, char> myDoubleCharMap;
+	map<double, int32> myDoubleInt32Map;
+	map<double, uint32> myDoubleUint32Map;
+	map<double, float> myDoubleFloatMap;
+	map<double, double> myDoubleDoubleMap;
+	map<double, string> myDoubleStringMap;
+}
+
+message Test11MapString [ id = 19 ] {
+	map<string, bool> myStringBoolMap;
+	map<string, char> myStringCharMap;
+	map<string, int32> myStringInt32Map;
+	map<string, uint32> myStringUint32Map;
+	map<string, float> myStringFloatMap;
+	map<string, double> myStringDoubleMap;
+	map<string, string> myStringStringMap;
+}

@@ -1,0 +1,47 @@
+/**
+ * CANDataStructureGenerator - IDL tool to describe the mapping from
+ *                             CAN data to high-level messages.
+ * Copyright (C) 2015 Christian Berger
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
+grammar org.opendavinci.CANDataModel
+  with org.eclipse.xtext.common.Terminals
+
+generate canDataModel "http://www.opendavinci.org/CANDataModel"
+
+Model:
+    cansignals        += CANSignal+
+    cansignalmappings += CANSignalMapping*;
+
+CANSignal:
+	cansignal = MessageIdentifier 'in' canIdentifier = HEXNUMBER 'at' 'bit' startBit = UNSIGNEDNUMBER 'for' length = UNSIGNEDNUMBER 'bits' ';';
+
+CANSignalMapping:
+    'message' message = MessageIdentifier '{'
+    	mappings += Mapping*
+    '}';
+
+Mapping:
+	cansignal = MessageIdentifier ':' messageIdentifier = UNSIGNEDNUMBER ';';
+
+MessageIdentifier:
+    ID (('.') ID)*;
+
+terminal fragment DIGIT: ('0' .. '9');
+terminal fragment HEXDIGIT: '0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9'|'a'|'b'|'c'|'d'|'e'|'f'|'A'|'B'|'C'|'D'|'E'|'F';
+terminal UNSIGNEDNUMBER: DIGIT+ (('.') DIGIT+)?;
+terminal HEXNUMBER: '0x' HEXDIGIT+;
