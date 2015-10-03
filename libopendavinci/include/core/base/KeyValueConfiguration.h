@@ -39,7 +39,7 @@ namespace core {
          * @code
          * KeyValueConfiguration kvc;
          * istream i = ...;
-         * i >> kvc;
+         * kvc.readFrom(i);
          *
          * @endcode
          *

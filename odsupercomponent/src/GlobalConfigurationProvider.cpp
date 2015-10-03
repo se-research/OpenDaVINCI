@@ -55,7 +55,7 @@ namespace odsupercomponent {
     KeyValueConfiguration GlobalConfigurationProvider::getConfiguration(const ModuleDescriptor& md) {
         Lock l(m_configurationMutex);
 
-        if ( (md.getName() == "Monitor") || (md.getName() == "Cockpit") ) {
+        if (md.getName() == "odcockpit") {
             return m_configuration;
         }
 
