@@ -34,6 +34,7 @@ class CANDataModelGenerator implements IGenerator {
 			fsa.generateFile("include/generated/" + e.message.toString().replaceAll("\\.", "/") + ".h", generateHeaderFileContent(generatedHeadersFile, e))
 			fsa.generateFile("src/generated/" + e.message.toString().replaceAll("\\.", "/") + ".cpp", generateImplementationFileContent(e, "generated"))
 			fsa.generateFile("testsuites/" + e.message.toString().replaceAll("\\.", "_") + "TestSuite.h", generateTestSuiteContent(e, generatedHeadersFile))
+			fsa.generateFile("uppaal/generated/" + e.message.toString().replaceAll("\\.", "/") + ".xml", generateUPPAALFileContent(e))
 		}
 	}
 
@@ -65,5 +66,15 @@ class CANDataModelGenerator implements IGenerator {
  * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
  */
 // Test suite file for: «mapping.message.toString»
+'''
+
+    /* This method generates the UPPAAL file content. */
+	def generateUPPAALFileContent(CANSignalMapping mapping) '''
+<!--
+This software is open source. Please see COPYING and AUTHORS for further information.
+
+This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
+-->
+<!-- UPPAAL file for: «mapping.message.toString» -->
 '''
 }
