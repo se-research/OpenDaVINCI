@@ -3,7 +3,7 @@ How to design a time-triggered software component
 
 OpenDaVINCI allows the development of distributed software components. These
 components can run on the same machine or on different ones using various
-types of communication and scheduling. Both is provided transparently to the
+types of communication and scheduling. Both are provided transparently to the
 user of the OpenDaVINCI middleware.
 
 This example demonstrates how to design a time-triggered software component.
@@ -292,7 +292,7 @@ the identifier 1::
 
     $ ./timetriggerexample --cid=111 --id=2
 
-the request would the value ``ValueForComponent2``.
+the request would return the value ``ValueForComponent2``.
 
 
 

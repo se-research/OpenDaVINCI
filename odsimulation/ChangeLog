@@ -1,3 +1,4 @@
+2.0.28 - Display toString for Serializable types in LiveFeed
 2.0.27 - Added odcockpit's LiveFeed plugin
 2.0.26 - Fixing configuration handling for odcockpit in odsupercomponent
 2.0.25 - Fixing irus -> odsimirus in odcockpit

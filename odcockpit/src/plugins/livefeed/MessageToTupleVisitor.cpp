@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include "core/data/SerializableData.h"
+
 #include "plugins/livefeed/MessageToTupleVisitor.h"
 
 namespace cockpit {
@@ -33,8 +35,14 @@ namespace cockpit {
 
             MessageToTupleVisitor::~MessageToTupleVisitor() {}
 
-            void MessageToTupleVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &shortName, core::base::Serializable &/*v*/) {
-                m_entries.push_back(make_pair(shortName, "Could not display Serializable."));
+            void MessageToTupleVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &shortName, core::base::Serializable &v) {
+                try {
+                    core::data::SerializableData& tmp = dynamic_cast<core::data::SerializableData&>(v);
+                    m_entries.push_back(make_pair(shortName, tmp.toString()));
+                }
+                catch(...) {
+                    m_entries.push_back(make_pair(shortName, "Could not display Serializable."));
+                }
             }
 
             void MessageToTupleVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &shortName, bool &v) {
