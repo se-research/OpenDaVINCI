@@ -292,7 +292,7 @@ the identifier 1::
 
     $ ./timetriggerexample --cid=111 --id=2
 
-the request would the value ``ValueForComponent2``.
+the request would return the value ``ValueForComponent2``.
 
 
 
