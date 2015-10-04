@@ -31,7 +31,7 @@ Update your package database:
 
 ### Installing OpenDaVINCI & automotive data structures library
 
-Next, you need to install the OpenDaVINCI library an the automotive data
+Next, you need to install the OpenDaVINCI library and the automotive data
 structures library: 
 
 Install the OpenDaVINCI library:
