@@ -27,10 +27,11 @@
 #include "core/base/module/TimeTriggeredConferenceClientModule.h"
 #include "tools/recorder/Recorder.h"
 
+#include "GeneratedHeaders_Simple.h"
+
 #include "GenericCANMessageListener.h"
 #include "CANDevice.h"
 #include "CANMessageReplicator.h"
-#include "DataMapper.h"
 
 namespace automotive {
     namespace odcantools {
@@ -91,7 +92,7 @@ namespace automotive {
                 string m_deviceNodeB;
                 CANMessageReplicator m_replicatorFromAtoB;
                 CANMessageReplicator m_replicatorFromBtoA;
-                DataMapper m_dataMapper;
+                simple::Simple m_simple;
         };
 
     } // odcantools

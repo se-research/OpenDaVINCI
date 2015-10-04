@@ -37,6 +37,16 @@ SET (CXXTEST_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../cxxtest")
 INCLUDE (CheckCxxTestEnvironment)
 SET(OPENDAVINCI_DIR "${CMAKE_INSTALL_PREFIX}")
 FIND_PACKAGE (OpenDaVINCI REQUIRED)
+
+###########################################################################
+# Find AutomotiveData.
+SET(AUTOMOTIVEDATA_DIR "${CMAKE_INSTALL_PREFIX}")
+FIND_PACKAGE (AutomotiveData REQUIRED)
+# Set header files from AutomotiveData.
+INCLUDE_DIRECTORIES (${AUTOMOTIVEDATA_INCLUDE_DIRS}/automotivedata)
+SET (LIBRARIES ${OPENDAVINCI_LIBRARIES}
+               ${AUTOMOTIVEDATA_LIBRARIES})
+
 # Include directories from core.
 INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS}/opendavinci)
 INCLUDE_DIRECTORIES (include)
@@ -86,9 +96,9 @@ FOREACH(testsuite ${libsimple-testsuites})
         ENDIF()
         IF(   WIN32
            OR ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin") )
-            TARGET_LINK_LIBRARIES(${testsuite-short}-TestSuite simple-static ${OPENDAVINCI_LIBRARIES})
+            TARGET_LINK_LIBRARIES(${testsuite-short}-TestSuite simple-static ${LIBRARIES})
         ELSE()
-            TARGET_LINK_LIBRARIES(${testsuite-short}-TestSuite simple ${OPENDAVINCI_LIBRARIES})
+            TARGET_LINK_LIBRARIES(${testsuite-short}-TestSuite simple ${LIBRARIES})
         ENDIF()
     ENDFOREACH()
 ENDIF(CXXTEST_FOUND)

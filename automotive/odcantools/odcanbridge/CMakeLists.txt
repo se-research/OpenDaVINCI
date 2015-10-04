@@ -62,6 +62,8 @@ INCLUDE_DIRECTORIES (${AUTOMOTIVEDATA_INCLUDE_DIRS}/automotivedata)
 INCLUDE_DIRECTORIES(${odcanmapper_SOURCE_DIR}/include)
 # Set include directory from canproxy.
 INCLUDE_DIRECTORIES(${odcanproxy_SOURCE_DIR}/include)
+# Set include directory from canproxy.
+INCLUDE_DIRECTORIES(${libsimple_SOURCE_DIR}/include)
 # Set header files from CAN driver.
 INCLUDE_DIRECTORIES (${CMAKE_INSTALL_PREFIX}/usr/include)
 # Set include directory.
@@ -71,6 +73,7 @@ INCLUDE_DIRECTORIES(include)
 # Set linking libraries to successfully link test suites and binaries.
 SET (LIBRARIES ${odcanmapper_BINARY_DIR}/libodcanmapperlib-static.a
                ${odcanproxy_BINARY_DIR}/libodcanproxylib-static.a
+               ${libsimple_BINARY_DIR}/libsimple-static.a
                ${OPENDAVINCI_LIBRARIES}
                ${AUTOMOTIVEDATA_LIBRARIES}
                ${CMAKE_INSTALL_PREFIX}/usr/lib/libpcan.so)

@@ -60,9 +60,14 @@ INCLUDE_DIRECTORIES (${AUTOMOTIVEDATA_INCLUDE_DIRS}/automotivedata)
 # Set include directory.
 INCLUDE_DIRECTORIES(include)
 
+# This line needs to be replaced by FindXYZ
+# Set include directory from odcanproxy.
+INCLUDE_DIRECTORIES(${libsimple_SOURCE_DIR}/include)
+
 ###########################################################################
 # Set linking libraries to successfully link test suites and binaries.
 SET (LIBRARIES ${OPENDAVINCI_LIBRARIES}
+               ${libsimple_BINARY_DIR}/libsimple-static.a
                ${AUTOMOTIVEDATA_LIBRARIES})
 
 ###############################################################################

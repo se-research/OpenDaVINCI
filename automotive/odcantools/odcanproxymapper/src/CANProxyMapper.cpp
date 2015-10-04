@@ -19,6 +19,7 @@
 
 #include <iostream>
 
+#include "core/base/Thread.h"
 #include "core/data/Container.h"
 #include "core/data/TimeStamp.h"
 #include "GeneratedHeaders_AutomotiveData.h"
@@ -34,17 +35,20 @@ namespace automotive {
 
         CANProxyMapper::CANProxyMapper(const int32_t &argc, char **argv) :
             CANProxy(argc, argv),
-            m_dataMapper() {}
+            m_simple() {}
 
         CANProxyMapper::~CANProxyMapper() {}
 
         void CANProxyMapper::nextGenericCANMessage(const GenericCANMessage &gcm) {
             // Try to get complete message with this additional information.
-            Container result = m_dataMapper.mapNext(gcm);
-            if (result.getDataType() != Container::UNDEFINEDDATA) {
-                // Last GenericCANMessage resulted in a complete decoding
-                // and mapping of valid high-level C++ message.
-                getConference().send(result);
+            vector<Container> listOfContainers = m_simple.mapNext(gcm);
+            if (listOfContainers.size() > 0) {
+                vector<Container>::iterator it = listOfContainers.begin();
+                while (it != listOfContainers.end()) {
+                    Container container = (*it++);
+                    getConference().send(container);
+                    Thread::usleepFor(100);
+                }
             }
         }
 

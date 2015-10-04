@@ -24,8 +24,7 @@
 #include <core/base/module/DataTriggeredConferenceClientModule.h>
 
 #include "GeneratedHeaders_AutomotiveData.h"
-
-#include "DataMapper.h"
+#include "GeneratedHeaders_Simple.h"
 
 namespace automotive {
     namespace odcantools {
@@ -74,8 +73,16 @@ namespace automotive {
 
                 virtual void tearDown();
 
+                /**
+                 * This method prints the payload of the low-level CAN message
+                 * to STDOUT for debug purposes.
+                 *
+                 * @param data to be printed.
+                 */
+                void printPayload(uint64_t payload) const;
+
             private:
-                DataMapper m_dataMapper;
+                simple::Simple m_simple;
         };
 
     } // odcantools
