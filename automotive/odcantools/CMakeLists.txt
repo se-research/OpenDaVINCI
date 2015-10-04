@@ -65,6 +65,7 @@ IF(    (UNIX)
         ADD_SUBDIRECTORY (odcanmapper)
         ADD_SUBDIRECTORY (odcanbridge)
         ADD_SUBDIRECTORY (odcanproxymapper)
+        ADD_SUBDIRECTORY (libsimple)
     ENDIF()
 ENDIF()
 
