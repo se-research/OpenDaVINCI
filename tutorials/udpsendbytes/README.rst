@@ -65,9 +65,9 @@ You can compile and link the example::
    g++ -o udpsendbytes UDPSendBytes.o -lopendavinci -lpthread
 
 To test the program, we create a simple UDP server awaiting data by using
-the tool ``nc``::
+the tool ``nc``(netcat)::
 
-    $ nc -l -p -u 1234
+    $ nc -l -u -p 1234
 
 The resulting program can be run::
 
