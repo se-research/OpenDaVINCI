@@ -128,7 +128,7 @@ TCPReceiveBytes.cpp:
         }
     }
 
-The outlined implementation will provide an overview how to get notified
+The outlined implementation will provide an overview of how to get notified
 about newly connecting clients using TCP; your application should track
 new connections in a ``vector`` for instance and manage their individual
 connection status properly.

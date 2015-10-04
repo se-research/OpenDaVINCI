@@ -41,7 +41,7 @@ Some tools in this folder require the odcockpit visualization environment, which
 
 ### Replay raw CAN data in asc format using odcanascreplay
 
-In /odcanascreplay/example, there is an example from a real CAN dump for the four wheel speed encoders based on data provided by Jeremy Daily: http://tucrrc.utulsa.edu/ToyotaCAN.html. For convenience purposes, two individual CAN messages in the original example are merged into a single one to have an 8 byte payload. The raw CAN data has been transformed to asc format.
+In /odcanascreplay/example, there is an example "example.asc" from a real CAN dump for the four wheel speed encoders based on data provided by Jeremy Daily: http://tucrrc.utulsa.edu/ToyotaCAN.html. For convenience purposes, two individual CAN messages in the original example are merged into a single one to have an 8 byte payload. The raw CAN data has been transformed to asc format.
 
 Go to /opt/od/bin/ and start odsupercomponent. The execution of odsupercomponent requires a configuration file. Create the configuration file if it does not exist:
 
