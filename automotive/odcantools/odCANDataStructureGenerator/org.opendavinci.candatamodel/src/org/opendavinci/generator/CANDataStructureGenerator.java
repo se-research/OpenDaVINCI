@@ -131,31 +131,6 @@ public class CANDataStructureGenerator {
         File d = new File(this.folder);
         d.mkdir();
     }
-    
-    public void generateSuperHeaderFile() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("/*"); sb.append("\r\n");
-        sb.append(" * THIS IS A GENERATED FILE - CHANGES WILL BE OVERWRITTEN."); sb.append("\r\n");
-        sb.append(" */"); sb.append("\r\n");
-        sb.append("\r\n");
-
-        for(String file : listOfGeneratedHeaderFiles) {
-            sb.append("#include \"" + file.replaceFirst("include/", "") + "\""); sb.append("\r\n");
-        }
-
-        System.out.print((CANDataStructureGenerator.appendGeneratedHeadersFile ? "Appending" : "Creating") + " '" + folder + "/include/GeneratedHeaders_" + odvdFilename + ".h' ");
-        File f = new File(folder + "/include/GeneratedHeaders_" + odvdFilename + ".h");
-        FileWriter fw;
-        try {
-            fw = new FileWriter(f, CANDataStructureGenerator.appendGeneratedHeadersFile);
-            fw.append(sb.toString());
-            fw.flush();
-            fw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println("done.");
-    }
 
     public void generateCMakeModules() {
         System.out.print("Creating '" + folder + "/cmake.Modules' ");
@@ -352,6 +327,15 @@ public class CANDataStructureGenerator {
         sb.append("INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS}/opendavinci)"); sb.append("\r\n");
         sb.append("INCLUDE_DIRECTORIES (include)"); sb.append("\r\n");
 
+        sb.append("###########################################################################"); sb.append("\r\n");
+        sb.append("# Find AutomotiveData."); sb.append("\r\n");
+        sb.append("SET(AUTOMOTIVEDATA_DIR \"${CMAKE_INSTALL_PREFIX}\")"); sb.append("\r\n");
+        sb.append("FIND_PACKAGE (AutomotiveData REQUIRED)"); sb.append("\r\n");
+        sb.append("# Set header files from AutomotiveData."); sb.append("\r\n");
+        sb.append("INCLUDE_DIRECTORIES (${AUTOMOTIVEDATA_INCLUDE_DIRS}/automotivedata)"); sb.append("\r\n");
+        sb.append("SET (LIBRARIES ${OPENDAVINCI_LIBRARIES}"); sb.append("\r\n");
+        sb.append("               ${AUTOMOTIVEDATA_LIBRARIES})"); sb.append("\r\n");
+
         sb.append("# Recipe for building " + folder + "."); sb.append("\r\n");
         sb.append("FILE(GLOB_RECURSE " + folder + "-sources \"${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp\")"); sb.append("\r\n");
         sb.append("ADD_LIBRARY (" + folder.replaceFirst("lib", "") + "-static STATIC ${" + folder + "-sources})"); sb.append("\r\n");
@@ -407,9 +391,9 @@ public class CANDataStructureGenerator {
 
         sb.append("        IF(   WIN32"); sb.append("\r\n");
                 sb.append("           OR (\"${CMAKE_SYSTEM_NAME}\" STREQUAL \"Darwin\") )"); sb.append("\r\n");
-        sb.append("            TARGET_LINK_LIBRARIES(${testsuite-short}-TestSuite " + folder.replaceFirst("lib", "") + "-static ${OPENDAVINCI_LIBRARIES})"); sb.append("\r\n");
+        sb.append("            TARGET_LINK_LIBRARIES(${testsuite-short}-TestSuite " + folder.replaceFirst("lib", "") + "-static ${LIBRARIES})"); sb.append("\r\n");
         sb.append("        ELSE()"); sb.append("\r\n");
-        sb.append("            TARGET_LINK_LIBRARIES(${testsuite-short}-TestSuite " + folder.replaceFirst("lib", "") + " ${OPENDAVINCI_LIBRARIES})"); sb.append("\r\n");
+        sb.append("            TARGET_LINK_LIBRARIES(${testsuite-short}-TestSuite " + folder.replaceFirst("lib", "") + " ${LIBRARIES})"); sb.append("\r\n");
         sb.append("        ENDIF()"); sb.append("\r\n");
         sb.append("    ENDFOREACH()"); sb.append("\r\n");
         sb.append("ENDIF(CXXTEST_FOUND)"); sb.append("\r\n");
@@ -618,9 +602,6 @@ public class CANDataStructureGenerator {
                                 // Setup the generator for the data structure.
                                 IGenerator canDataStructureGenerator = injector.getInstance(CANDataModelGenerator.class);        
                                 canDataStructureGenerator.doGenerate(resource, fileAccess);
-
-                                // Generate super header file.
-                                dsg.generateSuperHeaderFile();
 
                                 if (createCMakeFile) {
                                     dsg.generateCMakeFile();
