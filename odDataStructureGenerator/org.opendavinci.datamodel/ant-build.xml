@@ -129,38 +129,39 @@
                 <attribute name="Class-Path" value="."/>
             </manifest>
             <fileset dir="bin"/>
-            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xtext_2.6.0.v201405210727.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.ecore.xmi_2.10.0.v20140514-1158.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.ecore_2.10.0.v20140514-1158.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.common_2.10.0.v20140514-1158.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xtext_2.8.4.v201508050135.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.ecore.xmi_2.11.0.v20150512-0501.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.ecore_2.11.0.v20150512-0501.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.common_2.11.0.v20150512-0501.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="lib/org.antlr.runtime_3.2.0.v201101311130.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="lib/com.google.inject_3.0.0.v201312141243.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="lib/com.google.inject.multibindings_3.0.0.v201402270930.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.mwe.core_1.3.3.v201406110919.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.mwe.core_1.3.11.v201508030321.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="lib/org.apache.commons.cli_1.2.0.v201404270220.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.mwe2.runtime_2.6.1.v201406110919.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.mwe.utils_1.3.3.v201406110919.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xtext.util_2.6.0.v201405210727.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.mwe2.runtime_2.8.1.v201508030321.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.mwe.utils_1.3.11.v201508030321.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xtext.util_2.8.4.v201508050135.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="lib/com.google.guava_15.0.0.v201403281430.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="lib/javax.inject_1.0.0.v20091030.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xtext.xbase_2.6.0.v201405210727.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xtext.common.types_2.6.0.v201405210727.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xtend.lib_2.6.0.v201405210727.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xtext.xbase.lib_2.6.0.v201405210727.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xtext.generator_2.6.0.v201405210727.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xtend_2.0.0.v201406030414.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="lib/com.ibm.icu_52.1.0.v201404241930.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xpand_2.0.0.v201406030414.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xtend.typesystem.emf_2.0.0.v201406030414.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.codegen.ecore_2.10.0.v20140519-0339.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.codegen_2.10.0.v20140519-0339.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.mwe2.lib_2.6.1.v201406110919.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xtext.xbase_2.8.4.v201508050135.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xtext.common.types_2.8.4.v201508050135.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xtend.lib_2.8.4.v201508050135.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xtext.xbase.lib_2.8.4.v201508050135.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xtext.generator_2.8.4.v201508050135.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xtend_2.1.0.v201505260349.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/com.ibm.icu_54.1.1.v201501272100.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xpand_2.1.0.v201505260349.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xtend.typesystem.emf_2.1.0.v201505260349.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.codegen.ecore_2.11.0.v20150803-0846.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.codegen_2.11.0.v20150803-0846.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.mwe2.lib_2.8.1.v201508030321.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="lib/org.apache.commons.logging_1.1.1.v201101211721.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.mwe2.launch_2.6.1.v201406120758.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.mwe2.language_2.6.1.v201406120758.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.mwe2.launch_2.8.1.v201508030411.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.mwe2.language_2.8.1.v201508030411.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="lib/org.objectweb.asm_5.0.1.v201404251740.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="lib/org.apache.log4j_1.2.15.v201012070815.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xtext.builder_2.6.0.v201405210727.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xtext.builder_2.8.4.v201508050135.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xtend.lib.macro_2.8.4.v201508050135.jar"/>
         </jar>
     </target>
 
