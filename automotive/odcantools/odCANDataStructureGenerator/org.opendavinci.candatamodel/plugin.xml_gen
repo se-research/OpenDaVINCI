@@ -6,7 +6,7 @@
   <extension point="org.eclipse.emf.ecore.generated_package">
     <package 
        uri = "http://www.opendavinci.org/CANDataModel" 
-       class = "org.opendavinci.canDataModel.CANDataModelPackage"
+       class = "org.opendavinci.canDataModel.CanDataModelPackage"
        genModel = "model/generated/CANDataModel.genmodel" /> 
 	
   </extension>
