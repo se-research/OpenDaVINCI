@@ -17,25 +17,19 @@ Require-Bundle: org.eclipse.xtext;visibility:=reexport,
  org.eclipse.emf.common,
  org.antlr.runtime,
  org.eclipse.xtext.common.types,
- org.objectweb.asm;bundle-version="[5.0.1,6.0.0)";resolution:=optional
+ org.objectweb.asm;bundle-version="[5.0.1,6.0.0)";resolution:=optionalorg.eclipse.xtext.xbase.lib,
+ org.eclipse.xtext.xbase.lib
 Import-Package: org.apache.log4j,
  org.eclipse.xtext.builder,
  org.eclipse.xtext.xbase.lib
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: org.opendavinci,
+ org.opendavinci.canDataModel,
+ org.opendavinci.canDataModel.impl,
+ org.opendavinci.canDataModel.util,
  org.opendavinci.services,
- org.opendavinci.candataModel,
- org.opendavinci.candataModel.impl,
- org.opendavinci.candataModel.util,
  org.opendavinci.serializer,
  org.opendavinci.parser.antlr,
  org.opendavinci.parser.antlr.internal,
  org.opendavinci.validation,
- org.opendavinci.generator,
- org.opendavinci.dataModel,
- org.opendavinci.dataModel.impl,
- org.opendavinci.dataModel.util,
- org.opendavinci.canDataModel,
- org.opendavinci.canDataModel.impl,
- org.opendavinci.canDataModel.util
-
+ org.opendavinci.generator
