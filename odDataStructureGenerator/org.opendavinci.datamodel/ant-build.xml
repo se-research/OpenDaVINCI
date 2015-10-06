@@ -162,6 +162,7 @@
             <zipfileset excludes="META-INF/*.SF" src="lib/org.apache.log4j_1.2.15.v201012070815.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xtext.builder_2.8.4.v201508050135.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xtend.lib.macro_2.8.4.v201508050135.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.equinox.common_3.7.0.v20150402-1709.jar"/>
         </jar>
     </target>
 
