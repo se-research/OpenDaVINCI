@@ -65,7 +65,7 @@ IF(     NOT("${CMAKE_C_COMPILER}" STREQUAL "")
     SET(BUILD_LIBODSIMULATION 0)
     SET(BUILD_ODSIMULATION 0)
     SET(BUILD_ODCOCKPIT 0)
-    SET(BUILD_AUTOMOTIVE_ODCANTOOLS 0)
+    SET(BUILD_AUTOMOTIVE 0)
 
     MESSAGE(STATUS "Found C and C++ compiler:   Building opendavinci-lib")
     SET(BUILD_OPENDAVINCI 1)
@@ -105,8 +105,8 @@ IF(     NOT("${CMAKE_C_COMPILER}" STREQUAL "")
        AND (NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "DragonFly")
        AND (NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD") )
         IF(POPT_FOUND)
-            MESSAGE(STATUS "Found popt-dev:             Building automotive/odcantools")
-            SET(BUILD_AUTOMOTIVE_ODCANTOOLS 1)
+            MESSAGE(STATUS "Found popt-dev:             Building automotive")
+            SET(BUILD_AUTOMOTIVE 1)
         ENDIF()
     ENDIF()
 ENDIF()
@@ -259,16 +259,18 @@ IF("${CMAKE_TOOLCHAIN_FILE}" STREQUAL "")
             INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcockpit-prefix/src/odcockpit-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcockpit-prefix/src/odcockpit-build --target ${MAKE_PACKAGE})
     ENDIF()
 
-    # Next, build automotive/odcantools.
-    IF(${BUILD_AUTOMOTIVE_ODCANTOOLS})
-        ExternalProject_Add (automotive_odcantools
+    # Next, build automotive.
+    IF(${BUILD_AUTOMOTIVE})
+        ExternalProject_Add (automotive
             DEPENDS libautomotivedata
             DOWNLOAD_COMMAND ""
             UPDATE_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/automotive/odcantools"
+            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/automotive"
             CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            TEST_BEFORE_INSTALL 1
-            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/automotive_odcantools-prefix/src/automotive_odcantools-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/automotive_odcantools-prefix/src/automotive_odcantools-build --target ${MAKE_PACKAGE})
+            TEST_COMMAND ""
+            INSTALL_COMMAND "")
+#            TEST_BEFORE_INSTALL 1
+#            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/automotive-prefix/src/automotive-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/automotive-prefix/src/automotive-build --target ${MAKE_PACKAGE})
     ENDIF()
 ENDIF()
 
