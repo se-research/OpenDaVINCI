@@ -22,7 +22,7 @@ import org.eclipse.emf.mwe.utils.*
 import org.eclipse.xtext.generator.*
 
 var grammarURI = "classpath:/org/opendavinci/CANDataModel.xtext"
-var fileExtensions = "odvd"
+var fileExtensions = "can"
 var projectName = "org.opendavinci.candatamodel"
 var runtimeProject = "../${projectName}"
 var generateXtendStub = true

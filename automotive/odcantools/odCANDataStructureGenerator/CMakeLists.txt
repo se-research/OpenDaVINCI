@@ -30,6 +30,22 @@ INCLUDE (ExternalProject)
 INCLUDE (CheckJavaBuildEnvironment)
 
 ###########################################################################
+# If dpkg and rpmbuild are available, .deb and .rpm packages will be
+# created. Otherwise, the software is simply installed.
+IF(     NOT("${DPKG_EXECUTABLE}" STREQUAL "DPKG_EXECUTABLE-NOTFOUND")
+    AND NOT("${RPMBUILD_EXECUTABLE}" STREQUAL "RPMBUILD_EXECUTABLE-NOTFOUND") )
+    MESSAGE(STATUS "Enabling building .deb and .rpm packages.")
+    SET(MAKE_PACKAGE package)
+ELSE()
+    # If the platform does not provide dpkg and rpmbuild, make package is
+    # replaced with make install.
+    SET(MAKE_PACKAGE install)
+ENDIF()
+
+MESSAGE(STATUS "Installing artifacts to:    ${INSTALL_DIR}")
+MESSAGE("")
+
+###########################################################################
 # As this project uses ant to build the binary, we simply delegate
 # the actual compilation, test, and packaging to ant.
 ExternalProject_Add (odCANDataStructureGenerator
@@ -40,8 +56,9 @@ ExternalProject_Add (odCANDataStructureGenerator
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ${ANT_EXECUTABLE} -lib lib -f ant-build.xml compile-java
     BUILD_IN_SOURCE 1
-    TEST_COMMAND ${ANT_EXECUTABLE} -lib lib -f ant-build.xml test-java
-    TEST_BEFORE_INSTALL 1
+#    TEST_COMMAND ${ANT_EXECUTABLE} -lib lib -f ant-build.xml test-java
+#    TEST_BEFORE_INSTALL 1
+    TEST_COMMAND ""
     INSTALL_COMMAND ${ANT_EXECUTABLE} -lib lib -f ant-build.xml create-runnable-jar
     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/org.opendavinci.candatamodel/odCANDataStructureGenerator-latest.jar ${CMAKE_BINARY_DIR})
 

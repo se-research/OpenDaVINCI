@@ -29,7 +29,7 @@ class CANDataModelGenerator implements IGenerator {
 	
     /* This method is our interface to an outside caller. */
 	override void doGenerate(Resource resource, IFileSystemAccess fsa) {
-		val generatedHeadersFile = resource.URI.toString().substring(resource.URI.toString().lastIndexOf("/") + 1).replaceAll(".odvd", "")
+		val generatedHeadersFile = resource.URI.toString().substring(resource.URI.toString().lastIndexOf("/") + 1).replaceAll(".can", "")
 		for (e : resource.allContents.toIterable.filter(typeof(CANSignalMapping))) {
 			fsa.generateFile("include/GeneratedHeaders_" + generatedHeadersFile + ".h", generateSuperHeaderFileContent(generatedHeadersFile, e))
 			fsa.generateFile("src/GeneratedHeaders_" + generatedHeadersFile + ".cpp", generateSuperImplementationFileContent(generatedHeadersFile, e))
@@ -121,7 +121,7 @@ namespace simple {
 
 #include "generated/WheelSpeed.h"
 
-#include "GeneratedHeaders_Simple.h"
+#include "GeneratedHeaders_«generatedHeadersFile».h"
 
 namespace simple {
 

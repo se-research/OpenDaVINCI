@@ -24,7 +24,7 @@
 #include <core/base/module/DataTriggeredConferenceClientModule.h>
 
 #include "GeneratedHeaders_AutomotiveData.h"
-#include "GeneratedHeaders_Simple.h"
+#include "GeneratedHeaders_CANMessageMapping.h"
 
 namespace automotive {
     namespace odcantools {

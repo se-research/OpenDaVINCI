@@ -20,7 +20,7 @@
 #ifndef CANPROXYMAPPER_H_
 #define CANPROXYMAPPER_H_
 
-#include "GeneratedHeaders_Simple.h"
+#include "GeneratedHeaders_CANMessageMapping.h"
 
 #include "CANProxy.h"
 

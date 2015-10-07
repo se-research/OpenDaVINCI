@@ -1,4 +1,4 @@
-# DataStructureGenerator- IDL tool to describe exchangeable data.
+# CANDataStructureGenerator- IDL tool to describe exchangeable data.
 # Copyright (C) 2014 - 2015  Christian Berger
 #
 # This program is free software; you can redistribute it and/or
@@ -16,29 +16,29 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 ###########################################################################
-# Try to find the executable odDataStructureGenerator-latest.jar.
+# Try to find the executable odCANDataStructureGenerator-latest.jar.
 #
 # The user can specify an additional search path using the CMake variable
-# ODDATASTRUCTUREGENERATOR_PATH
+# ODCANDATASTRUCTUREGENERATOR_PATH
 
 # First, search at the specific user path setting.
-FIND_FILE(ODDATASTRUCTUREGENERATOR_EXECUTABLE
-          NAMES odDataStructureGenerator-latest.jar
-          PATHS ${ODDATASTRUCTUREGENERATOR_PATH}/bin
-                ${ODDATASTRUCTUREGENERATOR_PATH}
+FIND_FILE(ODCANDATASTRUCTUREGENERATOR_EXECUTABLE
+          NAMES odCANDataStructureGenerator-latest.jar
+          PATHS ${ODCANDATASTRUCTUREGENERATOR_PATH}/bin
+                ${ODCANDATASTRUCTUREGENERATOR_PATH}
           NO_DEFAULT_PATH)
 
 # If not found, use the system's search paths.
-IF(NOT ODDATASTRUCTUREGENERATOR_EXECUTABLE)
-    FIND_FILE(ODDATASTRUCTUREGENERATOR_EXECUTABLE
-              NAMES odDataStructureGenerator-latest.jar)
+IF(NOT ODCANDATASTRUCTUREGENERATOR_EXECUTABLE)
+    FIND_FILE(ODCANDATASTRUCTUREGENERATOR_EXECUTABLE
+              NAMES odCANDataStructureGenerator-latest.jar)
 ENDIF()
 
-MARK_AS_ADVANCED(ODDATASTRUCTUREGENERATOR_EXECUTABLE)
+MARK_AS_ADVANCED(ODCANDATASTRUCTUREGENERATOR_EXECUTABLE)
 
-IF(NOT ODDATASTRUCTUREGENERATOR_EXECUTABLE)
-    MESSAGE(FATAL_ERROR "Could not find odDataStructureGenerator executable to generate data structures.")
+IF(NOT ODCANDATASTRUCTUREGENERATOR_EXECUTABLE)
+    MESSAGE(FATAL_ERROR "Could not find odCANDataStructureGenerator executable to generate data structures.")
 ELSE()
-    MESSAGE(STATUS "Found odDataStructureGenerator executable: ${ODDATASTRUCTUREGENERATOR_EXECUTABLE}")
+    MESSAGE(STATUS "Found odCANDataStructureGenerator executable: ${ODCANDATASTRUCTUREGENERATOR_EXECUTABLE}")
 ENDIF()
 

@@ -27,7 +27,7 @@
 #include "core/base/module/TimeTriggeredConferenceClientModule.h"
 #include "tools/recorder/Recorder.h"
 
-#include "GeneratedHeaders_Simple.h"
+#include "GeneratedHeaders_CANMessageMapping.h"
 
 #include "GenericCANMessageListener.h"
 #include "CANDevice.h"
