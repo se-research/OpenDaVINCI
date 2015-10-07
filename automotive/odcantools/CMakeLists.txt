@@ -17,7 +17,7 @@
 
 CMAKE_MINIMUM_REQUIRED (VERSION 2.8)
 
-PROJECT (automotive)
+PROJECT (automotive.odcantools)
 
 ###########################################################################
 # Set the search path for .cmake files.
@@ -28,83 +28,13 @@ SET (CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules" ${CMAKE_MODUL
 INCLUDE (ExternalProject)
 
 ###########################################################################
-# Check for ant and Java.
-INCLUDE (CheckJavaBuildEnvironment)
-
-###########################################################################
-# Check for the possibility to build .deb and .rpm packages.
-INCLUDE (CheckBuildPackages)
+# Setting where to install the binaries.
+SET(INSTALL_DIR ${CMAKE_INSTALL_PREFIX})
 
 ###########################################################################
 # Find and configure CxxTest.
 SET (CXXTEST_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../cxxtest") 
 INCLUDE (CheckCxxTestEnvironment)
-
-###########################################################################
-# If dpkg and rpmbuild are available, .deb and .rpm packages will be
-# created. Otherwise, the software is simply installed.
-IF(     NOT("${DPKG_EXECUTABLE}" STREQUAL "DPKG_EXECUTABLE-NOTFOUND")
-    AND NOT("${RPMBUILD_EXECUTABLE}" STREQUAL "RPMBUILD_EXECUTABLE-NOTFOUND") )
-    MESSAGE(STATUS "Enabling building .deb and .rpm packages.")
-    SET(MAKE_PACKAGE package)
-ELSE()
-    # If the platform does not provide dpkg and rpmbuild, make package is
-    # replaced with make install.
-    SET(MAKE_PACKAGE install)
-ENDIF()
-SET(MAKE_PACKAGE install)
-
-###########################################################################
-# Setting where to install the binaries.
-SET(INSTALL_DIR ${CMAKE_INSTALL_PREFIX})
-
-MESSAGE(STATUS "Installing artifacts to:    ${INSTALL_DIR}")
-MESSAGE("")
-
-###########################################################################
-# First, display everything that is required to model and generate code from data structures.
-SET(BUILD_ODCANDATASTRUCTUREGENERATOR 0)
-IF(NOT("${ANT_EXECUTABLE}" STREQUAL "ANT_EXECUTABLE-NOTFOUND"))
-    IF(${HAVE_JAVAC})
-        MESSAGE(STATUS "Found working Java compiler and ant build tool: Building odCANDataStructureGenerator")
-        SET(BUILD_ODCANDATASTRUCTUREGENERATOR 1)
-    ENDIF()
-ENDIF()
-SET(ODCANDATASTRUCTUREGENERATOR_EXECUTABLE ${INSTALL_DIR}/bin/odCANDataStructureGenerator-latest.jar)
-MESSAGE(STATUS "Using ${ODCANDATASTRUCTUREGENERATOR_EXECUTABLE} to generate code from CAN data structure models.")
-
-###########################################################################
-# Build odCANDataStructureGenerator.
-IF(${BUILD_ODCANDATASTRUCTUREGENERATOR})
-    ExternalProject_Add (odCANDataStructureGenerator
-        DOWNLOAD_COMMAND ""
-        UPDATE_COMMAND ""
-        SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odCANDataStructureGenerator"
-        CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-        INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odCANDataStructureGenerator-prefix/src/odCANDataStructureGenerator-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odCANDataStructureGenerator-prefix/src/odCANDataStructureGenerator-build --target ${MAKE_PACKAGE})
-
-    # This "external project" simply deletes the existing libcanmessagemapping.
-    ExternalProject_Add (libcanmessagemapping-cleanup
-        DEPENDS odCANDataStructureGenerator
-        DOWNLOAD_COMMAND ""
-        UPDATE_COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_SOURCE_DIR}/libsimple
-        PATCH_COMMAND ""
-        SOURCE_DIR ""
-        CONFIGURE_COMMAND ""
-        BUILD_COMMAND ""
-        TEST_COMMAND ""
-        INSTALL_COMMAND "")
-
-    ExternalProject_Add (libcanmessagemapping
-        DEPENDS libcanmessagemapping-cleanup
-        DOWNLOAD_COMMAND ""
-        UPDATE_COMMAND cd ${CMAKE_CURRENT_SOURCE_DIR} && ${Java_JAVA_EXECUTABLE} -jar ${ODCANDATASTRUCTUREGENERATOR_EXECUTABLE} --withCMake ${CMAKE_CURRENT_SOURCE_DIR}/CANMessageMapping.can
-        PATCH_COMMAND ""
-        SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libcanmessagemapping"
-        CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-        TEST_BEFORE_INSTALL 1
-        INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libcanmessagemapping-prefix/src/libcanmessagemapping-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libcanmessagemapping-prefix/src/libcanmessagemapping-build --target ${MAKE_PACKAGE})
-ENDIF()
 
 ###########################################################################
 # Download and build Peak Systems CAN driver and library.
@@ -130,50 +60,11 @@ IF(    (UNIX)
 
         ###########################################################################
         # Add subdirectories.
-        ExternalProject_Add (odcanproxy
-            DEPENDS peak-linux-driver
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odcanproxy"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            TEST_BEFORE_INSTALL 1
-            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcanproxy-prefix/src/odcanproxy-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcanproxy-prefix/src/odcanproxy-build --target ${MAKE_PACKAGE})
-
-        ExternalProject_Add (odcanascreplay
-            DEPENDS libcanmessagemapping
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odcanascreplay"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            TEST_BEFORE_INSTALL 1
-            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcanascreplay-prefix/src/odcanascreplay-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcanascreplay-prefix/src/odcanascreplay-build --target ${MAKE_PACKAGE})
-
-        ExternalProject_Add (odcanmapper
-            DEPENDS libcanmessagemapping
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odcanmapper"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            TEST_BEFORE_INSTALL 1
-            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcanmapper-prefix/src/odcanmapper-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcanmapper-prefix/src/odcanmapper-build --target ${MAKE_PACKAGE})
-
-#        ExternalProject_Add (odcanbridge
-#            DEPENDS odcanproxy odcanmapper
-#            DOWNLOAD_COMMAND ""
-#            UPDATE_COMMAND ""
-#            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odcanbridge"
-#            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-#            TEST_BEFORE_INSTALL 1
-#            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcanbridge-prefix/src/odcanbridge-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcanbridge-prefix/src/odcanbridge-build --target ${MAKE_PACKAGE})
-
-#        ExternalProject_Add (odcanproxymapper
-#            DEPENDS odcanproxy odcanmapper
-#            DOWNLOAD_COMMAND ""
-#            UPDATE_COMMAND ""
-#            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odcanbridge"
-#            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-#            TEST_BEFORE_INSTALL 1
-#            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcanproxymapper-prefix/src/odcanproxymapper-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcanproxymapper-prefix/src/odcanproxymapper-build --target ${MAKE_PACKAGE})
+        ADD_SUBDIRECTORY (odcanascreplay)
+        ADD_SUBDIRECTORY (odcanproxy)
+        ADD_SUBDIRECTORY (odcanmapper)
+        ADD_SUBDIRECTORY (odcanbridge)
+        ADD_SUBDIRECTORY (odcanproxymapper)
     ENDIF()
 ENDIF()
 
