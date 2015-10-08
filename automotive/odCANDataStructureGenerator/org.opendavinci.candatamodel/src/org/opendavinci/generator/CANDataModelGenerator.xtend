@@ -24,20 +24,62 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.opendavinci.canDataModel.CANSignalMapping
+import org.opendavinci.canDataModel.CANSignal
+import java.util.HashMap
 
 class CANDataModelGenerator implements IGenerator {
+
+	/* This class describes all data to a defined CAN signal in a .can file. */
+	static class CANSignalDescription {
+		String m_FQDN
+		String m_CANID
+		String m_startBit
+		String m_length
+		String m_endian
+		String m_multiplyBy
+		String m_add
+		String m_rangeStart
+		String m_rangeEnd
+	}
 	
     /* This method is our interface to an outside caller. */
 	override void doGenerate(Resource resource, IFileSystemAccess fsa) {
 		val generatedHeadersFile = resource.URI.toString().substring(resource.URI.toString().lastIndexOf("/") + 1).replaceAll(".can", "")
+
+		// First, extract all CAN signals from .can file.
+		val mapOfDefinedCANSignals = collectDefinedCANSignals(resource.allContents.toIterable.filter(typeof(CANSignal)))
+
+		// Next, generate the code for the actual mapping.
 		for (e : resource.allContents.toIterable.filter(typeof(CANSignalMapping))) {
 			fsa.generateFile("include/GeneratedHeaders_" + generatedHeadersFile + ".h", generateSuperHeaderFileContent(generatedHeadersFile, e))
 			fsa.generateFile("src/GeneratedHeaders_" + generatedHeadersFile + ".cpp", generateSuperImplementationFileContent(generatedHeadersFile, e))
 			fsa.generateFile("include/generated/" + e.message.toString().replaceAll("\\.", "/") + ".h", generateHeaderFileContent(generatedHeadersFile, e))
-			fsa.generateFile("src/generated/" + e.message.toString().replaceAll("\\.", "/") + ".cpp", generateImplementationFileContent(e, "generated"))
+			fsa.generateFile("src/generated/" + e.message.toString().replaceAll("\\.", "/") + ".cpp", generateImplementationFileContent(e, "generated", mapOfDefinedCANSignals))
 			fsa.generateFile("testsuites/" + e.message.toString().replaceAll("\\.", "_") + "TestSuite.h", generateTestSuiteContent(generatedHeadersFile, e))
 			fsa.generateFile("uppaal/generated/" + e.message.toString().replaceAll("\\.", "/"), generateUPPAALFileContent(e))
 		}
+	}
+
+	/* This method collects all CAN signal definitions. */
+	def collectDefinedCANSignals(Iterable<CANSignal> iter) {
+		val cansignalsByFQDN =  new HashMap<String, CANSignalDescription>
+		val localIterator = iter.iterator
+		while (localIterator.hasNext) {
+			val cs = localIterator.next
+			val csd = new CANSignalDescription
+			csd.m_FQDN = cs.cansignal
+			csd.m_CANID = cs.canIdentifier
+			csd.m_startBit = cs.startBit
+			csd.m_length = cs.length
+			csd.m_endian = cs.endian
+			csd.m_multiplyBy = cs.multiplyBy
+			csd.m_add = cs.add
+			csd.m_rangeStart = cs.rangeStart
+			csd.m_rangeEnd = cs.rangeEnd
+			cansignalsByFQDN.put(csd.m_FQDN, csd)
+		}
+
+        return cansignalsByFQDN
 	}
 
     /* This method generates the header file content. */
@@ -211,13 +253,28 @@ namespace simple {
 '''
 
 	/* This method generates the implementation (.cpp). */
-	def generateImplementationFileContent(CANSignalMapping mapping, String includeDirectoryPrefix) '''
+	def generateImplementationFileContent(CANSignalMapping mapping, String includeDirectoryPrefix, HashMap<String, CANSignalDescription> canSignals) '''
 /*
  * This software is open source. Please see COPYING and AUTHORS for further information.
  *
  * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
  */
 // Source file for: «mapping.message.toString»
+
+/*
+«FOR entry : canSignals.entrySet»
+«entry.key» : «entry.value.m_CANID»
+«entry.key» : «entry.value.m_FQDN»
+«entry.key» : «entry.value.m_startBit»
+«entry.key» : «entry.value.m_length»
+«entry.key» : «entry.value.m_endian»
+«entry.key» : «entry.value.m_multiplyBy»
+«entry.key» : «entry.value.m_add»
+«entry.key» : «entry.value.m_rangeStart»
+«entry.key» : «entry.value.m_rangeEnd»
+
+«ENDFOR»
+*/
 
 #include "generated/WheelSpeed.h"
 

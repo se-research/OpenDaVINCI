@@ -28,7 +28,14 @@ Model:
     cansignalmappings += CANSignalMapping*;
 
 CANSignal:
-	cansignal = MessageIdentifier 'in' canIdentifier = HEXNUMBER 'at' 'bit' startBit = UNSIGNEDNUMBER 'for' length = UNSIGNEDNUMBER 'bits' ';';
+	cansignal = MessageIdentifier 'in' canIdentifier = HEXNUMBER
+								  'at' 'bit' startBit = FLOATNUMBER
+								  'for' length = FLOATNUMBER 'bits'
+								  'is' (endian = ('big' | 'little')) 'endian'
+								  'multiply by' multiplyBy = FLOATNUMBER
+								  'add' add = FLOATNUMBER
+								  'map to' '[' rangeStart = FLOATNUMBER ',' rangeEnd = FLOATNUMBER ']'
+								  ';';
 
 CANSignalMapping:
     'message' message = MessageIdentifier '{'
@@ -36,12 +43,14 @@ CANSignalMapping:
     '}';
 
 Mapping:
-	cansignal = MessageIdentifier ':' messageIdentifier = UNSIGNEDNUMBER ';';
+	cansignal = MessageIdentifier ':' messageIdentifier = FLOATNUMBER ';';
 
 MessageIdentifier:
     ID (('.') ID)*;
 
+terminal fragment SIGN: ('+'|'-');
 terminal fragment DIGIT: ('0' .. '9');
 terminal fragment HEXDIGIT: '0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9'|'a'|'b'|'c'|'d'|'e'|'f'|'A'|'B'|'C'|'D'|'E'|'F';
-terminal UNSIGNEDNUMBER: DIGIT+ (('.') DIGIT+)?;
+terminal FLOATNUMBER: SIGN? DIGIT+ (('.') DIGIT+)?;
 terminal HEXNUMBER: '0x' HEXDIGIT+;
+
