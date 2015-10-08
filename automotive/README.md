@@ -1,9 +1,9 @@
 The following steps are covered in this manual:
 
-- 0 - Testing the current code
-- A - Changing the grammar in the .xtext file (e.g., to add mathematical transformations)
-- B - Changing the model transformation in the .xtend file
-- C - Testing the resulting code
+- STEP 0 - Testing the current code
+- STEP A - Changing the grammar in the .xtext file (e.g., to add mathematical transformations)
+- STEP B - Changing the model transformation in the .xtend file
+- STEP C - Testing the resulting code
 
 
 ###STEP 0 - Testing the current code:
@@ -28,13 +28,13 @@ To test the current code, open Terminal, change directories to OpenDaVinci and r
 5. Right click on org.opendavinci/GenerateCANDataModel.mwe2 (in the navigation menu) and Run As MWE2 Workflow;
 6. Right click on the root project and then select Refresh;
 7. Build the Java code generator by opening Terminal and doing the following:
-
+	
 	$ cd OpenDaVinci/automotive/odCANDataStructureGenerator/org.opendavinci.candatamodel/
 	$ ant -f ant-build.xml clean
 	$ ant -f ant-build.xml
 	
-Then execute the code generator (it will use the “CANMessageMapping.can” file to generate its output)
-
+Then, execute the code generator (it will use the “CANMessageMapping.can” file to generate its output):
+	
 	$ cd ../..
 	$ java -jar odCANDataStructureGenerator/org.opendavinci.candatamodel/odCANDataStructureGenerator-latest.jar --withCMake CANMessageMapping.can
 
@@ -56,7 +56,7 @@ Alternatively to step 7, the complete automotive model can be build by following
 	$ ant -f ant-build.xml
 	
 Then, execute the code generator (it will use the “CANMessageMapping.can” file to generate its output):
-
+	
 	$ cd ../..
 	$ java -jar odCANDataStructureGenerator/org.opendavinci.candatamodel/odCANDataStructureGenerator-latest.jar --withCMake CANMessageMapping.can
 
@@ -75,11 +75,10 @@ Alternatively to step 5, the complete automotive model can be build by following
 
 Then, start the LiveFeed plugin in odcockpit. 
 
-Lastly:
-
-IF you are connected to a real car, run:
+Lastly, IF you are connected to a real car, run:
 
 	$ ./odcanproxy --cid=111
+	$ LD_LIBRARY_PATH=/opt/od/lib ./odcanmapper --cid=111
 
 ELSE if you have recording files, run:
 
