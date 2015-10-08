@@ -28,6 +28,9 @@ To test the current code, open Terminal, change directories to OpenDaVinci and r
 5. Right click on org.opendavinci/GenerateCANDataModel.mwe2 (in the navigation menu) and Run As MWE2 Workflow;
 6. Right click on the root project and then select Refresh;
 7. Build the Java code generator by opening Terminal and doing the following:
+
+	$ cd ../..
+	$ java -jar odCANDataStructureGenerator/org.opendavinci.candatamodel/odCANDataStructureGenerator-latest.jar --withCMake CANMessageMapping.can
 	
 	$ cd OpenDaVinci/automotive/odCANDataStructureGenerator/org.opendavinci.candatamodel/
 	$ ant -f ant-build.xml clean
@@ -61,7 +64,7 @@ Then, execute the code generator (it will use the “CANMessageMapping.can” fi
 	$ java -jar odCANDataStructureGenerator/org.opendavinci.candatamodel/odCANDataStructureGenerator-latest.jar --withCMake CANMessageMapping.can
 
 
-Alternatively to step 5, the complete automotive model can be build by following the procedures in STEP 0, with the same effect.
+Alternatively to step 5, the complete automotive model can be built - with the same effect - by following the procedures in STEP 0.
 
 
 ######Note: in the “.xtend” file, the text in grey background is reported verbatim in the generated files, while text in double angular brackets «...» is interpreted during the code generation, based on the input from the “.can” file.
