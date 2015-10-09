@@ -20,12 +20,13 @@
 
 package org.opendavinci.generator
 
-import org.eclipse.emf.ecore.resource.Resource
-import org.eclipse.xtext.generator.IGenerator
-import org.eclipse.xtext.generator.IFileSystemAccess
-import org.opendavinci.canDataModel.CANSignalMapping
-import org.opendavinci.canDataModel.CANSignal
+import java.util.ArrayList
 import java.util.HashMap
+import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.xtext.generator.IFileSystemAccess
+import org.eclipse.xtext.generator.IGenerator
+import org.opendavinci.canDataModel.CANSignal
+import org.opendavinci.canDataModel.CANSignalMapping
 
 class CANDataModelGenerator implements IGenerator {
 
@@ -49,10 +50,17 @@ class CANDataModelGenerator implements IGenerator {
 		// First, extract all CAN signals from .can file.
 		val mapOfDefinedCANSignals = collectDefinedCANSignals(resource.allContents.toIterable.filter(typeof(CANSignal)))
 
+		var ArrayList<String> includedClasses=new ArrayList<String>
+				
+		for (e : resource.allContents.toIterable.filter(typeof(CANSignalMapping))) {
+			includedClasses.add(e.message.toString().replaceAll("\\.", "/"))
+		}
+		
+		fsa.generateFile("include/GeneratedHeaders_" + generatedHeadersFile + ".h", generateSuperHeaderFileContent(generatedHeadersFile, includedClasses))
+		fsa.generateFile("src/GeneratedHeaders_" + generatedHeadersFile + ".cpp", generateSuperImplementationFileContent(generatedHeadersFile, includedClasses))
+		
 		// Next, generate the code for the actual mapping.
 		for (e : resource.allContents.toIterable.filter(typeof(CANSignalMapping))) {
-			fsa.generateFile("include/GeneratedHeaders_" + generatedHeadersFile + ".h", generateSuperHeaderFileContent(generatedHeadersFile, e))
-			fsa.generateFile("src/GeneratedHeaders_" + generatedHeadersFile + ".cpp", generateSuperImplementationFileContent(generatedHeadersFile, e))
 			fsa.generateFile("include/generated/" + e.message.toString().replaceAll("\\.", "/") + ".h", generateHeaderFileContent(generatedHeadersFile, e))
 			fsa.generateFile("src/generated/" + e.message.toString().replaceAll("\\.", "/") + ".cpp", generateImplementationFileContent(e, "generated", mapOfDefinedCANSignals))
 			fsa.generateFile("testsuites/" + e.message.toString().replaceAll("\\.", "_") + "TestSuite.h", generateTestSuiteContent(generatedHeadersFile, e))
@@ -83,30 +91,31 @@ class CANDataModelGenerator implements IGenerator {
 	}
 
     /* This method generates the header file content. */
-	def generateSuperHeaderFileContent(String generatedHeadersFile, CANSignalMapping mapping) '''
+	def generateSuperHeaderFileContent(String generatedHeadersFile, ArrayList<String> includedClasses) '''
 /*
  * This software is open source. Please see COPYING and AUTHORS for further information.
  *
  * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
  */
-// Header file for: «mapping.message.toString»
 
 #ifndef GENERATEDHEADERS_«generatedHeadersFile.toUpperCase()»_H_
 #define GENERATEDHEADERS_«generatedHeadersFile.toUpperCase()»_H_
 
 #include <vector>
 
-#include "generated/WheelSpeed.h"
+«FOR include : includedClasses»
+#include "generated/«include».h"
+«ENDFOR»
 
 #include <core/data/Container.h>
 
 #include "GeneratedHeaders_AutomotiveData.h"
 
-namespace simple {
+namespace canMapping {
 
     using namespace std;
 
-    class Simple {
+    class CanMapping {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -115,7 +124,7 @@ namespace simple {
              *
              * @param obj Reference to an object of this class.
              */
-            Simple(const Simple &/*obj*/);
+            CanMapping(const CanMapping &/*obj*/);
 
             /**
              * "Forbidden" assignment operator. Goal: The compiler should warn
@@ -125,12 +134,12 @@ namespace simple {
              * @param obj Reference to an object of this class.
              * @return Reference to this instance.
              */
-            Simple& operator=(const Simple &/*obj*/);
+            CanMapping& operator=(const CanMapping &/*obj*/);
 
         public:
-            Simple();
+            CanMapping();
 
-            virtual ~Simple();
+            virtual ~CanMapping();
 
             /**
              * This method adds the given GenericCANMessage to the internal
@@ -144,35 +153,40 @@ namespace simple {
             vector<core::data::Container> mapNext(const automotive::GenericCANMessage &gcm);
 
         private:
-            WheelSpeed m_wheelSpeed;
+        
+«FOR include : includedClasses»
+            «include» m_«Character.toLowerCase(include.charAt(0)) + include.substring(1)»;
+«ENDFOR»
+        
     };
 
-} // simple
+} // canMapping
 
 #endif /*GENERATEDHEADERS_«generatedHeadersFile.toUpperCase()»_H_*/
 '''
 
     /* This method generates the header file content. */
-	def generateSuperImplementationFileContent(String generatedHeadersFile, CANSignalMapping mapping) '''
+	def generateSuperImplementationFileContent(String generatedHeadersFile, ArrayList<String> includedClasses) '''
 /*
  * This software is open source. Please see COPYING and AUTHORS for further information.
  *
  * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
  */
-// Header file for: «mapping.message.toString»
 
 #include "generated/WheelSpeed.h"
 
 #include "GeneratedHeaders_«generatedHeadersFile».h"
 
-namespace simple {
+namespace canMapping {
 
-    Simple::Simple() :
-        m_wheelSpeed() {}
+    CanMapping::CanMapping() :
+«FOR include : includedClasses»
+            m_«Character.toLowerCase(include.charAt(0)) + include.substring(1)»() {}
+«ENDFOR»
 
-    Simple::~Simple() {}
+    CanMapping::~CanMapping() {}
 
-    vector<core::data::Container> Simple::mapNext(const automotive::GenericCANMessage &gcm) {
+    vector<core::data::Container> CanMapping::mapNext(const automotive::GenericCANMessage &gcm) {
         vector<core::data::Container> listOfContainers;
 
         // Traverse all defined mappings and check whether a new high-level message could be fully decoded.
@@ -194,7 +208,7 @@ namespace simple {
         return listOfContainers;
     }
 
-} // simple
+} // canMapping
 '''
 
     /* This method generates the header file content. */
@@ -205,20 +219,20 @@ namespace simple {
  * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
  */
 // Header file for: «mapping.message.toString»
-#ifndef WHEELSPEED_H_
-#define WHEELSPEED_H_
+#ifndef «mapping.message.toString.toUpperCase»_H_
+#define «mapping.message.toString.toUpperCase»_H_
 
-#include "generated/WheelSpeed.h"
+#include "generated/«mapping.message.toString».h"
 
 #include <core/data/Container.h>
 
 #include "GeneratedHeaders_AutomotiveData.h"
 
-namespace simple {
+namespace canMapping {
 
     using namespace std;
 
-    class WheelSpeed {
+    class «mapping.message.toString» {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -227,7 +241,7 @@ namespace simple {
              *
              * @param obj Reference to an object of this class.
              */
-            WheelSpeed(const WheelSpeed &/*obj*/);
+            «mapping.message.toString»(const «mapping.message.toString» &/*obj*/);
 
             /**
              * "Forbidden" assignment operator. Goal: The compiler should warn
@@ -237,19 +251,19 @@ namespace simple {
              * @param obj Reference to an object of this class.
              * @return Reference to this instance.
              */
-            WheelSpeed& operator=(const WheelSpeed &/*obj*/);
+            «mapping.message.toString»& operator=(const «mapping.message.toString» &/*obj*/);
 
         public:
-            WheelSpeed();
+            «mapping.message.toString»();
 
-            virtual ~WheelSpeed();
+            virtual ~«mapping.message.toString»();
 
             core::data::Container decode(const automotive::GenericCANMessage &gcm);
     };
 
-} // simple
+} // canMapping
 
-#endif /*WHEELSPEED_H_*/
+#endif /*«mapping.message.toString.toUpperCase»_H_*/
 '''
 
 	/* This method generates the implementation (.cpp). */
@@ -276,7 +290,7 @@ namespace simple {
 «ENDFOR»
 */
 
-#include "generated/WheelSpeed.h"
+#include "generated/«mapping.message.toString».h"
 
 #include <core/SharedPointer.h>
 #include <core/reflection/Message.h>
@@ -285,15 +299,15 @@ namespace simple {
 
 #include "GeneratedHeaders_AutomotiveData.h"
 
-namespace simple {
+namespace canMapping {
 
     using namespace std;
 
-    WheelSpeed::WheelSpeed() {}
+    «mapping.message.toString»::«mapping.message.toString»() {}
 
-    WheelSpeed::~WheelSpeed() {}
+    «mapping.message.toString»::~«mapping.message.toString»() {}
 
-    core::data::Container WheelSpeed::decode(const automotive::GenericCANMessage &gcm) {
+    core::data::Container «mapping.message.toString»::decode(const automotive::GenericCANMessage &gcm) {
         core::data::Container c;
 
         // TODO: Check the CAN ID and perform the CAN signal mapping before to process the rest of this method.
@@ -455,7 +469,7 @@ namespace simple {
         return c;
     }
 
-} // simple
+} // canMapping
 '''
 
 	// Generate the test suite content (.h).	
@@ -467,8 +481,8 @@ namespace simple {
  */
 // Test suite file for: «mapping.message.toString»
 
-#ifndef SIMPLETESTSUITE_H_
-#define SIMPLETESTSUITE_H_
+#ifndef CANMAPPINGTESTSUITE_H_
+#define CANMAPPINGTESTSUITE_H_
 
 #include "cxxtest/TestSuite.h"
 
@@ -486,7 +500,7 @@ class CANBridgeTest : public CxxTest::TestSuite {
 
 };
 
-#endif /*SIMPLETESTSUITE_H_*/
+#endif /*CANMAPPINGTESTSUITE_H_*/
 '''
 
     /* This method generates the UPPAAL file content. */

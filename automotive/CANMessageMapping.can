@@ -9,3 +9,7 @@ message WheelSpeed {
 	wheelspeed.rearleft : 3;
 	wheelspeed.rearright : 4;
 }
+
+message EmptyCanMessage {
+    
+}
