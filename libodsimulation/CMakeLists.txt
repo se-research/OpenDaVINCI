@@ -220,6 +220,7 @@ IF(    (UNIX)
     ENDIF()
     SET(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "${ARCH}")
     SET(CPACK_DEB_COMPONENT_INSTALL ON)
+    SET(CPACK_DEBIAN_PACKAGE_DEPENDS "opendavinci-odlib,libautomotivedata,libopencv-core-dev,libopencv-highgui-dev,libopencv-imgproc-dev,freeglut3,freeglut3-dev,libboost-dev")
 
     # RPM packages:
     IF("${ARMHF}" STREQUAL "YES")
@@ -236,6 +237,7 @@ IF(    (UNIX)
     SET(CPACK_RPM_PACKAGE_BUILDARCH "Buildarch: ${CPACK_RPM_PACKAGE_ARCHITECTURE}")
     SET(CPACK_RPM_COMPONENT_INSTALL ON)
     SET(CPACK_RPM_PACKAGE_LICENSE "GPL")
+    SET(CPACK_RPM_PACKAGE_REQUIRES "opendavinci-odlib, libautomotivedata, libopencv-core-dev, libopencv-highgui-dev, libopencv-imgproc-dev, freeglut3, freeglut3-dev, libboost-dev")
 
     # Resulting package name:
     SET(CPACK_PACKAGE_FILE_NAME ${CPACK_PACKAGE_NAME}_${CPACK_PACKAGE_VERSION}_${ARCH})
