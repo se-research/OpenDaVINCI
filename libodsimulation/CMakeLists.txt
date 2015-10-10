@@ -164,9 +164,10 @@ INSTALL(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/" DESTINATION include/ods
 
 # Install CMake modules locally.
 IF(UNIX)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindodSimulation.cmake" DESTINATION share/cmake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT odsimlib)
     INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindodSimulation.cmake" DESTINATION share/cmake-2.8/Modules COMPONENT odsimlib)
     INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindodSimulation.cmake" DESTINATION share/cmake-3.0/Modules COMPONENT odsimlib)
-    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindodSimulation.cmake" DESTINATION share/cmake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT odsimlib)ENDIF()
+ENDIF()
 IF(WIN32)
     INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindodSimulation.cmake" DESTINATION CMake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT odsimlib)
 ENDIF()
