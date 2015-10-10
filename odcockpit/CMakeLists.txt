@@ -27,7 +27,8 @@ SET (CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules" ${CMAKE_MODUL
 # Add a local CMake module search path dependent on the desired installation destination.
 # Thus, artifacts from the complete source build can be given precendence over any installed versions.
 IF(UNIX)
-    SET (CMAKE_MODULE_PATH "${CMAKE_INSTALL_PREFIX}/share/cmake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules" ${CMAKE_MODULE_PATH})
+    SET (CMAKE_MODULE_PATH "${CMAKE_INSTALL_PREFIX}/share/cmake-2.8/Modules" ${CMAKE_MODULE_PATH})
+    SET (CMAKE_MODULE_PATH "${CMAKE_INSTALL_PREFIX}/share/cmake-3.0/Modules" ${CMAKE_MODULE_PATH})
 ENDIF()
 IF(WIN32)
     SET (CMAKE_MODULE_PATH "${CMAKE_INSTALL_PREFIX}/CMake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules" ${CMAKE_MODULE_PATH})
@@ -217,7 +218,7 @@ IF(    (UNIX)
     SET(CPACK_RPM_PACKAGE_BUILDARCH "Buildarch: ${CPACK_RPM_PACKAGE_ARCHITECTURE}")
     SET(CPACK_RPM_COMPONENT_INSTALL ON)
     SET(CPACK_RPM_PACKAGE_LICENSE "GPL")
-    SET(CPACK_RPM_PACKAGE_REQUIRES "opendavinci-odlib, odsimulation-odsimlib, libautomotivedata, libqt4-dev, libqwt5-qt4-dev, libqwt5-qt4, libqt4-opengl-dev, qt4-dev-tools")
+    SET(CPACK_RPM_PACKAGE_REQUIRES "opendavinci-odlib, odsimulation-odsimlib, libautomotivedata, qt4-devel, qwt-devel")
 
     # Resulting package name:
     SET(CPACK_PACKAGE_FILE_NAME ${CPACK_PACKAGE_NAME}_${CPACK_PACKAGE_VERSION}_${ARCH})

@@ -341,7 +341,8 @@ public class DataStructureGenerator {
 		sb.append("# Add a local CMake module search path dependent on the desired installation destination."); sb.append("\r\n");
 		sb.append("# Thus, artifacts from the complete source build can be given precendence over any installed versions."); sb.append("\r\n");
 		sb.append("IF(UNIX)"); sb.append("\r\n");
-		sb.append("    SET (CMAKE_MODULE_PATH \"${CMAKE_INSTALL_PREFIX}/share/cmake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules\" ${CMAKE_MODULE_PATH})"); sb.append("\r\n");
+		sb.append("    SET (CMAKE_MODULE_PATH \"${CMAKE_INSTALL_PREFIX}/share/cmake-2.8/Modules\" ${CMAKE_MODULE_PATH})"); sb.append("\r\n");
+		sb.append("    SET (CMAKE_MODULE_PATH \"${CMAKE_INSTALL_PREFIX}/share/cmake-3.0/Modules\" ${CMAKE_MODULE_PATH})"); sb.append("\r\n");
 		sb.append("ENDIF()"); sb.append("\r\n");
 		sb.append("IF(WIN32)"); sb.append("\r\n");
 		sb.append("    SET (CMAKE_MODULE_PATH \"${CMAKE_INSTALL_PREFIX}/CMake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules\" ${CMAKE_MODULE_PATH})"); sb.append("\r\n");
@@ -386,7 +387,8 @@ public class DataStructureGenerator {
 
 		sb.append("# Install CMake modules locally."); sb.append("\r\n");
 		sb.append("IF(UNIX)"); sb.append("\r\n");
-		sb.append("    INSTALL(FILES \"${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/Find" + odvdFilename + ".cmake\" DESTINATION share/cmake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules" + " COMPONENT od" + folder.replaceFirst("lib", "") + "lib" + ")"); sb.append("\r\n");
+		sb.append("    INSTALL(FILES \"${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/Find" + odvdFilename + ".cmake\" DESTINATION share/cmake-2.8/Modules" + " COMPONENT od" + folder.replaceFirst("lib", "") + "lib" + ")"); sb.append("\r\n");
+		sb.append("    INSTALL(FILES \"${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/Find" + odvdFilename + ".cmake\" DESTINATION share/cmake-3.0/Modules" + " COMPONENT od" + folder.replaceFirst("lib", "") + "lib" + ")"); sb.append("\r\n");
 		sb.append("ENDIF()"); sb.append("\r\n");
 		sb.append("IF(WIN32)"); sb.append("\r\n");
 		sb.append("    INSTALL(FILES \"${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/Find" + odvdFilename + ".cmake\" DESTINATION CMake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules" + " COMPONENT od" + folder.replaceFirst("lib", "") + "lib" + ")"); sb.append("\r\n");
@@ -455,6 +457,7 @@ public class DataStructureGenerator {
 		sb.append("    ENDIF()"); sb.append("\r\n");
 		sb.append("    SET(CPACK_DEBIAN_PACKAGE_ARCHITECTURE \"${ARCH}\")"); sb.append("\r\n");
 		sb.append("#    SET(CPACK_DEB_COMPONENT_INSTALL ON)"); sb.append("\r\n");
+		sb.append("    SET(CPACK_DEBIAN_PACKAGE_DEPENDS \"ant,default-jre,default-jdk\")"); sb.append("\r\n");
 
 		sb.append("    # RPM packages:"); sb.append("\r\n");
 		sb.append("    IF(\"${ARMHF}\" STREQUAL \"YES\")"); sb.append("\r\n");
@@ -472,7 +475,7 @@ public class DataStructureGenerator {
 		sb.append("    SET(CPACK_RPM_PACKAGE_BUILDARCH \"Buildarch: ${CPACK_RPM_PACKAGE_ARCHITECTURE}\")"); sb.append("\r\n");
 		sb.append("#    SET(CPACK_RPM_COMPONENT_INSTALL ON)"); sb.append("\r\n");
 		sb.append("    SET(CPACK_RPM_PACKAGE_LICENSE \"LGPL\")"); sb.append("\r\n");
-
+		sb.append("    SET(CPACK_RPM_PACKAGE_DEPENDS \"ant\")"); sb.append("\r\n");
 		sb.append("    # Resulting package name:"); sb.append("\r\n");
 		sb.append("    SET(CPACK_PACKAGE_FILE_NAME ${CPACK_PACKAGE_NAME}_${CPACK_PACKAGE_VERSION}_${ARCH})"); sb.append("\r\n");
 		sb.append("ENDIF()"); sb.append("\r\n");
