@@ -51,6 +51,7 @@ INSTALL(FILES "${CMAKE_BINARY_DIR}/odDataStructureGenerator-latest.jar" DESTINAT
 IF(UNIX)
     INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindodDataStructureGenerator.cmake" DESTINATION share/cmake-2.8/Modules COMPONENT odDataStructureGenerator)
     INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindodDataStructureGenerator.cmake" DESTINATION share/cmake-3.0/Modules COMPONENT odDataStructureGenerator)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindodDataStructureGenerator.cmake" DESTINATION share/cmake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT odDataStructureGenerator)
 ENDIF()
 IF(WIN32)
     INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindodDataStructureGenerator.cmake" DESTINATION CMake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT odDataStructureGenerator)

@@ -429,8 +429,12 @@ INSTALL(FILES ${jpeg9a-headers} DESTINATION include/opendavinci/jpeg-9a COMPONEN
 IF(UNIX)
     INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindOpenDaVINCI.cmake" DESTINATION share/cmake-2.8/Modules COMPONENT odlib)
     INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindLibRT.cmake" DESTINATION share/cmake-2.8/Modules COMPONENT odlib)
+
     INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindOpenDaVINCI.cmake" DESTINATION share/cmake-3.0/Modules COMPONENT odlib)
     INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindLibRT.cmake" DESTINATION share/cmake-3.0/Modules COMPONENT odlib)
+
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindOpenDaVINCI.cmake" DESTINATION share/cmake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT odlib)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindLibRT.cmake" DESTINATION share/cmake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT odlib)
 ENDIF()
 IF(WIN32)
     INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindOpenDaVINCI.cmake" DESTINATION CMake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT odlib)

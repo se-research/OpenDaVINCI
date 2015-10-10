@@ -22,8 +22,7 @@ SET (CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules" ${CMAKE_MODUL
 # Add a local CMake module search path dependent on the desired installation destination.
 # Thus, artifacts from the complete source build can be given precendence over any installed versions.
 IF(UNIX)
-    SET (CMAKE_MODULE_PATH "${CMAKE_INSTALL_PREFIX}/share/cmake-2.8/Modules" ${CMAKE_MODULE_PATH})
-    SET (CMAKE_MODULE_PATH "${CMAKE_INSTALL_PREFIX}/share/cmake-3.0/Modules" ${CMAKE_MODULE_PATH})
+    SET (CMAKE_MODULE_PATH "${CMAKE_INSTALL_PREFIX}/share/cmake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules" ${CMAKE_MODULE_PATH})
 ENDIF()
 IF(WIN32)
     SET (CMAKE_MODULE_PATH "${CMAKE_INSTALL_PREFIX}/CMake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules" ${CMAKE_MODULE_PATH})
@@ -59,6 +58,7 @@ IF(CXXTEST_FOUND)
 FILE(GLOB libtest6-testsuites "${CMAKE_CURRENT_SOURCE_DIR}/testsuites/*.h")
 # Install CMake modules locally.
 IF(UNIX)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindTest6.cmake" DESTINATION share/cmake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT odtest6lib)
     INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindTest6.cmake" DESTINATION share/cmake-2.8/Modules COMPONENT odtest6lib)
     INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindTest6.cmake" DESTINATION share/cmake-3.0/Modules COMPONENT odtest6lib)
 ENDIF()
