@@ -90,8 +90,6 @@ namespace cockpit {
                     void rewind();
                     void step();
 
-                    void changeTimeScale(int);
-
                     void sendNextContainer();
 
                     void process();
@@ -104,13 +102,11 @@ namespace cockpit {
                     QPushButton *m_pauseBtn;
                     QPushButton *m_rewindBtn;
                     QPushButton *m_stepBtn;
-                    QSpinBox *m_timeScale;
                     QCheckBox *m_autoRewind;
                     QLabel *m_desc;
                     QLabel *m_containerCounterDesc;
                     int32_t m_containerCounter;
                     int32_t m_containerCounterTotal;
-                    double m_timeScaleFactor;
 
                     QPushButton *m_processBtn;
                     QLineEdit *m_start;
