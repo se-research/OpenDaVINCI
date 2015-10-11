@@ -217,7 +217,7 @@ IF(    (UNIX)
     SET(CPACK_RPM_PACKAGE_BUILDARCH "Buildarch: ${CPACK_RPM_PACKAGE_ARCHITECTURE}")
     SET(CPACK_RPM_COMPONENT_INSTALL ON)
     SET(CPACK_RPM_PACKAGE_LICENSE "GPL")
-    SET(CPACK_RPM_PACKAGE_REQUIRES "opendavinci-odlib, odsimulation-odsimlib, libautomotivedata, libqt4-dev, libqwt5-qt4-dev, libqwt5-qt4, libqt4-opengl-dev, qt4-dev-tools")
+    SET(CPACK_RPM_PACKAGE_REQUIRES "opendavinci-odlib, odsimulation-odsimlib, libautomotivedata, qt4-devel, qwt-devel")
 
     # Resulting package name:
     SET(CPACK_PACKAGE_FILE_NAME ${CPACK_PACKAGE_NAME}_${CPACK_PACKAGE_VERSION}_${ARCH})
