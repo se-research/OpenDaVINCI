@@ -1,3 +1,4 @@
+2.0.32 - Cleaning up odcockpit
 2.0.31 - CMake modules path setting fixed
 2.0.30 - Updating dependencies in generated deb and rpm packages
 2.0.29 - Update Xtext and Xtend to Eclipse Mars environment
