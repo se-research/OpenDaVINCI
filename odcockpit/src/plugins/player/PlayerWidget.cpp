@@ -54,13 +54,11 @@ namespace cockpit {
                 m_pauseBtn(NULL),
                 m_rewindBtn(NULL),
                 m_stepBtn(NULL),
-                m_timeScale(NULL),
                 m_autoRewind(NULL),
                 m_desc(NULL),
                 m_containerCounterDesc(NULL),
                 m_containerCounter(0),
                 m_containerCounterTotal(0),
-                m_timeScaleFactor(1),
                 m_processBtn(NULL),
                 m_start(NULL),
                 m_end(NULL),
@@ -96,20 +94,6 @@ namespace cockpit {
                 m_stepBtn->setEnabled(false);
                 QObject::connect(m_stepBtn, SIGNAL(clicked()), this, SLOT(step()));
 
-                // Replay speed
-                QLabel *lblTimeScale = new QLabel(tr("Time scale:"));
-                m_timeScale = new QSpinBox(this);
-                m_timeScale->setRange(1, 10);
-                m_timeScale->setSingleStep(1);
-                m_timeScale->setSuffix("x");
-                m_timeScale->setValue(1);
-
-                connect(m_timeScale, SIGNAL(valueChanged(int)), this, SLOT(changeTimeScale(int)));
-
-                QHBoxLayout *timeScale = new QHBoxLayout();
-                timeScale->addWidget(lblTimeScale);
-                timeScale->addWidget(m_timeScale);
-
                 m_autoRewind = new QCheckBox("Auto rewind", this);
 
                 QHBoxLayout *operations = new QHBoxLayout();
@@ -117,7 +101,6 @@ namespace cockpit {
                 operations->addWidget(m_pauseBtn);
                 operations->addWidget(m_rewindBtn);
                 operations->addWidget(m_stepBtn);
-                operations->addLayout(timeScale);
                 operations->addWidget(m_autoRewind);
 
                 // Splitting file.
@@ -190,12 +173,6 @@ namespace cockpit {
                 sendNextContainer();
             }
 
-            void PlayerWidget::changeTimeScale(int v) {
-                if (v > 0) {
-                    m_timeScaleFactor = 1.0/v;
-                }
-            }
-
             void PlayerWidget::sendNextContainer() {
                 if (m_player != NULL) {
                     if (!m_player->hasMoreData() && m_autoRewind->isChecked()) {
@@ -229,7 +206,7 @@ namespace cockpit {
 
                     // Continously playing if "pause" button is enabled.
                     if (m_pauseBtn->isEnabled()) {
-                        QTimer::singleShot(delay * m_timeScaleFactor, this, SLOT(sendNextContainer()));
+                        QTimer::singleShot(delay, this, SLOT(sendNextContainer()));
                     }
 
                     // If end of file has been reached, stop playback.

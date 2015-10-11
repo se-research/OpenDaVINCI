@@ -32,9 +32,7 @@
 #include "plugins/birdseyemap/BirdsEyeMapPlugIn.h"
 #include "plugins/configurationviewer/ConfigurationViewerPlugIn.h"
 #include "plugins/controller/ControllerPlugIn.h"
-#include "plugins/cutter/CutterPlugIn.h"
 #include "plugins/environmentviewer/EnvironmentViewerPlugIn.h"
-#include "plugins/forcecontrolviewer/ForceControlViewerPlugIn.h"
 #include "plugins/iruscharts/IrUsChartsPlugIn.h"
 #include "plugins/irusmap/IrUsMapPlugIn.h"
 #include "plugins/livefeed/LiveFeedPlugIn.h"
@@ -44,7 +42,6 @@
 #include "plugins/scnxviewer/SCNXViewerPlugIn.h"
 #include "plugins/sharedimageviewer/SharedImageViewerPlugIn.h"
 #include "plugins/spy/SpyPlugIn.h"
-#include "plugins/ecuviewer/ECUPlugIn.h"
 
 namespace cockpit {
 
@@ -69,11 +66,9 @@ namespace cockpit {
             // TODO: Read available plugins from .so-files.
             m_listOfAvailablePlugIns.push_back("ConfigurationViewer");
             m_listOfAvailablePlugIns.push_back("Controller");
-            m_listOfAvailablePlugIns.push_back("Cutter");
 #ifndef PANDABOARD
             m_listOfAvailablePlugIns.push_back("BirdsEyeMap");
             m_listOfAvailablePlugIns.push_back("EnvironmentViewer");
-            m_listOfAvailablePlugIns.push_back("ForceControlViewer");
             m_listOfAvailablePlugIns.push_back("IrUsCharts");
             m_listOfAvailablePlugIns.push_back("ModuleStatisticsViewer");
             m_listOfAvailablePlugIns.push_back("OBJXViewer");
@@ -84,15 +79,12 @@ namespace cockpit {
             m_listOfAvailablePlugIns.push_back("Player");
             m_listOfAvailablePlugIns.push_back("SharedImageViewer");
             m_listOfAvailablePlugIns.push_back("Spy");
-            m_listOfAvailablePlugIns.push_back("ECU");
 
             m_listOfDescriptions["ConfigurationViewer"] = tr("This plugin displays the current configuration.").toStdString();
             m_listOfDescriptions["Controller"] = tr("This plugin allows the control of the vehicle by the arrow keys.").toStdString();
-            m_listOfDescriptions["Cutter"] = tr("This plugin allows to filter & cut recordings.").toStdString();
 #ifndef PANDABOARD
             m_listOfDescriptions["BirdsEyeMap"] = tr("This plugin shows the entire environment in 2D.").toStdString();
             m_listOfDescriptions["EnvironmentViewer"] = tr("This plugin shows the entire environment in 3D.").toStdString();
-            m_listOfDescriptions["ForceControlViewer"] = tr("This plugin displays the values of ForceControl over time.").toStdString();
             m_listOfDescriptions["IrUsCharts"] = tr("This plugin displays the values of SensorBoardData over time.").toStdString();
             m_listOfDescriptions["ModuleStatisticsViewer"] = tr("This plugin shows module statistics.").toStdString();
             m_listOfDescriptions["OBJXViewer"] = tr("This plugin shows .objx files.").toStdString();
@@ -103,7 +95,6 @@ namespace cockpit {
             m_listOfDescriptions["Player"] = tr("This plugin replays previously recorded files.").toStdString();
             m_listOfDescriptions["SharedImageViewer"] = tr("This plugin displays shared images.").toStdString();
             m_listOfDescriptions["Spy"] = tr("This plugin displays all distributed containers.").toStdString();
-            m_listOfDescriptions["ECU"] = tr("This plugin displays data from the ECU.").toStdString();
         }
 
         PlugInProvider::~PlugInProvider() {
@@ -138,9 +129,6 @@ namespace cockpit {
             } else if (name == "Controller") {
                 cerr << "Creating Controller" << endl;
                 plugIn = core::SharedPointer<PlugIn>((PlugIn*)(new controller::ControllerPlugIn("Controller", m_kvc, m_conference, m_parent)));
-            } else if (name == "Cutter") {
-                cerr << "Creating Cutter" << endl;
-                plugIn = core::SharedPointer<PlugIn>(new cutter::CutterPlugIn("Cutter", m_kvc, m_parent));
             }
 #ifndef PANDABOARD
             else if (name == "BirdsEyeMap") {
@@ -150,10 +138,6 @@ namespace cockpit {
             else if (name == "EnvironmentViewer") {
                 cerr << "Creating EnvironmentViewer" << endl;
                 plugIn = core::SharedPointer<PlugIn>(new environmentviewer::EnvironmentViewerPlugIn("EnvironmentViewer", m_kvc, m_parent));
-            }
-            else if (name == "ForceControlViewer") {
-                cerr << "Creating ForceControlViewer" << endl;
-                plugIn = core::SharedPointer<PlugIn>(new forcecontrolviewer::ForceControlViewerPlugIn("ForceControlViewer", m_kvc, m_parent));
             }
             else if (name == "IrUsCharts") {
                 cerr << "Creating IrUsCharts" << endl;
@@ -187,9 +171,6 @@ namespace cockpit {
             } else if (name == "Spy") {
                 cerr << "Creating Spy" << endl;
                 plugIn = core::SharedPointer<PlugIn>(new spy::SpyPlugIn("Spy", m_kvc, m_parent));
-            } else if (name == "ECU") {
-                cerr << "Creating ECU" << endl;
-                plugIn = core::SharedPointer<PlugIn>(new ecuviewer::ECUPlugIn("ECU", m_kvc, m_conference, m_parent));
             }
 
             return plugIn;
