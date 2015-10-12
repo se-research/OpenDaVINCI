@@ -275,19 +275,33 @@ namespace canMapping {
  */
 // Source file for: «mapping.message.toString»
 
+«var ArrayList<String> keys=new ArrayList<String>»
 /*
 «FOR entry : canSignals.entrySet»
-«entry.key» : «entry.value.m_CANID»
-«entry.key» : «entry.value.m_FQDN»
-«entry.key» : «entry.value.m_startBit»
-«entry.key» : «entry.value.m_length»
-«entry.key» : «entry.value.m_endian»
-«entry.key» : «entry.value.m_multiplyBy»
-«entry.key» : «entry.value.m_add»
-«entry.key» : «entry.value.m_rangeStart»
-«entry.key» : «entry.value.m_rangeEnd»
+«IF(mapping.message.toString.toLowerCase.compareTo(entry.key.split("\\.").get(0).toLowerCase)==0)»
+«keys.add(0,entry.key)»
+CANID       : «entry.value.m_CANID»
+FQDN        : «entry.value.m_FQDN»
+startBit    : «entry.value.m_startBit»
+length      : «entry.value.m_length»
+endian      : «entry.value.m_endian»
+multiplyBy  : «entry.value.m_multiplyBy»
+add         : «entry.value.m_add»
+rangeStart  : «entry.value.m_rangeStart»
+rangeEnd    : «entry.value.m_rangeEnd»
 
+«ENDIF»
 «ENDFOR»
+
+signals of interest:
+
+«IF(! keys.empty)»
+«FOR key : keys»
+«key»
+«ENDFOR»
+«ELSE»
+none.
+«ENDIF»
 */
 
 #include "generated/«mapping.message.toString».h"
@@ -311,10 +325,18 @@ namespace canMapping {
         core::data::Container c;
 
         // TODO: Check the CAN ID and perform the CAN signal mapping before to process the rest of this method.
-        if (gcm.getIdentifier() != 0x123) {
-            return c;
-        }
-
+        
+        //if (gcm.getIdentifier() != ) {
+        //    return c;
+        //}
+        switch(gcm.getIdentifier())
+        {
+    	«FOR key:keys»
+    	case «canSignals.get(key).m_CANID» : break; // no op
+        «ENDFOR»
+        	default : return c; // valid id not found
+    	}
+    	
         // 2. If the identifier is matching, get the raw payload.
         uint64_t data = gcm.getData();
 
