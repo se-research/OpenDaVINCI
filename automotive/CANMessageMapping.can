@@ -2,7 +2,8 @@ wheelspeed.frontleft	in 0x123 at bit 0 for 16 bits is big endian multiply by 0.0
 wheelspeed.frontright	in 0x123 at bit 16 for 16 bits is big endian multiply by 0.01 add 0 map to [0, 200];
 wheelspeed.rearleft 	in 0x123 at bit 32 for 16 bits is big endian multiply by 0.01 add 0 map to [0, 200];
 wheelspeed.rearright	in 0x123 at bit 48 for 16 bits is big endian multiply by 0.01 add 0 map to [0, 200];
-lightsystem.headlights  in 0x001 at bit 0 for 2 bits is little endian multiply by 1 add 0 map to [0, 4];
+lightsystem.headlights  in 0x001 at bit 7 for 2 bits is big endian multiply by 1 add 0 map to [0, 4];
+
 message WheelSpeed {
 	wheelspeed.frontleft : 1;
 	wheelspeed.frontright : 2;

@@ -279,7 +279,7 @@ namespace canMapping {
 /*
 «FOR entry : canSignals.entrySet»
 «IF(mapping.message.toString.toLowerCase.compareTo(entry.key.split("\\.").get(0).toLowerCase)==0)»
-«keys.add(0,entry.key)»
+«{keys.add(entry.key); ""}»
 CANID       : «entry.value.m_CANID»
 FQDN        : «entry.value.m_FQDN»
 startBit    : «entry.value.m_startBit»
@@ -324,15 +324,10 @@ namespace canMapping {
     core::data::Container «mapping.message.toString»::decode(const automotive::GenericCANMessage &gcm) {
         core::data::Container c;
 
-        // TODO: Check the CAN ID and perform the CAN signal mapping before to process the rest of this method.
-        
-        //if (gcm.getIdentifier() != ) {
-        //    return c;
-        //}
         switch(gcm.getIdentifier())
         {
     	«FOR key:keys»
-    	case «canSignals.get(key).m_CANID» : break; // no op
+    		case «canSignals.get(key).m_CANID» : break; // no op
         «ENDFOR»
         	default : return c; // valid id not found
     	}
@@ -343,118 +338,92 @@ namespace canMapping {
         // Optionally: print payload for debug purposes.
         // printPayload(data);
 
-        // 3. Map uin64_t value to 8 byte char array.
-        string value((char*)(&data), 8);
-        stringstream sstr(value);
+        // 3. Map uin64_t value to 8 byte uint8_t array.
+        uint8_t payload[8]=reinterpret_cast<uint8_t*>(&data);
 
         // 4. Create a generic message.
         core::reflection::Message message;
 
-        // 5. Decode all contained attributes as defined in this CAN message specification.
-        {
-            {
-                // 5.1 Get raw value from 1st attribute.
-                uint16_t _wheel1 = 0;
-                sstr.read((char*)&_wheel1, sizeof(uint16_t));
+		«var int i=0»
+		«FOR key : keys»
+		// addressing variable number «i» referring to mapping «key»
+		«var String tempVarType=""»
+		«var String tempVarName="rawValue"+i»
+		«var String finalVarName="value"+i»
+		«var int numberOfBits=8»
+		
+		// 5.1 Get raw value from 1st attribute.
+		«IF Integer.parseInt(canSignals.get(key).m_startBit) + 
+			Integer.parseInt(canSignals.get(key).m_length) <= 8 »
+		«{numberOfBits=8;""}»
+		«tempVarType="uint8_t"» «tempVarName»=0x00;
+		«tempVarName»=payload[0];
+		«ELSEIF Integer.parseInt(canSignals.get(key).m_startBit) + 
+			Integer.parseInt(canSignals.get(key).m_length) <= 16 »
+		«{numberOfBits=16;""}»
+		«tempVarType="uint16_t"» «tempVarName»=0x0000;
+		«tempVarName»=«tempVarName» | static_cast<«tempVarType»>(payload[0]);
+		«tempVarName»=«tempVarName» << 8;
+		«tempVarName»=«tempVarName» | static_cast<«tempVarType»>(payload[1]);
+		«ELSEIF Integer.parseInt(canSignals.get(key).m_startBit) + 
+			Integer.parseInt(canSignals.get(key).m_length) <= 32 »
+		«{numberOfBits=32;""}»
+		«tempVarType="uint32_t"» «tempVarName»=0x00000000;
+		«tempVarName»=«tempVarName» | static_cast<«tempVarType»>(payload[0]);
+		«tempVarName»=«tempVarName» << 8;
+		«tempVarName»=«tempVarName» | static_cast<«tempVarType»>(payload[1]);
+		«tempVarName»=«tempVarName» << 8;
+		«tempVarName»=«tempVarName» | static_cast<«tempVarType»>(payload[2]);
+		«tempVarName»=«tempVarName» << 8;
+		«tempVarName»=«tempVarName» | static_cast<«tempVarType»>(payload[3]);
+		«ELSEIF Integer.parseInt(canSignals.get(key).m_startBit) + 
+			Integer.parseInt(canSignals.get(key).m_length) <= 64 »
+		«{numberOfBits=64;""}»
+		«tempVarType="uint64_t"» «tempVarName»=0x0000000000000000;
+		«tempVarName»=*reinterpret_cast<uint64_t*>(payload);
+		«ENDIF»
+		
+		// reset left hand side of bit field
+		«tempVarName»=«tempVarName» << «canSignals.get(key).m_startBit»;
+		// reset right hand side of bit field
+		«tempVarName»=«tempVarName» >> «numberOfBits-Integer.parseInt(canSignals.get(key).m_length)»;
+		«IF canSignals.get(key).m_endian.compareTo("big")==0»
+		
+		// 5.2 Optional: Fix endianness depending on CAN message specification.
+		«tempVarName» = ntohs(«tempVarName»);
+		«ENDIF»
+		
+		// variable holding the transformed value
+		double «finalVarName»=static_cast<double>(«tempVarName»);
+		
+		// 5.3 Apply value transformation (i.e. formula) to map raw value to (physically) meaningful value according to CAN message specification.
+		// scaling
+		const double SCALE = «canSignals.get(key).m_multiplyBy»;
+		«finalVarName»=«finalVarName»*SCALE;
+		// adding
+		const double OFFSET = «canSignals.get(key).m_add»;
+		«finalVarName»=«finalVarName»*OFFSET;
+		
+		// clamping
+		if(«finalVarName»<«canSignals.get(key).m_rangeStart»)
+			«finalVarName»=«canSignals.get(key).m_rangeStart»;
+		else if(«finalVarName»>«canSignals.get(key).m_rangeEnd»)
+			«finalVarName»=«canSignals.get(key).m_rangeEnd»;
+		
+		// 5.4 Create a field for a generic message.
+		core::reflection::Field<double> *f = new core::reflection::Field<double>(v);
+		f->setLongIdentifier(«canSignals.get(key).m_CANID»); // The identifiers specified here must match with the ones defined in the .odvd file!
+		f->setShortIdentifier(«canSignals.get(key).m_CANID»); // The identifiers specified here must match with the ones defined in the .odvd file!
+		f->setLongName("«canSignals.get(key).m_FQDN»");
+		f->setShortName("«{var String[] res; res=canSignals.get(key).m_FQDN.split("\\."); res.get(res.size-1)}»");
+		f->setFieldDataType(coredata::reflection::AbstractField::DOUBLE_T);
+		f->setSize(sizeof(v));
 
-                // 5.2 Optional: Fix endianness depending on CAN message specification.
-                _wheel1 = ntohs(_wheel1);
+		// 5.5 Add created field to generic message.
+		message.addField(core::SharedPointer<coredata::reflection::AbstractField>(f));
 
-                // 5.3 Apply value transformation (i.e. formula) to map raw value to (physically) meaningful value according to CAN message specification.
-                const float SCALE = 0.01;
-                float v = _wheel1 * SCALE;
-
-                // 5.4 Create a field for a generic message.
-                core::reflection::Field<float> *f = new core::reflection::Field<float>(v);
-                f->setLongIdentifier(1); // The identifiers specified here must match with the ones defined in the .odvd file!
-                f->setShortIdentifier(1); // The identifiers specified here must match with the ones defined in the .odvd file!
-                f->setLongName("WheelSpeed.frontLeft");
-                f->setShortName("frontLeft");
-                f->setFieldDataType(coredata::reflection::AbstractField::FLOAT_T);
-                f->setSize(sizeof(v));
-
-                // 5.5 Add created field to generic message.
-                message.addField(core::SharedPointer<coredata::reflection::AbstractField>(f));
-            }
-
-            // Continue decoding values depending on CAN message specification.
-            {
-                // 5.1 Get raw value from 2nd attribute.
-                uint16_t _wheel2 = 0;
-                sstr.read((char*)&_wheel2, sizeof(uint16_t));
-
-                // 5.2 Optional: Fix endianness depending on CAN message specification.
-                _wheel2 = ntohs(_wheel2);
-
-                // 5.3 Apply value transformation (i.e. formula) to map raw value to (physically) meaningful value according to CAN message specification.
-                const float SCALE = 0.01;
-                float v = _wheel2 * SCALE;
-
-                // 5.4 Create a field for a generic message.
-                core::reflection::Field<float> *f = new core::reflection::Field<float>(v);
-                f->setLongIdentifier(2); // The identifiers specified here must match with the ones defined in the .odvd file!
-                f->setShortIdentifier(2); // The identifiers specified here must match with the ones defined in the .odvd file!
-                f->setLongName("WheelSpeed.frontRight");
-                f->setShortName("frontRight");
-                f->setFieldDataType(coredata::reflection::AbstractField::FLOAT_T);
-                f->setSize(sizeof(v));
-
-                // 5.5 Add created field to generic message.
-                message.addField(core::SharedPointer<coredata::reflection::AbstractField>(f));
-            }
-
-            // Continue decoding values depending on CAN message specification.
-            {
-                // 5.1 Get raw value from 3rd attribute.
-                uint16_t _wheel3 = 0;
-                sstr.read((char*)&_wheel3, sizeof(uint16_t));
-
-                // 5.2 Optional: Fix endianness depending on CAN message specification.
-                _wheel3 = ntohs(_wheel3);
-
-                // 5.3 Apply value transformation (i.e. formula) to map raw value to (physically) meaningful value according to CAN message specification.
-                const float SCALE = 0.01;
-                float v = _wheel3 * SCALE;
-
-                // 5.4 Create a field for a generic message.
-                core::reflection::Field<float> *f = new core::reflection::Field<float>(v);
-                f->setLongIdentifier(3); // The identifiers specified here must match with the ones defined in the .odvd file!
-                f->setShortIdentifier(3); // The identifiers specified here must match with the ones defined in the .odvd file!
-                f->setLongName("WheelSpeed.rearLeft");
-                f->setShortName("rearLeft");
-                f->setFieldDataType(coredata::reflection::AbstractField::FLOAT_T);
-                f->setSize(sizeof(v));
-
-                // 5.5 Add created field to generic message.
-                message.addField(core::SharedPointer<coredata::reflection::AbstractField>(f));
-            }
-
-            // Continue decoding values depending on CAN message specification.
-            {
-                // 5.1 Get raw value from 4th attribute.
-                uint16_t _wheel4 = 0;
-                sstr.read((char*)&_wheel4, sizeof(uint16_t));
-
-                // 5.2 Optional: Fix endianness depending on CAN message specification.
-                _wheel4 = ntohs(_wheel4);
-
-                // 5.3 Apply value transformation (i.e. formula) to map raw value to (physically) meaningful value according to CAN message specification.
-                const float SCALE = 0.01;
-                float v = _wheel4 * SCALE;
-
-                // 5.4 Create a field for a generic message.
-                core::reflection::Field<float> *f = new core::reflection::Field<float>(v);
-                f->setLongIdentifier(4); // The identifiers specified here must match with the ones defined in the .odvd file!
-                f->setShortIdentifier(4); // The identifiers specified here must match with the ones defined in the .odvd file!
-                f->setLongName("WheelSpeed.rearRight");
-                f->setShortName("rearRight");
-                f->setFieldDataType(coredata::reflection::AbstractField::FLOAT_T);
-                f->setSize(sizeof(v));
-
-                // 5.5 Add created field to generic message.
-                message.addField(core::SharedPointer<coredata::reflection::AbstractField>(f));
-            }
-        }
+		«{i++;""}»
+«ENDFOR»
 
         // 6. Depending on the CAN message specification, we are either ready here
         // (i.e. mapping one CAN message to one high-level C++ message), or we have
@@ -469,10 +438,11 @@ namespace canMapping {
             core::reflection::MessageToVisitableVisitor mtvv(message);
 
             // 8. Create an instance of the named high-level message.
-            automotive::vehicle::WheelSpeed wheelSpeed;
+            «var String HLName= Character.toLowerCase(mapping.message.toString.charAt(0)) + mapping.message.toString.substring(1)»
+            automotive::vehicle::«mapping.message.toString» «HLName»;
 
             // 9. Letting the high-level message accept the visitor to enter the values.
-            wheelSpeed.accept(mtvv);
+            «HLName».accept(mtvv);
 
             {
                 // Optional: Showing how to use the MessagePrettyPrinterVisitor to print the content of the unnamed message.
@@ -481,11 +451,11 @@ namespace canMapping {
                 mppv.getOutput(cout);
 
                 // Optional: Just print the content for convenience purposes.
-                cout << wheelSpeed.toString() << endl;
+                cout << «HLName».toString() << endl;
             }
 
             // 10. Create the resulting container carrying a valid payload.
-            c = core::data::Container(core::data::Container::WHEELSPEED, wheelSpeed);
+            c = core::data::Container(core::data::Container::«mapping.message.toString.toUpperCase», «HLName»);
         }
 
         return c;
