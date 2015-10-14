@@ -11,7 +11,7 @@ mapping WheelSpeed {
 	wheelspeed.rearright : 4;
 }
 
-mapping LightSystem {
+unordered mapping LightSystem {
     lightsystem.headlights : 1;
 }
 

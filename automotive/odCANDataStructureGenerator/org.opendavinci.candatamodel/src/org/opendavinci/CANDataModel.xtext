@@ -38,7 +38,7 @@ CANSignal:
 								  ';';
 
 CANSignalMapping:
-    'mapping' mappingName = MessageIdentifier '{'
+    (unordered='unordered')? 'mapping' mappingName = MessageIdentifier '{'
     	mappings += Mapping*
     '}';
 
@@ -53,4 +53,3 @@ terminal fragment DIGIT: ('0' .. '9');
 terminal fragment HEXDIGIT: '0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9'|'a'|'b'|'c'|'d'|'e'|'f'|'A'|'B'|'C'|'D'|'E'|'F';
 terminal FLOATNUMBER: SIGN? DIGIT+ (('.') DIGIT+)?;
 terminal HEXNUMBER: '0x' HEXDIGIT+;
-

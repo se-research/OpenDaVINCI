@@ -27,6 +27,8 @@ import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
 import org.opendavinci.canDataModel.CANSignal
 import org.opendavinci.canDataModel.CANSignalMapping
+import java.util.HashSet
+import java.util.Iterator
 
 class CANDataModelGenerator implements IGenerator {
 
@@ -185,10 +187,21 @@ namespace canMapping {
 
 namespace canMapping {
 
+
+«var ArrayList<String> members=new ArrayList<String>»
+«var Iterator<String> iter = includedClasses.iterator»
+«{var String member;
+	while (iter.hasNext()){
+	member=iter.next();
+	var String temp="m_"+Character.toLowerCase(member.charAt(0)) + member.substring(1)+"()";
+	if(iter.hasNext())temp+=",";
+	members.add(member);
+}}»
     CanMapping::CanMapping() :
-«FOR include : includedClasses»
-            m_«Character.toLowerCase(include.charAt(0)) + include.substring(1)»() {}
-«ENDFOR»
+    «FOR member:members»
+    «member»
+    «ENDFOR»
+{}
 
     CanMapping::~CanMapping() {}
 
@@ -265,6 +278,10 @@ namespace canMapping {
             virtual ~«mapping.mappingName.toString»();
 
             core::data::Container decode(const automotive::GenericCANMessage &gcm);
+
+        private:
+        	std::map<uint64_t,uint64_t> m_payloads;
+        	std::vector<uint64_t> m_neededCanMessages;
     };
 
 } // canMapping
@@ -281,11 +298,13 @@ namespace canMapping {
  */
 // Source file for: «mapping.mappingName.toString»
 
-«var ArrayList<String> keys=new ArrayList<String>»
+«var HashSet<String> canSignalsKeys=new HashSet<String>»
+«var HashSet<String> canIDs=new HashSet<String>»
 /*
 «FOR entry : canSignals.entrySet»
 «IF(mapping.mappingName.toString.toLowerCase.compareTo(entry.key.split("\\.").get(0).toLowerCase)==0)»
-«{keys.add(entry.key); ""}»
+«{canSignalsKeys.add(entry.key); ""}»
+«{canIDs.add(entry.value.m_CANID); ""}»
 CANID       : «entry.value.m_CANID»
 FQDN        : «entry.value.m_FQDN»
 startBit    : «entry.value.m_startBit»
@@ -302,8 +321,8 @@ rangeEnd    : «entry.value.m_rangeEnd»
 
 signals of interest:
 
-«IF(! keys.empty)»
-«FOR key : keys»
+«IF(! canSignalsKeys.empty)»
+«FOR key : canSignalsKeys»
 «key»
 «ENDFOR»
 «ELSE»
@@ -324,7 +343,14 @@ namespace canMapping {
 
     using namespace std;
 
-    «mapping.mappingName.toString»::«mapping.mappingName.toString»() {}
+    «mapping.mappingName.toString»::«mapping.mappingName.toString»()
+    {
+		m_payloads = new std::map<uint64_t,uint64_t>();
+		m_neededCanMessages = new std::vector<uint64_t>();
+    	«FOR id:canIDs»
+    	m_neededCanMessages.push_back(«id»);
+        «ENDFOR»
+    }
 
     «mapping.mappingName.toString»::~«mapping.mappingName.toString»() {}
 
@@ -333,14 +359,28 @@ namespace canMapping {
 
         switch(gcm.getIdentifier())
         {
-    	«FOR key:keys»
-    		case «canSignals.get(key).m_CANID» : break; // no op
+    	«FOR id:canIDs»
+    	case «id» : 
+    	// Store the payload in a map for future use (if needed)
+    	// deleting existent value, if any
+    	m_payloads.erase(gcm.getIdentifier());
+    	// inserting latest payload
+    	m_payloads.insert(gcm.getIdentifier(), gcm.getData());
+    	break; // no op
         «ENDFOR»
         	default : return c; // valid id not found
     	}
     	
+		«IF mapping.unordered!=null && mapping.unordered.compareTo("unordered")==0»
+		// if we don't have all the needed CAN messages (order is not important), return 
+		if(m_payloads.size()!=m_neededCanMessages.size())
+			return c;
+		«ELSE»
+		
+		«ENDIF»
+
         // 2. If the identifier is matching, get the raw payload.
-        uint64_t data = gcm.getData();
+        //uint64_t data = ;
 
         // Optionally: print payload for debug purposes.
         // printPayload(data);
@@ -351,12 +391,11 @@ namespace canMapping {
         // 4. Create a generic message.
         core::reflection::Message message;
 
-		«var int i=0»
-		«FOR key : keys»
-		// addressing variable number «i» referring to mapping «key»
+		«FOR key : canSignalsKeys»
+		// addressing signal «key»
 		«var String tempVarType=""»
-		«var String tempVarName="rawValue"+i»
-		«var String finalVarName="value"+i»
+		«var String tempVarName="raw_"+key.replaceAll("\\.", "_")»
+		«var String finalVarName="transformed_"+key.replaceAll("\\.", "_")»
 		«var int numberOfBits=8»
 		
 		// 5.1 Get raw value from 1st attribute.
@@ -399,9 +438,10 @@ namespace canMapping {
 		// 5.2 Optional: Fix endianness depending on CAN message specification.
 		«tempVarName» = ntohs(«tempVarName»);
 		«ELSE»
+		
 		// 5.2 Endianness doesn't need fixing, skipping this step.
 		«ENDIF»
-		
+
 		// variable holding the transformed value
 		double «finalVarName»=static_cast<double>(«tempVarName»);
 		
@@ -430,8 +470,6 @@ namespace canMapping {
 
 		// 5.5 Add created field to generic message.
 		message.addField(core::SharedPointer<coredata::reflection::AbstractField>(f));
-
-		«{i++;""}»
 «ENDFOR»
 
         // 6. Depending on the CAN message specification, we are either ready here
