@@ -54,7 +54,7 @@ class CANDataModelGenerator implements IGenerator {
 		var ArrayList<String> includedClasses=new ArrayList<String>
 				
 		for (e : resource.allContents.toIterable.filter(typeof(CANSignalMapping))) {
-			includedClasses.add(e.message.toString().replaceAll("\\.", "/"))
+			includedClasses.add(e.mappingName.toString().replaceAll("\\.", "/"))
 		}
 		
 		fsa.generateFile("include/GeneratedHeaders_" + generatedHeadersFile + ".h", generateSuperHeaderFileContent(generatedHeadersFile, includedClasses))
@@ -62,10 +62,10 @@ class CANDataModelGenerator implements IGenerator {
 		
 		// Next, generate the code for the actual mapping.
 		for (e : resource.allContents.toIterable.filter(typeof(CANSignalMapping))) {
-			fsa.generateFile("include/generated/" + e.message.toString().replaceAll("\\.", "/") + ".h", generateHeaderFileContent(generatedHeadersFile, e))
-			fsa.generateFile("src/generated/" + e.message.toString().replaceAll("\\.", "/") + ".cpp", generateImplementationFileContent(e, "generated", mapOfDefinedCANSignals))
-			fsa.generateFile("testsuites/" + e.message.toString().replaceAll("\\.", "_") + "TestSuite.h", generateTestSuiteContent(generatedHeadersFile, e))
-			fsa.generateFile("uppaal/generated/" + e.message.toString().replaceAll("\\.", "/"), generateUPPAALFileContent(e))
+			fsa.generateFile("include/generated/" + e.mappingName.toString().replaceAll("\\.", "/") + ".h", generateHeaderFileContent(generatedHeadersFile, e))
+			fsa.generateFile("src/generated/" + e.mappingName.toString().replaceAll("\\.", "/") + ".cpp", generateImplementationFileContent(e, "generated", mapOfDefinedCANSignals))
+			fsa.generateFile("testsuites/" + e.mappingName.toString().replaceAll("\\.", "_") + "TestSuite.h", generateTestSuiteContent(generatedHeadersFile, e))
+			fsa.generateFile("uppaal/generated/" + e.mappingName.toString().replaceAll("\\.", "/"), generateUPPAALFileContent(e))
 		}
 	}
 
@@ -224,11 +224,11 @@ namespace canMapping {
  *
  * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
  */
-// Header file for: «mapping.message.toString»
-#ifndef «mapping.message.toString.toUpperCase»_H_
-#define «mapping.message.toString.toUpperCase»_H_
+// Header file for: «mapping.mappingName.toString»
+#ifndef «mapping.mappingName.toString.toUpperCase»_H_
+#define «mapping.mappingName.toString.toUpperCase»_H_
 
-#include "generated/«mapping.message.toString».h"
+#include "generated/«mapping.mappingName.toString».h"
 
 #include <core/data/Container.h>
 
@@ -238,7 +238,7 @@ namespace canMapping {
 
     using namespace std;
 
-    class «mapping.message.toString» {
+    class «mapping.mappingName.toString» {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -247,7 +247,7 @@ namespace canMapping {
              *
              * @param obj Reference to an object of this class.
              */
-            «mapping.message.toString»(const «mapping.message.toString» &/*obj*/);
+            «mapping.mappingName.toString»(const «mapping.mappingName.toString» &/*obj*/);
 
             /**
              * "Forbidden" assignment operator. Goal: The compiler should warn
@@ -257,19 +257,19 @@ namespace canMapping {
              * @param obj Reference to an object of this class.
              * @return Reference to this instance.
              */
-            «mapping.message.toString»& operator=(const «mapping.message.toString» &/*obj*/);
+            «mapping.mappingName.toString»& operator=(const «mapping.mappingName.toString» &/*obj*/);
 
         public:
-            «mapping.message.toString»();
+            «mapping.mappingName.toString»();
 
-            virtual ~«mapping.message.toString»();
+            virtual ~«mapping.mappingName.toString»();
 
             core::data::Container decode(const automotive::GenericCANMessage &gcm);
     };
 
 } // canMapping
 
-#endif /*«mapping.message.toString.toUpperCase»_H_*/
+#endif /*«mapping.mappingName.toString.toUpperCase»_H_*/
 '''
 
 	/* This method generates the implementation (.cpp). */
@@ -279,12 +279,12 @@ namespace canMapping {
  *
  * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
  */
-// Source file for: «mapping.message.toString»
+// Source file for: «mapping.mappingName.toString»
 
 «var ArrayList<String> keys=new ArrayList<String>»
 /*
 «FOR entry : canSignals.entrySet»
-«IF(mapping.message.toString.toLowerCase.compareTo(entry.key.split("\\.").get(0).toLowerCase)==0)»
+«IF(mapping.mappingName.toString.toLowerCase.compareTo(entry.key.split("\\.").get(0).toLowerCase)==0)»
 «{keys.add(entry.key); ""}»
 CANID       : «entry.value.m_CANID»
 FQDN        : «entry.value.m_FQDN»
@@ -311,7 +311,7 @@ none.
 «ENDIF»
 */
 
-#include "generated/«mapping.message.toString».h"
+#include "generated/«mapping.mappingName.toString».h"
 
 #include <core/SharedPointer.h>
 #include <core/reflection/Message.h>
@@ -324,11 +324,11 @@ namespace canMapping {
 
     using namespace std;
 
-    «mapping.message.toString»::«mapping.message.toString»() {}
+    «mapping.mappingName.toString»::«mapping.mappingName.toString»() {}
 
-    «mapping.message.toString»::~«mapping.message.toString»() {}
+    «mapping.mappingName.toString»::~«mapping.mappingName.toString»() {}
 
-    core::data::Container «mapping.message.toString»::decode(const automotive::GenericCANMessage &gcm) {
+    core::data::Container «mapping.mappingName.toString»::decode(const automotive::GenericCANMessage &gcm) {
         core::data::Container c;
 
         switch(gcm.getIdentifier())
@@ -447,8 +447,8 @@ namespace canMapping {
             core::reflection::MessageToVisitableVisitor mtvv(message);
 
             // 8. Create an instance of the named high-level message.
-            «var String HLName= Character.toLowerCase(mapping.message.toString.charAt(0)) + mapping.message.toString.substring(1)»
-            automotive::vehicle::«mapping.message.toString» «HLName»;
+            «var String HLName= Character.toLowerCase(mapping.mappingName.toString.charAt(0)) + mapping.mappingName.toString.substring(1)»
+            automotive::vehicle::«mapping.mappingName.toString» «HLName»;
 
             // 9. Letting the high-level message accept the visitor to enter the values.
             «HLName».accept(mtvv);
@@ -464,7 +464,7 @@ namespace canMapping {
             }
 
             // 10. Create the resulting container carrying a valid payload.
-            c = core::data::Container(core::data::Container::«mapping.message.toString.toUpperCase», «HLName»);
+            c = core::data::Container(core::data::Container::«mapping.mappingName.toString.toUpperCase», «HLName»);
         }
 
         return c;
@@ -480,7 +480,7 @@ namespace canMapping {
  *
  * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
  */
-// Test suite file for: «mapping.message.toString»
+// Test suite file for: «mapping.mappingName.toString»
 
 #ifndef CANMAPPINGTESTSUITE_H_
 #define CANMAPPINGTESTSUITE_H_
@@ -511,6 +511,6 @@ This software is open source. Please see COPYING and AUTHORS for further informa
 
 This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
 -->
-<!-- UPPAAL file for: «mapping.message.toString» -->
+<!-- UPPAAL file for: «mapping.mappingName.toString» -->
 '''
 }
