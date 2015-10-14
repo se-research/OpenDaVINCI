@@ -1,8 +1,8 @@
-wheelspeed.frontleft	in 0x123 at bit 0 for 16 bits is big endian multiply by 0.01 add 0 map to [0, 200];
-wheelspeed.frontright	in 0x123 at bit 16 for 16 bits is big endian multiply by 0.01 add 0 map to [0, 200];
-wheelspeed.rearleft 	in 0x123 at bit 32 for 16 bits is big endian multiply by 0.01 add 0 map to [0, 200];
-wheelspeed.rearright	in 0x123 at bit 48 for 16 bits is big endian multiply by 0.01 add 0 map to [0, 200];
-lightsystem.headlights  in 0x001 at bit 7 for 2 bits is big endian multiply by 1 add 0 map to [0, 4];
+wheelspeed.frontleft	in 0x123 at bit 0 for 16 bit is big endian multiply by 0.01 add 0 with range [0, 200];
+wheelspeed.frontright	in 0x123 at bit 16 for 2 bytes is big endian multiply by 0.01 add 0 with range [0, 200];
+wheelspeed.rearleft 	in 0x123 at bit 32 for 2 byte is big endian multiply by 0.01 add 0 within range [0, 200];
+wheelspeed.rearright	in 0x123 at bit 48 for 16 bits is big endian multiply by 0.01 add 0 within range [0, 200];
+lightsystem.headlights  in 0x001 at bit 7 for 2 bits is big endian multiply by 1 add 0 within range [0, 4];
 
 message WheelSpeed {
 	wheelspeed.frontleft : 1;
@@ -17,3 +17,4 @@ message LightSystem {
 
 message EmptyCanMessage {
 }
+

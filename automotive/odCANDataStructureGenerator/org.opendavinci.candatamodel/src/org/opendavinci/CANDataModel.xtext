@@ -29,12 +29,12 @@ Model:
 
 CANSignal:
 	cansignal = MessageIdentifier 'in' canIdentifier = HEXNUMBER
-								  'at' 'bit' startBit = FLOATNUMBER
-								  'for' length = FLOATNUMBER 'bits'
+								  'at bit' startBit = FLOATNUMBER
+								  'for' (length = FLOATNUMBER ('bit'|'bits') | lengthBytes = FLOATNUMBER ('byte'|'bytes'))
 								  'is' (endian = ('big' | 'little')) 'endian'
 								  'multiply by' multiplyBy = FLOATNUMBER
 								  'add' add = FLOATNUMBER
-								  'map to' '[' rangeStart = FLOATNUMBER ',' rangeEnd = FLOATNUMBER ']'
+								  ('with range' | 'within range') '[' rangeStart = FLOATNUMBER ',' rangeEnd = FLOATNUMBER ']'
 								  ';';
 
 CANSignalMapping:

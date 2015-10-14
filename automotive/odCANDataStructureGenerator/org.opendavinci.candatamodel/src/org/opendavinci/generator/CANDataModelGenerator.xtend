@@ -36,6 +36,7 @@ class CANDataModelGenerator implements IGenerator {
 		String m_CANID
 		String m_startBit
 		String m_length
+		String m_lengthBytes
 		String m_endian
 		String m_multiplyBy
 		String m_add
@@ -79,6 +80,11 @@ class CANDataModelGenerator implements IGenerator {
 			csd.m_CANID = cs.canIdentifier
 			csd.m_startBit = cs.startBit
 			csd.m_length = cs.length
+			if((cs.length==null || cs.length=="") && (cs.lengthBytes!=null || cs.lengthBytes!=""))
+				csd.m_length = (Integer.parseInt(cs.lengthBytes)*8)+""
+			csd.m_lengthBytes = cs.lengthBytes
+			if((cs.lengthBytes==null || cs.lengthBytes=="") && (cs.length!=null || cs.length!="") && Integer.parseInt(cs.length)%8==0)
+				csd.m_lengthBytes = (Integer.parseInt(cs.length)/8)+""
 			csd.m_endian = cs.endian
 			csd.m_multiplyBy = cs.multiplyBy
 			csd.m_add = cs.add
@@ -284,6 +290,7 @@ CANID       : «entry.value.m_CANID»
 FQDN        : «entry.value.m_FQDN»
 startBit    : «entry.value.m_startBit»
 length      : «entry.value.m_length»
+lengthBytes : «entry.value.m_lengthBytes»
 endian      : «entry.value.m_endian»
 multiplyBy  : «entry.value.m_multiplyBy»
 add         : «entry.value.m_add»
@@ -383,14 +390,16 @@ namespace canMapping {
 		«tempVarName»=*reinterpret_cast<uint64_t*>(payload);
 		«ENDIF»
 		
-		// reset left hand side of bit field
+		// reset left-hand side of bit field
 		«tempVarName»=«tempVarName» << «canSignals.get(key).m_startBit»;
-		// reset right hand side of bit field
+		// reset right-hand side of bit field
 		«tempVarName»=«tempVarName» >> «numberOfBits-Integer.parseInt(canSignals.get(key).m_length)»;
 		«IF canSignals.get(key).m_endian.compareTo("big")==0»
 		
 		// 5.2 Optional: Fix endianness depending on CAN message specification.
 		«tempVarName» = ntohs(«tempVarName»);
+		«ELSE»
+		// 5.2 Endianness doesn't need fixing, skipping this step.
 		«ENDIF»
 		
 		// variable holding the transformed value
