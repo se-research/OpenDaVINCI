@@ -22,13 +22,12 @@ package org.opendavinci.generator
 
 import java.util.ArrayList
 import java.util.HashMap
+import java.util.Iterator
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
 import org.opendavinci.canDataModel.CANSignal
 import org.opendavinci.canDataModel.CANSignalMapping
-import java.util.HashSet
-import java.util.Iterator
 
 class CANDataModelGenerator implements IGenerator {
 
@@ -52,9 +51,9 @@ class CANDataModelGenerator implements IGenerator {
 
 		// First, extract all CAN signals from .can file.
 		val mapOfDefinedCANSignals = collectDefinedCANSignals(resource.allContents.toIterable.filter(typeof(CANSignal)))
-
+		
+		// needed for the "super" header and source files
 		var ArrayList<String> includedClasses=new ArrayList<String>
-				
 		for (e : resource.allContents.toIterable.filter(typeof(CANSignalMapping))) {
 			includedClasses.add(e.mappingName.toString().replaceAll("\\.", "/"))
 		}
@@ -94,7 +93,6 @@ class CANDataModelGenerator implements IGenerator {
 			csd.m_rangeEnd = cs.rangeEnd
 			cansignalsByFQDN.put(csd.m_FQDN, csd)
 		}
-
         return cansignalsByFQDN
 	}
 
@@ -195,7 +193,7 @@ namespace canMapping {
 	member=iter.next();
 	var String temp="m_"+Character.toLowerCase(member.charAt(0)) + member.substring(1)+"()";
 	if(iter.hasNext())temp+=",";
-	members.add(member);
+	members.add(temp);
 }}»
     CanMapping::CanMapping() :
     «FOR member:members»
@@ -298,32 +296,40 @@ namespace canMapping {
  */
 // Source file for: «mapping.mappingName.toString»
 
-«var HashSet<String> canSignalsKeys=new HashSet<String>»
-«var HashSet<String> canIDs=new HashSet<String>»
+«var ArrayList<String> canIDs=new ArrayList<String>»
 /*
-«FOR entry : canSignals.entrySet»
-«IF(mapping.mappingName.toString.toLowerCase.compareTo(entry.key.split("\\.").get(0).toLowerCase)==0)»
-«{canSignalsKeys.add(entry.key); ""}»
-«{canIDs.add(entry.value.m_CANID); ""}»
-CANID       : «entry.value.m_CANID»
-FQDN        : «entry.value.m_FQDN»
-startBit    : «entry.value.m_startBit»
-length      : «entry.value.m_length»
-lengthBytes : «entry.value.m_lengthBytes»
-endian      : «entry.value.m_endian»
-multiplyBy  : «entry.value.m_multiplyBy»
-add         : «entry.value.m_add»
-rangeStart  : «entry.value.m_rangeStart»
-rangeEnd    : «entry.value.m_rangeEnd»
-
-«ENDIF»
-«ENDFOR»
-
 signals of interest:
 
-«IF(! canSignalsKeys.empty)»
-«FOR key : canSignalsKeys»
-«key»
+«IF(mapping.mappings.size>0)»
+«FOR currenMapping : mapping.mappings»
+«currenMapping.cansignal»
+«ENDFOR»
+
+«FOR currenMapping : mapping.mappings»
+«var String signalName=currenMapping.cansignal»
+«var CANSignalDescription canSignal=canSignals.get(signalName)»
+«IF(mapping.mappingName.toString.toLowerCase.compareTo(signalName.split("\\.").get(0).toLowerCase)==0)»
+«{
+	var boolean test=true;
+	for(id:canIDs)
+		if(id.compareTo(canSignal.m_CANID)==0)
+			test=false;
+	if(test)
+		canIDs.add(canSignal.m_CANID);
+	""
+}»
+CANID       : «canSignal.m_CANID»
+FQDN        : «canSignal.m_FQDN»
+startBit    : «canSignal.m_startBit»
+length      : «canSignal.m_length»
+lengthBytes : «canSignal.m_lengthBytes»
+endian      : «canSignal.m_endian»
+multiplyBy  : «canSignal.m_multiplyBy»
+add         : «canSignal.m_add»
+rangeStart  : «canSignal.m_rangeStart»
+rangeEnd    : «canSignal.m_rangeEnd»
+
+«ENDIF»
 «ENDFOR»
 «ELSE»
 none.
@@ -343,11 +349,11 @@ namespace canMapping {
 
     using namespace std;
 
-    «mapping.mappingName.toString»::«mapping.mappingName.toString»()
+    «mapping.mappingName.toString»::«mapping.mappingName.toString»() :
+    m_payloads(),
+    m_neededCanMessages()
     {
-		m_payloads = new std::map<uint64_t,uint64_t>();
-		m_neededCanMessages = new std::vector<uint64_t>();
-    	«FOR id:canIDs»
+    	«FOR id : canIDs»
     	m_neededCanMessages.push_back(«id»);
         «ENDFOR»
     }
@@ -359,15 +365,15 @@ namespace canMapping {
 
         switch(gcm.getIdentifier())
         {
-    	«FOR id:canIDs»
-    	case «id» : 
-    	// Store the payload in a map for future use (if needed)
-    	// deleting existent value, if any
-    	m_payloads.erase(gcm.getIdentifier());
-    	// inserting latest payload
-    	m_payloads.insert(gcm.getIdentifier(), gcm.getData());
-    	break; // no op
-        «ENDFOR»
+	    	«FOR id : canIDs»
+	    	case «id» : 
+	    	// Store the payload in a map for future use (if needed)
+	    	// deleting existent value, if any
+	    	m_payloads.erase(gcm.getIdentifier());
+	    	// inserting latest payload
+	    	m_payloads.insert(gcm.getIdentifier(), gcm.getData());
+	    	break; // no op
+	        «ENDFOR»
         	default : return c; // valid id not found
     	}
     	
@@ -376,43 +382,46 @@ namespace canMapping {
 		if(m_payloads.size()!=m_neededCanMessages.size())
 			return c;
 		«ELSE»
+		// if we don't have all the needed CAN messages in the correct order, return 
 		
 		«ENDIF»
 
-        // 2. If the identifier is matching, get the raw payload.
-        //uint64_t data = ;
+		«FOR currenMapping : mapping.mappings»
+		«var String signalName=currenMapping.cansignal»
+		
+		// 2. If the identifier is matching, get the raw payload.
+		//uint64_t data = ;
 
-        // Optionally: print payload for debug purposes.
-        // printPayload(data);
+		// Optionally: print payload for debug purposes.
+		// printPayload(data);
 
-        // 3. Map uin64_t value to 8 byte uint8_t array.
-        uint8_t payload[8]=reinterpret_cast<uint8_t*>(&data);
+		// 3. Map uin64_t value to 8 byte uint8_t array.
+		uint8_t payload[8]=reinterpret_cast<uint8_t*>(&data);
 
-        // 4. Create a generic message.
-        core::reflection::Message message;
+		// 4. Create a generic message.
+		reflection::Message message;
 
-		«FOR key : canSignalsKeys»
-		// addressing signal «key»
+		// addressing signal «signalName»
 		«var String tempVarType=""»
-		«var String tempVarName="raw_"+key.replaceAll("\\.", "_")»
-		«var String finalVarName="transformed_"+key.replaceAll("\\.", "_")»
+		«var String tempVarName="raw_"+signalName.replaceAll("\\.", "_")»
+		«var String finalVarName="transformed_"+signalName.replaceAll("\\.", "_")»
 		«var int numberOfBits=8»
 		
 		// 5.1 Get raw value from 1st attribute.
-		«IF Integer.parseInt(canSignals.get(key).m_startBit) + 
-			Integer.parseInt(canSignals.get(key).m_length) <= 8 »
+		«IF Integer.parseInt(canSignals.get(signalName).m_startBit) + 
+			Integer.parseInt(canSignals.get(signalName).m_length) <= 8 »
 		«{numberOfBits=8;""}»
 		«tempVarType="uint8_t"» «tempVarName»=0x00;
 		«tempVarName»=payload[0];
-		«ELSEIF Integer.parseInt(canSignals.get(key).m_startBit) + 
-			Integer.parseInt(canSignals.get(key).m_length) <= 16 »
+		«ELSEIF Integer.parseInt(canSignals.get(signalName).m_startBit) + 
+			Integer.parseInt(canSignals.get(signalName).m_length) <= 16 »
 		«{numberOfBits=16;""}»
 		«tempVarType="uint16_t"» «tempVarName»=0x0000;
 		«tempVarName»=«tempVarName» | static_cast<«tempVarType»>(payload[0]);
 		«tempVarName»=«tempVarName» << 8;
 		«tempVarName»=«tempVarName» | static_cast<«tempVarType»>(payload[1]);
-		«ELSEIF Integer.parseInt(canSignals.get(key).m_startBit) + 
-			Integer.parseInt(canSignals.get(key).m_length) <= 32 »
+		«ELSEIF Integer.parseInt(canSignals.get(signalName).m_startBit) + 
+			Integer.parseInt(canSignals.get(signalName).m_length) <= 32 »
 		«{numberOfBits=32;""}»
 		«tempVarType="uint32_t"» «tempVarName»=0x00000000;
 		«tempVarName»=«tempVarName» | static_cast<«tempVarType»>(payload[0]);
@@ -422,18 +431,18 @@ namespace canMapping {
 		«tempVarName»=«tempVarName» | static_cast<«tempVarType»>(payload[2]);
 		«tempVarName»=«tempVarName» << 8;
 		«tempVarName»=«tempVarName» | static_cast<«tempVarType»>(payload[3]);
-		«ELSEIF Integer.parseInt(canSignals.get(key).m_startBit) + 
-			Integer.parseInt(canSignals.get(key).m_length) <= 64 »
+		«ELSEIF Integer.parseInt(canSignals.get(signalName).m_startBit) + 
+			Integer.parseInt(canSignals.get(signalName).m_length) <= 64 »
 		«{numberOfBits=64;""}»
 		«tempVarType="uint64_t"» «tempVarName»=0x0000000000000000;
 		«tempVarName»=*reinterpret_cast<uint64_t*>(payload);
 		«ENDIF»
 		
 		// reset left-hand side of bit field
-		«tempVarName»=«tempVarName» << «canSignals.get(key).m_startBit»;
+		«tempVarName»=«tempVarName» << «canSignals.get(signalName).m_startBit»;
 		// reset right-hand side of bit field
-		«tempVarName»=«tempVarName» >> «numberOfBits-Integer.parseInt(canSignals.get(key).m_length)»;
-		«IF canSignals.get(key).m_endian.compareTo("big")==0»
+		«tempVarName»=«tempVarName» >> «numberOfBits-Integer.parseInt(canSignals.get(signalName).m_length)»;
+		«IF canSignals.get(signalName).m_endian.compareTo("big")==0»
 		
 		// 5.2 Optional: Fix endianness depending on CAN message specification.
 		«tempVarName» = ntohs(«tempVarName»);
@@ -447,24 +456,24 @@ namespace canMapping {
 		
 		// 5.3 Apply value transformation (i.e. formula) to map raw value to (physically) meaningful value according to CAN message specification.
 		// scaling
-		const double SCALE = «canSignals.get(key).m_multiplyBy»;
+		const double SCALE = «canSignals.get(signalName).m_multiplyBy»;
 		«finalVarName»=«finalVarName»*SCALE;
 		// adding
-		const double OFFSET = «canSignals.get(key).m_add»;
-		«finalVarName»=«finalVarName»*OFFSET;
+		const double OFFSET = «canSignals.get(signalName).m_add»;
+		«finalVarName»=«finalVarName»+OFFSET;
 		
 		// clamping
-		if(«finalVarName»<«canSignals.get(key).m_rangeStart»)
-			«finalVarName»=«canSignals.get(key).m_rangeStart»;
-		else if(«finalVarName»>«canSignals.get(key).m_rangeEnd»)
-			«finalVarName»=«canSignals.get(key).m_rangeEnd»;
+		if(«finalVarName»<«canSignals.get(signalName).m_rangeStart»)
+			«finalVarName»=«canSignals.get(signalName).m_rangeStart»;
+		else if(«finalVarName»>«canSignals.get(signalName).m_rangeEnd»)
+			«finalVarName»=«canSignals.get(signalName).m_rangeEnd»;
 		
 		// 5.4 Create a field for a generic message.
 		core::reflection::Field<double> *f = new core::reflection::Field<double>(v);
-		f->setLongIdentifier(«canSignals.get(key).m_CANID»); // The identifiers specified here must match with the ones defined in the .odvd file!
-		f->setShortIdentifier(«canSignals.get(key).m_CANID»); // The identifiers specified here must match with the ones defined in the .odvd file!
-		f->setLongName("«canSignals.get(key).m_FQDN»");
-		f->setShortName("«{var String[] res; res=canSignals.get(key).m_FQDN.split("\\."); res.get(res.size-1)}»");
+		f->setLongIdentifier(«canSignals.get(signalName).m_CANID»); // The identifiers specified here must match with the ones defined in the .odvd file!
+		f->setShortIdentifier(«canSignals.get(signalName).m_CANID»); // The identifiers specified here must match with the ones defined in the .odvd file!
+		f->setLongName("«canSignals.get(signalName).m_FQDN»");
+		f->setShortName("«{var String[] res; res=canSignals.get(signalName).m_FQDN.split("\\."); res.get(res.size-1)}»");
 		f->setFieldDataType(coredata::reflection::AbstractField::DOUBLE_T);
 		f->setSize(sizeof(v));
 
