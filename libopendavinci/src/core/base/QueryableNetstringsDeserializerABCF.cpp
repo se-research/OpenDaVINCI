@@ -89,26 +89,15 @@ namespace core {
 
             // Decode payload consisting of: *(ID SIZE PAYLOAD).
             char c = 0;
-            uint32_t tokenIdentifier = 0;
+            uint64_t tokenIdentifier = 0;
             uint64_t lengthOfPayload = 0;
-cerr << endl;
             while (in.good() && (length > 0)) {
                 // Start of next token by reading ID.
-cerr << "length=" << length;
-                in.read(reinterpret_cast<char*>(&tokenIdentifier), sizeof(uint32_t));
-                tokenIdentifier = ntohl(tokenIdentifier);
-cerr << ", length=" << length;
-cerr << ", ID=" << tokenIdentifier;
-                length -= (sizeof(uint32_t));
-cerr << ", length=" << length;
+                length -= decodeVarInt(in, tokenIdentifier);
 
                 // Read length of payload and adjust loop.
                 lengthOfPayload = 0;
-                uint32_t readBytes = decodeVarInt(in, lengthOfPayload);
-cerr << ", lengthOfPayload=" << lengthOfPayload;
-cerr << ", readBytes=" << readBytes;
-                length -= readBytes;
-cerr << ", length=" << length;
+                length -= decodeVarInt(in, lengthOfPayload);
 
                 // Create new (tokenIdentifier, m_buffer) hashmap entry.
                 m_values.insert(make_pair(tokenIdentifier, m_buffer.tellp()));
@@ -119,8 +108,6 @@ cerr << ", length=" << length;
                     m_buffer.put(c);
                     length--;
                 }
-cerr << ", length=" << length;
-cerr << endl;
             }
 
             // Check for trailing ','

@@ -64,7 +64,7 @@ namespace core {
             // Write length.
             uint64_t length = static_cast<uint32_t>(m_buffer.str().length());
             encodeVarInt(o, length);
-
+cerr << "Length = " << length << endl;
             // Write payload.
             o << m_buffer.str();
 
@@ -73,9 +73,7 @@ namespace core {
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &id, const Serializable &s) {
-            uint32_t _id = id;
-            _id = htonl(_id);
-            m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
+            encodeVarInt(m_buffer, id);
 
             stringstream buffer;
             buffer << s;
@@ -87,9 +85,7 @@ namespace core {
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &id, const bool &b) {
-            uint32_t _id = id;
-            _id = htonl(_id);
-            m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
+            encodeVarInt(m_buffer, id);
 
             uint64_t size = static_cast<uint32_t>(sizeof(b));
             encodeVarInt(m_buffer, size);
@@ -98,9 +94,7 @@ namespace core {
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &id, const char &c) {
-            uint32_t _id = id;
-            _id = htonl(_id);
-            m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
+            encodeVarInt(m_buffer, id);
 
             uint64_t size = static_cast<uint32_t>(sizeof(c));
             encodeVarInt(m_buffer, size);
@@ -109,9 +103,7 @@ namespace core {
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &id, const unsigned char &uc) {
-            uint32_t _id = id;
-            _id = htonl(_id);
-            m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
+            encodeVarInt(m_buffer, id);
 
             uint64_t size = static_cast<uint32_t>(sizeof(uc));
             encodeVarInt(m_buffer, size);
@@ -120,9 +112,7 @@ namespace core {
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &id, const int8_t &i) {
-            uint32_t _id = id;
-            _id = htonl(_id);
-            m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
+            encodeVarInt(m_buffer, id);
 
             uint64_t size = static_cast<uint32_t>(sizeof(i));
             encodeVarInt(m_buffer, size);
@@ -132,9 +122,7 @@ namespace core {
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &id, const int16_t &i) {
-            uint32_t _id = id;
-            _id = htonl(_id);
-            m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
+            encodeVarInt(m_buffer, id);
 
             uint64_t size = static_cast<uint32_t>(sizeof(i));
             encodeVarInt(m_buffer, size);
@@ -145,9 +133,7 @@ namespace core {
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &id, const uint16_t &ui) {
-            uint32_t _id = id;
-            _id = htonl(_id);
-            m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
+            encodeVarInt(m_buffer, id);
 
             uint64_t size = static_cast<uint32_t>(sizeof(ui));
             encodeVarInt(m_buffer, size);
@@ -158,9 +144,7 @@ namespace core {
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &id, const int32_t &i) {
-            uint32_t _id = id;
-            _id = htonl(_id);
-            m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
+            encodeVarInt(m_buffer, id);
 
             uint64_t size = static_cast<uint32_t>(sizeof(i));
             encodeVarInt(m_buffer, size);
@@ -171,9 +155,7 @@ namespace core {
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &id, const uint32_t &ui) {
-            uint32_t _id = id;
-            _id = htonl(_id);
-            m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
+            encodeVarInt(m_buffer, id);
 
             uint64_t size = static_cast<uint32_t>(sizeof(ui));
             encodeVarInt(m_buffer, size);
@@ -184,9 +166,7 @@ namespace core {
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &id, const int64_t &i) {
-            uint32_t _id = id;
-            _id = htonl(_id);
-            m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
+            encodeVarInt(m_buffer, id);
 
             uint64_t size = static_cast<uint32_t>(sizeof(i));
             encodeVarInt(m_buffer, size);
@@ -197,9 +177,7 @@ namespace core {
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &id, const uint64_t &ui) {
-            uint32_t _id = id;
-            _id = htonl(_id);
-            m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
+            encodeVarInt(m_buffer, id);
 
             uint64_t size = static_cast<uint32_t>(sizeof(ui));
             encodeVarInt(m_buffer, size);
@@ -210,9 +188,7 @@ namespace core {
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &id, const float &f) {
-            uint32_t _id = id;
-            _id = htonl(_id);
-            m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
+            encodeVarInt(m_buffer, id);
 
             uint64_t size = static_cast<uint32_t>(sizeof(f));
             encodeVarInt(m_buffer, size);
@@ -223,9 +199,7 @@ namespace core {
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &id, const double &d) {
-            uint32_t _id = id;
-            _id = htonl(_id);
-            m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
+            encodeVarInt(m_buffer, id);
 
             uint64_t size = static_cast<uint32_t>(sizeof(d));
             encodeVarInt(m_buffer, size);
@@ -236,9 +210,7 @@ namespace core {
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &id, const string &s) {
-            uint32_t _id = id;
-            _id = htonl(_id);
-            m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
+            encodeVarInt(m_buffer, id);
 
             uint32_t stringLength = s.length();
             uint32_t size = static_cast<uint32_t>(stringLength + sizeof(uint32_t)); // String's length plus the length of the type for (string's length).
@@ -251,9 +223,7 @@ namespace core {
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &id, const void *data, const uint32_t &size) {
-            uint32_t _id = id;
-            _id = htonl(_id);
-            m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
+            encodeVarInt(m_buffer, id);
 
             encodeVarInt(m_buffer, size);
 
