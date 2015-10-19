@@ -270,9 +270,10 @@ namespace core {
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
-                uint32_t stringLength = 0;
-                m_buffer.read(reinterpret_cast<char *>(&stringLength), sizeof(uint32_t));
-                stringLength = ntohl(stringLength);
+
+                uint64_t stringLength = 0;
+                decodeVarInt(m_buffer, stringLength);
+
                 char *str = new char[stringLength+1];
                 m_buffer.read(str, stringLength);
                 str[stringLength] = '\0';
