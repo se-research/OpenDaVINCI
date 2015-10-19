@@ -27,10 +27,15 @@ namespace core {
         using namespace std;
 
         QueryableNetstringsDeserializer::QueryableNetstringsDeserializer() :
-            m_aacf() {}
+            m_deserializer() {
+            m_deserializer = SharedPointer<Deserializer>(new QueryableNetstringsDeserializerAACF());
+        }
 
         QueryableNetstringsDeserializer::QueryableNetstringsDeserializer(istream &in) :
-            m_aacf(in) {}
+            m_deserializer() {
+            m_deserializer = SharedPointer<Deserializer>(new QueryableNetstringsDeserializerAACF());
+            deserializeDataFrom(in);
+        }
 
         void QueryableNetstringsDeserializer::deserializeDataFrom(istream &in) {
             // Save current position in the stream.
@@ -45,7 +50,7 @@ namespace core {
                 // Data is encoded in 0xAACF format, representing version 1 of queryable netstrings.
                 // Rewind the position and delegate decoding to QueryableNetstringsDeserializerAACF.
                 in.seekg(currentPosition);
-                m_aacf.deserializeDataFrom(in);
+                m_deserializer->deserializeDataFrom(in);
             }
             else {
                 if (in.good()) {
@@ -58,63 +63,63 @@ namespace core {
         QueryableNetstringsDeserializer::~QueryableNetstringsDeserializer() {}
 
         void QueryableNetstringsDeserializer::read(const uint32_t &id, Serializable &s) {
-            m_aacf.read(id, s);
+            m_deserializer->read(id, s);
         }
 
         void QueryableNetstringsDeserializer::read(const uint32_t &id, bool &b) {
-            m_aacf.read(id, b);
+            m_deserializer->read(id, b);
         }
 
         void QueryableNetstringsDeserializer::read(const uint32_t &id, char &c) {
-            m_aacf.read(id, c);
+            m_deserializer->read(id, c);
         }
 
         void QueryableNetstringsDeserializer::read(const uint32_t &id, unsigned char &uc) {
-            m_aacf.read(id, uc);
+            m_deserializer->read(id, uc);
         }
 
         void QueryableNetstringsDeserializer::read(const uint32_t &id, int8_t &i) {
-            m_aacf.read(id, i);
+            m_deserializer->read(id, i);
         }
 
         void QueryableNetstringsDeserializer::read(const uint32_t &id, int16_t &i) {
-            m_aacf.read(id, i);
+            m_deserializer->read(id, i);
         }
 
         void QueryableNetstringsDeserializer::read(const uint32_t &id, uint16_t &ui) {
-            m_aacf.read(id, ui);
+            m_deserializer->read(id, ui);
         }
 
         void QueryableNetstringsDeserializer::read(const uint32_t &id, int32_t &i) {
-            m_aacf.read(id, i);
+            m_deserializer->read(id, i);
         }
 
         void QueryableNetstringsDeserializer::read(const uint32_t &id, uint32_t &ui) {
-            m_aacf.read(id, ui);
+            m_deserializer->read(id, ui);
         }
 
         void QueryableNetstringsDeserializer::read(const uint32_t &id, int64_t &i) {
-            m_aacf.read(id, i);
+            m_deserializer->read(id, i);
         }
 
         void QueryableNetstringsDeserializer::read(const uint32_t &id, uint64_t &ui) {
-            m_aacf.read(id, ui);
+            m_deserializer->read(id, ui);
         }
 
         void QueryableNetstringsDeserializer::read(const uint32_t &id, float &f) {
-            m_aacf.read(id, f);
+            m_deserializer->read(id, f);
         }
 
         void QueryableNetstringsDeserializer::read(const uint32_t &id, double &d) {
-            m_aacf.read(id, d);
+            m_deserializer->read(id, d);
         }
 
         void QueryableNetstringsDeserializer::read(const uint32_t &id, string &s) {
-            m_aacf.read(id, s);
+            m_deserializer->read(id, s);
         }
 
         void QueryableNetstringsDeserializer::read(const uint32_t &id, void *data, const uint32_t &size) {
-            m_aacf.read(id, data, size);
+            m_deserializer->read(id, data, size);
         }
 
     }

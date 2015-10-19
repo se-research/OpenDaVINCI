@@ -23,6 +23,7 @@
 // core/platform.h must be included to setup platform-dependent header files and configurations.
 #include "core/platform.h"
 
+#include "core/SharedPointer.h"
 #include "core/base/Serializer.h"
 #include "core/base/QueryableNetstringsSerializerAACF.h"
 
@@ -114,7 +115,7 @@ namespace core {
 
             private:
                 ostream *m_out; // We have a pointer here that we derive from a reference parameter in our non-standard constructor; thus, the other class is responsible for the lifecycle of the variable to which we point to.
-                QueryableNetstringsSerializerAACF m_aacf;
+                SharedPointer<Serializer> m_serializer;
         };
 
     }

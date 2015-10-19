@@ -23,6 +23,7 @@
 // core/platform.h must be included to setup platform-dependent header files and configurations.
 #include "core/platform.h"
 
+#include "core/SharedPointer.h"
 #include "core/base/Deserializer.h"
 #include "core/base/QueryableNetstringsDeserializerAACF.h"
 
@@ -114,7 +115,7 @@ namespace core {
                 virtual void read(const uint32_t &id, void *data, const uint32_t &size);
 
             private:
-                QueryableNetstringsDeserializerAACF m_aacf;
+                SharedPointer<Deserializer> m_deserializer;
         };
 
     }

@@ -27,81 +27,84 @@ namespace core {
 
         QueryableNetstringsSerializer::QueryableNetstringsSerializer() :
             m_out(NULL),
-            m_aacf() {}
-
+            m_serializer() {
+            m_serializer = SharedPointer<Serializer>(new QueryableNetstringsSerializerAACF());
+        }
 
         QueryableNetstringsSerializer::QueryableNetstringsSerializer(ostream &out) :
             m_out(&out),
-            m_aacf() {}
+            m_serializer() {
+            m_serializer = SharedPointer<Serializer>(new QueryableNetstringsSerializerAACF());
+        }
 
         QueryableNetstringsSerializer::~QueryableNetstringsSerializer() {
             if (m_out != NULL) {
-                m_aacf.getSerializedData(*m_out);
+                m_serializer->getSerializedData(*m_out);
             }
         }
 
         void QueryableNetstringsSerializer::getSerializedData(ostream &o) {
-            m_aacf.getSerializedData(o);
+            m_serializer->getSerializedData(o);
         }
 
         void QueryableNetstringsSerializer::write(const uint32_t &id, const Serializable &s) {
-            m_aacf.write(id, s);
+            m_serializer->write(id, s);
         }
 
         void QueryableNetstringsSerializer::write(const uint32_t &id, const bool &b) {
-            m_aacf.write(id, b);
+            m_serializer->write(id, b);
         }
 
         void QueryableNetstringsSerializer::write(const uint32_t &id, const char &c) {
-            m_aacf.write(id, c);
+            m_serializer->write(id, c);
         }
 
         void QueryableNetstringsSerializer::write(const uint32_t &id, const unsigned char &uc) {
-            m_aacf.write(id, uc);
+            m_serializer->write(id, uc);
         }
 
         void QueryableNetstringsSerializer::write(const uint32_t &id, const int8_t &i) {
-            m_aacf.write(id, i);
+            m_serializer->write(id, i);
         }
 
         void QueryableNetstringsSerializer::write(const uint32_t &id, const int16_t &i) {
-            m_aacf.write(id, i);
+            m_serializer->write(id, i);
         }
 
         void QueryableNetstringsSerializer::write(const uint32_t &id, const uint16_t &ui) {
-            m_aacf.write(id, ui);
+            m_serializer->write(id, ui);
         }
 
         void QueryableNetstringsSerializer::write(const uint32_t &id, const int32_t &i) {
-            m_aacf.write(id, i);
+            m_serializer->write(id, i);
         }
 
         void QueryableNetstringsSerializer::write(const uint32_t &id, const uint32_t &ui) {
-            m_aacf.write(id, ui);
+            m_serializer->write(id, ui);
         }
 
         void QueryableNetstringsSerializer::write(const uint32_t &id, const int64_t &i) {
-            m_aacf.write(id, i);
+            m_serializer->write(id, i);
         }
 
         void QueryableNetstringsSerializer::write(const uint32_t &id, const uint64_t &ui) {
-            m_aacf.write(id, ui);
+            m_serializer->write(id, ui);
         }
 
         void QueryableNetstringsSerializer::write(const uint32_t &id, const float &f) {
-            m_aacf.write(id, f);
+            m_serializer->write(id, f);
         }
 
         void QueryableNetstringsSerializer::write(const uint32_t &id, const double &d) {
-            m_aacf.write(id, d);
+            m_serializer->write(id, d);
         }
 
         void QueryableNetstringsSerializer::write(const uint32_t &id, const string &s) {
-            m_aacf.write(id, s);
+            m_serializer->write(id, s);
         }
 
         void QueryableNetstringsSerializer::write(const uint32_t &id, const void *data, const uint32_t &size) {
-            m_aacf.write(id, data, size);
+            m_serializer->write(id, data, size);
         }
 
     }
