@@ -37,7 +37,7 @@ namespace core {
          * Netstrings. The original version (found at:
          * http://cr.yp.to/proto/netstrings.txt ) has been modified:
          *
-         * '0xAA' '0xCF' 'binary length (as uint32_t)' 'PAYLOAD' ','
+         * '0xAB' '0xCF' 'binary length encoded as varint' 'PAYLOAD' ','
          *
          * @See Serializable
          */
@@ -96,6 +96,16 @@ namespace core {
                 virtual void write(const uint32_t &id, const string &s);
 
                 virtual void write(const uint32_t &id, const void *data, const uint32_t &size);
+
+            private:
+                /**
+                 * This method encodes a given value using the varint encoding.
+                 *
+                 * @param out Output stream to be written to.
+                 * @param value Value to be encoded.
+                 * @return size Number of bytes written.
+                 */
+                uint8_t encodeVarInt(ostream &out, uint64_t value);
 
             private:
                 stringstream m_buffer;

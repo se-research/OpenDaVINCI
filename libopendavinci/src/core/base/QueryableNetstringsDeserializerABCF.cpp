@@ -36,6 +36,22 @@ namespace core {
             deserializeDataFrom(in);
         }
 
+        uint8_t QueryableNetstringsDeserializerABCF::decodeVarInt(istream &in, uint64_t &value) {
+            value = 0;
+            uint8_t size = 0;
+
+            while (in.good()) {
+                char c = in.get();
+                value |= (c & 0x7f) << (0x7 * size++);
+                if ( !(c & 0x80) ) break;
+            }
+
+            // Decode as little endian like in Protobuf's case.
+            value = le64toh(value);
+
+            return size;
+        }
+
         void QueryableNetstringsDeserializerABCF::deserializeDataFrom(istream &in) {
             // Reset any existing data in our hashmap.
             m_values.clear();
@@ -67,10 +83,9 @@ namespace core {
                 return;
             }
 
-            // Decoding length of the payload.
-            uint32_t length = 0;
-            in.read(reinterpret_cast<char*>(&length), sizeof(uint32_t));
-            length = ntohl(length);
+            // Decoding length of the payload written as varint.
+            uint64_t length = 0;
+            decodeVarInt(in, length);
 
             // Decode payload consisting of: *(ID SIZE PAYLOAD).
             char c = 0;

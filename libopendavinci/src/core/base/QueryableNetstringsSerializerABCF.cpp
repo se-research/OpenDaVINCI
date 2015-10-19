@@ -30,6 +30,31 @@ namespace core {
 
         QueryableNetstringsSerializerABCF::~QueryableNetstringsSerializerABCF() {}
 
+
+        uint8_t QueryableNetstringsSerializerABCF::encodeVarInt(ostream &out, uint64_t value) {
+            // We will write at least one byte.
+            uint8_t size = 1;
+
+            // Encode as little endian like in Protobuf's case.
+            value = htole64(value);
+
+            char byte = 0;
+            while (value > 0x7f) {
+                // If the value to be written occupies more than 7 bits, we need to encode it using the MSB flag.
+                byte = (static_cast<uint8_t>(value & 0x7f)) | 0x80;
+                out.put(byte);
+                // Remove the seven bits that we have already written.
+                value >>= 7;
+                // Start next byte.
+                size++;
+            }
+            // Write final value.
+            byte = (static_cast<uint8_t>(value)) & 0x7f;
+            out.put(byte);
+
+            return size;
+        }
+
         void QueryableNetstringsSerializerABCF::getSerializedData(ostream &o) {
             // Write magic number.
             uint16_t magicNumber = 0xABCF;
@@ -37,9 +62,8 @@ namespace core {
             o.write(reinterpret_cast<const char *>(&magicNumber), sizeof(uint16_t));
 
             // Write length.
-            uint32_t length = static_cast<uint32_t>(m_buffer.str().length());
-            length = htonl(length);
-            o.write(reinterpret_cast<const char *>(&length), sizeof(uint32_t));
+            uint64_t length = static_cast<uint32_t>(m_buffer.str().length());
+            encodeVarInt(o, length);
 
             // Write payload.
             o << m_buffer.str();

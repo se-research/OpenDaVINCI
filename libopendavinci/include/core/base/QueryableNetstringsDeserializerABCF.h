@@ -37,7 +37,7 @@ namespace core {
          * Netstrings. The original version (found at:
          * http://cr.yp.to/proto/netstrings.txt ) has been modified:
          *
-         * '0xAA' '0xCF' 'binary length (as uint32_t)' 'PAYLOAD' ','
+         * '0xAB' '0xCF' 'binary length encoded as varint' 'PAYLOAD' ','
          *
          * @See Serializable
          */
@@ -110,6 +110,16 @@ namespace core {
                 virtual void read(const uint32_t &id, string &s);
 
                 virtual void read(const uint32_t &id, void *data, const uint32_t &size);
+
+            private:
+                /**
+                 * This method decodes a value from a given varint encoding.
+                 *
+                 * @param in Input stream used for reading from.
+                 * @param value Destination variable to be written into.
+                 * @return size Number of bytes read.
+                 */
+                uint8_t decodeVarInt(istream& in, uint64_t &value);
 
             private:
                 stringstream m_buffer;
