@@ -17,44 +17,41 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef OPENDAVINCI_CORE_BASE_QUERYABLENETSTRINGSDESERIALIZER_H_
-#define OPENDAVINCI_CORE_BASE_QUERYABLENETSTRINGSDESERIALIZER_H_
+#ifndef OPENDAVINCI_CORE_BASE_QUERYABLENETSTRINGSDESERIALIZERAACF_H_
+#define OPENDAVINCI_CORE_BASE_QUERYABLENETSTRINGSDESERIALIZERAACF_H_
 
 // core/platform.h must be included to setup platform-dependent header files and configurations.
 #include "core/platform.h"
 
 #include "core/base/Deserializer.h"
-#include "core/base/QueryableNetstringsDeserializerAACF.h"
 
 namespace core {
     namespace base {
 
         using namespace std;
 
-        class SerializationFactory;
+        class QueryableNetstringsDeserializer;
 
         /**
-         * This class implements the interface Serializer for queryable
+         * This class implements the interface Deserializer for queryable
          * Netstrings. The original version (found at:
-         * http://cr.yp.to/proto/netstrings.txt ) has been modified
-         * in different implementations:
+         * http://cr.yp.to/proto/netstrings.txt ) has been modified:
          *
-         * Version 1 of queryable netstrings:
-         * QueryableNetstringsDeserializerAACF: '0xAA' '0xCF' 'binary length (as uint32_t)' 'PAYLOAD' ','
+         * '0xAA' '0xCF' 'binary length (as uint32_t)' 'PAYLOAD' ','
          *
          * @See Serializable
          */
-        class OPENDAVINCI_API QueryableNetstringsDeserializer : public Deserializer {
+        class OPENDAVINCI_API QueryableNetstringsDeserializerAACF : public Deserializer {
             private:
-                // Only the SerializationFactory or its subclasses are allowed to create instances of this Deserializer using the non-standard constructor.
-                friend class SerializationFactory;
+                // Only the QueryableNetstringsDeserializer is allowed to create instances of this Deserializer using the non-standard constructor.
+                friend class QueryableNetstringsDeserializer;
 
                 /**
                  * Constructor.
                  *
                  * @param in Input stream containing the data.
                  */
-                QueryableNetstringsDeserializer(istream &in);
+                QueryableNetstringsDeserializerAACF(istream &in);
 
             private:
                 /**
@@ -62,26 +59,27 @@ namespace core {
                  * already at compile time for unwanted bugs caused by any misuse
                  * of the copy constructor.
                  */
-                QueryableNetstringsDeserializer(const QueryableNetstringsDeserializer &);
+                QueryableNetstringsDeserializerAACF(const QueryableNetstringsDeserializerAACF &);
 
                 /**
                  * "Forbidden" assignment operator. Goal: The compiler should warn
                  * already at compile time for unwanted bugs caused by any misuse
                  * of the assignment operator.
                  */
-                QueryableNetstringsDeserializer& operator=(const QueryableNetstringsDeserializer &);
+                QueryableNetstringsDeserializerAACF& operator=(const QueryableNetstringsDeserializerAACF &);
+
 
             public:
                 /**
-                 * Default constructor. When a QueryableNetstringsDeserializer is created
+                 * Default constructor. When a QueryableNetstringsDeserializerAACF is created
                  * using this constructor, the method setSerializedData(istream &in) needs
                  * to be called before any read(...) method will return meaningful data.
                  */
-                QueryableNetstringsDeserializer();
+                QueryableNetstringsDeserializerAACF();
 
                 virtual void deserializeDataFrom(istream &in);
 
-                virtual ~QueryableNetstringsDeserializer();
+                virtual ~QueryableNetstringsDeserializerAACF();
 
                 virtual void read(const uint32_t &id, Serializable &s);
 
@@ -114,10 +112,11 @@ namespace core {
                 virtual void read(const uint32_t &id, void *data, const uint32_t &size);
 
             private:
-                QueryableNetstringsDeserializerAACF m_aacf;
+                stringstream m_buffer;
+                map<uint32_t, streampos> m_values;
         };
 
     }
 } // core::base
 
-#endif /*OPENDAVINCI_CORE_BASE_QUERYABLENETSTRINGSDESERIALIZER_H_*/
+#endif /*OPENDAVINCI_CORE_BASE_QUERYABLENETSTRINGSDESERIALIZERAACF_H_*/

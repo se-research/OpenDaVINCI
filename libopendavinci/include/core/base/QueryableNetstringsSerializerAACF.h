@@ -17,68 +17,53 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef OPENDAVINCI_CORE_BASE_QUERYABLENETSTRINGSSERIALIZER_H_
-#define OPENDAVINCI_CORE_BASE_QUERYABLENETSTRINGSSERIALIZER_H_
+#ifndef OPENDAVINCI_CORE_BASE_QUERYABLENETSTRINGSSERIALIZERAACF_H_
+#define OPENDAVINCI_CORE_BASE_QUERYABLENETSTRINGSSERIALIZERAACF_H_
 
 // core/platform.h must be included to setup platform-dependent header files and configurations.
 #include "core/platform.h"
 
 #include "core/base/Serializer.h"
-#include "core/base/QueryableNetstringsSerializerAACF.h"
 
 namespace core {
     namespace base {
 
         using namespace std;
 
-        class SerializationFactory;
+        class QueryableNetstringsSerializer;
 
         /**
          * This class implements the interface Serializer for queryable
          * Netstrings. The original version (found at:
-         * http://cr.yp.to/proto/netstrings.txt ) has been modified
-         * in different implementations:
+         * http://cr.yp.to/proto/netstrings.txt ) has been modified:
          *
-         * Version 1 of queryable netstrings:
-         * QueryableNetstringsSerializerAACF: '0xAA' '0xCF' 'binary length (as uint32_t)' 'PAYLOAD' ','
+         * '0xAA' '0xCF' 'binary length (as uint32_t)' 'PAYLOAD' ','
          *
          * @See Serializable
          */
-        class QueryableNetstringsSerializer : public Serializer {
+        class QueryableNetstringsSerializerAACF : public Serializer {
             private:
-                // Only the SerializationFactory or its subclasses are allowed to create instances of this Serializer using non-standard constructors.
-                friend class SerializationFactory;
+                // Only the QueryableNetstringsSerializer is allowed to create instances of this Serializer using the non-standard constructor.
+                friend class QueryableNetstringsSerializer;
 
-                /**
-                 * Constructor.
-                 *
-                 * @param out Output stream for the data.
-                 */
-                QueryableNetstringsSerializer(ostream &out);
-
-            private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn
                  * already at compile time for unwanted bugs caused by any misuse
                  * of the copy constructor.
                  */
-                QueryableNetstringsSerializer(const QueryableNetstringsSerializer &);
+                QueryableNetstringsSerializerAACF(const QueryableNetstringsSerializerAACF &);
 
                 /**
                  * "Forbidden" assignment operator. Goal: The compiler should warn
                  * already at compile time for unwanted bugs caused by any misuse
                  * of the assignment operator.
                  */
-                QueryableNetstringsSerializer& operator=(const QueryableNetstringsSerializer &);
+                QueryableNetstringsSerializerAACF& operator=(const QueryableNetstringsSerializerAACF &);
 
             public:
-                /**
-                 * Default Constructor where the serialized data needs to be
-                 * retrieved by calling the method getSerializedData().
-                 */
-                QueryableNetstringsSerializer();
+                QueryableNetstringsSerializerAACF();
 
-                virtual ~QueryableNetstringsSerializer();
+                virtual ~QueryableNetstringsSerializerAACF();
 
                 virtual void getSerializedData(ostream &o);
 
@@ -113,11 +98,10 @@ namespace core {
                 virtual void write(const uint32_t &id, const void *data, const uint32_t &size);
 
             private:
-                ostream *m_out; // We have a pointer here that we derive from a reference parameter in our non-standard constructor; thus, the other class is responsible for the lifecycle of the variable to which we point to.
-                QueryableNetstringsSerializerAACF m_aacf;
+                stringstream m_buffer;
         };
 
     }
 } // core::base
 
-#endif /*OPENDAVINCI_CORE_BASE_QUERYABLENETSTRINGSSERIALIZER_H_*/
+#endif /*OPENDAVINCI_CORE_BASE_QUERYABLENETSTRINGSSERIALIZERAACF_H_*/
