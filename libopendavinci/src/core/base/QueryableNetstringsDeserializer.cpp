@@ -28,12 +28,12 @@ namespace core {
 
         QueryableNetstringsDeserializer::QueryableNetstringsDeserializer() :
             m_deserializer() {
+            // Create a default deserializer that might be replaced by another one on user's request.
             m_deserializer = SharedPointer<Deserializer>(new QueryableNetstringsDeserializerAACF());
         }
 
         QueryableNetstringsDeserializer::QueryableNetstringsDeserializer(istream &in) :
             m_deserializer() {
-            m_deserializer = SharedPointer<Deserializer>(new QueryableNetstringsDeserializerAACF());
             deserializeDataFrom(in);
         }
 
@@ -50,6 +50,9 @@ namespace core {
                 // Data is encoded in 0xAACF format, representing version 1 of queryable netstrings.
                 // Rewind the position and delegate decoding to QueryableNetstringsDeserializerAACF.
                 in.seekg(currentPosition);
+
+                // Instantiate AACF deserializer.
+                m_deserializer = SharedPointer<Deserializer>(new QueryableNetstringsDeserializerAACF());
                 m_deserializer->deserializeDataFrom(in);
             }
             else {
