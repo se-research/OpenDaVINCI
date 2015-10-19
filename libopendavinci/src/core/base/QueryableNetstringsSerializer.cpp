@@ -18,6 +18,8 @@
  */
 
 #include "core/base/QueryableNetstringsSerializer.h"
+#include "core/base/QueryableNetstringsSerializerAACF.h"
+#include "core/base/QueryableNetstringsSerializerABCF.h"
 #include "core/base/Serializable.h"
 
 namespace core {
@@ -28,13 +30,13 @@ namespace core {
         QueryableNetstringsSerializer::QueryableNetstringsSerializer() :
             m_out(NULL),
             m_serializer() {
-            m_serializer = SharedPointer<Serializer>(new QueryableNetstringsSerializerAACF());
+            m_serializer = SharedPointer<Serializer>(new QueryableNetstringsSerializerABCF());
         }
 
         QueryableNetstringsSerializer::QueryableNetstringsSerializer(ostream &out) :
             m_out(&out),
             m_serializer() {
-            m_serializer = SharedPointer<Serializer>(new QueryableNetstringsSerializerAACF());
+            m_serializer = SharedPointer<Serializer>(new QueryableNetstringsSerializerABCF());
         }
 
         QueryableNetstringsSerializer::~QueryableNetstringsSerializer() {

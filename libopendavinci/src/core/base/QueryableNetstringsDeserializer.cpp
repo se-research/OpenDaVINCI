@@ -19,6 +19,8 @@
 
 #include "core/base/module/AbstractCIDModule.h"
 #include "core/base/QueryableNetstringsDeserializer.h"
+#include "core/base/QueryableNetstringsDeserializerAACF.h"
+#include "core/base/QueryableNetstringsDeserializerABCF.h"
 #include "core/base/Serializable.h"
 
 namespace core {
@@ -53,6 +55,15 @@ namespace core {
 
                 // Instantiate AACF deserializer.
                 m_deserializer = SharedPointer<Deserializer>(new QueryableNetstringsDeserializerAACF());
+                m_deserializer->deserializeDataFrom(in);
+            }
+            else if (magicNumber == 0xABCF) {
+                // Data is encoded in 0xABCF format, representing version 2 of queryable netstrings.
+                // Rewind the position and delegate decoding to QueryableNetstringsDeserializerABCF.
+                in.seekg(currentPosition);
+
+                // Instantiate ABCF deserializer.
+                m_deserializer = SharedPointer<Deserializer>(new QueryableNetstringsDeserializerABCF());
                 m_deserializer->deserializeDataFrom(in);
             }
             else {
