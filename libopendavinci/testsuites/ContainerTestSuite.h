@@ -32,6 +32,19 @@ using namespace core::data;
 
 class ContainerTest : public CxxTest::TestSuite {
     public:
+        void testTimeStampData() {
+            TimeStamp ts;
+
+            stringstream s;
+            s << ts;
+            s.flush();
+
+            TimeStamp ts2;
+            s >> ts2;
+
+            TS_ASSERT(ts.toString() == ts2.toString());
+        }
+
         void testContainerData() {
             TimeStamp ts;
             Container c(Container::TIMESTAMP, ts);

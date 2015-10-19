@@ -80,9 +80,8 @@ namespace core {
             stringstream buffer;
             buffer << s;
 
-            uint32_t size = static_cast<uint32_t>(buffer.str().length());
-            size = htonl(size);
-            m_buffer.write(reinterpret_cast<const char*>(&size), sizeof(uint32_t));
+            uint64_t size = static_cast<uint32_t>(buffer.str().length());
+            encodeVarInt(m_buffer, size);
 
             m_buffer << buffer.str();
         }
@@ -92,9 +91,9 @@ namespace core {
             _id = htonl(_id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
-            uint32_t size = static_cast<uint32_t>(sizeof(b));
-            size = htonl(size);
-            m_buffer.write(reinterpret_cast<const char*>(&size), sizeof(uint32_t));
+            uint64_t size = static_cast<uint32_t>(sizeof(b));
+            encodeVarInt(m_buffer, size);
+
             m_buffer.write(reinterpret_cast<const char *>(&b), sizeof(const bool));
         }
 
@@ -103,9 +102,9 @@ namespace core {
             _id = htonl(_id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
-            uint32_t size = static_cast<uint32_t>(sizeof(c));
-            size = htonl(size);
-            m_buffer.write(reinterpret_cast<const char*>(&size), sizeof(uint32_t));
+            uint64_t size = static_cast<uint32_t>(sizeof(c));
+            encodeVarInt(m_buffer, size);
+
             m_buffer.write(&c, sizeof(const char));
         }
 
@@ -114,9 +113,9 @@ namespace core {
             _id = htonl(_id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
-            uint32_t size = static_cast<uint32_t>(sizeof(uc));
-            size = htonl(size);
-            m_buffer.write(reinterpret_cast<const char*>(&size), sizeof(uint32_t));
+            uint64_t size = static_cast<uint32_t>(sizeof(uc));
+            encodeVarInt(m_buffer, size);
+
             m_buffer.write(reinterpret_cast<const char *>(&uc), sizeof(const unsigned char));
         }
 
@@ -125,9 +124,8 @@ namespace core {
             _id = htonl(_id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
-            uint32_t size = static_cast<uint32_t>(sizeof(i));
-            size = htonl(size);
-            m_buffer.write(reinterpret_cast<const char*>(&size), sizeof(uint32_t));
+            uint64_t size = static_cast<uint32_t>(sizeof(i));
+            encodeVarInt(m_buffer, size);
 
             int8_t _i = i;
             m_buffer.write(reinterpret_cast<const char *>(&_i), sizeof(const int8_t));
@@ -138,9 +136,8 @@ namespace core {
             _id = htonl(_id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
-            uint32_t size = static_cast<uint32_t>(sizeof(i));
-            size = htonl(size);
-            m_buffer.write(reinterpret_cast<const char*>(&size), sizeof(uint32_t));
+            uint64_t size = static_cast<uint32_t>(sizeof(i));
+            encodeVarInt(m_buffer, size);
 
             int16_t _i = i;
             _i = htons(_i);
@@ -152,9 +149,8 @@ namespace core {
             _id = htonl(_id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
-            uint32_t size = static_cast<uint32_t>(sizeof(ui));
-            size = htonl(size);
-            m_buffer.write(reinterpret_cast<const char*>(&size), sizeof(uint32_t));
+            uint64_t size = static_cast<uint32_t>(sizeof(ui));
+            encodeVarInt(m_buffer, size);
 
             uint16_t _ui = ui;
             _ui = htons(_ui);
@@ -166,9 +162,8 @@ namespace core {
             _id = htonl(_id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
-            uint32_t size = static_cast<uint32_t>(sizeof(i));
-            size = htonl(size);
-            m_buffer.write(reinterpret_cast<const char*>(&size), sizeof(uint32_t));
+            uint64_t size = static_cast<uint32_t>(sizeof(i));
+            encodeVarInt(m_buffer, size);
 
             int32_t _i = i;
             _i = htonl(_i);
@@ -180,9 +175,8 @@ namespace core {
             _id = htonl(_id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
-            uint32_t size = static_cast<uint32_t>(sizeof(ui));
-            size = htonl(size);
-            m_buffer.write(reinterpret_cast<const char*>(&size), sizeof(uint32_t));
+            uint64_t size = static_cast<uint32_t>(sizeof(ui));
+            encodeVarInt(m_buffer, size);
 
             uint32_t _ui = ui;
             _ui = htonl(_ui);
@@ -194,9 +188,8 @@ namespace core {
             _id = htonl(_id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
-            uint32_t size = static_cast<uint32_t>(sizeof(i));
-            size = htonl(size);
-            m_buffer.write(reinterpret_cast<const char*>(&size), sizeof(uint32_t));
+            uint64_t size = static_cast<uint32_t>(sizeof(i));
+            encodeVarInt(m_buffer, size);
 
             int64_t _i = i;
             _i = __htonll(_i);
@@ -208,9 +201,8 @@ namespace core {
             _id = htonl(_id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
-            uint32_t size = static_cast<uint32_t>(sizeof(ui));
-            size = htonl(size);
-            m_buffer.write(reinterpret_cast<const char*>(&size), sizeof(uint32_t));
+            uint64_t size = static_cast<uint32_t>(sizeof(ui));
+            encodeVarInt(m_buffer, size);
 
             uint64_t _ui = ui;
             _ui = __htonll(_ui);
@@ -222,9 +214,8 @@ namespace core {
             _id = htonl(_id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
-            uint32_t size = static_cast<uint32_t>(sizeof(f));
-            size = htonl(size);
-            m_buffer.write(reinterpret_cast<const char*>(&size), sizeof(uint32_t));
+            uint64_t size = static_cast<uint32_t>(sizeof(f));
+            encodeVarInt(m_buffer, size);
 
             float _f = f;
             _f = Serializer::htonf(_f);
@@ -236,9 +227,8 @@ namespace core {
             _id = htonl(_id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
-            uint32_t size = static_cast<uint32_t>(sizeof(d));
-            size = htonl(size);
-            m_buffer.write(reinterpret_cast<const char*>(&size), sizeof(uint32_t));
+            uint64_t size = static_cast<uint32_t>(sizeof(d));
+            encodeVarInt(m_buffer, size);
 
             double _d = d;
             _d = Serializer::htond(_d);
@@ -252,8 +242,7 @@ namespace core {
 
             uint32_t stringLength = s.length();
             uint32_t size = static_cast<uint32_t>(stringLength + sizeof(uint32_t)); // String's length plus the length of the type for (string's length).
-            size = htonl(size);
-            m_buffer.write(reinterpret_cast<const char *>(&size), sizeof(uint32_t));
+            encodeVarInt(m_buffer, size);
 
             uint32_t _stringLength = stringLength;
             _stringLength = htonl(_stringLength);
@@ -266,9 +255,8 @@ namespace core {
             _id = htonl(_id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
-            uint32_t realSize = size;
-            realSize = htonl(realSize);
-            m_buffer.write(reinterpret_cast<const char*>(&realSize), sizeof(uint32_t));
+            encodeVarInt(m_buffer, size);
+
             m_buffer.write(reinterpret_cast<const char*>(data), size);
         }
 
