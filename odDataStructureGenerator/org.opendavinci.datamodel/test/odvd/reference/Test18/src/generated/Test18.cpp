@@ -167,9 +167,9 @@
 
 		s->write(CRC32 < CharList<'m', CharList<'y', CharList<'A', CharList<'r', CharList<'r', CharList<'a', CharList<'y', CharList<'1', NullType> > > > > > > >  >::RESULT,
 				m_myArray1, getSize_MyArray1() * (sizeof(uint32_t)/sizeof(char)));
-		s->write(CRC32 < CharList<'m', CharList<'y', CharList<'A', CharList<'r', CharList<'r', CharList<'a', CharList<'y', CharList<'2', NullType> > > > > > > >  >::RESULT,
+		s->write(4,
 				m_myArray2, getSize_MyArray2() * (sizeof(float)/sizeof(char)));
-		s->write(CRC32 < CharList<'m', CharList<'y', CharList<'A', CharList<'t', CharList<'t', CharList<'1', NullType> > > > > >  >::RESULT,
+		s->write(5,
 				m_myAtt1);
 		s->write(0x12345678, m_myAtt2);
 		s->write(0xAaBbCcDd, m_myAtt3);
@@ -184,9 +184,9 @@
 
 		d->read(CRC32 < CharList<'m', CharList<'y', CharList<'A', CharList<'r', CharList<'r', CharList<'a', CharList<'y', CharList<'1', NullType> > > > > > > >  >::RESULT,
 		       m_myArray1, getSize_MyArray1() * (sizeof(uint32_t)/sizeof(char)));
-		d->read(CRC32 < CharList<'m', CharList<'y', CharList<'A', CharList<'r', CharList<'r', CharList<'a', CharList<'y', CharList<'2', NullType> > > > > > > >  >::RESULT,
+		d->read(4,
 		       m_myArray2, getSize_MyArray2() * (sizeof(float)/sizeof(char)));
-		d->read(CRC32 < CharList<'m', CharList<'y', CharList<'A', CharList<'t', CharList<'t', CharList<'1', NullType> > > > > >  >::RESULT,
+		d->read(5,
 				m_myAtt1);
 		d->read(0x12345678, m_myAtt2);
 		d->read(0xAaBbCcDd, m_myAtt3);
