@@ -134,7 +134,9 @@ namespace core {
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
-                m_buffer.read(reinterpret_cast<char *>(&b), sizeof(bool));
+                uint64_t tmp = 0;
+                decodeVarInt(m_buffer, tmp);
+                b = static_cast<bool>(tmp);
             }
         }
 
@@ -143,7 +145,9 @@ namespace core {
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
-                m_buffer.read(&c, sizeof(char));
+                uint64_t tmp = 0;
+                decodeVarInt(m_buffer, tmp);
+                c = static_cast<char>(tmp);
             }
         }
 
@@ -152,7 +156,9 @@ namespace core {
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
-                m_buffer.read(reinterpret_cast<char *>(&uc), sizeof(unsigned char));
+                uint64_t tmp = 0;
+                decodeVarInt(m_buffer, tmp);
+                uc = static_cast<unsigned char>(tmp);
             }
         }
 
@@ -161,7 +167,9 @@ namespace core {
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
-                m_buffer.read(reinterpret_cast<char *>(&i), sizeof(int8_t));
+                uint64_t tmp = 0;
+                decodeVarInt(m_buffer, tmp);
+                i = static_cast<int8_t>(tmp);
             }
         }
 
@@ -170,10 +178,9 @@ namespace core {
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
-                int16_t _i = 0;
-                m_buffer.read(reinterpret_cast<char *>(&_i), sizeof(int16_t));
-                _i = ntohs(_i);
-                i = _i;
+                uint64_t tmp = 0;
+                decodeVarInt(m_buffer, tmp);
+                i = static_cast<int16_t>(tmp);
             }
         }
 
@@ -182,11 +189,9 @@ namespace core {
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
-
-                uint16_t _ui = 0;
-                m_buffer.read(reinterpret_cast<char *>(&_ui), sizeof(uint16_t));
-                _ui = ntohs(_ui);
-                ui = _ui;
+                uint64_t tmp = 0;
+                decodeVarInt(m_buffer, tmp);
+                ui = static_cast<uint16_t>(tmp);
             }
         }
 
@@ -206,11 +211,9 @@ namespace core {
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
-
-                uint32_t _ui = 0;
-                m_buffer.read(reinterpret_cast<char *>(&_ui), sizeof(uint32_t));
-                _ui = ntohl(_ui);
-                ui = _ui;
+                uint64_t tmp = 0;
+                decodeVarInt(m_buffer, tmp);
+                ui = static_cast<uint32_t>(tmp);
             }
         }
 
@@ -219,10 +222,9 @@ namespace core {
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
-                int64_t _i = 0;
-                m_buffer.read(reinterpret_cast<char *>(&_i), sizeof(int64_t));
-                _i = __ntohll(_i);
-                i = _i;
+                uint64_t tmp = 0;
+                decodeVarInt(m_buffer, tmp);
+                i = static_cast<int64_t>(tmp);
             }
         }
 
@@ -231,11 +233,9 @@ namespace core {
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
-
-                uint64_t _ui = 0;
-                m_buffer.read(reinterpret_cast<char *>(&_ui), sizeof(uint64_t));
-                _ui = __ntohll(_ui);
-                ui = _ui;
+                uint64_t tmp = 0;
+                decodeVarInt(m_buffer, tmp);
+                ui = static_cast<uint64_t>(tmp);
             }
         }
 
