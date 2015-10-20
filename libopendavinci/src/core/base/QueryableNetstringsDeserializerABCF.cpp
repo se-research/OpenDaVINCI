@@ -306,5 +306,140 @@ namespace core {
             }
         }
 
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, Serializable &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::QueryableNetstringsDeserializerABCF]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
+        }
+
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, bool &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::QueryableNetstringsDeserializerABCF]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
+        }
+
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, char &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::QueryableNetstringsDeserializerABCF]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
+        }
+
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, unsigned char &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::QueryableNetstringsDeserializerABCF]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
+        }
+
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, int8_t &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::QueryableNetstringsDeserializerABCF]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
+        }
+
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, int16_t &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::QueryableNetstringsDeserializerABCF]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
+        }
+
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, uint16_t &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::QueryableNetstringsDeserializerABCF]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
+        }
+
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, int32_t &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::QueryableNetstringsDeserializerABCF]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
+        }
+
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, uint32_t &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::QueryableNetstringsDeserializerABCF]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
+        }
+
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, int64_t &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::QueryableNetstringsDeserializerABCF]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
+        }
+
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, uint64_t &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::QueryableNetstringsDeserializerABCF]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
+        }
+
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, float &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::QueryableNetstringsDeserializerABCF]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
+        }
+
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, double &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::QueryableNetstringsDeserializerABCF]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
+        }
+
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, string &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::QueryableNetstringsDeserializerABCF]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
+        }
+
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, void *data, const uint32_t &size) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)data;
+            (void)size;
+            cerr << "[core::base::QueryableNetstringsDeserializerABCF]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
+        }
     }
 } // core::base

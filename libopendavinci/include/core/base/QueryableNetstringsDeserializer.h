@@ -79,39 +79,43 @@ namespace core {
                  */
                 QueryableNetstringsDeserializer();
 
-                virtual void deserializeDataFrom(istream &in);
-
                 virtual ~QueryableNetstringsDeserializer();
 
+                virtual void deserializeDataFrom(istream &in);
+
+            public:
                 virtual void read(const uint32_t &id, Serializable &s);
-
                 virtual void read(const uint32_t &id, bool &b);
-
                 virtual void read(const uint32_t &id, char &c);
-
                 virtual void read(const uint32_t &id, unsigned char &uc);
-
                 virtual void read(const uint32_t &id, int8_t &i);
-
                 virtual void read(const uint32_t &id, int16_t &i);
-
                 virtual void read(const uint32_t &id, uint16_t &ui);
-
                 virtual void read(const uint32_t &id, int32_t &i);
-
                 virtual void read(const uint32_t &id, uint32_t &ui);
-
                 virtual void read(const uint32_t &id, int64_t &i);
-
                 virtual void read(const uint32_t &id, uint64_t &ui);
-
                 virtual void read(const uint32_t &id, float &f);
-
                 virtual void read(const uint32_t &id, double &d);
-
                 virtual void read(const uint32_t &id, string &s);
-
                 virtual void read(const uint32_t &id, void *data, const uint32_t &size);
+
+            public:
+                virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, Serializable &s);
+                virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, bool &b);
+                virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, char &c);
+                virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, unsigned char &uc);
+                virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, int8_t &i);
+                virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, int16_t &i);
+                virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, uint16_t &ui);
+                virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, int32_t &i);
+                virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, uint32_t &ui);
+                virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, int64_t &i);
+                virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, uint64_t &ui);
+                virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, float &f);
+                virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, double &d);
+                virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, string &s);
+                virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, void *data, const uint32_t &size);
 
             private:
                 SharedPointer<Deserializer> m_deserializer;

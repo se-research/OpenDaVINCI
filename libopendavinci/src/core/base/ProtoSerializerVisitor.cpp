@@ -55,7 +55,7 @@ namespace core {
             // We will write at least one byte.
             uint8_t size = 1;
 
-            // Protobuf's VarInt is based on little endian.            
+            // Protobuf's VarInt is based on little endian.
             value = htole64(value);
 
             char byte = 0;
@@ -154,6 +154,142 @@ namespace core {
 
             m_buffer.write(reinterpret_cast<const char*>(data), size);  
             m_size += size;
+        }
+
+        void ProtoSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const Serializable &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ProtoSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
+        }
+
+        void ProtoSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const bool &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ProtoSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
+        }
+
+        void ProtoSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const char &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ProtoSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
+        }
+
+        void ProtoSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const unsigned char &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ProtoSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
+        }
+
+        void ProtoSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const int8_t &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ProtoSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
+        }
+
+        void ProtoSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const int16_t &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ProtoSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
+        }
+
+        void ProtoSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const uint16_t &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ProtoSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
+        }
+
+        void ProtoSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const int32_t &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ProtoSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
+        }
+
+        void ProtoSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const uint32_t &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ProtoSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
+        }
+
+        void ProtoSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const int64_t &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ProtoSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
+        }
+
+        void ProtoSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const uint64_t &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ProtoSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
+        }
+
+        void ProtoSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const float &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ProtoSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
+        }
+
+        void ProtoSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const double &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ProtoSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
+        }
+
+        void ProtoSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const string &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ProtoSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
+        }
+
+        void ProtoSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const void *data, const uint32_t &size) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)data;
+            (void)size;
+            cerr << "[core::base::ProtoSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
         }
 
 

@@ -82,6 +82,23 @@ namespace core {
                 virtual void write(const uint32_t &id, const string &s);
                 virtual void write(const uint32_t &id, const void *data, const uint32_t &size);
 
+            private:
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const Serializable &s);
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const bool &b);
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const char &c);
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const unsigned char &uc);
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const int8_t &i);
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const int16_t &i);
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const uint16_t &ui);
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const int32_t &i);
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const uint32_t &ui);
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const int64_t &i);
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const uint64_t &ui);
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const float &f);
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const double &d);
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const string &s);
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const void *data, const uint32_t &size);
+
             public:
                 virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, Serializable &v);
                 virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, bool &v);

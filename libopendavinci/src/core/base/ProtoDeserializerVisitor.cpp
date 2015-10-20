@@ -90,7 +90,7 @@ namespace core {
                 if ( !(c & 0x80) ) break;
             }
 
-            // Protobuf's VarInt is based on little endian.            
+            // Protobuf's VarInt is based on little endian.
             value = le64toh(value);
 
             return size;
@@ -233,6 +233,143 @@ namespace core {
             memset(data, 0, size);
             memcpy(data, _data, (size < length ? size : length));
             OPENDAVINCI_CORE_DELETE_ARRAY(_data);
+        }
+
+
+        void ProtoDeserializerVisitor::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, Serializable &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ProtoDeserializerVisitor]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
+        }
+
+        void ProtoDeserializerVisitor::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, bool &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ProtoDeserializerVisitor]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
+        }
+
+        void ProtoDeserializerVisitor::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, char &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ProtoDeserializerVisitor]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
+        }
+
+        void ProtoDeserializerVisitor::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, unsigned char &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ProtoDeserializerVisitor]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
+        }
+
+        void ProtoDeserializerVisitor::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, int8_t &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ProtoDeserializerVisitor]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
+        }
+
+        void ProtoDeserializerVisitor::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, int16_t &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ProtoDeserializerVisitor]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
+        }
+
+        void ProtoDeserializerVisitor::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, uint16_t &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ProtoDeserializerVisitor]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
+        }
+
+        void ProtoDeserializerVisitor::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, int32_t &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ProtoDeserializerVisitor]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
+        }
+
+        void ProtoDeserializerVisitor::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, uint32_t &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ProtoDeserializerVisitor]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
+        }
+
+        void ProtoDeserializerVisitor::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, int64_t &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ProtoDeserializerVisitor]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
+        }
+
+        void ProtoDeserializerVisitor::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, uint64_t &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ProtoDeserializerVisitor]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
+        }
+
+        void ProtoDeserializerVisitor::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, float &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ProtoDeserializerVisitor]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
+        }
+
+        void ProtoDeserializerVisitor::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, double &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ProtoDeserializerVisitor]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
+        }
+
+        void ProtoDeserializerVisitor::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, string &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ProtoDeserializerVisitor]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
+        }
+
+        void ProtoDeserializerVisitor::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, void *data, const uint32_t &size) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)data;
+            (void)size;
+            cerr << "[core::base::ProtoDeserializerVisitor]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
         }
 
 

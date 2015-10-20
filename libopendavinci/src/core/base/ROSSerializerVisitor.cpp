@@ -133,11 +133,147 @@ namespace core {
 
         void ROSSerializerVisitor::write(const uint32_t &/*id*/, const void */*data*/, const uint32_t &/*size*/) {}
 
+        void ROSSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const Serializable &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ROSSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
+        }
+
+        void ROSSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const bool &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ROSSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
+        }
+
+        void ROSSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const char &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ROSSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
+        }
+
+        void ROSSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const unsigned char &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ROSSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
+        }
+
+        void ROSSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const int8_t &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ROSSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
+        }
+
+        void ROSSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const int16_t &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ROSSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
+        }
+
+        void ROSSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const uint16_t &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ROSSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
+        }
+
+        void ROSSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const int32_t &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ROSSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
+        }
+
+        void ROSSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const uint32_t &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ROSSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
+        }
+
+        void ROSSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const int64_t &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ROSSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
+        }
+
+        void ROSSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const uint64_t &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ROSSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
+        }
+
+        void ROSSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const float &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ROSSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
+        }
+
+        void ROSSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const double &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ROSSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
+        }
+
+        void ROSSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const string &v) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)v;
+            cerr << "[core::base::ROSSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
+        }
+
+        void ROSSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const void *data, const uint32_t &size) {
+            (void)fourByteID;
+            (void)oneByteID;
+            (void)longName;
+            (void)shortName;
+            (void)data;
+            (void)size;
+            cerr << "[core::base::ROSSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
+        }
+
 
         void ROSSerializerVisitor::visit(const uint32_t &longId, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, Serializable &v) {
             (void)longId;
             (void)v;
-            cerr << "[core::base::ROSDeserializerVisitor]: ROS for Serializable not implemented!" << endl;
+            cerr << "[core::base::ROSSerializerVisitor]: ROS for Serializable not implemented!" << endl;
         }
 
         void ROSSerializerVisitor::visit(const uint32_t &longId, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, bool &v) {
@@ -196,7 +332,7 @@ namespace core {
             (void)longId;
             (void)data;
             (void)size;
-            cerr << "[core::base::ROSDeserializerVisitor]: ROS for void* not implemented!" << endl;
+            cerr << "[core::base::ROSSerializerVisitor]: ROS for void* not implemented!" << endl;
         }
 
     }

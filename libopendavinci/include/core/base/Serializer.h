@@ -48,6 +48,7 @@ namespace core {
                  */
                 virtual void getSerializedData(ostream &o) = 0;
 
+            public:
                 /**
                  * This method serializes a Serializable.
                  *
@@ -168,6 +169,173 @@ namespace core {
                  * @param size Length of the data to be serialized.
                  */
                 virtual void write(const uint32_t &id, const void *data, const uint32_t &size) = 0;
+
+            public:
+                /**
+                 * This method serializes a Serializable.
+                 *
+                 * @param fourByteID Identifier for the value to be serialized.
+                 * @param oneByteID Identifier for the value to be serialized.
+                 * @param longName Long string name of the field.
+                 * @param shortName Short string name of the field.
+                 * @param s Serializable to be serialized.
+                 */
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const Serializable &s) = 0;
+
+                /**
+                 * This method serializes a bool.
+                 *
+                 * @param fourByteID Identifier for the value to be serialized.
+                 * @param oneByteID Identifier for the value to be serialized.
+                 * @param longName Long string name of the field.
+                 * @param shortName Short string name of the field.
+                 * @param b Bool to be serialized.
+                 */
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const bool &b) = 0;
+
+                /**
+                 * This method serializes a char.
+                 *
+                 * @param fourByteID Identifier for the value to be serialized.
+                 * @param oneByteID Identifier for the value to be serialized.
+                 * @param longName Long string name of the field.
+                 * @param shortName Short string name of the field.
+                 * @param c Char to be serialized.
+                 */
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const char &c) = 0;
+
+                /**
+                 * This method serializes an unsigned char.
+                 *
+                 * @param fourByteID Identifier for the value to be serialized.
+                 * @param oneByteID Identifier for the value to be serialized.
+                 * @param longName Long string name of the field.
+                 * @param shortName Short string name of the field.
+                 * @param uc Unsigned char to be serialized.
+                 */
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const unsigned char &uc) = 0;
+
+                /**
+                 * This method serializes an int.
+                 *
+                 * @param fourByteID Identifier for the value to be serialized.
+                 * @param oneByteID Identifier for the value to be serialized.
+                 * @param longName Long string name of the field.
+                 * @param shortName Short string name of the field.
+                 * @param i Int to be serialized.
+                 */
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const int8_t &i) = 0;
+
+                /**
+                 * This method serializes an int.
+                 *
+                 * @param fourByteID Identifier for the value to be serialized.
+                 * @param oneByteID Identifier for the value to be serialized.
+                 * @param longName Long string name of the field.
+                 * @param shortName Short string name of the field.
+                 * @param i Int to be serialized.
+                 */
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const int16_t &i) = 0;
+
+                /**
+                 * This method serializes an uint32_t.
+                 *
+                 * @param fourByteID Identifier for the value to be serialized.
+                 * @param oneByteID Identifier for the value to be serialized.
+                 * @param longName Long string name of the field.
+                 * @param shortName Short string name of the field.
+                 * @param ui Unsigned int32_t to be serialized.
+                 */
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const uint16_t &ui) = 0;
+
+                /**
+                 * This method serializes an int.
+                 *
+                 * @param fourByteID Identifier for the value to be serialized.
+                 * @param oneByteID Identifier for the value to be serialized.
+                 * @param longName Long string name of the field.
+                 * @param shortName Short string name of the field.
+                 * @param i Int to be serialized.
+                 */
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const int32_t &i) = 0;
+
+                /**
+                 * This method serializes an uint32_t.
+                 *
+                 * @param fourByteID Identifier for the value to be serialized.
+                 * @param oneByteID Identifier for the value to be serialized.
+                 * @param longName Long string name of the field.
+                 * @param shortName Short string name of the field.
+                 * @param ui Unsigned int32_t to be serialized.
+                 */
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const uint32_t &ui) = 0;
+
+                /**
+                 * This method serializes an int.
+                 *
+                 * @param fourByteID Identifier for the value to be serialized.
+                 * @param oneByteID Identifier for the value to be serialized.
+                 * @param longName Long string name of the field.
+                 * @param shortName Short string name of the field.
+                 * @param i Int to be serialized.
+                 */
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const int64_t &i) = 0;
+
+                /**
+                 * This method serializes an uint32_t.
+                 *
+                 * @param fourByteID Identifier for the value to be serialized.
+                 * @param oneByteID Identifier for the value to be serialized.
+                 * @param longName Long string name of the field.
+                 * @param shortName Short string name of the field.
+                 * @param ui Unsigned int32_t to be serialized.
+                 */
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const uint64_t &ui) = 0;
+
+                /**
+                 * This method serializes a float.
+                 *
+                 * @param fourByteID Identifier for the value to be serialized.
+                 * @param oneByteID Identifier for the value to be serialized.
+                 * @param longName Long string name of the field.
+                 * @param shortName Short string name of the field.
+                 * @param f Float to be serialized.
+                 */
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const float &f) = 0;
+
+                /**
+                 * This method serializes a double.
+                 *
+                 * @param fourByteID Identifier for the value to be serialized.
+                 * @param oneByteID Identifier for the value to be serialized.
+                 * @param longName Long string name of the field.
+                 * @param shortName Short string name of the field.
+                 * @param d Double to be serialized.
+                 */
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const double &d) = 0;
+
+                /**
+                 * This method serializes a string.
+                 *
+                 * @param fourByteID Identifier for the value to be serialized.
+                 * @param oneByteID Identifier for the value to be serialized.
+                 * @param longName Long string name of the field.
+                 * @param shortName Short string name of the field.
+                 * @param s String to be serialized.
+                 */
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const string &s) = 0;
+
+                /**
+                 * This method serializes undefined data of length size.
+                 *
+                 * @param fourByteID Identifier for the value to be serialized.
+                 * @param oneByteID Identifier for the value to be serialized.
+                 * @param longName Long string name of the field.
+                 * @param shortName Short string name of the field.
+                 * @param data Data to be serialized.
+                 * @param size Length of the data to be serialized.
+                 */
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const void *data, const uint32_t &size) = 0;
 
             public:
                 /**
