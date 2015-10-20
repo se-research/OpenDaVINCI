@@ -98,6 +98,11 @@ namespace core {
             char c = 0;
             uint64_t tokenIdentifier = 0;
             uint64_t lengthOfPayload = 0;
+
+            // Buffer to store payload "en bloc"; length is identical to UDP payload.
+            const uint32_t MAX_SIZE_PAYLOAD = 65535;
+            char buffer[MAX_SIZE_PAYLOAD];
+
             while (in.good() && (length > 0)) {
                 // Start of next token by reading ID.
                 length -= decodeVarInt(in, tokenIdentifier);
@@ -110,10 +115,13 @@ namespace core {
                 m_values.insert(make_pair(tokenIdentifier, m_buffer.tellp()));
 
                 // Decode payload.
-                for (uint32_t i = 0; i < lengthOfPayload; i++) {
-                    in.get(c);
-                    m_buffer.put(c);
-                    length--;
+                if (lengthOfPayload > 0) {
+                    // Read data "en bloc".
+                    in.read(buffer, lengthOfPayload);
+                    m_buffer.write(buffer, lengthOfPayload);
+
+                    // Update amount of processed data.
+                    length -= lengthOfPayload;
                 }
             }
 
