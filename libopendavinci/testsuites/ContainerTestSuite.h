@@ -39,8 +39,6 @@ class ContainerTest : public CxxTest::TestSuite {
             s << ts;
             s.flush();
 
-cerr << "'" << s.str() << "'" << endl;
-
             TimeStamp ts2;
             s >> ts2;
 
@@ -48,7 +46,7 @@ cerr << "'" << s.str() << "'" << endl;
         }
 
         void testContainerData() {
-            TimeStamp ts(123450, 6789012);
+            TimeStamp ts(12345, 6789);
             Container c(Container::TIMESTAMP, ts);
 
             stringstream s;

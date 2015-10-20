@@ -72,6 +72,12 @@ namespace core {
             // Payload.
             // ,
 
+            // The payload itself is encoded as:
+            //
+            // ID as varint
+            // Length of the payload as varint
+            // Value of the payload as varint
+
             // Checking for magic number.
             uint16_t magicNumber = 0;
             in.read(reinterpret_cast<char*>(&magicNumber), sizeof(uint16_t));

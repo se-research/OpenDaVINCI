@@ -87,8 +87,6 @@ namespace core {
 
             // Write End-Of-Data for checking corruptness.
             o << ",";
-
-cerr << "Length of payload = " << length << ", total = " << (length + 3) << endl;
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &id, const Serializable &s) {
