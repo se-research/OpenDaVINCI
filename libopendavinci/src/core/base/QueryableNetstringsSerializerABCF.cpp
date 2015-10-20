@@ -65,8 +65,6 @@ namespace core {
             uint64_t length = static_cast<uint32_t>(s.length());
             encodeVarInt(o, length);
 
-cerr << "Len: " << length << endl;
-
             // Write payload.
             o << s;
 
