@@ -134,127 +134,187 @@ namespace core {
 
         QueryableNetstringsDeserializerABCF::~QueryableNetstringsDeserializerABCF() {}
 
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, Serializable &s) {
-            map<uint32_t, streampos>::iterator it = m_values.find(QueryableNetstringsSerializerABCF::shortenID(id));
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, Serializable &v) {
+            read(id, 0, "", "", v);
+        }
+
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, bool &v) {
+            read(id, 0, "", "", v);
+        }
+
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, char &v) {
+            read(id, 0, "", "", v);
+        }
+
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, unsigned char &v) {
+            read(id, 0, "", "", v);
+        }
+
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, int8_t &v) {
+            read(id, 0, "", "", v);
+        }
+
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, int16_t &v) {
+            read(id, 0, "", "", v);
+        }
+
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, uint16_t &v) {
+            read(id, 0, "", "", v);
+        }
+
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, int32_t &v) {
+            read(id, 0, "", "", v);
+        }
+
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, uint32_t &v) {
+            read(id, 0, "", "", v);
+        }
+
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, int64_t &v) {
+            read(id, 0, "", "", v);
+        }
+
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, uint64_t &v) {
+            read(id, 0, "", "", v);
+        }
+
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, float &v) {
+            read(id, 0, "", "", v);
+        }
+
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, double &v) {
+            read(id, 0, "", "", v);
+        }
+
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, string &v) {
+            read(id, 0, "", "", v);
+        }
+
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, void *data, const uint32_t &size) {
+            read(id, 0, "", "", data, size);
+        }
+
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, Serializable &v) {
+            map<uint32_t, streampos>::iterator it = m_values.find( (oneByteID > 0 ? oneByteID : fourByteID) );
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
-                m_buffer >> s;
+                m_buffer >> v;
             }
         }
 
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, bool &b) {
-            map<uint32_t, streampos>::iterator it = m_values.find(QueryableNetstringsSerializerABCF::shortenID(id));
-
-            if (it != m_values.end()) {
-                m_buffer.seekg(it->second);
-                uint64_t tmp = 0;
-                decodeVarInt(m_buffer, tmp);
-                b = static_cast<bool>(tmp);
-            }
-        }
-
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, char &c) {
-            map<uint32_t, streampos>::iterator it = m_values.find(QueryableNetstringsSerializerABCF::shortenID(id));
-
-            if (it != m_values.end()) {
-                m_buffer.seekg(it->second);
-                uint64_t tmp = 0;
-                decodeVarInt(m_buffer, tmp);
-                c = static_cast<char>(tmp);
-            }
-        }
-
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, unsigned char &uc) {
-            map<uint32_t, streampos>::iterator it = m_values.find(QueryableNetstringsSerializerABCF::shortenID(id));
-
-            if (it != m_values.end()) {
-                m_buffer.seekg(it->second);
-                uint64_t tmp = 0;
-                decodeVarInt(m_buffer, tmp);
-                uc = static_cast<unsigned char>(tmp);
-            }
-        }
-
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, int8_t &i) {
-            map<uint32_t, streampos>::iterator it = m_values.find(QueryableNetstringsSerializerABCF::shortenID(id));
-
-            if (it != m_values.end()) {
-                m_buffer.seekg(it->second);
-                uint64_t tmp = 0;
-                decodeVarInt(m_buffer, tmp);
-                i = static_cast<int8_t>(tmp);
-            }
-        }
-
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, int16_t &i) {
-            map<uint32_t, streampos>::iterator it = m_values.find(QueryableNetstringsSerializerABCF::shortenID(id));
-
-            if (it != m_values.end()) {
-                m_buffer.seekg(it->second);
-                uint64_t tmp = 0;
-                decodeVarInt(m_buffer, tmp);
-                i = static_cast<int16_t>(tmp);
-            }
-        }
-
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, uint16_t &ui) {
-            map<uint32_t, streampos>::iterator it = m_values.find(QueryableNetstringsSerializerABCF::shortenID(id));
-
-            if (it != m_values.end()) {
-                m_buffer.seekg(it->second);
-                uint64_t tmp = 0;
-                decodeVarInt(m_buffer, tmp);
-                ui = static_cast<uint16_t>(tmp);
-            }
-        }
-
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, int32_t &i) {
-            map<uint32_t, streampos>::iterator it = m_values.find(QueryableNetstringsSerializerABCF::shortenID(id));
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, bool &v) {
+            map<uint32_t, streampos>::iterator it = m_values.find( (oneByteID > 0 ? oneByteID : fourByteID) );
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
                 uint64_t tmp = 0;
                 decodeVarInt(m_buffer, tmp);
-                i = static_cast<int32_t>(tmp);
+                v = static_cast<bool>(tmp);
             }
         }
 
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, uint32_t &ui) {
-            map<uint32_t, streampos>::iterator it = m_values.find(QueryableNetstringsSerializerABCF::shortenID(id));
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, char &v) {
+            map<uint32_t, streampos>::iterator it = m_values.find( (oneByteID > 0 ? oneByteID : fourByteID) );
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
                 uint64_t tmp = 0;
                 decodeVarInt(m_buffer, tmp);
-                ui = static_cast<uint32_t>(tmp);
+                v = static_cast<char>(tmp);
             }
         }
 
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, int64_t &i) {
-            map<uint32_t, streampos>::iterator it = m_values.find(QueryableNetstringsSerializerABCF::shortenID(id));
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, unsigned char &v) {
+            map<uint32_t, streampos>::iterator it = m_values.find( (oneByteID > 0 ? oneByteID : fourByteID) );
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
                 uint64_t tmp = 0;
                 decodeVarInt(m_buffer, tmp);
-                i = static_cast<int64_t>(tmp);
+                v = static_cast<unsigned char>(tmp);
             }
         }
 
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, uint64_t &ui) {
-            map<uint32_t, streampos>::iterator it = m_values.find(QueryableNetstringsSerializerABCF::shortenID(id));
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, int8_t &v) {
+            map<uint32_t, streampos>::iterator it = m_values.find( (oneByteID > 0 ? oneByteID : fourByteID) );
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
                 uint64_t tmp = 0;
                 decodeVarInt(m_buffer, tmp);
-                ui = static_cast<uint64_t>(tmp);
+                v = static_cast<int8_t>(tmp);
             }
         }
 
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, float &f) {
-            map<uint32_t, streampos>::iterator it = m_values.find(QueryableNetstringsSerializerABCF::shortenID(id));
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, int16_t &v) {
+            map<uint32_t, streampos>::iterator it = m_values.find( (oneByteID > 0 ? oneByteID : fourByteID) );
+
+            if (it != m_values.end()) {
+                m_buffer.seekg(it->second);
+                uint64_t tmp = 0;
+                decodeVarInt(m_buffer, tmp);
+                v = static_cast<int16_t>(tmp);
+            }
+        }
+
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, uint16_t &v) {
+            map<uint32_t, streampos>::iterator it = m_values.find( (oneByteID > 0 ? oneByteID : fourByteID) );
+
+            if (it != m_values.end()) {
+                m_buffer.seekg(it->second);
+                uint64_t tmp = 0;
+                decodeVarInt(m_buffer, tmp);
+                v = static_cast<uint16_t>(tmp);
+            }
+        }
+
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, int32_t &v) {
+            map<uint32_t, streampos>::iterator it = m_values.find( (oneByteID > 0 ? oneByteID : fourByteID) );
+
+            if (it != m_values.end()) {
+                m_buffer.seekg(it->second);
+                uint64_t tmp = 0;
+                decodeVarInt(m_buffer, tmp);
+                v = static_cast<int32_t>(tmp);
+            }
+        }
+
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, uint32_t &v) {
+            map<uint32_t, streampos>::iterator it = m_values.find( (oneByteID > 0 ? oneByteID : fourByteID) );
+
+            if (it != m_values.end()) {
+                m_buffer.seekg(it->second);
+                uint64_t tmp = 0;
+                decodeVarInt(m_buffer, tmp);
+                v = static_cast<uint32_t>(tmp);
+            }
+        }
+
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, int64_t &v) {
+            map<uint32_t, streampos>::iterator it = m_values.find( (oneByteID > 0 ? oneByteID : fourByteID) );
+
+            if (it != m_values.end()) {
+                m_buffer.seekg(it->second);
+                uint64_t tmp = 0;
+                decodeVarInt(m_buffer, tmp);
+                v = static_cast<int64_t>(tmp);
+            }
+        }
+
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, uint64_t &v) {
+            map<uint32_t, streampos>::iterator it = m_values.find( (oneByteID > 0 ? oneByteID : fourByteID) );
+
+            if (it != m_values.end()) {
+                m_buffer.seekg(it->second);
+                uint64_t tmp = 0;
+                decodeVarInt(m_buffer, tmp);
+                v = static_cast<uint64_t>(tmp);
+            }
+        }
+
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, float &v) {
+            map<uint32_t, streampos>::iterator it = m_values.find( (oneByteID > 0 ? oneByteID : fourByteID) );
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
@@ -262,12 +322,12 @@ namespace core {
                 float _f = 0;
                 m_buffer.read(reinterpret_cast<char *>(&_f), sizeof(float));
                 _f = Deserializer::ntohf(_f);
-                f = _f;
+                v = _f;
             }
         }
 
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, double &d) {
-            map<uint32_t, streampos>::iterator it = m_values.find(QueryableNetstringsSerializerABCF::shortenID(id));
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, double &v) {
+            map<uint32_t, streampos>::iterator it = m_values.find( (oneByteID > 0 ? oneByteID : fourByteID) );
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
@@ -275,12 +335,12 @@ namespace core {
                 double _d = 0;
                 m_buffer.read(reinterpret_cast<char *>(&_d), sizeof(double));
                 _d = Deserializer::ntohd(_d);
-                d = _d;
+                v = _d;
             }
         }
 
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, string &s) {
-            map<uint32_t, streampos>::iterator it = m_values.find(QueryableNetstringsSerializerABCF::shortenID(id));
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, string &v) {
+            map<uint32_t, streampos>::iterator it = m_values.find( (oneByteID > 0 ? oneByteID : fourByteID) );
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
@@ -292,154 +352,18 @@ namespace core {
                 m_buffer.read(str, stringLength);
                 str[stringLength] = '\0';
                 // It is absolutely necessary to specify the size of the serialized string, otherwise, s contains only data until the first '\0' is read.
-                s = string(str, stringLength);
+                v = string(str, stringLength);
                 OPENDAVINCI_CORE_DELETE_ARRAY(str);
             }
         }
 
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, void *data, const uint32_t &size) {
-            map<uint32_t, streampos>::iterator it = m_values.find(QueryableNetstringsSerializerABCF::shortenID(id));
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, void *data, const uint32_t &size) {
+            map<uint32_t, streampos>::iterator it = m_values.find( (oneByteID > 0 ? oneByteID : fourByteID) );
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
                 m_buffer.read(reinterpret_cast<char*>(data), size);
             }
-        }
-
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, Serializable &v) {
-            (void)fourByteID;
-            (void)oneByteID;
-            (void)longName;
-            (void)shortName;
-            (void)v;
-            cerr << "[core::base::QueryableNetstringsDeserializerABCF]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
-        }
-
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, bool &v) {
-            (void)fourByteID;
-            (void)oneByteID;
-            (void)longName;
-            (void)shortName;
-            (void)v;
-            cerr << "[core::base::QueryableNetstringsDeserializerABCF]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
-        }
-
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, char &v) {
-            (void)fourByteID;
-            (void)oneByteID;
-            (void)longName;
-            (void)shortName;
-            (void)v;
-            cerr << "[core::base::QueryableNetstringsDeserializerABCF]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
-        }
-
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, unsigned char &v) {
-            (void)fourByteID;
-            (void)oneByteID;
-            (void)longName;
-            (void)shortName;
-            (void)v;
-            cerr << "[core::base::QueryableNetstringsDeserializerABCF]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
-        }
-
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, int8_t &v) {
-            (void)fourByteID;
-            (void)oneByteID;
-            (void)longName;
-            (void)shortName;
-            (void)v;
-            cerr << "[core::base::QueryableNetstringsDeserializerABCF]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
-        }
-
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, int16_t &v) {
-            (void)fourByteID;
-            (void)oneByteID;
-            (void)longName;
-            (void)shortName;
-            (void)v;
-            cerr << "[core::base::QueryableNetstringsDeserializerABCF]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
-        }
-
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, uint16_t &v) {
-            (void)fourByteID;
-            (void)oneByteID;
-            (void)longName;
-            (void)shortName;
-            (void)v;
-            cerr << "[core::base::QueryableNetstringsDeserializerABCF]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
-        }
-
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, int32_t &v) {
-            (void)fourByteID;
-            (void)oneByteID;
-            (void)longName;
-            (void)shortName;
-            (void)v;
-            cerr << "[core::base::QueryableNetstringsDeserializerABCF]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
-        }
-
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, uint32_t &v) {
-            (void)fourByteID;
-            (void)oneByteID;
-            (void)longName;
-            (void)shortName;
-            (void)v;
-            cerr << "[core::base::QueryableNetstringsDeserializerABCF]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
-        }
-
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, int64_t &v) {
-            (void)fourByteID;
-            (void)oneByteID;
-            (void)longName;
-            (void)shortName;
-            (void)v;
-            cerr << "[core::base::QueryableNetstringsDeserializerABCF]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
-        }
-
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, uint64_t &v) {
-            (void)fourByteID;
-            (void)oneByteID;
-            (void)longName;
-            (void)shortName;
-            (void)v;
-            cerr << "[core::base::QueryableNetstringsDeserializerABCF]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
-        }
-
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, float &v) {
-            (void)fourByteID;
-            (void)oneByteID;
-            (void)longName;
-            (void)shortName;
-            (void)v;
-            cerr << "[core::base::QueryableNetstringsDeserializerABCF]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
-        }
-
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, double &v) {
-            (void)fourByteID;
-            (void)oneByteID;
-            (void)longName;
-            (void)shortName;
-            (void)v;
-            cerr << "[core::base::QueryableNetstringsDeserializerABCF]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
-        }
-
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, string &v) {
-            (void)fourByteID;
-            (void)oneByteID;
-            (void)longName;
-            (void)shortName;
-            (void)v;
-            cerr << "[core::base::QueryableNetstringsDeserializerABCF]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
-        }
-
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, void *data, const uint32_t &size) {
-            (void)fourByteID;
-            (void)oneByteID;
-            (void)longName;
-            (void)shortName;
-            (void)data;
-            (void)size;
-            cerr << "[core::base::QueryableNetstringsDeserializerABCF]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
         }
     }
 } // core::base

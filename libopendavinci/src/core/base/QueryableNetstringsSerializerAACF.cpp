@@ -48,13 +48,73 @@ namespace core {
             o << ",";
         }
 
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const Serializable &s) {
-            uint32_t _id = id;
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const Serializable &v) {
+            write(id, 0, "", "", v);
+        }
+
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const bool &v) {
+            write(id, 0, "", "", v);
+        }
+
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const char &v) {
+            write(id, 0, "", "", v);
+        }
+
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const unsigned char &v) {
+            write(id, 0, "", "", v);
+        }
+
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const int8_t &v) {
+            write(id, 0, "", "", v);
+        }
+
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const int16_t &v) {
+            write(id, 0, "", "", v);
+        }
+
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const uint16_t &v) {
+            write(id, 0, "", "", v);
+        }
+
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const int32_t &v) {
+            write(id, 0, "", "", v);
+        }
+
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const uint32_t &v) {
+            write(id, 0, "", "", v);
+        }
+
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const int64_t &v) {
+            write(id, 0, "", "", v);
+        }
+
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const uint64_t &v) {
+            write(id, 0, "", "", v);
+        }
+
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const float &v) {
+            write(id, 0, "", "", v);
+        }
+
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const double &v) {
+            write(id, 0, "", "", v);
+        }
+
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const string &v) {
+            write(id, 0, "", "", v);
+        }
+
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const void *data, const uint32_t &size) {
+            write(id, 0, "", "", data, size);
+        }
+
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const Serializable &v) {
+            uint32_t _id = (oneByteID > 0 ? oneByteID : fourByteID);
             _id = htonl(_id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
             stringstream buffer;
-            buffer << s;
+            buffer << v;
 
             uint32_t size = static_cast<uint32_t>(buffer.str().length());
             size = htonl(size);
@@ -63,170 +123,170 @@ namespace core {
             m_buffer << buffer.str();
         }
 
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const bool &b) {
-            uint32_t _id = id;
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const bool &v) {
+            uint32_t _id = (oneByteID > 0 ? oneByteID : fourByteID);
             _id = htonl(_id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
-            uint32_t size = static_cast<uint32_t>(sizeof(b));
+            uint32_t size = static_cast<uint32_t>(sizeof(v));
             size = htonl(size);
             m_buffer.write(reinterpret_cast<const char*>(&size), sizeof(uint32_t));
-            m_buffer.write(reinterpret_cast<const char *>(&b), sizeof(const bool));
+            m_buffer.write(reinterpret_cast<const char *>(&v), sizeof(const bool));
         }
 
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const char &c) {
-            uint32_t _id = id;
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const char &v) {
+            uint32_t _id = (oneByteID > 0 ? oneByteID : fourByteID);
             _id = htonl(_id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
-            uint32_t size = static_cast<uint32_t>(sizeof(c));
+            uint32_t size = static_cast<uint32_t>(sizeof(v));
             size = htonl(size);
             m_buffer.write(reinterpret_cast<const char*>(&size), sizeof(uint32_t));
-            m_buffer.write(&c, sizeof(const char));
+            m_buffer.write(&v, sizeof(const char));
         }
 
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const unsigned char &uc) {
-            uint32_t _id = id;
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const unsigned char &v) {
+            uint32_t _id = (oneByteID > 0 ? oneByteID : fourByteID);
             _id = htonl(_id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
-            uint32_t size = static_cast<uint32_t>(sizeof(uc));
+            uint32_t size = static_cast<uint32_t>(sizeof(v));
             size = htonl(size);
             m_buffer.write(reinterpret_cast<const char*>(&size), sizeof(uint32_t));
-            m_buffer.write(reinterpret_cast<const char *>(&uc), sizeof(const unsigned char));
+            m_buffer.write(reinterpret_cast<const char *>(&v), sizeof(const unsigned char));
         }
 
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const int8_t &i) {
-            uint32_t _id = id;
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const int8_t &v) {
+            uint32_t _id = (oneByteID > 0 ? oneByteID : fourByteID);
             _id = htonl(_id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
-            uint32_t size = static_cast<uint32_t>(sizeof(i));
+            uint32_t size = static_cast<uint32_t>(sizeof(v));
             size = htonl(size);
             m_buffer.write(reinterpret_cast<const char*>(&size), sizeof(uint32_t));
 
-            int8_t _i = i;
+            int8_t _i = v;
             m_buffer.write(reinterpret_cast<const char *>(&_i), sizeof(const int8_t));
         }
 
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const int16_t &i) {
-            uint32_t _id = id;
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const int16_t &v) {
+            uint32_t _id = (oneByteID > 0 ? oneByteID : fourByteID);
             _id = htonl(_id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
-            uint32_t size = static_cast<uint32_t>(sizeof(i));
+            uint32_t size = static_cast<uint32_t>(sizeof(v));
             size = htonl(size);
             m_buffer.write(reinterpret_cast<const char*>(&size), sizeof(uint32_t));
 
-            int16_t _i = i;
+            int16_t _i = v;
             _i = htons(_i);
             m_buffer.write(reinterpret_cast<const char *>(&_i), sizeof(const int16_t));
         }
 
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const uint16_t &ui) {
-            uint32_t _id = id;
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const uint16_t &v) {
+            uint32_t _id = (oneByteID > 0 ? oneByteID : fourByteID);
             _id = htonl(_id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
-            uint32_t size = static_cast<uint32_t>(sizeof(ui));
+            uint32_t size = static_cast<uint32_t>(sizeof(v));
             size = htonl(size);
             m_buffer.write(reinterpret_cast<const char*>(&size), sizeof(uint32_t));
 
-            uint16_t _ui = ui;
+            uint16_t _ui = v;
             _ui = htons(_ui);
             m_buffer.write(reinterpret_cast<const char *>(&_ui), sizeof(const uint16_t));
         }
 
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const int32_t &i) {
-            uint32_t _id = id;
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const int32_t &v) {
+            uint32_t _id = (oneByteID > 0 ? oneByteID : fourByteID);
             _id = htonl(_id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
-            uint32_t size = static_cast<uint32_t>(sizeof(i));
+            uint32_t size = static_cast<uint32_t>(sizeof(v));
             size = htonl(size);
             m_buffer.write(reinterpret_cast<const char*>(&size), sizeof(uint32_t));
 
-            int32_t _i = i;
+            int32_t _i = v;
             _i = htonl(_i);
             m_buffer.write(reinterpret_cast<const char *>(&_i), sizeof(const int32_t));
         }
 
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const uint32_t &ui) {
-            uint32_t _id = id;
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const uint32_t &v) {
+            uint32_t _id = (oneByteID > 0 ? oneByteID : fourByteID);
             _id = htonl(_id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
-            uint32_t size = static_cast<uint32_t>(sizeof(ui));
+            uint32_t size = static_cast<uint32_t>(sizeof(v));
             size = htonl(size);
             m_buffer.write(reinterpret_cast<const char*>(&size), sizeof(uint32_t));
 
-            uint32_t _ui = ui;
+            uint32_t _ui = v;
             _ui = htonl(_ui);
             m_buffer.write(reinterpret_cast<const char *>(&_ui), sizeof(const uint32_t));
         }
 
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const int64_t &i) {
-            uint32_t _id = id;
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const int64_t &v) {
+            uint32_t _id = (oneByteID > 0 ? oneByteID : fourByteID);
             _id = htonl(_id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
-            uint32_t size = static_cast<uint32_t>(sizeof(i));
+            uint32_t size = static_cast<uint32_t>(sizeof(v));
             size = htonl(size);
             m_buffer.write(reinterpret_cast<const char*>(&size), sizeof(uint32_t));
 
-            int64_t _i = i;
+            int64_t _i = v;
             _i = __htonll(_i);
             m_buffer.write(reinterpret_cast<const char *>(&_i), sizeof(const int64_t));
         }
 
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const uint64_t &ui) {
-            uint32_t _id = id;
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const uint64_t &v) {
+            uint32_t _id = (oneByteID > 0 ? oneByteID : fourByteID);
             _id = htonl(_id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
-            uint32_t size = static_cast<uint32_t>(sizeof(ui));
+            uint32_t size = static_cast<uint32_t>(sizeof(v));
             size = htonl(size);
             m_buffer.write(reinterpret_cast<const char*>(&size), sizeof(uint32_t));
 
-            uint64_t _ui = ui;
+            uint64_t _ui = v;
             _ui = __htonll(_ui);
             m_buffer.write(reinterpret_cast<const char *>(&_ui), sizeof(const uint64_t));
         }
 
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const float &f) {
-            uint32_t _id = id;
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const float &v) {
+            uint32_t _id = (oneByteID > 0 ? oneByteID : fourByteID);
             _id = htonl(_id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
-            uint32_t size = static_cast<uint32_t>(sizeof(f));
+            uint32_t size = static_cast<uint32_t>(sizeof(v));
             size = htonl(size);
             m_buffer.write(reinterpret_cast<const char*>(&size), sizeof(uint32_t));
 
-            float _f = f;
+            float _f = v;
             _f = Serializer::htonf(_f);
             m_buffer.write(reinterpret_cast<const char *>(&_f), sizeof(const float));
         }
 
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const double &d) {
-            uint32_t _id = id;
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const double &v) {
+            uint32_t _id = (oneByteID > 0 ? oneByteID : fourByteID);
             _id = htonl(_id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
-            uint32_t size = static_cast<uint32_t>(sizeof(d));
+            uint32_t size = static_cast<uint32_t>(sizeof(v));
             size = htonl(size);
             m_buffer.write(reinterpret_cast<const char*>(&size), sizeof(uint32_t));
 
-            double _d = d;
+            double _d = v;
             _d = Serializer::htond(_d);
             m_buffer.write(reinterpret_cast<const char *>(&_d), sizeof(const double));
         }
 
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const string &s) {
-            uint32_t _id = id;
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const string &v) {
+            uint32_t _id = (oneByteID > 0 ? oneByteID : fourByteID);
             _id = htonl(_id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
-            uint32_t stringLength = s.length();
+            uint32_t stringLength = v.length();
             uint32_t size = static_cast<uint32_t>(stringLength + sizeof(uint32_t)); // String's length plus the length of the type for (string's length).
             size = htonl(size);
             m_buffer.write(reinterpret_cast<const char *>(&size), sizeof(uint32_t));
@@ -234,11 +294,11 @@ namespace core {
             uint32_t _stringLength = stringLength;
             _stringLength = htonl(_stringLength);
             m_buffer.write(reinterpret_cast<const char *>(&_stringLength), sizeof(uint32_t));
-            m_buffer.write(s.c_str(), stringLength);
+            m_buffer.write(v.c_str(), stringLength);
         }
 
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const void *data, const uint32_t &size) {
-            uint32_t _id = id;
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const void *data, const uint32_t &size) {
+            uint32_t _id = (oneByteID > 0 ? oneByteID : fourByteID);
             _id = htonl(_id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
@@ -246,142 +306,6 @@ namespace core {
             realSize = htonl(realSize);
             m_buffer.write(reinterpret_cast<const char*>(&realSize), sizeof(uint32_t));
             m_buffer.write(reinterpret_cast<const char*>(data), size);
-        }
-
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const Serializable &v) {
-            (void)fourByteID;
-            (void)oneByteID;
-            (void)longName;
-            (void)shortName;
-            (void)v;
-            cerr << "[core::base::QueryableNetstringsSerializerAACF]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
-        }
-
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const bool &v) {
-            (void)fourByteID;
-            (void)oneByteID;
-            (void)longName;
-            (void)shortName;
-            (void)v;
-            cerr << "[core::base::QueryableNetstringsSerializerAACF]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
-        }
-
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const char &v) {
-            (void)fourByteID;
-            (void)oneByteID;
-            (void)longName;
-            (void)shortName;
-            (void)v;
-            cerr << "[core::base::QueryableNetstringsSerializerAACF]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
-        }
-
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const unsigned char &v) {
-            (void)fourByteID;
-            (void)oneByteID;
-            (void)longName;
-            (void)shortName;
-            (void)v;
-            cerr << "[core::base::QueryableNetstringsSerializerAACF]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
-        }
-
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const int8_t &v) {
-            (void)fourByteID;
-            (void)oneByteID;
-            (void)longName;
-            (void)shortName;
-            (void)v;
-            cerr << "[core::base::QueryableNetstringsSerializerAACF]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
-        }
-
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const int16_t &v) {
-            (void)fourByteID;
-            (void)oneByteID;
-            (void)longName;
-            (void)shortName;
-            (void)v;
-            cerr << "[core::base::QueryableNetstringsSerializerAACF]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
-        }
-
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const uint16_t &v) {
-            (void)fourByteID;
-            (void)oneByteID;
-            (void)longName;
-            (void)shortName;
-            (void)v;
-            cerr << "[core::base::QueryableNetstringsSerializerAACF]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
-        }
-
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const int32_t &v) {
-            (void)fourByteID;
-            (void)oneByteID;
-            (void)longName;
-            (void)shortName;
-            (void)v;
-            cerr << "[core::base::QueryableNetstringsSerializerAACF]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
-        }
-
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const uint32_t &v) {
-            (void)fourByteID;
-            (void)oneByteID;
-            (void)longName;
-            (void)shortName;
-            (void)v;
-            cerr << "[core::base::QueryableNetstringsSerializerAACF]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
-        }
-
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const int64_t &v) {
-            (void)fourByteID;
-            (void)oneByteID;
-            (void)longName;
-            (void)shortName;
-            (void)v;
-            cerr << "[core::base::QueryableNetstringsSerializerAACF]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
-        }
-
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const uint64_t &v) {
-            (void)fourByteID;
-            (void)oneByteID;
-            (void)longName;
-            (void)shortName;
-            (void)v;
-            cerr << "[core::base::QueryableNetstringsSerializerAACF]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
-        }
-
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const float &v) {
-            (void)fourByteID;
-            (void)oneByteID;
-            (void)longName;
-            (void)shortName;
-            (void)v;
-            cerr << "[core::base::QueryableNetstringsSerializerAACF]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
-        }
-
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const double &v) {
-            (void)fourByteID;
-            (void)oneByteID;
-            (void)longName;
-            (void)shortName;
-            (void)v;
-            cerr << "[core::base::QueryableNetstringsSerializerAACF]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
-        }
-
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const string &v) {
-            (void)fourByteID;
-            (void)oneByteID;
-            (void)longName;
-            (void)shortName;
-            (void)v;
-            cerr << "[core::base::QueryableNetstringsSerializerAACF]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
-        }
-
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const void *data, const uint32_t &size) {
-            (void)fourByteID;
-            (void)oneByteID;
-            (void)longName;
-            (void)shortName;
-            (void)data;
-            (void)size;
-            cerr << "[core::base::QueryableNetstringsSerializerAACF]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
         }
     }
 } // core::base
