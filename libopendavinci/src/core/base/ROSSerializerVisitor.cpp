@@ -133,12 +133,7 @@ namespace core {
 
         void ROSSerializerVisitor::write(const uint32_t &/*id*/, const void */*data*/, const uint32_t &/*size*/) {}
 
-        void ROSSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const Serializable &v) {
-            (void)fourByteID;
-            (void)oneByteID;
-            (void)longName;
-            (void)shortName;
-            (void)v;
+        void ROSSerializerVisitor::write(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, const Serializable &/*v*/) {
             cerr << "[core::base::ROSSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
         }
 
