@@ -1345,7 +1345,7 @@ namespace «s.get(i)» {
 			«ELSE»
 				«IF a.map.id != null»
 					d->read(«a.map.id» + «((a.eContainer) as Message).attributes.size»,
-							sstrOf«a.map.name.toFirstUpper».str());
+							elements);
 				«ELSE»
 					d->read(CRC32 < «generateCharList(a.map.name.toFirstUpper, 0)» >::RESULT,
 					       elements);
