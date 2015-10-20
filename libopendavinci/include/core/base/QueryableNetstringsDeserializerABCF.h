@@ -121,6 +121,7 @@ namespace core {
                  */
                 uint8_t decodeVarInt(istream& in, uint64_t &value);
 
+
             private:
                 stringstream m_buffer;
                 map<uint32_t, streampos> m_values;

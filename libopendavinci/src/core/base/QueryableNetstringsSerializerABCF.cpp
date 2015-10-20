@@ -30,7 +30,6 @@ namespace core {
 
         QueryableNetstringsSerializerABCF::~QueryableNetstringsSerializerABCF() {}
 
-
         uint8_t QueryableNetstringsSerializerABCF::encodeVarInt(ostream &out, uint64_t value) {
             // We will write at least one byte.
             uint8_t size = 1;
@@ -55,6 +54,23 @@ namespace core {
             return size;
         }
 
+        uint8_t QueryableNetstringsSerializerABCF::shortenID(const uint32_t &value) {
+            // Inspired by: https://chromium.googlesource.com/chromiumos/platform/vboot_reference/+/master/firmware/lib/crc8.c
+            uint16_t _value = 0;
+            uint32_t mask = 0xff000000;
+            for(uint8_t i = 0; i < 4; i++) {
+                mask >>= i*8;
+                _value ^= value & mask;
+                for(uint8_t j = 8; j; j--) {
+                    if (_value & 0x8000) {
+                        _value ^= (0x1070 << 3);
+                    }
+                    _value <<= 1;
+                }
+            }
+            return static_cast<uint8_t>(_value >> 8);
+        }
+
         void QueryableNetstringsSerializerABCF::getSerializedData(ostream &o) {
             // Write magic number.
             uint16_t magicNumber = 0xABCF;
@@ -62,18 +78,21 @@ namespace core {
             o.write(reinterpret_cast<const char *>(&magicNumber), sizeof(uint16_t));
 
             // Write length.
-            uint64_t length = static_cast<uint32_t>(m_buffer.str().length());
+            const string s = m_buffer.str();
+            uint64_t length = static_cast<uint32_t>(s.length());
             encodeVarInt(o, length);
-cerr << "Length = " << length << endl;
+
             // Write payload.
-            o << m_buffer.str();
+            o << s;
 
             // Write End-Of-Data for checking corruptness.
             o << ",";
+
+cerr << "Length of payload = " << length << ", total = " << (length + 3) << endl;
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &id, const Serializable &s) {
-            encodeVarInt(m_buffer, id);
+            encodeVarInt(m_buffer, QueryableNetstringsSerializerABCF::shortenID(id));
 
             stringstream buffer;
             buffer << s;
@@ -85,28 +104,28 @@ cerr << "Length = " << length << endl;
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &id, const bool &b) {
-            encodeVarInt(m_buffer, id);
+            encodeVarInt(m_buffer, QueryableNetstringsSerializerABCF::shortenID(id));
             encodeVarInt(m_buffer, sizeof(bool));
 
             m_buffer.write(reinterpret_cast<const char *>(&b), sizeof(const bool));
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &id, const char &c) {
-            encodeVarInt(m_buffer, id);
+            encodeVarInt(m_buffer, QueryableNetstringsSerializerABCF::shortenID(id));
             encodeVarInt(m_buffer, sizeof(const char));
 
             m_buffer.write(&c, sizeof(const char));
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &id, const unsigned char &uc) {
-            encodeVarInt(m_buffer, id);
+            encodeVarInt(m_buffer, QueryableNetstringsSerializerABCF::shortenID(id));
             encodeVarInt(m_buffer, sizeof(const unsigned char));
 
             m_buffer.write(reinterpret_cast<const char *>(&uc), sizeof(const unsigned char));
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &id, const int8_t &i) {
-            encodeVarInt(m_buffer, id);
+            encodeVarInt(m_buffer, QueryableNetstringsSerializerABCF::shortenID(id));
             encodeVarInt(m_buffer, sizeof(const int8_t));
 
             int8_t _i = i;
@@ -114,7 +133,7 @@ cerr << "Length = " << length << endl;
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &id, const int16_t &i) {
-            encodeVarInt(m_buffer, id);
+            encodeVarInt(m_buffer, QueryableNetstringsSerializerABCF::shortenID(id));
             encodeVarInt(m_buffer, sizeof(const int16_t));
 
             int16_t _i = i;
@@ -123,7 +142,7 @@ cerr << "Length = " << length << endl;
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &id, const uint16_t &ui) {
-            encodeVarInt(m_buffer, id);
+            encodeVarInt(m_buffer, QueryableNetstringsSerializerABCF::shortenID(id));
             encodeVarInt(m_buffer, sizeof(const uint16_t));
 
             uint16_t _ui = ui;
@@ -132,16 +151,44 @@ cerr << "Length = " << length << endl;
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &id, const int32_t &i) {
-            encodeVarInt(m_buffer, id);
-            encodeVarInt(m_buffer, sizeof(const int32_t));
+cerr << "L = " << m_buffer.str().length() << endl;
+            encodeVarInt(m_buffer, QueryableNetstringsSerializerABCF::shortenID(id));
+cerr << "L = " << m_buffer.str().length() << endl;
+//            encodeVarInt(m_buffer, sizeof(const int32_t));
 
-            int32_t _i = i;
-            _i = htonl(_i);
-            m_buffer.write(reinterpret_cast<const char *>(&_i), sizeof(const int32_t));
+//            int32_t _i = i;
+//            _i = htonl(_i);
+//            m_buffer.write(reinterpret_cast<const char *>(&_i), sizeof(const int32_t));
+
+            // Get the varint-encoded length of the string length that will be part of the payload.
+            stringstream tmp;
+            uint32_t size = encodeVarInt(tmp, i);
+
+            // Write the total length of the payload containing the varint-encoded string length + the raw string.
+            encodeVarInt(m_buffer, size);
+cerr << "L = " << m_buffer.str().length() << endl;
+
+            m_buffer << tmp.str();
+cerr << "L = " << m_buffer.str().length() << endl << endl;
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &id, const uint32_t &ui) {
-            encodeVarInt(m_buffer, id);
+            encodeVarInt(m_buffer, QueryableNetstringsSerializerABCF::shortenID(id));
+
+//            // Get the varint-encoded length of the string length that will be part of the payload.
+//            stringstream tmp;
+//            uint32_t size = encodeVarInt(tmp, stringLength);
+
+//            // Add the actual string length.
+//            size += stringLength;
+
+//            // Write the total length of the payload containing the varint-encoded string length + the raw string.
+//            encodeVarInt(m_buffer, size);
+
+//            // Write the string length (which is actually part of the payload).
+//            encodeVarInt(m_buffer, stringLength);
+
+
             encodeVarInt(m_buffer, sizeof(const uint32_t));
 
             uint32_t _ui = ui;
@@ -150,7 +197,7 @@ cerr << "Length = " << length << endl;
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &id, const int64_t &i) {
-            encodeVarInt(m_buffer, id);
+            encodeVarInt(m_buffer, QueryableNetstringsSerializerABCF::shortenID(id));
             encodeVarInt(m_buffer, sizeof(const int64_t));
 
             int64_t _i = i;
@@ -159,7 +206,7 @@ cerr << "Length = " << length << endl;
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &id, const uint64_t &ui) {
-            encodeVarInt(m_buffer, id);
+            encodeVarInt(m_buffer, QueryableNetstringsSerializerABCF::shortenID(id));
             encodeVarInt(m_buffer, sizeof(const uint64_t));
 
             uint64_t _ui = ui;
@@ -168,7 +215,7 @@ cerr << "Length = " << length << endl;
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &id, const float &f) {
-            encodeVarInt(m_buffer, id);
+            encodeVarInt(m_buffer, QueryableNetstringsSerializerABCF::shortenID(id));
             encodeVarInt(m_buffer, sizeof(float));
 
             float _f = f;
@@ -177,7 +224,7 @@ cerr << "Length = " << length << endl;
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &id, const double &d) {
-            encodeVarInt(m_buffer, id);
+            encodeVarInt(m_buffer, QueryableNetstringsSerializerABCF::shortenID(id));
             encodeVarInt(m_buffer, sizeof(double));
 
             double _d = d;
@@ -186,7 +233,9 @@ cerr << "Length = " << length << endl;
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &id, const string &s) {
-            encodeVarInt(m_buffer, id);
+            encodeVarInt(m_buffer, QueryableNetstringsSerializerABCF::shortenID(id));
+
+//cerr << "ID in = " << id << ", ID out = " << (uint32_t)shortenID(id) << endl;
 
             // Length of the raw string.
             const uint32_t stringLength = s.length();
@@ -202,14 +251,14 @@ cerr << "Length = " << length << endl;
             encodeVarInt(m_buffer, size);
 
             // Write the string length (which is actually part of the payload).
-            encodeVarInt(m_buffer, stringLength);
+            m_buffer << tmp.str();
 
             // Write the raw bytes from the string.
             m_buffer.write(s.c_str(), stringLength);
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &id, const void *data, const uint32_t &size) {
-            encodeVarInt(m_buffer, id);
+            encodeVarInt(m_buffer, QueryableNetstringsSerializerABCF::shortenID(id));
             encodeVarInt(m_buffer, size);
 
             m_buffer.write(reinterpret_cast<const char*>(data), size);

@@ -18,6 +18,7 @@
  */
 
 #include "core/base/module/AbstractCIDModule.h"
+#include "core/base/QueryableNetstringsSerializerABCF.h"
 #include "core/base/QueryableNetstringsDeserializerABCF.h"
 #include "core/base/Serializable.h"
 
@@ -120,7 +121,7 @@ namespace core {
         QueryableNetstringsDeserializerABCF::~QueryableNetstringsDeserializerABCF() {}
 
         void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, Serializable &s) {
-            map<uint32_t, streampos>::iterator it = m_values.find(id);
+            map<uint32_t, streampos>::iterator it = m_values.find(QueryableNetstringsSerializerABCF::shortenID(id));
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
@@ -129,7 +130,7 @@ namespace core {
         }
 
         void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, bool &b) {
-            map<uint32_t, streampos>::iterator it = m_values.find(id);
+            map<uint32_t, streampos>::iterator it = m_values.find(QueryableNetstringsSerializerABCF::shortenID(id));
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
@@ -138,7 +139,7 @@ namespace core {
         }
 
         void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, char &c) {
-            map<uint32_t, streampos>::iterator it = m_values.find(id);
+            map<uint32_t, streampos>::iterator it = m_values.find(QueryableNetstringsSerializerABCF::shortenID(id));
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
@@ -147,7 +148,7 @@ namespace core {
         }
 
         void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, unsigned char &uc) {
-            map<uint32_t, streampos>::iterator it = m_values.find(id);
+            map<uint32_t, streampos>::iterator it = m_values.find(QueryableNetstringsSerializerABCF::shortenID(id));
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
@@ -156,7 +157,7 @@ namespace core {
         }
 
         void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, int8_t &i) {
-            map<uint32_t, streampos>::iterator it = m_values.find(id);
+            map<uint32_t, streampos>::iterator it = m_values.find(QueryableNetstringsSerializerABCF::shortenID(id));
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
@@ -165,7 +166,7 @@ namespace core {
         }
 
         void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, int16_t &i) {
-            map<uint32_t, streampos>::iterator it = m_values.find(id);
+            map<uint32_t, streampos>::iterator it = m_values.find(QueryableNetstringsSerializerABCF::shortenID(id));
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
@@ -177,7 +178,7 @@ namespace core {
         }
 
         void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, uint16_t &ui) {
-            map<uint32_t, streampos>::iterator it = m_values.find(id);
+            map<uint32_t, streampos>::iterator it = m_values.find(QueryableNetstringsSerializerABCF::shortenID(id));
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
@@ -190,19 +191,22 @@ namespace core {
         }
 
         void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, int32_t &i) {
-            map<uint32_t, streampos>::iterator it = m_values.find(id);
+            map<uint32_t, streampos>::iterator it = m_values.find(QueryableNetstringsSerializerABCF::shortenID(id));
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
-                int32_t _i = 0;
-                m_buffer.read(reinterpret_cast<char *>(&_i), sizeof(int32_t));
-                _i = ntohl(_i);
-                i = _i;
+//                int32_t _i = 0;
+//                m_buffer.read(reinterpret_cast<char *>(&_i), sizeof(int32_t));
+//                _i = ntohl(_i);
+//                i = _i;
+                uint64_t tmp = 0;
+                decodeVarInt(m_buffer, tmp);
+                i = static_cast<int32_t>(tmp);
             }
         }
 
         void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, uint32_t &ui) {
-            map<uint32_t, streampos>::iterator it = m_values.find(id);
+            map<uint32_t, streampos>::iterator it = m_values.find(QueryableNetstringsSerializerABCF::shortenID(id));
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
@@ -215,7 +219,7 @@ namespace core {
         }
 
         void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, int64_t &i) {
-            map<uint32_t, streampos>::iterator it = m_values.find(id);
+            map<uint32_t, streampos>::iterator it = m_values.find(QueryableNetstringsSerializerABCF::shortenID(id));
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
@@ -227,7 +231,7 @@ namespace core {
         }
 
         void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, uint64_t &ui) {
-            map<uint32_t, streampos>::iterator it = m_values.find(id);
+            map<uint32_t, streampos>::iterator it = m_values.find(QueryableNetstringsSerializerABCF::shortenID(id));
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
@@ -240,7 +244,7 @@ namespace core {
         }
 
         void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, float &f) {
-            map<uint32_t, streampos>::iterator it = m_values.find(id);
+            map<uint32_t, streampos>::iterator it = m_values.find(QueryableNetstringsSerializerABCF::shortenID(id));
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
@@ -253,7 +257,7 @@ namespace core {
         }
 
         void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, double &d) {
-            map<uint32_t, streampos>::iterator it = m_values.find(id);
+            map<uint32_t, streampos>::iterator it = m_values.find(QueryableNetstringsSerializerABCF::shortenID(id));
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
@@ -266,7 +270,7 @@ namespace core {
         }
 
         void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, string &s) {
-            map<uint32_t, streampos>::iterator it = m_values.find(id);
+            map<uint32_t, streampos>::iterator it = m_values.find(QueryableNetstringsSerializerABCF::shortenID(id));
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
@@ -284,7 +288,7 @@ namespace core {
         }
 
         void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, void *data, const uint32_t &size) {
-            map<uint32_t, streampos>::iterator it = m_values.find(id);
+            map<uint32_t, streampos>::iterator it = m_values.find(QueryableNetstringsSerializerABCF::shortenID(id));
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);

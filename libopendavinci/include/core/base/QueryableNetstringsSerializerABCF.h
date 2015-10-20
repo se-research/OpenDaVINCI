@@ -107,6 +107,16 @@ namespace core {
                  */
                 uint8_t encodeVarInt(ostream &out, uint64_t value);
 
+            public:
+                /**
+                 * This method shortens the given 4 byte ID to a one byte ID
+                 * by calculating the CRC8 value.
+                 *
+                 * @param value to be shortened.
+                 * @return Shortened ID.
+                 */
+                static uint8_t shortenID(const uint32_t &value);
+
             private:
                 stringstream m_buffer;
         };
