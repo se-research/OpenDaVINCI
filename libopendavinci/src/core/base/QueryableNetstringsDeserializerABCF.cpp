@@ -195,10 +195,6 @@ namespace core {
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
-//                int32_t _i = 0;
-//                m_buffer.read(reinterpret_cast<char *>(&_i), sizeof(int32_t));
-//                _i = ntohl(_i);
-//                i = _i;
                 uint64_t tmp = 0;
                 decodeVarInt(m_buffer, tmp);
                 i = static_cast<int32_t>(tmp);

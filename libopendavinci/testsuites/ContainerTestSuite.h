@@ -47,7 +47,7 @@ cerr << "'" << s.str() << "'" << endl;
             TS_ASSERT(ts.toString() == ts2.toString());
         }
 
-        void notestContainerData() {
+        void testContainerData() {
             TimeStamp ts(123450, 6789012);
             Container c(Container::TIMESTAMP, ts);
 
@@ -63,7 +63,7 @@ cerr << "'" << s.str() << "'" << endl;
             TS_ASSERT(ts.toString() == ts2.toString());
         }
 
-        void notestContainerDataUserType() {
+        void testContainerDataUserType() {
             TimeStamp ts;
             Container c(Container::USER_DATA_9, ts);
 
