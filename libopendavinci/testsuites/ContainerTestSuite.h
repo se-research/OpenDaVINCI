@@ -33,7 +33,7 @@ using namespace core::data;
 class ContainerTest : public CxxTest::TestSuite {
     public:
         void testTimeStampData() {
-            TimeStamp ts(1, 2);
+            TimeStamp ts(1, -2);
 
             stringstream s;
             s << ts;
@@ -46,7 +46,7 @@ class ContainerTest : public CxxTest::TestSuite {
         }
 
         void testContainerData() {
-            TimeStamp ts(12345, 6789);
+            TimeStamp ts(12345, -3000);
             Container c(Container::TIMESTAMP, ts);
 
             stringstream s;
@@ -63,6 +63,7 @@ class ContainerTest : public CxxTest::TestSuite {
 
         void testContainerDataUserType() {
             TimeStamp ts;
+cerr << ts.toString() << endl;
             Container c(Container::USER_DATA_9, ts);
 
             stringstream s;
@@ -76,6 +77,7 @@ class ContainerTest : public CxxTest::TestSuite {
             if (c2.getDataType() == Container::USER_DATA_9) {
                 TimeStamp ts2;
                 ts2 = c2.getData<TimeStamp>();
+cerr << ts2.toString() << endl;
 
                 TS_ASSERT(ts.toString() == ts2.toString());
             }

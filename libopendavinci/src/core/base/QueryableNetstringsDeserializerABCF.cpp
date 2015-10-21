@@ -37,16 +37,39 @@ namespace core {
             deserializeDataFrom(in);
         }
 
-        uint8_t QueryableNetstringsDeserializerABCF::decodeVarInt(istream &in, uint64_t &value) {
+        uint8_t QueryableNetstringsDeserializerABCF::decodeVarInt(istream &in, int64_t &value) {
+            uint64_t uvalue = 0;
+            uint8_t size = decodeVarUInt(in, uvalue);
+            value = static_cast<int64_t>( uvalue & 1 ? ~(uvalue >> 1) : (uvalue >> 1) );
+            return size;
+        }
+
+        uint8_t QueryableNetstringsDeserializerABCF::decodeVarUInt(istream &in, uint64_t &value) {
+//            value = 0;
+//            uint8_t size = 0;
+
+//            while (in.good()) {
+//                char c = in.get();
+//                value |= (c & 0x7f) << (0x7 * size++);
+//                if ( !(c & 0x80) ) break;
+//            }
+
+//            // Decode as little endian like in Protobuf's case.
+//            value = le64toh(value);
+
+//            return size;
+
             value = 0;
             uint8_t size = 0;
-
+cerr << "Read = ";
             while (in.good()) {
                 char c = in.get();
-                value |= (c & 0x7f) << (0x7 * size++);
+                unsigned int v2 = (c & 0x7f) << (0x7 * size++);
+                value |= v2;
+cerr << (int)c << "(value = " << (int) v2 << ") ";
                 if ( !(c & 0x80) ) break;
             }
-
+cerr <<endl;
             // Decode as little endian like in Protobuf's case.
             value = le64toh(value);
 
@@ -92,7 +115,7 @@ namespace core {
 
             // Decoding length of the payload written as varint.
             uint64_t length = 0;
-            decodeVarInt(in, length);
+            decodeVarUInt(in, length);
 
             // Decode payload consisting of: *(ID SIZE PAYLOAD).
             char c = 0;
@@ -105,11 +128,11 @@ namespace core {
 
             while (in.good() && (length > 0)) {
                 // Start of next token by reading ID.
-                length -= decodeVarInt(in, tokenIdentifier);
+                length -= decodeVarUInt(in, tokenIdentifier);
 
                 // Read length of payload and adjust loop.
                 lengthOfPayload = 0;
-                length -= decodeVarInt(in, lengthOfPayload);
+                length -= decodeVarUInt(in, lengthOfPayload);
 
                 // Create new (tokenIdentifier, m_buffer) hashmap entry.
                 m_values.insert(make_pair(tokenIdentifier, m_buffer.tellp()));
@@ -209,7 +232,7 @@ namespace core {
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
                 uint64_t tmp = 0;
-                decodeVarInt(m_buffer, tmp);
+                decodeVarUInt(m_buffer, tmp);
                 v = static_cast<bool>(tmp);
             }
         }
@@ -219,7 +242,7 @@ namespace core {
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
-                uint64_t tmp = 0;
+                int64_t tmp = 0;
                 decodeVarInt(m_buffer, tmp);
                 v = static_cast<char>(tmp);
             }
@@ -231,7 +254,7 @@ namespace core {
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
                 uint64_t tmp = 0;
-                decodeVarInt(m_buffer, tmp);
+                decodeVarUInt(m_buffer, tmp);
                 v = static_cast<unsigned char>(tmp);
             }
         }
@@ -241,7 +264,7 @@ namespace core {
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
-                uint64_t tmp = 0;
+                int64_t tmp = 0;
                 decodeVarInt(m_buffer, tmp);
                 v = static_cast<int8_t>(tmp);
             }
@@ -252,7 +275,7 @@ namespace core {
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
-                uint64_t tmp = 0;
+                int64_t tmp = 0;
                 decodeVarInt(m_buffer, tmp);
                 v = static_cast<int16_t>(tmp);
             }
@@ -264,7 +287,7 @@ namespace core {
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
                 uint64_t tmp = 0;
-                decodeVarInt(m_buffer, tmp);
+                decodeVarUInt(m_buffer, tmp);
                 v = static_cast<uint16_t>(tmp);
             }
         }
@@ -274,8 +297,9 @@ namespace core {
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
-                uint64_t tmp = 0;
+                int64_t tmp = 0;
                 decodeVarInt(m_buffer, tmp);
+cerr << "D: " << tmp << endl;
                 v = static_cast<int32_t>(tmp);
             }
         }
@@ -286,7 +310,7 @@ namespace core {
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
                 uint64_t tmp = 0;
-                decodeVarInt(m_buffer, tmp);
+                decodeVarUInt(m_buffer, tmp);
                 v = static_cast<uint32_t>(tmp);
             }
         }
@@ -296,7 +320,7 @@ namespace core {
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
-                uint64_t tmp = 0;
+                int64_t tmp = 0;
                 decodeVarInt(m_buffer, tmp);
                 v = static_cast<int64_t>(tmp);
             }
@@ -308,7 +332,7 @@ namespace core {
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
                 uint64_t tmp = 0;
-                decodeVarInt(m_buffer, tmp);
+                decodeVarUInt(m_buffer, tmp);
                 v = static_cast<uint64_t>(tmp);
             }
         }
@@ -346,7 +370,7 @@ namespace core {
                 m_buffer.seekg(it->second);
 
                 uint64_t stringLength = 0;
-                decodeVarInt(m_buffer, stringLength);
+                decodeVarUInt(m_buffer, stringLength);
 
                 char *str = new char[stringLength+1];
                 m_buffer.read(str, stringLength);

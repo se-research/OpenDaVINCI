@@ -103,13 +103,22 @@ namespace core {
 
             private:
                 /**
-                 * This method encodes a given value using the varint encoding.
+                 * This method encodes a given unsigned value using the varint encoding.
                  *
                  * @param out Output stream to be written to.
                  * @param value Value to be encoded.
                  * @return size Number of bytes written.
                  */
-                uint8_t encodeVarInt(ostream &out, uint64_t value);
+                uint8_t encodeVarUInt(ostream &out, uint64_t value);
+
+                /**
+                 * This method encodes a given signed value using the varint encoding.
+                 *
+                 * @param out Output stream to be written to.
+                 * @param value Value to be encoded.
+                 * @return size Number of bytes written.
+                 */
+                uint8_t encodeVarInt(ostream &out, int64_t value);
 
             private:
                 stringstream m_buffer;

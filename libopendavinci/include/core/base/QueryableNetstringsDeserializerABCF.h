@@ -117,14 +117,22 @@ namespace core {
 
             private:
                 /**
-                 * This method decodes a value from a given varint encoding.
+                 * This method decodes an unsigned value from a given varint encoding.
                  *
                  * @param in Input stream used for reading from.
                  * @param value Destination variable to be written into.
                  * @return size Number of bytes read.
                  */
-                uint8_t decodeVarInt(istream& in, uint64_t &value);
+                uint8_t decodeVarUInt(istream& in, uint64_t &value);
 
+                /**
+                 * This method decodes a signed value from a given varint encoding.
+                 *
+                 * @param in Input stream used for reading from.
+                 * @param value Destination variable to be written into.
+                 * @return size Number of bytes read.
+                 */
+                uint8_t decodeVarInt(istream& in, int64_t &value);
 
             private:
                 stringstream m_buffer;
