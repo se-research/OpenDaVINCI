@@ -63,7 +63,6 @@ class ContainerTest : public CxxTest::TestSuite {
 
         void testContainerDataUserType() {
             TimeStamp ts;
-cerr << ts.toString() << endl;
             Container c(Container::USER_DATA_9, ts);
 
             stringstream s;
@@ -77,7 +76,6 @@ cerr << ts.toString() << endl;
             if (c2.getDataType() == Container::USER_DATA_9) {
                 TimeStamp ts2;
                 ts2 = c2.getData<TimeStamp>();
-cerr << ts2.toString() << endl;
 
                 TS_ASSERT(ts.toString() == ts2.toString());
             }

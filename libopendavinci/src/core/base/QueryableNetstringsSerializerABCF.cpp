@@ -50,14 +50,12 @@ namespace core {
 
             value = htole64(value);
 
-cerr << "Wrote = ";
             char byte = 0;
             while (value > 0x7f) {
                 // If the value to be written occupies more than 7 bits, we need to encode it using the MSB flag.
                 byte = (static_cast<uint8_t>(value & 0x7f)) | 0x80;
                 out.put(byte);
                 // Remove the seven bits that we have already written.
-cerr << (int)byte << "(value=" << (value & 0x7f) << ") ";
                 value >>= 7;
                 // Start next byte.
                 size++;
@@ -65,8 +63,6 @@ cerr << (int)byte << "(value=" << (value & 0x7f) << ") ";
             // Write final value.
             byte = (static_cast<uint8_t>(value)) & 0x7f;
             out.put(byte);
-cerr << (int)byte << "(value=" << (int) (value & 0x7f) << ") ";
-cerr << endl;
             return size;
         }
 
@@ -80,7 +76,7 @@ cerr << endl;
             const string s = m_buffer.str();
             uint64_t length = static_cast<uint32_t>(s.length());
             encodeVarUInt(o, length);
-cerr << "LEN=" << length << endl;
+
             // Write payload.
             o << s;
 
@@ -251,7 +247,7 @@ cerr << "LEN=" << length << endl;
             // Get the varint-encoded length of the value and save the varint-encoded payload.
             stringstream tmp;
             uint32_t size = encodeVarInt(tmp, v);
-cerr << "E: " << tmp.str() << endl;
+
             // Write the length of the payload.
             encodeVarUInt(m_buffer, size);
 

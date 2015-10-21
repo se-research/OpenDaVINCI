@@ -45,31 +45,13 @@ namespace core {
         }
 
         uint8_t QueryableNetstringsDeserializerABCF::decodeVarUInt(istream &in, uint64_t &value) {
-//            value = 0;
-//            uint8_t size = 0;
-
-//            while (in.good()) {
-//                char c = in.get();
-//                value |= (c & 0x7f) << (0x7 * size++);
-//                if ( !(c & 0x80) ) break;
-//            }
-
-//            // Decode as little endian like in Protobuf's case.
-//            value = le64toh(value);
-
-//            return size;
-
             value = 0;
             uint8_t size = 0;
-cerr << "Read = ";
             while (in.good()) {
                 char c = in.get();
-                unsigned int v2 = (c & 0x7f) << (0x7 * size++);
-                value |= v2;
-cerr << (int)c << "(value = " << (int) v2 << ") ";
+                value |= static_cast<unsigned int>( (c & 0x7f) << (0x7 * size++) );
                 if ( !(c & 0x80) ) break;
             }
-cerr <<endl;
             // Decode as little endian like in Protobuf's case.
             value = le64toh(value);
 
@@ -299,7 +281,6 @@ cerr <<endl;
                 m_buffer.seekg(it->second);
                 int64_t tmp = 0;
                 decodeVarInt(m_buffer, tmp);
-cerr << "D: " << tmp << endl;
                 v = static_cast<int32_t>(tmp);
             }
         }

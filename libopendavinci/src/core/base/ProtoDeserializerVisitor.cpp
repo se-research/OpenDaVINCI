@@ -86,7 +86,7 @@ namespace core {
             uint8_t size = 0;
             while (in.good()) {
                 char c = in.get();
-                value |= (c & 0x7f) << (0x7 * size++);
+                value |= static_cast<unsigned int>( (c & 0x7f) << (0x7 * size++) );
                 if ( !(c & 0x80) ) break;
             }
 
