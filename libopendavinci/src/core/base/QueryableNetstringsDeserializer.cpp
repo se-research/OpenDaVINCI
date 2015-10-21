@@ -29,13 +29,15 @@ namespace core {
         using namespace std;
 
         QueryableNetstringsDeserializer::QueryableNetstringsDeserializer() :
-            m_deserializer() {
-            // Create a default deserializer that might be replaced by another one on user's request.
-            m_deserializer = SharedPointer<Deserializer>(new QueryableNetstringsDeserializerAACF());
-        }
+            m_aacf(),
+            m_abcf(),
+            m_deserializer(&m_abcf) {} // Create a default deserializer that might be replaced by another one on user's request.
 
         QueryableNetstringsDeserializer::QueryableNetstringsDeserializer(istream &in) :
-            m_deserializer() {
+            m_aacf(),
+            m_abcf(),
+            m_deserializer(&m_abcf) // Create a default deserializer that might be replaced by another one on user's request.
+            {
             deserializeDataFrom(in);
         }
 
@@ -54,7 +56,7 @@ namespace core {
                 in.seekg(currentPosition);
 
                 // Instantiate AACF deserializer.
-                m_deserializer = SharedPointer<Deserializer>(new QueryableNetstringsDeserializerAACF());
+                m_deserializer = &m_aacf;
                 m_deserializer->deserializeDataFrom(in);
             }
             else if (magicNumber == 0xABCF) {
@@ -63,7 +65,7 @@ namespace core {
                 in.seekg(currentPosition);
 
                 // Instantiate ABCF deserializer.
-                m_deserializer = SharedPointer<Deserializer>(new QueryableNetstringsDeserializerABCF());
+                m_deserializer = &m_abcf;
                 m_deserializer->deserializeDataFrom(in);
             }
             else {

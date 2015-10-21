@@ -25,6 +25,8 @@
 
 #include "core/SharedPointer.h"
 #include "core/base/Serializer.h"
+#include "core/base/QueryableNetstringsSerializerAACF.h"
+#include "core/base/QueryableNetstringsSerializerABCF.h"
 
 namespace core {
     namespace base {
@@ -118,7 +120,9 @@ namespace core {
 
             private:
                 ostream *m_out; // We have a pointer here that we derive from a reference parameter in our non-standard constructor; thus, the other class is responsible for the lifecycle of the variable to which we point to.
-                SharedPointer<Serializer> m_serializer;
+                QueryableNetstringsSerializerAACF m_aacf;
+                QueryableNetstringsSerializerABCF m_abcf;
+                Serializer* m_serializer;
         };
 
     }

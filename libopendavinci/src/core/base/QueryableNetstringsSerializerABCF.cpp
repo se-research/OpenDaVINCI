@@ -31,15 +31,6 @@ namespace core {
         QueryableNetstringsSerializerABCF::~QueryableNetstringsSerializerABCF() {}
 
         uint8_t QueryableNetstringsSerializerABCF::encodeVarInt(ostream &out, int64_t value) {
-//            return encodeVarUInt(out, value);
-
-//            uint64_t v = static_cast<uint64_t>(value) << 1;
-//            if (value < 0) {
-//                v ^= v;
-//            }
-
-//            return encodeVarUInt(out, v);
-
             uint64_t uvalue = static_cast<uint64_t>( value < 0 ? ~(value << 1) : (value << 1) );
             return encodeVarUInt(out, uvalue);
         }

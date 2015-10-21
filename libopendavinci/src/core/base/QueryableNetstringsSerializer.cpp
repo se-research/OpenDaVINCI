@@ -29,15 +29,15 @@ namespace core {
 
         QueryableNetstringsSerializer::QueryableNetstringsSerializer() :
             m_out(NULL),
-            m_serializer() {
-            m_serializer = SharedPointer<Serializer>(new QueryableNetstringsSerializerABCF());
-        }
+            m_aacf(),
+            m_abcf(),
+            m_serializer(&m_abcf) {}
 
         QueryableNetstringsSerializer::QueryableNetstringsSerializer(ostream &out) :
             m_out(&out),
-            m_serializer() {
-            m_serializer = SharedPointer<Serializer>(new QueryableNetstringsSerializerABCF());
-        }
+            m_aacf(),
+            m_abcf(),
+            m_serializer(&m_abcf) {}
 
         QueryableNetstringsSerializer::~QueryableNetstringsSerializer() {
             if (m_out != NULL) {

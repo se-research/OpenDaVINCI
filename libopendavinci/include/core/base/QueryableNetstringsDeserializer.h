@@ -25,6 +25,8 @@
 
 #include "core/SharedPointer.h"
 #include "core/base/Deserializer.h"
+#include "core/base/QueryableNetstringsDeserializerAACF.h"
+#include "core/base/QueryableNetstringsDeserializerABCF.h"
 
 namespace core {
     namespace base {
@@ -118,7 +120,9 @@ namespace core {
                 virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, void *data, const uint32_t &size);
 
             private:
-                SharedPointer<Deserializer> m_deserializer;
+                QueryableNetstringsDeserializerAACF m_aacf;
+                QueryableNetstringsDeserializerABCF m_abcf;
+                Deserializer* m_deserializer;
         };
 
     }
