@@ -67,7 +67,8 @@ FIND_PACKAGE (AutomotiveData REQUIRED)
 ###########################################################################
 # Set linking libraries.
 SET(ODCANTOOLS_LIBRARIES ${OPENDAVINCI_LIBRARIES}
-                         ${AUTOMOTIVEDATA_LIBRARIES})
+                         ${AUTOMOTIVEDATA_LIBRARIES}
+                         ${ODCANTOOLS_LIBRARY})
 SET(ODCANTOOLS_INCLUDE_DIRS ${ODCANTOOLS_INCLUDE_DIR})
 
 ###########################################################################
