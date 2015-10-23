@@ -128,3 +128,13 @@ ENDIF()
 # Install header files.
 INSTALL(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/" DESTINATION include/odcantools COMPONENT cantools)
 
+# Install CMake modules locally.
+IF(UNIX)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/../cmake.Modules/Findodcantools.cmake" DESTINATION share/cmake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT cantools)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/../cmake.Modules/Findodcantools.cmake" DESTINATION share/cmake-2.8/Modules COMPONENT cantools)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/../cmake.Modules/Findodcantools.cmake" DESTINATION share/cmake-3.0/Modules COMPONENT cantools)
+ENDIF()
+IF(WIN32)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/../cmake.Modules/Findodcantools.cmake" DESTINATION CMake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT cantools)
+ENDIF()
+
