@@ -35,7 +35,7 @@ namespace automotive {
 
         CanMapper::CanMapper(const int32_t &argc, char **argv) :
             DataTriggeredConferenceClientModule(argc, argv, "odcanmapper"),
-            m_simple() {}
+            m_canMapping() {}
 
         CanMapper::~CanMapper() {}
 
@@ -67,7 +67,7 @@ namespace automotive {
                 uint64_t data = gcm.getData();
                 printPayload(data);
 
-                vector<Container> listOfContainers = m_simple.mapNext(gcm);
+                vector<Container> listOfContainers = m_canMapping.mapNext(gcm);
                 if (listOfContainers.size() > 0) {
                     vector<Container>::iterator it = listOfContainers.begin();
                     while (it != listOfContainers.end()) {

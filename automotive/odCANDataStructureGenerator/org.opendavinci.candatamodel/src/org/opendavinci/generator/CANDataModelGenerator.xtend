@@ -101,6 +101,7 @@ class CANDataModelGenerator implements IGenerator {
 #ifndef GENERATEDHEADERS_«generatedHeadersFile.toUpperCase()»_H_
 #define GENERATEDHEADERS_«generatedHeadersFile.toUpperCase()»_H_
 
+#include <string>
 #include <vector>
 
 «FOR include : includedClasses»
@@ -111,7 +112,7 @@ class CANDataModelGenerator implements IGenerator {
 
 #include "GeneratedHeaders_AutomotiveData.h"
 
-namespace canMapping {
+namespace canmapping {
 
     using namespace std;
 
@@ -157,10 +158,11 @@ namespace canMapping {
 «FOR include : includedClasses»
             «include» m_«Character.toLowerCase(include.charAt(0)) + include.substring(1)»;
 «ENDFOR»
+            string m_padding;
         
     };
 
-} // canMapping
+} // canmapping
 
 #endif /*GENERATEDHEADERS_«generatedHeadersFile.toUpperCase()»_H_*/
 '''
@@ -173,16 +175,19 @@ namespace canMapping {
  * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
  */
 
-#include "generated/WheelSpeed.h"
+«FOR include : includedClasses»
+#include "generated/«include».h"
+«ENDFOR»
 
 #include "GeneratedHeaders_«generatedHeadersFile».h"
 
-namespace canMapping {
+namespace canmapping {
 
     CanMapping::CanMapping() :
 «FOR include : includedClasses»
-            m_«Character.toLowerCase(include.charAt(0)) + include.substring(1)»() {}
+            m_«Character.toLowerCase(include.charAt(0)) + include.substring(1)»(),
 «ENDFOR»
+        m_padding() {}
 
     CanMapping::~CanMapping() {}
 
@@ -208,7 +213,7 @@ namespace canMapping {
         return listOfContainers;
     }
 
-} // canMapping
+} // canmapping
 '''
 
     /* This method generates the header file content. */
@@ -228,7 +233,7 @@ namespace canMapping {
 
 #include "GeneratedHeaders_AutomotiveData.h"
 
-namespace canMapping {
+namespace canmapping {
 
     using namespace std;
 
@@ -261,7 +266,7 @@ namespace canMapping {
             core::data::Container decode(const automotive::GenericCANMessage &gcm);
     };
 
-} // canMapping
+} // canmapping
 
 #endif /*«mapping.message.toString.toUpperCase»_H_*/
 '''
@@ -299,7 +304,7 @@ namespace canMapping {
 
 #include "GeneratedHeaders_AutomotiveData.h"
 
-namespace canMapping {
+namespace canmapping {
 
     using namespace std;
 
@@ -469,7 +474,7 @@ namespace canMapping {
         return c;
     }
 
-} // canMapping
+} // canmapping
 '''
 
 	// Generate the test suite content (.h).	

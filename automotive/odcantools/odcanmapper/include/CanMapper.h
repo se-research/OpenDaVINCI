@@ -82,7 +82,7 @@ namespace automotive {
                 void printPayload(uint64_t payload) const;
 
             private:
-                simple::Simple m_simple;
+                canmapping::CanMapping m_canMapping;
         };
 
     } // odcantools

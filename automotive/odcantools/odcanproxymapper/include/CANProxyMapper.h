@@ -67,7 +67,7 @@ namespace automotive {
                 virtual void nextGenericCANMessage(const GenericCANMessage &gcm);
 
             private:
-                simple::Simple m_simple;
+                canmapping::CanMapping m_canMapping;
         };
 
     } //odcantools

@@ -92,7 +92,7 @@ namespace automotive {
                 string m_deviceNodeB;
                 CANMessageReplicator m_replicatorFromAtoB;
                 CANMessageReplicator m_replicatorFromBtoA;
-                simple::Simple m_simple;
+                canmapping::CanMapping m_canMapping;
         };
 
     } // odcantools

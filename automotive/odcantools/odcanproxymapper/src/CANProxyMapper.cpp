@@ -35,13 +35,13 @@ namespace automotive {
 
         CANProxyMapper::CANProxyMapper(const int32_t &argc, char **argv) :
             CANProxy(argc, argv),
-            m_simple() {}
+            m_canMapping() {}
 
         CANProxyMapper::~CANProxyMapper() {}
 
         void CANProxyMapper::nextGenericCANMessage(const GenericCANMessage &gcm) {
             // Try to get complete message with this additional information.
-            vector<Container> listOfContainers = m_simple.mapNext(gcm);
+            vector<Container> listOfContainers = m_canMapping.mapNext(gcm);
             if (listOfContainers.size() > 0) {
                 vector<Container>::iterator it = listOfContainers.begin();
                 while (it != listOfContainers.end()) {

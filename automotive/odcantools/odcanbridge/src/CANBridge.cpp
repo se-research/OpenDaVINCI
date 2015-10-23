@@ -46,7 +46,7 @@ namespace automotive {
             m_deviceNodeB(),
             m_replicatorFromAtoB(*this),
             m_replicatorFromBtoA(*this),
-            m_simple() {}
+            m_canMapping() {}
 
         CANBridge::~CANBridge() {}
 
@@ -100,7 +100,7 @@ namespace automotive {
             Container c(Container::GENERIC_CAN_MESSAGE, gcm);
             m_fifo.add(c);
 
-            vector<Container> listOfContainers = m_simple.mapNext(gcm);
+            vector<Container> listOfContainers = m_canMapping.mapNext(gcm);
             if (listOfContainers.size() > 0) {
                 vector<Container>::iterator it = listOfContainers.begin();
                 while (it != listOfContainers.end()) {
