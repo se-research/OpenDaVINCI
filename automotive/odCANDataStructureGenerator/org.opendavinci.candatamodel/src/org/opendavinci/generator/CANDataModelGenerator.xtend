@@ -22,6 +22,7 @@ package org.opendavinci.generator
 
 import java.util.ArrayList
 import java.util.HashMap
+import java.util.Iterator
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
@@ -36,6 +37,7 @@ class CANDataModelGenerator implements IGenerator {
 		String m_CANID
 		String m_startBit
 		String m_length
+		String m_lengthBytes
 		String m_endian
 		String m_multiplyBy
 		String m_add
@@ -49,11 +51,11 @@ class CANDataModelGenerator implements IGenerator {
 
 		// First, extract all CAN signals from .can file.
 		val mapOfDefinedCANSignals = collectDefinedCANSignals(resource.allContents.toIterable.filter(typeof(CANSignal)))
-
+		
+		// needed for the "super" header and source files
 		var ArrayList<String> includedClasses=new ArrayList<String>
-				
 		for (e : resource.allContents.toIterable.filter(typeof(CANSignalMapping))) {
-			includedClasses.add(e.message.toString().replaceAll("\\.", "/"))
+			includedClasses.add(e.mappingName.toString().replaceAll("\\.", "/"))
 		}
 		
 		fsa.generateFile("include/GeneratedHeaders_" + generatedHeadersFile + ".h", generateSuperHeaderFileContent(generatedHeadersFile, includedClasses))
@@ -61,10 +63,10 @@ class CANDataModelGenerator implements IGenerator {
 		
 		// Next, generate the code for the actual mapping.
 		for (e : resource.allContents.toIterable.filter(typeof(CANSignalMapping))) {
-			fsa.generateFile("include/generated/" + e.message.toString().replaceAll("\\.", "/") + ".h", generateHeaderFileContent(generatedHeadersFile, e))
-			fsa.generateFile("src/generated/" + e.message.toString().replaceAll("\\.", "/") + ".cpp", generateImplementationFileContent(e, "generated", mapOfDefinedCANSignals))
-			fsa.generateFile("testsuites/" + e.message.toString().replaceAll("\\.", "_") + "TestSuite.h", generateTestSuiteContent(generatedHeadersFile, e))
-			fsa.generateFile("uppaal/generated/" + e.message.toString().replaceAll("\\.", "/"), generateUPPAALFileContent(e))
+			fsa.generateFile("include/generated/" + e.mappingName.toString().replaceAll("\\.", "/") + ".h", generateHeaderFileContent(generatedHeadersFile, e))
+			fsa.generateFile("src/generated/" + e.mappingName.toString().replaceAll("\\.", "/") + ".cpp", generateImplementationFileContent(e, "generated", mapOfDefinedCANSignals))
+			fsa.generateFile("testsuites/" + e.mappingName.toString().replaceAll("\\.", "_") + "TestSuite.h", generateTestSuiteContent(generatedHeadersFile, e))
+			fsa.generateFile("uppaal/generated/" + e.mappingName.toString().replaceAll("\\.", "/"), generateUPPAALFileContent(e))
 		}
 	}
 
@@ -79,6 +81,11 @@ class CANDataModelGenerator implements IGenerator {
 			csd.m_CANID = cs.canIdentifier
 			csd.m_startBit = cs.startBit
 			csd.m_length = cs.length
+			if((cs.length==null || cs.length=="") && (cs.lengthBytes!=null || cs.lengthBytes!=""))
+				csd.m_length = (Integer.parseInt(cs.lengthBytes)*8)+""
+			csd.m_lengthBytes = cs.lengthBytes
+			if((cs.lengthBytes==null || cs.lengthBytes=="") && (cs.length!=null || cs.length!="") && Integer.parseInt(cs.length)%8==0)
+				csd.m_lengthBytes = (Integer.parseInt(cs.length)/8)+""
 			csd.m_endian = cs.endian
 			csd.m_multiplyBy = cs.multiplyBy
 			csd.m_add = cs.add
@@ -86,7 +93,6 @@ class CANDataModelGenerator implements IGenerator {
 			csd.m_rangeEnd = cs.rangeEnd
 			cansignalsByFQDN.put(csd.m_FQDN, csd)
 		}
-
         return cansignalsByFQDN
 	}
 
@@ -158,8 +164,7 @@ namespace canmapping {
 «FOR include : includedClasses»
             «include» m_«Character.toLowerCase(include.charAt(0)) + include.substring(1)»;
 «ENDFOR»
-            string m_padding;
-        
+
     };
 
 } // canmapping
@@ -183,11 +188,21 @@ namespace canmapping {
 
 namespace canmapping {
 
+
+«var ArrayList<String> members=new ArrayList<String>»
+«var Iterator<String> iter = includedClasses.iterator»
+«{var String member;
+	while (iter.hasNext()){
+	member=iter.next();
+	var String temp="m_"+Character.toLowerCase(member.charAt(0)) + member.substring(1)+"()";
+	if(iter.hasNext())temp+=",";
+	members.add(temp);
+}}»
     CanMapping::CanMapping() :
-«FOR include : includedClasses»
-            m_«Character.toLowerCase(include.charAt(0)) + include.substring(1)»(),
-«ENDFOR»
-        m_padding() {}
+    «FOR member:members»
+    «member»
+    «ENDFOR»
+{}
 
     CanMapping::~CanMapping() {}
 
@@ -223,11 +238,11 @@ namespace canmapping {
  *
  * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
  */
-// Header file for: «mapping.message.toString»
-#ifndef «mapping.message.toString.toUpperCase»_H_
-#define «mapping.message.toString.toUpperCase»_H_
+// Header file for: «mapping.mappingName.toString»
+#ifndef «mapping.mappingName.toString.toUpperCase»_H_
+#define «mapping.mappingName.toString.toUpperCase»_H_
 
-#include "generated/«mapping.message.toString».h"
+#include "generated/«mapping.mappingName.toString».h"
 
 #include <core/data/Container.h>
 
@@ -237,7 +252,7 @@ namespace canmapping {
 
     using namespace std;
 
-    class «mapping.message.toString» {
+    class «mapping.mappingName.toString» {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -246,7 +261,7 @@ namespace canmapping {
              *
              * @param obj Reference to an object of this class.
              */
-            «mapping.message.toString»(const «mapping.message.toString» &/*obj*/);
+            «mapping.mappingName.toString»(const «mapping.mappingName.toString» &/*obj*/);
 
             /**
              * "Forbidden" assignment operator. Goal: The compiler should warn
@@ -256,19 +271,23 @@ namespace canmapping {
              * @param obj Reference to an object of this class.
              * @return Reference to this instance.
              */
-            «mapping.message.toString»& operator=(const «mapping.message.toString» &/*obj*/);
+            «mapping.mappingName.toString»& operator=(const «mapping.mappingName.toString» &/*obj*/);
 
         public:
-            «mapping.message.toString»();
+            «mapping.mappingName.toString»();
 
-            virtual ~«mapping.message.toString»();
+            virtual ~«mapping.mappingName.toString»();
 
             core::data::Container decode(const automotive::GenericCANMessage &gcm);
+
+        private:
+        	std::map<uint64_t,uint64_t> m_payloads;
+        	std::vector<uint64_t> m_neededCanMessages;
     };
 
 } // canmapping
 
-#endif /*«mapping.message.toString.toUpperCase»_H_*/
+#endif /*«mapping.mappingName.toString.toUpperCase»_H_*/
 '''
 
 	/* This method generates the implementation (.cpp). */
@@ -278,24 +297,49 @@ namespace canmapping {
  *
  * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
  */
-// Source file for: «mapping.message.toString»
+// Source file for: «mapping.mappingName.toString»
 
+«var ArrayList<String> canIDs=new ArrayList<String>»
 /*
-«FOR entry : canSignals.entrySet»
-«entry.key» : «entry.value.m_CANID»
-«entry.key» : «entry.value.m_FQDN»
-«entry.key» : «entry.value.m_startBit»
-«entry.key» : «entry.value.m_length»
-«entry.key» : «entry.value.m_endian»
-«entry.key» : «entry.value.m_multiplyBy»
-«entry.key» : «entry.value.m_add»
-«entry.key» : «entry.value.m_rangeStart»
-«entry.key» : «entry.value.m_rangeEnd»
+signals of interest:
 
+«IF(mapping.mappings.size>0)»
+«FOR currenMapping : mapping.mappings»
+«currenMapping.cansignal»
 «ENDFOR»
+
+«FOR currenMapping : mapping.mappings»
+«var String signalName=currenMapping.cansignal»
+«var CANSignalDescription canSignal=canSignals.get(signalName)»
+«IF(mapping.mappingName.toString.toLowerCase.compareTo(signalName.split("\\.").get(0).toLowerCase)==0)»
+«{
+	var boolean test=true;
+	for(id:canIDs)
+		if(id.compareTo(canSignal.m_CANID)==0)
+			test=false;
+	if(test)
+		canIDs.add(canSignal.m_CANID);
+	""
+}»
+CANID       : «canSignal.m_CANID»
+FQDN        : «canSignal.m_FQDN»
+startBit    : «canSignal.m_startBit»
+length      : «canSignal.m_length»
+lengthBytes : «canSignal.m_lengthBytes»
+endian      : «canSignal.m_endian»
+multiplyBy  : «canSignal.m_multiplyBy»
+add         : «canSignal.m_add»
+rangeStart  : «canSignal.m_rangeStart»
+rangeEnd    : «canSignal.m_rangeEnd»
+
+«ENDIF»
+«ENDFOR»
+«ELSE»
+none.
+«ENDIF»
 */
 
-#include "generated/«mapping.message.toString».h"
+#include "generated/«mapping.mappingName.toString».h"
 
 #include <core/SharedPointer.h>
 #include <core/reflection/Message.h>
@@ -308,136 +352,137 @@ namespace canmapping {
 
     using namespace std;
 
-    «mapping.message.toString»::«mapping.message.toString»() {}
+    «mapping.mappingName.toString»::«mapping.mappingName.toString»() :
+    m_payloads(),
+    m_neededCanMessages()
+    {
+    	«FOR id : canIDs»
+    	m_neededCanMessages.push_back(«id»);
+        «ENDFOR»
+    }
 
-    «mapping.message.toString»::~«mapping.message.toString»() {}
+    «mapping.mappingName.toString»::~«mapping.mappingName.toString»() {}
 
-    core::data::Container «mapping.message.toString»::decode(const automotive::GenericCANMessage &gcm) {
+    core::data::Container «mapping.mappingName.toString»::decode(const automotive::GenericCANMessage &gcm) {
         core::data::Container c;
 
-        // TODO: Check the CAN ID and perform the CAN signal mapping before to process the rest of this method.
-        if (gcm.getIdentifier() != 0x123) {
-            return c;
-        }
-
-        // 2. If the identifier is matching, get the raw payload.
-        uint64_t data = gcm.getData();
-
-        // Optionally: print payload for debug purposes.
-        // printPayload(data);
-
-        // 3. Map uin64_t value to 8 byte char array.
-        string value((char*)(&data), 8);
-        stringstream sstr(value);
-
-        // 4. Create a generic message.
-        core::reflection::Message message;
-
-        // 5. Decode all contained attributes as defined in this CAN message specification.
+        switch(gcm.getIdentifier())
         {
-            {
-                // 5.1 Get raw value from 1st attribute.
-                uint16_t _wheel1 = 0;
-                sstr.read((char*)&_wheel1, sizeof(uint16_t));
+	    	«FOR id : canIDs»
+	    	case «id» : 
+	    	// Store the payload in a map for future use (if needed)
+	    	// deleting existent value, if any
+	    	m_payloads.erase(gcm.getIdentifier());
+	    	// inserting latest payload
+	    	m_payloads.insert(gcm.getIdentifier(), gcm.getData());
+	    	break; // no op
+	        «ENDFOR»
+        	default : return c; // valid id not found
+    	}
+    	
+		«IF mapping.unordered!=null && mapping.unordered.compareTo("unordered")==0»
+		// if we don't have all the needed CAN messages (order is not important), return 
+		if(m_payloads.size()!=m_neededCanMessages.size())
+			return c;
+		«ELSE»
+		// if we don't have all the needed CAN messages in the correct order, return 
+		
+		«ENDIF»
 
-                // 5.2 Optional: Fix endianness depending on CAN message specification.
-                _wheel1 = ntohs(_wheel1);
+		«FOR currenMapping : mapping.mappings»
+		«var String signalName=currenMapping.cansignal»
+		
+		// 2. If the identifier is matching, get the raw payload.
+		//uint64_t data = ;
 
-                // 5.3 Apply value transformation (i.e. formula) to map raw value to (physically) meaningful value according to CAN message specification.
-                const float SCALE = 0.01;
-                float v = _wheel1 * SCALE;
+		// Optionally: print payload for debug purposes.
+		// printPayload(data);
 
-                // 5.4 Create a field for a generic message.
-                core::reflection::Field<float> *f = new core::reflection::Field<float>(v);
-                f->setLongIdentifier(1); // The identifiers specified here must match with the ones defined in the .odvd file!
-                f->setShortIdentifier(1); // The identifiers specified here must match with the ones defined in the .odvd file!
-                f->setLongName("WheelSpeed.frontLeft");
-                f->setShortName("frontLeft");
-                f->setFieldDataType(coredata::reflection::AbstractField::FLOAT_T);
-                f->setSize(sizeof(v));
+		// 3. Map uin64_t value to 8 byte uint8_t array.
+		uint8_t payload[8]=reinterpret_cast<uint8_t*>(&data);
 
-                // 5.5 Add created field to generic message.
-                message.addField(core::SharedPointer<coredata::reflection::AbstractField>(f));
-            }
+		// 4. Create a generic message.
+		reflection::Message message;
 
-            // Continue decoding values depending on CAN message specification.
-            {
-                // 5.1 Get raw value from 2nd attribute.
-                uint16_t _wheel2 = 0;
-                sstr.read((char*)&_wheel2, sizeof(uint16_t));
+		// addressing signal «signalName»
+		«var String tempVarType=""»
+		«var String tempVarName="raw_"+signalName.replaceAll("\\.", "_")»
+		«var String finalVarName="transformed_"+signalName.replaceAll("\\.", "_")»
+		«var int numberOfBits=8»
+		
+		// 5.1 Get raw value from 1st attribute.
+		«IF Integer.parseInt(canSignals.get(signalName).m_startBit) + 
+			Integer.parseInt(canSignals.get(signalName).m_length) <= 8 »
+		«{numberOfBits=8;""}»
+		«tempVarType="uint8_t"» «tempVarName»=0x00;
+		«tempVarName»=payload[0];
+		«ELSEIF Integer.parseInt(canSignals.get(signalName).m_startBit) + 
+			Integer.parseInt(canSignals.get(signalName).m_length) <= 16 »
+		«{numberOfBits=16;""}»
+		«tempVarType="uint16_t"» «tempVarName»=0x0000;
+		«tempVarName»=«tempVarName» | static_cast<«tempVarType»>(payload[0]);
+		«tempVarName»=«tempVarName» << 8;
+		«tempVarName»=«tempVarName» | static_cast<«tempVarType»>(payload[1]);
+		«ELSEIF Integer.parseInt(canSignals.get(signalName).m_startBit) + 
+			Integer.parseInt(canSignals.get(signalName).m_length) <= 32 »
+		«{numberOfBits=32;""}»
+		«tempVarType="uint32_t"» «tempVarName»=0x00000000;
+		«tempVarName»=«tempVarName» | static_cast<«tempVarType»>(payload[0]);
+		«tempVarName»=«tempVarName» << 8;
+		«tempVarName»=«tempVarName» | static_cast<«tempVarType»>(payload[1]);
+		«tempVarName»=«tempVarName» << 8;
+		«tempVarName»=«tempVarName» | static_cast<«tempVarType»>(payload[2]);
+		«tempVarName»=«tempVarName» << 8;
+		«tempVarName»=«tempVarName» | static_cast<«tempVarType»>(payload[3]);
+		«ELSEIF Integer.parseInt(canSignals.get(signalName).m_startBit) + 
+			Integer.parseInt(canSignals.get(signalName).m_length) <= 64 »
+		«{numberOfBits=64;""}»
+		«tempVarType="uint64_t"» «tempVarName»=0x0000000000000000;
+		«tempVarName»=*reinterpret_cast<uint64_t*>(payload);
+		«ENDIF»
+		
+		// reset left-hand side of bit field
+		«tempVarName»=«tempVarName» << «canSignals.get(signalName).m_startBit»;
+		// reset right-hand side of bit field
+		«tempVarName»=«tempVarName» >> «numberOfBits-Integer.parseInt(canSignals.get(signalName).m_length)»;
+		«IF canSignals.get(signalName).m_endian.compareTo("big")==0»
+		
+		// 5.2 Optional: Fix endianness depending on CAN message specification.
+		«tempVarName» = ntohs(«tempVarName»);
+		«ELSE»
+		
+		// 5.2 Endianness doesn't need fixing, skipping this step.
+		«ENDIF»
 
-                // 5.2 Optional: Fix endianness depending on CAN message specification.
-                _wheel2 = ntohs(_wheel2);
+		// variable holding the transformed value
+		double «finalVarName»=static_cast<double>(«tempVarName»);
+		
+		// 5.3 Apply value transformation (i.e. formula) to map raw value to (physically) meaningful value according to CAN message specification.
+		// scaling
+		const double SCALE = «canSignals.get(signalName).m_multiplyBy»;
+		«finalVarName»=«finalVarName»*SCALE;
+		// adding
+		const double OFFSET = «canSignals.get(signalName).m_add»;
+		«finalVarName»=«finalVarName»+OFFSET;
+		
+		// clamping
+		if(«finalVarName»<«canSignals.get(signalName).m_rangeStart»)
+			«finalVarName»=«canSignals.get(signalName).m_rangeStart»;
+		else if(«finalVarName»>«canSignals.get(signalName).m_rangeEnd»)
+			«finalVarName»=«canSignals.get(signalName).m_rangeEnd»;
+		
+		// 5.4 Create a field for a generic message.
+		core::reflection::Field<double> *f = new core::reflection::Field<double>(v);
+		f->setLongIdentifier(«canSignals.get(signalName).m_CANID»); // The identifiers specified here must match with the ones defined in the .odvd file!
+		f->setShortIdentifier(«canSignals.get(signalName).m_CANID»); // The identifiers specified here must match with the ones defined in the .odvd file!
+		f->setLongName("«canSignals.get(signalName).m_FQDN»");
+		f->setShortName("«{var String[] res; res=canSignals.get(signalName).m_FQDN.split("\\."); res.get(res.size-1)}»");
+		f->setFieldDataType(coredata::reflection::AbstractField::DOUBLE_T);
+		f->setSize(sizeof(v));
 
-                // 5.3 Apply value transformation (i.e. formula) to map raw value to (physically) meaningful value according to CAN message specification.
-                const float SCALE = 0.01;
-                float v = _wheel2 * SCALE;
-
-                // 5.4 Create a field for a generic message.
-                core::reflection::Field<float> *f = new core::reflection::Field<float>(v);
-                f->setLongIdentifier(2); // The identifiers specified here must match with the ones defined in the .odvd file!
-                f->setShortIdentifier(2); // The identifiers specified here must match with the ones defined in the .odvd file!
-                f->setLongName("WheelSpeed.frontRight");
-                f->setShortName("frontRight");
-                f->setFieldDataType(coredata::reflection::AbstractField::FLOAT_T);
-                f->setSize(sizeof(v));
-
-                // 5.5 Add created field to generic message.
-                message.addField(core::SharedPointer<coredata::reflection::AbstractField>(f));
-            }
-
-            // Continue decoding values depending on CAN message specification.
-            {
-                // 5.1 Get raw value from 3rd attribute.
-                uint16_t _wheel3 = 0;
-                sstr.read((char*)&_wheel3, sizeof(uint16_t));
-
-                // 5.2 Optional: Fix endianness depending on CAN message specification.
-                _wheel3 = ntohs(_wheel3);
-
-                // 5.3 Apply value transformation (i.e. formula) to map raw value to (physically) meaningful value according to CAN message specification.
-                const float SCALE = 0.01;
-                float v = _wheel3 * SCALE;
-
-                // 5.4 Create a field for a generic message.
-                core::reflection::Field<float> *f = new core::reflection::Field<float>(v);
-                f->setLongIdentifier(3); // The identifiers specified here must match with the ones defined in the .odvd file!
-                f->setShortIdentifier(3); // The identifiers specified here must match with the ones defined in the .odvd file!
-                f->setLongName("WheelSpeed.rearLeft");
-                f->setShortName("rearLeft");
-                f->setFieldDataType(coredata::reflection::AbstractField::FLOAT_T);
-                f->setSize(sizeof(v));
-
-                // 5.5 Add created field to generic message.
-                message.addField(core::SharedPointer<coredata::reflection::AbstractField>(f));
-            }
-
-            // Continue decoding values depending on CAN message specification.
-            {
-                // 5.1 Get raw value from 4th attribute.
-                uint16_t _wheel4 = 0;
-                sstr.read((char*)&_wheel4, sizeof(uint16_t));
-
-                // 5.2 Optional: Fix endianness depending on CAN message specification.
-                _wheel4 = ntohs(_wheel4);
-
-                // 5.3 Apply value transformation (i.e. formula) to map raw value to (physically) meaningful value according to CAN message specification.
-                const float SCALE = 0.01;
-                float v = _wheel4 * SCALE;
-
-                // 5.4 Create a field for a generic message.
-                core::reflection::Field<float> *f = new core::reflection::Field<float>(v);
-                f->setLongIdentifier(4); // The identifiers specified here must match with the ones defined in the .odvd file!
-                f->setShortIdentifier(4); // The identifiers specified here must match with the ones defined in the .odvd file!
-                f->setLongName("WheelSpeed.rearRight");
-                f->setShortName("rearRight");
-                f->setFieldDataType(coredata::reflection::AbstractField::FLOAT_T);
-                f->setSize(sizeof(v));
-
-                // 5.5 Add created field to generic message.
-                message.addField(core::SharedPointer<coredata::reflection::AbstractField>(f));
-            }
-        }
+		// 5.5 Add created field to generic message.
+		message.addField(core::SharedPointer<coredata::reflection::AbstractField>(f));
+«ENDFOR»
 
         // 6. Depending on the CAN message specification, we are either ready here
         // (i.e. mapping one CAN message to one high-level C++ message), or we have
@@ -452,10 +497,11 @@ namespace canmapping {
             core::reflection::MessageToVisitableVisitor mtvv(message);
 
             // 8. Create an instance of the named high-level message.
-            automotive::vehicle::WheelSpeed wheelSpeed;
+            «var String HLName= Character.toLowerCase(mapping.mappingName.toString.charAt(0)) + mapping.mappingName.toString.substring(1)»
+            automotive::vehicle::«mapping.mappingName.toString» «HLName»;
 
             // 9. Letting the high-level message accept the visitor to enter the values.
-            wheelSpeed.accept(mtvv);
+            «HLName».accept(mtvv);
 
             {
                 // Optional: Showing how to use the MessagePrettyPrinterVisitor to print the content of the unnamed message.
@@ -464,11 +510,11 @@ namespace canmapping {
                 mppv.getOutput(cout);
 
                 // Optional: Just print the content for convenience purposes.
-                cout << wheelSpeed.toString() << endl;
+                cout << «HLName».toString() << endl;
             }
 
             // 10. Create the resulting container carrying a valid payload.
-            c = core::data::Container(core::data::Container::WHEELSPEED, wheelSpeed);
+            c = core::data::Container(core::data::Container::«mapping.mappingName.toString.toUpperCase», «HLName»);
         }
 
         return c;
@@ -484,7 +530,7 @@ namespace canmapping {
  *
  * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
  */
-// Test suite file for: «mapping.message.toString»
+// Test suite file for: «mapping.mappingName.toString»
 
 #ifndef CANMAPPINGTESTSUITE_H_
 #define CANMAPPINGTESTSUITE_H_
@@ -515,6 +561,6 @@ This software is open source. Please see COPYING and AUTHORS for further informa
 
 This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
 -->
-<!-- UPPAAL file for: «mapping.message.toString» -->
+<!-- UPPAAL file for: «mapping.mappingName.toString» -->
 '''
 }
