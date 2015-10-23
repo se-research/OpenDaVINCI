@@ -1,24 +1,23 @@
-# odcanmapper - Tool for mapping GenericCANMessages to high-level
-#             C++ data structures and vice-versa.
+# libodcantools - Library to wrap a CAN interface.
 # Copyright (C) 2015 Christian Berger
 #
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
 #
-# This program is distributed in the hope that it will be useful,
+# This library is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
 #
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 CMAKE_MINIMUM_REQUIRED (VERSION 2.8)
 
-PROJECT (odcanmapper)
+PROJECT (libodcantools)
 
 ###########################################################################
 # Set the search path for .cmake files.
@@ -52,33 +51,40 @@ FIND_PACKAGE (OpenDaVINCI REQUIRED)
 SET(AUTOMOTIVEDATA_DIR "${CMAKE_INSTALL_PREFIX}")
 FIND_PACKAGE (AutomotiveData REQUIRED)
 
-###########################################################################
-# Find CANMappingMessage.
-SET(CANMESSAGEMAPPING_DIR "${CMAKE_INSTALL_PREFIX}")
-FIND_PACKAGE (CANMessageMapping REQUIRED)
-
 ###############################################################################
 # Set header files from OpenDaVINCI.
 INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS}/opendavinci)
 # Set header files from AutomotiveData.
 INCLUDE_DIRECTORIES (${AUTOMOTIVEDATA_INCLUDE_DIRS}/automotivedata)
-# Set header files from CANMappingMessage.
-INCLUDE_DIRECTORIES (${CANMESSAGEMAPPING_INCLUDE_DIRS}/canmessagemapping)
+# Set header files from CAN driver.
+INCLUDE_DIRECTORIES (${CMAKE_INSTALL_PREFIX}/usr/include)
 # Set include directory.
 INCLUDE_DIRECTORIES(include)
 
 ###########################################################################
 # Set linking libraries to successfully link test suites and binaries.
 SET (LIBRARIES ${OPENDAVINCI_LIBRARIES}
-               ${CANMESSAGEMAPPING_LIBRARIES}
-               ${AUTOMOTIVEDATA_LIBRARIES})
+               ${AUTOMOTIVEDATA_LIBRARIES}
+               ${CMAKE_INSTALL_PREFIX}/usr/lib/libpcan.so)
 
 ###############################################################################
 # Build this project.
 FILE(GLOB_RECURSE thisproject-sources "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
-ADD_LIBRARY (${PROJECT_NAME}lib-static STATIC ${thisproject-sources})
-ADD_EXECUTABLE (${PROJECT_NAME} "${CMAKE_CURRENT_SOURCE_DIR}/apps/${PROJECT_NAME}.cpp")
-TARGET_LINK_LIBRARIES (${PROJECT_NAME} ${PROJECT_NAME}lib-static ${LIBRARIES}) 
+
+###############################################################################
+# Resulting artifacts.
+ADD_LIBRARY (odcantools-core   OBJECT ${thisproject-sources})
+ADD_LIBRARY (odcantools-static STATIC $<TARGET_OBJECTS:odcantools-core>)
+IF(    (NOT WIN32)
+   AND (NOT ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")) )
+    ADD_LIBRARY (odcantools    SHARED $<TARGET_OBJECTS:odcantools-core>)
+ENDIF()
+
+TARGET_LINK_LIBRARIES(odcantools-static ${LIBRARIES})
+IF(    (NOT WIN32)
+   AND (NOT ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")) )
+    TARGET_LINK_LIBRARIES(odcantools    ${LIBRARIES})
+ENDIF()
 
 ###############################################################################
 # Enable CxxTest for all available testsuites.
@@ -107,12 +113,18 @@ IF(CXXTEST_FOUND)
             SET_SOURCE_FILES_PROPERTIES(${testsuite-short}-TestSuite.cpp PROPERTIES COMPILE_FLAGS "")
         ENDIF()
         SET_TESTS_PROPERTIES(${testsuite-short}-TestSuite PROPERTIES TIMEOUT 3000)
-        TARGET_LINK_LIBRARIES(${testsuite-short}-TestSuite ${PROJECT_NAME}lib-static ${LIBRARIES})
+        TARGET_LINK_LIBRARIES(${testsuite-short}-TestSuite odcantools-static ${LIBRARIES})
     ENDFOREACH()
 ENDIF(CXXTEST_FOUND)
 
 ###############################################################################
 # Install this project.
-INSTALL(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin COMPONENT cantools)
-INSTALL(FILES man/${PROJECT_NAME}.1 DESTINATION man/man1 COMPONENT cantools)
+INSTALL(TARGETS odcantools-static DESTINATION lib COMPONENT cantools)
+IF(    (NOT WIN32)
+   AND (NOT ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")) )
+    INSTALL(TARGETS odcantools    DESTINATION lib COMPONENT cantools)
+ENDIF()
+
+# Install header files.
+INSTALL(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/" DESTINATION include/odcantools COMPONENT cantools)
 
