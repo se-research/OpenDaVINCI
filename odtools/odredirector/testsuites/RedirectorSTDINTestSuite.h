@@ -104,6 +104,9 @@ class RedirectorTest : public CxxTest::TestSuite,
         }
 
         void testRedirectorPumpFromStdin() {
+#ifdef WIN32
+            TS_ASSERT(true);
+#else
             // Setup ContainerConference.
             core::SharedPointer<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.100");
 
@@ -229,6 +232,7 @@ class RedirectorTest : public CxxTest::TestSuite,
             ContainerConferenceFactory &ccf = ContainerConferenceFactory::getInstance();
             ContainerConferenceFactory *ccf2 = &ccf;
             OPENDAVINCI_CORE_DELETE_POINTER(ccf2);        
+#endif     
         }
 };
 
