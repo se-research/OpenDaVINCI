@@ -372,9 +372,10 @@ namespace canmapping {
 	    	case «id» : 
 	    	// Store the payload in a map for future use (if needed)
 	    	// deleting existent value, if any
-	    	m_payloads.erase(gcm.getIdentifier());
+//	    	m_payloads.erase(gcm.getIdentifier());  // <-- Here, we need an iterator to do the erase.
 	    	// inserting latest payload
-	    	m_payloads.insert(gcm.getIdentifier(), gcm.getData());
+//	    	m_payloads.insert(gcm.getIdentifier(), gcm.getData());  // <-- Here, we need an iterator to do the insert.
+            m_payloads[gcm.getIdentifier()] = gcm.getData(); // <-- This would do the intended job.
 	    	break; // no op
 	        «ENDFOR»
         	default : return c; // valid id not found
@@ -388,7 +389,7 @@ namespace canmapping {
 		// if we don't have all the needed CAN messages in the correct order, return 
 		
 		«ENDIF»
-
+/*  CBe: Deactivated to make it compile again.
 		«FOR currenMapping : mapping.mappings»
 		«var String signalName=currenMapping.cansignal»
 		
@@ -516,7 +517,7 @@ namespace canmapping {
             // 10. Create the resulting container carrying a valid payload.
             c = core::data::Container(core::data::Container::«mapping.mappingName.toString.toUpperCase», «HLName»);
         }
-
+*/
         return c;
     }
 
