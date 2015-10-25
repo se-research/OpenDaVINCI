@@ -494,7 +494,7 @@
 		    // Read string of elements.
 		    string elements;
 			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'B', CharList<'o', CharList<'o', CharList<'l', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > >  >::RESULT,
-				   elements);
+			   elements);
 		
 		    stringstream sstr(elements);
 		
@@ -517,7 +517,7 @@
 		    // Read string of elements.
 		    string elements;
 			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'C', CharList<'h', CharList<'a', CharList<'r', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > >  >::RESULT,
-				   elements);
+			   elements);
 		
 		    stringstream sstr(elements);
 		
@@ -540,7 +540,7 @@
 		    // Read string of elements.
 		    string elements;
 			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > >  >::RESULT,
-				   elements);
+			   elements);
 		
 		    stringstream sstr(elements);
 		
@@ -563,7 +563,7 @@
 		    // Read string of elements.
 		    string elements;
 			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'U', CharList<'i', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
-				   elements);
+			   elements);
 		
 		    stringstream sstr(elements);
 		
@@ -586,7 +586,7 @@
 		    // Read string of elements.
 		    string elements;
 			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > >  >::RESULT,
-				   elements);
+			   elements);
 		
 		    stringstream sstr(elements);
 		
@@ -609,7 +609,7 @@
 		    // Read string of elements.
 		    string elements;
 			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'D', CharList<'o', CharList<'u', CharList<'b', CharList<'l', CharList<'e', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
-				   elements);
+			   elements);
 		
 		    stringstream sstr(elements);
 		
@@ -632,7 +632,7 @@
 		    // Read string of elements.
 		    string elements;
 			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
-				   elements);
+			   elements);
 		
 		    stringstream sstr(elements);
 		

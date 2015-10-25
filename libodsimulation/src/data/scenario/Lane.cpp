@@ -145,7 +145,7 @@ namespace hesperia {
 
                 if (hasLaneModel) {
                     s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('l', 'a', 'n', 'e', 'm', 'd', 'l') >::RESULT,
-                            getLaneModel()->getType());
+                            static_cast<uint32_t>(getLaneModel()->getType()));
 
                     s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', 'o', 'd', 'e', 'l') >::RESULT,
                             *getLaneModel());

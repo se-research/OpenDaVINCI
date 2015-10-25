@@ -21,27 +21,27 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Other messages.
 message cartesian.Matrix3x3 [id = 52] {
-    double XX;
-    double XY;
-    double XZ;
-    double YX;
-    double YY;
-    double YZ;
-    double ZX;
-    double ZY;
-    double ZZ;
+    double XX [id = 1];
+    double XY [id = 2];
+    double XZ [id = 3];
+    double YX [id = 4];
+    double YY [id = 5];
+    double YZ [id = 6];
+    double ZX [id = 7];
+    double ZY [id = 8];
+    double ZZ [id = 9];
 }
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Messages describing entities in the Cartesian environment.
 message cartesian.Point2 [id = 51] {
-    float p[2];
+    float p[2] [id = 1];
 }
 
 message cartesian.Position [id = 53] {
-    cartesian.Point2 position;
-    cartesian.Point2 rotation;
+    cartesian.Point2 position [id = 1];
+    cartesian.Point2 rotation [id = 2];
 }
 
 message cartesian.Constants [id = 50] {
@@ -60,53 +60,53 @@ message automotive.Constants [id = 60] {
 }
 
 message automotive.VehicleData [id = 39] {
-    cartesian.Point2 position;
-    cartesian.Point2 velocity;
-    double heading;
-    double absTraveledPath;
-    double relTraveledPath;
-    double speed;
-    double v_log;
-    double v_batt;
-    double temp;
+    cartesian.Point2 position [id = 1];
+    cartesian.Point2 velocity [id = 2];
+    double heading [id = 3];
+    double absTraveledPath [id = 4];
+    double relTraveledPath [id = 5];
+    double speed [id = 6];
+    double v_log [id = 7];
+    double v_batt [id = 8];
+    double temp [id = 9];
 }
 
 message automotive.VehicleControl [id = 41] {
-    double speed [fourbyteid = 0x0E43596B];
-    double acceleration [fourbyteid = 0x0E435991];
-    double steeringWheelAngle [fourbyteid = 0x0E435969];
-    bool brakeLights [fourbyteid = 0x0E43599B];
-    bool flashingLightsLeft [fourbyteid = 0x09823BD7];
-    bool flashingLightsRight [fourbyteid = 0x0E435996];
+    double speed [id = 1, fourbyteid = 0x0E43596B];
+    double acceleration [id = 2, fourbyteid = 0x0E435991];
+    double steeringWheelAngle [id = 3, fourbyteid = 0x0E435969];
+    bool brakeLights [id = 4, fourbyteid = 0x0E43599B];
+    bool flashingLightsLeft [id = 5, fourbyteid = 0x09823BD7];
+    bool flashingLightsRight [id = 6, fourbyteid = 0x0E435996];
 }
 
 message automotive.ForceControl [id = 33] {
-    double accelerationForce [fourbyteid = 0x0E435991];
-    double brakeForce [fourbyteid = 0x0E43598D];
-    double steeringForce [fourbyteid = 0x0E435969];
-    bool brakeLights [fourbyteid = 0x0E43599B];
-    bool flashingLightsLeft [fourbyteid = 0x09823BD7];
-    bool flashingLightsRight [fourbyteid = 0x0E435996];
+    double accelerationForce [id = 1, fourbyteid = 0x0E435991];
+    double brakeForce [id = 2, fourbyteid = 0x0E43598D];
+    double steeringForce [id = 3, fourbyteid = 0x0E435969];
+    bool brakeLights [id = 4, fourbyteid = 0x0E43599B];
+    bool flashingLightsLeft [id = 5, fourbyteid = 0x09823BD7];
+    bool flashingLightsRight [id = 6, fourbyteid = 0x0E435996];
 }
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Miniature car messages.
 message automotive.miniature.SteeringData [id = 80] {
-    double exampleData;
+    double exampleData [id = 1];
 }
 
 message automotive.miniature.SensorBoardData [id = 81] {
-    uint32 numberOfSensors;
-    map<uint32, double> distances;
+    uint32 numberOfSensors [id = 1];
+    map<uint32, double> distances [id = 2];
 }
 
 message automotive.miniature.STM32F4Control [id = 82] {
-    uint32 dataFeed;
+    uint32 dataFeed [id = 1];
 }
 
 message automotive.miniature.STM32F4Data [id = 83] {
-    string rawData;
+    string rawData [id = 1];
 }
 
 message automotive.miniature.UserButtonData [id = 84] {
@@ -115,8 +115,8 @@ message automotive.miniature.UserButtonData [id = 84] {
         RELEASED = 0,
         PRESSED = 1,
     };
-    ButtonStatus buttonStatus;
-    double duration;
+    ButtonStatus buttonStatus [id = 1];
+    double duration [id = 2];
 }
 
 message automotive.carolocup.Sensors [id = 87] {
@@ -139,10 +139,10 @@ message automotive.carolocup.Control [id = 88] {
 ///////////////////////////////////////////////////////////////////////////////
 // Vehicle messages.
 message automotive.GenericCANMessage [id = 71] {
-    core::data::TimeStamp driverTimeStamp; // TimeStamp from CAN driver.
-    uint64 identifier;                     // ID of the CAN message. 
-    uint8 length;                          // Number of data bytes (1-8).
-    uint64 data;                           // Payload of the CAN message.
+    core::data::TimeStamp driverTimeStamp [id = 1]; // TimeStamp from CAN driver.
+    uint64 identifier [id = 2];                     // ID of the CAN message. 
+    uint8 length [id = 3];                          // Number of data bytes (1-8).
+    uint64 data [id = 4];                           // Payload of the CAN message.
 }
 
 message automotive.vehicle.WheelSpeed [id = 75] {

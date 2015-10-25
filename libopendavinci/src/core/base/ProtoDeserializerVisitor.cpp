@@ -86,11 +86,11 @@ namespace core {
             uint8_t size = 0;
             while (in.good()) {
                 char c = in.get();
-                value |= (c & 0x7f) << (0x7 * size++);
+                value |= static_cast<unsigned int>( (c & 0x7f) << (0x7 * size++) );
                 if ( !(c & 0x80) ) break;
             }
 
-            // Protobuf's VarInt is based on little endian.            
+            // Protobuf's VarInt is based on little endian.
             value = le64toh(value);
 
             return size;
@@ -236,67 +236,203 @@ namespace core {
         }
 
 
-        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/,Serializable &v) {
-            (void)longId;
-            (void)shortId;
-            (void)v;
+        void ProtoDeserializerVisitor::read(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, Serializable &/*v*/) {
+            cerr << "[core::base::ProtoDeserializerVisitor]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
+        }
+
+        void ProtoDeserializerVisitor::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, bool &v) {
+            m_size -= readAndValidateKey( (oneByteID > 0 ? oneByteID : fourByteID) , ProtoSerializerVisitor::VARINT);
+
+            uint64_t _v = 0;
+            m_size -= decodeVarInt(m_buffer, _v);
+            v = static_cast<bool>(_v);
+        }
+
+        void ProtoDeserializerVisitor::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, char &v) {
+            m_size -= readAndValidateKey( (oneByteID > 0 ? oneByteID : fourByteID) , ProtoSerializerVisitor::VARINT);
+
+            uint64_t _v = 0;
+            m_size -= decodeVarInt(m_buffer, _v);
+            v = static_cast<char>(_v);
+        }
+
+        void ProtoDeserializerVisitor::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, unsigned char &v) {
+            m_size -= readAndValidateKey( (oneByteID > 0 ? oneByteID : fourByteID) , ProtoSerializerVisitor::VARINT);
+
+            uint64_t _v = 0;
+            m_size -= decodeVarInt(m_buffer, _v);
+            v = static_cast<unsigned char>(_v);
+        }
+
+        void ProtoDeserializerVisitor::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, int8_t &v) {
+            m_size -= readAndValidateKey( (oneByteID > 0 ? oneByteID : fourByteID) , ProtoSerializerVisitor::VARINT);
+
+            uint64_t _v = 0;
+            m_size -= decodeVarInt(m_buffer, _v);
+            v = static_cast<int8_t>(_v);
+        }
+
+        void ProtoDeserializerVisitor::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, int16_t &v) {
+            m_size -= readAndValidateKey( (oneByteID > 0 ? oneByteID : fourByteID) , ProtoSerializerVisitor::VARINT);
+
+            uint64_t _v = 0;
+            m_size -= decodeVarInt(m_buffer, _v);
+            v = static_cast<int16_t>(_v);
+        }
+
+        void ProtoDeserializerVisitor::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, uint16_t &v) {
+            m_size -= readAndValidateKey( (oneByteID > 0 ? oneByteID : fourByteID) , ProtoSerializerVisitor::VARINT);
+
+            uint64_t _v = 0;
+            m_size -= decodeVarInt(m_buffer, _v);
+            v = static_cast<uint16_t>(_v);
+        }
+
+        void ProtoDeserializerVisitor::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, int32_t &v) {
+            m_size -= readAndValidateKey( (oneByteID > 0 ? oneByteID : fourByteID) , ProtoSerializerVisitor::VARINT);
+
+            uint64_t _v = 0;
+            m_size -= decodeVarInt(m_buffer, _v);
+            v = static_cast<int32_t>(_v);
+        }
+
+        void ProtoDeserializerVisitor::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, uint32_t &v) {
+            m_size -= readAndValidateKey( (oneByteID > 0 ? oneByteID : fourByteID) , ProtoSerializerVisitor::VARINT);
+
+            uint64_t _v = 0;
+            m_size -= decodeVarInt(m_buffer, _v);
+            v = static_cast<uint32_t>(_v);
+        }
+
+        void ProtoDeserializerVisitor::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, int64_t &v) {
+            m_size -= readAndValidateKey( (oneByteID > 0 ? oneByteID : fourByteID) , ProtoSerializerVisitor::VARINT);
+
+            uint64_t _v = 0;
+            m_size -= decodeVarInt(m_buffer, _v);
+            v = static_cast<int64_t>(_v);
+        }
+
+        void ProtoDeserializerVisitor::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, uint64_t &v) {
+            m_size -= readAndValidateKey( (oneByteID > 0 ? oneByteID : fourByteID) , ProtoSerializerVisitor::VARINT);
+
+            uint64_t _v = 0;
+            m_size -= decodeVarInt(m_buffer, _v);
+            v = _v;
+        }
+
+        void ProtoDeserializerVisitor::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, float &v) {
+            m_size -= readAndValidateKey( (oneByteID > 0 ? oneByteID : fourByteID) , ProtoSerializerVisitor::FOUR_BYTES);
+
+            float _f =0;
+            m_buffer.read(reinterpret_cast<char *>(&_f), sizeof(float));
+            v = Deserializer::ntohf(_f);
+            m_size -= sizeof(float);
+        }
+
+        void ProtoDeserializerVisitor::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, double &v) {
+            m_size -= readAndValidateKey( (oneByteID > 0 ? oneByteID : fourByteID) , ProtoSerializerVisitor::EIGHT_BYTES);
+
+            double _d =0;
+            m_buffer.read(reinterpret_cast<char*>(&_d), sizeof(double));
+            v = Deserializer::ntohd(_d);
+            m_size -= sizeof(double);
+        }
+
+        void ProtoDeserializerVisitor::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, string &v) {
+            m_size -= readAndValidateKey( (oneByteID > 0 ? oneByteID : fourByteID) , ProtoSerializerVisitor::LENGTH_DELIMITED);
+
+            // Read length.
+            uint64_t length = 0;
+            m_size -= decodeVarInt(m_buffer, length);
+
+            // Read string.
+            char *str = new char[length+1];
+            m_buffer.read(str, length);
+            m_size -= length;
+
+            // Create string.
+            str[length] = 0;
+            v = string(str, length);
+            OPENDAVINCI_CORE_DELETE_ARRAY(str);
+        }
+
+        void ProtoDeserializerVisitor::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, void *data, const uint32_t &size) {
+            m_size -= readAndValidateKey( (oneByteID > 0 ? oneByteID : fourByteID) , ProtoSerializerVisitor::LENGTH_DELIMITED);
+
+            // Read length.
+            uint64_t length = 0;
+            m_size -= decodeVarInt(m_buffer, length);
+
+            // Read data.
+            char *_data = new char[length];
+            m_buffer.read(_data, length);
+            m_size -= length;
+
+            // Move data.
+            memset(data, 0, size);
+            memcpy(data, _data, (size < length ? size : length));
+            OPENDAVINCI_CORE_DELETE_ARRAY(_data);
+        }
+
+
+        void ProtoDeserializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, Serializable &/*v*/) {
             cerr << "[core::base::ProtoDeserializerVisitor]: Proto for Serializable not implemented!" << endl;
         }
 
-        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/,bool &v) {
-            read( (shortId > 0 ? shortId : longId), v);
+        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, bool &v) {
+            read(longId, shortId, longName, shortName, v);
         }
 
-        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/,char &v) {
-            read( (shortId > 0 ? shortId : longId), v);
+        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, char &v) {
+            read(longId, shortId, longName, shortName, v);
         }
 
-        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/,unsigned char &v) {
-            read( (shortId > 0 ? shortId : longId), v);
+        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, unsigned char &v) {
+            read(longId, shortId, longName, shortName, v);
         }
 
-        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/,int8_t &v) {
-            read( (shortId > 0 ? shortId : longId), v);
+        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int8_t &v) {
+            read(longId, shortId, longName, shortName, v);
         }
 
-        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/,int16_t &v) {
-            read( (shortId > 0 ? shortId : longId), v);
+        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int16_t &v) {
+            read(longId, shortId, longName, shortName, v);
         }
 
-        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/,uint16_t &v) {
-            read( (shortId > 0 ? shortId : longId), v);
+        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint16_t &v) {
+            read(longId, shortId, longName, shortName, v);
         }
 
-        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/,int32_t &v) {
-            read( (shortId > 0 ? shortId : longId), v);
+        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int32_t &v) {
+            read(longId, shortId, longName, shortName, v);
         }
 
-        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/,uint32_t &v) {
-            read( (shortId > 0 ? shortId : longId), v);
+        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint32_t &v) {
+            read(longId, shortId, longName, shortName, v);
         }
 
-        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/,int64_t &v) {
-            read( (shortId > 0 ? shortId : longId), v);
+        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int64_t &v) {
+            read(longId, shortId, longName, shortName, v);
         }
 
-        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/,uint64_t &v) {
-            read( (shortId > 0 ? shortId : longId), v);
+        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint64_t &v) {
+            read(longId, shortId, longName, shortName, v);
         }
 
-        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/,float &v) {
-            read( (shortId > 0 ? shortId : longId), v);
+        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, float &v) {
+            read(longId, shortId, longName, shortName, v);
         }
 
-        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/,double &v) {
-            read( (shortId > 0 ? shortId : longId), v);
+        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, double &v) {
+            read(longId, shortId, longName, shortName, v);
         }
 
-        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/,string &v) {
-            read( (shortId > 0 ? shortId : longId), v);
+        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, string &v) {
+            read(longId, shortId, longName, shortName, v);
         }
 
-        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/,void *data, const uint32_t &size) {
-            read( (shortId > 0 ? shortId : longId), data, size);
+        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, void *data, const uint32_t &size) {
+            read(longId, shortId, longName, shortName, data, size);
         }
 
     }

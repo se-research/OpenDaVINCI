@@ -1133,13 +1133,24 @@ namespace «s.get(i)» {
 				s->write(«a.scalar.fourbyteid», m_«a.scalar.name»);
 				«ENDIF»
 			«ELSE»
-				«IF enums.containsKey(a.scalar.type)»
-				int32_t int32t_«a.scalar.name» = m_«a.scalar.name»;
-				s->write(CRC32 < «generateCharList(a.scalar.name, 0)» >::RESULT,
-						int32t_«a.scalar.name»);
+				«IF a.scalar.id != null»
+					«IF enums.containsKey(a.scalar.type)»
+					int32_t int32t_«a.scalar.name» = m_«a.scalar.name»;
+					s->write(«a.scalar.id»,
+							int32t_«a.scalar.name»);
+					«ELSE»
+					s->write(«a.scalar.id»,
+							m_«a.scalar.name»);
+					«ENDIF»
 				«ELSE»
-				s->write(CRC32 < «generateCharList(a.scalar.name, 0)» >::RESULT,
-						m_«a.scalar.name»);
+					«IF enums.containsKey(a.scalar.type)»
+					int32_t int32t_«a.scalar.name» = m_«a.scalar.name»;
+					s->write(CRC32 < «generateCharList(a.scalar.name, 0)» >::RESULT,
+							int32t_«a.scalar.name»);
+					«ELSE»
+					s->write(CRC32 < «generateCharList(a.scalar.name, 0)» >::RESULT,
+							m_«a.scalar.name»);
+					«ENDIF»
 				«ENDIF»
 			«ENDIF»
 		«ENDIF»
@@ -1149,8 +1160,12 @@ namespace «s.get(i)» {
 		«IF a.list.fourbyteid != null»
 			s->write(«a.list.fourbyteid», numberOf«a.list.name.toFirstUpper»);
 		«ELSE»
-			s->write(CRC32 < «generateCharList(new String("numberOf" + a.list.name.toFirstUpper), 0)» >::RESULT,
-			        numberOf«a.list.name.toFirstUpper»);
+			«IF a.list.id != null»
+				s->write(«a.list.id», numberOf«a.list.name.toFirstUpper»);
+			«ELSE»
+				s->write(CRC32 < «generateCharList(new String("numberOf" + a.list.name.toFirstUpper), 0)» >::RESULT,
+				        numberOf«a.list.name.toFirstUpper»);
+			«ENDIF»
 		«ENDIF»
 		
 		// Write actual elements into a stringstream.
@@ -1164,8 +1179,13 @@ namespace «s.get(i)» {
 			«IF a.list.fourbyteid != null»
 				s->write(«a.list.fourbyteid» + «((a.eContainer) as Message).attributes.size», sstrOf«a.list.name.toFirstUpper».str());
 			«ELSE»
-				s->write(CRC32 < «generateCharList(a.list.name.toFirstUpper, 0)» >::RESULT,
-				        sstrOf«a.list.name.toFirstUpper».str());
+				«IF a.list.id != null»
+					s->write(«a.list.id» + «((a.eContainer) as Message).attributes.size»,
+					        sstrOf«a.list.name.toFirstUpper».str());
+				«ELSE»
+					s->write(CRC32 < «generateCharList(a.list.name.toFirstUpper, 0)» >::RESULT,
+					        sstrOf«a.list.name.toFirstUpper».str());
+				«ENDIF»
 			«ENDIF»
 		}
 		«ENDIF»
@@ -1176,8 +1196,12 @@ namespace «s.get(i)» {
 			«IF a.map.fourbyteid != null»
 				s->write(«a.map.fourbyteid», numberOf«a.map.name.toFirstUpper»);
 			«ELSE»
-				s->write(CRC32 < «generateCharList(new String("numberOf" + a.map.name.toFirstUpper), 0)» >::RESULT,
-				        numberOf«a.map.name.toFirstUpper»);
+				«IF a.map.id != null»
+					s->write(«a.map.id», numberOf«a.map.name.toFirstUpper»);
+				«ELSE»
+					s->write(CRC32 < «generateCharList(new String("numberOf" + a.map.name.toFirstUpper), 0)» >::RESULT,
+					        numberOf«a.map.name.toFirstUpper»);
+				«ENDIF»
 			«ENDIF»
 
 			// Write actual elements into a stringstream.
@@ -1193,8 +1217,13 @@ namespace «s.get(i)» {
 				«IF a.map.fourbyteid != null»
 					s->write(«a.map.fourbyteid» + «((a.eContainer) as Message).attributes.size», sstrOf«a.map.name.toFirstUpper».str());
 				«ELSE»
-					s->write(CRC32 < «generateCharList(a.map.name.toFirstUpper, 0)» >::RESULT,
-							sstrOf«a.map.name.toFirstUpper».str());
+					«IF a.map.id != null»
+						s->write(«a.map.id» + «((a.eContainer) as Message).attributes.size»,
+								sstrOf«a.map.name.toFirstUpper».str());
+					«ELSE»
+						s->write(CRC32 < «generateCharList(a.map.name.toFirstUpper, 0)» >::RESULT,
+								sstrOf«a.map.name.toFirstUpper».str());
+					«ENDIF»
 				«ENDIF»
 			}
 		}
@@ -1203,8 +1232,13 @@ namespace «s.get(i)» {
 			«IF a.fixedarray.fourbyteid != null»
 				s->write(«a.fixedarray.fourbyteid», m_«a.fixedarray.name», getSize_«a.fixedarray.name.toFirstUpper»() * (sizeof(«IF typeMap.containsKey(a.fixedarray.type)»«typeMap.get(a.fixedarray.type)»«ELSE»«a.fixedarray.type.replaceAll("\\.", "::")»«ENDIF»)/sizeof(char)));
 			«ELSE»
-				s->write(CRC32 < «generateCharList(a.fixedarray.name, 0)» >::RESULT,
-						m_«a.fixedarray.name», getSize_«a.fixedarray.name.toFirstUpper»() * (sizeof(«IF typeMap.containsKey(a.fixedarray.type)»«typeMap.get(a.fixedarray.type)»«ELSE»«a.fixedarray.type.replaceAll("\\.", "::")»«ENDIF»)/sizeof(char)));
+				«IF a.fixedarray.id != null»
+					s->write(«a.fixedarray.id»,
+							m_«a.fixedarray.name», getSize_«a.fixedarray.name.toFirstUpper»() * (sizeof(«IF typeMap.containsKey(a.fixedarray.type)»«typeMap.get(a.fixedarray.type)»«ELSE»«a.fixedarray.type.replaceAll("\\.", "::")»«ENDIF»)/sizeof(char)));
+				«ELSE»
+					s->write(CRC32 < «generateCharList(a.fixedarray.name, 0)» >::RESULT,
+							m_«a.fixedarray.name», getSize_«a.fixedarray.name.toFirstUpper»() * (sizeof(«IF typeMap.containsKey(a.fixedarray.type)»«typeMap.get(a.fixedarray.type)»«ELSE»«a.fixedarray.type.replaceAll("\\.", "::")»«ENDIF»)/sizeof(char)));
+				«ENDIF»
 			«ENDIF»
 		«ENDIF»
 	'''
@@ -1220,14 +1254,26 @@ namespace «s.get(i)» {
 				d->read(«a.scalar.fourbyteid», m_«a.scalar.name»);
 				«ENDIF»
 			«ELSE»
-				«IF enums.containsKey(a.scalar.type)»
-				int32_t int32t_«a.scalar.name» = 0;
-				d->read(CRC32 < «generateCharList(a.scalar.name, 0)» >::RESULT,
-						int32t_«a.scalar.name»);
-				m_«a.scalar.name» = static_cast<«enums.get(a.scalar.type).m_enumNameIncludingMessageName.replaceAll("\\.", "::")»>(int32t_«a.scalar.name»);
+				«IF a.scalar.id != null»
+					«IF enums.containsKey(a.scalar.type)»
+					int32_t int32t_«a.scalar.name» = 0;
+					d->read(«a.scalar.id»,
+							int32t_«a.scalar.name»);
+					m_«a.scalar.name» = static_cast<«enums.get(a.scalar.type).m_enumNameIncludingMessageName.replaceAll("\\.", "::")»>(int32t_«a.scalar.name»);
+					«ELSE»
+					d->read(«a.scalar.id»,
+							m_«a.scalar.name»);
+					«ENDIF»
 				«ELSE»
-				d->read(CRC32 < «generateCharList(a.scalar.name, 0)» >::RESULT,
-						m_«a.scalar.name»);
+					«IF enums.containsKey(a.scalar.type)»
+					int32_t int32t_«a.scalar.name» = 0;
+					d->read(CRC32 < «generateCharList(a.scalar.name, 0)» >::RESULT,
+							int32t_«a.scalar.name»);
+					m_«a.scalar.name» = static_cast<«enums.get(a.scalar.type).m_enumNameIncludingMessageName.replaceAll("\\.", "::")»>(int32t_«a.scalar.name»);
+					«ELSE»
+					d->read(CRC32 < «generateCharList(a.scalar.name, 0)» >::RESULT,
+							m_«a.scalar.name»);
+					«ENDIF»
 				«ENDIF»
 			«ENDIF»
 		«ENDIF»
@@ -1240,18 +1286,28 @@ namespace «s.get(i)» {
 		«IF a.list.fourbyteid != null»
 			d->read(«a.list.fourbyteid», numberOf«a.list.name.toFirstUpper»);
 		«ELSE»
-			d->read(CRC32 < «generateCharList(new String("numberOf" + a.list.name.toFirstUpper), 0)» >::RESULT,
-			       numberOf«a.list.name.toFirstUpper»);
+			«IF a.list.id != null»
+				d->read(«a.list.id»,
+				       numberOf«a.list.name.toFirstUpper»);
+			«ELSE»
+				d->read(CRC32 < «generateCharList(new String("numberOf" + a.list.name.toFirstUpper), 0)» >::RESULT,
+				       numberOf«a.list.name.toFirstUpper»);
+			«ENDIF»
 		«ENDIF»
 		
 		if (numberOf«a.list.name.toFirstUpper» > 0) {
 		    // Read string of elements.
 		    string elements;
 			«IF a.list.fourbyteid != null»
-			d->read(«a.list.fourbyteid» + «((a.eContainer) as Message).attributes.size», elements);
+				d->read(«a.list.fourbyteid» + «((a.eContainer) as Message).attributes.size», elements);
 			«ELSE»
-			d->read(CRC32 < «generateCharList(a.list.name.toFirstUpper, 0)» >::RESULT,
-				   elements);
+				«IF a.list.id != null»
+					d->read(«a.list.id» + «((a.eContainer) as Message).attributes.size»,
+					   elements);
+				«ELSE»
+					d->read(CRC32 < «generateCharList(a.list.name.toFirstUpper, 0)» >::RESULT,
+					   elements);
+				«ENDIF»
 			«ENDIF»
 		
 		    stringstream sstr(elements);
@@ -1287,8 +1343,13 @@ namespace «s.get(i)» {
 			«IF a.map.fourbyteid != null»
 				d->read(«a.map.fourbyteid» + «((a.eContainer) as Message).attributes.size», elements);
 			«ELSE»
-				d->read(CRC32 < «generateCharList(a.map.name.toFirstUpper, 0)» >::RESULT,
-				       elements);
+				«IF a.map.id != null»
+					d->read(«a.map.id» + «((a.eContainer) as Message).attributes.size»,
+							elements);
+				«ELSE»
+					d->read(CRC32 < «generateCharList(a.map.name.toFirstUpper, 0)» >::RESULT,
+					       elements);
+				«ENDIF»
 			«ENDIF»
 
 			stringstream sstr(elements);
@@ -1333,8 +1394,13 @@ namespace «s.get(i)» {
 			«IF a.fixedarray.fourbyteid != null»
 				d->read(«a.fixedarray.fourbyteid», m_«a.fixedarray.name», getSize_«a.fixedarray.name.toFirstUpper»() * (sizeof(«IF typeMap.containsKey(a.fixedarray.type)»«typeMap.get(a.fixedarray.type)»«ELSE»«a.fixedarray.type.replaceAll("\\.", "::")»«ENDIF»)/sizeof(char)));
 			«ELSE»
-				d->read(CRC32 < «generateCharList(a.fixedarray.name, 0)» >::RESULT,
-				       m_«a.fixedarray.name», getSize_«a.fixedarray.name.toFirstUpper»() * (sizeof(«IF typeMap.containsKey(a.fixedarray.type)»«typeMap.get(a.fixedarray.type)»«ELSE»«a.fixedarray.type.replaceAll("\\.", "::")»«ENDIF»)/sizeof(char)));
+				«IF a.fixedarray.id != null»
+					d->read(«a.fixedarray.id»,
+					       m_«a.fixedarray.name», getSize_«a.fixedarray.name.toFirstUpper»() * (sizeof(«IF typeMap.containsKey(a.fixedarray.type)»«typeMap.get(a.fixedarray.type)»«ELSE»«a.fixedarray.type.replaceAll("\\.", "::")»«ENDIF»)/sizeof(char)));
+				«ELSE»
+					d->read(CRC32 < «generateCharList(a.fixedarray.name, 0)» >::RESULT,
+					       m_«a.fixedarray.name», getSize_«a.fixedarray.name.toFirstUpper»() * (sizeof(«IF typeMap.containsKey(a.fixedarray.type)»«typeMap.get(a.fixedarray.type)»«ELSE»«a.fixedarray.type.replaceAll("\\.", "::")»«ENDIF»)/sizeof(char)));
+				«ENDIF»
 			«ENDIF»
 		«ENDIF»
 	'''

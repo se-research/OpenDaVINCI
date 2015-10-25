@@ -28,14 +28,6 @@ Build the OpenDaVINCI sources::
 
    $ nmake
 
-Run the tests for OpenDaVINCI::
-
-   $ nmake test
-
-Install the binaries, libraries, and header files to /usr/local::
-
-   $ nmake install
-
 If you want to use Visual Studio for editing, let cmake create the build scripts::
 
    $ cd build

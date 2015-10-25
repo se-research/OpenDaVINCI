@@ -1,6 +1,6 @@
 /**
  * OpenDaVINCI - Portable middleware for distributed components.
- * Copyright (C) 2015 Christian Berger
+ * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,55 +17,57 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef OPENDAVINCI_CORE_BASE_ROSSERIALIZERVISITOR_H_
-#define OPENDAVINCI_CORE_BASE_ROSSERIALIZERVISITOR_H_
+#ifndef OPENDAVINCI_CORE_BASE_QUERYABLENETSTRINGSSERIALIZERABCF_H_
+#define OPENDAVINCI_CORE_BASE_QUERYABLENETSTRINGSSERIALIZERABCF_H_
 
 // core/platform.h must be included to setup platform-dependent header files and configurations.
 #include "core/platform.h"
 
 #include "core/base/Serializer.h"
-#include "core/base/Visitor.h"
 
 namespace core {
     namespace base {
 
         using namespace std;
 
+        class QueryableNetstringsSerializer;
+
         /**
-         * This class provides a serialization visitor to encode data
-         * in ROS format.
+         * This class implements the interface Serializer for queryable
+         * Netstrings. The original version (found at:
+         * http://cr.yp.to/proto/netstrings.txt ) has been modified:
+         *
+         * '0xAB' '0xCF' 'binary length encoded as varint' 'PAYLOAD' ','
+         *
+         * @See Serializable
          */
-        class ROSSerializerVisitor : public Serializer, public Visitor {
+        class QueryableNetstringsSerializerABCF : public Serializer {
             private:
+                // Only the QueryableNetstringsSerializer is allowed to create instances of this Serializer using the non-standard constructor.
+                friend class QueryableNetstringsSerializer;
+
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn
                  * already at compile time for unwanted bugs caused by any misuse
                  * of the copy constructor.
                  */
-                ROSSerializerVisitor(const ROSSerializerVisitor &);
+                QueryableNetstringsSerializerABCF(const QueryableNetstringsSerializerABCF &);
 
                 /**
                  * "Forbidden" assignment operator. Goal: The compiler should warn
                  * already at compile time for unwanted bugs caused by any misuse
                  * of the assignment operator.
                  */
-                ROSSerializerVisitor& operator=(const ROSSerializerVisitor &);
+                QueryableNetstringsSerializerABCF& operator=(const QueryableNetstringsSerializerABCF &);
 
             public:
-                ROSSerializerVisitor();
+                QueryableNetstringsSerializerABCF();
 
-                virtual ~ROSSerializerVisitor();
+                virtual ~QueryableNetstringsSerializerABCF();
 
                 virtual void getSerializedData(ostream &o);
 
-                /**
-                 * This method sets the message identifier.
-                 *
-                 * @param messageId
-                 */
-                void setMessageID(const uint8_t &messageId);
-
-            private:
+            public:
                 virtual void write(const uint32_t &id, const Serializable &s);
                 virtual void write(const uint32_t &id, const bool &b);
                 virtual void write(const uint32_t &id, const char &c);
@@ -82,7 +84,7 @@ namespace core {
                 virtual void write(const uint32_t &id, const string &s);
                 virtual void write(const uint32_t &id, const void *data, const uint32_t &size);
 
-            private:
+            public:
                 virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const Serializable &s);
                 virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const bool &b);
                 virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const char &c);
@@ -99,30 +101,30 @@ namespace core {
                 virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const string &s);
                 virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const void *data, const uint32_t &size);
 
-            public:
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, Serializable &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, bool &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, char &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, unsigned char &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int8_t &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int16_t &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint16_t &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int32_t &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint32_t &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int64_t &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint64_t &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, float &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, double &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, string &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, void *data, const uint32_t &size);
+            private:
+                /**
+                 * This method encodes a given unsigned value using the varint encoding.
+                 *
+                 * @param out Output stream to be written to.
+                 * @param value Value to be encoded.
+                 * @return size Number of bytes written.
+                 */
+                uint8_t encodeVarUInt(ostream &out, uint64_t value);
+
+                /**
+                 * This method encodes a given signed value using the varint encoding.
+                 *
+                 * @param out Output stream to be written to.
+                 * @param value Value to be encoded.
+                 * @return size Number of bytes written.
+                 */
+                uint8_t encodeVarInt(ostream &out, int64_t value);
 
             private:
-                uint8_t m_messageId;
-                uint32_t m_size;
                 stringstream m_buffer;
         };
 
     }
 } // core::base
 
-#endif /*OPENDAVINCI_CORE_BASE_ROSSERIALIZERVISITOR_H_*/
+#endif /*OPENDAVINCI_CORE_BASE_QUERYABLENETSTRINGSSERIALIZERABCF_H_*/

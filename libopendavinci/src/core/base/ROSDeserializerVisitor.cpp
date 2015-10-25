@@ -139,62 +139,148 @@ namespace core {
         void ROSDeserializerVisitor::read(const uint32_t &/*id*/, void */*data*/, const uint32_t &/*size*/) {}
 
 
+        void ROSDeserializerVisitor::read(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, Serializable &/*v*/) {
+            cerr << "[core::base::ROSDeserializerVisitor]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
+        }
+
+        void ROSDeserializerVisitor::read(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, bool &v) {
+            m_buffer.read(reinterpret_cast<char*>(&v), sizeof(bool));
+        }
+
+        void ROSDeserializerVisitor::read(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, char &v) {
+            m_buffer.read(&v, sizeof(char));
+        }
+
+        void ROSDeserializerVisitor::read(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, unsigned char &v) {
+            m_buffer.read(reinterpret_cast<char*>(&v), sizeof(unsigned char));
+        }
+
+        void ROSDeserializerVisitor::read(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, int8_t &v) {
+            m_buffer.read(reinterpret_cast<char*>(&v), sizeof(int8_t));
+        }
+
+        void ROSDeserializerVisitor::read(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, int16_t &v) {
+            int16_t _v = 0;
+            m_buffer.read(reinterpret_cast<char *>(&_v), sizeof(int16_t));
+            v = ntohs(_v);
+        }
+
+        void ROSDeserializerVisitor::read(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, uint16_t &v) {
+            uint16_t _v = 0;
+            m_buffer.read(reinterpret_cast<char *>(&_v), sizeof(uint16_t));
+            v = ntohs(_v);
+        }
+
+        void ROSDeserializerVisitor::read(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, int32_t &v) {
+            int32_t _v = 0;
+            m_buffer.read(reinterpret_cast<char *>(&_v), sizeof(int32_t));
+            v = ntohl(_v);
+        }
+
+        void ROSDeserializerVisitor::read(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, uint32_t &v) {
+            uint32_t _v = 0;
+            m_buffer.read(reinterpret_cast<char *>(&_v), sizeof(uint32_t));
+            v = ntohl(_v);
+        }
+
+        void ROSDeserializerVisitor::read(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, int64_t &v) {
+            int64_t _v = 0;
+            m_buffer.read(reinterpret_cast<char *>(&_v), sizeof(int64_t));
+            v = __ntohll(_v);
+        }
+
+        void ROSDeserializerVisitor::read(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, uint64_t &v) {
+            uint64_t _v = 0;
+            m_buffer.read(reinterpret_cast<char *>(&_v), sizeof(uint64_t));
+            v = __ntohll(_v);
+        }
+
+        void ROSDeserializerVisitor::read(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, float &v) {
+            float _v = 0;
+            m_buffer.read(reinterpret_cast<char *>(&_v), sizeof(float));
+            v = ntohf(_v);
+        }
+
+        void ROSDeserializerVisitor::read(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, double &v) {
+            double _v = 0;
+            m_buffer.read(reinterpret_cast<char *>(&_v), sizeof(double));
+            v = ntohd(_v);
+        }
+
+        void ROSDeserializerVisitor::read(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, string &v) {
+            int32_t _length;
+            m_buffer.read(reinterpret_cast<char *>(&_length), sizeof(const int32_t));
+            int32_t length = ntohl(_length);
+            
+            char *str = new char[length];
+            m_buffer.read(str, length);
+            v = string(str, length);
+            OPENDAVINCI_CORE_DELETE_ARRAY(str);
+        }
+
+        void ROSDeserializerVisitor::read(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, void *data, const uint32_t &size) {
+            (void)data;
+            (void)size;
+            cerr << "[core::base::ROSDeserializerVisitor]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
+        }
+
+
         void ROSDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, Serializable &v) {
             (void)longId;
             (void)v;
-            cerr << "[core::base::ROSSerializerVisitor]: ROS for Serializable not implemented!" << endl;
+            cerr << "[core::base::ROSDeserializerVisitor]: ROS for Serializable not implemented!" << endl;
         }
 
-        void ROSDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, bool &v) {
-            read(longId, v);
+        void ROSDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, bool &v) {
+            read(longId, shortId, longName, shortName, v);
         }
 
-        void ROSDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, char &v) {
-            read(longId, v);
+        void ROSDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, char &v) {
+            read(longId, shortId, longName, shortName, v);
         }
 
-        void ROSDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, unsigned char &v) {
-            read(longId, v);
+        void ROSDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, unsigned char &v) {
+            read(longId, shortId, longName, shortName, v);
         }
 
-        void ROSDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, int8_t &v) {
-            read(longId, v);
+        void ROSDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int8_t &v) {
+            read(longId, shortId, longName, shortName, v);
         }
 
-        void ROSDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, int16_t &v) {
-            read(longId, v);
+        void ROSDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int16_t &v) {
+            read(longId, shortId, longName, shortName, v);
         }
 
-        void ROSDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, uint16_t &v) {
-            read(longId, v);
+        void ROSDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint16_t &v) {
+            read(longId, shortId, longName, shortName, v);
         }
 
-        void ROSDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, int32_t &v) {
-            read(longId, v);
+        void ROSDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int32_t &v) {
+            read(longId, shortId, longName, shortName, v);
         }
 
-        void ROSDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, uint32_t &v) {
-            read(longId, v);
+        void ROSDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint32_t &v) {
+            read(longId, shortId, longName, shortName, v);
         }
 
-        void ROSDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, int64_t &v) {
-            read(longId, v);
+        void ROSDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int64_t &v) {
+            read(longId, shortId, longName, shortName, v);
         }
 
-        void ROSDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, uint64_t &v) {
-            read(longId, v);
+        void ROSDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint64_t &v) {
+            read(longId, shortId, longName, shortName, v);
         }
 
-        void ROSDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, float &v) {
-            read(longId, v);
+        void ROSDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, float &v) {
+            read(longId, shortId, longName, shortName, v);
         }
 
-        void ROSDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, double &v) {
-            read(longId, v);
+        void ROSDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, double &v) {
+            read(longId, shortId, longName, shortName, v);
         }
 
-        void ROSDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, string &v) {
-            read(longId, v);
+        void ROSDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, string &v) {
+            read(longId, shortId, longName, shortName, v);
         }
 
         void ROSDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, void *data, const uint32_t &size) {
@@ -203,7 +289,6 @@ namespace core {
             (void)size;
             cerr << "[core::base::ROSSerializerVisitor]: ROS for void* not implemented!" << endl;
         }
-
 
     }
 } // core::base

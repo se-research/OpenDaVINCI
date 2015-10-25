@@ -1,6 +1,6 @@
 /**
  * OpenDaVINCI - Portable middleware for distributed components.
- * Copyright (C) 2015 Christian Berger
+ * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -13,59 +13,75 @@
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
+ * License along with this library; if not, read to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef OPENDAVINCI_CORE_BASE_ROSDESERIALIZERVISITOR_H_
-#define OPENDAVINCI_CORE_BASE_ROSDESERIALIZERVISITOR_H_
+#ifndef OPENDAVINCI_CORE_BASE_QUERYABLENETSTRINGSDESERIALIZERAACF_H_
+#define OPENDAVINCI_CORE_BASE_QUERYABLENETSTRINGSDESERIALIZERAACF_H_
 
 // core/platform.h must be included to setup platform-dependent header files and configurations.
 #include "core/platform.h"
 
 #include "core/base/Deserializer.h"
-#include "core/base/Visitor.h"
 
 namespace core {
     namespace base {
 
         using namespace std;
 
+        class QueryableNetstringsDeserializer;
+
         /**
-         * This class provides a deserialization visitor to decode data
-         * encoded in ROS format.
+         * This class implements the interface Deserializer for queryable
+         * Netstrings. The original version (found at:
+         * http://cr.yp.to/proto/netstrings.txt ) has been modified:
+         *
+         * '0xAA' '0xCF' 'binary length (as uint32_t)' 'PAYLOAD' ','
+         *
+         * @See Serializable
          */
-        class ROSDeserializerVisitor : public Deserializer, public Visitor {
+        class OPENDAVINCI_API QueryableNetstringsDeserializerAACF : public Deserializer {
+            private:
+                // Only the QueryableNetstringsDeserializer is allowed to create instances of this Deserializer using the non-standard constructor.
+                friend class QueryableNetstringsDeserializer;
+
+                /**
+                 * Constructor.
+                 *
+                 * @param in Input stream containing the data.
+                 */
+                QueryableNetstringsDeserializerAACF(istream &in);
+
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn
                  * already at compile time for unwanted bugs caused by any misuse
                  * of the copy constructor.
                  */
-                ROSDeserializerVisitor(const ROSDeserializerVisitor &);
+                QueryableNetstringsDeserializerAACF(const QueryableNetstringsDeserializerAACF &);
 
                 /**
                  * "Forbidden" assignment operator. Goal: The compiler should warn
                  * already at compile time for unwanted bugs caused by any misuse
                  * of the assignment operator.
                  */
-                ROSDeserializerVisitor& operator=(const ROSDeserializerVisitor &);
+                QueryableNetstringsDeserializerAACF& operator=(const QueryableNetstringsDeserializerAACF &);
+
 
             public:
-                ROSDeserializerVisitor();
+                /**
+                 * Default constructor. When a QueryableNetstringsDeserializerAACF is created
+                 * using this constructor, the method setSerializedData(istream &in) needs
+                 * to be called before any read(...) method will return meaningful data.
+                 */
+                QueryableNetstringsDeserializerAACF();
 
-                virtual ~ROSDeserializerVisitor();
+                virtual ~QueryableNetstringsDeserializerAACF();
 
                 virtual void deserializeDataFrom(istream &in);
 
-                /**
-                 * This method returns the message identifier.
-                 *
-                 * @return message identifier
-                 */
-                uint8_t getMessageID() const;
-
-            private:
+            public:
                 virtual void read(const uint32_t &id, Serializable &s);
                 virtual void read(const uint32_t &id, bool &b);
                 virtual void read(const uint32_t &id, char &c);
@@ -82,7 +98,7 @@ namespace core {
                 virtual void read(const uint32_t &id, string &s);
                 virtual void read(const uint32_t &id, void *data, const uint32_t &size);
 
-            private:
+            public:
                 virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, Serializable &s);
                 virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, bool &b);
                 virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, char &c);
@@ -99,30 +115,12 @@ namespace core {
                 virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, string &s);
                 virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, void *data, const uint32_t &size);
 
-            public:
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, Serializable &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, bool &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, char &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, unsigned char &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int8_t &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int16_t &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint16_t &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int32_t &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint32_t &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int64_t &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint64_t &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, float &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, double &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, string &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, void *data, const uint32_t &size);
-
             private:
-                uint8_t m_messageId;
-                uint32_t m_size;
                 stringstream m_buffer;
+                map<uint32_t, streampos> m_values;
         };
 
     }
 } // core::base
 
-#endif /*OPENDAVINCI_CORE_BASE_ROSDESERIALIZERVISITOR_H_*/
+#endif /*OPENDAVINCI_CORE_BASE_QUERYABLENETSTRINGSDESERIALIZERAACF_H_*/
