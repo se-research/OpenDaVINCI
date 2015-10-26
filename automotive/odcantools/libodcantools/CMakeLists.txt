@@ -119,22 +119,22 @@ ENDIF(CXXTEST_FOUND)
 
 ###############################################################################
 # Install this project.
-INSTALL(TARGETS odcantools-static DESTINATION lib COMPONENT cantools)
+INSTALL(TARGETS odcantools-static DESTINATION lib COMPONENT odcantools)
 IF(    (NOT WIN32)
    AND (NOT ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")) )
-    INSTALL(TARGETS odcantools    DESTINATION lib COMPONENT cantools)
+    INSTALL(TARGETS odcantools    DESTINATION lib COMPONENT odcantools)
 ENDIF()
 
 # Install header files.
-INSTALL(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/" DESTINATION include/odcantools COMPONENT cantools)
+INSTALL(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/" DESTINATION include/odcantools COMPONENT odcantools)
 
 # Install CMake modules locally.
 IF(UNIX)
-    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/../cmake.Modules/Findodcantools.cmake" DESTINATION share/cmake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT cantools)
-    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/../cmake.Modules/Findodcantools.cmake" DESTINATION share/cmake-2.8/Modules COMPONENT cantools)
-    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/../cmake.Modules/Findodcantools.cmake" DESTINATION share/cmake-3.0/Modules COMPONENT cantools)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/../cmake.Modules/Findodcantools.cmake" DESTINATION share/cmake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT odcantools)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/../cmake.Modules/Findodcantools.cmake" DESTINATION share/cmake-2.8/Modules COMPONENT odcantools)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/../cmake.Modules/Findodcantools.cmake" DESTINATION share/cmake-3.0/Modules COMPONENT odcantools)
 ENDIF()
 IF(WIN32)
-    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/../cmake.Modules/Findodcantools.cmake" DESTINATION CMake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT cantools)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/../cmake.Modules/Findodcantools.cmake" DESTINATION CMake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT odcantools)
 ENDIF()
 
