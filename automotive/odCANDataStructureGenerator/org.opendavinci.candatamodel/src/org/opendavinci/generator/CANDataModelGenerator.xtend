@@ -262,7 +262,8 @@ namespace canmapping {
         private:
         	std::map<uint64_t,uint64_t> m_payloads;
         	std::vector<uint64_t> m_neededCanMessages;
-    }; // end of class «className»
+        	uint64_t m_index;
+    }; // end of class "«className»"
     
 	'''
 
@@ -270,7 +271,7 @@ namespace canmapping {
 	«IF namespaces.size>i+1»
 	namespace «namespaces.get(i)» {
 		«generateHeaderFileNSs(namespaces, i+1)»
-	} // end of namespace «namespaces.get(i)»
+	} // end of namespace "«namespaces.get(i)»"
 	«ELSE»
 	«generateHeaderFileBody(namespaces.get(i))»
 	«ENDIF»
@@ -307,7 +308,7 @@ namespace canmapping {
 	«IF namespaces.size>i+1»
 	namespace «namespaces.get(i)» {
 		«generateImplementationFileNSs(namespaces, i+1, mapping, includeDirectoryPrefix, canSignals, canIDs)»
-	} // end of namespace «namespaces.get(i)»
+	} // end of namespace "«namespaces.get(i)»"
 	«ELSE»
 	«generateImplementationFileBody(namespaces.get(i), mapping, includeDirectoryPrefix, canSignals, canIDs)»
 	«ENDIF»
@@ -315,49 +316,66 @@ namespace canmapping {
 	
 	def generateImplementationFileBody(String className, CANSignalMapping mapping, String includeDirectoryPrefix, HashMap<String, CANSignalDescription> canSignals, ArrayList<String> canIDs) '''
 	
-    using namespace std;
+	using namespace std;
 
     «className»::«className»() :
-    m_payloads(),
-    m_neededCanMessages()
-    {
-    	«FOR id : canIDs»
-    	m_neededCanMessages.push_back(«id»);
+	m_payloads(),
+	m_neededCanMessages()
+	{
+		«FOR id : canIDs»
+		m_neededCanMessages.push_back(«id»);
         «ENDFOR»
-    }
+		m_index=0;
+	}
 
     «className»::~«className»() {}
 
-    core::data::Container «className»::decode(const automotive::GenericCANMessage &gcm) {
-        core::data::Container c;
-        
-        std::queue<uint64_t> expectedIDs (m_neededCanMessages);
-        
-        switch(gcm.getIdentifier())
-        {
+	core::data::Container «className»::decode(const automotive::GenericCANMessage &gcm) {
+		core::data::Container c;
+		switch(gcm.getIdentifier())
+		{
+			// order check should be done here
 	    	«FOR id : canIDs»
 	    	case «id» : 
-	    	// Store the payload in a map for future use replacing the current content
+	    	
+	    	«IF mapping.unordered!=null && mapping.unordered.compareTo("unordered")==0»
+	    	// if the order doesn't matter, store the payload in a map for future use replacing the current content held there
 	    	m_payloads[gcm.getIdentifier()] = gcm.getData();
+	    	«ELSE»
+	    	// if the order matters:
+	    	if(m_neededCanMessages.at(m_index) == «id») // if we got the expected message
+	    	{
+	    		// Store the payload in a map for future use replacing the current content
+	    		m_payloads[«id»] = gcm.getData();
+	    		// modularly increase the internal index
+	    		(m_index==m_neededCanMessages.size()-1) ? m_index=0 : ++m_index;
+	    	}
+	    	else // otherwise
+	    	{
+	    		// reset the payloads map
+	    		while(! m_payloads.empty())
+	    			m_payloads.erase(m_payloads.begin());
+	    		// reset the internal index
+	    		m_index=0;
+	    	}
+	    	«ENDIF»
 	    	break;
+	    	
 	        «ENDFOR»
-        	default : return c; // valid id not found
-    	}
-    	
-		«IF mapping.unordered!=null && mapping.unordered.compareTo("unordered")==0»
-		// if we don't have all the needed CAN messages (order is not important), return 
+	        default : return c; // valid id not found
+	    }
+	    
+		// if we don't have all the needed CAN messages, return 
 		if(m_payloads.size()!=m_neededCanMessages.size())
 			return c;
-		«ELSE»
-		// if we don't have all the needed CAN messages in the correct order, return 
 		
-		«ENDIF»
+		
 /*  CBe: Deactivated to make it compile again.
 		«FOR currenMapping : mapping.mappings»
 		«var String signalName=currenMapping.cansignal»
 		
 		// 2. If the identifier is matching, get the raw payload.
-		//uint64_t data = ;
+		//uint64_t data = m_payloads[];
 
 		// 3. Map uin64_t value to 8 byte uint8_t array.
 		uint8_t payload[8]=reinterpret_cast<uint8_t*>(&data);
