@@ -231,28 +231,10 @@ namespace canmapping {
 } // canmapping
 '''
 
-    /* This method generates the header file content. */
-	def generateHeaderFileContent(String generatedHeadersFile, CANSignalMapping mapping) '''
-/*
- * This software is open source. Please see COPYING and AUTHORS for further information.
- *
- * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
- */
-// Header file for: «mapping.mappingName.toString»
-#ifndef «mapping.mappingName.toString.toUpperCase»_H_
-#define «mapping.mappingName.toString.toUpperCase»_H_
-
-#include "generated/«mapping.mappingName.toString».h"
-
-#include <core/data/Container.h>
-
-#include "GeneratedHeaders_AutomotiveData.h"
-
-namespace canmapping {
-
+	def generateHeaderFileBody(String className) '''
     using namespace std;
 
-    class «mapping.mappingName.toString» {
+    class «className» {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -261,7 +243,7 @@ namespace canmapping {
              *
              * @param obj Reference to an object of this class.
              */
-            «mapping.mappingName.toString»(const «mapping.mappingName.toString» &/*obj*/);
+            «className»(const «className» &/*obj*/);
 
             /**
              * "Forbidden" assignment operator. Goal: The compiler should warn
@@ -271,88 +253,74 @@ namespace canmapping {
              * @param obj Reference to an object of this class.
              * @return Reference to this instance.
              */
-            «mapping.mappingName.toString»& operator=(const «mapping.mappingName.toString» &/*obj*/);
+            «className»& operator=(const «className» &/*obj*/);
 
         public:
-            «mapping.mappingName.toString»();
+            «className»();
 
-            virtual ~«mapping.mappingName.toString»();
+            virtual ~«className»();
 
             core::data::Container decode(const automotive::GenericCANMessage &gcm);
 
         private:
         	std::map<uint64_t,uint64_t> m_payloads;
         	std::vector<uint64_t> m_neededCanMessages;
-    };
+    }; // end of class «className»
+    
+	'''
 
-} // canmapping
+	def generateHeaderFileNSs(String[] namespaces, int i) '''
+	«IF namespaces.size>i+1»
+	namespace «namespaces.get(i)» {
+		«generateHeaderFileNSs(namespaces, i+1)»
+	} // end of namespace «namespaces.get(i)»
+	«ELSE»
+	«generateHeaderFileBody(namespaces.get(i))»
+	«ENDIF»
+	'''
 
-#endif /*«mapping.mappingName.toString.toUpperCase»_H_*/
-'''
-
-	/* This method generates the implementation (.cpp). */
-	def generateImplementationFileContent(CANSignalMapping mapping, String includeDirectoryPrefix, HashMap<String, CANSignalDescription> canSignals) '''
+    /* This method generates the header file content. */
+	def generateHeaderFileContent(String generatedHeadersFile, CANSignalMapping mapping) '''
 /*
  * This software is open source. Please see COPYING and AUTHORS for further information.
  *
  * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
  */
-// Source file for: «mapping.mappingName.toString»
+// Header file for: «mapping.mappingName.toString»
+#ifndef «mapping.mappingName.toString.toUpperCase.replaceAll("\\.", "_")»_H_
+#define «mapping.mappingName.toString.toUpperCase.replaceAll("\\.", "_")»_H_
 
-«var ArrayList<String> canIDs=new ArrayList<String>»
-/*
-signals of interest:
-
-«IF(mapping.mappings.size>0)»
-«FOR currenMapping : mapping.mappings»
-«currenMapping.cansignal»
-«ENDFOR»
-
-«FOR currenMapping : mapping.mappings»
-«var String signalName=currenMapping.cansignal»
-«var CANSignalDescription canSignal=canSignals.get(signalName)»
-«IF(mapping.mappingName.toString.toLowerCase.compareTo(signalName.split("\\.").get(0).toLowerCase)==0)»
-«{
-	var boolean test=true;
-	for(id:canIDs)
-		if(id.compareTo(canSignal.m_CANID)==0)
-			test=false;
-	if(test)
-		canIDs.add(canSignal.m_CANID);
-	""
-}»
-CANID       : «canSignal.m_CANID»
-FQDN        : «canSignal.m_FQDN»
-startBit    : «canSignal.m_startBit»
-length      : «canSignal.m_length»
-lengthBytes : «canSignal.m_lengthBytes»
-endian      : «canSignal.m_endian»
-multiplyBy  : «canSignal.m_multiplyBy»
-add         : «canSignal.m_add»
-rangeStart  : «canSignal.m_rangeStart»
-rangeEnd    : «canSignal.m_rangeEnd»
-
-«ENDIF»
-«ENDFOR»
-«ELSE»
-none.
-«ENDIF»
-*/
-
-#include "generated/«mapping.mappingName.toString».h"
-
-#include <core/SharedPointer.h>
-#include <core/reflection/Message.h>
-#include <core/reflection/MessageToVisitableVisitor.h>
-#include <core/reflection/MessagePrettyPrinterVisitor.h>
+#include <core/data/Container.h>
 
 #include "GeneratedHeaders_AutomotiveData.h"
 
 namespace canmapping {
+	«var String[] classNames = mapping.mappingName.toString.split('\\.')»
+	«IF classNames.size>1»
+		«generateHeaderFileNSs(classNames, 0)»
+	«ELSE»
+		«generateHeaderFileBody(classNames.get(0))»
+	«ENDIF»
+} // end of namespace canmapping
 
+#endif /*«mapping.mappingName.toString.toUpperCase.replaceAll("\\.", "_")»_H_*/
+'''
+
+	def generateImplementationFileNSs(String[] namespaces, int i, CANSignalMapping mapping, String includeDirectoryPrefix, HashMap<String, CANSignalDescription> canSignals, ArrayList<String> canIDs) '''
+	«IF namespaces.size>i+1»
+	namespace «namespaces.get(i)» {
+		«generateImplementationFileNSs(namespaces, i+1, mapping, includeDirectoryPrefix, canSignals, canIDs)»
+	} // end of namespace «namespaces.get(i)»
+	«ELSE»
+	«generateImplementationFileBody(namespaces.get(i), mapping, includeDirectoryPrefix, canSignals, canIDs)»
+	«ENDIF»
+	'''
+	
+	def generateImplementationFileBody(String className, CANSignalMapping mapping, String includeDirectoryPrefix, HashMap<String, CANSignalDescription> canSignals, ArrayList<String> canIDs) '''
+	
     using namespace std;
 
-    «mapping.mappingName.toString»::«mapping.mappingName.toString»() :
+    «className»::«className»() :
     m_payloads(),
     m_neededCanMessages()
     {
@@ -361,22 +329,20 @@ namespace canmapping {
         «ENDFOR»
     }
 
-    «mapping.mappingName.toString»::~«mapping.mappingName.toString»() {}
+    «className»::~«className»() {}
 
-    core::data::Container «mapping.mappingName.toString»::decode(const automotive::GenericCANMessage &gcm) {
+    core::data::Container «className»::decode(const automotive::GenericCANMessage &gcm) {
         core::data::Container c;
-
+        
+        std::queue<uint64_t> expectedIDs (m_neededCanMessages);
+        
         switch(gcm.getIdentifier())
         {
 	    	«FOR id : canIDs»
 	    	case «id» : 
-	    	// Store the payload in a map for future use (if needed)
-	    	// deleting existent value, if any
-//	    	m_payloads.erase(gcm.getIdentifier());  // <-- Here, we need an iterator to do the erase.
-	    	// inserting latest payload
-//	    	m_payloads.insert(gcm.getIdentifier(), gcm.getData());  // <-- Here, we need an iterator to do the insert.
-            m_payloads[gcm.getIdentifier()] = gcm.getData(); // <-- This would do the intended job.
-	    	break; // no op
+	    	// Store the payload in a map for future use replacing the current content
+	    	m_payloads[gcm.getIdentifier()] = gcm.getData();
+	    	break;
 	        «ENDFOR»
         	default : return c; // valid id not found
     	}
@@ -395,9 +361,6 @@ namespace canmapping {
 		
 		// 2. If the identifier is matching, get the raw payload.
 		//uint64_t data = ;
-
-		// Optionally: print payload for debug purposes.
-		// printPayload(data);
 
 		// 3. Map uin64_t value to 8 byte uint8_t array.
 		uint8_t payload[8]=reinterpret_cast<uint8_t*>(&data);
@@ -498,21 +461,11 @@ namespace canmapping {
             core::reflection::MessageToVisitableVisitor mtvv(message);
 
             // 8. Create an instance of the named high-level message.
-            «var String HLName= Character.toLowerCase(mapping.mappingName.toString.charAt(0)) + mapping.mappingName.toString.substring(1)»
-            automotive::vehicle::«mapping.mappingName.toString» «HLName»;
+            «var String HLName= (Character.toLowerCase(mapping.mappingName.toString.charAt(0)) + mapping.mappingName.toString.substring(1)).replaceAll("\\.", "_")»
+            «mapping.mappingName.toString.replaceAll("\\.", "::")» «HLName»;
 
             // 9. Letting the high-level message accept the visitor to enter the values.
             «HLName».accept(mtvv);
-
-            {
-                // Optional: Showing how to use the MessagePrettyPrinterVisitor to print the content of the unnamed message.
-                core::reflection::MessagePrettyPrinterVisitor mppv;
-                message.accept(mppv);
-                mppv.getOutput(cout);
-
-                // Optional: Just print the content for convenience purposes.
-                cout << «HLName».toString() << endl;
-            }
 
             // 10. Create the resulting container carrying a valid payload.
             c = core::data::Container(core::data::Container::«mapping.mappingName.toString.toUpperCase», «HLName»);
@@ -520,6 +473,77 @@ namespace canmapping {
 */
         return c;
     }
+	
+	'''
+	
+	/* This method generates the implementation (.cpp). */
+	def generateImplementationFileContent(CANSignalMapping mapping, String includeDirectoryPrefix, HashMap<String, CANSignalDescription> canSignals) '''
+/*
+ * This software is open source. Please see COPYING and AUTHORS for further information.
+ *
+ * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
+ */
+// Source file for: «mapping.mappingName.toString»
+
+«var ArrayList<String> canIDs=new ArrayList<String>»
+/*
+signals of interest:
+
+«IF(mapping.mappings.size>0)»
+«FOR currenMapping : mapping.mappings»
+«currenMapping.cansignal»
+«ENDFOR»
+«ELSE»
+none.
+«ENDIF»
+
+«FOR currenMapping : mapping.mappings»
+«var String signalName=currenMapping.cansignal»
+«var CANSignalDescription canSignal=canSignals.get(signalName)»
+«var String[] splittedMN=mapping.mappingName.toString.toLowerCase.split("\\.")»
+«IF(splittedMN.get(splittedMN.size-1).compareTo(signalName.split("\\.").get(0).toLowerCase)==0)»
+«{
+	var boolean test=true;
+	for(id:canIDs)
+		if(id.compareTo(canSignal.m_CANID)==0)
+			test=false;
+	if(test)
+		canIDs.add(canSignal.m_CANID);
+	""
+}»
+CANID       : «canSignal.m_CANID»
+FQDN        : «canSignal.m_FQDN»
+startBit    : «canSignal.m_startBit»
+length      : «canSignal.m_length»
+lengthBytes : «canSignal.m_lengthBytes»
+endian      : «canSignal.m_endian»
+multiplyBy  : «canSignal.m_multiplyBy»
+add         : «canSignal.m_add»
+rangeStart  : «canSignal.m_rangeStart»
+rangeEnd    : «canSignal.m_rangeEnd»
+
+«ENDIF»
+«ENDFOR»
+*/
+
+#include "generated/«mapping.mappingName.toString.replaceAll('\\.','/')».h"
+
+#include <core/SharedPointer.h>
+#include <core/reflection/Message.h>
+#include <core/reflection/MessageToVisitableVisitor.h>
+#include <core/reflection/MessagePrettyPrinterVisitor.h>
+#include <queue>
+
+#include "GeneratedHeaders_AutomotiveData.h"
+
+namespace canmapping {
+
+	«var String[] classNames = mapping.mappingName.toString.split('\\.')»
+	«IF classNames.size>1»
+		«generateImplementationFileNSs(classNames, 0, mapping, includeDirectoryPrefix, canSignals, canIDs)»
+	«ELSE»
+		«generateImplementationFileBody(classNames.get(0), mapping, includeDirectoryPrefix, canSignals, canIDs)»
+	«ENDIF»
 
 } // canmapping
 '''
