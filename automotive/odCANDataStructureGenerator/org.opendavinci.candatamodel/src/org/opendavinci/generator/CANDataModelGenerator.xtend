@@ -64,7 +64,8 @@ class CANDataModelGenerator implements IGenerator {
 		// Next, generate the code for the actual mapping.
 		for (e : resource.allContents.toIterable.filter(typeof(CANSignalMapping))) {
 			fsa.generateFile("include/generated/" + e.mappingName.toString().replaceAll("\\.", "/") + ".h", generateHeaderFileContent(generatedHeadersFile, e))
-			fsa.generateFile("src/generated/" + e.mappingName.toString().replaceAll("\\.", "/") + ".cpp", generateImplementationFileContent(e, "generated", mapOfDefinedCANSignals))
+			fsa.generateFile("src/generated/" + e.mappingName.toString().replaceAll("\\.", "/") + ".cpp", 
+				generateImplementationFileContent(e, "generated", mapOfDefinedCANSignals))
 			fsa.generateFile("testsuites/" + e.mappingName.toString().replaceAll("\\.", "_") + "TestSuite.h", generateTestSuiteContent(generatedHeadersFile, e))
 			fsa.generateFile("uppaal/generated/" + e.mappingName.toString().replaceAll("\\.", "/"), generateUPPAALFileContent(e))
 		}
@@ -374,8 +375,9 @@ namespace canmapping {
 		«FOR currenMapping : mapping.mappings»
 		«var String signalName=currenMapping.cansignal»
 		
-		// 2. If the identifier is matching, get the raw payload.
-		//uint64_t data = m_payloads[];
+		// addressing signal «signalName»
+		// 2. Get the raw payload.
+		uint64_t data = m_payloads[«canSignals.get(signalName).m_CANID»];
 
 		// 3. Map uin64_t value to 8 byte uint8_t array.
 		uint8_t payload[8]=reinterpret_cast<uint8_t*>(&data);
@@ -383,47 +385,18 @@ namespace canmapping {
 		// 4. Create a generic message.
 		reflection::Message message;
 
-		// addressing signal «signalName»
 		«var String tempVarType=""»
 		«var String tempVarName="raw_"+signalName.replaceAll("\\.", "_")»
 		«var String finalVarName="transformed_"+signalName.replaceAll("\\.", "_")»
-		«var int numberOfBits=8»
 		
 		// 5.1 Get raw value from 1st attribute.
-		«IF Integer.parseInt(canSignals.get(signalName).m_startBit) + 
-			Integer.parseInt(canSignals.get(signalName).m_length) <= 8 »
-		«{numberOfBits=8;""}»
-		«tempVarType="uint8_t"» «tempVarName»=0x00;
-		«tempVarName»=payload[0];
-		«ELSEIF Integer.parseInt(canSignals.get(signalName).m_startBit) + 
-			Integer.parseInt(canSignals.get(signalName).m_length) <= 16 »
-		«{numberOfBits=16;""}»
-		«tempVarType="uint16_t"» «tempVarName»=0x0000;
-		«tempVarName»=«tempVarName» | static_cast<«tempVarType»>(payload[0]);
-		«tempVarName»=«tempVarName» << 8;
-		«tempVarName»=«tempVarName» | static_cast<«tempVarType»>(payload[1]);
-		«ELSEIF Integer.parseInt(canSignals.get(signalName).m_startBit) + 
-			Integer.parseInt(canSignals.get(signalName).m_length) <= 32 »
-		«{numberOfBits=32;""}»
-		«tempVarType="uint32_t"» «tempVarName»=0x00000000;
-		«tempVarName»=«tempVarName» | static_cast<«tempVarType»>(payload[0]);
-		«tempVarName»=«tempVarName» << 8;
-		«tempVarName»=«tempVarName» | static_cast<«tempVarType»>(payload[1]);
-		«tempVarName»=«tempVarName» << 8;
-		«tempVarName»=«tempVarName» | static_cast<«tempVarType»>(payload[2]);
-		«tempVarName»=«tempVarName» << 8;
-		«tempVarName»=«tempVarName» | static_cast<«tempVarType»>(payload[3]);
-		«ELSEIF Integer.parseInt(canSignals.get(signalName).m_startBit) + 
-			Integer.parseInt(canSignals.get(signalName).m_length) <= 64 »
-		«{numberOfBits=64;""}»
 		«tempVarType="uint64_t"» «tempVarName»=0x0000000000000000;
 		«tempVarName»=*reinterpret_cast<uint64_t*>(payload);
-		«ENDIF»
 		
 		// reset left-hand side of bit field
 		«tempVarName»=«tempVarName» << «canSignals.get(signalName).m_startBit»;
 		// reset right-hand side of bit field
-		«tempVarName»=«tempVarName» >> «numberOfBits-Integer.parseInt(canSignals.get(signalName).m_length)»;
+		«tempVarName»=«tempVarName» >> «64-Integer.parseInt(canSignals.get(signalName).m_length)»;
 		«IF canSignals.get(signalName).m_endian.compareTo("big")==0»
 		
 		// 5.2 Optional: Fix endianness depending on CAN message specification.
