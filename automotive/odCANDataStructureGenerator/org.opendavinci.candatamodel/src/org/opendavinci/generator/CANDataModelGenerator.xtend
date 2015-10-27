@@ -163,7 +163,7 @@ namespace canmapping {
         
 			«FOR include : includedClasses»
 			«var String className=include.split('\\/').get(include.split('\\/').size-1)»
-				«className» m_«Character.toLowerCase(className.charAt(0)) + className.substring(1)»;
+				«include.replaceAll('\\/','::')» m_«Character.toLowerCase(className.charAt(0)) + className.substring(1)»;
 			«ENDFOR»
 		
     };
@@ -214,7 +214,7 @@ namespace canmapping {
         // Traverse all defined mappings and check whether a new high-level message could be fully decoded.
 	    «FOR member:members»
 	    {
-		    core::data::Container container = «member.substring(0,member.indexOf(' '))».decode(gcm);
+		    core::data::Container container = «member.substring(0,member.indexOf(" ()"))».decode(gcm);
 		    if (container.getDataType() != core::data::Container::UNDEFINEDDATA)
 		    {
 		    	listOfContainers.push_back(container);
