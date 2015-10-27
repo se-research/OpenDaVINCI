@@ -161,10 +161,11 @@ namespace canmapping {
 
         private:
         
-«FOR include : includedClasses»
-            «include» m_«Character.toLowerCase(include.charAt(0)) + include.substring(1)»;
-«ENDFOR»
-
+			«FOR include : includedClasses»
+			«var String className=include.split('\\/').get(include.split('\\/').size-1)»
+				«className» m_«Character.toLowerCase(className.charAt(0)) + className.substring(1)»;
+			«ENDFOR»
+		
     };
 
 } // canmapping
@@ -194,7 +195,8 @@ namespace canmapping {
 «{var String member;
 	while (iter.hasNext()){
 	member=iter.next();
-	var String temp="m_"+Character.toLowerCase(member.charAt(0)) + member.substring(1)+"()";
+	var String className=member.split('\\/').get(member.split('\\/').size-1)
+	var String temp="m_"+Character.toLowerCase(className.charAt(0)) + className.substring(1)+" ()";
 	if(iter.hasNext())temp+=",";
 	members.add(temp);
 }}»
@@ -210,20 +212,15 @@ namespace canmapping {
         vector<core::data::Container> listOfContainers;
 
         // Traverse all defined mappings and check whether a new high-level message could be fully decoded.
-        {
-            core::data::Container container = m_wheelSpeed.decode(gcm);
-            if (container.getDataType() != core::data::Container::UNDEFINEDDATA) {
-                listOfContainers.push_back(container);
-            }
-        }
-
-        // Add the next mapping like:
-//        {
-//            core::data::Container container = m_message2.decode(gcm);
-//            if (container.getDataType() != core::data::Container::UNDEFINEDDATA) {
-//                listOfContainers.push_back(container);
-//            }
-//        }
+	    «FOR member:members»
+	    {
+		    core::data::Container container = «member.substring(0,member.indexOf(' '))».decode(gcm);
+		    if (container.getDataType() != core::data::Container::UNDEFINEDDATA)
+		    {
+		    	listOfContainers.push_back(container);
+		    }
+	    }
+	    «ENDFOR»
 
         return listOfContainers;
     }
