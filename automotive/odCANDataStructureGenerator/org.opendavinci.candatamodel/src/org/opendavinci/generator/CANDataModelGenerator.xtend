@@ -158,7 +158,7 @@ namespace canmapping {
              * @param gcm Next GenericCANMessage.
              * @return Container, where the type needs to be checked to determine invalidity (i.e. !Container::UNDEFINEDDATA).
              */
-            vector<core::data::Container> mapNext(const automotive::GenericCANMessage &gcm);
+            vector<core::data::Container> mapNext(const ::automotive::GenericCANMessage &gcm);
 
         private:
         
@@ -209,17 +209,17 @@ namespace canmapping {
 
     CanMapping::~CanMapping() {}
 
-    vector<core::data::Container> CanMapping::mapNext(const automotive::GenericCANMessage &gcm) {
+    vector<core::data::Container> CanMapping::mapNext(const ::automotive::GenericCANMessage &gcm) {
         vector<core::data::Container> listOfContainers;
 
         // Traverse all defined mappings and check whether a new high-level message could be fully decoded.
 	    «FOR member:members»
 	    {
-		    core::data::Container container = «member.substring(0,member.indexOf(" ()"))».decode(gcm);
-		    if (container.getDataType() != core::data::Container::UNDEFINEDDATA)
-		    {
-		    	listOfContainers.push_back(container);
-		    }
+	    	core::data::Container container = «member.substring(0,member.indexOf(" ()"))».decode(gcm);
+	    	if (container.getDataType() != core::data::Container::UNDEFINEDDATA)
+	    	{
+	    		listOfContainers.push_back(container);
+	    	}
 	    }
 	    «ENDFOR»
 
@@ -258,7 +258,7 @@ namespace canmapping {
 
             virtual ~«className»();
 
-            core::data::Container decode(const automotive::GenericCANMessage &gcm);
+            core::data::Container decode(const ::automotive::GenericCANMessage &gcm);
 
         private:
         	std::map<uint64_t,uint64_t> m_payloads;
@@ -321,17 +321,17 @@ namespace canmapping {
 
     «className»::«className»() :
 	m_payloads(),
-	m_neededCanMessages()
+	m_neededCanMessages(),
+	m_index(0)
 	{
 		«FOR id : canIDs»
 		m_neededCanMessages.push_back(«id»);
         «ENDFOR»
-		m_index=0;
 	}
 
     «className»::~«className»() {}
 
-	core::data::Container «className»::decode(const automotive::GenericCANMessage &gcm) {
+	core::data::Container «className»::decode(const ::automotive::GenericCANMessage &gcm) {
 		core::data::Container c;
 		switch(gcm.getIdentifier())
 		{
