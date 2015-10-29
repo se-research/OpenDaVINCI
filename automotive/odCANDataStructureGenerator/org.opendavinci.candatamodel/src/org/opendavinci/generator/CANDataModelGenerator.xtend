@@ -28,6 +28,8 @@ import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
 import org.opendavinci.canDataModel.CANSignal
 import org.opendavinci.canDataModel.CANSignalMapping
+import java.util.Random
+import org.opendavinci.canDataModel.Mapping
 
 class CANDataModelGenerator implements IGenerator {
 
@@ -229,7 +231,7 @@ namespace canmapping {
 } // canmapping
 '''
 
-	def generateHeaderFileBody(String className) '''
+	def generateHeaderFileBody(String className, CANSignalMapping mapping) '''
     using namespace std;
 
     class «className» : public core::data::SerializableData, public core::base::Visitable {
@@ -256,6 +258,19 @@ namespace canmapping {
         public:
             «className»();
 
+		«IF mapping.mappings.size>0»
+		«var ArrayList<String> parameters=new ArrayList<String>»
+		«var Iterator<Mapping> iter = mapping.mappings.iterator»
+		«{
+			while (iter.hasNext()){
+			iter.next();
+			var String temp="double";
+			if(iter.hasNext())temp+=", ";
+			parameters.add(temp);
+		}}»
+		«className»(«FOR parameter:parameters»«parameter»«ENDFOR»);
+		«ENDIF»
+
             virtual ~«className»();
 
             core::data::Container decode(const ::automotive::GenericCANMessage &gcm);
@@ -269,6 +284,10 @@ namespace canmapping {
     		virtual void accept(core::base::Visitor &v);
     		
         private:
+        	«FOR currenMapping : mapping.mappings»
+        	double m_«currenMapping.cansignal.replaceAll("\\.", "_")»;
+        	«ENDFOR»
+        	
         	std::map<uint64_t,uint64_t> m_payloads;
         	std::vector<uint64_t> m_neededCanMessages;
         	uint64_t m_index;
@@ -276,13 +295,13 @@ namespace canmapping {
     
 	'''
 
-	def generateHeaderFileNSs(String[] namespaces, int i) '''
+	def generateHeaderFileNSs(String[] namespaces, int i, CANSignalMapping mapping) '''
 	«IF namespaces.size>i+1»
 	namespace «namespaces.get(i)» {
-		«generateHeaderFileNSs(namespaces, i+1)»
+		«generateHeaderFileNSs(namespaces, i+1, mapping)»
 	} // end of namespace "«namespaces.get(i)»"
 	«ELSE»
-	«generateHeaderFileBody(namespaces.get(i))»
+	«generateHeaderFileBody(namespaces.get(i), mapping)»
 	«ENDIF»
 	'''
 
@@ -306,9 +325,9 @@ namespace canmapping {
 namespace canmapping {
 	«var String[] classNames = mapping.mappingName.toString.split('\\.')»
 	«IF classNames.size>1»
-		«generateHeaderFileNSs(classNames, 0)»
+		«generateHeaderFileNSs(classNames, 0, mapping)»
 	«ELSE»
-		«generateHeaderFileBody(classNames.get(0))»
+		«generateHeaderFileBody(classNames.get(0), mapping)»
 	«ENDIF»
 } // end of namespace canmapping
 
@@ -330,7 +349,11 @@ namespace canmapping {
 	using namespace std;
 
 	«className»::«className»() :
-		SerializableData(),
+		core::data::SerializableData(),
+		core::base::Visitable(),
+		«FOR currenMapping : mapping.mappings»
+		m_«currenMapping.cansignal.replaceAll("\\.", "_")»(0.0),
+		«ENDFOR»
 		m_payloads(),
 		m_neededCanMessages(),
 		m_index(0)
@@ -340,18 +363,79 @@ namespace canmapping {
         «ENDFOR»
 	}
 	
+	«IF mapping.mappings.size>0»
+	«var ArrayList<String> parameters=new ArrayList<String>»
+	«var ArrayList<String> initializations=new ArrayList<String>»
+	«var Iterator<Mapping> iter = mapping.mappings.iterator»
+	«{
+		var int i=0;
+		while (iter.hasNext()){
+		iter.next();
+		var String temp="double parameter"+(i++);
+		if(iter.hasNext())temp+=", ";
+		parameters.add(temp);
+		}
+		i=0;
+		for(currenMapping : mapping.mappings)
+			initializations.add("m_"+currenMapping.cansignal.replaceAll("\\.", "_")+"(parameter"+(i++)+")");
+		}»
+	«className»::«className»(«FOR parameter:parameters»«parameter»«ENDFOR») :
+		core::data::SerializableData(),
+		core::base::Visitable(),
+		«FOR initialization:initializations»«initialization+","+'\n'»«ENDFOR»
+		m_payloads(),
+		m_neededCanMessages(),
+		m_index(0)
+	{
+		«FOR id : canIDs»
+		m_neededCanMessages.push_back(«id»);
+        «ENDFOR»
+	}
+	«ENDIF»
+	
 	«className»::~«className»() {}
 	
+    	«var String result="\"Class : "+className+"\"<<endl"+'\n'»
+    	«var int fieldsNum=mapping.mappings.size»
+    	«IF fieldsNum>0»
+		«var Iterator<Mapping> iter = mapping.mappings.iterator»
+		«{var int i=0;
+			while (iter.hasNext()){
+			iter.next();
+			result+='\t'+'\t'+"<<\" "+mapping.mappings.get(i).cansignal.toString+" : \"<< m_"+mapping.mappings.get(i).cansignal.toString.replaceAll('\\.','_')+"<<endl";
+			i++;
+			if(iter.hasNext())result+='\n';
+    	}}»
+    	«ENDIF»
 	const string «className»::toString() const {
-		string result = "Class : «className» \n";
-		return result;
+		stringstream result;
+		result << «result»;
+		return result.str();
 	}
 	
 	ostream& «className»::operator<<(ostream &out) const {
+		core::base::SerializationFactory& sf = core::base::SerializationFactory::getInstance();
+		core::SharedPointer<core::base::Serializer> s = sf.getSerializer(out);
+
+		«FOR currenMapping : mapping.mappings»
+		s->write(static_cast<uint32_t>(«canSignals.get(currenMapping.cansignal).m_CANID»), m_«currenMapping.cansignal.replaceAll("\\.", "_")»);
+		«ENDFOR»
+		
 		return out;
 	}
 	
 	istream& «className»::operator>>(istream &in) {
+		core::base::SerializationFactory& sf = core::base::SerializationFactory::getInstance();
+		core::SharedPointer<core::base::Deserializer> s = sf.getDeserializer(in);
+		
+		«IF mapping.mappings.size>0»
+		uint32_t id;
+		«ENDIF»
+		«FOR currenMapping : mapping.mappings»
+		s->read(id, m_«currenMapping.cansignal.replaceAll("\\.", "_")»);
+		id=«canSignals.get(currenMapping.cansignal).m_CANID»;
+		«ENDFOR»
+		
 		return in;
 	}
 	
@@ -476,17 +560,16 @@ namespace canmapping {
 			
 			// 7. Create an instance of the named high-level message.
             «var String HLName= (Character.toLowerCase(mapping.mappingName.toString.charAt(0)) + mapping.mappingName.toString.substring(1)).replaceAll("\\.", "_")»
-            «mapping.mappingName.toString.replaceAll("\\.", "::")» «HLName»;
+        «mapping.mappingName.toString.replaceAll("\\.", "::")» «HLName»;
 	
 			// 8. Letting the high-level message accept the visitor to enter the values.
-            «HLName».accept(mtvv);
+        «HLName».accept(mtvv);
 
 			// 9. Create the resulting container carrying a valid payload.
 			c = core::data::Container(core::data::Container::USER_DATA_9, «HLName»);
 		}
 		return c;
 	}
-	
 	'''
 	
 	/* This method generates the implementation (.cpp). */
@@ -544,6 +627,9 @@ rangeEnd    : «canSignal.m_rangeEnd»
 #include <core/SharedPointer.h>
 #include <core/reflection/Message.h>
 #include <core/reflection/MessageToVisitableVisitor.h>
+#include <core/base/SerializationFactory.h>
+#include <core/base/Serializer.h>
+#include <core/base/Deserializer.h>
 
 namespace canmapping {
 
@@ -569,7 +655,9 @@ namespace canmapping {
 #ifndef CANMAPPINGTESTSUITE_H_
 #define CANMAPPINGTESTSUITE_H_
 
+#include "GeneratedHeaders_«generatedHeadersFile».h"
 #include "cxxtest/TestSuite.h"
+#include <sstream>
 
 using namespace std;
 
@@ -579,10 +667,46 @@ using namespace std;
 class CANBridgeTest : public CxxTest::TestSuite {
     public:
         void testSample() {
-            TS_ASSERT(1 != 0);
+        	
+        	«var String init=""»
+        	«var int fieldsNum=mapping.mappings.size»
+        	«IF fieldsNum>0»
+			«var Iterator<Mapping> iter = mapping.mappings.iterator»
+			«{
+        	//(1,1234.56,3.1415,0.00000001)
+    			var Random r = new Random();
+    			var double rangeMin=-10000.0;
+    			var double rangeMax=10000.0;
+				while (iter.hasNext()){
+				iter.next();
+				var double randomValue = rangeMin + (rangeMax - rangeMin) * r.nextDouble();
+				init+=randomValue+"";
+				if(iter.hasNext())init+=", ";
+        	}}»
+        	«ENDIF»
+        	
+            «var String HLName= (Character.toLowerCase(mapping.mappingName.toString.charAt(0)) + mapping.mappingName.toString.substring(1)).replaceAll("\\.", "_")»
+        	canmapping::«mapping.mappingName.toString.replaceAll("\\.", "::")» «HLName»_1«IF fieldsNum>0»«"("+init+")"»«ENDIF»;
+        	canmapping::«mapping.mappingName.toString.replaceAll("\\.", "::")» «HLName»_2;
+        	
+        	stringstream ss1,ss2;
+        	ss1 << «HLName»_1;
+        	
+            TS_ASSERT(ss1.str().compare(ss2.str())!=0);
+            
+            ss1 >> «HLName»_2;
+            ss2 << «HLName»_2;
+            
+        	cout << endl;
+        	cout << ss1.str() << endl;
+        	cout << ss2.str() << endl;
+            
+        	cout << endl;
+        	cout<<«HLName»_1.toString();
+        	cout<<«HLName»_2.toString();
+        	
+            TS_ASSERT(ss1.str().compare(ss2.str())==0);
         }
-
-
 };
 
 #endif /*CANMAPPINGTESTSUITE_H_*/
