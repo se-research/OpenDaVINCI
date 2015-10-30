@@ -432,8 +432,8 @@ namespace canmapping {
 		uint32_t id;
 		«ENDIF»
 		«FOR currenMapping : mapping.mappings»
-		s->read(id, m_«currenMapping.cansignal.replaceAll("\\.", "_")»);
 		id=«canSignals.get(currenMapping.cansignal).m_CANID»;
+		s->read(id, m_«currenMapping.cansignal.replaceAll("\\.", "_")»);
 		«ENDFOR»
 		
 		return in;
@@ -498,6 +498,7 @@ namespace canmapping {
 			«var String tempVarType=""»
 			«var String tempVarName="raw_"+signalName.replaceAll("\\.", "_")»
 			«var String finalVarName="transformed_"+signalName.replaceAll("\\.", "_")»
+			«var String memberVarName="m_"+signalName.replaceAll("\\.", "_")»
 			
 			// 4.1 Get raw value from attribute.
 			«tempVarType="uint64_t"» «tempVarName»=0x0000000000000000;
@@ -507,12 +508,22 @@ namespace canmapping {
 			«tempVarName»=«tempVarName» << «Integer.parseInt(canSignals.get(signalName).m_startBit)»;
 			// reset right-hand side of bit field
 			«tempVarName»=«tempVarName» >> «63-Integer.parseInt(canSignals.get(signalName).m_length)»;
+			
 			«IF canSignals.get(signalName).m_endian.compareTo("big")==0»
-			
 			// 4.2 Optional: Fix endianness depending on CAN message specification.
-			«tempVarName» = ntohs(«tempVarName»);
+			«IF Integer.parseInt(canSignals.get(signalName).m_length)<=16»
+			«ELSEIF Integer.parseInt(canSignals.get(signalName).m_length)<=16»
+			uint16_t temp_cast=static_cast<uint16_t>(«tempVarName»);
+			temp_cast=ntohs(temp_cast);
+			«tempVarName» = static_cast<uint64_t>(temp_cast);
+			«ELSEIF Integer.parseInt(canSignals.get(signalName).m_length)<=32»
+			uint32_t temp_cast=static_cast<uint32_t>(«tempVarName»);
+			temp_cast=ntohl(temp_cast);
+			«tempVarName» = static_cast<uint64_t>(temp_cast);
+			«ELSEIF Integer.parseInt(canSignals.get(signalName).m_length)<=64»
+			«tempVarName» = ntohll(«tempVarName»);
+			«ENDIF»
 			«ELSE»
-			
 			// 4.2 Endianness doesn't need fixing, skipping this step.
 			«ENDIF»
 	
@@ -533,14 +544,16 @@ namespace canmapping {
 			else if(«finalVarName»>«canSignals.get(signalName).m_rangeEnd»)
 				«finalVarName»=«canSignals.get(signalName).m_rangeEnd»;
 			
+			«memberVarName»=«finalVarName»;
+			
 			// 4.4 Create a field for a generic message.
-			core::reflection::Field<double> *f = new core::reflection::Field<double>(«finalVarName»);
+			core::reflection::Field<double> *f = new core::reflection::Field<double>(«memberVarName»);
 			f->setLongIdentifier(«canSignals.get(signalName).m_CANID»); // The identifiers specified here must match with the ones defined in the .odvd file!
 			f->setShortIdentifier(static_cast<uint8_t>(«canSignals.get(signalName).m_CANID»)); // The identifiers specified here must match with the ones defined in the .odvd file!
 			f->setLongName("«canSignals.get(signalName).m_FQDN»");
 			f->setShortName("«{var String[] res; res=canSignals.get(signalName).m_FQDN.split("\\."); res.get(res.size-1)}»");
 			f->setFieldDataType(coredata::reflection::AbstractField::DOUBLE_T);
-			f->setSize(sizeof(«finalVarName»));
+			f->setSize(sizeof(«memberVarName»));
 	
 			// 4.5 Add created field to generic message.
 			message.addField(core::SharedPointer<coredata::reflection::AbstractField>(f));
