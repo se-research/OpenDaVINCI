@@ -16,12 +16,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 ###########################################################################
-# Try to find Java >=1.6.
+# Try to find Java.
 FIND_PACKAGE(Java)
-IF( NOT ( ((${Java_VERSION_MAJOR} GREATER 1) OR (${Java_VERSION_MAJOR} EQUAL 1))
-      AND ((${Java_VERSION_MINOR} GREATER 6) OR (${Java_VERSION_MINOR} EQUAL 6)) ) )
-    MESSAGE(FATAL_ERROR "At least Java 1.6 is required, found: Java ${Java_VERSION_MAJOR}.${Java_VERSION_MINOR}.")
-ENDIF()
 
 IF(NOT("${Java_JAVA_EXECUTABLE}" STREQUAL ""))
     SET(HAVE_JAVA "1")
