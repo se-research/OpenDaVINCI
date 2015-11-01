@@ -24,7 +24,7 @@ IF(UNIX)
         SET(CMAKE_MACOSX_RPATH 1)
     ENDIF()
 
-    SET (CXX_OPTIONS       "-Wno-deprecated -Wall -Werror -Wshadow -Wextra -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wpacked")
+    SET (CXX_OPTIONS       "-std=c++11 -Wno-deprecated -Wall -Werror -Wshadow -Wextra -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wpacked")
     SET (CXX_OPTION_ANSI   "-ansi")
     SET (CXX_EFFECTIVE_CXX "-Wmissing-format-attribute -Wredundant-decls -Wno-error=effc++ -Weffc++")
     
