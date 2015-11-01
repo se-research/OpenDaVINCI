@@ -27,6 +27,7 @@ How to install OpenDaVINCI on BSD-based Platforms
 .. include:: installation.netbsd-6.1.5.rst
 .. include:: installation.netbsd-7.0.rst
 .. include:: installation.openbsd-5.7.rst
+.. include:: installation.openbsd-5.8.rst
 .. include:: installation.macosx-10.rst
 
 How to install OpenDaVINCI on Windows-based Platforms
