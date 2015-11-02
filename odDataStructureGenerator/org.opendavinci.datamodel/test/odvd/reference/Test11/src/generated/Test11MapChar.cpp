@@ -87,6 +87,18 @@
 		return "Test11MapChar";
 	}
 
+	int32_t Test11MapChar::getID() const {
+		return Test11MapChar::ID();
+	}
+
+	const string Test11MapChar::getShortName() const {
+		return Test11MapChar::ShortName();
+	}
+
+	const string Test11MapChar::getLongName() const {
+		return Test11MapChar::LongName();
+	}
+
 	std::map<char, bool> Test11MapChar::getMapOfMyCharBoolMap() const {
 		return m_mapOfMyCharBoolMap;
 	}

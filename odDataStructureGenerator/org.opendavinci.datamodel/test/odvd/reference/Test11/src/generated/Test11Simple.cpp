@@ -62,6 +62,18 @@
 		return "Test11Simple";
 	}
 
+	int32_t Test11Simple::getID() const {
+		return Test11Simple::ID();
+	}
+
+	const string Test11Simple::getShortName() const {
+		return Test11Simple::ShortName();
+	}
+
+	const string Test11Simple::getLongName() const {
+		return Test11Simple::LongName();
+	}
+
 	uint32_t Test11Simple::getData1() const {
 		return m_data1;
 	}

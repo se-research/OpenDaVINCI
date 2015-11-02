@@ -341,6 +341,27 @@ class «msg.message.substring(msg.message.lastIndexOf('.') + 1) /* These lines g
 		 */
 		static const string LongName();
 
+		/**
+		 * This method returns the message id.
+		 *
+		 * @return Message id.
+		 */
+		virtual int32_t getID() const;
+
+		/**
+		 * This method returns the short message name.
+		 *
+		 * @return Short message name.
+		 */
+		virtual const string getShortName() const;
+
+		/**
+		 * This method returns the long message name include package/sub structure.
+		 *
+		 * @return Long message name.
+		 */
+		virtual const string getLongName() const;
+
 	public:
 		virtual void accept(core::base::Visitor &v);
 
@@ -742,6 +763,18 @@ namespace «s.get(i)» {
 		«ELSE»
 			return "«msg.message»";
 		«ENDIF»
+	}
+
+	int32_t «/* Here, we generate the method to return the message ID. */msg.message.substring(msg.message.lastIndexOf('.') + 1)»::getID() const {
+		return «msg.message.substring(msg.message.lastIndexOf('.') + 1)»::ID();
+	}
+
+	const string «/* Here, we generate the method to return the short message name. */msg.message.substring(msg.message.lastIndexOf('.') + 1)»::getShortName() const {
+		return «msg.message.substring(msg.message.lastIndexOf('.') + 1)»::ShortName();
+	}
+
+	const string «/* Here, we generate the method to return the long message name. */msg.message.substring(msg.message.lastIndexOf('.') + 1)»::getLongName() const {
+		return «msg.message.substring(msg.message.lastIndexOf('.') + 1)»::LongName();
 	}
 
 	«FOR a : msg.attributes /* Next, we generate all implementations for the getter and setters. */»

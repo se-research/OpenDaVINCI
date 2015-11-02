@@ -64,6 +64,18 @@ namespace sub {
 				return "sub.structure.Test16Simple";
 			}
 		
+			int32_t Test16Simple::getID() const {
+				return Test16Simple::ID();
+			}
+		
+			const string Test16Simple::getShortName() const {
+				return Test16Simple::ShortName();
+			}
+		
+			const string Test16Simple::getLongName() const {
+				return Test16Simple::LongName();
+			}
+		
 			double Test16Simple::getMyData() const {
 				return m_myData;
 			}

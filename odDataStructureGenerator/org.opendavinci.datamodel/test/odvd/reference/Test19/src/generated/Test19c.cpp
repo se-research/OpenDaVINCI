@@ -51,6 +51,18 @@
 		return "Test19c";
 	}
 
+	int32_t Test19c::getID() const {
+		return Test19c::ID();
+	}
+
+	const string Test19c::getShortName() const {
+		return Test19c::ShortName();
+	}
+
+	const string Test19c::getLongName() const {
+		return Test19c::LongName();
+	}
+
 
 	void Test19c::accept(core::base::Visitor &v) {
 		(void)v; // Avoid unused parameter warning.

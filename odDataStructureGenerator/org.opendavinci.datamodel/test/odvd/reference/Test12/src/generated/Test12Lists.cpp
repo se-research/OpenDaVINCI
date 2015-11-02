@@ -90,6 +90,18 @@
 		return "Test12Lists";
 	}
 
+	int32_t Test12Lists::getID() const {
+		return Test12Lists::ID();
+	}
+
+	const string Test12Lists::getShortName() const {
+		return Test12Lists::ShortName();
+	}
+
+	const string Test12Lists::getLongName() const {
+		return Test12Lists::LongName();
+	}
+
 	std::vector<bool> Test12Lists::getListOfMyBoolList() const {
 		return m_listOfMyBoolList;
 	}

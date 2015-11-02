@@ -57,6 +57,18 @@
 		return "Test15Simple";
 	}
 
+	int32_t Test15Simple::getID() const {
+		return Test15Simple::ID();
+	}
+
+	const string Test15Simple::getShortName() const {
+		return Test15Simple::ShortName();
+	}
+
+	const string Test15Simple::getLongName() const {
+		return Test15Simple::LongName();
+	}
+
 	Test15Simple::ButtonState Test15Simple::getButtonState() const {
 		return m_buttonState;
 	}

@@ -58,6 +58,18 @@ namespace subpackage {
 			return "subpackage.Test14Simple";
 		}
 	
+		int32_t Test14Simple::getID() const {
+			return Test14Simple::ID();
+		}
+	
+		const string Test14Simple::getShortName() const {
+			return Test14Simple::ShortName();
+		}
+	
+		const string Test14Simple::getLongName() const {
+			return Test14Simple::LongName();
+		}
+	
 		Test14Simple::ButtonState Test14Simple::getButtonState() const {
 			return m_buttonState;
 		}

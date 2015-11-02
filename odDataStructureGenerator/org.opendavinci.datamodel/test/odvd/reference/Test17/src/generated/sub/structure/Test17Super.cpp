@@ -64,6 +64,18 @@ namespace sub {
 				return "sub.structure.Test17Super";
 			}
 		
+			int32_t Test17Super::getID() const {
+				return Test17Super::ID();
+			}
+		
+			const string Test17Super::getShortName() const {
+				return Test17Super::ShortName();
+			}
+		
+			const string Test17Super::getLongName() const {
+				return Test17Super::LongName();
+			}
+		
 			double Test17Super::getMyData() const {
 				return m_myData;
 			}

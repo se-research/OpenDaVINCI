@@ -96,6 +96,18 @@ namespace testpackage {
 			return "testpackage.Test7B";
 		}
 	
+		int32_t Test7B::getID() const {
+			return Test7B::ID();
+		}
+	
+		const string Test7B::getShortName() const {
+			return Test7B::ShortName();
+		}
+	
+		const string Test7B::getLongName() const {
+			return Test7B::LongName();
+		}
+	
 		bool Test7B::getAttribute1() const {
 			return m_attribute1;
 		}

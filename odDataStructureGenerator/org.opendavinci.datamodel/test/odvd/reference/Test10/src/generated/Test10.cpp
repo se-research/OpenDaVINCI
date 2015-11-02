@@ -75,6 +75,18 @@
 		return "Test10";
 	}
 
+	int32_t Test10::getID() const {
+		return Test10::ID();
+	}
+
+	const string Test10::getShortName() const {
+		return Test10::ShortName();
+	}
+
+	const string Test10::getLongName() const {
+		return Test10::LongName();
+	}
+
 	std::vector<std::string> Test10::getListOfMyStringList() const {
 		return m_listOfMyStringList;
 	}

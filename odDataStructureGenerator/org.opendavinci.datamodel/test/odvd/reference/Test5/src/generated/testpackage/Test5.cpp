@@ -88,6 +88,18 @@ namespace testpackage {
 			return "testpackage.Test5";
 		}
 	
+		int32_t Test5::getID() const {
+			return Test5::ID();
+		}
+	
+		const string Test5::getShortName() const {
+			return Test5::ShortName();
+		}
+	
+		const string Test5::getLongName() const {
+			return Test5::LongName();
+		}
+	
 		bool Test5::getAttribute1() const {
 			return m_attribute1;
 		}

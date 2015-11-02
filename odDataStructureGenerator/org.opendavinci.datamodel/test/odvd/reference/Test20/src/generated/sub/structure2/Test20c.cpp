@@ -64,6 +64,18 @@ namespace sub {
 				return "sub.structure2.Test20c";
 			}
 		
+			int32_t Test20c::getID() const {
+				return Test20c::ID();
+			}
+		
+			const string Test20c::getShortName() const {
+				return Test20c::ShortName();
+			}
+		
+			const string Test20c::getLongName() const {
+				return Test20c::LongName();
+			}
+		
 			uint32_t Test20c::getVal3() const {
 				return m_val3;
 			}

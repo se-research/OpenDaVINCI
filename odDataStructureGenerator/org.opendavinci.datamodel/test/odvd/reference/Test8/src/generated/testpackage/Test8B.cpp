@@ -58,6 +58,18 @@ namespace testpackage {
 			return "testpackage.Test8B";
 		}
 	
+		int32_t Test8B::getID() const {
+			return Test8B::ID();
+		}
+	
+		const string Test8B::getShortName() const {
+			return Test8B::ShortName();
+		}
+	
+		const string Test8B::getLongName() const {
+			return Test8B::LongName();
+		}
+	
 		bool Test8B::getAttribute1() const {
 			return m_attribute1;
 		}

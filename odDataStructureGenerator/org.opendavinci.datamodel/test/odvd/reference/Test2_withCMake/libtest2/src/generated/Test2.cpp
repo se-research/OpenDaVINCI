@@ -57,6 +57,18 @@
 		return "Test2";
 	}
 
+	int32_t Test2::getID() const {
+		return Test2::ID();
+	}
+
+	const string Test2::getShortName() const {
+		return Test2::ShortName();
+	}
+
+	const string Test2::getLongName() const {
+		return Test2::LongName();
+	}
+
 	uint32_t Test2::getAttribute1() const {
 		return m_attribute1;
 	}

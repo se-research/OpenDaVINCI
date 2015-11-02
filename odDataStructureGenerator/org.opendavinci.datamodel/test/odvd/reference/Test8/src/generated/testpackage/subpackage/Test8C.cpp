@@ -59,6 +59,18 @@ namespace testpackage {
 				return "testpackage.subpackage.Test8C";
 			}
 		
+			int32_t Test8C::getID() const {
+				return Test8C::ID();
+			}
+		
+			const string Test8C::getShortName() const {
+				return Test8C::ShortName();
+			}
+		
+			const string Test8C::getLongName() const {
+				return Test8C::LongName();
+			}
+		
 			std::string Test8C::getAttribute1() const {
 				return m_attribute1;
 			}

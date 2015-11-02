@@ -61,6 +61,18 @@ namespace sub {
 				return "sub.structure.Test17Child";
 			}
 		
+			int32_t Test17Child::getID() const {
+				return Test17Child::ID();
+			}
+		
+			const string Test17Child::getShortName() const {
+				return Test17Child::ShortName();
+			}
+		
+			const string Test17Child::getLongName() const {
+				return Test17Child::LongName();
+			}
+		
 			std::string Test17Child::getMyName() const {
 				return m_myName;
 			}

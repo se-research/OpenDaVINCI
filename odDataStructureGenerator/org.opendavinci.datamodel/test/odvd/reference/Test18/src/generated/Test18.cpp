@@ -96,6 +96,18 @@
 		return "Test18";
 	}
 
+	int32_t Test18::getID() const {
+		return Test18::ID();
+	}
+
+	const string Test18::getShortName() const {
+		return Test18::ShortName();
+	}
+
+	const string Test18::getLongName() const {
+		return Test18::LongName();
+	}
+
 	uint32_t* Test18::getMyArray1() {
 		return m_myArray1;
 	}

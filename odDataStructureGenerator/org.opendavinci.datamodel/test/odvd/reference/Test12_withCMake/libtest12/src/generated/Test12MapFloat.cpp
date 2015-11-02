@@ -87,6 +87,18 @@
 		return "Test12MapFloat";
 	}
 
+	int32_t Test12MapFloat::getID() const {
+		return Test12MapFloat::ID();
+	}
+
+	const string Test12MapFloat::getShortName() const {
+		return Test12MapFloat::ShortName();
+	}
+
+	const string Test12MapFloat::getLongName() const {
+		return Test12MapFloat::LongName();
+	}
+
 	std::map<float, bool> Test12MapFloat::getMapOfMyFloatBoolMap() const {
 		return m_mapOfMyFloatBoolMap;
 	}
