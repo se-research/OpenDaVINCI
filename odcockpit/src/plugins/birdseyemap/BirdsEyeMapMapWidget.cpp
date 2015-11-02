@@ -339,7 +339,7 @@ namespace cockpit {
                             case Obstacle::REMOVE:
                             {
                                 // Remove obstacle.
-                                map<uint32_t, SceneNode*>::iterator result = m_mapOfObstacles.find(obstacle.getID());
+                                map<uint32_t, SceneNode*>::iterator result = m_mapOfObstacles.find(obstacle.getObstacleID());
                                 if (result != m_mapOfObstacles.end()) {
                                     // Remove child from scene graph node.
                                     m_obstaclesRoot->removeChild(result->second);
@@ -352,7 +352,7 @@ namespace cockpit {
 
                             case Obstacle::UPDATE:
                             {
-                                map<uint32_t, SceneNode*>::iterator result = m_mapOfObstacles.find(obstacle.getID());
+                                map<uint32_t, SceneNode*>::iterator result = m_mapOfObstacles.find(obstacle.getObstacleID());
                                 if (result != m_mapOfObstacles.end()) {
                                     // Remove child from scene graph node.
                                     m_obstaclesRoot->removeChild(result->second);
@@ -363,7 +363,7 @@ namespace cockpit {
                                 stringstream contourName;
                                 contourName << "Obstacles";
                                 hesperia::scenegraph::primitives::Polygon *contour = new hesperia::scenegraph::primitives::Polygon(SceneNodeDescriptor(contourName.str()), obstacle.getPolygon().getVertices(), Point3(0, 1, 0), 2);
-                                m_mapOfObstacles[obstacle.getID()] = contour;
+                                m_mapOfObstacles[obstacle.getObstacleID()] = contour;
                                 m_obstaclesRoot->addChild(contour);
                             }
                             break;

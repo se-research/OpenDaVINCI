@@ -113,6 +113,8 @@ IF(     NOT("${CMAKE_C_COMPILER}" STREQUAL "")
     ENDIF()
 ENDIF()
 
+SET(BUILD_AUTOMOTIVE 0)
+
 # If dpkg and rpmbuild are available, .deb and .rpm packages will be
 # created. Otherwise, the software is simply installed.
 IF(     NOT("${DPKG_EXECUTABLE}" STREQUAL "DPKG_EXECUTABLE-NOTFOUND")

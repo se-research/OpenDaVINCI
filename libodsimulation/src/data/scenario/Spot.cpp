@@ -33,21 +33,21 @@ namespace hesperia {
             using namespace core::base;
 
             Spot::Spot() :
-                    m_id(0),
+                    m_identifier(0),
                     m_firstVertex(),
                     m_secondVertex() {
             }
 
             Spot::Spot(const Spot &obj) :
                     SerializableData(),
-                    m_id(obj.getID()),
+                    m_identifier(obj.getIdentifier()),
                     m_firstVertex(obj.getFirstVertex()),
                     m_secondVertex(obj.getSecondVertex()) {}
 
             Spot::~Spot() {}
 
             Spot& Spot::operator=(const Spot &obj) {
-                setID(obj.getID());
+                setIdentifier(obj.getIdentifier());
                 setFirstVertex(obj.getFirstVertex());
                 setSecondVertex(obj.getSecondVertex());
                 return (*this);
@@ -60,12 +60,12 @@ namespace hesperia {
                 m_secondVertex.accept(visitor);
             }
 
-            uint32_t Spot::getID() const {
-                return m_id;
+            uint32_t Spot::getIdentifier() const {
+                return m_identifier;
             }
 
-            void Spot::setID(const uint32_t &id) {
-                m_id = id;
+            void Spot::setIdentifier(const uint32_t &id) {
+                m_identifier = id;
             }
 
             const Vertex3& Spot::getFirstVertex() const {
@@ -84,9 +84,21 @@ namespace hesperia {
                 m_secondVertex = v;
             }
 
+            int32_t Spot::getID() const {
+                return 837;
+            }
+
+            const string Spot::getShortName() const {
+                return "Spot";
+            }
+
+            const string Spot::getLongName() const {
+                return "hesperia.data.scenario.Spot";
+            }
+
             const string Spot::toString() const {
                 stringstream s;
-                s << "ID: " << getID() << " @ " << m_firstVertex.toString() << "/" << m_secondVertex.toString();
+                s << "ID: " << getIdentifier() << " @ " << m_firstVertex.toString() << "/" << m_secondVertex.toString();
                 return s.str();
             }
 
@@ -96,7 +108,7 @@ namespace hesperia {
                 core::SharedPointer<Serializer> s = sf.getSerializer(out);
 
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                        getID());
+                        getIdentifier());
 
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('f', 'i', 'r', 's', 't') >::RESULT,
                         getFirstVertex());
@@ -113,7 +125,7 @@ namespace hesperia {
                 core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
                 d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                       m_id);
+                       m_identifier);
 
                 d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('f', 'i', 'r', 's', 't') >::RESULT,
                        m_firstVertex);

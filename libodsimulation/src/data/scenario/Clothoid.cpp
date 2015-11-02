@@ -87,6 +87,18 @@ namespace hesperia {
                 m_rotationZ = rotationZ;
             }
 
+            int32_t Clothoid::getID() const {
+                return 825;
+            }
+
+            const string Clothoid::getShortName() const {
+                return "Clothoid";
+            }
+
+            const string Clothoid::getLongName() const {
+                return "hesperia.data.scenario.Clothoid";
+            }
+
             const string Clothoid::toString() const {
                 return "";
             }

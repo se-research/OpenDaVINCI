@@ -76,6 +76,18 @@ namespace hesperia {
                 return !operator==(other);
             }
 
+            int32_t Position::getID() const {
+                return 15;
+            }
+
+            const string Position::getShortName() const {
+                return "Position";
+            }
+
+            const string Position::getLongName() const {
+                return "hesperia.data.environment.Position";
+            }
+
             const string Position::toString() const {
                 stringstream sstr;
                 sstr  << m_position.toString() << "/" << m_rotation.toString();

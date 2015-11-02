@@ -62,14 +62,14 @@ namespace hesperia {
                      *
                      * @return Object's ID.
                      */
-                    uint32_t getID() const;
+                    uint32_t getIdentifier() const;
 
                     /**
                      * This method sets the object's ID.
                      *
                      * @param id Object's ID.
                      */
-                    void setID(const uint32_t &id);
+                    void setIdentifier(const uint32_t &id);
 
                     /**
                      * This method returns the list of vertices.
@@ -88,10 +88,13 @@ namespace hesperia {
                     virtual ostream& operator<<(ostream &out) const;
                     virtual istream& operator>>(istream &in);
 
+                    virtual int32_t getID() const;
+                    virtual const string getShortName() const;
+                    virtual const string getLongName() const;
                     virtual const string toString() const;
 
                 private:
-                    uint32_t m_id;
+                    uint32_t m_identifier;
                     vector<Vertex3> m_listOfVertices;
 
                     /**

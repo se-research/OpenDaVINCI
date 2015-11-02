@@ -119,6 +119,18 @@ namespace hesperia {
                 }
             }
 
+            int32_t Surroundings::getID() const {
+                return 835;
+            }
+
+            const string Surroundings::getShortName() const {
+                return "Surroundings";
+            }
+
+            const string Surroundings::getLongName() const {
+                return "hesperia.data.scenario.Surroundings";
+            }
+
             const string Surroundings::toString() const {
                 return "";
             }

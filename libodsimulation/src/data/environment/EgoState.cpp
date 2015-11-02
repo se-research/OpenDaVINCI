@@ -50,6 +50,18 @@ namespace hesperia {
                 return (*this);
             }
 
+            int32_t EgoState::getID() const {
+                return 32;
+            }
+
+            const string EgoState::getShortName() const {
+                return "EgoState";
+            }
+
+            const string EgoState::getLongName() const {
+                return "hesperia.data.environment.EgoState";
+            }
+
             const string EgoState::toString() const {
                 stringstream s;
                 s << PointShapedObject::toString();

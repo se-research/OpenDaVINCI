@@ -67,14 +67,14 @@ namespace hesperia {
                      *
                      * @return ID of this spot.
                      */
-                    uint32_t getID() const;
+                    uint32_t getIdentifier() const;
 
                     /**
                      * This method sets the ID of this spot.
                      *
                      * @param id ID of this spot.
                      */
-                    void setID(const uint32_t &id);
+                    void setIdentifier(const uint32_t &id);
 
                     /**
                      * This method returns the first vertex
@@ -107,10 +107,13 @@ namespace hesperia {
                     virtual ostream& operator<<(ostream &out) const;
                     virtual istream& operator>>(istream &in);
 
+                    virtual int32_t getID() const;
+                    virtual const string getShortName() const;
+                    virtual const string getLongName() const;
                     virtual const string toString() const;
 
                 private:
-                    uint32_t m_id;
+                    uint32_t m_identifier;
                     Vertex3 m_firstVertex;
                     Vertex3 m_secondVertex;
             };

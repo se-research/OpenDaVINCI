@@ -93,6 +93,18 @@ namespace hesperia {
                 m_coordinateSystem = c;
             }
 
+            int32_t Header::getID() const {
+                return 834;
+            }
+
+            const string Header::getShortName() const {
+                return "Header";
+            }
+
+            const string Header::getLongName() const {
+                return "hesperia.data.scenario.Header";
+            }
+
             const string Header::toString() const {
                 stringstream s;
                 s << "Scenario: '" << m_name << "', Version: " << m_version << ", Date: " << m_date;

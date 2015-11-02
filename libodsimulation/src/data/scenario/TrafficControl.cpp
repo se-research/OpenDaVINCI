@@ -124,6 +124,18 @@ namespace hesperia {
                 }
             }
 
+            int32_t TrafficControl::getID() const {
+                return 820;
+            }
+
+            const string TrafficControl::getShortName() const {
+                return "TrafficControl";
+            }
+
+            const string TrafficControl::getLongName() const {
+                return "hesperia.data.scenario.TrafficControl";
+            }
+
             const string TrafficControl::toString() const {
                 stringstream s;
                 s << "Name: '" << m_name << "', Type: " << static_cast<uint32_t>(m_type);

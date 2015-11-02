@@ -49,6 +49,18 @@ namespace hesperia {
                 visitor.visit(*this);
             }
 
+            int32_t Stop::getID() const {
+                return 861;
+            }
+
+            const string Stop::getShortName() const {
+                return "Stop";
+            }
+
+            const string Stop::getLongName() const {
+                return "hesperia.data.situation.Stop";
+            }
+
             const string Stop::toString() const {
                 stringstream s;
                 s << getType();

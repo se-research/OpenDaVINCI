@@ -80,7 +80,7 @@ namespace hesperia {
         void LaneVisitor::visit(const hesperia::data::scenario::PointModel *pm) {
             if (pm != NULL) {
                 stringstream name;
-                name << pm->getLane()->getRoad()->getLayer()->getID() << "." << pm->getLane()->getRoad()->getID() << "." << pm->getLane()->getID();
+                name << pm->getLane()->getRoad()->getLayer()->getIdentifier() << "." << pm->getLane()->getRoad()->getIdentifier() << "." << pm->getLane()->getIdentifier();
                 cerr << "Found PointModel Lane: " << name.str() << endl;
 
                 const vector<IDVertex3> &listOfWaypoints = pm->getListOfIdentifiableVertices();
@@ -94,21 +94,21 @@ namespace hesperia {
                     m_listOfLines.push_back(line);
 
                     WaypointVertex *v1 = new WaypointVertex();
-                    v1->setLayerID(pm->getLane()->getRoad()->getLayer()->getID());
-                    v1->setRoadID(pm->getLane()->getRoad()->getID());
-                    v1->setLaneID(pm->getLane()->getID());
-                    v1->setWaypointID(vt1.getID());
+                    v1->setLayerID(pm->getLane()->getRoad()->getLayer()->getIdentifier());
+                    v1->setRoadID(pm->getLane()->getRoad()->getIdentifier());
+                    v1->setLaneID(pm->getLane()->getIdentifier());
+                    v1->setWaypointID(vt1.getIdentifier());
                     v1->setPosition(vt1);
-                    cerr << "Constructed node: " << pm->getLane()->getRoad()->getLayer()->getID() << "." << pm->getLane()->getRoad()->getID() << "." << pm->getLane()->getID() << "." << vt1.getID() << endl;
+                    cerr << "Constructed node: " << pm->getLane()->getRoad()->getLayer()->getIdentifier() << "." << pm->getLane()->getRoad()->getIdentifier() << "." << pm->getLane()->getIdentifier() << "." << vt1.getIdentifier() << endl;
 
                     WaypointVertex *v2 = new WaypointVertex();
-                    v2->setLayerID(pm->getLane()->getRoad()->getLayer()->getID());
-                    v2->setRoadID(pm->getLane()->getRoad()->getID());
-                    v2->setLaneID(pm->getLane()->getID());
-                    v2->setWaypointID(vt2.getID());
+                    v2->setLayerID(pm->getLane()->getRoad()->getLayer()->getIdentifier());
+                    v2->setRoadID(pm->getLane()->getRoad()->getIdentifier());
+                    v2->setLaneID(pm->getLane()->getIdentifier());
+                    v2->setWaypointID(vt2.getIdentifier());
                     v2->setPosition(vt2);
 
-                    cerr << "Constructed node: " << pm->getLane()->getRoad()->getLayer()->getID() << "." << pm->getLane()->getRoad()->getID() << "." << pm->getLane()->getID() << "." << vt2.getID() << endl;
+                    cerr << "Constructed node: " << pm->getLane()->getRoad()->getLayer()->getIdentifier() << "." << pm->getLane()->getRoad()->getIdentifier() << "." << pm->getLane()->getIdentifier() << "." << vt2.getIdentifier() << endl;
 
                     WaypointsEdge *edge = new WaypointsEdge();
                     edge->setCosts(vt1.getXYDistanceTo(vt2));
@@ -168,7 +168,7 @@ namespace hesperia {
         void LaneVisitor::visit(const hesperia::data::scenario::Arc *arc) {
             if (arc != NULL) {
                 stringstream name;
-                name << arc->getLane()->getRoad()->getLayer()->getID() << "." << arc->getLane()->getRoad()->getID() << "." << arc->getLane()->getID();
+                name << arc->getLane()->getRoad()->getLayer()->getIdentifier() << "." << arc->getLane()->getRoad()->getIdentifier() << "." << arc->getLane()->getIdentifier();
                 cerr << "Found Arc Lane: " << name.str() << endl;
 
                 IDVertex3 vt1 = arc->getStart();
@@ -211,21 +211,21 @@ namespace hesperia {
                 }
 
                 WaypointVertex *v1 = new WaypointVertex();
-                v1->setLayerID(arc->getLane()->getRoad()->getLayer()->getID());
-                v1->setRoadID(arc->getLane()->getRoad()->getID());
-                v1->setLaneID(arc->getLane()->getID());
-                v1->setWaypointID(vt1.getID());
+                v1->setLayerID(arc->getLane()->getRoad()->getLayer()->getIdentifier());
+                v1->setRoadID(arc->getLane()->getRoad()->getIdentifier());
+                v1->setLaneID(arc->getLane()->getIdentifier());
+                v1->setWaypointID(vt1.getIdentifier());
                 v1->setPosition(vt1);
-                cerr << "Constructed node: " << arc->getLane()->getRoad()->getLayer()->getID() << "." << arc->getLane()->getRoad()->getID() << "." << arc->getLane()->getID() << "." << vt1.getID() << endl;
+                cerr << "Constructed node: " << arc->getLane()->getRoad()->getLayer()->getIdentifier() << "." << arc->getLane()->getRoad()->getIdentifier() << "." << arc->getLane()->getIdentifier() << "." << vt1.getIdentifier() << endl;
 
                 WaypointVertex *v2 = new WaypointVertex();
-                v2->setLayerID(arc->getLane()->getRoad()->getLayer()->getID());
-                v2->setRoadID(arc->getLane()->getRoad()->getID());
-                v2->setLaneID(arc->getLane()->getID());
-                v2->setWaypointID(vt2.getID());
+                v2->setLayerID(arc->getLane()->getRoad()->getLayer()->getIdentifier());
+                v2->setRoadID(arc->getLane()->getRoad()->getIdentifier());
+                v2->setLaneID(arc->getLane()->getIdentifier());
+                v2->setWaypointID(vt2.getIdentifier());
                 v2->setPosition(vt2);
 
-                cerr << "Constructed node: " << arc->getLane()->getRoad()->getLayer()->getID() << "." << arc->getLane()->getRoad()->getID() << "." << arc->getLane()->getID() << "." << vt2.getID() << endl;
+                cerr << "Constructed node: " << arc->getLane()->getRoad()->getLayer()->getIdentifier() << "." << arc->getLane()->getRoad()->getIdentifier() << "." << arc->getLane()->getIdentifier() << "." << vt2.getIdentifier() << endl;
 
                 WaypointsEdge *edge = new WaypointsEdge();
                 edge->setCosts(vt1.getXYDistanceTo(vt2));
@@ -285,7 +285,7 @@ namespace hesperia {
         void LaneVisitor::visit(const hesperia::data::scenario::StraightLine *sl) {
             if (sl != NULL) {
                 stringstream name;
-                name << sl->getLane()->getRoad()->getLayer()->getID() << "." << sl->getLane()->getRoad()->getID() << "." << sl->getLane()->getID();
+                name << sl->getLane()->getRoad()->getLayer()->getIdentifier() << "." << sl->getLane()->getRoad()->getIdentifier() << "." << sl->getLane()->getIdentifier();
                 cerr << "Found StraightLine Lane: " << name.str() << endl;
 
                 IDVertex3 vt1 = sl->getStart();
@@ -296,21 +296,21 @@ namespace hesperia {
                 m_listOfLines.push_back(line);
 
                 WaypointVertex *v1 = new WaypointVertex();
-                v1->setLayerID(sl->getLane()->getRoad()->getLayer()->getID());
-                v1->setRoadID(sl->getLane()->getRoad()->getID());
-                v1->setLaneID(sl->getLane()->getID());
-                v1->setWaypointID(vt1.getID());
+                v1->setLayerID(sl->getLane()->getRoad()->getLayer()->getIdentifier());
+                v1->setRoadID(sl->getLane()->getRoad()->getIdentifier());
+                v1->setLaneID(sl->getLane()->getIdentifier());
+                v1->setWaypointID(vt1.getIdentifier());
                 v1->setPosition(vt1);
-                cerr << "Constructed node: " << sl->getLane()->getRoad()->getLayer()->getID() << "." << sl->getLane()->getRoad()->getID() << "." << sl->getLane()->getID() << "." << vt1.getID() << endl;
+                cerr << "Constructed node: " << sl->getLane()->getRoad()->getLayer()->getIdentifier() << "." << sl->getLane()->getRoad()->getIdentifier() << "." << sl->getLane()->getIdentifier() << "." << vt1.getIdentifier() << endl;
 
                 WaypointVertex *v2 = new WaypointVertex();
-                v2->setLayerID(sl->getLane()->getRoad()->getLayer()->getID());
-                v2->setRoadID(sl->getLane()->getRoad()->getID());
-                v2->setLaneID(sl->getLane()->getID());
-                v2->setWaypointID(vt2.getID());
+                v2->setLayerID(sl->getLane()->getRoad()->getLayer()->getIdentifier());
+                v2->setRoadID(sl->getLane()->getRoad()->getIdentifier());
+                v2->setLaneID(sl->getLane()->getIdentifier());
+                v2->setWaypointID(vt2.getIdentifier());
                 v2->setPosition(vt2);
 
-                cerr << "Constructed node: " << sl->getLane()->getRoad()->getLayer()->getID() << "." << sl->getLane()->getRoad()->getID() << "." << sl->getLane()->getID() << "." << vt2.getID() << endl;
+                cerr << "Constructed node: " << sl->getLane()->getRoad()->getLayer()->getIdentifier() << "." << sl->getLane()->getRoad()->getIdentifier() << "." << sl->getLane()->getIdentifier() << "." << vt2.getIdentifier() << endl;
 
                 WaypointsEdge *edge = new WaypointsEdge();
                 edge->setCosts(vt1.getXYDistanceTo(vt2));

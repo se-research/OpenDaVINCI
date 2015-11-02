@@ -75,6 +75,18 @@ namespace hesperia {
                 return length;
             }
 
+            int32_t Route::getID() const {
+                return 38;
+            }
+
+            const string Route::getShortName() const {
+                return "Route";
+            }
+
+            const string Route::getLongName() const {
+                return "hesperia.data.planning.Route";
+            }
+
             const string Route::toString() const {
                 stringstream sstr;
                 sstr << "Route:";

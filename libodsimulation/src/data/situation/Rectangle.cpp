@@ -94,6 +94,18 @@ namespace hesperia {
                 m_width = w;
             }
 
+            int32_t Rectangle::getID() const {
+                return 863;
+            }
+
+            const string Rectangle::getShortName() const {
+                return "Rectangle";
+            }
+
+            const string Rectangle::getLongName() const {
+                return "hesperia.data.situation.Rectangle";
+            }
+
             const string Rectangle::toString() const {
                 stringstream s;
                 s << Shape::toString() << ", Height: " << m_height << ", Color: " << m_color.toString() << ", length: " << m_length << ", width: " << m_width;

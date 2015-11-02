@@ -100,6 +100,18 @@ namespace hesperia {
                 return in;
             }
 
+            int32_t ExtrinsicParameters::getID() const {
+                return 21;
+            }
+
+            const string ExtrinsicParameters::getShortName() const {
+                return "ExtrinsicParameters";
+            }
+
+            const string ExtrinsicParameters::getLongName() const {
+                return "hesperia.data.camera.ExtrinsicParameters";
+            }
+
             const string ExtrinsicParameters::toString() const {
                 stringstream sstr;
                 sstr << "T=" << m_translation.toString() << "/R=" << m_rotation.toString();

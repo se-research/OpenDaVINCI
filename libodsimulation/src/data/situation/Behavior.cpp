@@ -52,6 +52,18 @@ namespace hesperia {
                 m_type = type;
             }
 
+            int32_t Behavior::getID() const {
+                return 852;
+            }
+
+            const string Behavior::getShortName() const {
+                return "Behavior";
+            }
+
+            const string Behavior::getLongName() const {
+                return "hesperia.data.situation.Behavior";
+            }
+
             const string Behavior::toString() const {
                 stringstream s;
                 s << "Type: " << static_cast<uint32_t>(m_type);

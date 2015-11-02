@@ -109,10 +109,10 @@ namespace hesperia {
                     ptB.setZ(layer.getHeight());
 
                     stringstream namePtA;
-                    namePtA << "Waypoint: " << layer.getID() << "." << road.getID() << "." << lane.getID() << "." << listOfVertices.at(i).getID();
+                    namePtA << "Waypoint: " << layer.getIdentifier() << "." << road.getIdentifier() << "." << lane.getIdentifier() << "." << listOfVertices.at(i).getIdentifier();
 
                     stringstream namePtB;
-                    namePtB << "Waypoint: " << layer.getID() << "." << road.getID() << "." << lane.getID() << "." << listOfVertices.at(i+1).getID();
+                    namePtB << "Waypoint: " << layer.getIdentifier() << "." << road.getIdentifier() << "." << lane.getIdentifier() << "." << listOfVertices.at(i+1).getIdentifier();
 
                     if (m_renderLaneConnectors) {
                         layerTG.addChild(new threeD::models::Point(threeD::NodeDescriptor(namePtA.str()), ptA, Point3(1, 0, 0), 5));
@@ -121,7 +121,7 @@ namespace hesperia {
 /*
                     Point3 colorSkeleton(0.05, 0.05, 0.05);
                     stringstream nameLane;
-                    nameLane << "Lane: " << layer.getID() << "." << road.getID() << "." << lane.getID();
+                    nameLane << "Lane: " << layer.getIdentifier() << "." << road.getIdentifier() << "." << lane.getIdentifier();
                     layerTG.addChild(new threeD::models::Line(threeD::NodeDescriptor(nameLane.str()), ptA, ptB, colorSkeleton, 1));
 */
                     const double halfWidth = pointModel.getLaneAttribute().getWidth() / 2.0;
@@ -152,7 +152,7 @@ namespace hesperia {
                         Point3 leftLanePtB = ptB + (orthonormalDirection * halfWidth);
 
                         stringstream leftLaneMarkingName;
-                        leftLaneMarkingName << "Left lane marking: " << layer.getID() << "." << road.getID() << "." << lane.getID();
+                        leftLaneMarkingName << "Left lane marking: " << layer.getIdentifier() << "." << road.getIdentifier() << "." << lane.getIdentifier();
                         layerTG.addChild(new threeD::models::Line(threeD::NodeDescriptor(leftLaneMarkingName.str()), leftLanePtA, leftLanePtB, colorLeftMarking, 5));
 
                         Point3 colorRightMarking;
@@ -176,7 +176,7 @@ namespace hesperia {
                         Point3 rightLanePtB = ptB - (orthonormalDirection * halfWidth);
 
                         stringstream rightLaneMarkingName;
-                        rightLaneMarkingName << "Right lane marking: " << layer.getID() << "." << road.getID() << "." << lane.getID();
+                        rightLaneMarkingName << "Right lane marking: " << layer.getIdentifier() << "." << road.getIdentifier() << "." << lane.getIdentifier();
                         layerTG.addChild(new threeD::models::Line(threeD::NodeDescriptor(rightLaneMarkingName.str()), rightLanePtA, rightLanePtB, colorRightMarking, 5));
                     }
                 }
@@ -192,10 +192,10 @@ namespace hesperia {
             ptB.setZ(layer.getHeight());
 
             stringstream namePtA;
-            namePtA << "Waypoint: " << layer.getID() << "." << road.getID() << "." << lane.getID() << "." << straightLine.getStart().getID();
+            namePtA << "Waypoint: " << layer.getIdentifier() << "." << road.getIdentifier() << "." << lane.getIdentifier() << "." << straightLine.getStart().getIdentifier();
 
             stringstream namePtB;
-            namePtB << "Waypoint: " << layer.getID() << "." << road.getID() << "." << lane.getID() << "." << straightLine.getEnd().getID();
+            namePtB << "Waypoint: " << layer.getIdentifier() << "." << road.getIdentifier() << "." << lane.getIdentifier() << "." << straightLine.getEnd().getIdentifier();
 
             if (m_renderLaneConnectors) {
                 layerTG.addChild(new threeD::models::Point(threeD::NodeDescriptor(namePtA.str()), ptA, Point3(1, 0, 0), 5));
@@ -204,7 +204,7 @@ namespace hesperia {
 /*
             Point3 colorSkeleton(0.01, 0.01, 0.01);
             stringstream nameLane;
-            nameLane << "Lane: " << layer.getID() << "." << road.getID() << "." << lane.getID();
+            nameLane << "Lane: " << layer.getIdentifier() << "." << road.getIdentifier() << "." << lane.getIdentifier();
             layerTG.addChild(new threeD::models::Line(threeD::NodeDescriptor(nameLane.str()), ptA, ptB, colorSkeleton, 1));
 */
             bool brokenLeft = true;
@@ -258,7 +258,7 @@ namespace hesperia {
                     Point3 leftLanePtA = (ptA + direction * (i + 1) * lanePart) + (orthonormalDirection * halfWidth);
                     if (brokenLeft && showLeft) {
                         stringstream leftLaneMarkingName;
-                        leftLaneMarkingName << "Left lane marking: " << layer.getID() << "." << road.getID() << "." << lane.getID();
+                        leftLaneMarkingName << "Left lane marking: " << layer.getIdentifier() << "." << road.getIdentifier() << "." << lane.getIdentifier();
                         layerTG.addChild(new threeD::models::Line(threeD::NodeDescriptor(leftLaneMarkingName.str()), leftLanePtAOld, leftLanePtA, colorLeftMarking, 5));
                     }
                     leftLanePtAOld = leftLanePtA;
@@ -290,7 +290,7 @@ namespace hesperia {
                     Point3 rightLanePtA = (ptA + direction * (i + 1) * lanePart) - (orthonormalDirection * halfWidth);
                     if (brokenRight && showRight) {
                         stringstream rightLaneMarkingName;
-                        rightLaneMarkingName << "Right lane marking: " << layer.getID() << "." << road.getID() << "." << lane.getID();
+                        rightLaneMarkingName << "Right lane marking: " << layer.getIdentifier() << "." << road.getIdentifier() << "." << lane.getIdentifier();
                         layerTG.addChild(new threeD::models::Line(threeD::NodeDescriptor(rightLaneMarkingName.str()), rightLanePtAOld, rightLanePtA, colorRightMarking, 5));
                     }
                     rightLanePtAOld = rightLanePtA;
@@ -300,14 +300,14 @@ namespace hesperia {
                 Point3 leftLaneLastPt = ptB + (orthonormalDirection * halfWidth);
                 if (brokenLeft && showLeft) {
                     stringstream leftLaneMarkingName;
-                    leftLaneMarkingName << "Left lane marking: " << layer.getID() << "." << road.getID() << "." << lane.getID();
+                    leftLaneMarkingName << "Left lane marking: " << layer.getIdentifier() << "." << road.getIdentifier() << "." << lane.getIdentifier();
                     layerTG.addChild(new threeD::models::Line(threeD::NodeDescriptor(leftLaneMarkingName.str()), leftLanePtAOld, leftLaneLastPt, colorLeftMarking, 5));
                 }
 
                 Point3 rightLaneLastPt = ptB - (orthonormalDirection * halfWidth);
                 if (brokenRight && showRight) {
                     stringstream rightLaneMarkingName;
-                    rightLaneMarkingName << "Right lane marking: " << layer.getID() << "." << road.getID() << "." << lane.getID();
+                    rightLaneMarkingName << "Right lane marking: " << layer.getIdentifier() << "." << road.getIdentifier() << "." << lane.getIdentifier();
                     layerTG.addChild(new threeD::models::Line(threeD::NodeDescriptor(rightLaneMarkingName.str()), rightLanePtAOld, rightLaneLastPt, colorRightMarking, 5));
                 }
  
@@ -323,10 +323,10 @@ namespace hesperia {
             ptB.setZ(layer.getHeight());
 
             stringstream namePtA;
-            namePtA << "Waypoint: " << layer.getID() << "." << road.getID() << "." << lane.getID() << "." << arc.getStart().getID();
+            namePtA << "Waypoint: " << layer.getIdentifier() << "." << road.getIdentifier() << "." << lane.getIdentifier() << "." << arc.getStart().getIdentifier();
 
             stringstream namePtB;
-            namePtB << "Waypoint: " << layer.getID() << "." << road.getID() << "." << lane.getID() << "." << arc.getEnd().getID();
+            namePtB << "Waypoint: " << layer.getIdentifier() << "." << road.getIdentifier() << "." << lane.getIdentifier() << "." << arc.getEnd().getIdentifier();
 
             if (m_renderLaneConnectors) {
                 layerTG.addChild(new threeD::models::Point(threeD::NodeDescriptor(namePtA.str()), ptA, Point3(1, 0, 0), 5));
@@ -390,7 +390,7 @@ namespace hesperia {
 /*
                 // Add center point to TG.
                 stringstream nameLane;
-                nameLane << "Lane: " << layer.getID() << "." << road.getID() << "." << lane.getID() << " (" << i << ")";
+                nameLane << "Lane: " << layer.getIdentifier() << "." << road.getIdentifier() << "." << lane.getIdentifier() << " (" << i << ")";
                 layerTG.addChild(new threeD::models::Line(threeD::NodeDescriptor(nameLane.str()), centerOld, center, colorSkeleton, 1));
 */
                 // Add left point to TG.
@@ -426,7 +426,7 @@ namespace hesperia {
 
                 if (brokenLeft && showLeft) {
                     stringstream leftLaneMarkingName;
-                    leftLaneMarkingName << "Left lane marking: " << layer.getID() << "." << road.getID() << "." << lane.getID() << " (" << i << ")";
+                    leftLaneMarkingName << "Left lane marking: " << layer.getIdentifier() << "." << road.getIdentifier() << "." << lane.getIdentifier() << " (" << i << ")";
                     layerTG.addChild(new threeD::models::Line(threeD::NodeDescriptor(leftLaneMarkingName.str()), leftOld, left, colorLeftMarking, 5));
                 }
 
@@ -463,7 +463,7 @@ namespace hesperia {
 
                 if (brokenRight && showRight) {
                     stringstream rightLaneMarkingName;
-                    rightLaneMarkingName << "Right lane marking: " << layer.getID() << "." << road.getID() << "." << lane.getID() << " (" << i << ")";
+                    rightLaneMarkingName << "Right lane marking: " << layer.getIdentifier() << "." << road.getIdentifier() << "." << lane.getIdentifier() << " (" << i << ")";
                     layerTG.addChild(new threeD::models::Line(threeD::NodeDescriptor(rightLaneMarkingName.str()), rightOld, right, colorRightMarking, 5));
                 }
 
@@ -579,17 +579,17 @@ namespace hesperia {
                                 ptB.setZ(layer.getHeight());
 
                                 stringstream namePtA;
-                                namePtA << "Waypoint: " << layer.getID() << "." << road.getID() << "." << lane.getID() << "." << clothoid->getStart().getID();
+                                namePtA << "Waypoint: " << layer.getIdentifier() << "." << road.getIdentifier() << "." << lane.getIdentifier() << "." << clothoid->getStart().getIdentifier();
 
                                 stringstream namePtB;
-                                namePtB << "Waypoint: " << layer.getID() << "." << road.getID() << "." << lane.getID() << "." << clothoid->getStart().getID();
+                                namePtB << "Waypoint: " << layer.getIdentifier() << "." << road.getIdentifier() << "." << lane.getIdentifier() << "." << clothoid->getStart().getIdentifier();
 
                                 layerTG->addChild(new threeD::models::Point(threeD::NodeDescriptor(namePtA.str()), ptA, Point3(1, 0, 0), 5));
                                 layerTG->addChild(new threeD::models::Point(threeD::NodeDescriptor(namePtB.str()), ptB, Point3(1, 0, 0), 5));
 
                                 Point3 colorSkeleton(0.2, 0.2, 0.2);
                                 stringstream nameLane;
-                                nameLane << "Lane: " << layer.getID() << "." << road.getID() << "." << lane.getID();
+                                nameLane << "Lane: " << layer.getIdentifier() << "." << road.getIdentifier() << "." << lane.getIdentifier();
                                 layerTG->addChild(new threeD::models::Line(threeD::NodeDescriptor(nameLane.str()), ptA, ptB, colorSkeleton, 1));
 */
                             }

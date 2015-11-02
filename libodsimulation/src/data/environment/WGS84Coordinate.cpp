@@ -254,6 +254,18 @@ namespace hesperia {
                 m_LONGITUDE = LON;
             }
 
+            int32_t WGS84Coordinate::getID() const {
+                return 19;
+            }
+
+            const string WGS84Coordinate::getShortName() const {
+                return "WGS84Coordinate";
+            }
+
+            const string WGS84Coordinate::getLongName() const {
+                return "hesperia.data.environment.WGS84Coordinate";
+            }
+
             const string WGS84Coordinate::toString() const {
                 stringstream s;
                 s << "(" << m_lat << ((getLATITUDE() == WGS84Coordinate::NORTH) ? "N" : "S") << "; " << m_lon << ((getLONGITUDE() == WGS84Coordinate::WEST) ? "W" : "E") << ")";

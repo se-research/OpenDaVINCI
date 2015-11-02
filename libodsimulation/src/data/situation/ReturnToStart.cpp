@@ -49,6 +49,18 @@ namespace hesperia {
                 visitor.visit(*this);
             }
 
+            int32_t ReturnToStart::getID() const {
+                return 862;
+            }
+
+            const string ReturnToStart::getShortName() const {
+                return "ReturnToStart";
+            }
+
+            const string ReturnToStart::getLongName() const {
+                return "hesperia.data.situation.ReturnToStart";
+            }
+
             const string ReturnToStart::toString() const {
                 stringstream s;
                 s << getType();

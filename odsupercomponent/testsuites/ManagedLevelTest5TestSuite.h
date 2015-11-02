@@ -94,6 +94,18 @@ class TestSuiteExample7Data : public core::data::SerializableData {
 		    return in;
 	    }
 
+        virtual int32_t getID() const {
+            return 33;
+        }
+
+        virtual const string getShortName() const {
+            return "TestSuiteExample7Data";
+        }
+
+        virtual const string getLongName() const {
+            return getShortName();
+        }
+
 		virtual const string toString() const {
 		    stringstream s;
 		    s << m_numericalValue;

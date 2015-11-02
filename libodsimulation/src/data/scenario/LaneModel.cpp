@@ -169,6 +169,18 @@ namespace hesperia {
                 return m_lane;
             }
 
+            int32_t LaneModel::getID() const {
+                return 841;
+            }
+
+            const string LaneModel::getShortName() const {
+                return "LaneModel";
+            }
+
+            const string LaneModel::getLongName() const {
+                return "hesperia.data.scenario.LaneModel";
+            }
+
             const string LaneModel::toString() const {
                 stringstream s;
                 s << "Type: " << getType() << " with " << static_cast<uint32_t>(m_listOfConnectors.size()) << " connectors and " << static_cast<uint32_t>(m_listOfTrafficControls.size()) << " traffic controls, attributes: " << getLaneAttribute().toString();

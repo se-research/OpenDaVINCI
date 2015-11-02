@@ -101,6 +101,18 @@ namespace hesperia {
                 m_listOfLayers.push_back(l);
             }
 
+            int32_t Scenario::getID() const {
+                return 830;
+            }
+
+            const string Scenario::getShortName() const {
+                return "Scenario";
+            }
+
+            const string Scenario::getLongName() const {
+                return "hesperia.data.scenario.Scenario";
+            }
+
             const string Scenario::toString() const {
                 return "";
             }

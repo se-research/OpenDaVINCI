@@ -33,14 +33,14 @@ namespace hesperia {
             using namespace scenario;
 
             Road::Road() :
-                    m_id(0),
+                    m_identifier(0),
                     m_name(""),
                     m_layer(NULL),
                     m_listOfLanes() {}
 
             Road::Road(const Road &obj) :
                     SerializableData(),
-                    m_id(obj.getID()),
+                    m_identifier(obj.getIdentifier()),
                     m_name(obj.getName()),
                     m_layer(obj.getLayer()),
                     m_listOfLanes() {
@@ -51,7 +51,7 @@ namespace hesperia {
             Road::~Road() {}
 
             Road& Road::operator=(const Road &obj) {
-                setID(obj.getID());
+                setIdentifier(obj.getIdentifier());
                 setName(obj.getName());
                 setLayer(obj.getLayer());
 
@@ -79,12 +79,12 @@ namespace hesperia {
                 }
             }
 
-            uint32_t Road::getID() const {
-                return m_id;
+            uint32_t Road::getIdentifier() const {
+                return m_identifier;
             }
 
-            void Road::setID(const uint32_t &id) {
-                m_id = id;
+            void Road::setIdentifier(const uint32_t &id) {
+                m_identifier = id;
             }
 
             const string Road::getName() const {
@@ -105,9 +105,21 @@ namespace hesperia {
                 m_listOfLanes.push_back(l);
             }
 
+            int32_t Road::getID() const {
+                return 847;
+            }
+
+            const string Road::getShortName() const {
+                return "Road";
+            }
+
+            const string Road::getLongName() const {
+                return "hesperia.data.scenario.Road";
+            }
+
             const string Road::toString() const {
                 stringstream s;
-                s << "ID: " << getID() << ", Name: " << getName();
+                s << "ID: " << getIdentifier() << ", Name: " << getName();
                 return s.str();
             }
 
@@ -125,7 +137,7 @@ namespace hesperia {
                 core::SharedPointer<Serializer> s = sf.getSerializer(out);
 
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                        getID());
+                        getIdentifier());
 
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('n', 'a', 'm', 'e') >::RESULT,
                         getName());
@@ -159,7 +171,7 @@ namespace hesperia {
                 m_listOfLanes.clear();
 
                 d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                       m_id);
+                       m_identifier);
 
                 d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('n', 'a', 'm', 'e') >::RESULT,
                        m_name);

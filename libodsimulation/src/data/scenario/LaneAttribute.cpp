@@ -79,6 +79,18 @@ namespace hesperia {
                 m_rightLaneMarking = bs;
             }
 
+            int32_t LaneAttribute::getID() const {
+                return 832;
+            }
+
+            const string LaneAttribute::getShortName() const {
+                return "LaneAttribute";
+            }
+
+            const string LaneAttribute::getLongName() const {
+                return "hesperia.data.scenario.LaneAttribute";
+            }
+
             const string LaneAttribute::toString() const {
                 stringstream s;
                 s << "Width: " << getWidth() << ", Left lane's marking: " << getLeftLaneMarking() << ", Right lane's marking: " << getRightLaneMarking();

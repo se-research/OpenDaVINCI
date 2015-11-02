@@ -84,7 +84,7 @@ namespace hesperia {
                 vector<IDVertex3>::const_iterator it = m_listOfIdentifiableVertices.begin();
                 while (it != m_listOfIdentifiableVertices.end()) {
                     retVal = (*it++);
-                    if (retVal.getID() == id) {
+                    if (retVal.getIdentifier() == id) {
                         found = true;
                         break;
                     }
@@ -98,6 +98,18 @@ namespace hesperia {
 
             void PointModel::addIdentifiableVertex(const IDVertex3 &idV) {
                 m_listOfIdentifiableVertices.push_back(idV);
+            }
+
+            int32_t PointModel::getID() const {
+                return 824;
+            }
+
+            const string PointModel::getShortName() const {
+                return "PointModel";
+            }
+
+            const string PointModel::getLongName() const {
+                return "hesperia.data.scenario.PointModel";
             }
 
             const string PointModel::toString() const {

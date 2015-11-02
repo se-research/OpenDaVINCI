@@ -49,6 +49,18 @@ namespace hesperia {
                 visitor.visit(*this);
             }
 
+            int32_t Immediately::getID() const {
+                return 868;
+            }
+
+            const string Immediately::getShortName() const {
+                return "Immediately";
+            }
+
+            const string Immediately::getLongName() const {
+                return "hesperia.data.situation.Immediately";
+            }
+
             const string Immediately::toString() const {
                 stringstream s;
                 s << getType();

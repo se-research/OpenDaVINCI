@@ -60,6 +60,18 @@ namespace hesperia {
                 m_contour = contour;
             }
 
+            int32_t ContouredObject::getID() const {
+                return 30;
+            }
+
+            const string ContouredObject::getShortName() const {
+                return "ContouredObject";
+            }
+
+            const string ContouredObject::getLongName() const {
+                return "hesperia.data.sensor.ContouredObject";
+            }
+
             const string ContouredObject::toString() const {
                 stringstream s;
                 s << PointShapedObject::toString() << " consisting of " << static_cast<uint32_t>(getContour().size()) << " contour points.";

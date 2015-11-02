@@ -55,20 +55,20 @@ namespace hesperia {
                 Lane &lane = dynamic_cast<Lane&>(node);
 
                 if ( (lane.getLaneModel() != NULL) && (lane.getRoad() != NULL) && (lane.getRoad()->getLayer() != NULL) ) {
-                    if (    (lane.getID() == m_pointID.getLaneID())
-                         && (lane.getRoad()->getID() == m_pointID.getRoadID())
-                         && (lane.getRoad()->getLayer()->getID() == m_pointID.getLayerID()) ) {
+                    if (    (lane.getIdentifier() == m_pointID.getLaneID())
+                         && (lane.getRoad()->getIdentifier() == m_pointID.getRoadID())
+                         && (lane.getRoad()->getLayer()->getIdentifier() == m_pointID.getLayerID()) ) {
 
                         // Checking for point in LaneModel.
                         try {
                             Arc *arc = dynamic_cast<Arc*>(lane.getLaneModel());
                             if (arc != NULL) {
-                            	if (arc->getStart().getID() == m_pointID.getPointID()) {
+                            	if (arc->getStart().getIdentifier() == m_pointID.getPointID()) {
                                     m_laneModel = arc;
                             		m_vertex = arc->getStart();
                             		return;
                             	}
-                                if (arc->getEnd().getID() == m_pointID.getPointID()) {
+                                if (arc->getEnd().getIdentifier() == m_pointID.getPointID()) {
                                     m_laneModel = arc;
                             		m_vertex = arc->getEnd();
                                     return;
@@ -80,12 +80,12 @@ namespace hesperia {
                         try {
                             Clothoid *clothoid = dynamic_cast<Clothoid*>(lane.getLaneModel());
                             if (clothoid != NULL) {
-                            	if (clothoid->getStart().getID() == m_pointID.getPointID()) {
+                            	if (clothoid->getStart().getIdentifier() == m_pointID.getPointID()) {
                             		m_laneModel = clothoid;
                             		m_vertex = clothoid->getStart();
                             		return;
                             	}
-                                if (clothoid->getEnd().getID() == m_pointID.getPointID()) {
+                                if (clothoid->getEnd().getIdentifier() == m_pointID.getPointID()) {
                                     m_laneModel = clothoid;
                                     m_vertex = clothoid->getEnd();
                                     return;
@@ -97,12 +97,12 @@ namespace hesperia {
                         try {
                             StraightLine *sl = dynamic_cast<StraightLine*>(lane.getLaneModel());
                             if (sl != NULL) {
-                            	if (sl->getStart().getID() == m_pointID.getPointID()) {
+                            	if (sl->getStart().getIdentifier() == m_pointID.getPointID()) {
                             		m_laneModel = sl;
                             		m_vertex = sl->getStart();
                             		return;
                             	}
-                                if (sl->getEnd().getID() == m_pointID.getPointID()) {
+                                if (sl->getEnd().getIdentifier() == m_pointID.getPointID()) {
                                     m_laneModel = sl;
                                     m_vertex = sl->getEnd();
                                     return;
@@ -117,7 +117,7 @@ namespace hesperia {
                                 const vector<IDVertex3> &listOfVertices = pm->getListOfIdentifiableVertices();
                                 vector<IDVertex3>::const_iterator it = listOfVertices.begin();
                                 while (it != listOfVertices.end()) {
-                                    if ((*it).getID() == m_pointID.getPointID()) {
+                                    if ((*it).getIdentifier() == m_pointID.getPointID()) {
                                     	m_vertex = (*it);
                                         m_laneModel = pm;
                                         break;

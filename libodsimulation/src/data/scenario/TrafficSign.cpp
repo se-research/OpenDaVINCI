@@ -66,6 +66,18 @@ namespace hesperia {
                 m_value = v;
             }
 
+            int32_t TrafficSign::getID() const {
+                return 821;
+            }
+
+            const string TrafficSign::getShortName() const {
+                return "TrafficSign";
+            }
+
+            const string TrafficSign::getLongName() const {
+                return "hesperia.data.scenario.TrafficSign";
+            }
+
             const string TrafficSign::toString() const {
                 stringstream sstr;
                 sstr << "Trafficsign: " << getValue();

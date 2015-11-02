@@ -32,14 +32,14 @@ namespace hesperia {
 
             OnEnteringPolygon::OnEnteringPolygon() :
                     StartType(),
-                    m_id(0),
+                    m_identifier(0),
                     m_listOfVertices() {
                 setType(StartType::ONENTERINGPOLYGON);
             }
 
             OnEnteringPolygon::OnEnteringPolygon(const OnEnteringPolygon &obj) :
                     StartType(obj),
-                    m_id(obj.getID()),
+                    m_identifier(obj.getIdentifier()),
                     m_listOfVertices() {
                 deepCopy(obj);
             }
@@ -48,7 +48,7 @@ namespace hesperia {
 
             OnEnteringPolygon& OnEnteringPolygon::operator=(const OnEnteringPolygon &obj) {
                 StartType::operator=(obj);
-                setID(obj.getID());
+                setIdentifier(obj.getIdentifier());
                 deepCopy(obj);
                 return (*this);
             }
@@ -72,12 +72,12 @@ namespace hesperia {
                 }
             }
 
-            uint32_t OnEnteringPolygon::getID() const {
-                return m_id;
+            uint32_t OnEnteringPolygon::getIdentifier() const {
+                return m_identifier;
             }
 
-            void OnEnteringPolygon::setID(const uint32_t &id) {
-                m_id = id;
+            void OnEnteringPolygon::setIdentifier(const uint32_t &id) {
+                m_identifier = id;
             }
 
             const vector<Vertex3>& OnEnteringPolygon::getListOfVertices() const {
@@ -88,9 +88,21 @@ namespace hesperia {
                 m_listOfVertices.push_back(v);
             }
 
+            int32_t OnEnteringPolygon::getID() const {
+                return 867;
+            }
+
+            const string OnEnteringPolygon::getShortName() const {
+                return "OnEnteringPolygon";
+            }
+
+            const string OnEnteringPolygon::getLongName() const {
+                return "hesperia.data.situation.OnEnteringPolygon";
+            }
+
             const string OnEnteringPolygon::toString() const {
                 stringstream s;
-                s << "Type: " << getType() << " on entering ID: " << getID();
+                s << "Type: " << getType() << " on entering ID: " << getIdentifier();
                 return s.str();
             }
 
@@ -103,7 +115,7 @@ namespace hesperia {
                 core::SharedPointer<Serializer> s = sf.getSerializer(out);
 
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                        getID());
+                        getIdentifier());
 
                 // Write number of vertices.
                 uint32_t numberOfVertices = static_cast<uint32_t>(m_listOfVertices.size());
@@ -134,7 +146,7 @@ namespace hesperia {
                 core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
                 d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                       m_id);
+                       m_identifier);
 
                 // Read number of vertices.
                 uint32_t numberOfVertices = 0;

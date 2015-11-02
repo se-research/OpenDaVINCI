@@ -95,6 +95,18 @@ namespace hesperia {
                 return in;
             }
 
+            int32_t ImageGrabberCalibration::getID() const {
+                return 23;
+            }
+
+            const string ImageGrabberCalibration::getShortName() const {
+                return "ImageGrabberCalibration";
+            }
+
+            const string ImageGrabberCalibration::getLongName() const {
+                return "hesperia.data.camera.ImageGrabberCalibration";
+            }
+
             const string ImageGrabberCalibration::toString() const {
                 stringstream sstr;
                 sstr << "Extrinsic: " << m_extrinsicParameters.toString() << "/Intrinsic: " << m_intrinsicParameters.toString();

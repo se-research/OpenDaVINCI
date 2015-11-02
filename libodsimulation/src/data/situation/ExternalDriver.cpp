@@ -49,6 +49,18 @@ namespace hesperia {
                 visitor.visit(*this);
             }
 
+            int32_t ExternalDriver::getID() const {
+                return 869;
+            }
+
+            const string ExternalDriver::getShortName() const {
+                return "ExternalDriver";
+            }
+
+            const string ExternalDriver::getLongName() const {
+                return "hesperia.data.situation.ExternalDriver";
+            }
+
             const string ExternalDriver::toString() const {
                 stringstream s;
                 s << getType();

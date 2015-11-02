@@ -77,6 +77,18 @@ namespace hesperia {
                 m_end = e;
             }
 
+            int32_t StraightLine::getID() const {
+                return 823;
+            }
+
+            const string StraightLine::getShortName() const {
+                return "StraightLine";
+            }
+
+            const string StraightLine::getLongName() const {
+                return "hesperia.data.scenario.StraightLine";
+            }
+
             const string StraightLine::toString() const {
                 return "";
             }

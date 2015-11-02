@@ -72,6 +72,18 @@ namespace hesperia {
                 m_target = targetID;
             }
 
+            int32_t Connector::getID() const {
+                return 836;
+            }
+
+            const string Connector::getShortName() const {
+                return "Connector";
+            }
+
+            const string Connector::getLongName() const {
+                return "hesperia.data.scenario.Connector";
+            }
+
             const string Connector::toString() const {
                 stringstream s;
                 s << "(" << getSource().toString() << ")" << " -> " << "(" << getTarget().toString() << ")";

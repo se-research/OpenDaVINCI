@@ -106,12 +106,12 @@ namespace hesperia {
         	Lock l(m_dataRendererMutex);
         	if (m_renderer != NULL) {
         		// Look up model.
-        		map<uint32_t, vector<TriangleSet> >::iterator res = m_mapOfModels.find(o.getID());
+        		map<uint32_t, vector<TriangleSet> >::iterator res = m_mapOfModels.find(o.getIdentifier());
         		if (res != m_mapOfModels.end()) {
                     m_renderer->beginPainting();
                         // TODO: Rotation for OpenGL is given in Eulerian angles for X-axis, for Y-axis, and for Z-axis SEPERATELY!
                         Point3 dir(0, 0, o.getRotation().getAngleXY());
-                        m_renderer->drawListOfTriangleSets(m_mapOfModels[o.getID()], o.getPosition(), dir);
+                        m_renderer->drawListOfTriangleSets(m_mapOfModels[o.getIdentifier()], o.getPosition(), dir);
                     m_renderer->endPainting();
         		}
         	}
@@ -286,7 +286,7 @@ namespace hesperia {
                 		hesperia::data::situation::ComplexModel *cm = dynamic_cast<hesperia::data::situation::ComplexModel*>(o.getShape());
                 		if (cm != NULL) {
                 			// Load complexmodel from SCNXArchive.
-                			loadComplexModel(o.getID(), *cm);
+                			loadComplexModel(o.getIdentifier(), *cm);
                 		}
                 	}
                 }

@@ -214,12 +214,12 @@ namespace hesperia {
 
                             // Label Waypoints.
                             stringstream namePtA;
-                            namePtA << pointModel.getLane()->getRoad()->getLayer()->getID() << "." << pointModel.getLane()->getRoad()->getID() << "." << pointModel.getLane()->getID() << "." << listOfVertices.at(i).getID();
+                            namePtA << pointModel.getLane()->getRoad()->getLayer()->getIdentifier() << "." << pointModel.getLane()->getRoad()->getIdentifier() << "." << pointModel.getLane()->getIdentifier() << "." << listOfVertices.at(i).getIdentifier();
                             m_renderer->setColor(Point3(0.7, 0.7, 0.7));
                             m_renderer->drawText(ptA, namePtA.str());
 
                             stringstream namePtB;
-                            namePtB << pointModel.getLane()->getRoad()->getLayer()->getID() << "." << pointModel.getLane()->getRoad()->getID() << "." << pointModel.getLane()->getID() << "." << listOfVertices.at(i+1).getID();
+                            namePtB << pointModel.getLane()->getRoad()->getLayer()->getIdentifier() << "." << pointModel.getLane()->getRoad()->getIdentifier() << "." << pointModel.getLane()->getIdentifier() << "." << listOfVertices.at(i+1).getIdentifier();
                             m_renderer->setColor(Point3(0.7, 0.7, 0.7));
                             m_renderer->drawText(ptB, namePtB.str());
 

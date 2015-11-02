@@ -34,14 +34,14 @@ namespace hesperia {
 
             Obstacle::Obstacle() :
                     PointShapedObject(Point3(0, 0, 0), Point3(0, 0, 0), Point3(0, 0, 0), Point3(0, 0, 0)),
-                    m_id(0),
+                    m_obstacleid(0),
                     m_state(Obstacle::REMOVE),
                     m_classification(Obstacle::UNKNOWN),
                     m_polygon() {}
 
             Obstacle::Obstacle(const uint32_t &id, const enum Obstacle::STATE &state) :
                    PointShapedObject(Point3(0, 0, 0), Point3(0, 0, 0), Point3(0, 0, 0), Point3(0, 0, 0)),
-                   m_id(id),
+                   m_obstacleid(id),
                    m_state(state),
                    m_classification(Obstacle::UNKNOWN),
                    m_polygon() {}
@@ -51,14 +51,14 @@ namespace hesperia {
                                const Point3 &velocity, const Point3 &acceleration,
                                const Polygon &polygon) :
                    PointShapedObject(position, rotation, velocity, acceleration),
-                   m_id(id),
+                   m_obstacleid(id),
                    m_state(state),
                    m_classification(classification),
                    m_polygon(polygon) {}
 
             Obstacle::Obstacle(const Obstacle &obj) :
                     PointShapedObject(obj),
-                    m_id(obj.m_id),
+                    m_obstacleid(obj.m_obstacleid),
                     m_state(obj.m_state),
                     m_classification(obj.m_classification),
                     m_polygon(obj.m_polygon) {}
@@ -68,7 +68,7 @@ namespace hesperia {
             Obstacle& Obstacle::operator=(const Obstacle &obj) {
                 PointShapedObject::operator=(obj);
 
-                m_id = obj.m_id;
+                m_obstacleid = obj.m_obstacleid;
                 m_state = obj.m_state;
                 m_classification = obj.m_classification;
                 m_polygon = obj.m_polygon;
@@ -76,12 +76,12 @@ namespace hesperia {
                 return (*this);
             }
 
-            uint32_t Obstacle::getID() const {
-                return m_id;
+            uint32_t Obstacle::getObstacleID() const {
+                return m_obstacleid;
             }
 
-            void Obstacle::setID(const uint32_t &id) {
-                m_id = id;
+            void Obstacle::setObstacleID(const uint32_t &id) {
+                m_obstacleid = id;
             }
 
             enum Obstacle::STATE Obstacle::getState() const {
@@ -108,6 +108,18 @@ namespace hesperia {
                 return m_polygon;
             }
 
+            int32_t Obstacle::getID() const {
+                return 35;
+            }
+
+            const string Obstacle::getShortName() const {
+                return "Obstacle";
+            }
+
+            const string Obstacle::getLongName() const {
+                return "hesperia.data.environment.Obstacle";
+            }
+
             const string Obstacle::toString() const {
                 stringstream s;
                 s << PointShapedObject::toString() << "/" << m_polygon.toString() << ", state: " << m_state << ", classification: " << m_classification;
@@ -124,7 +136,7 @@ namespace hesperia {
                 core::SharedPointer<Serializer> s = sf.getSerializer(out);
 
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                        static_cast<uint32_t>(m_id));
+                        static_cast<uint32_t>(m_obstacleid));
 
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('s', 't', 'a', 't', 'e') >::RESULT,
                         static_cast<uint32_t>(m_state));
@@ -148,7 +160,7 @@ namespace hesperia {
                 core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
                 d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                       m_id);
+                       m_obstacleid);
 
                 uint32_t v = 0;
                 d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('s', 't', 'a', 't', 'e') >::RESULT,

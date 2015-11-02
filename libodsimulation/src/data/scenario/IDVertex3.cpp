@@ -32,17 +32,17 @@ namespace hesperia {
 
             IDVertex3::IDVertex3() :
                     Vertex3(),
-                    m_id(0) {}
+                    m_identifier(0) {}
 
             IDVertex3::IDVertex3(const IDVertex3 &obj) :
                     Vertex3(obj),
-                    m_id(obj.getID()) {}
+                    m_identifier(obj.getIdentifier()) {}
 
             IDVertex3::~IDVertex3() {}
 
             IDVertex3& IDVertex3::operator=(const IDVertex3 &obj) {
                 Vertex3::operator=(obj);
-                setID(obj.getID());
+                setIdentifier(obj.getIdentifier());
 
                 return (*this);
             }
@@ -52,17 +52,29 @@ namespace hesperia {
                 visitor.visit(*this);
             }
 
-            uint32_t IDVertex3::getID() const {
-                return m_id;
+            uint32_t IDVertex3::getIdentifier() const {
+                return m_identifier;
             }
 
-            void IDVertex3::setID(const uint32_t &id) {
-                m_id = id;
+            void IDVertex3::setIdentifier(const uint32_t &id) {
+                m_identifier = id;
+            }
+
+            int32_t IDVertex3::getID() const {
+                return 818;
+            }
+
+            const string IDVertex3::getShortName() const {
+                return "IDVertex3";
+            }
+
+            const string IDVertex3::getLongName() const {
+                return "hesperia.data.scenario.IDVertex3";
             }
 
             const string IDVertex3::toString() const {
                 stringstream s;
-                s << "ID: " << getID() << ": " << Vertex3::toString();
+                s << "ID: " << getIdentifier() << ": " << Vertex3::toString();
                 return s.str();
             }
 
@@ -75,7 +87,7 @@ namespace hesperia {
                 core::SharedPointer<Serializer> s = sf.getSerializer(out);
 
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                        getID());
+                        getIdentifier());
 
                 return out;
             }
@@ -89,7 +101,7 @@ namespace hesperia {
                 core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
                 d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                       m_id);
+                       m_identifier);
 
                 return in;
             }

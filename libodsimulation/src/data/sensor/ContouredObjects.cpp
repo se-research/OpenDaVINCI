@@ -71,6 +71,18 @@ namespace hesperia {
                 m_color = color;
             }
 
+            int32_t ContouredObjects::getID() const {
+                return 31;
+            }
+
+            const string ContouredObjects::getShortName() const {
+                return "ContouredObjects";
+            }
+
+            const string ContouredObjects::getLongName() const {
+                return "hesperia.data.sensor.ContouredObjects";
+            }
+
             const string ContouredObjects::toString() const {
                 stringstream s;
                 s << "Containing " << static_cast<uint32_t>(m_contouredObjects.size()) << " contoured objects.";

@@ -93,6 +93,18 @@ namespace hesperia {
                 m_surroundings = s;
             }
 
+            int32_t Ground::getID() const {
+                return 844;
+            }
+
+            const string Ground::getShortName() const {
+                return "Ground";
+            }
+
+            const string Ground::getLongName() const {
+                return "hesperia.data.scenario.Ground";
+            }
+
             const string Ground::toString() const {
                 stringstream s;
                 s << "Ground's name: " << m_name;

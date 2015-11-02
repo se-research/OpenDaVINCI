@@ -51,7 +51,7 @@ namespace hesperia {
                 if (n == NULL) {
                     OPENDAVINCI_CORE_THROW_EXCEPTION(SCNScenarioVisitorException, "Node to get value from ID expected.");
                 }
-                idV.setID(n->getValue<uint32_t>());
+                idV.setIdentifier(n->getValue<uint32_t>());
 
                 Vertex3 v = visitVertex3(node->getLastChild());
                 idV.setX(v.getX());
@@ -679,7 +679,7 @@ namespace hesperia {
                 if (n == NULL) {
                     OPENDAVINCI_CORE_THROW_EXCEPTION(SCNScenarioVisitorException, "Node to get value from LANEID expected.");
                 }
-                l.setID(n->getValue<uint32_t>());
+                l.setIdentifier(n->getValue<uint32_t>());
 
                 LaneAttribute la;
                 vector<TrafficControl*> listOfTrafficControls;
@@ -780,7 +780,7 @@ namespace hesperia {
                 if (n == NULL) {
                     OPENDAVINCI_CORE_THROW_EXCEPTION(SCNScenarioVisitorException, "Node to get value from ROADID expected.");
                 }
-                r.setID(n->getValue<uint32_t>());
+                r.setIdentifier(n->getValue<uint32_t>());
 
                 n = node->getNodeFromFirstMatchingChildFor("ROADNAME");
                 if (n == NULL) {
@@ -828,7 +828,7 @@ namespace hesperia {
                 if (n == NULL) {
                     OPENDAVINCI_CORE_THROW_EXCEPTION(SCNScenarioVisitorException, "Node to get value from SPOTID expected.");
                 }
-                s.setID(n->getValue<uint32_t>());
+                s.setIdentifier(n->getValue<uint32_t>());
 
                 n = node->getChildren("SPOTID").at(1);
                 if (n == NULL) {
@@ -856,7 +856,7 @@ namespace hesperia {
                 if (n == NULL) {
                     OPENDAVINCI_CORE_THROW_EXCEPTION(SCNScenarioVisitorException, "Node to get value from ZONEID expected.");
                 }
-                z.setID(n->getValue<uint32_t>());
+                z.setIdentifier(n->getValue<uint32_t>());
 
                 n = node->getNodeFromFirstMatchingChildFor("ZONENAME");
                 if (n == NULL) {
@@ -908,7 +908,7 @@ namespace hesperia {
                 if (n == NULL) {
                     OPENDAVINCI_CORE_THROW_EXCEPTION(SCNScenarioVisitorException, "Node to get value from LAYERID expected.");
                 }
-                l.setID(n->getValue<uint32_t>());
+                l.setIdentifier(n->getValue<uint32_t>());
 
                 n = node->getNodeFromFirstMatchingChildFor("HEIGHT");
                 if (n == NULL) {

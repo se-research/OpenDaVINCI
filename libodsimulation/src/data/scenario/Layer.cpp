@@ -34,7 +34,7 @@ namespace hesperia {
 
             Layer::Layer() :
                     m_name(""),
-                    m_id(0),
+                    m_identifier(0),
                     m_height(0),
                     m_listOfRoads(),
                     m_listOfZones() {}
@@ -42,7 +42,7 @@ namespace hesperia {
             Layer::Layer(const Layer &obj) :
                     SerializableData(),
                     m_name(obj.getName()),
-                    m_id(obj.getID()),
+                    m_identifier(obj.getIdentifier()),
                     m_height(obj.getHeight()),
                     m_listOfRoads(),
                     m_listOfZones() {
@@ -54,7 +54,7 @@ namespace hesperia {
 
             Layer& Layer::operator=(const Layer &obj) {
                 setName(obj.getName());
-                setID(obj.getID());
+                setIdentifier(obj.getIdentifier());
                 setHeight(obj.getHeight());
 
                 // Create deep copy.
@@ -101,12 +101,12 @@ namespace hesperia {
                 m_name = name;
             }
 
-            uint32_t Layer::getID() const {
-                return m_id;
+            uint32_t Layer::getIdentifier() const {
+                return m_identifier;
             }
 
-            void Layer::setID(const uint32_t &id) {
-                m_id = id;
+            void Layer::setIdentifier(const uint32_t &id) {
+                m_identifier = id;
             }
 
             double Layer::getHeight() const {
@@ -137,9 +137,21 @@ namespace hesperia {
                 m_listOfZones.push_back(z);
             }
 
+            int32_t Layer::getID() const {
+                return 839;
+            }
+
+            const string Layer::getShortName() const {
+                return "Layer";
+            }
+
+            const string Layer::getLongName() const {
+                return "hesperia.data.scenario.Layer";
+            }
+
             const string Layer::toString() const {
                 stringstream s;
-                s << "Name: " << getName() << ", ID: " << getID() << ", Height: " << getHeight();
+                s << "Name: " << getName() << ", ID: " << getIdentifier() << ", Height: " << getHeight();
                 return s.str();
             }
 
@@ -152,7 +164,7 @@ namespace hesperia {
                         getName());
 
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                        getID());
+                        getIdentifier());
 
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('h', 'e', 'i', 'g', 'h', 't') >::RESULT,
                         getHeight());
@@ -207,7 +219,7 @@ namespace hesperia {
                        m_name);
 
                 d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                       m_id);
+                       m_identifier);
 
                 d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('h', 'e', 'i', 'g', 'h', 't') >::RESULT,
                        m_height);

@@ -89,6 +89,18 @@ namespace hesperia {
                 m_scenario = scenario;
             }
 
+            int32_t Header::getID() const {
+                return 855;
+            }
+
+            const string Header::getShortName() const {
+                return "Header";
+            }
+
+            const string Header::getLongName() const {
+                return "hesperia.data.situation.Header";
+            }
+
             const string Header::toString() const {
                 stringstream s;
                 s << "Situation: '" << m_name << "', Version: " << m_version << ", Date: " << m_date << ", Scenario: " << m_scenario;

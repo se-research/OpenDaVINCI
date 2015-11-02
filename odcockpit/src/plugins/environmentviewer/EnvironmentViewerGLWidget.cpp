@@ -464,7 +464,7 @@ namespace cockpit {
                             case Obstacle::REMOVE:
                             {
                                 // Remove obstacle.
-                                map<uint32_t, Node*>::iterator result = m_mapOfObstacles.find(obstacle.getID());
+                                map<uint32_t, Node*>::iterator result = m_mapOfObstacles.find(obstacle.getObstacleID());
                                 if (result != m_mapOfObstacles.end()) {
                                     // Remove child from scene graph node.
                                     m_obstaclesRoot->removeChild(result->second);
@@ -477,7 +477,7 @@ namespace cockpit {
 
                             case Obstacle::UPDATE:
                             {
-                                map<uint32_t, Node*>::iterator result = m_mapOfObstacles.find(obstacle.getID());
+                                map<uint32_t, Node*>::iterator result = m_mapOfObstacles.find(obstacle.getObstacleID());
                                 if (result != m_mapOfObstacles.end()) {
                                     // Remove child from scene graph node.
                                     m_obstaclesRoot->removeChild(result->second);
@@ -497,7 +497,7 @@ namespace cockpit {
 
                                     contourTG->addChild(new hesperia::threeD::models::Line(NodeDescriptor(), A, B, Point3(0, 1, 0), 2));
                                 }
-                                m_mapOfObstacles[obstacle.getID()] = contourTG;
+                                m_mapOfObstacles[obstacle.getObstacleID()] = contourTG;
                                 m_obstaclesRoot->addChild(contourTG);
                             }
                             break;
