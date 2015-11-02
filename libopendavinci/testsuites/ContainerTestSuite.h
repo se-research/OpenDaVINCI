@@ -80,6 +80,42 @@ class ContainerTest : public CxxTest::TestSuite {
                 TS_ASSERT(ts.toString() == ts2.toString());
             }
         }
+
+        void testSimpleContainerConstructor() {
+            TimeStamp ts(1, 2);
+            Container c(ts);
+
+            stringstream s;
+            s << c;
+            s.flush();
+
+            Container c2;
+            s >> c2;
+            TS_ASSERT(c2.getDataType() == ts.getID());
+
+            TimeStamp ts2;
+            ts2 = c2.getData<TimeStamp>();
+
+            TS_ASSERT(ts.toString() == ts2.toString());
+        }
+
+        void testInt32ContainerConstructor() {
+            TimeStamp ts(3, 4);
+            Container c(ts, ts.getID());
+
+            stringstream s;
+            s << c;
+            s.flush();
+
+            Container c2;
+            s >> c2;
+            TS_ASSERT(c2.getDataType() == ts.getID());
+
+            TimeStamp ts2;
+            ts2 = c2.getData<TimeStamp>();
+
+            TS_ASSERT(ts.toString() == ts2.toString());
+        }
 };
 
 #endif /*CORE_CONTAINERTESTSUITE_H_*/

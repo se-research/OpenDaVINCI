@@ -44,6 +44,24 @@ namespace core {
             m_serializedData << serializableData;
         }
 
+        Container::Container(const SerializableData &serializableData) :
+                m_dataType(static_cast<DATATYPE>(serializableData.getID())),
+                m_serializedData(),
+                m_sent(TimeStamp(0, 0)),
+                m_received(TimeStamp(0, 0)) {
+            // Get data for container.
+            m_serializedData << serializableData;
+        }
+
+        Container::Container(const SerializableData &serializableData, const int32_t &dataType) :
+                m_dataType(static_cast<DATATYPE>(dataType)),
+                m_serializedData(),
+                m_sent(TimeStamp(0, 0)),
+                m_received(TimeStamp(0, 0)) {
+            // Get data for container.
+            m_serializedData << serializableData;
+        }
+
         Container::Container(const Container &obj) :
                 Serializable(),
                 m_dataType(obj.getDataType()),

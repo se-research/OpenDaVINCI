@@ -165,6 +165,21 @@ namespace core {
                 Container(const DATATYPE &dataType, const SerializableData &serializableData);
 
                 /**
+                 * Constructor.
+                 *
+                 * @param serializableData Data to be serialized.
+                 */
+                Container(const SerializableData &serializableData);
+
+                /**
+                 * Constructor.
+                 *
+                 * @param serializableData Data to be serialized.
+                 * @param dataType Type of data inside this container.
+                 */
+                Container(const SerializableData &serializableData, const int32_t &dataType);
+
+                /**
                  * Copy constructor.
                  *
                  * @param obj Reference to an object of this class.
