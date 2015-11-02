@@ -70,10 +70,12 @@ namespace core {
                  */
                 KeyValueConfiguration& operator=(const KeyValueConfiguration &obj);
 
+                virtual int32_t getID() const;
+                virtual const string getShortName() const;
+                virtual const string getLongName() const;
                 virtual const string toString() const;
 
                 virtual ostream& operator<<(ostream &out) const;
-
                 virtual istream& operator>>(istream &in);
 
                 /**

@@ -122,6 +122,18 @@ class ProtoVehicleControl : public core::data::SerializableData, public core::ba
 		return "automotive.VehicleControl";
 	}
 
+    int32_t getID() const {
+        return 41;
+    }
+
+    const string getLongName() const {
+        return "automotive.VehicleControl";
+    }
+
+    const string getShortName() const {
+        return "VehicleControl";
+    }
+
 	double getSpeed() const {
 		return m_speed;
 	}

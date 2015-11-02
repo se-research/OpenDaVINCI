@@ -75,6 +75,18 @@ class QueueTestSampleData : public core::data::SerializableData {
             return in;
         }
 
+        int32_t getID() const {
+            return 0;
+        }
+
+        const string getLongName() const {
+            return getShortName();
+        }
+
+        const string getShortName() const {
+            return "QueueTestSampleData";
+        }
+
         const string toString() const {
             stringstream s;
             s << m_int << endl;

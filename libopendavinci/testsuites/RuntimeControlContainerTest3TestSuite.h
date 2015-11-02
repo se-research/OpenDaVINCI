@@ -99,9 +99,24 @@ class LocalPoint3 : public core::data::SerializableData {
             return sqrt(operator*((*this)));
         }
 
+        double getZ() const {
+            return m_z;
+        }
 
         const string toString() const {
             return "";
+        }
+
+        int32_t getID() const {
+            return 35;
+        }
+
+        const string getLongName() const {
+            return "LocalPoint3";
+        }
+
+        const string getShortName() const {
+            return getLongName();
         }
 
         ostream& operator<<(ostream &out) const {
@@ -142,21 +157,37 @@ class LocalPoint3 : public core::data::SerializableData {
 class LocalPosition : public core::data::SerializableData {
     private:
         LocalPoint3 m_position;
+        LocalPoint3 m_rotation;
     public:
         LocalPosition() :
-            m_position() {}
+            m_position(),
+            m_rotation() {}
 
         LocalPosition(const LocalPosition &o) :
             SerializableData(),
-            m_position(o.m_position) {}
+            m_position(o.m_position),
+            m_rotation(o.m_rotation) {}
 
         LocalPosition& operator=(const LocalPosition &o) {
             m_position = o.m_position;
+            m_rotation = o.m_rotation;
             return *this;
         }
 
         const string toString() const {
             return "";
+        }
+
+        int32_t getID() const {
+            return 36;
+        }
+
+        const string getLongName() const {
+            return "LocalPosition";
+        }
+
+        const string getShortName() const {
+            return getLongName();
         }
 
         void setPosition(const LocalPoint3 &p) {
@@ -167,6 +198,14 @@ class LocalPosition : public core::data::SerializableData {
             return m_position;
         }
 
+        void setRotation(const LocalPoint3 &p) {
+            m_rotation = p;
+        }
+
+        LocalPoint3 getRotation() const {
+            return m_rotation;
+        }
+
         ostream& operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
@@ -174,6 +213,9 @@ class LocalPosition : public core::data::SerializableData {
 
             s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('p', 'o', 's') >::RESULT,
                     m_position);
+
+            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('r', 'o', 't') >::RESULT,
+                    m_rotation);
 
             return out;
         }
@@ -186,6 +228,9 @@ class LocalPosition : public core::data::SerializableData {
             d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('p', 'o', 's') >::RESULT,
                    m_position);
 
+            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('r', 'o', 't') >::RESULT,
+                   m_rotation);
+
             return in;
         }
 };
@@ -197,6 +242,18 @@ class RuntimeControlContainerTestSampleData : public core::data::SerializableDat
             m_int(0) {}
 
         uint32_t m_int;
+
+        int32_t getID() const {
+            return 37;
+        }
+
+        const string getLongName() const {
+            return "RuntimeControlContainerTestSampleData";
+        }
+
+        const string getShortName() const {
+            return getLongName();
+        }
 
         const string toString() const {
             stringstream sstr;

@@ -109,6 +109,18 @@ class LocalPoint3 : public core::data::SerializableData {
             return "";
         }
 
+        int32_t getID() const {
+            return 35;
+        }
+
+        const string getLongName() const {
+            return "LocalPoint3";
+        }
+
+        const string getShortName() const {
+            return getLongName();
+        }
+
         ostream& operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();;
 
@@ -168,6 +180,18 @@ class LocalPosition : public core::data::SerializableData {
             return "";
         }
 
+        int32_t getID() const {
+            return 36;
+        }
+
+        const string getLongName() const {
+            return "LocalPosition";
+        }
+
+        const string getShortName() const {
+            return getLongName();
+        }
+
         void setPosition(const LocalPoint3 &p) {
             m_position = p;
         }
@@ -222,6 +246,18 @@ class RuntimeControlContainerMultipleAppsTestData : public core::data::Serializa
 
         uint32_t m_int;
         string m_id;
+
+        int32_t getID() const {
+            return 37;
+        }
+
+        const string getLongName() const {
+            return "RuntimeControlContainerMultipleAppsTestData";
+        }
+
+        const string getShortName() const {
+            return getLongName();
+        }
 
         const string toString() const {
             stringstream sstr;

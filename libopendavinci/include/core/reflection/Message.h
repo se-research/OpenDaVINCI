@@ -74,8 +74,8 @@ namespace core {
                     // Read value.
                     T value = dynamic_cast<core::reflection::Field<T>*>(f.operator->())->getValue();
                     // Visit value.
-                    v.visit(f->getLongIdentifier(), f->getShortIdentifier(),
-                            f->getLongName(), f->getShortName(), value);
+                    v.visit(f->getLongFieldIdentifier(), f->getShortFieldIdentifier(),
+                            f->getLongFieldName(), f->getShortFieldName(), value);
                     // Update value.
                     dynamic_cast<core::reflection::Field<T>*>(f.operator->())->setValue(value);
                 }

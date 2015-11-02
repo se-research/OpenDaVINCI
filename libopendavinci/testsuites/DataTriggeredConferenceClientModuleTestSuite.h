@@ -108,6 +108,18 @@ class TestSuiteExample7Data : public core::data::SerializableData {
 		    return s.str();
 	    }
 
+        int32_t getID() const {
+            return 0;
+        }
+
+        const string getLongName() const {
+            return "TestSuiteExample7Data";
+        }
+
+        const string getShortName() const {
+            return getLongName();
+        }
+
 	private:
 		uint32_t m_numericalValue;
 };

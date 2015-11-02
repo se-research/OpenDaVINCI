@@ -157,6 +157,18 @@ class ControlFlowTestSampleData : public core::data::SerializableData {
             return sstr.str();
         }
 
+        int32_t getID() const {
+            return 0;
+        }
+
+        const string getLongName() const {
+            return "ControlFlowTestSampleData";
+        }
+
+        const string getShortName() const {
+            return getLongName();
+        }
+
         ostream& operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();
 

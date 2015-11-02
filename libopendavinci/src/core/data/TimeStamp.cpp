@@ -392,6 +392,18 @@ namespace core {
             return s.str();
         }
 
+        int32_t TimeStamp::getID() const {
+            return 12;
+        }
+
+        const string TimeStamp::getShortName() const {
+            return "TimeStamp";
+        }
+
+        const string TimeStamp::getLongName() const {
+            return "core.data.TimeStamp";
+        }
+
         const string TimeStamp::toString() const {
             stringstream s;
             s << m_seconds << "s/" << m_microseconds << "us.";

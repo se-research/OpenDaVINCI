@@ -109,6 +109,18 @@ class DataStoreTestNestedData : public core::data::SerializableData {
             s << m_double << endl;
             return s.str();
         }
+
+        int32_t getID() const {
+            return 0;
+        }
+
+        const string getLongName() const {
+            return "DataStoreTestNestedData";
+        }
+
+        const string getShortName() const {
+            return getLongName();
+        }
 };
 
 class DataStoreTestSampleData : public core::data::SerializableData {
@@ -171,6 +183,18 @@ class DataStoreTestSampleData : public core::data::SerializableData {
             s << m_bool << endl << m_int << endl << m_string << endl
             << m_nestedData.toString();
             return s.str();
+        }
+
+        int32_t getID() const {
+            return 0;
+        }
+
+        const string getLongName() const {
+            return "DataStoreTestSampleData";
+        }
+
+        const string getShortName() const {
+            return getLongName();
         }
 };
 

@@ -184,6 +184,18 @@ namespace core {
                 return in;
             }
 
+            int32_t CompressedImage::getID() const {
+                return 16;
+            }
+
+            const string CompressedImage::getShortName() const {
+                return "CompressedImage";
+            }
+
+            const string CompressedImage::getLongName() const {
+                return "core.data.image.CompressedImage";
+            }
+
             const string CompressedImage::toString() const {
                 stringstream sstr;
                 sstr << "name = " << getName() << ", width = " << getWidth() << ", height = " << getHeight() << ", bytes per pixel = " << getBytesPerPixel() << ", compressed size = " << getCompressedSize();

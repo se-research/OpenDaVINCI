@@ -116,8 +116,8 @@ namespace core {
                         // Read value.
                         string value = dynamic_cast<Field<string>*>((*it).operator->())->getValue();
                         // Visit value.
-                        v.visit((*it)->getLongIdentifier(), (*it)->getShortIdentifier(),
-                                (*it)->getLongName(), (*it)->getShortName(), value);
+                        v.visit((*it)->getLongFieldIdentifier(), (*it)->getShortFieldIdentifier(),
+                                (*it)->getLongFieldName(), (*it)->getShortFieldName(), value);
                         // Update value.
                         dynamic_cast<Field<string>*>((*it).operator->())->setValue(value);
                         (*it)->setSize(value.size());
@@ -132,8 +132,8 @@ namespace core {
                         uint32_t size = (*it)->getSize();
 
                         // Visit value.
-                        v.visit((*it)->getLongIdentifier(), (*it)->getShortIdentifier(),
-                                (*it)->getLongName(), (*it)->getShortName(), valuePtr, size);
+                        v.visit((*it)->getLongFieldIdentifier(), (*it)->getShortFieldIdentifier(),
+                                (*it)->getLongFieldName(), (*it)->getShortFieldName(), valuePtr, size);
                         // Update value is not required as we deal with a pointer to a memory.
                     }
                     break;
@@ -166,7 +166,7 @@ namespace core {
 
             vector<SharedPointer<AbstractField> >::iterator it = m_fields.begin();
             while (it != m_fields.end()) {
-                if ( (*it)->getLongIdentifier() == longIdentifier ) {
+                if ( (*it)->getLongFieldIdentifier() == longIdentifier ) {
                     retVal = true;
                     field = (*it);
                     break;
@@ -184,7 +184,7 @@ namespace core {
 
             vector<SharedPointer<AbstractField> >::iterator it = m_fields.begin();
             while (it != m_fields.end()) {
-                if ( (*it)->getShortIdentifier() == shortIdentifier ) {
+                if ( (*it)->getShortFieldIdentifier() == shortIdentifier ) {
                     retVal = true;
                     field = (*it);
                     break;
