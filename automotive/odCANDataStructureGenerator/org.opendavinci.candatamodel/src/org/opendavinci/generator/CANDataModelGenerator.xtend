@@ -263,17 +263,37 @@ namespace canmapping {
 		«var Iterator<Mapping> iter = mapping.mappings.iterator»
 		«{
 			while (iter.hasNext()){
-			iter.next();
-			var String temp="double";
-			if(iter.hasNext())temp+=", ";
-			parameters.add(temp);
-		}}»
+				iter.next();
+				var String temp="double";
+				if(iter.hasNext())temp+=", ";
+				parameters.add(temp);
+			}
+		}»
 		«className»(«FOR parameter:parameters»«parameter»«ENDFOR»);
 		«ENDIF»
 
             virtual ~«className»();
 
             core::data::Container decode(const ::automotive::GenericCANMessage &gcm);
+            
+«var ArrayList<String> capitalizedNames=new ArrayList<String>»
+«{
+			var String[] chunks
+			var String capitalizedName
+			for(currenMapping : mapping.mappings){
+				chunks=currenMapping.cansignal.split('\\.');
+				capitalizedName=""
+				for(chunk:chunks){
+					capitalizedName+=chunk.toFirstUpper
+				}
+				capitalizedNames+=capitalizedName
+			}
+	}»
+        	«FOR capitalizedName : capitalizedNames»
+        	double get«capitalizedName»() const;
+        	void set«capitalizedName»(const double&);
+        	
+        	«ENDFOR»
 
             virtual const string toString() const;
     
@@ -284,8 +304,8 @@ namespace canmapping {
     		virtual void accept(core::base::Visitor &v);
     		
         private:
-        	«FOR currenMapping : mapping.mappings»
-        	double m_«currenMapping.cansignal.replaceAll("\\.", "_")»;
+        	«FOR capitalizedName : capitalizedNames»
+        	double m_«capitalizedName.toFirstLower»;
         	«ENDFOR»
         	
         	std::map<uint64_t,uint64_t> m_payloads;
@@ -348,11 +368,25 @@ namespace canmapping {
 	
 	using namespace std;
 
+«var ArrayList<String> capitalizedNames=new ArrayList<String>»
+«{
+			var String[] chunks
+			var String capitalizedName
+			for(currenMapping : mapping.mappings){
+				chunks=currenMapping.cansignal.split('\\.');
+				capitalizedName=""
+				for(chunk:chunks){
+					capitalizedName+=chunk.toFirstUpper
+				}
+				capitalizedNames+=capitalizedName
+			}
+	}»
+
 	«className»::«className»() :
 		core::data::SerializableData(),
 		core::base::Visitable(),
-		«FOR currenMapping : mapping.mappings»
-		m_«currenMapping.cansignal.replaceAll("\\.", "_")»(0.0),
+		«FOR capitalizedName : capitalizedNames»
+		m_«capitalizedName.toFirstLower»(0.0),
 		«ENDFOR»
 		m_payloads(),
 		m_neededCanMessages(),
@@ -376,8 +410,12 @@ namespace canmapping {
 		parameters.add(temp);
 		}
 		i=0;
-		for(currenMapping : mapping.mappings)
-			initializations.add("m_"+currenMapping.cansignal.replaceAll("\\.", "_")+"(parameter"+(i++)+")");
+		for(currenMapping : mapping.mappings){
+			var String[] chunks=currenMapping.cansignal.split('\\.');
+			var String capitalizedName=""
+			for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
+			initializations.add("m_"+capitalizedName.toFirstLower+"(parameter"+(i++)+")");
+		}
 		}»
 	«className»::«className»(«FOR parameter:parameters»«parameter»«ENDFOR») :
 		core::data::SerializableData(),
@@ -402,7 +440,10 @@ namespace canmapping {
 		«{var int i=0;
 			while (iter.hasNext()){
 			iter.next();
-			result+='\t'+'\t'+"<<\" "+mapping.mappings.get(i).cansignal.toString+" : \"<< m_"+mapping.mappings.get(i).cansignal.toString.replaceAll('\\.','_')+"<<endl";
+			var String[] chunks=mapping.mappings.get(i).cansignal.split('\\.');
+			var String capitalizedName=""
+			for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
+			result+='\t'+'\t'+"<<\" "+mapping.mappings.get(i).cansignal.toString+" : \"<< m_"+capitalizedName.toFirstLower+"<<endl";
 			i++;
 			if(iter.hasNext())result+='\n';
     	}}»
@@ -413,14 +454,35 @@ namespace canmapping {
 		return result.str();
 	}
 	
+	«FOR capitalizedName : capitalizedNames»
+	double «className»::get«capitalizedName»() const{
+		return m_«capitalizedName.toFirstLower»;
+	}
+	
+	void «className»::set«capitalizedName»(const double &«capitalizedName.toFirstLower») {
+		m_«capitalizedName.toFirstLower»=«capitalizedName.toFirstLower»;
+	}
+
+	«ENDFOR»
+	
 	ostream& «className»::operator<<(ostream &out) const {
 		core::base::SerializationFactory& sf = core::base::SerializationFactory::getInstance();
 		core::SharedPointer<core::base::Serializer> s = sf.getSerializer(out);
 
-		«FOR currenMapping : mapping.mappings»
-		s->write(static_cast<uint32_t>(«canSignals.get(currenMapping.cansignal).m_CANID»), m_«currenMapping.cansignal.replaceAll("\\.", "_")»);
+		«IF mapping.mappings.size>0»
+		«var ArrayList<String> opOutBody=new ArrayList<String>»
+		«for(var int i=0;i<mapping.mappings.size;i++){
+			var String capitalizedName
+			var String[] chunks=mapping.mappings.get(i).cansignal.split('\\.');
+			capitalizedName=""
+			for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
+			
+			opOutBody+="s->write(static_cast<uint32_t>("+mapping.mappings.get(i).messageIdentifier+"), m_"+capitalizedName.toFirstLower+");"
+		}»
+		«FOR line:opOutBody»
+		«line»
 		«ENDFOR»
-		
+		«ENDIF»
 		return out;
 	}
 	
@@ -430,17 +492,40 @@ namespace canmapping {
 		
 		«IF mapping.mappings.size>0»
 		uint32_t id;
-		«ENDIF»
-		«FOR currenMapping : mapping.mappings»
-		id=«canSignals.get(currenMapping.cansignal).m_CANID»;
-		s->read(id, m_«currenMapping.cansignal.replaceAll("\\.", "_")»);
+		«var ArrayList<String> opInBody=new ArrayList<String>»
+		«for(var int i=0;i<mapping.mappings.size;i++){
+			var String capitalizedName
+			var String[] chunks=mapping.mappings.get(i).cansignal.split('\\.');
+			capitalizedName=""
+			for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
+			
+			opInBody+="id="+mapping.mappings.get(i).messageIdentifier+";"
+			opInBody+="s->read(static_cast<uint32_t>(id), m_"+capitalizedName.toFirstLower+");"
+		}»
+		«FOR line:opInBody»
+		«line»
 		«ENDFOR»
-		
+		«ENDIF»
 		return in;
 	}
 	
 	void «className»::accept(core::base::Visitor &v) {
-		(void)v;
+	«var ArrayList<String> acceptBody=new ArrayList<String>»
+	«for(var int i=0;i<mapping.mappings.size;i++){
+			var String capitalizedName
+			var String[] chunks=mapping.mappings.get(i).cansignal.split('\\.');
+			capitalizedName=""
+			for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
+			
+			acceptBody+="v.visit(static_cast<uint32_t>("+mapping.mappings.get(i).messageIdentifier+"), "
+						+mapping.mappings.get(i).messageIdentifier+", \""
+						+mapping.mappings.get(i).cansignal+"\", \""
+						+chunks.get(chunks.size-1)+"\", m_"
+						+capitalizedName.toFirstLower+");"
+		}»
+		«FOR line:acceptBody»
+		«line»
+		«ENDFOR»
 	}
 	
 	core::data::Container «className»::decode(const ::automotive::GenericCANMessage &gcm) {
@@ -498,7 +583,13 @@ namespace canmapping {
 			«var String tempVarType=""»
 			«var String tempVarName="raw_"+signalName.replaceAll("\\.", "_")»
 			«var String finalVarName="transformed_"+signalName.replaceAll("\\.", "_")»
-			«var String memberVarName="m_"+signalName.replaceAll("\\.", "_")»
+			«var String capitalizedName»
+			«{
+				var String[] chunks=currenMapping.cansignal.split('\\.');
+				capitalizedName=""
+				for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
+			}»
+			«var String memberVarName="m_"+capitalizedName.toFirstLower»
 			
 			// 4.1 Get raw value from attribute.
 			«tempVarType="uint64_t"» «tempVarName»=0x0000000000000000;
@@ -507,7 +598,7 @@ namespace canmapping {
 			// reset left-hand side of bit field
 			«tempVarName»=«tempVarName» << «Integer.parseInt(canSignals.get(signalName).m_startBit)»;
 			// reset right-hand side of bit field
-			«tempVarName»=«tempVarName» >> «63-Integer.parseInt(canSignals.get(signalName).m_length)»;
+			«tempVarName»=«tempVarName» >> (64-«canSignals.get(signalName).m_length»);
 			
 			«IF canSignals.get(signalName).m_endian.compareTo("big")==0»
 			// 4.2 Optional: Fix endianness depending on CAN message specification.
@@ -710,13 +801,12 @@ class CANBridgeTest : public CxxTest::TestSuite {
             ss1 >> «HLName»_2;
             ss2 << «HLName»_2;
             
-        	cout << endl;
-        	cout << ss1.str() << endl;
-        	cout << ss2.str() << endl;
-            
-        	cout << endl;
-        	cout<<«HLName»_1.toString();
-        	cout<<«HLName»_2.toString();
+        	//cout << endl;
+        	//cout << ss1.str() << endl;
+        	//cout << ss2.str() << endl;
+            //cout << endl;
+        	//cout<<«HLName»_1.toString();
+        	//cout<<«HLName»_2.toString();
         	
             TS_ASSERT(ss1.str().compare(ss2.str())==0);
         }
