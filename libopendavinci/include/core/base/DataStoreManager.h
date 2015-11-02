@@ -52,7 +52,7 @@ namespace core {
                  * @param datatype Datatype for which a datastore should be added.
                  * @param dataStore Data store to be added.
                  */
-                virtual void addDataStoreFor(const core::data::Container::DATATYPE &datatype, core::base::AbstractDataStore &dataStore) = 0;
+                virtual void addDataStoreFor(const int32_t &datatype, core::base::AbstractDataStore &dataStore) = 0;
 
                 /**
                  * This method returns a key/value-datastore for all

@@ -219,7 +219,7 @@ class ControlFlowTestApp : public TimeTriggeredConferenceClientModule {
                         // Send some data.
                         ControlFlowTestSampleData cftsd;
                         cftsd.m_int = m_counter;
-                        Container c2(Container::UNDEFINEDDATA, cftsd);
+                        Container c2(cftsd, Container::UNDEFINEDDATA);
                         getConference().send(c2);
                     }
                 }
@@ -368,7 +368,7 @@ class ControlFlowTest : public CxxTest::TestSuite,
 
                 // Send to application.
                 TimeStamp tsSendFromSimulatorToContainerConference(i, i+1);
-                Container c = Container(Container::TIMESTAMP, tsSendFromSimulatorToContainerConference);
+                Container c = Container(tsSendFromSimulatorToContainerConference);
                 controlledCF->sendToSystemsUnderTest(c);
 
                 cfts.getBlockableContainerReceiver().setNextContainerAllowed(true);

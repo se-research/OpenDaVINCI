@@ -76,7 +76,7 @@ class QueueTestSampleData : public core::data::SerializableData {
         }
 
         int32_t getID() const {
-            return 0;
+            return 3456;
         }
 
         const string getLongName() const {
@@ -105,7 +105,7 @@ class QueueTestSuiteLIFOProducer: public Service {
             serviceReady();
             while (isRunning()) {
                 sampleData.m_int++;
-                Container c(Container::UNDEFINEDDATA, sampleData);
+                Container c(sampleData);
                 m_lifo.push(c);
 
                 // Yield other threads.
@@ -178,7 +178,7 @@ class QueueTestSuiteFIFOProducer: public Service {
             serviceReady();
             while (isRunning()) {
                 sampleData.m_int++;
-                Container c(Container::UNDEFINEDDATA, sampleData);
+                Container c(sampleData);
                 m_fifo.enter(c);
 
                 // Yield other threads.
@@ -322,19 +322,19 @@ class QueueTest : public CxxTest::TestSuite {
 
             QueueTestSampleData sampleData;
             sampleData.m_int = 10;
-            Container c1(Container::UNDEFINEDDATA, sampleData);
+            Container c1(sampleData);
             bufferedFifo.enter(c1);
 
             TS_ASSERT(bufferedFifo.getSize() == 1);
 
             sampleData.m_int = 20;
-            Container c2(Container::UNDEFINEDDATA, sampleData);
+            Container c2(sampleData);
             bufferedFifo.enter(c2);
 
             TS_ASSERT(bufferedFifo.getSize() == 2);
 
             sampleData.m_int = 30;
-            Container c3(Container::UNDEFINEDDATA, sampleData);
+            Container c3(sampleData);
             bufferedFifo.enter(c3);
 
             TS_ASSERT(bufferedFifo.getSize() == 3);
@@ -344,22 +344,22 @@ class QueueTest : public CxxTest::TestSuite {
             TS_ASSERT(bufferedFifo.getIndexOfLastElement() == 2);
 
             Container retrievedContainer3 = bufferedFifo.getElementAt(2);
-            TS_ASSERT(retrievedContainer3.getDataType() == Container::UNDEFINEDDATA);
+            TS_ASSERT(retrievedContainer3.getDataType() == sampleData.getID());
             sampleData = retrievedContainer3.getData<QueueTestSampleData>();
             TS_ASSERT(sampleData.m_int == 30);
 
             Container retrievedContainer1 = bufferedFifo.getElementAt(0);
-            TS_ASSERT(retrievedContainer1.getDataType() == Container::UNDEFINEDDATA);
+            TS_ASSERT(retrievedContainer1.getDataType() == sampleData.getID());
             sampleData = retrievedContainer1.getData<QueueTestSampleData>();
             TS_ASSERT(sampleData.m_int == 10);
 
             Container retrievedContainer2 = bufferedFifo.getElementAt(1);
-            TS_ASSERT(retrievedContainer2.getDataType() == Container::UNDEFINEDDATA);
+            TS_ASSERT(retrievedContainer2.getDataType() == sampleData.getID());
             sampleData = retrievedContainer2.getData<QueueTestSampleData>();
             TS_ASSERT(sampleData.m_int == 20);
 
             Container retrievedContainer3a = bufferedFifo.getElementAt(bufferedFifo.getIndexOfLastElement());
-            TS_ASSERT(retrievedContainer3a.getDataType() == Container::UNDEFINEDDATA);
+            TS_ASSERT(retrievedContainer3a.getDataType() == sampleData.getID());
             sampleData = retrievedContainer3a.getData<QueueTestSampleData>();
             TS_ASSERT(sampleData.m_int == 30);
 
@@ -394,19 +394,19 @@ class QueueTest : public CxxTest::TestSuite {
 
             QueueTestSampleData sampleData;
             sampleData.m_int = 10;
-            Container c1(Container::UNDEFINEDDATA, sampleData);
+            Container c1(sampleData);
             bufferedFifo.enter(c1);
 
             TS_ASSERT(bufferedFifo.getSize() == 1);
 
             sampleData.m_int = 20;
-            Container c2(Container::UNDEFINEDDATA, sampleData);
+            Container c2(sampleData);
             bufferedFifo.enter(c2);
 
             TS_ASSERT(bufferedFifo.getSize() == 2);
 
             sampleData.m_int = 30;
-            Container c3(Container::UNDEFINEDDATA, sampleData);
+            Container c3(sampleData);
             bufferedFifo.enter(c3);
 
             TS_ASSERT(!bufferedFifo.isEmpty());
@@ -414,17 +414,17 @@ class QueueTest : public CxxTest::TestSuite {
             TS_ASSERT(bufferedFifo.getIndexOfLastElement() == 1);
 
             Container retrievedContainer1 = bufferedFifo.getElementAt(0);
-            TS_ASSERT(retrievedContainer1.getDataType() == Container::UNDEFINEDDATA);
+            TS_ASSERT(retrievedContainer1.getDataType() == sampleData.getID());
             sampleData = retrievedContainer1.getData<QueueTestSampleData>();
             TS_ASSERT(sampleData.m_int == 10);
 
             Container retrievedContainer2 = bufferedFifo.getElementAt(1);
-            TS_ASSERT(retrievedContainer2.getDataType() == Container::UNDEFINEDDATA);
+            TS_ASSERT(retrievedContainer2.getDataType() == sampleData.getID());
             sampleData = retrievedContainer2.getData<QueueTestSampleData>();
             TS_ASSERT(sampleData.m_int == 20);
 
             Container retrievedContainer3a = bufferedFifo.getElementAt(bufferedFifo.getIndexOfLastElement());
-            TS_ASSERT(retrievedContainer3a.getDataType() == Container::UNDEFINEDDATA);
+            TS_ASSERT(retrievedContainer3a.getDataType() == sampleData.getID());
             sampleData = retrievedContainer3a.getData<QueueTestSampleData>();
             TS_ASSERT(sampleData.m_int == 20);
 
@@ -446,12 +446,12 @@ class QueueTest : public CxxTest::TestSuite {
             TS_ASSERT(bufferedFifo.getIndexOfLastElement() == 0);
 
             retrievedContainer2 = bufferedFifo.getElementAt(0);
-            TS_ASSERT(retrievedContainer2.getDataType() == Container::UNDEFINEDDATA);
+            TS_ASSERT(retrievedContainer2.getDataType() == sampleData.getID());
             sampleData = retrievedContainer2.getData<QueueTestSampleData>();
             TS_ASSERT(sampleData.m_int == 20);
 
             sampleData.m_int = 30;
-            c3 = Container(Container::UNDEFINEDDATA, sampleData);
+            c3 = Container(sampleData);
             bufferedFifo.enter(c3);
 
             TS_ASSERT(!bufferedFifo.isEmpty());
@@ -459,7 +459,7 @@ class QueueTest : public CxxTest::TestSuite {
             TS_ASSERT(bufferedFifo.getIndexOfLastElement() == 1);
 
             Container retrievedContainer3 = bufferedFifo.getElementAt(bufferedFifo.getIndexOfLastElement());
-            TS_ASSERT(retrievedContainer3.getDataType() == Container::UNDEFINEDDATA);
+            TS_ASSERT(retrievedContainer3.getDataType() == sampleData.getID());
             sampleData = retrievedContainer3.getData<QueueTestSampleData>();
             TS_ASSERT(sampleData.m_int == 30);
         }
@@ -503,19 +503,19 @@ class QueueTest : public CxxTest::TestSuite {
 
             QueueTestSampleData sampleData;
             sampleData.m_int = 10;
-            Container c1(Container::UNDEFINEDDATA, sampleData);
+            Container c1(sampleData);
             bufferedLifo.push(c1);
 
             TS_ASSERT(bufferedLifo.getSize() == 1);
 
             sampleData.m_int = 20;
-            Container c2(Container::UNDEFINEDDATA, sampleData);
+            Container c2(sampleData);
             bufferedLifo.push(c2);
 
             TS_ASSERT(bufferedLifo.getSize() == 2);
 
             sampleData.m_int = 30;
-            Container c3(Container::UNDEFINEDDATA, sampleData);
+            Container c3(sampleData);
             bufferedLifo.push(c3);
 
             TS_ASSERT(bufferedLifo.getSize() == 3);
@@ -525,22 +525,22 @@ class QueueTest : public CxxTest::TestSuite {
             TS_ASSERT(bufferedLifo.getIndexOfLastElement() == 2);
 
             Container retrievedContainer3 = bufferedLifo.getElementAt(2);
-            TS_ASSERT(retrievedContainer3.getDataType() == Container::UNDEFINEDDATA);
+            TS_ASSERT(retrievedContainer3.getDataType() == sampleData.getID());
             sampleData = retrievedContainer3.getData<QueueTestSampleData>();
             TS_ASSERT(sampleData.m_int == 10);
 
             Container retrievedContainer1 = bufferedLifo.getElementAt(0);
-            TS_ASSERT(retrievedContainer1.getDataType() == Container::UNDEFINEDDATA);
+            TS_ASSERT(retrievedContainer1.getDataType() == sampleData.getID());
             sampleData = retrievedContainer1.getData<QueueTestSampleData>();
             TS_ASSERT(sampleData.m_int == 30);
 
             Container retrievedContainer2 = bufferedLifo.getElementAt(1);
-            TS_ASSERT(retrievedContainer2.getDataType() == Container::UNDEFINEDDATA);
+            TS_ASSERT(retrievedContainer2.getDataType() == sampleData.getID());
             sampleData = retrievedContainer2.getData<QueueTestSampleData>();
             TS_ASSERT(sampleData.m_int == 20);
 
             Container retrievedContainer3a = bufferedLifo.getElementAt(bufferedLifo.getIndexOfLastElement());
-            TS_ASSERT(retrievedContainer3a.getDataType() == Container::UNDEFINEDDATA);
+            TS_ASSERT(retrievedContainer3a.getDataType() == sampleData.getID());
             sampleData = retrievedContainer3a.getData<QueueTestSampleData>();
             TS_ASSERT(sampleData.m_int == 10);
 
@@ -575,19 +575,19 @@ class QueueTest : public CxxTest::TestSuite {
 
             QueueTestSampleData sampleData;
             sampleData.m_int = 10;
-            Container c1(Container::UNDEFINEDDATA, sampleData);
+            Container c1(sampleData);
             bufferedLifo.push(c1);
 
             TS_ASSERT(bufferedLifo.getSize() == 1);
 
             sampleData.m_int = 20;
-            Container c2(Container::UNDEFINEDDATA, sampleData);
+            Container c2(sampleData);
             bufferedLifo.push(c2);
 
             TS_ASSERT(bufferedLifo.getSize() == 2);
 
             sampleData.m_int = 30;
-            Container c3(Container::UNDEFINEDDATA, sampleData);
+            Container c3(sampleData);
             bufferedLifo.push(c3);
 
             TS_ASSERT(!bufferedLifo.isEmpty());
@@ -595,17 +595,17 @@ class QueueTest : public CxxTest::TestSuite {
             TS_ASSERT(bufferedLifo.getIndexOfLastElement() == 1);
 
             Container retrievedContainer1 = bufferedLifo.getElementAt(0);
-            TS_ASSERT(retrievedContainer1.getDataType() == Container::UNDEFINEDDATA);
+            TS_ASSERT(retrievedContainer1.getDataType() == sampleData.getID());
             sampleData = retrievedContainer1.getData<QueueTestSampleData>();
             TS_ASSERT(sampleData.m_int == 20);
 
             Container retrievedContainer2 = bufferedLifo.getElementAt(1);
-            TS_ASSERT(retrievedContainer2.getDataType() == Container::UNDEFINEDDATA);
+            TS_ASSERT(retrievedContainer2.getDataType() == sampleData.getID());
             sampleData = retrievedContainer2.getData<QueueTestSampleData>();
             TS_ASSERT(sampleData.m_int == 10);
 
             Container retrievedContainer3a = bufferedLifo.getElementAt(bufferedLifo.getIndexOfLastElement());
-            TS_ASSERT(retrievedContainer3a.getDataType() == Container::UNDEFINEDDATA);
+            TS_ASSERT(retrievedContainer3a.getDataType() == sampleData.getID());
             sampleData = retrievedContainer3a.getData<QueueTestSampleData>();
             TS_ASSERT(sampleData.m_int == 10);
 
@@ -627,12 +627,12 @@ class QueueTest : public CxxTest::TestSuite {
             TS_ASSERT(bufferedLifo.getIndexOfLastElement() == 0);
 
             retrievedContainer2 = bufferedLifo.getElementAt(0);
-            TS_ASSERT(retrievedContainer2.getDataType() == Container::UNDEFINEDDATA);
+            TS_ASSERT(retrievedContainer2.getDataType() == sampleData.getID());
             sampleData = retrievedContainer2.getData<QueueTestSampleData>();
             TS_ASSERT(sampleData.m_int == 10);
 
             sampleData.m_int = 30;
-            c3 = Container(Container::UNDEFINEDDATA, sampleData);
+            c3 = Container(sampleData);
             bufferedLifo.push(c3);
 
             TS_ASSERT(!bufferedLifo.isEmpty());
@@ -640,12 +640,12 @@ class QueueTest : public CxxTest::TestSuite {
             TS_ASSERT(bufferedLifo.getIndexOfLastElement() == 1);
 
             Container retrievedContainer3 = bufferedLifo.getElementAt(bufferedLifo.getIndexOfLastElement());
-            TS_ASSERT(retrievedContainer3.getDataType() == Container::UNDEFINEDDATA);
+            TS_ASSERT(retrievedContainer3.getDataType() == sampleData.getID());
             sampleData = retrievedContainer3.getData<QueueTestSampleData>();
             TS_ASSERT(sampleData.m_int == 10);
 
             retrievedContainer1 = bufferedLifo.getElementAt(0);
-            TS_ASSERT(retrievedContainer1.getDataType() == Container::UNDEFINEDDATA);
+            TS_ASSERT(retrievedContainer1.getDataType() == sampleData.getID());
             sampleData = retrievedContainer1.getData<QueueTestSampleData>();
             TS_ASSERT(sampleData.m_int == 30);
         }

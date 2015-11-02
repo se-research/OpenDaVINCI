@@ -50,13 +50,13 @@ class PulseAckContainersTest : public CxxTest::TestSuite {
 
         void testPulseContainers() {
             TimeStamp ts1(1,2);
-            Container c1(Container::TIMESTAMP, ts1);
+            Container c1(ts1);
 
             TimeStamp ts2(3,4);
-            Container c2(Container::TIMESTAMP, ts2);
+            Container c2(ts2);
 
             TimeStamp ts3(5,6);
-            Container c3(Container::TIMESTAMP, ts3);
+            Container c3(ts3);
 
             PulseMessage pm;
             TS_ASSERT(pm.getListOfContainers().size() == 0);
@@ -96,13 +96,13 @@ class PulseAckContainersTest : public CxxTest::TestSuite {
 
         void testPulseContainersSetValues() {
             TimeStamp ts1(1,2);
-            Container c1(Container::TIMESTAMP, ts1);
+            Container c1(ts1);
 
             TimeStamp ts2(3,4);
-            Container c2(Container::TIMESTAMP, ts2);
+            Container c2(ts2);
 
             TimeStamp ts3(5,6);
-            Container c3(Container::TIMESTAMP, ts3);
+            Container c3(ts3);
 
             vector<Container> l;
             l.push_back(c1);
@@ -154,13 +154,13 @@ class PulseAckContainersTest : public CxxTest::TestSuite {
 
         void testPulseAckContainers() {
             TimeStamp ts1(1,2);
-            Container c1(Container::TIMESTAMP, ts1);
+            Container c1(ts1);
 
             TimeStamp ts2(3,4);
-            Container c2(Container::TIMESTAMP, ts2);
+            Container c2(ts2);
 
             TimeStamp ts3(5,6);
-            Container c3(Container::TIMESTAMP, ts3);
+            Container c3(ts3);
 
             PulseAckContainersMessage pac;
             TS_ASSERT(pac.getListOfContainers().size() == 0);
@@ -200,13 +200,13 @@ class PulseAckContainersTest : public CxxTest::TestSuite {
 
         void testPulseAckContainers_from_list() {
             TimeStamp ts1(1,2);
-            Container c1(Container::TIMESTAMP, ts1);
+            Container c1(ts1);
 
             TimeStamp ts2(3,4);
-            Container c2(Container::TIMESTAMP, ts2);
+            Container c2(ts2);
 
             TimeStamp ts3(5,6);
-            Container c3(Container::TIMESTAMP, ts3);
+            Container c3(ts3);
 
             vector<Container> l;
             l.push_back(c1);

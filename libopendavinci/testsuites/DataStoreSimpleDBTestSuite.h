@@ -205,7 +205,7 @@ class DataStoreTest : public CxxTest::TestSuite {
             KeyValueDataStore *ds = new KeyValueDataStore(core::SharedPointer<core::wrapper::KeyValueDatabase>(new MySimpleDB()));
             int32_t key1 = 1;
             TimeStamp ts1(0, 35);
-            Container v1(Container::TIMESTAMP, ts1);
+            Container v1(ts1);
             ds->put(key1, v1);
 
             Container v2;
@@ -230,7 +230,7 @@ class DataStoreTest : public CxxTest::TestSuite {
             Container *c = new Container[size];
             for (uint32_t i = 0; i < size; i++) {
                 TimeStamp ts;
-                c[i] = Container(Container::TIMESTAMP, ts);
+                c[i] = Container(ts);
                 Thread::usleepFor(10);
             }
 #ifndef WIN32
@@ -277,7 +277,7 @@ class DataStoreTest : public CxxTest::TestSuite {
             sd1.m_string = "This is an example for marshalling data.";
 
             // This is only undefined data.
-            Container c(Container::UNDEFINEDDATA, sd1);
+            Container c(sd1, Container::UNDEFINEDDATA);
             ds->put(1, c);
 
             Container c2 = ds->get(1);
@@ -305,9 +305,9 @@ class DataStoreTest : public CxxTest::TestSuite {
                 s.start();
 
                 TimeStamp ts;
-                Container timeStampContainer(Container::TIMESTAMP, ts);
+                Container timeStampContainer(ts);
                 DataStoreTestSampleData sd;
-                Container undefinedDataContainer(Container::UNDEFINEDDATA, sd);
+                Container undefinedDataContainer(sd, Container::UNDEFINEDDATA);
 
                 for (int32_t i = 0; i < 10240; i++) {
                     Thread::usleepFor(10); // Allow the service to check for data.

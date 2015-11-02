@@ -65,6 +65,7 @@ namespace core {
                     LINE = 24,
                     POLYGON = 25,
                     NAMEDLINE = 26,
+                    MEMORYSEGMENT = 29
 
                     SCENARIO = 830,
                     SCENARIOIDVERTEX3 = 818,
@@ -156,6 +157,7 @@ namespace core {
             public:
                 Container();
 
+            private:
                 /**
                  * Constructor.
                  *
@@ -164,6 +166,7 @@ namespace core {
                  */
                 Container(const DATATYPE &dataType, const SerializableData &serializableData);
 
+            public:
                 /**
                  * Constructor.
                  *
@@ -201,7 +204,7 @@ namespace core {
                  *
                  * @return Data type of the data contained in this container.
                  */
-                DATATYPE getDataType() const;
+                int32_t getDataType() const;
 
                 virtual ostream& operator<<(ostream &out) const;
                 virtual istream& operator>>(istream &in);
@@ -266,7 +269,7 @@ namespace core {
                 const string toString() const;
 
             private:
-                DATATYPE m_dataType;
+                int32_t m_dataType;
                 stringstream m_serializedData;
 
                 TimeStamp m_sent;

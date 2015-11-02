@@ -69,9 +69,10 @@ namespace core {
             void Client::onResponse() {}
 
             void Client::sendDiscoverMessage() {
-                Container discover = Container(Container::DMCP_DISCOVER,
-                                               DiscoverMessage(DiscoverMessage::DISCOVER, m_serverInformation, m_moduleName));
                 stringstream sstr;
+
+                DiscoverMessage d(DiscoverMessage::DISCOVER, m_serverInformation, m_moduleName);
+                Container discover = Container(d);
                 sstr << discover;
 
                 m_sender->send(sstr.str());
@@ -82,7 +83,7 @@ namespace core {
                 stringstream sstr(p.getData());
                 sstr >> container;
 
-                if (container.getDataType() == Container::DMCP_DISCOVER) {
+                if (container.getDataType() == DiscoverMessage::ID()) {
                     DiscoverMessage msg = container.getData<DiscoverMessage>();
                     if (msg.getType() == DiscoverMessage::RESPONSE) {
                         Lock l(m_responseCondition);

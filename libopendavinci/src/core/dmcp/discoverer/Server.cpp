@@ -57,7 +57,7 @@ namespace core {
                 stringstream ss(s);
                 ss >> container;
 
-                if (container.getDataType() == Container::DMCP_DISCOVER) {
+                if (container.getDataType() == DiscoverMessage::ID()) {
                     DiscoverMessage msg = container.getData<DiscoverMessage>();
                     if (msg.getType() == DiscoverMessage::DISCOVER) {
                         onRequest();
@@ -83,13 +83,13 @@ namespace core {
                 if (it == m_modulesToIgnore.end()) {
                     CLOG1 << "[core::dmcp::DiscovererServer] responding to DMCP_DISCOVER" << endl;
                     DiscoverMessage msg(DiscoverMessage::RESPONSE, m_serverInformation, MODULE_NAME);
-                    c = Container(Container::DMCP_DISCOVER, msg);
+                    c = Container(msg);
                 }
                 else {
                     CLOG1 << "[core::dmcp::DiscovererServer] responding to DMCP_DISCOVER for module '" << s << "' excluded from managed level " << m_serverInformation.getManagedLevel() << endl;
                     ServerInformation si(m_serverInformation.getIP(), m_serverInformation.getPort(), ServerInformation::ML_NONE);
                     DiscoverMessage msg(DiscoverMessage::RESPONSE, si, MODULE_NAME);
-                    c = Container(Container::DMCP_DISCOVER, msg);
+                    c = Container(msg);
                 }
 
                 stringstream ss;

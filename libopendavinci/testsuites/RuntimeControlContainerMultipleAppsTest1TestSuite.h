@@ -181,7 +181,7 @@ class LocalPosition : public core::data::SerializableData {
         }
 
         int32_t getID() const {
-            return 36;
+            return Container::POSITION;
         }
 
         const string getLongName() const {
@@ -321,7 +321,7 @@ class RuntimeControlContainerMultipleAppsTestModule : public TimeTriggeredConfer
                 RuntimeControlContainerMultipleAppsTestData tcctsd;
                 tcctsd.m_int = m_cycleCounter;
                 tcctsd.m_id = sstrId.str();
-                Container c(Container::UNDEFINEDDATA, tcctsd);
+                Container c(tcctsd);
                 getConference().send(c);
             }
 
@@ -413,7 +413,7 @@ class RuntimeControlContainerMultipleAppsTestSystemPartReply : public SystemFeed
             LocalPosition p;
             p.setPosition(LocalPoint3(m_replyCounter, m_replyCounter+1, m_replyCounter+2));
 
-            Container c(Container::POSITION, p);
+            Container c(p);
             sender.sendToSystemsUnderTest(c);
 
             m_replyCounter++;
@@ -455,7 +455,7 @@ class RuntimeControlContainerMultipleAppsTestSystemPartReplyRotation : public Sy
             LocalPosition p;
             p.setRotation(LocalPoint3(m_replyCounter, m_replyCounter+1, m_replyCounter+2));
 
-            Container c(Container::POSITION, p);
+            Container c(p);
             sender.sendToSystemsUnderTest(c);
 
             m_replyCounter++;

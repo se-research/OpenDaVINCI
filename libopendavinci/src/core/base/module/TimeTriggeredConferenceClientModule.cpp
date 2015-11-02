@@ -50,7 +50,7 @@ namespace core {
                     Lock l(m_dataStoresMutex);
                     m_listOfDataStores.clear();
 
-                    map<Container::DATATYPE, vector<AbstractDataStore*> >::iterator it = m_mapOfListOfDataStores.begin();
+                    map<int32_t, vector<AbstractDataStore*> >::iterator it = m_mapOfListOfDataStores.begin();
                     while (it != m_mapOfListOfDataStores.end()) {
                         vector<AbstractDataStore*> listOfDataStores = it->second;
                         listOfDataStores.clear();
@@ -95,7 +95,7 @@ namespace core {
                 m_listOfDataStores.push_back(&dataStore);
             }
 
-            void TimeTriggeredConferenceClientModule::addDataStoreFor(const Container::DATATYPE &datatype, AbstractDataStore &dataStore) {
+            void TimeTriggeredConferenceClientModule::addDataStoreFor(const int32_t &datatype, AbstractDataStore &dataStore) {
                 Lock l(m_dataStoresMutex);
 
                 vector<AbstractDataStore*> listOfDataStores = m_mapOfListOfDataStores[datatype];

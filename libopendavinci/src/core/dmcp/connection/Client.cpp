@@ -71,17 +71,19 @@ namespace core {
             }
 
             void Client::sendModuleExitCode(const coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode& exitCode) {
-                Container container(Container::DMCP_MODULEEXITCODEMESSAGE, ModuleExitCodeMessage(exitCode));
+                ModuleExitCodeMessage m(exitCode);
+                Container container(m);
                 m_connection.send(container);
             }
 
             void Client::sendModuleState(const coredata::dmcp::ModuleStateMessage::ModuleState& state) {
-                Container container(Container::DMCP_MODULESTATEMESSAGE, ModuleStateMessage(state));
+                ModuleStateMessage m(state);
+                Container container(m);
                 m_connection.send(container);
             }
 
             void Client::sendStatistics(const coredata::dmcp::RuntimeStatistic& rs) {
-                Container container(Container::RUNTIMESTATISTIC, rs);
+                Container container(rs);
                 m_connection.send(container);
             }
 
@@ -98,29 +100,30 @@ namespace core {
             void Client::sendConfigurationRequest() {
                 CLOG1 << "(DMCP-ConnectionClient) sending configuration request..." << m_serverInformation.toString() << endl;
 
-                Container container(Container::DMCP_CONFIGURATION_REQUEST, m_moduleDescriptor);
+                Container container(m_moduleDescriptor, Container::DMCP_CONFIGURATION_REQUEST);
                 m_connection.send(container);
             }
 
             void Client::sendPulseAck() {
-                Container container(Container::DMCP_PULSE_ACK_MESSAGE, PulseAckMessage());
+                PulseAckMessage p;
+                Container container(p);
                 m_connection.send(container);
             }
 
             void Client::sendPulseAckContainers(const vector<core::data::Container> &listOfContainers) {
                 PulseAckContainersMessage pac;
                 pac.setListOfContainers(listOfContainers);
-                Container container(Container::DMCP_PULSE_ACK_CONTAINERS_MESSAGE, pac);
+                Container container(pac);
                 m_connection.send(container);
             }
 
             void Client::nextContainer(Container &c) {
-                if (c.getDataType() == Container::CONFIGURATION) {
+                if (c.getDataType() == coredata::Configuration::ID()) {
                     coredata::Configuration configuration = c.getData<coredata::Configuration>();
                     handleConfiguration(configuration);
                 }
 
-                if (c.getDataType() == Container::DMCP_PULSE_MESSAGE) {
+                if (c.getDataType() == PulseMessage::ID()) {
                     {
                         Lock l(m_pulseMessageMutex);
                         m_pulseMessage = c.getData<PulseMessage>();

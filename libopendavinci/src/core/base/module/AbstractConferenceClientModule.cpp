@@ -67,7 +67,7 @@ namespace core {
                 logMessage.setLogMessage(msg);
                 logMessage.setLogLevel(logLevel);
 
-                Container c(Container::LOG_MESSAGE, logMessage);
+                Container c(logMessage);
                 getConference().send(c);
             }
 

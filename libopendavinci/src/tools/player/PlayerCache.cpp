@@ -65,7 +65,7 @@ namespace tools {
                 void *ptr = ::malloc(ms.getSize());
                 m_mapOfMemories[ms.getIdentifier()] = static_cast<char*>(ptr);
 
-                Container c(Container::UNDEFINEDDATA, ms);
+                Container c(ms);
                 m_bufferIn.enter(c);
             }
             CLOG1 << "done." << endl;
@@ -244,7 +244,7 @@ namespace tools {
                 string nameOfSharedMemory = "";
                 uint32_t size = 0;
 
-                if (header.getDataType() == Container::SHARED_IMAGE) {
+                if (header.getDataType() == coredata::image::SharedImage::ID()) {
                     coredata::image::SharedImage si = header.getData<coredata::image::SharedImage>();
 
                     nameOfSharedMemory = si.getName();
@@ -256,7 +256,7 @@ namespace tools {
                     size = (size > 0) ? size : (si.getWidth() * si.getHeight() * si.getBytesPerPixel());
                     si.setSize(size);                    
                 }
-                else if (header.getDataType() == Container::SHARED_DATA) {
+                else if (header.getDataType() == coredata::SharedData::ID()) {
                     coredata::SharedData sd = header.getData<coredata::SharedData>();
 
                     nameOfSharedMemory = sd.getName();
@@ -293,7 +293,7 @@ namespace tools {
                 ms.setConsumedSize(size);
 
                 // Save meta information.
-                c = Container(Container::UNDEFINEDDATA, ms);
+                c = Container(ms);
 
                 // Put the processed element into the output buffer.
                 m_bufferOut.enter(c);
@@ -305,11 +305,11 @@ namespace tools {
             if (!m_bufferOut.isEmpty()) {
                 string nameOfSharedMemory = "";
 
-                if (container.getDataType() == Container::SHARED_IMAGE) {
+                if (container.getDataType() == coredata::image::SharedImage::ID()) {
                     coredata::image::SharedImage si = container.getData<coredata::image::SharedImage>();
                     nameOfSharedMemory = si.getName();
                 }
-                else if (container.getDataType() == Container::SHARED_DATA) {
+                else if (container.getDataType() == coredata::SharedData::ID()) {
                     coredata::SharedData sd = container.getData<coredata::SharedData>();
                     nameOfSharedMemory = sd.getName();
                 }
@@ -334,7 +334,7 @@ namespace tools {
                     ms.setConsumedSize(0);
 
                     // Save meta information.
-                    c = Container(Container::UNDEFINEDDATA, ms);
+                    c = Container(ms);
 
                     // After processing, return the processed memory segment to input queue.
                     m_bufferIn.enter(c);

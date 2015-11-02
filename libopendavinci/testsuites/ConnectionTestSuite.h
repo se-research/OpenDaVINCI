@@ -149,7 +149,7 @@ class ConnectionTestsuite : public CxxTest::TestSuite {
             mocks::ContainerListenerMock clm1;
 
             TimeStamp ts;
-            Container container(Container::TIMESTAMP, ts);
+            Container container(ts);
             clm1.VALUES_nextContainer.addItem(container);
             clm1.VALUES_nextContainer.prepare();
 
