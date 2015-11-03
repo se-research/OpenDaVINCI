@@ -28,24 +28,24 @@ Model:
     cansignalmappings += CANSignalMapping*;
 
 CANSignal:
-	cansignal = MessageIdentifier 'in' canIdentifier = HEXNUMBER
-								  'at bit' startBit = FLOATNUMBER
-								  'for' (length = FLOATNUMBER ('bit'|'bits') | lengthBytes = FLOATNUMBER ('byte'|'bytes'))
-								  'is' (endian = ('big' | 'little')) 'endian'
-								  'multiply by' multiplyBy = FLOATNUMBER
-								  'add' add = FLOATNUMBER
-								  ('with range' | 'within range') '[' rangeStart = FLOATNUMBER ',' rangeEnd = FLOATNUMBER ']'
-								  ';';
+	cansignalname = ValidIdentifier	'in' canIdentifier = HEXNUMBER
+									'at bit' startBit = FLOATNUMBER
+									'for' (length = FLOATNUMBER ('bit'|'bits') | lengthBytes = FLOATNUMBER ('byte'|'bytes'))
+									'is' (endian = ('big' | 'little')) 'endian'
+									'multiply by' multiplyBy = FLOATNUMBER
+									'add' add = FLOATNUMBER
+									('with range' | 'within range') '[' rangeStart = FLOATNUMBER ',' rangeEnd = FLOATNUMBER ']'
+									';';
 
 CANSignalMapping:
-    (unordered='unordered')? 'mapping' mappingName = MessageIdentifier '{'
+    (unordered='unordered')? 'mapping' mappingName = ValidIdentifier '{'
     	mappings += Mapping*
     '}';
 
 Mapping:
-	cansignal = MessageIdentifier ':' messageIdentifier = FLOATNUMBER ';';
+	cansignalname = ValidIdentifier ':' signalIdentifier = FLOATNUMBER ';';
 
-MessageIdentifier:
+ValidIdentifier:
     ID (('.') ID)*;
 
 terminal fragment SIGN: ('+'|'-');

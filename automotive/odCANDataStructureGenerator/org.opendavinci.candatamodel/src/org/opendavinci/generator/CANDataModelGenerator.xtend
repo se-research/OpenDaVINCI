@@ -80,7 +80,7 @@ class CANDataModelGenerator implements IGenerator {
 		while (localIterator.hasNext) {
 			val cs = localIterator.next
 			val csd = new CANSignalDescription
-			csd.m_FQDN = cs.cansignal
+			csd.m_FQDN = cs.cansignalname
 			csd.m_CANID = cs.canIdentifier
 			csd.m_startBit = cs.startBit
 			csd.m_length = cs.length
@@ -281,7 +281,7 @@ namespace canmapping {
 			var String[] chunks
 			var String capitalizedName
 			for(currenMapping : mapping.mappings){
-				chunks=currenMapping.cansignal.split('\\.');
+				chunks=currenMapping.cansignalname.split('\\.');
 				capitalizedName=""
 				for(chunk:chunks){
 					capitalizedName+=chunk.toFirstUpper
@@ -373,7 +373,7 @@ namespace canmapping {
 			var String[] chunks
 			var String capitalizedName
 			for(currenMapping : mapping.mappings){
-				chunks=currenMapping.cansignal.split('\\.');
+				chunks=currenMapping.cansignalname.split('\\.');
 				capitalizedName=""
 				for(chunk:chunks){
 					capitalizedName+=chunk.toFirstUpper
@@ -411,7 +411,7 @@ namespace canmapping {
 		}
 		i=0;
 		for(currenMapping : mapping.mappings){
-			var String[] chunks=currenMapping.cansignal.split('\\.');
+			var String[] chunks=currenMapping.cansignalname.split('\\.');
 			var String capitalizedName=""
 			for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
 			initializations.add("m_"+capitalizedName.toFirstLower+"(parameter"+(i++)+")");
@@ -440,10 +440,10 @@ namespace canmapping {
 		«{var int i=0;
 			while (iter.hasNext()){
 			iter.next();
-			var String[] chunks=mapping.mappings.get(i).cansignal.split('\\.');
+			var String[] chunks=mapping.mappings.get(i).cansignalname.split('\\.');
 			var String capitalizedName=""
 			for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
-			result+='\t'+'\t'+"<<\" "+mapping.mappings.get(i).cansignal.toString+" : \"<< m_"+capitalizedName.toFirstLower+"<<endl";
+			result+='\t'+'\t'+"<<\" "+mapping.mappings.get(i).cansignalname.toString+" : \"<< m_"+capitalizedName.toFirstLower+"<<endl";
 			i++;
 			if(iter.hasNext())result+='\n';
     	}}»
@@ -473,11 +473,11 @@ namespace canmapping {
 		«var ArrayList<String> opOutBody=new ArrayList<String>»
 		«for(var int i=0;i<mapping.mappings.size;i++){
 			var String capitalizedName
-			var String[] chunks=mapping.mappings.get(i).cansignal.split('\\.');
+			var String[] chunks=mapping.mappings.get(i).cansignalname.split('\\.');
 			capitalizedName=""
 			for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
 			
-			opOutBody+="s->write(static_cast<uint32_t>("+mapping.mappings.get(i).messageIdentifier+"), m_"+capitalizedName.toFirstLower+");"
+			opOutBody+="s->write(static_cast<uint32_t>("+mapping.mappings.get(i).signalIdentifier+"), m_"+capitalizedName.toFirstLower+");"
 		}»
 		«FOR line:opOutBody»
 		«line»
@@ -495,11 +495,11 @@ namespace canmapping {
 		«var ArrayList<String> opInBody=new ArrayList<String>»
 		«for(var int i=0;i<mapping.mappings.size;i++){
 			var String capitalizedName
-			var String[] chunks=mapping.mappings.get(i).cansignal.split('\\.');
+			var String[] chunks=mapping.mappings.get(i).cansignalname.split('\\.');
 			capitalizedName=""
 			for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
 			
-			opInBody+="id="+mapping.mappings.get(i).messageIdentifier+";"
+			opInBody+="id="+mapping.mappings.get(i).signalIdentifier+";"
 			opInBody+="s->read(static_cast<uint32_t>(id), m_"+capitalizedName.toFirstLower+");"
 		}»
 		«FOR line:opInBody»
@@ -513,13 +513,13 @@ namespace canmapping {
 	«var ArrayList<String> acceptBody=new ArrayList<String>»
 	«for(var int i=0;i<mapping.mappings.size;i++){
 			var String capitalizedName
-			var String[] chunks=mapping.mappings.get(i).cansignal.split('\\.');
+			var String[] chunks=mapping.mappings.get(i).cansignalname.split('\\.');
 			capitalizedName=""
 			for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
 			
-			acceptBody+="v.visit(static_cast<uint32_t>("+mapping.mappings.get(i).messageIdentifier+"), "
-						+mapping.mappings.get(i).messageIdentifier+", \""
-						+mapping.mappings.get(i).cansignal+"\", \""
+			acceptBody+="v.visit(static_cast<uint32_t>("+mapping.mappings.get(i).signalIdentifier+"), "
+						+mapping.mappings.get(i).signalIdentifier+", \""
+						+mapping.mappings.get(i).cansignalname+"\", \""
 						+chunks.get(chunks.size-1)+"\", m_"
 						+capitalizedName.toFirstLower+");"
 		}»
@@ -571,7 +571,7 @@ namespace canmapping {
 		core::reflection::Message message;
 	
 		«FOR currenMapping : mapping.mappings»
-		«var String signalName=currenMapping.cansignal»
+		«var String signalName=currenMapping.cansignalname»
 		// addressing signal «signalName»
 		{
 			// 2. Get the raw payload.
@@ -585,7 +585,7 @@ namespace canmapping {
 			«var String finalVarName="transformed_"+signalName.replaceAll("\\.", "_")»
 			«var String capitalizedName»
 			«{
-				var String[] chunks=currenMapping.cansignal.split('\\.');
+				var String[] chunks=currenMapping.cansignalname.split('\\.');
 				capitalizedName=""
 				for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
 			}»
@@ -691,14 +691,14 @@ signals of interest:
 
 «IF(mapping.mappings.size>0)»
 «FOR currenMapping : mapping.mappings»
-«currenMapping.cansignal»
+«currenMapping.cansignalname»
 «ENDFOR»
 «ELSE»
 none.
 «ENDIF»
 
 «FOR currenMapping : mapping.mappings»
-«var String signalName=currenMapping.cansignal»
+«var String signalName=currenMapping.cansignalname»
 «var CANSignalDescription canSignal=canSignals.get(signalName)»
 «var String[] splittedMN=mapping.mappingName.toString.toLowerCase.split("\\.")»
 «IF(splittedMN.get(splittedMN.size-1).compareTo(signalName.split("\\.").get(0).toLowerCase)==0)»
