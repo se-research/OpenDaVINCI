@@ -25,7 +25,8 @@ generate canDataModel "http://www.opendavinci.org/CANDataModel"
 
 Model:
     cansignals        += CANSignal+
-    cansignalmappings += CANSignalMapping*;
+    cansignalmappings += CANSignalMapping*
+    cansignaltestings += CANSignalTesting*;
 
 CANSignal:
 	cansignalname = ValidIdentifier	'in' canIdentifier = HEXNUMBER
@@ -44,6 +45,18 @@ CANSignalMapping:
 
 Mapping:
 	cansignalname = ValidIdentifier ':' signalIdentifier = FLOATNUMBER ';';
+
+CANSignalTesting:
+    'test' mappingName = ValidIdentifier '{'
+    	CANMessageDescriptions += CANMessageDescription*
+    	Results += Result*
+    '}';
+
+CANMessageDescription:
+	canIdentifier = HEXNUMBER ':' payload = HEXNUMBER;
+
+Result:
+	'id' signalIdentifier = FLOATNUMBER '=' expectedResult = FLOATNUMBER;
 
 ValidIdentifier:
     ID (('.') ID)*;
