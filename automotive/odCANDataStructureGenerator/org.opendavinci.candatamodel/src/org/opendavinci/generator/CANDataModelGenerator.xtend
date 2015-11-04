@@ -30,6 +30,7 @@ import org.opendavinci.canDataModel.CANSignal
 import org.opendavinci.canDataModel.CANSignalMapping
 import java.util.Random
 import org.opendavinci.canDataModel.Mapping
+import org.opendavinci.canDataModel.CANSignalTesting
 
 class CANDataModelGenerator implements IGenerator {
 
@@ -63,12 +64,14 @@ class CANDataModelGenerator implements IGenerator {
 		fsa.generateFile("include/GeneratedHeaders_" + generatedHeadersFile + ".h", generateSuperHeaderFileContent(generatedHeadersFile, includedClasses))
 		fsa.generateFile("src/GeneratedHeaders_" + generatedHeadersFile + ".cpp", generateSuperImplementationFileContent(generatedHeadersFile, includedClasses))
 		
+		var ArrayList<CANSignalTesting> tests=new ArrayList<CANSignalTesting>(resource.allContents.toIterable.filter(typeof(CANSignalTesting)).toList);
+		
 		// Next, generate the code for the actual mapping.
 		for (e : resource.allContents.toIterable.filter(typeof(CANSignalMapping))) {
 			fsa.generateFile("include/generated/" + e.mappingName.toString().replaceAll("\\.", "/") + ".h", generateHeaderFileContent(generatedHeadersFile, e))
 			fsa.generateFile("src/generated/" + e.mappingName.toString().replaceAll("\\.", "/") + ".cpp", 
 				generateImplementationFileContent(e, "generated", mapOfDefinedCANSignals))
-			fsa.generateFile("testsuites/" + e.mappingName.toString().replaceAll("\\.", "_") + "TestSuite.h", generateTestSuiteContent(generatedHeadersFile, e))
+			fsa.generateFile("testsuites/" + e.mappingName.toString().replaceAll("\\.", "_") + "TestSuite.h", generateTestSuiteContent(generatedHeadersFile, e, tests, mapOfDefinedCANSignals))
 			fsa.generateFile("uppaal/generated/" + e.mappingName.toString().replaceAll("\\.", "/"), generateUPPAALFileContent(e))
 		}
 	}
@@ -510,6 +513,9 @@ namespace canmapping {
 	}
 	
 	void «className»::accept(core::base::Visitor &v) {
+	«IF mapping.mappings.size==0»
+	(void)v;
+	«ELSE»
 	«var ArrayList<String> acceptBody=new ArrayList<String>»
 	«for(var int i=0;i<mapping.mappings.size;i++){
 			var String capitalizedName
@@ -526,6 +532,7 @@ namespace canmapping {
 		«FOR line:acceptBody»
 		«line»
 		«ENDFOR»
+	«ENDIF»
 	}
 	
 	core::data::Container «className»::decode(const ::automotive::GenericCANMessage &gcm) {
@@ -748,18 +755,47 @@ namespace canmapping {
 '''
 
 	// Generate the test suite content (.h).	
-	def generateTestSuiteContent(String generatedHeadersFile, CANSignalMapping mapping) '''
+	def generateTestSuiteContent(String generatedHeadersFile, CANSignalMapping mapping, ArrayList<CANSignalTesting> canSignalTesting, HashMap<String, CANSignalDescription> canSignals) '''
 /*
  * This software is open source. Please see COPYING and AUTHORS for further information.
  *
  * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
  */
 // Test suite file for: «mapping.mappingName.toString»
+«var ArrayList<String> canIDs=new ArrayList<String>»/*
+«FOR currenMapping : mapping.mappings»
+«var String signalName=currenMapping.cansignalname»
+«var CANSignalDescription canSignal=canSignals.get(signalName)»
+«var String[] splittedMN=mapping.mappingName.toString.toLowerCase.split("\\.")»
+«IF(splittedMN.get(splittedMN.size-1).compareTo(signalName.split("\\.").get(0).toLowerCase)==0)»
+«{
+	var boolean test=true;
+	for(id:canIDs)
+		if(id.compareTo(canSignal.m_CANID)==0)
+			test=false;
+	if(test)
+		canIDs.add(canSignal.m_CANID);
+	""
+}»
+CANID       : «canSignal.m_CANID»
+FQDN        : «canSignal.m_FQDN»
+startBit    : «canSignal.m_startBit»
+length      : «canSignal.m_length»
+lengthBytes : «canSignal.m_lengthBytes»
+endian      : «canSignal.m_endian»
+multiplyBy  : «canSignal.m_multiplyBy»
+add         : «canSignal.m_add»
+rangeStart  : «canSignal.m_rangeStart»
+rangeEnd    : «canSignal.m_rangeEnd»
+
+«ENDIF»
+«ENDFOR»*/
 
 #ifndef CANMAPPINGTESTSUITE_H_
 #define CANMAPPINGTESTSUITE_H_
 
 #include "GeneratedHeaders_«generatedHeadersFile».h"
+#include "GeneratedHeaders_AutomotiveData.h"
 #include "cxxtest/TestSuite.h"
 #include <sstream>
 
@@ -809,6 +845,79 @@ class CANBridgeTest : public CxxTest::TestSuite {
         	//cout<<«HLName»_2.toString();
         	
             TS_ASSERT(ss1.str().compare(ss2.str())==0);
+«var int testIndex=0»
+«FOR test : canSignalTesting»
+«IF test.mappingName.toString.compareTo(mapping.mappingName.toString)==0»
+«var String testName="test_"+(testIndex++)»
+    		«var HashMap<String,String> GCMs=new HashMap<String,String>»
+			// Mapping name «test.mappingName»
+			«var int gcmIndex=0»
+			«FOR description : test.CANMessageDescriptions»
+			// id «description.canIdentifier»
+			// payload «description.payload» : length «(description.payload.length-2)/2»
+			«IF description.payload.length==18»
+			«var String gcmName="gcm_"+(gcmIndex++)»
+			::automotive::GenericCANMessage «gcmName»;
+			«gcmName».setIdentifier(«description.canIdentifier»);
+			«gcmName».setLength(«(description.payload.length-2)/2»);
+			«gcmName».setData(«description.payload»);
+			«GCMs.put(description.canIdentifier,gcmName)»
+			«ENDIF»
+    		«ENDFOR»
+    		
+    		canmapping::«mapping.mappingName.toString.replaceAll("\\.", "::")» «testName»;
+    		«IF canIDs.length==GCMs.size»
+			«FOR canid:canIDs»
+			«testName».decode(«GCMs.get(canid)»);
+			«ENDFOR»
+			
+        	«var ArrayList<String> asserts=new ArrayList<String>»
+        	«var ArrayList<String> gets=new ArrayList<String>»
+			«{
+			for(var int index=0;index<mapping.mappings.size;index++){
+				var String capitalizedName=""
+				var String[] chunks=mapping.mappings.get(index).cansignalname.split('\\.')
+				for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
+				for(result:test.results)
+					if(result.signalIdentifier.compareTo(mapping.mappings.get(index).signalIdentifier)==0)
+						asserts+="TS_ASSERT_DELTA("+testName+".get"+capitalizedName+"() , "+result.expectedResult+", 1e-5);"+'\n'
+			}
+			}»
+			«FOR assertions:asserts»
+			«assertions»
+			«ENDFOR»
+			
+			«IF !(mapping.unordered!=null && mapping.unordered.compareTo("unordered")==0)»
+			
+			«{testName="test_"+(testIndex++);""}»
+			canmapping::«mapping.mappingName.toString.replaceAll("\\.", "::")» «testName»;
+			«var ArrayList<String> decodes=new ArrayList<String>»
+        	«var ArrayList<String> orderAsserts=new ArrayList<String>»
+			«{
+				for(var int i=canIDs.length-1;i>=0;i--)
+					decodes+=testName+".decode("+GCMs.get(canIDs.get(i))+");"
+				for(var int index=0;index<mapping.mappings.size;index++){
+				var String capitalizedName=""
+				var String[] chunks=mapping.mappings.get(index).cansignalname.split('\\.')
+				for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
+				for(result:test.results)
+					if(result.signalIdentifier.compareTo(mapping.mappings.get(index).signalIdentifier)==0)
+						orderAsserts+="TS_ASSERT_DELTA("+testName+".get"+capitalizedName+"() , 0.0, 1e-5);"+'\n'
+			}
+			}»
+			«FOR decode:decodes»
+			«decode»
+			«ENDFOR»
+			«FOR assertions:orderAsserts»
+			«assertions»
+			«ENDFOR»
+			«ENDIF»
+
+    		«ELSE»
+    		// not enough CAN messages were provided
+    		«ENDIF»
+            	«ENDIF»
+            «ENDFOR»
         }
 };
 
