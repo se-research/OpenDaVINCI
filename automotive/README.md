@@ -8,11 +8,12 @@ The following steps are covered in this manual:
 
 ###STEP 0 - Testing the current code:
 
-To test the current code, open Terminal, change directories to OpenDaVinci and run the following commands:
+To test the current code, open Terminal, change directories to OpenDaVinci and run the following commands (Note that the package libpopt-dev is required to compile and install odcantools):
 
 	$ cd automotive/
 	$ rm -rf build 
 	$ mkdir build && cd build
+	$ sudo apt-get install libpopt-dev
 	$ cmake -D CMAKE_INSTALL_PREFIX=/opt/od ..
 	$ make
 
