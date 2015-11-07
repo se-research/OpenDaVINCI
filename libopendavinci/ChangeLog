@@ -1,3 +1,4 @@
+2.1.3 - Fixed deserialization of existing recordings using former 0xAACF serialization
 2.1.2 - Integrated build of odcantools in master build system
 2.1.1 - Refactored odcantools to provide libodcantools
 2.1.0 - Updated data marshaling to create smaller containers
