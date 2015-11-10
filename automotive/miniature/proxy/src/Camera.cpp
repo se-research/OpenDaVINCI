@@ -47,8 +47,6 @@ namespace automotive {
             m_sharedImage.setBytesPerPixel(bpp);
 
             m_size = width * height * bpp;
-
-            m_sharedImage.setWidth(m_size);
         }
 
         Camera::~Camera() {}
