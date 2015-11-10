@@ -45,6 +45,7 @@ namespace automotive {
             m_sharedImage.setWidth(width);
             m_sharedImage.setHeight(height);
             m_sharedImage.setBytesPerPixel(bpp);
+            m_sharedImage.setSize(width * height * bpp);
 
             m_size = width * height * bpp;
         }
