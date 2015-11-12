@@ -72,7 +72,7 @@ class CANDataModelGenerator implements IGenerator {
 			fsa.generateFile("src/generated/" + e.mappingName.toString().replaceAll("\\.", "/") + ".cpp", 
 				generateImplementationFileContent(e, "generated", mapOfDefinedCANSignals))
 			fsa.generateFile("testsuites/" + e.mappingName.toString().replaceAll("\\.", "_") + "TestSuite.h", generateTestSuiteContent(generatedHeadersFile, e, tests, mapOfDefinedCANSignals))
-			fsa.generateFile("uppaal/generated/" + e.mappingName.toString().replaceAll("\\.", "/"), generateUPPAALFileContent(e))
+			fsa.generateFile("uppaal/generated/" + e.mappingName.toString().replaceAll("\\.", "/"), generateUPPAALFileContent(e, mapOfDefinedCANSignals))
 		}
 	}
 
@@ -924,13 +924,496 @@ class CANBridgeTest : public CxxTest::TestSuite {
 #endif /*CANMAPPINGTESTSUITE_H_*/
 '''
 
-    /* This method generates the UPPAAL file content. */
-	def generateUPPAALFileContent(CANSignalMapping mapping) '''
-<!--
-This software is open source. Please see COPYING and AUTHORS for further information.
-
+/* This method generates the UPPAAL file content when the order of expected messages does not matter. */
+	def generateUPPAALUnordered(CANSignalMapping mapping,HashMap<String, CANSignalDescription> canSignals) '''
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+/*This software is open source. Please see COPYING and AUTHORS for further information.
 This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
--->
-<!-- UPPAAL file for: «mapping.mappingName.toString» -->
-'''
+UPPAAL file for: «mapping.mappingName.toString»
+Unordered messages*/
+«var ArrayList<String> canIDs=new ArrayList<String>»/*
+«FOR currenMapping : mapping.mappings»
+«var String signalName=currenMapping.cansignalname»
+«var CANSignalDescription canSignal=canSignals.get(signalName)»
+«var String[] splittedMN=mapping.mappingName.toString.toLowerCase.split("\\.")»
+«IF(splittedMN.get(splittedMN.size-1).compareTo(signalName.split("\\.").get(0).toLowerCase)==0)»
+«{
+	var boolean test=true;
+	for(id:canIDs)
+		if(id.compareTo(canSignal.m_CANID)==0)
+			test=false;
+	if(test)
+		canIDs.add(canSignal.m_CANID);
+	""
+}»
+CANID       : «canSignal.m_CANID»
+«ENDIF»
+«ENDFOR»*/
+int ID=0;
+const int N=«canIDs.size»;
+const int MAX=N*5;
+«var String expectedM=""»
+«var String receivedM=""»
+«var String notWantedM»
+«{
+	var int index=0;
+	var String tempString;
+	for(currentM:canIDs)
+	{
+		tempString=canIDs.get(index);
+		tempString=tempString.substring(2,tempString.length());
+		notWantedM=(Long.parseLong(tempString,16)+1)+"";
+		tempString=Long.parseLong(tempString,16)+"";
+		if(index<canIDs.size-1)
+		{
+			expectedM+=tempString+",";
+			receivedM+="false,";
+		}
+		else
+		{
+			expectedM+=tempString;
+			receivedM+="false";
+		}
+		index++;
+	}
+}»
+int list[N+1]={«expectedM»,«notWantedM»};
+int expectedID[N]={«expectedM»};
+
+int[0,MAX] counter=0;
+bool received[N]={«receivedM»};
+
+urgent chan message,Go;
+</declaration>
+	<template>
+		<name x="5" y="5">messageGenerator</name>
+		<declaration>// Place local declarations here.
+
+void nextID(int[0,N] canid)
+{
+    int[0,N] index=0;
+    ID=list[canid];
+    counter++;    
+    if(counter==MAX)
+    {
+        for(index=0;index&lt;N;index++)
+        {
+            if(!received[index])
+            {
+                ID=expectedID[index];
+                counter=0;
+                return;
+            }
+        }
+        counter=0;
+    }
+}</declaration>
+		<location id="id0" x="17" y="-102">
+			<name x="0" y="-136">Send</name>
+			<committed/>
+		</location>
+		<location id="id1" x="-187" y="-102">
+			<name x="-212" y="-144">Ready</name>
+		</location>
+		<init ref="id1"/>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="synchronisation" x="-110" y="-68">message!</label>
+			<nail x="17" y="-42"/>
+			<nail x="-187" y="-42"/>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<label kind="select" x="-119" y="-136">n:int[0,N]</label>
+			<label kind="synchronisation" x="-93" y="-119">Go!</label>
+			<label kind="assignment" x="-127" y="-102">nextID(n)</label>
+		</transition>
+	</template>
+	<template>
+		<name>Receiver</name>
+		<declaration>bool complete=false;
+
+void reset()
+{
+    int[0,N] index=0;
+    for(index=0;index&lt;N;index++)
+    {
+        received[index]=false;
+    }
+    complete=false;
+}
+
+void nextExpected()
+{
+    int[0,N] index=0;
+    if(complete)
+    {
+        reset();
+    }
+
+    for(index=0;index&lt;N;index++)
+    {
+        if(ID==expectedID[index])
+        {
+            received[index]=true;
+        }
+    }
+    complete=true;
+    for(index=0;index&lt;N;index++)
+    {
+        if(!received[index])
+        {
+            complete=false;
+            return;
+        }
+    }
+}</declaration>
+		<location id="id2" x="-25" y="-17">
+			<name x="-59" y="-51">Operating</name>
+		</location>
+		<init ref="id2"/>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id2"/>
+			<label kind="synchronisation" x="119" y="-25">message?</label>
+			<label kind="assignment" x="102" y="-8">nextExpected()</label>
+			<nail x="85" y="25"/>
+			<nail x="85" y="-51"/>
+		</transition>
+	</template>
+	<template>
+		<name>Synchronizer</name>
+		<location id="id3" x="-34" y="0">
+			<name x="-51" y="-34">Normal</name>
+		</location>
+		<init ref="id3"/>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id3"/>
+			<label kind="synchronisation" x="-42" y="34">Go?</label>
+			<nail x="-76" y="51"/>
+			<nail x="17" y="51"/>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+
+system messageGenerator,Receiver,Synchronizer;
+    </system>
+	<queries>
+		<query>
+			<formula>!Receiver.complete--&gt;Receiver.complete
+			</formula>
+			<comment>
+			</comment>
+		</query>
+		<query>
+			<formula>A[] not deadlock
+			</formula>
+			<comment>
+			</comment>
+		</query>
+	</queries>
+</nta>
+'''	
+
+/* This method generates the UPPAAL file content when the order of expected messages matters. */
+	def generateUPPAALOrdered(CANSignalMapping mapping,HashMap<String, CANSignalDescription> canSignals) '''
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+/*This software is open source. Please see COPYING and AUTHORS for further information.
+This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
+UPPAAL file for: «mapping.mappingName.toString»
+Ordered messages*/
+«var ArrayList<String> canIDs=new ArrayList<String>»/*
+«FOR currenMapping : mapping.mappings»
+«var String signalName=currenMapping.cansignalname»
+«var CANSignalDescription canSignal=canSignals.get(signalName)»
+«var String[] splittedMN=mapping.mappingName.toString.toLowerCase.split("\\.")»
+«IF(splittedMN.get(splittedMN.size-1).compareTo(signalName.split("\\.").get(0).toLowerCase)==0)»
+«{
+	var boolean test=true;
+	for(id:canIDs)
+		if(id.compareTo(canSignal.m_CANID)==0)
+			test=false;
+	if(test)
+		canIDs.add(canSignal.m_CANID);
+	""
+}»
+CANID       : «canSignal.m_CANID»
+«ENDIF»
+«ENDFOR»*/
+int ID=0;
+const int N=«canIDs.size»;
+const int MAX=N*5;
+«var String expectedM=""»
+«var String receivedM=""»
+«var String notWantedM»
+«var int[] IDs=newIntArrayOfSize(canIDs.size)»
+«var int index=0»
+«{
+	
+	var String tempString;
+	for(currentM:canIDs)
+	{
+		tempString=canIDs.get(index);
+		tempString=tempString.substring(2,tempString.length());
+		IDs.set(index,Integer.parseInt(tempString,16));
+		notWantedM=(Integer.parseInt(tempString,16)+1)+"";
+		tempString=Integer.parseInt(tempString,16)+"";
+		if(index<canIDs.size-1)
+		{
+			expectedM+=tempString+",";
+			receivedM+="false,";
+		}
+		else
+		{
+			expectedM+=tempString;
+			receivedM+="false";
+		}
+		index++;
+	}
+}»
+int list[N+1]={«expectedM»,«notWantedM»};
+int expectedID[N]={«expectedM»};
+bool received[N]={«receivedM»};
+bool allReceived=false;
+
+urgent chan message,Go;
+</declaration>
+	<template>
+		<name x="5" y="5">messageGenerator</name>
+		<declaration>// Place local declarations here.
+
+void updateReceiveList(int[0,N-1] current)
+{
+    int[0,N] index=0;
+    received[current]=true;
+    for(index=current+1;index&lt;N;index++)
+    {
+        received[index]=false;
+    }
+}
+
+
+void updateLocalBuffer()
+{
+    int[0,N] index=0;
+    int[0,N] index2=0;
+    for(index=0;index&lt;N;index++)
+    {
+        if(ID==expectedID[index])
+        {
+            if(index==0)
+            {
+                updateReceiveList(index);
+                return;
+            }
+            else
+            {
+                for(index2=0;index2&lt;index;index2++)
+                {
+                    if(!received[index2])
+                    {
+                        return;
+                    }
+                }
+                updateReceiveList(index);
+                if(index==N-1)
+                {
+                    allReceived=true;
+                }
+            }
+        }
+    }
+}
+                    
+</declaration>
+		<location id="id0" x="17" y="-102">
+			<name x="0" y="-136">Send</name>
+			<committed/>
+		</location>
+		<location id="id1" x="-187" y="-102">
+			<name x="-212" y="-144">Ready</name>
+		</location>
+		<init ref="id1"/>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="synchronisation" x="-110" y="-68">message!</label>
+			<label kind="assignment" x="-161" y="-42">updateLocalBuffer()</label>
+			<nail x="17" y="-42"/>
+			<nail x="-187" y="-42"/>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<label kind="select" x="-119" y="-136">canid:int[0,N]</label>
+			<label kind="synchronisation" x="-93" y="-119">Go!</label>
+			<label kind="assignment" x="-119" y="-102">ID=list[canid]</label>
+		</transition>
+	</template>
+	<template>
+		<name>Receiver</name>
+		<declaration>void reset()
+{
+    int[0,N] index=0;
+    for(index=0;index&lt;N;index++)
+    {
+        received[index]=false;
+    }
+    allReceived=false;
+}</declaration>
+«var int[] stateXPosition=newIntArrayOfSize(canIDs.size)»
+«{
+	var int initialX=-250;
+	for(index=0;index<canIDs.size;index++)
+	{
+		stateXPosition.set(index,initialX);
+		initialX+=160;
+	}
+}»	
+«var int stateYPosition=-17»
+«var int[] stateNameXPosition=newIntArrayOfSize(canIDs.size)»
+«{
+	var int initialX=-267;
+	for(index=0;index<canIDs.size;index++)
+	{
+		stateNameXPosition.set(index,initialX);
+		initialX+=160;
+	}
+}»	
+«var int stateNameYPosition=-52»
+«FOR a:canIDs»
+	«var int myIndex=canIDs.indexOf(a)»
+	<location id="id«myIndex+2»" x="«stateXPosition.get(myIndex)»" y="«stateYPosition»">
+		<name x="«stateNameXPosition.get(myIndex)»" y="«stateNameYPosition»">State«myIndex»</name>
+	</location>
+«ENDFOR»
+	<init ref="id2" />
+	
+«FOR a:canIDs»
+	«var int myIndex=canIDs.indexOf(a)»
+	<transition>
+		<source ref="id«myIndex+2»"/>
+		<target ref="id«myIndex+2»"/>
+		<label kind="guard" x="«stateXPosition.get(myIndex)-30»" y="«stateYPosition+30»">ID!=«IDs.get(myIndex)»</label>
+		<label kind="synchronisation" x="«stateXPosition.get(myIndex)-30»" y="«stateYPosition+50»">message?</label>
+		<nail x="«stateXPosition.get(myIndex)-50»" y="«stateYPosition+50»"/>
+		<nail x="«stateXPosition.get(myIndex)+50»" y="«stateYPosition+50»"/>
+	</transition>
+	«IF myIndex<canIDs.size-1»
+		<transition>
+			<source ref="id«myIndex+2»"/>
+			<target ref="id«myIndex+3»"/>
+			<label kind="guard" x="«stateXPosition.get(myIndex)+30»" y="«stateYPosition-15»">ID==«IDs.get(myIndex)»</label>
+			<label kind="synchronisation" x="«stateXPosition.get(myIndex)+30»" y="«stateYPosition»">message?</label>
+		</transition>
+	«ELSE»
+		<transition>
+			<source ref="id«myIndex+2»"/>
+			<target ref="id2"/>
+			<label kind="guard" x="«stateXPosition.get(0)+15»" y="«stateYPosition+70»">ID==«IDs.get(myIndex)»</label>
+			<label kind="synchronisation" x="«stateXPosition.get(0)+15»" y="«stateYPosition+85»">message?</label>
+			<label kind="assignment" x="«stateXPosition.get(0)+15»" y="«stateYPosition+98»">reset()</label>
+			<nail x="«stateXPosition.get(myIndex)»" y="«stateYPosition+100»"/>
+			<nail x="«stateXPosition.get(0)»" y="«stateYPosition+100»"/>
+		</transition>
+	«ENDIF»
+«ENDFOR»
+
+«var int diff=20»
+«IF canIDs.size>2»
+	«FOR a:canIDs»
+		«var int myIndex=canIDs.indexOf(a)»
+		«IF myIndex>0 && myIndex<canIDs.size-1»
+			«FOR i:(myIndex+1)..(canIDs.size-1)»
+				<transition>
+					<source ref="id«i+2»"/>
+					<target ref="id«myIndex+2»"/>
+					<label kind="guard" x="«stateXPosition.get(myIndex)+(stateXPosition.get(i)-stateXPosition.get(myIndex))/2»" y="«stateYPosition-70-diff*(i-myIndex)»">ID==«IDs.get(myIndex-1)»</label>
+					<label kind="synchronisation" x="«stateXPosition.get(myIndex)+(stateXPosition.get(i)-stateXPosition.get(myIndex))/2»" y="«stateYPosition-50-diff*(i-myIndex)»">message?</label>
+					<nail x="«stateXPosition.get(i)-10»" y="«stateYPosition-50-diff*(i-myIndex)»"/>
+					<nail x="«stateXPosition.get(myIndex)+10»" y="«stateYPosition-50-diff*(i-myIndex)»"/>
+				</transition>
+			«ENDFOR»
+		«ENDIF»
+	«ENDFOR»
+«ENDIF»
+</template>
+	<template>
+		<name>Synchronizer</name>
+		<location id="id«canIDs.size+2»" x="-34" y="0">
+			<name x="-51" y="-34">Normal</name>
+		</location>
+		<init ref="id«canIDs.size+2»"/>
+		<transition>
+			<source ref="id«canIDs.size+2»"/>
+			<target ref="id«canIDs.size+2»"/>
+			<label kind="synchronisation" x="-42" y="34">Go?</label>
+			<nail x="-76" y="51"/>
+			<nail x="17" y="51"/>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+
+system messageGenerator,Receiver,Synchronizer;
+    </system>
+	<queries>
+		<query>
+			<formula>!Receiver.State0 &amp;&amp; !allReceived--&gt;Receiver.State0
+			</formula>
+			<comment>
+			</comment>
+		</query>
+		<query>
+			<formula>!Receiver.State0 &amp;&amp; allReceived--&gt;Receiver.State0
+			</formula>
+			<comment>
+			</comment>
+		</query>
+		<query>
+			<formula>A[] not deadlock
+			</formula>
+			<comment>
+			</comment>
+		</query>
+	</queries>
+</nta>
+'''	
+
+    /* This method generates the UPPAAL file content. */
+	def generateUPPAALFileContent(CANSignalMapping mapping,HashMap<String, CANSignalDescription> canSignals) '''
+«IF mapping.unordered!=null && mapping.unordered.compareTo("unordered")==0»
+«generateUPPAALUnordered(mapping,canSignals)»
+«ELSE»
+	«var ArrayList<String> canIDs=new ArrayList<String>»
+	«FOR currenMapping : mapping.mappings»
+		«var String signalName=currenMapping.cansignalname»
+		«var CANSignalDescription canSignal=canSignals.get(signalName)»
+		«var String[] splittedMN=mapping.mappingName.toString.toLowerCase.split("\\.")»
+		«IF(splittedMN.get(splittedMN.size-1).compareTo(signalName.split("\\.").get(0).toLowerCase)==0)»
+		«{
+			var boolean test=true;
+			for(id:canIDs)
+				if(id.compareTo(canSignal.m_CANID)==0)
+					test=false;
+			if(test)
+				canIDs.add(canSignal.m_CANID);
+			""
+		}»
+		«ENDIF»
+	«ENDFOR»
+	«IF canIDs.size>1»
+		«generateUPPAALOrdered(mapping,canSignals)»
+	«ELSE»
+	«ENDIF»
+«ENDIF»
+'''	
 }
