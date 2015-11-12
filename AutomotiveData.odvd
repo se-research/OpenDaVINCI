@@ -126,14 +126,17 @@ message automotive.carolocup.Sensors [id = 87] {
     uint32 irRearRight [id = 4];
     uint32 irBackLeft [id = 5];
     uint32 irBackRight [id = 6];
-    uint32 wheelFrontLeft [id = 7];
-    uint32 wheelRearRight [id = 8];
+    uint32 gyroHeading [id = 7];
+    uint32 wheelRearLeft [id = 8];
+    uint32 wheelRearRight [id = 9];
+    uint32 buttonState [id = 10];
 }
 
 message automotive.carolocup.Control [id = 88] {
     uint32 steering [id = 1];
     uint32 acceleration [id = 2];
     uint32 lights [id = 3]; // 0 = no lights, 1 = brake lights, 2 = blinking left, 4 = blinking right, 8 = emergency light
+    uint32 gyroTrigger [id = 4];
 }
 
 ///////////////////////////////////////////////////////////////////////////////
