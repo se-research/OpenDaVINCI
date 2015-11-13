@@ -310,7 +310,7 @@ namespace odsupercomponent {
             {
                 // Update statistics.
                 Lock l(m_moduleStatisticsMutex);
-                Container c(Container::MODULESTATISTICS, m_moduleStatistics);
+                Container c(m_moduleStatistics);
                 m_conference->send(c);
             }
 

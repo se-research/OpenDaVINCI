@@ -167,7 +167,7 @@ namespace camgen {
             si.setBytesPerPixel(3);
             si.setName("odsimcamera");
 
-            Container c(Container::SHARED_IMAGE, si);
+            Container c(si);
             getConference().send(c);
         }
 

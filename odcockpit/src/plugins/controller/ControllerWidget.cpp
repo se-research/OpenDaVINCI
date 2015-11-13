@@ -157,7 +157,7 @@ namespace cockpit {
                     m_userButtonData.setButtonStatus(automotive::miniature::UserButtonData::PRESSED);
                     m_userButtonData.setDuration(0);
 
-                    Container c(Container::USER_BUTTON, m_userButtonData);
+                    Container c(m_userButtonData);
                     m_conference.send(c);
                 }
             }
@@ -170,7 +170,7 @@ namespace cockpit {
 
                 m_userButtonData.setButtonStatus(automotive::miniature::UserButtonData::RELEASED);
                 m_userButtonData.setDuration(duration);
-                Container c(Container::USER_BUTTON, m_userButtonData);
+                Container c(m_userButtonData);
                 m_conference.send(c);
             }
 
@@ -200,7 +200,7 @@ namespace cockpit {
                         Lock l3(m_sendVehicleControlDataMutex);
 
                         if (m_sendVehicleControlData) {
-                            Container c(Container::VEHICLECONTROL, m_vehicleControl);
+                            Container c(m_vehicleControl);
                             m_conference.send(c);
                             m_counter = 0;
                         }

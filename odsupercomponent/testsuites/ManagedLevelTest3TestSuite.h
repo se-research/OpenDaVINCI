@@ -145,7 +145,7 @@ class Example7SenderApp : public TimeTriggeredConferenceClientModule {
         		data.setNumericalValue(counter++);
 
         		// Create container with user data type ID 5.
-        		Container c(Container::USER_DATA_5, data);
+        		Container c(data, Container::USER_DATA_5);
 
         		// Send container.
         		getConference().send(c);

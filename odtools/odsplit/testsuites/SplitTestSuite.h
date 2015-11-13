@@ -124,7 +124,7 @@ class SplitTest : public CxxTest::TestSuite,
                 for(uint32_t i = 0; i < 200; i++) {
                     // Create regular container.
                     TimeStamp t(i, 0);
-                    Container c(Container::TIMESTAMP, t);
+                    Container c(t);
                     c.setReceivedTimeStamp(TimeStamp(i,500));
                     recorder.store(c);
 
@@ -137,7 +137,7 @@ class SplitTest : public CxxTest::TestSuite,
 
                     coredata::SharedData sd(memServer->getName(), memServer->getSize());
 
-                    Container c2(Container::SHARED_DATA, sd);
+                    Container c2(sd);
                     c2.setReceivedTimeStamp(TimeStamp(i,1000));
                     recorder.store(c2);
                 }

@@ -41,8 +41,8 @@ namespace vehiclecontext {
         using namespace hesperia::data::environment;
 
         SimplifiedBicycleModel::SimplifiedBicycleModel(const string &configuration) :
-			m_kvc(),
-			m_freq(0),
+            m_kvc(),
+            m_freq(0),
             m_wheelbase(1),
             m_maxSteeringLeftRad(0),
             m_maxSteeringRightRad(0),
@@ -63,14 +63,14 @@ namespace vehiclecontext {
             m_vehicleControl(),
             m_hasReceivedVehicleControl(false) {
 
-			// Create configuration object.
-			stringstream sstrConfiguration;
-			sstrConfiguration.str(configuration);
+            // Create configuration object.
+            stringstream sstrConfiguration;
+            sstrConfiguration.str(configuration);
             m_kvc.readFrom(sstrConfiguration);
-		}
+        }
 
         SimplifiedBicycleModel::SimplifiedBicycleModel(const float &freq, const string &configuration) :
-			m_kvc(),
+            m_kvc(),
             m_freq(freq),
             m_wheelbase(1),
             m_maxSteeringLeftRad(0),
@@ -273,11 +273,11 @@ namespace vehiclecontext {
                 cerr << "[SimplifiedBicycleModel] " << m_vehicleData.toString() << endl;
 
                 // Send EgoState to System-Under-Test.
-                Container c(Container::EGOSTATE, nextEgoState);
+                Container c(nextEgoState);
                 sender.sendToSystemsUnderTest(c);
 
                 // Send VehicleData to System-Under-Test.
-                Container c2(Container::VEHICLEDATA, m_vehicleData);
+                Container c2(m_vehicleData);
                 sender.sendToSystemsUnderTest(c2);
             }
             else {
@@ -288,11 +288,11 @@ namespace vehiclecontext {
                 cerr << "[SimplifiedBicycleModel] " << m_vehicleData.toString() << endl;
 
                 // Send EgoState to System-Under-Test.
-                Container c(Container::EGOSTATE, nextEgoState);
+                Container c(nextEgoState);
                 sender.sendToSystemsUnderTest(c);
 
                 // Send VehicleData to System-Under-Test.
-                Container c2(Container::VEHICLEDATA, m_vehicleData);
+                Container c2(m_vehicleData);
                 sender.sendToSystemsUnderTest(c2);
             }
 

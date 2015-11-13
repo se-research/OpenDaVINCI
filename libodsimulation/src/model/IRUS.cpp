@@ -261,8 +261,8 @@ namespace vehiclecontext {
                 // MSV: Store data for sensorboard.
                 sensorBoardData.putTo_MapOfDistances(sensor->getID(), m_distances[sensor->getName()]);
 
-        		// MSV: Create a container with type USER_DATA_0.
-        		Container c = Container(Container::USER_DATA_0, sensorBoardData);
+                // MSV: Create a container with type USER_DATA_0.
+                Container c = Container(sensorBoardData, Container::USER_DATA_0);
 
                 // MSV: Send container.
                 sender.sendToSystemsUnderTest(c);
@@ -282,7 +282,7 @@ namespace vehiclecontext {
                     FOVobstacle.setPolygon(FOV);
 
                     // Send obstacle.
-                    Container c = Container(Container::OBSTACLE, FOVobstacle);
+                    Container c = Container(FOVobstacle);
                     sender.sendToSystemsUnderTest(c);
                 }
             }

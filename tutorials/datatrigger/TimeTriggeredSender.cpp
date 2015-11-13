@@ -31,7 +31,7 @@ using namespace core::data;
 
 TimeTriggeredSender::TimeTriggeredSender(const int32_t &argc, char **argv) :
     TimeTriggeredConferenceClientModule(argc, argv, "TimeTriggeredSender")
-	{}
+    {}
 
 TimeTriggeredSender::~TimeTriggeredSender() {}
 
@@ -45,10 +45,10 @@ void TimeTriggeredSender::tearDown() {
 
 coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode TimeTriggeredSender::body() {
     uint32_t i = 0;
-	while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+    while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
         cout << "Sending " << i << "-th time stamp data...";
         TimeStamp ts(i, 2*i++);
-        Container c(Container::TIMESTAMP, ts);
+        Container c(ts);
         getConference().send(c);
         cout << "done." << endl;
     }

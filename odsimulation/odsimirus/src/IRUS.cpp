@@ -119,7 +119,7 @@ namespace irus {
                 polygonObstacle.setPolygon(p);
 
                 // Send obstacle.
-                Container c = Container(Container::OBSTACLE, polygonObstacle);
+                Container c = Container(polygonObstacle);
                 getConference().send(c);
 
                 cerr << "Found polygon: " << it->second.toString() << endl;
@@ -208,7 +208,7 @@ namespace irus {
             }
 
     		// MSV: Create a container with type USER_DATA_0.
-    		c = Container(Container::USER_DATA_0, sensorBoardData);
+    		c = Container(sensorBoardData, Container::USER_DATA_0);
 
             // MSV: Send container.
             getConference().send(c);
@@ -227,7 +227,7 @@ namespace irus {
                     FOVobstacle.setPolygon(FOV);
 
                     // Send obstacle.
-                    c = Container(Container::OBSTACLE, FOVobstacle);
+                    c = Container(FOVobstacle);
                     getConference().send(c);
                 }
             }
@@ -237,7 +237,7 @@ namespace irus {
         map<string, PointSensor*, core::strings::StringComparator>::const_iterator sensorIterator = m_mapOfPointSensors.begin();
         for (; sensorIterator != m_mapOfPointSensors.end(); sensorIterator++) {
             PointSensor *sensor = sensorIterator->second;
-            OPENDAVINCI_CORE_DELETE_POINTER(sensor);           
+            OPENDAVINCI_CORE_DELETE_POINTER(sensor);
         }
         m_mapOfPointSensors.clear();
 

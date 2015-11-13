@@ -126,27 +126,27 @@ class PlayerModuleTest : public CxxTest::TestSuite,
 
             // Write data.
             TimeStamp ts1(0, 1);
-            Container c1(Container::TIMESTAMP, ts1);
+            Container c1(ts1);
             c1.setReceivedTimeStamp(ts1);
             fout << c1;
 
             TimeStamp ts2(1, 2);
-            Container c2(Container::TIMESTAMP, ts2);
+            Container c2(ts2);
             c2.setReceivedTimeStamp(ts2);
             fout << c2;
 
             TimeStamp ts3(2, 3);
-            Container c3(Container::TIMESTAMP, ts3);
+            Container c3(ts3);
             c3.setReceivedTimeStamp(ts3);
             fout << c3;
 
             TimeStamp ts4(3, 4);
-            Container c4(Container::TIMESTAMP, ts4);
+            Container c4(ts4);
             c4.setReceivedTimeStamp(ts4);
             fout << c4;
 
             TimeStamp ts5(4, 5);
-            Container c5(Container::TIMESTAMP, ts5);
+            Container c5(ts5);
             c5.setReceivedTimeStamp(ts5);
             fout << c5;
 

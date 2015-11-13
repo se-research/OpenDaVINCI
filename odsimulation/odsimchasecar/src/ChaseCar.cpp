@@ -169,7 +169,7 @@ namespace chasecar {
             si.setBytesPerPixel(3);
             si.setName("ChaseCar");
 
-            Container c(Container::SHARED_IMAGE, si);
+            Container c(si);
             getConference().send(c);
         }
 

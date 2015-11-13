@@ -147,27 +147,27 @@ class RedirectorTest : public CxxTest::TestSuite,
             TS_ASSERT(fout.good());
 
             TimeStamp ts1(0, 1);
-            Container c1(Container::TIMESTAMP, ts1);
+            Container c1(ts1);
             fout << c1;
             fout.flush();
 
             TimeStamp ts2(1, 2);
-            Container c2(Container::TIMESTAMP, ts2);
+            Container c2(ts2);
             fout << c2;
             fout.flush();
 
             TimeStamp ts3(2, 3);
-            Container c3(Container::TIMESTAMP, ts3);
+            Container c3(ts3);
             fout << c3;
             fout.flush();
 
             TimeStamp ts4(3, 4);
-            Container c4(Container::TIMESTAMP, ts4);
+            Container c4(ts4);
             fout << c4;
             fout.flush();
 
             TimeStamp ts5(4, 5);
-            Container c5(Container::TIMESTAMP, ts5);
+            Container c5(ts5);
             fout << c5;
             fout.flush();
 

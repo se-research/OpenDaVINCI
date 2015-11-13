@@ -102,11 +102,11 @@ namespace vehicle {
             VehicleData vd = lbmn.getVehicleData();
             cerr << "VehicleData: '" << vd.toString() << "'" << endl;
 
-            Container container(Container::EGOSTATE, es);
+            Container container(es);
             getConference().send(container);
 
             // Send vehicledata.
-            Container c2(Container::VEHICLEDATA, vd);
+            Container c2(vd);
             getConference().send(c2);
         }
         return coredata::dmcp::ModuleExitCodeMessage::OKAY;
@@ -151,11 +151,11 @@ namespace vehicle {
             VehicleData vd = lbm.getVehicleData();
             cerr << "VehicleData: '" << vd.toString() << "'" << endl;
 
-            Container container(Container::EGOSTATE, es);
+            Container container(es);
             getConference().send(container);
 
             // Send vehicledata.
-            Container c2(Container::VEHICLEDATA, vd);
+            Container c2(vd);
             getConference().send(c2);
         }
         return coredata::dmcp::ModuleExitCodeMessage::OKAY;

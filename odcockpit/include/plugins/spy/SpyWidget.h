@@ -81,7 +81,7 @@ namespace cockpit {
 
                 private:
                     QTreeWidget* m_dataView;
-                    map<Container::DATATYPE, QTreeWidgetItem* > m_dataToType;
+                    map<int32_t, QTreeWidgetItem* > m_dataToType;
 
                     string DataToString(Container &container);
             };

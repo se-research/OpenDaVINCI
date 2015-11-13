@@ -176,7 +176,7 @@ namespace odredirector {
                         si.setBytesPerPixel(ci.getBytesPerPixel());
 
                         // Distribute the SharedImage information in the UDP multicast session.
-                        Container c2(Container::SHARED_IMAGE, si);
+                        Container c2(si);
                         getConference().send(c2);
                     }
                     else {

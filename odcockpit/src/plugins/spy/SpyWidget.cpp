@@ -87,8 +87,8 @@ namespace cockpit {
                 dataItem->setText(2, container.getSentTimeStamp().getYYYYMMDD_HHMMSSms().c_str());
                 m_dataToType[container.getDataType()]->insertChild(0, dataItem);
 
-                if (m_dataToType[container.getDataType()]->childCount() > 100000) {
-                    m_dataToType[container.getDataType()]->removeChild(m_dataToType[container.getDataType()]->takeChild(100000));
+                if (m_dataToType[container.getDataType()]->childCount() > 1000) {
+                    m_dataToType[container.getDataType()]->removeChild(m_dataToType[container.getDataType()]->takeChild(1000));
                 }
             }
 

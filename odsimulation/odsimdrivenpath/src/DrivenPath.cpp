@@ -91,7 +91,7 @@ namespace measurements {
             NamedLine l =(*it++);
 
             // Draw line.
-            Container c = Container(Container::DRAW_LINE, l);
+            Container c = Container(l);
             getConference().send(c);
 /*
             cout << "Lines;" << l.getName() << ";" << l.getA().getX()

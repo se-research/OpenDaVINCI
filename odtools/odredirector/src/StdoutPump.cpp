@@ -115,7 +115,7 @@ namespace odredirector {
                     OPENDAVINCI_CORE_FREE_POINTER(mem);
 
                     // Write the CompressedImage container to STDOUT.
-                    core::data::Container c(core::data::Container::COMPRESSED_IMAGE, ci);
+                    core::data::Container c(ci);
                     cout << c;
                 }
                 else {

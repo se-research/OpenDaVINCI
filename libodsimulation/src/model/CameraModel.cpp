@@ -279,7 +279,7 @@ namespace vehiclecontext {
                 glutPostRedisplay();
 
                 // Send next image.
-                Container c(Container::SHARED_IMAGE, m_sharedImage);
+                Container c(m_sharedImage);
                 sender.sendToSystemsUnderTest(c);
             }
         }
