@@ -35,15 +35,6 @@ namespace core {
                 m_sent(TimeStamp(0, 0)),
                 m_received(TimeStamp(0, 0)) {}
 
-        Container::Container(const DATATYPE &dataType, const SerializableData &serializableData) :
-                m_dataType(dataType),
-                m_serializedData(),
-                m_sent(TimeStamp(0, 0)),
-                m_received(TimeStamp(0, 0)) {
-            // Get data for container.
-            m_serializedData << serializableData;
-        }
-
         Container::Container(const SerializableData &serializableData) :
                 m_dataType(serializableData.getID()),
                 m_serializedData(),

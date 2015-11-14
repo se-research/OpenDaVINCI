@@ -157,16 +157,6 @@ namespace core {
             public:
                 Container();
 
-            private:
-                /**
-                 * Constructor.
-                 *
-                 * @param dataType Type of data inside this container.
-                 * @param serializableData Data to be serialized.
-                 */
-                Container(const DATATYPE &dataType, const SerializableData &serializableData);
-
-            public:
                 /**
                  * Constructor.
                  *
