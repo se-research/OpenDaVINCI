@@ -78,7 +78,7 @@ namespace cockpit {
             virtual void removeContainerListener(core::io::conference::ContainerListener *containerListener);
 
         protected:
-            virtual void distributeContainer(core::data::Container &c);
+            virtual void distributeContainer(core::data::Container c);
             virtual core::data::Container leaveContainer();
             virtual uint32_t getFIFOSize();
             virtual void waitForData();

@@ -50,8 +50,12 @@ namespace hesperia {
                 return (*this);
             }
 
-            int32_t EgoState::getID() const {
+            int32_t EgoState::ID() {
                 return 32;
+            }
+
+            int32_t EgoState::getID() const {
+                return EgoState::ID();
             }
 
             const string EgoState::getShortName() const {

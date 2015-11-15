@@ -26,6 +26,7 @@
 #include <cstring>
 
 #include "hesperia/data/environment/Position.h"
+#include "hesperia/data/environment/EgoState.h"
 #include "core/data/TimeStamp.h"
 
 #include "GeneratedHeaders_CoreData.h"
@@ -96,8 +97,14 @@ namespace cockpit {
             }
 
             string SpyWidget::DataToString(Container &container) {
+/*
                 if (container.getDataType() == coredata::dmcp::ModuleStatistics::ID()) {
                    return container.getData<coredata::dmcp::ModuleStatistics>().toString();
+                }
+*/
+
+                if (container.getDataType() == hesperia::data::environment::EgoState::ID()) {
+                   return container.getData<hesperia::data::environment::EgoState>().toString();
                 }
 
                 if (container.getDataType() == automotive::VehicleData::ID()) {

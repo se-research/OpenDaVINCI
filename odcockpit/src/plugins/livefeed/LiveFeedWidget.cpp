@@ -26,6 +26,7 @@
 #include <cstring>
 
 #include "hesperia/data/environment/Position.h"
+#include "hesperia/data/environment/EgoState.h"
 #include "core/data/TimeStamp.h"
 #include "core/reflection/MessageFromVisitableVisitor.h"
 #include "core/reflection/MessagePrettyPrinterVisitor.h"
@@ -114,18 +115,22 @@ namespace cockpit {
             }
 
             void LiveFeedWidget::transformContainerToTree(Container &container) {
+/*
                 if (container.getDataType() == coredata::dmcp::ModuleStatistics::ID()) {
                     coredata::dmcp::ModuleStatistics tmp = container.getData<coredata::dmcp::ModuleStatistics>();
                     if (dynamic_cast<Visitable*>(&tmp) != NULL) {
                         addMessageToTree(tmp.LongName(), container, tmp);
                     }
+                    return;
                 }
+*/
 
                 if (container.getDataType() == automotive::VehicleData::ID()) {
                     automotive::VehicleData tmp = container.getData<automotive::VehicleData>();
                     if (dynamic_cast<Visitable*>(&tmp) != NULL) {
                         addMessageToTree(tmp.LongName(), container, tmp);
                     }
+                    return;
                 }
 
 /*
