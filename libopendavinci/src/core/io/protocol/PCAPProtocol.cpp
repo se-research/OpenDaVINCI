@@ -128,20 +128,17 @@ namespace core {
                 if (foundPacketHeader && (ph.getIncl_len() > 0) && (streamSize >= ph.getIncl_len())) {
                     string payload(ph.getIncl_len(), '\0');
 
+                    // Get pointer to the beginning of the string to store the data.
                     char* begin = &(*payload.begin());
                     m_partialData.read(begin, ph.getIncl_len());
 
                     // Remove consumed part.
                     m_partialData.str(m_partialData.str().substr(ph.getIncl_len()));
 
+                    // Create packet.
                     pcap::Packet p(ph, payload);
-//cout << p.toString() << " " << endl;
-cout << ph.toString() << endl;
-//for(unsigned int i = 0; i < payload.size(); i++) {
-//    cout << hex << (int) (uint8_t)payload.at(i) << " ";
-//}
-//cout << dec << endl;
 
+                    // Create packet with the header and the payload.
                     Container c(Container::USER_DATA_2, p);
                     invokeContainerListener(c);
 

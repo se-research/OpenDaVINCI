@@ -33,29 +33,43 @@
 using namespace std;
 using namespace core::base;
 using namespace core::data;
-using namespace coredata::pcap;
+using namespace coredata;
 using namespace core::io::protocol;
 
 
 class PCAPTest : public CxxTest::TestSuite, public core::io::conference::ContainerListener {
     public:
+        bool passed;
 
         virtual void nextContainer(core::data::Container &c) {
-            cout << "Received container " << c.getDataType() << endl;
-        }
+            static int nextID = 1000;
 
-        void notestOut() {
-            fstream fin("dump.bin", ios::binary|ios::in);
-            while (fin.good()) {
-                char c;
-                fin.read(&c, sizeof(uint8_t));
-                cout << (int)c << " ";
+            cout << "Received container " << c.getDataType() << endl;
+
+            if (c.getDataType() == 1000) {
+                passed &= (c.getDataType() == nextID++);
             }
-            cout << endl;
-            fin.close();
+            if (c.getDataType() == 1001) {
+                passed &= (c.getDataType() == nextID++);
+            }
+            if (c.getDataType() == 1002) {
+                // Here, we have a valid packet.
+                passed &= (c.getDataType() == nextID);
+                nextID = 1001;
+
+                {
+                    pcap::Packet packet = c.getData<pcap::Packet>();
+                    pcap::PacketHeader packetHeader = packet.getHeader();
+                    const string payload = packet.getPayload();
+
+                    cout << packetHeader.toString() << endl;
+                    cout << "Payload: '" << payload << "'" << endl;
+                }
+            }
         }
 
         void testPCAPDecoding() {
+            passed = true;
             stringstream rawDataStream;
 
             // Serialized raw data (pcap excerpt).
@@ -72,6 +86,8 @@ class PCAPTest : public CxxTest::TestSuite, public core::io::conference::Contain
             PCAPProtocol pcap;
             pcap.setContainerListener(this);
             pcap.nextString(rawDataStream.str());
+
+            TS_ASSERT(passed);
         }
 
 };
