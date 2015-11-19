@@ -53,7 +53,7 @@ namespace core {
 
                 m_partialData.write(s.c_str(), s.length());
 
-                while (tryConsumingData()) {}
+                while (tryConsumingData());
             }
 
             bool PCAPProtocol::tryConsumingData() {
@@ -72,8 +72,6 @@ namespace core {
                 m_partialData.seekg(0, ios_base::end);
                 const uint32_t streamSize = m_partialData.tellg();
                 m_partialData.seekg(0, ios_base::beg);
-
-cout << "Stream size = " << streamSize << endl;
 
                 // State 1: Consume global header (once!).
                 if (!foundHeader) {
@@ -95,7 +93,6 @@ cout << "Stream size = " << streamSize << endl;
                         foundHeader = true;
 
                         pcap::GlobalHeader gh(magic_number, version_major, version_minor, thiszone, sigfigs, snaplen, network);
-cout << gh.toString() << endl;
 
                         Container c(Container::USER_DATA_0, gh);
                         invokeContainerListener(c);
@@ -105,7 +102,7 @@ cout << gh.toString() << endl;
                 }
 
                 // State 2: Consume packet header.
-                if (!foundPacketHeader) {
+                if (foundHeader && !foundPacketHeader) {
                     // Did we receive at least the global header?
                     if (streamSize >= SIZE_PACKET_HEADER) {
                         // Consume packet header.
@@ -119,7 +116,6 @@ cout << gh.toString() << endl;
                         foundPacketHeader = true;
 
                         ph = pcap::PacketHeader(ts_sec, ts_usec, incl_len, orig_len);
-cout << ph.toString() << " " << endl;
 
                         Container c(Container::USER_DATA_1, ph);
                         invokeContainerListener(c);
@@ -129,7 +125,7 @@ cout << ph.toString() << " " << endl;
                 }
 
                 // State 3: Consume packet's payload.
-                if ((ph.getIncl_len() > 0) && (streamSize >= ph.getIncl_len())) {
+                if (foundPacketHeader && (ph.getIncl_len() > 0) && (streamSize >= ph.getIncl_len())) {
                     string payload(ph.getIncl_len(), '\0');
 
                     char* begin = &(*payload.begin());
@@ -139,7 +135,12 @@ cout << ph.toString() << " " << endl;
                     m_partialData.str(m_partialData.str().substr(ph.getIncl_len()));
 
                     pcap::Packet p(ph, payload);
-cout << p.toString() << " " << endl;
+//cout << p.toString() << " " << endl;
+cout << ph.toString() << endl;
+//for(unsigned int i = 0; i < payload.size(); i++) {
+//    cout << hex << (int) (uint8_t)payload.at(i) << " ";
+//}
+//cout << dec << endl;
 
                     Container c(Container::USER_DATA_2, p);
                     invokeContainerListener(c);
