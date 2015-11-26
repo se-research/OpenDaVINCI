@@ -221,6 +221,20 @@ class PCAPTest : public CxxTest::TestSuite, public core::io::conference::Contain
             fin.close();
         }*/
 
+        void HANGPCAPDecodingFromFile() {
+            PCAPProtocol pcap;
+            pcap.setContainerListener(this);
+
+            fstream fin("a_given_recording.pcap", ios::binary|ios::in);
+            while (fin.good()) {
+                char c;
+                fin.read(&c, sizeof(uint8_t));
+                string s(c, 1);
+                pcap.nextString(s);
+            }
+            fin.close();
+        }
+
         void testPCAPDecoding() {
             passed = true;
             stringstream rawDataStream;
