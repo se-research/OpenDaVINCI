@@ -135,7 +135,7 @@ message automotive.carolocup.Sensors [id = 87] {
 
 message automotive.carolocup.Control [id = 88] {
     uint32 steering [id = 1];
-    uint32 acceleration [id = 2];
+    uint32 speed [id = 2];
     uint32 lights [id = 3]; // 0 = no lights, 1 = brake lights, 2 = blinking left, 4 = blinking right, 8 = emergency light
     uint32 gyroTrigger [id = 4];
 }
