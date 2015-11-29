@@ -71,7 +71,7 @@ const double horizOffsetCorrection[64]={2.5999999,-2.5999999,2.5999999,-2.599999
 2.5999999,-2.5999999,2.5999999,-2.5999999,2.5999999,-2.5999999,2.5999999,-2.5999999,
 2.5999999,-2.5999999,2.5999999,-2.5999999,2.5999999,-2.5999999,2.5999999,-2.5999999};*/
 
-long blockNr=0;
+int packetNr(0);
 
 
 using namespace std;
@@ -79,24 +79,6 @@ using namespace core::base;
 using namespace core::data;
 using namespace coredata;
 using namespace core::io::protocol;
-
-//This function takes two integers as the input, and merge their hex formats as a combined string
-/*int get2Bytes(int first,int second)
-{
-    stringstream headerStream;
-    int result;
-    if(first>15)
-    {
-        headerStream<<hex<<second<<first;
-    }
-    else
-    {
-        headerStream<<hex<<second<<"0"<<first;
-    }    
-    headerStream>>hex>>result;
-    return result;
-}*/
-
                 
 class PCAPTest : public CxxTest::TestSuite, public core::io::conference::ContainerListener {
     public:
@@ -112,125 +94,125 @@ class PCAPTest : public CxxTest::TestSuite, public core::io::conference::Contain
             }
             if (c.getDataType() == 1001) {
                 passed &= (c.getDataType() == nextID++);
+                packetNr++;
+                cout<<"Received "<<packetNr<<" packets!"<<endl;
             }
             if (c.getDataType() == 1002) {
                 // Here, we have a valid packet.
                 passed &= (c.getDataType() == nextID);
                 nextID = 1001;
+                if(packetNr>=50)//We only store data from the first 50 packets
+                {
+                    cout<<"Enough!"<<endl;
+                    return;
+                }
 
                 {
                     pcap::Packet packet = c.getData<pcap::Packet>();
                     pcap::PacketHeader packetHeader = packet.getHeader();
-                    const string payload = packet.getPayload();
-                    cout << packetHeader.toString() << endl;
-                    string dataToDecode=payload.substr(42);
-                    /*for(int index=0;index<100;index++)
+                    if(packetHeader.getIncl_len()==1248)
                     {
-                        cout<<hex<<(unsigned int)(uint8_t)(dataToDecode.at(index))<<" ";
-                    }
-                    cout<<endl;*/
+                        const string payload = packet.getPayload();
+                        //cout << packetHeader.toString() << endl;
+                        string dataToDecode=payload.substr(42);
+                        /*for(int index=0;index<100;index++)
+                        {
+                         cout<<hex<<(unsigned int)(uint8_t)(dataToDecode.at(index))<<" ";
+                        }
+                        cout<<endl;*/
                     
-                    //A packet consists of 12 blocks with 100 bytes each. Decode each block separately.
-                    int firstByte,secondByte,dataValue;
-                    for(int index=0;index<12;index++)
-                    {
-                        blockNr++;
-                        cout<<"Block numer: "<<blockNr<<endl;
-                        //cout.setf(ios::hex);    
-                        //Decode header information: 2 bytes                    
-                        firstByte=(unsigned int)(uint8_t)(dataToDecode.at(0));
-                        secondByte=(unsigned int)(uint8_t)(dataToDecode.at(1));
-                        dataValue=ntohs(firstByte*256+secondByte);
-                        //dataValue=get2Bytes(firstByte,secondByte);//A sensor block ID is expected to be either 0xddff or 0xeeff
-                        cout<<"Sensor block ID: "<<hex<<dataValue<<endl;
-                        TS_ASSERT(dataValue==0xddff||dataValue==0xeeff);
-                        if(dataValue==0xddff)
-                        {
-                            upperBlock=false;
-                            cout<<"Lower block"<<endl;
-                        }
-                        else
-                        {
-                            upperBlock=true;
-                            cout<<"Upper block"<<endl;
-                        }
-                        dataToDecode=dataToDecode.substr(2);
-
-                        //Decode rotational information: 2 bytes
-                        firstByte=(unsigned int)(uint8_t)(dataToDecode.at(0));
-                        secondByte=(unsigned int)(uint8_t)(dataToDecode.at(1));
-                        dataValue=ntohs(firstByte*256+secondByte);                        
-                        //dataValue=get2Bytes(firstByte,secondByte);
-                        double rotation=static_cast<double>(dataValue/100.00);
-                        TS_ASSERT(rotation>=0 && rotation<360.00);
-                        cout<<"Rotation: "<<rotation<<" degrees"<<endl;
-                        dataToDecode=dataToDecode.substr(2);
-
-                        cout.unsetf(ios::hex);
-                        //Decode distance information and intensity of each sensor in a block
-                        cout<<"Distances (calibrated): ";
-                        for(int counter=0;counter<32;counter++)
-                        {
-                            //Decode distance: 2 bytes
+                        //A packet consists of 12 blocks with 100 bytes each. Decode each block separately.
+                        int firstByte,secondByte,dataValue;
+                        ofstream outputData("LidarSensorData.csv", std::ios_base::app | std::ios_base::out);
+                        for(int index=0;index<12;index++)
+                        {   
+                            //Decode header information: 2 bytes                    
                             firstByte=(unsigned int)(uint8_t)(dataToDecode.at(0));
                             secondByte=(unsigned int)(uint8_t)(dataToDecode.at(1));
                             dataValue=ntohs(firstByte*256+secondByte);
-                            //dataValue=get2Bytes(firstByte,secondByte);
-                            distance[counter]=static_cast<double>(dataValue*0.200/100.000);
-                            if(upperBlock)
-                                distance[counter]=distance[counter]+distCorrection[counter];
+                            //dataValue=get2Bytes(firstByte,secondByte);//A sensor block ID is expected to be either 0xddff or 0xeeff
+                            //cout<<"Sensor block ID: "<<hex<<dataValue<<endl;
+                            TS_ASSERT(dataValue==0xddff||dataValue==0xeeff);
+                            if(dataValue==0xddff)
+                            {
+                                upperBlock=false;
+                                //cout<<"Lower block"<<endl;
+                            }
                             else
-                                distance[counter]=distance[counter]+distCorrection[counter+32]/100;
-                            cout<<distance[counter]<<" ";
+                            {
+                                upperBlock=true;
+                                //cout<<"Upper block"<<endl;
+                            }
+                            dataToDecode=dataToDecode.substr(2);
+
+                            //Decode rotational information: 2 bytes
+                            firstByte=(unsigned int)(uint8_t)(dataToDecode.at(0));
+                            secondByte=(unsigned int)(uint8_t)(dataToDecode.at(1));
+                            dataValue=ntohs(firstByte*256+secondByte);                        
+                            //dataValue=get2Bytes(firstByte,secondByte);
+                            double rotation=static_cast<double>(dataValue/100.00);
+                            TS_ASSERT(rotation>=0 && rotation<360.00);
+                            //cout<<"Rotation: "<<rotation<<" degrees"<<endl;
+                            dataToDecode=dataToDecode.substr(2);
+
+                            cout.unsetf(ios::hex);
+                            //Decode distance information and intensity of each sensor in a block
+                            //cout<<"Distances (calibrated): ";
+                            for(int counter=0;counter<32;counter++)
+                            {
+                                //Decode distance: 2 bytes
+                                int sensorID(0);
+                                if(upperBlock)
+                                    sensorID=counter;
+                                else
+                                    sensorID=counter+32;
+                                firstByte=(unsigned int)(uint8_t)(dataToDecode.at(0));
+                                secondByte=(unsigned int)(uint8_t)(dataToDecode.at(1));
+                                dataValue=ntohs(firstByte*256+secondByte);
+                                //dataValue=get2Bytes(firstByte,secondByte);
+                                distance[counter]=static_cast<double>(dataValue*0.200/100.000);
+                                if(upperBlock)
+                                    distance[counter]=distance[counter]+distCorrection[counter]/100;
+                                else
+                                    distance[counter]=distance[counter]+distCorrection[counter+32]/100;
+                                //cout<<distance[counter]<<" ";
     
-                            //Decode intensity: 1 byte
-                            intensity[counter]=(unsigned int)(uint8_t)(dataToDecode.at(2));
-                            dataToDecode=dataToDecode.substr(3);
+                                //Decode intensity: 1 byte
+                                intensity[counter]=(unsigned int)(uint8_t)(dataToDecode.at(2));
+                                dataToDecode=dataToDecode.substr(3);
+                                outputData<<sensorID<<".0,"<<distance[counter]<<","<<intensity[counter]<<".0"<<endl;
+                            }
+                            /*cout<<endl<<"Intensities: ";
+                            for(int counter=0;counter<32;counter++)
+                                cout<<intensity[counter]<<" ";
+                            cout<<endl;    */                
                         }
-                        cout<<endl<<"Intensities: ";
-                        for(int counter=0;counter<32;counter++)
-                            cout<<intensity[counter]<<" ";
-                        cout<<endl;                    
-                    }
                         
-                    //Decode 6 status bytes
-                    if(dataToDecode.substr(2,4)=="DegC")
-                    {
-                        firstByte=(unsigned int)(uint8_t)(dataToDecode.at(0));
-                        secondByte=(unsigned int)(uint8_t)(dataToDecode.at(1));
-                        double temperature=static_cast<double>(secondByte+firstByte/256.00);
-                        //double temperature=getTemperature(secondByte,firstByte);
-                        cout<<"Temperature: "<<temperature<<"DegC"<<endl;
-                    }
-                    else
-                        cout<<"Firmware version: "<<dataToDecode.substr(2,4)<<endl;
-                    //withTemperature=!withTemperature;
-                    if(dataToDecode.size()>6)
-                        dataToDecode=dataToDecode.substr(6);
+                        //Decode 6 status bytes
+                        /*if(dataToDecode.substr(2,4)=="DegC")
+                        {
+                            firstByte=(unsigned int)(uint8_t)(dataToDecode.at(0));
+                            secondByte=(unsigned int)(uint8_t)(dataToDecode.at(1));
+                            double temperature=static_cast<double>(secondByte+firstByte/256.00);
+                            double temperature=getTemperature(secondByte,firstByte);
+                            cout<<"Temperature: "<<temperature<<"DegC"<<endl;
+                        }
+                        else
+                            cout<<"Firmware version: "<<dataToDecode.substr(2,4)<<endl;*/
+                        //withTemperature=!withTemperature;
                     
-                    //cout.unsetf(ios::hex);
-                    //cout << "Payload: '" << payload << "'" << endl;
-                                
+                        //cout.unsetf(ios::hex);
+                        //cout << "Payload: '" << payload << "'" << endl;
+                    }             
                 }
             }
         }
-
-    /*void notestOut() {
-            fstream fin("dump.bin", ios::binary|ios::in);
-            while (fin.good()) {
-                char c;
-                fin.read(&c, sizeof(uint8_t));
-                cout << (int)c << " ";
-            }
-            cout << endl;
-            fin.close();
-        }*/
 
         void testPCAPDecodingFromFile() {
             PCAPProtocol pcap;
             pcap.setContainerListener(this);
 
-            fstream fin("poleonright.pcap", ios::binary|ios::in);
+            fstream fin("atwall.pcap", ios::binary|ios::in);
             while (fin.good()) {
                 char c;
                 fin.read(&c, sizeof(uint8_t));
