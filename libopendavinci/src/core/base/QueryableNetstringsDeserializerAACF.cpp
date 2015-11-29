@@ -322,11 +322,21 @@ namespace core {
                 m_buffer.read(reinterpret_cast<char *>(&stringLength), sizeof(uint32_t));
                 stringLength = ntohl(stringLength);
 
+// Win32 does not deal properly with the iterator.
+#ifdef WIN32
+                char *str = new char[stringLength+1];
+                m_buffer.read(str, stringLength);
+                str[stringLength] = '\0';
+                // It is absolutely necessary to specify the size of the serialized string, otherwise, s contains only data until the first '\0' is read.
+                v = string(str, stringLength);
+                OPENDAVINCI_CORE_DELETE_ARRAY(str);
+#else
                 string data(stringLength, '\0');
                 char* begin = &(*data.begin());
                 m_buffer.read(begin, stringLength);
 
                 v = data;
+#endif
             }
         }
 

@@ -130,6 +130,7 @@ message automotive.carolocup.Sensors [id = 87] {
     uint32 wheelRearLeft [id = 8];
     uint32 wheelRearRight [id = 9];
     uint32 buttonState [id = 10];
+    uint32 lightReading [id = 11];
 }
 
 message automotive.carolocup.Control [id = 88] {
