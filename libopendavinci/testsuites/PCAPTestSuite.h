@@ -29,8 +29,9 @@
 #include "core/io/protocol/PCAPProtocol.h"
 
 #include "GeneratedHeaders_CoreData.h"
+#include <cmath>
 
-/*const double rotCorrection[64]={-5.3328056,-3.2344019,2.4376695,4.7373252,-1.0502493,1.2386309,-1.8405367,0.4511103,
+const double rotCorrection[64]={-5.3328056,-3.2344019,2.4376695,4.7373252,-1.0502493,1.2386309,-1.8405367,0.4511103,
                                 3.2611551,5.4685535,2.4743285,4.7189918,-5.3511744,-3.1158857,-6.1270261,-3.852011,
                                 -1.1109436,1.1519098,-1.8682934,0.43604341,3.1763444,5.4284201,2.4024715,4.6698937,
                                 -5.3977456,-3.1504908,-6.1759849,-3.8819003,-1.1136208,1.0969903,-1.9088749,0.36758029,
@@ -45,7 +46,7 @@ const double vertCorrection[64]={-7.2988362,-6.9644198,0.250889,0.55538797,-6.64
                                 -22.597513,-22.397568,-11.576517,-10.877901,-21.935509,-21.409546,-25.066507,-24.458101,
                                 -20.777454,-20.243195,-23.863358,-23.352007,-16.629311,-16.230633,-19.788239,-19.21587,
                                 -15.754419,-15.166914,-18.828558,-18.312876,-14.641928,-14.048302,-17.687857,-17.16544,
-                                -10.436752,-10.085198,-13.484814,-13.107666,-9.5621262,-9.0374413,-12.651329,-12.115005};*/
+                                -10.436752,-10.085198,-13.484814,-13.107666,-9.5621262,-9.0374413,-12.651329,-12.115005};
 const double distCorrection[64]={111.0,146.0,131.76823,138.12656,119.0,135.0,132.0,145.0,
                                 116.0,133.99889,117.0,145.0,118.71672,142.90839,120.0,137.0,
                                 101.71324,145.31258,130.0,147.0,115.82812,146.0,129.29713,157.97737,
@@ -54,7 +55,7 @@ const double distCorrection[64]={111.0,146.0,131.76823,138.12656,119.0,135.0,132
                                 106.0,97.0,115.0,92.0,135.0,108.0,135.0,98.0,
                                 116.0,105.0,138.0,105.0,123.0,86.0,135.0,92.0,
                                 121.0,103.0,146.0,99.0,123.0,106.0,134.0,104.0,};
-/*const double vertOffsetCorrection[64]={19.736338,19.778963,20.688799,20.727015,19.82012,19.868624,19.561426,19.606993,
+const double vertOffsetCorrection[64]={19.736338,19.778963,20.688799,20.727015,19.82012,19.868624,19.561426,19.606993,
                                 19.909781,19.953875,19.648148,19.692244,20.249313,20.29929,20.00238,20.039125,
                                 20.343384,20.38307,20.081753,20.128786,20.431576,20.469791,20.169943,20.218447,
                                 20.768169,20.812265,20.509478,20.549164,20.856361,20.898987,20.596197,20.641764,
@@ -69,7 +70,10 @@ const double horizOffsetCorrection[64]={2.5999999,-2.5999999,2.5999999,-2.599999
 2.5999999,-2.5999999,2.5999999,-2.5999999,2.5999999,-2.5999999,2.5999999,-2.5999999,
 2.5999999,-2.5999999,2.5999999,-2.5999999,2.5999999,-2.5999999,2.5999999,-2.5999999,
 2.5999999,-2.5999999,2.5999999,-2.5999999,2.5999999,-2.5999999,2.5999999,-2.5999999,
-2.5999999,-2.5999999,2.5999999,-2.5999999,2.5999999,-2.5999999,2.5999999,-2.5999999};*/
+2.5999999,-2.5999999,2.5999999,-2.5999999,2.5999999,-2.5999999,2.5999999,-2.5999999};
+
+const double PI=3.1415926;
+#define toRadian(x) ((x)*PI/180.0)
 
 int packetNr(0);
 
@@ -101,7 +105,7 @@ class PCAPTest : public CxxTest::TestSuite, public core::io::conference::Contain
                 // Here, we have a valid packet.
                 passed &= (c.getDataType() == nextID);
                 nextID = 1001;
-                if(packetNr>=50)//We only store data from the first 50 packets
+                if(packetNr>=42)//We only store data from the first 42 packets
                 {
                     cout<<"Enough!"<<endl;
                     return;
@@ -171,16 +175,23 @@ class PCAPTest : public CxxTest::TestSuite, public core::io::conference::Contain
                                 dataValue=ntohs(firstByte*256+secondByte);
                                 //dataValue=get2Bytes(firstByte,secondByte);
                                 distance[counter]=static_cast<double>(dataValue*0.200/100.000);
-                                if(upperBlock)
-                                    distance[counter]=distance[counter]+distCorrection[counter]/100;
-                                else
-                                    distance[counter]=distance[counter]+distCorrection[counter+32]/100;
+                                //if(upperBlock)
+                                    distance[counter]=distance[counter]+distCorrection[sensorID]/100;
+                                //else
+                                    //distance[counter]=distance[counter]+distCorrection[counter+32]/100;
                                 //cout<<distance[counter]<<" ";
+                                double xyDistance=distance[counter]*cos(toRadian(vertCorrection[sensorID]));
+                                coordinate[0]=xyDistance*sin(toRadian(rotation-rotCorrection[sensorID]))
+                                    -horizOffsetCorrection[sensorID]/100.0*cos(toRadian(rotation-rotCorrection[sensorID]));
+                                coordinate[1]=xyDistance*cos(toRadian(rotation-rotCorrection[sensorID]))
+                                    +horizOffsetCorrection[sensorID]/100.0*sin(toRadian(rotation-rotCorrection[sensorID]));
+                                coordinate[2]=distance[counter]*sin(toRadian(vertCorrection[sensorID]))+vertOffsetCorrection[sensorID]/100.0;
     
                                 //Decode intensity: 1 byte
                                 intensity[counter]=(unsigned int)(uint8_t)(dataToDecode.at(2));
                                 dataToDecode=dataToDecode.substr(3);
-                                outputData<<sensorID<<".0,"<<distance[counter]<<","<<intensity[counter]<<".0"<<endl;
+                                outputData<<sensorID<<".0,"<<distance[counter]<<","<<intensity[counter]<<".0,"
+                                    <<rotation<<","<<coordinate[0]<<","<<coordinate[1]<<","<<coordinate[2]<<endl;
                             }
                             /*cout<<endl<<"Intensities: ";
                             for(int counter=0;counter<32;counter++)
@@ -256,6 +267,7 @@ private:
     int intensity[32];
     //bool withTemperature;
     bool upperBlock;
+    double coordinate[3];
 };
 
 #endif /*CORE_PCAPTESTSUITE_H_*/
