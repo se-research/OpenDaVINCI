@@ -607,22 +607,25 @@ namespace canmapping {
 			// reset right-hand side of bit field
 			«tempVarName»=«tempVarName» >> (64-«canSignals.get(signalName).m_length»);
 			
-			«IF canSignals.get(signalName).m_endian.compareTo("big")==0»
-			// 4.2 Optional: Fix endianness depending on CAN message specification.
-			«IF Integer.parseInt(canSignals.get(signalName).m_length)<=16»
-			«ELSEIF Integer.parseInt(canSignals.get(signalName).m_length)<=16»
-			uint16_t temp_cast=static_cast<uint16_t>(«tempVarName»);
-			temp_cast=ntohs(temp_cast);
-			«tempVarName» = static_cast<uint64_t>(temp_cast);
-			«ELSEIF Integer.parseInt(canSignals.get(signalName).m_length)<=32»
-			uint32_t temp_cast=static_cast<uint32_t>(«tempVarName»);
-			temp_cast=ntohl(temp_cast);
-			«tempVarName» = static_cast<uint64_t>(temp_cast);
-			«ELSEIF Integer.parseInt(canSignals.get(signalName).m_length)<=64»
-			«tempVarName» = ntohll(«tempVarName»);
-			«ENDIF»
+			«IF Integer.parseInt(canSignals.get(signalName).m_length)>=8»
+				«IF canSignals.get(signalName).m_endian.compareTo("big")==0»
+				// 4.2 Optional: Fix endianness depending on CAN message specification.
+					«IF Integer.parseInt(canSignals.get(signalName).m_length)<=16»
+					uint16_t temp_cast=static_cast<uint16_t>(«tempVarName»);
+					temp_cast=ntohs(temp_cast);
+					«tempVarName» = static_cast<uint64_t>(temp_cast);
+					«ELSEIF Integer.parseInt(canSignals.get(signalName).m_length)<=32»
+					uint32_t temp_cast=static_cast<uint32_t>(«tempVarName»);
+					temp_cast=ntohl(temp_cast);
+					«tempVarName» = static_cast<uint64_t>(temp_cast);
+					«ELSEIF Integer.parseInt(canSignals.get(signalName).m_length)<=64»
+					«tempVarName» = ntohll(«tempVarName»);
+					«ENDIF»
+				«ELSE»
+				// 4.2 Endianness doesn't need fixing, skipping this step.
+				«ENDIF»
 			«ELSE»
-			// 4.2 Endianness doesn't need fixing, skipping this step.
+				// 4.2 Field too short for endianness adjustment, skipping this step.
 			«ENDIF»
 	
 			// variable holding the transformed value
