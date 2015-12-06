@@ -30,6 +30,7 @@
 #include "GeneratedHeaders_AutomotiveData.h"
 #include "hesperia/data/environment/Point3.h"
 #include "hesperia/data/environment/Obstacle.h"
+#include "hesperia/data/planning/Route.h"
 #include "hesperia/scenario/SCNXArchive.h"
 #include "hesperia/scenario/SCNXArchiveFactory.h"
 
@@ -83,7 +84,8 @@ namespace cockpit {
                 m_egoCar(NULL),
                 m_egoCarTrace(NULL),
                 m_obstaclesRoot(NULL),
-                m_mapOfObstacles() {
+                m_mapOfObstacles(),
+                m_plannedRoute(NULL) {
 
                 m_root->addChild(m_scales);
                 m_root->addChild(m_stationaryElements);
@@ -168,6 +170,9 @@ namespace cockpit {
 
                 m_egoCarTrace = new SceneNode(SceneNodeDescriptor("EgoCar (Trace)"));
                 m_dynamicElements->addChild(m_egoCarTrace);
+
+                m_plannedRoute = new SceneNode(SceneNodeDescriptor("Planned Route"));
+                m_dynamicElements->addChild(m_plannedRoute);
 
                 // EgoCar is assignable.
                 m_listOfCameraAssignableNodes.push_back(egoStateNodeDescriptor);
@@ -328,6 +333,27 @@ namespace cockpit {
                         m_egoCarTrace->addChild(line);
 
                         m_lastEgoState = m_egoState;
+                    }
+                }
+
+                if (c.getDataType() == Container::ROUTE) {
+                    if (m_plannedRoute != NULL) {
+                        Lock l(m_rootMutex);
+                        hesperia::data::planning::Route r = c.getData<hesperia::data::planning::Route>();
+                        vector<Point3> listOfVertices = r.getListOfPoints();
+                        const uint32_t SIZE = listOfVertices.size();
+                        if (SIZE > 0) {
+                            m_plannedRoute->deleteAllChildren();
+                            for (uint32_t i = 0; i < SIZE - 1; i++) {
+                                Point3 posA = listOfVertices.at(i);
+                                posA.setZ(0.05);
+
+                                Point3 posB = listOfVertices.at(i+1);
+                                posB.setZ(0.05);
+
+                                m_plannedRoute->addChild(new hesperia::scenegraph::primitives::Line(m_plannedRoute->getSceneNodeDescriptor(), posA, posB, Point3(0.84, 1, 1), 4));
+                            }
+                        }
                     }
                 }
 

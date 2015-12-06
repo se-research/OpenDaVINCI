@@ -38,6 +38,7 @@ ADD_SUBDIRECTORY (lanefollower)
 ADD_SUBDIRECTORY (overtaker)
 ADD_SUBDIRECTORY (proxy)
 ADD_SUBDIRECTORY (sidewaysparker)
+ADD_SUBDIRECTORY (simpledriver)
 ADD_SUBDIRECTORY (VCR)
 
 ###########################################################################
