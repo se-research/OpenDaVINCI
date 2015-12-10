@@ -87,7 +87,7 @@ IF(${BUILD_ODCANDATASTRUCTUREGENERATOR})
     ExternalProject_Add (libcanmessagemapping-cleanup
         DEPENDS odCANDataStructureGenerator
         DOWNLOAD_COMMAND ""
-        UPDATE_COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_SOURCE_DIR}/libsimple
+        UPDATE_COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_SOURCE_DIR}/libcanmessagemapping
         PATCH_COMMAND ""
         SOURCE_DIR ""
         CONFIGURE_COMMAND ""

@@ -68,6 +68,8 @@ INSTALL(FILES "${CMAKE_BINARY_DIR}/odCANDataStructureGenerator-latest.jar" DESTI
 # Install CMake modules locally.
 IF(UNIX)
     INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindodCANDataStructureGenerator.cmake" DESTINATION share/cmake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT odCANDataStructureGenerator)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindodCANDataStructureGenerator.cmake" DESTINATION share/cmake-2.8/Modules COMPONENT odCANDataStructureGenerator)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindodCANDataStructureGenerator.cmake" DESTINATION share/cmake-3.0/Modules COMPONENT odCANDataStructureGenerator)
 ENDIF()
 IF(WIN32)
     INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindodCANDataStructureGenerator.cmake" DESTINATION CMake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT odCANDataStructureGenerator)

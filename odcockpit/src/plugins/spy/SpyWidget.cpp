@@ -93,8 +93,6 @@ namespace cockpit {
             }
 
             string SpyWidget::DataToString(Container &container) {
-                stringstream cs;
-
                 switch (container.getDataType()) {
                     case Container::CONFIGURATION:
                        return container.getData<coredata::Configuration> ().toString();
@@ -132,9 +130,11 @@ namespace cockpit {
                        return container.getData<automotive::GenericCANMessage> ().toString();
                     case Container::WHEELSPEED:
                        return container.getData<automotive::vehicle::WheelSpeed> ().toString();
-                    default :
-                       cs << container;
-                       return cs.str();
+                    default:{
+                        stringstream sstrType;
+                        sstrType << "Type: " << container.getDataType() << ": " << container;
+                        return sstrType.str();
+                    }
                 }
             }
         }
