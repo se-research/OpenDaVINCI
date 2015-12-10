@@ -83,6 +83,7 @@ Lastly, IF you are connected to a real car, run:
 
 ELSE if you have recording files, run:
 
-	$ ./odcanascreplay --cid=111 < OpenDaVINCI/automotive/odcantools/odcanascreplay/example/example.asc
+	$ ./odcanascreplay --cid=111 < The/path/of/the/recording/file
 	$ LD_LIBRARY_PATH=/opt/od/lib ./odcanmapper --cid=111
 
+An example recording file example.asc can be found in OpenDaVINCI/automotive/odcantools/odcanascreplay/example/example.asc.
