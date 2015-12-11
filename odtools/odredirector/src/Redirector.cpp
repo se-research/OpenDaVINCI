@@ -103,11 +103,43 @@ namespace odredirector {
 
         while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
             if (m_fromstdin) {
-                while (cin.good()) {
-                    Container c;
-                    cin >> c;
+                stringstream partialData;
 
-                    // Please note that reading from stin does not evaluate sending latencies.
+                while (cin.good()) {
+                    char _c = 0;
+                    cin.read(&_c, sizeof(char));
+
+                    // Add new bytes at the end.
+                    partialData.seekg(0, ios_base::end);
+                    partialData.write(&_c, sizeof(char));
+
+                    // Get size of stringstream.
+                    partialData.seekg(0, ios_base::end);
+                    const uint32_t streamSize = partialData.tellg();
+                    partialData.seekg(0, ios_base::beg);
+
+                    // Check for header with size information (4 bytes).
+                    if (streamSize <= sizeof(uint32_t)) continue;
+
+                    // Extract size information.
+                    partialData.seekg(0, ios_base::beg);
+                    uint32_t dataSize = 0;
+                    partialData.read(reinterpret_cast<char*>(&dataSize), sizeof(uint32_t));
+                    dataSize = ntohl(dataSize);
+
+                    // Check if we have enough bytes.
+                    if (streamSize < (dataSize + sizeof(uint32_t))) continue;
+
+                    // Move to the beginning of the container.
+                    partialData.seekg(sizeof(uint32_t), ios_base::beg);
+
+                    Container c;
+                    partialData >> c;
+
+                    // Enough data for at least one Container.
+                    partialData.str(partialData.str().substr(dataSize + sizeof(uint32_t)));
+
+                    // Please note that reading from stdin does not evaluate sending latencies.
 
                     // Compressed images are transformed into regular shared images again.
                     if (c.getDataType() == Container::COMPRESSED_IMAGE) {
