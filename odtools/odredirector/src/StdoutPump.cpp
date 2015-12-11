@@ -45,6 +45,7 @@ namespace odredirector {
 
     void StdoutPump::add(const core::data::Container &container) {
         stringstream sstr;
+
         // SharedImages are transformed into compressed images using JPEG compression.
         if (container.getDataType() == core::data::Container::SHARED_IMAGE) {
             coredata::image::SharedImage si = const_cast<core::data::Container&>(container).getData<coredata::image::SharedImage>();

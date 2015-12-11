@@ -106,23 +106,27 @@ namespace odredirector {
                 // Buffer for reading bytes.
                 stringstream partialData;
 
+                // Minimum amount of bytes to read.
+                uint32_t minimumAmountOfBytesToRead = sizeof(uint32_t);
+
                 // Please note that reading from stdin does not evaluate sending latencies.
                 while (cin.good()) {
                     // Read next byte.
                     char _c = 0;
                     cin.read(&_c, sizeof(char));
+                    minimumAmountOfBytesToRead--;
 
                     // Add new byte at the end of the buffer.
                     partialData.seekg(0, ios_base::end);
                     partialData.write(&_c, sizeof(char));
 
+                    // Read more bytes if required.
+                    if (minimumAmountOfBytesToRead > 0) continue;
+
                     // Get size of buffer.
                     partialData.seekg(0, ios_base::end);
                     const uint32_t streamSize = partialData.tellg();
                     partialData.seekg(0, ios_base::beg);
-
-                    // If we don't have enough bytes (header with size information (4 bytes)), start over.
-                    if (streamSize <= sizeof(uint32_t)) continue;
 
                     // Extract size information.
                     partialData.seekg(0, ios_base::beg);
@@ -131,7 +135,10 @@ namespace odredirector {
                     dataSize = ntohl(dataSize);
 
                     // If the expected amount of bytes doesn't match with the available ones, start over.
-                    if (streamSize < (dataSize + sizeof(uint32_t))) continue;
+                    if (streamSize < (dataSize + sizeof(uint32_t))) {
+                        minimumAmountOfBytesToRead = (dataSize + sizeof(uint32_t)) - streamSize;
+                        continue;
+                    }
 
                     // Skip size information and move read pointer to the beginning of the container.
                     partialData.seekg(sizeof(uint32_t), ios_base::beg);
@@ -142,6 +149,9 @@ namespace odredirector {
 
                     // Enough data for at least one Container.
                     partialData.str(partialData.str().substr(dataSize + sizeof(uint32_t)));
+
+                    // Start over reading header.
+                    minimumAmountOfBytesToRead = sizeof(uint32_t);
 
                     // Compressed images are transformed into regular shared images again.
                     if (c.getDataType() == Container::COMPRESSED_IMAGE) {
@@ -208,6 +218,7 @@ namespace odredirector {
                         si.setWidth(ci.getWidth());
                         si.setHeight(ci.getHeight());
                         si.setBytesPerPixel(ci.getBytesPerPixel());
+                        si.setSize(ci.getWidth() * ci.getHeight() * ci.getBytesPerPixel());
 
                         // Distribute the SharedImage information in the UDP multicast session.
                         Container c2(Container::SHARED_IMAGE, si);
