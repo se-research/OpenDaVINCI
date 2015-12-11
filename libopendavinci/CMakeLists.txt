@@ -340,8 +340,8 @@ ADD_LIBRARY (opendavinci-core OBJECT ${libopendavinci-sources}
                                      ${libopendavinci-coredata-sources} 
                                      ${libwjwwoodserial-sources} 
                                      ${libzip-sources}
-                                     ${zlib-sources} 
-                                     ${jpeg9a-sources})
+                                     ${zlib-sources})
+#                                     ${jpeg9a-sources})
 ADD_LIBRARY (opendavinci-static STATIC $<TARGET_OBJECTS:opendavinci-core>)
 IF(    (NOT WIN32)
    AND (NOT ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")) )
