@@ -235,26 +235,32 @@ class RedirectorTest : public CxxTest::TestSuite,
             Container c;
             TimeStamp ts;
 
+            uint32_t size;
+            fin.read((char*)&size, sizeof(uint32_t));
             fin >> c;
             ts = c.getData<TimeStamp>();
             TS_ASSERT(ts.toMicroseconds() == ts1.toMicroseconds());
             TS_ASSERT(fin.good());
 
+            fin.read((char*)&size, sizeof(uint32_t));
             fin >> c;
             ts = c.getData<TimeStamp>();
             TS_ASSERT(ts.toMicroseconds() == ts2.toMicroseconds());
             TS_ASSERT(fin.good());
 
+            fin.read((char*)&size, sizeof(uint32_t));
             fin >> c;
             ts = c.getData<TimeStamp>();
             TS_ASSERT(ts.toMicroseconds() == ts3.toMicroseconds());
             TS_ASSERT(fin.good());
 
+            fin.read((char*)&size, sizeof(uint32_t));
             fin >> c;
             ts = c.getData<TimeStamp>();
             TS_ASSERT(ts.toMicroseconds() == ts4.toMicroseconds());
             TS_ASSERT(fin.good());
 
+            fin.read((char*)&size, sizeof(uint32_t));
             fin >> c;
             ts = c.getData<TimeStamp>();
             TS_ASSERT(ts.toMicroseconds() == ts5.toMicroseconds());
