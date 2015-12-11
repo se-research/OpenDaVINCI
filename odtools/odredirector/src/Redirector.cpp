@@ -103,22 +103,25 @@ namespace odredirector {
 
         while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
             if (m_fromstdin) {
+                // Buffer for reading bytes.
                 stringstream partialData;
 
+                // Please note that reading from stdin does not evaluate sending latencies.
                 while (cin.good()) {
+                    // Read next byte.
                     char _c = 0;
                     cin.read(&_c, sizeof(char));
 
-                    // Add new bytes at the end.
+                    // Add new byte at the end of the buffer.
                     partialData.seekg(0, ios_base::end);
                     partialData.write(&_c, sizeof(char));
 
-                    // Get size of stringstream.
+                    // Get size of buffer.
                     partialData.seekg(0, ios_base::end);
                     const uint32_t streamSize = partialData.tellg();
                     partialData.seekg(0, ios_base::beg);
 
-                    // Check for header with size information (4 bytes).
+                    // If we don't have enough bytes (header with size information (4 bytes)), start over.
                     if (streamSize <= sizeof(uint32_t)) continue;
 
                     // Extract size information.
@@ -127,19 +130,18 @@ namespace odredirector {
                     partialData.read(reinterpret_cast<char*>(&dataSize), sizeof(uint32_t));
                     dataSize = ntohl(dataSize);
 
-                    // Check if we have enough bytes.
+                    // If the expected amount of bytes doesn't match with the available ones, start over.
                     if (streamSize < (dataSize + sizeof(uint32_t))) continue;
 
-                    // Move to the beginning of the container.
+                    // Skip size information and move read pointer to the beginning of the container.
                     partialData.seekg(sizeof(uint32_t), ios_base::beg);
 
+                    // Read container from buffer.
                     Container c;
                     partialData >> c;
 
                     // Enough data for at least one Container.
                     partialData.str(partialData.str().substr(dataSize + sizeof(uint32_t)));
-
-                    // Please note that reading from stdin does not evaluate sending latencies.
 
                     // Compressed images are transformed into regular shared images again.
                     if (c.getDataType() == Container::COMPRESSED_IMAGE) {

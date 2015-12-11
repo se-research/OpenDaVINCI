@@ -130,8 +130,7 @@ namespace odredirector {
         else {
             sstr << container;
         }
-        string s = sstr.str();
-
+        const string s = sstr.str();
         const uint32_t dataSize = htonl(s.length());
         std::cout.write(reinterpret_cast<const char*>(&dataSize), sizeof(uint32_t));
         std::cout << s;
