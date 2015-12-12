@@ -21,6 +21,10 @@ odredirector belongs to OpenDaVINCI and is a tool that dumps containers, which a
 exchanged between distributed software components, to stdout or pumps back containers
 read from stdin to a running container conference session.
 
+Please note that every dumped container is preceded with a 4 bytes network-byte ordered
+integer indicating the size of the dumped container in bytes. Thus, dumping the data
+into a file is not compatible with a recorded output using odrecorder(1)!
+
 This tool can only be used within an existing OpenDaVINCI container conference session
 created by odsupercomponent(1).
 

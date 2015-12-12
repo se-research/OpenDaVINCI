@@ -117,8 +117,6 @@ SET (jpeg9a-sources
 ###############################################################################
 # Set header files from OpenDaVINCI.
 INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS}/opendavinci)
-# Set header files from OpenDaVINCI (jpeg-9a).
-INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS}/opendavinci/jpeg-9a)
 # Set include directory.
 INCLUDE_DIRECTORIES(include)
 
