@@ -18,7 +18,7 @@
 #
 # GLOBAL CONFIGURATION
 #
-global.car = file://data/Car.objx
+global.car = data/Car1.objx
 global.scenario = file://data/Track.scnx
 global.showGrid = 0
 
