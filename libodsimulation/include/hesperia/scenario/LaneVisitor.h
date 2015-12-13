@@ -26,6 +26,7 @@
 #include "core/wrapper/graph/Edge.h"
 
 #include "hesperia/data/environment/NamedLine.h"
+#include "hesperia/data/scenario/Connector.h"
 #include "hesperia/data/scenario/PointModel.h"
 #include "hesperia/data/scenario/StraightLine.h"
 #include "hesperia/data/scenario/Arc.h"
@@ -103,6 +104,15 @@ namespace hesperia {
                  * @param arc Arc to visit. Covers also arcs.
                  */
                 void visit(const hesperia::data::scenario::Arc *arc);
+
+                /**
+                 * This method returns true if the start and endvertex of
+                 * a connector have been found in an Arc, Clothoid, Point-,
+                 * or StraightLine model.
+                 *
+                 * @param c connector to be checked.
+                 */
+                bool hasStartAndEndVertex(const hesperia::data::scenario::Connector &c);
         };
 
     }

@@ -104,6 +104,13 @@ namespace core {
                     const string toString() const;
 
                     /**
+                     * This method returns a representation of all edges in Graphviz's dot format.
+                     *
+                     * @return Graphviz dot representation of all edges.
+                     */
+                    const string toGraphizDot() const;
+
+                    /**
                      * This method returns the shortest path between two given vertices.
                      *
                      * @param v1 Start vertex.

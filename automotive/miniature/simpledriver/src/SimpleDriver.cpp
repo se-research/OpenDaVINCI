@@ -78,10 +78,13 @@ namespace automotive {
                 // Construct road network.
                 hesperia::scenario::LaneVisitor lv(m_graph, scenario);
                 scenario.accept(lv);
+
+                // Print graph in dot format.
+                cout << m_graph.toGraphizDot() << endl << endl;
             }
 
-            string startWaypoint = "1.1.1.1";
-            string endWaypoint = "1.4.1.2";
+            string startWaypoint = "";
+            string endWaypoint = "";
 
             cout << endl;
             cout << "Welcome to SimpleDriver" << endl << endl;
@@ -132,7 +135,6 @@ namespace automotive {
                 c = Container(Container::ROUTE, route);
                 getConference().send(c);
             }
-
 
             while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
                 // In the following, you find example for the various data sources that are available:
