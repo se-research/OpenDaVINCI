@@ -22,12 +22,16 @@
 #include <cstdio>
 #include <cmath>
 
+#include "core/base/Thread.h"
 #include "core/data/Container.h"
 #include "core/io/conference/ContainerConference.h"
 #include "core/io/URL.h"
 #include "core/wrapper/graph/DirectedGraph.h"
 #include "core/wrapper/graph/Edge.h"
 #include "core/wrapper/graph/Vertex.h"
+#include "hesperia/data/environment/EgoState.h"
+#include "hesperia/data/environment/Polygon.h"
+#include "hesperia/data/environment/Obstacle.h"
 #include "hesperia/data/graph/WaypointsEdge.h"
 #include "hesperia/data/graph/WaypointVertex.h"
 #include "hesperia/data/planning/Route.h"
@@ -50,6 +54,7 @@ namespace automotive {
         using namespace coredata;
         using namespace automotive;
         using namespace automotive::miniature;
+        using namespace hesperia::data::environment;
 
         SimpleDriver::SimpleDriver(const int32_t &argc, char **argv) :
             TimeTriggeredConferenceClientModule(argc, argv, "simpledriver") {
@@ -68,6 +73,11 @@ namespace automotive {
         // This method will do the main data processing job.
         coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode SimpleDriver::body() {
             const core::io::URL urlOfSCNXFile(getKeyValueConfiguration().getValue<string>("global.scenario"));
+            const double GAIN = 1.0;
+            const double LENGTH_OF_STEERING_DRAWBAR = 5.0;
+            const double LENGTH_OF_VELOCITY_DRAWBAR = 5.0;
+
+
 
             core::wrapper::graph::DirectedGraph m_graph;
             if (urlOfSCNXFile.isValid()) {
@@ -134,56 +144,249 @@ namespace automotive {
                 Container c;
                 c = Container(Container::ROUTE, route);
                 getConference().send(c);
-            }
-
-            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
-                // In the following, you find example for the various data sources that are available:
-
-                // 1. Get most recent vehicle data:
-                Container containerVehicleData = getKeyValueDataStore().get(Container::VEHICLEDATA);
-                VehicleData vd = containerVehicleData.getData<VehicleData> ();
-                cerr << "Most recent vehicle data: '" << vd.toString() << "'" << endl;
-
-//                // 2. Get most recent sensor board data:
-//                Container containerSensorBoardData = getKeyValueDataStore().get(Container::USER_DATA_0);
-//                SensorBoardData sbd = containerSensorBoardData.getData<SensorBoardData> ();
-//                cerr << "Most recent sensor board data: '" << sbd.toString() << "'" << endl;
-
-//                // 3. Get most recent user button data:
-//                Container containerUserButtonData = getKeyValueDataStore().get(Container::USER_BUTTON);
-//                UserButtonData ubd = containerUserButtonData.getData<UserButtonData> ();
-//                cerr << "Most recent user button data: '" << ubd.toString() << "'" << endl;
-
-//                // 4. Get most recent steering data as fill from lanedetector for example:
-//                Container containerSteeringData = getKeyValueDataStore().get(Container::USER_DATA_1);
-//                SteeringData sd = containerSteeringData.getData<SteeringData> ();
-//                cerr << "Most recent steering data: '" << sd.toString() << "'" << endl;
 
 
 
-                // Design your control algorithm here depending on the input data from above.
+                // Check, if the first point is in our field of view.
+                c = getKeyValueDataStore().get(Container::EGOSTATE);
+                EgoState es = c.getData<EgoState>();
 
+                Polygon FOV;
+                const double ANGLE_FOV_IN_DEG = 45.0;
+                Point3 leftBoundary(10, 0, 0);
+                leftBoundary.rotateZ(ANGLE_FOV_IN_DEG/2.0 * cartesian::Constants::DEG2RAD + es.getRotation().getAngleXY());
+                leftBoundary += es.getPosition();
 
+                Point3 rightBoundary(10, 0, 0);
+                rightBoundary.rotateZ(-ANGLE_FOV_IN_DEG/2.0 * cartesian::Constants::DEG2RAD + es.getRotation().getAngleXY());
+                rightBoundary += es.getPosition();
 
-                // Create vehicle control data.
-                VehicleControl vc;
+                FOV.add(es.getPosition() + Point3(1, 0, 0));
+                FOV.add(leftBoundary);
+                FOV.add(rightBoundary);
 
-                // With setSpeed you can set a desired speed for the vehicle in the range of -2.0 (backwards) .. 0 (stop) .. +2.0 (forwards)
-                vc.setSpeed(0.4);
-
-                // With setSteeringWheelAngle, you can steer in the range of -26 (left) .. 0 (straight) .. +25 (right)
-                double desiredSteeringWheelAngle = 4; // 4 degree but SteeringWheelAngle expects the angle in radians!
-                vc.setSteeringWheelAngle(desiredSteeringWheelAngle * cartesian::Constants::DEG2RAD);
-
-                // You can also turn on or off various lights:
-                vc.setBrakeLights(false);
-                vc.setFlashingLightsLeft(false);
-                vc.setFlashingLightsRight(true);
-
-                // Create container for finally sending the data.
-                Container c(Container::VEHICLECONTROL, vc);
-                // Send container.
+                // Visualize FOV.
+                Obstacle obstacleFOV(1, Obstacle::UPDATE);
+                obstacleFOV.setPolygon(FOV);
+                c = Container(Container::OBSTACLE, obstacleFOV);
                 getConference().send(c);
+
+                uint32_t waitingBeforeStart = 5;
+                while (waitingBeforeStart > 0) {
+                    cout << "Still waiting " << waitingBeforeStart << " seconds..." << endl;
+                    waitingBeforeStart--;
+                    Thread::usleepFor(1 * 1000 * 1000);
+                }
+
+                Point3 currentPoint = (*route.getListOfPoints().begin());
+                if (FOV.containsIgnoreZ(currentPoint) || true) {
+                    cerr << "Ready, first point of planned route is in our FOV. Let's go using our simple drawbar controller!" << endl;
+
+
+                    while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+                        TimeStamp startTime;
+                        double totalDrivenWay = 0;
+
+                        // Start at current position.
+                        currentPoint = es.getPosition();
+                        Point3 nextPoint;
+                        vector<Point3> listOfPointsWaypoints = route.getListOfPoints();
+
+                        Point3 nextPointUOR;
+                        vector<Point3> listOfPointsWaypointsUOR = route.getListOfPoints();
+                        nextPointUOR = listOfPointsWaypointsUOR.front();
+
+                        const uint32_t SIZE = listOfPointsWaypoints.size();
+                        for (uint32_t i = 0; (i < SIZE) && (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING); i++) {
+                            // Get next point.
+                            nextPoint = listOfPointsWaypoints.at(i);
+
+                            // Determine direction of (nextPoint - currentPoint).
+                            Point3 directionSegment = nextPoint - currentPoint;
+
+                            bool nextWaypointInFrontOfDrawBar = true;
+
+                            // Simply use the previously retrieved egostate.
+                            EgoState oldEgoState = es;
+                            TimeStamp oldTimeStamp;
+                            double V = 0;
+                            while ( (nextWaypointInFrontOfDrawBar) && (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) ) {
+                                c = getKeyValueDataStore().get(Container::EGOSTATE);
+                                es = c.getData<EgoState>();
+                                TimeStamp currentTimeStamp;
+
+                                // Compute velocity.
+                                double drivenWay = (es.getPosition() - oldEgoState.getPosition()).lengthXY();
+                                double passedTimeMS = (currentTimeStamp - oldTimeStamp).toMicroseconds();
+                                double passedTime = (static_cast<double>(passedTimeMS) / (1000.0 * 1000.0));
+                                if (passedTime > 0) {
+                                    V = fabs( drivenWay / passedTime );
+                                }
+                                if (drivenWay > 0) {
+                                	oldEgoState = es;
+                                	oldTimeStamp = currentTimeStamp;
+                                }
+
+                                totalDrivenWay += drivenWay;
+                                if (isVerbose()) {
+                                    cerr << "V: " << V << ", driven way: " << drivenWay << ", total driven way: " << totalDrivenWay << ", passedTime MS= " << passedTimeMS << ", passedTime: " << passedTime << endl;
+                                }
+
+                                // Compute drawbar point of velocity control.
+                                Point3 drawbarVelocityPoint(LENGTH_OF_VELOCITY_DRAWBAR, 0, 0);
+                                drawbarVelocityPoint.rotateZ(es.getRotation().getAngleXY());
+                                drawbarVelocityPoint += es.getPosition();
+
+                                // Compute drawbar point of steering control.
+                                Point3 drawbarSteeringPoint(LENGTH_OF_STEERING_DRAWBAR, 0, 0);
+                                drawbarSteeringPoint.rotateZ(es.getRotation().getAngleXY());
+                                drawbarSteeringPoint += es.getPosition();
+
+                                nextWaypointInFrontOfDrawBar = drawbarSteeringPoint.isInFront(nextPoint, (drawbarSteeringPoint - es.getPosition()).getAngleXY());
+
+                                //isPointFromUORInFrontOfDrawBar = drawbarSteeringPoint.isInFront(nextPointUOR, (drawbarSteeringPoint - es.getPosition()).getAngleXY());
+
+                                bool isPointFromUORInFrontOfDrawBar = false;
+                                while ( (!isPointFromUORInFrontOfDrawBar) && (listOfPointsWaypointsUOR.size() > 1) ) {
+                                    isPointFromUORInFrontOfDrawBar = drawbarSteeringPoint.isInFront(nextPointUOR, (drawbarSteeringPoint - es.getPosition()).getAngleXY());
+
+                                    if (!isPointFromUORInFrontOfDrawBar) {
+                                        if (listOfPointsWaypointsUOR.size() > 1) {
+                                            listOfPointsWaypointsUOR.erase(listOfPointsWaypointsUOR.begin());
+                                            nextPointUOR = listOfPointsWaypointsUOR.front();
+                                        }
+                                    }
+                                }
+
+                                if ( isPointFromUORInFrontOfDrawBar && nextWaypointInFrontOfDrawBar ) {
+                                    // Compute perpendicular point of drawbarPoint to direction of line segment.
+                                    Line l(currentPoint, nextPointUOR);
+
+                                    // Compute track error for steering.
+                                    Point3 perpendicularPointSteering = l.getPerpendicularPoint(drawbarSteeringPoint);
+                                    const double TRACK_ERROR_STEERING_UOR = (drawbarSteeringPoint - perpendicularPointSteering).lengthXY();
+                                    if (isVerbose()) {
+                                        cerr << "Error steering (unoptimized route): " << TRACK_ERROR_STEERING_UOR << endl;
+                                    }
+                                }
+
+                                if (nextWaypointInFrontOfDrawBar) {
+                                    // Compute perpendicular point of drawbarPoint to direction of line segment.
+                                    Line l(currentPoint, nextPoint);
+
+                                    // Compute track error for steering.
+                                    Point3 perpendicularPointSteering = l.getPerpendicularPoint(drawbarSteeringPoint);
+                                    const double TRACK_ERROR_STEERING = (drawbarSteeringPoint - perpendicularPointSteering).lengthXY();
+                                    if (isVerbose()) {
+                                        cerr << "Error steering: " << TRACK_ERROR_STEERING << endl;
+                                    }
+
+                                    // Compute track error for velocity.
+                                    Point3 perpendicularPointVelocity = l.getPerpendicularPoint(drawbarVelocityPoint);
+                                    const double TRACK_ERROR_VELOCITY = (drawbarVelocityPoint - perpendicularPointVelocity).lengthXY();
+                                    if (isVerbose()) {
+                                        cerr << "Error velocity: " << TRACK_ERROR_VELOCITY << endl;
+                                    }
+
+                                    // Compute orientation segment/egostate.
+                                    double psi = es.getRotation().getAngleXY() - directionSegment.getAngleXY();
+                                    if (isVerbose()) {
+                                        cerr << "psi (local): " << psi << endl;
+                                    }
+
+                                    // Normalize difference angle to interval -PI .. PI.
+                                    while (psi < -cartesian::Constants::PI) {
+                                        psi += 2.0*cartesian::Constants::PI;
+                                    }
+                                    while (psi > cartesian::Constants::PI) {
+                                        psi -= 2.0*cartesian::Constants::PI;
+                                    }
+
+                                    // Determine, if drawbar is left or right from the line to determine steering direction (depends on driving direction!).
+                                    const bool IS_RIGHT = perpendicularPointSteering.isInFront(drawbarSteeringPoint, directionSegment.getAngleXY() - cartesian::Constants::PI/2.0);
+                                    if (isVerbose()) {
+                                        cerr << "IS_RIGHT = " << IS_RIGHT << endl;
+                                    }
+                                    const bool IS_LEFT = perpendicularPointSteering.isInFront(drawbarSteeringPoint, directionSegment.getAngleXY() + cartesian::Constants::PI/2.0);
+                                    if (isVerbose()) {
+                                        cerr << "IS_LEFT = " << IS_LEFT << endl;
+                                    }
+
+                                    const double SIGN = (IS_RIGHT ? -1.0 : 1.0);
+                                    const double SIGNED_TRACK_ERROR_STEERING = SIGN * TRACK_ERROR_STEERING;
+
+                                    if (isVerbose()) {
+                                        cerr << "SIGNED_TRACK_ERROR_STEERING: " << SIGNED_TRACK_ERROR_STEERING << endl;
+                                    }
+
+                                    // Compute steering angle.
+                                    double steering = 0;
+                                    if (fabs(V) > 1e-5) {
+                                        steering = psi + atan( (GAIN/V) * SIGNED_TRACK_ERROR_STEERING );
+                                    }
+                                    else {
+                                        steering = psi + atan(GAIN * SIGNED_TRACK_ERROR_STEERING);
+                                    }
+
+                                    // Create vehicle control data.
+                                    VehicleControl vc;
+
+                                    // With setSpeed you can set a desired speed for the vehicle in the range of -2.0 (backwards) .. 0 (stop) .. +2.0 (forwards)
+                                    vc.setSpeed(0.4);
+
+//                                    // With setSteeringWheelAngle, you can steer in the range of -26 (left) .. 0 (straight) .. +25 (right)
+                                    vc.setSteeringWheelAngle(steering);
+
+                                    // You can also turn on or off various lights:
+                                    vc.setBrakeLights(false);
+                                    vc.setFlashingLightsLeft(false);
+                                    vc.setFlashingLightsRight(false);
+
+                                    // Create container for finally sending the data.
+                                    Container c2(Container::VEHICLECONTROL, vc);
+                                    // Send container.
+                                    getConference().send(c2);
+
+                                    cerr << "VehicleControl: " << vc.toString() << endl;
+
+                                    // Visualize drawbar.
+                                    Polygon p;
+                                    p.add(es.getPosition());
+                                    p.add(drawbarSteeringPoint);
+                                    p.add(perpendicularPointSteering);
+
+                                    cerr << es.getPosition().toString() << " " << drawbarSteeringPoint.toString() << " " << perpendicularPointSteering.toString() << endl;
+
+                                    Obstacle o(1, Obstacle::UPDATE);
+                                    o.setPolygon(p);
+                                    c2 = Container(Container::OBSTACLE, o);
+                                    getConference().send(c2);
+
+                                    cerr << endl;
+                                }
+                                else {
+                                    cerr << "Next waypoint reached." << endl;
+                                }
+
+                                // Sleeping is realized by --freq and isRunning().
+                            }
+                            currentPoint = nextPoint;
+                        }
+                        VehicleControl vc;
+
+                        // Create container for finally sending the data.
+                        Container c2(Container::VEHICLECONTROL, vc);
+                        // Send container.
+                        getConference().send(c2);
+
+                        cerr << "VehicleControl: " << vc.toString() << endl;
+
+                        TimeStamp endTime;
+
+                        cerr << "Thank you for using simpledriver. Trip took " << ((endTime - startTime).toMicroseconds() / (1000*1000)) << "s for " << totalDrivenWay << "m." << endl;
+                        break;
+                    }
+                }
             }
 
             return coredata::dmcp::ModuleExitCodeMessage::OKAY;
