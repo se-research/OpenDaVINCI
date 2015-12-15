@@ -44,8 +44,6 @@ namespace odredirector {
     StdoutPump::~StdoutPump() {}
 
     void StdoutPump::add(const core::data::Container &container) {
-        stringstream sstr;
-
         // SharedImages are transformed into compressed images using JPEG compression.
         if (container.getDataType() == core::data::Container::SHARED_IMAGE) {
             coredata::image::SharedImage si = const_cast<core::data::Container&>(container).getData<coredata::image::SharedImage>();
@@ -118,7 +116,7 @@ namespace odredirector {
 
                     // Write the CompressedImage container to STDOUT.
                     core::data::Container c(core::data::Container::COMPRESSED_IMAGE, ci);
-                    sstr << c;
+                    std::cout << c;
                 }
                 else {
                     cerr << "[odredirector]: Warning! Compressed image to large to fit in a UDP packet. Image skipped." << std::endl;
@@ -129,12 +127,8 @@ namespace odredirector {
             }
         }
         else {
-            sstr << container;
+            std::cout << container;
         }
-        const string s = sstr.str();
-        const uint32_t dataSize = htonl(s.length());
-        std::cout.write(reinterpret_cast<const char*>(&dataSize), sizeof(uint32_t));
-        std::cout << s;
 
         std::cout.rdbuf()->pubsync();
         std::cout.flush();

@@ -152,8 +152,6 @@ class RedirectorTest : public CxxTest::TestSuite,
                 stringstream sstr;
                 sstr << c1;
                 const string s = sstr.str();
-                const uint32_t dataSize = htonl(s.length());
-                fout.write(reinterpret_cast<const char*>(&dataSize), sizeof(uint32_t));
                 fout << s;
             }
             fout.flush();
@@ -164,8 +162,6 @@ class RedirectorTest : public CxxTest::TestSuite,
                 stringstream sstr;
                 sstr << c2;
                 const string s = sstr.str();
-                const uint32_t dataSize = htonl(s.length());
-                fout.write(reinterpret_cast<const char*>(&dataSize), sizeof(uint32_t));
                 fout << s;
             }
             fout.flush();
@@ -176,8 +172,6 @@ class RedirectorTest : public CxxTest::TestSuite,
                 stringstream sstr;
                 sstr << c3;
                 const string s = sstr.str();
-                const uint32_t dataSize = htonl(s.length());
-                fout.write(reinterpret_cast<const char*>(&dataSize), sizeof(uint32_t));
                 fout << s;
             }
             fout.flush();
@@ -188,8 +182,6 @@ class RedirectorTest : public CxxTest::TestSuite,
                 stringstream sstr;
                 sstr << c4;
                 const string s = sstr.str();
-                const uint32_t dataSize = htonl(s.length());
-                fout.write(reinterpret_cast<const char*>(&dataSize), sizeof(uint32_t));
                 fout << s;
             }
             fout.flush();
@@ -200,8 +192,6 @@ class RedirectorTest : public CxxTest::TestSuite,
                 stringstream sstr;
                 sstr << c5;
                 const string s = sstr.str();
-                const uint32_t dataSize = htonl(s.length());
-                fout.write(reinterpret_cast<const char*>(&dataSize), sizeof(uint32_t));
                 fout << s;
             }
             fout.flush();

@@ -48,7 +48,8 @@ namespace core {
             value = 0;
             uint8_t size = 0;
             while (in.good()) {
-                char c = in.get();
+                char c = 0;
+                in.read(&c, sizeof(char));
                 value |= static_cast<unsigned int>( (c & 0x7f) << (0x7 * size++) );
                 if ( !(c & 0x80) ) break;
             }
@@ -85,55 +86,55 @@ namespace core {
 
             // Checking for magic number.
             uint16_t magicNumber = 0;
-            in.read(reinterpret_cast<char*>(&magicNumber), sizeof(uint16_t));
-            magicNumber = ntohs(magicNumber);
-            if (magicNumber != 0xABCF) {
-                if (in.good()) {
+            if (in.good()) {
+                in.read(reinterpret_cast<char*>(&magicNumber), sizeof(uint16_t));
+                magicNumber = ntohs(magicNumber);
+                if (magicNumber != 0xABCF) {
                     // Stream is good but still no magic number?
                     CLOG2 << "Stream corrupt: magic number not found." << endl;
+                    return;
                 }
-                return;
-            }
 
-            // Decoding length of the payload written as varint.
-            uint64_t length = 0;
-            decodeVarUInt(in, length);
+                // Decoding length of the payload written as varint.
+                uint64_t length = 0;
+                decodeVarUInt(in, length);
 
-            // Decode payload consisting of: *(ID SIZE PAYLOAD).
-            char c = 0;
-            uint64_t tokenIdentifier = 0;
-            uint64_t lengthOfPayload = 0;
+                // Decode payload consisting of: *(ID SIZE PAYLOAD).
+                char c = 0;
+                uint64_t tokenIdentifier = 0;
+                uint64_t lengthOfPayload = 0;
 
-            // Buffer to store payload "en bloc"; length is identical to UDP payload.
-            const uint32_t MAX_SIZE_PAYLOAD = 65535;
-            char buffer[MAX_SIZE_PAYLOAD];
+                // Buffer to store payload "en bloc"; length is identical to UDP payload.
+                const uint32_t MAX_SIZE_PAYLOAD = 65535;
+                char buffer[MAX_SIZE_PAYLOAD];
 
-            while (in.good() && (length > 0)) {
-                // Start of next token by reading ID.
-                length -= decodeVarUInt(in, tokenIdentifier);
+                while (in.good() && (length > 0)) {
+                    // Start of next token by reading ID.
+                    length -= decodeVarUInt(in, tokenIdentifier);
 
-                // Read length of payload and adjust loop.
-                lengthOfPayload = 0;
-                length -= decodeVarUInt(in, lengthOfPayload);
+                    // Read length of payload and adjust loop.
+                    lengthOfPayload = 0;
+                    length -= decodeVarUInt(in, lengthOfPayload);
 
-                // Create new (tokenIdentifier, m_buffer) hashmap entry.
-                m_values.insert(make_pair(tokenIdentifier, m_buffer.tellp()));
+                    // Create new (tokenIdentifier, m_buffer) hashmap entry.
+                    m_values.insert(make_pair(tokenIdentifier, m_buffer.tellp()));
 
-                // Decode payload.
-                if (lengthOfPayload > 0) {
-                    // Read data "en bloc".
-                    in.read(buffer, lengthOfPayload);
-                    m_buffer.write(buffer, lengthOfPayload);
+                    // Decode payload.
+                    if (lengthOfPayload > 0) {
+                        // Read data "en bloc".
+                        in.read(buffer, lengthOfPayload);
+                        m_buffer.write(buffer, lengthOfPayload);
 
-                    // Update amount of processed data.
-                    length -= lengthOfPayload;
+                        // Update amount of processed data.
+                        length -= lengthOfPayload;
+                    }
                 }
-            }
 
-            // Check for trailing ','
-            in.get(c);
-            if (c != ',') {
-                CLOG2 << "Stream corrupt: trailing ',' missing,  found: '" << c << "'" << endl;
+                // Check for trailing ','
+                in.read(&c, sizeof(char));
+                if (c != ',') {
+                    CLOG2 << "Stream corrupt: trailing ',' missing,  found: '" << c << "'" << endl;
+                }
             }
         }
 

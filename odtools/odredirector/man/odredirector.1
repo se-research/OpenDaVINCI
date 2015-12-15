@@ -1,7 +1,7 @@
 .\" Manpage for odredirector
 .\" Author: Christian Berger <christian.berger@gu.se>.
 
-.TH odredirector 1 "12 December 2015" "2.1.5" "odredirector man page"
+.TH odredirector 1 "15 December 2015" "2.1.6" "odredirector man page"
 
 .SH NAME
 odredirector \- This tool dumps containers from an OpenDaVINCI container conference session to stdout or pumps back containers read from stdin to a running container conference session.
@@ -20,10 +20,6 @@ odredirector \- This tool dumps containers from an OpenDaVINCI container confere
 odredirector belongs to OpenDaVINCI and is a tool that dumps containers, which are
 exchanged between distributed software components, to stdout or pumps back containers
 read from stdin to a running container conference session.
-
-Please note that every dumped container is preceded with a 4 bytes network-byte ordered
-integer indicating the size of the dumped container in bytes. Thus, dumping the data
-into a file is not compatible with a recorded output using odrecorder(1)!
 
 This tool can only be used within an existing OpenDaVINCI container conference session
 created by odsupercomponent(1).
