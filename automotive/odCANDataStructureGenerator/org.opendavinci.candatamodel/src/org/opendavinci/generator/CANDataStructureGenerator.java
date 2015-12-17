@@ -75,7 +75,7 @@ public class CANDataStructureGenerator {
                 String... issueData) {
             if (object instanceof CANSignal) {
                 CANSignal cs = (CANSignal)object;
-                listOfClashingNames.add(cs.getCansignal().toString());
+                listOfClashingNames.add(cs.getCansignalname().toString());
             }
         }
     }
