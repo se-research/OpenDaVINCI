@@ -115,6 +115,17 @@ namespace core {
                 virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, string &s);
                 virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, void *data, const uint32_t &size);
 
+            public:
+                /**
+                 * This method copies the minimum amount of bytes that are
+                 * required to successfully decode using this decoder.
+                 *
+                 * @param in Input stream used for reading from.
+                 * @param buffer Buffer to copy bytes to.
+                 * @return size Number of bytes read.
+                 */
+                static uint32_t fillBuffer(istream& in, stringstream& buffer);
+
             private:
                 /**
                  * This method decodes an unsigned value from a given varint encoding.

@@ -23,6 +23,7 @@
 
 #include "jpeglib.h"
 
+#include "core/base/QueryableNetstringsDeserializerABCF.h"
 #include "core/data/Container.h"
 #include "core/base/CommandLineParser.h"
 #include "core/wrapper/SharedMemory.h"
@@ -105,6 +106,7 @@ namespace odredirector {
             if (m_fromstdin) {
                 // Please note that reading from stdin does not evaluate sending latencies.
                 while (cin.good()) {
+/*
                     // Buffer for reading bytes.
                     stringstream partialData;
                     char _c = 0;
@@ -169,6 +171,12 @@ namespace odredirector {
                         // Now, read the actual container.
                         Container c;
                         partialData >> c;
+*/
+                        stringstream containerBuffer;
+                        QueryableNetstringsDeserializerABCF::fillBuffer(cin, containerBuffer);
+
+                        Container c;
+                        containerBuffer >> c;
 
                         // Compressed images are transformed into regular shared images again.
                         if (c.getDataType() == Container::COMPRESSED_IMAGE) {
@@ -244,7 +252,7 @@ namespace odredirector {
                         else {
                             getConference().send(c);
                         }
-                    }
+//                    }
                 }
             }
         }

@@ -140,6 +140,69 @@ namespace core {
 
         QueryableNetstringsDeserializerABCF::~QueryableNetstringsDeserializerABCF() {}
 
+        uint32_t QueryableNetstringsDeserializerABCF::fillBuffer(istream& in, stringstream& buffer) {
+            char _c = 0;
+            uint32_t bytesRead = 0;
+
+            // Peek Container's header: 2 bytes (0xABCF) followed by maximum 8 bytes (uint64_t) length of payload information.
+            uint32_t bytesToRead = sizeof(uint16_t) + sizeof(uint64_t);
+
+            // Read Container header + size of payload.
+            while (in.good() && (bytesToRead > 0)) {
+                // Read next byte.
+                in.read(&_c, sizeof(char));
+                bytesToRead--; bytesRead++;
+
+                // Add new byte at the end of the buffer.
+                buffer.write(&_c, sizeof(char));
+            }
+
+            // Decode Container's magic number.
+            uint16_t magicNumber = 0;
+            buffer.read(reinterpret_cast<char*>(&magicNumber), sizeof(uint16_t));
+            magicNumber = ntohs(magicNumber);
+
+            if (magicNumber == 0xABCF) {
+                // Decode size of payload (encoded as varint).
+                uint64_t value = 0;
+                uint8_t size = 0;
+                {
+                    while (buffer.good()) {
+                        char c = 0;
+                        buffer.read(&c, sizeof(char));
+                        value |= static_cast<unsigned int>( (c & 0x7f) << (0x7 * size++) );
+                        if ( !(c & 0x80) ) break;
+                    }
+                    // Decode as little endian like in Protobuf's case.
+                    value = le64toh(value);
+                }
+
+                bytesToRead = (value // This is the length of the payload.
+                               - (sizeof(uint64_t) // We have already read this amount of bytes while peeking the header.
+                                  - size) // This amount of bytes was consumed to encode the length of the payload in the varint field.
+                                 )
+                               + 1; // And we need to consume the final ','.
+
+                // Add the data at the end of the buffer.
+                buffer.seekg(0, ios_base::end);
+
+                // Read remainder of the container.
+                while (in.good() && (bytesToRead > 0)) {
+                    // Read next byte.
+                    in.read(&_c, sizeof(char));
+                    bytesToRead--; bytesRead++;
+
+                    // Add new byte at the end of the buffer.
+                    buffer.write(&_c, sizeof(char));
+                }
+
+                // Move read pointer to the beginning to read container.
+                buffer.seekg(0, ios_base::beg);
+            }
+
+            return bytesRead;
+        }
+
         void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, Serializable &v) {
             read(id, 0, "", "", v);
         }
