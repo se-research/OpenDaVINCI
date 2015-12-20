@@ -41,10 +41,11 @@ INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS}/opendavinci)
 INCLUDE_DIRECTORIES (include)
 # Recipe for building libtest20.
 FILE(GLOB_RECURSE libtest20-sources "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
-ADD_LIBRARY (test20-static STATIC ${libtest20-sources})
+ADD_LIBRARY (test20-core OBJECT ${libtest20-sources})
+ADD_LIBRARY (test20-static STATIC $<TARGET_OBJECTS:test20-core>)
 IF(    (NOT WIN32)
    AND (NOT ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")) )
-    ADD_LIBRARY (test20 SHARED ${libtest20-sources})
+    ADD_LIBRARY (test20 SHARED $<TARGET_OBJECTS:test20-core>)
 ENDIF()
 # Installing libtest20.
 INSTALL(TARGETS test20-static DESTINATION lib COMPONENT odtest20lib)

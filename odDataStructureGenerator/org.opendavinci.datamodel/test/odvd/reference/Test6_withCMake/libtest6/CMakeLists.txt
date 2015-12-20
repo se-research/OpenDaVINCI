@@ -41,10 +41,11 @@ INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS}/opendavinci)
 INCLUDE_DIRECTORIES (include)
 # Recipe for building libtest6.
 FILE(GLOB_RECURSE libtest6-sources "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
-ADD_LIBRARY (test6-static STATIC ${libtest6-sources})
+ADD_LIBRARY (test6-core OBJECT ${libtest6-sources})
+ADD_LIBRARY (test6-static STATIC $<TARGET_OBJECTS:test6-core>)
 IF(    (NOT WIN32)
    AND (NOT ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")) )
-    ADD_LIBRARY (test6 SHARED ${libtest6-sources})
+    ADD_LIBRARY (test6 SHARED $<TARGET_OBJECTS:test6-core>)
 ENDIF()
 # Installing libtest6.
 INSTALL(TARGETS test6-static DESTINATION lib COMPONENT odtest6lib)

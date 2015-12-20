@@ -41,10 +41,11 @@ INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS}/opendavinci)
 INCLUDE_DIRECTORIES (include)
 # Recipe for building libtest8.
 FILE(GLOB_RECURSE libtest8-sources "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
-ADD_LIBRARY (test8-static STATIC ${libtest8-sources})
+ADD_LIBRARY (test8-core OBJECT ${libtest8-sources})
+ADD_LIBRARY (test8-static STATIC $<TARGET_OBJECTS:test8-core>)
 IF(    (NOT WIN32)
    AND (NOT ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")) )
-    ADD_LIBRARY (test8 SHARED ${libtest8-sources})
+    ADD_LIBRARY (test8 SHARED $<TARGET_OBJECTS:test8-core>)
 ENDIF()
 # Installing libtest8.
 INSTALL(TARGETS test8-static DESTINATION lib COMPONENT odtest8lib)

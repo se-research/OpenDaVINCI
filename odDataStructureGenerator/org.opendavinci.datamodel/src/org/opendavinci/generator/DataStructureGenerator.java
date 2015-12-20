@@ -365,10 +365,12 @@ public class DataStructureGenerator {
 
 		sb.append("# Recipe for building " + folder + "."); sb.append("\r\n");
 		sb.append("FILE(GLOB_RECURSE " + folder + "-sources \"${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp\")"); sb.append("\r\n");
-		sb.append("ADD_LIBRARY (" + folder.replaceFirst("lib", "") + "-static STATIC ${" + folder + "-sources})"); sb.append("\r\n");
+
+		sb.append("ADD_LIBRARY (" + folder.replaceFirst("lib", "") + "-core OBJECT ${" + folder + "-sources})"); sb.append("\r\n");
+		sb.append("ADD_LIBRARY (" + folder.replaceFirst("lib", "") + "-static STATIC $<TARGET_OBJECTS:" + folder.replaceFirst("lib", "") + "-core>)"); sb.append("\r\n");
 		sb.append("IF(    (NOT WIN32)"); sb.append("\r\n");
                 sb.append("   AND (NOT (\"${CMAKE_SYSTEM_NAME}\" STREQUAL \"Darwin\")) )"); sb.append("\r\n");
-		sb.append("    ADD_LIBRARY (" + folder.replaceFirst("lib", "") + " SHARED ${" + folder + "-sources})"); sb.append("\r\n");
+		sb.append("    ADD_LIBRARY (" + folder.replaceFirst("lib", "") + " SHARED $<TARGET_OBJECTS:" + folder.replaceFirst("lib", "") + "-core>)"); sb.append("\r\n");
 		sb.append("ENDIF()"); sb.append("\r\n");
 
 		sb.append("# Installing " + folder + "."); sb.append("\r\n");
