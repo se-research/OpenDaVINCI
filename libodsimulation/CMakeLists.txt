@@ -123,7 +123,7 @@ ENDIF()
 ###############################################################################
 # Enable CxxTest for all available testsuites.
 IF(CXXTEST_FOUND)
-	FILE(GLOB libodsimulation-testsuites "${CMAKE_CURRENT_SOURCE_DIR}/testsuites/*.h")
+    FILE(GLOB libodsimulation-testsuites "${CMAKE_CURRENT_SOURCE_DIR}/testsuites/*.h")
 
     FOREACH(testsuite ${libodsimulation-testsuites})
         STRING(REPLACE "/" ";" testsuite-list ${testsuite})
