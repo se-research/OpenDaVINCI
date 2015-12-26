@@ -37,7 +37,7 @@ Install Java to generate data structures::
 Clone the latest OpenDaVINCI sources from https://github.com/se-research/OpenDaVINCI or download
 the latest OpenDaVINCI sources as zip file: https://github.com/se-research/OpenDaVINCI/archive/master.zip.
 
-Change your source folder and create a build directory::
+Change to your source folder and create a build directory::
 
    $ cd OpenDaVINCI && mkdir build
 

@@ -15,13 +15,4 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-SET(CMAKE_SYSTEM_NAME Linux)
-
-# This flag sets further include and library paths in dependent CMakeLists.txt
-# and is required to correctly create the deb and rpm packages.
-SET(ARMHF YES)
-
-# Specify the cross compiler.
-SET(CMAKE_C_COMPILER arm-linux-gnueabihf-gcc)
-SET(CMAKE_CXX_COMPILER arm-linux-gnueabihf-g++)
-
+# This file is intentially left empty to force CMake falling back on the system's defaults.
