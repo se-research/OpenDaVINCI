@@ -377,10 +377,10 @@ public class CANDataStructureGenerator {
         sb.append("        SET(CXXTEST_TESTGEN_ARGS ${CXXTEST_TESTGEN_ARGS} --world=${PROJECT_NAME}-${testsuite-short})"); sb.append("\r\n");
         sb.append("        CXXTEST_ADD_TEST(${testsuite-short}-TestSuite ${testsuite-short}-TestSuite.cpp ${testsuite})"); sb.append("\r\n");
         sb.append("        SET_SOURCE_FILES_PROPERTIES(${testsuite-short}-TestSuite.cpp PROPERTIES COMPILE_FLAGS \"-Wno-effc++ -Wno-float-equal -Wno-error=suggest-attribute=noreturn\")"); sb.append("\r\n");
-        sb.append("        IF(UNIX)"); sb.append("\r\n");
-        sb.append("            IF(   (\"${CMAKE_SYSTEM_NAME}\" STREQUAL \"Linux\")"); sb.append("\r\n");
-        sb.append("               OR (\"${CMAKE_SYSTEM_NAME}\" STREQUAL \"FreeBSD\")"); sb.append("\r\n");
-        sb.append("               OR (\"${CMAKE_SYSTEM_NAME}\" STREQUAL \"DragonFly\") )"); sb.append("\r\n");
+        sb.append("            IF( (   (\"${CMAKE_SYSTEM_NAME}\" STREQUAL \"Linux\")"); sb.append("\r\n");
+        sb.append("                 OR (\"${CMAKE_SYSTEM_NAME}\" STREQUAL \"FreeBSD\")"); sb.append("\r\n");
+        sb.append("                 OR (\"${CMAKE_SYSTEM_NAME}\" STREQUAL \"DragonFly\") )"); sb.append("\r\n");
+        sb.append("                 AND (NOT \"${CMAKE_CXX_COMPILER_ID}\" STREQUAL \"Clang\") )"); sb.append("\r\n");
         sb.append("                SET_SOURCE_FILES_PROPERTIES(${testsuite-short}-TestSuite.cpp PROPERTIES COMPILE_FLAGS \"-Wno-effc++ -Wno-float-equal -Wno-error=suggest-attribute=noreturn\")"); sb.append("\r\n");
         sb.append("            ELSE()"); sb.append("\r\n");
         sb.append("                SET_SOURCE_FILES_PROPERTIES(${testsuite-short}-TestSuite.cpp PROPERTIES COMPILE_FLAGS \"-Wno-effc++ -Wno-float-equal\")"); sb.append("\r\n");
