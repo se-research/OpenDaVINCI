@@ -219,7 +219,8 @@ public class DataStructureGenerator {
 		sb.append("    IF(    (NOT \"${CMAKE_SYSTEM_NAME}\" STREQUAL \"Darwin\")"); sb.append("\r\n");
 		sb.append("       AND (NOT \"${CMAKE_SYSTEM_NAME}\" STREQUAL \"FreeBSD\")"); sb.append("\r\n");
 		sb.append("       AND (NOT \"${CMAKE_SYSTEM_NAME}\" STREQUAL \"NetBSD\")"); sb.append("\r\n");
-		sb.append("       AND (NOT \"${CMAKE_SYSTEM_NAME}\" STREQUAL \"DragonFly\") )"); sb.append("\r\n");
+		sb.append("       AND (NOT \"${CMAKE_SYSTEM_NAME}\" STREQUAL \"DragonFly\")"); sb.append("\r\n");
+		sb.append("       AND (NOT \"${CMAKE_CXX_COMPILER_ID}\" STREQUAL \"Clang\") )"); sb.append("\r\n");
 		sb.append("        SET (CXX_OPTIONS \"${CXX_OPTIONS} ${CXX_OPTION_ANSI}\")"); sb.append("\r\n");
 		sb.append("    ENDIF()"); sb.append("\r\n");
 
@@ -369,7 +370,7 @@ public class DataStructureGenerator {
 		sb.append("ADD_LIBRARY (" + folder.replaceFirst("lib", "") + "-core OBJECT ${" + folder + "-sources})"); sb.append("\r\n");
 		sb.append("ADD_LIBRARY (" + folder.replaceFirst("lib", "") + "-static STATIC $<TARGET_OBJECTS:" + folder.replaceFirst("lib", "") + "-core>)"); sb.append("\r\n");
 		sb.append("IF(    (NOT WIN32)"); sb.append("\r\n");
-                sb.append("   AND (NOT (\"${CMAKE_SYSTEM_NAME}\" STREQUAL \"Darwin\")) )"); sb.append("\r\n");
+		sb.append("   AND (NOT (\"${CMAKE_SYSTEM_NAME}\" STREQUAL \"Darwin\")) )"); sb.append("\r\n");
 		sb.append("    ADD_LIBRARY (" + folder.replaceFirst("lib", "") + " SHARED $<TARGET_OBJECTS:" + folder.replaceFirst("lib", "") + "-core>)"); sb.append("\r\n");
 		sb.append("ENDIF()"); sb.append("\r\n");
 
