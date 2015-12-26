@@ -1,6 +1,0 @@
-message Test2 [ id = 2 ] {
-	uint32 attribute1;
-}
-
-message Test2b [ id = 2 ] {
-}

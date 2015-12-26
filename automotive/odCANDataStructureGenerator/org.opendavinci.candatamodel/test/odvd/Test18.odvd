@@ -1,7 +1,0 @@
-message Test18 [ id = 18 ] {
-	uint32 myArray1[2];
-	float myArray2[3] [id = 4];
-	uint32 myAtt1 [id = 5];
-	uint32 myAtt2 [fourbyteid = 0x12345678];
-	uint32 myAtt3 [fourbyteid = 0xAaBbCcDd];
-}

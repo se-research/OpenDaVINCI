@@ -52,7 +52,7 @@ namespace core {
 
                         strm.avail_out = CHUNK;
                         strm.next_out = out;
-                        ret = deflate(&strm, flush);
+                        (void)deflate(&strm, flush);
                         have = CHUNK - strm.avail_out;
                         out[have] = 0;
                         result = string((const char*)out);
