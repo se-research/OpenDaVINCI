@@ -29,8 +29,6 @@ namespace core {
 
 class ContainerListener;
 
-            using namespace std;
-
             /**
              * This class provides an interface for registering
              * as a container listener at an observer.

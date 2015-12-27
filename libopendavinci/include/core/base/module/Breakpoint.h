@@ -27,8 +27,6 @@ namespace core {
     namespace base {
         namespace module {
 
-            using namespace std;
-
             /**
              * This interface encapsulates a breakpoint to interrupt the main application
              * whenever getModuleStateAndWaitForRemainingTimeInTimeslice() is called.

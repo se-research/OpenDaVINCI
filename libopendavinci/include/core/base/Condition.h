@@ -29,8 +29,6 @@
 namespace core {
     namespace base {
 
-        using namespace std;
-
         /**
          * This class implements a condition for waiting on signals:
          *

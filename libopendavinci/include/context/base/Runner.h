@@ -29,8 +29,6 @@ namespace core { namespace wrapper { class Time; } }
 namespace context {
     namespace base {
 
-        using namespace std;
-
         /**
          * This class is the base class for periodic executions.
          */

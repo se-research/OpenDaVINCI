@@ -28,8 +28,6 @@ namespace core {
 
 class PacketListener;
 
-        using namespace std;
-
         /**
          * This class provides an interface for registering
          * as a packet listener at a packet observer.

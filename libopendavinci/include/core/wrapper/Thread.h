@@ -23,8 +23,6 @@
 namespace core {
     namespace wrapper {
 
-        using namespace std;
-
         /**
          * This class controls a thread. It can be used
          * to start different types of Runnables.

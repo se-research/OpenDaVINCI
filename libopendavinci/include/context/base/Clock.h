@@ -27,8 +27,6 @@
 namespace context {
     namespace base {
 
-        using namespace std;
-
         /**
          * This class provides a clock.
          */

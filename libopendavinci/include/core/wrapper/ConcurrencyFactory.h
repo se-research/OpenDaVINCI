@@ -29,8 +29,6 @@ namespace core {
 class Runnable;
 class Thread;
 
-        using namespace std;
-
         /**
          * Abstract factory for creating wrapped threads based on pthread or C++11.
          *

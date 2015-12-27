@@ -26,8 +26,6 @@
 namespace core {
     namespace wrapper {
 
-        using namespace std;
-
         /**
          * This class provides a threadable interface. Any class that
          * wants to be able to start a new thread must implement

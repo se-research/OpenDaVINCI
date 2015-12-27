@@ -27,8 +27,6 @@ namespace core {
     namespace base {
         namespace module {
 
-            using namespace std;
-
             /**
              * This interface encapsulates all methods for realizing a periodic
              * execution.

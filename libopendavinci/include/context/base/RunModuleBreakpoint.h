@@ -30,8 +30,6 @@ namespace context {
 
 class BlockableContainerListener;
 
-        using namespace std;
-
         /**
          * This class provides access to the SystemContext using elsewhere
          * prepared data.

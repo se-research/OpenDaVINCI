@@ -29,8 +29,6 @@ namespace core { namespace io { namespace conference { class ContainerListener; 
 namespace context {
     namespace base {
 
-        using namespace std;
-
         /**
          * This interface provides methods to get data sent to
          * ControlledContainerConference and to send data to a

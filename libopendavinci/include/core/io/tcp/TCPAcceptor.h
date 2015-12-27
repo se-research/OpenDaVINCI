@@ -29,8 +29,6 @@ namespace core {
 
 class TCPAcceptorListener;
 
-            using namespace std;
-
             class OPENDAVINCI_API TCPAcceptor {
                 private:
                     /**

@@ -29,8 +29,6 @@ namespace core {
 
 class KeyValueDatabase;
 
-        using namespace std;
-
         /**
          * Abstract factory for creating wrapped key/value databases:
          *

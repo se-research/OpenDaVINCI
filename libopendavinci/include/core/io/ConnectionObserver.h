@@ -28,8 +28,6 @@ namespace core {
 
 class ConnectionListener;
 
-        using namespace std;
-
         /**
          * This class provides an interface for registering
          * an ConnectionListener to handle connection error

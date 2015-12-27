@@ -33,8 +33,6 @@ namespace core {
     namespace wrapper {
         namespace POSIX {
 
-            using namespace std;
-
             /**
              * This class implements a condition for protecting parts
              * using pthread. It is derived from POSIXMutex for getting

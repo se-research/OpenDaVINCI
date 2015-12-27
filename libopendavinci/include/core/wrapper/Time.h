@@ -26,8 +26,6 @@
 namespace core {
     namespace wrapper {
 
-        using namespace std;
-
         /**
          * This interface encapsulates all methods necessary for
          * getting the time since Jan. 1, 1970.

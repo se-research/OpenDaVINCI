@@ -28,8 +28,6 @@ namespace core {
 
 class StringListener;
 
-        using namespace std;
-
         /**
          * This class provides an interface for registering
          * as a string listener at a string observer.

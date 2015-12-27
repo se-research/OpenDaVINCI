@@ -28,9 +28,6 @@
 namespace core {
     namespace base {
 
-        using namespace std;
-
-
         /**
          * This class implements a mutex for protecting parts
          * of the code for simultaneous access using the concept

@@ -26,8 +26,6 @@
 namespace core {
     namespace wrapper {
 
-        using namespace std;
-
         /**
          * This interface marks an object as disposable.
          */

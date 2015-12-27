@@ -26,8 +26,6 @@
 namespace core {
     namespace io {
 
-        using namespace std;
-
         /**
          * This class provides an interface to handle connection errors
          */

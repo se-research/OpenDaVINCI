@@ -30,8 +30,6 @@ namespace core { namespace io { namespace conference { class ContainerListener; 
 namespace context {
     namespace base {
 
-        using namespace std;
-
         /**
          * This class realizes a blockable container receiver which can
          * blocked from sending. This class is used for every registered

@@ -29,8 +29,6 @@ namespace core { namespace data { class Container; } }
 namespace core {
     namespace base {
 
-        using namespace std;
-
         /**
          * This interface encapsulates methods for every data store.
          */

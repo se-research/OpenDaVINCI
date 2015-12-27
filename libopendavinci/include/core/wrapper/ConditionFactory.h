@@ -29,8 +29,6 @@ namespace core {
 
 class Condition;
 
-        using namespace std;
-
         /**
          * Factory for creating conditions using different
          * implementations (i.e. WIN32 or POSIX).

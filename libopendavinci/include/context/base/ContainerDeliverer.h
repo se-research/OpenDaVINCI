@@ -32,8 +32,6 @@ namespace core { namespace data { class Container; } }
 namespace context {
     namespace base {
 
-        using namespace std;
-
         /**
          * This class delivers Containers to ControlledContainerConferenceForSystemUnderTest.
          * Every ControlledContainerConferenceForSystemUnderTest has its own

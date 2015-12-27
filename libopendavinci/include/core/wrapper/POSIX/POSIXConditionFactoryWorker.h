@@ -31,8 +31,6 @@
 namespace core {
     namespace wrapper {
 
-        using namespace std;
-
         template <> class OPENDAVINCI_API ConditionFactoryWorker<SystemLibraryPosix> {
             public:
                 static SharedPointer<Condition> createCondition() {

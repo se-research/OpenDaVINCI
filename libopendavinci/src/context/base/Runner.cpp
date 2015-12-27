@@ -24,8 +24,6 @@
 namespace context {
     namespace base {
 
-        using namespace std;
-
         Runner::Runner() {}
 
         Runner::~Runner() {}

@@ -28,8 +28,6 @@ namespace core {
 
 class Mutex;
 
-        using namespace std;
-
         /**
          * Factory for creating wrapped mutexes (i.e.
          * mutexes based on WIN32, pthread, ...).

@@ -31,9 +31,6 @@ namespace core {
     namespace wrapper {
         namespace POSIX {
 
-            using namespace std;
-
-
             /**
              * This class implements a mutex for protecting parts
              * using pthread.

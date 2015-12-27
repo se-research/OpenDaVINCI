@@ -28,8 +28,6 @@ namespace core {
 
 class Packet;
 
-        using namespace std;
-
         /**
          * This class provides an interface for getting informed
          * about new packets by a packet observer.

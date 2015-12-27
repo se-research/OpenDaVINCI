@@ -31,8 +31,6 @@ namespace core {
     namespace wrapper {
         namespace POSIX {
 
-            using namespace std;
-
             /**
              * This class implements the time using POSIX.
              *

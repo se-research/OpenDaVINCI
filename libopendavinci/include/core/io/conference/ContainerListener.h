@@ -29,8 +29,6 @@ namespace core {
     namespace io {
         namespace conference {
 
-            using namespace std;
-
             /**
              * This class provides an interface for getting informed
              * about new containers by an observer.

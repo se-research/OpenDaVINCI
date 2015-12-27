@@ -31,8 +31,6 @@ namespace core {
 
 class TCPConnection;
 
-            using namespace std;
-
             class OPENDAVINCI_API TCPAcceptorListener {
                 public:
                     virtual ~TCPAcceptorListener();

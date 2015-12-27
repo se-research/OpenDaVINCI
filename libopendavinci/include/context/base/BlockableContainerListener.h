@@ -28,8 +28,6 @@
 namespace context {
     namespace base {
 
-        using namespace std;
-
         /**
          * This class provides methods for blocking a ContainerListener.
          */

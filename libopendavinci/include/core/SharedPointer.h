@@ -30,8 +30,6 @@
 
 namespace core {
 
-    using namespace std;
-
     /**
      * This class can be used to share pointers to dynamically allocated memory
      * that should be released automagically. Contrary to auto_ptr from STL,

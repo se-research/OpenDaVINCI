@@ -28,8 +28,6 @@ namespace core { namespace data { class Container; } }
 namespace context {
     namespace base {
 
-        using namespace std;
-
         /**
          * This interface provides methods to send data to a
          * ControlledContainerConferenceForSystemsUnderTest.

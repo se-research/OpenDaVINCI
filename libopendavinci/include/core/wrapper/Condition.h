@@ -23,8 +23,6 @@
 namespace core {
     namespace wrapper {
 
-        using namespace std;
-
         /**
          * This interface encapsulates all methods necessary to
          * realize a condition.
