@@ -28,8 +28,6 @@
 namespace hesperia {
     namespace threeD {
 
-        using namespace std;
-
         /**
          * This class configures several options for the rendering method.
          */
