@@ -19,11 +19,13 @@
 
 #include "KeyBoardController.h"
 
-#include <cstdio>
 #include <termios.h>
 #include <unistd.h>
 #include <sys/select.h>
 #include <sys/time.h>
+
+#include <cstdio>
+#include <iostream>
 
 namespace egocontroller {
 

@@ -19,6 +19,7 @@
 
 #include <cmath>
 #include <iomanip>
+#include <iostream>
 
 #include "core/wrapper/Eigen.h"
 

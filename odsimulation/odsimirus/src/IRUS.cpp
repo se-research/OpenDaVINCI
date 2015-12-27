@@ -19,6 +19,7 @@
 
 #include <cmath>
 #include <algorithm>
+#include <iostream>
 
 #include "core/macros.h"
 #include "core/base/KeyValueConfiguration.h"

@@ -18,6 +18,7 @@
  */
 
 #include <cmath>
+#include <iostream>
 
 #include "ForceControlBehaviourBicycleModel.h"
 
