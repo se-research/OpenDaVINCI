@@ -20,26 +20,28 @@
 #ifndef CORE_MESSAGETESTSUITE_H_
 #define CORE_MESSAGETESTSUITE_H_
 
-#include <cmath>
-#include <cstring>
-#include <cstdlib>
+#include <cmath>                        // for fabs
+#include <cstdlib>                      // for calloc
+#include <cstring>                      // for strcmp
+#include <iosfwd>                       // for stringstream, istream, etc
+#include <string>                       // for string
 
-#include "cxxtest/TestSuite.h"
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/base/Deserializer.h"
-#include "core/base/Hash.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Visitor.h"
-#include "core/base/Visitable.h"
-#include "core/base/Serializable.h"
-#include "core/base/Serializer.h"
-#include "core/reflection/Message.h"
+#include "core/platform.h"
+#include "core/SharedPointer.h"         // for SharedPointer
+#include "core/base/Deserializer.h"     // for Deserializer
+#include "core/base/Hash.h"             // for CharList, CRC32, etc
+#include "core/base/Serializable.h"     // for Serializable
+#include "core/base/SerializationFactory.h"  // for SerializationFactory
+#include "core/base/Serializer.h"       // for Serializer
+#include "core/base/Visitable.h"        // for Visitable
+#include "core/base/Visitor.h"          // for Visitor
+#include "core/reflection/Message.h"    // for Message
 #include "core/reflection/MessageFromVisitableVisitor.h"
-#include "core/reflection/MessageToVisitableVisitor.h"
 #include "core/reflection/MessagePrettyPrinterVisitor.h"
-#include "core/strings/StringToolbox.h"
-
-#include "GeneratedHeaders_CoreData.h"
+#include "core/reflection/MessageToVisitableVisitor.h"
+#include "core/strings/StringToolbox.h"  // for StringToolbox
 
 using namespace std;
 using namespace core;

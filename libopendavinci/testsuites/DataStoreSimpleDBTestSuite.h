@@ -20,24 +20,26 @@
 #ifndef CORE_DATASTORESIMPLEDBTESTSUITE_H_
 #define CORE_DATASTORESIMPLEDBTESTSUITE_H_
 
-#include "cxxtest/TestSuite.h"
-
-#include <cstdlib>
-
+#include <cstdlib>                      // for random
 #include <fstream>
-#include <string>
+#include <string>                       // for string, operator<<, etc
 
-#include "core/base/Deserializer.h"
-#include "core/base/Hash.h"
-#include "core/base/KeyValueDataStore.h"
-#include "core/base/Serializable.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
-#include "core/base/Service.h"
-#include "core/base/Thread.h"
-#include "core/data/SerializableData.h"
-#include "core/data/TimeStamp.h"
-#include "core/wrapper/SimpleDB/SimpleDB.h"
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
+
+#include "core/platform.h"
+#include "core/SharedPointer.h"         // for SharedPointer
+#include "core/base/Deserializer.h"     // for Deserializer
+#include "core/base/Hash.h"             // for CharList, CRC32, etc
+#include "core/base/KeyValueDataStore.h"  // for KeyValueDataStore
+#include "core/base/SerializationFactory.h"  // for SerializationFactory
+#include "core/base/Serializer.h"       // for Serializer
+#include "core/base/Service.h"          // for Service
+#include "core/base/Thread.h"           // for Thread
+#include "core/data/Container.h"        // for Container, etc
+#include "core/data/SerializableData.h"  // for SerializableData
+#include "core/data/TimeStamp.h"        // for TimeStamp
+#include "core/wrapper/KeyValueDatabase.h"  // for KeyValueDatabase
+#include "core/wrapper/SimpleDB/SimpleDB.h"  // for SimpleDB
 
 using namespace std;
 using namespace core::base;

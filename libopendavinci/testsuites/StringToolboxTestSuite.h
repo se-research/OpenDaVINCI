@@ -20,11 +20,12 @@
 #ifndef CORE_STRINGTOOLBOXTESTSUITE_H_
 #define CORE_STRINGTOOLBOXTESTSUITE_H_
 
-#include "cxxtest/TestSuite.h"
+#include <string>                       // for string
+#include <vector>                       // for vector
 
-#include <string>
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/strings/StringToolbox.h"
+#include "core/strings/StringToolbox.h"  // for StringToolbox
 
 using namespace std;
 

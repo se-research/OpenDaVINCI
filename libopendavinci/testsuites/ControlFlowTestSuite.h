@@ -20,45 +20,47 @@
 #ifndef CONTEXT_CONTROLFLOWTESTSUITE_H_
 #define CONTEXT_CONTROLFLOWTESTSUITE_H_
 
-#include "cxxtest/TestSuite.h"
+#include <iostream>                     // for operator<<, basic_ostream, etc
+#include <string>                       // for string, char_traits
+#include <vector>                       // for vector
 
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <vector>
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/macros.h"
-#include "core/base/module/Breakpoint.h"
-#include "core/base/Condition.h"
-#include "core/base/Deserializer.h"
-#include "core/base/Hash.h"
-#include "core/base/FIFOQueue.h"
-#include "core/base/Lock.h"
-#include "core/base/Service.h"
-#include "core/base/Serializable.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
-#include "core/base/Thread.h"
-#include "core/data/Container.h"
-#include "core/data/SerializableData.h"
-#include "core/data/TimeStamp.h"
+#include "core/platform.h"
+#include "context/base/BlockableContainerReceiver.h"
+#include "context/base/ControlledContainerConferenceFactory.h"
+#include "context/base/ControlledContainerConferenceForSystemUnderTest.h"
+#include "core/SharedPointer.h"         // for SharedPointer
+#include "core/base/Deserializer.h"     // for Deserializer
+#include "core/base/FIFOQueue.h"        // for FIFOQueue
+#include "core/base/Hash.h"             // for CharList, CRC32, etc
+#include "core/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
+#include "core/base/Lock.h"             // for Lock
+#include "core/base/Mutex.h"            // for Mutex
+#include "core/base/SerializationFactory.h"  // for SerializationFactory
+#include "core/base/Serializer.h"       // for Serializer
+#include "core/base/Service.h"          // for Service
+#include "core/base/Thread.h"           // for Thread
+#include "core/base/module/Breakpoint.h"  // for Breakpoint
+#include "core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "core/data/Container.h"        // for Container, etc
+#include "core/data/SerializableData.h"  // for SerializableData
+#include "core/data/TimeStamp.h"        // for TimeStamp
+#include "core/dmcp/ModuleConfigurationProvider.h"
+#include "core/dmcp/connection/ConnectionHandler.h"
+#include "core/dmcp/connection/Server.h"  // for Server
+#include "core/dmcp/discoverer/Server.h"  // for Server
+#include "core/io/conference/ContainerConference.h"
 #include "core/io/conference/ContainerConferenceFactory.h"
 #include "core/io/conference/ContainerListener.h"
-#include "core/io/conference/UDPMultiCastContainerConference.h"
+#include "core/macros.h"
+#include "generated/coredata/dmcp/Constants.h"  // for Constants, etc
+#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "generated/coredata/dmcp/ServerInformation.h"
 
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "core/dmcp/ModuleConfigurationProvider.h"
-#include "core/dmcp/discoverer/Server.h"
-#include "core/dmcp/connection/Server.h"
-#include "core/dmcp/connection/ConnectionHandler.h"
-#include "core/dmcp/connection/ModuleConnection.h"
-
-#include "context/base/BlockableContainerReceiver.h"
-#include "context/base/ControlledContainerConference.h"
-#include "context/base/ControlledContainerConferenceForSystemUnderTest.h"
-#include "context/base/ControlledContainerConferenceFactory.h"
-
-#include "GeneratedHeaders_CoreData.h"
+namespace context { namespace base { class BlockableContainerReceiver; } }
+namespace coredata { namespace dmcp { class ModuleDescriptor; } }
+namespace core { namespace dmcp { namespace connection { class ModuleConnection; } } }
 
 using namespace std;
 using namespace core::base;

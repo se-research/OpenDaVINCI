@@ -20,19 +20,17 @@
 #ifndef CORE_DMCPDISCOVERERTESTSUITE_H_
 #define CORE_DMCPDISCOVERERTESTSUITE_H_
 
-#include "cxxtest/TestSuite.h"
+#include <string>                       // for string
+#include <vector>                       // for vector
 
-#include <sstream>
-#include <string>
-#include <memory>
-#include <vector>
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/dmcp/discoverer/Client.h"
-#include "core/dmcp/discoverer/Server.h"
-
+#include "core/platform.h"
+#include "core/dmcp/discoverer/Client.h"  // for Client
+#include "core/dmcp/discoverer/Server.h"  // for Server
+#include "generated/coredata/dmcp/ServerInformation.h"
+#include "generated/coredata/dmcp/TestConstants.h"  // for TestConstants, etc
 #include "mocks/FunctionCallWaiter.h"
-
-#include "GeneratedHeaders_CoreData.h"
 
 using namespace std;
 

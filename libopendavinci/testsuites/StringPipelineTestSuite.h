@@ -20,10 +20,10 @@
 #ifndef CORE_STRINGPIPELINETESTSUITE_H_
 #define CORE_STRINGPIPELINETESTSUITE_H_
 
-#include "cxxtest/TestSuite.h"
-
 #include <string>
 #include <vector>
+
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
 #include "core/base/Thread.h"
 #include "core/io/StringListener.h"

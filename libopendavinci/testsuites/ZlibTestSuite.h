@@ -20,9 +20,9 @@
 #ifndef CORE_ZLIBTESTSUITE_H_
 #define CORE_ZLIBTESTSUITE_H_
 
-#include "cxxtest/TestSuite.h"
-
 #include <string>
+
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
 #include "core/strings/StringToolbox.h"
 #include "core/wrapper/zlib/Zlib.h"
