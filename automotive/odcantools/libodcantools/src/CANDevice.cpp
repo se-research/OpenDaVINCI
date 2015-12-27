@@ -17,6 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <fcntl.h>
+#include <iostream>
+
 #include "core/base/module/TimeTriggeredConferenceClientModule.h"
 #include "core/data/TimeStamp.h"
 

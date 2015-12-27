@@ -339,6 +339,7 @@ namespace canmapping {
 #ifndef «mapping.mappingName.toString.toUpperCase.replaceAll("\\.", "_")»_H_
 #define «mapping.mappingName.toString.toUpperCase.replaceAll("\\.", "_")»_H_
 
+#include <vector>
 #include <core/data/Container.h>
 #include <core/base/Visitable.h>
 #include <core/data/SerializableData.h>
