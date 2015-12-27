@@ -20,10 +20,11 @@
 #ifndef OPENDAVINCI_DMCP_CONNECTION_SERVER_H_
 #define OPENDAVINCI_DMCP_CONNECTION_SERVER_H_
 
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/base/Mutex.h"
 #include "core/io/ConnectionAcceptor.h"
 #include "core/io/ConnectionAcceptorListener.h"
-#include "core/native.h"
 
 namespace coredata { namespace dmcp { class ServerInformation; } }
 namespace core { namespace dmcp { class ModuleConfigurationProvider; } }

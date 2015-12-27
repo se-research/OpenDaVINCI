@@ -21,10 +21,10 @@
 #define OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXSHAREDMEMORY_H_
 
 #include <semaphore.h>
-#include <stdint.h>
-#include <sys/types.h>
 #include <string>
 
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/wrapper/SharedMemory.h"
 #include "core/wrapper/SystemLibraryProducts.h"
 

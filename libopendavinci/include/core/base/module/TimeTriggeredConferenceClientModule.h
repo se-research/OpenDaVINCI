@@ -20,11 +20,12 @@
 #ifndef OPENDAVINCI_BASE_TIMETRIGGEREDCONFERENCECLIENTMODULE_H_
 #define OPENDAVINCI_BASE_TIMETRIGGEREDCONFERENCECLIENTMODULE_H_
 
-#include <stdint.h>
 #include <map>
 #include <string>
 #include <vector>
 
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/SharedPointer.h"
 #include "core/base/DataStoreManager.h"
 #include "core/base/KeyValueDataStore.h"
@@ -32,7 +33,6 @@
 #include "core/base/module/AbstractConferenceClientModule.h"
 #include "core/data/Container.h"
 #include "core/exceptions/Exceptions.h"
-#include "core/native.h"
 #include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
 namespace core { namespace base { class AbstractDataStore; } }

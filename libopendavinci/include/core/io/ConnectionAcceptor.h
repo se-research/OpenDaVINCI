@@ -20,13 +20,12 @@
 #ifndef OPENDAVINCI_CORE_IO_CONNECTIONACCEPTOR_H_
 #define OPENDAVINCI_CORE_IO_CONNECTIONACCEPTOR_H_
 
-#include <stdint.h>
-
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/SharedPointer.h"
 #include "core/base/Mutex.h"
 #include "core/io/tcp/TCPAcceptor.h"
 #include "core/io/tcp/TCPAcceptorListener.h"
-#include "core/native.h"
 
 namespace core {
     namespace io {

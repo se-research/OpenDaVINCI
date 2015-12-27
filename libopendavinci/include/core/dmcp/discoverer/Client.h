@@ -20,15 +20,15 @@
 #ifndef OPENDAVINCI_DMCP_DISCOVER_CLIENT_H_
 #define OPENDAVINCI_DMCP_DISCOVER_CLIENT_H_
 
-#include <stdint.h>
 #include <string>
 
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/SharedPointer.h"
 #include "core/base/Condition.h"
 #include "core/io/PacketListener.h"
 #include "core/io/udp/UDPReceiver.h"
 #include "core/io/udp/UDPSender.h"
-#include "core/native.h"
 #include "generated/coredata/dmcp/ServerInformation.h"
 
 namespace core { namespace io { class Packet; } }

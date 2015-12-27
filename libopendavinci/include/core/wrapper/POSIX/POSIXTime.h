@@ -20,8 +20,8 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXTIME_H_
 #define OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXTIME_H_
 
-#include <stdint.h>
-
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/wrapper/SystemLibraryProducts.h"
 #include "core/wrapper/Time.h"
 

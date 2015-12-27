@@ -20,13 +20,12 @@
 #ifndef OPENDAVINCI_CORE_EXCEPTIONS_EXCEPTIONS_H_
 #define OPENDAVINCI_CORE_EXCEPTIONS_EXCEPTIONS_H_
 
-#include <stddef.h>
-#include <stdint.h>
 #include <exception>
 #include <string>
 
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/macros.h"
-#include "core/native.h"
 
 namespace core {
     namespace exceptions {

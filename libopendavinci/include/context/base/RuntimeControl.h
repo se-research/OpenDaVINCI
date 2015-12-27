@@ -20,14 +20,13 @@
 #ifndef CONTEXT_BASE_RUNTIMECONTROL_H_
 #define CONTEXT_BASE_RUNTIMECONTROL_H_
 
-#include <stdint.h>
 #include <vector>
 
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/SharedPointer.h"
 #include "core/base/Mutex.h"
 #include "core/base/module/AbstractModule.h"
-// native.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/native.h"
 #include "core/wrapper/TimeFactory.h"
 
 namespace core { namespace wrapper { class Time; } }

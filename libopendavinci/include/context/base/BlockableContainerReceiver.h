@@ -20,9 +20,9 @@
 #ifndef CONTEXT_BASE_BLOCKABLECONTAINERRECEIVER_H_
 #define CONTEXT_BASE_BLOCKABLECONTAINERRECEIVER_H_
 
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "context/base/BlockableContainerListener.h"
-// native.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/native.h"
 
 namespace core { namespace data { class Container; } }
 namespace core { namespace io { namespace conference { class ContainerListener; } } }

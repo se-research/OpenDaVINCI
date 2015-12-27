@@ -20,10 +20,10 @@
 #ifndef CONTEXT_BASE_BLOCKABLECONTAINERLISTENER_H_
 #define CONTEXT_BASE_BLOCKABLECONTAINERLISTENER_H_
 
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/base/Mutex.h"
 #include "core/io/conference/ContainerListener.h"
-// native.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/native.h"
 
 namespace context {
     namespace base {

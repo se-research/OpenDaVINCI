@@ -20,11 +20,10 @@
 #ifndef OPENDAVINCI_CORE_BASE_DESERIALIZER_H_
 #define OPENDAVINCI_CORE_BASE_DESERIALIZER_H_
 
-#include <stdint.h>
-#include <iosfwd>
 #include <string>
 
-#include "core/native.h"
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 
 namespace core {
     namespace base {

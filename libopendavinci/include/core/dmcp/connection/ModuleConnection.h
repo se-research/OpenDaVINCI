@@ -20,9 +20,10 @@
 #ifndef OPENDAVINCI_DMCP_CONNECTION_MODULECONNECTION_H_
 #define OPENDAVINCI_DMCP_CONNECTION_MODULECONNECTION_H_
 
-#include <stdint.h>
 #include <vector>
 
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/SharedPointer.h"
 #include "core/base/Condition.h"
 #include "core/base/Mutex.h"
@@ -30,7 +31,6 @@
 #include "core/io/Connection.h"
 #include "core/io/ConnectionErrorListener.h"
 #include "core/io/conference/ContainerListener.h"
-#include "core/native.h"
 #include "generated/coredata/dmcp/ModuleDescriptor.h"
 
 namespace coredata { namespace dmcp { class PulseMessage; } }

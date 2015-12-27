@@ -23,9 +23,10 @@
 #include <sstream>
 #include <string>
 
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/base/Serializable.h"
 #include "core/data/TimeStamp.h"
-#include "core/native.h"
 
 namespace core {
     namespace data {

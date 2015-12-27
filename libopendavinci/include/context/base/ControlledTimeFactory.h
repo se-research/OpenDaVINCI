@@ -20,12 +20,12 @@
 #ifndef CONTEXT_BASE_CONTROLLEDTIMEFACTORY_H_
 #define CONTEXT_BASE_CONTROLLEDTIMEFACTORY_H_
 
-#include "context/base/ControlledTime.h"
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/SharedPointer.h"
 #include "core/base/Mutex.h"
-// native.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/native.h"
 #include "core/wrapper/TimeFactory.h"
+#include "context/base/ControlledTime.h"
 
 namespace core { namespace wrapper { class Time; } }
 

@@ -20,15 +20,14 @@
 #ifndef OPENDAVINCI_CORE_BASE_QUERYABLENETSTRINGSDESERIALIZER_H_
 #define OPENDAVINCI_CORE_BASE_QUERYABLENETSTRINGSDESERIALIZER_H_
 
-#include <stdint.h>
-#include <iosfwd>
 #include <sstream>
 #include <string>
 
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/base/Deserializer.h"
 #include "core/base/QueryableNetstringsDeserializerAACF.h"
 #include "core/base/QueryableNetstringsDeserializerABCF.h"
-#include "core/native.h"
 
 namespace core {
     namespace base {

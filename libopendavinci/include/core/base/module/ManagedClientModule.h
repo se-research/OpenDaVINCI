@@ -20,11 +20,10 @@
 #ifndef OPENDAVINCI_BASE_MANAGEDCLIENTMODULE_H_
 #define OPENDAVINCI_BASE_MANAGEDCLIENTMODULE_H_
 
-#include <stdint.h>
-#include <time.h>
-#include <iosfwd>
 #include <string>
 
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "context/base/Clock.h"
 #include "core/SharedPointer.h"
 #include "core/base/module/Breakpoint.h"
@@ -32,7 +31,6 @@
 #include "core/data/TimeStamp.h"
 #include "core/exceptions/Exceptions.h"
 #include "core/io/conference/ContainerConference.h"
-#include "core/native.h"
 #include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
 #include "generated/coredata/dmcp/PulseMessage.h"
 

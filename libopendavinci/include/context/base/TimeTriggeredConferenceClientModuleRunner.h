@@ -20,12 +20,12 @@
 #ifndef CONTEXT_BASE_TIMETRIGGEREDCONFERENCECLIENTMODULERUNNER_H_
 #define CONTEXT_BASE_TIMETRIGGEREDCONFERENCECLIENTMODULERUNNER_H_
 
-#include "context/base/RunModuleBreakpoint.h"
-#include "context/base/Runner.h"
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/base/Mutex.h"
 #include "core/base/Service.h"
-// native.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/native.h"
+#include "context/base/RunModuleBreakpoint.h"
+#include "context/base/Runner.h"
 
 namespace core { namespace base { namespace module { class TimeTriggeredConferenceClientModule; } } }
 namespace core { namespace wrapper { class Time; } }

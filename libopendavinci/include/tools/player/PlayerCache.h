@@ -20,11 +20,12 @@
 #ifndef OPENDAVINCI_TOOLS_PLAYER_PLAYERCACHE_H_
 #define OPENDAVINCI_TOOLS_PLAYER_PLAYERCACHE_H_
 
-#include <stdint.h>
-#include <iostream>
+#include <iosfwd>
 #include <map>
 #include <string>
 
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/SharedPointer.h"
 #include "core/base/FIFOQueue.h"
 #include "core/base/LIFOQueue.h"

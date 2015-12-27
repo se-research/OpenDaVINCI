@@ -20,16 +20,16 @@
 #ifndef OPENDAVINCI_CORE_IO_CONNECTION_H_
 #define OPENDAVINCI_CORE_IO_CONNECTION_H_
 
-#include <stdint.h>
 #include <string>
 
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/SharedPointer.h"
 #include "core/base/Mutex.h"
 #include "core/io/ConnectionListener.h"
 #include "core/io/StringListener.h"
 #include "core/io/conference/ContainerObserver.h"
 #include "core/io/tcp/TCPConnection.h"
-#include "core/native.h"
 
 namespace core { namespace data { class Container; } }
 

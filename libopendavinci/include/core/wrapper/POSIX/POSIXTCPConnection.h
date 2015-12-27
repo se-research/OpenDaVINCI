@@ -20,10 +20,11 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_POSIXTCPCONNECTION_H_
 #define OPENDAVINCI_CORE_WRAPPER_POSIXTCPCONNECTION_H_
 
-#include <stdint.h>
 #include <memory>
 #include <string>
 
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/io/tcp/TCPConnection.h"
 #include "core/wrapper/Runnable.h"
 

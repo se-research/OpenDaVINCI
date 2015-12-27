@@ -20,13 +20,13 @@
 #ifndef CONTEXT_BASE_SYSTEMCONTEXTCOMPONENT_H_
 #define CONTEXT_BASE_SYSTEMCONTEXTCOMPONENT_H_
 
-#include "context/base/Runner.h"
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/SharedPointer.h"
 #include "core/base/FIFOQueue.h"
 #include "core/base/KeyValueDataStore.h"
 #include "core/io/conference/ContainerListener.h"
-// native.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/native.h"
+#include "context/base/Runner.h"
 
 namespace core { namespace data { class Container; } }
 

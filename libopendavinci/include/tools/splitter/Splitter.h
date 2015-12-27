@@ -20,8 +20,10 @@
 #ifndef OPENDAVINCI_TOOLS_SPLITTER_SPLITTER_H_
 #define OPENDAVINCI_TOOLS_SPLITTER_SPLITTER_H_
 
-#include <stdint.h>
 #include <string>
+
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 
 namespace tools {
     namespace splitter {

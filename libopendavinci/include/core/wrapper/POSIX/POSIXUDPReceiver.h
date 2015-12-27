@@ -20,11 +20,11 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXUDPRECEIVER_H_
 #define OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXUDPRECEIVER_H_
 
-#include <netinet/in.h>
-#include <stdint.h>
 #include <memory>
 #include <string>
 
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/io/udp/UDPReceiver.h"
 #include "core/wrapper/NetworkLibraryProducts.h"
 #include "core/wrapper/Runnable.h"

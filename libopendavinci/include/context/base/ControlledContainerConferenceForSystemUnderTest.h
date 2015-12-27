@@ -23,10 +23,10 @@
 #include <stdint.h>
 #include <string>
 
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/io/conference/ContainerConference.h"
 #include "core/io/conference/ContainerListener.h"
-// native.h must be included right before boost/asio.hpp because of the definition of _WIN32_WINNT.
-#include "core/native.h"
 
 namespace core { namespace data { class Container; } }
 namespace core { namespace io { namespace conference { class ContainerObserver; } } }

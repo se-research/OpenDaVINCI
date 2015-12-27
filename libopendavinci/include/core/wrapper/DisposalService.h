@@ -23,8 +23,9 @@
 #include <deque>
 #include <memory>
 
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/SharedPointer.h"
-#include "core/native.h"
 #include "core/wrapper/Condition.h"
 #include "core/wrapper/Runnable.h"
 

@@ -20,11 +20,12 @@
 #ifndef CONTEXT_BASE_SUPERCOMPONENT_H_
 #define CONTEXT_BASE_SUPERCOMPONENT_H_
 
-#include <stdint.h>
 #include <memory>
 #include <string>
 #include <vector>
 
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/SharedPointer.h"
 #include "core/base/KeyValueConfiguration.h"
 #include "core/base/Mutex.h"
@@ -32,8 +33,6 @@
 #include "core/dmcp/ModuleStateListener.h"
 #include "core/dmcp/connection/ConnectionHandler.h"
 #include "core/io/conference/ContainerConference.h"
-// native.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/native.h"
 #include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
 #include "generated/coredata/dmcp/ModuleStateMessage.h"
 #include "generated/coredata/dmcp/RuntimeStatistic.h"

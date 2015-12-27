@@ -20,13 +20,13 @@
 #ifndef OPENDAVINCI_CORE_BASE_MODULE_ABSTRACTCIDMODULE_H_
 #define OPENDAVINCI_CORE_BASE_MODULE_ABSTRACTCIDMODULE_H_
 
-#include <stdint.h>
 #include <string>
 
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/base/module/InterruptibleModule.h"
 #include "core/base/module/Periodic.h"
 #include "core/exceptions/Exceptions.h"
-#include "core/native.h"
 
 namespace core {
     namespace base {

@@ -20,11 +20,12 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_SIMPLEDB_SIMPLEDB_H_
 #define OPENDAVINCI_CORE_WRAPPER_SIMPLEDB_SIMPLEDB_H_
 
-#include <stdint.h>
 #include <map>
 #include <memory>
 #include <string>
 
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/wrapper/KeyValueDatabase.h"
 #include "core/wrapper/KeyValueDatabaseLibraryProducts.h"
 

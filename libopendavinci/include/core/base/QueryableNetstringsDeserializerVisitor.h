@@ -20,10 +20,11 @@
 #ifndef OPENDAVINCI_CORE_BASE_QUERYABLENETSTRINGSDESERIALIZERVISITOR_H_
 #define OPENDAVINCI_CORE_BASE_QUERYABLENETSTRINGSDESERIALIZERVISITOR_H_
 
-#include <stdint.h>
 #include <sstream>
 #include <string>
 
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/base/QueryableNetstringsDeserializer.h"
 #include "core/base/Visitor.h"
 

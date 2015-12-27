@@ -20,12 +20,12 @@
 #ifndef OPENDAVINCI_CORE_REFLECTION_MESSAGETOVISITABLEVISITOR_H_
 #define OPENDAVINCI_CORE_REFLECTION_MESSAGETOVISITABLEVISITOR_H_
 
-#include <stdint.h>
 #include <string>
 
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/SharedPointer.h"
 #include "core/base/Visitor.h"
-#include "core/native.h"
 #include "core/reflection/Field.h"
 #include "core/reflection/Message.h"
 #include "generated/coredata/reflection/AbstractField.h"

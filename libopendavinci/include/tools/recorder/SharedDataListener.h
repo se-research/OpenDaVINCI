@@ -20,12 +20,12 @@
 #ifndef OPENDAVINCI_TOOLS_RECORDER_SHAREDDATALISTENER_H_
 #define OPENDAVINCI_TOOLS_RECORDER_SHAREDDATALISTENER_H_
 
-#include <stdint.h>
-#include <iosfwd>
 #include <map>
 #include <memory>
 #include <string>
 
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/SharedPointer.h"
 #include "core/base/AbstractDataStore.h"
 #include "core/base/FIFOQueue.h"
