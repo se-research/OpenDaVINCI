@@ -18,6 +18,8 @@
  */
 
 #include <cmath>
+#include <cstdlib>
+#include <iostream>
 #include <strstream>
 
 #include "GeneratedHeaders_AutomotiveData.h"

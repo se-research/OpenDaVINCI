@@ -17,6 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <cmath>
+
 #include "core/base/Hash.h"
 #include "core/base/Deserializer.h"
 #include "core/base/SerializationFactory.h"

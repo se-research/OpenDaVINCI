@@ -20,6 +20,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <algorithm>
+#include <iostream>
 #include <sstream>
 
 #include "core/macros.h"
@@ -30,6 +31,8 @@
 #include "core/io/URL.h"
 #include "core/strings/StringComparator.h"
 #include "core/exceptions/Exceptions.h"
+#include "core/wrapper/Time.h"
+#include "context/base/SendContainerToSystemsUnderTest.h"
 
 #include "GeneratedHeaders_AutomotiveData.h"
 #include "hesperia/data/environment/EgoState.h"

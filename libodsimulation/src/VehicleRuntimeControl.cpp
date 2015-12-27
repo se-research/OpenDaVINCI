@@ -17,9 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <iostream>
 #include <sstream>
 
+#include "core/base/KeyValueConfiguration.h"
 #include "core/io/conference/ContainerConferenceFactory.h"
+#include "context/base/RuntimeControlInterface.h"
 
 #include "vehiclecontext/VehicleRuntimeControl.h"
 

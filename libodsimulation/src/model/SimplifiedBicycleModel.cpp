@@ -20,11 +20,14 @@
 #include <cmath>
 #include <cstdlib>
 #include <iomanip>
+#include <iostream>
 #include <sstream>
 
 #include "GeneratedHeaders_AutomotiveData.h"
 #include "core/wrapper/Eigen.h"
+#include "core/wrapper/Time.h"
 #include "core/exceptions/Exceptions.h"
+#include "context/base/SendContainerToSystemsUnderTest.h"
 
 #include "hesperia/data/environment/EgoState.h"
 
@@ -41,8 +44,8 @@ namespace vehiclecontext {
         using namespace hesperia::data::environment;
 
         SimplifiedBicycleModel::SimplifiedBicycleModel(const string &configuration) :
-			m_kvc(),
-			m_freq(0),
+            m_kvc(),
+            m_freq(0),
             m_wheelbase(1),
             m_maxSteeringLeftRad(0),
             m_maxSteeringRightRad(0),
@@ -63,14 +66,14 @@ namespace vehiclecontext {
             m_vehicleControl(),
             m_hasReceivedVehicleControl(false) {
 
-			// Create configuration object.
-			stringstream sstrConfiguration;
-			sstrConfiguration.str(configuration);
+            // Create configuration object.
+            stringstream sstrConfiguration;
+            sstrConfiguration.str(configuration);
             m_kvc.readFrom(sstrConfiguration);
-		}
+        }
 
         SimplifiedBicycleModel::SimplifiedBicycleModel(const float &freq, const string &configuration) :
-			m_kvc(),
+            m_kvc(),
             m_freq(freq),
             m_wheelbase(1),
             m_maxSteeringLeftRad(0),
@@ -281,7 +284,7 @@ namespace vehiclecontext {
                 sender.sendToSystemsUnderTest(c2);
             }
             else {
-            	// Send current position.
+                // Send current position.
                 EgoState nextEgoState(m_oldPosition, m_orientation, Point3(0, 0, 0), Point3(0, 0, 0));
 
                 cerr << "[SimplifiedBicycleModel] " << nextEgoState.toString() << endl;

@@ -34,6 +34,7 @@
 #include "core/data/Container.h"
 #include "core/wrapper/SharedMemory.h"
 #include "core/wrapper/SharedMemoryFactory.h"
+#include "context/base/SendContainerToSystemsUnderTest.h"
 
 #include "GeneratedHeaders_AutomotiveData.h"
 #include "hesperia/data/environment/Point3.h"
@@ -77,8 +78,8 @@ namespace vehiclecontext {
         }
 
         CameraModel::CameraModel(const string &configuration) :
-			m_kvc(),
-			m_freq(0),
+            m_kvc(),
+            m_freq(0),
             m_renderWindow(0),
             m_egoState(),
             m_grabber(NULL),
@@ -94,15 +95,15 @@ namespace vehiclecontext {
             m_mouseY(0),
             m_mouseButton(0) {
 
-			// Create configuration object.
-			stringstream sstrConfiguration;
-			sstrConfiguration.str(configuration);
+            // Create configuration object.
+            stringstream sstrConfiguration;
+            sstrConfiguration.str(configuration);
             m_kvc.readFrom(sstrConfiguration);
-		}
+        }
 
         CameraModel::CameraModel(const float &freq, const string &configuration) :
-			m_kvc(),
-			m_freq(freq),
+            m_kvc(),
+            m_freq(freq),
             m_renderWindow(0),
             m_egoState(),
             m_grabber(NULL),

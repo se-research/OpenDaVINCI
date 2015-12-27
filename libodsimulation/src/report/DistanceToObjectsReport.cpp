@@ -17,10 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <iostream>
 #include <sstream>
 #include <vector>
 
 #include "core/base/KeyValueDataStore.h"
+#include "core/wrapper/Time.h"
 #include "GeneratedHeaders_AutomotiveData.h"
 #include "hesperia/data/environment/EgoState.h"
 #include "hesperia/data/environment/Line.h"

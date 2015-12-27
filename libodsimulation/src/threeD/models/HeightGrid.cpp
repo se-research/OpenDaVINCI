@@ -19,8 +19,10 @@
 
 // The following include is necessary on Win32 platforms to set up necessary macro definitions.
 #ifdef WIN32
-#include <windows.h>
+    #include <windows.h>
 #endif
+
+#include <iostream>
 
 #include <GL/gl.h>
 
