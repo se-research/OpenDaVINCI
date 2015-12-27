@@ -17,8 +17,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <stddef.h>
-
 #include "core/wrapper/Mutex.h"
 #include "core/wrapper/MutexFactory.h"
 #include "core/wrapper/SimpleDB/SimpleDB.h"

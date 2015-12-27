@@ -22,6 +22,7 @@
 
 #include <pthread.h>
 
+#include "core/platform.h"
 #include "core/wrapper/Condition.h"
 #include "core/wrapper/POSIX/POSIXMutex.h"
 #include "core/wrapper/SystemLibraryProducts.h"

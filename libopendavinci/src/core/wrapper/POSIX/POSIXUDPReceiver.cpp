@@ -17,11 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <arpa/inet.h>
 #include <sys/select.h>
 #include <sys/socket.h>
-#include <sys/time.h>
-#include <unistd.h>
 #include <cerrno>
 #include <cstring>
 #include <sstream>

@@ -21,7 +21,6 @@
 #include <cstdlib>
 #include <iostream>
 #include <sstream>
-#include <utility>
 
 #include "core/base/Lock.h"
 #include "core/base/module/AbstractCIDModule.h"

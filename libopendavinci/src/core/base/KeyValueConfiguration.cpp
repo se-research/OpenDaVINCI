@@ -17,11 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <ctype.h>
-#include <stdint.h>
 #include <algorithm>
 #include <functional>
-#include <utility>
 
 #include "core/SharedPointer.h"
 #include "core/base/Deserializer.h"

@@ -20,7 +20,7 @@
 #ifndef OPENDAVINCI_CORE_BASE_KEYVALUECONFIGURATION_H_
 #define OPENDAVINCI_CORE_BASE_KEYVALUECONFIGURATION_H_
 
-#include <errno.h>
+#include <cerrno>
 #include <map>
 #include <iosfwd>
 #include <sstream>

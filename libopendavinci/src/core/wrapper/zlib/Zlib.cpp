@@ -17,9 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <stdint.h>
-#include <zlib.h>
-
+#include "zlib.h"
+#include "core/platform.h"
 #include "core/wrapper/zlib/Zlib.h"
 
 namespace core {

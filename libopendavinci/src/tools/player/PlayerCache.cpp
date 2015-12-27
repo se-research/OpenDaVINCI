@@ -20,7 +20,6 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
-#include <utility>
 
 #include "core/base/module/AbstractCIDModule.h"
 #include "core/base/Lock.h"

@@ -17,9 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <math.h>
-#include <sched.h>
-#include <sys/time.h>
+#ifdef HAVE_LINUX_RT
+    #include <sched.h>
+    #include <sys/time.h>
+#endif
+
+#include <cmath>
 #include <exception>
 #include <fstream>
 #include <iostream>

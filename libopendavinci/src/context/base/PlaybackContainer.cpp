@@ -17,8 +17,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <stddef.h>
-
 #include "context/base/PlaybackContainer.h"
 #include "context/base/SendContainerToSystemsUnderTest.h"
 #include "core/base/FIFOQueue.h"

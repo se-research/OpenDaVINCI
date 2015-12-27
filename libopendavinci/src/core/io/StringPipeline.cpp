@@ -17,9 +17,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <stddef.h>
-#include <stdint.h>
-
 #include "core/base/Lock.h"
 #include "core/io/StringPipeline.h"
 

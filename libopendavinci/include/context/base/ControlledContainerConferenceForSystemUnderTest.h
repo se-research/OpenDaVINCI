@@ -20,7 +20,6 @@
 #ifndef CONTEXT_BASE_CONTROLLEDCONTAINERCONFERENCEFORSYSTEMUNDERTEST_H_
 #define CONTEXT_BASE_CONTROLLEDCONTAINERCONFERENCEFORSYSTEMUNDERTEST_H_
 
-#include <stdint.h>
 #include <string>
 
 // platform.h must be included as first header file for definition of _WIN32_WINNT.

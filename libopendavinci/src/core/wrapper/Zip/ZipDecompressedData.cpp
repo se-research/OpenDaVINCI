@@ -18,16 +18,13 @@
  */
 
 #include <ctype.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/types.h>
-#include <unistd.h>
+#include <cstdlib>
+#include <cstring>
 #include <algorithm>
 #include <functional>
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <utility>
 
 #include "zip.h"
 #include "core/macros.h"
