@@ -18,6 +18,7 @@
  */
 
 #include <cmath>
+#include <iostream>
 
 #include "core/base/Thread.h"
 #include "core/io/URL.h"

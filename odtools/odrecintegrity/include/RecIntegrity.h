@@ -24,8 +24,6 @@
 
 namespace odrecintegrity {
 
-    using namespace std;
-
     /**
      * This class can be used to inspect the integrity of recorded data.
      */

@@ -49,7 +49,6 @@ using namespace std;
 using namespace core;
 using namespace core::base;
 using namespace core::data;
-using namespace core::dmcp;
 using namespace core::io;
 using namespace core::io::conference;
 using namespace coredata::dmcp;

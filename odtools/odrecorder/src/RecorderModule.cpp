@@ -72,8 +72,8 @@ namespace odrecorder {
         addDataStoreFor(r.getFIFO());
 
         // Connect recorder's data store that can handle shared data.
-        addDataStoreFor(Container::SHARED_DATA, r.getDataStoreForSharedData());
-        addDataStoreFor(Container::SHARED_IMAGE, r.getDataStoreForSharedData());
+        addDataStoreFor(Container::SHARED_DATA, reinterpret_cast<core::base::AbstractDataStore &>(r.getDataStoreForSharedData()));
+        addDataStoreFor(Container::SHARED_IMAGE, reinterpret_cast<core::base::AbstractDataStore &>(r.getDataStoreForSharedData()));
 
         // Get key/value-datastore for controlling the odrecorder.
         KeyValueDataStore &kvds = getKeyValueDataStore();
