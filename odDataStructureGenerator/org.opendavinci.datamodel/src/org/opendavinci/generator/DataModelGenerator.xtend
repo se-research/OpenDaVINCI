@@ -578,6 +578,7 @@ class «msg.message.substring(msg.message.lastIndexOf('.') + 1) /* These lines g
 		«{hasGeneratedAlgorithm = true; ""}»
 	«ENDIF»
 	«IF !hasGeneratedMacros && a.fixedarray != null && a.fixedarray.name != null && a.fixedarray.name.length > 0»
+#include <cstring>
 #include "core/macros.h"
 		«{hasGeneratedMacros = true; ""}»
 	«ENDIF»
