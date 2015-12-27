@@ -18,6 +18,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <cstdlib>
+#include <algorithm>
+#include <iostream>
+
 #include "core/platform.h"
 
 #include "core/strings/StringToolbox.h"
