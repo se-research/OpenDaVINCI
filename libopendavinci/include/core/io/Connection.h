@@ -20,20 +20,24 @@
 #ifndef OPENDAVINCI_CORE_IO_CONNECTION_H_
 #define OPENDAVINCI_CORE_IO_CONNECTION_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <stdint.h>
+#include <string>
 
 #include "core/SharedPointer.h"
 #include "core/base/Mutex.h"
-#include "core/data/Container.h"
-#include "core/io/conference/ContainerObserver.h"
-#include "core/io/ConnectionErrorListener.h"
-#include "core/io/conference/ContainerObserver.h"
+#include "core/io/ConnectionListener.h"
 #include "core/io/StringListener.h"
+#include "core/io/conference/ContainerObserver.h"
 #include "core/io/tcp/TCPConnection.h"
+#include "core/native.h"
+
+namespace core { namespace data { class Container; } }
 
 namespace core {
     namespace io {
+
+class ConnectionErrorListener;
+namespace conference { class ContainerListener; }
 
         using namespace std;
 

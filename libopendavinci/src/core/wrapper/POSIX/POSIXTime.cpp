@@ -17,6 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <stddef.h>
+#include <sys/time.h>
+
 #include "core/wrapper/POSIX/POSIXTime.h"
 
 namespace core {

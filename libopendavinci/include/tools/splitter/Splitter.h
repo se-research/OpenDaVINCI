@@ -20,6 +20,7 @@
 #ifndef OPENDAVINCI_TOOLS_SPLITTER_SPLITTER_H_
 #define OPENDAVINCI_TOOLS_SPLITTER_SPLITTER_H_
 
+#include <stdint.h>
 #include <string>
 
 namespace tools {

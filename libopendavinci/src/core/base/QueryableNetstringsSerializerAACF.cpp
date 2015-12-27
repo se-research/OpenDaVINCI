@@ -17,6 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <netinet/in.h>
+
 #include "core/base/QueryableNetstringsSerializerAACF.h"
 #include "core/base/Serializable.h"
 

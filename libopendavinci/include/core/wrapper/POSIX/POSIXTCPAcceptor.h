@@ -20,15 +20,17 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_POSIXTCPACCEPTOR_H_
 #define OPENDAVINCI_CORE_WRAPPER_POSIXTCPACCEPTOR_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <stdint.h>
+#include <memory>
 
-#include "core/SharedPointer.h"
 #include "core/io/tcp/TCPAcceptor.h"
-
 #include "core/wrapper/Runnable.h"
-#include "core/wrapper/Thread.h"
-#include "core/wrapper/Mutex.h"
+
+namespace core { namespace io { namespace tcp { class TCPAcceptorListener; } } }
+namespace core { namespace io { namespace tcp { class TCPConnection; } } }
+namespace core { namespace wrapper { class Mutex; } }
+namespace core { namespace wrapper { class Thread; } }
+namespace core { template <class T> class SharedPointer; }
 
 namespace core {
     namespace wrapper {

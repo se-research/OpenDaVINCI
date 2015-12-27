@@ -17,16 +17,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/base/module/AbstractCIDModule.h"
-#include "core/base/module/ManagedClientModule.h"
+#include <math.h>
+#include <sched.h>
+#include <sys/time.h>
+#include <exception>
+#include <iostream>
+#include <sstream>
+#include <vector>
+
+#include "context/base/ControlledTime.h"
+#include "context/base/ControlledTimeFactory.h"
+#include "context/base/RuntimeControl.h"
 #include "core/base/Thread.h"
+#include "core/base/module/ManagedClientModule.h"
+#include "core/base/module/ManagedClientModuleContainerConference.h"
 #include "core/data/Container.h"
 #include "core/data/TimeStamp.h"
+#include "core/dmcp/connection/Client.h"
 #include "core/exceptions/Exceptions.h"
-
-#include "context/base/RuntimeControl.h"
-
-#include "GeneratedHeaders_CoreData.h"
+#include "core/macros.h"
+#include "generated/coredata/dmcp/ModuleStateMessage.h"
+#include "generated/coredata/dmcp/RuntimeStatistic.h"
+#include "generated/coredata/dmcp/ServerInformation.h"
 
 namespace core {
     namespace base {

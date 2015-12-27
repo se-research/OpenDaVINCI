@@ -17,8 +17,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/data/Container.h"
+#include <stddef.h>
+#include <iostream>
+
 #include "context/base/RecordingContainer.h"
+#include "core/base/FIFOQueue.h"
+#include "core/data/Container.h"
+#include "tools/recorder/Recorder.h"
+
+namespace core { namespace wrapper { class Time; } }
 
 namespace context {
     namespace base {

@@ -20,15 +20,12 @@
 #ifndef OPENDAVINCI_CORE_BASE_MODULE_ABSTRACTMODULE_H_
 #define OPENDAVINCI_CORE_BASE_MODULE_ABSTRACTMODULE_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <stdint.h>
+#include <vector>
 
-#include "core/base/module/Breakpoint.h"
-#include "core/base/KeyValueConfiguration.h"
-#include "GeneratedHeaders_CoreData.h"
 #include "core/base/Mutex.h"
-
-#include "GeneratedHeaders_CoreData.h"
+#include "core/native.h"
+#include "generated/coredata/dmcp/ModuleStateMessage.h"
 
 namespace core {
     namespace base {

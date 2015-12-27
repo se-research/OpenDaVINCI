@@ -20,12 +20,13 @@
 #ifndef OPENDAVINCI_CORE_DATA_IMAGE_COMPRESSEDIMAGE_H_
 #define OPENDAVINCI_CORE_DATA_IMAGE_COMPRESSEDIMAGE_H_
 
+#include <stdint.h>
+#include <iosfwd>
 #include <string>
 
+#include "core/data/SerializableData.h"
 // native.h must be included as first header file for definition of _WIN32_WINNT.
 #include "core/native.h"
-
-#include "core/data/SerializableData.h"
 
 namespace core {
     namespace data {

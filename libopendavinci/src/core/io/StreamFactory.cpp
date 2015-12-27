@@ -17,9 +17,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <stddef.h>
+#include <ostream>
+#include <string>
+
 #include "core/base/Lock.h"
 #include "core/exceptions/Exceptions.h"
 #include "core/io/StreamFactory.h"
+#include "core/io/URLProtocol.h"
+#include "core/macros.h"
 
 namespace core {
     namespace io {

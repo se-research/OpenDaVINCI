@@ -17,8 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <stddef.h>
+
 #include "core/base/Lock.h"
+#include "core/io/Packet.h"
+#include "core/io/PacketListener.h"
 #include "core/io/udp/UDPReceiver.h"
+
+namespace core { namespace io { class StringListener; } }
 
 namespace core {
     namespace io {

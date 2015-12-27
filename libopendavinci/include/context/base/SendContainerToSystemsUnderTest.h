@@ -22,8 +22,8 @@
 
 // native.h must be included right before boost/asio.hpp because of the definition of _WIN32_WINNT.
 #include "core/native.h"
-#include "core/data/Container.h"
-#include "core/io/conference/ContainerListener.h"
+
+namespace core { namespace data { class Container; } }
 
 namespace context {
     namespace base {

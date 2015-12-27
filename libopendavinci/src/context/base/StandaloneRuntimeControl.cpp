@@ -17,14 +17,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/macros.h"
+#include <stddef.h>
+#include <stdint.h>
+#include <iostream>
+#include <sstream>
+
+#include "context/base/Clock.h"
+#include "context/base/ControlledTime.h"
+#include "context/base/RuntimeControlInterface.h"
+#include "context/base/StandaloneRuntimeControl.h"
+#include "context/base/SystemFeedbackComponent.h"
 #include "core/base/Lock.h"
 #include "core/base/Thread.h"
 #include "core/data/TimeStamp.h"
 #include "core/io/conference/ContainerConferenceFactory.h"
+#include "core/macros.h"
+#include "generated/coredata/dmcp/ModuleStateMessage.h"
 
-#include "context/base/Clock.h"
-#include "context/base/StandaloneRuntimeControl.h"
+namespace core { namespace data { class Container; } }
 
 namespace context {
 	namespace base {

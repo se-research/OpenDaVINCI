@@ -20,16 +20,16 @@
 #ifndef OPENDAVINCI_CORE_BASE_MODULE_INTERRUPTIBLEMODULE_H_
 #define OPENDAVINCI_CORE_BASE_MODULE_INTERRUPTIBLEMODULE_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
-
-#include "core/base/module/AbstractModule.h"
-#include "core/base/module/Breakpoint.h"
 #include "core/base/Mutex.h"
+#include "core/base/module/AbstractModule.h"
+#include "core/native.h"
+#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
 namespace core {
     namespace base {
         namespace module {
+
+class Breakpoint;
 
             using namespace std;
 

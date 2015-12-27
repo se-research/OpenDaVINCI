@@ -20,22 +20,25 @@
 #ifndef OPENDAVINCI_TOOLS_RECORDER_SHAREDDATALISTENER_H_
 #define OPENDAVINCI_TOOLS_RECORDER_SHAREDDATALISTENER_H_
 
+#include <stdint.h>
+#include <iosfwd>
 #include <map>
+#include <memory>
 #include <string>
 
 #include "core/SharedPointer.h"
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "core/base/AbstractDataStore.h"
 #include "core/base/FIFOQueue.h"
-#include "core/data/Container.h"
-#include "core/data/SerializableData.h"
-#include "core/wrapper/SharedMemory.h"
+#include "generated/coredata/SharedData.h"
+#include "generated/coredata/image/SharedImage.h"
 
-#include "tools/recorder/SharedDataWriter.h"
-
-#include "GeneratedHeaders_CoreData.h"
+namespace core { namespace data { class Container; } }
+namespace core { namespace wrapper { class SharedMemory; } }
 
 namespace tools {
     namespace recorder {
+
+class SharedDataWriter;
 
         using namespace std;
 

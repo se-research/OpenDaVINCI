@@ -24,6 +24,12 @@
 # endif
 # pragma GCC diagnostic ignored "-Weffc++"
 #endif
+#include <stddef.h>
+
+#include "core/io/ConnectionListener.h"
+#include "core/io/StringListener.h"
+#include "core/wrapper/Mutex.h"
+#include "core/wrapper/Thread.h"
     #include "serial/serial.h"
 #ifndef WIN32
 # if !defined(__OpenBSD__) && !defined(__NetBSD__)

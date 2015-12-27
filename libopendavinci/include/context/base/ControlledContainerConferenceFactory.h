@@ -20,24 +20,26 @@
 #ifndef CONTEXT_BASE_CONTROLLEDCONTAINERCONFERENCEFACTORY_H_
 #define CONTEXT_BASE_CONTROLLEDCONTAINERCONFERENCEFACTORY_H_
 
+#include <stdint.h>
 #include <string>
 #include <vector>
 
+#include "context/base/ControlledContainerConference.h"
+#include "core/SharedPointer.h"
+#include "core/base/Mutex.h"
+#include "core/io/conference/ContainerConferenceFactory.h"
+#include "core/io/conference/ContainerListener.h"
 // native.h must be included as first header file for definition of _WIN32_WINNT.
 #include "core/native.h"
 
-#include "core/SharedPointer.h"
-#include "core/base/Mutex.h"
-#include "core/data/Container.h"
-#include "core/io/conference/ContainerConference.h"
-#include "core/io/conference/ContainerConferenceFactory.h"
-#include "core/io/conference/ContainerListener.h"
-#include "context/base/BlockableContainerReceiver.h"
-#include "context/base/ContainerDeliverer.h"
-#include "context/base/ControlledContainerConference.h"
+namespace core { namespace data { class Container; } }
+namespace core { namespace io { namespace conference { class ContainerConference; } } }
 
 namespace context {
     namespace base {
+
+class BlockableContainerReceiver;
+class ContainerDeliverer;
 
         using namespace std;
 

@@ -20,11 +20,12 @@
 #ifndef OPENDAVINCI_CORE_BASE_BUFFEREDFIFOQUEUE_H_
 #define OPENDAVINCI_CORE_BASE_BUFFEREDFIFOQUEUE_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <stdint.h>
 
 #include "core/base/FIFOQueue.h"
+#include "core/data/Container.h"
 #include "core/exceptions/Exceptions.h"
+#include "core/native.h"
 
 namespace core {
     namespace base {

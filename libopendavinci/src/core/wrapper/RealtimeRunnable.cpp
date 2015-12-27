@@ -17,6 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <sched.h>
+#include <sys/time.h>
+#include <time.h>
+#include <string>
+
 #include "core/data/TimeStamp.h"
 #include "core/wrapper/RealtimeRunnable.h"
 

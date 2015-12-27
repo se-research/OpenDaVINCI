@@ -20,15 +20,21 @@
 #ifndef CONTEXT_BASE_PLAYBACKCONTAINER_H_
 #define CONTEXT_BASE_PLAYBACKCONTAINER_H_
 
+#include <stdint.h>
+#include <memory>
 #include <string>
 
+#include "context/base/SystemFeedbackComponent.h"
 // native.h must be included as first header file for definition of _WIN32_WINNT.
 #include "core/native.h"
-#include "context/base/SystemFeedbackComponent.h"
-#include "tools/player/Player.h"
+
+namespace core { namespace wrapper { class Time; } }
+namespace tools { namespace player { class Player; } }
 
 namespace context {
     namespace base {
+
+class SendContainerToSystemsUnderTest;
 
         using namespace std;
 

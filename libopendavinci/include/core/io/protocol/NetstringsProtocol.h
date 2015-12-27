@@ -20,14 +20,15 @@
 #ifndef OPENDAVINCI_CORE_IO_PROTOCOL_NETSTRINGSPROTOCOL_H_
 #define OPENDAVINCI_CORE_IO_PROTOCOL_NETSTRINGSPROTOCOL_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
-
 #include <sstream>
+#include <string>
 
 #include "core/base/Mutex.h"
-#include "core/io/protocol/AbstractProtocol.h"
 #include "core/io/StringObserver.h"
+#include "core/io/protocol/AbstractProtocol.h"
+#include "core/native.h"
+
+namespace core { namespace io { class StringListener; } }
 
 namespace core {
     namespace io {

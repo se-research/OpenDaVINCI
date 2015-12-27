@@ -17,8 +17,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <zip.h>
+#include <ctype.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <algorithm>
+#include <functional>
+#include <istream>
+#include <utility>
 
+#include "zip.h"
+#include "core/macros.h"
 #include "core/base/module/AbstractCIDModule.h"
 #include "core/wrapper/Zip/ZipDecompressedData.h"
 

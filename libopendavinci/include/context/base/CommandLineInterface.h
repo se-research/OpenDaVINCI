@@ -20,9 +20,14 @@
 #ifndef CONTEXT_BASE_COMMANDLINEINTERFACE_H_
 #define CONTEXT_BASE_COMMANDLINEINTERFACE_H_
 
+#include <stdint.h>
+#include <sys/types.h>
+#include <string>
+
+#include "context/base/RuntimeControlInterface.h"
+#include "core/base/KeyValueConfiguration.h"
 // native.h must be included as first header file for definition of _WIN32_WINNT.
 #include "core/native.h"
-#include "context/base/RuntimeControlInterface.h"
 
 namespace context {
     namespace base {

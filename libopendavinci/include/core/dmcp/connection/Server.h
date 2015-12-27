@@ -20,20 +20,21 @@
 #ifndef OPENDAVINCI_DMCP_CONNECTION_SERVER_H_
 #define OPENDAVINCI_DMCP_CONNECTION_SERVER_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
-
-#include "core/SharedPointer.h"
-#include "core/io/Connection.h"
+#include "core/base/Mutex.h"
 #include "core/io/ConnectionAcceptor.h"
 #include "core/io/ConnectionAcceptorListener.h"
-#include "core/dmcp/connection/ConnectionHandler.h"
+#include "core/native.h"
 
-#include "GeneratedHeaders_CoreData.h"
+namespace coredata { namespace dmcp { class ServerInformation; } }
+namespace core { namespace dmcp { class ModuleConfigurationProvider; } }
+namespace core { namespace io { class Connection; } }
+namespace core { template <class T> class SharedPointer; }
 
 namespace core {
     namespace dmcp {
         namespace connection {
+
+class ConnectionHandler;
 
             using namespace std;
 

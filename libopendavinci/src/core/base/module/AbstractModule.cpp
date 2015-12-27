@@ -17,16 +17,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <cstdlib>
+#include <string.h>
+#include <sys/types.h>
 #include <csignal>
+#include <cstdlib>
 
-#include "core/base/module/AbstractModule.h"
-#include "core/base/CommandLineParser.h"
 #include "core/base/Lock.h"
 #include "core/base/Thread.h"
+#include "core/base/module/AbstractModule.h"
+#include "core/exceptions/Exceptions.h"
+#include "core/macros.h"
 #include "core/wrapper/DisposalService.h"
-
-#include "GeneratedHeaders_CoreData.h"
 
 namespace core {
     namespace base {

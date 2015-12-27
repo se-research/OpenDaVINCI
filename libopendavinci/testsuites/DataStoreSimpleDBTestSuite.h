@@ -27,10 +27,12 @@
 #include <fstream>
 #include <string>
 
+#include "core/base/Deserializer.h"
 #include "core/base/Hash.h"
 #include "core/base/KeyValueDataStore.h"
 #include "core/base/Serializable.h"
 #include "core/base/SerializationFactory.h"
+#include "core/base/Serializer.h"
 #include "core/base/Service.h"
 #include "core/base/Thread.h"
 #include "core/data/SerializableData.h"

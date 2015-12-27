@@ -20,8 +20,8 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_SHAREDMEMORY_H_
 #define OPENDAVINCI_CORE_WRAPPER_SHAREDMEMORY_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <stdint.h>
+#include <string>
 
 namespace core {
     namespace wrapper {

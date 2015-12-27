@@ -20,14 +20,13 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_CONDITIONFACTORY_H_
 #define OPENDAVINCI_CORE_WRAPPER_CONDITIONFACTORY_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
-
 #include "core/SharedPointer.h"
-#include "core/wrapper/Condition.h"
+#include "core/native.h"
 
 namespace core {
     namespace wrapper {
+
+class Condition;
 
         using namespace std;
 

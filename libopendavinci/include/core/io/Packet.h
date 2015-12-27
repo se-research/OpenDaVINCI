@@ -20,8 +20,9 @@
 #ifndef OPENDAVINCI_CORE_IO_PACKET_H_
 #define OPENDAVINCI_CORE_IO_PACKET_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <string>
+
+#include "core/native.h"
 
 namespace core {
     namespace io {

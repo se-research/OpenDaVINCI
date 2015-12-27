@@ -17,12 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <stddef.h>
 #include <iostream>
 
+#include "context/base/BlockableContainerReceiver.h"
+#include "context/base/ControlledContainerConferenceForSystemUnderTest.h"
 #include "core/data/Container.h"
 #include "core/data/TimeStamp.h"
-
-#include "context/base/ControlledContainerConferenceForSystemUnderTest.h"
+#include "core/io/conference/ContainerObserver.h"
 
 namespace context {
     namespace base {

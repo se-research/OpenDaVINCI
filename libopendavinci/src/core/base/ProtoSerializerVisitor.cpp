@@ -17,10 +17,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <endian.h>
+#include <iostream>
+
 #include "core/base/ProtoSerializerVisitor.h"
 
 namespace core {
     namespace base {
+
+class Serializable;
 
         ProtoSerializerVisitor::ProtoSerializerVisitor() :
             m_size(0),

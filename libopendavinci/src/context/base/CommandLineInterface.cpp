@@ -17,11 +17,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <ctype.h>
 #include <algorithm>
 #include <fstream>
+#include <functional>
+#include <sstream>
 
-#include "core/base/CommandLineParser.h"
 #include "context/base/CommandLineInterface.h"
+#include "core/base/CommandLineArgument.h"
+#include "core/base/CommandLineParser.h"
 
 namespace context {
     namespace base {

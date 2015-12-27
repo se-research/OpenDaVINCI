@@ -33,6 +33,7 @@
 #include "core/io/conference/ContainerConferenceFactory.h"
 #include "core/io/conference/ContainerListener.h"
 #include "core/io/conference/UDPMultiCastContainerConference.h"
+#include "context/base/BlockableContainerReceiver.h"
 #include "context/base/ControlledContainerConference.h"
 #include "context/base/ControlledContainerConferenceForSystemUnderTest.h"
 #include "context/base/ControlledContainerConferenceFactory.h"

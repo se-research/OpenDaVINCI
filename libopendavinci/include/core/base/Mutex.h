@@ -20,10 +20,8 @@
 #ifndef OPENDAVINCI_CORE_BASE_MUTEX_H_
 #define OPENDAVINCI_CORE_BASE_MUTEX_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
-
 #include "core/SharedPointer.h"
+#include "core/native.h"
 #include "core/wrapper/Mutex.h"
 
 namespace core {
@@ -31,8 +29,6 @@ namespace core {
 
         using namespace std;
 
-        // Forward declaration to prevent circular dependencies.
-        class Lock;
 
         /**
          * This class implements a mutex for protecting parts

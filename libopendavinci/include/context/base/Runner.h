@@ -20,10 +20,11 @@
 #ifndef CONTEXT_BASE_RUNNER_H_
 #define CONTEXT_BASE_RUNNER_H_
 
+#include "core/base/module/Periodic.h"
 // native.h must be included as first header file for definition of _WIN32_WINNT.
 #include "core/native.h"
-#include "core/base/module/Periodic.h"
-#include "core/wrapper/Time.h"
+
+namespace core { namespace wrapper { class Time; } }
 
 namespace context {
     namespace base {

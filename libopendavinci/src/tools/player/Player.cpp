@@ -17,16 +17,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <cmath>
+#include <stddef.h>
+#include <string>
 
 #include "core/base/module/AbstractCIDModule.h"
-#include "core/macros.h"
 #include "core/data/Container.h"
+#include "core/data/TimeStamp.h"
+#include "core/exceptions/Exceptions.h"
 #include "core/io/StreamFactory.h"
-#include "core/base/Thread.h"
 #include "core/io/URL.h"
-
+#include "core/macros.h"
 #include "tools/player/Player.h"
+#include "tools/player/PlayerCache.h"
 
 namespace tools {
     namespace player {

@@ -20,17 +20,18 @@
 #ifndef OPENDAVINCI_DMCP_DISCOVER_CLIENT_H_
 #define OPENDAVINCI_DMCP_DISCOVER_CLIENT_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <stdint.h>
+#include <string>
 
 #include "core/SharedPointer.h"
-
 #include "core/base/Condition.h"
 #include "core/io/PacketListener.h"
-#include "core/io/udp/UDPSender.h"
 #include "core/io/udp/UDPReceiver.h"
+#include "core/io/udp/UDPSender.h"
+#include "core/native.h"
+#include "generated/coredata/dmcp/ServerInformation.h"
 
-#include "GeneratedHeaders_CoreData.h"
+namespace core { namespace io { class Packet; } }
 
 namespace core {
     namespace dmcp {

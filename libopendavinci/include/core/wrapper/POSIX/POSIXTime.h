@@ -20,11 +20,12 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXTIME_H_
 #define OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXTIME_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <stdint.h>
 
-#include "core/wrapper/TimeFactoryWorker.h"
+#include "core/wrapper/SystemLibraryProducts.h"
 #include "core/wrapper/Time.h"
+
+namespace core { namespace wrapper { template <core::wrapper::SystemLibraryProducts product> class TimeFactoryWorker; } }
 
 namespace core {
     namespace wrapper {

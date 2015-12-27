@@ -17,17 +17,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <sys/types.h>
 #include <cstdlib>
-#include <cstring>
+#include <utility>
 
 #include "core/base/module/AbstractCIDModule.h"
 #include "core/base/Lock.h"
+#include "core/base/Serializable.h"
 #include "core/base/Thread.h"
+#include "core/data/TimeStamp.h"
+#include "core/macros.h"
+#include "core/wrapper/SharedMemory.h"
 #include "core/wrapper/SharedMemoryFactory.h"
-
+#include "generated/coredata/SharedData.h"
+#include "generated/coredata/buffer/MemorySegment.h"
+#include "generated/coredata/image/SharedImage.h"
 #include "tools/player/PlayerCache.h"
-
-#include "GeneratedHeaders_CoreData.h"
 
 namespace tools {
     namespace player {

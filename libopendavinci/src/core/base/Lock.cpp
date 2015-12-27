@@ -17,7 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <stddef.h>
+
 #include "core/base/Lock.h"
+#include "core/base/Mutex.h"
 
 namespace core {
     namespace base {

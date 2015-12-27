@@ -20,9 +20,11 @@
 #ifndef CONTEXT_BASE_CLOCK_H_
 #define CONTEXT_BASE_CLOCK_H_
 
+#include <stdint.h>
+
+#include "context/base/ControlledTime.h"
 // native.h must be included as first header file for definition of _WIN32_WINNT.
 #include "core/native.h"
-#include "context/base/ControlledTime.h"
 
 namespace context {
     namespace base {

@@ -20,22 +20,29 @@
 #ifndef CONTEXT_BASE_SUPERCOMPONENT_H_
 #define CONTEXT_BASE_SUPERCOMPONENT_H_
 
+#include <stdint.h>
+#include <memory>
 #include <string>
 #include <vector>
 
-// native.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/native.h"
 #include "core/SharedPointer.h"
 #include "core/base/KeyValueConfiguration.h"
-#include "core/io/conference/ContainerConference.h"
+#include "core/base/Mutex.h"
 #include "core/dmcp/ModuleConfigurationProvider.h"
 #include "core/dmcp/ModuleStateListener.h"
 #include "core/dmcp/connection/ConnectionHandler.h"
-#include "core/dmcp/connection/ModuleConnection.h"
-#include "core/dmcp/connection/Server.h"
-#include "core/dmcp/discoverer/Server.h"
+#include "core/io/conference/ContainerConference.h"
+// native.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/native.h"
+#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "generated/coredata/dmcp/ModuleStateMessage.h"
+#include "generated/coredata/dmcp/RuntimeStatistic.h"
 
-#include "GeneratedHeaders_CoreData.h"
+namespace coredata { namespace dmcp { class ModuleDescriptor; } }
+namespace core { namespace data { class Container; } }
+namespace core { namespace dmcp { namespace connection { class ModuleConnection; } } }
+namespace core { namespace dmcp { namespace connection { class Server; } } }
+namespace core { namespace dmcp { namespace discoverer { class Server; } } }
 
 namespace context {
     namespace base {

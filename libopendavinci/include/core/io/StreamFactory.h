@@ -20,13 +20,14 @@
 #ifndef OPENDAVINCI_CORE_IO_STREAMFACTORY_H_
 #define OPENDAVINCI_CORE_IO_STREAMFACTORY_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <iosfwd>
+#include <vector>
 
 #include "core/SharedPointer.h"
 #include "core/base/Mutex.h"
 #include "core/exceptions/Exceptions.h"
 #include "core/io/URL.h"
+#include "core/native.h"
 
 namespace core {
     namespace io {

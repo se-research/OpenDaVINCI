@@ -17,11 +17,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/base/Serializer.h"
+#include <netinet/in.h>
+#include <iostream>
+
 #include "core/base/LCMSerializerVisitor.h"
+#include "core/base/Serializer.h"
 
 namespace core {
     namespace base {
+
+class Serializable;
 
         LCMSerializerVisitor::LCMSerializerVisitor() :
             m_channelName(),

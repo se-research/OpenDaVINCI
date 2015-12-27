@@ -25,11 +25,13 @@
 
 #include "cxxtest/TestSuite.h"
 
+#include "core/base/Deserializer.h"
 #include "core/base/Hash.h"
 #include "core/base/SerializationFactory.h"
 #include "core/base/Visitor.h"
 #include "core/base/Visitable.h"
 #include "core/base/Serializable.h"
+#include "core/base/Serializer.h"
 #include "core/reflection/Message.h"
 #include "core/reflection/MessageFromVisitableVisitor.h"
 #include "core/reflection/MessageToVisitableVisitor.h"

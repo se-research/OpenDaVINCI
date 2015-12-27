@@ -20,15 +20,16 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_TIMEFACTORY_H_
 #define OPENDAVINCI_CORE_WRAPPER_TIMEFACTORY_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <memory>
 
 #include "core/SharedPointer.h"
-#include "core/wrapper/Libraries.h"
+#include "core/native.h"
 #include "core/wrapper/ConfigurationTraits.h"
-#include "core/wrapper/Mutex.h"
+#include "core/wrapper/Libraries.h"
+#include "core/wrapper/SystemLibraryProducts.h"
 
-#include "core/wrapper/TimeFactoryWorker.h"
+namespace core { namespace wrapper { class Mutex; } }
+namespace core { namespace wrapper { class Time; } }
 
 #ifdef WIN32
     #include "core/wrapper/WIN32/WIN32TimeFactoryWorker.h"

@@ -20,8 +20,11 @@
 #ifndef OPENDAVINCI_CORE_BASE_DESERIALIZER_H_
 #define OPENDAVINCI_CORE_BASE_DESERIALIZER_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <stdint.h>
+#include <iosfwd>
+#include <string>
+
+#include "core/native.h"
 
 namespace core {
     namespace base {

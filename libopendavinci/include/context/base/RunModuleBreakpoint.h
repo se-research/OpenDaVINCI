@@ -20,14 +20,15 @@
 #ifndef CONTEXT_BASE_RUNMODULEBREAKPOINT_H_
 #define CONTEXT_BASE_RUNMODULEBREAKPOINT_H_
 
+#include "core/base/Mutex.h"
+#include "core/base/module/Breakpoint.h"
 // native.h must be included as first header file for definition of _WIN32_WINNT.
 #include "core/native.h"
-#include "core/base/module/Breakpoint.h"
-#include "core/base/Mutex.h"
-#include "context/base/BlockableContainerListener.h"
 
 namespace context {
     namespace base {
+
+class BlockableContainerListener;
 
         using namespace std;
 

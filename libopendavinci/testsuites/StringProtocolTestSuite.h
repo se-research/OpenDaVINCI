@@ -28,6 +28,7 @@
 
 #include "core/io/protocol/StringProtocol.h"
 #include "core/io/StringListener.h"
+#include "core/io/StringSender.h"
 
 using namespace std;
 

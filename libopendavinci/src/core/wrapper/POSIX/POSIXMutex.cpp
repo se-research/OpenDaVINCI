@@ -19,6 +19,7 @@
 
 #include <cerrno>
 #include <cstring>
+#include <sstream>
 
 #include "core/wrapper/POSIX/POSIXMutex.h"
 

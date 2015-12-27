@@ -17,6 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <endian.h>
+#include <netinet/in.h>
+
 #include "core/base/QueryableNetstringsSerializerABCF.h"
 #include "core/base/Serializable.h"
 

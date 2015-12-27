@@ -17,9 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <stddef.h>
+
 #include "core/base/Lock.h"
 #include "core/base/RealtimeService.h"
+#include "core/macros.h"
 #include "core/wrapper/ConcurrencyFactory.h"
+#include "core/wrapper/Thread.h"
 
 namespace core {
     namespace base {

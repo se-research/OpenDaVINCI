@@ -20,11 +20,11 @@
 #ifndef CONTEXT_BASE_CONTROLLEDCONTAINERCONFERENCE_H_
 #define CONTEXT_BASE_CONTROLLEDCONTAINERCONFERENCE_H_
 
+#include "context/base/SendContainerToSystemsUnderTest.h"
 // native.h must be included right before boost/asio.hpp because of the definition of _WIN32_WINNT.
 #include "core/native.h"
-#include "core/data/Container.h"
-#include "core/io/conference/ContainerListener.h"
-#include "context/base/SendContainerToSystemsUnderTest.h"
+
+namespace core { namespace io { namespace conference { class ContainerListener; } } }
 
 namespace context {
     namespace base {

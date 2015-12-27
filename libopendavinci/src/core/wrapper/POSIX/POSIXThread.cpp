@@ -17,9 +17,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <errno.h>
+#include <string.h>
+#include <ostream>
+#include <string>
+
+#include "core/macros.h"
 #include "core/base/module/AbstractCIDModule.h"
+#include "core/wrapper/Mutex.h"
 #include "core/wrapper/MutexFactory.h"
 #include "core/wrapper/POSIX/POSIXThread.h"
+#include "core/wrapper/Runnable.h"
 
 namespace core {
     namespace wrapper {

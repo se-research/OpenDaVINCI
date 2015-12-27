@@ -20,14 +20,15 @@
 #ifndef OPENDAVINCI_CORE_IO_TCP_TCPACCEPTOR_H_
 #define OPENDAVINCI_CORE_IO_TCP_TCPACCEPTOR_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
 
-#include "core/io/tcp/TCPAcceptorListener.h"
+
+#include "core/native.h"
 
 namespace core {
     namespace io {
         namespace tcp {
+
+class TCPAcceptorListener;
 
             using namespace std;
 

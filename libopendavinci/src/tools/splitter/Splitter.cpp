@@ -21,9 +21,9 @@
 #include <sstream>
 
 #include "core/base/module/AbstractCIDModule.h"
-#include "core/base/Thread.h"
 #include "core/data/Container.h"
-
+#include "core/io/URL.h"
+#include "core/macros.h"
 #include "tools/player/Player.h"
 #include "tools/recorder/Recorder.h"
 #include "tools/splitter/Splitter.h"

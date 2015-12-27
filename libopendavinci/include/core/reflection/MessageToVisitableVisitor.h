@@ -20,11 +20,17 @@
 #ifndef OPENDAVINCI_CORE_REFLECTION_MESSAGETOVISITABLEVISITOR_H_
 #define OPENDAVINCI_CORE_REFLECTION_MESSAGETOVISITABLEVISITOR_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <stdint.h>
+#include <string>
+
+#include "core/SharedPointer.h"
 #include "core/base/Visitor.h"
+#include "core/native.h"
 #include "core/reflection/Field.h"
 #include "core/reflection/Message.h"
+#include "generated/coredata/reflection/AbstractField.h"
+
+namespace core { namespace base { class Serializable; } }
 
 namespace core {
     namespace reflection {

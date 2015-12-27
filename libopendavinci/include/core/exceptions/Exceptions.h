@@ -20,8 +20,13 @@
 #ifndef OPENDAVINCI_CORE_EXCEPTIONS_EXCEPTIONS_H_
 #define OPENDAVINCI_CORE_EXCEPTIONS_EXCEPTIONS_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <stddef.h>
+#include <stdint.h>
+#include <exception>
+#include <string>
+
+#include "core/macros.h"
+#include "core/native.h"
 
 namespace core {
     namespace exceptions {

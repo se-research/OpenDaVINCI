@@ -20,16 +20,22 @@
 #ifndef OPENDAVINCI_BASE_TIMETRIGGEREDCONFERENCECLIENTMODULE_H_
 #define OPENDAVINCI_BASE_TIMETRIGGEREDCONFERENCECLIENTMODULE_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <stdint.h>
+#include <map>
+#include <string>
+#include <vector>
 
 #include "core/SharedPointer.h"
+#include "core/base/DataStoreManager.h"
+#include "core/base/KeyValueDataStore.h"
 #include "core/base/Mutex.h"
+#include "core/base/module/AbstractConferenceClientModule.h"
 #include "core/data/Container.h"
 #include "core/exceptions/Exceptions.h"
+#include "core/native.h"
+#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
-#include "core/base/module/AbstractConferenceClientModule.h"
-#include "core/base/DataStoreManager.h"
+namespace core { namespace base { class AbstractDataStore; } }
 
 namespace core {
     namespace base {

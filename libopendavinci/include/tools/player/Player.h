@@ -20,16 +20,18 @@
 #ifndef OPENDAVINCI_TOOLS_PLAYER_PLAYER_H_
 #define OPENDAVINCI_TOOLS_PLAYER_PLAYER_H_
 
+#include <stdint.h>
 #include <iostream>
+#include <memory>
 
 #include "core/SharedPointer.h"
 #include "core/data/Container.h"
 #include "core/io/URL.h"
 
-#include "tools/player/PlayerCache.h"
-
 namespace tools {
     namespace player {
+
+class PlayerCache;
 
         using namespace std;
 

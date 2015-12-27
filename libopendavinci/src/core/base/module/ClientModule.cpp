@@ -17,16 +17,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <ostream>
+
 #include "core/base/module/AbstractCIDModule.h"
 #include "core/base/module/ClientModule.h"
-#include "core/base/Thread.h"
-#include "core/data/Container.h"
-#include "core/data/TimeStamp.h"
-#include "core/dmcp/discoverer/Client.h"
 #include "core/dmcp/connection/Client.h"
+#include "core/dmcp/discoverer/Client.h"
 #include "core/exceptions/Exceptions.h"
-
-#include "GeneratedHeaders_CoreData.h"
+#include "core/macros.h"
+#include "generated/coredata/dmcp/Constants.h"
+#include "generated/coredata/dmcp/ModuleDescriptor.h"
+#include "generated/coredata/dmcp/ModuleStateMessage.h"
 
 namespace core {
     namespace base {

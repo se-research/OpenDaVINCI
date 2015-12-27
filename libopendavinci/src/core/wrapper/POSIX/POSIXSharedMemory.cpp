@@ -17,12 +17,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <fcntl.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
 #include <algorithm>
-
 #include <cerrno>
 #include <climits>
 #include <cstring>
+#include <ostream>
 
+#include "core/macros.h"
 #include "core/base/module/AbstractCIDModule.h"
 #include "core/wrapper/POSIX/POSIXSharedMemory.h"
 

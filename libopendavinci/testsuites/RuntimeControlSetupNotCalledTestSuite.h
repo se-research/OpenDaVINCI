@@ -31,6 +31,7 @@
 #include "context/base/DirectInterface.h"
 #include "context/base/RuntimeControl.h"
 #include "context/base/RuntimeEnvironment.h"
+#include "context/base/SendContainerToSystemsUnderTest.h"
 #include "context/base/SystemFeedbackComponent.h"
 
 using namespace std;

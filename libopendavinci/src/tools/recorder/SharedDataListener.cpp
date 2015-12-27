@@ -18,20 +18,18 @@
  */
 
 #include <cstdlib>
-#include <cstring>
+#include <sstream>
+#include <utility>
 
-#include "core/base/module/AbstractCIDModule.h"
-#include "core/base/Deserializer.h"
-#include "core/base/Hash.h"
 #include "core/base/Lock.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
+#include "core/base/module/AbstractCIDModule.h"
+#include "core/data/Container.h"
+#include "core/macros.h"
+#include "core/wrapper/SharedMemory.h"
 #include "core/wrapper/SharedMemoryFactory.h"
-#include "core/io/URL.h"
-
+#include "generated/coredata/buffer/MemorySegment.h"
 #include "tools/recorder/SharedDataListener.h"
-
-#include "GeneratedHeaders_CoreData.h"
+#include "tools/recorder/SharedDataWriter.h"
 
 namespace tools {
     namespace recorder {
@@ -39,7 +37,6 @@ namespace tools {
         using namespace core;
         using namespace core::base;
         using namespace core::data;
-        using namespace core::io;
         using namespace tools;
 
         SharedDataListener::SharedDataListener(SharedPointer<ostream> out, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const bool &threading) :

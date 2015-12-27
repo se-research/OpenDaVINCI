@@ -20,10 +20,12 @@
 #ifndef OPENDAVINCI_CORE_DATA_TIMESTAMP_H_
 #define OPENDAVINCI_CORE_DATA_TIMESTAMP_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <stdint.h>
+#include <iosfwd>
+#include <string>
 
 #include "core/data/SerializableData.h"
+#include "core/native.h"
 
 namespace core {
     namespace data {

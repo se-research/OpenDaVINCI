@@ -20,17 +20,22 @@
 #ifndef OPENDAVINCI_CORE_BASE_QUERYABLENETSTRINGSDESERIALIZERABCF_H_
 #define OPENDAVINCI_CORE_BASE_QUERYABLENETSTRINGSDESERIALIZERABCF_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <stdint.h>
+#include <iosfwd>
+#include <map>
+#include <sstream>
+#include <string>
 
 #include "core/base/Deserializer.h"
+#include "core/native.h"
 
 namespace core {
     namespace base {
 
+class Serializable;
+
         using namespace std;
 
-        class QueryableNetstringsDeserializer;
 
         /**
          * This class implements the interface Deserializer for queryable

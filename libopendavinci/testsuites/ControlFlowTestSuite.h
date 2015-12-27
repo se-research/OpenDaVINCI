@@ -53,6 +53,7 @@
 #include "core/dmcp/connection/ConnectionHandler.h"
 #include "core/dmcp/connection/ModuleConnection.h"
 
+#include "context/base/BlockableContainerReceiver.h"
 #include "context/base/ControlledContainerConference.h"
 #include "context/base/ControlledContainerConferenceForSystemUnderTest.h"
 #include "context/base/ControlledContainerConferenceFactory.h"

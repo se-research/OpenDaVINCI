@@ -28,39 +28,39 @@
 
 #ifndef WIN32
     // POSIX types.
-	#include <stdint.h>
+    #include <stdint.h>
 
     // POSIX network.
-	#include <netdb.h>
-	#include <arpa/inet.h>
-	#include <netinet/in.h>
-	#include <sys/socket.h>
-	#include <sys/select.h>
-	#include <sys/types.h>
+    #include <netdb.h>
+    #include <arpa/inet.h>
+    #include <netinet/in.h>
+    #include <sys/socket.h>
+    #include <sys/select.h>
+    #include <sys/types.h>
 
     // POSIX IPC.
-	#include <pthread.h>
-	#include <semaphore.h>
-	#include <sys/ipc.h>
-	#include <sys/shm.h>
-	#include <sys/stat.h>
+    #include <pthread.h>
+    #include <semaphore.h>
+    #include <sys/ipc.h>
+    #include <sys/shm.h>
+    #include <sys/stat.h>
 
     // Other POSIX stuff.
-	#include <fcntl.h>
-	#include <unistd.h>
-	#include <sys/time.h>
+    #include <fcntl.h>
+    #include <unistd.h>
+    #include <sys/time.h>
 
-	// Use regular unlink.
-	#define UNLINK unlink
+    // Use regular unlink.
+    #define UNLINK unlink
 
 #elif WIN32
 
-	// Unlink causes an error under Windows.
-	#define UNLINK _unlink
-	
-	#include <basetsd.h>
-	#include <Winsock2.h>
-	#include <ws2tcpip.h>
+    // Unlink causes an error under Windows.
+    #define UNLINK _unlink
+    
+    #include <basetsd.h>
+    #include <Winsock2.h>
+    #include <ws2tcpip.h>
 #endif
 
 /**************************************************************************************/

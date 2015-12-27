@@ -17,6 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <stddef.h>
+#include <iostream>
+#include <string>
+
+#include "core/base/Visitor.h"
 #include "core/reflection/Field.h"
 #include "core/reflection/Message.h"
 

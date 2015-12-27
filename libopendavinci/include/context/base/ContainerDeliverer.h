@@ -20,13 +20,14 @@
 #ifndef CONTEXT_BASE_CONTAINERDELIVERER_H_
 #define CONTEXT_BASE_CONTAINERDELIVERER_H_
 
-// native.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/native.h"
 #include "core/base/Mutex.h"
-#include "core/data/Container.h"
 #include "core/io/conference/ContainerListener.h"
 #include "core/io/conference/ContainerObserver.h"
+// native.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/native.h"
 #include "core/wrapper/Disposable.h"
+
+namespace core { namespace data { class Container; } }
 
 namespace context {
     namespace base {
