@@ -22,6 +22,8 @@
 #include <stdc-predef.h>
 #endif
 
+#include <iosfwd>
+
 #include "core/macros.h"
 
 #include "ContainerObserver.h"

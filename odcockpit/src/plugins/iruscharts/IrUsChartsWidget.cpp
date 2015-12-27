@@ -23,6 +23,7 @@
 #endif
 
 #include <cmath>
+#include <iostream>
 #include <sstream>
 
 #include "core/SharedPointer.h"

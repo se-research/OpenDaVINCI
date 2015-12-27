@@ -25,6 +25,8 @@
 #include <stdc-predef.h>
 #endif
 
+#include <string>
+
 #include "core/io/conference/ContainerConference.h"
 #include "plugins/PlugIn.h"
 

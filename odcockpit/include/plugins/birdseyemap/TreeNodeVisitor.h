@@ -20,6 +20,8 @@
 #ifndef PLUGINS_BIRDSEYEMAP_TREENODEVISITOR_H_
 #define PLUGINS_BIRDSEYEMAP_TREENODEVISITOR_H_
 
+#include <vector>
+
 #include "core/base/TreeNode.h"
 #include "hesperia/scenegraph/SceneNode.h"
 #include "hesperia/scenegraph/SceneNodeVisitor.h"

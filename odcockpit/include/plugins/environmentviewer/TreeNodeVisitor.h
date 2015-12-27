@@ -21,6 +21,8 @@
 #ifndef PLUGINS_ENVIRONMENTVIEWER_TREENODEVISITOR_H_
 #define PLUGINS_ENVIRONMENTVIEWER_TREENODEVISITOR_H_
 
+#include <vector>
+
 #include "core/base/TreeNode.h"
 
 #include "hesperia/threeD/NodeDescriptor.h"

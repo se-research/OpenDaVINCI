@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <iostream>
+
 #include "core/macros.h"
 #include "core/base/Lock.h"
 #include "core/base/Thread.h"

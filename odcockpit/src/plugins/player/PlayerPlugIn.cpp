@@ -30,6 +30,8 @@ namespace cockpit {
 
         namespace player {
 
+            using namespace std;
+
             PlayerPlugIn::PlayerPlugIn(const string &name, const core::base::KeyValueConfiguration &kvc, core::io::conference::ContainerConference &conf, QWidget *prnt) :
                 ControlPlugIn(name, kvc, conf, prnt),
                 m_kvc(kvc),

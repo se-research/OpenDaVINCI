@@ -22,6 +22,8 @@
 #include <stdc-predef.h>
 #endif
 
+#include <iosfwd>
+
 #include "ContainerObserver.h"
 
 namespace cockpit {

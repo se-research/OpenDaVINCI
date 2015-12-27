@@ -21,6 +21,8 @@
 #ifndef PLUGINS_ENVIRONMENTVIEWER_SELECTABLENODEDESCRIPTORTREELISTENER_H_
 #define PLUGINS_ENVIRONMENTVIEWER_SELECTABLENODEDESCRIPTORTREELISTENER_H_
 
+#include <vector>
+
 #include "core/base/TreeNode.h"
 
 #include "plugins/environmentviewer/SelectableNodeDescriptor.h"

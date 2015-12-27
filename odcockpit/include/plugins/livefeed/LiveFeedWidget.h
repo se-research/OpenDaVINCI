@@ -25,8 +25,9 @@
 #include <stdc-predef.h>
 #endif
 
-#include <map>
 #include <cstring>
+#include <map>
+#include <memory>
 
 #include "core/data/Container.h"
 #include "core/io/conference/ContainerListener.h"

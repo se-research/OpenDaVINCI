@@ -23,6 +23,7 @@
 
 #include <map>
 #include <string>
+#include <vector>
 
 #include "core/base/Visitor.h"
 

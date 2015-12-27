@@ -23,6 +23,7 @@
 #endif
 
 #include <algorithm>
+#include <iostream>
 
 #include "QtIncludes.h"
 

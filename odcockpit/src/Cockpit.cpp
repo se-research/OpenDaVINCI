@@ -22,6 +22,8 @@
 #include <stdc-predef.h>
 #endif
 
+#include <iostream>
+
 #include "Cockpit.h"
 #include "CockpitWindow.h"
 

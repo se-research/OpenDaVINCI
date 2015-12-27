@@ -20,7 +20,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
-#include <strstream>
+#include <sstream>
 
 #include "GeneratedHeaders_AutomotiveData.h"
 
@@ -205,7 +205,7 @@ namespace vehiclecontext {
         }
 
         const string PointSensor::toString() const {
-            strstream sstr;
+            stringstream sstr;
             sstr << m_name << "(" << m_id << ")" << ": " << m_translation.toString() << ", rot: " << m_rotZ << ", angle: " << m_angleFOV << ", range: " << m_distanceFOV << ", clampDistance: " << m_clampDistance <<  ", showFOV: " << m_showFOV << ", fault.skip: " << m_faultModelSkip << ", fault.noise: " << m_faultModelNoise << endl;
             return sstr.str();
         }  
