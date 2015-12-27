@@ -18,7 +18,8 @@
  */
 
 #include <sys/types.h>
-#include <cstdlib>
+#include <stdlib.h>
+#include <string.h>
 #include <utility>
 
 #include "core/base/module/AbstractCIDModule.h"

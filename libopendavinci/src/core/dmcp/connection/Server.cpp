@@ -18,7 +18,7 @@
  */
 
 #include <stddef.h>
-#include <ostream>
+#include <iostream>
 
 #include "core/SharedPointer.h"
 #include "core/base/Lock.h"

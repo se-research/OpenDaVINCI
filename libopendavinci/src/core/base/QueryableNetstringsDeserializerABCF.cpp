@@ -19,6 +19,7 @@
 
 #include <endian.h>
 #include <netinet/in.h>
+#include <iostream>
 #include <utility>
 
 #include "core/base/QueryableNetstringsDeserializerABCF.h"

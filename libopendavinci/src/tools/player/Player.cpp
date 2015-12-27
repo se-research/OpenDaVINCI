@@ -18,6 +18,7 @@
  */
 
 #include <stddef.h>
+#include <string.h>
 #include <string>
 
 #include "core/base/module/AbstractCIDModule.h"

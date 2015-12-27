@@ -24,7 +24,7 @@
 #include <cerrno>
 #include <climits>
 #include <cstring>
-#include <ostream>
+#include <iostream>
 
 #include "core/macros.h"
 #include "core/base/module/AbstractCIDModule.h"

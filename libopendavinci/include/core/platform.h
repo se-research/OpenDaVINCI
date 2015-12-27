@@ -27,34 +27,14 @@
 /**************************************************************************************/
 
 #ifndef WIN32
-    // POSIX types.
-    #include <stdint.h>
-
-    // POSIX network.
-    #include <netdb.h>
-    #include <arpa/inet.h>
-    #include <netinet/in.h>
-    #include <sys/socket.h>
-    #include <sys/select.h>
-    #include <sys/types.h>
-
-    // POSIX IPC.
-    #include <pthread.h>
-    #include <semaphore.h>
-    #include <sys/ipc.h>
-    #include <sys/shm.h>
-    #include <sys/stat.h>
-
-    // Other POSIX stuff.
-    #include <fcntl.h>
-    #include <unistd.h>
-    #include <sys/time.h>
+    #include <arpa/inet.h>  // for htonl etc
+    #include <stddef.h>     // for NULL
+    #include <stdint.h>     // for uint32_t etc
+    #include <unistd.h>     // for unlink
 
     // Use regular unlink.
     #define UNLINK unlink
-
 #elif WIN32
-
     // Unlink causes an error under Windows.
     #define UNLINK _unlink
     
@@ -64,31 +44,6 @@
 #endif
 
 /**************************************************************************************/
-
-// C++ wrapping headers for C headers.
-#include <cassert>
-#include <cerrno>
-#include <cmath>
-#include <csignal>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-
-// C++ headers.
-#include <algorithm>
-#include <deque>
-#include <fstream>
-#include <functional>
-#include <iomanip>
-#include <iostream>
-#include <limits>
-#include <map>
-#include <memory>
-#include <queue>
-#include <sstream>
-#include <string>
-#include <vector>
 
 // Basic header for OpenDaVINCI macros.
 #include "core/macros.h"

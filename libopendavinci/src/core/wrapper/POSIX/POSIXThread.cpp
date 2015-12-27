@@ -19,7 +19,8 @@
 
 #include <errno.h>
 #include <string.h>
-#include <ostream>
+#include <iostream>
+#include <sstream>
 #include <string>
 
 #include "core/macros.h"

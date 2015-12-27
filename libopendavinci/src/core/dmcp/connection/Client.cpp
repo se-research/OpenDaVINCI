@@ -18,7 +18,7 @@
  */
 
 #include <stddef.h>
-#include <ostream>
+#include <iostream>
 #include <string>
 
 #include "core/base/KeyValueConfiguration.h"

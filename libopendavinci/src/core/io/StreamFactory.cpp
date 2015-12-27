@@ -18,7 +18,9 @@
  */
 
 #include <stddef.h>
-#include <ostream>
+#include <fstream>
+#include <iostream>
+#include <sstream>
 #include <string>
 
 #include "core/base/Lock.h"

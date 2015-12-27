@@ -21,6 +21,7 @@
 #include <sched.h>
 #include <sys/time.h>
 #include <exception>
+#include <fstream>
 #include <iostream>
 #include <sstream>
 #include <vector>

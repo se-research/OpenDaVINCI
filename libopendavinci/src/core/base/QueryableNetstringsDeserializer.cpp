@@ -18,6 +18,7 @@
  */
 
 #include <netinet/in.h>
+#include <iostream>
 
 #include "core/base/QueryableNetstringsDeserializer.h"
 #include "core/base/QueryableNetstringsDeserializerAACF.h"

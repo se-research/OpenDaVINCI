@@ -18,6 +18,7 @@
  */
 
 #include <sstream>
+#include <vector>
 
 #include "core/io/URL.h"
 #include "core/io/URLProtocol.h"

@@ -19,7 +19,9 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include <ostream>
+#include <stdlib.h>
+#include <iostream>
+#include <sstream>
 
 #include "core/macros.h"
 #include "core/base/module/AbstractCIDModule.h"

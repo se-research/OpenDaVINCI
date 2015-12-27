@@ -20,6 +20,9 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXUDPFACTORYWORKER_H_
 #define OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXUDPFACTORYWORKER_H_
 
+#include <iostream>
+#include <sstream>
+
 // core/platform.h must be included to setup platform-dependent header files and configurations.
 #include "core/platform.h"
 

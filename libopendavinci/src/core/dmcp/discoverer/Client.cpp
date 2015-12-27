@@ -18,7 +18,7 @@
  */
 
 #include <stddef.h>
-#include <ostream>
+#include <iostream>
 
 #include "core/base/Lock.h"
 #include "core/base/Serializable.h"

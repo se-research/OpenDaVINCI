@@ -20,7 +20,7 @@
 #include <ctype.h>
 #include <stddef.h>
 #include <algorithm>
-#include <ostream>
+#include <iostream>
 
 #include "core/base/Serializable.h"
 #include "core/base/module/AbstractCIDModule.h"

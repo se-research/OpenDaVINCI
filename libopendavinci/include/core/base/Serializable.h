@@ -20,7 +20,7 @@
 #ifndef OPENDAVINCI_CORE_BASE_SERIALIZABLE_H_
 #define OPENDAVINCI_CORE_BASE_SERIALIZABLE_H_
 
-#include <iosfwd>
+#include <sstream>
 
 #include "core/native.h"
 

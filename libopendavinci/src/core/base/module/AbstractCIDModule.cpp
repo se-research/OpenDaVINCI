@@ -19,7 +19,7 @@
 
 #include <errno.h>
 #include <cmath>
-#include <istream>
+#include <iostream>
 
 #include "core/base/CommandLineArgument.h"
 #include "core/base/CommandLineParser.h"

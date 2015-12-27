@@ -26,6 +26,7 @@
 #include <sstream>
 #include <string>
 
+#include "core/platform.h"
 #include "core/io/protocol/StringProtocol.h"
 #include "core/io/StringListener.h"
 #include "core/io/StringSender.h"

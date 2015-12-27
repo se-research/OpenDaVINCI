@@ -22,6 +22,7 @@
 
 #include <cmath>
 #include <cstring>
+#include <cstdlib>
 
 #include "cxxtest/TestSuite.h"
 
