@@ -25,8 +25,11 @@
 #include <sstream>
 #include <cstring>
 
+#include "hesperia/data/environment/EgoState.h"
 #include "hesperia/data/environment/Position.h"
+#include "core/SharedPointer.h"
 #include "core/data/TimeStamp.h"
+#include "core/reflection/Message.h"
 #include "core/reflection/MessageFromVisitableVisitor.h"
 #include "core/reflection/MessagePrettyPrinterVisitor.h"
 
@@ -43,9 +46,11 @@ namespace cockpit {
         namespace livefeed {
 
             using namespace std;
+            using namespace core;
             using namespace core::base;
             using namespace core::data;
             using namespace core::reflection;
+            using namespace coredata::reflection;
 
             LiveFeedWidget::LiveFeedWidget(const PlugIn &/*plugIn*/, QWidget *prnt) :
                 QWidget(prnt),
@@ -115,6 +120,55 @@ namespace cockpit {
 
             void LiveFeedWidget::transformContainerToTree(Container &container) {
                 switch (container.getDataType()) {
+                    case Container::EGOSTATE:
+                    {
+                        hesperia::data::environment::EgoState es = container.getData<hesperia::data::environment::EgoState>();
+                        Message msg;
+
+                        {
+                            Field<double> *f = new Field<double>(es.getPosition().getX());
+                            f->setLongIdentifier(1);
+                            f->setShortIdentifier(1);
+                            f->setLongName("EgoState.Position.X");
+                            f->setShortName("Position.X");
+                            f->setFieldDataType(coredata::reflection::AbstractField::DOUBLE_T);
+                            f->setSize(sizeof(double));
+                            msg.addField(SharedPointer<AbstractField>(f));
+                        }
+                        {
+                            Field<double> *f = new Field<double>(es.getPosition().getY());
+                            f->setLongIdentifier(2);
+                            f->setShortIdentifier(2);
+                            f->setLongName("EgoState.Position.Y");
+                            f->setShortName("Position.Y");
+                            f->setFieldDataType(coredata::reflection::AbstractField::DOUBLE_T);
+                            f->setSize(sizeof(double));
+                            msg.addField(SharedPointer<AbstractField>(f));
+                        }
+                        {
+                            Field<double> *f = new Field<double>(es.getRotation().getAngleXY());
+                            f->setLongIdentifier(3);
+                            f->setShortIdentifier(3);
+                            f->setLongName("EgoState.Heading.RAD");
+                            f->setShortName("Heading.RAD");
+                            f->setFieldDataType(coredata::reflection::AbstractField::DOUBLE_T);
+                            f->setSize(sizeof(double));
+                            msg.addField(SharedPointer<AbstractField>(f));
+                        }
+                        {
+                            Field<double> *f = new Field<double>(es.getRotation().getAngleXY() * cartesian::Constants::RAD2DEG);
+                            f->setLongIdentifier(4);
+                            f->setShortIdentifier(4);
+                            f->setLongName("EgoState.Heading.DEG");
+                            f->setShortName("Heading.DEG");
+                            f->setFieldDataType(coredata::reflection::AbstractField::DOUBLE_T);
+                            f->setSize(sizeof(double));
+                            msg.addField(SharedPointer<AbstractField>(f));
+                        }
+
+                        addMessageToTree("EgoState", container, msg);
+                        break;
+                    }
                     case Container::CONFIGURATION:
                     {
                         coredata::Configuration tmp = container.getData<coredata::Configuration>();
