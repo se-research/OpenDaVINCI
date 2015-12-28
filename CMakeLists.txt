@@ -109,13 +109,24 @@ IF(     NOT("${CMAKE_C_COMPILER}" STREQUAL "")
 
     IF(    (UNIX)
        AND (NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "DragonFly")
-       AND (NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD") )
+       AND (NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD")
+       AND (NOT ("${ARMHF}" STREQUAL "YES"))
+       AND (NOT ("${i686}" STREQUAL "YES")) )
         IF(POPT_FOUND)
             MESSAGE(STATUS "Found popt-dev:             Building automotive/odcantools")
             SET(BUILD_AUTOMOTIVE_ODCANTOOLS 1)
         ENDIF()
     ENDIF()
 ENDIF()
+
+# Set parameters to ctest; for example, test cases are not executed on arm-hf cross compile build.
+SET(CTEST_PARAMETERS "--output-on-failure") # Display output from a failing test case.
+IF(     (UNIX)
+    AND ("${ARMHF}" STREQUAL "YES") )
+    SET(CTEST_PARAMETERS "--show-only") # Do not run test cases on arm-hf cross compile build.
+ENDIF()
+MESSAGE("Test command: \"${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}\"")
+
 
 # If dpkg and rpmbuild are available, .deb and .rpm packages will be
 # created. Otherwise, the software is simply installed.
@@ -166,6 +177,7 @@ IF(${BUILD_OPENDAVINCI})
         CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
         CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}"
         TEST_BEFORE_INSTALL 1
+        TEST_COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}
         INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libopendavinci-prefix/src/libopendavinci-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libopendavinci-prefix/src/libopendavinci-build --target ${MAKE_PACKAGE})
 
     # Build the reference projects in odDataStructureGenerator to check validity of the code generator.
@@ -177,6 +189,7 @@ IF(${BUILD_OPENDAVINCI})
         CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
         CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}"
         TEST_BEFORE_INSTALL 1
+        TEST_COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}
         INSTALL_COMMAND "")
 ENDIF()
 
@@ -203,6 +216,7 @@ IF(${BUILD_ODSUPERCOMPONENT})
         CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
         CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}"
         TEST_BEFORE_INSTALL 1
+        TEST_COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}
         INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odsupercomponent-prefix/src/odsupercomponent-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odsupercomponent-prefix/src/odsupercomponent-build --target ${MAKE_PACKAGE})
 ENDIF()
 
@@ -216,6 +230,7 @@ IF(${BUILD_ODTOOLS})
         CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
         CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}"
         TEST_BEFORE_INSTALL 1
+        TEST_COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}
         INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odtools-prefix/src/odtools-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odtools-prefix/src/odtools-build --target ${MAKE_PACKAGE})
 ENDIF()
 
@@ -242,6 +257,7 @@ IF(${BUILD_AUTOMOTIVEDATA})
         CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
         CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}"
         TEST_BEFORE_INSTALL 1
+        TEST_COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}
         INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libautomotivedata-prefix/src/libautomotivedata-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libautomotivedata-prefix/src/libautomotivedata-build --target ${MAKE_PACKAGE})
 ENDIF()
 
@@ -255,6 +271,7 @@ IF(${BUILD_LIBODSIMULATION})
         CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
         CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}"
         TEST_BEFORE_INSTALL 1
+        TEST_COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}
         INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodsimulation-prefix/src/libodsimulation-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodsimulation-prefix/src/libodsimulation-build --target ${MAKE_PACKAGE})
 ENDIF()
 
@@ -268,6 +285,7 @@ IF(${BUILD_ODSIMULATION})
         CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
         CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}"
         TEST_BEFORE_INSTALL 1
+        TEST_COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}
         INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odsimulation-prefix/src/odsimulation-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odsimulation-prefix/src/odsimulation-build --target ${MAKE_PACKAGE})
 ENDIF()
 
@@ -281,13 +299,12 @@ IF(${BUILD_ODCOCKPIT})
         CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
         CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}"
         TEST_BEFORE_INSTALL 1
+        TEST_COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}
         INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcockpit-prefix/src/odcockpit-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcockpit-prefix/src/odcockpit-build --target ${MAKE_PACKAGE})
 ENDIF()
 
 # Next, build automotive/odcantools.
-IF( ${BUILD_AUTOMOTIVE_ODCANTOOLS}
-    AND (NOT ("${ARMHF}" STREQUAL "YES"))
-    AND (NOT ("${i686}" STREQUAL "YES")) )
+IF(${BUILD_AUTOMOTIVE_ODCANTOOLS})
     ExternalProject_Add (automotive-odCANDataStructureGenerator
         DOWNLOAD_COMMAND ""
         UPDATE_COMMAND ""
@@ -317,6 +334,7 @@ IF( ${BUILD_AUTOMOTIVE_ODCANTOOLS}
         CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
         CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}"
         TEST_BEFORE_INSTALL 1
+        TEST_COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}
         INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/automotive-libcanmessagemapping-prefix/src/automotive-libcanmessagemapping-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/automotive-libcanmessagemapping-prefix/src/automotive-libcanmessagemapping-build --target ${MAKE_PACKAGE})
 
     ExternalProject_Add (automotive-odcantools
@@ -327,13 +345,12 @@ IF( ${BUILD_AUTOMOTIVE_ODCANTOOLS}
         CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
         CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}"
         TEST_BEFORE_INSTALL 1
+        TEST_COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}
         INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/automotive-odcantools-prefix/src/automotive-odcantools-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/automotive-odcantools-prefix/src/automotive-odcantools-build --target ${MAKE_PACKAGE})
 ENDIF()
 
 # Next, build automotive/miniature.
-IF( ${BUILD_AUTOMOTIVE_MINIATURE}
-    AND (NOT ("${ARMHF}" STREQUAL "YES"))
-    AND (NOT ("${i686}" STREQUAL "YES")) )
+IF(${BUILD_AUTOMOTIVE_MINIATURE})
     ExternalProject_Add (automotive-miniature
         DEPENDS libodsimulation
         DOWNLOAD_COMMAND ""
@@ -342,6 +359,7 @@ IF( ${BUILD_AUTOMOTIVE_MINIATURE}
         CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
         CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}"
         TEST_BEFORE_INSTALL 1
+        TEST_COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}
         INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/automotive-miniature-prefix/src/automotive-miniature-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/automotive-miniature-prefix/src/automotive-miniature-build --target ${MAKE_PACKAGE})
 ENDIF()
 
