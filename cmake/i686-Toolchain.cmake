@@ -18,7 +18,7 @@
 SET(CMAKE_SYSTEM_NAME Linux)
 
 # This flag enables/disables selected subprojects.
-SET(I686 YES)
+SET(i686 YES)
 
 # Specify the cross compiler.
 SET(CMAKE_C_COMPILER i686-linux-gnu-gcc)
