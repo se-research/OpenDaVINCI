@@ -156,6 +156,11 @@ namespace tools {
                 m_playerCache->copyMemoryToSharedMemory(m_actual);
             }
 
+            // Return the m_actual container as retVal in the case of a
+            // non-compressed image container as compressed images will
+            // be replaced by shared images below.
+            retVal = m_actual;
+
             // If the actual container is a COMPRESSED_IMAGE then decode it and replace the container with a shared image before sending the actual container.
             if (m_actual.getDataType() == Container::COMPRESSED_IMAGE) {
                 core::data::image::CompressedImage ci = m_actual.getData<core::data::image::CompressedImage>();
@@ -201,9 +206,6 @@ namespace tools {
 
                 OPENDAVINCI_CORE_FREE_POINTER(imageData);
             }
-
-            // Return the m_actual container as retVal;
-            retVal = m_actual;
 
             // Process the "successor" container as the next "actual" one.
             m_actual = m_successor;

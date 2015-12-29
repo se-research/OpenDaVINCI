@@ -91,6 +91,9 @@ namespace odrecintegrity {
                             cout << "[RecIntegrity]: Found SHARED_DATA '" << sd.getName() << "' (" << lengthToSkip << " bytes)" << endl;
                             numberOfSharedData++;
                         }
+                        else {
+                            cout << "[RecIntegrity]: Found data type '" << c.getDataType() << "'." << endl;
+                        }
 
                         float percentage = (float)(currPos*100.0)/(float)length;
 
