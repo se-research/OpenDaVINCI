@@ -53,19 +53,13 @@ namespace core {
                      (rawImageData != NULL) &&
                      (quality >= 1) &&
                      (quality <= 100) ) {
-                    void *buffer = ::malloc(width * height * bytesPerPixel);
-
                     // Setup the specified image quality.
                     jpge::params p;
                     p.m_quality = quality;
                     p.m_subsampling = (bytesPerPixel == 1) ? jpge::Y_ONLY : jpge::H2V2;
 
-                    // Size of the buffer as the compressed image is at most as large as the raw image.
-                    destSize = width * height * bytesPerPixel;
-                    retVal = jpge::compress_image_to_jpeg_file_in_memory(buffer, destSize, width, height, bytesPerPixel, rawImageData, p);
-
-                    // Free pointer to compressed data.
-                    OPENDAVINCI_CORE_FREE_POINTER(buffer);
+                    // Compress the given raw data.
+                    retVal = jpge::compress_image_to_jpeg_file_in_memory(dest, destSize, width, height, bytesPerPixel, rawImageData, p);
                 }
 
                 return retVal;

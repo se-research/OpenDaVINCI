@@ -52,18 +52,15 @@ namespace odredirector {
             
             if ( (1 == si.getBytesPerPixel()) || 
                  (3 == si.getBytesPerPixel()) ) {
-                int compressedSize = 0;
                 bool retVal = false;
-
-                void *buffer = ::malloc(si.getWidth() * si.getHeight() * si.getBytesPerPixel());
+                int compressedSize = si.getWidth() * si.getHeight() * si.getBytesPerPixel();
+                void *buffer = ::malloc(compressedSize);
                 if (buffer != NULL) {
                     // As we are transforming a SharedImage into a CompressedImage, attached to the shared memory segment.
                     SharedPointer<core::wrapper::SharedMemory> memory = core::wrapper::SharedMemoryFactory::attachToSharedMemory(si.getName());
                     if (memory->isValid()) {
                         Lock l(memory);
-                            // Size of the buffer.
-                            compressedSize = si.getWidth() * si.getHeight() * si.getBytesPerPixel();
-                            retVal = core::wrapper::jpg::JPG::compress(buffer, compressedSize, si.getWidth(), si.getHeight(), si.getBytesPerPixel(), static_cast<const unsigned char*>(memory->getSharedMemory()), m_jpegQuality);
+                        retVal = core::wrapper::jpg::JPG::compress(buffer, compressedSize, si.getWidth(), si.getHeight(), si.getBytesPerPixel(), static_cast<const unsigned char*>(memory->getSharedMemory()), m_jpegQuality);
                     }
 
                 }
