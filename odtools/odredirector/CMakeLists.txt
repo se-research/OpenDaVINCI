@@ -47,27 +47,6 @@ SET(OPENDAVINCI_DIR "${CMAKE_INSTALL_PREFIX}")
 FIND_PACKAGE (OpenDaVINCI REQUIRED)
 
 ###############################################################################
-# Include directories for shipped 3rd party libraries.
-SET(jpegcompressor_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/jpeg-compressor")
-
-INCLUDE_DIRECTORIES (${jpegcompressor_SOURCE_DIR})
-SET (jpegcompressor-headers
-    ${jpegcompressor_SOURCE_DIR}/jpgd.h
-    ${jpegcompressor_SOURCE_DIR}/jpge.h
-)
-SET (jpegcompressor-sources
-    ${jpegcompressor_SOURCE_DIR}/jpgd.cpp
-    ${jpegcompressor_SOURCE_DIR}/jpge.cpp
-)
-# Set compile flags for wjwwood serial library.
-SET(JPEG_COMPILE_FLAGS "-Wno-effc++ -Wno-error -Wno-sign-compare -Wno-unused-parameter -Wno-shadow")
-IF (GCC_VERSION VERSION_GREATER 4.7 OR GCC_VERSION VERSION_EQUAL 4.7)
-    SET(JPEG_COMPILE_FLAGS "${JPEG_COMPILE_FLAGS} -Wno-unused-but-set-variable -Wno-suggest-attribute=format")
-ENDIF()
-SET_SOURCE_FILES_PROPERTIES(${jpegcompressor_SOURCE_DIR}/jpgd.cpp PROPERTIES COMPILE_FLAGS "${JPEG_COMPILE_FLAGS}")
-SET_SOURCE_FILES_PROPERTIES(${jpegcompressor_SOURCE_DIR}/jpge.cpp PROPERTIES COMPILE_FLAGS "${JPEG_COMPILE_FLAGS}")
-
-###############################################################################
 # Set header files from OpenDaVINCI.
 INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS}/opendavinci)
 # Set include directory.
@@ -76,7 +55,7 @@ INCLUDE_DIRECTORIES(include)
 ###############################################################################
 # Build this project.
 FILE(GLOB_RECURSE thisproject-sources "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
-ADD_LIBRARY (${PROJECT_NAME}lib-static STATIC ${thisproject-sources} ${jpegcompressor-sources})
+ADD_LIBRARY (${PROJECT_NAME}lib-static STATIC ${thisproject-sources})
 ADD_EXECUTABLE (${PROJECT_NAME} "${CMAKE_CURRENT_SOURCE_DIR}/apps/${PROJECT_NAME}.cpp")
 TARGET_LINK_LIBRARIES (${PROJECT_NAME} ${PROJECT_NAME}lib-static ${OPENDAVINCI_LIBRARIES}) 
 

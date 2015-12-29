@@ -21,25 +21,13 @@
 #include <iostream>
 #include <sstream>
 
-#ifndef WIN32
-# if !defined(__OpenBSD__) && !defined(__NetBSD__)
-#  pragma GCC diagnostic push
-# endif
-# pragma GCC diagnostic ignored "-Weffc++"
-#endif
-    #include "jpge.h"
-#ifndef WIN32
-# if !defined(__OpenBSD__) && !defined(__NetBSD__)
-#  pragma GCC diagnostic pop
-# endif
-#endif
-
 #include "core/platform.h"
 
 #include "core/SharedPointer.h"
 #include "core/base/Lock.h"
 #include "core/wrapper/SharedMemory.h"
 #include "core/wrapper/SharedMemoryFactory.h"
+#include "core/wrapper/jpg/JPG.h"
 #include "core/data/image/CompressedImage.h"
 
 #include "GeneratedHeaders_CoreData.h"
@@ -73,14 +61,9 @@ namespace odredirector {
                     SharedPointer<core::wrapper::SharedMemory> memory = core::wrapper::SharedMemoryFactory::attachToSharedMemory(si.getName());
                     if (memory->isValid()) {
                         Lock l(memory);
-                            // Setup the specified image quality.
-                            jpge::params p;
-                            p.m_quality = m_jpegQuality;
-                            p.m_subsampling = (si.getBytesPerPixel() == 1) ? jpge::Y_ONLY : jpge::H2V2;
-
                             // Size of the buffer.
                             compressedSize = si.getWidth() * si.getHeight() * si.getBytesPerPixel();
-                            retVal = jpge::compress_image_to_jpeg_file_in_memory(buffer, compressedSize, si.getWidth(), si.getHeight(), si.getBytesPerPixel(), static_cast<const unsigned char*>(memory->getSharedMemory()), p);
+                            retVal = core::wrapper::jpg::JPG::compress(buffer, compressedSize, si.getWidth(), si.getHeight(), si.getBytesPerPixel(), static_cast<const unsigned char*>(memory->getSharedMemory()), m_jpegQuality);
                     }
 
                 }

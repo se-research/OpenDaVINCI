@@ -21,25 +21,13 @@
 
 #include "core/platform.h"
 
-#ifndef WIN32
-# if !defined(__OpenBSD__) && !defined(__NetBSD__)
-#  pragma GCC diagnostic push
-# endif
-# pragma GCC diagnostic ignored "-Weffc++"
-#endif
-    #include "jpgd.h"
-#ifndef WIN32
-# if !defined(__OpenBSD__) && !defined(__NetBSD__)
-#  pragma GCC diagnostic pop
-# endif
-#endif
-
 #include "core/base/QueryableNetstringsDeserializerABCF.h"
 #include "core/base/Lock.h"
 #include "core/data/Container.h"
 #include "core/base/CommandLineParser.h"
 #include "core/wrapper/SharedMemory.h"
 #include "core/wrapper/SharedMemoryFactory.h"
+#include "core/wrapper/jpg/JPG.h"
 #include "core/data/image/CompressedImage.h"
 
 #include "GeneratedHeaders_CoreData.h"
@@ -146,7 +134,7 @@ namespace odredirector {
                         int bpp = 0;
 
                         // Decompress image data.
-                        unsigned char *imageData = jpgd::decompress_jpeg_image_from_memory(ci.getRawData(), ci.getCompressedSize(), &width, &height, &bpp, ci.getBytesPerPixel());
+                        unsigned char *imageData = core::wrapper::jpg::JPG::decompress(ci.getRawData(), ci.getCompressedSize(), &width, &height, &bpp, ci.getBytesPerPixel());
 
                         if ( (imageData != NULL) &&
                              (width > 0) &&
@@ -170,6 +158,8 @@ namespace odredirector {
                             Container c2(Container::SHARED_IMAGE, si);
                             getConference().send(c2);
                         }
+
+                        OPENDAVINCI_CORE_FREE_POINTER(imageData);
                     }
                     else {
                         getConference().send(c);

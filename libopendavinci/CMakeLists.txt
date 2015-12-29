@@ -126,6 +126,7 @@ ENDIF()
 SET(zlib_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/zlib-1.2.8")
 SET(libzip_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/libzip-0.9")
 SET(libwjwwoodserial_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/wjwwood-serial-1.2.1")
+SET(jpegcompressor_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/jpeg-compressor")
 
 INCLUDE_DIRECTORIES (${zlib_SOURCE_DIR})
 SET (zlib-sources
@@ -206,12 +207,12 @@ SET (libzip-sources
 
 INCLUDE_DIRECTORIES (${libwjwwoodserial_SOURCE_DIR}/include)
 IF(UNIX)
-	SET (libwjwwoodserial-sources
+    SET (libwjwwoodserial-sources
          ${libwjwwoodserial_SOURCE_DIR}/src/serial.cc
          ${libwjwwoodserial_SOURCE_DIR}/src/impl/unix.cc
          ${libwjwwoodserial_SOURCE_DIR}/src/impl/list_ports/list_ports_linux.cc
          ${libwjwwoodserial_SOURCE_DIR}/src/impl/list_ports/list_ports_osx.cc
-	)
+    )
 
     # Set compile flags for wjwwood serial library.
     SET(WJWWOOD_SERIAL_COMPILE_FLAGS "-Wno-effc++ -Wno-error -Wno-sign-compare")
@@ -225,12 +226,29 @@ IF(UNIX)
 ENDIF()
 
 IF(WIN32)
-	SET (libwjwwoodserial-sources
+    SET (libwjwwoodserial-sources
          ${libwjwwoodserial_SOURCE_DIR}/src/serial.cc
          ${libwjwwoodserial_SOURCE_DIR}/src/impl/win.cc
          ${libwjwwoodserial_SOURCE_DIR}/src/impl/list_ports/list_ports_win.cc
     )
 ENDIF()
+
+INCLUDE_DIRECTORIES (${jpegcompressor_SOURCE_DIR})
+SET (jpegcompressor-headers
+    ${jpegcompressor_SOURCE_DIR}/jpgd.h
+    ${jpegcompressor_SOURCE_DIR}/jpge.h
+)
+SET (jpegcompressor-sources
+    ${jpegcompressor_SOURCE_DIR}/jpgd.cpp
+    ${jpegcompressor_SOURCE_DIR}/jpge.cpp
+)
+# Set compile flags for jpeg-compressor sources.
+SET(JPEG_COMPILE_FLAGS "-Wno-effc++ -Wno-error -Wno-sign-compare -Wno-unused-parameter -Wno-shadow")
+IF (GCC_VERSION VERSION_GREATER 4.7 OR GCC_VERSION VERSION_EQUAL 4.7)
+    SET(JPEG_COMPILE_FLAGS "${JPEG_COMPILE_FLAGS} -Wno-unused-but-set-variable -Wno-suggest-attribute=format")
+ENDIF()
+SET_SOURCE_FILES_PROPERTIES(${jpegcompressor_SOURCE_DIR}/jpgd.cpp PROPERTIES COMPILE_FLAGS "${JPEG_COMPILE_FLAGS}")
+SET_SOURCE_FILES_PROPERTIES(${jpegcompressor_SOURCE_DIR}/jpge.cpp PROPERTIES COMPILE_FLAGS "${JPEG_COMPILE_FLAGS}")
 
 ###############################################################################
 # Set header files for coredata files generated from CoreData.odvd.
@@ -275,7 +293,8 @@ ADD_LIBRARY (opendavinci-core OBJECT ${libopendavinci-sources}
                                      ${libopendavinci-coredata-sources} 
                                      ${libwjwwoodserial-sources} 
                                      ${libzip-sources}
-                                     ${zlib-sources})
+                                     ${zlib-sources}
+                                     ${jpegcompressor-sources})
 ADD_LIBRARY (opendavinci-static STATIC $<TARGET_OBJECTS:opendavinci-core>)
 IF(    (NOT WIN32)
    AND (NOT ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")) )
@@ -294,7 +313,7 @@ ADD_DEPENDENCIES(opendavinci-core GenerateDataStructures)
 ###############################################################################
 # Enable CxxTest for all available testsuites.
 IF(CXXTEST_FOUND)
-	FILE(GLOB libopendavinci-testsuites "${CMAKE_CURRENT_SOURCE_DIR}/testsuites/*.h")
+    FILE(GLOB libopendavinci-testsuites "${CMAKE_CURRENT_SOURCE_DIR}/testsuites/*.h")
 
     FOREACH(testsuite ${libopendavinci-testsuites})
         STRING(REPLACE "/" ";" testsuite-list ${testsuite})
@@ -319,7 +338,7 @@ IF(CXXTEST_FOUND)
         TARGET_LINK_LIBRARIES(${testsuite-short}-TestSuite ${OPENDAVINCI_LIB} ${THIRDPARTY_LIBS})
     ENDFOREACH()
 
-	FILE(GLOB libopendavinci-coredata-testsuites "${COREDATA_DIR}/testsuites/*.h")
+    FILE(GLOB libopendavinci-coredata-testsuites "${COREDATA_DIR}/testsuites/*.h")
 
     FOREACH(testsuite ${libopendavinci-coredata-testsuites})
         STRING(REPLACE "/" ";" testsuite-list ${testsuite})
@@ -342,7 +361,7 @@ IF(CXXTEST_FOUND)
         ENDIF()
 
         SET_TESTS_PROPERTIES(${testsuite-short}-TestSuite PROPERTIES TIMEOUT 3000)
-	    TARGET_LINK_LIBRARIES(${testsuite-short}-TestSuite ${OPENDAVINCI_LIB} ${LIBRARIES})
+        TARGET_LINK_LIBRARIES(${testsuite-short}-TestSuite ${OPENDAVINCI_LIB} ${LIBRARIES})
     ENDFOREACH()
 ENDIF(CXXTEST_FOUND)
 

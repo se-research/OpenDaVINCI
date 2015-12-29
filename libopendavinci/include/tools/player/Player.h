@@ -21,10 +21,13 @@
 #define OPENDAVINCI_TOOLS_PLAYER_PLAYER_H_
 
 #include <iostream>
+#include <map>
+#include <string>
 
 #include "core/SharedPointer.h"
 #include "core/data/Container.h"
 #include "core/io/URL.h"
+#include "core/wrapper/SharedMemory.h"
 
 #include "tools/player/PlayerCache.h"
 
@@ -122,6 +125,9 @@ namespace tools {
                 bool m_noMoreData;
 
                 uint32_t m_delay;
+
+                // Map used to store shared memory segments for restored from compressed images.
+                map<string, core::SharedPointer<core::wrapper::SharedMemory> > m_mapOfSharedMemoriesForCompressedImages;
         };
 
     } // player
