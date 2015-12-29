@@ -17,12 +17,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <cstdlib>
 #include <iostream>
 #include <sstream>
 
-#include "core/platform.h"
+#ifndef WIN32
+# if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#  pragma GCC diagnostic push
+# endif
+# pragma GCC diagnostic ignored "-Weffc++"
+#endif
+    #include "jpge.h"
+#ifndef WIN32
+# if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#  pragma GCC diagnostic pop
+# endif
+#endif
 
-#include "jpeglib.h"
+#include "core/platform.h"
 
 #include "core/SharedPointer.h"
 #include "core/wrapper/SharedMemory.h"
@@ -48,71 +60,32 @@ namespace odredirector {
         if (container.getDataType() == core::data::Container::SHARED_IMAGE) {
             coredata::image::SharedImage si = const_cast<core::data::Container&>(container).getData<coredata::image::SharedImage>();
             
-            if (si.getBytesPerPixel()==1 || si.getBytesPerPixel()==3) {
-                // Set up the actual JPEG compressor.
-                struct jpeg_compress_struct cinfo;
+            if ( (1 == si.getBytesPerPixel()) || 
+                 (3 == si.getBytesPerPixel()) ) {
+                int compressedSize = 0;
+                bool retVal = false;
 
-                // Set up the error reporting for JPEG compression.
-                struct jpeg_error_mgr jerr;
-                cinfo.err = jpeg_std_error(&jerr);
+                void *buffer = ::malloc(si.getWidth() * si.getHeight() * si.getBytesPerPixel());
+                if (buffer != NULL) {
+                    // As we are transforming a SharedImage into a CompressedImage, attached to the shared memory segment.
+                    SharedPointer<core::wrapper::SharedMemory> memory = core::wrapper::SharedMemoryFactory::attachToSharedMemory(si.getName());
+                    if (memory->isValid()) {
+                        memory->lock();
+                            // Setup the specified image quality.
+                            jpge::params p;
+                            p.m_quality = m_jpegQuality;
 
-                // Create the compressor structure.
-                jpeg_create_compress(&cinfo);
+                            retVal = jpge::compress_image_to_jpeg_file_in_memory(buffer, compressedSize, si.getWidth(), si.getHeight(), si.getBytesPerPixel(), static_cast<const unsigned char*>(memory->getSharedMemory()), p);
+                        memory->unlock();
+                    }
 
-                // Define the image parameters.
-                cinfo.image_width = si.getWidth();
-                cinfo.image_height = si.getHeight();
-                cinfo.input_components = si.getBytesPerPixel();
-
-                // Set correct color space.                
-                cinfo.in_color_space = (si.getBytesPerPixel() == 1) ? JCS_GRAYSCALE : JCS_RGB;
-                
-                jpeg_set_defaults(&cinfo);
-
-                // Set up the compression ratio.
-                const int quality = m_jpegQuality;
-                jpeg_set_quality(&cinfo, quality, TRUE /* limit to baseline-JPEG values */);
-
-                // Define where to store the compression data; in our case in memory.
-                unsigned char *mem = NULL;
-                unsigned long mem_size = 0;
-                jpeg_mem_dest(&cinfo, &mem, &mem_size);
-
-                // Start compression (i.e. create the JPEG header).
-                jpeg_start_compress(&cinfo, TRUE);
-
-                // As we are transforming a SharedImage into a CompressedImage, attached to the shared memory segment.
-                SharedPointer<core::wrapper::SharedMemory> memory = core::wrapper::SharedMemoryFactory::attachToSharedMemory(si.getName());
-                if (memory->isValid()) {
-                    memory->lock();
-                        // Pointer to store the compressed image data per row.
-                        JSAMPROW row_pointer[1];
-
-                        // Actual width of a row in the image: number of pixel per row * number of bytes per pixel.
-                        int row_stride = si.getWidth() * si.getBytesPerPixel();
-
-                        while (cinfo.next_scanline < cinfo.image_height) {
-                            row_pointer[0] = & (static_cast<JSAMPROW>(memory->getSharedMemory()))[cinfo.next_scanline * row_stride];
-                            (void) jpeg_write_scanlines(&cinfo, row_pointer, 1);
-                        }
-                    memory->unlock();
                 }
-
-                // Close the image compression.
-                jpeg_finish_compress(&cinfo);
-
                 // Check if the size of the compressed image fits in a UDP packet.
-                const uint32_t MAX_SIZE_UDP_PAYLOAD = 65000;
-                if (mem_size < MAX_SIZE_UDP_PAYLOAD) {
+                const int32_t MAX_SIZE_UDP_PAYLOAD = 65000;
+                if ( retVal && (compressedSize < MAX_SIZE_UDP_PAYLOAD) ) {
                     // Create the CompressedImage data structure.
-                    core::data::image::CompressedImage ci(si.getName(), si.getWidth(), si.getHeight(), si.getBytesPerPixel(), mem_size);
-                    ::memcpy(ci.getRawData(), mem, mem_size);
-
-                    // Free the compressor.
-                    jpeg_destroy_compress(&cinfo);
-
-                    // Free pointer to compressed data.
-                    OPENDAVINCI_CORE_FREE_POINTER(mem);
+                    core::data::image::CompressedImage ci(si.getName(), si.getWidth(), si.getHeight(), si.getBytesPerPixel(), compressedSize);
+                    ::memcpy(ci.getRawData(), buffer, compressedSize);
 
                     // Write the CompressedImage container to STDOUT.
                     core::data::Container c(core::data::Container::COMPRESSED_IMAGE, ci);
@@ -121,6 +94,8 @@ namespace odredirector {
                 else {
                     cerr << "[odredirector]: Warning! Compressed image to large to fit in a UDP packet. Image skipped." << std::endl;
                 }
+                // Free pointer to compressed data.
+                OPENDAVINCI_CORE_FREE_POINTER(buffer);
             }
             else {
                 cerr << "[odredirector]: Warning! Color space not supported. Image skipped." << std::endl;

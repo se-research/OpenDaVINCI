@@ -21,7 +21,18 @@
 
 #include "core/platform.h"
 
-#include "jpeglib.h"
+#ifndef WIN32
+# if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#  pragma GCC diagnostic push
+# endif
+# pragma GCC diagnostic ignored "-Weffc++"
+#endif
+    #include "jpgd.h"
+#ifndef WIN32
+# if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#  pragma GCC diagnostic pop
+# endif
+#endif
 
 #include "core/base/QueryableNetstringsDeserializerABCF.h"
 #include "core/data/Container.h"
@@ -129,62 +140,38 @@ namespace odredirector {
                         // Get the shared memory to put the uncompressed image into.
                         core::SharedPointer<core::wrapper::SharedMemory> sp = m_mapOfSharedMemories[ci.getName()];
 
-                        // Set up the actual JPEG decompressor.
-                        struct jpeg_decompress_struct cinfo;
+                        int width = 0;
+                        int height = 0;
+                        int bpp = 0;
 
-                        // Set up the error reporting for JPEG decompression.
-                        struct jpeg_error_mgr jerr;
-                        cinfo.err = jpeg_std_error(&jerr);
+                        // Decompress image data.
+                        unsigned char *imageData = jpgd::decompress_jpeg_image_from_memory(ci.getRawData(), ci.getCompressedSize(), &width, &height, &bpp, ci.getBytesPerPixel());
 
-                        // Create the decompressor structure.
-                        jpeg_create_decompress(&cinfo);
+                        if ( (imageData != NULL) &&
+                             (width > 0) &&
+                             (height > 0) &&
+                             (bpp > 0) ) {
+                            // Lock shared memory to store the uncompressed data.
+                            if (sp->isValid()) {
+                                sp->lock();
 
-                        // Set up the data source for decompression; in our case, use the data from CompressedImage.
-                        jpeg_mem_src(&cinfo, ci.getRawData(), ci.getCompressedSize());
+                                ::memcpy(sp->getSharedMemory(), imageData, width * height * bpp);
 
-                        // Read the JPEG header.
-                        (void) jpeg_read_header(&cinfo, TRUE);
-
-                        // Start the decompressor.
-                        (void) jpeg_start_decompress(&cinfo);
-
-                        // Actual width of a row in the image: number of pixel per row * number of bytes per pixel.
-                        int row_stride = cinfo.output_width * cinfo.output_components;
-
-                        // Pointer to the buffer where to read the compressed image data from.
-                        JSAMPARRAY buffer = (*cinfo.mem->alloc_sarray) ((j_common_ptr) &cinfo, JPOOL_IMAGE, row_stride, 1);
-
-                        // Lock shared memory to store the uncompressed data.
-                        if (sp->isValid()) {
-                            sp->lock();
-                            int rowCounter = 0;
-                            while (cinfo.output_scanline < cinfo.output_height) {
-                                // Read next line from JPEG and decompress it.
-                                (void) jpeg_read_scanlines(&cinfo, buffer, 1);
-                                // Put the line to shared memory segmet.
-                                ::memcpy(static_cast<uint8_t*>(sp->getSharedMemory()) + (rowCounter * row_stride), buffer[0], row_stride);
-                                // Increase the row counter.
-                                rowCounter++;
+                                sp->unlock();
                             }
-                            sp->unlock();
+
+                            // As we have now the decompressed image data in memory, create a SharedMemory data structure to describe it.
+                            coredata::image::SharedImage si;
+                            si.setName(ci.getName());
+                            si.setWidth(ci.getWidth());
+                            si.setHeight(ci.getHeight());
+                            si.setBytesPerPixel(ci.getBytesPerPixel());
+                            si.setSize(ci.getWidth() * ci.getHeight() * ci.getBytesPerPixel());
+
+                            // Distribute the SharedImage information in the UDP multicast session.
+                            Container c2(Container::SHARED_IMAGE, si);
+                            getConference().send(c2);
                         }
-                        // Finalize the decompression.
-                        (void) jpeg_finish_decompress(&cinfo);
-
-                        // Free the decompressor.
-                        jpeg_destroy_decompress(&cinfo);
-
-                        // As we have now the decompressed image data in memory, create a SharedMemory data structure to describe it.
-                        coredata::image::SharedImage si;
-                        si.setName(ci.getName());
-                        si.setWidth(ci.getWidth());
-                        si.setHeight(ci.getHeight());
-                        si.setBytesPerPixel(ci.getBytesPerPixel());
-                        si.setSize(ci.getWidth() * ci.getHeight() * ci.getBytesPerPixel());
-
-                        // Distribute the SharedImage information in the UDP multicast session.
-                        Container c2(Container::SHARED_IMAGE, si);
-                        getConference().send(c2);
                     }
                     else {
                         getConference().send(c);
