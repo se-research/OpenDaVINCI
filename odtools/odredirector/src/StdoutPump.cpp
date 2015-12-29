@@ -37,6 +37,7 @@
 #include "core/platform.h"
 
 #include "core/SharedPointer.h"
+#include "core/base/Lock.h"
 #include "core/wrapper/SharedMemory.h"
 #include "core/wrapper/SharedMemoryFactory.h"
 #include "core/data/image/CompressedImage.h"
@@ -49,6 +50,7 @@ namespace odredirector {
 
     using namespace std;
     using namespace core;
+    using namespace core::base;
 
     StdoutPump::StdoutPump(const int32_t &jpegQuality) :
         m_jpegQuality(jpegQuality) {}
@@ -70,13 +72,15 @@ namespace odredirector {
                     // As we are transforming a SharedImage into a CompressedImage, attached to the shared memory segment.
                     SharedPointer<core::wrapper::SharedMemory> memory = core::wrapper::SharedMemoryFactory::attachToSharedMemory(si.getName());
                     if (memory->isValid()) {
-                        memory->lock();
+                        Lock l(memory);
                             // Setup the specified image quality.
                             jpge::params p;
                             p.m_quality = m_jpegQuality;
+                            p.m_subsampling = (si.getBytesPerPixel() == 1) ? jpge::Y_ONLY : jpge::H2V2;
 
+                            // Size of the buffer.
+                            compressedSize = si.getWidth() * si.getHeight() * si.getBytesPerPixel();
                             retVal = jpge::compress_image_to_jpeg_file_in_memory(buffer, compressedSize, si.getWidth(), si.getHeight(), si.getBytesPerPixel(), static_cast<const unsigned char*>(memory->getSharedMemory()), p);
-                        memory->unlock();
                     }
 
                 }
@@ -91,8 +95,11 @@ namespace odredirector {
                     core::data::Container c(core::data::Container::COMPRESSED_IMAGE, ci);
                     std::cout << c;
                 }
-                else {
-                    cerr << "[odredirector]: Warning! Compressed image to large to fit in a UDP packet. Image skipped." << std::endl;
+                if (compressedSize >= MAX_SIZE_UDP_PAYLOAD) {
+                    cerr << "[odredirector]: Warning! Compressed image too large (" << compressedSize << " bytes) to fit in a UDP packet. Image skipped." << std::endl;
+                }
+                if (!retVal) {
+                    cerr << "[odredirector]: Warning! Failed to compress image. Image skipped." << std::endl;
                 }
                 // Free pointer to compressed data.
                 OPENDAVINCI_CORE_FREE_POINTER(buffer);

@@ -35,6 +35,7 @@
 #endif
 
 #include "core/base/QueryableNetstringsDeserializerABCF.h"
+#include "core/base/Lock.h"
 #include "core/data/Container.h"
 #include "core/base/CommandLineParser.h"
 #include "core/wrapper/SharedMemory.h"
@@ -56,7 +57,7 @@ namespace odredirector {
         TimeTriggeredConferenceClientModule(argc, argv, "odredirector"),
         m_fromstdin(false),
         m_tostdout(false),
-        m_jpegQuality(5),
+        m_jpegQuality(15),
         m_mapOfSharedMemories() {
         // Parse command line arguments.
         parseAdditionalCommandLineParameters(argc, argv);
@@ -90,8 +91,8 @@ namespace odredirector {
             m_jpegQuality = cmdArgumentJPEGQUALITY.getValue<int32_t>();
 
             if (m_jpegQuality < 1 || m_jpegQuality > 100) {
-                clog << "Value for parameter --jpegquality must be between 1 and 100; using default value 5." << endl;
-                m_jpegQuality = 5;
+                clog << "Value for parameter --jpegquality must be between 1 and 100; using default value 15." << endl;
+                m_jpegQuality = 15;
             }
         }
     }
@@ -153,11 +154,8 @@ namespace odredirector {
                              (bpp > 0) ) {
                             // Lock shared memory to store the uncompressed data.
                             if (sp->isValid()) {
-                                sp->lock();
-
+                                Lock l(sp);
                                 ::memcpy(sp->getSharedMemory(), imageData, width * height * bpp);
-
-                                sp->unlock();
                             }
 
                             // As we have now the decompressed image data in memory, create a SharedMemory data structure to describe it.
