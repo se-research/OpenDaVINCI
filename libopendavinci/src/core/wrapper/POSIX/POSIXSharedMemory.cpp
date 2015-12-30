@@ -20,6 +20,8 @@
 #include <fcntl.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
+#include <sys/stat.h>
+
 #include <algorithm>
 #include <cerrno>
 #include <climits>
