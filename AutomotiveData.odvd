@@ -141,6 +141,29 @@ message automotive.carolocup.Control [id = 88] {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+// Feature extraction messages.
+message fxe.KeyPoint [id = 301] {
+    cartesian.Point2 pt [id = 1];
+    float size [id = 2];
+}
+
+message fxe.Noise [id = 302] {
+    list<fxe.KeyPoint> noisePerFrame [id =1];
+}
+
+message fxe.Recording [id = 303] {
+    string filename [id = 1];
+    uint32 startFrame [id = 2];
+    uint32 endFrame [id = 3];
+    list<fxe.Noise> noises [id = 4];
+}
+
+message fxe.Correspondence [id = 304] {
+    fxe.Recording simulation [id = 1];
+    list<fxe.Recording> realRecordings [id = 2];
+}
+
+///////////////////////////////////////////////////////////////////////////////
 // Vehicle messages.
 message automotive.GenericCANMessage [id = 71] {
     core::data::TimeStamp driverTimeStamp [id = 1]; // TimeStamp from CAN driver.

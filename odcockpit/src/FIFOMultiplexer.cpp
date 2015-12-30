@@ -18,10 +18,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
-
 #include "core/base/Lock.h"
 #include "core/base/Thread.h"
 #include "core/data/Container.h"

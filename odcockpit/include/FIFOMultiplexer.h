@@ -21,10 +21,6 @@
 #ifndef FIFOMULTIPLEXER_H_
 #define FIFOMULTIPLEXER_H_
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
-
 #include <vector>
 
 #include "core/base/FIFOQueue.h"

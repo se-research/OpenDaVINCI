@@ -21,13 +21,16 @@
 #define OPENDAVINCI_TOOLS_PLAYER_PLAYER_H_
 
 #include <iosfwd>
+#include <map>
 #include <memory>
+#include <string>
 
 // platform.h must be included as first header file for definition of _WIN32_WINNT.
 #include "core/platform.h"
 #include "core/SharedPointer.h"
 #include "core/data/Container.h"
 #include "core/io/URL.h"
+#include "core/wrapper/SharedMemory.h"
 
 namespace tools {
     namespace player {
@@ -125,6 +128,9 @@ class PlayerCache;
                 bool m_noMoreData;
 
                 uint32_t m_delay;
+
+                // Map used to store shared memory segments for restored from compressed images.
+                map<string, core::SharedPointer<core::wrapper::SharedMemory> > m_mapOfSharedMemoriesForCompressedImages;
         };
 
     } // player

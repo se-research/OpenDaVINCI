@@ -1,6 +1,7 @@
 _build
 build*
 bin
+doc
 *~
 *.o
 .depend

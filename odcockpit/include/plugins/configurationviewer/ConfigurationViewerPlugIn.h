@@ -21,10 +21,6 @@
 #ifndef CONFIGURATIONVIEWER_H_
 #define CONFIGURATIONVIEWER_H_
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
-
 #include "plugins/PlugIn.h"
 #include "plugins/configurationviewer/ConfigurationViewerWidget.h"
 

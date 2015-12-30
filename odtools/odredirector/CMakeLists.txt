@@ -47,74 +47,6 @@ SET(OPENDAVINCI_DIR "${CMAKE_INSTALL_PREFIX}")
 FIND_PACKAGE (OpenDaVINCI REQUIRED)
 
 ###############################################################################
-# Include directories for shipped 3rd party libraries.
-SET(jpeg9a_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/jpeg-9a")
-
-INCLUDE_DIRECTORIES (${jpeg9a_SOURCE_DIR})
-SET (jpeg9a-headers
-    ${jpeg9a_SOURCE_DIR}/cderror.h
-    ${jpeg9a_SOURCE_DIR}/cdjpeg.h
-    ${jpeg9a_SOURCE_DIR}/jconfig.h
-    ${jpeg9a_SOURCE_DIR}/jdct.h
-    ${jpeg9a_SOURCE_DIR}/jerror.h
-    ${jpeg9a_SOURCE_DIR}/jinclude.h
-    ${jpeg9a_SOURCE_DIR}/jmemsys.h
-    ${jpeg9a_SOURCE_DIR}/jmorecfg.h
-    ${jpeg9a_SOURCE_DIR}/jpegint.h
-    ${jpeg9a_SOURCE_DIR}/jpeglib.h
-    ${jpeg9a_SOURCE_DIR}/jversion.h
-    ${jpeg9a_SOURCE_DIR}/transupp.h
-)
-SET (jpeg9a-sources
-    ${jpeg9a_SOURCE_DIR}/jaricom.c
-    ${jpeg9a_SOURCE_DIR}/jcapimin.c
-    ${jpeg9a_SOURCE_DIR}/jcapistd.c
-    ${jpeg9a_SOURCE_DIR}/jcarith.c
-    ${jpeg9a_SOURCE_DIR}/jccoefct.c
-    ${jpeg9a_SOURCE_DIR}/jccolor.c
-    ${jpeg9a_SOURCE_DIR}/jcdctmgr.c
-    ${jpeg9a_SOURCE_DIR}/jchuff.c
-    ${jpeg9a_SOURCE_DIR}/jcinit.c
-    ${jpeg9a_SOURCE_DIR}/jcmainct.c
-    ${jpeg9a_SOURCE_DIR}/jcmarker.c
-    ${jpeg9a_SOURCE_DIR}/jcmaster.c
-    ${jpeg9a_SOURCE_DIR}/jcomapi.c
-    ${jpeg9a_SOURCE_DIR}/jcparam.c
-    ${jpeg9a_SOURCE_DIR}/jcprepct.c
-    ${jpeg9a_SOURCE_DIR}/jcsample.c
-    ${jpeg9a_SOURCE_DIR}/jctrans.c
-    ${jpeg9a_SOURCE_DIR}/jdapimin.c
-    ${jpeg9a_SOURCE_DIR}/jdapistd.c
-    ${jpeg9a_SOURCE_DIR}/jdarith.c
-    ${jpeg9a_SOURCE_DIR}/jdatadst.c
-    ${jpeg9a_SOURCE_DIR}/jdatasrc.c
-    ${jpeg9a_SOURCE_DIR}/jdcoefct.c
-    ${jpeg9a_SOURCE_DIR}/jdcolor.c
-    ${jpeg9a_SOURCE_DIR}/jddctmgr.c
-    ${jpeg9a_SOURCE_DIR}/jdhuff.c
-    ${jpeg9a_SOURCE_DIR}/jdinput.c
-    ${jpeg9a_SOURCE_DIR}/jdmainct.c
-    ${jpeg9a_SOURCE_DIR}/jdmarker.c
-    ${jpeg9a_SOURCE_DIR}/jdmaster.c
-    ${jpeg9a_SOURCE_DIR}/jdmerge.c
-    ${jpeg9a_SOURCE_DIR}/jdpostct.c
-    ${jpeg9a_SOURCE_DIR}/jdsample.c
-    ${jpeg9a_SOURCE_DIR}/jdtrans.c
-    ${jpeg9a_SOURCE_DIR}/jerror.c
-    ${jpeg9a_SOURCE_DIR}/jfdctflt.c
-    ${jpeg9a_SOURCE_DIR}/jfdctfst.c
-    ${jpeg9a_SOURCE_DIR}/jfdctint.c
-    ${jpeg9a_SOURCE_DIR}/jidctflt.c
-    ${jpeg9a_SOURCE_DIR}/jidctfst.c
-    ${jpeg9a_SOURCE_DIR}/jidctint.c
-    ${jpeg9a_SOURCE_DIR}/jquant1.c
-    ${jpeg9a_SOURCE_DIR}/jquant2.c
-    ${jpeg9a_SOURCE_DIR}/jutils.c
-    ${jpeg9a_SOURCE_DIR}/jmemmgr.c
-    ${jpeg9a_SOURCE_DIR}/jmemnobs.c 
-)
-
-###############################################################################
 # Set header files from OpenDaVINCI.
 INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS}/opendavinci)
 # Set include directory.
@@ -123,7 +55,7 @@ INCLUDE_DIRECTORIES(include)
 ###############################################################################
 # Build this project.
 FILE(GLOB_RECURSE thisproject-sources "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
-ADD_LIBRARY (${PROJECT_NAME}lib-static STATIC ${thisproject-sources} ${jpeg9a-sources})
+ADD_LIBRARY (${PROJECT_NAME}lib-static STATIC ${thisproject-sources})
 ADD_EXECUTABLE (${PROJECT_NAME} "${CMAKE_CURRENT_SOURCE_DIR}/apps/${PROJECT_NAME}.cpp")
 TARGET_LINK_LIBRARIES (${PROJECT_NAME} ${PROJECT_NAME}lib-static ${OPENDAVINCI_LIBRARIES}) 
 

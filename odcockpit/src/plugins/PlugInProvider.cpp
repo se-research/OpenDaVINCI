@@ -18,10 +18,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
-
 #include "core/macros.h"
 #include "core/base/Lock.h"
 
@@ -66,14 +62,12 @@ namespace cockpit {
             // TODO: Read available plugins from .so-files.
             m_listOfAvailablePlugIns.push_back("ConfigurationViewer");
             m_listOfAvailablePlugIns.push_back("Controller");
-#ifndef PANDABOARD
             m_listOfAvailablePlugIns.push_back("BirdsEyeMap");
             m_listOfAvailablePlugIns.push_back("EnvironmentViewer");
             m_listOfAvailablePlugIns.push_back("IrUsCharts");
             m_listOfAvailablePlugIns.push_back("ModuleStatisticsViewer");
             m_listOfAvailablePlugIns.push_back("OBJXViewer");
             m_listOfAvailablePlugIns.push_back("SCNXViewer");
-#endif
             m_listOfAvailablePlugIns.push_back("IrUsMap");
             m_listOfAvailablePlugIns.push_back("LiveFeed");
             m_listOfAvailablePlugIns.push_back("Player");
@@ -82,14 +76,12 @@ namespace cockpit {
 
             m_listOfDescriptions["ConfigurationViewer"] = tr("This plugin displays the current configuration.").toStdString();
             m_listOfDescriptions["Controller"] = tr("This plugin allows the control of the vehicle by the arrow keys.").toStdString();
-#ifndef PANDABOARD
             m_listOfDescriptions["BirdsEyeMap"] = tr("This plugin shows the entire environment in 2D.").toStdString();
             m_listOfDescriptions["EnvironmentViewer"] = tr("This plugin shows the entire environment in 3D.").toStdString();
             m_listOfDescriptions["IrUsCharts"] = tr("This plugin displays the values of SensorBoardData over time.").toStdString();
             m_listOfDescriptions["ModuleStatisticsViewer"] = tr("This plugin shows module statistics.").toStdString();
             m_listOfDescriptions["OBJXViewer"] = tr("This plugin shows .objx files.").toStdString();
             m_listOfDescriptions["SCNXViewer"] = tr("This plugin shows .scnx files.").toStdString();
-#endif
             m_listOfDescriptions["IrUsMap"] = tr("This plugin displays the current irus readings.").toStdString();
             m_listOfDescriptions["LiveFeed"] = tr("This plugin displays all distributed visitable messages.").toStdString();
             m_listOfDescriptions["Player"] = tr("This plugin replays previously recorded files.").toStdString();
@@ -130,7 +122,6 @@ namespace cockpit {
                 cerr << "Creating Controller" << endl;
                 plugIn = core::SharedPointer<PlugIn>((PlugIn*)(new controller::ControllerPlugIn("Controller", m_kvc, m_conference, m_parent)));
             }
-#ifndef PANDABOARD
             else if (name == "BirdsEyeMap") {
                 cerr << "Creating BirdsEyeMap" << endl;
                 plugIn = core::SharedPointer<PlugIn>(new birdseyemap::BirdsEyeMapPlugIn("BirdsEyeMap", m_kvc, m_parent));
@@ -155,7 +146,6 @@ namespace cockpit {
                 cerr << "Creating SCNXViewer" << endl;
                 plugIn = core::SharedPointer<PlugIn>(new scnxviewer::SCNXViewerPlugIn("SCNXViewer", m_kvc, m_parent));
             }
-#endif
             else if (name == "IrUsMap") {
                 cerr << "Creating IrUsMap" << endl;
                 plugIn = core::SharedPointer<PlugIn>(new irusmap::IrUsMapPlugIn("IrUsMap", m_kvc, m_parent));

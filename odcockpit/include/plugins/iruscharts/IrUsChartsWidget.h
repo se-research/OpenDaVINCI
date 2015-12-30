@@ -21,10 +21,6 @@
 #ifndef COCKPIT_PLUGINS_IRUSCHARTS_IRUSCHARTSWIDGET_H_
 #define COCKPIT_PLUGINS_IRUSCHARTS_IRUSCHARTSWIDGET_H_
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
-
 #include <deque>
 #include <map>
 #include <string>
@@ -92,11 +88,9 @@ namespace cockpit {
                     void saveCSVFile();
 
                 private:
-#ifndef PANDABOARD
                     vector<QwtPlot*> m_listOfPlots;
                     vector<QwtPlotCurve*> m_listOfPlotCurves;
                     vector<IrUsChartData*> m_listOfData;
-#endif
                     map<uint32_t, string> m_mapOfSensors;
                     deque<automotive::miniature::SensorBoardData> m_data;
                     uint32_t m_bufferMax;

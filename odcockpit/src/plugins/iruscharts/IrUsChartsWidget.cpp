@@ -18,10 +18,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
-
 #include <cmath>
 #include <iostream>
 #include <sstream>
@@ -50,16 +46,11 @@ namespace cockpit {
             using namespace core::base;
             using namespace core::data;
 
-#ifndef PANDABOARD
             IrUsChartsWidget::IrUsChartsWidget(const PlugIn &/*plugIn*/, const core::base::KeyValueConfiguration &kvc, QWidget *prnt) :
                 QWidget(prnt),
                 m_listOfPlots(),
                 m_listOfPlotCurves(),
                 m_listOfData(),
-#else
-            IrUsChartsWidget::IrUsChartsWidget(const PlugIn &/*plugIn*/, const core::base::KeyValueConfiguration &/*kvc*/, QWidget *prnt) :
-                QWidget(prnt),
-#endif
                 m_mapOfSensors(),
                 m_data(),
                 m_bufferMax(10000),
@@ -70,7 +61,6 @@ namespace cockpit {
                 // Set size.
                 setMinimumSize(640, 480);
 
-#ifndef PANDABOARD
                 // Setup point distance sensors.
                 for (uint32_t i = 0; i < kvc.getValue<uint32_t>("odsimirus.numberOfSensors"); i++) {
                     stringstream sensorID;
@@ -145,7 +135,7 @@ namespace cockpit {
                 mainLayout->addWidget(scrollArea);
 
                 setLayout(mainLayout);
-#endif
+
                 // Timer for sending data regularly.
                 QTimer* timer = new QTimer(this);
                 connect(timer, SIGNAL(timeout()), this, SLOT(TimerEvent()));
@@ -155,12 +145,10 @@ namespace cockpit {
             IrUsChartsWidget::~IrUsChartsWidget() {}
 
             void IrUsChartsWidget::TimerEvent() {
-#ifndef PANDABOARD
                 vector<QwtPlot*>::iterator it = m_listOfPlots.begin();
                 for(;it < m_listOfPlots.end(); it++) {
                     (*it)->replot();
                 }
-#endif
                 {
                     Lock l(m_receivedSensorBoardDataContainersMutex);
 
