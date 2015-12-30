@@ -106,7 +106,7 @@ namespace odfilter {
 
         if ( (m_keep.size() > 0) && (m_drop.size() > 0) ) {
             cerr << "[odfilter] Error: You cannot specify --keep and --drop at the same time." << endl;
-            return BOTH_KEEP_DROP;
+            retVal = BOTH_KEEP_DROP;
         }
         else {
             // Please note that reading from stdin does not evaluate sending latencies.

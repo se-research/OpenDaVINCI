@@ -62,11 +62,11 @@ namespace odfilter {
             virtual ~Filter();
 
             /**
-             * This method splits a specified file.
+             * This method runs odfilter.
              *
              * @param argc Number of command line arguments.
              * @param argv Command line arguments.
-             * @return 0 if the split is successful, 1 if the end is not behind the start.
+             * @return 0 if the filter is successful, 1 if both, the keep and the drop parameters are specified.
              */
             int32_t run(const int32_t &argc, char **argv);
 
