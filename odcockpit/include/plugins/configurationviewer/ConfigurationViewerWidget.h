@@ -21,10 +21,6 @@
 #ifndef CONFIGURATIONVIEWERWIDGET_H_
 #define CONFIGURATIONVIEWERWIDGET_H_
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
-
 #include "core/base/KeyValueConfiguration.h"
 
 #include "QtIncludes.h"

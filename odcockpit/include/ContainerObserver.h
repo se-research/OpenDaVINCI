@@ -21,10 +21,6 @@
 #ifndef CONTAINEROBSERVER_H_
 #define CONTAINEROBSERVER_H_
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
-
 #include "core/io/conference/ContainerListener.h"
 
 namespace cockpit {

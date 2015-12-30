@@ -21,10 +21,6 @@
 #ifndef CONTROLLER_H_
 #define CONTROLLER_H_
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
-
 #include "plugins/ControlPlugIn.h"
 #include "plugins/controller/ControllerWidget.h"
 

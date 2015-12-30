@@ -21,10 +21,6 @@
 #ifndef COCKPIT_PLUGINS_IRUSMAP_POINTSENSOR_H_
 #define COCKPIT_PLUGINS_IRUSMAP_POINTSENSOR_H_
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
-
 #include <string>
 #include <map>
 

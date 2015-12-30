@@ -21,10 +21,6 @@
 #ifndef COCKPIT_PLUGINS_PLAYERPLUGIN_H_
 #define COCKPIT_PLUGINS_PLAYERPLUGIN_H_
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
-
 #include "plugins/ControlPlugIn.h"
 #include "plugins/player/PlayerWidget.h"
 

@@ -21,10 +21,6 @@
 #ifndef COCKPIT_PLUGINS_PLUGIN_H_
 #define COCKPIT_PLUGINS_PLUGIN_H_
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
-
 #include <string>
 
 #include "QtIncludes.h"

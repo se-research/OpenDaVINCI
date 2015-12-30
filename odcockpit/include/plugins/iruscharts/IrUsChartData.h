@@ -21,12 +21,6 @@
 #ifndef COCKPIT_PLUGINS_IRUSCHARTS_IRUSCHARTDATA_H_
 #define COCKPIT_PLUGINS_IRUSCHARTS_IRUSCHARTDATA_H_
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
-
-#ifndef PANDABOARD
-
 #include <deque>
 
 #include "QtIncludes.h"
@@ -86,8 +80,6 @@ namespace cockpit {
         }
     }
 }
-
-#endif
 
 #endif /*COCKPIT_PLUGINS_IRUSCHARTS_IRUSCHARTDATA_H_*/
 

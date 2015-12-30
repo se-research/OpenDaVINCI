@@ -21,10 +21,6 @@
 #ifndef COCKPIT_QTINCLUDES_H_
 #define COCKPIT_QTINCLUDES_H_
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
-
 #if defined __GNUC__
 #pragma GCC system_header
 #elif defined __SUNPRO_CC
@@ -87,12 +83,10 @@
 #include <QtCore/qrect.h>
 #include <QtCore/qmetatype.h>
 
-#ifndef PANDABOARD
 #include <qwt-qt4/qwt_legend.h>
 #include <qwt-qt4/qwt_plot.h>
 #include <qwt-qt4/qwt_plot_curve.h>
 #include <qwt-qt4/qwt_wheel.h>
-#endif
 
 #if defined __SUNPRO_CC
 #pragma enable_warn

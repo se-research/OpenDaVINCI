@@ -21,10 +21,6 @@
 #ifndef COCKPIT_PLUGINS_SPYPLUGIN_H_
 #define COCKPIT_PLUGINS_SPYPLUGIN_H_
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
-
 #include "plugins/PlugIn.h"
 #include "plugins/spy/SpyWidget.h"
 

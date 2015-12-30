@@ -18,12 +18,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
-
-#ifndef PANDABOARD
-
 #include "plugins/iruscharts/IrUsChartData.h"
 
 namespace cockpit {
@@ -62,4 +56,3 @@ namespace cockpit {
     }
 }
 
-#endif

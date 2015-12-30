@@ -21,10 +21,6 @@
 #ifndef COCKPITWINDOW_H_
 #define COCKPITWINDOW_H_
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
-
 #include <vector>
 
 #include "QtIncludes.h"

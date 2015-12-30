@@ -21,10 +21,6 @@
 #ifndef COCKPIT_PLUGINS_CONTROLPLUGIN_H_
 #define COCKPIT_PLUGINS_CONTROLPLUGIN_H_
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
-
 #include "core/io/conference/ContainerConference.h"
 #include "plugins/PlugIn.h"
 
