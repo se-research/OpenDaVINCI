@@ -20,6 +20,9 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXUDPRECEIVER_H_
 #define OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXUDPRECEIVER_H_
 
+#include <netinet/in.h>
+#include <sys/socket.h>
+
 #include <memory>
 #include <string>
 
