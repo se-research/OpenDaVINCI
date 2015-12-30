@@ -20,19 +20,17 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
-#include <sstream>
 
-#include "core/platform.h"
-
+#include "core/macros.h"
 #include "core/SharedPointer.h"
 #include "core/base/Lock.h"
-#include "core/data/TimeStamp.h"
+#include "core/base/Serializable.h"
+#include "core/data/Container.h"
+#include "core/data/image/CompressedImage.h"
+#include "core/wrapper/jpg/JPG.h"
 #include "core/wrapper/SharedMemory.h"
 #include "core/wrapper/SharedMemoryFactory.h"
-#include "core/wrapper/jpg/JPG.h"
-#include "core/data/image/CompressedImage.h"
-
-#include "GeneratedHeaders_CoreData.h"
+#include "generated/coredata/image/SharedImage.h"
 
 #include "StdoutPump.h"
 

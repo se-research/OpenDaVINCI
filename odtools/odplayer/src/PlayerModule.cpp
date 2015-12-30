@@ -20,11 +20,12 @@
 #include <cmath>
 #include <iostream>
 
+#include "core/macros.h"
 #include "core/base/Thread.h"
+#include "core/data/Container.h"
 #include "core/io/URL.h"
 #include "tools/player/Player.h"
-
-#include "GeneratedHeaders_CoreData.h"
+#include "generated/coredata/player/PlayerCommand.h"
 
 #include "PlayerModule.h"
 

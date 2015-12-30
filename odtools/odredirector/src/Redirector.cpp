@@ -21,18 +21,17 @@
 #include <cstring>
 #include <iostream>
 
-#include "core/platform.h"
-
-#include "core/base/QueryableNetstringsDeserializerABCF.h"
+#include "core/macros.h"
+#include "core/SharedPointer.h"
 #include "core/base/Lock.h"
-#include "core/data/Container.h"
+#include "core/base/CommandLineArgument.h"
 #include "core/base/CommandLineParser.h"
+#include "core/base/QueryableNetstringsDeserializerABCF.h"
+#include "core/wrapper/jpg/JPG.h"
 #include "core/wrapper/SharedMemory.h"
 #include "core/wrapper/SharedMemoryFactory.h"
-#include "core/wrapper/jpg/JPG.h"
 #include "core/data/image/CompressedImage.h"
-
-#include "GeneratedHeaders_CoreData.h"
+#include "generated/coredata/image/SharedImage.h"
 
 #include "Redirector.h"
 #include "StdoutPump.h"

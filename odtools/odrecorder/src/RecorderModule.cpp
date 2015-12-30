@@ -17,17 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <iostream>
+#include <string>
 
-#include "core/macros.h"
-#include "core/base/KeyValueDataStore.h"
-#include "core/base/Thread.h"
-#include "core/data/Container.h"
-
-#include "GeneratedHeaders_CoreData.h"
-
-#include "tools/recorder/Recorder.h"
 #include "RecorderModule.h"
+#include "core/base/Thread.h"
+#include "tools/recorder/Recorder.h"
+#include "generated/coredata/recorder/RecorderCommand.h"
+
+namespace core { namespace base { class KeyValueDataStore; } }
 
 namespace odrecorder {
 
