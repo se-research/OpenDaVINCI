@@ -21,14 +21,31 @@
 #ifndef COCKPIT_PLUGINS_MODULESTATISTICSVIEWER_LOADPERMODULE_H_
 #define COCKPIT_PLUGINS_MODULESTATISTICSVIEWER_LOADPERMODULE_H_
 
-#include <deque>
-#include <vector>
-#include <cstring>
+#if defined __GNUC__
+#pragma GCC system_header
+#elif defined __SUNPRO_CC
+#pragma disable_warn
+#elif defined _MSC_VER
+#pragma warning(push, 1)
+#endif
 
-#include "QtIncludes.h"
+#include <qcolor.h>
+
+#if defined __SUNPRO_CC
+#pragma enable_warn
+#elif defined _MSC_VER
+#pragma warning(pop)
+#endif
+
+#include <deque>
+#include <string>
+#include <vector>
 
 #include "core/base/Mutex.h"
-#include "GeneratedHeaders_CoreData.h"
+#include "generated/coredata/dmcp/ModuleDescriptor.h"
+#include "generated/coredata/dmcp/RuntimeStatistic.h"
+
+class QwtPlotCurve;
 
 namespace cockpit {
     namespace plugins {

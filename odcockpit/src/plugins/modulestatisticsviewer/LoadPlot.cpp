@@ -18,11 +18,30 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "core/SharedPointer.h"
+#ifndef WIN32
+# if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#  pragma GCC diagnostic push
+# endif
+# pragma GCC diagnostic ignored "-Weffc++"
+#endif
+#include <Qt/qtimer.h>
+#include <qframe.h>
+#include <qnamespace.h>
+#include <qstring.h>
+#include "qwt_legend.h"
+#include "qwt_plot_curve.h"
+#ifndef WIN32
+# if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#  pragma GCC diagnostic pop
+# endif
+#endif
 
-#include "QtIncludes.h"
-#include "plugins/modulestatisticsviewer/LoadPlot.h"
+#include "core/platform.h"
+#include "core/SharedPointer.h"
 #include "plugins/modulestatisticsviewer/LoadPerModule.h"
+#include "plugins/modulestatisticsviewer/LoadPlot.h"
+
+class QWidget;
 
 namespace cockpit {
     namespace plugins {

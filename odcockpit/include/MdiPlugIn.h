@@ -21,11 +21,30 @@
 #ifndef MDIPLUGIN_H_
 #define MDIPLUGIN_H_
 
-#include "QtIncludes.h"
+#if defined __GNUC__
+#pragma GCC system_header
+#elif defined __SUNPRO_CC
+#pragma disable_warn
+#elif defined _MSC_VER
+#pragma warning(push, 1)
+#endif
 
-#include "plugins/PlugIn.h"
+#include <Qt/qmdisubwindow.h>
+#include <qnamespace.h>
+#include <qobjectdefs.h>
+
+#if defined __SUNPRO_CC
+#pragma enable_warn
+#elif defined _MSC_VER
+#pragma warning(pop)
+#endif
+
+class QCloseEvent;
+class QWidget;
 
 namespace cockpit {
+
+namespace plugins { class PlugIn; }
 
     using namespace std;
 

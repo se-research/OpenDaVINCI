@@ -20,32 +20,56 @@
 #ifndef PLUGINS_BIRDSEYEMAP_BIRDSEYEMAPMAPWIDGET_H_
 #define PLUGINS_BIRDSEYEMAP_BIRDSEYEMAPMAPWIDGET_H_
 
+#if defined __GNUC__
+#pragma GCC system_header
+#elif defined __SUNPRO_CC
+#pragma disable_warn
+#elif defined _MSC_VER
+#pragma warning(push, 1)
+#endif
+
+#include <qobjectdefs.h>
+#include <qwidget.h>
+
+#if defined __SUNPRO_CC
+#pragma enable_warn
+#elif defined _MSC_VER
+#pragma warning(pop)
+#endif
+
 #include <map>
 #include <vector>
 
+#include "core/platform.h"
 #include "core/base/Mutex.h"
-#include "core/base/TreeNode.h"
 #include "core/io/conference/ContainerListener.h"
-#include "hesperia/data/environment/Point3.h"
-
 #include "hesperia/data/environment/EgoState.h"
-
-#include "hesperia/scenegraph/SceneNode.h"
-#include "hesperia/scenegraph/models/SimpleCar.h"
+#include "hesperia/data/environment/Point3.h"
+#include "hesperia/scenegraph/SceneNodeDescriptor.h"
 #include "hesperia/scenegraph/renderer/RenderingConfiguration.h"
-
-#include "plugins/PlugIn.h"
-#include "plugins/birdseyemap/CameraAssignableNodesListener.h"
-#include "plugins/birdseyemap/SelectableNodeDescriptor.h"
 #include "plugins/birdseyemap/SelectableNodeDescriptorTreeListener.h"
+
+class QMouseEvent;
+class QPaintEvent;
+class QTimer;
+namespace cockpit { namespace plugins { class PlugIn; } }
+namespace core { namespace base { template <typename T> class TreeNode; } }
+namespace core { namespace data { class Container; } }
+namespace hesperia { namespace scenegraph { class SceneNode; } }
+namespace hesperia { namespace scenegraph { namespace models { class SimpleCar; } } }
 
 namespace cockpit {
     namespace plugins {
         namespace birdseyemap {
 
+            using namespace std;
+
             /**
              * This class is the widget for a 2D scene.
              */
+class CameraAssignableNodesListener;
+class SelectableNodeDescriptor;
+
             class BirdsEyeMapMapWidget : public QWidget, public core::io::conference::ContainerListener, public SelectableNodeDescriptorTreeListener {
 
                     Q_OBJECT

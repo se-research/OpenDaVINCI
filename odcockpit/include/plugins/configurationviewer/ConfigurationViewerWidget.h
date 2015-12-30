@@ -21,11 +21,26 @@
 #ifndef CONFIGURATIONVIEWERWIDGET_H_
 #define CONFIGURATIONVIEWERWIDGET_H_
 
-#include "core/base/KeyValueConfiguration.h"
+#if defined __GNUC__
+#pragma GCC system_header
+#elif defined __SUNPRO_CC
+#pragma disable_warn
+#elif defined _MSC_VER
+#pragma warning(push, 1)
+#endif
 
-#include "QtIncludes.h"
+#include <qobjectdefs.h>
+#include <qwidget.h>
 
-#include "plugins/PlugIn.h"
+#if defined __SUNPRO_CC
+#pragma enable_warn
+#elif defined _MSC_VER
+#pragma warning(pop)
+#endif
+
+class QTextEdit;
+namespace cockpit { namespace plugins { class PlugIn; } }
+namespace core { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
 

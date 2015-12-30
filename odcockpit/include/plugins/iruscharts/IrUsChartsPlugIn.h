@@ -21,14 +21,20 @@
 #ifndef COCKPIT_PLUGINS_IRUSCHARTS_IRUSCHARTSPLUGIN_H_
 #define COCKPIT_PLUGINS_IRUSCHARTS_IRUSCHARTSPLUGIN_H_
 
+#include <string>
+
 #include "plugins/PlugIn.h"
-#include "plugins/iruscharts/IrUsChartsWidget.h"
+
+class QWidget;
+namespace core { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
 
     namespace plugins {
 
         namespace iruscharts {
+
+class IrUsChartsWidget;
 
           class IrUsChartsPlugIn : public PlugIn {
             private:

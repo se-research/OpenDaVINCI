@@ -17,33 +17,46 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <Qt/qevent.h>
+#include <Qt/qtimer.h>
+#include <qpainter.h>
+#include <qpen.h>
+#include <qrect.h>
+#include <qtransform.h>
+
 #include <sstream>
+#include <string>
 #include <vector>
 
-#include "core/macros.h"
+#include "core/platform.h"
+#include "core/base/KeyValueConfiguration.h"
 #include "core/base/Lock.h"
-#include "core/base/Thread.h"
+#include "core/base/TreeNode.h"
 #include "core/data/Container.h"
-#include "core/exceptions/Exceptions.h"
 #include "core/io/URL.h"
-
-#include "GeneratedHeaders_AutomotiveData.h"
-#include "hesperia/data/environment/Point3.h"
+#include "core/macros.h"
+#include "generated/cartesian/Constants.h"
 #include "hesperia/data/environment/Obstacle.h"
+#include "hesperia/data/environment/Point3.h"
+#include "hesperia/data/environment/Polygon.h"
 #include "hesperia/data/planning/Route.h"
-#include "hesperia/scenario/SCNXArchive.h"
 #include "hesperia/scenario/SCNXArchiveFactory.h"
-
-#include "hesperia/scenegraph/primitives/Line.h"
-#include "hesperia/scenegraph/primitives/Polygon.h"
-#include "hesperia/scenegraph/transformation/SceneGraphFactory.h"
-#include "hesperia/scenegraph/renderer/SceneNodeRenderingConfiguration.h"
+#include "hesperia/scenegraph/SceneNode.h"
+#include "hesperia/scenegraph/models/SimpleCar.h"
 #include "hesperia/scenegraph/models/XYAxes.h"
 #include "hesperia/scenegraph/models/Grid.h"
-
+#include "hesperia/scenegraph/primitives/Line.h"
+#include "hesperia/scenegraph/primitives/Polygon.h"
+#include "hesperia/scenegraph/renderer/SceneNodeRenderingConfiguration.h"
+#include "hesperia/scenegraph/transformation/SceneGraphFactory.h"
+#include "plugins/PlugIn.h"
 #include "plugins/birdseyemap/BirdsEyeMapMapWidget.h"
-#include "plugins/birdseyemap/TreeNodeVisitor.h"
 #include "plugins/birdseyemap/BirdsEyeMapRenderer.h"
+#include "plugins/birdseyemap/CameraAssignableNodesListener.h"
+#include "plugins/birdseyemap/SelectableNodeDescriptor.h"
+#include "plugins/birdseyemap/TreeNodeVisitor.h"
+
+namespace hesperia { namespace scenario { class SCNXArchive; } }
 
 namespace cockpit {
     namespace plugins {

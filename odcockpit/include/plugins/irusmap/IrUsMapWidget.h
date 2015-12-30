@@ -21,25 +21,43 @@
 #ifndef COCKPIT_PLUGINS_IRUSMAP_IRUSMAPWIDGET_H_
 #define COCKPIT_PLUGINS_IRUSMAP_IRUSMAPWIDGET_H_
 
+#if defined __GNUC__
+#pragma GCC system_header
+#elif defined __SUNPRO_CC
+#pragma disable_warn
+#elif defined _MSC_VER
+#pragma warning(push, 1)
+#endif
+
+#include <qobjectdefs.h>
+#include <qwidget.h>
+
+#if defined __SUNPRO_CC
+#pragma enable_warn
+#elif defined _MSC_VER
+#pragma warning(pop)
+#endif
+
 #include <map>
 #include <string>
-#include <vector>
-
-#include "QtIncludes.h"
 
 #include "core/base/Mutex.h"
 #include "core/io/conference/ContainerListener.h"
+#include "generated/automotive/miniature/SensorBoardData.h"
 
-#include "plugins/PlugIn.h"
-#include "plugins/irusmap/PointSensor.h"
-
-#include "GeneratedHeaders_AutomotiveData.h"
+class QPaintEvent;
+class QTimer;
+namespace cockpit { namespace plugins { class PlugIn; } }
+namespace core { namespace base { class KeyValueConfiguration; } }
+namespace core { namespace data { class Container; } }
 
 namespace cockpit {
 
     namespace plugins {
 
         namespace irusmap {
+
+class PointSensor;
 
             using namespace std;
 

@@ -21,14 +21,32 @@
 #ifndef COCKPIT_PLUGINS_SPYWIDGET_H_
 #define COCKPIT_PLUGINS_SPYWIDGET_H_
 
+#if defined __GNUC__
+#pragma GCC system_header
+#elif defined __SUNPRO_CC
+#pragma disable_warn
+#elif defined _MSC_VER
+#pragma warning(push, 1)
+#endif
+
+#include <qobjectdefs.h>
+#include <qwidget.h>
+
+#if defined __SUNPRO_CC
+#pragma enable_warn
+#elif defined _MSC_VER
+#pragma warning(pop)
+#endif
+
 #include <map>
-#include <cstring>
+#include <string>
 
 #include "core/data/Container.h"
 #include "core/io/conference/ContainerListener.h"
 
-#include "plugins/PlugIn.h"
-#include "QtIncludes.h"
+class QTreeWidget;
+class QTreeWidgetItem;
+namespace cockpit { namespace plugins { class PlugIn; } }
 
 namespace cockpit {
 

@@ -21,16 +21,20 @@
 #ifndef COCKPIT_PLUGINS_SHAREDIMAGEVIEWER_SHAREDIMAGEVIEWERPLUGIN_H_
 #define COCKPIT_PLUGINS_SHAREDIMAGEVIEWER_SHAREDIMAGEVIEWERPLUGIN_H_
 
-#include "core/base/KeyValueConfiguration.h"
+#include <string>
 
 #include "plugins/PlugIn.h"
-#include "plugins/sharedimageviewer/SharedImageViewerWidget.h"
+
+class QWidget;
+namespace core { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
 
     namespace plugins {
 
         namespace sharedimageviewer {
+
+class SharedImageViewerWidget;
 
             using namespace std;
 

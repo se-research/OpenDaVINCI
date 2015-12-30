@@ -21,18 +21,35 @@
 #ifndef COCKPIT_PLUGINS_PLAYERWIDGET_H_
 #define COCKPIT_PLUGINS_PLAYERWIDGET_H_
 
-#include <iostream>
-#include <map>
+#if defined __GNUC__
+#pragma GCC system_header
+#elif defined __SUNPRO_CC
+#pragma disable_warn
+#elif defined _MSC_VER
+#pragma warning(push, 1)
+#endif
+
+#include <qobjectdefs.h>
+#include <qwidget.h>
+
+#if defined __SUNPRO_CC
+#pragma enable_warn
+#elif defined _MSC_VER
+#pragma warning(pop)
+#endif
+
 #include <string>
 
-#include "core/data/Container.h"
-#include "core/io/conference/ContainerConference.h"
-#include "core/io/conference/ContainerListener.h"
+#include "core/platform.h"
 
-#include "tools/player/Player.h"
-
-#include "plugins/PlugIn.h"
-#include "QtIncludes.h"
+class QCheckBox;
+class QLabel;
+class QLineEdit;
+class QPushButton;
+namespace cockpit { namespace plugins { class PlugIn; } }
+namespace core { namespace base { class KeyValueConfiguration; } }
+namespace core { namespace io { namespace conference { class ContainerConference; } } }
+namespace tools { namespace player { class Player; } }
 
 namespace cockpit {
 
@@ -41,7 +58,6 @@ namespace cockpit {
         namespace player {
 
             using namespace std;
-            using namespace core::data;
 
             /**
              * This class is the container for the cutter widget.

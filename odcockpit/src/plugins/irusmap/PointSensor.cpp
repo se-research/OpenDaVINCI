@@ -18,11 +18,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <qbrush.h>
+#include <qnamespace.h>
+#include <qpainter.h>
+
 #include <cmath>
 #include <sstream>
 
-#include "GeneratedHeaders_AutomotiveData.h"
-
+#include "generated/automotive/miniature/SensorBoardData.h"
+#include "generated/cartesian/Constants.h"
 #include "plugins/irusmap/PointSensor.h"
 
 namespace cockpit {

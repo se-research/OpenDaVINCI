@@ -20,18 +20,17 @@
 #ifndef PLUGINS_BIRDSEYEMAP_TREENODEVISITOR_H_
 #define PLUGINS_BIRDSEYEMAP_TREENODEVISITOR_H_
 
-#include <vector>
-
-#include "core/base/TreeNode.h"
-#include "hesperia/scenegraph/SceneNode.h"
 #include "hesperia/scenegraph/SceneNodeVisitor.h"
-#include "hesperia/scenegraph/renderer/RenderingConfiguration.h"
 
-#include "plugins/birdseyemap/SelectableNodeDescriptor.h"
+namespace core { namespace base { template <typename T> class TreeNode; } }
+namespace hesperia { namespace scenegraph { class SceneNode; } }
+namespace hesperia { namespace scenegraph { namespace renderer { class RenderingConfiguration; } } }
 
 namespace cockpit {
     namespace plugins {
         namespace birdseyemap {
+
+class SelectableNodeDescriptor;
 
             using namespace std;
 

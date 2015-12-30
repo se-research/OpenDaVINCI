@@ -17,8 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "hesperia/scenegraph/SceneNodeDescriptor.h"
+#include <vector>
 
+#include "core/base/TreeNode.h"
+#include "hesperia/scenegraph/SceneNode.h"
+#include "hesperia/scenegraph/renderer/RenderingConfiguration.h"
+#include "hesperia/scenegraph/renderer/SceneNodeRenderingConfiguration.h"
+#include "plugins/birdseyemap/SelectableNodeDescriptor.h"
 #include "plugins/birdseyemap/TreeNodeVisitor.h"
 
 namespace cockpit {

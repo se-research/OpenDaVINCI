@@ -23,9 +23,26 @@
 
 #include <deque>
 
-#include "QtIncludes.h"
 
-#include "GeneratedHeaders_AutomotiveData.h"
+#if defined __GNUC__
+#pragma GCC system_header
+#elif defined __SUNPRO_CC
+#pragma disable_warn
+#elif defined _MSC_VER
+#pragma warning(push, 1)
+#endif
+
+#include "qwt_data.h"
+
+#if defined __SUNPRO_CC
+#pragma enable_warn
+#elif defined _MSC_VER
+#pragma warning(pop)
+#endif
+
+#include "core/platform.h"
+
+namespace automotive { namespace miniature { class SensorBoardData; } }
 
 namespace cockpit {
 

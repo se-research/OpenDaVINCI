@@ -21,15 +21,35 @@
 #ifndef COCKPIT_PLUGINS_ABSTRACTGLWIDGET_H_
 #define COCKPIT_PLUGINS_ABSTRACTGLWIDGET_H_
 
+#if defined __GNUC__
+#pragma GCC system_header
+#elif defined __SUNPRO_CC
+#pragma disable_warn
+#elif defined _MSC_VER
+#pragma warning(push, 1)
+#endif
+
+#include <Qt/qgl.h>
+#include <qobjectdefs.h>
+
+#if defined __SUNPRO_CC
+#pragma enable_warn
+#elif defined _MSC_VER
+#pragma warning(pop)
+#endif
+
+#include "core/platform.h"
 #include "core/base/Mutex.h"
 #include "hesperia/data/environment/Point3.h"
 
-#include "QtIncludes.h"
-
-#include "plugins/PlugIn.h"
+class QKeyEvent;
+class QMouseEvent;
+class QWidget;
 
 namespace cockpit {
     namespace plugins {
+
+class PlugIn;
 
         using namespace std;
 

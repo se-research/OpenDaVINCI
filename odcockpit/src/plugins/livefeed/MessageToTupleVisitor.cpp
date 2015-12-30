@@ -18,8 +18,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "core/data/SerializableData.h"
+#include <ostream>
 
+#include "core/base/Serializable.h"
+#include "core/data/SerializableData.h"
 #include "plugins/livefeed/MessageToTupleVisitor.h"
 
 namespace cockpit {

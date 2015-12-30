@@ -18,13 +18,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <iosfwd>
-
-#include "core/macros.h"
-
+#include "core/platform.h"
 #include "ContainerObserver.h"
 #include "plugins/modulestatisticsviewer/ModuleStatisticsViewerPlugIn.h"
 #include "plugins/modulestatisticsviewer/ModuleStatisticsViewerWidget.h"
+
+class QWidget;
+namespace core { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
     namespace plugins {

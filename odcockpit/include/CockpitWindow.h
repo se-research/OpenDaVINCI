@@ -21,19 +21,40 @@
 #ifndef COCKPITWINDOW_H_
 #define COCKPITWINDOW_H_
 
+#if defined __GNUC__
+#pragma GCC system_header
+#elif defined __SUNPRO_CC
+#pragma disable_warn
+#elif defined _MSC_VER
+#pragma warning(push, 1)
+#endif
+
+#include <Qt/qmainwindow.h>
+#include <qobjectdefs.h>
+
+#if defined __SUNPRO_CC
+#pragma enable_warn
+#elif defined _MSC_VER
+#pragma warning(pop)
+#endif
+
 #include <vector>
 
-#include "QtIncludes.h"
-
+#include "core/SharedPointer.h"
 #include "core/base/KeyValueConfiguration.h"
-#include "core/base/DataStoreManager.h"
-#include "core/io/conference/ContainerConference.h"
 
-#include "FIFOMultiplexer.h"
-#include "plugins/PlugIn.h"
-#include "plugins/PlugInProvider.h"
+class QListWidget;
+class QListWidgetItem;
+class QMdiArea;
+class QMenu;
+namespace core { namespace base { class DataStoreManager; } }
+namespace core { namespace io { namespace conference { class ContainerConference; } } }
 
 namespace cockpit {
+
+class FIFOMultiplexer;
+namespace plugins { class PlugIn; }
+namespace plugins { class PlugInProvider; }
 
     using namespace std;
 

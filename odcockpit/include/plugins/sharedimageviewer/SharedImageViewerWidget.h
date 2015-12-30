@@ -21,20 +21,41 @@
 #ifndef COCKPIT_PLUGINS_SHAREDIMAGEVIEWER_SHAREDIMAGEVIEWERWIDGET_H_
 #define COCKPIT_PLUGINS_SHAREDIMAGEVIEWER_SHAREDIMAGEVIEWERWIDGET_H_
 
+#if defined __GNUC__
+#pragma GCC system_header
+#elif defined __SUNPRO_CC
+#pragma disable_warn
+#elif defined _MSC_VER
+#pragma warning(push, 1)
+#endif
+
+#include <qobjectdefs.h>
+#include <qrgb.h>
+#include <qvector.h>
+#include <qwidget.h>
+
+#if defined __SUNPRO_CC
+#pragma enable_warn
+#elif defined _MSC_VER
+#pragma warning(pop)
+#endif
+
 #include <map>
 #include <string>
 #include <vector>
-
-#include "QtIncludes.h"
 
 #include "core/SharedPointer.h"
 #include "core/base/Mutex.h"
 #include "core/io/conference/ContainerListener.h"
 #include "core/wrapper/SharedMemory.h"
-//#include "core/data/image/SharedImage.h" included by GeneratedHeaders_AutomotiveData.h
-#include "GeneratedHeaders_CoreData.h"
+#include "generated/coredata/image/SharedImage.h"
 
-#include "plugins/PlugIn.h"
+class QImage;
+class QListWidget;
+class QListWidgetItem;
+class QPaintEvent;
+namespace cockpit { namespace plugins { class PlugIn; } }
+namespace core { namespace data { class Container; } }
 
 namespace cockpit {
 

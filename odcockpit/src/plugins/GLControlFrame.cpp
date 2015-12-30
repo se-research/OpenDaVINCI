@@ -18,12 +18,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "QtIncludes.h"
+#include <Qt/qgridlayout.h>
+#include <Qt/qpushbutton.h>
+#include <qnamespace.h>
+#include "qwt_wheel.h"
 
-#include "GeneratedHeaders_AutomotiveData.h"
-
-#include "plugins/GLControlFrame.h"
+#include "core/platform.h"
+#include "generated/cartesian/Constants.h"
 #include "plugins/AbstractGLWidget.h"
+#include "plugins/GLControlFrame.h"
 
 namespace cockpit {
     namespace plugins {

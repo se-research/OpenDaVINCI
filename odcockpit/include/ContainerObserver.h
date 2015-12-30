@@ -21,7 +21,7 @@
 #ifndef CONTAINEROBSERVER_H_
 #define CONTAINEROBSERVER_H_
 
-#include "core/io/conference/ContainerListener.h"
+namespace core { namespace io { namespace conference { class ContainerListener; } } }
 
 namespace cockpit {
 

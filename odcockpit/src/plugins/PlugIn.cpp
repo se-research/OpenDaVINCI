@@ -19,8 +19,10 @@
  */
 
 #include "core/base/Lock.h"
-
 #include "plugins/PlugIn.h"
+
+class QWidget;
+namespace cockpit { class ContainerObserver; }
 
 namespace cockpit {
 

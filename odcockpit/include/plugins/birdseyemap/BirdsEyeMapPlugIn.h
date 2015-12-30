@@ -20,9 +20,12 @@
 #ifndef PLUGINS_BIRDSEYEMAP_BIRDSEYEMAPPLUGIN_H_
 #define PLUGINS_BIRDSEYEMAP_BIRDSEYEMAPPLUGIN_H_
 
+#include <string>
+
 #include "plugins/PlugIn.h"
 
-#include "plugins/birdseyemap/BirdsEyeMapWidget.h"
+class QWidget;
+namespace core { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
     namespace plugins {
@@ -31,6 +34,8 @@ namespace cockpit {
             /**
              * This class is birdseye map plugin.
              */
+class BirdsEyeMapWidget;
+
             class BirdsEyeMapPlugIn : public PlugIn {
 
                 private:

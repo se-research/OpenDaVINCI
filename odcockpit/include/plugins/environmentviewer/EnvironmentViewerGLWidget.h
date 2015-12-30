@@ -24,20 +24,22 @@
 #include <map>
 #include <vector>
 
+#include "core/platform.h"
 #include "core/base/Mutex.h"
-#include "core/base/TreeNode.h"
-
-#include "hesperia/data/environment/Point3.h"
+#include "core/io/conference/ContainerListener.h"
 #include "hesperia/data/environment/Position.h"
-#include "hesperia/threeD/Node.h"
+#include "hesperia/threeD/NodeDescriptor.h"
 #include "hesperia/threeD/NodeDescriptorComparator.h"
 #include "hesperia/threeD/RenderingConfiguration.h"
-#include "hesperia/threeD/TransformGroup.h"
-
 #include "plugins/AbstractGLWidget.h"
-#include "plugins/environmentviewer/CameraAssignableNodesListener.h"
-#include "plugins/environmentviewer/SelectableNodeDescriptor.h"
 #include "plugins/environmentviewer/SelectableNodeDescriptorTreeListener.h"
+
+class QWidget;
+namespace cockpit { namespace plugins { class PlugIn; } }
+namespace core { namespace base { template <typename T> class TreeNode; } }
+namespace core { namespace data { class Container; } }
+namespace hesperia { namespace threeD { class Node; } }
+namespace hesperia { namespace threeD { class TransformGroup; } }
 
 namespace cockpit {
     namespace plugins {
@@ -46,6 +48,9 @@ namespace cockpit {
             /**
              * This class is the viewport for a 3D scene.
              */
+class CameraAssignableNodesListener;
+class SelectableNodeDescriptor;
+
             class EnvironmentViewerGLWidget : public AbstractGLWidget, public core::io::conference::ContainerListener, public SelectableNodeDescriptorTreeListener {
                 private:
                     /**
