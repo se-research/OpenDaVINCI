@@ -18,15 +18,25 @@
  */
 
 #include <istream>
-#include <sstream>
+#include <string>
+#include <vector>
 
+#include "core/SharedPointer.h"
 #include "core/macros.h"
-#include "core/wrapper/Image.h"
-#include "core/wrapper/ImageFactory.h"
-
+#include "hesperia/data/scenario/Ground.h"
+#include "hesperia/data/scenario/HeightImage.h"
+#include "hesperia/data/scenario/Image.h"
+#include "hesperia/data/scenario/Scenario.h"
+#include "hesperia/data/scenario/Surroundings.h"
+#include "hesperia/data/situation/Situation.h"
 #include "hesperia/scenario/SCNXArchive.h"
 #include "hesperia/situation/SituationFactory.h"
-#include "hesperia/data/situation/Situation.h"
+#include "core/wrapper/ImageFactory.h"
+
+namespace core { namespace wrapper { class DecompressedData; } }
+namespace core { namespace wrapper { class Image; } }
+namespace hesperia { namespace data { namespace scenario { class ComplexModel; } } }
+namespace hesperia { namespace data { namespace scenario { class Shape; } } }
 
 namespace hesperia {
     namespace scenario {

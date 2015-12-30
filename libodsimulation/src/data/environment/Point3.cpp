@@ -18,16 +18,20 @@
  */
 
 #include <cmath>
+#include <istream>
+#include <string>
 
-#include "core/base/Hash.h"
+#include "core/platform.h"
+#include "core/SharedPointer.h"
 #include "core/base/Deserializer.h"
+#include "core/base/Hash.h"
 #include "core/base/SerializationFactory.h"
 #include "core/base/Serializer.h"
+#include "core/data/SerializableData.h"
 #include "core/strings/StringToolbox.h"
-
+#include "generated/cartesian/Constants.h"
+#include "generated/cartesian/Matrix3x3.h"
 #include "hesperia/data/environment/Point3.h"
-
-#include "GeneratedHeaders_AutomotiveData.h"
 
 namespace hesperia {
     namespace data {

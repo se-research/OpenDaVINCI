@@ -20,10 +20,7 @@
 #ifndef HESPERIA_CORE_THREED_NODERENDERINGCONFIGURATION_H_
 #define HESPERIA_CORE_THREED_NODERENDERINGCONFIGURATION_H_
 
-#include <stdint.h>
-
-// native.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/native.h"
+#include "core/platform.h"
 
 namespace hesperia {
     namespace threeD {

@@ -22,12 +22,18 @@
     #include <windows.h>
 #endif
 
-#include <iostream>
-
 #include <GL/gl.h>
 
-#include "GeneratedHeaders_AutomotiveData.h"
-#include "hesperia/threeD/TextureManager.h"
+#include <iostream>
+#include <string>
+
+#include "core/platform.h"
+#include "core/wrapper/Image.h"
+#include "hesperia/data/environment/Point3.h"
+#include "hesperia/threeD/Node.h"
+#include "hesperia/threeD/NodeDescriptor.h"
+#include "hesperia/threeD/NodeRenderingConfiguration.h"
+#include "hesperia/threeD/RenderingConfiguration.h"
 #include "hesperia/threeD/models/HeightGrid.h"
 
 namespace hesperia {

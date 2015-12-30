@@ -20,10 +20,14 @@
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
-#include <sstream>
+#include <map>
+#include <string>
+#include <vector>
 
-#include "GeneratedHeaders_AutomotiveData.h"
-
+#include "core/platform.h"
+#include "generated/cartesian/Constants.h"
+#include "hesperia/data/environment/Point3.h"
+#include "hesperia/data/environment/Polygon.h"
 #include "vehiclecontext/model/PointSensor.h"
 
 namespace vehiclecontext {

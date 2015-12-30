@@ -17,43 +17,35 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <cmath>
-#include <cstdlib>
-#include <algorithm>
 #include <iostream>
-#include <sstream>
+#include <map>
+#include <string>
+#include <vector>
 
-#include "core/macros.h"
+#include "core/platform.h"
+#include "context/base/SendContainerToSystemsUnderTest.h"
 #include "core/base/KeyValueConfiguration.h"
-#include "core/base/KeyValueDataStore.h"
-#include "core/base/Thread.h"
 #include "core/data/Container.h"
 #include "core/io/URL.h"
+#include "core/macros.h"
 #include "core/strings/StringComparator.h"
-#include "core/exceptions/Exceptions.h"
 #include "core/wrapper/Time.h"
-#include "context/base/SendContainerToSystemsUnderTest.h"
-
-#include "GeneratedHeaders_AutomotiveData.h"
+#include "generated/automotive/miniature/SensorBoardData.h"
 #include "hesperia/data/environment/EgoState.h"
 #include "hesperia/data/environment/Obstacle.h"
-#include "hesperia/data/scenario/Scenario.h"
-#include "hesperia/data/scenario/Shape.h"
+#include "hesperia/data/environment/Point3.h"
+#include "hesperia/data/environment/Polygon.h"
+#include "hesperia/data/scenario/Ground.h"
 #include "hesperia/data/scenario/Polygon.h"
+#include "hesperia/data/scenario/Scenario.h"
 #include "hesperia/data/scenario/Surroundings.h"
-#include "hesperia/data/scenario/Vertex3.h"
 #include "hesperia/scenario/SCNXArchive.h"
 #include "hesperia/scenario/SCNXArchiveFactory.h"
-#include "hesperia/scenario/ScenarioFactory.h"
-#include "hesperia/scenario/ScenarioPrettyPrinter.h"
-
-#include "hesperia/data/environment/Line.h"
-
-#include "GeneratedHeaders_AutomotiveData.h"
-
-#include "GeneratedHeaders_AutomotiveData.h"
-
 #include "vehiclecontext/model/IRUS.h"
+#include "vehiclecontext/model/PointSensor.h"
+
+namespace core { namespace exceptions { class ValueForKeyNotFoundException; } }
+namespace hesperia { namespace data { namespace scenario { class Shape; } } }
 
 namespace vehiclecontext {
     namespace model {

@@ -25,11 +25,11 @@
 // native.h must be included as first header file for definition of _WIN32_WINNT.
 #include "core/native.h"
 
-#include "core/wrapper/parser/ParserTokenExtendedData.h"
-
 namespace core {
     namespace wrapper {
         namespace parser {
+
+class ParserTokenExtendedData;
 
             using namespace std;
 

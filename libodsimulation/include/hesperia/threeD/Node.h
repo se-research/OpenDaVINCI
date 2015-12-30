@@ -22,10 +22,8 @@
 
 // native.h must be included as first header file for definition of _WIN32_WINNT.
 #include "core/native.h"
-
 #include "core/wrapper/Disposable.h"
 #include "hesperia/threeD/NodeDescriptor.h"
-#include "hesperia/threeD/RenderingConfiguration.h"
 
 namespace hesperia {
     namespace threeD {
@@ -34,6 +32,8 @@ namespace hesperia {
          * This interface must be implemented by any subclass
          * to be drawn in an OpenGL scene.
          */
+class RenderingConfiguration;
+
         class OPENDAVINCI_API Node : public core::wrapper::Disposable {
             private:
                 /**

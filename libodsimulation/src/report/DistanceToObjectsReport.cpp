@@ -18,17 +18,20 @@
  */
 
 #include <iostream>
-#include <sstream>
+#include <string>
 #include <vector>
 
+#include "core/platform.h"
+#include "core/base/KeyValueConfiguration.h"
 #include "core/base/KeyValueDataStore.h"
+#include "core/data/Container.h"
 #include "core/wrapper/Time.h"
-#include "GeneratedHeaders_AutomotiveData.h"
 #include "hesperia/data/environment/EgoState.h"
 #include "hesperia/data/environment/Line.h"
 #include "hesperia/data/environment/Obstacle.h"
 #include "hesperia/data/environment/OtherVehicleState.h"
-
+#include "hesperia/data/environment/Point3.h"
+#include "hesperia/data/environment/Polygon.h"
 #include "vehiclecontext/report/DistanceToObjectsReport.h"
 
 namespace vehiclecontext {

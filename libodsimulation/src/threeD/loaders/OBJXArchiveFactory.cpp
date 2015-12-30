@@ -17,19 +17,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <iostream>
+#include <string>
 #include <vector>
 
-#include "core/macros.h"
 #include "core/SharedPointer.h"
 #include "core/base/Lock.h"
+#include "core/base/Mutex.h"
 #include "core/exceptions/Exceptions.h"
+#include "core/macros.h"
 #include "core/wrapper/CompressionFactory.h"
 #include "core/wrapper/DecompressedData.h"
-#include "core/wrapper/Image.h"
 #include "core/wrapper/ImageFactory.h"
-
-#include "GeneratedHeaders_AutomotiveData.h"
+#include "hesperia/threeD/loaders/OBJXArchive.h"
 #include "hesperia/threeD/loaders/OBJXArchiveFactory.h"
+
+namespace core { namespace wrapper { class Image; } }
 
 namespace hesperia {
     namespace threeD {

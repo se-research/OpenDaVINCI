@@ -19,6 +19,8 @@
 
 #include "hesperia/decorator/models/Material.h"
 
+namespace core { namespace wrapper { class Image; } }
+
 namespace hesperia {
     namespace decorator {
         namespace models{

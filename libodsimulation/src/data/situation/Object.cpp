@@ -18,18 +18,26 @@
  */
 
 #include <sstream>
+#include <string>
 
-#include "core/macros.h"
-#include "core/base/Hash.h"
+#include "core/platform.h"
+#include "core/SharedPointer.h"
 #include "core/base/Deserializer.h"
+#include "core/base/Hash.h"
+#include "core/base/Serializable.h"
 #include "core/base/SerializationFactory.h"
 #include "core/base/Serializer.h"
+#include "core/data/SerializableData.h"
+#include "core/macros.h"
+#include "hesperia/data/situation/Behavior.h"
 #include "hesperia/data/situation/ComplexModel.h"
 #include "hesperia/data/situation/ExternalDriver.h"
 #include "hesperia/data/situation/Object.h"
 #include "hesperia/data/situation/PointIDDriver.h"
 #include "hesperia/data/situation/Polygon.h"
 #include "hesperia/data/situation/Rectangle.h"
+#include "hesperia/data/situation/Shape.h"
+#include "hesperia/data/situation/SituationVisitor.h"
 
 namespace hesperia {
     namespace data {

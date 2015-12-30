@@ -22,9 +22,7 @@
 
 #include <string>
 
-// native.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/native.h"
-
+#include "core/platform.h"
 #include "hesperia/data/environment/Point3.h"
 
 namespace hesperia {

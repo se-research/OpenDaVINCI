@@ -17,12 +17,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "core/macros.h"
-#include "core/base/Hash.h"
+#include <iosfwd>
+#include <string>
+#include <vector>
+
+#include "core/platform.h"
+#include "core/SharedPointer.h"
 #include "core/base/Deserializer.h"
+#include "core/base/Hash.h"
+#include "core/base/Serializable.h"
 #include "core/base/SerializationFactory.h"
 #include "core/base/Serializer.h"
+#include "core/exceptions/Exceptions.h"
+#include "core/macros.h"
+#include "hesperia/data/scenario/IDVertex3.h"
+#include "hesperia/data/scenario/LaneModel.h"
 #include "hesperia/data/scenario/PointModel.h"
+#include "hesperia/data/scenario/ScenarioVisitor.h"
 
 namespace hesperia {
     namespace data {

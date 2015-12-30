@@ -20,14 +20,13 @@
 #ifndef HESPERIA_IO_CAMERA_IMAGEGRABBER_H_
 #define HESPERIA_IO_CAMERA_IMAGEGRABBER_H_
 
+#include "core/SharedPointer.h"
 // native.h must be included as first header file for definition of _WIN32_WINNT.
 #include "core/native.h"
-
-#include "core/SharedPointer.h"
-#include "core/wrapper/Image.h"
-
 #include "hesperia/data/camera/ImageGrabberCalibration.h"
 #include "hesperia/data/camera/ImageGrabberID.h"
+
+namespace core { namespace wrapper { class Image; } }
 
 namespace hesperia {
     namespace io {

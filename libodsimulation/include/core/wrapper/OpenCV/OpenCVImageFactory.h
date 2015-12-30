@@ -20,6 +20,10 @@
 #ifndef HESPERIA_CORE_WRAPPER_OPENCV_OPENCVIMAGEFACTORY_H_
 #define HESPERIA_CORE_WRAPPER_OPENCV_OPENCVIMAGEFACTORY_H_
 
+#include <iosfwd>
+
+#include "core/platform.h"
+#include "core/wrapper/Image.h"
 #include "core/wrapper/ImageFactory.h"
 
 namespace core {

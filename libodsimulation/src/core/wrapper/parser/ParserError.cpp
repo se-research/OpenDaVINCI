@@ -23,6 +23,8 @@ namespace core {
     namespace wrapper {
         namespace parser {
 
+class ParserErrorExtendedData;
+
             ParserError::ParserError(const string &context, const ParserErrorExtendedData &peed) :
                     m_context(context),
                     m_data(peed) {}

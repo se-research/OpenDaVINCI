@@ -17,16 +17,41 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <iostream>
+#include <string>
 
+#include "core/platform.h"
+#include "core/exceptions/Exceptions.h"
+#include "core/macros.h"
 #include "core/wrapper/parser/ASTNode.h"
-#include "hesperia/scenario/ScenarioPrettyPrinter.h"
-#include "hesperia/data/scenario/BoundingBox.h"
-#include "hesperia/data/scenario/ComplexModel.h"
-#include "hesperia/data/scenario/Cylinder.h"
-#include "hesperia/data/scenario/PointID.h"
-#include "hesperia/data/scenario/Polygon.h"
+#include "hesperia/data/scenario/Connector.h"
+#include "hesperia/data/scenario/Ground.h"
+#include "hesperia/data/scenario/Header.h"
+#include "hesperia/data/scenario/HeightImage.h"
+#include "hesperia/data/scenario/IDVertex3.h"
+#include "hesperia/data/scenario/Image.h"
+#include "hesperia/data/scenario/Lane.h"
+#include "hesperia/data/scenario/LaneAttribute.h"
+#include "hesperia/data/scenario/Layer.h"
+#include "hesperia/data/scenario/Perimeter.h"
+#include "hesperia/data/scenario/Road.h"
+#include "hesperia/data/scenario/Spot.h"
+#include "hesperia/data/scenario/Surroundings.h"
+#include "hesperia/data/scenario/Vertex3.h"
+#include "hesperia/data/scenario/WGS84CoordinateSystem.h"
+#include "hesperia/data/scenario/Zone.h"
 #include "hesperia/scenario/SCNScenarioVisitor.h"
+
+namespace hesperia { namespace data { namespace scenario { class Arc; } } }
+namespace hesperia { namespace data { namespace scenario { class Clothoid; } } }
+namespace hesperia { namespace data { namespace scenario { class ComplexModel; } } }
+namespace hesperia { namespace data { namespace scenario { class Cylinder; } } }
+namespace hesperia { namespace data { namespace scenario { class PointModel; } } }
+namespace hesperia { namespace data { namespace scenario { class Polygon; } } }
+namespace hesperia { namespace data { namespace scenario { class Scenario; } } }
+namespace hesperia { namespace data { namespace scenario { class Shape; } } }
+namespace hesperia { namespace data { namespace scenario { class StraightLine; } } }
+namespace hesperia { namespace data { namespace scenario { class TrafficLight; } } }
+namespace hesperia { namespace data { namespace scenario { class TrafficSign; } } }
 
 namespace hesperia {
     namespace scenario {

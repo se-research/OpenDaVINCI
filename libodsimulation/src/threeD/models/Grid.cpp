@@ -23,7 +23,13 @@
 #endif
 
 #include <GL/gl.h>
+#include <string>
 
+#include "core/platform.h"
+#include "hesperia/threeD/Node.h"
+#include "hesperia/threeD/NodeDescriptor.h"
+#include "hesperia/threeD/NodeRenderingConfiguration.h"
+#include "hesperia/threeD/RenderingConfiguration.h"
 #include "hesperia/threeD/models/Grid.h"
 
 namespace hesperia {

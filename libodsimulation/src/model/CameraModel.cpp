@@ -17,38 +17,27 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <ctime>
-
-#include <iostream>
-
 #include <GL/gl.h>
 #include <GL/freeglut.h>
 
-#include <opencv/highgui.h>
-#include <opencv/cxcore.h>
+#include <ctime>
+#include <iostream>
+#include <string>
 
-#include "core/macros.h"
-#include "core/base/Lock.h"
-#include "core/base/Thread.h"
+#include "core/platform.h"
+#include "context/base/SendContainerToSystemsUnderTest.h"
 #include "core/base/KeyValueConfiguration.h"
 #include "core/data/Container.h"
-#include "core/wrapper/SharedMemory.h"
-#include "core/wrapper/SharedMemoryFactory.h"
-#include "context/base/SendContainerToSystemsUnderTest.h"
-
-#include "GeneratedHeaders_AutomotiveData.h"
-#include "hesperia/data/environment/Point3.h"
+#include "core/macros.h"
+#include "generated/coredata/image/SharedImage.h"
 #include "hesperia/data/camera/ImageGrabberCalibration.h"
 #include "hesperia/data/camera/ImageGrabberID.h"
-
-#include "GeneratedHeaders_CoreData.h"
-#include "GeneratedHeaders_AutomotiveData.h"
-
-#include "core/exceptions/Exceptions.h"
-
 #include "hesperia/data/environment/EgoState.h"
-
+#include "hesperia/data/environment/Point3.h"
 #include "vehiclecontext/model/CameraModel.h"
+#include "vehiclecontext/model/OpenGLGrabber.h"
+
+namespace core { namespace wrapper { class Time; } }
 
 namespace vehiclecontext {
     namespace model {

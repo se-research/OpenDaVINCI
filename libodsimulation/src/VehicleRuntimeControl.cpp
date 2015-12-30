@@ -18,14 +18,13 @@
  */
 
 #include <iostream>
-#include <sstream>
+#include <string>
+#include <vector>
 
-#include "core/base/KeyValueConfiguration.h"
-#include "core/io/conference/ContainerConferenceFactory.h"
 #include "context/base/RuntimeControlInterface.h"
-
+#include "context/base/StandaloneRuntimeControl.h"
+#include "core/base/KeyValueConfiguration.h"
 #include "vehiclecontext/VehicleRuntimeControl.h"
-
 #include "vehiclecontext/model/SimplifiedBicycleModel.h"
 
 namespace vehiclecontext {

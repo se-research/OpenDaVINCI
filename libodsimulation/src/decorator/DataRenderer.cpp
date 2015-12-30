@@ -18,20 +18,35 @@
  */
 
 #include <fstream>
-#include <istream>
+#include <iostream>
+#include <map>
+#include <string>
+#include <vector>
 
+#include "core/platform.h"
 #include "core/SharedPointer.h"
 #include "core/base/Lock.h"
-
+#include "core/data/Container.h"
+#include "core/macros.h"
+#include "hesperia/data/environment/EgoState.h"
+#include "hesperia/data/environment/Obstacle.h"
+#include "hesperia/data/environment/OtherVehicleState.h"
 #include "hesperia/data/environment/Point3.h"
+#include "hesperia/data/environment/Polygon.h"
+#include "hesperia/data/planning/Route.h"
 #include "hesperia/data/sensor/ContouredObject.h"
-
+#include "hesperia/data/sensor/ContouredObjects.h"
+#include "hesperia/data/situation/ComplexModel.h"
 #include "hesperia/data/situation/Object.h"
+#include "hesperia/data/situation/Shape.h"
 #include "hesperia/data/situation/Situation.h"
-
+#include "hesperia/data/situation/Vertex3.h"
 #include "hesperia/decorator/DataRenderer.h"
+#include "hesperia/decorator/Renderer.h"
 #include "hesperia/decorator/models/OBJXArchive.h"
 #include "hesperia/decorator/models/OBJXArchiveFactory.h"
+#include "hesperia/decorator/models/TriangleSet.h"
+#include "hesperia/scenario/SCNXArchive.h"
 
 namespace hesperia {
     namespace decorator {

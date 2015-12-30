@@ -19,13 +19,15 @@
 
 #include <cmath>
 #include <sstream>
+#include <string>
 
-#include "core/base/Hash.h"
+#include "core/SharedPointer.h"
 #include "core/base/Deserializer.h"
+#include "core/base/Hash.h"
 #include "core/base/SerializationFactory.h"
 #include "core/base/Serializer.h"
-
 #include "hesperia/data/environment/Line.h"
+#include "hesperia/data/environment/Point3.h"
 
 namespace hesperia {
     namespace data {

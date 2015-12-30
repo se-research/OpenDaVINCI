@@ -19,19 +19,26 @@
 
 #include <cmath>
 #include <cstdlib>
-#include <iomanip>
 #include <iostream>
-#include <sstream>
+#include <string>
 
-#include "GeneratedHeaders_AutomotiveData.h"
 #include "core/wrapper/Eigen.h"
+
+#include "core/platform.h"
+#include "core/base/KeyValueConfiguration.h"
+#include "core/data/Container.h"
+#include "core/data/TimeStamp.h"
 #include "core/wrapper/Time.h"
-#include "core/exceptions/Exceptions.h"
 #include "context/base/SendContainerToSystemsUnderTest.h"
-
+#include "generated/automotive/VehicleControl.h"
+#include "generated/automotive/VehicleData.h"
+#include "generated/cartesian/Constants.h"
+#include "generated/cartesian/Point2.h"
 #include "hesperia/data/environment/EgoState.h"
-
+#include "hesperia/data/environment/Point3.h"
 #include "vehiclecontext/model/SimplifiedBicycleModel.h"
+
+namespace core { namespace exceptions { class ValueForKeyNotFoundException; } }
 
 namespace vehiclecontext {
     namespace model {

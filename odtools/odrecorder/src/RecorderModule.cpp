@@ -22,6 +22,7 @@
 #include "RecorderModule.h"
 #include "core/base/Thread.h"
 #include "tools/recorder/Recorder.h"
+#include "tools/recorder/SharedDataListener.h"
 #include "generated/coredata/recorder/RecorderCommand.h"
 
 namespace core { namespace base { class KeyValueDataStore; } }
@@ -69,8 +70,8 @@ namespace odrecorder {
         addDataStoreFor(r.getFIFO());
 
         // Connect recorder's data store that can handle shared data.
-        addDataStoreFor(Container::SHARED_DATA, reinterpret_cast<core::base::AbstractDataStore &>(r.getDataStoreForSharedData()));
-        addDataStoreFor(Container::SHARED_IMAGE, reinterpret_cast<core::base::AbstractDataStore &>(r.getDataStoreForSharedData()));
+        addDataStoreFor(Container::SHARED_DATA, r.getDataStoreForSharedData());
+        addDataStoreFor(Container::SHARED_IMAGE, r.getDataStoreForSharedData());
 
         // Get key/value-datastore for controlling the odrecorder.
         KeyValueDataStore &kvds = getKeyValueDataStore();

@@ -19,16 +19,19 @@
 
 #include <iostream>
 
-#include "core/macros.h"
 #include "core/base/Lock.h"
-
+#include "core/base/Mutex.h"
+#include "hesperia/data/scenario/Scenario.h"
 #include "hesperia/scenario/GroundBasedComplexModelLoader.h"
+#include "hesperia/scenario/SCNXArchive.h"
 #include "hesperia/scenario/ScenarioOpenGLSceneTransformation.h"
+#include "hesperia/threeD/models/AerialImage.h"
 #include "hesperia/threeD/NodeDescriptor.h"
 #include "hesperia/threeD/TransformGroup.h"
 #include "hesperia/threeD/decorator/DecoratorFactory.h"
-#include "hesperia/threeD/models/AerialImage.h"
-#include "hesperia/threeD/models/HeightGrid.h"
+
+namespace hesperia { namespace threeD { class Node; } }
+namespace hesperia { namespace threeD { namespace loaders { class OBJXArchive; } } }
 
 namespace hesperia {
     namespace threeD {

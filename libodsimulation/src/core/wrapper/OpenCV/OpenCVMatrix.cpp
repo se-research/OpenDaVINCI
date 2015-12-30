@@ -18,7 +18,6 @@
  */
 
 #include <cstdio>
-#include <iostream>
 
 #include "core/wrapper/OpenCV/OpenCVMatrix.h"
 
