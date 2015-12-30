@@ -24,16 +24,15 @@
 #include "hesperia/scenegraph/SceneNode.h"
 #include "hesperia/scenegraph/renderer/RenderingConfiguration.h"
 #include "hesperia/scenegraph/renderer/SceneNodeRenderingConfiguration.h"
+#include "hesperia/threeD/Node.h"
+#include "hesperia/threeD/NodeRenderingConfiguration.h"
+#include "hesperia/threeD/RenderingConfiguration.h"
 #include "plugins/environmentviewer/SelectableNodeDescriptor.h"
 #include "plugins/environmentviewer/TreeNodeVisitor.h"
-
-namespace hesperia { namespace threeD { class Node; } }
 
 namespace cockpit {
     namespace plugins {
         namespace environmentviewer {
-
-class SelectableNodeDescriptor;
 
             using namespace std;
             using namespace core::base;

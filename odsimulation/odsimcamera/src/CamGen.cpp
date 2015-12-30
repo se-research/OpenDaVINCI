@@ -30,6 +30,7 @@
 #include "core/base/KeyValueConfiguration.h"
 #include "core/data/Container.h"
 #include "core/macros.h"
+#include "core/wrapper/Image.h"
 #include "hesperia/data/camera/ImageGrabberCalibration.h"
 #include "hesperia/data/camera/ImageGrabberID.h"
 #include "hesperia/data/environment/Point3.h"

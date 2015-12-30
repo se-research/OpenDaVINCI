@@ -23,6 +23,9 @@
 #include "hesperia/scenegraph/SceneNode.h"
 #include "hesperia/scenegraph/renderer/RenderingConfiguration.h"
 #include "hesperia/scenegraph/renderer/SceneNodeRenderingConfiguration.h"
+#include "hesperia/threeD/Node.h"
+#include "hesperia/threeD/NodeRenderingConfiguration.h"
+#include "hesperia/threeD/RenderingConfiguration.h"
 #include "plugins/birdseyemap/SelectableNodeDescriptor.h"
 #include "plugins/birdseyemap/TreeNodeVisitor.h"
 

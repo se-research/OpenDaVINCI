@@ -23,12 +23,12 @@
 #include "core/platform.h"
 #include "hesperia/scenegraph/renderer/RenderingConfiguration.h"
 #include "hesperia/scenegraph/renderer/SceneNodeRenderingConfiguration.h"
+#include "hesperia/scenegraph/primitives/Line.h"
+#include "hesperia/scenegraph/primitives/Point.h"
+#include "hesperia/scenegraph/primitives/Polygon.h"
 #include "plugins/birdseyemap/BirdsEyeMapRenderer.h"
 
 class QPainter;
-namespace hesperia { namespace scenegraph { namespace primitives { class Line; } } }
-namespace hesperia { namespace scenegraph { namespace primitives { class Point; } } }
-namespace hesperia { namespace scenegraph { namespace primitives { class Polygon; } } }
 
 namespace cockpit {
     namespace plugins {
