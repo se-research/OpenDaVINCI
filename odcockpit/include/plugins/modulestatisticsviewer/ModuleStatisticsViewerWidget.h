@@ -21,22 +21,8 @@
 #ifndef COCKPIT_PLUGINS_MODULESTATISTICSVIEWER_MODULESTATISTICSVIEWERWIDGET_H_
 #define COCKPIT_PLUGINS_MODULESTATISTICSVIEWER_MODULESTATISTICSVIEWERWIDGET_H_
 
-#if defined __GNUC__
-#pragma GCC system_header
-#elif defined __SUNPRO_CC
-#pragma disable_warn
-#elif defined _MSC_VER
-#pragma warning(push, 1)
-#endif
-
 #include <qobjectdefs.h>
 #include <qwidget.h>
-
-#if defined __SUNPRO_CC
-#pragma enable_warn
-#elif defined _MSC_VER
-#pragma warning(pop)
-#endif
 
 #include <deque>
 #include <map>

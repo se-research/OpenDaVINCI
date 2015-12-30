@@ -18,11 +18,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "FIFOMultiplexer.h"
 #include "core/base/DataStoreManager.h"
 #include "core/base/Lock.h"
 #include "core/data/Container.h"
 #include "core/io/conference/ContainerListener.h"
+
+#include "FIFOMultiplexer.h"
 
 namespace cockpit {
 

@@ -23,7 +23,6 @@
 
 #include <deque>
 
-
 #if defined __GNUC__
 #pragma GCC system_header
 #elif defined __SUNPRO_CC
@@ -31,9 +30,7 @@
 #elif defined _MSC_VER
 #pragma warning(push, 1)
 #endif
-
-#include "qwt_data.h"
-
+    #include "qwt_data.h"
 #if defined __SUNPRO_CC
 #pragma enable_warn
 #elif defined _MSC_VER

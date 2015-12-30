@@ -18,13 +18,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// The following compiler switches are added to ignore -Weffc++ warnings in serial/serial.h.
-#ifndef WIN32
-# if !defined(__OpenBSD__) && !defined(__NetBSD__)
-#  pragma GCC diagnostic push
-# endif
-# pragma GCC diagnostic ignored "-Weffc++"
-#endif
 #include <Qt/qfiledialog.h>
 #include <Qt/qlabel.h>
 #include <Qt/qpushbutton.h>
@@ -33,9 +26,16 @@
 #include <qboxlayout.h>
 #include <qframe.h>
 #include <qnamespace.h>
-#include "qwt_plot.h"
-#include "qwt_plot_curve.h"
-#include "qwt_plot_item.h"
+
+#ifndef WIN32
+# if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#  pragma GCC diagnostic push
+# endif
+# pragma GCC diagnostic ignored "-Weffc++"
+#endif
+    #include "qwt_plot.h"
+    #include "qwt_plot_curve.h"
+    #include "qwt_plot_item.h"
 #ifndef WIN32
 # if !defined(__OpenBSD__) && !defined(__NetBSD__)
 #  pragma GCC diagnostic pop

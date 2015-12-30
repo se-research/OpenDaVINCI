@@ -25,8 +25,6 @@ namespace core { namespace io { namespace conference { class ContainerListener; 
 
 namespace cockpit {
 
-    using namespace std;
-
     /**
      * This interface manages multiple ContainerListeners.
      */

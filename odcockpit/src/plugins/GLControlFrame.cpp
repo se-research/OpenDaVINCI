@@ -21,7 +21,19 @@
 #include <Qt/qgridlayout.h>
 #include <Qt/qpushbutton.h>
 #include <qnamespace.h>
-#include "qwt_wheel.h"
+
+#ifndef WIN32
+# if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#  pragma GCC diagnostic push
+# endif
+# pragma GCC diagnostic ignored "-Weffc++"
+#endif
+    #include "qwt_wheel.h"
+#ifndef WIN32
+# if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#  pragma GCC diagnostic pop
+# endif
+#endif
 
 #include "core/platform.h"
 #include "generated/cartesian/Constants.h"

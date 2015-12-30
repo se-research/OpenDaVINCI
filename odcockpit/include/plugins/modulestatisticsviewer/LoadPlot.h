@@ -21,6 +21,8 @@
 #ifndef LOADPLOT_H_
 #define LOADPLOT_H_
 
+#include <qobjectdefs.h>
+
 #if defined __GNUC__
 #pragma GCC system_header
 #elif defined __SUNPRO_CC
@@ -28,10 +30,7 @@
 #elif defined _MSC_VER
 #pragma warning(push, 1)
 #endif
-
-#include <qobjectdefs.h>
-#include "qwt_plot.h"
-
+    #include "qwt_plot.h"
 #if defined __SUNPRO_CC
 #pragma enable_warn
 #elif defined _MSC_VER

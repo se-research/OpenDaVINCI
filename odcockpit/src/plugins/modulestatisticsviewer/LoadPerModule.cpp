@@ -18,15 +18,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <qpen.h>
+
 #ifndef WIN32
 # if !defined(__OpenBSD__) && !defined(__NetBSD__)
 #  pragma GCC diagnostic push
 # endif
 # pragma GCC diagnostic ignored "-Weffc++"
 #endif
-#include <qpen.h>
-#include "qwt_plot_curve.h"
-#include "qwt_plot_item.h"
+    #include "qwt_plot_curve.h"
+    #include "qwt_plot_item.h"
 #ifndef WIN32
 # if !defined(__OpenBSD__) && !defined(__NetBSD__)
 #  pragma GCC diagnostic pop
