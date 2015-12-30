@@ -18,10 +18,7 @@
  */
 
 #include <cstdlib>
-<<<<<<< HEAD
 #include <cstring>
-=======
->>>>>>> master
 #include <iostream>
 #include <sstream>
 

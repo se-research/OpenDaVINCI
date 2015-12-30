@@ -78,7 +78,7 @@ namespace odsplit {
 
         const int32_t MINIMUM_MEMORY_SEGMENT_SIZE = 640*480*1;
         if (m_memorySegmentSize < MINIMUM_MEMORY_SEGMENT_SIZE) {
-            cerr << "[Split] Specified memorySegmentSize is too small, using " << MINIMUM_MEMORY_SEGMENT_SIZE << " bytes." << endl;
+            cerr << "[odsplit] Specified memorySegmentSize is too small, using " << MINIMUM_MEMORY_SEGMENT_SIZE << " bytes." << endl;
             m_memorySegmentSize = MINIMUM_MEMORY_SEGMENT_SIZE;
         }
     }
