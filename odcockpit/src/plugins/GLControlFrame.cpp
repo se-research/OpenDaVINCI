@@ -28,7 +28,7 @@
 # endif
 # pragma GCC diagnostic ignored "-Weffc++"
 #endif
-    #include "qwt_wheel.h"
+    #include <qwt-qt4/qwt_wheel.h>
 #ifndef WIN32
 # if !defined(__OpenBSD__) && !defined(__NetBSD__)
 #  pragma GCC diagnostic pop

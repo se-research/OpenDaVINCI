@@ -30,7 +30,7 @@
 #elif defined _MSC_VER
 #pragma warning(push, 1)
 #endif
-    #include "qwt_plot.h"
+    #include <qwt-qt4/qwt_plot.h>
 #if defined __SUNPRO_CC
 #pragma enable_warn
 #elif defined _MSC_VER
