@@ -21,8 +21,7 @@
 #include <iostream>
 
 #include "ForceControlBehaviourSimplifiedBicycleModel.h"
-
-#include "GeneratedHeaders_AutomotiveData.h"
+#include "generated/cartesian/Constants.h"
 
 namespace egocontroller {
     using namespace core::base;

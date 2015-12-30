@@ -20,7 +20,10 @@
 #ifndef VEHICLE_H_
 #define VEHICLE_H_
 
+#include <stdint.h>
+
 #include "core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
 namespace vehicle {
 

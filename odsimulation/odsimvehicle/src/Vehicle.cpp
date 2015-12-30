@@ -18,20 +18,13 @@
  */
 
 #include <iostream>
+#include <string>
 
-#include "core/macros.h"
-#include "core/base/KeyValueConfiguration.h"
-#include "core/base/Thread.h"
-#include "core/data/Container.h"
-
-#include "hesperia/data/environment/EgoState.h"
-#include "hesperia/data/environment/Point3.h"
-#include "GeneratedHeaders_AutomotiveData.h"
-#include "GeneratedHeaders_CoreData.h"
-
-#include "Vehicle.h"
 #include "LinearBicycleModel.h"
 #include "LinearBicycleModelNew.h"
+#include "Vehicle.h"
+
+namespace core { namespace base { class KeyValueDataStore; } }
 
 namespace vehicle {
 

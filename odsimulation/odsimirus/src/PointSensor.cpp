@@ -19,10 +19,10 @@
 
 #include <cmath>
 #include <sstream>
-
-#include "GeneratedHeaders_AutomotiveData.h"
+#include <vector>
 
 #include "PointSensor.h"
+#include "generated/cartesian/Constants.h"
 
 namespace irus {
 

@@ -17,14 +17,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <iostream>
-
-#include "JoystickController.h"
 
 #if !defined(WIN32) && !defined(__gnu_hurd__)
 #include <cstdlib>
 #include <fcntl.h>
 #include <sys/ioctl.h>
+#include <linux/joystick.h>
+#endif
+
+#include <iostream>
+
+#include "ControlBehaviour.h"
+#include "JoystickController.h"
+
+#if !defined(WIN32) && !defined(__gnu_hurd__)
+#include <fcntl.h>
+#include <sys/ioctl.h>
+#include <cstdlib>
 #include <linux/joystick.h>
 #endif
 

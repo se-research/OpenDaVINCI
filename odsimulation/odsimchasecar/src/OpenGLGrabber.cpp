@@ -17,36 +17,40 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <cmath>
-#include <cstdlib>
-#include <fstream>
-
 #include <GL/gl.h>
 #include <GL/glut.h>
 
+#include <cstdlib>
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <vector>
+
+#include "OpenGLGrabber.h"
+#include "core/base/FIFOQueue.h"
 #include "core/base/Thread.h"
+#include "core/data/Container.h"
 #include "core/io/URL.h"
 #include "core/wrapper/ImageFactory.h"
 #include "core/wrapper/SharedMemoryFactory.h"
-#include "core/data/Container.h"
-
-#include "GeneratedHeaders_AutomotiveData.h"
+#include "hesperia/data/environment/EgoState.h"
 #include "hesperia/data/environment/Obstacle.h"
 #include "hesperia/data/environment/Point3.h"
-#include "hesperia/scenario/GroundBasedComplexModelLoader.h"
-#include "hesperia/scenario/SCNXArchive.h"
+#include "hesperia/data/environment/Polygon.h"
+#include "hesperia/data/environment/Position.h"
 #include "hesperia/scenario/SCNXArchiveFactory.h"
 #include "hesperia/threeD/NodeDescriptor.h"
 #include "hesperia/threeD/RenderingConfiguration.h"
 #include "hesperia/threeD/decorator/DecoratorFactory.h"
-#include "hesperia/threeD/models/CheckerBoard.h"
-#include "hesperia/threeD/models/Grid.h"
-#include "hesperia/threeD/models/XYZAxes.h"
-#include "hesperia/threeD/models/Line.h"
 #include "hesperia/threeD/loaders/OBJXArchive.h"
 #include "hesperia/threeD/loaders/OBJXArchiveFactory.h"
+#include "hesperia/threeD/models/Grid.h"
+#include "hesperia/threeD/models/Line.h"
+#include "hesperia/threeD/models/XYZAxes.h"
 
-#include "OpenGLGrabber.h"
+namespace hesperia { namespace data { namespace camera { class ImageGrabberCalibration; } } }
+namespace hesperia { namespace scenario { class SCNXArchive; } }
+namespace hesperia { namespace threeD { class Node; } }
 
 namespace chasecar {
 

@@ -17,8 +17,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "KeyBoardController.h"
-
 #include <termios.h>
 #include <unistd.h>
 #include <sys/select.h>
@@ -26,6 +24,9 @@
 
 #include <cstdio>
 #include <iostream>
+
+#include "ControlBehaviour.h"
+#include "KeyBoardController.h"
 
 namespace egocontroller {
 

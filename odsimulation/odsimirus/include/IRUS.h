@@ -20,15 +20,19 @@
 #ifndef IRUS_H_
 #define IRUS_H_
 
+#include <stdint.h>
+#include <sys/types.h>
 #include <map>
+#include <string>
 #include <vector>
 
 #include "core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
 #include "hesperia/data/environment/Polygon.h"
 
-#include "PointSensor.h"
-
 namespace irus {
+
+class PointSensor;
 
     using namespace std;
 
