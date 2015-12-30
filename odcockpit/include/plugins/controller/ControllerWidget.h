@@ -21,10 +21,6 @@
 #ifndef CONTROLLERWIDGET_H_
 #define CONTROLLERWIDGET_H_
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
-
 #include "core/base/KeyValueConfiguration.h"
 #include "core/base/Mutex.h"
 #include "core/data/Container.h"

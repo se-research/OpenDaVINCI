@@ -21,10 +21,6 @@
 #ifndef COCKPIT_PLUGINS_SHAREDIMAGEVIEWER_SHAREDIMAGEVIEWERPLUGIN_H_
 #define COCKPIT_PLUGINS_SHAREDIMAGEVIEWER_SHAREDIMAGEVIEWERPLUGIN_H_
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
-
 #include "core/base/KeyValueConfiguration.h"
 
 #include "plugins/PlugIn.h"

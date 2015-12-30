@@ -21,10 +21,6 @@
 #ifndef COCKPIT_PLUGINS_IRUSCHARTS_IRUSCHARTSPLUGIN_H_
 #define COCKPIT_PLUGINS_IRUSCHARTS_IRUSCHARTSPLUGIN_H_
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
-
 #include "plugins/PlugIn.h"
 #include "plugins/iruscharts/IrUsChartsWidget.h"
 

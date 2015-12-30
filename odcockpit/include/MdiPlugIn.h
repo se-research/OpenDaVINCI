@@ -21,10 +21,6 @@
 #ifndef MDIPLUGIN_H_
 #define MDIPLUGIN_H_
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
-
 #include "QtIncludes.h"
 
 #include "plugins/PlugIn.h"
