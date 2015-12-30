@@ -25,6 +25,7 @@
 
 #include "core/SharedPointer.h"
 #include "core/base/Lock.h"
+#include "core/data/TimeStamp.h"
 #include "core/wrapper/SharedMemory.h"
 #include "core/wrapper/SharedMemoryFactory.h"
 #include "core/wrapper/jpg/JPG.h"
@@ -39,6 +40,7 @@ namespace odredirector {
     using namespace std;
     using namespace core;
     using namespace core::base;
+    using namespace core::data;
 
     StdoutPump::StdoutPump(const int32_t &jpegQuality) :
         m_jpegQuality(jpegQuality) {}
@@ -73,6 +75,8 @@ namespace odredirector {
 
                     // Write the CompressedImage container to STDOUT.
                     core::data::Container c(core::data::Container::COMPRESSED_IMAGE, ci);
+                    c.setSentTimeStamp(container.getSentTimeStamp());
+                    c.setReceivedTimeStamp(container.getReceivedTimeStamp());
                     std::cout << c;
                 }
                 if (compressedSize >= MAX_SIZE_UDP_PAYLOAD) {

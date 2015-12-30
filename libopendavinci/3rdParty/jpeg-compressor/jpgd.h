@@ -3,8 +3,8 @@
 #ifndef JPEG_DECODER_H
 #define JPEG_DECODER_H
 
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cstdio>
 #include <setjmp.h>
 
 #ifdef _MSC_VER

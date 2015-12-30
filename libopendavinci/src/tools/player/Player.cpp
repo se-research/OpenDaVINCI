@@ -202,6 +202,8 @@ namespace tools {
 
                     // Distribute the SharedImage information in the UDP multicast session.
                     retVal = Container(Container::SHARED_IMAGE, si);
+                    retVal.setSentTimeStamp(m_actual.getSentTimeStamp());
+                    retVal.setReceivedTimeStamp(m_actual.getReceivedTimeStamp());
                 }
 
                 OPENDAVINCI_CORE_FREE_POINTER(imageData);

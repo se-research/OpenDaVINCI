@@ -243,12 +243,14 @@ SET (jpegcompressor-sources
     ${jpegcompressor_SOURCE_DIR}/jpge.cpp
 )
 # Set compile flags for jpeg-compressor sources.
-SET(JPEG_COMPILE_FLAGS "-Wno-effc++ -Wno-error -Wno-sign-compare -Wno-unused-parameter -Wno-shadow")
-IF (GCC_VERSION VERSION_GREATER 4.7 OR GCC_VERSION VERSION_EQUAL 4.7)
-    SET(JPEG_COMPILE_FLAGS "${JPEG_COMPILE_FLAGS} -Wno-unused-but-set-variable -Wno-suggest-attribute=format")
+IF(UNIX)
+    SET(JPEG_COMPILE_FLAGS "-Wno-effc++ -Wno-error -Wno-sign-compare -Wno-unused-parameter -Wno-shadow")
+    IF (GCC_VERSION VERSION_GREATER 4.7 OR GCC_VERSION VERSION_EQUAL 4.7)
+        SET(JPEG_COMPILE_FLAGS "${JPEG_COMPILE_FLAGS} -Wno-unused-but-set-variable -Wno-suggest-attribute=format")
+    ENDIF()
+    SET_SOURCE_FILES_PROPERTIES(${jpegcompressor_SOURCE_DIR}/jpgd.cpp PROPERTIES COMPILE_FLAGS "${JPEG_COMPILE_FLAGS}")
+    SET_SOURCE_FILES_PROPERTIES(${jpegcompressor_SOURCE_DIR}/jpge.cpp PROPERTIES COMPILE_FLAGS "${JPEG_COMPILE_FLAGS}")
 ENDIF()
-SET_SOURCE_FILES_PROPERTIES(${jpegcompressor_SOURCE_DIR}/jpgd.cpp PROPERTIES COMPILE_FLAGS "${JPEG_COMPILE_FLAGS}")
-SET_SOURCE_FILES_PROPERTIES(${jpegcompressor_SOURCE_DIR}/jpge.cpp PROPERTIES COMPILE_FLAGS "${JPEG_COMPILE_FLAGS}")
 
 ###############################################################################
 # Set header files for coredata files generated from CoreData.odvd.

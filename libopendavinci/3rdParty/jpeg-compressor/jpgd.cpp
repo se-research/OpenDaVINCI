@@ -10,9 +10,9 @@
 // http://vision.ai.uiuc.edu/~dugad/research/dct/index.html
 
 #include "jpgd.h"
-#include <string.h>
+#include <cstring>
 
-#include <assert.h>
+#include <cassert>
 #define JPGD_ASSERT(x) assert(x)
 
 #ifdef _MSC_VER
