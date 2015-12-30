@@ -18,12 +18,18 @@
  */
 
 #include <fcntl.h>
+
 #include <iostream>
 
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "core/data/TimeStamp.h"
+#include "core/macros.h"
+#include "core/platform.h"
+#include "core/base/module/AbstractCIDModule.h"
+
+#include "generated/automotive/GenericCANMessage.h"
 
 #include "CANDevice.h"
+#include "GenericCANMessageListener.h"
+#include "MessageToCANDataStore.h"
 
 namespace automotive {
     namespace odcantools {

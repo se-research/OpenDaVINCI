@@ -19,12 +19,13 @@
  */
 
 #include <iostream>
-
-#include "core/base/Thread.h"
-#include "core/data/Container.h"
-#include "core/data/TimeStamp.h"
+#include <vector>
 
 #include "CanMapper.h"
+#include "core/base/Thread.h"
+#include "core/base/module/DataTriggeredConferenceClientModule.h"
+#include "core/data/Container.h"
+#include "generated/automotive/GenericCANMessage.h"
 
 namespace automotive {
     namespace odcantools {
