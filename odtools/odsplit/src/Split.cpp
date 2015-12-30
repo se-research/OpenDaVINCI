@@ -20,27 +20,16 @@
 #include <iostream>
 #include <vector>
 
+#include "Split.h"
+#include "core/base/CommandLineArgument.h"
 #include "core/base/CommandLineParser.h"
 #include "core/strings/StringToolbox.h"
-#include "core/data/Container.h"
-#include "core/io/URL.h"
-
-#include "GeneratedHeaders_CoreData.h"
-
-#include "tools/player/Player.h"
-#include "tools/recorder/Recorder.h"
 #include "tools/splitter/Splitter.h"
-
-#include "Split.h"
 
 namespace odsplit {
 
     using namespace std;
     using namespace core::base;
-    using namespace core::data;
-    using namespace core::io;
-    using namespace tools::player;
-    using namespace tools::recorder;
     using namespace tools::splitter;
 
     Split::Split() :
@@ -78,7 +67,7 @@ namespace odsplit {
 
         const int32_t MINIMUM_MEMORY_SEGMENT_SIZE = 640*480*1;
         if (m_memorySegmentSize < MINIMUM_MEMORY_SEGMENT_SIZE) {
-            cerr << "[Split] Specified memorySegmentSize is too small, using " << MINIMUM_MEMORY_SEGMENT_SIZE << " bytes." << endl;
+            cerr << "[odsplit] Specified memorySegmentSize is too small, using " << MINIMUM_MEMORY_SEGMENT_SIZE << " bytes." << endl;
             m_memorySegmentSize = MINIMUM_MEMORY_SEGMENT_SIZE;
         }
     }

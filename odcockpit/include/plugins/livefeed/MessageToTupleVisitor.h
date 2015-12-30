@@ -21,10 +21,13 @@
 #ifndef COCKPIT_PLUGINS_MESSAGETOTUPLEVISITOR_H_
 #define COCKPIT_PLUGINS_MESSAGETOTUPLEVISITOR_H_
 
-#include <map>
 #include <string>
+#include <vector>
 
+#include "core/platform.h"
 #include "core/base/Visitor.h"
+
+namespace core { namespace base { class Serializable; } }
 
 namespace cockpit {
 

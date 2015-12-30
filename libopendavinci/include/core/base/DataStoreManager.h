@@ -20,15 +20,13 @@
 #ifndef OPENDAVINCI_BASE_DATASTOREMANAGER_H_
 #define OPENDAVINCI_BASE_DATASTOREMANAGER_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
-
-#include "core/base/AbstractDataStore.h"
-#include "core/base/KeyValueDataStore.h"
 #include "core/data/Container.h"
 
 namespace core {
     namespace base {
+
+class AbstractDataStore;
+class KeyValueDataStore;
 
         using namespace std;
 

@@ -20,9 +20,6 @@
 #ifndef HESPERIA_SCENEGRAPH_PRIMITIVES_LINE_H_
 #define HESPERIA_SCENEGRAPH_PRIMITIVES_LINE_H_
 
-// native.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/native.h"
-
 #include "hesperia/data/environment/Point3.h"
 #include "hesperia/scenegraph/SceneNode.h"
 #include "hesperia/scenegraph/SceneNodeDescriptor.h"

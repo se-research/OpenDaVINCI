@@ -20,6 +20,7 @@
 #include <ctype.h>
 #include <cstring>
 #include <cmath>
+#include <iostream>
 
 #include "core/base/KeyValueConfiguration.h"
 #include "core/data/Container.h"

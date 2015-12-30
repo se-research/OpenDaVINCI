@@ -17,24 +17,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <sstream>
+#include <vector>
 
-#include "GeneratedHeaders_AutomotiveData.h"
-#include "hesperia/data/environment/Point3.h"
-#include "hesperia/data/scenario/IDVertex3.h"
-#include "hesperia/data/graph/WaypointsEdge.h"
-#include "hesperia/data/graph/WaypointVertex.h"
-#include "hesperia/data/planning/Route.h"
+#include "core/wrapper/parser/ASTNode.h"
+#include "hesperia/data/environment/NamedLine.h"
+#include "hesperia/data/scenario/Arc.h"
 #include "hesperia/data/scenario/Connector.h"
-#include "hesperia/data/scenario/Scenario.h"
-#include "hesperia/data/scenario/Layer.h"
-#include "hesperia/data/scenario/PointID.h"
-#include "hesperia/data/scenario/Road.h"
 #include "hesperia/data/scenario/Lane.h"
-#include "hesperia/data/scenario/IDVertex3.h"
 #include "hesperia/data/scenario/LaneModel.h"
+#include "hesperia/data/scenario/PointModel.h"
+#include "hesperia/data/scenario/Scenario.h"
+#include "hesperia/data/scenario/ScenarioNode.h"
+#include "hesperia/data/scenario/StraightLine.h"
 #include "hesperia/scenario/FindNodeByPointIDVisitor.h"
 #include "hesperia/scenario/LaneVisitor.h"
+#include "hesperia/data/graph/WaypointsEdge.h"
+#include "hesperia/data/graph/WaypointVertex.h"
+
+namespace core { namespace wrapper { namespace graph { class DirectedGraph; } } }
 
 namespace hesperia {
     namespace scenario {

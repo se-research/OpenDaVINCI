@@ -18,9 +18,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <Qt/qgridlayout.h>
+#include <Qt/qtextedit.h>
+#include <qfont.h>
+#include <qstring.h>
+
 #include <sstream>
 
+#include "core/platform.h"
+#include "core/base/KeyValueConfiguration.h"
+#include "core/macros.h"
 #include "plugins/configurationviewer/ConfigurationViewerWidget.h"
+
+namespace cockpit { namespace plugins { class PlugIn; } }
 
 namespace cockpit {
 

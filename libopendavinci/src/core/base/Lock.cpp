@@ -18,6 +18,7 @@
  */
 
 #include "core/base/Lock.h"
+#include "core/base/Mutex.h"
 
 namespace core {
     namespace base {

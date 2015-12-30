@@ -18,6 +18,6 @@
 SET(CMAKE_SYSTEM_NAME Linux)
 
 # Specify the cross compiler.
-SET(CMAKE_C_COMPILER clang-3.6)
-SET(CMAKE_CXX_COMPILER clang++-3.6)
+SET(CMAKE_C_COMPILER clang)
+SET(CMAKE_CXX_COMPILER clang++)
 

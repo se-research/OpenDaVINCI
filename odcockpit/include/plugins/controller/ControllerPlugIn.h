@@ -21,14 +21,21 @@
 #ifndef CONTROLLER_H_
 #define CONTROLLER_H_
 
+#include <string>
+
 #include "plugins/ControlPlugIn.h"
-#include "plugins/controller/ControllerWidget.h"
+
+class QWidget;
+namespace core { namespace base { class KeyValueConfiguration; } }
+namespace core { namespace io { namespace conference { class ContainerConference; } } }
 
 namespace cockpit {
 
     namespace plugins {
 
         namespace controller {
+
+class ControllerWidget;
 
           class ControllerPlugIn : public ControlPlugIn {
             private:

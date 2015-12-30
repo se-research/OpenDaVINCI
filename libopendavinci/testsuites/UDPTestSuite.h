@@ -20,24 +20,24 @@
 #ifndef CORE_WRAPPER_UDPTESTSUITE_H_
 #define CORE_WRAPPER_UDPTESTSUITE_H_
 
-#include "cxxtest/TestSuite.h"
+#include <iostream>                     // for endl, operator<<, etc
+#include <string>                       // for string
+
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
+
 #include "core/platform.h"
-#include "core/SharedPointer.h"
-
-#include "core/io/udp/UDPSender.h"
-#include "core/io/udp/UDPReceiver.h"
-#include "core/wrapper/NetworkLibraryProducts.h"
-#include "core/wrapper/UDPFactoryWorker.h"
-
-#include "core/io/StringListener.h"
+#include "core/SharedPointer.h"         // for SharedPointer
 #include "mocks/StringListenerMock.h"
+
+namespace core { namespace io { namespace udp { class UDPReceiver; } } }
+namespace core { namespace io { namespace udp { class UDPSender; } } }
 
 using namespace std;
 
 #ifndef WIN32
     #include "core/wrapper/POSIX/POSIXUDPFactoryWorker.h"
-	#include "core/wrapper/POSIX/POSIXUDPReceiver.h"
-	#include "core/wrapper/POSIX/POSIXUDPSender.h"
+    #include "core/wrapper/POSIX/POSIXUDPReceiver.h"
+    #include "core/wrapper/POSIX/POSIXUDPSender.h"
 
     struct UDPTestPOSIX
     {
@@ -74,8 +74,8 @@ using namespace std;
 
 #ifdef WIN32
     #include "core/wrapper/WIN32/WIN32UDPFactoryWorker.h"
-	#include "core/wrapper/WIN32/WIN32UDPReceiver.h"
-	#include "core/wrapper/WIN32/WIN32UDPSender.h"
+    #include "core/wrapper/WIN32/WIN32UDPReceiver.h"
+    #include "core/wrapper/WIN32/WIN32UDPSender.h"
 
     struct UDPTestWin32
     {

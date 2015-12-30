@@ -17,12 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <iostream>
+
 #include "core/wrapper/CompressionFactory.h"
-#include "core/wrapper/CompressionFactoryWorker.h"
-#include "core/wrapper/Libraries.h"
 #include "core/wrapper/CompressionLibraryProducts.h"
 #include "core/wrapper/ConfigurationTraits.h"
-
+#include "core/wrapper/Libraries.h"
+#include "core/wrapper/DecompressedData.h"
 #include "core/wrapper/Zip/ZipCompressionFactoryWorker.h"
 
 namespace core {

@@ -18,42 +18,50 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <iostream>
+#include <GL/gl.h>
+#include <GL/glu.h>
+
 #include <fstream>
+#include <iostream>
+#include <string>
 #include <vector>
 
-#include "core/macros.h"
+#include "core/platform.h"
+#include "core/base/KeyValueConfiguration.h"
 #include "core/base/Lock.h"
-#include "core/base/Thread.h"
+#include "core/base/TreeNode.h"
 #include "core/data/Container.h"
 #include "core/exceptions/Exceptions.h"
 #include "core/io/URL.h"
-
-#include "GeneratedHeaders_AutomotiveData.h"
-#include "hesperia/data/environment/Point3.h"
+#include "core/macros.h"
+#include "hesperia/data/environment/EgoState.h"
 #include "hesperia/data/environment/Line.h"
 #include "hesperia/data/environment/Obstacle.h"
-#include "hesperia/data/environment/EgoState.h"
+#include "hesperia/data/environment/Point3.h"
+#include "hesperia/data/environment/Polygon.h"
 #include "hesperia/data/planning/Route.h"
 #include "hesperia/data/sensor/ContouredObject.h"
 #include "hesperia/data/sensor/ContouredObjects.h"
-#include "hesperia/data/scenario/Layer.h"
-#include "hesperia/data/scenario/Scenario.h"
-#include "hesperia/scenario/SCNXArchive.h"
 #include "hesperia/scenario/SCNXArchiveFactory.h"
-#include "hesperia/threeD/loaders/OBJXArchive.h"
-#include "hesperia/threeD/loaders/OBJXArchiveFactory.h"
-#include "hesperia/threeD/Camera.h"
+#include "hesperia/threeD/Node.h"
 #include "hesperia/threeD/NodeDescriptor.h"
+#include "hesperia/threeD/NodeRenderingConfiguration.h"
 #include "hesperia/threeD/TransformGroup.h"
 #include "hesperia/threeD/decorator/DecoratorFactory.h"
+#include "hesperia/threeD/loaders/OBJXArchive.h"
+#include "hesperia/threeD/loaders/OBJXArchiveFactory.h"
 #include "hesperia/threeD/models/Grid.h"
-#include "hesperia/threeD/models/Point.h"
 #include "hesperia/threeD/models/Line.h"
+#include "hesperia/threeD/models/Point.h"
 #include "hesperia/threeD/models/XYZAxes.h"
-
+#include "plugins/PlugIn.h"
+#include "plugins/environmentviewer/CameraAssignableNodesListener.h"
 #include "plugins/environmentviewer/EnvironmentViewerGLWidget.h"
+#include "plugins/environmentviewer/SelectableNodeDescriptor.h"
 #include "plugins/environmentviewer/TreeNodeVisitor.h"
+
+class QWidget;
+namespace hesperia { namespace scenario { class SCNXArchive; } }
 
 namespace cockpit {
     namespace plugins {

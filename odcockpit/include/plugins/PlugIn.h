@@ -23,12 +23,11 @@
 
 #include <string>
 
-#include "QtIncludes.h"
-
 #include "core/base/KeyValueConfiguration.h"
 #include "core/base/Mutex.h"
 
-#include "ContainerObserver.h"
+class QWidget;
+namespace cockpit { class ContainerObserver; }
 
 namespace cockpit {
 

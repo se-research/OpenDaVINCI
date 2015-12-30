@@ -26,8 +26,6 @@ namespace hesperia {
     namespace scenegraph {
         namespace renderer {
 
-            using namespace std;
-
             /**
              * This class configures several options for the rendering method.
              */

@@ -21,16 +21,35 @@
 #ifndef LOADPLOT_H_
 #define LOADPLOT_H_
 
-#include "core/SharedPointer.h"
+#include <qobjectdefs.h>
+
+#if defined __GNUC__
+#pragma GCC system_header
+#elif defined __SUNPRO_CC
+#pragma disable_warn
+#elif defined _MSC_VER
+#pragma warning(push, 1)
+#endif
+    #include "qwt_plot.h"
+#if defined __SUNPRO_CC
+#pragma enable_warn
+#elif defined _MSC_VER
+#pragma warning(pop)
+#endif
 
 #include <vector>
 
-#include "QtIncludes.h"
-#include "LoadPerModule.h"
+#include "core/SharedPointer.h"
+
+class QTimer;
+class QWidget;
+class QwtLegend;
 
 namespace cockpit {
     namespace plugins {
         namespace modulestatisticsviewer {
+
+class LoadPerModule;
 
             using namespace std;
 

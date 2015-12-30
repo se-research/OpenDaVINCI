@@ -17,18 +17,32 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "core/macros.h"
-#include "core/base/Hash.h"
+#include <istream>
+#include <string>
+#include <vector>
+
+#include "core/platform.h"
+#include "core/SharedPointer.h"
 #include "core/base/Deserializer.h"
+#include "core/base/Hash.h"
+#include "core/base/Serializable.h"
 #include "core/base/SerializationFactory.h"
 #include "core/base/Serializer.h"
+#include "core/data/SerializableData.h"
+#include "core/macros.h"
+#include "hesperia/data/scenario/Connector.h"
+#include "hesperia/data/scenario/LaneAttribute.h"
 #include "hesperia/data/scenario/LaneModel.h"
+#include "hesperia/data/scenario/ScenarioVisitor.h"
+#include "hesperia/data/scenario/TrafficControl.h"
 #include "hesperia/data/scenario/TrafficLight.h"
 #include "hesperia/data/scenario/TrafficSign.h"
 
 namespace hesperia {
     namespace data {
         namespace scenario {
+
+class Lane;
 
             using namespace std;
             using namespace core::base;

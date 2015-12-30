@@ -21,20 +21,27 @@
 #ifndef COCKPIT_PLUGINS_SHAREDIMAGEVIEWER_SHAREDIMAGEVIEWERWIDGET_H_
 #define COCKPIT_PLUGINS_SHAREDIMAGEVIEWER_SHAREDIMAGEVIEWERWIDGET_H_
 
+#include <qobjectdefs.h>
+#include <qrgb.h>
+#include <qvector.h>
+#include <qwidget.h>
+
 #include <map>
 #include <string>
 #include <vector>
-
-#include "QtIncludes.h"
 
 #include "core/SharedPointer.h"
 #include "core/base/Mutex.h"
 #include "core/io/conference/ContainerListener.h"
 #include "core/wrapper/SharedMemory.h"
-//#include "core/data/image/SharedImage.h" included by GeneratedHeaders_AutomotiveData.h
-#include "GeneratedHeaders_CoreData.h"
+#include "generated/coredata/image/SharedImage.h"
 
-#include "plugins/PlugIn.h"
+class QImage;
+class QListWidget;
+class QListWidgetItem;
+class QPaintEvent;
+namespace cockpit { namespace plugins { class PlugIn; } }
+namespace core { namespace data { class Container; } }
 
 namespace cockpit {
 

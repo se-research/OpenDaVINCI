@@ -18,14 +18,27 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "QtIncludes.h"
+#include <qpen.h>
+
+#ifndef WIN32
+# if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#  pragma GCC diagnostic push
+# endif
+# pragma GCC diagnostic ignored "-Weffc++"
+#endif
+    #include "qwt_plot_curve.h"
+    #include "qwt_plot_item.h"
+#ifndef WIN32
+# if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#  pragma GCC diagnostic pop
+# endif
+#endif
 
 #include <cstring>
 
-#include "core/macros.h"
+#include "core/platform.h"
 #include "core/base/Lock.h"
-#include "core/data/Container.h"
-
+#include "core/macros.h"
 #include "plugins/modulestatisticsviewer/LoadPerModule.h"
 
 namespace cockpit {

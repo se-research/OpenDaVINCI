@@ -18,16 +18,27 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <Qt/qgridlayout.h>
+#include <Qt/qlistwidget.h>
+#include <Qt/qtimer.h>
+#include <qatomic_x86_64.h>
+#include <qglobal.h>
+#include <qimage.h>
+#include <qpainter.h>
+#include <qstring.h>
+
 #include <algorithm>
+#include <iostream>
 
-#include "QtIncludes.h"
-
-#include "core/macros.h"
+#include "core/platform.h"
 #include "core/base/Lock.h"
 #include "core/data/Container.h"
+#include "core/macros.h"
 #include "core/wrapper/SharedMemoryFactory.h"
-
 #include "plugins/sharedimageviewer/SharedImageViewerWidget.h"
+
+class QPaintEvent;
+namespace cockpit { namespace plugins { class PlugIn; } }
 
 namespace cockpit {
 

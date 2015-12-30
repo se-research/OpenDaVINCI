@@ -20,13 +20,15 @@
 #ifndef OPENDAVINCI_TOOLS_RECORDER_SHAREDDATAWRITER_H_
 #define OPENDAVINCI_TOOLS_RECORDER_SHAREDDATAWRITER_H_
 
-#include <iostream>
+#include <iosfwd>
 #include <map>
 
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/SharedPointer.h"
-#include "core/base/Mutex.h"
 #include "core/base/Service.h"
-#include "core/base/FIFOQueue.h"
+
+namespace core { namespace base { class FIFOQueue; } }
 
 namespace tools {
 

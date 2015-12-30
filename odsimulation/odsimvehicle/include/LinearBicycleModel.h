@@ -20,13 +20,14 @@
 #ifndef VEHICLE_LINEARBICYCLEMODEL_H_
 #define VEHICLE_LINEARBICYCLEMODEL_H_
 
-#include <string>
-#include <utility>
+#include <sys/types.h>
 
-#include "core/base/KeyValueConfiguration.h"
 #include "core/data/TimeStamp.h"
+#include "generated/automotive/VehicleData.h"
 #include "hesperia/data/environment/EgoState.h"
-#include "GeneratedHeaders_AutomotiveData.h"
+#include "hesperia/data/environment/Point3.h"
+
+namespace core { namespace base { class KeyValueConfiguration; } }
 
 namespace vehicle {
 

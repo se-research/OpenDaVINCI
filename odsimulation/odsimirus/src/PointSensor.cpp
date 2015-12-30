@@ -18,11 +18,11 @@
  */
 
 #include <cmath>
-#include <strstream>
-
-#include "GeneratedHeaders_AutomotiveData.h"
+#include <sstream>
+#include <vector>
 
 #include "PointSensor.h"
+#include "generated/cartesian/Constants.h"
 
 namespace irus {
 
@@ -162,7 +162,7 @@ namespace irus {
     }
 
     const string PointSensor::toString() const {
-        strstream sstr;
+        stringstream sstr;
         sstr << m_name << "(" << m_id << ")" << ": " << m_translation.toString() << ", rot: " << m_rotZ << ", angle: " << m_angleFOV << ", range: " << m_distanceFOV << ", clampDistance: " << m_clampDistance <<  ", showFOV: " << m_showFOV;
         return sstr.str();
     }  

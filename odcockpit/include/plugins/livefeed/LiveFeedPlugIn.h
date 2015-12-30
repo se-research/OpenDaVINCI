@@ -21,14 +21,20 @@
 #ifndef COCKPIT_PLUGINS_LIVEFEEDPLUGIN_H_
 #define COCKPIT_PLUGINS_LIVEFEEDPLUGIN_H_
 
+#include <string>
+
 #include "plugins/PlugIn.h"
-#include "plugins/livefeed/LiveFeedWidget.h"
+
+class QWidget;
+namespace core { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
 
     namespace plugins {
 
         namespace livefeed {
+
+class LiveFeedWidget;
 
             class LiveFeedPlugIn : public PlugIn {
                 private:

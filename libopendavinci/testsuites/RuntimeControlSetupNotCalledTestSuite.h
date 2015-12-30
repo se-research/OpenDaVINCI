@@ -20,18 +20,24 @@
 #ifndef CONTEXT_RUNTIMECONTROLTESTSUITESETUPNOTCALLED_H_
 #define CONTEXT_RUNTIMECONTROLTESTSUITESETUPNOTCALLED_H_
 
-#include "cxxtest/TestSuite.h"
+#include <cmath>                        // for sqrt
+#include <iostream>                     // for operator<<, basic_ostream, etc
+#include <string>                       // for string, operator<<, etc
 
-#include <stdint.h>
-#include <iostream>
-#include <string>
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/base/KeyValueConfiguration.h"
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "context/base/DirectInterface.h"
-#include "context/base/RuntimeControl.h"
-#include "context/base/RuntimeEnvironment.h"
+#include "core/platform.h"
+#include "context/base/DirectInterface.h"  // for DirectInterface
+#include "context/base/RuntimeControl.h"  // for RuntimeControl, etc
+#include "context/base/RuntimeEnvironment.h"  // for RuntimeEnvironment
 #include "context/base/SystemFeedbackComponent.h"
+#include "core/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
+#include "core/base/Thread.h"
+#include "core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
+
+namespace context { namespace base { class SendContainerToSystemsUnderTest; } }
+namespace core { namespace wrapper { class Time; } }
 
 using namespace std;
 using namespace core::base;

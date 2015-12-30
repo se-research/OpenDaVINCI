@@ -18,12 +18,12 @@
  */
 
 #include "core/wrapper/ConcurrencyFactory.h"
-#include "core/wrapper/Runnable.h"
-#include "core/wrapper/Thread.h"
-#include "core/wrapper/Libraries.h"
 #include "core/wrapper/ConfigurationTraits.h"
+#include "core/wrapper/Libraries.h"
 #include "core/wrapper/SystemLibraryProducts.h"
-#include "core/wrapper/ConcurrencyFactoryWorker.h"
+
+namespace core { namespace wrapper { class Runnable; } }
+namespace core { namespace wrapper { class Thread; } }
 
 #ifdef WIN32
   #include "core/wrapper/WIN32/WIN32ConcurrencyFactoryWorker.h"

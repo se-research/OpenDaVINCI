@@ -20,16 +20,20 @@
 #ifndef OPENDAVINCI_CORE_REFLECTION_MESSAGE_H_
 #define OPENDAVINCI_CORE_REFLECTION_MESSAGE_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
+#include <vector>
+
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
 #include "core/platform.h"
 #include "core/SharedPointer.h"
-#include "core/base/Visitor.h"
-#include "core/reflection/Field.h"
+#include "core/base/Visitable.h"
+#include "generated/coredata/reflection/AbstractField.h"
 
-#include "GeneratedHeaders_CoreData.h"
+namespace core { namespace base { class Visitor; } }
 
 namespace core {
     namespace reflection {
+
+template <typename T> class Field;
 
         using namespace std;
 

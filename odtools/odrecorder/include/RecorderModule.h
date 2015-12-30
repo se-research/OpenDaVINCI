@@ -20,7 +20,9 @@
 #ifndef RECORDERMODULE_H_
 #define RECORDERMODULE_H_
 
+#include "core/platform.h"
 #include "core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
 namespace odrecorder {
 

@@ -20,28 +20,34 @@
 #ifndef CONTEXT_RUNTIMECONTROLCONTAINERMULTIPLEAPPSTESTSUITE_H_
 #define CONTEXT_RUNTIMECONTROLCONTAINERMULTIPLEAPPSTESTSUITE_H_
 
-#include "cxxtest/TestSuite.h"
+#include <cmath>                        // for sqrt
+#include <iostream>                     // for operator<<, basic_ostream, etc
+#include <string>                       // for string, operator<<, etc
 
-#include <stdint.h>
-#include <iostream>
-#include <string>
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/base/KeyValueConfiguration.h"
-#include "core/base/Deserializer.h"
-#include "core/base/FIFOQueue.h"
-#include "core/base/Hash.h"
-#include "core/base/Serializable.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
-#include "core/base/Thread.h"
-#include "core/data/Container.h"
-#include "core/data/SerializableData.h"
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "context/base/DirectInterface.h"
-#include "context/base/RuntimeControl.h"
-#include "context/base/RuntimeEnvironment.h"
+#include "core/platform.h"
+#include "context/base/DirectInterface.h"  // for DirectInterface
+#include "context/base/RuntimeControl.h"  // for RuntimeControl, etc
+#include "context/base/RuntimeEnvironment.h"  // for RuntimeEnvironment
+#include "context/base/SendContainerToSystemsUnderTest.h"
 #include "context/base/SystemFeedbackComponent.h"
 #include "context/base/SystemReportingComponent.h"
+#include "core/SharedPointer.h"         // for SharedPointer
+#include "core/base/Deserializer.h"     // for Deserializer
+#include "core/base/FIFOQueue.h"        // for FIFOQueue
+#include "core/base/Hash.h"             // for CharList, CRC32, etc
+#include "core/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
+#include "core/base/SerializationFactory.h"  // for SerializationFactory
+#include "core/base/Serializer.h"       // for Serializer
+#include "core/base/Thread.h"           // for Thread
+#include "core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "core/data/Container.h"        // for Container, etc
+#include "core/data/SerializableData.h"  // for SerializableData
+#include "core/data/TimeStamp.h"        // for TimeStamp
+#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
+
+namespace core { namespace wrapper { class Time; } }
 
 using namespace std;
 using namespace core::base;

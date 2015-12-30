@@ -17,8 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "GeneratedHeaders_AutomotiveData.h"
+#include <vector>
+
+#include "core/platform.h"
+#include "generated/cartesian/Constants.h"
 #include "hesperia/data/environment/Point3.h"
+#include "hesperia/decorator/models/Material.h"
+#include "hesperia/decorator/models/TriangleSet.h"
 #include "hesperia/decorator/twoD/Renderer2D.h"
 
 namespace hesperia {

@@ -20,19 +20,21 @@
 #ifndef OPENDAVINCI_BASE_MANAGEDCLIENTMODULE_H_
 #define OPENDAVINCI_BASE_MANAGEDCLIENTMODULE_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <string>
 
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
+#include "context/base/Clock.h"
 #include "core/SharedPointer.h"
 #include "core/base/module/Breakpoint.h"
 #include "core/base/module/ClientModule.h"
-#include "core/base/module/ManagedClientModuleContainerConference.h"
 #include "core/data/TimeStamp.h"
 #include "core/exceptions/Exceptions.h"
 #include "core/io/conference/ContainerConference.h"
+#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "generated/coredata/dmcp/PulseMessage.h"
 
-#include "context/base/Clock.h"
-#include "context/base/ControlledTimeFactory.h"
+namespace context { namespace base { class ControlledTimeFactory; } }
 
 namespace core {
     namespace base {

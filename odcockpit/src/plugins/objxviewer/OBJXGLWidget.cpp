@@ -18,21 +18,27 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <fstream>
+#include <GL/gl.h>
 
-#include "core/macros.h"
+#include <fstream>
+#include <iostream>
+
+#include "core/platform.h"
 #include "core/base/Lock.h"
-#include "core/io/URL.h"
+#include "core/macros.h"
 #include "hesperia/threeD/Node.h"
 #include "hesperia/threeD/NodeDescriptor.h"
+#include "hesperia/threeD/RenderingConfiguration.h"
 #include "hesperia/threeD/TransformGroup.h"
 #include "hesperia/threeD/decorator/DecoratorFactory.h"
+#include "hesperia/threeD/loaders/OBJXArchiveFactory.h"
 #include "hesperia/threeD/models/Grid.h"
 #include "hesperia/threeD/models/XYZAxes.h"
-#include "hesperia/threeD/loaders/OBJXArchive.h"
-#include "hesperia/threeD/loaders/OBJXArchiveFactory.h"
-
 #include "plugins/objxviewer/OBJXGLWidget.h"
+
+class QWidget;
+namespace cockpit { namespace plugins { class PlugIn; } }
+namespace hesperia { namespace threeD { namespace loaders { class OBJXArchive; } } }
 
 namespace cockpit {
     namespace plugins {
@@ -40,7 +46,6 @@ namespace cockpit {
 
             using namespace std;
             using namespace core::base;
-            using namespace core::io;
             using namespace hesperia::threeD;
             using namespace hesperia::threeD::decorator;
             using namespace hesperia::threeD::loaders;

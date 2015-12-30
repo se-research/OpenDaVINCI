@@ -20,12 +20,15 @@
 #ifndef CONTEXT_BASE_RECORDINGCONTAINER_H_
 #define CONTEXT_BASE_RECORDINGCONTAINER_H_
 
+#include <memory>
 #include <string>
 
-// native.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/native.h"
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "context/base/SystemReportingComponent.h"
-#include "tools/recorder/Recorder.h"
+
+namespace core { namespace wrapper { class Time; } }
+namespace tools { namespace recorder { class Recorder; } }
 
 namespace context {
     namespace base {

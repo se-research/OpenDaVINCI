@@ -17,10 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/base/module/AbstractCIDModule.h"
-#include "core/base/QueryableNetstringsSerializerABCF.h"
+#include <iostream>
+
 #include "core/base/QueryableNetstringsDeserializerABCF.h"
 #include "core/base/Serializable.h"
+#include "core/base/module/AbstractCIDModule.h"
+#include "core/macros.h"
 
 namespace core {
     namespace base {

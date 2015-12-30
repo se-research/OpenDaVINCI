@@ -21,14 +21,21 @@
 #ifndef COCKPIT_PLUGINS_PLAYERPLUGIN_H_
 #define COCKPIT_PLUGINS_PLAYERPLUGIN_H_
 
+#include <string>
+
 #include "plugins/ControlPlugIn.h"
-#include "plugins/player/PlayerWidget.h"
+
+class QWidget;
+namespace core { namespace base { class KeyValueConfiguration; } }
+namespace core { namespace io { namespace conference { class ContainerConference; } } }
 
 namespace cockpit {
 
     namespace plugins {
 
         namespace player {
+
+class PlayerWidget;
 
             class PlayerPlugIn : public ControlPlugIn {
                 private:

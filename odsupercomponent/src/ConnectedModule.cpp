@@ -18,7 +18,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include "core/dmcp/connection/ModuleConnection.h"
+
 #include "ConnectedModule.h"
+
+namespace core { namespace dmcp { namespace connection { class ModuleConnection; } } }
 
 namespace odsupercomponent {
 

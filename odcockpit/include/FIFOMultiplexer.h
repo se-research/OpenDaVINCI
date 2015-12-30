@@ -23,13 +23,15 @@
 
 #include <vector>
 
+#include "core/platform.h"
+#include "ContainerObserver.h"
 #include "core/base/FIFOQueue.h"
 #include "core/base/Mutex.h"
 #include "core/base/Service.h"
 #include "core/data/Container.h"
-#include "core/base/DataStoreManager.h"
 
-#include "ContainerObserver.h"
+namespace core { namespace base { class DataStoreManager; } }
+namespace core { namespace io { namespace conference { class ContainerListener; } } }
 
 namespace cockpit {
 

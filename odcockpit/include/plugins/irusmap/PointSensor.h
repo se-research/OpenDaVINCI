@@ -22,13 +22,12 @@
 #define COCKPIT_PLUGINS_IRUSMAP_POINTSENSOR_H_
 
 #include <string>
-#include <map>
 
+#include "core/platform.h"
 #include "hesperia/data/environment/Point3.h"
 
-#include "QtIncludes.h"
-
-#include "GeneratedHeaders_AutomotiveData.h"
+class QPainter;
+namespace automotive { namespace miniature { class SensorBoardData; } }
 
 namespace cockpit {
 

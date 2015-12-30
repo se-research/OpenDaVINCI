@@ -21,8 +21,13 @@
 #ifndef COCKPIT_PLUGINS_CONTROLPLUGIN_H_
 #define COCKPIT_PLUGINS_CONTROLPLUGIN_H_
 
-#include "core/io/conference/ContainerConference.h"
+#include <string>
+
 #include "plugins/PlugIn.h"
+
+class QWidget;
+namespace core { namespace base { class KeyValueConfiguration; } }
+namespace core { namespace io { namespace conference { class ContainerConference; } } }
 
 namespace cockpit {
 

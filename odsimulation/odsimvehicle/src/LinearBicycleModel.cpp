@@ -18,11 +18,13 @@
  */
 
 #include <cmath>
-#include <iomanip>
+#include <iostream>
+#include <string>
 
 #include "core/wrapper/Eigen.h"
-
-#include "GeneratedHeaders_AutomotiveData.h"
+#include "core/base/KeyValueConfiguration.h"
+#include "generated/cartesian/Constants.h"
+#include "generated/cartesian/Point2.h"
 #include "hesperia/data/environment/Point3.h"
 
 #include "LinearBicycleModel.h"

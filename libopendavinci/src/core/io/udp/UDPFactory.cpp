@@ -18,13 +18,11 @@
  */
 
 #include "core/io/udp/UDPFactory.h"
-#include "core/io/udp/UDPSender.h"
 #include "core/io/udp/UDPReceiver.h"
-
-#include "core/wrapper/Libraries.h"
+#include "core/io/udp/UDPSender.h"
 #include "core/wrapper/ConfigurationTraits.h"
+#include "core/wrapper/Libraries.h"
 #include "core/wrapper/NetworkLibraryProducts.h"
-#include "core/wrapper/UDPFactoryWorker.h"
 
 #ifdef WIN32
     #include "core/wrapper/WIN32/WIN32UDPFactoryWorker.h"

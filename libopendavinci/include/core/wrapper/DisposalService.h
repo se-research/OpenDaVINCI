@@ -20,18 +20,21 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_DISPOSALSERVICE_H_
 #define OPENDAVINCI_CORE_WRAPPER_DISPOSALSERVICE_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <deque>
+#include <memory>
 
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/SharedPointer.h"
 #include "core/wrapper/Condition.h"
-#include "core/wrapper/Disposable.h"
-#include "core/wrapper/Mutex.h"
 #include "core/wrapper/Runnable.h"
-#include "core/wrapper/Thread.h"
 
 namespace core {
     namespace wrapper {
+
+class Disposable;
+class Mutex;
+class Thread;
 
         using namespace std;
 

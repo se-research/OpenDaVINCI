@@ -22,18 +22,23 @@
 
 #include <vector>
 
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
+#include "context/base/RuntimeControl.h"
+#include "context/base/RuntimeEnvironment.h"
+#include "context/base/SendContainerToSystemsUnderTest.h"
 #include "core/SharedPointer.h"
 #include "core/base/Mutex.h"
 #include "core/io/conference/ContainerConference.h"
 #include "core/io/conference/ContainerListener.h"
 
-#include "context/base/RuntimeEnvironment.h"
-#include "context/base/RuntimeControl.h"
-#include "context/base/SendContainerToSystemsUnderTest.h"
-#include "context/base/SystemFeedbackComponent.h"
+namespace core { namespace data { class Container; } }
 
 namespace context {
     namespace base {
+
+class RuntimeControlInterface;
+class SystemFeedbackComponent;
 
 		using namespace std;
 

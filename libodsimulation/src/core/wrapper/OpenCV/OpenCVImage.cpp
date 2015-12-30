@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <cmath>
 #include <cstdio>
 #include <cstdlib>
 #include <fstream>
@@ -27,6 +28,7 @@
 
 #include <opencv/highgui.h>
 
+#include "core/platform.h"
 #include "core/wrapper/OpenCV/OpenCVImage.h"
 
 namespace core {

@@ -21,14 +21,17 @@
 #ifndef COCKPIT_PLUGINS_MODULESTATISTICSVIEWER_LOADPERMODULE_H_
 #define COCKPIT_PLUGINS_MODULESTATISTICSVIEWER_LOADPERMODULE_H_
 
-#include <deque>
-#include <vector>
-#include <cstring>
+#include <qcolor.h>
 
-#include "QtIncludes.h"
+#include <deque>
+#include <string>
+#include <vector>
 
 #include "core/base/Mutex.h"
-#include "GeneratedHeaders_CoreData.h"
+#include "generated/coredata/dmcp/ModuleDescriptor.h"
+#include "generated/coredata/dmcp/RuntimeStatistic.h"
+
+class QwtPlotCurve;
 
 namespace cockpit {
     namespace plugins {

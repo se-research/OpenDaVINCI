@@ -21,26 +21,25 @@
 #ifndef COCKPIT_PLUGINS_PLUGINPROVIDER_H_
 #define COCKPIT_PLUGINS_PLUGINPROVIDER_H_
 
+#include <qobject.h>
+
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
-
-#include "QtIncludes.h"
-
-// native.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/native.h"
 
 #include "core/SharedPointer.h"
 #include "core/base/KeyValueConfiguration.h"
 #include "core/base/Mutex.h"
-#include "core/base/DataStoreManager.h"
-#include "core/io/conference/ContainerConference.h"
 
-#include "plugins/PlugIn.h"
+class QWidget;
+namespace core { namespace base { class DataStoreManager; } }
+namespace core { namespace io { namespace conference { class ContainerConference; } } }
 
 namespace cockpit {
 
     namespace plugins {
+
+class PlugIn;
 
         using namespace std;
 

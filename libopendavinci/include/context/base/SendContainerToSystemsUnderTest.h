@@ -20,15 +20,13 @@
 #ifndef CONTEXT_BASE_SENDCONTAINERTOSYSTEMSUNDERTEST_H_
 #define CONTEXT_BASE_SENDCONTAINERTOSYSTEMSUNDERTEST_H_
 
-// native.h must be included right before boost/asio.hpp because of the definition of _WIN32_WINNT.
-#include "core/native.h"
-#include "core/data/Container.h"
-#include "core/io/conference/ContainerListener.h"
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
+
+namespace core { namespace data { class Container; } }
 
 namespace context {
     namespace base {
-
-        using namespace std;
 
         /**
          * This interface provides methods to send data to a

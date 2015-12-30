@@ -18,11 +18,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "core/macros.h"
-
+#include "core/platform.h"
 #include "ContainerObserver.h"
 #include "plugins/irusmap/IrUsMapPlugIn.h"
 #include "plugins/irusmap/IrUsMapWidgetControl.h"
+
+class QWidget;
+namespace core { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
 

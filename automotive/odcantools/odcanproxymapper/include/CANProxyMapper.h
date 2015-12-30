@@ -20,9 +20,12 @@
 #ifndef CANPROXYMAPPER_H_
 #define CANPROXYMAPPER_H_
 
-#include "GeneratedHeaders_CANMessageMapping.h"
+#include <stdint.h>
 
 #include "CANProxy.h"
+#include "GeneratedHeaders_CANMessageMapping.h"
+
+namespace automotive { class GenericCANMessage; }
 
 namespace automotive {
     namespace odcantools {

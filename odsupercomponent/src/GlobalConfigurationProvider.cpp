@@ -18,11 +18,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <fstream>
+#include <sstream>
+#include <string>
 #include <vector>
 
 #include "GlobalConfigurationProvider.h"
-
 #include "core/base/Lock.h"
+#include "generated/coredata/dmcp/ModuleDescriptor.h"
 
 namespace odsupercomponent {
 

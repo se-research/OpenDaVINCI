@@ -19,19 +19,22 @@
 
 #include <algorithm>
 #include <iostream>
-#include <sstream>
+#include <list>
 
 #include <boost/graph/astar_search.hpp>
 
 #include "core/macros.h"
 #include "core/strings/StringToolbox.h"
 #include "core/wrapper/graph/DirectedGraph.h"
+#include "core/wrapper/graph/Edge.h"
+#include "core/wrapper/graph/Vertex.h"
 
 namespace core {
     namespace wrapper {
         namespace graph {
 
 // The following compiler switches are added to ignore -Weffc++ warnings in Boost.
+class Edge;
 #ifdef __GNUC__
 #  if __GNUC__ >= 4
 #    if __GNUC_MINOR__ >= 6

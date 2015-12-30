@@ -21,15 +21,21 @@
 #ifndef COCKPIT_PLUGINS_SCNXVIEWER_SCNXVIEWERPLUGIN_H_
 #define COCKPIT_PLUGINS_SCNXVIEWER_SCNXVIEWERPLUGIN_H_
 
-#include "QtIncludes.h"
 
-#include "core/base/KeyValueConfiguration.h"
 
-#include "plugins/scnxviewer/SCNXViewerWidget.h"
+
+#include <string>
+
+#include "plugins/PlugIn.h"
+
+class QWidget;
+namespace core { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
     namespace plugins {
       namespace scnxviewer {
+
+class SCNXViewerWidget;
 
         using namespace std;
 

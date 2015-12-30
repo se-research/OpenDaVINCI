@@ -17,8 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <cassert>
+#include <cerrno>
+#include <algorithm>
+#include <sstream>
+
 #include "core/base/CommandLineParser.h"
 #include "core/exceptions/Exceptions.h"
+#include "core/macros.h"
 
 namespace core {
     namespace base {

@@ -20,9 +20,10 @@
 #ifndef OPENDAVINCI_CORE_BASE_LIFOQUEUE_H_
 #define OPENDAVINCI_CORE_BASE_LIFOQUEUE_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <deque>
 
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/base/AbstractDataStore.h"
 #include "core/base/Mutex.h"
 #include "core/data/Container.h"

@@ -20,13 +20,15 @@
 #ifndef OPENDAVINCI_CORE_BASE_REALTIMESERVICE_H_
 #define OPENDAVINCI_CORE_BASE_REALTIMESERVICE_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <memory>
 
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/base/Mutex.h"
 #include "core/exceptions/Exceptions.h"
-#include "core/wrapper/Thread.h"
 #include "core/wrapper/RealtimeRunnable.h"
+
+namespace core { namespace wrapper { class Thread; } }
 
 namespace core {
     namespace base {

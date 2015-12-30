@@ -17,33 +17,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <termios.h>
-#include <unistd.h>
-#include <sys/select.h>
-#include <sys/time.h>
-
 #include <cstdio>
 #include <algorithm>
 #include <iostream>
-#include <cmath>
 
-#include "core/SharedPointer.h"
-#include "core/base/Thread.h"
+#include "Controller.h"
+#include "EgoController.h"
+#include "ForceControlBehaviour.h"
+#include "ForceControlBehaviourBicycleModel.h"
+#include "ForceControlBehaviourSimplifiedBicycleModel.h"
+#include "JoystickController.h"
+#include "KeyBoardController.h"
+#include "LinearBicycleModelBehaviour.h"
+#include "SimpleControlBehaviour.h"
 #include "core/base/KeyValueConfiguration.h"
 #include "core/data/Container.h"
+#include "core/io/conference/ContainerConference.h"
+#include "generated/coredata/dmcp/ModuleStateMessage.h"
 #include "hesperia/data/environment/Point3.h"
-#include "GeneratedHeaders_AutomotiveData.h"
-#include "hesperia/data/environment/EgoState.h"
-
-#include "EgoController.h"
-#include "ControlBehaviour.h"
-#include "ForceControlBehaviour.h"
-#include "SimpleControlBehaviour.h"
-#include "Controller.h"
-#include "KeyBoardController.h"
-#include "JoystickController.h"
 
 namespace egocontroller {
+
+class ControlBehaviour;
 
     using namespace std;
     using namespace core::base;

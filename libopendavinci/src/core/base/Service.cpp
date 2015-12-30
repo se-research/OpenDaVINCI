@@ -19,7 +19,9 @@
 
 #include "core/base/Lock.h"
 #include "core/base/Service.h"
+#include "core/macros.h"
 #include "core/wrapper/ConcurrencyFactory.h"
+#include "core/wrapper/Thread.h"
 
 namespace core {
     namespace base {

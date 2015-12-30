@@ -17,12 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/wrapper/SharedMemoryFactory.h"
-
-#include "core/wrapper/Libraries.h"
 #include "core/wrapper/ConfigurationTraits.h"
-
-#include "core/wrapper/SharedMemoryFactoryWorker.h"
+#include "core/wrapper/Libraries.h"
+#include "core/wrapper/SharedMemory.h"
+#include "core/wrapper/SharedMemoryFactory.h"
 #include "core/wrapper/SystemLibraryProducts.h"
 
 #ifdef WIN32

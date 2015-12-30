@@ -20,9 +20,8 @@
 #ifndef OPENDAVINCI_CORE_BASE_THREAD_H_
 #define OPENDAVINCI_CORE_BASE_THREAD_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
 #include "core/platform.h"
-
 #include "core/data/TimeStamp.h"
 
 namespace core {

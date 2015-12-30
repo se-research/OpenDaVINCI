@@ -21,15 +21,20 @@
 #ifndef COCKPIT_PLUGINS_LIVEFEEDWIDGET_H_
 #define COCKPIT_PLUGINS_LIVEFEEDWIDGET_H_
 
+#include <qobjectdefs.h>
+#include <qwidget.h>
+
 #include <map>
-#include <cstring>
+#include <memory>
+#include <string>
 
-#include "core/data/Container.h"
 #include "core/io/conference/ContainerListener.h"
-#include "core/base/Visitable.h"
 
-#include "plugins/PlugIn.h"
-#include "QtIncludes.h"
+class QTreeWidget;
+class QTreeWidgetItem;
+namespace cockpit { namespace plugins { class PlugIn; } }
+namespace core { namespace base { class Visitable; } }
+namespace core { namespace data { class Container; } }
 
 namespace cockpit {
 

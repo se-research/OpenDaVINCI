@@ -20,12 +20,13 @@
 #ifndef CORE_KEYVALUECONFIGURATIONTESTSUITE_H_
 #define CORE_KEYVALUECONFIGURATIONTESTSUITE_H_
 
-#include "cxxtest/TestSuite.h"
+#include <sstream>                      // for operator<<, basic_ostream, etc
+#include <string>                       // for string, operator==, etc
 
-#include <sstream>
-#include <string>
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/base/KeyValueConfiguration.h"
+#include "core/platform.h"
+#include "core/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
 #include "core/exceptions/Exceptions.h"
 
 using namespace std;

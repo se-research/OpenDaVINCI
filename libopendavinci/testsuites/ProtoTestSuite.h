@@ -20,21 +20,25 @@
 #ifndef CORE_PROTOTESTSUITE_H_
 #define CORE_PROTOTESTSUITE_H_
 
-#include "cxxtest/TestSuite.h"
+#include <cmath>                        // for fabs
+#include <iostream>                     // for stringstream, operator<<, etc
+#include <string>                       // for operator==, basic_string, etc
 
-#include <iostream>
-#include <sstream>
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/base/Hash.h"
-#include "core/base/Deserializer.h"
-#include "core/base/ProtoSerializerVisitor.h"
+#include "core/platform.h"
+#include "core/SharedPointer.h"         // for SharedPointer
+#include "core/base/Deserializer.h"     // for Deserializer
 #include "core/base/ProtoDeserializerVisitor.h"
-#include "core/data/SerializableData.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
-#include "core/base/Visitable.h"
-
-#include "GeneratedHeaders_CoreData.h"
+#include "core/base/ProtoSerializerVisitor.h"
+#include "core/base/SerializationFactory.h"  // for SerializationFactory
+#include "core/base/Serializer.h"       // for Serializer
+#include "core/base/Visitable.h"        // for Visitable
+#include "core/base/Visitor.h"          // for Visitor
+#include "core/data/SerializableData.h"  // for SerializableData
+#include "generated/coredata/SharedData.h"  // for SharedData
+#include "generated/coredata/dmcp/ModuleDescriptor.h"
+#include "generated/coredata/image/SharedImage.h"  // for SharedImage
 
 using namespace std;
 using namespace core::base;

@@ -21,7 +21,9 @@
 #include <functional>
 #include <iostream>
 
+#include "core/platform.h"
 #include "core/wrapper/parser/ASTNode.h"
+#include "core/wrapper/parser/ASTVisitor.h"
 
 namespace core {
     namespace wrapper {

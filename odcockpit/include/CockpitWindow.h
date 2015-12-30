@@ -21,19 +21,26 @@
 #ifndef COCKPITWINDOW_H_
 #define COCKPITWINDOW_H_
 
+#include <Qt/qmainwindow.h>
+#include <qobjectdefs.h>
+
 #include <vector>
 
-#include "QtIncludes.h"
-
+#include "core/SharedPointer.h"
 #include "core/base/KeyValueConfiguration.h"
-#include "core/base/DataStoreManager.h"
-#include "core/io/conference/ContainerConference.h"
 
-#include "FIFOMultiplexer.h"
-#include "plugins/PlugIn.h"
-#include "plugins/PlugInProvider.h"
+class QListWidget;
+class QListWidgetItem;
+class QMdiArea;
+class QMenu;
+namespace core { namespace base { class DataStoreManager; } }
+namespace core { namespace io { namespace conference { class ContainerConference; } } }
 
 namespace cockpit {
+
+class FIFOMultiplexer;
+namespace plugins { class PlugIn; }
+namespace plugins { class PlugInProvider; }
 
     using namespace std;
 

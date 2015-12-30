@@ -19,9 +19,10 @@
 
 #include <iostream>
 
-#include <core/data/Container.h>
-#include <core/strings/StringToolbox.h>
-#include <GeneratedHeaders_AutomotiveData.h>
+#include "core/macros.h"
+#include "core/strings/StringToolbox.h"
+
+#include "generated/automotive/GenericCANMessage.h"
 
 #include "CANASCReplay.h"
 

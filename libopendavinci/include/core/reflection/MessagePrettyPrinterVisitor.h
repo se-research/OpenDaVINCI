@@ -20,10 +20,14 @@
 #ifndef OPENDAVINCI_CORE_REFLECTION_MESSAGEPRETTYPRINTERVISITOR_H_
 #define OPENDAVINCI_CORE_REFLECTION_MESSAGEPRETTYPRINTERVISITOR_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <sstream>
+#include <string>
 
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/base/Visitor.h"
+
+namespace core { namespace base { class Serializable; } }
 
 namespace core {
     namespace reflection {

@@ -18,21 +18,48 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <cmath>
+#include <Qt/qfiledialog.h>
+#include <Qt/qlabel.h>
+#include <Qt/qpushbutton.h>
+#include <Qt/qscrollarea.h>
+#include <Qt/qtimer.h>
+#include <qboxlayout.h>
+#include <qframe.h>
+#include <qnamespace.h>
+
+#ifndef WIN32
+# if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#  pragma GCC diagnostic push
+# endif
+# pragma GCC diagnostic ignored "-Weffc++"
+#endif
+    #include "qwt_plot.h"
+    #include "qwt_plot_curve.h"
+    #include "qwt_plot_item.h"
+#ifndef WIN32
+# if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#  pragma GCC diagnostic pop
+# endif
+#endif
+
+
+#include <iostream>
 #include <sstream>
 
+#include "core/platform.h"
 #include "core/SharedPointer.h"
-#include "core/base/Mutex.h"
+#include "core/base/KeyValueConfiguration.h"
 #include "core/base/Lock.h"
+#include "core/base/Serializable.h"
 #include "core/data/Container.h"
+#include "core/data/TimeStamp.h"
+#include "core/exceptions/Exceptions.h"
 #include "core/io/StreamFactory.h"
 #include "core/io/URL.h"
-
-#include "GeneratedHeaders_AutomotiveData.h"
-
-#include "QtIncludes.h"
-
+#include "plugins/iruscharts/IrUsChartData.h"
 #include "plugins/iruscharts/IrUsChartsWidget.h"
+
+namespace cockpit { namespace plugins { class PlugIn; } }
 
 namespace cockpit {
 

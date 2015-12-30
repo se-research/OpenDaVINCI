@@ -18,11 +18,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <qbrush.h>
+#include <qnamespace.h>
+#include <qpainter.h>
+
 #include <cmath>
-#include <strstream>
+#include <sstream>
 
-#include "GeneratedHeaders_AutomotiveData.h"
-
+#include "generated/automotive/miniature/SensorBoardData.h"
+#include "generated/cartesian/Constants.h"
 #include "plugins/irusmap/PointSensor.h"
 
 namespace cockpit {
@@ -121,7 +125,7 @@ namespace cockpit {
             }
 
             const string PointSensor::toString() const {
-                strstream sstr;
+                stringstream sstr;
                 sstr << m_name << "(" << m_id << ")" << ": " << m_translation.toString() << ", rot: " << m_rotZ << ", angle: " << m_angleFOV << ", range: " << m_distanceFOV << ", clampDistance: " << m_clampDistance;
                 return sstr.str();
             }

@@ -18,6 +18,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <Qt/qdesktopwidget.h>
+#include <Qt/qtranslator.h>
+#include <qlocale.h>
+#include <qsize.h>
+#include <qstring.h>
+
+#include <iostream>
+#include <string>
+
 #include "Cockpit.h"
 #include "CockpitWindow.h"
 

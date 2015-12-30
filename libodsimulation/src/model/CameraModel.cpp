@@ -17,37 +17,27 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <ctime>
-
-#include <iostream>
-
 #include <GL/gl.h>
 #include <GL/freeglut.h>
 
-#include <opencv/highgui.h>
-#include <opencv/cxcore.h>
+#include <ctime>
+#include <iostream>
+#include <string>
 
-#include "core/macros.h"
-#include "core/base/Lock.h"
-#include "core/base/Thread.h"
+#include "core/platform.h"
+#include "context/base/SendContainerToSystemsUnderTest.h"
 #include "core/base/KeyValueConfiguration.h"
 #include "core/data/Container.h"
-#include "core/wrapper/SharedMemory.h"
-#include "core/wrapper/SharedMemoryFactory.h"
-
-#include "GeneratedHeaders_AutomotiveData.h"
-#include "hesperia/data/environment/Point3.h"
+#include "core/macros.h"
+#include "generated/coredata/image/SharedImage.h"
 #include "hesperia/data/camera/ImageGrabberCalibration.h"
 #include "hesperia/data/camera/ImageGrabberID.h"
-
-#include "GeneratedHeaders_CoreData.h"
-#include "GeneratedHeaders_AutomotiveData.h"
-
-#include "core/exceptions/Exceptions.h"
-
 #include "hesperia/data/environment/EgoState.h"
-
+#include "hesperia/data/environment/Point3.h"
 #include "vehiclecontext/model/CameraModel.h"
+#include "vehiclecontext/model/OpenGLGrabber.h"
+
+namespace core { namespace wrapper { class Time; } }
 
 namespace vehiclecontext {
     namespace model {
@@ -77,8 +67,8 @@ namespace vehiclecontext {
         }
 
         CameraModel::CameraModel(const string &configuration) :
-			m_kvc(),
-			m_freq(0),
+            m_kvc(),
+            m_freq(0),
             m_renderWindow(0),
             m_egoState(),
             m_grabber(NULL),
@@ -94,15 +84,15 @@ namespace vehiclecontext {
             m_mouseY(0),
             m_mouseButton(0) {
 
-			// Create configuration object.
-			stringstream sstrConfiguration;
-			sstrConfiguration.str(configuration);
+            // Create configuration object.
+            stringstream sstrConfiguration;
+            sstrConfiguration.str(configuration);
             m_kvc.readFrom(sstrConfiguration);
-		}
+        }
 
         CameraModel::CameraModel(const float &freq, const string &configuration) :
-			m_kvc(),
-			m_freq(freq),
+            m_kvc(),
+            m_freq(freq),
             m_renderWindow(0),
             m_egoState(),
             m_grabber(NULL),

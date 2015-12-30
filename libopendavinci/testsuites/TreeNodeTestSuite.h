@@ -20,11 +20,12 @@
 #ifndef CORE_TREENODETESTSUITE_H_
 #define CORE_TREENODETESTSUITE_H_
 
-#include "cxxtest/TestSuite.h"
+#include <string>                       // for string, operator==, etc
+#include <vector>                       // for vector
 
-#include <string>
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/base/TreeNode.h"
+#include "core/base/TreeNode.h"         // for TreeNode
 
 using namespace std;
 using namespace core::base;

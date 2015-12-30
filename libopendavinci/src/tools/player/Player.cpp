@@ -17,7 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <cmath>
+#include <cstdlib>
+#include <cstring>
+#include <iostream>
+#include <string>
 
 #include "core/macros.h"
 #include "core/base/Lock.h"
@@ -33,6 +36,7 @@
 #include "GeneratedHeaders_CoreData.h"
 
 #include "tools/player/Player.h"
+#include "tools/player/PlayerCache.h"
 
 namespace tools {
     namespace player {

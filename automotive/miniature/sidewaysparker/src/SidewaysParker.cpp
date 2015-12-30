@@ -17,8 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <stdio.h>
-#include <math.h>
+#include <cstdio>
+#include <cmath>
+#include <iostream>
 
 #include "core/io/conference/ContainerConference.h"
 #include "core/data/Container.h"

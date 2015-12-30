@@ -19,11 +19,10 @@
 
 #include "context/base/Runner.h"
 #include "context/base/TimeConstants.h"
+#include "core/wrapper/Time.h"
 
 namespace context {
     namespace base {
-
-        using namespace std;
 
         Runner::Runner() {}
 

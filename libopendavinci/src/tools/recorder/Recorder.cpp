@@ -19,12 +19,14 @@
 
 #include <iostream>
 
+#include "core/base/Serializable.h"
 #include "core/base/module/AbstractCIDModule.h"
 #include "core/data/Container.h"
 #include "core/io/StreamFactory.h"
 #include "core/io/URL.h"
-
+#include "core/macros.h"
 #include "tools/recorder/Recorder.h"
+#include "tools/recorder/SharedDataListener.h"
 
 namespace tools {
 

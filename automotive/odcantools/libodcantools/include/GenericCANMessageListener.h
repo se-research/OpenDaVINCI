@@ -20,12 +20,10 @@
 #ifndef GENERICCANMESSAGELISTENER_H_
 #define GENERICCANMESSAGELISTENER_H_
 
-#include "GeneratedHeaders_AutomotiveData.h"
+namespace automotive { class GenericCANMessage; }
 
 namespace automotive {
     namespace odcantools {
-
-        using namespace std;
 
         /**
          * This interface is called whenever a low-level CAN message was received and

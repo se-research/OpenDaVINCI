@@ -20,17 +20,22 @@
 #ifndef CANPROXY_H_
 #define CANPROXY_H_
 
-#include <libpcan.h>
+#include <stdint.h>
+#include <memory>
+#include <string>
 
+#include "GenericCANMessageListener.h"
 #include "core/base/FIFOQueue.h"
 #include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "tools/recorder/Recorder.h"
+#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
-#include "CANDevice.h"
-#include "GenericCANMessageListener.h"
+namespace automotive { class GenericCANMessage; }
+namespace tools { namespace recorder { class Recorder; } }
 
 namespace automotive {
     namespace odcantools {
+
+class CANDevice;
 
         using namespace std;
 

@@ -22,22 +22,24 @@
 
 #include <vector>
 
-// native.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/native.h"
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/SharedPointer.h"
-#include "core/base/module/AbstractModule.h"
 #include "core/base/Mutex.h"
-#include "core/wrapper/Time.h"
+#include "core/base/module/AbstractModule.h"
 #include "core/wrapper/TimeFactory.h"
-#include "context/base/TimeTriggeredConferenceClientModuleRunner.h"
-#include "context/base/ControlledContainerConferenceFactory.h"
-#include "context/base/ControlledTimeFactory.h"
-#include "context/base/SuperComponent.h"
-#include "context/base/RuntimeControlInterface.h"
-#include "context/base/RuntimeEnvironment.h"
+
+namespace core { namespace wrapper { class Time; } }
 
 namespace context {
     namespace base {
+
+class ControlledContainerConferenceFactory;
+class ControlledTimeFactory;
+class RuntimeControlInterface;
+class RuntimeEnvironment;
+class SuperComponent;
+class TimeTriggeredConferenceClientModuleRunner;
 
         using namespace std;
 

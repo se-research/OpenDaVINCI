@@ -18,6 +18,8 @@
  */
 
 #include "core/base/Lock.h"
+#include "core/io/ConnectionListener.h"
+#include "core/io/StringListener.h"
 #include "core/io/tcp/TCPConnection.h"
 
 namespace core {

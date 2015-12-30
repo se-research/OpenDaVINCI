@@ -18,13 +18,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "core/macros.h"
+#include <qobjectdefs.h>
+#include <qstring.h>
+#include <qwidget.h>
+
+#include <iostream>
+
+#include "core/platform.h"
 #include "core/base/Lock.h"
-
-#include "QtIncludes.h"
-
 #include "plugins/PlugInProvider.h"
-
 #include "plugins/birdseyemap/BirdsEyeMapPlugIn.h"
 #include "plugins/configurationviewer/ConfigurationViewerPlugIn.h"
 #include "plugins/controller/ControllerPlugIn.h"
@@ -39,9 +41,14 @@
 #include "plugins/sharedimageviewer/SharedImageViewerPlugIn.h"
 #include "plugins/spy/SpyPlugIn.h"
 
+namespace core { namespace base { class DataStoreManager; } }
+namespace core { namespace io { namespace conference { class ContainerConference; } } }
+
 namespace cockpit {
 
     namespace plugins {
+
+class PlugIn;
 
         using namespace std;
         using namespace core::base;

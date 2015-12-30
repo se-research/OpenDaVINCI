@@ -21,13 +21,16 @@
 #define OPENDAVINCI_CORE_IO_TCP_TCPCONNECTION_H_
 
 #include <sstream>
+#include <string>
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
 #include "core/platform.h"
-
 #include "core/base/Mutex.h"
-#include "core/io/StringObserver.h"
 #include "core/io/ConnectionObserver.h"
+#include "core/io/StringObserver.h"
+
+namespace core { namespace io { class ConnectionListener; } }
+namespace core { namespace io { class StringListener; } }
 
 namespace core {
     namespace io {

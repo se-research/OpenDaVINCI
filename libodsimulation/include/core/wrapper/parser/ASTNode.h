@@ -27,11 +27,11 @@
 // native.h must be included as first header file for definition of _WIN32_WINNT.
 #include "core/native.h"
 
-#include "core/wrapper/parser/ASTVisitor.h"
-
 namespace core {
     namespace wrapper {
         namespace parser {
+
+class ASTVisitor;
 
             using namespace std;
 

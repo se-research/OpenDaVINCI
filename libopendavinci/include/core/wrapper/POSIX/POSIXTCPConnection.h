@@ -20,14 +20,16 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_POSIXTCPCONNECTION_H_
 #define OPENDAVINCI_CORE_WRAPPER_POSIXTCPCONNECTION_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
+#include <memory>
+#include <string>
+
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
 #include "core/platform.h"
-
 #include "core/io/tcp/TCPConnection.h"
-
-#include "core/wrapper/Mutex.h"
 #include "core/wrapper/Runnable.h"
-#include "core/wrapper/Thread.h"
+
+namespace core { namespace wrapper { class Mutex; } }
+namespace core { namespace wrapper { class Thread; } }
 
 namespace core {
     namespace wrapper {

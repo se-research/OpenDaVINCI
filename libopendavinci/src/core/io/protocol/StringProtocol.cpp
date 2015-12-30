@@ -18,6 +18,7 @@
  */
 
 #include "core/base/Lock.h"
+#include "core/io/StringListener.h"
 #include "core/io/protocol/StringProtocol.h"
 
 namespace core {

@@ -20,27 +20,22 @@
 #ifndef CORE_CONNECTIONTESTSUITE_H_
 #define CORE_CONNECTIONTESTSUITE_H_
 
-#include "cxxtest/TestSuite.h"
+#include <iostream>                     // for operator<<, basic_ostream, etc
 
-#include <sstream>
-#include <string>
-#include <list>
-#include <iostream>
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/base/Condition.h"
-#include "core/base/Lock.h"
-#include "core/base/Mutex.h"
-#include "core/base/Thread.h"
+#include "core/SharedPointer.h"         // for SharedPointer
+#include "core/base/Thread.h"           // for Thread
+#include "core/data/Container.h"        // for Container, etc
+#include "core/data/TimeStamp.h"        // for TimeStamp
 #include "core/exceptions/Exceptions.h"
-#include "core/data/Container.h"
-#include "core/data/TimeStamp.h"
-#include "core/io/Connection.h"
-#include "core/io/ConnectionAcceptor.h"
-#include "core/io/ConnectionErrorListener.h"
-
+#include "core/io/Connection.h"         // for Connection
+#include "core/io/ConnectionAcceptor.h"  // for ConnectionAcceptor
 #include "mocks/ConnectionAcceptorListenerMock.h"
 #include "mocks/ConnectionErrorListenerMock.h"
 #include "mocks/ContainerListenerMock.h"
+
+namespace core { namespace exceptions { class ConnectException; } }
 
 using namespace std;
 using namespace core::base;

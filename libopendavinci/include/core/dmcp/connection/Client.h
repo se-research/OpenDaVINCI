@@ -20,17 +20,26 @@
 #ifndef OPENDAVINCI_DMCP_CONNECTION_CLIENT_H_
 #define OPENDAVINCI_DMCP_CONNECTION_CLIENT_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <vector>
 
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/base/Condition.h"
 #include "core/base/KeyValueConfiguration.h"
-#include "core/data/Container.h"
-#include "core/dmcp/SuperComponentStateListener.h"
+#include "core/base/Mutex.h"
 #include "core/io/Connection.h"
 #include "core/io/ConnectionErrorListener.h"
+#include "core/io/conference/ContainerListener.h"
+#include "generated/coredata/dmcp/ModuleDescriptor.h"
+#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "generated/coredata/dmcp/ModuleStateMessage.h"
+#include "generated/coredata/dmcp/PulseMessage.h"
+#include "generated/coredata/dmcp/RuntimeStatistic.h"
+#include "generated/coredata/dmcp/ServerInformation.h"
 
-#include "GeneratedHeaders_CoreData.h"
+namespace coredata { class Configuration; }
+namespace core { namespace data { class Container; } }
+namespace core { namespace dmcp { class SupercomponentStateListener; } }
 
 namespace core {
     namespace dmcp {

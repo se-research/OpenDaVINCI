@@ -17,8 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/base/module/MasterModule.h"
+#include <exception>
+#include <iostream>
+
 #include "core/base/SerializationFactory.h"
+#include "core/base/module/MasterModule.h"
+#include "generated/coredata/dmcp/ModuleStateMessage.h"
 
 namespace core {
     namespace base {

@@ -21,16 +21,20 @@
 #ifndef COCKPIT_PLUGINS_IRUSMAP_IRUSMAPPLUGIN_H_
 #define COCKPIT_PLUGINS_IRUSMAP_IRUSMAPPLUGIN_H_
 
-#include "core/base/KeyValueConfiguration.h"
+#include <string>
 
 #include "plugins/PlugIn.h"
-#include "plugins/irusmap/IrUsMapWidgetControl.h"
+
+class QWidget;
+namespace core { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
 
     namespace plugins {
 
         namespace irusmap {
+
+class IrUsMapWidgetControl;
 
             using namespace std;
 

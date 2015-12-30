@@ -21,14 +21,18 @@
 #ifndef COCKPIT_PLUGINS_SPYWIDGET_H_
 #define COCKPIT_PLUGINS_SPYWIDGET_H_
 
+#include <qobjectdefs.h>
+#include <qwidget.h>
+
 #include <map>
-#include <cstring>
+#include <string>
 
 #include "core/data/Container.h"
 #include "core/io/conference/ContainerListener.h"
 
-#include "plugins/PlugIn.h"
-#include "QtIncludes.h"
+class QTreeWidget;
+class QTreeWidgetItem;
+namespace cockpit { namespace plugins { class PlugIn; } }
 
 namespace cockpit {
 

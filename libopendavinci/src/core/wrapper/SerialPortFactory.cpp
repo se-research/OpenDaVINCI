@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include "core/wrapper/SerialPort.h"
 #include "core/wrapper/SerialPortFactory.h"
 
 namespace core {

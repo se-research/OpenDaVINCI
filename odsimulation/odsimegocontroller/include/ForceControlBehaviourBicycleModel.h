@@ -20,9 +20,10 @@
 #ifndef EGOCONTROLLER_FORCECONTROLBEHAVIOURBICYCLEMODEL_H_
 #define EGOCONTROLLER_FORCECONTROLBEHAVIOURBICYCLEMODEL_H_
 
-#include "core/data/TimeStamp.h"
-
 #include "ControlBehaviour.h"
+#include "core/data/TimeStamp.h"
+#include "hesperia/data/environment/EgoState.h"
+#include "hesperia/data/environment/Point3.h"
 
 namespace egocontroller {
 

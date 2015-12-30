@@ -17,17 +17,30 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "core/base/Hash.h"
+#include <istream>
+#include <string>
+#include <vector>
+
+#include "core/platform.h"
+#include "core/SharedPointer.h"
 #include "core/base/Deserializer.h"
+#include "core/base/Hash.h"
+#include "core/base/Serializable.h"
 #include "core/base/SerializationFactory.h"
 #include "core/base/Serializer.h"
+#include "core/macros.h"
+#include "hesperia/data/situation/Behavior.h"
 #include "hesperia/data/situation/Immediately.h"
-#include "hesperia/data/situation/OnMoving.h"
 #include "hesperia/data/situation/OnEnteringPolygon.h"
-#include "hesperia/data/situation/ReturnToStart.h"
-#include "hesperia/data/situation/Stop.h"
-#include "hesperia/data/situation/WarpToStart.h"
+#include "hesperia/data/situation/OnMoving.h"
+#include "hesperia/data/situation/PointID.h"
 #include "hesperia/data/situation/PointIDDriver.h"
+#include "hesperia/data/situation/ReturnToStart.h"
+#include "hesperia/data/situation/SituationVisitor.h"
+#include "hesperia/data/situation/StartType.h"
+#include "hesperia/data/situation/Stop.h"
+#include "hesperia/data/situation/StopType.h"
+#include "hesperia/data/situation/WarpToStart.h"
 
 namespace hesperia {
     namespace data {

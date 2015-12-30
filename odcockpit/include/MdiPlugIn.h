@@ -21,11 +21,16 @@
 #ifndef MDIPLUGIN_H_
 #define MDIPLUGIN_H_
 
-#include "QtIncludes.h"
+#include <Qt/qmdisubwindow.h>
+#include <qnamespace.h>
+#include <qobjectdefs.h>
 
-#include "plugins/PlugIn.h"
+class QCloseEvent;
+class QWidget;
 
 namespace cockpit {
+
+namespace plugins { class PlugIn; }
 
     using namespace std;
 

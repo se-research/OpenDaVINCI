@@ -17,12 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <sstream>
+#include <iostream>
+#include <string>
+#include <vector>
 
-#include "core/io/conference/ContainerConferenceFactory.h"
-
+#include "context/base/RuntimeControlInterface.h"
+#include "context/base/StandaloneRuntimeControl.h"
+#include "core/base/KeyValueConfiguration.h"
 #include "vehiclecontext/VehicleRuntimeControl.h"
-
 #include "vehiclecontext/model/SimplifiedBicycleModel.h"
 
 namespace vehiclecontext {

@@ -21,11 +21,12 @@
 #ifndef CONFIGURATIONVIEWERWIDGET_H_
 #define CONFIGURATIONVIEWERWIDGET_H_
 
-#include "core/base/KeyValueConfiguration.h"
+#include <qobjectdefs.h>
+#include <qwidget.h>
 
-#include "QtIncludes.h"
-
-#include "plugins/PlugIn.h"
+class QTextEdit;
+namespace cockpit { namespace plugins { class PlugIn; } }
+namespace core { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
 

@@ -18,12 +18,17 @@
  */
 
 #include <sstream>
+#include <string>
+#include <vector>
 
-#include "core/base/Hash.h"
+#include "core/platform.h"
+#include "core/SharedPointer.h"
 #include "core/base/Deserializer.h"
+#include "core/base/Hash.h"
+#include "core/base/Serializable.h"
 #include "core/base/SerializationFactory.h"
 #include "core/base/Serializer.h"
-
+#include "hesperia/data/environment/Point3.h"
 #include "hesperia/data/planning/Route.h"
 
 namespace hesperia {

@@ -20,17 +20,16 @@
 #ifndef CONTEXT_TIMEFACTORYTESTSUITE_H_
 #define CONTEXT_TIMEFACTORYTESTSUITE_H_
 
-#include "cxxtest/TestSuite.h"
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include <iostream>
-
-#include "core/macros.h"
-#include "core/SharedPointer.h"
-#include "core/data/TimeStamp.h"
-#include "core/wrapper/TimeFactory.h"
-#include "core/wrapper/Time.h"
-#include "context/base/ControlledTime.h"
+#include "context/base/ControlledTime.h"  // for ControlledTime
 #include "context/base/ControlledTimeFactory.h"
+#include "core/SharedPointer.h"         // for SharedPointer
+#include "core/data/TimeStamp.h"        // for TimeStamp
+#include "core/macros.h"
+#include "core/wrapper/TimeFactory.h"   // for TimeFactory
+
+namespace core { namespace wrapper { class Time; } }
 
 using namespace std;
 using namespace core;

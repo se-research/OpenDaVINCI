@@ -20,9 +20,15 @@
 #ifndef REDIRECTOR_H_
 #define REDIRECTOR_H_
 
+#include <map>
+#include <string>
+
+#include "core/platform.h"
 #include "core/SharedPointer.h"
-#include "core/wrapper/SharedMemory.h"
 #include "core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
+
+namespace core { namespace wrapper { class SharedMemory; } }
 
 namespace odredirector {
 

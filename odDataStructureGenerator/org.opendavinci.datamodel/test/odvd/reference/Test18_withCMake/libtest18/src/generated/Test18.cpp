@@ -4,6 +4,7 @@
  * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
  */
 
+#include <cstring>
 #include "core/macros.h"
 
 #include "core/base/Hash.h"

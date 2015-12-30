@@ -18,17 +18,21 @@
  */
 
 #include <cerrno>
-#include <exception>
-#include <sstream>
+#include <iostream>
+#include <string>
 
-#include "core/macros.h"
 #include "core/base/Lock.h"
+#include "core/base/Mutex.h"
 #include "core/exceptions/Exceptions.h"
+#include "core/macros.h"
 #include "core/wrapper/parser/ASTNode.h"
-#include "core/wrapper/parser/ASTPrettyPrinter.h"
-
-#include "hesperia/scenario/ScenarioFactory.h"
+#include "core/wrapper/parser/ParserError.h"
+#include "core/wrapper/parser/ParserErrorExtendedData.h"
+#include "core/wrapper/parser/ParserToken.h"
+#include "core/wrapper/parser/ParserTokenExtendedData.h"
+#include "hesperia/data/scenario/Scenario.h"
 #include "hesperia/scenario/SCNGrammar.h"
+#include "hesperia/scenario/ScenarioFactory.h"
 #include "hesperia/scenario/SCNScenarioVisitor.h"
 
 namespace hesperia {

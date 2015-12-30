@@ -19,9 +19,12 @@
 
 #include <algorithm>
 #include <fstream>
+#include <functional>
+#include <sstream>
 
-#include "core/base/CommandLineParser.h"
 #include "context/base/CommandLineInterface.h"
+#include "core/base/CommandLineArgument.h"
+#include "core/base/CommandLineParser.h"
 
 namespace context {
     namespace base {
@@ -33,8 +36,8 @@ namespace context {
             m_configuration(),
             m_multicastGroup(),
             m_CID(),
-			m_isVerbose(false),
-			m_isSupercomponent(false) {}
+            m_isVerbose(false),
+            m_isSupercomponent(false) {}
 
         CommandLineInterface::~CommandLineInterface() {}
 
@@ -77,17 +80,17 @@ namespace context {
             }
 
             if (cmdArgumentVERBOSE.isSet()) {
-            	string value = cmdArgumentVERBOSE.getValue<string>();
+                string value = cmdArgumentVERBOSE.getValue<string>();
                 transform(value.begin(), value.end(), value.begin(), ptr_fun(::tolower));
 
-            	m_isVerbose = (value == "true");
+                m_isVerbose = (value == "true");
             }
 
             if (cmdArgumentSUPERCOMPONENT.isSet()) {
-            	string value = cmdArgumentSUPERCOMPONENT.getValue<string>();
+                string value = cmdArgumentSUPERCOMPONENT.getValue<string>();
                 transform(value.begin(), value.end(), value.begin(), ptr_fun(::tolower));
 
-            	m_isSupercomponent = (value == "true");
+                m_isSupercomponent = (value == "true");
             }
 
             return retVal;
@@ -106,11 +109,11 @@ namespace context {
         }
 
         bool CommandLineInterface::isVerbose() const {
-        	return m_isVerbose;
+            return m_isVerbose;
         }
 
         bool CommandLineInterface::isSupercomponent() const {
-        	return m_isSupercomponent;
+            return m_isSupercomponent;
         }
 
     }

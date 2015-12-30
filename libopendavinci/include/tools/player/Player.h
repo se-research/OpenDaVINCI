@@ -20,19 +20,22 @@
 #ifndef OPENDAVINCI_TOOLS_PLAYER_PLAYER_H_
 #define OPENDAVINCI_TOOLS_PLAYER_PLAYER_H_
 
-#include <iostream>
+#include <iosfwd>
 #include <map>
+#include <memory>
 #include <string>
 
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/SharedPointer.h"
 #include "core/data/Container.h"
 #include "core/io/URL.h"
 #include "core/wrapper/SharedMemory.h"
 
-#include "tools/player/PlayerCache.h"
-
 namespace tools {
     namespace player {
+
+class PlayerCache;
 
         using namespace std;
 

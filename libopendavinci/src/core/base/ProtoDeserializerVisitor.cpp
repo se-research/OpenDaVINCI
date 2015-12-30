@@ -17,11 +17,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/base/ProtoSerializerVisitor.h"
+#include <cstring>
+#include <iostream>
+
 #include "core/base/ProtoDeserializerVisitor.h"
+#include "core/base/ProtoSerializerVisitor.h"
+#include "core/macros.h"
 
 namespace core {
     namespace base {
+
+class Serializable;
 
         ProtoDeserializerVisitor::ProtoDeserializerVisitor() :
             m_size(0),

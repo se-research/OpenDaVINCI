@@ -31,6 +31,10 @@
 # endif
 #endif
 
+#include "core/io/ConnectionListener.h"
+#include "core/io/StringListener.h"
+#include "core/wrapper/Mutex.h"
+#include "core/wrapper/Thread.h"
 #include "core/wrapper/ConcurrencyFactory.h"
 #include "core/wrapper/MutexFactory.h"
 #include "core/wrapper/SerialPort.h"

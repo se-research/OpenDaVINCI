@@ -19,18 +19,24 @@
 
 #include <algorithm>
 #include <iostream>
+#include <map>
+#include <sstream>
 #include <string>
 #include <vector>
 
+#include "core/platform.h"
 #include "core/macros.h"
-
-#include "GeneratedHeaders_AutomotiveData.h"
+#include "core/strings/StringComparator.h"
+#include "generated/cartesian/Constants.h"
 #include "hesperia/data/environment/Point3.h"
+#include "hesperia/threeD/Material.h"
 #include "hesperia/threeD/NodeDescriptor.h"
 #include "hesperia/threeD/TextureManager.h"
-#include "hesperia/threeD/models/Triangle.h"
-#include "hesperia/threeD/models/TriangleSet.h"
+#include "hesperia/threeD/TransformGroup.h"
 #include "hesperia/threeD/loaders/OBJXArchive.h"
+#include "hesperia/threeD/models/TriangleSet.h"
+
+namespace core { namespace wrapper { class Image; } }
 
 namespace hesperia {
     namespace threeD {

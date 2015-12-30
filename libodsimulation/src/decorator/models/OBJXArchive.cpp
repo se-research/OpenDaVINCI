@@ -19,18 +19,21 @@
 
 #include <algorithm>
 #include <iostream>
+#include <map>
+#include <sstream>
 #include <string>
 #include <vector>
 
 #include "core/macros.h"
-#include "GeneratedHeaders_AutomotiveData.h"
+#include "core/platform.h"
+#include "core/strings/StringComparator.h"
 #include "hesperia/data/environment/Point3.h"
-
+#include "hesperia/decorator/models/Material.h"
 #include "hesperia/decorator/models/OBJXArchive.h"
 #include "hesperia/decorator/models/Triangle.h"
 #include "hesperia/decorator/models/TriangleSet.h"
 
-#include "hesperia/threeD/TextureManager.h"
+namespace core { namespace wrapper { class Image; } }
 
 namespace hesperia {
     namespace decorator {

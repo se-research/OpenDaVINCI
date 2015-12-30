@@ -17,10 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include "core/base/Deserializer.h"
 #include "core/base/Lock.h"
-#include "core/base/QueryableNetstringsSerializer.h"
 #include "core/base/QueryableNetstringsDeserializer.h"
+#include "core/base/QueryableNetstringsSerializer.h"
 #include "core/base/SerializationFactory.h"
+#include "core/base/Serializer.h"
 
 namespace core {
     namespace base {

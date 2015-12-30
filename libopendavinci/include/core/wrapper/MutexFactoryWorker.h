@@ -28,8 +28,6 @@
 namespace core {
     namespace wrapper {
 
-        using namespace std;
-
         /**
          * This template class provides factory methods to the
          * MutexFactory. The factory methods' implementations

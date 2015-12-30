@@ -19,13 +19,13 @@
 
 #include <fstream>
 #include <iostream>
-
-#include "core/SharedPointer.h"
-#include "core/data/Container.h"
-
-#include "GeneratedHeaders_CoreData.h"
+#include <string>
 
 #include "RecIntegrity.h"
+#include "core/base/Serializable.h"
+#include "core/data/Container.h"
+#include "generated/coredata/SharedData.h"
+#include "generated/coredata/image/SharedImage.h"
 
 namespace odrecintegrity {
 

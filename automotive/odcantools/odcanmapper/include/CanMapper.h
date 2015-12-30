@@ -22,9 +22,11 @@
 #define CANMAPPER_H_
 
 #include <core/base/module/DataTriggeredConferenceClientModule.h>
+#include <stdint.h>
 
-#include "GeneratedHeaders_AutomotiveData.h"
 #include "GeneratedHeaders_CANMessageMapping.h"
+
+namespace core { namespace data { class Container; } }
 
 namespace automotive {
     namespace odcantools {

@@ -20,14 +20,14 @@
 #ifndef CORE_NETSTRINGSPROTOCOLTESTSUITE_H_
 #define CORE_NETSTRINGSPROTOCOLTESTSUITE_H_
 
-#include "cxxtest/TestSuite.h"
+#include <iostream>                     // for operator<<, basic_ostream, etc
+#include <string>                       // for string, char_traits, etc
 
-#include <iostream>
-#include <sstream>
-#include <string>
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
+#include "core/io/StringListener.h"     // for StringListener
+#include "core/io/StringSender.h"       // for StringSender
 #include "core/io/protocol/NetstringsProtocol.h"
-#include "core/io/StringListener.h"
 
 using namespace std;
 

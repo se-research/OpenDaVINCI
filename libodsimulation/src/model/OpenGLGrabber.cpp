@@ -17,30 +17,29 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <cmath>
-#include <cstdlib>
-
 #include <GL/gl.h>
-#include <GL/glut.h>
+#include <string>
 
+#include "core/platform.h"
+#include "core/SharedPointer.h"
+#include "core/base/KeyValueConfiguration.h"
 #include "core/base/Thread.h"
 #include "core/io/URL.h"
-#include "core/wrapper/ImageFactory.h"
 #include "core/wrapper/SharedMemoryFactory.h"
-
-#include "GeneratedHeaders_AutomotiveData.h"
-#include "hesperia/data/environment/Point3.h"
-#include "hesperia/scenario/GroundBasedComplexModelLoader.h"
-#include "hesperia/scenario/SCNXArchive.h"
-#include "hesperia/scenario/SCNXArchiveFactory.h"
-#include "hesperia/threeD/NodeDescriptor.h"
-#include "hesperia/threeD/RenderingConfiguration.h"
+#include "core/wrapper/ImageFactory.h"
+#include "hesperia/data/camera/ImageGrabberID.h"
 #include "hesperia/threeD/decorator/DecoratorFactory.h"
+#include "hesperia/io/camera/ImageGrabber.h"
+#include "hesperia/scenario/SCNXArchiveFactory.h"
+#include "vehiclecontext/model/OpenGLGrabber.h"
 #include "hesperia/threeD/models/CheckerBoard.h"
 #include "hesperia/threeD/models/Grid.h"
 #include "hesperia/threeD/models/XYZAxes.h"
+#include "hesperia/threeD/RenderingConfiguration.h"
 
-#include "vehiclecontext/model/OpenGLGrabber.h"
+namespace core { namespace wrapper { class Image; } }
+namespace hesperia { namespace data { namespace camera { class ImageGrabberCalibration; } } }
+namespace hesperia { namespace scenario { class SCNXArchive; } }
 
 namespace vehiclecontext {
     namespace model {
