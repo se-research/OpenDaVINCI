@@ -22,9 +22,9 @@
 #define SUPERCOMPONENT_CONNECTEDMODULE_H_
 
 #include "core/SharedPointer.h"
-#include "core/dmcp/connection/ModuleConnection.h"
+#include "generated/coredata/dmcp/ModuleStateMessage.h"
 
-#include "GeneratedHeaders_CoreData.h"
+namespace core { namespace dmcp { namespace connection { class ModuleConnection; } } }
 
 namespace odsupercomponent {
 

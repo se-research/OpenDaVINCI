@@ -18,14 +18,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <cstdlib>
 #include <algorithm>
 
-#include "ConnectedModules.h"
+#include "core/platform.h"
 
-#include "core/strings/StringToolbox.h"
+#include "ConnectedModule.h"
+#include "ConnectedModules.h"
 #include "core/base/Lock.h"
 #include "core/base/Thread.h"
+#include "core/data/Container.h"
+#include "core/data/TimeStamp.h"
+#include "core/dmcp/connection/ModuleConnection.h"
+#include "generated/coredata/dmcp/ModuleDescriptor.h"
+#include "generated/coredata/dmcp/PulseMessage.h"
 
 namespace odsupercomponent {
 
