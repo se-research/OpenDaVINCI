@@ -25,13 +25,12 @@
 
 // platform.h must be included as first header file for definition of _WIN32_WINNT.
 #include "core/platform.h"
+#include "core/base/Serializer.h"
 #include "core/base/Deserializer.h"
 #include "core/base/Visitor.h"
 
 namespace core {
     namespace base {
-
-class Serializable;
 
         using namespace std;
 
