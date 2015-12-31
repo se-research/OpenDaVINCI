@@ -37,3 +37,6 @@ for i in $(find . -name "*.1" | grep -v "build" | grep -v "git" | grep -v "3rdPa
     cat $i | sed -e 's/\".*\"\ \".*\"\ /\"%ODDATE%\"\ \"%ODVERSION%\"\ /' | sed s/%ODVERSION%/$OD_VERSION/ | sed s/%ODDATE%/$OD_DATE/ | tr -s "%" " "  > $i.new && mv $i.new $i
 done
 
+echo "Updating VERSION"
+echo $OD_VERSION > VERSION
+
