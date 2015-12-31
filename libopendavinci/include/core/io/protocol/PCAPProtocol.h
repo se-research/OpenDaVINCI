@@ -26,6 +26,8 @@
 #include <sstream>
 
 #include "core/base/Mutex.h"
+#include "core/data/Container.h"
+#include "core/io/conference/ContainerListener.h"
 #include "core/io/conference/ContainerObserver.h"
 #include "core/io/protocol/AbstractProtocol.h"
 
