@@ -18,8 +18,7 @@
  */
 
 #include "SimpleControlBehaviour.h"
-
-#include "GeneratedHeaders_AutomotiveData.h"
+#include "generated/cartesian/Constants.h"
 #include "hesperia/data/environment/Point3.h"
 
 namespace egocontroller {

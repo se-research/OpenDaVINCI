@@ -17,11 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include "core/io/tcp/TCPAcceptor.h"
+#include "core/io/tcp/TCPConnection.h"
 #include "core/io/tcp/TCPFactory.h"
-
-#include "core/wrapper/Libraries.h"
 #include "core/wrapper/ConfigurationTraits.h"
-#include "core/wrapper/TCPFactoryWorker.h"
+#include "core/wrapper/Libraries.h"
+#include "core/wrapper/NetworkLibraryProducts.h"
 
 #ifdef WIN32
     #include "core/wrapper/WIN32/WIN32TCPFactoryWorker.h"

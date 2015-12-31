@@ -20,11 +20,15 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_WIN32IMPL_WIN32TCPACCEPTOR_H_
 #define OPENDAVINCI_CORE_WRAPPER_WIN32IMPL_WIN32TCPACCEPTOR_H_
 
+#include <memory>
+
 // core/platform.h must be included to setup platform-dependent header files and configurations.
 #include "core/platform.h"
 
 #include "core/SharedPointer.h"
 #include "core/io/tcp/TCPAcceptor.h"
+#include "core/io/tcp/TCPAcceptorListener.h"
+#include "core/io/tcp/TCPConnection.h"
 #include "core/wrapper/Runnable.h"
 #include "core/wrapper/Thread.h"
 #include "core/wrapper/Mutex.h"

@@ -20,15 +20,19 @@
 #ifndef CANDEVICE_H_
 #define CANDEVICE_H_
 
+#include <memory>
+#include <string>
+
 #include <libpcan.h>
 
 #include <core/base/Service.h>
 
-#include "GenericCANMessageListener.h"
-#include "MessageToCANDataStore.h"
+namespace automotive { class GenericCANMessage; }
 
 namespace automotive {
     namespace odcantools {
+
+class GenericCANMessageListener;
 
         using namespace std;
 

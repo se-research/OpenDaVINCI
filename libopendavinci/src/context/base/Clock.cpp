@@ -22,8 +22,6 @@
 namespace context {
     namespace base {
 
-        using namespace std;
-
         Clock::Clock() :
             m_theTime() {}
 

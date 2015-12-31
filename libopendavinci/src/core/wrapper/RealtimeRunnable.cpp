@@ -17,6 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#ifdef HAVE_LINUX_RT
+    #include <sched.h>
+    #include <sys/time.h>
+#endif
+#include <string>
+
 #include "core/data/TimeStamp.h"
 #include "core/wrapper/RealtimeRunnable.h"
 

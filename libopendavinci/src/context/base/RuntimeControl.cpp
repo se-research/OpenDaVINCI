@@ -21,16 +21,26 @@
 #include <iostream>
 #include <string>
 
+#include "context/base/Clock.h"
+#include "context/base/ControlledContainerConferenceFactory.h"
+#include "context/base/ControlledTime.h"
+#include "context/base/ControlledTimeFactory.h"
+#include "context/base/RuntimeControl.h"
+#include "context/base/RuntimeControlInterface.h"
+#include "context/base/RuntimeEnvironment.h"
+#include "context/base/SuperComponent.h"
+#include "context/base/SystemFeedbackComponent.h"
+#include "context/base/SystemReportingComponent.h"
+#include "context/base/TimeTriggeredConferenceClientModuleRunner.h"
 #include "core/base/Lock.h"
-#include "core/base/Thread.h"
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
 #include "core/data/TimeStamp.h"
 #include "core/exceptions/Exceptions.h"
 #include "core/io/conference/ContainerConferenceFactory.h"
-#include "context/base/Clock.h"
-#include "context/base/RunModuleBreakpoint.h"
-#include "context/base/RuntimeControl.h"
-#include "context/base/TimeConstants.h"
+#include "core/macros.h"
+#include "core/wrapper/Time.h"
+#include "generated/coredata/dmcp/ModuleStateMessage.h"
+
+namespace core { namespace base { namespace module { class TimeTriggeredConferenceClientModule; } } }
 
 namespace context {
     namespace base {

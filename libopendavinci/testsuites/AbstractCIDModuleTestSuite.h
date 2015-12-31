@@ -20,15 +20,21 @@
 #ifndef CORE_ABSTRACTCIDMODULETESTSUITE_H_
 #define CORE_ABSTRACTCIDMODULETESTSUITE_H_
 
-#include "cxxtest/TestSuite.h"
+#include <cerrno>                       // for errno
+#include <iostream>                     // for basic_ostream, clog, endl, etc
+#include <string>                       // for string, operator==, etc
+#include <vector>                       // for vector, vector<>::iterator
 
-#include <cerrno>
-#include <iostream>
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/base/module/AbstractCIDModule.h"
-#include "core/base/Service.h"
-#include "core/base/Thread.h"
-#include "core/exceptions/Exceptions.h"
+#include "core/platform.h"
+#include "core/base/Service.h"          // for Service
+#include "core/base/Thread.h"           // for Thread
+#include "core/base/module/AbstractCIDModule.h"  // for AbstractCIDModule
+#include "core/exceptions/Exceptions.h"  // for InvalidArgumentException
+#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
+
+namespace core { namespace base { namespace module { class AbstractModule; } } }
 
 using namespace std;
 using namespace core::base;

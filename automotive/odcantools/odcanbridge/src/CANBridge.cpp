@@ -19,14 +19,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <iostream>
+#include <vector>
 
 #include "core/base/Thread.h"
 #include "core/data/Container.h"
-#include "core/data/TimeStamp.h"
-#include "GeneratedHeaders_AutomotiveData.h"
+#include "tools/recorder/Recorder.h"
+#include "generated/automotive/GenericCANMessage.h"
 
 #include "CANBridge.h"
+#include "CANDevice.h"
+#include "MessageToCANDataStore.h"
 
 namespace automotive {
     namespace odcantools {

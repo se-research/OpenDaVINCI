@@ -20,15 +20,15 @@
 #ifndef OPENDAVINCI_CORE_BASE_LOCK_H_
 #define OPENDAVINCI_CORE_BASE_LOCK_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
 #include "core/platform.h"
-
-#include "core/base/Mutex.h"
 #include "core/SharedPointer.h"
 #include "core/wrapper/SharedMemory.h"
 
 namespace core {
     namespace base {
+
+class Mutex;
 
         using namespace std;
 

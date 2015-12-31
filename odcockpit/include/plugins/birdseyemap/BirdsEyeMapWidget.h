@@ -20,29 +20,43 @@
 #ifndef PLUGINS_BIRDSEYEMAP_BIRDSEYEMAPWIDGET_H_
 #define PLUGINS_BIRDSEYEMAP_BIRDSEYEMAPWIDGET_H_
 
+#include <qobjectdefs.h>
+#include <qstring.h>
+#include <qwidget.h>
+
 #include <map>
 #include <string>
-
-#include "QtIncludes.h"
+#include <vector>
 
 #include "core/base/Mutex.h"
-#include "core/base/TreeNode.h"
+#include "core/io/conference/ContainerListener.h"
 #include "core/strings/StringComparator.h"
-
+#include "hesperia/scenegraph/SceneNodeDescriptor.h"
 #include "plugins/birdseyemap/CameraAssignableNodesListener.h"
-#include "plugins/birdseyemap/BirdsEyeMapMapWidget.h"
-#include "plugins/birdseyemap/SelectableNodeDescriptor.h"
 #include "plugins/birdseyemap/SelectableNodeDescriptorTreeListener.h"
+
+class QComboBox;
+class QSpinBox;
+class QTreeWidget;
+class QTreeWidgetItem;
+namespace cockpit { namespace plugins { class PlugIn; } }
+namespace core { namespace base { template <typename T> class TreeNode; } }
+namespace core { namespace data { class Container; } }
 
 namespace cockpit {
     namespace plugins {
         namespace birdseyemap {
+
+            using namespace std;
 
             /**
              * This class is the outer container for the 2D scene graph viewer
              * implemented in BirdsEyeMapMapWidget and a tree like data
              * structure on its right hand side.
              */
+class BirdsEyeMapMapWidget;
+class SelectableNodeDescriptor;
+
             class BirdsEyeMapWidget : public QWidget, public core::io::conference::ContainerListener, public CameraAssignableNodesListener, public SelectableNodeDescriptorTreeListener {
 
                 Q_OBJECT

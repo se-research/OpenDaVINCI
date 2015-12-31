@@ -22,8 +22,6 @@
 namespace context {
     namespace base {
 
-        using namespace std;
-
         ControlledTime::ControlledTime() :
             Time(),
             m_seconds(0),

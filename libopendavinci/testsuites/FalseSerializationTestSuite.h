@@ -20,18 +20,18 @@
 #ifndef CORE_FALSESERIALIZATIONTESTSUITE_H_
 #define CORE_FALSESERIALIZATIONTESTSUITE_H_
 
-#include "cxxtest/TestSuite.h"
+#include <iostream>                     // for stringstream, istream, etc
+#include <string>                       // for operator==, string, etc
 
-#include <iostream>
-#include <sstream>
-#include <string>
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/base/Hash.h"
-#include "core/base/Serializable.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
-#include "core/base/Deserializer.h"
-#include "core/data/TimeStamp.h"
+#include "core/SharedPointer.h"         // for SharedPointer
+#include "core/base/Deserializer.h"     // for Deserializer
+#include "core/base/Hash.h"             // for CharList, CRC32, etc
+#include "core/base/Serializable.h"     // for operator<<, operator>>, etc
+#include "core/base/SerializationFactory.h"  // for SerializationFactory
+#include "core/base/Serializer.h"       // for Serializer
+#include "core/data/TimeStamp.h"        // for TimeStamp
 
 using namespace std;
 using namespace core::base;

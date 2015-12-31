@@ -18,6 +18,10 @@
  */
 
 #include "core/wrapper/parser/Grammar.h"
+#include "core/wrapper/parser/ParserErrorExtendedData.h"
+#include "core/wrapper/parser/ParserErrorListener.h"
+#include "core/wrapper/parser/ParserTokenExtendedData.h"
+#include "core/wrapper/parser/ParserTokenListener.h"
 
 namespace core {
     namespace wrapper {

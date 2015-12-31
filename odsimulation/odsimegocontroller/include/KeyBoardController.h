@@ -21,9 +21,11 @@
 #define EGOCONTROLLER_KEABOARDCONTROLLER_H_
 
 #include "Controller.h"
-#include "ControlBehaviour.h"
+#include "hesperia/data/environment/EgoState.h"
 
 namespace egocontroller {
+
+class ControlBehaviour;
 
     using namespace std;
 

@@ -18,20 +18,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
+#include <Qt/qlabel.h>
+#include <Qt/qspinbox.h>
+#include <qboxlayout.h>
+#include <qstring.h>
 
-#include <algorithm>
-
-#include "QtIncludes.h"
-
-#include "core/macros.h"
+#include "core/platform.h"
 #include "core/base/Lock.h"
-#include "core/data/Container.h"
-
+#include "core/macros.h"
 #include "plugins/irusmap/IrUsMapWidget.h"
 #include "plugins/irusmap/IrUsMapWidgetControl.h"
+
+namespace cockpit { namespace plugins { class PlugIn; } }
+namespace core { namespace base { class KeyValueConfiguration; } }
+namespace core { namespace data { class Container; } }
 
 namespace cockpit {
 

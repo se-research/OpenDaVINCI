@@ -20,15 +20,13 @@
 #ifndef OPENDAVINCI_CORE_IO_STRINGOBSERVER_H_
 #define OPENDAVINCI_CORE_IO_STRINGOBSERVER_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
 #include "core/platform.h"
-
-#include "core/io/StringListener.h"
 
 namespace core {
     namespace io {
 
-        using namespace std;
+class StringListener;
 
         /**
          * This class provides an interface for registering

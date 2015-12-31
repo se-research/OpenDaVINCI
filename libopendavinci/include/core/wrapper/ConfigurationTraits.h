@@ -23,8 +23,6 @@
 namespace core {
     namespace wrapper {
 
-        using namespace std;
-
         /**
          * This template classes describe the configuration of a certain
          * product type.

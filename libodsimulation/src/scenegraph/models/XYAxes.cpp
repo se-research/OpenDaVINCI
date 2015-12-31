@@ -17,7 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "GeneratedHeaders_AutomotiveData.h"
+#include "hesperia/data/environment/Point3.h"
+#include "hesperia/scenegraph/SceneNode.h"
+#include "hesperia/scenegraph/SceneNodeDescriptor.h"
 #include "hesperia/scenegraph/models/XYAxes.h"
 
 namespace hesperia {

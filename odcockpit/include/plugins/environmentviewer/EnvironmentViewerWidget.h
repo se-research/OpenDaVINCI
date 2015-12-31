@@ -21,20 +21,28 @@
 #ifndef PLUGINS_ENVIRONMENTVIEWER_ENVIRONMENTVIEWERWIDGET_H_
 #define PLUGINS_ENVIRONMENTVIEWER_ENVIRONMENTVIEWERWIDGET_H_
 
+#include <qobjectdefs.h>
+#include <qstring.h>
+#include <qwidget.h>
+
 #include <map>
 #include <string>
-
-#include "QtIncludes.h"
+#include <vector>
 
 #include "core/base/Mutex.h"
-#include "core/base/TreeNode.h"
+#include "core/io/conference/ContainerListener.h"
 #include "core/strings/StringComparator.h"
-
-#include "plugins/GLControlFrame.h"
+#include "hesperia/threeD/NodeDescriptor.h"
 #include "plugins/environmentviewer/CameraAssignableNodesListener.h"
-#include "plugins/environmentviewer/EnvironmentViewerGLWidget.h"
-#include "plugins/environmentviewer/SelectableNodeDescriptor.h"
 #include "plugins/environmentviewer/SelectableNodeDescriptorTreeListener.h"
+
+class QComboBox;
+class QTreeWidget;
+class QTreeWidgetItem;
+namespace cockpit { namespace plugins { class GLControlFrame; } }
+namespace cockpit { namespace plugins { class PlugIn; } }
+namespace core { namespace base { template <typename T> class TreeNode; } }
+namespace core { namespace data { class Container; } }
 
 namespace cockpit {
     namespace plugins {
@@ -45,6 +53,9 @@ namespace cockpit {
              * implemented in EnvironmentViewerGLWidget and a tree like data
              * structure on its right hand side.
              */
+class EnvironmentViewerGLWidget;
+class SelectableNodeDescriptor;
+
             class EnvironmentViewerWidget : public QWidget, public core::io::conference::ContainerListener, public CameraAssignableNodesListener, public SelectableNodeDescriptorTreeListener {
 
                 Q_OBJECT

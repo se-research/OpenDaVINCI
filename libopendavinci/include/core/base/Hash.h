@@ -36,8 +36,6 @@
 namespace core {
     namespace base {
 
-        using namespace std;
-
         /** This is the CRC32 polynomial. */
         const uint32_t CRC32POLYNOMIAL = 0x04C11DB7;
 

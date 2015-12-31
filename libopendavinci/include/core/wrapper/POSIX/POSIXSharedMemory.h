@@ -20,13 +20,15 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXSHAREDMEMORY_H_
 #define OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXSHAREDMEMORY_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
+#include <semaphore.h>
+#include <string>
+
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
 #include "core/platform.h"
-
 #include "core/wrapper/SharedMemory.h"
-#include "core/wrapper/SharedMemoryFactoryWorker.h"
+#include "core/wrapper/SystemLibraryProducts.h"
 
-#include "core/wrapper/POSIX/POSIXMutex.h"
+namespace core { namespace wrapper { template <core::wrapper::SystemLibraryProducts product> class SharedMemoryFactoryWorker; } }
 
 namespace core {
     namespace wrapper {

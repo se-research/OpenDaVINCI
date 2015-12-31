@@ -20,10 +20,14 @@
 #ifndef EGOCONTROLLER_JOYSTICKCONTROLLER_H_
 #define EGOCONTROLLER_JOYSTICKCONTROLLER_H_
 
+#include <string>
+
 #include "Controller.h"
-#include "ControlBehaviour.h"
+#include "hesperia/data/environment/EgoState.h"
 
 namespace egocontroller {
+
+class ControlBehaviour;
 
     using namespace std;
 

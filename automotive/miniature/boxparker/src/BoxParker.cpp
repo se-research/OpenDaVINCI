@@ -17,6 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <iostream>
+
 #include "core/data/Container.h"
 
 #include "GeneratedHeaders_CoreData.h"
@@ -34,17 +36,17 @@ namespace automotive {
         using namespace automotive;
 
         BoxParker::BoxParker(const int32_t &argc, char **argv) :
-	        TimeTriggeredConferenceClientModule(argc, argv, "BoxParker") {
+            TimeTriggeredConferenceClientModule(argc, argv, "BoxParker") {
         }
 
         BoxParker::~BoxParker() {}
 
         void BoxParker::setUp() {
-	        // This method will be call automatically _before_ running body().
+            // This method will be call automatically _before_ running body().
         }
 
         void BoxParker::tearDown() {
-	        // This method will be call automatically _after_ return from body().
+            // This method will be call automatically _after_ return from body().
         }
 
         // This method will do the main data processing job.
@@ -56,17 +58,19 @@ namespace automotive {
             int stageMoving = 0;
             int stageMeasuring = 0;
 
-	        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
-		        // 1. Get most recent vehicle data:
-		        Container containerVehicleData = getKeyValueDataStore().get(Container::VEHICLEDATA);
-		        VehicleData vd = containerVehicleData.getData<VehicleData> ();
+            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+                // 1. Get most recent vehicle data:
+                Container containerVehicleData = getKeyValueDataStore().get(Container::VEHICLEDATA);
+                VehicleData vd = containerVehicleData.getData<VehicleData> ();
+cout << vd.toString() << endl;
 
-		        // 2. Get most recent sensor board data describing virtual sensor data:
-		        Container containerSensorBoardData = getKeyValueDataStore().get(Container::USER_DATA_0);
-		        SensorBoardData sbd = containerSensorBoardData.getData<SensorBoardData> ();
+                // 2. Get most recent sensor board data describing virtual sensor data:
+                Container containerSensorBoardData = getKeyValueDataStore().get(Container::USER_DATA_0);
+                SensorBoardData sbd = containerSensorBoardData.getData<SensorBoardData> ();
+cout << sbd.toString() << endl;
 
-		        // Create vehicle control data.
-		        VehicleControl vc;
+                // Create vehicle control data.
+                VehicleControl vc;
 
                 // Moving state machine.
                 if (stageMoving == 0) {
@@ -144,13 +148,13 @@ namespace automotive {
                     break;
                 }
 
-		        // Create container for finally sending the data.
-		        Container c(Container::VEHICLECONTROL, vc);
-		        // Send container.
-		        getConference().send(c);
-	        }
+                // Create container for finally sending the data.
+                Container c(Container::VEHICLECONTROL, vc);
+                // Send container.
+                getConference().send(c);
+            }
 
-	        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+            return coredata::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
     } // miniature

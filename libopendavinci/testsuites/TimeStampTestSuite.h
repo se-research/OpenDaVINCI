@@ -20,13 +20,9 @@
 #ifndef CORE_TIMESTAMPTESTSUITE_H_
 #define CORE_TIMESTAMPTESTSUITE_H_
 
-#include "cxxtest/TestSuite.h"
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include <iostream>
-#include <sstream>
-#include <string>
-
-#include "core/data/TimeStamp.h"
+#include "core/data/TimeStamp.h"        // for TimeStamp
 
 using namespace std;
 using namespace core::data;

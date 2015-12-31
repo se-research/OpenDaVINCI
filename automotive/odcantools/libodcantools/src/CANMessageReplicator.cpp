@@ -19,10 +19,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include "CANDevice.h"
 #include "CANMessageReplicator.h"
+#include "core/SharedPointer.h"
+
+namespace automotive { class GenericCANMessage; }
 
 namespace automotive {
     namespace odcantools {
+
+class CANDevice;
 
         using namespace std;
 

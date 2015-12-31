@@ -18,11 +18,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
-
+#include "core/platform.h"
+#include "ContainerObserver.h"
 #include "plugins/iruscharts/IrUsChartsPlugIn.h"
+#include "plugins/iruscharts/IrUsChartsWidget.h"
+
+class QWidget;
+namespace core { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
 

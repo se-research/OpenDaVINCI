@@ -17,6 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <GL/freeglut.h>
+
+#include "hesperia/threeD/Camera.h"
 #include "hesperia/threeD/GLUTCameraController.h"
 
 namespace hesperia {

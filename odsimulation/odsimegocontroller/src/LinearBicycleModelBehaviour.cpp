@@ -17,9 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "LinearBicycleModelBehaviour.h"
+#include <cmath>
+#include <iostream>
 
-#include "GeneratedHeaders_AutomotiveData.h"
+#include "LinearBicycleModelBehaviour.h"
+#include "generated/cartesian/Constants.h"
 #include "hesperia/data/environment/Point3.h"
 
 namespace egocontroller {

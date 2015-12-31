@@ -22,9 +22,8 @@
 
 #include <string>
 
-// native.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/native.h"
-
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/data/SerializableData.h"
 
 namespace core {

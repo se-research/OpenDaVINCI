@@ -20,18 +20,18 @@
 #ifndef OPENDAVINCI_BASE_ABSTRACTCONFERENCECLIENTMODULE_H_
 #define OPENDAVINCI_BASE_ABSTRACTCONFERENCECLIENTMODULE_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
+#include <string>
+
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
 #include "core/platform.h"
-
-#include "core/data/Container.h"
-#include "core/exceptions/Exceptions.h"
-#include "core/io/conference/ContainerConference.h"
-#include "core/io/conference/ContainerListener.h"
-
-// Include data structures that are generated for the fundamental OpenDaVINCI framework.
-#include "GeneratedHeaders_CoreData.h"
-
 #include "core/base/module/ManagedClientModule.h"
+#include "core/exceptions/Exceptions.h"
+#include "core/io/conference/ContainerListener.h"
+#include "generated/coredata/LogMessage.h"
+#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
+
+namespace core { namespace data { class Container; } }
+namespace core { namespace io { namespace conference { class ContainerConference; } } }
 
 namespace core {
     namespace base {

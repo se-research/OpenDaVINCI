@@ -22,16 +22,15 @@
 
 #include <string>
 
-#include "core/data/TimeStamp.h"
 #include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "hesperia/data/environment/Point3.h"
-
-#include "ForceControlBehaviour.h"
-#include "ForceControlBehaviourBicycleModel.h"
-#include "ForceControlBehaviourSimplifiedBicycleModel.h"
-#include "LinearBicycleModelBehaviour.h"
+#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
 namespace egocontroller {
+
+class ForceControlBehaviour;
+class ForceControlBehaviourBicycleModel;
+class ForceControlBehaviourSimplifiedBicycleModel;
+class LinearBicycleModelBehaviour;
 
     using namespace std;
 

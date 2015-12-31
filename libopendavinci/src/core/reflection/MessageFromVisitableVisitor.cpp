@@ -17,8 +17,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <cstdlib>
+#include <cstring>
+
+#include "core/SharedPointer.h"
+#include "core/base/Serializable.h"
+#include "core/base/Visitable.h"
 #include "core/reflection/Field.h"
 #include "core/reflection/MessageFromVisitableVisitor.h"
+#include "generated/coredata/reflection/AbstractField.h"
 
 namespace core {
     namespace reflection {

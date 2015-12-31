@@ -20,14 +20,20 @@
 #ifndef OPENDAVINCI_TOOLS_RECORDER_RECORDER_H_
 #define OPENDAVINCI_TOOLS_RECORDER_RECORDER_H_
 
+#include <memory>
+#include <string>
+
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/SharedPointer.h"
 #include "core/base/FIFOQueue.h"
-#include "core/data/Container.h"
 
-#include "tools/recorder/SharedDataListener.h"
+namespace core { namespace data { class Container; } }
 
 namespace tools {
     namespace recorder {
+
+class SharedDataListener;
 
         using namespace std;
 

@@ -20,15 +20,20 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXUDPRECEIVER_H_
 #define OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXUDPRECEIVER_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
+#include <netinet/in.h>
+#include <sys/socket.h>
+
+#include <memory>
+#include <string>
+
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
 #include "core/platform.h"
-
-#include "core/wrapper/Runnable.h"
-#include "core/wrapper/Thread.h"
 #include "core/io/udp/UDPReceiver.h"
-
 #include "core/wrapper/NetworkLibraryProducts.h"
-#include "core/wrapper/UDPFactoryWorker.h"
+#include "core/wrapper/Runnable.h"
+
+namespace core { namespace wrapper { class Thread; } }
+namespace core { namespace wrapper { template <core::wrapper::NetworkLibraryProducts product> class UDPFactoryWorker; } }
 
 namespace core {
     namespace wrapper {

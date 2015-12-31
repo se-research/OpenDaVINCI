@@ -23,18 +23,24 @@
 #define CANBRIDGE_H_
 
 #include <core/SharedPointer.h>
+#include <stdint.h>
+#include <memory>
+#include <string>
+
+#include "CANMessageReplicator.h"
+#include "GeneratedHeaders_CANMessageMapping.h"
+#include "GenericCANMessageListener.h"
 #include "core/base/FIFOQueue.h"
 #include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "tools/recorder/Recorder.h"
+#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
-#include "GeneratedHeaders_CANMessageMapping.h"
-
-#include "GenericCANMessageListener.h"
-#include "CANDevice.h"
-#include "CANMessageReplicator.h"
+namespace automotive { class GenericCANMessage; }
+namespace tools { namespace recorder { class Recorder; } }
 
 namespace automotive {
     namespace odcantools {
+
+class CANDevice;
 
         using namespace std;
 

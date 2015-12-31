@@ -18,19 +18,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
+#include <Qt/qcheckbox.h>
+#include <Qt/qevent.h>
+#include <Qt/qgroupbox.h>
+#include <Qt/qlabel.h>
+#include <Qt/qpushbutton.h>
+#include <Qt/qspinbox.h>
+#include <Qt/qtimer.h>
+#include <qboxlayout.h>
+#include <qnamespace.h>
+#include <qstring.h>
 
-#include <sstream>
+#include <string>
 
+#include "core/platform.h"
 #include "core/base/Lock.h"
 #include "core/data/Container.h"
-#include "GeneratedHeaders_AutomotiveData.h"
-
-#include "QtIncludes.h"
-
+#include "core/io/conference/ContainerConference.h"
+#include "generated/cartesian/Constants.h"
 #include "plugins/controller/ControllerWidget.h"
+
+namespace cockpit { namespace plugins { class PlugIn; } }
+namespace core { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
 

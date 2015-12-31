@@ -18,25 +18,48 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
+#include <Qt/qfiledialog.h>
+#include <Qt/qlabel.h>
+#include <Qt/qpushbutton.h>
+#include <Qt/qscrollarea.h>
+#include <Qt/qtimer.h>
+#include <qboxlayout.h>
+#include <qframe.h>
+#include <qnamespace.h>
+
+#ifndef WIN32
+# if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#  pragma GCC diagnostic push
+# endif
+# pragma GCC diagnostic ignored "-Weffc++"
+#endif
+    #include <qwt-qt4/qwt_plot.h>
+    #include <qwt-qt4/qwt_plot_curve.h>
+    #include <qwt-qt4/qwt_plot_item.h>
+#ifndef WIN32
+# if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#  pragma GCC diagnostic pop
+# endif
 #endif
 
-#include <cmath>
+
+#include <iostream>
 #include <sstream>
 
+#include "core/platform.h"
 #include "core/SharedPointer.h"
-#include "core/base/Mutex.h"
+#include "core/base/KeyValueConfiguration.h"
 #include "core/base/Lock.h"
+#include "core/base/Serializable.h"
 #include "core/data/Container.h"
+#include "core/data/TimeStamp.h"
+#include "core/exceptions/Exceptions.h"
 #include "core/io/StreamFactory.h"
 #include "core/io/URL.h"
-
-#include "GeneratedHeaders_AutomotiveData.h"
-
-#include "QtIncludes.h"
-
+#include "plugins/iruscharts/IrUsChartData.h"
 #include "plugins/iruscharts/IrUsChartsWidget.h"
+
+namespace cockpit { namespace plugins { class PlugIn; } }
 
 namespace cockpit {
 
@@ -49,16 +72,11 @@ namespace cockpit {
             using namespace core::base;
             using namespace core::data;
 
-#ifndef PANDABOARD
             IrUsChartsWidget::IrUsChartsWidget(const PlugIn &/*plugIn*/, const core::base::KeyValueConfiguration &kvc, QWidget *prnt) :
                 QWidget(prnt),
                 m_listOfPlots(),
                 m_listOfPlotCurves(),
                 m_listOfData(),
-#else
-            IrUsChartsWidget::IrUsChartsWidget(const PlugIn &/*plugIn*/, const core::base::KeyValueConfiguration &/*kvc*/, QWidget *prnt) :
-                QWidget(prnt),
-#endif
                 m_mapOfSensors(),
                 m_data(),
                 m_bufferMax(10000),
@@ -69,7 +87,6 @@ namespace cockpit {
                 // Set size.
                 setMinimumSize(640, 480);
 
-#ifndef PANDABOARD
                 // Setup point distance sensors.
                 for (uint32_t i = 0; i < kvc.getValue<uint32_t>("odsimirus.numberOfSensors"); i++) {
                     stringstream sensorID;
@@ -144,7 +161,7 @@ namespace cockpit {
                 mainLayout->addWidget(scrollArea);
 
                 setLayout(mainLayout);
-#endif
+
                 // Timer for sending data regularly.
                 QTimer* timer = new QTimer(this);
                 connect(timer, SIGNAL(timeout()), this, SLOT(TimerEvent()));
@@ -154,12 +171,10 @@ namespace cockpit {
             IrUsChartsWidget::~IrUsChartsWidget() {}
 
             void IrUsChartsWidget::TimerEvent() {
-#ifndef PANDABOARD
                 vector<QwtPlot*>::iterator it = m_listOfPlots.begin();
                 for(;it < m_listOfPlots.end(); it++) {
                     (*it)->replot();
                 }
-#endif
                 {
                     Lock l(m_receivedSensorBoardDataContainersMutex);
 

@@ -21,17 +21,25 @@
 #ifndef COCKPIT_PLUGINS_IRUSCHARTS_IRUSCHARTDATA_H_
 #define COCKPIT_PLUGINS_IRUSCHARTS_IRUSCHARTDATA_H_
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
-
-#ifndef PANDABOARD
-
 #include <deque>
 
-#include "QtIncludes.h"
+#if defined __GNUC__
+#pragma GCC system_header
+#elif defined __SUNPRO_CC
+#pragma disable_warn
+#elif defined _MSC_VER
+#pragma warning(push, 1)
+#endif
+    #include <qwt-qt4/qwt_data.h>
+#if defined __SUNPRO_CC
+#pragma enable_warn
+#elif defined _MSC_VER
+#pragma warning(pop)
+#endif
 
-#include "GeneratedHeaders_AutomotiveData.h"
+#include "core/platform.h"
+
+namespace automotive { namespace miniature { class SensorBoardData; } }
 
 namespace cockpit {
 
@@ -86,8 +94,6 @@ namespace cockpit {
         }
     }
 }
-
-#endif
 
 #endif /*COCKPIT_PLUGINS_IRUSCHARTS_IRUSCHARTDATA_H_*/
 

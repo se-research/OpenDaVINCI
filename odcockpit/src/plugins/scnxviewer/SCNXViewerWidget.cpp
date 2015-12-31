@@ -18,9 +18,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "QtIncludes.h"
+#include <Qt/qaction.h>
+#include <Qt/qfiledialog.h>
+#include <Qt/qgridlayout.h>
+#include <Qt/qmenubar.h>
+#include <qstring.h>
 
+#include "core/platform.h"
+#include "core/macros.h"
+#include "plugins/GLControlFrame.h"
+#include "plugins/scnxviewer/SCNXGLWidget.h"
 #include "plugins/scnxviewer/SCNXViewerWidget.h"
+
+namespace cockpit { namespace plugins { class PlugIn; } }
 
 namespace cockpit {
     namespace plugins {

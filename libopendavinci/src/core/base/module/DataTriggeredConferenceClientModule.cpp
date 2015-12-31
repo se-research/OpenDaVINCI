@@ -18,6 +18,7 @@
  */
 
 #include "core/base/module/DataTriggeredConferenceClientModule.h"
+#include "generated/coredata/dmcp/ModuleStateMessage.h"
 
 namespace core {
     namespace base {

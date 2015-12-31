@@ -22,15 +22,17 @@
 
 #include <vector>
 
-// native.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/native.h"
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
 #include "core/base/Mutex.h"
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "context/base/SystemFeedbackComponent.h"
-#include "context/base/SystemReportingComponent.h"
+
+namespace core { namespace base { namespace module { class TimeTriggeredConferenceClientModule; } } }
 
 namespace context {
     namespace base {
+
+class SystemFeedbackComponent;
+class SystemReportingComponent;
 
         using namespace std;
 

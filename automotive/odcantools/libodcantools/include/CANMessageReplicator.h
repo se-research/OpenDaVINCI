@@ -25,10 +25,13 @@
 #include <core/SharedPointer.h>
 
 #include "GenericCANMessageListener.h"
-#include "CANDevice.h"
+
+namespace automotive { class GenericCANMessage; }
 
 namespace automotive {
     namespace odcantools {
+
+class CANDevice;
 
         using namespace std;
 

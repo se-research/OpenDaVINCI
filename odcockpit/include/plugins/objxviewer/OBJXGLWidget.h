@@ -23,12 +23,13 @@
 
 #include <string>
 
-#include "core/base/KeyValueConfiguration.h"
 #include "core/base/Mutex.h"
-#include "hesperia/threeD/Node.h"
-#include "hesperia/threeD/TransformGroup.h"
-
 #include "plugins/AbstractGLWidget.h"
+
+class QWidget;
+namespace cockpit { namespace plugins { class PlugIn; } }
+namespace hesperia { namespace threeD { class Node; } }
+namespace hesperia { namespace threeD { class TransformGroup; } }
 
 namespace cockpit {
     namespace plugins {

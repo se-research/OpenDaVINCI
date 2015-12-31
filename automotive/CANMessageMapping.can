@@ -1,10 +1,10 @@
-wheelspeed.frontleft	in 0x123 at bit 0 for 16 bit is big endian multiply by 0.01 add 0 with range [0, 200];
-wheelspeed.frontright	in 0x123 at bit 16 for 2 bytes is big endian multiply by 0.01 add 0 with range [0, 200];
-wheelspeed.rearleft 	in 0x123 at bit 32 for 2 byte is big endian multiply by 0.01 add 0 within range [0, 200];
-wheelspeed.rearright	in 0x123 at bit 48 for 16 bits is big endian multiply by 0.01 add 0 within range [0, 200];
-lightsystem.headlights  in 0x001 at bit 7 for 2 bits is big endian multiply by 1 add 0 within range [0, 4];
+wheelspeed.frontleft	in 0x123 at bit 0 for 16 bit is little endian multiply by 0.01 add 0 with range [0, 200];
+wheelspeed.frontright	in 0x123 at bit 16 for 2 bytes is little endian multiply by 0.01 add 0 with range [0, 200];
+wheelspeed.rearleft 	in 0x125 at bit 32 for 2 byte is little endian multiply by 0.01 add 0 within range [0, 200];
+wheelspeed.rearright	in 0x125 at bit 48 for 16 bits is little endian multiply by 0.01 add 0 within range [0, 200];
+lightsystem.headlights  in 0x001 at bit 6 for 2 bits is big endian multiply by 1 add 0 within range [0, 4];
 
-mapping WheelSpeed {
+mapping automotive.vehicle.WheelSpeed {
 	wheelspeed.frontleft : 1;
 	wheelspeed.frontright : 2;
 	wheelspeed.rearleft : 3;
@@ -17,5 +17,15 @@ unordered mapping LightSystem {
 
 mapping EmptyCanMessage {
     
+}
+
+test automotive.vehicle.WheelSpeed {
+  0x123: 0x223C2217220D2207
+  0x125: 0x22392223220F2204
+  
+  id 1 = 87.64
+  id 2 = 87.27
+  id 3 = 87.19
+  id 4 = 87.08
 }
 

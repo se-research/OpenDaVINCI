@@ -20,9 +20,13 @@
 #ifndef OPENDAVINCI_CORE_BASE_QUERYABLENETSTRINGSDESERIALIZERABCF_H_
 #define OPENDAVINCI_CORE_BASE_QUERYABLENETSTRINGSDESERIALIZERABCF_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <map>
+#include <sstream>
+#include <string>
 
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
+#include "core/platform.h"
+#include "core/base/Serializer.h"
 #include "core/base/Deserializer.h"
 
 namespace core {
@@ -30,7 +34,6 @@ namespace core {
 
         using namespace std;
 
-        class QueryableNetstringsDeserializer;
 
         /**
          * This class implements the interface Deserializer for queryable
@@ -114,6 +117,17 @@ namespace core {
                 virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, double &d);
                 virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, string &s);
                 virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, void *data, const uint32_t &size);
+
+            public:
+                /**
+                 * This method copies the minimum amount of bytes that are
+                 * required to successfully decode using this decoder.
+                 *
+                 * @param in Input stream used for reading from.
+                 * @param buffer Buffer to copy bytes to.
+                 * @return size Number of bytes read.
+                 */
+                static uint32_t fillBuffer(istream& in, stringstream& buffer);
 
             private:
                 /**

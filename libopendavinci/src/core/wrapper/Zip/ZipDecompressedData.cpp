@@ -17,8 +17,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <zip.h>
+#include <ctype.h>
+#include <cstdlib>
+#include <cstring>
+#include <algorithm>
+#include <functional>
+#include <fstream>
+#include <iostream>
+#include <sstream>
 
+#include "zip.h"
+#include "core/macros.h"
+#include "core/SharedPointer.h"
 #include "core/base/module/AbstractCIDModule.h"
 #include "core/wrapper/Zip/ZipDecompressedData.h"
 
@@ -27,6 +37,7 @@ namespace core {
         namespace Zip {
 
             using namespace std;
+            using namespace core;
             using namespace core::strings;
 
             ZipDecompressedData::ZipDecompressedData(istream &in) :

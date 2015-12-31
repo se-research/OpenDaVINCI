@@ -33,3 +33,15 @@ How to install OpenDaVINCI on BSD-based Platforms
 How to install OpenDaVINCI on Windows-based Platforms
 =====================================================
 .. include:: installation.windows.rst
+
+How to compile OpenDaVINCI with Clang
+=====================================
+
+To compile OpenDaVINCI using Clang, change to your source folder and create a build directory::
+
+   $ cd OpenDaVINCI && mkdir build
+
+Use cmake to create the build scripts for your build folder and specify the Clang toolchain::
+
+   $ cd build && cmake -D CMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_TOOLCHAIN_FILE=../cmake/clang-Toolchain.cmake ..
+

@@ -18,27 +18,33 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <cmath>
-
+#include <GL/gl.h>
+#include <GL/glu.h>
 #include <GL/glut.h>
 
+#include <Qt/qevent.h>
+#include <Qt/qtimer.h>
+#include <qglobal.h>
+#include <qnamespace.h>
+#include <qpoint.h>
+
+#include <cmath>
+
+#include "core/platform.h"
 #include "core/base/Lock.h"
-
-#include "hesperia/threeD/RenderingConfiguration.h"
-#include "hesperia/threeD/Node.h"
-#include "GeneratedHeaders_AutomotiveData.h"
-
-#include "QtIncludes.h"
-
+#include "generated/cartesian/Constants.h"
 #include "plugins/AbstractGLWidget.h"
+
+class QWidget;
 
 namespace cockpit {
     namespace plugins {
 
+class PlugIn;
+
         using namespace std;
         using namespace core::base;
         using namespace core::data;
-        using namespace hesperia::threeD;
 
         bool AbstractGLWidget::m_isGLUTinitialized = false;
 

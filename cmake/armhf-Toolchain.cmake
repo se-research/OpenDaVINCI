@@ -18,6 +18,7 @@
 SET(CMAKE_SYSTEM_NAME Linux)
 
 # This flag sets further include and library paths in dependent CMakeLists.txt
+# and is required to correctly create the deb and rpm packages.
 SET(ARMHF YES)
 
 # Specify the cross compiler.

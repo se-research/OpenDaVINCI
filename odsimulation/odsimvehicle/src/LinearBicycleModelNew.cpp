@@ -17,9 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "core/platform.h"
+#include <cmath>
+#include <cstdlib>
+#include <iostream>
 
 #include "core/wrapper/Eigen.h"
+#include "core/base/KeyValueConfiguration.h"
+#include "generated/cartesian/Constants.h"
+#include "hesperia/data/environment/Point3.h"
 
 #include "LinearBicycleModelNew.h"
 

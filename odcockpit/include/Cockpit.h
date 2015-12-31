@@ -21,13 +21,11 @@
 #ifndef COCKPIT_H_
 #define COCKPIT_H_
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
+#include <Qt/qapplication.h>
 
-#include "QtIncludes.h"
-
+#include "core/platform.h"
 #include "core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
 namespace cockpit {
 

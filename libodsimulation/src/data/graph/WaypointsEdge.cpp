@@ -18,6 +18,7 @@
  */
 
 #include <sstream>
+#include <string>
 
 #include "hesperia/data/graph/WaypointsEdge.h"
 

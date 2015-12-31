@@ -21,27 +21,23 @@
 #ifndef COCKPIT_PLUGINS_IRUSMAP_IRUSMAPWIDGETCONTROL_H_
 #define COCKPIT_PLUGINS_IRUSMAP_IRUSMAPWIDGETCONTROL_H_
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
-
-#include <map>
-#include <string>
-#include <vector>
-
-#include "QtIncludes.h"
+#include <qobjectdefs.h>
+#include <qwidget.h>
 
 #include "core/base/Mutex.h"
 #include "core/io/conference/ContainerListener.h"
 
-#include "plugins/PlugIn.h"
-#include "plugins/irusmap/IrUsMapWidget.h"
+namespace cockpit { namespace plugins { class PlugIn; } }
+namespace core { namespace base { class KeyValueConfiguration; } }
+namespace core { namespace data { class Container; } }
 
 namespace cockpit {
 
     namespace plugins {
 
         namespace irusmap {
+
+class IrUsMapWidget;
 
             using namespace std;
 

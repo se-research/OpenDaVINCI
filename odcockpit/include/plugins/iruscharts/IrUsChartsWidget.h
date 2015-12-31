@@ -21,32 +21,33 @@
 #ifndef COCKPIT_PLUGINS_IRUSCHARTS_IRUSCHARTSWIDGET_H_
 #define COCKPIT_PLUGINS_IRUSCHARTS_IRUSCHARTSWIDGET_H_
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
+#include <qobjectdefs.h>
+#include <qwidget.h>
 
 #include <deque>
 #include <map>
 #include <string>
 #include <vector>
 
-#include "core/base/KeyValueConfiguration.h"
+#include "core/platform.h"
 #include "core/base/Mutex.h"
 #include "core/data/Container.h"
 #include "core/io/conference/ContainerListener.h"
+#include "generated/automotive/miniature/SensorBoardData.h"
 
-#include "GeneratedHeaders_AutomotiveData.h"
-
-#include "QtIncludes.h"
-
-#include "plugins/PlugIn.h"
-#include "plugins/iruscharts/IrUsChartData.h"
+class QLabel;
+class QwtPlot;
+class QwtPlotCurve;
+namespace cockpit { namespace plugins { class PlugIn; } }
+namespace core { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
 
     namespace plugins {
 
       namespace iruscharts {
+
+class IrUsChartData;
 
           using namespace std;
 
@@ -92,11 +93,9 @@ namespace cockpit {
                     void saveCSVFile();
 
                 private:
-#ifndef PANDABOARD
                     vector<QwtPlot*> m_listOfPlots;
                     vector<QwtPlotCurve*> m_listOfPlotCurves;
                     vector<IrUsChartData*> m_listOfData;
-#endif
                     map<uint32_t, string> m_mapOfSensors;
                     deque<automotive::miniature::SensorBoardData> m_data;
                     uint32_t m_bufferMax;

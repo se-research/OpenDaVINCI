@@ -20,6 +20,8 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXCONCURRENCYFACTORYWORKER_H_
 #define OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXCONCURRENCYFACTORYWORKER_H_
 
+#include <sys/time.h>
+
 // core/platform.h must be included to setup platform-dependent header files and configurations.
 #include "core/platform.h"
 

@@ -18,12 +18,27 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "QtIncludes.h"
+#include <Qt/qgridlayout.h>
+#include <Qt/qpushbutton.h>
+#include <qnamespace.h>
 
-#include "GeneratedHeaders_AutomotiveData.h"
+#ifndef WIN32
+# if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#  pragma GCC diagnostic push
+# endif
+# pragma GCC diagnostic ignored "-Weffc++"
+#endif
+    #include <qwt-qt4/qwt_wheel.h>
+#ifndef WIN32
+# if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#  pragma GCC diagnostic pop
+# endif
+#endif
 
-#include "plugins/GLControlFrame.h"
+#include "core/platform.h"
+#include "generated/cartesian/Constants.h"
 #include "plugins/AbstractGLWidget.h"
+#include "plugins/GLControlFrame.h"
 
 namespace cockpit {
     namespace plugins {

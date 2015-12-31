@@ -22,6 +22,8 @@
 namespace core {
     namespace base {
 
+class Serializable;
+
         QueryableNetstringsSerializerVisitor::QueryableNetstringsSerializerVisitor() :
             QueryableNetstringsSerializer(),
             Visitor() {}

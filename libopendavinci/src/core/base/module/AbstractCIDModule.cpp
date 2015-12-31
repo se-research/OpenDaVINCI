@@ -17,11 +17,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/base/module/AbstractCIDModule.h"
+#include <cerrno>
+#include <cmath>
+#include <iostream>
+
+#include "core/base/CommandLineArgument.h"
 #include "core/base/CommandLineParser.h"
-#include "core/base/Lock.h"
 #include "core/base/Thread.h"
+#include "core/base/module/AbstractCIDModule.h"
 #include "core/data/TimeStamp.h"
+#include "core/macros.h"
 
 namespace core {
     namespace base {

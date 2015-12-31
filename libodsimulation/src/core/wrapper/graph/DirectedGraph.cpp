@@ -17,19 +17,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <algorithm>
 #include <iostream>
-#include <sstream>
+#include <list>
 
 #include <boost/graph/astar_search.hpp>
 
 #include "core/macros.h"
+#include "core/strings/StringToolbox.h"
 #include "core/wrapper/graph/DirectedGraph.h"
+#include "core/wrapper/graph/Edge.h"
+#include "core/wrapper/graph/Vertex.h"
 
 namespace core {
     namespace wrapper {
         namespace graph {
 
 // The following compiler switches are added to ignore -Weffc++ warnings in Boost.
+class Edge;
 #ifdef __GNUC__
 #  if __GNUC__ >= 4
 #    if __GNUC_MINOR__ >= 6
@@ -162,6 +167,29 @@ namespace core {
                 for(boost::tie(ei, ei_end) = boost::edges(m_graph); ei != ei_end; ei++) {
                     sstr << "(" << m_graph[boost::source(*ei, m_graph)]->toString() << "-" << m_weightMap[*ei] << "->" << m_graph[boost::target(*ei, m_graph)]->toString() << ") ";
                 }
+
+                return sstr.str();
+            }
+
+            const string DirectedGraph::toGraphizDot() const {
+                stringstream sstr;
+
+                sstr << "digraph RouteNetwork" << endl;
+                sstr << "{" << endl;
+                    boost::graph_traits<GraphDefinition>::edge_iterator ei, ei_end;
+                    for(boost::tie(ei, ei_end) = boost::edges(m_graph); ei != ei_end; ei++) {
+                        string source_ = m_graph[boost::source(*ei, m_graph)]->toString();
+                        string target_ = m_graph[boost::target(*ei, m_graph)]->toString();
+
+                        string source = core::strings::StringToolbox::split(source_, '@').at(0);
+                        string target = core::strings::StringToolbox::split(target_, '@').at(0);
+
+                        replace(source.begin(), source.end(), '.', '_');
+                        replace(target.begin(), target.end(), '.', '_');
+
+                        sstr << "\tWP_" << source << "->WP_" << target << " [label=\"" << m_weightMap[*ei] << "\"];" << endl;;
+                    }
+                sstr << "}" << endl;
 
                 return sstr.str();
             }

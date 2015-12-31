@@ -20,11 +20,8 @@
 #ifndef HESPERIA_CORE_THREED_NODEDESCRIPTORCOMPARATOR_H_
 #define HESPERIA_CORE_THREED_NODEDESCRIPTORCOMPARATOR_H_
 
-#include <string>
-
 // native.h must be included as first header file for definition of _WIN32_WINNT.
 #include "core/native.h"
-
 #include "hesperia/threeD/NodeDescriptor.h"
 
 namespace hesperia {

@@ -20,17 +20,16 @@
 #ifndef CAMGEN_OPENGLGRABBER_H_
 #define CAMGEN_OPENGLGRABBER_H_
 
-#include <opencv/cv.h>
-#include <opencv/highgui.h>
-
 #include "core/SharedPointer.h"
 #include "core/base/KeyValueConfiguration.h"
-#include "core/wrapper/Image.h"
-#include "core/wrapper/SharedMemory.h"
-
-#include "hesperia/data/environment/EgoState.h"
+#include "hesperia/data/camera/ImageGrabberID.h"
 #include "hesperia/io/camera/ImageGrabber.h"
-#include "hesperia/threeD/TransformGroup.h"
+
+namespace core { namespace wrapper { class Image; } }
+namespace core { namespace wrapper { class SharedMemory; } }
+namespace hesperia { namespace data { namespace camera { class ImageGrabberCalibration; } } }
+namespace hesperia { namespace data { namespace environment { class EgoState; } } }
+namespace hesperia { namespace threeD { class TransformGroup; } }
 
 namespace camgen {
 

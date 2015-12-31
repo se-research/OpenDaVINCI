@@ -18,11 +18,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "core/macros.h"
-
-#include "QtIncludes.h"
+#include "core/platform.h"
 #include "ContainerObserver.h"
 #include "plugins/environmentviewer/EnvironmentViewerPlugIn.h"
+#include "plugins/environmentviewer/EnvironmentViewerWidget.h"
+
+class QWidget;
+namespace core { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
     namespace plugins {

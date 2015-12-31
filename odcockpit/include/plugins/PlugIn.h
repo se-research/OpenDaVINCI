@@ -21,18 +21,13 @@
 #ifndef COCKPIT_PLUGINS_PLUGIN_H_
 #define COCKPIT_PLUGINS_PLUGIN_H_
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
-
 #include <string>
-
-#include "QtIncludes.h"
 
 #include "core/base/KeyValueConfiguration.h"
 #include "core/base/Mutex.h"
 
-#include "ContainerObserver.h"
+class QWidget;
+namespace cockpit { class ContainerObserver; }
 
 namespace cockpit {
 

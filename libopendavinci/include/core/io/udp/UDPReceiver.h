@@ -20,14 +20,14 @@
 #ifndef OPENDAVINCI_CORE_IO_UDP_UDPRECEIVER_H_
 #define OPENDAVINCI_CORE_IO_UDP_UDPRECEIVER_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
-
 #include "core/base/Mutex.h"
 #include "core/io/PacketObserver.h"
-#include "core/io/PacketListener.h"
 #include "core/io/StringObserver.h"
 #include "core/io/StringPipeline.h"
+
+namespace core { namespace io { class Packet; } }
+namespace core { namespace io { class PacketListener; } }
+namespace core { namespace io { class StringListener; } }
 
 namespace core {
     namespace io {

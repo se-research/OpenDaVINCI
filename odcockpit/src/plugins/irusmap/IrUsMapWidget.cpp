@@ -18,20 +18,34 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
+#include <Qt/qevent.h>
+#include <Qt/qtimer.h>
+#include <qbrush.h>
+#include <qcolor.h>
+#include <qfont.h>
+#include <qnamespace.h>
+#include <qpainter.h>
+#include <qpalette.h>
+#include <qpen.h>
+#include <qpoint.h>
+#include <qrect.h>
+#include <qstring.h>
+#include <qtransform.h>
 
-#include <algorithm>
+#include <cmath>
+#include <iostream>
+#include <sstream>
 
-#include "QtIncludes.h"
-
+#include "core/platform.h"
+#include "core/base/KeyValueConfiguration.h"
 #include "core/base/Lock.h"
 #include "core/data/Container.h"
-#include "GeneratedHeaders_AutomotiveData.h"
+#include "core/strings/StringComparator.h"
 #include "hesperia/data/environment/Point3.h"
-
 #include "plugins/irusmap/IrUsMapWidget.h"
+#include "plugins/irusmap/PointSensor.h"
+
+namespace cockpit { namespace plugins { class PlugIn; } }
 
 namespace cockpit {
 

@@ -20,7 +20,10 @@
 #ifndef CANASCREPLAY_H_
 #define CANASCREPLAY_H_
 
+#include <stdint.h>
+
 #include "core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
 namespace automotive {
     namespace odcantools {

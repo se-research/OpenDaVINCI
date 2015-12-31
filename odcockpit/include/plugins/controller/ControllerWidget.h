@@ -21,24 +21,24 @@
 #ifndef CONTROLLERWIDGET_H_
 #define CONTROLLERWIDGET_H_
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
+#include <qobjectdefs.h>
+#include <qwidget.h>
 
-#include "core/base/KeyValueConfiguration.h"
+#include "core/platform.h"
 #include "core/base/Mutex.h"
-#include "core/data/Container.h"
 #include "core/data/TimeStamp.h"
-#include "core/io/conference/ContainerConference.h"
 #include "core/io/conference/ContainerListener.h"
-//#include "core/data/control/VehicleControl.h" included by GeneratedHeaders_CoreData.h
-#include "GeneratedHeaders_CoreData.h"
+#include "generated/automotive/VehicleControl.h"
+#include "generated/automotive/miniature/UserButtonData.h"
 
-#include "QtIncludes.h"
-
-#include "GeneratedHeaders_AutomotiveData.h"
-
-#include "plugins/PlugIn.h"
+class QCheckBox;
+class QKeyEvent;
+class QLabel;
+class QPushButton;
+namespace cockpit { namespace plugins { class PlugIn; } }
+namespace core { namespace base { class KeyValueConfiguration; } }
+namespace core { namespace data { class Container; } }
+namespace core { namespace io { namespace conference { class ContainerConference; } } }
 
 namespace cockpit {
 

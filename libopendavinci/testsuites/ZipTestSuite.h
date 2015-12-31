@@ -20,17 +20,17 @@
 #ifndef CORE_ZIPTESTSUITE_H_
 #define CORE_ZIPTESTSUITE_H_
 
-#include "cxxtest/TestSuite.h"
+#include <fstream>                      // for stringstream, operator<<, etc
+#include <string>                       // for string, operator==, etc
+#include <vector>                       // for vector
 
-#include <cstdlib>
-#include <fstream>
-#include <iostream>
-#include <string>
-#include <vector>
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/SharedPointer.h"
-#include "core/wrapper/DecompressedData.h"
-#include "core/wrapper/CompressionFactory.h"
+#include "core/platform.h"
+#include "core/SharedPointer.h"         // for SharedPointer
+#include "core/platform.h"              // for UNLINK
+#include "core/wrapper/CompressionFactory.h"  // for CompressionFactory
+#include "core/wrapper/DecompressedData.h"  // for DecompressedData
 
 using namespace std;
 using namespace core;

@@ -34,8 +34,6 @@
 namespace hesperia {
     namespace threeD {
 
-        using namespace std;
-
         /**
          * This class creates a scene graph.
          */

@@ -20,8 +20,9 @@
 #ifndef POINTSENSOR_H_
 #define POINTSENSOR_H_
 
-#include <string>
+#include <stdint.h>
 #include <map>
+#include <string>
 
 #include "hesperia/data/environment/Point3.h"
 #include "hesperia/data/environment/Polygon.h"

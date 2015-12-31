@@ -25,27 +25,40 @@ generate canDataModel "http://www.opendavinci.org/CANDataModel"
 
 Model:
     cansignals        += CANSignal+
-    cansignalmappings += CANSignalMapping*;
+    cansignalmappings += CANSignalMapping*
+    cansignaltestings += CANSignalTesting*;
 
 CANSignal:
-	cansignal = MessageIdentifier 'in' canIdentifier = HEXNUMBER
-								  'at bit' startBit = FLOATNUMBER
-								  'for' (length = FLOATNUMBER ('bit'|'bits') | lengthBytes = FLOATNUMBER ('byte'|'bytes'))
-								  'is' (endian = ('big' | 'little')) 'endian'
-								  'multiply by' multiplyBy = FLOATNUMBER
-								  'add' add = FLOATNUMBER
-								  ('with range' | 'within range') '[' rangeStart = FLOATNUMBER ',' rangeEnd = FLOATNUMBER ']'
-								  ';';
+	cansignalname = ValidIdentifier	'in' canIdentifier = HEXNUMBER
+									'at bit' startBit = FLOATNUMBER
+									'for' (length = FLOATNUMBER ('bit'|'bits') | lengthBytes = FLOATNUMBER ('byte'|'bytes'))
+									'is' (endian = ('big' | 'little')) 'endian'
+									'multiply by' multiplyBy = FLOATNUMBER
+									'add' add = FLOATNUMBER
+									('with range' | 'within range') '[' rangeStart = FLOATNUMBER ',' rangeEnd = FLOATNUMBER ']'
+									';';
 
 CANSignalMapping:
-    (unordered='unordered')? 'mapping' mappingName = MessageIdentifier '{'
+    (unordered='unordered')? 'mapping' mappingName = ValidIdentifier '{'
     	mappings += Mapping*
     '}';
 
 Mapping:
-	cansignal = MessageIdentifier ':' messageIdentifier = FLOATNUMBER ';';
+	cansignalname = ValidIdentifier ':' signalIdentifier = FLOATNUMBER ';';
 
-MessageIdentifier:
+CANSignalTesting:
+    'test' mappingName = ValidIdentifier '{'
+    	CANMessageDescriptions += CANMessageDescription*
+    	Results += Result*
+    '}';
+
+CANMessageDescription:
+	canIdentifier = HEXNUMBER ':' payload = HEXNUMBER;
+
+Result:
+	'id' signalIdentifier = FLOATNUMBER '=' expectedResult = FLOATNUMBER;
+
+ValidIdentifier:
     ID (('.') ID)*;
 
 terminal fragment SIGN: ('+'|'-');

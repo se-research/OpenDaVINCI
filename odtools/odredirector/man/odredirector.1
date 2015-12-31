@@ -1,7 +1,7 @@
 .\" Manpage for odredirector
 .\" Author: Christian Berger <christian.berger@gu.se>.
 
-.TH odredirector 1 "29 November 2015" "2.1.4" "odredirector man page"
+.TH odredirector 1 "30 December 2015" "2.2.2" "odredirector man page"
 
 .SH NAME
 odredirector \- This tool dumps containers from an OpenDaVINCI container conference session to stdout or pumps back containers read from stdin to a running container conference session.
@@ -13,7 +13,7 @@ odredirector \- This tool dumps containers from an OpenDaVINCI container confere
 
 .B odredirector --cid=<CID> --tostdout=1 --jpegquality=8 [OPTIONS]
 
-.B odredirector --cid=<CID> --fromstd=1 [OPTIONS]
+.B odredirector --cid=<CID> --fromstdin=1 [OPTIONS]
 
 
 .SH DESCRIPTION
@@ -63,7 +63,7 @@ a UDP packet; if a quality factor is selected, which would result in compressed
 images violating this limit, an error message is printed to stderr and the current
 instance of SharedImage is not processed.
 
-If this parameter is omitted, the default quality level of 5 is used.
+If this parameter is omitted, the default quality level of 15 is used.
 .RE
 
 
@@ -119,7 +119,7 @@ also using nc(1) to forward dumped data from the container conference session ru
 
 
 .SH SEE ALSO
-odplayer(1), odrecorder(1), odrecintegrity(1), odredirector(1), odsplit(1), odspy(1)
+odfilter(1), odplayer(1), odrecorder(1), odrecintegrity(1), odredirector(1), odsplit(1), odspy(1)
 
 
 

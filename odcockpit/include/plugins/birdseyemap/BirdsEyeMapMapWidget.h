@@ -20,31 +20,42 @@
 #ifndef PLUGINS_BIRDSEYEMAP_BIRDSEYEMAPMAPWIDGET_H_
 #define PLUGINS_BIRDSEYEMAP_BIRDSEYEMAPMAPWIDGET_H_
 
+#include <qobjectdefs.h>
+#include <qwidget.h>
+
 #include <map>
+#include <vector>
 
+#include "core/platform.h"
 #include "core/base/Mutex.h"
-#include "core/base/TreeNode.h"
 #include "core/io/conference/ContainerListener.h"
-#include "hesperia/data/environment/Point3.h"
-
 #include "hesperia/data/environment/EgoState.h"
-
-#include "hesperia/scenegraph/SceneNode.h"
-#include "hesperia/scenegraph/models/SimpleCar.h"
+#include "hesperia/data/environment/Point3.h"
+#include "hesperia/scenegraph/SceneNodeDescriptor.h"
 #include "hesperia/scenegraph/renderer/RenderingConfiguration.h"
-
-#include "plugins/PlugIn.h"
-#include "plugins/birdseyemap/CameraAssignableNodesListener.h"
-#include "plugins/birdseyemap/SelectableNodeDescriptor.h"
 #include "plugins/birdseyemap/SelectableNodeDescriptorTreeListener.h"
+
+class QMouseEvent;
+class QPaintEvent;
+class QTimer;
+namespace cockpit { namespace plugins { class PlugIn; } }
+namespace core { namespace base { template <typename T> class TreeNode; } }
+namespace core { namespace data { class Container; } }
+namespace hesperia { namespace scenegraph { class SceneNode; } }
+namespace hesperia { namespace scenegraph { namespace models { class SimpleCar; } } }
 
 namespace cockpit {
     namespace plugins {
         namespace birdseyemap {
 
+            using namespace std;
+
             /**
              * This class is the widget for a 2D scene.
              */
+class CameraAssignableNodesListener;
+class SelectableNodeDescriptor;
+
             class BirdsEyeMapMapWidget : public QWidget, public core::io::conference::ContainerListener, public SelectableNodeDescriptorTreeListener {
 
                     Q_OBJECT
@@ -139,6 +150,8 @@ namespace cockpit {
 
                     hesperia::scenegraph::SceneNode *m_obstaclesRoot;
                     map<uint32_t, hesperia::scenegraph::SceneNode*> m_mapOfObstacles;
+
+                    hesperia::scenegraph::SceneNode *m_plannedRoute;
 
                     void createSceneGraph();
 

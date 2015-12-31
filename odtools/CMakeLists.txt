@@ -30,6 +30,7 @@ INCLUDE (CheckCxxTestEnvironment)
 
 ###########################################################################
 # Add subdirectories.
+ADD_SUBDIRECTORY (odfilter)
 ADD_SUBDIRECTORY (odplayer)
 ADD_SUBDIRECTORY (odrecintegrity)
 ADD_SUBDIRECTORY (odrecorder)

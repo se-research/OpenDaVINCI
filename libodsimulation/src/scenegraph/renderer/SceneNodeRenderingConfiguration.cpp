@@ -23,8 +23,6 @@ namespace hesperia {
     namespace scenegraph {
         namespace renderer {
 
-            using namespace std;
-
             SceneNodeRenderingConfiguration::SceneNodeRenderingConfiguration() :
                     m_parameters(SceneNodeRenderingConfiguration::ENABLED) {}
 

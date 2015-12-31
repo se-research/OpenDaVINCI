@@ -20,16 +20,14 @@
 #ifndef OPENDAVINCI_CORE_IO_CONFERENCE_CONTAINERLISTENER_H_
 #define OPENDAVINCI_CORE_IO_CONFERENCE_CONTAINERLISTENER_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
+// platform.h must be included as first header file for definition of _WIN32_WINNT.
 #include "core/platform.h"
 
-#include "core/data/Container.h"
+namespace core { namespace data { class Container; } }
 
 namespace core {
     namespace io {
         namespace conference {
-
-            using namespace std;
 
             /**
              * This class provides an interface for getting informed

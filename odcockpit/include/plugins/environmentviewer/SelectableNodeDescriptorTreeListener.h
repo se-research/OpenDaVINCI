@@ -21,9 +21,10 @@
 #ifndef PLUGINS_ENVIRONMENTVIEWER_SELECTABLENODEDESCRIPTORTREELISTENER_H_
 #define PLUGINS_ENVIRONMENTVIEWER_SELECTABLENODEDESCRIPTORTREELISTENER_H_
 
-#include "core/base/TreeNode.h"
 
-#include "plugins/environmentviewer/SelectableNodeDescriptor.h"
+
+
+namespace core { namespace base { template <typename T> class TreeNode; } }
 
 namespace cockpit {
     namespace plugins {
@@ -32,6 +33,8 @@ namespace cockpit {
             /**
              * This interface encapsulates the access to the tree of SelectableNodeDescriptors.
              */
+class SelectableNodeDescriptor;
+
             class SelectableNodeDescriptorTreeListener {
                 public:
                     virtual ~SelectableNodeDescriptorTreeListener();

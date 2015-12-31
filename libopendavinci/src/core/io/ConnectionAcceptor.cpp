@@ -17,11 +17,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <iostream>
+#include <sstream>
+#include <string>
+
 #include "core/base/Lock.h"
 #include "core/base/module/AbstractCIDModule.h"
 #include "core/exceptions/Exceptions.h"
+#include "core/io/Connection.h"
 #include "core/io/ConnectionAcceptor.h"
+#include "core/io/ConnectionAcceptorListener.h"
+#include "core/io/tcp/TCPConnection.h"
 #include "core/io/tcp/TCPFactory.h"
+#include "core/macros.h"
 
 namespace core {
     namespace io {

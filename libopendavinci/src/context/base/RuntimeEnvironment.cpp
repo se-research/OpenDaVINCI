@@ -17,12 +17,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/base/Lock.h"
 #include "context/base/RuntimeEnvironment.h"
+#include "context/base/SystemFeedbackComponent.h"
 #include "context/base/TimeConstants.h"
+#include "core/base/Lock.h"
+#include "core/base/module/TimeTriggeredConferenceClientModule.h"
 
 namespace context {
     namespace base {
+
+class SystemReportingComponent;
 
         using namespace std;
         using namespace core::base;

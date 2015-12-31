@@ -19,15 +19,22 @@
 
 #include <cerrno>
 #include <iostream>
-#include <sstream>
+#include <string>
 
-#include "core/base/Lock.h"
-#include "GeneratedHeaders_CoreData.h"
-#include "core/base/Thread.h"
-#include "core/exceptions/Exceptions.h"
-#include "context/base/TimeTriggeredConferenceClientModuleRunner.h"
+#include "context/base/BlockableContainerListener.h"
+#include "context/base/BlockableContainerReceiver.h"
 #include "context/base/ControlledContainerConferenceForSystemUnderTest.h"
 #include "context/base/TimeConstants.h"
+#include "context/base/TimeTriggeredConferenceClientModuleRunner.h"
+#include "core/base/Lock.h"
+#include "core/base/Thread.h"
+#include "core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "core/exceptions/Exceptions.h"
+#include "core/io/conference/ContainerConference.h"
+#include "core/macros.h"
+#include "core/wrapper/Time.h"
+#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "generated/coredata/dmcp/ModuleStateMessage.h"
 
 namespace context {
     namespace base {

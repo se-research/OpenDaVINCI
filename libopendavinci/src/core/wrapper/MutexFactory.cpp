@@ -17,12 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/wrapper/MutexFactory.h"
-
-#include "core/wrapper/Libraries.h"
 #include "core/wrapper/ConfigurationTraits.h"
+#include "core/wrapper/Libraries.h"
+#include "core/wrapper/MutexFactory.h"
 #include "core/wrapper/SystemLibraryProducts.h"
-#include "core/wrapper/MutexFactoryWorker.h"
+
+namespace core { namespace wrapper { class Mutex; } }
 
 #ifdef WIN32
     #include "core/wrapper/WIN32/WIN32MutexFactoryWorker.h"

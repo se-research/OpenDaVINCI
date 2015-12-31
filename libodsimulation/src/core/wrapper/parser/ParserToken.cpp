@@ -23,6 +23,8 @@ namespace core {
     namespace wrapper {
         namespace parser {
 
+class ParserTokenExtendedData;
+
             ParserToken::ParserToken(const string &value, const ParserTokenExtendedData &data) :
                     m_value(value),
                     m_data(data) {}
