@@ -22,6 +22,8 @@
 #include <cstdio>
 #include <cmath>
 
+#include <iostream>
+
 #include "core/base/Thread.h"
 #include "core/data/Container.h"
 #include "core/io/conference/ContainerConference.h"
