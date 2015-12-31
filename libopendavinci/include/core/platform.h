@@ -38,6 +38,7 @@
     // Unlink causes an error under Windows.
     #define UNLINK _unlink
     
+    #include "core/platform/win/inttypes.h"
     #include <basetsd.h>
     #include <Winsock2.h>
     #include <ws2tcpip.h>
