@@ -20,6 +20,8 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_WIN32IMPL_WIN32THREAD_H_
 #define OPENDAVINCI_CORE_WRAPPER_WIN32IMPL_WIN32THREAD_H_
 
+#include <memory>
+
 // Using c++11 standard.
 #include <thread>
 
