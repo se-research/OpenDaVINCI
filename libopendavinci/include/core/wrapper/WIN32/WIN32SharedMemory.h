@@ -20,6 +20,8 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_WIN32IMPL_WIN32SHAREDMEMORY_H_
 #define OPENDAVINCI_CORE_WRAPPER_WIN32IMPL_WIN32SHAREDMEMORY_H_
 
+#include <string>
+
 // core/platform.h must be included to setup platform-dependent header files and configurations.
 #include "core/platform.h"
 
@@ -92,7 +94,7 @@ namespace core {
                     string m_name;
                     string m_internalName;
                     HANDLE m_shmID;
-					HANDLE m_mutexSharedMemory;
+                    HANDLE m_mutexSharedMemory;
                     void *m_sharedMemory;
                     uint32_t m_size;
 
