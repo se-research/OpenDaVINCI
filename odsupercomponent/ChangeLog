@@ -1,3 +1,4 @@
+2.3.0 - Refactored code base to clean up unneeded include headers
 2.2.1 - Added fxe data structures
 2.2.0 - Refactored odsplit(1) to run independently from odsupercomponent(1)
 2.1.8 - Fixed deployment
