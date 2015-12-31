@@ -17,6 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <memory>
+#include <sstream>
+#include <string>
+
 #include "core/wrapper/MutexFactory.h"
 #include "core/wrapper/WIN32/WIN32UDPSender.h"
 
@@ -37,24 +41,24 @@ namespace core {
                     throw s.str();
                 }
 
-				// Load Winsock 2.2 DLL.
-				WSADATA wsaData;
-				if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
-					stringstream s;
-					const int retcode = WSAGetLastError();
-					s << "[core::wrapper::WIN32UDPSender] Error while calling WSAStartUp: " << retcode;
-					throw s.str();
-				}
+                // Load Winsock 2.2 DLL.
+                WSADATA wsaData;
+                if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
+                    stringstream s;
+                    const int retcode = WSAGetLastError();
+                    s << "[core::wrapper::WIN32UDPSender] Error while calling WSAStartUp: " << retcode;
+                    throw s.str();
+                }
 
                 // Create socket for sending.
                 m_fd = ::socket(PF_INET, SOCK_DGRAM, 0);
                 if (m_fd < 0) {
                     stringstream s;
-					const int retcode = WSAGetLastError();
-					s << "[core::wrapper::WIN32UDPSender] Error while creating file descriptor: " << retcode;
+                    const int retcode = WSAGetLastError();
+                    s << "[core::wrapper::WIN32UDPSender] Error while creating file descriptor: " << retcode;
 
-					// Decrement Winsock 2.2 DLL access counter.
-					WSACleanup();
+                    // Decrement Winsock 2.2 DLL access counter.
+                    WSACleanup();
 
                     throw s.str();
                 }
@@ -73,8 +77,8 @@ namespace core {
                 // Close socket.
                 ::closesocket(m_fd);
 
-				// Decrement Winsock 2.2 DLL access counter.
-				WSACleanup();
+                // Decrement Winsock 2.2 DLL access counter.
+                WSACleanup();
             }
 
             void WIN32UDPSender::send(const string &data) const {
@@ -86,7 +90,7 @@ namespace core {
 
                 m_socketMutex->lock();
                 {
-					::sendto(m_fd, data.c_str(), data.length(), 0, (struct sockaddr *) &m_address, sizeof(m_address));
+                    ::sendto(m_fd, data.c_str(), data.length(), 0, (struct sockaddr *) &m_address, sizeof(m_address));
                 }
                 m_socketMutex->unlock();
             }

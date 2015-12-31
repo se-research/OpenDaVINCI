@@ -17,6 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <memory>
+#include <sstream>
+#include <string>
+
 #include "core/wrapper/ConcurrencyFactory.h"
 #include "core/wrapper/MutexFactory.h"
 #include "core/wrapper/WIN32/WIN32TCPAcceptor.h"
@@ -44,27 +48,27 @@ namespace core {
                     throw std::string("[core::wrapper::WIN32TCPAcceptor] Error creating mutex");
                 }
 
-				// Load Winsock 2.2 DLL.
-				WSADATA wsaData;
-				if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
-					stringstream s;
-					const int retcode = WSAGetLastError();
-					s << "[core::wrapper::WIN32TCPAcceptor] Error while calling WSAStartUp: " << retcode;
-					throw s.str();
-				}
-				
-				// Create socket.
+                // Load Winsock 2.2 DLL.
+                WSADATA wsaData;
+                if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
+                    stringstream s;
+                    const int retcode = WSAGetLastError();
+                    s << "[core::wrapper::WIN32TCPAcceptor] Error while calling WSAStartUp: " << retcode;
+                    throw s.str();
+                }
+                
+                // Create socket.
                 m_fileDescriptor = ::socket(AF_INET, SOCK_STREAM, 0);
                 if (m_fileDescriptor < 0) {
-					stringstream s;
-					const int retcode = WSAGetLastError();
-					s << "[core::wrapper::WIN32TCPAcceptor] Error while creating file descriptor: " << retcode;
+                    stringstream s;
+                    const int retcode = WSAGetLastError();
+                    s << "[core::wrapper::WIN32TCPAcceptor] Error while creating file descriptor: " << retcode;
 
-					// Decrement Winsock 2.2 DLL access counter.
-					WSACleanup();
+                    // Decrement Winsock 2.2 DLL access counter.
+                    WSACleanup();
 
-					throw s.str();
-				}
+                    throw s.str();
+                }
 
                 // Allow reusing of ports by multiple sockets.
                 int32_t yes = 1;
@@ -74,14 +78,14 @@ namespace core {
                                                (char*)&yes,
                                                sizeof(yes));
                 if (retval < 0) {
-					stringstream s;
-					const int retcode = WSAGetLastError();
-					s << "[core::wrapper::WIN32TCPAcceptor] Error while setting socket options: " << retcode;
+                    stringstream s;
+                    const int retcode = WSAGetLastError();
+                    s << "[core::wrapper::WIN32TCPAcceptor] Error while setting socket options: " << retcode;
 
-					// Decrement Winsock 2.2 DLL access counter.
-					WSACleanup();
+                    // Decrement Winsock 2.2 DLL access counter.
+                    WSACleanup();
 
-					throw s.str();
+                    throw s.str();
                 }
 
                 // Setup address and port.
@@ -93,25 +97,25 @@ namespace core {
 
                 // Bind handle.
                 if (::bind(m_fileDescriptor, (struct sockaddr *) &address, sizeof(address)) == -1) {
-					stringstream s;
-					const int retcode = WSAGetLastError();
-					s << "[core::wrapper::WIN32TCPAcceptor] Error while binding: " << retcode;
+                    stringstream s;
+                    const int retcode = WSAGetLastError();
+                    s << "[core::wrapper::WIN32TCPAcceptor] Error while binding: " << retcode;
 
-					// Decrement Winsock 2.2 DLL access counter.
-					WSACleanup();
+                    // Decrement Winsock 2.2 DLL access counter.
+                    WSACleanup();
 
                     throw s.str();
                 }
 
                 if (::listen(m_fileDescriptor, WIN32TCPAcceptor::BACKLOG) == -1) {
-					stringstream s;
-					const int retcode = WSAGetLastError();
-					s << "[core::wrapper::WIN32TCPAcceptor] Error while listening: " << retcode;
+                    stringstream s;
+                    const int retcode = WSAGetLastError();
+                    s << "[core::wrapper::WIN32TCPAcceptor] Error while listening: " << retcode;
 
-					// Decrement Winsock 2.2 DLL access counter.
-					WSACleanup();
+                    // Decrement Winsock 2.2 DLL access counter.
+                    WSACleanup();
 
-					throw s.str();
+                    throw s.str();
                 }
             }
 
@@ -119,9 +123,9 @@ namespace core {
                 setAcceptorListener(NULL);
                 ::closesocket(m_fileDescriptor);
 
-				// Decrement Winsock 2.2 DLL access counter.
-				WSACleanup();
-			}
+                // Decrement Winsock 2.2 DLL access counter.
+                WSACleanup();
+            }
 
             void WIN32TCPAcceptor::setAcceptorListener(core::io::tcp::TCPAcceptorListener* listener) {
                 m_listenerMutex->lock();
