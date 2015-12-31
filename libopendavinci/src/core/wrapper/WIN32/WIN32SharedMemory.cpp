@@ -18,6 +18,7 @@
  */
 
 #include <algorithm>
+#include <iostream>
 
 #include "core/base/module/AbstractCIDModule.h"
 #include "core/wrapper/WIN32/WIN32SharedMemory.h"
