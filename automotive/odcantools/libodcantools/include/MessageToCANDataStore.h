@@ -20,7 +20,7 @@
 #ifndef MESSAGETOCANDATASTORE_H_
 #define MESSAGETOCANDATASTORE_H_
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/base/AbstractDataStore.h"
 
 namespace core { namespace data { class Container; } }

@@ -33,7 +33,7 @@
 #include <sstream>
 #include <string>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/base/KeyValueConfiguration.h"
 #include "core/data/Container.h"
 #include "core/io/URL.h"

@@ -25,7 +25,7 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
 #include "core/exceptions/Exceptions.h"
 

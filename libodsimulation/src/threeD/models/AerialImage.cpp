@@ -25,7 +25,7 @@
 #include <GL/gl.h>
 #include <string>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/opendavinci.h"
 #include "hesperia/data/environment/Point3.h"
 #include "hesperia/threeD/Node.h"

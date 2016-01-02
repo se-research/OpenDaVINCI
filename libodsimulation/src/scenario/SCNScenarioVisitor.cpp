@@ -19,7 +19,7 @@
 
 #include <string>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/exceptions/Exceptions.h"
 #include "core/opendavinci.h"
 #include "core/wrapper/parser/ASTNode.h"

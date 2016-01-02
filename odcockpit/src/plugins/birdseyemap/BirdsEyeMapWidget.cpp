@@ -27,7 +27,7 @@
 #include <qnamespace.h>
 #include <qstringlist.h>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/base/Lock.h"
 #include "core/base/TreeNode.h"
 #include "core/opendavinci.h"

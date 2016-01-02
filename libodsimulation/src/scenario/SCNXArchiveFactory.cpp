@@ -22,7 +22,7 @@
 #include <map>
 #include <string>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/SharedPointer.h"
 #include "core/base/Lock.h"
 #include "core/base/Mutex.h"

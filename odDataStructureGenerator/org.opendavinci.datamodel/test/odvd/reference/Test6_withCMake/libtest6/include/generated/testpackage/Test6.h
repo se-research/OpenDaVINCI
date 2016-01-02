@@ -7,8 +7,8 @@
 #ifndef TESTPACKAGE_TEST6_H
 #define TESTPACKAGE_TEST6_H
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+// core/opendavinci.h must be included to setup platform-dependent header files and configurations.
+#include "core/opendavinci.h"
 
 #include <vector>
 

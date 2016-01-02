@@ -20,8 +20,8 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_WIN32IMPL_WIN32TIMEFACTORYWORKER_H_
 #define OPENDAVINCI_CORE_WRAPPER_WIN32IMPL_WIN32TIMEFACTORYWORKER_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+// core/opendavinci.h must be included to setup platform-dependent header files and configurations.
+#include "core/opendavinci.h"
 
 #include "core/wrapper/TimeFactoryWorker.h"
 #include "core/wrapper/WIN32/WIN32Time.h"

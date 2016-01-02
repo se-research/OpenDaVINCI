@@ -24,7 +24,7 @@
 #include <Qt/qmenubar.h>
 #include <qstring.h>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/opendavinci.h"
 #include "plugins/GLControlFrame.h"
 #include "plugins/objxviewer/OBJXGLWidget.h"

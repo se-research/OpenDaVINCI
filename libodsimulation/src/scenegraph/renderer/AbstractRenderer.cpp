@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 
 #include "hesperia/scenegraph/renderer/AbstractRenderer.h"
 #include "hesperia/scenegraph/primitives/Line.h"

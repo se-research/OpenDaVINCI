@@ -34,7 +34,7 @@
 
 #include <string>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "CockpitWindow.h"
 #include "FIFOMultiplexer.h"
 #include "MdiPlugIn.h"

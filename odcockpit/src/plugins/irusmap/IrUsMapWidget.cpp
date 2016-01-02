@@ -36,7 +36,7 @@
 #include <iostream>
 #include <sstream>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/base/KeyValueConfiguration.h"
 #include "core/base/Lock.h"
 #include "core/data/Container.h"

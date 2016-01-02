@@ -26,7 +26,7 @@
 #include <map>
 #include <vector>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/base/Mutex.h"
 #include "core/io/conference/ContainerListener.h"
 #include "hesperia/data/environment/EgoState.h"

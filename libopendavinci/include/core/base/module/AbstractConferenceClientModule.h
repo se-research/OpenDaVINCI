@@ -23,7 +23,7 @@
 #include <string>
 
 // platform.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/base/module/ManagedClientModule.h"
 #include "core/exceptions/Exceptions.h"
 #include "core/io/conference/ContainerListener.h"

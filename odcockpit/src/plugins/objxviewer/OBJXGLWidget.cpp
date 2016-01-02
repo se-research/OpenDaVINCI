@@ -23,7 +23,7 @@
 #include <fstream>
 #include <iostream>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/base/Lock.h"
 #include "core/opendavinci.h"
 #include "hesperia/threeD/Node.h"

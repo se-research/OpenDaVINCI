@@ -20,8 +20,8 @@
 #ifndef OPENDAVINCI_DMCP_SUPERCOMPONENTSTATELISTENER_H_
 #define OPENDAVINCI_DMCP_SUPERCOMPONENTSTATELISTENER_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+// core/opendavinci.h must be included to setup platform-dependent header files and configurations.
+#include "core/opendavinci.h"
 
 namespace core {
     namespace dmcp {

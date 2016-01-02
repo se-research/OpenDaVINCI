@@ -30,7 +30,7 @@
 #include <algorithm>
 #include <iostream>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/base/Lock.h"
 #include "core/data/Container.h"
 #include "core/opendavinci.h"

@@ -20,7 +20,7 @@
 #ifndef SPY_H_
 #define SPY_H_
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/base/FIFOQueue.h"
 #include "core/base/module/TimeTriggeredConferenceClientModule.h"
 #include "generated/coredata/dmcp/ModuleExitCodeMessage.h"

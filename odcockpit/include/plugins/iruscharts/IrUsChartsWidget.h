@@ -29,7 +29,7 @@
 #include <string>
 #include <vector>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/base/Mutex.h"
 #include "core/data/Container.h"
 #include "core/io/conference/ContainerListener.h"

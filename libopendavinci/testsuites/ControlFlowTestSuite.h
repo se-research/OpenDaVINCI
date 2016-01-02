@@ -26,7 +26,7 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "context/base/BlockableContainerReceiver.h"
 #include "context/base/ControlledContainerConferenceFactory.h"
 #include "context/base/ControlledContainerConferenceForSystemUnderTest.h"

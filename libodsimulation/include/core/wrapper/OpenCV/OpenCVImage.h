@@ -24,7 +24,7 @@
 
 #include <opencv/cv.h>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/wrapper/Image.h"
 
 namespace core {

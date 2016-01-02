@@ -22,7 +22,7 @@
 #include <iostream>
 
 #include "core/opendavinci.h"
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/base/module/AbstractCIDModule.h"
 
 #include "generated/automotive/GenericCANMessage.h"

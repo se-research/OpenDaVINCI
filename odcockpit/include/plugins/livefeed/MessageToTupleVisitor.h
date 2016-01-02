@@ -24,7 +24,7 @@
 #include <string>
 #include <vector>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/base/Visitor.h"
 
 namespace core { namespace base { class Serializable; } }

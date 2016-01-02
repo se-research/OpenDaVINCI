@@ -21,7 +21,7 @@
 #define CONTEXT_BASE_BLOCKABLECONTAINERRECEIVER_H_
 
 // platform.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "context/base/BlockableContainerListener.h"
 
 namespace core { namespace data { class Container; } }

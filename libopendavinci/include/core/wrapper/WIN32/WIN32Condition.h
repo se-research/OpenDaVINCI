@@ -23,8 +23,8 @@
 // Using c++11 standard.
 #include <condition_variable>
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+// core/opendavinci.h must be included to setup platform-dependent header files and configurations.
+#include "core/opendavinci.h"
 
 #include "core/wrapper/Condition.h"
 #include "core/wrapper/ConditionFactoryWorker.h"

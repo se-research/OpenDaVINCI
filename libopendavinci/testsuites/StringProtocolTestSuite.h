@@ -25,7 +25,7 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/io/StringListener.h"     // for StringListener
 #include "core/io/StringSender.h"       // for StringSender
 #include "core/io/protocol/StringProtocol.h"  // for StringProtocol

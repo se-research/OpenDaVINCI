@@ -20,7 +20,7 @@
 
 #include <algorithm>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 
 #include "ConnectedModule.h"
 #include "ConnectedModules.h"

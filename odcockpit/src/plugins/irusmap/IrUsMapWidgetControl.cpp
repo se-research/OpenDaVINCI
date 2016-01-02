@@ -23,7 +23,7 @@
 #include <qboxlayout.h>
 #include <qstring.h>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/base/Lock.h"
 #include "core/opendavinci.h"
 #include "plugins/irusmap/IrUsMapWidget.h"

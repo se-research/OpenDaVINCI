@@ -20,7 +20,7 @@
 #ifndef HESPERIA_CORE_THREED_NODERENDERINGCONFIGURATION_H_
 #define HESPERIA_CORE_THREED_NODERENDERINGCONFIGURATION_H_
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 
 namespace hesperia {
     namespace threeD {

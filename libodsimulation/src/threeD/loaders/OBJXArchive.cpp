@@ -24,7 +24,7 @@
 #include <string>
 #include <vector>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/opendavinci.h"
 #include "core/strings/StringComparator.h"
 #include "generated/cartesian/Constants.h"

@@ -30,7 +30,7 @@
 
 #include <cmath>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/base/Lock.h"
 #include "generated/cartesian/Constants.h"
 #include "plugins/AbstractGLWidget.h"

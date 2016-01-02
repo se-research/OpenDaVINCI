@@ -24,7 +24,7 @@
 #include <qobjectdefs.h>
 #include <qwidget.h>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/base/Mutex.h"
 #include "core/data/TimeStamp.h"
 #include "core/io/conference/ContainerListener.h"
