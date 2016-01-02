@@ -28,7 +28,7 @@
 #include <map>
 #include <string>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/SharedPointer.h"
 #include "core/io/conference/ContainerListener.h"
 #include "generated/coredata/dmcp/ModuleStatistics.h"

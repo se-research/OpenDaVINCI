@@ -25,7 +25,7 @@
 #include "core/base/Lock.h"
 #include "core/base/module/AbstractCIDModule.h"
 #include "core/data/Container.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "core/wrapper/SharedMemory.h"
 #include "core/wrapper/SharedMemoryFactory.h"
 #include "generated/coredata/buffer/MemorySegment.h"

@@ -27,7 +27,7 @@
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/adjacency_list.hpp>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 
 namespace core {
     namespace wrapper {

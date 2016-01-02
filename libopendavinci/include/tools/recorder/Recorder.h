@@ -23,8 +23,7 @@
 #include <memory>
 #include <string>
 
-// platform.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/SharedPointer.h"
 #include "core/base/FIFOQueue.h"
 

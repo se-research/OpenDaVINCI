@@ -23,8 +23,7 @@
 #include <iostream>
 #include <sstream>
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include "core/opendavinci.h"
 
 #include "core/base/module/AbstractCIDModule.h"
 #include "core/wrapper/NetworkLibraryProducts.h"

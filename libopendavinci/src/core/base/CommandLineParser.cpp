@@ -24,7 +24,7 @@
 
 #include "core/base/CommandLineParser.h"
 #include "core/exceptions/Exceptions.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 
 namespace core {
     namespace base {

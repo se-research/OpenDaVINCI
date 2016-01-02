@@ -25,7 +25,7 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/base/CommandLineArgument.h"  // for CommandLineArgument
 #include "core/base/CommandLineParser.h"  // for CommandLineParser
 #include "core/exceptions/Exceptions.h"  // for CommandLineParserException

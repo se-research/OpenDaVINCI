@@ -39,7 +39,7 @@
 #include "core/data/TimeStamp.h"
 #include "core/dmcp/connection/Client.h"
 #include "core/exceptions/Exceptions.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "generated/coredata/dmcp/ModuleStateMessage.h"
 #include "generated/coredata/dmcp/RuntimeStatistic.h"
 #include "generated/coredata/dmcp/ServerInformation.h"

@@ -22,7 +22,7 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/base/Condition.h"        // for Condition
 #include "core/base/Lock.h"             // for Lock
 #include "core/base/Mutex.h"            // for Mutex

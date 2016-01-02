@@ -24,7 +24,7 @@
 #include "core/dmcp/connection/Client.h"
 #include "core/dmcp/discoverer/Client.h"
 #include "core/exceptions/Exceptions.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "generated/coredata/dmcp/Constants.h"
 #include "generated/coredata/dmcp/ModuleDescriptor.h"
 #include "generated/coredata/dmcp/ModuleStateMessage.h"

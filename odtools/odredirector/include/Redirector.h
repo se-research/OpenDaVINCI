@@ -23,7 +23,7 @@
 #include <map>
 #include <string>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/SharedPointer.h"
 #include "core/base/module/TimeTriggeredConferenceClientModule.h"
 #include "generated/coredata/dmcp/ModuleExitCodeMessage.h"

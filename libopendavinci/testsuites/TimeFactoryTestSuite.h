@@ -26,7 +26,7 @@
 #include "context/base/ControlledTimeFactory.h"
 #include "core/SharedPointer.h"         // for SharedPointer
 #include "core/data/TimeStamp.h"        // for TimeStamp
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "core/wrapper/TimeFactory.h"   // for TimeFactory
 
 namespace core { namespace wrapper { class Time; } }

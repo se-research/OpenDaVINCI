@@ -25,7 +25,7 @@
 #include "core/data/TimeStamp.h"
 #include "core/io/conference/UDPMultiCastContainerConference.h"
 #include "core/io/udp/UDPFactory.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 
 namespace core {
     namespace io {

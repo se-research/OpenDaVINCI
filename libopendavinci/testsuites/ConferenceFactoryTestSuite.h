@@ -35,7 +35,7 @@
 #include "core/io/conference/ContainerConferenceFactory.h"
 #include "core/io/conference/ContainerListener.h"
 #include "core/io/conference/UDPMultiCastContainerConference.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 
 using namespace std;
 using namespace core::base;

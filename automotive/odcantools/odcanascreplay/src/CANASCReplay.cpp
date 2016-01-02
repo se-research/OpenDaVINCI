@@ -19,7 +19,7 @@
 
 #include <iostream>
 
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "core/strings/StringToolbox.h"
 
 #include "generated/automotive/GenericCANMessage.h"

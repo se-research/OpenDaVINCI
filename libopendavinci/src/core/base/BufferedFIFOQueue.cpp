@@ -18,7 +18,7 @@
  */
 
 #include "core/base/BufferedFIFOQueue.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 
 namespace core {
     namespace base {

@@ -33,12 +33,11 @@
 #include <sstream>
 #include <string>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/base/KeyValueConfiguration.h"
 #include "core/data/Container.h"
 #include "core/io/URL.h"
 #include "core/io/conference/ContainerConference.h"
-#include "core/macros.h"
 #include "plugins/player/PlayerWidget.h"
 #include "tools/player/Player.h"
 #include "tools/splitter/Splitter.h"

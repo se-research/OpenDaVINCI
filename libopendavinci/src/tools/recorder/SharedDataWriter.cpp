@@ -24,7 +24,7 @@
 #include "core/base/Thread.h"
 #include "core/base/module/AbstractCIDModule.h"
 #include "core/data/Container.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "generated/coredata/buffer/MemorySegment.h"
 #include "tools/recorder/SharedDataWriter.h"
 

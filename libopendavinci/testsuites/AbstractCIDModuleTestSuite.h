@@ -27,7 +27,7 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/base/Service.h"          // for Service
 #include "core/base/Thread.h"           // for Thread
 #include "core/base/module/AbstractCIDModule.h"  // for AbstractCIDModule

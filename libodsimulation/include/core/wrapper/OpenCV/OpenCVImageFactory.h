@@ -22,7 +22,7 @@
 
 #include <iosfwd>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/wrapper/Image.h"
 #include "core/wrapper/ImageFactory.h"
 

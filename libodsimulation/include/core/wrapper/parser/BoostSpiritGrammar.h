@@ -27,7 +27,7 @@
 #include <boost/spirit/include/classic_ast.hpp>
 #include <boost/spirit/include/classic_error_handling.hpp>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/wrapper/parser/Grammar.h"
 #include "core/wrapper/parser/ParserError.h"
 #include "core/wrapper/parser/ParserErrorExtendedData.h"

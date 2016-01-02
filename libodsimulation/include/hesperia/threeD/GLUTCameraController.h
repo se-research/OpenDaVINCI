@@ -20,7 +20,7 @@
 #ifndef HESPERIA_THREED_GLUTCAMERACONTROLLER_H_
 #define HESPERIA_THREED_GLUTCAMERACONTROLLER_H_
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 
 namespace hesperia {
     namespace threeD {

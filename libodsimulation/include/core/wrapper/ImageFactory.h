@@ -22,7 +22,7 @@
 
 #include <iostream>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/wrapper/Disposable.h"
 #include "core/wrapper/Image.h"
 

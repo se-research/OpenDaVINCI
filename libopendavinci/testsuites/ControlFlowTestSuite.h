@@ -26,7 +26,7 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "context/base/BlockableContainerReceiver.h"
 #include "context/base/ControlledContainerConferenceFactory.h"
 #include "context/base/ControlledContainerConferenceForSystemUnderTest.h"
@@ -53,7 +53,6 @@
 #include "core/io/conference/ContainerConference.h"
 #include "core/io/conference/ContainerConferenceFactory.h"
 #include "core/io/conference/ContainerListener.h"
-#include "core/macros.h"
 #include "generated/coredata/dmcp/Constants.h"  // for Constants, etc
 #include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
 #include "generated/coredata/dmcp/ServerInformation.h"

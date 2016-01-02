@@ -20,8 +20,7 @@
 #ifndef CONNECTIONHANDLERMOCK_H_
 #define CONNECTIONHANDLERMOCK_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include "core/opendavinci.h"
 
 #include "core/dmcp/connection/ConnectionHandler.h"
 #include "core/dmcp/connection/ModuleConnection.h"

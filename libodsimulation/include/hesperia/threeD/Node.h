@@ -20,8 +20,7 @@
 #ifndef HESPERIA_THREED_NODE_H_
 #define HESPERIA_THREED_NODE_H_
 
-// native.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/native.h"
+#include "core/opendavinci.h"
 #include "core/wrapper/Disposable.h"
 #include "hesperia/threeD/NodeDescriptor.h"
 

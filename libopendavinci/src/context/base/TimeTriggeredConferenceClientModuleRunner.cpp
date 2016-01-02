@@ -31,7 +31,7 @@
 #include "core/base/module/TimeTriggeredConferenceClientModule.h"
 #include "core/exceptions/Exceptions.h"
 #include "core/io/conference/ContainerConference.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "core/wrapper/Time.h"
 #include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
 #include "generated/coredata/dmcp/ModuleStateMessage.h"

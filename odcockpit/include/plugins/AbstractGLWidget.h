@@ -24,7 +24,7 @@
 #include <Qt/qgl.h>
 #include <qobjectdefs.h>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/base/Mutex.h"
 #include "hesperia/data/environment/Point3.h"
 

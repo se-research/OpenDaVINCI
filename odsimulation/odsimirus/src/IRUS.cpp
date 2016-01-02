@@ -23,7 +23,7 @@
 #include "PointSensor.h"
 #include "core/data/Container.h"
 #include "core/io/URL.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "core/strings/StringComparator.h"
 #include "generated/automotive/miniature/SensorBoardData.h"
 #include "hesperia/data/environment/EgoState.h"

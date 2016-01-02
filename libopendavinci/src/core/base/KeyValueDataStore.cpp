@@ -22,7 +22,7 @@
 
 #include "core/base/KeyValueDataStore.h"
 #include "core/base/Serializable.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 
 namespace core {
     namespace base {

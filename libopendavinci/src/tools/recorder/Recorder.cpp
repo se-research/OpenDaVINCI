@@ -24,7 +24,7 @@
 #include "core/data/Container.h"
 #include "core/io/StreamFactory.h"
 #include "core/io/URL.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "tools/recorder/Recorder.h"
 #include "tools/recorder/SharedDataListener.h"
 

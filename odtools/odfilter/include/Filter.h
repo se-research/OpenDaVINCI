@@ -23,7 +23,7 @@
 #include <string>
 #include <vector>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 
 namespace odfilter {
 

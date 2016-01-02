@@ -26,7 +26,7 @@
 #include "core/base/Thread.h"
 #include "core/base/module/AbstractCIDModule.h"
 #include "core/data/TimeStamp.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 
 namespace core {
     namespace base {

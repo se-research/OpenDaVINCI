@@ -25,7 +25,7 @@
 #include "core/base/Thread.h"
 #include "core/base/module/AbstractModule.h"
 #include "core/exceptions/Exceptions.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "core/wrapper/DisposalService.h"
 
 namespace core {

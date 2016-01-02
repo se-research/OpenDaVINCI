@@ -21,7 +21,7 @@
 
 #include <string>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/wrapper/parser/ASTNode.h"
 #include "core/wrapper/parser/BoostSpiritGrammar.h"
 #include "hesperia/situation/SITGrammar.h"

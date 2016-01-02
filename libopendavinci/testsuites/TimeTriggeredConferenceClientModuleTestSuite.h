@@ -26,7 +26,7 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/SharedPointer.h"         // for SharedPointer
 #include "core/base/Condition.h"        // for Condition
 #include "core/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
@@ -41,7 +41,6 @@
 #include "core/dmcp/discoverer/Server.h"  // for Server
 #include "core/io/conference/ContainerConference.h"
 #include "core/io/conference/ContainerConferenceFactory.h"
-#include "core/macros.h"
 #include "generated/coredata/dmcp/Constants.h"  // for Constants, etc
 #include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
 #include "generated/coredata/dmcp/ModuleStateMessage.h"
