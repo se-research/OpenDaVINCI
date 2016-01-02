@@ -21,7 +21,7 @@
 #define HESPERIA_CORE_DATA_SCENARIO_SCENARIONODE_H_
 
 // native.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/native.h"
+#include "core/opendavinci.h"
 
 namespace hesperia {
     namespace data {

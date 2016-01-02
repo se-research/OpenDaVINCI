@@ -21,7 +21,7 @@
 #define HESPERIA_SCENARIO_GROUNDBASEDCOMPLEXMODELLOADER_H_
 
 // native.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/native.h"
+#include "core/opendavinci.h"
 
 #include "hesperia/scenario/SCNXArchive.h"
 #include "hesperia/threeD/TransformGroup.h"

@@ -22,7 +22,7 @@
 
 #include "core/SharedPointer.h"
 // native.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/native.h"
+#include "core/opendavinci.h"
 #include "hesperia/data/camera/ImageGrabberCalibration.h"
 #include "hesperia/data/camera/ImageGrabberID.h"
 

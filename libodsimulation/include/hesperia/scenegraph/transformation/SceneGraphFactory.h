@@ -21,7 +21,7 @@
 #define HESPERIA_SCENEGRAPH_TRANSFORMATION_SCENEGRAPHFACTORY_H_
 
 // native.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/native.h"
+#include "core/opendavinci.h"
 
 #include "core/base/Mutex.h"
 #include "hesperia/scenario/SCNXArchive.h"
