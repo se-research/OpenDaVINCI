@@ -579,7 +579,7 @@ class «msg.message.substring(msg.message.lastIndexOf('.') + 1) /* These lines g
 	«ENDIF»
 	«IF !hasGeneratedMacros && a.fixedarray != null && a.fixedarray.name != null && a.fixedarray.name.length > 0»
 #include <cstring>
-#include "core/macros.h"
+#include "core/opendavinci.h"
 		«{hasGeneratedMacros = true; ""}»
 	«ENDIF»
 «ENDFOR»

@@ -49,7 +49,7 @@
 #include "core/dmcp/discoverer/Server.h"  // for Server
 #include "core/io/conference/ContainerConference.h"
 #include "core/io/conference/ContainerConferenceFactory.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "generated/coredata/dmcp/Constants.h"  // for Constants, etc
 #include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
 #include "generated/coredata/dmcp/ModuleStateMessage.h"

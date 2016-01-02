@@ -92,7 +92,7 @@
 /**************************************************************************************/
 
 // Basic header for OpenDaVINCI macros.
-#include "core/macros.h"
+#include "core/opendavinci.h"
 
 // Type convention software-wide.
 namespace core {

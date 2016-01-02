@@ -31,7 +31,7 @@
 #include "core/platform.h"
 #include "core/data/SerializableData.h"
 #include "core/exceptions/Exceptions.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "core/strings/StringComparator.h"
 
 namespace core {
