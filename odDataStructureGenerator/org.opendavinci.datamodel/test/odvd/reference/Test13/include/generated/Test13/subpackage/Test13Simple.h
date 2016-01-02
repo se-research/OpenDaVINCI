@@ -7,7 +7,6 @@
 #ifndef TEST13_SUBPACKAGE_TEST13SIMPLE_H
 #define TEST13_SUBPACKAGE_TEST13SIMPLE_H
 
-// core/opendavinci.h must be included to setup platform-dependent header files and configurations.
 #include "core/opendavinci.h"
 
 

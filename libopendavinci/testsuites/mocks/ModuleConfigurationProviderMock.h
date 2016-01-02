@@ -20,7 +20,6 @@
 #ifndef MODULECONFIGURATIONLISTENERMOCK_H_
 #define MODULECONFIGURATIONLISTENERMOCK_H_
 
-// core/opendavinci.h must be included to setup platform-dependent header files and configurations.
 #include "core/opendavinci.h"
 
 #include "core/base/KeyValueConfiguration.h"

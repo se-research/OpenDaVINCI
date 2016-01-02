@@ -7,7 +7,6 @@
 #ifndef TEST10POINT_H
 #define TEST10POINT_H
 
-// core/opendavinci.h must be included to setup platform-dependent header files and configurations.
 #include "core/opendavinci.h"
 
 

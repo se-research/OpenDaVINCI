@@ -20,7 +20,6 @@
 #ifndef OPENDAVINCI_CORE_IO_CONNECTIONERRORLISTENER
 #define OPENDAVINCI_CORE_IO_CONNECTIONERRORLISTENER
 
-// core/opendavinci.h must be included to setup platform-dependent header files and configurations.
 #include "core/opendavinci.h"
 
 namespace core {

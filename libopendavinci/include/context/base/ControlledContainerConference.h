@@ -20,7 +20,6 @@
 #ifndef CONTEXT_BASE_CONTROLLEDCONTAINERCONFERENCE_H_
 #define CONTEXT_BASE_CONTROLLEDCONTAINERCONFERENCE_H_
 
-// platform.h must be included as first header file for definition of _WIN32_WINNT.
 #include "core/opendavinci.h"
 #include "context/base/SendContainerToSystemsUnderTest.h"
 

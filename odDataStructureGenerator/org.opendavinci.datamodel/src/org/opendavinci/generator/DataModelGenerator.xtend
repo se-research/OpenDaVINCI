@@ -159,7 +159,6 @@ class DataModelGenerator implements IGenerator {
 #define «msg.message.replaceAll("\\.", "_").toUpperCase + "_H"»
 «ENDIF»
 
-// core/opendavinci.h must be included to setup platform-dependent header files and configurations.
 #include "core/opendavinci.h"
 
 «var hasGeneratedVector = false /*These lines check if we have a list attribute and thus, need to include <vector>.*/»
@@ -1430,7 +1429,6 @@ namespace «s.get(i)» {
 #include <string>
 #include <vector>
 
-// core/opendavinci.h must be included to setup platform-dependent header files and configurations.
 #include "core/opendavinci.h"
 #include "core/strings/StringToolbox.h"
 

@@ -20,7 +20,6 @@
 #ifndef HESPERIA_SCENEGRAPH_SCENENODEDESCRIPTORCOMPARATOR_H_
 #define HESPERIA_SCENEGRAPH_SCENENODEDESCRIPTORCOMPARATOR_H_
 
-// native.h must be included as first header file for definition of _WIN32_WINNT.
 #include "core/opendavinci.h"
 #include "hesperia/scenegraph/SceneNodeDescriptor.h"
 

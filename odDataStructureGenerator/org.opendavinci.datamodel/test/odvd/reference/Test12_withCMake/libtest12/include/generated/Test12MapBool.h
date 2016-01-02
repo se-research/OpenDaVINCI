@@ -7,7 +7,6 @@
 #ifndef TEST12MAPBOOL_H
 #define TEST12MAPBOOL_H
 
-// core/opendavinci.h must be included to setup platform-dependent header files and configurations.
 #include "core/opendavinci.h"
 
 #include <map>

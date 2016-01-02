@@ -31,7 +31,6 @@
 #include <cassert>
 #include <string>
 
-// native.h must be included as first header file for definition of _WIN32_WINNT.
 #include "core/opendavinci.h"
 
 #include <boost/spirit/include/classic_ast.hpp>

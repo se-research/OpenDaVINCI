@@ -20,7 +20,6 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_KEYVALUEDATABASEFACTORYWORKER
 #define OPENDAVINCI_CORE_WRAPPER_KEYVALUEDATABASEFACTORYWORKER
 
-// core/opendavinci.h must be included to setup platform-dependent header files and configurations.
 #include "core/opendavinci.h"
 
 #include "core/SharedPointer.h"

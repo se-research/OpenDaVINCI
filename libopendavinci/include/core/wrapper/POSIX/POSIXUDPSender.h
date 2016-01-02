@@ -26,7 +26,6 @@
 #include <memory>
 #include <string>
 
-// platform.h must be included as first header file for definition of _WIN32_WINNT.
 #include "core/opendavinci.h"
 #include "core/io/udp/UDPSender.h"
 #include "core/wrapper/NetworkLibraryProducts.h"

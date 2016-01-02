@@ -20,7 +20,6 @@
 #ifndef OPENDAVINCI_DMCP_MODULECONFIGURATIONPROVIDER_H_
 #define OPENDAVINCI_DMCP_MODULECONFIGURATIONPROVIDER_H_
 
-// core/opendavinci.h must be included to setup platform-dependent header files and configurations.
 #include "core/opendavinci.h"
 
 #include "core/base/KeyValueConfiguration.h"

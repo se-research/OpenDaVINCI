@@ -23,7 +23,6 @@
 // Using c++11 standard.
 #include <condition_variable>
 
-// core/opendavinci.h must be included to setup platform-dependent header files and configurations.
 #include "core/opendavinci.h"
 
 #include "core/wrapper/Condition.h"

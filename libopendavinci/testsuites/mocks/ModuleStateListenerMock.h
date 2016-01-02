@@ -20,7 +20,6 @@
 #ifndef MOCKS__MODULESTATELISTENERMOCK_H_
 #define MOCKS__MODULESTATELISTENERMOCK_H_
 
-// core/opendavinci.h must be included to setup platform-dependent header files and configurations.
 #include "core/opendavinci.h"
 
 #include "core/base/Condition.h"

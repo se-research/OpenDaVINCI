@@ -7,7 +7,6 @@
 #ifndef TEST12COMPLEX_H
 #define TEST12COMPLEX_H
 
-// core/opendavinci.h must be included to setup platform-dependent header files and configurations.
 #include "core/opendavinci.h"
 
 

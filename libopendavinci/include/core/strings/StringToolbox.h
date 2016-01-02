@@ -20,7 +20,6 @@
 #ifndef OPENDAVINCI_CORE_STRINGS_STRINGTOOLBOX_H_
 #define OPENDAVINCI_CORE_STRINGS_STRINGTOOLBOX_H_
 
-// core/opendavinci.h must be included to setup platform-dependent header files and configurations.
 #include "core/opendavinci.h"
 
 #include <string>

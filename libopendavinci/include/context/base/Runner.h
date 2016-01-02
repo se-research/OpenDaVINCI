@@ -20,7 +20,6 @@
 #ifndef CONTEXT_BASE_RUNNER_H_
 #define CONTEXT_BASE_RUNNER_H_
 
-// platform.h must be included as first header file for definition of _WIN32_WINNT.
 #include "core/opendavinci.h"
 #include "core/base/module/Periodic.h"
 

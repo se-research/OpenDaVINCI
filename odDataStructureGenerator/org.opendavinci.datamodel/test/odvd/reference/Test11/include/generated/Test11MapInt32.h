@@ -7,7 +7,6 @@
 #ifndef TEST11MAPINT32_H
 #define TEST11MAPINT32_H
 
-// core/opendavinci.h must be included to setup platform-dependent header files and configurations.
 #include "core/opendavinci.h"
 
 #include <map>

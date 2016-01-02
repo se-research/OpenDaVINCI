@@ -20,7 +20,6 @@
 #ifndef HESPERIA_CORE_THREED_MODELS_LINE_H_
 #define HESPERIA_CORE_THREED_MODELS_LINE_H_
 
-// native.h must be included as first header file for definition of _WIN32_WINNT.
 #include "core/opendavinci.h"
 
 #include "hesperia/data/environment/Point3.h"
