@@ -1,3 +1,4 @@
+2.4.1 - Added missing protocol handler for configuration setting global.car
 2.4.0 - Refactored main include files
 2.3.0 - Refactored code base to clean up unneeded include headers
 2.2.1 - Added fxe data structures
