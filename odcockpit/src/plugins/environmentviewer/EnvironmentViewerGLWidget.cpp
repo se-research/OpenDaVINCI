@@ -142,32 +142,35 @@ namespace cockpit {
                 /*******************************************************************/
                 /* Dynamic elements.                                               */
                 /*******************************************************************/
-                string objxModel(getPlugIn().getKeyValueConfiguration().getValue<string>("global.car"));
-                cout << "Opening file stream to car model " << objxModel << endl;
-                fstream fin(objxModel.c_str(), ios::in | ios::binary);
-                if (fin.good()) {
-                    cout << "Loading car model" << endl;
-                    OBJXArchive *objxArchive = OBJXArchiveFactory::getInstance().getOBJXArchive(fin);
+                const URL urlOfCar(getPlugIn().getKeyValueConfiguration().getValue<string>("global.car"));
+                if (urlOfCar.isValid()) {
+                    string objxModel(urlOfCar.getResource());
+                    cout << "Opening file stream to car model " << objxModel << endl;
+                    fstream fin(objxModel.c_str(), ios::in | ios::binary);
+                    if (fin.good()) {
+                        cout << "Loading car model" << endl;
+                        OBJXArchive *objxArchive = OBJXArchiveFactory::getInstance().getOBJXArchive(fin);
 
-                    fin.close();
-                    if (objxArchive != NULL) {
-                        // Decorate objxArchive for getting displayed in an OpenGL scene.
-                        m_egoStateNodeDescriptor = NodeDescriptor("EgoCar");
-                        m_listOfCameraAssignableNodes.push_back(m_egoStateNodeDescriptor);
-                        m_egoStateNode = objxArchive->createTransformGroup(m_egoStateNodeDescriptor);
-                    }
+                        fin.close();
+                        if (objxArchive != NULL) {
+                            // Decorate objxArchive for getting displayed in an OpenGL scene.
+                            m_egoStateNodeDescriptor = NodeDescriptor("EgoCar");
+                            m_listOfCameraAssignableNodes.push_back(m_egoStateNodeDescriptor);
+                            m_egoStateNode = objxArchive->createTransformGroup(m_egoStateNodeDescriptor);
+                        }
 
-                    if (m_egoStateNode == NULL) {
-                        OPENDAVINCI_CORE_THROW_EXCEPTION(InvalidArgumentException, "Could not load car model");
-                    }
-                    else {
-                        m_dynamicElements->addChild(m_egoStateNode);
+                        if (m_egoStateNode == NULL) {
+                            OPENDAVINCI_CORE_THROW_EXCEPTION(InvalidArgumentException, "Could not load car model");
+                        }
+                        else {
+                            m_dynamicElements->addChild(m_egoStateNode);
 
-                        // EgoCar is traceable.
-                        NodeDescriptor traceableNodeDescriptor = NodeDescriptor("EgoCar (Trace)");
-                        TransformGroup *traceableNode = new TransformGroup(traceableNodeDescriptor);
-                        m_mapOfTraceablePositions[traceableNodeDescriptor] = traceableNode;
-                        m_dynamicElements->addChild(traceableNode);
+                            // EgoCar is traceable.
+                            NodeDescriptor traceableNodeDescriptor = NodeDescriptor("EgoCar (Trace)");
+                            TransformGroup *traceableNode = new TransformGroup(traceableNodeDescriptor);
+                            m_mapOfTraceablePositions[traceableNodeDescriptor] = traceableNode;
+                            m_dynamicElements->addChild(traceableNode);
+                        }
                     }
                 }
 
