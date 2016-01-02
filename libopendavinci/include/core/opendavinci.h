@@ -91,9 +91,6 @@
 
 /**************************************************************************************/
 
-// Basic header for OpenDaVINCI macros.
-#include "core/opendavinci.h"
-
 // Type convention software-wide.
 namespace core {
     enum TYPE_ {
