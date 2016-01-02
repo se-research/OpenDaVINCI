@@ -27,7 +27,6 @@
 #include "core/base/SerializationFactory.h"
 #include "core/base/Serializer.h"
 #include "core/data/SerializableData.h"
-#include "core/opendavinci.h"
 #include "hesperia/data/scenario/Arc.h"
 #include "hesperia/data/scenario/Clothoid.h"
 #include "hesperia/data/scenario/Lane.h"

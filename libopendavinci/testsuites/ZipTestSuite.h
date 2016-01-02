@@ -28,7 +28,6 @@
 
 #include "core/opendavinci.h"
 #include "core/SharedPointer.h"         // for SharedPointer
-#include "core/opendavinci.h"              // for UNLINK
 #include "core/wrapper/CompressionFactory.h"  // for CompressionFactory
 #include "core/wrapper/DecompressedData.h"  // for DecompressedData
 

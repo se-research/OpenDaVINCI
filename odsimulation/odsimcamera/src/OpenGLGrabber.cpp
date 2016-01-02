@@ -25,7 +25,6 @@
 #include <string>
 
 #include "core/opendavinci.h"
-#include "core/opendavinci.h"
 #include "OpenGLGrabber.h"
 #include "core/base/Thread.h"
 #include "core/io/URL.h"

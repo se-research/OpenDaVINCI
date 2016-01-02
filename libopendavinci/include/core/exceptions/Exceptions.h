@@ -24,7 +24,6 @@
 #include <string>
 
 #include "core/opendavinci.h"
-#include "core/opendavinci.h"
 
 namespace core {
     namespace exceptions {

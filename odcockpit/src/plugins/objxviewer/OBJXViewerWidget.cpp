@@ -25,7 +25,6 @@
 #include <qstring.h>
 
 #include "core/opendavinci.h"
-#include "core/opendavinci.h"
 #include "plugins/GLControlFrame.h"
 #include "plugins/objxviewer/OBJXGLWidget.h"
 #include "plugins/objxviewer/OBJXViewerWidget.h"

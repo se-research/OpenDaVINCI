@@ -24,7 +24,6 @@
 
 #include "core/opendavinci.h"
 #include "core/data/Container.h"
-#include "core/opendavinci.h"
 #include "generated/coredata/dmcp/ModuleDescriptor.h"
 #include "generated/coredata/dmcp/ModuleStatistic.h"
 #include "plugins/modulestatisticsviewer/LoadPerModule.h"

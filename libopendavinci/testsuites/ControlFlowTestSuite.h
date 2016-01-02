@@ -53,7 +53,6 @@
 #include "core/io/conference/ContainerConference.h"
 #include "core/io/conference/ContainerConferenceFactory.h"
 #include "core/io/conference/ContainerListener.h"
-#include "core/opendavinci.h"
 #include "generated/coredata/dmcp/Constants.h"  // for Constants, etc
 #include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
 #include "generated/coredata/dmcp/ServerInformation.h"

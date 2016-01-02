@@ -21,7 +21,6 @@
 
 #include "core/opendavinci.h"
 #include "core/exceptions/Exceptions.h"
-#include "core/opendavinci.h"
 #include "core/wrapper/parser/ASTNode.h"
 #include "hesperia/data/situation/Header.h"
 #include "hesperia/data/situation/Immediately.h"

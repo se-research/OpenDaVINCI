@@ -29,7 +29,6 @@
 #include "core/base/SerializationFactory.h"
 #include "core/base/Serializer.h"
 #include "core/data/SerializableData.h"
-#include "core/opendavinci.h"
 #include "hesperia/data/scenario/Connector.h"
 #include "hesperia/data/scenario/LaneAttribute.h"
 #include "hesperia/data/scenario/LaneModel.h"

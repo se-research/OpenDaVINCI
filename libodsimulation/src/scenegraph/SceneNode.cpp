@@ -22,7 +22,6 @@
 
 #include "core/opendavinci.h"
 #include "core/base/Lock.h"
-#include "core/opendavinci.h"
 #include "hesperia/scenegraph/SceneNode.h"
 #include "hesperia/scenegraph/SceneNodeDescriptor.h"
 #include "hesperia/scenegraph/SceneNodeVisitor.h"

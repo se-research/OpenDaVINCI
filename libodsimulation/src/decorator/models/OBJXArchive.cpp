@@ -25,7 +25,6 @@
 #include <vector>
 
 #include "core/opendavinci.h"
-#include "core/opendavinci.h"
 #include "core/strings/StringComparator.h"
 #include "hesperia/data/environment/Point3.h"
 #include "hesperia/decorator/models/Material.h"

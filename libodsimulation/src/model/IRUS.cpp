@@ -27,7 +27,6 @@
 #include "core/base/KeyValueConfiguration.h"
 #include "core/data/Container.h"
 #include "core/io/URL.h"
-#include "core/opendavinci.h"
 #include "core/strings/StringComparator.h"
 #include "core/wrapper/Time.h"
 #include "generated/automotive/miniature/SensorBoardData.h"

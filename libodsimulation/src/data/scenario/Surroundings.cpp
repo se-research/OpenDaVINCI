@@ -29,7 +29,6 @@
 #include "core/base/SerializationFactory.h"
 #include "core/base/Serializer.h"
 #include "core/data/SerializableData.h"
-#include "core/opendavinci.h"
 #include "hesperia/data/scenario/ComplexModel.h"
 #include "hesperia/data/scenario/Cylinder.h"
 #include "hesperia/data/scenario/Polygon.h"
