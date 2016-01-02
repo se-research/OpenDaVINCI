@@ -25,7 +25,7 @@
 
 #include "core/platform.h"
 #include "core/base/Lock.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "plugins/irusmap/IrUsMapWidget.h"
 #include "plugins/irusmap/IrUsMapWidgetControl.h"
 

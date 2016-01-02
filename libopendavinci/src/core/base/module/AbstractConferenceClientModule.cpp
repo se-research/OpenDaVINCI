@@ -23,7 +23,7 @@
 #include "core/data/Container.h"
 #include "core/io/conference/ContainerConference.h"
 #include "core/io/conference/ContainerConferenceFactory.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 
 namespace core {
     namespace base {

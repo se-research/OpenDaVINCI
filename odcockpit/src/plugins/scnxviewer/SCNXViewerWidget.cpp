@@ -25,7 +25,7 @@
 #include <qstring.h>
 
 #include "core/platform.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "plugins/GLControlFrame.h"
 #include "plugins/scnxviewer/SCNXGLWidget.h"
 #include "plugins/scnxviewer/SCNXViewerWidget.h"

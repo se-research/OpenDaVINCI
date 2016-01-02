@@ -20,7 +20,52 @@
 #ifndef OPENDAVINCI_CORE_PLATFORM_H_
 #define OPENDAVINCI_CORE_PLATFORM_H_
 
-#include "core/native.h"
+/**
+ * The following defines are needed for building a dynamic library using
+ * the Microsoft C++ compiler or the GNU compiler collection.
+ */
+#ifdef _WIN32
+    // Disable warning "__declspec(nothrow)..."
+    #pragma warning( disable : 4290 )
+    // Disable warning "Possible loss of precision"
+    #pragma warning( disable : 4244 )
+    // Disable warning "DLL interface..."
+    #pragma warning( disable : 4251 )
+    // Disable warning "this pointer during initialization..."
+    #pragma warning( disable : 4355 )
+    // Disable warning "'dynamic_cast' for polymorphic type..."
+    #pragma warning( disable : 4541 )
+    // Disable warning "Not all control paths..."
+    #pragma warning( disable : 4715 )
+    // Disable warning "C++ exceptio specification ignored..."
+    #pragma warning( disable : 4290 )
+    // Disable warning "Missing dllimport for std::exception..."
+    #pragma warning( disable : 4275 )
+    // Disable warning "new behavior: elements of array will be default initialized..."
+    #pragma warning( disable : 4351 )
+
+    // Link to ws2_32.lib to get symbol "htonl and ntohl".
+    #pragma comment(lib, "ws2_32.lib")
+
+    // Define Windows 7.
+    #ifndef _WIN32_WINNT
+        #define _WIN32_WINNT 0x0601
+    #endif
+    #define WIN32_LEAN_AND_MEAN
+
+    #ifdef OPENDAVINCI_SHARED
+        #ifdef OPENDAVINCI_EXPORTS
+            #define OPENDAVINCI_API __declspec(dllexport)
+        #else
+            #define OPENDAVINCI_API __declspec(dllimport)
+        #endif
+    #else
+        // In the case of static linking:
+        #define OPENDAVINCI_API
+    #endif
+#else // Not _WIN32 (i.e. LINUX or something else)
+    #define OPENDAVINCI_API
+#endif // _WIN32
 
 #include "platform/PortableEndian.h"
 
@@ -159,5 +204,26 @@ namespace core {
         NO_OP=255
     };
 }
+
+/* This macro eases the declaration of exceptions. */
+#define OPENDAVINCI_CORE_DECLARE_EXCEPTION(ExceptionName) class OPENDAVINCI_API ExceptionName : public Exceptions { public: ExceptionName(const string &exceptionMessage, const string &fileName, const uint32_t &lineNumber) : Exceptions(exceptionMessage, fileName, lineNumber) {}; const string getExceptionName() const { return "" #ExceptionName ""; } };
+
+/* This macro eases the usage of exceptions. */
+#define OPENDAVINCI_CORE_THROW_EXCEPTION(ExceptionClass, ExceptionMessage) do { throw core::exceptions::ExceptionClass(ExceptionMessage, "", 0); } while (false)
+
+/* This macro eases the usage of freeing a pointer. */
+#define OPENDAVINCI_CORE_FREE_POINTER(ptr) do { if (ptr != NULL) { free(ptr); }; ptr = NULL; } while (false)
+
+/* This macro eases the usage of deleting a pointer. */
+#define OPENDAVINCI_CORE_DELETE_POINTER(ptr) do { if (ptr != NULL) { delete(ptr); }; ptr = NULL; } while (false)
+
+/* This macro eases the usage of deleting an array. */
+#define OPENDAVINCI_CORE_DELETE_ARRAY(ptr) do { if (ptr != NULL) { delete [] (ptr); }; ptr = NULL; } while (false)
+
+/* This macro eases the usage of logging. */
+#define CLOG if (core::base::module::AbstractCIDModule::isVerbose()) std::clog
+#define CLOG1 if (core::base::module::AbstractCIDModule::getVerbosity() == 1) std::clog
+#define CLOG2 if ((core::base::module::AbstractCIDModule::getVerbosity() <= 2) && (core::base::module::AbstractCIDModule::getVerbosity() >= 1)) std::clog
+#define CLOG3 if ((core::base::module::AbstractCIDModule::getVerbosity() <= 3) && (core::base::module::AbstractCIDModule::getVerbosity() >= 1)) std::clog
 
 #endif // OPENDAVINCI_CORE_PLATFORM_H_

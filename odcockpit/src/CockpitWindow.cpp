@@ -38,7 +38,7 @@
 #include "CockpitWindow.h"
 #include "FIFOMultiplexer.h"
 #include "MdiPlugIn.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "plugins/PlugIn.h"
 #include "plugins/PlugInProvider.h"
 

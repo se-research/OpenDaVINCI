@@ -44,7 +44,7 @@
 #include "core/exceptions/Exceptions.h"
 #include "core/io/conference/ContainerConference.h"
 #include "core/io/conference/ContainerConferenceFactory.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "core/strings/StringToolbox.h"
 #include "generated/coredata/dmcp/ModuleDescriptor.h"
 #include "generated/coredata/dmcp/ModuleStatistic.h"

@@ -33,7 +33,7 @@
 #include "core/data/Container.h"
 #include "core/exceptions/Exceptions.h"
 #include "core/io/URL.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "hesperia/data/environment/EgoState.h"
 #include "hesperia/data/environment/Line.h"
 #include "hesperia/data/environment/Obstacle.h"

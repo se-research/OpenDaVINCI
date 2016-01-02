@@ -28,7 +28,7 @@
 #include "core/base/SerializationFactory.h"
 #include "core/base/Serializer.h"
 #include "core/data/SerializableData.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "hesperia/data/situation/Behavior.h"
 #include "hesperia/data/situation/ComplexModel.h"
 #include "hesperia/data/situation/ExternalDriver.h"

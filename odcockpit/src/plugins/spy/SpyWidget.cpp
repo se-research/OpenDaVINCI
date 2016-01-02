@@ -28,7 +28,7 @@
 
 #include "core/base/Serializable.h"
 #include "core/data/TimeStamp.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "generated/automotive/ForceControl.h"
 #include "generated/automotive/GenericCANMessage.h"
 #include "generated/automotive/VehicleData.h"

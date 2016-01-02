@@ -38,7 +38,7 @@
 
 #include "core/platform.h"
 #include "core/base/Lock.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "plugins/modulestatisticsviewer/LoadPerModule.h"
 
 namespace cockpit {

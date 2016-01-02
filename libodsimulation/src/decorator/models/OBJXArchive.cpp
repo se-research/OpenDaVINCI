@@ -24,7 +24,7 @@
 #include <string>
 #include <vector>
 
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "core/platform.h"
 #include "core/strings/StringComparator.h"
 #include "hesperia/data/environment/Point3.h"

@@ -24,7 +24,7 @@
 #include <iostream>
 #include <string>
 
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "core/platform.h"
 #include "OpenGLGrabber.h"
 #include "core/base/Thread.h"

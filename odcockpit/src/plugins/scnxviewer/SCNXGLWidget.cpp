@@ -26,7 +26,7 @@
 #include "core/base/Lock.h"
 #include "core/base/Thread.h"
 #include "core/io/URL.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "core/wrapper/DisposalService.h"
 #include "hesperia/scenario/SCNXArchiveFactory.h"
 #include "hesperia/threeD/Node.h"

@@ -29,7 +29,7 @@
 #include "core/base/SerializationFactory.h"
 #include "core/base/Serializer.h"
 #include "core/exceptions/Exceptions.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "hesperia/data/scenario/IDVertex3.h"
 #include "hesperia/data/scenario/LaneModel.h"
 #include "hesperia/data/scenario/PointModel.h"

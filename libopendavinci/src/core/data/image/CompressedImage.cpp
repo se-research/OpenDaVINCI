@@ -26,7 +26,7 @@
 #include "core/base/SerializationFactory.h"
 #include "core/base/Serializer.h"
 #include "core/data/image/CompressedImage.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 
 namespace core {
     namespace data {

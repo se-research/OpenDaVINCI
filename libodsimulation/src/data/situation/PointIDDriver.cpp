@@ -28,7 +28,7 @@
 #include "core/base/Serializable.h"
 #include "core/base/SerializationFactory.h"
 #include "core/base/Serializer.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "hesperia/data/situation/Behavior.h"
 #include "hesperia/data/situation/Immediately.h"
 #include "hesperia/data/situation/OnEnteringPolygon.h"

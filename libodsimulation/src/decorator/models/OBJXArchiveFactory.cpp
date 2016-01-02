@@ -25,7 +25,7 @@
 #include "core/base/Lock.h"
 #include "core/base/Mutex.h"
 #include "core/exceptions/Exceptions.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "core/wrapper/CompressionFactory.h"
 #include "core/wrapper/DecompressedData.h"
 #include "core/wrapper/ImageFactory.h"

@@ -25,7 +25,7 @@
 
 #include "core/platform.h"
 #include "core/base/Lock.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "hesperia/threeD/Node.h"
 #include "hesperia/threeD/NodeDescriptor.h"
 #include "hesperia/threeD/RenderingConfiguration.h"

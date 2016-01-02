@@ -27,7 +27,7 @@
 #include "core/SharedPointer.h"
 #include "core/base/Lock.h"
 #include "core/data/Container.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "hesperia/data/environment/EgoState.h"
 #include "hesperia/data/environment/Obstacle.h"
 #include "hesperia/data/environment/OtherVehicleState.h"

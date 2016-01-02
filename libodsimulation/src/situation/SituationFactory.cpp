@@ -24,7 +24,7 @@
 #include "core/base/Lock.h"
 #include "core/base/Mutex.h"
 #include "core/exceptions/Exceptions.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "core/wrapper/parser/ASTNode.h"
 #include "core/wrapper/parser/ParserError.h"
 #include "core/wrapper/parser/ParserErrorExtendedData.h"

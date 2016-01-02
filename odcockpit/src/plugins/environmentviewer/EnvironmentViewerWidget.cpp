@@ -29,7 +29,7 @@
 #include "core/platform.h"
 #include "core/base/Lock.h"
 #include "core/base/TreeNode.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "plugins/GLControlFrame.h"
 #include "plugins/environmentviewer/EnvironmentViewerGLWidget.h"
 #include "plugins/environmentviewer/EnvironmentViewerWidget.h"

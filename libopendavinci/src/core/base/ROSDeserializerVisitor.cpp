@@ -20,7 +20,7 @@
 #include <iostream>
 
 #include "core/base/ROSDeserializerVisitor.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 
 namespace core {
     namespace base {

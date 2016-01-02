@@ -22,7 +22,7 @@
 
 #include "core/base/ProtoDeserializerVisitor.h"
 #include "core/base/ProtoSerializerVisitor.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 
 namespace core {
     namespace base {
