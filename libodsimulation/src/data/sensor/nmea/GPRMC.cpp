@@ -20,7 +20,7 @@
 #include <iostream>
 #include <string>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/SharedPointer.h"
 #include "core/base/Deserializer.h"
 #include "core/base/Hash.h"

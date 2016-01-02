@@ -22,8 +22,7 @@
 
 #include <string>
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include "core/opendavinci.h"
 
 #include "core/wrapper/SharedMemoryFactoryWorker.h"
 #include "core/wrapper/WIN32/WIN32SharedMemory.h"

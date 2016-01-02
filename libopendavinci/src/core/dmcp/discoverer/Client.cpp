@@ -26,7 +26,7 @@
 #include "core/dmcp/discoverer/Client.h"
 #include "core/io/Packet.h"
 #include "core/io/udp/UDPFactory.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "generated/coredata/dmcp/Constants.h"
 #include "generated/coredata/dmcp/DiscoverMessage.h"
 

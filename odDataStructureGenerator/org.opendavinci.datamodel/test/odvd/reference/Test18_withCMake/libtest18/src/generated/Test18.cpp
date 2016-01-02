@@ -5,7 +5,7 @@
  */
 
 #include <cstring>
-#include "core/macros.h"
+#include "core/opendavinci.h"
 
 #include "core/base/Hash.h"
 #include "core/base/Deserializer.h"

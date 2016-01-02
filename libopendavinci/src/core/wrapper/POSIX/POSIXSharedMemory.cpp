@@ -28,7 +28,7 @@
 #include <cstring>
 #include <iostream>
 
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "core/base/module/AbstractCIDModule.h"
 #include "core/wrapper/POSIX/POSIXSharedMemory.h"
 

@@ -25,7 +25,7 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "mocks/ConnectionListenerMock.h"
 #include "mocks/StringListenerMock.h"
 #include "mocks/TCPAcceptorListenerMock.h"

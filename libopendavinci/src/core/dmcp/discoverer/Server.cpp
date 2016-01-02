@@ -25,7 +25,7 @@
 #include "core/data/Container.h"
 #include "core/dmcp/discoverer/Server.h"
 #include "core/io/udp/UDPFactory.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "generated/coredata/dmcp/DiscoverMessage.h"
 
 namespace core {

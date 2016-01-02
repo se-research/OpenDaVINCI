@@ -20,7 +20,7 @@
 #include <Qt/qpainter.h>
 #include <Qt/qpen.h>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "hesperia/scenegraph/renderer/RenderingConfiguration.h"
 #include "hesperia/scenegraph/renderer/SceneNodeRenderingConfiguration.h"
 #include "hesperia/scenegraph/primitives/Line.h"

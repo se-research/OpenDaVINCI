@@ -19,9 +19,8 @@
 
 #include <string>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/exceptions/Exceptions.h"
-#include "core/macros.h"
 #include "core/wrapper/parser/ASTNode.h"
 #include "hesperia/data/scenario/Connector.h"
 #include "hesperia/data/scenario/Ground.h"

@@ -37,7 +37,7 @@
 #pragma warning(pop)
 #endif
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 
 namespace automotive { namespace miniature { class SensorBoardData; } }
 

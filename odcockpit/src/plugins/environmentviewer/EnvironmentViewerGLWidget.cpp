@@ -26,14 +26,13 @@
 #include <string>
 #include <vector>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/base/KeyValueConfiguration.h"
 #include "core/base/Lock.h"
 #include "core/base/TreeNode.h"
 #include "core/data/Container.h"
 #include "core/exceptions/Exceptions.h"
 #include "core/io/URL.h"
-#include "core/macros.h"
 #include "hesperia/data/environment/EgoState.h"
 #include "hesperia/data/environment/Line.h"
 #include "hesperia/data/environment/Obstacle.h"

@@ -22,7 +22,7 @@
 #include <iostream>
 #include <string>
 
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "core/base/Lock.h"
 #include "core/base/Thread.h"
 #include "core/base/module/AbstractCIDModule.h"

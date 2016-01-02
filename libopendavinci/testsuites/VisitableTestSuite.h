@@ -25,7 +25,7 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/SharedPointer.h"         // for SharedPointer
 #include "core/base/Deserializer.h"     // for Deserializer
 #include "core/base/Hash.h"             // for CharList, CRC32, etc

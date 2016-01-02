@@ -21,7 +21,7 @@
 #include <string>
 #include <vector>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/SharedPointer.h"
 #include "core/base/Deserializer.h"
 #include "core/base/Hash.h"
@@ -29,7 +29,6 @@
 #include "core/base/SerializationFactory.h"
 #include "core/base/Serializer.h"
 #include "core/exceptions/Exceptions.h"
-#include "core/macros.h"
 #include "hesperia/data/scenario/IDVertex3.h"
 #include "hesperia/data/scenario/LaneModel.h"
 #include "hesperia/data/scenario/PointModel.h"

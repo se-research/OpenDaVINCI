@@ -19,7 +19,7 @@
 
 #include "core/base/Lock.h"
 #include "core/base/Service.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "core/wrapper/ConcurrencyFactory.h"
 #include "core/wrapper/Thread.h"
 

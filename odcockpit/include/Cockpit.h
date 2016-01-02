@@ -23,7 +23,7 @@
 
 #include <Qt/qapplication.h>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/base/module/TimeTriggeredConferenceClientModule.h"
 #include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
 

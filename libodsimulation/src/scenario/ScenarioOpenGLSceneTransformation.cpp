@@ -22,7 +22,7 @@
 #include <string>
 #include <vector>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "generated/cartesian/Constants.h"
 #include "hesperia/data/environment/Point3.h"
 #include "hesperia/data/scenario/Arc.h"

@@ -26,7 +26,7 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "context/base/DirectInterface.h"  // for DirectInterface
 #include "context/base/RuntimeControl.h"  // for RuntimeControl, etc
 #include "context/base/RuntimeEnvironment.h"  // for RuntimeEnvironment

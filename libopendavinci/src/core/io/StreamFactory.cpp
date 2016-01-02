@@ -26,7 +26,7 @@
 #include "core/exceptions/Exceptions.h"
 #include "core/io/StreamFactory.h"
 #include "core/io/URLProtocol.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 
 namespace core {
     namespace io {

@@ -23,7 +23,7 @@
 
 # First, search at the specific user path setting.
 IF(NOT ("${OPENDAVINCI_DIR}" STREQUAL ""))
-    FIND_PATH(OPENDAVINCI_INCLUDE_DIR core/platform.h
+    FIND_PATH(OPENDAVINCI_INCLUDE_DIR core/opendavinci.h
                  NAMES opendavinci
                  PATHS ${OPENDAVINCI_DIR}/include
                  NO_DEFAULT_PATH)
@@ -37,7 +37,7 @@ IF(   ("${OPENDAVINCI_INCLUDE_DIR}" STREQUAL "OPENDAVINCI_INCLUDE_DIR-NOTFOUND")
    OR ("${OPENDAVINCI_DIR}" STREQUAL "") )
     MESSAGE(STATUS "Trying to find OpenDAVINCI in default paths.")
     # If not found, use the system's search paths.
-    FIND_PATH(OPENDAVINCI_INCLUDE_DIR core/platform.h
+    FIND_PATH(OPENDAVINCI_INCLUDE_DIR core/opendavinci.h
                  NAMES opendavinci
                  PATHS /usr/include
                        /usr/local/include)

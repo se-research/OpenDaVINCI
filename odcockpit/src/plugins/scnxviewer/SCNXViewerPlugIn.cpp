@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "plugins/scnxviewer/SCNXViewerPlugIn.h"
 #include "plugins/scnxviewer/SCNXViewerWidget.h"
 

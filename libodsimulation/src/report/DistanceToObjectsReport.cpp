@@ -21,7 +21,7 @@
 #include <string>
 #include <vector>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/base/KeyValueConfiguration.h"
 #include "core/base/KeyValueDataStore.h"
 #include "core/data/Container.h"

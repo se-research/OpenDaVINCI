@@ -20,8 +20,7 @@
 #ifndef OPENDAVINCI_CORE_BASE_BUFFEREDLIFOQUEUE_H_
 #define OPENDAVINCI_CORE_BASE_BUFFEREDLIFOQUEUE_H_
 
-// platform.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/base/LIFOQueue.h"
 #include "core/data/Container.h"
 #include "core/exceptions/Exceptions.h"

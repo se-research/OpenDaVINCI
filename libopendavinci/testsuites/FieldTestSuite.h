@@ -24,7 +24,7 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/data/TimeStamp.h"        // for TimeStamp
 #include "core/reflection/Field.h"      // for Field
 #include "core/strings/StringToolbox.h"  // for StringToolbox
