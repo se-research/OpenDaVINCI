@@ -318,10 +318,16 @@ public class CANDataStructureGenerator {
 
         sb.append("###########################################################################"); sb.append("\r\n");
         sb.append("# Find and configure CxxTest."); sb.append("\r\n");
-        sb.append("SET (CXXTEST_INCLUDE_DIR \"${CMAKE_CURRENT_SOURCE_DIR}/../cxxtest\")"); sb.append("\r\n");
+        sb.append("IF(\"${CXXTEST_INCLUDE_DIR}\" STREQUAL \"\")"); sb.append("\r\n");
+        sb.append("    SET (CXXTEST_INCLUDE_DIR \"${CMAKE_CURRENT_SOURCE_DIR}/../cxxtest\")"); sb.append("\r\n");
+        sb.append("ENDIF()"); sb.append("\r\n");
         sb.append("INCLUDE (CheckCxxTestEnvironment)"); sb.append("\r\n");
 
-        sb.append("SET(OPENDAVINCI_DIR \"${CMAKE_INSTALL_PREFIX}\")"); sb.append("\r\n");
+        sb.append("IF(\"${OPENDAVINCI_DIR}\" STREQUAL \"\")"); sb.append("\r\n");
+        sb.append("    SET(OPENDAVINCI_DIR \"${CMAKE_INSTALL_PREFIX}\")"); sb.append("\r\n");
+        sb.append("ELSE()"); sb.append("\r\n");
+        sb.append("    SET(CMAKE_MODULE_PATH \"${OPENDAVINCI_DIR}/share/cmake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules\" ${CMAKE_MODULE_PATH})"); sb.append("\r\n");
+        sb.append("ENDIF()"); sb.append("\r\n");
         sb.append("FIND_PACKAGE (OpenDaVINCI REQUIRED)"); sb.append("\r\n");
 
         sb.append("# Include directories from core."); sb.append("\r\n");
