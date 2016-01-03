@@ -41,6 +41,10 @@ ADD_SUBDIRECTORY (sidewaysparker)
 ADD_SUBDIRECTORY (simpledriver)
 ADD_SUBDIRECTORY (VCR)
 
+# Add subdirectories for studies. These parts of the software will only
+# be compiled and executed if libodsimulation is available.
+ADD_SUBDIRECTORY (studies)
+
 ###########################################################################
 # Enable CPack to create .deb and .rpm.
 #

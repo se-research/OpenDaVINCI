@@ -72,16 +72,6 @@ TARGET_LINK_LIBRARIES (${PROJECT_NAME} ${PROJECT_NAME}lib-static ${LIBRARIES})
 
 ###########################################################################
 # Enable CxxTest for all available testsuites.
-#
-# This custom command copies the "Parking_boxes.scnx" scenario to where
-# the test suites are generated (more correctly to the parent folder) so
-# that the test suite "ExampleDriverTestSuite2.h" can open it during
-# exection.
-ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/Parking_boxes.scnx
-                   COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/resources/Parking_boxes.scnx ${CMAKE_BINARY_DIR}
-                   DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/resources/Parking_boxes.scnx)
-ADD_CUSTOM_TARGET(${PROJECT_NAME}-CopyScenarioForSimulations DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/Parking_boxes.scnx)
-
 IF(CXXTEST_FOUND)
     FILE(GLOB thisproject-testsuites "${CMAKE_CURRENT_SOURCE_DIR}/testsuites/*.h")
 
@@ -109,10 +99,6 @@ IF(CXXTEST_FOUND)
         ENDIF()
         SET_TESTS_PROPERTIES(${testsuite-short}-TestSuite PROPERTIES TIMEOUT 3000)
         TARGET_LINK_LIBRARIES(${testsuite-short}-TestSuite ${PROJECT_NAME}lib-static ${LIBRARIES})
-
-        # For the test suites that use an SCNX scenario, we are additionally copying
-        # the required scenarios to where the simulation runners are going to be executed.
-        ADD_DEPENDENCIES(${testsuite-short}-TestSuite ${PROJECT_NAME}-CopyScenarioForSimulations)
     ENDFOREACH()
 ENDIF(CXXTEST_FOUND)
 
