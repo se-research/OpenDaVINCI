@@ -1,6 +1,6 @@
 /**
  * libvehiclecontext - Models for simulating automotive systems.
- * Copyright (C) 2012 - 2015 Christian Berger
+ * Copyright (C) 2012 - 2016 Christian Berger
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
