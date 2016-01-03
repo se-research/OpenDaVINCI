@@ -1,0 +1,5 @@
+#!/bin/bash
+#
+# a simple test program to send test.txt repeatedly
+#
+i=1; while [ $i -eq $i ]; do cat test.txt >$1; done

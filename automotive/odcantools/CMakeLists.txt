@@ -47,19 +47,20 @@ IF(    (UNIX)
 
     IF(POPT_FOUND)
         # This library requires "libpopt-dev" to be installed.
-        ExternalProject_Add (peak-linux-driver
-            URL http://www.peak-system.com/fileadmin/media/linux/files/peak-linux-driver-7.15.2.tar.gz
-            UPDATE_COMMAND ""
-            PATCH_COMMAND ""
-            CONFIGURE_COMMAND ""
-            BUILD_IN_SOURCE 1
-            BUILD_COMMAND make NET=NO
-            TEST_COMMAND ""
-            INSTALL_COMMAND DESTDIR=${INSTALL_DIR} make install
-        )
+#        ExternalProject_Add (peak-linux-driver
+#            URL http://www.peak-system.com/fileadmin/media/linux/files/peak-linux-driver-7.15.2.tar.gz
+#            UPDATE_COMMAND ""
+#            PATCH_COMMAND ""
+#            CONFIGURE_COMMAND ""
+#            BUILD_IN_SOURCE 1
+#            BUILD_COMMAND make NET=NO
+#            TEST_COMMAND ""
+#            INSTALL_COMMAND DESTDIR=${INSTALL_DIR} make install
+#        )
 
         ###########################################################################
         # Add subdirectories.
+        ADD_SUBDIRECTORY (peak-linux-driver-7.15.2)
         ADD_SUBDIRECTORY (libodcantools)
         ADD_SUBDIRECTORY (odcanascreplay)
         ADD_SUBDIRECTORY (odcanproxy)
