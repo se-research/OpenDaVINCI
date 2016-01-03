@@ -36,8 +36,8 @@ namespace automotive {
         using namespace automotive;
 
         BoxParker::BoxParker(const int32_t &argc, char **argv) :
-            TimeTriggeredConferenceClientModule(argc, argv, "BoxParker") {
-        }
+            TimeTriggeredConferenceClientModule(argc, argv, "BoxParker"),
+            m_foundGaps() {}
 
         BoxParker::~BoxParker() {}
 
@@ -47,6 +47,10 @@ namespace automotive {
 
         void BoxParker::tearDown() {
             // This method will be call automatically _after_ return from body().
+        }
+
+        vector<double> BoxParker::getFoundGaps() const {
+            return m_foundGaps;
         }
 
         // This method will do the main data processing job.
@@ -138,6 +142,7 @@ cout << sbd.toString() << endl;
 
                                 const double GAP_SIZE = (absPathEnd - absPathStart);
                                 cerr << "Size = " << GAP_SIZE << endl;
+                                m_foundGaps.push_back(GAP_SIZE);
 
                                 if ((stageMoving < 1) && (GAP_SIZE > 3.5)) {
                                     stageMoving = 1;
