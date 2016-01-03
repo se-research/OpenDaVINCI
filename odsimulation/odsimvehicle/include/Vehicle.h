@@ -1,5 +1,6 @@
 /**
  * vehicle - Vehicle dynamics (part of simulation environment)
+ * Copyright (C) 2016 Christian Berger
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -20,8 +21,7 @@
 #ifndef VEHICLE_H_
 #define VEHICLE_H_
 
-#include <stdint.h>
-
+#include "core/opendavinci.h"
 #include "core/base/module/TimeTriggeredConferenceClientModule.h"
 #include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
@@ -70,10 +70,6 @@ namespace vehicle {
             virtual void setUp();
 
             virtual void tearDown();
-
-            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode runLinearBicycleModel();
-
-            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode runLinearBicycleModelNew(const bool &withSpeedController);
     };
 
 } // vehicle

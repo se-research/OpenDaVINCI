@@ -1,5 +1,6 @@
 /**
  * vehicle - Vehicle dynamics (part of simulation environment)
+ * Copyright (C) 2016 Christian Berger
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
