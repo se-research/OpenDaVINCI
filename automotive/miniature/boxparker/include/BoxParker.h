@@ -20,6 +20,8 @@
 #ifndef BOXPARKER_H_
 #define BOXPARKER_H_
 
+#include <vector>
+
 #include "core/base/module/TimeTriggeredConferenceClientModule.h"
 
 namespace automotive {
@@ -65,10 +67,20 @@ namespace automotive {
 
                 coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
+                /**
+                 * This method returns the gaps found during the parking process.
+                 *
+                 * return Gaps found during the parking process.
+                 */
+                vector<double> getFoundGaps() const;
+
             private:
                 virtual void setUp();
 
                 virtual void tearDown();
+
+            private:
+                vector<double> m_foundGaps;
         };
 
     } // miniature
