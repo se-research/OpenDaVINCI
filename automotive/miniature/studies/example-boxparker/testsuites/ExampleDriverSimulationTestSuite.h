@@ -1,9 +1,9 @@
 /**
- * 2015-example-boxparker - This test suite demonstrates how to run
- *                          a simulation in an automated mode for
- *                          execution within a unit test environment
- *                          (like CxxTest).
- * Copyright (C) 2012 - 2015 Christian Berger
+ * example-boxparker - This test suite demonstrates how to run
+ *                     a simulation in an automated mode for
+ *                     execution within a unit test environment
+ *                     (like CxxTest).
+ * Copyright (C) 2012 - 2016 Christian Berger
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
