@@ -22,7 +22,7 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/base/Thread.h"           // for Thread
 #include "core/wrapper/Disposable.h"    // for Disposable
 #include "core/wrapper/DisposalService.h"  // for DisposalService

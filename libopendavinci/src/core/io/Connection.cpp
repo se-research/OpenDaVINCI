@@ -28,7 +28,7 @@
 #include "core/io/ConnectionErrorListener.h"
 #include "core/io/conference/ContainerListener.h"
 #include "core/io/tcp/TCPFactory.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 
 namespace core {
     namespace io {

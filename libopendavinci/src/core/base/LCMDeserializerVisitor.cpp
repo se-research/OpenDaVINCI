@@ -21,7 +21,7 @@
 
 #include "core/base/LCMDeserializerVisitor.h"
 #include "core/base/LCMSerializerVisitor.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 
 namespace core {
     namespace base {

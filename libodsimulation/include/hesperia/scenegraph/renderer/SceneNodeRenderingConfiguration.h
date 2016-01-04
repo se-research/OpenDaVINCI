@@ -20,7 +20,7 @@
 #ifndef HESPERIA_CORE_SCENEGRAPH_RENDERER_SCENENODERENDERINGCONFIGURATION_H_
 #define HESPERIA_CORE_SCENEGRAPH_RENDERER_SCENENODERENDERINGCONFIGURATION_H_
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 
 namespace hesperia {
     namespace scenegraph {

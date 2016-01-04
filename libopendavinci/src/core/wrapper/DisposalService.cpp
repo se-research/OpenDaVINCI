@@ -21,7 +21,7 @@
 #include <iostream>
 #include <sstream>
 
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "core/base/module/AbstractCIDModule.h"
 #include "core/wrapper/ConcurrencyFactory.h"
 #include "core/wrapper/ConditionFactory.h"

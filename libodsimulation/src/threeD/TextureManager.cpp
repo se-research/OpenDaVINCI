@@ -36,7 +36,7 @@
 #include <map>
 #include <string>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/base/Lock.h"
 #include "core/base/Mutex.h"
 #include "core/strings/StringComparator.h"

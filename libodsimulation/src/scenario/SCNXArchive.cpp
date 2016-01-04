@@ -22,7 +22,7 @@
 #include <vector>
 
 #include "core/SharedPointer.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "hesperia/data/scenario/Ground.h"
 #include "hesperia/data/scenario/HeightImage.h"
 #include "hesperia/data/scenario/Image.h"

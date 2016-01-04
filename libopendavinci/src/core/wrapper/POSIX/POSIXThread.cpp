@@ -23,7 +23,7 @@
 #include <sstream>
 #include <string>
 
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "core/base/module/AbstractCIDModule.h"
 #include "core/wrapper/Mutex.h"
 #include "core/wrapper/MutexFactory.h"

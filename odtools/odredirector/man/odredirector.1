@@ -1,7 +1,7 @@
 .\" Manpage for odredirector
 .\" Author: Christian Berger <christian.berger@gu.se>.
 
-.TH odredirector 1 "30 December 2015" "2.2.2" "odredirector man page"
+.TH odredirector 1 "02 January 2016" "2.4.1" "odredirector man page"
 
 .SH NAME
 odredirector \- This tool dumps containers from an OpenDaVINCI container conference session to stdout or pumps back containers read from stdin to a running container conference session.
@@ -112,7 +112,7 @@ tool nc(1) is used to listen on port 1234 for incoming TCP connections. The send
 also using nc(1) to forward dumped data from the container conference session running at CID
 111 through TCP to the server on host 192.168.0.10 listening on port 1234.
 
-.B nc -k -l 1234  | odredirector --cid=222 --fromstdin=1
+.B nc -k -l 1234 | odredirector --cid=222 --fromstdin=1
 
 .B odredirector --cid=111 --tostdout=1 | nc 192.168.0.10 1234
 

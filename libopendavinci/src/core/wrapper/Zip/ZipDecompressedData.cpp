@@ -27,7 +27,7 @@
 #include <sstream>
 
 #include "zip.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "core/SharedPointer.h"
 #include "core/base/module/AbstractCIDModule.h"
 #include "core/wrapper/Zip/ZipDecompressedData.h"

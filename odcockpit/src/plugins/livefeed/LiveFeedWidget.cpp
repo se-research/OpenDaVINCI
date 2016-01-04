@@ -26,7 +26,7 @@
 #include <cstring>
 #include <vector>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/base/Visitable.h"
 #include "core/data/Container.h"
 #include "core/data/TimeStamp.h"

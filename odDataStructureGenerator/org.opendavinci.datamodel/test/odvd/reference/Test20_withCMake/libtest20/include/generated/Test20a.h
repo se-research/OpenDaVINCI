@@ -7,8 +7,7 @@
 #ifndef TEST20A_H
 #define TEST20A_H
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include "core/opendavinci.h"
 
 
 #include "core/base/Visitable.h"

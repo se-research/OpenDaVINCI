@@ -1,0 +1,20 @@
+*******************
+* minimal_xenomai *
+*******************
+
+Minimal exemples using Peak Linux driver with Xenomai:
+
+xenomai_receive_test.c
+xenomai_transmitt_test.c
+Makefile 
+
+Purpose of this files is not replace recevetest and transmittest program.
+They should be used as an "Hello world" program, providing as sane environment 
+to start a new project, with a working Makefile.
+
+How to start : 
+	- install xenomai and peak linux driver
+	- copy the minimal_xenomai directory in your workspace
+	- call make, to check everything works fine
+	- start modifying to fit your needs
+	

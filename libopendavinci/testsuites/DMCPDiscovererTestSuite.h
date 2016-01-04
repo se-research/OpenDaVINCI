@@ -25,7 +25,7 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/dmcp/discoverer/Client.h"  // for Client
 #include "core/dmcp/discoverer/Server.h"  // for Server
 #include "generated/coredata/dmcp/ServerInformation.h"

@@ -20,7 +20,7 @@
 #ifndef STDOUT_PUMP_H_
 #define STDOUT_PUMP_H_
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/base/AbstractDataStore.h"
 
 namespace core { namespace data { class Container; } }

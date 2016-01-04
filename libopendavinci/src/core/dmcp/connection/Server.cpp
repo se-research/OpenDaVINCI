@@ -26,7 +26,7 @@
 #include "core/dmcp/connection/ModuleConnection.h"
 #include "core/dmcp/connection/Server.h"
 #include "core/io/Connection.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "generated/coredata/dmcp/ServerInformation.h"
 
 namespace core { namespace dmcp { class ModuleConfigurationProvider; } }

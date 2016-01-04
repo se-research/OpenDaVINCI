@@ -21,14 +21,13 @@
 #include <string>
 #include <vector>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/SharedPointer.h"
 #include "core/base/Deserializer.h"
 #include "core/base/Hash.h"
 #include "core/base/Serializable.h"
 #include "core/base/SerializationFactory.h"
 #include "core/base/Serializer.h"
-#include "core/macros.h"
 #include "hesperia/data/situation/Behavior.h"
 #include "hesperia/data/situation/Immediately.h"
 #include "hesperia/data/situation/OnEnteringPolygon.h"

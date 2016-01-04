@@ -24,11 +24,10 @@
 #include <iostream>
 #include <string>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "context/base/SendContainerToSystemsUnderTest.h"
 #include "core/base/KeyValueConfiguration.h"
 #include "core/data/Container.h"
-#include "core/macros.h"
 #include "generated/coredata/image/SharedImage.h"
 #include "hesperia/data/camera/ImageGrabberCalibration.h"
 #include "hesperia/data/camera/ImageGrabberID.h"

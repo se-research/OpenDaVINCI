@@ -71,8 +71,9 @@ INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS}/opendavinci)
 INCLUDE_DIRECTORIES (${AUTOMOTIVEDATA_INCLUDE_DIRS}/automotivedata)
 # Set header files from CANMappingMessage.
 INCLUDE_DIRECTORIES (${CANMESSAGEMAPPING_INCLUDE_DIRS}/canmessagemapping)
-# Set header files from CAN driver.
-INCLUDE_DIRECTORIES (${CMAKE_INSTALL_PREFIX}/usr/include)
+# Set header files from pcan-no-kernel-driver.
+INCLUDE_DIRECTORIES (${pcan-no-kernel-driver_SOURCE_DIR}/lib)
+INCLUDE_DIRECTORIES (${pcan-no-kernel-driver_SOURCE_DIR}/driver)
 # Set include directory.
 INCLUDE_DIRECTORIES(include)
 
@@ -82,7 +83,7 @@ SET (LIBRARIES ${OPENDAVINCI_LIBRARIES}
                ${AUTOMOTIVEDATA_LIBRARIES}
                ${ODCANTOOLS_LIB}
                ${CANMESSAGEMAPPING_LIBRARIES}
-               ${CMAKE_INSTALL_PREFIX}/usr/lib/libpcan.so)
+               ${pcan-no-kernel-driver_BINARY_DIR}/libpcan-no-kernel-driver-static.a)
 
 ###############################################################################
 # Build this project.

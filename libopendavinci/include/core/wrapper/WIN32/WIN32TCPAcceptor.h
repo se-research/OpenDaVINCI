@@ -22,8 +22,7 @@
 
 #include <memory>
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include "core/opendavinci.h"
 
 #include "core/SharedPointer.h"
 #include "core/io/tcp/TCPAcceptor.h"

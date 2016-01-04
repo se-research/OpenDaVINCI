@@ -37,7 +37,7 @@
 # endif
 #endif
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/SharedPointer.h"
 #include "plugins/modulestatisticsviewer/LoadPerModule.h"
 #include "plugins/modulestatisticsviewer/LoadPlot.h"

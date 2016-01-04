@@ -32,9 +32,15 @@ ENDIF()
 INCLUDE (CompileFlags)
 ###########################################################################
 # Find and configure CxxTest.
-SET (CXXTEST_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../cxxtest")
+IF("${CXXTEST_INCLUDE_DIR}" STREQUAL "")
+    SET (CXXTEST_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../cxxtest")
+ENDIF()
 INCLUDE (CheckCxxTestEnvironment)
-SET(OPENDAVINCI_DIR "${CMAKE_INSTALL_PREFIX}")
+IF("${OPENDAVINCI_DIR}" STREQUAL "")
+    SET(OPENDAVINCI_DIR "${CMAKE_INSTALL_PREFIX}")
+ELSE()
+    SET(CMAKE_MODULE_PATH "${OPENDAVINCI_DIR}/share/cmake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules" ${CMAKE_MODULE_PATH})
+ENDIF()
 FIND_PACKAGE (OpenDaVINCI REQUIRED)
 # Include directories from core.
 INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS}/opendavinci)

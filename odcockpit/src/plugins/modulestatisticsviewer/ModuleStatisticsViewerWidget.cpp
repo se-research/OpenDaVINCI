@@ -22,9 +22,8 @@
 #include <Qt/qtimer.h>
 #include <qcolor.h>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/data/Container.h"
-#include "core/macros.h"
 #include "generated/coredata/dmcp/ModuleDescriptor.h"
 #include "generated/coredata/dmcp/ModuleStatistic.h"
 #include "plugins/modulestatisticsviewer/LoadPerModule.h"

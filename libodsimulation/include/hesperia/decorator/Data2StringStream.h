@@ -22,8 +22,7 @@
 
 #include <sstream>
 
-// native.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/native.h"
+#include "core/opendavinci.h"
 #include "core/data/Container.h"
 
 #include "hesperia/data/environment/EgoState.h"

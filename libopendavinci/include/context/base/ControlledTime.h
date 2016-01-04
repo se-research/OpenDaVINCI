@@ -20,8 +20,7 @@
 #ifndef CONTEXT_BASE_CONTROLLEDTIME_H_
 #define CONTEXT_BASE_CONTROLLEDTIME_H_
 
-// platform.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/wrapper/Time.h"
 
 namespace context {

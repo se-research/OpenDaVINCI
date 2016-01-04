@@ -24,7 +24,7 @@
 
 #include "core/SharedPointer.h"
 #include "core/base/Lock.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "hesperia/data/scenario/ComplexModel.h"
 #include "hesperia/data/scenario/HeightImage.h"
 #include "hesperia/data/scenario/Image.h"

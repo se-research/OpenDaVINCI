@@ -23,7 +23,7 @@
 
 #include <vector>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "ContainerObserver.h"
 #include "core/base/FIFOQueue.h"
 #include "core/base/Mutex.h"

@@ -29,7 +29,7 @@
 #include "core/io/ConnectionAcceptorListener.h"
 #include "core/io/tcp/TCPConnection.h"
 #include "core/io/tcp/TCPFactory.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 
 namespace core {
     namespace io {

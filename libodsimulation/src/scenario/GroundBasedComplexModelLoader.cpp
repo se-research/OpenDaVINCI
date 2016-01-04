@@ -23,7 +23,7 @@
 #include <vector>
 
 #include "core/SharedPointer.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "hesperia/data/environment/Point3.h"
 #include "hesperia/data/scenario/ComplexModel.h"
 #include "hesperia/data/scenario/Vertex3.h"

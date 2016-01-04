@@ -23,7 +23,7 @@
 
 #include <boost/graph/astar_search.hpp>
 
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "core/strings/StringToolbox.h"
 #include "core/wrapper/graph/DirectedGraph.h"
 #include "core/wrapper/graph/Edge.h"

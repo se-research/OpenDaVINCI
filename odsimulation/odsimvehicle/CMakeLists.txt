@@ -1,4 +1,5 @@
 # odsimvehicle - Component to simulate vehicle dynamics
+# Copyright (C) 2016 Christian Berger
 # Copyright (C) 2008 - 2015  Christian Berger, Bernhard Rumpe
 #
 # This program is free software; you can redistribute it and/or

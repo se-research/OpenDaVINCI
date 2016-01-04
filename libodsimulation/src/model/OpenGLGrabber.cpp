@@ -20,7 +20,7 @@
 #include <GL/gl.h>
 #include <string>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/SharedPointer.h"
 #include "core/base/KeyValueConfiguration.h"
 #include "core/base/Thread.h"

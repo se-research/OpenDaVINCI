@@ -20,7 +20,7 @@
 #ifndef PLUGINS_BIRDSEYEMAP_BIRDSEYEMAPRENDERER_H_
 #define PLUGINS_BIRDSEYEMAP_BIRDSEYEMAPRENDERER_H_
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "hesperia/scenegraph/renderer/AbstractRenderer.h"
 
 class QPainter;

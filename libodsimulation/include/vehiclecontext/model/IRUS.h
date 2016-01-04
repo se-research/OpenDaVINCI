@@ -1,6 +1,6 @@
 /**
  * libvehiclecontext - Models for simulating automotive systems.
- * Copyright (C) 2012 - 2015 Christian Berger
+ * Copyright (C) 2012 - 2016 Christian Berger
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,6 +23,7 @@
 #include <string>
 
 #include "core/base/KeyValueConfiguration.h"
+#include "core/data/Container.h"
 #include "core/data/TimeStamp.h"
 
 #include "context/base/SystemFeedbackComponent.h"
@@ -83,11 +84,19 @@ namespace vehiclecontext {
 
                 virtual void step(const core::wrapper::Time &t, context::base::SendContainerToSystemsUnderTest &sender);
 
+            public:
+                /**
+                 * This method calculates the results from odsimirus
+                 * based on the given EgoState.
+                 *
+                 * @param es EgoState of the vehicle.
+                 * @return List of containers with the results.
+                 */
+                vector<core::data::Container> calculate(const hesperia::data::environment::EgoState &es);
+
             private:
                 core::base::KeyValueConfiguration m_kvc;
                 float m_freq;
-
-                hesperia::data::environment::EgoState m_egoState;
 
                 uint32_t m_numberOfPolygons;
                 map<uint32_t, hesperia::data::environment::Polygon> m_mapOfPolygons;

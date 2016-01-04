@@ -1,7 +1,7 @@
 .\" Manpage for odsupercomponent
 .\" Author: Christian Berger <christian.berger@gu.se>.
 
-.TH odsupercomponent 1 "29 December 2015" "2.2.1" "odsupercomponent man page"
+.TH odsupercomponent 1 "02 January 2016" "2.4.1" "odsupercomponent man page"
 
 .SH NAME
 odsupercomponent \- This tool configures and monitors a set of distributed software components.
@@ -17,7 +17,7 @@ odsupercomponent \- This tool configures and monitors a set of distributed softw
 odsupercomponent belongs to OpenDaVINCI and is the central tool to configure and monitor
 distributed software components. The tool provides a set of configuration parameter
 settings that are specific for a software component, when it connects to odsupercomponent.
-    
+ 
 odsupercomponent also enables the communication between software components. For this
 purpose, it either creates a UDP multicast session to provide publish/subscribe communication
 among the software modules or transparently re-routes the components' communication
@@ -58,7 +58,7 @@ This parameter specifies the configuration file that shall be distributed to the
 modules, which will register for this CID. The format of the configuration is
 
 .RS
-.B  # Comments are preceded by #
+.B # Comments are preceded by #
 
 .B global.debug = 1
 
@@ -67,7 +67,7 @@ modules, which will register for this CID. The format of the configuration is
 .B component:1.key = value
 .RE
 
-A configuration file is a text file containing one configuration setting per line.  A
+A configuration file is a text file containing one configuration setting per line. A
 configuration setting is a key-value-pair divided by '='; the key is preceded by a heading
 section 'component.', where 'component' is the name of one of the software components
 awaiting the set of configuration settings. A software component will receive only

@@ -26,7 +26,7 @@
 #include "core/base/Serializable.h"
 #include "core/base/Thread.h"
 #include "core/data/TimeStamp.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "core/wrapper/SharedMemory.h"
 #include "core/wrapper/SharedMemoryFactory.h"
 #include "generated/coredata/SharedData.h"

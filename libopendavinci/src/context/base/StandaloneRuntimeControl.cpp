@@ -29,7 +29,7 @@
 #include "core/base/Thread.h"
 #include "core/data/TimeStamp.h"
 #include "core/io/conference/ContainerConferenceFactory.h"
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "generated/coredata/dmcp/ModuleStateMessage.h"
 
 namespace core { namespace data { class Container; } }

@@ -25,7 +25,7 @@
 #include <string>
 #include <vector>
 
-#include "core/platform.h"
+#include "core/opendavinci.h"
 #include "core/base/Mutex.h"
 
 namespace coredata { namespace dmcp { class ModuleDescriptor; } }
