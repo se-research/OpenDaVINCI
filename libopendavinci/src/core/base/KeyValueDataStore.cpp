@@ -17,7 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <iosfwd>
+#include <string>
+
 #include "core/base/KeyValueDataStore.h"
+#include "core/base/Serializable.h"
+#include "core/opendavinci.h"
 
 namespace core {
     namespace base {

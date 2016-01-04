@@ -21,17 +21,21 @@
 #include <windows.h>
 #endif
 
+#include <string>
+#include <vector>
+
 #include <GL/gl.h>
 #include <GL/glut.h>
 
-#include <sstream>
-#include <string>
-
-#include "GeneratedHeaders_AutomotiveData.h"
+#include "core/opendavinci.h"
+#include "generated/cartesian/Constants.h"
 #include "hesperia/data/environment/Point3.h"
-#include "hesperia/decorator/threeD/Renderer3D.h"
 #include "hesperia/decorator/models/Material.h"
+#include "hesperia/decorator/models/TriangleSet.h"
+#include "hesperia/decorator/threeD/Renderer3D.h"
 #include "hesperia/threeD/TextureManager.h"
+
+namespace core { namespace wrapper { class Image; } }
 
 namespace hesperia {
     namespace decorator {

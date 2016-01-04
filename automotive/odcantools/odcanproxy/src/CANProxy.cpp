@@ -20,10 +20,13 @@
 #include <iostream>
 
 #include "core/data/Container.h"
-#include "GeneratedHeaders_AutomotiveData.h"
+#include "core/data/TimeStamp.h"
+#include "tools/recorder/Recorder.h"
+#include "generated/automotive/GenericCANMessage.h"
 
-#include "CANProxy.h"
 #include "CANDevice.h"
+#include "CANProxy.h"
+#include "MessageToCANDataStore.h"
 
 namespace automotive {
     namespace odcantools {

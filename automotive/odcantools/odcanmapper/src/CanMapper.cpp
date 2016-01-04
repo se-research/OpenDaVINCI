@@ -19,11 +19,13 @@
  */
 
 #include <iostream>
-
-#include "core/data/Container.h"
-#include "core/data/TimeStamp.h"
+#include <vector>
 
 #include "CanMapper.h"
+#include "core/base/Thread.h"
+#include "core/base/module/DataTriggeredConferenceClientModule.h"
+#include "core/data/Container.h"
+#include "generated/automotive/GenericCANMessage.h"
 
 namespace automotive {
     namespace odcantools {
@@ -34,7 +36,7 @@ namespace automotive {
 
         CanMapper::CanMapper(const int32_t &argc, char **argv) :
             DataTriggeredConferenceClientModule(argc, argv, "odcanmapper"),
-            m_dataMapper() {}
+            m_canMapping() {}
 
         CanMapper::~CanMapper() {}
 
@@ -42,16 +44,38 @@ namespace automotive {
 
         void CanMapper::tearDown() {}
 
+        void CanMapper::printPayload(uint64_t payload) const {
+            const uint16_t LENGTH = 8;
+            uint8_t val[LENGTH];
+            for (uint8_t i = 0; i < LENGTH; i++) {
+                val[i] = (payload & 0xFF);
+                payload = payload >> 8;
+            }
+            cout << "Payload: " << hex << (int)val[0] << " "
+                                << hex << (int)val[1] << " "
+                                << hex << (int)val[2] << " "
+                                << hex << (int)val[3] << " "
+                                << hex << (int)val[4] << " "
+                                << hex << (int)val[5] << " "
+                                << hex << (int)val[6] << " "
+                                << hex << (int)val[7] << endl;
+        }
         void CanMapper::nextContainer(Container &c) {
             if (c.getDataType() == Container::GENERIC_CAN_MESSAGE) {
                 GenericCANMessage gcm = c.getData<GenericCANMessage>();
 
-                // Try to get complete message with this additional information.
-                Container result = m_dataMapper.mapNext(gcm);
-                if (result.getDataType() != Container::UNDEFINEDDATA) {
-                    // Last GenericCANMessage resulted in a complete decoding
-                    // and mapping of valid high-level C++ message.
-                    getConference().send(result);
+                // Optionally: print payload for debug purposes.
+                uint64_t data = gcm.getData();
+                printPayload(data);
+
+                vector<Container> listOfContainers = m_canMapping.mapNext(gcm);
+                if (listOfContainers.size() > 0) {
+                    vector<Container>::iterator it = listOfContainers.begin();
+                    while (it != listOfContainers.end()) {
+                        Container container = (*it++);
+                        getConference().send(container);
+                        Thread::usleepFor(100);
+                    }
                 }
             }
         }

@@ -1,3 +1,17 @@
+2.4.1 - Added missing protocol handler for configuration setting global.car
+2.4.0 - Refactored main include files
+2.3.0 - Refactored code base to clean up unneeded include headers
+2.2.1 - Added fxe data structures
+2.2.0 - Refactored odsplit(1) to run independently from odsupercomponent(1)
+2.1.8 - Fixed deployment
+2.1.7 - Refactored odredirector fix for compactified containers
+2.1.6 - odredirector fix for compactified containers
+2.1.5 - Fixes for jpeg-based texture handling and odredirector streaming of compactified containers
+2.1.4 - Improve deserialization speed and added another field in AutomotiveData
+2.1.3 - Fixed deserialization of existing recordings using former 0xAACF serialization
+2.1.2 - Integrated build of odcantools in master build system
+2.1.1 - Refactored odcantools to provide libodcantools
+2.1.0 - Updated data marshaling to create smaller containers
 2.0.32 - Cleaning up odcockpit
 2.0.31 - CMake modules path setting fixed
 2.0.30 - Updating dependencies in generated deb and rpm packages

@@ -21,12 +21,13 @@
 #ifndef COCKPIT_PLUGINS_CONTROLPLUGIN_H_
 #define COCKPIT_PLUGINS_CONTROLPLUGIN_H_
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
+#include <string>
 
-#include "core/io/conference/ContainerConference.h"
 #include "plugins/PlugIn.h"
+
+class QWidget;
+namespace core { namespace base { class KeyValueConfiguration; } }
+namespace core { namespace io { namespace conference { class ContainerConference; } } }
 
 namespace cockpit {
 

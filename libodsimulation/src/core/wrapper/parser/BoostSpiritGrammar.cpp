@@ -17,9 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <vector>
+
 #include <boost/algorithm/string/trim.hpp>
 
+#include "core/wrapper/parser/ASTNode.h"
 #include "core/wrapper/parser/BoostSpiritGrammar.h"
+#include "core/wrapper/parser/ParserTokenExtendedData.h"
 
 namespace core {
     namespace wrapper {

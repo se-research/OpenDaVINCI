@@ -23,7 +23,14 @@
 #endif
 
 #include <GL/gl.h>
+#include <string>
 
+#include "core/opendavinci.h"
+#include "hesperia/data/environment/Point3.h"
+#include "hesperia/threeD/Node.h"
+#include "hesperia/threeD/NodeDescriptor.h"
+#include "hesperia/threeD/NodeRenderingConfiguration.h"
+#include "hesperia/threeD/RenderingConfiguration.h"
 #include "hesperia/threeD/models/CheckerBoard.h"
 
 namespace hesperia {

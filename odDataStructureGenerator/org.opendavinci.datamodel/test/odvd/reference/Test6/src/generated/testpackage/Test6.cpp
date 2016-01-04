@@ -278,7 +278,7 @@ namespace testpackage {
 			    // Read string of elements.
 			    string elements;
 				d->read(CRC32 < CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
-					   elements);
+				   elements);
 			
 			    stringstream sstr(elements);
 			

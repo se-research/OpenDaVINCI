@@ -20,6 +20,8 @@
 #include <iostream>
 #include <string>
 
+#include "core/data/SerializableData.h"
+#include "hesperia/data/scenario/ScenarioNode.h"
 #include "hesperia/scenario/ScenarioPrettyPrinter.h"
 
 namespace hesperia {

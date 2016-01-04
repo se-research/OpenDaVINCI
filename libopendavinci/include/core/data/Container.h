@@ -20,15 +20,17 @@
 #ifndef OPENDAVINCI_CORE_DATA_CONTAINER_H_
 #define OPENDAVINCI_CORE_DATA_CONTAINER_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <sstream>
+#include <string>
 
+#include "core/opendavinci.h"
 #include "core/base/Serializable.h"
-#include "core/data/SerializableData.h"
 #include "core/data/TimeStamp.h"
 
 namespace core {
     namespace data {
+
+class SerializableData;
 
         using namespace std;
 

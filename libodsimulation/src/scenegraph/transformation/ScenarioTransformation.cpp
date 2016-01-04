@@ -20,29 +20,36 @@
 #include <cmath>
 #include <iostream>
 #include <string>
-#include <sstream>
 #include <vector>
 
-#include "GeneratedHeaders_AutomotiveData.h"
+#include "core/opendavinci.h"
+#include "generated/cartesian/Constants.h"
 #include "hesperia/data/environment/Point3.h"
-#include "hesperia/data/scenario/IDVertex3.h"
 #include "hesperia/data/scenario/Arc.h"
 #include "hesperia/data/scenario/Clothoid.h"
+#include "hesperia/data/scenario/IDVertex3.h"
+#include "hesperia/data/scenario/Lane.h"
 #include "hesperia/data/scenario/LaneAttribute.h"
 #include "hesperia/data/scenario/LaneModel.h"
 #include "hesperia/data/scenario/Layer.h"
-#include "hesperia/data/scenario/Polygon.h"
-#include "hesperia/data/scenario/Shape.h"
-#include "hesperia/data/scenario/TrafficSign.h"
-#include "hesperia/data/scenario/IDVertex3.h"
-#include "hesperia/data/scenario/Vertex3.h"
-#include "hesperia/data/scenario/Zone.h"
 #include "hesperia/data/scenario/Perimeter.h"
+#include "hesperia/data/scenario/Polygon.h"
+#include "hesperia/data/scenario/PointModel.h"
+#include "hesperia/data/scenario/Road.h"
+#include "hesperia/data/scenario/ScenarioNode.h"
+#include "hesperia/data/scenario/StraightLine.h"
+#include "hesperia/data/scenario/Surroundings.h"
+#include "hesperia/data/scenario/TrafficControl.h"
+#include "hesperia/data/scenario/TrafficSign.h"
+#include "hesperia/data/scenario/Zone.h"
+#include "hesperia/scenegraph/SceneNode.h"
 #include "hesperia/scenegraph/SceneNodeDescriptor.h"
+#include "hesperia/scenegraph/transformation/ScenarioTransformation.h"
 #include "hesperia/scenegraph/primitives/Line.h"
 #include "hesperia/scenegraph/primitives/Point.h"
 #include "hesperia/scenegraph/primitives/Polygon.h"
-#include "hesperia/scenegraph/transformation/ScenarioTransformation.h"
+
+namespace hesperia { namespace data { namespace scenario { class Shape; } } }
 
 namespace hesperia {
     namespace scenegraph {

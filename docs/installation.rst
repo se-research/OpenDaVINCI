@@ -25,9 +25,23 @@ How to install OpenDaVINCI on BSD-based Platforms
 .. include:: installation.dragonfly-4.2.rst
 .. include:: installation.freebsd-10.rst
 .. include:: installation.netbsd-6.1.5.rst
+.. include:: installation.netbsd-7.0.rst
 .. include:: installation.openbsd-5.7.rst
+.. include:: installation.openbsd-5.8.rst
 .. include:: installation.macosx-10.rst
 
 How to install OpenDaVINCI on Windows-based Platforms
 =====================================================
 .. include:: installation.windows.rst
+
+How to compile OpenDaVINCI with Clang
+=====================================
+
+To compile OpenDaVINCI using Clang, change to your source folder and create a build directory::
+
+   $ cd OpenDaVINCI && mkdir build
+
+Use cmake to create the build scripts for your build folder and specify the Clang toolchain::
+
+   $ cd build && cmake -D CMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_TOOLCHAIN_FILE=../cmake/clang-Toolchain.cmake ..
+

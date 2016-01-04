@@ -18,9 +18,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "hesperia/threeD/NodeDescriptor.h"
-#include "hesperia/threeD/NodeRenderingConfiguration.h"
+#include <vector>
 
+#include "core/base/TreeNode.h"
+#include "hesperia/scenegraph/SceneNode.h"
+#include "hesperia/scenegraph/renderer/RenderingConfiguration.h"
+#include "hesperia/scenegraph/renderer/SceneNodeRenderingConfiguration.h"
+#include "hesperia/threeD/Node.h"
+#include "hesperia/threeD/NodeRenderingConfiguration.h"
+#include "hesperia/threeD/RenderingConfiguration.h"
+#include "plugins/environmentviewer/SelectableNodeDescriptor.h"
 #include "plugins/environmentviewer/TreeNodeVisitor.h"
 
 namespace cockpit {

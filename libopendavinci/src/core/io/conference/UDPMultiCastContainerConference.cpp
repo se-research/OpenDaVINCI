@@ -17,10 +17,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <iosfwd>
+#include <sstream>
+
+#include "core/base/Serializable.h"
 #include "core/data/Container.h"
 #include "core/data/TimeStamp.h"
 #include "core/io/conference/UDPMultiCastContainerConference.h"
 #include "core/io/udp/UDPFactory.h"
+#include "core/opendavinci.h"
 
 namespace core {
     namespace io {

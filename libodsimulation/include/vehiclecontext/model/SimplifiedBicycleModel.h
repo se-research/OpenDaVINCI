@@ -1,5 +1,6 @@
 /**
  * libvehiclecontext - Models for simulating automotive systems.
+ * Copyright (C) 2016 Christian Berger
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This library is free software; you can redistribute it and/or
@@ -23,11 +24,12 @@
 #include <string>
 
 #include "core/base/KeyValueConfiguration.h"
+#include "core/data/Container.h"
 #include "core/data/TimeStamp.h"
 #include "hesperia/data/environment/Point3.h"
 
 #include "GeneratedHeaders_CoreData.h"
-#include "GeneratedHeaders_AutomotiveData.h"
+#include "generated/automotive/VehicleControl.h"
 
 #include "context/base/SystemFeedbackComponent.h"
 
@@ -81,6 +83,17 @@ namespace vehiclecontext {
                 virtual void tearDown();
 
                 virtual void step(const core::wrapper::Time &t, context::base::SendContainerToSystemsUnderTest &sender);
+
+            public:
+                /**
+                 * This method calculates the results from odsimvehicle
+                 * based on the given VehicleControl.
+                 *
+                 * @param vc Data to control the vehicle.
+                 * @param timeStep Elapsed time.
+                 * @return List of containers with the results.
+                 */
+                vector<core::data::Container> calculate(const automotive::VehicleControl &vc, const double &timeStep);
 
             private:
                 core::base::KeyValueConfiguration m_kvc;

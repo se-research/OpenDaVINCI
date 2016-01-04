@@ -21,9 +21,12 @@
 #ifndef PLUGINS_ENVIRONMENTVIEWER_ENVIRONMENTVIEWERPLUGIN_H_
 #define PLUGINS_ENVIRONMENTVIEWER_ENVIRONMENTVIEWERPLUGIN_H_
 
+#include <string>
+
 #include "plugins/PlugIn.h"
 
-#include "plugins/environmentviewer/EnvironmentViewerWidget.h"
+class QWidget;
+namespace core { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
     namespace plugins {
@@ -32,6 +35,8 @@ namespace cockpit {
             /**
              * This class is environment viewer plugin.
              */
+class EnvironmentViewerWidget;
+
             class EnvironmentViewerPlugIn : public PlugIn {
 
                 private:

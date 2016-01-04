@@ -20,25 +20,28 @@
 #ifndef CORE_QUEUETESTSUITE_H_
 #define CORE_QUEUETESTSUITE_H_
 
-#include "cxxtest/TestSuite.h"
+#include <sstream>                      // for stringstream, etc
+#include <string>                       // for string
 
-#include <sstream>
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/base/BufferedFIFOQueue.h"
-#include "core/base/BufferedLIFOQueue.h"
-#include "core/base/Condition.h"
-#include "core/base/Deserializer.h"
-#include "core/base/FIFOQueue.h"
-#include "core/base/Hash.h"
-#include "core/base/LIFOQueue.h"
-#include "core/base/Lock.h"
-#include "core/base/Mutex.h"
-#include "core/base/Service.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
+#include "core/opendavinci.h"
+#include "core/SharedPointer.h"         // for SharedPointer
+#include "core/base/BufferedFIFOQueue.h"  // for BufferedFIFOQueue
+#include "core/base/BufferedLIFOQueue.h"  // for BufferedLIFOQueue
+#include "core/base/Condition.h"        // for Condition
+#include "core/base/Deserializer.h"     // for Deserializer
+#include "core/base/FIFOQueue.h"        // for FIFOQueue
+#include "core/base/Hash.h"             // for CharList, CRC32, etc
+#include "core/base/LIFOQueue.h"        // for LIFOQueue
+#include "core/base/Lock.h"             // for Lock
+#include "core/base/Mutex.h"            // for Mutex
 #include "core/base/Thread.h"
-#include "core/data/Container.h"
-#include "core/data/SerializableData.h"
+#include "core/base/SerializationFactory.h"  // for SerializationFactory
+#include "core/base/Serializer.h"       // for Serializer
+#include "core/base/Service.h"          // for Service
+#include "core/data/Container.h"        // for Container, etc
+#include "core/data/SerializableData.h"  // for SerializableData
 
 using namespace std;
 using namespace core::base;

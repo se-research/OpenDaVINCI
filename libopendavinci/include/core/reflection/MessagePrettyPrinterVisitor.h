@@ -20,10 +20,13 @@
 #ifndef OPENDAVINCI_CORE_REFLECTION_MESSAGEPRETTYPRINTERVISITOR_H_
 #define OPENDAVINCI_CORE_REFLECTION_MESSAGEPRETTYPRINTERVISITOR_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <sstream>
+#include <string>
 
+#include "core/opendavinci.h"
 #include "core/base/Visitor.h"
+
+namespace core { namespace base { class Serializable; } }
 
 namespace core {
     namespace reflection {

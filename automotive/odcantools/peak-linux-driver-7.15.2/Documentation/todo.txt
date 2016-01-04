@@ -1,0 +1,9 @@
+Stand: 19.03.2007
+
+1. Modus "ListenOnly" testen.
+2. SysFS/udev fuer Kernel 2.6.x besser integrieren 
+
+
+
+
+

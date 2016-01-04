@@ -1,0 +1,107 @@
+// DataStructureGenerator- IDL tool to describe exchangeable data.
+// Copyright (C) 2014 - 2015 Christian Berger
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+
+module org.opendavinci.GenerateCANDataModel
+
+import org.eclipse.emf.mwe.utils.*
+import org.eclipse.xtext.generator.*
+
+var grammarURI = "classpath:/org/opendavinci/CANDataModel.xtext"
+var fileExtensions = "can"
+var projectName = "org.opendavinci.candatamodel"
+var runtimeProject = "../${projectName}"
+var generateXtendStub = true
+var encoding = "UTF-8"
+
+Workflow {
+    bean = StandaloneSetup {
+    	scanClassPath = true
+    	platformUri = "${runtimeProject}" // BE CAREFUL WITH THE .. THAT NEEDED TO BE REMOVED!
+    	// The following two lines can be removed, if Xbase is not used.
+    	registerGeneratedEPackage = "org.eclipse.xtext.xbase.XbasePackage"
+    	registerGenModelFile = "platform:/resource/org.eclipse.xtext.xbase/model/Xbase.genmodel"
+    }
+    
+    component = DirectoryCleaner {
+    	directory = "${runtimeProject}/src-gen"
+    }
+    
+    component = DirectoryCleaner {
+    	directory = "${runtimeProject}/model/generated"
+    }
+    
+    component = Generator {
+    	pathRtProject = runtimeProject
+    	projectNameRt = projectName
+    	encoding = encoding
+    	language = auto-inject {
+    		uri = grammarURI
+    
+    		// Java API to access grammar elements (required by several other fragments)
+    		fragment = grammarAccess.GrammarAccessFragment auto-inject {}
+    
+    		// generates Java API for the generated EPackages
+    		fragment = ecore.EMFGeneratorFragment auto-inject {}
+    
+    		// the old serialization component
+    		//fragment = parseTreeConstructor.ParseTreeConstructorFragment auto-inject {}    
+    
+    		// serializer 2.0 // required to compile DataStructureGenerator
+    		fragment = serializer.SerializerFragment auto-inject {
+    			generateStub = false
+    		}
+    
+    		// a custom ResourceFactory for use with EMF
+    		fragment = resourceFactory.ResourceFactoryFragment auto-inject {}
+    
+    		// The antlr parser generator fragment.
+    		fragment = parser.antlr.XtextAntlrGeneratorFragment auto-inject {
+    		//  options = {
+    		//      backtrack = true
+    		//  }
+    		}
+    
+    		// Xtend-based API for validation
+    		fragment = validation.ValidatorFragment auto-inject {
+    		//    composedCheck = "org.eclipse.xtext.validation.ImportUriValidator"
+    		    composedCheck = "org.eclipse.xtext.validation.NamesAreUniqueValidator"
+    		}
+
+    		// scoping and exporting API
+//    		fragment = scoping.ImportNamespacesScopingFragment auto-inject {}
+//    		fragment = exporting.QualifiedNamesFragment auto-inject {}
+//    		fragment = builder.BuilderIntegrationFragment auto-inject {}
+    
+    		// generator API
+    		fragment = generator.GeneratorFragment auto-inject {}
+    
+    		// generates junit test support classes into Generator#pathTestProject
+//    		fragment = junit.Junit4Fragment auto-inject {}
+    
+    		// provides the necessary bindings for java types integration
+    		fragment = types.TypesGeneratorFragment auto-inject {}
+    
+    		// generates the required bindings only if the grammar inherits from Xbase
+    		fragment = xbase.XbaseGeneratorFragment auto-inject {}
+    		
+    		// generates the required bindings only if the grammar inherits from Xtype
+    		fragment = xbase.XtypeGeneratorFragment auto-inject {}
+    	}
+    }
+}
+

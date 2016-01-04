@@ -20,15 +20,16 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_SIMPLEDB_SIMPLEDB_H_
 #define OPENDAVINCI_CORE_WRAPPER_SIMPLEDB_SIMPLEDB_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <map>
+#include <memory>
+#include <string>
 
-#include "core/SharedPointer.h"
+#include "core/opendavinci.h"
 #include "core/wrapper/KeyValueDatabase.h"
-#include "core/wrapper/Mutex.h"
-
-#include "core/wrapper/KeyValueDatabaseFactoryWorker.h"
 #include "core/wrapper/KeyValueDatabaseLibraryProducts.h"
+
+namespace core { namespace wrapper { class Mutex; } }
+namespace core { namespace wrapper { template <core::wrapper::KeyValueDatabaseLibraryProducts product> class KeyValueDatabaseFactoryWorker; } }
 
 namespace core {
     namespace wrapper {

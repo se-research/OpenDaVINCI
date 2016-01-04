@@ -219,7 +219,8 @@ public class DataStructureGenerator {
 		sb.append("    IF(    (NOT \"${CMAKE_SYSTEM_NAME}\" STREQUAL \"Darwin\")"); sb.append("\r\n");
 		sb.append("       AND (NOT \"${CMAKE_SYSTEM_NAME}\" STREQUAL \"FreeBSD\")"); sb.append("\r\n");
 		sb.append("       AND (NOT \"${CMAKE_SYSTEM_NAME}\" STREQUAL \"NetBSD\")"); sb.append("\r\n");
-		sb.append("       AND (NOT \"${CMAKE_SYSTEM_NAME}\" STREQUAL \"DragonFly\") )"); sb.append("\r\n");
+		sb.append("       AND (NOT \"${CMAKE_SYSTEM_NAME}\" STREQUAL \"DragonFly\")"); sb.append("\r\n");
+		sb.append("       AND (NOT \"${CMAKE_CXX_COMPILER_ID}\" STREQUAL \"Clang\") )"); sb.append("\r\n");
 		sb.append("        SET (CXX_OPTIONS \"${CXX_OPTIONS} ${CXX_OPTION_ANSI}\")"); sb.append("\r\n");
 		sb.append("    ENDIF()"); sb.append("\r\n");
 
@@ -353,10 +354,16 @@ public class DataStructureGenerator {
 
 		sb.append("###########################################################################"); sb.append("\r\n");
 		sb.append("# Find and configure CxxTest."); sb.append("\r\n");
-		sb.append("SET (CXXTEST_INCLUDE_DIR \"${CMAKE_CURRENT_SOURCE_DIR}/../cxxtest\")"); sb.append("\r\n");
+		sb.append("IF(\"${CXXTEST_INCLUDE_DIR}\" STREQUAL \"\")"); sb.append("\r\n");
+		sb.append("    SET (CXXTEST_INCLUDE_DIR \"${CMAKE_CURRENT_SOURCE_DIR}/../cxxtest\")"); sb.append("\r\n");
+		sb.append("ENDIF()"); sb.append("\r\n");
 		sb.append("INCLUDE (CheckCxxTestEnvironment)"); sb.append("\r\n");
 
-		sb.append("SET(OPENDAVINCI_DIR \"${CMAKE_INSTALL_PREFIX}\")"); sb.append("\r\n");
+		sb.append("IF(\"${OPENDAVINCI_DIR}\" STREQUAL \"\")"); sb.append("\r\n");
+		sb.append("    SET(OPENDAVINCI_DIR \"${CMAKE_INSTALL_PREFIX}\")"); sb.append("\r\n");
+		sb.append("ELSE()"); sb.append("\r\n");
+		sb.append("    SET(CMAKE_MODULE_PATH \"${OPENDAVINCI_DIR}/share/cmake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules\" ${CMAKE_MODULE_PATH})"); sb.append("\r\n");
+		sb.append("ENDIF()"); sb.append("\r\n");
 		sb.append("FIND_PACKAGE (OpenDaVINCI REQUIRED)"); sb.append("\r\n");
 
 		sb.append("# Include directories from core."); sb.append("\r\n");
@@ -365,10 +372,12 @@ public class DataStructureGenerator {
 
 		sb.append("# Recipe for building " + folder + "."); sb.append("\r\n");
 		sb.append("FILE(GLOB_RECURSE " + folder + "-sources \"${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp\")"); sb.append("\r\n");
-		sb.append("ADD_LIBRARY (" + folder.replaceFirst("lib", "") + "-static STATIC ${" + folder + "-sources})"); sb.append("\r\n");
+
+		sb.append("ADD_LIBRARY (" + folder.replaceFirst("lib", "") + "-core OBJECT ${" + folder + "-sources})"); sb.append("\r\n");
+		sb.append("ADD_LIBRARY (" + folder.replaceFirst("lib", "") + "-static STATIC $<TARGET_OBJECTS:" + folder.replaceFirst("lib", "") + "-core>)"); sb.append("\r\n");
 		sb.append("IF(    (NOT WIN32)"); sb.append("\r\n");
-                sb.append("   AND (NOT (\"${CMAKE_SYSTEM_NAME}\" STREQUAL \"Darwin\")) )"); sb.append("\r\n");
-		sb.append("    ADD_LIBRARY (" + folder.replaceFirst("lib", "") + " SHARED ${" + folder + "-sources})"); sb.append("\r\n");
+		sb.append("   AND (NOT (\"${CMAKE_SYSTEM_NAME}\" STREQUAL \"Darwin\")) )"); sb.append("\r\n");
+		sb.append("    ADD_LIBRARY (" + folder.replaceFirst("lib", "") + " SHARED $<TARGET_OBJECTS:" + folder.replaceFirst("lib", "") + "-core>)"); sb.append("\r\n");
 		sb.append("ENDIF()"); sb.append("\r\n");
 
 		sb.append("# Installing " + folder + "."); sb.append("\r\n");
@@ -403,11 +412,11 @@ public class DataStructureGenerator {
 
 		sb.append("        SET(CXXTEST_TESTGEN_ARGS ${CXXTEST_TESTGEN_ARGS} --world=${PROJECT_NAME}-${testsuite-short})"); sb.append("\r\n");
 		sb.append("        CXXTEST_ADD_TEST(${testsuite-short}-TestSuite ${testsuite-short}-TestSuite.cpp ${testsuite})"); sb.append("\r\n");
-		sb.append("        SET_SOURCE_FILES_PROPERTIES(${testsuite-short}-TestSuite.cpp PROPERTIES COMPILE_FLAGS \"-Wno-effc++ -Wno-float-equal -Wno-error=suggest-attribute=noreturn\")"); sb.append("\r\n");
 		sb.append("        IF(UNIX)"); sb.append("\r\n");
-		sb.append("            IF(   (\"${CMAKE_SYSTEM_NAME}\" STREQUAL \"Linux\")"); sb.append("\r\n");
-		sb.append("               OR (\"${CMAKE_SYSTEM_NAME}\" STREQUAL \"FreeBSD\")"); sb.append("\r\n");
-		sb.append("               OR (\"${CMAKE_SYSTEM_NAME}\" STREQUAL \"DragonFly\") )"); sb.append("\r\n");
+		sb.append("            IF( (   (\"${CMAKE_SYSTEM_NAME}\" STREQUAL \"Linux\")"); sb.append("\r\n");
+		sb.append("                 OR (\"${CMAKE_SYSTEM_NAME}\" STREQUAL \"FreeBSD\")"); sb.append("\r\n");
+		sb.append("                 OR (\"${CMAKE_SYSTEM_NAME}\" STREQUAL \"DragonFly\") )"); sb.append("\r\n");
+		sb.append("                 AND (NOT \"${CMAKE_CXX_COMPILER_ID}\" STREQUAL \"Clang\") )"); sb.append("\r\n");
 		sb.append("                SET_SOURCE_FILES_PROPERTIES(${testsuite-short}-TestSuite.cpp PROPERTIES COMPILE_FLAGS \"-Wno-effc++ -Wno-float-equal -Wno-error=suggest-attribute=noreturn\")"); sb.append("\r\n");
 		sb.append("            ELSE()"); sb.append("\r\n");
 		sb.append("                SET_SOURCE_FILES_PROPERTIES(${testsuite-short}-TestSuite.cpp PROPERTIES COMPILE_FLAGS \"-Wno-effc++ -Wno-float-equal\")"); sb.append("\r\n");

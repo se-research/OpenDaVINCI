@@ -1,7 +1,7 @@
 Compiling OpenDaVINCI on OpenBSD 5.7 (32bit and 64bit)
 ------------------------------------------------------
 
-Download and install OpenBSD 5.5.
+Download and install OpenBSD 5.7.
 
 Set the PKG_PATH (32bit version)::
 
@@ -25,7 +25,7 @@ Install the compiler::
    # pkg_add -v -i python # (choose version 2.7)
    # pkg_add -v -i cmake
    # pkg_add -v -i git
-   # pkg_add -v -i gcc # (should be installed automatically via comp56.tgz)
+   # pkg_add -v -i gcc # (should be installed automatically via comp57.tgz)
   
 Install Java to generate data structures::
 
@@ -47,7 +47,7 @@ Add a symbolic link to python as root user::
 Clone the latest OpenDaVINCI sources from https://github.com/se-research/OpenDaVINCI or download
 the latest OpenDaVINCI sources as zip file: https://github.com/se-research/OpenDaVINCI/archive/master.zip.
 
-Change your source folder and create a build directory::
+Change to your source folder and create a build directory::
 
    $ cd OpenDaVINCI && mkdir build
 
@@ -55,14 +55,7 @@ Use cmake to create the build scripts for your build folder::
 
    $ cd build && cmake -D CMAKE_INSTALL_PREFIX=/usr/local ..
 
-Build the OpenDaVINCI sources::
+Build, run the tests, and install the OpenDaVINCI::
 
    $ make all
 
-Run the tests for OpenDaVINCI::
-
-   $ make test
-
-Install the binaries, libraries, and header files to /usr/local::
-
-   $ make install

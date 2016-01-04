@@ -22,19 +22,19 @@
 
 #include <vector>
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
-
+#include "core/opendavinci.h"
 #include "core/SharedPointer.h"
 #include "core/base/Condition.h"
+#include "core/base/Mutex.h"
 #include "core/data/Container.h"
-#include "core/dmcp/ModuleConfigurationProvider.h"
-#include "core/dmcp/ModuleStateListener.h"
 #include "core/io/Connection.h"
 #include "core/io/ConnectionErrorListener.h"
 #include "core/io/conference/ContainerListener.h"
+#include "generated/coredata/dmcp/ModuleDescriptor.h"
 
-#include "GeneratedHeaders_CoreData.h"
+namespace coredata { namespace dmcp { class PulseMessage; } }
+namespace core { namespace dmcp { class ModuleConfigurationProvider; } }
+namespace core { namespace dmcp { class ModuleStateListener; } }
 
 namespace core {
     namespace dmcp {

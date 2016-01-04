@@ -19,8 +19,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef CANBRDIGETESTSUITE_H_
-#define CANBRDIGETESTSUITE_H_
+#ifndef CANBRIDGETESTSUITE_H_
+#define CANBRIDGETESTSUITE_H_
 
 #include "cxxtest/TestSuite.h"
 
@@ -121,5 +121,5 @@ class CANBridgeTest : public CxxTest::TestSuite {
 
 };
 
-#endif /*CANBRDIGETESTSUITE_H_*/
+#endif /*CANBRIDGETESTSUITE_H_*/
 

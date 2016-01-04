@@ -20,7 +20,10 @@
 #ifndef HESPERIA_CORE_WRAPPER_OPENCV_OPENCVMATRIXFACTORY_H_
 #define HESPERIA_CORE_WRAPPER_OPENCV_OPENCVMATRIXFACTORY_H_
 
+#include "core/opendavinci.h"
 #include "core/wrapper/MatrixFactory.h"
+
+namespace core { namespace wrapper { class Matrix; } }
 
 namespace core {
     namespace wrapper {

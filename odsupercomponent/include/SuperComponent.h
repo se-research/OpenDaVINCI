@@ -22,29 +22,37 @@
 #define SUPERCOMPONENT_H_
 
 #include <fstream>
-#include <map>
+#include <string>
+#include <vector>
 
+#include "core/opendavinci.h"
+#include "ConnectedModules.h"
+#include "GlobalConfigurationProvider.h"
 #include "core/SharedPointer.h"
 #include "core/base/KeyValueConfiguration.h"
-#include "core/base/module/MasterModule.h"
 #include "core/base/Mutex.h"
-#include "core/dmcp/ModuleConfigurationProvider.h"
+#include "core/base/module/MasterModule.h"
+#include "core/data/TimeStamp.h"
 #include "core/dmcp/ModuleStateListener.h"
-#include "core/dmcp/connection/Server.h"
 #include "core/dmcp/connection/ConnectionHandler.h"
-#include "core/dmcp/connection/ModuleConnection.h"
-#include "core/dmcp/discoverer/Server.h"
-#include "core/exceptions/Exceptions.h"
-#include "core/io/conference/ContainerConference.h"
 #include "core/io/conference/ContainerListener.h"
+#include "generated/coredata/LogMessage.h"
+#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "generated/coredata/dmcp/ModuleStateMessage.h"
+#include "generated/coredata/dmcp/ModuleStatistics.h"
+#include "generated/coredata/dmcp/RuntimeStatistic.h"
+#include "generated/coredata/dmcp/ServerInformation.h"
 
-#include "GeneratedHeaders_CoreData.h"
-
-#include "GlobalConfigurationProvider.h"
-#include "ConnectedModule.h"
-#include "ConnectedModules.h"
+namespace coredata { namespace dmcp { class ModuleDescriptor; } }
+namespace core { namespace data { class Container; } }
+namespace core { namespace dmcp { namespace connection { class ModuleConnection; } } }
+namespace core { namespace dmcp { namespace connection { class Server; } } }
+namespace core { namespace dmcp { namespace discoverer { class Server; } } }
+namespace core { namespace io { namespace conference { class ContainerConference; } } }
 
 namespace odsupercomponent {
+
+class ConnectedModule;
 
     using namespace std;
 

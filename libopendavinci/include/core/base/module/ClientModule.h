@@ -20,16 +20,17 @@
 #ifndef OPENDAVINCI_BASE_CLIENTMODULE_H_
 #define OPENDAVINCI_BASE_CLIENTMODULE_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <string>
 
-#include "core/base/module/AbstractCIDModule.h"
+#include "core/opendavinci.h"
+#include "core/SharedPointer.h"
 #include "core/base/KeyValueConfiguration.h"
-#include "core/exceptions/Exceptions.h"
-#include "core/dmcp/connection/Client.h"
+#include "core/base/module/AbstractCIDModule.h"
 #include "core/dmcp/SuperComponentStateListener.h"
-
-#include "GeneratedHeaders_CoreData.h"
+#include "core/dmcp/connection/Client.h"
+#include "core/exceptions/Exceptions.h"
+#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "generated/coredata/dmcp/ServerInformation.h"
 
 namespace core {
     namespace base {

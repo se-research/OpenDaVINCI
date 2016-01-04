@@ -18,22 +18,31 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
+#include <Qt/qcheckbox.h>
+#include <Qt/qfiledialog.h>
+#include <Qt/qlabel.h>
+#include <Qt/qlineedit.h>
+#include <Qt/qmessagebox.h>
+#include <Qt/qpushbutton.h>
+#include <Qt/qtimer.h>
+#include <qboxlayout.h>
+#include <qobject.h>
+#include <qstring.h>
 
+#include <iostream>
 #include <sstream>
 #include <string>
 
-#include "core/macros.h"
+#include "core/opendavinci.h"
+#include "core/base/KeyValueConfiguration.h"
 #include "core/data/Container.h"
-#include "core/data/TimeStamp.h"
-#include "core/exceptions/Exceptions.h"
 #include "core/io/URL.h"
-
+#include "core/io/conference/ContainerConference.h"
+#include "plugins/player/PlayerWidget.h"
+#include "tools/player/Player.h"
 #include "tools/splitter/Splitter.h"
 
-#include "plugins/player/PlayerWidget.h"
+namespace cockpit { namespace plugins { class PlugIn; } }
 
 namespace cockpit {
 

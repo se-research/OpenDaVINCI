@@ -20,17 +20,11 @@
 #ifndef CONTEXT_BASE_CONTROLLEDTIME_H_
 #define CONTEXT_BASE_CONTROLLEDTIME_H_
 
-#include <stdint.h>
-
-// native.h must be included right before boost/asio.hpp because of the definition of _WIN32_WINNT.
-#include "core/native.h"
-
+#include "core/opendavinci.h"
 #include "core/wrapper/Time.h"
 
 namespace context {
     namespace base {
-
-        using namespace std;
 
         /**
          * This class provides a controlled time.

@@ -17,13 +17,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <netinet/in.h>
+#include <sys/select.h>
+#include <sys/socket.h>
+
 #include <cerrno>
 #include <cstring>
+#include <sstream>
 
+#include "core/SharedPointer.h"
+#include "core/io/tcp/TCPAcceptorListener.h"
+#include "core/io/tcp/TCPConnection.h"
 #include "core/wrapper/ConcurrencyFactory.h"
+#include "core/wrapper/Mutex.h"
 #include "core/wrapper/MutexFactory.h"
 #include "core/wrapper/POSIX/POSIXTCPAcceptor.h"
 #include "core/wrapper/POSIX/POSIXTCPConnection.h"
+#include "core/wrapper/Thread.h"
 
 namespace core {
     namespace wrapper {

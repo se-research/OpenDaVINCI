@@ -20,17 +20,17 @@
 #ifndef OPENDAVINCI_CORE_BASE_SERIALIZATIONFACTORY_H_
 #define OPENDAVINCI_CORE_BASE_SERIALIZATIONFACTORY_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <iosfwd>
 
-#include "core/base/Mutex.h"
+#include "core/opendavinci.h"
 #include "core/SharedPointer.h"
-#include "core/base/Serializer.h"
-#include "core/base/Deserializer.h"
-#include "core/exceptions/Exceptions.h"
+#include "core/base/Mutex.h"
 
 namespace core {
     namespace base {
+
+class Deserializer;
+class Serializer;
 
         using namespace std;
 

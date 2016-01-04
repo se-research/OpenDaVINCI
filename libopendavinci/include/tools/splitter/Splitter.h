@@ -22,6 +22,8 @@
 
 #include <string>
 
+#include "core/opendavinci.h"
+
 namespace tools {
     namespace splitter {
 

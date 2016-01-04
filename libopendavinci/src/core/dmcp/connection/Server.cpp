@@ -17,12 +17,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <iostream>
+
 #include "core/SharedPointer.h"
-#include "core/base/module/AbstractCIDModule.h"
 #include "core/base/Lock.h"
+#include "core/base/module/AbstractCIDModule.h"
+#include "core/dmcp/connection/ConnectionHandler.h"
 #include "core/dmcp/connection/ModuleConnection.h"
 #include "core/dmcp/connection/Server.h"
-#include "core/exceptions/Exceptions.h"
+#include "core/io/Connection.h"
+#include "core/opendavinci.h"
+#include "generated/coredata/dmcp/ServerInformation.h"
+
+namespace core { namespace dmcp { class ModuleConfigurationProvider; } }
 
 namespace core {
     namespace dmcp {

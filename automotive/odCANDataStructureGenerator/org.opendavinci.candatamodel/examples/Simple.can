@@ -1,0 +1,12 @@
+wheelspeed.frontleft	in 0x123 at bit 0 for 16 bits is big endian multiply by 0.01 add 0 map to [0, 200];
+wheelspeed.frontright	in 0x123 at bit 16 for 16 bits is big endian multiply by 0.01 add 0 map to [0, 200];
+wheelspeed.rearleft 	in 0x123 at bit 32 for 16 bits is big endian multiply by 0.01 add 0 map to [0, 200];
+wheelspeed.rearright	in 0x123 at bit 48 for 16 bits is big endian multiply by 0.01 add 0 map to [0, 200];
+
+message WheelSpeed {
+	wheelspeed.frontleft : 1;
+	wheelspeed.frontright : 2;
+	wheelspeed.rearleft : 3;
+	wheelspeed.rearright : 4;
+}
+

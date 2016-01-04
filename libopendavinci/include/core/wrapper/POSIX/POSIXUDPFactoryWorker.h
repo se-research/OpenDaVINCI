@@ -20,8 +20,10 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXUDPFACTORYWORKER_H_
 #define OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXUDPFACTORYWORKER_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <iostream>
+#include <sstream>
+
+#include "core/opendavinci.h"
 
 #include "core/base/module/AbstractCIDModule.h"
 #include "core/wrapper/NetworkLibraryProducts.h"

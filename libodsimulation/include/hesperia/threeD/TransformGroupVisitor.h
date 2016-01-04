@@ -20,15 +20,12 @@
 #ifndef HESPERIA_CORE_THREED_TRANSFORMGROUPVISITOR_H_
 #define HESPERIA_CORE_THREED_TRANSFORMGROUPVISITOR_H_
 
-// native.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/native.h"
-
-#include "hesperia/threeD/Node.h"
+#include "core/opendavinci.h"
 
 namespace hesperia {
     namespace threeD {
 
-        using namespace std;
+class Node;
 
         /**
          * This interface can be implemented to traverse  a NodeTree built by TransformGroups.

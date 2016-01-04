@@ -18,13 +18,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
+#include <Qt/qgridlayout.h>
+#include <Qt/qtextedit.h>
+#include <qfont.h>
+#include <qstring.h>
 
 #include <sstream>
 
+#include "core/opendavinci.h"
+#include "core/base/KeyValueConfiguration.h"
 #include "plugins/configurationviewer/ConfigurationViewerWidget.h"
+
+namespace cockpit { namespace plugins { class PlugIn; } }
 
 namespace cockpit {
 

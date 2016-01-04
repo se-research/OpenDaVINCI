@@ -23,8 +23,6 @@ namespace core {
     namespace base {
         namespace module {
 
-            using namespace std;
-
             Periodic::~Periodic() {}
 
         }

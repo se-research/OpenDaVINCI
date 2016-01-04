@@ -85,10 +85,11 @@ IF(CXXTEST_FOUND)
 
         SET(CXXTEST_TESTGEN_ARGS ${CXXTEST_TESTGEN_ARGS} --world=${PROJECT_NAME}-${testsuite-short})
         CXXTEST_ADD_TEST(${testsuite-short}-TestSuite ${testsuite-short}-TestSuite.cpp ${testsuite})
-        IF(UNIX)        
-            IF(   ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
-               OR ("${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD")
-               OR ("${CMAKE_SYSTEM_NAME}" STREQUAL "DragonFly") )
+        IF(UNIX)
+            IF( (   ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+                 OR ("${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD")
+                 OR ("${CMAKE_SYSTEM_NAME}" STREQUAL "DragonFly") )
+                AND (NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang") )
                 SET_SOURCE_FILES_PROPERTIES(${testsuite-short}-TestSuite.cpp PROPERTIES COMPILE_FLAGS "-Wno-effc++ -Wno-float-equal -Wno-error=suggest-attribute=noreturn")
             ELSE()
                 SET_SOURCE_FILES_PROPERTIES(${testsuite-short}-TestSuite.cpp PROPERTIES COMPILE_FLAGS "-Wno-effc++ -Wno-float-equal")
@@ -104,6 +105,6 @@ ENDIF(CXXTEST_FOUND)
 
 ###############################################################################
 # Install this project.
-INSTALL(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin COMPONENT cantools)
-INSTALL(FILES man/${PROJECT_NAME}.1 DESTINATION man/man1 COMPONENT cantools)
+INSTALL(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin COMPONENT odcantools)
+INSTALL(FILES man/${PROJECT_NAME}.1 DESTINATION man/man1 COMPONENT odcantools)
 

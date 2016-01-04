@@ -58,6 +58,8 @@ ELSE()
 ENDIF()
 SET(ODDATASTRUCTUREGENERATOR_EXECUTABLE ${INSTALL_DIR}/bin/odDataStructureGenerator-latest.jar)
 MESSAGE(STATUS "Using ${ODDATASTRUCTUREGENERATOR_EXECUTABLE} to generate code from data structure models.")
+SET(ODCANDATASTRUCTUREGENERATOR_EXECUTABLE ${INSTALL_DIR}/bin/odCANDataStructureGenerator-latest.jar)
+MESSAGE(STATUS "Using ${ODCANDATASTRUCTUREGENERATOR_EXECUTABLE} to generate code from CAN data structure models.")
 
 # Next, if we get here, we have all the requirements to to model and generate code from data structures.
 IF(     NOT("${CMAKE_C_COMPILER}" STREQUAL "")
@@ -65,6 +67,7 @@ IF(     NOT("${CMAKE_C_COMPILER}" STREQUAL "")
     SET(BUILD_LIBODSIMULATION 0)
     SET(BUILD_ODSIMULATION 0)
     SET(BUILD_ODCOCKPIT 0)
+    SET(BUILD_AUTOMOTIVE_MINIATURE 0)
     SET(BUILD_AUTOMOTIVE_ODCANTOOLS 0)
 
     MESSAGE(STATUS "Found C and C++ compiler:   Building opendavinci-lib")
@@ -92,6 +95,9 @@ IF(     NOT("${CMAKE_C_COMPILER}" STREQUAL "")
             MESSAGE(STATUS "Found C++ compiler, OpenCV, OpenGL, GLUT, and Boost: Building odsimulation")
             SET(BUILD_ODSIMULATION 1)
 
+            MESSAGE(STATUS "Found C++ compiler, OpenCV, OpenGL, GLUT, and Boost: Building automotive/miniature")
+            SET(BUILD_AUTOMOTIVE_MINIATURE 1)
+
             IF (Qt4_FOUND)
                 IF (QWT5QT4_FOUND)
                     MESSAGE(STATUS "Found C++ compiler, OpenCV, OpenGL, GLUT, Boost, QT4, and Qwt: Building odcockpit")
@@ -103,13 +109,24 @@ IF(     NOT("${CMAKE_C_COMPILER}" STREQUAL "")
 
     IF(    (UNIX)
        AND (NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "DragonFly")
-       AND (NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD") )
+       AND (NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD")
+       AND (NOT ("${ARMHF}" STREQUAL "YES"))
+       AND (NOT ("${i686}" STREQUAL "YES")) )
         IF(POPT_FOUND)
             MESSAGE(STATUS "Found popt-dev:             Building automotive/odcantools")
             SET(BUILD_AUTOMOTIVE_ODCANTOOLS 1)
         ENDIF()
     ENDIF()
 ENDIF()
+
+# Set parameters to ctest; for example, test cases are not executed on arm-hf cross compile build.
+SET(CTEST_PARAMETERS "--output-on-failure") # Display output from a failing test case.
+IF(     (UNIX)
+    AND ("${ARMHF}" STREQUAL "YES") )
+    SET(CTEST_PARAMETERS "--show-only") # Do not run test cases on arm-hf cross compile build.
+ENDIF()
+MESSAGE("Test command: \"${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}\"")
+
 
 # If dpkg and rpmbuild are available, .deb and .rpm packages will be
 # created. Otherwise, the software is simply installed.
@@ -123,439 +140,226 @@ ELSE()
     SET(MAKE_PACKAGE install)
 ENDIF()
 
+###########################################################################
+IF(NOT("${CMAKE_TOOLCHAIN_FILE}" STREQUAL ""))
+    SET(TOOLCHAIN_FILE "${CMAKE_TOOLCHAIN_FILE}")
+ELSE()
+    SET(TOOLCHAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/cmake/default-Toolchain.cmake")
+ENDIF()
+MESSAGE(STATUS "Using toolchain:            ${TOOLCHAIN_FILE}")
+
+###########################################################################
 MESSAGE(STATUS "Installing artifacts to:    ${INSTALL_DIR}")
 MESSAGE("")
 
 ###########################################################################
 # Next, all projects for a complete build of the sources tree are listed.
-# This section is for non-cross-compiling builds.
-IF("${CMAKE_TOOLCHAIN_FILE}" STREQUAL "")
-    # Build data structure generator.
-    IF(${BUILD_ODDATASTRUCTUREGENERATOR})
-        ExternalProject_Add (odDataStructureGenerator
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odDataStructureGenerator"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odDataStructureGenerator-prefix/src/odDataStructureGenerator-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odDataStructureGenerator-prefix/src/odDataStructureGenerator-build --target ${MAKE_PACKAGE})
-    ENDIF()
-
-    # Next, build libopendavinci.
-    IF(${BUILD_OPENDAVINCI})
-        ExternalProject_Add (libopendavinci
-            DEPENDS odDataStructureGenerator
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libopendavinci"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            TEST_BEFORE_INSTALL 1
-            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libopendavinci-prefix/src/libopendavinci-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libopendavinci-prefix/src/libopendavinci-build --target ${MAKE_PACKAGE})
-
-        # Build the reference projects in odDataStructureGenerator to check validity of the code generator.
-        ExternalProject_Add (odDataStructureGenerator-reference
-            DEPENDS libopendavinci
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odDataStructureGenerator/org.opendavinci.datamodel/test/odvd/reference"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            TEST_BEFORE_INSTALL 1
-            INSTALL_COMMAND "")
-    ENDIF()
-
-    # Next, build tutorials.
-    IF(${BUILD_TUTORIALS})
-        ExternalProject_Add (tutorials
-            DEPENDS libopendavinci
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/tutorials"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            TEST_COMMAND ""
-            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/tutorials-prefix/src/tutorials-build --target install)
-    ENDIF()
-
-    # Next, build odsupercomponent.
-    IF(${BUILD_ODSUPERCOMPONENT})
-        ExternalProject_Add (odsupercomponent
-            DEPENDS libopendavinci
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odsupercomponent"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            TEST_BEFORE_INSTALL 1
-            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odsupercomponent-prefix/src/odsupercomponent-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odsupercomponent-prefix/src/odsupercomponent-build --target ${MAKE_PACKAGE})
-    ENDIF()
-
-    # Next, build odtools.
-    IF(${BUILD_ODTOOLS})
-        ExternalProject_Add (odtools
-            DEPENDS libopendavinci
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odtools"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            TEST_BEFORE_INSTALL 1
-            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odtools-prefix/src/odtools-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odtools-prefix/src/odtools-build --target ${MAKE_PACKAGE})
-    ENDIF()
-
-    # Next, the project for the automotive data structures is built.
-    IF(${BUILD_AUTOMOTIVEDATA})
-        # This "external project" simply deletes the existing libautomotivedata.
-        ExternalProject_Add (libautomotivedata-cleanup
-            DEPENDS libopendavinci
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_SOURCE_DIR}/libautomotivedata
-            PATCH_COMMAND ""
-            SOURCE_DIR ""
-            CONFIGURE_COMMAND ""
-            BUILD_COMMAND ""
-            TEST_COMMAND ""
-            INSTALL_COMMAND "")
-
-        ExternalProject_Add (libautomotivedata
-            DEPENDS libautomotivedata-cleanup
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND cd ${CMAKE_CURRENT_SOURCE_DIR} && ${Java_JAVA_EXECUTABLE} -jar ${ODDATASTRUCTUREGENERATOR_EXECUTABLE} --withCMake ${CMAKE_CURRENT_SOURCE_DIR}/AutomotiveData.odvd
-            PATCH_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libautomotivedata"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            TEST_BEFORE_INSTALL 1
-            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libautomotivedata-prefix/src/libautomotivedata-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libautomotivedata-prefix/src/libautomotivedata-build --target ${MAKE_PACKAGE})
-    ENDIF()
-
-    # Next, build libodsimulation.
-    IF(${BUILD_LIBODSIMULATION})
-        ExternalProject_Add (libodsimulation
-            DEPENDS libautomotivedata
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libodsimulation"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            TEST_BEFORE_INSTALL 1
-            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodsimulation-prefix/src/libodsimulation-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodsimulation-prefix/src/libodsimulation-build --target ${MAKE_PACKAGE})
-    ENDIF()
-
-    # Next, build odsimulation.
-    IF(${BUILD_ODSIMULATION})
-        ExternalProject_Add (odsimulation
-            DEPENDS libodsimulation
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odsimulation"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            TEST_BEFORE_INSTALL 1
-            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odsimulation-prefix/src/odsimulation-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odsimulation-prefix/src/odsimulation-build --target ${MAKE_PACKAGE})
-    ENDIF()
-
-    # Next, build odcockpit.
-    IF(${BUILD_ODCOCKPIT})
-        ExternalProject_Add (odcockpit
-            DEPENDS libodsimulation
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odcockpit"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            TEST_BEFORE_INSTALL 1
-            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcockpit-prefix/src/odcockpit-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcockpit-prefix/src/odcockpit-build --target ${MAKE_PACKAGE})
-    ENDIF()
-
-    # Next, build automotive/odcantools.
-    IF(${BUILD_AUTOMOTIVE_ODCANTOOLS})
-        ExternalProject_Add (automotive_odcantools
-            DEPENDS libautomotivedata
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/automotive/odcantools"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            TEST_BEFORE_INSTALL 1
-            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/automotive_odcantools-prefix/src/automotive_odcantools-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/automotive_odcantools-prefix/src/automotive_odcantools-build --target ${MAKE_PACKAGE})
-    ENDIF()
-ENDIF()
 
 ###########################################################################
-# This section is for i686-cross-compiling builds.
-IF(    NOT("${CMAKE_TOOLCHAIN_FILE}" STREQUAL "")
-   AND NOT("${ARMHF}") )
-    # Build data structure generator.
-    IF(${BUILD_ODDATASTRUCTUREGENERATOR})
-        ExternalProject_Add (odDataStructureGenerator
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odDataStructureGenerator"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
-            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odDataStructureGenerator-prefix/src/odDataStructureGenerator-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odDataStructureGenerator-prefix/src/odDataStructureGenerator-build --target ${MAKE_PACKAGE})
-    ENDIF()
-
-    # Next, build libopendavinci.
-    IF(${BUILD_OPENDAVINCI})
-        ExternalProject_Add (libopendavinci
-            DEPENDS odDataStructureGenerator
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libopendavinci"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
-            TEST_BEFORE_INSTALL 1
-            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libopendavinci-prefix/src/libopendavinci-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libopendavinci-prefix/src/libopendavinci-build --target ${MAKE_PACKAGE})
-
-        # Build the reference projects in odDataStructureGenerator to check validity of the code generator.
-        ExternalProject_Add (odDataStructureGenerator-reference
-            DEPENDS libopendavinci
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odDataStructureGenerator/org.opendavinci.datamodel/test/odvd/reference"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
-            TEST_BEFORE_INSTALL 1
-            INSTALL_COMMAND "")
-    ENDIF()
-
-    # Next, build tutorials.
-    IF(${BUILD_TUTORIALS})
-        ExternalProject_Add (tutorials
-            DEPENDS libopendavinci
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/tutorials"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
-            TEST_COMMAND ""
-            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/tutorials-prefix/src/tutorials-build --target install)
-    ENDIF()
-
-    # Next, build odsupercomponent.
-    IF(${BUILD_ODSUPERCOMPONENT})
-        ExternalProject_Add (odsupercomponent
-            DEPENDS libopendavinci
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odsupercomponent"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
-            TEST_BEFORE_INSTALL 1
-            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odsupercomponent-prefix/src/odsupercomponent-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odsupercomponent-prefix/src/odsupercomponent-build --target ${MAKE_PACKAGE})
-    ENDIF()
-
-    # Next, build odtools.
-    IF(${BUILD_ODTOOLS})
-        ExternalProject_Add (odtools
-            DEPENDS libopendavinci
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odtools"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
-            TEST_BEFORE_INSTALL 1
-            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odtools-prefix/src/odtools-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odtools-prefix/src/odtools-build --target ${MAKE_PACKAGE})
-    ENDIF()
-
-    # Next, the project for the automotive data structures is built.
-    IF(${BUILD_AUTOMOTIVEDATA})
-        # This "external project" simply deletes the existing libautomotivedata.
-        ExternalProject_Add (libautomotivedata-cleanup
-            DEPENDS libopendavinci
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_SOURCE_DIR}/libautomotivedata
-            PATCH_COMMAND ""
-            SOURCE_DIR ""
-            CONFIGURE_COMMAND ""
-            BUILD_COMMAND ""
-            TEST_COMMAND ""
-            INSTALL_COMMAND "")
-
-        ExternalProject_Add (libautomotivedata
-            DEPENDS libautomotivedata-cleanup
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND cd ${CMAKE_CURRENT_SOURCE_DIR} && ${Java_JAVA_EXECUTABLE} -jar ${ODDATASTRUCTUREGENERATOR_EXECUTABLE} --withCMake ${CMAKE_CURRENT_SOURCE_DIR}/AutomotiveData.odvd
-            PATCH_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libautomotivedata"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
-            TEST_BEFORE_INSTALL 1
-            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libautomotivedata-prefix/src/libautomotivedata-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libautomotivedata-prefix/src/libautomotivedata-build --target ${MAKE_PACKAGE})
-    ENDIF()
-
-    # Next, build libodsimulation.
-    IF(${BUILD_LIBODSIMULATION})
-        ExternalProject_Add (libodsimulation
-            DEPENDS libautomotivedata
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libodsimulation"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
-            TEST_BEFORE_INSTALL 1
-            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodsimulation-prefix/src/libodsimulation-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodsimulation-prefix/src/libodsimulation-build --target ${MAKE_PACKAGE})
-    ENDIF()
-
-    # Next, build odsimulation.
-    IF(${BUILD_ODSIMULATION})
-        ExternalProject_Add (odsimulation
-            DEPENDS libodsimulation
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odsimulation"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
-            TEST_BEFORE_INSTALL 1
-            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odsimulation-prefix/src/odsimulation-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odsimulation-prefix/src/odsimulation-build --target ${MAKE_PACKAGE})
-    ENDIF()
-
-    # Next, build odcockpit.
-    IF(${BUILD_ODCOCKPIT})
-        ExternalProject_Add (odcockpit
-            DEPENDS libodsimulation
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odcockpit"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
-            TEST_BEFORE_INSTALL 1
-            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcockpit-prefix/src/odcockpit-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcockpit-prefix/src/odcockpit-build --target ${MAKE_PACKAGE})
-    ENDIF()
+# Build data structure generator.
+IF(${BUILD_ODDATASTRUCTUREGENERATOR})
+    ExternalProject_Add (odDataStructureGenerator
+        DOWNLOAD_COMMAND ""
+        UPDATE_COMMAND ""
+        SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odDataStructureGenerator"
+        CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
+        CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}"
+        INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odDataStructureGenerator-prefix/src/odDataStructureGenerator-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odDataStructureGenerator-prefix/src/odDataStructureGenerator-build --target ${MAKE_PACKAGE})
 ENDIF()
 
-###########################################################################
-# This section is for armhf-cross-compiling builds.
-IF(    NOT("${CMAKE_TOOLCHAIN_FILE}" STREQUAL "")
-   AND ("${ARMHF}") )
-    # Build data structure generator.
-    IF(${BUILD_ODDATASTRUCTUREGENERATOR})
-        ExternalProject_Add (odDataStructureGenerator
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odDataStructureGenerator"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
-            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odDataStructureGenerator-prefix/src/odDataStructureGenerator-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odDataStructureGenerator-prefix/src/odDataStructureGenerator-build --target ${MAKE_PACKAGE})
-    ENDIF()
+# Next, build libopendavinci.
+IF(${BUILD_OPENDAVINCI})
+    ExternalProject_Add (libopendavinci
+        DEPENDS odDataStructureGenerator
+        DOWNLOAD_COMMAND ""
+        UPDATE_COMMAND ""
+        SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libopendavinci"
+        CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
+        CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}"
+        TEST_BEFORE_INSTALL 1
+        TEST_COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}
+        INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libopendavinci-prefix/src/libopendavinci-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libopendavinci-prefix/src/libopendavinci-build --target ${MAKE_PACKAGE})
 
-    # Next, build libopendavinci.
-    IF(${BUILD_OPENDAVINCI})
-        ExternalProject_Add (libopendavinci
-            DEPENDS odDataStructureGenerator
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libopendavinci"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
-            TEST_COMMAND ""
-            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libopendavinci-prefix/src/libopendavinci-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libopendavinci-prefix/src/libopendavinci-build --target ${MAKE_PACKAGE})
-
-        # Build the reference projects in odDataStructureGenerator to check validity of the code generator.
-        ExternalProject_Add (odDataStructureGenerator-reference
-            DEPENDS libopendavinci
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odDataStructureGenerator/org.opendavinci.datamodel/test/odvd/reference"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
-            TEST_COMMAND ""
-            INSTALL_COMMAND "")
-    ENDIF()
-
-    # Next, build tutorials.
-    IF(${BUILD_TUTORIALS})
-        ExternalProject_Add (tutorials
-            DEPENDS libopendavinci
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/tutorials"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
-            TEST_COMMAND ""
-            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/tutorials-prefix/src/tutorials-build --target install)
-    ENDIF()
-
-    # Next, build odsupercomponent.
-    IF(${BUILD_ODSUPERCOMPONENT})
-        ExternalProject_Add (odsupercomponent
-            DEPENDS libopendavinci
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odsupercomponent"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
-            TEST_COMMAND ""
-            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odsupercomponent-prefix/src/odsupercomponent-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odsupercomponent-prefix/src/odsupercomponent-build --target ${MAKE_PACKAGE})
-    ENDIF()
-
-    # Next, build odtools.
-    IF(${BUILD_ODTOOLS})
-        ExternalProject_Add (odtools
-            DEPENDS libopendavinci
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odtools"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
-            TEST_COMMAND ""
-            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odtools-prefix/src/odtools-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odtools-prefix/src/odtools-build --target ${MAKE_PACKAGE})
-    ENDIF()
-
-    # Next, the project for the automotive data structures is built.
-    IF(${BUILD_AUTOMOTIVEDATA})
-        # This "external project" simply deletes the existing libautomotivedata.
-        ExternalProject_Add (libautomotivedata-cleanup
-            DEPENDS libopendavinci
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_SOURCE_DIR}/libautomotivedata
-            PATCH_COMMAND ""
-            SOURCE_DIR ""
-            CONFIGURE_COMMAND ""
-            BUILD_COMMAND ""
-            TEST_COMMAND ""
-            INSTALL_COMMAND "")
-
-        ExternalProject_Add (libautomotivedata
-            DEPENDS libautomotivedata-cleanup
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND cd ${CMAKE_CURRENT_SOURCE_DIR} && ${Java_JAVA_EXECUTABLE} -jar ${ODDATASTRUCTUREGENERATOR_EXECUTABLE} --withCMake ${CMAKE_CURRENT_SOURCE_DIR}/AutomotiveData.odvd
-            PATCH_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libautomotivedata"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
-            TEST_COMMAND ""
-            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libautomotivedata-prefix/src/libautomotivedata-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libautomotivedata-prefix/src/libautomotivedata-build --target ${MAKE_PACKAGE})
-    ENDIF()
-
-    # Next, build libodsimulation.
-    IF(${BUILD_LIBODSIMULATION})
-        ExternalProject_Add (libodsimulation
-            DEPENDS libautomotivedata
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libodsimulation"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
-            TEST_COMMAND ""
-            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodsimulation-prefix/src/libodsimulation-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodsimulation-prefix/src/libodsimulation-build --target ${MAKE_PACKAGE})
-    ENDIF()
-
-    # Next, build odsimulation.
-    IF(${BUILD_ODSIMULATION})
-        ExternalProject_Add (odsimulation
-            DEPENDS libodsimulation
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odsimulation"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
-            TEST_COMMAND ""
-            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odsimulation-prefix/src/odsimulation-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odsimulation-prefix/src/odsimulation-build --target ${MAKE_PACKAGE})
-    ENDIF()
-
-    # Next, build odcockpit.
-    IF(${BUILD_ODCOCKPIT})
-        ExternalProject_Add (odcockpit
-            DEPENDS libodsimulation
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odcockpit"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
-            TEST_COMMAND ""
-            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcockpit-prefix/src/odcockpit-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcockpit-prefix/src/odcockpit-build --target ${MAKE_PACKAGE})
-    ENDIF()
+    # Build the reference projects in odDataStructureGenerator to check validity of the code generator.
+    ExternalProject_Add (odDataStructureGenerator-reference
+        DEPENDS libopendavinci
+        DOWNLOAD_COMMAND ""
+        UPDATE_COMMAND ""
+        SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odDataStructureGenerator/org.opendavinci.datamodel/test/odvd/reference"
+        CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
+        CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}"
+        TEST_BEFORE_INSTALL 1
+        TEST_COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}
+        INSTALL_COMMAND "")
 ENDIF()
+
+# Next, build tutorials.
+IF(${BUILD_TUTORIALS})
+    ExternalProject_Add (tutorials
+        DEPENDS libopendavinci
+        DOWNLOAD_COMMAND ""
+        UPDATE_COMMAND ""
+        SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/tutorials"
+        CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
+        CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}"
+        TEST_COMMAND ""
+        INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/tutorials-prefix/src/tutorials-build --target install)
+ENDIF()
+
+# Next, build odsupercomponent.
+IF(${BUILD_ODSUPERCOMPONENT})
+    ExternalProject_Add (odsupercomponent
+        DEPENDS libopendavinci
+        DOWNLOAD_COMMAND ""
+        UPDATE_COMMAND ""
+        SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odsupercomponent"
+        CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
+        CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}"
+        TEST_BEFORE_INSTALL 1
+        TEST_COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}
+        INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odsupercomponent-prefix/src/odsupercomponent-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odsupercomponent-prefix/src/odsupercomponent-build --target ${MAKE_PACKAGE})
+ENDIF()
+
+# Next, build odtools.
+IF(${BUILD_ODTOOLS})
+    ExternalProject_Add (odtools
+        DEPENDS libopendavinci
+        DOWNLOAD_COMMAND ""
+        UPDATE_COMMAND ""
+        SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odtools"
+        CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
+        CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}"
+        TEST_BEFORE_INSTALL 1
+        TEST_COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}
+        INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odtools-prefix/src/odtools-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odtools-prefix/src/odtools-build --target ${MAKE_PACKAGE})
+ENDIF()
+
+# Next, the project for the automotive data structures is built.
+IF(${BUILD_AUTOMOTIVEDATA})
+    # This "external project" simply deletes the existing libautomotivedata.
+    ExternalProject_Add (libautomotivedata-cleanup
+        DEPENDS libopendavinci
+        DOWNLOAD_COMMAND ""
+        UPDATE_COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_SOURCE_DIR}/libautomotivedata
+        PATCH_COMMAND ""
+        SOURCE_DIR ""
+        CONFIGURE_COMMAND ""
+        BUILD_COMMAND ""
+        TEST_COMMAND ""
+        INSTALL_COMMAND "")
+
+    ExternalProject_Add (libautomotivedata
+        DEPENDS libautomotivedata-cleanup
+        DOWNLOAD_COMMAND ""
+        UPDATE_COMMAND cd ${CMAKE_CURRENT_SOURCE_DIR} && ${Java_JAVA_EXECUTABLE} -jar ${ODDATASTRUCTUREGENERATOR_EXECUTABLE} --withCMake ${CMAKE_CURRENT_SOURCE_DIR}/AutomotiveData.odvd
+        PATCH_COMMAND ""
+        SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libautomotivedata"
+        CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
+        CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}"
+        TEST_BEFORE_INSTALL 1
+        TEST_COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}
+        INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libautomotivedata-prefix/src/libautomotivedata-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libautomotivedata-prefix/src/libautomotivedata-build --target ${MAKE_PACKAGE})
+ENDIF()
+
+# Next, build libodsimulation.
+IF(${BUILD_LIBODSIMULATION})
+    ExternalProject_Add (libodsimulation
+        DEPENDS libautomotivedata
+        DOWNLOAD_COMMAND ""
+        UPDATE_COMMAND ""
+        SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libodsimulation"
+        CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
+        CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}"
+        TEST_BEFORE_INSTALL 1
+        TEST_COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}
+        INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodsimulation-prefix/src/libodsimulation-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodsimulation-prefix/src/libodsimulation-build --target ${MAKE_PACKAGE})
+ENDIF()
+
+# Next, build odsimulation.
+IF(${BUILD_ODSIMULATION})
+    ExternalProject_Add (odsimulation
+        DEPENDS libodsimulation
+        DOWNLOAD_COMMAND ""
+        UPDATE_COMMAND ""
+        SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odsimulation"
+        CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
+        CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}"
+        TEST_BEFORE_INSTALL 1
+        TEST_COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}
+        INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odsimulation-prefix/src/odsimulation-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odsimulation-prefix/src/odsimulation-build --target ${MAKE_PACKAGE})
+ENDIF()
+
+# Next, build odcockpit.
+IF(${BUILD_ODCOCKPIT})
+    ExternalProject_Add (odcockpit
+        DEPENDS libodsimulation
+        DOWNLOAD_COMMAND ""
+        UPDATE_COMMAND ""
+        SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odcockpit"
+        CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
+        CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}"
+        TEST_BEFORE_INSTALL 1
+        TEST_COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}
+        INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcockpit-prefix/src/odcockpit-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcockpit-prefix/src/odcockpit-build --target ${MAKE_PACKAGE})
+ENDIF()
+
+# Next, build automotive/odcantools.
+IF(${BUILD_AUTOMOTIVE_ODCANTOOLS})
+    ExternalProject_Add (automotive-odCANDataStructureGenerator
+        DOWNLOAD_COMMAND ""
+        UPDATE_COMMAND ""
+        SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/automotive/odCANDataStructureGenerator"
+        CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
+        CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}"
+        INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/automotive-odCANDataStructureGenerator-prefix/src/automotive-odCANDataStructureGenerator-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/automotive-odCANDataStructureGenerator-prefix/src/automotive-odCANDataStructureGenerator-build --target ${MAKE_PACKAGE})
+
+    # This "external project" simply deletes the existing libcanmessagemapping.
+    ExternalProject_Add (automotive-libcanmessagemapping-cleanup
+        DEPENDS automotive-odCANDataStructureGenerator
+        DOWNLOAD_COMMAND ""
+        UPDATE_COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_SOURCE_DIR}/libcanmessagemapping
+        PATCH_COMMAND ""
+        SOURCE_DIR ""
+        CONFIGURE_COMMAND ""
+        BUILD_COMMAND ""
+        TEST_COMMAND ""
+        INSTALL_COMMAND "")
+
+    ExternalProject_Add (automotive-libcanmessagemapping
+        DEPENDS libopendavinci libautomotivedata automotive-libcanmessagemapping-cleanup
+        DOWNLOAD_COMMAND ""
+        UPDATE_COMMAND cd ${CMAKE_CURRENT_SOURCE_DIR} && ${Java_JAVA_EXECUTABLE} -jar ${ODCANDATASTRUCTUREGENERATOR_EXECUTABLE} --withCMake ${CMAKE_CURRENT_SOURCE_DIR}/automotive/CANMessageMapping.can
+        PATCH_COMMAND ""
+        SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libcanmessagemapping"
+        CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
+        CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}"
+        TEST_BEFORE_INSTALL 1
+        TEST_COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}
+        INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/automotive-libcanmessagemapping-prefix/src/automotive-libcanmessagemapping-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/automotive-libcanmessagemapping-prefix/src/automotive-libcanmessagemapping-build --target ${MAKE_PACKAGE})
+
+    ExternalProject_Add (automotive-odcantools
+        DEPENDS automotive-libcanmessagemapping
+        DOWNLOAD_COMMAND ""
+        UPDATE_COMMAND ""
+        SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/automotive/odcantools"
+        CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
+        CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}"
+        TEST_BEFORE_INSTALL 1
+        TEST_COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}
+        INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/automotive-odcantools-prefix/src/automotive-odcantools-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/automotive-odcantools-prefix/src/automotive-odcantools-build --target ${MAKE_PACKAGE})
+ENDIF()
+
+# Next, build automotive/miniature.
+IF(${BUILD_AUTOMOTIVE_MINIATURE})
+    ExternalProject_Add (automotive-miniature
+        DEPENDS libodsimulation
+        DOWNLOAD_COMMAND ""
+        UPDATE_COMMAND ""
+        SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/automotive/miniature"
+        CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
+        CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}"
+        TEST_BEFORE_INSTALL 1
+        TEST_COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}
+        INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/automotive-miniature-prefix/src/automotive-miniature-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/automotive-miniature-prefix/src/automotive-miniature-build --target ${MAKE_PACKAGE})
+ENDIF()
+

@@ -21,17 +21,19 @@
 #define HESPERIA_CORE_WRAPPER_PARSER_BOOSTSPIRITGRAMMAR_H_
 
 #include <iostream>
+#include <string>
 
 #include <boost/algorithm/string/trim.hpp>
 #include <boost/spirit/include/classic_ast.hpp>
 #include <boost/spirit/include/classic_error_handling.hpp>
 
-// native.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/native.h"
-
+#include "core/opendavinci.h"
 #include "core/wrapper/parser/Grammar.h"
-#include "core/wrapper/parser/ParserToken.h"
 #include "core/wrapper/parser/ParserError.h"
+#include "core/wrapper/parser/ParserErrorExtendedData.h"
+#include "core/wrapper/parser/ParserErrorListener.h"
+#include "core/wrapper/parser/ParserToken.h"
+#include "core/wrapper/parser/ParserTokenListener.h"
 
 namespace core {
     namespace wrapper {
@@ -40,6 +42,9 @@ namespace core {
             /**
              * This class implements a grammar using Boost::Spirit.
              */
+class ASTNode;
+class ParserTokenExtendedData;
+
             class OPENDAVINCI_API BoostSpiritGrammar  : public Grammar {
                 public:
                     // The following typedef's are necessary to construct the AST.

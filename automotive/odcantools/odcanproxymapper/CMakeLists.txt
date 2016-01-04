@@ -51,27 +51,40 @@ FIND_PACKAGE (OpenDaVINCI REQUIRED)
 SET(AUTOMOTIVEDATA_DIR "${CMAKE_INSTALL_PREFIX}")
 FIND_PACKAGE (AutomotiveData REQUIRED)
 
+###########################################################################
+# Find CANMappingMessage.
+SET(CANMESSAGEMAPPING_DIR "${CMAKE_INSTALL_PREFIX}")
+FIND_PACKAGE (CANMessageMapping REQUIRED)
+
+###########################################################################
+# Set include directory to libodcantools.
+INCLUDE_DIRECTORIES (../libodcantools/include)
+# Link with libodcantools.
+SET (ODCANTOOLS_LIB odcantools-static)
+
 ###############################################################################
 # Set header files from OpenDaVINCI.
 INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS}/opendavinci)
 # Set header files from AutomotiveData.
 INCLUDE_DIRECTORIES (${AUTOMOTIVEDATA_INCLUDE_DIRS}/automotivedata)
-# Set include directory from odcanmapper.
-INCLUDE_DIRECTORIES(${odcanmapper_SOURCE_DIR}/include)
 # Set include directory from odcanproxy.
 INCLUDE_DIRECTORIES(${odcanproxy_SOURCE_DIR}/include)
-# Set header files from CAN driver.
-INCLUDE_DIRECTORIES (${CMAKE_INSTALL_PREFIX}/usr/include)
+# Set header files from CANMappingMessage.
+INCLUDE_DIRECTORIES (${CANMESSAGEMAPPING_INCLUDE_DIRS}/canmessagemapping)
+# Set header files from pcan-no-kernel-driver.
+INCLUDE_DIRECTORIES (${pcan-no-kernel-driver_SOURCE_DIR}/lib)
+INCLUDE_DIRECTORIES (${pcan-no-kernel-driver_SOURCE_DIR}/driver)
 # Set include directory.
 INCLUDE_DIRECTORIES(include)
 
 ###########################################################################
 # Set linking libraries to successfully link test suites and binaries.
-SET (LIBRARIES ${odcanmapper_BINARY_DIR}/libodcanmapperlib-static.a
-               ${odcanproxy_BINARY_DIR}/libodcanproxylib-static.a
-               ${OPENDAVINCI_LIBRARIES}
+SET (LIBRARIES ${OPENDAVINCI_LIBRARIES}
                ${AUTOMOTIVEDATA_LIBRARIES}
-               ${CMAKE_INSTALL_PREFIX}/usr/lib/libpcan.so)
+               ${CANMESSAGEMAPPING_LIBRARIES}
+               ${odcanproxy_BINARY_DIR}/libodcanproxylib-static.a
+               ${ODCANTOOLS_LIB}
+               ${pcan-no-kernel-driver_BINARY_DIR}/libpcan-no-kernel-driver-static.a)
 
 ###############################################################################
 # Build this project.
@@ -94,10 +107,11 @@ IF(CXXTEST_FOUND)
 
         SET(CXXTEST_TESTGEN_ARGS ${CXXTEST_TESTGEN_ARGS} --world=${PROJECT_NAME}-${testsuite-short})
         CXXTEST_ADD_TEST(${testsuite-short}-TestSuite ${testsuite-short}-TestSuite.cpp ${testsuite})
-        IF(UNIX)        
-            IF(   ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
-               OR ("${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD")
-               OR ("${CMAKE_SYSTEM_NAME}" STREQUAL "DragonFly") )
+        IF(UNIX)
+            IF( (   ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+                 OR ("${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD")
+                 OR ("${CMAKE_SYSTEM_NAME}" STREQUAL "DragonFly") )
+                AND (NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang") )
                 SET_SOURCE_FILES_PROPERTIES(${testsuite-short}-TestSuite.cpp PROPERTIES COMPILE_FLAGS "-Wno-effc++ -Wno-float-equal -Wno-error=suggest-attribute=noreturn")
             ELSE()
                 SET_SOURCE_FILES_PROPERTIES(${testsuite-short}-TestSuite.cpp PROPERTIES COMPILE_FLAGS "-Wno-effc++ -Wno-float-equal")
@@ -113,6 +127,6 @@ ENDIF(CXXTEST_FOUND)
 
 ###############################################################################
 # Install this project.
-INSTALL(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin COMPONENT cantools)
-INSTALL(FILES man/${PROJECT_NAME}.1 DESTINATION man/man1 COMPONENT cantools)
+INSTALL(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin COMPONENT odcantools)
+INSTALL(FILES man/${PROJECT_NAME}.1 DESTINATION man/man1 COMPONENT odcantools)
 

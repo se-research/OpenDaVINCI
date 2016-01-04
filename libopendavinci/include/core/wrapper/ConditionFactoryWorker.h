@@ -26,8 +26,6 @@
 namespace core {
     namespace wrapper {
 
-        using namespace std;
-
         /**
          * This template class provides factory methods to the
          * ConditionFactory. The factory methods' implementations

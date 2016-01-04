@@ -21,18 +21,20 @@
 #ifndef COCKPIT_PLUGINS_SPYPLUGIN_H_
 #define COCKPIT_PLUGINS_SPYPLUGIN_H_
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
+#include <string>
 
 #include "plugins/PlugIn.h"
-#include "plugins/spy/SpyWidget.h"
+
+class QWidget;
+namespace core { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
 
     namespace plugins {
 
         namespace spy {
+
+class SpyWidget;
 
             class SpyPlugIn : public PlugIn {
                 private:

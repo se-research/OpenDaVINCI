@@ -17,11 +17,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/base/Hash.h"
+#include <iosfwd>
+
+#include "core/SharedPointer.h"
 #include "core/base/Deserializer.h"
+#include "core/base/Hash.h"
 #include "core/base/SerializationFactory.h"
 #include "core/base/Serializer.h"
 #include "core/data/Container.h"
+#include "core/data/SerializableData.h"
 
 namespace core {
     namespace data {
@@ -92,19 +96,23 @@ namespace core {
             // Write container data type.
             uint32_t dataType = getDataType();
             s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                    dataType);
+                     1, "Container.id", "id",
+                     dataType);
 
             // Write container data.
             s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('d', 'a', 't', 'a') >::RESULT,
-                    m_serializedData.str());
+                     2, "Container.data", "data",
+                     m_serializedData.str());
 
             // Write sent time stamp data.
             s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('s', 'e', 'n', 't') >::RESULT,
-                    m_sent);
+                     3, "Container.sent", "sent",
+                     m_sent);
 
             // Write received time stamp data.
             s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('r', 'e', 'c', 'v', 'd') >::RESULT,
-                    m_received);
+                     4, "Container.received", "received",
+                     m_received);
 
             return out;
         }
@@ -118,19 +126,23 @@ namespace core {
             // Read container data type.
             uint32_t dataType = 0;
             d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                   dataType);
+                    1, "Container.id", "id",
+                    dataType);
 
             // Read container data.
             d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('d', 'a', 't', 'a') >::RESULT,
-                   rawData);
+                    2, "Container.data", "data",
+                    rawData);
 
             // Read sent time stamp data.
             d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('s', 'e', 'n', 't') >::RESULT,
-                   m_sent);
+                    3, "Container.sent", "sent",
+                    m_sent);
 
             // Read received time stamp data.
             d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('r', 'e', 'c', 'v', 'd') >::RESULT,
-                   m_received);
+                    4, "Container.received", "received",
+                    m_received);
 
             // Set data.
             m_dataType = static_cast<DATATYPE>(dataType);

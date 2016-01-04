@@ -20,21 +20,25 @@
 #ifndef CORE_PROTOTESTSUITE_H_
 #define CORE_PROTOTESTSUITE_H_
 
-#include "cxxtest/TestSuite.h"
+#include <cmath>                        // for fabs
+#include <iostream>                     // for stringstream, operator<<, etc
+#include <string>                       // for operator==, basic_string, etc
 
-#include <iostream>
-#include <sstream>
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/base/Hash.h"
-#include "core/base/Deserializer.h"
-#include "core/base/ProtoSerializerVisitor.h"
+#include "core/opendavinci.h"
+#include "core/SharedPointer.h"         // for SharedPointer
+#include "core/base/Deserializer.h"     // for Deserializer
 #include "core/base/ProtoDeserializerVisitor.h"
-#include "core/data/SerializableData.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
-#include "core/base/Visitable.h"
-
-#include "GeneratedHeaders_CoreData.h"
+#include "core/base/ProtoSerializerVisitor.h"
+#include "core/base/SerializationFactory.h"  // for SerializationFactory
+#include "core/base/Serializer.h"       // for Serializer
+#include "core/base/Visitable.h"        // for Visitable
+#include "core/base/Visitor.h"          // for Visitor
+#include "core/data/SerializableData.h"  // for SerializableData
+#include "generated/coredata/SharedData.h"  // for SharedData
+#include "generated/coredata/dmcp/ModuleDescriptor.h"
+#include "generated/coredata/image/SharedImage.h"  // for SharedImage
 
 using namespace std;
 using namespace core::base;
@@ -348,6 +352,56 @@ class ProtoTest : public CxxTest::TestSuite {
             TS_ASSERT(md.getIdentifier() == md2.getIdentifier());
             TS_ASSERT(md.getVersion() == md2.getVersion());
             TS_ASSERT(fabs(md.getFrequency() - md2.getFrequency()) < 1e-4);
+        }
+
+        void testSerializationDeserializationNullValues() {
+            ProtoVehicleControl vcRef;
+            vcRef.setSpeed(0);
+            vcRef.setAcceleration(0);
+            vcRef.setSteeringWheelAngle(0);
+            vcRef.setBrakeLights(true);
+            vcRef.setLeftFlashingLights(false);
+            vcRef.setRightFlashingLights(true);
+
+            // Create a Proto serialization visitor.
+            ProtoSerializerVisitor protoSerializerVisitor;
+            vcRef.accept(protoSerializerVisitor);
+
+            // Write the data to a stringstream.
+            stringstream out;
+            protoSerializerVisitor.getSerializedDataNoHeader(out);
+
+            // Create a Proto deserialization visitor.
+            ProtoDeserializerVisitor protoDeserializerVisitor;
+            protoDeserializerVisitor.deserializeDataFromNoHeader(out);
+
+            // Read back the data by using the visitor.
+            ProtoVehicleControl vcRef2;
+            vcRef2.setSpeed(2);
+            vcRef2.setAcceleration(5);
+            vcRef2.setSteeringWheelAngle(9);
+            vcRef2.setBrakeLights(false);
+            vcRef2.setLeftFlashingLights(true);
+            vcRef2.setRightFlashingLights(false);
+
+            // Verify that both data structures are different.
+            TS_ASSERT(fabs(vcRef.getSpeed() - vcRef2.getSpeed()) > 1e-4);
+            TS_ASSERT(fabs(vcRef.getAcceleration() - vcRef2.getAcceleration()) > 1e-4);
+            TS_ASSERT(fabs(vcRef.getSteeringWheelAngle() - vcRef2.getSteeringWheelAngle()) > 1e-4);
+            TS_ASSERT(vcRef.getBrakeLights() != vcRef2.getBrakeLights());
+            TS_ASSERT(vcRef.getLeftFlashingLights() != vcRef2.getLeftFlashingLights());
+            TS_ASSERT(vcRef.getRightFlashingLights() != vcRef2.getRightFlashingLights());
+
+            // Read back the data using the deserializer.
+            vcRef2.accept(protoDeserializerVisitor);
+
+            // Verify that the two data structures are identical.
+            TS_ASSERT(fabs(vcRef.getSpeed() - vcRef2.getSpeed()) < 1e-4);
+            TS_ASSERT(fabs(vcRef.getAcceleration() - vcRef2.getAcceleration()) < 1e-4);
+            TS_ASSERT(fabs(vcRef.getSteeringWheelAngle() - vcRef2.getSteeringWheelAngle()) < 1e-4);
+            TS_ASSERT(vcRef.getBrakeLights() == vcRef2.getBrakeLights());
+            TS_ASSERT(vcRef.getLeftFlashingLights() == vcRef2.getLeftFlashingLights());
+            TS_ASSERT(vcRef.getRightFlashingLights() == vcRef2.getRightFlashingLights());
         }
 
         void testProtoSerialisation() {

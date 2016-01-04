@@ -20,16 +20,17 @@
 #ifndef OPENDAVINCI_CORE_IO_TCP_TCPFACTORY_H_
 #define OPENDAVINCI_CORE_IO_TCP_TCPFACTORY_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <string>
 
+#include "core/opendavinci.h"
 #include "core/SharedPointer.h"
-#include "core/io/tcp/TCPAcceptor.h"
-#include "core/io/tcp/TCPConnection.h"
 
 namespace core {
     namespace io {
         namespace tcp {
+
+class TCPAcceptor;
+class TCPConnection;
 
             using namespace std;
 

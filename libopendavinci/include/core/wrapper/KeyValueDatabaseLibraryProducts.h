@@ -23,8 +23,6 @@
 namespace core {
     namespace wrapper {
 
-        using namespace std;
-
         /**
          * This enumeration describes the avaiable
          * products of the KeyValueDatabaseFactory

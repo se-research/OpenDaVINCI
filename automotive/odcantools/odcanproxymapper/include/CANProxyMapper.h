@@ -20,8 +20,12 @@
 #ifndef CANPROXYMAPPER_H_
 #define CANPROXYMAPPER_H_
 
+#include <stdint.h>
+
 #include "CANProxy.h"
-#include "DataMapper.h"
+#include "GeneratedHeaders_CANMessageMapping.h"
+
+namespace automotive { class GenericCANMessage; }
 
 namespace automotive {
     namespace odcantools {
@@ -66,7 +70,7 @@ namespace automotive {
                 virtual void nextGenericCANMessage(const GenericCANMessage &gcm);
 
             private:
-                DataMapper m_dataMapper;
+                canmapping::CanMapping m_canMapping;
         };
 
     } //odcantools

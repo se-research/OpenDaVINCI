@@ -22,8 +22,7 @@
 
 #include <map>
 
-#include "core/platform.h"
-
+#include "core/opendavinci.h"
 #include "hesperia/scenegraph/SceneNodeDescriptor.h"
 #include "hesperia/scenegraph/SceneNodeDescriptorComparator.h"
 #include "hesperia/scenegraph/renderer/SceneNodeRenderingConfiguration.h"

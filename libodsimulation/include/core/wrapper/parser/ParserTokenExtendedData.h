@@ -20,8 +20,7 @@
 #ifndef HESPERIA_CORE_WRAPPER_PARSER_PARSERTOKENEXTENDEDDATA_H_
 #define HESPERIA_CORE_WRAPPER_PARSER_PARSERTOKENEXTENDEDDATA_H_
 
-// native.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/native.h"
+#include "core/opendavinci.h"
 
 namespace core {
     namespace wrapper {

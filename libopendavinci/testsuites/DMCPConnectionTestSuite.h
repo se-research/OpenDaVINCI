@@ -20,23 +20,23 @@
 #ifndef CORE_DMCPCONNECTIONTESTSUITE_H_
 #define CORE_DMCPCONNECTIONTESTSUITE_H_
 
-#include "cxxtest/TestSuite.h"
+#include <sstream>                      // for basic_ostream, operator<<, etc
+#include <string>                       // for string, operator==, etc
 
-#include <sstream>
-#include <string>
-#include <memory>
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/base/KeyValueConfiguration.h"
-#include "core/dmcp/connection/Client.h"
+#include "core/SharedPointer.h"         // for SharedPointer
+#include "core/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
+#include "core/dmcp/connection/Client.h"  // for Client
 #include "core/dmcp/connection/ConnectionHandler.h"
-#include "core/dmcp/connection/ModuleConnection.h"
-#include "core/dmcp/connection/Server.h"
-#include "core/exceptions/Exceptions.h"
-
-#include "mocks/ModuleConfigurationProviderMock.h"
+#include "core/dmcp/connection/Server.h"  // for Server
+#include "generated/coredata/dmcp/ModuleDescriptor.h"
+#include "generated/coredata/dmcp/ServerInformation.h"
+#include "generated/coredata/dmcp/TestConstants.h"  // for TestConstants, etc
 #include "mocks/ConnectionHandlerMock.h"
+#include "mocks/ModuleConfigurationProviderMock.h"
 
-#include "GeneratedHeaders_CoreData.h"
+namespace core { namespace dmcp { namespace connection { class ModuleConnection; } } }
 
 using namespace std;
 

@@ -19,7 +19,15 @@
 
 #include <boost/spirit/include/classic_parse_tree.hpp>
 
+#include <string>
+
+#include "core/opendavinci.h"
+#include "core/wrapper/parser/ASTNode.h"
+#include "core/wrapper/parser/BoostSpiritGrammar.h"
 #include "hesperia/situation/SITGrammar.h"
+
+namespace core { namespace wrapper { namespace parser { class ParserErrorListener; } } }
+namespace core { namespace wrapper { namespace parser { class ParserTokenListener; } } }
 
 namespace hesperia {
     namespace situation {

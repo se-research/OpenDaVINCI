@@ -17,8 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/data/Container.h"
 #include "context/base/PlaybackContainer.h"
+#include "context/base/SendContainerToSystemsUnderTest.h"
+#include "core/base/FIFOQueue.h"
+#include "core/data/Container.h"
+#include "tools/player/Player.h"
+
+namespace core { namespace wrapper { class Time; } }
 
 namespace context {
     namespace base {

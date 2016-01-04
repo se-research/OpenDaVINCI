@@ -20,20 +20,35 @@
 #ifndef CORE_CONTAINERTESTSUITE_H_
 #define CORE_CONTAINERTESTSUITE_H_
 
-#include "cxxtest/TestSuite.h"
+#include <sstream>                      // for stringstream, etc
+#include <string>                       // for operator==, basic_string
 
-#include <sstream>
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/data/Container.h"
-#include "core/data/TimeStamp.h"
+#include "core/base/Serializable.h"     // for operator<<, operator>>
+#include "core/data/Container.h"        // for Container, etc
+#include "core/data/TimeStamp.h"        // for TimeStamp
 
 using namespace std;
 using namespace core::data;
 
 class ContainerTest : public CxxTest::TestSuite {
     public:
+        void testTimeStampData() {
+            TimeStamp ts(1, -2);
+
+            stringstream s;
+            s << ts;
+            s.flush();
+
+            TimeStamp ts2;
+            s >> ts2;
+
+            TS_ASSERT(ts.toString() == ts2.toString());
+        }
+
         void testContainerData() {
-            TimeStamp ts;
+            TimeStamp ts(12345, -3000);
             Container c(Container::TIMESTAMP, ts);
 
             stringstream s;

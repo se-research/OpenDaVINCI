@@ -21,24 +21,27 @@
 #ifndef COCKPIT_PLUGINS_MODULESTATISTICSVIEWER_MODULESTATISTICSVIEWERWIDGET_H_
 #define COCKPIT_PLUGINS_MODULESTATISTICSVIEWER_MODULESTATISTICSVIEWERWIDGET_H_
 
+#include <qobjectdefs.h>
+#include <qwidget.h>
+
 #include <deque>
 #include <map>
+#include <string>
 
-#include "QtIncludes.h"
-
+#include "core/opendavinci.h"
 #include "core/SharedPointer.h"
 #include "core/io/conference/ContainerListener.h"
+#include "generated/coredata/dmcp/ModuleStatistics.h"
 
-#include "plugins/PlugIn.h"
-
-#include "plugins/modulestatisticsviewer/LoadPerModule.h"
-#include "plugins/modulestatisticsviewer/LoadPlot.h"
-
-#include "GeneratedHeaders_CoreData.h"
+namespace cockpit { namespace plugins { class PlugIn; } }
+namespace core { namespace data { class Container; } }
 
 namespace cockpit {
     namespace plugins {
       namespace modulestatisticsviewer {
+
+class LoadPerModule;
+class LoadPlot;
 
         using namespace std;
 

@@ -36,7 +36,7 @@ Install Java to generate data structures::
 Clone the latest OpenDaVINCI sources from https://github.com/se-research/OpenDaVINCI or download
 the latest OpenDaVINCI sources as zip file: https://github.com/se-research/OpenDaVINCI/archive/master.zip.
 
-Change your source folder and create a build directory::
+Change to your source folder and create a build directory::
 
    $ cd OpenDaVINCI && mkdir build
 
@@ -44,14 +44,7 @@ Use cmake to create the build scripts for your build folder::
 
    $ cd build && cmake -D CMAKE_INSTALL_PREFIX=/usr/local ..
 
-Build the OpenDaVINCI sources::
+Build, run the tests, and install the OpenDaVINCI::
 
    $ make all
 
-Run the tests for OpenDaVINCI::
-
-   $ make test
-
-Install the binaries, libraries, and header files to /usr/local::
-
-   $ make install

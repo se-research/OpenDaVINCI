@@ -20,11 +20,12 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_WIN32IMPL_WIN32THREAD_H_
 #define OPENDAVINCI_CORE_WRAPPER_WIN32IMPL_WIN32THREAD_H_
 
+#include <memory>
+
 // Using c++11 standard.
 #include <thread>
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include "core/opendavinci.h"
 
 #include "core/wrapper/Mutex.h"
 #include "core/wrapper/Runnable.h"

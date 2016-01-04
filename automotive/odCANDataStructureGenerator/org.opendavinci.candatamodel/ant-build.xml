@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="candatamodel" default="all">
+    <property name="workflow" value="src/org/opendavinci/GenerateCANDataModel.mwe2"/>
+    <property name="obj.tests" location="bin/"/>
+    <property name="reports.tests" location="."/>
+
+    <path id="classpath">
+        <fileset dir="lib" includes="*.jar"/>
+        <fileset dir="." includes=".antlr-generator-3.2.0.jar"/>
+        <pathelement location="src"/>
+    </path>
+    
+    <target name="clean">
+        <delete dir="bin"/>
+        <delete dir="obj"/>
+        <delete dir="model"/>
+        <delete dir="src-gen"/>
+        <delete dir="xtend-gen"/>
+        <delete dir="include"/>
+        <delete dir="src/generated"/>
+        <delete dir="testsuites"/>
+        <delete file="plugin.xml"/>
+        <delete file="odCANDataStructureGenerator-latest.jar"/>
+        <delete>
+            <fileset dir=".">
+                <include name="TEST-*.txt"/>
+                <include name="TEST-*.xml"/>
+            </fileset>
+        </delete>
+    </target>
+    
+    <target name="generate-xtext-artifacts">
+        <java classpathref="classpath" 
+              classname="org.eclipse.emf.mwe2.launch.runtime.Mwe2Launcher" 
+              fork="true">
+            <arg value="${workflow}"/>
+        </java>
+    </target>
+    
+    <target name="compile-xtend" depends="generate-xtext-artifacts">
+        <pathconvert pathsep="${path.separator}" 
+                     property="classpath-string" 
+                     refid="classpath">
+        </pathconvert>
+        <java classpathref="classpath"
+              classname="org.eclipse.xtend.core.compiler.batch.Main"
+              fork="true"
+              failonerror="yes">
+            <arg value="-cp" />
+            <arg value="${classpath-string}" />
+            <arg value="-encoding" />
+            <arg value="UTF-8" />
+            <arg value="-d" />
+            <arg value="${basedir}/bin/xtend-gen" />
+            <arg value="${basedir}/src-gen${path.separator}${basedir}/src" />
+        </java>
+    </target>   
+
+    <target name="compile-java" depends="compile-xtend">
+        <mkdir dir="obj/bin"/>
+        <javac classpathref="classpath"
+               destdir="bin"
+               source="1.6"
+               target="1.6"
+               includeantruntime="true">
+            <src path="src" />
+            <src path="src-gen" />
+            <src path="bin/xtend-gen" />
+            <src path="test" />
+        </javac>
+        <copy todir="bin">
+            <fileset dir="src" excludes="**/*.java,**/*.xtend" />
+            <fileset dir="src-gen" excludes="**/*.java,**/*.xtend" />
+            <fileset dir="bin/xtend-gen" excludes="**/*.java,**/*.xtend" />
+        </copy>
+    </target>
+
+    <target name="test-java">
+        <junit printsummary="on" haltonerror="true" haltonfailure="true">
+            <classpath>
+                <pathelement path="${classpath}"/>
+                <pathelement location="${basedir}/bin" />
+                <fileset dir="lib" includes="*.jar"/>
+            </classpath>
+
+            <formatter type="plain"/>
+            <formatter type="xml"/>
+
+            <batchtest fork="yes" todir="${reports.tests}">
+                <fileset dir="${obj.tests}">
+                    <include name="**/*Test*.class"/>
+                    <exclude name="**/*$*.class"/>
+                </fileset>
+            </batchtest>
+        </junit>
+        <delete>
+            <fileset dir=".">
+                <include name="TEST-*$*.txt"/>
+                <include name="TEST-*$*.xml"/>
+            </fileset>
+        </delete>
+    </target>
+
+    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+    <!--ANT 1.7 is required                                        -->
+    <target name="create-runnable-jar">
+        <jar destfile="odCANDataStructureGenerator-latest.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="org.opendavinci.generator.CANDataStructureGenerator"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="bin"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xtext_2.8.4.v201508050135.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.ecore.xmi_2.11.0.v20150512-0501.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.ecore_2.11.0.v20150512-0501.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.common_2.11.0.v20150512-0501.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.antlr.runtime_3.2.0.v201101311130.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/com.google.inject_3.0.0.v201312141243.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/com.google.inject.multibindings_3.0.0.v201402270930.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.mwe.core_1.3.11.v201508030321.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.apache.commons.cli_1.2.0.v201404270220.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.mwe2.runtime_2.8.1.v201508030321.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.mwe.utils_1.3.11.v201508030321.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xtext.util_2.8.4.v201508050135.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/com.google.guava_15.0.0.v201403281430.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/javax.inject_1.0.0.v20091030.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xtext.xbase_2.8.4.v201508050135.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xtext.common.types_2.8.4.v201508050135.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xtend.lib_2.8.4.v201508050135.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xtext.xbase.lib_2.8.4.v201508050135.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xtext.generator_2.8.4.v201508050135.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xtend_2.1.0.v201505260349.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/com.ibm.icu_54.1.1.v201501272100.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xpand_2.1.0.v201505260349.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xtend.typesystem.emf_2.1.0.v201505260349.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.codegen.ecore_2.11.0.v20150803-0846.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.codegen_2.11.0.v20150803-0846.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.mwe2.lib_2.8.1.v201508030321.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.apache.commons.logging_1.1.1.v201101211721.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.mwe2.launch_2.8.1.v201508030411.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.mwe2.language_2.8.1.v201508030411.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.objectweb.asm_5.0.1.v201404251740.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.apache.log4j_1.2.15.v201012070815.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xtext.builder_2.8.4.v201508050135.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.xtend.lib.macro_2.8.4.v201508050135.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.equinox.common_3.7.0.v20150402-1709.jar"/>
+        </jar>
+    </target>
+
+    <target name="all" depends="clean,generate-xtext-artifacts,compile-xtend,compile-java,create-runnable-jar"
+            description="build all">
+    </target>
+</project>

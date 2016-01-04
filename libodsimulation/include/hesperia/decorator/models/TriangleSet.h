@@ -22,16 +22,15 @@
 
 #include <vector>
 
-// native.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/native.h"
-
+#include "core/opendavinci.h"
 #include "hesperia/data/environment/Point3.h"
 #include "hesperia/decorator/models/Material.h"
-#include "hesperia/decorator/models/Triangle.h"
 
 namespace hesperia {
     namespace decorator {
         namespace models {
+
+class Triangle;
 
             using namespace std;
 

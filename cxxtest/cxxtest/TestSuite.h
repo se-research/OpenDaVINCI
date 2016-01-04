@@ -53,7 +53,11 @@ void setMaxDumpSize(unsigned value = CXXTEST_MAX_DUMP_SIZE);
 
 void doTrace(const char *file, int line, const char *message);
 void doWarn(const char *file, int line, const char *message);
+#ifdef WIN32
 void doSkipTest(const char *file, int line, const char *message);
+#else
+void doSkipTest(const char *file, int line, const char *message) __attribute__ ((noreturn));
+#endif
 void doFailTest(const char *file, int line, const char *message);
 void doFailAssert(const char *file, int line, const char *expression, const char *message);
 

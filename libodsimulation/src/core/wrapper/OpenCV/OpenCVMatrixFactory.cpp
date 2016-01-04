@@ -20,6 +20,8 @@
 #include "core/wrapper/OpenCV/OpenCVMatrix.h"
 #include "core/wrapper/OpenCV/OpenCVMatrixFactory.h"
 
+namespace core { namespace wrapper { class Matrix; } }
+
 namespace core {
     namespace wrapper {
         namespace OpenCV {

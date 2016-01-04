@@ -17,12 +17,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/base/module/AbstractCIDModule.h"
+#include <iostream>
+
 #include "core/base/Lock.h"
+#include "core/base/Serializable.h"
+#include "core/base/module/AbstractCIDModule.h"
 #include "core/data/Container.h"
 #include "core/dmcp/discoverer/Client.h"
-#include "core/exceptions/Exceptions.h"
+#include "core/io/Packet.h"
 #include "core/io/udp/UDPFactory.h"
+#include "core/opendavinci.h"
+#include "generated/coredata/dmcp/Constants.h"
+#include "generated/coredata/dmcp/DiscoverMessage.h"
 
 namespace core {
     namespace dmcp {

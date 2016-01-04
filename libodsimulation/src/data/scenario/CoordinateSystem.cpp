@@ -17,10 +17,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "core/base/Hash.h"
+#include <ostream>
+#include <string>
+
+#include "core/SharedPointer.h"
 #include "core/base/Deserializer.h"
+#include "core/base/Hash.h"
 #include "core/base/SerializationFactory.h"
 #include "core/base/Serializer.h"
+#include "core/data/SerializableData.h"
 #include "hesperia/data/scenario/CoordinateSystem.h"
 
 namespace hesperia {

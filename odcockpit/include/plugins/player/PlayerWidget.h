@@ -21,22 +21,21 @@
 #ifndef COCKPIT_PLUGINS_PLAYERWIDGET_H_
 #define COCKPIT_PLUGINS_PLAYERWIDGET_H_
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
+#include <qobjectdefs.h>
+#include <qwidget.h>
 
-#include <iostream>
-#include <map>
 #include <string>
 
-#include "core/data/Container.h"
-#include "core/io/conference/ContainerConference.h"
-#include "core/io/conference/ContainerListener.h"
+#include "core/opendavinci.h"
 
-#include "tools/player/Player.h"
-
-#include "plugins/PlugIn.h"
-#include "QtIncludes.h"
+class QCheckBox;
+class QLabel;
+class QLineEdit;
+class QPushButton;
+namespace cockpit { namespace plugins { class PlugIn; } }
+namespace core { namespace base { class KeyValueConfiguration; } }
+namespace core { namespace io { namespace conference { class ContainerConference; } } }
+namespace tools { namespace player { class Player; } }
 
 namespace cockpit {
 
@@ -45,7 +44,6 @@ namespace cockpit {
         namespace player {
 
             using namespace std;
-            using namespace core::data;
 
             /**
              * This class is the container for the cutter widget.

@@ -20,30 +20,29 @@
 #ifndef CORE_WRAPPER_TCPCONNECTIONTESTSUITE_H_
 #define CORE_WRAPPER_TCPCONNECTIONTESTSUITE_H_
 
-#include "cxxtest/TestSuite.h"
+#include <memory>                       // for auto_ptr, etc
+#include <string>                       // for string
 
-#include "core/platform.h"
-#include "core/SharedPointer.h"
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
+
+#include "core/SharedPointer.h"         // for SharedPointer
 #include "core/io/Connection.h"
-
+#include "core/io/tcp/TCPAcceptor.h"
+#include "core/wrapper/NetworkLibraryProducts.h"
 #include "mocks/ConnectionListenerMock.h"
 #include "mocks/StringListenerMock.h"
 #include "mocks/TCPAcceptorListenerMock.h"
 
-#include "core/io/StringListener.h"
-#include "core/wrapper/NetworkLibraryProducts.h"
-
 #ifndef WIN32
-	#include "core/wrapper/POSIX/POSIXTCPFactoryWorker.h"
+    #include "core/wrapper/POSIX/POSIXTCPFactoryWorker.h"
 #endif
 #ifdef WIN32
-	#include "core/wrapper/WIN32/WIN32TCPFactoryWorker.h"
+    #include "core/wrapper/WIN32/WIN32TCPFactoryWorker.h"
 #endif
+#include "core/io/tcp/TCPConnection.h"  // for TCPConnection
 
-#include "core/io/tcp/TCPAcceptorListener.h"
-#include "core/io/tcp/TCPConnection.h"
-#include "core/io/tcp/TCPAcceptor.h"
-#include "core/io/tcp/TCPFactory.h"
+namespace core { namespace io { class Connection; } }
+namespace core { namespace io { namespace tcp { class TCPAcceptor; } } }
 
 using namespace std;
 using namespace core;

@@ -20,12 +20,10 @@
 #ifndef CORE_MUTEXTESTSUITE_H_
 #define CORE_MUTEXTESTSUITE_H_
 
-#include "cxxtest/TestSuite.h"
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include <iostream>
-
-#include "core/base/Mutex.h"
-#include "core/base/Lock.h"
+#include "core/base/Lock.h"             // for Lock
+#include "core/base/Mutex.h"            // for Mutex
 
 using namespace std;
 using namespace core::base;

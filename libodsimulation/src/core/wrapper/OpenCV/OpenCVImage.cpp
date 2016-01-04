@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <cmath>
 #include <cstdio>
 #include <cstdlib>
 #include <fstream>
@@ -27,6 +28,7 @@
 
 #include <opencv/highgui.h>
 
+#include "core/opendavinci.h"
 #include "core/wrapper/OpenCV/OpenCVImage.h"
 
 namespace core {
@@ -81,9 +83,9 @@ namespace core {
 #ifdef WIN32
                 tempFileName = _tempnam("test", NULL);
 #else
-		tempFileName = (char*)calloc(50, sizeof(tempFileName));
-		strncpy(tempFileName,"/tmp/OpenCVImage-XXXXXX", 23);
-		mkstemp(tempFileName);
+                tempFileName = (char*)calloc(50, sizeof(tempFileName));
+                strncpy(tempFileName,"/tmp/OpenCVImage-XXXXXX", 23);
+                mkstemp(tempFileName);
 #endif
                 fstream fout(tempFileName, ios::binary | ios::out);
                 char c = 0;
@@ -96,7 +98,6 @@ namespace core {
                 // Load image. OpenCV images are stored in BGR format by default.
                 // CV_LOAD_IMAGE_COLOR specifies to store graylevel images using 24 bit as well.
                 m_image = cvLoadImage(tempFileName, CV_LOAD_IMAGE_COLOR);
-
 #ifdef WIN32
                 _unlink(tempFileName);
 #else

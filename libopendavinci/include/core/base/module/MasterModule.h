@@ -20,11 +20,10 @@
 #ifndef OPENDAVINCI_CORE_BASE_MODULE_MASTERMODULE_H_
 #define OPENDAVINCI_CORE_BASE_MODULE_MASTERMODULE_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
-
+#include "core/opendavinci.h"
 #include "core/base/module/AbstractCIDModule.h"
 #include "core/exceptions/Exceptions.h"
+#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
 namespace core {
     namespace base {

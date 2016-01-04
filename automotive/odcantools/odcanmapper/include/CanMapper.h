@@ -22,10 +22,11 @@
 #define CANMAPPER_H_
 
 #include <core/base/module/DataTriggeredConferenceClientModule.h>
+#include <stdint.h>
 
-#include "GeneratedHeaders_AutomotiveData.h"
+#include "GeneratedHeaders_CANMessageMapping.h"
 
-#include "DataMapper.h"
+namespace core { namespace data { class Container; } }
 
 namespace automotive {
     namespace odcantools {
@@ -74,8 +75,16 @@ namespace automotive {
 
                 virtual void tearDown();
 
+                /**
+                 * This method prints the payload of the low-level CAN message
+                 * to STDOUT for debug purposes.
+                 *
+                 * @param data to be printed.
+                 */
+                void printPayload(uint64_t payload) const;
+
             private:
-                DataMapper m_dataMapper;
+                canmapping::CanMapping m_canMapping;
         };
 
     } // odcantools

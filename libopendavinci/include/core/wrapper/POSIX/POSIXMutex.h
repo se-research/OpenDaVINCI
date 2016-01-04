@@ -20,19 +20,16 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXMUTEX_H_
 #define OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXMUTEX_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <pthread.h>
 
 #include "core/wrapper/Mutex.h"
-#include "core/wrapper/MutexFactoryWorker.h"
+#include "core/wrapper/SystemLibraryProducts.h"
+
+namespace core { namespace wrapper { template <core::wrapper::SystemLibraryProducts product> class MutexFactoryWorker; } }
 
 namespace core {
     namespace wrapper {
         namespace POSIX {
-
-            using namespace std;
-
-            class POSIXCondition;
 
             /**
              * This class implements a mutex for protecting parts

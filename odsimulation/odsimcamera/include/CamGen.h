@@ -20,18 +20,18 @@
 #ifndef CAMGEN_H_
 #define CAMGEN_H_
 
-#include <opencv/cv.h>
+#include <stdint.h>
 
 #include "core/SharedPointer.h"
-#include "core/wrapper/Image.h"
-
 #include "core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
 #include "hesperia/data/environment/EgoState.h"
-#include "hesperia/io/camera/ImageGrabber.h"
 
-#include "OpenGLGrabber.h"
+namespace core { namespace wrapper { class Image; } }
 
 namespace camgen {
+
+class OpenGLGrabber;
 
     using namespace std;
 

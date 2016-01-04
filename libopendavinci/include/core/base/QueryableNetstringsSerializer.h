@@ -20,24 +20,30 @@
 #ifndef OPENDAVINCI_CORE_BASE_QUERYABLENETSTRINGSSERIALIZER_H_
 #define OPENDAVINCI_CORE_BASE_QUERYABLENETSTRINGSSERIALIZER_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <sstream>
+#include <string>
 
+#include "core/opendavinci.h"
+#include "core/base/QueryableNetstringsSerializerAACF.h"
+#include "core/base/QueryableNetstringsSerializerABCF.h"
 #include "core/base/Serializer.h"
 
 namespace core {
     namespace base {
 
+class Serializable;
+
         using namespace std;
 
-        class SerializationFactory;
 
         /**
          * This class implements the interface Serializer for queryable
          * Netstrings. The original version (found at:
-         * http://cr.yp.to/proto/netstrings.txt ) has been modified:
+         * http://cr.yp.to/proto/netstrings.txt ) has been modified
+         * in different implementations:
          *
-         * '0xAA' '0xCF' 'binary length (as uint32_t)' 'PAYLOAD' ','
+         * Version 1 of queryable netstrings:
+         * QueryableNetstringsSerializerAACF: '0xAA' '0xCF' 'binary length (as uint32_t)' 'PAYLOAD' ','
          *
          * @See Serializable
          */
@@ -79,39 +85,45 @@ namespace core {
 
                 virtual void getSerializedData(ostream &o);
 
+            public:
                 virtual void write(const uint32_t &id, const Serializable &s);
-
                 virtual void write(const uint32_t &id, const bool &b);
-
                 virtual void write(const uint32_t &id, const char &c);
-
                 virtual void write(const uint32_t &id, const unsigned char &uc);
-
                 virtual void write(const uint32_t &id, const int8_t &i);
-
                 virtual void write(const uint32_t &id, const int16_t &i);
-
                 virtual void write(const uint32_t &id, const uint16_t &ui);
-
                 virtual void write(const uint32_t &id, const int32_t &i);
-
                 virtual void write(const uint32_t &id, const uint32_t &ui);
-
                 virtual void write(const uint32_t &id, const int64_t &i);
-
                 virtual void write(const uint32_t &id, const uint64_t &ui);
-
                 virtual void write(const uint32_t &id, const float &f);
-
                 virtual void write(const uint32_t &id, const double &d);
-
                 virtual void write(const uint32_t &id, const string &s);
-
                 virtual void write(const uint32_t &id, const void *data, const uint32_t &size);
+
+            public:
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const Serializable &s);
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const bool &b);
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const char &c);
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const unsigned char &uc);
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const int8_t &i);
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const int16_t &i);
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const uint16_t &ui);
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const int32_t &i);
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const uint32_t &ui);
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const int64_t &i);
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const uint64_t &ui);
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const float &f);
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const double &d);
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const string &s);
+                virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const void *data, const uint32_t &size);
 
             private:
                 ostream *m_out; // We have a pointer here that we derive from a reference parameter in our non-standard constructor; thus, the other class is responsible for the lifecycle of the variable to which we point to.
-                stringstream m_buffer;
+                QueryableNetstringsSerializerAACF m_aacf;
+                QueryableNetstringsSerializerABCF m_abcf;
+                Serializer* m_serializer;
         };
 
     }

@@ -20,6 +20,6 @@
 #include "Split.h"
 
 int32_t main(int32_t argc, char **argv) {
-    odsplit::Split s(argc, argv);
-    return s.runModule();
+    odsplit::Split s;
+    return s.run(argc, argv);
 }

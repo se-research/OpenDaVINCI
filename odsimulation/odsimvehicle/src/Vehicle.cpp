@@ -1,5 +1,6 @@
 /**
  * vehicle - Vehicle dynamics (part of simulation environment)
+ * Copyright (C) 2016 Christian Berger
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -17,29 +18,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <iostream>
+#include <sstream>
+#include <string>
+#include <vector>
 
-#include "core/macros.h"
-#include "core/base/KeyValueConfiguration.h"
 #include "core/base/Thread.h"
 #include "core/data/Container.h"
-
-#include "hesperia/data/environment/EgoState.h"
-#include "hesperia/data/environment/Point3.h"
-#include "GeneratedHeaders_AutomotiveData.h"
-#include "GeneratedHeaders_CoreData.h"
+#include "vehiclecontext/model/SimplifiedBicycleModel.h"
+#include "generated/automotive/VehicleControl.h"
 
 #include "Vehicle.h"
-#include "LinearBicycleModel.h"
-#include "LinearBicycleModelNew.h"
+
+namespace core { namespace base { class KeyValueDataStore; } }
 
 namespace vehicle {
 
     using namespace std;
     using namespace core::base;
     using namespace core::data;
-    using namespace automotive;
-    using namespace hesperia::data::environment;
 
     Vehicle::Vehicle(const int32_t &argc, char **argv) :
         TimeTriggeredConferenceClientModule(argc, argv, "odsimvehicle") {}
@@ -51,113 +47,43 @@ namespace vehicle {
     void Vehicle::tearDown() {}
 
     coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode Vehicle::body() {
-        string model = getKeyValueConfiguration().getValue<string>("odsimvehicle.model");
+        stringstream sstrConfiguration;
+        getKeyValueConfiguration().writeTo(sstrConfiguration);
 
-        if (model == "LinearBicycleModelNew") {
-            cerr << "Using LinearBicycleModelNew" << endl;
+        // Use libodsimulation's odsimirus implementation.
+        string config = sstrConfiguration.str();
+        vehiclecontext::model::SimplifiedBicycleModel simplifiedBicycleModel(config);
+        simplifiedBicycleModel.setup();
 
-            bool withSpeedController = (getKeyValueConfiguration().getValue<int32_t>("odsimvehicle.LinearBicycleModelNew.withSpeedController") == 1);
-
-            return runLinearBicycleModelNew(withSpeedController);
-        }
-
-        cerr << "Using LinearBicycleModel" << endl;
-        return runLinearBicycleModel();
-    }
-
-    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode Vehicle::runLinearBicycleModelNew(const bool &withSpeedController) {
-        LinearBicycleModelNew lbmn(getKeyValueConfiguration(), withSpeedController);
-
+        // Use the most recent EgoState available.
         KeyValueDataStore &kvs = getKeyValueDataStore();
 
+        TimeStamp previousTime;
+
         while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
-            // Get current ForceControl.
+            // Get current VehicleControl.
             Container c = kvs.get(Container::VEHICLECONTROL);
-            VehicleControl vc = c.getData<VehicleControl>();
-            cerr << "VehicleControl: '" << vc.toString() << "'" << endl;
+            automotive::VehicleControl vc = c.getData<automotive::VehicleControl>();
 
-            if (withSpeedController) {
-            	lbmn.speed(vc.getSpeed());
-            }
-            else {
-            	lbmn.accelerate(vc.getAcceleration());
-            }
-        	lbmn.steer(vc.getSteeringWheelAngle());
+            TimeStamp currentTime;
+            const double timeStep = (currentTime.toMicroseconds() - previousTime.toMicroseconds()) / (1000.0 * 1000.0);
 
-            if (vc.getBrakeLights()) {
-                cout << "Turn ON brake lights." << endl;
-            }
-
-            if (vc.getFlashingLightsLeft()) {
-                cout << "Turn ON left flashing lights." << endl;
+            // Calculate result and propagate it.
+            vector<Container> toBeSent = simplifiedBicycleModel.calculate(vc, timeStep);
+            if (toBeSent.size() > 0) {
+                vector<Container>::iterator it = toBeSent.begin();
+                while(it != toBeSent.end()) {
+                    getConference().send(*it);
+                    it++;
+                    Thread::usleepFor(50);
+                }
             }
 
-            if (vc.getFlashingLightsRight()) {
-                cout << "Turn ON right flashing lights." << endl;
-            }
-           
-            EgoState es = lbmn.computeEgoState();
-            
-            // Get vehicle data.
-            VehicleData vd = lbmn.getVehicleData();
-            cerr << "VehicleData: '" << vd.toString() << "'" << endl;
-
-            Container container(Container::EGOSTATE, es);
-            getConference().send(container);
-
-            // Send vehicledata.
-            Container c2(Container::VEHICLEDATA, vd);
-            getConference().send(c2);
+            previousTime = currentTime;
         }
-        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
-    }
 
-    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode Vehicle::runLinearBicycleModel() {
-        LinearBicycleModel lbm(getKeyValueConfiguration());
+        simplifiedBicycleModel.tearDown();
 
-        KeyValueDataStore &kvs = getKeyValueDataStore();
-
-        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
-            // Get current ForceControl.
-            Container c = kvs.get(Container::FORCECONTROL);
-            ForceControl fc = c.getData<ForceControl>();
-            cerr << "ForceControl: '" << fc.toString() << "'" << endl;
-
-        	lbm.accelerate(fc.getAccelerationForce());
-        	lbm.brake(fc.getBrakeForce());
-        	lbm.steer(fc.getSteeringForce());
-
-            if (fc.getBrakeLights()) {
-                cout << "Turn ON brake lights." << endl;
-            }
-            else {
-            }
-
-            if (fc.getFlashingLightsLeft()) {
-                cout << "Turn ON left flashing lights." << endl;
-            }
-            else {
-            }
-
-            if (fc.getFlashingLightsRight()) {
-                cout << "Turn ON right flashing lights." << endl;
-            }
-            else {
-            }
-           
-            EgoState es = lbm.computeEgoState();
-            
-            // Get vehicle data.
-            VehicleData vd = lbm.getVehicleData();
-            cerr << "VehicleData: '" << vd.toString() << "'" << endl;
-
-            Container container(Container::EGOSTATE, es);
-            getConference().send(container);
-
-            // Send vehicledata.
-            Container c2(Container::VEHICLEDATA, vd);
-            getConference().send(c2);
-        }
         return coredata::dmcp::ModuleExitCodeMessage::OKAY;
     }
 

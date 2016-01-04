@@ -17,32 +17,45 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <Qt/qevent.h>
+#include <Qt/qtimer.h>
+#include <qpainter.h>
+#include <qpen.h>
+#include <qrect.h>
+#include <qtransform.h>
+
 #include <sstream>
+#include <string>
 #include <vector>
 
-#include "core/macros.h"
+#include "core/opendavinci.h"
+#include "core/base/KeyValueConfiguration.h"
 #include "core/base/Lock.h"
-#include "core/base/Thread.h"
+#include "core/base/TreeNode.h"
 #include "core/data/Container.h"
-#include "core/exceptions/Exceptions.h"
 #include "core/io/URL.h"
-
-#include "GeneratedHeaders_AutomotiveData.h"
-#include "hesperia/data/environment/Point3.h"
+#include "generated/cartesian/Constants.h"
 #include "hesperia/data/environment/Obstacle.h"
-#include "hesperia/scenario/SCNXArchive.h"
+#include "hesperia/data/environment/Point3.h"
+#include "hesperia/data/environment/Polygon.h"
+#include "hesperia/data/planning/Route.h"
 #include "hesperia/scenario/SCNXArchiveFactory.h"
-
-#include "hesperia/scenegraph/primitives/Line.h"
-#include "hesperia/scenegraph/primitives/Polygon.h"
-#include "hesperia/scenegraph/transformation/SceneGraphFactory.h"
-#include "hesperia/scenegraph/renderer/SceneNodeRenderingConfiguration.h"
+#include "hesperia/scenegraph/SceneNode.h"
+#include "hesperia/scenegraph/models/SimpleCar.h"
 #include "hesperia/scenegraph/models/XYAxes.h"
 #include "hesperia/scenegraph/models/Grid.h"
-
+#include "hesperia/scenegraph/primitives/Line.h"
+#include "hesperia/scenegraph/primitives/Polygon.h"
+#include "hesperia/scenegraph/renderer/SceneNodeRenderingConfiguration.h"
+#include "hesperia/scenegraph/transformation/SceneGraphFactory.h"
+#include "plugins/PlugIn.h"
 #include "plugins/birdseyemap/BirdsEyeMapMapWidget.h"
-#include "plugins/birdseyemap/TreeNodeVisitor.h"
 #include "plugins/birdseyemap/BirdsEyeMapRenderer.h"
+#include "plugins/birdseyemap/CameraAssignableNodesListener.h"
+#include "plugins/birdseyemap/SelectableNodeDescriptor.h"
+#include "plugins/birdseyemap/TreeNodeVisitor.h"
+
+namespace hesperia { namespace scenario { class SCNXArchive; } }
 
 namespace cockpit {
     namespace plugins {
@@ -83,7 +96,8 @@ namespace cockpit {
                 m_egoCar(NULL),
                 m_egoCarTrace(NULL),
                 m_obstaclesRoot(NULL),
-                m_mapOfObstacles() {
+                m_mapOfObstacles(),
+                m_plannedRoute(NULL) {
 
                 m_root->addChild(m_scales);
                 m_root->addChild(m_stationaryElements);
@@ -168,6 +182,9 @@ namespace cockpit {
 
                 m_egoCarTrace = new SceneNode(SceneNodeDescriptor("EgoCar (Trace)"));
                 m_dynamicElements->addChild(m_egoCarTrace);
+
+                m_plannedRoute = new SceneNode(SceneNodeDescriptor("Planned Route"));
+                m_dynamicElements->addChild(m_plannedRoute);
 
                 // EgoCar is assignable.
                 m_listOfCameraAssignableNodes.push_back(egoStateNodeDescriptor);
@@ -328,6 +345,27 @@ namespace cockpit {
                         m_egoCarTrace->addChild(line);
 
                         m_lastEgoState = m_egoState;
+                    }
+                }
+
+                if (c.getDataType() == Container::ROUTE) {
+                    if (m_plannedRoute != NULL) {
+                        Lock l(m_rootMutex);
+                        hesperia::data::planning::Route r = c.getData<hesperia::data::planning::Route>();
+                        vector<Point3> listOfVertices = r.getListOfPoints();
+                        const uint32_t SIZE = listOfVertices.size();
+                        if (SIZE > 0) {
+                            m_plannedRoute->deleteAllChildren();
+                            for (uint32_t i = 0; i < SIZE - 1; i++) {
+                                Point3 posA = listOfVertices.at(i);
+                                posA.setZ(0.05);
+
+                                Point3 posB = listOfVertices.at(i+1);
+                                posB.setZ(0.05);
+
+                                m_plannedRoute->addChild(new hesperia::scenegraph::primitives::Line(m_plannedRoute->getSceneNodeDescriptor(), posA, posB, Point3(0.84, 1, 1), 4));
+                            }
+                        }
                     }
                 }
 

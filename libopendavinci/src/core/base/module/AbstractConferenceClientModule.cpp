@@ -17,13 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/base/Lock.h"
+#include "core/SharedPointer.h"
 #include "core/base/SerializationFactory.h"
-#include "core/data/Container.h"
-#include "core/io/conference/ContainerConferenceFactory.h"
-#include "core/wrapper/KeyValueDatabaseFactory.h"
-
 #include "core/base/module/AbstractConferenceClientModule.h"
+#include "core/data/Container.h"
+#include "core/io/conference/ContainerConference.h"
+#include "core/io/conference/ContainerConferenceFactory.h"
+#include "core/opendavinci.h"
 
 namespace core {
     namespace base {

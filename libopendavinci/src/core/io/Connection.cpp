@@ -17,10 +17,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <iosfwd>
+
 #include "core/base/Lock.h"
+#include "core/base/Serializable.h"
+#include "core/data/Container.h"
+#include "core/data/TimeStamp.h"
 #include "core/exceptions/Exceptions.h"
 #include "core/io/Connection.h"
+#include "core/io/ConnectionErrorListener.h"
+#include "core/io/conference/ContainerListener.h"
 #include "core/io/tcp/TCPFactory.h"
+#include "core/opendavinci.h"
 
 namespace core {
     namespace io {

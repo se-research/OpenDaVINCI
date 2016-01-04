@@ -18,14 +18,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <iostream>
+#include <Qt/qcombobox.h>
+#include <Qt/qgridlayout.h>
+#include <Qt/qlabel.h>
+#include <Qt/qtreewidget.h>
+#include <qglobal.h>
+#include <qnamespace.h>
+#include <qstringlist.h>
 
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "core/base/Lock.h"
-#include "core/data/Container.h"
-#include "hesperia/data/environment/Point3.h"
-
+#include "core/base/TreeNode.h"
+#include "plugins/GLControlFrame.h"
+#include "plugins/environmentviewer/EnvironmentViewerGLWidget.h"
 #include "plugins/environmentviewer/EnvironmentViewerWidget.h"
+#include "plugins/environmentviewer/SelectableNodeDescriptor.h"
+
+namespace cockpit { namespace plugins { class PlugIn; } }
+namespace core { namespace data { class Container; } }
 
 namespace cockpit {
     namespace plugins {

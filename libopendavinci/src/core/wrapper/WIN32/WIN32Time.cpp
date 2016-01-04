@@ -33,7 +33,7 @@ namespace core {
                 auto duration = t.time_since_epoch();
 
                 typedef std::chrono::duration<int32_t> seconds_type;
-				typedef std::chrono::duration<int64_t, std::micro> microseconds_type;
+                typedef std::chrono::duration<int64_t, std::micro> microseconds_type;
 
                 seconds_type s = std::chrono::duration_cast<seconds_type>(duration);
                 microseconds_type us = std::chrono::duration_cast<microseconds_type>(duration);

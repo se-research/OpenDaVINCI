@@ -20,11 +20,12 @@
 #ifndef CORE_DISPOSALTESTSUITE_H_
 #define CORE_DISPOSALTESTSUITE_H_
 
-#include "cxxtest/TestSuite.h"
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/base/Thread.h"
-#include "core/wrapper/Disposable.h"
-#include "core/wrapper/DisposalService.h"
+#include "core/opendavinci.h"
+#include "core/base/Thread.h"           // for Thread
+#include "core/wrapper/Disposable.h"    // for Disposable
+#include "core/wrapper/DisposalService.h"  // for DisposalService
 
 using namespace std;
 

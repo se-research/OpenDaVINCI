@@ -19,13 +19,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <iostream>
+#include <vector>
 
+#include "core/base/Thread.h"
 #include "core/data/Container.h"
-#include "core/data/TimeStamp.h"
-#include "GeneratedHeaders_AutomotiveData.h"
+#include "tools/recorder/Recorder.h"
+#include "generated/automotive/GenericCANMessage.h"
 
 #include "CANBridge.h"
+#include "CANDevice.h"
+#include "MessageToCANDataStore.h"
 
 namespace automotive {
     namespace odcantools {
@@ -45,7 +48,7 @@ namespace automotive {
             m_deviceNodeB(),
             m_replicatorFromAtoB(*this),
             m_replicatorFromBtoA(*this),
-            m_dataMapper() {}
+            m_canMapping() {}
 
         CANBridge::~CANBridge() {}
 
@@ -99,12 +102,14 @@ namespace automotive {
             Container c(Container::GENERIC_CAN_MESSAGE, gcm);
             m_fifo.add(c);
 
-            // Next, try to get complete message with this additional information.
-            Container result = m_dataMapper.mapNext(gcm);
-            if (result.getDataType() != Container::UNDEFINEDDATA) {
-                // Last GenericCANMessage resulted in a complete decoding
-                // and mapping of valid high-level C++ message.
-                getConference().send(result);
+            vector<Container> listOfContainers = m_canMapping.mapNext(gcm);
+            if (listOfContainers.size() > 0) {
+                vector<Container>::iterator it = listOfContainers.begin();
+                while (it != listOfContainers.end()) {
+                    Container container = (*it++);
+                    getConference().send(container);
+                    Thread::usleepFor(100);
+                }
             }
         }
 

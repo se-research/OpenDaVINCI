@@ -20,19 +20,18 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXCONDITION_H_
 #define OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXCONDITION_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <pthread.h>
 
+#include "core/opendavinci.h"
 #include "core/wrapper/Condition.h"
-#include "core/wrapper/ConditionFactoryWorker.h"
-#include "core/wrapper/SystemLibraryProducts.h"
 #include "core/wrapper/POSIX/POSIXMutex.h"
+#include "core/wrapper/SystemLibraryProducts.h"
+
+namespace core { namespace wrapper { template <core::wrapper::SystemLibraryProducts product> class ConditionFactoryWorker; } }
 
 namespace core {
     namespace wrapper {
         namespace POSIX {
-
-            using namespace std;
 
             /**
              * This class implements a condition for protecting parts

@@ -17,9 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/base/Thread.h"
-#include "core/data/TimeStamp.h"
 #include "context/base/BlockableContainerReceiver.h"
+#include "core/base/Thread.h"
+#include "core/data/Container.h"
+#include "core/data/TimeStamp.h"
+#include "core/io/conference/ContainerListener.h"
 
 namespace context {
     namespace base {

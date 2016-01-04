@@ -20,30 +20,23 @@
 #ifndef CORE_SERIALIZATIONTESTSUITE_H_
 #define CORE_SERIALIZATIONTESTSUITE_H_
 
-#include "cxxtest/TestSuite.h"
+#include <cmath>                        // for sqrt
+#include <iostream>                     // for operator<<, basic_ostream, etc
+#include <string>                       // for string, operator<<, etc
 
-#include <cstdlib>
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include <iostream>
-#include <sstream>
-#include <string>
-
-#include "core/SharedPointer.h"
-#include "core/base/Hash.h"
-#include "core/base/Serializable.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
-#include "core/base/Deserializer.h"
-#include "core/base/QueryableNetstringsDeserializer.h"
-#include "core/base/QueryableNetstringsSerializer.h"
-#include "core/base/Thread.h"
-#include "core/data/Container.h"
-#include "core/data/TimeStamp.h"
+#include "core/opendavinci.h"
+#include "core/SharedPointer.h"         // for SharedPointer
+#include "core/base/Deserializer.h"     // for Deserializer
+#include "core/base/Hash.h"             // for CharList, CRC32, etc
+#include "core/base/Serializable.h"     // for Serializable, operator<<, etc
+#include "core/base/SerializationFactory.h"  // for SerializationFactory
+#include "core/base/Serializer.h"       // for Serializer
 
 using namespace std;
 using namespace core;
 using namespace core::base;
-using namespace core::data;
 
 class SerializationTestNestedData : public core::base::Serializable {
     public:

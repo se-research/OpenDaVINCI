@@ -18,13 +18,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "QtIncludes.h"
+#include <Qt/qgridlayout.h>
+#include <Qt/qtimer.h>
+#include <qcolor.h>
 
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "core/data/Container.h"
-
-#include "plugins/modulestatisticsviewer/ModuleStatisticsViewerWidget.h"
+#include "generated/coredata/dmcp/ModuleDescriptor.h"
+#include "generated/coredata/dmcp/ModuleStatistic.h"
+#include "plugins/modulestatisticsviewer/LoadPerModule.h"
 #include "plugins/modulestatisticsviewer/LoadPlot.h"
+#include "plugins/modulestatisticsviewer/ModuleStatisticsViewerWidget.h"
+
+namespace cockpit { namespace plugins { class PlugIn; } }
 
 namespace cockpit {
     namespace plugins {

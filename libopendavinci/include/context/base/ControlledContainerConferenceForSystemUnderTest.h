@@ -20,21 +20,22 @@
 #ifndef CONTEXT_BASE_CONTROLLEDCONTAINERCONFERENCEFORSYSTEMUNDERTEST_H_
 #define CONTEXT_BASE_CONTROLLEDCONTAINERCONFERENCEFORSYSTEMUNDERTEST_H_
 
-// native.h must be included right before boost/asio.hpp because of the definition of _WIN32_WINNT.
-#include "core/native.h"
+#include <string>
 
-#include "core/data/Container.h"
+#include "core/opendavinci.h"
 #include "core/io/conference/ContainerConference.h"
 #include "core/io/conference/ContainerListener.h"
-#include "core/io/conference/ContainerObserver.h"
-#include "context/base/BlockableContainerReceiver.h"
+
+namespace core { namespace data { class Container; } }
+namespace core { namespace io { namespace conference { class ContainerObserver; } } }
 
 namespace context {
     namespace base {
 
+class BlockableContainerReceiver;
+
         using namespace std;
 
-        class ControlledContainerConferenceFactory;
 
         /**
          * This class provides a controlled container conference.

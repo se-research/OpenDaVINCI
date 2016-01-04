@@ -20,8 +20,9 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_WIN32IMPL_WIN32UDPRECEIVER_H_
 #define OPENDAVINCI_CORE_WRAPPER_WIN32IMPL_WIN32UDPRECEIVER_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <memory>
+
+#include "core/opendavinci.h"
 
 #include "core/io/udp/UDPReceiver.h"
 #include "core/wrapper/NetworkLibraryProducts.h"
