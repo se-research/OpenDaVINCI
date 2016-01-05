@@ -24,6 +24,11 @@ Install Java to generate data structures::
     # pkg install devel/apache-ant
     # pkg install java/openjdk8
   
+Add the following lines to /etc/fstab::
+
+    fdesc    /dev/fd       fdescfs      rw  0    0
+    proc     /proc         procfs        rw  0    0
+  
 Add a symbolic link to python as root user::
 
     # ln -sf /usr/local/bin/python /usr/bin/python

@@ -26,7 +26,7 @@ Install Java to generate data structures::
 
 Add the following lines to /etc/fstab::
 
-    fdesc    /dev/fd      fdescfs      rw  0    0
+    fdesc    /dev/fd       fdescfs      rw  0    0
     proc     /proc         procfs        rw  0    0
   
 Add a symbolic link to python as root user::
@@ -43,7 +43,6 @@ Change to your source folder and create a build directory::
 Use cmake to create the build scripts for your build folder::
 
     $ cd build && cmake -D CMAKE_INSTALL_PREFIX=/usr/local ..
-
 
 Build, run the tests, and install the OpenDaVINCI::
 
