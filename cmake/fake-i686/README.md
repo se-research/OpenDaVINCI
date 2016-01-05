@@ -36,9 +36,9 @@ Create a toolchain file::
 
 Create the cross build environment::
 
-   $ mkdir build.i686
-   $ cd build.i686
-   $ cmake -DCMAKE_TOOLCHAIN_FILE=../i686-Toolchain.cmake ..
+    $ mkdir build.i686
+    $ cd build.i686
+    $ cmake -DCMAKE_TOOLCHAIN_FILE=../i686-Toolchain.cmake ..
 
 Build the binaries::
 

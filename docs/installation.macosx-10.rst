@@ -14,13 +14,13 @@ the latest OpenDaVINCI sources as zip file: https://github.com/se-research/OpenD
 
 Change to your source folder and create a build directory::
 
-   $ cd OpenDaVINCI && mkdir build
+    $ cd OpenDaVINCI && mkdir build
 
 Use cmake to create the build scripts for your build folder::
 
-   $ cd build && cmake -D CMAKE_C_COMPILER=/usr/bin/cc -D CMAKE_CXX_COMPILER=/usr/bin/c++ -D CMAKE_INSTALL_PREFIX=/usr/local ..
+    $ cd build && cmake -D CMAKE_C_COMPILER=/usr/bin/cc -D CMAKE_CXX_COMPILER=/usr/bin/c++ -D CMAKE_INSTALL_PREFIX=/usr/local ..
 
 Build, run the tests, and install the OpenDaVINCI::
 
-   $ make all
+    $ make all
 
