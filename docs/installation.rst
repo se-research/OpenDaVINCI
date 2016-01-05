@@ -10,6 +10,7 @@ How to install OpenDaVINCI on Linux-based Platforms
 .. include:: installation.fedora-20.rst
 .. include:: installation.fedora-21.rst
 .. include:: installation.fedora-22.rst
+.. include:: installation.fedora-23.rst
 .. include:: installation.mageia.rst
 .. include:: installation.mint-17.rst
 .. include:: installation.opensuse-13.1.rst

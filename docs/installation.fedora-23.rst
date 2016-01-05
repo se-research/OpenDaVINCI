@@ -1,7 +1,7 @@
-Compiling OpenDaVINCI on Fedora 22
+Compiling OpenDaVINCI on Fedora 23
 ----------------------------------
 
-Download and install Fedora 22 and install its latest package updates::
+Download and install Fedora 23 and install its latest package updates::
 
     $ sudo dnf update
     $ sudo dnf upgrade
