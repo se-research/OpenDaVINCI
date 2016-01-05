@@ -29,11 +29,6 @@ Install the compiler::
   
 Install Java to generate data structures::
 
-   # pkg_add -v -i jre
-   # cd /usr/local/bin && ln -sf /usr/local/jdk-1.7.0/bin/java java
-  
-.. Install the Java::
-
    # pkg_add -v -i apache-ant
    # pkg_add -v -i jdk
    # pkg_add -v -i jre

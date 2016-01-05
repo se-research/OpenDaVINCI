@@ -21,13 +21,9 @@ Install the compiler::
    # pkg install lang/python
 
 Install Java to generate data structures::
-
-   # pkg install java/openjdk7
-
-.. Install Java to generate data structures::
    # pkg install devel/apache-ant
    # pkg install java/openjdk7
-  
+
 Add the following lines to /etc/fstab::
 
    fdesc   /dev/fd     fdescfs     rw  0   0

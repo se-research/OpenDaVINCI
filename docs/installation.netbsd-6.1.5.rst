@@ -30,7 +30,7 @@ Install the compiler::
   
 Add a symbolic link to python as root user::
 
-   #ln -sf /usr/pkg/bin/python2.7 /usr/bin/python
+   # ln -sf /usr/pkg/bin/python2.7 /usr/bin/python
 
 Install Java to generate data structures::
 

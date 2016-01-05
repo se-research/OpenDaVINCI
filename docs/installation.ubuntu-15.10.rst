@@ -1,7 +1,7 @@
-Compiling OpenDaVINCI on Ubuntu 14.04 LTS (32bit and 64bit)
------------------------------------------------------------
+Compiling OpenDaVINCI on Ubuntu 15.10
+-------------------------------------
 
-Download and install Ubuntu 14.04 LTS and install its latest package updates::
+Download and install Ubuntu 15.10 and install its latest package updates::
 
    $ sudo apt-get update
    $ sudo apt-get upgrade

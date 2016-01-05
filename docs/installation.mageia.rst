@@ -9,15 +9,15 @@ Install the required development packages for OpenDaVINCI sources::
 
    $ sudo urpmi cmake gcc gcc-c++ git 
    
-.. Install the required development packages for hesperia sources::
+Install the required development packages for libodsimulation sources::
 
    $ sudo urpmi libqt4-devel lib64freeglut3 lib64freeglut-devel lib64boost-devel opencv-devel
    
-.. Install qwt5-qt4 for hesperia sources::
+Install qwt5-qt4 for hesperia sources::
 
    $ sudo urpmi lib64qwt5-devel
    
-.. Add two missing symbolic links::
+Add two missing symbolic links::
 
    $ sudo ln -sf /usr/include/qwt /usr/include/qwt-qt4
    $ sudo ln -sf /usr/lib64/libqwt5-qt4.so /usr/lib64/libqwt-qt4.so
@@ -26,11 +26,7 @@ Install the required development packages for OpenDaVINCI sources::
 
    $ sudo urpmi libusb1.0-devel
    
-Install Java to generate data structures::
-
-   $ sudo urpmi java-1.7.0-openjdk-devel
-
-.. Install the required development packages for the DataStructureGenerator sources:
+Install the required development packages for the DataStructureGenerator sources:
 
    $sudo urpmi java-1.7.0-openjdk-devel ant ant-junit
    

@@ -27,7 +27,7 @@ Install the compiler::
    # pkg_add -v -i git
    # pkg_add -v -i gcc # (should be installed automatically via comp58.tgz)
   
-.. Install the Java::
+Install the Java::
 
    # pkg_add -v -i apache-ant
    # pkg_add -v -i jdk

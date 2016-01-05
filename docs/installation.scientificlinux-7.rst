@@ -11,11 +11,11 @@ Install the required development packages for OpenDaVINCI sources::
 
    $ sudo yum install cmake gcc gcc-c++ git
    
-.. Install the required development packages for hesperia sources::
+Install the required development packages for libodsimulation sources::
 
    $ sudo yum install freeglut qt4 boost boost-devel qt4-devel freeglut-devel opencv-devel
    
-.. Install qwt5-qt4::
+Install qwt5-qt4::
 
    $ sudo yum install bzip2
    $ wget http://downloads.sourceforge.net/project/qwt/qwt/5.2.3/qwt-5.2.3.tar.bz2
@@ -24,7 +24,7 @@ Install the required development packages for OpenDaVINCI sources::
    $ cd qwt-5.2.3 && qmake qwt.pro && make
    $ sudo make install
 
-.. Add two missing symbolic links::
+Add two missing symbolic links::
 
    $ sudo ln -sf /usr/local/qwt-5.2.3/include /usr/include/qwt-qt4
    $ sudo ln -sf /usr/local/qwt-5.2.3/lib/libqwt.so.5.2.3 /usr/include/libqwt-qt4.so
@@ -33,11 +33,7 @@ Install the required development packages for OpenDaVINCI sources::
 
    $ sudo yum install libusb-devel
    
-Install Java to generate data structures::
-
-   $sudo yum install java-1.7.0-openjdk
-
-.. Install the required development packages for the DataStructureGenerator sources::
+Install the required development packages for the DataStructureGenerator sources::
 
    $sudo yum install java-1.7.0-openjdk ant ant-junit
    

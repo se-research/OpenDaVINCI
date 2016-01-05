@@ -5,6 +5,7 @@ How to install OpenDaVINCI on Linux-based Platforms
 .. include:: installation.centos7.rst
 .. include:: installation.debian-7.8.rst
 .. include:: installation.debian-8.1.rst
+.. include:: installation.debian-8.2.rst
 .. include:: installation.elementaryos.rst
 .. include:: installation.fedora-20.rst
 .. include:: installation.fedora-21.rst
@@ -16,6 +17,7 @@ How to install OpenDaVINCI on Linux-based Platforms
 .. include:: installation.scientificlinux-7.rst
 .. include:: installation.ubuntu-14.04.rst
 .. include:: installation.ubuntu-15.04.rst
+.. include:: installation.ubuntu-15.10.rst
 .. include:: installation.zorin-9.1.rst
 .. include:: installation.zorin-10.rst
 

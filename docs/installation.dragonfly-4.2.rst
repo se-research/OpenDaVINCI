@@ -12,7 +12,7 @@ Install the bash shell::
 Change the shell by running::
 
    $ chsh
-  
+
 Install the compiler::
 
    # pkg install lang/gcc
@@ -21,21 +21,17 @@ Install the compiler::
    # pkg install lang/python
 
 Install Java to generate data structures::
-
-   # pkg install java/openjdk7
-
-.. Install Java to generate data structures::
    # pkg install devel/apache-ant
    # pkg install java/openjdk7
   
 Add the following lines to /etc/fstab::
 
    proc    /proc       procfs      rw  0   0
-  
+
 Add a symbolic link to python as root user::
 
    # ln -sf /usr/local/bin/python /usr/bin/python
-  
+
 Clone the latest OpenDaVINCI sources from https://github.com/se-research/OpenDaVINCI or download
 the latest OpenDaVINCI sources as zip file: https://github.com/se-research/OpenDaVINCI/archive/master.zip.
 
@@ -46,7 +42,6 @@ Change to your source folder and create a build directory::
 Use cmake to create the build scripts for your build folder::
 
    $ cd build && cmake -D CMAKE_INSTALL_PREFIX=/usr/local ..
-
 
 Build, run the tests, and install the OpenDaVINCI::
 

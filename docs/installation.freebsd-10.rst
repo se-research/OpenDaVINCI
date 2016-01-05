@@ -31,8 +31,9 @@ Add a symbolic link to python as root user::
 
 Install Java to generate data structures::
 
+   # pkg install devel/apache-ant
    # pkg install openjdk
-  
+
 Clone the latest OpenDaVINCI sources from https://github.com/se-research/OpenDaVINCI or download
 the latest OpenDaVINCI sources as zip file: https://github.com/se-research/OpenDaVINCI/archive/master.zip.
 
