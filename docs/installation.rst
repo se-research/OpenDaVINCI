@@ -32,6 +32,10 @@ How to install OpenDaVINCI on BSD-based Platforms
 .. include:: installation.openbsd-5.8.rst
 .. include:: installation.macosx-10.rst
 
+How to install OpenDaVINCI on Minix
+===================================
+.. include:: installation.minix.rst
+
 How to install OpenDaVINCI on Windows-based Platforms
 =====================================================
 .. include:: installation.windows.rst
