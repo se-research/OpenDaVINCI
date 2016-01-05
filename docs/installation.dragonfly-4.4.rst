@@ -22,7 +22,7 @@ Install the compiler::
 
 Install Java to generate data structures::
     # pkg install devel/apache-ant
-    # pkg install java/openjdk7
+    # pkg install java/openjdk8
   
 Add a symbolic link to python as root user::
 
