@@ -1,7 +1,7 @@
-Compiling OpenDaVINCI on DragonFlyBSD 4.2 (64bit)
+Compiling OpenDaVINCI on DragonFlyBSD 4.4 (64bit)
 -------------------------------------------------
 
-Download and install DragonFlyBSD 4.2 and update the packages list as root::
+Download and install DragonFlyBSD 4.4 and update the packages list as root::
 
     # pkg update
   
@@ -22,12 +22,8 @@ Install the compiler::
 
 Install Java to generate data structures::
     # pkg install devel/apache-ant
-    # pkg install java/openjdk7
+    # pkg install java/openjdk8
   
-Add the following lines to /etc/fstab::
-
-    proc     /proc         procfs        rw  0    0
-
 Add a symbolic link to python as root user::
 
     # ln -sf /usr/local/bin/python /usr/bin/python

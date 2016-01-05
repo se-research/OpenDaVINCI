@@ -1,7 +1,7 @@
-Compiling OpenDaVINCI on Linux Mint 17 (32bit and 64bit)
---------------------------------------------------------
+Compiling OpenDaVINCI on Debian 8.2
+-----------------------------------
 
-Download and install Linux Mint 17 and install its latest package updates::
+Download and install Debian 8.2 and install its latest package updates::
 
     $ sudo apt-get update
     $ sudo apt-get upgrade
@@ -38,6 +38,7 @@ Change to your source folder and create a build directory::
 Use cmake to create the build scripts for your build folder::
 
     $ cd build && cmake -D CMAKE_INSTALL_PREFIX=/usr/local ..
+
 
 Build, run the tests, and install the OpenDaVINCI::
 

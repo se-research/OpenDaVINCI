@@ -1,7 +1,7 @@
-Compiling OpenDaVINCI on Linux Mint 17 (32bit and 64bit)
---------------------------------------------------------
+Compiling OpenDaVINCI on Ubuntu 15.10
+-------------------------------------
 
-Download and install Linux Mint 17 and install its latest package updates::
+Download and install Ubuntu 15.10 and install its latest package updates::
 
     $ sudo apt-get update
     $ sudo apt-get upgrade
@@ -11,7 +11,7 @@ Install development packages for OpenDaVINCI sources::
 
     $ sudo apt-get install build-essential cmake git
 
-Install the required development packages for libodsimulation sources::
+Install development packages for libodsimulation sources::
 
     $ sudo apt-get install libcv-dev libhighgui-dev freeglut3 libqt4-dev libqwt5-qt4-dev libqwt5-qt4 libqt4-opengl-dev freeglut3-dev qt4-dev-tools libboost-dev libopencv-photo-dev libopencv-contrib-dev
 
