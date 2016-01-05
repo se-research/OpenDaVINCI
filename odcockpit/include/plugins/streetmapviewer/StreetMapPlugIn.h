@@ -22,6 +22,8 @@
 
 #include <string>
 
+#include "hesperia/data/environment/WGS84Coordinate.h"
+
 #include "plugins/PlugIn.h"
 
 class QWidget;
@@ -73,6 +75,7 @@ class StreetMapWidget;
 
                 private:
                     StreetMapWidget *m_widget;
+                    hesperia::data::environment::WGS84Coordinate m_referenceLocation;
             };
         }
     }

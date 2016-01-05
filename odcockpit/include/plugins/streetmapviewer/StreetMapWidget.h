@@ -31,6 +31,7 @@
 #include "core/base/Mutex.h"
 #include "core/io/conference/ContainerListener.h"
 #include "core/strings/StringComparator.h"
+#include "hesperia/data/environment/WGS84Coordinate.h"
 
 #include "plugins/streetmapviewer/StreetMapMapWidget.h"
 
@@ -73,8 +74,9 @@ namespace cockpit {
                      *
                      * @param plugIn Reference to the plugin to which this widget belongs.
                      * @param prnt Pointer to the parental widget.
+                     * @param rL WGS84 reference location.
                      */
-                    StreetMapWidget(const PlugIn &plugIn, QWidget *prnt);
+                    StreetMapWidget(const PlugIn &plugIn, QWidget *prnt, const hesperia::data::environment::WGS84Coordinate &rL);
 
                     virtual ~StreetMapWidget();
 
@@ -94,6 +96,7 @@ namespace cockpit {
                     StreetMapMapWidget *m_mapWidget;
                     QNetworkSession *m_networkSession;
                     QSpinBox *m_zoomLevel;
+                    hesperia::data::environment::WGS84Coordinate m_referenceLocation;
             };
         }
     }

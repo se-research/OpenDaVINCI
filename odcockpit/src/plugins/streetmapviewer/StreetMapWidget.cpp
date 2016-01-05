@@ -17,6 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <cmath>
+#include <iomanip>
 #include <iostream>
 
 #include <QtNetwork>
@@ -28,6 +30,7 @@
 
 #include "core/opendavinci.h"
 #include "core/data/Container.h"
+#include "hesperia/data/environment/EgoState.h"
 
 #include "plugins/streetmapviewer/StreetMapWidget.h"
 
@@ -39,12 +42,14 @@ namespace cockpit {
 
             using namespace std;
             using namespace core::data;
+            using namespace hesperia::data::environment;
 
-            StreetMapWidget::StreetMapWidget(const PlugIn &/*plugIn*/, QWidget *prnt) :
+            StreetMapWidget::StreetMapWidget(const PlugIn &/*plugIn*/, QWidget *prnt, const hesperia::data::environment::WGS84Coordinate &rL) :
                 QWidget(prnt),
                 m_mapWidget(NULL),
                 m_networkSession(NULL),
-                m_zoomLevel(NULL) {
+                m_zoomLevel(NULL),
+                m_referenceLocation(rL) {
 
                 QGridLayout *streetMapGrid = new QGridLayout(this);
 
@@ -64,7 +69,8 @@ namespace cockpit {
                 sideBar->setLayout(sideBarLayout);
 
                 // Setup tile viewer.
-                m_mapWidget = new StreetMapMapWidget(this, 57.70485804, 11.93831921);
+                m_mapWidget = new StreetMapMapWidget(this);
+                m_mapWidget->setMapCenter(m_referenceLocation);
 
                 // Setup layout.
                 streetMapGrid->addWidget(m_mapWidget, 0, 0);
@@ -124,7 +130,19 @@ namespace cockpit {
             }
 
             void StreetMapWidget::nextContainer(Container &c) {
-                m_mapWidget->nextContainer(c);
+                static WGS84Coordinate old = m_referenceLocation;
+                if (c.getDataType() == Container::USER_DATA_0) {
+                    WGS84Coordinate w = c.getData<WGS84Coordinate>();
+                    const double deltaLat = fabs(old.getLatitude() - w.getLatitude());
+                    const double deltaLon = fabs(old.getLongitude() - w.getLongitude());
+
+                    if ( (deltaLat > 1e-4) || (deltaLon > 1e-4) ) {
+                        cout << "[StreetMapWidget]: " << w.getLatitude() << " " << w.getLongitude() << endl;
+                        old = w;
+                        m_mapWidget->setMapCenter(w);
+                    }
+                }
+//                m_mapWidget->nextContainer(c);
             }
         }
     }

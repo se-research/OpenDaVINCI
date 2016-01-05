@@ -23,6 +23,7 @@
 #include <QtGui>
 #include <QtNetwork>
 
+#include "core/base/Lock.h"
 #include "core/data/Container.h"
 #include "hesperia/data/environment/EgoState.h"
 
@@ -34,19 +35,37 @@ namespace cockpit {
         namespace streetmap {
 
             using namespace std;
+            using namespace core::base;
             using namespace core::data;
             using namespace hesperia::data::environment;
 
-            StreetMapMapWidget::StreetMapMapWidget(QWidget *prnt, const double &latitude, const double &longitude) :
+            StreetMapMapWidget::StreetMapMapWidget(QWidget *prnt) :
                 QWidget(prnt),
                 m_mapTileProvider(NULL),
-                m_pressedPosition() {
+                m_timer(NULL),
+                m_pressedPosition(),
+                m_positionMutex(),
+                m_position() {
 
                 // Map tile provider.
                 m_mapTileProvider = new SlippyMap(this);
+                connect(m_mapTileProvider, SIGNAL(updated(QRect)), SLOT(redrawMap(QRect)));
+
+                // Timer repaint.
+                m_timer = new QTimer(this);
+                connect(m_timer, SIGNAL(timeout()), this, SLOT(repaint()));
+                m_timer->start(50);
+            }
+
+            void StreetMapMapWidget::setMapCenter(const double &latitude, const double &longitude) {
                 m_mapTileProvider->latitude = latitude;
                 m_mapTileProvider->longitude = longitude;
-                connect(m_mapTileProvider, SIGNAL(updated(QRect)), SLOT(redrawMap(QRect)));
+                m_mapTileProvider->invalidate();
+            }
+
+            void StreetMapMapWidget::setMapCenter(const WGS84Coordinate &position) {
+                Lock l(m_positionMutex);
+                m_position = position;
             }
 
             void StreetMapMapWidget::redrawMap(const QRect &r) {
@@ -60,6 +79,14 @@ namespace cockpit {
             }
 
             void StreetMapMapWidget::paintEvent(QPaintEvent *evnt) {
+                Lock l(m_positionMutex);
+                m_mapTileProvider->invalidate();
+                if ( (fabs(m_position.getLatitude()) > 1e-1) &&
+                     (fabs(m_position.getLongitude()) > 1e-1) ) {
+                    m_mapTileProvider->latitude = m_position.getLatitude();
+                    m_mapTileProvider->longitude = m_position.getLongitude();
+                }
+
                 QPainter painter;
                 painter.begin(this);
                     painter.setRenderHint(QPainter::Antialiasing);

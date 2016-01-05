@@ -22,8 +22,11 @@
 
 #include <QWidget>
 
+#include "core/base/Mutex.h"
 #include "core/io/conference/ContainerListener.h"
+#include "hesperia/data/environment/WGS84Coordinate.h"
 
+class QTimer;
 class SlippyMap;
 
 namespace cockpit {
@@ -55,10 +58,25 @@ namespace cockpit {
                      * Constructor.
                      *
                      * @param prnt Parent widget.
+                     */
+                    StreetMapMapWidget(QWidget *prnt);
+
+                    /**
+                     * This method sets the center of the map according to the
+                     * specified coordinates.
+                     *
                      * @param latitude Location to be rendered.
                      * @param longitude Location to be rendered.
                      */
-                    StreetMapMapWidget(QWidget *prnt, const double &latitude, const double &longitude);
+                    void setMapCenter(const double &latitude, const double &longitude);
+
+                    /**
+                     * This method sets the center of the map according to the
+                     * specified WGS84 coordinate.
+                     *
+                     * @param position.
+                     */
+                    void setMapCenter(const hesperia::data::environment::WGS84Coordinate &position);
 
                     void zoomIn();
                     void zoomOut();
@@ -76,7 +94,10 @@ namespace cockpit {
 
                 private:
                     SlippyMap *m_mapTileProvider;
+                    QTimer *m_timer;
                     QPoint m_pressedPosition;
+                    core::base::Mutex m_positionMutex;
+                    hesperia::data::environment::WGS84Coordinate m_position;
             };
         }
     }
