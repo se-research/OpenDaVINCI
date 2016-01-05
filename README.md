@@ -42,6 +42,20 @@ Architecture  | Windows 7 | Windows 8.1 | Windows 10
 To explore the features of OpenDaVINCI and to use it in your own projects, we provide pre-compiled
 packages in .deb and .rpm format for x86, x86_64, and armfh.
 
+### Compiling OpenDaVINCI from sources
+
+You will find information about how to compile OpenDaVINCI from sources here: http://opendavinci.readthedocs.org/en/latest/installation.html
+
+### Compiling OpenDaVINCI with Clang
+
+To compile OpenDaVINCI using Clang, change to your source folder and create a build directory::
+
+    $ cd OpenDaVINCI && mkdir build
+
+Use cmake to create the build scripts for your build folder and specify the Clang toolchain::
+
+    $ cd build && cmake -D CMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_TOOLCHAIN_FILE=../cmake/clang-Toolchain.cmake ..
+
 ### Using our Docker images
 
 We also provide pre-built Docker images for x86_64 and armhf. These images will be automatically updated whenever
