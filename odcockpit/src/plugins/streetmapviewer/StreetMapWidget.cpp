@@ -130,19 +130,21 @@ namespace cockpit {
             }
 
             void StreetMapWidget::nextContainer(Container &c) {
+                const double EPSILON = 1e-4;
                 static WGS84Coordinate old = m_referenceLocation;
-                if (c.getDataType() == Container::USER_DATA_0) {
+                if (c.getDataType() == Container::WGS84COORDINATE) {
                     WGS84Coordinate w = c.getData<WGS84Coordinate>();
                     const double deltaLat = fabs(old.getLatitude() - w.getLatitude());
                     const double deltaLon = fabs(old.getLongitude() - w.getLongitude());
 
-                    if ( (deltaLat > 1e-4) || (deltaLon > 1e-4) ) {
-                        cout << "[StreetMapWidget]: " << w.getLatitude() << " " << w.getLongitude() << endl;
-                        old = w;
+                    if ( (deltaLat > EPSILON) || (deltaLon > EPSILON) ) {
                         m_mapWidget->setMapCenter(w);
+                        old = w;
                     }
                 }
-//                m_mapWidget->nextContainer(c);
+                else {
+                    m_mapWidget->nextContainer(c);
+                }
             }
         }
     }

@@ -57,6 +57,8 @@ class SerializableData;
                     POSITION                     = 15,
                     COMPRESSED_IMAGE             = 16,
 
+                    WGS84COORDINATE              = 19,
+
                     CONTOUREDOBJECT              = 30,
                     CONTOUREDOBJECTS             = 31,
                     EGOSTATE                     = 32,
