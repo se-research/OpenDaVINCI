@@ -40,6 +40,7 @@
 #include "plugins/scnxviewer/SCNXViewerPlugIn.h"
 #include "plugins/sharedimageviewer/SharedImageViewerPlugIn.h"
 #include "plugins/spy/SpyPlugIn.h"
+#include "plugins/streetmapviewer/StreetMapPlugIn.h"
 
 namespace core { namespace base { class DataStoreManager; } }
 namespace core { namespace io { namespace conference { class ContainerConference; } } }
@@ -80,6 +81,7 @@ class PlugIn;
             m_listOfAvailablePlugIns.push_back("Player");
             m_listOfAvailablePlugIns.push_back("SharedImageViewer");
             m_listOfAvailablePlugIns.push_back("Spy");
+            m_listOfAvailablePlugIns.push_back("StreetMap");
 
             m_listOfDescriptions["ConfigurationViewer"] = tr("This plugin displays the current configuration.").toStdString();
             m_listOfDescriptions["Controller"] = tr("This plugin allows the control of the vehicle by the arrow keys.").toStdString();
@@ -94,6 +96,7 @@ class PlugIn;
             m_listOfDescriptions["Player"] = tr("This plugin replays previously recorded files.").toStdString();
             m_listOfDescriptions["SharedImageViewer"] = tr("This plugin displays shared images.").toStdString();
             m_listOfDescriptions["Spy"] = tr("This plugin displays all distributed containers.").toStdString();
+            m_listOfDescriptions["StreetMap"] = tr("This plugin visualizes the environment data using a map tile provider.").toStdString();
         }
 
         PlugInProvider::~PlugInProvider() {
@@ -168,6 +171,9 @@ class PlugIn;
             } else if (name == "Spy") {
                 cerr << "Creating Spy" << endl;
                 plugIn = core::SharedPointer<PlugIn>(new spy::SpyPlugIn("Spy", m_kvc, m_parent));
+            } else if (name == "StreetMap") {
+                cerr << "Creating StreetMap" << endl;
+                plugIn = core::SharedPointer<PlugIn>(new streetmap::StreetMapPlugIn("StreetMap", m_kvc, m_parent));
             }
 
             return plugIn;
