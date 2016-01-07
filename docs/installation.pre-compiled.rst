@@ -25,6 +25,26 @@ Adding OpenDaVINCI to your Ubuntu 14.04 Linux distribution
     $ sudo apt-get install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
 
 
+Adding OpenDaVINCI to your Ubuntu 15.04 Linux distribution
+----------------------------------------------------
+
+1. Add the public key from our repository::
+
+    $ wget -O - -q http://opendavinci.cse.chalmers.se/opendavinci.cse.chalmers.se.gpg.key | sudo apt-key add -
+
+2. Add our repository itself to your sources.list::
+
+    $ sudo sh -c 'echo "deb http://opendavinci.cse.chalmers.se/ubuntu/ vivid main" >> /etc/apt/sources.list'
+
+3. Update your package database::
+
+    $ sudo apt-get update
+
+4. Install OpenDaVINCI::
+
+    $ sudo apt-get install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
+
+
 Adding OpenDaVINCI to your Debian 8 Linux distribution
 ----------------------------------------------------
 
@@ -45,6 +65,22 @@ Adding OpenDaVINCI to your Debian 8 Linux distribution
     $ sudo apt-get install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
 
 
+Adding OpenDaVINCI to your CentOS 7 Linux distribution
+----------------------------------------------------
+
+1. Add our repository::
+
+    $ cd /etc/yum.repos.d && sudo wget http://opendavinci.cse.chalmers.se/OpenDaVINCI-x86_64.repo
+
+2. Update your package database::
+
+   $ sudo yum -y update
+
+3. Install OpenDaVINCI::
+
+   $ sudo yum install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
+
+
 Adding OpenDaVINCI to your Fedora 21 Linux distribution
 ----------------------------------------------------
 
@@ -59,6 +95,22 @@ Adding OpenDaVINCI to your Fedora 21 Linux distribution
 3. Install OpenDaVINCI::
 
    $ sudo yum install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
+
+
+Adding OpenDaVINCI to your Fedora 22 Linux distribution
+----------------------------------------------------
+
+1. Add our repository::
+
+    $ cd /etc/yum.repos.d && sudo wget http://opendavinci.cse.chalmers.se/OpenDaVINCI-x86_64.repo
+
+2. Update your package database::
+
+   $ sudo dnf -y upgrade
+
+3. Install OpenDaVINCI::
+
+   $ sudo dnf install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
    
    
 Adding OpenDaVINCI to your openSuSE 13 Linux distribution
