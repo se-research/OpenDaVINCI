@@ -15,7 +15,7 @@ Install the required development packages for libodsimulation sources::
 
     $ sudo yum install freeglut qt4 boost boost-devel qt4-devel freeglut-devel opencv-devel qwt5-qt4-devel
     
-Add two missing symbolic links:
+Add two missing symbolic links::
 
     $ sudo ln -sf /usr/include/qwt5-qt4 /usr/include/qwt-qt4
     $ sudo ln -sf /usr/lib64/libqwt5-qt4.so /usr/lib64/libqwt-qt4.so
@@ -24,7 +24,7 @@ Add two missing symbolic links:
 
     $sudo yum install libusb-devel
     
-Install the required development packages for the DataStructureGenerator sources:
+Install the required development packages for the DataStructureGenerator sources::
 
     $ sudo yum install java-1.7.0-openjdk ant
     

@@ -21,7 +21,7 @@ Install development packages for DataStructureGenerator sources::
     # cd /usr/local/bin && ln -sf /usr/local/jdk-1.7.0/bin/java java
     # cd /usr/local/bin && ln -sf /usr/local/jdk-1.7.0/bin/javac javac
   
-Add a symbolic link to python as root user:
+Add a symbolic link to python as root user::
 
     # ln -sf /usr/local/bin/python2.7 /usr/bin/python
 

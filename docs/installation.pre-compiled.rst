@@ -90,7 +90,7 @@ Adding OpenDaVINCI to your Fedora 21 Linux distribution
 
 2. Update your package database::
 
-   $ sudo yum -y update
+    $ sudo yum -y update
 
 3. Install OpenDaVINCI::
 
@@ -126,7 +126,7 @@ Adding OpenDaVINCI to your openSuSE 13 Linux distribution
 
 3. Install OpenDaVINCI::
 
-   $ sudo zypper install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
+    $ sudo zypper install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
 
 
 Using our Docker images

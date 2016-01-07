@@ -26,7 +26,7 @@ Add two missing symbolic links::
 
     $ sudo urpmi libusb1.0-devel
     
-Install the required development packages for the DataStructureGenerator sources:
+Install the required development packages for the DataStructureGenerator sources::
 
     $sudo urpmi java-1.7.0-openjdk-devel ant ant-junit
     
