@@ -59,7 +59,7 @@ FIND_PACKAGE (odSimulation REQUIRED)
 
 ###########################################################################
 # Find Qt.
-FIND_PACKAGE(Qt4 4.0.0 REQUIRED QtCore QtGui QtOpenGL)
+FIND_PACKAGE(Qt4 4.0.0 REQUIRED QtCore QtGui QtOpenGL QtNetwork)
 INCLUDE (${QT_USE_FILE})
 
 ###########################################################################
