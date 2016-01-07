@@ -185,6 +185,8 @@ namespace core {
                     return "Position";
                 case COMPRESSED_IMAGE:
                     return "CompressedImage";
+                case WGS84COORDINATE:
+                    return "WGS84Coordinate";
                 case CONTOUREDOBJECT:
                     return "ContouredObject";
                 case CONTOUREDOBJECTS:
