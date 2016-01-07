@@ -25,8 +25,9 @@ Install the compiler::
     # pkg_add -v -i python # (choose version 2.7)
     # pkg_add -v -i cmake
     # pkg_add -v -i git
-    # pkg_add -v -i gcc # (should be installed automatically via comp58.tgz)
-  
+    # pkg_add -v -i gcc-4.9.3p0
+    # pkg_add -v -i g++-4.9.3p0
+
 Install the Java::
 
     # pkg_add -v -i apache-ant
@@ -51,7 +52,7 @@ Change to your source folder and create a build directory::
 
 Use cmake to create the build scripts for your build folder::
 
-    $ cd build && cmake -D CMAKE_INSTALL_PREFIX=/usr/local ..
+    $ cd build && export CC=egcc && export CXX=eg++ && cmake -D CMAKE_INSTALL_PREFIX=/usr/local ..
 
 Build, run the tests, and install the OpenDaVINCI::
 
