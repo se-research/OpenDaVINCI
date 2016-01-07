@@ -23,7 +23,17 @@
 #endif
 
 #include <GL/gl.h>
+#include <string>
+#include <vector>
 
+#include "core/opendavinci.h"
+#include "hesperia/data/environment/Point3.h"
+#include "hesperia/threeD/Material.h"
+#include "hesperia/threeD/Node.h"
+#include "hesperia/threeD/NodeDescriptor.h"
+#include "hesperia/threeD/NodeRenderingConfiguration.h"
+#include "hesperia/threeD/RenderingConfiguration.h"
+#include "hesperia/threeD/models/Triangle.h"
 #include "hesperia/threeD/models/TriangleSet.h"
 
 namespace hesperia {

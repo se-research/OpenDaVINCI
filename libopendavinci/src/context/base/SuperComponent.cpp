@@ -20,12 +20,16 @@
 #include <iostream>
 #include <sstream>
 
-#include "core/macros.h"
-#include "core/base/Lock.h"
-#include "core/io/conference/ContainerConferenceFactory.h"
 #include "context/base/SuperComponent.h"
-
-#include "GeneratedHeaders_CoreData.h"
+#include "core/base/Lock.h"
+#include "core/data/Container.h"
+#include "core/dmcp/connection/ModuleConnection.h"
+#include "core/dmcp/connection/Server.h"
+#include "core/dmcp/discoverer/Server.h"
+#include "core/io/conference/ContainerConferenceFactory.h"
+#include "generated/coredata/dmcp/Constants.h"
+#include "generated/coredata/dmcp/ModuleDescriptor.h"
+#include "generated/coredata/dmcp/ServerInformation.h"
 
 namespace context {
     namespace base {

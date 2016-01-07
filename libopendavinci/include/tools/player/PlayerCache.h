@@ -20,17 +20,19 @@
 #ifndef OPENDAVINCI_TOOLS_PLAYER_PLAYERCACHE_H_
 #define OPENDAVINCI_TOOLS_PLAYER_PLAYERCACHE_H_
 
-#include <deque>
-#include <iostream>
+#include <iosfwd>
 #include <map>
+#include <string>
 
+#include "core/opendavinci.h"
 #include "core/SharedPointer.h"
-#include "core/base/Mutex.h"
 #include "core/base/FIFOQueue.h"
 #include "core/base/LIFOQueue.h"
+#include "core/base/Mutex.h"
 #include "core/base/Service.h"
 #include "core/data/Container.h"
-#include "core/wrapper/SharedMemory.h"
+
+namespace core { namespace wrapper { class SharedMemory; } }
 
 namespace tools {
     namespace player {

@@ -20,15 +20,15 @@
 #ifndef CORE_FIELDTESTSUITE_H_
 #define CORE_FIELDTESTSUITE_H_
 
-#include <cmath>
+#include <cmath>                        // for fabs
 
-#include "cxxtest/TestSuite.h"
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/data/TimeStamp.h"
-#include "core/reflection/Field.h"
-#include "core/strings/StringToolbox.h"
-
-#include "GeneratedHeaders_CoreData.h"
+#include "core/opendavinci.h"
+#include "core/data/TimeStamp.h"        // for TimeStamp
+#include "core/reflection/Field.h"      // for Field
+#include "core/strings/StringToolbox.h"  // for StringToolbox
+#include "generated/coredata/reflection/AbstractField.h"
 
 using namespace std;
 using namespace core::data;

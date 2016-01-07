@@ -17,10 +17,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <iostream>
+
 #include "core/base/ROSDeserializerVisitor.h"
+#include "core/opendavinci.h"
 
 namespace core {
     namespace base {
+
+class Serializable;
 
         ROSDeserializerVisitor::ROSDeserializerVisitor() :
             m_messageId(0),

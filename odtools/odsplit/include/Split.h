@@ -22,7 +22,7 @@
 
 #include <string>
 
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "core/opendavinci.h"
 
 namespace odsplit {
 
@@ -31,7 +31,7 @@ namespace odsplit {
     /**
      * This class can be used to split recorded data.
      */
-    class Split : public core::base::module::TimeTriggeredConferenceClientModule {
+    class Split {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -55,26 +55,27 @@ namespace odsplit {
         public:
             /**
              * Constructor.
-             *
-             * @param argc Number of command line arguments.
-             * @param argv Command line arguments.
              */
-            Split(const int32_t &argc, char **argv);
+            Split();
 
             virtual ~Split();
 
-            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+            /**
+             * This method splits a specified file.
+             *
+             * @param argc Number of command line arguments.
+             * @param argv Command line arguments.
+             * @return 0 if the split is successful, 1 if the end is not behind the start.
+             */
+            int32_t run(const int32_t &argc, char **argv);
 
         private:
-            virtual void setUp();
-
-            virtual void tearDown();
-
             void parseAdditionalCommandLineParameters(const int &argc, char **argv);
 
         private:
             string m_source;
             string m_range;
+            int32_t m_memorySegmentSize;
     };
 
 } // odsplit

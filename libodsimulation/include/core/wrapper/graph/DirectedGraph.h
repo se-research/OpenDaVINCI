@@ -24,18 +24,17 @@
 #include <string>
 #include <vector>
 
-// native.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/native.h"
-
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/adjacency_list.hpp>
 
-#include "core/wrapper/graph/Edge.h"
-#include "core/wrapper/graph/Vertex.h"
+#include "core/opendavinci.h"
 
 namespace core {
     namespace wrapper {
         namespace graph {
+
+class Edge;
+class Vertex;
 
             using namespace std;
 
@@ -102,6 +101,13 @@ namespace core {
                      * @return Human readable representation of all edges.
                      */
                     const string toString() const;
+
+                    /**
+                     * This method returns a representation of all edges in Graphviz's dot format.
+                     *
+                     * @return Graphviz dot representation of all edges.
+                     */
+                    const string toGraphizDot() const;
 
                     /**
                      * This method returns the shortest path between two given vertices.

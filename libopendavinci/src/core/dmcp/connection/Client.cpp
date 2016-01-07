@@ -17,16 +17,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/base/module/AbstractCIDModule.h"
+#include <iostream>
+#include <string>
+
 #include "core/base/KeyValueConfiguration.h"
 #include "core/base/Lock.h"
-#include "core/base/Thread.h"
+#include "core/base/module/AbstractCIDModule.h"
 #include "core/data/Container.h"
-#include "core/data/TimeStamp.h"
+#include "core/dmcp/SuperComponentStateListener.h"
 #include "core/dmcp/connection/Client.h"
 #include "core/exceptions/Exceptions.h"
-
-#include "GeneratedHeaders_CoreData.h"
+#include "core/opendavinci.h"
+#include "generated/coredata/Configuration.h"
+#include "generated/coredata/dmcp/Constants.h"
+#include "generated/coredata/dmcp/PulseAckContainersMessage.h"
+#include "generated/coredata/dmcp/PulseAckMessage.h"
 
 namespace core {
     namespace dmcp {

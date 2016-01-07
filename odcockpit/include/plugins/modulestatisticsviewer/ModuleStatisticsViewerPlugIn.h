@@ -21,14 +21,18 @@
 #ifndef COCKPIT_PLUGINS_MODULESTATISTICSVIEWER_MODULESTATISTICSVIEWERPLUGIN_H_
 #define COCKPIT_PLUGINS_MODULESTATISTICSVIEWER_MODULESTATISTICSVIEWERPLUGIN_H_
 
-#include "core/base/KeyValueConfiguration.h"
+#include <string>
 
 #include "plugins/PlugIn.h"
-#include "plugins/modulestatisticsviewer/ModuleStatisticsViewerWidget.h"
+
+class QWidget;
+namespace core { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
     namespace plugins {
         namespace modulestatisticsviewer {
+
+class ModuleStatisticsViewerWidget;
 
             using namespace std;
 

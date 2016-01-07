@@ -18,21 +18,42 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
+#include <Qt/qgridlayout.h>
+#include <Qt/qtreewidget.h>
+#include <qstring.h>
+#include <qstringlist.h>
 
-#include <sstream>
 #include <cstring>
+#include <sstream>
 
+<<<<<<< HEAD
 #include "hesperia/data/environment/Position.h"
 #include "hesperia/data/environment/EgoState.h"
+=======
+#include "core/base/Serializable.h"
+>>>>>>> master
 #include "core/data/TimeStamp.h"
-
-#include "GeneratedHeaders_CoreData.h"
-#include "GeneratedHeaders_AutomotiveData.h"
-
+#include "core/opendavinci.h"
+#include "generated/automotive/ForceControl.h"
+#include "generated/automotive/GenericCANMessage.h"
+#include "generated/automotive/VehicleData.h"
+#include "generated/automotive/miniature/UserButtonData.h"
+#include "generated/automotive/vehicle/WheelSpeed.h"
+#include "generated/coredata/Configuration.h"
+#include "generated/coredata/SharedData.h"
+#include "generated/coredata/dmcp/DiscoverMessage.h"
+#include "generated/coredata/dmcp/ModuleDescriptor.h"
+#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "generated/coredata/dmcp/ModuleStateMessage.h"
+#include "generated/coredata/dmcp/ModuleStatistics.h"
+#include "generated/coredata/dmcp/RuntimeStatistic.h"
+#include "generated/coredata/image/SharedImage.h"
+#include "generated/coredata/player/PlayerCommand.h"
+#include "generated/coredata/recorder/RecorderCommand.h"
+#include "hesperia/data/environment/Position.h"
 #include "plugins/spy/SpyWidget.h"
+
+namespace cockpit { namespace plugins { class PlugIn; } }
 
 namespace cockpit {
 

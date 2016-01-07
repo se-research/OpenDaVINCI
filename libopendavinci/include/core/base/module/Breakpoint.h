@@ -20,14 +20,11 @@
 #ifndef OPENDAVINCI_CORE_BASE_MODULE_BREAKPOINT_H_
 #define OPENDAVINCI_CORE_BASE_MODULE_BREAKPOINT_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include "core/opendavinci.h"
 
 namespace core {
     namespace base {
         namespace module {
-
-            using namespace std;
 
             /**
              * This interface encapsulates a breakpoint to interrupt the main application

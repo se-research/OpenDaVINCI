@@ -20,16 +20,17 @@
 #ifndef OPENDAVINCI_CORE_IO_UDP_UDPFACTORY_H_
 #define OPENDAVINCI_CORE_IO_UDP_UDPFACTORY_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <string>
 
+#include "core/opendavinci.h"
 #include "core/SharedPointer.h"
-#include "core/io/udp/UDPSender.h"
-#include "core/io/udp/UDPReceiver.h"
 
 namespace core {
     namespace io {
         namespace udp {
+
+class UDPReceiver;
+class UDPSender;
 
             using namespace std;
 

@@ -17,12 +17,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <algorithm>
+#include <fcntl.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
+#include <sys/stat.h>
 
+#include <algorithm>
 #include <cerrno>
 #include <climits>
 #include <cstring>
+#include <iostream>
 
+#include "core/opendavinci.h"
 #include "core/base/module/AbstractCIDModule.h"
 #include "core/wrapper/POSIX/POSIXSharedMemory.h"
 

@@ -20,10 +20,14 @@
 #ifndef PLUGINS_BIRDSEYEMAP_BIRDSEYEMAPRENDERER_H_
 #define PLUGINS_BIRDSEYEMAP_BIRDSEYEMAPRENDERER_H_
 
+#include "core/opendavinci.h"
 #include "hesperia/scenegraph/renderer/AbstractRenderer.h"
-#include "hesperia/scenegraph/renderer/RenderingConfiguration.h"
 
-#include "QtIncludes.h"
+class QPainter;
+namespace hesperia { namespace scenegraph { namespace primitives { class Line; } } }
+namespace hesperia { namespace scenegraph { namespace primitives { class Point; } } }
+namespace hesperia { namespace scenegraph { namespace primitives { class Polygon; } } }
+namespace hesperia { namespace scenegraph { namespace renderer { class RenderingConfiguration; } } }
 
 namespace cockpit {
     namespace plugins {

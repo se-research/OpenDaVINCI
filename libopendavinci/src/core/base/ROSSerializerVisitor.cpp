@@ -17,10 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <iostream>
+
 #include "core/base/ROSSerializerVisitor.h"
 
 namespace core {
     namespace base {
+
+class Serializable;
 
         ROSSerializerVisitor::ROSSerializerVisitor() :
             m_messageId(0),

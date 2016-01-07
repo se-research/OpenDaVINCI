@@ -20,14 +20,15 @@
 #ifndef OPENDAVINCI_CORE_BASE_SERVICE_H_
 #define OPENDAVINCI_CORE_BASE_SERVICE_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <memory>
 
+#include "core/opendavinci.h"
 #include "core/base/Condition.h"
 #include "core/base/Mutex.h"
 #include "core/exceptions/Exceptions.h"
 #include "core/wrapper/Runnable.h"
-#include "core/wrapper/Thread.h"
+
+namespace core { namespace wrapper { class Thread; } }
 
 namespace core {
     namespace base {

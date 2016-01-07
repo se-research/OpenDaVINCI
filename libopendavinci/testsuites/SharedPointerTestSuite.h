@@ -20,12 +20,13 @@
 #ifndef CORE_SHAREDPOINTERTESTSUITE_H_
 #define CORE_SHAREDPOINTERTESTSUITE_H_
 
-#include "cxxtest/TestSuite.h"
+#include <iostream>                     // for clog, endl, ostream, etc
+#include <vector>                       // for vector, vector<>::iterator
 
-#include <iostream>
-#include <vector>
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/SharedPointer.h"
+#include "core/opendavinci.h"
+#include "core/SharedPointer.h"         // for SharedPointer
 
 using namespace std;
 

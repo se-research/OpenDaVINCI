@@ -21,15 +21,12 @@
 #ifndef CONFIGURATIONVIEWERWIDGET_H_
 #define CONFIGURATIONVIEWERWIDGET_H_
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
+#include <qobjectdefs.h>
+#include <qwidget.h>
 
-#include "core/base/KeyValueConfiguration.h"
-
-#include "QtIncludes.h"
-
-#include "plugins/PlugIn.h"
+class QTextEdit;
+namespace cockpit { namespace plugins { class PlugIn; } }
+namespace core { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
 

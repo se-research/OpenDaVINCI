@@ -20,13 +20,13 @@
 #ifndef CORE_SERVICETESTSUITE_H_
 #define CORE_SERVICETESTSUITE_H_
 
-#include "cxxtest/TestSuite.h"
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include <iostream>
-
-#include "core/base/Condition.h"
-#include "core/base/Lock.h"
-#include "core/base/Service.h"
+#include "core/opendavinci.h"
+#include "core/base/Condition.h"        // for Condition
+#include "core/base/Lock.h"             // for Lock
+#include "core/base/Mutex.h"            // for Mutex
+#include "core/base/Service.h"          // for Service
 #include "core/base/Thread.h"
 
 using namespace std;

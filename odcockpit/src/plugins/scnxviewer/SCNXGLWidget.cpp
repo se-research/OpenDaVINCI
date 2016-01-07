@@ -18,21 +18,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "core/macros.h"
+#include <GL/gl.h>
+
+#include <iostream>
+
+#include "core/opendavinci.h"
 #include "core/base/Lock.h"
 #include "core/base/Thread.h"
 #include "core/io/URL.h"
 #include "core/wrapper/DisposalService.h"
-#include "hesperia/scenario/SCNXArchive.h"
 #include "hesperia/scenario/SCNXArchiveFactory.h"
 #include "hesperia/threeD/Node.h"
 #include "hesperia/threeD/NodeDescriptor.h"
+#include "hesperia/threeD/RenderingConfiguration.h"
 #include "hesperia/threeD/TransformGroup.h"
 #include "hesperia/threeD/decorator/DecoratorFactory.h"
 #include "hesperia/threeD/models/Grid.h"
 #include "hesperia/threeD/models/XYZAxes.h"
-
 #include "plugins/scnxviewer/SCNXGLWidget.h"
+
+class QWidget;
+namespace cockpit { namespace plugins { class PlugIn; } }
+namespace hesperia { namespace scenario { class SCNXArchive; } }
 
 namespace cockpit {
     namespace plugins {

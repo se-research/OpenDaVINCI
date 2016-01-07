@@ -20,15 +20,17 @@
 #ifndef OPENDAVINCI_CORE_IO_CONFERENCE_UDPMULTICASTCONTAINERCONFERENCE_H_
 #define OPENDAVINCI_CORE_IO_CONFERENCE_UDPMULTICASTCONTAINERCONFERENCE_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <string>
 
+#include "core/opendavinci.h"
 #include "core/SharedPointer.h"
 #include "core/exceptions/Exceptions.h"
-#include "core/io/conference/ContainerConference.h"
 #include "core/io/StringListener.h"
-#include "core/io/udp/UDPSender.h"
+#include "core/io/conference/ContainerConference.h"
 #include "core/io/udp/UDPReceiver.h"
+#include "core/io/udp/UDPSender.h"
+
+namespace core { namespace data { class Container; } }
 
 namespace core {
     namespace io {

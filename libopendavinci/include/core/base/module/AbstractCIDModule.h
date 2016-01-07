@@ -20,9 +20,9 @@
 #ifndef OPENDAVINCI_CORE_BASE_MODULE_ABSTRACTCIDMODULE_H_
 #define OPENDAVINCI_CORE_BASE_MODULE_ABSTRACTCIDMODULE_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <string>
 
+#include "core/opendavinci.h"
 #include "core/base/module/InterruptibleModule.h"
 #include "core/base/module/Periodic.h"
 #include "core/exceptions/Exceptions.h"

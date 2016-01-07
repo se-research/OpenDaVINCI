@@ -18,11 +18,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
-
+#include "core/opendavinci.h"
+#include "ContainerObserver.h"
 #include "plugins/controller/ControllerPlugIn.h"
+#include "plugins/controller/ControllerWidget.h"
+
+class QWidget;
+namespace cockpit { class ContainerObserver; }
+namespace core { namespace base { class KeyValueConfiguration; } }
+namespace core { namespace io { namespace conference { class ContainerConference; } } }
 
 namespace cockpit {
 

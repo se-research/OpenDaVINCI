@@ -24,6 +24,7 @@
 
 #include <opencv/cv.h>
 
+#include "core/opendavinci.h"
 #include "core/wrapper/Image.h"
 
 namespace core {
@@ -32,8 +33,6 @@ namespace core {
 
             using namespace std;
 
-            // Forward declaration to prevent circular dependencies.
-            class OpenCVImageFactory;
 
             /**
              * This class implements an abstract object containing

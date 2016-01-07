@@ -17,10 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include "core/base/AbstractDataStore.h"
 #include "core/base/Lock.h"
-#include "core/wrapper/KeyValueDatabaseFactory.h"
-
 #include "core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "core/wrapper/KeyValueDatabase.h"
+#include "core/wrapper/KeyValueDatabaseFactory.h"
 
 namespace core {
     namespace base {

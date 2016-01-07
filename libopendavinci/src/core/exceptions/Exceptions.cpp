@@ -17,6 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <cerrno>
+#include <cstdlib>
+#include <cstring>
+#include <sstream>
+
 #include "core/exceptions/Exceptions.h"
 
 namespace core {

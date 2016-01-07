@@ -17,10 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include "core/wrapper/Condition.h"
 #include "core/wrapper/ConditionFactory.h"
-#include "core/wrapper/Libraries.h"
 #include "core/wrapper/ConfigurationTraits.h"
-#include "core/wrapper/ConditionFactoryWorker.h"
+#include "core/wrapper/Libraries.h"
 #include "core/wrapper/SystemLibraryProducts.h"
 
 #ifdef WIN32

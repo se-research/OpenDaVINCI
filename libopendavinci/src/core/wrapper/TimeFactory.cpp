@@ -17,7 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include "core/wrapper/Mutex.h"
 #include "core/wrapper/MutexFactory.h"
+#include "core/wrapper/Time.h"
 #include "core/wrapper/TimeFactory.h"
 
 namespace core {

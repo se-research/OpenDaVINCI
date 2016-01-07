@@ -95,6 +95,30 @@ class CanMapperTest : public CxxTest::TestSuite {
             TS_ASSERT(dt != NULL);
         }
 
+        void testWheelSpeed() {
+            automotive::vehicle::WheelSpeed wheelSpeed;
+            wheelSpeed.setFrontLeft(1.2);
+            wheelSpeed.setFrontRight(2.2);
+            wheelSpeed.setRearLeft(3.2);
+            wheelSpeed.setRearRight(4.2);
+
+            stringstream sstr;
+            sstr << wheelSpeed;
+
+            automotive::vehicle::WheelSpeed wheelSpeed2;
+            sstr >> wheelSpeed2;
+
+            TS_ASSERT_DELTA(wheelSpeed.getFrontLeft(), wheelSpeed2.getFrontLeft(), 1e-3);
+            TS_ASSERT_DELTA(wheelSpeed.getFrontRight(), wheelSpeed2.getFrontRight(), 1e-3);
+            TS_ASSERT_DELTA(wheelSpeed.getRearLeft(), wheelSpeed2.getRearLeft(), 1e-3);
+            TS_ASSERT_DELTA(wheelSpeed.getRearRight(), wheelSpeed2.getRearRight(), 1e-3);
+
+            TS_ASSERT_DELTA(wheelSpeed2.getFrontLeft(), 1.2, 1e-3);
+            TS_ASSERT_DELTA(wheelSpeed2.getFrontRight(), 2.2, 1e-3);
+            TS_ASSERT_DELTA(wheelSpeed2.getRearLeft(), 3.2, 1e-3);
+            TS_ASSERT_DELTA(wheelSpeed2.getRearRight(), 4.2, 1e-3);
+        }
+
         void testMessageToWheelSpeed() {
             Message message;
 

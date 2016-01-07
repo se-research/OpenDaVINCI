@@ -23,7 +23,7 @@
 
 #include <vector>
 
-#include "hesperia/threeD/NodeDescriptor.h"
+namespace hesperia { namespace threeD { class NodeDescriptor; } }
 
 namespace cockpit {
     namespace plugins {

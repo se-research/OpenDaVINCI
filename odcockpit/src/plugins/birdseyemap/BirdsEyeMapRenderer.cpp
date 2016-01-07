@@ -17,12 +17,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <vector>
+#include <Qt/qpainter.h>
+#include <Qt/qpen.h>
 
-#include "hesperia/data/environment/Point3.h"
+#include "core/opendavinci.h"
+#include "hesperia/scenegraph/renderer/RenderingConfiguration.h"
 #include "hesperia/scenegraph/renderer/SceneNodeRenderingConfiguration.h"
-
+#include "hesperia/scenegraph/primitives/Line.h"
+#include "hesperia/scenegraph/primitives/Point.h"
+#include "hesperia/scenegraph/primitives/Polygon.h"
 #include "plugins/birdseyemap/BirdsEyeMapRenderer.h"
+
+class QPainter;
 
 namespace cockpit {
     namespace plugins {

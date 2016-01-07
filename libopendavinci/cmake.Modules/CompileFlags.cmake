@@ -24,7 +24,7 @@ IF(UNIX)
         SET(CMAKE_MACOSX_RPATH 1)
     ENDIF()
 
-    SET (CXX_OPTIONS        "-std=c++98 -Wno-deprecated -Wall -Werror -Wshadow -Wextra -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wpacked")
+    SET (CXX_OPTIONS        "-std=c++11 -Wno-deprecated -Wall -Werror -Wshadow -Wextra -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wpacked")
     SET (CXX_OPTION_ANSI    "-ansi")
     SET (CXX_EFFECTIVE_CXX  "-Wmissing-format-attribute -Wredundant-decls -Wno-error=effc++ -Weffc++")
     
@@ -37,7 +37,8 @@ IF(UNIX)
     IF(    (NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin") 
        AND (NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD")
        AND (NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "NetBSD")
-       AND (NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "DragonFly") )
+       AND (NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "DragonFly")
+       AND (NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang") )
         SET (CXX_OPTIONS "${CXX_OPTIONS} ${CXX_OPTION_ANSI}")
     ENDIF()
 

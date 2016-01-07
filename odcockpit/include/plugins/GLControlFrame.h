@@ -21,12 +21,15 @@
 #ifndef COCKPIT_GLCONTROLFRAME_H_
 #define COCKPIT_GLCONTROLFRAME_H_
 
-#include "QtIncludes.h"
+#include <qobjectdefs.h>
+#include <qwidget.h>
 
-#include "plugins/AbstractGLWidget.h"
+class QwtWheel;
 
 namespace cockpit {
     namespace plugins {
+
+class AbstractGLWidget;
 
         class GLControlFrame: public QWidget {
 

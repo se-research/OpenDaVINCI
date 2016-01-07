@@ -20,13 +20,10 @@
 #ifndef CONTEXT_CLOCKTESTSUITE_H_
 #define CONTEXT_CLOCKTESTSUITE_H_
 
-#include "cxxtest/TestSuite.h"
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include <iostream>
-
-#include "core/macros.h"
-#include "context/base/Clock.h"
-#include "context/base/ControlledTime.h"
+#include "context/base/Clock.h"         // for Clock
+#include "context/base/ControlledTime.h"  // for ControlledTime
 
 using namespace std;
 using namespace context::base;

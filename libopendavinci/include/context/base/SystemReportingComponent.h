@@ -20,10 +20,10 @@
 #ifndef CONTEXT_BASE_SYSTEMREPORTINGCOMPONENT_H_
 #define CONTEXT_BASE_SYSTEMREPORTINGCOMPONENT_H_
 
-// native.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/native.h"
+#include "core/opendavinci.h"
 #include "context/base/SystemContextComponent.h"
-#include "core/wrapper/Time.h"
+
+namespace core { namespace wrapper { class Time; } }
 
 namespace context {
     namespace base {

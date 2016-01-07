@@ -20,14 +20,18 @@
 #ifndef CORE_SHAREDMEMORYTESTSUITE_H_
 #define CORE_SHAREDMEMORYTESTSUITE_H_
 
-#include "cxxtest/TestSuite.h"
+#include <iosfwd>                       // for stringstream, istream, etc
+#include <string>                       // for operator==, basic_string
 
-#include "core/base/Lock.h"
-#include "core/SharedPointer.h"
-//#include "core/data/SharedData.h" included by GeneratedHeaders_CoreData.h
-#include "GeneratedHeaders_CoreData.h"
-#include "core/wrapper/SharedMemory.h"
-#include "core/wrapper/SharedMemoryFactory.h"
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
+
+#include "core/opendavinci.h"
+#include "core/SharedPointer.h"         // for SharedPointer
+#include "core/base/Lock.h"             // for Lock
+#include "core/base/Serializable.h"     // for operator<<, operator>>
+#include "core/wrapper/SharedMemory.h"  // for SharedMemory
+#include "core/wrapper/SharedMemoryFactory.h"  // for SharedMemoryFactory
+#include "generated/coredata/SharedData.h"  // for SharedData
 
 using namespace std;
 

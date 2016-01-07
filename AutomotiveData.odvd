@@ -130,13 +130,37 @@ message automotive.carolocup.Sensors [id = 87] {
     uint32 wheelRearLeft [id = 8];
     uint32 wheelRearRight [id = 9];
     uint32 buttonState [id = 10];
+    uint32 lightReading [id = 11];
 }
 
 message automotive.carolocup.Control [id = 88] {
     uint32 steering [id = 1];
-    uint32 acceleration [id = 2];
+    uint32 speed [id = 2];
     uint32 lights [id = 3]; // 0 = no lights, 1 = brake lights, 2 = blinking left, 4 = blinking right, 8 = emergency light
     uint32 gyroTrigger [id = 4];
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Feature extraction messages.
+message fxe.KeyPoint [id = 301] {
+    cartesian.Point2 pt [id = 1];
+    float size [id = 2];
+}
+
+message fxe.Noise [id = 302] {
+    list<fxe.KeyPoint> noisePerFrame [id =1];
+}
+
+message fxe.Recording [id = 303] {
+    string filename [id = 1];
+    uint32 startFrame [id = 2];
+    uint32 endFrame [id = 3];
+    list<fxe.Noise> noises [id = 4];
+}
+
+message fxe.Correspondence [id = 304] {
+    fxe.Recording simulation [id = 1];
+    list<fxe.Recording> realRecordings [id = 2];
 }
 
 ///////////////////////////////////////////////////////////////////////////////

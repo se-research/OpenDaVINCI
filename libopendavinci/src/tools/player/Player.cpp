@@ -17,16 +17,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <cmath>
+#include <cstdlib>
+#include <cstring>
+#include <iostream>
+#include <string>
 
-#include "core/base/module/AbstractCIDModule.h"
-#include "core/macros.h"
-#include "core/data/Container.h"
-#include "core/io/StreamFactory.h"
+#include "core/opendavinci.h"
+#include "core/base/Lock.h"
 #include "core/base/Thread.h"
+#include "core/base/module/AbstractCIDModule.h"
+#include "core/data/Container.h"
+#include "core/data/image/CompressedImage.h"
+#include "core/io/StreamFactory.h"
 #include "core/io/URL.h"
+#include "core/wrapper/SharedMemoryFactory.h"
+#include "core/wrapper/jpg/JPG.h"
+
+#include "GeneratedHeaders_CoreData.h"
 
 #include "tools/player/Player.h"
+#include "tools/player/PlayerCache.h"
 
 namespace tools {
     namespace player {
@@ -47,7 +57,8 @@ namespace tools {
             m_successorProcessed(true),
             m_seekToTheBeginning(true),
             m_noMoreData(false),
-            m_delay(0) {
+            m_delay(0),
+            m_mapOfSharedMemoriesForCompressedImages() {
 
             // Get the stream using the StreamFactory with the given URL.
             m_inFile = StreamFactory::getInstance().getInputStream(url);
@@ -81,6 +92,9 @@ namespace tools {
             if ( (m_playerCache.get() != NULL) && (m_threading) ) {
                 m_playerCache->stop();
             }
+
+            // Clear shared memories created for compressed images.
+            m_mapOfSharedMemoriesForCompressedImages.clear();
         }
 
         Container Player::getNextContainerToBeSent() {
@@ -146,8 +160,58 @@ namespace tools {
                 m_playerCache->copyMemoryToSharedMemory(m_actual);
             }
 
-            // Return the m_actual container as retVal;
+            // Return the m_actual container as retVal in the case of a
+            // non-compressed image container as compressed images will
+            // be replaced by shared images below.
             retVal = m_actual;
+
+            // If the actual container is a COMPRESSED_IMAGE then decode it and replace the container with a shared image before sending the actual container.
+            if (m_actual.getDataType() == Container::COMPRESSED_IMAGE) {
+                core::data::image::CompressedImage ci = m_actual.getData<core::data::image::CompressedImage>();
+
+                // Check, whether a shared memory was already created for this compressed image; otherwise, create it and save it for later.
+                map<string, core::SharedPointer<core::wrapper::SharedMemory> >::iterator it = m_mapOfSharedMemoriesForCompressedImages.find(ci.getName());
+                if (it == m_mapOfSharedMemoriesForCompressedImages.end()) {
+                    core::SharedPointer<core::wrapper::SharedMemory> sp = core::wrapper::SharedMemoryFactory::createSharedMemory(ci.getName(), ci.getSize());
+                    m_mapOfSharedMemoriesForCompressedImages[ci.getName()] = sp;
+                }
+
+                // Get the shared memory to put the uncompressed image into.
+                core::SharedPointer<core::wrapper::SharedMemory> sp = m_mapOfSharedMemoriesForCompressedImages[ci.getName()];
+
+                int width = 0;
+                int height = 0;
+                int bpp = 0;
+
+                // Decompress image data.
+                unsigned char *imageData = core::wrapper::jpg::JPG::decompress(ci.getRawData(), ci.getCompressedSize(), &width, &height, &bpp, ci.getBytesPerPixel());
+
+                if ( (imageData != NULL) &&
+                     (width > 0) &&
+                     (height > 0) &&
+                     (bpp > 0) ) {
+                    // Lock shared memory to store the uncompressed data.
+                    if (sp->isValid()) {
+                        Lock l(sp);
+                        ::memcpy(sp->getSharedMemory(), imageData, width * height * bpp);
+                    }
+
+                    // As we have now the decompressed image data in memory, create a SharedMemory data structure to describe it.
+                    coredata::image::SharedImage si;
+                    si.setName(ci.getName());
+                    si.setWidth(ci.getWidth());
+                    si.setHeight(ci.getHeight());
+                    si.setBytesPerPixel(ci.getBytesPerPixel());
+                    si.setSize(ci.getWidth() * ci.getHeight() * ci.getBytesPerPixel());
+
+                    // Distribute the SharedImage information in the UDP multicast session.
+                    retVal = Container(Container::SHARED_IMAGE, si);
+                    retVal.setSentTimeStamp(m_actual.getSentTimeStamp());
+                    retVal.setReceivedTimeStamp(m_actual.getReceivedTimeStamp());
+                }
+
+                OPENDAVINCI_CORE_FREE_POINTER(imageData);
+            }
 
             // Process the "successor" container as the next "actual" one.
             m_actual = m_successor;

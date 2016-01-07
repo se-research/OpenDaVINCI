@@ -123,74 +123,10 @@ ENDIF()
 
 ###############################################################################
 # Include directories for shipped 3rd party libraries.
-SET(jpeg9a_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/jpeg-9a")
 SET(zlib_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/zlib-1.2.8")
 SET(libzip_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/libzip-0.9")
 SET(libwjwwoodserial_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/wjwwood-serial-1.2.1")
-
-INCLUDE_DIRECTORIES (${jpeg9a_SOURCE_DIR})
-SET (jpeg9a-headers
-    ${jpeg9a_SOURCE_DIR}/cderror.h
-    ${jpeg9a_SOURCE_DIR}/cdjpeg.h
-    ${jpeg9a_SOURCE_DIR}/jconfig.h
-    ${jpeg9a_SOURCE_DIR}/jdct.h
-    ${jpeg9a_SOURCE_DIR}/jerror.h
-    ${jpeg9a_SOURCE_DIR}/jinclude.h
-    ${jpeg9a_SOURCE_DIR}/jmemsys.h
-    ${jpeg9a_SOURCE_DIR}/jmorecfg.h
-    ${jpeg9a_SOURCE_DIR}/jpegint.h
-    ${jpeg9a_SOURCE_DIR}/jpeglib.h
-    ${jpeg9a_SOURCE_DIR}/jversion.h
-    ${jpeg9a_SOURCE_DIR}/transupp.h
-)
-SET (jpeg9a-sources
-    ${jpeg9a_SOURCE_DIR}/jaricom.c
-    ${jpeg9a_SOURCE_DIR}/jcapimin.c
-    ${jpeg9a_SOURCE_DIR}/jcapistd.c
-    ${jpeg9a_SOURCE_DIR}/jcarith.c
-    ${jpeg9a_SOURCE_DIR}/jccoefct.c
-    ${jpeg9a_SOURCE_DIR}/jccolor.c
-    ${jpeg9a_SOURCE_DIR}/jcdctmgr.c
-    ${jpeg9a_SOURCE_DIR}/jchuff.c
-    ${jpeg9a_SOURCE_DIR}/jcinit.c
-    ${jpeg9a_SOURCE_DIR}/jcmainct.c
-    ${jpeg9a_SOURCE_DIR}/jcmarker.c
-    ${jpeg9a_SOURCE_DIR}/jcmaster.c
-    ${jpeg9a_SOURCE_DIR}/jcomapi.c
-    ${jpeg9a_SOURCE_DIR}/jcparam.c
-    ${jpeg9a_SOURCE_DIR}/jcprepct.c
-    ${jpeg9a_SOURCE_DIR}/jcsample.c
-    ${jpeg9a_SOURCE_DIR}/jctrans.c
-    ${jpeg9a_SOURCE_DIR}/jdapimin.c
-    ${jpeg9a_SOURCE_DIR}/jdapistd.c
-    ${jpeg9a_SOURCE_DIR}/jdarith.c
-    ${jpeg9a_SOURCE_DIR}/jdatadst.c
-    ${jpeg9a_SOURCE_DIR}/jdatasrc.c
-    ${jpeg9a_SOURCE_DIR}/jdcoefct.c
-    ${jpeg9a_SOURCE_DIR}/jdcolor.c
-    ${jpeg9a_SOURCE_DIR}/jddctmgr.c
-    ${jpeg9a_SOURCE_DIR}/jdhuff.c
-    ${jpeg9a_SOURCE_DIR}/jdinput.c
-    ${jpeg9a_SOURCE_DIR}/jdmainct.c
-    ${jpeg9a_SOURCE_DIR}/jdmarker.c
-    ${jpeg9a_SOURCE_DIR}/jdmaster.c
-    ${jpeg9a_SOURCE_DIR}/jdmerge.c
-    ${jpeg9a_SOURCE_DIR}/jdpostct.c
-    ${jpeg9a_SOURCE_DIR}/jdsample.c
-    ${jpeg9a_SOURCE_DIR}/jdtrans.c
-    ${jpeg9a_SOURCE_DIR}/jerror.c
-    ${jpeg9a_SOURCE_DIR}/jfdctflt.c
-    ${jpeg9a_SOURCE_DIR}/jfdctfst.c
-    ${jpeg9a_SOURCE_DIR}/jfdctint.c
-    ${jpeg9a_SOURCE_DIR}/jidctflt.c
-    ${jpeg9a_SOURCE_DIR}/jidctfst.c
-    ${jpeg9a_SOURCE_DIR}/jidctint.c
-    ${jpeg9a_SOURCE_DIR}/jquant1.c
-    ${jpeg9a_SOURCE_DIR}/jquant2.c
-    ${jpeg9a_SOURCE_DIR}/jutils.c
-    ${jpeg9a_SOURCE_DIR}/jmemmgr.c
-    ${jpeg9a_SOURCE_DIR}/jmemnobs.c 
-)
+SET(jpegcompressor_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/jpeg-compressor")
 
 INCLUDE_DIRECTORIES (${zlib_SOURCE_DIR})
 SET (zlib-sources
@@ -271,12 +207,12 @@ SET (libzip-sources
 
 INCLUDE_DIRECTORIES (${libwjwwoodserial_SOURCE_DIR}/include)
 IF(UNIX)
-	SET (libwjwwoodserial-sources
+    SET (libwjwwoodserial-sources
          ${libwjwwoodserial_SOURCE_DIR}/src/serial.cc
          ${libwjwwoodserial_SOURCE_DIR}/src/impl/unix.cc
          ${libwjwwoodserial_SOURCE_DIR}/src/impl/list_ports/list_ports_linux.cc
          ${libwjwwoodserial_SOURCE_DIR}/src/impl/list_ports/list_ports_osx.cc
-	)
+    )
 
     # Set compile flags for wjwwood serial library.
     SET(WJWWOOD_SERIAL_COMPILE_FLAGS "-Wno-effc++ -Wno-error -Wno-sign-compare")
@@ -290,11 +226,30 @@ IF(UNIX)
 ENDIF()
 
 IF(WIN32)
-	SET (libwjwwoodserial-sources
+    SET (libwjwwoodserial-sources
          ${libwjwwoodserial_SOURCE_DIR}/src/serial.cc
          ${libwjwwoodserial_SOURCE_DIR}/src/impl/win.cc
          ${libwjwwoodserial_SOURCE_DIR}/src/impl/list_ports/list_ports_win.cc
     )
+ENDIF()
+
+INCLUDE_DIRECTORIES (${jpegcompressor_SOURCE_DIR})
+SET (jpegcompressor-headers
+    ${jpegcompressor_SOURCE_DIR}/jpgd.h
+    ${jpegcompressor_SOURCE_DIR}/jpge.h
+)
+SET (jpegcompressor-sources
+    ${jpegcompressor_SOURCE_DIR}/jpgd.cpp
+    ${jpegcompressor_SOURCE_DIR}/jpge.cpp
+)
+# Set compile flags for jpeg-compressor sources.
+IF(UNIX)
+    SET(JPEG_COMPILE_FLAGS "-Wno-effc++ -Wno-error -Wno-sign-compare -Wno-unused-parameter -Wno-shadow")
+    IF (GCC_VERSION VERSION_GREATER 4.7 OR GCC_VERSION VERSION_EQUAL 4.7)
+        SET(JPEG_COMPILE_FLAGS "${JPEG_COMPILE_FLAGS} -Wno-unused-but-set-variable -Wno-suggest-attribute=format")
+    ENDIF()
+    SET_SOURCE_FILES_PROPERTIES(${jpegcompressor_SOURCE_DIR}/jpgd.cpp PROPERTIES COMPILE_FLAGS "${JPEG_COMPILE_FLAGS}")
+    SET_SOURCE_FILES_PROPERTIES(${jpegcompressor_SOURCE_DIR}/jpge.cpp PROPERTIES COMPILE_FLAGS "${JPEG_COMPILE_FLAGS}")
 ENDIF()
 
 ###############################################################################
@@ -340,8 +295,8 @@ ADD_LIBRARY (opendavinci-core OBJECT ${libopendavinci-sources}
                                      ${libopendavinci-coredata-sources} 
                                      ${libwjwwoodserial-sources} 
                                      ${libzip-sources}
-                                     ${zlib-sources} 
-                                     ${jpeg9a-sources})
+                                     ${zlib-sources}
+                                     ${jpegcompressor-sources})
 ADD_LIBRARY (opendavinci-static STATIC $<TARGET_OBJECTS:opendavinci-core>)
 IF(    (NOT WIN32)
    AND (NOT ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")) )
@@ -360,7 +315,7 @@ ADD_DEPENDENCIES(opendavinci-core GenerateDataStructures)
 ###############################################################################
 # Enable CxxTest for all available testsuites.
 IF(CXXTEST_FOUND)
-	FILE(GLOB libopendavinci-testsuites "${CMAKE_CURRENT_SOURCE_DIR}/testsuites/*.h")
+    FILE(GLOB libopendavinci-testsuites "${CMAKE_CURRENT_SOURCE_DIR}/testsuites/*.h")
 
     FOREACH(testsuite ${libopendavinci-testsuites})
         STRING(REPLACE "/" ";" testsuite-list ${testsuite})
@@ -371,10 +326,11 @@ IF(CXXTEST_FOUND)
 
         SET(CXXTEST_TESTGEN_ARGS ${CXXTEST_TESTGEN_ARGS} --world=${PROJECT_NAME}-${testsuite-short})
         CXXTEST_ADD_TEST(${testsuite-short}-TestSuite ${testsuite-short}-TestSuite.cpp ${testsuite})
-        IF(UNIX)        
-            IF(   ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
-               OR ("${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD")
-               OR ("${CMAKE_SYSTEM_NAME}" STREQUAL "DragonFly") )
+        IF(UNIX)
+            IF( (   ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+                 OR ("${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD")
+                 OR ("${CMAKE_SYSTEM_NAME}" STREQUAL "DragonFly") )
+                AND (NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang") )
                 SET_SOURCE_FILES_PROPERTIES(${testsuite-short}-TestSuite.cpp PROPERTIES COMPILE_FLAGS "-Wno-effc++ -Wno-float-equal -Wno-error=suggest-attribute=noreturn")
             ELSE()
                 SET_SOURCE_FILES_PROPERTIES(${testsuite-short}-TestSuite.cpp PROPERTIES COMPILE_FLAGS "-Wno-effc++ -Wno-float-equal")
@@ -384,7 +340,7 @@ IF(CXXTEST_FOUND)
         TARGET_LINK_LIBRARIES(${testsuite-short}-TestSuite ${OPENDAVINCI_LIB} ${THIRDPARTY_LIBS})
     ENDFOREACH()
 
-	FILE(GLOB libopendavinci-coredata-testsuites "${COREDATA_DIR}/testsuites/*.h")
+    FILE(GLOB libopendavinci-coredata-testsuites "${COREDATA_DIR}/testsuites/*.h")
 
     FOREACH(testsuite ${libopendavinci-coredata-testsuites})
         STRING(REPLACE "/" ";" testsuite-list ${testsuite})
@@ -395,10 +351,11 @@ IF(CXXTEST_FOUND)
 
         SET(CXXTEST_TESTGEN_ARGS ${CXXTEST_TESTGEN_ARGS} --world=${PROJECT_NAME}-${testsuite-short})
         CXXTEST_ADD_TEST(${testsuite-short}-TestSuite ${testsuite-short}-TestSuite.cpp ${testsuite})
-        IF(UNIX)        
-            IF(   ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
-               OR ("${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD")
-               OR ("${CMAKE_SYSTEM_NAME}" STREQUAL "DragonFly") )
+        IF(UNIX)
+            IF( (   ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+                 OR ("${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD")
+                 OR ("${CMAKE_SYSTEM_NAME}" STREQUAL "DragonFly") )
+                AND (NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang") )
                 SET_SOURCE_FILES_PROPERTIES(${testsuite-short}-TestSuite.cpp PROPERTIES COMPILE_FLAGS "-Wno-effc++ -Wno-float-equal -Wno-error=suggest-attribute=noreturn")
             ELSE()
                 SET_SOURCE_FILES_PROPERTIES(${testsuite-short}-TestSuite.cpp PROPERTIES COMPILE_FLAGS "-Wno-effc++ -Wno-float-equal")
@@ -406,7 +363,7 @@ IF(CXXTEST_FOUND)
         ENDIF()
 
         SET_TESTS_PROPERTIES(${testsuite-short}-TestSuite PROPERTIES TIMEOUT 3000)
-	    TARGET_LINK_LIBRARIES(${testsuite-short}-TestSuite ${OPENDAVINCI_LIB} ${LIBRARIES})
+        TARGET_LINK_LIBRARIES(${testsuite-short}-TestSuite ${OPENDAVINCI_LIB} ${LIBRARIES})
     ENDFOREACH()
 ENDIF(CXXTEST_FOUND)
 
@@ -422,8 +379,6 @@ ENDIF()
 INSTALL(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/" DESTINATION include/opendavinci COMPONENT odlib)
 # Merge header files from generated data structures with the rest of OpenDaVINCI to avoid specifying another include directory at the users' end.
 INSTALL(DIRECTORY "${COREDATA_DIR}/include/" DESTINATION include/opendavinci COMPONENT odlib)
-# Install header files for jpeg-9a.
-INSTALL(FILES ${jpeg9a-headers} DESTINATION include/opendavinci/jpeg-9a COMPONENT odlib)
 
 # Install CMake modules locally.
 IF(UNIX)

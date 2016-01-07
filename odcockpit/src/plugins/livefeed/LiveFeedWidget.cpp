@@ -18,24 +18,43 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
+#include <Qt/qgridlayout.h>
+#include <Qt/qtreewidget.h>
+#include <qstring.h>
+#include <qstringlist.h>
 
-#include <sstream>
 #include <cstring>
+#include <vector>
 
+<<<<<<< HEAD
 #include "hesperia/data/environment/Position.h"
 #include "hesperia/data/environment/EgoState.h"
+=======
+#include "core/opendavinci.h"
+#include "core/base/Visitable.h"
+#include "core/data/Container.h"
+>>>>>>> master
 #include "core/data/TimeStamp.h"
-#include "core/reflection/MessageFromVisitableVisitor.h"
-#include "core/reflection/MessagePrettyPrinterVisitor.h"
-
-#include "GeneratedHeaders_CoreData.h"
-#include "GeneratedHeaders_AutomotiveData.h"
-
+#include "generated/automotive/ForceControl.h"
+#include "generated/automotive/GenericCANMessage.h"
+#include "generated/automotive/VehicleData.h"
+#include "generated/automotive/miniature/UserButtonData.h"
+#include "generated/automotive/vehicle/WheelSpeed.h"
+#include "generated/coredata/Configuration.h"
+#include "generated/coredata/SharedData.h"
+#include "generated/coredata/dmcp/DiscoverMessage.h"
+#include "generated/coredata/dmcp/ModuleDescriptor.h"
+#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "generated/coredata/dmcp/ModuleStateMessage.h"
+#include "generated/coredata/dmcp/ModuleStatistics.h"
+#include "generated/coredata/dmcp/RuntimeStatistic.h"
+#include "generated/coredata/image/SharedImage.h"
+#include "generated/coredata/player/PlayerCommand.h"
+#include "generated/coredata/recorder/RecorderCommand.h"
 #include "plugins/livefeed/LiveFeedWidget.h"
 #include "plugins/livefeed/MessageToTupleVisitor.h"
+
+namespace cockpit { namespace plugins { class PlugIn; } }
 
 namespace cockpit {
 
@@ -46,7 +65,6 @@ namespace cockpit {
             using namespace std;
             using namespace core::base;
             using namespace core::data;
-            using namespace core::reflection;
 
             LiveFeedWidget::LiveFeedWidget(const PlugIn &/*plugIn*/, QWidget *prnt) :
                 QWidget(prnt),

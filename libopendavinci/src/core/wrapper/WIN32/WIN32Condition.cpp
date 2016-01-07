@@ -35,22 +35,22 @@ namespace core {
             WIN32Condition::~WIN32Condition() {}
 
             void WIN32Condition::waitOnSignal() {
-				// Adopt the lock so that the condition can wait on this native mutex.
+                // Adopt the lock so that the condition can wait on this native mutex.
                 std::unique_lock<std::mutex> l(m_mutex.getNativeMutex(), std::adopt_lock);
                 m_condition.wait(l);
-				// Release the lock (without unlocking it!) so that the outer scope receives the responsibility to unlock the mutex.
-				// Thus, the existing semantics which is compliant with the POSIX implementation is preserved.
-				l.release();
+                // Release the lock (without unlocking it!) so that the outer scope receives the responsibility to unlock the mutex.
+                // Thus, the existing semantics which is compliant with the POSIX implementation is preserved.
+                l.release();
             }
 
             bool WIN32Condition::waitOnSignalWithTimeout(const unsigned long ms) {
-				// Adopt the lock so that the condition can wait on this native mutex.
-				std::unique_lock<std::mutex> l(m_mutex.getNativeMutex(), std::adopt_lock);
+                // Adopt the lock so that the condition can wait on this native mutex.
+                std::unique_lock<std::mutex> l(m_mutex.getNativeMutex(), std::adopt_lock);
                 bool retVal = m_condition.wait_for(l, std::chrono::milliseconds(ms)) == std::cv_status::no_timeout;
-				// Release the lock (without unlocking it!) so that the outer scope receives the responsibility to unlock the mutex.
-				// Thus, the existing semantics which is compliant with the POSIX implementation is preserved.
-				l.release();
-				return retVal;
+                // Release the lock (without unlocking it!) so that the outer scope receives the responsibility to unlock the mutex.
+                // Thus, the existing semantics which is compliant with the POSIX implementation is preserved.
+                l.release();
+                return retVal;
             }
 
             void WIN32Condition::wakeOne() {
@@ -62,16 +62,16 @@ namespace core {
             }
 
             void WIN32Condition::lock() {
-				m_mutex.lock();
+                m_mutex.lock();
             }
 
             bool WIN32Condition::tryLock() {
-				return m_mutex.tryLock();
+                return m_mutex.tryLock();
             }
 
             void WIN32Condition::unlock() {
-				m_mutex.unlock();
-			}
+                m_mutex.unlock();
+            }
 
         }
     }

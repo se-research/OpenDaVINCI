@@ -21,15 +21,21 @@
 #ifndef COCKPIT_PLUGINS_OBJXVIEWER_OBJXVIEWERPLUGIN_H_
 #define COCKPIT_PLUGINS_OBJXVIEWER_OBJXVIEWERPLUGIN_H_
 
-#include "QtIncludes.h"
 
-#include "core/base/KeyValueConfiguration.h"
 
-#include "plugins/objxviewer/OBJXViewerWidget.h"
+
+#include <string>
+
+#include "plugins/PlugIn.h"
+
+class QWidget;
+namespace core { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
     namespace plugins {
       namespace objxviewer {
+
+class OBJXViewerWidget;
 
         using namespace std;
 

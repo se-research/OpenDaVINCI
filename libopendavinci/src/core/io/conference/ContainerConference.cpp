@@ -19,6 +19,9 @@
 
 #include "core/base/Lock.h"
 #include "core/io/conference/ContainerConference.h"
+#include "core/io/conference/ContainerListener.h"
+
+namespace core { namespace data { class Container; } }
 
 namespace core {
     namespace io {

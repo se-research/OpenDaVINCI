@@ -23,18 +23,17 @@
 #include <string>
 #include <vector>
 
-// native.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/native.h"
-
-#include "core/wrapper/parser/ASTNode.h"
-#include "core/wrapper/parser/ParserTokenListener.h"
-#include "core/wrapper/parser/ParserTokenExtendedData.h"
-#include "core/wrapper/parser/ParserErrorListener.h"
-#include "core/wrapper/parser/ParserErrorExtendedData.h"
+#include "core/opendavinci.h"
 
 namespace core {
     namespace wrapper {
         namespace parser {
+
+class ASTNode;
+class ParserErrorExtendedData;
+class ParserErrorListener;
+class ParserTokenExtendedData;
+class ParserTokenListener;
 
             using namespace std;
 

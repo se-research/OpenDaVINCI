@@ -20,13 +20,14 @@
 #ifndef OPENDAVINCI_BASE_DATATRIGGEREDCONFERENCECLIENTMODULE_H_
 #define OPENDAVINCI_BASE_DATATRIGGEREDCONFERENCECLIENTMODULE_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <string>
 
-#include "core/data/Container.h"
-#include "core/exceptions/Exceptions.h"
-
+#include "core/opendavinci.h"
 #include "core/base/module/AbstractConferenceClientModule.h"
+#include "core/exceptions/Exceptions.h"
+#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
+
+namespace core { namespace data { class Container; } }
 
 namespace core {
     namespace base {

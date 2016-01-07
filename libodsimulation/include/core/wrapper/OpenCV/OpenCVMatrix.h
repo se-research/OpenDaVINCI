@@ -20,6 +20,8 @@
 #ifndef HESPERIA_CORE_WRAPPER_OPENCV_OPENCVMATRIX_H_
 #define HESPERIA_CORE_WRAPPER_OPENCV_OPENCVMATRIX_H_
 
+#include <string>
+
 #include <opencv/cv.h>
 
 #include "core/wrapper/Matrix.h"
@@ -30,8 +32,6 @@ namespace core {
 
             using namespace std;
 
-            // Forward declaration to prevent circular dependencies.
-            class OpenCVMatrixFactory;
 
             /**
              * This class implements an abstract object containing

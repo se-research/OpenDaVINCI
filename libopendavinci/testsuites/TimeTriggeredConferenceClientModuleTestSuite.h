@@ -20,32 +20,33 @@
 #ifndef OPENDAVINCI_TIMETRIGGEREDCONFERENCECLIENTMODULETESTSUITE_H_
 #define OPENDAVINCI_TIMETRIGGEREDCONFERENCECLIENTMODULETESTSUITE_H_
 
-#include "cxxtest/TestSuite.h"
+#include <fstream>                      // for operator<<, basic_ostream, etc
+#include <string>                       // for string, operator==, etc
+#include <vector>                       // for vector
 
-#include <cstdlib>
-#include <fstream>
-#include <sstream>
-#include <string>
-#include <vector>
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/base/Lock.h"
-#include "core/base/Service.h"
-#include "core/base/Thread.h"
-#include "core/data/Container.h"
-#include "core/data/TimeStamp.h"
-#include "core/io/conference/ContainerConference.h"
-#include "core/io/conference/ContainerConferenceFactory.h"
-#include "core/io/URL.h"
-
+#include "core/opendavinci.h"
+#include "core/SharedPointer.h"         // for SharedPointer
+#include "core/base/Condition.h"        // for Condition
+#include "core/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
+#include "core/base/Lock.h"             // for Lock
+#include "core/base/Service.h"          // for Service
+#include "core/base/Thread.h"           // for Thread
 #include "core/base/module/TimeTriggeredConferenceClientModule.h"
-
 #include "core/dmcp/ModuleConfigurationProvider.h"
-#include "core/dmcp/discoverer/Server.h"
-#include "core/dmcp/connection/Server.h"
 #include "core/dmcp/connection/ConnectionHandler.h"
 #include "core/dmcp/connection/ModuleConnection.h"
+#include "core/dmcp/connection/Server.h"  // for Server
+#include "core/dmcp/discoverer/Server.h"  // for Server
+#include "core/io/conference/ContainerConference.h"
+#include "core/io/conference/ContainerConferenceFactory.h"
+#include "generated/coredata/dmcp/Constants.h"  // for Constants, etc
+#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "generated/coredata/dmcp/ModuleStateMessage.h"
+#include "generated/coredata/dmcp/ServerInformation.h"
 
-#include "GeneratedHeaders_CoreData.h"
+namespace coredata { namespace dmcp { class ModuleDescriptor; } }
 
 using namespace std;
 using namespace core::base;

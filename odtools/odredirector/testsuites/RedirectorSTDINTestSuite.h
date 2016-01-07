@@ -104,19 +104,19 @@ class RedirectorTest : public CxxTest::TestSuite,
         }
 
         void testRedirectorPumpFromStdin() {
-#ifdef WIN32
+#if defined(WIN32) || defined(__OpenBSD__)
             TS_ASSERT(true);
 #else
             // Setup ContainerConference.
             core::SharedPointer<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.100");
 
             // Setup DMCP.
-            stringstream sstr;
-            sstr << "global.buffer.memorySegmentSize = 1000" << endl
-                 << "global.buffer.numberOfMemorySegments = 5" << endl;
+            stringstream sstr_;
+            sstr_ << "global.buffer.memorySegmentSize = 1000" << endl
+                  << "global.buffer.numberOfMemorySegments = 5" << endl;
 
             m_configuration = KeyValueConfiguration();
-            m_configuration.readFrom(sstr);
+            m_configuration.readFrom(sstr_);
 
             vector<string> noModulesToIgnore;
             ServerInformation serverInformation("127.0.0.1", 19000, ServerInformation::ML_NONE);
@@ -147,6 +147,7 @@ class RedirectorTest : public CxxTest::TestSuite,
             TS_ASSERT(fout.good());
 
             TimeStamp ts1(0, 1);
+<<<<<<< HEAD
             Container c1(ts1);
             fout << c1;
             fout.flush();
@@ -169,6 +170,55 @@ class RedirectorTest : public CxxTest::TestSuite,
             TimeStamp ts5(4, 5);
             Container c5(ts5);
             fout << c5;
+=======
+            Container c1(Container::TIMESTAMP, ts1);
+            {
+                stringstream sstr;
+                sstr << c1;
+                const string s = sstr.str();
+                fout << s;
+            }
+            fout.flush();
+
+            TimeStamp ts2(1, 2);
+            Container c2(Container::TIMESTAMP, ts2);
+            {
+                stringstream sstr;
+                sstr << c2;
+                const string s = sstr.str();
+                fout << s;
+            }
+            fout.flush();
+
+            TimeStamp ts3(2, 3);
+            Container c3(Container::TIMESTAMP, ts3);
+            {
+                stringstream sstr;
+                sstr << c3;
+                const string s = sstr.str();
+                fout << s;
+            }
+            fout.flush();
+
+            TimeStamp ts4(3, 4);
+            Container c4(Container::TIMESTAMP, ts4);
+            {
+                stringstream sstr;
+                sstr << c4;
+                const string s = sstr.str();
+                fout << s;
+            }
+            fout.flush();
+
+            TimeStamp ts5(4, 5);
+            Container c5(Container::TIMESTAMP, ts5);
+            {
+                stringstream sstr;
+                sstr << c5;
+                const string s = sstr.str();
+                fout << s;
+            }
+>>>>>>> master
             fout.flush();
 
             fout.close();

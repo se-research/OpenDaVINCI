@@ -20,11 +20,10 @@
 #ifndef HESPERIA_MATH_TRANSFORMATION_H_
 #define HESPERIA_MATH_TRANSFORMATION_H_
 
-// native.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/native.h"
-
+#include "core/opendavinci.h"
 #include "hesperia/data/environment/Point3.h"
-#include "hesperia/data/environment/Position.h"
+
+namespace hesperia { namespace data { namespace environment { class Position; } } }
 
 namespace hesperia {
     namespace math {

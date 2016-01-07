@@ -19,8 +19,6 @@
 
 #include "core/base/Lock.h"
 #include "core/io/StringPipeline.h"
-#include "core/wrapper/ConcurrencyFactory.h"
-#include "core/wrapper/ConditionFactory.h"
 
 namespace core {
     namespace io {

@@ -20,12 +20,15 @@
 #ifndef CORE_COMMANDLINEPARSERTESTSUITE_H_
 #define CORE_COMMANDLINEPARSERTESTSUITE_H_
 
-#include "cxxtest/TestSuite.h"
+#include <string>                       // for string, operator==, etc
+#include <vector>                       // for vector
 
-#include <string>
-#include <iostream>
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/base/CommandLineParser.h"
+#include "core/opendavinci.h"
+#include "core/base/CommandLineArgument.h"  // for CommandLineArgument
+#include "core/base/CommandLineParser.h"  // for CommandLineParser
+#include "core/exceptions/Exceptions.h"  // for CommandLineParserException
 
 using namespace std;
 using namespace core::base;

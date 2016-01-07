@@ -20,16 +20,13 @@
 #ifndef OPENDAVINCI_CORE_IO_CONFERENCE_CONTAINEROBSERVER_H_
 #define OPENDAVINCI_CORE_IO_CONFERENCE_CONTAINEROBSERVER_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
-
-#include "core/io/conference/ContainerListener.h"
+#include "core/opendavinci.h"
 
 namespace core {
     namespace io {
         namespace conference {
 
-            using namespace std;
+class ContainerListener;
 
             /**
              * This class provides an interface for registering

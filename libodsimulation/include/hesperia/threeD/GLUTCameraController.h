@@ -20,10 +20,7 @@
 #ifndef HESPERIA_THREED_GLUTCAMERACONTROLLER_H_
 #define HESPERIA_THREED_GLUTCAMERACONTROLLER_H_
 
-#include <GL/gl.h>
-#include <GL/glut.h>
-
-#include "hesperia/threeD/Camera.h"
+#include "core/opendavinci.h"
 
 namespace hesperia {
     namespace threeD {
@@ -32,6 +29,8 @@ namespace hesperia {
          * Eases the use of a Camera in a GLUTWindow. Simply call the process... methods
          * and can control the camera like a First-Person-Shooter.
          */
+class Camera;
+
         class GLUTCameraController
         {
             public:

@@ -20,14 +20,19 @@
 #ifndef OPENDAVINCI_TOOLS_RECORDER_RECORDER_H_
 #define OPENDAVINCI_TOOLS_RECORDER_RECORDER_H_
 
+#include <memory>
+#include <string>
+
+#include "core/opendavinci.h"
 #include "core/SharedPointer.h"
 #include "core/base/FIFOQueue.h"
-#include "core/data/Container.h"
 
-#include "tools/recorder/SharedDataListener.h"
+namespace core { namespace data { class Container; } }
 
 namespace tools {
     namespace recorder {
+
+class SharedDataListener;
 
         using namespace std;
 

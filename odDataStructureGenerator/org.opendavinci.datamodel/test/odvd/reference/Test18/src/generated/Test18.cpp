@@ -4,7 +4,8 @@
  * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
  */
 
-#include "core/macros.h"
+#include <cstring>
+#include "core/opendavinci.h"
 
 #include "core/base/Hash.h"
 #include "core/base/Deserializer.h"

@@ -15,20 +15,20 @@ Download and install Visual Studio 2013 Community Edition: http://go.microsoft.c
 Clone the latest OpenDaVINCI sources from https://github.com/se-research/OpenDaVINCI or download
 the latest OpenDaVINCI sources as zip file: https://github.com/se-research/OpenDaVINCI/archive/master.zip.
 
-Change your source folder and create a build directory::
+Change to your source folder and create a build directory::
 
-   $ cd OpenDaVINCI && mkdir build
+    $ cd OpenDaVINCI && mkdir build
 
 Use cmake to create the build scripts for your build folder (NMake files for building on console)::
 
-   $ cd build
-   $ cmake -G "NMake Makefiles" -D CMAKE_INSTALL_PREFIX=myInstallDir ..
+    $ cd build
+    $ cmake -G "NMake Makefiles" -D CMAKE_INSTALL_PREFIX=myInstallDir ..
 
 Build the OpenDaVINCI sources::
 
-   $ nmake
+    $ nmake
 
 If you want to use Visual Studio for editing, let cmake create the build scripts::
 
-   $ cd build
-   $ cmake -G "Visual Studio 12 2013" -D CMAKE_INSTALL_PREFIX=../myInstallDir ..
+    $ cd build
+    $ cmake -G "Visual Studio 12 2013" -D CMAKE_INSTALL_PREFIX=../myInstallDir ..

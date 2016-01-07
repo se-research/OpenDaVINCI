@@ -18,24 +18,31 @@
  */
 
 #include <iostream>
-#include <sstream>
+#include <map>
+#include <string>
 #include <vector>
 
 #include "core/SharedPointer.h"
 #include "core/base/Lock.h"
+#include "core/opendavinci.h"
+#include "hesperia/data/scenario/ComplexModel.h"
+#include "hesperia/data/scenario/HeightImage.h"
+#include "hesperia/data/scenario/Image.h"
+#include "hesperia/data/scenario/PointModel.h"
+#include "hesperia/data/scenario/Polygon.h"
+#include "hesperia/data/scenario/ScenarioNode.h"
+#include "hesperia/data/scenario/Surroundings.h"
 #include "hesperia/decorator/ScenarioRenderer.h"
 #include "hesperia/decorator/models/OBJXArchiveFactory.h"
-#include "hesperia/data/scenario/IDVertex3.h"
-#include "hesperia/data/scenario/Lane.h"
-#include "hesperia/data/scenario/Layer.h"
-#include "hesperia/data/scenario/Road.h"
-#include "hesperia/data/scenario/Shape.h"
-#include "hesperia/data/scenario/Vertex3.h"
+#include "hesperia/decorator/models/TriangleSet.h"
 
-#include "GeneratedHeaders_AutomotiveData.h"
+namespace hesperia { namespace scenario { class SCNXArchive; } }
 
 namespace hesperia {
     namespace decorator {
+
+class Renderer;
+namespace models { class OBJXArchive; }
 
         using namespace std;
         using namespace core;

@@ -20,14 +20,17 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_ZIP_ZIPDECOMPRESSEDDATA_H_
 #define OPENDAVINCI_CORE_WRAPPER_ZIP_ZIPDECOMPRESSEDDATA_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <iosfwd>
+#include <map>
+#include <string>
+#include <vector>
 
-#include "core/wrapper/DecompressedData.h"
+#include "core/SharedPointer.h"
 #include "core/strings/StringComparator.h"
-
-#include "core/wrapper/CompressionFactoryWorker.h"
 #include "core/wrapper/CompressionLibraryProducts.h"
+#include "core/wrapper/DecompressedData.h"
+
+namespace core { namespace wrapper { template <core::wrapper::CompressionLibraryProducts product> struct CompressionFactoryWorker; } }
 
 namespace core {
     namespace wrapper {

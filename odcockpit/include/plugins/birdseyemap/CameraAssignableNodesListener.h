@@ -22,7 +22,7 @@
 
 #include <vector>
 
-#include "hesperia/scenegraph/SceneNodeDescriptor.h"
+namespace hesperia { namespace scenegraph { class SceneNodeDescriptor; } }
 
 namespace cockpit {
     namespace plugins {

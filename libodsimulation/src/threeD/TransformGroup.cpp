@@ -17,8 +17,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <algorithm>
-
 // The following include is necessary on Win32 platforms to set up necessary macro definitions.
 #ifdef WIN32
 #include <windows.h>
@@ -26,12 +24,18 @@
 
 #include <GL/gl.h>
 
-#include "core/macros.h"
+#include <algorithm>
+#include <vector>
+
 #include "core/base/Lock.h"
-#include "core/base/Thread.h"
-#include "core/wrapper/DisposalService.h"
-#include "GeneratedHeaders_AutomotiveData.h"
+#include "core/opendavinci.h"
+#include "hesperia/data/environment/Point3.h"
+#include "hesperia/threeD/Node.h"
+#include "hesperia/threeD/NodeDescriptor.h"
 #include "hesperia/threeD/TransformGroup.h"
+#include "hesperia/threeD/RenderingConfiguration.h"
+
+namespace hesperia { namespace threeD { class TransformGroupVisitor; } }
 
 namespace hesperia {
     namespace threeD {

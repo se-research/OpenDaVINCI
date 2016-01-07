@@ -17,9 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/base/module/AbstractCIDModule.h"
+#include <iostream>
+
 #include "core/base/QueryableNetstringsDeserializerAACF.h"
 #include "core/base/Serializable.h"
+#include "core/base/module/AbstractCIDModule.h"
+#include "core/opendavinci.h"
 
 namespace core {
     namespace base {
@@ -321,12 +324,22 @@ namespace core {
                 uint32_t stringLength = 0;
                 m_buffer.read(reinterpret_cast<char *>(&stringLength), sizeof(uint32_t));
                 stringLength = ntohl(stringLength);
+
+// Win32 does not deal properly with the iterator.
+#ifdef WIN32
                 char *str = new char[stringLength+1];
                 m_buffer.read(str, stringLength);
                 str[stringLength] = '\0';
                 // It is absolutely necessary to specify the size of the serialized string, otherwise, s contains only data until the first '\0' is read.
                 v = string(str, stringLength);
                 OPENDAVINCI_CORE_DELETE_ARRAY(str);
+#else
+                string data(stringLength, '\0');
+                char* begin = &(*data.begin());
+                m_buffer.read(begin, stringLength);
+
+                v = data;
+#endif
             }
         }
 

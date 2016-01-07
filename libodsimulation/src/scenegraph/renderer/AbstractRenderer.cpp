@@ -17,7 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include "core/opendavinci.h"
+
 #include "hesperia/scenegraph/renderer/AbstractRenderer.h"
+#include "hesperia/scenegraph/primitives/Line.h"
+#include "hesperia/scenegraph/primitives/Point.h"
+#include "hesperia/scenegraph/primitives/Polygon.h"
+
+namespace hesperia { namespace scenegraph { class SceneNode; } }
 
 namespace hesperia {
     namespace scenegraph {

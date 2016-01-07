@@ -18,18 +18,31 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
+#include <Qt/qaction.h>
+#include <Qt/qapplication.h>
+#include <Qt/qdockwidget.h>
+#include <Qt/qlistwidget.h>
+#include <Qt/qmdiarea.h>
+#include <Qt/qmdisubwindow.h>
+#include <Qt/qmenu.h>
+#include <Qt/qmenubar.h>
+#include <qglobal.h>
+#include <qlist.h>
+#include <qnamespace.h>
+#include <qstring.h>
+#include <qwidget.h>
 
-#include <iostream>
+#include <string>
 
-#include "core/macros.h"
-
-#include "QtIncludes.h"
-
+#include "core/opendavinci.h"
 #include "CockpitWindow.h"
+#include "FIFOMultiplexer.h"
 #include "MdiPlugIn.h"
+#include "plugins/PlugIn.h"
+#include "plugins/PlugInProvider.h"
+
+namespace core { namespace base { class DataStoreManager; } }
+namespace core { namespace io { namespace conference { class ContainerConference; } } }
 
 namespace cockpit {
 

@@ -20,14 +20,16 @@
 #ifndef CORE_PULSEACKCONTAINERSMESSAGETESTSUITE_H_
 #define CORE_PULSEACKCONTAINERSMESSAGETESTSUITE_H_
 
-#include "cxxtest/TestSuite.h"
+#include <sstream>                      // for stringstream, istream, etc
+#include <vector>                       // for vector
 
-#include <sstream>
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/data/Container.h"
-#include "core/data/TimeStamp.h"
-
-#include "GeneratedHeaders_CoreData.h"
+#include "core/base/Serializable.h"     // for operator<<, operator>>
+#include "core/data/Container.h"        // for Container, etc
+#include "core/data/TimeStamp.h"        // for TimeStamp
+#include "generated/coredata/dmcp/PulseAckContainersMessage.h"
+#include "generated/coredata/dmcp/PulseMessage.h"  // for PulseMessage
 
 using namespace std;
 using namespace core::data;

@@ -21,13 +21,15 @@
 #define OPENDAVINCI_CORE_IO_TCP_TCPCONNECTION_H_
 
 #include <sstream>
+#include <string>
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
-
+#include "core/opendavinci.h"
 #include "core/base/Mutex.h"
-#include "core/io/StringObserver.h"
 #include "core/io/ConnectionObserver.h"
+#include "core/io/StringObserver.h"
+
+namespace core { namespace io { class ConnectionListener; } }
+namespace core { namespace io { class StringListener; } }
 
 namespace core {
     namespace io {

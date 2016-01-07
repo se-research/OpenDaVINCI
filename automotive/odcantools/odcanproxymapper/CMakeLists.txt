@@ -71,8 +71,9 @@ INCLUDE_DIRECTORIES (${AUTOMOTIVEDATA_INCLUDE_DIRS}/automotivedata)
 INCLUDE_DIRECTORIES(${odcanproxy_SOURCE_DIR}/include)
 # Set header files from CANMappingMessage.
 INCLUDE_DIRECTORIES (${CANMESSAGEMAPPING_INCLUDE_DIRS}/canmessagemapping)
-# Set header files from CAN driver.
-INCLUDE_DIRECTORIES (${CMAKE_INSTALL_PREFIX}/usr/include)
+# Set header files from pcan-no-kernel-driver.
+INCLUDE_DIRECTORIES (${pcan-no-kernel-driver_SOURCE_DIR}/lib)
+INCLUDE_DIRECTORIES (${pcan-no-kernel-driver_SOURCE_DIR}/driver)
 # Set include directory.
 INCLUDE_DIRECTORIES(include)
 
@@ -83,7 +84,7 @@ SET (LIBRARIES ${OPENDAVINCI_LIBRARIES}
                ${CANMESSAGEMAPPING_LIBRARIES}
                ${odcanproxy_BINARY_DIR}/libodcanproxylib-static.a
                ${ODCANTOOLS_LIB}
-               ${CMAKE_INSTALL_PREFIX}/usr/lib/libpcan.so)
+               ${pcan-no-kernel-driver_BINARY_DIR}/libpcan-no-kernel-driver-static.a)
 
 ###############################################################################
 # Build this project.
@@ -106,10 +107,11 @@ IF(CXXTEST_FOUND)
 
         SET(CXXTEST_TESTGEN_ARGS ${CXXTEST_TESTGEN_ARGS} --world=${PROJECT_NAME}-${testsuite-short})
         CXXTEST_ADD_TEST(${testsuite-short}-TestSuite ${testsuite-short}-TestSuite.cpp ${testsuite})
-        IF(UNIX)        
-            IF(   ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
-               OR ("${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD")
-               OR ("${CMAKE_SYSTEM_NAME}" STREQUAL "DragonFly") )
+        IF(UNIX)
+            IF( (   ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+                 OR ("${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD")
+                 OR ("${CMAKE_SYSTEM_NAME}" STREQUAL "DragonFly") )
+                AND (NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang") )
                 SET_SOURCE_FILES_PROPERTIES(${testsuite-short}-TestSuite.cpp PROPERTIES COMPILE_FLAGS "-Wno-effc++ -Wno-float-equal -Wno-error=suggest-attribute=noreturn")
             ELSE()
                 SET_SOURCE_FILES_PROPERTIES(${testsuite-short}-TestSuite.cpp PROPERTIES COMPILE_FLAGS "-Wno-effc++ -Wno-float-equal")

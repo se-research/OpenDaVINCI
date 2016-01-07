@@ -24,8 +24,7 @@
 #include <chrono>
 #include <thread>
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include "core/opendavinci.h"
 
 #include "core/wrapper/SystemLibraryProducts.h"
 #include "core/wrapper/ConcurrencyFactoryWorker.h"
@@ -43,18 +42,18 @@ namespace core {
                     return new core::wrapper::WIN32Impl::WIN32Thread(runnable);
                 };
 
-				static void usleepFor(const long &microseconds) {
-					std::this_thread::sleep_until(std::chrono::steady_clock::now() + std::chrono::microseconds(microseconds));
+                static void usleepFor(const long &microseconds) {
+                    std::this_thread::sleep_until(std::chrono::steady_clock::now() + std::chrono::microseconds(microseconds));
                 };
 
-				static void usleepUntil(const long &seconds, const long &partialMicroseconds) {
+                static void usleepUntil(const long &seconds, const long &partialMicroseconds) {
                     using Clock = std::chrono::high_resolution_clock;
                     using TimePoint = std::chrono::time_point<Clock>;
 
                     const Clock::duration sleepUntilDuration = std::chrono::seconds(seconds) + std::chrono::microseconds(partialMicroseconds);
                     const TimePoint timePoint(sleepUntilDuration);
 
-					std::this_thread::sleep_until(timePoint);
+                    std::this_thread::sleep_until(timePoint);
                 };
         };
     }

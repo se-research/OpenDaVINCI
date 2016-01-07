@@ -18,10 +18,16 @@
  */
 
 #include <cmath>
-#include <strstream>
+#include <cstdlib>
+#include <iostream>
+#include <map>
+#include <string>
+#include <vector>
 
-#include "GeneratedHeaders_AutomotiveData.h"
-
+#include "core/opendavinci.h"
+#include "generated/cartesian/Constants.h"
+#include "hesperia/data/environment/Point3.h"
+#include "hesperia/data/environment/Polygon.h"
 #include "vehiclecontext/model/PointSensor.h"
 
 namespace vehiclecontext {
@@ -203,7 +209,7 @@ namespace vehiclecontext {
         }
 
         const string PointSensor::toString() const {
-            strstream sstr;
+            stringstream sstr;
             sstr << m_name << "(" << m_id << ")" << ": " << m_translation.toString() << ", rot: " << m_rotZ << ", angle: " << m_angleFOV << ", range: " << m_distanceFOV << ", clampDistance: " << m_clampDistance <<  ", showFOV: " << m_showFOV << ", fault.skip: " << m_faultModelSkip << ", fault.noise: " << m_faultModelNoise << endl;
             return sstr.str();
         }  

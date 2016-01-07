@@ -18,12 +18,18 @@
  */
 
 #include <sstream>
+#include <string>
+#include <vector>
 
-#include "core/base/Hash.h"
+#include "core/opendavinci.h"
+#include "core/SharedPointer.h"
 #include "core/base/Deserializer.h"
+#include "core/base/Hash.h"
+#include "core/base/Serializable.h"
 #include "core/base/SerializationFactory.h"
 #include "core/base/Serializer.h"
-
+#include "core/data/SerializableData.h"
+#include "hesperia/data/sensor/ContouredObject.h"
 #include "hesperia/data/sensor/ContouredObjects.h"
 
 namespace hesperia {

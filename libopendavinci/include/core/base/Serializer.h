@@ -20,15 +20,15 @@
 #ifndef OPENDAVINCI_CORE_BASE_SERIALIZER_H_
 #define OPENDAVINCI_CORE_BASE_SERIALIZER_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <string>
+
+#include "core/opendavinci.h"
+#include "core/base/Serializable.h"
 
 namespace core {
     namespace base {
 
         using namespace std;
-
-        class Serializable;
 
         /**
          * This class is the interface for any serializer.

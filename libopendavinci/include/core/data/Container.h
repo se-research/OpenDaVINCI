@@ -20,15 +20,17 @@
 #ifndef OPENDAVINCI_CORE_DATA_CONTAINER_H_
 #define OPENDAVINCI_CORE_DATA_CONTAINER_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <sstream>
+#include <string>
 
+#include "core/opendavinci.h"
 #include "core/base/Serializable.h"
-#include "core/data/SerializableData.h"
 #include "core/data/TimeStamp.h"
 
 namespace core {
     namespace data {
+
+class SerializableData;
 
         using namespace std;
 
@@ -67,6 +69,7 @@ namespace core {
                     NAMEDLINE = 26,
                     MEMORYSEGMENT = 29
 
+<<<<<<< HEAD
                     SCENARIO = 830,
                     SCENARIOIDVERTEX3 = 818,
                     SCENARIOHEIGHTIMAGE = 819,
@@ -120,6 +123,10 @@ namespace core {
                     SITUATIONEXTERNALDRIVER = 867,
                     SITUATIONCOMPLEXMODEL = 868,
 */
+=======
+                    WGS84COORDINATE              = 19,
+
+>>>>>>> master
                     CONTOUREDOBJECT              = 30,
                     CONTOUREDOBJECTS             = 31,
                     EGOSTATE                     = 32,

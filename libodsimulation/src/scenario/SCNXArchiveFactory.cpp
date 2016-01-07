@@ -18,18 +18,23 @@
  */
 
 #include <fstream>
-#include <sstream>
+#include <iostream>
+#include <map>
+#include <string>
 
-#include "core/macros.h"
+#include "core/opendavinci.h"
 #include "core/SharedPointer.h"
 #include "core/base/Lock.h"
+#include "core/base/Mutex.h"
+#include "core/exceptions/Exceptions.h"
+#include "core/io/URL.h"
+#include "core/strings/StringComparator.h"
 #include "core/wrapper/CompressionFactory.h"
 #include "core/wrapper/DecompressedData.h"
-#include "core/wrapper/DisposalService.h"
-#include "core/exceptions/Exceptions.h"
+#include "hesperia/data/scenario/Scenario.h"
+#include "hesperia/scenario/SCNXArchive.h"
 #include "hesperia/scenario/SCNXArchiveFactory.h"
 #include "hesperia/scenario/ScenarioFactory.h"
-#include "hesperia/data/scenario/Scenario.h"
 
 namespace hesperia {
     namespace scenario {

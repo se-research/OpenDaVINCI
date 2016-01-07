@@ -18,12 +18,20 @@
  */
 
 #include <sstream>
+#include <string>
+#include <vector>
 
-#include "core/base/Hash.h"
+#include "core/opendavinci.h"
+#include "core/SharedPointer.h"
 #include "core/base/Deserializer.h"
+#include "core/base/Hash.h"
+#include "core/base/Serializable.h"
 #include "core/base/SerializationFactory.h"
 #include "core/base/Serializer.h"
 #include "hesperia/data/situation/Polygon.h"
+#include "hesperia/data/situation/Shape.h"
+#include "hesperia/data/situation/SituationVisitor.h"
+#include "hesperia/data/situation/Vertex3.h"
 
 namespace hesperia {
     namespace data {

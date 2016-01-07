@@ -1,6 +1,6 @@
 /**
  * libvehiclecontext - Models for simulating automotive systems.
- * Copyright (C) 2012 - 2015 Christian Berger
+ * Copyright (C) 2012 - 2016 Christian Berger
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,40 +17,31 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <cmath>
-#include <cstdlib>
-#include <algorithm>
-#include <sstream>
+#include <iostream>
+#include <map>
+#include <string>
+#include <vector>
 
-#include "core/macros.h"
+#include "core/opendavinci.h"
+#include "context/base/SendContainerToSystemsUnderTest.h"
 #include "core/base/KeyValueConfiguration.h"
-#include "core/base/KeyValueDataStore.h"
-#include "core/base/Thread.h"
-#include "core/data/Container.h"
 #include "core/io/URL.h"
 #include "core/strings/StringComparator.h"
-#include "core/exceptions/Exceptions.h"
-
-#include "GeneratedHeaders_AutomotiveData.h"
-#include "hesperia/data/environment/EgoState.h"
+#include "core/wrapper/Time.h"
+#include "generated/automotive/miniature/SensorBoardData.h"
 #include "hesperia/data/environment/Obstacle.h"
-#include "hesperia/data/scenario/Scenario.h"
-#include "hesperia/data/scenario/Shape.h"
+#include "hesperia/data/environment/Point3.h"
+#include "hesperia/data/scenario/Ground.h"
 #include "hesperia/data/scenario/Polygon.h"
+#include "hesperia/data/scenario/Scenario.h"
 #include "hesperia/data/scenario/Surroundings.h"
-#include "hesperia/data/scenario/Vertex3.h"
 #include "hesperia/scenario/SCNXArchive.h"
 #include "hesperia/scenario/SCNXArchiveFactory.h"
-#include "hesperia/scenario/ScenarioFactory.h"
-#include "hesperia/scenario/ScenarioPrettyPrinter.h"
-
-#include "hesperia/data/environment/Line.h"
-
-#include "GeneratedHeaders_AutomotiveData.h"
-
-#include "GeneratedHeaders_AutomotiveData.h"
-
 #include "vehiclecontext/model/IRUS.h"
+#include "vehiclecontext/model/PointSensor.h"
+
+namespace core { namespace exceptions { class ValueForKeyNotFoundException; } }
+namespace hesperia { namespace data { namespace scenario { class Shape; } } }
 
 namespace vehiclecontext {
     namespace model {
@@ -65,9 +56,8 @@ namespace vehiclecontext {
         using namespace hesperia::scenario;
 
         IRUS::IRUS(const string &configuration) :
-			m_kvc(),
-			m_freq(0),
-            m_egoState(),
+            m_kvc(),
+            m_freq(0),
             m_numberOfPolygons(0),
             m_mapOfPolygons(),
             m_listOfPolygonsInsideFOV(),
@@ -75,16 +65,15 @@ namespace vehiclecontext {
             m_distances(),
             m_FOVs() {
 
-			// Create configuration object.
-			stringstream sstrConfiguration;
-			sstrConfiguration.str(configuration);
+            // Create configuration object.
+            stringstream sstrConfiguration;
+            sstrConfiguration.str(configuration);
             m_kvc.readFrom(sstrConfiguration);
-		}
+        }
 
         IRUS::IRUS(const float &freq, const string &configuration) :
-			m_kvc(),
-			m_freq(freq),
-            m_egoState(),
+            m_kvc(),
+            m_freq(freq),
             m_numberOfPolygons(0),
             m_mapOfPolygons(),
             m_listOfPolygonsInsideFOV(),
@@ -222,27 +211,15 @@ namespace vehiclecontext {
             map<string, PointSensor*, core::strings::StringComparator>::const_iterator sensorIterator = m_mapOfPointSensors.begin();
             for (; sensorIterator != m_mapOfPointSensors.end(); sensorIterator++) {
                 PointSensor *sensor = sensorIterator->second;
-                OPENDAVINCI_CORE_DELETE_POINTER(sensor);           
+                OPENDAVINCI_CORE_DELETE_POINTER(sensor);
             }
             m_mapOfPointSensors.clear();
         }
 
-        void IRUS::step(const core::wrapper::Time &t, SendContainerToSystemsUnderTest &sender) {
-            cerr << "[IRUS] Call for t = " << t.getSeconds() << "." << t.getPartialMicroseconds() << ", containing " << getFIFO().getSize() << " containers." << endl;
+        vector<Container> IRUS::calculate(const EgoState &es) {
+            vector<Container> retVal;
 
-            // Get last ForceControl.
-            const uint32_t SIZE = getFIFO().getSize();
-            for (uint32_t i = 0; i < SIZE; i++) {
-                Container c = getFIFO().leave();
-                cerr << "[IRUS] Received: " << c.toString() << endl;
-                if (c.getDataType() == Container::EGOSTATE) {
-                    m_egoState = c.getData<EgoState>();
-                }
-            }
-
-            ////////////////////////////////////////////////////////////////////
-
-            // MSV: Variable for data from the sensorboard.
+            // Store distance information.
             automotive::miniature::SensorBoardData sensorBoardData;
 
             // Loop through point sensors.
@@ -251,21 +228,26 @@ namespace vehiclecontext {
                 PointSensor *sensor = sensorIterator->second;
 
                 // Update FOV.
-                Polygon FOV = sensor->updateFOV(m_egoState.getPosition(), m_egoState.getRotation());
+                Polygon FOV = sensor->updateFOV(es.getPosition(), es.getRotation());
                 m_FOVs[sensor->getName()] = FOV;
 
                 // Calculate distance.
                 m_distances[sensor->getName()] = sensor->getDistance(m_mapOfPolygons);
                 cerr << sensor->getName() << ": " << m_distances[sensor->getName()] << endl;
 
-                // MSV: Store data for sensorboard.
+                // Store data for sensorboard.
                 sensorBoardData.putTo_MapOfDistances(sensor->getID(), m_distances[sensor->getName()]);
 
+<<<<<<< HEAD
                 // MSV: Create a container with type USER_DATA_0.
                 Container c = Container(sensorBoardData, Container::USER_DATA_0);
+=======
+                // Create a container with type USER_DATA_0.
+                Container c = Container(Container::USER_DATA_0, sensorBoardData);
+>>>>>>> master
 
-                // MSV: Send container.
-                sender.sendToSystemsUnderTest(c);
+                // Enqueue container.
+                retVal.push_back(c);
             }
 
             // Distribute FOV where necessary.
@@ -281,9 +263,43 @@ namespace vehiclecontext {
                     Obstacle FOVobstacle(sensorID++, Obstacle::UPDATE);
                     FOVobstacle.setPolygon(FOV);
 
+<<<<<<< HEAD
                     // Send obstacle.
                     Container c = Container(FOVobstacle);
                     sender.sendToSystemsUnderTest(c);
+=======
+                    Container c = Container(Container::OBSTACLE, FOVobstacle);
+                    // Enqueue container.
+                    retVal.push_back(c);
+                }
+            }
+
+            return retVal;
+        }
+
+        void IRUS::step(const core::wrapper::Time &t, SendContainerToSystemsUnderTest &sender) {
+            cerr << "[IRUS] Call for t = " << t.getSeconds() << "." << t.getPartialMicroseconds() << ", containing " << getFIFO().getSize() << " containers." << endl;
+
+            // Get last EgoState.
+            EgoState egoState;
+
+            const uint32_t SIZE = getFIFO().getSize();
+            for (uint32_t i = 0; i < SIZE; i++) {
+                Container c = getFIFO().leave();
+                cerr << "[IRUS] Received: " << c.toString() << endl;
+                if (c.getDataType() == Container::EGOSTATE) {
+                    egoState = c.getData<EgoState>();
+                }
+            }
+
+            // Calculate result and propagate it.
+            vector<Container> toBeSent = calculate(egoState);
+            if (toBeSent.size() > 0) {
+                vector<Container>::iterator it = toBeSent.begin();
+                while(it != toBeSent.end()) {
+                    sender.sendToSystemsUnderTest(*it);
+                    it++;
+>>>>>>> master
                 }
             }
         }

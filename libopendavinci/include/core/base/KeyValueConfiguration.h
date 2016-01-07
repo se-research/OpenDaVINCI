@@ -20,9 +20,14 @@
 #ifndef OPENDAVINCI_CORE_BASE_KEYVALUECONFIGURATION_H_
 #define OPENDAVINCI_CORE_BASE_KEYVALUECONFIGURATION_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <cerrno>
+#include <map>
+#include <iosfwd>
+#include <sstream>
+#include <string>
+#include <vector>
 
+#include "core/opendavinci.h"
 #include "core/data/SerializableData.h"
 #include "core/exceptions/Exceptions.h"
 #include "core/strings/StringComparator.h"

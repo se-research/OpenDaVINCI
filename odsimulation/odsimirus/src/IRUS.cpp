@@ -17,57 +17,27 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <cmath>
-#include <algorithm>
-
-#include "core/macros.h"
-#include "core/base/KeyValueConfiguration.h"
-#include "core/base/KeyValueDataStore.h"
-#include "core/base/Thread.h"
-#include "core/data/Container.h"
-#include "core/io/URL.h"
-#include "core/strings/StringComparator.h"
-
-#include "GeneratedHeaders_AutomotiveData.h"
-#include "hesperia/data/environment/EgoState.h"
-#include "hesperia/data/environment/Obstacle.h"
-#include "hesperia/data/scenario/Scenario.h"
-#include "hesperia/data/scenario/Shape.h"
-#include "hesperia/data/scenario/Polygon.h"
-#include "hesperia/data/scenario/Surroundings.h"
-#include "hesperia/data/scenario/Vertex3.h"
-#include "hesperia/scenario/SCNXArchive.h"
-#include "hesperia/scenario/SCNXArchiveFactory.h"
-#include "hesperia/scenario/ScenarioFactory.h"
-#include "hesperia/scenario/ScenarioPrettyPrinter.h"
-
-#include "hesperia/data/environment/Line.h"
-
-#include "PointSensor.h"
+#include <sstream>
+#include <string>
 
 #include "IRUS.h"
+#include "core/opendavinci.h"
+#include "core/base/Thread.h"
+#include "core/data/Container.h"
+#include "hesperia/data/environment/EgoState.h"
+#include "vehiclecontext/model/IRUS.h"
 
-#include "GeneratedHeaders_AutomotiveData.h"
+namespace core { namespace base { class KeyValueDataStore; } }
 
 namespace irus {
 
     using namespace std;
     using namespace core::base;
     using namespace core::data;
-    using namespace core::io;
-    using namespace hesperia::data;
     using namespace hesperia::data::environment;
-    using namespace hesperia::scenario;
 
     IRUS::IRUS(const int32_t &argc, char **argv) :
-        TimeTriggeredConferenceClientModule(argc, argv, "odsimirus"),
-        m_numberOfPolygons(0),
-        m_mapOfPolygons(),
-        m_listOfPolygonsInsideFOV(),
-        m_mapOfPointSensors(),
-        m_distances(),
-        m_FOVs()
-    {}
+        TimeTriggeredConferenceClientModule(argc, argv, "odsimirus") {}
 
     IRUS::~IRUS() {}
 
@@ -76,6 +46,7 @@ namespace irus {
     void IRUS::tearDown() {}
 
     coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode IRUS::body() {
+<<<<<<< HEAD
         // Load scenario.
         const URL urlOfSCNXFile(getKeyValueConfiguration().getValue<string>("global.scenario"));
         if (urlOfSCNXFile.isValid()) {
@@ -126,70 +97,25 @@ namespace irus {
                 it++;
             }
         }
+=======
+        stringstream sstrConfiguration;
+        getKeyValueConfiguration().writeTo(sstrConfiguration);
+>>>>>>> master
 
-        // Setup all point sensors.
-        for (uint32_t i = 0; i < getKeyValueConfiguration().getValue<uint32_t>("odsimirus.numberOfSensors"); i++) {
-            stringstream sensorID;
-            sensorID << "odsimirus.sensor" << i << ".id";
-            uint16_t id(getKeyValueConfiguration().getValue<uint16_t>(sensorID.str()));
-
-            stringstream sensorName;
-            sensorName << "odsimirus.sensor" << i << ".name";
-            string name(getKeyValueConfiguration().getValue<string>(sensorName.str()));
-            
-            stringstream sensorTranslation;
-            sensorTranslation << "odsimirus.sensor" << i << ".translation";
-            Point3 translation(getKeyValueConfiguration().getValue<string>(sensorTranslation.str()));
-
-            stringstream sensorRotZ;
-            sensorRotZ << "odsimirus.sensor" << i << ".rotZ";
-            const double rotZ = getKeyValueConfiguration().getValue<double>(sensorRotZ.str());
-            
-            stringstream sensorAngleFOV;
-            sensorAngleFOV << "odsimirus.sensor" << i << ".angleFOV";
-            const double angleFOV = getKeyValueConfiguration().getValue<double>(sensorAngleFOV.str());
-            
-            stringstream sensorDistanceFOV;
-            sensorDistanceFOV << "odsimirus.sensor" << i << ".distanceFOV";
-            const double distanceFOV = getKeyValueConfiguration().getValue<double>(sensorDistanceFOV.str());
-            
-            stringstream sensorClampDistance;
-            sensorClampDistance << "odsimirus.sensor" << i << ".clampDistance";
-            const double clampDistance = getKeyValueConfiguration().getValue<double>(sensorClampDistance.str());
-            
-            stringstream sensorShowFOV;
-            sensorShowFOV << "odsimirus.sensor" << i << ".showFOV";
-            const bool showFOV = getKeyValueConfiguration().getValue<bool>(sensorShowFOV.str());
-
-            PointSensor *ps = new PointSensor(id, name, translation, rotZ, angleFOV, distanceFOV, clampDistance, showFOV);
-
-            if (ps != NULL) {
-                // Save for later.
-                m_mapOfPointSensors[ps->getName()] = ps;
-
-                // Initialize distance map entry.
-                m_distances[ps->getName()] = -1;
-
-                // Initialize FOV map entry.
-                Polygon f;
-                m_FOVs[ps->getName()] = f;
-
-                cout << "Registered point sensor " << ps->toString() << "." << endl;
-            }
-        }
+        // Use libodsimulation's odsimirus implementation.
+        string config = sstrConfiguration.str();
+        vehiclecontext::model::IRUS irus(config);
+        irus.setup();
 
         // Use the most recent EgoState available.
         KeyValueDataStore &kvs = getKeyValueDataStore();
 
-        // MSV: Variable for data from the sensorboard.
-        automotive::miniature::SensorBoardData sensorBoardData;
-
-        // Loop through the map of polygons with the current EgoState and intersect all with the point sensor's FOV.
         while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
             // Get current EgoState.
             Container c = kvs.get(Container::EGOSTATE);
             EgoState es = c.getData<EgoState>();
 
+<<<<<<< HEAD
             // Loop through point sensors.
             map<string, PointSensor*, core::strings::StringComparator>::iterator sensorIterator = m_mapOfPointSensors.begin();
             for (; sensorIterator != m_mapOfPointSensors.end(); sensorIterator++) {
@@ -229,10 +155,21 @@ namespace irus {
                     // Send obstacle.
                     c = Container(FOVobstacle);
                     getConference().send(c);
+=======
+            // Calculate result and propagate it.
+            vector<Container> toBeSent = irus.calculate(es);
+            if (toBeSent.size() > 0) {
+                vector<Container>::iterator it = toBeSent.begin();
+                while(it != toBeSent.end()) {
+                    getConference().send(*it);
+                    it++;
+                    Thread::usleepFor(50);
+>>>>>>> master
                 }
             }
         }
 
+<<<<<<< HEAD
         // Delete all point sensors.
         map<string, PointSensor*, core::strings::StringComparator>::const_iterator sensorIterator = m_mapOfPointSensors.begin();
         for (; sensorIterator != m_mapOfPointSensors.end(); sensorIterator++) {
@@ -240,6 +177,9 @@ namespace irus {
             OPENDAVINCI_CORE_DELETE_POINTER(sensor);
         }
         m_mapOfPointSensors.clear();
+=======
+        irus.tearDown();
+>>>>>>> master
 
         return coredata::dmcp::ModuleExitCodeMessage::OKAY;
     }

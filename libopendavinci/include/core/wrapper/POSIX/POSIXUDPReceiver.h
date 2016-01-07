@@ -20,15 +20,19 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXUDPRECEIVER_H_
 #define OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXUDPRECEIVER_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <netinet/in.h>
+#include <sys/socket.h>
 
-#include "core/wrapper/Runnable.h"
-#include "core/wrapper/Thread.h"
+#include <memory>
+#include <string>
+
+#include "core/opendavinci.h"
 #include "core/io/udp/UDPReceiver.h"
-
 #include "core/wrapper/NetworkLibraryProducts.h"
-#include "core/wrapper/UDPFactoryWorker.h"
+#include "core/wrapper/Runnable.h"
+
+namespace core { namespace wrapper { class Thread; } }
+namespace core { namespace wrapper { template <core::wrapper::NetworkLibraryProducts product> class UDPFactoryWorker; } }
 
 namespace core {
     namespace wrapper {

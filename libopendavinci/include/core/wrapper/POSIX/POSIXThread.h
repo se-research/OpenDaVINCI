@@ -20,14 +20,15 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXTHREAD_H_
 #define OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXTHREAD_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <pthread.h>
+#include <memory>
 
-#include "core/wrapper/Mutex.h"
-#include "core/wrapper/Runnable.h"
-#include "core/wrapper/Thread.h"
 #include "core/wrapper/SystemLibraryProducts.h"
-#include "core/wrapper/ConcurrencyFactoryWorker.h"
+#include "core/wrapper/Thread.h"
+
+namespace core { namespace wrapper { class Mutex; } }
+namespace core { namespace wrapper { class Runnable; } }
+namespace core { namespace wrapper { template <core::wrapper::SystemLibraryProducts product> class ConcurrencyFactoryWorker; } }
 
 namespace core {
     namespace wrapper {

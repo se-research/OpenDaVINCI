@@ -18,6 +18,7 @@
  */
 
 #include "core/base/Lock.h"
+#include "core/io/StringSender.h"
 #include "core/io/protocol/AbstractProtocol.h"
 
 namespace core {

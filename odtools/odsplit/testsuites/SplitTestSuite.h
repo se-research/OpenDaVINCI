@@ -34,11 +34,6 @@
 #include "core/data/TimeStamp.h"
 #include "core/io/conference/ContainerConference.h"
 #include "core/io/conference/ContainerConferenceFactory.h"
-#include "core/dmcp/ModuleConfigurationProvider.h"
-#include "core/dmcp/discoverer/Server.h"
-#include "core/dmcp/connection/Server.h"
-#include "core/dmcp/connection/ConnectionHandler.h"
-#include "core/dmcp/connection/ModuleConnection.h"
 #include "core/wrapper/SharedMemory.h"
 #include "core/wrapper/SharedMemoryFactory.h"
 
@@ -54,27 +49,12 @@ using namespace std;
 using namespace core;
 using namespace core::base;
 using namespace core::data;
-using namespace core::dmcp;
 using namespace core::io;
 using namespace core::io::conference;
 using namespace coredata::dmcp;
 using namespace tools::player;
 using namespace tools::recorder;
 using namespace odsplit;
-
-/**
- * This class derives from Split to allow access to protected methods.
- */
-class SplitTestling : public Split {
-    private:
-        SplitTestling();
-    
-    public:
-        SplitTestling(const int32_t &argc, char **argv) :
-            Split(argc, argv) {}
-
-        // Here, you need to add all methods which are protected in Split and which are needed for the test cases.
-};
 
 // Size of the memory buffer.
 const uint32_t MEMORY_SEGMENT_SIZE = 100;
@@ -85,35 +65,14 @@ const uint32_t NUMBER_OF_SEGMENTS = 1;
 /**
  * The actual testsuite starts here.
  */
-class SplitTest : public CxxTest::TestSuite,
-                     public connection::ConnectionHandler,
-                     public ModuleConfigurationProvider {
-    private:
-        SplitTestling *dt;
-
+class SplitTest : public CxxTest::TestSuite {
     public:
-        SplitTest() :
-            dt(NULL),
-            m_configuration(),
-            m_connection() {}
-
-        KeyValueConfiguration m_configuration;
-        core::SharedPointer<connection::ModuleConnection> m_connection;
-
-        virtual KeyValueConfiguration getConfiguration(const ModuleDescriptor& /*md*/) {
-            return m_configuration;
-        }
-
-        virtual void onNewModule(core::SharedPointer<core::dmcp::connection::ModuleConnection> mc) {
-            m_connection = mc;
-        }
-
         void setUp() {
             // Run recorder in synchronous mode.
             const bool THREADING = false;
             const bool DUMP_SHARED_DATA = true;
             const string file("file://A.rec");
-            Recorder recorder(file, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING, DUMP_SHARED_DATA);        
+            Recorder recorder(file, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING, DUMP_SHARED_DATA);
 
             {
                 core::SharedPointer<core::wrapper::SharedMemory> memServer = core::wrapper::SharedMemoryFactory::createSharedMemory("SharedMemoryServer", 50);
@@ -154,55 +113,24 @@ class SplitTest : public CxxTest::TestSuite,
         ////////////////////////////////////////////////////////////////////////////////////
 
         void testSplitSuccessfullySplit() {
-            // Setup ContainerConference.
-            core::SharedPointer<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.100");
-
-            // Setup DMCP.
-            stringstream sstr;
-            sstr << "odrecorder.output = file://RecorderTest.rec" << endl
-            << "global.buffer.memorySegmentSize = 1000" << endl
-            << "global.buffer.numberOfMemorySegments = 1" << endl
-            << "odrecorder.remoteControl = 0" << endl;
-
-            m_configuration = KeyValueConfiguration();
-            m_configuration.readFrom(sstr);
-
-            vector<string> noModulesToIgnore;
-            ServerInformation serverInformation("127.0.0.1", 19000, ServerInformation::ML_NONE);
-            discoverer::Server dmcpDiscovererServer(serverInformation,
-                                                    "225.0.0.100",
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_SERVER,
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_CLIENT,
-                                                    noModulesToIgnore);
-            dmcpDiscovererServer.startResponding();
-
-            connection::Server dmcpConnectionServer(serverInformation, *this);
-            dmcpConnectionServer.setConnectionHandler(this);
-
             // Prepare the data that would be available from commandline.
             string argv0("odsplit");
-            string argv1("--cid=100");
-            string argv2("--freq=100");
-            string argv3("--source=A.rec");
-            string argv4("--range=50-60");
-            int32_t argc = 5;
+            string argv1("--source=A.rec");
+            string argv2("--range=50-60");
+            string argv3("--memorysegmentsize=1000");
+            int32_t argc = 4;
             char **argv;
-            argv = new char*[5];
+            argv = new char*[4];
             argv[0] = const_cast<char*>(argv0.c_str());
             argv[1] = const_cast<char*>(argv1.c_str());
             argv[2] = const_cast<char*>(argv2.c_str());
             argv[3] = const_cast<char*>(argv3.c_str());
-            argv[4] = const_cast<char*>(argv4.c_str());
 
-            // Create an instance of sensorboard through SensorBoardTestling which will be deleted in tearDown().
-            dt = new SplitTestling(argc, argv);
+            // Create an instance of split.
+            Split split;
 
             // Run the split.
-            TS_ASSERT(dt != NULL);
-            TS_ASSERT(dt->runModule() == coredata::dmcp::ModuleExitCodeMessage::OKAY);
-
-            delete dt;
-            dt = NULL;
+            TS_ASSERT(split.run(argc, argv) == 0);
 
             // Compare the split.
 
@@ -257,92 +185,31 @@ class SplitTest : public CxxTest::TestSuite,
             TS_ASSERT(rangeBasis == 31);
             TS_ASSERT(sharedMemorySegments == 5);
 
-            // "Ugly" cleaning up conference.
-            ContainerConferenceFactory &ccf = ContainerConferenceFactory::getInstance();
-            ContainerConferenceFactory *ccf2 = &ccf;
-            OPENDAVINCI_CORE_DELETE_POINTER(ccf2);
-
             // Clean up temporarily created files.
             UNLINK("A.rec_50-60.rec");
             UNLINK("A.rec_50-60.rec.mem");
         }
 
         void testSplitWrongRange() {
-            // Setup DMCP.
-            stringstream sstr;
-            sstr << "odrecorder.output = file://RecorderTest.rec" << endl
-            << "global.buffer.memorySegmentSize = 1000" << endl
-            << "global.buffer.numberOfMemorySegments = 1" << endl
-            << "odrecorder.remoteControl = 0" << endl;
-
-            m_configuration = KeyValueConfiguration();
-            m_configuration.readFrom(sstr);
-
-            vector<string> noModulesToIgnore;
-            ServerInformation serverInformation("127.0.0.1", 19000, ServerInformation::ML_NONE);
-            discoverer::Server dmcpDiscovererServer(serverInformation,
-                                                    "225.0.0.100",
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_SERVER,
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_CLIENT,
-                                                    noModulesToIgnore);
-            dmcpDiscovererServer.startResponding();
-
-            connection::Server dmcpConnectionServer(serverInformation, *this);
-            dmcpConnectionServer.setConnectionHandler(this);
-
             // Prepare the data that would be available from commandline.
             string argv0("odsplit");
-            string argv1("--cid=100");
-            string argv2("--freq=100");
-            string argv3("--source=A.rec");
-            string argv4("--range=70-60");
-            int32_t argc = 5;
+            string argv1("--source=A.rec");
+            string argv2("--range=70-60");
+            string argv3("--memorysegmentsize=1000");
+            int32_t argc = 4;
             char **argv;
-            argv = new char*[5];
+            argv = new char*[4];
             argv[0] = const_cast<char*>(argv0.c_str());
             argv[1] = const_cast<char*>(argv1.c_str());
             argv[2] = const_cast<char*>(argv2.c_str());
             argv[3] = const_cast<char*>(argv3.c_str());
-            argv[4] = const_cast<char*>(argv4.c_str());
 
-            // Create an instance of sensorboard through SensorBoardTestling which will be deleted in tearDown().
-            dt = new SplitTestling(argc, argv);
+            // Create an instance of split.
+            Split split;
 
             // Run the split.
-            TS_ASSERT(dt != NULL);
-            TS_ASSERT(dt->runModule() == coredata::dmcp::ModuleExitCodeMessage::SERIOUS_ERROR);
-
-            delete dt;
-            dt = NULL;
+            TS_ASSERT(split.run(argc, argv) == 1);
         }
-
-        ////////////////////////////////////////////////////////////////////////////////////
-        // Below this line the necessary constructor for initializing the pointer variables,
-        // and the forbidden copy constructor and assignment operator are declared.
-        //
-        // These functions are normally not changed.
-        ////////////////////////////////////////////////////////////////////////////////////
-
-    private:
-        /**
-         * "Forbidden" copy constructor. Goal: The compiler should warn
-         * already at compile time for unwanted bugs caused by any misuse
-         * of the copy constructor.
-         *
-         * @param obj Reference to an object of this class.
-         */
-        SplitTest(const SplitTest &/*obj*/);
-
-        /**
-         * "Forbidden" assignment operator. Goal: The compiler should warn
-         * already at compile time for unwanted bugs caused by any misuse
-         * of the assignment operator.
-         *
-         * @param obj Reference to an object of this class.
-         * @return Reference to this instance.
-         */
-        SplitTest& operator=(const SplitTest &/*obj*/);
-
 };
 
 #endif /*SPLITTESTSUITE_H_*/

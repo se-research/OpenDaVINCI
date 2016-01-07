@@ -21,17 +21,20 @@
 #ifndef SUPERCOMPONENT_CONNECTEDMODULES_H_
 #define SUPERCOMPONENT_CONNECTEDMODULES_H_
 
+#include <map>
+#include <string>
 #include <vector>
 
-#include "GeneratedHeaders_CoreData.h"
+#include "core/opendavinci.h"
 #include "core/base/Mutex.h"
-#include "core/data/Container.h"
 
-#include "GeneratedHeaders_CoreData.h"
-
-#include "ConnectedModule.h"
+namespace coredata { namespace dmcp { class ModuleDescriptor; } }
+namespace coredata { namespace dmcp { class PulseMessage; } }
+namespace core { namespace data { class Container; } }
 
 namespace odsupercomponent {
+
+class ConnectedModule;
 
     using namespace std;
 

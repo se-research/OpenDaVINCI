@@ -20,15 +20,12 @@
 #ifndef OPENDAVINCI_CORE_IO_PACKETOBSERVER_H_
 #define OPENDAVINCI_CORE_IO_PACKETOBSERVER_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
-
-#include "core/io/PacketListener.h"
+#include "core/opendavinci.h"
 
 namespace core {
     namespace io {
 
-        using namespace std;
+class PacketListener;
 
         /**
          * This class provides an interface for registering

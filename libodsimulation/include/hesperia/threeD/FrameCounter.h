@@ -20,6 +20,7 @@
 #ifndef HESPERIA_THREED_FRAMECOUNTER_H_
 #define HESPERIA_THREED_FRAMECOUNTER_H_
 
+#include "core/opendavinci.h"
 #include "core/data/TimeStamp.h"
 
 namespace hesperia {

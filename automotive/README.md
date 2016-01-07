@@ -29,10 +29,10 @@ To test the current code, open Terminal, change directories to OpenDaVinci and r
 5. Right click on org.opendavinci/GenerateCANDataModel.mwe2 (in the navigation menu) and Run As MWE2 Workflow;
 6. Right click on the root project and then select Refresh;
 7. Build the Java code generator by opening Terminal and doing the following:
-	
-	$ cd OpenDaVinci/automotive/odCANDataStructureGenerator/org.opendavinci.candatamodel/
-	$ ant -f ant-build.xml clean
-	$ ant -f ant-build.xml
+
+        $ cd OpenDaVinci/automotive/odCANDataStructureGenerator/org.opendavinci.candatamodel/
+        $ ant -f ant-build.xml clean
+        $ ant -f ant-build.xml
 	
 Then, execute the code generator (it will use the “CANMessageMapping.can” file to generate its output):
 	
@@ -71,18 +71,19 @@ Alternatively to step 5, the complete automotive model can be built - with the s
 ###STEP C - Testing the result code:
 
 	$ cd /opt/od/bin
-	$ ./odsupercomponent --cid=111
-	$ ./odcockpit --cid=111 
+	$ LD_LIBRARY_PATH=/opt/od/lib ./odsupercomponent --cid=111
+	$ LD_LIBRARY_PATH=/opt/od/lib ./odcockpit --cid=111 
 
 Then, start the LiveFeed plugin in odcockpit. 
 
 Lastly, IF you are connected to a real car, run:
 
-	$ ./odcanproxy --cid=111
+	$ LD_LIBRARY_PATH=/opt/od/lib ./odcanproxy --cid=111
 	$ LD_LIBRARY_PATH=/opt/od/lib ./odcanmapper --cid=111
 
 ELSE if you have recording files, run:
 
-	$ ./odcanascreplay --cid=111 < OpenDaVINCI/automotive/odcantools/odcanascreplay/example/example.asc
+	$ LD_LIBRARY_PATH=/opt/od/lib ./odcanascreplay --cid=111 < The/path/of/the/recording/file
 	$ LD_LIBRARY_PATH=/opt/od/lib ./odcanmapper --cid=111
 
+An example recording file example.asc can be found in OpenDaVINCI/automotive/odcantools/odcanascreplay/example/example.asc.

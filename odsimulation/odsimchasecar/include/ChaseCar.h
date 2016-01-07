@@ -20,22 +20,19 @@
 #ifndef CHASECAR_H_
 #define CHASECAR_H_
 
-#include <vector>
-
-#include <opencv/cv.h>
+#include <stdint.h>
 
 #include "core/SharedPointer.h"
-#include "core/wrapper/Image.h"
 #include "core/base/FIFOQueue.h"
-
 #include "core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
 #include "hesperia/data/environment/EgoState.h"
-#include "hesperia/data/environment/Obstacle.h"
-#include "hesperia/io/camera/ImageGrabber.h"
 
-#include "OpenGLGrabber.h"
+namespace core { namespace wrapper { class Image; } }
 
 namespace chasecar {
+
+class OpenGLGrabber;
 
     using namespace std;
 

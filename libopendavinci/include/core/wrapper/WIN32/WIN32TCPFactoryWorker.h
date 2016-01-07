@@ -20,8 +20,9 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_WIN32IMPL_WIN32TCPFACTORY_H_
 #define OPENDAVINCI_CORE_WRAPPER_WIN32IMPL_WIN32TCPFACTORY_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <string>
+
+#include "core/opendavinci.h"
 
 #include "core/wrapper/TCPFactoryWorker.h"
 #include "core/wrapper/WIN32/WIN32TCPAcceptor.h"

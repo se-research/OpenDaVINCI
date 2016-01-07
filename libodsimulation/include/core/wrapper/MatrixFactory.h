@@ -20,17 +20,14 @@
 #ifndef HESPERIA_CORE_WRAPPER_MATRIXFACTORY_H_
 #define HESPERIA_CORE_WRAPPER_MATRIXFACTORY_H_
 
-#include <iostream>
-
-// native.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/native.h"
-
+#include "core/opendavinci.h"
 #include "core/wrapper/Disposable.h"
-#include "core/wrapper/Matrix.h"
-#include "core/wrapper/Mutex.h"
 
 namespace core {
     namespace wrapper {
+
+class Matrix;
+class Mutex;
 
         using namespace std;
 

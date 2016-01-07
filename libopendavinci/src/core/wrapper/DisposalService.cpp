@@ -17,12 +17,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <cstdlib>
+#include <iostream>
+#include <sstream>
+
+#include "core/opendavinci.h"
 #include "core/base/module/AbstractCIDModule.h"
 #include "core/wrapper/ConcurrencyFactory.h"
 #include "core/wrapper/ConditionFactory.h"
+#include "core/wrapper/Disposable.h"
 #include "core/wrapper/DisposalService.h"
+#include "core/wrapper/Mutex.h"
 #include "core/wrapper/MutexFactory.h"
-#include "core/wrapper/TimeFactory.h"
+#include "core/wrapper/Thread.h"
 
 namespace core {
     namespace wrapper {

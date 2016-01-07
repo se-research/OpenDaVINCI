@@ -1,0 +1,67 @@
+.\" Manpage for odfilter
+.\" Author: Christian Berger <christian.berger@gu.se>.
+
+.TH odfilter 1 "05 January 2016" "2.4.2" "odfilter man page"
+
+.SH NAME
+odfilter \- This tool filters a stream of containers as part of a pipe.
+
+
+
+.SH SYNOPSIS
+.B odfilter [--keep=<ID_1>] [--drop=<ID_1>,<ID_2>]
+
+
+
+.SH DESCRIPTION
+odfilter belongs to OpenDaVINCI and is a tool to keep or drop a range of containers from
+a stream of containers dumped from an OpenDaVINCI container conference session. This tool
+expects a stream of containers from STDIN and dumps the results according to the
+specified --keep or --drop parameter to STDOUT.
+
+All container IDs > 0 specified as a comma-separated list to the parameter --keep will
+be dumped to STDOUT; all non-matching containers will be discarded.
+
+All container IDs > 0 specified as a comma-separated list to the parameter --drop will
+not be dumped to STDOUT; all other containers will be dumped.
+
+You cannot specify --keep and --drop at the same time.
+
+
+
+.SH OPTIONS
+.B --keep=<ID_1>,<ID_2>
+.RS
+This parameter specifies which containers to be kept for dumping to STDOUT. The specified
+identifiers must be separated with commas and the identifiers must be greater than 0.
+.RE
+
+
+.B --drop=<ID_1>,<ID_2>
+.RS
+This parameter specifies which containers to be dropped from dumping to STDOUT. The specified
+identifiers must be separated with commas and the identifiers must be greater than 0.
+.RE
+
+
+
+.SH EXAMPLES
+The following command only preserves containers with the identifiers 1, 2, or 78.
+
+.B odfilter --keep=1,2,78 < myRecording.rec > myCleanedRecording.rec
+
+
+
+.SH SEE ALSO
+odfilter(1), odplayer(1), odrecorder(1), odrecintegrity(1), odredirector(1), odsplit(1), odspy(1)
+
+
+
+.SH BUGS
+No known bugs.
+
+
+
+.SH AUTHOR
+Christian Berger (christian.berger@gu.se)
+

@@ -20,13 +20,9 @@
 #ifndef IRUS_H_
 #define IRUS_H_
 
-#include <map>
-#include <vector>
-
+#include "core/opendavinci.h"
 #include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "hesperia/data/environment/Polygon.h"
-
-#include "PointSensor.h"
+#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
 namespace irus {
 
@@ -74,14 +70,6 @@ namespace irus {
             virtual void setUp();
 
             virtual void tearDown();
-
-        private:
-            uint32_t m_numberOfPolygons;
-            map<uint32_t, hesperia::data::environment::Polygon> m_mapOfPolygons;
-            vector<uint32_t> m_listOfPolygonsInsideFOV;
-            map<string, PointSensor*> m_mapOfPointSensors;
-            map<string, double> m_distances;
-            map<string, hesperia::data::environment::Polygon> m_FOVs;
     };
 
 } // irus

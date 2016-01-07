@@ -17,12 +17,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "core/macros.h"
-#include "core/base/Lock.h"
+#include <iostream>
 
-#include "hesperia/scenegraph/SceneNodeDescriptor.h"
-#include "hesperia/scenegraph/transformation/SceneGraphFactory.h"
+#include "core/base/Lock.h"
+#include "core/base/Mutex.h"
+#include "hesperia/data/scenario/Scenario.h"
+#include "hesperia/scenario/SCNXArchive.h"
+#include "hesperia/scenegraph/SceneNode.h"
 #include "hesperia/scenegraph/transformation/ScenarioTransformation.h"
+#include "hesperia/scenegraph/transformation/SceneGraphFactory.h"
 
 namespace hesperia {
     namespace scenegraph {

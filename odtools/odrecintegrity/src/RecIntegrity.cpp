@@ -19,13 +19,13 @@
 
 #include <fstream>
 #include <iostream>
-
-#include "core/SharedPointer.h"
-#include "core/data/Container.h"
-
-#include "GeneratedHeaders_CoreData.h"
+#include <string>
 
 #include "RecIntegrity.h"
+#include "core/base/Serializable.h"
+#include "core/data/Container.h"
+#include "generated/coredata/SharedData.h"
+#include "generated/coredata/image/SharedImage.h"
 
 namespace odrecintegrity {
 
@@ -90,6 +90,9 @@ namespace odrecintegrity {
                             fin.seekg(currPos + lengthToSkip);
                             cout << "[RecIntegrity]: Found SHARED_DATA '" << sd.getName() << "' (" << lengthToSkip << " bytes)" << endl;
                             numberOfSharedData++;
+                        }
+                        else {
+                            cout << "[RecIntegrity]: Found data type '" << c.getDataType() << "'." << endl;
                         }
 
                         float percentage = (float)(currPos*100.0)/(float)length;

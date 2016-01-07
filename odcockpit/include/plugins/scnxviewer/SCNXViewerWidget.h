@@ -21,14 +21,17 @@
 #ifndef COCKPIT_PLUGINS_SCNXVIEWER_SCNXVIEWERWIDGET_H_
 #define COCKPIT_PLUGINS_SCNXVIEWER_SCNXVIEWERWIDGET_H_
 
-#include "QtIncludes.h"
+#include <qobjectdefs.h>
+#include <qwidget.h>
 
-#include "plugins/GLControlFrame.h"
-#include "plugins/scnxviewer/SCNXGLWidget.h"
+namespace cockpit { namespace plugins { class GLControlFrame; } }
+namespace cockpit { namespace plugins { class PlugIn; } }
 
 namespace cockpit {
     namespace plugins {
         namespace scnxviewer {
+
+class SCNXGLWidget;
 
             using namespace std;
 

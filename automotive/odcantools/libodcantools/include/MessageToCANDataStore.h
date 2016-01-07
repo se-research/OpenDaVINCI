@@ -20,11 +20,10 @@
 #ifndef MESSAGETOCANDATASTORE_H_
 #define MESSAGETOCANDATASTORE_H_
 
+#include "core/opendavinci.h"
 #include "core/base/AbstractDataStore.h"
 
-#include "GeneratedHeaders_CoreData.h"
-
-#include "CANDevice.h"
+namespace core { namespace data { class Container; } }
 
 namespace automotive {
     namespace odcantools {

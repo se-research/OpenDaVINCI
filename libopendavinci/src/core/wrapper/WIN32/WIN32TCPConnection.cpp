@@ -17,6 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <memory>
+#include <sstream>
+#include <string>
+
 #include "core/wrapper/ConcurrencyFactory.h"
 #include "core/wrapper/MutexFactory.h"
 #include "core/wrapper/WIN32/WIN32TCPConnection.h"
@@ -46,16 +50,16 @@ namespace core {
                 m_port(port) {
                 initialize();
 
-				// Load Winsock 2.2 DLL.
-				WSADATA wsaData;
-				if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
-					stringstream s;
-					const int retcode = WSAGetLastError();
-					s << "[core::wrapper::WIN32TCPConnection] Error while calling WSAStartUp: " << retcode;
-					throw s.str();
-				}
-				
-				addrinfo hints;
+                // Load Winsock 2.2 DLL.
+                WSADATA wsaData;
+                if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
+                    stringstream s;
+                    const int retcode = WSAGetLastError();
+                    s << "[core::wrapper::WIN32TCPConnection] Error while calling WSAStartUp: " << retcode;
+                    throw s.str();
+                }
+                
+                addrinfo hints;
                 memset(&hints, 0, sizeof(hints));
                 hints.ai_family = AF_INET;
                 hints.ai_socktype = SOCK_STREAM;
@@ -67,39 +71,39 @@ namespace core {
                 addrinfo* res;
                 if ( ::getaddrinfo(ip.c_str(), sstr.c_str(), &hints, &res) == -1 ) {
                     ::freeaddrinfo(res);
-					stringstream s;
-					const int retcode = WSAGetLastError();
-					s << "[core::wrapper::WIN32TCPConnection] Error while getting info: " << retcode;
+                    stringstream s;
+                    const int retcode = WSAGetLastError();
+                    s << "[core::wrapper::WIN32TCPConnection] Error while getting info: " << retcode;
 
-					// Decrement Winsock 2.2 DLL access counter.
-					WSACleanup();
+                    // Decrement Winsock 2.2 DLL access counter.
+                    WSACleanup();
 
-					throw s.str();
+                    throw s.str();
                 }
 
                 m_fileDescriptor = ::socket(res->ai_family, res->ai_socktype, res->ai_protocol);
                 if (m_fileDescriptor < 0) {
                     ::freeaddrinfo(res);
-					stringstream s;
-					const int retcode = WSAGetLastError();
-					s << "[core::wrapper::WIN32TCPConnection] Error creating socket: " << retcode;
+                    stringstream s;
+                    const int retcode = WSAGetLastError();
+                    s << "[core::wrapper::WIN32TCPConnection] Error creating socket: " << retcode;
 
-					// Decrement Winsock 2.2 DLL access counter.
-					WSACleanup();
+                    // Decrement Winsock 2.2 DLL access counter.
+                    WSACleanup();
 
-					throw s.str();
+                    throw s.str();
                 }
 
                 if ( ::connect(m_fileDescriptor, res->ai_addr, res->ai_addrlen) < 0 ) {
                     ::freeaddrinfo(res);
-					stringstream s;
-					const int retcode = WSAGetLastError();
-					s << "[core::wrapper::WIN32TCPConnection] Error connecting to socket: " << retcode;
+                    stringstream s;
+                    const int retcode = WSAGetLastError();
+                    s << "[core::wrapper::WIN32TCPConnection] Error connecting to socket: " << retcode;
 
-					// Decrement Winsock 2.2 DLL access counter.
-					WSACleanup();
+                    // Decrement Winsock 2.2 DLL access counter.
+                    WSACleanup();
 
-					throw s.str();
+                    throw s.str();
                 }
 
                 ::freeaddrinfo(res);
@@ -108,10 +112,10 @@ namespace core {
             WIN32TCPConnection::~WIN32TCPConnection() {
                 stop();
                 ::closesocket(m_fileDescriptor);
-			
-				// Decrement Winsock 2.2 DLL access counter.
-				WSACleanup();
-			}
+            
+                // Decrement Winsock 2.2 DLL access counter.
+                WSACleanup();
+            }
 
             void WIN32TCPConnection::start() {
                 m_thread->start();

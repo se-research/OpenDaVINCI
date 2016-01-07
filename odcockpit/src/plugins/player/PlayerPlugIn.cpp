@@ -18,17 +18,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifdef PANDABOARD
-#include <stdc-predef.h>
-#endif
-
+#include "core/opendavinci.h"
 #include "plugins/player/PlayerPlugIn.h"
+#include "plugins/player/PlayerWidget.h"
+
+class QWidget;
+namespace core { namespace base { class KeyValueConfiguration; } }
+namespace core { namespace io { namespace conference { class ContainerConference; } } }
 
 namespace cockpit {
 
     namespace plugins {
 
         namespace player {
+
+            using namespace std;
 
             PlayerPlugIn::PlayerPlugIn(const string &name, const core::base::KeyValueConfiguration &kvc, core::io::conference::ContainerConference &conf, QWidget *prnt) :
                 ControlPlugIn(name, kvc, conf, prnt),

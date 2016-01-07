@@ -20,12 +20,13 @@
 #ifndef HESPERIA_SCENEGRAPH_RENDERER_ABSTRACTRENDERER_H_
 #define HESPERIA_SCENEGRAPH_RENDERER_ABSTRACTRENDERER_H_
 
-// native.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/native.h"
+#include "core/opendavinci.h"
+#include "hesperia/scenegraph/SceneNodeVisitor.h"
 
-#include "hesperia/scenegraph/primitives/Point.h"
-#include "hesperia/scenegraph/primitives/Line.h"
-#include "hesperia/scenegraph/primitives/Polygon.h"
+namespace hesperia { namespace scenegraph { class SceneNode; } }
+namespace hesperia { namespace scenegraph { namespace primitives { class Line; } } }
+namespace hesperia { namespace scenegraph { namespace primitives { class Point; } } }
+namespace hesperia { namespace scenegraph { namespace primitives { class Polygon; } } }
 
 namespace hesperia {
     namespace scenegraph {

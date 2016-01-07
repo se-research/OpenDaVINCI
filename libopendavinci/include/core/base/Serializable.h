@@ -20,8 +20,9 @@
 #ifndef OPENDAVINCI_CORE_BASE_SERIALIZABLE_H_
 #define OPENDAVINCI_CORE_BASE_SERIALIZABLE_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include <sstream>
+
+#include "core/opendavinci.h"
 
 namespace core {
     namespace base {

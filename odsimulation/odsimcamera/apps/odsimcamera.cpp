@@ -17,6 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <sys/types.h>
+
 #include "CamGen.h"
 
 int32_t main(int32_t argc, char **argv) {

@@ -23,21 +23,21 @@
 #include <string>
 #include <vector>
 
-// native.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/native.h"
-
+#include "core/opendavinci.h"
 #include "core/SharedPointer.h"
 #include "core/base/Mutex.h"
-#include "core/data/Container.h"
-#include "core/io/conference/ContainerConference.h"
 #include "core/io/conference/ContainerConferenceFactory.h"
 #include "core/io/conference/ContainerListener.h"
-#include "context/base/BlockableContainerReceiver.h"
-#include "context/base/ContainerDeliverer.h"
 #include "context/base/ControlledContainerConference.h"
+
+namespace core { namespace data { class Container; } }
+namespace core { namespace io { namespace conference { class ContainerConference; } } }
 
 namespace context {
     namespace base {
+
+class BlockableContainerReceiver;
+class ContainerDeliverer;
 
         using namespace std;
 

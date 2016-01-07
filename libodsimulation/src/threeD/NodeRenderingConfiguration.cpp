@@ -22,8 +22,6 @@
 namespace hesperia {
     namespace threeD {
 
-        using namespace std;
-
         NodeRenderingConfiguration::NodeRenderingConfiguration() :
                 m_parameters(NodeRenderingConfiguration::ENABLED) {}
 

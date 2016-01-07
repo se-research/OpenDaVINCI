@@ -17,17 +17,30 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <iostream>
+#include <string>
 
-#include "hesperia/data/situation/BoundingBox.h"
+#include "core/opendavinci.h"
+#include "core/exceptions/Exceptions.h"
+#include "core/wrapper/parser/ASTNode.h"
+#include "hesperia/data/situation/Header.h"
 #include "hesperia/data/situation/Immediately.h"
-#include "hesperia/data/situation/PointID.h"
+#include "hesperia/data/situation/Object.h"
 #include "hesperia/data/situation/ReturnToStart.h"
 #include "hesperia/data/situation/Stop.h"
+#include "hesperia/data/situation/Vertex3.h"
 #include "hesperia/data/situation/WarpToStart.h"
 #include "hesperia/situation/SITSituationVisitor.h"
-#include "core/wrapper/parser/ASTNode.h"
-#include "core/wrapper/parser/ASTPrettyPrinter.h"
+
+namespace hesperia { namespace data { namespace situation { class Behavior; } } }
+namespace hesperia { namespace data { namespace situation { class ComplexModel; } } }
+namespace hesperia { namespace data { namespace situation { class ExternalDriver; } } }
+namespace hesperia { namespace data { namespace situation { class OnEnteringPolygon; } } }
+namespace hesperia { namespace data { namespace situation { class OnMoving; } } }
+namespace hesperia { namespace data { namespace situation { class PointIDDriver; } } }
+namespace hesperia { namespace data { namespace situation { class Polygon; } } }
+namespace hesperia { namespace data { namespace situation { class Rectangle; } } }
+namespace hesperia { namespace data { namespace situation { class Shape; } } }
+namespace hesperia { namespace data { namespace situation { class Situation; } } }
 
 namespace hesperia {
     namespace situation {

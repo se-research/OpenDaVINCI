@@ -17,30 +17,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <ctime>
+#include <GL/freeglut.h>
+#include <GL/gl.h>
 
+#include <cmath>
+#include <cstdlib>
+#include <ctime>
 #include <iostream>
 
-#include <GL/gl.h>
-#include <GL/freeglut.h>
-
-#include <opencv/highgui.h>
-#include <opencv/cxcore.h>
-
-#include "core/macros.h"
-#include "core/base/Thread.h"
+#include "CamGen.h"
+#include "OpenGLGrabber.h"
 #include "core/base/KeyValueConfiguration.h"
 #include "core/data/Container.h"
-#include "core/wrapper/SharedMemory.h"
-#include "core/wrapper/SharedMemoryFactory.h"
-
-#include "GeneratedHeaders_AutomotiveData.h"
-#include "hesperia/data/environment/Point3.h"
+#include "core/opendavinci.h"
+#include "core/wrapper/Image.h"
 #include "hesperia/data/camera/ImageGrabberCalibration.h"
 #include "hesperia/data/camera/ImageGrabberID.h"
-#include "GeneratedHeaders_CoreData.h"
-
-#include "CamGen.h"
+#include "hesperia/data/environment/Point3.h"
+#include "generated/coredata/image/SharedImage.h"
 
 namespace camgen {
 

@@ -17,24 +17,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <sstream>
+#include <iostream>
+#include <vector>
 
-#include "GeneratedHeaders_AutomotiveData.h"
-#include "hesperia/data/environment/Point3.h"
-#include "hesperia/data/scenario/IDVertex3.h"
-#include "hesperia/data/graph/WaypointsEdge.h"
-#include "hesperia/data/graph/WaypointVertex.h"
-#include "hesperia/data/planning/Route.h"
+#include "core/wrapper/parser/ASTNode.h"
+#include "hesperia/data/environment/NamedLine.h"
+#include "hesperia/data/scenario/Arc.h"
 #include "hesperia/data/scenario/Connector.h"
-#include "hesperia/data/scenario/Scenario.h"
-#include "hesperia/data/scenario/Layer.h"
-#include "hesperia/data/scenario/PointID.h"
-#include "hesperia/data/scenario/Road.h"
 #include "hesperia/data/scenario/Lane.h"
-#include "hesperia/data/scenario/IDVertex3.h"
 #include "hesperia/data/scenario/LaneModel.h"
+#include "hesperia/data/scenario/PointModel.h"
+#include "hesperia/data/scenario/Scenario.h"
+#include "hesperia/data/scenario/ScenarioNode.h"
+#include "hesperia/data/scenario/StraightLine.h"
 #include "hesperia/scenario/FindNodeByPointIDVisitor.h"
 #include "hesperia/scenario/LaneVisitor.h"
+#include "hesperia/data/graph/WaypointsEdge.h"
+#include "hesperia/data/graph/WaypointVertex.h"
+
+namespace core { namespace wrapper { namespace graph { class DirectedGraph; } } }
 
 namespace hesperia {
     namespace scenario {
@@ -57,20 +58,24 @@ namespace hesperia {
 
                 if (l.getLaneModel() != NULL) {
                     const PointModel *pm = dynamic_cast<PointModel*>(l.getLaneModel());
-                    if (pm != NULL) {
+                    bool wasPM = false;
+                    if (!wasPM && pm != NULL) {
                         visit(pm);
+                        wasPM = true;
                     }
 
                     bool wasArc = false;
                     const Arc *arc = dynamic_cast<Arc*>(l.getLaneModel());
-                    if (arc != NULL) {
-                        wasArc = true;
+                    if (!wasArc && !wasPM && arc != NULL) {
                         visit(arc);
+                        wasArc = true;
                     }
 
                     const StraightLine *sl = dynamic_cast<StraightLine*>(l.getLaneModel());
-                    if (!wasArc && (sl != NULL)) {
+                    bool wasSL = false;
+                    if (!wasSL && !wasArc && !wasPM && (sl != NULL)) {
                         visit(sl);
+                        wasSL = true;
                     }
                 }
             }
@@ -128,15 +133,17 @@ namespace hesperia {
                         // Find start vertex.
                         FindNodeByPointIDVisitor startVertexFinder(c.getSource());
                         m_scenario.accept(startVertexFinder);
-                        const PointModel *startPointModel = dynamic_cast<const PointModel*>(startVertexFinder.getLaneModel());
 
+                        // Find end vertex.
                         FindNodeByPointIDVisitor endVertexFinder(c.getTarget());
                         m_scenario.accept(endVertexFinder);
-                        const PointModel *endPointModel = dynamic_cast<const PointModel*>(endVertexFinder.getLaneModel());
 
-                        if ( (startPointModel != NULL) && (endPointModel != NULL) ) {
-                            const IDVertex3 startV = startPointModel->getIDVertex3(c.getSource().getPointID());
-                            const IDVertex3 endV = endPointModel->getIDVertex3(c.getTarget().getPointID());
+                        // Check if valid models.
+                        if ( hasStartAndEndVertex(c) ) {
+//                            const IDVertex3 startV = startPointModel->getIDVertex3(c.getSource().getPointID());
+//                            const IDVertex3 endV = endPointModel->getIDVertex3(c.getTarget().getPointID());
+                            const IDVertex3 startV = startVertexFinder.getIDVertex3();
+                            const IDVertex3 endV = endVertexFinder.getIDVertex3();
 
                             WaypointVertex *v1 = new WaypointVertex();
                             v1->setLayerID(c.getSource().getLayerID());
@@ -193,7 +200,7 @@ namespace hesperia {
                     hesperia::data::environment::Point3 centerOld = vt1;
 
                     for(uint32_t i = 0; i < steps; i++) {
-                        // Calculate the skeleton approximation.                
+                        // Calculate the skeleton approximation.
                         hesperia::data::environment::Point3 center(0, 0, 0);
                         center.setX(arc->getRadius() * cos(arc->getRotationZ() - correctRotation + i * stepSize));
                         center.setY(arc->getRadius() * sin(arc->getRotationZ() - correctRotation + i * stepSize));
@@ -244,13 +251,13 @@ namespace hesperia {
                         // Find start vertex.
                         FindNodeByPointIDVisitor startVertexFinder(c.getSource());
                         m_scenario.accept(startVertexFinder);
-                        const StraightLine *startStraightLine = dynamic_cast<const StraightLine*>(startVertexFinder.getLaneModel());
 
+                        // Find end vertex.
                         FindNodeByPointIDVisitor endVertexFinder(c.getTarget());
                         m_scenario.accept(endVertexFinder);
-                        const StraightLine *endStraightLine = dynamic_cast<const StraightLine*>(endVertexFinder.getLaneModel());
 
-                        if ( (startStraightLine != NULL) && (endStraightLine != NULL) ) {
+                        // Check if valid models.
+                        if ( hasStartAndEndVertex(c) ) {
                             const IDVertex3 startV = startVertexFinder.getIDVertex3();
                             const IDVertex3 endV = endVertexFinder.getIDVertex3();
 
@@ -279,8 +286,6 @@ namespace hesperia {
                 }
             }
         }
-
-        
 
         void LaneVisitor::visit(const hesperia::data::scenario::StraightLine *sl) {
             if (sl != NULL) {
@@ -329,13 +334,13 @@ namespace hesperia {
                         // Find start vertex.
                         FindNodeByPointIDVisitor startVertexFinder(c.getSource());
                         m_scenario.accept(startVertexFinder);
-                        const StraightLine *startStraightLine = dynamic_cast<const StraightLine*>(startVertexFinder.getLaneModel());
 
+                        // Find end vertex.
                         FindNodeByPointIDVisitor endVertexFinder(c.getTarget());
                         m_scenario.accept(endVertexFinder);
-                        const StraightLine *endStraightLine = dynamic_cast<const StraightLine*>(endVertexFinder.getLaneModel());
 
-                        if ( (startStraightLine != NULL) && (endStraightLine != NULL) ) {
+                        // Check if valid models.
+                        if ( hasStartAndEndVertex(c) ) {
                             const IDVertex3 startV = startVertexFinder.getIDVertex3();
                             const IDVertex3 endV = endVertexFinder.getIDVertex3();
 
@@ -363,6 +368,45 @@ namespace hesperia {
                     catch(...) {}
                 }
             }
+        }
+
+        bool LaneVisitor::hasStartAndEndVertex(const hesperia::data::scenario::Connector &c) {
+            bool startVertexFound = false;
+            bool endVertexFound = false;
+
+            // Find start vertex.
+            {
+                FindNodeByPointIDVisitor startVertexFinder(c.getSource());
+                m_scenario.accept(startVertexFinder);
+
+                const Arc *startArc = dynamic_cast<const Arc*>(startVertexFinder.getLaneModel());
+//                const Clothoid *startClothoid = dynamic_cast<const Clothoid*>(startVertexFinder.getLaneModel());
+                const PointModel *startPointModel = dynamic_cast<const PointModel*>(startVertexFinder.getLaneModel());
+                const StraightLine *startStraightLine = dynamic_cast<const StraightLine*>(startVertexFinder.getLaneModel());
+
+                startVertexFound |= (startArc != NULL) ||
+//                                    (startClothoid != NULL) ||
+                                    (startPointModel != NULL) ||
+                                    (startStraightLine != NULL);
+            }
+
+            // Find end vertex.
+            {
+                FindNodeByPointIDVisitor endVertexFinder(c.getTarget());
+                m_scenario.accept(endVertexFinder);
+
+                const Arc *endArc = dynamic_cast<const Arc*>(endVertexFinder.getLaneModel());
+//                const Clothoid *endClothoid = dynamic_cast<const Clothoid*>(endVertexFinder.getLaneModel());
+                const PointModel *endPointModel = dynamic_cast<const PointModel*>(endVertexFinder.getLaneModel());
+                const StraightLine *endStraightLine = dynamic_cast<const StraightLine*>(endVertexFinder.getLaneModel());
+
+                endVertexFound |= (endArc != NULL) ||
+//                                  (endClothoid != NULL) ||
+                                  (endPointModel != NULL) ||
+                                  (endStraightLine != NULL);
+            }
+
+            return (startVertexFound && endVertexFound);
         }
 
         vector<hesperia::data::environment::NamedLine> LaneVisitor::getListOfLines() const {

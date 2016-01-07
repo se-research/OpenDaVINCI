@@ -17,6 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <memory>
+#include <iostream>
+#include <sstream>
+#include <string>
+
 #include "core/base/module/AbstractCIDModule.h"
 #include "core/wrapper/MutexFactory.h"
 #include "core/wrapper/WIN32/WIN32Thread.h"

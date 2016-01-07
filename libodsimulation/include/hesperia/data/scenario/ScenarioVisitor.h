@@ -20,10 +20,7 @@
 #ifndef HESPERIA_CORE_DATA_SCENARIO_SCENARIOVISITOR_H_
 #define HESPERIA_CORE_DATA_SCENARIO_SCENARIOVISITOR_H_
 
-// native.h must be included as first header file for definition of _WIN32_WINNT.
-#include "core/native.h"
-
-#include "hesperia/data/scenario/ScenarioNode.h"
+#include "core/opendavinci.h"
 
 namespace hesperia {
     namespace data {
@@ -33,6 +30,8 @@ namespace hesperia {
              * This interface allows the use of visitors for transforming
              * the scenario data structure.
              */
+class ScenarioNode;
+
             class OPENDAVINCI_API ScenarioVisitor {
                 public:
                     virtual ~ScenarioVisitor();

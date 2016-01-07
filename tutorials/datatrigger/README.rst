@@ -354,7 +354,7 @@ before ``odsupercomponent`` can be started::
 
 Next, we can run the life-cycle management application ``odsupercomponent``::
 
-   $ odsupercomponent --cid=111 --configuration=./path/to/configuration
+   $ odsupercomponent --cid=111 --configuration=/path/to/configuration
 
 The first parameter specifies a unique container conference session identifier
 from within the range [2,254]. Thus, it is possible to host several sessions

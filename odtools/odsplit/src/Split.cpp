@@ -20,52 +20,36 @@
 #include <iostream>
 #include <vector>
 
-#include "core/strings/StringToolbox.h"
-#include "core/data/Container.h"
-#include "core/io/URL.h"
-#include "core/base/CommandLineParser.h"
-
-#include "GeneratedHeaders_CoreData.h"
-
-#include "tools/player/Player.h"
-#include "tools/recorder/Recorder.h"
-#include "tools/splitter/Splitter.h"
-
 #include "Split.h"
+#include "core/base/CommandLineArgument.h"
+#include "core/base/CommandLineParser.h"
+#include "core/strings/StringToolbox.h"
+#include "tools/splitter/Splitter.h"
 
 namespace odsplit {
 
     using namespace std;
     using namespace core::base;
-    using namespace core::data;
-    using namespace core::io;
-    using namespace tools::player;
-    using namespace tools::recorder;
     using namespace tools::splitter;
 
-    Split::Split(const int32_t &argc, char **argv) :
-        TimeTriggeredConferenceClientModule(argc, argv, "odsplit"),
+    Split::Split() :
         m_source(),
-        m_range() {
-        // Parse command line arguments.
-        parseAdditionalCommandLineParameters(argc, argv);
-    }
+        m_range(),
+        m_memorySegmentSize(0) {}
 
     Split::~Split() {}
-
-    void Split::setUp() {}
-
-    void Split::tearDown() {}
 
     void Split::parseAdditionalCommandLineParameters(const int &argc, char **argv) {
         CommandLineParser cmdParser;
         cmdParser.addCommandLineArgument("source");
         cmdParser.addCommandLineArgument("range");
+        cmdParser.addCommandLineArgument("memorysegmentsize");
 
         cmdParser.parse(argc, argv);
 
         CommandLineArgument cmdArgumentSOURCE = cmdParser.getCommandLineArgument("source");
         CommandLineArgument cmdArgumentRANGE = cmdParser.getCommandLineArgument("range");
+        CommandLineArgument cmdArgumentMEMORYSEGMENTSIZE = cmdParser.getCommandLineArgument("memorysegmentsize");
 
         if (cmdArgumentSOURCE.isSet()) {
             m_source = cmdArgumentSOURCE.getValue<string>();
@@ -76,13 +60,26 @@ namespace odsplit {
             m_range = cmdArgumentRANGE.getValue<string>();
             core::strings::StringToolbox::trim(m_range);
         }
+
+        if (cmdArgumentMEMORYSEGMENTSIZE.isSet()) {
+            m_memorySegmentSize = cmdArgumentMEMORYSEGMENTSIZE.getValue<int32_t>();
+        }
+
+        const int32_t MINIMUM_MEMORY_SEGMENT_SIZE = 640*480*1;
+        if (m_memorySegmentSize < MINIMUM_MEMORY_SEGMENT_SIZE) {
+            cerr << "[odsplit] Specified memorySegmentSize is too small, using " << MINIMUM_MEMORY_SEGMENT_SIZE << " bytes." << endl;
+            m_memorySegmentSize = MINIMUM_MEMORY_SEGMENT_SIZE;
+        }
     }
 
-    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode Split::body() {
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode retVal = coredata::dmcp::ModuleExitCodeMessage::OKAY;
+    int32_t Split::run(const int32_t &argc, char **argv) {
+        enum RETURN_CODE { CORRECT = 0,
+                           END_SMALLER_THAN_START = 1 };
 
-        // Size of the memory buffer.
-        const uint32_t MEMORY_SEGMENT_SIZE = getKeyValueConfiguration().getValue<uint32_t>("global.buffer.memorySegmentSize");
+        RETURN_CODE retVal = CORRECT;
+
+        // Parse command line arguments.
+        parseAdditionalCommandLineParameters(argc, argv);
 
         // Split the range parameter.
         vector<string> rangeTokens = core::strings::StringToolbox::split(m_range, '-');
@@ -99,10 +96,10 @@ namespace odsplit {
 
             if (start < end) {
                 Splitter s;
-                s.process(m_source, MEMORY_SEGMENT_SIZE, start, end);
+                s.process(m_source, m_memorySegmentSize, start, end);
             }
             else {
-                retVal = coredata::dmcp::ModuleExitCodeMessage::SERIOUS_ERROR;
+                retVal = END_SMALLER_THAN_START;
             }
         }
 

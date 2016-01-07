@@ -18,7 +18,7 @@
 #
 # GLOBAL CONFIGURATION
 #
-global.car = Scenarios/Models/FordEscape.objx
+global.car = file://Scenarios/Models/Car1.objx
 global.scenario = file://Parking-boxes-1.scnx
 global.showGrid = 0
 

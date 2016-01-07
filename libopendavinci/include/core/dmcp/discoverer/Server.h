@@ -23,15 +23,12 @@
 #include <string>
 #include <vector>
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
-
+#include "core/opendavinci.h"
 #include "core/SharedPointer.h"
+#include "core/io/StringListener.h"
 #include "core/io/udp/UDPReceiver.h"
 #include "core/io/udp/UDPSender.h"
-#include "core/io/StringListener.h"
-
-#include "GeneratedHeaders_CoreData.h"
+#include "generated/coredata/dmcp/ServerInformation.h"
 
 namespace core {
     namespace dmcp {

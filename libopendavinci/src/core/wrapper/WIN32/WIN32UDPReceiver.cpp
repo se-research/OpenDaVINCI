@@ -17,6 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <memory>
+#include <iostream>
+#include <sstream>
+#include <string>
+
 #include "core/base/module/AbstractCIDModule.h"
 #include "core/io/Packet.h"
 #include "core/wrapper/ConcurrencyFactory.h"
@@ -42,58 +47,58 @@ namespace core {
                     throw s.str();
                 }
 
-				// Load Winsock 2.2 DLL.
-				WSADATA wsaData;
-				if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
-					stringstream s;
-					const int retcode = WSAGetLastError();
-					s << "[core::wrapper::WIN32UDPReceiver] Error while calling WSAStartUp: " << retcode;
-					throw s.str();
-				}
-				
-				// Create socket for receiving.
+                // Load Winsock 2.2 DLL.
+                WSADATA wsaData;
+                if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
+                    stringstream s;
+                    const int retcode = WSAGetLastError();
+                    s << "[core::wrapper::WIN32UDPReceiver] Error while calling WSAStartUp: " << retcode;
+                    throw s.str();
+                }
+                
+                // Create socket for receiving.
                 m_fd = ::socket(PF_INET, SOCK_DGRAM, 0);
                 if (m_fd < 0) {
-					stringstream s;
-					const int retcode = WSAGetLastError();
-					s << "[core::wrapper::WIN32UDPReceiver] Error while creating file descriptor: " << retcode;
+                    stringstream s;
+                    const int retcode = WSAGetLastError();
+                    s << "[core::wrapper::WIN32UDPReceiver] Error while creating file descriptor: " << retcode;
 
-					// Decrement Winsock 2.2 DLL access counter.
-					WSACleanup();
+                    // Decrement Winsock 2.2 DLL access counter.
+                    WSACleanup();
 
-					throw s.str();
-				}
+                    throw s.str();
+                }
 
                 // Allow reusing of ports by multiple sockets.
                 uint32_t yes = 1;
                 if (::setsockopt(m_fd, SOL_SOCKET, SO_REUSEADDR, (char*)&yes, sizeof(yes)) < 0) {
-					stringstream s;
-					const int retcode = WSAGetLastError();
-					s << "[core::wrapper::WIN32UDPReceiver] Error while setting socket options: " << retcode;
+                    stringstream s;
+                    const int retcode = WSAGetLastError();
+                    s << "[core::wrapper::WIN32UDPReceiver] Error while setting socket options: " << retcode;
 
-					// Decrement Winsock 2.2 DLL access counter.
-					WSACleanup();
+                    // Decrement Winsock 2.2 DLL access counter.
+                    WSACleanup();
 
-					throw s.str();
+                    throw s.str();
                 }
 
                 // Setup address and port.
                 memset(&m_address, 0, sizeof(m_address));
                 m_address.sin_family = AF_INET;
-				// The binding is different from POSIX as Windows would return the WSA error 10049 if we would use address here. See explanation http://www.sockets.com/err_lst1.htm for error 10049.
-				m_address.sin_addr.s_addr = (m_isMulticast ? htonl(INADDR_ANY) : inet_addr(address.c_str()));
+                // The binding is different from POSIX as Windows would return the WSA error 10049 if we would use address here. See explanation http://www.sockets.com/err_lst1.htm for error 10049.
+                m_address.sin_addr.s_addr = (m_isMulticast ? htonl(INADDR_ANY) : inet_addr(address.c_str()));
                 m_address.sin_port = htons(port);
 
                 // Bind to receive address/port.
                 if (::bind(m_fd, (struct sockaddr *) &m_address, sizeof(m_address)) < 0) {
-					stringstream s;
-					const int retcode = WSAGetLastError();
-					s << "[core::wrapper::WIN32UDPReceiver] Error while binding: " << retcode;
+                    stringstream s;
+                    const int retcode = WSAGetLastError();
+                    s << "[core::wrapper::WIN32UDPReceiver] Error while binding: " << retcode;
 
-					// Decrement Winsock 2.2 DLL access counter.
-					WSACleanup();
-					
-					throw s.str();
+                    // Decrement Winsock 2.2 DLL access counter.
+                    WSACleanup();
+                    
+                    throw s.str();
                 }
 
                 if (m_isMulticast) {
@@ -101,14 +106,14 @@ namespace core {
                     m_mreq.imr_multiaddr.s_addr = inet_addr(address.c_str());
                     m_mreq.imr_interface.s_addr = htonl(INADDR_ANY);
                     if (::setsockopt(m_fd, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char*)&m_mreq, sizeof(m_mreq)) < 0) {
-						stringstream s;
-						const int retcode = WSAGetLastError();
-						s << "[core::wrapper::WIN32UDPReceiver] Error while joining multicast group: " << retcode;
+                        stringstream s;
+                        const int retcode = WSAGetLastError();
+                        s << "[core::wrapper::WIN32UDPReceiver] Error while joining multicast group: " << retcode;
 
-						// Decrement Winsock 2.2 DLL access counter.
-						WSACleanup();
+                        // Decrement Winsock 2.2 DLL access counter.
+                        WSACleanup();
 
-						throw s.str();
+                        throw s.str();
                     }
                 }
 
@@ -118,10 +123,10 @@ namespace core {
                     stringstream s;
                     s << "[core::wrapper::WIN32UDPReceiver] Error while creating thread.";
 
-					// Decrement Winsock 2.2 DLL access counter.
-					WSACleanup();
-					
-					throw s.str();
+                    // Decrement Winsock 2.2 DLL access counter.
+                    WSACleanup();
+                    
+                    throw s.str();
                 }
             }
 
@@ -137,24 +142,24 @@ namespace core {
                 }
                 m_buffer = NULL;
 
-				// Decrement Winsock 2.2 DLL access counter.
-				WSACleanup();
-			}
+                // Decrement Winsock 2.2 DLL access counter.
+                WSACleanup();
+            }
 
-			const char* WIN32UDPReceiver::inet_ntop(int af, const void* src, char* dst, int cnt) {
-				struct sockaddr_in srcaddr;
+            const char* WIN32UDPReceiver::inet_ntop(int af, const void* src, char* dst, int cnt) {
+                struct sockaddr_in srcaddr;
 
-				memset(&srcaddr, 0, sizeof(struct sockaddr_in));
-				memcpy(&(srcaddr.sin_addr), src, sizeof(srcaddr.sin_addr));
+                memset(&srcaddr, 0, sizeof(struct sockaddr_in));
+                memcpy(&(srcaddr.sin_addr), src, sizeof(srcaddr.sin_addr));
 
-				srcaddr.sin_family = af;
-				if (WSAAddressToString((struct sockaddr*) &srcaddr, sizeof(struct sockaddr_in), 0, dst, (LPDWORD)&cnt) != 0) {
-					const int retcode = WSAGetLastError();
-					CLOG3 << "[core::wrapper::WIN32UDPReceiver] Error while calling WSAAddressToString: " << retcode;
-					return NULL;
-				}
-				return dst;
-			}
+                srcaddr.sin_family = af;
+                if (WSAAddressToString((struct sockaddr*) &srcaddr, sizeof(struct sockaddr_in), 0, dst, (LPDWORD)&cnt) != 0) {
+                    const int retcode = WSAGetLastError();
+                    CLOG3 << "[core::wrapper::WIN32UDPReceiver] Error while calling WSAAddressToString: " << retcode;
+                    return NULL;
+                }
+                return dst;
+            }
 
             void WIN32UDPReceiver::run() {
                 fd_set rfds;
@@ -173,19 +178,19 @@ namespace core {
                     ::select(m_fd + 1, &rfds, NULL, NULL, &timeout);
 
                     if (FD_ISSET(m_fd, &rfds)) {
-						// Get data and sender address.
-						size_t addrLength = sizeof(remote);
-						nbytes = ::recvfrom(m_fd, m_buffer, BUFFER_SIZE, 0, (struct sockaddr *)&remote, (socklen_t*)&addrLength);
+                        // Get data and sender address.
+                        size_t addrLength = sizeof(remote);
+                        nbytes = ::recvfrom(m_fd, m_buffer, BUFFER_SIZE, 0, (struct sockaddr *)&remote, (socklen_t*)&addrLength);
 
-						if (nbytes > 0) {
-							// Get sender address.
-							const uint32_t MAX_ADDR_SIZE = 1024;
-							char remoteAddr[MAX_ADDR_SIZE];
-							inet_ntop(remote.ss_family, &(((struct sockaddr_in*)&remote)->sin_addr), remoteAddr, sizeof(remoteAddr));
+                        if (nbytes > 0) {
+                            // Get sender address.
+                            const uint32_t MAX_ADDR_SIZE = 1024;
+                            char remoteAddr[MAX_ADDR_SIZE];
+                            inet_ntop(remote.ss_family, &(((struct sockaddr_in*)&remote)->sin_addr), remoteAddr, sizeof(remoteAddr));
 
-							// ------------------------v (remote address)-----v (data)
-							nextPacket(core::io::Packet(string(remoteAddr), string(m_buffer, nbytes)));
-						}
+                            // ------------------------v (remote address)-----v (data)
+                            nextPacket(core::io::Packet(string(remoteAddr), string(m_buffer, nbytes)));
+                        }
                     }
                 }
             }
@@ -201,7 +206,7 @@ namespace core {
                 }
 
                 // Interrupt socket.
-				::shutdown(m_fd, SD_BOTH); // On POSIX: SHUT_RDWR
+                ::shutdown(m_fd, SD_BOTH); // On POSIX: SHUT_RDWR
 
                 m_thread->stop();
             }

@@ -21,17 +21,17 @@
 #ifndef PLUGINS_ENVIRONMENTVIEWER_TREENODEVISITOR_H_
 #define PLUGINS_ENVIRONMENTVIEWER_TREENODEVISITOR_H_
 
-#include "core/base/TreeNode.h"
-
-#include "hesperia/threeD/NodeDescriptor.h"
-#include "hesperia/threeD/RenderingConfiguration.h"
 #include "hesperia/threeD/TransformGroupVisitor.h"
 
-#include "plugins/environmentviewer/SelectableNodeDescriptor.h"
+namespace core { namespace base { template <typename T> class TreeNode; } }
+namespace hesperia { namespace threeD { class Node; } }
+namespace hesperia { namespace threeD { class RenderingConfiguration; } }
 
 namespace cockpit {
     namespace plugins {
         namespace environmentviewer {
+
+class SelectableNodeDescriptor;
 
             using namespace std;
 

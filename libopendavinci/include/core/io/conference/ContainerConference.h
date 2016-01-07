@@ -20,20 +20,20 @@
 #ifndef OPENDAVINCI_CORE_IO_CONFERENCE_CONTAINERCONFERENCE_H_
 #define OPENDAVINCI_CORE_IO_CONFERENCE_CONTAINERCONFERENCE_H_
 
-// core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
-
+#include "core/opendavinci.h"
 #include "core/base/Mutex.h"
-#include "core/data/Container.h"
 #include "core/io/conference/ContainerObserver.h"
+
+namespace core { namespace data { class Container; } }
 
 namespace core {
     namespace io {
         namespace conference {
 
+class ContainerListener;
+
             using namespace std;
 
-            class ContainerConferenceFactory;
 
             /**
              * This class provides an interface for a ContainerConference.

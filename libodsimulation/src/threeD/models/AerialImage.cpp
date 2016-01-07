@@ -23,10 +23,18 @@
 #endif
 
 #include <GL/gl.h>
+#include <string>
 
-#include "GeneratedHeaders_AutomotiveData.h"
+#include "core/opendavinci.h"
+#include "hesperia/data/environment/Point3.h"
+#include "hesperia/threeD/Node.h"
+#include "hesperia/threeD/NodeDescriptor.h"
+#include "hesperia/threeD/NodeRenderingConfiguration.h"
+#include "hesperia/threeD/RenderingConfiguration.h"
 #include "hesperia/threeD/TextureManager.h"
 #include "hesperia/threeD/models/AerialImage.h"
+
+namespace core { namespace wrapper { class Image; } }
 
 namespace hesperia {
     namespace threeD {

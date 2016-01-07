@@ -18,29 +18,22 @@
  */
 
 #include <iostream>
-#include <limits>
+#include <string>
+#include <vector>
 
-#include "core/macros.h"
-#include "core/base/KeyValueConfiguration.h"
-#include "core/base/Thread.h"
+#include "DrivenPath.h"
 #include "core/data/Container.h"
 #include "core/io/URL.h"
 #include "core/wrapper/graph/DirectedGraph.h"
-#include "core/wrapper/graph/Edge.h"
-#include "core/wrapper/graph/Vertex.h"
-
-#include "hesperia/scenario/SCNXArchive.h"
-#include "hesperia/scenario/SCNXArchiveFactory.h"
+#include "hesperia/data/environment/EgoState.h"
+#include "hesperia/data/environment/NamedLine.h"
+#include "hesperia/data/environment/Point3.h"
 #include "hesperia/data/scenario/Scenario.h"
 #include "hesperia/scenario/LaneVisitor.h"
-#include "hesperia/data/environment/EgoState.h"
-#include "hesperia/data/environment/Point3.h"
-#include "hesperia/data/environment/NamedLine.h"
-#include "hesperia/data/environment/Line.h"
-#include "hesperia/data/environment/Polygon.h"
-#include "hesperia/data/environment/Obstacle.h"
+#include "hesperia/scenario/SCNXArchive.h"
+#include "hesperia/scenario/SCNXArchiveFactory.h"
 
-#include "DrivenPath.h"
+namespace core { namespace base { class KeyValueDataStore; } }
 
 namespace measurements {
 

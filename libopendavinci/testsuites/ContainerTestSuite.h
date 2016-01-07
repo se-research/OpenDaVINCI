@@ -20,12 +20,14 @@
 #ifndef CORE_CONTAINERTESTSUITE_H_
 #define CORE_CONTAINERTESTSUITE_H_
 
-#include "cxxtest/TestSuite.h"
+#include <sstream>                      // for stringstream, etc
+#include <string>                       // for operator==, basic_string
 
-#include <sstream>
+#include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/data/Container.h"
-#include "core/data/TimeStamp.h"
+#include "core/base/Serializable.h"     // for operator<<, operator>>
+#include "core/data/Container.h"        // for Container, etc
+#include "core/data/TimeStamp.h"        // for TimeStamp
 
 using namespace std;
 using namespace core::data;
