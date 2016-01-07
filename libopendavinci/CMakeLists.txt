@@ -264,6 +264,17 @@ FILE(GLOB_RECURSE libopendavinci-coredata-sources "${COREDATA_DIR}/src/*.cpp")
 # Collect all source files.
 FILE(GLOB_RECURSE libopendavinci-sources "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 
+
+###############################################################################
+# REMOVE ME <BEGIN>.
+IF(UNIX)
+SET(CMAKE_CXX_FLAGS "-fPIC -Wall -Wextra")
+SET_SOURCE_FILES_PROPERTIES(${CMAKE_CURRENT_SOURCE_DIR}/src/RemoveMe.cpp PROPERTIES COMPILE_FLAGS "-std=c++11")
+ENDIF()
+# REMOVE ME <END>
+###############################################################################
+
+
 ###############################################################################
 # Remove POSIX files on WIN32.
 IF(WIN32)
