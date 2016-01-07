@@ -65,7 +65,7 @@ we release new features or patches.
 
 * Ubuntu/armhf: docker pull seresearch/opendavinci-ubuntu-armhf (https://registry.hub.docker.com/u/seresearch/opendavinci-ubuntu-armhf/)
 
-### Adding OpenDaVINCI to your Ubuntu Linux distribution
+### Adding OpenDaVINCI to your Ubuntu 14.04 Linux distribution
 
 To explore the features of OpenDaVINCI and to use it in your own projects, you can add our .deb repository. We provide
 packages for x86, x86_64, and armfh.
@@ -87,7 +87,7 @@ Install OpenDaVINCI:
     $ sudo apt-get install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
 
 
-### Adding OpenDaVINCI to your Debian Linux distribution
+### Adding OpenDaVINCI to your Debian 8 Linux distribution
 
 Add the public key from our repository:
 
@@ -106,7 +106,7 @@ Install OpenDaVINCI:
     $ sudo apt-get install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
 
 
-### Adding OpenDaVINCI to your Fedora Linux distribution
+### Adding OpenDaVINCI to your Fedora 21 Linux distribution
 
 Add our repository to your sources.list:
 
@@ -121,7 +121,7 @@ Install OpenDaVINCI:
     $ sudo yum install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
    
    
-### Adding OpenDaVINCI to your openSuse Linux distribution
+### Adding OpenDaVINCI to your openSuSE 13 Linux distribution
 
 Add our repository to your sources.list:
 
