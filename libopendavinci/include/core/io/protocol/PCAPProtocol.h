@@ -21,7 +21,7 @@
 #define OPENDAVINCI_CORE_IO_PROTOCOL_PCAPPROTOCOL_H_
 
 // core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/platform.h"
+#include "core/opendavinci.h"
 
 #include <sstream>
 
