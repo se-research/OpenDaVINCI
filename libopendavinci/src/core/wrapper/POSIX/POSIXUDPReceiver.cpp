@@ -74,7 +74,7 @@ namespace core {
                 m_address.sin_port = htons(port);
 
                 // Bind to receive address/port.
-                if (bind(m_fd, reinterpret_cast<struct sockaddr *>(&m_address), sizeof(m_address)) < 0) {
+                if (::bind(m_fd, reinterpret_cast<struct sockaddr *>(&m_address), sizeof(m_address)) < 0) {
                     stringstream s;
                     s << "[POSIXUDPReceiver] Error while binding socket: " << strerror(errno);
                     throw s.str();
