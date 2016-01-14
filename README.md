@@ -109,6 +109,28 @@ Install OpenDaVINCI:
     $ sudo apt-get install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
 
 
+### Adding OpenDaVINCI to your Ubuntu 15.10 Linux distribution
+
+To explore the features of OpenDaVINCI and to use it in your own projects, you can add our .deb repository. We provide
+packages for x86, x86_64, and armfh.
+
+Add the public key from our repository:
+
+    $ wget -O - -q http://opendavinci.cse.chalmers.se/opendavinci.cse.chalmers.se.gpg.key | sudo apt-key add -
+
+Add our repository itself to your sources.list:
+
+    $ sudo echo "deb http://opendavinci.cse.chalmers.se/ubuntu-wily/ wily main" >> /etc/apt/sources.list
+
+Update your package database:
+
+    $ sudo apt-get update
+
+Install OpenDaVINCI:
+
+    $ sudo apt-get install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
+
+
 ### Adding OpenDaVINCI to your Debian 8 Linux distribution
 
 Add the public key from our repository:
