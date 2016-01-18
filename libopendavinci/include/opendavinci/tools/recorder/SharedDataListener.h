@@ -28,8 +28,8 @@
 #include "opendavinci/core/SharedPointer.h"
 #include "opendavinci/core/base/AbstractDataStore.h"
 #include "opendavinci/core/base/FIFOQueue.h"
-#include "generated/coredata/SharedData.h"
-#include "generated/coredata/image/SharedImage.h"
+#include "opendavinci/generated/coredata/SharedData.h"
+#include "opendavinci/generated/coredata/image/SharedImage.h"
 
 namespace core { namespace data { class Container; } }
 namespace core { namespace wrapper { class SharedMemory; } }
