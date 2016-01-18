@@ -30,7 +30,7 @@
 #include "opendavinci/core/io/Connection.h"
 #include "opendavinci/core/io/ConnectionErrorListener.h"
 #include "opendavinci/core/io/conference/ContainerListener.h"
-#include "generated/coredata/dmcp/ModuleDescriptor.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleDescriptor.h"
 
 namespace coredata { namespace dmcp { class PulseMessage; } }
 namespace core { namespace dmcp { class ModuleConfigurationProvider; } }

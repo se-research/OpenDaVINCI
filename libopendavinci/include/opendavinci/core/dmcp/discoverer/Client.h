@@ -28,7 +28,7 @@
 #include "opendavinci/core/io/PacketListener.h"
 #include "opendavinci/core/io/udp/UDPReceiver.h"
 #include "opendavinci/core/io/udp/UDPSender.h"
-#include "generated/coredata/dmcp/ServerInformation.h"
+#include "opendavinci/generated/coredata/dmcp/ServerInformation.h"
 
 namespace core { namespace io { class Packet; } }
 

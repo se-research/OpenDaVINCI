@@ -27,7 +27,7 @@
 #include "opendavinci/core/base/Visitor.h"
 #include "opendavinci/core/reflection/Field.h"
 #include "opendavinci/core/reflection/Message.h"
-#include "generated/coredata/reflection/AbstractField.h"
+#include "opendavinci/generated/coredata/reflection/AbstractField.h"
 
 namespace core { namespace base { class Serializable; } }
 

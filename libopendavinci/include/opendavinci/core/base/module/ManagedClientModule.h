@@ -30,8 +30,8 @@
 #include "opendavinci/core/data/TimeStamp.h"
 #include "opendavinci/core/exceptions/Exceptions.h"
 #include "opendavinci/core/io/conference/ContainerConference.h"
-#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
-#include "generated/coredata/dmcp/PulseMessage.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/coredata/dmcp/PulseMessage.h"
 
 namespace context { namespace base { class ControlledTimeFactory; } }
 

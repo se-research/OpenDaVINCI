@@ -25,7 +25,7 @@
 #include "opendavinci/core/opendavinci.h"
 #include "opendavinci/core/SharedPointer.h"
 #include "opendavinci/core/base/Visitable.h"
-#include "generated/coredata/reflection/AbstractField.h"
+#include "opendavinci/generated/coredata/reflection/AbstractField.h"
 
 namespace core { namespace base { class Visitor; } }
 

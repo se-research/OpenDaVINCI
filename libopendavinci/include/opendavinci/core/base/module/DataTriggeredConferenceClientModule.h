@@ -25,7 +25,7 @@
 #include "opendavinci/core/opendavinci.h"
 #include "opendavinci/core/base/module/AbstractConferenceClientModule.h"
 #include "opendavinci/core/exceptions/Exceptions.h"
-#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
 namespace core { namespace data { class Container; } }
 

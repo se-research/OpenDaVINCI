@@ -29,12 +29,12 @@
 #include "opendavinci/core/io/Connection.h"
 #include "opendavinci/core/io/ConnectionErrorListener.h"
 #include "opendavinci/core/io/conference/ContainerListener.h"
-#include "generated/coredata/dmcp/ModuleDescriptor.h"
-#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
-#include "generated/coredata/dmcp/ModuleStateMessage.h"
-#include "generated/coredata/dmcp/PulseMessage.h"
-#include "generated/coredata/dmcp/RuntimeStatistic.h"
-#include "generated/coredata/dmcp/ServerInformation.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleDescriptor.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
+#include "opendavinci/generated/coredata/dmcp/PulseMessage.h"
+#include "opendavinci/generated/coredata/dmcp/RuntimeStatistic.h"
+#include "opendavinci/generated/coredata/dmcp/ServerInformation.h"
 
 namespace coredata { class Configuration; }
 namespace core { namespace data { class Container; } }

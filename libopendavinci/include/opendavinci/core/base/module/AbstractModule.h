@@ -24,7 +24,7 @@
 
 #include "opendavinci/core/opendavinci.h"
 #include "opendavinci/core/base/Mutex.h"
-#include "generated/coredata/dmcp/ModuleStateMessage.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
 
 namespace core {
     namespace base {

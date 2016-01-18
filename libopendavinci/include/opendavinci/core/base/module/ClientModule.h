@@ -29,8 +29,8 @@
 #include "opendavinci/core/dmcp/SuperComponentStateListener.h"
 #include "opendavinci/core/dmcp/connection/Client.h"
 #include "opendavinci/core/exceptions/Exceptions.h"
-#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
-#include "generated/coredata/dmcp/ServerInformation.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/coredata/dmcp/ServerInformation.h"
 
 namespace core {
     namespace base {

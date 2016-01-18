@@ -23,7 +23,7 @@
 #include "opendavinci/core/opendavinci.h"
 #include "opendavinci/core/base/Mutex.h"
 #include "opendavinci/core/base/module/AbstractModule.h"
-#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
 namespace core {
     namespace base {
