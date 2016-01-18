@@ -123,7 +123,7 @@ public class DataStructureGeneratorTest {
 			for (File f : listOfGeneratedFiles) {
 				if (f.exists()) {
 					System.out.println("Removing '" + f.toString() + "'.");
-					f.delete();
+//					f.delete();
 				}
 			}
 		}

@@ -1,6 +1,6 @@
 /**
  * DataStructureGenerator- IDL tool to describe exchangeable data.
- * Copyright (C) 2014 - 2015 Christian Berger
+ * Copyright (C) 2014 - 2016 Christian Berger
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -104,20 +104,21 @@ class DataModelGenerator implements IGenerator {
     /* This method is our interface to an outside caller. */
 	override void doGenerate(Resource resource, IFileSystemAccess fsa) {
 		val generatedHeadersFile = resource.URI.toString().substring(resource.URI.toString().lastIndexOf("/") + 1).replaceAll(".odvd", "")
+		val toplevelIncludeFolder = resource.URI.toString().substring(resource.URI.toString().lastIndexOf("/") + 1).replaceAll(".odvd", "").toLowerCase
 		val pdl = resource.allContents.toIterable.filter(typeof(PackageDeclaration)).head
 		for (e : resource.allContents.toIterable.filter(typeof(Message))) {
 			if (pdl != null && pdl.package != null && pdl.package.length > 0) {
 				val pdlToDirectory = pdl.package.replace('.','/')
 				val enumDescriptions = collectEnumsFromMessage(pdl, e)
-				fsa.generateFile("include/generated/" + pdlToDirectory + "/" + e.message.toString() + ".h", generateHeaderFileContent(generatedHeadersFile, pdl, e, enumDescriptions))
-				fsa.generateFile("src/generated/" + pdlToDirectory + "/" + e.message.toString() + ".cpp", generateImplementationFileContent(pdl, e, "generated/" + pdlToDirectory, enumDescriptions))
-				fsa.generateFile("testsuites/" + pdl.package.toString().replaceAll("\\.", "_") + "_" + e.message.toString().replaceAll("\\.", "_") + "TestSuite.h", generateTestSuiteContent(pdl, e, generatedHeadersFile, enumDescriptions))
+				fsa.generateFile("include/" + toplevelIncludeFolder + "/generated/" + pdlToDirectory + "/" + e.message.toString() + ".h", generateHeaderFileContent(toplevelIncludeFolder, generatedHeadersFile, pdl, e, enumDescriptions))
+				fsa.generateFile("src/generated/" + pdlToDirectory + "/" + e.message.toString() + ".cpp", generateImplementationFileContent(pdl, e, toplevelIncludeFolder, "generated/" + pdlToDirectory, enumDescriptions))
+				fsa.generateFile("testsuites/" + pdl.package.toString().replaceAll("\\.", "_") + "_" + e.message.toString().replaceAll("\\.", "_") + "TestSuite.h", generateTestSuiteContent(pdl, e, toplevelIncludeFolder, generatedHeadersFile, enumDescriptions))
 			}
 			else {
 				val enumDescriptions = collectEnumsFromMessage(pdl, e)
-				fsa.generateFile("include/generated/" + e.message.toString() + ".h", generateHeaderFileContent(generatedHeadersFile, pdl, e, enumDescriptions))
-				fsa.generateFile("src/generated/" + e.message.toString() + ".cpp", generateImplementationFileContent(pdl, e, "generated", enumDescriptions))
-				fsa.generateFile("testsuites/" + e.message.toString().replaceAll("\\.", "_") + "TestSuite.h", generateTestSuiteContent(pdl, e, generatedHeadersFile, enumDescriptions))
+				fsa.generateFile("include/" + toplevelIncludeFolder + "/generated/" + e.message.toString() + ".h", generateHeaderFileContent(toplevelIncludeFolder, generatedHeadersFile, pdl, e, enumDescriptions))
+				fsa.generateFile("src/generated/" + e.message.toString() + ".cpp", generateImplementationFileContent(pdl, e, toplevelIncludeFolder, "generated", enumDescriptions))
+				fsa.generateFile("testsuites/" + e.message.toString().replaceAll("\\.", "_") + "TestSuite.h", generateTestSuiteContent(pdl, e, toplevelIncludeFolder, generatedHeadersFile, enumDescriptions))
 			}
 		}
 	}
@@ -144,7 +145,7 @@ class DataModelGenerator implements IGenerator {
 	}
 
     /* This method generates the header file content. */
-	def generateHeaderFileContent(String generatedHeadersFile, PackageDeclaration pdl, Message msg, HashMap<String, EnumDescription> enums) '''
+	def generateHeaderFileContent(String toplevelIncludeFolder, String generatedHeadersFile, PackageDeclaration pdl, Message msg, HashMap<String, EnumDescription> enums) '''
 /*
  * This software is open source. Please see COPYING and AUTHORS for further information.
  *
@@ -159,7 +160,7 @@ class DataModelGenerator implements IGenerator {
 #define «msg.message.replaceAll("\\.", "_").toUpperCase + "_H"»
 «ENDIF»
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
 «var hasGeneratedVector = false /*These lines check if we have a list attribute and thus, need to include <vector>.*/»
 «FOR a : msg.attributes»
@@ -176,8 +177,8 @@ class DataModelGenerator implements IGenerator {
 	«ENDIF»
 «ENDFOR»
 
-#include "core/base/Visitable.h"
-#include "core/data/SerializableData.h"
+#include "opendavinci/core/base/Visitable.h"
+#include "opendavinci/core/data/SerializableData.h"
 
 «FOR a : msg.attributes /*These lines include header files for user generated types used in other messages.*/»
 	«IF a.scalar != null»
@@ -185,7 +186,7 @@ class DataModelGenerator implements IGenerator {
 			«IF a.scalar.type.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
 				#include "«a.scalar.type.replaceAll("::", "/")».h"
 			«ELSE /* Use the types only as specified by the user. */»
-				#include "generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.scalar.type.replaceAll("\\.", "/")».h"
+				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.scalar.type.replaceAll("\\.", "/")».h"
 			«ENDIF»
 		«ENDIF»
 	«ENDIF»
@@ -194,7 +195,7 @@ class DataModelGenerator implements IGenerator {
 			«IF a.list.type.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
 				#include "«a.list.type.replaceAll("::", "/")».h"
 			«ELSE /* Use the types only as specified by the user. */»
-				#include "generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.list.type.replaceAll("\\.", "/")».h"
+				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.list.type.replaceAll("\\.", "/")».h"
 			«ENDIF»
 		«ENDIF»
 	«ENDIF»
@@ -203,14 +204,14 @@ class DataModelGenerator implements IGenerator {
 			«IF a.map.primaryType.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
 				#include "«a.map.primaryType.replaceAll("::", "/")».h"
 			«ELSE /* Use the types only as specified by the user. */»
-				#include "generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.map.primaryType.replaceAll("\\.", "/")».h"
+				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.map.primaryType.replaceAll("\\.", "/")».h"
 			«ENDIF»
 		«ENDIF»
 		«IF !typeMap.containsKey(a.map.secondaryType) && !enums.containsKey(a.map.secondaryType)»
 			«IF a.map.secondaryType.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
 				#include "«a.map.secondaryType.replaceAll("::", "/")».h"
 			«ELSE /* Use the types only as specified by the user. */»
-				#include "generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.map.secondaryType.replaceAll("\\.", "/")».h"
+				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.map.secondaryType.replaceAll("\\.", "/")».h"
 			«ENDIF»
 		«ENDIF»
 	«ENDIF»
@@ -219,14 +220,14 @@ class DataModelGenerator implements IGenerator {
 			«IF a.fixedarray.type.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
 				#include "«a.fixedarray.type.replaceAll("::", "/")».h"
 			«ELSE /* Use the types only as specified by the user. */»
-				#include "generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.fixedarray.type.replaceAll("\\.", "/")».h"
+				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.fixedarray.type.replaceAll("\\.", "/")».h"
 			«ENDIF»
 		«ENDIF»
 	«ENDIF»
 «ENDFOR»
 
 «IF msg != null && msg.superMessage != null && msg.superMessage.length > 0 /*In the case of a message extending another message, we include GeneratedHeaders_<Filename>.h that points to all headers generated from <Filename>.*/»
-	#include "GeneratedHeaders_«generatedHeadersFile + ".h"»"
+	#include "«toplevelIncludeFolder»/GeneratedHeaders_«generatedHeadersFile + ".h"»"
 «ENDIF»
 «IF pdl != null && pdl.package != null && pdl.package.length > 0»
 	«IF msg.message.split("\\.").length > 1»
@@ -560,7 +561,7 @@ class «msg.message.substring(msg.message.lastIndexOf('.') + 1) /* These lines g
 	'''
 
 	/* This method generates the implementation (.cpp). */
-	def generateImplementationFileContent(PackageDeclaration pdl, Message msg, String includeDirectoryPrefix, HashMap<String, EnumDescription> enums) '''
+	def generateImplementationFileContent(PackageDeclaration pdl, Message msg, String toplevelIncludeFolder, String includeDirectoryPrefix, HashMap<String, EnumDescription> enums) '''
 /*
  * This software is open source. Please see COPYING and AUTHORS for further information.
  *
@@ -578,24 +579,24 @@ class «msg.message.substring(msg.message.lastIndexOf('.') + 1) /* These lines g
 	«ENDIF»
 	«IF !hasGeneratedMacros && a.fixedarray != null && a.fixedarray.name != null && a.fixedarray.name.length > 0»
 #include <cstring>
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 		«{hasGeneratedMacros = true; ""}»
 	«ENDIF»
 «ENDFOR»
 
-#include "core/base/Hash.h"
-#include "core/base/Deserializer.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
+#include "opendavinci/core/base/Hash.h"
+#include "opendavinci/core/base/Deserializer.h"
+#include "opendavinci/core/base/SerializationFactory.h"
+#include "opendavinci/core/base/Serializer.h"
 
 «IF msg.superMessage != null && msg.superMessage.length > 0 /* If this message is a derived one, we need to include the supermessage here. */»
-#include "«includeDirectoryPrefix + "/" + msg.superMessage.substring(0, msg.superMessage.lastIndexOf('.')).replaceAll("\\.", "/") + "/" + msg.superMessage.substring(msg.superMessage.lastIndexOf('.') + 1)».h"
+#include "«toplevelIncludeFolder»/«includeDirectoryPrefix + "/" + msg.superMessage.substring(0, msg.superMessage.lastIndexOf('.')).replaceAll("\\.", "/") + "/" + msg.superMessage.substring(msg.superMessage.lastIndexOf('.') + 1)».h"
 «ENDIF»
 
 «IF msg.message.split("\\.").length > 1 /* Here, we include our own header file. */»
-#include "«includeDirectoryPrefix + "/" + msg.message.substring(0, msg.message.lastIndexOf('.')).replaceAll("\\.", "/") + "/" + msg.message.substring(msg.message.lastIndexOf('.') + 1)».h"
+#include "«toplevelIncludeFolder»/«includeDirectoryPrefix + "/" + msg.message.substring(0, msg.message.lastIndexOf('.')).replaceAll("\\.", "/") + "/" + msg.message.substring(msg.message.lastIndexOf('.') + 1)».h"
 «ELSE»
-#include "«includeDirectoryPrefix + "/" + msg.message.substring(msg.message.lastIndexOf('.') + 1)».h"
+#include "«toplevelIncludeFolder»/«includeDirectoryPrefix + "/" + msg.message.substring(msg.message.lastIndexOf('.') + 1)».h"
 «ENDIF»
 
 «IF pdl != null && pdl.package != null && pdl.package.length > 0 /* Next, we generate our namespaces. */»
@@ -1405,8 +1406,8 @@ namespace «s.get(i)» {
 		«ENDIF»
 	'''
 
-	// Generate the test suite content (.h).	
-	def generateTestSuiteContent(PackageDeclaration pdl, Message msg, String generatedHeadersFile, HashMap<String, EnumDescription> enums) '''
+	// Generate the test suite content (.h).
+	def generateTestSuiteContent(PackageDeclaration pdl, Message msg, String toplevelIncludeFolder, String generatedHeadersFile, HashMap<String, EnumDescription> enums) '''
 /*
  * This software is open source. Please see COPYING and AUTHORS for further information.
  *
@@ -1429,10 +1430,10 @@ namespace «s.get(i)» {
 #include <string>
 #include <vector>
 
-#include "core/opendavinci.h"
-#include "core/strings/StringToolbox.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/strings/StringToolbox.h"
 
-#include "GeneratedHeaders_«generatedHeadersFile + ".h"»"
+#include "«toplevelIncludeFolder»/GeneratedHeaders_«generatedHeadersFile + ".h"»"
 
 «FOR a : msg.attributes /*These lines include header files for user generated types used in other messages.*/»
 	«IF a.scalar != null»
@@ -1440,7 +1441,7 @@ namespace «s.get(i)» {
 			«IF a.scalar.type.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
 				#include "«a.scalar.type.replaceAll("::", "/")».h"
 			«ELSE /* Use the types only as specified by the user. */»
-				#include "generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.scalar.type.replaceAll("\\.", "/")».h"
+				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.scalar.type.replaceAll("\\.", "/")».h"
 			«ENDIF»
 		«ENDIF»
 	«ENDIF»
@@ -1449,7 +1450,7 @@ namespace «s.get(i)» {
 			«IF a.list.type.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
 				#include "«a.list.type.replaceAll("::", "/")».h"
 			«ELSE /* Use the types only as specified by the user. */»
-				#include "generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.list.type.replaceAll("\\.", "/")».h"
+				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.list.type.replaceAll("\\.", "/")».h"
 			«ENDIF»
 		«ENDIF»
 	«ENDIF»
@@ -1458,14 +1459,14 @@ namespace «s.get(i)» {
 			«IF a.map.primaryType.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
 				#include "«a.map.primaryType.replaceAll("::", "/")».h"
 			«ELSE /* Use the types only as specified by the user. */»
-				#include "generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.map.primaryType.replaceAll("\\.", "/")».h"
+				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.map.primaryType.replaceAll("\\.", "/")».h"
 			«ENDIF»
 		«ENDIF»
 		«IF !typeMap.containsKey(a.map.secondaryType) && !enums.containsKey(a.map.secondaryType)»
 			«IF a.map.secondaryType.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
 				#include "«a.map.secondaryType.replaceAll("::", "/")».h"
 			«ELSE /* Use the types only as specified by the user. */»
-				#include "generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.map.secondaryType.replaceAll("\\.", "/")».h"
+				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.map.secondaryType.replaceAll("\\.", "/")».h"
 			«ENDIF»
 		«ENDIF»
 	«ENDIF»
@@ -1474,7 +1475,7 @@ namespace «s.get(i)» {
 			«IF a.fixedarray.type.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
 				#include "«a.fixedarray.type.replaceAll("::", "/")».h"
 			«ELSE /* Use the types only as specified by the user. */»
-				#include "generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.fixedarray.type.replaceAll("\\.", "/")».h"
+				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.fixedarray.type.replaceAll("\\.", "/")».h"
 			«ENDIF»
 		«ENDIF»
 	«ENDIF»
