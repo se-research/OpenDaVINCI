@@ -24,7 +24,7 @@
 
 #include "opendavinci/core/data/Container.h"
 
-#include "GeneratedHeaders_CoreData.h"
+#include "opendavinci/GeneratedHeaders_CoreData.h"
 
 namespace core {
     namespace dmcp {
