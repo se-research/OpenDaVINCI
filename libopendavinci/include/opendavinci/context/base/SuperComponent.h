@@ -32,9 +32,9 @@
 #include "opendavinci/core/dmcp/ModuleStateListener.h"
 #include "opendavinci/core/dmcp/connection/ConnectionHandler.h"
 #include "opendavinci/core/io/conference/ContainerConference.h"
-#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
-#include "generated/coredata/dmcp/ModuleStateMessage.h"
-#include "generated/coredata/dmcp/RuntimeStatistic.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
+#include "opendavinci/generated/coredata/dmcp/RuntimeStatistic.h"
 
 namespace coredata { namespace dmcp { class ModuleDescriptor; } }
 namespace core { namespace data { class Container; } }
