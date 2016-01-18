@@ -22,13 +22,13 @@
 
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"
-#include "core/exceptions/Exceptions.h"
-#include "core/io/StringListener.h"
-#include "core/io/conference/ContainerConference.h"
-#include "core/io/udp/UDPReceiver.h"
-#include "core/io/udp/UDPSender.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/exceptions/Exceptions.h"
+#include "opendavinci/core/io/StringListener.h"
+#include "opendavinci/core/io/conference/ContainerConference.h"
+#include "opendavinci/core/io/udp/UDPReceiver.h"
+#include "opendavinci/core/io/udp/UDPSender.h"
 
 namespace core { namespace data { class Container; } }
 

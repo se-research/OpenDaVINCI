@@ -23,13 +23,13 @@
 #include <memory>
 #include <string>
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/io/udp/UDPSender.h"
+#include "opendavinci/core/io/udp/UDPSender.h"
 
-#include "core/wrapper/Mutex.h"
-#include "core/wrapper/NetworkLibraryProducts.h"
-#include "core/wrapper/UDPFactoryWorker.h"
+#include "opendavinci/core/wrapper/Mutex.h"
+#include "opendavinci/core/wrapper/NetworkLibraryProducts.h"
+#include "opendavinci/core/wrapper/UDPFactoryWorker.h"
 
 namespace core {
     namespace wrapper {

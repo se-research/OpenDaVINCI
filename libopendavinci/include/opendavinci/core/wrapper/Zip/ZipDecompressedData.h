@@ -25,10 +25,10 @@
 #include <string>
 #include <vector>
 
-#include "core/SharedPointer.h"
-#include "core/strings/StringComparator.h"
-#include "core/wrapper/CompressionLibraryProducts.h"
-#include "core/wrapper/DecompressedData.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/strings/StringComparator.h"
+#include "opendavinci/core/wrapper/CompressionLibraryProducts.h"
+#include "opendavinci/core/wrapper/DecompressedData.h"
 
 namespace core { namespace wrapper { template <core::wrapper::CompressionLibraryProducts product> struct CompressionFactoryWorker; } }
 

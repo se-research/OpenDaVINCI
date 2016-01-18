@@ -20,11 +20,11 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_KEYVALUEDATABASEFACTORYWORKER
 #define OPENDAVINCI_CORE_WRAPPER_KEYVALUEDATABASEFACTORYWORKER
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/SharedPointer.h"
-#include "core/wrapper/KeyValueDatabase.h"
-#include "core/wrapper/KeyValueDatabaseLibraryProducts.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/wrapper/KeyValueDatabase.h"
+#include "opendavinci/core/wrapper/KeyValueDatabaseLibraryProducts.h"
 
 namespace core {
     namespace wrapper {

@@ -22,10 +22,10 @@
 
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/base/module/ManagedClientModule.h"
-#include "core/exceptions/Exceptions.h"
-#include "core/io/conference/ContainerListener.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/module/ManagedClientModule.h"
+#include "opendavinci/core/exceptions/Exceptions.h"
+#include "opendavinci/core/io/conference/ContainerListener.h"
 #include "generated/coredata/LogMessage.h"
 #include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
 

@@ -20,11 +20,11 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_TCPFACTORYWORKER_H_
 #define OPENDAVINCI_CORE_WRAPPER_TCPFACTORYWORKER_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/io/tcp/TCPAcceptor.h"
-#include "core/io/tcp/TCPConnection.h"
-#include "core/wrapper/NetworkLibraryProducts.h"
+#include "opendavinci/core/io/tcp/TCPAcceptor.h"
+#include "opendavinci/core/io/tcp/TCPConnection.h"
+#include "opendavinci/core/wrapper/NetworkLibraryProducts.h"
 
 namespace core {
     namespace wrapper {

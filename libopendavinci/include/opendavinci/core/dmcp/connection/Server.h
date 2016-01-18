@@ -20,10 +20,10 @@
 #ifndef OPENDAVINCI_DMCP_CONNECTION_SERVER_H_
 #define OPENDAVINCI_DMCP_CONNECTION_SERVER_H_
 
-#include "core/opendavinci.h"
-#include "core/base/Mutex.h"
-#include "core/io/ConnectionAcceptor.h"
-#include "core/io/ConnectionAcceptorListener.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/core/io/ConnectionAcceptor.h"
+#include "opendavinci/core/io/ConnectionAcceptorListener.h"
 
 namespace coredata { namespace dmcp { class ServerInformation; } }
 namespace core { namespace dmcp { class ModuleConfigurationProvider; } }

@@ -20,8 +20,8 @@
 #ifndef OPENDAVINCI_CORE_BASE_ABSTRACTDATASTORE_H_
 #define OPENDAVINCI_CORE_BASE_ABSTRACTDATASTORE_H_
 
-#include "core/opendavinci.h"
-#include "core/base/Condition.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/Condition.h"
 
 namespace core { namespace data { class Container; } }
 

@@ -22,14 +22,14 @@
 
 #include <string>
 
-#include "core/opendavinci.h"
-#include "context/base/Clock.h"
-#include "core/SharedPointer.h"
-#include "core/base/module/Breakpoint.h"
-#include "core/base/module/ClientModule.h"
-#include "core/data/TimeStamp.h"
-#include "core/exceptions/Exceptions.h"
-#include "core/io/conference/ContainerConference.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/context/base/Clock.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/base/module/Breakpoint.h"
+#include "opendavinci/core/base/module/ClientModule.h"
+#include "opendavinci/core/data/TimeStamp.h"
+#include "opendavinci/core/exceptions/Exceptions.h"
+#include "opendavinci/core/io/conference/ContainerConference.h"
 #include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
 #include "generated/coredata/dmcp/PulseMessage.h"
 

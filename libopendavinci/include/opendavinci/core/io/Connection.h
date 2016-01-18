@@ -22,13 +22,13 @@
 
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"
-#include "core/base/Mutex.h"
-#include "core/io/ConnectionListener.h"
-#include "core/io/StringListener.h"
-#include "core/io/conference/ContainerObserver.h"
-#include "core/io/tcp/TCPConnection.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/core/io/ConnectionListener.h"
+#include "opendavinci/core/io/StringListener.h"
+#include "opendavinci/core/io/conference/ContainerObserver.h"
+#include "opendavinci/core/io/tcp/TCPConnection.h"
 
 namespace core { namespace data { class Container; } }
 

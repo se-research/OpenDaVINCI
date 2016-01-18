@@ -30,7 +30,7 @@
 #define OPENDAVINCI_CORE_STRINGLITERAL8(a, b, c, d, e, f, g, h) core::base::CharList<a, core::base::CharList<b, core::base::CharList<c, core::base::CharList<d, core::base::CharList<e, core::base::CharList<f, core::base::CharList<g, core::base::CharList<h, core::base::NullType> > > > > > > >
 
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
 namespace core {
     namespace base {

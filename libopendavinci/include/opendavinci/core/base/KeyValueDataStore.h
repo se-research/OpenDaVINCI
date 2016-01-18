@@ -20,11 +20,11 @@
 #ifndef OPENDAVINCI_CORE_BASE_KEYVALUEDATASTORE_H_
 #define OPENDAVINCI_CORE_BASE_KEYVALUEDATASTORE_H_
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"
-#include "core/data/Container.h"
-#include "core/exceptions/Exceptions.h"
-#include "core/wrapper/KeyValueDatabase.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/exceptions/Exceptions.h"
+#include "opendavinci/core/wrapper/KeyValueDatabase.h"
 
 namespace core {
     namespace base {

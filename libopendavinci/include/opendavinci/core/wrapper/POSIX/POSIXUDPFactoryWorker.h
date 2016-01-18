@@ -23,14 +23,14 @@
 #include <iostream>
 #include <sstream>
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/base/module/AbstractCIDModule.h"
-#include "core/wrapper/NetworkLibraryProducts.h"
-#include "core/wrapper/UDPFactoryWorker.h"
+#include "opendavinci/core/base/module/AbstractCIDModule.h"
+#include "opendavinci/core/wrapper/NetworkLibraryProducts.h"
+#include "opendavinci/core/wrapper/UDPFactoryWorker.h"
 
-#include "core/wrapper/POSIX/POSIXUDPReceiver.h"
-#include "core/wrapper/POSIX/POSIXUDPSender.h"
+#include "opendavinci/core/wrapper/POSIX/POSIXUDPReceiver.h"
+#include "opendavinci/core/wrapper/POSIX/POSIXUDPSender.h"
 
 namespace core {
     namespace wrapper {

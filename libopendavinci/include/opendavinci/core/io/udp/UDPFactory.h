@@ -22,8 +22,8 @@
 
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"
 
 namespace core {
     namespace io {

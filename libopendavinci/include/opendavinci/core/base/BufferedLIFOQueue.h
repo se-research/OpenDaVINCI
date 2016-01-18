@@ -20,10 +20,10 @@
 #ifndef OPENDAVINCI_CORE_BASE_BUFFEREDLIFOQUEUE_H_
 #define OPENDAVINCI_CORE_BASE_BUFFEREDLIFOQUEUE_H_
 
-#include "core/opendavinci.h"
-#include "core/base/LIFOQueue.h"
-#include "core/data/Container.h"
-#include "core/exceptions/Exceptions.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/LIFOQueue.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/exceptions/Exceptions.h"
 
 namespace core {
     namespace base {

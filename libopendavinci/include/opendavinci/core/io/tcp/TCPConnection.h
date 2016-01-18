@@ -23,10 +23,10 @@
 #include <sstream>
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/base/Mutex.h"
-#include "core/io/ConnectionObserver.h"
-#include "core/io/StringObserver.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/core/io/ConnectionObserver.h"
+#include "opendavinci/core/io/StringObserver.h"
 
 namespace core { namespace io { class ConnectionListener; } }
 namespace core { namespace io { class StringListener; } }

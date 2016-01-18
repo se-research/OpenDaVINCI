@@ -20,8 +20,8 @@
 #ifndef OPENDAVINCI_CORE_BASE_THREAD_H_
 #define OPENDAVINCI_CORE_BASE_THREAD_H_
 
-#include "core/opendavinci.h"
-#include "core/data/TimeStamp.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/data/TimeStamp.h"
 
 namespace core {
     namespace base {

@@ -24,12 +24,12 @@
 #include <chrono>
 #include <thread>
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/wrapper/SystemLibraryProducts.h"
-#include "core/wrapper/ConcurrencyFactoryWorker.h"
+#include "opendavinci/core/wrapper/SystemLibraryProducts.h"
+#include "opendavinci/core/wrapper/ConcurrencyFactoryWorker.h"
 
-#include "core/wrapper/WIN32/WIN32Thread.h"
+#include "opendavinci/core/wrapper/WIN32/WIN32Thread.h"
 
 namespace core {
     namespace wrapper {

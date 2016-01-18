@@ -20,10 +20,10 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_COMPRESSIONFACTORYWORKER_H_
 #define OPENDAVINCI_CORE_WRAPPER_COMPRESSIONFACTORYWORKER_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/wrapper/DecompressedData.h"
-#include "core/wrapper/CompressionLibraryProducts.h"
+#include "opendavinci/core/wrapper/DecompressedData.h"
+#include "opendavinci/core/wrapper/CompressionLibraryProducts.h"
 
 namespace core {
     namespace wrapper {

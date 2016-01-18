@@ -22,9 +22,9 @@
 
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/base/Mutex.h"
-#include "core/io/StringListener.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/core/io/StringListener.h"
 
 namespace core { namespace io { class StringSender; } }
 

@@ -22,15 +22,15 @@
 
 #include <memory>
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/SharedPointer.h"
-#include "core/io/tcp/TCPAcceptor.h"
-#include "core/io/tcp/TCPAcceptorListener.h"
-#include "core/io/tcp/TCPConnection.h"
-#include "core/wrapper/Runnable.h"
-#include "core/wrapper/Thread.h"
-#include "core/wrapper/Mutex.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/io/tcp/TCPAcceptor.h"
+#include "opendavinci/core/io/tcp/TCPAcceptorListener.h"
+#include "opendavinci/core/io/tcp/TCPConnection.h"
+#include "opendavinci/core/wrapper/Runnable.h"
+#include "opendavinci/core/wrapper/Thread.h"
+#include "opendavinci/core/wrapper/Mutex.h"
 
 namespace core {
     namespace wrapper {

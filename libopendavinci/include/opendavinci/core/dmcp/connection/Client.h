@@ -22,13 +22,13 @@
 
 #include <vector>
 
-#include "core/opendavinci.h"
-#include "core/base/Condition.h"
-#include "core/base/KeyValueConfiguration.h"
-#include "core/base/Mutex.h"
-#include "core/io/Connection.h"
-#include "core/io/ConnectionErrorListener.h"
-#include "core/io/conference/ContainerListener.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/Condition.h"
+#include "opendavinci/core/base/KeyValueConfiguration.h"
+#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/core/io/Connection.h"
+#include "opendavinci/core/io/ConnectionErrorListener.h"
+#include "opendavinci/core/io/conference/ContainerListener.h"
 #include "generated/coredata/dmcp/ModuleDescriptor.h"
 #include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
 #include "generated/coredata/dmcp/ModuleStateMessage.h"

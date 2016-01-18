@@ -20,8 +20,8 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_CONDITIONFACTORYWORKER_H_
 #define OPENDAVINCI_CORE_WRAPPER_CONDITIONFACTORYWORKER_H_
 
-#include "core/SharedPointer.h"
-#include "core/wrapper/SystemLibraryProducts.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/wrapper/SystemLibraryProducts.h"
 
 namespace core {
     namespace wrapper {

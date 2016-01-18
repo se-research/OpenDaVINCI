@@ -24,9 +24,9 @@
 #include <sstream>
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/base/Serializer.h"
-#include "core/base/Deserializer.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/Serializer.h"
+#include "opendavinci/core/base/Deserializer.h"
 
 namespace core {
     namespace base {

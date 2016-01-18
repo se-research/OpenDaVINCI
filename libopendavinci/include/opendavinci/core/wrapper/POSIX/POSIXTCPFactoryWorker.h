@@ -20,11 +20,11 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXTCPFACTORY_H_
 #define OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXTCPFACTORY_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/wrapper/TCPFactoryWorker.h"
-#include "core/wrapper/POSIX/POSIXTCPAcceptor.h"
-#include "core/wrapper/POSIX/POSIXTCPConnection.h"
+#include "opendavinci/core/wrapper/TCPFactoryWorker.h"
+#include "opendavinci/core/wrapper/POSIX/POSIXTCPAcceptor.h"
+#include "opendavinci/core/wrapper/POSIX/POSIXTCPConnection.h"
 
 namespace core {
     namespace wrapper {

@@ -25,13 +25,13 @@
 // Using c++11 standard.
 #include <thread>
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/wrapper/Mutex.h"
-#include "core/wrapper/Runnable.h"
-#include "core/wrapper/Thread.h"
-#include "core/wrapper/SystemLibraryProducts.h"
-#include "core/wrapper/ConcurrencyFactoryWorker.h"
+#include "opendavinci/core/wrapper/Mutex.h"
+#include "opendavinci/core/wrapper/Runnable.h"
+#include "opendavinci/core/wrapper/Thread.h"
+#include "opendavinci/core/wrapper/SystemLibraryProducts.h"
+#include "opendavinci/core/wrapper/ConcurrencyFactoryWorker.h"
 
 namespace core {
     namespace wrapper {

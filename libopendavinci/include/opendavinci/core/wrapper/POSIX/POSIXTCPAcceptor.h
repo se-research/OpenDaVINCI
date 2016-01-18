@@ -22,9 +22,9 @@
 
 #include <memory>
 
-#include "core/opendavinci.h"
-#include "core/io/tcp/TCPAcceptor.h"
-#include "core/wrapper/Runnable.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/io/tcp/TCPAcceptor.h"
+#include "opendavinci/core/wrapper/Runnable.h"
 
 namespace core { namespace io { namespace tcp { class TCPAcceptorListener; } } }
 namespace core { namespace io { namespace tcp { class TCPConnection; } } }

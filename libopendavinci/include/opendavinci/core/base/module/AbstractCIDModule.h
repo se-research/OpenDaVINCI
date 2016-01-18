@@ -22,10 +22,10 @@
 
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/base/module/InterruptibleModule.h"
-#include "core/base/module/Periodic.h"
-#include "core/exceptions/Exceptions.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/module/InterruptibleModule.h"
+#include "opendavinci/core/base/module/Periodic.h"
+#include "opendavinci/core/exceptions/Exceptions.h"
 
 namespace core {
     namespace base {

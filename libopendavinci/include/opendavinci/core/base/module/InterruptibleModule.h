@@ -20,9 +20,9 @@
 #ifndef OPENDAVINCI_CORE_BASE_MODULE_INTERRUPTIBLEMODULE_H_
 #define OPENDAVINCI_CORE_BASE_MODULE_INTERRUPTIBLEMODULE_H_
 
-#include "core/opendavinci.h"
-#include "core/base/Mutex.h"
-#include "core/base/module/AbstractModule.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/core/base/module/AbstractModule.h"
 #include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
 namespace core {

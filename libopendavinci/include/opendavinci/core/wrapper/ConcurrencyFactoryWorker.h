@@ -20,11 +20,11 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_CONCURRENCYFACTORYWORKER_H_
 #define OPENDAVINCI_CORE_WRAPPER_CONCURRENCYFACTORYWORKER_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/wrapper/Runnable.h"
-#include "core/wrapper/Thread.h"
-#include "core/wrapper/SystemLibraryProducts.h"
+#include "opendavinci/core/wrapper/Runnable.h"
+#include "opendavinci/core/wrapper/Thread.h"
+#include "opendavinci/core/wrapper/SystemLibraryProducts.h"
 
 namespace core {
     namespace wrapper {

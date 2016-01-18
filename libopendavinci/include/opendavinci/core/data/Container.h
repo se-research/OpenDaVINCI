@@ -23,9 +23,9 @@
 #include <sstream>
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/base/Serializable.h"
-#include "core/data/TimeStamp.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/Serializable.h"
+#include "opendavinci/core/data/TimeStamp.h"
 
 namespace core {
     namespace data {

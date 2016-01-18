@@ -20,9 +20,9 @@
 #ifndef OPENDAVINCI_CORE_BASE_MUTEX_H_
 #define OPENDAVINCI_CORE_BASE_MUTEX_H_
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"
-#include "core/wrapper/Mutex.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/wrapper/Mutex.h"
 
 namespace core {
     namespace base {

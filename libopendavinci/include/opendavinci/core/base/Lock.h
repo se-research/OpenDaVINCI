@@ -20,9 +20,9 @@
 #ifndef OPENDAVINCI_CORE_BASE_LOCK_H_
 #define OPENDAVINCI_CORE_BASE_LOCK_H_
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"
-#include "core/wrapper/SharedMemory.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/wrapper/SharedMemory.h"
 
 namespace core {
     namespace base {

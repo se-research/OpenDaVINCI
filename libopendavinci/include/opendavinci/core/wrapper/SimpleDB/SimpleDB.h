@@ -24,9 +24,9 @@
 #include <memory>
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/wrapper/KeyValueDatabase.h"
-#include "core/wrapper/KeyValueDatabaseLibraryProducts.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/wrapper/KeyValueDatabase.h"
+#include "opendavinci/core/wrapper/KeyValueDatabaseLibraryProducts.h"
 
 namespace core { namespace wrapper { class Mutex; } }
 namespace core { namespace wrapper { template <core::wrapper::KeyValueDatabaseLibraryProducts product> class KeyValueDatabaseFactoryWorker; } }

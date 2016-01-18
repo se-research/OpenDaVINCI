@@ -23,8 +23,8 @@
 #include <pthread.h>
 #include <memory>
 
-#include "core/wrapper/SystemLibraryProducts.h"
-#include "core/wrapper/Thread.h"
+#include "opendavinci/core/wrapper/SystemLibraryProducts.h"
+#include "opendavinci/core/wrapper/Thread.h"
 
 namespace core { namespace wrapper { class Mutex; } }
 namespace core { namespace wrapper { class Runnable; } }

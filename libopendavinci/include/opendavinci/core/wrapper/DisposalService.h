@@ -23,10 +23,10 @@
 #include <deque>
 #include <memory>
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"
-#include "core/wrapper/Condition.h"
-#include "core/wrapper/Runnable.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/wrapper/Condition.h"
+#include "opendavinci/core/wrapper/Runnable.h"
 
 namespace core {
     namespace wrapper {

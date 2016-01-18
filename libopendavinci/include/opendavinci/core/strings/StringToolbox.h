@@ -20,7 +20,7 @@
 #ifndef OPENDAVINCI_CORE_STRINGS_STRINGTOOLBOX_H_
 #define OPENDAVINCI_CORE_STRINGS_STRINGTOOLBOX_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
 #include <string>
 #include <vector>

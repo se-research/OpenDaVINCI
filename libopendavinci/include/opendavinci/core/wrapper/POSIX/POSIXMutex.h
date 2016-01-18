@@ -22,8 +22,8 @@
 
 #include <pthread.h>
 
-#include "core/wrapper/Mutex.h"
-#include "core/wrapper/SystemLibraryProducts.h"
+#include "opendavinci/core/wrapper/Mutex.h"
+#include "opendavinci/core/wrapper/SystemLibraryProducts.h"
 
 namespace core { namespace wrapper { template <core::wrapper::SystemLibraryProducts product> class MutexFactoryWorker; } }
 

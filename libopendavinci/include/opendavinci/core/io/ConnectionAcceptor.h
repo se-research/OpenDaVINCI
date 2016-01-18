@@ -20,11 +20,11 @@
 #ifndef OPENDAVINCI_CORE_IO_CONNECTIONACCEPTOR_H_
 #define OPENDAVINCI_CORE_IO_CONNECTIONACCEPTOR_H_
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"
-#include "core/base/Mutex.h"
-#include "core/io/tcp/TCPAcceptor.h"
-#include "core/io/tcp/TCPAcceptorListener.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/core/io/tcp/TCPAcceptor.h"
+#include "opendavinci/core/io/tcp/TCPAcceptorListener.h"
 
 namespace core {
     namespace io {

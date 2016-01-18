@@ -24,13 +24,13 @@
 #include <sstream>
 #include <string>
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/base/module/AbstractCIDModule.h"
-#include "core/wrapper/NetworkLibraryProducts.h"
-#include "core/wrapper/UDPFactoryWorker.h"
-#include "core/wrapper/WIN32/WIN32UDPReceiver.h"
-#include "core/wrapper/WIN32/WIN32UDPSender.h"
+#include "opendavinci/core/base/module/AbstractCIDModule.h"
+#include "opendavinci/core/wrapper/NetworkLibraryProducts.h"
+#include "opendavinci/core/wrapper/UDPFactoryWorker.h"
+#include "opendavinci/core/wrapper/WIN32/WIN32UDPReceiver.h"
+#include "opendavinci/core/wrapper/WIN32/WIN32UDPSender.h"
 
 namespace core {
     namespace wrapper {

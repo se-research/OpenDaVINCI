@@ -23,12 +23,12 @@
 // Using c++11 standard.
 #include <condition_variable>
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/wrapper/Condition.h"
-#include "core/wrapper/ConditionFactoryWorker.h"
-#include "core/wrapper/SystemLibraryProducts.h"
-#include "core/wrapper/WIN32/WIN32Mutex.h"
+#include "opendavinci/core/wrapper/Condition.h"
+#include "opendavinci/core/wrapper/ConditionFactoryWorker.h"
+#include "opendavinci/core/wrapper/SystemLibraryProducts.h"
+#include "opendavinci/core/wrapper/WIN32/WIN32Mutex.h"
 
 namespace core {
     namespace wrapper {

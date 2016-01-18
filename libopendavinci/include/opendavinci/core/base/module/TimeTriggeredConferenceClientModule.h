@@ -24,14 +24,14 @@
 #include <string>
 #include <vector>
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"
-#include "core/base/DataStoreManager.h"
-#include "core/base/KeyValueDataStore.h"
-#include "core/base/Mutex.h"
-#include "core/base/module/AbstractConferenceClientModule.h"
-#include "core/data/Container.h"
-#include "core/exceptions/Exceptions.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/base/DataStoreManager.h"
+#include "opendavinci/core/base/KeyValueDataStore.h"
+#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/core/base/module/AbstractConferenceClientModule.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/exceptions/Exceptions.h"
 #include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
 namespace core { namespace base { class AbstractDataStore; } }

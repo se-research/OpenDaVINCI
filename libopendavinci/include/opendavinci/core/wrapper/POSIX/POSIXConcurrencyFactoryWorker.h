@@ -22,12 +22,12 @@
 
 #include <sys/time.h>
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/wrapper/SystemLibraryProducts.h"
-#include "core/wrapper/ConcurrencyFactoryWorker.h"
+#include "opendavinci/core/wrapper/SystemLibraryProducts.h"
+#include "opendavinci/core/wrapper/ConcurrencyFactoryWorker.h"
 
-#include "core/wrapper/POSIX/POSIXThread.h"
+#include "opendavinci/core/wrapper/POSIX/POSIXThread.h"
 
 namespace core {
     namespace wrapper {

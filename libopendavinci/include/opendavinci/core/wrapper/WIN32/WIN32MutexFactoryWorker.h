@@ -20,12 +20,12 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_WIN32IMPL_WIN32MUTEXFACTORYWORKER_H_
 #define OPENDAVINCI_CORE_WRAPPER_WIN32IMPL_WIN32MUTEXFACTORYWORKER_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/wrapper/Mutex.h"
-#include "core/wrapper/MutexFactoryWorker.h"
+#include "opendavinci/core/wrapper/Mutex.h"
+#include "opendavinci/core/wrapper/MutexFactoryWorker.h"
 
-#include "core/wrapper/WIN32/WIN32Mutex.h"
+#include "opendavinci/core/wrapper/WIN32/WIN32Mutex.h"
 
 namespace core {
     namespace wrapper {

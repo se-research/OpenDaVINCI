@@ -22,9 +22,9 @@
 
 #include <vector>
 
-#include "core/opendavinci.h"
-#include "core/data/Container.h"
-#include "core/io/conference/ContainerConference.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/io/conference/ContainerConference.h"
 
 namespace core {
     namespace base {

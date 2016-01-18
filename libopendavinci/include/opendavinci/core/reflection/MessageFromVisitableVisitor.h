@@ -22,9 +22,9 @@
 
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/base/Visitor.h"
-#include "core/reflection/Message.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/Visitor.h"
+#include "opendavinci/core/reflection/Message.h"
 
 namespace core { namespace base { class Serializable; } }
 

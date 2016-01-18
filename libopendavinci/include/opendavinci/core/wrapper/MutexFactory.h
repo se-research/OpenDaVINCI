@@ -20,7 +20,7 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_MUTEXFACTORY_H_
 #define OPENDAVINCI_CORE_WRAPPER_MUTEXFACTORY_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
 namespace core {
     namespace wrapper {

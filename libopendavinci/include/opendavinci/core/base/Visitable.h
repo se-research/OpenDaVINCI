@@ -20,8 +20,8 @@
 #ifndef OPENDAVINCI_CORE_BASE_VISITABLE_H_
 #define OPENDAVINCI_CORE_BASE_VISITABLE_H_
 
-#include "core/opendavinci.h"
-#include "core/base/Visitor.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/Visitor.h"
 
 namespace core {
     namespace base {

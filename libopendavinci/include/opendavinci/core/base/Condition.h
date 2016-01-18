@@ -20,10 +20,10 @@
 #ifndef OPENDAVINCI_CORE_BASE_CONDITION_H_
 #define OPENDAVINCI_CORE_BASE_CONDITION_H_
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"
-#include "core/base/Mutex.h"
-#include "core/wrapper/Condition.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/core/wrapper/Condition.h"
 
 namespace core {
     namespace base {

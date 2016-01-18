@@ -20,12 +20,12 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_WIN32IMPL_WIN32CONDITIONFACTORYWORKER_H_
 #define OPENDAVINCI_CORE_WRAPPER_WIN32IMPL_WIN32CONDITIONFACTORYWORKER_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/wrapper/ConditionFactoryWorker.h"
-#include "core/wrapper/SystemLibraryProducts.h"
+#include "opendavinci/core/wrapper/ConditionFactoryWorker.h"
+#include "opendavinci/core/wrapper/SystemLibraryProducts.h"
 
-#include "core/wrapper/WIN32/WIN32Condition.h"
+#include "opendavinci/core/wrapper/WIN32/WIN32Condition.h"
 
 namespace core {
     namespace wrapper {

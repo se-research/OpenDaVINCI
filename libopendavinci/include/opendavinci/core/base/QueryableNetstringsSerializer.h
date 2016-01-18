@@ -23,10 +23,10 @@
 #include <sstream>
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/base/QueryableNetstringsSerializerAACF.h"
-#include "core/base/QueryableNetstringsSerializerABCF.h"
-#include "core/base/Serializer.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/QueryableNetstringsSerializerAACF.h"
+#include "opendavinci/core/base/QueryableNetstringsSerializerABCF.h"
+#include "opendavinci/core/base/Serializer.h"
 
 namespace core {
     namespace base {

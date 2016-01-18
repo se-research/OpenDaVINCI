@@ -23,10 +23,10 @@
 #include <memory>
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/io/ConnectionObserver.h"
-#include "core/io/StringSender.h"
-#include "core/wrapper/Runnable.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/io/ConnectionObserver.h"
+#include "opendavinci/core/io/StringSender.h"
+#include "opendavinci/core/wrapper/Runnable.h"
 
 namespace core { namespace io { class ConnectionListener; } }
 namespace core { namespace io { class StringListener; } }

@@ -20,7 +20,7 @@
 #ifndef OPENDAVINCI_CORE_BASE_MODULE_PERIODIC_H_
 #define OPENDAVINCI_CORE_BASE_MODULE_PERIODIC_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
 namespace core {
     namespace base {

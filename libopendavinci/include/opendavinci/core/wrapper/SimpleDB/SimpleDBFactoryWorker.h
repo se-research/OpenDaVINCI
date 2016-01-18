@@ -20,12 +20,12 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_SIMPLEDB_SIMPLEDBFACTORY_H_
 #define OPENDAVINCI_CORE_WRAPPER_SIMPLEDB_SIMPLEDBFACTORY_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/wrapper/KeyValueDatabaseLibraryProducts.h"
-#include "core/wrapper/KeyValueDatabaseFactoryWorker.h"
+#include "opendavinci/core/wrapper/KeyValueDatabaseLibraryProducts.h"
+#include "opendavinci/core/wrapper/KeyValueDatabaseFactoryWorker.h"
 
-#include "core/wrapper/SimpleDB/SimpleDB.h"
+#include "opendavinci/core/wrapper/SimpleDB/SimpleDB.h"
 
 namespace core {
     namespace wrapper {

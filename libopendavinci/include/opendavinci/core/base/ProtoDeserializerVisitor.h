@@ -23,11 +23,11 @@
 #include <sstream>
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/base/Serializer.h"
-#include "core/base/Deserializer.h"
-#include "core/base/ProtoSerializerVisitor.h"
-#include "core/base/Visitor.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/Serializer.h"
+#include "opendavinci/core/base/Deserializer.h"
+#include "opendavinci/core/base/ProtoSerializerVisitor.h"
+#include "opendavinci/core/base/Visitor.h"
 
 namespace core {
     namespace base {

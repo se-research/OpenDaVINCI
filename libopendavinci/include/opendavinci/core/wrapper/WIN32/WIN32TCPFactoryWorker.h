@@ -22,11 +22,11 @@
 
 #include <string>
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/wrapper/TCPFactoryWorker.h"
-#include "core/wrapper/WIN32/WIN32TCPAcceptor.h"
-#include "core/wrapper/WIN32/WIN32TCPConnection.h"
+#include "opendavinci/core/wrapper/TCPFactoryWorker.h"
+#include "opendavinci/core/wrapper/WIN32/WIN32TCPAcceptor.h"
+#include "opendavinci/core/wrapper/WIN32/WIN32TCPConnection.h"
 
 namespace core {
     namespace wrapper {

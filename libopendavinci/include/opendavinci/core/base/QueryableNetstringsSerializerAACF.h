@@ -23,8 +23,8 @@
 #include <sstream>
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/base/Serializer.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/Serializer.h"
 
 namespace core {
     namespace base {

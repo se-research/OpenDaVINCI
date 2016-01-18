@@ -20,12 +20,12 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXCONDITIONFACTORYWORKER_H_
 #define OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXCONDITIONFACTORYWORKER_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/wrapper/ConditionFactoryWorker.h"
-#include "core/wrapper/SystemLibraryProducts.h"
+#include "opendavinci/core/wrapper/ConditionFactoryWorker.h"
+#include "opendavinci/core/wrapper/SystemLibraryProducts.h"
 
-#include "core/wrapper/POSIX/POSIXCondition.h"
+#include "opendavinci/core/wrapper/POSIX/POSIXCondition.h"
 
 namespace core {
     namespace wrapper {

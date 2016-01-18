@@ -20,10 +20,10 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_TIMEFACTORYWORKER_H_
 #define OPENDAVINCI_CORE_WRAPPER_TIMEFACTORYWORKER_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/wrapper/Time.h"
-#include "core/wrapper/SystemLibraryProducts.h"
+#include "opendavinci/core/wrapper/Time.h"
+#include "opendavinci/core/wrapper/SystemLibraryProducts.h"
 
 namespace core {
     namespace wrapper {

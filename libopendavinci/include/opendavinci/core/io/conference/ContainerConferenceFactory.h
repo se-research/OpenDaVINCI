@@ -22,9 +22,9 @@
 
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"
-#include "core/base/Mutex.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/base/Mutex.h"
 
 namespace core {
     namespace io {

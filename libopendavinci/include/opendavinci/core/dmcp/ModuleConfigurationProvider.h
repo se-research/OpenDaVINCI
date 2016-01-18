@@ -20,9 +20,9 @@
 #ifndef OPENDAVINCI_DMCP_MODULECONFIGURATIONPROVIDER_H_
 #define OPENDAVINCI_DMCP_MODULECONFIGURATIONPROVIDER_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/base/KeyValueConfiguration.h"
+#include "opendavinci/core/base/KeyValueConfiguration.h"
 
 #include "GeneratedHeaders_CoreData.h"
 

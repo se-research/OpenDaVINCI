@@ -20,10 +20,10 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXSHAREDMEMORYFACTORY_H_
 #define OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXSHAREDMEMORYFACTORY_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/wrapper/SharedMemoryFactoryWorker.h"
-#include "core/wrapper/POSIX/POSIXSharedMemory.h"
+#include "opendavinci/core/wrapper/SharedMemoryFactoryWorker.h"
+#include "opendavinci/core/wrapper/POSIX/POSIXSharedMemory.h"
 
 namespace core {
     namespace wrapper {

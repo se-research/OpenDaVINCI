@@ -22,8 +22,8 @@
 
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/io/URLProtocol.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/io/URLProtocol.h"
 
 namespace core {
     namespace io {

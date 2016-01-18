@@ -23,9 +23,9 @@
 #include <sstream>
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/base/QueryableNetstringsSerializer.h"
-#include "core/base/Visitor.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/QueryableNetstringsSerializer.h"
+#include "opendavinci/core/base/Visitor.h"
 
 namespace core {
     namespace base {

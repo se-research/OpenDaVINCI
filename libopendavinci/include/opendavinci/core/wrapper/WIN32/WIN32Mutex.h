@@ -23,10 +23,10 @@
 // Using c++11 standard.
 #include <mutex>
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/wrapper/Mutex.h"
-#include "core/wrapper/MutexFactoryWorker.h"
+#include "opendavinci/core/wrapper/Mutex.h"
+#include "opendavinci/core/wrapper/MutexFactoryWorker.h"
 
 namespace core {
     namespace wrapper {

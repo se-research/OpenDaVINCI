@@ -22,12 +22,12 @@
 
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"
-#include "core/base/Condition.h"
-#include "core/io/PacketListener.h"
-#include "core/io/udp/UDPReceiver.h"
-#include "core/io/udp/UDPSender.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/base/Condition.h"
+#include "opendavinci/core/io/PacketListener.h"
+#include "opendavinci/core/io/udp/UDPReceiver.h"
+#include "opendavinci/core/io/udp/UDPSender.h"
 #include "generated/coredata/dmcp/ServerInformation.h"
 
 namespace core { namespace io { class Packet; } }

@@ -20,7 +20,7 @@
 #ifndef OPENDAVINCI_BASE_DATASTOREMANAGER_H_
 #define OPENDAVINCI_BASE_DATASTOREMANAGER_H_
 
-#include "core/data/Container.h"
+#include "opendavinci/core/data/Container.h"
 
 namespace core {
     namespace base {

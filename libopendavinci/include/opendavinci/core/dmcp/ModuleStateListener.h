@@ -20,9 +20,9 @@
 #ifndef OPENDAVINCI_DMCP_MODULESTATELISTENER_H_
 #define OPENDAVINCI_DMCP_MODULESTATELISTENER_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/data/Container.h"
+#include "opendavinci/core/data/Container.h"
 
 #include "GeneratedHeaders_CoreData.h"
 

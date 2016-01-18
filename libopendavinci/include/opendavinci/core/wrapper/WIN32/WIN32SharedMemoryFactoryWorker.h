@@ -22,10 +22,10 @@
 
 #include <string>
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/wrapper/SharedMemoryFactoryWorker.h"
-#include "core/wrapper/WIN32/WIN32SharedMemory.h"
+#include "opendavinci/core/wrapper/SharedMemoryFactoryWorker.h"
+#include "opendavinci/core/wrapper/WIN32/WIN32SharedMemory.h"
 
 namespace core {
     namespace wrapper {

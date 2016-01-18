@@ -20,10 +20,10 @@
 #ifndef OPENDAVINCI_DMCP_CONNECTION_CONNECTIONHANDLER_H_
 #define OPENDAVINCI_DMCP_CONNECTION_CONNECTIONHANDLER_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/SharedPointer.h"
-#include "core/dmcp/connection/ModuleConnection.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/dmcp/connection/ModuleConnection.h"
 
 namespace core {
     namespace dmcp {

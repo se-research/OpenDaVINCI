@@ -23,11 +23,11 @@
 #include <string>
 #include <vector>
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"
-#include "core/io/StringListener.h"
-#include "core/io/udp/UDPReceiver.h"
-#include "core/io/udp/UDPSender.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/io/StringListener.h"
+#include "opendavinci/core/io/udp/UDPReceiver.h"
+#include "opendavinci/core/io/udp/UDPSender.h"
 #include "generated/coredata/dmcp/ServerInformation.h"
 
 namespace core {

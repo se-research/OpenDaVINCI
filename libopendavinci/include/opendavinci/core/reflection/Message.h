@@ -22,9 +22,9 @@
 
 #include <vector>
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"
-#include "core/base/Visitable.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/base/Visitable.h"
 #include "generated/coredata/reflection/AbstractField.h"
 
 namespace core { namespace base { class Visitor; } }

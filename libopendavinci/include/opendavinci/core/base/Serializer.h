@@ -22,8 +22,8 @@
 
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/base/Serializable.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/Serializable.h"
 
 namespace core {
     namespace base {

@@ -23,11 +23,11 @@
 #include <queue>
 #include <string>
 
-#include "core/base/Condition.h"
-#include "core/base/Mutex.h"
-#include "core/base/Service.h"
-#include "core/io/StringListener.h"
-#include "core/io/StringObserver.h"
+#include "opendavinci/core/base/Condition.h"
+#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/core/base/Service.h"
+#include "opendavinci/core/io/StringListener.h"
+#include "opendavinci/core/io/StringObserver.h"
 
 namespace core {
     namespace io {

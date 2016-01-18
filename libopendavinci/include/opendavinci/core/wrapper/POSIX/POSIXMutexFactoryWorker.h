@@ -20,12 +20,12 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXMUTEXFACTORYWORKER_H_
 #define OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXMUTEXFACTORYWORKER_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/wrapper/Mutex.h"
-#include "core/wrapper/MutexFactoryWorker.h"
+#include "opendavinci/core/wrapper/Mutex.h"
+#include "opendavinci/core/wrapper/MutexFactoryWorker.h"
 
-#include "core/wrapper/POSIX/POSIXMutex.h"
+#include "opendavinci/core/wrapper/POSIX/POSIXMutex.h"
 
 namespace core {
     namespace wrapper {

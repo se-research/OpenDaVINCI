@@ -26,10 +26,10 @@
 #include <memory>
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/io/udp/UDPReceiver.h"
-#include "core/wrapper/NetworkLibraryProducts.h"
-#include "core/wrapper/Runnable.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/io/udp/UDPReceiver.h"
+#include "opendavinci/core/wrapper/NetworkLibraryProducts.h"
+#include "opendavinci/core/wrapper/Runnable.h"
 
 namespace core { namespace wrapper { class Thread; } }
 namespace core { namespace wrapper { template <core::wrapper::NetworkLibraryProducts product> class UDPFactoryWorker; } }

@@ -23,9 +23,9 @@
 #include <semaphore.h>
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/wrapper/SharedMemory.h"
-#include "core/wrapper/SystemLibraryProducts.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/wrapper/SharedMemory.h"
+#include "opendavinci/core/wrapper/SystemLibraryProducts.h"
 
 namespace core { namespace wrapper { template <core::wrapper::SystemLibraryProducts product> class SharedMemoryFactoryWorker; } }
 

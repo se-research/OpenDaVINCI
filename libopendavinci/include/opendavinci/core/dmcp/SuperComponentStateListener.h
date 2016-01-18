@@ -20,7 +20,7 @@
 #ifndef OPENDAVINCI_DMCP_SUPERCOMPONENTSTATELISTENER_H_
 #define OPENDAVINCI_DMCP_SUPERCOMPONENTSTATELISTENER_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
 namespace core {
     namespace dmcp {

@@ -24,7 +24,7 @@
 #include <string>
 #include <vector>
 
-#include "core/SharedPointer.h"
+#include "opendavinci/core/SharedPointer.h"
 
 namespace core {
     namespace wrapper {

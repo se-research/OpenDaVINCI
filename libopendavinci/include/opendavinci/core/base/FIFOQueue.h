@@ -22,10 +22,10 @@
 
 #include <deque>
 
-#include "core/opendavinci.h"
-#include "core/base/AbstractDataStore.h"
-#include "core/base/Mutex.h"
-#include "core/data/Container.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/AbstractDataStore.h"
+#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/core/data/Container.h"
 
 namespace core {
     namespace base {

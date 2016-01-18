@@ -22,20 +22,20 @@
 
 #include <memory>
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"
-#include "core/wrapper/ConfigurationTraits.h"
-#include "core/wrapper/Libraries.h"
-#include "core/wrapper/SystemLibraryProducts.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/wrapper/ConfigurationTraits.h"
+#include "opendavinci/core/wrapper/Libraries.h"
+#include "opendavinci/core/wrapper/SystemLibraryProducts.h"
 
 namespace core { namespace wrapper { class Mutex; } }
 namespace core { namespace wrapper { class Time; } }
 
 #ifdef WIN32
-    #include "core/wrapper/WIN32/WIN32TimeFactoryWorker.h"
+    #include "opendavinci/core/wrapper/WIN32/WIN32TimeFactoryWorker.h"
 #endif
 #ifndef WIN32
-    #include "core/wrapper/POSIX/POSIXTimeFactoryWorker.h"
+    #include "opendavinci/core/wrapper/POSIX/POSIXTimeFactoryWorker.h"
 #endif
 
 namespace core {

@@ -20,10 +20,10 @@
 #ifndef OPENDAVINCI_CORE_IO_UDP_UDPRECEIVER_H_
 #define OPENDAVINCI_CORE_IO_UDP_UDPRECEIVER_H_
 
-#include "core/base/Mutex.h"
-#include "core/io/PacketObserver.h"
-#include "core/io/StringObserver.h"
-#include "core/io/StringPipeline.h"
+#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/core/io/PacketObserver.h"
+#include "opendavinci/core/io/StringObserver.h"
+#include "opendavinci/core/io/StringPipeline.h"
 
 namespace core { namespace io { class Packet; } }
 namespace core { namespace io { class PacketListener; } }

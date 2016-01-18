@@ -20,11 +20,11 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_UDPFACTORYWORKER_H_
 #define OPENDAVINCI_CORE_WRAPPER_UDPFACTORYWORKER_H_
 
-#include "core/opendavinci.h"
-#include "core/wrapper/NetworkLibraryProducts.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/wrapper/NetworkLibraryProducts.h"
 
-#include "core/io/udp/UDPSender.h"
-#include "core/io/udp/UDPReceiver.h"
+#include "opendavinci/core/io/udp/UDPSender.h"
+#include "opendavinci/core/io/udp/UDPReceiver.h"
 
 namespace core {
     namespace wrapper {

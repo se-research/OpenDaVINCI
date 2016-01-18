@@ -20,10 +20,10 @@
 #ifndef OPENDAVINCI_CORE_IO_CONNECTIONACCEPTORLISTENER_H_
 #define OPENDAVINCI_CORE_IO_CONNECTIONACCEPTORLISTENER_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/SharedPointer.h"
-#include "core/io/Connection.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/io/Connection.h"
 
 namespace core {
     namespace io {

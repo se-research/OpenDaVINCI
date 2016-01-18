@@ -20,29 +20,29 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_LIBRARIES_H_
 #define OPENDAVINCI_CORE_WRAPPER_LIBRARIES_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/wrapper/ConfigurationTraits.h"
+#include "opendavinci/core/wrapper/ConfigurationTraits.h"
 
 /**
  * Enumeration of supported, but mutually excluded system libraries.
  */
-#include "core/wrapper/SystemLibraryProducts.h"
+#include "opendavinci/core/wrapper/SystemLibraryProducts.h"
 
 /**
  * Enumeration of supported, but mutually excluded network libraries.
  */
-#include "core/wrapper/NetworkLibraryProducts.h"
+#include "opendavinci/core/wrapper/NetworkLibraryProducts.h"
 
 /**
  * Enumeration of supported, but mutually excluded compression libraries.
  */
-#include "core/wrapper/CompressionLibraryProducts.h"
+#include "opendavinci/core/wrapper/CompressionLibraryProducts.h"
 
 /**
  * Enumeration of supported, but mutually excluded key/value-database  libraries.
  */
-#include "core/wrapper/KeyValueDatabaseLibraryProducts.h"
+#include "opendavinci/core/wrapper/KeyValueDatabaseLibraryProducts.h"
 
 namespace core {
     namespace wrapper {

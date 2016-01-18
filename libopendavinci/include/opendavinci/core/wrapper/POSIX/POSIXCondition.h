@@ -22,10 +22,10 @@
 
 #include <pthread.h>
 
-#include "core/opendavinci.h"
-#include "core/wrapper/Condition.h"
-#include "core/wrapper/POSIX/POSIXMutex.h"
-#include "core/wrapper/SystemLibraryProducts.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/wrapper/Condition.h"
+#include "opendavinci/core/wrapper/POSIX/POSIXMutex.h"
+#include "opendavinci/core/wrapper/SystemLibraryProducts.h"
 
 namespace core { namespace wrapper { template <core::wrapper::SystemLibraryProducts product> class ConditionFactoryWorker; } }
 

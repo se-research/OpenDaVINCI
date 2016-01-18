@@ -23,9 +23,9 @@
 #ifndef OPENDAVINCI_CORE_SHAREDPOINTER_H_
 #define OPENDAVINCI_CORE_SHAREDPOINTER_H_
 
-#include "core/opendavinci.h"
-#include "core/wrapper/Mutex.h"
-#include "core/wrapper/MutexFactory.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/wrapper/Mutex.h"
+#include "opendavinci/core/wrapper/MutexFactory.h"
 
 namespace core {
 

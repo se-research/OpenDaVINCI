@@ -22,11 +22,11 @@
 
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"
-#include "core/base/Visitor.h"
-#include "core/reflection/Field.h"
-#include "core/reflection/Message.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/base/Visitor.h"
+#include "opendavinci/core/reflection/Field.h"
+#include "opendavinci/core/reflection/Message.h"
 #include "generated/coredata/reflection/AbstractField.h"
 
 namespace core { namespace base { class Serializable; } }
