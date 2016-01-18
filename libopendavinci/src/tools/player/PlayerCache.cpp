@@ -21,17 +21,17 @@
 #include <cstring>
 #include <iostream>
 
-#include "core/base/module/AbstractCIDModule.h"
-#include "core/base/Lock.h"
-#include "core/base/Serializable.h"
-#include "core/base/Thread.h"
-#include "core/data/TimeStamp.h"
-#include "core/opendavinci.h"
-#include "core/wrapper/SharedMemory.h"
-#include "core/wrapper/SharedMemoryFactory.h"
-#include "generated/coredata/SharedData.h"
-#include "generated/coredata/buffer/MemorySegment.h"
-#include "generated/coredata/image/SharedImage.h"
+#include "opendavinci/core/base/module/AbstractCIDModule.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/base/Serializable.h"
+#include "opendavinci/core/base/Thread.h"
+#include "opendavinci/core/data/TimeStamp.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/wrapper/SharedMemory.h"
+#include "opendavinci/core/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/generated/coredata/SharedData.h"
+#include "opendavinci/generated/coredata/buffer/MemorySegment.h"
+#include "opendavinci/generated/coredata/image/SharedImage.h"
 #include "tools/player/PlayerCache.h"
 
 namespace tools {

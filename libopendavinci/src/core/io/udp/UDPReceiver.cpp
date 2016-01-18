@@ -17,10 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/base/Lock.h"
-#include "core/io/Packet.h"
-#include "core/io/PacketListener.h"
-#include "core/io/udp/UDPReceiver.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/io/Packet.h"
+#include "opendavinci/core/io/PacketListener.h"
+#include "opendavinci/core/io/udp/UDPReceiver.h"
 
 namespace core { namespace io { class StringListener; } }
 

@@ -19,15 +19,15 @@
 
 #include <iostream>
 
-#include "core/base/module/AbstractCIDModule.h"
-#include "core/base/module/ClientModule.h"
-#include "core/dmcp/connection/Client.h"
-#include "core/dmcp/discoverer/Client.h"
-#include "core/exceptions/Exceptions.h"
-#include "core/opendavinci.h"
-#include "generated/coredata/dmcp/Constants.h"
-#include "generated/coredata/dmcp/ModuleDescriptor.h"
-#include "generated/coredata/dmcp/ModuleStateMessage.h"
+#include "opendavinci/core/base/module/AbstractCIDModule.h"
+#include "opendavinci/core/base/module/ClientModule.h"
+#include "opendavinci/core/dmcp/connection/Client.h"
+#include "opendavinci/core/dmcp/discoverer/Client.h"
+#include "opendavinci/core/exceptions/Exceptions.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/generated/coredata/dmcp/Constants.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleDescriptor.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
 
 namespace core {
     namespace base {

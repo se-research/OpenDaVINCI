@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/base/module/DataTriggeredConferenceClientModule.h"
-#include "generated/coredata/dmcp/ModuleStateMessage.h"
+#include "opendavinci/core/base/module/DataTriggeredConferenceClientModule.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
 
 namespace core {
     namespace base {

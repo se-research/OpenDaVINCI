@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/data/SerializableData.h"
+#include "opendavinci/core/data/SerializableData.h"
 
 namespace core {
     namespace data {

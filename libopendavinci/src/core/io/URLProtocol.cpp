@@ -21,8 +21,8 @@
 #include <algorithm>
 #include <functional>
 
-#include "core/io/URLProtocol.h"
-#include "core/strings/StringToolbox.h"
+#include "opendavinci/core/io/URLProtocol.h"
+#include "opendavinci/core/strings/StringToolbox.h"
 
 namespace core {
     namespace io {

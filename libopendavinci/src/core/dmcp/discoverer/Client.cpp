@@ -19,16 +19,16 @@
 
 #include <iostream>
 
-#include "core/base/Lock.h"
-#include "core/base/Serializable.h"
-#include "core/base/module/AbstractCIDModule.h"
-#include "core/data/Container.h"
-#include "core/dmcp/discoverer/Client.h"
-#include "core/io/Packet.h"
-#include "core/io/udp/UDPFactory.h"
-#include "core/opendavinci.h"
-#include "generated/coredata/dmcp/Constants.h"
-#include "generated/coredata/dmcp/DiscoverMessage.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/base/Serializable.h"
+#include "opendavinci/core/base/module/AbstractCIDModule.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/dmcp/discoverer/Client.h"
+#include "opendavinci/core/io/Packet.h"
+#include "opendavinci/core/io/udp/UDPFactory.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/generated/coredata/dmcp/Constants.h"
+#include "opendavinci/generated/coredata/dmcp/DiscoverMessage.h"
 
 namespace core {
     namespace dmcp {

@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/base/Deserializer.h"
-#include "core/wrapper/Libraries.h"
+#include "opendavinci/core/base/Deserializer.h"
+#include "opendavinci/core/wrapper/Libraries.h"
 
 namespace core {
     namespace base {

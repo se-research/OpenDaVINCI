@@ -22,11 +22,11 @@
 #include <sstream>
 #include <string>
 
-#include "core/base/Lock.h"
-#include "core/exceptions/Exceptions.h"
-#include "core/io/StreamFactory.h"
-#include "core/io/URLProtocol.h"
-#include "core/opendavinci.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/exceptions/Exceptions.h"
+#include "opendavinci/core/io/StreamFactory.h"
+#include "opendavinci/core/io/URLProtocol.h"
+#include "opendavinci/core/opendavinci.h"
 
 namespace core {
     namespace io {

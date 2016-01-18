@@ -21,9 +21,9 @@
 #include <sstream>
 #include <string>
 
-#include "core/wrapper/ConcurrencyFactory.h"
-#include "core/wrapper/MutexFactory.h"
-#include "core/wrapper/WIN32/WIN32TCPConnection.h"
+#include "opendavinci/core/wrapper/ConcurrencyFactory.h"
+#include "opendavinci/core/wrapper/MutexFactory.h"
+#include "opendavinci/core/wrapper/WIN32/WIN32TCPConnection.h"
 
 namespace core {
     namespace wrapper {

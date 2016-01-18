@@ -22,10 +22,10 @@
 #include <sstream>
 #include <string>
 
-#include "core/base/module/AbstractCIDModule.h"
-#include "core/io/Packet.h"
-#include "core/wrapper/ConcurrencyFactory.h"
-#include "core/wrapper/WIN32/WIN32UDPReceiver.h"
+#include "opendavinci/core/base/module/AbstractCIDModule.h"
+#include "opendavinci/core/io/Packet.h"
+#include "opendavinci/core/wrapper/ConcurrencyFactory.h"
+#include "opendavinci/core/wrapper/WIN32/WIN32UDPReceiver.h"
 
 namespace core {
     namespace wrapper {

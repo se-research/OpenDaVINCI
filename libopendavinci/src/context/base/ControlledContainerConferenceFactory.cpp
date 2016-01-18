@@ -19,14 +19,14 @@
 
 #include <iostream>
 
-#include "context/base/BlockableContainerReceiver.h"
-#include "context/base/ContainerDeliverer.h"
-#include "context/base/ControlledContainerConferenceFactory.h"
-#include "context/base/ControlledContainerConferenceForSystemUnderTest.h"
-#include "core/base/Lock.h"
-#include "core/data/Container.h"
-#include "core/data/TimeStamp.h"
-#include "core/io/conference/ContainerConference.h"
+#include "opendavinci/context/base/BlockableContainerReceiver.h"
+#include "opendavinci/context/base/ContainerDeliverer.h"
+#include "opendavinci/context/base/ControlledContainerConferenceFactory.h"
+#include "opendavinci/context/base/ControlledContainerConferenceForSystemUnderTest.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/data/TimeStamp.h"
+#include "opendavinci/core/io/conference/ContainerConference.h"
 
 namespace context {
     namespace base {

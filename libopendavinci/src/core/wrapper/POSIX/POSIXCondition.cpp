@@ -22,7 +22,7 @@
 #include <cstring>
 #include <sstream>
 
-#include "core/wrapper/POSIX/POSIXCondition.h"
+#include "opendavinci/core/wrapper/POSIX/POSIXCondition.h"
 
 namespace core {
     namespace wrapper {

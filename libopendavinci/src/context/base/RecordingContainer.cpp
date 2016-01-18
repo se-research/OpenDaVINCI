@@ -19,9 +19,9 @@
 
 #include <iostream>
 
-#include "context/base/RecordingContainer.h"
-#include "core/base/FIFOQueue.h"
-#include "core/data/Container.h"
+#include "opendavinci/context/base/RecordingContainer.h"
+#include "opendavinci/core/base/FIFOQueue.h"
+#include "opendavinci/core/data/Container.h"
 #include "tools/recorder/Recorder.h"
 
 namespace core { namespace wrapper { class Time; } }

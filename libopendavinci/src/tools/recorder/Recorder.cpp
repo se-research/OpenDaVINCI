@@ -19,12 +19,12 @@
 
 #include <iostream>
 
-#include "core/base/Serializable.h"
-#include "core/base/module/AbstractCIDModule.h"
-#include "core/data/Container.h"
-#include "core/io/StreamFactory.h"
-#include "core/io/URL.h"
-#include "core/opendavinci.h"
+#include "opendavinci/core/base/Serializable.h"
+#include "opendavinci/core/base/module/AbstractCIDModule.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/io/StreamFactory.h"
+#include "opendavinci/core/io/URL.h"
+#include "opendavinci/core/opendavinci.h"
 #include "tools/recorder/Recorder.h"
 #include "tools/recorder/SharedDataListener.h"
 

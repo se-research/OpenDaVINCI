@@ -17,19 +17,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/wrapper/ConcurrencyFactory.h"
-#include "core/wrapper/ConfigurationTraits.h"
-#include "core/wrapper/Libraries.h"
-#include "core/wrapper/SystemLibraryProducts.h"
+#include "opendavinci/core/wrapper/ConcurrencyFactory.h"
+#include "opendavinci/core/wrapper/ConfigurationTraits.h"
+#include "opendavinci/core/wrapper/Libraries.h"
+#include "opendavinci/core/wrapper/SystemLibraryProducts.h"
 
 namespace core { namespace wrapper { class Runnable; } }
 namespace core { namespace wrapper { class Thread; } }
 
 #ifdef WIN32
-  #include "core/wrapper/WIN32/WIN32ConcurrencyFactoryWorker.h"
+  #include "opendavinci/core/wrapper/WIN32/WIN32ConcurrencyFactoryWorker.h"
 #endif
 #ifndef WIN32
-  #include "core/wrapper/POSIX/POSIXConcurrencyFactoryWorker.h"
+  #include "opendavinci/core/wrapper/POSIX/POSIXConcurrencyFactoryWorker.h"
 #endif
 
 namespace core {

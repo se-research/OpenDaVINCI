@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/base/Lock.h"
-#include "context/base/BlockableContainerListener.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/context/base/BlockableContainerListener.h"
 
 namespace context {
     namespace base {

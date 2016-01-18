@@ -19,12 +19,12 @@
 
 #include <iostream>
 
-#include "core/wrapper/CompressionFactory.h"
-#include "core/wrapper/CompressionLibraryProducts.h"
-#include "core/wrapper/ConfigurationTraits.h"
-#include "core/wrapper/Libraries.h"
-#include "core/wrapper/DecompressedData.h"
-#include "core/wrapper/Zip/ZipCompressionFactoryWorker.h"
+#include "opendavinci/core/wrapper/CompressionFactory.h"
+#include "opendavinci/core/wrapper/CompressionLibraryProducts.h"
+#include "opendavinci/core/wrapper/ConfigurationTraits.h"
+#include "opendavinci/core/wrapper/Libraries.h"
+#include "opendavinci/core/wrapper/DecompressedData.h"
+#include "opendavinci/core/wrapper/Zip/ZipCompressionFactoryWorker.h"
 
 namespace core {
     namespace wrapper {

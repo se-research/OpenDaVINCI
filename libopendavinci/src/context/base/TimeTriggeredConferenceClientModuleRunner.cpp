@@ -21,20 +21,20 @@
 #include <iostream>
 #include <string>
 
-#include "context/base/BlockableContainerListener.h"
-#include "context/base/BlockableContainerReceiver.h"
-#include "context/base/ControlledContainerConferenceForSystemUnderTest.h"
-#include "context/base/TimeConstants.h"
-#include "context/base/TimeTriggeredConferenceClientModuleRunner.h"
-#include "core/base/Lock.h"
-#include "core/base/Thread.h"
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "core/exceptions/Exceptions.h"
-#include "core/io/conference/ContainerConference.h"
-#include "core/opendavinci.h"
-#include "core/wrapper/Time.h"
-#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
-#include "generated/coredata/dmcp/ModuleStateMessage.h"
+#include "opendavinci/context/base/BlockableContainerListener.h"
+#include "opendavinci/context/base/BlockableContainerReceiver.h"
+#include "opendavinci/context/base/ControlledContainerConferenceForSystemUnderTest.h"
+#include "opendavinci/context/base/TimeConstants.h"
+#include "opendavinci/context/base/TimeTriggeredConferenceClientModuleRunner.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/base/Thread.h"
+#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/core/exceptions/Exceptions.h"
+#include "opendavinci/core/io/conference/ContainerConference.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/wrapper/Time.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
 
 namespace context {
     namespace base {

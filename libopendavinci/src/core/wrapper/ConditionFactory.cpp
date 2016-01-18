@@ -17,17 +17,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/wrapper/Condition.h"
-#include "core/wrapper/ConditionFactory.h"
-#include "core/wrapper/ConfigurationTraits.h"
-#include "core/wrapper/Libraries.h"
-#include "core/wrapper/SystemLibraryProducts.h"
+#include "opendavinci/core/wrapper/Condition.h"
+#include "opendavinci/core/wrapper/ConditionFactory.h"
+#include "opendavinci/core/wrapper/ConfigurationTraits.h"
+#include "opendavinci/core/wrapper/Libraries.h"
+#include "opendavinci/core/wrapper/SystemLibraryProducts.h"
 
 #ifdef WIN32
-    #include "core/wrapper/WIN32/WIN32ConditionFactoryWorker.h"
+    #include "opendavinci/core/wrapper/WIN32/WIN32ConditionFactoryWorker.h"
 #endif
 #ifndef WIN32
-    #include "core/wrapper/POSIX/POSIXConditionFactoryWorker.h"
+    #include "opendavinci/core/wrapper/POSIX/POSIXConditionFactoryWorker.h"
 #endif
 
 namespace core {

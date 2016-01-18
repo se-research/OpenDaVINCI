@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "context/base/ControlledTimeFactory.h"
-#include "core/base/Lock.h"
-#include "core/wrapper/Time.h"
+#include "opendavinci/context/base/ControlledTimeFactory.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/wrapper/Time.h"
 
 namespace context {
     namespace base {

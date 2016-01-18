@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/base/QueryableNetstringsSerializerAACF.h"
-#include "core/base/Serializable.h"
+#include "opendavinci/core/base/QueryableNetstringsSerializerAACF.h"
+#include "opendavinci/core/base/Serializable.h"
 
 namespace core {
     namespace base {

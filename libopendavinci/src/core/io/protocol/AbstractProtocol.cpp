@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/base/Lock.h"
-#include "core/io/StringSender.h"
-#include "core/io/protocol/AbstractProtocol.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/io/StringSender.h"
+#include "opendavinci/core/io/protocol/AbstractProtocol.h"
 
 namespace core {
     namespace io {

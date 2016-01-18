@@ -17,18 +17,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/base/KeyValueConfiguration.h"
-#include "core/base/Lock.h"
-#include "core/data/Container.h"
-#include "core/dmcp/ModuleConfigurationProvider.h"
-#include "core/dmcp/ModuleStateListener.h"
-#include "core/dmcp/connection/ModuleConnection.h"
-#include "generated/coredata/Configuration.h"
-#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
-#include "generated/coredata/dmcp/ModuleStateMessage.h"
-#include "generated/coredata/dmcp/PulseAckContainersMessage.h"
-#include "generated/coredata/dmcp/PulseMessage.h"
-#include "generated/coredata/dmcp/RuntimeStatistic.h"
+#include "opendavinci/core/base/KeyValueConfiguration.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/dmcp/ModuleConfigurationProvider.h"
+#include "opendavinci/core/dmcp/ModuleStateListener.h"
+#include "opendavinci/core/dmcp/connection/ModuleConnection.h"
+#include "opendavinci/generated/coredata/Configuration.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
+#include "opendavinci/generated/coredata/dmcp/PulseAckContainersMessage.h"
+#include "opendavinci/generated/coredata/dmcp/PulseMessage.h"
+#include "opendavinci/generated/coredata/dmcp/RuntimeStatistic.h"
 
 namespace core {
     namespace dmcp {

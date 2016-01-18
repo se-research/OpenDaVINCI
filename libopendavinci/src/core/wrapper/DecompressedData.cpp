@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/wrapper/DecompressedData.h"
+#include "opendavinci/core/wrapper/DecompressedData.h"
 
 namespace core {
     namespace wrapper {

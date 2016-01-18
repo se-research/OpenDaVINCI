@@ -20,7 +20,7 @@
 // Using c++11 standard.
 #include <chrono>
 
-#include "core/wrapper/WIN32/WIN32Condition.h"
+#include "opendavinci/core/wrapper/WIN32/WIN32Condition.h"
 
 namespace core {
     namespace wrapper {

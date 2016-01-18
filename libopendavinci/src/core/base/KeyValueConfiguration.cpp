@@ -20,13 +20,13 @@
 #include <algorithm>
 #include <functional>
 
-#include "core/SharedPointer.h"
-#include "core/base/Deserializer.h"
-#include "core/base/Hash.h"
-#include "core/base/KeyValueConfiguration.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
-#include "core/strings/StringToolbox.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/base/Deserializer.h"
+#include "opendavinci/core/base/Hash.h"
+#include "opendavinci/core/base/KeyValueConfiguration.h"
+#include "opendavinci/core/base/SerializationFactory.h"
+#include "opendavinci/core/base/Serializer.h"
+#include "opendavinci/core/strings/StringToolbox.h"
 
 namespace core {
     namespace base {

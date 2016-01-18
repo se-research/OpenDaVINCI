@@ -22,13 +22,13 @@
 #include <iostream>
 #include <sstream>
 
-#include "core/base/Lock.h"
-#include "core/base/module/AbstractCIDModule.h"
-#include "core/data/Container.h"
-#include "core/opendavinci.h"
-#include "core/wrapper/SharedMemory.h"
-#include "core/wrapper/SharedMemoryFactory.h"
-#include "generated/coredata/buffer/MemorySegment.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/base/module/AbstractCIDModule.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/wrapper/SharedMemory.h"
+#include "opendavinci/core/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/generated/coredata/buffer/MemorySegment.h"
 #include "tools/recorder/SharedDataListener.h"
 #include "tools/recorder/SharedDataWriter.h"
 

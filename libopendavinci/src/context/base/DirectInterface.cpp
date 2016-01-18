@@ -19,7 +19,7 @@
 
 #include <sstream>
 
-#include "context/base/DirectInterface.h"
+#include "opendavinci/context/base/DirectInterface.h"
 
 namespace context {
     namespace base {

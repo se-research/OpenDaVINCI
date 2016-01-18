@@ -17,19 +17,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/io/tcp/TCPAcceptor.h"
-#include "core/io/tcp/TCPConnection.h"
-#include "core/io/tcp/TCPFactory.h"
-#include "core/wrapper/ConfigurationTraits.h"
-#include "core/wrapper/Libraries.h"
-#include "core/wrapper/NetworkLibraryProducts.h"
+#include "opendavinci/core/io/tcp/TCPAcceptor.h"
+#include "opendavinci/core/io/tcp/TCPConnection.h"
+#include "opendavinci/core/io/tcp/TCPFactory.h"
+#include "opendavinci/core/wrapper/ConfigurationTraits.h"
+#include "opendavinci/core/wrapper/Libraries.h"
+#include "opendavinci/core/wrapper/NetworkLibraryProducts.h"
 
 #ifdef WIN32
-    #include "core/wrapper/WIN32/WIN32TCPFactoryWorker.h"
+    #include "opendavinci/core/wrapper/WIN32/WIN32TCPFactoryWorker.h"
 #endif
 
 #ifndef WIN32
-    #include "core/wrapper/POSIX/POSIXTCPFactoryWorker.h"
+    #include "opendavinci/core/wrapper/POSIX/POSIXTCPFactoryWorker.h"
 #endif
 
 namespace core {

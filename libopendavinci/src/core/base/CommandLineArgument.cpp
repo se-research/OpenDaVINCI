@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/base/CommandLineArgument.h"
+#include "opendavinci/core/base/CommandLineArgument.h"
 
 namespace core {
     namespace base {

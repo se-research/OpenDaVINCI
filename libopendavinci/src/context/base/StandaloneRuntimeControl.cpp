@@ -20,17 +20,17 @@
 #include <iostream>
 #include <sstream>
 
-#include "context/base/Clock.h"
-#include "context/base/ControlledTime.h"
-#include "context/base/RuntimeControlInterface.h"
-#include "context/base/StandaloneRuntimeControl.h"
-#include "context/base/SystemFeedbackComponent.h"
-#include "core/base/Lock.h"
-#include "core/base/Thread.h"
-#include "core/data/TimeStamp.h"
-#include "core/io/conference/ContainerConferenceFactory.h"
-#include "core/opendavinci.h"
-#include "generated/coredata/dmcp/ModuleStateMessage.h"
+#include "opendavinci/context/base/Clock.h"
+#include "opendavinci/context/base/ControlledTime.h"
+#include "opendavinci/context/base/RuntimeControlInterface.h"
+#include "opendavinci/context/base/StandaloneRuntimeControl.h"
+#include "opendavinci/context/base/SystemFeedbackComponent.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/base/Thread.h"
+#include "opendavinci/core/data/TimeStamp.h"
+#include "opendavinci/core/io/conference/ContainerConferenceFactory.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
 
 namespace core { namespace data { class Container; } }
 

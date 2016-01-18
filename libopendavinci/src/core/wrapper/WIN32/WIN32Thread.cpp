@@ -22,9 +22,9 @@
 #include <sstream>
 #include <string>
 
-#include "core/base/module/AbstractCIDModule.h"
-#include "core/wrapper/MutexFactory.h"
-#include "core/wrapper/WIN32/WIN32Thread.h"
+#include "opendavinci/core/base/module/AbstractCIDModule.h"
+#include "opendavinci/core/wrapper/MutexFactory.h"
+#include "opendavinci/core/wrapper/WIN32/WIN32Thread.h"
 
 namespace core {
     namespace wrapper {

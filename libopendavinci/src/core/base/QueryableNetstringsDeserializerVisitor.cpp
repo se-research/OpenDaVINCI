@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/base/QueryableNetstringsDeserializerVisitor.h"
+#include "opendavinci/core/base/QueryableNetstringsDeserializerVisitor.h"
 
 namespace core {
     namespace base {

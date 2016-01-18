@@ -19,8 +19,8 @@
 
 #include <iostream>
 
-#include "core/base/ROSDeserializerVisitor.h"
-#include "core/opendavinci.h"
+#include "opendavinci/core/base/ROSDeserializerVisitor.h"
+#include "opendavinci/core/opendavinci.h"
 
 namespace core {
     namespace base {

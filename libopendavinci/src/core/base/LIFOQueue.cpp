@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/base/Lock.h"
-#include "core/base/LIFOQueue.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/base/LIFOQueue.h"
 
 namespace core {
     namespace base {

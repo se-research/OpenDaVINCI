@@ -28,9 +28,9 @@
 #include <cstring>
 #include <iostream>
 
-#include "core/opendavinci.h"
-#include "core/base/module/AbstractCIDModule.h"
-#include "core/wrapper/POSIX/POSIXSharedMemory.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/module/AbstractCIDModule.h"
+#include "opendavinci/core/wrapper/POSIX/POSIXSharedMemory.h"
 
 namespace core {
     namespace wrapper {

@@ -19,7 +19,7 @@
 
 #include <iostream>
 
-#include "core/base/ROSSerializerVisitor.h"
+#include "opendavinci/core/base/ROSSerializerVisitor.h"
 
 namespace core {
     namespace base {

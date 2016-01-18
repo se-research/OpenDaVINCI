@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/io/tcp/TCPAcceptor.h"
+#include "opendavinci/core/io/tcp/TCPAcceptor.h"
 
 namespace core {
     namespace io {

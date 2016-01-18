@@ -21,8 +21,8 @@
 #include <iostream>
 #include <sstream>
 
-#include "core/base/module/AbstractCIDModule.h"
-#include "core/wrapper/WIN32/WIN32SharedMemory.h"
+#include "opendavinci/core/base/module/AbstractCIDModule.h"
+#include "opendavinci/core/wrapper/WIN32/WIN32SharedMemory.h"
 
 namespace core {
     namespace wrapper {

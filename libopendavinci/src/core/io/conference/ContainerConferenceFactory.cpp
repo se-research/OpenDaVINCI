@@ -17,10 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/base/Lock.h"
-#include "core/io/conference/ContainerConference.h"
-#include "core/io/conference/ContainerConferenceFactory.h"
-#include "core/io/conference/UDPMultiCastContainerConference.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/io/conference/ContainerConference.h"
+#include "opendavinci/core/io/conference/ContainerConferenceFactory.h"
+#include "opendavinci/core/io/conference/UDPMultiCastContainerConference.h"
 
 namespace core {
     namespace io {

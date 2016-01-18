@@ -20,9 +20,9 @@
 #include <exception>
 #include <iostream>
 
-#include "core/base/SerializationFactory.h"
-#include "core/base/module/MasterModule.h"
-#include "generated/coredata/dmcp/ModuleStateMessage.h"
+#include "opendavinci/core/base/SerializationFactory.h"
+#include "opendavinci/core/base/module/MasterModule.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
 
 namespace core {
     namespace base {

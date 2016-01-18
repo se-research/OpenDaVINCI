@@ -21,8 +21,8 @@
 #include <sstream>
 #include <string>
 
-#include "core/wrapper/MutexFactory.h"
-#include "core/wrapper/WIN32/WIN32UDPSender.h"
+#include "opendavinci/core/wrapper/MutexFactory.h"
+#include "opendavinci/core/wrapper/WIN32/WIN32UDPSender.h"
 
 namespace core {
     namespace wrapper {

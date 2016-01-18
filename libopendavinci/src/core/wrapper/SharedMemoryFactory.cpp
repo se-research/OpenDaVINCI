@@ -17,17 +17,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/wrapper/ConfigurationTraits.h"
-#include "core/wrapper/Libraries.h"
-#include "core/wrapper/SharedMemory.h"
-#include "core/wrapper/SharedMemoryFactory.h"
-#include "core/wrapper/SystemLibraryProducts.h"
+#include "opendavinci/core/wrapper/ConfigurationTraits.h"
+#include "opendavinci/core/wrapper/Libraries.h"
+#include "opendavinci/core/wrapper/SharedMemory.h"
+#include "opendavinci/core/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/core/wrapper/SystemLibraryProducts.h"
 
 #ifdef WIN32
-    #include "core/wrapper/WIN32/WIN32SharedMemoryFactoryWorker.h"
+    #include "opendavinci/core/wrapper/WIN32/WIN32SharedMemoryFactoryWorker.h"
 #endif
 #ifndef WIN32
-    #include "core/wrapper/POSIX/POSIXSharedMemoryFactoryWorker.h"
+    #include "opendavinci/core/wrapper/POSIX/POSIXSharedMemoryFactoryWorker.h"
 #endif
 
 namespace core {

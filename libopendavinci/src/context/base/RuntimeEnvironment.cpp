@@ -17,11 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "context/base/RuntimeEnvironment.h"
-#include "context/base/SystemFeedbackComponent.h"
-#include "context/base/TimeConstants.h"
-#include "core/base/Lock.h"
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/context/base/RuntimeEnvironment.h"
+#include "opendavinci/context/base/SystemFeedbackComponent.h"
+#include "opendavinci/context/base/TimeConstants.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
 
 namespace context {
     namespace base {

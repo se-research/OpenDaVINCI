@@ -23,8 +23,8 @@
 #endif
 #include <string>
 
-#include "core/data/TimeStamp.h"
-#include "core/wrapper/RealtimeRunnable.h"
+#include "opendavinci/core/data/TimeStamp.h"
+#include "opendavinci/core/wrapper/RealtimeRunnable.h"
 
 namespace core {
     namespace wrapper {

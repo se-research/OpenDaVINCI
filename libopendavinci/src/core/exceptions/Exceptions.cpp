@@ -22,7 +22,7 @@
 #include <cstring>
 #include <sstream>
 
-#include "core/exceptions/Exceptions.h"
+#include "opendavinci/core/exceptions/Exceptions.h"
 
 namespace core {
     namespace exceptions {

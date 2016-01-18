@@ -31,7 +31,7 @@
 # endif
 #endif
 
-#include "core/wrapper/jpg/JPG.h"
+#include "opendavinci/core/wrapper/jpg/JPG.h"
 
 namespace core {
     namespace wrapper {

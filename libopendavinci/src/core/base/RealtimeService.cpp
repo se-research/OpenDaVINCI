@@ -17,11 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/base/Lock.h"
-#include "core/base/RealtimeService.h"
-#include "core/opendavinci.h"
-#include "core/wrapper/ConcurrencyFactory.h"
-#include "core/wrapper/Thread.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/base/RealtimeService.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/wrapper/ConcurrencyFactory.h"
+#include "opendavinci/core/wrapper/Thread.h"
 
 namespace core {
     namespace base {

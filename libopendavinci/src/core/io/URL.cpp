@@ -20,8 +20,8 @@
 #include <sstream>
 #include <vector>
 
-#include "core/io/URL.h"
-#include "core/io/URLProtocol.h"
+#include "opendavinci/core/io/URL.h"
+#include "opendavinci/core/io/URLProtocol.h"
 
 namespace core {
     namespace io {

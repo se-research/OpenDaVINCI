@@ -17,10 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "context/base/BlockableContainerListener.h"
-#include "context/base/RunModuleBreakpoint.h"
-#include "core/base/Lock.h"
-#include "core/base/Thread.h"
+#include "opendavinci/context/base/BlockableContainerListener.h"
+#include "opendavinci/context/base/RunModuleBreakpoint.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/base/Thread.h"
 
 namespace context {
     namespace base {

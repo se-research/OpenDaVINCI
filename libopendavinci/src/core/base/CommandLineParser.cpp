@@ -22,9 +22,9 @@
 #include <algorithm>
 #include <sstream>
 
-#include "core/base/CommandLineParser.h"
-#include "core/exceptions/Exceptions.h"
-#include "core/opendavinci.h"
+#include "opendavinci/core/base/CommandLineParser.h"
+#include "opendavinci/core/exceptions/Exceptions.h"
+#include "opendavinci/core/opendavinci.h"
 
 namespace core {
     namespace base {

@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/base/Thread.h"
-#include "core/wrapper/ConcurrencyFactory.h"
+#include "opendavinci/core/base/Thread.h"
+#include "opendavinci/core/wrapper/ConcurrencyFactory.h"
 
 namespace core {
     namespace base {

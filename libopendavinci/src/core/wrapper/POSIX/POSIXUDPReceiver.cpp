@@ -25,10 +25,10 @@
 #include <cstring>
 #include <sstream>
 
-#include "core/io/Packet.h"
-#include "core/wrapper/ConcurrencyFactory.h"
-#include "core/wrapper/POSIX/POSIXUDPReceiver.h"
-#include "core/wrapper/Thread.h"
+#include "opendavinci/core/io/Packet.h"
+#include "opendavinci/core/wrapper/ConcurrencyFactory.h"
+#include "opendavinci/core/wrapper/POSIX/POSIXUDPReceiver.h"
+#include "opendavinci/core/wrapper/Thread.h"
 
 namespace core {
     namespace wrapper {

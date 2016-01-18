@@ -18,8 +18,8 @@
  */
 
 #include "zlib.h"
-#include "core/opendavinci.h"
-#include "core/wrapper/zlib/Zlib.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/wrapper/zlib/Zlib.h"
 
 namespace core {
     namespace wrapper {

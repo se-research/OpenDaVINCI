@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/base/module/ManagedClientModuleContainerConference.h"
-#include "core/data/TimeStamp.h"
+#include "opendavinci/core/base/module/ManagedClientModuleContainerConference.h"
+#include "opendavinci/core/data/TimeStamp.h"
 
 namespace core {
     namespace base {

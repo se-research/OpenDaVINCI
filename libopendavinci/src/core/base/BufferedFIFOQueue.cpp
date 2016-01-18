@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/base/BufferedFIFOQueue.h"
-#include "core/opendavinci.h"
+#include "opendavinci/core/base/BufferedFIFOQueue.h"
+#include "opendavinci/core/opendavinci.h"
 
 namespace core {
     namespace base {

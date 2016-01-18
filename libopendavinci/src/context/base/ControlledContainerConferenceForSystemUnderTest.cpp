@@ -19,11 +19,11 @@
 
 #include <iostream>
 
-#include "context/base/BlockableContainerReceiver.h"
-#include "context/base/ControlledContainerConferenceForSystemUnderTest.h"
-#include "core/data/Container.h"
-#include "core/data/TimeStamp.h"
-#include "core/io/conference/ContainerObserver.h"
+#include "opendavinci/context/base/BlockableContainerReceiver.h"
+#include "opendavinci/context/base/ControlledContainerConferenceForSystemUnderTest.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/data/TimeStamp.h"
+#include "opendavinci/core/io/conference/ContainerObserver.h"
 
 namespace context {
     namespace base {

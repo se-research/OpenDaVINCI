@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/io/Packet.h"
+#include "opendavinci/core/io/Packet.h"
 
 namespace core {
     namespace io {

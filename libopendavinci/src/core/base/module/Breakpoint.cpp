@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/base/module/Breakpoint.h"
+#include "opendavinci/core/base/module/Breakpoint.h"
 
 namespace core {
     namespace base {

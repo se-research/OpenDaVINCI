@@ -17,13 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/SharedPointer.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/module/AbstractConferenceClientModule.h"
-#include "core/data/Container.h"
-#include "core/io/conference/ContainerConference.h"
-#include "core/io/conference/ContainerConferenceFactory.h"
-#include "core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/base/SerializationFactory.h"
+#include "opendavinci/core/base/module/AbstractConferenceClientModule.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/io/conference/ContainerConference.h"
+#include "opendavinci/core/io/conference/ContainerConferenceFactory.h"
+#include "opendavinci/core/opendavinci.h"
 
 namespace core {
     namespace base {

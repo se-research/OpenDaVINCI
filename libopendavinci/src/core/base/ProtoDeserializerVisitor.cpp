@@ -20,9 +20,9 @@
 #include <cstring>
 #include <iostream>
 
-#include "core/base/ProtoDeserializerVisitor.h"
-#include "core/base/ProtoSerializerVisitor.h"
-#include "core/opendavinci.h"
+#include "opendavinci/core/base/ProtoDeserializerVisitor.h"
+#include "opendavinci/core/base/ProtoSerializerVisitor.h"
+#include "opendavinci/core/opendavinci.h"
 
 namespace core {
     namespace base {

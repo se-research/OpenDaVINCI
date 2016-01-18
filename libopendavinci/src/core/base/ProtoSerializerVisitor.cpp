@@ -19,7 +19,7 @@
 
 #include <iostream>
 
-#include "core/base/ProtoSerializerVisitor.h"
+#include "opendavinci/core/base/ProtoSerializerVisitor.h"
 
 namespace core {
     namespace base {

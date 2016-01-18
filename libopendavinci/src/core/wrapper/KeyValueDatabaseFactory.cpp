@@ -17,13 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/SharedPointer.h"
-#include "core/wrapper/ConfigurationTraits.h"
-#include "core/wrapper/KeyValueDatabase.h"
-#include "core/wrapper/KeyValueDatabaseFactory.h"
-#include "core/wrapper/KeyValueDatabaseLibraryProducts.h"
-#include "core/wrapper/Libraries.h"
-#include "core/wrapper/SimpleDB/SimpleDBFactoryWorker.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/wrapper/ConfigurationTraits.h"
+#include "opendavinci/core/wrapper/KeyValueDatabase.h"
+#include "opendavinci/core/wrapper/KeyValueDatabaseFactory.h"
+#include "opendavinci/core/wrapper/KeyValueDatabaseLibraryProducts.h"
+#include "opendavinci/core/wrapper/Libraries.h"
+#include "opendavinci/core/wrapper/SimpleDB/SimpleDBFactoryWorker.h"
 
 namespace core {
     namespace wrapper {

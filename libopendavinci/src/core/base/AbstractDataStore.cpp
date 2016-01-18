@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/base/AbstractDataStore.h"
-#include "core/base/Lock.h"
+#include "opendavinci/core/base/AbstractDataStore.h"
+#include "opendavinci/core/base/Lock.h"
 
 namespace core {
     namespace base {

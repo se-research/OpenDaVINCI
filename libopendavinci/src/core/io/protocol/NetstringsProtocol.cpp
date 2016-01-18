@@ -19,9 +19,9 @@
 
 #include <cstdlib>
 
-#include "core/base/Lock.h"
-#include "core/io/StringListener.h"
-#include "core/io/protocol/NetstringsProtocol.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/io/StringListener.h"
+#include "opendavinci/core/io/protocol/NetstringsProtocol.h"
 
 namespace core {
     namespace io {

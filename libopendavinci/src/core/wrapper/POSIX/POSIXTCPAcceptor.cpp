@@ -25,15 +25,15 @@
 #include <cstring>
 #include <sstream>
 
-#include "core/SharedPointer.h"
-#include "core/io/tcp/TCPAcceptorListener.h"
-#include "core/io/tcp/TCPConnection.h"
-#include "core/wrapper/ConcurrencyFactory.h"
-#include "core/wrapper/Mutex.h"
-#include "core/wrapper/MutexFactory.h"
-#include "core/wrapper/POSIX/POSIXTCPAcceptor.h"
-#include "core/wrapper/POSIX/POSIXTCPConnection.h"
-#include "core/wrapper/Thread.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/io/tcp/TCPAcceptorListener.h"
+#include "opendavinci/core/io/tcp/TCPConnection.h"
+#include "opendavinci/core/wrapper/ConcurrencyFactory.h"
+#include "opendavinci/core/wrapper/Mutex.h"
+#include "opendavinci/core/wrapper/MutexFactory.h"
+#include "opendavinci/core/wrapper/POSIX/POSIXTCPAcceptor.h"
+#include "opendavinci/core/wrapper/POSIX/POSIXTCPConnection.h"
+#include "opendavinci/core/wrapper/Thread.h"
 
 namespace core {
     namespace wrapper {

@@ -27,10 +27,10 @@
 #include <sstream>
 
 #include "zip.h"
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"
-#include "core/base/module/AbstractCIDModule.h"
-#include "core/wrapper/Zip/ZipDecompressedData.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/base/module/AbstractCIDModule.h"
+#include "opendavinci/core/wrapper/Zip/ZipDecompressedData.h"
 
 namespace core {
     namespace wrapper {

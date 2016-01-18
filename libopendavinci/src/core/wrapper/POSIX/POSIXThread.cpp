@@ -23,12 +23,12 @@
 #include <sstream>
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/base/module/AbstractCIDModule.h"
-#include "core/wrapper/Mutex.h"
-#include "core/wrapper/MutexFactory.h"
-#include "core/wrapper/POSIX/POSIXThread.h"
-#include "core/wrapper/Runnable.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/module/AbstractCIDModule.h"
+#include "opendavinci/core/wrapper/Mutex.h"
+#include "opendavinci/core/wrapper/MutexFactory.h"
+#include "opendavinci/core/wrapper/POSIX/POSIXThread.h"
+#include "opendavinci/core/wrapper/Runnable.h"
 
 namespace core {
     namespace wrapper {

@@ -22,9 +22,9 @@
 #include <functional>
 #include <sstream>
 
-#include "context/base/CommandLineInterface.h"
-#include "core/base/CommandLineArgument.h"
-#include "core/base/CommandLineParser.h"
+#include "opendavinci/context/base/CommandLineInterface.h"
+#include "opendavinci/core/base/CommandLineArgument.h"
+#include "opendavinci/core/base/CommandLineParser.h"
 
 namespace context {
     namespace base {

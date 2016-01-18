@@ -19,13 +19,13 @@
 
 #include <iostream>
 
-#include "core/base/FIFOQueue.h"
-#include "core/base/Serializable.h"
-#include "core/base/Thread.h"
-#include "core/base/module/AbstractCIDModule.h"
-#include "core/data/Container.h"
-#include "core/opendavinci.h"
-#include "generated/coredata/buffer/MemorySegment.h"
+#include "opendavinci/core/base/FIFOQueue.h"
+#include "opendavinci/core/base/Serializable.h"
+#include "opendavinci/core/base/Thread.h"
+#include "opendavinci/core/base/module/AbstractCIDModule.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/generated/coredata/buffer/MemorySegment.h"
 #include "tools/recorder/SharedDataWriter.h"
 
 namespace tools {

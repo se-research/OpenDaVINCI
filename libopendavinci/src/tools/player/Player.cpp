@@ -22,18 +22,18 @@
 #include <iostream>
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/base/Lock.h"
-#include "core/base/Thread.h"
-#include "core/base/module/AbstractCIDModule.h"
-#include "core/data/Container.h"
-#include "core/data/image/CompressedImage.h"
-#include "core/io/StreamFactory.h"
-#include "core/io/URL.h"
-#include "core/wrapper/SharedMemoryFactory.h"
-#include "core/wrapper/jpg/JPG.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/base/Thread.h"
+#include "opendavinci/core/base/module/AbstractCIDModule.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/data/image/CompressedImage.h"
+#include "opendavinci/core/io/StreamFactory.h"
+#include "opendavinci/core/io/URL.h"
+#include "opendavinci/core/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/core/wrapper/jpg/JPG.h"
 
-#include "GeneratedHeaders_CoreData.h"
+#include "opendavinci/GeneratedHeaders_CoreData.h"
 
 #include "tools/player/Player.h"
 #include "tools/player/PlayerCache.h"

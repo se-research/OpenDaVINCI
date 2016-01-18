@@ -20,12 +20,12 @@
 #include <iosfwd>
 #include <sstream>
 
-#include "core/base/Serializable.h"
-#include "core/data/Container.h"
-#include "core/data/TimeStamp.h"
-#include "core/io/conference/UDPMultiCastContainerConference.h"
-#include "core/io/udp/UDPFactory.h"
-#include "core/opendavinci.h"
+#include "opendavinci/core/base/Serializable.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/data/TimeStamp.h"
+#include "opendavinci/core/io/conference/UDPMultiCastContainerConference.h"
+#include "opendavinci/core/io/udp/UDPFactory.h"
+#include "opendavinci/core/opendavinci.h"
 
 namespace core {
     namespace io {

@@ -20,12 +20,12 @@
 #include <cstdlib>
 #include <cstring>
 
-#include "core/SharedPointer.h"
-#include "core/base/Serializable.h"
-#include "core/base/Visitable.h"
-#include "core/reflection/Field.h"
-#include "core/reflection/MessageFromVisitableVisitor.h"
-#include "generated/coredata/reflection/AbstractField.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/base/Serializable.h"
+#include "opendavinci/core/base/Visitable.h"
+#include "opendavinci/core/reflection/Field.h"
+#include "opendavinci/core/reflection/MessageFromVisitableVisitor.h"
+#include "opendavinci/generated/coredata/reflection/AbstractField.h"
 
 namespace core {
     namespace reflection {

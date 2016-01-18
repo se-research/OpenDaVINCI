@@ -20,16 +20,16 @@
 #include <iostream>
 #include <sstream>
 
-#include "context/base/SuperComponent.h"
-#include "core/base/Lock.h"
-#include "core/data/Container.h"
-#include "core/dmcp/connection/ModuleConnection.h"
-#include "core/dmcp/connection/Server.h"
-#include "core/dmcp/discoverer/Server.h"
-#include "core/io/conference/ContainerConferenceFactory.h"
-#include "generated/coredata/dmcp/Constants.h"
-#include "generated/coredata/dmcp/ModuleDescriptor.h"
-#include "generated/coredata/dmcp/ServerInformation.h"
+#include "opendavinci/context/base/SuperComponent.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/dmcp/connection/ModuleConnection.h"
+#include "opendavinci/core/dmcp/connection/Server.h"
+#include "opendavinci/core/dmcp/discoverer/Server.h"
+#include "opendavinci/core/io/conference/ContainerConferenceFactory.h"
+#include "opendavinci/generated/coredata/dmcp/Constants.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleDescriptor.h"
+#include "opendavinci/generated/coredata/dmcp/ServerInformation.h"
 
 namespace context {
     namespace base {

@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/wrapper/Disposable.h"
+#include "opendavinci/core/wrapper/Disposable.h"
 
 namespace core {
     namespace wrapper {

@@ -21,7 +21,7 @@
 #include <cstring>
 #include <sstream>
 
-#include "core/wrapper/POSIX/POSIXMutex.h"
+#include "opendavinci/core/wrapper/POSIX/POSIXMutex.h"
 
 namespace core {
     namespace wrapper {

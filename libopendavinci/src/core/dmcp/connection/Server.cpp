@@ -19,15 +19,15 @@
 
 #include <iostream>
 
-#include "core/SharedPointer.h"
-#include "core/base/Lock.h"
-#include "core/base/module/AbstractCIDModule.h"
-#include "core/dmcp/connection/ConnectionHandler.h"
-#include "core/dmcp/connection/ModuleConnection.h"
-#include "core/dmcp/connection/Server.h"
-#include "core/io/Connection.h"
-#include "core/opendavinci.h"
-#include "generated/coredata/dmcp/ServerInformation.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/base/module/AbstractCIDModule.h"
+#include "opendavinci/core/dmcp/connection/ConnectionHandler.h"
+#include "opendavinci/core/dmcp/connection/ModuleConnection.h"
+#include "opendavinci/core/dmcp/connection/Server.h"
+#include "opendavinci/core/io/Connection.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/generated/coredata/dmcp/ServerInformation.h"
 
 namespace core { namespace dmcp { class ModuleConfigurationProvider; } }
 

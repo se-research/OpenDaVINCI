@@ -20,13 +20,13 @@
 #include <algorithm>
 #include <iostream>
 
-#include "core/base/Serializable.h"
-#include "core/base/module/AbstractCIDModule.h"
-#include "core/data/Container.h"
-#include "core/dmcp/discoverer/Server.h"
-#include "core/io/udp/UDPFactory.h"
-#include "core/opendavinci.h"
-#include "generated/coredata/dmcp/DiscoverMessage.h"
+#include "opendavinci/core/base/Serializable.h"
+#include "opendavinci/core/base/module/AbstractCIDModule.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/dmcp/discoverer/Server.h"
+#include "opendavinci/core/io/udp/UDPFactory.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/generated/coredata/dmcp/DiscoverMessage.h"
 
 namespace core {
     namespace dmcp {

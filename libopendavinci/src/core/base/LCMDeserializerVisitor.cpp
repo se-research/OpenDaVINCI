@@ -19,9 +19,9 @@
 
 #include <iostream>
 
-#include "core/base/LCMDeserializerVisitor.h"
-#include "core/base/LCMSerializerVisitor.h"
-#include "core/opendavinci.h"
+#include "opendavinci/core/base/LCMDeserializerVisitor.h"
+#include "opendavinci/core/base/LCMSerializerVisitor.h"
+#include "opendavinci/core/opendavinci.h"
 
 namespace core {
     namespace base {

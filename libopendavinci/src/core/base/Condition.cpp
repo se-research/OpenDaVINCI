@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/base/Condition.h"
-#include "core/wrapper/ConditionFactory.h"
+#include "opendavinci/core/base/Condition.h"
+#include "opendavinci/core/wrapper/ConditionFactory.h"
 
 namespace core {
     namespace base {

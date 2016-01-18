@@ -21,12 +21,12 @@
 #include <cmath>
 #include <iostream>
 
-#include "core/base/CommandLineArgument.h"
-#include "core/base/CommandLineParser.h"
-#include "core/base/Thread.h"
-#include "core/base/module/AbstractCIDModule.h"
-#include "core/data/TimeStamp.h"
-#include "core/opendavinci.h"
+#include "opendavinci/core/base/CommandLineArgument.h"
+#include "opendavinci/core/base/CommandLineParser.h"
+#include "opendavinci/core/base/Thread.h"
+#include "opendavinci/core/base/module/AbstractCIDModule.h"
+#include "opendavinci/core/data/TimeStamp.h"
+#include "opendavinci/core/opendavinci.h"
 
 namespace core {
     namespace base {

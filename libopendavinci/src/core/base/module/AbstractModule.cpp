@@ -21,12 +21,12 @@
 #include <csignal>
 #include <cstdlib>
 
-#include "core/base/Lock.h"
-#include "core/base/Thread.h"
-#include "core/base/module/AbstractModule.h"
-#include "core/exceptions/Exceptions.h"
-#include "core/opendavinci.h"
-#include "core/wrapper/DisposalService.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/base/Thread.h"
+#include "opendavinci/core/base/module/AbstractModule.h"
+#include "opendavinci/core/exceptions/Exceptions.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/wrapper/DisposalService.h"
 
 namespace core {
     namespace base {

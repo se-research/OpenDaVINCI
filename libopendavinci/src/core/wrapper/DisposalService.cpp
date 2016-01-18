@@ -21,15 +21,15 @@
 #include <iostream>
 #include <sstream>
 
-#include "core/opendavinci.h"
-#include "core/base/module/AbstractCIDModule.h"
-#include "core/wrapper/ConcurrencyFactory.h"
-#include "core/wrapper/ConditionFactory.h"
-#include "core/wrapper/Disposable.h"
-#include "core/wrapper/DisposalService.h"
-#include "core/wrapper/Mutex.h"
-#include "core/wrapper/MutexFactory.h"
-#include "core/wrapper/Thread.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/module/AbstractCIDModule.h"
+#include "opendavinci/core/wrapper/ConcurrencyFactory.h"
+#include "opendavinci/core/wrapper/ConditionFactory.h"
+#include "opendavinci/core/wrapper/Disposable.h"
+#include "opendavinci/core/wrapper/DisposalService.h"
+#include "opendavinci/core/wrapper/Mutex.h"
+#include "opendavinci/core/wrapper/MutexFactory.h"
+#include "opendavinci/core/wrapper/Thread.h"
 
 namespace core {
     namespace wrapper {

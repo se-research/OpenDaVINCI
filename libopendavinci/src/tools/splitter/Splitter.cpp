@@ -21,10 +21,10 @@
 #include <limits>
 #include <sstream>
 
-#include "core/base/module/AbstractCIDModule.h"
-#include "core/data/Container.h"
-#include "core/io/URL.h"
-#include "core/opendavinci.h"
+#include "opendavinci/core/base/module/AbstractCIDModule.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/io/URL.h"
+#include "opendavinci/core/opendavinci.h"
 #include "tools/player/Player.h"
 #include "tools/recorder/Recorder.h"
 #include "tools/splitter/Splitter.h"

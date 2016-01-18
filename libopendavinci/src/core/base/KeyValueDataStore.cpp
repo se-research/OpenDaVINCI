@@ -20,9 +20,9 @@
 #include <iosfwd>
 #include <string>
 
-#include "core/base/KeyValueDataStore.h"
-#include "core/base/Serializable.h"
-#include "core/opendavinci.h"
+#include "opendavinci/core/base/KeyValueDataStore.h"
+#include "opendavinci/core/base/Serializable.h"
+#include "opendavinci/core/opendavinci.h"
 
 namespace core {
     namespace base {

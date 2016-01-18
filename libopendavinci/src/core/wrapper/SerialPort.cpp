@@ -31,13 +31,13 @@
 # endif
 #endif
 
-#include "core/io/ConnectionListener.h"
-#include "core/io/StringListener.h"
-#include "core/wrapper/Mutex.h"
-#include "core/wrapper/Thread.h"
-#include "core/wrapper/ConcurrencyFactory.h"
-#include "core/wrapper/MutexFactory.h"
-#include "core/wrapper/SerialPort.h"
+#include "opendavinci/core/io/ConnectionListener.h"
+#include "opendavinci/core/io/StringListener.h"
+#include "opendavinci/core/wrapper/Mutex.h"
+#include "opendavinci/core/wrapper/Thread.h"
+#include "opendavinci/core/wrapper/ConcurrencyFactory.h"
+#include "opendavinci/core/wrapper/MutexFactory.h"
+#include "opendavinci/core/wrapper/SerialPort.h"
 
 namespace core {
     namespace wrapper {

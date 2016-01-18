@@ -19,16 +19,16 @@
 
 #include <iosfwd>
 
-#include "core/base/Lock.h"
-#include "core/base/Serializable.h"
-#include "core/data/Container.h"
-#include "core/data/TimeStamp.h"
-#include "core/exceptions/Exceptions.h"
-#include "core/io/Connection.h"
-#include "core/io/ConnectionErrorListener.h"
-#include "core/io/conference/ContainerListener.h"
-#include "core/io/tcp/TCPFactory.h"
-#include "core/opendavinci.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/base/Serializable.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/data/TimeStamp.h"
+#include "opendavinci/core/exceptions/Exceptions.h"
+#include "opendavinci/core/io/Connection.h"
+#include "opendavinci/core/io/ConnectionErrorListener.h"
+#include "opendavinci/core/io/conference/ContainerListener.h"
+#include "opendavinci/core/io/tcp/TCPFactory.h"
+#include "opendavinci/core/opendavinci.h"
 
 namespace core {
     namespace io {

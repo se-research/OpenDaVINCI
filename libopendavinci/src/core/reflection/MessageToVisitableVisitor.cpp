@@ -19,10 +19,10 @@
 
 #include <cstring>
 
-#include "core/base/Serializable.h"
-#include "core/base/Visitable.h"
-#include "core/reflection/Field.h"
-#include "core/reflection/MessageToVisitableVisitor.h"
+#include "opendavinci/core/base/Serializable.h"
+#include "opendavinci/core/base/Visitable.h"
+#include "opendavinci/core/reflection/Field.h"
+#include "opendavinci/core/reflection/MessageToVisitableVisitor.h"
 
 namespace core {
     namespace reflection {

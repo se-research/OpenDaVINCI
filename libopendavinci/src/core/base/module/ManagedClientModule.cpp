@@ -29,20 +29,20 @@
 #include <sstream>
 #include <vector>
 
-#include "context/base/ControlledTime.h"
-#include "context/base/ControlledTimeFactory.h"
-#include "context/base/RuntimeControl.h"
-#include "core/base/Thread.h"
-#include "core/base/module/ManagedClientModule.h"
-#include "core/base/module/ManagedClientModuleContainerConference.h"
-#include "core/data/Container.h"
-#include "core/data/TimeStamp.h"
-#include "core/dmcp/connection/Client.h"
-#include "core/exceptions/Exceptions.h"
-#include "core/opendavinci.h"
-#include "generated/coredata/dmcp/ModuleStateMessage.h"
-#include "generated/coredata/dmcp/RuntimeStatistic.h"
-#include "generated/coredata/dmcp/ServerInformation.h"
+#include "opendavinci/context/base/ControlledTime.h"
+#include "opendavinci/context/base/ControlledTimeFactory.h"
+#include "opendavinci/context/base/RuntimeControl.h"
+#include "opendavinci/core/base/Thread.h"
+#include "opendavinci/core/base/module/ManagedClientModule.h"
+#include "opendavinci/core/base/module/ManagedClientModuleContainerConference.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/data/TimeStamp.h"
+#include "opendavinci/core/dmcp/connection/Client.h"
+#include "opendavinci/core/exceptions/Exceptions.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
+#include "opendavinci/generated/coredata/dmcp/RuntimeStatistic.h"
+#include "opendavinci/generated/coredata/dmcp/ServerInformation.h"
 
 namespace core {
     namespace base {
