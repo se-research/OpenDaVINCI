@@ -25,8 +25,8 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"         // for SharedPointer
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"         // for SharedPointer
 #include "mocks/StringListenerMock.h"
 
 namespace core { namespace io { namespace udp { class UDPReceiver; } } }
@@ -35,9 +35,9 @@ namespace core { namespace io { namespace udp { class UDPSender; } } }
 using namespace std;
 
 #ifndef WIN32
-    #include "core/wrapper/POSIX/POSIXUDPFactoryWorker.h"
-    #include "core/wrapper/POSIX/POSIXUDPReceiver.h"
-    #include "core/wrapper/POSIX/POSIXUDPSender.h"
+    #include "opendavinci/core/wrapper/POSIX/POSIXUDPFactoryWorker.h"
+    #include "opendavinci/core/wrapper/POSIX/POSIXUDPReceiver.h"
+    #include "opendavinci/core/wrapper/POSIX/POSIXUDPSender.h"
 
     struct UDPTestPOSIX
     {
@@ -73,9 +73,9 @@ using namespace std;
 #endif
 
 #ifdef WIN32
-    #include "core/wrapper/WIN32/WIN32UDPFactoryWorker.h"
-    #include "core/wrapper/WIN32/WIN32UDPReceiver.h"
-    #include "core/wrapper/WIN32/WIN32UDPSender.h"
+    #include "opendavinci/core/wrapper/WIN32/WIN32UDPFactoryWorker.h"
+    #include "opendavinci/core/wrapper/WIN32/WIN32UDPReceiver.h"
+    #include "opendavinci/core/wrapper/WIN32/WIN32UDPSender.h"
 
     struct UDPTestWin32
     {

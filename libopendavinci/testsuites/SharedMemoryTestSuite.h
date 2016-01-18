@@ -25,13 +25,13 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"         // for SharedPointer
-#include "core/base/Lock.h"             // for Lock
-#include "core/base/Serializable.h"     // for operator<<, operator>>
-#include "core/wrapper/SharedMemory.h"  // for SharedMemory
-#include "core/wrapper/SharedMemoryFactory.h"  // for SharedMemoryFactory
-#include "generated/coredata/SharedData.h"  // for SharedData
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"         // for SharedPointer
+#include "opendavinci/core/base/Lock.h"             // for Lock
+#include "opendavinci/core/base/Serializable.h"     // for operator<<, operator>>
+#include "opendavinci/core/wrapper/SharedMemory.h"  // for SharedMemory
+#include "opendavinci/core/wrapper/SharedMemoryFactory.h"  // for SharedMemoryFactory
+#include "opendavinci/generated/coredata/SharedData.h"  // for SharedData
 
 using namespace std;
 

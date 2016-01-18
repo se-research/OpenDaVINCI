@@ -26,13 +26,13 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"         // for SharedPointer
-#include "core/base/Deserializer.h"     // for Deserializer
-#include "core/base/Hash.h"             // for CharList, CRC32, etc
-#include "core/base/Serializable.h"     // for Serializable, operator<<, etc
-#include "core/base/SerializationFactory.h"  // for SerializationFactory
-#include "core/base/Serializer.h"       // for Serializer
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"         // for SharedPointer
+#include "opendavinci/core/base/Deserializer.h"     // for Deserializer
+#include "opendavinci/core/base/Hash.h"             // for CharList, CRC32, etc
+#include "opendavinci/core/base/Serializable.h"     // for Serializable, operator<<, etc
+#include "opendavinci/core/base/SerializationFactory.h"  // for SerializationFactory
+#include "opendavinci/core/base/Serializer.h"       // for Serializer
 
 using namespace std;
 using namespace core;

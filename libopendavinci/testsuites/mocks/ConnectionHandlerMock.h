@@ -20,10 +20,10 @@
 #ifndef CONNECTIONHANDLERMOCK_H_
 #define CONNECTIONHANDLERMOCK_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/dmcp/connection/ConnectionHandler.h"
-#include "core/dmcp/connection/ModuleConnection.h"
+#include "opendavinci/core/dmcp/connection/ConnectionHandler.h"
+#include "opendavinci/core/dmcp/connection/ModuleConnection.h"
 #include "FunctionCallWaiter.h"
 
 namespace mocks {

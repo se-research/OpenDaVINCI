@@ -20,8 +20,8 @@
 #ifndef MOCKS_FUNCTIONCALLWAITER_H
 #define MOCKS_FUNCTIONCALLWAITER_H
 
-#include "core/base/Lock.h"
-#include "core/base/Condition.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/base/Condition.h"
 
 namespace mocks {
 

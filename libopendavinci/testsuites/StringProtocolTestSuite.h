@@ -25,10 +25,10 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/opendavinci.h"
-#include "core/io/StringListener.h"     // for StringListener
-#include "core/io/StringSender.h"       // for StringSender
-#include "core/io/protocol/StringProtocol.h"  // for StringProtocol
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/io/StringListener.h"     // for StringListener
+#include "opendavinci/core/io/StringSender.h"       // for StringSender
+#include "opendavinci/core/io/protocol/StringProtocol.h"  // for StringProtocol
 
 using namespace std;
 

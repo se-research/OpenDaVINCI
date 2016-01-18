@@ -22,10 +22,10 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/opendavinci.h"
-#include "core/base/Thread.h"           // for Thread
-#include "core/wrapper/Disposable.h"    // for Disposable
-#include "core/wrapper/DisposalService.h"  // for DisposalService
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/Thread.h"           // for Thread
+#include "opendavinci/core/wrapper/Disposable.h"    // for Disposable
+#include "opendavinci/core/wrapper/DisposalService.h"  // for DisposalService
 
 using namespace std;
 

@@ -24,8 +24,8 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/strings/StringToolbox.h"
-#include "core/wrapper/zlib/Zlib.h"
+#include "opendavinci/core/strings/StringToolbox.h"
+#include "opendavinci/core/wrapper/zlib/Zlib.h"
 
 using namespace std;
 using namespace core::wrapper::zlib;

@@ -20,12 +20,12 @@
 #ifndef MODULECONFIGURATIONLISTENERMOCK_H_
 #define MODULECONFIGURATIONLISTENERMOCK_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/base/KeyValueConfiguration.h"
-#include "core/dmcp/ModuleConfigurationProvider.h"
+#include "opendavinci/core/base/KeyValueConfiguration.h"
+#include "opendavinci/core/dmcp/ModuleConfigurationProvider.h"
 
-#include "GeneratedHeaders_CoreData.h"
+#include "opendavinci/GeneratedHeaders_CoreData.h"
 
 namespace mocks {
     class ModuleConfigurationProviderMock : public core::dmcp::ModuleConfigurationProvider {

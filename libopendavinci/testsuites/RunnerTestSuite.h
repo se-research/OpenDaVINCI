@@ -22,8 +22,8 @@
 
 #include "cxxtest/TestSuite.h"
 
-#include "context/base/ControlledTime.h"
-#include "context/base/Runner.h"
+#include "opendavinci/context/base/ControlledTime.h"
+#include "opendavinci/context/base/Runner.h"
 
 using namespace std;
 

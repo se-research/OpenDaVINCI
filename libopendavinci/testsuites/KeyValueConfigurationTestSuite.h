@@ -25,9 +25,9 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/opendavinci.h"
-#include "core/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
-#include "core/exceptions/Exceptions.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
+#include "opendavinci/core/exceptions/Exceptions.h"
 
 using namespace std;
 using namespace core::base;

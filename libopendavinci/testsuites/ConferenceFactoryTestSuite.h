@@ -24,18 +24,18 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "context/base/BlockableContainerReceiver.h"
-#include "context/base/ControlledContainerConferenceFactory.h"
-#include "context/base/ControlledContainerConferenceForSystemUnderTest.h"
-#include "core/SharedPointer.h"         // for SharedPointer
-#include "core/base/FIFOQueue.h"        // for FIFOQueue
-#include "core/data/Container.h"        // for Container, etc
-#include "core/data/TimeStamp.h"        // for TimeStamp
-#include "core/io/conference/ContainerConference.h"
-#include "core/io/conference/ContainerConferenceFactory.h"
-#include "core/io/conference/ContainerListener.h"
-#include "core/io/conference/UDPMultiCastContainerConference.h"
-#include "core/opendavinci.h"
+#include "opendavinci/context/base/BlockableContainerReceiver.h"
+#include "opendavinci/context/base/ControlledContainerConferenceFactory.h"
+#include "opendavinci/context/base/ControlledContainerConferenceForSystemUnderTest.h"
+#include "opendavinci/core/SharedPointer.h"         // for SharedPointer
+#include "opendavinci/core/base/FIFOQueue.h"        // for FIFOQueue
+#include "opendavinci/core/data/Container.h"        // for Container, etc
+#include "opendavinci/core/data/TimeStamp.h"        // for TimeStamp
+#include "opendavinci/core/io/conference/ContainerConference.h"
+#include "opendavinci/core/io/conference/ContainerConferenceFactory.h"
+#include "opendavinci/core/io/conference/ContainerListener.h"
+#include "opendavinci/core/io/conference/UDPMultiCastContainerConference.h"
+#include "opendavinci/core/opendavinci.h"
 
 using namespace std;
 using namespace core::base;

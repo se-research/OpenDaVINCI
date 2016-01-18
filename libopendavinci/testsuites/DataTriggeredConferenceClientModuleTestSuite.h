@@ -26,33 +26,33 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"         // for SharedPointer
-#include "core/base/Condition.h"        // for Condition
-#include "core/base/Deserializer.h"     // for Deserializer
-#include "core/base/Hash.h"             // for CharList, CRC32, etc
-#include "core/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
-#include "core/base/Lock.h"             // for Lock
-#include "core/base/SerializationFactory.h"  // for SerializationFactory
-#include "core/base/Serializer.h"       // for Serializer
-#include "core/base/Service.h"          // for Service
-#include "core/base/Thread.h"           // for Thread
-#include "core/base/module/AbstractConferenceClientModule.h"
-#include "core/base/module/DataTriggeredConferenceClientModule.h"
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "core/data/Container.h"        // for Container, etc
-#include "core/data/SerializableData.h"  // for SerializableData
-#include "core/dmcp/ModuleConfigurationProvider.h"
-#include "core/dmcp/connection/ConnectionHandler.h"
-#include "core/dmcp/connection/ModuleConnection.h"
-#include "core/dmcp/connection/Server.h"  // for Server
-#include "core/dmcp/discoverer/Server.h"  // for Server
-#include "core/io/conference/ContainerConference.h"
-#include "core/io/conference/ContainerConferenceFactory.h"
-#include "generated/coredata/dmcp/Constants.h"  // for Constants, etc
-#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
-#include "generated/coredata/dmcp/ModuleStateMessage.h"
-#include "generated/coredata/dmcp/ServerInformation.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"         // for SharedPointer
+#include "opendavinci/core/base/Condition.h"        // for Condition
+#include "opendavinci/core/base/Deserializer.h"     // for Deserializer
+#include "opendavinci/core/base/Hash.h"             // for CharList, CRC32, etc
+#include "opendavinci/core/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
+#include "opendavinci/core/base/Lock.h"             // for Lock
+#include "opendavinci/core/base/SerializationFactory.h"  // for SerializationFactory
+#include "opendavinci/core/base/Serializer.h"       // for Serializer
+#include "opendavinci/core/base/Service.h"          // for Service
+#include "opendavinci/core/base/Thread.h"           // for Thread
+#include "opendavinci/core/base/module/AbstractConferenceClientModule.h"
+#include "opendavinci/core/base/module/DataTriggeredConferenceClientModule.h"
+#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/core/data/Container.h"        // for Container, etc
+#include "opendavinci/core/data/SerializableData.h"  // for SerializableData
+#include "opendavinci/core/dmcp/ModuleConfigurationProvider.h"
+#include "opendavinci/core/dmcp/connection/ConnectionHandler.h"
+#include "opendavinci/core/dmcp/connection/ModuleConnection.h"
+#include "opendavinci/core/dmcp/connection/Server.h"  // for Server
+#include "opendavinci/core/dmcp/discoverer/Server.h"  // for Server
+#include "opendavinci/core/io/conference/ContainerConference.h"
+#include "opendavinci/core/io/conference/ContainerConferenceFactory.h"
+#include "opendavinci/generated/coredata/dmcp/Constants.h"  // for Constants, etc
+#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
+#include "opendavinci/generated/coredata/dmcp/ServerInformation.h"
 
 namespace coredata { namespace dmcp { class ModuleDescriptor; } }
 

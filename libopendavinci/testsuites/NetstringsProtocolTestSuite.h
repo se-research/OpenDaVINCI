@@ -25,9 +25,9 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/io/StringListener.h"     // for StringListener
-#include "core/io/StringSender.h"       // for StringSender
-#include "core/io/protocol/NetstringsProtocol.h"
+#include "opendavinci/core/io/StringListener.h"     // for StringListener
+#include "opendavinci/core/io/StringSender.h"       // for StringSender
+#include "opendavinci/core/io/protocol/NetstringsProtocol.h"
 
 using namespace std;
 

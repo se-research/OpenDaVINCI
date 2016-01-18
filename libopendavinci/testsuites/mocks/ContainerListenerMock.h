@@ -22,8 +22,8 @@
 
 #include "FunctionCallWaiter.h"
 #include "ParameterValueList.h"
-#include "core/data/Container.h"
-#include "core/io/conference/ContainerListener.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/io/conference/ContainerListener.h"
 
 namespace mocks {
 

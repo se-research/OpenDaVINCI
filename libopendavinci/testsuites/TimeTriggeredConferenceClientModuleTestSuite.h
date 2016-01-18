@@ -26,25 +26,25 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"         // for SharedPointer
-#include "core/base/Condition.h"        // for Condition
-#include "core/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
-#include "core/base/Lock.h"             // for Lock
-#include "core/base/Service.h"          // for Service
-#include "core/base/Thread.h"           // for Thread
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "core/dmcp/ModuleConfigurationProvider.h"
-#include "core/dmcp/connection/ConnectionHandler.h"
-#include "core/dmcp/connection/ModuleConnection.h"
-#include "core/dmcp/connection/Server.h"  // for Server
-#include "core/dmcp/discoverer/Server.h"  // for Server
-#include "core/io/conference/ContainerConference.h"
-#include "core/io/conference/ContainerConferenceFactory.h"
-#include "generated/coredata/dmcp/Constants.h"  // for Constants, etc
-#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
-#include "generated/coredata/dmcp/ModuleStateMessage.h"
-#include "generated/coredata/dmcp/ServerInformation.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"         // for SharedPointer
+#include "opendavinci/core/base/Condition.h"        // for Condition
+#include "opendavinci/core/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
+#include "opendavinci/core/base/Lock.h"             // for Lock
+#include "opendavinci/core/base/Service.h"          // for Service
+#include "opendavinci/core/base/Thread.h"           // for Thread
+#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/core/dmcp/ModuleConfigurationProvider.h"
+#include "opendavinci/core/dmcp/connection/ConnectionHandler.h"
+#include "opendavinci/core/dmcp/connection/ModuleConnection.h"
+#include "opendavinci/core/dmcp/connection/Server.h"  // for Server
+#include "opendavinci/core/dmcp/discoverer/Server.h"  // for Server
+#include "opendavinci/core/io/conference/ContainerConference.h"
+#include "opendavinci/core/io/conference/ContainerConferenceFactory.h"
+#include "opendavinci/generated/coredata/dmcp/Constants.h"  // for Constants, etc
+#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
+#include "opendavinci/generated/coredata/dmcp/ServerInformation.h"
 
 namespace coredata { namespace dmcp { class ModuleDescriptor; } }
 

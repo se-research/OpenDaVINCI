@@ -22,9 +22,9 @@
 
 #include "FunctionCallWaiter.h"
 
-#include "core/SharedPointer.h"
-#include "core/io/tcp/TCPAcceptorListener.h"
-#include "core/io/tcp/TCPConnection.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/io/tcp/TCPAcceptorListener.h"
+#include "opendavinci/core/io/tcp/TCPConnection.h"
 
 namespace mocks {
     class TCPAcceptorListenerMock : public core::io::tcp::TCPAcceptorListener {

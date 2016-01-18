@@ -25,14 +25,14 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/SharedPointer.h"         // for SharedPointer
-#include "core/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
-#include "core/dmcp/connection/Client.h"  // for Client
-#include "core/dmcp/connection/ConnectionHandler.h"
-#include "core/dmcp/connection/Server.h"  // for Server
-#include "generated/coredata/dmcp/ModuleDescriptor.h"
-#include "generated/coredata/dmcp/ServerInformation.h"
-#include "generated/coredata/dmcp/TestConstants.h"  // for TestConstants, etc
+#include "opendavinci/core/SharedPointer.h"         // for SharedPointer
+#include "opendavinci/core/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
+#include "opendavinci/core/dmcp/connection/Client.h"  // for Client
+#include "opendavinci/core/dmcp/connection/ConnectionHandler.h"
+#include "opendavinci/core/dmcp/connection/Server.h"  // for Server
+#include "opendavinci/generated/coredata/dmcp/ModuleDescriptor.h"
+#include "opendavinci/generated/coredata/dmcp/ServerInformation.h"
+#include "opendavinci/generated/coredata/dmcp/TestConstants.h"  // for TestConstants, etc
 #include "mocks/ConnectionHandlerMock.h"
 #include "mocks/ModuleConfigurationProviderMock.h"
 

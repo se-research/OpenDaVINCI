@@ -25,23 +25,23 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"         // for SharedPointer
-#include "core/base/BufferedFIFOQueue.h"  // for BufferedFIFOQueue
-#include "core/base/BufferedLIFOQueue.h"  // for BufferedLIFOQueue
-#include "core/base/Condition.h"        // for Condition
-#include "core/base/Deserializer.h"     // for Deserializer
-#include "core/base/FIFOQueue.h"        // for FIFOQueue
-#include "core/base/Hash.h"             // for CharList, CRC32, etc
-#include "core/base/LIFOQueue.h"        // for LIFOQueue
-#include "core/base/Lock.h"             // for Lock
-#include "core/base/Mutex.h"            // for Mutex
-#include "core/base/Thread.h"
-#include "core/base/SerializationFactory.h"  // for SerializationFactory
-#include "core/base/Serializer.h"       // for Serializer
-#include "core/base/Service.h"          // for Service
-#include "core/data/Container.h"        // for Container, etc
-#include "core/data/SerializableData.h"  // for SerializableData
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"         // for SharedPointer
+#include "opendavinci/core/base/BufferedFIFOQueue.h"  // for BufferedFIFOQueue
+#include "opendavinci/core/base/BufferedLIFOQueue.h"  // for BufferedLIFOQueue
+#include "opendavinci/core/base/Condition.h"        // for Condition
+#include "opendavinci/core/base/Deserializer.h"     // for Deserializer
+#include "opendavinci/core/base/FIFOQueue.h"        // for FIFOQueue
+#include "opendavinci/core/base/Hash.h"             // for CharList, CRC32, etc
+#include "opendavinci/core/base/LIFOQueue.h"        // for LIFOQueue
+#include "opendavinci/core/base/Lock.h"             // for Lock
+#include "opendavinci/core/base/Mutex.h"            // for Mutex
+#include "opendavinci/core/base/Thread.h"
+#include "opendavinci/core/base/SerializationFactory.h"  // for SerializationFactory
+#include "opendavinci/core/base/Serializer.h"       // for Serializer
+#include "opendavinci/core/base/Service.h"          // for Service
+#include "opendavinci/core/data/Container.h"        // for Container, etc
+#include "opendavinci/core/data/SerializableData.h"  // for SerializableData
 
 using namespace std;
 using namespace core::base;

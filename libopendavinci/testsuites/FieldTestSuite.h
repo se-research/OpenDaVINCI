@@ -24,11 +24,11 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/opendavinci.h"
-#include "core/data/TimeStamp.h"        // for TimeStamp
-#include "core/reflection/Field.h"      // for Field
-#include "core/strings/StringToolbox.h"  // for StringToolbox
-#include "generated/coredata/reflection/AbstractField.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/data/TimeStamp.h"        // for TimeStamp
+#include "opendavinci/core/reflection/Field.h"      // for Field
+#include "opendavinci/core/strings/StringToolbox.h"  // for StringToolbox
+#include "opendavinci/generated/coredata/reflection/AbstractField.h"
 
 using namespace std;
 using namespace core::data;

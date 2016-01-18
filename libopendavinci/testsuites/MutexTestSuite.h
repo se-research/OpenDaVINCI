@@ -22,8 +22,8 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/base/Lock.h"             // for Lock
-#include "core/base/Mutex.h"            // for Mutex
+#include "opendavinci/core/base/Lock.h"             // for Lock
+#include "opendavinci/core/base/Mutex.h"            // for Mutex
 
 using namespace std;
 using namespace core::base;

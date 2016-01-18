@@ -26,19 +26,19 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"         // for SharedPointer
-#include "core/base/Deserializer.h"     // for Deserializer
-#include "core/base/LCMDeserializerVisitor.h"
-#include "core/base/LCMSerializerVisitor.h"  // for LCMSerializerVisitor
-#include "core/base/SerializationFactory.h"  // for SerializationFactory
-#include "core/base/Serializer.h"       // for Serializer
-#include "core/base/Visitable.h"        // for Visitable
-#include "core/base/Visitor.h"          // for Visitor
-#include "core/data/SerializableData.h"  // for SerializableData
-#include "generated/coredata/SharedData.h"  // for SharedData
-#include "generated/coredata/dmcp/ModuleDescriptor.h"
-#include "generated/coredata/image/SharedImage.h"  // for SharedImage
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"         // for SharedPointer
+#include "opendavinci/core/base/Deserializer.h"     // for Deserializer
+#include "opendavinci/core/base/LCMDeserializerVisitor.h"
+#include "opendavinci/core/base/LCMSerializerVisitor.h"  // for LCMSerializerVisitor
+#include "opendavinci/core/base/SerializationFactory.h"  // for SerializationFactory
+#include "opendavinci/core/base/Serializer.h"       // for Serializer
+#include "opendavinci/core/base/Visitable.h"        // for Visitable
+#include "opendavinci/core/base/Visitor.h"          // for Visitor
+#include "opendavinci/core/data/SerializableData.h"  // for SerializableData
+#include "opendavinci/generated/coredata/SharedData.h"  // for SharedData
+#include "opendavinci/generated/coredata/dmcp/ModuleDescriptor.h"
+#include "opendavinci/generated/coredata/image/SharedImage.h"  // for SharedImage
 
 using namespace std;
 using namespace core::base;

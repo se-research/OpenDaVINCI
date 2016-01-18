@@ -25,7 +25,7 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/strings/StringToolbox.h"  // for StringToolbox
+#include "opendavinci/core/strings/StringToolbox.h"  // for StringToolbox
 
 using namespace std;
 

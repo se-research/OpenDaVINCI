@@ -24,13 +24,13 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/SharedPointer.h"         // for SharedPointer
-#include "core/base/Thread.h"           // for Thread
-#include "core/data/Container.h"        // for Container, etc
-#include "core/data/TimeStamp.h"        // for TimeStamp
-#include "core/exceptions/Exceptions.h"
-#include "core/io/Connection.h"         // for Connection
-#include "core/io/ConnectionAcceptor.h"  // for ConnectionAcceptor
+#include "opendavinci/core/SharedPointer.h"         // for SharedPointer
+#include "opendavinci/core/base/Thread.h"           // for Thread
+#include "opendavinci/core/data/Container.h"        // for Container, etc
+#include "opendavinci/core/data/TimeStamp.h"        // for TimeStamp
+#include "opendavinci/core/exceptions/Exceptions.h"
+#include "opendavinci/core/io/Connection.h"         // for Connection
+#include "opendavinci/core/io/ConnectionAcceptor.h"  // for ConnectionAcceptor
 #include "mocks/ConnectionAcceptorListenerMock.h"
 #include "mocks/ConnectionErrorListenerMock.h"
 #include "mocks/ContainerListenerMock.h"

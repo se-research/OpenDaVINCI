@@ -25,9 +25,9 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/base/Thread.h"
-#include "core/io/StringListener.h"
-#include "core/io/StringPipeline.h"
+#include "opendavinci/core/base/Thread.h"
+#include "opendavinci/core/io/StringListener.h"
+#include "opendavinci/core/io/StringPipeline.h"
 
 using namespace std;
 using namespace core::base;

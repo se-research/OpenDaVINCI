@@ -20,17 +20,17 @@
 #ifndef MOCKS__MODULESTATELISTENERMOCK_H_
 #define MOCKS__MODULESTATELISTENERMOCK_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/base/Condition.h"
-#include "core/base/Lock.h"
-#include "core/base/Mutex.h"
-#include "GeneratedHeaders_CoreData.h"
+#include "opendavinci/core/base/Condition.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/GeneratedHeaders_CoreData.h"
 
-#include "core/dmcp/ModuleStateListener.h"
-#include "core/data/dmcp/ModuleDescriptor.h"
+#include "opendavinci/core/dmcp/ModuleStateListener.h"
+#include "opendavinci/core/data/dmcp/ModuleDescriptor.h"
 
-#include "GeneratedHeaders_CoreData.h"
+#include "opendavinci/GeneratedHeaders_CoreData.h"
 
 namespace mocks {
 

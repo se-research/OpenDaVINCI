@@ -25,7 +25,7 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/base/TreeNode.h"         // for TreeNode
+#include "opendavinci/core/base/TreeNode.h"         // for TreeNode
 
 using namespace std;
 using namespace core::base;

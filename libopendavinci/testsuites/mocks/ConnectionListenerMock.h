@@ -21,7 +21,7 @@
 #define MOCKS__CONNECTIONLISTENERMOCK_H_
 
 #include "FunctionCallWaiter.h"
-#include "core/io/ConnectionListener.h"
+#include "opendavinci/core/io/ConnectionListener.h"
 
 namespace mocks {
     class ConnectionListenerMock : public core::io::ConnectionListener {

@@ -25,11 +25,11 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/opendavinci.h"
-#include "core/dmcp/discoverer/Client.h"  // for Client
-#include "core/dmcp/discoverer/Server.h"  // for Server
-#include "generated/coredata/dmcp/ServerInformation.h"
-#include "generated/coredata/dmcp/TestConstants.h"  // for TestConstants, etc
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/dmcp/discoverer/Client.h"  // for Client
+#include "opendavinci/core/dmcp/discoverer/Server.h"  // for Server
+#include "opendavinci/generated/coredata/dmcp/ServerInformation.h"
+#include "opendavinci/generated/coredata/dmcp/TestConstants.h"  // for TestConstants, etc
 #include "mocks/FunctionCallWaiter.h"
 
 using namespace std;

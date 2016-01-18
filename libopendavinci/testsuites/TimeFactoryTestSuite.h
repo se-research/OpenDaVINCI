@@ -22,12 +22,12 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "context/base/ControlledTime.h"  // for ControlledTime
-#include "context/base/ControlledTimeFactory.h"
-#include "core/SharedPointer.h"         // for SharedPointer
-#include "core/data/TimeStamp.h"        // for TimeStamp
-#include "core/opendavinci.h"
-#include "core/wrapper/TimeFactory.h"   // for TimeFactory
+#include "opendavinci/context/base/ControlledTime.h"  // for ControlledTime
+#include "opendavinci/context/base/ControlledTimeFactory.h"
+#include "opendavinci/core/SharedPointer.h"         // for SharedPointer
+#include "opendavinci/core/data/TimeStamp.h"        // for TimeStamp
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/wrapper/TimeFactory.h"   // for TimeFactory
 
 namespace core { namespace wrapper { class Time; } }
 

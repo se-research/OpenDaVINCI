@@ -26,26 +26,26 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/opendavinci.h"
-#include "context/base/DirectInterface.h"  // for DirectInterface
-#include "context/base/RuntimeControl.h"  // for RuntimeControl, etc
-#include "context/base/RuntimeEnvironment.h"  // for RuntimeEnvironment
-#include "context/base/SendContainerToSystemsUnderTest.h"
-#include "context/base/SystemFeedbackComponent.h"
-#include "context/base/SystemReportingComponent.h"
-#include "core/SharedPointer.h"         // for SharedPointer
-#include "core/base/Deserializer.h"     // for Deserializer
-#include "core/base/FIFOQueue.h"        // for FIFOQueue
-#include "core/base/Hash.h"             // for CharList, CRC32, etc
-#include "core/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
-#include "core/base/SerializationFactory.h"  // for SerializationFactory
-#include "core/base/Serializer.h"       // for Serializer
-#include "core/base/Thread.h"           // for Thread
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "core/data/Container.h"        // for Container, etc
-#include "core/data/SerializableData.h"  // for SerializableData
-#include "core/data/TimeStamp.h"        // for TimeStamp
-#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/context/base/DirectInterface.h"  // for DirectInterface
+#include "opendavinci/context/base/RuntimeControl.h"  // for RuntimeControl, etc
+#include "opendavinci/context/base/RuntimeEnvironment.h"  // for RuntimeEnvironment
+#include "opendavinci/context/base/SendContainerToSystemsUnderTest.h"
+#include "opendavinci/context/base/SystemFeedbackComponent.h"
+#include "opendavinci/context/base/SystemReportingComponent.h"
+#include "opendavinci/core/SharedPointer.h"         // for SharedPointer
+#include "opendavinci/core/base/Deserializer.h"     // for Deserializer
+#include "opendavinci/core/base/FIFOQueue.h"        // for FIFOQueue
+#include "opendavinci/core/base/Hash.h"             // for CharList, CRC32, etc
+#include "opendavinci/core/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
+#include "opendavinci/core/base/SerializationFactory.h"  // for SerializationFactory
+#include "opendavinci/core/base/Serializer.h"       // for Serializer
+#include "opendavinci/core/base/Thread.h"           // for Thread
+#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/core/data/Container.h"        // for Container, etc
+#include "opendavinci/core/data/SerializableData.h"  // for SerializableData
+#include "opendavinci/core/data/TimeStamp.h"        // for TimeStamp
+#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
 namespace core { namespace wrapper { class Time; } }
 

@@ -23,13 +23,13 @@
 #include <string>
 #include <iostream>
 
-#include "core/SharedPointer.h"
-#include "core/base/Condition.h"
-#include "core/base/Lock.h"
-#include "core/base/Mutex.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/base/Condition.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/base/Mutex.h"
 
-#include "core/io/ConnectionAcceptorListener.h"
-#include "core/io/Connection.h"
+#include "opendavinci/core/io/ConnectionAcceptorListener.h"
+#include "opendavinci/core/io/Connection.h"
 
 namespace mocks {
     using namespace core;

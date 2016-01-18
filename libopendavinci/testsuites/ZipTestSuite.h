@@ -26,10 +26,10 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"         // for SharedPointer
-#include "core/wrapper/CompressionFactory.h"  // for CompressionFactory
-#include "core/wrapper/DecompressedData.h"  // for DecompressedData
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"         // for SharedPointer
+#include "opendavinci/core/wrapper/CompressionFactory.h"  // for CompressionFactory
+#include "opendavinci/core/wrapper/DecompressedData.h"  // for DecompressedData
 
 using namespace std;
 using namespace core;

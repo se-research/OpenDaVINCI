@@ -26,15 +26,15 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/opendavinci.h"
-#include "context/base/DirectInterface.h"  // for DirectInterface
-#include "context/base/RuntimeControl.h"  // for RuntimeControl, etc
-#include "context/base/RuntimeEnvironment.h"  // for RuntimeEnvironment
-#include "context/base/SystemFeedbackComponent.h"
-#include "core/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
-#include "core/base/Thread.h"
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/context/base/DirectInterface.h"  // for DirectInterface
+#include "opendavinci/context/base/RuntimeControl.h"  // for RuntimeControl, etc
+#include "opendavinci/context/base/RuntimeEnvironment.h"  // for RuntimeEnvironment
+#include "opendavinci/context/base/SystemFeedbackComponent.h"
+#include "opendavinci/core/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
+#include "opendavinci/core/base/Thread.h"
+#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
 namespace context { namespace base { class SendContainerToSystemsUnderTest; } }
 namespace core { namespace wrapper { class Time; } }

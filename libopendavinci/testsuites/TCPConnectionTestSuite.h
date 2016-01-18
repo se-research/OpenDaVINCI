@@ -25,21 +25,21 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/SharedPointer.h"         // for SharedPointer
-#include "core/io/Connection.h"
-#include "core/io/tcp/TCPAcceptor.h"
-#include "core/wrapper/NetworkLibraryProducts.h"
+#include "opendavinci/core/SharedPointer.h"         // for SharedPointer
+#include "opendavinci/core/io/Connection.h"
+#include "opendavinci/core/io/tcp/TCPAcceptor.h"
+#include "opendavinci/core/wrapper/NetworkLibraryProducts.h"
 #include "mocks/ConnectionListenerMock.h"
 #include "mocks/StringListenerMock.h"
 #include "mocks/TCPAcceptorListenerMock.h"
 
 #ifndef WIN32
-    #include "core/wrapper/POSIX/POSIXTCPFactoryWorker.h"
+    #include "opendavinci/core/wrapper/POSIX/POSIXTCPFactoryWorker.h"
 #endif
 #ifdef WIN32
-    #include "core/wrapper/WIN32/WIN32TCPFactoryWorker.h"
+    #include "opendavinci/core/wrapper/WIN32/WIN32TCPFactoryWorker.h"
 #endif
-#include "core/io/tcp/TCPConnection.h"  // for TCPConnection
+#include "opendavinci/core/io/tcp/TCPConnection.h"  // for TCPConnection
 
 namespace core { namespace io { class Connection; } }
 namespace core { namespace io { namespace tcp { class TCPAcceptor; } } }

@@ -25,9 +25,9 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/base/Serializable.h"     // for operator<<, operator>>
-#include "core/data/Container.h"        // for Container, etc
-#include "core/data/TimeStamp.h"        // for TimeStamp
+#include "opendavinci/core/base/Serializable.h"     // for operator<<, operator>>
+#include "opendavinci/core/data/Container.h"        // for Container, etc
+#include "opendavinci/core/data/TimeStamp.h"        // for TimeStamp
 
 using namespace std;
 using namespace core::data;

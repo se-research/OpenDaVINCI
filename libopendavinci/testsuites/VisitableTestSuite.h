@@ -25,17 +25,17 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"         // for SharedPointer
-#include "core/base/Deserializer.h"     // for Deserializer
-#include "core/base/Hash.h"             // for CharList, CRC32, etc
-#include "core/base/QueryableNetstringsDeserializerVisitor.h"
-#include "core/base/QueryableNetstringsSerializerVisitor.h"
-#include "core/base/Serializable.h"     // for operator<<, Serializable
-#include "core/base/SerializationFactory.h"  // for SerializationFactory
-#include "core/base/Serializer.h"       // for Serializer
-#include "core/base/Visitable.h"        // for Visitable
-#include "core/base/Visitor.h"          // for Visitor
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"         // for SharedPointer
+#include "opendavinci/core/base/Deserializer.h"     // for Deserializer
+#include "opendavinci/core/base/Hash.h"             // for CharList, CRC32, etc
+#include "opendavinci/core/base/QueryableNetstringsDeserializerVisitor.h"
+#include "opendavinci/core/base/QueryableNetstringsSerializerVisitor.h"
+#include "opendavinci/core/base/Serializable.h"     // for operator<<, Serializable
+#include "opendavinci/core/base/SerializationFactory.h"  // for SerializationFactory
+#include "opendavinci/core/base/Serializer.h"       // for Serializer
+#include "opendavinci/core/base/Visitable.h"        // for Visitable
+#include "opendavinci/core/base/Visitor.h"          // for Visitor
 
 using namespace std;
 using namespace core;

@@ -28,20 +28,20 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"         // for SharedPointer
-#include "core/base/Deserializer.h"     // for Deserializer
-#include "core/base/Hash.h"             // for CharList, CRC32, etc
-#include "core/base/Serializable.h"     // for Serializable
-#include "core/base/SerializationFactory.h"  // for SerializationFactory
-#include "core/base/Serializer.h"       // for Serializer
-#include "core/base/Visitable.h"        // for Visitable
-#include "core/base/Visitor.h"          // for Visitor
-#include "core/reflection/Message.h"    // for Message
-#include "core/reflection/MessageFromVisitableVisitor.h"
-#include "core/reflection/MessagePrettyPrinterVisitor.h"
-#include "core/reflection/MessageToVisitableVisitor.h"
-#include "core/strings/StringToolbox.h"  // for StringToolbox
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"         // for SharedPointer
+#include "opendavinci/core/base/Deserializer.h"     // for Deserializer
+#include "opendavinci/core/base/Hash.h"             // for CharList, CRC32, etc
+#include "opendavinci/core/base/Serializable.h"     // for Serializable
+#include "opendavinci/core/base/SerializationFactory.h"  // for SerializationFactory
+#include "opendavinci/core/base/Serializer.h"       // for Serializer
+#include "opendavinci/core/base/Visitable.h"        // for Visitable
+#include "opendavinci/core/base/Visitor.h"          // for Visitor
+#include "opendavinci/core/reflection/Message.h"    // for Message
+#include "opendavinci/core/reflection/MessageFromVisitableVisitor.h"
+#include "opendavinci/core/reflection/MessagePrettyPrinterVisitor.h"
+#include "opendavinci/core/reflection/MessageToVisitableVisitor.h"
+#include "opendavinci/core/strings/StringToolbox.h"  // for StringToolbox
 
 using namespace std;
 using namespace core;

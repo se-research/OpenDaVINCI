@@ -24,7 +24,7 @@
 
 #include "FunctionCallWaiter.h"
 #include "ParameterValueList.h"
-#include "core/io/StringListener.h"
+#include "opendavinci/core/io/StringListener.h"
 
 namespace mocks {
 
