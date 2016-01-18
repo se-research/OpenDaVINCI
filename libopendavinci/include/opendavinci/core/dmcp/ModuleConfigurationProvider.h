@@ -24,7 +24,7 @@
 
 #include "opendavinci/core/base/KeyValueConfiguration.h"
 
-#include "opendavinci/GeneratedHeaders_CoreData.h"
+#include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
 namespace core {
     namespace dmcp {

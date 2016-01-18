@@ -22,7 +22,7 @@
 
 #include "opendavinci/core/opendavinci.h"
 
-#include "opendavinci/GeneratedHeaders_CoreData.h"
+#include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
 namespace core {
     namespace reflection {

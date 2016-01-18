@@ -25,7 +25,7 @@
 #include "opendavinci/core/base/KeyValueConfiguration.h"
 #include "opendavinci/core/dmcp/ModuleConfigurationProvider.h"
 
-#include "opendavinci/GeneratedHeaders_CoreData.h"
+#include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
 namespace mocks {
     class ModuleConfigurationProviderMock : public core::dmcp::ModuleConfigurationProvider {

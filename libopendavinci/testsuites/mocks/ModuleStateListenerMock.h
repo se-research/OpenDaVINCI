@@ -25,12 +25,12 @@
 #include "opendavinci/core/base/Condition.h"
 #include "opendavinci/core/base/Lock.h"
 #include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/GeneratedHeaders_CoreData.h"
+#include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
 #include "opendavinci/core/dmcp/ModuleStateListener.h"
 #include "opendavinci/core/data/dmcp/ModuleDescriptor.h"
 
-#include "opendavinci/GeneratedHeaders_CoreData.h"
+#include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
 namespace mocks {
 

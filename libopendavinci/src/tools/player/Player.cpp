@@ -33,7 +33,7 @@
 #include "opendavinci/core/wrapper/SharedMemoryFactory.h"
 #include "opendavinci/core/wrapper/jpg/JPG.h"
 
-#include "opendavinci/GeneratedHeaders_CoreData.h"
+#include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
 #include "opendavinci/tools/player/Player.h"
 #include "opendavinci/tools/player/PlayerCache.h"
