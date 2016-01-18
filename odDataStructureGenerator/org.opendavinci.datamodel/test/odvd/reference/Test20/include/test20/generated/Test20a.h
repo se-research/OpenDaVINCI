@@ -13,7 +13,7 @@
 #include "opendavinci/core/base/Visitable.h"
 #include "opendavinci/core/data/SerializableData.h"
 
-#include "core/data/TimeStamp.h"
+#include "opendavinci/core/data/TimeStamp.h"
 
 using namespace std;
 
