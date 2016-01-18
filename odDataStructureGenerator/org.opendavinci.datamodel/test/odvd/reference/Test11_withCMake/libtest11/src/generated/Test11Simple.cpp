@@ -1,0 +1,119 @@
+/*
+ * This software is open source. Please see COPYING and AUTHORS for further information.
+ *
+ * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
+ */
+
+
+#include "opendavinci/core/base/Hash.h"
+#include "opendavinci/core/base/Deserializer.h"
+#include "opendavinci/core/base/SerializationFactory.h"
+#include "opendavinci/core/base/Serializer.h"
+
+
+#include "test11/generated/Test11Simple.h"
+
+	using namespace std;
+	using namespace core::base;
+
+
+	Test11Simple::Test11Simple() :
+	    SerializableData(), Visitable()
+		, m_data1(0)
+		, m_data2(0)
+	{
+	}
+
+	Test11Simple::Test11Simple(
+		const uint32_t &val0, 
+		const uint32_t &val1
+	) :
+	    SerializableData(), Visitable()
+		, m_data1(val0)
+		, m_data2(val1)
+	{
+	}
+
+	Test11Simple::Test11Simple(const Test11Simple &obj) :
+	    SerializableData(), Visitable()
+		, m_data1(obj.m_data1)
+		, m_data2(obj.m_data2)
+	{
+	}
+	
+	Test11Simple::~Test11Simple() {
+	}
+
+	Test11Simple& Test11Simple::operator=(const Test11Simple &obj) {
+		m_data1 = obj.m_data1;
+		m_data2 = obj.m_data2;
+		return (*this);
+	}
+
+	int32_t Test11Simple::ID() {
+		return 11;
+	}
+
+	const string Test11Simple::ShortName() {
+		return "Test11Simple";
+	}
+
+	const string Test11Simple::LongName() {
+		return "Test11Simple";
+	}
+
+	uint32_t Test11Simple::getData1() const {
+		return m_data1;
+	}
+	
+	void Test11Simple::setData1(const uint32_t &val) {
+		m_data1 = val;
+	}
+	uint32_t Test11Simple::getData2() const {
+		return m_data2;
+	}
+	
+	void Test11Simple::setData2(const uint32_t &val) {
+		m_data2 = val;
+	}
+
+	void Test11Simple::accept(core::base::Visitor &v) {
+		v.visit(CRC32 < CharList<'d', CharList<'a', CharList<'t', CharList<'a', CharList<'1', NullType> > > > >  >::RESULT, 0, "Test11Simple.data1", "data1", m_data1);
+		v.visit(CRC32 < CharList<'d', CharList<'a', CharList<'t', CharList<'a', CharList<'2', NullType> > > > >  >::RESULT, 0, "Test11Simple.data2", "data2", m_data2);
+	}
+
+	const string Test11Simple::toString() const {
+		stringstream s;
+
+
+		s << "Data1: " << getData1() << " ";
+		s << "Data2: " << getData2() << " ";
+
+		return s.str();
+	}
+
+	ostream& Test11Simple::operator<<(ostream &out) const {
+
+		SerializationFactory& sf = SerializationFactory::getInstance();
+
+		core::SharedPointer<Serializer> s = sf.getSerializer(out);
+
+		s->write(CRC32 < CharList<'d', CharList<'a', CharList<'t', CharList<'a', CharList<'1', NullType> > > > >  >::RESULT,
+				m_data1);
+		s->write(CRC32 < CharList<'d', CharList<'a', CharList<'t', CharList<'a', CharList<'2', NullType> > > > >  >::RESULT,
+				m_data2);
+		return out;
+	}
+
+	istream& Test11Simple::operator>>(istream &in) {
+
+		SerializationFactory& sf = SerializationFactory::getInstance();
+
+		core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+
+		d->read(CRC32 < CharList<'d', CharList<'a', CharList<'t', CharList<'a', CharList<'1', NullType> > > > >  >::RESULT,
+				m_data1);
+		d->read(CRC32 < CharList<'d', CharList<'a', CharList<'t', CharList<'a', CharList<'2', NullType> > > > >  >::RESULT,
+				m_data2);
+		return in;
+	}

@@ -1,0 +1,111 @@
+/*
+ * This software is open source. Please see COPYING and AUTHORS for further information.
+ *
+ * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
+ */
+
+#ifndef SUB_STRUCTURE_TEST16SIMPLE_H
+#define SUB_STRUCTURE_TEST16SIMPLE_H
+
+#include "opendavinci/core/opendavinci.h"
+
+
+#include "opendavinci/core/base/Visitable.h"
+#include "opendavinci/core/data/SerializableData.h"
+
+
+namespace sub {
+	namespace structure {
+		using namespace std;
+		
+		class Test16Simple : public core::data::SerializableData, public core::base::Visitable {
+			public:
+				Test16Simple();
+		
+				Test16Simple(
+				const double &val0, 
+				const int32_t &val1
+				);
+		
+				virtual ~Test16Simple();
+		
+				/**
+				 * Copy constructor.
+				 *
+				 * @param obj Reference to an object of this class.
+				 */
+				Test16Simple(const Test16Simple &obj);
+		
+				/**
+				 * Assignment operator.
+				 *
+				 * @param obj Reference to an object of this class.
+				 * @return Reference to this instance.
+				 */
+				Test16Simple& operator=(const Test16Simple &obj);
+		
+			public:
+				/**
+				 * @return myData.
+				 */
+				double getMyData() const;
+				
+				/**
+				 * This method sets myData.
+				 *
+				 * @param val Value for myData.
+				 */
+				void setMyData(const double &val);
+			public:
+				/**
+				 * @return myValue.
+				 */
+				int32_t getMyValue() const;
+				
+				/**
+				 * This method sets myValue.
+				 *
+				 * @param val Value for myValue.
+				 */
+				void setMyValue(const int32_t &val);
+		
+			public:
+				/**
+				 * This method returns the message id.
+				 *
+				 * @return Message id.
+				 */
+				static int32_t ID();
+		
+				/**
+				 * This method returns the short message name.
+				 *
+				 * @return Short message name.
+				 */
+				static const string ShortName();
+		
+				/**
+				 * This method returns the long message name include package/sub structure.
+				 *
+				 * @return Long message name.
+				 */
+				static const string LongName();
+		
+			public:
+				virtual void accept(core::base::Visitor &v);
+		
+				virtual ostream& operator<<(ostream &out) const;
+				virtual istream& operator>>(istream &in);
+		
+				virtual const string toString() const;
+		
+			private:
+				double m_myData;
+			private:
+				int32_t m_myValue;
+		
+		};
+	} // structure
+} // sub
+
+#endif /*SUB_STRUCTURE_TEST16SIMPLE_H*/
