@@ -25,9 +25,9 @@
 #include "opendavinci/core/data/Container.h"
 #include "opendavinci/core/io/URL.h"
 #include "opendavinci/core/opendavinci.h"
-#include "tools/player/Player.h"
-#include "tools/recorder/Recorder.h"
-#include "tools/splitter/Splitter.h"
+#include "opendavinci/tools/player/Player.h"
+#include "opendavinci/tools/recorder/Recorder.h"
+#include "opendavinci/tools/splitter/Splitter.h"
 
 
 namespace tools {

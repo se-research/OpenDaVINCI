@@ -26,7 +26,7 @@
 #include "opendavinci/core/data/Container.h"
 #include "opendavinci/core/opendavinci.h"
 #include "opendavinci/generated/coredata/buffer/MemorySegment.h"
-#include "tools/recorder/SharedDataWriter.h"
+#include "opendavinci/tools/recorder/SharedDataWriter.h"
 
 namespace tools {
     namespace recorder {

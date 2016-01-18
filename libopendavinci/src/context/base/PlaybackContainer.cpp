@@ -21,7 +21,7 @@
 #include "opendavinci/context/base/SendContainerToSystemsUnderTest.h"
 #include "opendavinci/core/base/FIFOQueue.h"
 #include "opendavinci/core/data/Container.h"
-#include "tools/player/Player.h"
+#include "opendavinci/tools/player/Player.h"
 
 namespace core { namespace wrapper { class Time; } }
 

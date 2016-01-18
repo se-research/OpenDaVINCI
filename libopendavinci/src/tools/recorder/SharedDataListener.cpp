@@ -29,8 +29,8 @@
 #include "opendavinci/core/wrapper/SharedMemory.h"
 #include "opendavinci/core/wrapper/SharedMemoryFactory.h"
 #include "opendavinci/generated/coredata/buffer/MemorySegment.h"
-#include "tools/recorder/SharedDataListener.h"
-#include "tools/recorder/SharedDataWriter.h"
+#include "opendavinci/tools/recorder/SharedDataListener.h"
+#include "opendavinci/tools/recorder/SharedDataWriter.h"
 
 namespace tools {
     namespace recorder {

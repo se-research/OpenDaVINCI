@@ -25,8 +25,8 @@
 #include "opendavinci/core/io/StreamFactory.h"
 #include "opendavinci/core/io/URL.h"
 #include "opendavinci/core/opendavinci.h"
-#include "tools/recorder/Recorder.h"
-#include "tools/recorder/SharedDataListener.h"
+#include "opendavinci/tools/recorder/Recorder.h"
+#include "opendavinci/tools/recorder/SharedDataListener.h"
 
 namespace tools {
 

@@ -35,8 +35,8 @@
 
 #include "opendavinci/GeneratedHeaders_CoreData.h"
 
-#include "tools/player/Player.h"
-#include "tools/player/PlayerCache.h"
+#include "opendavinci/tools/player/Player.h"
+#include "opendavinci/tools/player/PlayerCache.h"
 
 namespace tools {
     namespace player {

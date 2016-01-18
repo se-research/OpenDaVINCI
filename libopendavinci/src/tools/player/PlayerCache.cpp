@@ -32,7 +32,7 @@
 #include "opendavinci/generated/coredata/SharedData.h"
 #include "opendavinci/generated/coredata/buffer/MemorySegment.h"
 #include "opendavinci/generated/coredata/image/SharedImage.h"
-#include "tools/player/PlayerCache.h"
+#include "opendavinci/tools/player/PlayerCache.h"
 
 namespace tools {
     namespace player {

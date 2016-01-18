@@ -22,7 +22,7 @@
 #include "opendavinci/context/base/RecordingContainer.h"
 #include "opendavinci/core/base/FIFOQueue.h"
 #include "opendavinci/core/data/Container.h"
-#include "tools/recorder/Recorder.h"
+#include "opendavinci/tools/recorder/Recorder.h"
 
 namespace core { namespace wrapper { class Time; } }
 
