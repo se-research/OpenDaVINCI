@@ -20,7 +20,7 @@
 
 #include "test20/GeneratedHeaders_Test20.h"
 
-#include "core/data/TimeStamp.h"
+#include "opendavinci/core/data/TimeStamp.h"
 
 class Test20a_TestSuite : public CxxTest::TestSuite {
 

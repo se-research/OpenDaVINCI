@@ -184,7 +184,7 @@ class DataModelGenerator implements IGenerator {
 	«IF a.scalar != null»
 		«IF !typeMap.containsKey(a.scalar.type) && !enums.containsKey(a.scalar.type)»
 			«IF a.scalar.type.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
-				#include "«a.scalar.type.replaceAll("::", "/")».h"
+				#include "«IF a.scalar.type.contains("core::data")»opendavinci/«ENDIF»«a.scalar.type.replaceAll("::", "/")».h"
 			«ELSE /* Use the types only as specified by the user. */»
 				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.scalar.type.replaceAll("\\.", "/")».h"
 			«ENDIF»
@@ -193,7 +193,7 @@ class DataModelGenerator implements IGenerator {
 	«IF a.list != null && a.list.modifier != null && a.list.modifier.length > 0 && a.list.modifier.equalsIgnoreCase("list")»
 		«IF !typeMap.containsKey(a.list.type) && !enums.containsKey(a.list.type)»
 			«IF a.list.type.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
-				#include "«a.list.type.replaceAll("::", "/")».h"
+				#include "«IF a.list.type.contains("core::data")»opendavinci/«ENDIF»«a.list.type.replaceAll("::", "/")».h"
 			«ELSE /* Use the types only as specified by the user. */»
 				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.list.type.replaceAll("\\.", "/")».h"
 			«ENDIF»
@@ -202,14 +202,14 @@ class DataModelGenerator implements IGenerator {
 	«IF a.map != null && a.map.modifier != null && a.map.modifier.length > 0 && a.map.modifier.equalsIgnoreCase("map")»
 		«IF !typeMap.containsKey(a.map.primaryType) && !enums.containsKey(a.map.primaryType)»
 			«IF a.map.primaryType.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
-				#include "«a.map.primaryType.replaceAll("::", "/")».h"
+				#include "«IF a.map.primaryType.contains("core::data")»opendavinci/«ENDIF»«a.map.primaryType.replaceAll("::", "/")».h"
 			«ELSE /* Use the types only as specified by the user. */»
 				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.map.primaryType.replaceAll("\\.", "/")».h"
 			«ENDIF»
 		«ENDIF»
 		«IF !typeMap.containsKey(a.map.secondaryType) && !enums.containsKey(a.map.secondaryType)»
 			«IF a.map.secondaryType.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
-				#include "«a.map.secondaryType.replaceAll("::", "/")».h"
+				#include "«IF a.map.secondaryType.contains("core::data")»opendavinci/«ENDIF»«a.map.secondaryType.replaceAll("::", "/")».h"
 			«ELSE /* Use the types only as specified by the user. */»
 				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.map.secondaryType.replaceAll("\\.", "/")».h"
 			«ENDIF»
@@ -218,7 +218,7 @@ class DataModelGenerator implements IGenerator {
 	«IF a.fixedarray != null»
 		«IF !typeMap.containsKey(a.fixedarray.type) && !enums.containsKey(a.fixedarray.type)»
 			«IF a.fixedarray.type.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
-				#include "«a.fixedarray.type.replaceAll("::", "/")».h"
+				#include "«IF a.fixedarray.type.contains("core::data")»opendavinci/«ENDIF»«a.fixedarray.type.replaceAll("::", "/")».h"
 			«ELSE /* Use the types only as specified by the user. */»
 				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.fixedarray.type.replaceAll("\\.", "/")».h"
 			«ENDIF»
@@ -1439,7 +1439,7 @@ namespace «s.get(i)» {
 	«IF a.scalar != null»
 		«IF !typeMap.containsKey(a.scalar.type) && !enums.containsKey(a.scalar.type)»
 			«IF a.scalar.type.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
-				#include "«a.scalar.type.replaceAll("::", "/")».h"
+				#include "«IF a.scalar.type.contains("core::data")»opendavinci/«ENDIF»«a.scalar.type.replaceAll("::", "/")».h"
 			«ELSE /* Use the types only as specified by the user. */»
 				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.scalar.type.replaceAll("\\.", "/")».h"
 			«ENDIF»
@@ -1448,7 +1448,7 @@ namespace «s.get(i)» {
 	«IF a.list != null && a.list.modifier != null && a.list.modifier.length > 0 && a.list.modifier.equalsIgnoreCase("list")»
 		«IF !typeMap.containsKey(a.list.type) && !enums.containsKey(a.list.type)»
 			«IF a.list.type.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
-				#include "«a.list.type.replaceAll("::", "/")».h"
+				#include "«IF a.list.type.contains("core::data")»opendavinci/«ENDIF»«a.list.type.replaceAll("::", "/")».h"
 			«ELSE /* Use the types only as specified by the user. */»
 				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.list.type.replaceAll("\\.", "/")».h"
 			«ENDIF»
@@ -1457,14 +1457,14 @@ namespace «s.get(i)» {
 	«IF a.map != null && a.map.modifier != null && a.map.modifier.length > 0 && a.map.modifier.equalsIgnoreCase("map")»
 		«IF !typeMap.containsKey(a.map.primaryType) && !enums.containsKey(a.map.primaryType)»
 			«IF a.map.primaryType.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
-				#include "«a.map.primaryType.replaceAll("::", "/")».h"
+				#include "«IF a.map.primaryType.contains("core::data")»opendavinci/«ENDIF»«a.map.primaryType.replaceAll("::", "/")».h"
 			«ELSE /* Use the types only as specified by the user. */»
 				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.map.primaryType.replaceAll("\\.", "/")».h"
 			«ENDIF»
 		«ENDIF»
 		«IF !typeMap.containsKey(a.map.secondaryType) && !enums.containsKey(a.map.secondaryType)»
 			«IF a.map.secondaryType.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
-				#include "«a.map.secondaryType.replaceAll("::", "/")».h"
+				#include "«IF a.map.secondaryType.contains("core::data")»opendavinci/«ENDIF»«a.map.secondaryType.replaceAll("::", "/")».h"
 			«ELSE /* Use the types only as specified by the user. */»
 				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.map.secondaryType.replaceAll("\\.", "/")».h"
 			«ENDIF»
@@ -1473,7 +1473,7 @@ namespace «s.get(i)» {
 	«IF a.fixedarray != null»
 		«IF !typeMap.containsKey(a.fixedarray.type) && !enums.containsKey(a.fixedarray.type)»
 			«IF a.fixedarray.type.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
-				#include "«a.fixedarray.type.replaceAll("::", "/")».h"
+				#include "«IF a.fixedarray.type.contains("core::data")»opendavinci/«ENDIF»«a.fixedarray.type.replaceAll("::", "/")».h"
 			«ELSE /* Use the types only as specified by the user. */»
 				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.fixedarray.type.replaceAll("\\.", "/")».h"
 			«ENDIF»
