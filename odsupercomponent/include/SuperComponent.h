@@ -25,23 +25,23 @@
 #include <string>
 #include <vector>
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 #include "ConnectedModules.h"
 #include "GlobalConfigurationProvider.h"
-#include "core/SharedPointer.h"
-#include "core/base/KeyValueConfiguration.h"
-#include "core/base/Mutex.h"
-#include "core/base/module/MasterModule.h"
-#include "core/data/TimeStamp.h"
-#include "core/dmcp/ModuleStateListener.h"
-#include "core/dmcp/connection/ConnectionHandler.h"
-#include "core/io/conference/ContainerListener.h"
-#include "generated/coredata/LogMessage.h"
-#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
-#include "generated/coredata/dmcp/ModuleStateMessage.h"
-#include "generated/coredata/dmcp/ModuleStatistics.h"
-#include "generated/coredata/dmcp/RuntimeStatistic.h"
-#include "generated/coredata/dmcp/ServerInformation.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/base/KeyValueConfiguration.h"
+#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/core/base/module/MasterModule.h"
+#include "opendavinci/core/data/TimeStamp.h"
+#include "opendavinci/core/dmcp/ModuleStateListener.h"
+#include "opendavinci/core/dmcp/connection/ConnectionHandler.h"
+#include "opendavinci/core/io/conference/ContainerListener.h"
+#include "opendavinci/generated/coredata/LogMessage.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleStatistics.h"
+#include "opendavinci/generated/coredata/dmcp/RuntimeStatistic.h"
+#include "opendavinci/generated/coredata/dmcp/ServerInformation.h"
 
 namespace coredata { namespace dmcp { class ModuleDescriptor; } }
 namespace core { namespace data { class Container; } }

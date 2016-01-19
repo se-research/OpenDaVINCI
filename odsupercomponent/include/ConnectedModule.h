@@ -21,8 +21,8 @@
 #ifndef SUPERCOMPONENT_CONNECTEDMODULE_H_
 #define SUPERCOMPONENT_CONNECTEDMODULE_H_
 
-#include "core/SharedPointer.h"
-#include "generated/coredata/dmcp/ModuleStateMessage.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
 
 namespace core { namespace dmcp { namespace connection { class ModuleConnection; } } }
 

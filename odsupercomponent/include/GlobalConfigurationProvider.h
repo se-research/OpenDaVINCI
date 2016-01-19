@@ -21,9 +21,9 @@
 #ifndef SUPERCOMPONENT_GLOBALCONFIGURATIONPROVIDER_H_
 #define SUPERCOMPONENT_GLOBALCONFIGURATIONPROVIDER_H_
 
-#include "core/base/KeyValueConfiguration.h"
-#include "core/base/Mutex.h"
-#include "core/dmcp/ModuleConfigurationProvider.h"
+#include "opendavinci/core/base/KeyValueConfiguration.h"
+#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/core/dmcp/ModuleConfigurationProvider.h"
 
 namespace coredata { namespace dmcp { class ModuleDescriptor; } }
 

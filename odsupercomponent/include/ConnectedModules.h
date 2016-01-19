@@ -25,8 +25,8 @@
 #include <string>
 #include <vector>
 
-#include "core/opendavinci.h"
-#include "core/base/Mutex.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/Mutex.h"
 
 namespace coredata { namespace dmcp { class ModuleDescriptor; } }
 namespace coredata { namespace dmcp { class PulseMessage; } }

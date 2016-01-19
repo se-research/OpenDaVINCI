@@ -24,8 +24,8 @@
 #include <vector>
 
 #include "GlobalConfigurationProvider.h"
-#include "core/base/Lock.h"
-#include "generated/coredata/dmcp/ModuleDescriptor.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleDescriptor.h"
 
 namespace odsupercomponent {
 

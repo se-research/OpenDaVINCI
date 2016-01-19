@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "core/dmcp/connection/ModuleConnection.h"
+#include "opendavinci/core/dmcp/connection/ModuleConnection.h"
 
 #include "ConnectedModule.h"
 

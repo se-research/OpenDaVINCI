@@ -27,19 +27,19 @@
 #include <iostream>
 #include <sstream>
 
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "core/base/KeyValueConfiguration.h"
-#include "core/base/Lock.h"
-#include "GeneratedHeaders_CoreData.h"
-#include "core/base/Mutex.h"
-#include "core/base/Service.h"
-#include "core/base/Thread.h"
-#include "core/base/Hash.h"
-#include "core/base/Deserializer.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
-#include "core/data/TimeStamp.h"
-#include "core/strings/StringToolbox.h"
+#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/core/base/KeyValueConfiguration.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
+#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/core/base/Service.h"
+#include "opendavinci/core/base/Thread.h"
+#include "opendavinci/core/base/Hash.h"
+#include "opendavinci/core/base/Deserializer.h"
+#include "opendavinci/core/base/SerializationFactory.h"
+#include "opendavinci/core/base/Serializer.h"
+#include "opendavinci/core/data/TimeStamp.h"
+#include "opendavinci/core/strings/StringToolbox.h"
 
 #include "../include/SuperComponent.h"
 

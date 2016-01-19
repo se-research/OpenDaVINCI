@@ -20,17 +20,17 @@
 
 #include <algorithm>
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
 #include "ConnectedModule.h"
 #include "ConnectedModules.h"
-#include "core/base/Lock.h"
-#include "core/base/Thread.h"
-#include "core/data/Container.h"
-#include "core/data/TimeStamp.h"
-#include "core/dmcp/connection/ModuleConnection.h"
-#include "generated/coredata/dmcp/ModuleDescriptor.h"
-#include "generated/coredata/dmcp/PulseMessage.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/base/Thread.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/data/TimeStamp.h"
+#include "opendavinci/core/dmcp/connection/ModuleConnection.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleDescriptor.h"
+#include "opendavinci/generated/coredata/dmcp/PulseMessage.h"
 
 namespace odsupercomponent {
 
