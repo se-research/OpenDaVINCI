@@ -13,7 +13,7 @@ MyRealtimeService.hpp:
 
 .. code-block:: c++
 
-    #include <core/base/RealtimeService.h>
+    #include <opendavinci/core/base/RealtimeService.h>
 
     // Realtime concurrency is provided by the class core::base::RealtimeService.
     class MyRealtimeService : public core::base::RealtimeService {
@@ -32,7 +32,7 @@ MyRealtimeService.cpp:
 
     #include <stdint.h>
     #include <iostream>
-    #include <core/base/Thread.h>
+    #include <opendavinci/core/base/Thread.h>
 
     #include "MyRealtimeService.hpp"
 
@@ -57,7 +57,7 @@ MyRealtimeService.cpp:
     }
 
 Your class needs to derive from ``core::base::RealtimeService``, which is provided in
-``#include <core/base/RealtimeService.h>`` in the include directory ``opendavinci``.
+``#include <opendavinci/core/base/RealtimeService.h>`` in the include directory ``opendavinci``.
 This class provides one method that needs to be implemented in deriving classes:
 ``void nextTimeSlice()``. This method will be called with the specified periodicity.
 

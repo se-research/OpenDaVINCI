@@ -13,7 +13,7 @@ SerialReceiveBytes.hpp:
 
 .. code-block:: c++
 
-    #include <core/io/StringListener.h>
+    #include <opendavinci/core/io/StringListener.h>
 
     // This class will handle the bytes received via a serial link.
     class SerialReceiveBytes : public core::io::StringListener {
@@ -34,10 +34,10 @@ SerialReceiveBytes.cpp:
     #include <stdint.h>
     #include <iostream>
     #include <string>
-    #include <core/SharedPointer.h>
-    #include <core/base/Thread.h>
-    #include <core/wrapper/SerialPort.h>
-    #include <core/wrapper/SerialPortFactory.h>
+    #include <opendavinci/core/SharedPointer.h>
+    #include <opendavinci/core/base/Thread.h>
+    #include <opendavinci/core/wrapper/SerialPort.h>
+    #include <opendavinci/core/wrapper/SerialPortFactory.h>
 
     #include "SerialReceiveBytes.hpp"
 
@@ -82,7 +82,7 @@ SerialReceiveBytes.cpp:
     }
 
 To receive bytes from a serial link, your application needs to include
-``<core/wrapper/SerialPort.h>`` and ``<core/wrapper/SerialPortFactory.h>`` that
+``<opendavinci/core/wrapper/SerialPort.h>`` and ``<opendavinci/core/wrapper/SerialPortFactory.h>`` that
 encapsulate the platform-specific implementations.
 
 ``SerialPortFactory`` provides a static method called ``createSerialPort`` that allows

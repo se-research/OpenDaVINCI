@@ -13,10 +13,10 @@ TCPReceiveBytes.hpp:
 
 .. code-block:: c++
 
-    #include <core/io/ConnectionListener.h>
-    #include <core/io/StringListener.h>
-    #include <core/io/TCPAcceptorListener.h>
-    #include <core/io/TCPConnection.h>
+    #include <opendavinci/core/io/ConnectionListener.h>
+    #include <opendavinci/core/io/StringListener.h>
+    #include <opendavinci/core/io/TCPAcceptorListener.h>
+    #include <opendavinci/core/io/TCPConnection.h>
 
     // This class will handle newly accepted TCP connections.
     class TCPReceiveBytes : 
@@ -49,10 +49,10 @@ TCPReceiveBytes.cpp:
     #include <stdint.h>
     #include <iostream>
     #include <string>
-    #include <core/SharedPointer.h>
-    #include <core/base/Thread.h>
-    #include <core/io/tcp/TCPAcceptor.h>
-    #include <core/io/tcp/TCPFactory.h>
+    #include <opendavinci/core/SharedPointer.h>
+    #include <opendavinci/core/base/Thread.h>
+    #include <opendavinci/core/io/tcp/TCPAcceptor.h>
+    #include <opendavinci/core/io/tcp/TCPFactory.h>
 
     #include "TCPReceiveBytes.hpp"
 
@@ -134,7 +134,7 @@ new connections in a ``vector`` for instance and manage their individual
 connection status properly.
  
 To receive bytes from a TCP socket, your application needs to include
-``<core/io/tcp/TCPAcceptor.h>`` and ``<core/io/tcp/TCPFactory.h>`` that encapsulate
+``<opendavinci/core/io/tcp/TCPAcceptor.h>`` and ``<opendavinci/core/io/tcp/TCPFactory.h>`` that encapsulate
 the platform-specific implementations.
 
 ``TCPFactory`` provides a static method called ``createTCPAcceptor`` that allows

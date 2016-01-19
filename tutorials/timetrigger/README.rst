@@ -14,13 +14,13 @@ https://github.com/se-research/OpenDaVINCI/tree/master/tutorials/timetrigger
 """""""""""""""""""""
 
 A time-triggered software component is derived from ``core::base::TimeTriggeredConferenceClientModule``,
-provided in ``<core/base/module/TimeTriggeredConferenceClientModule.h>``.
+provided in ``<opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h>``.
 
 TimeTriggerExample.h:
 
 .. code-block:: c++
 
-    #include <core/base/TimeTriggeredConferenceClientModule.h>
+    #include <opendavinci/core/base/TimeTriggeredConferenceClientModule.h>
 
     class TimeTriggerExample : public core::base::module::TimeTriggeredConferenceClientModule {
         private:
@@ -165,7 +165,7 @@ If the container conference session identifier is omitted, the following excepti
 will be thrown::
 
    terminate called after throwing an instance of 'core::exceptions::InvalidArgumentException'
-     what():  InvalidArgumentException: Invalid number of arguments. At least a conference group id (--cid=) needed. at /home/berger/GITHUB/Mini-Smart-Vehicles/sources/OpenDaVINCI-msv/libopendavinci/src/core/base/AbstractCIDModule.cpp: 53
+     what():  InvalidArgumentException: Invalid number of arguments. At least a conference group id (--cid=) needed. at /home/berger/GITHUB/Mini-Smart-Vehicles/sources/OpenDaVINCI-msv/libopendavinci/src/opendavinci/core/base/AbstractCIDModule.cpp: 53
    Aborted
 
 If no ``odsupercomponent`` is running, the application will exit with return code 4.

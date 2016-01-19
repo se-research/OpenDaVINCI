@@ -16,9 +16,9 @@ TCPSendBytes.cpp:
     #include <stdint.h>
     #include <iostream>
     #include <string>
-    #include <core/SharedPointer.h>
-    #include <core/io/tcp/TCPConnection.h>
-    #include <core/io/tcp/TCPFactory.h>
+    #include <opendavinci/core/SharedPointer.h>
+    #include <opendavinci/core/io/tcp/TCPConnection.h>
+    #include <opendavinci/core/io/tcp/TCPFactory.h>
 
     using namespace std;
 
@@ -44,7 +44,7 @@ TCPSendBytes.cpp:
     }
 
 To send bytes over a TCP link to a TCP server, your application needs to include
-``<core/io/tcp/TCPConnection.h>`` and ``<core/io/tcp/TCPFactory.h>`` that encapsulate
+``<opendavinci/core/io/tcp/TCPConnection.h>`` and ``<opendavinci/core/io/tcp/TCPFactory.h>`` that encapsulate
 the platform-specific implementations.
 
 ``TCPFactory`` provides a static method called ``createTCPConnectionTo`` that

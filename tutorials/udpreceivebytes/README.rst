@@ -13,7 +13,7 @@ UDPReceiveBytes.hpp:
 
 .. code-block:: c++
 
-    #include <core/io/StringListener.h>
+    #include <opendavinci/core/io/StringListener.h>
 
     // This class will handle the bytes received via a UDP socket.
     class UDPReceiveBytes : public core::io::StringListener {
@@ -33,10 +33,10 @@ UDPReceiveBytes.cpp:
     #include <stdint.h>
     #include <iostream>
     #include <string>
-    #include <core/SharedPointer.h>
-    #include <core/base/Thread.h>
-    #include <core/io/udp/UDPReceiver.h>
-    #include <core/io/udp/UDPFactory.h>
+    #include <opendavinci/core/SharedPointer.h>
+    #include <opendavinci/core/base/Thread.h>
+    #include <opendavinci/core/io/udp/UDPReceiver.h>
+    #include <opendavinci/core/io/udp/UDPFactory.h>
 
     #include "UDPReceiveBytes.hpp"
 
@@ -82,7 +82,7 @@ UDPReceiveBytes.cpp:
     }
 
 To receive bytes from a UDP socket, your application needs to include
-``<core/io/udp/UDPReceiver.h>`` and ``<core/io/udp/UDPFactory.h>`` that encapsulate
+``<opendavinci/core/io/udp/UDPReceiver.h>`` and ``<opendavinci/core/io/udp/UDPFactory.h>`` that encapsulate
 the platform-specific implementations.
 
 ``UDPFactory`` provides a static method called ``createUDPReceiver`` that allows

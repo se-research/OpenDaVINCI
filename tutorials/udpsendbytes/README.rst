@@ -16,9 +16,9 @@ UDPSendBytes.cpp:
     #include <stdint.h>
     #include <iostream>
     #include <string>
-    #include <core/SharedPointer.h>
-    #include <core/io/udp/UDPSender.h>
-    #include <core/io/udp/UDPFactory.h>
+    #include <opendavinci/core/SharedPointer.h>
+    #include <opendavinci/core/io/udp/UDPSender.h>
+    #include <opendavinci/core/io/udp/UDPFactory.h>
 
     using namespace std;
 
@@ -43,7 +43,7 @@ UDPSendBytes.cpp:
     }
 
 To send bytes over UDP to a UDP socket, your application needs to include
-``<core/io/udp/UDPSender.h>`` and ``<core/io/udp/UDPFactory.h>`` that encapsulate
+``<opendavinci/core/io/udp/UDPSender.h>`` and ``<opendavinci/core/io/udp/UDPFactory.h>`` that encapsulate
 the platform-specific implementations.
 
 ``UDPFactory`` provides a static method called ``createUDPSender`` that

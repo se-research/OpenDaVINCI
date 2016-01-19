@@ -20,14 +20,14 @@ Time-triggered sender
 """""""""""""""""""""
 
 A time-triggered software component is derived from ``core::base::TimeTriggeredConferenceClientModule``,
-provided in ``<core/base/module/TimeTriggeredConferenceClientModule.h>`` to
+provided in ``<opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h>`` to
 realize the sending functionality.
 
 TimeTriggeredSender.h:
 
 .. code-block:: c++
 
-    #include <core/base/module/TimeTriggeredConferenceClientModule.h>
+    #include <opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h>
 
     class TimeTriggeredSender : public core::base::module::TimeTriggeredConferenceClientModule {
         private:
@@ -88,7 +88,7 @@ TimeTriggeredSender.cpp:
 
     #include <iostream>
 
-    #include "core/data/TimeStamp.h"
+    #include "opendavinci/core/data/TimeStamp.h"
 
     #include "TimeTriggeredSender.h"
 
@@ -186,14 +186,14 @@ Data-triggered receiver
 
 To receive the sent data, a data-triggered software component is derived from
 ``core::base::DataTriggeredConferenceClientModule``, provided in
-``<core/base/module/DataTriggeredConferenceClientModule.h>`` to realize the
+``<opendavinci/core/base/module/DataTriggeredConferenceClientModule.h>`` to realize the
 receiving functionality.
 
 DataTriggeredSender.h:
 
 .. code-block:: c++
 
-    #include <core/base/module/DataTriggeredConferenceClientModule.h>
+    #include <opendavinci/core/base/module/DataTriggeredConferenceClientModule.h>
 
     class DataTriggeredReceiver : public core::base::module::DataTriggeredConferenceClientModule {
         private:
@@ -255,7 +255,7 @@ DataTriggeredSender.cpp:
     #include <iostream>
 
     #include "DataTriggeredReceiver.h"
-    #include "core/data/TimeStamp.h"
+    #include "opendavinci/core/data/TimeStamp.h"
 
     using namespace std;
 
@@ -416,7 +416,7 @@ If the container conference session identifier is omitted, the following excepti
 will be thrown::
 
    terminate called after throwing an instance of 'core::exceptions::InvalidArgumentException'
-     what():  InvalidArgumentException: Invalid number of arguments. At least a conference group id (--cid=) needed. at /home/berger/GITHUB/Mini-Smart-Vehicles/sources/OpenDaVINCI/libopendavinci/src/core/base/module/AbstractCIDModule.cpp: 53
+     what():  InvalidArgumentException: Invalid number of arguments. At least a conference group id (--cid=) needed. at /home/berger/GITHUB/Mini-Smart-Vehicles/sources/OpenDaVINCI/libopendavinci/src/opendavinci/core/base/module/AbstractCIDModule.cpp: 53
    Aborted
 
 If no ``odsupercomponent`` is running, the application will exit with return code 4.

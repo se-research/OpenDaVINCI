@@ -13,7 +13,7 @@ MyService.hpp:
 
 .. code-block:: c++
 
-    #include <core/base/Service.h>
+    #include <opendavinci/core/base/Service.h>
 
     // Concurrency is provided by the class core::base::Service.
     class MyService : public core::base::Service {
@@ -32,7 +32,7 @@ MyService.cpp:
 
     #include <stdint.h>
     #include <iostream>
-    #include <core/base/Thread.h>
+    #include <opendavinci/core/base/Thread.h>
 
     #include "MyService.hpp"
 
@@ -76,7 +76,7 @@ MyService.cpp:
     }
 
 Your class needs to derive from ``core::base::Service``, which is provided in
-``#include <core/base/Service.h>`` in the include directory ``opendavinci``.
+``#include <opendavinci/core/base/Service.h>`` in the include directory ``opendavinci``.
 This class provides two methods that need to be implemented in deriving classes:
 ``void beforeStop()`` and ``void run()``. The former method is called
 from an outside thread intending to stop the concurrently executing thread; thus

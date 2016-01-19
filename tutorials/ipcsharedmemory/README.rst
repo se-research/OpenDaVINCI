@@ -18,11 +18,11 @@ ipcsharedmemoryproducer.cpp:
     #include <stdint.h>
     #include <iostream>
     #include <string>
-    #include <core/SharedPointer.h>
-    #include <core/base/Lock.h>
-    #include <core/base/Thread.h>
-    #include <core/wrapper/SharedMemory.h>
-    #include <core/wrapper/SharedMemoryFactory.h>
+    #include <opendavinci/core/SharedPointer.h>
+    #include <opendavinci/core/base/Lock.h>
+    #include <opendavinci/core/base/Thread.h>
+    #include <opendavinci/core/wrapper/SharedMemory.h>
+    #include <opendavinci/core/wrapper/SharedMemoryFactory.h>
 
     using namespace std;
 
@@ -63,8 +63,8 @@ ipcsharedmemoryproducer.cpp:
         }
     }
 
-The producer process needs to include ``<core/wrapper/SharedMemory.h>`` and
-``<core/wrapper/SharedMemoryFactory.h>`` that encapsulate the platform-specific
+The producer process needs to include ``<opendavinci/core/wrapper/SharedMemory.h>`` and
+``<opendavinci/core/wrapper/SharedMemoryFactory.h>`` that encapsulate the platform-specific
 implementations.
 
 ``SharedMemoryFactory`` provides a static method called ``createSharedMemory`` that
@@ -95,11 +95,11 @@ ipcsharedmemoryconsumer.cpp:
     #include <stdint.h>
     #include <iostream>
     #include <string>
-    #include <core/SharedPointer.h>
-    #include <core/base/Lock.h>
-    #include <core/base/Thread.h>
-    #include <core/wrapper/SharedMemory.h>
-    #include <core/wrapper/SharedMemoryFactory.h>
+    #include <opendavinci/core/SharedPointer.h>
+    #include <opendavinci/core/base/Lock.h>
+    #include <opendavinci/core/base/Thread.h>
+    #include <opendavinci/core/wrapper/SharedMemory.h>
+    #include <opendavinci/core/wrapper/SharedMemoryFactory.h>
 
     using namespace std;
 
@@ -139,8 +139,8 @@ ipcsharedmemoryconsumer.cpp:
         }
     }
 
-The consumer process needs to include ``<core/wrapper/SharedMemory.h>`` and
-``<core/wrapper/SharedMemoryFactory.h>`` that encapsulate the platform-specific
+The consumer process needs to include ``<opendavinci/core/wrapper/SharedMemory.h>`` and
+``<opendavinci/core/wrapper/SharedMemoryFactory.h>`` that encapsulate the platform-specific
 implementations as well.
 
 On the consumer side, ``SharedMemoryFactory`` provides a static method called
