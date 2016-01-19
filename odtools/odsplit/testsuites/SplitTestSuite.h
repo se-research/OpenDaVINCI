@@ -27,20 +27,20 @@
 
 #include "cxxtest/TestSuite.h"
 
-#include "core/SharedPointer.h"
-#include "core/strings/StringToolbox.h"
-#include "GeneratedHeaders_CoreData.h"
-#include "core/data/Container.h"
-#include "core/data/TimeStamp.h"
-#include "core/io/conference/ContainerConference.h"
-#include "core/io/conference/ContainerConferenceFactory.h"
-#include "core/wrapper/SharedMemory.h"
-#include "core/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/strings/StringToolbox.h"
+#include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/data/TimeStamp.h"
+#include "opendavinci/core/io/conference/ContainerConference.h"
+#include "opendavinci/core/io/conference/ContainerConferenceFactory.h"
+#include "opendavinci/core/wrapper/SharedMemory.h"
+#include "opendavinci/core/wrapper/SharedMemoryFactory.h"
 
-#include "GeneratedHeaders_CoreData.h"
+#include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
-#include "tools/player/Player.h"
-#include "tools/recorder/Recorder.h"
+#include "opendavinci/tools/player/Player.h"
+#include "opendavinci/tools/recorder/Recorder.h"
 
 // Include local header files.
 #include "../include/Split.h"

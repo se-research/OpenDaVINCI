@@ -22,10 +22,10 @@
 #include <string>
 
 #include "RecIntegrity.h"
-#include "core/base/Serializable.h"
-#include "core/data/Container.h"
-#include "generated/coredata/SharedData.h"
-#include "generated/coredata/image/SharedImage.h"
+#include "opendavinci/core/base/Serializable.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/generated/coredata/SharedData.h"
+#include "opendavinci/generated/coredata/image/SharedImage.h"
 
 namespace odrecintegrity {
 

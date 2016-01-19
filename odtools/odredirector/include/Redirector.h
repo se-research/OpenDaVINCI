@@ -23,10 +23,10 @@
 #include <map>
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
 namespace core { namespace wrapper { class SharedMemory; } }
 

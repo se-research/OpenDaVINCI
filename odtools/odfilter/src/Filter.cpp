@@ -21,12 +21,12 @@
 #include <iostream>
 #include <sstream>
 
-#include "core/base/CommandLineParser.h"
-#include "core/base/QueryableNetstringsDeserializerABCF.h"
-#include "core/strings/StringToolbox.h"
-#include "core/data/Container.h"
+#include "opendavinci/core/base/CommandLineParser.h"
+#include "opendavinci/core/base/QueryableNetstringsDeserializerABCF.h"
+#include "opendavinci/core/strings/StringToolbox.h"
+#include "opendavinci/core/data/Container.h"
 
-#include "GeneratedHeaders_CoreData.h"
+#include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
 #include "Filter.h"
 

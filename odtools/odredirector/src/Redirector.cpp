@@ -21,17 +21,17 @@
 #include <cstring>
 #include <iostream>
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"
-#include "core/base/Lock.h"
-#include "core/base/CommandLineArgument.h"
-#include "core/base/CommandLineParser.h"
-#include "core/base/QueryableNetstringsDeserializerABCF.h"
-#include "core/wrapper/jpg/JPG.h"
-#include "core/wrapper/SharedMemory.h"
-#include "core/wrapper/SharedMemoryFactory.h"
-#include "core/data/image/CompressedImage.h"
-#include "generated/coredata/image/SharedImage.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/base/CommandLineArgument.h"
+#include "opendavinci/core/base/CommandLineParser.h"
+#include "opendavinci/core/base/QueryableNetstringsDeserializerABCF.h"
+#include "opendavinci/core/wrapper/jpg/JPG.h"
+#include "opendavinci/core/wrapper/SharedMemory.h"
+#include "opendavinci/core/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/core/data/image/CompressedImage.h"
+#include "opendavinci/generated/coredata/image/SharedImage.h"
 
 #include "Redirector.h"
 #include "StdoutPump.h"

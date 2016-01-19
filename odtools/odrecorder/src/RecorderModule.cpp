@@ -20,10 +20,10 @@
 #include <string>
 
 #include "RecorderModule.h"
-#include "core/base/Thread.h"
-#include "tools/recorder/Recorder.h"
-#include "tools/recorder/SharedDataListener.h"
-#include "generated/coredata/recorder/RecorderCommand.h"
+#include "opendavinci/core/base/Thread.h"
+#include "opendavinci/tools/recorder/Recorder.h"
+#include "opendavinci/tools/recorder/SharedDataListener.h"
+#include "opendavinci/generated/coredata/recorder/RecorderCommand.h"
 
 namespace core { namespace base { class KeyValueDataStore; } }
 

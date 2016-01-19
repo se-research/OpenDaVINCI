@@ -21,10 +21,10 @@
 #include <vector>
 
 #include "Split.h"
-#include "core/base/CommandLineArgument.h"
-#include "core/base/CommandLineParser.h"
-#include "core/strings/StringToolbox.h"
-#include "tools/splitter/Splitter.h"
+#include "opendavinci/core/base/CommandLineArgument.h"
+#include "opendavinci/core/base/CommandLineParser.h"
+#include "opendavinci/core/strings/StringToolbox.h"
+#include "opendavinci/tools/splitter/Splitter.h"
 
 namespace odsplit {
 
