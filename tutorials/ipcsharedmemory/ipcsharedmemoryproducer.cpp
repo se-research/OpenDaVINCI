@@ -20,11 +20,11 @@
 #include <stdint.h>
 #include <iostream>
 #include <string>
-#include <core/SharedPointer.h>
-#include <core/base/Lock.h>
-#include <core/base/Thread.h>
-#include <core/wrapper/SharedMemory.h>
-#include <core/wrapper/SharedMemoryFactory.h>
+#include <opendavinci/core/SharedPointer.h>
+#include <opendavinci/core/base/Lock.h>
+#include <opendavinci/core/base/Thread.h>
+#include <opendavinci/core/wrapper/SharedMemory.h>
+#include <opendavinci/core/wrapper/SharedMemoryFactory.h>
 
 using namespace std;
 

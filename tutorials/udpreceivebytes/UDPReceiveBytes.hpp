@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <core/io/StringListener.h>
+#include <opendavinci/core/io/StringListener.h>
 
 // This class will handle the bytes received via a UDP socket.
 class UDPReceiveBytes : public core::io::StringListener {

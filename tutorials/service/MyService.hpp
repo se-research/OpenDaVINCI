@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <core/base/Service.h>
+#include <opendavinci/core/base/Service.h>
 
 // Concurrency is provided by the class core::base::Service.
 class MyService : public core::base::Service {

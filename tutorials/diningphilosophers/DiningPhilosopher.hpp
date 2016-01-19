@@ -18,8 +18,8 @@
  */
 
 #include <vector>
-#include <core/base/Mutex.h>
-#include <core/base/Service.h>
+#include <opendavinci/core/base/Mutex.h>
+#include <opendavinci/core/base/Service.h>
 
 // Concurrency is provided by the class core::base::Service.
 class DiningPhilosopher : public core::base::Service {

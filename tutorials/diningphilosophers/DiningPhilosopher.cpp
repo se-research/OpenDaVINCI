@@ -20,8 +20,8 @@
 #include <stdint.h>
 #include <cstdlib>
 #include <iostream>
-#include <core/base/Lock.h>
-#include <core/base/Thread.h>
+#include <opendavinci/core/base/Lock.h>
+#include <opendavinci/core/base/Thread.h>
 
 #include "DiningPhilosopher.hpp"
 

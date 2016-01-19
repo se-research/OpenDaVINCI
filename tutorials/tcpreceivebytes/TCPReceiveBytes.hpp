@@ -17,10 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <core/io/ConnectionListener.h>
-#include <core/io/StringListener.h>
-#include <core/io/tcp/TCPAcceptorListener.h>
-#include <core/io/tcp/TCPConnection.h>
+#include <opendavinci/core/io/ConnectionListener.h>
+#include <opendavinci/core/io/StringListener.h>
+#include <opendavinci/core/io/tcp/TCPAcceptorListener.h>
+#include <opendavinci/core/io/tcp/TCPConnection.h>
 
 // This class will handle newly accepted TCP connections.
 class TCPReceiveBytes : 

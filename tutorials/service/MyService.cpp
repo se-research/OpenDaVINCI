@@ -19,7 +19,7 @@
 
 #include <stdint.h>
 #include <iostream>
-#include <core/base/Thread.h>
+#include <opendavinci/core/base/Thread.h>
 
 #include "MyService.hpp"
 

@@ -20,11 +20,11 @@
 #include <stdint.h>
 #include <iostream>
 #include <string>
-#include <core/SharedPointer.h>
-#include <core/base/Thread.h>
-#include <core/io/Packet.h>
-#include <core/io/udp/UDPReceiver.h>
-#include <core/io/udp/UDPFactory.h>
+#include <opendavinci/core/SharedPointer.h>
+#include <opendavinci/core/base/Thread.h>
+#include <opendavinci/core/io/Packet.h>
+#include <opendavinci/core/io/udp/UDPReceiver.h>
+#include <opendavinci/core/io/udp/UDPFactory.h>
 
 #include "UDPReceivePackets.hpp"
 

@@ -20,9 +20,9 @@
 #include <stdint.h>
 #include <iostream>
 #include <string>
-#include <core/SharedPointer.h>
-#include <core/io/udp/UDPSender.h>
-#include <core/io/udp/UDPFactory.h>
+#include <opendavinci/core/SharedPointer.h>
+#include <opendavinci/core/io/udp/UDPSender.h>
+#include <opendavinci/core/io/udp/UDPFactory.h>
 
 using namespace std;
 

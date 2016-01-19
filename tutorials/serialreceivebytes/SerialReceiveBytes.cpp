@@ -20,10 +20,10 @@
 #include <stdint.h>
 #include <iostream>
 #include <string>
-#include <core/SharedPointer.h>
-#include <core/base/Thread.h>
-#include <core/wrapper/SerialPort.h>
-#include <core/wrapper/SerialPortFactory.h>
+#include <opendavinci/core/SharedPointer.h>
+#include <opendavinci/core/base/Thread.h>
+#include <opendavinci/core/wrapper/SerialPort.h>
+#include <opendavinci/core/wrapper/SerialPortFactory.h>
 
 #include "SerialReceiveBytes.hpp"
 

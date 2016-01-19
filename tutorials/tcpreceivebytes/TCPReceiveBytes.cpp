@@ -20,10 +20,10 @@
 #include <stdint.h>
 #include <iostream>
 #include <string>
-#include <core/SharedPointer.h>
-#include <core/base/Thread.h>
-#include <core/io/tcp/TCPAcceptor.h>
-#include <core/io/tcp/TCPFactory.h>
+#include <opendavinci/core/SharedPointer.h>
+#include <opendavinci/core/base/Thread.h>
+#include <opendavinci/core/io/tcp/TCPAcceptor.h>
+#include <opendavinci/core/io/tcp/TCPFactory.h>
 
 #include "TCPReceiveBytes.hpp"
 
