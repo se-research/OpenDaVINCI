@@ -237,13 +237,13 @@ namespace vehiclecontext {
 
                 // Store data for sensorboard.
                 sensorBoardData.putTo_MapOfDistances(sensor->getID(), m_distances[sensor->getName()]);
-
-                // Create a container with type USER_DATA_0.
-                Container c = Container(Container::USER_DATA_0, sensorBoardData);
-
-                // Enqueue container.
-                retVal.push_back(c);
             }
+
+            // Create a container with type USER_DATA_0.
+            Container c = Container(Container::USER_DATA_0, sensorBoardData);
+
+            // Enqueue container.
+            retVal.push_back(c);
 
             // Distribute FOV where necessary.
             uint32_t sensorID = 9000;
@@ -258,9 +258,9 @@ namespace vehiclecontext {
                     Obstacle FOVobstacle(sensorID++, Obstacle::UPDATE);
                     FOVobstacle.setPolygon(FOV);
 
-                    Container c = Container(Container::OBSTACLE, FOVobstacle);
+                    Container c2 = Container(Container::OBSTACLE, FOVobstacle);
                     // Enqueue container.
-                    retVal.push_back(c);
+                    retVal.push_back(c2);
                 }
             }
 
