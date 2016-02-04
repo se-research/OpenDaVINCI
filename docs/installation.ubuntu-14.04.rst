@@ -47,6 +47,7 @@ Build, run the tests, and install the OpenDaVINCI::
 
     $ sudo make all
     
-Note that sudo here installs the software system-wide. The folder /usr/local can only be edited by the root user. If OpenDaVINCI is installed in a different directory, e.g., /opt/od, then there is no need to use sudo. Instead, write permission should be given:
+Note that sudo here installs the software system-wide. The folder /usr/local can only be edited by the root user. If OpenDaVINCI is installed in a different directory, e.g., /opt/od, then there is no need to use sudo. Instead, write permission should be given::
 
     $ sudo chown $USER:$USER /opt/od
+    
