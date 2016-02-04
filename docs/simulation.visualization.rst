@@ -7,6 +7,6 @@ The tutorial on installing precompiled OpenDaVINCI libraries (http://opendavinci
 
     $ sudo apt-get install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
 
-with
+with::
 
     $ sudo apt-get install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent odsimulation-odsimtools opendavinci-odcockpit
