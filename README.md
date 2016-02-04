@@ -80,7 +80,7 @@ Add the public key from our repository:
 
 Add our repository itself to your sources.list:
 
-    $ sudo echo "deb http://opendavinci.cse.chalmers.se/ubuntu/ trusty main" >> /etc/apt/sources.list
+    $ echo "deb http://opendavinci.cse.chalmers.se/ubuntu/ trusty main" | sudo tee -a /etc/apt/sources.list 
 
 Update your package database:
 
