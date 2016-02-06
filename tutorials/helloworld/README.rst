@@ -130,9 +130,7 @@ OpenDaVINCI classes.
 Next, we specify the sources (cf. (3)) that are required to create
 the binary. Afterwards, we define the executable and the libraries
 that are required to link. The last line specifies where the resulting
-shall be installed to.
-
-.. code-block::
+shall be installed to::
 
     CMAKE_MINIMUM_REQUIRED (VERSION 2.8)
 
