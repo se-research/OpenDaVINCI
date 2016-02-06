@@ -94,9 +94,9 @@ the "Hello World" example, the latter file is simply starting the component.
 
 Now, you can compile and link the example manually::
 
-   $ g++ -I /usr/include/opendavinci -c HelloWorldExample.cpp -o HelloWorldExample.o
-   $ g++ -I /usr/include/opendavinci -c HelloWorldExampleMain.cpp -o HelloWorldExampleMain.o
-   $ g++ -o helloworldexample HelloWorldExampleMain.o HelloWorldExample.o -lopendavinci -lpthread
+    $ g++ -I /usr/include/opendavinci -c HelloWorldExample.cpp -o HelloWorldExample.o
+    $ g++ -I /usr/include/opendavinci -c HelloWorldExampleMain.cpp -o HelloWorldExampleMain.o
+    $ g++ -o helloworldexample HelloWorldExampleMain.o HelloWorldExample.o -lopendavinci -lpthread
 
 
 "Hello World" example - compiling using CMake
@@ -156,4 +156,27 @@ shall be installed to.
 
     # (4) Install the binary.
     INSTALL(TARGETS helloworldexample RUNTIME DESTINATION bin COMPONENT tutorials)
+
+Having the CMakeLists.txt file enables us to create the build environment.
+Therefore, we first create a build folder to separate the compiled object
+code from the sources::
+
+    $ mkdir build
+    $ cd build
+
+Next, we call CMake to create the build environment for us (make for instance)::
+
+    $ cmake ..
+
+In this case, the OpenDaVINCI libraries would be expected to reside at /usr
+(or /usr/local). If you have the OpenDaVINCI libraries installed at a different
+location, you need to call CMake using the commandline parameter OPENDAVINCI_DIR::
+
+    $ cmake -D OPENDAVINCI_DIR=<location of OpenDaVINCI include files and library> ..
+
+Both aforementioned calls would result in trying to install the binary to /usr
+(or /usr/local). To specify a different installation folder, you need to invoke
+CMake as follows::
+
+    $ cmake -D OPENDAVINCI_DIR=<location of OpenDaVINCI include files and library> -D CMAKE_INSTALL_PREFIX=<location where you want to install the binaries> ..
 
