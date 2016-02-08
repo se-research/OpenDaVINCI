@@ -25,7 +25,7 @@
 #include <string>
 #include <vector>
 
-#include "core/exceptions/Exceptions.h"
+#include "opendavinci/core/exceptions/Exceptions.h"
 #include "hesperia/data/situation/ComplexModel.h"
 #include "hesperia/data/situation/Immediately.h"
 #include "hesperia/data/situation/Object.h"

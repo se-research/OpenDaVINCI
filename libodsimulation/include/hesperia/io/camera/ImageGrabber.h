@@ -20,8 +20,8 @@
 #ifndef HESPERIA_IO_CAMERA_IMAGEGRABBER_H_
 #define HESPERIA_IO_CAMERA_IMAGEGRABBER_H_
 
-#include "core/SharedPointer.h"
-#include "core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/opendavinci.h"
 #include "hesperia/data/camera/ImageGrabberCalibration.h"
 #include "hesperia/data/camera/ImageGrabberID.h"
 

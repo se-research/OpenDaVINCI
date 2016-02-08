@@ -20,11 +20,11 @@
 #ifndef HESPERIA_CORE_THREED_TRANSFORMGROUP_H_
 #define HESPERIA_CORE_THREED_TRANSFORMGROUP_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
 #include <vector>
 
-#include "core/base/Mutex.h"
+#include "opendavinci/core/base/Mutex.h"
 #include "hesperia/data/environment/Point3.h"
 #include "hesperia/threeD/Node.h"
 #include "hesperia/threeD/NodeDescriptor.h"

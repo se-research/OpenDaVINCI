@@ -22,7 +22,7 @@
 
 #include <vector>
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
 #include "hesperia/decorator/Renderer.h"
 

@@ -20,8 +20,8 @@
 #ifndef HESPERIA_CORE_WRAPPER_MATRIXFACTORY_H_
 #define HESPERIA_CORE_WRAPPER_MATRIXFACTORY_H_
 
-#include "core/opendavinci.h"
-#include "core/wrapper/Disposable.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/wrapper/Disposable.h"
 
 namespace core {
     namespace wrapper {

@@ -20,11 +20,11 @@
 #ifndef HESPERIA_DATA_ENVIRONMENT_POINT3_H_
 #define HESPERIA_DATA_ENVIRONMENT_POINT3_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/data/SerializableData.h"
+#include "opendavinci/core/data/SerializableData.h"
 
-#include "GeneratedHeaders_AutomotiveData.h"
+#include "opendavinci/GeneratedHeaders_AutomotiveData.h"
 
 namespace hesperia {
     namespace data {

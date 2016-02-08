@@ -24,7 +24,7 @@
 
 #include <opencv/cv.h>
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 #include "hesperia/core/wrapper/Image.h"
 
 namespace core {

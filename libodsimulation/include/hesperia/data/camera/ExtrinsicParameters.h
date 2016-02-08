@@ -22,12 +22,12 @@
 
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/data/SerializableData.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/data/SerializableData.h"
 
 #include "hesperia/data/environment/Point3.h"
 
-#include "GeneratedHeaders_AutomotiveData.h"
+#include "opendavinci/GeneratedHeaders_AutomotiveData.h"
 
 namespace hesperia {
     namespace data {

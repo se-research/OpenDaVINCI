@@ -25,9 +25,9 @@
 #include <sstream>
 #include <vector>
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 #include "hesperia/core/wrapper/Image.h"
-#include "core/strings/StringComparator.h"
+#include "opendavinci/core/strings/StringComparator.h"
 
 #include "hesperia/decorator/models/Material.h"
 #include "hesperia/decorator/models/TriangleSet.h"

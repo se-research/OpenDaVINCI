@@ -24,9 +24,9 @@
 #include <string>
 #include <vector>
 
-#include "core/opendavinci.h"
-#include "core/base/Mutex.h"
-#include "core/data/Container.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/core/data/Container.h"
 
 #include "hesperia/data/environment/EgoState.h"
 #include "hesperia/data/environment/Obstacle.h"

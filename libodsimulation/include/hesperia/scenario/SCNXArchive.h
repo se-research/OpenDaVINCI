@@ -22,10 +22,10 @@
 
 #include <vector>
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/SharedPointer.h"
-#include "core/wrapper/DecompressedData.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/wrapper/DecompressedData.h"
 #include "hesperia/core/wrapper/Image.h"
 
 #include "hesperia/data/scenario/ComplexModel.h"

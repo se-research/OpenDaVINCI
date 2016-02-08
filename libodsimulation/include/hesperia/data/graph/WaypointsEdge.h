@@ -20,7 +20,7 @@
 #ifndef HESPERIA_DATA_GRAPH_WAYPOINTSEDGE_H_
 #define HESPERIA_DATA_GRAPH_WAYPOINTSEDGE_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 #include "hesperia/core/wrapper/graph/Edge.h"
 
 namespace hesperia {

@@ -20,7 +20,7 @@
 #ifndef HESPERIA_CORE_DATA_SITUATION_VERTEX3_H_
 #define HESPERIA_CORE_DATA_SITUATION_VERTEX3_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
 #include "hesperia/data/environment/Point3.h"
 #include "hesperia/data/situation/SituationNode.h"

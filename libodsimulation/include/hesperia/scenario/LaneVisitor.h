@@ -20,7 +20,7 @@
 #ifndef HESPERIA_SCENARIO_LANEVISITOR_H_
 #define HESPERIA_SCENARIO_LANEVISITOR_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
 #include "hesperia/core/wrapper/graph/DirectedGraph.h"
 #include "hesperia/core/wrapper/graph/Edge.h"

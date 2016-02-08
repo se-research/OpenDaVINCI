@@ -22,8 +22,8 @@
 
 #include <iostream>
 
-#include "core/opendavinci.h"
-#include "core/wrapper/Disposable.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/wrapper/Disposable.h"
 #include "hesperia/core/wrapper/Image.h"
 
 namespace core {

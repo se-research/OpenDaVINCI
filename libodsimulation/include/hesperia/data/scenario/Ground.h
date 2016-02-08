@@ -22,8 +22,8 @@
 
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/data/SerializableData.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/data/SerializableData.h"
 
 #include "hesperia/data/scenario/HeightImage.h"
 #include "hesperia/data/scenario/Image.h"

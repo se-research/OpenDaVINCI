@@ -23,15 +23,15 @@
 
 #include <string>
 
-#include "core/base/KeyValueConfiguration.h"
-#include "core/data/Container.h"
-#include "core/data/TimeStamp.h"
+#include "opendavinci/core/base/KeyValueConfiguration.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/data/TimeStamp.h"
 #include "hesperia/data/environment/Point3.h"
 
-#include "GeneratedHeaders_CoreData.h"
-#include "generated/automotive/VehicleControl.h"
+#include "opendavinci/GeneratedHeaders_CoreData.h"
+#include "opendavinci/generated/automotive/VehicleControl.h"
 
-#include "context/base/SystemFeedbackComponent.h"
+#include "opendavinci/context/base/SystemFeedbackComponent.h"
 
 namespace vehiclecontext {
     namespace model {

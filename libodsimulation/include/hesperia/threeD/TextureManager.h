@@ -23,10 +23,10 @@
 #include <map>
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/base/Mutex.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/Mutex.h"
 #include "hesperia/core/wrapper/Image.h"
-#include "core/strings/StringComparator.h"
+#include "opendavinci/core/strings/StringComparator.h"
 
 namespace hesperia {
     namespace threeD {

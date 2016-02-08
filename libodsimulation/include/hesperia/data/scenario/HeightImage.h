@@ -22,7 +22,7 @@
 
 #include <string>
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
 #include "hesperia/data/scenario/Image.h"
 

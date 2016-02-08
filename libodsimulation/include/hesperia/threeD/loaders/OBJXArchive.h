@@ -24,9 +24,9 @@
 #include <string>
 #include <sstream>
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 #include "hesperia/core/wrapper/Image.h"
-#include "core/strings/StringComparator.h"
+#include "opendavinci/core/strings/StringComparator.h"
 
 #include "hesperia/threeD/Material.h"
 #include "hesperia/threeD/TransformGroup.h"

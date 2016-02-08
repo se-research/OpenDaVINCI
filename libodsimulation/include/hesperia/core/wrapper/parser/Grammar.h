@@ -23,7 +23,7 @@
 #include <string>
 #include <vector>
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
 namespace core {
     namespace wrapper {

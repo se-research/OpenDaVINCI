@@ -20,9 +20,9 @@
 #ifndef VEHICLECONTEXT_VEHICLERUNTIMECONTROL_H_
 #define VEHICLECONTEXT_VEHICLERUNTIMECONTROL_H_
 
-//#include "core/base/KeyValueConfiguration.h"
+//#include "opendavinci/core/base/KeyValueConfiguration.h"
 
-#include "context/base/StandaloneRuntimeControl.h"
+#include "opendavinci/context/base/StandaloneRuntimeControl.h"
 
 namespace vehiclecontext {
 

@@ -23,10 +23,10 @@
 #include <string>
 #include <vector>
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/data/SerializableData.h"
-#include "core/exceptions/Exceptions.h"
+#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/core/exceptions/Exceptions.h"
 #include "hesperia/data/scenario/IDVertex3.h"
 #include "hesperia/data/scenario/LaneModel.h"
 

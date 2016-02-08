@@ -20,8 +20,8 @@
 #ifndef HESPERIA_THREED_NODE_H_
 #define HESPERIA_THREED_NODE_H_
 
-#include "core/opendavinci.h"
-#include "core/wrapper/Disposable.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/wrapper/Disposable.h"
 #include "hesperia/threeD/NodeDescriptor.h"
 
 namespace hesperia {

@@ -20,7 +20,7 @@
 #ifndef HESPERIA_CORE_THREED_MODELS_XYZAXES_H_
 #define HESPERIA_CORE_THREED_MODELS_XYZAXES_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
 #include "hesperia/threeD/Node.h"
 #include "hesperia/threeD/NodeDescriptor.h"

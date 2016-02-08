@@ -20,7 +20,7 @@
 #ifndef HESPERIA_CORE_DATA_SITUATION_SITUATIONNODE_H_
 #define HESPERIA_CORE_DATA_SITUATION_SITUATIONNODE_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
 namespace hesperia {
     namespace data {

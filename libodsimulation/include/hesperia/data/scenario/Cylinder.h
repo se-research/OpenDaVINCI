@@ -20,7 +20,7 @@
 #ifndef HESPERIA_CORE_DATA_SCENARIO_CYLINDER_H_
 #define HESPERIA_CORE_DATA_SCENARIO_CYLINDER_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
 #include "hesperia/data/scenario/Shape.h"
 #include "hesperia/data/scenario/Vertex3.h"

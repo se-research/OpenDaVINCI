@@ -20,8 +20,8 @@
 #ifndef HESPERIA_SCENARIO_SCENARIOOPENGLSCENETRANSFORMATION_H_
 #define HESPERIA_SCENARIO_SCENARIOOPENGLSCENETRANSFORMATION_H_
 
-#include "core/opendavinci.h"
-#include "core/data/SerializableData.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/data/SerializableData.h"
 
 #include "hesperia/data/scenario/Lane.h"
 #include "hesperia/data/scenario/Layer.h"

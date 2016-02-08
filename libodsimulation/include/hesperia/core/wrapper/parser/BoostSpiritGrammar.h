@@ -27,7 +27,7 @@
 #include <boost/spirit/include/classic_ast.hpp>
 #include <boost/spirit/include/classic_error_handling.hpp>
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 #include "hesperia/core/wrapper/parser/Grammar.h"
 #include "hesperia/core/wrapper/parser/ParserError.h"
 #include "hesperia/core/wrapper/parser/ParserErrorExtendedData.h"

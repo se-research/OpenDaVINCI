@@ -24,18 +24,18 @@
 
 #include <opencv/cv.h>
 
-#include "core/SharedPointer.h"
-#include "core/base/Condition.h"
-#include "core/base/KeyValueConfiguration.h"
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/base/Condition.h"
+#include "opendavinci/core/base/KeyValueConfiguration.h"
+#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
 #include "hesperia/core/wrapper/Image.h"
-#include "context/base/SystemFeedbackComponent.h"
+#include "opendavinci/context/base/SystemFeedbackComponent.h"
 
 #include "hesperia/data/environment/EgoState.h"
 #include "hesperia/io/camera/ImageGrabber.h"
 
-#include "GeneratedHeaders_CoreData.h"
-#include "GeneratedHeaders_AutomotiveData.h"
+#include "opendavinci/GeneratedHeaders_CoreData.h"
+#include "opendavinci/GeneratedHeaders_AutomotiveData.h"
 
 #include "OpenGLGrabber.h"
 

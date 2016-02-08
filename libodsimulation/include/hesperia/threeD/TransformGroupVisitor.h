@@ -20,7 +20,7 @@
 #ifndef HESPERIA_CORE_THREED_TRANSFORMGROUPVISITOR_H_
 #define HESPERIA_CORE_THREED_TRANSFORMGROUPVISITOR_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
 namespace hesperia {
     namespace threeD {

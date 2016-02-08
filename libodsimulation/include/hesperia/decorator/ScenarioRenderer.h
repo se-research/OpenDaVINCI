@@ -24,8 +24,8 @@
 #include <string>
 #include <vector>
 
-#include "core/opendavinci.h"
-#include "core/base/Mutex.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/Mutex.h"
 #include "hesperia/core/wrapper/Image.h"
 
 #include "hesperia/data/scenario/ScenarioNode.h"

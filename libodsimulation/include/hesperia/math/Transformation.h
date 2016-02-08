@@ -20,7 +20,7 @@
 #ifndef HESPERIA_MATH_TRANSFORMATION_H_
 #define HESPERIA_MATH_TRANSFORMATION_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 #include "hesperia/data/environment/Point3.h"
 
 namespace hesperia { namespace data { namespace environment { class Position; } } }

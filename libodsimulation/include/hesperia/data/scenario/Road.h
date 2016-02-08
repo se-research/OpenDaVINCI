@@ -23,9 +23,9 @@
 #include <string>
 #include <vector>
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/data/SerializableData.h"
+#include "opendavinci/core/data/SerializableData.h"
 #include "hesperia/data/scenario/Lane.h"
 #include "hesperia/data/scenario/ScenarioNode.h"
 #include "hesperia/data/scenario/ScenarioVisitor.h"

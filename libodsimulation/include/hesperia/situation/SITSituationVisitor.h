@@ -33,7 +33,7 @@
 #include "hesperia/data/situation/Shape.h"
 #include "hesperia/data/situation/Situation.h"
 #include "hesperia/data/situation/Vertex3.h"
-#include "core/exceptions/Exceptions.h"
+#include "opendavinci/core/exceptions/Exceptions.h"
 #include "hesperia/core/wrapper/parser/ASTVisitor.h"
 
 namespace hesperia {

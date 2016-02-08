@@ -22,11 +22,11 @@
 
 #include <string>
 
-#include "core/base/KeyValueConfiguration.h"
-#include "core/data/Container.h"
-#include "core/data/TimeStamp.h"
+#include "opendavinci/core/base/KeyValueConfiguration.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/data/TimeStamp.h"
 
-#include "context/base/SystemFeedbackComponent.h"
+#include "opendavinci/context/base/SystemFeedbackComponent.h"
 
 #include "hesperia/data/environment/EgoState.h"
 #include "hesperia/data/environment/Polygon.h"

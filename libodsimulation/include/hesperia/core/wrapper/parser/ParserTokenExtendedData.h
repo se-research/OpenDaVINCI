@@ -20,7 +20,7 @@
 #ifndef HESPERIA_CORE_WRAPPER_PARSER_PARSERTOKENEXTENDEDDATA_H_
 #define HESPERIA_CORE_WRAPPER_PARSER_PARSERTOKENEXTENDEDDATA_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
 namespace core {
     namespace wrapper {

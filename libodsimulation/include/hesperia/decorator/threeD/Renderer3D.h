@@ -23,8 +23,8 @@
 #include <string>
 #include <vector>
 
-#include "core/opendavinci.h"
-#include "core/strings/StringComparator.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/strings/StringComparator.h"
 
 #include "hesperia/decorator/Renderer.h"
 

@@ -20,7 +20,7 @@
 #ifndef HESPERIA_CORE_THREED_MODELS_HEIGHTGRID_H_
 #define HESPERIA_CORE_THREED_MODELS_HEIGHTGRID_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 #include "hesperia/core/wrapper/Image.h"
 
 #include "hesperia/data/environment/Point3.h"

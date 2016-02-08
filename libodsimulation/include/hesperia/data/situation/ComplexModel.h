@@ -20,7 +20,7 @@
 #ifndef HESPERIA_CORE_DATA_SITUATION_COMPLEXMODEL_H_
 #define HESPERIA_CORE_DATA_SITUATION_COMPLEXMODEL_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 #include "hesperia/data/situation/BoundingBox.h"
 #include "hesperia/data/situation/Shape.h"
 #include "hesperia/data/situation/Vertex3.h"

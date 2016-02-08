@@ -25,7 +25,7 @@
 #include <sstream>
 #include <vector>
 
-#include "core/data/TimeStamp.h"
+#include "opendavinci/core/data/TimeStamp.h"
 #include "hesperia/data/environment/Point3.h"
 #include "hesperia/data/environment/WGS84Coordinate.h"
 #include "hesperia/data/sensor/nmea/GPRMC.h"

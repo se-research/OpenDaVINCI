@@ -22,9 +22,9 @@
 
 #include <map>
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
-#include "core/data/SerializableData.h"
+#include "opendavinci/core/data/SerializableData.h"
 #include "hesperia/data/environment/Point3.h"
 
 namespace hesperia {

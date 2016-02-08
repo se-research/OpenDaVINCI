@@ -20,7 +20,7 @@
 #ifndef HESPERIA_WRAPPER_PARSER_ASTVISITOR_H_
 #define HESPERIA_WRAPPER_PARSER_ASTVISITOR_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
 namespace core {
     namespace wrapper {

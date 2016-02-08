@@ -31,7 +31,7 @@
 #include <cassert>
 #include <string>
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
 #include <boost/spirit/include/classic_ast.hpp>
 #include <boost/spirit/include/classic_error_handling.hpp>

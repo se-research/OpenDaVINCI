@@ -20,7 +20,7 @@
 #ifndef HESPERIA_WRAPPER_PARSER_ASTPRETTYPRINTER_H_
 #define HESPERIA_WRAPPER_PARSER_ASTPRETTYPRINTER_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 #include "hesperia/core/wrapper/parser/ASTVisitor.h"
 
 namespace core {

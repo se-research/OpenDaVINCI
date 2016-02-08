@@ -23,11 +23,11 @@
 #include <list>
 #include <string>
 
-#include "core/base/KeyValueConfiguration.h"
+#include "opendavinci/core/base/KeyValueConfiguration.h"
 #include "hesperia/data/environment/Point3.h"
 #include "hesperia/data/scenario/PointID.h"
 
-#include "context/base/SystemReportingComponent.h"
+#include "opendavinci/context/base/SystemReportingComponent.h"
 
 namespace vehiclecontext {
     namespace report {

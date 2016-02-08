@@ -22,9 +22,9 @@
 
 #include <iostream>
 
-#include "core/opendavinci.h"
-#include "core/base/Mutex.h"
-#include "core/exceptions/Exceptions.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/core/exceptions/Exceptions.h"
 
 #include "hesperia/threeD/loaders/OBJXArchive.h"
 

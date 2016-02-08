@@ -20,7 +20,7 @@
 #ifndef HESPERIA_DATA_ENVIRONMENT_OBSTACLE_H_
 #define HESPERIA_DATA_ENVIRONMENT_OBSTACLE_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
 #include "hesperia/data/environment/PointShapedObject.h"
 #include "hesperia/data/environment/Polygon.h"

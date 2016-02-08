@@ -22,8 +22,8 @@
 
 #include <sstream>
 
-#include "core/opendavinci.h"
-#include "core/data/Container.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/data/Container.h"
 
 #include "hesperia/data/environment/EgoState.h"
 #include "hesperia/data/planning/Route.h"

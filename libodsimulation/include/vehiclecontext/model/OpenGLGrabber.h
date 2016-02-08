@@ -23,10 +23,10 @@
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
 
-#include "core/SharedPointer.h"
-#include "core/base/KeyValueConfiguration.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/base/KeyValueConfiguration.h"
 #include "hesperia/core/wrapper/Image.h"
-#include "core/wrapper/SharedMemory.h"
+#include "opendavinci/core/wrapper/SharedMemory.h"
 
 #include "hesperia/data/environment/EgoState.h"
 #include "hesperia/io/camera/ImageGrabber.h"
