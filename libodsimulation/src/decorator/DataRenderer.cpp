@@ -23,10 +23,10 @@
 #include <string>
 #include <vector>
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"
-#include "core/base/Lock.h"
-#include "core/data/Container.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/data/Container.h"
 #include "hesperia/data/environment/EgoState.h"
 #include "hesperia/data/environment/Obstacle.h"
 #include "hesperia/data/environment/OtherVehicleState.h"

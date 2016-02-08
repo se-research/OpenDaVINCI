@@ -19,11 +19,11 @@
 
 #include <cstdio>
 
-#include "core/wrapper/DisposalService.h"
+#include "opendavinci/core/wrapper/DisposalService.h"
 #include "hesperia/core/wrapper/HesperiaLibraries.h"
 #include "hesperia/core/wrapper/ImageFactory.h"
-#include "core/wrapper/Mutex.h"
-#include "core/wrapper/MutexFactory.h"
+#include "opendavinci/core/wrapper/Mutex.h"
+#include "opendavinci/core/wrapper/MutexFactory.h"
 #include "hesperia/core/wrapper/OpenCV/OpenCVImageFactory.h"
 
 namespace core {

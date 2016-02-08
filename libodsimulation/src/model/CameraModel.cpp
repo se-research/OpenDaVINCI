@@ -24,11 +24,11 @@
 #include <iostream>
 #include <string>
 
-#include "core/opendavinci.h"
-#include "context/base/SendContainerToSystemsUnderTest.h"
-#include "core/base/KeyValueConfiguration.h"
-#include "core/data/Container.h"
-#include "generated/coredata/image/SharedImage.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/context/base/SendContainerToSystemsUnderTest.h"
+#include "opendavinci/core/base/KeyValueConfiguration.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/generated/coredata/image/SharedImage.h"
 #include "hesperia/data/camera/ImageGrabberCalibration.h"
 #include "hesperia/data/camera/ImageGrabberID.h"
 #include "hesperia/data/environment/EgoState.h"

@@ -21,7 +21,7 @@
 
 #include <string>
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 #include "hesperia/core/wrapper/parser/ASTNode.h"
 #include "hesperia/core/wrapper/parser/BoostSpiritGrammar.h"
 #include "hesperia/situation/SITGrammar.h"

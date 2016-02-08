@@ -24,9 +24,9 @@
 #include <string>
 #include <vector>
 
-#include "core/opendavinci.h"
-#include "core/strings/StringComparator.h"
-#include "generated/cartesian/Constants.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/strings/StringComparator.h"
+#include "opendavinci/generated/cartesian/Constants.h"
 #include "hesperia/data/environment/Point3.h"
 #include "hesperia/threeD/Material.h"
 #include "hesperia/threeD/NodeDescriptor.h"

@@ -21,8 +21,8 @@
 #include <string>
 #include <vector>
 
-#include "core/SharedPointer.h"
-#include "core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/opendavinci.h"
 #include "hesperia/data/scenario/Ground.h"
 #include "hesperia/data/scenario/HeightImage.h"
 #include "hesperia/data/scenario/Image.h"

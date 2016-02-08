@@ -22,13 +22,13 @@
 #include <string>
 #include <vector>
 
-#include "core/opendavinci.h"
-#include "context/base/SendContainerToSystemsUnderTest.h"
-#include "core/base/KeyValueConfiguration.h"
-#include "core/io/URL.h"
-#include "core/strings/StringComparator.h"
-#include "core/wrapper/Time.h"
-#include "generated/automotive/miniature/SensorBoardData.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/context/base/SendContainerToSystemsUnderTest.h"
+#include "opendavinci/core/base/KeyValueConfiguration.h"
+#include "opendavinci/core/io/URL.h"
+#include "opendavinci/core/strings/StringComparator.h"
+#include "opendavinci/core/wrapper/Time.h"
+#include "opendavinci/generated/automotive/miniature/SensorBoardData.h"
 #include "hesperia/data/environment/Obstacle.h"
 #include "hesperia/data/environment/Point3.h"
 #include "hesperia/data/scenario/Ground.h"

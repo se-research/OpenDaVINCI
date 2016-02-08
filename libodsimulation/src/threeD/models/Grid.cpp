@@ -25,7 +25,7 @@
 #include <GL/gl.h>
 #include <string>
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 #include "hesperia/threeD/Node.h"
 #include "hesperia/threeD/NodeDescriptor.h"
 #include "hesperia/threeD/NodeRenderingConfiguration.h"

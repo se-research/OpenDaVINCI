@@ -20,12 +20,12 @@
 #include <GL/gl.h>
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"
-#include "core/base/KeyValueConfiguration.h"
-#include "core/base/Thread.h"
-#include "core/io/URL.h"
-#include "core/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/base/KeyValueConfiguration.h"
+#include "opendavinci/core/base/Thread.h"
+#include "opendavinci/core/io/URL.h"
+#include "opendavinci/core/wrapper/SharedMemoryFactory.h"
 #include "hesperia/core/wrapper/ImageFactory.h"
 #include "hesperia/data/camera/ImageGrabberID.h"
 #include "hesperia/threeD/decorator/DecoratorFactory.h"

@@ -22,9 +22,9 @@
 #include <string>
 #include <vector>
 
-#include "core/SharedPointer.h"
-#include "core/base/Lock.h"
-#include "core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/opendavinci.h"
 #include "hesperia/data/scenario/ComplexModel.h"
 #include "hesperia/data/scenario/HeightImage.h"
 #include "hesperia/data/scenario/Image.h"

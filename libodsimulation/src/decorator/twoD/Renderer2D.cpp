@@ -19,8 +19,8 @@
 
 #include <vector>
 
-#include "core/opendavinci.h"
-#include "generated/cartesian/Constants.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/generated/cartesian/Constants.h"
 #include "hesperia/data/environment/Point3.h"
 #include "hesperia/decorator/models/Material.h"
 #include "hesperia/decorator/models/TriangleSet.h"

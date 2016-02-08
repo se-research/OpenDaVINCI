@@ -26,7 +26,7 @@
 #include <string>
 #include <vector>
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 #include "hesperia/data/environment/Point3.h"
 #include "hesperia/threeD/Material.h"
 #include "hesperia/threeD/Node.h"

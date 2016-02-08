@@ -21,9 +21,9 @@
 #include <string>
 #include <vector>
 
-#include "context/base/RuntimeControlInterface.h"
-#include "context/base/StandaloneRuntimeControl.h"
-#include "core/base/KeyValueConfiguration.h"
+#include "opendavinci/context/base/RuntimeControlInterface.h"
+#include "opendavinci/context/base/StandaloneRuntimeControl.h"
+#include "opendavinci/core/base/KeyValueConfiguration.h"
 #include "vehiclecontext/VehicleRuntimeControl.h"
 #include "vehiclecontext/model/SimplifiedBicycleModel.h"
 

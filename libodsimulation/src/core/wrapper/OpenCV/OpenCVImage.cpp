@@ -28,7 +28,7 @@
 
 #include <opencv/highgui.h>
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 #include "hesperia/core/wrapper/OpenCV/OpenCVImage.h"
 
 namespace core {

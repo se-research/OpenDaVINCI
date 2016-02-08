@@ -19,8 +19,8 @@
 
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/exceptions/Exceptions.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/exceptions/Exceptions.h"
 #include "hesperia/core/wrapper/parser/ASTNode.h"
 #include "hesperia/data/situation/Header.h"
 #include "hesperia/data/situation/Immediately.h"

@@ -20,12 +20,12 @@
 #include <ostream>
 #include <string>
 
-#include "core/SharedPointer.h"
-#include "core/base/Deserializer.h"
-#include "core/base/Hash.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
-#include "core/data/SerializableData.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/base/Deserializer.h"
+#include "opendavinci/core/base/Hash.h"
+#include "opendavinci/core/base/SerializationFactory.h"
+#include "opendavinci/core/base/Serializer.h"
+#include "opendavinci/core/data/SerializableData.h"
 #include "hesperia/data/situation/BoundingBox.h"
 #include "hesperia/data/situation/SituationVisitor.h"
 #include "hesperia/data/situation/Vertex3.h"

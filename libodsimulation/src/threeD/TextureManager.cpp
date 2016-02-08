@@ -36,10 +36,10 @@
 #include <map>
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/base/Lock.h"
-#include "core/base/Mutex.h"
-#include "core/strings/StringComparator.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/core/strings/StringComparator.h"
 #include "hesperia/threeD/TextureManager.h"
 
 namespace core { namespace wrapper { class Image; } }

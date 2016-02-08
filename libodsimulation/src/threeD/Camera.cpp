@@ -22,7 +22,7 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 
-#include "generated/cartesian/Constants.h"
+#include "opendavinci/generated/cartesian/Constants.h"
 #include "hesperia/data/environment/Point3.h"
 #include "hesperia/threeD/Camera.h"
 

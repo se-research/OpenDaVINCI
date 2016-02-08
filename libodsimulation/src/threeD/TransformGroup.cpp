@@ -27,8 +27,8 @@
 #include <algorithm>
 #include <vector>
 
-#include "core/base/Lock.h"
-#include "core/opendavinci.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/opendavinci.h"
 #include "hesperia/data/environment/Point3.h"
 #include "hesperia/threeD/Node.h"
 #include "hesperia/threeD/NodeDescriptor.h"

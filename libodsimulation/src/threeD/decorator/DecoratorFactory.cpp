@@ -19,8 +19,8 @@
 
 #include <iostream>
 
-#include "core/base/Lock.h"
-#include "core/base/Mutex.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/base/Mutex.h"
 #include "hesperia/data/scenario/Scenario.h"
 #include "hesperia/scenario/GroundBasedComplexModelLoader.h"
 #include "hesperia/scenario/SCNXArchive.h"

@@ -21,7 +21,7 @@
 
 #include <boost/spirit/include/classic_parse_tree.hpp>
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 #include "hesperia/core/wrapper/parser/ASTNode.h"
 #include "hesperia/core/wrapper/parser/BoostSpiritGrammar.h"
 #include "hesperia/scenario/SCNGrammar.h"

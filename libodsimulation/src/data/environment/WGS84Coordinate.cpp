@@ -22,13 +22,13 @@
 #include <limits>
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"
-#include "core/base/Deserializer.h"
-#include "core/base/Hash.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
-#include "generated/cartesian/Constants.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/base/Deserializer.h"
+#include "opendavinci/core/base/Hash.h"
+#include "opendavinci/core/base/SerializationFactory.h"
+#include "opendavinci/core/base/Serializer.h"
+#include "opendavinci/generated/cartesian/Constants.h"
 #include "hesperia/data/environment/Point3.h"
 #include "hesperia/data/environment/WGS84Coordinate.h"
 

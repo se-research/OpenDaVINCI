@@ -21,10 +21,10 @@
 #include <iostream>
 #include <string>
 
-#include "core/base/Lock.h"
-#include "core/base/Mutex.h"
-#include "core/exceptions/Exceptions.h"
-#include "core/opendavinci.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/core/exceptions/Exceptions.h"
+#include "opendavinci/core/opendavinci.h"
 #include "hesperia/core/wrapper/parser/ASTNode.h"
 #include "hesperia/core/wrapper/parser/ParserError.h"
 #include "hesperia/core/wrapper/parser/ParserErrorExtendedData.h"

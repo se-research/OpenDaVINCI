@@ -23,8 +23,8 @@
 
 #include <boost/graph/astar_search.hpp>
 
-#include "core/opendavinci.h"
-#include "core/strings/StringToolbox.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/strings/StringToolbox.h"
 #include "hesperia/core/wrapper/graph/DirectedGraph.h"
 #include "hesperia/core/wrapper/graph/Edge.h"
 #include "hesperia/core/wrapper/graph/Vertex.h"

@@ -27,7 +27,7 @@
 #include <iostream>
 #include <string>
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 #include "hesperia/core/wrapper/Image.h"
 #include "hesperia/data/environment/Point3.h"
 #include "hesperia/threeD/Node.h"

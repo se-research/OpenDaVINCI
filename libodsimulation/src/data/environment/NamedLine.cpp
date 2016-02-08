@@ -20,11 +20,11 @@
 #include <sstream>
 #include <string>
 
-#include "core/SharedPointer.h"
-#include "core/base/Deserializer.h"
-#include "core/base/Hash.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/base/Deserializer.h"
+#include "opendavinci/core/base/Hash.h"
+#include "opendavinci/core/base/SerializationFactory.h"
+#include "opendavinci/core/base/Serializer.h"
 #include "hesperia/data/environment/Line.h"
 #include "hesperia/data/environment/NamedLine.h"
 #include "hesperia/data/environment/Point3.h"

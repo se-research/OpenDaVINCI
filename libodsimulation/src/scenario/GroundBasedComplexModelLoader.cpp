@@ -22,8 +22,8 @@
 #include <string>
 #include <vector>
 
-#include "core/SharedPointer.h"
-#include "core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/opendavinci.h"
 #include "hesperia/data/environment/Point3.h"
 #include "hesperia/data/scenario/ComplexModel.h"
 #include "hesperia/data/scenario/Vertex3.h"

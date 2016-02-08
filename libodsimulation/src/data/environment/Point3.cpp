@@ -21,16 +21,16 @@
 #include <istream>
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"
-#include "core/base/Deserializer.h"
-#include "core/base/Hash.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
-#include "core/data/SerializableData.h"
-#include "core/strings/StringToolbox.h"
-#include "generated/cartesian/Constants.h"
-#include "generated/cartesian/Matrix3x3.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/base/Deserializer.h"
+#include "opendavinci/core/base/Hash.h"
+#include "opendavinci/core/base/SerializationFactory.h"
+#include "opendavinci/core/base/Serializer.h"
+#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/core/strings/StringToolbox.h"
+#include "opendavinci/generated/cartesian/Constants.h"
+#include "opendavinci/generated/cartesian/Matrix3x3.h"
 #include "hesperia/data/environment/Point3.h"
 
 namespace hesperia {

@@ -21,11 +21,11 @@
 #include <string>
 #include <vector>
 
-#include "core/opendavinci.h"
-#include "core/base/KeyValueConfiguration.h"
-#include "core/base/KeyValueDataStore.h"
-#include "core/data/Container.h"
-#include "core/wrapper/Time.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/KeyValueConfiguration.h"
+#include "opendavinci/core/base/KeyValueDataStore.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/wrapper/Time.h"
 #include "hesperia/data/environment/EgoState.h"
 #include "hesperia/data/environment/Line.h"
 #include "hesperia/data/environment/Obstacle.h"
