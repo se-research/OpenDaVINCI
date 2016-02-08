@@ -90,7 +90,7 @@ namespace core {
                 address.sin_port = htons(port);
 
                 // Bind handle.
-                if (bind(m_fileDescriptor, reinterpret_cast<struct sockaddr *>(&address), sizeof(address)) == -1) {
+                if (::bind(m_fileDescriptor, reinterpret_cast<struct sockaddr *>(&address), sizeof(address)) == -1) {
                     stringstream s;
                     s << "[core::wrapper::POSIXTCPAcceptor] Error while binding socket: " << strerror(errno);
                     throw s.str();
