@@ -29,8 +29,8 @@
 # pragma GCC diagnostic ignored "-Weffc++"
 # pragma GCC diagnostic ignored "-Wshadow"
 #endif
-    #include "Eigen/Core"
-    #include "Eigen/Geometry"
+    #include "opendavinci/Eigen/Core"
+    #include "opendavinci/Eigen/Geometry"
 #ifndef WIN32
 # if !defined(__OpenBSD__) && !defined(__NetBSD__)
 #  pragma GCC diagnostic pop
