@@ -37,5 +37,6 @@ How to design distributed software systems
 .. include:: tutorial.datatrigger.rst
 
 How to use simulation and visualization
-----------------------
-.. include::simulation.visualization.rst
+------------------------------------------
+.. include:: simulation.visualization.rst
+
