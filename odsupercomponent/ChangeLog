@@ -1,3 +1,8 @@
+2.4.7 - Added signal handler for SIGTERM
+2.4.6 - Fix for odsimirus data simulation
+2.4.5 - Adding pre-compiled binaries for Ubuntu 15.10
+2.4.4 - Fixed deployment issue
+2.4.3 - Fixed compile error for Mac
 2.4.2 - Refactored odsimulation tools
 2.4.1 - Added missing protocol handler for configuration setting global.car
 2.4.0 - Refactored main include files

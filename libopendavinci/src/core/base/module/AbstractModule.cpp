@@ -50,7 +50,8 @@ namespace core {
             void finalize();
 
             void signalHandler(int32_t signal) {
-                if (signal == SIGINT) {
+                if ( (signal == SIGINT) ||
+                     (signal == SIGTERM) ) {
                     vector<AbstractModule*>::iterator it = AbstractModule::getListOfModules().begin();
                     while (it != AbstractModule::getListOfModules().end()) {
                         AbstractModule *m = *it++;
@@ -91,6 +92,11 @@ namespace core {
                     OPENDAVINCI_CORE_THROW_EXCEPTION(InvalidArgumentException, "Failed to register signal SIGINT.");
                 }
 
+                // Catch signal SIGTERM.
+                if (::sigaction(SIGTERM, &ourSignalHandler, NULL) < 0) {
+                    OPENDAVINCI_CORE_THROW_EXCEPTION(InvalidArgumentException, "Failed to register signal SIGTERM.");
+                }
+
                 memset(&ignoreSignal, 0, sizeof(ignoreSignal));
                 ignoreSignal.sa_handler = SIG_IGN;
 
@@ -100,7 +106,7 @@ namespace core {
                     OPENDAVINCI_CORE_THROW_EXCEPTION(InvalidArgumentException, "Failed to ignore signal SIGPIPE.");
                 }
 #endif
-		    }
+            }
 
             AbstractModule::~AbstractModule() {
                 vector<AbstractModule*>::iterator it = AbstractModule::getListOfModules().begin();
