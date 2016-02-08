@@ -28,7 +28,7 @@
 #include "opendavinci/core/io/URL.h"
 #include "opendavinci/core/strings/StringComparator.h"
 #include "opendavinci/core/wrapper/Time.h"
-#include "opendavinci/generated/automotive/miniature/SensorBoardData.h"
+#include "automotivedata/generated/automotive/miniature/SensorBoardData.h"
 #include "hesperia/data/environment/Obstacle.h"
 #include "hesperia/data/environment/Point3.h"
 #include "hesperia/data/scenario/Ground.h"

@@ -29,7 +29,7 @@
 #include "hesperia/data/environment/Point3.h"
 
 #include "opendavinci/GeneratedHeaders_CoreData.h"
-#include "opendavinci/generated/automotive/VehicleControl.h"
+#include "automotivedata/generated/automotive/VehicleControl.h"
 
 #include "opendavinci/context/base/SystemFeedbackComponent.h"
 

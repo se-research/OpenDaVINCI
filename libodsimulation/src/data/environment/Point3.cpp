@@ -29,8 +29,8 @@
 #include "opendavinci/core/base/Serializer.h"
 #include "opendavinci/core/data/SerializableData.h"
 #include "opendavinci/core/strings/StringToolbox.h"
-#include "opendavinci/generated/cartesian/Constants.h"
-#include "opendavinci/generated/cartesian/Matrix3x3.h"
+#include "automotivedata/generated/cartesian/Constants.h"
+#include "automotivedata/generated/cartesian/Matrix3x3.h"
 #include "hesperia/data/environment/Point3.h"
 
 namespace hesperia {

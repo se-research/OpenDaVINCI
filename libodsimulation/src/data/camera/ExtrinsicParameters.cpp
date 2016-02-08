@@ -25,7 +25,7 @@
 #include "opendavinci/core/base/Hash.h"
 #include "opendavinci/core/base/SerializationFactory.h"
 #include "opendavinci/core/base/Serializer.h"
-#include "opendavinci/generated/cartesian/Matrix3x3.h"
+#include "automotivedata/generated/cartesian/Matrix3x3.h"
 #include "hesperia/data/camera/ExtrinsicParameters.h"
 #include "hesperia/data/environment/Point3.h"
 
