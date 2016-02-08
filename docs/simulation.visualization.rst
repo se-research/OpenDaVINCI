@@ -44,7 +44,7 @@ In a new terminal, run odcockpit::
 	
 In odcockpit window, open the BirdsEyeMap plugin. You will see a static car and its surroundings for parking.
 
-Go to the boxparker binary directory and run boxparker in a new terminal:
+Go to the boxparker binary directory and run boxparker in a new terminal::
 
 	$ ./boxparker --cid=111 --freq=10
 	
