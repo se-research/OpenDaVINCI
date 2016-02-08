@@ -21,7 +21,7 @@
 #define HESPERIA_CORE_THREED_MODELS_HEIGHTGRID_H_
 
 #include "core/opendavinci.h"
-#include "core/wrapper/Image.h"
+#include "hesperia/core/wrapper/Image.h"
 
 #include "hesperia/data/environment/Point3.h"
 #include "hesperia/threeD/Node.h"

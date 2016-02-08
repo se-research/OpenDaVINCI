@@ -31,7 +31,7 @@
 #include "hesperia/data/situation/Situation.h"
 #include "hesperia/scenario/SCNXArchive.h"
 #include "hesperia/situation/SituationFactory.h"
-#include "core/wrapper/ImageFactory.h"
+#include "hesperia/core/wrapper/ImageFactory.h"
 
 namespace core { namespace wrapper { class DecompressedData; } }
 namespace core { namespace wrapper { class Image; } }

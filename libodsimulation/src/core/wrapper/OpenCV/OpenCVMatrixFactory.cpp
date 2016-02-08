@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "core/wrapper/OpenCV/OpenCVMatrix.h"
-#include "core/wrapper/OpenCV/OpenCVMatrixFactory.h"
+#include "hesperia/core/wrapper/OpenCV/OpenCVMatrix.h"
+#include "hesperia/core/wrapper/OpenCV/OpenCVMatrixFactory.h"
 
 namespace core { namespace wrapper { class Matrix; } }
 

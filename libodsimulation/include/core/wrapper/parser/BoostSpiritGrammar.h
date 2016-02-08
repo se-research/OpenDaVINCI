@@ -28,12 +28,12 @@
 #include <boost/spirit/include/classic_error_handling.hpp>
 
 #include "core/opendavinci.h"
-#include "core/wrapper/parser/Grammar.h"
-#include "core/wrapper/parser/ParserError.h"
-#include "core/wrapper/parser/ParserErrorExtendedData.h"
-#include "core/wrapper/parser/ParserErrorListener.h"
-#include "core/wrapper/parser/ParserToken.h"
-#include "core/wrapper/parser/ParserTokenListener.h"
+#include "hesperia/core/wrapper/parser/Grammar.h"
+#include "hesperia/core/wrapper/parser/ParserError.h"
+#include "hesperia/core/wrapper/parser/ParserErrorExtendedData.h"
+#include "hesperia/core/wrapper/parser/ParserErrorListener.h"
+#include "hesperia/core/wrapper/parser/ParserToken.h"
+#include "hesperia/core/wrapper/parser/ParserTokenListener.h"
 
 namespace core {
     namespace wrapper {

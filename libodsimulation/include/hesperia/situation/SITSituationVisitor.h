@@ -34,7 +34,7 @@
 #include "hesperia/data/situation/Situation.h"
 #include "hesperia/data/situation/Vertex3.h"
 #include "core/exceptions/Exceptions.h"
-#include "core/wrapper/parser/ASTVisitor.h"
+#include "hesperia/core/wrapper/parser/ASTVisitor.h"
 
 namespace hesperia {
     namespace situation {

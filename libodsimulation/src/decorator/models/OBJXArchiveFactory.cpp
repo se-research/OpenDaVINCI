@@ -28,7 +28,7 @@
 #include "core/opendavinci.h"
 #include "core/wrapper/CompressionFactory.h"
 #include "core/wrapper/DecompressedData.h"
-#include "core/wrapper/ImageFactory.h"
+#include "hesperia/core/wrapper/ImageFactory.h"
 #include "hesperia/decorator/models/OBJXArchive.h"
 #include "hesperia/decorator/models/OBJXArchiveFactory.h"
 

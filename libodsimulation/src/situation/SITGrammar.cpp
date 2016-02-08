@@ -22,8 +22,8 @@
 #include <string>
 
 #include "core/opendavinci.h"
-#include "core/wrapper/parser/ASTNode.h"
-#include "core/wrapper/parser/BoostSpiritGrammar.h"
+#include "hesperia/core/wrapper/parser/ASTNode.h"
+#include "hesperia/core/wrapper/parser/BoostSpiritGrammar.h"
 #include "hesperia/situation/SITGrammar.h"
 
 namespace core { namespace wrapper { namespace parser { class ParserErrorListener; } } }

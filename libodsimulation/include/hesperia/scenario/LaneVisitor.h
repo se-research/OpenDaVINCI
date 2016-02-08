@@ -22,8 +22,8 @@
 
 #include "core/opendavinci.h"
 
-#include "core/wrapper/graph/DirectedGraph.h"
-#include "core/wrapper/graph/Edge.h"
+#include "hesperia/core/wrapper/graph/DirectedGraph.h"
+#include "hesperia/core/wrapper/graph/Edge.h"
 
 #include "hesperia/data/environment/NamedLine.h"
 #include "hesperia/data/scenario/Connector.h"

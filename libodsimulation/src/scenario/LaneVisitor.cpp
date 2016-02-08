@@ -20,7 +20,7 @@
 #include <iostream>
 #include <vector>
 
-#include "core/wrapper/parser/ASTNode.h"
+#include "hesperia/core/wrapper/parser/ASTNode.h"
 #include "hesperia/data/environment/NamedLine.h"
 #include "hesperia/data/scenario/Arc.h"
 #include "hesperia/data/scenario/Connector.h"

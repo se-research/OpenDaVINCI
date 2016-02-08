@@ -26,7 +26,7 @@
 #include <vector>
 
 #include "core/opendavinci.h"
-#include "core/wrapper/Image.h"
+#include "hesperia/core/wrapper/Image.h"
 #include "core/strings/StringComparator.h"
 
 #include "hesperia/decorator/models/Material.h"

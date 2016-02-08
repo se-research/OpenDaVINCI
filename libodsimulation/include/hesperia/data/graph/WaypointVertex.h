@@ -21,7 +21,7 @@
 #define HESPERIA_DATA_GRAPH_WAYPOINTVERTEX_H_
 
 #include "core/opendavinci.h"
-#include "core/wrapper/graph/Vertex.h"
+#include "hesperia/core/wrapper/graph/Vertex.h"
 
 #include "hesperia/data/environment/Point3.h"
 

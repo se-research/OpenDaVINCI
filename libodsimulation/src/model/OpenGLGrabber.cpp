@@ -26,7 +26,7 @@
 #include "core/base/Thread.h"
 #include "core/io/URL.h"
 #include "core/wrapper/SharedMemoryFactory.h"
-#include "core/wrapper/ImageFactory.h"
+#include "hesperia/core/wrapper/ImageFactory.h"
 #include "hesperia/data/camera/ImageGrabberID.h"
 #include "hesperia/threeD/decorator/DecoratorFactory.h"
 #include "hesperia/io/camera/ImageGrabber.h"

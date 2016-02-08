@@ -20,11 +20,11 @@
 #include <cstdio>
 
 #include "core/wrapper/DisposalService.h"
-#include "core/wrapper/HesperiaLibraries.h"
-#include "core/wrapper/ImageFactory.h"
+#include "hesperia/core/wrapper/HesperiaLibraries.h"
+#include "hesperia/core/wrapper/ImageFactory.h"
 #include "core/wrapper/Mutex.h"
 #include "core/wrapper/MutexFactory.h"
-#include "core/wrapper/OpenCV/OpenCVImageFactory.h"
+#include "hesperia/core/wrapper/OpenCV/OpenCVImageFactory.h"
 
 namespace core {
     namespace wrapper {

@@ -28,7 +28,7 @@
 #include "core/base/Condition.h"
 #include "core/base/KeyValueConfiguration.h"
 #include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "core/wrapper/Image.h"
+#include "hesperia/core/wrapper/Image.h"
 #include "context/base/SystemFeedbackComponent.h"
 
 #include "hesperia/data/environment/EgoState.h"

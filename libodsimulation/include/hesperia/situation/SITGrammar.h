@@ -38,11 +38,11 @@
 #include <boost/spirit/include/classic_confix.hpp>
 #include <boost/spirit/include/classic_core.hpp>
 
-#include "core/wrapper/parser/BoostSpiritGrammar.h"
-#include "core/wrapper/parser/ParserTokenListener.h"
-#include "core/wrapper/parser/ParserTokenExtendedData.h"
-#include "core/wrapper/parser/ParserErrorListener.h"
-#include "core/wrapper/parser/ParserErrorExtendedData.h"
+#include "hesperia/core/wrapper/parser/BoostSpiritGrammar.h"
+#include "hesperia/core/wrapper/parser/ParserTokenListener.h"
+#include "hesperia/core/wrapper/parser/ParserTokenExtendedData.h"
+#include "hesperia/core/wrapper/parser/ParserErrorListener.h"
+#include "hesperia/core/wrapper/parser/ParserErrorExtendedData.h"
 
 namespace hesperia {
     namespace situation {

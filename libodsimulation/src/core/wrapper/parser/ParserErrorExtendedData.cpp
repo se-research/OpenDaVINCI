@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "core/wrapper/parser/ParserErrorExtendedData.h"
+#include "hesperia/core/wrapper/parser/ParserErrorExtendedData.h"
 
 namespace core {
     namespace wrapper {

@@ -25,7 +25,7 @@
 
 #include "core/opendavinci.h"
 #include "core/base/Mutex.h"
-#include "core/wrapper/Image.h"
+#include "hesperia/core/wrapper/Image.h"
 #include "core/strings/StringComparator.h"
 
 namespace hesperia {

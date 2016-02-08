@@ -24,7 +24,7 @@
 
 #include <opencv/cv.h>
 
-#include "core/wrapper/Matrix.h"
+#include "hesperia/core/wrapper/Matrix.h"
 
 namespace core {
     namespace wrapper {

@@ -23,8 +23,8 @@
 #include <iosfwd>
 
 #include "core/opendavinci.h"
-#include "core/wrapper/Image.h"
-#include "core/wrapper/ImageFactory.h"
+#include "hesperia/core/wrapper/Image.h"
+#include "hesperia/core/wrapper/ImageFactory.h"
 
 namespace core {
     namespace wrapper {

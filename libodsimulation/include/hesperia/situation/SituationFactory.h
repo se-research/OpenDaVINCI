@@ -25,8 +25,8 @@
 #include "core/opendavinci.h"
 #include "core/base/Mutex.h"
 #include "core/exceptions/Exceptions.h"
-#include "core/wrapper/parser/ParserErrorListener.h"
-#include "core/wrapper/parser/ParserTokenListener.h"
+#include "hesperia/core/wrapper/parser/ParserErrorListener.h"
+#include "hesperia/core/wrapper/parser/ParserTokenListener.h"
 
 #include "hesperia/data/situation/Situation.h"
 

@@ -26,7 +26,7 @@
 
 #include "core/SharedPointer.h"
 #include "core/wrapper/DecompressedData.h"
-#include "core/wrapper/Image.h"
+#include "hesperia/core/wrapper/Image.h"
 
 #include "hesperia/data/scenario/ComplexModel.h"
 #include "hesperia/data/scenario/Scenario.h"
