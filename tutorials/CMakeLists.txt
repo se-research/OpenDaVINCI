@@ -23,6 +23,7 @@ PROJECT (tutorials)
 # Add subdirectories.
 ADD_SUBDIRECTORY (datatrigger)
 ADD_SUBDIRECTORY (diningphilosophers)
+ADD_SUBDIRECTORY (helloworld)
 ADD_SUBDIRECTORY (ipcsharedmemory)
 ADD_SUBDIRECTORY (realtimeservice)
 ADD_SUBDIRECTORY (serialreceivebytes)
