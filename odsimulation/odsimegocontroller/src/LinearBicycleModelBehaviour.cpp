@@ -21,7 +21,7 @@
 #include <iostream>
 
 #include "LinearBicycleModelBehaviour.h"
-#include "generated/cartesian/Constants.h"
+#include "automotivedata/generated/cartesian/Constants.h"
 #include "hesperia/data/environment/Point3.h"
 
 namespace egocontroller {

@@ -20,8 +20,8 @@
 #ifndef CAMGEN_OPENGLGRABBER_H_
 #define CAMGEN_OPENGLGRABBER_H_
 
-#include "core/SharedPointer.h"
-#include "core/base/KeyValueConfiguration.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/base/KeyValueConfiguration.h"
 #include "hesperia/data/camera/ImageGrabberID.h"
 #include "hesperia/io/camera/ImageGrabber.h"
 

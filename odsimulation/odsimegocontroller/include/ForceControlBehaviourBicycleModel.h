@@ -21,7 +21,7 @@
 #define EGOCONTROLLER_FORCECONTROLBEHAVIOURBICYCLEMODEL_H_
 
 #include "ControlBehaviour.h"
-#include "core/data/TimeStamp.h"
+#include "opendavinci/core/data/TimeStamp.h"
 #include "hesperia/data/environment/EgoState.h"
 #include "hesperia/data/environment/Point3.h"
 

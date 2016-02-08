@@ -21,9 +21,9 @@
 #include <string>
 
 #include "IRUS.h"
-#include "core/opendavinci.h"
-#include "core/base/Thread.h"
-#include "core/data/Container.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/Thread.h"
+#include "opendavinci/core/data/Container.h"
 #include "hesperia/data/environment/EgoState.h"
 #include "vehiclecontext/model/IRUS.h"
 

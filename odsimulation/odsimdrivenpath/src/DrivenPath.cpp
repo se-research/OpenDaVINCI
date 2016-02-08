@@ -22,9 +22,9 @@
 #include <vector>
 
 #include "DrivenPath.h"
-#include "core/data/Container.h"
-#include "core/io/URL.h"
-#include "core/wrapper/graph/DirectedGraph.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/io/URL.h"
+#include "hesperia/core/wrapper/graph/DirectedGraph.h"
 #include "hesperia/data/environment/EgoState.h"
 #include "hesperia/data/environment/NamedLine.h"
 #include "hesperia/data/environment/Point3.h"

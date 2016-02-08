@@ -27,12 +27,12 @@
 #include <vector>
 
 #include "OpenGLGrabber.h"
-#include "core/base/FIFOQueue.h"
-#include "core/base/Thread.h"
-#include "core/data/Container.h"
-#include "core/io/URL.h"
-#include "core/wrapper/ImageFactory.h"
-#include "core/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/core/base/FIFOQueue.h"
+#include "opendavinci/core/base/Thread.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/io/URL.h"
+#include "hesperia/core/wrapper/ImageFactory.h"
+#include "opendavinci/core/wrapper/SharedMemoryFactory.h"
 #include "hesperia/data/environment/EgoState.h"
 #include "hesperia/data/environment/Obstacle.h"
 #include "hesperia/data/environment/Point3.h"

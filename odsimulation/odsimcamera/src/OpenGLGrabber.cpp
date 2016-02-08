@@ -24,13 +24,13 @@
 #include <iostream>
 #include <string>
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 #include "OpenGLGrabber.h"
-#include "core/base/Thread.h"
-#include "core/io/URL.h"
-#include "core/wrapper/ImageFactory.h"
-#include "core/wrapper/SharedMemory.h"
-#include "core/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/core/base/Thread.h"
+#include "opendavinci/core/io/URL.h"
+#include "hesperia/core/wrapper/ImageFactory.h"
+#include "opendavinci/core/wrapper/SharedMemory.h"
+#include "opendavinci/core/wrapper/SharedMemoryFactory.h"
 #include "hesperia/scenario/SCNXArchiveFactory.h"
 #include "hesperia/threeD/RenderingConfiguration.h"
 #include "hesperia/threeD/TransformGroup.h"

@@ -20,9 +20,9 @@
 #ifndef IRUS_H_
 #define IRUS_H_
 
-#include "core/opendavinci.h"
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
 namespace irus {
 

@@ -22,9 +22,9 @@
 
 #include <stdint.h>
 
-#include "core/SharedPointer.h"
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
 #include "hesperia/data/environment/EgoState.h"
 
 namespace core { namespace wrapper { class Image; } }

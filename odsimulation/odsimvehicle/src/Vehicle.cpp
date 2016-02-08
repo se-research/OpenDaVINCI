@@ -22,10 +22,10 @@
 #include <string>
 #include <vector>
 
-#include "core/base/Thread.h"
-#include "core/data/Container.h"
+#include "opendavinci/core/base/Thread.h"
+#include "opendavinci/core/data/Container.h"
 #include "vehiclecontext/model/SimplifiedBicycleModel.h"
-#include "generated/automotive/VehicleControl.h"
+#include "automotivedata/generated/automotive/VehicleControl.h"
 
 #include "Vehicle.h"
 

@@ -20,7 +20,7 @@
 #include <cmath>
 
 #include "ForceControlBehaviour.h"
-#include "generated/cartesian/Constants.h"
+#include "automotivedata/generated/cartesian/Constants.h"
 
 namespace egocontroller {
     using namespace core::base;

@@ -23,10 +23,10 @@
 #include <stdint.h>
 #include <map>
 
-#include "core/SharedPointer.h"
-#include "core/base/KeyValueConfiguration.h"
-#include "core/wrapper/Image.h"
-#include "core/wrapper/SharedMemory.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/base/KeyValueConfiguration.h"
+#include "hesperia/core/wrapper/Image.h"
+#include "opendavinci/core/wrapper/SharedMemory.h"
 #include "hesperia/data/camera/ImageGrabberID.h"
 #include "hesperia/io/camera/ImageGrabber.h"
 #include "hesperia/threeD/TransformGroup.h"

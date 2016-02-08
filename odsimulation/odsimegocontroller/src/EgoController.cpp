@@ -30,10 +30,10 @@
 #include "KeyBoardController.h"
 #include "LinearBicycleModelBehaviour.h"
 #include "SimpleControlBehaviour.h"
-#include "core/base/KeyValueConfiguration.h"
-#include "core/data/Container.h"
-#include "core/io/conference/ContainerConference.h"
-#include "generated/coredata/dmcp/ModuleStateMessage.h"
+#include "opendavinci/core/base/KeyValueConfiguration.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/io/conference/ContainerConference.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
 #include "hesperia/data/environment/Point3.h"
 
 namespace egocontroller {
