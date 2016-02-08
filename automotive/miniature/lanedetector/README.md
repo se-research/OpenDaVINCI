@@ -103,8 +103,8 @@ Create a symbolic link in your $HOME folder:
 
 ## Run the simulation
 
-Now, the simulation as provided in a Docker image can be started:
-
+Now, the simulation as provided in a Docker image can be started.
+Make sure your user is in the "docker" group.
 Start "odsupercomponent" for the software component lifecycle management (this step will download the Docker image):
 
     $ docker run --rm=true --net host -v /home/$USER/config:/opt/data -w "/opt/data" -t -i seresearch/odsimulation:latest odsupercomponent --cid=111 --verbose=1
