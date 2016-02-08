@@ -97,7 +97,7 @@ simply start the Docker image later.
 
 Create a symbolic link in your $HOME folder:
 
-    $ ln -sf $PWD/config $HOME/config
+    $ ln -sf $PWD/../config $HOME
 
 
 
