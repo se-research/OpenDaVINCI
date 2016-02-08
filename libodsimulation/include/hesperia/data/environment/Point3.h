@@ -24,7 +24,7 @@
 
 #include "opendavinci/core/data/SerializableData.h"
 
-#include "opendavinci/GeneratedHeaders_AutomotiveData.h"
+#include "automotivedata/GeneratedHeaders_AutomotiveData.h"
 
 namespace hesperia {
     namespace data {

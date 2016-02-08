@@ -27,7 +27,7 @@
 
 #include "hesperia/data/environment/Point3.h"
 
-#include "opendavinci/GeneratedHeaders_AutomotiveData.h"
+#include "automotivedata/GeneratedHeaders_AutomotiveData.h"
 
 namespace hesperia {
     namespace data {

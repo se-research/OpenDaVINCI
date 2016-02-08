@@ -35,7 +35,7 @@
 #include "hesperia/io/camera/ImageGrabber.h"
 
 #include "opendavinci/GeneratedHeaders_CoreData.h"
-#include "opendavinci/GeneratedHeaders_AutomotiveData.h"
+#include "automotivedata/GeneratedHeaders_AutomotiveData.h"
 
 #include "OpenGLGrabber.h"
 
