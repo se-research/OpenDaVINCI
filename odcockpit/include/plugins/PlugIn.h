@@ -23,8 +23,8 @@
 
 #include <string>
 
-#include "core/base/KeyValueConfiguration.h"
-#include "core/base/Mutex.h"
+#include "opendavinci/core/base/KeyValueConfiguration.h"
+#include "opendavinci/core/base/Mutex.h"
 
 class QWidget;
 namespace cockpit { class ContainerObserver; }

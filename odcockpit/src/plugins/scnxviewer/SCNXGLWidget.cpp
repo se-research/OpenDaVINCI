@@ -22,11 +22,11 @@
 
 #include <iostream>
 
-#include "core/opendavinci.h"
-#include "core/base/Lock.h"
-#include "core/base/Thread.h"
-#include "core/io/URL.h"
-#include "core/wrapper/DisposalService.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/base/Thread.h"
+#include "opendavinci/core/io/URL.h"
+#include "opendavinci/core/wrapper/DisposalService.h"
 #include "hesperia/scenario/SCNXArchiveFactory.h"
 #include "hesperia/threeD/Node.h"
 #include "hesperia/threeD/NodeDescriptor.h"

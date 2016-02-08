@@ -28,9 +28,9 @@
 #include <string>
 #include <vector>
 
-#include "core/base/Mutex.h"
-#include "core/io/conference/ContainerListener.h"
-#include "core/strings/StringComparator.h"
+#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/core/io/conference/ContainerListener.h"
+#include "opendavinci/core/strings/StringComparator.h"
 #include "hesperia/data/environment/WGS84Coordinate.h"
 
 #include "plugins/streetmapviewer/StreetMapMapWidget.h"

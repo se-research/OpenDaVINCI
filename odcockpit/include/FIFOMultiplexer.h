@@ -23,12 +23,12 @@
 
 #include <vector>
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 #include "ContainerObserver.h"
-#include "core/base/FIFOQueue.h"
-#include "core/base/Mutex.h"
-#include "core/base/Service.h"
-#include "core/data/Container.h"
+#include "opendavinci/core/base/FIFOQueue.h"
+#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/core/base/Service.h"
+#include "opendavinci/core/data/Container.h"
 
 namespace core { namespace base { class DataStoreManager; } }
 namespace core { namespace io { namespace conference { class ContainerListener; } } }

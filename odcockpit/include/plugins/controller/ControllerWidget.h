@@ -24,12 +24,12 @@
 #include <qobjectdefs.h>
 #include <qwidget.h>
 
-#include "core/opendavinci.h"
-#include "core/base/Mutex.h"
-#include "core/data/TimeStamp.h"
-#include "core/io/conference/ContainerListener.h"
-#include "generated/automotive/VehicleControl.h"
-#include "generated/automotive/miniature/UserButtonData.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/core/data/TimeStamp.h"
+#include "opendavinci/core/io/conference/ContainerListener.h"
+#include "automotivedata/generated/automotive/VehicleControl.h"
+#include "automotivedata/generated/automotive/miniature/UserButtonData.h"
 
 class QCheckBox;
 class QKeyEvent;

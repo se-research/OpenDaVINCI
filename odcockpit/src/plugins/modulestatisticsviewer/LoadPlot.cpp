@@ -37,8 +37,8 @@
 # endif
 #endif
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"
 #include "plugins/modulestatisticsviewer/LoadPerModule.h"
 #include "plugins/modulestatisticsviewer/LoadPlot.h"
 

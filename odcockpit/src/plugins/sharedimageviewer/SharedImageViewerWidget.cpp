@@ -30,10 +30,10 @@
 #include <algorithm>
 #include <iostream>
 
-#include "core/opendavinci.h"
-#include "core/base/Lock.h"
-#include "core/data/Container.h"
-#include "core/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/wrapper/SharedMemoryFactory.h"
 #include "plugins/sharedimageviewer/SharedImageViewerWidget.h"
 
 class QPaintEvent;

@@ -27,8 +27,8 @@
 #include <map>
 #include <string>
 
-#include "core/data/Container.h"
-#include "core/io/conference/ContainerListener.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/io/conference/ContainerListener.h"
 
 class QTreeWidget;
 class QTreeWidgetItem;

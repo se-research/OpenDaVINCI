@@ -23,8 +23,8 @@
 #include <fstream>
 #include <iostream>
 
-#include "core/opendavinci.h"
-#include "core/base/Lock.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/Lock.h"
 #include "hesperia/threeD/Node.h"
 #include "hesperia/threeD/NodeDescriptor.h"
 #include "hesperia/threeD/RenderingConfiguration.h"

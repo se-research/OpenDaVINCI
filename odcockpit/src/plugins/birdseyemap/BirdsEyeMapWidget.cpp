@@ -27,9 +27,9 @@
 #include <qnamespace.h>
 #include <qstringlist.h>
 
-#include "core/opendavinci.h"
-#include "core/base/Lock.h"
-#include "core/base/TreeNode.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/base/TreeNode.h"
 #include "plugins/birdseyemap/BirdsEyeMapMapWidget.h"
 #include "plugins/birdseyemap/BirdsEyeMapWidget.h"
 #include "plugins/birdseyemap/SelectableNodeDescriptor.h"

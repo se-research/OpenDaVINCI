@@ -23,7 +23,7 @@
 
 #include <string>
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 #include "hesperia/data/environment/Point3.h"
 
 class QPainter;

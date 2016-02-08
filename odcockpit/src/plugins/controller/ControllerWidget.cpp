@@ -31,11 +31,11 @@
 
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/base/Lock.h"
-#include "core/data/Container.h"
-#include "core/io/conference/ContainerConference.h"
-#include "generated/cartesian/Constants.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/io/conference/ContainerConference.h"
+#include "automotivedata/generated/cartesian/Constants.h"
 #include "plugins/controller/ControllerWidget.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }

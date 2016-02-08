@@ -26,9 +26,9 @@
 #include <map>
 #include <vector>
 
-#include "core/opendavinci.h"
-#include "core/base/Mutex.h"
-#include "core/io/conference/ContainerListener.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/core/io/conference/ContainerListener.h"
 #include "hesperia/data/environment/EgoState.h"
 #include "hesperia/data/environment/Point3.h"
 #include "hesperia/scenegraph/SceneNodeDescriptor.h"

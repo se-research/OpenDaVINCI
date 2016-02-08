@@ -36,8 +36,8 @@
 
 #include <cstring>
 
-#include "core/opendavinci.h"
-#include "core/base/Lock.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/Lock.h"
 #include "plugins/modulestatisticsviewer/LoadPerModule.h"
 
 namespace cockpit {

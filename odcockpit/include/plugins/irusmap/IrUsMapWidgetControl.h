@@ -24,8 +24,8 @@
 #include <qobjectdefs.h>
 #include <qwidget.h>
 
-#include "core/base/Mutex.h"
-#include "core/io/conference/ContainerListener.h"
+#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/core/io/conference/ContainerListener.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }
 namespace core { namespace base { class KeyValueConfiguration; } }

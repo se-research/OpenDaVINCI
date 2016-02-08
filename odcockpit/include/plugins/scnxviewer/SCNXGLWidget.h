@@ -23,7 +23,7 @@
 
 #include <string>
 
-#include "core/base/Mutex.h"
+#include "opendavinci/core/base/Mutex.h"
 #include "plugins/AbstractGLWidget.h"
 
 class QWidget;

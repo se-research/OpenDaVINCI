@@ -20,7 +20,7 @@
 
 #include <vector>
 
-#include "core/base/TreeNode.h"
+#include "opendavinci/core/base/TreeNode.h"
 #include "hesperia/scenegraph/SceneNode.h"
 #include "hesperia/scenegraph/renderer/RenderingConfiguration.h"
 #include "hesperia/scenegraph/renderer/SceneNodeRenderingConfiguration.h"

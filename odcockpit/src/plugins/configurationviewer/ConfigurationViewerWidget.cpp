@@ -25,8 +25,8 @@
 
 #include <sstream>
 
-#include "core/opendavinci.h"
-#include "core/base/KeyValueConfiguration.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/KeyValueConfiguration.h"
 #include "plugins/configurationviewer/ConfigurationViewerWidget.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }

@@ -28,10 +28,10 @@
 #include <map>
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"
-#include "core/io/conference/ContainerListener.h"
-#include "generated/coredata/dmcp/ModuleStatistics.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/io/conference/ContainerListener.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleStatistics.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }
 namespace core { namespace data { class Container; } }

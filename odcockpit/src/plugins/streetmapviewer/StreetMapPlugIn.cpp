@@ -21,8 +21,8 @@
 #include <sstream>
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/strings/StringToolbox.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/strings/StringToolbox.h"
 #include "ContainerObserver.h"
 
 #include "plugins/streetmapviewer/StreetMapPlugIn.h"

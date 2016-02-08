@@ -30,9 +30,9 @@
 
 #include <cmath>
 
-#include "core/opendavinci.h"
-#include "core/base/Lock.h"
-#include "generated/cartesian/Constants.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/Lock.h"
+#include "automotivedata/generated/cartesian/Constants.h"
 #include "plugins/AbstractGLWidget.h"
 
 class QWidget;

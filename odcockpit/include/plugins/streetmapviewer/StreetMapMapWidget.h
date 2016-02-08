@@ -22,8 +22,8 @@
 
 #include <QWidget>
 
-#include "core/base/Mutex.h"
-#include "core/io/conference/ContainerListener.h"
+#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/core/io/conference/ContainerListener.h"
 #include "hesperia/data/environment/WGS84Coordinate.h"
 
 class QTimer;

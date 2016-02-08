@@ -39,7 +39,7 @@
 
 #include <vector>
 
-#include "core/SharedPointer.h"
+#include "opendavinci/core/SharedPointer.h"
 
 class QTimer;
 class QWidget;

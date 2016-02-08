@@ -26,9 +26,9 @@
 #include <qnamespace.h>
 #include <qstringlist.h>
 
-#include "core/opendavinci.h"
-#include "core/base/Lock.h"
-#include "core/base/TreeNode.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/base/TreeNode.h"
 #include "plugins/GLControlFrame.h"
 #include "plugins/environmentviewer/EnvironmentViewerGLWidget.h"
 #include "plugins/environmentviewer/EnvironmentViewerWidget.h"

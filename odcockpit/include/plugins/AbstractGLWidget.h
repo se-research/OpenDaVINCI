@@ -24,8 +24,8 @@
 #include <Qt/qgl.h>
 #include <qobjectdefs.h>
 
-#include "core/opendavinci.h"
-#include "core/base/Mutex.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/Mutex.h"
 #include "hesperia/data/environment/Point3.h"
 
 class QKeyEvent;

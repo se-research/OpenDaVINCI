@@ -23,8 +23,8 @@
 #include <QtGui>
 #include <QtNetwork>
 
-#include "core/base/Lock.h"
-#include "core/data/Container.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/data/Container.h"
 #include "hesperia/data/environment/EgoState.h"
 
 #include "plugins/streetmapviewer/StreetMapMapWidget.h"

@@ -28,13 +28,13 @@
 #include <string>
 #include <vector>
 
-#include "core/opendavinci.h"
-#include "core/base/KeyValueConfiguration.h"
-#include "core/base/Lock.h"
-#include "core/base/TreeNode.h"
-#include "core/data/Container.h"
-#include "core/io/URL.h"
-#include "generated/cartesian/Constants.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/KeyValueConfiguration.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/base/TreeNode.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/io/URL.h"
+#include "automotivedata/generated/cartesian/Constants.h"
 #include "hesperia/data/environment/Obstacle.h"
 #include "hesperia/data/environment/Point3.h"
 #include "hesperia/data/environment/Polygon.h"

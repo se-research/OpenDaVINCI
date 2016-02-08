@@ -28,8 +28,8 @@
 #include <qglobal.h>
 #include <qnamespace.h>
 
-#include "core/opendavinci.h"
-#include "core/data/Container.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/data/Container.h"
 #include "hesperia/data/environment/EgoState.h"
 
 #include "plugins/streetmapviewer/StreetMapWidget.h"

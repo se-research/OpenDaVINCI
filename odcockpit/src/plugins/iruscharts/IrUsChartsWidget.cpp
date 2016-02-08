@@ -46,16 +46,16 @@
 #include <iostream>
 #include <sstream>
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"
-#include "core/base/KeyValueConfiguration.h"
-#include "core/base/Lock.h"
-#include "core/base/Serializable.h"
-#include "core/data/Container.h"
-#include "core/data/TimeStamp.h"
-#include "core/exceptions/Exceptions.h"
-#include "core/io/StreamFactory.h"
-#include "core/io/URL.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/base/KeyValueConfiguration.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/base/Serializable.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/data/TimeStamp.h"
+#include "opendavinci/core/exceptions/Exceptions.h"
+#include "opendavinci/core/io/StreamFactory.h"
+#include "opendavinci/core/io/URL.h"
 #include "plugins/iruscharts/IrUsChartData.h"
 #include "plugins/iruscharts/IrUsChartsWidget.h"
 

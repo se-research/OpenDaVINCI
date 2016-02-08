@@ -20,8 +20,8 @@
 
 #include <ostream>
 
-#include "core/base/Serializable.h"
-#include "core/data/SerializableData.h"
+#include "opendavinci/core/base/Serializable.h"
+#include "opendavinci/core/data/SerializableData.h"
 #include "plugins/livefeed/MessageToTupleVisitor.h"
 
 namespace cockpit {

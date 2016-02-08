@@ -22,10 +22,10 @@
 #include <Qt/qtimer.h>
 #include <qcolor.h>
 
-#include "core/opendavinci.h"
-#include "core/data/Container.h"
-#include "generated/coredata/dmcp/ModuleDescriptor.h"
-#include "generated/coredata/dmcp/ModuleStatistic.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleDescriptor.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleStatistic.h"
 #include "plugins/modulestatisticsviewer/LoadPerModule.h"
 #include "plugins/modulestatisticsviewer/LoadPlot.h"
 #include "plugins/modulestatisticsviewer/ModuleStatisticsViewerWidget.h"

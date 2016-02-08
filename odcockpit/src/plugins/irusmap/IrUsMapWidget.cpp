@@ -36,11 +36,11 @@
 #include <iostream>
 #include <sstream>
 
-#include "core/opendavinci.h"
-#include "core/base/KeyValueConfiguration.h"
-#include "core/base/Lock.h"
-#include "core/data/Container.h"
-#include "core/strings/StringComparator.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/KeyValueConfiguration.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/strings/StringComparator.h"
 #include "hesperia/data/environment/Point3.h"
 #include "plugins/irusmap/IrUsMapWidget.h"
 #include "plugins/irusmap/PointSensor.h"

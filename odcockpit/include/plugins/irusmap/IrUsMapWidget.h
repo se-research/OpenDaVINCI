@@ -27,9 +27,9 @@
 #include <map>
 #include <string>
 
-#include "core/base/Mutex.h"
-#include "core/io/conference/ContainerListener.h"
-#include "generated/automotive/miniature/SensorBoardData.h"
+#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/core/io/conference/ContainerListener.h"
+#include "automotivedata/generated/automotive/miniature/SensorBoardData.h"
 
 class QPaintEvent;
 class QTimer;

@@ -27,9 +27,9 @@
 #include <string>
 #include <vector>
 
-#include "core/SharedPointer.h"
-#include "core/base/KeyValueConfiguration.h"
-#include "core/base/Mutex.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/base/KeyValueConfiguration.h"
+#include "opendavinci/core/base/Mutex.h"
 
 class QWidget;
 namespace core { namespace base { class DataStoreManager; } }

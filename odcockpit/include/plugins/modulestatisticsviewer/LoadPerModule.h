@@ -27,9 +27,9 @@
 #include <string>
 #include <vector>
 
-#include "core/base/Mutex.h"
-#include "generated/coredata/dmcp/ModuleDescriptor.h"
-#include "generated/coredata/dmcp/RuntimeStatistic.h"
+#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleDescriptor.h"
+#include "opendavinci/generated/coredata/dmcp/RuntimeStatistic.h"
 
 class QwtPlotCurve;
 

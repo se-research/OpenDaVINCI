@@ -24,9 +24,9 @@
 #include <map>
 #include <vector>
 
-#include "core/opendavinci.h"
-#include "core/base/Mutex.h"
-#include "core/io/conference/ContainerListener.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/core/io/conference/ContainerListener.h"
 #include "hesperia/data/environment/Position.h"
 #include "hesperia/threeD/NodeDescriptor.h"
 #include "hesperia/threeD/NodeDescriptorComparator.h"

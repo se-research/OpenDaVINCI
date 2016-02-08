@@ -29,9 +29,9 @@
 #include <string>
 #include <vector>
 
-#include "core/base/Mutex.h"
-#include "core/io/conference/ContainerListener.h"
-#include "core/strings/StringComparator.h"
+#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/core/io/conference/ContainerListener.h"
+#include "opendavinci/core/strings/StringComparator.h"
 #include "hesperia/threeD/NodeDescriptor.h"
 #include "plugins/environmentviewer/CameraAssignableNodesListener.h"
 #include "plugins/environmentviewer/SelectableNodeDescriptorTreeListener.h"

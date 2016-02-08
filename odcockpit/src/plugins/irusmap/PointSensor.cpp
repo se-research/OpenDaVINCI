@@ -25,8 +25,8 @@
 #include <cmath>
 #include <sstream>
 
-#include "generated/automotive/miniature/SensorBoardData.h"
-#include "generated/cartesian/Constants.h"
+#include "automotivedata/generated/automotive/miniature/SensorBoardData.h"
+#include "automotivedata/generated/cartesian/Constants.h"
 #include "plugins/irusmap/PointSensor.h"
 
 namespace cockpit {

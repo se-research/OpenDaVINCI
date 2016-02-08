@@ -24,8 +24,8 @@
 
 #include <iostream>
 
-#include "core/opendavinci.h"
-#include "core/base/Lock.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/Lock.h"
 #include "plugins/PlugInProvider.h"
 #include "plugins/birdseyemap/BirdsEyeMapPlugIn.h"
 #include "plugins/configurationviewer/ConfigurationViewerPlugIn.h"

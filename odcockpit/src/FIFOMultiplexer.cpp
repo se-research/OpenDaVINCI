@@ -18,10 +18,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "core/base/DataStoreManager.h"
-#include "core/base/Lock.h"
-#include "core/data/Container.h"
-#include "core/io/conference/ContainerListener.h"
+#include "opendavinci/core/base/DataStoreManager.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/io/conference/ContainerListener.h"
 
 #include "FIFOMultiplexer.h"
 

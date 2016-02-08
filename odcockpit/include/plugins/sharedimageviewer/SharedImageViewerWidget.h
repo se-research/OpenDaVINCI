@@ -30,11 +30,11 @@
 #include <string>
 #include <vector>
 
-#include "core/SharedPointer.h"
-#include "core/base/Mutex.h"
-#include "core/io/conference/ContainerListener.h"
-#include "core/wrapper/SharedMemory.h"
-#include "generated/coredata/image/SharedImage.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/core/io/conference/ContainerListener.h"
+#include "opendavinci/core/wrapper/SharedMemory.h"
+#include "opendavinci/generated/coredata/image/SharedImage.h"
 
 class QImage;
 class QListWidget;
