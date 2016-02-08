@@ -13,7 +13,7 @@ HelloWorldExample.h:
 
 .. code-block:: c++
 
-    #include <core/base/TimeTriggeredConferenceClientModule.h>
+    #include <opendavinci/core/base/TimeTriggeredConferenceClientModule.h>
 
     class HelloWorldExample : public core::base::module::TimeTriggeredConferenceClientModule {
         private:
@@ -94,8 +94,8 @@ the "Hello World" example, the latter file is simply starting the component.
 
 Now, you can compile and link the example manually::
 
-    $ g++ -I /usr/include/opendavinci -c HelloWorldExample.cpp -o HelloWorldExample.o
-    $ g++ -I /usr/include/opendavinci -c HelloWorldExampleMain.cpp -o HelloWorldExampleMain.o
+    $ g++ -I /usr/include -c HelloWorldExample.cpp -o HelloWorldExample.o
+    $ g++ -I /usr/include -c HelloWorldExampleMain.cpp -o HelloWorldExampleMain.o
     $ g++ -o helloworldexample HelloWorldExampleMain.o HelloWorldExample.o -lopendavinci -lpthread
 
 
@@ -145,7 +145,7 @@ shall be installed to::
     FIND_PACKAGE (OpenDaVINCI REQUIRED)
 
     # (2) Set header files from OpenDaVINCI.
-    INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS}/opendavinci)
+    INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS})
 
     # (3) Build the project.
     SET(SOURCES HelloWorldExample.cpp HelloWorldExampleMain.cpp)

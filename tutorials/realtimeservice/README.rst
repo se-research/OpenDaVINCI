@@ -65,7 +65,7 @@ Furthermore, the deriving class needs to pass the desired periodicity to the sup
 
 You can compile and link the example::
 
-   g++ -I /usr/include/opendavinci -c MyRealtimeService.cpp -o MyRealtimeService.o
+   g++ -I /usr/include -c MyRealtimeService.cpp -o MyRealtimeService.o
    g++ -o realtimeservice MyRealtimeService.o -lopendavinci -lpthread -lrt
 
 The resulting program can be run as superuser (as the scheduling properties will be

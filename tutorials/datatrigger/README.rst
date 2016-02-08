@@ -176,7 +176,7 @@ super-classes.
 
 You can compile and link the example::
 
-   $ g++ -I /usr/include/opendavinci -c TimeTriggeredSender.cpp -o TimeTriggeredSender.o
+   $ g++ -I /usr/include -c TimeTriggeredSender.cpp -o TimeTriggeredSender.o
    $ g++ -o timetriggeredsender TimeTriggeredSender.o -lopendavinci -lpthread
 
 
@@ -328,7 +328,7 @@ super-classes.
 
 You can compile and link the example::
 
-   $ g++ -I /usr/include/opendavinci -c DataTriggeredReceiver.cpp -o DataTriggeredReceiver.o
+   $ g++ -I /usr/include -c DataTriggeredReceiver.cpp -o DataTriggeredReceiver.o
    $ g++ -o datatriggeredreceiver DataTriggeredReceiver.o -lopendavinci -lpthread
 
 
@@ -416,7 +416,7 @@ If the container conference session identifier is omitted, the following excepti
 will be thrown::
 
    terminate called after throwing an instance of 'core::exceptions::InvalidArgumentException'
-     what():  InvalidArgumentException: Invalid number of arguments. At least a conference group id (--cid=) needed. at /home/berger/GITHUB/Mini-Smart-Vehicles/sources/OpenDaVINCI/libopendavinci/src/opendavinci/core/base/module/AbstractCIDModule.cpp: 53
+     what():  InvalidArgumentException: Invalid number of arguments. At least a conference group id (--cid=) needed. at /home/berger/GITHUB/Mini-Smart-Vehicles/sources/OpenDaVINCI/libopendavinci/src/core/base/module/AbstractCIDModule.cpp: 53
    Aborted
 
 If no ``odsupercomponent`` is running, the application will exit with return code 4.

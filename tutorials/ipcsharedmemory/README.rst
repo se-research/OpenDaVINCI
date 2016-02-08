@@ -85,7 +85,7 @@ returning a ``char*``.
 
 You can compile and link the producer example as follows::
 
-   g++ -I /usr/include/opendavinci -c ipcsharedmemoryproducer.cpp -o ipcsharedmemoryproducer.o
+   g++ -I /usr/include -c ipcsharedmemoryproducer.cpp -o ipcsharedmemoryproducer.o
    g++ -o ipcsharedmemoryproducer ipcsharedmemoryproducer.o -lopendavinci -lpthread
 
 ipcsharedmemoryconsumer.cpp:
@@ -162,7 +162,7 @@ returning a ``char*``.
 
 You can compile and link the consumer example as follows::
 
-   g++ -I /usr/include/opendavinci -c ipcsharedmemoryconsumer.cpp -o ipcsharedmemoryconsumer.o
+   g++ -I /usr/include -c ipcsharedmemoryconsumer.cpp -o ipcsharedmemoryconsumer.o
    g++ -o ipcsharedmemoryconsumer ipcsharedmemoryconsumer.o -lopendavinci -lpthread
 
 To test the program, simply run the producer::

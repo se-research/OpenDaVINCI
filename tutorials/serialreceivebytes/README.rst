@@ -109,7 +109,7 @@ thus, you need to create a new one.
 
 You can compile and link the example::
 
-   g++ -I /usr/include/opendavinci -c SerialReceiveBytes.cpp -o SerialReceiveBytes.o
+   g++ -I /usr/include -c SerialReceiveBytes.cpp -o SerialReceiveBytes.o
    g++ -o serialreceivebytes SerialReceiveBytes.o -lopendavinci -lpthread
 
 To test the program, we create a simple virtual serial port on Linux using the
