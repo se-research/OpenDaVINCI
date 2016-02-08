@@ -40,7 +40,7 @@ FIND_PACKAGE (OpenDaVINCI REQUIRED)
 
 ###############################################################################
 # Set header files from OpenDaVINCI.
-INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS}/opendavinci)
+INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS})
 
 ###############################################################################
 # Build this project.

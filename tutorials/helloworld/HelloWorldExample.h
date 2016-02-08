@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <core/base/module/TimeTriggeredConferenceClientModule.h>
+#include <opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h>
 
 class HelloWorldExample : public core::base::module::TimeTriggeredConferenceClientModule {
     private:
