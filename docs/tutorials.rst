@@ -31,7 +31,12 @@ TCP connection
 .. include:: tutorial.tcpreceivebytes.rst
 
 How to design distributed software systems
-----------------------
+------------------------------------------
+.. include:: tutorial.building.rst
 .. include:: tutorial.timetrigger.rst
 .. include:: tutorial.datatrigger.rst
+
+How to use simulation and visualization
+------------------------------------------
+.. include:: simulation.visualization.rst
 
