@@ -30,6 +30,7 @@
 
 #include "GeneratedHeaders_CoreData.h"
 #include <cmath>
+#include <vector>
 
 const double rotCorrection[64]={-5.3328056,-3.2344019,2.4376695,4.7373252,-1.0502493,1.2386309,-1.8405367,0.4511103,
                                 3.2611551,5.4685535,2.4743285,4.7189918,-5.3511744,-3.1158857,-6.1270261,-3.852011,
@@ -75,8 +76,10 @@ const double horizOffsetCorrection[64]={2.5999999,-2.5999999,2.5999999,-2.599999
 const double PI=3.1415926;
 #define toRadian(x) ((x)*PI/180.0)
 
-int packetNr(0);
-
+long packetNr(0);
+long pointIndex(0);
+long frameIndex(0);
+double previousAzimuth(0.00);
 
 using namespace std;
 using namespace core::base;
@@ -105,9 +108,10 @@ class PCAPTest : public CxxTest::TestSuite, public core::io::conference::Contain
                 // Here, we have a valid packet.
                 passed &= (c.getDataType() == nextID);
                 nextID = 1001;
-                if(packetNr>=42)//We only store data from the first 42 packets
+                if(packetNr>=600)//We only store data from the first 600 packets
                 {
                     cout<<"Enough!"<<endl;
+                    cout<<"Frame:"<<frameIndex<<", Number of points: "<<pointIndex<<endl;
                     return;
                 }
 
@@ -127,7 +131,7 @@ class PCAPTest : public CxxTest::TestSuite, public core::io::conference::Contain
                     
                         //A packet consists of 12 blocks with 100 bytes each. Decode each block separately.
                         int firstByte,secondByte,dataValue;
-                        ofstream outputData("LidarSensorData.csv", std::ios_base::app | std::ios_base::out);
+                        //ofstream outputData("DataFrame1.csv", std::ios_base::app | std::ios_base::out);
                         for(int index=0;index<12;index++)
                         {   
                             //Decode header information: 2 bytes                    
@@ -155,8 +159,28 @@ class PCAPTest : public CxxTest::TestSuite, public core::io::conference::Contain
                             dataValue=ntohs(firstByte*256+secondByte);                        
                             //dataValue=get2Bytes(firstByte,secondByte);
                             double rotation=static_cast<double>(dataValue/100.00);
-                            TS_ASSERT(rotation>=0 && rotation<360.00);
+                            TS_ASSERT(rotation>=0.00 && rotation<360.00);
                             //cout<<"Rotation: "<<rotation<<" degrees"<<endl;
+                            if(rotation<previousAzimuth)
+                            {
+                                //Visualize one frame based on "pointIndex", intensity[index], 
+                                //where index is from 0 to intensity.size(), the same for xData[index],yData[index],zData[index]
+                                /*if(frameIndex==1)
+                                {
+                                    for(unsigned long iii=0;iii<intensity.size();iii++)
+                                    {
+                                        outputData<<intensity[iii]<<".0,"<<xData[iii]<<","<<yData[iii]<<","<<zData[iii]<<endl;
+                                    }
+                                }*/
+                                intensity.clear();
+                                xData.clear();
+                                yData.clear();
+                                zData.clear();
+                                pointIndex=0;
+                                frameIndex++;
+                                cout<<rotation<<"/"<<previousAzimuth<<"/Next frame!"<<endl;
+                            }
+                            previousAzimuth=rotation;
                             dataToDecode=dataToDecode.substr(2);
 
                             cout.unsetf(ios::hex);
@@ -181,17 +205,20 @@ class PCAPTest : public CxxTest::TestSuite, public core::io::conference::Contain
                                     //distance[counter]=distance[counter]+distCorrection[counter+32]/100;
                                 //cout<<distance[counter]<<" ";
                                 double xyDistance=distance[counter]*cos(toRadian(vertCorrection[sensorID]));
-                                coordinate[0]=xyDistance*sin(toRadian(rotation-rotCorrection[sensorID]))
-                                    -horizOffsetCorrection[sensorID]/100.0*cos(toRadian(rotation-rotCorrection[sensorID]));
-                                coordinate[1]=xyDistance*cos(toRadian(rotation-rotCorrection[sensorID]))
-                                    +horizOffsetCorrection[sensorID]/100.0*sin(toRadian(rotation-rotCorrection[sensorID]));
-                                coordinate[2]=distance[counter]*sin(toRadian(vertCorrection[sensorID]))+vertOffsetCorrection[sensorID]/100.0;
+                                xData.push_back(xyDistance*sin(toRadian(rotation-rotCorrection[sensorID]))
+                                    -horizOffsetCorrection[sensorID]/100.0*cos(toRadian(rotation-rotCorrection[sensorID])));
+                                yData.push_back(xyDistance*cos(toRadian(rotation-rotCorrection[sensorID]))
+                                    +horizOffsetCorrection[sensorID]/100.0*sin(toRadian(rotation-rotCorrection[sensorID])));
+                                zData.push_back(distance[counter]*sin(toRadian(vertCorrection[sensorID]))+vertOffsetCorrection[sensorID]/100.0);
     
                                 //Decode intensity: 1 byte
-                                intensity[counter]=(unsigned int)(uint8_t)(dataToDecode.at(2));
+                                intensity.push_back((unsigned int)(uint8_t)(dataToDecode.at(2)));
                                 dataToDecode=dataToDecode.substr(3);
-                                outputData<<sensorID<<".0,"<<distance[counter]<<","<<intensity[counter]<<".0,"
-                                    <<rotation<<","<<coordinate[0]<<","<<coordinate[1]<<","<<coordinate[2]<<endl;
+                                pointIndex++;
+                                //if(pointIndex>90000)
+                                //{cout<<"Frame:"<<frameIndex<<"; Point:"<<pointIndex<<"Overflow!"<<endl;}
+                                //outputData<<sensorID<<".0,"<<distance[counter]<<","<<intensity[counter]<<".0,"
+                                    //<<rotation<<","<<coordinate[0]<<","<<coordinate[1]<<","<<coordinate[2]<<endl;
                             }
                             /*cout<<endl<<"Intensities: ";
                             for(int counter=0;counter<32;counter++)
@@ -264,10 +291,15 @@ class PCAPTest : public CxxTest::TestSuite, public core::io::conference::Contain
 //        }
 private:
     double distance[32];
-    int intensity[32];
+    //int intensity[32];
+    //int intensity[90000];
+    vector<int> intensity;
     //bool withTemperature;
     bool upperBlock;
-    double coordinate[3];
+    //double coordinate[90000][3];//From our observation of the Velodyne recordings, 90000 is a safe upper bound for the number of points to be visualized for one frame
+    vector<double> xData;
+    vector<double> yData;
+    vector<double> zData;
 };
 
 #endif /*CORE_PCAPTESTSUITE_H_*/
