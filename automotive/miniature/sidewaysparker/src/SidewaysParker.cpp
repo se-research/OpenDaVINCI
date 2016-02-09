@@ -21,11 +21,11 @@
 #include <cmath>
 #include <iostream>
 
-#include "core/io/conference/ContainerConference.h"
-#include "core/data/Container.h"
+#include "opendavinci/core/io/conference/ContainerConference.h"
+#include "opendavinci/core/data/Container.h"
 
-#include "GeneratedHeaders_CoreData.h"
-#include "GeneratedHeaders_AutomotiveData.h"
+#include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
+#include "automotivedata/GeneratedHeaders_AutomotiveData.h"
 
 #include "SidewaysParker.h"
 

@@ -22,7 +22,7 @@
 #ifndef DRIVER_H_
 #define DRIVER_H_
 
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
 
 namespace automotive {
     namespace miniature {

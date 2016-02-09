@@ -24,13 +24,13 @@
 
 #include <iostream>
 
-#include "core/base/Thread.h"
-#include "core/data/Container.h"
-#include "core/io/conference/ContainerConference.h"
-#include "core/io/URL.h"
-#include "core/wrapper/graph/DirectedGraph.h"
-#include "core/wrapper/graph/Edge.h"
-#include "core/wrapper/graph/Vertex.h"
+#include "opendavinci/core/base/Thread.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/io/conference/ContainerConference.h"
+#include "opendavinci/core/io/URL.h"
+#include "hesperia/core/wrapper/graph/DirectedGraph.h"
+#include "hesperia/core/wrapper/graph/Edge.h"
+#include "hesperia/core/wrapper/graph/Vertex.h"
 #include "hesperia/data/environment/EgoState.h"
 #include "hesperia/data/environment/Polygon.h"
 #include "hesperia/data/environment/Obstacle.h"
@@ -43,7 +43,7 @@
 #include "hesperia/scenario/ScenarioFactory.h"
 #include "hesperia/scenario/LaneVisitor.h"
 
-#include "GeneratedHeaders_AutomotiveData.h"
+#include "automotivedata/GeneratedHeaders_AutomotiveData.h"
 
 #include "SimpleDriver.h"
 

@@ -22,13 +22,13 @@
 
 #include <opencv/cv.h>
 
-#include "core/SharedPointer.h"
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "core/data/TimeStamp.h"
-#include "core/wrapper/SharedMemory.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/core/data/TimeStamp.h"
+#include "opendavinci/core/wrapper/SharedMemory.h"
 
-#include "GeneratedHeaders_AutomotiveData.h"
-#include "GeneratedHeaders_CoreData.h"
+#include "automotivedata/GeneratedHeaders_AutomotiveData.h"
+#include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
 namespace automotive {
     namespace miniature {

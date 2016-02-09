@@ -23,9 +23,9 @@
 #include <stdint.h>
 #include <string>
 
-#include "core/SharedPointer.h"
-#include "core/wrapper/SharedMemory.h"
-#include "GeneratedHeaders_CoreData.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/wrapper/SharedMemory.h"
+#include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
 namespace automotive {
     namespace miniature {

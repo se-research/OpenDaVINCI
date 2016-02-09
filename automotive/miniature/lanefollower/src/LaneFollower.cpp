@@ -22,14 +22,14 @@
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
 
-#include "core/base/KeyValueConfiguration.h"
-#include "core/base/Lock.h"
-#include "core/data/Container.h"
-#include "core/io/conference/ContainerConference.h"
-#include "core/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/core/base/KeyValueConfiguration.h"
+#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/io/conference/ContainerConference.h"
+#include "opendavinci/core/wrapper/SharedMemoryFactory.h"
 
-#include "GeneratedHeaders_AutomotiveData.h"
-#include "GeneratedHeaders_CoreData.h"
+#include "automotivedata/GeneratedHeaders_AutomotiveData.h"
+#include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
 #include "LaneFollower.h"
 

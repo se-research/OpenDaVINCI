@@ -19,11 +19,11 @@
 
 #include <iostream>
 
-#include "core/base/KeyValueConfiguration.h"
-#include "core/data/Container.h"
-#include "core/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/core/base/KeyValueConfiguration.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/wrapper/SharedMemoryFactory.h"
 
-#include "GeneratedHeaders_CoreData.h"
+#include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
 #include "VCR.h"
 

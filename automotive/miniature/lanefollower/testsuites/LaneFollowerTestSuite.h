@@ -22,12 +22,12 @@
 
 #include "cxxtest/TestSuite.h"
 
-#include "core/SharedPointer.h"
-#include "core/data/Container.h"
-#include "core/wrapper/SharedMemory.h"
-#include "core/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/wrapper/SharedMemory.h"
+#include "opendavinci/core/wrapper/SharedMemoryFactory.h"
 
-#include "GeneratedHeaders_CoreData.h"
+#include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
 // Include local header files.
 #include "../include/LaneFollower.h"

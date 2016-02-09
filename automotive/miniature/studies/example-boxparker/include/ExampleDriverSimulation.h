@@ -22,7 +22,7 @@
 #ifndef EXAMPLEDRIVERSIMULATION_H_
 #define EXAMPLEDRIVERSIMULATION_H_
 
-#include "core/opendavinci.h"
+#include "opendavinci/core/opendavinci.h"
 
 namespace simulation {
     class ExampleDriverSimulation {

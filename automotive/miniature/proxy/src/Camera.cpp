@@ -22,7 +22,7 @@
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
 
-#include "core/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/core/wrapper/SharedMemoryFactory.h"
 
 #include "Camera.h"
 

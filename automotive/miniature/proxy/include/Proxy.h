@@ -22,9 +22,9 @@
 
 #include <map>
 
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "core/data/Container.h"
-#include "tools/recorder/Recorder.h"
+#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/tools/recorder/Recorder.h"
 
 #include "Camera.h"
 
