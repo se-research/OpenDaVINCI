@@ -1,4 +1,4 @@
-This tutorial explains how to use OpenDaVINCI for simulation and visualization (Ubuntu 14.04)
+This tutorial explains how to use OpenDaVINCI for simulation and visualization (Ubuntu 14.04).
 
 Installation
 ^^^^^^^^^^^
