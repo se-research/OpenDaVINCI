@@ -120,9 +120,9 @@ class CANDataModelGenerator implements IGenerator {
 #include "generated/«include».h"
 «ENDFOR»
 
-#include <core/data/Container.h>
+#include <opendavinci/core/data/Container.h>
 
-#include "GeneratedHeaders_AutomotiveData.h"
+#include <automotivedata/GeneratedHeaders_AutomotiveData.h>
 
 namespace canmapping {
 
@@ -340,11 +340,11 @@ namespace canmapping {
 #define «mapping.mappingName.toString.toUpperCase.replaceAll("\\.", "_")»_H_
 
 #include <vector>
-#include <core/data/Container.h>
-#include <core/base/Visitable.h>
-#include <core/data/SerializableData.h>
+#include <opendavinci/core/data/Container.h>
+#include <opendavinci/core/base/Visitable.h>
+#include <opendavinci/core/data/SerializableData.h>
 
-#include "GeneratedHeaders_AutomotiveData.h"
+#include <automotivedata/GeneratedHeaders_AutomotiveData.h>
 
 namespace canmapping {
 	«var String[] classNames = mapping.mappingName.toString.split('\\.')»
@@ -739,12 +739,12 @@ rangeEnd    : «canSignal.m_rangeEnd»
 
 #include "generated/«mapping.mappingName.toString.replaceAll('\\.','/')».h"
 
-#include <core/SharedPointer.h>
-#include <core/reflection/Message.h>
-#include <core/reflection/MessageToVisitableVisitor.h>
-#include <core/base/SerializationFactory.h>
-#include <core/base/Serializer.h>
-#include <core/base/Deserializer.h>
+#include <opendavinci/core/SharedPointer.h>
+#include <opendavinci/core/reflection/Message.h>
+#include <opendavinci/core/reflection/MessageToVisitableVisitor.h>
+#include <opendavinci/core/base/SerializationFactory.h>
+#include <opendavinci/core/base/Serializer.h>
+#include <opendavinci/core/base/Deserializer.h>
 
 namespace canmapping {
 
@@ -799,7 +799,7 @@ rangeEnd    : «canSignal.m_rangeEnd»
 #define CANMAPPINGTESTSUITE_H_
 
 #include "GeneratedHeaders_«generatedHeadersFile».h"
-#include "GeneratedHeaders_AutomotiveData.h"
+#include <automotivedata/GeneratedHeaders_AutomotiveData.h>
 #include "cxxtest/TestSuite.h"
 #include <sstream>
 
