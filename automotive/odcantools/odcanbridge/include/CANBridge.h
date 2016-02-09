@@ -22,17 +22,17 @@
 #ifndef CANBRIDGE_H_
 #define CANBRIDGE_H_
 
-#include <core/SharedPointer.h>
+#include <opendavinci/core/SharedPointer.h>
 #include <stdint.h>
 #include <memory>
 #include <string>
 
 #include "CANMessageReplicator.h"
-#include "GeneratedHeaders_CANMessageMapping.h"
+#include "canmessagemapping/GeneratedHeaders_CANMessageMapping.h"
 #include "GenericCANMessageListener.h"
-#include "core/base/FIFOQueue.h"
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/core/base/FIFOQueue.h"
+#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
 namespace automotive { class GenericCANMessage; }
 namespace tools { namespace recorder { class Recorder; } }

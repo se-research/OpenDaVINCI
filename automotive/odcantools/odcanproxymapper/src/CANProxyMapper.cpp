@@ -20,8 +20,8 @@
 #include <vector>
 
 #include "CANProxyMapper.h"
-#include "core/base/Thread.h"
-#include "core/data/Container.h"
+#include "opendavinci/core/base/Thread.h"
+#include "opendavinci/core/data/Container.h"
 
 namespace automotive { class GenericCANMessage; }
 

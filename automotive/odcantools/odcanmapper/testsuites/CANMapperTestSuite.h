@@ -23,12 +23,12 @@
 
 #include "cxxtest/TestSuite.h"
 
-#include <core/SharedPointer.h>
-#include <core/reflection/Message.h>
-#include <core/reflection/MessageToVisitableVisitor.h>
-#include <core/reflection/MessagePrettyPrinterVisitor.h>
+#include <opendavinci/core/SharedPointer.h>
+#include <opendavinci/core/reflection/Message.h>
+#include <opendavinci/core/reflection/MessageToVisitableVisitor.h>
+#include <opendavinci/core/reflection/MessagePrettyPrinterVisitor.h>
 
-#include "GeneratedHeaders_AutomotiveData.h"
+#include "automotivedata/GeneratedHeaders_AutomotiveData.h"
 
 // Include local header files.
 #include "../include/CanMapper.h"

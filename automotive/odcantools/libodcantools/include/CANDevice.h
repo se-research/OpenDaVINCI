@@ -25,7 +25,7 @@
 
 #include <libpcan.h>
 
-#include <core/base/Service.h>
+#include <opendavinci/core/base/Service.h>
 
 namespace automotive { class GenericCANMessage; }
 

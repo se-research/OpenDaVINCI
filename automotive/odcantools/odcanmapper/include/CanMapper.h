@@ -21,10 +21,10 @@
 #ifndef CANMAPPER_H_
 #define CANMAPPER_H_
 
-#include <core/base/module/DataTriggeredConferenceClientModule.h>
+#include <opendavinci/core/base/module/DataTriggeredConferenceClientModule.h>
 #include <stdint.h>
 
-#include "GeneratedHeaders_CANMessageMapping.h"
+#include "canmessagemapping/GeneratedHeaders_CANMessageMapping.h"
 
 namespace core { namespace data { class Container; } }
 

@@ -23,7 +23,7 @@
 #include <stdint.h>
 
 #include "CANProxy.h"
-#include "GeneratedHeaders_CANMessageMapping.h"
+#include "canmessagemapping/GeneratedHeaders_CANMessageMapping.h"
 
 namespace automotive { class GenericCANMessage; }
 

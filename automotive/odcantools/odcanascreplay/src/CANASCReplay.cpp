@@ -19,10 +19,10 @@
 
 #include <iostream>
 
-#include "core/opendavinci.h"
-#include "core/strings/StringToolbox.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/strings/StringToolbox.h"
 
-#include "generated/automotive/GenericCANMessage.h"
+#include "automotivedata/generated/automotive/GenericCANMessage.h"
 
 #include "CANASCReplay.h"
 

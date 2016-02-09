@@ -21,7 +21,7 @@
 
 #include "CANDevice.h"
 #include "CANMessageReplicator.h"
-#include "core/SharedPointer.h"
+#include "opendavinci/core/SharedPointer.h"
 
 namespace automotive { class GenericCANMessage; }
 

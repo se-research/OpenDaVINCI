@@ -22,7 +22,7 @@
 #ifndef CANMESSAGEREPLICATOR_H_
 #define CANMESSAGEREPLICATOR_H_
 
-#include <core/SharedPointer.h>
+#include <opendavinci/core/SharedPointer.h>
 
 #include "GenericCANMessageListener.h"
 

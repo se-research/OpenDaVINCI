@@ -22,10 +22,10 @@
 #include <vector>
 
 #include "CanMapper.h"
-#include "core/base/Thread.h"
-#include "core/base/module/DataTriggeredConferenceClientModule.h"
-#include "core/data/Container.h"
-#include "generated/automotive/GenericCANMessage.h"
+#include "opendavinci/core/base/Thread.h"
+#include "opendavinci/core/base/module/DataTriggeredConferenceClientModule.h"
+#include "opendavinci/core/data/Container.h"
+#include "automotivedata/generated/automotive/GenericCANMessage.h"
 
 namespace automotive {
     namespace odcantools {

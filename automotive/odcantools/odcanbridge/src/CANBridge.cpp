@@ -21,10 +21,10 @@
 
 #include <vector>
 
-#include "core/base/Thread.h"
-#include "core/data/Container.h"
-#include "tools/recorder/Recorder.h"
-#include "generated/automotive/GenericCANMessage.h"
+#include "opendavinci/core/base/Thread.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/tools/recorder/Recorder.h"
+#include "automotivedata/generated/automotive/GenericCANMessage.h"
 
 #include "CANBridge.h"
 #include "CANDevice.h"

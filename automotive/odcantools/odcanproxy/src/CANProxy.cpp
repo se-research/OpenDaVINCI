@@ -19,10 +19,10 @@
 
 #include <iostream>
 
-#include "core/data/Container.h"
-#include "core/data/TimeStamp.h"
-#include "tools/recorder/Recorder.h"
-#include "generated/automotive/GenericCANMessage.h"
+#include "opendavinci/core/data/Container.h"
+#include "opendavinci/core/data/TimeStamp.h"
+#include "opendavinci/tools/recorder/Recorder.h"
+#include "automotivedata/generated/automotive/GenericCANMessage.h"
 
 #include "CANDevice.h"
 #include "CANProxy.h"

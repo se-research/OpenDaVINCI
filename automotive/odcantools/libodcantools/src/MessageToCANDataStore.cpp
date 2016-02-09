@@ -19,8 +19,8 @@
 
 #include "CANDevice.h"
 #include "MessageToCANDataStore.h"
-#include "core/data/Container.h"
-#include "generated/automotive/GenericCANMessage.h"
+#include "opendavinci/core/data/Container.h"
+#include "automotivedata/generated/automotive/GenericCANMessage.h"
 
 namespace automotive {
     namespace odcantools {

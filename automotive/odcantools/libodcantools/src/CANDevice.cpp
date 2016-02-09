@@ -21,10 +21,10 @@
 
 #include <iostream>
 
-#include "core/opendavinci.h"
-#include "core/base/module/AbstractCIDModule.h"
+#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/core/base/module/AbstractCIDModule.h"
 
-#include "generated/automotive/GenericCANMessage.h"
+#include "automotivedata/generated/automotive/GenericCANMessage.h"
 
 #include "CANDevice.h"
 #include "GenericCANMessageListener.h"
