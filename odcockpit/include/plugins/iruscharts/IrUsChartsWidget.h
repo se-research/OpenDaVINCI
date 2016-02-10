@@ -109,4 +109,3 @@ class IrUsChartData;
 }
 
 #endif /*COCKPIT_PLUGINS_IRUSCHARTS_IRUSCHARTSWIDGET_H_*/
-
