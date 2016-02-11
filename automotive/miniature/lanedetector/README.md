@@ -113,7 +113,7 @@ Next, start the vehicle dynamics simulation "vehicle":
 
     $ docker run --rm=true --net host -v /home/$USER/config:/opt/data -w "/opt/data" -t -i seresearch/odsimulation:latest odsimvehicle --cid=111 --freq=10
 
-Start the camera simulation "camgen" to produce a virtual image feed (the first command grants access to your Xserver):
+Start the camera simulation "odsimcamera" to produce a virtual image feed (the first command grants access to your Xserver):
 
     $ xhost +
 
@@ -123,7 +123,7 @@ Start the camera simulation "camgen" to produce a virtual image feed (the first 
 
 ## Start lanedetector
 
-Next, change the build directory and start the lanedetector component (sudo is required as "camgen" creates the semaphore to protect the shared memory segment owned by root):
+Next, change the build directory and start the lanedetector component (sudo is required as "odsimcamera" creates the semaphore to protect the shared memory segment owned by root):
 
     $ cd build
 
