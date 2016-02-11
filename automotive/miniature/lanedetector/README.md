@@ -109,7 +109,7 @@ Start "odsupercomponent" for the software component lifecycle management (this s
 
     $ docker run --rm=true --net host -v /home/$USER/config:/opt/data -w "/opt/data" -t -i seresearch/odsimulation:latest odsupercomponent --cid=111 --verbose=1
 
-Next, start the vehicle dynamics simulation "vehicle":
+Next, start the vehicle dynamics simulation "odsimvehicle":
 
     $ docker run --rm=true --net host -v /home/$USER/config:/opt/data -w "/opt/data" -t -i seresearch/odsimulation:latest odsimvehicle --cid=111 --freq=10
 
