@@ -15,10 +15,6 @@ Install the required development packages for OpenDaVINCI sources::
 
     $ sudo pacman -S cmake gcc git make python2
 
-Add a missing symbolic link::
-
-    $ sudo ln -sf /usr/bin/python2.7 /usr/bin/python
-
 Install development packages for libodsimulation sources::
 
     $ sudo pacman -S freeglut qt4 boost opencv
@@ -26,11 +22,6 @@ Install development packages for libodsimulation sources::
 Install qwt5-qt4::
 
     $ sudo pacman -S qwt5
-
-Add two missing symbolic links::
-
-    $ sudo ln -sf /usr/include/qwt5 /usr/include/qwt-qt4
-    $ sudo ln -sf /usr/lib/libqwt5.so /usr/lib/libqwt-qt4.so
 
 .. Install the required development packages for host-tools sources:
 
