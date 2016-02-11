@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-FIND_PACKAGE (PythonInterp)
+FIND_PACKAGE (PythonInterp 2.7)
 IF(PYTHONINTERP_FOUND)
     SET (CXXTEST_TESTGEN_ARGS --xunit-printer --have-eh)
     SET (CXXTEST_USE_PYTHON true)
