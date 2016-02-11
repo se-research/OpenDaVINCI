@@ -25,7 +25,9 @@ IF(NOT QWT5QT4_FOUND)
 
     FIND_FILE(QWT5QT4_LIBRARIES
         NAMES libqwt-qt4.so
+              libqwt5-qt4.so
               libqwt5.so
+              libqwt.so
         PATHS ${LIBQWT5QT4_PATH}/lib/
               /usr/local/lib64/
               /usr/local/lib/
