@@ -28,11 +28,6 @@ Clean up installation::
     $ sudo dnf autoremove
     $ sudo dnf clean all
   
-Add two missing symbolic links::
-
-    $ sudo ln -sf /usr/include/qwt5-qt4 /usr/include/qwt-qt4
-    $ sudo ln -sf /usr/lib64/libqwt5-qt4.so /usr/lib64/libqwt-qt4.so
-     
 Clone the latest OpenDaVINCI sources from https://github.com/se-research/OpenDaVINCI or download
 the latest OpenDaVINCI sources as zip file: https://github.com/se-research/OpenDaVINCI/archive/master.zip.
 
