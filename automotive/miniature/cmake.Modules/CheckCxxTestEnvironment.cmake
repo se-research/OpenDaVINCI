@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-FIND_PACKAGE (PythonInterp REQUIRED)
+FIND_PACKAGE (PythonInterp 2.7 REQUIRED)
 
 IF(PYTHONINTERP_FOUND)
     SET (CXXTEST_USE_PYTHON true)
