@@ -59,7 +59,6 @@ class SerializableData;
 /*
                     POINT3 = 17,
                     GPRMC = 18,
-                    WGS84COORDINATE = 19,
                     CAMERAINTRINSICPARAMETERS = 20,
                     CAMERAEXTRINSICPARAMETERS = 21,
                     CAMERAIMAGEGRABBERID = 22,
@@ -69,7 +68,6 @@ class SerializableData;
                     NAMEDLINE = 26,
                     MEMORYSEGMENT = 29
 
-<<<<<<< HEAD
                     SCENARIO = 830,
                     SCENARIOIDVERTEX3 = 818,
                     SCENARIOHEIGHTIMAGE = 819,
@@ -123,10 +121,9 @@ class SerializableData;
                     SITUATIONEXTERNALDRIVER = 867,
                     SITUATIONCOMPLEXMODEL = 868,
 */
-=======
+
                     WGS84COORDINATE              = 19,
 
->>>>>>> master
                     CONTOUREDOBJECT              = 30,
                     CONTOUREDOBJECTS             = 31,
                     EGOSTATE                     = 32,
