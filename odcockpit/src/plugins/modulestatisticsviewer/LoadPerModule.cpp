@@ -26,8 +26,8 @@
 # endif
 # pragma GCC diagnostic ignored "-Weffc++"
 #endif
-    #include <qwt-qt4/qwt_plot_curve.h>
-    #include <qwt-qt4/qwt_plot_item.h>
+    #include <qwt_plot_curve.h>
+    #include <qwt_plot_item.h>
 #ifndef WIN32
 # if !defined(__OpenBSD__) && !defined(__NetBSD__)
 #  pragma GCC diagnostic pop

@@ -244,7 +244,7 @@ public class CANDataStructureGenerator {
         sb.append("# along with this program; if not, write to the Free Software"); sb.append("\r\n");
         sb.append("# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA."); sb.append("\r\n");
 
-        sb.append("FIND_PACKAGE (PythonInterp)"); sb.append("\r\n");
+        sb.append("FIND_PACKAGE (PythonInterp 2.7)"); sb.append("\r\n");
 
         sb.append("IF(PYTHONINTERP_FOUND)"); sb.append("\r\n");
         sb.append("    SET (CXXTEST_TESTGEN_ARGS --xunit-printer --have-eh)"); sb.append("\r\n");

@@ -39,7 +39,7 @@ INCLUDE (CompileFlags)
 
 ###########################################################################
 # Find and configure CxxTest.
-SET (CXXTEST_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../cxxtest") 
+SET (CXXTEST_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../cxxtest")
 INCLUDE (CheckCxxTestEnvironment)
 
 ###########################################################################
@@ -82,7 +82,9 @@ INCLUDE_DIRECTORIES (${AUTOMOTIVEDATA_INCLUDE_DIRS})
 # Set header files from Hesperia.
 INCLUDE_DIRECTORIES (${ODSIMULATION_INCLUDE_DIRS}/odsimulation)
 # Set header files from Qwt5-Qt4.
-INCLUDE_DIRECTORIES (${QWT5QT4_INCLUDE_DIRS})
+# Marking this with SYSTEM tells CMake to count this as a system library.
+# Used to suppress warnings from Qwt5-Qt4.
+INCLUDE_DIRECTORIES (SYSTEM ${QWT5QT4_INCLUDE_DIRS})
 # Set include directory.
 INCLUDE_DIRECTORIES(include)
 
@@ -113,13 +115,13 @@ QT4_ADD_TRANSLATION(QM ${myapp_TRANSLATIONS})
 # Artifacts from this project.
 ADD_LIBRARY (${PROJECT_NAME}lib-static STATIC ${thisproject-sources} ${odcockpit-headers-moc})
 ADD_EXECUTABLE (${PROJECT_NAME} "${CMAKE_CURRENT_SOURCE_DIR}/apps/${PROJECT_NAME}.cpp")
-TARGET_LINK_LIBRARIES (${PROJECT_NAME} ${PROJECT_NAME}lib-static ${LIBRARIES}) 
+TARGET_LINK_LIBRARIES (${PROJECT_NAME} ${PROJECT_NAME}lib-static ${LIBRARIES})
 
 ###########################################################################
 # Enable CxxTest for all available testsuites.
 IF(CXXTEST_FOUND)
     FILE(GLOB thisproject-testsuites "${CMAKE_CURRENT_SOURCE_DIR}/testsuites/*.h")
-    
+
     FOREACH(testsuite ${thisproject-testsuites})
         STRING(REPLACE "/" ";" testsuite-list ${testsuite})
 
