@@ -199,7 +199,7 @@ message coredata.Configuration [id = 2] {
 // odplayer and odrecorder messages.
 
 // This message is used to describe memory segments to handle binary large objects like SharedImages or SharedData.
-message coredata.buffer.MemorySegment [id = 17] {
+message coredata.buffer.MemorySegment [id = 29] {
     core::data::Container header [id = 1];
     uint32 size [id = 2];
     uint32 consumedSize [id = 3];
