@@ -1,3 +1,5 @@
+2.4.11 - Updated deployment process to use aptly over reprepro for deb packages
+2.4.10 - Updated FindOpenCV.cmake
 2.4.9 - Added container identifiers for ReVeRe/GCDC
 2.4.8 - Update to CMake scripts to find qwt library
 2.4.7 - Added signal handler for SIGTERM
