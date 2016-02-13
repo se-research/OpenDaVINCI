@@ -80,7 +80,7 @@ Add the public key from our repository:
 
 Add our repository itself to your sources.list:
 
-    $ echo "deb http://opendavinci.cse.chalmers.se/ubuntu/ trusty main" | sudo tee -a /etc/apt/sources.list 
+    $ echo "deb http://opendavinci.cse.chalmers.se/deb/ trusty main" | sudo tee -a /etc/apt/sources.list 
 
 Update your package database:
 
@@ -102,7 +102,7 @@ Add the public key from our repository:
 
 Add our repository itself to your sources.list:
 
-    $ sudo echo "deb http://opendavinci.cse.chalmers.se/ubuntu/ vivid main" >> /etc/apt/sources.list
+    $ sudo echo "deb http://opendavinci.cse.chalmers.se/deb/ vivid main" >> /etc/apt/sources.list
 
 Update your package database:
 
@@ -143,7 +143,7 @@ Add the public key from our repository:
 
 Add our repository itself to your sources.list:
 
-    $ sudo echo "deb http://opendavinci.cse.chalmers.se/debian/ jessie main" >> /etc/apt/sources.list
+    $ sudo echo "deb http://opendavinci.cse.chalmers.se/deb/ jessie main" >> /etc/apt/sources.list
 
 Update your package database:
 
