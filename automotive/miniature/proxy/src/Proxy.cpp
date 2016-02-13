@@ -102,7 +102,7 @@ namespace automotive {
         }
 
         void Proxy::tearDown() {
-	        // This method will be call automatically _after_ return from body().
+            // This method will be call automatically _after_ return from body().
             OPENDAVINCI_CORE_DELETE_POINTER(m_recorder);
             OPENDAVINCI_CORE_DELETE_POINTER(m_camera);
         }
@@ -127,7 +127,7 @@ namespace automotive {
                 if (m_camera != NULL) {
                     coredata::image::SharedImage si = m_camera->capture();
 
-                    Container c(Container::SHARED_IMAGE, si);
+                    Container c(si);
                     distribute(c);
                     captureCounter++;
                 }

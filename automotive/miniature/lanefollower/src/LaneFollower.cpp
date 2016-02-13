@@ -451,7 +451,7 @@ namespace automotive {
                 }
 
                 // Create container for finally sending the set values for the control algorithm.
-                Container c2(Container::VEHICLECONTROL, m_vehicleControl);
+                Container c2(m_vehicleControl);
                 // Send container.
                 getConference().send(c2);
 	        }

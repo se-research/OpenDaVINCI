@@ -205,7 +205,7 @@ namespace tools {
                     si.setSize(ci.getWidth() * ci.getHeight() * ci.getBytesPerPixel());
 
                     // Distribute the SharedImage information in the UDP multicast session.
-                    retVal = Container(Container::SHARED_IMAGE, si);
+                    retVal = Container(si, Container::SHARED_IMAGE);
                     retVal.setSentTimeStamp(m_actual.getSentTimeStamp());
                     retVal.setReceivedTimeStamp(m_actual.getReceivedTimeStamp());
                 }

@@ -79,52 +79,11 @@ namespace vehicle {
                 }
             }
 
-<<<<<<< HEAD
-            if (vc.getFlashingLightsRight()) {
-                cout << "Turn ON right flashing lights." << endl;
-            }
-           
-            EgoState es = lbmn.computeEgoState();
-            
-            // Get vehicle data.
-            VehicleData vd = lbmn.getVehicleData();
-            cerr << "VehicleData: '" << vd.toString() << "'" << endl;
-
-            Container container(es);
-            getConference().send(container);
-
-            // Send vehicledata.
-            Container c2(vd);
-            getConference().send(c2);
-=======
             previousTime = currentTime;
->>>>>>> master
         }
 
         simplifiedBicycleModel.tearDown();
 
-<<<<<<< HEAD
-            if (fc.getFlashingLightsRight()) {
-                cout << "Turn ON right flashing lights." << endl;
-            }
-            else {
-            }
-           
-            EgoState es = lbm.computeEgoState();
-            
-            // Get vehicle data.
-            VehicleData vd = lbm.getVehicleData();
-            cerr << "VehicleData: '" << vd.toString() << "'" << endl;
-
-            Container container(es);
-            getConference().send(container);
-
-            // Send vehicledata.
-            Container c2(vd);
-            getConference().send(c2);
-        }
-=======
->>>>>>> master
         return coredata::dmcp::ModuleExitCodeMessage::OKAY;
     }
 

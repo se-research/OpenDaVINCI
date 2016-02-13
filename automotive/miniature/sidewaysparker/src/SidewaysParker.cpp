@@ -63,16 +63,16 @@ namespace automotive {
             int stageMeasuring = 0;
 
             while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
-	            // 1. Get most recent vehicle data:
-	            Container containerVehicleData = getKeyValueDataStore().get(Container::VEHICLEDATA);
-	            VehicleData vd = containerVehicleData.getData<VehicleData> ();
+                // 1. Get most recent vehicle data:
+                Container containerVehicleData = getKeyValueDataStore().get(Container::VEHICLEDATA);
+                VehicleData vd = containerVehicleData.getData<VehicleData> ();
 
-	            // 2. Get most recent sensor board data:
-	            Container containerSensorBoardData = getKeyValueDataStore().get(Container::USER_DATA_0);
-	            SensorBoardData sbd = containerSensorBoardData.getData<SensorBoardData> ();
+                // 2. Get most recent sensor board data:
+                Container containerSensorBoardData = getKeyValueDataStore().get(Container::USER_DATA_0);
+                SensorBoardData sbd = containerSensorBoardData.getData<SensorBoardData> ();
 
-	            // Create vehicle control data.
-	            VehicleControl vc;
+                // Create vehicle control data.
+                VehicleControl vc;
 
                 // Moving state machine.
                 if (stageMoving == 0) {
@@ -151,10 +151,10 @@ namespace automotive {
                     break;
                 }
 
-	            // Create container for finally sending the data.
-	            Container c(Container::VEHICLECONTROL, vc);
-	            // Send container.
-	            getConference().send(c);
+                // Create container for finally sending the data.
+                Container c(vc);
+                // Send container.
+                getConference().send(c);
             }
 
             return coredata::dmcp::ModuleExitCodeMessage::OKAY;

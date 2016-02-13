@@ -26,12 +26,9 @@
 #include <cstring>
 #include <sstream>
 
-<<<<<<< HEAD
 #include "hesperia/data/environment/Position.h"
 #include "hesperia/data/environment/EgoState.h"
-=======
 #include "core/base/Serializable.h"
->>>>>>> master
 #include "core/data/TimeStamp.h"
 #include "core/opendavinci.h"
 #include "generated/automotive/ForceControl.h"

@@ -26,14 +26,11 @@
 #include <cstring>
 #include <vector>
 
-<<<<<<< HEAD
 #include "hesperia/data/environment/Position.h"
 #include "hesperia/data/environment/EgoState.h"
-=======
 #include "core/opendavinci.h"
 #include "core/base/Visitable.h"
 #include "core/data/Container.h"
->>>>>>> master
 #include "core/data/TimeStamp.h"
 #include "generated/automotive/ForceControl.h"
 #include "generated/automotive/GenericCANMessage.h"

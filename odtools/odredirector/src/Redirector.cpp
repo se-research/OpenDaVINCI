@@ -156,30 +156,11 @@ namespace odredirector {
                             si.setSize(ci.getWidth() * ci.getHeight() * ci.getBytesPerPixel());
 
                             // Distribute the SharedImage information in the UDP multicast session.
-                            Container c2(Container::SHARED_IMAGE, si);
+                            Container c2(si, Container::SHARED_IMAGE);
                             getConference().send(c2);
                         }
-<<<<<<< HEAD
-                        // Finalize the decompression.
-                        (void) jpeg_finish_decompress(&cinfo);
-
-                        // Free the decompressor.
-                        jpeg_destroy_decompress(&cinfo);
-
-                        // As we have now the decompressed image data in memory, create a SharedMemory data structure to describe it.
-                        coredata::image::SharedImage si;
-                        si.setName(ci.getName());
-                        si.setWidth(ci.getWidth());
-                        si.setHeight(ci.getHeight());
-                        si.setBytesPerPixel(ci.getBytesPerPixel());
-
-                        // Distribute the SharedImage information in the UDP multicast session.
-                        Container c2(si);
-                        getConference().send(c2);
-=======
 
                         OPENDAVINCI_CORE_FREE_POINTER(imageData);
->>>>>>> master
                     }
                     else {
                         getConference().send(c);

@@ -101,7 +101,7 @@ namespace automotive {
                 vc.setFlashingLightsRight(true);
 
                 // Create container for finally sending the data.
-                Container c(Container::VEHICLECONTROL, vc);
+                Container c(vc);
                 // Send container.
                 getConference().send(c);
             }

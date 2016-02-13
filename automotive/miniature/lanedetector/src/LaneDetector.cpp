@@ -137,7 +137,7 @@ namespace automotive {
             sd.setExampleData(1234.56);
 
             // Create container for finally sending the data.
-            Container c(Container::USER_DATA_1, sd);
+            Container c(sd, Container::USER_DATA_1);
             // Send container.
             getConference().send(c);
         }

@@ -31,7 +31,7 @@ namespace hesperia {
     namespace data {
         namespace camera {
 
-            using namespace core;
+            using namespace std;
 
             /* Parameter:
 

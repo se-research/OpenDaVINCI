@@ -144,7 +144,7 @@ namespace automotive {
                 cout << route.toString() << endl;
 
                 Container c;
-                c = Container(Container::ROUTE, route);
+                c = Container(route, Container::ROUTE);
                 getConference().send(c);
 
 
@@ -170,7 +170,7 @@ namespace automotive {
                 // Visualize FOV.
                 Obstacle obstacleFOV(1, Obstacle::UPDATE);
                 obstacleFOV.setPolygon(FOV);
-                c = Container(Container::OBSTACLE, obstacleFOV);
+                c = Container(obstacleFOV, Container::OBSTACLE);
                 getConference().send(c);
 
                 uint32_t waitingBeforeStart = 5;
@@ -225,8 +225,8 @@ namespace automotive {
                                     V = fabs( drivenWay / passedTime );
                                 }
                                 if (drivenWay > 0) {
-                                	oldEgoState = es;
-                                	oldTimeStamp = currentTimeStamp;
+                                    oldEgoState = es;
+                                    oldTimeStamp = currentTimeStamp;
                                 }
 
                                 totalDrivenWay += drivenWay;
@@ -345,7 +345,7 @@ namespace automotive {
                                     vc.setFlashingLightsRight(false);
 
                                     // Create container for finally sending the data.
-                                    Container c2(Container::VEHICLECONTROL, vc);
+                                    Container c2(vc, Container::VEHICLECONTROL);
                                     // Send container.
                                     getConference().send(c2);
 
@@ -361,7 +361,7 @@ namespace automotive {
 
                                     Obstacle o(1, Obstacle::UPDATE);
                                     o.setPolygon(p);
-                                    c2 = Container(Container::OBSTACLE, o);
+                                    c2 = Container(o, Container::OBSTACLE);
                                     getConference().send(c2);
 
                                     cerr << endl;
@@ -377,7 +377,7 @@ namespace automotive {
                         VehicleControl vc;
 
                         // Create container for finally sending the data.
-                        Container c2(Container::VEHICLECONTROL, vc);
+                        Container c2(vc, Container::VEHICLECONTROL);
                         // Send container.
                         getConference().send(c2);
 

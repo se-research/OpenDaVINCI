@@ -73,18 +73,13 @@ namespace odredirector {
                     ::memcpy(ci.getRawData(), buffer, compressedSize);
 
                     // Write the CompressedImage container to STDOUT.
-<<<<<<< HEAD
-                    core::data::Container c(ci);
-                    cout << c;
-=======
-                    core::data::Container c(core::data::Container::COMPRESSED_IMAGE, ci);
+                    core::data::Container c(ci, core::data::Container::COMPRESSED_IMAGE);
                     c.setSentTimeStamp(container.getSentTimeStamp());
                     c.setReceivedTimeStamp(container.getReceivedTimeStamp());
                     std::cout << c;
                 }
                 if (compressedSize >= MAX_SIZE_UDP_PAYLOAD) {
                     cerr << "[odredirector]: Warning! Compressed image too large (" << compressedSize << " bytes) to fit in a UDP packet. Image skipped." << std::endl;
->>>>>>> master
                 }
                 if (!retVal) {
                     cerr << "[odredirector]: Warning! Failed to compress image. Image skipped." << std::endl;
