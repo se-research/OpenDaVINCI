@@ -14,7 +14,7 @@ Adding OpenDaVINCI to your Ubuntu 14.04 Linux distribution
 
 2. Add our repository itself to your sources.list::
 
-    $ sudo sh -c 'echo "deb http://opendavinci.cse.chalmers.se/ubuntu/ trusty main" >> /etc/apt/sources.list'
+    $ sudo sh -c 'echo "deb http://opendavinci.cse.chalmers.se/deb/ trusty main" >> /etc/apt/sources.list'
 
 3. Update your package database::
 
@@ -34,7 +34,7 @@ Adding OpenDaVINCI to your Ubuntu 15.04 Linux distribution
 
 2. Add our repository itself to your sources.list::
 
-    $ sudo sh -c 'echo "deb http://opendavinci.cse.chalmers.se/ubuntu/ vivid main" >> /etc/apt/sources.list'
+    $ sudo sh -c 'echo "deb http://opendavinci.cse.chalmers.se/deb/ vivid main" >> /etc/apt/sources.list'
 
 3. Update your package database::
 
@@ -74,7 +74,7 @@ Adding OpenDaVINCI to your Debian 8 Linux distribution
 
 2. Add our repository itself to your sources.list::
 
-    $ sudo echo "deb http://opendavinci.cse.chalmers.se/debian/ jessie main" >> /etc/apt/sources.list
+    $ sudo echo "deb http://opendavinci.cse.chalmers.se/deb/ jessie main" >> /etc/apt/sources.list
 
 3. Update your package database::
 
