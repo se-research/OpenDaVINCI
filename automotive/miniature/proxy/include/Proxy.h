@@ -21,6 +21,7 @@
 #define PROXY_H_
 
 #include <map>
+#include <memory>
 
 #include "core/base/module/TimeTriggeredConferenceClientModule.h"
 #include "core/data/Container.h"
@@ -78,8 +79,8 @@ namespace automotive {
                 void distribute(core::data::Container c);
 
             private:
-                tools::recorder::Recorder *m_recorder;
-                Camera *m_camera;
+                auto_ptr<tools::recorder::Recorder> m_recorder;
+                auto_ptr<Camera> m_camera;
         };
 
     }

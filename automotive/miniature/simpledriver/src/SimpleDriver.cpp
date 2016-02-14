@@ -144,13 +144,13 @@ namespace automotive {
                 cout << route.toString() << endl;
 
                 Container c;
-                c = Container(route, Container::ROUTE);
+                c = Container(route);
                 getConference().send(c);
 
 
 
                 // Check, if the first point is in our field of view.
-                c = getKeyValueDataStore().get(Container::EGOSTATE);
+                c = getKeyValueDataStore().get(hesperia::data::environment::EgoState::ID());
                 EgoState es = c.getData<EgoState>();
 
                 Polygon FOV;
@@ -170,7 +170,7 @@ namespace automotive {
                 // Visualize FOV.
                 Obstacle obstacleFOV(1, Obstacle::UPDATE);
                 obstacleFOV.setPolygon(FOV);
-                c = Container(obstacleFOV, Container::OBSTACLE);
+                c = Container(obstacleFOV);
                 getConference().send(c);
 
                 uint32_t waitingBeforeStart = 5;
@@ -213,7 +213,7 @@ namespace automotive {
                             TimeStamp oldTimeStamp;
                             double V = 0;
                             while ( (nextWaypointInFrontOfDrawBar) && (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) ) {
-                                c = getKeyValueDataStore().get(Container::EGOSTATE);
+                                c = getKeyValueDataStore().get(hesperia::data::environment::EgoState::ID());
                                 es = c.getData<EgoState>();
                                 TimeStamp currentTimeStamp;
 
@@ -345,7 +345,7 @@ namespace automotive {
                                     vc.setFlashingLightsRight(false);
 
                                     // Create container for finally sending the data.
-                                    Container c2(vc, Container::VEHICLECONTROL);
+                                    Container c2(vc);
                                     // Send container.
                                     getConference().send(c2);
 
@@ -361,7 +361,7 @@ namespace automotive {
 
                                     Obstacle o(1, Obstacle::UPDATE);
                                     o.setPolygon(p);
-                                    c2 = Container(o, Container::OBSTACLE);
+                                    c2 = Container(o);
                                     getConference().send(c2);
 
                                     cerr << endl;
@@ -377,7 +377,7 @@ namespace automotive {
                         VehicleControl vc;
 
                         // Create container for finally sending the data.
-                        Container c2(vc, Container::VEHICLECONTROL);
+                        Container c2(vc);
                         // Send container.
                         getConference().send(c2);
 

@@ -124,7 +124,7 @@ class LaneFollowerTest : public CxxTest::TestSuite {
             si.setBytesPerPixel(BYTESPERPIXEL);
 
             // Create a container.
-    		Container c(si);
+            Container c(si);
 
             TS_ASSERT(ldt->callReadSharedImage(c) == true);
         }
@@ -143,7 +143,7 @@ class LaneFollowerTest : public CxxTest::TestSuite {
             si.setBytesPerPixel(BYTESPERPIXEL);
 
             // Create a container.
-    		Container c(si);
+            Container c(si);
 
             TS_ASSERT(ldt->callReadSharedImage(c) == false);
         }

@@ -79,7 +79,7 @@ namespace automotive {
         bool LaneDetector::readSharedImage(Container &c) {
 	        bool retVal = false;
 
-	        if (c.getDataType() == Container::SHARED_IMAGE) {
+	        if (c.getDataType() == coredata::image::SharedImage::ID()) {
 		        SharedImage si = c.getData<SharedImage> ();
 
 		        // Check if we have already attached to the shared memory containing the image from the virtual camera.
@@ -182,10 +182,10 @@ namespace automotive {
                 }
                 else {
 		            // Get the most recent available container for a SHARED_IMAGE.
-		            c = getKeyValueDataStore().get(Container::SHARED_IMAGE);
-                }                
+		            c = getKeyValueDataStore().get(coredata::image::SharedImage::ID());
+                }
 
-		        if (c.getDataType() == Container::SHARED_IMAGE) {
+		        if (c.getDataType() == coredata::image::SharedImage::ID()) {
 			        // Example for processing the received container.
 			        has_next_frame = readSharedImage(c);
 		        }

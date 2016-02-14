@@ -124,7 +124,7 @@ class LaneDetectorTest : public CxxTest::TestSuite {
             si.setBytesPerPixel(BYTESPERPIXEL);
 
             // Create a container.
-    		Container c(si, Container::SHARED_IMAGE);
+            Container c(si);
 
             TS_ASSERT(ldt->callReadSharedImage(c) == true);
         }
@@ -143,7 +143,7 @@ class LaneDetectorTest : public CxxTest::TestSuite {
             si.setBytesPerPixel(BYTESPERPIXEL);
 
             // Create a container.
-    		Container c(si, Container::SHARED_IMAGE);
+            Container c(si);
 
             TS_ASSERT(ldt->callReadSharedImage(c) == false);
         }

@@ -64,7 +64,7 @@ namespace automotive {
 
             while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
                 // 1. Get most recent vehicle data:
-                Container containerVehicleData = getKeyValueDataStore().get(Container::VEHICLEDATA);
+                Container containerVehicleData = getKeyValueDataStore().get(automotive::VehicleData::ID());
                 VehicleData vd = containerVehicleData.getData<VehicleData> ();
 
                 // 2. Get most recent sensor board data:

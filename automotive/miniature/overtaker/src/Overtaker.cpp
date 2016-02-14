@@ -77,16 +77,16 @@ namespace automotive {
             double distanceToObstacleOld = 0;
 
             while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
-	            // 1. Get most recent vehicle data:
-	            Container containerVehicleData = getKeyValueDataStore().get(Container::VEHICLEDATA);
-	            VehicleData vd = containerVehicleData.getData<VehicleData> ();
+                // 1. Get most recent vehicle data:
+                Container containerVehicleData = getKeyValueDataStore().get(automotive::VehicleData::ID());
+                VehicleData vd = containerVehicleData.getData<VehicleData> ();
 
-	            // 2. Get most recent sensor board data:
-	            Container containerSensorBoardData = getKeyValueDataStore().get(Container::USER_DATA_0);
-	            SensorBoardData sbd = containerSensorBoardData.getData<SensorBoardData> ();
+                // 2. Get most recent sensor board data:
+                Container containerSensorBoardData = getKeyValueDataStore().get(Container::USER_DATA_0);
+                SensorBoardData sbd = containerSensorBoardData.getData<SensorBoardData> ();
 
-	            // Create vehicle control data.
-	            VehicleControl vc;
+                // Create vehicle control data.
+                VehicleControl vc;
 
                 // Moving state machine.
                 if (stageMoving == FORWARD) {
@@ -161,7 +161,7 @@ namespace automotive {
 
                     // Approaching an obstacle (stationary or driving slower than us).
                     if ( (distanceToObstacle > 0) && (((distanceToObstacleOld - distanceToObstacle) > 0) || (fabs(distanceToObstacleOld - distanceToObstacle) < 1e-2)) ) {
-                        // Check if overtaking shall be started.                        
+                        // Check if overtaking shall be started.
                         stageMeasuring = FIND_OBJECT_PLAUSIBLE;
                     }
 
@@ -209,10 +209,10 @@ namespace automotive {
                     }
                 }
 
-	            // Create container for finally sending the data.
-	            Container c(vc);
-	            // Send container.
-	            getConference().send(c);
+                // Create container for finally sending the data.
+                Container c(vc);
+                // Send container.
+                getConference().send(c);
             }
 
             return coredata::dmcp::ModuleExitCodeMessage::OKAY;
