@@ -186,28 +186,20 @@ namespace core {
                     return "SharedData";
                 case SHARED_IMAGE:
                     return "SharedImage";
-                case POSITION:
-                    return "Position";
                 case COMPRESSED_IMAGE:
                     return "CompressedImage";
                 case WGS84COORDINATE:
                     return "WGS84Coordinate";
-                case CONTOUREDOBJECT:
-                    return "ContouredObject";
                 case CONTOUREDOBJECTS:
                     return "ContouredObject";
                 case EGOSTATE:
                     return "EgoState";
-                case FORCECONTROL:
-                    return "ForceControl";
-                case LMS291MESSAGE:
-                    return "LMS291Message";
+                case POSITION:
+                    return "Position";
                 case OBSTACLE:
                     return "Obstacle";
                 case OTHERVEHICLESTATE:
                     return "OtherVehicleState";
-                case POINTSHAPEDOBJECT:
-                    return "PointShapedObject";
                 case ROUTE:
                     return "Route";
                 case VEHICLEDATA:
@@ -218,10 +210,6 @@ namespace core {
                     return "VehicleControl";
                 case GENERIC_CAN_MESSAGE:
                     return "GenericCANMessage";
-                case WHEELSPEED:
-                    return "WheelSpeed";
-                case USER_BUTTON:
-                    return "User Button";
                 case LOG_MESSAGE:
                     return "LOG_MESSAGE";
                 case DMCP_PULSE_MESSAGE:

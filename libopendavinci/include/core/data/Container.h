@@ -67,6 +67,11 @@ class SerializableData;
                     POLYGON = 25,
                     NAMEDLINE = 26,
                     MEMORYSEGMENT = 29
+                    CONTOUREDOBJECT              = 30,
+                    POINTSHAPEDOBJECT            = 37,
+                    WHEELSPEED                   = 75,
+                    FORCECONTROL                 = 33,
+                    LMS291MESSAGE                = 34,
 
                     SCENARIO = 830,
                     SCENARIOIDVERTEX3 = 818,
@@ -120,32 +125,28 @@ class SerializableData;
                     SITUATIONIMMEDIATELY = 868,
                     SITUATIONEXTERNALDRIVER = 867,
                     SITUATIONCOMPLEXMODEL = 868,
+
+                    USER_BUTTON                  = 999,
+
 */
 
                     WGS84COORDINATE              = 19,
 
-                    CONTOUREDOBJECT              = 30,
                     CONTOUREDOBJECTS             = 31,
                     EGOSTATE                     = 32,
-                    FORCECONTROL                 = 33,
-                    LMS291MESSAGE                = 34,
                     OBSTACLE                     = 35,
                     OTHERVEHICLESTATE            = 36,
-                    POINTSHAPEDOBJECT            = 37,
                     ROUTE                        = 38,
                     VEHICLEDATA                  = 39,
                     DRAW_LINE                    = 40,
                     VEHICLECONTROL               = 41,
 
                     GENERIC_CAN_MESSAGE          = 71,
-                    WHEELSPEED                   = 75,
 
                     LOG_MESSAGE                  = 100,
                     DMCP_PULSE_MESSAGE           = 101,
                     DMCP_PULSE_ACK_MESSAGE       = 102,
                     DMCP_PULSE_ACK_CONTAINERS_MESSAGE = 103,
-
-                    USER_BUTTON                  = 999,
                 };
 
             public:
