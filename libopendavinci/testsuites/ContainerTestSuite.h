@@ -75,7 +75,7 @@ class ContainerTest : public CxxTest::TestSuite {
             s >> c2;
             TS_ASSERT(c2.getDataType() == 1234);
 
-            if (c2.getDataType() == Container::USER_DATA_9) {
+            if (c2.getDataType() == 1234) {
                 TimeStamp ts2;
                 ts2 = c2.getData<TimeStamp>();
 

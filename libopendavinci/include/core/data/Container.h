@@ -145,38 +145,7 @@ class SerializableData;
                     DMCP_PULSE_ACK_MESSAGE       = 102,
                     DMCP_PULSE_ACK_CONTAINERS_MESSAGE = 103,
 
-                    OPENDLV_GCDC_MSG00           = 150,
-                    OPENDLV_GCDC_MSG01           = 151,
-                    OPENDLV_GCDC_MSG02           = 152,
-                    OPENDLV_GCDC_MSG03           = 153,
-                    OPENDLV_GCDC_MSG04           = 154,
-                    OPENDLV_GCDC_MSG05           = 155,
-                    OPENDLV_GCDC_MSG06           = 156,
-                    OPENDLV_GCDC_MSG07           = 157,
-                    OPENDLV_GCDC_MSG08           = 158,
-                    OPENDLV_GCDC_MSG09           = 159,
-                    OPENDLV_GCDC_MSG10           = 160,
-                    OPENDLV_GCDC_MSG11           = 161,
-                    OPENDLV_GCDC_MSG12           = 162,
-                    OPENDLV_GCDC_MSG13           = 163,
-                    OPENDLV_GCDC_MSG14           = 164,
-                    OPENDLV_GCDC_MSG15           = 165,
-                    OPENDLV_GCDC_MSG16           = 166,
-                    OPENDLV_GCDC_MSG17           = 167,
-                    OPENDLV_GCDC_MSG18           = 168,
-                    OPENDLV_GCDC_MSG19           = 169,
-
                     USER_BUTTON                  = 999,
-                    USER_DATA_0                  = 1000,
-                    USER_DATA_1                  = 1001,
-                    USER_DATA_2                  = 1002,
-                    USER_DATA_3                  = 1003,
-                    USER_DATA_4                  = 1004,
-                    USER_DATA_5                  = 1005,
-                    USER_DATA_6                  = 1006,
-                    USER_DATA_7                  = 1007,
-                    USER_DATA_8                  = 1008,
-                    USER_DATA_9                  = 1009
                 };
 
             public:

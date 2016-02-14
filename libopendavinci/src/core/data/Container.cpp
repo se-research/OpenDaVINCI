@@ -230,66 +230,6 @@ namespace core {
                     return "DMCP_PULSE_ACK_MESSAGE";
                 case DMCP_PULSE_ACK_CONTAINERS_MESSAGE:
                     return "DMCP_PULSE_ACK_CONTAINERS_MESSAGE";
-                case OPENDLV_GCDC_MSG00:
-                    return "OPENDLV_GCDC_MSG00";
-                case OPENDLV_GCDC_MSG01:
-                    return "OPENDLV_GCDC_MSG01";
-                case OPENDLV_GCDC_MSG02:
-                    return "OPENDLV_GCDC_MSG02";
-                case OPENDLV_GCDC_MSG03:
-                    return "OPENDLV_GCDC_MSG03";
-                case OPENDLV_GCDC_MSG04:
-                    return "OPENDLV_GCDC_MSG04";
-                case OPENDLV_GCDC_MSG05:
-                    return "OPENDLV_GCDC_MSG05";
-                case OPENDLV_GCDC_MSG06:
-                    return "OPENDLV_GCDC_MSG06";
-                case OPENDLV_GCDC_MSG07:
-                    return "OPENDLV_GCDC_MSG07";
-                case OPENDLV_GCDC_MSG08:
-                    return "OPENDLV_GCDC_MSG08";
-                case OPENDLV_GCDC_MSG09:
-                    return "OPENDLV_GCDC_MSG09";
-                case OPENDLV_GCDC_MSG10:
-                    return "OPENDLV_GCDC_MSG10";
-                case OPENDLV_GCDC_MSG11:
-                    return "OPENDLV_GCDC_MSG11";
-                case OPENDLV_GCDC_MSG12:
-                    return "OPENDLV_GCDC_MSG12";
-                case OPENDLV_GCDC_MSG13:
-                    return "OPENDLV_GCDC_MSG13";
-                case OPENDLV_GCDC_MSG14:
-                    return "OPENDLV_GCDC_MSG14";
-                case OPENDLV_GCDC_MSG15:
-                    return "OPENDLV_GCDC_MSG15";
-                case OPENDLV_GCDC_MSG16:
-                    return "OPENDLV_GCDC_MSG16";
-                case OPENDLV_GCDC_MSG17:
-                    return "OPENDLV_GCDC_MSG17";
-                case OPENDLV_GCDC_MSG18:
-                    return "OPENDLV_GCDC_MSG18";
-                case OPENDLV_GCDC_MSG19:
-                    return "OPENDLV_GCDC_MSG19";
-                case USER_DATA_0:
-                    return "UserData_0";
-                case USER_DATA_1:
-                    return "UserData_1";
-                case USER_DATA_2:
-                    return "UserData_2";
-                case USER_DATA_3:
-                    return "UserData_3";
-                case USER_DATA_4:
-                    return "UserData_4";
-                case USER_DATA_5:
-                    return "UserData_5";
-                case USER_DATA_6:
-                    return "UserData_6";
-                case USER_DATA_7:
-                    return "UserData_7";
-                case USER_DATA_8:
-                    return "UserData_8";
-                case USER_DATA_9:
-                    return "UserData_9";
             }
             return "";
         }

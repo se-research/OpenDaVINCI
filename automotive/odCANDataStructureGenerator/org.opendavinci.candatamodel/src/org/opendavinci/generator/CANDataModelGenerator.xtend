@@ -748,7 +748,7 @@ namespace canmapping {
         «HLName».accept(mtvv);
 
 			// 9. Create the resulting container carrying a valid payload.
-			c = core::data::Container(«HLName», core::data::Container::USER_DATA_9);
+			c = core::data::Container(«HLName»);
 		}
 		return c;
 	}
