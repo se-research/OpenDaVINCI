@@ -44,7 +44,6 @@ namespace automotive {
         using namespace core::data;
         using namespace coredata::image;
         using namespace tools::player;
-        using namespace automotive;
 
         LaneDetector::LaneDetector(const int32_t &argc, char **argv) :
             TimeTriggeredConferenceClientModule(argc, argv, "LaneDetector"),
@@ -137,7 +136,7 @@ namespace automotive {
             sd.setExampleData(1234.56);
 
             // Create container for finally sending the data.
-            Container c(sd, Container::USER_DATA_1);
+            Container c(sd);
             // Send container.
             getConference().send(c);
         }

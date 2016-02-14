@@ -265,7 +265,7 @@ namespace cockpit {
             }
 
             void IrUsChartsWidget::nextContainer(Container &container) {
-                if (container.getDataType() == Container::USER_DATA_0) {
+                if (container.getDataType() == automotive::miniature::SensorBoardData::ID()) {
                     automotive::miniature::SensorBoardData sbd = container.getData<automotive::miniature::SensorBoardData>();
 
                     m_data.push_back(sbd);

@@ -82,7 +82,7 @@ namespace automotive {
                 VehicleData vd = containerVehicleData.getData<VehicleData> ();
 
                 // 2. Get most recent sensor board data:
-                Container containerSensorBoardData = getKeyValueDataStore().get(Container::USER_DATA_0);
+                Container containerSensorBoardData = getKeyValueDataStore().get(automotive::miniature::SensorBoardData::ID());
                 SensorBoardData sbd = containerSensorBoardData.getData<SensorBoardData> ();
 
                 // Create vehicle control data.

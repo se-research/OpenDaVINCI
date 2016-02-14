@@ -239,8 +239,8 @@ namespace vehiclecontext {
                 sensorBoardData.putTo_MapOfDistances(sensor->getID(), m_distances[sensor->getName()]);
             }
 
-            // Create a container with type USER_DATA_0.
-            Container c = Container(sensorBoardData, Container::USER_DATA_0);
+            // Create a container with type automotive::miniature::SensorBoardData.
+            Container c = Container(sensorBoardData);
 
             // Enqueue container.
             retVal.push_back(c);
@@ -258,7 +258,7 @@ namespace vehiclecontext {
                     Obstacle FOVobstacle(sensorID++, Obstacle::UPDATE);
                     FOVobstacle.setPolygon(FOV);
 
-                    Container c2 = Container(FOVobstacle, Container::OBSTACLE);
+                    Container c2 = Container(FOVobstacle);
 
                     // Enqueue container.
                     retVal.push_back(c2);
@@ -278,7 +278,7 @@ namespace vehiclecontext {
             for (uint32_t i = 0; i < SIZE; i++) {
                 Container c = getFIFO().leave();
                 cerr << "[IRUS] Received: " << c.toString() << endl;
-                if (c.getDataType() == Container::EGOSTATE) {
+                if (c.getDataType() == hesperia::data::environment::EgoState::ID()) {
                     egoState = c.getData<EgoState>();
                 }
             }
