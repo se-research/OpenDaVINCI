@@ -74,7 +74,7 @@ namespace automotive {
         void CANProxy::tearDown() {}
 
         void CANProxy::nextGenericCANMessage(const GenericCANMessage &gcm) {
-            Container c(gcm, Container::GENERIC_CAN_MESSAGE);
+            Container c(gcm);
             m_fifo.add(c);
         }
 

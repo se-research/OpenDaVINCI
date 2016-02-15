@@ -61,7 +61,7 @@ namespace automotive {
                                 << hex << (int)val[7] << endl;
         }
         void CanMapper::nextContainer(Container &c) {
-            if (c.getDataType() == Container::GENERIC_CAN_MESSAGE) {
+            if (c.getDataType() == GenericCANMessage::ID()) {
                 GenericCANMessage gcm = c.getData<GenericCANMessage>();
 
                 // Optionally: print payload for debug purposes.

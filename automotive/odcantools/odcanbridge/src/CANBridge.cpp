@@ -99,7 +99,7 @@ namespace automotive {
 
         void CANBridge::nextGenericCANMessage(const GenericCANMessage &gcm) {
             // Pass the received GenericCANMessage to the recorder.
-            Container c(gcm, Container::GENERIC_CAN_MESSAGE);
+            Container c(gcm);
             m_fifo.add(c);
 
             vector<Container> listOfContainers = m_canMapping.mapNext(gcm);
