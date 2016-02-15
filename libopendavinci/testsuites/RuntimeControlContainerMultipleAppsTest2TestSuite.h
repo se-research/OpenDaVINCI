@@ -55,6 +55,8 @@ using namespace core::base::module;
 using namespace core::data;
 using namespace context::base;
 
+const int32_t Container_POSITION = 15;
+
 class LocalPoint3 : public core::data::SerializableData {
     private:
         double m_x;
@@ -186,7 +188,7 @@ class LocalPosition : public core::data::SerializableData {
         }
 
         int32_t getID() const {
-            return Container::POSITION;
+            return Container_POSITION;
         }
 
         const string getLongName() const {
@@ -316,7 +318,7 @@ class RuntimeControlContainerMultipleAppsTestModule : public TimeTriggeredConfer
 
             m_config.getValue<string>("runtimecontrolcontainermultipleappstestmodule.key1");
 
-            addDataStoreFor(Container::POSITION, m_receivedData);
+            addDataStoreFor(Container_POSITION, m_receivedData);
             while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
                 m_cycleCounter++;
 
@@ -610,7 +612,7 @@ class RuntimeControlContainerMultipleAppsTest : public CxxTest::TestSuite {
             uint32_t cntApp2SampleData = 0;
             for(uint32_t i = 0; i < SIZE_RECEIVED_AT_SYSTEM_UNDER_TEST_A2; i++) {
                 Container c = app2.getReceivedData().leave();
-                if (c.getDataType() == Container::POSITION) {
+                if (c.getDataType() == Container_POSITION) {
                     cntApp2Position++;
                     LocalPosition pos = c.getData<LocalPosition>();
                     LocalPoint3 p = pos.getPosition();

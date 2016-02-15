@@ -41,10 +41,14 @@ class SerializableData;
             public:
                 enum DATATYPE {
                     UNDEFINEDDATA                =  1,
+                    DMCP_CONFIGURATION_REQUEST   =  5,
+                };
+
+            private:
+                enum DATATYPE2 {
                     CONFIGURATION                =  2,
                     DMCP_DISCOVER                =  3,
                     DMCP_CONNECTION_REQUEST      =  4,
-                    DMCP_CONFIGURATION_REQUEST   =  5,
                     DMCP_MODULESTATEMESSAGE      =  6,
                     DMCP_MODULEEXITCODEMESSAGE   =  7,
                     MODULESTATISTICS             =  8,

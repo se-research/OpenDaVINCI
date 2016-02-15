@@ -62,7 +62,7 @@ class DataStoreTestService : public Service {
             serviceReady();
             while (isRunning()) {
                 Container c = m_ds.get(0);
-                m_found |= (c.getDataType() == Container::TIMESTAMP);
+                m_found |= (c.getDataType() == TimeStamp::ID());
 
                 // Yield other threads.
                 Thread::usleepFor(10);

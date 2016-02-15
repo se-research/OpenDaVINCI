@@ -406,6 +406,18 @@ namespace core {
             return "core.data.TimeStamp";
         }
 
+        int32_t TimeStamp::ID() {
+            return 12;
+        }
+
+        const string TimeStamp::ShortName() {
+            return "TimeStamp";
+        }
+
+        const string TimeStamp::LongName() {
+            return "core.data.TimeStamp";
+        }
+
         const string TimeStamp::toString() const {
             stringstream s;
             s << m_seconds << "s/" << m_microseconds << "us.";

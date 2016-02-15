@@ -211,7 +211,7 @@ class ControlFlowTestApp : public TimeTriggeredConferenceClientModule {
                 const uint32_t SIZE = myFIFO.getSize();
                 for(uint32_t i = 0; i < SIZE; i++) {
                     Container c = myFIFO.leave();
-                    if (c.getDataType() == Container::TIMESTAMP) {
+                    if (c.getDataType() == TimeStamp::ID()) {
                         TimeStamp ts = c.getData<TimeStamp>();
                         clog << "ControlFlowTestApp received '" << ts.toString() << "'" << endl;
 

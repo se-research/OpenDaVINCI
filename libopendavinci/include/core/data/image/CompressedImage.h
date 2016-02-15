@@ -153,6 +153,9 @@ namespace core {
                     virtual const string getShortName() const;
                     virtual const string getLongName() const;
                     virtual const string toString() const;
+                    static int32_t ID();
+                    static const string ShortName();
+                    static const string LongName();
 
                 private:
                     string m_name;

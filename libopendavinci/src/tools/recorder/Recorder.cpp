@@ -77,17 +77,17 @@ namespace tools {
         void Recorder::store(core::data::Container c) {
             // Check if the container to be stored is a "regular" data type.
             if ( (c.getDataType() != Container::UNDEFINEDDATA) &&
-                 (c.getDataType() != Container::RECORDER_COMMAND)  &&
-                 (c.getDataType() != Container::SHARED_DATA)  &&
-                 (c.getDataType() != Container::SHARED_IMAGE) ) {
+                 (c.getDataType() != coredata::recorder::RecorderCommand::ID())  &&
+                 (c.getDataType() != coredata::SharedData::ID())  &&
+                 (c.getDataType() != coredata::image::SharedImage::ID()) ) {
                 getFIFO().enter(c);
                 recordQueueEntries();
             }
 
             if (m_dumpSharedData) {
                 // ... or a container that describes a shared memory segment.
-                if ( (c.getDataType() == Container::SHARED_DATA)  ||
-                     (c.getDataType() == Container::SHARED_IMAGE) ) {
+                if ( (c.getDataType() == coredata::SharedData::ID())  ||
+                     (c.getDataType() == coredata::image::SharedImage::ID()) ) {
                     getDataStoreForSharedData().add(c);
                 }
             }
@@ -100,9 +100,9 @@ namespace tools {
                     Container c = m_fifo.leave();
                     // Filter undefined data as well as recorder commands.
                     if ( (c.getDataType() != Container::UNDEFINEDDATA) &&
-                         (c.getDataType() != Container::RECORDER_COMMAND)  &&
-                         (c.getDataType() != Container::SHARED_DATA)  &&
-                         (c.getDataType() != Container::SHARED_IMAGE) ) {
+                         (c.getDataType() != coredata::recorder::RecorderCommand::ID())  &&
+                         (c.getDataType() != coredata::SharedData::ID())  &&
+                         (c.getDataType() != coredata::image::SharedImage::ID()) ) {
                         if (m_out.isValid()) {
                             (*m_out) << c;
                         }

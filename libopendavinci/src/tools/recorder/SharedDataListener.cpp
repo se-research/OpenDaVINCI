@@ -43,8 +43,8 @@ namespace tools {
         SharedDataListener::SharedDataListener(SharedPointer<ostream> out, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const bool &threading) :
             m_threading(threading),
             m_sharedDataWriter(NULL),
-		    m_mapOfAvailableSharedData(),
-		    m_mapOfAvailableSharedImages(),
+            m_mapOfAvailableSharedData(),
+            m_mapOfAvailableSharedImages(),
             m_mapOfMemories(),
             m_bufferIn(),
             m_bufferOut(),
@@ -134,7 +134,7 @@ namespace tools {
 
                 if (copied) {
                     // Enter memory segment to processing queue.
-                    m_bufferOut.enter(c);                
+                    m_bufferOut.enter(c);
                 }
             }
 
@@ -149,7 +149,7 @@ namespace tools {
 
                 map<string, coredata::SharedData>::iterator it = m_mapOfAvailableSharedData.find(sd.getName());
                 if (it == m_mapOfAvailableSharedData.end()) {
-            		m_mapOfAvailableSharedData[sd.getName()] = sd;
+                    m_mapOfAvailableSharedData[sd.getName()] = sd;
 
                     CLOG1 << "Connecting to shared memory " << sd.getName() << " at ";
                     
@@ -179,7 +179,7 @@ namespace tools {
 
                 map<string, coredata::image::SharedImage>::iterator it = m_mapOfAvailableSharedImages.find(si.getName());
                 if (it == m_mapOfAvailableSharedImages.end()) {
-            		m_mapOfAvailableSharedImages[si.getName()] = si;
+                    m_mapOfAvailableSharedImages[si.getName()] = si;
 
                     CLOG1 << "Connecting to shared image " << si.getName() << " at ";
 
