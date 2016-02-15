@@ -43,8 +43,8 @@ namespace hesperia {
                     m_identifier(0) {}
 
             OtherVehicleState::OtherVehicleState(const uint32_t &id,
-						const Point3 &position, const Point3 &rotation,
-                        const Point3 &velocity, const Point3 &acceleration) :
+                    const Point3 &position, const Point3 &rotation,
+                    const Point3 &velocity, const Point3 &acceleration) :
                     PointShapedObject(position, rotation, velocity, acceleration),
                     m_identifier(id) {}
 
@@ -59,6 +59,10 @@ namespace hesperia {
                 setIdentifier(obj.getIdentifier());
 
                 return (*this);
+            }
+
+            int32_t OtherVehicleState::ID() {
+                return 36;
             }
 
             int32_t OtherVehicleState::getID() const {
@@ -80,11 +84,11 @@ namespace hesperia {
             }
 
             uint32_t OtherVehicleState::getIdentifier() const {
-            	return m_identifier;
+                return m_identifier;
             }
 
             void OtherVehicleState::setIdentifier(const uint32_t &id) {
-            	m_identifier = id;
+                m_identifier = id;
             }
 
             ostream& OtherVehicleState::operator<<(ostream &out) const {

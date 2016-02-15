@@ -281,7 +281,7 @@ namespace vehiclecontext {
             for (uint32_t i = 0; i < SIZE; i++) {
                 Container c = getFIFO().leave();
                 cerr << "[SimplifiedBicycleModel] Received: " << c.toString() << endl;
-                if (c.getDataType() == Container::VEHICLECONTROL) {
+                if (c.getDataType() == automotive::VehicleControl::ID()) {
                     m_hasReceivedVehicleControl = true;
                     m_vehicleControl = c.getData<automotive::VehicleControl>();
                     break;

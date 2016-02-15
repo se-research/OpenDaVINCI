@@ -80,6 +80,10 @@ namespace hesperia {
                 return length;
             }
 
+            int32_t Route::ID() {
+                return 38;
+            }
+
             int32_t Route::getID() const {
                 return 38;
             }

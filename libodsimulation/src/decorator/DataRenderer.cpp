@@ -63,10 +63,10 @@ namespace hesperia {
         DataRenderer::DataRenderer() :
             m_dataRendererMutex(),
             m_renderer(NULL),
-			m_scnxArchive(NULL),
-			m_egoStateModel(),
+            m_scnxArchive(NULL),
+            m_egoStateModel(),
             m_listOfLoadedOBJXArchives(),
-			m_mapOfModels() {}
+            m_mapOfModels() {}
 
         DataRenderer::~DataRenderer() {
             Lock l(m_dataRendererMutex);
@@ -80,55 +80,40 @@ namespace hesperia {
         }
 
         void DataRenderer::draw(Container &c) {
-            switch (c.getDataType()) {
-                case Container::EGOSTATE:
-                {
-                    draw(c.getData<EgoState>());
-                    break;
-                }
+            if (c.getDataType() == hesperia::data::environment::EgoState::ID()){
+                draw(c.getData<EgoState>());
+            }
 
-                case Container::CONTOUREDOBJECTS:
-                {
-                    draw(c.getData<ContouredObjects>());
-                    break;
-                }
+            if (c.getDataType() == hesperia::data::sensor::ContouredObjects::ID()){
+                draw(c.getData<ContouredObjects>());
+            }
 
-                case Container::OBSTACLE:
-                {
-                    draw(c.getData<Obstacle>());
-                    break;
-                }
+            if (c.getDataType() == hesperia::data::environment::Obstacle::ID()){
+                draw(c.getData<Obstacle>());
+            }
 
-                case Container::OTHERVEHICLESTATE:
-                {
-                	draw(c.getData<OtherVehicleState>());
-                	break;
-                }
+            if (c.getDataType() == hesperia::data::environment::OtherVehicleState::ID()){
+                draw(c.getData<OtherVehicleState>());
+            }
 
-                case Container::ROUTE:
-                {
-                    draw(c.getData<Route>());
-                    break;
-                }
-
-                default:
-                    break;
+            if (c.getDataType() == hesperia::data::planning::Route::ID()){
+                draw(c.getData<Route>());
             }
         }
 
         void DataRenderer::draw(const OtherVehicleState &o) {
-        	Lock l(m_dataRendererMutex);
-        	if (m_renderer != NULL) {
-        		// Look up model.
-        		map<uint32_t, vector<TriangleSet> >::iterator res = m_mapOfModels.find(o.getIdentifier());
-        		if (res != m_mapOfModels.end()) {
+            Lock l(m_dataRendererMutex);
+            if (m_renderer != NULL) {
+                // Look up model.
+                map<uint32_t, vector<TriangleSet> >::iterator res = m_mapOfModels.find(o.getIdentifier());
+                if (res != m_mapOfModels.end()) {
                     m_renderer->beginPainting();
                         // TODO: Rotation for OpenGL is given in Eulerian angles for X-axis, for Y-axis, and for Z-axis SEPERATELY!
                         Point3 dir(0, 0, o.getRotation().getAngleXY());
                         m_renderer->drawListOfTriangleSets(m_mapOfModels[o.getIdentifier()], o.getPosition(), dir);
                     m_renderer->endPainting();
-        		}
-        	}
+                }
+            }
         }
 
         void DataRenderer::draw(const ContouredObjects &cos) {
@@ -171,7 +156,7 @@ namespace hesperia {
                 if (m_egoStateModel.size() > 0) {
                     // Use model of triangle sets for drawing.
                     m_renderer->beginPainting();
-						// TODO: Rotation for OpenGL is given in Eulerian angles for X-axis, for Y-axis, and for Z-axis SEPERATELY!
+                        // TODO: Rotation for OpenGL is given in Eulerian angles for X-axis, for Y-axis, and for Z-axis SEPERATELY!
                         Point3 dir(0, 0, es.getRotation().getAngleXY());
                         m_renderer->drawListOfTriangleSets(m_egoStateModel, es.getPosition(), dir);
                     m_renderer->endPainting();
@@ -283,26 +268,26 @@ namespace hesperia {
             m_scnxArchive = scnxArchive;
 
             if (m_scnxArchive != NULL) {
-            	// Remove any existing models.
-            	m_mapOfModels.clear();
+                // Remove any existing models.
+                m_mapOfModels.clear();
 
-            	// Load models from scenario by looping trough the (FIRST!) available situation.
+                // Load models from scenario by looping trough the (FIRST!) available situation.
                 vector<hesperia::data::situation::Situation> listOfSituations = m_scnxArchive->getListOfSituations();
                 if (listOfSituations.size() > 0) {
-                	hesperia::data::situation::Situation situation = listOfSituations.front();
+                    hesperia::data::situation::Situation situation = listOfSituations.front();
 
-                	map<uint32_t, hesperia::data::situation::Object> mapOfObjects;
-                	vector<hesperia::data::situation::Object> listOfObjects = situation.getListOfObjects();
-                	vector<hesperia::data::situation::Object>::iterator it = listOfObjects.begin();
-                	while (it != listOfObjects.end()) {
-                		hesperia::data::situation::Object o = (*it++);
+                    map<uint32_t, hesperia::data::situation::Object> mapOfObjects;
+                    vector<hesperia::data::situation::Object> listOfObjects = situation.getListOfObjects();
+                    vector<hesperia::data::situation::Object>::iterator it = listOfObjects.begin();
+                    while (it != listOfObjects.end()) {
+                        hesperia::data::situation::Object o = (*it++);
 
-                		hesperia::data::situation::ComplexModel *cm = dynamic_cast<hesperia::data::situation::ComplexModel*>(o.getShape());
-                		if (cm != NULL) {
-                			// Load complexmodel from SCNXArchive.
-                			loadComplexModel(o.getIdentifier(), *cm);
-                		}
-                	}
+                        hesperia::data::situation::ComplexModel *cm = dynamic_cast<hesperia::data::situation::ComplexModel*>(o.getShape());
+                        if (cm != NULL) {
+                            // Load complexmodel from SCNXArchive.
+                            loadComplexModel(o.getIdentifier(), *cm);
+                        }
+                    }
                 }
             }
         }

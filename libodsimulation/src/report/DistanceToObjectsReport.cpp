@@ -69,7 +69,7 @@ namespace vehiclecontext {
 
             // Get last EgoState.
             KeyValueDataStore &kvds = getKeyValueDataStore();
-            Container c = kvds.get(Container::EGOSTATE);
+            Container c = kvds.get(hesperia::data::environment::EgoState::ID());
             EgoState es = c.getData<EgoState>();
 
             const uint32_t SIZE = getFIFO().getSize();
@@ -77,51 +77,51 @@ namespace vehiclecontext {
                 c = getFIFO().leave();
                 cerr << "Received: " << c.toString() << endl;
 
-				if (c.getDataType() == Container::OBSTACLE) {
-					Obstacle o = c.getData<Obstacle>();
+                if (c.getDataType() == hesperia::data::environment::Obstacle::ID()) {
+                    Obstacle o = c.getData<Obstacle>();
 
-					const float DISTANCE = (es.getPosition().getDistanceTo(o.getPosition()));
-					cerr << "DistanceToObjectsReport: Distance to object: " << DISTANCE << ", E: " << es.toString() << ", o: " << o.getPosition().toString() << endl;
+                    const float DISTANCE = (es.getPosition().getDistanceTo(o.getPosition()));
+                    cerr << "DistanceToObjectsReport: Distance to object: " << DISTANCE << ", E: " << es.toString() << ", o: " << o.getPosition().toString() << endl;
 
-					// Continuously check distance.
-					m_correctDistance &= (DISTANCE > m_threshold);
+                    // Continuously check distance.
+                    m_correctDistance &= (DISTANCE > m_threshold);
 
-					vector<Point3> shape = o.getPolygon().getVertices();
-					Point3 head = shape.front();
-					shape.push_back(head);
-					const uint32_t NUMVERTICES = shape.size();
-					for(uint32_t j = 1; j < NUMVERTICES; j++) {
-						Point3 pA = shape.at(j-1);
-						Point3 pB = shape.at(j);
+                    vector<Point3> shape = o.getPolygon().getVertices();
+                    Point3 head = shape.front();
+                    shape.push_back(head);
+                    const uint32_t NUMVERTICES = shape.size();
+                    for(uint32_t j = 1; j < NUMVERTICES; j++) {
+                        Point3 pA = shape.at(j-1);
+                        Point3 pB = shape.at(j);
 
-						// TODO: Check polygonal data as well as perpendicular to all sides.
-	                    // Create line.
+                        // TODO: Check polygonal data as well as perpendicular to all sides.
+                        // Create line.
                         Line l(pA, pB);
 
                         // Compute perpendicular point.
                         Point3 perpendicularPoint = l.getPerpendicularPoint(es.getPosition());
 
-    					// Compute distance between current position and perpendicular point.
+                        // Compute distance between current position and perpendicular point.
                         const float DISTANCE_PP = (es.getPosition().getDistanceTo(perpendicularPoint));
 
                         cerr << "DistanceToObjectsReport: Distance to object's shape: " << DISTANCE_PP << ", E: " << es.toString() << ", o: " << o.getPosition().toString() << ", perpendicular point:" << perpendicularPoint.toString() << endl;
 
-    					// Continuously check distance.
-    					m_correctDistance &= (DISTANCE > m_threshold);
-					}
-				}
+                        // Continuously check distance.
+                        m_correctDistance &= (DISTANCE > m_threshold);
+                    }
+                }
 
-				if (c.getDataType() == Container::OTHERVEHICLESTATE) {
-					OtherVehicleState o = c.getData<OtherVehicleState>();
+                if (c.getDataType() == hesperia::data::environment::OtherVehicleState::ID()) {
+                    OtherVehicleState o = c.getData<OtherVehicleState>();
 
-					const float DISTANCE = (es.getPosition().getDistanceTo(o.getPosition()));
+                    const float DISTANCE = (es.getPosition().getDistanceTo(o.getPosition()));
 
-					// Compute distance between current position and perpendicular point.
-					cerr << "DistanceToObjectsReport: Distance to other vehicle: " << DISTANCE << ", E: " << es.toString() << ", o: " << o.getPosition().toString() << endl;
+                    // Compute distance between current position and perpendicular point.
+                    cerr << "DistanceToObjectsReport: Distance to other vehicle: " << DISTANCE << ", E: " << es.toString() << ", o: " << o.getPosition().toString() << endl;
 
-					// Continuously check distance.
-					m_correctDistance &= (DISTANCE > m_threshold);
-				}
+                    // Continuously check distance.
+                    m_correctDistance &= (DISTANCE > m_threshold);
+                }
             }
         }
 

@@ -115,6 +115,10 @@ namespace hesperia {
                 return m_polygon;
             }
 
+            int32_t Obstacle::ID() {
+                return 35;
+            }
+
             int32_t Obstacle::getID() const {
                 return 35;
             }

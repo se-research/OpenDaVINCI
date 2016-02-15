@@ -252,7 +252,7 @@ namespace vehiclecontext {
             for (uint32_t i = 0; i < SIZE; i++) {
                 Container c = getFIFO().leave();
                 cerr << "[CameraModel] Received: " << c.toString() << endl;
-                if (c.getDataType() == Container::EGOSTATE) {
+                if (c.getDataType() == hesperia::data::environment::EgoState::ID()) {
                     m_egoState = c.getData<EgoState>();
                     hasEgoState = true;
                 }

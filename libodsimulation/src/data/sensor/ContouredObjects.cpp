@@ -77,6 +77,10 @@ namespace hesperia {
                 m_color = color;
             }
 
+            int32_t ContouredObjects::ID() {
+                return 31;
+            }
+
             int32_t ContouredObjects::getID() const {
                 return 31;
             }

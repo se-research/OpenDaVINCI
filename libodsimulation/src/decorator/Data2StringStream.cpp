@@ -40,21 +40,12 @@ namespace hesperia {
         Data2StringStream::~Data2StringStream() {}
 
         void Data2StringStream::toStringStream(Container &c) {
-            switch (c.getDataType()) {
-                case Container::EGOSTATE:
-                {
-                    toStringStream(c.getData<EgoState>());
-                    break;
-                }
+            if (c.getDataType() == hesperia::data::environment::EgoState::ID()) {
+                toStringStream(c.getData<EgoState>());
+            }
 
-                case Container::ROUTE:
-                {
-                    toStringStream(c.getData<Route>());
-                    break;
-                }
-
-                default:
-                    break;
+            if (c.getDataType() == hesperia::data::planning::Route::ID()) {
+                toStringStream(c.getData<Route>());
             }
         }
 
