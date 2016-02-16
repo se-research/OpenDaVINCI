@@ -335,7 +335,7 @@ namespace cockpit {
             }
 
             void BirdsEyeMapMapWidget::nextContainer(Container &c) {
-                if (c.getDataType() == Container::EGOSTATE) {
+                if (c.getDataType() == hesperia::data::environment::EgoState::ID()) {
                     Lock l(m_rootMutex);
                     m_egoState = c.getData<EgoState>();
                     m_numberOfReceivedEgoStates++;
@@ -348,7 +348,7 @@ namespace cockpit {
                     }
                 }
 
-                if (c.getDataType() == Container::ROUTE) {
+                if (c.getDataType() == hesperia::data::planning::Route::ID()) {
                     if (m_plannedRoute != NULL) {
                         Lock l(m_rootMutex);
                         hesperia::data::planning::Route r = c.getData<hesperia::data::planning::Route>();
@@ -369,7 +369,7 @@ namespace cockpit {
                     }
                 }
 
-                if (c.getDataType() == Container::OBSTACLE) {
+                if (c.getDataType() == hesperia::data::environment::Obstacle::ID()) {
                     if (m_obstaclesRoot != NULL) {
                         Lock l(m_rootMutex);
                         Obstacle obstacle = c.getData<Obstacle>();

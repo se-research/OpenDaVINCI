@@ -163,6 +163,10 @@ namespace hesperia {
                 return result;
             }
 
+            int32_t Line::ID() {
+                return 24;
+            }
+
             int32_t Line::getID() const {
                 return 24;
             }

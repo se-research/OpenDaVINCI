@@ -146,7 +146,7 @@ namespace camgen {
         static uint32_t frameCounter = 0;
         static clock_t start = clock();
 
-        Container container = getKeyValueDataStore().get(Container::EGOSTATE);
+        Container container = getKeyValueDataStore().get(hesperia::data::environment::EgoState::ID());
         m_egoState = container.getData<hesperia::data::environment::EgoState>();
         m_image = m_grabber->getNextImage();
 

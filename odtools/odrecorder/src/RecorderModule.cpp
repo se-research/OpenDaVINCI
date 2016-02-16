@@ -70,8 +70,8 @@ namespace odrecorder {
         addDataStoreFor(r.getFIFO());
 
         // Connect recorder's data store that can handle shared data.
-        addDataStoreFor(Container::SHARED_DATA, r.getDataStoreForSharedData());
-        addDataStoreFor(Container::SHARED_IMAGE, r.getDataStoreForSharedData());
+        addDataStoreFor(coredata::SharedData::ID(), r.getDataStoreForSharedData());
+        addDataStoreFor(coredata::image::SharedImage::ID(), r.getDataStoreForSharedData());
 
         // Get key/value-datastore for controlling the odrecorder.
         KeyValueDataStore &kvds = getKeyValueDataStore();
@@ -91,8 +91,8 @@ namespace odrecorder {
 
             // Check for remote control.
             if (remoteControl) {
-                Container container = kvds.get(Container::RECORDER_COMMAND);
-                if (container.getDataType() == Container::RECORDER_COMMAND) {
+                Container container = kvds.get(coredata::recorder::RecorderCommand::ID());
+                if (container.getDataType() == coredata::recorder::RecorderCommand::ID()) {
                     coredata::recorder::RecorderCommand rc;
                     rc = container.getData<coredata::recorder::RecorderCommand>();
 

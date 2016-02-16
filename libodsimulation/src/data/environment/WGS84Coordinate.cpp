@@ -257,6 +257,10 @@ namespace hesperia {
                 m_LONGITUDE = LON;
             }
 
+            int32_t WGS84Coordinate::ID() {
+                return 19;
+            }
+
             int32_t WGS84Coordinate::getID() const {
                 return 19;
             }

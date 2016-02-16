@@ -151,7 +151,7 @@ namespace chasecar {
                     const uint32_t size = m_FIFO_Obstacles.getSize();
                     for(uint32_t i = 0; i < size; i++) {
                         Container c = m_FIFO_Obstacles.leave();
-                        if (c.getDataType() == Container::OBSTACLE) {
+                        if (c.getDataType() == Obstacle::ID()) {
                             Obstacle obstacle = c.getData<Obstacle>();
 
                             // Check if sensor FOV-"Obstacle":

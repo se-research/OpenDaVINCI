@@ -41,6 +41,7 @@
 #include "plugins/player/PlayerWidget.h"
 #include "tools/player/Player.h"
 #include "tools/splitter/Splitter.h"
+#include "generated/coredata/player/PlayerCommand.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }
 
@@ -209,7 +210,7 @@ namespace cockpit {
 
                     // Send container.
                     if ( (nextContainerToBeSent.getDataType() != Container::UNDEFINEDDATA) &&
-                         (nextContainerToBeSent.getDataType() != Container::PLAYER_COMMAND) ) {
+                         (nextContainerToBeSent.getDataType() != coredata::player::PlayerCommand::ID()) ) {
                         m_conference.send(nextContainerToBeSent);
                     }
 

@@ -544,7 +544,7 @@ namespace odsupercomponent {
     }
 
     void SuperComponent::nextContainer(Container &container) {
-        if (container.getDataType() == Container::LOG_MESSAGE) {
+        if (container.getDataType() == coredata::LogMessage::ID()) {
             coredata::LogMessage logMessage = container.getData<coredata::LogMessage>();
 
             if (m_logLevel >= logMessage.getLogLevel()) {

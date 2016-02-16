@@ -59,7 +59,7 @@ namespace irus {
 
         while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
             // Get current EgoState.
-            Container c = kvs.get(Container::EGOSTATE);
+            Container c = kvs.get(hesperia::data::environment::EgoState::ID());
             EgoState es = c.getData<EgoState>();
 
             // Calculate result and propagate it.

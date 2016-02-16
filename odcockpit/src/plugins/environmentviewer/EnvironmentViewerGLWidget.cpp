@@ -388,7 +388,7 @@ namespace cockpit {
             }
 
             void EnvironmentViewerGLWidget::nextContainer(Container &c) {
-                if (c.getDataType() == Container::EGOSTATE) {
+                if (c.getDataType() == hesperia::data::environment::EgoState::ID()) {
                     m_numberOfReceivedEgoStates++;
 
                     if (m_egoStateNode != NULL) {
@@ -414,7 +414,7 @@ namespace cockpit {
                         }
                     }
                 }
-                if (c.getDataType() == Container::CONTOUREDOBJECTS) {
+                if (c.getDataType() == ContouredObjects::ID()) {
                     if (m_contouredObjectsNode != NULL) {
                         Lock l(m_rootMutex);
                         ContouredObjects cos = c.getData<ContouredObjects>();
@@ -432,7 +432,7 @@ namespace cockpit {
                         }
                     }
                 }
-                if (c.getDataType() == Container::ROUTE) {
+                if (c.getDataType() == hesperia::data::planning::Route::ID()) {
                     if (m_plannedRoute != NULL) {
                         Lock l(m_rootMutex);
                         Route r = c.getData<Route>();
@@ -452,7 +452,7 @@ namespace cockpit {
                         }
                     }
                 }
-                if (c.getDataType() == Container::DRAW_LINE) {
+                if (c.getDataType() == hesperia::data::environment::Line::ID()) {
                     if (m_lines != NULL) {
                         Lock l(m_rootMutex);
                         hesperia::data::environment::Line line = c.getData<Line>();
@@ -466,7 +466,7 @@ namespace cockpit {
                         m_lines->addChild(new hesperia::threeD::models::Line(NodeDescriptor(), posA, posB, Point3(1, 0, 0), 6));
                     }
                 }
-                if (c.getDataType() == Container::OBSTACLE) {
+                if (c.getDataType() == hesperia::data::environment::Obstacle::ID()) {
                     if (m_obstaclesRoot != NULL) {
                         Lock l(m_rootMutex);
                         Obstacle obstacle = c.getData<Obstacle>();

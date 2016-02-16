@@ -90,7 +90,7 @@ class PlayerModuleTestContainerListener : public ContainerListener {
         }
 
         virtual void nextContainer(Container &c) {
-            if ( (c.getDataType() == Container::TIMESTAMP) ) {
+            if ( (c.getDataType() == TimeStamp::ID()) ) {
                 fifo->enter(c);
             }
         }

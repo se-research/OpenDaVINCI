@@ -151,7 +151,7 @@ namespace cockpit {
             ControllerWidget::~ControllerWidget() {}
 
             void ControllerWidget::nextContainer(Container &container) {
-                if (container.getDataType() == Container::VEHICLECONTROL) {
+                if (container.getDataType() == automotive::VehicleControl::ID()) {
                     VehicleControl vc = container.getData<VehicleControl>();
                     m_value->setText(vc.toString().c_str());
                 }
