@@ -95,7 +95,7 @@ IF(    (UNIX)
     ENDIF()
     SET(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "${ARCH}")
     SET(CPACK_DEB_COMPONENT_INSTALL ON)
-    SET(CPACK_DEBIAN_PACKAGE_DEPENDS "opendavinci-odlib,odsimulation-odsimlib,libautomotivedata")
+    SET(CPACK_DEBIAN_PACKAGE_DEPENDS "opendavinci-odlib,opendlv-lib,libautomotivedata")
 
     # RPM packages:
     IF("${ARMHF}" STREQUAL "YES")
@@ -110,7 +110,7 @@ IF(    (UNIX)
     SET(CPACK_RPM_PACKAGE_BUILDARCH "Buildarch: ${CPACK_RPM_PACKAGE_ARCHITECTURE}")
     SET(CPACK_RPM_COMPONENT_INSTALL ON)
     SET(CPACK_RPM_PACKAGE_LICENSE "GPL")
-    SET(CPACK_RPM_PACKAGE_REQUIRES "opendavinci-odlib, odsimulation-odsimlib, libautomotivedata")
+    SET(CPACK_RPM_PACKAGE_REQUIRES "opendavinci-odlib, opendlv-lib, libautomotivedata")
 
     # Resulting package name:
     SET(CPACK_PACKAGE_FILE_NAME ${CPACK_PACKAGE_NAME}_${CPACK_PACKAGE_VERSION}_${ARCH})

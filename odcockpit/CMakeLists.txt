@@ -53,9 +53,9 @@ SET(AUTOMOTIVEDATA_DIR "${CMAKE_INSTALL_PREFIX}")
 FIND_PACKAGE (AutomotiveData REQUIRED)
 
 ###########################################################################
-# Find odSimulation.
-SET(ODSIMULATION_DIR "${CMAKE_INSTALL_PREFIX}")
-FIND_PACKAGE (odSimulation REQUIRED)
+# Find OpenDLV.
+SET(OPENDLV_DIR "${CMAKE_INSTALL_PREFIX}")
+FIND_PACKAGE (OpenDLV REQUIRED)
 
 ###########################################################################
 # Find Qt.
@@ -70,7 +70,7 @@ FIND_PACKAGE (Qwt5Qt4 REQUIRED)
 # Set linking libraries to successfully link test suites and binaries.
 SET (LIBRARIES ${OPENDAVINCI_LIBRARIES}
                ${AUTOMOTIVEDATA_LIBRARIES}
-               ${ODSIMULATION_LIBRARIES}
+               ${OPENDLV_LIBRARIES}
                ${QT_LIBRARIES}
                ${QWT5QT4_LIBRARIES})
 
@@ -79,8 +79,8 @@ SET (LIBRARIES ${OPENDAVINCI_LIBRARIES}
 INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS})
 # Set header files from AutomotiveData.
 INCLUDE_DIRECTORIES (${AUTOMOTIVEDATA_INCLUDE_DIRS})
-# Set header files from Hesperia.
-INCLUDE_DIRECTORIES (${ODSIMULATION_INCLUDE_DIRS}/odsimulation)
+# Set header files from OpenDLV.
+INCLUDE_DIRECTORIES (${OPENDLV_INCLUDE_DIRS}/opendlv)
 # Set header files from Qwt5-Qt4.
 # Marking this with SYSTEM tells CMake to count this as a system library.
 # Used to suppress warnings from Qwt5-Qt4.
@@ -205,7 +205,7 @@ IF(    (UNIX)
     ENDIF()
     SET(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "${ARCH}")
     SET(CPACK_DEB_COMPONENT_INSTALL ON)
-    SET(CPACK_DEBIAN_PACKAGE_DEPENDS "opendavinci-odlib,odsimulation-odsimlib,libautomotivedata,libqt4-dev,libqwt5-qt4-dev,libqwt5-qt4,libqt4-opengl-dev,qt4-dev-tools")
+    SET(CPACK_DEBIAN_PACKAGE_DEPENDS "opendavinci-odlib,opendlv-lib,libautomotivedata,libqt4-dev,libqwt5-qt4-dev,libqwt5-qt4,libqt4-opengl-dev,qt4-dev-tools")
 
     # RPM packages:
     IF("${ARMHF}" STREQUAL "YES")
@@ -220,7 +220,7 @@ IF(    (UNIX)
     SET(CPACK_RPM_PACKAGE_BUILDARCH "Buildarch: ${CPACK_RPM_PACKAGE_ARCHITECTURE}")
     SET(CPACK_RPM_COMPONENT_INSTALL ON)
     SET(CPACK_RPM_PACKAGE_LICENSE "GPL")
-    SET(CPACK_RPM_PACKAGE_REQUIRES "opendavinci-odlib, odsimulation-odsimlib, libautomotivedata, qt4-devel, qwt-devel")
+    SET(CPACK_RPM_PACKAGE_REQUIRES "opendavinci-odlib, opendlv-lib, libautomotivedata, qt4-devel, qwt-devel")
 
     # Resulting package name:
     SET(CPACK_PACKAGE_FILE_NAME ${CPACK_PACKAGE_NAME}_${CPACK_PACKAGE_VERSION}_${ARCH})
