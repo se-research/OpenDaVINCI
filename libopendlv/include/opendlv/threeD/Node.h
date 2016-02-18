@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -24,7 +24,7 @@
 #include "opendavinci/core/wrapper/Disposable.h"
 #include "opendlv/threeD/NodeDescriptor.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace threeD {
 
         /**
@@ -89,6 +89,6 @@ class RenderingConfiguration;
         };
 
     }
-} // hesperia::threeD
+} // opendlv::threeD
 
 #endif /*HESPERIA_THREED_NODE_H_*/

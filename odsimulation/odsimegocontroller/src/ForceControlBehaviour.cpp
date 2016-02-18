@@ -25,8 +25,8 @@
 namespace egocontroller {
     using namespace core::base;
     using namespace core::data;
-    using namespace hesperia::data::environment;
-    using namespace hesperia::data::environment;
+    using namespace opendlv::data::environment;
+    using namespace opendlv::data::environment;
 
     ForceControlBehaviour::ForceControlBehaviour(
             const double& minimumTurningRadius,

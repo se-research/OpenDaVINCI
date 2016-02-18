@@ -36,7 +36,7 @@ namespace cockpit {
 
             using namespace std;
             using namespace core::base;
-            using namespace hesperia::threeD;
+            using namespace opendlv::threeD;
 
             TreeNodeVisitor::TreeNodeVisitor(RenderingConfiguration &rc, TreeNode<SelectableNodeDescriptor> *root) :
                 m_renderingConfiguration(rc),

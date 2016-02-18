@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -26,7 +26,7 @@
 #include "opendlv/data/situation/SituationNode.h"
 #include "opendlv/data/situation/SituationVisitor.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace data {
         namespace situation {
 
@@ -35,7 +35,7 @@ namespace hesperia {
             /**
              * This class represents visitable three dimensional coordinates.
              */
-            class OPENDAVINCI_API Vertex3 : public hesperia::data::environment::Point3, public SituationNode {
+            class OPENDAVINCI_API Vertex3 : public opendlv::data::environment::Point3, public SituationNode {
                 public:
                     Vertex3();
 
@@ -61,6 +61,6 @@ namespace hesperia {
 
         }
     }
-} // hesperia::data::situation
+} // opendlv::data::situation
 
 #endif /*HESPERIA_CORE_DATA_SITUATION_VERTEX3_H_*/

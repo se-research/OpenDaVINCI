@@ -37,7 +37,7 @@
 
 class QWidget;
 namespace cockpit { namespace plugins { class PlugIn; } }
-namespace hesperia { namespace threeD { namespace loaders { class OBJXArchive; } } }
+namespace opendlv { namespace threeD { namespace loaders { class OBJXArchive; } } }
 
 namespace cockpit {
     namespace plugins {
@@ -45,10 +45,10 @@ namespace cockpit {
 
             using namespace std;
             using namespace core::base;
-            using namespace hesperia::threeD;
-            using namespace hesperia::threeD::decorator;
-            using namespace hesperia::threeD::loaders;
-            using namespace hesperia::threeD::models;
+            using namespace opendlv::threeD;
+            using namespace opendlv::threeD::decorator;
+            using namespace opendlv::threeD::loaders;
+            using namespace opendlv::threeD::models;
 
             OBJXGLWidget::OBJXGLWidget(const PlugIn &plugIn, QWidget *prnt) :
                     AbstractGLWidget(plugIn, prnt),

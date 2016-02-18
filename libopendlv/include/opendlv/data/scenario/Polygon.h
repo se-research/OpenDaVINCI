@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
 #include "opendlv/data/scenario/Shape.h"
 #include "opendlv/data/scenario/Vertex3.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace data {
         namespace scenario {
 
@@ -100,7 +100,7 @@ namespace hesperia {
                      *
                      * @return List of Point3 vertices.
                      */
-                    const vector<hesperia::data::environment::Point3> getListOfVerticesAsPoint3() const;
+                    const vector<opendlv::data::environment::Point3> getListOfVerticesAsPoint3() const;
 
                     /**
                      * This method add a new vertex to the polygon.
@@ -129,6 +129,6 @@ namespace hesperia {
 
         }
     }
-} // hesperia::data::scenario
+} // opendlv::data::scenario
 
 #endif /*HESPERIA_CORE_DATA_SCENARIO_POLYGON_H_*/

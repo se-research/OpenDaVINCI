@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -36,7 +36,7 @@
 #include "opendlv/scenario/SCNXArchiveFactory.h"
 #include "opendlv/scenario/ScenarioFactory.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace scenario {
 
         using namespace std;
@@ -131,4 +131,4 @@ namespace hesperia {
         }
 
     }
-} // hesperia::scenario
+} // opendlv::scenario

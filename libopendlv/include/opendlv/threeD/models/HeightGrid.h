@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -29,7 +29,7 @@
 #include "opendlv/threeD/TransformGroup.h"
 
 
-namespace hesperia {
+namespace opendlv {
     namespace threeD {
         namespace models {
 
@@ -91,8 +91,8 @@ namespace hesperia {
                      */
                     HeightGrid(const NodeDescriptor &nodeDescriptor,
                                const core::wrapper::Image *heightImage,
-                               const hesperia::data::environment::Point3 &originPixelXY,
-                               const hesperia::data::environment::Point3 &scalingPixelXY,
+                               const opendlv::data::environment::Point3 &originPixelXY,
+                               const opendlv::data::environment::Point3 &scalingPixelXY,
                                const float &rotationZ,
                                const float &ground,
                                const float &min,
@@ -119,8 +119,8 @@ namespace hesperia {
 
                 private:
                     const core::wrapper::Image *m_heightImage;
-                    hesperia::data::environment::Point3 m_originPixelXY;
-                    hesperia::data::environment::Point3 m_scalingPixelXY;
+                    opendlv::data::environment::Point3 m_originPixelXY;
+                    opendlv::data::environment::Point3 m_scalingPixelXY;
                     float m_rotationZ;
                     float m_ground;
                     float m_min;
@@ -138,6 +138,6 @@ namespace hesperia {
 
         }
     }
-} // hesperia::threeD::models
+} // opendlv::threeD::models
 
 #endif /*HESPERIA_CORE_THREED_MODELS_HEIGHTGRID_H_*/

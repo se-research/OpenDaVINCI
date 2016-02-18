@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -27,7 +27,7 @@
 #include "opendlv/data/environment/Point3.h"
 #include "opendlv/data/environment/PointShapedObject.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace data {
         namespace sensor {
 
@@ -37,7 +37,7 @@ namespace hesperia {
              * This class contains data about a measured object
              * either by the radar or laser system.
              */
-            class OPENDAVINCI_API ContouredObject : public hesperia::data::environment::PointShapedObject {
+            class OPENDAVINCI_API ContouredObject : public opendlv::data::environment::PointShapedObject {
                 public:
                     ContouredObject();
 
@@ -49,8 +49,8 @@ namespace hesperia {
                      * @param velocity Velocity.
                      * @param acceleration Acceleration.
                      */
-                    ContouredObject(const hesperia::data::environment::Point3 &position, const hesperia::data::environment::Point3 &rotation,
-                                    const hesperia::data::environment::Point3 &velocity, const hesperia::data::environment::Point3 &acceleration);
+                    ContouredObject(const opendlv::data::environment::Point3 &position, const opendlv::data::environment::Point3 &rotation,
+                                    const opendlv::data::environment::Point3 &velocity, const opendlv::data::environment::Point3 &acceleration);
 
                     /**
                      * Copy constructor.
@@ -74,14 +74,14 @@ namespace hesperia {
                      *
                      * @return Contour.
                      */
-                    const vector<hesperia::data::environment::Point3> getContour() const;
+                    const vector<opendlv::data::environment::Point3> getContour() const;
 
                     /**
                      * This method sets a contour.
                      *
                      * @param contour New contour.
                      */
-                    void setContour(const vector<hesperia::data::environment::Point3> &contour);
+                    void setContour(const vector<opendlv::data::environment::Point3> &contour);
 
                     /**
                      * This method resets the current contoured object.
@@ -94,11 +94,11 @@ namespace hesperia {
                     virtual const string toString() const;
 
                 private:
-                    vector<hesperia::data::environment::Point3> m_contour;
+                    vector<opendlv::data::environment::Point3> m_contour;
             };
 
         }
     }
-} // hesperia::data::sensor
+} // opendlv::data::sensor
 
 #endif /*HESPERIA_CORE_DATA_SENSOR_CONTOUREDOBJECT_H_*/

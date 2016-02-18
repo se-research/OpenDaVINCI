@@ -41,8 +41,8 @@ class QTimer;
 namespace cockpit { namespace plugins { class PlugIn; } }
 namespace core { namespace base { template <typename T> class TreeNode; } }
 namespace core { namespace data { class Container; } }
-namespace hesperia { namespace scenegraph { class SceneNode; } }
-namespace hesperia { namespace scenegraph { namespace models { class SimpleCar; } } }
+namespace opendlv { namespace scenegraph { class SceneNode; } }
+namespace opendlv { namespace scenegraph { namespace models { class SimpleCar; } } }
 
 namespace cockpit {
     namespace plugins {
@@ -106,7 +106,7 @@ class SelectableNodeDescriptor;
                      *
                      * @param snd SceneNodeDescriptor to which the camera should be assigned.
                      */
-                    void assignCameraTo(const hesperia::scenegraph::SceneNodeDescriptor &snd);
+                    void assignCameraTo(const opendlv::scenegraph::SceneNodeDescriptor &snd);
 
                     virtual void update(core::base::TreeNode<SelectableNodeDescriptor> *node);
 
@@ -119,39 +119,39 @@ class SelectableNodeDescriptor;
                 private:
                     const plugins::PlugIn &m_plugIn;
 
-                    hesperia::scenegraph::renderer::RenderingConfiguration m_renderingConfiguration;
+                    opendlv::scenegraph::renderer::RenderingConfiguration m_renderingConfiguration;
 
                     core::base::TreeNode<SelectableNodeDescriptor> *m_selectableNodeDescriptorTree;
                     SelectableNodeDescriptorTreeListener &m_selectableNodeDescriptorTreeListener;
 
                     CameraAssignableNodesListener &m_cameraAssignableNodesListener;
-                    vector<hesperia::scenegraph::SceneNodeDescriptor> m_listOfCameraAssignableNodes;
-                    hesperia::scenegraph::SceneNodeDescriptor m_cameraAssignedNodeDescriptor;
+                    vector<opendlv::scenegraph::SceneNodeDescriptor> m_listOfCameraAssignableNodes;
+                    opendlv::scenegraph::SceneNodeDescriptor m_cameraAssignedNodeDescriptor;
 
                     QTimer *m_timer;
 
                     core::base::Mutex m_rootMutex;
 
-                    hesperia::scenegraph::SceneNode *m_root;
-                    hesperia::scenegraph::SceneNode *m_scales;
-                    hesperia::scenegraph::SceneNode *m_stationaryElements;
-                    hesperia::scenegraph::SceneNode *m_dynamicElements;
-                    hesperia::scenegraph::SceneNode *m_measurements;
+                    opendlv::scenegraph::SceneNode *m_root;
+                    opendlv::scenegraph::SceneNode *m_scales;
+                    opendlv::scenegraph::SceneNode *m_stationaryElements;
+                    opendlv::scenegraph::SceneNode *m_dynamicElements;
+                    opendlv::scenegraph::SceneNode *m_measurements;
 
                     double m_scaleFactor;
-                    hesperia::data::environment::Point3 m_centerOfMap;
-                    hesperia::data::environment::Point3 m_mouseOld;
+                    opendlv::data::environment::Point3 m_centerOfMap;
+                    opendlv::data::environment::Point3 m_mouseOld;
 
                     uint32_t m_numberOfReceivedEgoStates;
-                    hesperia::data::environment::EgoState m_egoState;
-                    hesperia::data::environment::EgoState m_lastEgoState;
-                    hesperia::scenegraph::models::SimpleCar *m_egoCar;
-                    hesperia::scenegraph::SceneNode *m_egoCarTrace;
+                    opendlv::data::environment::EgoState m_egoState;
+                    opendlv::data::environment::EgoState m_lastEgoState;
+                    opendlv::scenegraph::models::SimpleCar *m_egoCar;
+                    opendlv::scenegraph::SceneNode *m_egoCarTrace;
 
-                    hesperia::scenegraph::SceneNode *m_obstaclesRoot;
-                    map<uint32_t, hesperia::scenegraph::SceneNode*> m_mapOfObstacles;
+                    opendlv::scenegraph::SceneNode *m_obstaclesRoot;
+                    map<uint32_t, opendlv::scenegraph::SceneNode*> m_mapOfObstacles;
 
-                    hesperia::scenegraph::SceneNode *m_plannedRoute;
+                    opendlv::scenegraph::SceneNode *m_plannedRoute;
 
                     void createSceneGraph();
 

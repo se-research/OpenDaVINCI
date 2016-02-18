@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -27,13 +27,13 @@
 #include "opendavinci/core/data/SerializableData.h"
 #include "opendlv/data/environment/Point3.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace data {
         namespace environment {
 
             using namespace std;
 
-            using namespace hesperia::data::environment;
+            using namespace opendlv::data::environment;
 
             /**
              * This class can be used for line operations.
@@ -131,6 +131,6 @@ namespace hesperia {
 
         }
     }
-} // hesperia::data::environment
+} // opendlv::data::environment
 
 #endif /*HESPERIA_DATA_ENVIRONMENT_LINE_H_*/

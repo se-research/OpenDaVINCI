@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -29,7 +29,7 @@
 #include "opendlv/scenegraph/SceneNodeDescriptor.h"
 #include "opendlv/scenegraph/primitives/Line.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace scenegraph {
         namespace models {
 
@@ -47,7 +47,7 @@ namespace hesperia {
                      * @param color Color for these X/Y-axes.
                      * @param thickness of X/Y-axes.
                      */
-                    XYAxes(const SceneNodeDescriptor &sceneNodeDescriptor, const hesperia::data::environment::Point3 &color, const float &thickness);
+                    XYAxes(const SceneNodeDescriptor &sceneNodeDescriptor, const opendlv::data::environment::Point3 &color, const float &thickness);
 
                     /**
                      * Copy constructor.
@@ -67,7 +67,7 @@ namespace hesperia {
                     virtual ~XYAxes();
 
                 private:
-                    hesperia::data::environment::Point3 m_color;
+                    opendlv::data::environment::Point3 m_color;
                     float m_thickness;
 
                     void createAxes();
@@ -75,6 +75,6 @@ namespace hesperia {
 
         }
     }
-} // hesperia::scenegraph::models
+} // opendlv::scenegraph::models
 
 #endif /*HESPERIA_SCENEGRAPH_MODELS_XYAXES_H_*/

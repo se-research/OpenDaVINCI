@@ -32,9 +32,9 @@
 #include "opendlv/threeD/TransformGroup.h"
 
 namespace core { namespace base { class FIFOQueue; } }
-namespace hesperia { namespace data { namespace camera { class ImageGrabberCalibration; } } }
-namespace hesperia { namespace data { namespace environment { class EgoState; } } }
-namespace hesperia { namespace threeD { class Node; } }
+namespace opendlv { namespace data { namespace camera { class ImageGrabberCalibration; } } }
+namespace opendlv { namespace data { namespace environment { class EgoState; } } }
+namespace opendlv { namespace threeD { class Node; } }
 
 namespace chasecar {
 
@@ -44,7 +44,7 @@ namespace chasecar {
      * This class implements a grabber providing images from
      * a given OpenGL scene.
      */
-    class OpenGLGrabber : public hesperia::io::camera::ImageGrabber {
+    class OpenGLGrabber : public opendlv::io::camera::ImageGrabber {
         public:
             enum RENDERING {
                 IN_CAR,
@@ -83,9 +83,9 @@ namespace chasecar {
              * @param obstacle Last obstacle data.
              */
             OpenGLGrabber(const core::base::KeyValueConfiguration &kvc,
-                          const hesperia::data::camera::ImageGrabberID &imageGrabberID,
-                          const hesperia::data::camera::ImageGrabberCalibration &imageGrabberCalibration,
-                          hesperia::data::environment::EgoState &egoState,
+                          const opendlv::data::camera::ImageGrabberID &imageGrabberID,
+                          const opendlv::data::camera::ImageGrabberCalibration &imageGrabberCalibration,
+                          opendlv::data::environment::EgoState &egoState,
                           core::base::FIFOQueue &obstacles);
 
             virtual ~OpenGLGrabber();
@@ -99,12 +99,12 @@ namespace chasecar {
             core::base::KeyValueConfiguration m_kvc;
             core::SharedPointer<core::wrapper::Image> m_image;
             core::SharedPointer<core::wrapper::SharedMemory> m_sharedMemory;
-            core::SharedPointer<hesperia::threeD::TransformGroup> m_root;
-            core::SharedPointer<hesperia::threeD::TransformGroup> m_car;
-            core::SharedPointer<hesperia::threeD::TransformGroup> m_sensors;
-            map<uint32_t, hesperia::threeD::Node*> m_mapOfObstacles;
+            core::SharedPointer<opendlv::threeD::TransformGroup> m_root;
+            core::SharedPointer<opendlv::threeD::TransformGroup> m_car;
+            core::SharedPointer<opendlv::threeD::TransformGroup> m_sensors;
+            map<uint32_t, opendlv::threeD::Node*> m_mapOfObstacles;
 
-            hesperia::data::environment::EgoState &m_egoState;
+            opendlv::data::environment::EgoState &m_egoState;
             core::base::FIFOQueue &m_FIFO_Obstacles;
 
             void renderNextImageInCar();

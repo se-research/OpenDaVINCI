@@ -41,7 +41,7 @@ namespace vehiclecontext {
          * This class implements a grabber providing images from
          * a given OpenGL scene.
          */
-        class OpenGLGrabber : public hesperia::io::camera::ImageGrabber {
+        class OpenGLGrabber : public opendlv::io::camera::ImageGrabber {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -72,8 +72,8 @@ namespace vehiclecontext {
                  * @param egoState Current ego state.
                  */
                 OpenGLGrabber(const core::base::KeyValueConfiguration &kvc,
-                              const hesperia::data::camera::ImageGrabberID &imageGrabberID,
-                              const hesperia::data::camera::ImageGrabberCalibration &imageGrabberCalibration);
+                              const opendlv::data::camera::ImageGrabberID &imageGrabberID,
+                              const opendlv::data::camera::ImageGrabberCalibration &imageGrabberCalibration);
 
                 virtual ~OpenGLGrabber();
 
@@ -85,7 +85,7 @@ namespace vehiclecontext {
                 core::base::KeyValueConfiguration m_kvc;
                 core::SharedPointer<core::wrapper::Image> m_image;
                 core::SharedPointer<core::wrapper::SharedMemory> m_sharedMemory;
-                core::SharedPointer<hesperia::threeD::TransformGroup> m_root;
+                core::SharedPointer<opendlv::threeD::TransformGroup> m_root;
         };
 
     }

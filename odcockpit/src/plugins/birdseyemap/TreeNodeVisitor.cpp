@@ -35,8 +35,8 @@ namespace cockpit {
 
             using namespace std;
             using namespace core::base;
-            using namespace hesperia::scenegraph;
-            using namespace hesperia::scenegraph::renderer;
+            using namespace opendlv::scenegraph;
+            using namespace opendlv::scenegraph::renderer;
 
             TreeNodeVisitor::TreeNodeVisitor(RenderingConfiguration &rc, TreeNode<SelectableNodeDescriptor> *root) :
                 m_renderingConfiguration(rc),

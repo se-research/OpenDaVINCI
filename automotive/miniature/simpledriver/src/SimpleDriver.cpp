@@ -56,7 +56,7 @@ namespace automotive {
         using namespace coredata;
         using namespace automotive;
         using namespace automotive::miniature;
-        using namespace hesperia::data::environment;
+        using namespace opendlv::data::environment;
 
         SimpleDriver::SimpleDriver(const int32_t &argc, char **argv) :
             TimeTriggeredConferenceClientModule(argc, argv, "simpledriver") {
@@ -83,12 +83,12 @@ namespace automotive {
 
             core::wrapper::graph::DirectedGraph m_graph;
             if (urlOfSCNXFile.isValid()) {
-                hesperia::scenario::SCNXArchive &scnxArchive = hesperia::scenario::SCNXArchiveFactory::getInstance().getSCNXArchive(urlOfSCNXFile);
+                opendlv::scenario::SCNXArchive &scnxArchive = opendlv::scenario::SCNXArchiveFactory::getInstance().getSCNXArchive(urlOfSCNXFile);
 
-                hesperia::data::scenario::Scenario &scenario = scnxArchive.getScenario();
+                opendlv::data::scenario::Scenario &scenario = scnxArchive.getScenario();
 
                 // Construct road network.
-                hesperia::scenario::LaneVisitor lv(m_graph, scenario);
+                opendlv::scenario::LaneVisitor lv(m_graph, scenario);
                 scenario.accept(lv);
 
                 // Print graph in dot format.
@@ -112,27 +112,27 @@ namespace automotive {
             cout << "Start: '" << startWaypoint << "'" << endl;
             cout << "End: '" << endWaypoint << "'" << endl;
 
-            hesperia::data::scenario::PointID pidStart(startWaypoint);
-            hesperia::data::scenario::PointID pidEnd(endWaypoint);
+            opendlv::data::scenario::PointID pidStart(startWaypoint);
+            opendlv::data::scenario::PointID pidEnd(endWaypoint);
 
-            hesperia::data::graph::WaypointVertex v1;
+            opendlv::data::graph::WaypointVertex v1;
             v1.setLayerID(pidStart.getLayerID());
             v1.setRoadID(pidStart.getRoadID());
             v1.setLaneID(pidStart.getLaneID());
             v1.setWaypointID(pidStart.getPointID());
 
-            hesperia::data::graph::WaypointVertex v2;
+            opendlv::data::graph::WaypointVertex v2;
             v2.setLayerID(pidEnd.getLayerID());
             v2.setRoadID(pidEnd.getRoadID());
             v2.setLaneID(pidEnd.getLaneID());
             v2.setWaypointID(pidEnd.getPointID());
 
-            hesperia::data::planning::Route route;
+            opendlv::data::planning::Route route;
             vector<const core::wrapper::graph::Vertex*> resultingRoute = m_graph.getShortestPath(v1, v2);
             if (resultingRoute.size() > 0) {
                 vector<const core::wrapper::graph::Vertex*>::const_iterator it = resultingRoute.begin();
                 while (it != resultingRoute.end()) {
-                    const hesperia::data::graph::WaypointVertex *v = dynamic_cast<const hesperia::data::graph::WaypointVertex*>(*it++);
+                    const opendlv::data::graph::WaypointVertex *v = dynamic_cast<const opendlv::data::graph::WaypointVertex*>(*it++);
                     if (v != NULL) {
                         route.add(v->getPosition());
                     }

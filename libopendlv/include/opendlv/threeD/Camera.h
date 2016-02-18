@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@
 
 #include "opendlv/data/environment/Point3.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace threeD {
 
     class Camera
@@ -41,7 +41,7 @@ namespace hesperia {
                 /**
                  * Creates a new camera with given position and orientation
                  */
-                Camera(const hesperia::data::environment::Point3& position,
+                Camera(const opendlv::data::environment::Point3& position,
                        const float& head,
                        const float& pitch,
                        const float& roll);
@@ -107,7 +107,7 @@ namespace hesperia {
                 /**
                  * Sets a new camera position.
                  */
-                void setPosition(const hesperia::data::environment::Point3& position);
+                void setPosition(const opendlv::data::environment::Point3& position);
 
                 /**
                  * Sets new head angle.
@@ -133,9 +133,9 @@ namespace hesperia {
                 void apply();
 
             private:
-                hesperia::data::environment::Point3 m_position;
-                hesperia::data::environment::Point3 m_orientation;
-                hesperia::data::environment::Point3 m_up;
+                opendlv::data::environment::Point3 m_position;
+                opendlv::data::environment::Point3 m_orientation;
+                opendlv::data::environment::Point3 m_up;
 
                 float m_head;
                 float m_pitch;

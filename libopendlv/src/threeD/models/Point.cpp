@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -32,11 +32,11 @@
 #include "opendlv/threeD/RenderingConfiguration.h"
 #include "opendlv/threeD/models/Point.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace threeD {
         namespace models {
 
-            using namespace hesperia::data::environment;
+            using namespace opendlv::data::environment;
 
             Point::Point(const NodeDescriptor &nodeDescriptor, const Point3 &position, const Point3 &color, const float &width) :
                     Node(nodeDescriptor),
@@ -80,4 +80,4 @@ namespace hesperia {
 
         }
     }
-} // hesperia::threeD::models
+} // opendlv::threeD::models

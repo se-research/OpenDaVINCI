@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -36,9 +36,9 @@
 #include "opendlv/decorator/models/OBJXArchiveFactory.h"
 #include "opendlv/decorator/models/TriangleSet.h"
 
-namespace hesperia { namespace scenario { class SCNXArchive; } }
+namespace opendlv { namespace scenario { class SCNXArchive; } }
 
-namespace hesperia {
+namespace opendlv {
     namespace decorator {
 
 class Renderer;
@@ -48,9 +48,9 @@ namespace models { class OBJXArchive; }
         using namespace core;
         using namespace core::base;
         using namespace core::data;
-        using namespace hesperia::data::environment;
-        using namespace hesperia::data::scenario;
-        using namespace hesperia::decorator::models;
+        using namespace opendlv::data::environment;
+        using namespace opendlv::data::scenario;
+        using namespace opendlv::decorator::models;
 
         ScenarioRenderer::ScenarioRenderer() :
             m_scenarioRendererMutex(),
@@ -77,7 +77,7 @@ namespace models { class OBJXArchive; }
             m_renderer = renderer;
         }
 
-        void ScenarioRenderer::setSCNXArchive(hesperia::scenario::SCNXArchive *scnxArchive) {
+        void ScenarioRenderer::setSCNXArchive(opendlv::scenario::SCNXArchive *scnxArchive) {
             Lock l(m_scenarioRendererMutex);
             m_scnxArchive = scnxArchive;
         }
@@ -304,4 +304,4 @@ namespace models { class OBJXArchive; }
         }
 
     }
-} // hesperia::decorator
+} // opendlv::decorator

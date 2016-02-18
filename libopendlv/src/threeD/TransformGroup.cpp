@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -35,13 +35,13 @@
 #include "opendlv/threeD/TransformGroup.h"
 #include "opendlv/threeD/RenderingConfiguration.h"
 
-namespace hesperia { namespace threeD { class TransformGroupVisitor; } }
+namespace opendlv { namespace threeD { class TransformGroupVisitor; } }
 
-namespace hesperia {
+namespace opendlv {
     namespace threeD {
 
         using namespace core::base;
-        using namespace hesperia::data::environment;
+        using namespace opendlv::data::environment;
 
         TransformGroup::TransformGroup() :
                 Node(NodeDescriptor()),
@@ -180,4 +180,4 @@ namespace hesperia {
         }
 
     }
-} // hesperia::threeD
+} // opendlv::threeD

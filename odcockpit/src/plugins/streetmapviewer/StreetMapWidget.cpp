@@ -42,9 +42,9 @@ namespace cockpit {
 
             using namespace std;
             using namespace core::data;
-            using namespace hesperia::data::environment;
+            using namespace opendlv::data::environment;
 
-            StreetMapWidget::StreetMapWidget(const PlugIn &/*plugIn*/, QWidget *prnt, const hesperia::data::environment::WGS84Coordinate &rL) :
+            StreetMapWidget::StreetMapWidget(const PlugIn &/*plugIn*/, QWidget *prnt, const opendlv::data::environment::WGS84Coordinate &rL) :
                 QWidget(prnt),
                 m_mapWidget(NULL),
                 m_networkSession(NULL),

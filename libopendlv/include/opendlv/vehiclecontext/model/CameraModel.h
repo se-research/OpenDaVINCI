@@ -120,7 +120,7 @@ namespace vehiclecontext {
             private:
                 static CameraModel* m_singleton;
                 int m_renderWindow;
-                hesperia::data::environment::EgoState m_egoState;
+                opendlv::data::environment::EgoState m_egoState;
                 OpenGLGrabber *m_grabber;
                 core::SharedPointer<core::wrapper::Image> m_image;
                 coredata::image::SharedImage m_sharedImage;

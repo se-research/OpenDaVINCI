@@ -35,7 +35,7 @@ namespace cockpit {
         namespace birdseyemap {
 
             using namespace std;
-            using namespace hesperia::scenegraph::renderer;
+            using namespace opendlv::scenegraph::renderer;
 
             BirdsEyeMapRenderer::BirdsEyeMapRenderer(QPainter *painter, RenderingConfiguration &rc, const uint32_t &pixelPerMeter) :
                 AbstractRenderer(),
@@ -45,7 +45,7 @@ namespace cockpit {
 
             BirdsEyeMapRenderer::~BirdsEyeMapRenderer() {}
 
-            void BirdsEyeMapRenderer::render(hesperia::scenegraph::primitives::Point *p) {
+            void BirdsEyeMapRenderer::render(opendlv::scenegraph::primitives::Point *p) {
                 if ( (p != NULL) && (m_renderingConfiguration.getSceneNodeRenderingConfiguration(p->getSceneNodeDescriptor()).hasParameter(SceneNodeRenderingConfiguration::ENABLED)) ) {
                     QPen pen;
                     pen.setWidth(p->getWidth()*m_pixelPerMeter/10);
@@ -57,7 +57,7 @@ namespace cockpit {
                 }
             }
 
-            void BirdsEyeMapRenderer::render(hesperia::scenegraph::primitives::Line *l) {
+            void BirdsEyeMapRenderer::render(opendlv::scenegraph::primitives::Line *l) {
                 if ( (l != NULL) && (m_renderingConfiguration.getSceneNodeRenderingConfiguration(l->getSceneNodeDescriptor()).hasParameter(SceneNodeRenderingConfiguration::ENABLED)) ) {
                     QPen pen;
                     pen.setWidth(l->getWidth()*m_pixelPerMeter/10);
@@ -70,7 +70,7 @@ namespace cockpit {
                 }
             }
 
-            void BirdsEyeMapRenderer::render(hesperia::scenegraph::primitives::Polygon *p) {
+            void BirdsEyeMapRenderer::render(opendlv::scenegraph::primitives::Polygon *p) {
                 if ( (p != NULL) && (m_renderingConfiguration.getSceneNodeRenderingConfiguration(p->getSceneNodeDescriptor()).hasParameter(SceneNodeRenderingConfiguration::ENABLED)) ) {
                     QPen pen;
                     pen.setWidth(1*m_pixelPerMeter/10);
@@ -78,20 +78,20 @@ namespace cockpit {
 
                     m_painter->setPen(pen);
 
-                    const vector<hesperia::data::environment::Point3>& listOfGroundVertices = p->getListOfGroundVertices();
+                    const vector<opendlv::data::environment::Point3>& listOfGroundVertices = p->getListOfGroundVertices();
                     const uint32_t size = listOfGroundVertices.size();
 
                     for (uint32_t i = 0; i < size - 1; i++) {
-                        const hesperia::data::environment::Point3 &p1 = listOfGroundVertices[i];
-                        const hesperia::data::environment::Point3 &p2 = listOfGroundVertices[i+1];
+                        const opendlv::data::environment::Point3 &p1 = listOfGroundVertices[i];
+                        const opendlv::data::environment::Point3 &p2 = listOfGroundVertices[i+1];
                         m_painter->drawLine(p1.getX()*m_pixelPerMeter, p1.getY()*m_pixelPerMeter,
                                             p2.getX()*m_pixelPerMeter, p2.getY()*m_pixelPerMeter);
 
                     }
 
                     {
-                        const hesperia::data::environment::Point3 &p1 = listOfGroundVertices[size-1];
-                        const hesperia::data::environment::Point3 &p2 = listOfGroundVertices[0];
+                        const opendlv::data::environment::Point3 &p1 = listOfGroundVertices[size-1];
+                        const opendlv::data::environment::Point3 &p2 = listOfGroundVertices[0];
 
                         // Close polyon.
                         m_painter->drawLine(p1.getX()*m_pixelPerMeter, p1.getY()*m_pixelPerMeter,

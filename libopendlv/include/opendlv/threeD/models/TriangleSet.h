@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -30,7 +30,7 @@
 #include "opendlv/threeD/NodeDescriptor.h"
 #include "opendlv/threeD/models/Triangle.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace threeD {
         namespace models {
 
@@ -87,9 +87,9 @@ namespace hesperia {
                     mutable bool m_compiled;
                     mutable uint32_t m_callList;
                     Material m_material;
-                    vector<hesperia::data::environment::Point3> m_vertices;
-                    vector<hesperia::data::environment::Point3> m_normals;
-                    vector<hesperia::data::environment::Point3> m_textureCoordinates;
+                    vector<opendlv::data::environment::Point3> m_vertices;
+                    vector<opendlv::data::environment::Point3> m_normals;
+                    vector<opendlv::data::environment::Point3> m_textureCoordinates;
 
                     /**
                      * This method compiles this triangle set using OpenGL
@@ -100,6 +100,6 @@ namespace hesperia {
 
         }
     }
-} // hesperia::threeD::models
+} // opendlv::threeD::models
 
 #endif /*HESPERIA_CORE_THREED_MODELS_TRIANGLESET_H_*/

@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -25,7 +25,7 @@
 #include "opendavinci/core/opendavinci.h"
 #include "opendlv/data/environment/Point3.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace threeD {
 
         using namespace std;
@@ -101,42 +101,42 @@ namespace hesperia {
                  *
                  * @param a Value for ambient.
                  */
-                void setAmbient(const hesperia::data::environment::Point3 &a);
+                void setAmbient(const opendlv::data::environment::Point3 &a);
 
                 /**
                  * This method returns the value for ambient.
                  *
                  * @return Value for ambient.
                  */
-                const hesperia::data::environment::Point3 getAmbient() const;
+                const opendlv::data::environment::Point3 getAmbient() const;
 
                 /**
                  * This method sets the value for diffuse.
                  *
                  * @param d Value for diffuse.
                  */
-                void setDiffuse(const hesperia::data::environment::Point3 &d);
+                void setDiffuse(const opendlv::data::environment::Point3 &d);
 
                 /**
                  * This method returns the value for diffuse.
                  *
                  * @return Value for diffuse.
                  */
-                const hesperia::data::environment::Point3 getDiffuse() const;
+                const opendlv::data::environment::Point3 getDiffuse() const;
 
                 /**
                  * This method sets the value for specular.
                  *
                  * @param s Value for specular.
                  */
-                void setSpecular(const hesperia::data::environment::Point3 &s);
+                void setSpecular(const opendlv::data::environment::Point3 &s);
 
                 /**
                  * This method returns the value for specular.
                  *
                  * @return Value for specular.
                  */
-                const hesperia::data::environment::Point3 getSpecular() const;
+                const opendlv::data::environment::Point3 getSpecular() const;
 
                 /**
                  * This method sets the texture handle.
@@ -159,12 +159,12 @@ namespace hesperia {
                 int32_t m_textureHandle;
                 double m_shininess;
 
-                hesperia::data::environment::Point3 m_ambient;
-                hesperia::data::environment::Point3 m_diffuse;
-                hesperia::data::environment::Point3 m_specular;
+                opendlv::data::environment::Point3 m_ambient;
+                opendlv::data::environment::Point3 m_diffuse;
+                opendlv::data::environment::Point3 m_specular;
         };
 
     }
-} // hesperia::threeD
+} // opendlv::threeD
 
 #endif /*HESPERIA_CORE_THREED_MATERIAL_H_*/

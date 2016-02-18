@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -39,7 +39,7 @@
 #include "opendlv/decorator/models/TriangleSet.h"
 #include "opendlv/scenario/SCNXArchive.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace decorator {
 
         using namespace std;
@@ -80,35 +80,35 @@ namespace hesperia {
                  *
                  * @param es EgoState to be drawn.
                  */
-                void draw(const hesperia::data::environment::EgoState &es);
+                void draw(const opendlv::data::environment::EgoState &es);
 
                 /**
                  * This method draws a ContouredObjects.
                  *
                  * @param cos ContouredObjectes to be drawn.
                  */
-                void draw(const hesperia::data::sensor::ContouredObjects &cos);
+                void draw(const opendlv::data::sensor::ContouredObjects &cos);
 
                 /**
                  * This method draws an Obstacle.
                  *
                  * @param o Obstacle to be drawn.
                  */
-                void draw(const hesperia::data::environment::Obstacle &o);
+                void draw(const opendlv::data::environment::Obstacle &o);
 
                 /**
                  * This method draws the planned Route.
                  *
                  * @param r Planned route to be drawn.
                  */
-                void draw(const hesperia::data::planning::Route &r);
+                void draw(const opendlv::data::planning::Route &r);
 
                 /**
                  * This method draws another object.
                  *
                  * @param o Other object.
                  */
-                void draw(const hesperia::data::environment::OtherVehicleState &o);
+                void draw(const opendlv::data::environment::OtherVehicleState &o);
 
                 /**
                  * This method sets the renderer to be used for rendering.
@@ -130,18 +130,18 @@ namespace hesperia {
                  *
                  * @param scnxArchive SCNXArchive to be used. If set to NULL no archive will be used. The given point won't get freed.
                  */
-                void setSCNXArchive(hesperia::scenario::SCNXArchive *scnxArchive);
+                void setSCNXArchive(opendlv::scenario::SCNXArchive *scnxArchive);
 
             private:
                 core::base::Mutex m_dataRendererMutex;
                 Renderer *m_renderer;
 
-                hesperia::scenario::SCNXArchive *m_scnxArchive;
+                opendlv::scenario::SCNXArchive *m_scnxArchive;
 
-                vector<hesperia::decorator::models::TriangleSet> m_egoStateModel;
-                vector<hesperia::decorator::models::OBJXArchive*> m_listOfLoadedOBJXArchives;
+                vector<opendlv::decorator::models::TriangleSet> m_egoStateModel;
+                vector<opendlv::decorator::models::OBJXArchive*> m_listOfLoadedOBJXArchives;
 
-                map<uint32_t, vector<hesperia::decorator::models::TriangleSet> > m_mapOfModels;
+                map<uint32_t, vector<opendlv::decorator::models::TriangleSet> > m_mapOfModels;
 
                 /**
                  * Load complex model from SCNX archive.
@@ -149,10 +149,10 @@ namespace hesperia {
                  * @param id Identifier.
                  * @param cm ComplexModel data structure.
                  */
-                void loadComplexModel(const uint32_t &id, hesperia::data::situation::ComplexModel &cm);
+                void loadComplexModel(const uint32_t &id, opendlv::data::situation::ComplexModel &cm);
         };
 
     }
-} // hesperia::decorator
+} // opendlv::decorator
 
 #endif /*HESPERIA_CORE_DECORATOR_DATARENDERER_H_*/

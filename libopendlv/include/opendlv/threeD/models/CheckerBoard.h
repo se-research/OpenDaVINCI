@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -27,7 +27,7 @@
 #include "opendlv/threeD/Node.h"
 #include "opendlv/data/environment/Point3.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace threeD {
         namespace models {
 
@@ -53,7 +53,7 @@ namespace hesperia {
                      * @param positionB Position B of the checker board.
                      * @param height Checker board's height.
                      */
-                    CheckerBoard(const NodeDescriptor &nodeDescriptor, const hesperia::data::environment::Point3 &positionA, const hesperia::data::environment::Point3 &positionB, const float &height);
+                    CheckerBoard(const NodeDescriptor &nodeDescriptor, const opendlv::data::environment::Point3 &positionA, const opendlv::data::environment::Point3 &positionB, const float &height);
 
                     /**
                      * Copy constructor.
@@ -75,13 +75,13 @@ namespace hesperia {
                     virtual void render(RenderingConfiguration &renderingConfiguration);
 
                 private:
-                    hesperia::data::environment::Point3 m_positionA;
-                    hesperia::data::environment::Point3 m_positionB;
+                    opendlv::data::environment::Point3 m_positionA;
+                    opendlv::data::environment::Point3 m_positionB;
                     float m_height;
             };
 
         }
     }
-} // hesperia::threeD::models
+} // opendlv::threeD::models
 
 #endif /*HESPERIA_CORE_THREED_MODELS_CHECKERBOARD_H_*/

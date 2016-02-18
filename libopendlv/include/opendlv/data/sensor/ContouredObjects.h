@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -27,7 +27,7 @@
 
 #include "opendlv/data/sensor/ContouredObject.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace data {
         namespace sensor {
 
@@ -110,6 +110,6 @@ namespace hesperia {
 
         }
     }
-} // hesperia::data::sensor
+} // opendlv::data::sensor
 
 #endif /*HESPERIA_CORE_DATA_SENSOR_CONTOUREDOBJECTS_H_*/

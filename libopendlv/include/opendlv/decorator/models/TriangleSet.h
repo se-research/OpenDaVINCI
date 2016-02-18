@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -26,7 +26,7 @@
 #include "opendlv/data/environment/Point3.h"
 #include "opendlv/decorator/models/Material.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace decorator {
         namespace models {
 
@@ -73,13 +73,13 @@ class Triangle;
                     void setMaterial(const Material &material);
 
                     Material m_material;
-                    vector<hesperia::data::environment::Point3> m_vertices;
-                    vector<hesperia::data::environment::Point3> m_normals;
-                    vector<hesperia::data::environment::Point3> m_textureCoordinates;
+                    vector<opendlv::data::environment::Point3> m_vertices;
+                    vector<opendlv::data::environment::Point3> m_normals;
+                    vector<opendlv::data::environment::Point3> m_textureCoordinates;
             };
 
         }
     }
-} // hesperia::decorator::models
+} // opendlv::decorator::models
 
 #endif /*HESPERIA_CORE_DECORATOR_MODELS_TRIANGLESET_H_*/

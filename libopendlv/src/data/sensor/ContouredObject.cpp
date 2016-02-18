@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -32,13 +32,13 @@
 #include "opendlv/data/environment/PointShapedObject.h"
 #include "opendlv/data/sensor/ContouredObject.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace data {
         namespace sensor {
 
             using namespace std;
             using namespace core::base;
-            using namespace hesperia::data::environment;
+            using namespace opendlv::data::environment;
 
             ContouredObject::ContouredObject() :
                     PointShapedObject(), m_contour() {}
@@ -139,4 +139,4 @@ namespace hesperia {
 
         }
     }
-} // hesperia::data::sensor
+} // opendlv::data::sensor

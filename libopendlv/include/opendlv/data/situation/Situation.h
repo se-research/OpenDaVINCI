@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -31,7 +31,7 @@
 #include "opendlv/data/situation/SituationNode.h"
 #include "opendlv/data/situation/SituationVisitor.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace data {
         namespace situation {
 
@@ -110,6 +110,6 @@ namespace hesperia {
 
         }
     }
-} // hesperia::data::situation
+} // opendlv::data::situation
 
 #endif /*HESPERIA_CORE_DATA_SITUATION_SITUATION_H_*/

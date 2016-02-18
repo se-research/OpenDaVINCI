@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -31,13 +31,13 @@
 #include "opendlv/data/environment/PointShapedObject.h"
 #include "opendlv/data/environment/Polygon.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace data {
         namespace environment {
 
             using namespace std;
             using namespace core::base;
-            using namespace hesperia::data::environment;
+            using namespace opendlv::data::environment;
 
             Obstacle::Obstacle() :
                     PointShapedObject(Point3(0, 0, 0), Point3(0, 0, 0), Point3(0, 0, 0), Point3(0, 0, 0)),
@@ -175,4 +175,4 @@ namespace hesperia {
 
         }
     }
-} // hesperia::data::environment
+} // opendlv::data::environment

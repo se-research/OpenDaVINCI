@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -26,7 +26,7 @@
 
 #include "opendlv/decorator/Renderer.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace decorator {
         namespace twoD {
 
@@ -38,46 +38,46 @@ namespace hesperia {
              * context must derive from this class and implement the missing
              * methods.
              */
-            class OPENDAVINCI_API Renderer2D : public hesperia::decorator::Renderer {
+            class OPENDAVINCI_API Renderer2D : public opendlv::decorator::Renderer {
                 public:
                     Renderer2D();
 
                     virtual ~Renderer2D();
 
                 public:
-                    virtual void setColor(const hesperia::data::environment::Point3 &c) = 0;
+                    virtual void setColor(const opendlv::data::environment::Point3 &c) = 0;
 
                     virtual void setPointWidth(const double &width) = 0;
 
                     virtual void setLineWidth(const double &width) = 0;
 
-                    virtual void drawText(const hesperia::data::environment::Point3 &p, const string &text) = 0;
+                    virtual void drawText(const opendlv::data::environment::Point3 &p, const string &text) = 0;
 
-                    virtual void drawLine(const hesperia::data::environment::Point3 &A, const hesperia::data::environment::Point3 &B) = 0;
+                    virtual void drawLine(const opendlv::data::environment::Point3 &A, const opendlv::data::environment::Point3 &B) = 0;
 
-                    virtual void drawPoint(const hesperia::data::environment::Point3 &p) = 0;
+                    virtual void drawPoint(const opendlv::data::environment::Point3 &p) = 0;
 
-                    virtual void drawImage(const core::wrapper::Image *image, const hesperia::data::environment::Point3 &originPixelXY, const hesperia::data::environment::Point3 &scalingPixelXY, const float &rotationZ) = 0;
+                    virtual void drawImage(const core::wrapper::Image *image, const opendlv::data::environment::Point3 &originPixelXY, const opendlv::data::environment::Point3 &scalingPixelXY, const float &rotationZ) = 0;
 
                     virtual void beginPainting();
 
                     virtual void endPainting();
 
-                    virtual void drawPolyLine(const vector<hesperia::data::environment::Point3> &listOfPoints);
+                    virtual void drawPolyLine(const vector<opendlv::data::environment::Point3> &listOfPoints);
 
-                    virtual void drawPolyLine(const vector<hesperia::data::environment::Point3> &listOfPoints, const double &height);
+                    virtual void drawPolyLine(const vector<opendlv::data::environment::Point3> &listOfPoints, const double &height);
 
-                    virtual void drawTriangleSet(const hesperia::decorator::models::TriangleSet &ts);
+                    virtual void drawTriangleSet(const opendlv::decorator::models::TriangleSet &ts);
 
-                    virtual void drawListOfTriangleSets(const vector<hesperia::decorator::models::TriangleSet> &listOfTriangleSets);
+                    virtual void drawListOfTriangleSets(const vector<opendlv::decorator::models::TriangleSet> &listOfTriangleSets);
 
-                    virtual void drawTriangleSet(const hesperia::decorator::models::TriangleSet &ts, const hesperia::data::environment::Point3 &position, const hesperia::data::environment::Point3 &rotation);
+                    virtual void drawTriangleSet(const opendlv::decorator::models::TriangleSet &ts, const opendlv::data::environment::Point3 &position, const opendlv::data::environment::Point3 &rotation);
 
-                    virtual void drawListOfTriangleSets(const vector<hesperia::decorator::models::TriangleSet> &listOfTriangleSets, const hesperia::data::environment::Point3 &position, const hesperia::data::environment::Point3 &rotation);
+                    virtual void drawListOfTriangleSets(const vector<opendlv::decorator::models::TriangleSet> &listOfTriangleSets, const opendlv::data::environment::Point3 &position, const opendlv::data::environment::Point3 &rotation);
             };
 
         }
     }
-} // hesperia::decorator::twoD
+} // opendlv::decorator::twoD
 
 #endif /*HESPERIA_CORE_DECORATOR_TWOD_RENDERER2D_H_*/

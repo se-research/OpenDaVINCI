@@ -48,7 +48,7 @@ namespace vehiclecontext {
         using namespace core::data;
         using namespace core::io;
         using namespace context::base;
-        using namespace hesperia::data::environment;
+        using namespace opendlv::data::environment;
 
         SimplifiedBicycleModel::SimplifiedBicycleModel(const string &configuration) :
             m_kvc(),

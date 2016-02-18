@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -29,9 +29,9 @@
 #include "opendlv/data/sensor/ContouredObject.h"
 
 using namespace std;
-using namespace hesperia::data;
-using namespace hesperia::data::environment;
-using namespace hesperia::data::sensor;
+using namespace opendlv::data;
+using namespace opendlv::data::environment;
+using namespace opendlv::data::sensor;
 
 class ContouredObjectTest : public CxxTest::TestSuite {
     public:

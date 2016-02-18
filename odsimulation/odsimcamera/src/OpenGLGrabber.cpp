@@ -40,24 +40,24 @@
 #include "opendlv/threeD/models/XYZAxes.h"
 
 namespace core { namespace wrapper { class Image; } }
-namespace hesperia { namespace data { namespace camera { class ImageGrabberCalibration; } } }
-namespace hesperia { namespace data { namespace environment { class EgoState; } } }
-namespace hesperia { namespace scenario { class SCNXArchive; } }
+namespace opendlv { namespace data { namespace camera { class ImageGrabberCalibration; } } }
+namespace opendlv { namespace data { namespace environment { class EgoState; } } }
+namespace opendlv { namespace scenario { class SCNXArchive; } }
 
 namespace camgen {
 
     using namespace std;
     using namespace core::base;
-    using namespace hesperia::data::camera;
-    using namespace hesperia::data::environment;
-    using namespace hesperia::data::environment;
+    using namespace opendlv::data::camera;
+    using namespace opendlv::data::environment;
+    using namespace opendlv::data::environment;
     using namespace core::io;
-    using namespace hesperia::scenario;
-    using namespace hesperia::threeD;
-    using namespace hesperia::threeD::decorator;
-    using namespace hesperia::threeD::models;
+    using namespace opendlv::scenario;
+    using namespace opendlv::threeD;
+    using namespace opendlv::threeD::decorator;
+    using namespace opendlv::threeD::models;
 
-    OpenGLGrabber::OpenGLGrabber(const KeyValueConfiguration &kvc, const ImageGrabberID &imageGrabberID, const ImageGrabberCalibration &imageGrabberCalibration, hesperia::data::environment::EgoState &egoState) :
+    OpenGLGrabber::OpenGLGrabber(const KeyValueConfiguration &kvc, const ImageGrabberID &imageGrabberID, const ImageGrabberCalibration &imageGrabberCalibration, opendlv::data::environment::EgoState &egoState) :
             ImageGrabber(imageGrabberID, imageGrabberCalibration),
             m_render(OpenGLGrabber::WORLD),
             m_kvc(kvc),
@@ -71,7 +71,7 @@ namespace camgen {
         const URL urlOfSCNXFile(m_kvc.getValue<string>("global.scenario"));
         const bool SHOW_GRID = (m_kvc.getValue<uint8_t>("global.showgrid") == 1);
         if (urlOfSCNXFile.isValid()) {
-            m_root = core::SharedPointer<TransformGroup>(new hesperia::threeD::TransformGroup());
+            m_root = core::SharedPointer<TransformGroup>(new opendlv::threeD::TransformGroup());
             SCNXArchive &scnxArchive = SCNXArchiveFactory::getInstance().getSCNXArchive(urlOfSCNXFile);
 
             // Read scnxArchive and decorate it for getting displayed in an OpenGL scene.
@@ -91,12 +91,12 @@ namespace camgen {
             }
         }
 
-        m_intrinsicCalibrationRoot = core::SharedPointer<TransformGroup>(new hesperia::threeD::TransformGroup());
+        m_intrinsicCalibrationRoot = core::SharedPointer<TransformGroup>(new opendlv::threeD::TransformGroup());
         m_intrinsicCalibrationRoot->addChild(new XYZAxes(NodeDescriptor("XYZAxes")));
         m_intrinsicCalibrationRoot->addChild(new CheckerBoard(NodeDescriptor("CheckerBoard")));
         m_intrinsicCalibrationRoot->setTranslation(Point3(2.5, 0, 1));
 
-        m_extrinsicCalibrationRoot = core::SharedPointer<TransformGroup>(new hesperia::threeD::TransformGroup());
+        m_extrinsicCalibrationRoot = core::SharedPointer<TransformGroup>(new opendlv::threeD::TransformGroup());
         m_extrinsicCalibrationRoot->addChild(new XYZAxes(NodeDescriptor("XYZAxes")));
         m_extrinsicCalibrationRoot->addChild(new CheckerBoard(NodeDescriptor("CheckerBoard")));
         m_extrinsicCalibrationRoot->setTranslation(Point3(2.3, 0, 0));

@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -32,7 +32,7 @@
 #include "opendlv/threeD/RenderingConfiguration.h"
 #include "opendlv/threeD/models/Grid.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace threeD {
         namespace models {
 

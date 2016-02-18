@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
 
 namespace core { namespace wrapper { class Image; } }
 
-namespace hesperia {
+namespace opendlv {
     namespace decorator {
 
 namespace models { class TriangleSet; }
@@ -81,7 +81,7 @@ namespace models { class TriangleSet; }
                  *
                  * @param c Color in RGB [0;1].
                  */
-                virtual void setColor(const hesperia::data::environment::Point3 &c) = 0;
+                virtual void setColor(const opendlv::data::environment::Point3 &c) = 0;
 
                 /**
                  * This method sets the point's width for the next paint operation.
@@ -103,14 +103,14 @@ namespace models { class TriangleSet; }
                  * @param position Position where to draw the text.
                  * @param text Text to be drawn.
                  */
-                virtual void drawText(const hesperia::data::environment::Point3 &p, const string &text) = 0;
+                virtual void drawText(const opendlv::data::environment::Point3 &p, const string &text) = 0;
 
                 /**
                  * This method draws a point.
                  *
                  * @param p Point.
                  */
-                virtual void drawPoint(const hesperia::data::environment::Point3 &p) = 0;
+                virtual void drawPoint(const opendlv::data::environment::Point3 &p) = 0;
 
                 /**
                  * This method draws a line.
@@ -118,14 +118,14 @@ namespace models { class TriangleSet; }
                  * @param A Point A.
                  * @param B Point B.
                  */
-                virtual void drawLine(const hesperia::data::environment::Point3 &A, const hesperia::data::environment::Point3 &B) = 0;
+                virtual void drawLine(const opendlv::data::environment::Point3 &A, const opendlv::data::environment::Point3 &B) = 0;
 
                 /**
                  * This method draws a line consisting of several vertices.
                  *
                  * @param listOfPoints List of points.
                  */
-                virtual void drawPolyLine(const vector<hesperia::data::environment::Point3> &listOfPoints) = 0;
+                virtual void drawPolyLine(const vector<opendlv::data::environment::Point3> &listOfPoints) = 0;
 
                 /**
                  * This method draws a line consisting of several vertices with
@@ -134,7 +134,7 @@ namespace models { class TriangleSet; }
                  * @param listOfPoints List of points.
                  * @param h height
                  */
-                virtual void drawPolyLine(const vector<hesperia::data::environment::Point3> &listOfPoints, const double &height) = 0;
+                virtual void drawPolyLine(const vector<opendlv::data::environment::Point3> &listOfPoints, const double &height) = 0;
 
                 /**
                  * This method draws an image.
@@ -144,21 +144,21 @@ namespace models { class TriangleSet; }
                  * @param scalingPixelXY Scaling for the image.
                  * @param rotationZ Rotation around Z-axis.
                  */
-                virtual void drawImage(const core::wrapper::Image *image, const hesperia::data::environment::Point3 &originPixelXY, const hesperia::data::environment::Point3 &scalingPixelXY, const float &rotationZ) = 0;
+                virtual void drawImage(const core::wrapper::Image *image, const opendlv::data::environment::Point3 &originPixelXY, const opendlv::data::environment::Point3 &scalingPixelXY, const float &rotationZ) = 0;
 
                 /**
                  * This method draws a TriangleSet.
                  *
                  * @param ts Triangle set.
                  */
-                virtual void drawTriangleSet(const hesperia::decorator::models::TriangleSet &ts) = 0;
+                virtual void drawTriangleSet(const opendlv::decorator::models::TriangleSet &ts) = 0;
 
                 /**
                  * This method draws a list of TriangleSets.
                  *
                  * @param listOfTriangleSets List of triangle sets.
                  */
-                virtual void drawListOfTriangleSets(const vector<hesperia::decorator::models::TriangleSet> &listOfTriangleSets) = 0;
+                virtual void drawListOfTriangleSets(const vector<opendlv::decorator::models::TriangleSet> &listOfTriangleSets) = 0;
 
                 /**
                  * This method draws a TriangleSet at the given position with the given rotation.
@@ -167,7 +167,7 @@ namespace models { class TriangleSet; }
                  * @param position Position.
                  * @param rotation Rotation.
                  */
-                virtual void drawTriangleSet(const hesperia::decorator::models::TriangleSet &ts, const hesperia::data::environment::Point3 &position, const hesperia::data::environment::Point3 &rotation) = 0;
+                virtual void drawTriangleSet(const opendlv::decorator::models::TriangleSet &ts, const opendlv::data::environment::Point3 &position, const opendlv::data::environment::Point3 &rotation) = 0;
 
                 /**
                  * This method draws a list of TriangleSets.
@@ -176,10 +176,10 @@ namespace models { class TriangleSet; }
                  * @param position Position.
                  * @param rotation Rotation.
                  */
-                virtual void drawListOfTriangleSets(const vector<hesperia::decorator::models::TriangleSet> &listOfTriangleSets, const hesperia::data::environment::Point3 &position, const hesperia::data::environment::Point3 &rotation) = 0;
+                virtual void drawListOfTriangleSets(const vector<opendlv::decorator::models::TriangleSet> &listOfTriangleSets, const opendlv::data::environment::Point3 &position, const opendlv::data::environment::Point3 &rotation) = 0;
         };
 
     }
-} // hesperia::decorator
+} // opendlv::decorator
 
 #endif /*HESPERIA_CORE_DECORATOR_RENDERER_H_*/

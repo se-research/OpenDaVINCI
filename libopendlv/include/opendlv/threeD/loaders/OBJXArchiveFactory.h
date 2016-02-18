@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
 
 #include "opendlv/threeD/loaders/OBJXArchive.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace threeD {
         namespace loaders {
 
@@ -92,6 +92,6 @@ namespace hesperia {
 
         }
     }
-} // hesperia::threeD::loaders
+} // opendlv::threeD::loaders
 
 #endif /*HESPERIA_CORE_THREED_LOADERS_OBJXARCHIVEFACTORY_H_*/

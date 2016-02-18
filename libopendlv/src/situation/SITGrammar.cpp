@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -29,7 +29,7 @@
 namespace core { namespace wrapper { namespace parser { class ParserErrorListener; } } }
 namespace core { namespace wrapper { namespace parser { class ParserTokenListener; } } }
 
-namespace hesperia {
+namespace opendlv {
     namespace situation {
 
         using namespace core::wrapper::parser;
@@ -68,4 +68,4 @@ namespace hesperia {
         }
 
     }
-} // hesperia::situation
+} // opendlv::situation

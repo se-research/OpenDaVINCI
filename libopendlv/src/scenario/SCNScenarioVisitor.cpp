@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -40,19 +40,19 @@
 #include "opendlv/data/scenario/Zone.h"
 #include "opendlv/scenario/SCNScenarioVisitor.h"
 
-namespace hesperia { namespace data { namespace scenario { class Arc; } } }
-namespace hesperia { namespace data { namespace scenario { class Clothoid; } } }
-namespace hesperia { namespace data { namespace scenario { class ComplexModel; } } }
-namespace hesperia { namespace data { namespace scenario { class Cylinder; } } }
-namespace hesperia { namespace data { namespace scenario { class PointModel; } } }
-namespace hesperia { namespace data { namespace scenario { class Polygon; } } }
-namespace hesperia { namespace data { namespace scenario { class Scenario; } } }
-namespace hesperia { namespace data { namespace scenario { class Shape; } } }
-namespace hesperia { namespace data { namespace scenario { class StraightLine; } } }
-namespace hesperia { namespace data { namespace scenario { class TrafficLight; } } }
-namespace hesperia { namespace data { namespace scenario { class TrafficSign; } } }
+namespace opendlv { namespace data { namespace scenario { class Arc; } } }
+namespace opendlv { namespace data { namespace scenario { class Clothoid; } } }
+namespace opendlv { namespace data { namespace scenario { class ComplexModel; } } }
+namespace opendlv { namespace data { namespace scenario { class Cylinder; } } }
+namespace opendlv { namespace data { namespace scenario { class PointModel; } } }
+namespace opendlv { namespace data { namespace scenario { class Polygon; } } }
+namespace opendlv { namespace data { namespace scenario { class Scenario; } } }
+namespace opendlv { namespace data { namespace scenario { class Shape; } } }
+namespace opendlv { namespace data { namespace scenario { class StraightLine; } } }
+namespace opendlv { namespace data { namespace scenario { class TrafficLight; } } }
+namespace opendlv { namespace data { namespace scenario { class TrafficSign; } } }
 
-namespace hesperia {
+namespace opendlv {
     namespace scenario {
 
         using namespace std;
@@ -1013,4 +1013,4 @@ namespace hesperia {
         }
 
     }
-} // hesperia::scenario
+} // opendlv::scenario

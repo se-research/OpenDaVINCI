@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@
 
 #include "opendavinci/core/opendavinci.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace threeD {
 
         /**
@@ -34,7 +34,7 @@ class Camera;
         class GLUTCameraController
         {
             public:
-                GLUTCameraController(hesperia::threeD::Camera& camera,
+                GLUTCameraController(opendlv::threeD::Camera& camera,
                                      double positionDelta = 0.5,
                                      double orientationDelta = 0.08 );
 
@@ -45,7 +45,7 @@ class Camera;
                 void processMouseEvent(int32_t button, int32_t state, int32_t x, int32_t y);
 
             protected:
-                hesperia::threeD::Camera& m_camera;
+                opendlv::threeD::Camera& m_camera;
                 double m_positionDelta;
                 double m_orientationDelta;
                 int32_t m_mouseX;

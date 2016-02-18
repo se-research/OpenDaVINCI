@@ -92,18 +92,18 @@ namespace vehiclecontext {
                  * @param es EgoState of the vehicle.
                  * @return List of containers with the results.
                  */
-                vector<core::data::Container> calculate(const hesperia::data::environment::EgoState &es);
+                vector<core::data::Container> calculate(const opendlv::data::environment::EgoState &es);
 
             private:
                 core::base::KeyValueConfiguration m_kvc;
                 float m_freq;
 
                 uint32_t m_numberOfPolygons;
-                map<uint32_t, hesperia::data::environment::Polygon> m_mapOfPolygons;
+                map<uint32_t, opendlv::data::environment::Polygon> m_mapOfPolygons;
                 vector<uint32_t> m_listOfPolygonsInsideFOV;
                 map<string, PointSensor*> m_mapOfPointSensors;
                 map<string, double> m_distances;
-                map<string, hesperia::data::environment::Polygon> m_FOVs;
+                map<string, opendlv::data::environment::Polygon> m_FOVs;
         };
 
     }

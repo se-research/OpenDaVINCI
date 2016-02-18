@@ -37,7 +37,7 @@ namespace cockpit {
             using namespace std;
             using namespace core::base;
             using namespace core::data;
-            using namespace hesperia::data::environment;
+            using namespace opendlv::data::environment;
 
             StreetMapMapWidget::StreetMapMapWidget(QWidget *prnt) :
                 QWidget(prnt),

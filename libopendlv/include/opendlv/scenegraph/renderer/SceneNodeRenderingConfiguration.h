@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@
 
 #include "opendavinci/core/opendavinci.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace scenegraph {
         namespace renderer {
 
@@ -80,6 +80,6 @@ namespace hesperia {
 
         }
     }
-} // hesperia::scenegraph::renderer
+} // opendlv::scenegraph::renderer
 
 #endif /*HESPERIA_CORE_SCENEGRAPH_RENDERER_SCENENODERENDERINGCONFIGURATION_H_*/

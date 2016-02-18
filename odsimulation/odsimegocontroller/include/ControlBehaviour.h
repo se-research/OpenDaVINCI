@@ -38,7 +38,7 @@ namespace egocontroller {
             virtual void turnRight(const double& value) = 0;
             virtual void stop() = 0;
 
-            virtual hesperia::data::environment::EgoState computeEgoState() = 0;
+            virtual opendlv::data::environment::EgoState computeEgoState() = 0;
     };
 }
 

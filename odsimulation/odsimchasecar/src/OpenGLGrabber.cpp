@@ -48,25 +48,25 @@
 #include "opendlv/threeD/models/Line.h"
 #include "opendlv/threeD/models/XYZAxes.h"
 
-namespace hesperia { namespace data { namespace camera { class ImageGrabberCalibration; } } }
-namespace hesperia { namespace scenario { class SCNXArchive; } }
-namespace hesperia { namespace threeD { class Node; } }
+namespace opendlv { namespace data { namespace camera { class ImageGrabberCalibration; } } }
+namespace opendlv { namespace scenario { class SCNXArchive; } }
+namespace opendlv { namespace threeD { class Node; } }
 
 namespace chasecar {
 
     using namespace std;
     using namespace core::base;
     using namespace core::data;
-    using namespace hesperia::data::camera;
-    using namespace hesperia::data::environment;
+    using namespace opendlv::data::camera;
+    using namespace opendlv::data::environment;
     using namespace core::io;
-    using namespace hesperia::scenario;
-    using namespace hesperia::threeD;
-    using namespace hesperia::threeD::decorator;
-    using namespace hesperia::threeD::models;
-    using namespace hesperia::threeD::loaders;
+    using namespace opendlv::scenario;
+    using namespace opendlv::threeD;
+    using namespace opendlv::threeD::decorator;
+    using namespace opendlv::threeD::models;
+    using namespace opendlv::threeD::loaders;
 
-    OpenGLGrabber::OpenGLGrabber(const KeyValueConfiguration &kvc, const ImageGrabberID &imageGrabberID, const ImageGrabberCalibration &imageGrabberCalibration, hesperia::data::environment::EgoState &egoState, core::base::FIFOQueue &obstacles) :
+    OpenGLGrabber::OpenGLGrabber(const KeyValueConfiguration &kvc, const ImageGrabberID &imageGrabberID, const ImageGrabberCalibration &imageGrabberCalibration, opendlv::data::environment::EgoState &egoState, core::base::FIFOQueue &obstacles) :
             ImageGrabber(imageGrabberID, imageGrabberCalibration),
             m_render(OpenGLGrabber::IN_CAR),
             m_kvc(kvc),
@@ -82,9 +82,9 @@ namespace chasecar {
         const URL urlOfSCNXFile(m_kvc.getValue<string>("global.scenario"));
         const bool SHOW_GRID = (m_kvc.getValue<uint8_t>("global.showgrid") == 1);
         if (urlOfSCNXFile.isValid()) {
-            m_root = core::SharedPointer<TransformGroup>(new hesperia::threeD::TransformGroup());
-            m_car = core::SharedPointer<TransformGroup>(new hesperia::threeD::TransformGroup());
-            m_sensors = core::SharedPointer<TransformGroup>(new hesperia::threeD::TransformGroup());
+            m_root = core::SharedPointer<TransformGroup>(new opendlv::threeD::TransformGroup());
+            m_car = core::SharedPointer<TransformGroup>(new opendlv::threeD::TransformGroup());
+            m_sensors = core::SharedPointer<TransformGroup>(new opendlv::threeD::TransformGroup());
 
             SCNXArchive &scnxArchive = SCNXArchiveFactory::getInstance().getSCNXArchive(urlOfSCNXFile);
 
@@ -191,7 +191,7 @@ namespace chasecar {
                                             Point3 A = contour.at(k); A.setZ(0.5);
                                             Point3 B = contour.at(k+1); B.setZ(0.5);
 
-                                            contourTG->addChild(new hesperia::threeD::models::Line(NodeDescriptor(), A, B, Point3(0, 1, 0), 2));
+                                            contourTG->addChild(new opendlv::threeD::models::Line(NodeDescriptor(), A, B, Point3(0, 1, 0), 2));
                                         }
                                         m_mapOfObstacles[obstacle.getID()] = contourTG;
 

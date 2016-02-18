@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -25,7 +25,7 @@
 
 #include "opendlv/data/environment/Point3.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace data {
         namespace graph {
 
@@ -122,14 +122,14 @@ namespace hesperia {
                      *
                      * @param pos Position.
                      */
-                    void setPosition(const hesperia::data::environment::Point3 &pos);
+                    void setPosition(const opendlv::data::environment::Point3 &pos);
 
                     /**
                      * This method returns the position.
                      *
                      * @return Position.
                      */
-                    const hesperia::data::environment::Point3 getPosition() const;
+                    const opendlv::data::environment::Point3 getPosition() const;
 
                     virtual const string toString() const;
 
@@ -143,11 +143,11 @@ namespace hesperia {
                     uint32_t m_laneID;
                     uint32_t m_waypointID;
 
-                    hesperia::data::environment::Point3 m_position;
+                    opendlv::data::environment::Point3 m_position;
             };
 
         }
     }
-} // hesperia::data::graph
+} // opendlv::data::graph
 
 #endif /*HESPERIA_DATA_GRAPH_WAYPOINTVERTEX_H_*/

@@ -126,7 +126,7 @@ class OpenGLGrabber;
 
         private:
             static CamGen* m_singleton;
-            hesperia::data::environment::EgoState m_egoState;
+            opendlv::data::environment::EgoState m_egoState;
             OpenGLGrabber *m_grabber;
             core::SharedPointer<core::wrapper::Image> m_image;
 

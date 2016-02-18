@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -24,13 +24,13 @@
 
 #include "opendlv/data/environment/PointShapedObject.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace data {
         namespace environment {
 
             using namespace std;
 
-            using namespace hesperia::data::environment;
+            using namespace opendlv::data::environment;
 
             /**
              * This class contains all relevant data for the own car.
@@ -94,6 +94,6 @@ namespace hesperia {
 
         }
     }
-} // hesperia::data::environment
+} // opendlv::data::environment
 
 #endif /*HESPERIA_DATA_ENVIRONMENT_OTHERVEHICLESTATE_H_*/

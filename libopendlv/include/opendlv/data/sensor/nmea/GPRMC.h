@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
 #include "opendavinci/core/data/TimeStamp.h"
 #include "opendlv/data/environment/WGS84Coordinate.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace data {
         namespace sensor {
             namespace nmea {
@@ -98,14 +98,14 @@ namespace hesperia {
                          *
                          * @return WGS84Coordinate.
                          */
-                        const hesperia::data::environment::WGS84Coordinate getCoordinate() const;
+                        const opendlv::data::environment::WGS84Coordinate getCoordinate() const;
 
                         /**
                          * This methods sets the WGS84 coordinate.
                          *
                          * @param coordinate WGS84Coordinate.
                          */
-                        void setCoordinate(const hesperia::data::environment::WGS84Coordinate &coordinate);
+                        void setCoordinate(const opendlv::data::environment::WGS84Coordinate &coordinate);
 
                         virtual ostream& operator<<(ostream &out) const;
                         virtual istream& operator>>(istream &in);
@@ -115,7 +115,7 @@ namespace hesperia {
                     private:
                         string m_message;
                         core::data::TimeStamp m_timeStamp;
-                        hesperia::data::environment::WGS84Coordinate m_coordinate;
+                        opendlv::data::environment::WGS84Coordinate m_coordinate;
 
                         /**
                          * This method decodes a given GPRMC string.
@@ -131,6 +131,6 @@ namespace hesperia {
             }
         }
     }
-} // hesperia::data::sensor::nmea
+} // opendlv::data::sensor::nmea
 
 #endif /*HESPERIA_DATA_SENSOR_NMEA_GPRMC_H_*/

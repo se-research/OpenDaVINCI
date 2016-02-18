@@ -34,7 +34,7 @@ namespace irus {
     using namespace std;
     using namespace core::base;
     using namespace core::data;
-    using namespace hesperia::data::environment;
+    using namespace opendlv::data::environment;
 
     IRUS::IRUS(const int32_t &argc, char **argv) :
         TimeTriggeredConferenceClientModule(argc, argv, "odsimirus") {}

@@ -40,10 +40,10 @@ namespace chasecar {
     using namespace std;
     using namespace core::base;
     using namespace core::data;
-    using namespace hesperia::data;
-    using namespace hesperia::data::camera;
+    using namespace opendlv::data;
+    using namespace opendlv::data::camera;
     using namespace coredata::image;
-    using namespace hesperia::data::environment;
+    using namespace opendlv::data::environment;
 
     ChaseCar* ChaseCar::m_singleton = NULL;
 
@@ -147,7 +147,7 @@ namespace chasecar {
         static clock_t start = clock();
 
         Container container = getKeyValueDataStore().get(Container::EGOSTATE);
-        m_egoState = container.getData<hesperia::data::environment::EgoState>();
+        m_egoState = container.getData<opendlv::data::environment::EgoState>();
 
         m_image = m_grabber->getNextImage();
 

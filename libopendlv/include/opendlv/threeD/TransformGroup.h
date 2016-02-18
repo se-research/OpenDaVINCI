@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -30,7 +30,7 @@
 #include "opendlv/threeD/NodeDescriptor.h"
 #include "opendlv/threeD/TransformGroupVisitor.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace threeD {
 
         /**
@@ -74,42 +74,42 @@ namespace hesperia {
                  *
                  * @param t Translation.
                  */
-                void setTranslation(const hesperia::data::environment::Point3 &t);
+                void setTranslation(const opendlv::data::environment::Point3 &t);
 
                 /**
                  * This method returns the translation.
                  *
                  * @return Translation.
                  */
-                hesperia::data::environment::Point3 getTranslation() const;
+                opendlv::data::environment::Point3 getTranslation() const;
 
                 /**
                  * This method sets the rotation.
                  *
                  * @param r Rotation.
                  */
-                void setRotation(const hesperia::data::environment::Point3 &r);
+                void setRotation(const opendlv::data::environment::Point3 &r);
 
                 /**
                  * This method returns the rotation.
                  *
                  * @return Rotation.
                  */
-                hesperia::data::environment::Point3 getRotation() const;
+                opendlv::data::environment::Point3 getRotation() const;
 
                 /**
                  * This method sets the scaling.
                  *
                  * @param s Scaling.
                  */
-                void setScaling(const hesperia::data::environment::Point3 &s);
+                void setScaling(const opendlv::data::environment::Point3 &s);
 
                 /**
                  * This method returns the scaling.
                  *
                  * @return Scaling.
                  */
-                hesperia::data::environment::Point3 getScaling() const;
+                opendlv::data::environment::Point3 getScaling() const;
 
                 /**
                  * This method adds a child.
@@ -138,15 +138,15 @@ namespace hesperia {
                 void accept(TransformGroupVisitor &visitor);
 
             private:
-                hesperia::data::environment::Point3 m_translation;
-                hesperia::data::environment::Point3 m_rotation;
-                hesperia::data::environment::Point3 m_scaling;
+                opendlv::data::environment::Point3 m_translation;
+                opendlv::data::environment::Point3 m_rotation;
+                opendlv::data::environment::Point3 m_scaling;
 
                 mutable core::base::Mutex m_listOfChildrenMutex;
                 vector<Node*> m_listOfChildren;
         };
 
     }
-} // hesperia::threeD
+} // opendlv::threeD
 
 #endif /*HESPERIA_CORE_THREED_TRANSFORMGROUP_H_*/

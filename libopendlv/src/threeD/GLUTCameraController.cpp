@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -22,10 +22,10 @@
 #include "opendlv/threeD/Camera.h"
 #include "opendlv/threeD/GLUTCameraController.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace threeD {
 
-       GLUTCameraController::GLUTCameraController(hesperia::threeD::Camera& camera,
+       GLUTCameraController::GLUTCameraController(opendlv::threeD::Camera& camera,
                                                   const double positionDelta,
                                                   const double orientationDelta) :
            m_camera(camera),

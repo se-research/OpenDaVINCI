@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -21,7 +21,7 @@
 
 #include "opendlv/threeD/NodeDescriptorComparator.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace threeD {
 
         NodeDescriptorComparator::NodeDescriptorComparator() {}
@@ -39,4 +39,4 @@ namespace hesperia {
         }
 
     }
-} // hesperia::threeD
+} // opendlv::threeD

@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
 #include "opendlv/threeD/Node.h"
 #include "opendlv/threeD/NodeDescriptor.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace threeD {
         namespace models {
 
@@ -47,7 +47,7 @@ namespace hesperia {
                      * @param color Color of this polygon.
                      * @param height Polygon's height.
                      */
-                    Polygon(const NodeDescriptor &nodeDescriptor, const vector<hesperia::data::environment::Point3> &listOfGroundVertices, const hesperia::data::environment::Point3 &color, const float &height);
+                    Polygon(const NodeDescriptor &nodeDescriptor, const vector<opendlv::data::environment::Point3> &listOfGroundVertices, const opendlv::data::environment::Point3 &color, const float &height);
 
                     /**
                      * Copy constructor.
@@ -69,13 +69,13 @@ namespace hesperia {
                     virtual void render(RenderingConfiguration &renderingConfiguration);
 
                 private:
-                    vector<hesperia::data::environment::Point3> m_listOfGroundVertices;
-                    hesperia::data::environment::Point3 m_color;
+                    vector<opendlv::data::environment::Point3> m_listOfGroundVertices;
+                    opendlv::data::environment::Point3 m_color;
                     float m_height;
             };
 
         }
     }
-} // hesperia::threeD::models
+} // opendlv::threeD::models
 
 #endif /*HESPERIA_CORE_THREED_MODELS_POLYGON_H_*/

@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -31,18 +31,18 @@
 #include "opendlv/data/situation/WarpToStart.h"
 #include "opendlv/situation/SITSituationVisitor.h"
 
-namespace hesperia { namespace data { namespace situation { class Behavior; } } }
-namespace hesperia { namespace data { namespace situation { class ComplexModel; } } }
-namespace hesperia { namespace data { namespace situation { class ExternalDriver; } } }
-namespace hesperia { namespace data { namespace situation { class OnEnteringPolygon; } } }
-namespace hesperia { namespace data { namespace situation { class OnMoving; } } }
-namespace hesperia { namespace data { namespace situation { class PointIDDriver; } } }
-namespace hesperia { namespace data { namespace situation { class Polygon; } } }
-namespace hesperia { namespace data { namespace situation { class Rectangle; } } }
-namespace hesperia { namespace data { namespace situation { class Shape; } } }
-namespace hesperia { namespace data { namespace situation { class Situation; } } }
+namespace opendlv { namespace data { namespace situation { class Behavior; } } }
+namespace opendlv { namespace data { namespace situation { class ComplexModel; } } }
+namespace opendlv { namespace data { namespace situation { class ExternalDriver; } } }
+namespace opendlv { namespace data { namespace situation { class OnEnteringPolygon; } } }
+namespace opendlv { namespace data { namespace situation { class OnMoving; } } }
+namespace opendlv { namespace data { namespace situation { class PointIDDriver; } } }
+namespace opendlv { namespace data { namespace situation { class Polygon; } } }
+namespace opendlv { namespace data { namespace situation { class Rectangle; } } }
+namespace opendlv { namespace data { namespace situation { class Shape; } } }
+namespace opendlv { namespace data { namespace situation { class Situation; } } }
 
-namespace hesperia {
+namespace opendlv {
     namespace situation {
 
         using namespace std;
@@ -522,4 +522,4 @@ namespace hesperia {
         }
 
     }
-} // hesperia::situation
+} // opendlv::situation

@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -24,7 +24,7 @@
 #include "opendlv/scenegraph/SceneNode.h"
 #include "opendlv/scenegraph/SceneNodeDescriptor.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace scenegraph {
         namespace primitives {
 
@@ -43,7 +43,7 @@ namespace hesperia {
                      * @param color Point's color.
                      * @param width Point's width.
                      */
-                    Point(const SceneNodeDescriptor &sceneNodeDescriptor, const hesperia::data::environment::Point3 &position, const hesperia::data::environment::Point3 &color, const float &width);
+                    Point(const SceneNodeDescriptor &sceneNodeDescriptor, const opendlv::data::environment::Point3 &position, const opendlv::data::environment::Point3 &color, const float &width);
 
                     /**
                      * Copy constructor.
@@ -65,12 +65,12 @@ namespace hesperia {
                     /**
                      * @return Position.
                      */
-                    const hesperia::data::environment::Point3& getPosition() const;
+                    const opendlv::data::environment::Point3& getPosition() const;
 
                     /**
                      * @return Point's color.
                      */
-                    const hesperia::data::environment::Point3& getColor() const;
+                    const opendlv::data::environment::Point3& getColor() const;
 
                     /**
                      * @return Point's width.
@@ -78,13 +78,13 @@ namespace hesperia {
                     float getWidth() const;
 
                 private:
-                    hesperia::data::environment::Point3 m_position;
-                    hesperia::data::environment::Point3 m_color;
+                    opendlv::data::environment::Point3 m_position;
+                    opendlv::data::environment::Point3 m_color;
                     float m_width;
             };
 
         }
     }
-} // hesperia::scenegraph::primitives
+} // opendlv::scenegraph::primitives
 
 #endif /*HESPERIA_SCENEGRAPH_PRIMITIVES_POINT_H_*/

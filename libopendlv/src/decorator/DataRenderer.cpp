@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -47,18 +47,18 @@
 #include "opendlv/decorator/models/TriangleSet.h"
 #include "opendlv/scenario/SCNXArchive.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace decorator {
 
         using namespace std;
         using namespace core;
         using namespace core::base;
         using namespace core::data;
-        using namespace hesperia::data::environment;
-        using namespace hesperia::data::environment;
-        using namespace hesperia::data::planning;
-        using namespace hesperia::data::sensor;
-        using namespace hesperia::decorator::models;
+        using namespace opendlv::data::environment;
+        using namespace opendlv::data::environment;
+        using namespace opendlv::data::planning;
+        using namespace opendlv::data::sensor;
+        using namespace opendlv::decorator::models;
 
         DataRenderer::DataRenderer() :
             m_dataRendererMutex(),
@@ -278,7 +278,7 @@ namespace hesperia {
             }
         }
 
-        void DataRenderer::setSCNXArchive(hesperia::scenario::SCNXArchive *scnxArchive) {
+        void DataRenderer::setSCNXArchive(opendlv::scenario::SCNXArchive *scnxArchive) {
             Lock l(m_dataRendererMutex);
             m_scnxArchive = scnxArchive;
 
@@ -287,17 +287,17 @@ namespace hesperia {
             	m_mapOfModels.clear();
 
             	// Load models from scenario by looping trough the (FIRST!) available situation.
-                vector<hesperia::data::situation::Situation> listOfSituations = m_scnxArchive->getListOfSituations();
+                vector<opendlv::data::situation::Situation> listOfSituations = m_scnxArchive->getListOfSituations();
                 if (listOfSituations.size() > 0) {
-                	hesperia::data::situation::Situation situation = listOfSituations.front();
+                	opendlv::data::situation::Situation situation = listOfSituations.front();
 
-                	map<uint32_t, hesperia::data::situation::Object> mapOfObjects;
-                	vector<hesperia::data::situation::Object> listOfObjects = situation.getListOfObjects();
-                	vector<hesperia::data::situation::Object>::iterator it = listOfObjects.begin();
+                	map<uint32_t, opendlv::data::situation::Object> mapOfObjects;
+                	vector<opendlv::data::situation::Object> listOfObjects = situation.getListOfObjects();
+                	vector<opendlv::data::situation::Object>::iterator it = listOfObjects.begin();
                 	while (it != listOfObjects.end()) {
-                		hesperia::data::situation::Object o = (*it++);
+                		opendlv::data::situation::Object o = (*it++);
 
-                		hesperia::data::situation::ComplexModel *cm = dynamic_cast<hesperia::data::situation::ComplexModel*>(o.getShape());
+                		opendlv::data::situation::ComplexModel *cm = dynamic_cast<opendlv::data::situation::ComplexModel*>(o.getShape());
                 		if (cm != NULL) {
                 			// Load complexmodel from SCNXArchive.
                 			loadComplexModel(o.getID(), *cm);
@@ -307,7 +307,7 @@ namespace hesperia {
             }
         }
 
-        void DataRenderer::loadComplexModel(const uint32_t &id, hesperia::data::situation::ComplexModel &cm) {
+        void DataRenderer::loadComplexModel(const uint32_t &id, opendlv::data::situation::ComplexModel &cm) {
             SharedPointer<istream> in = m_scnxArchive->getModelData(cm.getModelFile());
             if (in.isValid()) {
                 // Load model.
@@ -344,4 +344,4 @@ namespace hesperia {
         }
 
     }
-} // hesperia::decorator
+} // opendlv::decorator

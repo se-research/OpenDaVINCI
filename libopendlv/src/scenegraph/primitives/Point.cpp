@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -19,11 +19,11 @@
 
 #include "opendlv/scenegraph/primitives/Point.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace scenegraph {
         namespace primitives {
 
-            using namespace hesperia::data::environment;
+            using namespace opendlv::data::environment;
 
             Point::Point(const SceneNodeDescriptor &sceneNodeDescriptor, const Point3 &position, const Point3 &color, const float &width) :
                 SceneNode(sceneNodeDescriptor),
@@ -62,4 +62,4 @@ namespace hesperia {
 
         }
     }
-} // hesperia::scenegraph::primitives
+} // opendlv::scenegraph::primitives

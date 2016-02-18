@@ -41,8 +41,8 @@ namespace vehiclecontext {
         using namespace core::base;
         using namespace core::data;
         using namespace core::io;
-        using namespace hesperia::data;
-        using namespace hesperia::data::environment;
+        using namespace opendlv::data;
+        using namespace opendlv::data::environment;
 
         DistanceToObjectsReport::DistanceToObjectsReport(const string &configuration, const float &threshold) :
             m_configuration(),

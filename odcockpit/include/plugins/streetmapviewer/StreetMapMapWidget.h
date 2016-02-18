@@ -76,7 +76,7 @@ namespace cockpit {
                      *
                      * @param position.
                      */
-                    void setMapCenter(const hesperia::data::environment::WGS84Coordinate &position);
+                    void setMapCenter(const opendlv::data::environment::WGS84Coordinate &position);
 
                     void zoomIn();
                     void zoomOut();
@@ -97,7 +97,7 @@ namespace cockpit {
                     QTimer *m_timer;
                     QPoint m_pressedPosition;
                     core::base::Mutex m_positionMutex;
-                    hesperia::data::environment::WGS84Coordinate m_position;
+                    opendlv::data::environment::WGS84Coordinate m_position;
             };
         }
     }

@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -27,7 +27,7 @@
 
 namespace core { namespace wrapper { class Image; } }
 
-namespace hesperia {
+namespace opendlv {
     namespace io {
         namespace camera {
 
@@ -101,6 +101,6 @@ namespace hesperia {
 
         }
     }
-} // hesperia::io::camera
+} // opendlv::io::camera
 
 #endif /*HESPERIA_IO_CAMERA_IMAGEGRABBER_H_*/

@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -34,14 +34,14 @@
 #include "opendlv/threeD/loaders/OBJXArchive.h"
 #include "opendlv/threeD/loaders/OBJXArchiveFactory.h"
 
-namespace hesperia { namespace threeD { class Node; } }
+namespace opendlv { namespace threeD { class Node; } }
 
-namespace hesperia {
+namespace opendlv {
     namespace scenario {
 
         using namespace std;
         using namespace core;
-        using namespace hesperia::data::environment;
+        using namespace opendlv::data::environment;
         using namespace data::scenario;
         using namespace scenario;
         using namespace threeD;
@@ -108,4 +108,4 @@ namespace hesperia {
         }
 
     }
-} // hesperia::scenario
+} // opendlv::scenario

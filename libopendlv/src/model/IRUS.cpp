@@ -41,7 +41,7 @@
 #include "opendlv/vehiclecontext/model/PointSensor.h"
 
 namespace core { namespace exceptions { class ValueForKeyNotFoundException; } }
-namespace hesperia { namespace data { namespace scenario { class Shape; } } }
+namespace opendlv { namespace data { namespace scenario { class Shape; } } }
 
 namespace vehiclecontext {
     namespace model {
@@ -51,9 +51,9 @@ namespace vehiclecontext {
         using namespace core::data;
         using namespace context::base;
         using namespace core::io;
-        using namespace hesperia::data;
-        using namespace hesperia::data::environment;
-        using namespace hesperia::scenario;
+        using namespace opendlv::data;
+        using namespace opendlv::data::environment;
+        using namespace opendlv::scenario;
 
         IRUS::IRUS(const string &configuration) :
             m_kvc(),
@@ -99,22 +99,22 @@ namespace vehiclecontext {
             if (urlOfSCNXFile.isValid()) {
                 SCNXArchive &scnxArchive = SCNXArchiveFactory::getInstance().getSCNXArchive(urlOfSCNXFile);
 
-                hesperia::data::scenario::Scenario &scenario = scnxArchive.getScenario();
+                opendlv::data::scenario::Scenario &scenario = scnxArchive.getScenario();
 
-                const hesperia::data::scenario::Surroundings &surroundings = scenario.getGround().getSurroundings();
-                const vector<hesperia::data::scenario::Shape*> &listOfShapes = surroundings.getListOfShapes();
-                vector<hesperia::data::scenario::Shape*>::const_iterator it = listOfShapes.begin();
+                const opendlv::data::scenario::Surroundings &surroundings = scenario.getGround().getSurroundings();
+                const vector<opendlv::data::scenario::Shape*> &listOfShapes = surroundings.getListOfShapes();
+                vector<opendlv::data::scenario::Shape*>::const_iterator it = listOfShapes.begin();
                 while (it != listOfShapes.end()) {
-                    hesperia::data::scenario::Shape *shape = (*it++);
+                    opendlv::data::scenario::Shape *shape = (*it++);
                     if (shape != NULL) {
-                        if (shape->getType() == hesperia::data::scenario::Shape::POLYGON) {
-                            hesperia::data::scenario::Polygon *polygon = dynamic_cast<hesperia::data::scenario::Polygon*>(shape);
+                        if (shape->getType() == opendlv::data::scenario::Shape::POLYGON) {
+                            opendlv::data::scenario::Polygon *polygon = dynamic_cast<opendlv::data::scenario::Polygon*>(shape);
                             if (polygon != NULL) {
                                 Polygon p;
                                 m_numberOfPolygons++;
 
-                                const vector<hesperia::data::scenario::Vertex3> &listOfVertices = polygon->getListOfVertices();
-                                vector<hesperia::data::scenario::Vertex3>::const_iterator jt = listOfVertices.begin();
+                                const vector<opendlv::data::scenario::Vertex3> &listOfVertices = polygon->getListOfVertices();
+                                vector<opendlv::data::scenario::Vertex3>::const_iterator jt = listOfVertices.begin();
                                 while (jt != listOfVertices.end()) {
                                     p.add(*jt++);
                                 }

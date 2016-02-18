@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -23,7 +23,7 @@
 #include "opendavinci/core/opendavinci.h"
 #include "opendavinci/core/data/TimeStamp.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace threeD {
 
         class FrameCounter

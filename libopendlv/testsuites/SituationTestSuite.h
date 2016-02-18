@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -46,9 +46,9 @@
 #include "opendlv/situation/SituationPrettyPrinter.h"
 
 using namespace std;
-using namespace hesperia::data::situation;
+using namespace opendlv::data::situation;
 using namespace core::exceptions;
-using namespace hesperia::situation;
+using namespace opendlv::situation;
 using namespace core::wrapper::parser;
 
 class SituationTest : public CxxTest::TestSuite {
@@ -265,9 +265,9 @@ class SituationTest : public CxxTest::TestSuite {
             TS_ASSERT(listOfObjects.at(0).getName() == "Test-Objekt1");
             TS_ASSERT(listOfObjects.at(0).getID() == 1);
             TS_ASSERT_DELTA(listOfObjects.at(0).getRotationZ(), 1.23456, 1e-5);
-            hesperia::data::situation::Polygon *p1 = dynamic_cast<hesperia::data::situation::Polygon*>(listOfObjects.at(0).getShape());
+            opendlv::data::situation::Polygon *p1 = dynamic_cast<opendlv::data::situation::Polygon*>(listOfObjects.at(0).getShape());
             TS_ASSERT(p1 != NULL);
-            TS_ASSERT(p1->getType() == hesperia::data::situation::Shape::POLYGON);
+            TS_ASSERT(p1->getType() == opendlv::data::situation::Shape::POLYGON);
             TS_ASSERT(p1->getName() == "Test-Polygon1");
             TS_ASSERT_DELTA(p1->getHeight(), 10.5432, 1e-4);
             TS_ASSERT_DELTA(p1->getFront().getX(), 1.1, 1e-3);
@@ -276,7 +276,7 @@ class SituationTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(p1->getColor().getX(), 0.1, 1e-3);
             TS_ASSERT_DELTA(p1->getColor().getY(), 0.2, 1e-3);
             TS_ASSERT_DELTA(p1->getColor().getZ(), 0.3, 1e-3);
-            const vector<hesperia::data::situation::Vertex3>& listOfVertices1 = p1->getListOfVertices();
+            const vector<opendlv::data::situation::Vertex3>& listOfVertices1 = p1->getListOfVertices();
             TS_ASSERT(listOfVertices1.size() == 2);
             TS_ASSERT_DELTA(listOfVertices1.at(0).getX(), 3.1, 1e-5);
             TS_ASSERT_DELTA(listOfVertices1.at(0).getY(), 4.2, 1e-5);
@@ -284,7 +284,7 @@ class SituationTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(listOfVertices1.at(1).getX(), 5.1, 1e-5);
             TS_ASSERT_DELTA(listOfVertices1.at(1).getY(), 6.2, 1e-5);
             TS_ASSERT_DELTA(listOfVertices1.at(1).getZ(), 0, 1e-5);
-            TS_ASSERT(listOfObjects.at(0).getBehavior()->getType() == hesperia::data::situation::Behavior::EXTERNALDRIVER);
+            TS_ASSERT(listOfObjects.at(0).getBehavior()->getType() == opendlv::data::situation::Behavior::EXTERNALDRIVER);
 
 
             TS_ASSERT(listOfObjects.at(1).getName() == "Test-Objekt2");
@@ -292,7 +292,7 @@ class SituationTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(listOfObjects.at(1).getRotationZ(), 2.34567, 1e-5);
             Rectangle *r2 = dynamic_cast<Rectangle*>(listOfObjects.at(1).getShape());
             TS_ASSERT(r2 != NULL);
-            TS_ASSERT(r2->getType() == hesperia::data::situation::Shape::RECTANGLE);
+            TS_ASSERT(r2->getType() == opendlv::data::situation::Shape::RECTANGLE);
             TS_ASSERT(r2->getName() == "Test-Rectangle2");
             TS_ASSERT_DELTA(r2->getHeight(), 9.54321, 1e-5);
             TS_ASSERT_DELTA(r2->getFront().getX(), 11.1, 1e-3);
@@ -300,15 +300,15 @@ class SituationTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(r2->getFront().getZ(), 0, 1e-3);
             TS_ASSERT_DELTA(r2->getLength(), 4.2, 1e-3);
             TS_ASSERT_DELTA(r2->getWidth(), 5.2, 1e-3);
-            TS_ASSERT(listOfObjects.at(1).getBehavior()->getType() == hesperia::data::situation::Behavior::POINTIDDRIVER);
+            TS_ASSERT(listOfObjects.at(1).getBehavior()->getType() == opendlv::data::situation::Behavior::POINTIDDRIVER);
             TS_ASSERT(dynamic_cast<PointIDDriver*>(listOfObjects.at(1).getBehavior()) != NULL);
             TS_ASSERT_DELTA((dynamic_cast<PointIDDriver*>(listOfObjects.at(1).getBehavior()))->getConstantAcceleration(), 1.2, 1e-4);
             TS_ASSERT_DELTA((dynamic_cast<PointIDDriver*>(listOfObjects.at(1).getBehavior()))->getConstantVelocity(), 0, 1e-4);
-            TS_ASSERT((dynamic_cast<PointIDDriver*>(listOfObjects.at(1).getBehavior()))->getStartType()->getType() == hesperia::data::situation::StartType::IMMEDIATELY);
+            TS_ASSERT((dynamic_cast<PointIDDriver*>(listOfObjects.at(1).getBehavior()))->getStartType()->getType() == opendlv::data::situation::StartType::IMMEDIATELY);
             TS_ASSERT(dynamic_cast<Immediately*>((dynamic_cast<PointIDDriver*>(listOfObjects.at(1).getBehavior()))->getStartType()) != NULL);
-            TS_ASSERT((dynamic_cast<PointIDDriver*>(listOfObjects.at(1).getBehavior()))->getStopType()->getType() == hesperia::data::situation::StopType::STOP);
+            TS_ASSERT((dynamic_cast<PointIDDriver*>(listOfObjects.at(1).getBehavior()))->getStopType()->getType() == opendlv::data::situation::StopType::STOP);
             TS_ASSERT(dynamic_cast<Stop*>((dynamic_cast<PointIDDriver*>(listOfObjects.at(1).getBehavior()))->getStopType()) != NULL);
-            vector<hesperia::data::situation::PointID> o1PIDs = dynamic_cast<PointIDDriver*>(listOfObjects.at(1).getBehavior())->getListOfPointIDs();
+            vector<opendlv::data::situation::PointID> o1PIDs = dynamic_cast<PointIDDriver*>(listOfObjects.at(1).getBehavior())->getListOfPointIDs();
             TS_ASSERT(o1PIDs.size() == 2);
             TS_ASSERT(o1PIDs.at(0).toString() == "1.2.3.4");
             TS_ASSERT(o1PIDs.at(1).toString() == "5.6.7.8");
@@ -317,9 +317,9 @@ class SituationTest : public CxxTest::TestSuite {
             TS_ASSERT(listOfObjects.at(2).getName() == "Test-Objekt3");
             TS_ASSERT(listOfObjects.at(2).getID() == 3);
             TS_ASSERT_DELTA(listOfObjects.at(2).getRotationZ(), 5.34567, 1e-5);
-            hesperia::data::situation::ComplexModel *cm3 = dynamic_cast<hesperia::data::situation::ComplexModel*>(listOfObjects.at(2).getShape());
+            opendlv::data::situation::ComplexModel *cm3 = dynamic_cast<opendlv::data::situation::ComplexModel*>(listOfObjects.at(2).getShape());
             TS_ASSERT(cm3 != NULL);
-            TS_ASSERT(cm3->getType() == hesperia::data::situation::Shape::COMPLEXMODEL);
+            TS_ASSERT(cm3->getType() == opendlv::data::situation::Shape::COMPLEXMODEL);
             TS_ASSERT(cm3->getName() == "Test-ComplexModel3");
             TS_ASSERT_DELTA(cm3->getFront().getX(), 8.1, 1e-3);
             TS_ASSERT_DELTA(cm3->getFront().getY(), 8.2, 1e-3);
@@ -343,16 +343,16 @@ class SituationTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(cm3->getBoundingBox().getLowerLeft().getX(), 7.1, 1e-4);
             TS_ASSERT_DELTA(cm3->getBoundingBox().getLowerLeft().getY(), 8.2, 1e-4);
             TS_ASSERT_DELTA(cm3->getBoundingBox().getLowerLeft().getZ(), 0, 1e-4);
-            TS_ASSERT(listOfObjects.at(2).getBehavior()->getType() == hesperia::data::situation::Behavior::POINTIDDRIVER);
+            TS_ASSERT(listOfObjects.at(2).getBehavior()->getType() == opendlv::data::situation::Behavior::POINTIDDRIVER);
             TS_ASSERT(dynamic_cast<PointIDDriver*>(listOfObjects.at(2).getBehavior()) != NULL);
             TS_ASSERT_DELTA((dynamic_cast<PointIDDriver*>(listOfObjects.at(2).getBehavior()))->getConstantAcceleration(), 0, 1e-4);
             TS_ASSERT_DELTA((dynamic_cast<PointIDDriver*>(listOfObjects.at(2).getBehavior()))->getConstantVelocity(), 3.2, 1e-4);
-            TS_ASSERT((dynamic_cast<PointIDDriver*>(listOfObjects.at(2).getBehavior()))->getStartType()->getType() == hesperia::data::situation::StartType::ONMOVING);
+            TS_ASSERT((dynamic_cast<PointIDDriver*>(listOfObjects.at(2).getBehavior()))->getStartType()->getType() == opendlv::data::situation::StartType::ONMOVING);
             TS_ASSERT(dynamic_cast<OnMoving*>((dynamic_cast<PointIDDriver*>(listOfObjects.at(2).getBehavior()))->getStartType()) != NULL);
             TS_ASSERT(dynamic_cast<OnMoving*>((dynamic_cast<PointIDDriver*>(listOfObjects.at(2).getBehavior()))->getStartType())->getID() == 3);
-            TS_ASSERT((dynamic_cast<PointIDDriver*>(listOfObjects.at(2).getBehavior()))->getStopType()->getType() == hesperia::data::situation::StopType::RETURNTOSTART);
+            TS_ASSERT((dynamic_cast<PointIDDriver*>(listOfObjects.at(2).getBehavior()))->getStopType()->getType() == opendlv::data::situation::StopType::RETURNTOSTART);
             TS_ASSERT(dynamic_cast<ReturnToStart*>((dynamic_cast<PointIDDriver*>(listOfObjects.at(2).getBehavior()))->getStopType()) != NULL);
-            vector<hesperia::data::situation::PointID> o2PIDs = dynamic_cast<PointIDDriver*>(listOfObjects.at(2).getBehavior())->getListOfPointIDs();
+            vector<opendlv::data::situation::PointID> o2PIDs = dynamic_cast<PointIDDriver*>(listOfObjects.at(2).getBehavior())->getListOfPointIDs();
             TS_ASSERT(o2PIDs.size() == 2);
             TS_ASSERT(o2PIDs.at(0).toString() == "9.8.7.6");
             TS_ASSERT(o2PIDs.at(1).toString() == "5.4.3.2");
@@ -361,9 +361,9 @@ class SituationTest : public CxxTest::TestSuite {
             TS_ASSERT(listOfObjects.at(3).getName() == "Test-Objekt4");
             TS_ASSERT(listOfObjects.at(3).getID() == 4);
             TS_ASSERT_DELTA(listOfObjects.at(3).getRotationZ(), 6.34567, 1e-5);
-            hesperia::data::situation::Polygon *p4 = dynamic_cast<hesperia::data::situation::Polygon*>(listOfObjects.at(3).getShape());
+            opendlv::data::situation::Polygon *p4 = dynamic_cast<opendlv::data::situation::Polygon*>(listOfObjects.at(3).getShape());
             TS_ASSERT(p4 != NULL);
-            TS_ASSERT(p4->getType() == hesperia::data::situation::Shape::POLYGON);
+            TS_ASSERT(p4->getType() == opendlv::data::situation::Shape::POLYGON);
             TS_ASSERT(p4->getName() == "Test-Polygon4");
             TS_ASSERT_DELTA(p4->getHeight(), 11.5432, 1e-4);
             TS_ASSERT_DELTA(p4->getFront().getX(), 11.1, 1e-3);
@@ -372,7 +372,7 @@ class SituationTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(p4->getColor().getX(), 0.5, 1e-3);
             TS_ASSERT_DELTA(p4->getColor().getY(), 0.6, 1e-3);
             TS_ASSERT_DELTA(p4->getColor().getZ(), 0.7, 1e-3);
-            const vector<hesperia::data::situation::Vertex3> listOfVertices4 = p4->getListOfVertices();
+            const vector<opendlv::data::situation::Vertex3> listOfVertices4 = p4->getListOfVertices();
             TS_ASSERT(listOfVertices4.size() == 2);
             TS_ASSERT_DELTA(listOfVertices4.at(0).getX(), 13.1, 1e-5);
             TS_ASSERT_DELTA(listOfVertices4.at(0).getY(), 14.2, 1e-5);
@@ -380,15 +380,15 @@ class SituationTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(listOfVertices4.at(1).getX(), 15.1, 1e-5);
             TS_ASSERT_DELTA(listOfVertices4.at(1).getY(), 16.2, 1e-5);
             TS_ASSERT_DELTA(listOfVertices4.at(1).getZ(), 0, 1e-5);
-            TS_ASSERT(listOfObjects.at(3).getBehavior()->getType() == hesperia::data::situation::Behavior::POINTIDDRIVER);
+            TS_ASSERT(listOfObjects.at(3).getBehavior()->getType() == opendlv::data::situation::Behavior::POINTIDDRIVER);
             TS_ASSERT(dynamic_cast<PointIDDriver*>(listOfObjects.at(3).getBehavior()) != NULL);
             TS_ASSERT_DELTA((dynamic_cast<PointIDDriver*>(listOfObjects.at(3).getBehavior()))->getConstantAcceleration(), 0, 1e-4);
             TS_ASSERT_DELTA((dynamic_cast<PointIDDriver*>(listOfObjects.at(3).getBehavior()))->getConstantVelocity(), 31.2, 1e-4);
-            TS_ASSERT((dynamic_cast<PointIDDriver*>(listOfObjects.at(3).getBehavior()))->getStartType()->getType() == hesperia::data::situation::StartType::ONENTERINGPOLYGON);
+            TS_ASSERT((dynamic_cast<PointIDDriver*>(listOfObjects.at(3).getBehavior()))->getStartType()->getType() == opendlv::data::situation::StartType::ONENTERINGPOLYGON);
             TS_ASSERT(dynamic_cast<OnEnteringPolygon*>((dynamic_cast<PointIDDriver*>(listOfObjects.at(3).getBehavior()))->getStartType()) != NULL);
             OnEnteringPolygon *oep = dynamic_cast<OnEnteringPolygon*>((dynamic_cast<PointIDDriver*>(listOfObjects.at(3).getBehavior()))->getStartType());
             TS_ASSERT(oep != NULL);
-            vector<hesperia::data::situation::Vertex3> listOfVerticesOEP = oep->getListOfVertices();
+            vector<opendlv::data::situation::Vertex3> listOfVerticesOEP = oep->getListOfVertices();
             TS_ASSERT(listOfVerticesOEP.size() == 4);
             TS_ASSERT_DELTA(listOfVerticesOEP.at(0).getX(), 31.1, 1e-3);
             TS_ASSERT_DELTA(listOfVerticesOEP.at(0).getY(), 32.2, 1e-3);
@@ -403,9 +403,9 @@ class SituationTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(listOfVerticesOEP.at(3).getY(), 62.2, 1e-3);
             TS_ASSERT_DELTA(listOfVerticesOEP.at(3).getZ(), 0, 1e-3);
             TS_ASSERT(dynamic_cast<OnEnteringPolygon*>((dynamic_cast<PointIDDriver*>(listOfObjects.at(3).getBehavior()))->getStartType())->getID() == 1);
-            TS_ASSERT((dynamic_cast<PointIDDriver*>(listOfObjects.at(3).getBehavior()))->getStopType()->getType() == hesperia::data::situation::StopType::WARPTOSTART);
+            TS_ASSERT((dynamic_cast<PointIDDriver*>(listOfObjects.at(3).getBehavior()))->getStopType()->getType() == opendlv::data::situation::StopType::WARPTOSTART);
             TS_ASSERT(dynamic_cast<WarpToStart*>((dynamic_cast<PointIDDriver*>(listOfObjects.at(3).getBehavior()))->getStopType()) != NULL);
-            vector<hesperia::data::situation::PointID> o3PIDs = dynamic_cast<PointIDDriver*>(listOfObjects.at(3).getBehavior())->getListOfPointIDs();
+            vector<opendlv::data::situation::PointID> o3PIDs = dynamic_cast<PointIDDriver*>(listOfObjects.at(3).getBehavior())->getListOfPointIDs();
             TS_ASSERT(o3PIDs.size() == 2);
             TS_ASSERT(o3PIDs.at(0).toString() == "8.7.6.5");
             TS_ASSERT(o3PIDs.at(1).toString() == "4.3.2.1");

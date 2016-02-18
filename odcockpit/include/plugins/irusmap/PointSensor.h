@@ -73,7 +73,7 @@ namespace cockpit {
                      * @param distanceFOV Range of the FOV.
                      * @param clampDistance Maximum distance for the sensor; any distance greater than this will be set to -1.
                      */
-                    PointSensor(const uint16_t &id, const string &name, const hesperia::data::environment::Point3 &translation, const double &rotZ, const double &angleFOV, const double &distanceFOV, const double &clampDistance);
+                    PointSensor(const uint16_t &id, const string &name, const opendlv::data::environment::Point3 &translation, const double &rotZ, const double &angleFOV, const double &distanceFOV, const double &clampDistance);
 
                     virtual ~PointSensor();
 
@@ -87,14 +87,14 @@ namespace cockpit {
 
                     const string toString() const;
 
-                    hesperia::data::environment::Point3 getTranslation() const;
+                    opendlv::data::environment::Point3 getTranslation() const;
 
-                    hesperia::data::environment::Point3 getDescPoint() const;
+                    opendlv::data::environment::Point3 getDescPoint() const;
 
                 private:
                     uint16_t m_id;
                     string m_name;
-                    hesperia::data::environment::Point3 m_translation;
+                    opendlv::data::environment::Point3 m_translation;
                     double m_rotZ;
                     double m_angleFOV;
                     double m_distanceFOV;

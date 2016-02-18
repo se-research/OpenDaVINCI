@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -24,7 +24,7 @@
 #include "opendlv/scenegraph/SceneNode.h"
 #include "opendlv/scenegraph/SceneNodeDescriptor.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace scenegraph {
         namespace primitives {
 
@@ -44,7 +44,7 @@ namespace hesperia {
                      * @param color Line's color.
                      * @param width Line's width.
                      */
-                    Line(const SceneNodeDescriptor &sceneNodeDescriptor, const hesperia::data::environment::Point3 &positionA, const hesperia::data::environment::Point3 &positionB, const hesperia::data::environment::Point3 &color, const float &width);
+                    Line(const SceneNodeDescriptor &sceneNodeDescriptor, const opendlv::data::environment::Point3 &positionA, const opendlv::data::environment::Point3 &positionB, const opendlv::data::environment::Point3 &color, const float &width);
 
                     /**
                      * Copy constructor.
@@ -66,27 +66,27 @@ namespace hesperia {
                     /**
                      * @return Line's point A.
                      */
-                    const hesperia::data::environment::Point3& getA() const;
+                    const opendlv::data::environment::Point3& getA() const;
 
                     /**
                      * @return Line's point B.
                      */
-                    const hesperia::data::environment::Point3& getB() const;
+                    const opendlv::data::environment::Point3& getB() const;
 
                     /**
                      * @param A Line's point A.
                      */
-                    void setA(const hesperia::data::environment::Point3 &A);
+                    void setA(const opendlv::data::environment::Point3 &A);
 
                     /**
                      * @param B Line's point B.
                      */
-                    void setB(const hesperia::data::environment::Point3 &B);
+                    void setB(const opendlv::data::environment::Point3 &B);
 
                     /**
                      * @return Line's color.
                      */
-                    const hesperia::data::environment::Point3& getColor() const;
+                    const opendlv::data::environment::Point3& getColor() const;
 
                     /**
                      * @return Line's width.
@@ -94,14 +94,14 @@ namespace hesperia {
                     float getWidth() const;
 
                 private:
-                    hesperia::data::environment::Point3 m_positionA;
-                    hesperia::data::environment::Point3 m_positionB;
-                    hesperia::data::environment::Point3 m_color;
+                    opendlv::data::environment::Point3 m_positionA;
+                    opendlv::data::environment::Point3 m_positionB;
+                    opendlv::data::environment::Point3 m_color;
                     float m_width;
             };
 
         }
     }
-} // hesperia::threeD::primitives
+} // opendlv::threeD::primitives
 
 #endif /*HESPERIA_SCENEGRAPH_PRIMITIVES_LINE_H_*/

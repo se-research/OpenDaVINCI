@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -36,7 +36,7 @@
 #include "opendavinci/core/exceptions/Exceptions.h"
 #include "opendlv/core/wrapper/parser/ASTVisitor.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace situation {
 
         using namespace std;
@@ -188,6 +188,6 @@ namespace hesperia {
         };
 
     }
-} // hesperia::situation
+} // opendlv::situation
 
 #endif /*HESPERIA_CORE_SITUATION_SITSITUATIONVISITOR_H_*/

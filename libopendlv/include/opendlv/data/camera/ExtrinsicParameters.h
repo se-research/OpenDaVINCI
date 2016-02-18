@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -29,7 +29,7 @@
 
 #include "automotivedata/GeneratedHeaders_AutomotiveData.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace data {
         namespace camera {
 
@@ -49,7 +49,7 @@ namespace hesperia {
                      * @param translation Translation.
                      * @param rotation Rotation.
                      */
-                    ExtrinsicParameters(const hesperia::data::environment::Point3 &translation, const cartesian::Matrix3x3 &rotation);
+                    ExtrinsicParameters(const opendlv::data::environment::Point3 &translation, const cartesian::Matrix3x3 &rotation);
 
                     /**
                      * Copy constructor.
@@ -73,14 +73,14 @@ namespace hesperia {
                      *
                      * @return Translation.
                      */
-                    const hesperia::data::environment::Point3 getTranslation() const;
+                    const opendlv::data::environment::Point3 getTranslation() const;
 
                     /**
                      * This method sets the translation.
                      *
                      * @param translation Translation.
                      */
-                    void setTranslation(const hesperia::data::environment::Point3 &translation);
+                    void setTranslation(const opendlv::data::environment::Point3 &translation);
 
                     /**
                      * This method gets the rotation.
@@ -102,11 +102,11 @@ namespace hesperia {
                     virtual const string toString() const;
 
                 private:
-                    hesperia::data::environment::Point3 m_translation;
+                    opendlv::data::environment::Point3 m_translation;
                     cartesian::Matrix3x3 m_rotation;
             };
         }
     }
-} // hesperia::data::camera
+} // opendlv::data::camera
 
 #endif /*HESPERIA_CORE_DATA_CAMERA_EXTRINSICPARAMETERS_H_*/

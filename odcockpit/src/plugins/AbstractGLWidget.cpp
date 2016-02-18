@@ -99,7 +99,7 @@ class PlugIn;
             return m_plugIn;
         }
 
-        void AbstractGLWidget::setBackgroundColor(const hesperia::data::environment::Point3 &c) {
+        void AbstractGLWidget::setBackgroundColor(const opendlv::data::environment::Point3 &c) {
             Lock l(m_backgroundColorMutex);
             m_backgroundColor = c;
         }

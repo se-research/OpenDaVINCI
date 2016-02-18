@@ -56,7 +56,7 @@ namespace cockpit {
             using namespace std;
             using namespace core::base;
             using namespace core::data;
-            using namespace hesperia::data::environment;
+            using namespace opendlv::data::environment;
 
             IrUsMapWidget::IrUsMapWidget(const PlugIn &/*plugIn*/, const core::base::KeyValueConfiguration &kvc, QWidget *prnt) :
                 QWidget(prnt),

@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -40,7 +40,7 @@
 #include "opendlv/decorator/models/TriangleSet.h"
 #include "opendlv/scenario/SCNXArchive.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace decorator {
 
         using namespace std;
@@ -48,7 +48,7 @@ namespace hesperia {
         /**
          * This class is a device independent drawing visitor for scenarios.
          */
-        class OPENDAVINCI_API ScenarioRenderer : public hesperia::data::scenario::ScenarioVisitor {
+        class OPENDAVINCI_API ScenarioRenderer : public opendlv::data::scenario::ScenarioVisitor {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -69,7 +69,7 @@ namespace hesperia {
 
                 virtual ~ScenarioRenderer();
 
-                virtual void visit(hesperia::data::scenario::ScenarioNode &node);
+                virtual void visit(opendlv::data::scenario::ScenarioNode &node);
 
                 /**
                  * This method sets the renderer to be used for rendering.
@@ -84,7 +84,7 @@ namespace hesperia {
                  *
                  * @param scnxArchive SCNXArchive to be used. If set to NULL no archive will be used. The given point won't get freed.
                  */
-                void setSCNXArchive(hesperia::scenario::SCNXArchive *scnxArchive);
+                void setSCNXArchive(opendlv::scenario::SCNXArchive *scnxArchive);
 
             private:
                 /**
@@ -93,7 +93,7 @@ namespace hesperia {
                  *
                  * @param p Polygon to visit.
                  */
-                void visitPolygon(hesperia::data::scenario::Polygon &p);
+                void visitPolygon(opendlv::data::scenario::Polygon &p);
 
                 /**
                  * This method is called when visit(ScenarioNode &node); encounters
@@ -101,7 +101,7 @@ namespace hesperia {
                  *
                  * @param p PointModel to visit.
                  */
-                void visitPointModel(hesperia::data::scenario::PointModel &p);
+                void visitPointModel(opendlv::data::scenario::PointModel &p);
 
                 /**
                  * This method is called when visit(ScenarioNode &node); encounters
@@ -109,14 +109,14 @@ namespace hesperia {
                  *
                  * @param s Surroundings to visit.
                  */
-                void visitSurroundings(hesperia::data::scenario::Surroundings &s);
+                void visitSurroundings(opendlv::data::scenario::Surroundings &s);
 
                 /**
                  * This method is called to load a ground based complex model.
                  *
                  * @param cm ComplexModel to visit.
                  */
-                void loadGroundBasedComplexModel(hesperia::data::scenario::ComplexModel &cm);
+                void loadGroundBasedComplexModel(opendlv::data::scenario::ComplexModel &cm);
 
                 /**
                  * This method is called when visit(ScenarioNode &node); encounters
@@ -124,7 +124,7 @@ namespace hesperia {
                  *
                  * @param image Image to visit.
                  */
-                void visitImage(hesperia::data::scenario::Image &image);
+                void visitImage(opendlv::data::scenario::Image &image);
 
                 /**
                  * This method is called when visit(ScenarioNode &node); encounters
@@ -132,18 +132,18 @@ namespace hesperia {
                  *
                  * @param hi HeightImage to visit.
                  */
-                void visitHeightImage(hesperia::data::scenario::HeightImage &hi);
+                void visitHeightImage(opendlv::data::scenario::HeightImage &hi);
 
             private:
                 core::base::Mutex m_scenarioRendererMutex;
-                hesperia::scenario::SCNXArchive *m_scnxArchive;
+                opendlv::scenario::SCNXArchive *m_scnxArchive;
                 Renderer *m_renderer;
 
-                map<string, vector<hesperia::decorator::models::TriangleSet> > m_mapOfGroundBasedComplexModels;
-                vector<hesperia::decorator::models::OBJXArchive*> m_listOfLoadedOBJXArchives;
+                map<string, vector<opendlv::decorator::models::TriangleSet> > m_mapOfGroundBasedComplexModels;
+                vector<opendlv::decorator::models::OBJXArchive*> m_listOfLoadedOBJXArchives;
         };
 
     }
-} // hesperia::decorator
+} // opendlv::decorator
 
 #endif /*HESPERIA_CORE_DECORATOR_SCENARIORENDERER_H_*/

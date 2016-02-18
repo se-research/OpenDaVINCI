@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
 #include "opendavinci/core/data/SerializableData.h"
 #include "opendlv/data/sensor/LMS291Message.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace data {
         namespace sensor {
 
@@ -105,4 +105,4 @@ namespace hesperia {
 
         }
     }
-} // hesperia::data::sensor
+} // opendlv::data::sensor

@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -36,12 +36,12 @@
 #include "opendlv/threeD/RenderingConfiguration.h"
 #include "opendlv/threeD/models/HeightGrid.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace threeD {
         namespace models {
 
             using namespace core;
-            using namespace hesperia::data::environment;
+            using namespace opendlv::data::environment;
 
             HeightGridRenderer::HeightGridRenderer(const NodeDescriptor &nodeDescriptor, const uint32_t &callList) :
                     Node(nodeDescriptor),
@@ -229,4 +229,4 @@ namespace hesperia {
             }
         }
     }
-} // hesperia::threeD::models
+} // opendlv::threeD::models

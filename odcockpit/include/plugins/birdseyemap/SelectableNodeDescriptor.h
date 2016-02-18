@@ -42,7 +42,7 @@ namespace cockpit {
                      * @param snd SceneNodeDescriptor.
                      * @param selected True iff selected.
                      */
-                    SelectableNodeDescriptor(const hesperia::scenegraph::SceneNodeDescriptor &snd, const bool &selected);
+                    SelectableNodeDescriptor(const opendlv::scenegraph::SceneNodeDescriptor &snd, const bool &selected);
 
                     /**
                      * Copy constructor.
@@ -66,14 +66,14 @@ namespace cockpit {
                      *
                      * @return Name.
                      */
-                    const hesperia::scenegraph::SceneNodeDescriptor getSceneNodeDescriptor() const;
+                    const opendlv::scenegraph::SceneNodeDescriptor getSceneNodeDescriptor() const;
 
                     /**
                      * This method sets the SceneNodeDescriptor.
                      *
                      * @param snd SceneNodeDescriptor.
                      */
-                    void setSceneNodeDescriptor(const hesperia::scenegraph::SceneNodeDescriptor &snd);
+                    void setSceneNodeDescriptor(const opendlv::scenegraph::SceneNodeDescriptor &snd);
 
                     /**
                      * This method returns true if this SceneNodeDescriptor is selected.
@@ -90,7 +90,7 @@ namespace cockpit {
                     void setSelected(const bool &selected);
 
                 private:
-                    hesperia::scenegraph::SceneNodeDescriptor m_sceneNodeDescriptor;
+                    opendlv::scenegraph::SceneNodeDescriptor m_sceneNodeDescriptor;
                     bool m_selected;
             };
         }

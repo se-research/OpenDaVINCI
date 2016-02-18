@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -27,7 +27,7 @@
 #include "opendavinci/core/data/SerializableData.h"
 #include "opendlv/data/environment/Point3.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace data {
         namespace planning {
 
@@ -45,7 +45,7 @@ namespace hesperia {
                      *
                      * @param List of vertices.
                      */
-                    Route(const vector<hesperia::data::environment::Point3> &vertices);
+                    Route(const vector<opendlv::data::environment::Point3> &vertices);
 
                     /**
                      * Copy constructor.
@@ -69,14 +69,14 @@ namespace hesperia {
                      *
                      * @param p Point to be added.
                      */
-                    void add(const hesperia::data::environment::Point3 &p);
+                    void add(const opendlv::data::environment::Point3 &p);
 
                     /**
                      * This method returns all vertices.
                      *
                      * @return Vertices from this polygon.
                      */
-                    vector<hesperia::data::environment::Point3> getListOfPoints() const;
+                    vector<opendlv::data::environment::Point3> getListOfPoints() const;
 
                     /**
                      * This method returns this route size.
@@ -98,11 +98,11 @@ namespace hesperia {
                     virtual const string toString() const;
 
                 private:
-                    vector<hesperia::data::environment::Point3> m_listOfVertices;
+                    vector<opendlv::data::environment::Point3> m_listOfVertices;
             };
 
         }
     }
-} // hesperia::data::planning
+} // opendlv::data::planning
 
 #endif /*HESPERIA_DATA_PLANNING_ROUTE_H_*/

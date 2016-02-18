@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -29,7 +29,7 @@
 #include "opendlv/scenegraph/SceneNodeDescriptor.h"
 #include "opendlv/scenegraph/primitives/Line.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace scenegraph {
         namespace models {
 
@@ -63,7 +63,7 @@ namespace hesperia {
                      * @param color Color for this simple car.
                      * @param height SimpleCar's height.
                      */
-                    SimpleCar(const SceneNodeDescriptor &sceneNodeDescriptor, const double &length, const double &width, const hesperia::data::environment::Point3 &position, const double &rotZ, const hesperia::data::environment::Point3 &color, const float &height);
+                    SimpleCar(const SceneNodeDescriptor &sceneNodeDescriptor, const double &length, const double &width, const opendlv::data::environment::Point3 &position, const double &rotZ, const opendlv::data::environment::Point3 &color, const float &height);
 
                     /**
                      * Copy constructor.
@@ -88,27 +88,27 @@ namespace hesperia {
                      * @param position Position of the car.
                      * @param rotZ Rotation around Z axis of the car.
                      */
-                    void setPosition(const hesperia::data::environment::Point3 &position, const double &rotZ);
+                    void setPosition(const opendlv::data::environment::Point3 &position, const double &rotZ);
 
                 private:
                     double m_length;
                     double m_width;
 
-                    hesperia::data::environment::Point3 m_color;
+                    opendlv::data::environment::Point3 m_color;
                     float m_height;
 
-                    hesperia::scenegraph::primitives::Line *m_rearLeft;
-                    hesperia::scenegraph::primitives::Line *m_rearRight;
-                    hesperia::scenegraph::primitives::Line *m_sideLeft;
-                    hesperia::scenegraph::primitives::Line *m_sideRight;
-                    hesperia::scenegraph::primitives::Line *m_front;
-                    hesperia::scenegraph::primitives::Line *m_arrowLeft;
-                    hesperia::scenegraph::primitives::Line *m_arrowRight;
-                    hesperia::scenegraph::primitives::Line *m_arrowRear;
+                    opendlv::scenegraph::primitives::Line *m_rearLeft;
+                    opendlv::scenegraph::primitives::Line *m_rearRight;
+                    opendlv::scenegraph::primitives::Line *m_sideLeft;
+                    opendlv::scenegraph::primitives::Line *m_sideRight;
+                    opendlv::scenegraph::primitives::Line *m_front;
+                    opendlv::scenegraph::primitives::Line *m_arrowLeft;
+                    opendlv::scenegraph::primitives::Line *m_arrowRight;
+                    opendlv::scenegraph::primitives::Line *m_arrowRear;
             };
 
         }
     }
-} // hesperia::scenegraph::models
+} // opendlv::scenegraph::models
 
 #endif /*HESPERIA_SCENEGRAPH_MODELS_SIMPLECAR_H_*/

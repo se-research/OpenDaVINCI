@@ -38,8 +38,8 @@ class QWidget;
 namespace cockpit { namespace plugins { class PlugIn; } }
 namespace core { namespace base { template <typename T> class TreeNode; } }
 namespace core { namespace data { class Container; } }
-namespace hesperia { namespace threeD { class Node; } }
-namespace hesperia { namespace threeD { class TransformGroup; } }
+namespace opendlv { namespace threeD { class Node; } }
+namespace opendlv { namespace threeD { class TransformGroup; } }
 
 namespace cockpit {
     namespace plugins {
@@ -88,7 +88,7 @@ class SelectableNodeDescriptor;
                      *
                      * @param nd NodeDescriptor to which the camera should be assigned.
                      */
-                    void assignCameraTo(const hesperia::threeD::NodeDescriptor &nd);
+                    void assignCameraTo(const opendlv::threeD::NodeDescriptor &nd);
 
                     virtual void update(core::base::TreeNode<SelectableNodeDescriptor> *node);
 
@@ -101,26 +101,26 @@ class SelectableNodeDescriptor;
 
                 private:
                     core::base::Mutex m_rootMutex;
-                    hesperia::threeD::TransformGroup *m_root;
-                    hesperia::threeD::TransformGroup *m_stationaryElements;
-                    hesperia::threeD::TransformGroup *m_dynamicElements;
-                    hesperia::threeD::TransformGroup *m_measurements;
-                    hesperia::threeD::TransformGroup *m_plannedRoute;
-                    hesperia::threeD::TransformGroup *m_lines;
+                    opendlv::threeD::TransformGroup *m_root;
+                    opendlv::threeD::TransformGroup *m_stationaryElements;
+                    opendlv::threeD::TransformGroup *m_dynamicElements;
+                    opendlv::threeD::TransformGroup *m_measurements;
+                    opendlv::threeD::TransformGroup *m_plannedRoute;
+                    opendlv::threeD::TransformGroup *m_lines;
 
-                    hesperia::threeD::NodeDescriptor m_egoStateNodeDescriptor;
+                    opendlv::threeD::NodeDescriptor m_egoStateNodeDescriptor;
                     uint32_t m_numberOfReceivedEgoStates;
-                    hesperia::threeD::TransformGroup *m_egoStateNode;
-                    map<hesperia::threeD::NodeDescriptor, hesperia::threeD::TransformGroup*, hesperia::threeD::NodeDescriptorComparator> m_mapOfTraceablePositions;
-                    hesperia::threeD::TransformGroup *m_contouredObjectsNode;
-                    hesperia::threeD::RenderingConfiguration m_renderingConfiguration;
-                    hesperia::threeD::TransformGroup *m_obstaclesRoot;
-                    map<uint32_t, hesperia::threeD::Node*> m_mapOfObstacles;
+                    opendlv::threeD::TransformGroup *m_egoStateNode;
+                    map<opendlv::threeD::NodeDescriptor, opendlv::threeD::TransformGroup*, opendlv::threeD::NodeDescriptorComparator> m_mapOfTraceablePositions;
+                    opendlv::threeD::TransformGroup *m_contouredObjectsNode;
+                    opendlv::threeD::RenderingConfiguration m_renderingConfiguration;
+                    opendlv::threeD::TransformGroup *m_obstaclesRoot;
+                    map<uint32_t, opendlv::threeD::Node*> m_mapOfObstacles;
 
                     CameraAssignableNodesListener &m_cameraAssignableNodesListener;
-                    vector<hesperia::threeD::NodeDescriptor> m_listOfCameraAssignableNodes;
-                    hesperia::threeD::NodeDescriptor m_cameraAssignedNodeDescriptor;
-                    map<hesperia::threeD::NodeDescriptor, hesperia::data::environment::Position, hesperia::threeD::NodeDescriptorComparator> m_mapOfCurrentPositions;
+                    vector<opendlv::threeD::NodeDescriptor> m_listOfCameraAssignableNodes;
+                    opendlv::threeD::NodeDescriptor m_cameraAssignedNodeDescriptor;
+                    map<opendlv::threeD::NodeDescriptor, opendlv::data::environment::Position, opendlv::threeD::NodeDescriptorComparator> m_mapOfCurrentPositions;
 
                     core::base::TreeNode<SelectableNodeDescriptor> *m_selectableNodeDescriptorTree;
                     SelectableNodeDescriptorTreeListener &m_selectableNodeDescriptorTreeListener;

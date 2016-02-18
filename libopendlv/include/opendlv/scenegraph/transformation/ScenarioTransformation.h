@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -35,7 +35,7 @@
 #include "opendlv/data/scenario/Surroundings.h"
 #include "opendlv/scenegraph/SceneNode.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace scenegraph {
         namespace transformation {
 
@@ -77,10 +77,10 @@ namespace hesperia {
                     /**
                      * @return The renderable root node.
                      */
-                    hesperia::scenegraph::SceneNode* getRoot() const;
+                    opendlv::scenegraph::SceneNode* getRoot() const;
 
                 private:
-                    hesperia::scenegraph::SceneNode *m_root;
+                    opendlv::scenegraph::SceneNode *m_root;
                     bool m_renderLaneConnectors;
 
                     /**
@@ -89,7 +89,7 @@ namespace hesperia {
                      * @param surroundings Surroundings.
                      * @param sceneNode to be used.
                      */
-                    void transform(data::scenario::Surroundings &surroundings, hesperia::scenegraph::SceneNode *sn);
+                    void transform(data::scenario::Surroundings &surroundings, opendlv::scenegraph::SceneNode *sn);
 
                     /**
                      * This method transforms a list of traffic controls into a renderable representation.
@@ -97,7 +97,7 @@ namespace hesperia {
                      * @param laneModel LaneModel.
                      * @param layerSceneNode SceneNode for filling with renderable primitives.
                      */
-                    void transform(const data::scenario::LaneModel &laneModel, hesperia::scenegraph::SceneNode *layerSceneNode);
+                    void transform(const data::scenario::LaneModel &laneModel, opendlv::scenegraph::SceneNode *layerSceneNode);
 
                     /**
                      * This method transforms a PointModel into a renderable representation.
@@ -108,7 +108,7 @@ namespace hesperia {
                      * @param layer Layer containing this PointModel.
                      * @param layerSceneNode SceneNode for filling with renderable primitives.
                      */
-                    void transform(const data::scenario::Layer &layer, const data::scenario::Road &road, const data::scenario::Lane &lane, const data::scenario::PointModel &pointModel, hesperia::scenegraph::SceneNode *layerSceneNode);
+                    void transform(const data::scenario::Layer &layer, const data::scenario::Road &road, const data::scenario::Lane &lane, const data::scenario::PointModel &pointModel, opendlv::scenegraph::SceneNode *layerSceneNode);
 
                     /**
                      * This method transforms a StraightLine into a renderable representation.
@@ -119,7 +119,7 @@ namespace hesperia {
                      * @param layer Layer containing this StraightLine.
                      * @param layerSceneNode SceneNode for filling with renderable primitives.
                      */
-                    void transform(const data::scenario::Layer &layer, const data::scenario::Road &road, const data::scenario::Lane &lane, const data::scenario::StraightLine &straightLine, hesperia::scenegraph::SceneNode *layerSceneNode);
+                    void transform(const data::scenario::Layer &layer, const data::scenario::Road &road, const data::scenario::Lane &lane, const data::scenario::StraightLine &straightLine, opendlv::scenegraph::SceneNode *layerSceneNode);
 
                     /**
                      * This method transforms an Arc into a renderable representation.
@@ -130,7 +130,7 @@ namespace hesperia {
                      * @param layer Layer containing this StraightLine.
                      * @param layerSceneNode SceneNode for filling with renderable primitives.
                      */
-                    void transform(const data::scenario::Layer &layer, const data::scenario::Road &road, const data::scenario::Lane &lane, const data::scenario::Arc &arc, hesperia::scenegraph::SceneNode *layerSceneNode);
+                    void transform(const data::scenario::Layer &layer, const data::scenario::Road &road, const data::scenario::Lane &lane, const data::scenario::Arc &arc, opendlv::scenegraph::SceneNode *layerSceneNode);
 
                     /**
                      * This method transforms a Zone into a renderable representation.
@@ -139,11 +139,11 @@ namespace hesperia {
                      * @param layer Layer containing this Zone.
                      * @param layerSceneNode SceneNode for filling with renderable primitives.
                      */
-                    void transform(const data::scenario::Layer &layer, const data::scenario::Zone &zone, hesperia::scenegraph::SceneNode *layerSceneNode);
+                    void transform(const data::scenario::Layer &layer, const data::scenario::Zone &zone, opendlv::scenegraph::SceneNode *layerSceneNode);
             };
 
         }
     }
-} // hesperia::scenegraph::transformation
+} // opendlv::scenegraph::transformation
 
 #endif /*HESPERIA_SCENEGRAPH_TRANSFORMATION_SCENARIOTRANSFORMATION_H_*/

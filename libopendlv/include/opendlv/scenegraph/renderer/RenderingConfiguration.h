@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -27,7 +27,7 @@
 #include "opendlv/scenegraph/SceneNodeDescriptorComparator.h"
 #include "opendlv/scenegraph/renderer/SceneNodeRenderingConfiguration.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace scenegraph {
         namespace renderer {
 
@@ -85,6 +85,6 @@ namespace hesperia {
 
         }
     }
-} // hesperia::scenegraph::renderer
+} // opendlv::scenegraph::renderer
 
 #endif /*HESPERIA_SCENEGRAPH_RENDERER_RENDERINGCONFIGURATION_H_*/

@@ -35,9 +35,9 @@ namespace vehiclecontext {
 
         using namespace std;
         using namespace core::data;
-        using namespace hesperia::data::environment;
+        using namespace opendlv::data::environment;
 
-        PointSensor::PointSensor(const uint16_t &id, const string &name, const hesperia::data::environment::Point3 &translation, const double &rotZ, const double &angleFOV, const double &distanceFOV, const double &clampDistance, const bool &showFOV, const double &faultModelSkip, const double &faultModelNoise) :
+        PointSensor::PointSensor(const uint16_t &id, const string &name, const opendlv::data::environment::Point3 &translation, const double &rotZ, const double &angleFOV, const double &distanceFOV, const double &clampDistance, const bool &showFOV, const double &faultModelSkip, const double &faultModelNoise) :
             m_id(id),
             m_name(name),
             m_translation(translation),
@@ -119,11 +119,11 @@ namespace vehiclecontext {
             return retVal;
         }
 
-        double PointSensor::getDistance(map<uint32_t, hesperia::data::environment::Polygon> &mapOfPolygons) {
+        double PointSensor::getDistance(map<uint32_t, opendlv::data::environment::Polygon> &mapOfPolygons) {
             Point3 nearest;
             double distanceToSensor = -1;
 
-            map<uint32_t, hesperia::data::environment::Polygon>::const_iterator it = mapOfPolygons.begin();
+            map<uint32_t, opendlv::data::environment::Polygon>::const_iterator it = mapOfPolygons.begin();
             while (it != mapOfPolygons.end()) {
                 Polygon p = it->second;
 

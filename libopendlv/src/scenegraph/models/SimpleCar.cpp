@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -25,14 +25,14 @@
 #include "opendlv/scenegraph/models/SimpleCar.h"
 #include "opendlv/scenegraph/primitives/Line.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace scenegraph {
         namespace models {
 
             using namespace std;
             using namespace core::data;
-            using namespace hesperia::data::environment;
-            using namespace hesperia::scenegraph::primitives;
+            using namespace opendlv::data::environment;
+            using namespace opendlv::scenegraph::primitives;
 
             /**
              * This class represents a simple car:
@@ -50,7 +50,7 @@ namespace hesperia {
              * X = Position, + = ROTZ.
              */
 
-            SimpleCar::SimpleCar(const SceneNodeDescriptor &sceneNodeDescriptor, const double &length, const double &width, const hesperia::data::environment::Point3 &position, const double &rotZ, const hesperia::data::environment::Point3 &color, const float &height) :
+            SimpleCar::SimpleCar(const SceneNodeDescriptor &sceneNodeDescriptor, const double &length, const double &width, const opendlv::data::environment::Point3 &position, const double &rotZ, const opendlv::data::environment::Point3 &color, const float &height) :
                 SceneNode(sceneNodeDescriptor),
                 m_length(length),
                 m_width(width),
@@ -163,7 +163,7 @@ namespace hesperia {
 
             SimpleCar::~SimpleCar() {}
 
-            void SimpleCar::setPosition(const hesperia::data::environment::Point3 &positionCenter, const double &rotZ) {
+            void SimpleCar::setPosition(const opendlv::data::environment::Point3 &positionCenter, const double &rotZ) {
                 Point3 positionCenterRearAxle(-m_length/2.0, 0, 0);
                 positionCenterRearAxle.rotateZ(rotZ);
                 positionCenterRearAxle += positionCenter;
@@ -229,5 +229,5 @@ namespace hesperia {
 
         }
     }
-}  // hesperia::scenegraph::models
+}  // opendlv::scenegraph::models
 

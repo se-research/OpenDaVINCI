@@ -46,9 +46,9 @@ namespace vehiclecontext {
         using namespace core::data;
         using namespace core::io;
         using namespace context::base;
-        using namespace hesperia::data;
-        using namespace hesperia::data::camera;
-        using namespace hesperia::data::environment;
+        using namespace opendlv::data;
+        using namespace opendlv::data::camera;
+        using namespace opendlv::data::environment;
 
         CameraModel* CameraModel::m_singleton = NULL;
 

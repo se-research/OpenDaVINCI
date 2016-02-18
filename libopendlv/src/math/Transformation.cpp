@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -20,12 +20,12 @@
 #include "opendlv/data/environment/Position.h"
 #include "opendlv/math/Transformation.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace math {
 
         using namespace std;
         using namespace core::data;
-        using namespace hesperia::data::environment;
+        using namespace opendlv::data::environment;
 
         Transformation::Transformation() {}
 
@@ -60,4 +60,4 @@ namespace hesperia {
         }
 
     }
-} // hesperia::math
+} // opendlv::math

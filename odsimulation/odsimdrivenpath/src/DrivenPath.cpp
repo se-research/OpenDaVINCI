@@ -41,10 +41,10 @@ namespace measurements {
     using namespace core::base;
     using namespace core::data;
     using namespace core::io;
-    using namespace hesperia::data::scenario;
-    using namespace hesperia::data::environment;
-    using namespace hesperia::data::environment;
-    using namespace hesperia::scenario;
+    using namespace opendlv::data::scenario;
+    using namespace opendlv::data::environment;
+    using namespace opendlv::data::environment;
+    using namespace opendlv::scenario;
 
     DrivenPath::DrivenPath(const int32_t &argc, char **argv) :
         TimeTriggeredConferenceClientModule(argc, argv, "DrivenPath") {}
@@ -69,7 +69,7 @@ namespace measurements {
         if (urlOfSCNXFile.isValid()) {
             SCNXArchive &scnxArchive = SCNXArchiveFactory::getInstance().getSCNXArchive(urlOfSCNXFile);
 
-            hesperia::data::scenario::Scenario &scenario = scnxArchive.getScenario();
+            opendlv::data::scenario::Scenario &scenario = scnxArchive.getScenario();
 
             // Construct road network.
             LaneVisitor lv(m_graph, scenario);

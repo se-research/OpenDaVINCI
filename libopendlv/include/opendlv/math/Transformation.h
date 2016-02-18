@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -23,9 +23,9 @@
 #include "opendavinci/core/opendavinci.h"
 #include "opendlv/data/environment/Point3.h"
 
-namespace hesperia { namespace data { namespace environment { class Position; } } }
+namespace opendlv { namespace data { namespace environment { class Position; } } }
 
-namespace hesperia {
+namespace opendlv {
     namespace math {
 
         /**
@@ -60,7 +60,7 @@ namespace hesperia {
                  * @param position Position to be used.
                  * @return Transformed cartesian coordinate.
                  */
-                hesperia::data::environment::Point3 transform(const hesperia::data::environment::Point3 &coordinate, const hesperia::data::environment::Position &position) const;
+                opendlv::data::environment::Point3 transform(const opendlv::data::environment::Point3 &coordinate, const opendlv::data::environment::Position &position) const;
 
                 /**
                  * This method transforms the given cartesian coordinate from
@@ -70,10 +70,10 @@ namespace hesperia {
                  * @param position Position to be used.
                  * @return Transformed cartesian coordinate.
                  */
-                hesperia::data::environment::Point3 transformInversely(const hesperia::data::environment::Point3 &coordinate, const hesperia::data::environment::Position &position) const;
+                opendlv::data::environment::Point3 transformInversely(const opendlv::data::environment::Point3 &coordinate, const opendlv::data::environment::Position &position) const;
         };
 
     }
-} // hesperia::math
+} // opendlv::math
 
 #endif /*HESPERIA_MATH_TRANSFORMATION_H_*/

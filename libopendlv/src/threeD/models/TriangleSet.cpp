@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -36,11 +36,11 @@
 #include "opendlv/threeD/models/Triangle.h"
 #include "opendlv/threeD/models/TriangleSet.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace threeD {
         namespace models {
 
-            using namespace hesperia::data::environment;
+            using namespace opendlv::data::environment;
 
             TriangleSet::TriangleSet() :
                     Node(),
@@ -186,4 +186,4 @@ namespace hesperia {
             }
         }
     }
-} // hesperia::threeD::models
+} // opendlv::threeD::models

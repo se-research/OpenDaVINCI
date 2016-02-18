@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -26,7 +26,7 @@
 #include "opendlv/threeD/Node.h"
 #include "opendlv/threeD/NodeDescriptor.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace threeD {
         namespace models {
 
@@ -46,7 +46,7 @@ namespace hesperia {
                      * @param color Line's color.
                      * @param width Line's width.
                      */
-                    Line(const NodeDescriptor &nodeDescriptor, const hesperia::data::environment::Point3 &positionA, const hesperia::data::environment::Point3 &positionB, const hesperia::data::environment::Point3 &color, const float &width);
+                    Line(const NodeDescriptor &nodeDescriptor, const opendlv::data::environment::Point3 &positionA, const opendlv::data::environment::Point3 &positionB, const opendlv::data::environment::Point3 &color, const float &width);
 
                     /**
                      * Copy constructor.
@@ -68,14 +68,14 @@ namespace hesperia {
                     virtual void render(RenderingConfiguration &renderingConfiguration);
 
                 private:
-                    hesperia::data::environment::Point3 m_positionA;
-                    hesperia::data::environment::Point3 m_positionB;
-                    hesperia::data::environment::Point3 m_color;
+                    opendlv::data::environment::Point3 m_positionA;
+                    opendlv::data::environment::Point3 m_positionB;
+                    opendlv::data::environment::Point3 m_color;
                     float m_width;
             };
 
         }
     }
-} // hesperia::threeD::models
+} // opendlv::threeD::models
 
 #endif /*HESPERIA_CORE_THREED_MODELS_LINE_H_*/

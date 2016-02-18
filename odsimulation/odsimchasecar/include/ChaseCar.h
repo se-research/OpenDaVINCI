@@ -127,7 +127,7 @@ class OpenGLGrabber;
 
         private:
             static ChaseCar* m_singleton;
-            hesperia::data::environment::EgoState m_egoState;
+            opendlv::data::environment::EgoState m_egoState;
 
             core::base::FIFOQueue m_FIFO_Obstacles;
 

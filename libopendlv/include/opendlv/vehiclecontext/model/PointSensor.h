@@ -70,7 +70,7 @@ namespace vehiclecontext {
                  * @param faultModelSkip Skip n% of the frames.
                  * @param faultModelNoise Add random noise data from the range [-faultModelNoise .. +faultModelNoise].
                  */
-                PointSensor(const uint16_t &id, const string &name, const hesperia::data::environment::Point3 &translation, const double &rotZ, const double &angleFOV, const double &distanceFOV, const double &clampDistance, const bool &showFOV, const double &faultModelSkip, const double &faultModelNoise);
+                PointSensor(const uint16_t &id, const string &name, const opendlv::data::environment::Point3 &translation, const double &rotZ, const double &angleFOV, const double &distanceFOV, const double &clampDistance, const bool &showFOV, const double &faultModelSkip, const double &faultModelNoise);
 
                 virtual ~PointSensor();
 
@@ -80,7 +80,7 @@ namespace vehiclecontext {
                  * @param translation Global translation of the vehicle that is carrying this sensor.
                  * @param rotation Global rotation of the vehicle that is carrying this sensor.
                  */
-                hesperia::data::environment::Polygon updateFOV(const hesperia::data::environment::Point3 &translation, const hesperia::data::environment::Point3 &rotation);
+                opendlv::data::environment::Polygon updateFOV(const opendlv::data::environment::Point3 &translation, const opendlv::data::environment::Point3 &rotation);
 
                 /**
                  * This methods calculates the distance.
@@ -88,7 +88,7 @@ namespace vehiclecontext {
                  * @param mapOfPolygons Map of polygons to iterate through.
                  * @return distance to the closest line or -1.
                  */
-                double getDistance(map<uint32_t, hesperia::data::environment::Polygon> &mapOfPolygons);
+                double getDistance(map<uint32_t, opendlv::data::environment::Polygon> &mapOfPolygons);
 
                 bool hasShowFOV() const;
 
@@ -101,7 +101,7 @@ namespace vehiclecontext {
             private:
                 uint16_t m_id;
                 string m_name;
-                hesperia::data::environment::Point3 m_translation;
+                opendlv::data::environment::Point3 m_translation;
                 double m_rotZ;
                 double m_angleFOV;
                 double m_distanceFOV;
@@ -113,10 +113,10 @@ namespace vehiclecontext {
 
                 double m_totalRotation;
 
-                hesperia::data::environment::Polygon m_FOV;
-                hesperia::data::environment::Point3 m_sensorPosition;
+                opendlv::data::environment::Polygon m_FOV;
+                opendlv::data::environment::Point3 m_sensorPosition;
 
-                bool isInFOV(const hesperia::data::environment::Point3 &pt) const;
+                bool isInFOV(const opendlv::data::environment::Point3 &pt) const;
         };
 
     }

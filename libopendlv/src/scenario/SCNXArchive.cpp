@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -35,10 +35,10 @@
 
 namespace core { namespace wrapper { class DecompressedData; } }
 namespace core { namespace wrapper { class Image; } }
-namespace hesperia { namespace data { namespace scenario { class ComplexModel; } } }
-namespace hesperia { namespace data { namespace scenario { class Shape; } } }
+namespace opendlv { namespace data { namespace scenario { class ComplexModel; } } }
+namespace opendlv { namespace data { namespace scenario { class Shape; } } }
 
-namespace hesperia {
+namespace opendlv {
     namespace scenario {
 
         using namespace std;
@@ -116,7 +116,7 @@ namespace hesperia {
                         while ( in->get( c ) ) {
                             s << c;
                         }
-                        hesperia::data::situation::Situation sit = situation::SituationFactory::getInstance().getSituation(s.str());
+                        opendlv::data::situation::Situation sit = situation::SituationFactory::getInstance().getSituation(s.str());
                         listOfSituations.push_back(sit);
                     }
                 }
@@ -130,4 +130,4 @@ namespace hesperia {
             return m_decompressedData->getInputStreamFor(sstr.str());
         }
     }
-} // hesperia::scenario
+} // opendlv::scenario

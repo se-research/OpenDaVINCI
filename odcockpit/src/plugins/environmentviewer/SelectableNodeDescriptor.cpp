@@ -24,7 +24,7 @@ namespace cockpit {
     namespace plugins {
         namespace environmentviewer {
 
-            using namespace hesperia::threeD;
+            using namespace opendlv::threeD;
 
             SelectableNodeDescriptor::SelectableNodeDescriptor() :
                 m_nodeDescriptor(),

@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -30,16 +30,16 @@
 #include "opendlv/threeD/TransformGroup.h"
 #include "opendlv/threeD/decorator/DecoratorFactory.h"
 
-namespace hesperia { namespace threeD { class Node; } }
-namespace hesperia { namespace threeD { namespace loaders { class OBJXArchive; } } }
+namespace opendlv { namespace threeD { class Node; } }
+namespace opendlv { namespace threeD { namespace loaders { class OBJXArchive; } } }
 
-namespace hesperia {
+namespace opendlv {
     namespace threeD {
         namespace decorator {
 
             using namespace std;
             using namespace core::base;
-            using namespace hesperia::data::environment;
+            using namespace opendlv::data::environment;
             using namespace data::scenario;
             using namespace scenario;
             using namespace threeD::loaders;
@@ -120,4 +120,4 @@ namespace hesperia {
             }
         }
     }
-} // hesperia::threeD::decorator
+} // opendlv::threeD::decorator

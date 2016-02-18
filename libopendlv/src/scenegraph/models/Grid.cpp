@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -23,16 +23,16 @@
 #include "opendlv/scenegraph/SceneNodeDescriptor.h"
 #include "opendlv/scenegraph/models/Grid.h"
 
-namespace hesperia { namespace scenegraph { namespace primitives { class Line; } } }
+namespace opendlv { namespace scenegraph { namespace primitives { class Line; } } }
 
-namespace hesperia {
+namespace opendlv {
     namespace scenegraph {
         namespace models {
 
             using namespace std;
             using namespace core::data;
-            using namespace hesperia::data::environment;
-            using namespace hesperia::scenegraph::primitives;
+            using namespace opendlv::data::environment;
+            using namespace opendlv::scenegraph::primitives;
 
             Grid::Grid(const SceneNodeDescriptor &sceneNodeDescriptor) :
                 SceneNode(sceneNodeDescriptor) {
@@ -80,5 +80,5 @@ namespace hesperia {
 
         }
     }
-}  // hesperia::scenegraph::models
+}  // opendlv::scenegraph::models
 

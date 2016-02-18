@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -26,7 +26,7 @@
 
 #include "opendlv/data/environment/Point3.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace decorator {
         namespace models {
 
@@ -63,28 +63,28 @@ namespace hesperia {
                      * @param b Vertex b.
                      * @param c Vertex c.
                      */
-                    void setVertices(const hesperia::data::environment::Point3 &a, const hesperia::data::environment::Point3 &b, const hesperia::data::environment::Point3 &c);
+                    void setVertices(const opendlv::data::environment::Point3 &a, const opendlv::data::environment::Point3 &b, const opendlv::data::environment::Point3 &c);
 
                     /**
                      * This method returns the triangle's vertices.
                      *
                      * @return Triangle's vertices.
                      */
-                    vector<hesperia::data::environment::Point3> getVertices() const;
+                    vector<opendlv::data::environment::Point3> getVertices() const;
 
                     /**
                      * This method sets the triangle's normal.
                      *
                      * @param n Normal.
                      */
-                    void setNormal(const hesperia::data::environment::Point3 &n);
+                    void setNormal(const opendlv::data::environment::Point3 &n);
 
                     /**
                      * This method returns the triangle's normal.
                      *
                      * @return Triangle's normal.
                      */
-                    hesperia::data::environment::Point3 getNormal() const;
+                    opendlv::data::environment::Point3 getNormal() const;
 
                     /**
                      * This method sets the triangle's texture coordinates.
@@ -93,23 +93,23 @@ namespace hesperia {
                      * @param tc Texture coordinate for vertex b.
                      * @param tb Texture coordinate for vertex c.
                      */
-                    void setTextureCoordinates(const hesperia::data::environment::Point3 &ta, const hesperia::data::environment::Point3 &tb, const hesperia::data::environment::Point3 &tc);
+                    void setTextureCoordinates(const opendlv::data::environment::Point3 &ta, const opendlv::data::environment::Point3 &tb, const opendlv::data::environment::Point3 &tc);
 
                     /**
                      * This method returns the triangle's texture coordinates.
                      *
                      * @return Triangle's texture coordinates.
                      */
-                    vector<hesperia::data::environment::Point3> getTextureCoordinates() const;
+                    vector<opendlv::data::environment::Point3> getTextureCoordinates() const;
 
                 private:
-                    vector<hesperia::data::environment::Point3> m_vertices;
-                    hesperia::data::environment::Point3 m_normal;
-                    vector<hesperia::data::environment::Point3> m_textureCoordinates;
+                    vector<opendlv::data::environment::Point3> m_vertices;
+                    opendlv::data::environment::Point3 m_normal;
+                    vector<opendlv::data::environment::Point3> m_textureCoordinates;
             };
 
         }
     }
-} // hesperia::decorator::models
+} // opendlv::decorator::models
 
 #endif /*HESPERIA_CORE_DECORATOR_MODELS_TRIANGLE_H_*/

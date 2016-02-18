@@ -38,7 +38,7 @@ namespace cockpit {
             using namespace std;
             using namespace core::base;
             using namespace core::strings;
-            using namespace hesperia::data::environment;
+            using namespace opendlv::data::environment;
 
             StreetMapPlugIn::StreetMapPlugIn(const string &name, const KeyValueConfiguration &kvc, QWidget* prnt) :
                     PlugIn(name, kvc, prnt),

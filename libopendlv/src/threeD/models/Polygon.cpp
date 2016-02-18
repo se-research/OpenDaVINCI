@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -34,12 +34,12 @@
 #include "opendlv/threeD/RenderingConfiguration.h"
 #include "opendlv/threeD/models/Polygon.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace threeD {
         namespace models {
 
             using namespace std;
-            using namespace hesperia::data::environment;
+            using namespace opendlv::data::environment;
 
             Polygon::Polygon(const NodeDescriptor &nodeDescriptor, const vector<Point3> &listOfGroundVertices, const Point3 &color, const float &height) :
                     Node(nodeDescriptor),
@@ -115,4 +115,4 @@ namespace hesperia {
 
         }
     }
-} // hesperia::threeD::models
+} // opendlv::threeD::models

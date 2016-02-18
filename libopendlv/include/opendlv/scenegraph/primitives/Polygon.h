@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
 #include "opendlv/scenegraph/SceneNode.h"
 #include "opendlv/scenegraph/SceneNodeDescriptor.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace scenegraph {
         namespace primitives {
 
@@ -47,7 +47,7 @@ namespace hesperia {
                      * @param color Color of this polygon.
                      * @param height Polygon's height.
                      */
-                    Polygon(const SceneNodeDescriptor &sceneNodeDescriptor, const vector<hesperia::data::environment::Point3> &listOfGroundVertices, const hesperia::data::environment::Point3 &color, const float &height);
+                    Polygon(const SceneNodeDescriptor &sceneNodeDescriptor, const vector<opendlv::data::environment::Point3> &listOfGroundVertices, const opendlv::data::environment::Point3 &color, const float &height);
 
                     /**
                      * Copy constructor.
@@ -69,12 +69,12 @@ namespace hesperia {
                     /**
                      * @return List of ground vertices.
                      */
-                    const vector<hesperia::data::environment::Point3>& getListOfGroundVertices() const;
+                    const vector<opendlv::data::environment::Point3>& getListOfGroundVertices() const;
 
                     /**
                      * @return Polygon's color.
                      */
-                    const hesperia::data::environment::Point3& getColor() const;
+                    const opendlv::data::environment::Point3& getColor() const;
 
                     /**
                      * @return Polygon's height.
@@ -82,13 +82,13 @@ namespace hesperia {
                     float getHeight() const;
 
                 private:
-                    vector<hesperia::data::environment::Point3> m_listOfGroundVertices;
-                    hesperia::data::environment::Point3 m_color;
+                    vector<opendlv::data::environment::Point3> m_listOfGroundVertices;
+                    opendlv::data::environment::Point3 m_color;
                     float m_height;
             };
 
         }
     }
-} // hesperia::scenegraph::primitives
+} // opendlv::scenegraph::primitives
 
 #endif /*HESPERIA_SCENEGRAPH_PRIMITIVES_POLYGON_H_*/

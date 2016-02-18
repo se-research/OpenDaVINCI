@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -26,14 +26,14 @@
 #include "opendlv/decorator/models/TriangleSet.h"
 #include "opendlv/decorator/twoD/Renderer2D.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace decorator {
         namespace twoD {
 
             using namespace std;
             using namespace core::data;
-            using namespace hesperia::data::environment;
-            using namespace hesperia::decorator::models;
+            using namespace opendlv::data::environment;
+            using namespace opendlv::decorator::models;
 
             Renderer2D::Renderer2D() {}
 
@@ -88,7 +88,7 @@ namespace hesperia {
                 drawPolyLine(points);
             }
 
-            void Renderer2D::drawListOfTriangleSets(const vector<hesperia::decorator::models::TriangleSet> &listOfTriangleSets, const hesperia::data::environment::Point3 &position, const hesperia::data::environment::Point3 &rotation) {
+            void Renderer2D::drawListOfTriangleSets(const vector<opendlv::decorator::models::TriangleSet> &listOfTriangleSets, const opendlv::data::environment::Point3 &position, const opendlv::data::environment::Point3 &rotation) {
                 vector<TriangleSet>::const_iterator it = listOfTriangleSets.begin();
                 while (it != listOfTriangleSets.end()) {
                     if ((*it).m_vertices.size() > 0) {
@@ -119,4 +119,4 @@ namespace hesperia {
 
         }
     }
-} // hesperia::decorator::twoD
+} // opendlv::decorator::twoD

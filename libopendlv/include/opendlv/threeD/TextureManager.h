@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
 #include "opendlv/core/wrapper/Image.h"
 #include "opendavinci/core/strings/StringComparator.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace threeD {
 
         using namespace std;
@@ -107,6 +107,6 @@ namespace hesperia {
         };
 
     }
-} // hesperia::threeD
+} // opendlv::threeD
 
 #endif /*HESPERIA_CORE_THREED_TEXTUREMANAGER_H_*/

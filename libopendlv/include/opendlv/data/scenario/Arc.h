@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
 
 #include "opendlv/data/scenario/StraightLine.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace data {
         namespace scenario {
 
@@ -134,6 +134,6 @@ namespace hesperia {
 
         }
     }
-} // hesperia::data::scenario
+} // opendlv::data::scenario
 
 #endif /*HESPERIA_CORE_DATA_SCENARIO_ARC_H_*/

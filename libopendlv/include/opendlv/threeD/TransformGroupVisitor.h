@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@
 
 #include "opendavinci/core/opendavinci.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace threeD {
 
 class Node;
@@ -38,6 +38,6 @@ class Node;
         };
 
     }
-} // hesperia::threeD
+} // opendlv::threeD
 
 #endif /*HESPERIA_CORE_THREED_TRANSFORMGROUPVISITOR_H_*/

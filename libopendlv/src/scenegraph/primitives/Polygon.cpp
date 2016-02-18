@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -19,12 +19,12 @@
 
 #include "opendlv/scenegraph/primitives/Polygon.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace scenegraph {
         namespace primitives {
 
             using namespace std;
-            using namespace hesperia::data::environment;
+            using namespace opendlv::data::environment;
 
             Polygon::Polygon(const SceneNodeDescriptor &sceneNodeDescriptor, const vector<Point3> &listOfGroundVertices, const Point3 &color, const float &height) :
                 SceneNode(sceneNodeDescriptor),
@@ -68,4 +68,4 @@ namespace hesperia {
 
         }
     }
-} // hesperia::scenegraph::primitives
+} // opendlv::scenegraph::primitives

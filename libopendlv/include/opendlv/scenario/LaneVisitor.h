@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -33,7 +33,7 @@
 #include "opendlv/data/scenario/ScenarioVisitor.h"
 #include "opendlv/data/scenario/Scenario.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace scenario {
 
         using namespace std;
@@ -41,7 +41,7 @@ namespace hesperia {
         /**
          * This class implements a visitor for constructing the graph.
          */
-        class LaneVisitor : public hesperia::data::scenario::ScenarioVisitor {
+        class LaneVisitor : public opendlv::data::scenario::ScenarioVisitor {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -69,41 +69,41 @@ namespace hesperia {
                  * @param g Graph.
                  * @param scenario Scenario.
                  */
-                LaneVisitor(core::wrapper::graph::DirectedGraph &g, hesperia::data::scenario::Scenario &scenario);
+                LaneVisitor(core::wrapper::graph::DirectedGraph &g, opendlv::data::scenario::Scenario &scenario);
 
                 virtual ~LaneVisitor();
 
-                virtual void visit(hesperia::data::scenario::ScenarioNode &node);
+                virtual void visit(opendlv::data::scenario::ScenarioNode &node);
 
-                vector<hesperia::data::environment::NamedLine> getListOfLines() const;
+                vector<opendlv::data::environment::NamedLine> getListOfLines() const;
 
             private:
                 core::wrapper::graph::DirectedGraph &m_graph;
-                hesperia::data::scenario::Scenario &m_scenario;
+                opendlv::data::scenario::Scenario &m_scenario;
 
                 // This vector contains all line between start and end points from lanes (arcs are approximated).
-                vector<hesperia::data::environment::NamedLine> m_listOfLines;
+                vector<opendlv::data::environment::NamedLine> m_listOfLines;
 
                 /**
                  * This method is called by the generic visit method.
                  *
                  * @param pm PointModel to visit.
                  */
-                void visit(const hesperia::data::scenario::PointModel *pm);
+                void visit(const opendlv::data::scenario::PointModel *pm);
 
                 /**
                  * This method is called by the generic visit method.
                  *
                  * @param sl StraightLine to visit. Covers also arcs.
                  */
-                void visit(const hesperia::data::scenario::StraightLine *sl);
+                void visit(const opendlv::data::scenario::StraightLine *sl);
 
                 /**
                  * This method is called by the generic visit method.
                  *
                  * @param arc Arc to visit. Covers also arcs.
                  */
-                void visit(const hesperia::data::scenario::Arc *arc);
+                void visit(const opendlv::data::scenario::Arc *arc);
 
                 /**
                  * This method returns true if the start and endvertex of
@@ -112,10 +112,10 @@ namespace hesperia {
                  *
                  * @param c connector to be checked.
                  */
-                bool hasStartAndEndVertex(const hesperia::data::scenario::Connector &c);
+                bool hasStartAndEndVertex(const opendlv::data::scenario::Connector &c);
         };
 
     }
-} // hesperia::scenario
+} // opendlv::scenario
 
 #endif /*HESPERIA_SCENARIO_LANEVISITOR_H_*/

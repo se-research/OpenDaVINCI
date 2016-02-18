@@ -60,7 +60,7 @@
 #include "plugins/environmentviewer/TreeNodeVisitor.h"
 
 class QWidget;
-namespace hesperia { namespace scenario { class SCNXArchive; } }
+namespace opendlv { namespace scenario { class SCNXArchive; } }
 
 namespace cockpit {
     namespace plugins {
@@ -71,15 +71,15 @@ namespace cockpit {
             using namespace core::exceptions;
             using namespace core::io;
             using namespace core::data;
-            using namespace hesperia::data::environment;
-            using namespace hesperia::data::environment;
-            using namespace hesperia::data::planning;
-            using namespace hesperia::data::scenario;
-            using namespace hesperia::data::sensor;
-            using namespace hesperia::scenario;
-            using namespace hesperia::threeD;
-            using namespace hesperia::threeD::decorator;
-            using namespace hesperia::threeD::loaders;
+            using namespace opendlv::data::environment;
+            using namespace opendlv::data::environment;
+            using namespace opendlv::data::planning;
+            using namespace opendlv::data::scenario;
+            using namespace opendlv::data::sensor;
+            using namespace opendlv::scenario;
+            using namespace opendlv::threeD;
+            using namespace opendlv::threeD::decorator;
+            using namespace opendlv::threeD::loaders;
 
             EnvironmentViewerGLWidget::EnvironmentViewerGLWidget(const PlugIn &plugIn, QWidget *prnt, CameraAssignableNodesListener &canl, SelectableNodeDescriptorTreeListener &sndtl) :
                     AbstractGLWidget(plugIn, prnt),
@@ -123,8 +123,8 @@ namespace cockpit {
                 /*******************************************************************/
                 /* Stationary elements.                                            */
                 /*******************************************************************/
-                m_stationaryElements->addChild(new hesperia::threeD::models::XYZAxes(NodeDescriptor("XYZAxes"), 1, 10));
-                m_stationaryElements->addChild(new hesperia::threeD::models::Grid(NodeDescriptor("Grid"), 10, 1));
+                m_stationaryElements->addChild(new opendlv::threeD::models::XYZAxes(NodeDescriptor("XYZAxes"), 1, 10));
+                m_stationaryElements->addChild(new opendlv::threeD::models::Grid(NodeDescriptor("Grid"), 10, 1));
 
                 // Setup surroundings.
                 const URL urlOfSCNXFile(getPlugIn().getKeyValueConfiguration().getValue<string>("global.scenario"));
@@ -408,7 +408,7 @@ namespace cockpit {
                             TransformGroup *tg = m_mapOfTraceablePositions[nd];
                             if (tg != NULL) {
                                 Point3 color(0, 0, 1);
-                                hesperia::threeD::models::Point *p = new hesperia::threeD::models::Point(NodeDescriptor("Trace"), egostate.getPosition(), color, 5);
+                                opendlv::threeD::models::Point *p = new opendlv::threeD::models::Point(NodeDescriptor("Trace"), egostate.getPosition(), color, 5);
                                 tg->addChild(p);
                             }
                         }
@@ -425,7 +425,7 @@ namespace cockpit {
                             vector<Point3> contour = (*it).getContour();
                             vector<Point3>::iterator jt = contour.begin();
                             while (jt != contour.end()) {
-                                m_contouredObjectsNode->addChild(new hesperia::threeD::models::Point(NodeDescriptor("Point"), (*jt), Point3(1, 0, 0), 2));
+                                m_contouredObjectsNode->addChild(new opendlv::threeD::models::Point(NodeDescriptor("Point"), (*jt), Point3(1, 0, 0), 2));
                                 jt++;
                             }
                             it++;
@@ -447,7 +447,7 @@ namespace cockpit {
                                 Point3 posB = listOfVertices.at(i+1);
                                 posB.setZ(0.05);
 
-                                m_plannedRoute->addChild(new hesperia::threeD::models::Line(NodeDescriptor(), posA, posB, Point3(0, 1, 0), 6));
+                                m_plannedRoute->addChild(new opendlv::threeD::models::Line(NodeDescriptor(), posA, posB, Point3(0, 1, 0), 6));
                             }
                         }
                     }
@@ -455,7 +455,7 @@ namespace cockpit {
                 if (c.getDataType() == Container::DRAW_LINE) {
                     if (m_lines != NULL) {
                         Lock l(m_rootMutex);
-                        hesperia::data::environment::Line line = c.getData<Line>();
+                        opendlv::data::environment::Line line = c.getData<Line>();
 
                         Point3 posA = line.getA();
                         posA.setZ(0.05);
@@ -463,7 +463,7 @@ namespace cockpit {
                         Point3 posB = line.getB();
                         posB.setZ(0.05);
 
-                        m_lines->addChild(new hesperia::threeD::models::Line(NodeDescriptor(), posA, posB, Point3(1, 0, 0), 6));
+                        m_lines->addChild(new opendlv::threeD::models::Line(NodeDescriptor(), posA, posB, Point3(1, 0, 0), 6));
                     }
                 }
                 if (c.getDataType() == Container::OBSTACLE) {
@@ -505,7 +505,7 @@ namespace cockpit {
                                     Point3 A = contour.at(k); A.setZ(0.5);
                                     Point3 B = contour.at(k+1); B.setZ(0.5);
 
-                                    contourTG->addChild(new hesperia::threeD::models::Line(NodeDescriptor(), A, B, Point3(0, 1, 0), 2));
+                                    contourTG->addChild(new opendlv::threeD::models::Line(NodeDescriptor(), A, B, Point3(0, 1, 0), 2));
                                 }
                                 m_mapOfObstacles[obstacle.getID()] = contourTG;
                                 m_obstaclesRoot->addChild(contourTG);

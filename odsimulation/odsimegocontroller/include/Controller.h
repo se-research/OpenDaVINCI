@@ -33,7 +33,7 @@ namespace egocontroller {
             virtual ~Controller();
 
             virtual void doWork() = 0;
-            virtual hesperia::data::environment::EgoState getEgoState() = 0;
+            virtual opendlv::data::environment::EgoState getEgoState() = 0;
     };
 }
 

@@ -43,7 +43,7 @@ namespace cockpit {
 
             using namespace core::base;
             using namespace core::data;
-            using namespace hesperia::threeD;
+            using namespace opendlv::threeD;
 
             EnvironmentViewerWidget::EnvironmentViewerWidget(const PlugIn &plugIn, QWidget *prnt) :
                     QWidget(prnt),
@@ -205,10 +205,10 @@ namespace cockpit {
 
             void EnvironmentViewerWidget::selectedItemChangedBackground(const QString &item) {
                 if (item.toStdString() == "black") {
-                    m_environmentViewerGLWidget->setBackgroundColor(hesperia::data::environment::Point3(0, 0, 0));
+                    m_environmentViewerGLWidget->setBackgroundColor(opendlv::data::environment::Point3(0, 0, 0));
                 }
                 if (item.toStdString() == "white") {
-                    m_environmentViewerGLWidget->setBackgroundColor(hesperia::data::environment::Point3(1, 1, 1));
+                    m_environmentViewerGLWidget->setBackgroundColor(opendlv::data::environment::Point3(1, 1, 1));
                 }
             }
 

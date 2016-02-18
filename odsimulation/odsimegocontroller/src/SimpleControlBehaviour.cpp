@@ -24,8 +24,8 @@
 namespace egocontroller {
     using namespace core::base;
     using namespace core::data;
-    using namespace hesperia::data::environment;
-    using namespace hesperia::data::environment;
+    using namespace opendlv::data::environment;
+    using namespace opendlv::data::environment;
 
     SimpleControlBehaviour::SimpleControlBehaviour(const Point3 &translation, const double &rotZ) :
         m_previousTime(),

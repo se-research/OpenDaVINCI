@@ -55,7 +55,7 @@ namespace egocontroller {
             virtual void turnLeft(const double& value);
             virtual void turnRight(const double& value);
             virtual void stop();
-            virtual hesperia::data::environment::EgoState computeEgoState();
+            virtual opendlv::data::environment::EgoState computeEgoState();
 
         protected:
             double m_minimumTurningRadius;
@@ -94,8 +94,8 @@ namespace egocontroller {
             double m_vehicleResistiveEffortX;
 
             core::data::TimeStamp m_previousTime;
-            hesperia::data::environment::Point3 m_oldPosition;
-            hesperia::data::environment::Point3 m_orientation;
+            opendlv::data::environment::Point3 m_oldPosition;
+            opendlv::data::environment::Point3 m_orientation;
     };
 }
 

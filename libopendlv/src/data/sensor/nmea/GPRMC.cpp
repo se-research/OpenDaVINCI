@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -31,7 +31,7 @@
 #include "opendlv/data/environment/WGS84Coordinate.h"
 #include "opendlv/data/sensor/nmea/GPRMC.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace data {
         namespace sensor {
             namespace nmea {
@@ -39,7 +39,7 @@ namespace hesperia {
                 using namespace std;
                 using namespace core::base;
                 using namespace core::data;
-                using namespace hesperia::data::environment;
+                using namespace opendlv::data::environment;
 
                 GPRMC::GPRMC() :
                         SerializableData(),
@@ -384,4 +384,4 @@ namespace hesperia {
             }
         }
     }
-} // hesperia::data::sensor::nmea
+} // opendlv::data::sensor::nmea

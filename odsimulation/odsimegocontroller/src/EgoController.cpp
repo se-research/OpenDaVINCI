@@ -43,8 +43,8 @@ class ControlBehaviour;
     using namespace std;
     using namespace core::base;
     using namespace core::data;
-    using namespace hesperia::data::environment;
-    using namespace hesperia::data::environment;
+    using namespace opendlv::data::environment;
+    using namespace opendlv::data::environment;
 
     EgoController::EgoController(const int &argc, char **argv) :
             TimeTriggeredConferenceClientModule(argc, argv, "EgoController"),

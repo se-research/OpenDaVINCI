@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -19,11 +19,11 @@
 
 #include "opendlv/scenegraph/SceneNodeVisitor.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace scenegraph {
 
         SceneNodeVisitor::~SceneNodeVisitor() {}
 
     }
-} // hesperia::scenegraph
+} // opendlv::scenegraph
 

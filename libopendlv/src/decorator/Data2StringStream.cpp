@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -25,14 +25,14 @@
 #include "opendlv/data/planning/Route.h"
 #include "opendlv/decorator/Data2StringStream.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace decorator {
 
         using namespace std;
         using namespace core::data;
         using namespace core::base;
-        using namespace hesperia::data::environment;
-        using namespace hesperia::data::planning;
+        using namespace opendlv::data::environment;
+        using namespace opendlv::data::planning;
 
         Data2StringStream::Data2StringStream(stringstream &sstr) :
             m_sstr(sstr) {}
@@ -67,4 +67,4 @@ namespace hesperia {
         }
 
     }
-} // hesperia::decorator
+} // opendlv::decorator

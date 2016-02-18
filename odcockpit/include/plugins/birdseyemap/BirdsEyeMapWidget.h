@@ -91,7 +91,7 @@ class SelectableNodeDescriptor;
 
                     virtual void update(core::base::TreeNode<SelectableNodeDescriptor> *node);
 
-                    virtual void updateListOfCameraAssignableNodes(const vector<hesperia::scenegraph::SceneNodeDescriptor> &list);
+                    virtual void updateListOfCameraAssignableNodes(const vector<opendlv::scenegraph::SceneNodeDescriptor> &list);
 
                 private slots:
                     /**
@@ -129,7 +129,7 @@ class SelectableNodeDescriptor;
                     QComboBox *m_cameraSelector;
                     core::base::Mutex m_cameraAssignableNodesUpdateMutex;
                     bool m_cameraAssignableNodesUpdate;
-                    map<string, hesperia::scenegraph::SceneNodeDescriptor, core::strings::StringComparator> m_mapOfSceneNodeDescriptors;
+                    map<string, opendlv::scenegraph::SceneNodeDescriptor, core::strings::StringComparator> m_mapOfSceneNodeDescriptors;
 
                     QSpinBox *m_zoomLevel;
 

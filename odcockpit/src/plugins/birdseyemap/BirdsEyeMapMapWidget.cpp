@@ -55,7 +55,7 @@
 #include "plugins/birdseyemap/SelectableNodeDescriptor.h"
 #include "plugins/birdseyemap/TreeNodeVisitor.h"
 
-namespace hesperia { namespace scenario { class SCNXArchive; } }
+namespace opendlv { namespace scenario { class SCNXArchive; } }
 
 namespace cockpit {
     namespace plugins {
@@ -65,11 +65,11 @@ namespace cockpit {
             using namespace core::data;
             using namespace core::exceptions;
             using namespace core::io;
-            using namespace hesperia::data::environment;
-            using namespace hesperia::data::environment;
-            using namespace hesperia::scenegraph;
-            using namespace hesperia::scenegraph::models;
-            using namespace hesperia::scenegraph::renderer;
+            using namespace opendlv::data::environment;
+            using namespace opendlv::data::environment;
+            using namespace opendlv::scenegraph;
+            using namespace opendlv::scenegraph::models;
+            using namespace opendlv::scenegraph::renderer;
 
             BirdsEyeMapMapWidget::BirdsEyeMapMapWidget(const PlugIn &plugIn, QWidget *prnt, CameraAssignableNodesListener &canl, SelectableNodeDescriptorTreeListener &sndtl) :
                 QWidget(prnt),
@@ -158,10 +158,10 @@ namespace cockpit {
                 // Setup surroundings.
                 const URL urlOfSCNXFile(m_plugIn.getKeyValueConfiguration().getValue<string>("global.scenario"));
                 if (urlOfSCNXFile.isValid()) {
-                    hesperia::scenario::SCNXArchive &scnxArchive = hesperia::scenario::SCNXArchiveFactory::getInstance().getSCNXArchive(urlOfSCNXFile);
+                    opendlv::scenario::SCNXArchive &scnxArchive = opendlv::scenario::SCNXArchiveFactory::getInstance().getSCNXArchive(urlOfSCNXFile);
 
                     // Read scnxArchive and transform it into renderable scene graph.
-                    SceneNode *surroundings = hesperia::scenegraph::transformation::SceneGraphFactory::getInstance().transform(scnxArchive);
+                    SceneNode *surroundings = opendlv::scenegraph::transformation::SceneGraphFactory::getInstance().transform(scnxArchive);
 
                     if (surroundings != NULL) {
                         surroundings->setSceneNodeDescriptor(SceneNodeDescriptor("Surroundings"));
@@ -341,7 +341,7 @@ namespace cockpit {
                     m_numberOfReceivedEgoStates++;
 
                     if ( (m_numberOfReceivedEgoStates % 10) == 0 ) {
-                        hesperia::scenegraph::primitives::Line *line = new hesperia::scenegraph::primitives::Line(m_egoCarTrace->getSceneNodeDescriptor(), m_lastEgoState.getPosition(), m_egoState.getPosition(), Point3(1, 0.84, 0), 2);
+                        opendlv::scenegraph::primitives::Line *line = new opendlv::scenegraph::primitives::Line(m_egoCarTrace->getSceneNodeDescriptor(), m_lastEgoState.getPosition(), m_egoState.getPosition(), Point3(1, 0.84, 0), 2);
                         m_egoCarTrace->addChild(line);
 
                         m_lastEgoState = m_egoState;
@@ -351,7 +351,7 @@ namespace cockpit {
                 if (c.getDataType() == Container::ROUTE) {
                     if (m_plannedRoute != NULL) {
                         Lock l(m_rootMutex);
-                        hesperia::data::planning::Route r = c.getData<hesperia::data::planning::Route>();
+                        opendlv::data::planning::Route r = c.getData<opendlv::data::planning::Route>();
                         vector<Point3> listOfVertices = r.getListOfPoints();
                         const uint32_t SIZE = listOfVertices.size();
                         if (SIZE > 0) {
@@ -363,7 +363,7 @@ namespace cockpit {
                                 Point3 posB = listOfVertices.at(i+1);
                                 posB.setZ(0.05);
 
-                                m_plannedRoute->addChild(new hesperia::scenegraph::primitives::Line(m_plannedRoute->getSceneNodeDescriptor(), posA, posB, Point3(0.84, 1, 1), 4));
+                                m_plannedRoute->addChild(new opendlv::scenegraph::primitives::Line(m_plannedRoute->getSceneNodeDescriptor(), posA, posB, Point3(0.84, 1, 1), 4));
                             }
                         }
                     }
@@ -400,7 +400,7 @@ namespace cockpit {
                                 }
                                 stringstream contourName;
                                 contourName << "Obstacles";
-                                hesperia::scenegraph::primitives::Polygon *contour = new hesperia::scenegraph::primitives::Polygon(SceneNodeDescriptor(contourName.str()), obstacle.getPolygon().getVertices(), Point3(0, 1, 0), 2);
+                                opendlv::scenegraph::primitives::Polygon *contour = new opendlv::scenegraph::primitives::Polygon(SceneNodeDescriptor(contourName.str()), obstacle.getPolygon().getVertices(), Point3(0, 1, 0), 2);
                                 m_mapOfObstacles[obstacle.getID()] = contour;
                                 m_obstaclesRoot->addChild(contour);
                             }

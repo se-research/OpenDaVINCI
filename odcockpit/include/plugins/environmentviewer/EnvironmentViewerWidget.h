@@ -90,7 +90,7 @@ class SelectableNodeDescriptor;
 
                     virtual void update(core::base::TreeNode<SelectableNodeDescriptor> *node);
 
-                    virtual void updateListOfCameraAssignableNodes(const vector<hesperia::threeD::NodeDescriptor> &list);
+                    virtual void updateListOfCameraAssignableNodes(const vector<opendlv::threeD::NodeDescriptor> &list);
 
                 private slots:
                     /**
@@ -125,7 +125,7 @@ class SelectableNodeDescriptor;
                     QComboBox *m_cameraSelector;
                     core::base::Mutex m_cameraAssignableNodesUpdateMutex;
                     bool m_cameraAssignableNodesUpdate;
-                    map<string, hesperia::threeD::NodeDescriptor, core::strings::StringComparator> m_mapOfNodeDescriptors;
+                    map<string, opendlv::threeD::NodeDescriptor, core::strings::StringComparator> m_mapOfNodeDescriptors;
 
                     QComboBox *m_backgroundSelector;
 

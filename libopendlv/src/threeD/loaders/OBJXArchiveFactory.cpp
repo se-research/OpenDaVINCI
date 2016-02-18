@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -34,7 +34,7 @@
 
 namespace core { namespace wrapper { class Image; } }
 
-namespace hesperia {
+namespace opendlv {
     namespace threeD {
         namespace loaders {
 
@@ -169,4 +169,4 @@ namespace hesperia {
 
         }
     }
-} // hesperia::threeD::loaders
+} // opendlv::threeD::loaders

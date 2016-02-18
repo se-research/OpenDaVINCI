@@ -78,7 +78,7 @@ class PlugIn;
                  *
                  * @param c Color.
                  */
-                void setBackgroundColor(const hesperia::data::environment::Point3 &c);
+                void setBackgroundColor(const opendlv::data::environment::Point3 &c);
 
                 /**
                  * This method can be overridden in subclasses to perform a
@@ -156,7 +156,7 @@ class PlugIn;
                 int32_t m_mouseButton;
 
                 core::base::Mutex m_backgroundColorMutex;
-                hesperia::data::environment::Point3 m_backgroundColor;
+                opendlv::data::environment::Point3 m_backgroundColor;
 
                 virtual void initializeGL();
 

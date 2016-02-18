@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -37,20 +37,20 @@
 
 namespace core { namespace wrapper { class Image; } }
 
-namespace hesperia {
+namespace opendlv {
     namespace decorator {
         namespace threeD {
 
             using namespace std;
             using namespace core::data;
-            using namespace hesperia::data::environment;
-            using namespace hesperia::decorator::models;
+            using namespace opendlv::data::environment;
+            using namespace opendlv::decorator::models;
 
             Renderer3D::Renderer3D() :
                 m_listOfImagesRegisteredAtTextureManager() {}
 
             Renderer3D::~Renderer3D() {
-                hesperia::threeD::TextureManager &textureManager = hesperia::threeD::TextureManager::getInstance();
+                opendlv::threeD::TextureManager &textureManager = opendlv::threeD::TextureManager::getInstance();
                 vector<string>::iterator it = m_listOfImagesRegisteredAtTextureManager.begin();
                 while (it != m_listOfImagesRegisteredAtTextureManager.end()) {
                     textureManager.removeTexture(*it++);
@@ -171,7 +171,7 @@ namespace hesperia {
                 glPopMatrix();
             }
 
-            void Renderer3D::drawListOfTriangleSets(const vector<hesperia::decorator::models::TriangleSet> &listOfTriangleSets, const hesperia::data::environment::Point3 &position, const hesperia::data::environment::Point3 &rotation) {
+            void Renderer3D::drawListOfTriangleSets(const vector<opendlv::decorator::models::TriangleSet> &listOfTriangleSets, const opendlv::data::environment::Point3 &position, const opendlv::data::environment::Point3 &rotation) {
                 glTranslatef(static_cast<float>(position.getX()), static_cast<float>(position.getY()), static_cast<float>(position.getZ()));
 
                 glRotatef(static_cast<float>(rotation.getX()*180.0 / cartesian::Constants::PI), 1, 0, 0);
@@ -195,7 +195,7 @@ namespace hesperia {
                             if ((*it).m_vertices.size() > 0) {
                                 int32_t textureHandle = -1;
                                 if ((*it).m_material.getImage() != NULL) {
-                                    hesperia::threeD::TextureManager &textureManager = hesperia::threeD::TextureManager::getInstance();
+                                    opendlv::threeD::TextureManager &textureManager = opendlv::threeD::TextureManager::getInstance();
 
                                     // Check if the texture has to be loaded first.
                                     stringstream sstrImage;
@@ -258,7 +258,7 @@ namespace hesperia {
             void Renderer3D::drawImage(const core::wrapper::Image *image, const Point3 &originPixelXY, const Point3 &scalingPixelXY, const float &rotationZ) {
                 if (image != NULL) {
                     // Get texture manager.
-                    hesperia::threeD::TextureManager &textureManager = hesperia::threeD::TextureManager::getInstance();
+                    opendlv::threeD::TextureManager &textureManager = opendlv::threeD::TextureManager::getInstance();
 
                     // Use current image's memory address as identifier.
                     stringstream sstrAddressOfImage;
@@ -361,4 +361,4 @@ namespace hesperia {
             }
         }
     }
-} // hesperia::decorator::threeD
+} // opendlv::decorator::threeD

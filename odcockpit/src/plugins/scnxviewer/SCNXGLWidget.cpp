@@ -39,7 +39,7 @@
 
 class QWidget;
 namespace cockpit { namespace plugins { class PlugIn; } }
-namespace hesperia { namespace scenario { class SCNXArchive; } }
+namespace opendlv { namespace scenario { class SCNXArchive; } }
 
 namespace cockpit {
     namespace plugins {
@@ -48,10 +48,10 @@ namespace cockpit {
             using namespace std;
             using namespace core::base;
             using namespace core::io;
-            using namespace hesperia::scenario;
-            using namespace hesperia::threeD;
-            using namespace hesperia::threeD::decorator;
-            using namespace hesperia::threeD::models;
+            using namespace opendlv::scenario;
+            using namespace opendlv::threeD;
+            using namespace opendlv::threeD::decorator;
+            using namespace opendlv::threeD::models;
 
             SCNXGLWidget::SCNXGLWidget(const PlugIn &plugIn, QWidget *prnt) :
                     AbstractGLWidget(plugIn, prnt),

@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -32,14 +32,14 @@
 #include "opendlv/data/environment/Point3.h"
 #include "opendlv/data/environment/WGS84Coordinate.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace data {
         namespace environment {
 
             using namespace std;
             using namespace core::base;
             using namespace core::data;
-            using namespace hesperia::data::environment;
+            using namespace opendlv::data::environment;
 
             const double WGS84Coordinate::EQUATOR_RADIUS = 6378137.0;
             const double WGS84Coordinate::FLATTENING = 1.0 / 298.257223563;
@@ -309,4 +309,4 @@ namespace hesperia {
 
         }
     }
-} // hesperia::data::environment
+} // opendlv::data::environment

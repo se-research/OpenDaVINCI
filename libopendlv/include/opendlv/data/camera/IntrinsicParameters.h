@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -27,7 +27,7 @@
 #include "opendavinci/core/data/SerializableData.h"
 #include "opendlv/data/environment/Point3.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace data {
         namespace camera {
 
@@ -73,7 +73,7 @@ namespace hesperia {
                      *
                      * @return Principle point.
                      */
-                    const hesperia::data::environment::Point3 getPrinciplePoint() const;
+                    const opendlv::data::environment::Point3 getPrinciplePoint() const;
 
                     /**
                      * This method sets the principle point. The z-component
@@ -81,7 +81,7 @@ namespace hesperia {
                      *
                      * @param principlePoint Two dimensional principle point.
                      */
-                    void setPrinciplePoint(const hesperia::data::environment::Point3 &principlePoint);
+                    void setPrinciplePoint(const opendlv::data::environment::Point3 &principlePoint);
 
                     /**
                      * This method returns the focal length in x- and y-
@@ -89,7 +89,7 @@ namespace hesperia {
                      *
                      * @return Focal length.
                      */
-                    const hesperia::data::environment::Point3 getFocalLength() const;
+                    const opendlv::data::environment::Point3 getFocalLength() const;
 
                     /**
                      * This method sets the focal length. The z-component
@@ -97,7 +97,7 @@ namespace hesperia {
                      *
                      * @param focalLength Two-dimensional focal length.
                      */
-                    void setFocalLength(const hesperia::data::environment::Point3 &focalLength);
+                    void setFocalLength(const opendlv::data::environment::Point3 &focalLength);
 
                     /**
                      * This method returns the focal distance.
@@ -133,13 +133,13 @@ namespace hesperia {
                     virtual const std::string toString() const;
 
                 private:
-                    hesperia::data::environment::Point3 m_principlePoint;
-                    hesperia::data::environment::Point3 m_focalLength;
+                    opendlv::data::environment::Point3 m_principlePoint;
+                    opendlv::data::environment::Point3 m_focalLength;
                     double m_focalDistance;
                     double m_alpha;
             };
         }
     }
-} // hesperia::data::camera
+} // opendlv::data::camera
 
 #endif /*HESPERIA_DATA_CAMERA_INTRINSICPARAMETERS_H_*/

@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -29,13 +29,13 @@
 #include "opendlv/data/camera/ExtrinsicParameters.h"
 #include "opendlv/data/environment/Point3.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace data {
         namespace camera {
 
             using namespace std;
             using namespace core::base;
-            using namespace hesperia::data::environment;
+            using namespace opendlv::data::environment;
 
             ExtrinsicParameters::ExtrinsicParameters() :
                     m_translation(),

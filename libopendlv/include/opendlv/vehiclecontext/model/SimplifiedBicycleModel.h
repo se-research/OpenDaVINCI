@@ -115,8 +115,8 @@ namespace vehiclecontext {
 
                 double m_speed;
                 core::data::TimeStamp m_previousTime;
-                hesperia::data::environment::Point3 m_oldPosition;
-                hesperia::data::environment::Point3 m_orientation;
+                opendlv::data::environment::Point3 m_oldPosition;
+                opendlv::data::environment::Point3 m_orientation;
                 double m_heading;
                 automotive::VehicleData m_vehicleData;
 

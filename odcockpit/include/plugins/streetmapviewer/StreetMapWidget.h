@@ -76,7 +76,7 @@ namespace cockpit {
                      * @param prnt Pointer to the parental widget.
                      * @param rL WGS84 reference location.
                      */
-                    StreetMapWidget(const PlugIn &plugIn, QWidget *prnt, const hesperia::data::environment::WGS84Coordinate &rL);
+                    StreetMapWidget(const PlugIn &plugIn, QWidget *prnt, const opendlv::data::environment::WGS84Coordinate &rL);
 
                     virtual ~StreetMapWidget();
 
@@ -96,7 +96,7 @@ namespace cockpit {
                     StreetMapMapWidget *m_mapWidget;
                     QNetworkSession *m_networkSession;
                     QSpinBox *m_zoomLevel;
-                    hesperia::data::environment::WGS84Coordinate m_referenceLocation;
+                    opendlv::data::environment::WGS84Coordinate m_referenceLocation;
             };
         }
     }

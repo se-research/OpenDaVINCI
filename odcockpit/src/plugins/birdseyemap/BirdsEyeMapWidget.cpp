@@ -43,7 +43,7 @@ namespace cockpit {
 
             using namespace core::base;
             using namespace core::data;
-            using namespace hesperia::scenegraph;
+            using namespace opendlv::scenegraph;
 
             BirdsEyeMapWidget::BirdsEyeMapWidget(const PlugIn &plugIn, QWidget *prnt) :
                 QWidget(prnt),

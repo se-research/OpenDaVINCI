@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -24,13 +24,13 @@
 #include "opendlv/scenegraph/primitives/Point.h"
 #include "opendlv/scenegraph/primitives/Polygon.h"
 
-namespace hesperia { namespace scenegraph { class SceneNode; } }
+namespace opendlv { namespace scenegraph { class SceneNode; } }
 
-namespace hesperia {
+namespace opendlv {
     namespace scenegraph {
         namespace renderer {
 
-            using namespace hesperia::scenegraph::primitives;
+            using namespace opendlv::scenegraph::primitives;
 
                 AbstractRenderer::AbstractRenderer() {}
 
@@ -65,5 +65,5 @@ namespace hesperia {
 
         }
     }
-} // hesperia::scenegraph::renderer
+} // opendlv::scenegraph::renderer
 

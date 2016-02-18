@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -44,7 +44,7 @@
 #include "opendlv/core/wrapper/parser/ParserErrorListener.h"
 #include "opendlv/core/wrapper/parser/ParserErrorExtendedData.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace situation {
 
         using namespace std;
@@ -458,7 +458,7 @@ namespace hesperia {
         };
 
     }
-} // hesperia::situation
+} // opendlv::situation
 
 #if defined __SUNPRO_CC
 #pragma enable_warn

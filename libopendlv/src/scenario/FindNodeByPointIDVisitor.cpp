@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -29,21 +29,21 @@
 #include "opendlv/data/situation/PointID.h"
 #include "opendlv/scenario/FindNodeByPointIDVisitor.h"
 
-namespace hesperia { namespace data { namespace scenario { class LaneModel; } } }
+namespace opendlv { namespace data { namespace scenario { class LaneModel; } } }
 
-namespace hesperia {
+namespace opendlv {
     namespace scenario {
 
         using namespace std;
-        using namespace hesperia::data::scenario;
-        using namespace hesperia::scenario;
+        using namespace opendlv::data::scenario;
+        using namespace opendlv::scenario;
 
         FindNodeByPointIDVisitor::FindNodeByPointIDVisitor(const PointID &pID) :
             m_pointID(pID),
             m_laneModel(NULL),
 			m_vertex() {}
 
-        FindNodeByPointIDVisitor::FindNodeByPointIDVisitor(const hesperia::data::situation::PointID &pID) :
+        FindNodeByPointIDVisitor::FindNodeByPointIDVisitor(const opendlv::data::situation::PointID &pID) :
             m_pointID(pID.toString()),
             m_laneModel(NULL),
 			m_vertex() {}
@@ -144,4 +144,4 @@ namespace hesperia {
         }
 
     }
-} // hesperia::scenario
+} // opendlv::scenario

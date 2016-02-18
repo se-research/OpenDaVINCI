@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -19,7 +19,7 @@
 
 #include "opendlv/io/camera/ImageGrabber.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace io {
         namespace camera {
 
@@ -41,4 +41,4 @@ namespace hesperia {
 
         }
     }
-} // hesperia::io::camera
+} // opendlv::io::camera

@@ -32,7 +32,7 @@ namespace egocontroller {
     class SimpleControlBehaviour : public ControlBehaviour
     {
         public:
-            SimpleControlBehaviour(const hesperia::data::environment::Point3 &translation, const double &rotZ);
+            SimpleControlBehaviour(const opendlv::data::environment::Point3 &translation, const double &rotZ);
             virtual ~SimpleControlBehaviour();
 
             virtual void accelerate(const double& value);
@@ -40,12 +40,12 @@ namespace egocontroller {
             virtual void turnLeft(const double& value);
             virtual void turnRight(const double& value);
             virtual void stop();
-            virtual hesperia::data::environment::EgoState computeEgoState();
+            virtual opendlv::data::environment::EgoState computeEgoState();
 
         protected:
             core::data::TimeStamp m_previousTime;
-            hesperia::data::environment::Point3 m_oldPosition;
-            hesperia::data::environment::Point3 m_orientation;
+            opendlv::data::environment::Point3 m_oldPosition;
+            opendlv::data::environment::Point3 m_orientation;
 
             double m_angle;
             double m_speed;

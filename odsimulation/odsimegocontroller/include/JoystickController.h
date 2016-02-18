@@ -38,7 +38,7 @@ class ControlBehaviour;
             virtual ~JoystickController();
 
             void doWork();
-            hesperia::data::environment::EgoState getEgoState();
+            opendlv::data::environment::EgoState getEgoState();
 
         protected:
             ControlBehaviour& m_behaviour;

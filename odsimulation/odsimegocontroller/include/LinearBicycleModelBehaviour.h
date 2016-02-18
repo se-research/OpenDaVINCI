@@ -32,7 +32,7 @@ namespace egocontroller {
     class LinearBicycleModelBehaviour : public ControlBehaviour
     {
         public:
-            LinearBicycleModelBehaviour(const hesperia::data::environment::Point3 &translation, const double &rotZ,
+            LinearBicycleModelBehaviour(const opendlv::data::environment::Point3 &translation, const double &rotZ,
                 const double &wheelbase, const double &maxSteeringLeftRad, const double &maxSteeringRightRad,
                 const double &maxSpeed);
             virtual ~LinearBicycleModelBehaviour();
@@ -42,12 +42,12 @@ namespace egocontroller {
             virtual void turnRight(const double& value);
             virtual void brake(const double& value);
             virtual void stop();
-            virtual hesperia::data::environment::EgoState computeEgoState();
+            virtual opendlv::data::environment::EgoState computeEgoState();
 
         protected:
             core::data::TimeStamp m_previousTime;
-            hesperia::data::environment::Point3 m_oldPosition;
-            hesperia::data::environment::Point3 m_orientation;
+            opendlv::data::environment::Point3 m_oldPosition;
+            opendlv::data::environment::Point3 m_orientation;
 
             double m_angle;
             double m_speed;

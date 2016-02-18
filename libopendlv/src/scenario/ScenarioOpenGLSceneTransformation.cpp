@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -49,13 +49,13 @@
 #include "opendlv/threeD/models/Point.h"
 #include "opendlv/threeD/models/Polygon.h"
 
-namespace hesperia { namespace data { namespace scenario { class Shape; } } }
+namespace opendlv { namespace data { namespace scenario { class Shape; } } }
 
-namespace hesperia {
+namespace opendlv {
     namespace scenario {
 
         using namespace std;
-        using namespace hesperia::data::environment;
+        using namespace opendlv::data::environment;
         using namespace data::scenario;
         using namespace cartesian;
 
@@ -627,4 +627,4 @@ namespace hesperia {
         }
 
     }
-} // hesperia::scenario
+} // opendlv::scenario

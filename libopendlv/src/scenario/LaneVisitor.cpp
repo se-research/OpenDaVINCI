@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -37,15 +37,15 @@
 
 namespace core { namespace wrapper { namespace graph { class DirectedGraph; } } }
 
-namespace hesperia {
+namespace opendlv {
     namespace scenario {
 
         using namespace std;
-        using namespace hesperia::data::environment;
-        using namespace hesperia::data::graph;
-        using namespace hesperia::data::scenario;
+        using namespace opendlv::data::environment;
+        using namespace opendlv::data::graph;
+        using namespace opendlv::data::scenario;
 
-        LaneVisitor::LaneVisitor(core::wrapper::graph::DirectedGraph &g, hesperia::data::scenario::Scenario &scenario) :
+        LaneVisitor::LaneVisitor(core::wrapper::graph::DirectedGraph &g, opendlv::data::scenario::Scenario &scenario) :
             m_graph(g),
             m_scenario(scenario),
             m_listOfLines() {}
@@ -82,7 +82,7 @@ namespace hesperia {
             catch(...) {}
         }
 
-        void LaneVisitor::visit(const hesperia::data::scenario::PointModel *pm) {
+        void LaneVisitor::visit(const opendlv::data::scenario::PointModel *pm) {
             if (pm != NULL) {
                 stringstream name;
                 name << pm->getLane()->getRoad()->getLayer()->getID() << "." << pm->getLane()->getRoad()->getID() << "." << pm->getLane()->getID();
@@ -95,7 +95,7 @@ namespace hesperia {
                     IDVertex3 vt2 = listOfWaypoints.at(i+1);
 
                     // Construct a line between to consecutive points.
-                    hesperia::data::environment::NamedLine line(name.str(), vt1, vt2);
+                    opendlv::data::environment::NamedLine line(name.str(), vt1, vt2);
                     m_listOfLines.push_back(line);
 
                     WaypointVertex *v1 = new WaypointVertex();
@@ -172,7 +172,7 @@ namespace hesperia {
         }
 
 
-        void LaneVisitor::visit(const hesperia::data::scenario::Arc *arc) {
+        void LaneVisitor::visit(const opendlv::data::scenario::Arc *arc) {
             if (arc != NULL) {
                 stringstream name;
                 name << arc->getLane()->getRoad()->getLayer()->getID() << "." << arc->getLane()->getRoad()->getID() << "." << arc->getLane()->getID();
@@ -187,7 +187,7 @@ namespace hesperia {
                     double correctRotation = cartesian::Constants::PI / 2.0;
 
                     // Transposition of the arc.
-                    hesperia::data::environment::Point3 t(0, 0, 0);
+                    opendlv::data::environment::Point3 t(0, 0, 0);
                     t.setX(vt1.getX() - arc->getRadius() * cos(arc->getRotationZ() - correctRotation));
                     t.setY(vt1.getY() - arc->getRadius() * sin(arc->getRotationZ() - correctRotation));      
                     t.setZ(0.05);
@@ -197,11 +197,11 @@ namespace hesperia {
                     double stepSize = 5.0 * cartesian::Constants::PI / 180.0; // 5° to rad.
                     uint32_t steps = (unsigned int) round( (endInterval - beginInterval) / stepSize );
 
-                    hesperia::data::environment::Point3 centerOld = vt1;
+                    opendlv::data::environment::Point3 centerOld = vt1;
 
                     for(uint32_t i = 0; i < steps; i++) {
                         // Calculate the skeleton approximation.
-                        hesperia::data::environment::Point3 center(0, 0, 0);
+                        opendlv::data::environment::Point3 center(0, 0, 0);
                         center.setX(arc->getRadius() * cos(arc->getRotationZ() - correctRotation + i * stepSize));
                         center.setY(arc->getRadius() * sin(arc->getRotationZ() - correctRotation + i * stepSize));
 
@@ -209,7 +209,7 @@ namespace hesperia {
                         center += t;
 
                         // Construct a line between to consecutive points.
-                        hesperia::data::environment::NamedLine line(name.str(), centerOld, center);
+                        opendlv::data::environment::NamedLine line(name.str(), centerOld, center);
                         m_listOfLines.push_back(line);
 
                         // Keep old point.
@@ -287,7 +287,7 @@ namespace hesperia {
             }
         }
 
-        void LaneVisitor::visit(const hesperia::data::scenario::StraightLine *sl) {
+        void LaneVisitor::visit(const opendlv::data::scenario::StraightLine *sl) {
             if (sl != NULL) {
                 stringstream name;
                 name << sl->getLane()->getRoad()->getLayer()->getID() << "." << sl->getLane()->getRoad()->getID() << "." << sl->getLane()->getID();
@@ -297,7 +297,7 @@ namespace hesperia {
                 IDVertex3 vt2 = sl->getEnd();
 
                 // Construct a line between to consecutive points.
-                hesperia::data::environment::NamedLine line(name.str(), vt1, vt2);
+                opendlv::data::environment::NamedLine line(name.str(), vt1, vt2);
                 m_listOfLines.push_back(line);
 
                 WaypointVertex *v1 = new WaypointVertex();
@@ -370,7 +370,7 @@ namespace hesperia {
             }
         }
 
-        bool LaneVisitor::hasStartAndEndVertex(const hesperia::data::scenario::Connector &c) {
+        bool LaneVisitor::hasStartAndEndVertex(const opendlv::data::scenario::Connector &c) {
             bool startVertexFound = false;
             bool endVertexFound = false;
 
@@ -409,9 +409,9 @@ namespace hesperia {
             return (startVertexFound && endVertexFound);
         }
 
-        vector<hesperia::data::environment::NamedLine> LaneVisitor::getListOfLines() const {
+        vector<opendlv::data::environment::NamedLine> LaneVisitor::getListOfLines() const {
             return m_listOfLines;
         }
 
     }
-} // hesperia::scenario
+} // opendlv::scenario

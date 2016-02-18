@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -34,12 +34,12 @@
 
 namespace core { namespace wrapper { class Image; } }
 
-namespace hesperia {
+namespace opendlv {
     namespace decorator {
         namespace models {
 
             using namespace core;
-            using namespace hesperia::data::environment;
+            using namespace opendlv::data::environment;
 
             OBJXArchive::OBJXArchive() :
                 m_mapOfImages(),
@@ -407,4 +407,4 @@ namespace hesperia {
 
         }
     }
-} // hesperia::decorator::models
+} // opendlv::decorator::models

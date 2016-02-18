@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -25,12 +25,12 @@
 #include "opendlv/data/environment/Point3.h"
 #include "opendlv/data/graph/WaypointVertex.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace data {
         namespace graph {
 
             using namespace std;
-            using namespace hesperia::data::environment;
+            using namespace opendlv::data::environment;
 
             WaypointVertex::WaypointVertex() :
                 m_layerID(0),
@@ -103,4 +103,4 @@ namespace hesperia {
 
         }
     }
-} // hesperia::data::graph
+} // opendlv::data::graph

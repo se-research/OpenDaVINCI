@@ -38,8 +38,8 @@
 #include "opendlv/threeD/RenderingConfiguration.h"
 
 namespace core { namespace wrapper { class Image; } }
-namespace hesperia { namespace data { namespace camera { class ImageGrabberCalibration; } } }
-namespace hesperia { namespace scenario { class SCNXArchive; } }
+namespace opendlv { namespace data { namespace camera { class ImageGrabberCalibration; } } }
+namespace opendlv { namespace scenario { class SCNXArchive; } }
 
 namespace vehiclecontext {
     namespace model {
@@ -47,12 +47,12 @@ namespace vehiclecontext {
         using namespace std;
         using namespace core::base;
         using namespace core::io;
-        using namespace hesperia::data::camera;
-        using namespace hesperia::data::environment;
-        using namespace hesperia::scenario;
-        using namespace hesperia::threeD;
-        using namespace hesperia::threeD::decorator;
-        using namespace hesperia::threeD::models;
+        using namespace opendlv::data::camera;
+        using namespace opendlv::data::environment;
+        using namespace opendlv::scenario;
+        using namespace opendlv::threeD;
+        using namespace opendlv::threeD::decorator;
+        using namespace opendlv::threeD::models;
 
         OpenGLGrabber::OpenGLGrabber(const KeyValueConfiguration &kvc, const ImageGrabberID &imageGrabberID, const ImageGrabberCalibration &imageGrabberCalibration) :
             ImageGrabber(imageGrabberID, imageGrabberCalibration),
@@ -64,7 +64,7 @@ namespace vehiclecontext {
             const URL urlOfSCNXFile(m_kvc.getValue<string>("global.scenario"));
             const bool SHOW_GRID = (m_kvc.getValue<uint8_t>("global.showgrid") == 1);
             if (urlOfSCNXFile.isValid()) {
-                m_root = core::SharedPointer<TransformGroup>(new hesperia::threeD::TransformGroup());
+                m_root = core::SharedPointer<TransformGroup>(new opendlv::threeD::TransformGroup());
                 SCNXArchive &scnxArchive = SCNXArchiveFactory::getInstance().getSCNXArchive(urlOfSCNXFile);
 
                 // Read scnxArchive and decorate it for getting displayed in an OpenGL scene.

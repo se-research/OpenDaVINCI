@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -26,10 +26,10 @@
 #include "opendlv/data/environment/Point3.h"
 #include "opendlv/threeD/Camera.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace threeD {
 
-    using namespace hesperia::data::environment;
+    using namespace opendlv::data::environment;
 
     Camera::Camera() :
         m_position(0,0,10),

@@ -130,7 +130,7 @@ namespace cockpit {
                     case Container::PLAYER_COMMAND:
                        return container.getData<coredata::player::PlayerCommand> ().toString();
                     case Container::POSITION:
-                       return container.getData<hesperia::data::environment::Position> ().toString();
+                       return container.getData<opendlv::data::environment::Position> ().toString();
                     case Container::RECORDER_COMMAND:
                        return container.getData<coredata::recorder::RecorderCommand> ().toString();
                     case Container::RUNTIMESTATISTIC:

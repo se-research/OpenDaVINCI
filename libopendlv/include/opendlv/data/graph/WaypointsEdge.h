@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -23,7 +23,7 @@
 #include "opendavinci/core/opendavinci.h"
 #include "opendlv/core/wrapper/graph/Edge.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace data {
         namespace graph{
 
@@ -76,6 +76,6 @@ namespace hesperia {
 
         }
     }
-} // hesperia::data::graph
+} // opendlv::data::graph
 
 #endif /*HESPERIA_DATA_GRAPH_WAYPOINTSEDGE_H_*/

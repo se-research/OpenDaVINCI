@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -34,13 +34,13 @@
 #include "opendlv/data/environment/Point3.h"
 #include "opendlv/data/environment/Polygon.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace data {
         namespace environment {
 
             using namespace std;
             using namespace core::base;
-            using namespace hesperia::data::environment;
+            using namespace opendlv::data::environment;
 
             const double Polygon::EPSILON = 1e-10;
 
@@ -407,4 +407,4 @@ namespace hesperia {
 
         }
     }
-} // hesperia::data::environment
+} // opendlv::data::environment

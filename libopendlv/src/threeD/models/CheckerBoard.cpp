@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -33,12 +33,12 @@
 #include "opendlv/threeD/RenderingConfiguration.h"
 #include "opendlv/threeD/models/CheckerBoard.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace threeD {
         namespace models {
 
             using namespace std;
-            using namespace hesperia::data::environment;
+            using namespace opendlv::data::environment;
 
             CheckerBoard::CheckerBoard(const NodeDescriptor &nodeDescriptor) :
                     Node(nodeDescriptor),
@@ -111,4 +111,4 @@ namespace hesperia {
             }
         }
     }
-} // hesperia::threeD::models
+} // opendlv::threeD::models

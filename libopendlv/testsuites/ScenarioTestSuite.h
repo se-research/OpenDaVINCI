@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -50,9 +50,9 @@
 #include "opendlv/scenario/ScenarioPrettyPrinter.h"
 
 using namespace std;
-using namespace hesperia::data::scenario;
+using namespace opendlv::data::scenario;
 using namespace core::exceptions;
-using namespace hesperia::scenario;
+using namespace opendlv::scenario;
 using namespace core::wrapper::parser;
 
 class ScenarioTest : public CxxTest::TestSuite {
@@ -446,12 +446,12 @@ class ScenarioTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(scn.getGround().getHeightImage().getMinimumHeight(), -0.4, 1e-3);
             TS_ASSERT_DELTA(scn.getGround().getHeightImage().getMaximumHeight(), 1.2, 1e-3);
 
-            const vector<hesperia::data::scenario::Shape*> &listOfShapes = scn.getGround().getSurroundings().getListOfShapes();
+            const vector<opendlv::data::scenario::Shape*> &listOfShapes = scn.getGround().getSurroundings().getListOfShapes();
             TS_ASSERT(listOfShapes.size() == 3);
 
-            TS_ASSERT(listOfShapes.at(0)->getType() == hesperia::data::scenario::Shape::CYLINDER);
+            TS_ASSERT(listOfShapes.at(0)->getType() == opendlv::data::scenario::Shape::CYLINDER);
             Cylinder *c = dynamic_cast<Cylinder*>(listOfShapes.at(0));
-            TS_ASSERT(c->getType() == hesperia::data::scenario::Shape::CYLINDER);
+            TS_ASSERT(c->getType() == opendlv::data::scenario::Shape::CYLINDER);
             TS_ASSERT(c->getName() == "Cylinder1");
             TS_ASSERT_DELTA(c->getCenter().getX(), 42.1, 1e-3);
             TS_ASSERT_DELTA(c->getCenter().getY(), -42.5, 1e-3);
@@ -461,37 +461,37 @@ class ScenarioTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(c->getColor().getY(), 1, 1e-3);
             TS_ASSERT_DELTA(c->getColor().getZ(), 0, 1e-3);
 
-            TS_ASSERT(listOfShapes.at(1)->getType() == hesperia::data::scenario::Shape::POLYGON);
-            hesperia::data::scenario::Polygon *p = dynamic_cast<hesperia::data::scenario::Polygon*>(listOfShapes.at(1));
-            TS_ASSERT(p->getType() == hesperia::data::scenario::Shape::POLYGON);
+            TS_ASSERT(listOfShapes.at(1)->getType() == opendlv::data::scenario::Shape::POLYGON);
+            opendlv::data::scenario::Polygon *p = dynamic_cast<opendlv::data::scenario::Polygon*>(listOfShapes.at(1));
+            TS_ASSERT(p->getType() == opendlv::data::scenario::Shape::POLYGON);
             TS_ASSERT(p->getName() == "Polygon1");
             TS_ASSERT_DELTA(p->getHeight(), 4, 1e-3);
             TS_ASSERT_DELTA(p->getColor().getX(), 1, 1e-3);
             TS_ASSERT_DELTA(p->getColor().getY(), 0, 1e-3);
             TS_ASSERT_DELTA(p->getColor().getZ(), 1, 1e-3);
-            const vector<hesperia::data::scenario::Vertex3>& listOfVertices = p->getListOfVertices();
+            const vector<opendlv::data::scenario::Vertex3>& listOfVertices = p->getListOfVertices();
             TS_ASSERT(listOfVertices.size() == 2);
             TS_ASSERT_DELTA(listOfVertices.at(0).getX(), 2.1, 1e-5);
             TS_ASSERT_DELTA(listOfVertices.at(0).getY(), -2.5, 1e-5);
             TS_ASSERT_DELTA(listOfVertices.at(1).getX(), 22.1, 1e-5);
             TS_ASSERT_DELTA(listOfVertices.at(1).getY(), -22.5, 1e-5);
 
-            TS_ASSERT(listOfShapes.at(2)->getType() == hesperia::data::scenario::Shape::COMPLEXMODEL);
-            hesperia::data::scenario::ComplexModel *cm = dynamic_cast<hesperia::data::scenario::ComplexModel*>(listOfShapes.at(2));
-            TS_ASSERT(cm->getType() == hesperia::data::scenario::Shape::COMPLEXMODEL);
+            TS_ASSERT(listOfShapes.at(2)->getType() == opendlv::data::scenario::Shape::COMPLEXMODEL);
+            opendlv::data::scenario::ComplexModel *cm = dynamic_cast<opendlv::data::scenario::ComplexModel*>(listOfShapes.at(2));
+            TS_ASSERT(cm->getType() == opendlv::data::scenario::Shape::COMPLEXMODEL);
             TS_ASSERT(cm->getName() == "ComplexModel1");
             TS_ASSERT(cm->getModelFile() == "Test2.3ds");
-            const hesperia::data::scenario::Vertex3 &position = cm->getPosition();
+            const opendlv::data::scenario::Vertex3 &position = cm->getPosition();
             TS_ASSERT_DELTA(position.getX(), 1.1, 1e-5);
             TS_ASSERT_DELTA(position.getY(), -1.5, 1e-5);
             TS_ASSERT_DELTA(position.getZ(), 5.5, 1e-5);
 
-            const hesperia::data::scenario::Vertex3 &rotation = cm->getRotation();
+            const opendlv::data::scenario::Vertex3 &rotation = cm->getRotation();
             TS_ASSERT_DELTA(rotation.getX(), 0.1, 1e-5);
             TS_ASSERT_DELTA(rotation.getY(), -0.5, 1e-5);
             TS_ASSERT_DELTA(rotation.getZ(), 0.5, 1e-5);
 
-            const hesperia::data::scenario::BoundingBox &bb = cm->getBoundingBox();
+            const opendlv::data::scenario::BoundingBox &bb = cm->getBoundingBox();
             TS_ASSERT_DELTA(bb.getUpperLeft().getX(), 1.1, 1e-5);
             TS_ASSERT_DELTA(bb.getUpperLeft().getY(), 1.2, 1e-5);
             TS_ASSERT_DELTA(bb.getUpperRight().getX(), 2.1, 1e-5);
@@ -502,45 +502,45 @@ class ScenarioTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(bb.getLowerLeft().getY(), 4.2, 1e-5);
 
             TS_ASSERT(scn.getListOfLayers().size() == 1);
-            const vector<hesperia::data::scenario::Layer> &listOfLayers = scn.getListOfLayers();
+            const vector<opendlv::data::scenario::Layer> &listOfLayers = scn.getListOfLayers();
             TS_ASSERT_DELTA(listOfLayers.at(0).getHeight(), 0.1, 1e-3);
             TS_ASSERT(listOfLayers.at(0).getID() == 1);
             TS_ASSERT(listOfLayers.at(0).getName() == "FirstLayer");
 
-            const vector<hesperia::data::scenario::Road> &listOfRoads = listOfLayers.at(0).getListOfRoads();
+            const vector<opendlv::data::scenario::Road> &listOfRoads = listOfLayers.at(0).getListOfRoads();
             TS_ASSERT(listOfRoads.size() == 1);
             TS_ASSERT(listOfRoads.at(0).getID() == 1);
             TS_ASSERT(listOfRoads.at(0).getName() == "Road1");
 
-            const vector<hesperia::data::scenario::Lane> &listOfLanes = listOfRoads.at(0).getListOfLanes();
+            const vector<opendlv::data::scenario::Lane> &listOfLanes = listOfRoads.at(0).getListOfLanes();
             TS_ASSERT(listOfLanes.size() == 4);
             TS_ASSERT(listOfLanes.at(0).getID() == 1);
             TS_ASSERT(listOfLanes.at(1).getID() == 2);
             TS_ASSERT(listOfLanes.at(2).getID() == 3);
             TS_ASSERT(listOfLanes.at(3).getID() == 4);
 
-            const hesperia::data::scenario::Lane& lane1 = listOfLanes.at(0);
-            const vector<hesperia::data::scenario::Connector> &listOfConnectorsLane1 = lane1.getLaneModel()->getListOfConnectors();
+            const opendlv::data::scenario::Lane& lane1 = listOfLanes.at(0);
+            const vector<opendlv::data::scenario::Connector> &listOfConnectorsLane1 = lane1.getLaneModel()->getListOfConnectors();
             TS_ASSERT(listOfConnectorsLane1.size() == 2);
             TS_ASSERT(listOfConnectorsLane1.at(0).toString() == "(1.1.1.2) -> (1.1.2.1)");
             TS_ASSERT(listOfConnectorsLane1.at(1).toString() == "(3.2.1.2) -> (3.5.2.1)");
 
-            const hesperia::data::scenario::LaneAttribute& la = lane1.getLaneModel()->getLaneAttribute();
+            const opendlv::data::scenario::LaneAttribute& la = lane1.getLaneModel()->getLaneAttribute();
             TS_ASSERT_DELTA(la.getWidth(), 4.5, 1e-3);
-            TS_ASSERT(la.getLeftLaneMarking() == hesperia::data::scenario::LaneAttribute::SOLID_YELLOW);
-            TS_ASSERT(la.getRightLaneMarking() == hesperia::data::scenario::LaneAttribute::SOLID_WHITE);
+            TS_ASSERT(la.getLeftLaneMarking() == opendlv::data::scenario::LaneAttribute::SOLID_YELLOW);
+            TS_ASSERT(la.getRightLaneMarking() == opendlv::data::scenario::LaneAttribute::SOLID_WHITE);
 
-            const vector<hesperia::data::scenario::TrafficControl*> listOfTrafficControlsLane1 = lane1.getLaneModel()->getListOfTrafficControls();
+            const vector<opendlv::data::scenario::TrafficControl*> listOfTrafficControlsLane1 = lane1.getLaneModel()->getListOfTrafficControls();
             TS_ASSERT(listOfTrafficControlsLane1.size() == 1);
 
-            const hesperia::data::scenario::TrafficLight *tl = dynamic_cast<hesperia::data::scenario::TrafficLight*>(listOfTrafficControlsLane1.at(0));
+            const opendlv::data::scenario::TrafficLight *tl = dynamic_cast<opendlv::data::scenario::TrafficLight*>(listOfTrafficControlsLane1.at(0));
             TS_ASSERT(tl != NULL);
             TS_ASSERT(tl->getName() == "TrafficLight1");
             TS_ASSERT(tl->getPosition().getID() == 1);
             TS_ASSERT_DELTA(tl->getPosition().getX(), 832.1, 1e-4);
             TS_ASSERT_DELTA(tl->getPosition().getY(), -832.5, 1e-4);
 
-            const hesperia::data::scenario::Cylinder *tlc = dynamic_cast<hesperia::data::scenario::Cylinder*>(tl->getShape());
+            const opendlv::data::scenario::Cylinder *tlc = dynamic_cast<opendlv::data::scenario::Cylinder*>(tl->getShape());
             TS_ASSERT(tlc != NULL);
             TS_ASSERT(tlc->getName() == "TrafficLightCylinder1");
             TS_ASSERT_DELTA(tlc->getCenter().getX(), 832.1, 1e-3);
@@ -551,10 +551,10 @@ class ScenarioTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(tlc->getColor().getY(), 1, 1e-1);
             TS_ASSERT_DELTA(tlc->getColor().getZ(), 0, 1e-1);
 
-            hesperia::data::scenario::PointModel *pm = dynamic_cast<hesperia::data::scenario::PointModel*>(lane1.getLaneModel());
+            opendlv::data::scenario::PointModel *pm = dynamic_cast<opendlv::data::scenario::PointModel*>(lane1.getLaneModel());
             TS_ASSERT(pm != NULL);
 
-            const vector<hesperia::data::scenario::IDVertex3> &listOfIdentifiableVerticesLane1 = pm->getListOfIdentifiableVertices();
+            const vector<opendlv::data::scenario::IDVertex3> &listOfIdentifiableVerticesLane1 = pm->getListOfIdentifiableVertices();
             TS_ASSERT(listOfIdentifiableVerticesLane1.size() == 2);
             TS_ASSERT(listOfIdentifiableVerticesLane1.at(0).getID() == 1);
             TS_ASSERT_DELTA(listOfIdentifiableVerticesLane1.at(0).getX(), 32.1, 1e-3);
@@ -563,14 +563,14 @@ class ScenarioTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(listOfIdentifiableVerticesLane1.at(1).getX(), 52.1, 1e-3);
             TS_ASSERT_DELTA(listOfIdentifiableVerticesLane1.at(1).getY(), -52.5, 1e-3);
 
-            const hesperia::data::scenario::Lane& lane2 = listOfLanes.at(1);
-            hesperia::data::scenario::StraightLine *sl = dynamic_cast<StraightLine*>(lane2.getLaneModel());
+            const opendlv::data::scenario::Lane& lane2 = listOfLanes.at(1);
+            opendlv::data::scenario::StraightLine *sl = dynamic_cast<StraightLine*>(lane2.getLaneModel());
             TS_ASSERT(sl != NULL);
 
-            const vector<hesperia::data::scenario::TrafficControl*> listOfTrafficControlsLane2 = lane2.getLaneModel()->getListOfTrafficControls();
+            const vector<opendlv::data::scenario::TrafficControl*> listOfTrafficControlsLane2 = lane2.getLaneModel()->getListOfTrafficControls();
             TS_ASSERT(listOfTrafficControlsLane2.size() == 1);
 
-            const hesperia::data::scenario::TrafficSign *ts = dynamic_cast<hesperia::data::scenario::TrafficSign*>(listOfTrafficControlsLane2.at(0));
+            const opendlv::data::scenario::TrafficSign *ts = dynamic_cast<opendlv::data::scenario::TrafficSign*>(listOfTrafficControlsLane2.at(0));
             TS_ASSERT(ts != NULL);
             TS_ASSERT(ts->getName() == "Stopline1");
             TS_ASSERT(ts->getValue() == "stopline");
@@ -578,7 +578,7 @@ class ScenarioTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(ts->getPosition().getX(), 932.1, 1e-4);
             TS_ASSERT_DELTA(ts->getPosition().getY(), -932.5, 1e-4);
 
-            const hesperia::data::scenario::Polygon *tsp = dynamic_cast<hesperia::data::scenario::Polygon*>(ts->getShape());
+            const opendlv::data::scenario::Polygon *tsp = dynamic_cast<opendlv::data::scenario::Polygon*>(ts->getShape());
             TS_ASSERT(tsp != NULL);
             TS_ASSERT(tsp->getName() == "StoplinePolygon1");
             TS_ASSERT_DELTA(tsp->getHeight(), 1, 1e-3);
@@ -586,7 +586,7 @@ class ScenarioTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(tsp->getColor().getY(), 1, 1e-1);
             TS_ASSERT_DELTA(tsp->getColor().getZ(), 1, 1e-1);
 
-            const vector<hesperia::data::scenario::Vertex3> &tspVertices = tsp->getListOfVertices();
+            const vector<opendlv::data::scenario::Vertex3> &tspVertices = tsp->getListOfVertices();
             TS_ASSERT(tspVertices.size() == 2);
             TS_ASSERT_DELTA(tspVertices.at(0).getX(), 932.1, 1e-3);
             TS_ASSERT_DELTA(tspVertices.at(0).getY(), -932.5, 1e-3);
@@ -600,12 +600,12 @@ class ScenarioTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(sl->getEnd().getX(), 772.1, 1e-3);
             TS_ASSERT_DELTA(sl->getEnd().getY(), -772.5, 1e-3);
 
-            const hesperia::data::scenario::Lane& lane3 = listOfLanes.at(2);
-            const vector<hesperia::data::scenario::Connector> listOfConnectorsLane3 = lane3.getLaneModel()->getListOfConnectors();
+            const opendlv::data::scenario::Lane& lane3 = listOfLanes.at(2);
+            const vector<opendlv::data::scenario::Connector> listOfConnectorsLane3 = lane3.getLaneModel()->getListOfConnectors();
             TS_ASSERT(listOfConnectorsLane3.size() == 1);
             TS_ASSERT(listOfConnectorsLane3.at(0).toString() == "(3.3.3.3) -> (1.1.2.1)");
 
-            hesperia::data::scenario::Clothoid *cl = dynamic_cast<hesperia::data::scenario::Clothoid*>(lane3.getLaneModel());
+            opendlv::data::scenario::Clothoid *cl = dynamic_cast<opendlv::data::scenario::Clothoid*>(lane3.getLaneModel());
             TS_ASSERT(cl != NULL);
 
             TS_ASSERT(cl->getStart().getID() == 1);
@@ -620,8 +620,8 @@ class ScenarioTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(cl->getEnd().getY(), -5772.5, 1e-3);
             TS_ASSERT_DELTA(cl->getRotationZ(), -0.3, 1e-3);
 
-            const hesperia::data::scenario::Lane& lane4 = listOfLanes.at(3);
-            hesperia::data::scenario::Arc *a = dynamic_cast<hesperia::data::scenario::Arc*>(lane4.getLaneModel());
+            const opendlv::data::scenario::Lane& lane4 = listOfLanes.at(3);
+            opendlv::data::scenario::Arc *a = dynamic_cast<opendlv::data::scenario::Arc*>(lane4.getLaneModel());
             TS_ASSERT(a != NULL);
 
             TS_ASSERT(a->getStart().getID() == 1);

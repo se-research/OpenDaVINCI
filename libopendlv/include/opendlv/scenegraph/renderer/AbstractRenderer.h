@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -23,12 +23,12 @@
 #include "opendavinci/core/opendavinci.h"
 #include "opendlv/scenegraph/SceneNodeVisitor.h"
 
-namespace hesperia { namespace scenegraph { class SceneNode; } }
-namespace hesperia { namespace scenegraph { namespace primitives { class Line; } } }
-namespace hesperia { namespace scenegraph { namespace primitives { class Point; } } }
-namespace hesperia { namespace scenegraph { namespace primitives { class Polygon; } } }
+namespace opendlv { namespace scenegraph { class SceneNode; } }
+namespace opendlv { namespace scenegraph { namespace primitives { class Line; } } }
+namespace opendlv { namespace scenegraph { namespace primitives { class Point; } } }
+namespace opendlv { namespace scenegraph { namespace primitives { class Polygon; } } }
 
-namespace hesperia {
+namespace opendlv {
     namespace scenegraph {
         namespace renderer {
 
@@ -66,7 +66,7 @@ namespace hesperia {
                      *
                      * @param p Point to be rendered.
                      */
-                    virtual void render(hesperia::scenegraph::primitives::Point *p) = 0;
+                    virtual void render(opendlv::scenegraph::primitives::Point *p) = 0;
 
                     /**
                      * This method needs to be implemented in sub classes to
@@ -74,7 +74,7 @@ namespace hesperia {
                      *
                      * @param l Line to be rendered.
                      */
-                    virtual void render(hesperia::scenegraph::primitives::Line *l) = 0;
+                    virtual void render(opendlv::scenegraph::primitives::Line *l) = 0;
 
                     /**
                      * This method needs to be implemented in sub classes to
@@ -82,11 +82,11 @@ namespace hesperia {
                      *
                      * @param p Polygon to be rendered.
                      */
-                    virtual void render(hesperia::scenegraph::primitives::Polygon *p) = 0;
+                    virtual void render(opendlv::scenegraph::primitives::Polygon *p) = 0;
             };
 
         }
     }
-} // hesperia::scenegraph::renderer
+} // opendlv::scenegraph::renderer
 
 #endif /*HESPERIA_SCENEGRAPH_RENDERER_ABSTRACTRENDERER_H_*/

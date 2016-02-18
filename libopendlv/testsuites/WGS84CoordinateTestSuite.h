@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -32,10 +32,10 @@
 
 using namespace std;
 using namespace core::data;
-using namespace hesperia::data;
-using namespace hesperia::data::environment;
-using namespace hesperia::data::environment;
-using namespace hesperia::data::sensor::nmea;
+using namespace opendlv::data;
+using namespace opendlv::data::environment;
+using namespace opendlv::data::environment;
+using namespace opendlv::data::sensor::nmea;
 
 class WGS84CoordinateTest : public CxxTest::TestSuite {
     public:

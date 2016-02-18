@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
 #include "opendlv/data/environment/EgoState.h"
 #include "opendlv/data/planning/Route.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace decorator {
 
         using namespace std;
@@ -74,20 +74,20 @@ namespace hesperia {
                  *
                  * @param es EgoState to be drawn.
                  */
-                void toStringStream(const hesperia::data::environment::EgoState &es);
+                void toStringStream(const opendlv::data::environment::EgoState &es);
 
                 /**
                  * This method draws the planned Route.
                  *
                  * @param r Planned route to be drawn.
                  */
-                void toStringStream(const hesperia::data::planning::Route &r);
+                void toStringStream(const opendlv::data::planning::Route &r);
 
             private:
                 stringstream &m_sstr;
         };
 
     }
-} // hesperia::decorator
+} // opendlv::decorator
 
 #endif /*HESPERIA_CORE_DECORATOR_DATA2STRINGSTREAM_H_*/

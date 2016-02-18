@@ -1,5 +1,5 @@
 /**
- * hesperia - Simulation environment
+ * OpenDLV - Simulation environment
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
 #include "opendlv/threeD/NodeDescriptor.h"
 #include "opendlv/threeD/TransformGroup.h"
 
-namespace hesperia {
+namespace opendlv {
     namespace threeD {
         namespace models {
 
@@ -86,8 +86,8 @@ namespace hesperia {
                      */
                     AerialImage(const NodeDescriptor &nodeDescriptor,
                                 const core::wrapper::Image *image,
-                                const hesperia::data::environment::Point3 &originPixelXY,
-                                const hesperia::data::environment::Point3 &scalingPixelXY,
+                                const opendlv::data::environment::Point3 &originPixelXY,
+                                const opendlv::data::environment::Point3 &scalingPixelXY,
                                 const float &rotationZ);
 
                     /**
@@ -111,8 +111,8 @@ namespace hesperia {
 
                 private:
                     const core::wrapper::Image *m_image;
-                    hesperia::data::environment::Point3 m_originPixelXY;
-                    hesperia::data::environment::Point3 m_scalingPixelXY;
+                    opendlv::data::environment::Point3 m_originPixelXY;
+                    opendlv::data::environment::Point3 m_scalingPixelXY;
                     float m_rotationZ;
 
                     uint32_t m_textureHandle;
@@ -130,6 +130,6 @@ namespace hesperia {
 
         }
     }
-} // hesperia::threeD::models
+} // opendlv::threeD::models
 
 #endif /*HESPERIA_CORE_THREED_MODELS_AERIALIMAGE_H_*/

@@ -75,7 +75,7 @@ class StreetMapWidget;
 
                 private:
                     StreetMapWidget *m_widget;
-                    hesperia::data::environment::WGS84Coordinate m_referenceLocation;
+                    opendlv::data::environment::WGS84Coordinate m_referenceLocation;
             };
         }
     }

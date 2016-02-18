@@ -24,8 +24,8 @@
 #include "opendlv/threeD/TransformGroupVisitor.h"
 
 namespace core { namespace base { template <typename T> class TreeNode; } }
-namespace hesperia { namespace threeD { class Node; } }
-namespace hesperia { namespace threeD { class RenderingConfiguration; } }
+namespace opendlv { namespace threeD { class Node; } }
+namespace opendlv { namespace threeD { class RenderingConfiguration; } }
 
 namespace cockpit {
     namespace plugins {
@@ -39,7 +39,7 @@ class SelectableNodeDescriptor;
              * This class represents NodeDescriptor combined with a state
              * indicating whether this element was selected by the user.
              */
-            class TreeNodeVisitor : public hesperia::threeD::TransformGroupVisitor {
+            class TreeNodeVisitor : public opendlv::threeD::TransformGroupVisitor {
                 private:
                     /**
                      * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -62,14 +62,14 @@ class SelectableNodeDescriptor;
                      * @param rc RenderingConfiguration.
                      * @param root TreeNode for adding NodeDescriptors.
                      */
-                    TreeNodeVisitor(hesperia::threeD::RenderingConfiguration &rc, core::base::TreeNode<SelectableNodeDescriptor> *root);
+                    TreeNodeVisitor(opendlv::threeD::RenderingConfiguration &rc, core::base::TreeNode<SelectableNodeDescriptor> *root);
 
                     virtual ~TreeNodeVisitor();
 
-                    virtual void visit(hesperia::threeD::Node *nd);
+                    virtual void visit(opendlv::threeD::Node *nd);
 
                 private:
-                    hesperia::threeD::RenderingConfiguration &m_renderingConfiguration;
+                    opendlv::threeD::RenderingConfiguration &m_renderingConfiguration;
                     core::base::TreeNode<SelectableNodeDescriptor> *m_root;
             };
         }

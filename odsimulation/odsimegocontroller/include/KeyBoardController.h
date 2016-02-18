@@ -43,7 +43,7 @@ class ControlBehaviour;
             virtual ~KeyboardController();
 
             virtual void doWork();
-            virtual hesperia::data::environment::EgoState getEgoState();
+            virtual opendlv::data::environment::EgoState getEgoState();
 
         private:
             ControlBehaviour& m_behaviour;
