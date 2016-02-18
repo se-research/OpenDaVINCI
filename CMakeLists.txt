@@ -70,7 +70,7 @@ IF(     NOT("${CMAKE_C_COMPILER}" STREQUAL "")
     SET(BUILD_AUTOMOTIVE_MINIATURE 0)
     SET(BUILD_AUTOMOTIVE_ODCANTOOLS 0)
 
-    MESSAGE(STATUS "Found C and C++ compiler:   Building opendavinci-odlib")
+    MESSAGE(STATUS "Found C and C++ compiler:   Building opendavinci-lib")
     SET(BUILD_OPENDAVINCI 1)
 
     MESSAGE(STATUS "Found C++ compiler:         Building opendavinci-odsupercomponent")

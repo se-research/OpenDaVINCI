@@ -22,7 +22,7 @@ Adding OpenDaVINCI to your Ubuntu 14.04 Linux distribution
 
 4. Install OpenDaVINCI::
 
-    $ sudo apt-get install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
+    $ sudo apt-get install opendavinci-lib opendavinci-odtools opendavinci-odsupercomponent
 
 
 Adding OpenDaVINCI to your Ubuntu 15.04 Linux distribution
@@ -42,7 +42,7 @@ Adding OpenDaVINCI to your Ubuntu 15.04 Linux distribution
 
 4. Install OpenDaVINCI::
 
-    $ sudo apt-get install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
+    $ sudo apt-get install opendavinci-lib opendavinci-odtools opendavinci-odsupercomponent
 
 
 Adding OpenDaVINCI to your Ubuntu 15.10 Linux distribution
@@ -62,7 +62,7 @@ Adding OpenDaVINCI to your Ubuntu 15.10 Linux distribution
 
 4. Install OpenDaVINCI::
 
-    $ sudo apt-get install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
+    $ sudo apt-get install opendavinci-lib opendavinci-odtools opendavinci-odsupercomponent
 
 
 Adding OpenDaVINCI to your Debian 8 Linux distribution
@@ -82,7 +82,7 @@ Adding OpenDaVINCI to your Debian 8 Linux distribution
 
 4. Install OpenDaVINCI::
 
-    $ sudo apt-get install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
+    $ sudo apt-get install opendavinci-lib opendavinci-odtools opendavinci-odsupercomponent
 
 
 Adding OpenDaVINCI to your CentOS 7 Linux distribution
@@ -98,7 +98,7 @@ Adding OpenDaVINCI to your CentOS 7 Linux distribution
 
 3. Install OpenDaVINCI::
 
-   $ sudo yum install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
+   $ sudo yum install opendavinci-lib opendavinci-odtools opendavinci-odsupercomponent
 
 
 Adding OpenDaVINCI to your Fedora 21 Linux distribution
@@ -114,7 +114,7 @@ Adding OpenDaVINCI to your Fedora 21 Linux distribution
 
 3. Install OpenDaVINCI::
 
-   $ sudo yum install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
+   $ sudo yum install opendavinci-lib opendavinci-odtools opendavinci-odsupercomponent
 
 
 Adding OpenDaVINCI to your Fedora 22 Linux distribution
@@ -130,7 +130,7 @@ Adding OpenDaVINCI to your Fedora 22 Linux distribution
 
 3. Install OpenDaVINCI::
 
-   $ sudo dnf install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
+   $ sudo dnf install opendavinci-lib opendavinci-odtools opendavinci-odsupercomponent
    
    
 Adding OpenDaVINCI to your openSuSE 13 Linux distribution
@@ -146,7 +146,7 @@ Adding OpenDaVINCI to your openSuSE 13 Linux distribution
 
 3. Install OpenDaVINCI::
 
-    $ sudo zypper install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
+    $ sudo zypper install opendavinci-lib opendavinci-odtools opendavinci-odsupercomponent
 
 
 Using our Docker images

@@ -205,7 +205,7 @@ IF(    (UNIX)
     ENDIF()
     SET(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "${ARCH}")
     SET(CPACK_DEB_COMPONENT_INSTALL ON)
-    SET(CPACK_DEBIAN_PACKAGE_DEPENDS "opendavinci-odlib,opendlv-lib,libautomotivedata,libqt4-dev,libqwt5-qt4-dev,libqwt5-qt4,libqt4-opengl-dev,qt4-dev-tools")
+    SET(CPACK_DEBIAN_PACKAGE_DEPENDS "opendavinci-lib,opendlv-lib,libautomotivedata,libqt4-dev,libqwt5-qt4-dev,libqwt5-qt4,libqt4-opengl-dev,qt4-dev-tools")
 
     # RPM packages:
     IF("${ARMHF}" STREQUAL "YES")
@@ -220,7 +220,7 @@ IF(    (UNIX)
     SET(CPACK_RPM_PACKAGE_BUILDARCH "Buildarch: ${CPACK_RPM_PACKAGE_ARCHITECTURE}")
     SET(CPACK_RPM_COMPONENT_INSTALL ON)
     SET(CPACK_RPM_PACKAGE_LICENSE "GPL")
-    SET(CPACK_RPM_PACKAGE_REQUIRES "opendavinci-odlib, opendlv-lib, libautomotivedata, qt4-devel, qwt-devel")
+    SET(CPACK_RPM_PACKAGE_REQUIRES "opendavinci-lib, opendlv-lib, libautomotivedata, qt4-devel, qwt-devel")
 
     # Resulting package name:
     SET(CPACK_PACKAGE_FILE_NAME ${CPACK_PACKAGE_NAME}_${CPACK_PACKAGE_VERSION}_${ARCH})
