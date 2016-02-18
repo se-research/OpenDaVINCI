@@ -80,7 +80,7 @@ INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS})
 # Set header files from AutomotiveData.
 INCLUDE_DIRECTORIES (${AUTOMOTIVEDATA_INCLUDE_DIRS})
 # Set header files from OpenDLV.
-INCLUDE_DIRECTORIES (${OPENDLV_INCLUDE_DIRS}/opendlv)
+INCLUDE_DIRECTORIES (${OPENDLV_INCLUDE_DIRS})
 # Set header files from Qwt5-Qt4.
 # Marking this with SYSTEM tells CMake to count this as a system library.
 # Used to suppress warnings from Qwt5-Qt4.

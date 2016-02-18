@@ -163,7 +163,7 @@ IF(    (NOT WIN32)
 ENDIF()
 
 # Install header files.
-INSTALL(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/" DESTINATION include/opendlv COMPONENT lib)
+INSTALL(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/" DESTINATION include COMPONENT lib)
 
 # Install CMake modules locally.
 IF(UNIX)
