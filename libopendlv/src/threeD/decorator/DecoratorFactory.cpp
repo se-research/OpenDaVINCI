@@ -21,14 +21,14 @@
 
 #include "opendavinci/core/base/Lock.h"
 #include "opendavinci/core/base/Mutex.h"
-#include "hesperia/data/scenario/Scenario.h"
-#include "hesperia/scenario/GroundBasedComplexModelLoader.h"
-#include "hesperia/scenario/SCNXArchive.h"
-#include "hesperia/scenario/ScenarioOpenGLSceneTransformation.h"
-#include "hesperia/threeD/models/AerialImage.h"
-#include "hesperia/threeD/NodeDescriptor.h"
-#include "hesperia/threeD/TransformGroup.h"
-#include "hesperia/threeD/decorator/DecoratorFactory.h"
+#include "opendlv/data/scenario/Scenario.h"
+#include "opendlv/scenario/GroundBasedComplexModelLoader.h"
+#include "opendlv/scenario/SCNXArchive.h"
+#include "opendlv/scenario/ScenarioOpenGLSceneTransformation.h"
+#include "opendlv/threeD/models/AerialImage.h"
+#include "opendlv/threeD/NodeDescriptor.h"
+#include "opendlv/threeD/TransformGroup.h"
+#include "opendlv/threeD/decorator/DecoratorFactory.h"
 
 namespace hesperia { namespace threeD { class Node; } }
 namespace hesperia { namespace threeD { namespace loaders { class OBJXArchive; } } }

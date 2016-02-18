@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "hesperia/threeD/FrameCounter.h"
+#include "opendlv/threeD/FrameCounter.h"
 
 namespace hesperia {
     namespace threeD {

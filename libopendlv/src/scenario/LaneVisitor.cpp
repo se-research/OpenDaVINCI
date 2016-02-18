@@ -20,20 +20,20 @@
 #include <iostream>
 #include <vector>
 
-#include "hesperia/core/wrapper/parser/ASTNode.h"
-#include "hesperia/data/environment/NamedLine.h"
-#include "hesperia/data/scenario/Arc.h"
-#include "hesperia/data/scenario/Connector.h"
-#include "hesperia/data/scenario/Lane.h"
-#include "hesperia/data/scenario/LaneModel.h"
-#include "hesperia/data/scenario/PointModel.h"
-#include "hesperia/data/scenario/Scenario.h"
-#include "hesperia/data/scenario/ScenarioNode.h"
-#include "hesperia/data/scenario/StraightLine.h"
-#include "hesperia/scenario/FindNodeByPointIDVisitor.h"
-#include "hesperia/scenario/LaneVisitor.h"
-#include "hesperia/data/graph/WaypointsEdge.h"
-#include "hesperia/data/graph/WaypointVertex.h"
+#include "opendlv/core/wrapper/parser/ASTNode.h"
+#include "opendlv/data/environment/NamedLine.h"
+#include "opendlv/data/scenario/Arc.h"
+#include "opendlv/data/scenario/Connector.h"
+#include "opendlv/data/scenario/Lane.h"
+#include "opendlv/data/scenario/LaneModel.h"
+#include "opendlv/data/scenario/PointModel.h"
+#include "opendlv/data/scenario/Scenario.h"
+#include "opendlv/data/scenario/ScenarioNode.h"
+#include "opendlv/data/scenario/StraightLine.h"
+#include "opendlv/scenario/FindNodeByPointIDVisitor.h"
+#include "opendlv/scenario/LaneVisitor.h"
+#include "opendlv/data/graph/WaypointsEdge.h"
+#include "opendlv/data/graph/WaypointVertex.h"
 
 namespace core { namespace wrapper { namespace graph { class DirectedGraph; } } }
 

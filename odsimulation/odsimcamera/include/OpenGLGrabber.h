@@ -22,8 +22,8 @@
 
 #include "opendavinci/core/SharedPointer.h"
 #include "opendavinci/core/base/KeyValueConfiguration.h"
-#include "hesperia/data/camera/ImageGrabberID.h"
-#include "hesperia/io/camera/ImageGrabber.h"
+#include "opendlv/data/camera/ImageGrabberID.h"
+#include "opendlv/io/camera/ImageGrabber.h"
 
 namespace core { namespace wrapper { class Image; } }
 namespace core { namespace wrapper { class SharedMemory; } }

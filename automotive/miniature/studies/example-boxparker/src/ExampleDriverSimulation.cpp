@@ -28,10 +28,10 @@
 #include "opendavinci/context/base/RecordingContainer.h"
 #include "opendavinci/context/base/RuntimeControl.h"
 #include "opendavinci/context/base/RuntimeEnvironment.h"
-#include "vehiclecontext/VehicleRuntimeControl.h"
-#include "vehiclecontext/model/IRUS.h"
-#include "vehiclecontext/model/SimplifiedBicycleModel.h"
-#include "vehiclecontext/report/DistanceToObjectsReport.h"
+#include "opendlv/vehiclecontext/VehicleRuntimeControl.h"
+#include "opendlv/vehiclecontext/model/IRUS.h"
+#include "opendlv/vehiclecontext/model/SimplifiedBicycleModel.h"
+#include "opendlv/vehiclecontext/report/DistanceToObjectsReport.h"
 
 #include "ExampleDriverSimulation.h"
 

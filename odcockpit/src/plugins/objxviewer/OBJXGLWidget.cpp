@@ -25,14 +25,14 @@
 
 #include "opendavinci/core/opendavinci.h"
 #include "opendavinci/core/base/Lock.h"
-#include "hesperia/threeD/Node.h"
-#include "hesperia/threeD/NodeDescriptor.h"
-#include "hesperia/threeD/RenderingConfiguration.h"
-#include "hesperia/threeD/TransformGroup.h"
-#include "hesperia/threeD/decorator/DecoratorFactory.h"
-#include "hesperia/threeD/loaders/OBJXArchiveFactory.h"
-#include "hesperia/threeD/models/Grid.h"
-#include "hesperia/threeD/models/XYZAxes.h"
+#include "opendlv/threeD/Node.h"
+#include "opendlv/threeD/NodeDescriptor.h"
+#include "opendlv/threeD/RenderingConfiguration.h"
+#include "opendlv/threeD/TransformGroup.h"
+#include "opendlv/threeD/decorator/DecoratorFactory.h"
+#include "opendlv/threeD/loaders/OBJXArchiveFactory.h"
+#include "opendlv/threeD/models/Grid.h"
+#include "opendlv/threeD/models/XYZAxes.h"
 #include "plugins/objxviewer/OBJXGLWidget.h"
 
 class QWidget;

@@ -24,7 +24,7 @@
 
 #include "opendavinci/core/base/Mutex.h"
 #include "opendavinci/core/io/conference/ContainerListener.h"
-#include "hesperia/data/environment/WGS84Coordinate.h"
+#include "opendlv/data/environment/WGS84Coordinate.h"
 
 class QTimer;
 class SlippyMap;

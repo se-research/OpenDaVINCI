@@ -24,8 +24,8 @@
 #include "opendavinci/context/base/RuntimeControlInterface.h"
 #include "opendavinci/context/base/StandaloneRuntimeControl.h"
 #include "opendavinci/core/base/KeyValueConfiguration.h"
-#include "vehiclecontext/VehicleRuntimeControl.h"
-#include "vehiclecontext/model/SimplifiedBicycleModel.h"
+#include "opendlv/vehiclecontext/VehicleRuntimeControl.h"
+#include "opendlv/vehiclecontext/model/SimplifiedBicycleModel.h"
 
 namespace vehiclecontext {
 

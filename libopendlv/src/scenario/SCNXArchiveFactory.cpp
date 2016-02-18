@@ -31,10 +31,10 @@
 #include "opendavinci/core/strings/StringComparator.h"
 #include "opendavinci/core/wrapper/CompressionFactory.h"
 #include "opendavinci/core/wrapper/DecompressedData.h"
-#include "hesperia/data/scenario/Scenario.h"
-#include "hesperia/scenario/SCNXArchive.h"
-#include "hesperia/scenario/SCNXArchiveFactory.h"
-#include "hesperia/scenario/ScenarioFactory.h"
+#include "opendlv/data/scenario/Scenario.h"
+#include "opendlv/scenario/SCNXArchive.h"
+#include "opendlv/scenario/SCNXArchiveFactory.h"
+#include "opendlv/scenario/ScenarioFactory.h"
 
 namespace hesperia {
     namespace scenario {

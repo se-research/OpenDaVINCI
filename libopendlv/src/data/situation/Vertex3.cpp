@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "hesperia/data/environment/Point3.h"
-#include "hesperia/data/situation/SituationVisitor.h"
-#include "hesperia/data/situation/Vertex3.h"
+#include "opendlv/data/environment/Point3.h"
+#include "opendlv/data/situation/SituationVisitor.h"
+#include "opendlv/data/situation/Vertex3.h"
 
 namespace hesperia {
     namespace data {

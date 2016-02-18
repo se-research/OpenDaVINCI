@@ -20,7 +20,7 @@
 #ifndef EGOCONTROLLER_CONTROLBEHAVIOUR_H_
 #define EGOCONTROLLER_CONTROLBEHAVIOUR_H_
 
-#include "hesperia/data/environment/EgoState.h"
+#include "opendlv/data/environment/EgoState.h"
 
 namespace egocontroller {
 

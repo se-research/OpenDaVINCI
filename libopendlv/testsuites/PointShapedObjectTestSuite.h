@@ -24,8 +24,8 @@
 
 #include <sstream>
 
-#include "hesperia/data/environment/Point3.h"
-#include "hesperia/data/environment/PointShapedObject.h"
+#include "opendlv/data/environment/Point3.h"
+#include "opendlv/data/environment/PointShapedObject.h"
 
 using namespace std;
 using namespace hesperia::data;

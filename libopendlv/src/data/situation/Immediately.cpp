@@ -20,9 +20,9 @@
 #include <ostream>
 #include <string>
 
-#include "hesperia/data/situation/Immediately.h"
-#include "hesperia/data/situation/SituationVisitor.h"
-#include "hesperia/data/situation/StartType.h"
+#include "opendlv/data/situation/Immediately.h"
+#include "opendlv/data/situation/SituationVisitor.h"
+#include "opendlv/data/situation/StartType.h"
 
 namespace hesperia {
     namespace data {

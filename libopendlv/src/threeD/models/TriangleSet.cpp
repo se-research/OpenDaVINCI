@@ -27,14 +27,14 @@
 #include <vector>
 
 #include "opendavinci/core/opendavinci.h"
-#include "hesperia/data/environment/Point3.h"
-#include "hesperia/threeD/Material.h"
-#include "hesperia/threeD/Node.h"
-#include "hesperia/threeD/NodeDescriptor.h"
-#include "hesperia/threeD/NodeRenderingConfiguration.h"
-#include "hesperia/threeD/RenderingConfiguration.h"
-#include "hesperia/threeD/models/Triangle.h"
-#include "hesperia/threeD/models/TriangleSet.h"
+#include "opendlv/data/environment/Point3.h"
+#include "opendlv/threeD/Material.h"
+#include "opendlv/threeD/Node.h"
+#include "opendlv/threeD/NodeDescriptor.h"
+#include "opendlv/threeD/NodeRenderingConfiguration.h"
+#include "opendlv/threeD/RenderingConfiguration.h"
+#include "opendlv/threeD/models/Triangle.h"
+#include "opendlv/threeD/models/TriangleSet.h"
 
 namespace hesperia {
     namespace threeD {

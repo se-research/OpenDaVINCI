@@ -26,13 +26,13 @@
 #include "opendavinci/core/base/KeyValueDataStore.h"
 #include "opendavinci/core/data/Container.h"
 #include "opendavinci/core/wrapper/Time.h"
-#include "hesperia/data/environment/EgoState.h"
-#include "hesperia/data/environment/Line.h"
-#include "hesperia/data/environment/Obstacle.h"
-#include "hesperia/data/environment/OtherVehicleState.h"
-#include "hesperia/data/environment/Point3.h"
-#include "hesperia/data/environment/Polygon.h"
-#include "vehiclecontext/report/DistanceToObjectsReport.h"
+#include "opendlv/data/environment/EgoState.h"
+#include "opendlv/data/environment/Line.h"
+#include "opendlv/data/environment/Obstacle.h"
+#include "opendlv/data/environment/OtherVehicleState.h"
+#include "opendlv/data/environment/Point3.h"
+#include "opendlv/data/environment/Polygon.h"
+#include "opendlv/vehiclecontext/report/DistanceToObjectsReport.h"
 
 namespace vehiclecontext {
     namespace report {

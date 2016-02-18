@@ -25,7 +25,7 @@
 #include "opendavinci/core/base/Hash.h"
 #include "opendavinci/core/base/SerializationFactory.h"
 #include "opendavinci/core/base/Serializer.h"
-#include "hesperia/data/camera/ImageGrabberID.h"
+#include "opendlv/data/camera/ImageGrabberID.h"
 
 namespace hesperia {
     namespace data {

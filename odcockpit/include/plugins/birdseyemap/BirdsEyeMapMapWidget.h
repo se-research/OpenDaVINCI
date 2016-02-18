@@ -29,10 +29,10 @@
 #include "opendavinci/core/opendavinci.h"
 #include "opendavinci/core/base/Mutex.h"
 #include "opendavinci/core/io/conference/ContainerListener.h"
-#include "hesperia/data/environment/EgoState.h"
-#include "hesperia/data/environment/Point3.h"
-#include "hesperia/scenegraph/SceneNodeDescriptor.h"
-#include "hesperia/scenegraph/renderer/RenderingConfiguration.h"
+#include "opendlv/data/environment/EgoState.h"
+#include "opendlv/data/environment/Point3.h"
+#include "opendlv/scenegraph/SceneNodeDescriptor.h"
+#include "opendlv/scenegraph/renderer/RenderingConfiguration.h"
 #include "plugins/birdseyemap/SelectableNodeDescriptorTreeListener.h"
 
 class QMouseEvent;

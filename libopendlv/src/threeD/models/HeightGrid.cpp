@@ -28,13 +28,13 @@
 #include <string>
 
 #include "opendavinci/core/opendavinci.h"
-#include "hesperia/core/wrapper/Image.h"
-#include "hesperia/data/environment/Point3.h"
-#include "hesperia/threeD/Node.h"
-#include "hesperia/threeD/NodeDescriptor.h"
-#include "hesperia/threeD/NodeRenderingConfiguration.h"
-#include "hesperia/threeD/RenderingConfiguration.h"
-#include "hesperia/threeD/models/HeightGrid.h"
+#include "opendlv/core/wrapper/Image.h"
+#include "opendlv/data/environment/Point3.h"
+#include "opendlv/threeD/Node.h"
+#include "opendlv/threeD/NodeDescriptor.h"
+#include "opendlv/threeD/NodeRenderingConfiguration.h"
+#include "opendlv/threeD/RenderingConfiguration.h"
+#include "opendlv/threeD/models/HeightGrid.h"
 
 namespace hesperia {
     namespace threeD {

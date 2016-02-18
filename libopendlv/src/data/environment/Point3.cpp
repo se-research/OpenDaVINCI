@@ -31,7 +31,7 @@
 #include "opendavinci/core/strings/StringToolbox.h"
 #include "automotivedata/generated/cartesian/Constants.h"
 #include "automotivedata/generated/cartesian/Matrix3x3.h"
-#include "hesperia/data/environment/Point3.h"
+#include "opendlv/data/environment/Point3.h"
 
 namespace hesperia {
     namespace data {

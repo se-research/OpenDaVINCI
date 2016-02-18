@@ -27,13 +27,13 @@
 #include "opendavinci/core/base/SerializationFactory.h"
 #include "opendavinci/core/base/Serializer.h"
 #include "opendavinci/core/data/SerializableData.h"
-#include "hesperia/data/scenario/Arc.h"
-#include "hesperia/data/scenario/Clothoid.h"
-#include "hesperia/data/scenario/Lane.h"
-#include "hesperia/data/scenario/LaneModel.h"
-#include "hesperia/data/scenario/PointModel.h"
-#include "hesperia/data/scenario/ScenarioVisitor.h"
-#include "hesperia/data/scenario/StraightLine.h"
+#include "opendlv/data/scenario/Arc.h"
+#include "opendlv/data/scenario/Clothoid.h"
+#include "opendlv/data/scenario/Lane.h"
+#include "opendlv/data/scenario/LaneModel.h"
+#include "opendlv/data/scenario/PointModel.h"
+#include "opendlv/data/scenario/ScenarioVisitor.h"
+#include "opendlv/data/scenario/StraightLine.h"
 
 namespace hesperia {
     namespace data {

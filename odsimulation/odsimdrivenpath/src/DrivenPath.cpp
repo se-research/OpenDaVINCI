@@ -24,14 +24,14 @@
 #include "DrivenPath.h"
 #include "opendavinci/core/data/Container.h"
 #include "opendavinci/core/io/URL.h"
-#include "hesperia/core/wrapper/graph/DirectedGraph.h"
-#include "hesperia/data/environment/EgoState.h"
-#include "hesperia/data/environment/NamedLine.h"
-#include "hesperia/data/environment/Point3.h"
-#include "hesperia/data/scenario/Scenario.h"
-#include "hesperia/scenario/LaneVisitor.h"
-#include "hesperia/scenario/SCNXArchive.h"
-#include "hesperia/scenario/SCNXArchiveFactory.h"
+#include "opendlv/core/wrapper/graph/DirectedGraph.h"
+#include "opendlv/data/environment/EgoState.h"
+#include "opendlv/data/environment/NamedLine.h"
+#include "opendlv/data/environment/Point3.h"
+#include "opendlv/data/scenario/Scenario.h"
+#include "opendlv/scenario/LaneVisitor.h"
+#include "opendlv/scenario/SCNXArchive.h"
+#include "opendlv/scenario/SCNXArchiveFactory.h"
 
 namespace core { namespace base { class KeyValueDataStore; } }
 

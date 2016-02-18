@@ -25,29 +25,29 @@
 #include <string>
 
 #include "opendavinci/core/exceptions/Exceptions.h"
-#include "hesperia/data/scenario/Arc.h"
-#include "hesperia/data/scenario/BoundingBox.h"
-#include "hesperia/data/scenario/Clothoid.h"
-#include "hesperia/data/scenario/ComplexModel.h"
-#include "hesperia/data/scenario/Connector.h"
-#include "hesperia/data/scenario/Cylinder.h"
-#include "hesperia/data/scenario/IDVertex3.h"
-#include "hesperia/data/scenario/Lane.h"
-#include "hesperia/data/scenario/LaneAttribute.h"
-#include "hesperia/data/scenario/Layer.h"
-#include "hesperia/data/scenario/PointModel.h"
-#include "hesperia/data/scenario/Polygon.h"
-#include "hesperia/data/scenario/Road.h"
-#include "hesperia/data/scenario/Scenario.h"
-#include "hesperia/data/scenario/Shape.h"
-#include "hesperia/data/scenario/Spot.h"
-#include "hesperia/data/scenario/StraightLine.h"
-#include "hesperia/data/scenario/TrafficLight.h"
-#include "hesperia/data/scenario/TrafficSign.h"
-#include "hesperia/data/scenario/Vertex3.h"
-#include "hesperia/data/scenario/Zone.h"
-#include "hesperia/scenario/ScenarioFactory.h"
-#include "hesperia/scenario/ScenarioPrettyPrinter.h"
+#include "opendlv/data/scenario/Arc.h"
+#include "opendlv/data/scenario/BoundingBox.h"
+#include "opendlv/data/scenario/Clothoid.h"
+#include "opendlv/data/scenario/ComplexModel.h"
+#include "opendlv/data/scenario/Connector.h"
+#include "opendlv/data/scenario/Cylinder.h"
+#include "opendlv/data/scenario/IDVertex3.h"
+#include "opendlv/data/scenario/Lane.h"
+#include "opendlv/data/scenario/LaneAttribute.h"
+#include "opendlv/data/scenario/Layer.h"
+#include "opendlv/data/scenario/PointModel.h"
+#include "opendlv/data/scenario/Polygon.h"
+#include "opendlv/data/scenario/Road.h"
+#include "opendlv/data/scenario/Scenario.h"
+#include "opendlv/data/scenario/Shape.h"
+#include "opendlv/data/scenario/Spot.h"
+#include "opendlv/data/scenario/StraightLine.h"
+#include "opendlv/data/scenario/TrafficLight.h"
+#include "opendlv/data/scenario/TrafficSign.h"
+#include "opendlv/data/scenario/Vertex3.h"
+#include "opendlv/data/scenario/Zone.h"
+#include "opendlv/scenario/ScenarioFactory.h"
+#include "opendlv/scenario/ScenarioPrettyPrinter.h"
 
 using namespace std;
 using namespace hesperia::data::scenario;
@@ -81,7 +81,7 @@ class ScenarioTest : public CxxTest::TestSuite {
             try {
                 Scenario scn = ScenarioFactory::getInstance().getScenario(s.str());
             } catch (InvalidArgumentException &iae) {
-                //failed = (iae.toString() != "InvalidArgumentException: SCNGrammarErrorListener caught an unknown parser error at line: 3 in context \'SCENARIO Test-Scenario\nVERSION v1.0\n===Erroneous line===>>> DATE3 July-15-2008\n\'. at build/libhesperia/testing/src/scenario/ScenarioFactory.cpp: 60");
+                //failed = (iae.toString() != "InvalidArgumentException: SCNGrammarErrorListener caught an unknown parser error at line: 3 in context \'SCENARIO Test-Scenario\nVERSION v1.0\n===Erroneous line===>>> DATE3 July-15-2008\n\'. at build/libopendlv/testing/src/scenario/ScenarioFactory.cpp: 60");
                failed = false;
             }
             TS_ASSERT(!failed);

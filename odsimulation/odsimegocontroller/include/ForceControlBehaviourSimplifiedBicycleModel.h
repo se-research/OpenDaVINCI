@@ -22,8 +22,8 @@
 
 #include "ControlBehaviour.h"
 #include "opendavinci/core/data/TimeStamp.h"
-#include "hesperia/data/environment/EgoState.h"
-#include "hesperia/data/environment/Point3.h"
+#include "opendlv/data/environment/EgoState.h"
+#include "opendlv/data/environment/Point3.h"
 
 namespace egocontroller {
 

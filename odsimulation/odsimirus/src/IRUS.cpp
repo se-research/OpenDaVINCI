@@ -24,8 +24,8 @@
 #include "opendavinci/core/opendavinci.h"
 #include "opendavinci/core/base/Thread.h"
 #include "opendavinci/core/data/Container.h"
-#include "hesperia/data/environment/EgoState.h"
-#include "vehiclecontext/model/IRUS.h"
+#include "opendlv/data/environment/EgoState.h"
+#include "opendlv/vehiclecontext/model/IRUS.h"
 
 namespace core { namespace base { class KeyValueDataStore; } }
 

@@ -28,10 +28,10 @@
 #include "opendavinci/core/base/Serializable.h"
 #include "opendavinci/core/base/SerializationFactory.h"
 #include "opendavinci/core/base/Serializer.h"
-#include "hesperia/data/situation/OnEnteringPolygon.h"
-#include "hesperia/data/situation/SituationVisitor.h"
-#include "hesperia/data/situation/StartType.h"
-#include "hesperia/data/situation/Vertex3.h"
+#include "opendlv/data/situation/OnEnteringPolygon.h"
+#include "opendlv/data/situation/SituationVisitor.h"
+#include "opendlv/data/situation/StartType.h"
+#include "opendlv/data/situation/Vertex3.h"
 
 namespace hesperia {
     namespace data {

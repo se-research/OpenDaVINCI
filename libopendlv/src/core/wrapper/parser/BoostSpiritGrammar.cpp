@@ -21,9 +21,9 @@
 
 #include <boost/algorithm/string/trim.hpp>
 
-#include "hesperia/core/wrapper/parser/ASTNode.h"
-#include "hesperia/core/wrapper/parser/BoostSpiritGrammar.h"
-#include "hesperia/core/wrapper/parser/ParserTokenExtendedData.h"
+#include "opendlv/core/wrapper/parser/ASTNode.h"
+#include "opendlv/core/wrapper/parser/BoostSpiritGrammar.h"
+#include "opendlv/core/wrapper/parser/ParserTokenExtendedData.h"
 
 namespace core {
     namespace wrapper {

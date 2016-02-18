@@ -27,13 +27,13 @@
 #include "opendavinci/core/opendavinci.h"
 #include "opendavinci/core/strings/StringComparator.h"
 #include "automotivedata/generated/cartesian/Constants.h"
-#include "hesperia/data/environment/Point3.h"
-#include "hesperia/threeD/Material.h"
-#include "hesperia/threeD/NodeDescriptor.h"
-#include "hesperia/threeD/TextureManager.h"
-#include "hesperia/threeD/TransformGroup.h"
-#include "hesperia/threeD/loaders/OBJXArchive.h"
-#include "hesperia/threeD/models/TriangleSet.h"
+#include "opendlv/data/environment/Point3.h"
+#include "opendlv/threeD/Material.h"
+#include "opendlv/threeD/NodeDescriptor.h"
+#include "opendlv/threeD/TextureManager.h"
+#include "opendlv/threeD/TransformGroup.h"
+#include "opendlv/threeD/loaders/OBJXArchive.h"
+#include "opendlv/threeD/models/TriangleSet.h"
 
 namespace core { namespace wrapper { class Image; } }
 

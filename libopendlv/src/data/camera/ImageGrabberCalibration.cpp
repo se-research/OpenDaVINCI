@@ -25,9 +25,9 @@
 #include "opendavinci/core/base/Hash.h"
 #include "opendavinci/core/base/SerializationFactory.h"
 #include "opendavinci/core/base/Serializer.h"
-#include "hesperia/data/camera/ExtrinsicParameters.h"
-#include "hesperia/data/camera/ImageGrabberCalibration.h"
-#include "hesperia/data/camera/IntrinsicParameters.h"
+#include "opendlv/data/camera/ExtrinsicParameters.h"
+#include "opendlv/data/camera/ImageGrabberCalibration.h"
+#include "opendlv/data/camera/IntrinsicParameters.h"
 
 namespace hesperia {
     namespace data {

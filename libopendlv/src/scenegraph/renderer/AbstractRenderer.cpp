@@ -19,10 +19,10 @@
 
 #include "opendavinci/core/opendavinci.h"
 
-#include "hesperia/scenegraph/renderer/AbstractRenderer.h"
-#include "hesperia/scenegraph/primitives/Line.h"
-#include "hesperia/scenegraph/primitives/Point.h"
-#include "hesperia/scenegraph/primitives/Polygon.h"
+#include "opendlv/scenegraph/renderer/AbstractRenderer.h"
+#include "opendlv/scenegraph/primitives/Line.h"
+#include "opendlv/scenegraph/primitives/Point.h"
+#include "opendlv/scenegraph/primitives/Polygon.h"
 
 namespace hesperia { namespace scenegraph { class SceneNode; } }
 

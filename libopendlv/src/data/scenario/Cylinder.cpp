@@ -25,10 +25,10 @@
 #include "opendavinci/core/base/Hash.h"
 #include "opendavinci/core/base/SerializationFactory.h"
 #include "opendavinci/core/base/Serializer.h"
-#include "hesperia/data/scenario/Cylinder.h"
-#include "hesperia/data/scenario/ScenarioVisitor.h"
-#include "hesperia/data/scenario/Shape.h"
-#include "hesperia/data/scenario/Vertex3.h"
+#include "opendlv/data/scenario/Cylinder.h"
+#include "opendlv/data/scenario/ScenarioVisitor.h"
+#include "opendlv/data/scenario/Shape.h"
+#include "opendlv/data/scenario/Vertex3.h"
 
 namespace hesperia {
     namespace data {

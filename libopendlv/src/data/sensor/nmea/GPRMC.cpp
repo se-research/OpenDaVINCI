@@ -28,8 +28,8 @@
 #include "opendavinci/core/base/Serializer.h"
 #include "opendavinci/core/data/SerializableData.h"
 #include "opendavinci/core/data/TimeStamp.h"
-#include "hesperia/data/environment/WGS84Coordinate.h"
-#include "hesperia/data/sensor/nmea/GPRMC.h"
+#include "opendlv/data/environment/WGS84Coordinate.h"
+#include "opendlv/data/sensor/nmea/GPRMC.h"
 
 namespace hesperia {
     namespace data {

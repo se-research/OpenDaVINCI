@@ -29,9 +29,9 @@
 #include "opendavinci/core/base/SerializationFactory.h"
 #include "opendavinci/core/base/Serializer.h"
 #include "opendavinci/core/data/SerializableData.h"
-#include "hesperia/data/scenario/Lane.h"
-#include "hesperia/data/scenario/Road.h"
-#include "hesperia/data/scenario/ScenarioVisitor.h"
+#include "opendlv/data/scenario/Lane.h"
+#include "opendlv/data/scenario/Road.h"
+#include "opendlv/data/scenario/ScenarioVisitor.h"
 
 namespace hesperia {
     namespace data {

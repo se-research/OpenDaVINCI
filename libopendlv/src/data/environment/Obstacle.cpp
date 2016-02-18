@@ -26,10 +26,10 @@
 #include "opendavinci/core/base/Hash.h"
 #include "opendavinci/core/base/SerializationFactory.h"
 #include "opendavinci/core/base/Serializer.h"
-#include "hesperia/data/environment/Obstacle.h"
-#include "hesperia/data/environment/Point3.h"
-#include "hesperia/data/environment/PointShapedObject.h"
-#include "hesperia/data/environment/Polygon.h"
+#include "opendlv/data/environment/Obstacle.h"
+#include "opendlv/data/environment/Point3.h"
+#include "opendlv/data/environment/PointShapedObject.h"
+#include "opendlv/data/environment/Polygon.h"
 
 namespace hesperia {
     namespace data {

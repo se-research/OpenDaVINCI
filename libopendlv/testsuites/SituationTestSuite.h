@@ -26,24 +26,24 @@
 #include <vector>
 
 #include "opendavinci/core/exceptions/Exceptions.h"
-#include "hesperia/data/situation/ComplexModel.h"
-#include "hesperia/data/situation/Immediately.h"
-#include "hesperia/data/situation/Object.h"
-#include "hesperia/data/situation/OnEnteringPolygon.h"
-#include "hesperia/data/situation/OnMoving.h"
-#include "hesperia/data/situation/PointID.h"
-#include "hesperia/data/situation/PointIDDriver.h"
-#include "hesperia/data/situation/Polygon.h"
-#include "hesperia/data/situation/Rectangle.h"
-#include "hesperia/data/situation/Situation.h"
-#include "hesperia/data/situation/ReturnToStart.h"
-#include "hesperia/data/situation/StartType.h"
-#include "hesperia/data/situation/Stop.h"
-#include "hesperia/data/situation/StopType.h"
-#include "hesperia/data/situation/WarpToStart.h"
-#include "hesperia/data/situation/Vertex3.h"
-#include "hesperia/situation/SituationFactory.h"
-#include "hesperia/situation/SituationPrettyPrinter.h"
+#include "opendlv/data/situation/ComplexModel.h"
+#include "opendlv/data/situation/Immediately.h"
+#include "opendlv/data/situation/Object.h"
+#include "opendlv/data/situation/OnEnteringPolygon.h"
+#include "opendlv/data/situation/OnMoving.h"
+#include "opendlv/data/situation/PointID.h"
+#include "opendlv/data/situation/PointIDDriver.h"
+#include "opendlv/data/situation/Polygon.h"
+#include "opendlv/data/situation/Rectangle.h"
+#include "opendlv/data/situation/Situation.h"
+#include "opendlv/data/situation/ReturnToStart.h"
+#include "opendlv/data/situation/StartType.h"
+#include "opendlv/data/situation/Stop.h"
+#include "opendlv/data/situation/StopType.h"
+#include "opendlv/data/situation/WarpToStart.h"
+#include "opendlv/data/situation/Vertex3.h"
+#include "opendlv/situation/SituationFactory.h"
+#include "opendlv/situation/SituationPrettyPrinter.h"
 
 using namespace std;
 using namespace hesperia::data::situation;
@@ -64,7 +64,7 @@ class SituationTest : public CxxTest::TestSuite {
             try {
                 Situation sit = SituationFactory::getInstance().getSituation(s.str());
             } catch (InvalidArgumentException &iae) {
-                //failed = (iae.toString() != "InvalidArgumentException: SITGrammarErrorListener caught an unknown parser error at line: 3 in context \'SITUATION Test-Situation\nVERSION v1.0\n===Erroneous line===>>> DATE3 July-15-2008\nSCENARIO Test-Szenario\n\'. at build/libhesperia/testing/src/situation/SituationFactory.cpp: 60");
+                //failed = (iae.toString() != "InvalidArgumentException: SITGrammarErrorListener caught an unknown parser error at line: 3 in context \'SITUATION Test-Situation\nVERSION v1.0\n===Erroneous line===>>> DATE3 July-15-2008\nSCENARIO Test-Szenario\n\'. at build/libopendlv/testing/src/situation/SituationFactory.cpp: 60");
                 failed = false;
             }
             TS_ASSERT(!failed);

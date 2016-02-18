@@ -25,9 +25,9 @@
 #include "opendavinci/core/base/Hash.h"
 #include "opendavinci/core/base/SerializationFactory.h"
 #include "opendavinci/core/base/Serializer.h"
-#include "hesperia/data/scenario/HeightImage.h"
-#include "hesperia/data/scenario/Image.h"
-#include "hesperia/data/scenario/ScenarioVisitor.h"
+#include "opendlv/data/scenario/HeightImage.h"
+#include "opendlv/data/scenario/Image.h"
+#include "opendlv/data/scenario/ScenarioVisitor.h"
 
 namespace hesperia {
     namespace data {

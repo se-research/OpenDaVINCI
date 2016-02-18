@@ -18,8 +18,8 @@
  */
 
 #include "opendavinci/core/opendavinci.h"
-#include "hesperia/core/wrapper/OpenCV/OpenCVImage.h"
-#include "hesperia/core/wrapper/OpenCV/OpenCVImageFactory.h"
+#include "opendlv/core/wrapper/OpenCV/OpenCVImage.h"
+#include "opendlv/core/wrapper/OpenCV/OpenCVImageFactory.h"
 
 namespace core {
     namespace wrapper {

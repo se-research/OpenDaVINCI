@@ -21,7 +21,7 @@
 #ifndef PLUGINS_ENVIRONMENTVIEWER_TREENODEVISITOR_H_
 #define PLUGINS_ENVIRONMENTVIEWER_TREENODEVISITOR_H_
 
-#include "hesperia/threeD/TransformGroupVisitor.h"
+#include "opendlv/threeD/TransformGroupVisitor.h"
 
 namespace core { namespace base { template <typename T> class TreeNode; } }
 namespace hesperia { namespace threeD { class Node; } }

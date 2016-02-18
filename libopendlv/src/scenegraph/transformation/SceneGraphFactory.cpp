@@ -21,11 +21,11 @@
 
 #include "opendavinci/core/base/Lock.h"
 #include "opendavinci/core/base/Mutex.h"
-#include "hesperia/data/scenario/Scenario.h"
-#include "hesperia/scenario/SCNXArchive.h"
-#include "hesperia/scenegraph/SceneNode.h"
-#include "hesperia/scenegraph/transformation/ScenarioTransformation.h"
-#include "hesperia/scenegraph/transformation/SceneGraphFactory.h"
+#include "opendlv/data/scenario/Scenario.h"
+#include "opendlv/scenario/SCNXArchive.h"
+#include "opendlv/scenegraph/SceneNode.h"
+#include "opendlv/scenegraph/transformation/ScenarioTransformation.h"
+#include "opendlv/scenegraph/transformation/SceneGraphFactory.h"
 
 namespace hesperia {
     namespace scenegraph {

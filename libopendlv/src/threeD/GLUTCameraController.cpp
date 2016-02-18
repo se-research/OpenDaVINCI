@@ -19,8 +19,8 @@
 
 #include <GL/freeglut.h>
 
-#include "hesperia/threeD/Camera.h"
-#include "hesperia/threeD/GLUTCameraController.h"
+#include "opendlv/threeD/Camera.h"
+#include "opendlv/threeD/GLUTCameraController.h"
 
 namespace hesperia {
     namespace threeD {

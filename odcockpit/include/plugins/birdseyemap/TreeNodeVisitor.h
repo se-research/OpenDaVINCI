@@ -20,7 +20,7 @@
 #ifndef PLUGINS_BIRDSEYEMAP_TREENODEVISITOR_H_
 #define PLUGINS_BIRDSEYEMAP_TREENODEVISITOR_H_
 
-#include "hesperia/scenegraph/SceneNodeVisitor.h"
+#include "opendlv/scenegraph/SceneNodeVisitor.h"
 
 namespace core { namespace base { template <typename T> class TreeNode; } }
 namespace hesperia { namespace scenegraph { class SceneNode; } }

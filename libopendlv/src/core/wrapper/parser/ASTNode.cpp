@@ -22,8 +22,8 @@
 #include <iostream>
 
 #include "opendavinci/core/opendavinci.h"
-#include "hesperia/core/wrapper/parser/ASTNode.h"
-#include "hesperia/core/wrapper/parser/ASTVisitor.h"
+#include "opendlv/core/wrapper/parser/ASTNode.h"
+#include "opendlv/core/wrapper/parser/ASTVisitor.h"
 
 namespace core {
     namespace wrapper {

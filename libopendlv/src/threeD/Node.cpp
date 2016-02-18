@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "hesperia/threeD/Node.h"
+#include "opendlv/threeD/Node.h"
 
 namespace hesperia {
     namespace threeD {

@@ -26,7 +26,7 @@
 #include "opendavinci/core/base/FIFOQueue.h"
 #include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
-#include "hesperia/data/environment/EgoState.h"
+#include "opendlv/data/environment/EgoState.h"
 
 namespace core { namespace wrapper { class Image; } }
 

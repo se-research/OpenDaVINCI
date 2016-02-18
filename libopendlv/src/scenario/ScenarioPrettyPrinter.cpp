@@ -21,8 +21,8 @@
 #include <string>
 
 #include "opendavinci/core/data/SerializableData.h"
-#include "hesperia/data/scenario/ScenarioNode.h"
-#include "hesperia/scenario/ScenarioPrettyPrinter.h"
+#include "opendlv/data/scenario/ScenarioNode.h"
+#include "opendlv/scenario/ScenarioPrettyPrinter.h"
 
 namespace hesperia {
     namespace scenario {

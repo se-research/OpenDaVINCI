@@ -24,15 +24,15 @@
 
 #include "opendavinci/core/SharedPointer.h"
 #include "opendavinci/core/opendavinci.h"
-#include "hesperia/data/environment/Point3.h"
-#include "hesperia/data/scenario/ComplexModel.h"
-#include "hesperia/data/scenario/Vertex3.h"
-#include "hesperia/scenario/GroundBasedComplexModelLoader.h"
-#include "hesperia/scenario/SCNXArchive.h"
-#include "hesperia/threeD/NodeDescriptor.h"
-#include "hesperia/threeD/TransformGroup.h"
-#include "hesperia/threeD/loaders/OBJXArchive.h"
-#include "hesperia/threeD/loaders/OBJXArchiveFactory.h"
+#include "opendlv/data/environment/Point3.h"
+#include "opendlv/data/scenario/ComplexModel.h"
+#include "opendlv/data/scenario/Vertex3.h"
+#include "opendlv/scenario/GroundBasedComplexModelLoader.h"
+#include "opendlv/scenario/SCNXArchive.h"
+#include "opendlv/threeD/NodeDescriptor.h"
+#include "opendlv/threeD/TransformGroup.h"
+#include "opendlv/threeD/loaders/OBJXArchive.h"
+#include "opendlv/threeD/loaders/OBJXArchiveFactory.h"
 
 namespace hesperia { namespace threeD { class Node; } }
 

@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "hesperia/io/camera/ImageGrabber.h"
+#include "opendlv/io/camera/ImageGrabber.h"
 
 namespace hesperia {
     namespace io {

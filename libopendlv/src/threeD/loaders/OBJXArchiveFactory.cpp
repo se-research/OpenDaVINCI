@@ -28,9 +28,9 @@
 #include "opendavinci/core/opendavinci.h"
 #include "opendavinci/core/wrapper/CompressionFactory.h"
 #include "opendavinci/core/wrapper/DecompressedData.h"
-#include "hesperia/core/wrapper/ImageFactory.h"
-#include "hesperia/threeD/loaders/OBJXArchive.h"
-#include "hesperia/threeD/loaders/OBJXArchiveFactory.h"
+#include "opendlv/core/wrapper/ImageFactory.h"
+#include "opendlv/threeD/loaders/OBJXArchive.h"
+#include "opendlv/threeD/loaders/OBJXArchiveFactory.h"
 
 namespace core { namespace wrapper { class Image; } }
 

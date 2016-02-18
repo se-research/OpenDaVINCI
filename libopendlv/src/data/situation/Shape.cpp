@@ -27,8 +27,8 @@
 #include "opendavinci/core/base/SerializationFactory.h"
 #include "opendavinci/core/base/Serializer.h"
 #include "opendavinci/core/data/SerializableData.h"
-#include "hesperia/data/situation/Shape.h"
-#include "hesperia/data/situation/Vertex3.h"
+#include "opendlv/data/situation/Shape.h"
+#include "opendlv/data/situation/Vertex3.h"
 
 namespace hesperia {
     namespace data {

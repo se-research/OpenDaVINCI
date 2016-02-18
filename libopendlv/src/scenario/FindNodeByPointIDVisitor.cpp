@@ -17,17 +17,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "hesperia/data/scenario/IDVertex3.h"
-#include "hesperia/data/scenario/Arc.h"
-#include "hesperia/data/scenario/Clothoid.h"
-#include "hesperia/data/scenario/Road.h"
-#include "hesperia/data/scenario/Lane.h"
-#include "hesperia/data/scenario/Layer.h"
-#include "hesperia/data/scenario/PointID.h"
-#include "hesperia/data/scenario/PointModel.h"
-#include "hesperia/data/scenario/ScenarioNode.h"
-#include "hesperia/data/situation/PointID.h"
-#include "hesperia/scenario/FindNodeByPointIDVisitor.h"
+#include "opendlv/data/scenario/IDVertex3.h"
+#include "opendlv/data/scenario/Arc.h"
+#include "opendlv/data/scenario/Clothoid.h"
+#include "opendlv/data/scenario/Road.h"
+#include "opendlv/data/scenario/Lane.h"
+#include "opendlv/data/scenario/Layer.h"
+#include "opendlv/data/scenario/PointID.h"
+#include "opendlv/data/scenario/PointModel.h"
+#include "opendlv/data/scenario/ScenarioNode.h"
+#include "opendlv/data/situation/PointID.h"
+#include "opendlv/scenario/FindNodeByPointIDVisitor.h"
 
 namespace hesperia { namespace data { namespace scenario { class LaneModel; } } }
 

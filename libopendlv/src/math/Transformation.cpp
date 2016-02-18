@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "hesperia/data/environment/Position.h"
-#include "hesperia/math/Transformation.h"
+#include "opendlv/data/environment/Position.h"
+#include "opendlv/math/Transformation.h"
 
 namespace hesperia {
     namespace math {

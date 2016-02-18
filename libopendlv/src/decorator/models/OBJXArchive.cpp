@@ -26,11 +26,11 @@
 
 #include "opendavinci/core/opendavinci.h"
 #include "opendavinci/core/strings/StringComparator.h"
-#include "hesperia/data/environment/Point3.h"
-#include "hesperia/decorator/models/Material.h"
-#include "hesperia/decorator/models/OBJXArchive.h"
-#include "hesperia/decorator/models/Triangle.h"
-#include "hesperia/decorator/models/TriangleSet.h"
+#include "opendlv/data/environment/Point3.h"
+#include "opendlv/decorator/models/Material.h"
+#include "opendlv/decorator/models/OBJXArchive.h"
+#include "opendlv/decorator/models/Triangle.h"
+#include "opendlv/decorator/models/TriangleSet.h"
 
 namespace core { namespace wrapper { class Image; } }
 

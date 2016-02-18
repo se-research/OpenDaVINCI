@@ -25,7 +25,7 @@
 
 #include "opendavinci/core/base/Lock.h"
 #include "opendavinci/core/data/Container.h"
-#include "hesperia/data/environment/EgoState.h"
+#include "opendlv/data/environment/EgoState.h"
 
 #include "plugins/streetmapviewer/StreetMapMapWidget.h"
 #include "plugins/streetmapviewer/slippymap.h"

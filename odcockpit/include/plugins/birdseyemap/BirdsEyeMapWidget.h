@@ -31,7 +31,7 @@
 #include "opendavinci/core/base/Mutex.h"
 #include "opendavinci/core/io/conference/ContainerListener.h"
 #include "opendavinci/core/strings/StringComparator.h"
-#include "hesperia/scenegraph/SceneNodeDescriptor.h"
+#include "opendlv/scenegraph/SceneNodeDescriptor.h"
 #include "plugins/birdseyemap/CameraAssignableNodesListener.h"
 #include "plugins/birdseyemap/SelectableNodeDescriptorTreeListener.h"
 

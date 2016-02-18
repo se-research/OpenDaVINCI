@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "hesperia/core/wrapper/Image.h"
+#include "opendlv/core/wrapper/Image.h"
 
 namespace core {
     namespace wrapper {

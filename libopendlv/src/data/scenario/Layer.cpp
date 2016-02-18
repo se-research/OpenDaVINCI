@@ -29,10 +29,10 @@
 #include "opendavinci/core/base/SerializationFactory.h"
 #include "opendavinci/core/base/Serializer.h"
 #include "opendavinci/core/data/SerializableData.h"
-#include "hesperia/data/scenario/Layer.h"
-#include "hesperia/data/scenario/Road.h"
-#include "hesperia/data/scenario/ScenarioVisitor.h"
-#include "hesperia/data/scenario/Zone.h"
+#include "opendlv/data/scenario/Layer.h"
+#include "opendlv/data/scenario/Road.h"
+#include "opendlv/data/scenario/ScenarioVisitor.h"
+#include "opendlv/data/scenario/Zone.h"
 
 namespace hesperia {
     namespace data {

@@ -26,7 +26,7 @@
 #include "opendavinci/core/base/SerializationFactory.h"
 #include "opendavinci/core/base/Serializer.h"
 #include "opendavinci/core/data/SerializableData.h"
-#include "hesperia/data/sensor/LMS291Message.h"
+#include "opendlv/data/sensor/LMS291Message.h"
 
 namespace hesperia {
     namespace data {

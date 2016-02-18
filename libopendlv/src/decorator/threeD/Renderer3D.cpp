@@ -29,11 +29,11 @@
 
 #include "opendavinci/core/opendavinci.h"
 #include "automotivedata/generated/cartesian/Constants.h"
-#include "hesperia/data/environment/Point3.h"
-#include "hesperia/decorator/models/Material.h"
-#include "hesperia/decorator/models/TriangleSet.h"
-#include "hesperia/decorator/threeD/Renderer3D.h"
-#include "hesperia/threeD/TextureManager.h"
+#include "opendlv/data/environment/Point3.h"
+#include "opendlv/decorator/models/Material.h"
+#include "opendlv/decorator/models/TriangleSet.h"
+#include "opendlv/decorator/threeD/Renderer3D.h"
+#include "opendlv/threeD/TextureManager.h"
 
 namespace core { namespace wrapper { class Image; } }
 

@@ -26,11 +26,11 @@
 #include <string>
 
 #include "opendavinci/core/opendavinci.h"
-#include "hesperia/threeD/Node.h"
-#include "hesperia/threeD/NodeDescriptor.h"
-#include "hesperia/threeD/NodeRenderingConfiguration.h"
-#include "hesperia/threeD/RenderingConfiguration.h"
-#include "hesperia/threeD/models/Grid.h"
+#include "opendlv/threeD/Node.h"
+#include "opendlv/threeD/NodeDescriptor.h"
+#include "opendlv/threeD/NodeRenderingConfiguration.h"
+#include "opendlv/threeD/RenderingConfiguration.h"
+#include "opendlv/threeD/models/Grid.h"
 
 namespace hesperia {
     namespace threeD {

@@ -26,7 +26,7 @@
 #include "opendavinci/core/base/SerializationFactory.h"
 #include "opendavinci/core/base/Serializer.h"
 #include "opendavinci/core/data/SerializableData.h"
-#include "hesperia/data/scenario/CoordinateSystem.h"
+#include "opendlv/data/scenario/CoordinateSystem.h"
 
 namespace hesperia {
     namespace data {

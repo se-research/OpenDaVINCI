@@ -25,11 +25,11 @@
 
 #include "opendavinci/core/SharedPointer.h"
 #include "opendavinci/core/base/KeyValueConfiguration.h"
-#include "hesperia/core/wrapper/Image.h"
+#include "opendlv/core/wrapper/Image.h"
 #include "opendavinci/core/wrapper/SharedMemory.h"
-#include "hesperia/data/camera/ImageGrabberID.h"
-#include "hesperia/io/camera/ImageGrabber.h"
-#include "hesperia/threeD/TransformGroup.h"
+#include "opendlv/data/camera/ImageGrabberID.h"
+#include "opendlv/io/camera/ImageGrabber.h"
+#include "opendlv/threeD/TransformGroup.h"
 
 namespace core { namespace base { class FIFOQueue; } }
 namespace hesperia { namespace data { namespace camera { class ImageGrabberCalibration; } } }

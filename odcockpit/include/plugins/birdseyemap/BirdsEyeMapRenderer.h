@@ -21,7 +21,7 @@
 #define PLUGINS_BIRDSEYEMAP_BIRDSEYEMAPRENDERER_H_
 
 #include "opendavinci/core/opendavinci.h"
-#include "hesperia/scenegraph/renderer/AbstractRenderer.h"
+#include "opendlv/scenegraph/renderer/AbstractRenderer.h"
 
 class QPainter;
 namespace hesperia { namespace scenegraph { namespace primitives { class Line; } } }

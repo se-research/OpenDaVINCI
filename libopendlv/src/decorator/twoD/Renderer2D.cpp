@@ -21,10 +21,10 @@
 
 #include "opendavinci/core/opendavinci.h"
 #include "automotivedata/generated/cartesian/Constants.h"
-#include "hesperia/data/environment/Point3.h"
-#include "hesperia/decorator/models/Material.h"
-#include "hesperia/decorator/models/TriangleSet.h"
-#include "hesperia/decorator/twoD/Renderer2D.h"
+#include "opendlv/data/environment/Point3.h"
+#include "opendlv/decorator/models/Material.h"
+#include "opendlv/decorator/models/TriangleSet.h"
+#include "opendlv/decorator/twoD/Renderer2D.h"
 
 namespace hesperia {
     namespace decorator {

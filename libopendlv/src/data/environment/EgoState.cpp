@@ -20,9 +20,9 @@
 #include <ostream>
 #include <string>
 
-#include "hesperia/data/environment/EgoState.h"
-#include "hesperia/data/environment/Point3.h"
-#include "hesperia/data/environment/PointShapedObject.h"
+#include "opendlv/data/environment/EgoState.h"
+#include "opendlv/data/environment/Point3.h"
+#include "opendlv/data/environment/PointShapedObject.h"
 
 namespace hesperia {
     namespace data {

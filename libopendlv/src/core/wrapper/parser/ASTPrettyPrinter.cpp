@@ -19,8 +19,8 @@
 
 #include <iostream>
 
-#include "hesperia/core/wrapper/parser/ASTNode.h"
-#include "hesperia/core/wrapper/parser/ASTPrettyPrinter.h"
+#include "opendlv/core/wrapper/parser/ASTNode.h"
+#include "opendlv/core/wrapper/parser/ASTPrettyPrinter.h"
 
 namespace core {
     namespace wrapper {

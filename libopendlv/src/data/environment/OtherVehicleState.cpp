@@ -26,9 +26,9 @@
 #include "opendavinci/core/base/Hash.h"
 #include "opendavinci/core/base/SerializationFactory.h"
 #include "opendavinci/core/base/Serializer.h"
-#include "hesperia/data/environment/OtherVehicleState.h"
-#include "hesperia/data/environment/Point3.h"
-#include "hesperia/data/environment/PointShapedObject.h"
+#include "opendlv/data/environment/OtherVehicleState.h"
+#include "opendlv/data/environment/Point3.h"
+#include "opendlv/data/environment/PointShapedObject.h"
 
 namespace hesperia {
     namespace data {

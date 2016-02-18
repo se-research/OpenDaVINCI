@@ -21,15 +21,15 @@
 
 #include "opendavinci/core/opendavinci.h"
 #include "opendavinci/core/exceptions/Exceptions.h"
-#include "hesperia/core/wrapper/parser/ASTNode.h"
-#include "hesperia/data/situation/Header.h"
-#include "hesperia/data/situation/Immediately.h"
-#include "hesperia/data/situation/Object.h"
-#include "hesperia/data/situation/ReturnToStart.h"
-#include "hesperia/data/situation/Stop.h"
-#include "hesperia/data/situation/Vertex3.h"
-#include "hesperia/data/situation/WarpToStart.h"
-#include "hesperia/situation/SITSituationVisitor.h"
+#include "opendlv/core/wrapper/parser/ASTNode.h"
+#include "opendlv/data/situation/Header.h"
+#include "opendlv/data/situation/Immediately.h"
+#include "opendlv/data/situation/Object.h"
+#include "opendlv/data/situation/ReturnToStart.h"
+#include "opendlv/data/situation/Stop.h"
+#include "opendlv/data/situation/Vertex3.h"
+#include "opendlv/data/situation/WarpToStart.h"
+#include "opendlv/situation/SITSituationVisitor.h"
 
 namespace hesperia { namespace data { namespace situation { class Behavior; } } }
 namespace hesperia { namespace data { namespace situation { class ComplexModel; } } }

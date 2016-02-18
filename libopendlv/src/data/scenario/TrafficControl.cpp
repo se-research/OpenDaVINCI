@@ -27,12 +27,12 @@
 #include "opendavinci/core/base/SerializationFactory.h"
 #include "opendavinci/core/base/Serializer.h"
 #include "opendavinci/core/data/SerializableData.h"
-#include "hesperia/data/scenario/ComplexModel.h"
-#include "hesperia/data/scenario/Cylinder.h"
-#include "hesperia/data/scenario/IDVertex3.h"
-#include "hesperia/data/scenario/Polygon.h"
-#include "hesperia/data/scenario/Shape.h"
-#include "hesperia/data/scenario/TrafficControl.h"
+#include "opendlv/data/scenario/ComplexModel.h"
+#include "opendlv/data/scenario/Cylinder.h"
+#include "opendlv/data/scenario/IDVertex3.h"
+#include "opendlv/data/scenario/Polygon.h"
+#include "opendlv/data/scenario/Shape.h"
+#include "opendlv/data/scenario/TrafficControl.h"
 
 namespace hesperia {
     namespace data {

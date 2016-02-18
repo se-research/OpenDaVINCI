@@ -30,9 +30,9 @@
 #include "opendavinci/core/base/Serializable.h"
 #include "opendavinci/core/base/SerializationFactory.h"
 #include "opendavinci/core/base/Serializer.h"
-#include "hesperia/data/environment/Line.h"
-#include "hesperia/data/environment/Point3.h"
-#include "hesperia/data/environment/Polygon.h"
+#include "opendlv/data/environment/Line.h"
+#include "opendlv/data/environment/Point3.h"
+#include "opendlv/data/environment/Polygon.h"
 
 namespace hesperia {
     namespace data {

@@ -21,8 +21,8 @@
 #include <string>
 
 #include "opendavinci/core/data/SerializableData.h"
-#include "hesperia/data/situation/SituationNode.h"
-#include "hesperia/situation/SituationPrettyPrinter.h"
+#include "opendlv/data/situation/SituationNode.h"
+#include "opendlv/situation/SituationPrettyPrinter.h"
 
 namespace hesperia {
     namespace situation {

@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "hesperia/data/scenario/ScenarioVisitor.h"
+#include "opendlv/data/scenario/ScenarioVisitor.h"
 
 namespace hesperia {
     namespace data {

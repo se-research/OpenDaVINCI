@@ -22,7 +22,7 @@
 
 #include <string>
 
-#include "hesperia/data/environment/WGS84Coordinate.h"
+#include "opendlv/data/environment/WGS84Coordinate.h"
 
 #include "plugins/PlugIn.h"
 

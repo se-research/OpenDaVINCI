@@ -29,7 +29,7 @@
 #include <opencv/highgui.h>
 
 #include "opendavinci/core/opendavinci.h"
-#include "hesperia/core/wrapper/OpenCV/OpenCVImage.h"
+#include "opendlv/core/wrapper/OpenCV/OpenCVImage.h"
 
 namespace core {
     namespace wrapper {

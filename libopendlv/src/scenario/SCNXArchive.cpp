@@ -23,15 +23,15 @@
 
 #include "opendavinci/core/SharedPointer.h"
 #include "opendavinci/core/opendavinci.h"
-#include "hesperia/data/scenario/Ground.h"
-#include "hesperia/data/scenario/HeightImage.h"
-#include "hesperia/data/scenario/Image.h"
-#include "hesperia/data/scenario/Scenario.h"
-#include "hesperia/data/scenario/Surroundings.h"
-#include "hesperia/data/situation/Situation.h"
-#include "hesperia/scenario/SCNXArchive.h"
-#include "hesperia/situation/SituationFactory.h"
-#include "hesperia/core/wrapper/ImageFactory.h"
+#include "opendlv/data/scenario/Ground.h"
+#include "opendlv/data/scenario/HeightImage.h"
+#include "opendlv/data/scenario/Image.h"
+#include "opendlv/data/scenario/Scenario.h"
+#include "opendlv/data/scenario/Surroundings.h"
+#include "opendlv/data/situation/Situation.h"
+#include "opendlv/scenario/SCNXArchive.h"
+#include "opendlv/situation/SituationFactory.h"
+#include "opendlv/core/wrapper/ImageFactory.h"
 
 namespace core { namespace wrapper { class DecompressedData; } }
 namespace core { namespace wrapper { class Image; } }

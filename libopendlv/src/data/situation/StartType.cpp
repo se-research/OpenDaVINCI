@@ -27,7 +27,7 @@
 #include "opendavinci/core/base/SerializationFactory.h"
 #include "opendavinci/core/base/Serializer.h"
 #include "opendavinci/core/data/SerializableData.h"
-#include "hesperia/data/situation/StartType.h"
+#include "opendlv/data/situation/StartType.h"
 
 namespace hesperia {
     namespace data {

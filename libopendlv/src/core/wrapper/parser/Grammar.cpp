@@ -17,11 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "hesperia/core/wrapper/parser/Grammar.h"
-#include "hesperia/core/wrapper/parser/ParserErrorExtendedData.h"
-#include "hesperia/core/wrapper/parser/ParserErrorListener.h"
-#include "hesperia/core/wrapper/parser/ParserTokenExtendedData.h"
-#include "hesperia/core/wrapper/parser/ParserTokenListener.h"
+#include "opendlv/core/wrapper/parser/Grammar.h"
+#include "opendlv/core/wrapper/parser/ParserErrorExtendedData.h"
+#include "opendlv/core/wrapper/parser/ParserErrorListener.h"
+#include "opendlv/core/wrapper/parser/ParserTokenExtendedData.h"
+#include "opendlv/core/wrapper/parser/ParserTokenListener.h"
 
 namespace core {
     namespace wrapper {

@@ -30,7 +30,7 @@
 
 #include "opendavinci/core/opendavinci.h"
 #include "opendavinci/core/data/Container.h"
-#include "hesperia/data/environment/EgoState.h"
+#include "opendlv/data/environment/EgoState.h"
 
 #include "plugins/streetmapviewer/StreetMapWidget.h"
 

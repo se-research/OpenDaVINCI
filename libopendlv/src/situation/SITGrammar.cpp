@@ -22,9 +22,9 @@
 #include <string>
 
 #include "opendavinci/core/opendavinci.h"
-#include "hesperia/core/wrapper/parser/ASTNode.h"
-#include "hesperia/core/wrapper/parser/BoostSpiritGrammar.h"
-#include "hesperia/situation/SITGrammar.h"
+#include "opendlv/core/wrapper/parser/ASTNode.h"
+#include "opendlv/core/wrapper/parser/BoostSpiritGrammar.h"
+#include "opendlv/situation/SITGrammar.h"
 
 namespace core { namespace wrapper { namespace parser { class ParserErrorListener; } } }
 namespace core { namespace wrapper { namespace parser { class ParserTokenListener; } } }

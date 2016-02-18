@@ -19,11 +19,11 @@
 
 #include "opendavinci/core/opendavinci.h"
 #include "automotivedata/generated/cartesian/Constants.h"
-#include "hesperia/data/environment/Point3.h"
-#include "hesperia/scenegraph/SceneNode.h"
-#include "hesperia/scenegraph/SceneNodeDescriptor.h"
-#include "hesperia/scenegraph/models/SimpleCar.h"
-#include "hesperia/scenegraph/primitives/Line.h"
+#include "opendlv/data/environment/Point3.h"
+#include "opendlv/scenegraph/SceneNode.h"
+#include "opendlv/scenegraph/SceneNodeDescriptor.h"
+#include "opendlv/scenegraph/models/SimpleCar.h"
+#include "opendlv/scenegraph/primitives/Line.h"
 
 namespace hesperia {
     namespace scenegraph {

@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "hesperia/core/wrapper/graph/Vertex.h"
+#include "opendlv/core/wrapper/graph/Vertex.h"
 
 namespace core {
     namespace wrapper {

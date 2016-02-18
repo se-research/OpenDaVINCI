@@ -30,9 +30,9 @@
 #include "opendavinci/core/base/KeyValueConfiguration.h"
 #include "opendavinci/core/data/Container.h"
 #include "opendavinci/core/opendavinci.h"
-#include "hesperia/data/camera/ImageGrabberCalibration.h"
-#include "hesperia/data/camera/ImageGrabberID.h"
-#include "hesperia/data/environment/Point3.h"
+#include "opendlv/data/camera/ImageGrabberCalibration.h"
+#include "opendlv/data/camera/ImageGrabberID.h"
+#include "opendlv/data/environment/Point3.h"
 #include "opendavinci/generated/coredata/image/SharedImage.h"
 
 namespace chasecar {

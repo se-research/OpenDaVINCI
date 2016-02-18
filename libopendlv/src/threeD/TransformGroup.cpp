@@ -29,11 +29,11 @@
 
 #include "opendavinci/core/base/Lock.h"
 #include "opendavinci/core/opendavinci.h"
-#include "hesperia/data/environment/Point3.h"
-#include "hesperia/threeD/Node.h"
-#include "hesperia/threeD/NodeDescriptor.h"
-#include "hesperia/threeD/TransformGroup.h"
-#include "hesperia/threeD/RenderingConfiguration.h"
+#include "opendlv/data/environment/Point3.h"
+#include "opendlv/threeD/Node.h"
+#include "opendlv/threeD/NodeDescriptor.h"
+#include "opendlv/threeD/TransformGroup.h"
+#include "opendlv/threeD/RenderingConfiguration.h"
 
 namespace hesperia { namespace threeD { class TransformGroupVisitor; } }
 

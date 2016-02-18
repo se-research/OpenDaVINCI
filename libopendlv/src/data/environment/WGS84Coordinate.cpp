@@ -29,8 +29,8 @@
 #include "opendavinci/core/base/SerializationFactory.h"
 #include "opendavinci/core/base/Serializer.h"
 #include "automotivedata/generated/cartesian/Constants.h"
-#include "hesperia/data/environment/Point3.h"
-#include "hesperia/data/environment/WGS84Coordinate.h"
+#include "opendlv/data/environment/Point3.h"
+#include "opendlv/data/environment/WGS84Coordinate.h"
 
 namespace hesperia {
     namespace data {

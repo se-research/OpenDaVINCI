@@ -29,13 +29,13 @@
 #include "opendavinci/core/base/SerializationFactory.h"
 #include "opendavinci/core/base/Serializer.h"
 #include "opendavinci/core/data/SerializableData.h"
-#include "hesperia/data/scenario/Connector.h"
-#include "hesperia/data/scenario/LaneAttribute.h"
-#include "hesperia/data/scenario/LaneModel.h"
-#include "hesperia/data/scenario/ScenarioVisitor.h"
-#include "hesperia/data/scenario/TrafficControl.h"
-#include "hesperia/data/scenario/TrafficLight.h"
-#include "hesperia/data/scenario/TrafficSign.h"
+#include "opendlv/data/scenario/Connector.h"
+#include "opendlv/data/scenario/LaneAttribute.h"
+#include "opendlv/data/scenario/LaneModel.h"
+#include "opendlv/data/scenario/ScenarioVisitor.h"
+#include "opendlv/data/scenario/TrafficControl.h"
+#include "opendlv/data/scenario/TrafficLight.h"
+#include "opendlv/data/scenario/TrafficSign.h"
 
 namespace hesperia {
     namespace data {

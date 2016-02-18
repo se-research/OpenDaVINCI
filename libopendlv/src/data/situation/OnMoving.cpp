@@ -26,9 +26,9 @@
 #include "opendavinci/core/base/Hash.h"
 #include "opendavinci/core/base/SerializationFactory.h"
 #include "opendavinci/core/base/Serializer.h"
-#include "hesperia/data/situation/OnMoving.h"
-#include "hesperia/data/situation/SituationVisitor.h"
-#include "hesperia/data/situation/StartType.h"
+#include "opendlv/data/situation/OnMoving.h"
+#include "opendlv/data/situation/SituationVisitor.h"
+#include "opendlv/data/situation/StartType.h"
 
 namespace hesperia {
     namespace data {

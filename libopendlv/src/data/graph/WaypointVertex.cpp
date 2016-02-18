@@ -21,9 +21,9 @@
 #include <string>
 
 #include "opendavinci/core/opendavinci.h"
-#include "hesperia/core/wrapper/graph/Vertex.h"
-#include "hesperia/data/environment/Point3.h"
-#include "hesperia/data/graph/WaypointVertex.h"
+#include "opendlv/core/wrapper/graph/Vertex.h"
+#include "opendlv/data/environment/Point3.h"
+#include "opendlv/data/graph/WaypointVertex.h"
 
 namespace hesperia {
     namespace data {

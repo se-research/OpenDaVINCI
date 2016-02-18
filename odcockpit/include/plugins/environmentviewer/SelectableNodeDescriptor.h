@@ -21,7 +21,7 @@
 #ifndef PLUGINS_ENVIRONMENTVIEWER_SELECTABLENODESCRIPTOR_H_
 #define PLUGINS_ENVIRONMENTVIEWER_SELECTABLENODESCRIPTOR_H_
 
-#include "hesperia/threeD/NodeDescriptor.h"
+#include "opendlv/threeD/NodeDescriptor.h"
 
 namespace cockpit {
     namespace plugins {

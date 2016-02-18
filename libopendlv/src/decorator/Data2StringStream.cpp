@@ -21,9 +21,9 @@
 #include <string>
 
 #include "opendavinci/core/data/Container.h"
-#include "hesperia/data/environment/EgoState.h"
-#include "hesperia/data/planning/Route.h"
-#include "hesperia/decorator/Data2StringStream.h"
+#include "opendlv/data/environment/EgoState.h"
+#include "opendlv/data/planning/Route.h"
+#include "opendlv/decorator/Data2StringStream.h"
 
 namespace hesperia {
     namespace decorator {

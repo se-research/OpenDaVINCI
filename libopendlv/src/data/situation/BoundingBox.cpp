@@ -26,9 +26,9 @@
 #include "opendavinci/core/base/SerializationFactory.h"
 #include "opendavinci/core/base/Serializer.h"
 #include "opendavinci/core/data/SerializableData.h"
-#include "hesperia/data/situation/BoundingBox.h"
-#include "hesperia/data/situation/SituationVisitor.h"
-#include "hesperia/data/situation/Vertex3.h"
+#include "opendlv/data/situation/BoundingBox.h"
+#include "opendlv/data/situation/SituationVisitor.h"
+#include "opendlv/data/situation/Vertex3.h"
 
 namespace hesperia {
     namespace data {

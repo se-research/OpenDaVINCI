@@ -25,8 +25,8 @@
 #include <sstream>
 #include <vector>
 
-#include "hesperia/data/environment/Point3.h"
-#include "hesperia/data/sensor/ContouredObject.h"
+#include "opendlv/data/environment/Point3.h"
+#include "opendlv/data/sensor/ContouredObject.h"
 
 using namespace std;
 using namespace hesperia::data;

@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "hesperia/scenegraph/renderer/RenderingConfiguration.h"
+#include "opendlv/scenegraph/renderer/RenderingConfiguration.h"
 
 namespace hesperia {
     namespace scenegraph {

@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "hesperia/decorator/Renderer.h"
+#include "opendlv/decorator/Renderer.h"
 
 namespace hesperia {
     namespace decorator {

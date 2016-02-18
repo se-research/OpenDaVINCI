@@ -20,7 +20,7 @@
 #ifndef PLUGINS_BIRDSEYEMAP_SELECTABLENODESCRIPTOR_H_
 #define PLUGINS_BIRDSEYEMAP_SELECTABLENODESCRIPTOR_H_
 
-#include "hesperia/scenegraph/SceneNodeDescriptor.h"
+#include "opendlv/scenegraph/SceneNodeDescriptor.h"
 
 namespace cockpit {
     namespace plugins {

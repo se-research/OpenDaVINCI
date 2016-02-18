@@ -20,9 +20,9 @@
 #include <iosfwd>
 #include <string>
 
-#include "hesperia/data/scenario/ScenarioVisitor.h"
-#include "hesperia/data/scenario/TrafficControl.h"
-#include "hesperia/data/scenario/TrafficLight.h"
+#include "opendlv/data/scenario/ScenarioVisitor.h"
+#include "opendlv/data/scenario/TrafficControl.h"
+#include "opendlv/data/scenario/TrafficLight.h"
 
 namespace hesperia {
     namespace data {

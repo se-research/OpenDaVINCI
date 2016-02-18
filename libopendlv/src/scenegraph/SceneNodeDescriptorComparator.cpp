@@ -19,7 +19,7 @@
 
 #include <string>
 
-#include "hesperia/scenegraph/SceneNodeDescriptorComparator.h"
+#include "opendlv/scenegraph/SceneNodeDescriptorComparator.h"
 
 namespace hesperia {
     namespace scenegraph {

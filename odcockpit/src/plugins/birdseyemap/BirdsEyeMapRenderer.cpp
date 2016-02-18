@@ -21,11 +21,11 @@
 #include <Qt/qpen.h>
 
 #include "opendavinci/core/opendavinci.h"
-#include "hesperia/scenegraph/renderer/RenderingConfiguration.h"
-#include "hesperia/scenegraph/renderer/SceneNodeRenderingConfiguration.h"
-#include "hesperia/scenegraph/primitives/Line.h"
-#include "hesperia/scenegraph/primitives/Point.h"
-#include "hesperia/scenegraph/primitives/Polygon.h"
+#include "opendlv/scenegraph/renderer/RenderingConfiguration.h"
+#include "opendlv/scenegraph/renderer/SceneNodeRenderingConfiguration.h"
+#include "opendlv/scenegraph/primitives/Line.h"
+#include "opendlv/scenegraph/primitives/Point.h"
+#include "opendlv/scenegraph/primitives/Polygon.h"
 #include "plugins/birdseyemap/BirdsEyeMapRenderer.h"
 
 class QPainter;

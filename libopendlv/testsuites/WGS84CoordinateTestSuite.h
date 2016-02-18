@@ -26,9 +26,9 @@
 #include <vector>
 
 #include "opendavinci/core/data/TimeStamp.h"
-#include "hesperia/data/environment/Point3.h"
-#include "hesperia/data/environment/WGS84Coordinate.h"
-#include "hesperia/data/sensor/nmea/GPRMC.h"
+#include "opendlv/data/environment/Point3.h"
+#include "opendlv/data/environment/WGS84Coordinate.h"
+#include "opendlv/data/sensor/nmea/GPRMC.h"
 
 using namespace std;
 using namespace core::data;

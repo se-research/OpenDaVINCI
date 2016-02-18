@@ -31,7 +31,7 @@
 #include "opendavinci/core/base/Mutex.h"
 #include "opendavinci/core/io/conference/ContainerListener.h"
 #include "opendavinci/core/strings/StringComparator.h"
-#include "hesperia/data/environment/WGS84Coordinate.h"
+#include "opendlv/data/environment/WGS84Coordinate.h"
 
 #include "plugins/streetmapviewer/StreetMapMapWidget.h"
 

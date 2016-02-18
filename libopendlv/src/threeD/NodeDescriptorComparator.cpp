@@ -19,7 +19,7 @@
 
 #include <string>
 
-#include "hesperia/threeD/NodeDescriptorComparator.h"
+#include "opendlv/threeD/NodeDescriptorComparator.h"
 
 namespace hesperia {
     namespace threeD {

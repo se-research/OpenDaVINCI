@@ -19,7 +19,7 @@
 
 #include <cstdio>
 
-#include "hesperia/core/wrapper/OpenCV/OpenCVMatrix.h"
+#include "opendlv/core/wrapper/OpenCV/OpenCVMatrix.h"
 
 namespace core {
     namespace wrapper {

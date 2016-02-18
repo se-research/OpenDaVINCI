@@ -20,7 +20,7 @@
 #include <sstream>
 #include <string>
 
-#include "hesperia/data/graph/WaypointsEdge.h"
+#include "opendlv/data/graph/WaypointsEdge.h"
 
 namespace hesperia {
     namespace data {

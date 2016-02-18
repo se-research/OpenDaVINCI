@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "hesperia/decorator/models/Triangle.h"
+#include "opendlv/decorator/models/Triangle.h"
 
 namespace hesperia {
     namespace decorator {

@@ -22,9 +22,9 @@
 
 #include "opendavinci/core/opendavinci.h"
 #include "opendavinci/core/base/Lock.h"
-#include "hesperia/scenegraph/SceneNode.h"
-#include "hesperia/scenegraph/SceneNodeDescriptor.h"
-#include "hesperia/scenegraph/SceneNodeVisitor.h"
+#include "opendlv/scenegraph/SceneNode.h"
+#include "opendlv/scenegraph/SceneNodeDescriptor.h"
+#include "opendlv/scenegraph/SceneNodeVisitor.h"
 
 namespace hesperia {
     namespace scenegraph {

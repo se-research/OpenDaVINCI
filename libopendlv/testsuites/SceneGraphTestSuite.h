@@ -24,9 +24,9 @@
 
 #include "cxxtest/TestSuite.h"
 
-#include "hesperia/scenegraph/SceneNode.h"
-#include "hesperia/scenegraph/SceneNodeDescriptor.h"
-#include "hesperia/scenegraph/SceneNodeVisitor.h"
+#include "opendlv/scenegraph/SceneNode.h"
+#include "opendlv/scenegraph/SceneNodeDescriptor.h"
+#include "opendlv/scenegraph/SceneNodeVisitor.h"
 
 using namespace std;
 using namespace hesperia::scenegraph;

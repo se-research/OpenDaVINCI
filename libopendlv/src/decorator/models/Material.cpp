@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "hesperia/decorator/models/Material.h"
+#include "opendlv/decorator/models/Material.h"
 
 namespace core { namespace wrapper { class Image; } }
 

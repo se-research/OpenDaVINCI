@@ -28,8 +28,8 @@
 #include "opendavinci/core/base/Serializable.h"
 #include "opendavinci/core/base/SerializationFactory.h"
 #include "opendavinci/core/base/Serializer.h"
-#include "hesperia/data/environment/Point3.h"
-#include "hesperia/data/planning/Route.h"
+#include "opendlv/data/environment/Point3.h"
+#include "opendlv/data/planning/Route.h"
 
 namespace hesperia {
     namespace data {

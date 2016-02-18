@@ -26,11 +26,11 @@
 #include "opendavinci/core/base/SerializationFactory.h"
 #include "opendavinci/core/base/Serializer.h"
 #include "opendavinci/core/data/SerializableData.h"
-#include "hesperia/data/scenario/Ground.h"
-#include "hesperia/data/scenario/HeightImage.h"
-#include "hesperia/data/scenario/Image.h"
-#include "hesperia/data/scenario/ScenarioVisitor.h"
-#include "hesperia/data/scenario/Surroundings.h"
+#include "opendlv/data/scenario/Ground.h"
+#include "opendlv/data/scenario/HeightImage.h"
+#include "opendlv/data/scenario/Image.h"
+#include "opendlv/data/scenario/ScenarioVisitor.h"
+#include "opendlv/data/scenario/Surroundings.h"
 
 namespace hesperia {
     namespace data {

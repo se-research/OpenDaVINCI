@@ -25,9 +25,9 @@
 
 #include "opendavinci/core/opendavinci.h"
 #include "opendavinci/core/strings/StringToolbox.h"
-#include "hesperia/core/wrapper/graph/DirectedGraph.h"
-#include "hesperia/core/wrapper/graph/Edge.h"
-#include "hesperia/core/wrapper/graph/Vertex.h"
+#include "opendlv/core/wrapper/graph/DirectedGraph.h"
+#include "opendlv/core/wrapper/graph/Edge.h"
+#include "opendlv/core/wrapper/graph/Vertex.h"
 
 namespace core {
     namespace wrapper {

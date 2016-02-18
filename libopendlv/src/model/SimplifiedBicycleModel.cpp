@@ -34,9 +34,9 @@
 #include "automotivedata/generated/automotive/VehicleData.h"
 #include "automotivedata/generated/cartesian/Constants.h"
 #include "automotivedata/generated/cartesian/Point2.h"
-#include "hesperia/data/environment/EgoState.h"
-#include "hesperia/data/environment/Point3.h"
-#include "vehiclecontext/model/SimplifiedBicycleModel.h"
+#include "opendlv/data/environment/EgoState.h"
+#include "opendlv/data/environment/Point3.h"
+#include "opendlv/vehiclecontext/model/SimplifiedBicycleModel.h"
 
 namespace core { namespace exceptions { class ValueForKeyNotFoundException; } }
 

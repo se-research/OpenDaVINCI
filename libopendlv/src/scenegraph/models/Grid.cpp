@@ -18,10 +18,10 @@
  */
 
 #include "opendavinci/core/opendavinci.h"
-#include "hesperia/data/environment/Point3.h"
-#include "hesperia/scenegraph/SceneNode.h"
-#include "hesperia/scenegraph/SceneNodeDescriptor.h"
-#include "hesperia/scenegraph/models/Grid.h"
+#include "opendlv/data/environment/Point3.h"
+#include "opendlv/scenegraph/SceneNode.h"
+#include "opendlv/scenegraph/SceneNodeDescriptor.h"
+#include "opendlv/scenegraph/models/Grid.h"
 
 namespace hesperia { namespace scenegraph { namespace primitives { class Line; } } }
 

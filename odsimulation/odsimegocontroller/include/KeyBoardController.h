@@ -21,7 +21,7 @@
 #define EGOCONTROLLER_KEABOARDCONTROLLER_H_
 
 #include "Controller.h"
-#include "hesperia/data/environment/EgoState.h"
+#include "opendlv/data/environment/EgoState.h"
 
 namespace egocontroller {
 

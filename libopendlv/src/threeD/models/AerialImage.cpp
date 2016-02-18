@@ -26,13 +26,13 @@
 #include <string>
 
 #include "opendavinci/core/opendavinci.h"
-#include "hesperia/data/environment/Point3.h"
-#include "hesperia/threeD/Node.h"
-#include "hesperia/threeD/NodeDescriptor.h"
-#include "hesperia/threeD/NodeRenderingConfiguration.h"
-#include "hesperia/threeD/RenderingConfiguration.h"
-#include "hesperia/threeD/TextureManager.h"
-#include "hesperia/threeD/models/AerialImage.h"
+#include "opendlv/data/environment/Point3.h"
+#include "opendlv/threeD/Node.h"
+#include "opendlv/threeD/NodeDescriptor.h"
+#include "opendlv/threeD/NodeRenderingConfiguration.h"
+#include "opendlv/threeD/RenderingConfiguration.h"
+#include "opendlv/threeD/TextureManager.h"
+#include "opendlv/threeD/models/AerialImage.h"
 
 namespace core { namespace wrapper { class Image; } }
 

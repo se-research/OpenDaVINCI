@@ -24,7 +24,7 @@
 
 #include "opendavinci/core/base/Thread.h"
 #include "opendavinci/core/data/Container.h"
-#include "vehiclecontext/model/SimplifiedBicycleModel.h"
+#include "opendlv/vehiclecontext/model/SimplifiedBicycleModel.h"
 #include "automotivedata/generated/automotive/VehicleControl.h"
 
 #include "Vehicle.h"

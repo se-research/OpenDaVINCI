@@ -25,11 +25,11 @@
 #include "opendavinci/core/base/Hash.h"
 #include "opendavinci/core/base/SerializationFactory.h"
 #include "opendavinci/core/base/Serializer.h"
-#include "hesperia/data/situation/BoundingBox.h"
-#include "hesperia/data/situation/ComplexModel.h"
-#include "hesperia/data/situation/Shape.h"
-#include "hesperia/data/situation/SituationVisitor.h"
-#include "hesperia/data/situation/Vertex3.h"
+#include "opendlv/data/situation/BoundingBox.h"
+#include "opendlv/data/situation/ComplexModel.h"
+#include "opendlv/data/situation/Shape.h"
+#include "opendlv/data/situation/SituationVisitor.h"
+#include "opendlv/data/situation/Vertex3.h"
 
 namespace hesperia {
     namespace data {
