@@ -34,7 +34,7 @@
 #include "opendlv/data/environment/Polygon.h"
 #include "opendlv/vehiclecontext/report/DistanceToObjectsReport.h"
 
-namespace vehiclecontext {
+namespace opendlv { namespace vehiclecontext {
     namespace report {
 
         using namespace std;
@@ -126,4 +126,4 @@ namespace vehiclecontext {
         }
 
     }
-} // vehiclecontext::report
+} } // opendlv::vehiclecontext::report

@@ -24,7 +24,7 @@
 
 #include "opendavinci/context/base/StandaloneRuntimeControl.h"
 
-namespace vehiclecontext {
+namespace opendlv { namespace vehiclecontext {
 
     using namespace std;
 
@@ -75,6 +75,6 @@ namespace vehiclecontext {
             virtual void configureRuntimeEnvironment();
     };
 
-} // vehiclecontext
+} } // opendlv::vehiclecontext
 
 #endif /*VEHICLECONTEXT_VEHICLERUNTIMECONTROL_H_*/

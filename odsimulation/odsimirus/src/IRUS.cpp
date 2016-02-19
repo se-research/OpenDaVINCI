@@ -51,7 +51,7 @@ namespace irus {
 
         // Use libodsimulation's odsimirus implementation.
         string config = sstrConfiguration.str();
-        vehiclecontext::model::IRUS irus(config);
+        opendlv::vehiclecontext::model::IRUS irus(config);
         irus.setup();
 
         // Use the most recent EgoState available.

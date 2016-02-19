@@ -32,7 +32,7 @@
 #include "opendlv/io/camera/ImageGrabber.h"
 #include "opendlv/threeD/TransformGroup.h"
 
-namespace vehiclecontext {
+namespace opendlv { namespace vehiclecontext {
     namespace model {
 
         using namespace std;
@@ -89,6 +89,6 @@ namespace vehiclecontext {
         };
 
     }
-} // vehiclecontext::model
+} } // opendlv::vehiclecontext::model
 
 #endif /*VEHICLECONTEXT_MODEL_OPENGLGRABBER_H_*/

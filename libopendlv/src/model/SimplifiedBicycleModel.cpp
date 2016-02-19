@@ -40,7 +40,7 @@
 
 namespace core { namespace exceptions { class ValueForKeyNotFoundException; } }
 
-namespace vehiclecontext {
+namespace opendlv { namespace vehiclecontext {
     namespace model {
 
         using namespace std;
@@ -327,4 +327,4 @@ namespace vehiclecontext {
         }
 
     }
-} // vehiclecontext::model
+} } // opendlv::vehiclecontext::model

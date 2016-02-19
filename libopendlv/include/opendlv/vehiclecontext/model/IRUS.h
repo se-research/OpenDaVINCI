@@ -33,7 +33,7 @@
 
 #include "opendlv/vehiclecontext/model/PointSensor.h"
 
-namespace vehiclecontext {
+namespace opendlv { namespace vehiclecontext {
     namespace model {
 
         using namespace std;
@@ -107,6 +107,6 @@ namespace vehiclecontext {
         };
 
     }
-} // vehiclecontext::model
+} } // opendlv::vehiclecontext::model
 
 #endif /*VEHICLECONTEXT_MODEL_SIMPLIFIEDBICYCLEMODEL_H_*/

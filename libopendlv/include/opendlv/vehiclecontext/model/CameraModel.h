@@ -40,7 +40,7 @@
 #include "OpenGLGrabber.h"
 
 
-namespace vehiclecontext {
+namespace opendlv { namespace vehiclecontext {
     namespace model {
 
         using namespace std;
@@ -153,6 +153,6 @@ namespace vehiclecontext {
         };
 
     }
-} // vehiclecontext::model
+} } // opendlv::vehiclecontext::model
 
 #endif /*VEHICLECONTEXT_MODEL_CAMERAMODEL_H_*/

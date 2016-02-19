@@ -38,7 +38,7 @@
 
 namespace core { namespace wrapper { class Time; } }
 
-namespace vehiclecontext {
+namespace opendlv { namespace vehiclecontext {
     namespace model {
 
         using namespace std;
@@ -274,4 +274,4 @@ namespace vehiclecontext {
         }
 
     }
-} // vehiclecontext::model
+} } // opendlv::vehiclecontext::model

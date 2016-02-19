@@ -52,7 +52,7 @@ namespace vehicle {
 
         // Use libodsimulation's odsimirus implementation.
         string config = sstrConfiguration.str();
-        vehiclecontext::model::SimplifiedBicycleModel simplifiedBicycleModel(config);
+        opendlv::vehiclecontext::model::SimplifiedBicycleModel simplifiedBicycleModel(config);
         simplifiedBicycleModel.setup();
 
         // Use the most recent EgoState available.

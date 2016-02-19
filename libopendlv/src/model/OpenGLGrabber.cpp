@@ -41,7 +41,7 @@ namespace core { namespace wrapper { class Image; } }
 namespace opendlv { namespace data { namespace camera { class ImageGrabberCalibration; } } }
 namespace opendlv { namespace scenario { class SCNXArchive; } }
 
-namespace vehiclecontext {
+namespace opendlv { namespace vehiclecontext {
     namespace model {
 
         using namespace std;
@@ -112,4 +112,4 @@ namespace vehiclecontext {
         }
 
     }
-} // vehiclecontext::model
+} } // opendlv::vehiclecontext::model

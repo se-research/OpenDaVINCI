@@ -40,9 +40,9 @@
 
 using namespace std;
 using namespace context::base;
-using namespace vehiclecontext;
-using namespace vehiclecontext::model;
-using namespace vehiclecontext::report;
+using namespace opendlv::vehiclecontext;
+using namespace opendlv::vehiclecontext::model;
+using namespace opendlv::vehiclecontext::report;
 using namespace automotive::miniature;
 
 namespace simulation {

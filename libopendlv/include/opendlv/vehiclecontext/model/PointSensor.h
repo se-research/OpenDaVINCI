@@ -26,7 +26,7 @@
 #include "opendlv/data/environment/Point3.h"
 #include "opendlv/data/environment/Polygon.h"
 
-namespace vehiclecontext {
+namespace opendlv { namespace vehiclecontext {
     namespace model {
 
         using namespace std;
@@ -120,6 +120,6 @@ namespace vehiclecontext {
         };
 
     }
-} // vehiclecontext::model
+} } // opendlv::vehiclecontext::model
 
 #endif /*VEHICLECONTEXT_MODEL_POINTSENSOR_H_*/

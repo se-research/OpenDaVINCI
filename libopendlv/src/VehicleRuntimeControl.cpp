@@ -27,11 +27,11 @@
 #include "opendlv/vehiclecontext/VehicleRuntimeControl.h"
 #include "opendlv/vehiclecontext/model/SimplifiedBicycleModel.h"
 
-namespace vehiclecontext {
+namespace opendlv { namespace vehiclecontext {
 
     using namespace std;
     using namespace core::base;
-    using namespace vehiclecontext::model;
+    using namespace opendlv::vehiclecontext::model;
 
     VehicleRuntimeControl::VehicleRuntimeControl(const context::base::RuntimeControlInterface &sci) :
         context::base::StandaloneRuntimeControl(sci),
@@ -94,5 +94,5 @@ namespace vehiclecontext {
         }
     }
 
-} // vehiclecontext
+} } // opendlv::vehiclecontext
 
