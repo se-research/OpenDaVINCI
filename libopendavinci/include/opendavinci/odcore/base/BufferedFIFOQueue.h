@@ -20,12 +20,12 @@
 #ifndef OPENDAVINCI_CORE_BASE_BUFFEREDFIFOQUEUE_H_
 #define OPENDAVINCI_CORE_BASE_BUFFEREDFIFOQUEUE_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/FIFOQueue.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/exceptions/Exceptions.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/FIFOQueue.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
         using namespace std;
@@ -91,6 +91,6 @@ namespace core {
         };
 
     }
-} // core::base
+} // odcore::base
 
 #endif /*OPENDAVINCI_CORE_BASE_BUFFEREDFIFOQUEUE_H_*/

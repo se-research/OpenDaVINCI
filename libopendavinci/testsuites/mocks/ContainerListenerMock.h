@@ -22,12 +22,12 @@
 
 #include "FunctionCallWaiter.h"
 #include "ParameterValueList.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/io/conference/ContainerListener.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
 
 namespace mocks {
 
-    class ContainerListenerMock : public core::io::conference::ContainerListener {
+    class ContainerListenerMock : public odcore::io::conference::ContainerListener {
         public:
             ContainerListenerMock() :
                 VALUES_nextContainer(),
@@ -35,14 +35,14 @@ namespace mocks {
                 currentValue()
             {};
 
-            virtual void nextContainer(core::data::Container &c) {
+            virtual void nextContainer(odcore::data::Container &c) {
                 currentValue = c;
                 CALLWAITER_nextContainer.called();
             }
 
-            ParameterValueList< core::data::Container > VALUES_nextContainer;
+            ParameterValueList< odcore::data::Container > VALUES_nextContainer;
             FunctionCallWaiter CALLWAITER_nextContainer;
-            core::data::Container currentValue;
+            odcore::data::Container currentValue;
     };
 }
 #endif // MOCKS__CONTAINERLISTENERMOCK_H

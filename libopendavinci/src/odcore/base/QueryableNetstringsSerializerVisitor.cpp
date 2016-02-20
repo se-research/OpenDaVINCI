@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/base/QueryableNetstringsSerializerVisitor.h"
+#include "opendavinci/odcore/base/QueryableNetstringsSerializerVisitor.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
 class Serializable;
@@ -90,5 +90,5 @@ class Serializable;
             write(longId, data, size);
         }
     }
-} // core::base
+} // odcore::base
 

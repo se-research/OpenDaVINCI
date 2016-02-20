@@ -22,14 +22,14 @@
 
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/Visitable.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Visitable.h"
 #include "opendavinci/generated/coredata/reflection/AbstractField.h"
 
-namespace core { namespace base { class Visitor; } }
+namespace odcore { namespace base { class Visitor; } }
 
-namespace core {
+namespace odcore {
     namespace reflection {
 
 template <typename T> class Field;
@@ -39,7 +39,7 @@ template <typename T> class Field;
         /**
          * This class is a generic Message representation.
          */
-        class OPENDAVINCI_API Message : public core::base::Visitable {
+        class OPENDAVINCI_API Message : public odcore::base::Visitable {
             public:
                 Message();
 
@@ -61,7 +61,7 @@ template <typename T> class Field;
                 Message& operator=(const Message &obj);
 
             public:
-                virtual void accept(core::base::Visitor &v);
+                virtual void accept(odcore::base::Visitor &v);
 
             private:
                 /**
@@ -73,14 +73,14 @@ template <typename T> class Field;
                  * @param f Field to visit.
                  */
                 template<typename T>
-                void visitPrimitiveDataType(core::base::Visitor &v, core::SharedPointer<coredata::reflection::AbstractField> &f) {
+                void visitPrimitiveDataType(odcore::base::Visitor &v, odcore::SharedPointer<coredata::reflection::AbstractField> &f) {
                     // Read value.
-                    T value = dynamic_cast<core::reflection::Field<T>*>(f.operator->())->getValue();
+                    T value = dynamic_cast<odcore::reflection::Field<T>*>(f.operator->())->getValue();
                     // Visit value.
                     v.visit(f->getLongIdentifier(), f->getShortIdentifier(),
                             f->getLongName(), f->getShortName(), value);
                     // Update value.
-                    dynamic_cast<core::reflection::Field<T>*>(f.operator->())->setValue(value);
+                    dynamic_cast<odcore::reflection::Field<T>*>(f.operator->())->setValue(value);
                 }
 
             public:
@@ -89,7 +89,7 @@ template <typename T> class Field;
                  *
                  * @param Field to be added.
                  */
-                void addField(const core::SharedPointer<coredata::reflection::AbstractField> &f);
+                void addField(const odcore::SharedPointer<coredata::reflection::AbstractField> &f);
 
                 /**
                  * This method tries to find a field using first the long identifier;
@@ -100,7 +100,7 @@ template <typename T> class Field;
                  * @param found Flag modified by this method indicating if the field was found.
                  * @return field Be aware to always check 'found' whether the field was found.
                  */
-                core::SharedPointer<coredata::reflection::AbstractField> getFieldByLongIdentifierOrShortIdentifier(const uint32_t &longIdentifier, const uint8_t &shortIdentifier, bool &found);
+                odcore::SharedPointer<coredata::reflection::AbstractField> getFieldByLongIdentifierOrShortIdentifier(const uint32_t &longIdentifier, const uint8_t &shortIdentifier, bool &found);
 
             private:
                 /**
@@ -110,7 +110,7 @@ template <typename T> class Field;
                  * @param found Flag modified by this method indicating if the field was found.
                  * @return field Be aware to always check 'found' whether the field was found.
                  */
-                core::SharedPointer<coredata::reflection::AbstractField> getFieldByLongIdentifier(const uint32_t &longIdentifier, bool &found);
+                odcore::SharedPointer<coredata::reflection::AbstractField> getFieldByLongIdentifier(const uint32_t &longIdentifier, bool &found);
 
                 /**
                  * This method tries to find a field using the short identifier.
@@ -119,13 +119,13 @@ template <typename T> class Field;
                  * @param found Flag modified by this method indicating if the field was found.
                  * @return field Be aware to always check 'found' whether the field was found.
                  */
-                core::SharedPointer<coredata::reflection::AbstractField> getFieldByShortIdentifier(const uint8_t &shortIdentifier, bool &found);
+                odcore::SharedPointer<coredata::reflection::AbstractField> getFieldByShortIdentifier(const uint8_t &shortIdentifier, bool &found);
 
             private:
-                vector<core::SharedPointer<coredata::reflection::AbstractField> > m_fields;
+                vector<odcore::SharedPointer<coredata::reflection::AbstractField> > m_fields;
         };
 
     }
-} // core::reflection
+} // odcore::reflection
 
 #endif /*OPENDAVINCI_CORE_REFLECTION_MESSAGE_H_*/

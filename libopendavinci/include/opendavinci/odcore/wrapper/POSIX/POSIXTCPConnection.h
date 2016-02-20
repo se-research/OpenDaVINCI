@@ -23,20 +23,20 @@
 #include <memory>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/io/tcp/TCPConnection.h"
-#include "opendavinci/core/wrapper/Runnable.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/io/tcp/TCPConnection.h"
+#include "opendavinci/odcore/wrapper/Runnable.h"
 
-namespace core { namespace wrapper { class Mutex; } }
-namespace core { namespace wrapper { class Thread; } }
+namespace odcore { namespace wrapper { class Mutex; } }
+namespace odcore { namespace wrapper { class Thread; } }
 
-namespace core {
+namespace odcore {
     namespace wrapper {
         namespace POSIX {
 
             using namespace std;
 
-            class POSIXTCPConnection : public core::io::tcp::TCPConnection, public Runnable {
+            class POSIXTCPConnection : public odcore::io::tcp::TCPConnection, public Runnable {
                 private:
                     /**
                      * "Forbidden" copy constructor. Goal: The compiler should warn

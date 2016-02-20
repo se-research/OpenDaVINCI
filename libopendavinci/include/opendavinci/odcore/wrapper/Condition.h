@@ -20,7 +20,7 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_CONDITION_H_
 #define OPENDAVINCI_CORE_WRAPPER_CONDITION_H_
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         /**
@@ -75,6 +75,6 @@ namespace core {
         };
 
     }
-} // core::wrapper
+} // odcore::wrapper
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_CONDITION_H_*/

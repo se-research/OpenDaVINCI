@@ -173,10 +173,10 @@ message coredata.dmcp.ModuleExitCodeMessage [id = 7] {
 
 // This message is part of centralized scheduling coordinated by supercomponent.
 message coredata.dmcp.PulseMessage [id = 101] {
-    core::data::TimeStamp realTimeFromSupercomponent [id = 1];
+    odcore::data::TimeStamp realTimeFromSupercomponent [id = 1];
     uint32 nominalTimeSlice [id = 2];
     uint32 cumulatedTimeSlice [id = 3];
-    list<core::data::Container> containers [id = 4];
+    list<odcore::data::Container> containers [id = 4];
 }
 
 // This message is part of centralized scheduling coordinated by supercomponent.
@@ -184,14 +184,14 @@ message coredata.dmcp.PulseAckMessage [id = 102] {}
 
 // This message is part of centralized scheduling coordinated by supercomponent.
 message coredata.dmcp.PulseAckContainersMessage [id = 103] {
-    list<core::data::Container> containers [id = 1];
+    list<odcore::data::Container> containers [id = 1];
 }
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Configuration message.
 message coredata.Configuration [id = 2] {
-    core::base::KeyValueConfiguration keyValueConfiguration [id = 1];
+    odcore::base::KeyValueConfiguration keyValueConfiguration [id = 1];
 }
 
 
@@ -200,7 +200,7 @@ message coredata.Configuration [id = 2] {
 
 // This message is used to describe memory segments to handle binary large objects like SharedImages or SharedData.
 message coredata.buffer.MemorySegment [id = 29] {
-    core::data::Container header [id = 1];
+    odcore::data::Container header [id = 1];
     uint32 size [id = 2];
     uint32 consumedSize [id = 3];
     uint16 identifier [id = 4];

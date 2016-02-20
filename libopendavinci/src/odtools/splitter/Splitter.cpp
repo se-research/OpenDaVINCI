@@ -21,21 +21,21 @@
 #include <limits>
 #include <sstream>
 
-#include "opendavinci/core/base/module/AbstractCIDModule.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/io/URL.h"
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/tools/player/Player.h"
-#include "opendavinci/tools/recorder/Recorder.h"
-#include "opendavinci/tools/splitter/Splitter.h"
+#include "opendavinci/odcore/base/module/AbstractCIDModule.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/io/URL.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odtools/player/Player.h"
+#include "opendavinci/odtools/recorder/Recorder.h"
+#include "opendavinci/odtools/splitter/Splitter.h"
 
 
 namespace odtools {
     namespace splitter {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::data;
+        using namespace odcore::base;
+        using namespace odcore::data;
         using namespace odtools::player;
         using namespace odtools::recorder;
 

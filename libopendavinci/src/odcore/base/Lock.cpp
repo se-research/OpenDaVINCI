@@ -17,10 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/Mutex.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
         Lock::Lock(Mutex &mutex) :
@@ -29,7 +29,7 @@ namespace core {
             m_mutex->lock();
         }
 
-        Lock::Lock(core::SharedPointer<core::wrapper::SharedMemory> sp) :
+        Lock::Lock(odcore::SharedPointer<odcore::wrapper::SharedMemory> sp) :
                 m_mutex(NULL),
                 m_sharedPointerToSharedMemory(sp) {
             m_sharedPointerToSharedMemory->lock();
@@ -45,4 +45,4 @@ namespace core {
         }
 
     }
-} // core::base
+} // odcore::base

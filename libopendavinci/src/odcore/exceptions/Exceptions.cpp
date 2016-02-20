@@ -22,9 +22,9 @@
 #include <cstring>
 #include <sstream>
 
-#include "opendavinci/core/exceptions/Exceptions.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
 
-namespace core {
+namespace odcore {
     namespace exceptions {
 
         using namespace std;
@@ -104,4 +104,4 @@ namespace core {
         }
 
     }
-} // core::exceptions
+} // odcore::exceptions

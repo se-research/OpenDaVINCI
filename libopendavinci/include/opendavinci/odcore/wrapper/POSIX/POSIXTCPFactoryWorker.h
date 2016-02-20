@@ -20,23 +20,23 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXTCPFACTORY_H_
 #define OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXTCPFACTORY_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/wrapper/TCPFactoryWorker.h"
-#include "opendavinci/core/wrapper/POSIX/POSIXTCPAcceptor.h"
-#include "opendavinci/core/wrapper/POSIX/POSIXTCPConnection.h"
+#include "opendavinci/odcore/wrapper/TCPFactoryWorker.h"
+#include "opendavinci/odcore/wrapper/POSIX/POSIXTCPAcceptor.h"
+#include "opendavinci/odcore/wrapper/POSIX/POSIXTCPConnection.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         using namespace std;
 
         template <> struct OPENDAVINCI_API TCPFactoryWorker<NetworkLibraryPosix> {
-            static core::io::tcp::TCPAcceptor* createTCPAcceptor(const uint32_t& port) {
+            static odcore::io::tcp::TCPAcceptor* createTCPAcceptor(const uint32_t& port) {
                 return new POSIX::POSIXTCPAcceptor(port);
             };
 
-            static core::io::tcp::TCPConnection* createTCPConnectionTo(const string& ip, const uint32_t& port) {
+            static odcore::io::tcp::TCPConnection* createTCPConnectionTo(const string& ip, const uint32_t& port) {
                 return new POSIX::POSIXTCPConnection(ip, port);
             };
         };

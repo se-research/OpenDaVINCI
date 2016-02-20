@@ -20,13 +20,13 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_UDPFACTORYWORKER_H_
 #define OPENDAVINCI_CORE_WRAPPER_UDPFACTORYWORKER_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/wrapper/NetworkLibraryProducts.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/wrapper/NetworkLibraryProducts.h"
 
-#include "opendavinci/core/io/udp/UDPSender.h"
-#include "opendavinci/core/io/udp/UDPReceiver.h"
+#include "opendavinci/odcore/io/udp/UDPSender.h"
+#include "opendavinci/odcore/io/udp/UDPReceiver.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         using namespace std;
@@ -51,7 +51,7 @@ namespace core {
                  * @param port Port.
                  * @return A new UDPSender
                  */
-                static core::io::udp::UDPSender* createUDPSender(const string &address, const uint32_t &port);
+                static odcore::io::udp::UDPSender* createUDPSender(const string &address, const uint32_t &port);
 
                 /**
                  * This method creates a UDP receiver.
@@ -60,9 +60,9 @@ namespace core {
                  * @param port Port.
                  * @return A new UDPReceiver
                  */
-                static core::io::udp::UDPReceiver* createUDPReceiver(const string &address, const uint32_t &port);
+                static odcore::io::udp::UDPReceiver* createUDPReceiver(const string &address, const uint32_t &port);
         };
     }
-} // core::wrapper
+} // odcore::wrapper
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_UDPFACTORYWORKER_H_*/

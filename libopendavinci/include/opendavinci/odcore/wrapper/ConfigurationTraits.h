@@ -20,7 +20,7 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_CONFIGURATIONTRAITS_H_
 #define OPENDAVINCI_CORE_WRAPPER_CONFIGURATIONTRAITS_H_
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         /**

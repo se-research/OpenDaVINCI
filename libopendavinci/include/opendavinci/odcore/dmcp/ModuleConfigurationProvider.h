@@ -20,13 +20,13 @@
 #ifndef OPENDAVINCI_DMCP_MODULECONFIGURATIONPROVIDER_H_
 #define OPENDAVINCI_DMCP_MODULECONFIGURATIONPROVIDER_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
 
 #include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
-namespace core {
+namespace odcore {
     namespace dmcp {
 
         using namespace std;
@@ -43,9 +43,9 @@ namespace core {
                  * Returns a configuration for the given ModuleDescriptor. Since multiple thread may
                  * call this method, it has to be implemented thread-safe.
                  */
-                virtual core::base::KeyValueConfiguration getConfiguration(const coredata::dmcp::ModuleDescriptor &md) = 0;
+                virtual odcore::base::KeyValueConfiguration getConfiguration(const coredata::dmcp::ModuleDescriptor &md) = 0;
         };
     }
-} // core::dmcp
+} // odcore::dmcp
 
 #endif /* OPENDAVINCI_DMCP_MODULECONFIGURATIONPROVIDER_H_ */

@@ -17,14 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/context/base/BlockableContainerListener.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcontext/base/BlockableContainerListener.h"
 
 namespace odcontext {
     namespace base {
 
         using namespace std;
-        using namespace core::base;
+        using namespace odcore::base;
 
         BlockableContainerListener::BlockableContainerListener() :
             m_nextContainerAllowedMutex(),

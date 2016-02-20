@@ -20,12 +20,12 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXTIMEFACTORYWORKER_H_
 #define OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXTIMEFACTORYWORKER_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/wrapper/TimeFactoryWorker.h"
-#include "opendavinci/core/wrapper/POSIX/POSIXTime.h"
+#include "opendavinci/odcore/wrapper/TimeFactoryWorker.h"
+#include "opendavinci/odcore/wrapper/POSIX/POSIXTime.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         using namespace std;
@@ -37,6 +37,6 @@ namespace core {
                 }
         };
     }
-} // core::wrapper
+} // odcore::wrapper
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXTIMEFACTORYWORKER_H_*/

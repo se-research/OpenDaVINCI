@@ -20,13 +20,13 @@
 #ifndef CONTEXT_BASE_CONTAINERDELIVERER_H_
 #define CONTEXT_BASE_CONTAINERDELIVERER_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/io/conference/ContainerListener.h"
-#include "opendavinci/core/io/conference/ContainerObserver.h"
-#include "opendavinci/core/wrapper/Disposable.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
+#include "opendavinci/odcore/io/conference/ContainerObserver.h"
+#include "opendavinci/odcore/wrapper/Disposable.h"
 
-namespace core { namespace data { class Container; } }
+namespace odcore { namespace data { class Container; } }
 
 namespace odcontext {
     namespace base {
@@ -36,7 +36,7 @@ namespace odcontext {
          * Every ControlledContainerConferenceForSystemUnderTest has its own
          * ContainerDeliverer to ensure synchronous delivery.
          */
-        class OPENDAVINCI_API ContainerDeliverer : public core::io::conference::ContainerObserver, public core::io::conference::ContainerListener, public core::wrapper::Disposable {
+        class OPENDAVINCI_API ContainerDeliverer : public odcore::io::conference::ContainerObserver, public odcore::io::conference::ContainerListener, public odcore::wrapper::Disposable {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -57,14 +57,14 @@ namespace odcontext {
 
                 virtual ~ContainerDeliverer();
 
-                virtual void setContainerListener(core::io::conference::ContainerListener *cl);
+                virtual void setContainerListener(odcore::io::conference::ContainerListener *cl);
 
                 // This method is called by ControlledContainerConferenceFactory to send c to the registered ContainerListener from an app.
-                virtual void nextContainer(core::data::Container &c);
+                virtual void nextContainer(odcore::data::Container &c);
 
             private:
-                core::base::Mutex m_containerListenerMutex;
-                core::io::conference::ContainerListener *m_containerListener;
+                odcore::base::Mutex m_containerListenerMutex;
+                odcore::io::conference::ContainerListener *m_containerListener;
         };
 
     }

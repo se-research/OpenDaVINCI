@@ -22,10 +22,10 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Serializable.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Serializable.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
         using namespace std;
@@ -376,6 +376,6 @@ namespace core {
         };
 
     }
-} // core::base
+} // odcore::base
 
 #endif /*OPENDAVINCI_CORE_BASE_SERIALIZER_H_*/

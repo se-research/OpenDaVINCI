@@ -20,18 +20,18 @@
 #include <cstdlib>
 #include <cstring>
 
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/Serializable.h"
-#include "opendavinci/core/base/Visitable.h"
-#include "opendavinci/core/reflection/Field.h"
-#include "opendavinci/core/reflection/MessageFromVisitableVisitor.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/base/Visitable.h"
+#include "opendavinci/odcore/reflection/Field.h"
+#include "opendavinci/odcore/reflection/MessageFromVisitableVisitor.h"
 #include "opendavinci/generated/coredata/reflection/AbstractField.h"
 
-namespace core {
+namespace odcore {
     namespace reflection {
 
-        using namespace core;
-        using namespace core::base;
+        using namespace odcore;
+        using namespace odcore::base;
         using namespace coredata::reflection;
 
         MessageFromVisitableVisitor::MessageFromVisitableVisitor() :
@@ -227,5 +227,5 @@ namespace core {
         }
 
     }
-} // core::reflection
+} // odcore::reflection
 

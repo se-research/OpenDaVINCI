@@ -17,28 +17,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/context/base/ControlledTimeFactory.h"
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/wrapper/Time.h"
+#include "opendavinci/odcontext/base/ControlledTimeFactory.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/wrapper/Time.h"
 
 namespace odcontext {
     namespace base {
 
-        using namespace core::base;
+        using namespace odcore::base;
 
         ControlledTimeFactory::ControlledTimeFactory() :
             m_timeMutex(),
             m_time() {
-            core::wrapper::TimeFactory::setSingleton(this);
+            odcore::wrapper::TimeFactory::setSingleton(this);
         }
 
         ControlledTimeFactory::~ControlledTimeFactory() {}
 
-        core::SharedPointer<core::wrapper::Time> ControlledTimeFactory::now() {
-            core::SharedPointer<core::wrapper::Time> t;
+        odcore::SharedPointer<odcore::wrapper::Time> ControlledTimeFactory::now() {
+            odcore::SharedPointer<odcore::wrapper::Time> t;
             {
                 Lock l(m_timeMutex);
-                t = core::SharedPointer<core::wrapper::Time>(new ControlledTime(m_time));
+                t = odcore::SharedPointer<odcore::wrapper::Time>(new ControlledTime(m_time));
             }
             return t;
         }

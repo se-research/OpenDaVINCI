@@ -20,12 +20,12 @@
 #ifndef OPENDAVINCI_CORE_BASE_ABSTRACTDATASTORE_H_
 #define OPENDAVINCI_CORE_BASE_ABSTRACTDATASTORE_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Condition.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Condition.h"
 
-namespace core { namespace data { class Container; } }
+namespace odcore { namespace data { class Container; } }
 
-namespace core {
+namespace odcore {
     namespace base {
 
         /**
@@ -84,6 +84,6 @@ namespace core {
         };
 
     }
-} // core::base
+} // odcore::base
 
 #endif /*OPENDAVINCI_CORE_BASE_ABSTRACTDATASTORE_H_*/

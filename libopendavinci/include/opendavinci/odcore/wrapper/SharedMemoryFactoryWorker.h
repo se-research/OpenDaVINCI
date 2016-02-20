@@ -20,13 +20,13 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_SHAREDMEMORYFACTORYWORKER_H_
 #define OPENDAVINCI_CORE_WRAPPER_SHAREDMEMORYFACTORYWORKER_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/wrapper/SharedMemory.h"
-#include "opendavinci/core/wrapper/SystemLibraryProducts.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/wrapper/SharedMemory.h"
+#include "opendavinci/odcore/wrapper/SystemLibraryProducts.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         using namespace std;
@@ -64,6 +64,6 @@ namespace core {
         };
 
     }
-} // core::wrapper
+} // odcore::wrapper
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_SHAREDMEMORYFACTORYWORKER_H_*/

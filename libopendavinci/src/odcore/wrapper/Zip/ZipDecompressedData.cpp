@@ -27,18 +27,18 @@
 #include <sstream>
 
 #include "zip.h"
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/module/AbstractCIDModule.h"
-#include "opendavinci/core/wrapper/Zip/ZipDecompressedData.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/module/AbstractCIDModule.h"
+#include "opendavinci/odcore/wrapper/Zip/ZipDecompressedData.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
         namespace Zip {
 
             using namespace std;
-            using namespace core;
-            using namespace core::strings;
+            using namespace odcore;
+            using namespace odcore::strings;
 
             ZipDecompressedData::ZipDecompressedData(istream &in) :
                 m_mapOfDecompressedEntries() {
@@ -175,4 +175,4 @@ namespace core {
 
         }
     }
-} // core::wrapper::Zip
+} // odcore::wrapper::Zip

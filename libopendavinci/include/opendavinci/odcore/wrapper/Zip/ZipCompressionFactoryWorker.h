@@ -20,13 +20,13 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_ZIP_ZIPCOMPRESSIONFACTORYWORKER_H_
 #define OPENDAVINCI_CORE_WRAPPER_ZIP_ZIPCOMPRESSIONFACTORYWORKER_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/wrapper/CompressionLibraryProducts.h"
-#include "opendavinci/core/wrapper/CompressionFactoryWorker.h"
-#include "opendavinci/core/wrapper/Zip/ZipDecompressedData.h"
+#include "opendavinci/odcore/wrapper/CompressionLibraryProducts.h"
+#include "opendavinci/odcore/wrapper/CompressionFactoryWorker.h"
+#include "opendavinci/odcore/wrapper/Zip/ZipDecompressedData.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         using namespace std;
@@ -38,6 +38,6 @@ namespace core {
         };
 
     }
-} // core::wrapper
+} // odcore::wrapper
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_ZIP_ZIPCOMPRESSIONFACTORYWORKER_H_*/

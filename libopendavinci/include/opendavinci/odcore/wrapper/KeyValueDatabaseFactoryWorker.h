@@ -20,13 +20,13 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_KEYVALUEDATABASEFACTORYWORKER
 #define OPENDAVINCI_CORE_WRAPPER_KEYVALUEDATABASEFACTORYWORKER
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/wrapper/KeyValueDatabase.h"
-#include "opendavinci/core/wrapper/KeyValueDatabaseLibraryProducts.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/wrapper/KeyValueDatabase.h"
+#include "opendavinci/odcore/wrapper/KeyValueDatabaseLibraryProducts.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         using namespace std;
@@ -52,6 +52,6 @@ namespace core {
         };
 
     }
-} // core::wrapper
+} // odcore::wrapper
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_KEYVALUEDATABASEFACTORYWORKER*/

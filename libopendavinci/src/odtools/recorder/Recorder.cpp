@@ -19,23 +19,23 @@
 
 #include <iostream>
 
-#include "opendavinci/core/base/Serializable.h"
-#include "opendavinci/core/base/module/AbstractCIDModule.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/io/StreamFactory.h"
-#include "opendavinci/core/io/URL.h"
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/tools/recorder/Recorder.h"
-#include "opendavinci/tools/recorder/SharedDataListener.h"
+#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/base/module/AbstractCIDModule.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/io/StreamFactory.h"
+#include "opendavinci/odcore/io/URL.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odtools/recorder/Recorder.h"
+#include "opendavinci/odtools/recorder/SharedDataListener.h"
 
 namespace odtools {
 
     namespace recorder {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::data;
-        using namespace core::io;
+        using namespace odcore::base;
+        using namespace odcore::data;
+        using namespace odcore::io;
 
         Recorder::Recorder(const string &url, const uint32_t &memorySegmentSize, const uint32_t &numberOfSegments, const bool &threading, const bool &dumpSharedData) :
             m_fifo(),
@@ -74,7 +74,7 @@ namespace odtools {
             return *m_sharedDataListener;
         }
 
-        void Recorder::store(core::data::Container c) {
+        void Recorder::store(odcore::data::Container c) {
             // Check if the container to be stored is a "regular" data type.
             if ( (c.getDataType() != Container::UNDEFINEDDATA) &&
                  (c.getDataType() != Container::RECORDER_COMMAND)  &&

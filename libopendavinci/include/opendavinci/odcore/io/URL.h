@@ -22,10 +22,10 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/io/URLProtocol.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/io/URLProtocol.h"
 
-namespace core {
+namespace odcore {
     namespace io {
 
         using namespace std;
@@ -96,6 +96,6 @@ namespace core {
         };
 
     }
-} // core::io
+} // odcore::io
 
 #endif /*OPENDAVINCI_CORE_IO_URL_H_*/

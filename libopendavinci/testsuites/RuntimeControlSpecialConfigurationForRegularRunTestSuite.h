@@ -26,22 +26,22 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/context/base/DirectInterface.h"  // for DirectInterface
-#include "opendavinci/context/base/RuntimeControl.h"  // for RuntimeControl, etc
-#include "opendavinci/context/base/RuntimeEnvironment.h"  // for RuntimeEnvironment
-#include "opendavinci/context/base/SystemFeedbackComponent.h"
-#include "opendavinci/core/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcontext/base/DirectInterface.h"  // for DirectInterface
+#include "opendavinci/odcontext/base/RuntimeControl.h"  // for RuntimeControl, etc
+#include "opendavinci/odcontext/base/RuntimeEnvironment.h"  // for RuntimeEnvironment
+#include "opendavinci/odcontext/base/SystemFeedbackComponent.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
 namespace odcontext { namespace base { class SendContainerToSystemsUnderTest; } }
-namespace core { namespace wrapper { class Time; } }
+namespace odcore { namespace wrapper { class Time; } }
 
 using namespace std;
-using namespace core::base;
-using namespace core::base::module;
+using namespace odcore::base;
+using namespace odcore::base::module;
 using namespace odcontext::base;
 
 class RuntimeControlTestModule : public TimeTriggeredConferenceClientModule {
@@ -99,7 +99,7 @@ class RuntimeControlTestDummySystemPart : public SystemFeedbackComponent {
             m_tearDownCalled = true;
         }
 
-        virtual void step(const core::wrapper::Time &t, SendContainerToSystemsUnderTest &/*sender*/) {
+        virtual void step(const odcore::wrapper::Time &t, SendContainerToSystemsUnderTest &/*sender*/) {
             clog << "Call to RuntimeControlTestDummySystemPart for t = " << t.getSeconds() << "." << t.getPartialMicroseconds() << ", containing " << getFIFO().getSize() << " containers." << endl;
         }
 

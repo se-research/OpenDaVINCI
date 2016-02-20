@@ -25,12 +25,12 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"         // for SharedPointer
-#include "opendavinci/core/base/Lock.h"             // for Lock
-#include "opendavinci/core/base/Serializable.h"     // for operator<<, operator>>
-#include "opendavinci/core/wrapper/SharedMemory.h"  // for SharedMemory
-#include "opendavinci/core/wrapper/SharedMemoryFactory.h"  // for SharedMemoryFactory
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"         // for SharedPointer
+#include "opendavinci/odcore/base/Lock.h"             // for Lock
+#include "opendavinci/odcore/base/Serializable.h"     // for operator<<, operator>>
+#include "opendavinci/odcore/wrapper/SharedMemory.h"  // for SharedMemory
+#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"  // for SharedMemoryFactory
 #include "opendavinci/generated/coredata/SharedData.h"  // for SharedData
 
 using namespace std;
@@ -76,9 +76,9 @@ class SharedMemoryTest : public CxxTest::TestSuite {
         }
 
         void testSharedMemory() {
-            core::SharedPointer<core::wrapper::SharedMemory> memClient;
+            odcore::SharedPointer<odcore::wrapper::SharedMemory> memClient;
 
-            core::SharedPointer<core::wrapper::SharedMemory> memServer = core::wrapper::SharedMemoryFactory::createSharedMemory("SharedMemoryTest", 10);
+            odcore::SharedPointer<odcore::wrapper::SharedMemory> memServer = odcore::wrapper::SharedMemoryFactory::createSharedMemory("SharedMemoryTest", 10);
             TS_ASSERT(memServer->isValid());
             TS_ASSERT(memServer->getSize() == 10);
             memServer->lock();
@@ -89,7 +89,7 @@ class SharedMemoryTest : public CxxTest::TestSuite {
 
             TS_ASSERT(!memClient.isValid());
 
-            memClient = core::wrapper::SharedMemoryFactory::attachToSharedMemory("SharedMemoryTest");
+            memClient = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory("SharedMemoryTest");
             TS_ASSERT(memClient->isValid());
             TS_ASSERT(memClient->getSize() == 10);
             memClient->lock();
@@ -101,13 +101,13 @@ class SharedMemoryTest : public CxxTest::TestSuite {
         }
 
         void testSharedMemoryWithScopedLock() {
-            core::SharedPointer<core::wrapper::SharedMemory> memClient;
+            odcore::SharedPointer<odcore::wrapper::SharedMemory> memClient;
 
-            core::SharedPointer<core::wrapper::SharedMemory> memServer = core::wrapper::SharedMemoryFactory::createSharedMemory("SharedMemoryTest", 10);
+            odcore::SharedPointer<odcore::wrapper::SharedMemory> memServer = odcore::wrapper::SharedMemoryFactory::createSharedMemory("SharedMemoryTest", 10);
             TS_ASSERT(memServer->isValid());
             TS_ASSERT(memServer->getSize() == 10);
             {
-                core::base::Lock l(memServer);
+                odcore::base::Lock l(memServer);
 
                 for (uint32_t i = 0; i < memServer->getSize(); i++) {
                     *(((char*)(memServer->getSharedMemory())) + i) = ('A' + i);
@@ -116,11 +116,11 @@ class SharedMemoryTest : public CxxTest::TestSuite {
 
             TS_ASSERT(!memClient.isValid());
 
-            memClient = core::wrapper::SharedMemoryFactory::attachToSharedMemory("SharedMemoryTest");
+            memClient = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory("SharedMemoryTest");
             TS_ASSERT(memClient->isValid());
             TS_ASSERT(memClient->getSize() == 10);
             {
-                core::base::Lock l(memClient);
+                odcore::base::Lock l(memClient);
                 for (uint32_t i = 0; i < memClient->getSize(); i++) {
                     char c = *(((char*)(memClient->getSharedMemory())) + i);
                     TS_ASSERT(c == (char)('A' + i));

@@ -20,9 +20,9 @@
 #ifndef OPENDAVINCI_CORE_BASE_MODULE_BREAKPOINT_H_
 #define OPENDAVINCI_CORE_BASE_MODULE_BREAKPOINT_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-namespace core {
+namespace odcore {
     namespace base {
         namespace module {
 
@@ -42,6 +42,6 @@ namespace core {
 
         }
     }
-} // core::base::module
+} // odcore::base::module
 
 #endif /*OPENDAVINCI_CORE_BASE_MODULE_BREAKPOINT_H_*/

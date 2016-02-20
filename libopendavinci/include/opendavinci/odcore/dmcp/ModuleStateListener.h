@@ -20,13 +20,13 @@
 #ifndef OPENDAVINCI_DMCP_MODULESTATELISTENER_H_
 #define OPENDAVINCI_DMCP_MODULESTATELISTENER_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/data/Container.h"
+#include "opendavinci/odcore/data/Container.h"
 
 #include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
-namespace core {
+namespace odcore {
     namespace dmcp {
 
         using namespace std;
@@ -47,9 +47,9 @@ namespace core {
                 virtual void handleConnectionLost(const coredata::dmcp::ModuleDescriptor &md) = 0;
 
                 virtual void handleUnkownContainer(const coredata::dmcp::ModuleDescriptor &md,
-                                                   const core::data::Container& container) = 0;
+                                                   const odcore::data::Container& container) = 0;
         };
     }
-} // core::dmcp
+} // odcore::dmcp
 
 #endif /* OPENDAVINCI_DMCP_MODULESTATELISTENER_H_ */

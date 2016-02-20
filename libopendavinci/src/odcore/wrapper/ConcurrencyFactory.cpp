@@ -17,22 +17,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/wrapper/ConcurrencyFactory.h"
-#include "opendavinci/core/wrapper/ConfigurationTraits.h"
-#include "opendavinci/core/wrapper/Libraries.h"
-#include "opendavinci/core/wrapper/SystemLibraryProducts.h"
+#include "opendavinci/odcore/wrapper/ConcurrencyFactory.h"
+#include "opendavinci/odcore/wrapper/ConfigurationTraits.h"
+#include "opendavinci/odcore/wrapper/Libraries.h"
+#include "opendavinci/odcore/wrapper/SystemLibraryProducts.h"
 
-namespace core { namespace wrapper { class Runnable; } }
-namespace core { namespace wrapper { class Thread; } }
+namespace odcore { namespace wrapper { class Runnable; } }
+namespace odcore { namespace wrapper { class Thread; } }
 
 #ifdef WIN32
-  #include "opendavinci/core/wrapper/WIN32/WIN32ConcurrencyFactoryWorker.h"
+  #include "opendavinci/odcore/wrapper/WIN32/WIN32ConcurrencyFactoryWorker.h"
 #endif
 #ifndef WIN32
-  #include "opendavinci/core/wrapper/POSIX/POSIXConcurrencyFactoryWorker.h"
+  #include "opendavinci/odcore/wrapper/POSIX/POSIXConcurrencyFactoryWorker.h"
 #endif
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         Thread* ConcurrencyFactory::createThread(Runnable &runnable) {
@@ -50,4 +50,4 @@ namespace core {
             return ConcurrencyFactoryWorker<configuration::value>::usleepUntil(seconds, partialMicroseconds);
         }
     }
-} // core::wrapper
+} // odcore::wrapper

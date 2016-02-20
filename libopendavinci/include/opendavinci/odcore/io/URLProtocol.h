@@ -22,7 +22,7 @@
 
 #include <string>
 
-namespace core {
+namespace odcore {
     namespace io {
 
         using namespace std;
@@ -76,6 +76,6 @@ namespace core {
         };
 
     }
-} // core::io
+} // odcore::io
 
 #endif /*OPENDAVINCI_CORE_IO_URLPROTOCOL_H_*/

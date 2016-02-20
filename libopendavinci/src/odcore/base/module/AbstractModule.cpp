@@ -21,14 +21,14 @@
 #include <csignal>
 #include <cstdlib>
 
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/core/base/module/AbstractModule.h"
-#include "opendavinci/core/exceptions/Exceptions.h"
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/wrapper/DisposalService.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/base/module/AbstractModule.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/wrapper/DisposalService.h"
 
-namespace core {
+namespace odcore {
     namespace base {
         namespace module {
 
@@ -153,4 +153,4 @@ namespace core {
 
         }
     }
-} // core::base
+} // odcore::base

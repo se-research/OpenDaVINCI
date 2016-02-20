@@ -26,14 +26,14 @@
 #include <memory>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/io/udp/UDPSender.h"
-#include "opendavinci/core/wrapper/NetworkLibraryProducts.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/io/udp/UDPSender.h"
+#include "opendavinci/odcore/wrapper/NetworkLibraryProducts.h"
 
-namespace core { namespace wrapper { class Mutex; } }
-namespace core { namespace wrapper { template <core::wrapper::NetworkLibraryProducts product> class UDPFactoryWorker; } }
+namespace odcore { namespace wrapper { class Mutex; } }
+namespace odcore { namespace wrapper { template <odcore::wrapper::NetworkLibraryProducts product> class UDPFactoryWorker; } }
 
-namespace core {
+namespace odcore {
     namespace wrapper {
         namespace POSIX {
 
@@ -44,7 +44,7 @@ namespace core {
              *
              * @See UDPSender
              */
-            class POSIXUDPSender : public core::io::udp::UDPSender {
+            class POSIXUDPSender : public odcore::io::udp::UDPSender {
                 private:
                     enum {
                         MAX_UDP_PACKET_SIZE = 65507
@@ -90,6 +90,6 @@ namespace core {
 
         }
     }
-} // core::wrapper::POSIX
+} // odcore::wrapper::POSIX
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXUDPSENDER_H_*/

@@ -22,13 +22,13 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Visitor.h"
-#include "opendavinci/core/reflection/Message.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Visitor.h"
+#include "opendavinci/odcore/reflection/Message.h"
 
-namespace core { namespace base { class Serializable; } }
+namespace odcore { namespace base { class Serializable; } }
 
-namespace core {
+namespace odcore {
     namespace reflection {
 
         using namespace std;
@@ -36,7 +36,7 @@ namespace core {
         /**
          * This class is a Visitor transforming a visitable class into a generic Message representation.
          */
-        class OPENDAVINCI_API MessageFromVisitableVisitor : public core::base::Visitor {
+        class OPENDAVINCI_API MessageFromVisitableVisitor : public odcore::base::Visitor {
             private:
                 /**
                  * Copy constructor.
@@ -59,7 +59,7 @@ namespace core {
                 virtual ~MessageFromVisitableVisitor();
 
             public:
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, core::base::Serializable &v);
+                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, odcore::base::Serializable &v);
                 virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, bool &v);
                 virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, char &v);
                 virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, unsigned char &v);
@@ -88,6 +88,6 @@ namespace core {
         };
 
     }
-} // core::reflection
+} // odcore::reflection
 
 #endif /*OPENDAVINCI_CORE_REFLECTION_MESSAGEFROMVISITABLEVISITOR_H_*/

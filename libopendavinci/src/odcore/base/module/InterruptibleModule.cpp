@@ -17,17 +17,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/core/base/module/Breakpoint.h"
-#include "opendavinci/core/base/module/InterruptibleModule.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/base/module/Breakpoint.h"
+#include "opendavinci/odcore/base/module/InterruptibleModule.h"
 
-namespace core {
+namespace odcore {
     namespace base {
         namespace module {
 
             using namespace std;
-            using namespace core::base;
+            using namespace odcore::base;
 
             InterruptibleModule::InterruptibleModule() :
                     m_breakpointMutex(),
@@ -64,4 +64,4 @@ namespace core {
 
         }
     }
-} // core::base
+} // odcore::base

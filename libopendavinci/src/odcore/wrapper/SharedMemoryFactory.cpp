@@ -17,20 +17,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/wrapper/ConfigurationTraits.h"
-#include "opendavinci/core/wrapper/Libraries.h"
-#include "opendavinci/core/wrapper/SharedMemory.h"
-#include "opendavinci/core/wrapper/SharedMemoryFactory.h"
-#include "opendavinci/core/wrapper/SystemLibraryProducts.h"
+#include "opendavinci/odcore/wrapper/ConfigurationTraits.h"
+#include "opendavinci/odcore/wrapper/Libraries.h"
+#include "opendavinci/odcore/wrapper/SharedMemory.h"
+#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/odcore/wrapper/SystemLibraryProducts.h"
 
 #ifdef WIN32
-    #include "opendavinci/core/wrapper/WIN32/WIN32SharedMemoryFactoryWorker.h"
+    #include "opendavinci/odcore/wrapper/WIN32/WIN32SharedMemoryFactoryWorker.h"
 #endif
 #ifndef WIN32
-    #include "opendavinci/core/wrapper/POSIX/POSIXSharedMemoryFactoryWorker.h"
+    #include "opendavinci/odcore/wrapper/POSIX/POSIXSharedMemoryFactoryWorker.h"
 #endif
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         SharedPointer<SharedMemory> SharedMemoryFactory::createSharedMemory(const string &name, const uint32_t &size) {
@@ -43,4 +43,4 @@ namespace core {
             return SharedMemoryFactoryWorker<configuration::value>::attachToSharedMemory(name);
         }
     }
-} // core::wrapper
+} // odcore::wrapper

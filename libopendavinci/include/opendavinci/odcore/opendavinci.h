@@ -83,7 +83,7 @@
     // Unlink causes an error under Windows.
     #define UNLINK _unlink
     
-    #include "opendavinci/core/platform/win/inttypes.h"
+    #include "opendavinci/odcore/platform/win/inttypes.h"
     #include <basetsd.h>
     #include <Winsock2.h>
     #include <ws2tcpip.h>
@@ -92,7 +92,7 @@
 /**************************************************************************************/
 
 // Type convention software-wide.
-namespace core {
+namespace odcore {
     enum TYPE_ {
         BOOL_=0,
         INTEGERS_START,
@@ -206,7 +206,7 @@ namespace core {
 #define OPENDAVINCI_CORE_DECLARE_EXCEPTION(ExceptionName) class OPENDAVINCI_API ExceptionName : public Exceptions { public: ExceptionName(const string &exceptionMessage, const string &fileName, const uint32_t &lineNumber) : Exceptions(exceptionMessage, fileName, lineNumber) {}; const string getExceptionName() const { return "" #ExceptionName ""; } };
 
 /* This macro eases the usage of exceptions. */
-#define OPENDAVINCI_CORE_THROW_EXCEPTION(ExceptionClass, ExceptionMessage) do { throw core::exceptions::ExceptionClass(ExceptionMessage, "", 0); } while (false)
+#define OPENDAVINCI_CORE_THROW_EXCEPTION(ExceptionClass, ExceptionMessage) do { throw odcore::exceptions::ExceptionClass(ExceptionMessage, "", 0); } while (false)
 
 /* This macro eases the usage of freeing a pointer. */
 #define OPENDAVINCI_CORE_FREE_POINTER(ptr) do { if (ptr != NULL) { free(ptr); }; ptr = NULL; } while (false)
@@ -218,9 +218,9 @@ namespace core {
 #define OPENDAVINCI_CORE_DELETE_ARRAY(ptr) do { if (ptr != NULL) { delete [] (ptr); }; ptr = NULL; } while (false)
 
 /* This macro eases the usage of logging. */
-#define CLOG if (core::base::module::AbstractCIDModule::isVerbose()) std::clog
-#define CLOG1 if (core::base::module::AbstractCIDModule::getVerbosity() == 1) std::clog
-#define CLOG2 if ((core::base::module::AbstractCIDModule::getVerbosity() <= 2) && (core::base::module::AbstractCIDModule::getVerbosity() >= 1)) std::clog
-#define CLOG3 if ((core::base::module::AbstractCIDModule::getVerbosity() <= 3) && (core::base::module::AbstractCIDModule::getVerbosity() >= 1)) std::clog
+#define CLOG if (odcore::base::module::AbstractCIDModule::isVerbose()) std::clog
+#define CLOG1 if (odcore::base::module::AbstractCIDModule::getVerbosity() == 1) std::clog
+#define CLOG2 if ((odcore::base::module::AbstractCIDModule::getVerbosity() <= 2) && (odcore::base::module::AbstractCIDModule::getVerbosity() >= 1)) std::clog
+#define CLOG3 if ((odcore::base::module::AbstractCIDModule::getVerbosity() <= 3) && (odcore::base::module::AbstractCIDModule::getVerbosity() >= 1)) std::clog
 
 #endif // OPENDAVINCI_CORE_PLATFORM_H_

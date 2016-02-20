@@ -23,15 +23,15 @@
 #include <memory>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/io/udp/UDPSender.h"
+#include "opendavinci/odcore/io/udp/UDPSender.h"
 
-#include "opendavinci/core/wrapper/Mutex.h"
-#include "opendavinci/core/wrapper/NetworkLibraryProducts.h"
-#include "opendavinci/core/wrapper/UDPFactoryWorker.h"
+#include "opendavinci/odcore/wrapper/Mutex.h"
+#include "opendavinci/odcore/wrapper/NetworkLibraryProducts.h"
+#include "opendavinci/odcore/wrapper/UDPFactoryWorker.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
         namespace WIN32Impl {
 
@@ -42,7 +42,7 @@ namespace core {
              *
              * @See UDPSender
              */
-            class WIN32UDPSender : public core::io::udp::UDPSender {
+            class WIN32UDPSender : public odcore::io::udp::UDPSender {
                 private:
                     enum {
                         MAX_UDP_PACKET_SIZE = 65507
@@ -88,6 +88,6 @@ namespace core {
 
         }
     }
-} // core::wrapper::WIN32Impl
+} // odcore::wrapper::WIN32Impl
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_WIN32IMPL_WIN32UDPSENDER_H_*/

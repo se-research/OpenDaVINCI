@@ -19,13 +19,13 @@
 
 #include <iostream>
 
-#include "opendavinci/core/base/QueryableNetstringsDeserializer.h"
-#include "opendavinci/core/base/QueryableNetstringsDeserializerAACF.h"
-#include "opendavinci/core/base/QueryableNetstringsDeserializerABCF.h"
-#include "opendavinci/core/base/module/AbstractCIDModule.h"
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/base/QueryableNetstringsDeserializer.h"
+#include "opendavinci/odcore/base/QueryableNetstringsDeserializerAACF.h"
+#include "opendavinci/odcore/base/QueryableNetstringsDeserializerABCF.h"
+#include "opendavinci/odcore/base/module/AbstractCIDModule.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
 class Serializable;
@@ -202,4 +202,4 @@ class Serializable;
             m_deserializer->read(fourByteID, oneByteID, longName, shortName, data, size);
         }
     }
-} // core::base
+} // odcore::base

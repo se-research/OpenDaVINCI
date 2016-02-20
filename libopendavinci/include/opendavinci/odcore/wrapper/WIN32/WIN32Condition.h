@@ -23,14 +23,14 @@
 // Using c++11 standard.
 #include <condition_variable>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/wrapper/Condition.h"
-#include "opendavinci/core/wrapper/ConditionFactoryWorker.h"
-#include "opendavinci/core/wrapper/SystemLibraryProducts.h"
-#include "opendavinci/core/wrapper/WIN32/WIN32Mutex.h"
+#include "opendavinci/odcore/wrapper/Condition.h"
+#include "opendavinci/odcore/wrapper/ConditionFactoryWorker.h"
+#include "opendavinci/odcore/wrapper/SystemLibraryProducts.h"
+#include "opendavinci/odcore/wrapper/WIN32/WIN32Mutex.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
         namespace WIN32Impl {
 
@@ -86,6 +86,6 @@ namespace core {
 
         }
     }
-} // core::wrapper::WIN32Impl
+} // odcore::wrapper::WIN32Impl
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_WIN32IMPL_WIN32CONDITION_H_*/

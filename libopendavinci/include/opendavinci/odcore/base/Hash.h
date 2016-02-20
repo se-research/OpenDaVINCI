@@ -20,19 +20,19 @@
 #ifndef OPENDAVINCI_CORE_BASE_HASH_H_
 #define OPENDAVINCI_CORE_BASE_HASH_H_
 
-#define OPENDAVINCI_CORE_STRINGLITERAL1(a)                      core::base::CharList<a, core::base::NullType>
-#define OPENDAVINCI_CORE_STRINGLITERAL2(a, b)                   core::base::CharList<a, core::base::CharList<b, core::base::NullType> >
-#define OPENDAVINCI_CORE_STRINGLITERAL3(a, b, c)                core::base::CharList<a, core::base::CharList<b, core::base::CharList<c, core::base::NullType> > >
-#define OPENDAVINCI_CORE_STRINGLITERAL4(a, b, c, d)             core::base::CharList<a, core::base::CharList<b, core::base::CharList<c, core::base::CharList<d, core::base::NullType> > > >
-#define OPENDAVINCI_CORE_STRINGLITERAL5(a, b, c, d, e)          core::base::CharList<a, core::base::CharList<b, core::base::CharList<c, core::base::CharList<d, core::base::CharList<e, core::base::NullType> > > > >
-#define OPENDAVINCI_CORE_STRINGLITERAL6(a, b, c, d, e, f)       core::base::CharList<a, core::base::CharList<b, core::base::CharList<c, core::base::CharList<d, core::base::CharList<e, core::base::CharList<f, core::base::NullType> > > > > >
-#define OPENDAVINCI_CORE_STRINGLITERAL7(a, b, c, d, e, f, g)    core::base::CharList<a, core::base::CharList<b, core::base::CharList<c, core::base::CharList<d, core::base::CharList<e, core::base::CharList<f, core::base::CharList<g, core::base::NullType> > > > > > >
-#define OPENDAVINCI_CORE_STRINGLITERAL8(a, b, c, d, e, f, g, h) core::base::CharList<a, core::base::CharList<b, core::base::CharList<c, core::base::CharList<d, core::base::CharList<e, core::base::CharList<f, core::base::CharList<g, core::base::CharList<h, core::base::NullType> > > > > > > >
+#define OPENDAVINCI_CORE_STRINGLITERAL1(a)                      odcore::base::CharList<a, odcore::base::NullType>
+#define OPENDAVINCI_CORE_STRINGLITERAL2(a, b)                   odcore::base::CharList<a, odcore::base::CharList<b, odcore::base::NullType> >
+#define OPENDAVINCI_CORE_STRINGLITERAL3(a, b, c)                odcore::base::CharList<a, odcore::base::CharList<b, odcore::base::CharList<c, odcore::base::NullType> > >
+#define OPENDAVINCI_CORE_STRINGLITERAL4(a, b, c, d)             odcore::base::CharList<a, odcore::base::CharList<b, odcore::base::CharList<c, odcore::base::CharList<d, odcore::base::NullType> > > >
+#define OPENDAVINCI_CORE_STRINGLITERAL5(a, b, c, d, e)          odcore::base::CharList<a, odcore::base::CharList<b, odcore::base::CharList<c, odcore::base::CharList<d, odcore::base::CharList<e, odcore::base::NullType> > > > >
+#define OPENDAVINCI_CORE_STRINGLITERAL6(a, b, c, d, e, f)       odcore::base::CharList<a, odcore::base::CharList<b, odcore::base::CharList<c, odcore::base::CharList<d, odcore::base::CharList<e, odcore::base::CharList<f, odcore::base::NullType> > > > > >
+#define OPENDAVINCI_CORE_STRINGLITERAL7(a, b, c, d, e, f, g)    odcore::base::CharList<a, odcore::base::CharList<b, odcore::base::CharList<c, odcore::base::CharList<d, odcore::base::CharList<e, odcore::base::CharList<f, odcore::base::CharList<g, odcore::base::NullType> > > > > > >
+#define OPENDAVINCI_CORE_STRINGLITERAL8(a, b, c, d, e, f, g, h) odcore::base::CharList<a, odcore::base::CharList<b, odcore::base::CharList<c, odcore::base::CharList<d, odcore::base::CharList<e, odcore::base::CharList<f, odcore::base::CharList<g, odcore::base::CharList<h, odcore::base::NullType> > > > > > > >
 
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
         /** This is the CRC32 polynomial. */
@@ -111,6 +111,6 @@ namespace core {
         };
 
     }
-} // core::base
+} // odcore::base
 
 #endif /*OPENDAVINCI_CORE_BASE_HASH_H_*/

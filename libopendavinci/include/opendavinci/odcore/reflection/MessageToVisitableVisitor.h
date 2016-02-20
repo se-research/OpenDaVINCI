@@ -22,16 +22,16 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/Visitor.h"
-#include "opendavinci/core/reflection/Field.h"
-#include "opendavinci/core/reflection/Message.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Visitor.h"
+#include "opendavinci/odcore/reflection/Field.h"
+#include "opendavinci/odcore/reflection/Message.h"
 #include "opendavinci/generated/coredata/reflection/AbstractField.h"
 
-namespace core { namespace base { class Serializable; } }
+namespace odcore { namespace base { class Serializable; } }
 
-namespace core {
+namespace odcore {
     namespace reflection {
 
         using namespace std;
@@ -39,7 +39,7 @@ namespace core {
         /**
          * This class is a Visitor setting values in a visitable class from a generic Message representation.
          */
-        class OPENDAVINCI_API MessageToVisitableVisitor : public core::base::Visitor {
+        class OPENDAVINCI_API MessageToVisitableVisitor : public odcore::base::Visitor {
             private:
                 /**
                  * Copy constructor.
@@ -62,7 +62,7 @@ namespace core {
                 virtual ~MessageToVisitableVisitor();
 
             public:
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, core::base::Serializable &v);
+                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, odcore::base::Serializable &v);
                 virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, bool &v);
                 virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, char &v);
                 virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, unsigned char &v);
@@ -94,16 +94,16 @@ namespace core {
                  * @param f Field to visit.
                  */
                 template<typename T>
-                void visitPrimitiveDataType(core::SharedPointer<coredata::reflection::AbstractField> &f, T &v) {
+                void visitPrimitiveDataType(odcore::SharedPointer<coredata::reflection::AbstractField> &f, T &v) {
                     // If T is != double but f->getFieldDataType() == double, we require a compiler cast.
                     double _v = 0;
                     if (f->getFieldDataType() == coredata::reflection::AbstractField::DOUBLE_T) {
-                        _v = dynamic_cast<core::reflection::Field<double>*>(f.operator->())->getValue();
+                        _v = dynamic_cast<odcore::reflection::Field<double>*>(f.operator->())->getValue();
                     }
 
                     // Set value from f to v (default case).
                     if (f->getFieldDataType() != coredata::reflection::AbstractField::DOUBLE_T) {
-                        v = dynamic_cast<core::reflection::Field<T>*>(f.operator->())->getValue();
+                        v = dynamic_cast<odcore::reflection::Field<T>*>(f.operator->())->getValue();
                     }
                     else { v = _v; }
                 }
@@ -118,6 +118,6 @@ namespace core {
         };
 
     }
-} // core::reflection
+} // odcore::reflection
 
 #endif /*OPENDAVINCI_CORE_REFLECTION_MESSAGETOVISITABLEVISITOR_H_*/

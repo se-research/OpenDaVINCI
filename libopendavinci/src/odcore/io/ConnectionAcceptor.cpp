@@ -21,28 +21,28 @@
 #include <sstream>
 #include <string>
 
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/base/module/AbstractCIDModule.h"
-#include "opendavinci/core/exceptions/Exceptions.h"
-#include "opendavinci/core/io/Connection.h"
-#include "opendavinci/core/io/ConnectionAcceptor.h"
-#include "opendavinci/core/io/ConnectionAcceptorListener.h"
-#include "opendavinci/core/io/tcp/TCPConnection.h"
-#include "opendavinci/core/io/tcp/TCPFactory.h"
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/module/AbstractCIDModule.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
+#include "opendavinci/odcore/io/Connection.h"
+#include "opendavinci/odcore/io/ConnectionAcceptor.h"
+#include "opendavinci/odcore/io/ConnectionAcceptorListener.h"
+#include "opendavinci/odcore/io/tcp/TCPConnection.h"
+#include "opendavinci/odcore/io/tcp/TCPFactory.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-namespace core {
+namespace odcore {
     namespace io {
 
         using namespace std;
-        using namespace core::base;
+        using namespace odcore::base;
 
         ConnectionAcceptor::ConnectionAcceptor(const uint32_t &port) :
             m_listenerMutex(),
             m_listener(NULL),
             m_acceptor(NULL) {
             try {
-                m_acceptor = core::io::tcp::TCPFactory::createTCPAcceptor(port);
+                m_acceptor = odcore::io::tcp::TCPFactory::createTCPAcceptor(port);
             }
             catch (std::string &s) {
                 OPENDAVINCI_CORE_THROW_EXCEPTION(ConnectionAcceptorException , s);
@@ -61,10 +61,10 @@ namespace core {
             m_listener = listener;
         }
 
-        void ConnectionAcceptor::onNewConnection(core::SharedPointer<core::io::tcp::TCPConnection> connection) {
+        void ConnectionAcceptor::onNewConnection(odcore::SharedPointer<odcore::io::tcp::TCPConnection> connection) {
             Lock l(m_listenerMutex);
             if (m_listener != NULL) {
-                m_listener->onNewConnection(core::SharedPointer<core::io::Connection>(new core::io::Connection(connection)));
+                m_listener->onNewConnection(odcore::SharedPointer<odcore::io::Connection>(new odcore::io::Connection(connection)));
             }
             else {
                 CLOG3 << "[core::io::ConnectionAcceptor] no listener to call" << endl;

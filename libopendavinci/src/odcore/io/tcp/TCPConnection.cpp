@@ -17,16 +17,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/io/ConnectionListener.h"
-#include "opendavinci/core/io/StringListener.h"
-#include "opendavinci/core/io/tcp/TCPConnection.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/io/ConnectionListener.h"
+#include "opendavinci/odcore/io/StringListener.h"
+#include "opendavinci/odcore/io/tcp/TCPConnection.h"
 
-namespace core {
+namespace odcore {
     namespace io {
         namespace tcp {
 
-            using namespace core::base;
+            using namespace odcore::base;
 
             TCPConnection::TCPConnection() :
                 m_connectionListenerMutex(),

@@ -17,12 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/wrapper/Time.h"
+#include "opendavinci/odcore/wrapper/Time.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         Time::~Time() {}
 
     }
-} // core::wrapper
+} // odcore::wrapper

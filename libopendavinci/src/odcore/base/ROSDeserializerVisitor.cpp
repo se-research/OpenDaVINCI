@@ -19,10 +19,10 @@
 
 #include <iostream>
 
-#include "opendavinci/core/base/ROSDeserializerVisitor.h"
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/base/ROSDeserializerVisitor.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
 class Serializable;
@@ -296,5 +296,5 @@ class Serializable;
         }
 
     }
-} // core::base
+} // odcore::base
 

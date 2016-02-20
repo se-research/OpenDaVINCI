@@ -25,14 +25,14 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "opendavinci/core/base/Condition.h"        // for Condition
-#include "opendavinci/core/base/Lock.h"             // for Lock
-#include "opendavinci/core/base/Mutex.h"            // for Mutex
-#include "opendavinci/core/base/Service.h"          // for Service
-#include "opendavinci/core/base/Thread.h"           // for Thread
+#include "opendavinci/odcore/base/Condition.h"        // for Condition
+#include "opendavinci/odcore/base/Lock.h"             // for Lock
+#include "opendavinci/odcore/base/Mutex.h"            // for Mutex
+#include "opendavinci/odcore/base/Service.h"          // for Service
+#include "opendavinci/odcore/base/Thread.h"           // for Thread
 
 using namespace std;
-using namespace core::base;
+using namespace odcore::base;
 
 class WaitOnSignalService : public Service {
     public:

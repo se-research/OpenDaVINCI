@@ -20,13 +20,13 @@
 #ifndef OPENDAVINCI_CORE_IO_CONNECTIONACCEPTOR_H_
 #define OPENDAVINCI_CORE_IO_CONNECTIONACCEPTOR_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/io/tcp/TCPAcceptor.h"
-#include "opendavinci/core/io/tcp/TCPAcceptorListener.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/io/tcp/TCPAcceptor.h"
+#include "opendavinci/odcore/io/tcp/TCPAcceptorListener.h"
 
-namespace core {
+namespace odcore {
     namespace io {
 
 class ConnectionAcceptorListener;
@@ -41,7 +41,7 @@ namespace tcp { class TCPConnection; }
          *
          * To establish a connection, see #Connection
          */
-        class OPENDAVINCI_API ConnectionAcceptor : public core::io::tcp::TCPAcceptorListener {
+        class OPENDAVINCI_API ConnectionAcceptor : public odcore::io::tcp::TCPAcceptorListener {
             private:
                 /**
                  * Forbidden copy constructor
@@ -66,9 +66,9 @@ namespace tcp { class TCPConnection; }
                 base::Mutex m_listenerMutex;
                 ConnectionAcceptorListener* m_listener;
 
-                core::SharedPointer<core::io::tcp::TCPAcceptor> m_acceptor;
+                odcore::SharedPointer<odcore::io::tcp::TCPAcceptor> m_acceptor;
 
-                void onNewConnection(core::SharedPointer<core::io::tcp::TCPConnection> connection);
+                void onNewConnection(odcore::SharedPointer<odcore::io::tcp::TCPConnection> connection);
         };
     }
 }

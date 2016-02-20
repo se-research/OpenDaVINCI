@@ -17,12 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/wrapper/Condition.h"
+#include "opendavinci/odcore/wrapper/Condition.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         Condition::~Condition() {}
 
     }
-} // core::wrapper
+} // odcore::wrapper

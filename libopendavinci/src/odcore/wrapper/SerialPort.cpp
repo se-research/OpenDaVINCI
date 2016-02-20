@@ -31,18 +31,18 @@
 # endif
 #endif
 
-#include "opendavinci/core/io/ConnectionListener.h"
-#include "opendavinci/core/io/StringListener.h"
-#include "opendavinci/core/wrapper/Mutex.h"
-#include "opendavinci/core/wrapper/Thread.h"
-#include "opendavinci/core/wrapper/ConcurrencyFactory.h"
-#include "opendavinci/core/wrapper/MutexFactory.h"
-#include "opendavinci/core/wrapper/SerialPort.h"
+#include "opendavinci/odcore/io/ConnectionListener.h"
+#include "opendavinci/odcore/io/StringListener.h"
+#include "opendavinci/odcore/wrapper/Mutex.h"
+#include "opendavinci/odcore/wrapper/Thread.h"
+#include "opendavinci/odcore/wrapper/ConcurrencyFactory.h"
+#include "opendavinci/odcore/wrapper/MutexFactory.h"
+#include "opendavinci/odcore/wrapper/SerialPort.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
-        using namespace core::io;
+        using namespace odcore::io;
 
         SerialPort::SerialPort(const string &port, const uint32_t &baudRate) :
             m_thread(),

@@ -20,8 +20,8 @@
 #ifndef CONTEXT_BASE_CLOCK_H_
 #define CONTEXT_BASE_CLOCK_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/context/base/ControlledTime.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcontext/base/ControlledTime.h"
 
 namespace odcontext {
     namespace base {

@@ -28,29 +28,29 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"         // for SharedPointer
-#include "opendavinci/core/base/Deserializer.h"     // for Deserializer
-#include "opendavinci/core/base/Hash.h"             // for CharList, CRC32, etc
-#include "opendavinci/core/base/Serializable.h"     // for Serializable
-#include "opendavinci/core/base/SerializationFactory.h"  // for SerializationFactory
-#include "opendavinci/core/base/Serializer.h"       // for Serializer
-#include "opendavinci/core/base/Visitable.h"        // for Visitable
-#include "opendavinci/core/base/Visitor.h"          // for Visitor
-#include "opendavinci/core/reflection/Message.h"    // for Message
-#include "opendavinci/core/reflection/MessageFromVisitableVisitor.h"
-#include "opendavinci/core/reflection/MessagePrettyPrinterVisitor.h"
-#include "opendavinci/core/reflection/MessageToVisitableVisitor.h"
-#include "opendavinci/core/strings/StringToolbox.h"  // for StringToolbox
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"         // for SharedPointer
+#include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
+#include "opendavinci/odcore/base/Hash.h"             // for CharList, CRC32, etc
+#include "opendavinci/odcore/base/Serializable.h"     // for Serializable
+#include "opendavinci/odcore/base/SerializationFactory.h"  // for SerializationFactory
+#include "opendavinci/odcore/base/Serializer.h"       // for Serializer
+#include "opendavinci/odcore/base/Visitable.h"        // for Visitable
+#include "opendavinci/odcore/base/Visitor.h"          // for Visitor
+#include "opendavinci/odcore/reflection/Message.h"    // for Message
+#include "opendavinci/odcore/reflection/MessageFromVisitableVisitor.h"
+#include "opendavinci/odcore/reflection/MessagePrettyPrinterVisitor.h"
+#include "opendavinci/odcore/reflection/MessageToVisitableVisitor.h"
+#include "opendavinci/odcore/strings/StringToolbox.h"  // for StringToolbox
 
 using namespace std;
-using namespace core;
-using namespace core::base;
-using namespace core::data;
-using namespace core::reflection;
+using namespace odcore;
+using namespace odcore::base;
+using namespace odcore::data;
+using namespace odcore::reflection;
 using namespace coredata::reflection;
 
-class MyRawVisitable : public core::base::Serializable, public Visitable {
+class MyRawVisitable : public odcore::base::Serializable, public Visitable {
     public:
         MyRawVisitable() :
             data(NULL) {}
@@ -70,14 +70,14 @@ class MyRawVisitable : public core::base::Serializable, public Visitable {
         char *data;
         uint32_t size;
         
-        virtual void accept(core::base::Visitor &v) {
+        virtual void accept(odcore::base::Visitor &v) {
             v.visit(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('d', 'a', 't', 'a') >::RESULT, 1, "MyNestedVisitable::data", "data", data, size);
         }
 
         ostream& operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
-            core::SharedPointer<Serializer> s = sf.getSerializer(out);
+            odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 
             s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('d', 'a', 't', 'a') >::RESULT,
                     data, 13);
@@ -88,7 +88,7 @@ class MyRawVisitable : public core::base::Serializable, public Visitable {
         istream& operator>>(istream &in) {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
-            core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+            odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
             d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('d', 'a', 't', 'a') >::RESULT,
                    data, 13);
@@ -97,21 +97,21 @@ class MyRawVisitable : public core::base::Serializable, public Visitable {
         }
 };
 
-class MyNestedVisitable : public core::base::Serializable, public Visitable {
+class MyNestedVisitable : public odcore::base::Serializable, public Visitable {
     public:
         MyNestedVisitable() :
                 m_double(0) {}
         
         double m_double;
         
-        virtual void accept(core::base::Visitor &v) {
+        virtual void accept(odcore::base::Visitor &v) {
             v.visit(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('m', '_', 'd', 'o', 'u', 'b', 'l', 'e') >::RESULT, 1, "MyNestedVisitable::m_double", "m_double", m_double);
         }
 
         ostream& operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
-            core::SharedPointer<Serializer> s = sf.getSerializer(out);
+            odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 
             s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('m', '_', 'd', 'o', 'u', 'b', 'l', 'e') >::RESULT,
                     m_double);
@@ -122,7 +122,7 @@ class MyNestedVisitable : public core::base::Serializable, public Visitable {
         istream& operator>>(istream &in) {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
-            core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+            odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
             d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('m', '_', 'd', 'o', 'u', 'b', 'l', 'e') >::RESULT,
                    m_double);
@@ -208,7 +208,7 @@ class MyVisitable : public Serializable, public Visitable {
 			return in;
         }
 
-        virtual void accept(core::base::Visitor &v) {
+        virtual void accept(odcore::base::Visitor &v) {
             v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'1', NullType> > > > >::RESULT, 1, "MyVisitable::att1", "att1", m_att1);
             v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'2', NullType> > > > >::RESULT, 2, "MyVisitable::att2", "att2", m_att2);
             v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'3', NullType> > > > >::RESULT, 3, "MyVisitable::att3", "att3", m_att3);
@@ -248,7 +248,7 @@ class FieldTest : public CxxTest::TestSuite {
             mpp2.getOutput(sstr2);
 
             // Assert both pretty printed representations are identical.
-            TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(sstr1.str(), sstr2.str()));
+            TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(sstr1.str(), sstr2.str()));
 
             // Restore concrete data structure from generic representation.
             MessageToVisitableVisitor mtvv(msg);
@@ -285,7 +285,7 @@ class FieldTest : public CxxTest::TestSuite {
             mpp2.getOutput(sstr2);
 
             // Assert both pretty printed representations are identical.
-            TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(sstr1.str(), sstr2.str()));
+            TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(sstr1.str(), sstr2.str()));
 
             // Restore concrete data structure from generic representation.
             MessageToVisitableVisitor mtvv(msg);
@@ -293,14 +293,14 @@ class FieldTest : public CxxTest::TestSuite {
             TS_ASSERT(d2.m_att1 == 0);
             TS_ASSERT(fabs(d2.m_att2) < 1e-4);
             TS_ASSERT(fabs(d2.m_att3) < 1e-4);
-            TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(d2.m_att4, ""));
+            TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(d2.m_att4, ""));
             TS_ASSERT(fabs(d2.m_att5.m_double) < 1e-4);
 
             d2.accept(mtvv);
             TS_ASSERT(d2.m_att1 == d.m_att1);
             TS_ASSERT(fabs(d2.m_att2 - d.m_att2) < 1e-4);
             TS_ASSERT(fabs(d2.m_att3 - d.m_att3) < 1e-4);
-            TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(d2.m_att4, d.m_att4));
+            TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(d2.m_att4, d.m_att4));
             TS_ASSERT(fabs(d2.m_att5.m_double - d.m_att5.m_double) < 1e-4);
         }
 
@@ -325,7 +325,7 @@ class FieldTest : public CxxTest::TestSuite {
             mpp2.getOutput(sstr2);
 
             // Assert both pretty printed representations are identical.
-            TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(sstr1.str(), sstr2.str()));
+            TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(sstr1.str(), sstr2.str()));
 
             // Restore concrete data structure from generic representation.
             MessageToVisitableVisitor mtvv(msg);

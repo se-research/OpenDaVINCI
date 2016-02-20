@@ -22,10 +22,10 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Serializable.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Serializable.h"
 
-namespace core {
+namespace odcore {
     namespace data {
 
         using namespace std;
@@ -33,7 +33,7 @@ namespace core {
         /**
          * This class is the superclass for all data.
          */
-        class OPENDAVINCI_API SerializableData : public core::base::Serializable {
+        class OPENDAVINCI_API SerializableData : public odcore::base::Serializable {
             public:
                 SerializableData();
 
@@ -49,6 +49,6 @@ namespace core {
         };
 
     }
-} // core::data
+} // odcore::data
 
 #endif /*OPENDAVINCI_CORE_DATA_SERIALIZABLEDATA_H_*/

@@ -25,10 +25,10 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "opendavinci/core/base/TreeNode.h"         // for TreeNode
+#include "opendavinci/odcore/base/TreeNode.h"         // for TreeNode
 
 using namespace std;
-using namespace core::base;
+using namespace odcore::base;
 
 class TreeNodeTest : public CxxTest::TestSuite {
     public:

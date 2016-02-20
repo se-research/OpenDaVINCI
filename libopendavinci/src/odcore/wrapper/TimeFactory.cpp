@@ -17,12 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/wrapper/Mutex.h"
-#include "opendavinci/core/wrapper/MutexFactory.h"
-#include "opendavinci/core/wrapper/Time.h"
-#include "opendavinci/core/wrapper/TimeFactory.h"
+#include "opendavinci/odcore/wrapper/Mutex.h"
+#include "opendavinci/odcore/wrapper/MutexFactory.h"
+#include "opendavinci/odcore/wrapper/Time.h"
+#include "opendavinci/odcore/wrapper/TimeFactory.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         // Set up TimeFactory that can be exchanged on runtime.
@@ -54,12 +54,12 @@ namespace core {
             return *(TimeFactory::instance);
         }
 
-        core::SharedPointer<core::wrapper::Time> TimeFactory::now() {
-        	core::SharedPointer<core::wrapper::Time> t;
+        odcore::SharedPointer<odcore::wrapper::Time> TimeFactory::now() {
+        	odcore::SharedPointer<odcore::wrapper::Time> t;
 
         	TimeFactory::m_singletonMutex->lock();
                 if (TimeFactory::controlledInstance == NULL) {
-                    t = core::SharedPointer<Time>(SystemTimeFactory::getInstance().now());
+                    t = odcore::SharedPointer<Time>(SystemTimeFactory::getInstance().now());
                 }
             TimeFactory::m_singletonMutex->unlock();
 
@@ -77,4 +77,4 @@ namespace core {
         }  
 
     }
-} // core::wrapper
+} // odcore::wrapper

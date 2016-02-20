@@ -23,20 +23,20 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/io/StringListener.h"
-#include "opendavinci/core/io/udp/UDPReceiver.h"
-#include "opendavinci/core/io/udp/UDPSender.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/io/StringListener.h"
+#include "opendavinci/odcore/io/udp/UDPReceiver.h"
+#include "opendavinci/odcore/io/udp/UDPSender.h"
 #include "opendavinci/generated/coredata/dmcp/ServerInformation.h"
 
-namespace core {
+namespace odcore {
     namespace dmcp {
         namespace discoverer {
 
             using namespace std;
 
-            class OPENDAVINCI_API Server : public core::io::StringListener {
+            class OPENDAVINCI_API Server : public odcore::io::StringListener {
                 private:
                     /**
                      * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -68,8 +68,8 @@ namespace core {
 
                     void sendResponseMessage(const string &s);
 
-                    core::SharedPointer<core::io::udp::UDPSender> m_sender;
-                    core::SharedPointer<core::io::udp::UDPReceiver> m_receiver;
+                    odcore::SharedPointer<odcore::io::udp::UDPSender> m_sender;
+                    odcore::SharedPointer<odcore::io::udp::UDPReceiver> m_receiver;
 
                     coredata::dmcp::ServerInformation m_serverInformation;
 

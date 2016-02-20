@@ -23,12 +23,12 @@
 // Using c++11 standard.
 #include <mutex>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/wrapper/Mutex.h"
-#include "opendavinci/core/wrapper/MutexFactoryWorker.h"
+#include "opendavinci/odcore/wrapper/Mutex.h"
+#include "opendavinci/odcore/wrapper/MutexFactoryWorker.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
         namespace WIN32Impl {
 
@@ -82,6 +82,6 @@ namespace core {
 
         }
     }
-} // core::wrapper::WIN32Impl
+} // odcore::wrapper::WIN32Impl
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_WIN32IMPL_WIN32MUTEX_H_*/

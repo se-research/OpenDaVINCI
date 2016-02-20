@@ -22,22 +22,22 @@
 #include <iostream>
 #include <sstream>
 
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/base/module/AbstractCIDModule.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/wrapper/SharedMemory.h"
-#include "opendavinci/core/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/module/AbstractCIDModule.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/wrapper/SharedMemory.h"
+#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 #include "opendavinci/generated/coredata/buffer/MemorySegment.h"
-#include "opendavinci/tools/recorder/SharedDataListener.h"
-#include "opendavinci/tools/recorder/SharedDataWriter.h"
+#include "opendavinci/odtools/recorder/SharedDataListener.h"
+#include "opendavinci/odtools/recorder/SharedDataWriter.h"
 
 namespace odtools {
     namespace recorder {
 
-        using namespace core;
-        using namespace core::base;
-        using namespace core::data;
+        using namespace odcore;
+        using namespace odcore::base;
+        using namespace odcore::data;
         using namespace odtools;
 
         SharedDataListener::SharedDataListener(SharedPointer<ostream> out, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const bool &threading) :
@@ -106,7 +106,7 @@ namespace odtools {
                 coredata::buffer::MemorySegment ms = c.getData<coredata::buffer::MemorySegment>();
 
                 // Copy the data.
-                SharedPointer<core::wrapper::SharedMemory> memory = m_sharedPointers[name];
+                SharedPointer<odcore::wrapper::SharedMemory> memory = m_sharedPointers[name];
                 if ( (memory.isValid()) && (memory->isValid()) ) {
                     char *destPtr = m_mapOfMemories[ms.getIdentifier()];
 
@@ -153,7 +153,7 @@ namespace odtools {
 
                     CLOG1 << "Connecting to shared memory " << sd.getName() << " at ";
                     
-                    SharedPointer<core::wrapper::SharedMemory> sp = core::wrapper::SharedMemoryFactory::attachToSharedMemory(sd.getName());
+                    SharedPointer<odcore::wrapper::SharedMemory> sp = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(sd.getName());
                     m_sharedPointers[sd.getName()] = sp;
 
                     CLOG1 << sp->getSharedMemory() << " ";
@@ -183,7 +183,7 @@ namespace odtools {
 
                     CLOG1 << "Connecting to shared image " << si.getName() << " at ";
 
-                    SharedPointer<core::wrapper::SharedMemory> sp = core::wrapper::SharedMemoryFactory::attachToSharedMemory(si.getName());
+                    SharedPointer<odcore::wrapper::SharedMemory> sp = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(si.getName());
                     m_sharedPointers[si.getName()] = sp;
 
                     CLOG1 << sp->getSharedMemory() << " ";

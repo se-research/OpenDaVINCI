@@ -19,11 +19,11 @@
 
 #include <iostream>
 
-#include "opendavinci/core/base/LCMDeserializerVisitor.h"
-#include "opendavinci/core/base/LCMSerializerVisitor.h"
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/base/LCMDeserializerVisitor.h"
+#include "opendavinci/odcore/base/LCMSerializerVisitor.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
 class Serializable;
@@ -373,5 +373,5 @@ class Serializable;
         }
 
     }
-} // core::base
+} // odcore::base
 

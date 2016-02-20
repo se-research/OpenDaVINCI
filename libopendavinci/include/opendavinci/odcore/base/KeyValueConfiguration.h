@@ -27,12 +27,12 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/data/SerializableData.h"
-#include "opendavinci/core/exceptions/Exceptions.h"
-#include "opendavinci/core/strings/StringComparator.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/data/SerializableData.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
+#include "opendavinci/odcore/strings/StringComparator.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
         using namespace std;
@@ -54,7 +54,7 @@ namespace core {
          * #key=value Disabled key.
          * anotherKey=anotherValue # Commented key-value-pair.
          */
-        class OPENDAVINCI_API KeyValueConfiguration : public core::data::SerializableData {
+        class OPENDAVINCI_API KeyValueConfiguration : public odcore::data::SerializableData {
             public:
                 KeyValueConfiguration();
 
@@ -154,7 +154,7 @@ namespace core {
                 const vector<string> getListOfKeys() const;
 
             private:
-                map<string, string, core::strings::StringComparator> m_keyValueConfiguration;
+                map<string, string, odcore::strings::StringComparator> m_keyValueConfiguration;
 
                 /**
                  * This method returns the string for given key or ""
@@ -167,6 +167,6 @@ namespace core {
         };
 
     }
-} // core::base
+} // odcore::base
 
 #endif /*OPENDAVINCI_CORE_BASE_KEYVALUECONFIGURATION_H_*/

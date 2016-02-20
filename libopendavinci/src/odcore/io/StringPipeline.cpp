@@ -17,14 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/io/StringPipeline.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/io/StringPipeline.h"
 
-namespace core {
+namespace odcore {
     namespace io {
 
         using namespace std;
-        using namespace core::base;
+        using namespace odcore::base;
 
         StringPipeline::StringPipeline() :
             Service(),
@@ -120,4 +120,4 @@ namespace core {
         }
 
     }
-} // core::io
+} // odcore::io

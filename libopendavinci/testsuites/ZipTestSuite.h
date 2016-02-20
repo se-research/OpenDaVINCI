@@ -26,13 +26,13 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"         // for SharedPointer
-#include "opendavinci/core/wrapper/CompressionFactory.h"  // for CompressionFactory
-#include "opendavinci/core/wrapper/DecompressedData.h"  // for DecompressedData
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"         // for SharedPointer
+#include "opendavinci/odcore/wrapper/CompressionFactory.h"  // for CompressionFactory
+#include "opendavinci/odcore/wrapper/DecompressedData.h"  // for DecompressedData
 
 using namespace std;
-using namespace core;
+using namespace odcore;
 
 class ZipTest : public CxxTest::TestSuite {
     public:
@@ -49,7 +49,7 @@ class ZipTest : public CxxTest::TestSuite {
             fout.close();
 
             fstream fin("ZipTest.zip", ios::binary | ios::in);
-            core::SharedPointer<core::wrapper::DecompressedData> dd = core::wrapper::CompressionFactory::getContents(fin);
+            odcore::SharedPointer<odcore::wrapper::DecompressedData> dd = odcore::wrapper::CompressionFactory::getContents(fin);
             TS_ASSERT(dd.isValid());
             fin.close();
 

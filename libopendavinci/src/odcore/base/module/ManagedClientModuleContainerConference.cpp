@@ -17,21 +17,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/base/module/ManagedClientModuleContainerConference.h"
-#include "opendavinci/core/data/TimeStamp.h"
+#include "opendavinci/odcore/base/module/ManagedClientModuleContainerConference.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
 
-namespace core {
+namespace odcore {
     namespace base {
         namespace module {
 
-            using namespace core::data;
+            using namespace odcore::data;
 
             ManagedClientModuleContainerConference::ManagedClientModuleContainerConference() :
                 m_listOfContainersToBeDelivered() {}
 
             ManagedClientModuleContainerConference::~ManagedClientModuleContainerConference() {}
 
-            void ManagedClientModuleContainerConference::send(core::data::Container &container) const {
+            void ManagedClientModuleContainerConference::send(odcore::data::Container &container) const {
                 // Put container to be sent into our list of data to be distributed.
                 container.setSentTimeStamp(TimeStamp());
 
@@ -39,7 +39,7 @@ namespace core {
                 const_cast<ManagedClientModuleContainerConference*>(this)->m_listOfContainersToBeDelivered.push_back(container);
             }
 
-            vector<core::data::Container> ManagedClientModuleContainerConference::getListOfContainers() const {
+            vector<odcore::data::Container> ManagedClientModuleContainerConference::getListOfContainers() const {
                 return m_listOfContainersToBeDelivered;
             }
 
@@ -47,12 +47,12 @@ namespace core {
                 m_listOfContainersToBeDelivered.clear();
             }
 
-            void ManagedClientModuleContainerConference::receiveFromLocal(core::data::Container &c) {
+            void ManagedClientModuleContainerConference::receiveFromLocal(odcore::data::Container &c) {
                 // Delegate call to super class.
                 receive(c);
             }
 
         }
     }
-} // core::base
+} // odcore::base
 

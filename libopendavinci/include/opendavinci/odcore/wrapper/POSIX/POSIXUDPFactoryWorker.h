@@ -23,27 +23,27 @@
 #include <iostream>
 #include <sstream>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/base/module/AbstractCIDModule.h"
-#include "opendavinci/core/wrapper/NetworkLibraryProducts.h"
-#include "opendavinci/core/wrapper/UDPFactoryWorker.h"
+#include "opendavinci/odcore/base/module/AbstractCIDModule.h"
+#include "opendavinci/odcore/wrapper/NetworkLibraryProducts.h"
+#include "opendavinci/odcore/wrapper/UDPFactoryWorker.h"
 
-#include "opendavinci/core/wrapper/POSIX/POSIXUDPReceiver.h"
-#include "opendavinci/core/wrapper/POSIX/POSIXUDPSender.h"
+#include "opendavinci/odcore/wrapper/POSIX/POSIXUDPReceiver.h"
+#include "opendavinci/odcore/wrapper/POSIX/POSIXUDPSender.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         using namespace std;
 
         template <> class OPENDAVINCI_API UDPFactoryWorker<NetworkLibraryPosix> {
             public:
-                static core::io::udp::UDPSender* createUDPSender(const string &address, const uint32_t &port) {
+                static odcore::io::udp::UDPSender* createUDPSender(const string &address, const uint32_t &port) {
                     return new POSIX::POSIXUDPSender(address, port);
                 };
 
-                static core::io::udp::UDPReceiver* createUDPReceiver(const string &address, const uint32_t &port) {
+                static odcore::io::udp::UDPReceiver* createUDPReceiver(const string &address, const uint32_t &port) {
                     bool isMulticast = false;
                     string::size_type posFirstDot = address.find(".");
                     if (posFirstDot != string::npos) {
@@ -58,6 +58,6 @@ namespace core {
         };
 
     }
-} // core::wrapper
+} // odcore::wrapper
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXUDPFACTORYWORKER_H_*/

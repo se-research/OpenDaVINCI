@@ -17,10 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/core/wrapper/ConcurrencyFactory.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/wrapper/ConcurrencyFactory.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
         void Thread::usleepFor(const long &microseconds) {
@@ -29,9 +29,9 @@ namespace core {
             }
         }
 
-        void Thread::usleepUntil(const core::data::TimeStamp &ts) {
+        void Thread::usleepUntil(const odcore::data::TimeStamp &ts) {
             wrapper::ConcurrencyFactory::usleepUntil(ts.getSeconds(), ts.getFractionalMicroseconds());
         }
 
     }
-} // core::base
+} // odcore::base

@@ -17,18 +17,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/base/module/DataTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/base/module/DataTriggeredConferenceClientModule.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
 
-namespace core {
+namespace odcore {
     namespace base {
         namespace module {
 
             using namespace std;
 
-            using namespace core;
-            using namespace core::base;
-            using namespace core::exceptions;
+            using namespace odcore;
+            using namespace odcore::base;
+            using namespace odcore::exceptions;
 
             DataTriggeredConferenceClientModule::DataTriggeredConferenceClientModule(const int32_t &argc, char **argv, const string &name) throw (InvalidArgumentException) :
                     AbstractConferenceClientModule(argc, argv, name) {}
@@ -47,4 +47,4 @@ namespace core {
 
         }
     }
-} // core::base
+} // odcore::base

@@ -22,13 +22,13 @@
 
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/base/module/AbstractModule.h"
-#include "opendavinci/core/wrapper/TimeFactory.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/base/module/AbstractModule.h"
+#include "opendavinci/odcore/wrapper/TimeFactory.h"
 
-namespace core { namespace wrapper { class Time; } }
+namespace odcore { namespace wrapper { class Time; } }
 
 namespace odcontext {
     namespace base {
@@ -45,7 +45,7 @@ class TimeTriggeredConferenceClientModuleRunner;
         /**
          * This class controls the system's context.
          */
-        class OPENDAVINCI_API RuntimeControl : public core::base::module::AbstractModule {
+        class OPENDAVINCI_API RuntimeControl : public odcore::base::module::AbstractModule {
             public:
                 enum RUNTIMECONTROL {
                     UNSPECIFIED,
@@ -199,28 +199,28 @@ class TimeTriggeredConferenceClientModuleRunner;
                  * @param rte RuntimeEnvironment
                  * @return List of wrapped ConferenceClientModules.
                  */
-                vector<core::SharedPointer<TimeTriggeredConferenceClientModuleRunner> > createListOfTimeTriggeredConferenceClientModuleRunners(RuntimeEnvironment &rte);
+                vector<odcore::SharedPointer<TimeTriggeredConferenceClientModuleRunner> > createListOfTimeTriggeredConferenceClientModuleRunners(RuntimeEnvironment &rte);
 
                 /**
                  * This method calls all reporting components.
                  *
                  * @param rte RuntimeEnvironment.
                  */
-                void doReporting(RuntimeEnvironment &rte, const core::wrapper::Time &time);
+                void doReporting(RuntimeEnvironment &rte, const odcore::wrapper::Time &time);
 
             public:
                 /**
                  * This class is used to disable to TimeFactory.
                  */
-                class DisableTimeFactory : public core::wrapper::TimeFactory {
+                class DisableTimeFactory : public odcore::wrapper::TimeFactory {
                     public:
                         void disable();
 
-                        virtual core::SharedPointer<core::wrapper::Time> now();
+                        virtual odcore::SharedPointer<odcore::wrapper::Time> now();
                 };
 
             private:
-                core::base::Mutex m_controlMutex;
+                odcore::base::Mutex m_controlMutex;
                 enum RUNTIMECONTROL m_control;
                 bool m_tearDownCalled;
                 const RuntimeControlInterface &m_runtimeControlInterface;

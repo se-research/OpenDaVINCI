@@ -17,12 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/io/PacketObserver.h"
+#include "opendavinci/odcore/io/PacketObserver.h"
 
-namespace core {
+namespace odcore {
     namespace io {
 
         PacketObserver::~PacketObserver() {}
 
     }
-} // core::io
+} // odcore::io

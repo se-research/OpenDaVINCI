@@ -19,12 +19,12 @@
 
 #include <iostream>
 
-#include "opendavinci/core/base/QueryableNetstringsDeserializerAACF.h"
-#include "opendavinci/core/base/Serializable.h"
-#include "opendavinci/core/base/module/AbstractCIDModule.h"
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/base/QueryableNetstringsDeserializerAACF.h"
+#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/base/module/AbstractCIDModule.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
         using namespace std;
@@ -352,4 +352,4 @@ namespace core {
             }
         }
     }
-} // core::base
+} // odcore::base

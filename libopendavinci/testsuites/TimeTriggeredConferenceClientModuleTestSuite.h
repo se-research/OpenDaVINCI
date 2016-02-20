@@ -26,21 +26,21 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"         // for SharedPointer
-#include "opendavinci/core/base/Condition.h"        // for Condition
-#include "opendavinci/core/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
-#include "opendavinci/core/base/Lock.h"             // for Lock
-#include "opendavinci/core/base/Service.h"          // for Service
-#include "opendavinci/core/base/Thread.h"           // for Thread
-#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "opendavinci/core/dmcp/ModuleConfigurationProvider.h"
-#include "opendavinci/core/dmcp/connection/ConnectionHandler.h"
-#include "opendavinci/core/dmcp/connection/ModuleConnection.h"
-#include "opendavinci/core/dmcp/connection/Server.h"  // for Server
-#include "opendavinci/core/dmcp/discoverer/Server.h"  // for Server
-#include "opendavinci/core/io/conference/ContainerConference.h"
-#include "opendavinci/core/io/conference/ContainerConferenceFactory.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"         // for SharedPointer
+#include "opendavinci/odcore/base/Condition.h"        // for Condition
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
+#include "opendavinci/odcore/base/Lock.h"             // for Lock
+#include "opendavinci/odcore/base/Service.h"          // for Service
+#include "opendavinci/odcore/base/Thread.h"           // for Thread
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/dmcp/ModuleConfigurationProvider.h"
+#include "opendavinci/odcore/dmcp/connection/ConnectionHandler.h"
+#include "opendavinci/odcore/dmcp/connection/ModuleConnection.h"
+#include "opendavinci/odcore/dmcp/connection/Server.h"  // for Server
+#include "opendavinci/odcore/dmcp/discoverer/Server.h"  // for Server
+#include "opendavinci/odcore/io/conference/ContainerConference.h"
+#include "opendavinci/odcore/io/conference/ContainerConferenceFactory.h"
 #include "opendavinci/generated/coredata/dmcp/Constants.h"  // for Constants, etc
 #include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
@@ -49,12 +49,12 @@
 namespace coredata { namespace dmcp { class ModuleDescriptor; } }
 
 using namespace std;
-using namespace core::base;
-using namespace core::base::module;
-using namespace core::data;
-using namespace core::io;
-using namespace core::io::conference;
-using namespace core::dmcp;
+using namespace odcore::base;
+using namespace odcore::base::module;
+using namespace odcore::data;
+using namespace odcore::io;
+using namespace odcore::io::conference;
+using namespace odcore::dmcp;
 using namespace coredata::dmcp;
 
 
@@ -143,19 +143,19 @@ class TimeTriggeredConferenceClientModuleTest : public CxxTest::TestSuite,
             m_connection() {}
 
         KeyValueConfiguration m_configuration;
-        core::SharedPointer<connection::ModuleConnection> m_connection;
+        odcore::SharedPointer<connection::ModuleConnection> m_connection;
 
         virtual KeyValueConfiguration getConfiguration(const ModuleDescriptor& /*md*/) {
             return m_configuration;
         }
 
-        virtual void onNewModule(core::SharedPointer<core::dmcp::connection::ModuleConnection> mc) {
+        virtual void onNewModule(odcore::SharedPointer<odcore::dmcp::connection::ModuleConnection> mc) {
             m_connection = mc;
         }
 
         void testTimeTriggeredTimeTriggeredConferenceClientModule() {
             // Setup ContainerConference.
-            core::SharedPointer<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.101");
+            odcore::SharedPointer<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.101");
 
             // Setup DMCP.
             stringstream sstr;

@@ -19,15 +19,15 @@
 
 #include <cstdlib>
 
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/io/StringListener.h"
-#include "opendavinci/core/io/protocol/NetstringsProtocol.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/io/StringListener.h"
+#include "opendavinci/odcore/io/protocol/NetstringsProtocol.h"
 
-namespace core {
+namespace odcore {
     namespace io {
         namespace protocol {
 
-            using namespace core::base;
+            using namespace odcore::base;
 
             NetstringsProtocol::NetstringsProtocol() :
                 AbstractProtocol(),

@@ -22,11 +22,11 @@
 
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
 
-namespace core {
+namespace odcore {
     namespace base {
         namespace module {
 
@@ -125,6 +125,6 @@ namespace core {
 
         }
     }
-} // core::base::module
+} // odcore::base::module
 
 #endif /*OPENDAVINCI_CORE_BASE_MODULE_ABSTRACTMODULE_H_*/

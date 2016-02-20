@@ -17,12 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/base/DataStoreManager.h"
+#include "opendavinci/odcore/base/DataStoreManager.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
     DataStoreManager::~DataStoreManager() {}
 
     }
-} // core::base
+} // odcore::base

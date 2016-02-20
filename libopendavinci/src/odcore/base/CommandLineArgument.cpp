@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/base/CommandLineArgument.h"
+#include "opendavinci/odcore/base/CommandLineArgument.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
         CommandLineArgument::CommandLineArgument() :
@@ -42,4 +42,4 @@ namespace core {
             return m_argument;
         }
     }
-} // core::base
+} // odcore::base

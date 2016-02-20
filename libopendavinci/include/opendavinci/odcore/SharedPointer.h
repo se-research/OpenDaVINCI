@@ -23,11 +23,11 @@
 #ifndef OPENDAVINCI_CORE_SHAREDPOINTER_H_
 #define OPENDAVINCI_CORE_SHAREDPOINTER_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/wrapper/Mutex.h"
-#include "opendavinci/core/wrapper/MutexFactory.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/wrapper/Mutex.h"
+#include "opendavinci/odcore/wrapper/MutexFactory.h"
 
-namespace core {
+namespace odcore {
 
     /**
      * This class can be used to share pointers to dynamically allocated memory
@@ -183,7 +183,7 @@ namespace core {
                         m_pointer(pointer),
                         m_counter(1),
                         m_counterMutex(NULL) {
-                        m_counterMutex = core::wrapper::MutexFactory::createMutex();
+                        m_counterMutex = odcore::wrapper::MutexFactory::createMutex();
                     }
 
                     ~CountablePointer() {
@@ -216,7 +216,7 @@ namespace core {
 
                 private:
                     uint32_t m_counter;
-                    core::wrapper::Mutex* m_counterMutex;
+                    odcore::wrapper::Mutex* m_counterMutex;
             };
 
             // Pointer to the previously defined data structure.

@@ -20,9 +20,9 @@
 #ifndef OPENDAVINCI_CORE_IO_CONNECTIONERRORLISTENER
 #define OPENDAVINCI_CORE_IO_CONNECTIONERRORLISTENER
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-namespace core {
+namespace odcore {
     namespace io {
 
         using namespace std;

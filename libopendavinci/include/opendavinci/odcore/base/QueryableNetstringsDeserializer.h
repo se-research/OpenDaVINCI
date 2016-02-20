@@ -23,13 +23,13 @@
 #include <sstream>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Serializer.h"
-#include "opendavinci/core/base/Deserializer.h"
-#include "opendavinci/core/base/QueryableNetstringsDeserializerAACF.h"
-#include "opendavinci/core/base/QueryableNetstringsDeserializerABCF.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/QueryableNetstringsDeserializerAACF.h"
+#include "opendavinci/odcore/base/QueryableNetstringsDeserializerABCF.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
         using namespace std;
@@ -126,6 +126,6 @@ namespace core {
         };
 
     }
-} // core::base
+} // odcore::base
 
 #endif /*OPENDAVINCI_CORE_BASE_QUERYABLENETSTRINGSDESERIALIZER_H_*/

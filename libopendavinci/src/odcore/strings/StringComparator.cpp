@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/strings/StringComparator.h"
+#include "opendavinci/odcore/strings/StringComparator.h"
 
-namespace core {
+namespace odcore {
     namespace strings {
 
         StringComparator::StringComparator() {}
@@ -37,4 +37,4 @@ namespace core {
         }
 
     }
-} // core::wrapper
+} // odcore::wrapper

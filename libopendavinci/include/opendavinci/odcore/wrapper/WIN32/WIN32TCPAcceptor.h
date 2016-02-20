@@ -22,23 +22,23 @@
 
 #include <memory>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/io/tcp/TCPAcceptor.h"
-#include "opendavinci/core/io/tcp/TCPAcceptorListener.h"
-#include "opendavinci/core/io/tcp/TCPConnection.h"
-#include "opendavinci/core/wrapper/Runnable.h"
-#include "opendavinci/core/wrapper/Thread.h"
-#include "opendavinci/core/wrapper/Mutex.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/io/tcp/TCPAcceptor.h"
+#include "opendavinci/odcore/io/tcp/TCPAcceptorListener.h"
+#include "opendavinci/odcore/io/tcp/TCPConnection.h"
+#include "opendavinci/odcore/wrapper/Runnable.h"
+#include "opendavinci/odcore/wrapper/Thread.h"
+#include "opendavinci/odcore/wrapper/Mutex.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
         namespace WIN32Impl {
 
             using namespace std;
 
-            class WIN32TCPAcceptor : public core::io::tcp::TCPAcceptor, public Runnable {
+            class WIN32TCPAcceptor : public odcore::io::tcp::TCPAcceptor, public Runnable {
                 private:
                     static const int32_t BACKLOG = 100;
 
@@ -61,7 +61,7 @@ namespace core {
                     WIN32TCPAcceptor(const uint32_t& port);
                     virtual ~WIN32TCPAcceptor();
 
-                    virtual void setAcceptorListener(core::io::tcp::TCPAcceptorListener* listener);
+                    virtual void setAcceptorListener(odcore::io::tcp::TCPAcceptorListener* listener);
 
                     virtual void start();
                     virtual void stop();
@@ -70,12 +70,12 @@ namespace core {
                     virtual void run();
 
                 protected:
-                    void invokeAcceptorListener(core::SharedPointer<core::io::tcp::TCPConnection> connection);
+                    void invokeAcceptorListener(odcore::SharedPointer<odcore::io::tcp::TCPConnection> connection);
 
                     auto_ptr<Thread> m_thread;
 
                     auto_ptr<Mutex> m_listenerMutex;
-                    core::io::tcp::TCPAcceptorListener* m_listener;
+                    odcore::io::tcp::TCPAcceptorListener* m_listener;
 
                     int32_t m_fileDescriptor;
                     int32_t m_port;

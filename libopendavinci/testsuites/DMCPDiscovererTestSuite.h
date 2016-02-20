@@ -25,20 +25,20 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/dmcp/discoverer/Client.h"  // for Client
-#include "opendavinci/core/dmcp/discoverer/Server.h"  // for Server
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/dmcp/discoverer/Client.h"  // for Client
+#include "opendavinci/odcore/dmcp/discoverer/Server.h"  // for Server
 #include "opendavinci/generated/coredata/dmcp/ServerInformation.h"
 #include "opendavinci/generated/coredata/dmcp/TestConstants.h"  // for TestConstants, etc
 #include "mocks/FunctionCallWaiter.h"
 
 using namespace std;
 
-using namespace core::dmcp;
-using namespace core::data;
+using namespace odcore::dmcp;
+using namespace odcore::data;
 using namespace coredata::dmcp;
 
-class TestClient : public core::dmcp::discoverer::Client
+class TestClient : public odcore::dmcp::discoverer::Client
 {
     public:
         TestClient(const string& group, const uint32_t &serverPort, const uint32_t &clientPort, const string &name) :
@@ -53,7 +53,7 @@ class TestClient : public core::dmcp::discoverer::Client
     mocks::FunctionCallWaiter WAITER;
 };
 
-class TestServer : public core::dmcp::discoverer::Server
+class TestServer : public odcore::dmcp::discoverer::Server
 {
     public:
         TestServer(const ServerInformation& serverInformation,

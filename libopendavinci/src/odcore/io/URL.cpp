@@ -20,10 +20,10 @@
 #include <sstream>
 #include <vector>
 
-#include "opendavinci/core/io/URL.h"
-#include "opendavinci/core/io/URLProtocol.h"
+#include "opendavinci/odcore/io/URL.h"
+#include "opendavinci/odcore/io/URLProtocol.h"
 
-namespace core {
+namespace odcore {
     namespace io {
 
         URL::URL(const string &connection) :
@@ -84,4 +84,4 @@ namespace core {
         }
 
     }
-} // core::io
+} // odcore::io

@@ -26,15 +26,15 @@
 #include <memory>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/io/udp/UDPReceiver.h"
-#include "opendavinci/core/wrapper/NetworkLibraryProducts.h"
-#include "opendavinci/core/wrapper/Runnable.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/io/udp/UDPReceiver.h"
+#include "opendavinci/odcore/wrapper/NetworkLibraryProducts.h"
+#include "opendavinci/odcore/wrapper/Runnable.h"
 
-namespace core { namespace wrapper { class Thread; } }
-namespace core { namespace wrapper { template <core::wrapper::NetworkLibraryProducts product> class UDPFactoryWorker; } }
+namespace odcore { namespace wrapper { class Thread; } }
+namespace odcore { namespace wrapper { template <odcore::wrapper::NetworkLibraryProducts product> class UDPFactoryWorker; } }
 
-namespace core {
+namespace odcore {
     namespace wrapper {
         namespace POSIX {
 
@@ -45,7 +45,7 @@ namespace core {
              *
              * @See UDPReceiver
              */
-            class POSIXUDPReceiver : public Runnable, public core::io::udp::UDPReceiver {
+            class POSIXUDPReceiver : public Runnable, public odcore::io::udp::UDPReceiver {
                 private:
                     friend class UDPFactoryWorker<NetworkLibraryPosix>;
 
@@ -100,6 +100,6 @@ namespace core {
 
         }
     }
-} // core::wrapper::POSIX
+} // odcore::wrapper::POSIX
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXUDPRECEIVER_H_*/

@@ -17,18 +17,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/context/base/ContainerDeliverer.h"
-#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/odcontext/base/ContainerDeliverer.h"
+#include "opendavinci/odcore/base/Lock.h"
 
-namespace core { namespace data { class Container; } }
+namespace odcore { namespace data { class Container; } }
 
 namespace odcontext {
     namespace base {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::data;
-        using namespace core::io;
+        using namespace odcore::base;
+        using namespace odcore::data;
+        using namespace odcore::io;
 
         ContainerDeliverer::ContainerDeliverer() :
             m_containerListenerMutex(),

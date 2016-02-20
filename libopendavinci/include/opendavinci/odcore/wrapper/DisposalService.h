@@ -23,12 +23,12 @@
 #include <deque>
 #include <memory>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/wrapper/Condition.h"
-#include "opendavinci/core/wrapper/Runnable.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/wrapper/Condition.h"
+#include "opendavinci/odcore/wrapper/Runnable.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
 class Disposable;
@@ -163,6 +163,6 @@ class Thread;
         };
 
     }
-} // core::wrapper
+} // odcore::wrapper
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_DISPOSALSERVICE_H_*/

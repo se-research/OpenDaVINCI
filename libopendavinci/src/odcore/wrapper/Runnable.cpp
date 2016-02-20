@@ -17,12 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/wrapper/Runnable.h"
+#include "opendavinci/odcore/wrapper/Runnable.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         Runnable::~Runnable() {}
 
     }
-} // core::wrapper
+} // odcore::wrapper

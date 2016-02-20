@@ -19,13 +19,13 @@
 
 #include <sstream>
 
-#include "opendavinci/context/base/DirectInterface.h"
+#include "opendavinci/odcontext/base/DirectInterface.h"
 
 namespace odcontext {
     namespace base {
 
         using namespace std;
-        using namespace core::base;
+        using namespace odcore::base;
 
         DirectInterface::DirectInterface(const string &multicastGroup, const uint32_t &CID, const string &configuration) :
             m_configuration(),

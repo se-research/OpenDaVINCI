@@ -20,9 +20,9 @@
 #ifndef OPENDAVINCI_CORE_IO_PACKETLISTENER_H_
 #define OPENDAVINCI_CORE_IO_PACKETLISTENER_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-namespace core {
+namespace odcore {
     namespace io {
 
 class Packet;
@@ -44,6 +44,6 @@ class Packet;
         };
 
     }
-} // core::io
+} // odcore::io
 
 #endif /*OPENDAVINCI_CORE_IO_PACKETLISTENER_H_*/

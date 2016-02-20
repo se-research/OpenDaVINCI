@@ -23,11 +23,11 @@
 #include <sstream>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Serializable.h"
-#include "opendavinci/core/data/TimeStamp.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
 
-namespace core {
+namespace odcore {
     namespace data {
 
 class SerializableData;
@@ -37,7 +37,7 @@ class SerializableData;
         /**
          * Container for all interchangeable data.
          */
-        class OPENDAVINCI_API Container : public core::base::Serializable {
+        class OPENDAVINCI_API Container : public odcore::base::Serializable {
             public:
                 enum DATATYPE {
                     UNDEFINEDDATA                =  1,
@@ -220,6 +220,6 @@ class SerializableData;
         };
 
     }
-} // core::data
+} // odcore::data
 
 #endif /*OPENDAVINCI_CORE_DATA_CONTAINER_H_*/

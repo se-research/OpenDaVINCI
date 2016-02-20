@@ -25,15 +25,15 @@
 // Using c++11 standard.
 #include <thread>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/wrapper/Mutex.h"
-#include "opendavinci/core/wrapper/Runnable.h"
-#include "opendavinci/core/wrapper/Thread.h"
-#include "opendavinci/core/wrapper/SystemLibraryProducts.h"
-#include "opendavinci/core/wrapper/ConcurrencyFactoryWorker.h"
+#include "opendavinci/odcore/wrapper/Mutex.h"
+#include "opendavinci/odcore/wrapper/Runnable.h"
+#include "opendavinci/odcore/wrapper/Thread.h"
+#include "opendavinci/odcore/wrapper/SystemLibraryProducts.h"
+#include "opendavinci/odcore/wrapper/ConcurrencyFactoryWorker.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
         namespace WIN32Impl {
 
@@ -98,6 +98,6 @@ namespace core {
 
         }
     }
-} // core::wrapper::WIN32Impl
+} // odcore::wrapper::WIN32Impl
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_WIN32IMPL_WIN32THREAD_H_*/

@@ -17,12 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/wrapper/Disposable.h"
+#include "opendavinci/odcore/wrapper/Disposable.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         Disposable::~Disposable() {}
 
     }
-} // core::wrapper
+} // odcore::wrapper

@@ -20,10 +20,10 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_COMPRESSIONFACTORY_H_
 #define OPENDAVINCI_CORE_WRAPPER_COMPRESSIONFACTORY_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
 class DecompressedData;
@@ -52,6 +52,6 @@ class DecompressedData;
         };
 
     }
-} // core::wrapper
+} // odcore::wrapper
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_COMPRESSIONFACTORY_H_*/

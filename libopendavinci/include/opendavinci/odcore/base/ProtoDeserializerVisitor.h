@@ -23,13 +23,13 @@
 #include <sstream>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Serializer.h"
-#include "opendavinci/core/base/Deserializer.h"
-#include "opendavinci/core/base/ProtoSerializerVisitor.h"
-#include "opendavinci/core/base/Visitor.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/ProtoSerializerVisitor.h"
+#include "opendavinci/odcore/base/Visitor.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
         using namespace std;
@@ -145,6 +145,6 @@ namespace core {
         };
 
     }
-} // core::base
+} // odcore::base
 
 #endif /*OPENDAVINCI_CORE_BASE_PROTODESERIALIZERVISITOR_H_*/

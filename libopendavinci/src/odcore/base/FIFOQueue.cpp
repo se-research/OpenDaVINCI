@@ -17,10 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/base/FIFOQueue.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/FIFOQueue.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
         using namespace data;
@@ -89,4 +89,4 @@ namespace core {
             return m_queue.empty();
         }
     }
-} // core::base
+} // odcore::base

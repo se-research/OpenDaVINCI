@@ -19,9 +19,9 @@
 
 #include <iostream>
 
-#include "opendavinci/core/base/ProtoSerializerVisitor.h"
+#include "opendavinci/odcore/base/ProtoSerializerVisitor.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
 class Serializable;
@@ -305,5 +305,5 @@ class Serializable;
         }
 
     }
-} // core::base
+} // odcore::base
 

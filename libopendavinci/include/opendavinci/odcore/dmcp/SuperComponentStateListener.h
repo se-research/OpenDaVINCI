@@ -20,9 +20,9 @@
 #ifndef OPENDAVINCI_DMCP_SUPERCOMPONENTSTATELISTENER_H_
 #define OPENDAVINCI_DMCP_SUPERCOMPONENTSTATELISTENER_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-namespace core {
+namespace odcore {
     namespace dmcp {
 
         using namespace std;
@@ -34,6 +34,6 @@ namespace core {
                 virtual void handleConnectionLost() = 0;
         };
     }
-} // core::dmcp
+} // odcore::dmcp
 
 #endif /* OPENDAVINCI_DMCP_SUPERCOMPONENTSTATELISTENER_H_ */

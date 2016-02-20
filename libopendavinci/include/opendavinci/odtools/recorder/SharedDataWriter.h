@@ -23,11 +23,11 @@
 #include <iosfwd>
 #include <map>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/Service.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Service.h"
 
-namespace core { namespace base { class FIFOQueue; } }
+namespace odcore { namespace base { class FIFOQueue; } }
 
 namespace odtools {
 
@@ -38,7 +38,7 @@ namespace odtools {
         /**
          * This class writes the FIFO of MemorySegments to an outstream.
          */
-        class SharedDataWriter : public core::base::Service {
+        class SharedDataWriter : public odcore::base::Service {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -65,7 +65,7 @@ namespace odtools {
                  *
                  * @param out Output stream to write to.
                  */
-                SharedDataWriter(core::SharedPointer<ostream> out, map<uint32_t, char*> &mapOfMemories, core::base::FIFOQueue &bufferIn, core::base::FIFOQueue &bufferOut);
+                SharedDataWriter(odcore::SharedPointer<ostream> out, map<uint32_t, char*> &mapOfMemories, odcore::base::FIFOQueue &bufferIn, odcore::base::FIFOQueue &bufferOut);
 
                 virtual ~SharedDataWriter();
 
@@ -77,12 +77,12 @@ namespace odtools {
                 virtual void run();
 
             private:
-                core::SharedPointer<ostream> m_out;
+                odcore::SharedPointer<ostream> m_out;
 
                 map<uint32_t, char*> &m_mapOfMemories;
 
-                core::base::FIFOQueue &m_bufferIn;
-                core::base::FIFOQueue &m_bufferOut;
+                odcore::base::FIFOQueue &m_bufferIn;
+                odcore::base::FIFOQueue &m_bufferOut;
         };
 
     } // recorder

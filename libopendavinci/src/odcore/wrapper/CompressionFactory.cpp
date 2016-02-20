@@ -19,14 +19,14 @@
 
 #include <iostream>
 
-#include "opendavinci/core/wrapper/CompressionFactory.h"
-#include "opendavinci/core/wrapper/CompressionLibraryProducts.h"
-#include "opendavinci/core/wrapper/ConfigurationTraits.h"
-#include "opendavinci/core/wrapper/Libraries.h"
-#include "opendavinci/core/wrapper/DecompressedData.h"
-#include "opendavinci/core/wrapper/Zip/ZipCompressionFactoryWorker.h"
+#include "opendavinci/odcore/wrapper/CompressionFactory.h"
+#include "opendavinci/odcore/wrapper/CompressionLibraryProducts.h"
+#include "opendavinci/odcore/wrapper/ConfigurationTraits.h"
+#include "opendavinci/odcore/wrapper/Libraries.h"
+#include "opendavinci/odcore/wrapper/DecompressedData.h"
+#include "opendavinci/odcore/wrapper/Zip/ZipCompressionFactoryWorker.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         SharedPointer<DecompressedData> CompressionFactory::getContents(istream &in) {
@@ -34,4 +34,4 @@ namespace core {
             return SharedPointer<DecompressedData>(CompressionFactoryWorker<configuration::value>::getContents(in));
         }
     }
-} // core::wrapper
+} // odcore::wrapper

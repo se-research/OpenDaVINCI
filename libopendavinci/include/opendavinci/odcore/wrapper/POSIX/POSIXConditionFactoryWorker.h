@@ -20,24 +20,24 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXCONDITIONFACTORYWORKER_H_
 #define OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXCONDITIONFACTORYWORKER_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/wrapper/ConditionFactoryWorker.h"
-#include "opendavinci/core/wrapper/SystemLibraryProducts.h"
+#include "opendavinci/odcore/wrapper/ConditionFactoryWorker.h"
+#include "opendavinci/odcore/wrapper/SystemLibraryProducts.h"
 
-#include "opendavinci/core/wrapper/POSIX/POSIXCondition.h"
+#include "opendavinci/odcore/wrapper/POSIX/POSIXCondition.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         template <> class OPENDAVINCI_API ConditionFactoryWorker<SystemLibraryPosix> {
             public:
                 static SharedPointer<Condition> createCondition() {
-                    return SharedPointer<Condition>(new core::wrapper::POSIX::POSIXCondition());
+                    return SharedPointer<Condition>(new odcore::wrapper::POSIX::POSIXCondition());
                 }
         };
 
     }
-} // core::wrapper
+} // odcore::wrapper
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXCONDITIONFACTORYWORKER_H_*/

@@ -20,15 +20,15 @@
 #include <algorithm>
 #include <functional>
 
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/Deserializer.h"
-#include "opendavinci/core/base/Hash.h"
-#include "opendavinci/core/base/KeyValueConfiguration.h"
-#include "opendavinci/core/base/SerializationFactory.h"
-#include "opendavinci/core/base/Serializer.h"
-#include "opendavinci/core/strings/StringToolbox.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/strings/StringToolbox.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
         KeyValueConfiguration::KeyValueConfiguration() : m_keyValueConfiguration() {}
@@ -53,7 +53,7 @@ namespace core {
 
         ostream& KeyValueConfiguration::operator<<(ostream &out) const {
 			SerializationFactory& sf = SerializationFactory::getInstance();
-			core::SharedPointer<Serializer> s = sf.getSerializer(out);
+			odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
             stringstream sstr;
             writeTo(sstr);
 			s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('c', 'o', 'n', 'f', 'i', 'g')  >::RESULT, sstr.str());
@@ -62,7 +62,7 @@ namespace core {
 
         istream& KeyValueConfiguration::operator>>(istream &in) {
 			SerializationFactory& sf = SerializationFactory::getInstance();
-			core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+			odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
             string s;
 			d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('c', 'o', 'n', 'f', 'i', 'g')  >::RESULT, s);
             stringstream sstr(s);
@@ -72,7 +72,7 @@ namespace core {
 
         ostream& KeyValueConfiguration::writeTo(ostream &out) const {
             // Print out configuration data.
-            map<string, string, core::strings::StringComparator>::const_iterator it = m_keyValueConfiguration.begin();
+            map<string, string, odcore::strings::StringComparator>::const_iterator it = m_keyValueConfiguration.begin();
             for (; it != m_keyValueConfiguration.end(); ++it) {
                 out << it->first << "=" << it->second << endl;
             }
@@ -122,8 +122,8 @@ namespace core {
                 string key = line.substr(0, delimiter);
                 string value = line.substr(delimiter + 1, valueLength);
 
-                core::strings::StringToolbox::trim(key);
-                core::strings::StringToolbox::trim(value);
+                odcore::strings::StringToolbox::trim(key);
+                odcore::strings::StringToolbox::trim(value);
 
                 // Skip lines with invalid keys or values.
                 if ( (key.length() == 0) ||
@@ -148,7 +148,7 @@ namespace core {
             transform(subsetSection.begin(), subsetSection.end(), subsetSection.begin(), ptr_fun(::tolower));
 
             // Print32_t out configuration data.
-            map<string, string, core::strings::StringComparator>::const_iterator it = m_keyValueConfiguration.begin();
+            map<string, string, odcore::strings::StringComparator>::const_iterator it = m_keyValueConfiguration.begin();
             for (; it != m_keyValueConfiguration.end(); ++it) {
                 string key = it->first;
                 string::size_type pos = key.find(subsetSection, 0);
@@ -172,7 +172,7 @@ namespace core {
             transform(subsetSection.begin(), subsetSection.end(), subsetSection.begin(), ptr_fun(::tolower));
 
             // Print32_t out configuration data.
-            map<string, string, core::strings::StringComparator>::const_iterator it = m_keyValueConfiguration.begin();
+            map<string, string, odcore::strings::StringComparator>::const_iterator it = m_keyValueConfiguration.begin();
             for (; it != m_keyValueConfiguration.end(); ++it) {
                 string key = it->first;
                 string::size_type pos = key.find(subsetSection, 0);
@@ -190,7 +190,7 @@ namespace core {
         const vector<string> KeyValueConfiguration::getListOfKeys() const {
             vector<string> listOfKeys;
 
-            map<string, string, core::strings::StringComparator>::const_iterator it = m_keyValueConfiguration.begin();
+            map<string, string, odcore::strings::StringComparator>::const_iterator it = m_keyValueConfiguration.begin();
             for (; it != m_keyValueConfiguration.end(); ++it) {
                 listOfKeys.push_back(it->first);
             }
@@ -205,7 +205,7 @@ namespace core {
             transform(key.begin(), key.end(), key.begin(), ptr_fun(::tolower));
 
             // Try to find the key/value.
-            map<string, string, core::strings::StringComparator>::const_iterator it = m_keyValueConfiguration.find(key);
+            map<string, string, odcore::strings::StringComparator>::const_iterator it = m_keyValueConfiguration.find(key);
             if (it != m_keyValueConfiguration.end()) {
                 value = it->second;
             }
@@ -214,5 +214,5 @@ namespace core {
         }
 
     }
-} // core::base
+} // odcore::base
 

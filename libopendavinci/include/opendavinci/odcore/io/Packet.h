@@ -22,9 +22,9 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-namespace core {
+namespace odcore {
     namespace io {
 
         using namespace std;
@@ -95,6 +95,6 @@ namespace core {
         };
 
     }
-} // core::io
+} // odcore::io
 
 #endif /*OPENDAVINCI_CORE_IO_PACKET_H_*/

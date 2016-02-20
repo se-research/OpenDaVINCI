@@ -22,23 +22,23 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/wrapper/TCPFactoryWorker.h"
-#include "opendavinci/core/wrapper/WIN32/WIN32TCPAcceptor.h"
-#include "opendavinci/core/wrapper/WIN32/WIN32TCPConnection.h"
+#include "opendavinci/odcore/wrapper/TCPFactoryWorker.h"
+#include "opendavinci/odcore/wrapper/WIN32/WIN32TCPAcceptor.h"
+#include "opendavinci/odcore/wrapper/WIN32/WIN32TCPConnection.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         using namespace std;
 
         template <> struct OPENDAVINCI_API TCPFactoryWorker<NetworkLibraryWin32> {
-            static core::io::tcp::TCPAcceptor* createTCPAcceptor(const uint32_t& port) {
+            static odcore::io::tcp::TCPAcceptor* createTCPAcceptor(const uint32_t& port) {
                 return new WIN32Impl::WIN32TCPAcceptor(port);
             };
 
-            static core::io::tcp::TCPConnection* createTCPConnectionTo(const string& ip, const uint32_t& port) {
+            static odcore::io::tcp::TCPConnection* createTCPConnectionTo(const string& ip, const uint32_t& port) {
                 return new WIN32Impl::WIN32TCPConnection(ip, port);
             };
         };

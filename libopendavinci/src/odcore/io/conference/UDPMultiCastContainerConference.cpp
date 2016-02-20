@@ -20,14 +20,14 @@
 #include <iosfwd>
 #include <sstream>
 
-#include "opendavinci/core/base/Serializable.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/data/TimeStamp.h"
-#include "opendavinci/core/io/conference/UDPMultiCastContainerConference.h"
-#include "opendavinci/core/io/udp/UDPFactory.h"
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
+#include "opendavinci/odcore/io/conference/UDPMultiCastContainerConference.h"
+#include "opendavinci/odcore/io/udp/UDPFactory.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-namespace core {
+namespace odcore {
     namespace io {
         namespace conference {
 
@@ -40,14 +40,14 @@ namespace core {
                 m_sender(NULL),
                 m_receiver(NULL) {
                 try {
-                    m_sender = core::io::udp::UDPFactory::createUDPSender(address, port);
+                    m_sender = odcore::io::udp::UDPFactory::createUDPSender(address, port);
                 }
                 catch (string &s) {
                     OPENDAVINCI_CORE_THROW_EXCEPTION(ConferenceException, s);
                 }
 
                 try {
-                    m_receiver = core::io::udp::UDPFactory::createUDPReceiver(address, port);
+                    m_receiver = odcore::io::udp::UDPFactory::createUDPReceiver(address, port);
                 }
                 catch (string &s) {
                     OPENDAVINCI_CORE_THROW_EXCEPTION(ConferenceException, s);
@@ -97,4 +97,4 @@ namespace core {
 
         }
     }
-} // core::io::conference
+} // odcore::io::conference

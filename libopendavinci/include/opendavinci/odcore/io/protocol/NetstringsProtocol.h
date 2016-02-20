@@ -23,14 +23,14 @@
 #include <sstream>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/io/StringObserver.h"
-#include "opendavinci/core/io/protocol/AbstractProtocol.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/io/StringObserver.h"
+#include "opendavinci/odcore/io/protocol/AbstractProtocol.h"
 
-namespace core { namespace io { class StringListener; } }
+namespace odcore { namespace io { class StringListener; } }
 
-namespace core {
+namespace odcore {
     namespace io {
         namespace protocol {
 
@@ -112,10 +112,10 @@ namespace core {
                      */
                     void invokeStringListener(const string& data);
 
-                    core::base::Mutex m_stringListenerMutex;
+                    odcore::base::Mutex m_stringListenerMutex;
                     StringListener *m_stringListener;
 
-                    core::base::Mutex m_partialDataMutex;
+                    odcore::base::Mutex m_partialDataMutex;
                     stringstream m_partialData;
             };
 

@@ -19,18 +19,18 @@
 
 #include <iostream>
 
-#include "opendavinci/context/base/RecordingContainer.h"
-#include "opendavinci/core/base/FIFOQueue.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/tools/recorder/Recorder.h"
+#include "opendavinci/odcontext/base/RecordingContainer.h"
+#include "opendavinci/odcore/base/FIFOQueue.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odtools/recorder/Recorder.h"
 
-namespace core { namespace wrapper { class Time; } }
+namespace odcore { namespace wrapper { class Time; } }
 
 namespace odcontext {
     namespace base {
 
         using namespace std;
-        using namespace core::data;
+        using namespace odcore::data;
         using namespace odtools::recorder;
 
 		RecordingContainer::RecordingContainer(const float &freq, const string &urlFileName, const uint32_t &memorySegmentSize, const uint32_t &numberOfSegments) :
@@ -55,7 +55,7 @@ namespace odcontext {
 
         void RecordingContainer::tearDown() {}
 
-		void RecordingContainer::report(const core::wrapper::Time &/*t*/) {
+		void RecordingContainer::report(const odcore::wrapper::Time &/*t*/) {
 			if (m_recorder.get() != NULL) {
 	            const uint32_t SIZE = getFIFO().getSize();
 	            for (uint32_t i = 0; i < SIZE; i++) {

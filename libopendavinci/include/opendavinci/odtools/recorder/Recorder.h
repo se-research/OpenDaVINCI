@@ -23,11 +23,11 @@
 #include <memory>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/FIFOQueue.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/FIFOQueue.h"
 
-namespace core { namespace data { class Container; } }
+namespace odcore { namespace data { class Container; } }
 
 namespace odtools {
     namespace recorder {
@@ -91,7 +91,7 @@ class SharedDataListener;
                  *
                  * @return Reference to queue to be used for queuing Containers.
                  */
-                core::base::FIFOQueue& getFIFO();
+                odcore::base::FIFOQueue& getFIFO();
 
                 /**
                  * This method returns the data store to be used
@@ -108,13 +108,13 @@ class SharedDataListener;
                  *
                  * @param c Container to be recorded.
                  */
-                void store(core::data::Container c);
+                void store(odcore::data::Container c);
 
             private:
-                core::base::FIFOQueue m_fifo;
+                odcore::base::FIFOQueue m_fifo;
                 auto_ptr<SharedDataListener> m_sharedDataListener;
-                core::SharedPointer<ostream> m_out;
-                core::SharedPointer<ostream> m_outSharedMemoryFile;
+                odcore::SharedPointer<ostream> m_out;
+                odcore::SharedPointer<ostream> m_outSharedMemoryFile;
                 bool m_dumpSharedData;
         };
 

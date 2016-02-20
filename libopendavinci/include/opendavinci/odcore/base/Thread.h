@@ -20,10 +20,10 @@
 #ifndef OPENDAVINCI_CORE_BASE_THREAD_H_
 #define OPENDAVINCI_CORE_BASE_THREAD_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/data/TimeStamp.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
         using namespace std;
@@ -46,10 +46,10 @@ namespace core {
                  *
                  * @param ts TimeStamp of the point in time until this thread is suspended.
                  */
-                static void usleepUntil(const core::data::TimeStamp &ts);
+                static void usleepUntil(const odcore::data::TimeStamp &ts);
         };
 
     }
-} // core::base
+} // odcore::base
 
 #endif /*OPENDAVINCI_CORE_BASE_THREAD_H_*/

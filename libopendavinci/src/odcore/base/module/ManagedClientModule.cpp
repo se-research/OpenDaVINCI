@@ -29,31 +29,31 @@
 #include <sstream>
 #include <vector>
 
-#include "opendavinci/context/base/ControlledTime.h"
-#include "opendavinci/context/base/ControlledTimeFactory.h"
-#include "opendavinci/context/base/RuntimeControl.h"
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/core/base/module/ManagedClientModule.h"
-#include "opendavinci/core/base/module/ManagedClientModuleContainerConference.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/data/TimeStamp.h"
-#include "opendavinci/core/dmcp/connection/Client.h"
-#include "opendavinci/core/exceptions/Exceptions.h"
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcontext/base/ControlledTime.h"
+#include "opendavinci/odcontext/base/ControlledTimeFactory.h"
+#include "opendavinci/odcontext/base/RuntimeControl.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/base/module/ManagedClientModule.h"
+#include "opendavinci/odcore/base/module/ManagedClientModuleContainerConference.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
+#include "opendavinci/odcore/dmcp/connection/Client.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
 #include "opendavinci/generated/coredata/dmcp/RuntimeStatistic.h"
 #include "opendavinci/generated/coredata/dmcp/ServerInformation.h"
 
-namespace core {
+namespace odcore {
     namespace base {
         namespace module {
 
             using namespace std;
 
-            using namespace core;
-            using namespace core::base;
-            using namespace core::data;
-            using namespace core::exceptions;
+            using namespace odcore;
+            using namespace odcore::base;
+            using namespace odcore::data;
+            using namespace odcore::exceptions;
 
             ManagedClientModule::ManagedClientModule(const int32_t &argc, char **argv, const string &name) throw (InvalidArgumentException) :
                 ClientModule(argc, argv, name),
@@ -73,7 +73,7 @@ namespace core {
                 m_localContainerConference(NULL),
                 m_hasExternalContainerConference(false),
                 m_containerConference(NULL) {
-                m_localContainerConference = SharedPointer<core::io::conference::ContainerConference>(new ManagedClientModuleContainerConference());
+                m_localContainerConference = SharedPointer<odcore::io::conference::ContainerConference>(new ManagedClientModuleContainerConference());
             }
 
             ManagedClientModule::~ManagedClientModule() {
@@ -92,7 +92,7 @@ namespace core {
 
             void ManagedClientModule::DMCPconnectionLost() {}
 
-            void ManagedClientModule::setContainerConference(SharedPointer<core::io::conference::ContainerConference> c) {
+            void ManagedClientModule::setContainerConference(SharedPointer<odcore::io::conference::ContainerConference> c) {
                 if (m_hasExternalContainerConference) {
                     m_containerConference.release();
                     m_hasExternalContainerConference = false;
@@ -104,7 +104,7 @@ namespace core {
                 }
             }
 
-            SharedPointer<core::io::conference::ContainerConference> ManagedClientModule::getContainerConference() {
+            SharedPointer<odcore::io::conference::ContainerConference> ManagedClientModule::getContainerConference() {
                 return m_containerConference;
             }
 
@@ -726,4 +726,4 @@ namespace core {
 
         }
     }
-} // core::base::module
+} // odcore::base::module

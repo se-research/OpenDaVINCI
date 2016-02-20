@@ -20,10 +20,10 @@
 #ifndef CONTEXT_BASE_SYSTEMFEEDBACKCOMPONENT_H_
 #define CONTEXT_BASE_SYSTEMFEEDBACKCOMPONENT_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/context/base/SystemContextComponent.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcontext/base/SystemContextComponent.h"
 
-namespace core { namespace wrapper { class Time; } }
+namespace odcore { namespace wrapper { class Time; } }
 
 namespace odcontext {
     namespace base {
@@ -46,7 +46,7 @@ class SendContainerToSystemsUnderTest;
                  * @param t Current system time.
                  * @param sender Sender for containers to be delivered to Systems Under Tests.
                  */
-                virtual void step(const core::wrapper::Time &t, SendContainerToSystemsUnderTest &sender) = 0;
+                virtual void step(const odcore::wrapper::Time &t, SendContainerToSystemsUnderTest &sender) = 0;
         };
 
     }

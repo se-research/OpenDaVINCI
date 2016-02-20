@@ -22,20 +22,20 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/context/base/Clock.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/module/Breakpoint.h"
-#include "opendavinci/core/base/module/ClientModule.h"
-#include "opendavinci/core/data/TimeStamp.h"
-#include "opendavinci/core/exceptions/Exceptions.h"
-#include "opendavinci/core/io/conference/ContainerConference.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcontext/base/Clock.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/module/Breakpoint.h"
+#include "opendavinci/odcore/base/module/ClientModule.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
+#include "opendavinci/odcore/io/conference/ContainerConference.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
 #include "opendavinci/generated/coredata/dmcp/PulseMessage.h"
 
 namespace odcontext { namespace base { class ControlledTimeFactory; } }
 
-namespace core {
+namespace odcore {
     namespace base {
         namespace module {
 
@@ -48,7 +48,7 @@ namespace core {
              *
              * @See AbstractConferenceClientModule
              */
-            class OPENDAVINCI_API ManagedClientModule : public core::base::module::ClientModule, public core::base::module::Breakpoint {
+            class OPENDAVINCI_API ManagedClientModule : public odcore::base::module::ClientModule, public odcore::base::module::Breakpoint {
                 private:
                     friend class AbstractConferenceClientModule;
 
@@ -60,7 +60,7 @@ namespace core {
                      * @param name Name of this module. This parameter is necessary for identifying the corresponding parts in the configuration.
                      * @throw InvalidArgumentException if the signal handler could not be registered.
                      */
-                    ManagedClientModule(const int32_t &argc, char **argv, const string &name) throw (core::exceptions::InvalidArgumentException);
+                    ManagedClientModule(const int32_t &argc, char **argv, const string &name) throw (odcore::exceptions::InvalidArgumentException);
 
                 private:
                     /**
@@ -83,12 +83,12 @@ namespace core {
                     /**
                      * @return Start time of the current execution cycle.
                      */
-                    const core::data::TimeStamp getStartOfCurrentCycle() const;
+                    const odcore::data::TimeStamp getStartOfCurrentCycle() const;
 
                     /**
                      * @return End time of the last execution cycle.
                      */
-                    const core::data::TimeStamp getStartOfLastCycle() const;
+                    const odcore::data::TimeStamp getStartOfLastCycle() const;
 
                 protected:
                     /**
@@ -154,8 +154,8 @@ namespace core {
                      * This method is used to log the time consumption (load)
                      * for this module into a profiling file.
                      */
-                    void logProfilingData(const core::data::TimeStamp &current,
-                                          const core::data::TimeStamp &lastCycle,
+                    void logProfilingData(const odcore::data::TimeStamp &current,
+                                          const odcore::data::TimeStamp &lastCycle,
                                           const float &freq,
                                           const long &lastWaitTime,
                                           const long &timeConsumptionCurrent,
@@ -176,7 +176,7 @@ namespace core {
                      *
                      * @param c Pointer to the ContainerConference to be used.
                      */
-                    void setContainerConference(core::SharedPointer<core::io::conference::ContainerConference> c);
+                    void setContainerConference(odcore::SharedPointer<odcore::io::conference::ContainerConference> c);
 
                     /**
                      * This method returns the ContainerConference to be used. In the case
@@ -185,15 +185,15 @@ namespace core {
                      *
                      * @return Pointer to the ContainerConference to be used.
                      */
-                    core::SharedPointer<core::io::conference::ContainerConference> getContainerConference();
+                    odcore::SharedPointer<odcore::io::conference::ContainerConference> getContainerConference();
 
                 private:
 #ifndef WIN32
                     struct timespec m_waitForSlice;
 #endif
-                    core::data::TimeStamp m_startOfCurrentCycle;
-                    core::data::TimeStamp m_startOfLastCycle;
-                    core::data::TimeStamp m_lastCycle;
+                    odcore::data::TimeStamp m_startOfCurrentCycle;
+                    odcore::data::TimeStamp m_startOfLastCycle;
+                    odcore::data::TimeStamp m_lastCycle;
                     long m_lastWaitTime;
                     int32_t m_cycleCounter;
                     ofstream *m_profilingFile;
@@ -204,13 +204,13 @@ namespace core {
                     odcontext::base::ControlledTimeFactory *m_controlledTimeFactory;
 
                     coredata::dmcp::PulseMessage m_pulseMessage;
-                    core::SharedPointer<core::io::conference::ContainerConference> m_localContainerConference;
+                    odcore::SharedPointer<odcore::io::conference::ContainerConference> m_localContainerConference;
                     bool m_hasExternalContainerConference;
-                    core::SharedPointer<core::io::conference::ContainerConference> m_containerConference;
+                    odcore::SharedPointer<odcore::io::conference::ContainerConference> m_containerConference;
             };
 
         }
     }
-} // core::base::module
+} // odcore::base::module
 
 #endif /*OPENDAVINCI_BASE_MANAGEDCLIENTMODULE_H_*/

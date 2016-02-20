@@ -17,10 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/base/BufferedLIFOQueue.h"
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/base/BufferedLIFOQueue.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
         using namespace data;
@@ -51,4 +51,4 @@ namespace core {
         }
 
     }
-} // core::base
+} // odcore::base

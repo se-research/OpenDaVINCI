@@ -23,10 +23,10 @@
 #endif
 #include <string>
 
-#include "opendavinci/core/data/TimeStamp.h"
-#include "opendavinci/core/wrapper/RealtimeRunnable.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
+#include "opendavinci/odcore/wrapper/RealtimeRunnable.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         using namespace std;
@@ -62,13 +62,13 @@ namespace core {
                 ::clock_nanosleep(CLOCK_REALTIME, TIMER_ABSTIME, &waitForSlice, NULL);
 
                 // Get time before slice.
-                core::data::TimeStamp before;
+                odcore::data::TimeStamp before;
 
                 // Execute slice.
                 nextTimeSlice();
 
                 // Get time after slice.
-                core::data::TimeStamp after;
+                odcore::data::TimeStamp after;
 
                 // Compute delta using monotonic clock.
                 const long delta = after.toMicroseconds() - before.toMicroseconds();
@@ -92,4 +92,4 @@ namespace core {
         }
 
     }
-} // core::wrapper
+} // odcore::wrapper

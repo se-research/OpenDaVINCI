@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/wrapper/WIN32/WIN32Mutex.h"
+#include "opendavinci/odcore/wrapper/WIN32/WIN32Mutex.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
         namespace WIN32Impl {
 
@@ -48,4 +48,4 @@ namespace core {
 
         }
     }
-} // core::wrapper::WIN32Impl
+} // odcore::wrapper::WIN32Impl

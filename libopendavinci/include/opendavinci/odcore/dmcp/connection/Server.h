@@ -20,17 +20,17 @@
 #ifndef OPENDAVINCI_DMCP_CONNECTION_SERVER_H_
 #define OPENDAVINCI_DMCP_CONNECTION_SERVER_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/io/ConnectionAcceptor.h"
-#include "opendavinci/core/io/ConnectionAcceptorListener.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/io/ConnectionAcceptor.h"
+#include "opendavinci/odcore/io/ConnectionAcceptorListener.h"
 
 namespace coredata { namespace dmcp { class ServerInformation; } }
-namespace core { namespace dmcp { class ModuleConfigurationProvider; } }
-namespace core { namespace io { class Connection; } }
-namespace core { template <class T> class SharedPointer; }
+namespace odcore { namespace dmcp { class ModuleConfigurationProvider; } }
+namespace odcore { namespace io { class Connection; } }
+namespace odcore { template <class T> class SharedPointer; }
 
-namespace core {
+namespace odcore {
     namespace dmcp {
         namespace connection {
 
@@ -38,7 +38,7 @@ class ConnectionHandler;
 
             using namespace std;
 
-            class OPENDAVINCI_API Server : protected core::io::ConnectionAcceptorListener {
+            class OPENDAVINCI_API Server : protected odcore::io::ConnectionAcceptorListener {
                 private:
                     /**
                      * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -62,18 +62,18 @@ class ConnectionHandler;
                     void setConnectionHandler(ConnectionHandler* connectionHandler);
 
                 protected:
-                    virtual void onNewConnection(core::SharedPointer<core::io::Connection> connection);
+                    virtual void onNewConnection(odcore::SharedPointer<odcore::io::Connection> connection);
 
-                    core::base::Mutex m_configProviderMutex;
+                    odcore::base::Mutex m_configProviderMutex;
                     ModuleConfigurationProvider& m_configProvider;
 
-                    core::base::Mutex m_connectionHandlerMutex;
+                    odcore::base::Mutex m_connectionHandlerMutex;
                     ConnectionHandler* m_connectionHandler;
 
-                    core::io::ConnectionAcceptor m_acceptor;
+                    odcore::io::ConnectionAcceptor m_acceptor;
             };
         }
     }
-} // core::dmcp
+} // odcore::dmcp
 
 #endif  /*OPENDAVINCI_DMCP_CONNECTION_SERVER_H_*/

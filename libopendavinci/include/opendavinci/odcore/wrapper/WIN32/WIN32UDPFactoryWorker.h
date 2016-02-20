@@ -24,26 +24,26 @@
 #include <sstream>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/base/module/AbstractCIDModule.h"
-#include "opendavinci/core/wrapper/NetworkLibraryProducts.h"
-#include "opendavinci/core/wrapper/UDPFactoryWorker.h"
-#include "opendavinci/core/wrapper/WIN32/WIN32UDPReceiver.h"
-#include "opendavinci/core/wrapper/WIN32/WIN32UDPSender.h"
+#include "opendavinci/odcore/base/module/AbstractCIDModule.h"
+#include "opendavinci/odcore/wrapper/NetworkLibraryProducts.h"
+#include "opendavinci/odcore/wrapper/UDPFactoryWorker.h"
+#include "opendavinci/odcore/wrapper/WIN32/WIN32UDPReceiver.h"
+#include "opendavinci/odcore/wrapper/WIN32/WIN32UDPSender.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         using namespace std;
 
         template <> class OPENDAVINCI_API UDPFactoryWorker<NetworkLibraryWin32> {
             public:
-                static core::io::udp::UDPSender* createUDPSender(const string &address, const uint32_t &port) {
+                static odcore::io::udp::UDPSender* createUDPSender(const string &address, const uint32_t &port) {
                     return new WIN32Impl::WIN32UDPSender(address, port);
                 };
 
-                static core::io::udp::UDPReceiver* createUDPReceiver(const string &address, const uint32_t &port) {
+                static odcore::io::udp::UDPReceiver* createUDPReceiver(const string &address, const uint32_t &port) {
                     bool isMulticast = false;
                     string::size_type posFirstDot = address.find(".");
                     if (posFirstDot != string::npos) {
@@ -57,6 +57,6 @@ namespace core {
                 };
         };
     }
-} // core::wrapper
+} // odcore::wrapper
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_WIN32IMPL_WIN32UDPFACTORYWORKER_H_*/

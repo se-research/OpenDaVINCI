@@ -24,11 +24,11 @@
 
 #include "FunctionCallWaiter.h"
 #include "ParameterValueList.h"
-#include "opendavinci/core/io/StringListener.h"
+#include "opendavinci/odcore/io/StringListener.h"
 
 namespace mocks {
 
-    class StringListenerMock : public core::io::StringListener {
+    class StringListenerMock : public odcore::io::StringListener {
         public:
             StringListenerMock() :
                 CALLWAITER_nextString(),

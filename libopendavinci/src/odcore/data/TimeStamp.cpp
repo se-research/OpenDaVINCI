@@ -19,16 +19,16 @@
 
 #include <sstream>
 
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/Deserializer.h"
-#include "opendavinci/core/base/Hash.h"
-#include "opendavinci/core/base/SerializationFactory.h"
-#include "opendavinci/core/base/Serializer.h"
-#include "opendavinci/core/data/TimeStamp.h"
-#include "opendavinci/core/wrapper/Time.h"
-#include "opendavinci/core/wrapper/TimeFactory.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
+#include "opendavinci/odcore/wrapper/Time.h"
+#include "opendavinci/odcore/wrapper/TimeFactory.h"
 
-namespace core {
+namespace odcore {
     namespace data {
 
         using namespace std;
@@ -37,7 +37,7 @@ namespace core {
         TimeStamp::TimeStamp() :
             m_seconds(0),
             m_microseconds(0) {
-            core::SharedPointer<core::wrapper::Time> time(core::wrapper::TimeFactory::getInstance().now());
+            odcore::SharedPointer<odcore::wrapper::Time> time(odcore::wrapper::TimeFactory::getInstance().now());
             if (time.isValid()) {
                 m_seconds = time->getSeconds();
                 m_microseconds = time->getPartialMicroseconds();
@@ -403,7 +403,7 @@ namespace core {
         ostream& TimeStamp::operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();;
 
-            core::SharedPointer<Serializer> s = sf.getSerializer(out);
+            odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 
             s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('s', 'e', 'c') >::RESULT,
                     m_seconds);
@@ -417,7 +417,7 @@ namespace core {
         istream& TimeStamp::operator>>(istream &in) {
             SerializationFactory& sf=SerializationFactory::getInstance();;
 
-            core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+            odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
             d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('s', 'e', 'c') >::RESULT,
                    m_seconds);
@@ -429,4 +429,4 @@ namespace core {
         }
 
     }
-} // core::data
+} // odcore::data

@@ -23,13 +23,13 @@
 #include <queue>
 #include <string>
 
-#include "opendavinci/core/base/Condition.h"
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/base/Service.h"
-#include "opendavinci/core/io/StringListener.h"
-#include "opendavinci/core/io/StringObserver.h"
+#include "opendavinci/odcore/base/Condition.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/base/Service.h"
+#include "opendavinci/odcore/io/StringListener.h"
+#include "opendavinci/odcore/io/StringObserver.h"
 
-namespace core {
+namespace odcore {
     namespace io {
 
         using namespace std;
@@ -38,7 +38,7 @@ namespace core {
          * This class distributes strings using an asynchronous pipeline to decouple
          * the processing of the data when invoking a StringListener at higher levels.
          */
-        class StringPipeline : public core::base::Service, public StringObserver, public StringListener {
+        class StringPipeline : public odcore::base::Service, public StringObserver, public StringListener {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -74,15 +74,15 @@ namespace core {
                 void processQueue();
 
             private:
-                core::base::Condition m_queueCondition;
-                core::base::Mutex m_queueMutex;
+                odcore::base::Condition m_queueCondition;
+                odcore::base::Mutex m_queueMutex;
                 queue<string> m_queue;
 
-                core::base::Mutex m_stringListenerMutex;
+                odcore::base::Mutex m_stringListenerMutex;
                 StringListener *m_stringListener;
         };
 
     }
-} // core::io
+} // odcore::io
 
 #endif /*OPENDAVINCI_CORE_IO_STRINGPIPELINE_H_*/

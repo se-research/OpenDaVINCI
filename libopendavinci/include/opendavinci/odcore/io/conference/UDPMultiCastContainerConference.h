@@ -22,17 +22,17 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/exceptions/Exceptions.h"
-#include "opendavinci/core/io/StringListener.h"
-#include "opendavinci/core/io/conference/ContainerConference.h"
-#include "opendavinci/core/io/udp/UDPReceiver.h"
-#include "opendavinci/core/io/udp/UDPSender.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
+#include "opendavinci/odcore/io/StringListener.h"
+#include "opendavinci/odcore/io/conference/ContainerConference.h"
+#include "opendavinci/odcore/io/udp/UDPReceiver.h"
+#include "opendavinci/odcore/io/udp/UDPSender.h"
 
-namespace core { namespace data { class Container; } }
+namespace odcore { namespace data { class Container; } }
 
-namespace core {
+namespace odcore {
     namespace io {
         namespace conference {
 
@@ -45,7 +45,7 @@ namespace core {
              * a StringListener for getting informed about new strings from
              * the UDPReceiver and informs any connected ContainerListener.
              */
-            class OPENDAVINCI_API UDPMultiCastContainerConference : public ContainerConference, public core::io::StringListener {
+            class OPENDAVINCI_API UDPMultiCastContainerConference : public ContainerConference, public odcore::io::StringListener {
                 private:
                     friend class ContainerConferenceFactory;
 
@@ -79,15 +79,15 @@ namespace core {
 
                     virtual void nextString(const string &s);
 
-                    virtual void send(core::data::Container &container) const;
+                    virtual void send(odcore::data::Container &container) const;
 
                 private:
-                    core::SharedPointer<core::io::udp::UDPSender> m_sender;
-                    core::SharedPointer<core::io::udp::UDPReceiver> m_receiver;
+                    odcore::SharedPointer<odcore::io::udp::UDPSender> m_sender;
+                    odcore::SharedPointer<odcore::io::udp::UDPReceiver> m_receiver;
             };
 
         }
     }
-} // core::io::conference
+} // odcore::io::conference
 
 #endif /*OPENDAVINCI_CORE_IO_CONFERENCE_UDPMULTICASTCONTAINERCONFERENCE_H_*/

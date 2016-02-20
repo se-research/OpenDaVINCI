@@ -24,23 +24,23 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/KeyValueConfiguration.h"
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/dmcp/ModuleConfigurationProvider.h"
-#include "opendavinci/core/dmcp/ModuleStateListener.h"
-#include "opendavinci/core/dmcp/connection/ConnectionHandler.h"
-#include "opendavinci/core/io/conference/ContainerConference.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/dmcp/ModuleConfigurationProvider.h"
+#include "opendavinci/odcore/dmcp/ModuleStateListener.h"
+#include "opendavinci/odcore/dmcp/connection/ConnectionHandler.h"
+#include "opendavinci/odcore/io/conference/ContainerConference.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
 #include "opendavinci/generated/coredata/dmcp/RuntimeStatistic.h"
 
 namespace coredata { namespace dmcp { class ModuleDescriptor; } }
-namespace core { namespace data { class Container; } }
-namespace core { namespace dmcp { namespace connection { class ModuleConnection; } } }
-namespace core { namespace dmcp { namespace connection { class Server; } } }
-namespace core { namespace dmcp { namespace discoverer { class Server; } } }
+namespace odcore { namespace data { class Container; } }
+namespace odcore { namespace dmcp { namespace connection { class ModuleConnection; } } }
+namespace odcore { namespace dmcp { namespace connection { class Server; } } }
+namespace odcore { namespace dmcp { namespace discoverer { class Server; } } }
 
 namespace odcontext {
     namespace base {
@@ -50,9 +50,9 @@ namespace odcontext {
         /**
          * This class provides supercomponent functionality.
          */
-        class OPENDAVINCI_API SuperComponent : protected core::dmcp::connection::ConnectionHandler,
-                                               protected core::dmcp::ModuleStateListener,
-                                               public core::dmcp::ModuleConfigurationProvider {
+        class OPENDAVINCI_API SuperComponent : protected odcore::dmcp::connection::ConnectionHandler,
+                                               protected odcore::dmcp::ModuleStateListener,
+                                               public odcore::dmcp::ModuleConfigurationProvider {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -77,7 +77,7 @@ namespace odcontext {
                  * @param cid CID for the supercomponent.
                  * @param configuration Global configuration.
                  */
-                SuperComponent(const string &multicastGroup, const uint32_t &CID, const core::base::KeyValueConfiguration &configuration);
+                SuperComponent(const string &multicastGroup, const uint32_t &CID, const odcore::base::KeyValueConfiguration &configuration);
 
                 virtual ~SuperComponent();
 
@@ -86,14 +86,14 @@ namespace odcontext {
                  *
                  * @return UDPMulticastClientConference.
                  */
-                core::io::conference::ContainerConference& getContainerConference();
+                odcore::io::conference::ContainerConference& getContainerConference();
 
             protected:
-                virtual core::base::KeyValueConfiguration getConfiguration(const coredata::dmcp::ModuleDescriptor& md);
+                virtual odcore::base::KeyValueConfiguration getConfiguration(const coredata::dmcp::ModuleDescriptor& md);
 
-                virtual core::base::KeyValueConfiguration getGlobalConfiguration() const;
+                virtual odcore::base::KeyValueConfiguration getGlobalConfiguration() const;
 
-                virtual void onNewModule(core::SharedPointer<core::dmcp::connection::ModuleConnection> mc);
+                virtual void onNewModule(odcore::SharedPointer<odcore::dmcp::connection::ModuleConnection> mc);
 
                 virtual void handleChangeState(const coredata::dmcp::ModuleDescriptor& md,
                                                const coredata::dmcp::ModuleStateMessage::ModuleState &ms);
@@ -107,18 +107,18 @@ namespace odcontext {
                 virtual void handleConnectionLost(const coredata::dmcp::ModuleDescriptor& md);
 
                 virtual void handleUnkownContainer(const coredata::dmcp::ModuleDescriptor& md,
-                                                   const core::data::Container& container);
+                                                   const odcore::data::Container& container);
 
             private:
-                core::base::Mutex m_configurationMutex;
-                core::base::KeyValueConfiguration m_configuration;
+                odcore::base::Mutex m_configurationMutex;
+                odcore::base::KeyValueConfiguration m_configuration;
 
-                auto_ptr<core::dmcp::discoverer::Server> m_discovererServer;
-                auto_ptr<core::dmcp::connection::Server> m_connectionServer;
+                auto_ptr<odcore::dmcp::discoverer::Server> m_discovererServer;
+                auto_ptr<odcore::dmcp::connection::Server> m_connectionServer;
 
-                core::SharedPointer<core::io::conference::ContainerConference> m_conference;
+                odcore::SharedPointer<odcore::io::conference::ContainerConference> m_conference;
 
-                vector<core::SharedPointer<core::dmcp::connection::ModuleConnection> > m_listOfModuleConnections;
+                vector<odcore::SharedPointer<odcore::dmcp::connection::ModuleConnection> > m_listOfModuleConnections;
         };
 
     }

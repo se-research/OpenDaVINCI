@@ -22,19 +22,19 @@
 #include <sstream>
 #include <string>
 
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/exceptions/Exceptions.h"
-#include "opendavinci/core/io/StreamFactory.h"
-#include "opendavinci/core/io/URLProtocol.h"
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
+#include "opendavinci/odcore/io/StreamFactory.h"
+#include "opendavinci/odcore/io/URLProtocol.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-namespace core {
+namespace odcore {
     namespace io {
 
         using namespace std;
-        using namespace core;
-        using namespace core::base;
-        using namespace core::exceptions;
+        using namespace odcore;
+        using namespace odcore::base;
+        using namespace odcore::exceptions;
 
         // Initialize singleton instance.
         Mutex StreamFactory::m_singletonMutex;
@@ -122,4 +122,4 @@ namespace core {
         }
 
     }
-} // core::io
+} // odcore::io

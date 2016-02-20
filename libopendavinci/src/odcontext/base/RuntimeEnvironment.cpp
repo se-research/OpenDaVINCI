@@ -17,11 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/context/base/RuntimeEnvironment.h"
-#include "opendavinci/context/base/SystemFeedbackComponent.h"
-#include "opendavinci/context/base/TimeConstants.h"
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/odcontext/base/RuntimeEnvironment.h"
+#include "opendavinci/odcontext/base/SystemFeedbackComponent.h"
+#include "opendavinci/odcontext/base/TimeConstants.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
 
 namespace odcontext {
     namespace base {
@@ -29,8 +29,8 @@ namespace odcontext {
 class SystemReportingComponent;
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::base::module;
+        using namespace odcore::base;
+        using namespace odcore::base::module;
 
         RuntimeEnvironment::RuntimeEnvironment() :
             m_listsMutex(),
@@ -89,7 +89,7 @@ class SystemReportingComponent;
             return retVal;
         }
 
-        vector<core::base::module::TimeTriggeredConferenceClientModule*> RuntimeEnvironment::getListOfTimeTriggeredConferenceClientModules() {
+        vector<odcore::base::module::TimeTriggeredConferenceClientModule*> RuntimeEnvironment::getListOfTimeTriggeredConferenceClientModules() {
             Lock l(m_listsMutex);
             return m_listOfTimeTriggeredConferenceClientModules;
         }

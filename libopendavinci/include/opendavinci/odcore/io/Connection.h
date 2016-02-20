@@ -22,17 +22,17 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/io/ConnectionListener.h"
-#include "opendavinci/core/io/StringListener.h"
-#include "opendavinci/core/io/conference/ContainerObserver.h"
-#include "opendavinci/core/io/tcp/TCPConnection.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/io/ConnectionListener.h"
+#include "opendavinci/odcore/io/StringListener.h"
+#include "opendavinci/odcore/io/conference/ContainerObserver.h"
+#include "opendavinci/odcore/io/tcp/TCPConnection.h"
 
-namespace core { namespace data { class Container; } }
+namespace odcore { namespace data { class Container; } }
 
-namespace core {
+namespace odcore {
     namespace io {
 
 class ConnectionErrorListener;
@@ -40,7 +40,7 @@ namespace conference { class ContainerListener; }
 
         using namespace std;
 
-        class OPENDAVINCI_API Connection : public core::io::conference::ContainerObserver,
+        class OPENDAVINCI_API Connection : public odcore::io::conference::ContainerObserver,
                                            protected StringListener,
                                            protected ConnectionListener
         {
@@ -59,8 +59,8 @@ namespace conference { class ContainerListener; }
                 Connection(const std::string &ip, const uint32_t &port);
                 virtual ~Connection();
 
-                void send(core::data::Container &container);
-                virtual void setContainerListener(core::io::conference::ContainerListener *cl);
+                void send(odcore::data::Container &container);
+                virtual void setContainerListener(odcore::io::conference::ContainerListener *cl);
                 void setErrorListener(ConnectionErrorListener* el);
 
                 void start();
@@ -70,21 +70,21 @@ namespace conference { class ContainerListener; }
 
             protected:
                 friend class ConnectionAcceptor;
-                Connection(core::SharedPointer<core::io::tcp::TCPConnection> connection);
+                Connection(odcore::SharedPointer<odcore::io::tcp::TCPConnection> connection);
 
                 virtual void nextString(const std::string &s);
                 virtual void handleConnectionError();
 
             private:
-                core::base::Mutex m_listenerMutex;
-                core::io::conference::ContainerListener* m_listener;
+                odcore::base::Mutex m_listenerMutex;
+                odcore::io::conference::ContainerListener* m_listener;
 
-                core::base::Mutex m_errorHandlerMutex;
+                odcore::base::Mutex m_errorHandlerMutex;
                 ConnectionErrorListener* m_errorHandler;
 
-                core::SharedPointer<core::io::tcp::TCPConnection> m_connection;
+                odcore::SharedPointer<odcore::io::tcp::TCPConnection> m_connection;
 
-                core::base::Mutex m_connectedMutex;
+                odcore::base::Mutex m_connectedMutex;
                 bool m_connected;
         };
     }

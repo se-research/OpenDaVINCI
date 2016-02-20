@@ -23,9 +23,9 @@
 #include <exception>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-namespace core {
+namespace odcore {
     namespace exceptions {
 
         using namespace std;
@@ -170,6 +170,6 @@ namespace core {
         OPENDAVINCI_CORE_DECLARE_EXCEPTION(SITSituationVisitorException);
 
     }
-} // core::exceptions
+} // odcore::exceptions
 
 #endif /*OPENDAVINCI_CORE_EXCEPTIONS_EXCEPTIONS_H_*/

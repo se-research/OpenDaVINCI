@@ -27,19 +27,19 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Service.h"          // for Service
-#include "opendavinci/core/base/Thread.h"           // for Thread
-#include "opendavinci/core/base/module/AbstractCIDModule.h"  // for AbstractCIDModule
-#include "opendavinci/core/exceptions/Exceptions.h"  // for InvalidArgumentException
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Service.h"          // for Service
+#include "opendavinci/odcore/base/Thread.h"           // for Thread
+#include "opendavinci/odcore/base/module/AbstractCIDModule.h"  // for AbstractCIDModule
+#include "opendavinci/odcore/exceptions/Exceptions.h"  // for InvalidArgumentException
 #include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
-namespace core { namespace base { namespace module { class AbstractModule; } } }
+namespace odcore { namespace base { namespace module { class AbstractModule; } } }
 
 using namespace std;
-using namespace core::base;
-using namespace core::base::module;
-using namespace core::exceptions;
+using namespace odcore::base;
+using namespace odcore::base::module;
+using namespace odcore::exceptions;
 
 class AbstractCIDModuleTestConcreteModule : public AbstractCIDModule {
     public:

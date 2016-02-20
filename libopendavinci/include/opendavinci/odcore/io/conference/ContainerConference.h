@@ -20,13 +20,13 @@
 #ifndef OPENDAVINCI_CORE_IO_CONFERENCE_CONTAINERCONFERENCE_H_
 #define OPENDAVINCI_CORE_IO_CONFERENCE_CONTAINERCONFERENCE_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/io/conference/ContainerObserver.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/io/conference/ContainerObserver.h"
 
-namespace core { namespace data { class Container; } }
+namespace odcore { namespace data { class Container; } }
 
-namespace core {
+namespace odcore {
     namespace io {
         namespace conference {
 
@@ -79,7 +79,7 @@ class ContainerListener;
                      *
                      * @param container Container to be sent.
                      */
-                    virtual void send(core::data::Container &container) const = 0;
+                    virtual void send(odcore::data::Container &container) const = 0;
 
                 protected:
                     /**
@@ -88,7 +88,7 @@ class ContainerListener;
                      *
                      * @param c Container to be distributed.
                      */
-                    void receive(core::data::Container &c);
+                    void receive(odcore::data::Container &c);
 
                     /**
                      * This method returns true if a ContainerListener is registered.
@@ -104,6 +104,6 @@ class ContainerListener;
 
         }
     }
-} // core::io::conference
+} // odcore::io::conference
 
 #endif /*OPENDAVINCI_CORE_IO_CONFERENCE_CONTAINERCONFERENCE_H_*/

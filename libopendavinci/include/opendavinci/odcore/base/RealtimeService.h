@@ -22,14 +22,14 @@
 
 #include <memory>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/exceptions/Exceptions.h"
-#include "opendavinci/core/wrapper/RealtimeRunnable.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
+#include "opendavinci/odcore/wrapper/RealtimeRunnable.h"
 
-namespace core { namespace wrapper { class Thread; } }
+namespace odcore { namespace wrapper { class Thread; } }
 
-namespace core {
+namespace odcore {
     namespace base {
 
         using namespace std;
@@ -131,13 +131,13 @@ namespace core {
                 virtual bool isRunning();
 
             private:
-                auto_ptr<core::wrapper::Thread> m_thread;
+                auto_ptr<odcore::wrapper::Thread> m_thread;
 
                 Mutex m_realtimeServiceStateMutex;
                 REALTIMESERVICE_STATE m_realtimeServiceState;
         };
 
     }
-} // core::base
+} // odcore::base
 
 #endif /*OPENDAVINCI_CORE_BASE_REALTIMESERVICE_H_*/

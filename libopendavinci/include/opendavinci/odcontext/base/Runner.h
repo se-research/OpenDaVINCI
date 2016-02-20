@@ -20,10 +20,10 @@
 #ifndef CONTEXT_BASE_RUNNER_H_
 #define CONTEXT_BASE_RUNNER_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/module/Periodic.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/module/Periodic.h"
 
-namespace core { namespace wrapper { class Time; } }
+namespace odcore { namespace wrapper { class Time; } }
 
 namespace odcontext {
     namespace base {
@@ -31,7 +31,7 @@ namespace odcontext {
         /**
          * This class is the base class for periodic executions.
          */
-        class OPENDAVINCI_API Runner : public core::base::module::Periodic {
+        class OPENDAVINCI_API Runner : public odcore::base::module::Periodic {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -62,7 +62,7 @@ namespace odcontext {
                  * @param t Time.
                  * @return True if the app needs to be executed at time t.
                  */
-                bool needsExecution(const core::wrapper::Time &t) const;
+                bool needsExecution(const odcore::wrapper::Time &t) const;
 
                 /**
                  * This method should be overridden in subclasses to add an additional

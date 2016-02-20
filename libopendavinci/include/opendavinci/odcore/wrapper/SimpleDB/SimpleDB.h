@@ -24,14 +24,14 @@
 #include <memory>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/wrapper/KeyValueDatabase.h"
-#include "opendavinci/core/wrapper/KeyValueDatabaseLibraryProducts.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/wrapper/KeyValueDatabase.h"
+#include "opendavinci/odcore/wrapper/KeyValueDatabaseLibraryProducts.h"
 
-namespace core { namespace wrapper { class Mutex; } }
-namespace core { namespace wrapper { template <core::wrapper::KeyValueDatabaseLibraryProducts product> class KeyValueDatabaseFactoryWorker; } }
+namespace odcore { namespace wrapper { class Mutex; } }
+namespace odcore { namespace wrapper { template <odcore::wrapper::KeyValueDatabaseLibraryProducts product> class KeyValueDatabaseFactoryWorker; } }
 
-namespace core {
+namespace odcore {
     namespace wrapper {
         namespace SimpleDB {
 
@@ -71,6 +71,6 @@ namespace core {
 
         }
     }
-} // core::wrapper::SimpleDB
+} // odcore::wrapper::SimpleDB
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_SIMPLEDB_SIMPLEDB_H_*/

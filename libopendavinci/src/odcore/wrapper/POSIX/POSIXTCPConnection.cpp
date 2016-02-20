@@ -24,13 +24,13 @@
 #include <cstring>
 #include <sstream>
 
-#include "opendavinci/core/wrapper/ConcurrencyFactory.h"
-#include "opendavinci/core/wrapper/Mutex.h"
-#include "opendavinci/core/wrapper/MutexFactory.h"
-#include "opendavinci/core/wrapper/POSIX/POSIXTCPConnection.h"
-#include "opendavinci/core/wrapper/Thread.h"
+#include "opendavinci/odcore/wrapper/ConcurrencyFactory.h"
+#include "opendavinci/odcore/wrapper/Mutex.h"
+#include "opendavinci/odcore/wrapper/MutexFactory.h"
+#include "opendavinci/odcore/wrapper/POSIX/POSIXTCPConnection.h"
+#include "opendavinci/odcore/wrapper/Thread.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
         namespace POSIX {
 

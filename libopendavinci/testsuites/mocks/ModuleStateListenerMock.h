@@ -20,28 +20,28 @@
 #ifndef MOCKS__MODULESTATELISTENERMOCK_H_
 #define MOCKS__MODULESTATELISTENERMOCK_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/base/Condition.h"
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/odcore/base/Condition.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
-#include "opendavinci/core/dmcp/ModuleStateListener.h"
-#include "opendavinci/core/data/dmcp/ModuleDescriptor.h"
+#include "opendavinci/odcore/dmcp/ModuleStateListener.h"
+#include "opendavinci/odcore/data/dmcp/ModuleDescriptor.h"
 
 #include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
 namespace mocks {
 
-    class ModuleStateListenerMock : public core::dmcp::ModuleStateListener {
+    class ModuleStateListenerMock : public odcore::dmcp::ModuleStateListener {
         private:
             coredata::dmcp::ModuleStateMessage::ModuleState m_ms;
             coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode m_me;
             bool m_stateCalled;
             bool m_exitCalled;
-            core::base::Condition m_stateCondition;
-            core::base::Condition m_exitCondition;
+            odcore::base::Condition m_stateCondition;
+            odcore::base::Condition m_exitCondition;
 
         public:
             ModuleStateListenerMock()
@@ -55,7 +55,7 @@ namespace mocks {
             virtual ~ModuleStateListenerMock() {};
 
             void waitForStateCall() {
-                core::base::Lock l(m_stateCondition);
+                odcore::base::Lock l(m_stateCondition);
 
                 if (!wasStateCalled() ) {
                     m_stateCondition.waitOnSignalWithTimeout(1000);
@@ -67,7 +67,7 @@ namespace mocks {
             }
 
             void waitForExitCodeCall() {
-                core::base::Lock l(m_exitCondition);
+                odcore::base::Lock l(m_exitCondition);
 
                 if (!wasExitCodeCalled() ) {
                     m_exitCondition.waitOnSignalWithTimeout(1000);
@@ -78,17 +78,17 @@ namespace mocks {
                 return m_exitCalled;
             }
 
-            virtual void handleChangeState(const core::data::dmcp::ModuleDescriptor& /*md*/,
+            virtual void handleChangeState(const odcore::data::dmcp::ModuleDescriptor& /*md*/,
                                            const coredata::dmcp::ModuleStateMessage::ModuleState &ms) {
-                core::base::Lock l(m_stateCondition);
+                odcore::base::Lock l(m_stateCondition);
                 m_ms = ms;
                 m_stateCalled = true;
                 m_stateCondition.wakeAll();
             }
 
-            virtual void handleExitCode(const core::data::dmcp::ModuleDescriptor& /*md*/,
+            virtual void handleExitCode(const odcore::data::dmcp::ModuleDescriptor& /*md*/,
                                         const coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode &me) {
-                core::base::Lock l(m_exitCondition);
+                odcore::base::Lock l(m_exitCondition);
                 m_me = me;
                 m_exitCalled = true;
                 m_exitCondition.wakeAll();
@@ -102,12 +102,12 @@ namespace mocks {
             }
 
             coredata::dmcp::ModuleStateMessage::ModuleState getModuleStateAndWaitForRemainingTimeInTimeslice() {
-                core::base::Lock l(m_stateCondition);
+                odcore::base::Lock l(m_stateCondition);
                 return m_ms;
             }
 
             coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode getExitCode() {
-                core::base::Lock l(m_exitCondition);
+                odcore::base::Lock l(m_exitCondition);
                 return m_me;
             }
     };

@@ -20,11 +20,11 @@
 #ifndef OPENDAVINCI_CORE_IO_CONFERENCE_CONTAINERLISTENER_H_
 #define OPENDAVINCI_CORE_IO_CONFERENCE_CONTAINERLISTENER_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-namespace core { namespace data { class Container; } }
+namespace odcore { namespace data { class Container; } }
 
-namespace core {
+namespace odcore {
     namespace io {
         namespace conference {
 
@@ -41,11 +41,11 @@ namespace core {
                      *
                      * @param c Container that has been occured.
                      */
-                    virtual void nextContainer(core::data::Container &c) = 0;
+                    virtual void nextContainer(odcore::data::Container &c) = 0;
             };
 
         }
     }
-} // core::io::conference
+} // odcore::io::conference
 
 #endif /*OPENDAVINCI_CORE_IO_CONFERENCE_CONTAINERLISTENER_H_*/

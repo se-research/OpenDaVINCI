@@ -22,10 +22,10 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 
-namespace core {
+namespace odcore {
     namespace data {
 
         using namespace std;
@@ -215,6 +215,6 @@ namespace core {
         };
 
     }
-} // core::data
+} // odcore::data
 
 #endif /*OPENDAVINCI_CORE_DATA_TIMESTAMP_H_*/

@@ -28,11 +28,11 @@
 #include <cstring>
 #include <iostream>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/module/AbstractCIDModule.h"
-#include "opendavinci/core/wrapper/POSIX/POSIXSharedMemory.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/module/AbstractCIDModule.h"
+#include "opendavinci/odcore/wrapper/POSIX/POSIXSharedMemory.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
         namespace POSIX {
 
@@ -203,4 +203,4 @@ namespace core {
 
         }
     }
-} // core::wrapper::POSIX
+} // odcore::wrapper::POSIX

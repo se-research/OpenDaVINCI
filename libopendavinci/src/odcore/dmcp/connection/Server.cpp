@@ -19,26 +19,26 @@
 
 #include <iostream>
 
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/base/module/AbstractCIDModule.h"
-#include "opendavinci/core/dmcp/connection/ConnectionHandler.h"
-#include "opendavinci/core/dmcp/connection/ModuleConnection.h"
-#include "opendavinci/core/dmcp/connection/Server.h"
-#include "opendavinci/core/io/Connection.h"
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/module/AbstractCIDModule.h"
+#include "opendavinci/odcore/dmcp/connection/ConnectionHandler.h"
+#include "opendavinci/odcore/dmcp/connection/ModuleConnection.h"
+#include "opendavinci/odcore/dmcp/connection/Server.h"
+#include "opendavinci/odcore/io/Connection.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/generated/coredata/dmcp/ServerInformation.h"
 
-namespace core { namespace dmcp { class ModuleConfigurationProvider; } }
+namespace odcore { namespace dmcp { class ModuleConfigurationProvider; } }
 
-namespace core {
+namespace odcore {
     namespace dmcp {
         namespace connection {
 
             using namespace std;
-            using namespace core;
-            using namespace core::base;
-            using namespace core::exceptions;
+            using namespace odcore;
+            using namespace odcore::base;
+            using namespace odcore::exceptions;
             using namespace coredata::dmcp;
 
             Server::Server(const ServerInformation &serverInformation, ModuleConfigurationProvider &configProvider) :
@@ -60,7 +60,7 @@ namespace core {
                 m_connectionHandler = connectionHandler;
             }
 
-            void Server::onNewConnection(core::SharedPointer<core::io::Connection> connection) {
+            void Server::onNewConnection(odcore::SharedPointer<odcore::io::Connection> connection) {
                 Lock l(m_configProviderMutex);
                 SharedPointer<ModuleConnection> mc;
 
@@ -82,4 +82,4 @@ namespace core {
 
         }
     }
-} // core::dmcp
+} // odcore::dmcp

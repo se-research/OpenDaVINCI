@@ -20,16 +20,16 @@
 #ifndef OPENDAVINCI_CORE_IO_UDP_UDPRECEIVER_H_
 #define OPENDAVINCI_CORE_IO_UDP_UDPRECEIVER_H_
 
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/io/PacketObserver.h"
-#include "opendavinci/core/io/StringObserver.h"
-#include "opendavinci/core/io/StringPipeline.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/io/PacketObserver.h"
+#include "opendavinci/odcore/io/StringObserver.h"
+#include "opendavinci/odcore/io/StringPipeline.h"
 
-namespace core { namespace io { class Packet; } }
-namespace core { namespace io { class PacketListener; } }
-namespace core { namespace io { class StringListener; } }
+namespace odcore { namespace io { class Packet; } }
+namespace odcore { namespace io { class PacketListener; } }
+namespace odcore { namespace io { class StringListener; } }
 
-namespace core {
+namespace odcore {
     namespace io {
         namespace udp {
 
@@ -130,12 +130,12 @@ namespace core {
                 private:
                     StringPipeline m_stringPipeline;
 
-                    core::base::Mutex m_packetListenerMutex;
+                    odcore::base::Mutex m_packetListenerMutex;
                     PacketListener *m_packetListener;
             };
 
         }
     }
-} // core::io::udp
+} // odcore::io::udp
 
 #endif /*OPENDAVINCI_CORE_IO_UDP_UDPRECEIVER_H_*/

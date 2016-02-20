@@ -21,10 +21,10 @@
 #include <algorithm>
 #include <functional>
 
-#include "opendavinci/core/io/URLProtocol.h"
-#include "opendavinci/core/strings/StringToolbox.h"
+#include "opendavinci/odcore/io/URLProtocol.h"
+#include "opendavinci/odcore/strings/StringToolbox.h"
 
-namespace core {
+namespace odcore {
     namespace io {
 
         using namespace std;
@@ -38,7 +38,7 @@ namespace core {
 
             // Transform to lower case for case insensitive searches.
             transform(connectionString.begin(), connectionString.end(), connectionString.begin(), ptr_fun(::tolower));
-            core::strings::StringToolbox::trim(connectionString);
+            odcore::strings::StringToolbox::trim(connectionString);
 
             // Trying to parse "file://" at position 0.
             if (connectionString.length() >= 7) {
@@ -55,4 +55,4 @@ namespace core {
         }
 
     }
-} // core::io
+} // odcore::io

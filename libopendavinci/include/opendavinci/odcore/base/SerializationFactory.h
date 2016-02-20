@@ -22,11 +22,11 @@
 
 #include <iosfwd>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Mutex.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
 class Deserializer;
@@ -93,6 +93,6 @@ class Serializer;
         };
 
     }
-} // core::base
+} // odcore::base
 
 #endif /*OPENDAVINCI_CORE_BASE_SERIALIZATIONFACTORY_H_*/

@@ -21,9 +21,9 @@
 #include <cstring>
 #include <sstream>
 
-#include "opendavinci/core/wrapper/POSIX/POSIXMutex.h"
+#include "opendavinci/odcore/wrapper/POSIX/POSIXMutex.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
         namespace POSIX {
 
@@ -59,4 +59,4 @@ namespace core {
             }
         }
     }
-} // core::wrapper::POSIX
+} // odcore::wrapper::POSIX

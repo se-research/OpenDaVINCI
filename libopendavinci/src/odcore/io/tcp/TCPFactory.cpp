@@ -17,35 +17,35 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/io/tcp/TCPAcceptor.h"
-#include "opendavinci/core/io/tcp/TCPConnection.h"
-#include "opendavinci/core/io/tcp/TCPFactory.h"
-#include "opendavinci/core/wrapper/ConfigurationTraits.h"
-#include "opendavinci/core/wrapper/Libraries.h"
-#include "opendavinci/core/wrapper/NetworkLibraryProducts.h"
+#include "opendavinci/odcore/io/tcp/TCPAcceptor.h"
+#include "opendavinci/odcore/io/tcp/TCPConnection.h"
+#include "opendavinci/odcore/io/tcp/TCPFactory.h"
+#include "opendavinci/odcore/wrapper/ConfigurationTraits.h"
+#include "opendavinci/odcore/wrapper/Libraries.h"
+#include "opendavinci/odcore/wrapper/NetworkLibraryProducts.h"
 
 #ifdef WIN32
-    #include "opendavinci/core/wrapper/WIN32/WIN32TCPFactoryWorker.h"
+    #include "opendavinci/odcore/wrapper/WIN32/WIN32TCPFactoryWorker.h"
 #endif
 
 #ifndef WIN32
-    #include "opendavinci/core/wrapper/POSIX/POSIXTCPFactoryWorker.h"
+    #include "opendavinci/odcore/wrapper/POSIX/POSIXTCPFactoryWorker.h"
 #endif
 
-namespace core {
+namespace odcore {
     namespace io {
         namespace tcp {
 
             SharedPointer<TCPAcceptor> TCPFactory::createTCPAcceptor(const uint32_t &port) {
-                typedef core::wrapper::ConfigurationTraits<core::wrapper::NetworkLibraryProducts>::configuration configuration;
-                return SharedPointer<TCPAcceptor>(core::wrapper::TCPFactoryWorker<configuration::value>::createTCPAcceptor(port));
+                typedef odcore::wrapper::ConfigurationTraits<odcore::wrapper::NetworkLibraryProducts>::configuration configuration;
+                return SharedPointer<TCPAcceptor>(odcore::wrapper::TCPFactoryWorker<configuration::value>::createTCPAcceptor(port));
             }
 
             SharedPointer<TCPConnection> TCPFactory::createTCPConnectionTo(const std::string& ip, const uint32_t& port) {
-                typedef core::wrapper::ConfigurationTraits<core::wrapper::NetworkLibraryProducts>::configuration configuration;
-                return SharedPointer<TCPConnection>(core::wrapper::TCPFactoryWorker<configuration::value>::createTCPConnectionTo(ip, port));
+                typedef odcore::wrapper::ConfigurationTraits<odcore::wrapper::NetworkLibraryProducts>::configuration configuration;
+                return SharedPointer<TCPConnection>(odcore::wrapper::TCPFactoryWorker<configuration::value>::createTCPConnectionTo(ip, port));
             }
 
         }
     }
-} // core::io::tcp
+} // odcore::io::tcp

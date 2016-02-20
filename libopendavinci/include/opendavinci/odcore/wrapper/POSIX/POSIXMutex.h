@@ -22,12 +22,12 @@
 
 #include <pthread.h>
 
-#include "opendavinci/core/wrapper/Mutex.h"
-#include "opendavinci/core/wrapper/SystemLibraryProducts.h"
+#include "opendavinci/odcore/wrapper/Mutex.h"
+#include "opendavinci/odcore/wrapper/SystemLibraryProducts.h"
 
-namespace core { namespace wrapper { template <core::wrapper::SystemLibraryProducts product> class MutexFactoryWorker; } }
+namespace odcore { namespace wrapper { template <odcore::wrapper::SystemLibraryProducts product> class MutexFactoryWorker; } }
 
-namespace core {
+namespace odcore {
     namespace wrapper {
         namespace POSIX {
 
@@ -76,6 +76,6 @@ namespace core {
 
         }
     }
-} // core::wrapper::POSIX
+} // odcore::wrapper::POSIX
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXMUTEX_H_*/

@@ -17,12 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/io/StringListener.h"
+#include "opendavinci/odcore/io/StringListener.h"
 
-namespace core {
+namespace odcore {
     namespace io {
 
         StringListener::~StringListener() {}
 
     }
-} // core::io
+} // odcore::io

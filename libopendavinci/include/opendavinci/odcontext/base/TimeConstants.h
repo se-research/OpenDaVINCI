@@ -20,7 +20,7 @@
 #ifndef CONTEXT_BASE_TIMECONSTANTS_H_
 #define CONTEXT_BASE_TIMECONSTANTS_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 namespace odcontext {
     namespace base {

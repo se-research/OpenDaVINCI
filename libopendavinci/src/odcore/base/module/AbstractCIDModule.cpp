@@ -21,14 +21,14 @@
 #include <cmath>
 #include <iostream>
 
-#include "opendavinci/core/base/CommandLineArgument.h"
-#include "opendavinci/core/base/CommandLineParser.h"
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/core/base/module/AbstractCIDModule.h"
-#include "opendavinci/core/data/TimeStamp.h"
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/base/CommandLineArgument.h"
+#include "opendavinci/odcore/base/CommandLineParser.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/base/module/AbstractCIDModule.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-namespace core {
+namespace odcore {
     namespace base {
         namespace module {
 
@@ -169,10 +169,10 @@ namespace core {
                     // Suspend this thread to the beginning of the secondsIncrement-th full second only
                     // if we are not executed with realtime flag because ManagedClientModule will do
                     // that for us.
-                    Thread::usleepUntil(core::data::TimeStamp(core::data::TimeStamp().getSeconds() + secondsIncrement, 0));
+                    Thread::usleepUntil(odcore::data::TimeStamp(odcore::data::TimeStamp().getSeconds() + secondsIncrement, 0));
                 }
             }
 
         }
     }
-} // core::base::module
+} // odcore::base::module

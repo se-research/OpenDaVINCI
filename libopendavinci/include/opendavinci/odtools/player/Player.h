@@ -25,11 +25,11 @@
 #include <memory>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/io/URL.h"
-#include "opendavinci/core/wrapper/SharedMemory.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/io/URL.h"
+#include "opendavinci/odcore/wrapper/SharedMemory.h"
 
 namespace odtools {
     namespace player {
@@ -73,7 +73,7 @@ class PlayerCache;
                  * @param numberOfMemorySegments Number of memory segments to be used for buffering.
                  * @param threading If set to true, player will load new containers from the file in background.
                  */
-                Player(const core::io::URL &url, const bool &autoRewind, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const bool &threading);
+                Player(const odcore::io::URL &url, const bool &autoRewind, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const bool &threading);
 
                 virtual ~Player();
 
@@ -82,7 +82,7 @@ class PlayerCache;
                  *
                  * @return Next container to be replayed.
                  */
-                core::data::Container getNextContainerToBeSent();
+                odcore::data::Container getNextContainerToBeSent();
 
                 /**
                  * This method returns the delay to be waited before the next container should be delivered.
@@ -107,15 +107,15 @@ class PlayerCache;
                 bool m_threading;
                 bool m_autoRewind;
 
-                core::SharedPointer<istream> m_inFile;
-                core::SharedPointer<istream> m_inSharedMemoryFile;
+                odcore::SharedPointer<istream> m_inFile;
+                odcore::SharedPointer<istream> m_inSharedMemoryFile;
 
                 auto_ptr<PlayerCache> m_playerCache;
 
                 // The "actual" container contains the data to be sent, ...
-                core::data::Container m_actual;
+                odcore::data::Container m_actual;
                 // ... whereas the "successor" container contains the data that follows the actual one.
-                core::data::Container m_successor;
+                odcore::data::Container m_successor;
 
                 // This flag indicates if new data has to be read from the stream.
                 bool m_successorProcessed;
@@ -129,7 +129,7 @@ class PlayerCache;
                 uint32_t m_delay;
 
                 // Map used to store shared memory segments for restored from compressed images.
-                map<string, core::SharedPointer<core::wrapper::SharedMemory> > m_mapOfSharedMemoriesForCompressedImages;
+                map<string, odcore::SharedPointer<odcore::wrapper::SharedMemory> > m_mapOfSharedMemoriesForCompressedImages;
         };
 
     } // player

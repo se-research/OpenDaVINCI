@@ -22,15 +22,15 @@
 
 #include <memory>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/io/udp/UDPReceiver.h"
-#include "opendavinci/core/wrapper/NetworkLibraryProducts.h"
-#include "opendavinci/core/wrapper/Runnable.h"
-#include "opendavinci/core/wrapper/Thread.h"
-#include "opendavinci/core/wrapper/UDPFactoryWorker.h"
+#include "opendavinci/odcore/io/udp/UDPReceiver.h"
+#include "opendavinci/odcore/wrapper/NetworkLibraryProducts.h"
+#include "opendavinci/odcore/wrapper/Runnable.h"
+#include "opendavinci/odcore/wrapper/Thread.h"
+#include "opendavinci/odcore/wrapper/UDPFactoryWorker.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
         namespace WIN32Impl {
 
@@ -41,7 +41,7 @@ namespace core {
              *
              * @See UDPReceiver
              */
-            class WIN32UDPReceiver : public Runnable, public core::io::udp::UDPReceiver {
+            class WIN32UDPReceiver : public Runnable, public odcore::io::udp::UDPReceiver {
                 private:
                     friend class UDPFactoryWorker<NetworkLibraryWin32>;
 
@@ -99,6 +99,6 @@ namespace core {
 
         }
     }
-} // core::wrapper::WIN32Impl
+} // odcore::wrapper::WIN32Impl
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_WIN32IMPL_WIN32UDPRECEIVER_H_*/

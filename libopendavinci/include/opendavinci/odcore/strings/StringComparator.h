@@ -22,9 +22,9 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-namespace core {
+namespace odcore {
     namespace strings {
 
         using namespace std;
@@ -62,6 +62,6 @@ namespace core {
         };
 
     }
-} // core::strings
+} // odcore::strings
 
 #endif /*OPENDAVINCI_CORE_STRINGS_STRINGCOMPARATOR_H_*/

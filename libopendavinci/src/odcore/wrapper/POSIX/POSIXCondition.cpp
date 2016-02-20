@@ -22,9 +22,9 @@
 #include <cstring>
 #include <sstream>
 
-#include "opendavinci/core/wrapper/POSIX/POSIXCondition.h"
+#include "opendavinci/odcore/wrapper/POSIX/POSIXCondition.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
         namespace POSIX {
 
@@ -96,4 +96,4 @@ namespace core {
 
         }
     }
-} // core::wrapper::POSIX
+} // odcore::wrapper::POSIX

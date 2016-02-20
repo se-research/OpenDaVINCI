@@ -20,21 +20,21 @@
 #include <algorithm>
 #include <iostream>
 
-#include "opendavinci/core/base/Serializable.h"
-#include "opendavinci/core/base/module/AbstractCIDModule.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/dmcp/discoverer/Server.h"
-#include "opendavinci/core/io/udp/UDPFactory.h"
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/base/module/AbstractCIDModule.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/dmcp/discoverer/Server.h"
+#include "opendavinci/odcore/io/udp/UDPFactory.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/generated/coredata/dmcp/DiscoverMessage.h"
 
-namespace core {
+namespace odcore {
     namespace dmcp {
         namespace discoverer {
 
             using namespace std;
-            using namespace core::base;
-            using namespace core::data;
+            using namespace odcore::base;
+            using namespace odcore::data;
             using namespace coredata::dmcp;
 
             Server::Server(const ServerInformation &serverInformation,
@@ -42,8 +42,8 @@ namespace core {
                            const uint32_t &serverPort,
                            const uint32_t &clientPort,
                            const vector<string> &modulesToIgnore) :
-                m_sender(core::io::udp::UDPFactory::createUDPSender(group, clientPort)),
-                m_receiver(core::io::udp::UDPFactory::createUDPReceiver(group, serverPort)),
+                m_sender(odcore::io::udp::UDPFactory::createUDPSender(group, clientPort)),
+                m_receiver(odcore::io::udp::UDPFactory::createUDPReceiver(group, serverPort)),
                 m_serverInformation(serverInformation),
                 m_modulesToIgnore(modulesToIgnore) {
                 m_receiver->start();

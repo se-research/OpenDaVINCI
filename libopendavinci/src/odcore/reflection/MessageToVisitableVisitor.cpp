@@ -19,16 +19,16 @@
 
 #include <cstring>
 
-#include "opendavinci/core/base/Serializable.h"
-#include "opendavinci/core/base/Visitable.h"
-#include "opendavinci/core/reflection/Field.h"
-#include "opendavinci/core/reflection/MessageToVisitableVisitor.h"
+#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/base/Visitable.h"
+#include "opendavinci/odcore/reflection/Field.h"
+#include "opendavinci/odcore/reflection/MessageToVisitableVisitor.h"
 
-namespace core {
+namespace odcore {
     namespace reflection {
 
-        using namespace core;
-        using namespace core::base;
+        using namespace odcore;
+        using namespace odcore::base;
         using namespace coredata::reflection;
 
         MessageToVisitableVisitor::MessageToVisitableVisitor(const Message &m) :
@@ -46,7 +46,7 @@ namespace core {
                     // A Serializable (i.e. a nested type) is restored from a Message that is nested within m_message.
                     // Thus, retrieve the nested message from m_message, create a new MessageToVisitableVisitor based
                     // on the nested message, and visit the Serializable v with the new MessageToVisitableVisitor.
-                    core::reflection::Field<Message> *nestedField = dynamic_cast<core::reflection::Field<Message>*>(field.operator->());
+                    odcore::reflection::Field<Message> *nestedField = dynamic_cast<odcore::reflection::Field<Message>*>(field.operator->());
                     MessageToVisitableVisitor msgToVisitableVisitor(nestedField->getValue());
                     visitable.accept(msgToVisitableVisitor);
                 }
@@ -165,7 +165,7 @@ namespace core {
                 bool found = false;
                 SharedPointer<coredata::reflection::AbstractField> field = m_message.getFieldByLongIdentifierOrShortIdentifier(longId, shortId, found);
                 if (found) {
-                    core::reflection::Field<SharedPointer<char> > *fValue = dynamic_cast<core::reflection::Field<SharedPointer<char> >*>(field.operator->());
+                    odcore::reflection::Field<SharedPointer<char> > *fValue = dynamic_cast<odcore::reflection::Field<SharedPointer<char> >*>(field.operator->());
                     const uint32_t fSize = fValue->getSize();
                     memcpy(data, fValue->getValue().operator->(), (size <= fSize ? size : fSize));
                 }
@@ -173,5 +173,5 @@ namespace core {
         }
 
     }
-} // core::reflection
+} // odcore::reflection
 

@@ -20,9 +20,9 @@
 #ifndef OPENDAVINCI_CORE_BASE_TREENODE_H_
 #define OPENDAVINCI_CORE_BASE_TREENODE_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
         using namespace std;
@@ -126,6 +126,6 @@ namespace core {
         };
 
     }
-} // core::base
+} // odcore::base
 
 #endif /*OPENDAVINCI_CORE_BASE_TREENODE_H_*/

@@ -23,12 +23,12 @@
 #include <sstream>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Visitor.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Visitor.h"
 
-namespace core { namespace base { class Serializable; } }
+namespace odcore { namespace base { class Serializable; } }
 
-namespace core {
+namespace odcore {
     namespace reflection {
 
         using namespace std;
@@ -36,7 +36,7 @@ namespace core {
         /**
          * This class transforms a Visitable into a pretty printed output.
          */
-        class MessagePrettyPrinterVisitor : public core::base::Visitor {
+        class MessagePrettyPrinterVisitor : public odcore::base::Visitor {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -67,7 +67,7 @@ namespace core {
                 virtual void getOutput(ostream &o);
 
             public:
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, core::base::Serializable &v);
+                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, odcore::base::Serializable &v);
                 virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, bool &v);
                 virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, char &v);
                 virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, unsigned char &v);
@@ -89,6 +89,6 @@ namespace core {
         };
 
     }
-} // core::reflection
+} // odcore::reflection
 
 #endif /*OPENDAVINCI_CORE_REFLECTION_MESSAGEPRETTYPRINTERVISITOR_H_*/

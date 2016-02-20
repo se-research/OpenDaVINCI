@@ -20,9 +20,9 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_TIME_H_
 #define OPENDAVINCI_CORE_WRAPPER_TIME_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         /**
@@ -54,6 +54,6 @@ namespace core {
         };
 
     }
-} // core::wrapper
+} // odcore::wrapper
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_TIME_H_*/

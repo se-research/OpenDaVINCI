@@ -17,19 +17,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/context/base/PlaybackContainer.h"
-#include "opendavinci/context/base/SendContainerToSystemsUnderTest.h"
-#include "opendavinci/core/base/FIFOQueue.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/tools/player/Player.h"
+#include "opendavinci/odcontext/base/PlaybackContainer.h"
+#include "opendavinci/odcontext/base/SendContainerToSystemsUnderTest.h"
+#include "opendavinci/odcore/base/FIFOQueue.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odtools/player/Player.h"
 
-namespace core { namespace wrapper { class Time; } }
+namespace odcore { namespace wrapper { class Time; } }
 
 namespace odcontext {
     namespace base {
 
         using namespace std;
-        using namespace core::data;
+        using namespace odcore::data;
         using namespace odtools::player;
 
 		PlaybackContainer::PlaybackContainer(const float &freq, const string &urlFileName, const uint32_t &memorySegmentSize, const uint32_t &numberOfSegments) :
@@ -53,7 +53,7 @@ namespace odcontext {
 
         void PlaybackContainer::tearDown() {}
 
-        void PlaybackContainer::step(const core::wrapper::Time &/*t*/, SendContainerToSystemsUnderTest &sender) {
+        void PlaybackContainer::step(const odcore::wrapper::Time &/*t*/, SendContainerToSystemsUnderTest &sender) {
 			if (m_player.get() != NULL) {
                 // TODO: Check if the delta between two captures frames matches the t and replay more than one frame potentially.
 			    Container c;

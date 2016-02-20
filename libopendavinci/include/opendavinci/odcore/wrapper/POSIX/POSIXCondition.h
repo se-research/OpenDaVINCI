@@ -22,14 +22,14 @@
 
 #include <pthread.h>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/wrapper/Condition.h"
-#include "opendavinci/core/wrapper/POSIX/POSIXMutex.h"
-#include "opendavinci/core/wrapper/SystemLibraryProducts.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/wrapper/Condition.h"
+#include "opendavinci/odcore/wrapper/POSIX/POSIXMutex.h"
+#include "opendavinci/odcore/wrapper/SystemLibraryProducts.h"
 
-namespace core { namespace wrapper { template <core::wrapper::SystemLibraryProducts product> class ConditionFactoryWorker; } }
+namespace odcore { namespace wrapper { template <odcore::wrapper::SystemLibraryProducts product> class ConditionFactoryWorker; } }
 
-namespace core {
+namespace odcore {
     namespace wrapper {
         namespace POSIX {
 
@@ -85,6 +85,6 @@ namespace core {
 
         }
     }
-} // core::wrapper::POSIX
+} // odcore::wrapper::POSIX
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXCONDITION_H_*/

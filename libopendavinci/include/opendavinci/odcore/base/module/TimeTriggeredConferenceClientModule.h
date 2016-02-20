@@ -24,19 +24,19 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/DataStoreManager.h"
-#include "opendavinci/core/base/KeyValueDataStore.h"
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/base/module/AbstractConferenceClientModule.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/exceptions/Exceptions.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/DataStoreManager.h"
+#include "opendavinci/odcore/base/KeyValueDataStore.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/base/module/AbstractConferenceClientModule.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
-namespace core { namespace base { class AbstractDataStore; } }
+namespace odcore { namespace base { class AbstractDataStore; } }
 
-namespace core {
+namespace odcore {
     namespace base {
         namespace module {
 
@@ -119,8 +119,8 @@ namespace core {
                      * @throw InvalidArgumentException if the signal handler could not be registered.
                      * @throw NoDatabaseAvailableException if the database could not be created.
                      */
-                    TimeTriggeredConferenceClientModule(const int32_t &argc, char **argv, const string &name) throw (core::exceptions::InvalidArgumentException,
-                            core::exceptions::NoDatabaseAvailableException);
+                    TimeTriggeredConferenceClientModule(const int32_t &argc, char **argv, const string &name) throw (odcore::exceptions::InvalidArgumentException,
+                            odcore::exceptions::NoDatabaseAvailableException);
 
                     virtual ~TimeTriggeredConferenceClientModule();
 
@@ -131,26 +131,26 @@ namespace core {
 
                     virtual coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body() = 0;
 
-                    virtual void nextContainer(core::data::Container &c);
+                    virtual void nextContainer(odcore::data::Container &c);
 
-                    virtual void addDataStoreFor(core::base::AbstractDataStore &dataStore);
+                    virtual void addDataStoreFor(odcore::base::AbstractDataStore &dataStore);
 
-                    virtual void addDataStoreFor(const core::data::Container::DATATYPE &datatype, core::base::AbstractDataStore &dataStore);
+                    virtual void addDataStoreFor(const odcore::data::Container::DATATYPE &datatype, odcore::base::AbstractDataStore &dataStore);
 
-                    virtual core::base::KeyValueDataStore& getKeyValueDataStore();
+                    virtual odcore::base::KeyValueDataStore& getKeyValueDataStore();
 
                 private:
                     // Distribute input data using thread-safe data stores.
-                    core::base::Mutex m_dataStoresMutex;
-                    vector<core::base::AbstractDataStore*> m_listOfDataStores;
-                    map<core::data::Container::DATATYPE, vector<core::base::AbstractDataStore*> > m_mapOfListOfDataStores;
+                    odcore::base::Mutex m_dataStoresMutex;
+                    vector<odcore::base::AbstractDataStore*> m_listOfDataStores;
+                    map<odcore::data::Container::DATATYPE, vector<odcore::base::AbstractDataStore*> > m_mapOfListOfDataStores;
 
                     // Store all received data using Container::DATATYPE as key.
-                    core::SharedPointer<core::base::KeyValueDataStore> m_keyValueDataStore;
+                    odcore::SharedPointer<odcore::base::KeyValueDataStore> m_keyValueDataStore;
             };
 
         }
     }
-} // core::base::module
+} // odcore::base::module
 
 #endif /*OPENDAVINCI_BASE_TIMETRIGGEREDCONFERENCECLIENTMODULE_H_*/

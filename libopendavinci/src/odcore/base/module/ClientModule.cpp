@@ -19,27 +19,27 @@
 
 #include <iostream>
 
-#include "opendavinci/core/base/module/AbstractCIDModule.h"
-#include "opendavinci/core/base/module/ClientModule.h"
-#include "opendavinci/core/dmcp/connection/Client.h"
-#include "opendavinci/core/dmcp/discoverer/Client.h"
-#include "opendavinci/core/exceptions/Exceptions.h"
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/base/module/AbstractCIDModule.h"
+#include "opendavinci/odcore/base/module/ClientModule.h"
+#include "opendavinci/odcore/dmcp/connection/Client.h"
+#include "opendavinci/odcore/dmcp/discoverer/Client.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/generated/coredata/dmcp/Constants.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleDescriptor.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
 
-namespace core {
+namespace odcore {
     namespace base {
         namespace module {
 
             using namespace std;
 
-            using namespace core;
-            using namespace core::base;
-            using namespace core::data;
-            using namespace core::dmcp;
-            using namespace core::exceptions;
+            using namespace odcore;
+            using namespace odcore::base;
+            using namespace odcore::data;
+            using namespace odcore::dmcp;
+            using namespace odcore::exceptions;
             using namespace coredata::dmcp;
 
             ClientModule::ClientModule(const int32_t &argc, char **argv, const string &name) throw (InvalidArgumentException) :
@@ -51,7 +51,7 @@ namespace core {
 
             ClientModule::~ClientModule() {}
 
-            core::SharedPointer<core::dmcp::connection::Client>& ClientModule::getDMCPClient() {
+            odcore::SharedPointer<odcore::dmcp::connection::Client>& ClientModule::getDMCPClient() {
                 return m_dmcpClient;
             }
 
@@ -136,4 +136,4 @@ namespace core {
 
         }
     }
-} // core::base::module
+} // odcore::base::module

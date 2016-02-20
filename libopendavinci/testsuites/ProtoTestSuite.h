@@ -26,22 +26,22 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"         // for SharedPointer
-#include "opendavinci/core/base/Deserializer.h"     // for Deserializer
-#include "opendavinci/core/base/ProtoDeserializerVisitor.h"
-#include "opendavinci/core/base/ProtoSerializerVisitor.h"
-#include "opendavinci/core/base/SerializationFactory.h"  // for SerializationFactory
-#include "opendavinci/core/base/Serializer.h"       // for Serializer
-#include "opendavinci/core/base/Visitable.h"        // for Visitable
-#include "opendavinci/core/base/Visitor.h"          // for Visitor
-#include "opendavinci/core/data/SerializableData.h"  // for SerializableData
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"         // for SharedPointer
+#include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
+#include "opendavinci/odcore/base/ProtoDeserializerVisitor.h"
+#include "opendavinci/odcore/base/ProtoSerializerVisitor.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"  // for SerializationFactory
+#include "opendavinci/odcore/base/Serializer.h"       // for Serializer
+#include "opendavinci/odcore/base/Visitable.h"        // for Visitable
+#include "opendavinci/odcore/base/Visitor.h"          // for Visitor
+#include "opendavinci/odcore/data/SerializableData.h"  // for SerializableData
 #include "opendavinci/generated/coredata/SharedData.h"  // for SharedData
 #include "opendavinci/generated/coredata/dmcp/ModuleDescriptor.h"
 #include "opendavinci/generated/coredata/image/SharedImage.h"  // for SharedImage
 
 using namespace std;
-using namespace core::base;
+using namespace odcore::base;
 using namespace coredata;
 using namespace coredata::dmcp;
 using namespace coredata::image;
@@ -58,7 +58,7 @@ using namespace coredata::image;
         bool flashingLightsRight [id = 6, fourbyteid = 0x0E435996];
     }
  */
-class ProtoVehicleControl : public core::data::SerializableData, public core::base::Visitable {
+class ProtoVehicleControl : public odcore::data::SerializableData, public odcore::base::Visitable {
 	public:
 
 	ProtoVehicleControl() :
@@ -169,7 +169,7 @@ class ProtoVehicleControl : public core::data::SerializableData, public core::ba
 		m_flashingLightsRight = val;
 	}
 
-	void accept(core::base::Visitor &v) {
+	void accept(odcore::base::Visitor &v) {
 		v.visit(0x0E43596B, 1, "ProtoVehicleControl.speed", "speed", m_speed);
 		v.visit(0x0E435991, 2, "ProtoVehicleControl.acceleration", "acceleration", m_acceleration);
 		v.visit(0x0E435969, 3, "ProtoVehicleControl.steeringWheelAngle", "steeringWheelAngle", m_steeringWheelAngle);
@@ -196,7 +196,7 @@ class ProtoVehicleControl : public core::data::SerializableData, public core::ba
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Serializer> s = sf.getSerializer(out);
+		odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 
 		s->write(0x0E43596B, m_speed);
 		s->write(0x0E435991, m_acceleration);
@@ -211,7 +211,7 @@ class ProtoVehicleControl : public core::data::SerializableData, public core::ba
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+		odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
 		d->read(0x0E43596B, m_speed);
 		d->read(0x0E435991, m_acceleration);

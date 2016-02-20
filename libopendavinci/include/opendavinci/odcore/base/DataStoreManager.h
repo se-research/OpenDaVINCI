@@ -20,9 +20,9 @@
 #ifndef OPENDAVINCI_BASE_DATASTOREMANAGER_H_
 #define OPENDAVINCI_BASE_DATASTOREMANAGER_H_
 
-#include "opendavinci/core/data/Container.h"
+#include "opendavinci/odcore/data/Container.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
 class AbstractDataStore;
@@ -42,7 +42,7 @@ class KeyValueDataStore;
                  *
                  * @param dataStore Data store to be added.
                  */
-                virtual void addDataStoreFor(core::base::AbstractDataStore &dataStore) = 0;
+                virtual void addDataStoreFor(odcore::base::AbstractDataStore &dataStore) = 0;
 
                 /**
                  * This method adds a data store for a given data type.
@@ -50,7 +50,7 @@ class KeyValueDataStore;
                  * @param datatype Datatype for which a datastore should be added.
                  * @param dataStore Data store to be added.
                  */
-                virtual void addDataStoreFor(const core::data::Container::DATATYPE &datatype, core::base::AbstractDataStore &dataStore) = 0;
+                virtual void addDataStoreFor(const odcore::data::Container::DATATYPE &datatype, odcore::base::AbstractDataStore &dataStore) = 0;
 
                 /**
                  * This method returns a key/value-datastore for all
@@ -58,10 +58,10 @@ class KeyValueDataStore;
                  *
                  * @return Key/Value-data store containing all received data.
                  */
-                virtual core::base::KeyValueDataStore& getKeyValueDataStore() = 0;
+                virtual odcore::base::KeyValueDataStore& getKeyValueDataStore() = 0;
         };
 
     }
-} // core::base
+} // odcore::base
 
 #endif /*OPENDAVINCI_BASE_DATASTOREMANAGER_H_*/

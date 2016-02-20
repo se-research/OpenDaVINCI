@@ -17,13 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/base/Visitable.h"
+#include "opendavinci/odcore/base/Visitable.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
         Visitable::~Visitable() {}
 
     }
-} // core::base
+} // odcore::base
 

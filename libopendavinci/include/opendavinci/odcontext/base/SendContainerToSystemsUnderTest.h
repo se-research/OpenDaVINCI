@@ -20,9 +20,9 @@
 #ifndef CONTEXT_BASE_SENDCONTAINERTOSYSTEMSUNDERTEST_H_
 #define CONTEXT_BASE_SENDCONTAINERTOSYSTEMSUNDERTEST_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-namespace core { namespace data { class Container; } }
+namespace odcore { namespace data { class Container; } }
 
 namespace odcontext {
     namespace base {
@@ -42,7 +42,7 @@ namespace odcontext {
                  *
                  * @param c Container to send.
                  */
-                virtual void sendToSystemsUnderTest(core::data::Container &c) = 0;
+                virtual void sendToSystemsUnderTest(odcore::data::Container &c) = 0;
         };
 
     }

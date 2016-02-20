@@ -20,13 +20,13 @@
 #ifndef CONTEXT_BASE_CONTROLLEDTIMEFACTORY_H_
 #define CONTEXT_BASE_CONTROLLEDTIMEFACTORY_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/wrapper/TimeFactory.h"
-#include "opendavinci/context/base/ControlledTime.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/wrapper/TimeFactory.h"
+#include "opendavinci/odcontext/base/ControlledTime.h"
 
-namespace core { namespace wrapper { class Time; } }
+namespace odcore { namespace wrapper { class Time; } }
 
 namespace odcontext {
     namespace base {
@@ -36,7 +36,7 @@ namespace odcontext {
         /**
          * This class provides controlled time factory.
          */
-        class OPENDAVINCI_API ControlledTimeFactory : public core::wrapper::TimeFactory {
+        class OPENDAVINCI_API ControlledTimeFactory : public odcore::wrapper::TimeFactory {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -57,7 +57,7 @@ namespace odcontext {
 
                 virtual ~ControlledTimeFactory();
 
-                virtual core::SharedPointer<core::wrapper::Time> now();
+                virtual odcore::SharedPointer<odcore::wrapper::Time> now();
 
                 /**
                  * This method sets the time.
@@ -67,7 +67,7 @@ namespace odcontext {
                 void setTime(const ControlledTime &ct);
 
             private:
-                core::base::Mutex m_timeMutex;
+                odcore::base::Mutex m_timeMutex;
                 ControlledTime m_time;
         };
 

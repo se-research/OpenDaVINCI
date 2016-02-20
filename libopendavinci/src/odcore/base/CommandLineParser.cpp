@@ -22,14 +22,14 @@
 #include <algorithm>
 #include <sstream>
 
-#include "opendavinci/core/base/CommandLineParser.h"
-#include "opendavinci/core/exceptions/Exceptions.h"
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/base/CommandLineParser.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-namespace core {
+namespace odcore {
     namespace base {
         using namespace std;
-        using namespace core::exceptions;
+        using namespace odcore::exceptions;
 
         CommandLineParser::CommandLineParser() :
             m_listOfArgumentsToParse(),
@@ -79,4 +79,4 @@ namespace core {
             }
         }
     }
-} // core::base
+} // odcore::base

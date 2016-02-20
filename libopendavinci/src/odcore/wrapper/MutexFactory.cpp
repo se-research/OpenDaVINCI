@@ -17,21 +17,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/wrapper/ConfigurationTraits.h"
-#include "opendavinci/core/wrapper/Libraries.h"
-#include "opendavinci/core/wrapper/MutexFactory.h"
-#include "opendavinci/core/wrapper/SystemLibraryProducts.h"
+#include "opendavinci/odcore/wrapper/ConfigurationTraits.h"
+#include "opendavinci/odcore/wrapper/Libraries.h"
+#include "opendavinci/odcore/wrapper/MutexFactory.h"
+#include "opendavinci/odcore/wrapper/SystemLibraryProducts.h"
 
-namespace core { namespace wrapper { class Mutex; } }
+namespace odcore { namespace wrapper { class Mutex; } }
 
 #ifdef WIN32
-    #include "opendavinci/core/wrapper/WIN32/WIN32MutexFactoryWorker.h"
+    #include "opendavinci/odcore/wrapper/WIN32/WIN32MutexFactoryWorker.h"
 #endif
 #ifndef WIN32
-    #include "opendavinci/core/wrapper/POSIX/POSIXMutexFactoryWorker.h"
+    #include "opendavinci/odcore/wrapper/POSIX/POSIXMutexFactoryWorker.h"
 #endif
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         Mutex* MutexFactory::createMutex() {
@@ -40,5 +40,5 @@ namespace core {
         }
 
       }
-} // core::wrapper
+} // odcore::wrapper
 

@@ -20,12 +20,12 @@
 #ifndef OPENDAVINCI_CORE_STRINGS_STRINGTOOLBOX_H_
 #define OPENDAVINCI_CORE_STRINGS_STRINGTOOLBOX_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 #include <string>
 #include <vector>
 
-namespace core {
+namespace odcore {
     namespace strings {
 
 	    using namespace std;

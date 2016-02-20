@@ -25,14 +25,14 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/io/StringListener.h"     // for StringListener
-#include "opendavinci/core/io/StringSender.h"       // for StringSender
-#include "opendavinci/core/io/protocol/StringProtocol.h"  // for StringProtocol
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/io/StringListener.h"     // for StringListener
+#include "opendavinci/odcore/io/StringSender.h"       // for StringSender
+#include "opendavinci/odcore/io/protocol/StringProtocol.h"  // for StringProtocol
 
 using namespace std;
 
-class StringProtocolTest : public CxxTest::TestSuite, public core::io::StringListener, public core::io::StringSender {
+class StringProtocolTest : public CxxTest::TestSuite, public odcore::io::StringListener, public odcore::io::StringSender {
     private:
         string m_receivedData;
         string m_dataToBeSent;
@@ -51,7 +51,7 @@ class StringProtocolTest : public CxxTest::TestSuite, public core::io::StringLis
         }
 
         void testStringProtocolSend() {
-            core::io::protocol::StringProtocol sp;
+            odcore::io::protocol::StringProtocol sp;
             sp.setStringListener(this);
             sp.setStringSender(this);
 
@@ -72,7 +72,7 @@ class StringProtocolTest : public CxxTest::TestSuite, public core::io::StringLis
         }
 
         void testStringProtocolReceive() {
-            core::io::protocol::StringProtocol sp;
+            odcore::io::protocol::StringProtocol sp;
             sp.setStringListener(this);
             sp.setStringSender(this);
 

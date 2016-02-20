@@ -22,14 +22,14 @@
 
 #include <sys/time.h>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/wrapper/SystemLibraryProducts.h"
-#include "opendavinci/core/wrapper/ConcurrencyFactoryWorker.h"
+#include "opendavinci/odcore/wrapper/SystemLibraryProducts.h"
+#include "opendavinci/odcore/wrapper/ConcurrencyFactoryWorker.h"
 
-#include "opendavinci/core/wrapper/POSIX/POSIXThread.h"
+#include "opendavinci/odcore/wrapper/POSIX/POSIXThread.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         using namespace std;
@@ -37,7 +37,7 @@ namespace core {
         template <> class OPENDAVINCI_API ConcurrencyFactoryWorker<SystemLibraryPosix> {
             public:
                 static Thread* createThread(Runnable &runnable) {
-                    return new core::wrapper::POSIX::POSIXThread(runnable);
+                    return new odcore::wrapper::POSIX::POSIXThread(runnable);
                 };
 
                 static void usleepFor(const long &microseconds) {
@@ -113,6 +113,6 @@ namespace core {
                 };
         };
     }
-} // core::wrapper::POSIX
+} // odcore::wrapper::POSIX
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXCONCURRENCYFACTORY_H_*/

@@ -20,10 +20,10 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_CONDITIONFACTORYWORKER_H_
 #define OPENDAVINCI_CORE_WRAPPER_CONDITIONFACTORYWORKER_H_
 
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/wrapper/SystemLibraryProducts.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/wrapper/SystemLibraryProducts.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         /**
@@ -45,6 +45,6 @@ namespace core {
         };
 
     }
-} // core::wrapper
+} // odcore::wrapper
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_CONDITIONFACTORYWORKER_H_*/

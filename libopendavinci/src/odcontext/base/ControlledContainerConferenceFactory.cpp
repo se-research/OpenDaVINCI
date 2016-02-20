@@ -19,23 +19,23 @@
 
 #include <iostream>
 
-#include "opendavinci/context/base/BlockableContainerReceiver.h"
-#include "opendavinci/context/base/ContainerDeliverer.h"
-#include "opendavinci/context/base/ControlledContainerConferenceFactory.h"
-#include "opendavinci/context/base/ControlledContainerConferenceForSystemUnderTest.h"
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/data/TimeStamp.h"
-#include "opendavinci/core/io/conference/ContainerConference.h"
+#include "opendavinci/odcontext/base/BlockableContainerReceiver.h"
+#include "opendavinci/odcontext/base/ContainerDeliverer.h"
+#include "opendavinci/odcontext/base/ControlledContainerConferenceFactory.h"
+#include "opendavinci/odcontext/base/ControlledContainerConferenceForSystemUnderTest.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
+#include "opendavinci/odcore/io/conference/ContainerConference.h"
 
 namespace odcontext {
     namespace base {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::data;
-        using namespace core::io;
-        using namespace core::io::conference;
+        using namespace odcore::base;
+        using namespace odcore::data;
+        using namespace odcore::io;
+        using namespace odcore::io::conference;
 
         ControlledContainerConferenceFactory::ControlledContainerConferenceFactory() :
             m_listOfContainerListenersToReceiveContainersFromSystemsUnderTestMutex(),
@@ -64,14 +64,14 @@ namespace odcontext {
             }
         }
 
-        void ControlledContainerConferenceFactory::add(core::io::conference::ContainerListener *cl) {
+        void ControlledContainerConferenceFactory::add(odcore::io::conference::ContainerListener *cl) {
             if (cl != NULL) {
                 Lock l(m_listOfContainerListenersToReceiveContainersFromSystemsUnderTestMutex);
                 m_listOfContainerListenersToReceiveContainersFromSystemsUnderTest.push_back(cl);
             }
         }
 
-        void ControlledContainerConferenceFactory::sendToSUD(core::data::Container &c) {
+        void ControlledContainerConferenceFactory::sendToSUD(odcore::data::Container &c) {
             Lock l(m_listOfContainerDelivererToSystemUnderTestMutex);
 
             clog << "Distributing '" << c.toString() << "' in ControlledContainerConferenceFactory to all ContainerConferences from Systems Under Test." << endl;
@@ -88,7 +88,7 @@ namespace odcontext {
             }
         }
 
-        void ControlledContainerConferenceFactory::sendToSCC(core::data::Container &c) {
+        void ControlledContainerConferenceFactory::sendToSCC(odcore::data::Container &c) {
             Lock l(m_listOfContainerListenersToReceiveContainersFromSystemsUnderTestMutex);
 
             clog << "Distributing '" << c.toString() << "' in ControlledContainerConferenceFactory to all SystemParts." << endl;
@@ -122,7 +122,7 @@ namespace odcontext {
             sendToSCC(c);
         }
 
-        core::SharedPointer<ContainerConference> ControlledContainerConferenceFactory::getContainerConference(const string &address, const uint32_t &port) {
+        odcore::SharedPointer<ContainerConference> ControlledContainerConferenceFactory::getContainerConference(const string &address, const uint32_t &port) {
             // Create a ControlledContainerConference specific synchronous ContainerDeliverer which delivers containers sent TO the system under test.
             ContainerDeliverer *containerDelivererToSystemUnderTest = new ContainerDeliverer();
 
@@ -130,7 +130,7 @@ namespace odcontext {
             BlockableContainerReceiver *blockableContainerReceiverFromSystemUnderTest = new BlockableContainerReceiver(*this);
 
             // Connect the FIFO with a new ControlledContainerConferenceForSystemUnderTest for decoupling it from the factory (the receiving instance will destroy the ControlledContainerConferenceForSystemUnderTest later).
-            core::SharedPointer<ContainerConference> ccc(new ControlledContainerConferenceForSystemUnderTest(address, port, *blockableContainerReceiverFromSystemUnderTest, *containerDelivererToSystemUnderTest));
+            odcore::SharedPointer<ContainerConference> ccc(new ControlledContainerConferenceForSystemUnderTest(address, port, *blockableContainerReceiverFromSystemUnderTest, *containerDelivererToSystemUnderTest));
 
             // Add ContainerDelivererTOSystemUnderTest to list.
             {

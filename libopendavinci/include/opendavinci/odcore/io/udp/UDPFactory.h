@@ -22,10 +22,10 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
 
-namespace core {
+namespace odcore {
     namespace io {
         namespace udp {
 
@@ -56,6 +56,6 @@ class UDPSender;
 
         }
     }
-} // core::io::udp
+} // odcore::io::udp
 
 #endif /*OPENDAVINCI_CORE_IO_UDP_UDPFACTORY_H_*/

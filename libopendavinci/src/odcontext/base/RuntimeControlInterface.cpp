@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/context/base/RuntimeControlInterface.h"
+#include "opendavinci/odcontext/base/RuntimeControlInterface.h"
 
 namespace odcontext {
     namespace base {

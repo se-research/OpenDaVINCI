@@ -20,9 +20,9 @@
 // Using c++11 standard.
 #include <chrono>
 
-#include "opendavinci/core/wrapper/WIN32/WIN32Condition.h"
+#include "opendavinci/odcore/wrapper/WIN32/WIN32Condition.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
         namespace WIN32Impl {
 
@@ -75,4 +75,4 @@ namespace core {
 
         }
     }
-} // core::wrapper::WIN32Impl
+} // odcore::wrapper::WIN32Impl

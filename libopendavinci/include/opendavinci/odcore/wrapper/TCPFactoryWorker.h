@@ -20,13 +20,13 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_TCPFACTORYWORKER_H_
 #define OPENDAVINCI_CORE_WRAPPER_TCPFACTORYWORKER_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/io/tcp/TCPAcceptor.h"
-#include "opendavinci/core/io/tcp/TCPConnection.h"
-#include "opendavinci/core/wrapper/NetworkLibraryProducts.h"
+#include "opendavinci/odcore/io/tcp/TCPAcceptor.h"
+#include "opendavinci/odcore/io/tcp/TCPConnection.h"
+#include "opendavinci/odcore/wrapper/NetworkLibraryProducts.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         using namespace std;
@@ -43,8 +43,8 @@ namespace core {
          */
         template <NetworkLibraryProducts product>
         struct OPENDAVINCI_API TCPFactoryWorker {
-            static core::io::tcp::TCPAcceptor* createTCPAcceptor(const uint32_t &port);
-            static core::io::tcp::TCPConnection* createTCPConnectionTo(const std::string& ip, const uint32_t& port);
+            static odcore::io::tcp::TCPAcceptor* createTCPAcceptor(const uint32_t &port);
+            static odcore::io::tcp::TCPConnection* createTCPConnectionTo(const std::string& ip, const uint32_t& port);
         };
     }
 }

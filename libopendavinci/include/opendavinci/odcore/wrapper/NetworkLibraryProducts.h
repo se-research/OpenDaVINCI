@@ -20,7 +20,7 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_NETWORKLIBRARYPRODUCTS_H_
 #define OPENDAVINCI_CORE_WRAPPER_NETWORKLIBRARYPRODUCTS_H_
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         enum NetworkLibraryProducts
@@ -30,6 +30,6 @@ namespace core {
         };
 
     }
-} // core::wrapper
+} // odcore::wrapper
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_NETWORKLIBRARYPRODUCTS_H_*/

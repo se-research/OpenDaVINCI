@@ -26,48 +26,48 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/context/base/BlockableContainerReceiver.h"
-#include "opendavinci/context/base/ControlledContainerConferenceFactory.h"
-#include "opendavinci/context/base/ControlledContainerConferenceForSystemUnderTest.h"
-#include "opendavinci/core/SharedPointer.h"         // for SharedPointer
-#include "opendavinci/core/base/Deserializer.h"     // for Deserializer
-#include "opendavinci/core/base/FIFOQueue.h"        // for FIFOQueue
-#include "opendavinci/core/base/Hash.h"             // for CharList, CRC32, etc
-#include "opendavinci/core/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
-#include "opendavinci/core/base/Lock.h"             // for Lock
-#include "opendavinci/core/base/Mutex.h"            // for Mutex
-#include "opendavinci/core/base/SerializationFactory.h"  // for SerializationFactory
-#include "opendavinci/core/base/Serializer.h"       // for Serializer
-#include "opendavinci/core/base/Service.h"          // for Service
-#include "opendavinci/core/base/Thread.h"           // for Thread
-#include "opendavinci/core/base/module/Breakpoint.h"  // for Breakpoint
-#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "opendavinci/core/data/Container.h"        // for Container, etc
-#include "opendavinci/core/data/SerializableData.h"  // for SerializableData
-#include "opendavinci/core/data/TimeStamp.h"        // for TimeStamp
-#include "opendavinci/core/dmcp/ModuleConfigurationProvider.h"
-#include "opendavinci/core/dmcp/connection/ConnectionHandler.h"
-#include "opendavinci/core/dmcp/connection/Server.h"  // for Server
-#include "opendavinci/core/dmcp/discoverer/Server.h"  // for Server
-#include "opendavinci/core/io/conference/ContainerConference.h"
-#include "opendavinci/core/io/conference/ContainerConferenceFactory.h"
-#include "opendavinci/core/io/conference/ContainerListener.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcontext/base/BlockableContainerReceiver.h"
+#include "opendavinci/odcontext/base/ControlledContainerConferenceFactory.h"
+#include "opendavinci/odcontext/base/ControlledContainerConferenceForSystemUnderTest.h"
+#include "opendavinci/odcore/SharedPointer.h"         // for SharedPointer
+#include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
+#include "opendavinci/odcore/base/FIFOQueue.h"        // for FIFOQueue
+#include "opendavinci/odcore/base/Hash.h"             // for CharList, CRC32, etc
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
+#include "opendavinci/odcore/base/Lock.h"             // for Lock
+#include "opendavinci/odcore/base/Mutex.h"            // for Mutex
+#include "opendavinci/odcore/base/SerializationFactory.h"  // for SerializationFactory
+#include "opendavinci/odcore/base/Serializer.h"       // for Serializer
+#include "opendavinci/odcore/base/Service.h"          // for Service
+#include "opendavinci/odcore/base/Thread.h"           // for Thread
+#include "opendavinci/odcore/base/module/Breakpoint.h"  // for Breakpoint
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/data/Container.h"        // for Container, etc
+#include "opendavinci/odcore/data/SerializableData.h"  // for SerializableData
+#include "opendavinci/odcore/data/TimeStamp.h"        // for TimeStamp
+#include "opendavinci/odcore/dmcp/ModuleConfigurationProvider.h"
+#include "opendavinci/odcore/dmcp/connection/ConnectionHandler.h"
+#include "opendavinci/odcore/dmcp/connection/Server.h"  // for Server
+#include "opendavinci/odcore/dmcp/discoverer/Server.h"  // for Server
+#include "opendavinci/odcore/io/conference/ContainerConference.h"
+#include "opendavinci/odcore/io/conference/ContainerConferenceFactory.h"
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
 #include "opendavinci/generated/coredata/dmcp/Constants.h"  // for Constants, etc
 #include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
 #include "opendavinci/generated/coredata/dmcp/ServerInformation.h"
 
 namespace odcontext { namespace base { class BlockableContainerReceiver; } }
 namespace coredata { namespace dmcp { class ModuleDescriptor; } }
-namespace core { namespace dmcp { namespace connection { class ModuleConnection; } } }
+namespace odcore { namespace dmcp { namespace connection { class ModuleConnection; } } }
 
 using namespace std;
-using namespace core::base;
-using namespace core::base::module;
-using namespace core::data;
-using namespace core::dmcp;
-using namespace core::io;
-using namespace core::io::conference;
+using namespace odcore::base;
+using namespace odcore::base::module;
+using namespace odcore::data;
+using namespace odcore::dmcp;
+using namespace odcore::io;
+using namespace odcore::io::conference;
 using namespace odcontext::base;
 
 using namespace coredata::dmcp;
@@ -78,7 +78,7 @@ using namespace coredata::dmcp;
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-class ControlFlowTestBreakpoint : public core::base::module::Breakpoint {
+class ControlFlowTestBreakpoint : public odcore::base::module::Breakpoint {
     public:
         ControlFlowTestBreakpoint() :
             m_reachedMutex(),
@@ -146,7 +146,7 @@ class ControlFlowTestBreakpoint : public core::base::module::Breakpoint {
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-class ControlFlowTestSampleData : public core::data::SerializableData {
+class ControlFlowTestSampleData : public odcore::data::SerializableData {
     public:
         ControlFlowTestSampleData() :
                 m_int(0) {}
@@ -162,7 +162,7 @@ class ControlFlowTestSampleData : public core::data::SerializableData {
         ostream& operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
-            core::SharedPointer<Serializer> s = sf.getSerializer(out);
+            odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 
             s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 'i', 'n', 't') >::RESULT,
                     m_int);
@@ -173,7 +173,7 @@ class ControlFlowTestSampleData : public core::data::SerializableData {
         istream& operator>>(istream &in) {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
-            core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+            odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
             d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 'i', 'n', 't') >::RESULT,
                    m_int);
@@ -224,7 +224,7 @@ class ControlFlowTestApp : public TimeTriggeredConferenceClientModule {
 
 class ControlFlowTestService : public Service {
     public:
-        ControlFlowTestService(const int32_t &argc, char **argv, const string &name, core::base::module::Breakpoint *bp) :
+        ControlFlowTestService(const int32_t &argc, char **argv, const string &name, odcore::base::module::Breakpoint *bp) :
             myApp(argc, argv, name) {
             myApp.setBreakpoint(bp);
         }
@@ -247,12 +247,12 @@ class ControlFlowTestService : public Service {
         ControlFlowTestApp myApp;
 };
 
-class ControlFlowTestContainerReceiverFromSystemUnderTest : public core::io::conference::ContainerListener {
+class ControlFlowTestContainerReceiverFromSystemUnderTest : public odcore::io::conference::ContainerListener {
     public:
         ControlFlowTestContainerReceiverFromSystemUnderTest() :
             queueContainingContainersSentToConferenceBySystemUnderTest() {}
 
-        virtual void nextContainer(core::data::Container &c) {
+        virtual void nextContainer(odcore::data::Container &c) {
             queueContainingContainersSentToConferenceBySystemUnderTest.add(c);
         }
 
@@ -275,13 +275,13 @@ class ControlFlowTest : public CxxTest::TestSuite,
             m_connection() {}
 
         KeyValueConfiguration m_configuration;
-        core::SharedPointer<connection::ModuleConnection> m_connection;
+        odcore::SharedPointer<connection::ModuleConnection> m_connection;
 
         virtual KeyValueConfiguration getConfiguration(const ModuleDescriptor& /*md*/) {
             return m_configuration;
         }
 
-        virtual void onNewModule(core::SharedPointer<core::dmcp::connection::ModuleConnection> mc) {
+        virtual void onNewModule(odcore::SharedPointer<odcore::dmcp::connection::ModuleConnection> mc) {
             m_connection = mc;
         }
 
@@ -298,7 +298,7 @@ class ControlFlowTest : public CxxTest::TestSuite,
             TS_ASSERT(ccf2 == controlledCF);
 
             // Get ControlledContainerConference.
-            core::SharedPointer<ContainerConference> cf = controlledccf.getContainerConference("testControlledContainerFactoryTestSuite");
+            odcore::SharedPointer<ContainerConference> cf = controlledccf.getContainerConference("testControlledContainerFactoryTestSuite");
             ControlledContainerConferenceForSystemUnderTest *controlledConferenceForSystemUnderTest = NULL;
             TS_ASSERT(cf.isValid());
             bool castIntoCCFSuccessful = false;

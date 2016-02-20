@@ -17,10 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/base/Serializer.h"
-#include "opendavinci/core/wrapper/Libraries.h"
+#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/wrapper/Libraries.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
         Serializer::Serializer() {}
@@ -28,7 +28,7 @@ namespace core {
         Serializer::~Serializer() {}
 
         float Serializer::htonf(float f) {
-            if (core::wrapper::USESYSTEMENDINANESS == core::wrapper::IS_BIG_ENDIAN) {
+            if (odcore::wrapper::USESYSTEMENDINANESS == odcore::wrapper::IS_BIG_ENDIAN) {
                 return f;
             }
             else {
@@ -44,7 +44,7 @@ namespace core {
         }
 
         double Serializer::htond(double d) {
-            if (core::wrapper::USESYSTEMENDINANESS == core::wrapper::IS_BIG_ENDIAN) {
+            if (odcore::wrapper::USESYSTEMENDINANESS == odcore::wrapper::IS_BIG_ENDIAN) {
                 return d;
             }
             else {
@@ -60,7 +60,7 @@ namespace core {
         }
 
         uint64_t Serializer::__htonll(uint64_t ui) {
-            if (core::wrapper::USESYSTEMENDINANESS == core::wrapper::IS_BIG_ENDIAN) {
+            if (odcore::wrapper::USESYSTEMENDINANESS == odcore::wrapper::IS_BIG_ENDIAN) {
                 return ui;
             }
             else {
@@ -69,7 +69,7 @@ namespace core {
         }
 
         int64_t Serializer::__htonll(int64_t i) {
-            if (core::wrapper::USESYSTEMENDINANESS == core::wrapper::IS_BIG_ENDIAN) {
+            if (odcore::wrapper::USESYSTEMENDINANESS == odcore::wrapper::IS_BIG_ENDIAN) {
                 return i;
             }
             else {
@@ -77,4 +77,4 @@ namespace core {
             }
         }
     }
-} // core::base
+} // odcore::base

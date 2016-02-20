@@ -20,11 +20,11 @@
 #ifndef OPENDAVINCI_CORE_BASE_LOCK_H_
 #define OPENDAVINCI_CORE_BASE_LOCK_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/wrapper/SharedMemory.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/wrapper/SharedMemory.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
 class Mutex;
@@ -79,14 +79,14 @@ class Mutex;
                  *
                  * @param mutex Mutex to be automagically locked.
                  */
-                Lock(core::SharedPointer<core::wrapper::SharedMemory> sp);
+                Lock(odcore::SharedPointer<odcore::wrapper::SharedMemory> sp);
 
             private:
                 Mutex *m_mutex;
-                core::SharedPointer<core::wrapper::SharedMemory> m_sharedPointerToSharedMemory;
+                odcore::SharedPointer<odcore::wrapper::SharedMemory> m_sharedPointerToSharedMemory;
         };
 
     }
-} // core::base
+} // odcore::base
 
 #endif /*OPENDAVINCI_CORE_BASE_LOCK_H_*/

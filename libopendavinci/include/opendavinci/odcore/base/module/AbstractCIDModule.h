@@ -22,12 +22,12 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/module/InterruptibleModule.h"
-#include "opendavinci/core/base/module/Periodic.h"
-#include "opendavinci/core/exceptions/Exceptions.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/module/InterruptibleModule.h"
+#include "opendavinci/odcore/base/module/Periodic.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
 
-namespace core {
+namespace odcore {
     namespace base {
         namespace module {
 
@@ -155,6 +155,6 @@ namespace core {
 
         }
     }
-} // core::base::module
+} // odcore::base::module
 
 #endif /*OPENDAVINCI_CORE_BASE_MODULE_ABSTRACTCIDMODULE_H_*/

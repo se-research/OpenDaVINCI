@@ -21,36 +21,36 @@
 #include <iostream>
 #include <string>
 
-#include "opendavinci/context/base/Clock.h"
-#include "opendavinci/context/base/ControlledContainerConferenceFactory.h"
-#include "opendavinci/context/base/ControlledTime.h"
-#include "opendavinci/context/base/ControlledTimeFactory.h"
-#include "opendavinci/context/base/RuntimeControl.h"
-#include "opendavinci/context/base/RuntimeControlInterface.h"
-#include "opendavinci/context/base/RuntimeEnvironment.h"
-#include "opendavinci/context/base/SuperComponent.h"
-#include "opendavinci/context/base/SystemFeedbackComponent.h"
-#include "opendavinci/context/base/SystemReportingComponent.h"
-#include "opendavinci/context/base/TimeTriggeredConferenceClientModuleRunner.h"
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/data/TimeStamp.h"
-#include "opendavinci/core/exceptions/Exceptions.h"
-#include "opendavinci/core/io/conference/ContainerConferenceFactory.h"
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/wrapper/Time.h"
+#include "opendavinci/odcontext/base/Clock.h"
+#include "opendavinci/odcontext/base/ControlledContainerConferenceFactory.h"
+#include "opendavinci/odcontext/base/ControlledTime.h"
+#include "opendavinci/odcontext/base/ControlledTimeFactory.h"
+#include "opendavinci/odcontext/base/RuntimeControl.h"
+#include "opendavinci/odcontext/base/RuntimeControlInterface.h"
+#include "opendavinci/odcontext/base/RuntimeEnvironment.h"
+#include "opendavinci/odcontext/base/SuperComponent.h"
+#include "opendavinci/odcontext/base/SystemFeedbackComponent.h"
+#include "opendavinci/odcontext/base/SystemReportingComponent.h"
+#include "opendavinci/odcontext/base/TimeTriggeredConferenceClientModuleRunner.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
+#include "opendavinci/odcore/io/conference/ContainerConferenceFactory.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/wrapper/Time.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
 
-namespace core { namespace base { namespace module { class TimeTriggeredConferenceClientModule; } } }
+namespace odcore { namespace base { namespace module { class TimeTriggeredConferenceClientModule; } } }
 
 namespace odcontext {
     namespace base {
 
         using namespace std;
-        using namespace core;
-        using namespace core::base;
-        using namespace core::base::module;
-        using namespace core::io;
-        using namespace core::io::conference;
+        using namespace odcore;
+        using namespace odcore::base;
+        using namespace odcore::base::module;
+        using namespace odcore::io;
+        using namespace odcore::io::conference;
 
         RuntimeControl::RuntimeControl(const RuntimeControlInterface &sci) :
             m_controlMutex(),
@@ -61,7 +61,7 @@ namespace odcontext {
             m_controlledContainerConferenceFactory(NULL),
             m_controlledTimeFactory(NULL) {
             // Initialize TimeFactory to avoid SEGFAULT.
-            core::data::TimeStamp ts;
+            odcore::data::TimeStamp ts;
             if (ts.getSeconds() > 0) {};
         }
 
@@ -248,7 +248,7 @@ namespace odcontext {
             return listOfWrappedTimeTriggeredConferenceClientModules;
         }
 
-        void RuntimeControl::doReporting(RuntimeEnvironment &rte, const core::wrapper::Time &time) {
+        void RuntimeControl::doReporting(RuntimeEnvironment &rte, const odcore::wrapper::Time &time) {
             if (rte.isValid() && rte.isExecuting()) {
                 // Get list of SystemReportingComponents to register all SystemReportingComponents as receivers for Containers at ControlledContainerConferenceFactory.
                 vector<SystemReportingComponent*> listOfSystemReportingComponents = rte.getListOfSystemReportingComponents();
@@ -393,7 +393,7 @@ namespace odcontext {
                             }
                         }
                     }
-                    catch(core::exceptions::Exceptions &e) {
+                    catch(odcore::exceptions::Exceptions &e) {
                         clog << "(context::base::RuntimeControl) Exception occurred: " << e.toString() << endl;
                         retVal = RuntimeControl::EXCEPTION_CAUGHT;
                     }
@@ -423,11 +423,11 @@ namespace odcontext {
         ////////////////////////////////////////////////////////////////////////
 
         void RuntimeControl::DisableTimeFactory::disable() {
-            core::wrapper::TimeFactory::setSingleton(NULL);
+            odcore::wrapper::TimeFactory::setSingleton(NULL);
         }
 
-        core::SharedPointer<core::wrapper::Time> RuntimeControl::DisableTimeFactory::now() {
-            core::SharedPointer<core::wrapper::Time> t;
+        odcore::SharedPointer<odcore::wrapper::Time> RuntimeControl::DisableTimeFactory::now() {
+            odcore::SharedPointer<odcore::wrapper::Time> t;
             return t;
         }
 

@@ -17,15 +17,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/wrapper/ConfigurationTraits.h"
-#include "opendavinci/core/wrapper/KeyValueDatabase.h"
-#include "opendavinci/core/wrapper/KeyValueDatabaseFactory.h"
-#include "opendavinci/core/wrapper/KeyValueDatabaseLibraryProducts.h"
-#include "opendavinci/core/wrapper/Libraries.h"
-#include "opendavinci/core/wrapper/SimpleDB/SimpleDBFactoryWorker.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/wrapper/ConfigurationTraits.h"
+#include "opendavinci/odcore/wrapper/KeyValueDatabase.h"
+#include "opendavinci/odcore/wrapper/KeyValueDatabaseFactory.h"
+#include "opendavinci/odcore/wrapper/KeyValueDatabaseLibraryProducts.h"
+#include "opendavinci/odcore/wrapper/Libraries.h"
+#include "opendavinci/odcore/wrapper/SimpleDB/SimpleDBFactoryWorker.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         SharedPointer<KeyValueDatabase> KeyValueDatabaseFactory::createKeyValueDatabase() {
@@ -33,4 +33,4 @@ namespace core {
             return KeyValueDatabaseFactoryWorker<configuration::value>::createKeyValueDatabase();
         }
     }
-} // core::wrapper
+} // odcore::wrapper

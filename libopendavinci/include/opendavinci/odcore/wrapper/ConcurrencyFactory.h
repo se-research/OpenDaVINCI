@@ -20,9 +20,9 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_CONCURRENCYFACTORY_H_
 #define OPENDAVINCI_CORE_WRAPPER_CONCURRENCYFACTORY_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
 class Runnable;
@@ -61,6 +61,6 @@ class Thread;
         };
 
     }
-} // core::wrapper
+} // odcore::wrapper
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_CONCURRENCYFACTORY_H_*/

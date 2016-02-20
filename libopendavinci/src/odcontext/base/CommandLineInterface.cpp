@@ -22,15 +22,15 @@
 #include <functional>
 #include <sstream>
 
-#include "opendavinci/context/base/CommandLineInterface.h"
-#include "opendavinci/core/base/CommandLineArgument.h"
-#include "opendavinci/core/base/CommandLineParser.h"
+#include "opendavinci/odcontext/base/CommandLineInterface.h"
+#include "opendavinci/odcore/base/CommandLineArgument.h"
+#include "opendavinci/odcore/base/CommandLineParser.h"
 
 namespace odcontext {
     namespace base {
 
         using namespace std;
-        using namespace core::base;
+        using namespace odcore::base;
 
         CommandLineInterface::CommandLineInterface() :
             m_configuration(),

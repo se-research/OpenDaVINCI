@@ -21,26 +21,26 @@
 #include <cstring>
 #include <iostream>
 
-#include "opendavinci/core/base/module/AbstractCIDModule.h"
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/base/Serializable.h"
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/core/data/TimeStamp.h"
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/wrapper/SharedMemory.h"
-#include "opendavinci/core/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/odcore/base/module/AbstractCIDModule.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/wrapper/SharedMemory.h"
+#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 #include "opendavinci/generated/coredata/SharedData.h"
 #include "opendavinci/generated/coredata/buffer/MemorySegment.h"
 #include "opendavinci/generated/coredata/image/SharedImage.h"
-#include "opendavinci/tools/player/PlayerCache.h"
+#include "opendavinci/odtools/player/PlayerCache.h"
 
 namespace odtools {
     namespace player {
 
         using namespace std;
-        using namespace core;
-        using namespace core::base;
-        using namespace core::data;
+        using namespace odcore;
+        using namespace odcore::base;
+        using namespace odcore::data;
         using namespace odtools;
 
         PlayerCache::PlayerCache(const uint32_t size, const uint32_t sizeMemorySegments, const bool &autoRewind, SharedPointer<istream> in, SharedPointer<istream> inSharedMemoryFile) :
@@ -269,9 +269,9 @@ namespace odtools {
                 }
 
                 // Check, whether a shared memory was already created for this SharedImage or SharedData; otherwise, create it and save it for later.
-                map<string, SharedPointer<core::wrapper::SharedMemory> >::iterator it = m_sharedPointers.find(nameOfSharedMemory);
+                map<string, SharedPointer<odcore::wrapper::SharedMemory> >::iterator it = m_sharedPointers.find(nameOfSharedMemory);
                 if (it == m_sharedPointers.end()) {
-                    SharedPointer<core::wrapper::SharedMemory> sp = core::wrapper::SharedMemoryFactory::createSharedMemory(nameOfSharedMemory, size);
+                    SharedPointer<odcore::wrapper::SharedMemory> sp = odcore::wrapper::SharedMemoryFactory::createSharedMemory(nameOfSharedMemory, size);
                     m_sharedPointers[nameOfSharedMemory] = sp;
                 }
 
@@ -305,7 +305,7 @@ namespace odtools {
             }
         }
 
-        void PlayerCache::copyMemoryToSharedMemory(core::data::Container &container) {
+        void PlayerCache::copyMemoryToSharedMemory(odcore::data::Container &container) {
             // The m_bufferOut should never run empty.
             if (!m_bufferOut.isEmpty()) {
                 string nameOfSharedMemory = "";
@@ -320,7 +320,7 @@ namespace odtools {
                 }
 
                 // Check, if a shared memory exists for this container.
-                map<string, SharedPointer<core::wrapper::SharedMemory> >::iterator it = m_sharedPointers.find(nameOfSharedMemory);
+                map<string, SharedPointer<odcore::wrapper::SharedMemory> >::iterator it = m_sharedPointers.find(nameOfSharedMemory);
                 if (it != m_sharedPointers.end()) {
                     // Get next entry to process from output queue.
                     Container c = m_bufferOut.leave();
@@ -330,7 +330,7 @@ namespace odtools {
                     char *src = m_mapOfMemories[ms.getIdentifier()];
 
                     // Get shared memory based on "header" informaton.
-                    SharedPointer<core::wrapper::SharedMemory> sp = it->second;
+                    SharedPointer<odcore::wrapper::SharedMemory> sp = it->second;
 
                     // memcpy src to shared memory.
                     ::memcpy(sp->getSharedMemory(), src, ms.getConsumedSize());

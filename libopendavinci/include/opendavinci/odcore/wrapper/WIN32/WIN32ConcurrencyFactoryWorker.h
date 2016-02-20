@@ -24,14 +24,14 @@
 #include <chrono>
 #include <thread>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/wrapper/SystemLibraryProducts.h"
-#include "opendavinci/core/wrapper/ConcurrencyFactoryWorker.h"
+#include "opendavinci/odcore/wrapper/SystemLibraryProducts.h"
+#include "opendavinci/odcore/wrapper/ConcurrencyFactoryWorker.h"
 
-#include "opendavinci/core/wrapper/WIN32/WIN32Thread.h"
+#include "opendavinci/odcore/wrapper/WIN32/WIN32Thread.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         using namespace std;
@@ -39,7 +39,7 @@ namespace core {
         template <> class OPENDAVINCI_API ConcurrencyFactoryWorker<SystemLibraryWin32> {
             public:
                 static Thread* createThread(Runnable &runnable) {
-                    return new core::wrapper::WIN32Impl::WIN32Thread(runnable);
+                    return new odcore::wrapper::WIN32Impl::WIN32Thread(runnable);
                 };
 
                 static void usleepFor(const long &microseconds) {
@@ -57,6 +57,6 @@ namespace core {
                 };
         };
     }
-} // core::wrapper
+} // odcore::wrapper
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_WIN32_WIN32CONCURRENCYFACTORY_H_*/

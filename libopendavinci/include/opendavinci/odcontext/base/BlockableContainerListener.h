@@ -20,9 +20,9 @@
 #ifndef CONTEXT_BASE_BLOCKABLECONTAINERLISTENER_H_
 #define CONTEXT_BASE_BLOCKABLECONTAINERLISTENER_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/io/conference/ContainerListener.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
 
 namespace odcontext {
     namespace base {
@@ -30,7 +30,7 @@ namespace odcontext {
         /**
          * This class provides methods for blocking a ContainerListener.
          */
-        class OPENDAVINCI_API BlockableContainerListener : public core::io::conference::ContainerListener {
+        class OPENDAVINCI_API BlockableContainerListener : public odcore::io::conference::ContainerListener {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -66,7 +66,7 @@ namespace odcontext {
                 bool isNextContainerAllowed() const;
 
             private:
-                mutable core::base::Mutex m_nextContainerAllowedMutex;
+                mutable odcore::base::Mutex m_nextContainerAllowedMutex;
                 bool m_nextContainerAllowed;
         };
 

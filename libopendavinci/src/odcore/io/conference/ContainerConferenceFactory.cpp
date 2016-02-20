@@ -17,12 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/io/conference/ContainerConference.h"
-#include "opendavinci/core/io/conference/ContainerConferenceFactory.h"
-#include "opendavinci/core/io/conference/UDPMultiCastContainerConference.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/io/conference/ContainerConference.h"
+#include "opendavinci/odcore/io/conference/ContainerConferenceFactory.h"
+#include "opendavinci/odcore/io/conference/UDPMultiCastContainerConference.h"
 
-namespace core {
+namespace odcore {
     namespace io {
         namespace conference {
 
@@ -54,10 +54,10 @@ namespace core {
                 return (*ContainerConferenceFactory::m_singleton);
             }
 
-            core::SharedPointer<ContainerConference> ContainerConferenceFactory::getContainerConference(const string &address, const uint32_t &port) {
-                return core::SharedPointer<ContainerConference>(new UDPMultiCastContainerConference(address, port));
+            odcore::SharedPointer<ContainerConference> ContainerConferenceFactory::getContainerConference(const string &address, const uint32_t &port) {
+                return odcore::SharedPointer<ContainerConference>(new UDPMultiCastContainerConference(address, port));
             }
 
         }
     }
-} // core::io::conference
+} // odcore::io::conference

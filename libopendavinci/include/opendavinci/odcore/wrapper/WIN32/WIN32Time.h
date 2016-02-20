@@ -20,12 +20,12 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_WIN32IMPL_WIN32TIME_H_
 #define OPENDAVINCI_CORE_WRAPPER_WIN32IMPL_WIN32TIME_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/wrapper/TimeFactoryWorker.h"
-#include "opendavinci/core/wrapper/Time.h"
+#include "opendavinci/odcore/wrapper/TimeFactoryWorker.h"
+#include "opendavinci/odcore/wrapper/Time.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
         namespace WIN32Impl {
 
@@ -71,6 +71,6 @@ namespace core {
 
         }
     }
-} // core::wrapper::WIN32Impl
+} // odcore::wrapper::WIN32Impl
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_WIN32IMPL_WIN32TIME_H_*/

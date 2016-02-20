@@ -17,16 +17,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/context/base/BlockableContainerListener.h"
-#include "opendavinci/context/base/RunModuleBreakpoint.h"
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/base/Thread.h"
+#include "opendavinci/odcontext/base/BlockableContainerListener.h"
+#include "opendavinci/odcontext/base/RunModuleBreakpoint.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/Thread.h"
 
 namespace odcontext {
     namespace base {
 
         using namespace std;
-        using namespace core::base;
+        using namespace odcore::base;
 
         RunModuleBreakpoint::RunModuleBreakpoint(BlockableContainerListener &bcl) :
             m_blockableContainerListener(bcl),

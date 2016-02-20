@@ -19,25 +19,25 @@
 
 #include <iostream>
 
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/base/Serializable.h"
-#include "opendavinci/core/base/module/AbstractCIDModule.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/dmcp/discoverer/Client.h"
-#include "opendavinci/core/io/Packet.h"
-#include "opendavinci/core/io/udp/UDPFactory.h"
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/base/module/AbstractCIDModule.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/dmcp/discoverer/Client.h"
+#include "opendavinci/odcore/io/Packet.h"
+#include "opendavinci/odcore/io/udp/UDPFactory.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/generated/coredata/dmcp/Constants.h"
 #include "opendavinci/generated/coredata/dmcp/DiscoverMessage.h"
 
-namespace core {
+namespace odcore {
     namespace dmcp {
         namespace discoverer {
 
             using namespace std;
-            using namespace core::base;
-            using namespace core::data;
-            using namespace core::exceptions;
+            using namespace odcore::base;
+            using namespace odcore::data;
+            using namespace odcore::exceptions;
 
             using namespace coredata::dmcp;
 
@@ -45,8 +45,8 @@ namespace core {
                            const uint32_t &serverPort,
                            const uint32_t &clientPort,
                            const string &name) :
-                m_sender(core::io::udp::UDPFactory::createUDPSender(group, serverPort)),
-                m_receiver(core::io::udp::UDPFactory::createUDPReceiver(group, clientPort)),
+                m_sender(odcore::io::udp::UDPFactory::createUDPSender(group, serverPort)),
+                m_receiver(odcore::io::udp::UDPFactory::createUDPReceiver(group, clientPort)),
                 m_responseCondition(),
                 m_response(false),
                 m_serverInformation(),
@@ -83,7 +83,7 @@ namespace core {
                 m_sender->send(sstr.str());
             }
 
-            void Client::nextPacket(const core::io::Packet &p) {
+            void Client::nextPacket(const odcore::io::Packet &p) {
                 Container container;
                 stringstream sstr(p.getData());
                 sstr >> container;
@@ -104,7 +104,7 @@ namespace core {
                     }
                 }
                 else {
-                    CLOG1 << "[core::dmcp::DiscovererServer] received unknown message: " << container.toString() << endl;
+                    CLOG1 << "[odcore::dmcp::DiscovererServer] received unknown message: " << container.toString() << endl;
                 }
             }
 

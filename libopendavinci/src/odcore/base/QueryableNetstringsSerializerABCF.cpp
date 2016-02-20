@@ -17,10 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/base/QueryableNetstringsSerializerABCF.h"
-#include "opendavinci/core/base/Serializable.h"
+#include "opendavinci/odcore/base/QueryableNetstringsSerializerABCF.h"
+#include "opendavinci/odcore/base/Serializable.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
         using namespace std;
@@ -337,4 +337,4 @@ namespace core {
         }
 
     }
-} // core::base
+} // odcore::base

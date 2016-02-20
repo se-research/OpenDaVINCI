@@ -17,25 +17,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/SerializationFactory.h"
-#include "opendavinci/core/base/module/AbstractConferenceClientModule.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/io/conference/ContainerConference.h"
-#include "opendavinci/core/io/conference/ContainerConferenceFactory.h"
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/module/AbstractConferenceClientModule.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/io/conference/ContainerConference.h"
+#include "opendavinci/odcore/io/conference/ContainerConferenceFactory.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-namespace core {
+namespace odcore {
     namespace base {
         namespace module {
 
             using namespace std;
-            using namespace core;
-            using namespace core::base;
-            using namespace core::data;
-            using namespace core::io;
-            using namespace core::io::conference;
-            using namespace core::exceptions;
+            using namespace odcore;
+            using namespace odcore::base;
+            using namespace odcore::data;
+            using namespace odcore::io;
+            using namespace odcore::io::conference;
+            using namespace odcore::exceptions;
 
             AbstractConferenceClientModule::AbstractConferenceClientModule(const int32_t &argc, char **argv, const string &name) throw (InvalidArgumentException) :
                     ManagedClientModule(argc, argv, name) {
@@ -73,4 +73,4 @@ namespace core {
 
         }
     }
-} // core::base::module
+} // odcore::base::module

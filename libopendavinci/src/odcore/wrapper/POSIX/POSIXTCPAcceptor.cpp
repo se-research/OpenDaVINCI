@@ -25,17 +25,17 @@
 #include <cstring>
 #include <sstream>
 
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/io/tcp/TCPAcceptorListener.h"
-#include "opendavinci/core/io/tcp/TCPConnection.h"
-#include "opendavinci/core/wrapper/ConcurrencyFactory.h"
-#include "opendavinci/core/wrapper/Mutex.h"
-#include "opendavinci/core/wrapper/MutexFactory.h"
-#include "opendavinci/core/wrapper/POSIX/POSIXTCPAcceptor.h"
-#include "opendavinci/core/wrapper/POSIX/POSIXTCPConnection.h"
-#include "opendavinci/core/wrapper/Thread.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/io/tcp/TCPAcceptorListener.h"
+#include "opendavinci/odcore/io/tcp/TCPConnection.h"
+#include "opendavinci/odcore/wrapper/ConcurrencyFactory.h"
+#include "opendavinci/odcore/wrapper/Mutex.h"
+#include "opendavinci/odcore/wrapper/MutexFactory.h"
+#include "opendavinci/odcore/wrapper/POSIX/POSIXTCPAcceptor.h"
+#include "opendavinci/odcore/wrapper/POSIX/POSIXTCPConnection.h"
+#include "opendavinci/odcore/wrapper/Thread.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
         namespace POSIX {
 
@@ -108,13 +108,13 @@ namespace core {
                 close(m_fileDescriptor);
             }
 
-            void POSIXTCPAcceptor::setAcceptorListener(core::io::tcp::TCPAcceptorListener* listener) {
+            void POSIXTCPAcceptor::setAcceptorListener(odcore::io::tcp::TCPAcceptorListener* listener) {
                 m_listenerMutex->lock();
                     m_listener = listener;
                 m_listenerMutex->unlock();
             }
 
-            void POSIXTCPAcceptor::invokeAcceptorListener(core::SharedPointer<core::io::tcp::TCPConnection> connection) {
+            void POSIXTCPAcceptor::invokeAcceptorListener(odcore::SharedPointer<odcore::io::tcp::TCPConnection> connection) {
                 m_listenerMutex->lock();
                 if (m_listener != NULL) {
                     m_listener->onNewConnection(connection);
@@ -156,7 +156,7 @@ namespace core {
 
                         int32_t client = accept(m_fileDescriptor, &clientsock, &csize);
                         if (client >= 0) {
-                            invokeAcceptorListener(core::SharedPointer<core::io::tcp::TCPConnection>(new POSIXTCPConnection(client)));
+                            invokeAcceptorListener(odcore::SharedPointer<odcore::io::tcp::TCPConnection>(new POSIXTCPConnection(client)));
                         }
                     }
                 }

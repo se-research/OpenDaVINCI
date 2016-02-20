@@ -22,11 +22,11 @@
 
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/io/conference/ContainerConference.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/io/conference/ContainerConference.h"
 
-namespace core {
+namespace odcore {
     namespace base {
         namespace module {
 
@@ -36,7 +36,7 @@ namespace core {
              * This class is a software only ContainerConference as a substitute
              * to the UDP-driver ContainerConference.
              */
-            class OPENDAVINCI_API ManagedClientModuleContainerConference : public core::io::conference::ContainerConference {
+            class OPENDAVINCI_API ManagedClientModuleContainerConference : public odcore::io::conference::ContainerConference {
                 private:
                     /**
                      * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -57,9 +57,9 @@ namespace core {
 
                     virtual ~ManagedClientModuleContainerConference();
 
-                    virtual void send(core::data::Container &container) const;
+                    virtual void send(odcore::data::Container &container) const;
 
-                    void receiveFromLocal(core::data::Container &c);
+                    void receiveFromLocal(odcore::data::Container &c);
 
                     /**
                      * This message clears the list of containers to be transferred from a connected
@@ -73,14 +73,14 @@ namespace core {
                      *
                      * @return List of containers to be transferred to supercomponent.
                      */
-                    vector<core::data::Container> getListOfContainers() const;
+                    vector<odcore::data::Container> getListOfContainers() const;
 
                 private:
-                    vector<core::data::Container> m_listOfContainersToBeDelivered;
+                    vector<odcore::data::Container> m_listOfContainersToBeDelivered;
             };
 
         }
     }
-} // core::base::module
+} // odcore::base::module
 
 #endif /*OPENDAVINCI_BASE_MANAGEDCLIENTMODULECONTAINERCONFERENCE_H_*/

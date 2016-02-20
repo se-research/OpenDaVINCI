@@ -25,12 +25,12 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "opendavinci/core/base/Serializable.h"     // for operator<<, operator>>
-#include "opendavinci/core/data/Container.h"        // for Container, etc
-#include "opendavinci/core/data/TimeStamp.h"        // for TimeStamp
+#include "opendavinci/odcore/base/Serializable.h"     // for operator<<, operator>>
+#include "opendavinci/odcore/data/Container.h"        // for Container, etc
+#include "opendavinci/odcore/data/TimeStamp.h"        // for TimeStamp
 
 using namespace std;
-using namespace core::data;
+using namespace odcore::data;
 
 class ContainerTest : public CxxTest::TestSuite {
     public:

@@ -22,28 +22,28 @@
 
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/Condition.h"
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/io/Connection.h"
-#include "opendavinci/core/io/ConnectionErrorListener.h"
-#include "opendavinci/core/io/conference/ContainerListener.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Condition.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/io/Connection.h"
+#include "opendavinci/odcore/io/ConnectionErrorListener.h"
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleDescriptor.h"
 
 namespace coredata { namespace dmcp { class PulseMessage; } }
-namespace core { namespace dmcp { class ModuleConfigurationProvider; } }
-namespace core { namespace dmcp { class ModuleStateListener; } }
+namespace odcore { namespace dmcp { class ModuleConfigurationProvider; } }
+namespace odcore { namespace dmcp { class ModuleStateListener; } }
 
-namespace core {
+namespace odcore {
     namespace dmcp {
         namespace connection {
 
             using namespace std;
 
-            class OPENDAVINCI_API ModuleConnection : protected core::io::ConnectionErrorListener,
-                                                     protected core::io::conference::ContainerListener
+            class OPENDAVINCI_API ModuleConnection : protected odcore::io::ConnectionErrorListener,
+                                                     protected odcore::io::conference::ContainerListener
             {
                 private:
                     /**
@@ -61,7 +61,7 @@ namespace core {
                     ModuleConnection& operator=(const ModuleConnection &);
 
                 public:
-                    ModuleConnection(core::SharedPointer<core::io::Connection> connection,
+                    ModuleConnection(odcore::SharedPointer<odcore::io::Connection> connection,
                                      ModuleConfigurationProvider &configProvider);
                     virtual ~ModuleConnection();
 
@@ -98,37 +98,37 @@ namespace core {
                      * @param timeout Timeout in milliseconds to wait for the ACK message.
                      * @return Containers to be transferred to supercomponent.
                      */
-                    vector<core::data::Container> pulse_ack_containers(const coredata::dmcp::PulseMessage &pm, const uint32_t &timeout);
+                    vector<odcore::data::Container> pulse_ack_containers(const coredata::dmcp::PulseMessage &pm, const uint32_t &timeout);
 
                     const coredata::dmcp::ModuleDescriptor getModuleDescriptor() const;
 
                 protected:
-                    virtual void nextContainer(core::data::Container &c);
+                    virtual void nextContainer(odcore::data::Container &c);
                     virtual void handleConnectionError();
 
-                    core::SharedPointer<core::io::Connection> m_connection;
+                    odcore::SharedPointer<odcore::io::Connection> m_connection;
                     ModuleConfigurationProvider& m_configurationProvider;
 
-                    core::base::Condition m_descriptorCondition;
+                    odcore::base::Condition m_descriptorCondition;
                     coredata::dmcp::ModuleDescriptor m_descriptor;
                     bool m_hasDescriptor;
 
-                    core::base::Condition m_pulseAckCondition;
+                    odcore::base::Condition m_pulseAckCondition;
                     bool m_hasReceivedPulseAck;
 
-                    core::base::Condition m_pulseAckContainersCondition;
+                    odcore::base::Condition m_pulseAckContainersCondition;
                     bool m_hasReceivedPulseAckContainers;
 
-                    core::base::Mutex m_connectionLostMutex;
+                    odcore::base::Mutex m_connectionLostMutex;
                     bool m_connectionLost;
 
                     ModuleStateListener* m_stateListener;
-                    core::base::Mutex m_stateListenerMutex;
+                    odcore::base::Mutex m_stateListenerMutex;
 
-                    vector<core::data::Container> m_containersToBeTransferredToSupercomponent;
+                    vector<odcore::data::Container> m_containersToBeTransferredToSupercomponent;
             };
         }
     }
-} // core::dmcp
+} // odcore::dmcp
 
 #endif /*OPENDAVINCI_DMCP_CONNECTION_MODULECONNECTION_H_*/

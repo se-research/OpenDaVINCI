@@ -22,13 +22,13 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/io/StringListener.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/io/StringListener.h"
 
-namespace core { namespace io { class StringSender; } }
+namespace odcore { namespace io { class StringSender; } }
 
-namespace core {
+namespace odcore {
     namespace io {
         namespace protocol {
 
@@ -79,7 +79,7 @@ namespace core {
                     void sendByStringSender(const string &data);
 
                 private:
-                    core::base::Mutex m_stringSenderMutex;
+                    odcore::base::Mutex m_stringSenderMutex;
                     StringSender *m_stringSender;
             };
 

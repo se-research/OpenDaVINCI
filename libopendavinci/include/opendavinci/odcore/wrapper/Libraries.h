@@ -20,31 +20,31 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_LIBRARIES_H_
 #define OPENDAVINCI_CORE_WRAPPER_LIBRARIES_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/wrapper/ConfigurationTraits.h"
+#include "opendavinci/odcore/wrapper/ConfigurationTraits.h"
 
 /**
  * Enumeration of supported, but mutually excluded system libraries.
  */
-#include "opendavinci/core/wrapper/SystemLibraryProducts.h"
+#include "opendavinci/odcore/wrapper/SystemLibraryProducts.h"
 
 /**
  * Enumeration of supported, but mutually excluded network libraries.
  */
-#include "opendavinci/core/wrapper/NetworkLibraryProducts.h"
+#include "opendavinci/odcore/wrapper/NetworkLibraryProducts.h"
 
 /**
  * Enumeration of supported, but mutually excluded compression libraries.
  */
-#include "opendavinci/core/wrapper/CompressionLibraryProducts.h"
+#include "opendavinci/odcore/wrapper/CompressionLibraryProducts.h"
 
 /**
  * Enumeration of supported, but mutually excluded key/value-database  libraries.
  */
-#include "opendavinci/core/wrapper/KeyValueDatabaseLibraryProducts.h"
+#include "opendavinci/odcore/wrapper/KeyValueDatabaseLibraryProducts.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         enum SYSTEM_ENDIANESS {
@@ -89,6 +89,6 @@ namespace core {
          */
         OPENDAVINCI_STATIC_CONFIGURATION(KeyValueDatabaseLibraryProducts, KeyValueDatabaseSimpleDB);
     }
-} // core::wrapper
+} // odcore::wrapper
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_LIBRARIES_H_*/

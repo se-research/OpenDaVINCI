@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/io/conference/ContainerObserver.h"
+#include "opendavinci/odcore/io/conference/ContainerObserver.h"
 
-namespace core {
+namespace odcore {
     namespace io {
         namespace conference {
 
@@ -27,4 +27,4 @@ namespace core {
 
         }
     }
-} // core::io::conference
+} // odcore::io::conference

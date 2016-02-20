@@ -17,15 +17,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/io/StringListener.h"
-#include "opendavinci/core/io/protocol/StringProtocol.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/io/StringListener.h"
+#include "opendavinci/odcore/io/protocol/StringProtocol.h"
 
-namespace core {
+namespace odcore {
     namespace io {
         namespace protocol {
 
-            using namespace core::base;
+            using namespace odcore::base;
 
             StringProtocol::StringProtocol() :
                 AbstractProtocol(),

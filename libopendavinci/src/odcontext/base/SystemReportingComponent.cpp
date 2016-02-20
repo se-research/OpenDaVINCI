@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/context/base/SystemReportingComponent.h"
+#include "opendavinci/odcontext/base/SystemReportingComponent.h"
 
 namespace odcontext {
     namespace base {

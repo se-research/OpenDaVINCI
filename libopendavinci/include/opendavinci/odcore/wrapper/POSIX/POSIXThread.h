@@ -23,14 +23,14 @@
 #include <pthread.h>
 #include <memory>
 
-#include "opendavinci/core/wrapper/SystemLibraryProducts.h"
-#include "opendavinci/core/wrapper/Thread.h"
+#include "opendavinci/odcore/wrapper/SystemLibraryProducts.h"
+#include "opendavinci/odcore/wrapper/Thread.h"
 
-namespace core { namespace wrapper { class Mutex; } }
-namespace core { namespace wrapper { class Runnable; } }
-namespace core { namespace wrapper { template <core::wrapper::SystemLibraryProducts product> class ConcurrencyFactoryWorker; } }
+namespace odcore { namespace wrapper { class Mutex; } }
+namespace odcore { namespace wrapper { class Runnable; } }
+namespace odcore { namespace wrapper { template <odcore::wrapper::SystemLibraryProducts product> class ConcurrencyFactoryWorker; } }
 
-namespace core {
+namespace odcore {
     namespace wrapper {
         namespace POSIX {
 
@@ -95,6 +95,6 @@ namespace core {
 
         }
     }
-} // core::wrapper::POSIX
+} // odcore::wrapper::POSIX
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXTHREAD_H_*/

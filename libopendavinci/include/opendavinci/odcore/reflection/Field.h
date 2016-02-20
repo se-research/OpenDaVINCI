@@ -20,11 +20,11 @@
 #ifndef OPENDAVINCI_CORE_REFLECTION_FIELD_H_
 #define OPENDAVINCI_CORE_REFLECTION_FIELD_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 #include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
-namespace core {
+namespace odcore {
     namespace reflection {
 
         using namespace std;
@@ -89,6 +89,6 @@ namespace core {
         };
 
     }
-} // core::reflection
+} // odcore::reflection
 
 #endif /*OPENDAVINCI_CORE_REFLECTION_FIELD_H*/

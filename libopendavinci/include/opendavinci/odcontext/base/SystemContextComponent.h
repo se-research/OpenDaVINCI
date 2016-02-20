@@ -20,14 +20,14 @@
 #ifndef CONTEXT_BASE_SYSTEMCONTEXTCOMPONENT_H_
 #define CONTEXT_BASE_SYSTEMCONTEXTCOMPONENT_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/FIFOQueue.h"
-#include "opendavinci/core/base/KeyValueDataStore.h"
-#include "opendavinci/core/io/conference/ContainerListener.h"
-#include "opendavinci/context/base/Runner.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/FIFOQueue.h"
+#include "opendavinci/odcore/base/KeyValueDataStore.h"
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
+#include "opendavinci/odcontext/base/Runner.h"
 
-namespace core { namespace data { class Container; } }
+namespace odcore { namespace data { class Container; } }
 
 namespace odcontext {
     namespace base {
@@ -38,7 +38,7 @@ namespace odcontext {
          * This class can be used to compute data for system's parts
          * which can be either feedback or reporting components.
          */
-        class OPENDAVINCI_API SystemContextComponent : public Runner, public core::io::conference::ContainerListener {
+        class OPENDAVINCI_API SystemContextComponent : public Runner, public odcore::io::conference::ContainerListener {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -73,25 +73,25 @@ namespace odcontext {
                  */
                 virtual void tearDown() = 0;
 
-                virtual void nextContainer(core::data::Container &c);
+                virtual void nextContainer(odcore::data::Container &c);
 
                 /**
                  * This method returns the FIFO containing received containers.
                  *
                  * @return FIFO containing received containers.
                  */
-                core::base::FIFOQueue& getFIFO();
+                odcore::base::FIFOQueue& getFIFO();
 
                 /**
                  * This method returns the key/value-data store.
                  *
                  * @return Key/value-datastore.
                  */
-                core::base::KeyValueDataStore& getKeyValueDataStore();
+                odcore::base::KeyValueDataStore& getKeyValueDataStore();
 
             private:
-                core::base::FIFOQueue m_fifo;
-                core::SharedPointer<core::base::KeyValueDataStore> m_keyValueDataStore;
+                odcore::base::FIFOQueue m_fifo;
+                odcore::SharedPointer<odcore::base::KeyValueDataStore> m_keyValueDataStore;
         };
 
     }

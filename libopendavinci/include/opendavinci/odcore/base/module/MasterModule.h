@@ -20,12 +20,12 @@
 #ifndef OPENDAVINCI_CORE_BASE_MODULE_MASTERMODULE_H_
 #define OPENDAVINCI_CORE_BASE_MODULE_MASTERMODULE_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/module/AbstractCIDModule.h"
-#include "opendavinci/core/exceptions/Exceptions.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/module/AbstractCIDModule.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
-namespace core {
+namespace odcore {
     namespace base {
         namespace module {
 
@@ -95,6 +95,6 @@ namespace core {
 
         }
     }
-} // core::base::module
+} // odcore::base::module
 
 #endif /*OPENDAVINCI_CORE_BASE_MODULE_MASTERMODULE_H_*/

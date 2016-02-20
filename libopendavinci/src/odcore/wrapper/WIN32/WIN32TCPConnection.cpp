@@ -21,11 +21,11 @@
 #include <sstream>
 #include <string>
 
-#include "opendavinci/core/wrapper/ConcurrencyFactory.h"
-#include "opendavinci/core/wrapper/MutexFactory.h"
-#include "opendavinci/core/wrapper/WIN32/WIN32TCPConnection.h"
+#include "opendavinci/odcore/wrapper/ConcurrencyFactory.h"
+#include "opendavinci/odcore/wrapper/MutexFactory.h"
+#include "opendavinci/odcore/wrapper/WIN32/WIN32TCPConnection.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
         namespace WIN32Impl {
 

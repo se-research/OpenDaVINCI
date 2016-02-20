@@ -17,14 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/base/Deserializer.h"
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/base/QueryableNetstringsDeserializer.h"
-#include "opendavinci/core/base/QueryableNetstringsSerializer.h"
-#include "opendavinci/core/base/SerializationFactory.h"
-#include "opendavinci/core/base/Serializer.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/QueryableNetstringsDeserializer.h"
+#include "opendavinci/odcore/base/QueryableNetstringsSerializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
         using namespace std;
@@ -68,4 +68,4 @@ namespace core {
         }
 
     }
-} // core::base
+} // odcore::base

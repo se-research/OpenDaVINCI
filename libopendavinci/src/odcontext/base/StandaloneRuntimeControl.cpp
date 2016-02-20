@@ -20,28 +20,28 @@
 #include <iostream>
 #include <sstream>
 
-#include "opendavinci/context/base/Clock.h"
-#include "opendavinci/context/base/ControlledTime.h"
-#include "opendavinci/context/base/RuntimeControlInterface.h"
-#include "opendavinci/context/base/StandaloneRuntimeControl.h"
-#include "opendavinci/context/base/SystemFeedbackComponent.h"
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/core/data/TimeStamp.h"
-#include "opendavinci/core/io/conference/ContainerConferenceFactory.h"
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcontext/base/Clock.h"
+#include "opendavinci/odcontext/base/ControlledTime.h"
+#include "opendavinci/odcontext/base/RuntimeControlInterface.h"
+#include "opendavinci/odcontext/base/StandaloneRuntimeControl.h"
+#include "opendavinci/odcontext/base/SystemFeedbackComponent.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
+#include "opendavinci/odcore/io/conference/ContainerConferenceFactory.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
 
-namespace core { namespace data { class Container; } }
+namespace odcore { namespace data { class Container; } }
 
 namespace odcontext {
     namespace base {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::data;
-        using namespace core::io;
-        using namespace core::io::conference;
+        using namespace odcore::base;
+        using namespace odcore::data;
+        using namespace odcore::io;
+        using namespace odcore::io::conference;
 
         StandaloneRuntimeControl::StandaloneRuntimeControl(const RuntimeControlInterface &sci) :
             odcontext::base::RuntimeControl(sci),

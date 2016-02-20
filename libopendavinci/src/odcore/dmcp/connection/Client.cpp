@@ -20,29 +20,29 @@
 #include <iostream>
 #include <string>
 
-#include "opendavinci/core/base/KeyValueConfiguration.h"
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/base/module/AbstractCIDModule.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/dmcp/SuperComponentStateListener.h"
-#include "opendavinci/core/dmcp/connection/Client.h"
-#include "opendavinci/core/exceptions/Exceptions.h"
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/module/AbstractCIDModule.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/dmcp/SuperComponentStateListener.h"
+#include "opendavinci/odcore/dmcp/connection/Client.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/generated/coredata/Configuration.h"
 #include "opendavinci/generated/coredata/dmcp/Constants.h"
 #include "opendavinci/generated/coredata/dmcp/PulseAckContainersMessage.h"
 #include "opendavinci/generated/coredata/dmcp/PulseAckMessage.h"
 
-namespace core {
+namespace odcore {
     namespace dmcp {
         namespace connection {
             using namespace std;
 
-            using namespace core::base;
-            using namespace core::exceptions;
-            using namespace core::io;
-            using namespace core::data;
-            using namespace core::dmcp;
+            using namespace odcore::base;
+            using namespace odcore::exceptions;
+            using namespace odcore::io;
+            using namespace odcore::data;
+            using namespace odcore::dmcp;
             using namespace coredata::dmcp;
 
             Client::Client(const ModuleDescriptor& moduleDescriptor, const ServerInformation& serverInformation) :
@@ -112,7 +112,7 @@ namespace core {
                 m_connection.send(container);
             }
 
-            void Client::sendPulseAckContainers(const vector<core::data::Container> &listOfContainers) {
+            void Client::sendPulseAckContainers(const vector<odcore::data::Container> &listOfContainers) {
                 PulseAckContainersMessage pac;
                 pac.setListOfContainers(listOfContainers);
                 Container container(Container::DMCP_PULSE_ACK_CONTAINERS_MESSAGE, pac);

@@ -20,32 +20,32 @@
 #ifndef MODULECONFIGURATIONLISTENERMOCK_H_
 #define MODULECONFIGURATIONLISTENERMOCK_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/base/KeyValueConfiguration.h"
-#include "opendavinci/core/dmcp/ModuleConfigurationProvider.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/dmcp/ModuleConfigurationProvider.h"
 
 #include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
 namespace mocks {
-    class ModuleConfigurationProviderMock : public core::dmcp::ModuleConfigurationProvider {
+    class ModuleConfigurationProviderMock : public odcore::dmcp::ModuleConfigurationProvider {
         public:
             ModuleConfigurationProviderMock() : m_configs() {};
             virtual ~ModuleConfigurationProviderMock() {};
 
             void addConfig(const coredata::dmcp::ModuleDescriptor& md,
-                           const core::base::KeyValueConfiguration& kv)
+                           const odcore::base::KeyValueConfiguration& kv)
             {
                 m_configs[md.getName()] = kv;
             }
 
-            virtual core::base::KeyValueConfiguration getConfiguration(const coredata::dmcp::ModuleDescriptor& md)
+            virtual odcore::base::KeyValueConfiguration getConfiguration(const coredata::dmcp::ModuleDescriptor& md)
             {
                 return m_configs[md.getName()];
             };
 
         private:
-            std::map<std::string, core::base::KeyValueConfiguration> m_configs;
+            std::map<std::string, odcore::base::KeyValueConfiguration> m_configs;
     };
 }
 #endif /* MODULECONFIGURATIONLISTENERMOCK_H_ */

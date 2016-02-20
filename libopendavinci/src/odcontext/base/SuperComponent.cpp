@@ -20,13 +20,13 @@
 #include <iostream>
 #include <sstream>
 
-#include "opendavinci/context/base/SuperComponent.h"
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/dmcp/connection/ModuleConnection.h"
-#include "opendavinci/core/dmcp/connection/Server.h"
-#include "opendavinci/core/dmcp/discoverer/Server.h"
-#include "opendavinci/core/io/conference/ContainerConferenceFactory.h"
+#include "opendavinci/odcontext/base/SuperComponent.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/dmcp/connection/ModuleConnection.h"
+#include "opendavinci/odcore/dmcp/connection/Server.h"
+#include "opendavinci/odcore/dmcp/discoverer/Server.h"
+#include "opendavinci/odcore/io/conference/ContainerConferenceFactory.h"
 #include "opendavinci/generated/coredata/dmcp/Constants.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleDescriptor.h"
 #include "opendavinci/generated/coredata/dmcp/ServerInformation.h"
@@ -35,11 +35,11 @@ namespace odcontext {
     namespace base {
 
         using namespace std;
-        using namespace core;
-        using namespace core::base;
-        using namespace core::io;
-        using namespace core::io::conference;
-        using namespace core::dmcp;
+        using namespace odcore;
+        using namespace odcore::base;
+        using namespace odcore::io;
+        using namespace odcore::io::conference;
+        using namespace odcore::dmcp;
         using namespace coredata::dmcp;
 
         SuperComponent::SuperComponent(const string &multicastGroup, const uint32_t &CID, const KeyValueConfiguration &configuration) :
@@ -55,11 +55,11 @@ namespace odcontext {
             clog << "(context::base::SuperComponent) Server information: " << serverInformation.toString() << endl;
             clog << "(context::base::SuperComponent) Creating discoverer server..." << endl;
             vector<string> noModulesToIgnore;
-            m_discovererServer = auto_ptr<core::dmcp::discoverer::Server>(new discoverer::Server(serverInformation, multicastGroup, coredata::dmcp::Constants::BROADCAST_PORT_SERVER, coredata::dmcp::Constants::BROADCAST_PORT_CLIENT, noModulesToIgnore));
+            m_discovererServer = auto_ptr<odcore::dmcp::discoverer::Server>(new discoverer::Server(serverInformation, multicastGroup, coredata::dmcp::Constants::BROADCAST_PORT_SERVER, coredata::dmcp::Constants::BROADCAST_PORT_CLIENT, noModulesToIgnore));
             m_discovererServer->startResponding();
 
             clog << "(context::base::SuperComponent) Creating connection server..." << endl;
-            m_connectionServer = auto_ptr<core::dmcp::connection::Server>(new connection::Server(serverInformation, *this));
+            m_connectionServer = auto_ptr<odcore::dmcp::connection::Server>(new connection::Server(serverInformation, *this));
             m_connectionServer->setConnectionHandler(this);
 
             clog << "(context::base::SuperComponent) Creating ContainerConference..." << endl;
@@ -136,7 +136,7 @@ namespace odcontext {
             return m_configuration;
         }
 
-        void SuperComponent::onNewModule(SharedPointer<core::dmcp::connection::ModuleConnection> mc) {
+        void SuperComponent::onNewModule(SharedPointer<odcore::dmcp::connection::ModuleConnection> mc) {
             if (mc.isValid()) {
                 clog << "(context::base::SuperComponent) Got new connection from " << mc->getModuleDescriptor().toString() << endl;
 
@@ -204,7 +204,7 @@ namespace odcontext {
             clog << "(context::base::SuperComponent) Lost connection to " << md.toString() << endl;
         }
 
-        void SuperComponent::handleUnkownContainer(const coredata::dmcp::ModuleDescriptor& md, const core::data::Container& container) {
+        void SuperComponent::handleUnkownContainer(const coredata::dmcp::ModuleDescriptor& md, const odcore::data::Container& container) {
             clog << "(context::base::SuperComponent) Received unknown container " << container.toString() << "from " << md.toString() << endl;
         }
 

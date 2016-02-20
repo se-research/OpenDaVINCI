@@ -17,13 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/base/RealtimeService.h"
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/wrapper/ConcurrencyFactory.h"
-#include "opendavinci/core/wrapper/Thread.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/RealtimeService.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/wrapper/ConcurrencyFactory.h"
+#include "opendavinci/odcore/wrapper/Thread.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
         using namespace exceptions;
@@ -33,7 +33,7 @@ namespace core {
             m_thread(),
             m_realtimeServiceStateMutex(),
             m_realtimeServiceState(INITIALIZED) {
-            m_thread = auto_ptr<core::wrapper::Thread>(core::wrapper::ConcurrencyFactory::createThread(*this));
+            m_thread = auto_ptr<odcore::wrapper::Thread>(odcore::wrapper::ConcurrencyFactory::createThread(*this));
             if (m_thread.get() == NULL) {
                 OPENDAVINCI_CORE_THROW_EXCEPTION(ThreadException, "[core::base::RealtimeService] Thread could not be created!");
             }
@@ -71,4 +71,4 @@ namespace core {
         }
 
     }
-} // core::base
+} // odcore::base

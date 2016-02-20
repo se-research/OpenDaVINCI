@@ -17,38 +17,38 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/context/base/SystemContextComponent.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/wrapper/KeyValueDatabase.h"
-#include "opendavinci/core/wrapper/KeyValueDatabaseFactory.h"
+#include "opendavinci/odcontext/base/SystemContextComponent.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/wrapper/KeyValueDatabase.h"
+#include "opendavinci/odcore/wrapper/KeyValueDatabaseFactory.h"
 
 namespace odcontext {
     namespace base {
 
         using namespace std;
-        using namespace core::base;
+        using namespace odcore::base;
 
         SystemContextComponent::SystemContextComponent() :
             m_fifo(),
             m_keyValueDataStore() {
             // Create an in-memory database.
-            m_keyValueDataStore = core::SharedPointer<KeyValueDataStore>(new KeyValueDataStore(core::wrapper::KeyValueDatabaseFactory::createKeyValueDatabase()));
+            m_keyValueDataStore = odcore::SharedPointer<KeyValueDataStore>(new KeyValueDataStore(odcore::wrapper::KeyValueDatabaseFactory::createKeyValueDatabase()));
         }
 
         SystemContextComponent::~SystemContextComponent() {}
 
-        void SystemContextComponent::nextContainer(core::data::Container &c) {
+        void SystemContextComponent::nextContainer(odcore::data::Container &c) {
             m_fifo.add(c);
 
             // Store data using a plain map.
             m_keyValueDataStore->put(c.getDataType(), c);
         }
 
-        core::base::FIFOQueue& SystemContextComponent::getFIFO() {
+        odcore::base::FIFOQueue& SystemContextComponent::getFIFO() {
             return m_fifo;
         }
 
-        core::base::KeyValueDataStore& SystemContextComponent::getKeyValueDataStore() {
+        odcore::base::KeyValueDataStore& SystemContextComponent::getKeyValueDataStore() {
         	return *m_keyValueDataStore;
         }
 

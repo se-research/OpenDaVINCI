@@ -17,34 +17,34 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/io/udp/UDPFactory.h"
-#include "opendavinci/core/io/udp/UDPReceiver.h"
-#include "opendavinci/core/io/udp/UDPSender.h"
-#include "opendavinci/core/wrapper/ConfigurationTraits.h"
-#include "opendavinci/core/wrapper/Libraries.h"
-#include "opendavinci/core/wrapper/NetworkLibraryProducts.h"
+#include "opendavinci/odcore/io/udp/UDPFactory.h"
+#include "opendavinci/odcore/io/udp/UDPReceiver.h"
+#include "opendavinci/odcore/io/udp/UDPSender.h"
+#include "opendavinci/odcore/wrapper/ConfigurationTraits.h"
+#include "opendavinci/odcore/wrapper/Libraries.h"
+#include "opendavinci/odcore/wrapper/NetworkLibraryProducts.h"
 
 #ifdef WIN32
-    #include "opendavinci/core/wrapper/WIN32/WIN32UDPFactoryWorker.h"
+    #include "opendavinci/odcore/wrapper/WIN32/WIN32UDPFactoryWorker.h"
 #endif
 #ifndef WIN32
-    #include "opendavinci/core/wrapper/POSIX/POSIXUDPFactoryWorker.h"
+    #include "opendavinci/odcore/wrapper/POSIX/POSIXUDPFactoryWorker.h"
 #endif
 
-namespace core {
+namespace odcore {
     namespace io {
         namespace udp {
 
             SharedPointer<UDPSender> UDPFactory::createUDPSender(const string &address, const uint32_t &port) {
-                typedef core::wrapper::ConfigurationTraits<core::wrapper::NetworkLibraryProducts>::configuration configuration;
-                return SharedPointer<UDPSender>(core::wrapper::UDPFactoryWorker<configuration::value>::createUDPSender(address, port));
+                typedef odcore::wrapper::ConfigurationTraits<odcore::wrapper::NetworkLibraryProducts>::configuration configuration;
+                return SharedPointer<UDPSender>(odcore::wrapper::UDPFactoryWorker<configuration::value>::createUDPSender(address, port));
             }
 
             SharedPointer<UDPReceiver> UDPFactory::createUDPReceiver(const string &address, const uint32_t &port) {
-                typedef core::wrapper::ConfigurationTraits<core::wrapper::NetworkLibraryProducts>::configuration configuration;
-                return SharedPointer<UDPReceiver>(core::wrapper::UDPFactoryWorker<configuration::value>::createUDPReceiver(address, port));
+                typedef odcore::wrapper::ConfigurationTraits<odcore::wrapper::NetworkLibraryProducts>::configuration configuration;
+                return SharedPointer<UDPReceiver>(odcore::wrapper::UDPFactoryWorker<configuration::value>::createUDPReceiver(address, port));
             }
 
         }
     }
-} // core::io::udp
+} // odcore::io::udp

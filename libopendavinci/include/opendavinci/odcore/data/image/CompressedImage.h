@@ -22,10 +22,10 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 
-namespace core {
+namespace odcore {
     namespace data {
         namespace image {
 
@@ -35,7 +35,7 @@ namespace core {
              * This class provides information about a compressed image using
              * JPEG encoding based on IJG.
              */
-            class OPENDAVINCI_API CompressedImage : public core::data::SerializableData {
+            class OPENDAVINCI_API CompressedImage : public odcore::data::SerializableData {
                 public:
                     CompressedImage();
 
@@ -161,6 +161,6 @@ namespace core {
             };
         }
     }
-} // core::data::image
+} // odcore::data::image
 
 #endif /*OPENDAVINCI_CORE_DATA_IMAGE_COMPRESSEDIMAGE_H_*/

@@ -24,15 +24,15 @@
 #include <memory>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/AbstractDataStore.h"
-#include "opendavinci/core/base/FIFOQueue.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/AbstractDataStore.h"
+#include "opendavinci/odcore/base/FIFOQueue.h"
 #include "opendavinci/generated/coredata/SharedData.h"
 #include "opendavinci/generated/coredata/image/SharedImage.h"
 
-namespace core { namespace data { class Container; } }
-namespace core { namespace wrapper { class SharedMemory; } }
+namespace odcore { namespace data { class Container; } }
+namespace odcore { namespace wrapper { class SharedMemory; } }
 
 namespace odtools {
     namespace recorder {
@@ -44,7 +44,7 @@ class SharedDataWriter;
         /**
          * This class encapsulates a listener for SharedData containers.
          */
-        class SharedDataListener : public core::base::AbstractDataStore {
+        class SharedDataListener : public odcore::base::AbstractDataStore {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -74,11 +74,11 @@ class SharedDataWriter;
                  * @param numberOfMemorySegments Number of available memory segments.
                  * @param threading Cf. constructor of Recorder.
                  */
-                SharedDataListener(core::SharedPointer<ostream> out, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const bool &threading);
+                SharedDataListener(odcore::SharedPointer<ostream> out, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const bool &threading);
 
                 virtual ~SharedDataListener();
 
-                virtual void add(const core::data::Container &container);
+                virtual void add(const odcore::data::Container &container);
 
                 virtual void clear();
 
@@ -95,7 +95,7 @@ class SharedDataWriter;
                  * @param header Container that contains the meta-data for this shared memory segment which shall be used as header in the file.
                  * @return true if the copy succeeded.
                  */
-                bool copySharedMemoryToMemorySegment(const string &name, const core::data::Container &header);
+                bool copySharedMemoryToMemorySegment(const string &name, const odcore::data::Container &header);
 
             private:
                 bool m_threading;
@@ -105,14 +105,14 @@ class SharedDataWriter;
 
                 map<uint32_t, char*> m_mapOfMemories;
 
-                core::base::FIFOQueue m_bufferIn;
-                core::base::FIFOQueue m_bufferOut;
+                odcore::base::FIFOQueue m_bufferIn;
+                odcore::base::FIFOQueue m_bufferOut;
 
                 uint32_t m_droppedSharedMemories;
 
-                map<string, core::SharedPointer<core::wrapper::SharedMemory> > m_sharedPointers;
+                map<string, odcore::SharedPointer<odcore::wrapper::SharedMemory> > m_sharedPointers;
 
-                core::SharedPointer<ostream> m_out;
+                odcore::SharedPointer<ostream> m_out;
         };
 
     } // recorder

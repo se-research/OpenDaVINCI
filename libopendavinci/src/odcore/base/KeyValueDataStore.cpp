@@ -20,11 +20,11 @@
 #include <iosfwd>
 #include <string>
 
-#include "opendavinci/core/base/KeyValueDataStore.h"
-#include "opendavinci/core/base/Serializable.h"
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/base/KeyValueDataStore.h"
+#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
         using namespace data;
@@ -64,4 +64,4 @@ namespace core {
         }
 
     }
-} // core::base
+} // odcore::base

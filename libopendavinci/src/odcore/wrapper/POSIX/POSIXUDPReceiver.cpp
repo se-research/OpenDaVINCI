@@ -25,12 +25,12 @@
 #include <cstring>
 #include <sstream>
 
-#include "opendavinci/core/io/Packet.h"
-#include "opendavinci/core/wrapper/ConcurrencyFactory.h"
-#include "opendavinci/core/wrapper/POSIX/POSIXUDPReceiver.h"
-#include "opendavinci/core/wrapper/Thread.h"
+#include "opendavinci/odcore/io/Packet.h"
+#include "opendavinci/odcore/wrapper/ConcurrencyFactory.h"
+#include "opendavinci/odcore/wrapper/POSIX/POSIXUDPReceiver.h"
+#include "opendavinci/odcore/wrapper/Thread.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
         namespace POSIX {
 
@@ -141,7 +141,7 @@ namespace core {
                             inet_ntop(remote.ss_family, &((reinterpret_cast<struct sockaddr_in*>(&remote))->sin_addr), remoteAddr, sizeof(remoteAddr));
 
                             // ----------------------v (remote address)--v (data)
-                            nextPacket(core::io::Packet(string(remoteAddr), string(m_buffer, nbytes)));
+                            nextPacket(odcore::io::Packet(string(remoteAddr), string(m_buffer, nbytes)));
                         }
                     }
                 }
@@ -168,4 +168,4 @@ namespace core {
             }
         }
     }
-} // core::wrapper::POSIX
+} // odcore::wrapper::POSIX

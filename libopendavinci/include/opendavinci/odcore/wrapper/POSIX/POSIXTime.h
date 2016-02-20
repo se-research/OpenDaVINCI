@@ -20,13 +20,13 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXTIME_H_
 #define OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXTIME_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/wrapper/SystemLibraryProducts.h"
-#include "opendavinci/core/wrapper/Time.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/wrapper/SystemLibraryProducts.h"
+#include "opendavinci/odcore/wrapper/Time.h"
 
-namespace core { namespace wrapper { template <core::wrapper::SystemLibraryProducts product> class TimeFactoryWorker; } }
+namespace odcore { namespace wrapper { template <odcore::wrapper::SystemLibraryProducts product> class TimeFactoryWorker; } }
 
-namespace core {
+namespace odcore {
     namespace wrapper {
         namespace POSIX {
 
@@ -70,6 +70,6 @@ namespace core {
 
         }
     }
-} // core::wrapper::POSIX
+} // odcore::wrapper::POSIX
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXTIME_H_*/

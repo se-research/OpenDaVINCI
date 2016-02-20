@@ -20,11 +20,11 @@
 #ifndef OPENDAVINCI_CORE_BASE_MUTEX_H_
 #define OPENDAVINCI_CORE_BASE_MUTEX_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/wrapper/Mutex.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/wrapper/Mutex.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
         /**
@@ -89,10 +89,10 @@ namespace core {
                 virtual void unlock();
 
             private:
-                SharedPointer<core::wrapper::Mutex> m_mutex;
+                SharedPointer<odcore::wrapper::Mutex> m_mutex;
         };
 
     }
-} // core::base
+} // odcore::base
 
 #endif /*OPENDAVINCI_CORE_BASE_MUTEX_H_*/

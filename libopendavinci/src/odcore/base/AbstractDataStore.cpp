@@ -17,10 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/base/AbstractDataStore.h"
-#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/odcore/base/AbstractDataStore.h"
+#include "opendavinci/odcore/base/Lock.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
         AbstractDataStore::AbstractDataStore() :
@@ -47,4 +47,4 @@ namespace core {
 
 
     }
-} // core::base
+} // odcore::base

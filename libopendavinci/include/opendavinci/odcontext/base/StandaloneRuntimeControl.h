@@ -22,16 +22,16 @@
 
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/context/base/RuntimeControl.h"
-#include "opendavinci/context/base/RuntimeEnvironment.h"
-#include "opendavinci/context/base/SendContainerToSystemsUnderTest.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/io/conference/ContainerConference.h"
-#include "opendavinci/core/io/conference/ContainerListener.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcontext/base/RuntimeControl.h"
+#include "opendavinci/odcontext/base/RuntimeEnvironment.h"
+#include "opendavinci/odcontext/base/SendContainerToSystemsUnderTest.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/io/conference/ContainerConference.h"
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
 
-namespace core { namespace data { class Container; } }
+namespace odcore { namespace data { class Container; } }
 
 namespace odcontext {
     namespace base {
@@ -44,7 +44,7 @@ class SystemFeedbackComponent;
 		/**
 		 * This class is the abstract base class for all standalone simulation.
 		 */
-		class OPENDAVINCI_API StandaloneRuntimeControl : public RuntimeControl, public core::io::conference::ContainerListener, public SendContainerToSystemsUnderTest {
+		class OPENDAVINCI_API StandaloneRuntimeControl : public RuntimeControl, public odcore::io::conference::ContainerListener, public SendContainerToSystemsUnderTest {
 			public:
 				enum VEHICLECONTEXTMODULES {
 					SIMPLIFIEDBICYCLEMODEL,
@@ -75,7 +75,7 @@ class SystemFeedbackComponent;
 
 				virtual ~StandaloneRuntimeControl();
 
-				virtual void sendToSystemsUnderTest(core::data::Container &c);
+				virtual void sendToSystemsUnderTest(odcore::data::Container &c);
 
 			protected:
 				/**
@@ -100,16 +100,16 @@ class SystemFeedbackComponent;
 				virtual void destroySystemFeedbackComponents();
 
 			private:
-				core::SharedPointer<core::io::conference::ContainerConference> m_conference;
+				odcore::SharedPointer<odcore::io::conference::ContainerConference> m_conference;
 
 				RuntimeEnvironment m_rte;
 
-				core::base::Mutex m_listOfSystemFeedbackComponentsMutex;
+				odcore::base::Mutex m_listOfSystemFeedbackComponentsMutex;
 				vector<SystemFeedbackComponent*> m_listOfSystemFeedbackComponents;
 
                 virtual enum ERRORCODES runStandalone();
 
-				virtual void nextContainer(core::data::Container &c);
+				virtual void nextContainer(odcore::data::Container &c);
 		};
 
     }

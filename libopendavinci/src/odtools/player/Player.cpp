@@ -22,29 +22,29 @@
 #include <iostream>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/core/base/module/AbstractCIDModule.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/data/image/CompressedImage.h"
-#include "opendavinci/core/io/StreamFactory.h"
-#include "opendavinci/core/io/URL.h"
-#include "opendavinci/core/wrapper/SharedMemoryFactory.h"
-#include "opendavinci/core/wrapper/jpg/JPG.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/base/module/AbstractCIDModule.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/data/image/CompressedImage.h"
+#include "opendavinci/odcore/io/StreamFactory.h"
+#include "opendavinci/odcore/io/URL.h"
+#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/odcore/wrapper/jpg/JPG.h"
 
 #include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
-#include "opendavinci/tools/player/Player.h"
-#include "opendavinci/tools/player/PlayerCache.h"
+#include "opendavinci/odtools/player/Player.h"
+#include "opendavinci/odtools/player/PlayerCache.h"
 
 namespace odtools {
     namespace player {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::data;
-        using namespace core::io;
+        using namespace odcore::base;
+        using namespace odcore::data;
+        using namespace odcore::io;
 
         Player::Player(const URL &url, const bool &autoRewind, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const bool &threading) :
             m_threading(threading),
@@ -70,7 +70,7 @@ namespace odtools {
                     m_inSharedMemoryFile = StreamFactory::getInstance().getInputStream(urlSharedMemoryFile);
                     CLOG1 << "Player: Found shared memory dump file '" << urlSharedMemoryFile.toString() << "'" << endl;
                 }
-                catch (const core::exceptions::InvalidArgumentException &iae) {
+                catch (const odcore::exceptions::InvalidArgumentException &iae) {
                     clog << "Player: Warning: " << iae.toString() << endl;
                 } 
             }
@@ -167,24 +167,24 @@ namespace odtools {
 
             // If the actual container is a COMPRESSED_IMAGE then decode it and replace the container with a shared image before sending the actual container.
             if (m_actual.getDataType() == Container::COMPRESSED_IMAGE) {
-                core::data::image::CompressedImage ci = m_actual.getData<core::data::image::CompressedImage>();
+                odcore::data::image::CompressedImage ci = m_actual.getData<odcore::data::image::CompressedImage>();
 
                 // Check, whether a shared memory was already created for this compressed image; otherwise, create it and save it for later.
-                map<string, core::SharedPointer<core::wrapper::SharedMemory> >::iterator it = m_mapOfSharedMemoriesForCompressedImages.find(ci.getName());
+                map<string, odcore::SharedPointer<odcore::wrapper::SharedMemory> >::iterator it = m_mapOfSharedMemoriesForCompressedImages.find(ci.getName());
                 if (it == m_mapOfSharedMemoriesForCompressedImages.end()) {
-                    core::SharedPointer<core::wrapper::SharedMemory> sp = core::wrapper::SharedMemoryFactory::createSharedMemory(ci.getName(), ci.getSize());
+                    odcore::SharedPointer<odcore::wrapper::SharedMemory> sp = odcore::wrapper::SharedMemoryFactory::createSharedMemory(ci.getName(), ci.getSize());
                     m_mapOfSharedMemoriesForCompressedImages[ci.getName()] = sp;
                 }
 
                 // Get the shared memory to put the uncompressed image into.
-                core::SharedPointer<core::wrapper::SharedMemory> sp = m_mapOfSharedMemoriesForCompressedImages[ci.getName()];
+                odcore::SharedPointer<odcore::wrapper::SharedMemory> sp = m_mapOfSharedMemoriesForCompressedImages[ci.getName()];
 
                 int width = 0;
                 int height = 0;
                 int bpp = 0;
 
                 // Decompress image data.
-                unsigned char *imageData = core::wrapper::jpg::JPG::decompress(ci.getRawData(), ci.getCompressedSize(), &width, &height, &bpp, ci.getBytesPerPixel());
+                unsigned char *imageData = odcore::wrapper::jpg::JPG::decompress(ci.getRawData(), ci.getCompressedSize(), &width, &height, &bpp, ci.getBytesPerPixel());
 
                 if ( (imageData != NULL) &&
                      (width > 0) &&

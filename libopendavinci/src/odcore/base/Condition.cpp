@@ -17,15 +17,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/base/Condition.h"
-#include "opendavinci/core/wrapper/ConditionFactory.h"
+#include "opendavinci/odcore/base/Condition.h"
+#include "opendavinci/odcore/wrapper/ConditionFactory.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
         Condition::Condition() :
             m_condition() {
-            m_condition = core::wrapper::ConditionFactory::createCondition();
+            m_condition = odcore::wrapper::ConditionFactory::createCondition();
         }
 
         Condition::~Condition() {}
@@ -59,4 +59,4 @@ namespace core {
         }
 
     }
-} // core::base
+} // odcore::base

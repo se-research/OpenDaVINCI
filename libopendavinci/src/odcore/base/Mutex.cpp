@@ -17,10 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/wrapper/MutexFactory.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/wrapper/MutexFactory.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
         Mutex::Mutex() :
@@ -47,4 +47,4 @@ namespace core {
         }
 
     }
-} // core::base
+} // odcore::base

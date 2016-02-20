@@ -17,11 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/wrapper/Mutex.h"
-#include "opendavinci/core/wrapper/MutexFactory.h"
-#include "opendavinci/core/wrapper/SimpleDB/SimpleDB.h"
+#include "opendavinci/odcore/wrapper/Mutex.h"
+#include "opendavinci/odcore/wrapper/MutexFactory.h"
+#include "opendavinci/odcore/wrapper/SimpleDB/SimpleDB.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
         namespace SimpleDB {
 
@@ -57,4 +57,4 @@ namespace core {
 
         }
     }
-} // core::wrapper::SimpleDB
+} // odcore::wrapper::SimpleDB

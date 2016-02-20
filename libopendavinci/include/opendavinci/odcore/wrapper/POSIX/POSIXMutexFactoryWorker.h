@@ -20,24 +20,24 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXMUTEXFACTORYWORKER_H_
 #define OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXMUTEXFACTORYWORKER_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/wrapper/Mutex.h"
-#include "opendavinci/core/wrapper/MutexFactoryWorker.h"
+#include "opendavinci/odcore/wrapper/Mutex.h"
+#include "opendavinci/odcore/wrapper/MutexFactoryWorker.h"
 
-#include "opendavinci/core/wrapper/POSIX/POSIXMutex.h"
+#include "opendavinci/odcore/wrapper/POSIX/POSIXMutex.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         template <> class OPENDAVINCI_API MutexFactoryWorker<SystemLibraryPosix> {
             public:
                 static Mutex* createMutex() {
-                    return new core::wrapper::POSIX::POSIXMutex();
+                    return new odcore::wrapper::POSIX::POSIXMutex();
                 }
         };
 
     }
-} // core::wrapper
+} // odcore::wrapper
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_POSIX_POSIXMUTEXFACTORYWORKER_H_*/

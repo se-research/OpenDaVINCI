@@ -22,12 +22,12 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/io/conference/ContainerConference.h"
-#include "opendavinci/core/io/conference/ContainerListener.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/io/conference/ContainerConference.h"
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
 
-namespace core { namespace data { class Container; } }
-namespace core { namespace io { namespace conference { class ContainerObserver; } } }
+namespace odcore { namespace data { class Container; } }
+namespace odcore { namespace io { namespace conference { class ContainerObserver; } } }
 
 namespace odcontext {
     namespace base {
@@ -40,7 +40,7 @@ class BlockableContainerReceiver;
         /**
          * This class provides a controlled container conference.
          */
-        class OPENDAVINCI_API ControlledContainerConferenceForSystemUnderTest : public core::io::conference::ContainerConference, public core::io::conference::ContainerListener {
+        class OPENDAVINCI_API ControlledContainerConferenceForSystemUnderTest : public odcore::io::conference::ContainerConference, public odcore::io::conference::ContainerListener {
             private:
                 friend class ControlledContainerConferenceFactory;
 
@@ -68,14 +68,14 @@ class BlockableContainerReceiver;
                  * @param bcl BlockableContainerListener to which we send our Containers.
                  * @param receiveFromObserver ContainerObserver which delivers incoming Containers to us.
                  */
-                ControlledContainerConferenceForSystemUnderTest(const string &address, const uint32_t &port, BlockableContainerReceiver &bcl, core::io::conference::ContainerObserver &receiveFromObserver);
+                ControlledContainerConferenceForSystemUnderTest(const string &address, const uint32_t &port, BlockableContainerReceiver &bcl, odcore::io::conference::ContainerObserver &receiveFromObserver);
 
             public:
                 virtual ~ControlledContainerConferenceForSystemUnderTest();
 
-                virtual void send(core::data::Container &container) const;
+                virtual void send(odcore::data::Container &container) const;
 
-                virtual void nextContainer(core::data::Container &c);
+                virtual void nextContainer(odcore::data::Container &c);
 
                 /**
                  * This method returns the BlockableContainerReceiver.
@@ -86,7 +86,7 @@ class BlockableContainerReceiver;
 
             private:
                 BlockableContainerReceiver &m_sendToListener;
-                core::io::conference::ContainerObserver &m_receiveFromObserver;
+                odcore::io::conference::ContainerObserver &m_receiveFromObserver;
         };
 
     }

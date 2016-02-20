@@ -19,9 +19,9 @@
 
 #include <sys/time.h>
 
-#include "opendavinci/core/wrapper/POSIX/POSIXTime.h"
+#include "opendavinci/odcore/wrapper/POSIX/POSIXTime.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
         namespace POSIX {
 
@@ -46,4 +46,4 @@ namespace core {
 
         }
     }
-} // core::wrapper::POSIX
+} // odcore::wrapper::POSIX

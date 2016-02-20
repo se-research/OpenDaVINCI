@@ -23,15 +23,15 @@
 #include <memory>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/io/ConnectionObserver.h"
-#include "opendavinci/core/io/StringSender.h"
-#include "opendavinci/core/wrapper/Runnable.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/io/ConnectionObserver.h"
+#include "opendavinci/odcore/io/StringSender.h"
+#include "opendavinci/odcore/wrapper/Runnable.h"
 
-namespace core { namespace io { class ConnectionListener; } }
-namespace core { namespace io { class StringListener; } }
+namespace odcore { namespace io { class ConnectionListener; } }
+namespace odcore { namespace io { class StringListener; } }
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
 class Mutex;
@@ -42,7 +42,7 @@ class Thread;
         /**
          * This class provides a platform-independent serial port encapsulation.
          */
-        class OPENDAVINCI_API SerialPort : public Runnable, public core::io::StringSender, public core::io::ConnectionObserver {
+        class OPENDAVINCI_API SerialPort : public Runnable, public odcore::io::StringSender, public odcore::io::ConnectionObserver {
             public:
                 /**
                  * Constructor for enforcing subclasses for this class.
@@ -60,14 +60,14 @@ class Thread;
                  *
                  * @param cl The ConnectionListener
                  */
-                void setConnectionListener(core::io::ConnectionListener* cl);
+                void setConnectionListener(odcore::io::ConnectionListener* cl);
 
                 /**
                  * This method sets the StringListener that will realize the protocol.
                  *
                  * @param sl StringListener that will handle incoming data.
                  */
-                void setStringListener(core::io::StringListener *sl);
+                void setStringListener(odcore::io::StringListener *sl);
 
                 /**
                  * This method must be called to start the connection.
@@ -115,10 +115,10 @@ class Thread;
                 auto_ptr<Thread> m_thread;
 
                 auto_ptr<Mutex> m_connectionListenerMutex;
-                core::io::ConnectionListener* m_connectionListener;
+                odcore::io::ConnectionListener* m_connectionListener;
 
                 auto_ptr<Mutex> m_stringListenerMutex;
-                core::io::StringListener *m_stringListener;
+                odcore::io::StringListener *m_stringListener;
 
                 void *m_serial;
 

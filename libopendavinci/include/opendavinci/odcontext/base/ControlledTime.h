@@ -20,8 +20,8 @@
 #ifndef CONTEXT_BASE_CONTROLLEDTIME_H_
 #define CONTEXT_BASE_CONTROLLEDTIME_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/wrapper/Time.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/wrapper/Time.h"
 
 namespace odcontext {
     namespace base {
@@ -29,7 +29,7 @@ namespace odcontext {
         /**
          * This class provides a controlled time.
          */
-        class OPENDAVINCI_API ControlledTime : public core::wrapper::Time {
+        class OPENDAVINCI_API ControlledTime : public odcore::wrapper::Time {
             public:
                 ControlledTime();
 

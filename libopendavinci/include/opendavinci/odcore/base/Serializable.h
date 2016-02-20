@@ -22,9 +22,9 @@
 
 #include <sstream>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
         using namespace std;
@@ -80,12 +80,12 @@ namespace core {
         };
 
     }
-} // core::base
+} // odcore::base
 
 namespace std {
     // The following methods are declarations for convenient usage.
-    ostream OPENDAVINCI_API &operator<<(ostream &out, const core::base::Serializable &s);
-    istream OPENDAVINCI_API &operator>>(istream &in, core::base::Serializable &s);
+    ostream OPENDAVINCI_API &operator<<(ostream &out, const odcore::base::Serializable &s);
+    istream OPENDAVINCI_API &operator>>(istream &in, odcore::base::Serializable &s);
 }
 
 #endif /*OPENDAVINCI_CORE_BASE_SERIALIZEABLE_H_*/

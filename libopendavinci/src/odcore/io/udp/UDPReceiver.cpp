@@ -17,19 +17,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/io/Packet.h"
-#include "opendavinci/core/io/PacketListener.h"
-#include "opendavinci/core/io/udp/UDPReceiver.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/io/Packet.h"
+#include "opendavinci/odcore/io/PacketListener.h"
+#include "opendavinci/odcore/io/udp/UDPReceiver.h"
 
-namespace core { namespace io { class StringListener; } }
+namespace odcore { namespace io { class StringListener; } }
 
-namespace core {
+namespace odcore {
     namespace io {
         namespace udp {
 
             using namespace std;
-            using namespace core::base;
+            using namespace odcore::base;
 
             UDPReceiver::UDPReceiver() :
                 m_stringPipeline(),
@@ -65,4 +65,4 @@ namespace core {
 
         }
     }
-} // core::io::udp
+} // odcore::io::udp

@@ -23,10 +23,10 @@
 #include <memory>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/context/base/SystemReportingComponent.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcontext/base/SystemReportingComponent.h"
 
-namespace core { namespace wrapper { class Time; } }
+namespace odcore { namespace wrapper { class Time; } }
 namespace odtools { namespace recorder { class Recorder; } }
 
 namespace odcontext {
@@ -68,7 +68,7 @@ namespace odcontext {
 
                 virtual void tearDown();
 
-                virtual void report(const core::wrapper::Time &t);
+                virtual void report(const odcore::wrapper::Time &t);
 
             private:
                 virtual float getFrequency() const;

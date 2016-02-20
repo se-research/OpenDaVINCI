@@ -22,9 +22,9 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
 class Serializable;
@@ -47,7 +47,7 @@ class Serializable;
                  * @param shortName Short identifier for the v to be serialized.
                  * @param v Serializable to be serialized.
                  */
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, core::base::Serializable &v) = 0;
+                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, odcore::base::Serializable &v) = 0;
 
                 /**
                  * This method visits a bool.
@@ -206,6 +206,6 @@ class Serializable;
         };
 
     }
-} // core::base
+} // odcore::base
 
 #endif /*OPENDAVINCI_CORE_BASE_VISITOR_H_*/

@@ -20,12 +20,12 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_COMPRESSIONFACTORYWORKER_H_
 #define OPENDAVINCI_CORE_WRAPPER_COMPRESSIONFACTORYWORKER_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/wrapper/DecompressedData.h"
-#include "opendavinci/core/wrapper/CompressionLibraryProducts.h"
+#include "opendavinci/odcore/wrapper/DecompressedData.h"
+#include "opendavinci/odcore/wrapper/CompressionLibraryProducts.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         using namespace std;
@@ -52,6 +52,6 @@ namespace core {
         };
 
     }
-} // core::wrapper
+} // odcore::wrapper
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_COMPRESSIONFACTORYWORKER_H_*/

@@ -19,19 +19,19 @@
 
 #include <iostream>
 
-#include "opendavinci/context/base/BlockableContainerReceiver.h"
-#include "opendavinci/context/base/ControlledContainerConferenceForSystemUnderTest.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/data/TimeStamp.h"
-#include "opendavinci/core/io/conference/ContainerObserver.h"
+#include "opendavinci/odcontext/base/BlockableContainerReceiver.h"
+#include "opendavinci/odcontext/base/ControlledContainerConferenceForSystemUnderTest.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
+#include "opendavinci/odcore/io/conference/ContainerObserver.h"
 
 namespace odcontext {
     namespace base {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::data;
-        using namespace core::io;
+        using namespace odcore::base;
+        using namespace odcore::data;
+        using namespace odcore::io;
 
         ControlledContainerConferenceForSystemUnderTest::ControlledContainerConferenceForSystemUnderTest(const string &address, const uint32_t &port, BlockableContainerReceiver &bcl, ContainerObserver &receiveFromObserver) :
             m_sendToListener(bcl),

@@ -24,9 +24,9 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/odcore/SharedPointer.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         using namespace std;
@@ -59,6 +59,6 @@ namespace core {
         };
 
     }
-} // core::wrapper
+} // odcore::wrapper
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_DECOMPRESSEDDATA_H_*/

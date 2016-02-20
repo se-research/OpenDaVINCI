@@ -22,9 +22,9 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-namespace core {
+namespace odcore {
     namespace io {
         namespace udp {
 
@@ -71,6 +71,6 @@ namespace core {
 
         }
     }
-} // core::io::udp
+} // odcore::io::udp
 
 #endif /*OPENDAVINCI_CORE_IO_UDP_UDPSENDER_H_*/

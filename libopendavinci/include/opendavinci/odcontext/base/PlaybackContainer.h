@@ -23,10 +23,10 @@
 #include <memory>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/context/base/SystemFeedbackComponent.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcontext/base/SystemFeedbackComponent.h"
 
-namespace core { namespace wrapper { class Time; } }
+namespace odcore { namespace wrapper { class Time; } }
 namespace odtools { namespace player { class Player; } }
 
 namespace odcontext {
@@ -70,7 +70,7 @@ class SendContainerToSystemsUnderTest;
 
                 virtual void tearDown();
 
-                virtual void step(const core::wrapper::Time &t, SendContainerToSystemsUnderTest &sender);
+                virtual void step(const odcore::wrapper::Time &t, SendContainerToSystemsUnderTest &sender);
 
             private:
                 virtual float getFrequency() const;

@@ -19,24 +19,24 @@
 
 #include <iosfwd>
 
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/base/Serializable.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/data/TimeStamp.h"
-#include "opendavinci/core/exceptions/Exceptions.h"
-#include "opendavinci/core/io/Connection.h"
-#include "opendavinci/core/io/ConnectionErrorListener.h"
-#include "opendavinci/core/io/conference/ContainerListener.h"
-#include "opendavinci/core/io/tcp/TCPFactory.h"
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
+#include "opendavinci/odcore/io/Connection.h"
+#include "opendavinci/odcore/io/ConnectionErrorListener.h"
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
+#include "opendavinci/odcore/io/tcp/TCPFactory.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-namespace core {
+namespace odcore {
     namespace io {
 
         using namespace std;
-        using namespace core;
-        using namespace core::base;
-        using namespace core::data;
+        using namespace odcore;
+        using namespace odcore::base;
+        using namespace odcore::data;
 
         Connection::Connection(const string& ip, const uint32_t &port) :
             m_listenerMutex(),
@@ -47,7 +47,7 @@ namespace core {
             m_connectedMutex(),
             m_connected(false) {
             try {
-                m_connection = core::io::tcp::TCPFactory::createTCPConnectionTo(ip, port);
+                m_connection = odcore::io::tcp::TCPFactory::createTCPConnectionTo(ip, port);
             }
             catch (string& s) {
                 OPENDAVINCI_CORE_THROW_EXCEPTION(ConnectException, s);
@@ -59,7 +59,7 @@ namespace core {
             }
         }
 
-        Connection::Connection(core::SharedPointer<core::io::tcp::TCPConnection> connection) :
+        Connection::Connection(odcore::SharedPointer<odcore::io::tcp::TCPConnection> connection) :
             m_listenerMutex(),
             m_listener(NULL),
             m_errorHandlerMutex(),
@@ -133,7 +133,7 @@ namespace core {
             m_errorHandler = el;
         }
 
-        void Connection::setContainerListener(core::io::conference::ContainerListener *cl) {
+        void Connection::setContainerListener(odcore::io::conference::ContainerListener *cl) {
             Lock l(m_listenerMutex);
             m_listener = cl;
         }

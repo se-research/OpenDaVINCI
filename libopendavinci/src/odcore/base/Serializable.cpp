@@ -17,23 +17,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/base/Serializable.h"
+#include "opendavinci/odcore/base/Serializable.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
         Serializable::~Serializable() {}
 
     }
-} // core::base
+} // odcore::base
 
 namespace std {
 
-    ostream &operator<<(ostream &out, const core::base::Serializable &s) {
+    ostream &operator<<(ostream &out, const odcore::base::Serializable &s) {
         return s.operator << (out);
     }
 
-    istream &operator>>(istream &in, core::base::Serializable &s) {
+    istream &operator>>(istream &in, odcore::base::Serializable &s) {
         return s.operator >> (in);
     }
 

@@ -22,23 +22,23 @@
 
 #include <memory>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/io/tcp/TCPAcceptor.h"
-#include "opendavinci/core/wrapper/Runnable.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/io/tcp/TCPAcceptor.h"
+#include "opendavinci/odcore/wrapper/Runnable.h"
 
-namespace core { namespace io { namespace tcp { class TCPAcceptorListener; } } }
-namespace core { namespace io { namespace tcp { class TCPConnection; } } }
-namespace core { namespace wrapper { class Mutex; } }
-namespace core { namespace wrapper { class Thread; } }
-namespace core { template <class T> class SharedPointer; }
+namespace odcore { namespace io { namespace tcp { class TCPAcceptorListener; } } }
+namespace odcore { namespace io { namespace tcp { class TCPConnection; } } }
+namespace odcore { namespace wrapper { class Mutex; } }
+namespace odcore { namespace wrapper { class Thread; } }
+namespace odcore { template <class T> class SharedPointer; }
 
-namespace core {
+namespace odcore {
     namespace wrapper {
         namespace POSIX {
 
             using namespace std;
 
-            class POSIXTCPAcceptor : public core::io::tcp::TCPAcceptor, public Runnable {
+            class POSIXTCPAcceptor : public odcore::io::tcp::TCPAcceptor, public Runnable {
                 private:
                     static const int32_t BACKLOG = 100;
 
@@ -61,7 +61,7 @@ namespace core {
                     POSIXTCPAcceptor(const uint32_t& port);
                     virtual ~POSIXTCPAcceptor();
 
-                    virtual void setAcceptorListener(core::io::tcp::TCPAcceptorListener* listener);
+                    virtual void setAcceptorListener(odcore::io::tcp::TCPAcceptorListener* listener);
 
                     virtual void start();
                     virtual void stop();
@@ -70,12 +70,12 @@ namespace core {
                     virtual void run();
 
                 protected:
-                    void invokeAcceptorListener(core::SharedPointer<core::io::tcp::TCPConnection> connection);
+                    void invokeAcceptorListener(odcore::SharedPointer<odcore::io::tcp::TCPConnection> connection);
 
                     auto_ptr<Thread> m_thread;
 
                     auto_ptr<Mutex> m_listenerMutex;
-                    core::io::tcp::TCPAcceptorListener* m_listener;
+                    odcore::io::tcp::TCPAcceptorListener* m_listener;
 
                     int32_t m_fileDescriptor;
                     int32_t m_port;

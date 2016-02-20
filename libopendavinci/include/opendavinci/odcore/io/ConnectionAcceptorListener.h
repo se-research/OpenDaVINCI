@@ -20,12 +20,12 @@
 #ifndef OPENDAVINCI_CORE_IO_CONNECTIONACCEPTORLISTENER_H_
 #define OPENDAVINCI_CORE_IO_CONNECTIONACCEPTORLISTENER_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/io/Connection.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/io/Connection.h"
 
-namespace core {
+namespace odcore {
     namespace io {
 
         using namespace std;
@@ -34,7 +34,7 @@ namespace core {
             public:
                 virtual ~ConnectionAcceptorListener() {};
 
-                virtual void onNewConnection(core::SharedPointer<core::io::Connection> connection) = 0;
+                virtual void onNewConnection(odcore::SharedPointer<odcore::io::Connection> connection) = 0;
         };
     }
 }

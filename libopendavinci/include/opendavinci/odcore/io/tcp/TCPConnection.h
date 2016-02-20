@@ -23,15 +23,15 @@
 #include <sstream>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/io/ConnectionObserver.h"
-#include "opendavinci/core/io/StringObserver.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/io/ConnectionObserver.h"
+#include "opendavinci/odcore/io/StringObserver.h"
 
-namespace core { namespace io { class ConnectionListener; } }
-namespace core { namespace io { class StringListener; } }
+namespace odcore { namespace io { class ConnectionListener; } }
+namespace odcore { namespace io { class StringListener; } }
 
-namespace core {
+namespace odcore {
     namespace io {
         namespace tcp {
 
@@ -134,13 +134,13 @@ namespace core {
                      */
                     void invokeStringListener(const string& data);
 
-                    core::base::Mutex m_connectionListenerMutex;
+                    odcore::base::Mutex m_connectionListenerMutex;
                     ConnectionListener* m_connectionListener;
 
-                    core::base::Mutex m_stringListenerMutex;
+                    odcore::base::Mutex m_stringListenerMutex;
                     StringListener *m_stringListener;
 
-                    core::base::Mutex m_partialDataMutex;
+                    odcore::base::Mutex m_partialDataMutex;
                     stringstream m_partialData;
             };
 

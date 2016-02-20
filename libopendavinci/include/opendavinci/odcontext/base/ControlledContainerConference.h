@@ -20,10 +20,10 @@
 #ifndef CONTEXT_BASE_CONTROLLEDCONTAINERCONFERENCE_H_
 #define CONTEXT_BASE_CONTROLLEDCONTAINERCONFERENCE_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/context/base/SendContainerToSystemsUnderTest.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcontext/base/SendContainerToSystemsUnderTest.h"
 
-namespace core { namespace io { namespace conference { class ContainerListener; } } }
+namespace odcore { namespace io { namespace conference { class ContainerListener; } } }
 
 namespace odcontext {
     namespace base {
@@ -43,7 +43,7 @@ namespace odcontext {
                  *
                  * @param cl ContainerListener to add.
                  */
-                virtual void add(core::io::conference::ContainerListener *cl) = 0;
+                virtual void add(odcore::io::conference::ContainerListener *cl) = 0;
         };
 
     }

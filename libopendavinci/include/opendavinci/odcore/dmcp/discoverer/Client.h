@@ -22,23 +22,23 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/Condition.h"
-#include "opendavinci/core/io/PacketListener.h"
-#include "opendavinci/core/io/udp/UDPReceiver.h"
-#include "opendavinci/core/io/udp/UDPSender.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Condition.h"
+#include "opendavinci/odcore/io/PacketListener.h"
+#include "opendavinci/odcore/io/udp/UDPReceiver.h"
+#include "opendavinci/odcore/io/udp/UDPSender.h"
 #include "opendavinci/generated/coredata/dmcp/ServerInformation.h"
 
-namespace core { namespace io { class Packet; } }
+namespace odcore { namespace io { class Packet; } }
 
-namespace core {
+namespace odcore {
     namespace dmcp {
         namespace discoverer {
 
             using namespace std;
 
-            class OPENDAVINCI_API Client : protected core::io::PacketListener {
+            class OPENDAVINCI_API Client : protected odcore::io::PacketListener {
                 private:
                     /**
                      * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -70,12 +70,12 @@ namespace core {
                 protected:
                     void sendDiscoverMessage();
                     void waitForResponse();
-                    virtual void nextPacket(const core::io::Packet &p);
+                    virtual void nextPacket(const odcore::io::Packet &p);
 
-                    core::SharedPointer<core::io::udp::UDPSender> m_sender;
-                    core::SharedPointer<core::io::udp::UDPReceiver> m_receiver;
+                    odcore::SharedPointer<odcore::io::udp::UDPSender> m_sender;
+                    odcore::SharedPointer<odcore::io::udp::UDPReceiver> m_receiver;
 
-                    core::base::Condition m_responseCondition;
+                    odcore::base::Condition m_responseCondition;
                     bool m_response;
 
                     coredata::dmcp::ServerInformation m_serverInformation;

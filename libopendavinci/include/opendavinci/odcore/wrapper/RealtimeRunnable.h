@@ -20,10 +20,10 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_REALTIMERUNNABLE_H_
 #define OPENDAVINCI_CORE_WRAPPER_REALTIMERUNNABLE_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/wrapper/Runnable.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/wrapper/Runnable.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         using namespace std;
@@ -120,6 +120,6 @@ namespace core {
         };
 
     }
-} // core::wrapper
+} // odcore::wrapper
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_REALTIMERUNNABLE_H_*/

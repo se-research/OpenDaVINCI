@@ -22,17 +22,17 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/KeyValueConfiguration.h"
-#include "opendavinci/core/base/module/AbstractCIDModule.h"
-#include "opendavinci/core/dmcp/SuperComponentStateListener.h"
-#include "opendavinci/core/dmcp/connection/Client.h"
-#include "opendavinci/core/exceptions/Exceptions.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/base/module/AbstractCIDModule.h"
+#include "opendavinci/odcore/dmcp/SuperComponentStateListener.h"
+#include "opendavinci/odcore/dmcp/connection/Client.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
 #include "opendavinci/generated/coredata/dmcp/ServerInformation.h"
 
-namespace core {
+namespace odcore {
     namespace base {
         namespace module {
 
@@ -44,8 +44,8 @@ namespace core {
              *
              * @See ConferenceClientModule
              */
-            class OPENDAVINCI_API ClientModule : public core::base::module::AbstractCIDModule,
-                                                 protected core::dmcp::SupercomponentStateListener {
+            class OPENDAVINCI_API ClientModule : public odcore::base::module::AbstractCIDModule,
+                                                 protected odcore::dmcp::SupercomponentStateListener {
                 private:
                     friend class ManagedClientModule;
 
@@ -57,7 +57,7 @@ namespace core {
                      * @param name Name of this module. This parameter is necessary for identifying the corresponding parts in the configuration.
                      * @throw InvalidArgumentException if the signal handler could not be registered.
                      */
-                    ClientModule(const int32_t &argc, char **argv, const string &name) throw (core::exceptions::InvalidArgumentException);
+                    ClientModule(const int32_t &argc, char **argv, const string &name) throw (odcore::exceptions::InvalidArgumentException);
 
                 private:
                     /**
@@ -110,7 +110,7 @@ namespace core {
                      *
                      * @return Key/value-configuration.
                      */
-                    const core::base::KeyValueConfiguration getKeyValueConfiguration() const;
+                    const odcore::base::KeyValueConfiguration getKeyValueConfiguration() const;
 
                     /**
                      * This method returns the SharedPointer for the
@@ -118,7 +118,7 @@ namespace core {
                      *
                      * @return SharedPointer for DMCP connection.
                      */
-                    core::SharedPointer<core::dmcp::connection::Client>& getDMCPClient();
+                    odcore::SharedPointer<odcore::dmcp::connection::Client>& getDMCPClient();
 
                     virtual void handleConnectionLost();
 
@@ -143,13 +143,13 @@ namespace core {
 
                 private:
                     string m_name;
-                    core::base::KeyValueConfiguration m_keyValueConfiguration;
+                    odcore::base::KeyValueConfiguration m_keyValueConfiguration;
                     coredata::dmcp::ServerInformation m_serverInformation;
-                    core::SharedPointer<core::dmcp::connection::Client> m_dmcpClient;
+                    odcore::SharedPointer<odcore::dmcp::connection::Client> m_dmcpClient;
             };
 
         }
     }
-} // core::base::module
+} // odcore::base::module
 
 #endif /*OPENDAVINCI_BASE_CLIENTMODULE_H_*/

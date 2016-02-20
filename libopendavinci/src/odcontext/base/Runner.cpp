@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/context/base/Runner.h"
-#include "opendavinci/context/base/TimeConstants.h"
-#include "opendavinci/core/wrapper/Time.h"
+#include "opendavinci/odcontext/base/Runner.h"
+#include "opendavinci/odcontext/base/TimeConstants.h"
+#include "opendavinci/odcore/wrapper/Time.h"
 
 namespace odcontext {
     namespace base {
@@ -32,7 +32,7 @@ namespace odcontext {
             return false;
         }
 
-        bool Runner::needsExecution(const core::wrapper::Time &t) const {
+        bool Runner::needsExecution(const odcore::wrapper::Time &t) const {
             bool retVal = false;
             if (getFrequency() > 0) {
                 const uint32_t THIS_RUN_AT_TIME = static_cast<uint32_t>(TimeConstants::ONE_SECOND_IN_MILLISECONDS / getFrequency());

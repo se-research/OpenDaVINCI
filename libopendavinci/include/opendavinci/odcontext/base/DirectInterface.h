@@ -22,9 +22,9 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/KeyValueConfiguration.h"
-#include "opendavinci/context/base/RuntimeControlInterface.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcontext/base/RuntimeControlInterface.h"
 
 namespace odcontext {
     namespace base {
@@ -63,7 +63,7 @@ namespace odcontext {
 
                 virtual ~DirectInterface();
 
-                virtual const core::base::KeyValueConfiguration getConfiguration() const;
+                virtual const odcore::base::KeyValueConfiguration getConfiguration() const;
 
                 virtual const string getMulticastGroup() const;
 
@@ -74,7 +74,7 @@ namespace odcontext {
                 virtual bool isSupercomponent() const;
 
             private:
-                core::base::KeyValueConfiguration m_configuration;
+                odcore::base::KeyValueConfiguration m_configuration;
                 string m_multicastGroup;
                 uint32_t m_CID;
         };

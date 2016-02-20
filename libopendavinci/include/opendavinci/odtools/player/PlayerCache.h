@@ -24,15 +24,15 @@
 #include <map>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/FIFOQueue.h"
-#include "opendavinci/core/base/LIFOQueue.h"
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/base/Service.h"
-#include "opendavinci/core/data/Container.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/FIFOQueue.h"
+#include "opendavinci/odcore/base/LIFOQueue.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/base/Service.h"
+#include "opendavinci/odcore/data/Container.h"
 
-namespace core { namespace wrapper { class SharedMemory; } }
+namespace odcore { namespace wrapper { class SharedMemory; } }
 
 namespace odtools {
     namespace player {
@@ -42,7 +42,7 @@ namespace odtools {
         /**
          * This class caches containers from previously recorded file..
          */
-        class PlayerCache : public core::base::Service {
+        class PlayerCache : public odcore::base::Service {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -73,7 +73,7 @@ namespace odtools {
                  * @param in Input stream to read data from.
                  * @param inSharedMemoryFile Input stream to read data from the shared memory dump.
                  */
-                PlayerCache(const uint32_t size, const uint32_t sizeMemorySegments, const bool &autoRewind, core::SharedPointer<istream> in, core::SharedPointer<istream> inSharedMemoryFile);
+                PlayerCache(const uint32_t size, const uint32_t sizeMemorySegments, const bool &autoRewind, odcore::SharedPointer<istream> in, odcore::SharedPointer<istream> inSharedMemoryFile);
 
                 virtual ~PlayerCache();
 
@@ -83,7 +83,7 @@ namespace odtools {
                  *
                  * @return Container.
                  */
-                core::data::Container getNextContainer();
+                odcore::data::Container getNextContainer();
 
                 /**
                  * This method returns the number of entries in the queue.
@@ -109,7 +109,7 @@ namespace odtools {
                  *
                  * @param c Container with meta data describing the raw memory data.
                  */
-                void copyMemoryToSharedMemory(core::data::Container &c);
+                void copyMemoryToSharedMemory(odcore::data::Container &c);
 
                 /**
                  * This method is used to fill the internal cache. It must
@@ -143,26 +143,26 @@ namespace odtools {
                  *
                  * @param c Container with meta data describing the raw memory data.
                  */
-                void putRawMemoryDataIntoBuffer(core::data::Container &c);
+                void putRawMemoryDataIntoBuffer(odcore::data::Container &c);
 
             private:
                 uint32_t m_cacheSize;
                 const bool m_autoRewind;
-                core::SharedPointer<istream> m_in;
-                core::SharedPointer<istream> m_inSharedMemoryFile;
+                odcore::SharedPointer<istream> m_in;
+                odcore::SharedPointer<istream> m_inSharedMemoryFile;
 
-                core::base::FIFOQueue m_queue;
-                core::base::LIFOQueue m_recBuffer;
-                core::base::LIFOQueue m_memBuffer;
+                odcore::base::FIFOQueue m_queue;
+                odcore::base::LIFOQueue m_recBuffer;
+                odcore::base::LIFOQueue m_memBuffer;
 
                 map<uint32_t, char*> m_mapOfMemories;
 
-                core::base::FIFOQueue m_bufferIn;
-                core::base::FIFOQueue m_bufferOut;
+                odcore::base::FIFOQueue m_bufferIn;
+                odcore::base::FIFOQueue m_bufferOut;
 
-                map<string, core::SharedPointer<core::wrapper::SharedMemory> > m_sharedPointers;
+                map<string, odcore::SharedPointer<odcore::wrapper::SharedMemory> > m_sharedPointers;
 
-                core::base::Mutex m_modifyCacheMutex;
+                odcore::base::Mutex m_modifyCacheMutex;
         };
 
     } // player

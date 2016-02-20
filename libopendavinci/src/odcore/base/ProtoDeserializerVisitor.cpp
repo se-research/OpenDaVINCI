@@ -20,11 +20,11 @@
 #include <cstring>
 #include <iostream>
 
-#include "opendavinci/core/base/ProtoDeserializerVisitor.h"
-#include "opendavinci/core/base/ProtoSerializerVisitor.h"
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/base/ProtoDeserializerVisitor.h"
+#include "opendavinci/odcore/base/ProtoSerializerVisitor.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
 class Serializable;
@@ -442,5 +442,5 @@ class Serializable;
         }
 
     }
-} // core::base
+} // odcore::base
 

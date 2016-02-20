@@ -21,18 +21,18 @@
 #include <iostream>
 #include <string>
 
-#include "opendavinci/context/base/BlockableContainerListener.h"
-#include "opendavinci/context/base/BlockableContainerReceiver.h"
-#include "opendavinci/context/base/ControlledContainerConferenceForSystemUnderTest.h"
-#include "opendavinci/context/base/TimeConstants.h"
-#include "opendavinci/context/base/TimeTriggeredConferenceClientModuleRunner.h"
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "opendavinci/core/exceptions/Exceptions.h"
-#include "opendavinci/core/io/conference/ContainerConference.h"
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/wrapper/Time.h"
+#include "opendavinci/odcontext/base/BlockableContainerListener.h"
+#include "opendavinci/odcontext/base/BlockableContainerReceiver.h"
+#include "opendavinci/odcontext/base/ControlledContainerConferenceForSystemUnderTest.h"
+#include "opendavinci/odcontext/base/TimeConstants.h"
+#include "opendavinci/odcontext/base/TimeTriggeredConferenceClientModuleRunner.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
+#include "opendavinci/odcore/io/conference/ContainerConference.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/wrapper/Time.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
 
@@ -40,9 +40,9 @@ namespace odcontext {
     namespace base {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::base::module;
-        using namespace core::exceptions;
+        using namespace odcore::base;
+        using namespace odcore::base::module;
+        using namespace odcore::exceptions;
 
         // If the dynamic cast fails, the user did not call RuntimeControl::setup(RuntimeControl::TAKE_CONTROL).
         TimeTriggeredConferenceClientModuleRunner::TimeTriggeredConferenceClientModuleRunner(TimeTriggeredConferenceClientModule &ttccm) :
@@ -64,7 +64,7 @@ namespace odcontext {
             return m_timeTriggeredConferenceClientModule.getFrequency();
         }
 
-        void TimeTriggeredConferenceClientModuleRunner::step(const core::wrapper::Time &t) {
+        void TimeTriggeredConferenceClientModuleRunner::step(const odcore::wrapper::Time &t) {
             if (needsExecution(t)) {
                 clog << "[APP] at " << t.getSeconds() << "." << t.getPartialMicroseconds() << endl;
 

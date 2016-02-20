@@ -31,9 +31,9 @@
 # endif
 #endif
 
-#include "opendavinci/core/wrapper/jpg/JPG.h"
+#include "opendavinci/odcore/wrapper/jpg/JPG.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
         namespace jpg {
 
@@ -78,5 +78,5 @@ namespace core {
 
         }
     }
-} // core::wrapper::jpg
+} // odcore::wrapper::jpg
 

@@ -20,15 +20,15 @@
 #include <iostream>
 #include <string>
 
-#include "opendavinci/core/base/Visitor.h"
-#include "opendavinci/core/reflection/Field.h"
-#include "opendavinci/core/reflection/Message.h"
+#include "opendavinci/odcore/base/Visitor.h"
+#include "opendavinci/odcore/reflection/Field.h"
+#include "opendavinci/odcore/reflection/Message.h"
 
-namespace core {
+namespace odcore {
     namespace reflection {
 
-        using namespace core;
-        using namespace core::base;
+        using namespace odcore;
+        using namespace odcore::base;
         using namespace coredata::reflection;
 
         Message::Message() :
@@ -45,7 +45,7 @@ namespace core {
             return *this;
         }
 
-        void Message::addField(const core::SharedPointer<coredata::reflection::AbstractField> &f) {
+        void Message::addField(const odcore::SharedPointer<coredata::reflection::AbstractField> &f) {
             m_fields.push_back(f);
         }
 
@@ -201,5 +201,5 @@ namespace core {
         }
 
     }
-} // core::reflection
+} // odcore::reflection
 

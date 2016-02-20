@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/io/udp/UDPSender.h"
+#include "opendavinci/odcore/io/udp/UDPSender.h"
 
-namespace core {
+namespace odcore {
     namespace io {
         namespace udp {
 
@@ -27,4 +27,4 @@ namespace core {
 
         }
     }
-} // core::io::udp
+} // odcore::io::udp

@@ -20,10 +20,10 @@
 #ifndef CONTEXT_BASE_SYSTEMREPORTINGCOMPONENT_H_
 #define CONTEXT_BASE_SYSTEMREPORTINGCOMPONENT_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/context/base/SystemContextComponent.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcontext/base/SystemContextComponent.h"
 
-namespace core { namespace wrapper { class Time; } }
+namespace odcore { namespace wrapper { class Time; } }
 
 namespace odcontext {
     namespace base {
@@ -64,7 +64,7 @@ namespace odcontext {
                  *
                  * @param t Current system time.
                  */
-                virtual void report(const core::wrapper::Time &t) = 0;
+                virtual void report(const odcore::wrapper::Time &t) = 0;
 
             private:
                 /**

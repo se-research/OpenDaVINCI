@@ -17,20 +17,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/context/base/BlockableContainerReceiver.h"
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/data/TimeStamp.h"
-#include "opendavinci/core/io/conference/ContainerListener.h"
+#include "opendavinci/odcontext/base/BlockableContainerReceiver.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
 
 namespace odcontext {
     namespace base {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::data;
+        using namespace odcore::base;
+        using namespace odcore::data;
 
-        BlockableContainerReceiver::BlockableContainerReceiver(core::io::conference::ContainerListener &cl) :
+        BlockableContainerReceiver::BlockableContainerReceiver(odcore::io::conference::ContainerListener &cl) :
             m_dispatcherForContainersSentFromSystemUnderTest(cl) {}
 
         BlockableContainerReceiver::~BlockableContainerReceiver() {

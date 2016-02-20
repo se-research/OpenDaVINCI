@@ -20,9 +20,9 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_JPG_JPG_H_
 #define OPENDAVINCI_CORE_WRAPPER_JPG_JPG_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
         namespace jpg {
 
@@ -81,6 +81,6 @@ namespace core {
 
         }
     }
-} // core::wrapper::jpg
+} // odcore::wrapper::jpg
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_JPG_JPG_H_*/

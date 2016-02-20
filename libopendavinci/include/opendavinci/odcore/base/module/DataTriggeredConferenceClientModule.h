@@ -22,14 +22,14 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/module/AbstractConferenceClientModule.h"
-#include "opendavinci/core/exceptions/Exceptions.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/module/AbstractConferenceClientModule.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
-namespace core { namespace data { class Container; } }
+namespace odcore { namespace data { class Container; } }
 
-namespace core {
+namespace odcore {
     namespace base {
         namespace module {
 
@@ -98,7 +98,7 @@ namespace core {
                      * @param name Name of this module. This parameter is necessary for identifying the corresponding parts in the configuration.
                      * @throw InvalidArgumentException if the signal handler could not be registered.
                      */
-                    DataTriggeredConferenceClientModule(const int32_t &argc, char **argv, const string &name) throw (core::exceptions::InvalidArgumentException);
+                    DataTriggeredConferenceClientModule(const int32_t &argc, char **argv, const string &name) throw (odcore::exceptions::InvalidArgumentException);
 
                     virtual ~DataTriggeredConferenceClientModule();
 
@@ -109,11 +109,11 @@ namespace core {
 
                     virtual void tearDown() = 0;
 
-                    virtual void nextContainer(core::data::Container &c) = 0;
+                    virtual void nextContainer(odcore::data::Container &c) = 0;
             };
 
         }
     }
-} // core::base::module
+} // odcore::base::module
 
 #endif /*OPENDAVINCI_BASE_DATATRIGGEREDCONFERENCECLIENTMODULE_H_*/

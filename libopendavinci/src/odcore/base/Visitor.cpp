@@ -17,13 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/base/Visitor.h"
+#include "opendavinci/odcore/base/Visitor.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
         Visitor::~Visitor() {}
 
     }
-} // core::base
+} // odcore::base
 

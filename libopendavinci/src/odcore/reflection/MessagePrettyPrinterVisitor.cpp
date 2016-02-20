@@ -19,15 +19,15 @@
 
 #include <ostream>
 
-#include "opendavinci/core/base/Serializable.h"
-#include "opendavinci/core/base/Visitable.h"
-#include "opendavinci/core/reflection/MessagePrettyPrinterVisitor.h"
+#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/base/Visitable.h"
+#include "opendavinci/odcore/reflection/MessagePrettyPrinterVisitor.h"
 
-namespace core {
+namespace odcore {
     namespace reflection {
 
         using namespace std;
-        using namespace core::base;
+        using namespace odcore::base;
 
         MessagePrettyPrinterVisitor::MessagePrettyPrinterVisitor() :
             m_indent(0),
@@ -130,5 +130,5 @@ namespace core {
         }
 
     }
-} // core::reflection
+} // odcore::reflection
 

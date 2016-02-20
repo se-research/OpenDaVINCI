@@ -20,11 +20,11 @@
 #ifndef CONTEXT_BASE_BLOCKABLECONTAINERRECEIVER_H_
 #define CONTEXT_BASE_BLOCKABLECONTAINERRECEIVER_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/context/base/BlockableContainerListener.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcontext/base/BlockableContainerListener.h"
 
-namespace core { namespace data { class Container; } }
-namespace core { namespace io { namespace conference { class ContainerListener; } } }
+namespace odcore { namespace data { class Container; } }
+namespace odcore { namespace io { namespace conference { class ContainerListener; } } }
 
 namespace odcontext {
     namespace base {
@@ -61,16 +61,16 @@ namespace odcontext {
                  *
                  * @param cl ContainerListener for finally receiving Containers from the System Under Test.
                  */
-                BlockableContainerReceiver(core::io::conference::ContainerListener &cl);
+                BlockableContainerReceiver(odcore::io::conference::ContainerListener &cl);
 
                 virtual ~BlockableContainerReceiver();
 
                 // This method is called by ControlledContainerConference to send c from an app to all SystemParts.
-                virtual void nextContainer(core::data::Container &c);
+                virtual void nextContainer(odcore::data::Container &c);
 
             private:
                 // This ContainerListener receives the containers sent from the System Under Test to which this BlockableContainerReceiver belongs to all SystemParts and all other Systems Under Test.
-                core::io::conference::ContainerListener &m_dispatcherForContainersSentFromSystemUnderTest;
+                odcore::io::conference::ContainerListener &m_dispatcherForContainersSentFromSystemUnderTest;
         };
 
     }

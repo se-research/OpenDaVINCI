@@ -22,12 +22,12 @@
 #include <sstream>
 #include <string>
 
-#include "opendavinci/core/base/module/AbstractCIDModule.h"
-#include "opendavinci/core/io/Packet.h"
-#include "opendavinci/core/wrapper/ConcurrencyFactory.h"
-#include "opendavinci/core/wrapper/WIN32/WIN32UDPReceiver.h"
+#include "opendavinci/odcore/base/module/AbstractCIDModule.h"
+#include "opendavinci/odcore/io/Packet.h"
+#include "opendavinci/odcore/wrapper/ConcurrencyFactory.h"
+#include "opendavinci/odcore/wrapper/WIN32/WIN32UDPReceiver.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
         namespace WIN32Impl {
 
@@ -189,7 +189,7 @@ namespace core {
                             inet_ntop(remote.ss_family, &(((struct sockaddr_in*)&remote)->sin_addr), remoteAddr, sizeof(remoteAddr));
 
                             // ------------------------v (remote address)-----v (data)
-                            nextPacket(core::io::Packet(string(remoteAddr), string(m_buffer, nbytes)));
+                            nextPacket(odcore::io::Packet(string(remoteAddr), string(m_buffer, nbytes)));
                         }
                     }
                 }
@@ -216,4 +216,4 @@ namespace core {
             }
         }
     }
-} // core::wrapper::WIN32
+} // odcore::wrapper::WIN32

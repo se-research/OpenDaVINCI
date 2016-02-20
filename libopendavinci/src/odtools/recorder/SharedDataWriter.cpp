@@ -19,21 +19,21 @@
 
 #include <iostream>
 
-#include "opendavinci/core/base/FIFOQueue.h"
-#include "opendavinci/core/base/Serializable.h"
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/core/base/module/AbstractCIDModule.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/base/FIFOQueue.h"
+#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/base/module/AbstractCIDModule.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/generated/coredata/buffer/MemorySegment.h"
-#include "opendavinci/tools/recorder/SharedDataWriter.h"
+#include "opendavinci/odtools/recorder/SharedDataWriter.h"
 
 namespace odtools {
     namespace recorder {
 
-        using namespace core;
-        using namespace core::base;
-        using namespace core::data;
+        using namespace odcore;
+        using namespace odcore::base;
+        using namespace odcore::data;
         using namespace odtools;
 
         SharedDataWriter::SharedDataWriter(SharedPointer<ostream> out, map<uint32_t, char*> &mapOfMemories, FIFOQueue &bufferIn, FIFOQueue &bufferOut) :

@@ -20,10 +20,10 @@
 #ifndef OPENDAVINCI_CORE_BASE_VISITABLE_H_
 #define OPENDAVINCI_CORE_BASE_VISITABLE_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Visitor.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Visitor.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
         using namespace std;
@@ -35,10 +35,10 @@ namespace core {
             public:
                 virtual ~Visitable();
 
-                virtual void accept(core::base::Visitor &v) = 0;
+                virtual void accept(odcore::base::Visitor &v) = 0;
         };
 
     }
-} // core::base
+} // odcore::base
 
 #endif /*OPENDAVINCI_CORE_BASE_VISITABLE_H_*/

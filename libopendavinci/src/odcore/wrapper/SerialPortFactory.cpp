@@ -17,10 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/wrapper/SerialPort.h"
-#include "opendavinci/core/wrapper/SerialPortFactory.h"
+#include "opendavinci/odcore/wrapper/SerialPort.h"
+#include "opendavinci/odcore/wrapper/SerialPortFactory.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         SerialPort* SerialPortFactory::createSerialPort(const string &port, const uint32_t &baudRate) {
@@ -28,4 +28,4 @@ namespace core {
         }
 
     }
-} // core::wrapper
+} // odcore::wrapper

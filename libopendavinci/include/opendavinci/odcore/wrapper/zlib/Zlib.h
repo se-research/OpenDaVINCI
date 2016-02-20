@@ -22,7 +22,7 @@
 
 #include <string>
 
-namespace core {
+namespace odcore {
     namespace wrapper {
         namespace zlib {
 
@@ -64,6 +64,6 @@ namespace core {
 
         }
     }
-} // core::wrapper::zlib
+} // odcore::wrapper::zlib
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_ZLIB_ZLIB_H_*/

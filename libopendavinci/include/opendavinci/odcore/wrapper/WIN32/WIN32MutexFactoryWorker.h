@@ -20,14 +20,14 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_WIN32IMPL_WIN32MUTEXFACTORYWORKER_H_
 #define OPENDAVINCI_CORE_WRAPPER_WIN32IMPL_WIN32MUTEXFACTORYWORKER_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/wrapper/Mutex.h"
-#include "opendavinci/core/wrapper/MutexFactoryWorker.h"
+#include "opendavinci/odcore/wrapper/Mutex.h"
+#include "opendavinci/odcore/wrapper/MutexFactoryWorker.h"
 
-#include "opendavinci/core/wrapper/WIN32/WIN32Mutex.h"
+#include "opendavinci/odcore/wrapper/WIN32/WIN32Mutex.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         using namespace std;
@@ -35,11 +35,11 @@ namespace core {
         template <> class OPENDAVINCI_API MutexFactoryWorker<SystemLibraryWin32> {
             public:
                 static Mutex* createMutex() {
-                    return new core::wrapper::WIN32Impl::WIN32Mutex();
+                    return new odcore::wrapper::WIN32Impl::WIN32Mutex();
                 }
         };
 
     }
-} // core::wrapper
+} // odcore::wrapper
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_WIN32IMPL_WIN32MUTEXFACTORYWORKER_H_*/

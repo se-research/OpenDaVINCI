@@ -20,11 +20,11 @@
 #include <exception>
 #include <iostream>
 
-#include "opendavinci/core/base/SerializationFactory.h"
-#include "opendavinci/core/base/module/MasterModule.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/module/MasterModule.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
 
-namespace core {
+namespace odcore {
     namespace base {
         namespace module {
 
@@ -60,4 +60,4 @@ namespace core {
 
         }
     }
-} // core::base::module
+} // odcore::base::module

@@ -22,10 +22,10 @@
 
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Mutex.h"
 
-namespace core { namespace base { namespace module { class TimeTriggeredConferenceClientModule; } } }
+namespace odcore { namespace base { namespace module { class TimeTriggeredConferenceClientModule; } } }
 
 namespace odcontext {
     namespace base {
@@ -71,7 +71,7 @@ class SystemReportingComponent;
                  *
                  * @param ttccm TimeTriggeredConferenceClientModule to be executed.
                  */
-                void add(core::base::module::TimeTriggeredConferenceClientModule &ttccm);
+                void add(odcore::base::module::TimeTriggeredConferenceClientModule &ttccm);
 
                 /**
                  * This method adds another SystemFeedbackComponent to be
@@ -103,7 +103,7 @@ class SystemReportingComponent;
                  *
                  * @return List of added TimeTriggeredConferenceClientModules.
                  */
-                vector<core::base::module::TimeTriggeredConferenceClientModule*> getListOfTimeTriggeredConferenceClientModules();
+                vector<odcore::base::module::TimeTriggeredConferenceClientModule*> getListOfTimeTriggeredConferenceClientModules();
 
                 /**
                  * This method returns the list of added SystemFeedbackComponents.
@@ -152,13 +152,13 @@ class SystemReportingComponent;
                 uint32_t getGreatestCommonDivisor(const uint32_t &a, const uint32_t &b) const;
 
             private:
-                mutable core::base::Mutex m_listsMutex;
+                mutable odcore::base::Mutex m_listsMutex;
 
-                vector<core::base::module::TimeTriggeredConferenceClientModule*> m_listOfTimeTriggeredConferenceClientModules;
+                vector<odcore::base::module::TimeTriggeredConferenceClientModule*> m_listOfTimeTriggeredConferenceClientModules;
                 vector<SystemFeedbackComponent*> m_listOfSystemFeedbackComponents;
                 vector<SystemReportingComponent*> m_listOfSystemReportingComponents;
 
-                mutable core::base::Mutex m_executingMutex;
+                mutable odcore::base::Mutex m_executingMutex;
                 bool m_executing;
         };
 

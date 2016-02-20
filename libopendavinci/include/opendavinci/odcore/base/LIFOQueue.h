@@ -22,12 +22,12 @@
 
 #include <deque>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/AbstractDataStore.h"
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/data/Container.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/AbstractDataStore.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/data/Container.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
         using namespace std;
@@ -84,6 +84,6 @@ namespace core {
         };
 
     }
-} // core::base
+} // odcore::base
 
 #endif /*OPENDAVINCI_CORE_BASE_LIFOQUEUE_H_*/

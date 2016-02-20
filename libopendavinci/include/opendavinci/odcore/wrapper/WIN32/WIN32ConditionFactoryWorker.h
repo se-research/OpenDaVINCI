@@ -20,14 +20,14 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_WIN32IMPL_WIN32CONDITIONFACTORYWORKER_H_
 #define OPENDAVINCI_CORE_WRAPPER_WIN32IMPL_WIN32CONDITIONFACTORYWORKER_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/wrapper/ConditionFactoryWorker.h"
-#include "opendavinci/core/wrapper/SystemLibraryProducts.h"
+#include "opendavinci/odcore/wrapper/ConditionFactoryWorker.h"
+#include "opendavinci/odcore/wrapper/SystemLibraryProducts.h"
 
-#include "opendavinci/core/wrapper/WIN32/WIN32Condition.h"
+#include "opendavinci/odcore/wrapper/WIN32/WIN32Condition.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         using namespace std;
@@ -35,11 +35,11 @@ namespace core {
         template <> class OPENDAVINCI_API ConditionFactoryWorker<SystemLibraryWin32> {
             public:
                 static SharedPointer<Condition> createCondition() {
-                    return SharedPointer<Condition>(new core::wrapper::WIN32Impl::WIN32Condition());
+                    return SharedPointer<Condition>(new odcore::wrapper::WIN32Impl::WIN32Condition());
                 }
         };
 
     }
-} // core::wrapper
+} // odcore::wrapper
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_WIN32IMPL_WIN32CONDITIONFACTORYWORKER_H_*/

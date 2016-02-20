@@ -23,12 +23,12 @@
 #include <sstream>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Serializer.h"
-#include "opendavinci/core/base/QueryableNetstringsDeserializer.h"
-#include "opendavinci/core/base/Visitor.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/base/QueryableNetstringsDeserializer.h"
+#include "opendavinci/odcore/base/Visitor.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
         using namespace std;
@@ -80,6 +80,6 @@ namespace core {
         };
 
     }
-} // core::base
+} // odcore::base
 
 #endif /*OPENDAVINCI_CORE_BASE_QUERYABLENETSTRINGSDESERIALIZERVISITOR_H_*/

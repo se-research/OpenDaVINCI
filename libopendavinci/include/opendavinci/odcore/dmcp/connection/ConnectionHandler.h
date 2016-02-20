@@ -20,12 +20,12 @@
 #ifndef OPENDAVINCI_DMCP_CONNECTION_CONNECTIONHANDLER_H_
 #define OPENDAVINCI_DMCP_CONNECTION_CONNECTIONHANDLER_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/dmcp/connection/ModuleConnection.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/dmcp/connection/ModuleConnection.h"
 
-namespace core {
+namespace odcore {
     namespace dmcp {
         namespace connection {
 
@@ -35,10 +35,10 @@ namespace core {
                 public:
                     virtual ~ConnectionHandler() {};
 
-                    virtual void onNewModule(core::SharedPointer<core::dmcp::connection::ModuleConnection> mc) = 0;
+                    virtual void onNewModule(odcore::SharedPointer<odcore::dmcp::connection::ModuleConnection> mc) = 0;
             };
         }
     }
-} // core::dmcp
+} // odcore::dmcp
 
 #endif /* OPENDAVINCI_DMCP_CONNECTION_CONNECTIONLISTENER_H_ */

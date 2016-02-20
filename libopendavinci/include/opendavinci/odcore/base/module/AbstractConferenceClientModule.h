@@ -22,17 +22,17 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/module/ManagedClientModule.h"
-#include "opendavinci/core/exceptions/Exceptions.h"
-#include "opendavinci/core/io/conference/ContainerListener.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/module/ManagedClientModule.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
 #include "opendavinci/generated/coredata/LogMessage.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
-namespace core { namespace data { class Container; } }
-namespace core { namespace io { namespace conference { class ContainerConference; } } }
+namespace odcore { namespace data { class Container; } }
+namespace odcore { namespace io { namespace conference { class ContainerConference; } } }
 
-namespace core {
+namespace odcore {
     namespace base {
         namespace module {
 
@@ -47,7 +47,7 @@ namespace core {
              * - @See DataTriggeredConferenceClientModule
              * - @See TimeTriggeredConferenceClientModule
              */
-            class OPENDAVINCI_API AbstractConferenceClientModule : public ManagedClientModule, public core::io::conference::ContainerListener {
+            class OPENDAVINCI_API AbstractConferenceClientModule : public ManagedClientModule, public odcore::io::conference::ContainerListener {
                 private:
                     /**
                      * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -72,7 +72,7 @@ namespace core {
                      * @param name Name of this module. This parameter is necessary for identifying the corresponding parts in the configuration.
                      * @throw InvalidArgumentException if the signal handler could not be registered.
                      */
-                    AbstractConferenceClientModule(const int32_t &argc, char **argv, const string &name) throw (core::exceptions::InvalidArgumentException);
+                    AbstractConferenceClientModule(const int32_t &argc, char **argv, const string &name) throw (odcore::exceptions::InvalidArgumentException);
 
                     virtual ~AbstractConferenceClientModule();
 
@@ -81,7 +81,7 @@ namespace core {
                      *
                      * @return Conference.
                      */
-                    core::io::conference::ContainerConference& getConference();
+                    odcore::io::conference::ContainerConference& getConference();
 
                 protected:
                     virtual void setUp() = 0;
@@ -90,7 +90,7 @@ namespace core {
 
                     virtual coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body() = 0;
 
-                    virtual void nextContainer(core::data::Container &c) = 0;
+                    virtual void nextContainer(odcore::data::Container &c) = 0;
 
                 public:
                     /**
@@ -104,6 +104,6 @@ namespace core {
 
         }
     }
-} // core::base::module
+} // odcore::base::module
 
 #endif /*OPENDAVINCI_BASE_ABSTRACTCONFERENCECLIENTMODULE_H_*/

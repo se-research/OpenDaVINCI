@@ -20,14 +20,14 @@
 #ifndef CONTEXT_BASE_TIMETRIGGEREDCONFERENCECLIENTMODULERUNNER_H_
 #define CONTEXT_BASE_TIMETRIGGEREDCONFERENCECLIENTMODULERUNNER_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/base/Service.h"
-#include "opendavinci/context/base/RunModuleBreakpoint.h"
-#include "opendavinci/context/base/Runner.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/base/Service.h"
+#include "opendavinci/odcontext/base/RunModuleBreakpoint.h"
+#include "opendavinci/odcontext/base/Runner.h"
 
-namespace core { namespace base { namespace module { class TimeTriggeredConferenceClientModule; } } }
-namespace core { namespace wrapper { class Time; } }
+namespace odcore { namespace base { namespace module { class TimeTriggeredConferenceClientModule; } } }
+namespace odcore { namespace wrapper { class Time; } }
 
 namespace odcontext {
     namespace base {
@@ -41,7 +41,7 @@ class BlockableContainerListener;
          * independent thread which is controlled by the given breakpoint created by
          * this class.
          */
-        class OPENDAVINCI_API TimeTriggeredConferenceClientModuleRunner : public Runner, public core::base::Service {
+        class OPENDAVINCI_API TimeTriggeredConferenceClientModuleRunner : public Runner, public odcore::base::Service {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -63,7 +63,7 @@ class BlockableContainerListener;
                  *
                  * @param ttccm TimeTriggeredConferenceClientModule which is to be executed.
                  */
-                TimeTriggeredConferenceClientModuleRunner(core::base::module::TimeTriggeredConferenceClientModule &ttccm);
+                TimeTriggeredConferenceClientModuleRunner(odcore::base::module::TimeTriggeredConferenceClientModule &ttccm);
 
                 virtual ~TimeTriggeredConferenceClientModuleRunner();
 
@@ -74,7 +74,7 @@ class BlockableContainerListener;
                  *
                  * @param t Time.
                  */
-                virtual void step(const core::wrapper::Time &t);
+                virtual void step(const odcore::wrapper::Time &t);
 
                 virtual bool hasFinished() const;
 
@@ -89,10 +89,10 @@ class BlockableContainerListener;
             private:
                 bool m_timeTriggeredConferenceClientModuleStarted;
 
-                mutable core::base::Mutex m_timeTriggeredConferenceClientModuleFinishedMutex;
+                mutable odcore::base::Mutex m_timeTriggeredConferenceClientModuleFinishedMutex;
                 bool m_timeTriggeredConferenceClientModuleFinished;
 
-                core::base::module::TimeTriggeredConferenceClientModule &m_timeTriggeredConferenceClientModule;
+                odcore::base::module::TimeTriggeredConferenceClientModule &m_timeTriggeredConferenceClientModule;
                 BlockableContainerListener &m_blockableContainerListener;
                 RunModuleBreakpoint m_runModuleBreakpoint;
         };

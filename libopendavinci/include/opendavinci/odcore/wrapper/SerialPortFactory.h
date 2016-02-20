@@ -22,9 +22,9 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
 class SerialPort;
@@ -43,6 +43,6 @@ class SerialPort;
                 static SerialPort* createSerialPort(const string &port, const uint32_t &baudRate);
         };
     }
-} // core::wrapper
+} // odcore::wrapper
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_SERIALPORTFACTORY_H_*/

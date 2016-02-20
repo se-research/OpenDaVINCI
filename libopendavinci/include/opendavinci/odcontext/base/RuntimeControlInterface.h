@@ -22,8 +22,8 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
 
 namespace odcontext {
     namespace base {
@@ -43,7 +43,7 @@ namespace odcontext {
                  *
                  * @return KeyValueConfiguration to be used.
                  */
-                virtual const core::base::KeyValueConfiguration getConfiguration() const = 0;
+                virtual const odcore::base::KeyValueConfiguration getConfiguration() const = 0;
 
                 /**
                  * This method returns the multicast group to be used.

@@ -23,9 +23,9 @@
 #include <sstream>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
         using namespace std;
@@ -83,6 +83,6 @@ namespace core {
                 bool m_set;
         };
     }
-} // core::base
+} // odcore::base
 
 #endif // OPENDAVINCI_CORE_BASE_COMMANDLINEARGUMENT_H_

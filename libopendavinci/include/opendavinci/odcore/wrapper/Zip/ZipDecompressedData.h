@@ -25,14 +25,14 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/strings/StringComparator.h"
-#include "opendavinci/core/wrapper/CompressionLibraryProducts.h"
-#include "opendavinci/core/wrapper/DecompressedData.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/strings/StringComparator.h"
+#include "opendavinci/odcore/wrapper/CompressionLibraryProducts.h"
+#include "opendavinci/odcore/wrapper/DecompressedData.h"
 
-namespace core { namespace wrapper { template <core::wrapper::CompressionLibraryProducts product> struct CompressionFactoryWorker; } }
+namespace odcore { namespace wrapper { template <odcore::wrapper::CompressionLibraryProducts product> struct CompressionFactoryWorker; } }
 
-namespace core {
+namespace odcore {
     namespace wrapper {
         namespace Zip {
 
@@ -83,7 +83,7 @@ namespace core {
                     virtual SharedPointer<istream> getInputStreamFor(const string &entry);
 
                 private:
-                    map<string, SharedPointer<istream>, core::strings::StringComparator> m_mapOfDecompressedEntries;
+                    map<string, SharedPointer<istream>, odcore::strings::StringComparator> m_mapOfDecompressedEntries;
 
                     /**
                      * This method tries to decompress the given archive and
@@ -96,6 +96,6 @@ namespace core {
 
         }
     }
-} // core::wrapper::Zip
+} // odcore::wrapper::Zip
 
 #endif /*OPENDAVINCI_CORE_WRAPPER_ZIP_ZIPDECOMPRESSEDDATA_H_*/

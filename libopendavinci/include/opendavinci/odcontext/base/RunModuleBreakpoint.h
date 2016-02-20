@@ -20,9 +20,9 @@
 #ifndef CONTEXT_BASE_RUNMODULEBREAKPOINT_H_
 #define CONTEXT_BASE_RUNMODULEBREAKPOINT_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/base/module/Breakpoint.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/base/module/Breakpoint.h"
 
 namespace odcontext {
     namespace base {
@@ -33,7 +33,7 @@ class BlockableContainerListener;
          * This class provides access to the SystemContext using elsewhere
          * prepared data.
          */
-        class OPENDAVINCI_API RunModuleBreakpoint : public core::base::module::Breakpoint {
+        class OPENDAVINCI_API RunModuleBreakpoint : public odcore::base::module::Breakpoint {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -92,10 +92,10 @@ class BlockableContainerListener;
             private:
                 BlockableContainerListener &m_blockableContainerListener;
 
-                mutable core::base::Mutex m_reachedMutex;
+                mutable odcore::base::Mutex m_reachedMutex;
                 bool m_reached;
 
-                mutable core::base::Mutex m_continueMutex;
+                mutable odcore::base::Mutex m_continueMutex;
                 bool m_continue;
         };
 

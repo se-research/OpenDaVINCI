@@ -24,11 +24,11 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/CommandLineArgument.h"
-#include "opendavinci/core/exceptions/Exceptions.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/CommandLineArgument.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
 
-namespace core {
+namespace odcore {
     namespace base {
 
         using namespace std;
@@ -99,6 +99,6 @@ namespace core {
                 map<string, vector<CommandLineArgument> > m_values;
         };
     } // base
-} // core::base
+} // odcore::base
 
 #endif // OPENDAVINCI_CORE_BASE_COMMANDLINEPARSER_H_

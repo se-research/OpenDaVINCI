@@ -22,13 +22,13 @@
 
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Condition.h"
-#include "opendavinci/core/base/KeyValueConfiguration.h"
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/io/Connection.h"
-#include "opendavinci/core/io/ConnectionErrorListener.h"
-#include "opendavinci/core/io/conference/ContainerListener.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Condition.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/io/Connection.h"
+#include "opendavinci/odcore/io/ConnectionErrorListener.h"
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleDescriptor.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
@@ -37,17 +37,17 @@
 #include "opendavinci/generated/coredata/dmcp/ServerInformation.h"
 
 namespace coredata { class Configuration; }
-namespace core { namespace data { class Container; } }
-namespace core { namespace dmcp { class SupercomponentStateListener; } }
+namespace odcore { namespace data { class Container; } }
+namespace odcore { namespace dmcp { class SupercomponentStateListener; } }
 
-namespace core {
+namespace odcore {
     namespace dmcp {
         namespace connection {
 
             using namespace std;
 
-            class OPENDAVINCI_API Client : protected core::io::conference::ContainerListener,
-                                           protected core::io::ConnectionErrorListener
+            class OPENDAVINCI_API Client : protected odcore::io::conference::ContainerListener,
+                                           protected odcore::io::ConnectionErrorListener
             {
                 private:
                     /**
@@ -76,7 +76,7 @@ namespace core {
                     void sendModuleState(const coredata::dmcp::ModuleStateMessage::ModuleState &me);
                     void sendStatistics(const coredata::dmcp::RuntimeStatistic &rs);
 
-                    core::base::KeyValueConfiguration getConfiguration();
+                    odcore::base::KeyValueConfiguration getConfiguration();
 
                     const coredata::dmcp::PulseMessage getPulseMessage();
 
@@ -91,7 +91,7 @@ namespace core {
                      *
                      * @param listOfContainers List of containers to be sent.
                      */
-                    void sendPulseAckContainers(const vector<core::data::Container> &listOfContainers);
+                    void sendPulseAckContainers(const vector<odcore::data::Container> &listOfContainers);
 
                     void setSupercomponentStateListener(SupercomponentStateListener* listener);
 
@@ -99,7 +99,7 @@ namespace core {
 
                 protected:
                     void sendConfigurationRequest();
-                    virtual void nextContainer(core::data::Container &c);
+                    virtual void nextContainer(odcore::data::Container &c);
                     virtual void handleConnectionError();
 
                     void handleConfiguration(coredata::Configuration &configuration);
@@ -110,24 +110,24 @@ namespace core {
                     coredata::dmcp::ModuleDescriptor m_moduleDescriptor;
                     coredata::dmcp::ServerInformation m_serverInformation;
 
-                    core::io::Connection m_connection;
+                    odcore::io::Connection m_connection;
 
-                    core::base::Mutex m_configurationMutex;
-                    core::base::KeyValueConfiguration m_configuration;
+                    odcore::base::Mutex m_configurationMutex;
+                    odcore::base::KeyValueConfiguration m_configuration;
 
                     bool m_configured;
-                    core::base::Mutex m_configuredMutex;
-                    core::base::Condition m_configurationRequestCondition;
+                    odcore::base::Mutex m_configuredMutex;
+                    odcore::base::Condition m_configurationRequestCondition;
 
-                    core::base::Mutex m_listenerMutex;
+                    odcore::base::Mutex m_listenerMutex;
                     SupercomponentStateListener* m_listener;
 
-                    core::base::Condition m_pulseCondition;
-                    core::base::Mutex m_pulseMessageMutex;
+                    odcore::base::Condition m_pulseCondition;
+                    odcore::base::Mutex m_pulseMessageMutex;
                     coredata::dmcp::PulseMessage m_pulseMessage;
             };
         }
     }
-} // core::dmcp
+} // odcore::dmcp
 
 #endif /*OPENDAVINCI_DMCP_CONNECTION_CLIENT_H_*/

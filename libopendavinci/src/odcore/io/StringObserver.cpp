@@ -17,12 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/io/StringObserver.h"
+#include "opendavinci/odcore/io/StringObserver.h"
 
-namespace core {
+namespace odcore {
     namespace io {
 
         StringObserver::~StringObserver() {}
 
     }
-} // core::io
+} // odcore::io

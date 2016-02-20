@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/io/StringSender.h"
+#include "opendavinci/odcore/io/StringSender.h"
 
-namespace core {
+namespace odcore {
     namespace io {
 
         StringSender::~StringSender() {}

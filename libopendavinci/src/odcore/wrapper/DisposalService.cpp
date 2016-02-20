@@ -21,17 +21,17 @@
 #include <iostream>
 #include <sstream>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/module/AbstractCIDModule.h"
-#include "opendavinci/core/wrapper/ConcurrencyFactory.h"
-#include "opendavinci/core/wrapper/ConditionFactory.h"
-#include "opendavinci/core/wrapper/Disposable.h"
-#include "opendavinci/core/wrapper/DisposalService.h"
-#include "opendavinci/core/wrapper/Mutex.h"
-#include "opendavinci/core/wrapper/MutexFactory.h"
-#include "opendavinci/core/wrapper/Thread.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/module/AbstractCIDModule.h"
+#include "opendavinci/odcore/wrapper/ConcurrencyFactory.h"
+#include "opendavinci/odcore/wrapper/ConditionFactory.h"
+#include "opendavinci/odcore/wrapper/Disposable.h"
+#include "opendavinci/odcore/wrapper/DisposalService.h"
+#include "opendavinci/odcore/wrapper/Mutex.h"
+#include "opendavinci/odcore/wrapper/MutexFactory.h"
+#include "opendavinci/odcore/wrapper/Thread.h"
 
-namespace core {
+namespace odcore {
     namespace wrapper {
 
         // Initialization of the singleton instance.
@@ -275,4 +275,4 @@ namespace core {
         }
 
     }
-} // core::wrapper
+} // odcore::wrapper

@@ -17,23 +17,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/core/base/AbstractDataStore.h"
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "opendavinci/core/wrapper/KeyValueDatabase.h"
-#include "opendavinci/core/wrapper/KeyValueDatabaseFactory.h"
+#include "opendavinci/odcore/base/AbstractDataStore.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/wrapper/KeyValueDatabase.h"
+#include "opendavinci/odcore/wrapper/KeyValueDatabaseFactory.h"
 
-namespace core {
+namespace odcore {
     namespace base {
         namespace module {
 
             using namespace std;
 
-            using namespace core;
-            using namespace core::base;
-            using namespace core::data;
-            using namespace core::io;
-            using namespace core::exceptions;
+            using namespace odcore;
+            using namespace odcore::base;
+            using namespace odcore::data;
+            using namespace odcore::io;
+            using namespace odcore::exceptions;
 
             TimeTriggeredConferenceClientModule::TimeTriggeredConferenceClientModule(const int32_t &argc, char **argv, const string &name) throw (InvalidArgumentException, NoDatabaseAvailableException) :
                 AbstractConferenceClientModule(argc, argv, name),
@@ -110,4 +110,4 @@ namespace core {
 
         }
     }
-} // core::base::module
+} // odcore::base::module
