@@ -160,7 +160,7 @@ class DataModelGenerator implements IGenerator {
 #define «msg.message.replaceAll("\\.", "_").toUpperCase + "_H"»
 «ENDIF»
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 «var hasGeneratedVector = false /*These lines check if we have a list attribute and thus, need to include <vector>.*/»
 «FOR a : msg.attributes»
@@ -177,14 +177,14 @@ class DataModelGenerator implements IGenerator {
 	«ENDIF»
 «ENDFOR»
 
-#include "opendavinci/core/base/Visitable.h"
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/base/Visitable.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 
 «FOR a : msg.attributes /*These lines include header files for user generated types used in other messages.*/»
 	«IF a.scalar != null»
 		«IF !typeMap.containsKey(a.scalar.type) && !enums.containsKey(a.scalar.type)»
 			«IF a.scalar.type.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
-				#include "«IF a.scalar.type.contains("core::")»opendavinci/«ENDIF»«a.scalar.type.replaceAll("::", "/")».h"
+				#include "«IF a.scalar.type.contains("odcore::")»opendavinci/«ENDIF»«a.scalar.type.replaceAll("::", "/")».h"
 			«ELSE /* Use the types only as specified by the user. */»
 				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.scalar.type.replaceAll("\\.", "/")».h"
 			«ENDIF»
@@ -193,7 +193,7 @@ class DataModelGenerator implements IGenerator {
 	«IF a.list != null && a.list.modifier != null && a.list.modifier.length > 0 && a.list.modifier.equalsIgnoreCase("list")»
 		«IF !typeMap.containsKey(a.list.type) && !enums.containsKey(a.list.type)»
 			«IF a.list.type.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
-				#include "«IF a.list.type.contains("core::")»opendavinci/«ENDIF»«a.list.type.replaceAll("::", "/")».h"
+				#include "«IF a.list.type.contains("odcore::")»opendavinci/«ENDIF»«a.list.type.replaceAll("::", "/")».h"
 			«ELSE /* Use the types only as specified by the user. */»
 				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.list.type.replaceAll("\\.", "/")».h"
 			«ENDIF»
@@ -202,14 +202,14 @@ class DataModelGenerator implements IGenerator {
 	«IF a.map != null && a.map.modifier != null && a.map.modifier.length > 0 && a.map.modifier.equalsIgnoreCase("map")»
 		«IF !typeMap.containsKey(a.map.primaryType) && !enums.containsKey(a.map.primaryType)»
 			«IF a.map.primaryType.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
-				#include "«IF a.map.primaryType.contains("core::")»opendavinci/«ENDIF»«a.map.primaryType.replaceAll("::", "/")».h"
+				#include "«IF a.map.primaryType.contains("odcore::")»opendavinci/«ENDIF»«a.map.primaryType.replaceAll("::", "/")».h"
 			«ELSE /* Use the types only as specified by the user. */»
 				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.map.primaryType.replaceAll("\\.", "/")».h"
 			«ENDIF»
 		«ENDIF»
 		«IF !typeMap.containsKey(a.map.secondaryType) && !enums.containsKey(a.map.secondaryType)»
 			«IF a.map.secondaryType.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
-				#include "«IF a.map.secondaryType.contains("core::")»opendavinci/«ENDIF»«a.map.secondaryType.replaceAll("::", "/")».h"
+				#include "«IF a.map.secondaryType.contains("odcore::")»opendavinci/«ENDIF»«a.map.secondaryType.replaceAll("::", "/")».h"
 			«ELSE /* Use the types only as specified by the user. */»
 				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.map.secondaryType.replaceAll("\\.", "/")».h"
 			«ENDIF»
@@ -218,7 +218,7 @@ class DataModelGenerator implements IGenerator {
 	«IF a.fixedarray != null»
 		«IF !typeMap.containsKey(a.fixedarray.type) && !enums.containsKey(a.fixedarray.type)»
 			«IF a.fixedarray.type.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
-				#include "«IF a.fixedarray.type.contains("core::")»opendavinci/«ENDIF»«a.fixedarray.type.replaceAll("::", "/")».h"
+				#include "«IF a.fixedarray.type.contains("odcore::")»opendavinci/«ENDIF»«a.fixedarray.type.replaceAll("::", "/")».h"
 			«ELSE /* Use the types only as specified by the user. */»
 				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.fixedarray.type.replaceAll("\\.", "/")».h"
 			«ENDIF»
@@ -265,7 +265,7 @@ namespace «s.get(i)» {
 	def generateHeaderFileContentBody(Message msg, HashMap<String, EnumDescription> enums) '''
 using namespace std;
 
-class «msg.message.substring(msg.message.lastIndexOf('.') + 1) /* These lines generate the class structure and the superclass (i.e. the one from which this class is deriving or SerializableData as default. */» : «IF msg.superMessage != null && msg.superMessage.length > 0»public «msg.superMessage.replaceAll("\\.", "::")»«ELSE»public core::data::SerializableData, public core::base::Visitable«ENDIF» {
+class «msg.message.substring(msg.message.lastIndexOf('.') + 1) /* These lines generate the class structure and the superclass (i.e. the one from which this class is deriving or SerializableData as default. */» : «IF msg.superMessage != null && msg.superMessage.length > 0»public «msg.superMessage.replaceAll("\\.", "::")»«ELSE»public odcore::data::SerializableData, public odcore::base::Visitable«ENDIF» {
 	«IF enums.size > 0 /*These lines generate the enum declarations.*/»
 	«generateHeaderFileEnum(msg, enums)»
 	«ENDIF»
@@ -342,7 +342,7 @@ class «msg.message.substring(msg.message.lastIndexOf('.') + 1) /* These lines g
 		static const string LongName();
 
 	public:
-		virtual void accept(core::base::Visitor &v);
+		virtual void accept(odcore::base::Visitor &v);
 
 		virtual ostream& operator<<(ostream &out) const;
 		virtual istream& operator>>(istream &in);
@@ -579,15 +579,15 @@ class «msg.message.substring(msg.message.lastIndexOf('.') + 1) /* These lines g
 	«ENDIF»
 	«IF !hasGeneratedMacros && a.fixedarray != null && a.fixedarray.name != null && a.fixedarray.name.length > 0»
 #include <cstring>
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 		«{hasGeneratedMacros = true; ""}»
 	«ENDIF»
 «ENDFOR»
 
-#include "opendavinci/core/base/Hash.h"
-#include "opendavinci/core/base/Deserializer.h"
-#include "opendavinci/core/base/SerializationFactory.h"
-#include "opendavinci/core/base/Serializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 
 «IF msg.superMessage != null && msg.superMessage.length > 0 /* If this message is a derived one, we need to include the supermessage here. */»
 #include "«toplevelIncludeFolder»/«includeDirectoryPrefix + "/" + msg.superMessage.substring(0, msg.superMessage.lastIndexOf('.')).replaceAll("\\.", "/") + "/" + msg.superMessage.substring(msg.superMessage.lastIndexOf('.') + 1)».h"
@@ -628,7 +628,7 @@ namespace «s.get(i)» {
 	/* This method finally generates the content of the CPP file. */
 	def generateImplementationFileContentBody(PackageDeclaration pdl, Message msg, HashMap<String, EnumDescription> enums) '''
 	using namespace std;
-	using namespace core::base;
+	using namespace odcore::base;
 
 	«FOR a : msg.attributes /* Here, we generate the const definitions. */»
 		«a.generateImplementationFileConstants(msg)»
@@ -755,7 +755,7 @@ namespace «s.get(i)» {
 		«{hasScalarAttributes = true; ""}»
 	«ENDIF»
 «ENDFOR»
-	void «/* Here, we generate the accept() method. */msg.message.substring(msg.message.lastIndexOf('.') + 1)»::accept(core::base::Visitor &v) {
+	void «/* Here, we generate the accept() method. */msg.message.substring(msg.message.lastIndexOf('.') + 1)»::accept(odcore::base::Visitor &v) {
 		«IF msg.superMessage != null && msg.superMessage.length > 0»«msg.superMessage.replaceAll("\\.", "::")»::accept(v);«ENDIF»
 		«IF !hasScalarAttributes»
 			(void)v; // Avoid unused parameter warning.
@@ -784,7 +784,7 @@ namespace «s.get(i)» {
 		«IF !msg.attributes.empty»
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Serializer> s = sf.getSerializer(out);«IF !hasOtherThanEnumAndConstAttributes»(void)s; // Avoid unused variable warning.«ENDIF»
+		odcore::SharedPointer<Serializer> s = sf.getSerializer(out);«IF !hasOtherThanEnumAndConstAttributes»(void)s; // Avoid unused variable warning.«ENDIF»
 
 		«FOR a : msg.attributes»
 			«a.generateAttributeSerialization(enums)»
@@ -799,7 +799,7 @@ namespace «s.get(i)» {
 		«IF !msg.attributes.empty»
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Deserializer> d = sf.getDeserializer(in);«IF !hasOtherThanEnumAndConstAttributes»(void)d; // Avoid unused variable warning.«ENDIF»
+		odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);«IF !hasOtherThanEnumAndConstAttributes»(void)d; // Avoid unused variable warning.«ENDIF»
 
 		«FOR a : msg.attributes»
 			«a.generateAttributeDeserialization(enums)»
@@ -1430,8 +1430,8 @@ namespace «s.get(i)» {
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/strings/StringToolbox.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/strings/StringToolbox.h"
 
 #include "«toplevelIncludeFolder»/GeneratedHeaders_«generatedHeadersFile + ".h"»"
 
@@ -1439,7 +1439,7 @@ namespace «s.get(i)» {
 	«IF a.scalar != null»
 		«IF !typeMap.containsKey(a.scalar.type) && !enums.containsKey(a.scalar.type)»
 			«IF a.scalar.type.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
-				#include "«IF a.scalar.type.contains("core::")»opendavinci/«ENDIF»«a.scalar.type.replaceAll("::", "/")».h"
+				#include "«IF a.scalar.type.contains("odcore::")»opendavinci/«ENDIF»«a.scalar.type.replaceAll("::", "/")».h"
 			«ELSE /* Use the types only as specified by the user. */»
 				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.scalar.type.replaceAll("\\.", "/")».h"
 			«ENDIF»
@@ -1448,7 +1448,7 @@ namespace «s.get(i)» {
 	«IF a.list != null && a.list.modifier != null && a.list.modifier.length > 0 && a.list.modifier.equalsIgnoreCase("list")»
 		«IF !typeMap.containsKey(a.list.type) && !enums.containsKey(a.list.type)»
 			«IF a.list.type.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
-				#include "«IF a.list.type.contains("core::")»opendavinci/«ENDIF»«a.list.type.replaceAll("::", "/")».h"
+				#include "«IF a.list.type.contains("odcore::")»opendavinci/«ENDIF»«a.list.type.replaceAll("::", "/")».h"
 			«ELSE /* Use the types only as specified by the user. */»
 				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.list.type.replaceAll("\\.", "/")».h"
 			«ENDIF»
@@ -1457,14 +1457,14 @@ namespace «s.get(i)» {
 	«IF a.map != null && a.map.modifier != null && a.map.modifier.length > 0 && a.map.modifier.equalsIgnoreCase("map")»
 		«IF !typeMap.containsKey(a.map.primaryType) && !enums.containsKey(a.map.primaryType)»
 			«IF a.map.primaryType.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
-				#include "«IF a.map.primaryType.contains("core::")»opendavinci/«ENDIF»«a.map.primaryType.replaceAll("::", "/")».h"
+				#include "«IF a.map.primaryType.contains("odcore::")»opendavinci/«ENDIF»«a.map.primaryType.replaceAll("::", "/")».h"
 			«ELSE /* Use the types only as specified by the user. */»
 				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.map.primaryType.replaceAll("\\.", "/")».h"
 			«ENDIF»
 		«ENDIF»
 		«IF !typeMap.containsKey(a.map.secondaryType) && !enums.containsKey(a.map.secondaryType)»
 			«IF a.map.secondaryType.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
-				#include "«IF a.map.secondaryType.contains("core::")»opendavinci/«ENDIF»«a.map.secondaryType.replaceAll("::", "/")».h"
+				#include "«IF a.map.secondaryType.contains("odcore::")»opendavinci/«ENDIF»«a.map.secondaryType.replaceAll("::", "/")».h"
 			«ELSE /* Use the types only as specified by the user. */»
 				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.map.secondaryType.replaceAll("\\.", "/")».h"
 			«ENDIF»
@@ -1473,7 +1473,7 @@ namespace «s.get(i)» {
 	«IF a.fixedarray != null»
 		«IF !typeMap.containsKey(a.fixedarray.type) && !enums.containsKey(a.fixedarray.type)»
 			«IF a.fixedarray.type.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
-				#include "«IF a.fixedarray.type.contains("core::")»opendavinci/«ENDIF»«a.fixedarray.type.replaceAll("::", "/")».h"
+				#include "«IF a.fixedarray.type.contains("odcore::")»opendavinci/«ENDIF»«a.fixedarray.type.replaceAll("::", "/")».h"
 			«ELSE /* Use the types only as specified by the user. */»
 				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.fixedarray.type.replaceAll("\\.", "/")».h"
 			«ENDIF»
@@ -1563,7 +1563,7 @@ class «IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.p
 				«a.generateCompareAttributeValueWithTestValuesTest("obj3")»
 			«ENDFOR»
 
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj3.toString()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj3.toString()));
 		}
 
 		void testCreateAndAssignObject() {
@@ -1606,7 +1606,7 @@ class «IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.p
 				«a.generateCompareAttributeValueWithTestValuesTest("obj2")»
 			«ENDFOR»
 
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
 		}
 
 		void testCreateAndSerializeObject() {
@@ -1652,7 +1652,7 @@ class «IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.p
 				«a.generateCompareAttributeValueWithTestValuesTest("obj2")»
 			«ENDFOR»
 
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
 		}
 '''
 
@@ -1664,7 +1664,7 @@ class «IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.p
 						TS_ASSERT_DELTA(«obj».get«a.scalar.name.toFirstUpper»(), «initializationMap.get(a.scalar.type)», 1e-5);
 					«ENDIF»
 					«IF (a.scalar.type.equalsIgnoreCase("string"))»
-						TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(«obj».get«a.scalar.name.toFirstUpper»(), «initializationMap.get(a.scalar.type)»));
+						TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(«obj».get«a.scalar.name.toFirstUpper»(), «initializationMap.get(a.scalar.type)»));
 					«ENDIF»
 					«IF (a.scalar.type.equalsIgnoreCase("bool") || a.scalar.type.equalsIgnoreCase("char") || a.scalar.type.equalsIgnoreCase("int32") || a.scalar.type.equalsIgnoreCase("uint32"))»
 						TS_ASSERT(«obj».get«a.scalar.name.toFirstUpper»() == «initializationMap.get(a.scalar.type)»);
@@ -1675,7 +1675,7 @@ class «IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.p
 					TS_ASSERT_DELTA(«obj».get«a.scalar.name.toFirstUpper»(), «a.scalar.value», 1e-5);
 				«ENDIF»
 				«IF (a.scalar.type.equalsIgnoreCase("string"))»
-					TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(«obj».get«a.scalar.name.toFirstUpper»(), "«a.scalar.value»"));
+					TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(«obj».get«a.scalar.name.toFirstUpper»(), "«a.scalar.value»"));
 				«ENDIF»
 				«IF (a.scalar.type.equalsIgnoreCase("char"))»
 					TS_ASSERT(«obj».get«a.scalar.name.toFirstUpper»() == '«a.scalar.value»');
@@ -1704,7 +1704,7 @@ class «IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.p
 				«ENDIF»
 				«IF (a.fixedarray.type.equalsIgnoreCase("string"))»
 					for(uint32_t i = 0; i < «obj».getSize_«a.fixedarray.name.toFirstUpper»(); i++) {
-						TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(«obj».get«a.fixedarray.name.toFirstUpper»()[i], «initializationMap.get(a.fixedarray.type)»));
+						TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(«obj».get«a.fixedarray.name.toFirstUpper»()[i], «initializationMap.get(a.fixedarray.type)»));
 					}
 				«ENDIF»
 				«IF (a.fixedarray.type.equalsIgnoreCase("bool") || a.fixedarray.type.equalsIgnoreCase("char") || a.fixedarray.type.equalsIgnoreCase("int32") || a.fixedarray.type.equalsIgnoreCase("uint32"))»
@@ -1723,7 +1723,7 @@ class «IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.p
 					TS_ASSERT_DELTA(«obj».get«a.scalar.name.toFirstUpper»(), «testValuesMap.get(a.scalar.type)», 1e-5);
 				«ENDIF»
 				«IF (a.scalar.type.equalsIgnoreCase("string"))»
-					TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(«obj».get«a.scalar.name.toFirstUpper»(), «testValuesMap.get(a.scalar.type)»));
+					TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(«obj».get«a.scalar.name.toFirstUpper»(), «testValuesMap.get(a.scalar.type)»));
 				«ENDIF»
 				«IF (a.scalar.type.equalsIgnoreCase("bool") || a.scalar.type.equalsIgnoreCase("char") || a.scalar.type.equalsIgnoreCase("int32") || a.scalar.type.equalsIgnoreCase("uint32"))»
 					TS_ASSERT(«obj».get«a.scalar.name.toFirstUpper»() == «testValuesMap.get(a.scalar.type)»);
@@ -1777,7 +1777,7 @@ class «IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.p
 					for(uint32_t i = 0; i < «obj».getSize_«a.fixedarray.name.toFirstUpper»(); i++) {
 						std::stringstream sstr;
 						sstr << «testValuesMap.get(a.fixedarray.type)» << "-" << i;
-						TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(«obj».get«a.fixedarray.name.toFirstUpper»()[i], sstr.str()));
+						TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(«obj».get«a.fixedarray.name.toFirstUpper»()[i], sstr.str()));
 					}
 				«ENDIF»
 				«IF (a.fixedarray.type.equalsIgnoreCase("int32") || a.fixedarray.type.equalsIgnoreCase("uint32"))»
@@ -1809,7 +1809,7 @@ class «IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.p
 				TS_ASSERT_DELTA(«objA».get«a.scalar.name.toFirstUpper»(), «objB».get«a.scalar.name.toFirstUpper»(), 1e-5);
 			«ENDIF»
 			«IF (a.scalar.type.equalsIgnoreCase("string"))»
-					TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(«objA».get«a.scalar.name.toFirstUpper»(), «objB».get«a.scalar.name.toFirstUpper»()));
+					TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(«objA».get«a.scalar.name.toFirstUpper»(), «objB».get«a.scalar.name.toFirstUpper»()));
 			«ENDIF»
 			«IF (a.scalar.type.equalsIgnoreCase("bool") || a.scalar.type.equalsIgnoreCase("char") || a.scalar.type.equalsIgnoreCase("int32") || a.scalar.type.equalsIgnoreCase("uint32"))»
 				TS_ASSERT(«objA».get«a.scalar.name.toFirstUpper»() == «objB».get«a.scalar.name.toFirstUpper»());
@@ -1832,7 +1832,7 @@ class «IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.p
 			«ENDIF»
 			«IF (a.fixedarray.type.equalsIgnoreCase("string"))»
 				for(uint32_t i = 0; i < «objA».getSize_«a.fixedarray.name.toFirstUpper»(); i++) {
-					TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(«objA».get«a.fixedarray.name.toFirstUpper»()[i], «objB».get«a.fixedarray.name.toFirstUpper»()[i]));
+					TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(«objA».get«a.fixedarray.name.toFirstUpper»()[i], «objB».get«a.fixedarray.name.toFirstUpper»()[i]));
 				}
 			«ENDIF»
 			«IF (a.fixedarray.type.equalsIgnoreCase("bool") || a.fixedarray.type.equalsIgnoreCase("char") || a.fixedarray.type.equalsIgnoreCase("int32") || a.fixedarray.type.equalsIgnoreCase("uint32"))»
@@ -1932,7 +1932,7 @@ class «IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.p
 					«IF ((a.map.secondaryType.equalsIgnoreCase("float")) || (a.map.secondaryType.equalsIgnoreCase("double")))»
 						TS_ASSERT_DELTA(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(0)»), «testListValuesMap.get(a.map.secondaryType).get(0)», 1e-5);
 					«ELSEIF a.map.secondaryType.equalsIgnoreCase("string")»
-						TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(0)»), «testListValuesMap.get(a.map.secondaryType).get(0)»));
+						TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(0)»), «testListValuesMap.get(a.map.secondaryType).get(0)»));
 					«ELSE»
 						TS_ASSERT(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(0)») == «testListValuesMap.get(a.map.secondaryType).get(0)»);
 					«ENDIF»
@@ -1940,7 +1940,7 @@ class «IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.p
 					«IF ((a.map.secondaryType.equalsIgnoreCase("float")) || (a.map.secondaryType.equalsIgnoreCase("double")))»
 						TS_ASSERT_DELTA(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(1)»), «testListValuesMap.get(a.map.secondaryType).get(1)», 1e-5);
 					«ELSEIF a.map.secondaryType.equalsIgnoreCase("string")»
-						TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(1)»), «testListValuesMap.get(a.map.secondaryType).get(1)»));
+						TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(1)»), «testListValuesMap.get(a.map.secondaryType).get(1)»));
 					«ELSE»
 						TS_ASSERT(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(1)») == «testListValuesMap.get(a.map.secondaryType).get(1)»);
 					«ENDIF»
@@ -1949,7 +1949,7 @@ class «IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.p
 						«IF ((a.map.secondaryType.equalsIgnoreCase("float")) || (a.map.secondaryType.equalsIgnoreCase("double")))»
 							TS_ASSERT_DELTA(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(2)»), «testListValuesMap.get(a.map.secondaryType).get(2)», 1e-5);
 						«ELSEIF a.map.secondaryType.equalsIgnoreCase("string")»
-							TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(2)»), «testListValuesMap.get(a.map.secondaryType).get(2)»));
+							TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(2)»), «testListValuesMap.get(a.map.secondaryType).get(2)»));
 						«ELSE»
 							TS_ASSERT(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(2)») == «testListValuesMap.get(a.map.secondaryType).get(2)»);
 						«ENDIF»
@@ -1971,7 +1971,7 @@ class «IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.p
 				«IF ((a.map.secondaryType.equalsIgnoreCase("float")) || (a.map.secondaryType.equalsIgnoreCase("double")))»
 					TS_ASSERT_DELTA(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(0)»), «testListValuesMap.get(a.map.secondaryType).get(0)», 1e-5);
 				«ELSEIF a.map.secondaryType.equalsIgnoreCase("string")»
-					TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(0)»), «testListValuesMap.get(a.map.secondaryType).get(0)»));
+					TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(0)»), «testListValuesMap.get(a.map.secondaryType).get(0)»));
 				«ELSE»
 					TS_ASSERT(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(0)») == «testListValuesMap.get(a.map.secondaryType).get(0)»);
 				«ENDIF»
@@ -1986,7 +1986,7 @@ class «IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.p
 				«IF ((a.map.secondaryType.equalsIgnoreCase("float")) || (a.map.secondaryType.equalsIgnoreCase("double")))»
 					TS_ASSERT_DELTA(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(0)»), «testListValuesMap.get(a.map.secondaryType).get(0)», 1e-5);
 				«ELSEIF a.map.secondaryType.equalsIgnoreCase("string")»
-					TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(0)»), «testListValuesMap.get(a.map.secondaryType).get(0)»));
+					TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(0)»), «testListValuesMap.get(a.map.secondaryType).get(0)»));
 				«ELSE»
 					TS_ASSERT(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(0)») == «testListValuesMap.get(a.map.secondaryType).get(0)»);
 				«ENDIF»
@@ -1994,7 +1994,7 @@ class «IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.p
 				«IF ((a.map.secondaryType.equalsIgnoreCase("float")) || (a.map.secondaryType.equalsIgnoreCase("double")))»
 					TS_ASSERT_DELTA(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(1)»), «testListValuesMap.get(a.map.secondaryType).get(1)», 1e-5);
 				«ELSEIF a.map.secondaryType.equalsIgnoreCase("string")»
-					TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(1)»), «testListValuesMap.get(a.map.secondaryType).get(1)»));
+					TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(1)»), «testListValuesMap.get(a.map.secondaryType).get(1)»));
 				«ELSE»
 					TS_ASSERT(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(1)») == «testListValuesMap.get(a.map.secondaryType).get(1)»);
 				«ENDIF»
@@ -2009,7 +2009,7 @@ class «IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.p
 					«IF ((a.map.secondaryType.equalsIgnoreCase("float")) || (a.map.secondaryType.equalsIgnoreCase("double")))»
 						TS_ASSERT_DELTA(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(0)»), «testListValuesMap.get(a.map.secondaryType).get(0)», 1e-5);
 					«ELSEIF a.map.secondaryType.equalsIgnoreCase("string")»
-						TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(0)»), «testListValuesMap.get(a.map.secondaryType).get(0)»));
+						TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(0)»), «testListValuesMap.get(a.map.secondaryType).get(0)»));
 					«ELSE»
 						TS_ASSERT(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(0)») == «testListValuesMap.get(a.map.secondaryType).get(0)»);
 					«ENDIF»
@@ -2017,7 +2017,7 @@ class «IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.p
 					«IF ((a.map.secondaryType.equalsIgnoreCase("float")) || (a.map.secondaryType.equalsIgnoreCase("double")))»
 						TS_ASSERT_DELTA(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(1)»), «testListValuesMap.get(a.map.secondaryType).get(1)», 1e-5);
 					«ELSEIF a.map.secondaryType.equalsIgnoreCase("string")»
-						TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(1)»), «testListValuesMap.get(a.map.secondaryType).get(1)»));
+						TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(1)»), «testListValuesMap.get(a.map.secondaryType).get(1)»));
 					«ELSE»
 						TS_ASSERT(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(1)») == «testListValuesMap.get(a.map.secondaryType).get(1)»);
 					«ENDIF»
@@ -2025,7 +2025,7 @@ class «IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.p
 					«IF ((a.map.secondaryType.equalsIgnoreCase("float")) || (a.map.secondaryType.equalsIgnoreCase("double")))»
 						TS_ASSERT_DELTA(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(2)»), «testListValuesMap.get(a.map.secondaryType).get(2)», 1e-5);
 					«ELSEIF a.map.secondaryType.equalsIgnoreCase("string")»
-						TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(2)»), «testListValuesMap.get(a.map.secondaryType).get(2)»));
+						TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(2)»), «testListValuesMap.get(a.map.secondaryType).get(2)»));
 					«ELSE»
 						TS_ASSERT(«objA».getValueForKey_MapOf«a.map.name.toFirstUpper»(«testListValuesMap.get(a.map.primaryType).get(2)») == «testListValuesMap.get(a.map.secondaryType).get(2)»);
 					«ENDIF»
@@ -2051,7 +2051,7 @@ class «IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.p
 					for(uint32_t i = 0; i < «objA».getSize_«a.fixedarray.name.toFirstUpper»(); i++) {
 						std::stringstream sstr;
 						sstr << «testValuesMap.get(a.fixedarray.type)» << "-" << i;
-						TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(«objA».get«a.fixedarray.name.toFirstUpper»()[i], sstr.str()));
+						TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(«objA».get«a.fixedarray.name.toFirstUpper»()[i], sstr.str()));
 					}
 				«ENDIF»
 				«IF (a.fixedarray.type.equalsIgnoreCase("int32") || a.fixedarray.type.equalsIgnoreCase("uint32"))»

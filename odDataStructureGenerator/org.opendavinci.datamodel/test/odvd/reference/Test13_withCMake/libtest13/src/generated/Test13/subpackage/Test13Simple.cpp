@@ -5,10 +5,10 @@
  */
 
 
-#include "opendavinci/core/base/Hash.h"
-#include "opendavinci/core/base/Deserializer.h"
-#include "opendavinci/core/base/SerializationFactory.h"
-#include "opendavinci/core/base/Serializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 
 
 #include "test13/generated/Test13/subpackage/Test13Simple.h"
@@ -16,7 +16,7 @@
 namespace test13 {
 	namespace subpackage {
 			using namespace std;
-			using namespace core::base;
+			using namespace odcore::base;
 		
 		
 			Test13Simple::Test13Simple() :
@@ -67,7 +67,7 @@ namespace test13 {
 				m_buttonState = val;
 			}
 		
-			void Test13Simple::accept(core::base::Visitor &v) {
+			void Test13Simple::accept(odcore::base::Visitor &v) {
 				int32_t int32t_buttonState = m_buttonState;
 				v.visit(CRC32 < CharList<'b', CharList<'u', CharList<'t', CharList<'t', CharList<'o', CharList<'n', CharList<'S', CharList<'t', CharList<'a', CharList<'t', CharList<'e', NullType> > > > > > > > > > >  >::RESULT, 0, "Test13Simple.buttonState", "buttonState", int32t_buttonState);
 			}
@@ -95,7 +95,7 @@ namespace test13 {
 		
 				SerializationFactory& sf = SerializationFactory::getInstance();
 		
-				core::SharedPointer<Serializer> s = sf.getSerializer(out);
+				odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 		
 				int32_t int32t_buttonState = m_buttonState;
 				s->write(CRC32 < CharList<'b', CharList<'u', CharList<'t', CharList<'t', CharList<'o', CharList<'n', CharList<'S', CharList<'t', CharList<'a', CharList<'t', CharList<'e', NullType> > > > > > > > > > >  >::RESULT,
@@ -107,7 +107,7 @@ namespace test13 {
 		
 				SerializationFactory& sf = SerializationFactory::getInstance();
 		
-				core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+				odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 		
 				int32_t int32t_buttonState = 0;
 				d->read(CRC32 < CharList<'b', CharList<'u', CharList<'t', CharList<'t', CharList<'o', CharList<'n', CharList<'S', CharList<'t', CharList<'a', CharList<'t', CharList<'e', NullType> > > > > > > > > > >  >::RESULT,

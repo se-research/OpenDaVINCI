@@ -15,8 +15,8 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/strings/StringToolbox.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/strings/StringToolbox.h"
 
 #include "test18/GeneratedHeaders_Test18.h"
 
@@ -139,7 +139,7 @@ class Test18_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj3.getMyAtt2() == 4000);
 			TS_ASSERT(obj3.getMyAtt3() == 4000);
 	
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj3.toString()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj3.toString()));
 		}
 	
 		void testCreateAndAssignObject() {
@@ -215,7 +215,7 @@ class Test18_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj2.getMyAtt2() == 4000);
 			TS_ASSERT(obj2.getMyAtt3() == 4000);
 	
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
 		}
 	
 		void testCreateAndSerializeObject() {
@@ -294,7 +294,7 @@ class Test18_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj2.getMyAtt2() == 4000);
 			TS_ASSERT(obj2.getMyAtt3() == 4000);
 	
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
 		}
 
 };

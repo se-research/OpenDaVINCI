@@ -7,17 +7,17 @@
 #ifndef TEST12MAPSTRING_H
 #define TEST12MAPSTRING_H
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 #include <map>
 
-#include "opendavinci/core/base/Visitable.h"
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/base/Visitable.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 
 
 using namespace std;
 
-class Test12MapString : public core::data::SerializableData, public core::base::Visitable {
+class Test12MapString : public odcore::data::SerializableData, public odcore::base::Visitable {
 	public:
 		Test12MapString();
 
@@ -443,7 +443,7 @@ class Test12MapString : public core::data::SerializableData, public core::base::
 		static const string LongName();
 
 	public:
-		virtual void accept(core::base::Visitor &v);
+		virtual void accept(odcore::base::Visitor &v);
 
 		virtual ostream& operator<<(ostream &out) const;
 		virtual istream& operator>>(istream &in);

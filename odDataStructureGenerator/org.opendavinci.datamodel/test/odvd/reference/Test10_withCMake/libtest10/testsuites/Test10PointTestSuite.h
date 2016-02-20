@@ -15,8 +15,8 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/strings/StringToolbox.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/strings/StringToolbox.h"
 
 #include "test10/GeneratedHeaders_Test10.h"
 
@@ -60,7 +60,7 @@ class Test10Point_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT_DELTA(obj3.getX(), 2.5, 1e-5);
 			TS_ASSERT_DELTA(obj3.getY(), 2.5, 1e-5);
 	
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj3.toString()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj3.toString()));
 		}
 	
 		void testCreateAndAssignObject() {
@@ -86,7 +86,7 @@ class Test10Point_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT_DELTA(obj2.getX(), 2.5, 1e-5);
 			TS_ASSERT_DELTA(obj2.getY(), 2.5, 1e-5);
 	
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
 		}
 	
 		void testCreateAndSerializeObject() {
@@ -115,7 +115,7 @@ class Test10Point_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT_DELTA(obj2.getX(), 2.5, 1e-5);
 			TS_ASSERT_DELTA(obj2.getY(), 2.5, 1e-5);
 	
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
 		}
 
 };

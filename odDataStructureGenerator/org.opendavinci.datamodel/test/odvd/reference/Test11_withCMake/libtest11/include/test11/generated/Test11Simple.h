@@ -7,16 +7,16 @@
 #ifndef TEST11SIMPLE_H
 #define TEST11SIMPLE_H
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 
-#include "opendavinci/core/base/Visitable.h"
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/base/Visitable.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 
 
 using namespace std;
 
-class Test11Simple : public core::data::SerializableData, public core::base::Visitable {
+class Test11Simple : public odcore::data::SerializableData, public odcore::base::Visitable {
 	public:
 		Test11Simple();
 
@@ -90,7 +90,7 @@ class Test11Simple : public core::data::SerializableData, public core::base::Vis
 		static const string LongName();
 
 	public:
-		virtual void accept(core::base::Visitor &v);
+		virtual void accept(odcore::base::Visitor &v);
 
 		virtual ostream& operator<<(ostream &out) const;
 		virtual istream& operator>>(istream &in);

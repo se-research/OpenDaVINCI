@@ -7,20 +7,20 @@
 #ifndef TEST10_H
 #define TEST10_H
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 #include <vector>
 #include <map>
 
-#include "opendavinci/core/base/Visitable.h"
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/base/Visitable.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 
 #include "test10/generated/Test10Point.h"
 #include "test10/generated/Test10Point.h"
 
 using namespace std;
 
-class Test10 : public core::data::SerializableData, public core::base::Visitable {
+class Test10 : public odcore::data::SerializableData, public odcore::base::Visitable {
 	public:
 		Test10();
 
@@ -282,7 +282,7 @@ class Test10 : public core::data::SerializableData, public core::base::Visitable
 		static const string LongName();
 
 	public:
-		virtual void accept(core::base::Visitor &v);
+		virtual void accept(odcore::base::Visitor &v);
 
 		virtual ostream& operator<<(ostream &out) const;
 		virtual istream& operator>>(istream &in);

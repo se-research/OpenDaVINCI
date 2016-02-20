@@ -15,8 +15,8 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/strings/StringToolbox.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/strings/StringToolbox.h"
 
 #include "test6/GeneratedHeaders_Test6.h"
 
@@ -34,7 +34,7 @@ class testpackage_Test6_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getAttribute4() == +45);
 			TS_ASSERT_DELTA(obj1.getAttribute5(), -0.12, 1e-5);
 			TS_ASSERT_DELTA(obj1.getAttribute6(), +0.45678, 1e-5);
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getAttribute7(), "Hello World."));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getAttribute7(), "Hello World."));
 			TS_ASSERT(obj1.getListOfMyStringList().size() == 0);
 			TS_ASSERT(obj1.getSize_ListOfMyStringList() == 0);
 			TS_ASSERT(obj1.isEmpty_ListOfMyStringList());
@@ -106,7 +106,7 @@ class testpackage_Test6_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getAttribute4() == 4000);
 			TS_ASSERT_DELTA(obj1.getAttribute5(), 2.5, 1e-5);
 			TS_ASSERT_DELTA(obj1.getAttribute6(), 1.0, 1e-5);
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getAttribute7(), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getAttribute7(), "Hello World!"));
 			TS_ASSERT(obj1.getListOfMyStringList().size() == 3);
 			TS_ASSERT(obj1.getSize_ListOfMyStringList() == 3);
 			TS_ASSERT(!obj1.isEmpty_ListOfMyStringList());
@@ -125,7 +125,7 @@ class testpackage_Test6_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getAttribute4() == +45);
 			TS_ASSERT_DELTA(obj1.getAttribute5(), -0.12, 1e-5);
 			TS_ASSERT_DELTA(obj1.getAttribute6(), +0.45678, 1e-5);
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getAttribute7(), "Hello World."));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getAttribute7(), "Hello World."));
 			TS_ASSERT(obj1.getListOfMyStringList().size() == 0);
 			TS_ASSERT(obj1.getSize_ListOfMyStringList() == 0);
 			TS_ASSERT(obj1.isEmpty_ListOfMyStringList());
@@ -137,7 +137,7 @@ class testpackage_Test6_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getAttribute4() == obj2.getAttribute4());
 			TS_ASSERT_DELTA(obj1.getAttribute5(), obj2.getAttribute5(), 1e-5);
 			TS_ASSERT_DELTA(obj1.getAttribute6(), obj2.getAttribute6(), 1e-5);
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getAttribute7(), obj2.getAttribute7()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getAttribute7(), obj2.getAttribute7()));
 			TS_ASSERT(obj1.getSize_ListOfMyStringList() == obj2.getSize_ListOfMyStringList());
 			TS_ASSERT(obj1.isEmpty_ListOfMyStringList() == obj2.isEmpty_ListOfMyStringList());
 	
@@ -208,7 +208,7 @@ class testpackage_Test6_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getAttribute4() == 4000);
 			TS_ASSERT_DELTA(obj1.getAttribute5(), 2.5, 1e-5);
 			TS_ASSERT_DELTA(obj1.getAttribute6(), 1.0, 1e-5);
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getAttribute7(), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getAttribute7(), "Hello World!"));
 			TS_ASSERT(obj1.getListOfMyStringList().size() == 3);
 			TS_ASSERT(obj1.getSize_ListOfMyStringList() == 3);
 			TS_ASSERT(!obj1.isEmpty_ListOfMyStringList());
@@ -223,7 +223,7 @@ class testpackage_Test6_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getAttribute4() == obj3.getAttribute4());
 			TS_ASSERT_DELTA(obj1.getAttribute5(), obj3.getAttribute5(), 1e-5);
 			TS_ASSERT_DELTA(obj1.getAttribute6(), obj3.getAttribute6(), 1e-5);
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getAttribute7(), obj3.getAttribute7()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getAttribute7(), obj3.getAttribute7()));
 			TS_ASSERT(obj1.getSize_ListOfMyStringList() == obj3.getSize_ListOfMyStringList());
 			TS_ASSERT(obj1.isEmpty_ListOfMyStringList() == obj3.isEmpty_ListOfMyStringList());
 	
@@ -233,7 +233,7 @@ class testpackage_Test6_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj3.getAttribute4() == 4000);
 			TS_ASSERT_DELTA(obj3.getAttribute5(), 2.5, 1e-5);
 			TS_ASSERT_DELTA(obj3.getAttribute6(), 1.0, 1e-5);
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj3.getAttribute7(), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj3.getAttribute7(), "Hello World!"));
 			TS_ASSERT(obj3.getListOfMyStringList().size() == 3);
 			TS_ASSERT(obj3.getSize_ListOfMyStringList() == 3);
 			TS_ASSERT(!obj3.isEmpty_ListOfMyStringList());
@@ -241,7 +241,7 @@ class testpackage_Test6_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj3.contains_ListOfMyStringList("Hello Solar System!"));
 			TS_ASSERT(obj3.contains_ListOfMyStringList("Hello Milky Way!"));
 	
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj3.toString()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj3.toString()));
 		}
 	
 		void testCreateAndAssignObject() {
@@ -254,7 +254,7 @@ class testpackage_Test6_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getAttribute4() == +45);
 			TS_ASSERT_DELTA(obj1.getAttribute5(), -0.12, 1e-5);
 			TS_ASSERT_DELTA(obj1.getAttribute6(), +0.45678, 1e-5);
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getAttribute7(), "Hello World."));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getAttribute7(), "Hello World."));
 			TS_ASSERT(obj1.getListOfMyStringList().size() == 0);
 			TS_ASSERT(obj1.getSize_ListOfMyStringList() == 0);
 			TS_ASSERT(obj1.isEmpty_ListOfMyStringList());
@@ -266,7 +266,7 @@ class testpackage_Test6_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj2.getAttribute4() == +45);
 			TS_ASSERT_DELTA(obj2.getAttribute5(), -0.12, 1e-5);
 			TS_ASSERT_DELTA(obj2.getAttribute6(), +0.45678, 1e-5);
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj2.getAttribute7(), "Hello World."));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj2.getAttribute7(), "Hello World."));
 			TS_ASSERT(obj2.getListOfMyStringList().size() == 0);
 			TS_ASSERT(obj2.getSize_ListOfMyStringList() == 0);
 			TS_ASSERT(obj2.isEmpty_ListOfMyStringList());
@@ -338,7 +338,7 @@ class testpackage_Test6_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getAttribute4() == 4000);
 			TS_ASSERT_DELTA(obj1.getAttribute5(), 2.5, 1e-5);
 			TS_ASSERT_DELTA(obj1.getAttribute6(), 1.0, 1e-5);
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getAttribute7(), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getAttribute7(), "Hello World!"));
 			TS_ASSERT(obj1.getListOfMyStringList().size() == 3);
 			TS_ASSERT(obj1.getSize_ListOfMyStringList() == 3);
 			TS_ASSERT(!obj1.isEmpty_ListOfMyStringList());
@@ -353,7 +353,7 @@ class testpackage_Test6_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getAttribute4() == obj2.getAttribute4());
 			TS_ASSERT_DELTA(obj1.getAttribute5(), obj2.getAttribute5(), 1e-5);
 			TS_ASSERT_DELTA(obj1.getAttribute6(), obj2.getAttribute6(), 1e-5);
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getAttribute7(), obj2.getAttribute7()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getAttribute7(), obj2.getAttribute7()));
 			TS_ASSERT(obj1.getSize_ListOfMyStringList() == obj2.getSize_ListOfMyStringList());
 			TS_ASSERT(obj1.isEmpty_ListOfMyStringList() == obj2.isEmpty_ListOfMyStringList());
 	
@@ -363,7 +363,7 @@ class testpackage_Test6_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj2.getAttribute4() == 4000);
 			TS_ASSERT_DELTA(obj2.getAttribute5(), 2.5, 1e-5);
 			TS_ASSERT_DELTA(obj2.getAttribute6(), 1.0, 1e-5);
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj2.getAttribute7(), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj2.getAttribute7(), "Hello World!"));
 			TS_ASSERT(obj2.getListOfMyStringList().size() == 3);
 			TS_ASSERT(obj2.getSize_ListOfMyStringList() == 3);
 			TS_ASSERT(!obj2.isEmpty_ListOfMyStringList());
@@ -371,7 +371,7 @@ class testpackage_Test6_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj2.contains_ListOfMyStringList("Hello Solar System!"));
 			TS_ASSERT(obj2.contains_ListOfMyStringList("Hello Milky Way!"));
 	
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
 		}
 	
 		void testCreateAndSerializeObject() {
@@ -384,7 +384,7 @@ class testpackage_Test6_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getAttribute4() == +45);
 			TS_ASSERT_DELTA(obj1.getAttribute5(), -0.12, 1e-5);
 			TS_ASSERT_DELTA(obj1.getAttribute6(), +0.45678, 1e-5);
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getAttribute7(), "Hello World."));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getAttribute7(), "Hello World."));
 			TS_ASSERT(obj1.getListOfMyStringList().size() == 0);
 			TS_ASSERT(obj1.getSize_ListOfMyStringList() == 0);
 			TS_ASSERT(obj1.isEmpty_ListOfMyStringList());
@@ -396,7 +396,7 @@ class testpackage_Test6_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj2.getAttribute4() == +45);
 			TS_ASSERT_DELTA(obj2.getAttribute5(), -0.12, 1e-5);
 			TS_ASSERT_DELTA(obj2.getAttribute6(), +0.45678, 1e-5);
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj2.getAttribute7(), "Hello World."));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj2.getAttribute7(), "Hello World."));
 			TS_ASSERT(obj2.getListOfMyStringList().size() == 0);
 			TS_ASSERT(obj2.getSize_ListOfMyStringList() == 0);
 			TS_ASSERT(obj2.isEmpty_ListOfMyStringList());
@@ -468,7 +468,7 @@ class testpackage_Test6_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getAttribute4() == 4000);
 			TS_ASSERT_DELTA(obj1.getAttribute5(), 2.5, 1e-5);
 			TS_ASSERT_DELTA(obj1.getAttribute6(), 1.0, 1e-5);
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getAttribute7(), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getAttribute7(), "Hello World!"));
 			TS_ASSERT(obj1.getListOfMyStringList().size() == 3);
 			TS_ASSERT(obj1.getSize_ListOfMyStringList() == 3);
 			TS_ASSERT(!obj1.isEmpty_ListOfMyStringList());
@@ -486,7 +486,7 @@ class testpackage_Test6_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getAttribute4() == obj2.getAttribute4());
 			TS_ASSERT_DELTA(obj1.getAttribute5(), obj2.getAttribute5(), 1e-5);
 			TS_ASSERT_DELTA(obj1.getAttribute6(), obj2.getAttribute6(), 1e-5);
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getAttribute7(), obj2.getAttribute7()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getAttribute7(), obj2.getAttribute7()));
 			TS_ASSERT(obj1.getSize_ListOfMyStringList() == obj2.getSize_ListOfMyStringList());
 			TS_ASSERT(obj1.isEmpty_ListOfMyStringList() == obj2.isEmpty_ListOfMyStringList());
 	
@@ -496,7 +496,7 @@ class testpackage_Test6_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj2.getAttribute4() == 4000);
 			TS_ASSERT_DELTA(obj2.getAttribute5(), 2.5, 1e-5);
 			TS_ASSERT_DELTA(obj2.getAttribute6(), 1.0, 1e-5);
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj2.getAttribute7(), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj2.getAttribute7(), "Hello World!"));
 			TS_ASSERT(obj2.getListOfMyStringList().size() == 3);
 			TS_ASSERT(obj2.getSize_ListOfMyStringList() == 3);
 			TS_ASSERT(!obj2.isEmpty_ListOfMyStringList());
@@ -504,7 +504,7 @@ class testpackage_Test6_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj2.contains_ListOfMyStringList("Hello Solar System!"));
 			TS_ASSERT(obj2.contains_ListOfMyStringList("Hello Milky Way!"));
 	
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
 		}
 
 };

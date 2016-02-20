@@ -7,17 +7,17 @@
 #ifndef TEST11MAPFLOAT_H
 #define TEST11MAPFLOAT_H
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 #include <map>
 
-#include "opendavinci/core/base/Visitable.h"
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/base/Visitable.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 
 
 using namespace std;
 
-class Test11MapFloat : public core::data::SerializableData, public core::base::Visitable {
+class Test11MapFloat : public odcore::data::SerializableData, public odcore::base::Visitable {
 	public:
 		Test11MapFloat();
 
@@ -443,7 +443,7 @@ class Test11MapFloat : public core::data::SerializableData, public core::base::V
 		static const string LongName();
 
 	public:
-		virtual void accept(core::base::Visitor &v);
+		virtual void accept(odcore::base::Visitor &v);
 
 		virtual ostream& operator<<(ostream &out) const;
 		virtual istream& operator>>(istream &in);

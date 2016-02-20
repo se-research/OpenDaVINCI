@@ -5,10 +5,10 @@
  */
 
 
-#include "opendavinci/core/base/Hash.h"
-#include "opendavinci/core/base/Deserializer.h"
-#include "opendavinci/core/base/SerializationFactory.h"
-#include "opendavinci/core/base/Serializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 
 #include "test17/generated/sub/structure/Test17Super.h"
 
@@ -17,7 +17,7 @@
 namespace sub {
 	namespace structure {
 			using namespace std;
-			using namespace core::base;
+			using namespace odcore::base;
 		
 		
 			Test17Child::Test17Child() :
@@ -69,7 +69,7 @@ namespace sub {
 				m_myName = val;
 			}
 		
-			void Test17Child::accept(core::base::Visitor &v) {
+			void Test17Child::accept(odcore::base::Visitor &v) {
 				sub::structure::Test17Super::accept(v);
 				v.visit(CRC32 < CharList<'m', CharList<'y', CharList<'N', CharList<'a', CharList<'m', CharList<'e', NullType> > > > > >  >::RESULT, 0, "Test17Child.myName", "myName", m_myName);
 			}
@@ -89,7 +89,7 @@ namespace sub {
 		
 				SerializationFactory& sf = SerializationFactory::getInstance();
 		
-				core::SharedPointer<Serializer> s = sf.getSerializer(out);
+				odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 		
 				s->write(CRC32 < CharList<'m', CharList<'y', CharList<'N', CharList<'a', CharList<'m', CharList<'e', NullType> > > > > >  >::RESULT,
 						m_myName);
@@ -101,7 +101,7 @@ namespace sub {
 		
 				SerializationFactory& sf = SerializationFactory::getInstance();
 		
-				core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+				odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 		
 				d->read(CRC32 < CharList<'m', CharList<'y', CharList<'N', CharList<'a', CharList<'m', CharList<'e', NullType> > > > > >  >::RESULT,
 						m_myName);

@@ -7,11 +7,11 @@
 #ifndef SUB_STRUCTURE_TEST17CHILD_H
 #define SUB_STRUCTURE_TEST17CHILD_H
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 
-#include "opendavinci/core/base/Visitable.h"
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/base/Visitable.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 
 
 #include "test17/GeneratedHeaders_Test17.h"
@@ -80,7 +80,7 @@ namespace sub {
 				static const string LongName();
 		
 			public:
-				virtual void accept(core::base::Visitor &v);
+				virtual void accept(odcore::base::Visitor &v);
 		
 				virtual ostream& operator<<(ostream &out) const;
 				virtual istream& operator>>(istream &in);

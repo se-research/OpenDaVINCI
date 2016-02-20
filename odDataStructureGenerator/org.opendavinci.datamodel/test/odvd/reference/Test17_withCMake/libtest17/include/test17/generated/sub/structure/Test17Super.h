@@ -7,18 +7,18 @@
 #ifndef SUB_STRUCTURE_TEST17SUPER_H
 #define SUB_STRUCTURE_TEST17SUPER_H
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 
-#include "opendavinci/core/base/Visitable.h"
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/base/Visitable.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 
 
 namespace sub {
 	namespace structure {
 		using namespace std;
 		
-		class Test17Super : public core::data::SerializableData, public core::base::Visitable {
+		class Test17Super : public odcore::data::SerializableData, public odcore::base::Visitable {
 			public:
 				Test17Super();
 		
@@ -92,7 +92,7 @@ namespace sub {
 				static const string LongName();
 		
 			public:
-				virtual void accept(core::base::Visitor &v);
+				virtual void accept(odcore::base::Visitor &v);
 		
 				virtual ostream& operator<<(ostream &out) const;
 				virtual istream& operator>>(istream &in);
