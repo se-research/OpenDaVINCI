@@ -21,9 +21,9 @@
 
 #include <vector>
 
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/tools/recorder/Recorder.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odtools/recorder/Recorder.h"
 #include "automotivedata/generated/automotive/GenericCANMessage.h"
 
 #include "CANBridge.h"
@@ -34,9 +34,9 @@ namespace automotive {
     namespace odcantools {
 
         using namespace std;
-        using namespace core;
-        using namespace core::base;
-        using namespace core::data;
+        using namespace odcore;
+        using namespace odcore::base;
+        using namespace odcore::data;
 
         CANBridge::CANBridge(const int32_t &argc, char **argv) :
             TimeTriggeredConferenceClientModule(argc, argv, "odcanbridge"),

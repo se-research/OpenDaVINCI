@@ -19,20 +19,20 @@
 
 #include "CANDevice.h"
 #include "MessageToCANDataStore.h"
-#include "opendavinci/core/data/Container.h"
+#include "opendavinci/odcore/data/Container.h"
 #include "automotivedata/generated/automotive/GenericCANMessage.h"
 
 namespace automotive {
     namespace odcantools {
 
-        using namespace core::data;
+        using namespace odcore::data;
 
         MessageToCANDataStore::MessageToCANDataStore(CANDevice &canDevice) :
             m_canDevice(canDevice) {}
 
         MessageToCANDataStore::~MessageToCANDataStore() {}
 
-        void MessageToCANDataStore::add(const core::data::Container &container) {
+        void MessageToCANDataStore::add(const odcore::data::Container &container) {
             // TODO: Here, we need to check for which Containers we have specified a mapping to CAN messages.
             if (container.getDataType() == Container::VEHICLECONTROL) {
                 // TODO: Use the Visitor-pattern to transform a Container into the CAN message.

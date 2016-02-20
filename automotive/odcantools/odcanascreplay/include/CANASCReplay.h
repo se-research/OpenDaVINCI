@@ -22,7 +22,7 @@
 
 #include <stdint.h>
 
-#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
 namespace automotive {
@@ -33,7 +33,7 @@ namespace automotive {
         /**
          * This class plays back data from an ASC file.
          */
-        class CANASCReplay : public core::base::module::TimeTriggeredConferenceClientModule {
+        class CANASCReplay : public odcore::base::module::TimeTriggeredConferenceClientModule {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn

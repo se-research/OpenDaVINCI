@@ -23,10 +23,10 @@
 
 #include "cxxtest/TestSuite.h"
 
-#include <opendavinci/core/SharedPointer.h>
-#include <opendavinci/core/reflection/Message.h>
-#include <opendavinci/core/reflection/MessageToVisitableVisitor.h>
-#include <opendavinci/core/reflection/MessagePrettyPrinterVisitor.h>
+#include <opendavinci/odcore/SharedPointer.h>
+#include <opendavinci/odcore/reflection/Message.h>
+#include <opendavinci/odcore/reflection/MessageToVisitableVisitor.h>
+#include <opendavinci/odcore/reflection/MessagePrettyPrinterVisitor.h>
 
 #include "automotivedata/GeneratedHeaders_AutomotiveData.h"
 
@@ -34,10 +34,10 @@
 #include "../include/CanMapper.h"
 
 using namespace std;
-using namespace core;
-using namespace core::data;
+using namespace odcore;
+using namespace odcore::data;
 using namespace automotive::odcantools;
-using namespace core::reflection;
+using namespace odcore::reflection;
 using namespace coredata::reflection;
 
 /**

@@ -22,7 +22,7 @@
 #ifndef CANBRIDGE_H_
 #define CANBRIDGE_H_
 
-#include <opendavinci/core/SharedPointer.h>
+#include <opendavinci/odcore/SharedPointer.h>
 #include <stdint.h>
 #include <memory>
 #include <string>
@@ -30,8 +30,8 @@
 #include "CANMessageReplicator.h"
 #include "canmessagemapping/GeneratedHeaders_CANMessageMapping.h"
 #include "GenericCANMessageListener.h"
-#include "opendavinci/core/base/FIFOQueue.h"
-#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/base/FIFOQueue.h"
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
 namespace automotive { class GenericCANMessage; }
@@ -47,7 +47,7 @@ class CANDevice;
         /**
          * This class bridges between two CAN devices and maps GenericCANMessages to high-level C++ messages.
          */
-        class CANBridge : public core::base::module::TimeTriggeredConferenceClientModule,
+        class CANBridge : public odcore::base::module::TimeTriggeredConferenceClientModule,
                           public GenericCANMessageListener {
             private:
                 /**
@@ -90,11 +90,11 @@ class CANDevice;
                 virtual void tearDown();
 
             private:
-                core::base::FIFOQueue m_fifo;
+                odcore::base::FIFOQueue m_fifo;
                 auto_ptr<odtools::recorder::Recorder> m_recorder;
-                core::SharedPointer<CANDevice> m_deviceA;
+                odcore::SharedPointer<CANDevice> m_deviceA;
                 string m_deviceNodeA;
-                core::SharedPointer<CANDevice> m_deviceB;
+                odcore::SharedPointer<CANDevice> m_deviceB;
                 string m_deviceNodeB;
                 CANMessageReplicator m_replicatorFromAtoB;
                 CANMessageReplicator m_replicatorFromBtoA;

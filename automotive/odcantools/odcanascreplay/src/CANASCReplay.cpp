@@ -19,8 +19,8 @@
 
 #include <iostream>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/strings/StringToolbox.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/strings/StringToolbox.h"
 
 #include "automotivedata/generated/automotive/GenericCANMessage.h"
 
@@ -30,9 +30,9 @@ namespace automotive {
     namespace odcantools {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::data;
-        using namespace core::strings;
+        using namespace odcore::base;
+        using namespace odcore::data;
+        using namespace odcore::strings;
 
         CANASCReplay::CANASCReplay(const int32_t &argc, char **argv) :
             TimeTriggeredConferenceClientModule(argc, argv, "odcanascreplay") {}

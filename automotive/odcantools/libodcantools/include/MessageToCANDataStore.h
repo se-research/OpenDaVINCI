@@ -20,10 +20,10 @@
 #ifndef MESSAGETOCANDATASTORE_H_
 #define MESSAGETOCANDATASTORE_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/AbstractDataStore.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/AbstractDataStore.h"
 
-namespace core { namespace data { class Container; } }
+namespace odcore { namespace data { class Container; } }
 
 namespace automotive {
     namespace odcantools {
@@ -36,7 +36,7 @@ namespace automotive {
         /**
          * This class is waiting for Containers to be written to a CAN bus.
          */
-        class MessageToCANDataStore : public core::base::AbstractDataStore {
+        class MessageToCANDataStore : public odcore::base::AbstractDataStore {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -67,7 +67,7 @@ namespace automotive {
 
                 virtual ~MessageToCANDataStore();
 
-                virtual void add(const core::data::Container &container);
+                virtual void add(const odcore::data::Container &container);
 
                 virtual void clear();
 

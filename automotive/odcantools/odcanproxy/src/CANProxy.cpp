@@ -19,9 +19,9 @@
 
 #include <iostream>
 
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/data/TimeStamp.h"
-#include "opendavinci/tools/recorder/Recorder.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
+#include "opendavinci/odtools/recorder/Recorder.h"
 #include "automotivedata/generated/automotive/GenericCANMessage.h"
 
 #include "CANDevice.h"
@@ -32,8 +32,8 @@ namespace automotive {
     namespace odcantools {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::data;
+        using namespace odcore::base;
+        using namespace odcore::data;
 
         CANProxy::CANProxy(const int32_t &argc, char **argv) :
             TimeTriggeredConferenceClientModule(argc, argv, "odcanproxy"),

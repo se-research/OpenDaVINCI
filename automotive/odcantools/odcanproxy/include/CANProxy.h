@@ -25,8 +25,8 @@
 #include <string>
 
 #include "GenericCANMessageListener.h"
-#include "opendavinci/core/base/FIFOQueue.h"
-#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/base/FIFOQueue.h"
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
 namespace automotive { class GenericCANMessage; }
@@ -42,7 +42,7 @@ class CANDevice;
         /**
          * This class wraps a CAN device node to wrap low-level CAN messages into GenericCANMessages.
          */
-        class CANProxy : public core::base::module::TimeTriggeredConferenceClientModule,
+        class CANProxy : public odcore::base::module::TimeTriggeredConferenceClientModule,
                          public GenericCANMessageListener {
             private:
                 /**
@@ -92,7 +92,7 @@ class CANDevice;
                 virtual void tearDown();
 
             private:
-                core::base::FIFOQueue m_fifo;
+                odcore::base::FIFOQueue m_fifo;
                 auto_ptr<odtools::recorder::Recorder> m_recorder;
                 auto_ptr<CANDevice> m_device;
                 string m_deviceNode;

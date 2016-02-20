@@ -22,17 +22,17 @@
 #include <vector>
 
 #include "CanMapper.h"
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/core/base/module/DataTriggeredConferenceClientModule.h"
-#include "opendavinci/core/data/Container.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/base/module/DataTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/data/Container.h"
 #include "automotivedata/generated/automotive/GenericCANMessage.h"
 
 namespace automotive {
     namespace odcantools {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::data;
+        using namespace odcore::base;
+        using namespace odcore::data;
 
         CanMapper::CanMapper(const int32_t &argc, char **argv) :
             DataTriggeredConferenceClientModule(argc, argv, "odcanmapper"),
