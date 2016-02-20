@@ -31,7 +31,7 @@
 namespace egocontroller {
 
     using namespace std;
-    using namespace hesperia::data::environment;
+    using namespace opendlv::data::environment;
 
     KeyboardController::KeyboardController(
             ControlBehaviour& behaviour,

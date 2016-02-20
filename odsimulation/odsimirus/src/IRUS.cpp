@@ -21,20 +21,20 @@
 #include <string>
 
 #include "IRUS.h"
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/core/data/Container.h"
-#include "hesperia/data/environment/EgoState.h"
-#include "vehiclecontext/model/IRUS.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendlv/data/environment/EgoState.h"
+#include "opendlv/vehiclecontext/model/IRUS.h"
 
-namespace core { namespace base { class KeyValueDataStore; } }
+namespace odcore { namespace base { class KeyValueDataStore; } }
 
 namespace irus {
 
     using namespace std;
-    using namespace core::base;
-    using namespace core::data;
-    using namespace hesperia::data::environment;
+    using namespace odcore::base;
+    using namespace odcore::data;
+    using namespace opendlv::data::environment;
 
     IRUS::IRUS(const int32_t &argc, char **argv) :
         TimeTriggeredConferenceClientModule(argc, argv, "odsimirus") {}
@@ -45,21 +45,21 @@ namespace irus {
 
     void IRUS::tearDown() {}
 
-    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode IRUS::body() {
+    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode IRUS::body() {
         stringstream sstrConfiguration;
         getKeyValueConfiguration().writeTo(sstrConfiguration);
 
         // Use libodsimulation's odsimirus implementation.
         string config = sstrConfiguration.str();
-        vehiclecontext::model::IRUS irus(config);
+        opendlv::vehiclecontext::model::IRUS irus(config);
         irus.setup();
 
         // Use the most recent EgoState available.
         KeyValueDataStore &kvs = getKeyValueDataStore();
 
-        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
             // Get current EgoState.
-            Container c = kvs.get(hesperia::data::environment::EgoState::ID());
+            Container c = kvs.get(opendlv::data::environment::EgoState::ID());
             EgoState es = c.getData<EgoState>();
 
             // Calculate result and propagate it.
@@ -76,7 +76,7 @@ namespace irus {
 
         irus.tearDown();
 
-        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+        return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
     }
 
 } // irus

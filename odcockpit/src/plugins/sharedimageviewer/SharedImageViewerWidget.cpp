@@ -30,12 +30,12 @@
 #include <algorithm>
 #include <iostream>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 #include "plugins/sharedimageviewer/SharedImageViewerWidget.h"
-#include "opendavinci/generated/coredata/image/SharedImage.h"
+#include "opendavinci/generated/odcore/data/image/SharedImage.h"
 
 class QPaintEvent;
 namespace cockpit { namespace plugins { class PlugIn; } }
@@ -47,9 +47,9 @@ namespace cockpit {
         namespace sharedimageviewer {
 
             using namespace std;
-            using namespace core::base;
-            using namespace core::data;
-            using namespace coredata::image;
+            using namespace odcore::base;
+            using namespace odcore::data;
+            using namespace odcore::data::image;
 
             SharedImageViewerWidget::SharedImageViewerWidget(const PlugIn &/*plugIn*/, QWidget *prnt) :
                 QWidget(prnt),
@@ -100,7 +100,7 @@ namespace cockpit {
                         cerr << "Using shared image: " << si.toString() << endl;
                         setWindowTitle(QString::fromStdString(si.toString()));
 
-                        m_sharedImageMemory = core::wrapper::SharedMemoryFactory::attachToSharedMemory(si.getName());
+                        m_sharedImageMemory = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(si.getName());
                         m_sharedImage = si;
 
                         // Remove the selection box.
@@ -110,7 +110,7 @@ namespace cockpit {
             }
 
             void SharedImageViewerWidget::nextContainer(Container &c) {
-                if (c.getDataType() == coredata::image::SharedImage::ID()) {
+                if (c.getDataType() == odcore::data::image::SharedImage::ID()) {
                     SharedImage si = c.getData<SharedImage>();
 
                     if ( ( (si.getWidth() * si.getHeight()) > 0) && (si.getName().size() > 0) ) {

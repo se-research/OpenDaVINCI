@@ -22,7 +22,7 @@
 
 #include <vector>
 
-namespace hesperia { namespace scenegraph { class SceneNodeDescriptor; } }
+namespace opendlv { namespace scenegraph { class SceneNodeDescriptor; } }
 
 namespace cockpit {
     namespace plugins {
@@ -44,7 +44,7 @@ namespace cockpit {
                      *
                      * @param list List of camera assignable nodes.
                      */
-                    virtual void updateListOfCameraAssignableNodes(const vector<hesperia::scenegraph::SceneNodeDescriptor> &list) = 0;
+                    virtual void updateListOfCameraAssignableNodes(const vector<opendlv::scenegraph::SceneNodeDescriptor> &list) = 0;
             };
 
         }

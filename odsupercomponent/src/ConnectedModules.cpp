@@ -20,24 +20,24 @@
 
 #include <algorithm>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 #include "ConnectedModule.h"
 #include "ConnectedModules.h"
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/data/TimeStamp.h"
-#include "opendavinci/core/dmcp/connection/ModuleConnection.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleDescriptor.h"
-#include "opendavinci/generated/coredata/dmcp/PulseMessage.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
+#include "opendavinci/odcore/dmcp/connection/ModuleConnection.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleDescriptor.h"
+#include "opendavinci/generated/odcore/data/dmcp/PulseMessage.h"
 
 namespace odsupercomponent {
 
     using namespace std;
-    using namespace core::base;
-    using namespace core::data;
-    using namespace coredata::dmcp;
+    using namespace odcore::base;
+    using namespace odcore::data;
+    using namespace odcore::data::dmcp;
 
     ConnectedModules::ConnectedModules() :
         m_modulesMutex(),
@@ -68,7 +68,7 @@ namespace odsupercomponent {
         return (m_modules.count(md.getName()) != 0);
     }
 
-    void ConnectedModules::pulse(const coredata::dmcp::PulseMessage &pm) {
+    void ConnectedModules::pulse(const odcore::data::dmcp::PulseMessage &pm) {
         Lock l(m_modulesMutex);
         map<string, ConnectedModule*>::iterator iter;
 
@@ -77,17 +77,17 @@ namespace odsupercomponent {
         }
     }
 
-    void ConnectedModules::pulseShift(const coredata::dmcp::PulseMessage &pm, const uint32_t &shift) {
+    void ConnectedModules::pulseShift(const odcore::data::dmcp::PulseMessage &pm, const uint32_t &shift) {
         Lock l(m_modulesMutex);
         map<string, ConnectedModule*>::iterator iter;
 
         uint32_t connectedModulesCounter = 0;
-        coredata::dmcp::PulseMessage pm_shifted = pm;
-        const core::data::TimeStamp pm_org_ts = pm.getRealTimeFromSupercomponent();
+        odcore::data::dmcp::PulseMessage pm_shifted = pm;
+        const odcore::data::TimeStamp pm_org_ts = pm.getRealTimeFromSupercomponent();
 
         for (iter = m_modules.begin(); iter != m_modules.end(); ++iter) {
-            core::data::TimeStamp ts(0, shift * connectedModulesCounter);
-            core::data::TimeStamp shiftedTime = pm_org_ts + ts;
+            odcore::data::TimeStamp ts(0, shift * connectedModulesCounter);
+            odcore::data::TimeStamp shiftedTime = pm_org_ts + ts;
 
             pm_shifted.setRealTimeFromSupercomponent(shiftedTime);
             iter->second->getConnection().pulse(pm_shifted);
@@ -96,7 +96,7 @@ namespace odsupercomponent {
         }
     }
 
-    void ConnectedModules::pulse_ack(const coredata::dmcp::PulseMessage &pm, const uint32_t &timeout, const uint32_t &yield, const vector<string> &modulesToIgnore) {
+    void ConnectedModules::pulse_ack(const odcore::data::dmcp::PulseMessage &pm, const uint32_t &timeout, const uint32_t &yield, const vector<string> &modulesToIgnore) {
         // Unfortunately, we cannot prevent code duplication here (cf. pulse_ack_containers)
         // as in this case, the dependent client module will NOT send its containers to using
         // this TCP link but via the regular UDP multicast conference.
@@ -120,7 +120,7 @@ namespace odsupercomponent {
         }
     }
 
-    vector<Container> ConnectedModules::pulse_ack_containers(const coredata::dmcp::PulseMessage &pm, const uint32_t &timeout, const uint32_t &yield, const vector<string> &modulesToIgnore) {
+    vector<Container> ConnectedModules::pulse_ack_containers(const odcore::data::dmcp::PulseMessage &pm, const uint32_t &timeout, const uint32_t &yield, const vector<string> &modulesToIgnore) {
         // Unfortunately, we cannot prevent code duplication here (cf. pulse_ack)
         // as in this case, the dependent client module will send all its containers
         // via this TCP link and NOT via the regular UDP multicast conference.

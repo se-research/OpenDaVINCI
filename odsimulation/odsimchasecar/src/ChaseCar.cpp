@@ -27,24 +27,24 @@
 
 #include "ChaseCar.h"
 #include "OpenGLGrabber.h"
-#include "opendavinci/core/base/KeyValueConfiguration.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/opendavinci.h"
-#include "hesperia/data/camera/ImageGrabberCalibration.h"
-#include "hesperia/data/camera/ImageGrabberID.h"
-#include "hesperia/data/environment/Point3.h"
-#include "hesperia/data/environment/Obstacle.h"
-#include "opendavinci/generated/coredata/image/SharedImage.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendlv/data/camera/ImageGrabberCalibration.h"
+#include "opendlv/data/camera/ImageGrabberID.h"
+#include "opendlv/data/environment/Point3.h"
+#include "opendlv/data/environment/Obstacle.h"
+#include "opendavinci/generated/odcore/data/image/SharedImage.h"
 
 namespace chasecar {
 
     using namespace std;
-    using namespace core::base;
-    using namespace core::data;
-    using namespace hesperia::data;
-    using namespace hesperia::data::camera;
-    using namespace coredata::image;
-    using namespace hesperia::data::environment;
+    using namespace odcore::base;
+    using namespace odcore::data;
+    using namespace opendlv::data;
+    using namespace opendlv::data::camera;
+    using namespace odcore::data::image;
+    using namespace opendlv::data::environment;
 
     ChaseCar* ChaseCar::m_singleton = NULL;
 
@@ -147,8 +147,8 @@ namespace chasecar {
         static uint32_t frameCounter = 0;
         static clock_t start = clock();
 
-        Container container = getKeyValueDataStore().get(hesperia::data::environment::EgoState::ID());
-        m_egoState = container.getData<hesperia::data::environment::EgoState>();
+        Container container = getKeyValueDataStore().get(opendlv::data::environment::EgoState::ID());
+        m_egoState = container.getData<opendlv::data::environment::EgoState>();
 
         m_image = m_grabber->getNextImage();
 
@@ -287,13 +287,13 @@ namespace chasecar {
         glMatrixMode(GL_MODELVIEW);
     }
 
-    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode ChaseCar::body() {
-    	addDataStoreFor(hesperia::data::environment::Obstacle::ID(), m_FIFO_Obstacles);
+    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode ChaseCar::body() {
+    	addDataStoreFor(opendlv::data::environment::Obstacle::ID(), m_FIFO_Obstacles);
         
         // The following call never returns!
         glutMainLoop();
 
-        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+        return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
     }
 
 } // chasecar

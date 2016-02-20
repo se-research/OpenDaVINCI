@@ -64,7 +64,7 @@ MESSAGE(STATUS "Using ${ODCANDATASTRUCTUREGENERATOR_EXECUTABLE} to generate code
 # Next, if we get here, we have all the requirements to to model and generate code from data structures.
 IF(     NOT("${CMAKE_C_COMPILER}" STREQUAL "")
     AND NOT("${CMAKE_CXX_COMPILER}" STREQUAL "") )
-    SET(BUILD_LIBODSIMULATION 0)
+    SET(BUILD_LIBOPENDLV 0)
     SET(BUILD_ODSIMULATION 0)
     SET(BUILD_ODCOCKPIT 0)
     SET(BUILD_AUTOMOTIVE_MINIATURE 0)
@@ -79,7 +79,7 @@ IF(     NOT("${CMAKE_C_COMPILER}" STREQUAL "")
     MESSAGE(STATUS "Found C++ compiler:         Building opendavinci-odtools")
     SET(BUILD_ODTOOLS 1)
 
-    MESSAGE(STATUS "Found C++ compiler:         Building opendavinci-automotivedata")
+    MESSAGE(STATUS "Found C++ compiler:         Building automotivedata")
     SET(BUILD_AUTOMOTIVEDATA 1)
 
     MESSAGE(STATUS "Found C++ compiler:         Building opendavinci-tutorials")
@@ -89,8 +89,8 @@ IF(     NOT("${CMAKE_C_COMPILER}" STREQUAL "")
         IF (    OPENGL_FOUND
             AND GLUT_FOUND
             AND Boost_FOUND)
-            MESSAGE(STATUS "Found C++ compiler, OpenCV, OpenGL, GLUT, and Boost: Building libodsimulation")
-            SET(BUILD_LIBODSIMULATION 1)
+            MESSAGE(STATUS "Found C++ compiler, OpenCV, OpenGL, GLUT, and Boost: Building libopendlv")
+            SET(BUILD_LIBOPENDLV 1)
 
             MESSAGE(STATUS "Found C++ compiler, OpenCV, OpenGL, GLUT, and Boost: Building odsimulation")
             SET(BUILD_ODSIMULATION 1)
@@ -260,24 +260,24 @@ IF(${BUILD_AUTOMOTIVEDATA})
         INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libautomotivedata-prefix/src/libautomotivedata-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libautomotivedata-prefix/src/libautomotivedata-build --target ${MAKE_PACKAGE})
 ENDIF()
 
-# Next, build libodsimulation.
-IF(${BUILD_LIBODSIMULATION})
-    ExternalProject_Add (libodsimulation
+# Next, build libopendlv.
+IF(${BUILD_LIBOPENDLV})
+    ExternalProject_Add (libopendlv
         DEPENDS libautomotivedata
         DOWNLOAD_COMMAND ""
         UPDATE_COMMAND ""
-        SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libodsimulation"
+        SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libopendlv"
         CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
         CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}"
         TEST_BEFORE_INSTALL 1
         TEST_COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}
-        INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodsimulation-prefix/src/libodsimulation-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodsimulation-prefix/src/libodsimulation-build --target ${MAKE_PACKAGE})
+        INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libopendlv-prefix/src/libopendlv-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libopendlv-prefix/src/libopendlv-build --target ${MAKE_PACKAGE})
 ENDIF()
 
 # Next, build odsimulation.
 IF(${BUILD_ODSIMULATION})
     ExternalProject_Add (odsimulation
-        DEPENDS libodsimulation
+        DEPENDS libopendlv
         DOWNLOAD_COMMAND ""
         UPDATE_COMMAND ""
         SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odsimulation"
@@ -291,7 +291,7 @@ ENDIF()
 # Next, build odcockpit.
 IF(${BUILD_ODCOCKPIT})
     ExternalProject_Add (odcockpit
-        DEPENDS libodsimulation
+        DEPENDS libopendlv
         DOWNLOAD_COMMAND ""
         UPDATE_COMMAND ""
         SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odcockpit"
@@ -351,7 +351,7 @@ ENDIF()
 # Next, build automotive/miniature.
 IF(${BUILD_AUTOMOTIVE_MINIATURE})
     ExternalProject_Add (automotive-miniature
-        DEPENDS libodsimulation
+        DEPENDS libopendlv
         DOWNLOAD_COMMAND ""
         UPDATE_COMMAND ""
         SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/automotive/miniature"

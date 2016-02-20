@@ -20,7 +20,7 @@
 #ifndef OVERTAKER_H_
 #define OVERTAKER_H_
 
-#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
 
 namespace automotive {
     namespace miniature {
@@ -30,7 +30,7 @@ namespace automotive {
         /**
          * This class is a skeleton to send driving commands to Hesperia-light's vehicle driving dynamics simulation.
          */
-        class Overtaker : public core::base::module::TimeTriggeredConferenceClientModule {
+        class Overtaker : public odcore::base::module::TimeTriggeredConferenceClientModule {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -62,7 +62,7 @@ namespace automotive {
 
                 virtual ~Overtaker();
 
-                coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+                odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
             private:
                 virtual void setUp();

@@ -20,10 +20,10 @@
 #include <stdint.h>
 #include <iostream>
 #include <string>
-#include <opendavinci/core/SharedPointer.h>
-#include <opendavinci/core/base/Thread.h>
-#include <opendavinci/core/wrapper/SerialPort.h>
-#include <opendavinci/core/wrapper/SerialPortFactory.h>
+#include <opendavinci/odcore/SharedPointer.h>
+#include <opendavinci/odcore/base/Thread.h>
+#include <opendavinci/odcore/wrapper/SerialPort.h>
+#include <opendavinci/odcore/wrapper/SerialPortFactory.h>
 
 #include "SerialReceiveBytes.hpp"
 
@@ -34,8 +34,8 @@ void SerialReceiveBytes::nextString(const string &s) {
 }
 
 // We add some of OpenDaVINCI's namespaces for the sake of readability.
-using namespace core;
-using namespace core::wrapper;
+using namespace odcore;
+using namespace odcore::wrapper;
 
 int32_t main(int32_t argc, char **argv) {
     const string SERIAL_PORT = "/dev/pts/20";
@@ -56,7 +56,7 @@ int32_t main(int32_t argc, char **argv) {
         serial->start();
 
         const uint32_t ONE_SECOND = 1000 * 1000;
-        core::base::Thread::usleepFor(10 * ONE_SECOND);
+        odcore::base::Thread::usleepFor(10 * ONE_SECOND);
 
         // Stop receiving bytes and unregister our handler.
         serial->stop();

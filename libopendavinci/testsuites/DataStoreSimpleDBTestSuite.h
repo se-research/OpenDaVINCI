@@ -26,28 +26,28 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"         // for SharedPointer
-#include "opendavinci/core/base/Deserializer.h"     // for Deserializer
-#include "opendavinci/core/base/Hash.h"             // for CharList, CRC32, etc
-#include "opendavinci/core/base/KeyValueDataStore.h"  // for KeyValueDataStore
-#include "opendavinci/core/base/SerializationFactory.h"  // for SerializationFactory
-#include "opendavinci/core/base/Serializer.h"       // for Serializer
-#include "opendavinci/core/base/Service.h"          // for Service
-#include "opendavinci/core/base/Thread.h"           // for Thread
-#include "opendavinci/core/data/Container.h"        // for Container, etc
-#include "opendavinci/core/data/SerializableData.h"  // for SerializableData
-#include "opendavinci/core/data/TimeStamp.h"        // for TimeStamp
-#include "opendavinci/core/wrapper/KeyValueDatabase.h"  // for KeyValueDatabase
-#include "opendavinci/core/wrapper/SimpleDB/SimpleDB.h"  // for SimpleDB
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"         // for SharedPointer
+#include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
+#include "opendavinci/odcore/base/Hash.h"             // for CharList, CRC32, etc
+#include "opendavinci/odcore/base/KeyValueDataStore.h"  // for KeyValueDataStore
+#include "opendavinci/odcore/base/SerializationFactory.h"  // for SerializationFactory
+#include "opendavinci/odcore/base/Serializer.h"       // for Serializer
+#include "opendavinci/odcore/base/Service.h"          // for Service
+#include "opendavinci/odcore/base/Thread.h"           // for Thread
+#include "opendavinci/odcore/data/Container.h"        // for Container, etc
+#include "opendavinci/odcore/data/SerializableData.h"  // for SerializableData
+#include "opendavinci/odcore/data/TimeStamp.h"        // for TimeStamp
+#include "opendavinci/odcore/wrapper/KeyValueDatabase.h"  // for KeyValueDatabase
+#include "opendavinci/odcore/wrapper/SimpleDB/SimpleDB.h"  // for SimpleDB
 
 using namespace std;
-using namespace core::base;
-using namespace core::data;
+using namespace odcore::base;
+using namespace odcore::data;
 
-class MySimpleDB : public core::wrapper::SimpleDB::SimpleDB {
+class MySimpleDB : public odcore::wrapper::SimpleDB::SimpleDB {
     public:
-        MySimpleDB() : core::wrapper::SimpleDB::SimpleDB() {}
+        MySimpleDB() : odcore::wrapper::SimpleDB::SimpleDB() {}
 };
 
 class DataStoreTestService : public Service {
@@ -78,7 +78,7 @@ class DataStoreTestService : public Service {
         bool m_found;
 };
 
-class DataStoreTestNestedData : public core::data::SerializableData {
+class DataStoreTestNestedData : public odcore::data::SerializableData {
     public:
         DataStoreTestNestedData() :
                 m_double(0) {
@@ -89,7 +89,7 @@ class DataStoreTestNestedData : public core::data::SerializableData {
         ostream& operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
-            core::SharedPointer<Serializer> s = sf.getSerializer(out);
+            odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 
             s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('m', '_', 'd', 'o', 'u',
                     'b', 'l', 'e') >::RESULT, m_double);
@@ -100,7 +100,7 @@ class DataStoreTestNestedData : public core::data::SerializableData {
         istream& operator>>(istream &in) {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
-            core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+            odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
             d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('m', '_', 'd', 'o', 'u',
                     'b', 'l', 'e') >::RESULT, m_double);
@@ -127,7 +127,7 @@ class DataStoreTestNestedData : public core::data::SerializableData {
         }
 };
 
-class DataStoreTestSampleData : public core::data::SerializableData {
+class DataStoreTestSampleData : public odcore::data::SerializableData {
     public:
         DataStoreTestSampleData() :
                 m_bool(false), m_int(0), m_string(""), m_nestedData() {
@@ -141,7 +141,7 @@ class DataStoreTestSampleData : public core::data::SerializableData {
         ostream& operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
-            core::SharedPointer<Serializer> s = sf.getSerializer(out);
+            odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 
             s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('m', '_', 'n', 'e', 's',
                     't', 'e', 'd') >::RESULT, m_nestedData);
@@ -163,7 +163,7 @@ class DataStoreTestSampleData : public core::data::SerializableData {
         istream& operator>>(istream &in) {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
-            core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+            odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
             d->read(
                 CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 's', 't', 'r') >::RESULT,
@@ -206,7 +206,7 @@ class DataStoreTest : public CxxTest::TestSuite {
     public:
 
         void testDataStore() {
-            KeyValueDataStore *ds = new KeyValueDataStore(core::SharedPointer<core::wrapper::KeyValueDatabase>(new MySimpleDB()));
+            KeyValueDataStore *ds = new KeyValueDataStore(odcore::SharedPointer<odcore::wrapper::KeyValueDatabase>(new MySimpleDB()));
             int32_t key1 = 1;
             TimeStamp ts1(0, 35);
             Container v1(ts1);
@@ -227,7 +227,7 @@ class DataStoreTest : public CxxTest::TestSuite {
         }
 
         void testMassData() {
-            KeyValueDataStore *ds = new KeyValueDataStore(core::SharedPointer<core::wrapper::KeyValueDatabase>(new MySimpleDB()));
+            KeyValueDataStore *ds = new KeyValueDataStore(odcore::SharedPointer<odcore::wrapper::KeyValueDatabase>(new MySimpleDB()));
 
             const uint32_t size = 4096;
             // Generate data.
@@ -272,7 +272,7 @@ class DataStoreTest : public CxxTest::TestSuite {
         }
 
         void testSerializationDeserialization() {
-            KeyValueDataStore *ds = new KeyValueDataStore(core::SharedPointer<core::wrapper::KeyValueDatabase>(new MySimpleDB()));
+            KeyValueDataStore *ds = new KeyValueDataStore(odcore::SharedPointer<odcore::wrapper::KeyValueDatabase>(new MySimpleDB()));
 
             DataStoreTestSampleData sd1;
             sd1.m_bool = true;
@@ -303,7 +303,7 @@ class DataStoreTest : public CxxTest::TestSuite {
         void testDataStoreForDataExchange() {
             bool failed = true;
             try {
-                KeyValueDataStore *ds = new KeyValueDataStore(core::SharedPointer<core::wrapper::KeyValueDatabase>(new MySimpleDB()));
+                KeyValueDataStore *ds = new KeyValueDataStore(odcore::SharedPointer<odcore::wrapper::KeyValueDatabase>(new MySimpleDB()));
 
                 DataStoreTestService s(*ds);
                 s.start();

@@ -18,12 +18,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "plugins/configurationviewer/ConfigurationViewerPlugIn.h"
 #include "plugins/configurationviewer/ConfigurationViewerWidget.h"
 
 class QWidget;
-namespace core { namespace base { class KeyValueConfiguration; } }
+namespace odcore { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
 
@@ -31,7 +31,7 @@ namespace cockpit {
 
         namespace configurationviewer {
 
-            ConfigurationViewerPlugIn::ConfigurationViewerPlugIn(const string &name, const core::base::KeyValueConfiguration &kvc, QWidget *prnt) :
+            ConfigurationViewerPlugIn::ConfigurationViewerPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt) :
                 PlugIn(name, kvc, prnt),
                 m_viewerWidget(NULL) {
                 setDescription("This plugin displays the current configuration.");

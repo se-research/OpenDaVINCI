@@ -24,14 +24,14 @@
 #include <sstream>
 #include <string>
 
-#include "opendavinci/context/base/DirectInterface.h"
-#include "opendavinci/context/base/RecordingContainer.h"
-#include "opendavinci/context/base/RuntimeControl.h"
-#include "opendavinci/context/base/RuntimeEnvironment.h"
-#include "vehiclecontext/VehicleRuntimeControl.h"
-#include "vehiclecontext/model/IRUS.h"
-#include "vehiclecontext/model/SimplifiedBicycleModel.h"
-#include "vehiclecontext/report/DistanceToObjectsReport.h"
+#include "opendavinci/odcontext/base/DirectInterface.h"
+#include "opendavinci/odcontext/base/RecordingContainer.h"
+#include "opendavinci/odcontext/base/RuntimeControl.h"
+#include "opendavinci/odcontext/base/RuntimeEnvironment.h"
+#include "opendlv/vehiclecontext/VehicleRuntimeControl.h"
+#include "opendlv/vehiclecontext/model/IRUS.h"
+#include "opendlv/vehiclecontext/model/SimplifiedBicycleModel.h"
+#include "opendlv/vehiclecontext/report/DistanceToObjectsReport.h"
 
 #include "ExampleDriverSimulation.h"
 
@@ -39,10 +39,10 @@
 #include "BoxParker.h"
 
 using namespace std;
-using namespace context::base;
-using namespace vehiclecontext;
-using namespace vehiclecontext::model;
-using namespace vehiclecontext::report;
+using namespace odcontext::base;
+using namespace opendlv::vehiclecontext;
+using namespace opendlv::vehiclecontext::model;
+using namespace opendlv::vehiclecontext::report;
 using namespace automotive::miniature;
 
 namespace simulation {

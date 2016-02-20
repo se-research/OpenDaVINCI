@@ -15,8 +15,8 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/strings/StringToolbox.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/strings/StringToolbox.h"
 
 #include "test12/GeneratedHeaders_Test12.h"
 
@@ -423,11 +423,11 @@ class Test12MapChar_TestSuite : public CxxTest::TestSuite {
 				TS_ASSERT(obj1.getSize_MapOfMyCharStringMap() == 3);
 				TS_ASSERT(!obj1.isEmpty_MapOfMyCharStringMap());
 				TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('d'));
-				TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('d'), "Hello World!"));
+				TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('d'), "Hello World!"));
 				TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('e'));
-				TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('e'), "Hello Solar System!"));
+				TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('e'), "Hello Solar System!"));
 				TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('f'));
-				TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('f'), "Hello Milky Way!"));
+				TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('f'), "Hello Milky Way!"));
 			
 				obj1.clear_MapOfMyCharStringMap();
 				TS_ASSERT(obj1.getMapOfMyCharStringMap().size() == 0);
@@ -442,7 +442,7 @@ class Test12MapChar_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getSize_MapOfMyCharStringMap() == 1);
 			TS_ASSERT(!obj1.isEmpty_MapOfMyCharStringMap());
 			TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('d'));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('d'), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('d'), "Hello World!"));
 			TS_ASSERT(!obj1.containsKey_MapOfMyCharStringMap('e'));
 			TS_ASSERT(!obj1.containsKey_MapOfMyCharStringMap('f'));
 			
@@ -451,9 +451,9 @@ class Test12MapChar_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getSize_MapOfMyCharStringMap() == 2);
 			TS_ASSERT(!obj1.isEmpty_MapOfMyCharStringMap());
 			TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('d'));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('d'), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('d'), "Hello World!"));
 			TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('e'));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('e'), "Hello Solar System!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('e'), "Hello Solar System!"));
 			TS_ASSERT(!obj1.containsKey_MapOfMyCharStringMap('f'));
 			
 			obj1.putTo_MapOfMyCharStringMap('f', "Hello Milky Way!");
@@ -461,11 +461,11 @@ class Test12MapChar_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getSize_MapOfMyCharStringMap() == 3);
 			TS_ASSERT(!obj1.isEmpty_MapOfMyCharStringMap());
 			TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('d'));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('d'), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('d'), "Hello World!"));
 			TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('e'));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('e'), "Hello Solar System!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('e'), "Hello Solar System!"));
 			TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('f'));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('f'), "Hello Milky Way!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('f'), "Hello Milky Way!"));
 	
 			TS_ASSERT(obj1.getMapOfMyCharBoolMap().size() == 2);
 			TS_ASSERT(obj1.getSize_MapOfMyCharBoolMap() == 2);
@@ -938,11 +938,11 @@ class Test12MapChar_TestSuite : public CxxTest::TestSuite {
 				TS_ASSERT(obj1.getSize_MapOfMyCharStringMap() == 3);
 				TS_ASSERT(!obj1.isEmpty_MapOfMyCharStringMap());
 				TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('d'));
-				TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('d'), "Hello World!"));
+				TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('d'), "Hello World!"));
 				TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('e'));
-				TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('e'), "Hello Solar System!"));
+				TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('e'), "Hello Solar System!"));
 				TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('f'));
-				TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('f'), "Hello Milky Way!"));
+				TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('f'), "Hello Milky Way!"));
 			
 				obj1.clear_MapOfMyCharStringMap();
 				TS_ASSERT(obj1.getMapOfMyCharStringMap().size() == 0);
@@ -957,7 +957,7 @@ class Test12MapChar_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getSize_MapOfMyCharStringMap() == 1);
 			TS_ASSERT(!obj1.isEmpty_MapOfMyCharStringMap());
 			TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('d'));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('d'), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('d'), "Hello World!"));
 			TS_ASSERT(!obj1.containsKey_MapOfMyCharStringMap('e'));
 			TS_ASSERT(!obj1.containsKey_MapOfMyCharStringMap('f'));
 			
@@ -966,9 +966,9 @@ class Test12MapChar_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getSize_MapOfMyCharStringMap() == 2);
 			TS_ASSERT(!obj1.isEmpty_MapOfMyCharStringMap());
 			TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('d'));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('d'), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('d'), "Hello World!"));
 			TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('e'));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('e'), "Hello Solar System!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('e'), "Hello Solar System!"));
 			TS_ASSERT(!obj1.containsKey_MapOfMyCharStringMap('f'));
 			
 			obj1.putTo_MapOfMyCharStringMap('f', "Hello Milky Way!");
@@ -976,11 +976,11 @@ class Test12MapChar_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getSize_MapOfMyCharStringMap() == 3);
 			TS_ASSERT(!obj1.isEmpty_MapOfMyCharStringMap());
 			TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('d'));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('d'), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('d'), "Hello World!"));
 			TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('e'));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('e'), "Hello Solar System!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('e'), "Hello Solar System!"));
 			TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('f'));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('f'), "Hello Milky Way!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('f'), "Hello Milky Way!"));
 	
 			TS_ASSERT(obj1.getMapOfMyCharBoolMap().size() == 2);
 			TS_ASSERT(obj1.getSize_MapOfMyCharBoolMap() == 2);
@@ -1108,7 +1108,7 @@ class Test12MapChar_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj3.containsKey_MapOfMyCharStringMap('f'));
 			TS_ASSERT(obj3.getValueForKey_MapOfMyCharStringMap('f') == "Hello Milky Way!");
 	
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj3.toString()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj3.toString()));
 		}
 	
 		void testCreateAndAssignObject() {
@@ -1533,11 +1533,11 @@ class Test12MapChar_TestSuite : public CxxTest::TestSuite {
 				TS_ASSERT(obj1.getSize_MapOfMyCharStringMap() == 3);
 				TS_ASSERT(!obj1.isEmpty_MapOfMyCharStringMap());
 				TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('d'));
-				TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('d'), "Hello World!"));
+				TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('d'), "Hello World!"));
 				TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('e'));
-				TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('e'), "Hello Solar System!"));
+				TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('e'), "Hello Solar System!"));
 				TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('f'));
-				TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('f'), "Hello Milky Way!"));
+				TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('f'), "Hello Milky Way!"));
 			
 				obj1.clear_MapOfMyCharStringMap();
 				TS_ASSERT(obj1.getMapOfMyCharStringMap().size() == 0);
@@ -1552,7 +1552,7 @@ class Test12MapChar_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getSize_MapOfMyCharStringMap() == 1);
 			TS_ASSERT(!obj1.isEmpty_MapOfMyCharStringMap());
 			TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('d'));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('d'), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('d'), "Hello World!"));
 			TS_ASSERT(!obj1.containsKey_MapOfMyCharStringMap('e'));
 			TS_ASSERT(!obj1.containsKey_MapOfMyCharStringMap('f'));
 			
@@ -1561,9 +1561,9 @@ class Test12MapChar_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getSize_MapOfMyCharStringMap() == 2);
 			TS_ASSERT(!obj1.isEmpty_MapOfMyCharStringMap());
 			TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('d'));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('d'), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('d'), "Hello World!"));
 			TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('e'));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('e'), "Hello Solar System!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('e'), "Hello Solar System!"));
 			TS_ASSERT(!obj1.containsKey_MapOfMyCharStringMap('f'));
 			
 			obj1.putTo_MapOfMyCharStringMap('f', "Hello Milky Way!");
@@ -1571,11 +1571,11 @@ class Test12MapChar_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getSize_MapOfMyCharStringMap() == 3);
 			TS_ASSERT(!obj1.isEmpty_MapOfMyCharStringMap());
 			TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('d'));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('d'), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('d'), "Hello World!"));
 			TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('e'));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('e'), "Hello Solar System!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('e'), "Hello Solar System!"));
 			TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('f'));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('f'), "Hello Milky Way!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('f'), "Hello Milky Way!"));
 	
 			TS_ASSERT(obj1.getMapOfMyCharBoolMap().size() == 2);
 			TS_ASSERT(obj1.getSize_MapOfMyCharBoolMap() == 2);
@@ -1703,7 +1703,7 @@ class Test12MapChar_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj2.containsKey_MapOfMyCharStringMap('f'));
 			TS_ASSERT(obj2.getValueForKey_MapOfMyCharStringMap('f') == "Hello Milky Way!");
 	
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
 		}
 	
 		void testCreateAndSerializeObject() {
@@ -2128,11 +2128,11 @@ class Test12MapChar_TestSuite : public CxxTest::TestSuite {
 				TS_ASSERT(obj1.getSize_MapOfMyCharStringMap() == 3);
 				TS_ASSERT(!obj1.isEmpty_MapOfMyCharStringMap());
 				TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('d'));
-				TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('d'), "Hello World!"));
+				TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('d'), "Hello World!"));
 				TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('e'));
-				TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('e'), "Hello Solar System!"));
+				TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('e'), "Hello Solar System!"));
 				TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('f'));
-				TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('f'), "Hello Milky Way!"));
+				TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('f'), "Hello Milky Way!"));
 			
 				obj1.clear_MapOfMyCharStringMap();
 				TS_ASSERT(obj1.getMapOfMyCharStringMap().size() == 0);
@@ -2147,7 +2147,7 @@ class Test12MapChar_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getSize_MapOfMyCharStringMap() == 1);
 			TS_ASSERT(!obj1.isEmpty_MapOfMyCharStringMap());
 			TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('d'));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('d'), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('d'), "Hello World!"));
 			TS_ASSERT(!obj1.containsKey_MapOfMyCharStringMap('e'));
 			TS_ASSERT(!obj1.containsKey_MapOfMyCharStringMap('f'));
 			
@@ -2156,9 +2156,9 @@ class Test12MapChar_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getSize_MapOfMyCharStringMap() == 2);
 			TS_ASSERT(!obj1.isEmpty_MapOfMyCharStringMap());
 			TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('d'));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('d'), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('d'), "Hello World!"));
 			TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('e'));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('e'), "Hello Solar System!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('e'), "Hello Solar System!"));
 			TS_ASSERT(!obj1.containsKey_MapOfMyCharStringMap('f'));
 			
 			obj1.putTo_MapOfMyCharStringMap('f', "Hello Milky Way!");
@@ -2166,11 +2166,11 @@ class Test12MapChar_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getSize_MapOfMyCharStringMap() == 3);
 			TS_ASSERT(!obj1.isEmpty_MapOfMyCharStringMap());
 			TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('d'));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('d'), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('d'), "Hello World!"));
 			TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('e'));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('e'), "Hello Solar System!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('e'), "Hello Solar System!"));
 			TS_ASSERT(obj1.containsKey_MapOfMyCharStringMap('f'));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('f'), "Hello Milky Way!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyCharStringMap('f'), "Hello Milky Way!"));
 	
 			TS_ASSERT(obj1.getMapOfMyCharBoolMap().size() == 2);
 			TS_ASSERT(obj1.getSize_MapOfMyCharBoolMap() == 2);
@@ -2301,7 +2301,7 @@ class Test12MapChar_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj2.containsKey_MapOfMyCharStringMap('f'));
 			TS_ASSERT(obj2.getValueForKey_MapOfMyCharStringMap('f') == "Hello Milky Way!");
 	
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
 		}
 
 };

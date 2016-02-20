@@ -33,7 +33,7 @@
 namespace cockpit {
 
     using namespace std;
-    using namespace core::base;
+    using namespace odcore::base;
 
     Cockpit::Cockpit(int32_t &argc, char **argv) :
         TimeTriggeredConferenceClientModule(argc, argv, "odcockpit"),
@@ -50,7 +50,7 @@ namespace cockpit {
         // This method will be call automatically _after_ return from body().
     }
 
-    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode Cockpit::body() {
+    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Cockpit::body() {
         // Get apropriate translator.
         QTranslator qtTranslator;
         std::cerr << QLocale::system().name().toStdString() << std::endl;
@@ -79,7 +79,7 @@ namespace cockpit {
         mainWindow.show();
         m_cockpitApp.exec();
 
-    	return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+    	return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
     }
 
 } // cockpit

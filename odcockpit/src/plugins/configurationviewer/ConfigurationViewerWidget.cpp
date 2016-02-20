@@ -25,8 +25,8 @@
 
 #include <sstream>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
 #include "plugins/configurationviewer/ConfigurationViewerWidget.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }
@@ -39,7 +39,7 @@ namespace cockpit {
 
             using namespace std;
 
-            ConfigurationViewerWidget::ConfigurationViewerWidget(const PlugIn &/*plugIn*/, const core::base::KeyValueConfiguration &kvc, QWidget *prnt) :
+            ConfigurationViewerWidget::ConfigurationViewerWidget(const PlugIn &/*plugIn*/, const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt) :
                 QWidget(prnt),
                 m_configurationDataText(NULL) {
 

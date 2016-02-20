@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h>
+#include <opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h>
 
-class TimeTriggerExample : public core::base::module::TimeTriggeredConferenceClientModule {
+class TimeTriggerExample : public odcore::base::module::TimeTriggeredConferenceClientModule {
     private:
         /**
          * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -51,7 +51,7 @@ class TimeTriggerExample : public core::base::module::TimeTriggeredConferenceCli
 
         virtual ~TimeTriggerExample();
 
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
     private:
         virtual void setUp();

@@ -21,10 +21,10 @@
 #include <iostream>
 #include <sstream>
 
-#include "opendavinci/core/base/CommandLineParser.h"
-#include "opendavinci/core/base/QueryableNetstringsDeserializerABCF.h"
-#include "opendavinci/core/strings/StringToolbox.h"
-#include "opendavinci/core/data/Container.h"
+#include "opendavinci/odcore/base/CommandLineParser.h"
+#include "opendavinci/odcore/base/QueryableNetstringsDeserializerABCF.h"
+#include "opendavinci/odcore/strings/StringToolbox.h"
+#include "opendavinci/odcore/data/Container.h"
 
 #include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
@@ -33,8 +33,8 @@
 namespace odfilter {
 
     using namespace std;
-    using namespace core::base;
-    using namespace core::data;
+    using namespace odcore::base;
+    using namespace odcore::data;
 
     Filter::Filter() :
         m_keep(),
@@ -65,7 +65,7 @@ namespace odfilter {
 
     vector<uint32_t> Filter::getListOfNumbers(const string &s) {
         vector<uint32_t> listOfNumbers;
-        vector<string> listOfStringNumbers = core::strings::StringToolbox::split(s, ',');
+        vector<string> listOfStringNumbers = odcore::strings::StringToolbox::split(s, ',');
         if (listOfStringNumbers.size() == 0) {
             // If only one ID was specified, simply add s to listOfStringNumbers.
             listOfStringNumbers.push_back(s);

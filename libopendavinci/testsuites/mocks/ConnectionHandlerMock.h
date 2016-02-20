@@ -20,15 +20,15 @@
 #ifndef CONNECTIONHANDLERMOCK_H_
 #define CONNECTIONHANDLERMOCK_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/dmcp/connection/ConnectionHandler.h"
-#include "opendavinci/core/dmcp/connection/ModuleConnection.h"
+#include "opendavinci/odcore/dmcp/connection/ConnectionHandler.h"
+#include "opendavinci/odcore/dmcp/connection/ModuleConnection.h"
 #include "FunctionCallWaiter.h"
 
 namespace mocks {
 
-    class ConnectionHandlerMock : public core::dmcp::connection::ConnectionHandler {
+    class ConnectionHandlerMock : public odcore::dmcp::connection::ConnectionHandler {
         public:
             ConnectionHandlerMock() :
                 connection(NULL),
@@ -37,13 +37,13 @@ namespace mocks {
 
             virtual ~ConnectionHandlerMock() {};
 
-            virtual void onNewModule(core::SharedPointer<core::dmcp::connection::ModuleConnection> mc)
+            virtual void onNewModule(odcore::SharedPointer<odcore::dmcp::connection::ModuleConnection> mc)
             {
                 connection = mc;
                 WAITER.called();
             }
 
-            core::SharedPointer<core::dmcp::connection::ModuleConnection> connection;
+            odcore::SharedPointer<odcore::dmcp::connection::ModuleConnection> connection;
             FunctionCallWaiter WAITER;
         private:
             ConnectionHandlerMock(const ConnectionHandlerMock &);

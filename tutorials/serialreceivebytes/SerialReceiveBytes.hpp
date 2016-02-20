@@ -17,10 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <opendavinci/core/io/StringListener.h>
+#include <opendavinci/odcore/io/StringListener.h>
 
 // This class will handle the bytes received via a serial link.
-class SerialReceiveBytes : public core::io::StringListener {
+class SerialReceiveBytes : public odcore::io::StringListener {
 
     // Your class needs to implement the method void nextString(const std::string &s).
     virtual void nextString(const std::string &s);

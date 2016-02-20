@@ -20,15 +20,15 @@
 #include <stdint.h>
 #include <iostream>
 #include <string>
-#include <opendavinci/core/SharedPointer.h>
-#include <opendavinci/core/wrapper/SerialPort.h>
-#include <opendavinci/core/wrapper/SerialPortFactory.h>
+#include <opendavinci/odcore/SharedPointer.h>
+#include <opendavinci/odcore/wrapper/SerialPort.h>
+#include <opendavinci/odcore/wrapper/SerialPortFactory.h>
 
 using namespace std;
 
 // We add some of OpenDaVINCI's namespaces for the sake of readability.
-using namespace core;
-using namespace core::wrapper;
+using namespace odcore;
+using namespace odcore::wrapper;
 
 int32_t main(int32_t argc, char **argv) {
     const string SERIAL_PORT = "/dev/pts/19";

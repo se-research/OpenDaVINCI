@@ -25,19 +25,19 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "opendavinci/core/SharedPointer.h"         // for SharedPointer
-#include "opendavinci/core/base/Deserializer.h"     // for Deserializer
-#include "opendavinci/core/base/Hash.h"             // for CharList, CRC32, etc
-#include "opendavinci/core/base/Serializable.h"     // for operator<<, operator>>, etc
-#include "opendavinci/core/base/SerializationFactory.h"  // for SerializationFactory
-#include "opendavinci/core/base/Serializer.h"       // for Serializer
-#include "opendavinci/core/data/TimeStamp.h"        // for TimeStamp
+#include "opendavinci/odcore/SharedPointer.h"         // for SharedPointer
+#include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
+#include "opendavinci/odcore/base/Hash.h"             // for CharList, CRC32, etc
+#include "opendavinci/odcore/base/Serializable.h"     // for operator<<, operator>>, etc
+#include "opendavinci/odcore/base/SerializationFactory.h"  // for SerializationFactory
+#include "opendavinci/odcore/base/Serializer.h"       // for Serializer
+#include "opendavinci/odcore/data/TimeStamp.h"        // for TimeStamp
 
 using namespace std;
-using namespace core::base;
-using namespace core::data;
+using namespace odcore::base;
+using namespace odcore::data;
 
-class FalseSerializationTestSuiteNestedData : public core::base::Serializable {
+class FalseSerializationTestSuiteNestedData : public odcore::base::Serializable {
     public:
         FalseSerializationTestSuiteNestedData() :
                 m_string("BlaBla") {}
@@ -47,7 +47,7 @@ class FalseSerializationTestSuiteNestedData : public core::base::Serializable {
         ostream& operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
-            core::SharedPointer<Serializer> s = sf.getSerializer(out);
+            odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 
             s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('t', 'e', 's', 't') >::RESULT,
                     m_string);
@@ -58,7 +58,7 @@ class FalseSerializationTestSuiteNestedData : public core::base::Serializable {
         istream& operator>>(istream &in) {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
-            core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+            odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
             d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('t', 'e', 's', 't') >::RESULT,
                    m_string);
@@ -67,7 +67,7 @@ class FalseSerializationTestSuiteNestedData : public core::base::Serializable {
         }
 };
 
-class FalseSerializationTestSuiteSampleData : public core::base::Serializable {
+class FalseSerializationTestSuiteSampleData : public odcore::base::Serializable {
     public:
         FalseSerializationTestSuiteSampleData() :
                 m_string("Bla"), m_nestedData() {}
@@ -78,7 +78,7 @@ class FalseSerializationTestSuiteSampleData : public core::base::Serializable {
         ostream& operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
-            core::SharedPointer<Serializer> s = sf.getSerializer(out);
+            odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 
             s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('n', 'e', 's', 't', 'e', 'd') >::RESULT,
                     m_nestedData);
@@ -92,7 +92,7 @@ class FalseSerializationTestSuiteSampleData : public core::base::Serializable {
         istream& operator>>(istream &in) {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
-            core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+            odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
             d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('t', 'e', 's', 't') >::RESULT,
                    m_string);

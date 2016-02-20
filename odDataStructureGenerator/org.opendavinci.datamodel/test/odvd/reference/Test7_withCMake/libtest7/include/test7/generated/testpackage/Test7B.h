@@ -7,18 +7,18 @@
 #ifndef TESTPACKAGE_TEST7B_H
 #define TESTPACKAGE_TEST7B_H
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 #include <vector>
 
-#include "opendavinci/core/base/Visitable.h"
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/base/Visitable.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 
 
 namespace testpackage {
 	using namespace std;
 	
-	class Test7B : public core::data::SerializableData, public core::base::Visitable {
+	class Test7B : public odcore::data::SerializableData, public odcore::base::Visitable {
 		public:
 			Test7B();
 	
@@ -231,7 +231,7 @@ namespace testpackage {
 			virtual const string getLongName() const;
 	
 		public:
-			virtual void accept(core::base::Visitor &v);
+			virtual void accept(odcore::base::Visitor &v);
 	
 			virtual ostream& operator<<(ostream &out) const;
 			virtual istream& operator>>(istream &in);

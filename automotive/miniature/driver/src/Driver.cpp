@@ -23,8 +23,8 @@
 #include <cmath>
 #include <iostream>
 
-#include "opendavinci/core/io/conference/ContainerConference.h"
-#include "opendavinci/core/data/Container.h"
+#include "opendavinci/odcore/io/conference/ContainerConference.h"
+#include "opendavinci/odcore/data/Container.h"
 
 #include "automotivedata/GeneratedHeaders_AutomotiveData.h"
 
@@ -34,9 +34,9 @@ namespace automotive {
     namespace miniature {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::data;
-        using namespace coredata;
+        using namespace odcore::base;
+        using namespace odcore::data;
+        using namespace odcore::data;
         using namespace automotive;
         using namespace automotive::miniature;
 
@@ -55,8 +55,8 @@ namespace automotive {
         }
 
         // This method will do the main data processing job.
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode Driver::body() {
-            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Driver::body() {
+            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
                 // In the following, you find example for the various data sources that are available:
 
                 // 1. Get most recent vehicle data:
@@ -106,7 +106,7 @@ namespace automotive {
                 getConference().send(c);
             }
 
-            return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
     }

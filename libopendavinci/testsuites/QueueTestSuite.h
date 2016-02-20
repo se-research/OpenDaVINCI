@@ -25,29 +25,29 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"         // for SharedPointer
-#include "opendavinci/core/base/BufferedFIFOQueue.h"  // for BufferedFIFOQueue
-#include "opendavinci/core/base/BufferedLIFOQueue.h"  // for BufferedLIFOQueue
-#include "opendavinci/core/base/Condition.h"        // for Condition
-#include "opendavinci/core/base/Deserializer.h"     // for Deserializer
-#include "opendavinci/core/base/FIFOQueue.h"        // for FIFOQueue
-#include "opendavinci/core/base/Hash.h"             // for CharList, CRC32, etc
-#include "opendavinci/core/base/LIFOQueue.h"        // for LIFOQueue
-#include "opendavinci/core/base/Lock.h"             // for Lock
-#include "opendavinci/core/base/Mutex.h"            // for Mutex
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/core/base/SerializationFactory.h"  // for SerializationFactory
-#include "opendavinci/core/base/Serializer.h"       // for Serializer
-#include "opendavinci/core/base/Service.h"          // for Service
-#include "opendavinci/core/data/Container.h"        // for Container, etc
-#include "opendavinci/core/data/SerializableData.h"  // for SerializableData
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"         // for SharedPointer
+#include "opendavinci/odcore/base/BufferedFIFOQueue.h"  // for BufferedFIFOQueue
+#include "opendavinci/odcore/base/BufferedLIFOQueue.h"  // for BufferedLIFOQueue
+#include "opendavinci/odcore/base/Condition.h"        // for Condition
+#include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
+#include "opendavinci/odcore/base/FIFOQueue.h"        // for FIFOQueue
+#include "opendavinci/odcore/base/Hash.h"             // for CharList, CRC32, etc
+#include "opendavinci/odcore/base/LIFOQueue.h"        // for LIFOQueue
+#include "opendavinci/odcore/base/Lock.h"             // for Lock
+#include "opendavinci/odcore/base/Mutex.h"            // for Mutex
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"  // for SerializationFactory
+#include "opendavinci/odcore/base/Serializer.h"       // for Serializer
+#include "opendavinci/odcore/base/Service.h"          // for Service
+#include "opendavinci/odcore/data/Container.h"        // for Container, etc
+#include "opendavinci/odcore/data/SerializableData.h"  // for SerializableData
 
 using namespace std;
-using namespace core::base;
-using namespace core::data;
+using namespace odcore::base;
+using namespace odcore::data;
 
-class QueueTestSampleData : public core::data::SerializableData {
+class QueueTestSampleData : public odcore::data::SerializableData {
     public:
         QueueTestSampleData() :
                 m_int(0) {}
@@ -57,7 +57,7 @@ class QueueTestSampleData : public core::data::SerializableData {
         ostream& operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
-            core::SharedPointer<Serializer> s = sf.getSerializer(out);
+            odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 
             s->write(
                 CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 'i', 'n', 't') >::RESULT,
@@ -69,7 +69,7 @@ class QueueTestSampleData : public core::data::SerializableData {
         istream& operator>>(istream &in) {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
-            core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+            odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
             d->read(
                 CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 'i', 'n', 't') >::RESULT,

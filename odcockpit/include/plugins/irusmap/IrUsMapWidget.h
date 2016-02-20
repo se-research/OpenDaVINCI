@@ -27,15 +27,15 @@
 #include <map>
 #include <string>
 
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/io/conference/ContainerListener.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
 #include "automotivedata/generated/automotive/miniature/SensorBoardData.h"
 
 class QPaintEvent;
 class QTimer;
 namespace cockpit { namespace plugins { class PlugIn; } }
-namespace core { namespace base { class KeyValueConfiguration; } }
-namespace core { namespace data { class Container; } }
+namespace odcore { namespace base { class KeyValueConfiguration; } }
+namespace odcore { namespace data { class Container; } }
 
 namespace cockpit {
 
@@ -50,7 +50,7 @@ class PointSensor;
             /**
              * This class is the container for the irus map widget.
              */
-            class IrUsMapWidget : public QWidget, public core::io::conference::ContainerListener {
+            class IrUsMapWidget : public QWidget, public odcore::io::conference::ContainerListener {
 
                     Q_OBJECT
 
@@ -77,11 +77,11 @@ class PointSensor;
                      * @param kvc KeyValueConfiguration for this based widget.
                      * @param prnt Pointer to the parental widget.
                      */
-                    IrUsMapWidget(const PlugIn &plugIn, const core::base::KeyValueConfiguration &kvc, QWidget *prnt);
+                    IrUsMapWidget(const PlugIn &plugIn, const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt);
 
                     virtual ~IrUsMapWidget();
 
-                    virtual void nextContainer(core::data::Container &c);
+                    virtual void nextContainer(odcore::data::Container &c);
 
                     void setScale(const int &val);
 
@@ -93,13 +93,13 @@ class PointSensor;
                 private:
                     QTimer *m_timer;
 
-                    core::base::Mutex m_scaleFactorMutex;
+                    odcore::base::Mutex m_scaleFactorMutex;
                     double m_scaleFactor;
                     double m_rotation;
 
                     map<string, PointSensor*> m_mapOfPointSensors;
 
-                    core::base::Mutex m_sensorBoardDataMutex;
+                    odcore::base::Mutex m_sensorBoardDataMutex;
                     automotive::miniature::SensorBoardData m_sensorBoardData;
             };
 

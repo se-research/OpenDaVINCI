@@ -21,9 +21,9 @@
 #define EGOCONTROLLER_LINEARBICYCLEMODELBEHAVIOUR_H_
 
 #include "ControlBehaviour.h"
-#include "opendavinci/core/data/TimeStamp.h"
-#include "hesperia/data/environment/EgoState.h"
-#include "hesperia/data/environment/Point3.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
+#include "opendlv/data/environment/EgoState.h"
+#include "opendlv/data/environment/Point3.h"
 
 namespace egocontroller {
 
@@ -32,7 +32,7 @@ namespace egocontroller {
     class LinearBicycleModelBehaviour : public ControlBehaviour
     {
         public:
-            LinearBicycleModelBehaviour(const hesperia::data::environment::Point3 &translation, const double &rotZ,
+            LinearBicycleModelBehaviour(const opendlv::data::environment::Point3 &translation, const double &rotZ,
                 const double &wheelbase, const double &maxSteeringLeftRad, const double &maxSteeringRightRad,
                 const double &maxSpeed);
             virtual ~LinearBicycleModelBehaviour();
@@ -42,12 +42,12 @@ namespace egocontroller {
             virtual void turnRight(const double& value);
             virtual void brake(const double& value);
             virtual void stop();
-            virtual hesperia::data::environment::EgoState computeEgoState();
+            virtual opendlv::data::environment::EgoState computeEgoState();
 
         protected:
-            core::data::TimeStamp m_previousTime;
-            hesperia::data::environment::Point3 m_oldPosition;
-            hesperia::data::environment::Point3 m_orientation;
+            odcore::data::TimeStamp m_previousTime;
+            opendlv::data::environment::Point3 m_oldPosition;
+            opendlv::data::environment::Point3 m_orientation;
 
             double m_angle;
             double m_speed;

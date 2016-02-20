@@ -7,17 +7,17 @@
 #ifndef TEST12LISTS_H
 #define TEST12LISTS_H
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 #include <vector>
 
-#include "opendavinci/core/base/Visitable.h"
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/base/Visitable.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 
 
 using namespace std;
 
-class Test12Lists : public core::data::SerializableData, public core::base::Visitable {
+class Test12Lists : public odcore::data::SerializableData, public odcore::base::Visitable {
 	public:
 		Test12Lists();
 
@@ -457,7 +457,7 @@ class Test12Lists : public core::data::SerializableData, public core::base::Visi
 		virtual const string getLongName() const;
 
 	public:
-		virtual void accept(core::base::Visitor &v);
+		virtual void accept(odcore::base::Visitor &v);
 
 		virtual ostream& operator<<(ostream &out) const;
 		virtual istream& operator>>(istream &in);

@@ -21,31 +21,31 @@
 #ifndef SUPERCOMPONENT_GLOBALCONFIGURATIONPROVIDER_H_
 #define SUPERCOMPONENT_GLOBALCONFIGURATIONPROVIDER_H_
 
-#include "opendavinci/core/base/KeyValueConfiguration.h"
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/dmcp/ModuleConfigurationProvider.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/dmcp/ModuleConfigurationProvider.h"
 
-namespace coredata { namespace dmcp { class ModuleDescriptor; } }
+namespace odcore { namespace data { namespace dmcp { class ModuleDescriptor; } } }
 
 namespace odsupercomponent {
 
     using namespace std;
 
-    class GlobalConfigurationProvider : public core::dmcp::ModuleConfigurationProvider {
+    class GlobalConfigurationProvider : public odcore::dmcp::ModuleConfigurationProvider {
         public:
             GlobalConfigurationProvider();
-            GlobalConfigurationProvider(const core::base::KeyValueConfiguration& configurations);
+            GlobalConfigurationProvider(const odcore::base::KeyValueConfiguration& configurations);
             GlobalConfigurationProvider(const GlobalConfigurationProvider& configurationProvider);
             GlobalConfigurationProvider& operator=(const GlobalConfigurationProvider& configurationProvider);
 
             virtual ~GlobalConfigurationProvider();
 
-            virtual core::base::KeyValueConfiguration getConfiguration(const coredata::dmcp::ModuleDescriptor& md);
-            virtual core::base::KeyValueConfiguration getGlobalConfiguration() const;
+            virtual odcore::base::KeyValueConfiguration getConfiguration(const odcore::data::dmcp::ModuleDescriptor& md);
+            virtual odcore::base::KeyValueConfiguration getGlobalConfiguration() const;
 
         protected:
-            core::base::KeyValueConfiguration m_configuration;
-            core::base::Mutex m_configurationMutex;
+            odcore::base::KeyValueConfiguration m_configuration;
+            odcore::base::Mutex m_configurationMutex;
     };
 }
 

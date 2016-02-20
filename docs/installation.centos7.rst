@@ -15,7 +15,7 @@ Install the required development packages for libodsimulation sources::
 
     $ sudo yum install freeglut qt4 boost boost-devel qt4-devel freeglut-devel opencv-devel
 
-Install qwt5-qt4 for hesperia sources::
+Install qwt5-qt4 for OpenDLV sources::
 
     $ sudo yum install wget
     $ wget http://li.nux.ro/download/nux/dextop/el7/x86_64/qwt5-qt4-5.2.2-26.el7.nux.x86_64.rpm

@@ -13,10 +13,10 @@ MyService.hpp:
 
 .. code-block:: c++
 
-    #include <opendavinci/core/base/Service.h>
+    #include <opendavinci/odcore/base/Service.h>
 
-    // Concurrency is provided by the class core::base::Service.
-    class MyService : public core::base::Service {
+    // Concurrency is provided by the class odcore::base::Service.
+    class MyService : public odcore::base::Service {
 
         // Your class needs to implement the method void beforeStop().
         virtual void beforeStop();
@@ -32,7 +32,7 @@ MyService.cpp:
 
     #include <stdint.h>
     #include <iostream>
-    #include <opendavinci/core/base/Thread.h>
+    #include <opendavinci/odcore/base/Thread.h>
 
     #include "MyService.hpp"
 
@@ -61,7 +61,7 @@ MyService.cpp:
             cout << "This message is printed every second." << endl;        
 
             const uint32_t ONE_SECOND = 1000 * 1000;
-            core::base::Thread::usleepFor(ONE_SECOND);
+            odcore::base::Thread::usleepFor(ONE_SECOND);
         }
     }
 
@@ -70,13 +70,13 @@ MyService.cpp:
 
         s.start();
         const uint32_t ONE_SECOND = 1000 * 1000;
-        core::base::Thread::usleepFor(10 * ONE_SECOND);
+        odcore::base::Thread::usleepFor(10 * ONE_SECOND);
 
         s.stop();
     }
 
 Your class needs to derive from ``core::base::Service``, which is provided in
-``#include <opendavinci/core/base/Service.h>`` in the include directory ``opendavinci``.
+``#include <opendavinci/odcore/base/Service.h>`` in the include directory ``opendavinci``.
 This class provides two methods that need to be implemented in deriving classes:
 ``void beforeStop()`` and ``void run()``. The former method is called
 from an outside thread intending to stop the concurrently executing thread; thus

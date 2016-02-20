@@ -24,16 +24,16 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/data/TimeStamp.h"        // for TimeStamp
-#include "opendavinci/core/reflection/Field.h"      // for Field
-#include "opendavinci/core/strings/StringToolbox.h"  // for StringToolbox
-#include "opendavinci/generated/coredata/reflection/AbstractField.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/data/TimeStamp.h"        // for TimeStamp
+#include "opendavinci/odcore/reflection/Field.h"      // for Field
+#include "opendavinci/odcore/strings/StringToolbox.h"  // for StringToolbox
+#include "opendavinci/generated/odcore/data/reflection/AbstractField.h"
 
 using namespace std;
-using namespace core::data;
-using namespace core::reflection;
-using namespace coredata::reflection;
+using namespace odcore::data;
+using namespace odcore::reflection;
+using namespace odcore::data::reflection;
 
 class FieldTest : public CxxTest::TestSuite {
     public:
@@ -43,15 +43,15 @@ class FieldTest : public CxxTest::TestSuite {
             f1.setShortFieldIdentifier(1);
             f1.setLongFieldName("testField.myUint32");
             f1.setShortFieldName("myUint32");
-            f1.setFieldDataType(coredata::reflection::AbstractField::UINT32_T);
+            f1.setFieldDataType(odcore::data::reflection::AbstractField::UINT32_T);
             f1.setValue(1234);
             f1.setSize(sizeof(uint32_t));
 
             TS_ASSERT(f1.getLongFieldIdentifier() == 0x10203040);
             TS_ASSERT(f1.getShortFieldIdentifier() == 1);
-            TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(f1.getLongFieldName(), "testField.myUint32"));
-            TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(f1.getShortFieldName(), "myUint32"));
-            TS_ASSERT(f1.getFieldDataType() == coredata::reflection::AbstractField::UINT32_T);
+            TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(f1.getLongFieldName(), "testField.myUint32"));
+            TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(f1.getShortFieldName(), "myUint32"));
+            TS_ASSERT(f1.getFieldDataType() == odcore::data::reflection::AbstractField::UINT32_T);
             TS_ASSERT(f1.getValue() == 1234);
             TS_ASSERT(f1.getSize() == sizeof(uint32_t));
         }
@@ -62,15 +62,15 @@ class FieldTest : public CxxTest::TestSuite {
             f1.setShortFieldIdentifier(2);
             f1.setLongFieldName("testField.myDouble");
             f1.setShortFieldName("myDouble");
-            f1.setFieldDataType(coredata::reflection::AbstractField::DOUBLE_T);
+            f1.setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
             f1.setValue(1.234);
             f1.setSize(sizeof(double));
 
             TS_ASSERT(f1.getLongFieldIdentifier() == 0x10203041);
             TS_ASSERT(f1.getShortFieldIdentifier() == 2);
-            TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(f1.getLongFieldName(), "testField.myDouble"));
-            TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(f1.getShortFieldName(), "myDouble"));
-            TS_ASSERT(f1.getFieldDataType() == coredata::reflection::AbstractField::DOUBLE_T);
+            TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(f1.getLongFieldName(), "testField.myDouble"));
+            TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(f1.getShortFieldName(), "myDouble"));
+            TS_ASSERT(f1.getFieldDataType() == odcore::data::reflection::AbstractField::DOUBLE_T);
             TS_ASSERT(fabs(f1.getValue() - 1.234) < 1e-4);
             TS_ASSERT(f1.getSize() == sizeof(double));
         }
@@ -81,14 +81,15 @@ class FieldTest : public CxxTest::TestSuite {
             f1.setShortFieldIdentifier(3);
             f1.setLongFieldName("testField.myTimeStamp");
             f1.setShortFieldName("myTimeStamp");
-            f1.setFieldDataType(coredata::reflection::AbstractField::SERIALIZABLE_T);
+            f1.setFieldDataType(odcore::data::reflection::AbstractField::SERIALIZABLE_T);
             f1.setValue(TimeStamp(1, 2));
 
             TS_ASSERT(f1.getLongFieldIdentifier() == 0x10203042);
             TS_ASSERT(f1.getShortFieldIdentifier() == 3);
-            TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(f1.getLongFieldName(), "testField.myTimeStamp"));
-            TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(f1.getShortFieldName(), "myTimeStamp"));
-            TS_ASSERT(f1.getFieldDataType() == coredata::reflection::AbstractField::SERIALIZABLE_T);
+            TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(f1.getLongFieldName(), "testField.myTimeStamp"));
+            TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(f1.getShortFieldName(), "myTimeStamp"));
+            TS_ASSERT(f1.getFieldDataType() == odcore::data::reflection::AbstractField::SERIALIZABLE_T);
+
             TimeStamp ts = f1.getValue();
             TS_ASSERT(ts.getSeconds() == 1);
             TS_ASSERT(ts.getFractionalMicroseconds() == 2);

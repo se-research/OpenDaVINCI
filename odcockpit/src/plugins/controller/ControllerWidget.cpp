@@ -31,15 +31,15 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/io/conference/ContainerConference.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/io/conference/ContainerConference.h"
 #include "automotivedata/generated/cartesian/Constants.h"
 #include "plugins/controller/ControllerWidget.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }
-namespace core { namespace base { class KeyValueConfiguration; } }
+namespace odcore { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
 
@@ -48,12 +48,12 @@ namespace cockpit {
         namespace controller {
 
             using namespace std;
-            using namespace core::base;
-            using namespace core::io::conference;
-            using namespace core::data;
+            using namespace odcore::base;
+            using namespace odcore::io::conference;
+            using namespace odcore::data;
             using namespace automotive;
 
-            ControllerWidget::ControllerWidget(const PlugIn &/*plugIn*/, const core::base::KeyValueConfiguration &/*kvc*/, ContainerConference &conf, QWidget *prnt) :
+            ControllerWidget::ControllerWidget(const PlugIn &/*plugIn*/, const odcore::base::KeyValueConfiguration &/*kvc*/, ContainerConference &conf, QWidget *prnt) :
                 QWidget(prnt),
                 m_conference(conf),
                 m_vehicleControlMutex(),

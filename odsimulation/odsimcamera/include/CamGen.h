@@ -22,10 +22,10 @@
 
 #include <stdint.h>
 
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
-#include "hesperia/data/environment/EgoState.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
+#include "opendlv/data/environment/EgoState.h"
 
 namespace core { namespace wrapper { class Image; } }
 
@@ -38,7 +38,7 @@ class OpenGLGrabber;
     /**
      * This class is the camera server providing new camera images.
      */
-    class CamGen : public core::base::module::TimeTriggeredConferenceClientModule {
+    class CamGen : public odcore::base::module::TimeTriggeredConferenceClientModule {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -74,7 +74,7 @@ class OpenGLGrabber;
 
             virtual void tearDown();
 
-            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+            odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
             /**
              * This method returns the singleton instance.
@@ -126,9 +126,9 @@ class OpenGLGrabber;
 
         private:
             static CamGen* m_singleton;
-            hesperia::data::environment::EgoState m_egoState;
+            opendlv::data::environment::EgoState m_egoState;
             OpenGLGrabber *m_grabber;
-            core::SharedPointer<core::wrapper::Image> m_image;
+            odcore::SharedPointer<core::wrapper::Image> m_image;
 
             float m_translationX;
             float m_translationY;

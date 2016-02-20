@@ -13,22 +13,22 @@ TCPReceiveBytes.hpp:
 
 .. code-block:: c++
 
-    #include <opendavinci/core/io/ConnectionListener.h>
-    #include <opendavinci/core/io/StringListener.h>
-    #include <opendavinci/core/io/TCPAcceptorListener.h>
-    #include <opendavinci/core/io/TCPConnection.h>
+    #include <opendavinci/odcore/io/ConnectionListener.h>
+    #include <opendavinci/odcore/io/StringListener.h>
+    #include <opendavinci/odcore/io/TCPAcceptorListener.h>
+    #include <opendavinci/odcore/io/TCPConnection.h>
 
     // This class will handle newly accepted TCP connections.
     class TCPReceiveBytes : 
-        public core::io::ConnectionListener,
-        public core::io::StringListener,
-        public core::io::tcp::TCPAcceptorListener {
+        public odcore::io::ConnectionListener,
+        public odcore::io::StringListener,
+        public odcore::io::tcp::TCPAcceptorListener {
 
         // Your class needs to implement the method void nextString(const std::string &s).
         virtual void nextString(const std::string &s);
 
-        // Your class needs to implement the method void onNewConnection(core::SharedPointer<core::io::tcp::TCPConnection> connection).
-        virtual void onNewConnection(core::SharedPointer<core::io::tcp::TCPConnection> connection);
+        // Your class needs to implement the method void onNewConnection(odcore::SharedPointer<odcore::io::tcp::TCPConnection> connection).
+        virtual void onNewConnection(odcore::SharedPointer<odcore::io::tcp::TCPConnection> connection);
 
         // Your class should implement the method void handleConnectionError() to handle connection errors (like terminated connections).
         virtual void handleConnectionError();
@@ -49,19 +49,19 @@ TCPReceiveBytes.cpp:
     #include <stdint.h>
     #include <iostream>
     #include <string>
-    #include <opendavinci/core/SharedPointer.h>
-    #include <opendavinci/core/base/Thread.h>
-    #include <opendavinci/core/io/tcp/TCPAcceptor.h>
-    #include <opendavinci/core/io/tcp/TCPFactory.h>
+    #include <opendavinci/odcore/SharedPointer.h>
+    #include <opendavinci/odcore/base/Thread.h>
+    #include <opendavinci/odcore/io/tcp/TCPAcceptor.h>
+    #include <opendavinci/odcore/io/tcp/TCPFactory.h>
 
     #include "TCPReceiveBytes.hpp"
 
     using namespace std;
 
     // We add some of OpenDaVINCI's namespaces for the sake of readability.
-    using namespace core;
-    using namespace core::io;
-    using namespace core::io:tcp;
+    using namespace odcore;
+    using namespace odcore::io;
+    using namespace odcore::io:tcp;
 
     void TCPReceiveBytes::handleConnectionError() {
         cout << "Connection terminated." << endl;
@@ -71,7 +71,7 @@ TCPReceiveBytes.cpp:
         cout << "Received " << s.length() << " bytes containing '" << s << "'" << endl;
     }
 
-    void TCPReceiveBytes::onNewConnection(core::SharedPointer<core::io::tcp::TCPConnection> connection) {
+    void TCPReceiveBytes::onNewConnection(odcore::SharedPointer<odcore::io::tcp::TCPConnection> connection) {
         if (connection.isValid()) {
             cout << "Handle a new connection." << endl;
 
@@ -89,7 +89,7 @@ TCPReceiveBytes.cpp:
             // We keep this connection open only for one
             // second before we close it.
             const uint32_t ONE_SECOND = 1000 * 1000;
-            core::base::Thread::usleepFor(ONE_SECOND);
+            odcore::base::Thread::usleepFor(ONE_SECOND);
 
             // Stop this connection.
             connection->stop();
@@ -117,7 +117,7 @@ TCPReceiveBytes.cpp:
             tcpacceptor->start();
 
             const uint32_t ONE_SECOND = 1000 * 1000;
-            core::base::Thread::usleepFor(10 * ONE_SECOND);
+            odcore::base::Thread::usleepFor(10 * ONE_SECOND);
 
             // Stop accepting new connections and unregister our handler.
             tcpacceptor->stop();
@@ -134,7 +134,7 @@ new connections in a ``vector`` for instance and manage their individual
 connection status properly.
  
 To receive bytes from a TCP socket, your application needs to include
-``<opendavinci/core/io/tcp/TCPAcceptor.h>`` and ``<opendavinci/core/io/tcp/TCPFactory.h>`` that encapsulate
+``<opendavinci/odcore/io/tcp/TCPAcceptor.h>`` and ``<opendavinci/odcore/io/tcp/TCPFactory.h>`` that encapsulate
 the platform-specific implementations.
 
 ``TCPFactory`` provides a static method called ``createTCPAcceptor`` that allows

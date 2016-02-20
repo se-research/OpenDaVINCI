@@ -24,8 +24,8 @@
 namespace odspy {
 
     using namespace std;
-    using namespace core::base;
-    using namespace core::data;
+    using namespace odcore::base;
+    using namespace odcore::data;
 
     Spy::Spy(const int32_t &argc, char **argv) :
         TimeTriggeredConferenceClientModule(argc, argv, "odspy"),
@@ -37,11 +37,11 @@ namespace odspy {
 
     void Spy::tearDown() {}
 
-    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode Spy::body() {
+    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Spy::body() {
         // Add FIFOQueue to spy all data.
         addDataStoreFor(m_fifo);
 
-        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
             while (!m_fifo.isEmpty()) {
                 Container c = m_fifo.leave();
                 
@@ -49,7 +49,7 @@ namespace odspy {
             }
         }
 
-        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+        return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
     }
 
 } // odspy

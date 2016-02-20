@@ -23,7 +23,7 @@
 
 
 
-namespace core { namespace base { template <typename T> class TreeNode; } }
+namespace odcore { namespace base { template <typename T> class TreeNode; } }
 
 namespace cockpit {
     namespace plugins {
@@ -43,7 +43,7 @@ class SelectableNodeDescriptor;
                      *
                      * @param node Node of the tree to update.
                      */
-                    virtual void update(core::base::TreeNode<SelectableNodeDescriptor> *node) = 0;
+                    virtual void update(odcore::base::TreeNode<SelectableNodeDescriptor> *node) = 0;
             };
         }
     }

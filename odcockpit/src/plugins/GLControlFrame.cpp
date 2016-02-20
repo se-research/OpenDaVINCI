@@ -35,7 +35,7 @@
 # endif
 #endif
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "automotivedata/generated/cartesian/Constants.h"
 #include "plugins/AbstractGLWidget.h"
 #include "plugins/GLControlFrame.h"

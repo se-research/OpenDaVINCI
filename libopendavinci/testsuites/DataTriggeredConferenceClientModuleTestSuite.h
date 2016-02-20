@@ -26,46 +26,46 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"         // for SharedPointer
-#include "opendavinci/core/base/Condition.h"        // for Condition
-#include "opendavinci/core/base/Deserializer.h"     // for Deserializer
-#include "opendavinci/core/base/Hash.h"             // for CharList, CRC32, etc
-#include "opendavinci/core/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
-#include "opendavinci/core/base/Lock.h"             // for Lock
-#include "opendavinci/core/base/SerializationFactory.h"  // for SerializationFactory
-#include "opendavinci/core/base/Serializer.h"       // for Serializer
-#include "opendavinci/core/base/Service.h"          // for Service
-#include "opendavinci/core/base/Thread.h"           // for Thread
-#include "opendavinci/core/base/module/AbstractConferenceClientModule.h"
-#include "opendavinci/core/base/module/DataTriggeredConferenceClientModule.h"
-#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "opendavinci/core/data/Container.h"        // for Container, etc
-#include "opendavinci/core/data/SerializableData.h"  // for SerializableData
-#include "opendavinci/core/dmcp/ModuleConfigurationProvider.h"
-#include "opendavinci/core/dmcp/connection/ConnectionHandler.h"
-#include "opendavinci/core/dmcp/connection/ModuleConnection.h"
-#include "opendavinci/core/dmcp/connection/Server.h"  // for Server
-#include "opendavinci/core/dmcp/discoverer/Server.h"  // for Server
-#include "opendavinci/core/io/conference/ContainerConference.h"
-#include "opendavinci/core/io/conference/ContainerConferenceFactory.h"
-#include "opendavinci/generated/coredata/dmcp/Constants.h"  // for Constants, etc
-#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
-#include "opendavinci/generated/coredata/dmcp/ServerInformation.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"         // for SharedPointer
+#include "opendavinci/odcore/base/Condition.h"        // for Condition
+#include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
+#include "opendavinci/odcore/base/Hash.h"             // for CharList, CRC32, etc
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
+#include "opendavinci/odcore/base/Lock.h"             // for Lock
+#include "opendavinci/odcore/base/SerializationFactory.h"  // for SerializationFactory
+#include "opendavinci/odcore/base/Serializer.h"       // for Serializer
+#include "opendavinci/odcore/base/Service.h"          // for Service
+#include "opendavinci/odcore/base/Thread.h"           // for Thread
+#include "opendavinci/odcore/base/module/AbstractConferenceClientModule.h"
+#include "opendavinci/odcore/base/module/DataTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/data/Container.h"        // for Container, etc
+#include "opendavinci/odcore/data/SerializableData.h"  // for SerializableData
+#include "opendavinci/odcore/dmcp/ModuleConfigurationProvider.h"
+#include "opendavinci/odcore/dmcp/connection/ConnectionHandler.h"
+#include "opendavinci/odcore/dmcp/connection/ModuleConnection.h"
+#include "opendavinci/odcore/dmcp/connection/Server.h"  // for Server
+#include "opendavinci/odcore/dmcp/discoverer/Server.h"  // for Server
+#include "opendavinci/odcore/io/conference/ContainerConference.h"
+#include "opendavinci/odcore/io/conference/ContainerConferenceFactory.h"
+#include "opendavinci/generated/odcore/data/dmcp/Constants.h"  // for Constants, etc
+#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleStateMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ServerInformation.h"
 
-namespace coredata { namespace dmcp { class ModuleDescriptor; } }
+namespace odcore { namespace data { namespace dmcp { class ModuleDescriptor; } } }
 
 using namespace std;
-using namespace core::base;
-using namespace core::base::module;
-using namespace core::data;
-using namespace core::io;
-using namespace core::io::conference;
-using namespace core::dmcp;
-using namespace coredata::dmcp;
+using namespace odcore::base;
+using namespace odcore::base::module;
+using namespace odcore::data;
+using namespace odcore::io;
+using namespace odcore::io::conference;
+using namespace odcore::dmcp;
+using namespace odcore::data::dmcp;
 
-class TestSuiteExample7Data : public core::data::SerializableData {
+class TestSuiteExample7Data : public odcore::data::SerializableData {
 	public:
 		TestSuiteExample7Data() : m_numericalValue(0) {}
 
@@ -90,7 +90,7 @@ class TestSuiteExample7Data : public core::data::SerializableData {
 
 		virtual ostream& operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();
-		    core::SharedPointer<Serializer> s = sf.getSerializer(out);
+		    odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 		    s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('n', 'u', 'm') >::RESULT,
 				    m_numericalValue);
 		    return out;
@@ -98,7 +98,7 @@ class TestSuiteExample7Data : public core::data::SerializableData {
 
 		virtual istream& operator>>(istream &in) {
             SerializationFactory& sf=SerializationFactory::getInstance();
-		    core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+		    odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 		    d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('n', 'u', 'm') >::RESULT,
 			       m_numericalValue);
 		    return in;
@@ -149,11 +149,11 @@ class TimeTriggeredConferenceClientModuleTestModule : public TimeTriggeredConfer
             correctOrder &= (setUpCalled && !bodyCalled && !tearDownCalled);
         }
 
-        virtual coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
+        virtual odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
             bodyCalled = true;
             correctOrder &= (setUpCalled && bodyCalled && !tearDownCalled);
 
-            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
                 if (counter-- < 0) {
                     break;
                 }
@@ -169,7 +169,7 @@ class TimeTriggeredConferenceClientModuleTestModule : public TimeTriggeredConfer
         		getConference().send(c);
             }
 
-            return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
         virtual void tearDown() {
@@ -233,7 +233,7 @@ class ConferenceClientModuleTestService : public Service {
                 myACCM(accm) {}
 
         virtual void beforeStop() {
-            myACCM.setModuleState(coredata::dmcp::ModuleStateMessage::NOT_RUNNING);
+            myACCM.setModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
         }
 
         virtual void run() {
@@ -253,19 +253,19 @@ class DataTriggeredConferenceClientModuleTest : public CxxTest::TestSuite,
             m_connection() {}
 
         KeyValueConfiguration m_configuration;
-        core::SharedPointer<connection::ModuleConnection> m_connection;
+        odcore::SharedPointer<connection::ModuleConnection> m_connection;
 
         virtual KeyValueConfiguration getConfiguration(const ModuleDescriptor& /*md*/) {
             return m_configuration;
         }
 
-        virtual void onNewModule(core::SharedPointer<core::dmcp::connection::ModuleConnection> mc) {
+        virtual void onNewModule(odcore::SharedPointer<odcore::dmcp::connection::ModuleConnection> mc) {
             m_connection = mc;
         }
 
         void testTimeTriggeredTimeTriggeredConferenceClientModule() {
             // Setup ContainerConference.
-            core::SharedPointer<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.101");
+            odcore::SharedPointer<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.101");
 
 #if !defined(__OpenBSD__) && !defined(__APPLE__)
             // Setup DMCP.
@@ -283,8 +283,8 @@ class DataTriggeredConferenceClientModuleTest : public CxxTest::TestSuite,
             ServerInformation serverInformation("127.0.0.1", 19000, ServerInformation::ML_NONE);
             discoverer::Server dmcpDiscovererServer(serverInformation,
                                                     "225.0.0.101",
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_SERVER,
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_CLIENT,
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_SERVER,
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_CLIENT,
                                                     noModulesToIgnore);
             dmcpDiscovererServer.startResponding();
 
@@ -335,7 +335,7 @@ class DataTriggeredConferenceClientModuleTest : public CxxTest::TestSuite,
 
         void testDataTriggeredTimeTriggeredConferenceClientModules() {
             // Setup ContainerConference.
-            core::SharedPointer<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.102");
+            odcore::SharedPointer<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.102");
 
 #if !defined(__OpenBSD__) && !defined(__APPLE__)
             // Setup DMCP.
@@ -353,8 +353,8 @@ class DataTriggeredConferenceClientModuleTest : public CxxTest::TestSuite,
             ServerInformation serverInformation("127.0.0.1", 19000, ServerInformation::ML_NONE);
             discoverer::Server dmcpDiscovererServer(serverInformation,
                                                     "225.0.0.102",
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_SERVER,
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_CLIENT,
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_SERVER,
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_CLIENT,
                                                     noModulesToIgnore);
             dmcpDiscovererServer.startResponding();
 
@@ -439,7 +439,7 @@ class DataTriggeredConferenceClientModuleTest : public CxxTest::TestSuite,
 
         void testDataTriggeredTimeTriggeredConferenceClientModulesFreq10() {
             // Setup ContainerConference.
-            core::SharedPointer<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.103");
+            odcore::SharedPointer<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.103");
 
 #if !defined(__OpenBSD__) && !defined(__APPLE__)
             // Setup DMCP.
@@ -457,8 +457,8 @@ class DataTriggeredConferenceClientModuleTest : public CxxTest::TestSuite,
             ServerInformation serverInformation("127.0.0.1", 19000, ServerInformation::ML_NONE);
             discoverer::Server dmcpDiscovererServer(serverInformation,
                                                     "225.0.0.103",
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_SERVER,
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_CLIENT,
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_SERVER,
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_CLIENT,
                                                     noModulesToIgnore);
             dmcpDiscovererServer.startResponding();
 

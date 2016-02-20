@@ -7,18 +7,18 @@
 #ifndef TESTPACKAGE_SUBPACKAGE_TEST8C_H
 #define TESTPACKAGE_SUBPACKAGE_TEST8C_H
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 
-#include "opendavinci/core/base/Visitable.h"
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/base/Visitable.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 
 
 namespace testpackage {
 	namespace subpackage {
 		using namespace std;
 		
-		class Test8C : public core::data::SerializableData, public core::base::Visitable {
+		class Test8C : public odcore::data::SerializableData, public odcore::base::Visitable {
 			public:
 				Test8C();
 		
@@ -100,7 +100,7 @@ namespace testpackage {
 				virtual const string getLongName() const;
 		
 			public:
-				virtual void accept(core::base::Visitor &v);
+				virtual void accept(odcore::base::Visitor &v);
 		
 				virtual ostream& operator<<(ostream &out) const;
 				virtual istream& operator>>(istream &in);

@@ -19,15 +19,15 @@
 
 #include <iostream>
 
-#include <opendavinci/core/data/TimeStamp.h>
+#include <opendavinci/odcore/data/TimeStamp.h>
 
 #include "TimeTriggeredSender.h"
 
 using namespace std;
 
 // We add some of OpenDaVINCI's namespaces for the sake of readability.
-using namespace core::base::module;
-using namespace core::data;
+using namespace odcore::base::module;
+using namespace odcore::data;
 
 TimeTriggeredSender::TimeTriggeredSender(const int32_t &argc, char **argv) :
     TimeTriggeredConferenceClientModule(argc, argv, "TimeTriggeredSender")
@@ -43,9 +43,9 @@ void TimeTriggeredSender::tearDown() {
     cout << "This method is called after the program flow returns from the component's body." << endl;
 }
 
-coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode TimeTriggeredSender::body() {
+odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode TimeTriggeredSender::body() {
     uint32_t i = 0;
-    while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+    while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
         cout << "Sending " << i << "-th time stamp data...";
         TimeStamp ts(i, 2*i++);
         Container c(ts);
@@ -53,7 +53,7 @@ coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode TimeTriggeredSender::body(
         cout << "done." << endl;
     }
 
-    return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+    return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
 }
 
 int32_t main(int32_t argc, char **argv) {

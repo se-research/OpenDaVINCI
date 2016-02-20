@@ -22,31 +22,31 @@
 
 #include "cxxtest/TestSuite.h"
 
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/Service.h"
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/io/conference/ContainerListener.h"
-#include "opendavinci/core/io/conference/ContainerConference.h"
-#include "opendavinci/core/io/conference/ContainerConferenceFactory.h"
-#include "opendavinci/core/io/StreamFactory.h"
-#include "opendavinci/core/io/URL.h"
-#include "opendavinci/core/dmcp/ModuleConfigurationProvider.h"
-#include "opendavinci/core/dmcp/discoverer/Server.h"
-#include "opendavinci/core/dmcp/connection/Server.h"
-#include "opendavinci/core/dmcp/connection/ConnectionHandler.h"
-#include "opendavinci/core/dmcp/connection/ModuleConnection.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Service.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
+#include "opendavinci/odcore/io/conference/ContainerConference.h"
+#include "opendavinci/odcore/io/conference/ContainerConferenceFactory.h"
+#include "opendavinci/odcore/io/StreamFactory.h"
+#include "opendavinci/odcore/io/URL.h"
+#include "opendavinci/odcore/dmcp/ModuleConfigurationProvider.h"
+#include "opendavinci/odcore/dmcp/discoverer/Server.h"
+#include "opendavinci/odcore/dmcp/connection/Server.h"
+#include "opendavinci/odcore/dmcp/connection/ConnectionHandler.h"
+#include "opendavinci/odcore/dmcp/connection/ModuleConnection.h"
 
 // Include local header files.
 #include "../include/Redirector.h"
 
 using namespace std;
-using namespace core::base;
-using namespace core::data;
-using namespace core::dmcp;
-using namespace core::io;
-using namespace core::io::conference;
-using namespace coredata::dmcp;
+using namespace odcore::base;
+using namespace odcore::data;
+using namespace odcore::dmcp;
+using namespace odcore::io;
+using namespace odcore::io::conference;
+using namespace odcore::data::dmcp;
 using namespace odredirector;
 
 /**
@@ -59,7 +59,7 @@ class RedirectorTestService : public Service {
 
         virtual void beforeStop() {
             // Stop redirector.
-            myRedirector.setModuleState(coredata::dmcp::ModuleStateMessage::NOT_RUNNING);
+            myRedirector.setModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
         }
 
         virtual void run() {
@@ -88,14 +88,14 @@ class RedirectorTest : public CxxTest::TestSuite,
         }
 
         KeyValueConfiguration m_configuration;
-        core::SharedPointer<connection::ModuleConnection> m_connection;
+        odcore::SharedPointer<connection::ModuleConnection> m_connection;
         vector<Container> m_listOfContainers;
 
         virtual KeyValueConfiguration getConfiguration(const ModuleDescriptor& /*md*/) {
             return m_configuration;
         }
 
-        virtual void onNewModule(core::SharedPointer<core::dmcp::connection::ModuleConnection> mc) {
+        virtual void onNewModule(odcore::SharedPointer<odcore::dmcp::connection::ModuleConnection> mc) {
             m_connection = mc;
         }
 
@@ -108,7 +108,7 @@ class RedirectorTest : public CxxTest::TestSuite,
             TS_ASSERT(true);
 #else
             // Setup ContainerConference.
-            core::SharedPointer<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.100");
+            odcore::SharedPointer<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.100");
 
             // Setup DMCP.
             stringstream sstr_;
@@ -122,8 +122,8 @@ class RedirectorTest : public CxxTest::TestSuite,
             ServerInformation serverInformation("127.0.0.1", 19000, ServerInformation::ML_NONE);
             discoverer::Server dmcpDiscovererServer(serverInformation,
                                                     "225.0.0.100",
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_SERVER,
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_CLIENT,
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_SERVER,
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_CLIENT,
                                                     noModulesToIgnore);
             dmcpDiscovererServer.startResponding();
 

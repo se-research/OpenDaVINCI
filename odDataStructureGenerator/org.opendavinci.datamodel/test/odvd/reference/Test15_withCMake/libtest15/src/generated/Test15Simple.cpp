@@ -5,16 +5,16 @@
  */
 
 
-#include "opendavinci/core/base/Hash.h"
-#include "opendavinci/core/base/Deserializer.h"
-#include "opendavinci/core/base/SerializationFactory.h"
-#include "opendavinci/core/base/Serializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 
 
 #include "test15/generated/Test15Simple.h"
 
 	using namespace std;
-	using namespace core::base;
+	using namespace odcore::base;
 
 
 	Test15Simple::Test15Simple() :
@@ -77,7 +77,7 @@
 		m_buttonState = val;
 	}
 
-	void Test15Simple::accept(core::base::Visitor &v) {
+	void Test15Simple::accept(odcore::base::Visitor &v) {
 		int32_t int32t_buttonState = m_buttonState;
 		v.visit(CRC32 < CharList<'b', CharList<'u', CharList<'t', CharList<'t', CharList<'o', CharList<'n', CharList<'S', CharList<'t', CharList<'a', CharList<'t', CharList<'e', NullType> > > > > > > > > > >  >::RESULT, 0, "Test15Simple.buttonState", "buttonState", int32t_buttonState);
 	}
@@ -105,7 +105,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Serializer> s = sf.getSerializer(out);
+		odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 
 		int32_t int32t_buttonState = m_buttonState;
 		s->write(CRC32 < CharList<'b', CharList<'u', CharList<'t', CharList<'t', CharList<'o', CharList<'n', CharList<'S', CharList<'t', CharList<'a', CharList<'t', CharList<'e', NullType> > > > > > > > > > >  >::RESULT,
@@ -117,7 +117,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+		odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
 		int32_t int32t_buttonState = 0;
 		d->read(CRC32 < CharList<'b', CharList<'u', CharList<'t', CharList<'t', CharList<'o', CharList<'n', CharList<'S', CharList<'t', CharList<'a', CharList<'t', CharList<'e', NullType> > > > > > > > > > >  >::RESULT,

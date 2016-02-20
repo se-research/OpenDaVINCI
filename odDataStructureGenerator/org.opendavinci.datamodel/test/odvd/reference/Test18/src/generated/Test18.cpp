@@ -5,18 +5,18 @@
  */
 
 #include <cstring>
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/base/Hash.h"
-#include "opendavinci/core/base/Deserializer.h"
-#include "opendavinci/core/base/SerializationFactory.h"
-#include "opendavinci/core/base/Serializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 
 
 #include "test18/generated/Test18.h"
 
 	using namespace std;
-	using namespace core::base;
+	using namespace odcore::base;
 
 
 	Test18::Test18() :
@@ -145,7 +145,7 @@
 		m_myAtt3 = val;
 	}
 
-	void Test18::accept(core::base::Visitor &v) {
+	void Test18::accept(odcore::base::Visitor &v) {
 		v.visit(CRC32 < CharList<'m', CharList<'y', CharList<'A', CharList<'t', CharList<'t', CharList<'1', NullType> > > > > >  >::RESULT, 5, "Test18.myAtt1", "myAtt1", m_myAtt1);
 		v.visit(0x12345678, 0, "Test18.myAtt2", "myAtt2", m_myAtt2);
 		v.visit(0xAaBbCcDd, 0, "Test18.myAtt3", "myAtt3", m_myAtt3);
@@ -176,7 +176,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Serializer> s = sf.getSerializer(out);
+		odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 
 		s->write(CRC32 < CharList<'m', CharList<'y', CharList<'A', CharList<'r', CharList<'r', CharList<'a', CharList<'y', CharList<'1', NullType> > > > > > > >  >::RESULT,
 				m_myArray1, getSize_MyArray1() * (sizeof(uint32_t)/sizeof(char)));
@@ -193,7 +193,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+		odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
 		d->read(CRC32 < CharList<'m', CharList<'y', CharList<'A', CharList<'r', CharList<'r', CharList<'a', CharList<'y', CharList<'1', NullType> > > > > > > >  >::RESULT,
 		       m_myArray1, getSize_MyArray1() * (sizeof(uint32_t)/sizeof(char)));

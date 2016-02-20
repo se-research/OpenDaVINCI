@@ -26,7 +26,7 @@
 #include "plugins/PlugIn.h"
 
 class QWidget;
-namespace core { namespace base { class KeyValueConfiguration; } }
+namespace odcore { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
     namespace plugins {
@@ -61,7 +61,7 @@ class ModuleStatisticsViewerWidget;
                      * @param kvc KeyValueConfiguration for this widget.
                      * @param prnt Pointer to the container super window.
                      */
-                    ModuleStatisticsViewerPlugIn(const string &name, const core::base::KeyValueConfiguration &kvc, QWidget *prnt);
+                    ModuleStatisticsViewerPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt);
 
                     virtual ~ModuleStatisticsViewerPlugIn();
 

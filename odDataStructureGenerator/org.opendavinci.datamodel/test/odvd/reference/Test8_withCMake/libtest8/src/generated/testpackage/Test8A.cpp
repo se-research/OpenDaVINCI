@@ -5,17 +5,17 @@
  */
 
 
-#include "opendavinci/core/base/Hash.h"
-#include "opendavinci/core/base/Deserializer.h"
-#include "opendavinci/core/base/SerializationFactory.h"
-#include "opendavinci/core/base/Serializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 
 
 #include "test8/generated/testpackage/Test8A.h"
 
 namespace testpackage {
 		using namespace std;
-		using namespace core::base;
+		using namespace odcore::base;
 	
 	
 		Test8A::Test8A() :
@@ -78,7 +78,7 @@ namespace testpackage {
 			m_attribute1 = val;
 		}
 	
-		void Test8A::accept(core::base::Visitor &v) {
+		void Test8A::accept(odcore::base::Visitor &v) {
 			v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'1', NullType> > > > > > > > > >  >::RESULT, 0, "Test8A.attribute1", "attribute1", m_attribute1);
 		}
 	
@@ -95,7 +95,7 @@ namespace testpackage {
 	
 			SerializationFactory& sf = SerializationFactory::getInstance();
 	
-			core::SharedPointer<Serializer> s = sf.getSerializer(out);
+			odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 	
 			s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'1', NullType> > > > > > > > > >  >::RESULT,
 					m_attribute1);
@@ -106,7 +106,7 @@ namespace testpackage {
 	
 			SerializationFactory& sf = SerializationFactory::getInstance();
 	
-			core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+			odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 	
 			d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'1', NullType> > > > > > > > > >  >::RESULT,
 					m_attribute1);

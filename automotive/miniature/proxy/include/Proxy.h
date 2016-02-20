@@ -23,9 +23,9 @@
 #include <map>
 #include <memory>
 
-#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/tools/recorder/Recorder.h"
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odtools/recorder/Recorder.h"
 
 #include "Camera.h"
 
@@ -37,7 +37,7 @@ namespace automotive {
         /**
          * This class wraps the software/hardware interface board.
          */
-        class Proxy : public core::base::module::TimeTriggeredConferenceClientModule {
+        class Proxy : public odcore::base::module::TimeTriggeredConferenceClientModule {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -69,17 +69,17 @@ namespace automotive {
 
                 virtual ~Proxy();
 
-                coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+                odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
             private:
                 virtual void setUp();
 
                 virtual void tearDown();
 
-                void distribute(core::data::Container c);
+                void distribute(odcore::data::Container c);
 
             private:
-                auto_ptr<tools::recorder::Recorder> m_recorder;
+                auto_ptr<odtools::recorder::Recorder> m_recorder;
                 auto_ptr<Camera> m_camera;
         };
 

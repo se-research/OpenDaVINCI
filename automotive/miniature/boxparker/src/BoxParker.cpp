@@ -19,7 +19,7 @@
 
 #include <iostream>
 
-#include "opendavinci/core/data/Container.h"
+#include "opendavinci/odcore/data/Container.h"
 
 #include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 #include "automotivedata/GeneratedHeaders_AutomotiveData.h"
@@ -30,9 +30,9 @@ namespace automotive {
     namespace miniature {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::base::module;
-        using namespace core::data;
+        using namespace odcore::base;
+        using namespace odcore::base::module;
+        using namespace odcore::data;
         using namespace automotive;
 
         BoxParker::BoxParker(const int32_t &argc, char **argv) :
@@ -54,7 +54,7 @@ namespace automotive {
         }
 
         // This method will do the main data processing job.
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode BoxParker::body() {
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode BoxParker::body() {
             double distanceOld = 0;
             double absPathStart = 0;
             double absPathEnd = 0;
@@ -62,7 +62,7 @@ namespace automotive {
             int stageMoving = 0;
             int stageMeasuring = 0;
 
-            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
                 // 1. Get most recent vehicle data:
                 Container containerVehicleData = getKeyValueDataStore().get(automotive::VehicleData::ID());
                 VehicleData vd = containerVehicleData.getData<VehicleData> ();
@@ -157,7 +157,7 @@ namespace automotive {
                 getConference().send(c);
             }
 
-            return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
     } // miniature

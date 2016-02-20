@@ -18,17 +18,17 @@ ipcsharedmemoryproducer.cpp:
     #include <stdint.h>
     #include <iostream>
     #include <string>
-    #include <opendavinci/core/SharedPointer.h>
-    #include <opendavinci/core/base/Lock.h>
-    #include <opendavinci/core/base/Thread.h>
-    #include <opendavinci/core/wrapper/SharedMemory.h>
-    #include <opendavinci/core/wrapper/SharedMemoryFactory.h>
+    #include <opendavinci/odcore/SharedPointer.h>
+    #include <opendavinci/odcore/base/Lock.h>
+    #include <opendavinci/odcore/base/Thread.h>
+    #include <opendavinci/odcore/wrapper/SharedMemory.h>
+    #include <opendavinci/odcore/wrapper/SharedMemoryFactory.h>
 
     using namespace std;
 
     // We add some of OpenDaVINCI's namespaces for the sake of readability.
-    using namespace core;
-    using namespace core::wrapper;
+    using namespace odcore;
+    using namespace odcore::wrapper;
 
     int32_t main(int32_t argc, char **argv) {
         const string NAME = "MySharedMemory";
@@ -44,7 +44,7 @@ ipcsharedmemoryproducer.cpp:
                 while (counter-- > 0) {
                     {
                         // Using a scoped lock to lock and automatically unlock a shared memory segment.
-                        core::base::Lock l(sharedMemory);
+                        odcore::base::Lock l(sharedMemory);
                         char *p = static_cast<char*>(sharedMemory->getSharedMemory());
                         for (uint32_t i = 0; i < sharedMemory->getSize(); i++) {
                             char c = (char) (65 + ((i+counter)%26));
@@ -54,7 +54,7 @@ ipcsharedmemoryproducer.cpp:
 
                     // Sleep some time.
                     const uint32_t ONE_SECOND = 1000 * 1000;
-                    core::base::Thread::usleepFor(ONE_SECOND);
+                    odcore::base::Thread::usleepFor(ONE_SECOND);
                 }
             }
         }
@@ -63,8 +63,8 @@ ipcsharedmemoryproducer.cpp:
         }
     }
 
-The producer process needs to include ``<opendavinci/core/wrapper/SharedMemory.h>`` and
-``<opendavinci/core/wrapper/SharedMemoryFactory.h>`` that encapsulate the platform-specific
+The producer process needs to include ``<opendavinci/odcore/wrapper/SharedMemory.h>`` and
+``<opendavinci/odcore/wrapper/SharedMemoryFactory.h>`` that encapsulate the platform-specific
 implementations.
 
 ``SharedMemoryFactory`` provides a static method called ``createSharedMemory`` that
@@ -95,17 +95,17 @@ ipcsharedmemoryconsumer.cpp:
     #include <stdint.h>
     #include <iostream>
     #include <string>
-    #include <opendavinci/core/SharedPointer.h>
-    #include <opendavinci/core/base/Lock.h>
-    #include <opendavinci/core/base/Thread.h>
-    #include <opendavinci/core/wrapper/SharedMemory.h>
-    #include <opendavinci/core/wrapper/SharedMemoryFactory.h>
+    #include <opendavinci/odcore/SharedPointer.h>
+    #include <opendavinci/odcore/base/Lock.h>
+    #include <opendavinci/odcore/base/Thread.h>
+    #include <opendavinci/odcore/wrapper/SharedMemory.h>
+    #include <opendavinci/odcore/wrapper/SharedMemoryFactory.h>
 
     using namespace std;
 
     // We add some of OpenDaVINCI's namespaces for the sake of readability.
-    using namespace core;
-    using namespace core::wrapper;
+    using namespace odcore;
+    using namespace odcore::wrapper;
 
     int32_t main(int32_t argc, char **argv) {
         const string NAME = "MySharedMemory";
@@ -121,7 +121,7 @@ ipcsharedmemoryconsumer.cpp:
                     string s;
                     {
                         // Using a scoped lock to lock and automatically unlock a shared memory segment.
-                        core::base::Lock l(sharedMemory);
+                        odcore::base::Lock l(sharedMemory);
                         char *p = static_cast<char*>(sharedMemory->getSharedMemory());
                         s = string(p);
                     }
@@ -130,7 +130,7 @@ ipcsharedmemoryconsumer.cpp:
 
                     // Sleep some time.
                     const uint32_t ONE_SECOND = 1000 * 1000;
-                    core::base::Thread::usleepFor(0.5 * ONE_SECOND);
+                    odcore::base::Thread::usleepFor(0.5 * ONE_SECOND);
                 }
             }
         }
@@ -139,8 +139,8 @@ ipcsharedmemoryconsumer.cpp:
         }
     }
 
-The consumer process needs to include ``<opendavinci/core/wrapper/SharedMemory.h>`` and
-``<opendavinci/core/wrapper/SharedMemoryFactory.h>`` that encapsulate the platform-specific
+The consumer process needs to include ``<opendavinci/odcore/wrapper/SharedMemory.h>`` and
+``<opendavinci/odcore/wrapper/SharedMemoryFactory.h>`` that encapsulate the platform-specific
 implementations as well.
 
 On the consumer side, ``SharedMemoryFactory`` provides a static method called

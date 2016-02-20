@@ -36,8 +36,8 @@
 
 #include <cstring>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Lock.h"
 #include "plugins/modulestatisticsviewer/LoadPerModule.h"
 
 namespace cockpit {
@@ -45,11 +45,11 @@ namespace cockpit {
         namespace modulestatisticsviewer {
 
             using namespace std;
-            using namespace core::base;
-            using namespace coredata;
-            using namespace coredata::dmcp;
+            using namespace odcore::base;
+            using namespace odcore::data;
+            using namespace odcore::data::dmcp;
 
-            LoadPerModule::LoadPerModule( const coredata::dmcp::ModuleDescriptor &md, const QColor &color) :
+            LoadPerModule::LoadPerModule( const odcore::data::dmcp::ModuleDescriptor &md, const QColor &color) :
                     m_moduleDescriptor(md),
                     m_curve(NULL),
                     m_loadMutex(),

@@ -22,11 +22,11 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "opendavinci/context/base/Clock.h"         // for Clock
-#include "opendavinci/context/base/ControlledTime.h"  // for ControlledTime
+#include "opendavinci/odcontext/base/Clock.h"         // for Clock
+#include "opendavinci/odcontext/base/ControlledTime.h"  // for ControlledTime
 
 using namespace std;
-using namespace context::base;
+using namespace odcontext::base;
 
 class ClockTest : public CxxTest::TestSuite {
     public:

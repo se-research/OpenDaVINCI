@@ -27,27 +27,27 @@
 #include <iostream>
 #include <sstream>
 
-#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "opendavinci/core/base/KeyValueConfiguration.h"
-#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/base/Service.h"
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/core/base/Hash.h"
-#include "opendavinci/core/base/Deserializer.h"
-#include "opendavinci/core/base/SerializationFactory.h"
-#include "opendavinci/core/base/Serializer.h"
-#include "opendavinci/core/data/TimeStamp.h"
-#include "opendavinci/core/strings/StringToolbox.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/base/Service.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
+#include "opendavinci/odcore/strings/StringToolbox.h"
 
 #include "../include/SuperComponent.h"
 
 using namespace std;
-using namespace core::base;
-using namespace core::base::module;
-using namespace core::data;
-using namespace core::exceptions;
+using namespace odcore::base;
+using namespace odcore::base::module;
+using namespace odcore::data;
+using namespace odcore::exceptions;
 
 class ExampleLoggerApp : public TimeTriggeredConferenceClientModule {
     public:
@@ -66,15 +66,15 @@ class ExampleLoggerApp : public TimeTriggeredConferenceClientModule {
             tearDownCalled = true;
         }
 
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
             uint32_t cnt = 0;
-        	while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+        	while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
                 stringstream msg;
                 msg << "Log message: " << cnt++;
-                toLogger(static_cast<coredata::LogMessage::LogLevel>(m_loggingLevel), msg.str());
+                toLogger(static_cast<odcore::data::LogMessage::LogLevel>(m_loggingLevel), msg.str());
             }
 
-        	return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+        	return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 };
 
@@ -92,7 +92,7 @@ class ModuleRunnerTestService : public Service {
     public:
         virtual void beforeStop() {
             // Stop app.
-            myApp->setModuleState(coredata::dmcp::ModuleStateMessage::NOT_RUNNING);
+            myApp->setModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
         }
 
         virtual void run() {
@@ -129,7 +129,7 @@ class SupercomponentService : public Service {
 
         virtual void beforeStop() {
             // Stop app.
-            mySC.setModuleState(coredata::dmcp::ModuleStateMessage::NOT_RUNNING);
+            mySC.setModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
         }
 
         virtual void run() {
@@ -205,7 +205,7 @@ class LoggerTest : public CxxTest::TestSuite {
             c0_argv[2] = const_cast<char*>(c0_argv2.c_str());
             c0_argv[3] = const_cast<char*>(c0_argv3.c_str());
 
-            ExampleLoggerApp app1(c0_argc, c0_argv, coredata::LogMessage::NONE);
+            ExampleLoggerApp app1(c0_argc, c0_argv, odcore::data::LogMessage::NONE);
             ModuleRunnerTestService mrts1(&app1);
 
             // Create second component sending at level INFO.
@@ -221,7 +221,7 @@ class LoggerTest : public CxxTest::TestSuite {
             c1_argv[2] = const_cast<char*>(c1_argv2.c_str());
             c1_argv[3] = const_cast<char*>(c1_argv3.c_str());
 
-            ExampleLoggerApp app2(c1_argc, c1_argv, coredata::LogMessage::INFO);
+            ExampleLoggerApp app2(c1_argc, c1_argv, odcore::data::LogMessage::INFO);
             ModuleRunnerTestService mrts2(&app2);
 
             // Create third component sending at level WARN.
@@ -237,7 +237,7 @@ class LoggerTest : public CxxTest::TestSuite {
             c2_argv[2] = const_cast<char*>(c2_argv2.c_str());
             c2_argv[3] = const_cast<char*>(c2_argv3.c_str());
 
-            ExampleLoggerApp app3(c2_argc, c2_argv, coredata::LogMessage::WARN);
+            ExampleLoggerApp app3(c2_argc, c2_argv, odcore::data::LogMessage::WARN);
             ModuleRunnerTestService mrts3(&app3);
 
             // Create fourth component sending at level DEBUG.
@@ -253,7 +253,7 @@ class LoggerTest : public CxxTest::TestSuite {
             c3_argv[2] = const_cast<char*>(c3_argv2.c_str());
             c3_argv[3] = const_cast<char*>(c3_argv3.c_str());
 
-            ExampleLoggerApp app4(c3_argc, c3_argv, coredata::LogMessage::DEBUG);
+            ExampleLoggerApp app4(c3_argc, c3_argv, odcore::data::LogMessage::DEBUG);
             ModuleRunnerTestService mrts4(&app4);
 
 

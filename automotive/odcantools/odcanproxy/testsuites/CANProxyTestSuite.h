@@ -26,7 +26,7 @@
 #include "../include/CANProxy.h"
 
 using namespace std;
-using namespace core::data;
+using namespace odcore::data;
 using namespace automotive::odcantools;
 
 /**

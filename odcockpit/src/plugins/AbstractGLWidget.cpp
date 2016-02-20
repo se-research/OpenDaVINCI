@@ -30,8 +30,8 @@
 
 #include <cmath>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Lock.h"
 #include "automotivedata/generated/cartesian/Constants.h"
 #include "plugins/AbstractGLWidget.h"
 
@@ -43,8 +43,8 @@ namespace cockpit {
 class PlugIn;
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::data;
+        using namespace odcore::base;
+        using namespace odcore::data;
 
         bool AbstractGLWidget::m_isGLUTinitialized = false;
 
@@ -99,7 +99,7 @@ class PlugIn;
             return m_plugIn;
         }
 
-        void AbstractGLWidget::setBackgroundColor(const hesperia::data::environment::Point3 &c) {
+        void AbstractGLWidget::setBackgroundColor(const opendlv::data::environment::Point3 &c) {
             Lock l(m_backgroundColorMutex);
             m_backgroundColor = c;
         }

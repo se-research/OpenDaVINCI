@@ -20,20 +20,20 @@
 #include <string>
 
 #include "RecorderModule.h"
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/tools/recorder/Recorder.h"
-#include "opendavinci/tools/recorder/SharedDataListener.h"
-#include "opendavinci/generated/coredata/recorder/RecorderCommand.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odtools/recorder/Recorder.h"
+#include "opendavinci/odtools/recorder/SharedDataListener.h"
+#include "opendavinci/generated/odcore/data/recorder/RecorderCommand.h"
 
-namespace core { namespace base { class KeyValueDataStore; } }
+namespace odcore { namespace base { class KeyValueDataStore; } }
 
 namespace odrecorder {
 
     using namespace std;
-    using namespace core::base;
-    using namespace core::data;
-    using namespace core::io;
-    using namespace tools::recorder;
+    using namespace odcore::base;
+    using namespace odcore::data;
+    using namespace odcore::io;
+    using namespace odtools::recorder;
 
     RecorderModule::RecorderModule(const int32_t &argc, char **argv) :
         TimeTriggeredConferenceClientModule(argc, argv, "odrecorder") {}
@@ -48,7 +48,7 @@ namespace odrecorder {
         AbstractModule::wait();
     }
 
-    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode RecorderModule::body() {
+    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode RecorderModule::body() {
         // Check if the recorder is remotely controlled.
         bool remoteControl = (getKeyValueConfiguration().getValue<bool>("odrecorder.remoteControl") != 0);
 
@@ -70,15 +70,15 @@ namespace odrecorder {
         addDataStoreFor(r.getFIFO());
 
         // Connect recorder's data store that can handle shared data.
-        addDataStoreFor(coredata::SharedData::ID(), r.getDataStoreForSharedData());
-        addDataStoreFor(coredata::image::SharedImage::ID(), r.getDataStoreForSharedData());
+        addDataStoreFor(odcore::data::SharedData::ID(), r.getDataStoreForSharedData());
+        addDataStoreFor(odcore::data::image::SharedImage::ID(), r.getDataStoreForSharedData());
 
         // Get key/value-datastore for controlling the odrecorder.
         KeyValueDataStore &kvds = getKeyValueDataStore();
 
         // If remote control is disabled, simply start recording immediately.
         bool recording = (!remoteControl);
-        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
             // Recording queued entries.
             if (recording) {
                 if (!r.getFIFO().isEmpty()) {
@@ -91,12 +91,12 @@ namespace odrecorder {
 
             // Check for remote control.
             if (remoteControl) {
-                Container container = kvds.get(coredata::recorder::RecorderCommand::ID());
-                if (container.getDataType() == coredata::recorder::RecorderCommand::ID()) {
-                    coredata::recorder::RecorderCommand rc;
-                    rc = container.getData<coredata::recorder::RecorderCommand>();
+                Container container = kvds.get(odcore::data::recorder::RecorderCommand::ID());
+                if (container.getDataType() == odcore::data::recorder::RecorderCommand::ID()) {
+                    odcore::data::recorder::RecorderCommand rc;
+                    rc = container.getData<odcore::data::recorder::RecorderCommand>();
 
-                    recording = (rc.getCommand() == coredata::recorder::RecorderCommand::RECORD);
+                    recording = (rc.getCommand() == odcore::data::recorder::RecorderCommand::RECORD);
                 }
 
                 // Discard existing entries.
@@ -106,7 +106,7 @@ namespace odrecorder {
             }
         }
 
-        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+        return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
     }
 
 } // odrecorder

@@ -25,8 +25,8 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"         // for SharedPointer
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"         // for SharedPointer
 
 using namespace std;
 
@@ -61,7 +61,7 @@ class DerivedSharedPointerTestData : public SharedPointerTestData {
 class SharedPointerTest : public CxxTest::TestSuite {
     public:
         void testCreateSharedPointer() {
-            using namespace core;
+            using namespace odcore;
             {
                 SharedPointerTestData *sptd = new SharedPointerTestData();
                 SharedPointer<SharedPointerTestData> p1(sptd);
@@ -75,7 +75,7 @@ class SharedPointerTest : public CxxTest::TestSuite {
         }
 
         void testCreateDestroySharedPointer() {
-            using namespace core;
+            using namespace odcore;
             {
                 SharedPointerTestData *sptd = new SharedPointerTestData();
                 SharedPointer<SharedPointerTestData> p1(sptd);
@@ -92,7 +92,7 @@ class SharedPointerTest : public CxxTest::TestSuite {
         }
 
         void testCreateDestroySharedPointerUsingCopyConstructor() {
-            using namespace core;
+            using namespace odcore;
             // Create instance.
             SharedPointer<SharedPointerTestData> p1(new SharedPointerTestData());
             {
@@ -115,7 +115,7 @@ class SharedPointerTest : public CxxTest::TestSuite {
         }
 
         void testCreateDestroySharedPointerUsingAssignmentOperator() {
-            using namespace core;
+            using namespace odcore;
             // Create instance.
             SharedPointer<SharedPointerTestData> p1(new SharedPointerTestData());
             {
@@ -138,7 +138,7 @@ class SharedPointerTest : public CxxTest::TestSuite {
         }
 
         void testCreateAndKeepSharedPointerUsingCopyConstructor() {
-            using namespace core;
+            using namespace odcore;
 
             // Create empty instance.
             SharedPointer<SharedPointerTestData> p1;
@@ -165,7 +165,7 @@ class SharedPointerTest : public CxxTest::TestSuite {
         }
 
         void testCreateAndKeepSharedPointerUsingAssignmentOperator() {
-            using namespace core;
+            using namespace odcore;
 
             // Create empty instance.
             SharedPointer<SharedPointerTestData> p1;
@@ -193,7 +193,7 @@ class SharedPointerTest : public CxxTest::TestSuite {
         }
 
         void testSharedPointerInsideSTL() {
-            using namespace core;
+            using namespace odcore;
 
             vector<SharedPointer<SharedPointerTestData> > listOfPtrs;
             TS_ASSERT(listOfPtrs.empty());
@@ -228,7 +228,7 @@ class SharedPointerTest : public CxxTest::TestSuite {
         }
 
         void testSharedPointerInsideSTLAndCopy() {
-            using namespace core;
+            using namespace odcore;
 
             vector<SharedPointer<SharedPointerTestData> > listOfPtrs;
             TS_ASSERT(listOfPtrs.empty());
@@ -285,7 +285,7 @@ class SharedPointerTest : public CxxTest::TestSuite {
         }
 
         void testCreateSharedPointerFromDerivedClass() {
-            using namespace core;
+            using namespace odcore;
             {
                 SharedPointerTestData *sptd = new SharedPointerTestData();
                 SharedPointer<SharedPointerTestData> p1(sptd);

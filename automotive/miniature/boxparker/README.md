@@ -36,7 +36,7 @@ structures library:
 
 Install the OpenDaVINCI library:
 
-    $ sudo apt-get install opendavinci-odlib
+    $ sudo apt-get install opendavinci-lib
 
 Install the automotive data structures:
 

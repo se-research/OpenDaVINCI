@@ -22,36 +22,36 @@
 
 #include <iostream>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/core/io/URL.h"
-#include "opendavinci/core/wrapper/DisposalService.h"
-#include "hesperia/scenario/SCNXArchiveFactory.h"
-#include "hesperia/threeD/Node.h"
-#include "hesperia/threeD/NodeDescriptor.h"
-#include "hesperia/threeD/RenderingConfiguration.h"
-#include "hesperia/threeD/TransformGroup.h"
-#include "hesperia/threeD/decorator/DecoratorFactory.h"
-#include "hesperia/threeD/models/Grid.h"
-#include "hesperia/threeD/models/XYZAxes.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/io/URL.h"
+#include "opendavinci/odcore/wrapper/DisposalService.h"
+#include "opendlv/scenario/SCNXArchiveFactory.h"
+#include "opendlv/threeD/Node.h"
+#include "opendlv/threeD/NodeDescriptor.h"
+#include "opendlv/threeD/RenderingConfiguration.h"
+#include "opendlv/threeD/TransformGroup.h"
+#include "opendlv/threeD/decorator/DecoratorFactory.h"
+#include "opendlv/threeD/models/Grid.h"
+#include "opendlv/threeD/models/XYZAxes.h"
 #include "plugins/scnxviewer/SCNXGLWidget.h"
 
 class QWidget;
 namespace cockpit { namespace plugins { class PlugIn; } }
-namespace hesperia { namespace scenario { class SCNXArchive; } }
+namespace opendlv { namespace scenario { class SCNXArchive; } }
 
 namespace cockpit {
     namespace plugins {
         namespace scnxviewer {
 
             using namespace std;
-            using namespace core::base;
-            using namespace core::io;
-            using namespace hesperia::scenario;
-            using namespace hesperia::threeD;
-            using namespace hesperia::threeD::decorator;
-            using namespace hesperia::threeD::models;
+            using namespace odcore::base;
+            using namespace odcore::io;
+            using namespace opendlv::scenario;
+            using namespace opendlv::threeD;
+            using namespace opendlv::threeD::decorator;
+            using namespace opendlv::threeD::models;
 
             SCNXGLWidget::SCNXGLWidget(const PlugIn &plugIn, QWidget *prnt) :
                     AbstractGLWidget(plugIn, prnt),
@@ -68,7 +68,7 @@ namespace cockpit {
                 m_model->deleteAllChildren();
 
                 // Cleanup right now.
-                core::wrapper::DisposalService::getInstance().cleanUpImmediately();
+                odcore::wrapper::DisposalService::getInstance().cleanUpImmediately();
                 Thread::usleepFor(1000*1000);
 
                 URL scnxFile("file://" + scnxModel);

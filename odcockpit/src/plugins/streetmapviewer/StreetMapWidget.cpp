@@ -28,9 +28,9 @@
 #include <qglobal.h>
 #include <qnamespace.h>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/data/Container.h"
-#include "hesperia/data/environment/EgoState.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendlv/data/environment/EgoState.h"
 
 #include "plugins/streetmapviewer/StreetMapWidget.h"
 
@@ -41,10 +41,10 @@ namespace cockpit {
         namespace streetmap {
 
             using namespace std;
-            using namespace core::data;
-            using namespace hesperia::data::environment;
+            using namespace odcore::data;
+            using namespace opendlv::data::environment;
 
-            StreetMapWidget::StreetMapWidget(const PlugIn &/*plugIn*/, QWidget *prnt, const hesperia::data::environment::WGS84Coordinate &rL) :
+            StreetMapWidget::StreetMapWidget(const PlugIn &/*plugIn*/, QWidget *prnt, const opendlv::data::environment::WGS84Coordinate &rL) :
                 QWidget(prnt),
                 m_mapWidget(NULL),
                 m_networkSession(NULL),
@@ -132,7 +132,7 @@ namespace cockpit {
             void StreetMapWidget::nextContainer(Container &c) {
                 const double EPSILON = 1e-4;
                 static WGS84Coordinate old = m_referenceLocation;
-                if (c.getDataType() == hesperia::data::environment::WGS84Coordinate::ID()) {
+                if (c.getDataType() == opendlv::data::environment::WGS84Coordinate::ID()) {
                     WGS84Coordinate w = c.getData<WGS84Coordinate>();
                     const double deltaLat = fabs(old.getLatitude() - w.getLatitude());
                     const double deltaLon = fabs(old.getLongitude() - w.getLongitude());

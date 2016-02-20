@@ -22,10 +22,10 @@
 
 #include <opencv/cv.h>
 
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "opendavinci/core/data/TimeStamp.h"
-#include "opendavinci/core/wrapper/SharedMemory.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
+#include "opendavinci/odcore/wrapper/SharedMemory.h"
 
 #include "automotivedata/GeneratedHeaders_AutomotiveData.h"
 #include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
@@ -38,7 +38,7 @@ namespace automotive {
         /**
          * This class is an exemplary skeleton for processing video data.
          */
-        class LaneFollower: public core::base::module::TimeTriggeredConferenceClientModule {
+        class LaneFollower: public odcore::base::module::TimeTriggeredConferenceClientModule {
             private:
 	            /**
 	             * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -70,7 +70,7 @@ namespace automotive {
 
 	            virtual ~LaneFollower();
 
-	            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+	            odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
             protected:
 	            /**
@@ -79,16 +79,16 @@ namespace automotive {
 	             * @param c Container to process.
 	             * @return true if c was successfully processed.
 	             */
-	            bool readSharedImage(core::data::Container &c);
+	            bool readSharedImage(odcore::data::Container &c);
 
             private:
 	            bool m_hasAttachedToSharedImageMemory;
-	            core::SharedPointer<core::wrapper::SharedMemory> m_sharedImageMemory;
+	            odcore::SharedPointer<odcore::wrapper::SharedMemory> m_sharedImageMemory;
 	            IplImage *m_image;
                 bool m_debug;
                 CvFont m_font;
 
-                core::data::TimeStamp m_previousTime;
+                odcore::data::TimeStamp m_previousTime;
                 double m_eSum;
                 double m_eOld;
 

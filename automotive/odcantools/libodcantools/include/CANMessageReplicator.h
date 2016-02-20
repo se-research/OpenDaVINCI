@@ -22,7 +22,7 @@
 #ifndef CANMESSAGEREPLICATOR_H_
 #define CANMESSAGEREPLICATOR_H_
 
-#include <opendavinci/core/SharedPointer.h>
+#include <opendavinci/odcore/SharedPointer.h>
 
 #include "GenericCANMessageListener.h"
 
@@ -72,14 +72,14 @@ class CANDevice;
                  *
                  * @param CANDeviceToReplicateTo SharedPointer to the CAN device where GenericCANMessages received from this listener shall be replicated.
                  */
-                void setCANDevice(core::SharedPointer<CANDevice> CANDeviceToReplicateTo);
+                void setCANDevice(odcore::SharedPointer<CANDevice> CANDeviceToReplicateTo);
 
                 virtual ~CANMessageReplicator();
 
                 virtual void nextGenericCANMessage(const GenericCANMessage &gcm);
 
             private:
-                core::SharedPointer<CANDevice> m_CANDeviceToReplicateTo;
+                odcore::SharedPointer<CANDevice> m_CANDeviceToReplicateTo;
                 GenericCANMessageListener &m_conference;
         };
 

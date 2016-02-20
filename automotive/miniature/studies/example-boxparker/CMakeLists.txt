@@ -1,5 +1,5 @@
 # example-boxparker - Example for a simulation using
-#                     libodsimulation to realize an automated
+#                     libopendlv to realize an automated
 #                     test for vehicle parking in a box.
 # Copyright (C) 2012 - 2016  Christian Berger
 #
@@ -50,23 +50,23 @@ SET(AUTOMOTIVEDATA_DIR "${CMAKE_INSTALL_PREFIX}")
 FIND_PACKAGE (AutomotiveData REQUIRED)
 
 ###########################################################################
-# Try to find odSimulation.
-SET(ODSIMULATION_DIR "${CMAKE_INSTALL_PREFIX}")
-FIND_PACKAGE (odSimulation)
+# Find OpenDLV.
+SET(OPENDLV_DIR "${CMAKE_INSTALL_PREFIX}")
+FIND_PACKAGE (OpenDLV REQUIRED)
 
 ###########################################################################
 # Set linking libraries to successfully link simulations.
 SET (LIBRARIES ${OPENDAVINCI_LIBRARIES}
                ${AUTOMOTIVEDATA_LIBRARIES}
-               ${ODSIMULATION_LIBRARIES})
+               ${OPENDLV_LIBRARIES})
 
 ###########################################################################
 # Set header files from OpenDaVINCI.
 INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS})
 # Set header files from AutomotiveData.
 INCLUDE_DIRECTORIES (${AUTOMOTIVEDATA_INCLUDE_DIRS})
-# Set header files from odSimulation.
-INCLUDE_DIRECTORIES (${ODSIMULATION_INCLUDE_DIRS}/odsimulation)
+# Set header files from OpenDLV.
+INCLUDE_DIRECTORIES (${OPENDLV_INCLUDE_DIRS})
 # Set include directory.
 INCLUDE_DIRECTORIES(include)
 

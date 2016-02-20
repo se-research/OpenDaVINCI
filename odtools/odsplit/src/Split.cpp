@@ -21,16 +21,16 @@
 #include <vector>
 
 #include "Split.h"
-#include "opendavinci/core/base/CommandLineArgument.h"
-#include "opendavinci/core/base/CommandLineParser.h"
-#include "opendavinci/core/strings/StringToolbox.h"
-#include "opendavinci/tools/splitter/Splitter.h"
+#include "opendavinci/odcore/base/CommandLineArgument.h"
+#include "opendavinci/odcore/base/CommandLineParser.h"
+#include "opendavinci/odcore/strings/StringToolbox.h"
+#include "opendavinci/odtools/splitter/Splitter.h"
 
 namespace odsplit {
 
     using namespace std;
-    using namespace core::base;
-    using namespace tools::splitter;
+    using namespace odcore::base;
+    using namespace odtools::splitter;
 
     Split::Split() :
         m_source(),
@@ -53,12 +53,12 @@ namespace odsplit {
 
         if (cmdArgumentSOURCE.isSet()) {
             m_source = cmdArgumentSOURCE.getValue<string>();
-            core::strings::StringToolbox::trim(m_source);
+            odcore::strings::StringToolbox::trim(m_source);
         }
 
         if (cmdArgumentRANGE.isSet()) {
             m_range = cmdArgumentRANGE.getValue<string>();
-            core::strings::StringToolbox::trim(m_range);
+            odcore::strings::StringToolbox::trim(m_range);
         }
 
         if (cmdArgumentMEMORYSEGMENTSIZE.isSet()) {
@@ -82,7 +82,7 @@ namespace odsplit {
         parseAdditionalCommandLineParameters(argc, argv);
 
         // Split the range parameter.
-        vector<string> rangeTokens = core::strings::StringToolbox::split(m_range, '-');
+        vector<string> rangeTokens = odcore::strings::StringToolbox::split(m_range, '-');
 
         if (rangeTokens.size() == 2) {
             uint32_t start = 0, end = 0;

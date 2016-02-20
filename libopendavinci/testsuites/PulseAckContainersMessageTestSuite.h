@@ -25,15 +25,15 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "opendavinci/core/base/Serializable.h"     // for operator<<, operator>>
-#include "opendavinci/core/data/Container.h"        // for Container, etc
-#include "opendavinci/core/data/TimeStamp.h"        // for TimeStamp
-#include "opendavinci/generated/coredata/dmcp/PulseAckContainersMessage.h"
-#include "opendavinci/generated/coredata/dmcp/PulseMessage.h"  // for PulseMessage
+#include "opendavinci/odcore/base/Serializable.h"     // for operator<<, operator>>
+#include "opendavinci/odcore/data/Container.h"        // for Container, etc
+#include "opendavinci/odcore/data/TimeStamp.h"        // for TimeStamp
+#include "opendavinci/generated/odcore/data/dmcp/PulseAckContainersMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/PulseMessage.h"  // for PulseMessage
 
 using namespace std;
-using namespace core::data;
-using namespace coredata::dmcp;
+using namespace odcore::data;
+using namespace odcore::data::dmcp;
 
 class PulseAckContainersTest : public CxxTest::TestSuite {
     public:

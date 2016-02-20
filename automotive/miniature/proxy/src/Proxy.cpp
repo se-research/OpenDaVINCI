@@ -22,9 +22,9 @@
 #include <cmath>
 #include <iostream>
 
-#include "opendavinci/core/base/KeyValueConfiguration.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/data/TimeStamp.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
 
 #include "OpenCVCamera.h"
 
@@ -38,9 +38,9 @@ namespace automotive {
     namespace miniature {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::data;
-        using namespace tools::recorder;
+        using namespace odcore::base;
+        using namespace odcore::data;
+        using namespace odtools::recorder;
 
         Proxy::Proxy(const int32_t &argc, char **argv) :
             TimeTriggeredConferenceClientModule(argc, argv, "proxy"),
@@ -118,12 +118,12 @@ namespace automotive {
         }
 
         // This method will do the main data processing job.
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode Proxy::body() {
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Proxy::body() {
             uint32_t captureCounter = 0;
-            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
                 // Capture frame.
                 if (m_camera.get() != NULL) {
-                    coredata::image::SharedImage si = m_camera->capture();
+                    odcore::data::image::SharedImage si = m_camera->capture();
 
                     Container c(si);
                     distribute(c);
@@ -135,7 +135,7 @@ namespace automotive {
 
             cout << "Proxy: Captured " << captureCounter << " frames." << endl;
 
-            return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
     }

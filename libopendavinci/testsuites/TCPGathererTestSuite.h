@@ -25,21 +25,21 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "mocks/ConnectionListenerMock.h"
 #include "mocks/StringListenerMock.h"
 #include "mocks/TCPAcceptorListenerMock.h"
 #ifdef WIN32
-	#include "opendavinci/core/wrapper/WIN32/WIN32TCPFactoryWorker.h"
+	#include "opendavinci/odcore/wrapper/WIN32/WIN32TCPFactoryWorker.h"
 #endif
 
-#include "opendavinci/core/io/tcp/TCPConnection.h"  // for TCPConnection
+#include "opendavinci/odcore/io/tcp/TCPConnection.h"  // for TCPConnection
 
 using namespace std;
-using namespace core;
-using namespace core::base;
+using namespace odcore;
+using namespace odcore::base;
 
-class TCPGathererTestSuite : public CxxTest::TestSuite, public core::io::tcp::TCPConnection
+class TCPGathererTestSuite : public CxxTest::TestSuite, public odcore::io::tcp::TCPConnection
 {
     public:
 		TCPGathererTestSuite() :

@@ -21,7 +21,7 @@
 #include <Qt/qevent.h>
 #include <qcoreevent.h>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "MdiPlugIn.h"
 #include "plugins/PlugIn.h"
 

@@ -22,12 +22,12 @@
 
 #include "cxxtest/TestSuite.h"
 
-#include "opendavinci/context/base/ControlledTime.h"
-#include "opendavinci/context/base/Runner.h"
+#include "opendavinci/odcontext/base/ControlledTime.h"
+#include "opendavinci/odcontext/base/Runner.h"
 
 using namespace std;
 
-using namespace context::base;
+using namespace odcontext::base;
 
 class RunnerTestApp : public Runner {
     public:

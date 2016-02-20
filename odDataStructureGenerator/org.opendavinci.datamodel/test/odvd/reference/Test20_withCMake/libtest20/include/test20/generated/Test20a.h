@@ -7,23 +7,23 @@
 #ifndef TEST20A_H
 #define TEST20A_H
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 
-#include "opendavinci/core/base/Visitable.h"
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/base/Visitable.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 
-#include "opendavinci/core/data/TimeStamp.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
 
 using namespace std;
 
-class Test20a : public core::data::SerializableData, public core::base::Visitable {
+class Test20a : public odcore::data::SerializableData, public odcore::base::Visitable {
 	public:
 		Test20a();
 
 		Test20a(
 		const uint32_t &val0, 
-		const core::data::TimeStamp &val1
+		const odcore::data::TimeStamp &val1
 		);
 
 		virtual ~Test20a();
@@ -59,14 +59,14 @@ class Test20a : public core::data::SerializableData, public core::base::Visitabl
 		/**
 		 * @return timeStamp.
 		 */
-		core::data::TimeStamp getTimeStamp() const;
+		odcore::data::TimeStamp getTimeStamp() const;
 		
 		/**
 		 * This method sets timeStamp.
 		 *
 		 * @param val Value for timeStamp.
 		 */
-		void setTimeStamp(const core::data::TimeStamp &val);
+		void setTimeStamp(const odcore::data::TimeStamp &val);
 
 	public:
 		/**
@@ -112,7 +112,7 @@ class Test20a : public core::data::SerializableData, public core::base::Visitabl
 		virtual const string getLongName() const;
 
 	public:
-		virtual void accept(core::base::Visitor &v);
+		virtual void accept(odcore::base::Visitor &v);
 
 		virtual ostream& operator<<(ostream &out) const;
 		virtual istream& operator>>(istream &in);
@@ -122,7 +122,7 @@ class Test20a : public core::data::SerializableData, public core::base::Visitabl
 	private:
 		uint32_t m_val1;
 	private:
-		core::data::TimeStamp m_timeStamp;
+		odcore::data::TimeStamp m_timeStamp;
 
 };
 

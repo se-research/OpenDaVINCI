@@ -20,9 +20,9 @@
 #ifndef RECORDERMODULE_H_
 #define RECORDERMODULE_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
 
 namespace odrecorder {
 
@@ -32,7 +32,7 @@ namespace odrecorder {
      * This class can be used to record data distributed
      * using a conference.
      */
-    class RecorderModule : public core::base::module::TimeTriggeredConferenceClientModule {
+    class RecorderModule : public odcore::base::module::TimeTriggeredConferenceClientModule {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -66,7 +66,7 @@ namespace odrecorder {
 
             virtual void wait();
 
-            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+            odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
         private:
             virtual void setUp();

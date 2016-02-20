@@ -20,26 +20,26 @@
 #include <stdint.h>
 #include <iostream>
 #include <string>
-#include <opendavinci/core/SharedPointer.h>
-#include <opendavinci/core/base/Thread.h>
-#include <opendavinci/core/io/Packet.h>
-#include <opendavinci/core/io/udp/UDPReceiver.h>
-#include <opendavinci/core/io/udp/UDPFactory.h>
+#include <opendavinci/odcore/SharedPointer.h>
+#include <opendavinci/odcore/base/Thread.h>
+#include <opendavinci/odcore/io/Packet.h>
+#include <opendavinci/odcore/io/udp/UDPReceiver.h>
+#include <opendavinci/odcore/io/udp/UDPFactory.h>
 
 #include "UDPReceivePackets.hpp"
 
 using namespace std;
 
-void UDPReceivePackets::nextPacket(const core::io::Packet &p) {
+void UDPReceivePackets::nextPacket(const odcore::io::Packet &p) {
     cout << "Received a packet from " << p.getSender() << ", "
          << "with " << p.getData().length() << " bytes containing '"
          << p.getData() << "'" << endl;
 }
 
 // We add some of OpenDaVINCI's namespaces for the sake of readability.
-using namespace core;
-using namespace core::io;
-using namespace core::io::udp;
+using namespace odcore;
+using namespace odcore::io;
+using namespace odcore::io::udp;
 
 int32_t main(int32_t argc, char **argv) {
     const string RECEIVER = "0.0.0.0";
@@ -60,7 +60,7 @@ int32_t main(int32_t argc, char **argv) {
         udpreceiver->start();
 
         const uint32_t ONE_SECOND = 1000 * 1000;
-        core::base::Thread::usleepFor(10 * ONE_SECOND);
+        odcore::base::Thread::usleepFor(10 * ONE_SECOND);
 
         // Stop receiving bytes and unregister our handler.
         udpreceiver->stop();

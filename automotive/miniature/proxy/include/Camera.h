@@ -23,8 +23,8 @@
 #include <stdint.h>
 #include <string>
 
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/wrapper/SharedMemory.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/wrapper/SharedMemory.h"
 #include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
 namespace automotive {
@@ -73,7 +73,7 @@ namespace automotive {
                 /**
                  * @return Meta information about the image.
                  */
-                coredata::image::SharedImage capture();
+                odcore::data::image::SharedImage capture();
 
             protected:
                 /**
@@ -103,8 +103,8 @@ namespace automotive {
                 uint32_t getSize() const;
 
             private:
-                coredata::image::SharedImage m_sharedImage;
-                core::SharedPointer<core::wrapper::SharedMemory> m_sharedMemory;
+                odcore::data::image::SharedImage m_sharedImage;
+                odcore::SharedPointer<odcore::wrapper::SharedMemory> m_sharedMemory;
                 
             protected:
                 string m_name;

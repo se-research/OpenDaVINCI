@@ -23,7 +23,7 @@ namespace cockpit {
     namespace plugins {
         namespace birdseyemap {
 
-            using namespace hesperia::scenegraph;
+            using namespace opendlv::scenegraph;
 
             SelectableNodeDescriptor::SelectableNodeDescriptor() :
                 m_sceneNodeDescriptor(),

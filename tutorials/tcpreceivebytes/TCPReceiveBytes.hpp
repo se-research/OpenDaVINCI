@@ -17,22 +17,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <opendavinci/core/io/ConnectionListener.h>
-#include <opendavinci/core/io/StringListener.h>
-#include <opendavinci/core/io/tcp/TCPAcceptorListener.h>
-#include <opendavinci/core/io/tcp/TCPConnection.h>
+#include <opendavinci/odcore/io/ConnectionListener.h>
+#include <opendavinci/odcore/io/StringListener.h>
+#include <opendavinci/odcore/io/tcp/TCPAcceptorListener.h>
+#include <opendavinci/odcore/io/tcp/TCPConnection.h>
 
 // This class will handle newly accepted TCP connections.
 class TCPReceiveBytes : 
-    public core::io::ConnectionListener,
-    public core::io::StringListener,
-    public core::io::tcp::TCPAcceptorListener {
+    public odcore::io::ConnectionListener,
+    public odcore::io::StringListener,
+    public odcore::io::tcp::TCPAcceptorListener {
 
     // Your class needs to implement the method void nextString(const std::string &s).
     virtual void nextString(const std::string &s);
 
-    // Your class needs to implement the method void onNewConnection(core::SharedPointer<core::io::tcp::TCPConnection> connection).
-    virtual void onNewConnection(core::SharedPointer<core::io::tcp::TCPConnection> connection);
+    // Your class needs to implement the method void onNewConnection(odcore::SharedPointer<odcore::io::tcp::TCPConnection> connection).
+    virtual void onNewConnection(odcore::SharedPointer<odcore::io::tcp::TCPConnection> connection);
 
     // Your class should implement the method void handleConnectionError() to handle connection errors.
     virtual void handleConnectionError();

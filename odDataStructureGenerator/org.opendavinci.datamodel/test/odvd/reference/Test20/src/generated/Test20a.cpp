@@ -5,16 +5,16 @@
  */
 
 
-#include "opendavinci/core/base/Hash.h"
-#include "opendavinci/core/base/Deserializer.h"
-#include "opendavinci/core/base/SerializationFactory.h"
-#include "opendavinci/core/base/Serializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 
 
 #include "test20/generated/Test20a.h"
 
 	using namespace std;
-	using namespace core::base;
+	using namespace odcore::base;
 
 
 	Test20a::Test20a() :
@@ -26,7 +26,7 @@
 
 	Test20a::Test20a(
 		const uint32_t &val0, 
-		const core::data::TimeStamp &val1
+		const odcore::data::TimeStamp &val1
 	) :
 	    SerializableData(), Visitable()
 		, m_val1(val0)
@@ -81,15 +81,15 @@
 	void Test20a::setVal1(const uint32_t &val) {
 		m_val1 = val;
 	}
-	core::data::TimeStamp Test20a::getTimeStamp() const {
+	odcore::data::TimeStamp Test20a::getTimeStamp() const {
 		return m_timeStamp;
 	}
 	
-	void Test20a::setTimeStamp(const core::data::TimeStamp &val) {
+	void Test20a::setTimeStamp(const odcore::data::TimeStamp &val) {
 		m_timeStamp = val;
 	}
 
-	void Test20a::accept(core::base::Visitor &v) {
+	void Test20a::accept(odcore::base::Visitor &v) {
 		v.visit(CRC32 < CharList<'v', CharList<'a', CharList<'l', CharList<'1', NullType> > > >  >::RESULT, 0, "Test20a.val1", "val1", m_val1);
 		v.visit(CRC32 < CharList<'t', CharList<'i', CharList<'m', CharList<'e', CharList<'S', CharList<'t', CharList<'a', CharList<'m', CharList<'p', NullType> > > > > > > > >  >::RESULT, 0, "Test20a.timeStamp", "timeStamp", m_timeStamp);
 	}
@@ -108,7 +108,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Serializer> s = sf.getSerializer(out);
+		odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 
 		s->write(CRC32 < CharList<'v', CharList<'a', CharList<'l', CharList<'1', NullType> > > >  >::RESULT,
 				m_val1);
@@ -121,7 +121,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+		odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
 		d->read(CRC32 < CharList<'v', CharList<'a', CharList<'l', CharList<'1', NullType> > > >  >::RESULT,
 				m_val1);

@@ -5,16 +5,16 @@
  */
 
 
-#include "opendavinci/core/base/Hash.h"
-#include "opendavinci/core/base/Deserializer.h"
-#include "opendavinci/core/base/SerializationFactory.h"
-#include "opendavinci/core/base/Serializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 
 
 #include "test2/generated/Test2b.h"
 
 	using namespace std;
-	using namespace core::base;
+	using namespace odcore::base;
 
 
 	Test2b::Test2b() :
@@ -62,7 +62,7 @@
 	}
 
 
-	void Test2b::accept(core::base::Visitor &v) {
+	void Test2b::accept(odcore::base::Visitor &v) {
 		(void)v; // Avoid unused parameter warning.
 	}
 

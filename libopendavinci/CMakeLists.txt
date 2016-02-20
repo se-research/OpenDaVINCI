@@ -369,31 +369,31 @@ ENDIF(CXXTEST_FOUND)
 
 ###############################################################################
 # Installing "libopendavinci".
-INSTALL(TARGETS opendavinci-static DESTINATION lib COMPONENT odlib)
+INSTALL(TARGETS opendavinci-static DESTINATION lib COMPONENT lib)
 IF(    (NOT WIN32)
    AND (NOT ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")) )
-    INSTALL(TARGETS opendavinci    DESTINATION lib COMPONENT odlib)
+    INSTALL(TARGETS opendavinci    DESTINATION lib COMPONENT lib)
 ENDIF()
 
 # Install header files.
-INSTALL(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/" DESTINATION include/ COMPONENT odlib)
+INSTALL(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/" DESTINATION include/ COMPONENT lib)
 # Merge header files from generated data structures with the rest of OpenDaVINCI to avoid specifying another include directory at the users' end.
-INSTALL(DIRECTORY "${COREDATA_DIR}/include/" DESTINATION include/ COMPONENT odlib)
+INSTALL(DIRECTORY "${COREDATA_DIR}/include/" DESTINATION include/ COMPONENT lib)
 
 # Install CMake modules locally.
 IF(UNIX)
-    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindOpenDaVINCI.cmake" DESTINATION share/cmake-2.8/Modules COMPONENT odlib)
-    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindLibRT.cmake" DESTINATION share/cmake-2.8/Modules COMPONENT odlib)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindOpenDaVINCI.cmake" DESTINATION share/cmake-2.8/Modules COMPONENT lib)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindLibRT.cmake" DESTINATION share/cmake-2.8/Modules COMPONENT lib)
 
-    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindOpenDaVINCI.cmake" DESTINATION share/cmake-3.0/Modules COMPONENT odlib)
-    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindLibRT.cmake" DESTINATION share/cmake-3.0/Modules COMPONENT odlib)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindOpenDaVINCI.cmake" DESTINATION share/cmake-3.0/Modules COMPONENT lib)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindLibRT.cmake" DESTINATION share/cmake-3.0/Modules COMPONENT lib)
 
-    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindOpenDaVINCI.cmake" DESTINATION share/cmake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT odlib)
-    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindLibRT.cmake" DESTINATION share/cmake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT odlib)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindOpenDaVINCI.cmake" DESTINATION share/cmake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT lib)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindLibRT.cmake" DESTINATION share/cmake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT lib)
 ENDIF()
 IF(WIN32)
-    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindOpenDaVINCI.cmake" DESTINATION CMake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT odlib)
-    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindLibRT.cmake" DESTINATION CMake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT odlib)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindOpenDaVINCI.cmake" DESTINATION CMake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT lib)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindLibRT.cmake" DESTINATION CMake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT lib)
 ENDIF()
 
 ###########################################################################
@@ -430,7 +430,7 @@ IF(    (UNIX)
     SET(CPACK_PACKAGE_VERSION_MINOR "${MINOR}")
     SET(CPACK_PACKAGE_VERSION_PATCH "${PATCH}")
     SET(CPACK_PACKAGE_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}")
-    SET(CPACK_COMPONENTS_ALL odlib)
+    SET(CPACK_COMPONENTS_ALL lib)
 
     # Debian packages:
     SET(CPACK_DEBIAN_PACKAGE_SECTION "devel")

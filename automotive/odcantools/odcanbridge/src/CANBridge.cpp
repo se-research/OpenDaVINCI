@@ -21,9 +21,9 @@
 
 #include <vector>
 
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/tools/recorder/Recorder.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odtools/recorder/Recorder.h"
 #include "automotivedata/generated/automotive/GenericCANMessage.h"
 
 #include "CANBridge.h"
@@ -34,9 +34,9 @@ namespace automotive {
     namespace odcantools {
 
         using namespace std;
-        using namespace core;
-        using namespace core::base;
-        using namespace core::data;
+        using namespace odcore;
+        using namespace odcore::base;
+        using namespace odcore::data;
 
         CANBridge::CANBridge(const int32_t &argc, char **argv) :
             TimeTriggeredConferenceClientModule(argc, argv, "odcanbridge"),
@@ -91,7 +91,7 @@ namespace automotive {
                 const bool DUMP_SHARED_DATA = false;
 
                 // Create a recorder instance.
-                m_recorder = auto_ptr<tools::recorder::Recorder>(new tools::recorder::Recorder(recordingURL.str(), MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING, DUMP_SHARED_DATA));
+                m_recorder = auto_ptr<odtools::recorder::Recorder>(new odtools::recorder::Recorder(recordingURL.str(), MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING, DUMP_SHARED_DATA));
             }
         }
 
@@ -113,12 +113,12 @@ namespace automotive {
             }
         }
 
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode CANBridge::body() {
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode CANBridge::body() {
             // Start the wrapped CAN devices to receive CAN messages concurrently.
             m_deviceA->start();
             m_deviceB->start();
 
-            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
                 const uint32_t ENTRIES = m_fifo.getSize();
                 for (uint32_t i = 0; i < ENTRIES; i++) {
                     Container c = m_fifo.leave();
@@ -136,7 +136,7 @@ namespace automotive {
             m_deviceA->stop();
             m_deviceB->stop();
 
-            return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
     } // namespace odcantools

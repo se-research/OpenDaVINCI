@@ -15,8 +15,8 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/strings/StringToolbox.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/strings/StringToolbox.h"
 
 #include "test13/GeneratedHeaders_Test13.h"
 
@@ -44,7 +44,7 @@ class Test13_subpackage_Test13Simple_TestSuite : public CxxTest::TestSuite {
 			Test13Simple obj3(obj1);
 	
 	
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj3.toString()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj3.toString()));
 		}
 	
 		void testCreateAndAssignObject() {
@@ -59,7 +59,7 @@ class Test13_subpackage_Test13Simple_TestSuite : public CxxTest::TestSuite {
 			obj2 = obj1;
 	
 	
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
 		}
 	
 		void testCreateAndSerializeObject() {
@@ -77,7 +77,7 @@ class Test13_subpackage_Test13Simple_TestSuite : public CxxTest::TestSuite {
 	
 	
 	
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
 		}
 
 };

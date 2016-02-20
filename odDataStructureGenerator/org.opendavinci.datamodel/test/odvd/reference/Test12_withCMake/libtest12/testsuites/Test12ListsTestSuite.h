@@ -15,8 +15,8 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/strings/StringToolbox.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/strings/StringToolbox.h"
 
 #include "test12/GeneratedHeaders_Test12.h"
 
@@ -951,7 +951,7 @@ class Test12Lists_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj3.contains_ListOfMyStringList("Hello Solar System!"));
 			TS_ASSERT(obj3.contains_ListOfMyStringList("Hello Milky Way!"));
 	
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj3.toString()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj3.toString()));
 		}
 	
 		void testCreateAndAssignObject() {
@@ -1461,7 +1461,7 @@ class Test12Lists_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj2.contains_ListOfMyStringList("Hello Solar System!"));
 			TS_ASSERT(obj2.contains_ListOfMyStringList("Hello Milky Way!"));
 	
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
 		}
 	
 		void testCreateAndSerializeObject() {
@@ -1974,7 +1974,7 @@ class Test12Lists_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj2.contains_ListOfMyStringList("Hello Solar System!"));
 			TS_ASSERT(obj2.contains_ListOfMyStringList("Hello Milky Way!"));
 	
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
 		}
 
 };

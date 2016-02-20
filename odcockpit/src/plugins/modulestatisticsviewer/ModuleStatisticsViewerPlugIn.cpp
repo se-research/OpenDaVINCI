@@ -18,19 +18,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "ContainerObserver.h"
 #include "plugins/modulestatisticsviewer/ModuleStatisticsViewerPlugIn.h"
 #include "plugins/modulestatisticsviewer/ModuleStatisticsViewerWidget.h"
 
 class QWidget;
-namespace core { namespace base { class KeyValueConfiguration; } }
+namespace odcore { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
     namespace plugins {
         namespace modulestatisticsviewer {
 
-            ModuleStatisticsViewerPlugIn::ModuleStatisticsViewerPlugIn(const string &name, const core::base::KeyValueConfiguration &kvc, QWidget *prnt) :
+            ModuleStatisticsViewerPlugIn::ModuleStatisticsViewerPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt) :
                     PlugIn(name, kvc, prnt),
                     m_modulestatisticsViewerWidget(NULL) {
                 setDescription("This plugin shows module statistics.");

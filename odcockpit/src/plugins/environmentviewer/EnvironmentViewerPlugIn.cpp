@@ -18,19 +18,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "ContainerObserver.h"
 #include "plugins/environmentviewer/EnvironmentViewerPlugIn.h"
 #include "plugins/environmentviewer/EnvironmentViewerWidget.h"
 
 class QWidget;
-namespace core { namespace base { class KeyValueConfiguration; } }
+namespace odcore { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
     namespace plugins {
         namespace environmentviewer {
 
-            using namespace core::base;
+            using namespace odcore::base;
 
             EnvironmentViewerPlugIn::EnvironmentViewerPlugIn(const string &name, const KeyValueConfiguration &kvc, QWidget* prnt) :
                     PlugIn(name, kvc, prnt),

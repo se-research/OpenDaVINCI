@@ -22,29 +22,29 @@
 #include <vector>
 
 #include "DrivenPath.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/io/URL.h"
-#include "hesperia/core/wrapper/graph/DirectedGraph.h"
-#include "hesperia/data/environment/EgoState.h"
-#include "hesperia/data/environment/NamedLine.h"
-#include "hesperia/data/environment/Point3.h"
-#include "hesperia/data/scenario/Scenario.h"
-#include "hesperia/scenario/LaneVisitor.h"
-#include "hesperia/scenario/SCNXArchive.h"
-#include "hesperia/scenario/SCNXArchiveFactory.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/io/URL.h"
+#include "opendlv/core/wrapper/graph/DirectedGraph.h"
+#include "opendlv/data/environment/EgoState.h"
+#include "opendlv/data/environment/NamedLine.h"
+#include "opendlv/data/environment/Point3.h"
+#include "opendlv/data/scenario/Scenario.h"
+#include "opendlv/scenario/LaneVisitor.h"
+#include "opendlv/scenario/SCNXArchive.h"
+#include "opendlv/scenario/SCNXArchiveFactory.h"
 
-namespace core { namespace base { class KeyValueDataStore; } }
+namespace odcore { namespace base { class KeyValueDataStore; } }
 
 namespace measurements {
 
     using namespace std;
-    using namespace core::base;
-    using namespace core::data;
-    using namespace core::io;
-    using namespace hesperia::data::scenario;
-    using namespace hesperia::data::environment;
-    using namespace hesperia::data::environment;
-    using namespace hesperia::scenario;
+    using namespace odcore::base;
+    using namespace odcore::data;
+    using namespace odcore::io;
+    using namespace opendlv::data::scenario;
+    using namespace opendlv::data::environment;
+    using namespace opendlv::data::environment;
+    using namespace opendlv::scenario;
 
     DrivenPath::DrivenPath(const int32_t &argc, char **argv) :
         TimeTriggeredConferenceClientModule(argc, argv, "DrivenPath") {}
@@ -55,7 +55,7 @@ namespace measurements {
 
     void DrivenPath::tearDown() {}
 
-    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode DrivenPath::body() {
+    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode DrivenPath::body() {
         KeyValueDataStore &kvs = getKeyValueDataStore();
 
         // Get scenario.
@@ -69,7 +69,7 @@ namespace measurements {
         if (urlOfSCNXFile.isValid()) {
             SCNXArchive &scnxArchive = SCNXArchiveFactory::getInstance().getSCNXArchive(urlOfSCNXFile);
 
-            hesperia::data::scenario::Scenario &scenario = scnxArchive.getScenario();
+            opendlv::data::scenario::Scenario &scenario = scnxArchive.getScenario();
 
             // Construct road network.
             LaneVisitor lv(m_graph, scenario);
@@ -105,9 +105,9 @@ namespace measurements {
 
         unsigned int counter = 0;
 
-        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
             // Get current ego state.
-            Container c = kvs.get(hesperia::data::environment::EgoState::ID());
+            Container c = kvs.get(opendlv::data::environment::EgoState::ID());
             EgoState es = c.getData<EgoState>();
             cout << counter << ";EgoState: '" << es.toString() << "'" << endl;
             cout << counter << ";EgoState-short;" << es.getPosition().getX() << ";" << es.getPosition().getY() << ";" << es.getPosition().getZ() << endl;
@@ -157,7 +157,7 @@ namespace measurements {
 
             counter++;
         }
-        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+        return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
     }
 
 } // measurements

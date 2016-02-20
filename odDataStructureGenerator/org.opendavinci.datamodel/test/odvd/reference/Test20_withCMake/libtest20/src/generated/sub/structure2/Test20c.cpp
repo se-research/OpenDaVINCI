@@ -5,10 +5,10 @@
  */
 
 
-#include "opendavinci/core/base/Hash.h"
-#include "opendavinci/core/base/Deserializer.h"
-#include "opendavinci/core/base/SerializationFactory.h"
-#include "opendavinci/core/base/Serializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 
 
 #include "test20/generated/sub/structure2/Test20c.h"
@@ -16,7 +16,7 @@
 namespace sub {
 	namespace structure2 {
 			using namespace std;
-			using namespace core::base;
+			using namespace odcore::base;
 		
 		
 			Test20c::Test20c() :
@@ -91,7 +91,7 @@ namespace sub {
 				m_val4 = val;
 			}
 		
-			void Test20c::accept(core::base::Visitor &v) {
+			void Test20c::accept(odcore::base::Visitor &v) {
 				v.visit(CRC32 < CharList<'v', CharList<'a', CharList<'l', CharList<'3', NullType> > > >  >::RESULT, 0, "Test20c.val3", "val3", m_val3);
 				v.visit(CRC32 < CharList<'v', CharList<'a', CharList<'l', CharList<'4', NullType> > > >  >::RESULT, 0, "Test20c.val4", "val4", m_val4);
 			}
@@ -110,7 +110,7 @@ namespace sub {
 		
 				SerializationFactory& sf = SerializationFactory::getInstance();
 		
-				core::SharedPointer<Serializer> s = sf.getSerializer(out);
+				odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 		
 				s->write(CRC32 < CharList<'v', CharList<'a', CharList<'l', CharList<'3', NullType> > > >  >::RESULT,
 						m_val3);
@@ -123,7 +123,7 @@ namespace sub {
 		
 				SerializationFactory& sf = SerializationFactory::getInstance();
 		
-				core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+				odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 		
 				d->read(CRC32 < CharList<'v', CharList<'a', CharList<'l', CharList<'3', NullType> > > >  >::RESULT,
 						m_val3);

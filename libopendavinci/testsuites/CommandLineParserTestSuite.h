@@ -25,14 +25,14 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/CommandLineArgument.h"  // for CommandLineArgument
-#include "opendavinci/core/base/CommandLineParser.h"  // for CommandLineParser
-#include "opendavinci/core/exceptions/Exceptions.h"  // for CommandLineParserException
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/CommandLineArgument.h"  // for CommandLineArgument
+#include "opendavinci/odcore/base/CommandLineParser.h"  // for CommandLineParser
+#include "opendavinci/odcore/exceptions/Exceptions.h"  // for CommandLineParserException
 
 using namespace std;
-using namespace core::base;
-using namespace core::exceptions;
+using namespace odcore::base;
+using namespace odcore::exceptions;
 
 class CommandLineParserTestSuite : public CxxTest::TestSuite {
     public:

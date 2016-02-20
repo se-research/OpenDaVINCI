@@ -14,15 +14,15 @@ https://github.com/se-research/OpenDaVINCI/tree/master/tutorials/timetrigger
 """""""""""""""""""""
 
 A time-triggered software component is derived from ``core::base::TimeTriggeredConferenceClientModule``,
-provided in ``<opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h>``.
+provided in ``<opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h>``.
 
 TimeTriggerExample.h:
 
 .. code-block:: c++
 
-    #include <opendavinci/core/base/TimeTriggeredConferenceClientModule.h>
+    #include <opendavinci/odcore/base/TimeTriggeredConferenceClientModule.h>
 
-    class TimeTriggerExample : public core::base::module::TimeTriggeredConferenceClientModule {
+    class TimeTriggerExample : public odcore::base::module::TimeTriggeredConferenceClientModule {
         private:
             TimeTriggerExample(const TimeTriggerExample &/*obj*/);
             TimeTriggerExample& operator=(const TimeTriggerExample &/*obj*/);
@@ -70,7 +70,7 @@ TimeTriggerExample.cpp:
     using namespace std;
 
     // We add some of OpenDaVINCI's namespaces for the sake of readability.
-    using namespace core::base::module;
+    using namespace odcore::base::module;
 
     TimeTriggerExample::TimeTriggerExample(const int32_t &argc, char **argv) :
         TimeTriggeredConferenceClientModule(argc, argv, "TimeTriggerExample")
@@ -191,7 +191,7 @@ TimeTriggerExample.cpp:
     using namespace std;
 
     // We add some of OpenDaVINCI's namespaces for the sake of readability.
-    using namespace core::base;
+    using namespace odcore::base;
 
     TimeTriggerExample::TimeTriggerExample(const int32_t &argc, char **argv) :
         TimeTriggeredConferenceClientModule(argc, argv, "TimeTriggerExample")
@@ -314,7 +314,7 @@ TimeTriggerExample.cpp:
     using namespace std;
 
     // We add some of OpenDaVINCI's namespaces for the sake of readability.
-    using namespace core::base;
+    using namespace odcore::base;
 
     TimeTriggerExample::TimeTriggerExample(const int32_t &argc, char **argv) :
         TimeTriggeredConferenceClientModule(argc, argv, "TimeTriggerExample")

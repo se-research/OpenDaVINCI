@@ -23,14 +23,14 @@
 #include <qboxlayout.h>
 #include <qstring.h>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Lock.h"
 #include "plugins/irusmap/IrUsMapWidget.h"
 #include "plugins/irusmap/IrUsMapWidgetControl.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }
-namespace core { namespace base { class KeyValueConfiguration; } }
-namespace core { namespace data { class Container; } }
+namespace odcore { namespace base { class KeyValueConfiguration; } }
+namespace odcore { namespace data { class Container; } }
 
 namespace cockpit {
 
@@ -39,10 +39,10 @@ namespace cockpit {
         namespace irusmap {
 
             using namespace std;
-            using namespace core::base;
-            using namespace core::data;
+            using namespace odcore::base;
+            using namespace odcore::data;
 
-            IrUsMapWidgetControl::IrUsMapWidgetControl(const PlugIn &plugIn, const core::base::KeyValueConfiguration &kvc, QWidget *prnt) :
+            IrUsMapWidgetControl::IrUsMapWidgetControl(const PlugIn &plugIn, const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt) :
                 QWidget(prnt),
                 m_mapWidgetMutex(),
                 m_mapWidget(NULL) {

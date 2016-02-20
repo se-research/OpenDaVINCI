@@ -29,22 +29,22 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/FIFOQueue.h"
-#include "opendavinci/core/base/Service.h"
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/data/TimeStamp.h"
-#include "opendavinci/core/io/conference/ContainerConference.h"
-#include "opendavinci/core/io/conference/ContainerConferenceFactory.h"
-#include "opendavinci/core/io/conference/ContainerListener.h"
-#include "opendavinci/core/io/StreamFactory.h"
-#include "opendavinci/core/io/URL.h"
-#include "opendavinci/core/dmcp/ModuleConfigurationProvider.h"
-#include "opendavinci/core/dmcp/discoverer/Server.h"
-#include "opendavinci/core/dmcp/connection/Server.h"
-#include "opendavinci/core/dmcp/connection/ConnectionHandler.h"
-#include "opendavinci/core/dmcp/connection/ModuleConnection.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/FIFOQueue.h"
+#include "opendavinci/odcore/base/Service.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
+#include "opendavinci/odcore/io/conference/ContainerConference.h"
+#include "opendavinci/odcore/io/conference/ContainerConferenceFactory.h"
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
+#include "opendavinci/odcore/io/StreamFactory.h"
+#include "opendavinci/odcore/io/URL.h"
+#include "opendavinci/odcore/dmcp/ModuleConfigurationProvider.h"
+#include "opendavinci/odcore/dmcp/discoverer/Server.h"
+#include "opendavinci/odcore/dmcp/connection/Server.h"
+#include "opendavinci/odcore/dmcp/connection/ConnectionHandler.h"
+#include "opendavinci/odcore/dmcp/connection/ModuleConnection.h"
 
 #include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
@@ -52,12 +52,12 @@
 
 using namespace std;
 using namespace odplayer;
-using namespace core::base;
-using namespace core::data;
-using namespace core::dmcp;
-using namespace core::io;
-using namespace core::io::conference;
-using namespace coredata::dmcp;
+using namespace odcore::base;
+using namespace odcore::data;
+using namespace odcore::dmcp;
+using namespace odcore::io;
+using namespace odcore::io::conference;
+using namespace odcore::data::dmcp;
 
 class PlayerModuleTestService : public Service {
     public:
@@ -66,7 +66,7 @@ class PlayerModuleTestService : public Service {
 
         virtual void beforeStop() {
             // Stop player.
-            myPlayerModule.setModuleState(coredata::dmcp::ModuleStateMessage::NOT_RUNNING);
+            myPlayerModule.setModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
         }
 
         virtual void run() {
@@ -110,13 +110,13 @@ class PlayerModuleTest : public CxxTest::TestSuite,
             m_connection() {}
 
         KeyValueConfiguration m_configuration;
-        core::SharedPointer<connection::ModuleConnection> m_connection;
+        odcore::SharedPointer<connection::ModuleConnection> m_connection;
 
         virtual KeyValueConfiguration getConfiguration(const ModuleDescriptor& /*md*/) {
             return m_configuration;
         }
 
-        virtual void onNewModule(core::SharedPointer<core::dmcp::connection::ModuleConnection> mc) {
+        virtual void onNewModule(odcore::SharedPointer<odcore::dmcp::connection::ModuleConnection> mc) {
             m_connection = mc;
         }
 
@@ -156,7 +156,7 @@ class PlayerModuleTest : public CxxTest::TestSuite,
 
             // Setup ContainerConference.
             PlayerModuleTestContainerListener ptcl;
-            core::SharedPointer<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.100");
+            odcore::SharedPointer<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.100");
             conference->setContainerListener(&ptcl);
 
             // Setup DMCP.
@@ -175,8 +175,8 @@ class PlayerModuleTest : public CxxTest::TestSuite,
             ServerInformation serverInformation("127.0.0.1", 19000, ServerInformation::ML_NONE);
             discoverer::Server dmcpDiscovererServer(serverInformation,
                                                     "225.0.0.100",
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_SERVER,
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_CLIENT,
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_SERVER,
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_CLIENT,
                                                     noModulesToIgnore);
             dmcpDiscovererServer.startResponding();
 
@@ -203,8 +203,8 @@ class PlayerModuleTest : public CxxTest::TestSuite,
             ////////////////////////////////////////////////////////////////////
 
             // Start playing.
-            coredata::player::PlayerCommand playerCommand;
-            playerCommand.setCommand(coredata::player::PlayerCommand::PLAY);
+            odcore::data::player::PlayerCommand playerCommand;
+            playerCommand.setCommand(odcore::data::player::PlayerCommand::PLAY);
             Container cPC1(playerCommand);
             conference->send(cPC1);
 
@@ -215,7 +215,7 @@ class PlayerModuleTest : public CxxTest::TestSuite,
             }
 
             // Pause playing.
-            playerCommand.setCommand(coredata::player::PlayerCommand::PAUSE);
+            playerCommand.setCommand(odcore::data::player::PlayerCommand::PAUSE);
             Container cPC2(playerCommand);
             conference->send(cPC2);
 
@@ -238,7 +238,7 @@ class PlayerModuleTest : public CxxTest::TestSuite,
             ////////////////////////////////////////////////////////////////////
 
             // Rewind.
-            playerCommand.setCommand(coredata::player::PlayerCommand::REWIND);
+            playerCommand.setCommand(odcore::data::player::PlayerCommand::REWIND);
             Container cPC3(playerCommand);
             conference->send(cPC3);
 
@@ -251,7 +251,7 @@ class PlayerModuleTest : public CxxTest::TestSuite,
             // Start playing.
             // Clear queue.
             ptcl.getQueue().clear();
-            playerCommand.setCommand(coredata::player::PlayerCommand::PLAY);
+            playerCommand.setCommand(odcore::data::player::PlayerCommand::PLAY);
             Container cPC4(playerCommand);
             conference->send(cPC4);
 
@@ -266,7 +266,7 @@ class PlayerModuleTest : public CxxTest::TestSuite,
             ////////////////////////////////////////////////////////////////////
 
             // Pause playing.
-            playerCommand.setCommand(coredata::player::PlayerCommand::PAUSE);
+            playerCommand.setCommand(odcore::data::player::PlayerCommand::PAUSE);
             Container cPC5(playerCommand);
             conference->send(cPC5);
 
@@ -286,7 +286,7 @@ class PlayerModuleTest : public CxxTest::TestSuite,
             // Start playing.
             // Clear queue.
             ptcl.getQueue().clear();
-            playerCommand.setCommand(coredata::player::PlayerCommand::PLAY);
+            playerCommand.setCommand(odcore::data::player::PlayerCommand::PLAY);
             Container cPC6(playerCommand);
             conference->send(cPC6);
 
@@ -301,7 +301,7 @@ class PlayerModuleTest : public CxxTest::TestSuite,
             ////////////////////////////////////////////////////////////////////
 
             // Pause playing.
-            playerCommand.setCommand(coredata::player::PlayerCommand::PAUSE);
+            playerCommand.setCommand(odcore::data::player::PlayerCommand::PAUSE);
             Container cPC7(playerCommand);
             conference->send(cPC7);
 
@@ -320,7 +320,7 @@ class PlayerModuleTest : public CxxTest::TestSuite,
 
             // Clear queue.
             ptcl.getQueue().clear();
-            playerCommand.setCommand(coredata::player::PlayerCommand::STEP_FORWARD);
+            playerCommand.setCommand(odcore::data::player::PlayerCommand::STEP_FORWARD);
             Container cPC8(playerCommand);
             conference->send(cPC8);
 
@@ -339,7 +339,7 @@ class PlayerModuleTest : public CxxTest::TestSuite,
 
             // Clear queue.
             ptcl.getQueue().clear();
-            playerCommand.setCommand(coredata::player::PlayerCommand::STEP_FORWARD);
+            playerCommand.setCommand(odcore::data::player::PlayerCommand::STEP_FORWARD);
             Container cPC9(playerCommand);
             conference->send(cPC9);
 

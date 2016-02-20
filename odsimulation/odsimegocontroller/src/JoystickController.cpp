@@ -40,7 +40,7 @@
 namespace egocontroller {
 
     using namespace std;
-    using namespace hesperia::data::environment;
+    using namespace opendlv::data::environment;
 
     JoystickController::JoystickController(ControlBehaviour& behaviour, const string& device) :
         m_behaviour(behaviour),

@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <opendavinci/core/base/module/DataTriggeredConferenceClientModule.h>
+#include <opendavinci/odcore/base/module/DataTriggeredConferenceClientModule.h>
 
-class DataTriggeredReceiver : public core::base::module::DataTriggeredConferenceClientModule {
+class DataTriggeredReceiver : public odcore::base::module::DataTriggeredConferenceClientModule {
     private:
         /**
          * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -51,7 +51,7 @@ class DataTriggeredReceiver : public core::base::module::DataTriggeredConference
 
         virtual ~DataTriggeredReceiver();
 
-        virtual void nextContainer(core::data::Container &c);
+        virtual void nextContainer(odcore::data::Container &c);
 
     private:
         virtual void setUp();

@@ -5,16 +5,16 @@
  */
 
 
-#include "opendavinci/core/base/Hash.h"
-#include "opendavinci/core/base/Deserializer.h"
-#include "opendavinci/core/base/SerializationFactory.h"
-#include "opendavinci/core/base/Serializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 
 
 #include "test10/generated/Test10Point.h"
 
 	using namespace std;
-	using namespace core::base;
+	using namespace odcore::base;
 
 
 	Test10Point::Test10Point() :
@@ -89,7 +89,7 @@
 		m_y = val;
 	}
 
-	void Test10Point::accept(core::base::Visitor &v) {
+	void Test10Point::accept(odcore::base::Visitor &v) {
 		v.visit(CRC32 < CharList<'x', NullType>  >::RESULT, 0, "Test10Point.x", "x", m_x);
 		v.visit(CRC32 < CharList<'y', NullType>  >::RESULT, 0, "Test10Point.y", "y", m_y);
 	}
@@ -108,7 +108,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Serializer> s = sf.getSerializer(out);
+		odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 
 		s->write(CRC32 < CharList<'x', NullType>  >::RESULT,
 				m_x);
@@ -121,7 +121,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+		odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
 		d->read(CRC32 < CharList<'x', NullType>  >::RESULT,
 				m_x);

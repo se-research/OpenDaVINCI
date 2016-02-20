@@ -24,25 +24,25 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "opendavinci/context/base/BlockableContainerReceiver.h"
-#include "opendavinci/context/base/ControlledContainerConferenceFactory.h"
-#include "opendavinci/context/base/ControlledContainerConferenceForSystemUnderTest.h"
-#include "opendavinci/core/SharedPointer.h"         // for SharedPointer
-#include "opendavinci/core/base/FIFOQueue.h"        // for FIFOQueue
-#include "opendavinci/core/data/Container.h"        // for Container, etc
-#include "opendavinci/core/data/TimeStamp.h"        // for TimeStamp
-#include "opendavinci/core/io/conference/ContainerConference.h"
-#include "opendavinci/core/io/conference/ContainerConferenceFactory.h"
-#include "opendavinci/core/io/conference/ContainerListener.h"
-#include "opendavinci/core/io/conference/UDPMultiCastContainerConference.h"
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcontext/base/BlockableContainerReceiver.h"
+#include "opendavinci/odcontext/base/ControlledContainerConferenceFactory.h"
+#include "opendavinci/odcontext/base/ControlledContainerConferenceForSystemUnderTest.h"
+#include "opendavinci/odcore/SharedPointer.h"         // for SharedPointer
+#include "opendavinci/odcore/base/FIFOQueue.h"        // for FIFOQueue
+#include "opendavinci/odcore/data/Container.h"        // for Container, etc
+#include "opendavinci/odcore/data/TimeStamp.h"        // for TimeStamp
+#include "opendavinci/odcore/io/conference/ContainerConference.h"
+#include "opendavinci/odcore/io/conference/ContainerConferenceFactory.h"
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
+#include "opendavinci/odcore/io/conference/UDPMultiCastContainerConference.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 using namespace std;
-using namespace core::base;
-using namespace core::data;
-using namespace core::io;
-using namespace core::io::conference;
-using namespace context::base;
+using namespace odcore::base;
+using namespace odcore::data;
+using namespace odcore::io;
+using namespace odcore::io::conference;
+using namespace odcontext::base;
 
 class ConferenceFactoryTestContainerListener : public ContainerListener {
     public:
@@ -92,7 +92,7 @@ class ConferenceFactoryTest : public CxxTest::TestSuite {
 
             // Create regular ContainerConference.
             const string group = "225.0.0.200";
-            core::SharedPointer<ContainerConference> udpCF = ContainerConferenceFactory::getInstance().getContainerConference(group);
+            odcore::SharedPointer<ContainerConference> udpCF = ContainerConferenceFactory::getInstance().getContainerConference(group);
             TS_ASSERT(udpCF.isValid());
             bool castIntoUDPCFSuccessful = false;
             try {
@@ -117,7 +117,7 @@ class ConferenceFactoryTest : public CxxTest::TestSuite {
             TS_ASSERT(ccf2 == controlledCF);
 
             // Get ControlledContainerConference.
-            core::SharedPointer<ContainerConference> cf = controlledccf.getContainerConference(group);
+            odcore::SharedPointer<ContainerConference> cf = controlledccf.getContainerConference(group);
             ControlledContainerConferenceForSystemUnderTest *controlledConferenceForSystemUnderTest = NULL;
             TS_ASSERT(cf.isValid());
             bool castIntoCCFSuccessful = false;

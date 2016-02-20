@@ -22,10 +22,10 @@
 
 #include "cxxtest/TestSuite.h"
 
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/wrapper/SharedMemory.h"
-#include "opendavinci/core/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/wrapper/SharedMemory.h"
+#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 
 #include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
@@ -33,8 +33,8 @@
 #include "../include/VCR.h"
 
 using namespace std;
-using namespace core::data;
-using namespace coredata::image;
+using namespace odcore::data;
+using namespace odcore::data::image;
 using namespace automotive::miniature;
 
 /**
@@ -107,7 +107,7 @@ class VCRTest : public CxxTest::TestSuite {
             const uint32_t WIDTH = 3;
             const uint32_t HEIGHT = 4;
             const uint32_t BYTESPERPIXEL = 3;
-            core::SharedPointer<core::wrapper::SharedMemory> imageProducer = core::wrapper::SharedMemoryFactory::createSharedMemory("ImageProducer", WIDTH * HEIGHT * BYTESPERPIXEL);
+            odcore::SharedPointer<odcore::wrapper::SharedMemory> imageProducer = odcore::wrapper::SharedMemoryFactory::createSharedMemory("ImageProducer", WIDTH * HEIGHT * BYTESPERPIXEL);
             TS_ASSERT(imageProducer->isValid());
             TS_ASSERT(imageProducer->getSize() == WIDTH * HEIGHT * BYTESPERPIXEL);
             imageProducer->lock();

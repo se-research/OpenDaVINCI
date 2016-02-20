@@ -25,28 +25,28 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "opendavinci/core/SharedPointer.h"         // for SharedPointer
-#include "opendavinci/core/io/Connection.h"
-#include "opendavinci/core/io/tcp/TCPAcceptor.h"
-#include "opendavinci/core/wrapper/NetworkLibraryProducts.h"
+#include "opendavinci/odcore/SharedPointer.h"         // for SharedPointer
+#include "opendavinci/odcore/io/Connection.h"
+#include "opendavinci/odcore/io/tcp/TCPAcceptor.h"
+#include "opendavinci/odcore/wrapper/NetworkLibraryProducts.h"
 #include "mocks/ConnectionListenerMock.h"
 #include "mocks/StringListenerMock.h"
 #include "mocks/TCPAcceptorListenerMock.h"
 
 #ifndef WIN32
-    #include "opendavinci/core/wrapper/POSIX/POSIXTCPFactoryWorker.h"
+    #include "opendavinci/odcore/wrapper/POSIX/POSIXTCPFactoryWorker.h"
 #endif
 #ifdef WIN32
-    #include "opendavinci/core/wrapper/WIN32/WIN32TCPFactoryWorker.h"
+    #include "opendavinci/odcore/wrapper/WIN32/WIN32TCPFactoryWorker.h"
 #endif
-#include "opendavinci/core/io/tcp/TCPConnection.h"  // for TCPConnection
+#include "opendavinci/odcore/io/tcp/TCPConnection.h"  // for TCPConnection
 
-namespace core { namespace io { class Connection; } }
-namespace core { namespace io { namespace tcp { class TCPAcceptor; } } }
+namespace odcore { namespace io { class Connection; } }
+namespace odcore { namespace io { namespace tcp { class TCPAcceptor; } } }
 
 using namespace std;
-using namespace core;
-using namespace core::base;
+using namespace odcore;
+using namespace odcore::base;
 
 template <typename worker> struct TCPConnectionTests
 {
@@ -54,11 +54,11 @@ template <typename worker> struct TCPConnectionTests
     {
         mocks::TCPAcceptorListenerMock am;
 
-        auto_ptr<core::io::tcp::TCPAcceptor> acceptor(worker::createTCPAcceptor(20000));
+        auto_ptr<odcore::io::tcp::TCPAcceptor> acceptor(worker::createTCPAcceptor(20000));
         acceptor->setAcceptorListener(&am);
         acceptor->start();
 
-        auto_ptr<core::io::tcp::TCPConnection> connection(worker::createTCPConnectionTo("127.0.0.1", 20000));
+        auto_ptr<odcore::io::tcp::TCPConnection> connection(worker::createTCPConnectionTo("127.0.0.1", 20000));
         connection->start();
 
         TS_ASSERT(am.CALLWAITER_onNewConnection.wait());
@@ -98,12 +98,12 @@ template <typename worker> struct TCPConnectionTests
         try {
             mocks::TCPAcceptorListenerMock acceptorListenerMock1;
 
-            auto_ptr<core::io::tcp::TCPAcceptor> acceptor(worker::createTCPAcceptor(20000));
+            auto_ptr<odcore::io::tcp::TCPAcceptor> acceptor(worker::createTCPAcceptor(20000));
             acceptor->setAcceptorListener(&acceptorListenerMock1);
             acceptor->start();
 
             // 1. Case: Remove accepted part of connection.
-            auto_ptr<core::io::tcp::TCPConnection> connection1(worker::createTCPConnectionTo("127.0.0.1", 20000));
+            auto_ptr<odcore::io::tcp::TCPConnection> connection1(worker::createTCPConnectionTo("127.0.0.1", 20000));
             connection1->start();
 
             TS_ASSERT(acceptorListenerMock1.CALLWAITER_onNewConnection.wait());
@@ -111,7 +111,7 @@ template <typename worker> struct TCPConnectionTests
 
             mocks::ConnectionListenerMock connectionListenerMock1;
             connection1->setConnectionListener(&connectionListenerMock1);
-            SharedPointer<core::io::Connection> conn = acceptorListenerMock1.getConnection();
+            SharedPointer<odcore::io::Connection> conn = acceptorListenerMock1.getConnection();
             conn.release();
             acceptorListenerMock1.dontDeleteConnection();
 
@@ -120,7 +120,7 @@ template <typename worker> struct TCPConnectionTests
             // 2. Case: Remove connecting part of connection.
             mocks::TCPAcceptorListenerMock acceptorListenerMock2;
             acceptor->setAcceptorListener(&acceptorListenerMock2);
-            core::io::tcp::TCPConnection* connection2(worker::createTCPConnectionTo("127.0.0.1", 20000));
+            odcore::io::tcp::TCPConnection* connection2(worker::createTCPConnectionTo("127.0.0.1", 20000));
             connection2->start();
 
             TS_ASSERT(acceptorListenerMock2.CALLWAITER_onNewConnection.wait());
@@ -152,7 +152,7 @@ class TCPConnectionTestSuite  : public CxxTest::TestSuite
                 clog << endl << "TCPConnectionTestSuite::testTransfer using NetworkLibraryWin32" << endl;
                 TCPConnectionTests
                 <
-                     core::wrapper::TCPFactoryWorker<core::wrapper::NetworkLibraryWin32>
+                     odcore::wrapper::TCPFactoryWorker<odcore::wrapper::NetworkLibraryWin32>
                 >::transferTest();
             #endif
 
@@ -160,7 +160,7 @@ class TCPConnectionTestSuite  : public CxxTest::TestSuite
                 clog << endl << "TCPConnectionTestSuite::testTransfer using NetworkLibraryPosix" << endl;
                 TCPConnectionTests
                 <
-                     core::wrapper::TCPFactoryWorker<core::wrapper::NetworkLibraryPosix>
+                     odcore::wrapper::TCPFactoryWorker<odcore::wrapper::NetworkLibraryPosix>
                 >::transferTest();
             #endif
         }
@@ -171,7 +171,7 @@ class TCPConnectionTestSuite  : public CxxTest::TestSuite
                 clog << endl << "TCPConnectionTestSuite::testError using NetworkLibraryWin32" << endl;
                 TCPConnectionTests
                 <
-                     core::wrapper::TCPFactoryWorker<core::wrapper::NetworkLibraryWin32>
+                     odcore::wrapper::TCPFactoryWorker<odcore::wrapper::NetworkLibraryWin32>
                 >::errorTest();
             #endif
 
@@ -179,7 +179,7 @@ class TCPConnectionTestSuite  : public CxxTest::TestSuite
                 clog << endl << "TCPConnectionTestSuite::testError using NetworkLibraryPosix" << endl;
                 TCPConnectionTests
                 <
-                     core::wrapper::TCPFactoryWorker<core::wrapper::NetworkLibraryPosix>
+                     odcore::wrapper::TCPFactoryWorker<odcore::wrapper::NetworkLibraryPosix>
                 >::errorTest();
             #endif
         }

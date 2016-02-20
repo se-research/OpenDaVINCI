@@ -40,6 +40,6 @@ Next, you need to install the OpenDaVINCI library:
 
 Install the OpenDaVINCI library:
 
-    $ sudo apt-get install opendavinci-odlib
+    $ sudo apt-get install opendavinci-lib
 
 

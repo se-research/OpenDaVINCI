@@ -7,17 +7,17 @@
 #ifndef SUBPACKAGE_TEST14SIMPLE_H
 #define SUBPACKAGE_TEST14SIMPLE_H
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 
-#include "opendavinci/core/base/Visitable.h"
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/base/Visitable.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 
 
 namespace subpackage {
 	using namespace std;
 	
-	class Test14Simple : public core::data::SerializableData, public core::base::Visitable {
+	class Test14Simple : public odcore::data::SerializableData, public odcore::base::Visitable {
 		public:
 			enum ButtonState {
 				PRESSED = 1,
@@ -106,7 +106,7 @@ namespace subpackage {
 			virtual const string getLongName() const;
 	
 		public:
-			virtual void accept(core::base::Visitor &v);
+			virtual void accept(odcore::base::Visitor &v);
 	
 			virtual ostream& operator<<(ostream &out) const;
 			virtual istream& operator>>(istream &in);

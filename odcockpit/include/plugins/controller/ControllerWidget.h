@@ -24,10 +24,10 @@
 #include <qobjectdefs.h>
 #include <qwidget.h>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/data/TimeStamp.h"
-#include "opendavinci/core/io/conference/ContainerListener.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
 #include "automotivedata/generated/automotive/VehicleControl.h"
 #include "automotivedata/generated/automotive/miniature/UserButtonData.h"
 
@@ -36,9 +36,9 @@ class QKeyEvent;
 class QLabel;
 class QPushButton;
 namespace cockpit { namespace plugins { class PlugIn; } }
-namespace core { namespace base { class KeyValueConfiguration; } }
-namespace core { namespace data { class Container; } }
-namespace core { namespace io { namespace conference { class ContainerConference; } } }
+namespace odcore { namespace base { class KeyValueConfiguration; } }
+namespace odcore { namespace data { class Container; } }
+namespace odcore { namespace io { namespace conference { class ContainerConference; } } }
 
 namespace cockpit {
 
@@ -51,7 +51,7 @@ namespace cockpit {
             /**
              * This class is the container for the controller widget.
              */
-            class ControllerWidget : public QWidget, public core::io::conference::ContainerListener {
+            class ControllerWidget : public QWidget, public odcore::io::conference::ContainerListener {
 
                 Q_OBJECT
 
@@ -79,11 +79,11 @@ namespace cockpit {
                      * @param conf Client conference to send data to.
                      * @param prnt Pointer to the parental widget.
                      */
-                    ControllerWidget(const PlugIn &plugIn, const core::base::KeyValueConfiguration &kvc, core::io::conference::ContainerConference &conf, QWidget *prnt);
+                    ControllerWidget(const PlugIn &plugIn, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, QWidget *prnt);
 
                     virtual ~ControllerWidget();
 
-                    virtual void nextContainer(core::data::Container &c);
+                    virtual void nextContainer(odcore::data::Container &c);
 
                 protected:
                     void keyPressEvent(QKeyEvent *event);
@@ -98,11 +98,11 @@ namespace cockpit {
                     void sendButtonReleased();
 
                 private:
-                    core::io::conference::ContainerConference &m_conference;
-                    core::base::Mutex m_vehicleControlMutex;
+                    odcore::io::conference::ContainerConference &m_conference;
+                    odcore::base::Mutex m_vehicleControlMutex;
                     automotive::VehicleControl m_vehicleControl;
 
-                    core::base::Mutex m_HzMutex;
+                    odcore::base::Mutex m_HzMutex;
                     uint32_t m_Hz;
                     uint32_t m_counter;
 
@@ -111,13 +111,13 @@ namespace cockpit {
                     QCheckBox *m_leftTurningLEDs;
                     QCheckBox *m_rightTurningLEDs;
 
-                    core::base::Mutex m_userButtonMutex;
+                    odcore::base::Mutex m_userButtonMutex;
                     QPushButton *m_userButton;
-                    core::data::TimeStamp m_userButtonPressedTS;
+                    odcore::data::TimeStamp m_userButtonPressedTS;
                     bool m_userButtonPressed;
                     automotive::miniature::UserButtonData m_userButtonData;
 
-                    core::base::Mutex m_sendVehicleControlDataMutex;
+                    odcore::base::Mutex m_sendVehicleControlDataMutex;
                     bool m_sendVehicleControlData;
                     QPushButton *m_sendVehicleControlButton;
             };

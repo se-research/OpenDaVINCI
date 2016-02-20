@@ -26,27 +26,27 @@
 #include <cstring>
 #include <sstream>
 
-#include "opendavinci/core/base/Serializable.h"
-#include "opendavinci/core/data/TimeStamp.h"
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "automotivedata/generated/automotive/ForceControl.h"
 #include "automotivedata/generated/automotive/GenericCANMessage.h"
 #include "automotivedata/generated/automotive/VehicleData.h"
 #include "automotivedata/generated/automotive/miniature/UserButtonData.h"
 #include "automotivedata/generated/automotive/vehicle/WheelSpeed.h"
-#include "opendavinci/generated/coredata/Configuration.h"
-#include "opendavinci/generated/coredata/SharedData.h"
-#include "opendavinci/generated/coredata/dmcp/DiscoverMessage.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleDescriptor.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleStatistics.h"
-#include "opendavinci/generated/coredata/dmcp/RuntimeStatistic.h"
-#include "opendavinci/generated/coredata/image/SharedImage.h"
-#include "opendavinci/generated/coredata/player/PlayerCommand.h"
-#include "opendavinci/generated/coredata/recorder/RecorderCommand.h"
-#include "hesperia/data/environment/Position.h"
-#include "hesperia/data/environment/EgoState.h"
+#include "opendavinci/generated/odcore/data/Configuration.h"
+#include "opendavinci/generated/odcore/data/SharedData.h"
+#include "opendavinci/generated/odcore/data/dmcp/DiscoverMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleDescriptor.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleStateMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleStatistics.h"
+#include "opendavinci/generated/odcore/data/dmcp/RuntimeStatistic.h"
+#include "opendavinci/generated/odcore/data/image/SharedImage.h"
+#include "opendavinci/generated/odcore/data/player/PlayerCommand.h"
+#include "opendavinci/generated/odcore/data/recorder/RecorderCommand.h"
+#include "opendlv/data/environment/EgoState.h"
+#include "opendlv/data/environment/Position.h"
 #include "plugins/spy/SpyWidget.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }
@@ -58,7 +58,7 @@ namespace cockpit {
         namespace spy {
 
             using namespace std;
-            using namespace core::data;
+            using namespace odcore::data;
 
             SpyWidget::SpyWidget(const PlugIn &/*plugIn*/, QWidget *prnt) :
                 QWidget(prnt),
@@ -120,8 +120,8 @@ namespace cockpit {
                 }
 */
 
-                if (container.getDataType() == hesperia::data::environment::EgoState::ID()) {
-                   return container.getData<hesperia::data::environment::EgoState>().toString();
+                if (container.getDataType() == opendlv::data::environment::EgoState::ID()) {
+                   return container.getData<opendlv::data::environment::EgoState>().toString();
                 }
 
                 if (container.getDataType() == automotive::VehicleData::ID()) {
@@ -131,35 +131,35 @@ namespace cockpit {
 /*
                 switch (container.getDataType()) {
                     case Container::CONFIGURATION:
-                       return container.getData<coredata::Configuration> ().toString();
+                       return container.getData<odcore::data::Configuration> ().toString();
                     case Container::FORCECONTROL:
                        return container.getData<automotive::ForceControl> ().toString();
                     case Container::DMCP_DISCOVER:
-                       return container.getData<coredata::dmcp::DiscoverMessage> ().toString();
+                       return container.getData<odcore::data::dmcp::DiscoverMessage> ().toString();
                     case Container::DMCP_CONFIGURATION_REQUEST:
-                       return container.getData<coredata::dmcp::ModuleDescriptor> ().toString();
+                       return container.getData<odcore::data::dmcp::ModuleDescriptor> ().toString();
                     case Container::DMCP_MODULESTATEMESSAGE:
-                       return container.getData<coredata::dmcp::ModuleStateMessage> ().toString();
+                       return container.getData<odcore::data::dmcp::ModuleStateMessage> ().toString();
                     case Container::DMCP_MODULEEXITCODEMESSAGE:
-                       return container.getData<coredata::dmcp::ModuleExitCodeMessage> ().toString();
+                       return container.getData<odcore::data::dmcp::ModuleExitCodeMessage> ().toString();
                     case Container::MODULESTATISTICS:
-                       return container.getData<coredata::dmcp::ModuleStatistics> ().toString();
+                       return container.getData<odcore::data::dmcp::ModuleStatistics> ().toString();
                     case Container::VEHICLEDATA:
                        return container.getData<automotive::VehicleData> ().toString();
                     case Container::PLAYER_COMMAND:
-                       return container.getData<coredata::player::PlayerCommand> ().toString();
+                       return container.getData<odcore::data::player::PlayerCommand> ().toString();
                     case Container::POSITION:
-                       return container.getData<hesperia::data::environment::Position> ().toString();
+                       return container.getData<opendlv::data::environment::Position> ().toString();
                     case Container::RECORDER_COMMAND:
-                       return container.getData<coredata::recorder::RecorderCommand> ().toString();
+                       return container.getData<odcore::data::recorder::RecorderCommand> ().toString();
                     case Container::RUNTIMESTATISTIC:
-                       return container.getData<coredata::dmcp::RuntimeStatistic> ().toString();
+                       return container.getData<odcore::data::dmcp::RuntimeStatistic> ().toString();
                     case Container::SHARED_DATA:
-                       return container.getData<coredata::SharedData> ().toString();
+                       return container.getData<odcore::data::SharedData> ().toString();
                     case Container::SHARED_IMAGE:
-                       return container.getData<coredata::image::SharedImage> ().toString();
+                       return container.getData<odcore::data::image::SharedImage> ().toString();
                     case Container::TIMESTAMP:
-                       return container.getData<core::data::TimeStamp> ().toString();
+                       return container.getData<odcore::data::TimeStamp> ().toString();
                     case Container::USER_BUTTON:
                        return container.getData<automotive::miniature::UserButtonData> ().toString();
                     case Container::GENERIC_CAN_MESSAGE:

@@ -7,17 +7,17 @@
 #ifndef TEST11MAPUINT32_H
 #define TEST11MAPUINT32_H
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 #include <map>
 
-#include "opendavinci/core/base/Visitable.h"
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/base/Visitable.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 
 
 using namespace std;
 
-class Test11MapUint32 : public core::data::SerializableData, public core::base::Visitable {
+class Test11MapUint32 : public odcore::data::SerializableData, public odcore::base::Visitable {
 	public:
 		Test11MapUint32();
 
@@ -464,7 +464,7 @@ class Test11MapUint32 : public core::data::SerializableData, public core::base::
 		virtual const string getLongName() const;
 
 	public:
-		virtual void accept(core::base::Visitor &v);
+		virtual void accept(odcore::base::Visitor &v);
 
 		virtual ostream& operator<<(ostream &out) const;
 		virtual istream& operator>>(istream &in);

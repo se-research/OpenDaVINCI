@@ -18,15 +18,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "ContainerObserver.h"
 #include "plugins/controller/ControllerPlugIn.h"
 #include "plugins/controller/ControllerWidget.h"
 
 class QWidget;
 namespace cockpit { class ContainerObserver; }
-namespace core { namespace base { class KeyValueConfiguration; } }
-namespace core { namespace io { namespace conference { class ContainerConference; } } }
+namespace odcore { namespace base { class KeyValueConfiguration; } }
+namespace odcore { namespace io { namespace conference { class ContainerConference; } } }
 
 namespace cockpit {
 
@@ -34,9 +34,9 @@ namespace cockpit {
 
         namespace controller {
 
-            using namespace core::io::conference;
+            using namespace odcore::io::conference;
 
-            ControllerPlugIn::ControllerPlugIn(const string &name, const core::base::KeyValueConfiguration &kvc, ContainerConference &conf, QWidget *prnt) :
+            ControllerPlugIn::ControllerPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, ContainerConference &conf, QWidget *prnt) :
                 ControlPlugIn(name, kvc, conf, prnt),
                 m_controllerWidget(NULL) {
                 setDescription("This plugin allows the control of the vehicle by the arrow keys.");

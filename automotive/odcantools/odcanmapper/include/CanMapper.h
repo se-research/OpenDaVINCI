@@ -21,12 +21,12 @@
 #ifndef CANMAPPER_H_
 #define CANMAPPER_H_
 
-#include <opendavinci/core/base/module/DataTriggeredConferenceClientModule.h>
+#include <opendavinci/odcore/base/module/DataTriggeredConferenceClientModule.h>
 #include <stdint.h>
 
 #include "canmessagemapping/GeneratedHeaders_CANMessageMapping.h"
 
-namespace core { namespace data { class Container; } }
+namespace odcore { namespace data { class Container; } }
 
 namespace automotive {
     namespace odcantools {
@@ -36,7 +36,7 @@ namespace automotive {
         /**
          * This class can be used to map GenericCANMessages to high-level C++ messages.
          */
-        class CanMapper : public core::base::module::DataTriggeredConferenceClientModule {
+        class CanMapper : public odcore::base::module::DataTriggeredConferenceClientModule {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -68,7 +68,7 @@ namespace automotive {
 
                 virtual ~CanMapper();
 
-                virtual void nextContainer(core::data::Container &c);
+                virtual void nextContainer(odcore::data::Container &c);
 
             private:
                 virtual void setUp();

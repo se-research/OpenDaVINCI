@@ -5,16 +5,16 @@
  */
 
 
-#include "opendavinci/core/base/Hash.h"
-#include "opendavinci/core/base/Deserializer.h"
-#include "opendavinci/core/base/SerializationFactory.h"
-#include "opendavinci/core/base/Serializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 
 
 #include "test19/generated/Test19b.h"
 
 	using namespace std;
-	using namespace core::base;
+	using namespace odcore::base;
 
 
 	Test19b::Test19b() :
@@ -62,7 +62,7 @@
 	}
 
 
-	void Test19b::accept(core::base::Visitor &v) {
+	void Test19b::accept(odcore::base::Visitor &v) {
 		(void)v; // Avoid unused parameter warning.
 	}
 
@@ -78,7 +78,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Serializer> s = sf.getSerializer(out);(void)s; // Avoid unused variable warning.
+		odcore::SharedPointer<Serializer> s = sf.getSerializer(out);(void)s; // Avoid unused variable warning.
 
 		return out;
 	}
@@ -87,7 +87,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Deserializer> d = sf.getDeserializer(in);(void)d; // Avoid unused variable warning.
+		odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);(void)d; // Avoid unused variable warning.
 
 		return in;
 	}

@@ -28,17 +28,17 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/io/conference/ContainerListener.h"
-#include "opendavinci/core/strings/StringComparator.h"
-#include "hesperia/data/environment/WGS84Coordinate.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
+#include "opendavinci/odcore/strings/StringComparator.h"
+#include "opendlv/data/environment/WGS84Coordinate.h"
 
 #include "plugins/streetmapviewer/StreetMapMapWidget.h"
 
 class QNetworkSession;
 class QSpinBox;
 namespace cockpit { namespace plugins { class PlugIn; } }
-namespace core { namespace data { class Container; } }
+namespace odcore { namespace data { class Container; } }
 
 namespace cockpit {
     namespace plugins {
@@ -49,7 +49,7 @@ namespace cockpit {
             /**
              * This class is the outer container for the map tile viewer.
              */
-            class StreetMapWidget : public QWidget, public core::io::conference::ContainerListener {
+            class StreetMapWidget : public QWidget, public odcore::io::conference::ContainerListener {
 
                 Q_OBJECT
 
@@ -76,11 +76,11 @@ namespace cockpit {
                      * @param prnt Pointer to the parental widget.
                      * @param rL WGS84 reference location.
                      */
-                    StreetMapWidget(const PlugIn &plugIn, QWidget *prnt, const hesperia::data::environment::WGS84Coordinate &rL);
+                    StreetMapWidget(const PlugIn &plugIn, QWidget *prnt, const opendlv::data::environment::WGS84Coordinate &rL);
 
                     virtual ~StreetMapWidget();
 
-                    virtual void nextContainer(core::data::Container &c);
+                    virtual void nextContainer(odcore::data::Container &c);
 
                 private slots:
                     /**
@@ -96,7 +96,7 @@ namespace cockpit {
                     StreetMapMapWidget *m_mapWidget;
                     QNetworkSession *m_networkSession;
                     QSpinBox *m_zoomLevel;
-                    hesperia::data::environment::WGS84Coordinate m_referenceLocation;
+                    opendlv::data::environment::WGS84Coordinate m_referenceLocation;
             };
         }
     }

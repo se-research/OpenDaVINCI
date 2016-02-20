@@ -22,7 +22,7 @@
 #ifndef SIMPLEDRIVER_H_
 #define SIMPLEDRIVER_H_
 
-#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
 
 namespace automotive {
     namespace miniature {
@@ -32,7 +32,7 @@ namespace automotive {
         /**
          * This class is a skeleton to send driving commands to Hesperia-light's vehicle driving dynamics simulation.
          */
-        class SimpleDriver : public core::base::module::TimeTriggeredConferenceClientModule {
+        class SimpleDriver : public odcore::base::module::TimeTriggeredConferenceClientModule {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -64,7 +64,7 @@ namespace automotive {
 
                 virtual ~SimpleDriver();
 
-                coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+                odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
             private:
                 virtual void setUp();

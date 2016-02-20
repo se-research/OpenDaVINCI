@@ -120,7 +120,7 @@ class CANDataModelGenerator implements IGenerator {
 #include "generated/«include».h"
 «ENDFOR»
 
-#include <opendavinci/core/data/Container.h>
+#include <opendavinci/odcore/data/Container.h>
 
 #include <automotivedata/GeneratedHeaders_AutomotiveData.h>
 
@@ -163,7 +163,7 @@ namespace canmapping {
              * @param gcm Next GenericCANMessage.
              * @return Container, where the type needs to be checked to determine invalidity (i.e. !Container::UNDEFINEDDATA).
              */
-            vector<core::data::Container> mapNext(const ::automotive::GenericCANMessage &gcm);
+            vector<odcore::data::Container> mapNext(const ::automotive::GenericCANMessage &gcm);
 
         private:
         
@@ -214,14 +214,14 @@ namespace canmapping {
 
     CanMapping::~CanMapping() {}
 
-    vector<core::data::Container> CanMapping::mapNext(const ::automotive::GenericCANMessage &gcm) {
-        vector<core::data::Container> listOfContainers;
+    vector<odcore::data::Container> CanMapping::mapNext(const ::automotive::GenericCANMessage &gcm) {
+        vector<odcore::data::Container> listOfContainers;
 
         // Traverse all defined mappings and check whether a new high-level message could be fully decoded.
 	    «FOR member:members»
 	    {
-	    	core::data::Container container = «member.substring(0,member.indexOf(" ()"))».decode(gcm);
-	    	if (container.getDataType() != core::data::Container::UNDEFINEDDATA)
+	    	odcore::data::Container container = «member.substring(0,member.indexOf(" ()"))».decode(gcm);
+	    	if (container.getDataType() != odcore::data::Container::UNDEFINEDDATA)
 	    	{
 	    		listOfContainers.push_back(container);
 	    	}
@@ -237,7 +237,7 @@ namespace canmapping {
 	def generateHeaderFileBody(String className, CANSignalMapping mapping) '''
     using namespace std;
 
-    class «className» : public core::data::SerializableData, public core::base::Visitable {
+    class «className» : public odcore::data::SerializableData, public odcore::base::Visitable {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -277,7 +277,7 @@ namespace canmapping {
 
             virtual ~«className»();
 
-            core::data::Container decode(const ::automotive::GenericCANMessage &gcm);
+            odcore::data::Container decode(const ::automotive::GenericCANMessage &gcm);
             
 «var ArrayList<String> capitalizedNames=new ArrayList<String>»
 «{
@@ -304,7 +304,7 @@ namespace canmapping {
     
     		virtual istream& operator>>(istream &in);
 
-    		virtual void accept(core::base::Visitor &v);
+    		virtual void accept(odcore::base::Visitor &v);
     		
 
             /**
@@ -382,9 +382,9 @@ namespace canmapping {
 #define «mapping.mappingName.toString.toUpperCase.replaceAll("\\.", "_")»_H_
 
 #include <vector>
-#include <opendavinci/core/data/Container.h>
-#include <opendavinci/core/base/Visitable.h>
-#include <opendavinci/core/data/SerializableData.h>
+#include <opendavinci/odcore/data/Container.h>
+#include <opendavinci/odcore/base/Visitable.h>
+#include <opendavinci/odcore/data/SerializableData.h>
 
 #include <automotivedata/GeneratedHeaders_AutomotiveData.h>
 
@@ -429,8 +429,8 @@ namespace canmapping {
 	}»
 
 	«className»::«className»() :
-		core::data::SerializableData(),
-		core::base::Visitable(),
+		odcore::data::SerializableData(),
+		odcore::base::Visitable(),
 		«FOR capitalizedName : capitalizedNames»
 		m_«capitalizedName.toFirstLower»(0.0),
 		«ENDFOR»
@@ -464,8 +464,8 @@ namespace canmapping {
 		}
 		}»
 	«className»::«className»(«FOR parameter:parameters»«parameter»«ENDFOR») :
-		core::data::SerializableData(),
-		core::base::Visitable(),
+		odcore::data::SerializableData(),
+		odcore::base::Visitable(),
 		«FOR initialization:initializations»«initialization+","+'\n'»«ENDFOR»
 		m_payloads(),
 		m_neededCanMessages(),
@@ -512,8 +512,8 @@ namespace canmapping {
 	«ENDFOR»
 	
 	ostream& «className»::operator<<(ostream &out) const {
-		core::base::SerializationFactory& sf = core::base::SerializationFactory::getInstance();
-		core::SharedPointer<core::base::Serializer> s = sf.getSerializer(out);
+		odcore::base::SerializationFactory& sf = odcore::base::SerializationFactory::getInstance();
+		odcore::SharedPointer<odcore::base::Serializer> s = sf.getSerializer(out);
 
 		«IF mapping.mappings.size>0»
 		«var ArrayList<String> opOutBody=new ArrayList<String>»
@@ -533,8 +533,8 @@ namespace canmapping {
 	}
 	
 	istream& «className»::operator>>(istream &in) {
-		core::base::SerializationFactory& sf = core::base::SerializationFactory::getInstance();
-		core::SharedPointer<core::base::Deserializer> s = sf.getDeserializer(in);
+		odcore::base::SerializationFactory& sf = odcore::base::SerializationFactory::getInstance();
+		odcore::SharedPointer<odcore::base::Deserializer> s = sf.getDeserializer(in);
 		
 		«IF mapping.mappings.size>0»
 		uint32_t id;
@@ -555,7 +555,6 @@ namespace canmapping {
 		return in;
 	}
 	
-
 	int32_t «/* Here, we generate the method to return the message ID. */className»::ID() {
 		return 0; // There is no valid message identifier specified as the CAN message will be mapped to a high-level data structure.
 	}
@@ -580,7 +579,7 @@ namespace canmapping {
 		return «className»::LongName();
 	}
 
-	void «className»::accept(core::base::Visitor &v) {
+	void «className»::accept(odcore::base::Visitor &v) {
 	«IF mapping.mappings.size==0»
 	(void)v;
 	«ELSE»
@@ -603,8 +602,8 @@ namespace canmapping {
 	«ENDIF»
 	}
 	
-	core::data::Container «className»::decode(const ::automotive::GenericCANMessage &gcm) {
-		core::data::Container c;
+	odcore::data::Container «className»::decode(const ::automotive::GenericCANMessage &gcm) {
+		odcore::data::Container c;
 		switch(gcm.getIdentifier())
 		{
 			// order check should be done here
@@ -643,7 +642,7 @@ namespace canmapping {
 			return c;
 
 		// 1. Create a generic message.
-		core::reflection::Message message;
+		odcore::reflection::Message message;
 	
 		«FOR currenMapping : mapping.mappings»
 		«var String signalName=currenMapping.cansignalname»
@@ -716,16 +715,16 @@ namespace canmapping {
 			«memberVarName»=«finalVarName»;
 			
 			// 4.4 Create a field for a generic message.
-			core::reflection::Field<double> *f = new core::reflection::Field<double>(«memberVarName»);
+			odcore::reflection::Field<double> *f = new odcore::reflection::Field<double>(«memberVarName»);
 			f->setLongFieldIdentifier(«canSignals.get(signalName).m_CANID»); // The identifiers specified here must match with the ones defined in the .odvd file!
 			f->setShortFieldIdentifier(static_cast<uint8_t>(«canSignals.get(signalName).m_CANID»)); // The identifiers specified here must match with the ones defined in the .odvd file!
 			f->setLongFieldName("«canSignals.get(signalName).m_FQDN»");
 			f->setShortFieldName("«{var String[] res; res=canSignals.get(signalName).m_FQDN.split("\\."); res.get(res.size-1)}»");
-			f->setFieldDataType(coredata::reflection::AbstractField::DOUBLE_T);
+			f->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
 			f->setSize(sizeof(«memberVarName»));
 	
 			// 4.5 Add created field to generic message.
-			message.addField(core::SharedPointer<coredata::reflection::AbstractField>(f));
+			message.addField(odcore::SharedPointer<odcore::data::reflection::AbstractField>(f));
 		}
 	«ENDFOR»
 		// 5. Depending on the CAN message specification, we are either ready here
@@ -738,7 +737,7 @@ namespace canmapping {
 			// 6. As we are ready here for the given example, we create a visitor to
 			// traverse the unnamed message and create a named message (i.e. an instance
 			// of a high-level C++ message) to be distributed as a Container.
-			core::reflection::MessageToVisitableVisitor mtvv(message);
+			odcore::reflection::MessageToVisitableVisitor mtvv(message);
 			
 			// 7. Create an instance of the named high-level message.
             «var String HLName= (Character.toLowerCase(mapping.mappingName.toString.charAt(0)) + mapping.mappingName.toString.substring(1)).replaceAll("\\.", "_")»
@@ -748,7 +747,7 @@ namespace canmapping {
         «HLName».accept(mtvv);
 
 			// 9. Create the resulting container carrying a valid payload.
-			c = core::data::Container(«HLName»);
+			c = odcore::data::Container(«HLName»);
 		}
 		return c;
 	}
@@ -806,12 +805,12 @@ rangeEnd    : «canSignal.m_rangeEnd»
 
 #include "generated/«mapping.mappingName.toString.replaceAll('\\.','/')».h"
 
-#include <opendavinci/core/SharedPointer.h>
-#include <opendavinci/core/reflection/Message.h>
-#include <opendavinci/core/reflection/MessageToVisitableVisitor.h>
-#include <opendavinci/core/base/SerializationFactory.h>
-#include <opendavinci/core/base/Serializer.h>
-#include <opendavinci/core/base/Deserializer.h>
+#include <opendavinci/odcore/SharedPointer.h>
+#include <opendavinci/odcore/reflection/Message.h>
+#include <opendavinci/odcore/reflection/MessageToVisitableVisitor.h>
+#include <opendavinci/odcore/base/SerializationFactory.h>
+#include <opendavinci/odcore/base/Serializer.h>
+#include <opendavinci/odcore/base/Deserializer.h>
 
 namespace canmapping {
 

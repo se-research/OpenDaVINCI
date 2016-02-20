@@ -26,15 +26,15 @@
 #include <sstream>
 #include <string>
 
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleStatistics.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleStatistic.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleDescriptor.h"
-#include "opendavinci/generated/coredata/dmcp/RuntimeStatistic.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleStatistics.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleStatistic.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleDescriptor.h"
+#include "opendavinci/generated/odcore/data/dmcp/RuntimeStatistic.h"
 
 using namespace std;
-using namespace core::data;
-using namespace coredata::dmcp;
+using namespace odcore::data;
+using namespace odcore::data::dmcp;
 
 class ModuleStatisticsTest : public CxxTest::TestSuite {
     public:
