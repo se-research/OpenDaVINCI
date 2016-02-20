@@ -23,10 +23,10 @@
 #include <map>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Mutex.h"
 #include "opendlv/core/wrapper/Image.h"
-#include "opendavinci/core/strings/StringComparator.h"
+#include "opendavinci/odcore/strings/StringComparator.h"
 
 namespace opendlv {
     namespace threeD {
@@ -101,9 +101,9 @@ namespace opendlv {
                 void removeTexture(const string &name);
 
             private:
-                static core::base::Mutex m_singletonMutex;
+                static odcore::base::Mutex m_singletonMutex;
                 static TextureManager* m_singleton;
-                map<string, uint32_t, core::strings::StringComparator> m_mapOfTextureHandles;
+                map<string, uint32_t, odcore::strings::StringComparator> m_mapOfTextureHandles;
         };
 
     }

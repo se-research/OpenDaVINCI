@@ -20,8 +20,8 @@
 #ifndef HESPERIA_THREED_FRAMECOUNTER_H_
 #define HESPERIA_THREED_FRAMECOUNTER_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/data/TimeStamp.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
 
 namespace opendlv {
     namespace threeD {
@@ -40,7 +40,7 @@ namespace opendlv {
 
             protected:
                 uint32_t m_frameCounter;
-                core::data::TimeStamp m_lastFrame;
+                odcore::data::TimeStamp m_lastFrame;
                 double m_fps;
         };
     }

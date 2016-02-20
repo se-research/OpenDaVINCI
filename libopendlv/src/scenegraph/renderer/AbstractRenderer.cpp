@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 #include "opendlv/scenegraph/renderer/AbstractRenderer.h"
 #include "opendlv/scenegraph/primitives/Line.h"

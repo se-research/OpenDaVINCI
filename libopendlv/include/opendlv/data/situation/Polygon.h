@@ -22,7 +22,7 @@
 
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 #include "opendlv/data/situation/Shape.h"
 #include "opendlv/data/situation/Vertex3.h"

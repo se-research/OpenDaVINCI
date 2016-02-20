@@ -21,7 +21,7 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendlv/core/wrapper/parser/ASTNode.h"
 #include "opendlv/core/wrapper/parser/BoostSpiritGrammar.h"
 #include "opendlv/situation/SITGrammar.h"

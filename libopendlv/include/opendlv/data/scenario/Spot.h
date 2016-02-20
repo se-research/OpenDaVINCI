@@ -22,9 +22,9 @@
 
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 #include "opendlv/data/scenario/ScenarioNode.h"
 #include "opendlv/data/scenario/ScenarioVisitor.h"
 #include "opendlv/data/scenario/Vertex3.h"
@@ -38,7 +38,7 @@ namespace opendlv {
             /**
              * This class represents a polygon.
              */
-            class OPENDAVINCI_API Spot : public core::data::SerializableData, public ScenarioNode {
+            class OPENDAVINCI_API Spot : public odcore::data::SerializableData, public ScenarioNode {
                 public:
                     Spot();
 

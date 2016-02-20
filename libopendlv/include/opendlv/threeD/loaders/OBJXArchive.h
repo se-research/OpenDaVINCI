@@ -24,9 +24,9 @@
 #include <string>
 #include <sstream>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendlv/core/wrapper/Image.h"
-#include "opendavinci/core/strings/StringComparator.h"
+#include "opendavinci/odcore/strings/StringComparator.h"
 
 #include "opendlv/threeD/Material.h"
 #include "opendlv/threeD/TransformGroup.h"
@@ -126,8 +126,8 @@ namespace opendlv {
                     TransformGroup* createTransformGroup(const NodeDescriptor &nd);
 
                 private:
-                    map<string, core::wrapper::Image*, core::strings::StringComparator> m_mapOfImages;
-                    map<string, Material, core::strings::StringComparator> m_mapOfMaterials;
+                    map<string, core::wrapper::Image*, odcore::strings::StringComparator> m_mapOfImages;
+                    map<string, Material, odcore::strings::StringComparator> m_mapOfMaterials;
                     stringstream m_objFile;
                     stringstream m_mtlFile;
 

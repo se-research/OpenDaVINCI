@@ -22,8 +22,8 @@
 
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 
 #include "opendlv/data/sensor/ContouredObject.h"
 
@@ -36,7 +36,7 @@ namespace opendlv {
             /**
              * This class contains all data from one specific sensor.
              */
-            class OPENDAVINCI_API ContouredObjects : public core::data::SerializableData {
+            class OPENDAVINCI_API ContouredObjects : public odcore::data::SerializableData {
                 public:
                     enum COLOR {
                         RED,

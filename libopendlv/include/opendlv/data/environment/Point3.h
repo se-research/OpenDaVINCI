@@ -20,9 +20,9 @@
 #ifndef HESPERIA_DATA_ENVIRONMENT_POINT3_H_
 #define HESPERIA_DATA_ENVIRONMENT_POINT3_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 
 #include "automotivedata/GeneratedHeaders_AutomotiveData.h"
 
@@ -35,7 +35,7 @@ namespace opendlv {
             /**
              * This class is the main class for all cartesian computations.
              */
-            class OPENDAVINCI_API Point3 : public core::data::SerializableData {
+            class OPENDAVINCI_API Point3 : public odcore::data::SerializableData {
                 private:
                     const static double EPSILON;
 

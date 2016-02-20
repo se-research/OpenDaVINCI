@@ -22,16 +22,16 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 #include "opendlv/data/environment/Point3.h"
 
 namespace opendlv {
     namespace data {
         namespace camera {
 
-            using namespace core;
+            using namespace odcore;
 
             /* Parameter:
 
@@ -45,7 +45,7 @@ namespace opendlv {
             /**
              * This class represents intrinsic calibration parameters.
              */
-            class OPENDAVINCI_API IntrinsicParameters : public core::data::SerializableData {
+            class OPENDAVINCI_API IntrinsicParameters : public odcore::data::SerializableData {
                 public:
                     IntrinsicParameters();
 

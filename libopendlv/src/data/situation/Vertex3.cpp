@@ -26,7 +26,7 @@ namespace opendlv {
         namespace situation {
 
             using namespace std;
-            using namespace core::base;
+            using namespace odcore::base;
             using namespace opendlv::data::environment;
 
             Vertex3::Vertex3() :

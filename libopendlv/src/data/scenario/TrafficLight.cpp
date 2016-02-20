@@ -29,7 +29,7 @@ namespace opendlv {
         namespace scenario {
 
             using namespace std;
-            using namespace core::base;
+            using namespace odcore::base;
             using namespace scenario;
 
             TrafficLight::TrafficLight() {

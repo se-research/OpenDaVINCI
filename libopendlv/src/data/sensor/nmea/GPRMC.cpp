@@ -20,14 +20,14 @@
 #include <iostream>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/Deserializer.h"
-#include "opendavinci/core/base/Hash.h"
-#include "opendavinci/core/base/SerializationFactory.h"
-#include "opendavinci/core/base/Serializer.h"
-#include "opendavinci/core/data/SerializableData.h"
-#include "opendavinci/core/data/TimeStamp.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/data/SerializableData.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
 #include "opendlv/data/environment/WGS84Coordinate.h"
 #include "opendlv/data/sensor/nmea/GPRMC.h"
 
@@ -37,8 +37,8 @@ namespace opendlv {
             namespace nmea {
 
                 using namespace std;
-                using namespace core::base;
-                using namespace core::data;
+                using namespace odcore::base;
+                using namespace odcore::data;
                 using namespace opendlv::data::environment;
 
                 GPRMC::GPRMC() :
@@ -97,7 +97,7 @@ namespace opendlv {
                     return m_timeStamp;
                 }
 
-                void GPRMC::setTimeStamp(const core::data::TimeStamp &timeStamp) {
+                void GPRMC::setTimeStamp(const odcore::data::TimeStamp &timeStamp) {
                     m_timeStamp = timeStamp;
 
                     // Update message.
@@ -358,7 +358,7 @@ namespace opendlv {
                     // Serialize this class.
                     SerializationFactory& sf=SerializationFactory::getInstance();
 
-                    core::SharedPointer<Serializer> s = sf.getSerializer(out);
+                    odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 
                     s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('m', 'e', 's', 's', 'a', 'g', 'e') >::RESULT,
                             m_message);
@@ -370,7 +370,7 @@ namespace opendlv {
                     // Deserialize this class.
                     SerializationFactory& sf=SerializationFactory::getInstance();
 
-                    core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+                    odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
                     d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('m', 'e', 's', 's', 'a', 'g', 'e') >::RESULT,
                            m_message);

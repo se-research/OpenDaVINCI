@@ -20,7 +20,7 @@
 #ifndef HESPERIA_CORE_WRAPPER_IMAGE_H_
 #define HESPERIA_CORE_WRAPPER_IMAGE_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 namespace core {
     namespace wrapper {

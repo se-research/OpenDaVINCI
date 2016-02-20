@@ -23,8 +23,8 @@
 
 #include <boost/graph/astar_search.hpp>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/strings/StringToolbox.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/strings/StringToolbox.h"
 #include "opendlv/core/wrapper/graph/DirectedGraph.h"
 #include "opendlv/core/wrapper/graph/Edge.h"
 #include "opendlv/core/wrapper/graph/Vertex.h"
@@ -181,8 +181,8 @@ class Edge;
                         string source_ = m_graph[boost::source(*ei, m_graph)]->toString();
                         string target_ = m_graph[boost::target(*ei, m_graph)]->toString();
 
-                        string source = core::strings::StringToolbox::split(source_, '@').at(0);
-                        string target = core::strings::StringToolbox::split(target_, '@').at(0);
+                        string source = odcore::strings::StringToolbox::split(source_, '@').at(0);
+                        string target = odcore::strings::StringToolbox::split(target_, '@').at(0);
 
                         replace(source.begin(), source.end(), '.', '_');
                         replace(target.begin(), target.end(), '.', '_');

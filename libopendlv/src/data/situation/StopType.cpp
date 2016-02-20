@@ -20,13 +20,13 @@
 #include <ostream>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/Deserializer.h"
-#include "opendavinci/core/base/Hash.h"
-#include "opendavinci/core/base/SerializationFactory.h"
-#include "opendavinci/core/base/Serializer.h"
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 #include "opendlv/data/situation/StopType.h"
 
 namespace opendlv {
@@ -34,7 +34,7 @@ namespace opendlv {
         namespace situation {
 
             using namespace std;
-            using namespace core::base;
+            using namespace odcore::base;
 
             StopType::StopType() :
                     m_type(StopType::UNDEFINED) {}
@@ -67,7 +67,7 @@ namespace opendlv {
             ostream& StopType::operator<<(ostream &out) const {
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                core::SharedPointer<Serializer> s = sf.getSerializer(out);
+                odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('t', 'y', 'p', 'e') >::RESULT,
                         static_cast<uint32_t>(m_type));
@@ -78,7 +78,7 @@ namespace opendlv {
             istream& StopType::operator>>(istream &in) {
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+                odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
                 uint32_t type = 0;
                 d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('t', 'y', 'p', 'e') >::RESULT,

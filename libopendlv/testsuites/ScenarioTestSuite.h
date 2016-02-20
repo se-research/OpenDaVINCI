@@ -24,7 +24,7 @@
 #include <sstream>
 #include <string>
 
-#include "opendavinci/core/exceptions/Exceptions.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
 #include "opendlv/data/scenario/Arc.h"
 #include "opendlv/data/scenario/BoundingBox.h"
 #include "opendlv/data/scenario/Clothoid.h"
@@ -51,7 +51,7 @@
 
 using namespace std;
 using namespace opendlv::data::scenario;
-using namespace core::exceptions;
+using namespace odcore::exceptions;
 using namespace opendlv::scenario;
 using namespace core::wrapper::parser;
 

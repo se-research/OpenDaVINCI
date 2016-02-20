@@ -20,9 +20,9 @@
 #ifndef HESPERIA_CORE_SITUATION_SITUATIONPRETTYPRINTER_H_
 #define HESPERIA_CORE_SITUATION_SITUATIONPRETTYPRINTER_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 #include "opendlv/data/situation/SituationVisitor.h"
 
 namespace opendlv {

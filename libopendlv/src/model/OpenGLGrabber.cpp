@@ -20,12 +20,12 @@
 #include <GL/gl.h>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/KeyValueConfiguration.h"
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/core/io/URL.h"
-#include "opendavinci/core/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/io/URL.h"
+#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 #include "opendlv/core/wrapper/ImageFactory.h"
 #include "opendlv/data/camera/ImageGrabberID.h"
 #include "opendlv/threeD/decorator/DecoratorFactory.h"
@@ -45,8 +45,8 @@ namespace opendlv { namespace vehiclecontext {
     namespace model {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::io;
+        using namespace odcore::base;
+        using namespace odcore::io;
         using namespace opendlv::data::camera;
         using namespace opendlv::data::environment;
         using namespace opendlv::scenario;
@@ -64,7 +64,7 @@ namespace opendlv { namespace vehiclecontext {
             const URL urlOfSCNXFile(m_kvc.getValue<string>("global.scenario"));
             const bool SHOW_GRID = (m_kvc.getValue<uint8_t>("global.showgrid") == 1);
             if (urlOfSCNXFile.isValid()) {
-                m_root = core::SharedPointer<TransformGroup>(new opendlv::threeD::TransformGroup());
+                m_root = odcore::SharedPointer<TransformGroup>(new opendlv::threeD::TransformGroup());
                 SCNXArchive &scnxArchive = SCNXArchiveFactory::getInstance().getSCNXArchive(urlOfSCNXFile);
 
                 // Read scnxArchive and decorate it for getting displayed in an OpenGL scene.
@@ -77,7 +77,7 @@ namespace opendlv { namespace vehiclecontext {
 
                 m_sharedMemory = core::wrapper::SharedMemoryFactory::createSharedMemory("odsimcamera", 640 * 480 * 3);
 
-                m_image = core::SharedPointer<core::wrapper::Image>(core::wrapper::ImageFactory::getInstance().getImage(640, 480, core::wrapper::Image::BGR_24BIT, static_cast<char*>(m_sharedMemory->getSharedMemory())));
+                m_image = odcore::SharedPointer<core::wrapper::Image>(odcore::wrapper::ImageFactory::getInstance().getImage(640, 480, odcore::wrapper::Image::BGR_24BIT, static_cast<char*>(m_sharedMemory->getSharedMemory())));
 
                 if (m_image.isValid()) {
                     cerr << "OpenGLGrabber initialized." << endl;
@@ -91,7 +91,7 @@ namespace opendlv { namespace vehiclecontext {
             Thread::usleepFor(1000 * 10);
         }
 
-        core::SharedPointer<core::wrapper::Image> OpenGLGrabber::getNextImage() {
+        odcore::SharedPointer<core::wrapper::Image> OpenGLGrabber::getNextImage() {
             if ( (m_sharedMemory.isValid()) && (m_sharedMemory->isValid()) ) {
                 m_sharedMemory->lock();
                     RenderingConfiguration r = RenderingConfiguration();

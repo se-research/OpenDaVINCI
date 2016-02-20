@@ -20,7 +20,7 @@
 #ifndef HESPERIA_SCENARIO_GROUNDBASEDCOMPLEXMODELLOADER_H_
 #define HESPERIA_SCENARIO_GROUNDBASEDCOMPLEXMODELLOADER_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 #include "opendlv/scenario/SCNXArchive.h"
 #include "opendlv/threeD/TransformGroup.h"

@@ -19,8 +19,8 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/exceptions/Exceptions.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
 #include "opendlv/core/wrapper/parser/ASTNode.h"
 #include "opendlv/data/situation/Header.h"
 #include "opendlv/data/situation/Immediately.h"
@@ -47,7 +47,7 @@ namespace opendlv {
 
         using namespace std;
         using namespace data::situation;
-        using namespace core::exceptions;
+        using namespace odcore::exceptions;
         using namespace core::wrapper::parser;
 
         SITSituationVisitor::SITSituationVisitor(Situation &s) :

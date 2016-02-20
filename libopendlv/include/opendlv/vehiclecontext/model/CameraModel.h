@@ -24,12 +24,12 @@
 
 #include <opencv/cv.h>
 
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/Condition.h"
-#include "opendavinci/core/base/KeyValueConfiguration.h"
-#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Condition.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
 #include "opendlv/core/wrapper/Image.h"
-#include "opendavinci/context/base/SystemFeedbackComponent.h"
+#include "opendavinci/odcontext/base/SystemFeedbackComponent.h"
 
 #include "opendlv/data/environment/EgoState.h"
 #include "opendlv/io/camera/ImageGrabber.h"
@@ -92,7 +92,7 @@ namespace opendlv { namespace vehiclecontext {
                 virtual void step(const core::wrapper::Time &t, odcontext::base::SendContainerToSystemsUnderTest &sender);
 
             private:
-                core::base::KeyValueConfiguration m_kvc;
+                odcore::base::KeyValueConfiguration m_kvc;
                 float m_freq;
 
             public:
@@ -122,7 +122,7 @@ namespace opendlv { namespace vehiclecontext {
                 int m_renderWindow;
                 opendlv::data::environment::EgoState m_egoState;
                 OpenGLGrabber *m_grabber;
-                core::SharedPointer<core::wrapper::Image> m_image;
+                odcore::SharedPointer<core::wrapper::Image> m_image;
                 coredata::image::SharedImage m_sharedImage;
 
                 float m_translationX;

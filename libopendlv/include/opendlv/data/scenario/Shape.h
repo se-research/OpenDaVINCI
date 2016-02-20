@@ -22,9 +22,9 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 #include "opendlv/data/scenario/ScenarioNode.h"
 #include "opendlv/data/scenario/ScenarioVisitor.h"
 
@@ -37,7 +37,7 @@ namespace opendlv {
             /**
              * This class represents a shape (i.e. a polygon, cylinder or complex model).
              */
-            class OPENDAVINCI_API Shape : public core::data::SerializableData, public ScenarioNode {
+            class OPENDAVINCI_API Shape : public odcore::data::SerializableData, public ScenarioNode {
                 public:
                     enum SHAPETYPE {
                         UNDEFINED,

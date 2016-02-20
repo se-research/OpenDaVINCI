@@ -23,14 +23,14 @@
 #include <iostream>
 #include <string>
 
-#include "opendavinci/core/wrapper/Eigen.h"
+#include "opendavinci/odcore/wrapper/Eigen.h"
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/KeyValueConfiguration.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/data/TimeStamp.h"
-#include "opendavinci/core/wrapper/Time.h"
-#include "opendavinci/context/base/SendContainerToSystemsUnderTest.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
+#include "opendavinci/odcore/wrapper/Time.h"
+#include "opendavinci/odcontext/base/SendContainerToSystemsUnderTest.h"
 #include "automotivedata/generated/automotive/VehicleData.h"
 #include "automotivedata/generated/cartesian/Constants.h"
 #include "automotivedata/generated/cartesian/Point2.h"
@@ -44,9 +44,9 @@ namespace opendlv { namespace vehiclecontext {
     namespace model {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::data;
-        using namespace core::io;
+        using namespace odcore::base;
+        using namespace odcore::data;
+        using namespace odcore::io;
         using namespace odcontext::base;
         using namespace opendlv::data::environment;
 
@@ -132,7 +132,7 @@ namespace opendlv { namespace vehiclecontext {
             try {
                 m_faultModelNoise = m_kvc.getValue<double>("odsimvehicle.LinearBicycleModelNew.faultModel.noise");
             }
-            catch (const core::exceptions::ValueForKeyNotFoundException &e) {
+            catch (const odcore::exceptions::ValueForKeyNotFoundException &e) {
             }
 
             cerr << "max turning wheel angle to the left: " << m_maxSteeringLeftRad << endl;

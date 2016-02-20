@@ -20,9 +20,9 @@
 #ifndef VEHICLECONTEXT_VEHICLERUNTIMECONTROL_H_
 #define VEHICLECONTEXT_VEHICLERUNTIMECONTROL_H_
 
-//#include "opendavinci/core/base/KeyValueConfiguration.h"
+//#include "opendavinci/odcore/base/KeyValueConfiguration.h"
 
-#include "opendavinci/context/base/StandaloneRuntimeControl.h"
+#include "opendavinci/odcontext/base/StandaloneRuntimeControl.h"
 
 namespace opendlv { namespace vehiclecontext {
 
@@ -63,14 +63,14 @@ namespace opendlv { namespace vehiclecontext {
             virtual ~VehicleRuntimeControl();
 
         private:
-            core::base::KeyValueConfiguration m_globalConfiguration;
+            odcore::base::KeyValueConfiguration m_globalConfiguration;
 
             /**
              * This method returns the appropriate configuration data.
              *
              * @param module Module to get configuration for.
              */
-            const core::base::KeyValueConfiguration getConfigurationFor(const enum VEHICLECONTEXTMODULES &module);
+            const odcore::base::KeyValueConfiguration getConfigurationFor(const enum VEHICLECONTEXTMODULES &module);
 
             virtual void configureRuntimeEnvironment();
     };

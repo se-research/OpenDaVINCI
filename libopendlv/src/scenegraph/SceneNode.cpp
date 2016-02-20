@@ -20,8 +20,8 @@
 #include <algorithm>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Lock.h"
 #include "opendlv/scenegraph/SceneNode.h"
 #include "opendlv/scenegraph/SceneNodeDescriptor.h"
 #include "opendlv/scenegraph/SceneNodeVisitor.h"
@@ -29,7 +29,7 @@
 namespace opendlv {
     namespace scenegraph {
 
-        using namespace core::base;
+        using namespace odcore::base;
 
         SceneNode::SceneNode() :
             m_sceneNodeDescriptor(),

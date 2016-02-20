@@ -24,10 +24,10 @@
 #include <iostream>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/context/base/SendContainerToSystemsUnderTest.h"
-#include "opendavinci/core/base/KeyValueConfiguration.h"
-#include "opendavinci/core/data/Container.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcontext/base/SendContainerToSystemsUnderTest.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/generated/coredata/image/SharedImage.h"
 #include "opendlv/data/camera/ImageGrabberCalibration.h"
 #include "opendlv/data/camera/ImageGrabberID.h"
@@ -42,9 +42,9 @@ namespace opendlv { namespace vehiclecontext {
     namespace model {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::data;
-        using namespace core::io;
+        using namespace odcore::base;
+        using namespace odcore::data;
+        using namespace odcore::io;
         using namespace odcontext::base;
         using namespace opendlv::data;
         using namespace opendlv::data::camera;

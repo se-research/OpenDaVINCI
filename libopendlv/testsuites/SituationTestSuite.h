@@ -25,7 +25,7 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/exceptions/Exceptions.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
 #include "opendlv/data/situation/ComplexModel.h"
 #include "opendlv/data/situation/Immediately.h"
 #include "opendlv/data/situation/Object.h"
@@ -47,7 +47,7 @@
 
 using namespace std;
 using namespace opendlv::data::situation;
-using namespace core::exceptions;
+using namespace odcore::exceptions;
 using namespace opendlv::situation;
 using namespace core::wrapper::parser;
 

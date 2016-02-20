@@ -36,10 +36,10 @@
 #include <map>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/strings/StringComparator.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/strings/StringComparator.h"
 #include "opendlv/threeD/TextureManager.h"
 
 namespace core { namespace wrapper { class Image; } }
@@ -48,7 +48,7 @@ namespace opendlv {
     namespace threeD {
 
         using namespace std;
-        using namespace core::base;
+        using namespace odcore::base;
 
         // Initialize singleton instance.
         Mutex TextureManager::m_singletonMutex;
@@ -71,7 +71,7 @@ namespace opendlv {
         }
 
         void TextureManager::removeTexture(const string &name) {
-            map<string, uint32_t, core::strings::StringComparator>::iterator it = m_mapOfTextureHandles.find(name);
+            map<string, uint32_t, odcore::strings::StringComparator>::iterator it = m_mapOfTextureHandles.find(name);
             if (it != m_mapOfTextureHandles.end()) {
                 // TODO: glDeleteTextures(1, it->second); fails...
                 m_mapOfTextureHandles.erase(it);
@@ -82,7 +82,7 @@ namespace opendlv {
         int32_t TextureManager::getTexture(const string &name) const {
             int32_t textureHandle = -1;
 
-            map<string, uint32_t, core::strings::StringComparator>::const_iterator it = m_mapOfTextureHandles.find(name);
+            map<string, uint32_t, odcore::strings::StringComparator>::const_iterator it = m_mapOfTextureHandles.find(name);
             if (it != m_mapOfTextureHandles.end()) {
                 textureHandle = static_cast<int>(it->second);
             }
@@ -93,7 +93,7 @@ namespace opendlv {
         bool TextureManager::hasTexture(const string &name) const {
             bool retVal = false;
 
-            map<string, uint32_t, core::strings::StringComparator>::const_iterator it = m_mapOfTextureHandles.find(name);
+            map<string, uint32_t, odcore::strings::StringComparator>::const_iterator it = m_mapOfTextureHandles.find(name);
             retVal = (it != m_mapOfTextureHandles.end());
 
             return retVal;

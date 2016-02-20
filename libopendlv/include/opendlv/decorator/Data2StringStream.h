@@ -22,8 +22,8 @@
 
 #include <sstream>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/data/Container.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/data/Container.h"
 
 #include "opendlv/data/environment/EgoState.h"
 #include "opendlv/data/planning/Route.h"
@@ -67,7 +67,7 @@ namespace opendlv {
                  *
                  * @param c Container to draw.
                  */
-                void toStringStream(core::data::Container &c);
+                void toStringStream(odcore::data::Container &c);
 
                 /**
                  * This method draws an EgoState.

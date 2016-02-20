@@ -22,7 +22,7 @@
 
 #include <map>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 #include "opendlv/threeD/NodeDescriptor.h"
 #include "opendlv/threeD/NodeDescriptorComparator.h"

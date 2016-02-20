@@ -22,7 +22,7 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 #include "opendlv/data/scenario/CoordinateSystem.h"
 #include "opendlv/data/scenario/Vertex3.h"

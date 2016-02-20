@@ -20,12 +20,12 @@
 #include <ostream>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/Deserializer.h"
-#include "opendavinci/core/base/Hash.h"
-#include "opendavinci/core/base/SerializationFactory.h"
-#include "opendavinci/core/base/Serializer.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 #include "opendlv/data/environment/Obstacle.h"
 #include "opendlv/data/environment/Point3.h"
 #include "opendlv/data/environment/PointShapedObject.h"
@@ -36,7 +36,7 @@ namespace opendlv {
         namespace environment {
 
             using namespace std;
-            using namespace core::base;
+            using namespace odcore::base;
             using namespace opendlv::data::environment;
 
             Obstacle::Obstacle() :
@@ -128,7 +128,7 @@ namespace opendlv {
                 // Serialize this class.
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                core::SharedPointer<Serializer> s = sf.getSerializer(out);
+                odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
                         static_cast<uint32_t>(m_id));
@@ -152,7 +152,7 @@ namespace opendlv {
                 // Deserialize this class.
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+                odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
                 d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
                        m_id);

@@ -22,9 +22,9 @@
 
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 #include "opendlv/data/environment/Point3.h"
 
 namespace opendlv {
@@ -36,7 +36,7 @@ namespace opendlv {
             /**
              * This class represents a route consisting of several points.
              */
-            class OPENDAVINCI_API Route : public core::data::SerializableData {
+            class OPENDAVINCI_API Route : public odcore::data::SerializableData {
                 public:
                     Route();
 

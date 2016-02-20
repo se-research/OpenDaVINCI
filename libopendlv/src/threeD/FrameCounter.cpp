@@ -22,7 +22,7 @@
 namespace opendlv {
     namespace threeD {
 
-        using namespace core::data;
+        using namespace odcore::data;
 
         FrameCounter::FrameCounter() :
             m_frameCounter(0),

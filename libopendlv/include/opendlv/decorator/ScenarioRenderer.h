@@ -24,8 +24,8 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Mutex.h"
 #include "opendlv/core/wrapper/Image.h"
 
 #include "opendlv/data/scenario/ScenarioNode.h"
@@ -135,7 +135,7 @@ namespace opendlv {
                 void visitHeightImage(opendlv::data::scenario::HeightImage &hi);
 
             private:
-                core::base::Mutex m_scenarioRendererMutex;
+                odcore::base::Mutex m_scenarioRendererMutex;
                 opendlv::scenario::SCNXArchive *m_scnxArchive;
                 Renderer *m_renderer;
 

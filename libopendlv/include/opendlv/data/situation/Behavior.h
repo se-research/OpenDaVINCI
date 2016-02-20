@@ -22,8 +22,8 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 #include "opendlv/data/situation/SituationNode.h"
 #include "opendlv/data/situation/SituationVisitor.h"
 
@@ -37,7 +37,7 @@ namespace opendlv {
              * This class represents an abstract behavior (i.e. EXTERNALDRIVER or
              * POINTIDDRIVER at the moment).
              */
-            class OPENDAVINCI_API Behavior : public core::data::SerializableData, public SituationNode {
+            class OPENDAVINCI_API Behavior : public odcore::data::SerializableData, public SituationNode {
                 public:
                     enum BEHAVIORTYPE {
                         UNDEFINED,

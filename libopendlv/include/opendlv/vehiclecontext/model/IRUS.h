@@ -22,11 +22,11 @@
 
 #include <string>
 
-#include "opendavinci/core/base/KeyValueConfiguration.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/data/TimeStamp.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
 
-#include "opendavinci/context/base/SystemFeedbackComponent.h"
+#include "opendavinci/odcontext/base/SystemFeedbackComponent.h"
 
 #include "opendlv/data/environment/EgoState.h"
 #include "opendlv/data/environment/Polygon.h"
@@ -92,10 +92,10 @@ namespace opendlv { namespace vehiclecontext {
                  * @param es EgoState of the vehicle.
                  * @return List of containers with the results.
                  */
-                vector<core::data::Container> calculate(const opendlv::data::environment::EgoState &es);
+                vector<odcore::data::Container> calculate(const opendlv::data::environment::EgoState &es);
 
             private:
-                core::base::KeyValueConfiguration m_kvc;
+                odcore::base::KeyValueConfiguration m_kvc;
                 float m_freq;
 
                 uint32_t m_numberOfPolygons;

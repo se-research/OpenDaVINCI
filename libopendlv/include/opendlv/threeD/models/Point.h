@@ -20,7 +20,7 @@
 #ifndef HESPERIA_CORE_THREED_MODELS_POINT_H_
 #define HESPERIA_CORE_THREED_MODELS_POINT_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 #include "opendlv/data/environment/Point3.h"
 #include "opendlv/threeD/Node.h"

@@ -22,8 +22,8 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendlv/data/environment/Point3.h"
 #include "opendlv/data/scenario/ComplexModel.h"
 #include "opendlv/data/scenario/Vertex3.h"
@@ -40,7 +40,7 @@ namespace opendlv {
     namespace scenario {
 
         using namespace std;
-        using namespace core;
+        using namespace odcore;
         using namespace opendlv::data::environment;
         using namespace data::scenario;
         using namespace scenario;

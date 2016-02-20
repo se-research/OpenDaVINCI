@@ -21,14 +21,14 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/Deserializer.h"
-#include "opendavinci/core/base/Hash.h"
-#include "opendavinci/core/base/Serializable.h"
-#include "opendavinci/core/base/SerializationFactory.h"
-#include "opendavinci/core/base/Serializer.h"
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 #include "opendlv/data/scenario/Ground.h"
 #include "opendlv/data/scenario/Header.h"
 #include "opendlv/data/scenario/Layer.h"
@@ -40,7 +40,7 @@ namespace opendlv {
         namespace scenario {
 
             using namespace std;
-            using namespace core::base;
+            using namespace odcore::base;
 
             Scenario::Scenario() :
                     m_header(),
@@ -120,7 +120,7 @@ namespace opendlv {
             ostream& Scenario::operator<<(ostream &out) const {
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                core::SharedPointer<Serializer> s = sf.getSerializer(out);
+                odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('h', 'e', 'a', 'd', 'e', 'r') >::RESULT,
                         m_header);
@@ -151,7 +151,7 @@ namespace opendlv {
             istream& Scenario::operator>>(istream &in) {
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+                odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
                 // Clean up.
                 m_listOfLayers.clear();

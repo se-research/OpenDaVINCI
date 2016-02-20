@@ -22,9 +22,9 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 
 namespace opendlv {
     namespace data {
@@ -35,7 +35,7 @@ namespace opendlv {
             /**
              * This class encapsulated an LMS291 message.
              */
-            class OPENDAVINCI_API LMS291Message : public core::data::SerializableData {
+            class OPENDAVINCI_API LMS291Message : public odcore::data::SerializableData {
                 public:
                     LMS291Message();
 

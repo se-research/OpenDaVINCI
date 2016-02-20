@@ -22,9 +22,9 @@
 
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 #include "opendlv/data/environment/Point3.h"
 
 namespace opendlv {
@@ -38,7 +38,7 @@ namespace opendlv {
             /**
              * This class represents a polygon.
              */
-            class OPENDAVINCI_API Polygon : public core::data::SerializableData {
+            class OPENDAVINCI_API Polygon : public odcore::data::SerializableData {
                 private:
                     const static double EPSILON;
 

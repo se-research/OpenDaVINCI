@@ -25,9 +25,9 @@
 #include <sstream>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendlv/core/wrapper/Image.h"
-#include "opendavinci/core/strings/StringComparator.h"
+#include "opendavinci/odcore/strings/StringComparator.h"
 
 #include "opendlv/decorator/models/Material.h"
 #include "opendlv/decorator/models/TriangleSet.h"
@@ -133,8 +133,8 @@ namespace opendlv {
                     const vector<TriangleSet> getListOfTriangleSets();
 
                 private:
-                    map<string, core::wrapper::Image*, core::strings::StringComparator> m_mapOfImages;
-                    map<string, Material, core::strings::StringComparator> m_mapOfMaterials;
+                    map<string, core::wrapper::Image*, odcore::strings::StringComparator> m_mapOfImages;
+                    map<string, Material, odcore::strings::StringComparator> m_mapOfMaterials;
                     stringstream m_objFile;
                     stringstream m_mtlFile;
 

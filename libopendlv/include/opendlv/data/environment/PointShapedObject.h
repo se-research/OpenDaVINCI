@@ -20,7 +20,7 @@
 #ifndef HESPERIA_DATA_ENVIRONMENT_POINTSHAPEDOBJECT_H_
 #define HESPERIA_DATA_ENVIRONMENT_POINTSHAPEDOBJECT_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 #include "opendlv/data/environment/Point3.h"
 #include "opendlv/data/environment/Position.h"

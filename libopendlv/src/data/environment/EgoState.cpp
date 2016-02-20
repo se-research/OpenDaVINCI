@@ -29,7 +29,7 @@ namespace opendlv {
         namespace environment {
 
             using namespace std;
-            using namespace core::base;
+            using namespace odcore::base;
             using namespace opendlv::data::environment;
 
             EgoState::EgoState() :
@@ -63,7 +63,7 @@ namespace opendlv {
                 // Serialize this class.
 //                SerializationFactory& sf=SerializationFactory::getInstance();
 //
-//                core::SharedPointer<Serializer> s = sf.getSerializer(out);
+//                odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 
                 // Nothing to be done.
 
@@ -77,7 +77,7 @@ namespace opendlv {
                 // Deserialize this class.
 //                SerializationFactory& sf=SerializationFactory::getInstance();
 //
-//                core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+//                odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
                 // Nothing to be done.
 

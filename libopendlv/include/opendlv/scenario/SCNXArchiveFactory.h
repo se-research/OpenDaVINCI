@@ -23,11 +23,11 @@
 #include <map>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/exceptions/Exceptions.h"
-#include "opendavinci/core/io/URL.h"
-#include "opendavinci/core/strings/StringComparator.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
+#include "opendavinci/odcore/io/URL.h"
+#include "opendavinci/odcore/strings/StringComparator.h"
 
 #include "opendlv/scenario/SCNXArchive.h"
 
@@ -77,13 +77,13 @@ namespace opendlv {
                  * @return SCNXArchive.
                  * @throws InvalidArgumentException if the URL could not be used to create the data structure.
                  */
-                SCNXArchive& getSCNXArchive(const core::io::URL &u) throw (core::exceptions::InvalidArgumentException);
+                SCNXArchive& getSCNXArchive(const odcore::io::URL &u) throw (odcore::exceptions::InvalidArgumentException);
 
             private:
-                static core::base::Mutex m_singletonMutex;
+                static odcore::base::Mutex m_singletonMutex;
                 static SCNXArchiveFactory* m_singleton;
 
-                map<string, SCNXArchive*, core::strings::StringComparator> m_mapOfSCNXArchives;
+                map<string, SCNXArchive*, odcore::strings::StringComparator> m_mapOfSCNXArchives;
         };
 
     }

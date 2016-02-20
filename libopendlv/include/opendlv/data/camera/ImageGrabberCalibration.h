@@ -22,8 +22,8 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 
 #include "opendlv/data/camera/ExtrinsicParameters.h"
 #include "opendlv/data/camera/IntrinsicParameters.h"
@@ -37,7 +37,7 @@ namespace opendlv {
             /**
              * This class represents a calibration for an image grabber.
              */
-            class OPENDAVINCI_API ImageGrabberCalibration : public core::data::SerializableData {
+            class OPENDAVINCI_API ImageGrabberCalibration : public odcore::data::SerializableData {
                 public:
                     ImageGrabberCalibration();
 

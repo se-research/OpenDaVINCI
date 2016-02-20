@@ -21,14 +21,14 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/Deserializer.h"
-#include "opendavinci/core/base/Hash.h"
-#include "opendavinci/core/base/Serializable.h"
-#include "opendavinci/core/base/SerializationFactory.h"
-#include "opendavinci/core/base/Serializer.h"
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 #include "opendlv/data/scenario/ComplexModel.h"
 #include "opendlv/data/scenario/Cylinder.h"
 #include "opendlv/data/scenario/Polygon.h"
@@ -41,7 +41,7 @@ namespace opendlv {
         namespace scenario {
 
             using namespace std;
-            using namespace core::base;
+            using namespace odcore::base;
             using namespace scenario;
 
             Surroundings::Surroundings() :
@@ -135,7 +135,7 @@ namespace opendlv {
             ostream& Surroundings::operator<<(ostream &out) const {
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                core::SharedPointer<Serializer> s = sf.getSerializer(out);
+                odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 
                 // Do not serialize UNKNOWN TYPES.
                 uint32_t numberOfShapes = 0;
@@ -173,7 +173,7 @@ namespace opendlv {
             istream& Surroundings::operator>>(istream &in) {
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+                odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
                 // Clean up.
                 cleanUp();

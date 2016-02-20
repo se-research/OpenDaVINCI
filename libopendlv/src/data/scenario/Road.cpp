@@ -21,14 +21,14 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/Deserializer.h"
-#include "opendavinci/core/base/Hash.h"
-#include "opendavinci/core/base/Serializable.h"
-#include "opendavinci/core/base/SerializationFactory.h"
-#include "opendavinci/core/base/Serializer.h"
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 #include "opendlv/data/scenario/Lane.h"
 #include "opendlv/data/scenario/Road.h"
 #include "opendlv/data/scenario/ScenarioVisitor.h"
@@ -40,7 +40,7 @@ namespace opendlv {
 class Layer;
 
             using namespace std;
-            using namespace core::base;
+            using namespace odcore::base;
             using namespace scenario;
 
             Road::Road() :
@@ -133,7 +133,7 @@ class Layer;
             ostream& Road::operator<<(ostream &out) const {
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                core::SharedPointer<Serializer> s = sf.getSerializer(out);
+                odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
                         getID());
@@ -164,7 +164,7 @@ class Layer;
             istream& Road::operator>>(istream &in) {
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+                odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
                 // Clean up.
                 m_listOfLanes.clear();

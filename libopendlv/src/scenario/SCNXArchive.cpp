@@ -21,8 +21,8 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendlv/data/scenario/Ground.h"
 #include "opendlv/data/scenario/HeightImage.h"
 #include "opendlv/data/scenario/Image.h"
@@ -33,7 +33,7 @@
 #include "opendlv/situation/SituationFactory.h"
 #include "opendlv/core/wrapper/ImageFactory.h"
 
-namespace core { namespace wrapper { class DecompressedData; } }
+namespace odcore { namespace wrapper { class DecompressedData; } }
 namespace core { namespace wrapper { class Image; } }
 namespace opendlv { namespace data { namespace scenario { class ComplexModel; } } }
 namespace opendlv { namespace data { namespace scenario { class Shape; } } }
@@ -42,9 +42,9 @@ namespace opendlv {
     namespace scenario {
 
         using namespace std;
-        using namespace core;
+        using namespace odcore;
 
-        SCNXArchive::SCNXArchive(const data::scenario::Scenario &scenario, core::SharedPointer<core::wrapper::DecompressedData> dd) :
+        SCNXArchive::SCNXArchive(const data::scenario::Scenario &scenario, odcore::SharedPointer<core::wrapper::DecompressedData> dd) :
             m_scenario(scenario),
             m_decompressedData(dd),
             m_aerialImage(NULL),

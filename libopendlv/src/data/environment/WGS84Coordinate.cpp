@@ -22,12 +22,12 @@
 #include <limits>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/Deserializer.h"
-#include "opendavinci/core/base/Hash.h"
-#include "opendavinci/core/base/SerializationFactory.h"
-#include "opendavinci/core/base/Serializer.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 #include "automotivedata/generated/cartesian/Constants.h"
 #include "opendlv/data/environment/Point3.h"
 #include "opendlv/data/environment/WGS84Coordinate.h"
@@ -37,8 +37,8 @@ namespace opendlv {
         namespace environment {
 
             using namespace std;
-            using namespace core::base;
-            using namespace core::data;
+            using namespace odcore::base;
+            using namespace odcore::data;
             using namespace opendlv::data::environment;
 
             const double WGS84Coordinate::EQUATOR_RADIUS = 6378137.0;
@@ -266,7 +266,7 @@ namespace opendlv {
             ostream& WGS84Coordinate::operator<<(ostream &out) const {
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                core::SharedPointer<Serializer> s = sf.getSerializer(out);
+                odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('l', 'a', 't') >::RESULT,
                         m_lat);
@@ -286,7 +286,7 @@ namespace opendlv {
             istream& WGS84Coordinate::operator>>(istream &in) {
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+                odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
                 d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('l', 'a', 't') >::RESULT,
                        m_lat);

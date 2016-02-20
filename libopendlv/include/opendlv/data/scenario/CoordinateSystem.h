@@ -22,8 +22,8 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 
 #include "opendlv/data/scenario/ScenarioNode.h"
 #include "opendlv/data/scenario/ScenarioVisitor.h"
@@ -37,7 +37,7 @@ namespace opendlv {
             /**
              * This class represents the coordinate system to be used of a scenario.
              */
-            class OPENDAVINCI_API CoordinateSystem : public core::data::SerializableData, public ScenarioNode {
+            class OPENDAVINCI_API CoordinateSystem : public odcore::data::SerializableData, public ScenarioNode {
                 protected:
                     CoordinateSystem();
 

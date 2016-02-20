@@ -23,10 +23,10 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/data/Container.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/data/Container.h"
 #include "opendlv/data/environment/EgoState.h"
 #include "opendlv/data/environment/Obstacle.h"
 #include "opendlv/data/environment/OtherVehicleState.h"
@@ -51,9 +51,9 @@ namespace opendlv {
     namespace decorator {
 
         using namespace std;
-        using namespace core;
-        using namespace core::base;
-        using namespace core::data;
+        using namespace odcore;
+        using namespace odcore::base;
+        using namespace odcore::data;
         using namespace opendlv::data::environment;
         using namespace opendlv::data::environment;
         using namespace opendlv::data::planning;

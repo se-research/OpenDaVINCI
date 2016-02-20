@@ -20,7 +20,7 @@
 #ifndef HESPERIA_SCENEGRAPH_SCENENODEVISITOR_H_
 #define HESPERIA_SCENEGRAPH_SCENENODEVISITOR_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 namespace opendlv {
     namespace scenegraph {

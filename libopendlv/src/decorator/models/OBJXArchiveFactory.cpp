@@ -21,13 +21,13 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/exceptions/Exceptions.h"
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/wrapper/CompressionFactory.h"
-#include "opendavinci/core/wrapper/DecompressedData.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/wrapper/CompressionFactory.h"
+#include "opendavinci/odcore/wrapper/DecompressedData.h"
 #include "opendlv/core/wrapper/ImageFactory.h"
 #include "opendlv/decorator/models/OBJXArchive.h"
 #include "opendlv/decorator/models/OBJXArchiveFactory.h"
@@ -39,10 +39,10 @@ namespace opendlv {
         namespace models {
 
             using namespace std;
-            using namespace core;
-            using namespace core::base;
-            using namespace core::data;
-            using namespace core::exceptions;
+            using namespace odcore;
+            using namespace odcore::base;
+            using namespace odcore::data;
+            using namespace odcore::exceptions;
 
             // Initialize singleton instance.
             Mutex OBJXArchiveFactory::m_singletonMutex;
@@ -103,7 +103,7 @@ namespace opendlv {
                 OBJXArchive *objxArchive = NULL;
 
                 // Use CompressionFactory to read the contents of the OBJXArchive.
-                SharedPointer<core::wrapper::DecompressedData> data = core::wrapper::CompressionFactory::getContents(in);
+                SharedPointer<odcore::wrapper::DecompressedData> data = odcore::wrapper::CompressionFactory::getContents(in);
 
                 if (data.isValid()) {
                     // Create OBJXArchive.
@@ -144,7 +144,7 @@ namespace opendlv {
                             SharedPointer<istream> stream = data->getInputStreamFor(entry);
 
                             if (stream.isValid()) {
-                                core::wrapper::Image *image = core::wrapper::ImageFactory::getInstance().getImage(*stream);
+                                core::wrapper::Image *image = odcore::wrapper::ImageFactory::getInstance().getImage(*stream);
 
                                 if (image != NULL) {
                                     // TODO: Check where origin lies.

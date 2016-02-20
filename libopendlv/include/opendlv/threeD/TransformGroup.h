@@ -20,11 +20,11 @@
 #ifndef HESPERIA_CORE_THREED_TRANSFORMGROUP_H_
 #define HESPERIA_CORE_THREED_TRANSFORMGROUP_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 #include <vector>
 
-#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/odcore/base/Mutex.h"
 #include "opendlv/data/environment/Point3.h"
 #include "opendlv/threeD/Node.h"
 #include "opendlv/threeD/NodeDescriptor.h"
@@ -142,7 +142,7 @@ namespace opendlv {
                 opendlv::data::environment::Point3 m_rotation;
                 opendlv::data::environment::Point3 m_scaling;
 
-                mutable core::base::Mutex m_listOfChildrenMutex;
+                mutable odcore::base::Mutex m_listOfChildrenMutex;
                 vector<Node*> m_listOfChildren;
         };
 

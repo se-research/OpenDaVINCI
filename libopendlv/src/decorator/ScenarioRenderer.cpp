@@ -22,9 +22,9 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendlv/data/scenario/ComplexModel.h"
 #include "opendlv/data/scenario/HeightImage.h"
 #include "opendlv/data/scenario/Image.h"
@@ -45,9 +45,9 @@ class Renderer;
 namespace models { class OBJXArchive; }
 
         using namespace std;
-        using namespace core;
-        using namespace core::base;
-        using namespace core::data;
+        using namespace odcore;
+        using namespace odcore::base;
+        using namespace odcore::data;
         using namespace opendlv::data::environment;
         using namespace opendlv::data::scenario;
         using namespace opendlv::decorator::models;

@@ -24,8 +24,8 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/strings/StringComparator.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/strings/StringComparator.h"
 #include "automotivedata/generated/cartesian/Constants.h"
 #include "opendlv/data/environment/Point3.h"
 #include "opendlv/threeD/Material.h"
@@ -41,7 +41,7 @@ namespace opendlv {
     namespace threeD {
         namespace loaders {
 
-            using namespace core;
+            using namespace odcore;
             using namespace opendlv::data::environment;
             using namespace threeD::models;
 
@@ -52,7 +52,7 @@ namespace opendlv {
                     m_mtlFile() {}
 
             OBJXArchive::~OBJXArchive() {
-                map<string, wrapper::Image*, core::strings::StringComparator>::iterator it = m_mapOfImages.begin();
+                map<string, wrapper::Image*, odcore::strings::StringComparator>::iterator it = m_mapOfImages.begin();
 
                 while (it != m_mapOfImages.end()) {
                     clog << "Deleting " << it->first << "...";
@@ -147,7 +147,7 @@ namespace opendlv {
                 if (m_mapOfMaterials.size() > 0) {
                     TextureManager &tm = TextureManager::getInstance();
 
-                    map<string, Material, core::strings::StringComparator>::iterator it = m_mapOfMaterials.begin();
+                    map<string, Material, odcore::strings::StringComparator>::iterator it = m_mapOfMaterials.begin();
                     while (it != m_mapOfMaterials.end()) {
                         wrapper::Image *image = m_mapOfImages[it->second.getTextureName()];
 

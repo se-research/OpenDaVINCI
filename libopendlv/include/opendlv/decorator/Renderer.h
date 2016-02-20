@@ -23,7 +23,7 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendlv/data/environment/Point3.h"
 
 namespace core { namespace wrapper { class Image; } }

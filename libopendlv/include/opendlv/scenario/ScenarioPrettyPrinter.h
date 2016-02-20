@@ -20,8 +20,8 @@
 #ifndef HESPERIA_SCENARIO_SCENARIOPRETTYPRINTER_H_
 #define HESPERIA_SCENARIO_SCENARIOPRETTYPRINTER_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 
 #include "opendlv/data/scenario/ScenarioVisitor.h"
 

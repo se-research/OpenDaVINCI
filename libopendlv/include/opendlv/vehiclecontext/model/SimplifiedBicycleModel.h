@@ -23,15 +23,15 @@
 
 #include <string>
 
-#include "opendavinci/core/base/KeyValueConfiguration.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/data/TimeStamp.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
 #include "opendlv/data/environment/Point3.h"
 
 #include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 #include "automotivedata/generated/automotive/VehicleControl.h"
 
-#include "opendavinci/context/base/SystemFeedbackComponent.h"
+#include "opendavinci/odcontext/base/SystemFeedbackComponent.h"
 
 namespace opendlv { namespace vehiclecontext {
     namespace model {
@@ -93,10 +93,10 @@ namespace opendlv { namespace vehiclecontext {
                  * @param timeStep Elapsed time.
                  * @return List of containers with the results.
                  */
-                vector<core::data::Container> calculate(const automotive::VehicleControl &vc, const double &timeStep);
+                vector<odcore::data::Container> calculate(const automotive::VehicleControl &vc, const double &timeStep);
 
             private:
-                core::base::KeyValueConfiguration m_kvc;
+                odcore::base::KeyValueConfiguration m_kvc;
                 float m_freq;
 
                 double m_wheelbase;
@@ -114,7 +114,7 @@ namespace opendlv { namespace vehiclecontext {
                 double m_desiredSteer;
 
                 double m_speed;
-                core::data::TimeStamp m_previousTime;
+                odcore::data::TimeStamp m_previousTime;
                 opendlv::data::environment::Point3 m_oldPosition;
                 opendlv::data::environment::Point3 m_orientation;
                 double m_heading;

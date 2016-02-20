@@ -21,11 +21,11 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/KeyValueConfiguration.h"
-#include "opendavinci/core/base/KeyValueDataStore.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/wrapper/Time.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/base/KeyValueDataStore.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/wrapper/Time.h"
 #include "opendlv/data/environment/EgoState.h"
 #include "opendlv/data/environment/Line.h"
 #include "opendlv/data/environment/Obstacle.h"
@@ -38,9 +38,9 @@ namespace opendlv { namespace vehiclecontext {
     namespace report {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::data;
-        using namespace core::io;
+        using namespace odcore::base;
+        using namespace odcore::data;
+        using namespace odcore::io;
         using namespace opendlv::data;
         using namespace opendlv::data::environment;
 

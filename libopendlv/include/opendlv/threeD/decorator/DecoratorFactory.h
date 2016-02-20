@@ -20,9 +20,9 @@
 #ifndef HESPERIA_CORE_THREED_DECORATOR_DECORATORFACTORY_H_
 #define HESPERIA_CORE_THREED_DECORATOR_DECORATORFACTORY_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/odcore/base/Mutex.h"
 #include "opendlv/scenario/SCNXArchive.h"
 #include "opendlv/threeD/Node.h"
 #include "opendlv/threeD/NodeDescriptor.h"
@@ -95,7 +95,7 @@ namespace opendlv {
                     Node* decorate(loaders::OBJXArchive &objxArchive, const NodeDescriptor &nd);
 
                 private:
-                    static core::base::Mutex m_singletonMutex;
+                    static odcore::base::Mutex m_singletonMutex;
                     static DecoratorFactory* m_singleton;
             };
 

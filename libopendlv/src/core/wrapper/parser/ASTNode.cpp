@@ -21,7 +21,7 @@
 #include <functional>
 #include <iostream>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendlv/core/wrapper/parser/ASTNode.h"
 #include "opendlv/core/wrapper/parser/ASTVisitor.h"
 

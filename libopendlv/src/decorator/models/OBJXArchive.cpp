@@ -24,8 +24,8 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/strings/StringComparator.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/strings/StringComparator.h"
 #include "opendlv/data/environment/Point3.h"
 #include "opendlv/decorator/models/Material.h"
 #include "opendlv/decorator/models/OBJXArchive.h"
@@ -38,7 +38,7 @@ namespace opendlv {
     namespace decorator {
         namespace models {
 
-            using namespace core;
+            using namespace odcore;
             using namespace opendlv::data::environment;
 
             OBJXArchive::OBJXArchive() :
@@ -48,7 +48,7 @@ namespace opendlv {
                 m_mtlFile() {}
 
             OBJXArchive::~OBJXArchive() {
-                map<string, wrapper::Image*, core::strings::StringComparator>::iterator it = m_mapOfImages.begin();
+                map<string, wrapper::Image*, odcore::strings::StringComparator>::iterator it = m_mapOfImages.begin();
 
                 while (it != m_mapOfImages.end()) {
                     clog << "Deleting " << it->first << "...";
@@ -88,7 +88,7 @@ namespace opendlv {
             vector<string> OBJXArchive::getListOfImages() const {
                 vector<string> listOfImages;
 
-                map<string, core::wrapper::Image*, core::strings::StringComparator>::const_iterator it = m_mapOfImages.begin();
+                map<string, core::wrapper::Image*, odcore::strings::StringComparator>::const_iterator it = m_mapOfImages.begin();
                 while (it != m_mapOfImages.end()) {
                     listOfImages.push_back(it->first);
                     it++;

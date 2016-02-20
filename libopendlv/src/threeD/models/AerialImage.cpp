@@ -25,7 +25,7 @@
 #include <GL/gl.h>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendlv/data/environment/Point3.h"
 #include "opendlv/threeD/Node.h"
 #include "opendlv/threeD/NodeDescriptor.h"
@@ -41,7 +41,7 @@ namespace opendlv {
         namespace models {
 
             using namespace opendlv::data::environment;
-            using namespace core::wrapper;
+            using namespace odcore::wrapper;
 
             AerialImageRenderer::AerialImageRenderer(const NodeDescriptor &nodeDescriptor, const uint32_t &textureHandle) :
                     Node(nodeDescriptor),

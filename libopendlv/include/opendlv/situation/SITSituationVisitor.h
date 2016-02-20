@@ -33,7 +33,7 @@
 #include "opendlv/data/situation/Shape.h"
 #include "opendlv/data/situation/Situation.h"
 #include "opendlv/data/situation/Vertex3.h"
-#include "opendavinci/core/exceptions/Exceptions.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
 #include "opendlv/core/wrapper/parser/ASTVisitor.h"
 
 namespace opendlv {
@@ -65,7 +65,7 @@ namespace opendlv {
 
                 virtual ~SITSituationVisitor();
 
-                virtual void visit(core::wrapper::parser::ASTNode *node) throw (core::exceptions::SITSituationVisitorException);
+                virtual void visit(core::wrapper::parser::ASTNode *node) throw (odcore::exceptions::SITSituationVisitorException);
 
             private:
                 data::situation::Situation &m_situation;
@@ -174,7 +174,7 @@ namespace opendlv {
                  * @param maxDepth Maximum depth to descend.
                  * @return Node or NULL.
                  */
-                core::wrapper::parser::ASTNode* findByKey(const string &key, core::wrapper::parser::ASTNode *node, const int32_t &maxDepth);
+                core::wrapper::parser::ASTNode* findByKey(const string &key, odcore::wrapper::parser::ASTNode *node, const int32_t &maxDepth);
 
                 /**
                  * This method tries to find a node with the given value.
@@ -184,7 +184,7 @@ namespace opendlv {
                  * @param maxDepth Maximum depth to descend.
                  * @return Node or NULL.
                  */
-                core::wrapper::parser::ASTNode* findByValue(const string &value, core::wrapper::parser::ASTNode *node, const int32_t &maxDepth);
+                core::wrapper::parser::ASTNode* findByValue(const string &value, odcore::wrapper::parser::ASTNode *node, const int32_t &maxDepth);
         };
 
     }

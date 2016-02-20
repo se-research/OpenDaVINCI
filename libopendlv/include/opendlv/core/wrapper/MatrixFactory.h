@@ -20,8 +20,8 @@
 #ifndef HESPERIA_CORE_WRAPPER_MATRIXFACTORY_H_
 #define HESPERIA_CORE_WRAPPER_MATRIXFACTORY_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/wrapper/Disposable.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/wrapper/Disposable.h"
 
 namespace core {
     namespace wrapper {
@@ -49,7 +49,7 @@ class Mutex;
          *
          * @endcode
          */
-        class OPENDAVINCI_API MatrixFactory : public Disposable {
+        class OPENDAVINCI_API MatrixFactory : public odcore::wrapper::Disposable {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn

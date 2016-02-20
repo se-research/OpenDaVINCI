@@ -20,7 +20,7 @@
 #ifndef HESPERIA_SCENEGRAPH_SCENENODEDESCRIPTORCOMPARATOR_H_
 #define HESPERIA_SCENEGRAPH_SCENENODEDESCRIPTORCOMPARATOR_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendlv/scenegraph/SceneNodeDescriptor.h"
 
 namespace opendlv {

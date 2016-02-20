@@ -20,7 +20,7 @@
 #ifndef HESPERIA_CORE_SCENEGRAPH_RENDERER_SCENENODERENDERINGCONFIGURATION_H_
 #define HESPERIA_CORE_SCENEGRAPH_RENDERER_SCENENODERENDERINGCONFIGURATION_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 namespace opendlv {
     namespace scenegraph {

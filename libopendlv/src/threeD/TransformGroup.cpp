@@ -27,8 +27,8 @@
 #include <algorithm>
 #include <vector>
 
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendlv/data/environment/Point3.h"
 #include "opendlv/threeD/Node.h"
 #include "opendlv/threeD/NodeDescriptor.h"
@@ -40,7 +40,7 @@ namespace opendlv { namespace threeD { class TransformGroupVisitor; } }
 namespace opendlv {
     namespace threeD {
 
-        using namespace core::base;
+        using namespace odcore::base;
         using namespace opendlv::data::environment;
 
         TransformGroup::TransformGroup() :

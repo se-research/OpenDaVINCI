@@ -23,11 +23,11 @@
 #include <list>
 #include <string>
 
-#include "opendavinci/core/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
 #include "opendlv/data/environment/Point3.h"
 #include "opendlv/data/scenario/PointID.h"
 
-#include "opendavinci/context/base/SystemReportingComponent.h"
+#include "opendavinci/odcontext/base/SystemReportingComponent.h"
 
 namespace opendlv { namespace vehiclecontext {
     namespace report {
@@ -78,7 +78,7 @@ namespace opendlv { namespace vehiclecontext {
                 bool hasCorrectDistance() const;
 
             private:
-                core::base::KeyValueConfiguration m_configuration;
+                odcore::base::KeyValueConfiguration m_configuration;
                 const float m_threshold;
                 bool m_correctDistance;
         };

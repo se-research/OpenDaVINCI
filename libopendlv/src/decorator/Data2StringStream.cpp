@@ -20,7 +20,7 @@
 #include <ostream>
 #include <string>
 
-#include "opendavinci/core/data/Container.h"
+#include "opendavinci/odcore/data/Container.h"
 #include "opendlv/data/environment/EgoState.h"
 #include "opendlv/data/planning/Route.h"
 #include "opendlv/decorator/Data2StringStream.h"
@@ -29,8 +29,8 @@ namespace opendlv {
     namespace decorator {
 
         using namespace std;
-        using namespace core::data;
-        using namespace core::base;
+        using namespace odcore::data;
+        using namespace odcore::base;
         using namespace opendlv::data::environment;
         using namespace opendlv::data::planning;
 

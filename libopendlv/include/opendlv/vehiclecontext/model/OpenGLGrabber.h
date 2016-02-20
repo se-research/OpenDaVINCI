@@ -23,10 +23,10 @@
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
 
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
 #include "opendlv/core/wrapper/Image.h"
-#include "opendavinci/core/wrapper/SharedMemory.h"
+#include "opendavinci/odcore/wrapper/SharedMemory.h"
 
 #include "opendlv/data/environment/EgoState.h"
 #include "opendlv/io/camera/ImageGrabber.h"
@@ -71,7 +71,7 @@ namespace opendlv { namespace vehiclecontext {
                  * @param imageGrabberCalibration Calibration information for this grabber.
                  * @param egoState Current ego state.
                  */
-                OpenGLGrabber(const core::base::KeyValueConfiguration &kvc,
+                OpenGLGrabber(const odcore::base::KeyValueConfiguration &kvc,
                               const opendlv::data::camera::ImageGrabberID &imageGrabberID,
                               const opendlv::data::camera::ImageGrabberCalibration &imageGrabberCalibration);
 
@@ -79,13 +79,13 @@ namespace opendlv { namespace vehiclecontext {
 
                 virtual void delay();
 
-                virtual core::SharedPointer<core::wrapper::Image> getNextImage();
+                virtual odcore::SharedPointer<core::wrapper::Image> getNextImage();
 
             private:
-                core::base::KeyValueConfiguration m_kvc;
-                core::SharedPointer<core::wrapper::Image> m_image;
-                core::SharedPointer<core::wrapper::SharedMemory> m_sharedMemory;
-                core::SharedPointer<opendlv::threeD::TransformGroup> m_root;
+                odcore::base::KeyValueConfiguration m_kvc;
+                odcore::SharedPointer<core::wrapper::Image> m_image;
+                odcore::SharedPointer<core::wrapper::SharedMemory> m_sharedMemory;
+                odcore::SharedPointer<opendlv::threeD::TransformGroup> m_root;
         };
 
     }

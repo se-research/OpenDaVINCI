@@ -19,8 +19,8 @@
 
 #include <iostream>
 
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/Mutex.h"
 #include "opendlv/data/scenario/Scenario.h"
 #include "opendlv/scenario/GroundBasedComplexModelLoader.h"
 #include "opendlv/scenario/SCNXArchive.h"
@@ -38,7 +38,7 @@ namespace opendlv {
         namespace decorator {
 
             using namespace std;
-            using namespace core::base;
+            using namespace odcore::base;
             using namespace opendlv::data::environment;
             using namespace data::scenario;
             using namespace scenario;

@@ -22,8 +22,8 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 #include "opendlv/data/situation/SituationNode.h"
 #include "opendlv/data/situation/SituationVisitor.h"
 
@@ -36,7 +36,7 @@ namespace opendlv {
             /**
              * This class represents an abstract stop type (STOP, RETURNTOSTART, WARPTOSTART).
              */
-            class OPENDAVINCI_API StopType : public core::data::SerializableData, public SituationNode {
+            class OPENDAVINCI_API StopType : public odcore::data::SerializableData, public SituationNode {
                 public:
                     enum STOPTYPE {
                         UNDEFINED,

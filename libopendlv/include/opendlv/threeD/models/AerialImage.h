@@ -20,7 +20,7 @@
 #ifndef HESPERIA_CORE_THREED_MODELS_AERIALIMAGE_H_
 #define HESPERIA_CORE_THREED_MODELS_AERIALIMAGE_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendlv/core/wrapper/Image.h"
 
 #include "opendlv/data/environment/Point3.h"

@@ -20,8 +20,8 @@
 #ifndef HESPERIA_THREED_NODE_H_
 #define HESPERIA_THREED_NODE_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/wrapper/Disposable.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/wrapper/Disposable.h"
 #include "opendlv/threeD/NodeDescriptor.h"
 
 namespace opendlv {
@@ -33,7 +33,7 @@ namespace opendlv {
          */
 class RenderingConfiguration;
 
-        class OPENDAVINCI_API Node : public core::wrapper::Disposable {
+        class OPENDAVINCI_API Node : public odcore::wrapper::Disposable {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn

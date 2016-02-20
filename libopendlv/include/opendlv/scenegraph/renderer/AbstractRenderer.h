@@ -20,7 +20,7 @@
 #ifndef HESPERIA_SCENEGRAPH_RENDERER_ABSTRACTRENDERER_H_
 #define HESPERIA_SCENEGRAPH_RENDERER_ABSTRACTRENDERER_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendlv/scenegraph/SceneNodeVisitor.h"
 
 namespace opendlv { namespace scenegraph { class SceneNode; } }

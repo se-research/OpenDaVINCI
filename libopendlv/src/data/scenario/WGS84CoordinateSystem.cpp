@@ -20,11 +20,11 @@
 #include <ostream>
 #include <string>
 
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/Deserializer.h"
-#include "opendavinci/core/base/Hash.h"
-#include "opendavinci/core/base/SerializationFactory.h"
-#include "opendavinci/core/base/Serializer.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 #include "opendlv/data/scenario/CoordinateSystem.h"
 #include "opendlv/data/scenario/ScenarioVisitor.h"
 #include "opendlv/data/scenario/Vertex3.h"
@@ -35,7 +35,7 @@ namespace opendlv {
         namespace scenario {
 
             using namespace std;
-            using namespace core::base;
+            using namespace odcore::base;
 
             WGS84CoordinateSystem::WGS84CoordinateSystem() :
                     m_origin() {}
@@ -78,7 +78,7 @@ namespace opendlv {
 
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                core::SharedPointer<Serializer> s = sf.getSerializer(out);
+                odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('o', 'r', 'i', 'g', 'i', 'n') >::RESULT,
                         m_origin);
@@ -92,7 +92,7 @@ namespace opendlv {
 
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+                odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
                 d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('o', 'r', 'i', 'g', 'i', 'n') >::RESULT,
                        m_origin);

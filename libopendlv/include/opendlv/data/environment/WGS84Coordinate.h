@@ -22,9 +22,9 @@
 
 #include <map>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 #include "opendlv/data/environment/Point3.h"
 
 namespace opendlv {
@@ -38,7 +38,7 @@ namespace opendlv {
             /**
              * This class is the main class for a WGS84 coordinate.
              */
-            class OPENDAVINCI_API WGS84Coordinate : public core::data::SerializableData {
+            class OPENDAVINCI_API WGS84Coordinate : public odcore::data::SerializableData {
                 private:
                     // The following constants are necessary the project WGS84 coordinates.
                     const static double EQUATOR_RADIUS;

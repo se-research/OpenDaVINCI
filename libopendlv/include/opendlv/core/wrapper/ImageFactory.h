@@ -22,8 +22,8 @@
 
 #include <iostream>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/wrapper/Disposable.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/wrapper/Disposable.h"
 #include "opendlv/core/wrapper/Image.h"
 
 namespace core {
@@ -52,7 +52,7 @@ class Mutex;
          *
          * @endcode
          */
-        class OPENDAVINCI_API ImageFactory : public Disposable {
+        class OPENDAVINCI_API ImageFactory : public odcore::wrapper::Disposable {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn

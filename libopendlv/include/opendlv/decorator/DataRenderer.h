@@ -24,9 +24,9 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/data/Container.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/data/Container.h"
 
 #include "opendlv/data/environment/EgoState.h"
 #include "opendlv/data/environment/Obstacle.h"
@@ -73,7 +73,7 @@ namespace opendlv {
                  *
                  * @param c Container to draw.
                  */
-                void draw(core::data::Container &c);
+                void draw(odcore::data::Container &c);
 
                 /**
                  * This method draws an EgoState.
@@ -133,7 +133,7 @@ namespace opendlv {
                 void setSCNXArchive(opendlv::scenario::SCNXArchive *scnxArchive);
 
             private:
-                core::base::Mutex m_dataRendererMutex;
+                odcore::base::Mutex m_dataRendererMutex;
                 Renderer *m_renderer;
 
                 opendlv::scenario::SCNXArchive *m_scnxArchive;

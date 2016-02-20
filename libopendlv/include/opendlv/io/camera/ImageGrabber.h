@@ -20,8 +20,8 @@
 #ifndef HESPERIA_IO_CAMERA_IMAGEGRABBER_H_
 #define HESPERIA_IO_CAMERA_IMAGEGRABBER_H_
 
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendlv/data/camera/ImageGrabberCalibration.h"
 #include "opendlv/data/camera/ImageGrabberID.h"
 
@@ -73,7 +73,7 @@ namespace opendlv {
                      *
                      * @return Next available image.
                      */
-                    virtual core::SharedPointer<core::wrapper::Image> getNextImage() = 0;
+                    virtual odcore::SharedPointer<core::wrapper::Image> getNextImage() = 0;
 
                     /**
                      * This methods delays the image acquisition.

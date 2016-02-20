@@ -24,7 +24,7 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 namespace core {
     namespace wrapper {

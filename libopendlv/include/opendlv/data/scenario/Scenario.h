@@ -23,9 +23,9 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 #include "opendlv/data/scenario/Ground.h"
 #include "opendlv/data/scenario/Header.h"
 #include "opendlv/data/scenario/Layer.h"
@@ -41,7 +41,7 @@ namespace opendlv {
             /**
              * This class represents a scenario.
              */
-            class OPENDAVINCI_API Scenario : public core::data::SerializableData, public ScenarioNode {
+            class OPENDAVINCI_API Scenario : public odcore::data::SerializableData, public ScenarioNode {
                 public:
                     Scenario();
 

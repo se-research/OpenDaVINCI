@@ -23,9 +23,9 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 #include "opendlv/data/scenario/Connector.h"
 #include "opendlv/data/scenario/Lane.h"
 #include "opendlv/data/scenario/Perimeter.h"
@@ -45,7 +45,7 @@ namespace opendlv {
             /**
              * This class represents a zone.
              */
-            class OPENDAVINCI_API Zone : public core::data::SerializableData, public ScenarioNode {
+            class OPENDAVINCI_API Zone : public odcore::data::SerializableData, public ScenarioNode {
                 public:
                     Zone();
 

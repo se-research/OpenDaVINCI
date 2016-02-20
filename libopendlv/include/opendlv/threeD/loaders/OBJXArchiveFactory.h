@@ -22,9 +22,9 @@
 
 #include <iostream>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/exceptions/Exceptions.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
 
 #include "opendlv/threeD/loaders/OBJXArchive.h"
 
@@ -74,7 +74,7 @@ namespace opendlv {
                      * @return OBJXArchive.
                      * @throws InvalidArgumentException if the URL could not be used to create the data structure.
                      */
-                    OBJXArchive* getOBJXArchiveFromPlainOBJFile(istream &in) throw (core::exceptions::InvalidArgumentException);
+                    OBJXArchive* getOBJXArchiveFromPlainOBJFile(istream &in) throw (odcore::exceptions::InvalidArgumentException);
 
                     /**
                      * This method returns the OBJXArchive data structure.
@@ -83,10 +83,10 @@ namespace opendlv {
                      * @return OBJXArchive.
                      * @throws InvalidArgumentException if the URL could not be used to create the data structure.
                      */
-                    OBJXArchive* getOBJXArchive(istream &in) throw (core::exceptions::InvalidArgumentException);
+                    OBJXArchive* getOBJXArchive(istream &in) throw (odcore::exceptions::InvalidArgumentException);
 
                 private:
-                    static core::base::Mutex m_singletonMutex;
+                    static odcore::base::Mutex m_singletonMutex;
                     static OBJXArchiveFactory* m_singleton;
             };
 

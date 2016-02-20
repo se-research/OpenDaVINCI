@@ -27,7 +27,7 @@
 #include <boost/spirit/include/classic_ast.hpp>
 #include <boost/spirit/include/classic_error_handling.hpp>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendlv/core/wrapper/parser/Grammar.h"
 #include "opendlv/core/wrapper/parser/ParserError.h"
 #include "opendlv/core/wrapper/parser/ParserErrorExtendedData.h"

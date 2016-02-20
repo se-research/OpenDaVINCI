@@ -23,10 +23,10 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/data/SerializableData.h"
-#include "opendavinci/core/exceptions/Exceptions.h"
+#include "opendavinci/odcore/data/SerializableData.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
 #include "opendlv/data/scenario/IDVertex3.h"
 #include "opendlv/data/scenario/LaneModel.h"
 
@@ -76,7 +76,7 @@ namespace opendlv {
                      * @return IDVertex3 for the given ID.
                      * @throws InvalidArgumentException if the ID could not be found.
                      */
-                    const IDVertex3 getIDVertex3(const uint32_t &id) const throw (core::exceptions::InvalidArgumentException);
+                    const IDVertex3 getIDVertex3(const uint32_t &id) const throw (odcore::exceptions::InvalidArgumentException);
 
                     /**
                      * This method adds an identifiable vertex.

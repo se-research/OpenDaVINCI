@@ -24,7 +24,7 @@ namespace opendlv {
     namespace math {
 
         using namespace std;
-        using namespace core::data;
+        using namespace odcore::data;
         using namespace opendlv::data::environment;
 
         Transformation::Transformation() {}

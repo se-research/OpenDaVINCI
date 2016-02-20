@@ -20,7 +20,7 @@
 #ifndef HESPERIA_DATA_ENVIRONMENT_OTHERVEHICLESTATE_H_
 #define HESPERIA_DATA_ENVIRONMENT_OTHERVEHICLESTATE_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 #include "opendlv/data/environment/PointShapedObject.h"
 

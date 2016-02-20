@@ -25,13 +25,13 @@
 #include <sstream>
 #include <vector>
 
-#include "opendavinci/core/data/TimeStamp.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
 #include "opendlv/data/environment/Point3.h"
 #include "opendlv/data/environment/WGS84Coordinate.h"
 #include "opendlv/data/sensor/nmea/GPRMC.h"
 
 using namespace std;
-using namespace core::data;
+using namespace odcore::data;
 using namespace opendlv::data;
 using namespace opendlv::data::environment;
 using namespace opendlv::data::environment;

@@ -20,7 +20,7 @@
 #include <iostream>
 #include <string>
 
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 #include "opendlv/data/scenario/ScenarioNode.h"
 #include "opendlv/scenario/ScenarioPrettyPrinter.h"
 
@@ -28,7 +28,7 @@ namespace opendlv {
     namespace scenario {
 
         using namespace std;
-        using namespace core::data;
+        using namespace odcore::data;
         using namespace data::scenario;
 
         ScenarioPrettyPrinter::ScenarioPrettyPrinter() {}

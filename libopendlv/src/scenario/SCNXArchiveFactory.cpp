@@ -22,15 +22,15 @@
 #include <map>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/exceptions/Exceptions.h"
-#include "opendavinci/core/io/URL.h"
-#include "opendavinci/core/strings/StringComparator.h"
-#include "opendavinci/core/wrapper/CompressionFactory.h"
-#include "opendavinci/core/wrapper/DecompressedData.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
+#include "opendavinci/odcore/io/URL.h"
+#include "opendavinci/odcore/strings/StringComparator.h"
+#include "opendavinci/odcore/wrapper/CompressionFactory.h"
+#include "opendavinci/odcore/wrapper/DecompressedData.h"
 #include "opendlv/data/scenario/Scenario.h"
 #include "opendlv/scenario/SCNXArchive.h"
 #include "opendlv/scenario/SCNXArchiveFactory.h"
@@ -40,10 +40,10 @@ namespace opendlv {
     namespace scenario {
 
         using namespace std;
-        using namespace core;
-        using namespace core::base;
-        using namespace core::exceptions;
-        using namespace core::io;
+        using namespace odcore;
+        using namespace odcore::base;
+        using namespace odcore::exceptions;
+        using namespace odcore::io;
 
         using namespace data::scenario;
 
@@ -55,7 +55,7 @@ namespace opendlv {
             m_mapOfSCNXArchives() {}
 
         SCNXArchiveFactory::~SCNXArchiveFactory() {
-            map<string, SCNXArchive*, core::strings::StringComparator>::iterator it = m_mapOfSCNXArchives.begin();
+            map<string, SCNXArchive*, odcore::strings::StringComparator>::iterator it = m_mapOfSCNXArchives.begin();
             while (it != m_mapOfSCNXArchives.end()) {
                 SCNXArchive *s = it->second;
                 OPENDAVINCI_CORE_DELETE_POINTER(s);
@@ -84,7 +84,7 @@ namespace opendlv {
             SCNXArchive *scnxArchive = NULL;
 
             // Try to find an existing SCNXArchive in the map using the URL as key.
-            map<string, SCNXArchive*, core::strings::StringComparator>::iterator it = m_mapOfSCNXArchives.find(url.toString());
+            map<string, SCNXArchive*, odcore::strings::StringComparator>::iterator it = m_mapOfSCNXArchives.find(url.toString());
             if (it != m_mapOfSCNXArchives.end()) {
             	clog << "Found already constructed data structure." << endl;
                 scnxArchive = it->second;
@@ -95,7 +95,7 @@ namespace opendlv {
 
                 string fileName = url.getResource();
                 fstream fin(fileName.c_str(), ios::binary | ios::in);
-                core::SharedPointer<core::wrapper::DecompressedData> data = core::wrapper::CompressionFactory::getContents(fin);
+                odcore::SharedPointer<odcore::wrapper::DecompressedData> data = odcore::wrapper::CompressionFactory::getContents(fin);
                 fin.close();
 
                 if (data.isValid()) {

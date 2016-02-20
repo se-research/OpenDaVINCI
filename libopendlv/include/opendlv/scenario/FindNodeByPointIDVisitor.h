@@ -20,8 +20,8 @@
 #ifndef HESPERIA_SCENARIO_FINDNODEBYPOINTIDVISITOR_H_
 #define HESPERIA_SCENARIO_FINDNODEBYPOINTIDVISITOR_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 
 #include "opendlv/data/scenario/ScenarioVisitor.h"
 #include "opendlv/data/situation/PointID.h"

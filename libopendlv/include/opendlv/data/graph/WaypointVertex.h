@@ -20,7 +20,7 @@
 #ifndef HESPERIA_DATA_GRAPH_WAYPOINTVERTEX_H_
 #define HESPERIA_DATA_GRAPH_WAYPOINTVERTEX_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendlv/core/wrapper/graph/Vertex.h"
 
 #include "opendlv/data/environment/Point3.h"

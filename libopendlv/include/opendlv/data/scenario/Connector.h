@@ -22,8 +22,8 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 
 #include "opendlv/data/scenario/PointID.h"
 #include "opendlv/data/scenario/ScenarioNode.h"
@@ -38,7 +38,7 @@ namespace opendlv {
             /**
              * This class represents a connector between lanes or lanes and zones.
              */
-            class OPENDAVINCI_API Connector : public core::data::SerializableData, public ScenarioNode {
+            class OPENDAVINCI_API Connector : public odcore::data::SerializableData, public ScenarioNode {
                 public:
                     Connector();
 

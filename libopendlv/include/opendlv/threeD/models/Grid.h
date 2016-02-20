@@ -20,7 +20,7 @@
 #ifndef HESPERIA_CORE_THREED_MODELS_GRID_H_
 #define HESPERIA_CORE_THREED_MODELS_GRID_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 #include "opendlv/threeD/Node.h"
 #include "opendlv/threeD/NodeDescriptor.h"

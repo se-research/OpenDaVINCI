@@ -22,12 +22,12 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/context/base/SendContainerToSystemsUnderTest.h"
-#include "opendavinci/core/base/KeyValueConfiguration.h"
-#include "opendavinci/core/io/URL.h"
-#include "opendavinci/core/strings/StringComparator.h"
-#include "opendavinci/core/wrapper/Time.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcontext/base/SendContainerToSystemsUnderTest.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/io/URL.h"
+#include "opendavinci/odcore/strings/StringComparator.h"
+#include "opendavinci/odcore/wrapper/Time.h"
 #include "automotivedata/generated/automotive/miniature/SensorBoardData.h"
 #include "opendlv/data/environment/Obstacle.h"
 #include "opendlv/data/environment/Point3.h"
@@ -47,10 +47,10 @@ namespace opendlv { namespace vehiclecontext {
     namespace model {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::data;
+        using namespace odcore::base;
+        using namespace odcore::data;
         using namespace odcontext::base;
-        using namespace core::io;
+        using namespace odcore::io;
         using namespace opendlv::data;
         using namespace opendlv::data::environment;
         using namespace opendlv::scenario;
@@ -175,7 +175,7 @@ namespace opendlv { namespace vehiclecontext {
                         faultModelSkip = 1;
                     }
                 }
-                catch (const core::exceptions::ValueForKeyNotFoundException &e) {
+                catch (const odcore::exceptions::ValueForKeyNotFoundException &e) {
                 }
 
                 // Don't add any noise as default.
@@ -185,7 +185,7 @@ namespace opendlv { namespace vehiclecontext {
                     faultModelNoiseStr << "odsimirus.sensor" << i << ".faultModel.noise";
                     faultModelNoise = m_kvc.getValue<double>(faultModelNoiseStr.str());
                 }
-                catch (const core::exceptions::ValueForKeyNotFoundException &e) {
+                catch (const odcore::exceptions::ValueForKeyNotFoundException &e) {
                 }
 
                 PointSensor *ps = new PointSensor(id, name, translation, rotZ, angleFOV, distanceFOV, clampDistance, showFOV, faultModelSkip, faultModelNoise);
@@ -208,7 +208,7 @@ namespace opendlv { namespace vehiclecontext {
 
         void IRUS::tearDown() {
             // Delete all point sensors.
-            map<string, PointSensor*, core::strings::StringComparator>::const_iterator sensorIterator = m_mapOfPointSensors.begin();
+            map<string, PointSensor*, odcore::strings::StringComparator>::const_iterator sensorIterator = m_mapOfPointSensors.begin();
             for (; sensorIterator != m_mapOfPointSensors.end(); sensorIterator++) {
                 PointSensor *sensor = sensorIterator->second;
                 OPENDAVINCI_CORE_DELETE_POINTER(sensor);
@@ -223,7 +223,7 @@ namespace opendlv { namespace vehiclecontext {
             automotive::miniature::SensorBoardData sensorBoardData;
 
             // Loop through point sensors.
-            map<string, PointSensor*, core::strings::StringComparator>::iterator sensorIterator = m_mapOfPointSensors.begin();
+            map<string, PointSensor*, odcore::strings::StringComparator>::iterator sensorIterator = m_mapOfPointSensors.begin();
             for (; sensorIterator != m_mapOfPointSensors.end(); sensorIterator++) {
                 PointSensor *sensor = sensorIterator->second;
 
@@ -247,7 +247,7 @@ namespace opendlv { namespace vehiclecontext {
 
             // Distribute FOV where necessary.
             uint32_t sensorID = 9000;
-            map<string, Polygon, core::strings::StringComparator>::iterator FOVIterator = m_FOVs.begin();
+            map<string, Polygon, odcore::strings::StringComparator>::iterator FOVIterator = m_FOVs.begin();
             for (; FOVIterator != m_FOVs.end(); FOVIterator++) {
                 string key = FOVIterator->first;
                 Polygon FOV = FOVIterator->second;

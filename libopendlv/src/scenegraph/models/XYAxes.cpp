@@ -27,7 +27,7 @@ namespace opendlv {
         namespace models {
 
             using namespace std;
-            using namespace core::data;
+            using namespace odcore::data;
             using namespace opendlv::data::environment;
             using namespace opendlv::scenegraph::primitives;
 

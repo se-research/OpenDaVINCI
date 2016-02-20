@@ -20,7 +20,7 @@
 #ifndef HESPERIA_CORE_DATA_SITUATION_SITUATIONNODE_H_
 #define HESPERIA_CORE_DATA_SITUATION_SITUATIONNODE_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 namespace opendlv {
     namespace data {

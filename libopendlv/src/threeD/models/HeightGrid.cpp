@@ -27,7 +27,7 @@
 #include <iostream>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendlv/core/wrapper/Image.h"
 #include "opendlv/data/environment/Point3.h"
 #include "opendlv/threeD/Node.h"
@@ -40,7 +40,7 @@ namespace opendlv {
     namespace threeD {
         namespace models {
 
-            using namespace core;
+            using namespace odcore;
             using namespace opendlv::data::environment;
 
             HeightGridRenderer::HeightGridRenderer(const NodeDescriptor &nodeDescriptor, const uint32_t &callList) :

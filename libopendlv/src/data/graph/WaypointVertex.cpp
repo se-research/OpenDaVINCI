@@ -20,7 +20,7 @@
 #include <sstream>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendlv/core/wrapper/graph/Vertex.h"
 #include "opendlv/data/environment/Point3.h"
 #include "opendlv/data/graph/WaypointVertex.h"

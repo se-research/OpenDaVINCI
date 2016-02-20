@@ -20,12 +20,12 @@
 #include <ostream>
 #include <string>
 
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/Deserializer.h"
-#include "opendavinci/core/base/Hash.h"
-#include "opendavinci/core/base/SerializationFactory.h"
-#include "opendavinci/core/base/Serializer.h"
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 #include "opendlv/data/scenario/Connector.h"
 #include "opendlv/data/scenario/PointID.h"
 #include "opendlv/data/scenario/ScenarioVisitor.h"
@@ -35,7 +35,7 @@ namespace opendlv {
         namespace scenario {
 
             using namespace std;
-            using namespace core::base;
+            using namespace odcore::base;
             using namespace scenario;
 
             Connector::Connector() :
@@ -87,7 +87,7 @@ namespace opendlv {
             ostream& Connector::operator<<(ostream &out) const {
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                core::SharedPointer<Serializer> s = sf.getSerializer(out);
+                odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('s', 'o', 'u', 'r', 'c', 'e') >::RESULT,
                         getSource());
@@ -101,7 +101,7 @@ namespace opendlv {
             istream& Connector::operator>>(istream &in) {
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+                odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
                 d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('s', 'o', 'u', 'r', 'c', 'e') >::RESULT,
                        m_source);

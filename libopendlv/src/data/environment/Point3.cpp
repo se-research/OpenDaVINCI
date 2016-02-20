@@ -21,14 +21,14 @@
 #include <istream>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/Deserializer.h"
-#include "opendavinci/core/base/Hash.h"
-#include "opendavinci/core/base/SerializationFactory.h"
-#include "opendavinci/core/base/Serializer.h"
-#include "opendavinci/core/data/SerializableData.h"
-#include "opendavinci/core/strings/StringToolbox.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/data/SerializableData.h"
+#include "opendavinci/odcore/strings/StringToolbox.h"
 #include "automotivedata/generated/cartesian/Constants.h"
 #include "automotivedata/generated/cartesian/Matrix3x3.h"
 #include "opendlv/data/environment/Point3.h"
@@ -38,8 +38,8 @@ namespace opendlv {
         namespace environment {
 
             using namespace std;
-            using namespace core::base;
-            using namespace core::data;
+            using namespace odcore::base;
+            using namespace odcore::data;
 
             const double Point3::EPSILON = 1e-7;
 
@@ -58,7 +58,7 @@ namespace opendlv {
                     m_y(0),
                     m_z(0) {
                 string trimmedString(s);
-                core::strings::StringToolbox::trim(trimmedString);
+                odcore::strings::StringToolbox::trim(trimmedString);
                 stringstream sstr(trimmedString);
                 char ignore;
 
@@ -329,7 +329,7 @@ namespace opendlv {
             ostream& Point3::operator<<(ostream &out) const {
                 SerializationFactory& sf=SerializationFactory::getInstance();;
 
-                core::SharedPointer<Serializer> s = sf.getSerializer(out);
+                odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 
                 stringstream rawData;
                 rawData.precision(10);
@@ -345,7 +345,7 @@ namespace opendlv {
             istream& Point3::operator>>(istream &in) {
                 SerializationFactory& sf=SerializationFactory::getInstance();;
 
-                core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+                odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
                 string data;
                 d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('d', 'a', 't', 'a') >::RESULT,

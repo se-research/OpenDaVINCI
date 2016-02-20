@@ -22,9 +22,9 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 #include "opendlv/data/scenario/LaneModel.h"
 #include "opendlv/data/scenario/ScenarioNode.h"
 #include "opendlv/data/scenario/ScenarioVisitor.h"
@@ -41,7 +41,7 @@ namespace opendlv {
             /**
              * This class represents a lane.
              */
-            class OPENDAVINCI_API Lane : public core::data::SerializableData, public ScenarioNode {
+            class OPENDAVINCI_API Lane : public odcore::data::SerializableData, public ScenarioNode {
                 public:
                     Lane();
 

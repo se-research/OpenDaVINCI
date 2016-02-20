@@ -22,8 +22,8 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 #include "opendlv/data/situation/SituationNode.h"
 #include "opendlv/data/situation/SituationVisitor.h"
 #include "opendlv/data/situation/Vertex3.h"
@@ -37,7 +37,7 @@ namespace opendlv {
             /**
              * This class represents a bounding box.
              */
-            class OPENDAVINCI_API BoundingBox : public core::data::SerializableData, public SituationNode {
+            class OPENDAVINCI_API BoundingBox : public odcore::data::SerializableData, public SituationNode {
                 public:
                     BoundingBox();
 

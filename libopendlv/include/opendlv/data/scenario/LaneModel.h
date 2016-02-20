@@ -23,8 +23,8 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 
 #include "opendlv/data/scenario/Connector.h"
 #include "opendlv/data/scenario/LaneAttribute.h"
@@ -44,7 +44,7 @@ namespace opendlv {
             /**
              * This class represents a lane model as the super class for any shaped lanes.
              */
-            class OPENDAVINCI_API LaneModel : public core::data::SerializableData, public ScenarioNode {
+            class OPENDAVINCI_API LaneModel : public odcore::data::SerializableData, public ScenarioNode {
                 public:
                     enum LANEMODELTYPE {
                         ARC,

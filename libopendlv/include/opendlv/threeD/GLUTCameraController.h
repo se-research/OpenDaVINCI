@@ -20,7 +20,7 @@
 #ifndef HESPERIA_THREED_GLUTCAMERACONTROLLER_H_
 #define HESPERIA_THREED_GLUTCAMERACONTROLLER_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 namespace opendlv {
     namespace threeD {

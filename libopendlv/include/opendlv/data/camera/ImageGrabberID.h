@@ -22,9 +22,9 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 
 namespace opendlv {
     namespace data {
@@ -35,7 +35,7 @@ namespace opendlv {
             /**
              * This class implements a CAN message.
              */
-            class OPENDAVINCI_API ImageGrabberID : public core::data::SerializableData {
+            class OPENDAVINCI_API ImageGrabberID : public odcore::data::SerializableData {
                 public:
                     /**
                      * Constructor.

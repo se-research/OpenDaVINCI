@@ -21,10 +21,10 @@
 #include <iostream>
 #include <string>
 
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/exceptions/Exceptions.h"
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendlv/core/wrapper/parser/ASTNode.h"
 #include "opendlv/core/wrapper/parser/ParserError.h"
 #include "opendlv/core/wrapper/parser/ParserErrorExtendedData.h"
@@ -39,9 +39,9 @@ namespace opendlv {
     namespace situation {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::data;
-        using namespace core::exceptions;
+        using namespace odcore::base;
+        using namespace odcore::data;
+        using namespace odcore::exceptions;
         using namespace core::wrapper::parser;
         using namespace data::situation;
 

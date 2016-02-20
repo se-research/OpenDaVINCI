@@ -20,7 +20,7 @@
 #ifndef HESPERIA_CORE_THREED_NODEDESCRIPTORCOMPARATOR_H_
 #define HESPERIA_CORE_THREED_NODEDESCRIPTORCOMPARATOR_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendlv/threeD/NodeDescriptor.h"
 
 namespace opendlv {

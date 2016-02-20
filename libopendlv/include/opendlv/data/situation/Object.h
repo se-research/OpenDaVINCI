@@ -22,8 +22,8 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 #include "opendlv/data/situation/Behavior.h"
 #include "opendlv/data/situation/Shape.h"
 #include "opendlv/data/situation/SituationNode.h"
@@ -38,7 +38,7 @@ namespace opendlv {
             /**
              * This class represents the header of a scenario.
              */
-            class OPENDAVINCI_API Object : public core::data::SerializableData, public SituationNode {
+            class OPENDAVINCI_API Object : public odcore::data::SerializableData, public SituationNode {
                 public:
                     Object();
 

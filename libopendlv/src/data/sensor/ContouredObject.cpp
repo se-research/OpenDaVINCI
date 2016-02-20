@@ -21,13 +21,13 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/Deserializer.h"
-#include "opendavinci/core/base/Hash.h"
-#include "opendavinci/core/base/Serializable.h"
-#include "opendavinci/core/base/SerializationFactory.h"
-#include "opendavinci/core/base/Serializer.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 #include "opendlv/data/environment/Point3.h"
 #include "opendlv/data/environment/PointShapedObject.h"
 #include "opendlv/data/sensor/ContouredObject.h"
@@ -37,7 +37,7 @@ namespace opendlv {
         namespace sensor {
 
             using namespace std;
-            using namespace core::base;
+            using namespace odcore::base;
             using namespace opendlv::data::environment;
 
             ContouredObject::ContouredObject() :
@@ -89,7 +89,7 @@ namespace opendlv {
                 // Serialize this class.
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                core::SharedPointer<Serializer> s = sf.getSerializer(out);
+                odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 
                 // Write contour.
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('c', 'o', 'n', 't', 's', 'i', 'z', 'e') >::RESULT,
@@ -114,7 +114,7 @@ namespace opendlv {
                 // Deserialize this class.
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+                odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
                 // Read contour.
                 uint32_t numberOfContourPoints = 0;

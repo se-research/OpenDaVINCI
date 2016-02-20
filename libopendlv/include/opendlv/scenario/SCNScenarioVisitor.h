@@ -20,7 +20,7 @@
 #ifndef HESPERIA_SCENARIO_SCNSCENARIOVISITOR_H_
 #define HESPERIA_SCENARIO_SCNSCENARIOVISITOR_H_
 
-#include "opendavinci/core/exceptions/Exceptions.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
 #include "opendlv/core/wrapper/parser/ASTVisitor.h"
 
 #include "opendlv/data/scenario/Arc.h"
@@ -82,7 +82,7 @@ namespace opendlv {
 
                 virtual ~SCNScenarioVisitor();
 
-                virtual void visit(core::wrapper::parser::ASTNode *node) throw (core::exceptions::SCNScenarioVisitorException);
+                virtual void visit(core::wrapper::parser::ASTNode *node) throw (odcore::exceptions::SCNScenarioVisitorException);
 
             private:
                 data::scenario::Scenario &m_scenario;
@@ -312,7 +312,7 @@ namespace opendlv {
                  * @param maxDepth Maximum depth to descend.
                  * @return Node or NULL.
                  */
-                core::wrapper::parser::ASTNode* findByKey(const string &key, core::wrapper::parser::ASTNode *node, const int32_t &maxDepth);
+                core::wrapper::parser::ASTNode* findByKey(const string &key, odcore::wrapper::parser::ASTNode *node, const int32_t &maxDepth);
 
                 /**
                  * This method tries to find a node with the given value.
@@ -322,7 +322,7 @@ namespace opendlv {
                  * @param maxDepth Maximum depth to descend.
                  * @return Node or NULL.
                  */
-                core::wrapper::parser::ASTNode* findByValue(const string &value, core::wrapper::parser::ASTNode *node, const int32_t &maxDepth);
+                core::wrapper::parser::ASTNode* findByValue(const string &value, odcore::wrapper::parser::ASTNode *node, const int32_t &maxDepth);
         };
 
     }

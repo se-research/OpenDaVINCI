@@ -22,10 +22,10 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/exceptions/Exceptions.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
 #include "opendlv/core/wrapper/parser/ParserErrorListener.h"
 #include "opendlv/core/wrapper/parser/ParserTokenListener.h"
 
@@ -37,7 +37,7 @@ namespace opendlv {
         using namespace std;
 
         /**
-         * This class produces the complex core::data::Scenario data structure.
+         * This class produces the complex odcore::data::Scenario data structure.
          */
         class OPENDAVINCI_API ScenarioFactory {
             private:
@@ -75,10 +75,10 @@ namespace opendlv {
                  * @return Scenario data structure.
                  * @throws InvalidArgumentException if the input could be parsed.
                  */
-                data::scenario::Scenario getScenario(const string &s) throw (core::exceptions::InvalidArgumentException);
+                data::scenario::Scenario getScenario(const string &s) throw (odcore::exceptions::InvalidArgumentException);
 
             private:
-                static core::base::Mutex m_singletonMutex;
+                static odcore::base::Mutex m_singletonMutex;
                 static ScenarioFactory* m_singleton;
 
                 /**

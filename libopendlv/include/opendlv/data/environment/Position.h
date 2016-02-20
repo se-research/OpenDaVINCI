@@ -20,9 +20,9 @@
 #ifndef HESPERIA_DATA_ENVIRONMENT_POSITION_H_
 #define HESPERIA_DATA_ENVIRONMENT_POSITION_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 
 #include "opendlv/data/environment/Point3.h"
 
@@ -36,7 +36,7 @@ namespace opendlv {
              * This class can be used to describe an object in a three dimensional
              * space using position and rotation.
              */
-            class OPENDAVINCI_API Position : public core::data::SerializableData {
+            class OPENDAVINCI_API Position : public odcore::data::SerializableData {
                 public:
                     Position();
 

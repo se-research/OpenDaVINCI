@@ -22,7 +22,7 @@
 
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 #include "opendlv/decorator/Renderer.h"
 

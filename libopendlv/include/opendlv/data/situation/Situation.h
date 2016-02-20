@@ -23,8 +23,8 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 
 #include "opendlv/data/situation/Header.h"
 #include "opendlv/data/situation/Object.h"
@@ -40,7 +40,7 @@ namespace opendlv {
             /**
              * This class represents a situation.
              */
-            class OPENDAVINCI_API Situation : public core::data::SerializableData, public SituationNode {
+            class OPENDAVINCI_API Situation : public odcore::data::SerializableData, public SituationNode {
                 public:
                     Situation();
 

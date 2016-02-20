@@ -20,7 +20,7 @@
 #ifndef HESPERIA_MATH_TRANSFORMATION_H_
 #define HESPERIA_MATH_TRANSFORMATION_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendlv/data/environment/Point3.h"
 
 namespace opendlv { namespace data { namespace environment { class Position; } } }

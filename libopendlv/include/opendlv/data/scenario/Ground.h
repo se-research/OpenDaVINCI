@@ -22,8 +22,8 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 
 #include "opendlv/data/scenario/HeightImage.h"
 #include "opendlv/data/scenario/Image.h"
@@ -40,7 +40,7 @@ namespace opendlv {
             /**
              * This class represents the ground of the scenario.
              */
-            class OPENDAVINCI_API Ground : public core::data::SerializableData, public ScenarioNode {
+            class OPENDAVINCI_API Ground : public odcore::data::SerializableData, public ScenarioNode {
                 public:
                     Ground();
 

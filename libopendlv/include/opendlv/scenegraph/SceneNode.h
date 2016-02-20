@@ -22,9 +22,9 @@
 
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/odcore/base/Mutex.h"
 
 #include "opendlv/scenegraph/SceneNodeDescriptor.h"
 #include "opendlv/scenegraph/SceneNodeVisitor.h"
@@ -111,7 +111,7 @@ namespace opendlv {
             private:
                 SceneNodeDescriptor m_sceneNodeDescriptor;
 
-                core::base::Mutex m_childrenMutex;
+                odcore::base::Mutex m_childrenMutex;
                 vector<SceneNode*> m_children;
         };
 

@@ -22,10 +22,10 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/data/SerializableData.h"
-#include "opendavinci/core/data/TimeStamp.h"
+#include "opendavinci/odcore/data/SerializableData.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
 #include "opendlv/data/environment/WGS84Coordinate.h"
 
 namespace opendlv {
@@ -38,7 +38,7 @@ namespace opendlv {
                 /**
                  * This class encapsulated a GPRMC (GPS recommended) message.
                  */
-                class OPENDAVINCI_API GPRMC : public core::data::SerializableData {
+                class OPENDAVINCI_API GPRMC : public odcore::data::SerializableData {
                     private:
                         enum {
                             BASE_YEAR = 2000
@@ -83,7 +83,7 @@ namespace opendlv {
                          *
                          * @return timestamp.
                          */
-                        const core::data::TimeStamp getTimeStamp() const;
+                        const odcore::data::TimeStamp getTimeStamp() const;
 
                         /**
                          * This method sets the time stamp for this
@@ -91,7 +91,7 @@ namespace opendlv {
                          *
                          * @param timeStamp Timestamp.
                          */
-                        void setTimeStamp(const core::data::TimeStamp &timeStamp);
+                        void setTimeStamp(const odcore::data::TimeStamp &timeStamp);
 
                         /**
                          * This methods returns the WGS84 coordinate.
@@ -114,7 +114,7 @@ namespace opendlv {
 
                     private:
                         string m_message;
-                        core::data::TimeStamp m_timeStamp;
+                        odcore::data::TimeStamp m_timeStamp;
                         opendlv::data::environment::WGS84Coordinate m_coordinate;
 
                         /**

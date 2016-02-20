@@ -23,9 +23,9 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 #include "opendlv/data/scenario/IDVertex3.h"
 #include "opendlv/data/scenario/ScenarioNode.h"
 #include "opendlv/data/scenario/ScenarioVisitor.h"
@@ -39,7 +39,7 @@ namespace opendlv {
             /**
              * This class represents a road.
              */
-            class OPENDAVINCI_API Perimeter : public core::data::SerializableData, public ScenarioNode {
+            class OPENDAVINCI_API Perimeter : public odcore::data::SerializableData, public ScenarioNode {
                 public:
                     Perimeter();
 

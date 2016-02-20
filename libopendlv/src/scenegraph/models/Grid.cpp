@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendlv/data/environment/Point3.h"
 #include "opendlv/scenegraph/SceneNode.h"
 #include "opendlv/scenegraph/SceneNodeDescriptor.h"
@@ -30,7 +30,7 @@ namespace opendlv {
         namespace models {
 
             using namespace std;
-            using namespace core::data;
+            using namespace odcore::data;
             using namespace opendlv::data::environment;
             using namespace opendlv::scenegraph::primitives;
 

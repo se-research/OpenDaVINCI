@@ -22,9 +22,9 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 #include "opendlv/data/environment/Point3.h"
 
 namespace opendlv {
@@ -38,7 +38,7 @@ namespace opendlv {
             /**
              * This class can be used for line operations.
              */
-            class OPENDAVINCI_API Line : public core::data::SerializableData {
+            class OPENDAVINCI_API Line : public odcore::data::SerializableData {
                 private:
                     const static double EPSILON;
 

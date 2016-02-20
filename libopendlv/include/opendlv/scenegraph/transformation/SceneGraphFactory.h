@@ -20,9 +20,9 @@
 #ifndef HESPERIA_SCENEGRAPH_TRANSFORMATION_SCENEGRAPHFACTORY_H_
 #define HESPERIA_SCENEGRAPH_TRANSFORMATION_SCENEGRAPHFACTORY_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/odcore/base/Mutex.h"
 #include "opendlv/scenario/SCNXArchive.h"
 #include "opendlv/scenegraph/SceneNode.h"
 #include "opendlv/scenegraph/SceneNodeDescriptor.h"
@@ -84,7 +84,7 @@ namespace opendlv {
                     SceneNode* transform(scenario::SCNXArchive &scnxArchive, const bool &showLaneConnectors);
 
                 private:
-                    static core::base::Mutex m_singletonMutex;
+                    static odcore::base::Mutex m_singletonMutex;
                     static SceneGraphFactory* m_singleton;
             };
 

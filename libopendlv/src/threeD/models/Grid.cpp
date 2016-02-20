@@ -25,7 +25,7 @@
 #include <GL/gl.h>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendlv/threeD/Node.h"
 #include "opendlv/threeD/NodeDescriptor.h"
 #include "opendlv/threeD/NodeRenderingConfiguration.h"

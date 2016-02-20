@@ -22,7 +22,7 @@
 
 #include <map>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendlv/scenegraph/SceneNodeDescriptor.h"
 #include "opendlv/scenegraph/SceneNodeDescriptorComparator.h"
 #include "opendlv/scenegraph/renderer/SceneNodeRenderingConfiguration.h"

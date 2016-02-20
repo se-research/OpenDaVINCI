@@ -22,7 +22,7 @@
 
 #include <iosfwd>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendlv/core/wrapper/Image.h"
 #include "opendlv/core/wrapper/ImageFactory.h"
 

@@ -20,11 +20,11 @@
 #include <sstream>
 #include <string>
 
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/Deserializer.h"
-#include "opendavinci/core/base/Hash.h"
-#include "opendavinci/core/base/SerializationFactory.h"
-#include "opendavinci/core/base/Serializer.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 #include "automotivedata/generated/cartesian/Matrix3x3.h"
 #include "opendlv/data/camera/ExtrinsicParameters.h"
 #include "opendlv/data/environment/Point3.h"
@@ -34,7 +34,7 @@ namespace opendlv {
         namespace camera {
 
             using namespace std;
-            using namespace core::base;
+            using namespace odcore::base;
             using namespace opendlv::data::environment;
 
             ExtrinsicParameters::ExtrinsicParameters() :
@@ -77,7 +77,7 @@ namespace opendlv {
             ostream& ExtrinsicParameters::operator<<(ostream &out) const {
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                core::SharedPointer<Serializer> s = sf.getSerializer(out);
+                odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('t', 'r', 'a', 'n', 's') >::RESULT,
                         m_translation);
@@ -91,7 +91,7 @@ namespace opendlv {
             istream& ExtrinsicParameters::operator>>(istream &in) {
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+                odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
                 d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('t', 'r', 'a', 'n', 's') >::RESULT,
                        m_translation);

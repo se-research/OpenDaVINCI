@@ -19,8 +19,8 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/exceptions/Exceptions.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
 #include "opendlv/core/wrapper/parser/ASTNode.h"
 #include "opendlv/data/scenario/Connector.h"
 #include "opendlv/data/scenario/Ground.h"
@@ -57,7 +57,7 @@ namespace opendlv {
 
         using namespace std;
         using namespace data::scenario;
-        using namespace core::exceptions;
+        using namespace odcore::exceptions;
         using namespace core::wrapper::parser;
 
         SCNScenarioVisitor::SCNScenarioVisitor(Scenario &s) :

@@ -21,14 +21,14 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/Deserializer.h"
-#include "opendavinci/core/base/Hash.h"
-#include "opendavinci/core/base/Serializable.h"
-#include "opendavinci/core/base/SerializationFactory.h"
-#include "opendavinci/core/base/Serializer.h"
-#include "opendavinci/core/exceptions/Exceptions.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
 #include "opendlv/data/scenario/IDVertex3.h"
 #include "opendlv/data/scenario/LaneModel.h"
 #include "opendlv/data/scenario/PointModel.h"
@@ -39,7 +39,7 @@ namespace opendlv {
         namespace scenario {
 
             using namespace std;
-            using namespace core::base;
+            using namespace odcore::base;
             using namespace scenario;
 
             PointModel::PointModel() :
@@ -88,7 +88,7 @@ namespace opendlv {
                 return m_listOfIdentifiableVertices;
             }
 
-            const IDVertex3 PointModel::getIDVertex3(const uint32_t &id) const throw (core::exceptions::InvalidArgumentException) {
+            const IDVertex3 PointModel::getIDVertex3(const uint32_t &id) const throw (odcore::exceptions::InvalidArgumentException) {
                 bool found = false;
                 IDVertex3 retVal;
                 vector<IDVertex3>::const_iterator it = m_listOfIdentifiableVertices.begin();
@@ -120,7 +120,7 @@ namespace opendlv {
 
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                core::SharedPointer<Serializer> s = sf.getSerializer(out);
+                odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 
                 uint32_t numberOfIdentifiableVertices = static_cast<uint32_t>(m_listOfIdentifiableVertices.size());
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('n', 'u', 'm', 'i', 'd', 'v', 's') >::RESULT,
@@ -148,7 +148,7 @@ namespace opendlv {
 
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+                odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
                 // Clean up.
                 m_listOfIdentifiableVertices.clear();
