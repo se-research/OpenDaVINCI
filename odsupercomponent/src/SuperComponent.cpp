@@ -29,22 +29,22 @@
 #include <cstring>
 #include <iostream>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/core/base/CommandLineArgument.h"
-#include "opendavinci/core/base/CommandLineParser.h"
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/data/TimeStamp.h"
-#include "opendavinci/core/dmcp/connection/ModuleConnection.h"
-#include "opendavinci/core/dmcp/connection/Server.h"
-#include "opendavinci/core/dmcp/discoverer/Client.h"
-#include "opendavinci/core/dmcp/discoverer/Server.h"
-#include "opendavinci/core/exceptions/Exceptions.h"
-#include "opendavinci/core/io/conference/ContainerConference.h"
-#include "opendavinci/core/io/conference/ContainerConferenceFactory.h"
-#include "opendavinci/core/strings/StringToolbox.h"
+#include "opendavinci/odcore/base/CommandLineArgument.h"
+#include "opendavinci/odcore/base/CommandLineParser.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
+#include "opendavinci/odcore/dmcp/connection/ModuleConnection.h"
+#include "opendavinci/odcore/dmcp/connection/Server.h"
+#include "opendavinci/odcore/dmcp/discoverer/Client.h"
+#include "opendavinci/odcore/dmcp/discoverer/Server.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
+#include "opendavinci/odcore/io/conference/ContainerConference.h"
+#include "opendavinci/odcore/io/conference/ContainerConferenceFactory.h"
+#include "opendavinci/odcore/strings/StringToolbox.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleDescriptor.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleStatistic.h"
 
@@ -53,13 +53,13 @@
 
 namespace odsupercomponent {
 
-    using namespace core::base;
-    using namespace core::data;
-    using namespace core::exceptions;
-    using namespace core::dmcp;
-    using namespace core::dmcp::connection;
-    using namespace core::io;
-    using namespace core::io::conference;
+    using namespace odcore::base;
+    using namespace odcore::data;
+    using namespace odcore::exceptions;
+    using namespace odcore::dmcp;
+    using namespace odcore::dmcp::connection;
+    using namespace odcore::io;
+    using namespace odcore::io::conference;
     using namespace coredata::dmcp;
 
     SuperComponent::SuperComponent(const int &argc, char **argv) :
@@ -120,7 +120,7 @@ namespace odsupercomponent {
         m_connectionServer = new connection::Server(serverInformation, m_configurationProvider);
         m_connectionServer->setConnectionHandler(this);
 
-        m_conference = core::SharedPointer<ContainerConference>(ContainerConferenceFactory::getInstance().getContainerConference(getMultiCastGroup()));
+        m_conference = odcore::SharedPointer<ContainerConference>(ContainerConferenceFactory::getInstance().getContainerConference(getMultiCastGroup()));
         m_conference->setContainerListener(this);
 
         CLOG1 << "[odsupercomponent" << (isRealtime() ? " - real time mode" : "") << "]: Ready - managed level " << m_managedLevel << endl;
@@ -154,7 +154,7 @@ namespace odsupercomponent {
         // Check the centrally maintained managed level.
         if (cmdArgumentCONFIGURATION.isSet()) {
             configurationFile = cmdArgumentCONFIGURATION.getValue<string>();
-            core::strings::StringToolbox::trim(configurationFile);
+            odcore::strings::StringToolbox::trim(configurationFile);
         }
         return configurationFile;
     }
@@ -175,16 +175,16 @@ namespace odsupercomponent {
         if (cmdArgumentLOGLEVEL.isSet()) {
             string logLevel = cmdArgumentLOGLEVEL.getValue<string>();
 
-            if (core::strings::StringToolbox::equalsIgnoreCase(logLevel, "none")) {
+            if (odcore::strings::StringToolbox::equalsIgnoreCase(logLevel, "none")) {
                 m_logLevel = coredata::LogMessage::NONE;
             }
-            if (core::strings::StringToolbox::equalsIgnoreCase(logLevel, "info")) {
+            if (odcore::strings::StringToolbox::equalsIgnoreCase(logLevel, "info")) {
                 m_logLevel = coredata::LogMessage::INFO;
             }
-            if (core::strings::StringToolbox::equalsIgnoreCase(logLevel, "warn")) {
+            if (odcore::strings::StringToolbox::equalsIgnoreCase(logLevel, "warn")) {
                 m_logLevel = coredata::LogMessage::WARN;
             }
-            if (core::strings::StringToolbox::equalsIgnoreCase(logLevel, "debug")) {
+            if (odcore::strings::StringToolbox::equalsIgnoreCase(logLevel, "debug")) {
                 m_logLevel = coredata::LogMessage::DEBUG;
             }
         }
@@ -210,15 +210,15 @@ namespace odsupercomponent {
         // Check the centrally maintained managed level.
         if (cmdArgumentMANAGED.isSet()) {
             string managedLevel = cmdArgumentMANAGED.getValue<string>();
-            core::strings::StringToolbox::trim(managedLevel);
+            odcore::strings::StringToolbox::trim(managedLevel);
 
-            if (core::strings::StringToolbox::equalsIgnoreCase(managedLevel, "none")) {
+            if (odcore::strings::StringToolbox::equalsIgnoreCase(managedLevel, "none")) {
                 m_managedLevel = coredata::dmcp::ServerInformation::ML_NONE;
             }
-            if (core::strings::StringToolbox::equalsIgnoreCase(managedLevel, "pulse")) {
+            if (odcore::strings::StringToolbox::equalsIgnoreCase(managedLevel, "pulse")) {
                 m_managedLevel = coredata::dmcp::ServerInformation::ML_PULSE;
             }
-            if (core::strings::StringToolbox::equalsIgnoreCase(managedLevel, "pulse_shift")) {
+            if (odcore::strings::StringToolbox::equalsIgnoreCase(managedLevel, "pulse_shift")) {
                 m_managedLevel = coredata::dmcp::ServerInformation::ML_PULSE_SHIFT;
 
                 m_shiftMicroseconds = 10 * 1000;
@@ -229,17 +229,17 @@ namespace odsupercomponent {
                     CLOG1 << "[odsupercomponent]: Value for 'odsupercomponent.pulseshift.shift' not found in configuration, using " << m_shiftMicroseconds << " as default." << endl;
                 }
             }
-            if (core::strings::StringToolbox::equalsIgnoreCase(managedLevel, "pulse_time")) {
+            if (odcore::strings::StringToolbox::equalsIgnoreCase(managedLevel, "pulse_time")) {
                 m_managedLevel = coredata::dmcp::ServerInformation::ML_PULSE_TIME;
             }
-            if (core::strings::StringToolbox::equalsIgnoreCase(managedLevel, "pulse_time_ack") || core::strings::StringToolbox::equalsIgnoreCase(managedLevel, "simulation") || core::strings::StringToolbox::equalsIgnoreCase(managedLevel, "simulation_rt")) {
-                if (core::strings::StringToolbox::equalsIgnoreCase(managedLevel, "pulse_time_ack")) {
+            if (odcore::strings::StringToolbox::equalsIgnoreCase(managedLevel, "pulse_time_ack") || odcore::strings::StringToolbox::equalsIgnoreCase(managedLevel, "simulation") || odcore::strings::StringToolbox::equalsIgnoreCase(managedLevel, "simulation_rt")) {
+                if (odcore::strings::StringToolbox::equalsIgnoreCase(managedLevel, "pulse_time_ack")) {
                     m_managedLevel = coredata::dmcp::ServerInformation::ML_PULSE_TIME_ACK;
                 }
-                if (core::strings::StringToolbox::equalsIgnoreCase(managedLevel, "simulation")) {
+                if (odcore::strings::StringToolbox::equalsIgnoreCase(managedLevel, "simulation")) {
                     m_managedLevel = coredata::dmcp::ServerInformation::ML_SIMULATION;
                 }
-                if (core::strings::StringToolbox::equalsIgnoreCase(managedLevel, "simulation_rt")) {
+                if (odcore::strings::StringToolbox::equalsIgnoreCase(managedLevel, "simulation_rt")) {
                     m_managedLevel = coredata::dmcp::ServerInformation::ML_SIMULATION_RT;
                 }
 
@@ -264,7 +264,7 @@ namespace odsupercomponent {
                     string s = m_configuration.getValue<string>("odsupercomponent.pulsetimeack.exclude");
                     transform(s.begin(), s.end(), s.begin(), ::tolower);
 
-                    m_modulesToIgnore = core::strings::StringToolbox::split(s, ',');
+                    m_modulesToIgnore = odcore::strings::StringToolbox::split(s, ',');
                 }
                 catch(...) {
                     // If "odsupercomponent.pulsetimeack.exclude" is not specified, just ignore exception.
@@ -461,7 +461,7 @@ namespace odsupercomponent {
         return coredata::dmcp::ModuleExitCodeMessage::OKAY;
     }
 
-    void SuperComponent::onNewModule(core::SharedPointer<core::dmcp::connection::ModuleConnection> mc) {
+    void SuperComponent::onNewModule(odcore::SharedPointer<odcore::dmcp::connection::ModuleConnection> mc) {
         if (mc.isValid()) {
             mc->waitForModuleDescription();
             CLOG1 << "[odsupercomponent]: New connected module " << mc->getModuleDescriptor().toString() << endl;

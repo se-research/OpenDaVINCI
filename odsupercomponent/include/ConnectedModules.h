@@ -25,12 +25,12 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Mutex.h"
 
 namespace coredata { namespace dmcp { class ModuleDescriptor; } }
 namespace coredata { namespace dmcp { class PulseMessage; } }
-namespace core { namespace data { class Container; } }
+namespace odcore { namespace data { class Container; } }
 
 namespace odsupercomponent {
 
@@ -88,12 +88,12 @@ class ConnectedModule;
              * @param modulesToIgnore Modules that are skipped when sending the pulse signal.
              * @return Containers to be transferred to supercomponent.
              */
-            vector<core::data::Container> pulse_ack_containers(const coredata::dmcp::PulseMessage &pm, const uint32_t &timeout, const uint32_t &yield, const vector<string> &modulesToIgnore);
+            vector<odcore::data::Container> pulse_ack_containers(const coredata::dmcp::PulseMessage &pm, const uint32_t &timeout, const uint32_t &yield, const vector<string> &modulesToIgnore);
 
             void deleteAllModules();
 
         protected:
-            core::base::Mutex m_modulesMutex;
+            odcore::base::Mutex m_modulesMutex;
             map<string, ConnectedModule*> m_modules;
 
         private:

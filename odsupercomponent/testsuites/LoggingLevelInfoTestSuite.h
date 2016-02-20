@@ -27,27 +27,27 @@
 #include <iostream>
 #include <sstream>
 
-#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "opendavinci/core/base/KeyValueConfiguration.h"
-#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/base/Service.h"
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/core/base/Hash.h"
-#include "opendavinci/core/base/Deserializer.h"
-#include "opendavinci/core/base/SerializationFactory.h"
-#include "opendavinci/core/base/Serializer.h"
-#include "opendavinci/core/data/TimeStamp.h"
-#include "opendavinci/core/strings/StringToolbox.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/base/Service.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
+#include "opendavinci/odcore/strings/StringToolbox.h"
 
 #include "../include/SuperComponent.h"
 
 using namespace std;
-using namespace core::base;
-using namespace core::base::module;
-using namespace core::data;
-using namespace core::exceptions;
+using namespace odcore::base;
+using namespace odcore::base::module;
+using namespace odcore::data;
+using namespace odcore::exceptions;
 
 class ExampleLoggerApp : public TimeTriggeredConferenceClientModule {
     public:
@@ -299,16 +299,16 @@ class LoggerTest : public CxxTest::TestSuite {
                 lines++;
                 string line;
                 getline(fin, line);
-                vector<string> tokens = core::strings::StringToolbox::split(line, ';');
+                vector<string> tokens = odcore::strings::StringToolbox::split(line, ';');
 
                 // Ensure we have correct entries.
                 TS_ASSERT(tokens.size() > 3);
 
                 // Check for log levels.
-                foundLogLevelNone |= core::strings::StringToolbox::equalsIgnoreCase(tokens.at(2), "0");
-                foundLogLevelInfo |= core::strings::StringToolbox::equalsIgnoreCase(tokens.at(2), "1");
-                foundLogLevelWarn |= core::strings::StringToolbox::equalsIgnoreCase(tokens.at(2), "2");
-                foundLogLevelDebug |= core::strings::StringToolbox::equalsIgnoreCase(tokens.at(2), "3");
+                foundLogLevelNone |= odcore::strings::StringToolbox::equalsIgnoreCase(tokens.at(2), "0");
+                foundLogLevelInfo |= odcore::strings::StringToolbox::equalsIgnoreCase(tokens.at(2), "1");
+                foundLogLevelWarn |= odcore::strings::StringToolbox::equalsIgnoreCase(tokens.at(2), "2");
+                foundLogLevelDebug |= odcore::strings::StringToolbox::equalsIgnoreCase(tokens.at(2), "3");
             }
 
             fin.close();

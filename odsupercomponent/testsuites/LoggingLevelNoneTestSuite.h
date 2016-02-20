@@ -27,27 +27,27 @@
 #include <iostream>
 #include <sstream>
 
-#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "opendavinci/core/base/KeyValueConfiguration.h"
-#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/base/Service.h"
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/core/base/Hash.h"
-#include "opendavinci/core/base/Deserializer.h"
-#include "opendavinci/core/base/SerializationFactory.h"
-#include "opendavinci/core/base/Serializer.h"
-#include "opendavinci/core/data/TimeStamp.h"
-#include "opendavinci/core/strings/StringToolbox.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/base/Service.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
+#include "opendavinci/odcore/strings/StringToolbox.h"
 
 #include "../include/SuperComponent.h"
 
 using namespace std;
-using namespace core::base;
-using namespace core::base::module;
-using namespace core::data;
-using namespace core::exceptions;
+using namespace odcore::base;
+using namespace odcore::base::module;
+using namespace odcore::data;
+using namespace odcore::exceptions;
 
 class ExampleLoggerApp : public TimeTriggeredConferenceClientModule {
     public:

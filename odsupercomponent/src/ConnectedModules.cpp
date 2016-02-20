@@ -20,23 +20,23 @@
 
 #include <algorithm>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 #include "ConnectedModule.h"
 #include "ConnectedModules.h"
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/data/TimeStamp.h"
-#include "opendavinci/core/dmcp/connection/ModuleConnection.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
+#include "opendavinci/odcore/dmcp/connection/ModuleConnection.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleDescriptor.h"
 #include "opendavinci/generated/coredata/dmcp/PulseMessage.h"
 
 namespace odsupercomponent {
 
     using namespace std;
-    using namespace core::base;
-    using namespace core::data;
+    using namespace odcore::base;
+    using namespace odcore::data;
     using namespace coredata::dmcp;
 
     ConnectedModules::ConnectedModules() :
@@ -83,11 +83,11 @@ namespace odsupercomponent {
 
         uint32_t connectedModulesCounter = 0;
         coredata::dmcp::PulseMessage pm_shifted = pm;
-        const core::data::TimeStamp pm_org_ts = pm.getRealTimeFromSupercomponent();
+        const odcore::data::TimeStamp pm_org_ts = pm.getRealTimeFromSupercomponent();
 
         for (iter = m_modules.begin(); iter != m_modules.end(); ++iter) {
-            core::data::TimeStamp ts(0, shift * connectedModulesCounter);
-            core::data::TimeStamp shiftedTime = pm_org_ts + ts;
+            odcore::data::TimeStamp ts(0, shift * connectedModulesCounter);
+            odcore::data::TimeStamp shiftedTime = pm_org_ts + ts;
 
             pm_shifted.setRealTimeFromSupercomponent(shiftedTime);
             iter->second->getConnection().pulse(pm_shifted);

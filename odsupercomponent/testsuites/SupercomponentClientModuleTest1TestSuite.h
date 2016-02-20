@@ -30,22 +30,22 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/odcore/SharedPointer.h"
 #include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
-#include "opendavinci/core/base/FIFOQueue.h"
-#include "opendavinci/core/base/KeyValueConfiguration.h"
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/base/Service.h"
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/core/exceptions/Exceptions.h"
+#include "opendavinci/odcore/base/FIFOQueue.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/base/Service.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
 
-#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "opendavinci/core/dmcp/ModuleConfigurationProvider.h"
-#include "opendavinci/core/dmcp/discoverer/Server.h"
-#include "opendavinci/core/dmcp/connection/Server.h"
-#include "opendavinci/core/dmcp/connection/ConnectionHandler.h"
-#include "opendavinci/core/dmcp/connection/ModuleConnection.h"
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/dmcp/ModuleConfigurationProvider.h"
+#include "opendavinci/odcore/dmcp/discoverer/Server.h"
+#include "opendavinci/odcore/dmcp/connection/Server.h"
+#include "opendavinci/odcore/dmcp/connection/ConnectionHandler.h"
+#include "opendavinci/odcore/dmcp/connection/ModuleConnection.h"
 
 #include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
@@ -53,12 +53,12 @@
 #include "../include/SuperComponent.h"
 
 using namespace std;
-using namespace core::base;
-using namespace core::base::module;
-using namespace core::data;
-using namespace core::exceptions;
-using namespace core::dmcp;
-using namespace core::io;
+using namespace odcore::base;
+using namespace odcore::base::module;
+using namespace odcore::data;
+using namespace odcore::exceptions;
+using namespace odcore::dmcp;
+using namespace odcore::io;
 using namespace coredata::dmcp;
 using namespace odsupercomponent;
 
@@ -134,13 +134,13 @@ class SupercomponentClientModuleTest : public CxxTest::TestSuite,
             m_connection() {}
 
         odsupercomponent::GlobalConfigurationProvider m_globaleConfigurationProvider;
-        core::SharedPointer<connection::ModuleConnection> m_connection;
+        odcore::SharedPointer<connection::ModuleConnection> m_connection;
 
         virtual KeyValueConfiguration getConfiguration(const ModuleDescriptor &md) {
             return m_globaleConfigurationProvider.getConfiguration(md);
         }
 
-        virtual void onNewModule(core::SharedPointer<core::dmcp::connection::ModuleConnection> mc) {
+        virtual void onNewModule(odcore::SharedPointer<odcore::dmcp::connection::ModuleConnection> mc) {
             m_connection = mc;
         }
 
