@@ -43,7 +43,7 @@ namespace automotive {
         using namespace core::base::module;
         using namespace core::data;
         using namespace coredata::image;
-        using namespace tools::player;
+        using namespace odtools::player;
         using namespace automotive;
 
         LaneDetector::LaneDetector(const int32_t &argc, char **argv) :

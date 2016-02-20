@@ -32,13 +32,13 @@
 #include "opendavinci/tools/recorder/SharedDataListener.h"
 #include "opendavinci/tools/recorder/SharedDataWriter.h"
 
-namespace tools {
+namespace odtools {
     namespace recorder {
 
         using namespace core;
         using namespace core::base;
         using namespace core::data;
-        using namespace tools;
+        using namespace odtools;
 
         SharedDataListener::SharedDataListener(SharedPointer<ostream> out, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const bool &threading) :
             m_threading(threading),

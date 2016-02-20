@@ -52,8 +52,8 @@ using namespace core::data;
 using namespace core::io;
 using namespace core::io::conference;
 using namespace coredata::dmcp;
-using namespace tools::player;
-using namespace tools::recorder;
+using namespace odtools::player;
+using namespace odtools::recorder;
 using namespace odsplit;
 
 // Size of the memory buffer.

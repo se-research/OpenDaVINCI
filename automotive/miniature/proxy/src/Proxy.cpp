@@ -40,7 +40,7 @@ namespace automotive {
         using namespace std;
         using namespace core::base;
         using namespace core::data;
-        using namespace tools::recorder;
+        using namespace odtools::recorder;
 
         Proxy::Proxy(const int32_t &argc, char **argv) :
 	        TimeTriggeredConferenceClientModule(argc, argv, "proxy"),

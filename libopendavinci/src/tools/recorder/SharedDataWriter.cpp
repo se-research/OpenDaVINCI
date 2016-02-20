@@ -28,13 +28,13 @@
 #include "opendavinci/generated/coredata/buffer/MemorySegment.h"
 #include "opendavinci/tools/recorder/SharedDataWriter.h"
 
-namespace tools {
+namespace odtools {
     namespace recorder {
 
         using namespace core;
         using namespace core::base;
         using namespace core::data;
-        using namespace tools;
+        using namespace odtools;
 
         SharedDataWriter::SharedDataWriter(SharedPointer<ostream> out, map<uint32_t, char*> &mapOfMemories, FIFOQueue &bufferIn, FIFOQueue &bufferOut) :
             m_out(out),

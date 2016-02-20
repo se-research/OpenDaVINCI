@@ -33,7 +33,7 @@ namespace odrecorder {
     using namespace core::base;
     using namespace core::data;
     using namespace core::io;
-    using namespace tools::recorder;
+    using namespace odtools::recorder;
 
     RecorderModule::RecorderModule(const int32_t &argc, char **argv) :
         TimeTriggeredConferenceClientModule(argc, argv, "odrecorder") {}

@@ -27,7 +27,7 @@
 #include "opendavinci/context/base/SystemFeedbackComponent.h"
 
 namespace core { namespace wrapper { class Time; } }
-namespace tools { namespace player { class Player; } }
+namespace odtools { namespace player { class Player; } }
 
 namespace odcontext {
     namespace base {
@@ -80,7 +80,7 @@ class SendContainerToSystemsUnderTest;
                 string m_urlFileName;
                 uint32_t m_memorySegmentSize;
                 uint32_t m_numberOfSegments;
-                auto_ptr<tools::player::Player> m_player;
+                auto_ptr<odtools::player::Player> m_player;
         };
 
     }

@@ -35,7 +35,7 @@ namespace odplayer {
     using namespace core::base;
     using namespace core::data;
     using namespace core::io;
-    using namespace tools::player;
+    using namespace odtools::player;
 
     PlayerModule::PlayerModule(const int32_t &argc, char **argv) :
         TimeTriggeredConferenceClientModule(argc, argv, "odplayer"),

@@ -29,7 +29,7 @@
 
 namespace core { namespace data { class Container; } }
 
-namespace tools {
+namespace odtools {
     namespace recorder {
 
 class SharedDataListener;

@@ -38,7 +38,7 @@
 #include "opendavinci/tools/player/Player.h"
 #include "opendavinci/tools/player/PlayerCache.h"
 
-namespace tools {
+namespace odtools {
     namespace player {
 
         using namespace std;

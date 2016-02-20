@@ -78,7 +78,7 @@ namespace automotive {
                 void distribute(core::data::Container c);
 
             private:
-                tools::recorder::Recorder *m_recorder;
+                odtools::recorder::Recorder *m_recorder;
                 Camera *m_camera;
         };
 

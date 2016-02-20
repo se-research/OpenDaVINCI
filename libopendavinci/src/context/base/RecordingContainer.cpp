@@ -31,7 +31,7 @@ namespace odcontext {
 
         using namespace std;
         using namespace core::data;
-        using namespace tools::recorder;
+        using namespace odtools::recorder;
 
 		RecordingContainer::RecordingContainer(const float &freq, const string &urlFileName, const uint32_t &memorySegmentSize, const uint32_t &numberOfSegments) :
 			m_freq(freq),

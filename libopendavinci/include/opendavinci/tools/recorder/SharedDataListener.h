@@ -34,7 +34,7 @@
 namespace core { namespace data { class Container; } }
 namespace core { namespace wrapper { class SharedMemory; } }
 
-namespace tools {
+namespace odtools {
     namespace recorder {
 
 class SharedDataWriter;

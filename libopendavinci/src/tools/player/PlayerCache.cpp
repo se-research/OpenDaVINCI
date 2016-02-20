@@ -34,14 +34,14 @@
 #include "opendavinci/generated/coredata/image/SharedImage.h"
 #include "opendavinci/tools/player/PlayerCache.h"
 
-namespace tools {
+namespace odtools {
     namespace player {
 
         using namespace std;
         using namespace core;
         using namespace core::base;
         using namespace core::data;
-        using namespace tools;
+        using namespace odtools;
 
         PlayerCache::PlayerCache(const uint32_t size, const uint32_t sizeMemorySegments, const bool &autoRewind, SharedPointer<istream> in, SharedPointer<istream> inSharedMemoryFile) :
             m_cacheSize(size),

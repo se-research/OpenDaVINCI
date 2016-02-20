@@ -29,7 +29,7 @@
 
 namespace core { namespace base { class FIFOQueue; } }
 
-namespace tools {
+namespace odtools {
 
     namespace recorder {
 

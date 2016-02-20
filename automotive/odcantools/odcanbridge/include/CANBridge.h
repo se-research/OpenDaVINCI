@@ -35,7 +35,7 @@
 #include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
 namespace automotive { class GenericCANMessage; }
-namespace tools { namespace recorder { class Recorder; } }
+namespace odtools { namespace recorder { class Recorder; } }
 
 namespace automotive {
     namespace odcantools {
@@ -91,7 +91,7 @@ class CANDevice;
 
             private:
                 core::base::FIFOQueue m_fifo;
-                auto_ptr<tools::recorder::Recorder> m_recorder;
+                auto_ptr<odtools::recorder::Recorder> m_recorder;
                 core::SharedPointer<CANDevice> m_deviceA;
                 string m_deviceNodeA;
                 core::SharedPointer<CANDevice> m_deviceB;

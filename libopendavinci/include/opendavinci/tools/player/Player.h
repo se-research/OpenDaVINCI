@@ -31,7 +31,7 @@
 #include "opendavinci/core/io/URL.h"
 #include "opendavinci/core/wrapper/SharedMemory.h"
 
-namespace tools {
+namespace odtools {
     namespace player {
 
 class PlayerCache;

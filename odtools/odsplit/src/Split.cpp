@@ -30,7 +30,7 @@ namespace odsplit {
 
     using namespace std;
     using namespace core::base;
-    using namespace tools::splitter;
+    using namespace odtools::splitter;
 
     Split::Split() :
         m_source(),

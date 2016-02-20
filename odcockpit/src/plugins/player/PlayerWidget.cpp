@@ -52,8 +52,8 @@ namespace cockpit {
 
             using namespace std;
             using namespace core::data;
-            using namespace tools::player;
-            using namespace tools::splitter;
+            using namespace odtools::player;
+            using namespace odtools::splitter;
 
             PlayerWidget::PlayerWidget(const PlugIn &/*plugIn*/, const core::base::KeyValueConfiguration &kvc, core::io::conference::ContainerConference &conf, QWidget *prnt) :
                 QWidget(prnt),

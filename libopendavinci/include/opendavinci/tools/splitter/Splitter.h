@@ -24,7 +24,7 @@
 
 #include "opendavinci/core/opendavinci.h"
 
-namespace tools {
+namespace odtools {
     namespace splitter {
 
         using namespace std;

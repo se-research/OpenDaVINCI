@@ -30,14 +30,14 @@
 #include "opendavinci/tools/splitter/Splitter.h"
 
 
-namespace tools {
+namespace odtools {
     namespace splitter {
 
         using namespace std;
         using namespace core::base;
         using namespace core::data;
-        using namespace tools::player;
-        using namespace tools::recorder;
+        using namespace odtools::player;
+        using namespace odtools::recorder;
 
         Splitter::Splitter() {}
 

@@ -34,7 +34,7 @@
 
 namespace core { namespace wrapper { class SharedMemory; } }
 
-namespace tools {
+namespace odtools {
     namespace player {
 
         using namespace std;

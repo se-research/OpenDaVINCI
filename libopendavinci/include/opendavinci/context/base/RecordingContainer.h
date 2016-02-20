@@ -27,7 +27,7 @@
 #include "opendavinci/context/base/SystemReportingComponent.h"
 
 namespace core { namespace wrapper { class Time; } }
-namespace tools { namespace recorder { class Recorder; } }
+namespace odtools { namespace recorder { class Recorder; } }
 
 namespace odcontext {
     namespace base {
@@ -78,7 +78,7 @@ namespace odcontext {
                 string m_urlFileName;
                 uint32_t m_memorySegmentSize;
                 uint32_t m_numberOfSegments;
-                auto_ptr<tools::recorder::Recorder> m_recorder;
+                auto_ptr<odtools::recorder::Recorder> m_recorder;
         };
 
     }

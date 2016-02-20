@@ -35,7 +35,7 @@ class QPushButton;
 namespace cockpit { namespace plugins { class PlugIn; } }
 namespace core { namespace base { class KeyValueConfiguration; } }
 namespace core { namespace io { namespace conference { class ContainerConference; } } }
-namespace tools { namespace player { class Player; } }
+namespace odtools { namespace player { class Player; } }
 
 namespace cockpit {
 
@@ -110,7 +110,7 @@ namespace cockpit {
                     QLineEdit *m_start;
                     QLineEdit *m_end;
 
-                    tools::player::Player *m_player;
+                    odtools::player::Player *m_player;
 
                     string m_fileName;
             };
