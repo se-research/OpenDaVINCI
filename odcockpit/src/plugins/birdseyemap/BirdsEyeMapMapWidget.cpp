@@ -28,12 +28,12 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/KeyValueConfiguration.h"
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/base/TreeNode.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/io/URL.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/TreeNode.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/io/URL.h"
 #include "automotivedata/generated/cartesian/Constants.h"
 #include "opendlv/data/environment/Obstacle.h"
 #include "opendlv/data/environment/Point3.h"
@@ -61,10 +61,10 @@ namespace cockpit {
     namespace plugins {
         namespace birdseyemap {
 
-            using namespace core::base;
-            using namespace core::data;
-            using namespace core::exceptions;
-            using namespace core::io;
+            using namespace odcore::base;
+            using namespace odcore::data;
+            using namespace odcore::exceptions;
+            using namespace odcore::io;
             using namespace opendlv::data::environment;
             using namespace opendlv::data::environment;
             using namespace opendlv::scenegraph;

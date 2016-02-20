@@ -17,19 +17,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "ContainerObserver.h"
 #include "plugins/birdseyemap/BirdsEyeMapPlugIn.h"
 #include "plugins/birdseyemap/BirdsEyeMapWidget.h"
 
 class QWidget;
-namespace core { namespace base { class KeyValueConfiguration; } }
+namespace odcore { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
     namespace plugins {
         namespace birdseyemap {
 
-            using namespace core::base;
+            using namespace odcore::base;
 
             BirdsEyeMapPlugIn::BirdsEyeMapPlugIn(const string &name, const KeyValueConfiguration &kvc, QWidget* prnt) :
                     PlugIn(name, kvc, prnt),

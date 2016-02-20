@@ -23,7 +23,7 @@
 
 #include <string>
 
-#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/odcore/base/Mutex.h"
 #include "plugins/AbstractGLWidget.h"
 
 class QWidget;
@@ -84,7 +84,7 @@ namespace cockpit {
                 private:
                     opendlv::threeD::Node *m_root;
 
-                    mutable core::base::Mutex m_modelMutex;
+                    mutable odcore::base::Mutex m_modelMutex;
                     opendlv::threeD::TransformGroup *m_model;
             };
 

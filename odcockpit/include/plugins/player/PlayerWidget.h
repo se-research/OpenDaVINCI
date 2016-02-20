@@ -26,15 +26,15 @@
 
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 class QCheckBox;
 class QLabel;
 class QLineEdit;
 class QPushButton;
 namespace cockpit { namespace plugins { class PlugIn; } }
-namespace core { namespace base { class KeyValueConfiguration; } }
-namespace core { namespace io { namespace conference { class ContainerConference; } } }
+namespace odcore { namespace base { class KeyValueConfiguration; } }
+namespace odcore { namespace io { namespace conference { class ContainerConference; } } }
 namespace odtools { namespace player { class Player; } }
 
 namespace cockpit {
@@ -76,7 +76,7 @@ namespace cockpit {
                      * @param conf Conference to send data to.
                      * @param prnt Pointer to the parental widget.
                      */
-                    PlayerWidget(const PlugIn &plugIn, const core::base::KeyValueConfiguration &kvc, core::io::conference::ContainerConference &conf, QWidget *prnt);
+                    PlayerWidget(const PlugIn &plugIn, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, QWidget *prnt);
 
                     virtual ~PlayerWidget();
 
@@ -93,8 +93,8 @@ namespace cockpit {
                     void process();
 
                 private:
-                    const core::base::KeyValueConfiguration &m_kvc;
-                    core::io::conference::ContainerConference &m_conference;
+                    const odcore::base::KeyValueConfiguration &m_kvc;
+                    odcore::io::conference::ContainerConference &m_conference;
 
                     QPushButton *m_playBtn;
                     QPushButton *m_pauseBtn;

@@ -22,7 +22,7 @@
 
 #include "opendlv/scenegraph/SceneNodeVisitor.h"
 
-namespace core { namespace base { template <typename T> class TreeNode; } }
+namespace odcore { namespace base { template <typename T> class TreeNode; } }
 namespace opendlv { namespace scenegraph { class SceneNode; } }
 namespace opendlv { namespace scenegraph { namespace renderer { class RenderingConfiguration; } } }
 
@@ -60,7 +60,7 @@ class SelectableNodeDescriptor;
                      *
                      * @param root TreeNode for adding SceneNodeDescriptors.
                      */
-                    TreeNodeVisitor(opendlv::scenegraph::renderer::RenderingConfiguration &rc, core::base::TreeNode<SelectableNodeDescriptor> *root);
+                    TreeNodeVisitor(opendlv::scenegraph::renderer::RenderingConfiguration &rc, odcore::base::TreeNode<SelectableNodeDescriptor> *root);
 
                     virtual ~TreeNodeVisitor();
 
@@ -68,7 +68,7 @@ class SelectableNodeDescriptor;
 
                 private:
                     opendlv::scenegraph::renderer::RenderingConfiguration &m_renderingConfiguration;
-                    core::base::TreeNode<SelectableNodeDescriptor> *m_root;
+                    odcore::base::TreeNode<SelectableNodeDescriptor> *m_root;
             };
         }
     }

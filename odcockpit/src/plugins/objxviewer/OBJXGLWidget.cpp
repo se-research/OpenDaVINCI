@@ -23,8 +23,8 @@
 #include <fstream>
 #include <iostream>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Lock.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Lock.h"
 #include "opendlv/threeD/Node.h"
 #include "opendlv/threeD/NodeDescriptor.h"
 #include "opendlv/threeD/RenderingConfiguration.h"
@@ -44,7 +44,7 @@ namespace cockpit {
         namespace objxviewer {
 
             using namespace std;
-            using namespace core::base;
+            using namespace odcore::base;
             using namespace opendlv::threeD;
             using namespace opendlv::threeD::decorator;
             using namespace opendlv::threeD::loaders;

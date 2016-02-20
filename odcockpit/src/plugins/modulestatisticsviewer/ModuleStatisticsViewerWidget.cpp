@@ -22,8 +22,8 @@
 #include <Qt/qtimer.h>
 #include <qcolor.h>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/data/Container.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleDescriptor.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleStatistic.h"
 #include "plugins/modulestatisticsviewer/LoadPerModule.h"
@@ -37,9 +37,9 @@ namespace cockpit {
         namespace modulestatisticsviewer {
 
             using namespace std;
-            using namespace core::base;
+            using namespace odcore::base;
             using namespace coredata;
-            using namespace core::data;
+            using namespace odcore::data;
             using namespace coredata::dmcp;
 
             ModuleStatisticsViewerWidget::ModuleStatisticsViewerWidget(const PlugIn &/*plugIn*/, QWidget *prnt) :
@@ -84,13 +84,13 @@ namespace cockpit {
                         ModuleStatistic entry = it->second;
 
                         // Lookup module in map.
-                        core::SharedPointer<LoadPerModule> lpm = m_loadPerModule[entry.getModule().getName()];
+                        odcore::SharedPointer<LoadPerModule> lpm = m_loadPerModule[entry.getModule().getName()];
                         if (!lpm.isValid()) {
                             const uint32_t R = (m_color > 255) ? 255 : m_color;
                             const uint32_t G = (m_color > 510) ? 255 : ( (m_color > 255) ? (m_color-255) : 0 );
                             const uint32_t B = (m_color > 510) ? (m_color-510) : 0;
                             QColor color(R, G, B);
-                            lpm = core::SharedPointer<LoadPerModule>(new LoadPerModule(entry.getModule(), color));
+                            lpm = odcore::SharedPointer<LoadPerModule>(new LoadPerModule(entry.getModule(), color));
                             m_loadPerModule[entry.getModule().getName()] = lpm;
                             m_plot->addLoadPerModule(lpm);
 

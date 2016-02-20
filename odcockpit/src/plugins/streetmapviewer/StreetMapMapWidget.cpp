@@ -23,8 +23,8 @@
 #include <QtGui>
 #include <QtNetwork>
 
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/data/Container.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/data/Container.h"
 #include "opendlv/data/environment/EgoState.h"
 
 #include "plugins/streetmapviewer/StreetMapMapWidget.h"
@@ -35,8 +35,8 @@ namespace cockpit {
         namespace streetmap {
 
             using namespace std;
-            using namespace core::base;
-            using namespace core::data;
+            using namespace odcore::base;
+            using namespace odcore::data;
             using namespace opendlv::data::environment;
 
             StreetMapMapWidget::StreetMapMapWidget(QWidget *prnt) :

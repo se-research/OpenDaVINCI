@@ -33,7 +33,7 @@
 namespace cockpit {
 
     using namespace std;
-    using namespace core::base;
+    using namespace odcore::base;
 
     Cockpit::Cockpit(int32_t &argc, char **argv) :
         TimeTriggeredConferenceClientModule(argc, argv, "odcockpit"),

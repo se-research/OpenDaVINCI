@@ -27,8 +27,8 @@
 #include <map>
 #include <string>
 
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/io/conference/ContainerListener.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
 
 class QTreeWidget;
 class QTreeWidgetItem;
@@ -41,12 +41,12 @@ namespace cockpit {
         namespace spy {
 
             using namespace std;
-            using namespace core::data;
+            using namespace odcore::data;
 
             /**
              * This class is the container for the spy widget.
              */
-            class SpyWidget : public QWidget, public core::io::conference::ContainerListener {
+            class SpyWidget : public QWidget, public odcore::io::conference::ContainerListener {
 
                     Q_OBJECT
 

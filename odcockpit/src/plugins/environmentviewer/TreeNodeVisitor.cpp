@@ -20,7 +20,7 @@
 
 #include <vector>
 
-#include "opendavinci/core/base/TreeNode.h"
+#include "opendavinci/odcore/base/TreeNode.h"
 #include "opendlv/scenegraph/SceneNode.h"
 #include "opendlv/scenegraph/renderer/RenderingConfiguration.h"
 #include "opendlv/scenegraph/renderer/SceneNodeRenderingConfiguration.h"
@@ -35,7 +35,7 @@ namespace cockpit {
         namespace environmentviewer {
 
             using namespace std;
-            using namespace core::base;
+            using namespace odcore::base;
             using namespace opendlv::threeD;
 
             TreeNodeVisitor::TreeNodeVisitor(RenderingConfiguration &rc, TreeNode<SelectableNodeDescriptor> *root) :

@@ -36,7 +36,7 @@ namespace cockpit {
         namespace irusmap {
 
             using namespace std;
-            using namespace core::data;
+            using namespace odcore::data;
             using namespace opendlv::data::environment;
 
             PointSensor::PointSensor(const uint16_t &id, const string &name, const opendlv::data::environment::Point3 &translation, const double &rotZ, const double &angleFOV, const double &distanceFOV, const double &clampDistance) :

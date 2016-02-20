@@ -26,9 +26,9 @@
 #include <cstring>
 #include <sstream>
 
-#include "opendavinci/core/base/Serializable.h"
-#include "opendavinci/core/data/TimeStamp.h"
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "automotivedata/generated/automotive/ForceControl.h"
 #include "automotivedata/generated/automotive/GenericCANMessage.h"
 #include "automotivedata/generated/automotive/VehicleData.h"
@@ -57,7 +57,7 @@ namespace cockpit {
         namespace spy {
 
             using namespace std;
-            using namespace core::data;
+            using namespace odcore::data;
 
             SpyWidget::SpyWidget(const PlugIn &/*plugIn*/, QWidget *prnt) :
                 QWidget(prnt),
@@ -140,7 +140,7 @@ namespace cockpit {
                     case Container::SHARED_IMAGE:
                        return container.getData<coredata::image::SharedImage> ().toString();
                     case Container::TIMESTAMP:
-                       return container.getData<core::data::TimeStamp> ().toString();
+                       return container.getData<odcore::data::TimeStamp> ().toString();
                     case Container::USER_BUTTON:
                        return container.getData<automotive::miniature::UserButtonData> ().toString();
                     case Container::GENERIC_CAN_MESSAGE:

@@ -26,7 +26,7 @@
 #include "plugins/PlugIn.h"
 
 class QWidget;
-namespace core { namespace base { class KeyValueConfiguration; } }
+namespace odcore { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
 
@@ -60,7 +60,7 @@ class LiveFeedWidget;
                      * @param kvc KeyValueConfiguration for this GL-based widget.
                      * @param prnt Pointer to the container super window.
                      */
-                    LiveFeedPlugIn(const string &name, const core::base::KeyValueConfiguration &kvc, QWidget *prnt);
+                    LiveFeedPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt);
 
                     virtual ~LiveFeedPlugIn();
 

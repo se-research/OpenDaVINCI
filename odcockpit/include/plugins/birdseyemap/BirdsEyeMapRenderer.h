@@ -20,7 +20,7 @@
 #ifndef PLUGINS_BIRDSEYEMAP_BIRDSEYEMAPRENDERER_H_
 #define PLUGINS_BIRDSEYEMAP_BIRDSEYEMAPRENDERER_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendlv/scenegraph/renderer/AbstractRenderer.h"
 
 class QPainter;

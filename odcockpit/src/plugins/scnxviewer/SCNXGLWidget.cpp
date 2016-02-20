@@ -22,11 +22,11 @@
 
 #include <iostream>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/core/io/URL.h"
-#include "opendavinci/core/wrapper/DisposalService.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/io/URL.h"
+#include "opendavinci/odcore/wrapper/DisposalService.h"
 #include "opendlv/scenario/SCNXArchiveFactory.h"
 #include "opendlv/threeD/Node.h"
 #include "opendlv/threeD/NodeDescriptor.h"
@@ -46,8 +46,8 @@ namespace cockpit {
         namespace scnxviewer {
 
             using namespace std;
-            using namespace core::base;
-            using namespace core::io;
+            using namespace odcore::base;
+            using namespace odcore::io;
             using namespace opendlv::scenario;
             using namespace opendlv::threeD;
             using namespace opendlv::threeD::decorator;
@@ -68,7 +68,7 @@ namespace cockpit {
                 m_model->deleteAllChildren();
 
                 // Cleanup right now.
-                core::wrapper::DisposalService::getInstance().cleanUpImmediately();
+                odcore::wrapper::DisposalService::getInstance().cleanUpImmediately();
                 Thread::usleepFor(1000*1000);
 
                 URL scnxFile("file://" + scnxModel);

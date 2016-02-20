@@ -18,18 +18,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "plugins/objxviewer/OBJXViewerPlugIn.h"
 #include "plugins/objxviewer/OBJXViewerWidget.h"
 
 class QWidget;
-namespace core { namespace base { class KeyValueConfiguration; } }
+namespace odcore { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
     namespace plugins {
         namespace objxviewer {
 
-            OBJXViewerPlugIn::OBJXViewerPlugIn(const string &name, const core::base::KeyValueConfiguration &kvc, QWidget *prnt) :
+            OBJXViewerPlugIn::OBJXViewerPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt) :
                 PlugIn(name, kvc, prnt),
                 m_viewerWidget(NULL) {
                 setDescription("This plugin shows .objx files.");

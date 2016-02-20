@@ -21,7 +21,7 @@
 #ifndef CONTAINEROBSERVER_H_
 #define CONTAINEROBSERVER_H_
 
-namespace core { namespace io { namespace conference { class ContainerListener; } } }
+namespace odcore { namespace io { namespace conference { class ContainerListener; } } }
 
 namespace cockpit {
 
@@ -37,14 +37,14 @@ namespace cockpit {
              *
              * @param containerListener ContainerListener to be added.
              */
-            virtual void addContainerListener(core::io::conference::ContainerListener *containerListener) = 0;
+            virtual void addContainerListener(odcore::io::conference::ContainerListener *containerListener) = 0;
 
             /**
              * This method removes a container listener.
              *
              * @param containerListener ContainerListener to be removed.
              */
-            virtual void removeContainerListener(core::io::conference::ContainerListener *containerListener) = 0;
+            virtual void removeContainerListener(odcore::io::conference::ContainerListener *containerListener) = 0;
     };
 
 } // cockpit

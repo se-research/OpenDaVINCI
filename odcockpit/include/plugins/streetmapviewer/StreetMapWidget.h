@@ -28,9 +28,9 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/io/conference/ContainerListener.h"
-#include "opendavinci/core/strings/StringComparator.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
+#include "opendavinci/odcore/strings/StringComparator.h"
 #include "opendlv/data/environment/WGS84Coordinate.h"
 
 #include "plugins/streetmapviewer/StreetMapMapWidget.h"
@@ -38,7 +38,7 @@
 class QNetworkSession;
 class QSpinBox;
 namespace cockpit { namespace plugins { class PlugIn; } }
-namespace core { namespace data { class Container; } }
+namespace odcore { namespace data { class Container; } }
 
 namespace cockpit {
     namespace plugins {
@@ -49,7 +49,7 @@ namespace cockpit {
             /**
              * This class is the outer container for the map tile viewer.
              */
-            class StreetMapWidget : public QWidget, public core::io::conference::ContainerListener {
+            class StreetMapWidget : public QWidget, public odcore::io::conference::ContainerListener {
 
                 Q_OBJECT
 
@@ -80,7 +80,7 @@ namespace cockpit {
 
                     virtual ~StreetMapWidget();
 
-                    virtual void nextContainer(core::data::Container &c);
+                    virtual void nextContainer(odcore::data::Container &c);
 
                 private slots:
                     /**

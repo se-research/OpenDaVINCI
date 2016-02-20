@@ -27,7 +27,7 @@
 #include "plugins/PlugIn.h"
 
 class QWidget;
-namespace core { namespace base { class KeyValueConfiguration; } }
+namespace odcore { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
     namespace plugins {
@@ -63,7 +63,7 @@ class StreetMapWidget;
                      * @param kvc KeyValueConfiguration for this GL-based widget.
                      * @param prnt Pointer to the container super window.
                      */
-                    StreetMapPlugIn(const string &name, const core::base::KeyValueConfiguration &kvc, QWidget* prnt);
+                    StreetMapPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, QWidget* prnt);
 
                     virtual ~StreetMapPlugIn();
 

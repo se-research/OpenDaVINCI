@@ -28,13 +28,13 @@
 #include <map>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/io/conference/ContainerListener.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleStatistics.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }
-namespace core { namespace data { class Container; } }
+namespace odcore { namespace data { class Container; } }
 
 namespace cockpit {
     namespace plugins {
@@ -49,7 +49,7 @@ class LoadPlot;
          * This class is the container for the shared image viewer widget.
          */
         class ModuleStatisticsViewerWidget : public QWidget,
-            public core::io::conference::ContainerListener
+            public odcore::io::conference::ContainerListener
         {
 
         Q_OBJECT
@@ -83,12 +83,12 @@ class LoadPlot;
           ~ModuleStatisticsViewerWidget();
 
           virtual void
-          nextContainer(core::data::Container &c);
+          nextContainer(odcore::data::Container &c);
 
         private:
           LoadPlot *m_plot;
           deque<coredata::dmcp::ModuleStatistics> m_moduleStatistics;
-          map<string, core::SharedPointer<LoadPerModule> > m_loadPerModule;
+          map<string, odcore::SharedPointer<LoadPerModule> > m_loadPerModule;
           uint32_t m_color;
         };
     }

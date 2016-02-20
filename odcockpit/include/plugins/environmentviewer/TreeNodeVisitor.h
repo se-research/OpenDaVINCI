@@ -23,7 +23,7 @@
 
 #include "opendlv/threeD/TransformGroupVisitor.h"
 
-namespace core { namespace base { template <typename T> class TreeNode; } }
+namespace odcore { namespace base { template <typename T> class TreeNode; } }
 namespace opendlv { namespace threeD { class Node; } }
 namespace opendlv { namespace threeD { class RenderingConfiguration; } }
 
@@ -62,7 +62,7 @@ class SelectableNodeDescriptor;
                      * @param rc RenderingConfiguration.
                      * @param root TreeNode for adding NodeDescriptors.
                      */
-                    TreeNodeVisitor(opendlv::threeD::RenderingConfiguration &rc, core::base::TreeNode<SelectableNodeDescriptor> *root);
+                    TreeNodeVisitor(opendlv::threeD::RenderingConfiguration &rc, odcore::base::TreeNode<SelectableNodeDescriptor> *root);
 
                     virtual ~TreeNodeVisitor();
 
@@ -70,7 +70,7 @@ class SelectableNodeDescriptor;
 
                 private:
                     opendlv::threeD::RenderingConfiguration &m_renderingConfiguration;
-                    core::base::TreeNode<SelectableNodeDescriptor> *m_root;
+                    odcore::base::TreeNode<SelectableNodeDescriptor> *m_root;
             };
         }
     }

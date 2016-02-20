@@ -20,8 +20,8 @@
 
 #include <ostream>
 
-#include "opendavinci/core/base/Serializable.h"
-#include "opendavinci/core/data/SerializableData.h"
+#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 #include "plugins/livefeed/MessageToTupleVisitor.h"
 
 namespace cockpit {
@@ -30,16 +30,16 @@ namespace cockpit {
 
         namespace livefeed {
 
-            using namespace core::base;
+            using namespace odcore::base;
 
             MessageToTupleVisitor::MessageToTupleVisitor(vector<pair<string, string> > &entries) :
                 m_entries(entries) {}
 
             MessageToTupleVisitor::~MessageToTupleVisitor() {}
 
-            void MessageToTupleVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &shortName, core::base::Serializable &v) {
+            void MessageToTupleVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &shortName, odcore::base::Serializable &v) {
                 try {
-                    core::data::SerializableData& tmp = dynamic_cast<core::data::SerializableData&>(v);
+                    odcore::data::SerializableData& tmp = dynamic_cast<odcore::data::SerializableData&>(v);
                     m_entries.push_back(make_pair(shortName, tmp.toString()));
                 }
                 catch(...) {

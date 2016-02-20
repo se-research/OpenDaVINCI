@@ -18,19 +18,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "opendavinci/core/base/DataStoreManager.h"
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/io/conference/ContainerListener.h"
+#include "opendavinci/odcore/base/DataStoreManager.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
 
 #include "FIFOMultiplexer.h"
 
 namespace cockpit {
 
     using namespace std;
-    using namespace core::base;
-    using namespace core::data;
-    using namespace core::io::conference;
+    using namespace odcore::base;
+    using namespace odcore::data;
+    using namespace odcore::io::conference;
 
     FIFOMultiplexer::FIFOMultiplexer(DataStoreManager &dsm) :
         m_dataStoreManager(dsm),
@@ -43,14 +43,14 @@ namespace cockpit {
         m_listOfContainerListeners.clear();
     }
 
-    void FIFOMultiplexer::addContainerListener(core::io::conference::ContainerListener *containerListener) {
+    void FIFOMultiplexer::addContainerListener(odcore::io::conference::ContainerListener *containerListener) {
         if (containerListener != NULL) {
             Lock l(m_fifoMutex);
             m_listOfContainerListeners.push_back(containerListener);
         }
     }
 
-    void FIFOMultiplexer::removeContainerListener(core::io::conference::ContainerListener *containerListener) {
+    void FIFOMultiplexer::removeContainerListener(odcore::io::conference::ContainerListener *containerListener) {
         if (containerListener != NULL) {
             Lock l(m_fifoMutex);
             vector<ContainerListener*>::iterator it = m_listOfContainerListeners.begin();

@@ -26,23 +26,23 @@
 #include <qnamespace.h>
 #include <qstringlist.h>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/base/TreeNode.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/TreeNode.h"
 #include "plugins/GLControlFrame.h"
 #include "plugins/environmentviewer/EnvironmentViewerGLWidget.h"
 #include "plugins/environmentviewer/EnvironmentViewerWidget.h"
 #include "plugins/environmentviewer/SelectableNodeDescriptor.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }
-namespace core { namespace data { class Container; } }
+namespace odcore { namespace data { class Container; } }
 
 namespace cockpit {
     namespace plugins {
         namespace environmentviewer {
 
-            using namespace core::base;
-            using namespace core::data;
+            using namespace odcore::base;
+            using namespace odcore::data;
             using namespace opendlv::threeD;
 
             EnvironmentViewerWidget::EnvironmentViewerWidget(const PlugIn &plugIn, QWidget *prnt) :
@@ -146,7 +146,7 @@ namespace cockpit {
                 }
             }
 
-            void EnvironmentViewerWidget::update(core::base::TreeNode<SelectableNodeDescriptor> *node) {
+            void EnvironmentViewerWidget::update(odcore::base::TreeNode<SelectableNodeDescriptor> *node) {
                 if (node != NULL) {
                     {
                         Lock l(m_textualSceneGraphRootUpdateMutex);

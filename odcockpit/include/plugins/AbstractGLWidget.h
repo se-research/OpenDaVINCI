@@ -24,8 +24,8 @@
 #include <Qt/qgl.h>
 #include <qobjectdefs.h>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Mutex.h"
 #include "opendlv/data/environment/Point3.h"
 
 class QKeyEvent;
@@ -155,7 +155,7 @@ class PlugIn;
                 int32_t m_mouseY;
                 int32_t m_mouseButton;
 
-                core::base::Mutex m_backgroundColorMutex;
+                odcore::base::Mutex m_backgroundColorMutex;
                 opendlv::data::environment::Point3 m_backgroundColor;
 
                 virtual void initializeGL();

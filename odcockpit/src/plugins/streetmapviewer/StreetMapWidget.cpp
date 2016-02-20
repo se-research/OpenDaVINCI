@@ -28,8 +28,8 @@
 #include <qglobal.h>
 #include <qnamespace.h>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/data/Container.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/data/Container.h"
 #include "opendlv/data/environment/EgoState.h"
 
 #include "plugins/streetmapviewer/StreetMapWidget.h"
@@ -41,7 +41,7 @@ namespace cockpit {
         namespace streetmap {
 
             using namespace std;
-            using namespace core::data;
+            using namespace odcore::data;
             using namespace opendlv::data::environment;
 
             StreetMapWidget::StreetMapWidget(const PlugIn &/*plugIn*/, QWidget *prnt, const opendlv::data::environment::WGS84Coordinate &rL) :

@@ -39,7 +39,7 @@
 
 #include <vector>
 
-#include "opendavinci/core/SharedPointer.h"
+#include "opendavinci/odcore/SharedPointer.h"
 
 class QTimer;
 class QWidget;
@@ -77,11 +77,11 @@ class LoadPerModule;
 
 	                ~LoadPlot();
 
-	                void addLoadPerModule(core::SharedPointer<LoadPerModule> lpm);
+	                void addLoadPerModule(odcore::SharedPointer<LoadPerModule> lpm);
 
                 private:
 	                QwtLegend* m_legend;
-	                vector<core::SharedPointer<LoadPerModule> > m_toAdd;
+	                vector<odcore::SharedPointer<LoadPerModule> > m_toAdd;
 	                QTimer* m_toAttachVisitor;
 
                 private slots:

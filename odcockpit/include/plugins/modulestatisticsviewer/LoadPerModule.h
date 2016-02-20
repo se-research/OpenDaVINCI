@@ -27,7 +27,7 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/base/Mutex.h"
+#include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleDescriptor.h"
 #include "opendavinci/generated/coredata/dmcp/RuntimeStatistic.h"
 
@@ -89,7 +89,7 @@ namespace cockpit {
                 private:
                     coredata::dmcp::ModuleDescriptor m_moduleDescriptor;
                     QwtPlotCurve *m_curve;
-                    core::base::Mutex m_loadMutex;
+                    odcore::base::Mutex m_loadMutex;
                     deque<coredata::dmcp::RuntimeStatistic> m_load;
                     vector<double> m_data;
                     vector<double> m_reference;

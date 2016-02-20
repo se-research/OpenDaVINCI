@@ -20,7 +20,7 @@
 #include <Qt/qpainter.h>
 #include <Qt/qpen.h>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendlv/scenegraph/renderer/RenderingConfiguration.h"
 #include "opendlv/scenegraph/renderer/SceneNodeRenderingConfiguration.h"
 #include "opendlv/scenegraph/primitives/Line.h"

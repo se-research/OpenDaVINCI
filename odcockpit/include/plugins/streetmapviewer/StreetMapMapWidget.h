@@ -22,8 +22,8 @@
 
 #include <QWidget>
 
-#include "opendavinci/core/base/Mutex.h"
-#include "opendavinci/core/io/conference/ContainerListener.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
 #include "opendlv/data/environment/WGS84Coordinate.h"
 
 class QTimer;
@@ -34,7 +34,7 @@ namespace cockpit {
         namespace streetmap {
 
             class StreetMapMapWidget: public QWidget,
-                                      public core::io::conference::ContainerListener {
+                                      public odcore::io::conference::ContainerListener {
 
                 Q_OBJECT
 
@@ -81,7 +81,7 @@ namespace cockpit {
                     void zoomIn();
                     void zoomOut();
 
-                    virtual void nextContainer(core::data::Container &c);
+                    virtual void nextContainer(odcore::data::Container &c);
 
                 protected:
                     void resizeEvent(QResizeEvent *evnt);
@@ -96,7 +96,7 @@ namespace cockpit {
                     SlippyMap *m_mapTileProvider;
                     QTimer *m_timer;
                     QPoint m_pressedPosition;
-                    core::base::Mutex m_positionMutex;
+                    odcore::base::Mutex m_positionMutex;
                     opendlv::data::environment::WGS84Coordinate m_position;
             };
         }

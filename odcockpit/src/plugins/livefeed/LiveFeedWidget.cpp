@@ -26,10 +26,10 @@
 #include <cstring>
 #include <vector>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Visitable.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/data/TimeStamp.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Visitable.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
 #include "automotivedata/generated/automotive/ForceControl.h"
 #include "automotivedata/generated/automotive/GenericCANMessage.h"
 #include "automotivedata/generated/automotive/VehicleData.h"
@@ -58,8 +58,8 @@ namespace cockpit {
         namespace livefeed {
 
             using namespace std;
-            using namespace core::base;
-            using namespace core::data;
+            using namespace odcore::base;
+            using namespace odcore::data;
 
             LiveFeedWidget::LiveFeedWidget(const PlugIn &/*plugIn*/, QWidget *prnt) :
                 QWidget(prnt),
@@ -93,7 +93,7 @@ namespace cockpit {
                 transformContainerToTree(container);
             }
 
-            void LiveFeedWidget::addMessageToTree(const string &messageName, core::data::Container &container, core::base::Visitable &v) {
+            void LiveFeedWidget::addMessageToTree(const string &messageName, odcore::data::Container &container, odcore::base::Visitable &v) {
                 //create new Header if needed
                 if (m_dataToType.find(messageName) == m_dataToType.end()) {
                     QTreeWidgetItem *newHeader = new QTreeWidgetItem(m_dataView.get());

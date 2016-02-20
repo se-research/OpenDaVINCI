@@ -19,7 +19,7 @@
 
 #include <vector>
 
-#include "opendavinci/core/base/TreeNode.h"
+#include "opendavinci/odcore/base/TreeNode.h"
 #include "opendlv/scenegraph/SceneNode.h"
 #include "opendlv/scenegraph/renderer/RenderingConfiguration.h"
 #include "opendlv/scenegraph/renderer/SceneNodeRenderingConfiguration.h"
@@ -34,7 +34,7 @@ namespace cockpit {
         namespace birdseyemap {
 
             using namespace std;
-            using namespace core::base;
+            using namespace odcore::base;
             using namespace opendlv::scenegraph;
             using namespace opendlv::scenegraph::renderer;
 

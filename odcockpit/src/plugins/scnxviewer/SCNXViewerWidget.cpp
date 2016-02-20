@@ -24,7 +24,7 @@
 #include <Qt/qmenubar.h>
 #include <qstring.h>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "plugins/GLControlFrame.h"
 #include "plugins/scnxviewer/SCNXGLWidget.h"
 #include "plugins/scnxviewer/SCNXViewerWidget.h"
