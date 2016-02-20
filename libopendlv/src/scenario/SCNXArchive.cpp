@@ -44,7 +44,7 @@ namespace opendlv {
         using namespace std;
         using namespace odcore;
 
-        SCNXArchive::SCNXArchive(const data::scenario::Scenario &scenario, odcore::SharedPointer<core::wrapper::DecompressedData> dd) :
+        SCNXArchive::SCNXArchive(const data::scenario::Scenario &scenario, odcore::SharedPointer<odcore::wrapper::DecompressedData> dd) :
             m_scenario(scenario),
             m_decompressedData(dd),
             m_aerialImage(NULL),

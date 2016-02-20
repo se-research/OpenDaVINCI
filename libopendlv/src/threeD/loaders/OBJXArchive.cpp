@@ -52,7 +52,7 @@ namespace opendlv {
                     m_mtlFile() {}
 
             OBJXArchive::~OBJXArchive() {
-                map<string, wrapper::Image*, odcore::strings::StringComparator>::iterator it = m_mapOfImages.begin();
+                map<string, core::wrapper::Image*, odcore::strings::StringComparator>::iterator it = m_mapOfImages.begin();
 
                 while (it != m_mapOfImages.end()) {
                     clog << "Deleting " << it->first << "...";
@@ -149,7 +149,7 @@ namespace opendlv {
 
                     map<string, Material, odcore::strings::StringComparator>::iterator it = m_mapOfMaterials.begin();
                     while (it != m_mapOfMaterials.end()) {
-                        wrapper::Image *image = m_mapOfImages[it->second.getTextureName()];
+                        core::wrapper::Image *image = m_mapOfImages[it->second.getTextureName()];
 
                         if (image != NULL) {
                             tm.addImage(it->first, image);
@@ -422,9 +422,9 @@ namespace opendlv {
                 return returnableModel;
             }
 
-            void OBJXArchive::addImage(const string &name, wrapper::Image *image) {
+            void OBJXArchive::addImage(const string &name, core::wrapper::Image *image) {
                 if ( (name.length() > 0) && (image != NULL) && (image->getWidth() > 0) && (image->getHeight() > 0) ) {
-                    wrapper::Image *existingEntry = m_mapOfImages[name];
+                    core::wrapper::Image *existingEntry = m_mapOfImages[name];
 
                     if (existingEntry == NULL) {
                         clog << "Adding " << name << ", W: " << image->getWidth() << ", H: " << image->getHeight() << endl;

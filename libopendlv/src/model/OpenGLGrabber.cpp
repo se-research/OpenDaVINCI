@@ -75,9 +75,9 @@ namespace opendlv { namespace vehiclecontext {
                     m_root->addChild(new Grid(NodeDescriptor("Grid"), 10, 2));
                 }
 
-                m_sharedMemory = core::wrapper::SharedMemoryFactory::createSharedMemory("odsimcamera", 640 * 480 * 3);
+                m_sharedMemory = odcore::wrapper::SharedMemoryFactory::createSharedMemory("odsimcamera", 640 * 480 * 3);
 
-                m_image = odcore::SharedPointer<core::wrapper::Image>(odcore::wrapper::ImageFactory::getInstance().getImage(640, 480, odcore::wrapper::Image::BGR_24BIT, static_cast<char*>(m_sharedMemory->getSharedMemory())));
+                m_image = odcore::SharedPointer<core::wrapper::Image>(core::wrapper::ImageFactory::getInstance().getImage(640, 480, core::wrapper::Image::BGR_24BIT, static_cast<char*>(m_sharedMemory->getSharedMemory())));
 
                 if (m_image.isValid()) {
                     cerr << "OpenGLGrabber initialized." << endl;

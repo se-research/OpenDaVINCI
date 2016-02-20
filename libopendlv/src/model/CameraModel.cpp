@@ -36,7 +36,7 @@
 #include "opendlv/vehiclecontext/model/CameraModel.h"
 #include "opendlv/vehiclecontext/model/OpenGLGrabber.h"
 
-namespace core { namespace wrapper { class Time; } }
+namespace odcore { namespace wrapper { class Time; } }
 
 namespace opendlv { namespace vehiclecontext {
     namespace model {
@@ -242,7 +242,7 @@ namespace opendlv { namespace vehiclecontext {
             glMatrixMode(GL_MODELVIEW);
         }
 
-        void CameraModel::step(const core::wrapper::Time &t, SendContainerToSystemsUnderTest &sender) {
+        void CameraModel::step(const odcore::wrapper::Time &t, SendContainerToSystemsUnderTest &sender) {
             (void)sender;
             cerr << "[CameraModel] Call for t = " << t.getSeconds() << "." << t.getPartialMicroseconds() << ", containing " << getFIFO().getSize() << " containers." << endl;
 

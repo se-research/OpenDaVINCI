@@ -273,7 +273,7 @@ namespace opendlv { namespace vehiclecontext {
             return retVal;
         }
 
-        void SimplifiedBicycleModel::step(const core::wrapper::Time &t, SendContainerToSystemsUnderTest &sender) {
+        void SimplifiedBicycleModel::step(const odcore::wrapper::Time &t, SendContainerToSystemsUnderTest &sender) {
             cerr << "[SimplifiedBicycleModel] Call for t = " << t.getSeconds() << "." << t.getPartialMicroseconds() << ", containing " << getFIFO().getSize() << " containers." << endl;
 
             // Get last VehicleControl.

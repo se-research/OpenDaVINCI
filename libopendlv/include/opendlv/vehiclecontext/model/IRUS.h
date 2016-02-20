@@ -82,7 +82,7 @@ namespace opendlv { namespace vehiclecontext {
 
                 virtual void tearDown();
 
-                virtual void step(const core::wrapper::Time &t, odcontext::base::SendContainerToSystemsUnderTest &sender);
+                virtual void step(const odcore::wrapper::Time &t, odcontext::base::SendContainerToSystemsUnderTest &sender);
 
             public:
                 /**

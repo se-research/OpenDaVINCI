@@ -23,11 +23,12 @@
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/wrapper/Disposable.h"
 
+namespace odcore { namespace wrapper { class Mutex; } }
+
 namespace core {
     namespace wrapper {
 
 class Matrix;
-class Mutex;
 
         using namespace std;
 
@@ -87,7 +88,7 @@ class Mutex;
                 virtual Matrix* createMatrix(const uint32_t &dimensionX, const uint32_t &dimensionY) = 0;
 
             private:
-                static Mutex *m_singletonMutex;
+                static odcore::wrapper::Mutex *m_singletonMutex;
                 static MatrixFactory *m_singleton;
         };
 

@@ -267,7 +267,7 @@ namespace opendlv { namespace vehiclecontext {
             return retVal;
         }
 
-        void IRUS::step(const core::wrapper::Time &t, SendContainerToSystemsUnderTest &sender) {
+        void IRUS::step(const odcore::wrapper::Time &t, SendContainerToSystemsUnderTest &sender) {
             cerr << "[IRUS] Call for t = " << t.getSeconds() << "." << t.getPartialMicroseconds() << ", containing " << getFIFO().getSize() << " containers." << endl;
 
             // Get last EgoState.

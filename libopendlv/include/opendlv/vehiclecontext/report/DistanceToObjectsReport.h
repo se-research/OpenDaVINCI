@@ -68,7 +68,7 @@ namespace opendlv { namespace vehiclecontext {
 
                 virtual void tearDown();
 
-                virtual void report(const core::wrapper::Time &t);
+                virtual void report(const odcore::wrapper::Time &t);
 
                 /**
                  * This method returns true, if the distance to the objects was greater than the given threshold.

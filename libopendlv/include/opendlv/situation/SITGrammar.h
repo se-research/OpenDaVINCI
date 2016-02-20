@@ -130,7 +130,7 @@ namespace opendlv {
                  * @param ptl Listener for successfully parsed tokens.
                  * @param pel Listener for occurring errors.
                  */
-                SITGrammar(core::wrapper::parser::ParserTokenListener &ptl, odcore::wrapper::parser::ParserErrorListener &pel);
+                SITGrammar(core::wrapper::parser::ParserTokenListener &ptl, core::wrapper::parser::ParserErrorListener &pel);
 
                 virtual ~SITGrammar();
 

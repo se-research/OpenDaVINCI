@@ -84,7 +84,7 @@ namespace opendlv { namespace vehiclecontext {
             private:
                 odcore::base::KeyValueConfiguration m_kvc;
                 odcore::SharedPointer<core::wrapper::Image> m_image;
-                odcore::SharedPointer<core::wrapper::SharedMemory> m_sharedMemory;
+                odcore::SharedPointer<odcore::wrapper::SharedMemory> m_sharedMemory;
                 odcore::SharedPointer<opendlv::threeD::TransformGroup> m_root;
         };
 

@@ -144,7 +144,7 @@ namespace opendlv {
                             SharedPointer<istream> stream = data->getInputStreamFor(entry);
 
                             if (stream.isValid()) {
-                                core::wrapper::Image *image = odcore::wrapper::ImageFactory::getInstance().getImage(*stream);
+                                core::wrapper::Image *image = core::wrapper::ImageFactory::getInstance().getImage(*stream);
 
                                 if (image != NULL) {
                                     // TODO: Check where origin lies.

@@ -23,6 +23,7 @@
 #include <iostream>
 
 #include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/wrapper/Mutex.h"
 #include "opendavinci/odcore/wrapper/Disposable.h"
 #include "opendlv/core/wrapper/Image.h"
 
@@ -112,7 +113,7 @@ class Mutex;
                 virtual Image* getImage(const uint32_t &width, const uint32_t &height, const enum Image::FORMAT &format, char *ptr) = 0;
 
             private:
-                static Mutex *m_singletonMutex;
+                static odcore::wrapper::Mutex *m_singletonMutex;
                 static ImageFactory *m_singleton;
         };
 

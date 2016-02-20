@@ -71,7 +71,7 @@ namespace opendlv {
 
             ////////////////////////////////////////////////////////////////////
 
-            HeightGrid::HeightGrid(const NodeDescriptor &nodeDescriptor, const wrapper::Image *heightImage, const Point3 &originPixelXY, const Point3 &scalingPixelXY, const float &rotationZ, const float &ground, const float &min, const float &max) :
+            HeightGrid::HeightGrid(const NodeDescriptor &nodeDescriptor, const core::wrapper::Image *heightImage, const Point3 &originPixelXY, const Point3 &scalingPixelXY, const float &rotationZ, const float &ground, const float &min, const float &max) :
                     Node(nodeDescriptor),
                     m_heightImage(heightImage),
                     m_originPixelXY(originPixelXY),
@@ -124,14 +124,14 @@ namespace opendlv {
             template <class T>
             class MyImage {
                 private:
-                    const wrapper::Image *m_image;
+                    const core::wrapper::Image *m_image;
                     T m_t;
 
                     MyImage(const MyImage &obj);
                     MyImage& operator=(const MyImage &obj);
 
                 public:
-                    MyImage(const wrapper::Image *image) :
+                    MyImage(const core::wrapper::Image *image) :
                             m_image(image),
                             m_t() {}
 

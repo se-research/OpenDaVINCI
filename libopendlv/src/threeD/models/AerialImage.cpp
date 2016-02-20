@@ -93,7 +93,7 @@ namespace opendlv {
 
             ////////////////////////////////////////////////////////////////////
 
-            AerialImage::AerialImage(const NodeDescriptor &nodeDescriptor, const Image *image, const Point3 &originPixelXY, const Point3 &scalingPixelXY, const float &rotationZ) :
+            AerialImage::AerialImage(const NodeDescriptor &nodeDescriptor, const core::wrapper::Image *image, const Point3 &originPixelXY, const Point3 &scalingPixelXY, const float &rotationZ) :
                     Node(nodeDescriptor),
                     m_image(image),
                     m_originPixelXY(originPixelXY),

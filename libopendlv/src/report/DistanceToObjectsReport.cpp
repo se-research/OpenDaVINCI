@@ -64,7 +64,7 @@ namespace opendlv { namespace vehiclecontext {
             return m_correctDistance;
         }
 
-        void DistanceToObjectsReport::report(const core::wrapper::Time &t) {
+        void DistanceToObjectsReport::report(const odcore::wrapper::Time &t) {
             cerr << "Call to DistanceToObjectsReport for t = " << t.getSeconds() << "." << t.getPartialMicroseconds() << ", containing " << getFIFO().getSize() << " containers." << endl;
 
             // Get last EgoState.

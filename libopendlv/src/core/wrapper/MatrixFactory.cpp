@@ -30,7 +30,7 @@ namespace core {
     namespace wrapper {
 
         // Initialization of the singleton instance.
-        Mutex* MatrixFactory::m_singletonMutex = MutexFactory::createMutex();
+        odcore::wrapper::Mutex* MatrixFactory::m_singletonMutex = odcore::wrapper::MutexFactory::createMutex();
         MatrixFactory* MatrixFactory::m_singleton = NULL;
 
         MatrixFactory::MatrixFactory() {}
@@ -50,7 +50,7 @@ namespace core {
                     }
 
                     // Add to disposal service.
-                    DisposalService::getInstance().addDisposableForFinalRemoval((Disposable**)&MatrixFactory::m_singleton);
+                    odcore::wrapper::DisposalService::getInstance().addDisposableForFinalRemoval((Disposable**)&MatrixFactory::m_singleton);
                 }
             }
             MatrixFactory::m_singletonMutex->unlock();
