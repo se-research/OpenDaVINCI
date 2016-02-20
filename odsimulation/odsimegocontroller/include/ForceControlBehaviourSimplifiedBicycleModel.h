@@ -21,7 +21,7 @@
 #define EGOCONTROLLER_FORCECONTROLBEHAVIOURSIMPLIFIEDBICYCLEMODEL_H_
 
 #include "ControlBehaviour.h"
-#include "opendavinci/core/data/TimeStamp.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
 #include "opendlv/data/environment/EgoState.h"
 #include "opendlv/data/environment/Point3.h"
 
@@ -84,7 +84,7 @@ namespace egocontroller {
             double m_vehicleLinearEffortX;
             double m_vehicleResistiveEffortX;
 
-            core::data::TimeStamp m_previousTime;
+            odcore::data::TimeStamp m_previousTime;
             opendlv::data::environment::Point3 m_oldPosition;
             opendlv::data::environment::Point3 m_orientation;
     };

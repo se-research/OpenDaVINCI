@@ -27,9 +27,9 @@
 
 #include "ChaseCar.h"
 #include "OpenGLGrabber.h"
-#include "opendavinci/core/base/KeyValueConfiguration.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendlv/data/camera/ImageGrabberCalibration.h"
 #include "opendlv/data/camera/ImageGrabberID.h"
 #include "opendlv/data/environment/Point3.h"
@@ -38,8 +38,8 @@
 namespace chasecar {
 
     using namespace std;
-    using namespace core::base;
-    using namespace core::data;
+    using namespace odcore::base;
+    using namespace odcore::data;
     using namespace opendlv::data;
     using namespace opendlv::data::camera;
     using namespace coredata::image;

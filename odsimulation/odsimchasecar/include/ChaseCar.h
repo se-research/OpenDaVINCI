@@ -22,9 +22,9 @@
 
 #include <stdint.h>
 
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/FIFOQueue.h"
-#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/FIFOQueue.h"
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
 #include "opendlv/data/environment/EgoState.h"
 
@@ -39,7 +39,7 @@ class OpenGLGrabber;
     /**
      * This class is the camera server providing new camera images from the chase car perspective.
      */
-    class ChaseCar : public core::base::module::TimeTriggeredConferenceClientModule {
+    class ChaseCar : public odcore::base::module::TimeTriggeredConferenceClientModule {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -129,10 +129,10 @@ class OpenGLGrabber;
             static ChaseCar* m_singleton;
             opendlv::data::environment::EgoState m_egoState;
 
-            core::base::FIFOQueue m_FIFO_Obstacles;
+            odcore::base::FIFOQueue m_FIFO_Obstacles;
 
             OpenGLGrabber *m_grabber;
-            core::SharedPointer<core::wrapper::Image> m_image;
+            odcore::SharedPointer<core::wrapper::Image> m_image;
 
             float m_translationX;
             float m_translationY;

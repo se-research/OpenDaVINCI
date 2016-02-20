@@ -22,8 +22,8 @@
 #include "opendlv/data/environment/Point3.h"
 
 namespace egocontroller {
-    using namespace core::base;
-    using namespace core::data;
+    using namespace odcore::base;
+    using namespace odcore::data;
     using namespace opendlv::data::environment;
     using namespace opendlv::data::environment;
 

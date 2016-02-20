@@ -27,12 +27,12 @@
 #include <vector>
 
 #include "OpenGLGrabber.h"
-#include "opendavinci/core/base/FIFOQueue.h"
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/io/URL.h"
+#include "opendavinci/odcore/base/FIFOQueue.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/io/URL.h"
 #include "opendlv/core/wrapper/ImageFactory.h"
-#include "opendavinci/core/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 #include "opendlv/data/environment/EgoState.h"
 #include "opendlv/data/environment/Obstacle.h"
 #include "opendlv/data/environment/Point3.h"
@@ -55,18 +55,18 @@ namespace opendlv { namespace threeD { class Node; } }
 namespace chasecar {
 
     using namespace std;
-    using namespace core::base;
-    using namespace core::data;
+    using namespace odcore::base;
+    using namespace odcore::data;
     using namespace opendlv::data::camera;
     using namespace opendlv::data::environment;
-    using namespace core::io;
+    using namespace odcore::io;
     using namespace opendlv::scenario;
     using namespace opendlv::threeD;
     using namespace opendlv::threeD::decorator;
     using namespace opendlv::threeD::models;
     using namespace opendlv::threeD::loaders;
 
-    OpenGLGrabber::OpenGLGrabber(const KeyValueConfiguration &kvc, const ImageGrabberID &imageGrabberID, const ImageGrabberCalibration &imageGrabberCalibration, opendlv::data::environment::EgoState &egoState, core::base::FIFOQueue &obstacles) :
+    OpenGLGrabber::OpenGLGrabber(const KeyValueConfiguration &kvc, const ImageGrabberID &imageGrabberID, const ImageGrabberCalibration &imageGrabberCalibration, opendlv::data::environment::EgoState &egoState, odcore::base::FIFOQueue &obstacles) :
             ImageGrabber(imageGrabberID, imageGrabberCalibration),
             m_render(OpenGLGrabber::IN_CAR),
             m_kvc(kvc),
@@ -82,9 +82,9 @@ namespace chasecar {
         const URL urlOfSCNXFile(m_kvc.getValue<string>("global.scenario"));
         const bool SHOW_GRID = (m_kvc.getValue<uint8_t>("global.showgrid") == 1);
         if (urlOfSCNXFile.isValid()) {
-            m_root = core::SharedPointer<TransformGroup>(new opendlv::threeD::TransformGroup());
-            m_car = core::SharedPointer<TransformGroup>(new opendlv::threeD::TransformGroup());
-            m_sensors = core::SharedPointer<TransformGroup>(new opendlv::threeD::TransformGroup());
+            m_root = odcore::SharedPointer<TransformGroup>(new opendlv::threeD::TransformGroup());
+            m_car = odcore::SharedPointer<TransformGroup>(new opendlv::threeD::TransformGroup());
+            m_sensors = odcore::SharedPointer<TransformGroup>(new opendlv::threeD::TransformGroup());
 
             SCNXArchive &scnxArchive = SCNXArchiveFactory::getInstance().getSCNXArchive(urlOfSCNXFile);
 
@@ -114,9 +114,9 @@ namespace chasecar {
                 }
             }
 
-            m_sharedMemory = core::wrapper::SharedMemoryFactory::createSharedMemory("ChaseCar", 640 * 480 * 3);
+            m_sharedMemory = odcore::wrapper::SharedMemoryFactory::createSharedMemory("ChaseCar", 640 * 480 * 3);
 
-            m_image = core::SharedPointer<core::wrapper::Image>(core::wrapper::ImageFactory::getInstance().getImage(640, 480, core::wrapper::Image::BGR_24BIT, static_cast<char*>(m_sharedMemory->getSharedMemory())));
+            m_image = odcore::SharedPointer<core::wrapper::Image>(core::wrapper::ImageFactory::getInstance().getImage(640, 480, core::wrapper::Image::BGR_24BIT, static_cast<char*>(m_sharedMemory->getSharedMemory())));
 
             if (m_image.isValid()) {
                 cerr << "OpenGLGrabber initialized." << endl;
@@ -130,7 +130,7 @@ namespace chasecar {
         Thread::usleepFor(1000 * 10);
     }
 
-    core::SharedPointer<core::wrapper::Image> OpenGLGrabber::getNextImage() {
+    odcore::SharedPointer<core::wrapper::Image> OpenGLGrabber::getNextImage() {
         if ( (m_sharedMemory.isValid()) && (m_sharedMemory->isValid()) ) {
             m_sharedMemory->lock();
 

@@ -20,13 +20,13 @@
 #ifndef CAMGEN_OPENGLGRABBER_H_
 #define CAMGEN_OPENGLGRABBER_H_
 
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
 #include "opendlv/data/camera/ImageGrabberID.h"
 #include "opendlv/io/camera/ImageGrabber.h"
 
 namespace core { namespace wrapper { class Image; } }
-namespace core { namespace wrapper { class SharedMemory; } }
+namespace odcore { namespace wrapper { class SharedMemory; } }
 namespace opendlv { namespace data { namespace camera { class ImageGrabberCalibration; } } }
 namespace opendlv { namespace data { namespace environment { class EgoState; } } }
 namespace opendlv { namespace threeD { class TransformGroup; } }
@@ -76,7 +76,7 @@ namespace camgen {
              * @param imageGrabberCalibration Calibration information for this grabber.
              * @param egoState Current ego state.
              */
-            OpenGLGrabber(const core::base::KeyValueConfiguration &kvc,
+            OpenGLGrabber(const odcore::base::KeyValueConfiguration &kvc,
                           const opendlv::data::camera::ImageGrabberID &imageGrabberID,
                           const opendlv::data::camera::ImageGrabberCalibration &imageGrabberCalibration,
                           opendlv::data::environment::EgoState &egoState);
@@ -85,16 +85,16 @@ namespace camgen {
 
             virtual void delay();
 
-            virtual core::SharedPointer<core::wrapper::Image> getNextImage();
+            virtual odcore::SharedPointer<core::wrapper::Image> getNextImage();
 
             enum RENDERING m_render;
         private:
-            core::base::KeyValueConfiguration m_kvc;
-            core::SharedPointer<core::wrapper::Image> m_image;
-            core::SharedPointer<core::wrapper::SharedMemory> m_sharedMemory;
-            core::SharedPointer<opendlv::threeD::TransformGroup> m_root;
-            core::SharedPointer<opendlv::threeD::TransformGroup> m_extrinsicCalibrationRoot;
-            core::SharedPointer<opendlv::threeD::TransformGroup> m_intrinsicCalibrationRoot;
+            odcore::base::KeyValueConfiguration m_kvc;
+            odcore::SharedPointer<core::wrapper::Image> m_image;
+            odcore::SharedPointer<odcore::wrapper::SharedMemory> m_sharedMemory;
+            odcore::SharedPointer<opendlv::threeD::TransformGroup> m_root;
+            odcore::SharedPointer<opendlv::threeD::TransformGroup> m_extrinsicCalibrationRoot;
+            odcore::SharedPointer<opendlv::threeD::TransformGroup> m_intrinsicCalibrationRoot;
             opendlv::data::environment::EgoState &m_egoState;
 
             /**

@@ -23,15 +23,15 @@
 #include <stdint.h>
 #include <map>
 
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
 #include "opendlv/core/wrapper/Image.h"
-#include "opendavinci/core/wrapper/SharedMemory.h"
+#include "opendavinci/odcore/wrapper/SharedMemory.h"
 #include "opendlv/data/camera/ImageGrabberID.h"
 #include "opendlv/io/camera/ImageGrabber.h"
 #include "opendlv/threeD/TransformGroup.h"
 
-namespace core { namespace base { class FIFOQueue; } }
+namespace odcore { namespace base { class FIFOQueue; } }
 namespace opendlv { namespace data { namespace camera { class ImageGrabberCalibration; } } }
 namespace opendlv { namespace data { namespace environment { class EgoState; } } }
 namespace opendlv { namespace threeD { class Node; } }
@@ -82,30 +82,30 @@ namespace chasecar {
              * @param egoState Current ego state.
              * @param obstacle Last obstacle data.
              */
-            OpenGLGrabber(const core::base::KeyValueConfiguration &kvc,
+            OpenGLGrabber(const odcore::base::KeyValueConfiguration &kvc,
                           const opendlv::data::camera::ImageGrabberID &imageGrabberID,
                           const opendlv::data::camera::ImageGrabberCalibration &imageGrabberCalibration,
                           opendlv::data::environment::EgoState &egoState,
-                          core::base::FIFOQueue &obstacles);
+                          odcore::base::FIFOQueue &obstacles);
 
             virtual ~OpenGLGrabber();
 
             virtual void delay();
 
-            virtual core::SharedPointer<core::wrapper::Image> getNextImage();
+            virtual odcore::SharedPointer<core::wrapper::Image> getNextImage();
 
             enum RENDERING m_render;
         private:
-            core::base::KeyValueConfiguration m_kvc;
-            core::SharedPointer<core::wrapper::Image> m_image;
-            core::SharedPointer<core::wrapper::SharedMemory> m_sharedMemory;
-            core::SharedPointer<opendlv::threeD::TransformGroup> m_root;
-            core::SharedPointer<opendlv::threeD::TransformGroup> m_car;
-            core::SharedPointer<opendlv::threeD::TransformGroup> m_sensors;
+            odcore::base::KeyValueConfiguration m_kvc;
+            odcore::SharedPointer<core::wrapper::Image> m_image;
+            odcore::SharedPointer<odcore::wrapper::SharedMemory> m_sharedMemory;
+            odcore::SharedPointer<opendlv::threeD::TransformGroup> m_root;
+            odcore::SharedPointer<opendlv::threeD::TransformGroup> m_car;
+            odcore::SharedPointer<opendlv::threeD::TransformGroup> m_sensors;
             map<uint32_t, opendlv::threeD::Node*> m_mapOfObstacles;
 
             opendlv::data::environment::EgoState &m_egoState;
-            core::base::FIFOQueue &m_FIFO_Obstacles;
+            odcore::base::FIFOQueue &m_FIFO_Obstacles;
 
             void renderNextImageInCar();
 

@@ -30,9 +30,9 @@
 #include "KeyBoardController.h"
 #include "LinearBicycleModelBehaviour.h"
 #include "SimpleControlBehaviour.h"
-#include "opendavinci/core/base/KeyValueConfiguration.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/io/conference/ContainerConference.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/io/conference/ContainerConference.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
 #include "opendlv/data/environment/Point3.h"
 
@@ -41,8 +41,8 @@ namespace egocontroller {
 class ControlBehaviour;
 
     using namespace std;
-    using namespace core::base;
-    using namespace core::data;
+    using namespace odcore::base;
+    using namespace odcore::data;
     using namespace opendlv::data::environment;
     using namespace opendlv::data::environment;
 

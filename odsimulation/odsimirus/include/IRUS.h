@@ -20,8 +20,8 @@
 #ifndef IRUS_H_
 #define IRUS_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
 namespace irus {
@@ -32,7 +32,7 @@ namespace irus {
      * This class can be used to produce some objects detected by
      * point providing sensors.
      */
-    class IRUS : public core::base::module::TimeTriggeredConferenceClientModule {
+    class IRUS : public odcore::base::module::TimeTriggeredConferenceClientModule {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn

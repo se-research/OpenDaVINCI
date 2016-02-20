@@ -22,8 +22,8 @@
 #include <vector>
 
 #include "DrivenPath.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/io/URL.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/io/URL.h"
 #include "opendlv/core/wrapper/graph/DirectedGraph.h"
 #include "opendlv/data/environment/EgoState.h"
 #include "opendlv/data/environment/NamedLine.h"
@@ -33,14 +33,14 @@
 #include "opendlv/scenario/SCNXArchive.h"
 #include "opendlv/scenario/SCNXArchiveFactory.h"
 
-namespace core { namespace base { class KeyValueDataStore; } }
+namespace odcore { namespace base { class KeyValueDataStore; } }
 
 namespace measurements {
 
     using namespace std;
-    using namespace core::base;
-    using namespace core::data;
-    using namespace core::io;
+    using namespace odcore::base;
+    using namespace odcore::data;
+    using namespace odcore::io;
     using namespace opendlv::data::scenario;
     using namespace opendlv::data::environment;
     using namespace opendlv::data::environment;

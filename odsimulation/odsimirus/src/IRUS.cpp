@@ -21,19 +21,19 @@
 #include <string>
 
 #include "IRUS.h"
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/core/data/Container.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/data/Container.h"
 #include "opendlv/data/environment/EgoState.h"
 #include "opendlv/vehiclecontext/model/IRUS.h"
 
-namespace core { namespace base { class KeyValueDataStore; } }
+namespace odcore { namespace base { class KeyValueDataStore; } }
 
 namespace irus {
 
     using namespace std;
-    using namespace core::base;
-    using namespace core::data;
+    using namespace odcore::base;
+    using namespace odcore::data;
     using namespace opendlv::data::environment;
 
     IRUS::IRUS(const int32_t &argc, char **argv) :

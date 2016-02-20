@@ -24,13 +24,13 @@
 #include <iostream>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "OpenGLGrabber.h"
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/core/io/URL.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/io/URL.h"
 #include "opendlv/core/wrapper/ImageFactory.h"
-#include "opendavinci/core/wrapper/SharedMemory.h"
-#include "opendavinci/core/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/odcore/wrapper/SharedMemory.h"
+#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 #include "opendlv/scenario/SCNXArchiveFactory.h"
 #include "opendlv/threeD/RenderingConfiguration.h"
 #include "opendlv/threeD/TransformGroup.h"
@@ -47,11 +47,11 @@ namespace opendlv { namespace scenario { class SCNXArchive; } }
 namespace camgen {
 
     using namespace std;
-    using namespace core::base;
+    using namespace odcore::base;
     using namespace opendlv::data::camera;
     using namespace opendlv::data::environment;
     using namespace opendlv::data::environment;
-    using namespace core::io;
+    using namespace odcore::io;
     using namespace opendlv::scenario;
     using namespace opendlv::threeD;
     using namespace opendlv::threeD::decorator;
@@ -71,7 +71,7 @@ namespace camgen {
         const URL urlOfSCNXFile(m_kvc.getValue<string>("global.scenario"));
         const bool SHOW_GRID = (m_kvc.getValue<uint8_t>("global.showgrid") == 1);
         if (urlOfSCNXFile.isValid()) {
-            m_root = core::SharedPointer<TransformGroup>(new opendlv::threeD::TransformGroup());
+            m_root = odcore::SharedPointer<TransformGroup>(new opendlv::threeD::TransformGroup());
             SCNXArchive &scnxArchive = SCNXArchiveFactory::getInstance().getSCNXArchive(urlOfSCNXFile);
 
             // Read scnxArchive and decorate it for getting displayed in an OpenGL scene.
@@ -82,21 +82,21 @@ namespace camgen {
                 m_root->addChild(new Grid(NodeDescriptor("Grid"), 10, 2));
             }
 
-            m_sharedMemory = core::wrapper::SharedMemoryFactory::createSharedMemory("odsimcamera", 640 * 480 * 3);
+            m_sharedMemory = odcore::wrapper::SharedMemoryFactory::createSharedMemory("odsimcamera", 640 * 480 * 3);
 
-            m_image = core::SharedPointer<core::wrapper::Image>(core::wrapper::ImageFactory::getInstance().getImage(640, 480, core::wrapper::Image::BGR_24BIT, static_cast<char*>(m_sharedMemory->getSharedMemory())));
+            m_image = odcore::SharedPointer<core::wrapper::Image>(core::wrapper::ImageFactory::getInstance().getImage(640, 480, core::wrapper::Image::BGR_24BIT, static_cast<char*>(m_sharedMemory->getSharedMemory())));
 
             if (m_image.isValid()) {
                 cerr << "OpenGLGrabber initialized." << endl;
             }
         }
 
-        m_intrinsicCalibrationRoot = core::SharedPointer<TransformGroup>(new opendlv::threeD::TransformGroup());
+        m_intrinsicCalibrationRoot = odcore::SharedPointer<TransformGroup>(new opendlv::threeD::TransformGroup());
         m_intrinsicCalibrationRoot->addChild(new XYZAxes(NodeDescriptor("XYZAxes")));
         m_intrinsicCalibrationRoot->addChild(new CheckerBoard(NodeDescriptor("CheckerBoard")));
         m_intrinsicCalibrationRoot->setTranslation(Point3(2.5, 0, 1));
 
-        m_extrinsicCalibrationRoot = core::SharedPointer<TransformGroup>(new opendlv::threeD::TransformGroup());
+        m_extrinsicCalibrationRoot = odcore::SharedPointer<TransformGroup>(new opendlv::threeD::TransformGroup());
         m_extrinsicCalibrationRoot->addChild(new XYZAxes(NodeDescriptor("XYZAxes")));
         m_extrinsicCalibrationRoot->addChild(new CheckerBoard(NodeDescriptor("CheckerBoard")));
         m_extrinsicCalibrationRoot->setTranslation(Point3(2.3, 0, 0));
@@ -109,7 +109,7 @@ namespace camgen {
         Thread::usleepFor(1000 * 10);
     }
 
-    core::SharedPointer<core::wrapper::Image> OpenGLGrabber::getNextImage() {
+    odcore::SharedPointer<core::wrapper::Image> OpenGLGrabber::getNextImage() {
         if ( (m_sharedMemory.isValid()) && (m_sharedMemory->isValid()) ) {
             m_sharedMemory->lock();
 

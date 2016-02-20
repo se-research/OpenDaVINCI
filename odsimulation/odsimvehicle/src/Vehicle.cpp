@@ -22,20 +22,20 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/core/data/Container.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/data/Container.h"
 #include "opendlv/vehiclecontext/model/SimplifiedBicycleModel.h"
 #include "automotivedata/generated/automotive/VehicleControl.h"
 
 #include "Vehicle.h"
 
-namespace core { namespace base { class KeyValueDataStore; } }
+namespace odcore { namespace base { class KeyValueDataStore; } }
 
 namespace vehicle {
 
     using namespace std;
-    using namespace core::base;
-    using namespace core::data;
+    using namespace odcore::base;
+    using namespace odcore::data;
 
     Vehicle::Vehicle(const int32_t &argc, char **argv) :
         TimeTriggeredConferenceClientModule(argc, argv, "odsimvehicle") {}

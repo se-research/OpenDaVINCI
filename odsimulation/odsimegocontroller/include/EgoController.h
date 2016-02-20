@@ -22,7 +22,7 @@
 
 #include <string>
 
-#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
 namespace egocontroller {
@@ -37,7 +37,7 @@ class LinearBicycleModelBehaviour;
     /**
      * This class is the camera server providing new camera images.
      */
-    class EgoController : public core::base::module::TimeTriggeredConferenceClientModule {
+    class EgoController : public odcore::base::module::TimeTriggeredConferenceClientModule {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
