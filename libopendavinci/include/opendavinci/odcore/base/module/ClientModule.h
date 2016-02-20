@@ -29,8 +29,8 @@
 #include "opendavinci/odcore/dmcp/SuperComponentStateListener.h"
 #include "opendavinci/odcore/dmcp/connection/Client.h"
 #include "opendavinci/odcore/exceptions/Exceptions.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
-#include "opendavinci/generated/coredata/dmcp/ServerInformation.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ServerInformation.h"
 
 namespace odcore {
     namespace base {
@@ -77,7 +77,7 @@ namespace odcore {
                 public:
                     virtual ~ClientModule();
 
-                    virtual coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode runModule();
+                    virtual odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode runModule();
 
                     /**
                      * This method returns the module's name.
@@ -102,7 +102,7 @@ namespace odcore {
                      *
                      * @return The exit code of the real body.
                      */
-                    virtual coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body() = 0;
+                    virtual odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body() = 0;
 
                     /**
                      * This method returns the key/value-configuration
@@ -132,19 +132,19 @@ namespace odcore {
                      *
                      * @return return status.
                      */
-                    virtual coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode runModuleImplementation() = 0;
+                    virtual odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode runModuleImplementation() = 0;
 
                     /**
                      * This method returns the ServerInformation object describing the supercomponent.
                      *
                      * @return ServerInformation
                      */
-                    const coredata::dmcp::ServerInformation getServerInformation() const;
+                    const odcore::data::dmcp::ServerInformation getServerInformation() const;
 
                 private:
                     string m_name;
                     odcore::base::KeyValueConfiguration m_keyValueConfiguration;
-                    coredata::dmcp::ServerInformation m_serverInformation;
+                    odcore::data::dmcp::ServerInformation m_serverInformation;
                     odcore::SharedPointer<odcore::dmcp::connection::Client> m_dmcpClient;
             };
 

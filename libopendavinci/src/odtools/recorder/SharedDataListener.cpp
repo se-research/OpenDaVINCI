@@ -28,7 +28,7 @@
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
 #include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
-#include "opendavinci/generated/coredata/buffer/MemorySegment.h"
+#include "opendavinci/generated/odcore/data/buffer/MemorySegment.h"
 #include "opendavinci/odtools/recorder/SharedDataListener.h"
 #include "opendavinci/odtools/recorder/SharedDataWriter.h"
 
@@ -54,7 +54,7 @@ namespace odtools {
 
             CLOG1 << "SharedDataListener: preparing buffer...";
             for(uint16_t id = 0; id < numberOfMemorySegments; id++) {
-                coredata::buffer::MemorySegment ms;
+                odcore::data::buffer::MemorySegment ms;
                 ms.setSize(memorySegmentSize);
                 ms.setIdentifier(id);
                 void *ptr = ::malloc(ms.getSize());
@@ -103,7 +103,7 @@ namespace odtools {
             if (!m_bufferIn.isEmpty()) {
                 // Get next usable memory segment.
                 Container c = m_bufferIn.leave();
-                coredata::buffer::MemorySegment ms = c.getData<coredata::buffer::MemorySegment>();
+                odcore::data::buffer::MemorySegment ms = c.getData<odcore::data::buffer::MemorySegment>();
 
                 // Copy the data.
                 SharedPointer<odcore::wrapper::SharedMemory> memory = m_sharedPointers[name];
@@ -145,9 +145,9 @@ namespace odtools {
             bool hasCopied = false;
 
             if (container.getDataType() == Container::SHARED_DATA) {
-                coredata::SharedData sd = const_cast<Container&>(container).getData<coredata::SharedData>();
+                odcore::data::SharedData sd = const_cast<Container&>(container).getData<odcore::data::SharedData>();
 
-                map<string, coredata::SharedData>::iterator it = m_mapOfAvailableSharedData.find(sd.getName());
+                map<string, odcore::data::SharedData>::iterator it = m_mapOfAvailableSharedData.find(sd.getName());
                 if (it == m_mapOfAvailableSharedData.end()) {
             		m_mapOfAvailableSharedData[sd.getName()] = sd;
 
@@ -164,7 +164,7 @@ namespace odtools {
             }
 
             if (container.getDataType() == Container::SHARED_IMAGE) {
-                coredata::image::SharedImage si = const_cast<Container&>(container).getData<coredata::image::SharedImage>();
+                odcore::data::image::SharedImage si = const_cast<Container&>(container).getData<odcore::data::image::SharedImage>();
 
                 // For old recordings containing SharedImage, the attribute size is calculated
                 // "on-the-fly". The following four lines set the size attribute in the generated
@@ -177,7 +177,7 @@ namespace odtools {
                 c.setSentTimeStamp(container.getSentTimeStamp());
                 c.setReceivedTimeStamp(container.getReceivedTimeStamp());
 
-                map<string, coredata::image::SharedImage>::iterator it = m_mapOfAvailableSharedImages.find(si.getName());
+                map<string, odcore::data::image::SharedImage>::iterator it = m_mapOfAvailableSharedImages.find(si.getName());
                 if (it == m_mapOfAvailableSharedImages.end()) {
             		m_mapOfAvailableSharedImages[si.getName()] = si;
 

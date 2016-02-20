@@ -113,12 +113,12 @@ namespace automotive {
             }
         }
 
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode CANBridge::body() {
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode CANBridge::body() {
             // Start the wrapped CAN devices to receive CAN messages concurrently.
             m_deviceA->start();
             m_deviceB->start();
 
-            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
                 const uint32_t ENTRIES = m_fifo.getSize();
                 for (uint32_t i = 0; i < ENTRIES; i++) {
                     Container c = m_fifo.leave();
@@ -136,7 +136,7 @@ namespace automotive {
             m_deviceA->stop();
             m_deviceB->stop();
 
-            return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
     } // namespace odcantools

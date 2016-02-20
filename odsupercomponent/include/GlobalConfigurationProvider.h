@@ -25,7 +25,7 @@
 #include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/dmcp/ModuleConfigurationProvider.h"
 
-namespace coredata { namespace dmcp { class ModuleDescriptor; } }
+namespace odcore { namespace data { namespace dmcp { class ModuleDescriptor; } } }
 
 namespace odsupercomponent {
 
@@ -40,7 +40,7 @@ namespace odsupercomponent {
 
             virtual ~GlobalConfigurationProvider();
 
-            virtual odcore::base::KeyValueConfiguration getConfiguration(const coredata::dmcp::ModuleDescriptor& md);
+            virtual odcore::base::KeyValueConfiguration getConfiguration(const odcore::data::dmcp::ModuleDescriptor& md);
             virtual odcore::base::KeyValueConfiguration getGlobalConfiguration() const;
 
         protected:

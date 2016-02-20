@@ -43,7 +43,7 @@ namespace odcore {
                  * Returns a configuration for the given ModuleDescriptor. Since multiple thread may
                  * call this method, it has to be implemented thread-safe.
                  */
-                virtual odcore::base::KeyValueConfiguration getConfiguration(const coredata::dmcp::ModuleDescriptor &md) = 0;
+                virtual odcore::base::KeyValueConfiguration getConfiguration(const odcore::data::dmcp::ModuleDescriptor &md) = 0;
         };
     }
 } // odcore::dmcp

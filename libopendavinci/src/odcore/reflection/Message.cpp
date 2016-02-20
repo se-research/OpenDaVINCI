@@ -29,7 +29,7 @@ namespace odcore {
 
         using namespace odcore;
         using namespace odcore::base;
-        using namespace coredata::reflection;
+        using namespace odcore::data::reflection;
 
         Message::Message() :
             m_fields() {}
@@ -45,7 +45,7 @@ namespace odcore {
             return *this;
         }
 
-        void Message::addField(const odcore::SharedPointer<coredata::reflection::AbstractField> &f) {
+        void Message::addField(const odcore::SharedPointer<odcore::data::reflection::AbstractField> &f) {
             m_fields.push_back(f);
         }
 
@@ -53,7 +53,7 @@ namespace odcore {
             vector<SharedPointer<AbstractField> >::iterator it = m_fields.begin();
             while (it != m_fields.end()) {
                 switch((*it)->getFieldDataType()) {
-                    case coredata::reflection::AbstractField::SERIALIZABLE_T:
+                    case odcore::data::reflection::AbstractField::SERIALIZABLE_T:
                     {
                         // If we have a nested message, we need to delegate this Visitor to the nested type.
                         Field<Message> *f = dynamic_cast<Field<Message>*>((*it).operator->()); // Access the value of the SharedPointer from the iterator.
@@ -63,59 +63,59 @@ namespace odcore {
                     }
                     break;
 
-                    case coredata::reflection::AbstractField::BOOL_T :
+                    case odcore::data::reflection::AbstractField::BOOL_T :
                         visitPrimitiveDataType<bool>(v, *it);
                     break;
 
-                    case coredata::reflection::AbstractField::UINT8_T:
+                    case odcore::data::reflection::AbstractField::UINT8_T:
                         visitPrimitiveDataType<uint8_t>(v, *it);
                     break;
 
-                    case coredata::reflection::AbstractField::INT8_T:
+                    case odcore::data::reflection::AbstractField::INT8_T:
                         visitPrimitiveDataType<int8_t>(v, *it);
                     break;
 
-                    case coredata::reflection::AbstractField::UINT16_T:
+                    case odcore::data::reflection::AbstractField::UINT16_T:
                         visitPrimitiveDataType<uint16_t>(v, *it);
                     break;
 
-                    case coredata::reflection::AbstractField::INT16_T:
+                    case odcore::data::reflection::AbstractField::INT16_T:
                         visitPrimitiveDataType<int16_t>(v, *it);
                     break;
 
-                    case coredata::reflection::AbstractField::UINT32_T:
+                    case odcore::data::reflection::AbstractField::UINT32_T:
                         visitPrimitiveDataType<uint32_t>(v, *it);
                     break;
 
-                    case coredata::reflection::AbstractField::INT32_T:
+                    case odcore::data::reflection::AbstractField::INT32_T:
                         visitPrimitiveDataType<int32_t>(v, *it);
                     break;
 
-                    case coredata::reflection::AbstractField::UINT64_T:
+                    case odcore::data::reflection::AbstractField::UINT64_T:
                         visitPrimitiveDataType<uint64_t>(v, *it);
                     break;
 
-                    case coredata::reflection::AbstractField::INT64_T:
+                    case odcore::data::reflection::AbstractField::INT64_T:
                         visitPrimitiveDataType<int64_t>(v, *it);
                     break;
 
-                    case coredata::reflection::AbstractField::CHAR_T:
+                    case odcore::data::reflection::AbstractField::CHAR_T:
                         visitPrimitiveDataType<char>(v, *it);
                     break;
 
-                    case coredata::reflection::AbstractField::UCHAR_T:
+                    case odcore::data::reflection::AbstractField::UCHAR_T:
                         visitPrimitiveDataType<unsigned char>(v, *it);
                     break;
 
-                    case coredata::reflection::AbstractField::FLOAT_T:
+                    case odcore::data::reflection::AbstractField::FLOAT_T:
                         visitPrimitiveDataType<float>(v, *it);
                     break;
 
-                    case coredata::reflection::AbstractField::DOUBLE_T:
+                    case odcore::data::reflection::AbstractField::DOUBLE_T:
                         visitPrimitiveDataType<double>(v, *it);
                     break;
 
-                    case coredata::reflection::AbstractField::STRING_T:
+                    case odcore::data::reflection::AbstractField::STRING_T:
                     {
                         // Read value.
                         string value = dynamic_cast<Field<string>*>((*it).operator->())->getValue();
@@ -128,7 +128,7 @@ namespace odcore {
                     }
                     break;
 
-                    case coredata::reflection::AbstractField::DATA_T :
+                    case odcore::data::reflection::AbstractField::DATA_T :
                     {
                         // Read value.
                         SharedPointer<char> value = dynamic_cast<Field<SharedPointer<char> >*>((*it).operator->())->getValue();
@@ -151,11 +151,11 @@ namespace odcore {
             }
         }
 
-        SharedPointer<coredata::reflection::AbstractField> Message::getFieldByLongIdentifierOrShortIdentifier(const uint32_t &longIdentifier, const uint8_t &shortIdentifier, bool &found) {
+        SharedPointer<odcore::data::reflection::AbstractField> Message::getFieldByLongIdentifierOrShortIdentifier(const uint32_t &longIdentifier, const uint8_t &shortIdentifier, bool &found) {
             bool retVal = false;
 
             // Try the long identifier first.
-            SharedPointer<coredata::reflection::AbstractField> field = getFieldByLongIdentifier(longIdentifier, retVal);
+            SharedPointer<odcore::data::reflection::AbstractField> field = getFieldByLongIdentifier(longIdentifier, retVal);
 
             // Try the short identifier next.
             if (!retVal) field = getFieldByShortIdentifier(shortIdentifier, retVal);
@@ -164,9 +164,9 @@ namespace odcore {
             return field;
         }
 
-        SharedPointer<coredata::reflection::AbstractField> Message::getFieldByLongIdentifier(const uint32_t &longIdentifier, bool &found) {
+        SharedPointer<odcore::data::reflection::AbstractField> Message::getFieldByLongIdentifier(const uint32_t &longIdentifier, bool &found) {
             bool retVal = false;
-            SharedPointer<coredata::reflection::AbstractField> field;
+            SharedPointer<odcore::data::reflection::AbstractField> field;
 
             vector<SharedPointer<AbstractField> >::iterator it = m_fields.begin();
             while (it != m_fields.end()) {
@@ -182,9 +182,9 @@ namespace odcore {
             return field;
         }
 
-        SharedPointer<coredata::reflection::AbstractField> Message::getFieldByShortIdentifier(const uint8_t &shortIdentifier, bool &found) {
+        SharedPointer<odcore::data::reflection::AbstractField> Message::getFieldByShortIdentifier(const uint8_t &shortIdentifier, bool &found) {
             bool retVal = false;
-            SharedPointer<coredata::reflection::AbstractField> field;
+            SharedPointer<odcore::data::reflection::AbstractField> field;
 
             vector<SharedPointer<AbstractField> >::iterator it = m_fields.begin();
             while (it != m_fields.end()) {

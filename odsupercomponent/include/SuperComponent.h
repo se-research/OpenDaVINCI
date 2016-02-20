@@ -36,14 +36,14 @@
 #include "opendavinci/odcore/dmcp/ModuleStateListener.h"
 #include "opendavinci/odcore/dmcp/connection/ConnectionHandler.h"
 #include "opendavinci/odcore/io/conference/ContainerListener.h"
-#include "opendavinci/generated/coredata/LogMessage.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleStatistics.h"
-#include "opendavinci/generated/coredata/dmcp/RuntimeStatistic.h"
-#include "opendavinci/generated/coredata/dmcp/ServerInformation.h"
+#include "opendavinci/generated/odcore/data/LogMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleStateMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleStatistics.h"
+#include "opendavinci/generated/odcore/data/dmcp/RuntimeStatistic.h"
+#include "opendavinci/generated/odcore/data/dmcp/ServerInformation.h"
 
-namespace coredata { namespace dmcp { class ModuleDescriptor; } }
+namespace odcore { namespace data { namespace dmcp { class ModuleDescriptor; } } }
 namespace odcore { namespace data { class Container; } }
 namespace odcore { namespace dmcp { namespace connection { class ModuleConnection; } } }
 namespace odcore { namespace dmcp { namespace connection { class Server; } } }
@@ -99,27 +99,27 @@ class ConnectedModule;
         protected:
             void checkForSuperComponent();
 
-            virtual coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+            virtual odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
             virtual void onNewModule(odcore::SharedPointer<odcore::dmcp::connection::ModuleConnection> mc);
 
             virtual void nextContainer(odcore::data::Container &c);
 
-            virtual void handleChangeState(const coredata::dmcp::ModuleDescriptor& md,
-                                           const coredata::dmcp::ModuleStateMessage::ModuleState &ms);
+            virtual void handleChangeState(const odcore::data::dmcp::ModuleDescriptor& md,
+                                           const odcore::data::dmcp::ModuleStateMessage::ModuleState &ms);
 
-            virtual void handleExitCode(const coredata::dmcp::ModuleDescriptor& md,
-                                        const coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode &me);
+            virtual void handleExitCode(const odcore::data::dmcp::ModuleDescriptor& md,
+                                        const odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode &me);
 
-            virtual void handleRuntimeStatistics(const coredata::dmcp::ModuleDescriptor& md,
-                                                 const coredata::dmcp::RuntimeStatistic& rs);
+            virtual void handleRuntimeStatistics(const odcore::data::dmcp::ModuleDescriptor& md,
+                                                 const odcore::data::dmcp::RuntimeStatistic& rs);
 
-            virtual void handleConnectionLost(const coredata::dmcp::ModuleDescriptor& md);
+            virtual void handleConnectionLost(const odcore::data::dmcp::ModuleDescriptor& md);
 
-            virtual void handleUnkownContainer(const coredata::dmcp::ModuleDescriptor& md,
+            virtual void handleUnkownContainer(const odcore::data::dmcp::ModuleDescriptor& md,
                                                const odcore::data::Container& container);
 
-            ConnectedModule* moveToShutdownModules(const coredata::dmcp::ModuleDescriptor& md);
+            ConnectedModule* moveToShutdownModules(const odcore::data::dmcp::ModuleDescriptor& md);
 
             odcore::base::KeyValueConfiguration m_configuration;
 
@@ -133,9 +133,9 @@ class ConnectedModule;
             ConnectedModules m_shutdownModules;
 
             odcore::base::Mutex m_moduleStatisticsMutex;
-            coredata::dmcp::ModuleStatistics m_moduleStatistics;
+            odcore::data::dmcp::ModuleStatistics m_moduleStatistics;
 
-            coredata::dmcp::ServerInformation::ManagedLevel m_managedLevel;
+            odcore::data::dmcp::ServerInformation::ManagedLevel m_managedLevel;
 
         private:
             /**
@@ -163,7 +163,7 @@ class ConnectedModule;
             uint32_t m_yieldMicroseconds;
 
             vector<string> m_modulesToIgnore;
-            coredata::LogMessage::LogLevel m_logLevel;
+            odcore::data::LogMessage::LogLevel m_logLevel;
             fstream *m_logFile;
     };
 }

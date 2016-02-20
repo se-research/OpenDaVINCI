@@ -24,7 +24,7 @@
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/Mutex.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleStateMessage.h"
 
 namespace odcore {
     namespace base {
@@ -68,14 +68,14 @@ namespace odcore {
                      *
                      * @param s MODULE_STATE of the module.
                      */
-                    void setModuleState(const coredata::dmcp::ModuleStateMessage::ModuleState &s);
+                    void setModuleState(const odcore::data::dmcp::ModuleStateMessage::ModuleState &s);
 
                     /**
                      * This method returns the module MODULE_STATE.
                      *
                      * @return Module MODULE_STATE.
                      */
-                    coredata::dmcp::ModuleStateMessage::ModuleState getModuleState();
+                    odcore::data::dmcp::ModuleStateMessage::ModuleState getModuleState();
 
                     /**
                      * This method returns the module MODULE_STATE and
@@ -84,7 +84,7 @@ namespace odcore {
                      *
                      * @return Module MODULE_STATE.
                      */
-                    coredata::dmcp::ModuleStateMessage::ModuleState getModuleStateAndWaitForRemainingTimeInTimeslice();
+                    odcore::data::dmcp::ModuleStateMessage::ModuleState getModuleStateAndWaitForRemainingTimeInTimeslice();
 
                     /**
                      * This method suspends the execution of this thread
@@ -120,7 +120,7 @@ namespace odcore {
                     static vector<AbstractModule*> m_listOfModules;
 
                     Mutex m_moduleStateMutex;
-                    coredata::dmcp::ModuleStateMessage::ModuleState m_moduleState;
+                    odcore::data::dmcp::ModuleStateMessage::ModuleState m_moduleState;
             };
 
         }

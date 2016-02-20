@@ -32,11 +32,11 @@
 #include "opendavinci/odcore/dmcp/ModuleStateListener.h"
 #include "opendavinci/odcore/dmcp/connection/ConnectionHandler.h"
 #include "opendavinci/odcore/io/conference/ContainerConference.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
-#include "opendavinci/generated/coredata/dmcp/RuntimeStatistic.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleStateMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/RuntimeStatistic.h"
 
-namespace coredata { namespace dmcp { class ModuleDescriptor; } }
+namespace odcore { namespace data { namespace dmcp { class ModuleDescriptor; } } }
 namespace odcore { namespace data { class Container; } }
 namespace odcore { namespace dmcp { namespace connection { class ModuleConnection; } } }
 namespace odcore { namespace dmcp { namespace connection { class Server; } } }
@@ -89,24 +89,24 @@ namespace odcontext {
                 odcore::io::conference::ContainerConference& getContainerConference();
 
             protected:
-                virtual odcore::base::KeyValueConfiguration getConfiguration(const coredata::dmcp::ModuleDescriptor& md);
+                virtual odcore::base::KeyValueConfiguration getConfiguration(const odcore::data::dmcp::ModuleDescriptor& md);
 
                 virtual odcore::base::KeyValueConfiguration getGlobalConfiguration() const;
 
                 virtual void onNewModule(odcore::SharedPointer<odcore::dmcp::connection::ModuleConnection> mc);
 
-                virtual void handleChangeState(const coredata::dmcp::ModuleDescriptor& md,
-                                               const coredata::dmcp::ModuleStateMessage::ModuleState &ms);
+                virtual void handleChangeState(const odcore::data::dmcp::ModuleDescriptor& md,
+                                               const odcore::data::dmcp::ModuleStateMessage::ModuleState &ms);
 
-                virtual void handleExitCode(const coredata::dmcp::ModuleDescriptor& md,
-                                            const coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode &me);
+                virtual void handleExitCode(const odcore::data::dmcp::ModuleDescriptor& md,
+                                            const odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode &me);
 
-                virtual void handleRuntimeStatistics(const coredata::dmcp::ModuleDescriptor& md,
-                                                     const coredata::dmcp::RuntimeStatistic& rs);
+                virtual void handleRuntimeStatistics(const odcore::data::dmcp::ModuleDescriptor& md,
+                                                     const odcore::data::dmcp::RuntimeStatistic& rs);
 
-                virtual void handleConnectionLost(const coredata::dmcp::ModuleDescriptor& md);
+                virtual void handleConnectionLost(const odcore::data::dmcp::ModuleDescriptor& md);
 
-                virtual void handleUnkownContainer(const coredata::dmcp::ModuleDescriptor& md,
+                virtual void handleUnkownContainer(const odcore::data::dmcp::ModuleDescriptor& md,
                                                    const odcore::data::Container& container);
 
             private:

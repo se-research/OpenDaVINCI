@@ -32,7 +32,7 @@
 #include "opendavinci/odcore/base/Thread.h"           // for Thread
 #include "opendavinci/odcore/base/module/AbstractCIDModule.h"  // for AbstractCIDModule
 #include "opendavinci/odcore/exceptions/Exceptions.h"  // for InvalidArgumentException
-#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
 
 namespace odcore { namespace base { namespace module { class AbstractModule; } } }
 
@@ -47,9 +47,9 @@ class AbstractCIDModuleTestConcreteModule : public AbstractCIDModule {
                 AbstractCIDModule(argc, argv), counter(0) {}
 
         int32_t counter;
-        virtual coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode runModule() {
+        virtual odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode runModule() {
             counter++;
-            return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 };
 
@@ -60,14 +60,14 @@ class AbstractCIDModuleTestConcreteModule2 : public AbstractCIDModule {
 
         int32_t counter;
         bool ready;
-        virtual coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode runModule() {
-            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+        virtual odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode runModule() {
+            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
                 ready = true;
                 counter++;
                 Thread::usleepFor(100);
             }
             ready = false;
-            return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 };
 
@@ -76,7 +76,7 @@ class AbstractCIDModuleTestConcreteModule3 : public AbstractCIDModule {
         AbstractCIDModuleTestConcreteModule3(int32_t argc = 0, char **argv = NULL):
                 AbstractCIDModule(argc, argv) {}
 
-        virtual coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode runModule() {
+        virtual odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode runModule() {
             errno = 0;
             throw InvalidArgumentException("Test", "Testcase", 123);
         }
@@ -91,7 +91,7 @@ class AbstractCIDModuleTestConcreteModule2Service : public Service {
 
         virtual void run() {
             serviceReady();
-            m_module.setModuleState(coredata::dmcp::ModuleStateMessage::RUNNING);
+            m_module.setModuleState(odcore::data::dmcp::ModuleStateMessage::RUNNING);
             m_module.runModule();
         }
 
@@ -114,11 +114,11 @@ class AbstractCIDModuleTest : public CxxTest::TestSuite {
             AbstractCIDModuleTestConcreteModule amtcm(argc, argv);
             TS_ASSERT(AbstractCIDModule::getListOfModules().size() == 1);
 
-            amtcm.setModuleState(coredata::dmcp::ModuleStateMessage::NOT_RUNNING);
-            TS_ASSERT(amtcm.getModuleStateAndWaitForRemainingTimeInTimeslice() ==  coredata::dmcp::ModuleStateMessage::NOT_RUNNING);
+            amtcm.setModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
+            TS_ASSERT(amtcm.getModuleStateAndWaitForRemainingTimeInTimeslice() ==  odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
 
             amtcm.counter = 0;
-            TS_ASSERT(amtcm.runModule() == coredata::dmcp::ModuleExitCodeMessage::OKAY);
+            TS_ASSERT(amtcm.runModule() == odcore::data::dmcp::ModuleExitCodeMessage::OKAY);
             TS_ASSERT(amtcm.counter == 1);
 
             // Clean up created modules.
@@ -226,7 +226,7 @@ class AbstractCIDModuleTest : public CxxTest::TestSuite {
             while (it != AbstractCIDModule::getListOfModules().end()) {
                 AbstractModule *m = *it++;
                 if (m != NULL) {
-                    m->setModuleState(coredata::dmcp::ModuleStateMessage::NOT_RUNNING);
+                    m->setModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
                 }
             }
             /******* This is the same code as in AbstractCIDModule **********/

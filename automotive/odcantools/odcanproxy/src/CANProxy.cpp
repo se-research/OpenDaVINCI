@@ -82,7 +82,7 @@ namespace automotive {
             m_device->write(gcm);
         }
 
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode CANProxy::body() {
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode CANProxy::body() {
             // Register the CAN device as receiver for all Containers to be
             // potentially written to the CAN bus.
             addDataStoreFor(m_device->getMessageToCANDataStore());
@@ -90,7 +90,7 @@ namespace automotive {
             // Start the wrapped CAN device to receive CAN messages concurrently.
             m_device->start();
 
-            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
                 const uint32_t ENTRIES = m_fifo.getSize();
                 for (uint32_t i = 0; i < ENTRIES; i++) {
                     Container c = m_fifo.leave();
@@ -107,7 +107,7 @@ namespace automotive {
 
             m_device->stop();
 
-            return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
     } // odcantools

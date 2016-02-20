@@ -27,7 +27,7 @@
 #include "opendavinci/odcore/base/Visitor.h"
 #include "opendavinci/odcore/reflection/Field.h"
 #include "opendavinci/odcore/reflection/Message.h"
-#include "opendavinci/generated/coredata/reflection/AbstractField.h"
+#include "opendavinci/generated/odcore/data/reflection/AbstractField.h"
 
 namespace odcore { namespace base { class Serializable; } }
 
@@ -94,15 +94,15 @@ namespace odcore {
                  * @param f Field to visit.
                  */
                 template<typename T>
-                void visitPrimitiveDataType(odcore::SharedPointer<coredata::reflection::AbstractField> &f, T &v) {
+                void visitPrimitiveDataType(odcore::SharedPointer<odcore::data::reflection::AbstractField> &f, T &v) {
                     // If T is != double but f->getFieldDataType() == double, we require a compiler cast.
                     double _v = 0;
-                    if (f->getFieldDataType() == coredata::reflection::AbstractField::DOUBLE_T) {
+                    if (f->getFieldDataType() == odcore::data::reflection::AbstractField::DOUBLE_T) {
                         _v = dynamic_cast<odcore::reflection::Field<double>*>(f.operator->())->getValue();
                     }
 
                     // Set value from f to v (default case).
-                    if (f->getFieldDataType() != coredata::reflection::AbstractField::DOUBLE_T) {
+                    if (f->getFieldDataType() != odcore::data::reflection::AbstractField::DOUBLE_T) {
                         v = dynamic_cast<odcore::reflection::Field<T>*>(f.operator->())->getValue();
                     }
                     else { v = _v; }

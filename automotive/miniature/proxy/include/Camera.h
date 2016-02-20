@@ -73,7 +73,7 @@ namespace automotive {
                 /**
                  * @return Meta information about the image.
                  */
-                coredata::image::SharedImage capture();
+                odcore::data::image::SharedImage capture();
 
             protected:
                 /**
@@ -103,7 +103,7 @@ namespace automotive {
                 uint32_t getSize() const;
 
             private:
-                coredata::image::SharedImage m_sharedImage;
+                odcore::data::image::SharedImage m_sharedImage;
                 odcore::SharedPointer<odcore::wrapper::SharedMemory> m_sharedMemory;
                 
             protected:

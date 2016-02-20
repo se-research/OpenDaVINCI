@@ -23,7 +23,7 @@
 #include <stdint.h>
 
 #include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
 
 namespace measurements {
 
@@ -64,7 +64,7 @@ namespace measurements {
 
             virtual ~DrivenPath();
 
-            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+            odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
         private:
             virtual void setUp();

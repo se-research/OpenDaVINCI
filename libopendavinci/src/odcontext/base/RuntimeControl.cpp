@@ -38,7 +38,7 @@
 #include "opendavinci/odcore/io/conference/ContainerConferenceFactory.h"
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/wrapper/Time.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleStateMessage.h"
 
 namespace odcore { namespace base { namespace module { class TimeTriggeredConferenceClientModule; } } }
 
@@ -312,8 +312,8 @@ namespace odcontext {
                         bool moreModulesSchedulable = true;
 
                         // Perform system's context simulation.
-                        setModuleState(coredata::dmcp::ModuleStateMessage::RUNNING);
-                        while ( (moreModulesSchedulable) && (static_cast<uint32_t>(time.now().getSeconds()) < maxRunningTimeInSeconds) && (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) ) {
+                        setModuleState(odcore::data::dmcp::ModuleStateMessage::RUNNING);
+                        while ( (moreModulesSchedulable) && (static_cast<uint32_t>(time.now().getSeconds()) < maxRunningTimeInSeconds) && (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) ) {
                             clog << "------------------------------------------------------------------------------" << endl;
                             clog << "Time " << time.now().getSeconds() << "." << time.now().getPartialMicroseconds() << endl;
 
@@ -376,7 +376,7 @@ namespace odcontext {
                         }
 
                         // Check if the specified time has run out or if all simulatable modules have finished.
-                        if (getModuleStateAndWaitForRemainingTimeInTimeslice() != coredata::dmcp::ModuleStateMessage::RUNNING) {
+                        if (getModuleStateAndWaitForRemainingTimeInTimeslice() != odcore::data::dmcp::ModuleStateMessage::RUNNING) {
                             clog << "(context::base::RuntimeControl) Forced to quit." << endl;
                             retVal = RuntimeControl::RUNTIMECONTROL_FORCED_TO_QUIT;
                         }

@@ -59,7 +59,7 @@ using namespace odcore::data;
 using namespace odcore::exceptions;
 using namespace odcore::dmcp;
 using namespace odcore::io;
-using namespace coredata::dmcp;
+using namespace odcore::data::dmcp;
 using namespace odsupercomponent;
 
 class SuperComponentApp : public SuperComponent {
@@ -81,8 +81,8 @@ class ClientModuleApp : public TimeTriggeredConferenceClientModule {
 
         void tearDown() {}
 
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
-            return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 };
 
@@ -95,7 +95,7 @@ class ClientModuleTestService : public Service {
 
         virtual void beforeStop() {
             // Stop app.
-            myApp.setModuleState(coredata::dmcp::ModuleStateMessage::NOT_RUNNING);
+            myApp.setModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
         }
 
         virtual void run() {
@@ -160,8 +160,8 @@ class SupercomponentClientModuleTest : public CxxTest::TestSuite,
             ServerInformation serverInformation("127.0.0.1", 19000, ServerInformation::ML_NONE);
             discoverer::Server dmcpDiscovererServer(serverInformation,
                                                     "225.0.0.100",
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_SERVER,
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_CLIENT,
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_SERVER,
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_CLIENT,
                                                     noModulesToIgnore);
             dmcpDiscovererServer.startResponding();
 

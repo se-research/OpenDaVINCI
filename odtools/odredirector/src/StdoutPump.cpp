@@ -30,7 +30,7 @@
 #include "opendavinci/odcore/wrapper/jpg/JPG.h"
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
 #include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
-#include "opendavinci/generated/coredata/image/SharedImage.h"
+#include "opendavinci/generated/odcore/data/image/SharedImage.h"
 
 #include "StdoutPump.h"
 
@@ -49,7 +49,7 @@ namespace odredirector {
     void StdoutPump::add(const odcore::data::Container &container) {
         // SharedImages are transformed into compressed images using JPEG compression.
         if (container.getDataType() == odcore::data::Container::SHARED_IMAGE) {
-            coredata::image::SharedImage si = const_cast<odcore::data::Container&>(container).getData<coredata::image::SharedImage>();
+            odcore::data::image::SharedImage si = const_cast<odcore::data::Container&>(container).getData<odcore::data::image::SharedImage>();
             
             if ( (1 == si.getBytesPerPixel()) || 
                  (3 == si.getBytesPerPixel()) ) {

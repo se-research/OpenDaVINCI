@@ -22,7 +22,7 @@
 
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/module/MasterModule.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleStateMessage.h"
 
 namespace odcore {
     namespace base {
@@ -38,21 +38,21 @@ namespace odcore {
 
             MasterModule::~MasterModule() {}
 
-            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode MasterModule::runModule() {
-                coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode retVal = coredata::dmcp::ModuleExitCodeMessage::OKAY;
+            odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode MasterModule::runModule() {
+                odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode retVal = odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
 
-                setModuleState(coredata::dmcp::ModuleStateMessage::RUNNING);
+                setModuleState(odcore::data::dmcp::ModuleStateMessage::RUNNING);
 
                 try {
                     retVal = body();
                 } catch (std::exception &e) {
                     // Try to catch any exception derived from std::exception and print32_t out reason.
                     clog << e.what() << endl;
-                    retVal = coredata::dmcp::ModuleExitCodeMessage::EXCEPTION_CAUGHT;
+                    retVal = odcore::data::dmcp::ModuleExitCodeMessage::EXCEPTION_CAUGHT;
                 } catch (...) {
                     // Try to catch anything else print32_t generic error.
                     clog << "Unknown exception caught in MasterModule::run()" << endl;
-                    retVal = coredata::dmcp::ModuleExitCodeMessage::SERIOUS_ERROR;
+                    retVal = odcore::data::dmcp::ModuleExitCodeMessage::SERIOUS_ERROR;
                 }
 
                 return retVal;

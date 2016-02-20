@@ -33,8 +33,8 @@
 #include "opendavinci/odcore/io/conference/ContainerConference.h"
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/wrapper/Time.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleStateMessage.h"
 
 namespace odcontext {
     namespace base {
@@ -98,7 +98,7 @@ namespace odcontext {
 
         void TimeTriggeredConferenceClientModuleRunner::beforeStop() {
             // Stop module.
-            m_timeTriggeredConferenceClientModule.setModuleState(coredata::dmcp::ModuleStateMessage::NOT_RUNNING);
+            m_timeTriggeredConferenceClientModule.setModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
 
             // Remove breakpoint.
             m_timeTriggeredConferenceClientModule.setBreakpoint(NULL);
@@ -126,7 +126,7 @@ namespace odcontext {
 
             serviceReady();
 
-            if (m_timeTriggeredConferenceClientModule.runModule() == coredata::dmcp::ModuleExitCodeMessage::OKAY) {
+            if (m_timeTriggeredConferenceClientModule.runModule() == odcore::data::dmcp::ModuleExitCodeMessage::OKAY) {
                 // After finishing the application, report that no more execution is necessary.
                 Lock l(m_timeTriggeredConferenceClientModuleFinishedMutex);
                 m_timeTriggeredConferenceClientModuleFinished = true;

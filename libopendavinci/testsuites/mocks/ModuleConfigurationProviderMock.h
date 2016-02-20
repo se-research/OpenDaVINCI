@@ -33,13 +33,13 @@ namespace mocks {
             ModuleConfigurationProviderMock() : m_configs() {};
             virtual ~ModuleConfigurationProviderMock() {};
 
-            void addConfig(const coredata::dmcp::ModuleDescriptor& md,
+            void addConfig(const odcore::data::dmcp::ModuleDescriptor& md,
                            const odcore::base::KeyValueConfiguration& kv)
             {
                 m_configs[md.getName()] = kv;
             }
 
-            virtual odcore::base::KeyValueConfiguration getConfiguration(const coredata::dmcp::ModuleDescriptor& md)
+            virtual odcore::base::KeyValueConfiguration getConfiguration(const odcore::data::dmcp::ModuleDescriptor& md)
             {
                 return m_configs[md.getName()];
             };

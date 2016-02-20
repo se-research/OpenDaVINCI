@@ -43,10 +43,10 @@ namespace automotive {
 
         void CANASCReplay::tearDown() {}
 
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode CANASCReplay::body() {
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode CANASCReplay::body() {
             // Structure of an ASC entry: 'Timestamp Channel  ID             Rx   d Length 00 11 22 33 44 55 66 77'
             char buffer[100];
-            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
                 // Read next line from STDIN.
                 cin.getline(buffer, 100);
 
@@ -93,7 +93,7 @@ namespace automotive {
                 }
             }
 
-            return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
     } // odcantools

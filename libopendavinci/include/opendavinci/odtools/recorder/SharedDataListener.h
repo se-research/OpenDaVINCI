@@ -28,8 +28,8 @@
 #include "opendavinci/odcore/SharedPointer.h"
 #include "opendavinci/odcore/base/AbstractDataStore.h"
 #include "opendavinci/odcore/base/FIFOQueue.h"
-#include "opendavinci/generated/coredata/SharedData.h"
-#include "opendavinci/generated/coredata/image/SharedImage.h"
+#include "opendavinci/generated/odcore/data/SharedData.h"
+#include "opendavinci/generated/odcore/data/image/SharedImage.h"
 
 namespace odcore { namespace data { class Container; } }
 namespace odcore { namespace wrapper { class SharedMemory; } }
@@ -100,8 +100,8 @@ class SharedDataWriter;
             private:
                 bool m_threading;
                 auto_ptr<SharedDataWriter> m_sharedDataWriter;
-                map<string, coredata::SharedData> m_mapOfAvailableSharedData;
-                map<string, coredata::image::SharedImage> m_mapOfAvailableSharedImages;
+                map<string, odcore::data::SharedData> m_mapOfAvailableSharedData;
+                map<string, odcore::data::image::SharedImage> m_mapOfAvailableSharedImages;
 
                 map<uint32_t, char*> m_mapOfMemories;
 

@@ -40,13 +40,13 @@ void HelloWorldExample::tearDown() {
     cout << "This method is called after the program flow returns from the component's body." << endl;
 }
 
-coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode HelloWorldExample::body() {
+odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode HelloWorldExample::body() {
     cout << "Hello OpenDaVINCI World!" << endl;
 
-    while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+    while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
         cout << "Inside the main processing loop." << endl;
     }
 
-    return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+    return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
 }
 

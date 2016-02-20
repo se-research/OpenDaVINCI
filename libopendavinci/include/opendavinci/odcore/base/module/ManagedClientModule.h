@@ -30,8 +30,8 @@
 #include "opendavinci/odcore/data/TimeStamp.h"
 #include "opendavinci/odcore/exceptions/Exceptions.h"
 #include "opendavinci/odcore/io/conference/ContainerConference.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
-#include "opendavinci/generated/coredata/dmcp/PulseMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/PulseMessage.h"
 
 namespace odcontext { namespace base { class ControlledTimeFactory; } }
 
@@ -106,9 +106,9 @@ namespace odcore {
                      *
                      * @return The exit code of the real body.
                      */
-                    virtual coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body() = 0;
+                    virtual odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body() = 0;
 
-                    virtual coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode runModuleImplementation();
+                    virtual odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode runModuleImplementation();
 
                     virtual void reached();
 
@@ -117,27 +117,27 @@ namespace odcore {
 
                     virtual void DMCPconnectionLost();
 
-                    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode runModuleImplementation_ManagedLevel_None();
+                    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode runModuleImplementation_ManagedLevel_None();
                     void wait_ManagedLevel_None();
                     void wait_ManagedLevel_None_realtime();
 
-                    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode runModuleImplementation_ManagedLevel_Pulse();
+                    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode runModuleImplementation_ManagedLevel_Pulse();
                     void wait_ManagedLevel_Pulse();
                     void reached_ManagedLevel_Pulse();
 
-                    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode runModuleImplementation_ManagedLevel_Pulse_Shift();
+                    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode runModuleImplementation_ManagedLevel_Pulse_Shift();
                     void wait_ManagedLevel_Pulse_Shift();
                     void reached_ManagedLevel_Pulse_Shift();
 
-                    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode runModuleImplementation_ManagedLevel_Pulse_Time();
+                    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode runModuleImplementation_ManagedLevel_Pulse_Time();
                     void wait_ManagedLevel_Pulse_Time();
                     void reached_ManagedLevel_Pulse_Time();
 
-                    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode runModuleImplementation_ManagedLevel_Pulse_Time_Ack();
+                    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode runModuleImplementation_ManagedLevel_Pulse_Time_Ack();
                     void wait_ManagedLevel_Pulse_Time_Ack();
                     void reached_ManagedLevel_Pulse_Time_Ack();
 
-                    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode runModuleImplementation_ManagedLevel_Pulse_Time_Ack_Containers();
+                    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode runModuleImplementation_ManagedLevel_Pulse_Time_Ack_Containers();
                     void wait_ManagedLevel_Pulse_Time_Ack_Containers();
                     void reached_ManagedLevel_Pulse_Time_Ack_Containers();
 
@@ -203,7 +203,7 @@ namespace odcore {
                     odcontext::base::Clock m_time;
                     odcontext::base::ControlledTimeFactory *m_controlledTimeFactory;
 
-                    coredata::dmcp::PulseMessage m_pulseMessage;
+                    odcore::data::dmcp::PulseMessage m_pulseMessage;
                     odcore::SharedPointer<odcore::io::conference::ContainerConference> m_localContainerConference;
                     bool m_hasExternalContainerConference;
                     odcore::SharedPointer<odcore::io::conference::ContainerConference> m_containerConference;

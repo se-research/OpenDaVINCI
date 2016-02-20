@@ -28,7 +28,7 @@
 #include "opendavinci/odcore/io/StringListener.h"
 #include "opendavinci/odcore/io/udp/UDPReceiver.h"
 #include "opendavinci/odcore/io/udp/UDPSender.h"
-#include "opendavinci/generated/coredata/dmcp/ServerInformation.h"
+#include "opendavinci/generated/odcore/data/dmcp/ServerInformation.h"
 
 namespace odcore {
     namespace dmcp {
@@ -53,7 +53,7 @@ namespace odcore {
                     Server& operator=(const Server &);
 
                 public:
-                    Server(const coredata::dmcp::ServerInformation &serverInformation,
+                    Server(const odcore::data::dmcp::ServerInformation &serverInformation,
                            const std::string &group, const uint32_t &serverPort, const uint32_t &clientPort,
                            const vector<string> &modulesToIgnore);
                     virtual ~Server();
@@ -71,7 +71,7 @@ namespace odcore {
                     odcore::SharedPointer<odcore::io::udp::UDPSender> m_sender;
                     odcore::SharedPointer<odcore::io::udp::UDPReceiver> m_receiver;
 
-                    coredata::dmcp::ServerInformation m_serverInformation;
+                    odcore::data::dmcp::ServerInformation m_serverInformation;
 
                     vector<string> m_modulesToIgnore;
             };

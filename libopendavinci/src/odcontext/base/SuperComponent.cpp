@@ -27,9 +27,9 @@
 #include "opendavinci/odcore/dmcp/connection/Server.h"
 #include "opendavinci/odcore/dmcp/discoverer/Server.h"
 #include "opendavinci/odcore/io/conference/ContainerConferenceFactory.h"
-#include "opendavinci/generated/coredata/dmcp/Constants.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleDescriptor.h"
-#include "opendavinci/generated/coredata/dmcp/ServerInformation.h"
+#include "opendavinci/generated/odcore/data/dmcp/Constants.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleDescriptor.h"
+#include "opendavinci/generated/odcore/data/dmcp/ServerInformation.h"
 
 namespace odcontext {
     namespace base {
@@ -40,7 +40,7 @@ namespace odcontext {
         using namespace odcore::io;
         using namespace odcore::io::conference;
         using namespace odcore::dmcp;
-        using namespace coredata::dmcp;
+        using namespace odcore::data::dmcp;
 
         SuperComponent::SuperComponent(const string &multicastGroup, const uint32_t &CID, const KeyValueConfiguration &configuration) :
             m_configurationMutex(),
@@ -50,12 +50,12 @@ namespace odcontext {
             m_conference(NULL),
             m_listOfModuleConnections() {
             // Run locally.
-            ServerInformation serverInformation("127.0.0.1", coredata::dmcp::Constants::CONNECTIONSERVER_PORT_BASE + CID, ServerInformation::ML_NONE);
+            ServerInformation serverInformation("127.0.0.1", odcore::data::dmcp::Constants::CONNECTIONSERVER_PORT_BASE + CID, ServerInformation::ML_NONE);
 
             clog << "(context::base::SuperComponent) Server information: " << serverInformation.toString() << endl;
             clog << "(context::base::SuperComponent) Creating discoverer server..." << endl;
             vector<string> noModulesToIgnore;
-            m_discovererServer = auto_ptr<odcore::dmcp::discoverer::Server>(new discoverer::Server(serverInformation, multicastGroup, coredata::dmcp::Constants::BROADCAST_PORT_SERVER, coredata::dmcp::Constants::BROADCAST_PORT_CLIENT, noModulesToIgnore));
+            m_discovererServer = auto_ptr<odcore::dmcp::discoverer::Server>(new discoverer::Server(serverInformation, multicastGroup, odcore::data::dmcp::Constants::BROADCAST_PORT_SERVER, odcore::data::dmcp::Constants::BROADCAST_PORT_CLIENT, noModulesToIgnore));
             m_discovererServer->startResponding();
 
             clog << "(context::base::SuperComponent) Creating connection server..." << endl;
@@ -74,7 +74,7 @@ namespace odcontext {
             return *m_conference;
         }
 
-        KeyValueConfiguration SuperComponent::getConfiguration(const coredata::dmcp::ModuleDescriptor& md) {
+        KeyValueConfiguration SuperComponent::getConfiguration(const odcore::data::dmcp::ModuleDescriptor& md) {
             Lock l(m_configurationMutex);
 
              if (md.getName() == "Cockpit") {
@@ -144,17 +144,17 @@ namespace odcontext {
             }
         }
 
-        void SuperComponent::handleChangeState(const coredata::dmcp::ModuleDescriptor& md, const coredata::dmcp::ModuleStateMessage::ModuleState &ms) {
+        void SuperComponent::handleChangeState(const odcore::data::dmcp::ModuleDescriptor& md, const odcore::data::dmcp::ModuleStateMessage::ModuleState &ms) {
             switch (ms) {
-                case coredata::dmcp::ModuleStateMessage::NOT_RUNNING:
+                case odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING:
                     clog << "(context::base::SuperComponent) Module " << md.toString() << " changed state to NOT_RUNNING." << endl;
                 break;
 
-                case coredata::dmcp::ModuleStateMessage::RUNNING:
+                case odcore::data::dmcp::ModuleStateMessage::RUNNING:
                     clog << "(context::base::SuperComponent) Module " << md.toString() << " changed state to RUNNING." << endl;
                 break;
 
-                case coredata::dmcp::ModuleStateMessage::UNDEFINED_STATE:
+                case odcore::data::dmcp::ModuleStateMessage::UNDEFINED_STATE:
                     clog << "(context::base::SuperComponent) Module " << md.toString() << " changed state to UNDEFINED_STATE." << endl;
                 break;
 
@@ -164,29 +164,29 @@ namespace odcontext {
             }
         }
 
-        void SuperComponent::handleExitCode(const coredata::dmcp::ModuleDescriptor& md, const coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode &me) {
+        void SuperComponent::handleExitCode(const odcore::data::dmcp::ModuleDescriptor& md, const odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode &me) {
             switch (me) {
-                case coredata::dmcp::ModuleExitCodeMessage::OKAY:
+                case odcore::data::dmcp::ModuleExitCodeMessage::OKAY:
                     clog << "(context::base::SuperComponent) Module " << md.toString() << " exited with exitcode OKAY." << endl;
                 break;
 
-                case coredata::dmcp::ModuleExitCodeMessage::EXCEPTION_CAUGHT:
+                case odcore::data::dmcp::ModuleExitCodeMessage::EXCEPTION_CAUGHT:
                     clog << "(context::base::SuperComponent) Module " << md.toString() << " exited with exitcode EXCEPTION_CAUGHT." << endl;
                 break;
 
-                case coredata::dmcp::ModuleExitCodeMessage::SERIOUS_ERROR:
+                case odcore::data::dmcp::ModuleExitCodeMessage::SERIOUS_ERROR:
                     clog << "(context::base::SuperComponent) Module " << md.toString() << " exited with exitcode SERIOUS_ERROR." << endl;
                 break;
 
-                case coredata::dmcp::ModuleExitCodeMessage::CONNECTION_LOST:
+                case odcore::data::dmcp::ModuleExitCodeMessage::CONNECTION_LOST:
                     clog << "(context::base::SuperComponent) Module " << md.toString() << " exited with exitcode CONNECTION_LOST." << endl;
                 break;
 
-                case coredata::dmcp::ModuleExitCodeMessage::NO_SUPERCOMPONENT:
+                case odcore::data::dmcp::ModuleExitCodeMessage::NO_SUPERCOMPONENT:
                     clog << "(context::base::SuperComponent) Module " << md.toString() << " exited with exitcode NO_SUPERCOMPONENT." << endl;
                 break;
 
-                case coredata::dmcp::ModuleExitCodeMessage::UNDEFINED_EXITCODE:
+                case odcore::data::dmcp::ModuleExitCodeMessage::UNDEFINED_EXITCODE:
                     clog << "(context::base::SuperComponent) Module " << md.toString() << " exited with exitcode UNDEFINED_EXITCODE." << endl;
                 break;
 
@@ -196,15 +196,15 @@ namespace odcontext {
             }
         }
 
-        void SuperComponent::handleRuntimeStatistics(const coredata::dmcp::ModuleDescriptor& md,  const coredata::dmcp::RuntimeStatistic& rs) {
+        void SuperComponent::handleRuntimeStatistics(const odcore::data::dmcp::ModuleDescriptor& md,  const odcore::data::dmcp::RuntimeStatistic& rs) {
             clog << "(context::base::SuperComponent) Received RuntimeStatistics for " << md.toString() << ": " << rs.toString() << endl;
         }
 
-        void SuperComponent::handleConnectionLost(const coredata::dmcp::ModuleDescriptor& md) {
+        void SuperComponent::handleConnectionLost(const odcore::data::dmcp::ModuleDescriptor& md) {
             clog << "(context::base::SuperComponent) Lost connection to " << md.toString() << endl;
         }
 
-        void SuperComponent::handleUnkownContainer(const coredata::dmcp::ModuleDescriptor& md, const odcore::data::Container& container) {
+        void SuperComponent::handleUnkownContainer(const odcore::data::dmcp::ModuleDescriptor& md, const odcore::data::Container& container) {
             clog << "(context::base::SuperComponent) Received unknown container " << container.toString() << "from " << md.toString() << endl;
         }
 

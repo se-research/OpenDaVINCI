@@ -25,12 +25,12 @@
 
 #include "GlobalConfigurationProvider.h"
 #include "opendavinci/odcore/base/Lock.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleDescriptor.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleDescriptor.h"
 
 namespace odsupercomponent {
 
     using namespace odcore::base;
-    using namespace coredata::dmcp;
+    using namespace odcore::data::dmcp;
 
     GlobalConfigurationProvider::GlobalConfigurationProvider(const KeyValueConfiguration& configurations) :
         m_configuration(configurations),

@@ -31,45 +31,45 @@
 #include "opendavinci/odcore/base/Serializable.h"     // for operator<<, operator>>
 #include "opendavinci/odcore/wrapper/SharedMemory.h"  // for SharedMemory
 #include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"  // for SharedMemoryFactory
-#include "opendavinci/generated/coredata/SharedData.h"  // for SharedData
+#include "opendavinci/generated/odcore/data/SharedData.h"  // for SharedData
 
 using namespace std;
 
 class SharedMemoryTest : public CxxTest::TestSuite {
     public:
         void testSharedData1() {
-            coredata::SharedData sd;
+            odcore::data::SharedData sd;
 
             stringstream sstr;
             sstr << sd;
 
-            coredata::SharedData sd2;
+            odcore::data::SharedData sd2;
             sstr >> sd2;
             TS_ASSERT(sd2.getName() == "");
             TS_ASSERT(sd2.getSize() == 0);
         }
 
         void testSharedData2() {
-            coredata::SharedData sd("abc", 10);
+            odcore::data::SharedData sd("abc", 10);
 
             stringstream sstr;
             sstr << sd;
 
-            coredata::SharedData sd2;
+            odcore::data::SharedData sd2;
             sstr >> sd2;
             TS_ASSERT(sd2.getName() == "abc");
             TS_ASSERT(sd2.getSize() == 10);
         }
 
         void testSharedData3() {
-            coredata::SharedData sd;
+            odcore::data::SharedData sd;
             sd.setName("def");
             sd.setSize(22);
 
             stringstream sstr;
             sstr << sd;
 
-            coredata::SharedData sd2;
+            odcore::data::SharedData sd2;
             sstr >> sd2;
             TS_ASSERT(sd2.getName() == "def");
             TS_ASSERT(sd2.getSize() == 22);

@@ -197,7 +197,7 @@ namespace odtools {
                     }
 
                     // As we have now the decompressed image data in memory, create a SharedMemory data structure to describe it.
-                    coredata::image::SharedImage si;
+                    odcore::data::image::SharedImage si;
                     si.setName(ci.getName());
                     si.setWidth(ci.getWidth());
                     si.setHeight(ci.getHeight());

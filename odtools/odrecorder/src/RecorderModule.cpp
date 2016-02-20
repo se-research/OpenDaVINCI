@@ -23,7 +23,7 @@
 #include "opendavinci/odcore/base/Thread.h"
 #include "opendavinci/odtools/recorder/Recorder.h"
 #include "opendavinci/odtools/recorder/SharedDataListener.h"
-#include "opendavinci/generated/coredata/recorder/RecorderCommand.h"
+#include "opendavinci/generated/odcore/data/recorder/RecorderCommand.h"
 
 namespace odcore { namespace base { class KeyValueDataStore; } }
 
@@ -48,7 +48,7 @@ namespace odrecorder {
         AbstractModule::wait();
     }
 
-    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode RecorderModule::body() {
+    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode RecorderModule::body() {
         // Check if the recorder is remotely controlled.
         bool remoteControl = (getKeyValueConfiguration().getValue<bool>("odrecorder.remoteControl") != 0);
 
@@ -78,7 +78,7 @@ namespace odrecorder {
 
         // If remote control is disabled, simply start recording immediately.
         bool recording = (!remoteControl);
-        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
             // Recording queued entries.
             if (recording) {
                 if (!r.getFIFO().isEmpty()) {
@@ -93,10 +93,10 @@ namespace odrecorder {
             if (remoteControl) {
                 Container container = kvds.get(Container::RECORDER_COMMAND);
                 if (container.getDataType() == Container::RECORDER_COMMAND) {
-                    coredata::recorder::RecorderCommand rc;
-                    rc = container.getData<coredata::recorder::RecorderCommand>();
+                    odcore::data::recorder::RecorderCommand rc;
+                    rc = container.getData<odcore::data::recorder::RecorderCommand>();
 
-                    recording = (rc.getCommand() == coredata::recorder::RecorderCommand::RECORD);
+                    recording = (rc.getCommand() == odcore::data::recorder::RecorderCommand::RECORD);
                 }
 
                 // Discard existing entries.
@@ -106,7 +106,7 @@ namespace odrecorder {
             }
         }
 
-        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+        return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
     }
 
 } // odrecorder

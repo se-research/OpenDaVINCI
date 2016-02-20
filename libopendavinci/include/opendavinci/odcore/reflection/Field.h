@@ -33,7 +33,7 @@ namespace odcore {
          * This class describes a concrete Field in a Message.
          */
         template<typename T>
-        class OPENDAVINCI_API Field : public coredata::reflection::AbstractField {
+        class OPENDAVINCI_API Field : public odcore::data::reflection::AbstractField {
             public:
                 Field() : m_value() {}
 
@@ -50,7 +50,7 @@ namespace odcore {
                  * @param obj Reference to an object of this class.
                  */
                 Field(const Field<T> &obj) : 
-                    coredata::reflection::AbstractField(obj),
+                    odcore::data::reflection::AbstractField(obj),
                     m_value(obj.m_value) {}
 
                 virtual ~Field() {}

@@ -48,7 +48,7 @@ namespace cockpit {
             using namespace std;
             using namespace odcore::base;
             using namespace odcore::data;
-            using namespace coredata::image;
+            using namespace odcore::data::image;
 
             SharedImageViewerWidget::SharedImageViewerWidget(const PlugIn &/*plugIn*/, QWidget *prnt) :
                     QWidget(prnt),

@@ -26,7 +26,7 @@
 #include "opendavinci/odcore/dmcp/discoverer/Server.h"
 #include "opendavinci/odcore/io/udp/UDPFactory.h"
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/generated/coredata/dmcp/DiscoverMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/DiscoverMessage.h"
 
 namespace odcore {
     namespace dmcp {
@@ -35,7 +35,7 @@ namespace odcore {
             using namespace std;
             using namespace odcore::base;
             using namespace odcore::data;
-            using namespace coredata::dmcp;
+            using namespace odcore::data::dmcp;
 
             Server::Server(const ServerInformation &serverInformation,
                            const std::string &group,

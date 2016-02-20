@@ -51,7 +51,7 @@ using namespace odcore::base;
 using namespace odcore::data;
 using namespace odcore::io;
 using namespace odcore::io::conference;
-using namespace coredata::dmcp;
+using namespace odcore::data::dmcp;
 using namespace odtools::player;
 using namespace odtools::recorder;
 using namespace odsplit;
@@ -94,7 +94,7 @@ class SplitTest : public CxxTest::TestSuite {
                         memcpy(memServer->getSharedMemory(), sstr.str().c_str(), sstr.str().size());
                     memServer->unlock();
 
-                    coredata::SharedData sd(memServer->getName(), memServer->getSize());
+                    odcore::data::SharedData sd(memServer->getName(), memServer->getSize());
 
                     Container c2(Container::SHARED_DATA, sd);
                     c2.setReceivedTimeStamp(TimeStamp(i,1000));
@@ -161,7 +161,7 @@ class SplitTest : public CxxTest::TestSuite {
                 }
                 else if (nextContainer.getDataType() == Container::SHARED_DATA) {
                     if (!memClient.isValid()) {
-                        coredata::SharedData sd = nextContainer.getData<coredata::SharedData>();
+                        odcore::data::SharedData sd = nextContainer.getData<odcore::data::SharedData>();
                         memClient = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(sd.getName());
                     }
 

@@ -61,8 +61,8 @@ namespace odcore {
                 return *(getContainerConference());
             }
 
-            void AbstractConferenceClientModule::toLogger(const coredata::LogMessage::LogLevel &logLevel, const string &msg) {
-                coredata::LogMessage logMessage;
+            void AbstractConferenceClientModule::toLogger(const odcore::data::LogMessage::LogLevel &logLevel, const string &msg) {
+                odcore::data::LogMessage logMessage;
                 logMessage.setComponentName(getName());
                 logMessage.setLogMessage(msg);
                 logMessage.setLogLevel(logLevel);

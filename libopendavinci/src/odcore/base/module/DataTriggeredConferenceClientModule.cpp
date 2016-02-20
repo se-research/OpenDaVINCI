@@ -18,7 +18,7 @@
  */
 
 #include "opendavinci/odcore/base/module/DataTriggeredConferenceClientModule.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleStateMessage.h"
 
 namespace odcore {
     namespace base {
@@ -35,14 +35,14 @@ namespace odcore {
 
             DataTriggeredConferenceClientModule::~DataTriggeredConferenceClientModule() {}
 
-            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode DataTriggeredConferenceClientModule::body() {
-                while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+            odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode DataTriggeredConferenceClientModule::body() {
+                while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
                     // Do nothing.
                     //
                     // This empty implementation is required to ensure proper scheduling.
                 }
 
-                return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+                return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
             }
 
         }

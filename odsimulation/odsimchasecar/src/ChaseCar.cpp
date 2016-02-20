@@ -33,7 +33,7 @@
 #include "opendlv/data/camera/ImageGrabberCalibration.h"
 #include "opendlv/data/camera/ImageGrabberID.h"
 #include "opendlv/data/environment/Point3.h"
-#include "opendavinci/generated/coredata/image/SharedImage.h"
+#include "opendavinci/generated/odcore/data/image/SharedImage.h"
 
 namespace chasecar {
 
@@ -42,7 +42,7 @@ namespace chasecar {
     using namespace odcore::data;
     using namespace opendlv::data;
     using namespace opendlv::data::camera;
-    using namespace coredata::image;
+    using namespace odcore::data::image;
     using namespace opendlv::data::environment;
 
     ChaseCar* ChaseCar::m_singleton = NULL;
@@ -286,13 +286,13 @@ namespace chasecar {
         glMatrixMode(GL_MODELVIEW);
     }
 
-    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode ChaseCar::body() {
+    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode ChaseCar::body() {
     	addDataStoreFor(Container::OBSTACLE, m_FIFO_Obstacles);
         
         // The following call never returns!
         glutMainLoop();
 
-        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+        return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
     }
 
 } // chasecar

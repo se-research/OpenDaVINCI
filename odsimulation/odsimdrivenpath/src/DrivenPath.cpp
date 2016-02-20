@@ -55,7 +55,7 @@ namespace measurements {
 
     void DrivenPath::tearDown() {}
 
-    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode DrivenPath::body() {
+    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode DrivenPath::body() {
         KeyValueDataStore &kvs = getKeyValueDataStore();
 
         // Get scenario.
@@ -105,7 +105,7 @@ namespace measurements {
 
         unsigned int counter = 0;
 
-        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
             // Get current ego state.
             Container c = kvs.get(Container::EGOSTATE);
             EgoState es = c.getData<EgoState>();
@@ -157,7 +157,7 @@ namespace measurements {
 
             counter++;
         }
-        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+        return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
     }
 
 } // measurements

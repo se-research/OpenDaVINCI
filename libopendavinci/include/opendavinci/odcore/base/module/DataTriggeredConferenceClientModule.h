@@ -25,7 +25,7 @@
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/module/AbstractConferenceClientModule.h"
 #include "opendavinci/odcore/exceptions/Exceptions.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
 
 namespace odcore { namespace data { class Container; } }
 
@@ -102,7 +102,7 @@ namespace odcore {
 
                     virtual ~DataTriggeredConferenceClientModule();
 
-                    virtual coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+                    virtual odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
                 protected:
                     virtual void setUp() = 0;

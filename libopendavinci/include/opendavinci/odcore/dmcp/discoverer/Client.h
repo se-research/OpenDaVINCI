@@ -28,7 +28,7 @@
 #include "opendavinci/odcore/io/PacketListener.h"
 #include "opendavinci/odcore/io/udp/UDPReceiver.h"
 #include "opendavinci/odcore/io/udp/UDPSender.h"
-#include "opendavinci/generated/coredata/dmcp/ServerInformation.h"
+#include "opendavinci/generated/odcore/data/dmcp/ServerInformation.h"
 
 namespace odcore { namespace io { class Packet; } }
 
@@ -63,7 +63,7 @@ namespace odcore {
 
                     bool existsServer();
 
-                    coredata::dmcp::ServerInformation getServerInformation() const;
+                    odcore::data::dmcp::ServerInformation getServerInformation() const;
 
                     virtual void onResponse();
 
@@ -78,7 +78,7 @@ namespace odcore {
                     odcore::base::Condition m_responseCondition;
                     bool m_response;
 
-                    coredata::dmcp::ServerInformation m_serverInformation;
+                    odcore::data::dmcp::ServerInformation m_serverInformation;
                     string m_moduleName;
             };
         }

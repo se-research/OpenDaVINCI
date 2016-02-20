@@ -654,11 +654,11 @@ namespace canmapping {
 			f->setShortIdentifier(static_cast<uint8_t>(«canSignals.get(signalName).m_CANID»)); // The identifiers specified here must match with the ones defined in the .odvd file!
 			f->setLongName("«canSignals.get(signalName).m_FQDN»");
 			f->setShortName("«{var String[] res; res=canSignals.get(signalName).m_FQDN.split("\\."); res.get(res.size-1)}»");
-			f->setFieldDataType(coredata::reflection::AbstractField::DOUBLE_T);
+			f->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
 			f->setSize(sizeof(«memberVarName»));
 	
 			// 4.5 Add created field to generic message.
-			message.addField(odcore::SharedPointer<coredata::reflection::AbstractField>(f));
+			message.addField(odcore::SharedPointer<odcore::data::reflection::AbstractField>(f));
 		}
 	«ENDFOR»
 		// 5. Depending on the CAN message specification, we are either ready here

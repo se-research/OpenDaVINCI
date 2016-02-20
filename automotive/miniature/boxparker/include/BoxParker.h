@@ -65,7 +65,7 @@ namespace automotive {
 
                 virtual ~BoxParker();
 
-                coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+                odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
                 /**
                  * This method returns the gaps found during the parking process.

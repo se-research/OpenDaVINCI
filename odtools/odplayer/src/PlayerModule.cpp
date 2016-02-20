@@ -25,7 +25,7 @@
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/io/URL.h"
 #include "opendavinci/odtools/player/Player.h"
-#include "opendavinci/generated/coredata/player/PlayerCommand.h"
+#include "opendavinci/generated/odcore/data/player/PlayerCommand.h"
 
 #include "PlayerModule.h"
 
@@ -51,7 +51,7 @@ namespace odplayer {
         AbstractModule::wait();
     }
 
-    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode PlayerModule::body() {
+    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode PlayerModule::body() {
         // Check if the player is remotely controlled.
         bool remoteControl = (getKeyValueConfiguration().getValue<bool>("odplayer.remoteControl") != 0);
 
@@ -91,7 +91,7 @@ namespace odplayer {
         bool doStep = false;
 
         // The main loop.
-        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
             if (playing) {
                 // Get container to be sent.
                 nextContainerToBeSent = player.getNextContainerToBeSent();
@@ -128,23 +128,23 @@ namespace odplayer {
                 if (!(m_playerControl.isEmpty())) {
                     Container container = m_playerControl.leave();
 
-                    coredata::player::PlayerCommand pc;
-                    pc = container.getData<coredata::player::PlayerCommand>();
+                    odcore::data::player::PlayerCommand pc;
+                    pc = container.getData<odcore::data::player::PlayerCommand>();
 
                     CLOG1 << "[" << getName() << "(" << getIdentifier() << ")]: " << pc.toString() << endl;
 
                     switch (pc.getCommand()) {
-                        case coredata::player::PlayerCommand::PLAY:
+                        case odcore::data::player::PlayerCommand::PLAY:
                             playing = true;
                             break;
-                        case coredata::player::PlayerCommand::PAUSE:
+                        case odcore::data::player::PlayerCommand::PAUSE:
                             playing = false;
                             break;
-                        case coredata::player::PlayerCommand::STEP_FORWARD:
+                        case odcore::data::player::PlayerCommand::STEP_FORWARD:
                             playing = true;
                             doStep = true;
                             break;
-                        case coredata::player::PlayerCommand::REWIND:
+                        case odcore::data::player::PlayerCommand::REWIND:
                             player.rewind();
                             playing = false;
                             break;
@@ -158,7 +158,7 @@ namespace odplayer {
             }
         }
 
-        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+        return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
     }
 
 } // odplayer

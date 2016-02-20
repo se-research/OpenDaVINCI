@@ -51,7 +51,7 @@ class TimeTriggeredSender : public odcore::base::module::TimeTriggeredConference
 
         virtual ~TimeTriggeredSender();
 
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
     private:
         virtual void setUp();

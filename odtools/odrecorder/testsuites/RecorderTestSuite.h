@@ -55,7 +55,7 @@ using namespace odcore::data;
 using namespace odcore::dmcp;
 using namespace odcore::io;
 using namespace odcore::io::conference;
-using namespace coredata::dmcp;
+using namespace odcore::data::dmcp;
 
 class RecorderTestService : public Service {
     public:
@@ -64,7 +64,7 @@ class RecorderTestService : public Service {
 
         virtual void beforeStop() {
             // Stop recorder.
-            myRecorder.setModuleState(coredata::dmcp::ModuleStateMessage::NOT_RUNNING);
+            myRecorder.setModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
         }
 
         virtual void run() {
@@ -114,8 +114,8 @@ class RecorderTest : public CxxTest::TestSuite,
             ServerInformation serverInformation("127.0.0.1", 19000, ServerInformation::ML_NONE);
             discoverer::Server dmcpDiscovererServer(serverInformation,
                                                     "225.0.0.100",
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_SERVER,
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_CLIENT,
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_SERVER,
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_CLIENT,
                                                     noModulesToIgnore);
             dmcpDiscovererServer.startResponding();
 

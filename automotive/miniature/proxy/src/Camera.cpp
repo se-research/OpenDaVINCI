@@ -76,7 +76,7 @@ namespace automotive {
             return m_size;
         }
 
-        coredata::image::SharedImage Camera::capture() {
+        odcore::data::image::SharedImage Camera::capture() {
             if (isValid()) {
                 if (captureFrame()) {
                     if (m_sharedMemory.isValid() && m_sharedMemory->isValid()) {

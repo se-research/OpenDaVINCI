@@ -34,7 +34,7 @@
 #include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/io/conference/ContainerListener.h"
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
-#include "opendavinci/generated/coredata/image/SharedImage.h"
+#include "opendavinci/generated/odcore/data/image/SharedImage.h"
 
 class QImage;
 class QListWidget;
@@ -91,14 +91,14 @@ namespace cockpit {
 
                 private:
                     mutable odcore::base::Mutex m_sharedImageMemoryMutex;
-                    coredata::image::SharedImage m_sharedImage;
+                    odcore::data::image::SharedImage m_sharedImage;
                     odcore::SharedPointer<odcore::wrapper::SharedMemory> m_sharedImageMemory;
                     QImage *m_drawableImage;
                     QVector<QRgb> m_grayscale;
 
                     QListWidget *m_list;
                     vector<string> m_listOfAvailableSharedImages;
-                    map<string, coredata::image::SharedImage> m_mapOfAvailableSharedImages;
+                    map<string, odcore::data::image::SharedImage> m_mapOfAvailableSharedImages;
 
                     virtual void paintEvent(QPaintEvent *evnt);
             };

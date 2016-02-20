@@ -26,8 +26,8 @@
 #include "opendavinci/odcore/base/module/ManagedClientModule.h"
 #include "opendavinci/odcore/exceptions/Exceptions.h"
 #include "opendavinci/odcore/io/conference/ContainerListener.h"
-#include "opendavinci/generated/coredata/LogMessage.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/odcore/data/LogMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
 
 namespace odcore { namespace data { class Container; } }
 namespace odcore { namespace io { namespace conference { class ContainerConference; } } }
@@ -88,7 +88,7 @@ namespace odcore {
 
                     virtual void tearDown() = 0;
 
-                    virtual coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body() = 0;
+                    virtual odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body() = 0;
 
                     virtual void nextContainer(odcore::data::Container &c) = 0;
 
@@ -99,7 +99,7 @@ namespace odcore {
                      * @param logLevel Level for the message.
                      * @param msg Message to be logged.
                      */
-                    void toLogger(const coredata::LogMessage::LogLevel &logLevel, const string &msg);
+                    void toLogger(const odcore::data::LogMessage::LogLevel &logLevel, const string &msg);
             };
 
         }

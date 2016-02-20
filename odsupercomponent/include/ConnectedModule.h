@@ -22,7 +22,7 @@
 #define SUPERCOMPONENT_CONNECTEDMODULE_H_
 
 #include "opendavinci/odcore/SharedPointer.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleStateMessage.h"
 
 namespace odcore { namespace dmcp { namespace connection { class ModuleConnection; } } }
 
@@ -33,20 +33,20 @@ namespace odsupercomponent {
     class ConnectedModule {
         public:
             ConnectedModule(odcore::SharedPointer<odcore::dmcp::connection::ModuleConnection> connection,
-                            const coredata::dmcp::ModuleStateMessage::ModuleState& moduleState );
+                            const odcore::data::dmcp::ModuleStateMessage::ModuleState& moduleState );
 
             virtual ~ConnectedModule();
 
             odcore::dmcp::connection::ModuleConnection& getConnection();
 
-            coredata::dmcp::ModuleStateMessage::ModuleState getState() const;
-            void setState(const coredata::dmcp::ModuleStateMessage::ModuleState& state);
+            odcore::data::dmcp::ModuleStateMessage::ModuleState getState() const;
+            void setState(const odcore::data::dmcp::ModuleStateMessage::ModuleState& state);
 
             void setExitCode();
             bool hasExitCode() const;
 
         protected:
-            coredata::dmcp::ModuleStateMessage::ModuleState m_state;
+            odcore::data::dmcp::ModuleStateMessage::ModuleState m_state;
             odcore::SharedPointer<odcore::dmcp::connection::ModuleConnection> m_connection;
             bool m_hasExitCode;
 

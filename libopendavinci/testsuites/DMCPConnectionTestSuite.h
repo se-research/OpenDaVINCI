@@ -30,9 +30,9 @@
 #include "opendavinci/odcore/dmcp/connection/Client.h"  // for Client
 #include "opendavinci/odcore/dmcp/connection/ConnectionHandler.h"
 #include "opendavinci/odcore/dmcp/connection/Server.h"  // for Server
-#include "opendavinci/generated/coredata/dmcp/ModuleDescriptor.h"
-#include "opendavinci/generated/coredata/dmcp/ServerInformation.h"
-#include "opendavinci/generated/coredata/dmcp/TestConstants.h"  // for TestConstants, etc
+#include "opendavinci/generated/odcore/data/dmcp/ModuleDescriptor.h"
+#include "opendavinci/generated/odcore/data/dmcp/ServerInformation.h"
+#include "opendavinci/generated/odcore/data/dmcp/TestConstants.h"  // for TestConstants, etc
 #include "mocks/ConnectionHandlerMock.h"
 #include "mocks/ModuleConfigurationProviderMock.h"
 
@@ -44,7 +44,7 @@ using namespace odcore::base;
 using namespace odcore::exceptions;
 using namespace odcore::dmcp;
 using namespace odcore::data;
-using namespace coredata::dmcp;
+using namespace odcore::data::dmcp;
 
 class DMCPConnectionTestsuite : public CxxTest::TestSuite,
                                 public connection::ConnectionHandler
@@ -72,7 +72,7 @@ class DMCPConnectionTestsuite : public CxxTest::TestSuite,
             mocks::ModuleConfigurationProviderMock configProvider;
             mocks::ConnectionHandlerMock connectionHandler;
 
-            ServerInformation serverInfo("127.0.0.1", coredata::dmcp::TestConstants::DMCPCONFIG_TEST_SERVERPORT, ServerInformation::ML_NONE);
+            ServerInformation serverInfo("127.0.0.1", odcore::data::dmcp::TestConstants::DMCPCONFIG_TEST_SERVERPORT, ServerInformation::ML_NONE);
             ModuleDescriptor descriptor("DMCPConnectionTestSuite", "NONE", "TestVersion", 1);
 
             configProvider.addConfig(descriptor, kv);

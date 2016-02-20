@@ -24,8 +24,8 @@
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/data/Container.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleDescriptor.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleStatistic.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleDescriptor.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleStatistic.h"
 #include "plugins/modulestatisticsviewer/LoadPerModule.h"
 #include "plugins/modulestatisticsviewer/LoadPlot.h"
 #include "plugins/modulestatisticsviewer/ModuleStatisticsViewerWidget.h"
@@ -38,9 +38,9 @@ namespace cockpit {
 
             using namespace std;
             using namespace odcore::base;
-            using namespace coredata;
             using namespace odcore::data;
-            using namespace coredata::dmcp;
+            using namespace odcore::data;
+            using namespace odcore::data::dmcp;
 
             ModuleStatisticsViewerWidget::ModuleStatisticsViewerWidget(const PlugIn &/*plugIn*/, QWidget *prnt) :
                     QWidget(prnt),
@@ -77,9 +77,9 @@ namespace cockpit {
                     m_moduleStatistics.push_back(ms);
 
                     // Get the iterator to the entries.
-    				std::pair<std::map<std::string, coredata::dmcp::ModuleStatistic>::iterator, std::map<std::string, coredata::dmcp::ModuleStatistic>::iterator> iterators = ms.iteratorPair_MapOfModuleStatistics();
+    				std::pair<std::map<std::string, odcore::data::dmcp::ModuleStatistic>::iterator, std::map<std::string, odcore::data::dmcp::ModuleStatistic>::iterator> iterators = ms.iteratorPair_MapOfModuleStatistics();
 
-                    std::map<std::string, coredata::dmcp::ModuleStatistic>::iterator it = iterators.first;
+                    std::map<std::string, odcore::data::dmcp::ModuleStatistic>::iterator it = iterators.first;
                     while (it != iterators.second) {
                         ModuleStatistic entry = it->second;
 

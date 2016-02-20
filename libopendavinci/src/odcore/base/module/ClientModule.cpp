@@ -25,9 +25,9 @@
 #include "opendavinci/odcore/dmcp/discoverer/Client.h"
 #include "opendavinci/odcore/exceptions/Exceptions.h"
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/generated/coredata/dmcp/Constants.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleDescriptor.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/Constants.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleDescriptor.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleStateMessage.h"
 
 namespace odcore {
     namespace base {
@@ -40,7 +40,7 @@ namespace odcore {
             using namespace odcore::data;
             using namespace odcore::dmcp;
             using namespace odcore::exceptions;
-            using namespace coredata::dmcp;
+            using namespace odcore::data::dmcp;
 
             ClientModule::ClientModule(const int32_t &argc, char **argv, const string &name) throw (InvalidArgumentException) :
                 AbstractCIDModule(argc, argv),
@@ -63,24 +63,24 @@ namespace odcore {
                 return m_keyValueConfiguration;
             }
 
-            const coredata::dmcp::ServerInformation ClientModule::getServerInformation() const {
+            const odcore::data::dmcp::ServerInformation ClientModule::getServerInformation() const {
                 return m_serverInformation;
             }
 
-            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode ClientModule::runModule() {
+            odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode ClientModule::runModule() {
                 // Try to discover supercomponent.
                 try {
                     SharedPointer<discoverer::Client> discovererClient =
                         SharedPointer<discoverer::Client>(
                                 new discoverer::Client(getMultiCastGroup(),
-                                                       coredata::dmcp::Constants::BROADCAST_PORT_SERVER,
-                                                       coredata::dmcp::Constants::BROADCAST_PORT_CLIENT,
+                                                       odcore::data::dmcp::Constants::BROADCAST_PORT_SERVER,
+                                                       odcore::data::dmcp::Constants::BROADCAST_PORT_CLIENT,
                                                        getName()));
 
                     bool supercomponentFound = false;
                     uint32_t attempt  = 0;
 
-                    while ( !supercomponentFound && ( attempt < coredata::dmcp::Constants::CONNECTION_RETRIES)) {
+                    while ( !supercomponentFound && ( attempt < odcore::data::dmcp::Constants::CONNECTION_RETRIES)) {
                     	CLOG1 << "(ClientModule) discovering supercomponent..." << endl;
                     	supercomponentFound = discovererClient->existsServer();
                     	attempt++;
@@ -88,7 +88,7 @@ namespace odcore {
 
                     if ( !supercomponentFound ) {
                         CLOG1 << "(ClientModule) no supercomponent running for " << getMultiCastGroup() << endl;
-                        return coredata::dmcp::ModuleExitCodeMessage::NO_SUPERCOMPONENT;
+                        return odcore::data::dmcp::ModuleExitCodeMessage::NO_SUPERCOMPONENT;
                     }
 
                     m_serverInformation = discovererClient->getServerInformation();
@@ -96,7 +96,7 @@ namespace odcore {
                 }
                 catch (...) {
                     CLOG1 << "(ClientModule) error while discovering supercomponent." << endl;
-                    return coredata::dmcp::ModuleExitCodeMessage::SERIOUS_ERROR;
+                    return odcore::data::dmcp::ModuleExitCodeMessage::SERIOUS_ERROR;
                 }
 
                 CLOG1 << "(ClientModule) connecting to supercomponent..." << endl;
@@ -114,13 +114,13 @@ namespace odcore {
                     m_keyValueConfiguration = m_dmcpClient->getConfiguration();
                 } catch (ConnectException& e) {
                     CLOG1 << "(ClientModule) connecting to supercomponent failed: " << e.getMessage() << endl;
-                    return coredata::dmcp::ModuleExitCodeMessage::SERIOUS_ERROR;
+                    return odcore::data::dmcp::ModuleExitCodeMessage::SERIOUS_ERROR;
                 }
 
                 CLOG1 << "(ClientModule) connecting to supercomponent...done - managed level: " << m_serverInformation.getManagedLevel() << endl;
 
                 // Run user implementation from derived ConferenceClientModule.
-                coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode retVal = runModuleImplementation();
+                odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode retVal = runModuleImplementation();
 
                 if (m_dmcpClient.isValid()) {
                     m_dmcpClient->sendModuleExitCode(retVal);
@@ -131,7 +131,7 @@ namespace odcore {
 
             void ClientModule::handleConnectionLost() {
                 CLOG1 << "(ClientModule) connection to supercomponent lost. Shutting down" << endl;
-                setModuleState(coredata::dmcp::ModuleStateMessage::NOT_RUNNING);
+                setModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
             }
 
         }

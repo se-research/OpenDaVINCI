@@ -121,13 +121,13 @@ class Example7SenderApp : public TimeTriggeredConferenceClientModule {
             tearDownCalled = true;
         }
 
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
             uint32_t seed = 24;
         	uint32_t counter = 0;
 
             srand(seed);
 
-        	while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+        	while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
         		// Create user data.
         		TestSuiteExample7Data data;
         		data.setNumericalValue(counter++);
@@ -149,7 +149,7 @@ class Example7SenderApp : public TimeTriggeredConferenceClientModule {
                 }
             }
 
-        	return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+        	return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 };
 
@@ -172,12 +172,12 @@ class Example7ReceiverApp : public TimeTriggeredConferenceClientModule {
             tearDownCalled = true;
         }
 
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
             uint32_t sum = 0;
             uint32_t expected_sum = 0;
             uint32_t counter = 0;
 
-        	while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+        	while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
 			    Container c = getKeyValueDataStore().get(Container::USER_DATA_5);
 			    TestSuiteExample7Data data = c.getData<TestSuiteExample7Data>();
                 sum += data.getNumericalValue();
@@ -194,7 +194,7 @@ class Example7ReceiverApp : public TimeTriggeredConferenceClientModule {
                 }
         	}
 
-        	return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+        	return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
         uint32_t getDiff() {
@@ -220,12 +220,12 @@ class ConnectedClientModuleApp : public TimeTriggeredConferenceClientModule {
             tearDownCalled = true;
         }
 
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
-            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
+            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
                 // Do nothing.
             }
 
-            return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
         bool tearDownCalled;
@@ -243,7 +243,7 @@ class ConnectedClientModuleTestService : public Service {
 
         virtual void beforeStop() {
             // Stop app.
-            myApp->setModuleState(coredata::dmcp::ModuleStateMessage::NOT_RUNNING);
+            myApp->setModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
         }
 
         virtual void run() {
@@ -280,7 +280,7 @@ class SupercomponentService : public Service {
 
         virtual void beforeStop() {
             // Stop app.
-            mySC.setModuleState(coredata::dmcp::ModuleStateMessage::NOT_RUNNING);
+            mySC.setModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
         }
 
         virtual void run() {

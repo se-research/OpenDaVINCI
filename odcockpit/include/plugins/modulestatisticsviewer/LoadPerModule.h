@@ -28,8 +28,8 @@
 #include <vector>
 
 #include "opendavinci/odcore/base/Mutex.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleDescriptor.h"
-#include "opendavinci/generated/coredata/dmcp/RuntimeStatistic.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleDescriptor.h"
+#include "opendavinci/generated/odcore/data/dmcp/RuntimeStatistic.h"
 
 class QwtPlotCurve;
 
@@ -71,7 +71,7 @@ namespace cockpit {
                      * @param md Module's descriptor.
                      * @param color Curve's color.
                      */
-                    LoadPerModule( const coredata::dmcp::ModuleDescriptor &md, const QColor &color);
+                    LoadPerModule( const odcore::data::dmcp::ModuleDescriptor &md, const QColor &color);
 
                     virtual ~LoadPerModule();
 
@@ -80,17 +80,17 @@ namespace cockpit {
                      *
                      * @param rts RunTimeStatistics to be added.
                      */
-                    void addRuntimeStatistics(const coredata::dmcp::RuntimeStatistic &rts);
+                    void addRuntimeStatistics(const odcore::data::dmcp::RuntimeStatistic &rts);
 
                     QwtPlotCurve* getCurve();
 
                     const string getModuleName() const;
 
                 private:
-                    coredata::dmcp::ModuleDescriptor m_moduleDescriptor;
+                    odcore::data::dmcp::ModuleDescriptor m_moduleDescriptor;
                     QwtPlotCurve *m_curve;
                     odcore::base::Mutex m_loadMutex;
-                    deque<coredata::dmcp::RuntimeStatistic> m_load;
+                    deque<odcore::data::dmcp::RuntimeStatistic> m_load;
                     vector<double> m_data;
                     vector<double> m_reference;
                     double m_referenceOffset;

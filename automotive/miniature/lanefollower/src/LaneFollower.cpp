@@ -39,7 +39,7 @@ namespace automotive {
         using namespace std;
         using namespace odcore::base;
         using namespace odcore::data;
-        using namespace coredata::image;
+        using namespace odcore::data::image;
         using namespace automotive;
         using namespace automotive::miniature;
 
@@ -256,7 +256,7 @@ namespace automotive {
 
         // This method will do the main data processing job.
         // Therefore, it tries to open the real camera first. If that fails, the virtual camera images from camgen are used.
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode LaneFollower::body() {
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode LaneFollower::body() {
 	        // Get configuration data.
 	        KeyValueConfiguration kv = getKeyValueConfiguration();
 	        m_debug = kv.getValue<int32_t> ("lanefollower.debug") == 1;
@@ -295,7 +295,7 @@ namespace automotive {
             double distanceToObstacleOld = 0;
 
             // Overall state machine handler.
-	        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+	        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
 		        bool has_next_frame = false;
 
 		        // Get the most recent available container for a SHARED_IMAGE.
@@ -456,7 +456,7 @@ namespace automotive {
                 getConference().send(c2);
 	        }
 
-	        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+	        return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
     }

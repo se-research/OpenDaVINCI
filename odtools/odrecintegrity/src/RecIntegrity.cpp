@@ -24,8 +24,8 @@
 #include "RecIntegrity.h"
 #include "opendavinci/odcore/base/Serializable.h"
 #include "opendavinci/odcore/data/Container.h"
-#include "opendavinci/generated/coredata/SharedData.h"
-#include "opendavinci/generated/coredata/image/SharedImage.h"
+#include "opendavinci/generated/odcore/data/SharedData.h"
+#include "opendavinci/generated/odcore/data/image/SharedImage.h"
 
 namespace odrecintegrity {
 
@@ -71,7 +71,7 @@ namespace odrecintegrity {
 
                         // If the data is from SHARED_IMAGE, skip the raw data from the shared memory segment.
                         if (c.getDataType() == Container::SHARED_IMAGE) {
-                            coredata::image::SharedImage si = c.getData<coredata::image::SharedImage>();
+                            odcore::data::image::SharedImage si = c.getData<odcore::data::image::SharedImage>();
 
                             uint32_t lengthToSkip = si.getSize();
                             if (lengthToSkip == 0) {
@@ -83,7 +83,7 @@ namespace odrecintegrity {
                             numberOfSharedImages++;
                         }
                         else if (c.getDataType() == Container::SHARED_DATA) {
-                            coredata::SharedData sd = c.getData<coredata::SharedData>();
+                            odcore::data::SharedData sd = c.getData<odcore::data::SharedData>();
 
                             uint32_t lengthToSkip = sd.getSize();
 

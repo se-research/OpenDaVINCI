@@ -25,7 +25,7 @@
 #include "opendavinci/odcore/io/ConnectionAcceptor.h"
 #include "opendavinci/odcore/io/ConnectionAcceptorListener.h"
 
-namespace coredata { namespace dmcp { class ServerInformation; } }
+namespace odcore { namespace data { namespace dmcp { class ServerInformation; } } }
 namespace odcore { namespace dmcp { class ModuleConfigurationProvider; } }
 namespace odcore { namespace io { class Connection; } }
 namespace odcore { template <class T> class SharedPointer; }
@@ -55,7 +55,7 @@ class ConnectionHandler;
                     Server& operator=(const Server &);
 
                 public:
-                    Server(const coredata::dmcp::ServerInformation &serverInformation,
+                    Server(const odcore::data::dmcp::ServerInformation &serverInformation,
                            ModuleConfigurationProvider &configProvider);
                     virtual ~Server();
 

@@ -57,7 +57,7 @@ using namespace odcore::data;
 using namespace odcore::dmcp;
 using namespace odcore::io;
 using namespace odcore::io::conference;
-using namespace coredata::dmcp;
+using namespace odcore::data::dmcp;
 
 class PlayerModuleTestService : public Service {
     public:
@@ -66,7 +66,7 @@ class PlayerModuleTestService : public Service {
 
         virtual void beforeStop() {
             // Stop player.
-            myPlayerModule.setModuleState(coredata::dmcp::ModuleStateMessage::NOT_RUNNING);
+            myPlayerModule.setModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
         }
 
         virtual void run() {
@@ -174,8 +174,8 @@ class PlayerModuleTest : public CxxTest::TestSuite,
             ServerInformation serverInformation("127.0.0.1", 19000, ServerInformation::ML_NONE);
             discoverer::Server dmcpDiscovererServer(serverInformation,
                                                     "225.0.0.100",
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_SERVER,
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_CLIENT,
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_SERVER,
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_CLIENT,
                                                     noModulesToIgnore);
             dmcpDiscovererServer.startResponding();
 

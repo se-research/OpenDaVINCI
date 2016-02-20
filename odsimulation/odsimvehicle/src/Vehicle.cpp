@@ -46,7 +46,7 @@ namespace vehicle {
 
     void Vehicle::tearDown() {}
 
-    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode Vehicle::body() {
+    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Vehicle::body() {
         stringstream sstrConfiguration;
         getKeyValueConfiguration().writeTo(sstrConfiguration);
 
@@ -60,7 +60,7 @@ namespace vehicle {
 
         TimeStamp previousTime;
 
-        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
             // Get current VehicleControl.
             Container c = kvs.get(Container::VEHICLECONTROL);
             automotive::VehicleControl vc = c.getData<automotive::VehicleControl>();
@@ -84,7 +84,7 @@ namespace vehicle {
 
         simplifiedBicycleModel.tearDown();
 
-        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+        return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
     }
 
 } // vehicle

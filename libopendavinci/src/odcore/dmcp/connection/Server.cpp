@@ -27,7 +27,7 @@
 #include "opendavinci/odcore/dmcp/connection/Server.h"
 #include "opendavinci/odcore/io/Connection.h"
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/generated/coredata/dmcp/ServerInformation.h"
+#include "opendavinci/generated/odcore/data/dmcp/ServerInformation.h"
 
 namespace odcore { namespace dmcp { class ModuleConfigurationProvider; } }
 
@@ -39,7 +39,7 @@ namespace odcore {
             using namespace odcore;
             using namespace odcore::base;
             using namespace odcore::exceptions;
-            using namespace coredata::dmcp;
+            using namespace odcore::data::dmcp;
 
             Server::Server(const ServerInformation &serverInformation, ModuleConfigurationProvider &configProvider) :
                 m_configProviderMutex(),

@@ -40,7 +40,7 @@ void TimeTriggerExample::tearDown() {
     cout << "This method is called after the program flow returns from the component's body." << endl;
 }
 
-coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode TimeTriggerExample::body() {
+odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode TimeTriggerExample::body() {
     cout << "Hello OpenDaVINCI World!" << endl;
 
     cout << "This is my name: " << getName() << endl;
@@ -53,11 +53,11 @@ coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode TimeTriggerExample::body()
     cout << "  " << getKeyValueConfiguration().getValue<string>("timetriggerexample.key4") << endl;
     cout << "  " << (getKeyValueConfiguration().getValue<bool>("timetriggerexample.key5") == 1) << endl;
 
-	while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+	while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
         cout << "Inside the main processing loop." << endl;
     }
 
-    return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+    return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
 }
 
 int32_t main(int32_t argc, char **argv) {

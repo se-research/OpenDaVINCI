@@ -44,7 +44,7 @@
 #include "opendavinci/odcore/data/Container.h"        // for Container, etc
 #include "opendavinci/odcore/data/SerializableData.h"  // for SerializableData
 #include "opendavinci/odcore/data/TimeStamp.h"        // for TimeStamp
-#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
 
 namespace odcore { namespace wrapper { class Time; } }
 
@@ -245,13 +245,13 @@ class RuntimeControlContainerTestModule : public TimeTriggeredConferenceClientMo
 
         virtual void tearDown() {}
 
-        virtual coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
+        virtual odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
             m_config = getKeyValueConfiguration();
 
             m_config.getValue<string>("runtimecontrolcontainertestmodule.key1");
 
             addDataStoreFor(Container::POSITION, m_receivedData);
-            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
                 m_cycleCounter++;
 
                 RuntimeControlContainerTestSampleData tcctsd;
@@ -260,7 +260,7 @@ class RuntimeControlContainerTestModule : public TimeTriggeredConferenceClientMo
                 getConference().send(c);
             }
 
-            return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
         KeyValueConfiguration getConfiguration() {

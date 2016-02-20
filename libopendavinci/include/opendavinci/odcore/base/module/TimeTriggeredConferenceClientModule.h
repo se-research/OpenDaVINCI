@@ -32,7 +32,7 @@
 #include "opendavinci/odcore/base/module/AbstractConferenceClientModule.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/exceptions/Exceptions.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
 
 namespace odcore { namespace base { class AbstractDataStore; } }
 
@@ -67,11 +67,11 @@ namespace odcore {
              *        virtual void tearDown()
              *        {}
              *
-             *        virtual coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
+             *        virtual odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
              *            FIFOQueue fifo;
              *            addDataStoreFor(Container::TIMESTAMP, fifo);
              *
-             *            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+             *            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
              *                Container c = fifo.leave();
              *                TimeStamp ts = c.getData<TimeStamp>();
              *
@@ -81,7 +81,7 @@ namespace odcore {
              *                getConference().send(c2);
              *            }
              *
-             *            return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+             *            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
              *         }
              * };
              *
@@ -129,7 +129,7 @@ namespace odcore {
 
                     virtual void tearDown() = 0;
 
-                    virtual coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body() = 0;
+                    virtual odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body() = 0;
 
                     virtual void nextContainer(odcore::data::Container &c);
 

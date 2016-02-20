@@ -30,9 +30,9 @@
 #include "opendavinci/odcore/io/Connection.h"
 #include "opendavinci/odcore/io/ConnectionErrorListener.h"
 #include "opendavinci/odcore/io/conference/ContainerListener.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleDescriptor.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleDescriptor.h"
 
-namespace coredata { namespace dmcp { class PulseMessage; } }
+namespace odcore { namespace data { namespace dmcp { class PulseMessage; } } }
 namespace odcore { namespace dmcp { class ModuleConfigurationProvider; } }
 namespace odcore { namespace dmcp { class ModuleStateListener; } }
 
@@ -74,7 +74,7 @@ namespace odcore {
                      *
                      * @param pm Pulse to be sent.
                      */
-                    void pulse(const coredata::dmcp::PulseMessage &pm);
+                    void pulse(const odcore::data::dmcp::PulseMessage &pm);
 
                     /**
                      * This method sends a pulse to the connected module and
@@ -84,7 +84,7 @@ namespace odcore {
                      * @param pm Pulse to be sent.
                      * @param timeout Timeout in milliseconds to wait for the ACK message.
                      */
-                    void pulse_ack(const coredata::dmcp::PulseMessage &pm, const uint32_t &timeout);
+                    void pulse_ack(const odcore::data::dmcp::PulseMessage &pm, const uint32_t &timeout);
 
                     /**
                      * This method sends a pulse to the connected module and
@@ -98,9 +98,9 @@ namespace odcore {
                      * @param timeout Timeout in milliseconds to wait for the ACK message.
                      * @return Containers to be transferred to supercomponent.
                      */
-                    vector<odcore::data::Container> pulse_ack_containers(const coredata::dmcp::PulseMessage &pm, const uint32_t &timeout);
+                    vector<odcore::data::Container> pulse_ack_containers(const odcore::data::dmcp::PulseMessage &pm, const uint32_t &timeout);
 
-                    const coredata::dmcp::ModuleDescriptor getModuleDescriptor() const;
+                    const odcore::data::dmcp::ModuleDescriptor getModuleDescriptor() const;
 
                 protected:
                     virtual void nextContainer(odcore::data::Container &c);
@@ -110,7 +110,7 @@ namespace odcore {
                     ModuleConfigurationProvider& m_configurationProvider;
 
                     odcore::base::Condition m_descriptorCondition;
-                    coredata::dmcp::ModuleDescriptor m_descriptor;
+                    odcore::data::dmcp::ModuleDescriptor m_descriptor;
                     bool m_hasDescriptor;
 
                     odcore::base::Condition m_pulseAckCondition;

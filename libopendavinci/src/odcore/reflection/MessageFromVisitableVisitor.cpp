@@ -25,14 +25,14 @@
 #include "opendavinci/odcore/base/Visitable.h"
 #include "opendavinci/odcore/reflection/Field.h"
 #include "opendavinci/odcore/reflection/MessageFromVisitableVisitor.h"
-#include "opendavinci/generated/coredata/reflection/AbstractField.h"
+#include "opendavinci/generated/odcore/data/reflection/AbstractField.h"
 
 namespace odcore {
     namespace reflection {
 
         using namespace odcore;
         using namespace odcore::base;
-        using namespace coredata::reflection;
+        using namespace odcore::data::reflection;
 
         MessageFromVisitableVisitor::MessageFromVisitableVisitor() :
             m_message() {}
@@ -57,7 +57,7 @@ namespace odcore {
                 f->setShortIdentifier(shortId);
                 f->setLongName(longName);
                 f->setShortName(shortName);
-                f->setFieldDataType(coredata::reflection::AbstractField::SERIALIZABLE_T);
+                f->setFieldDataType(odcore::data::reflection::AbstractField::SERIALIZABLE_T);
                 m_message.addField(SharedPointer<AbstractField>(f));
             }
             catch (...) {
@@ -71,7 +71,7 @@ namespace odcore {
             f->setShortIdentifier(shortId);
             f->setLongName(longName);
             f->setShortName(shortName);
-            f->setFieldDataType(coredata::reflection::AbstractField::BOOL_T);
+            f->setFieldDataType(odcore::data::reflection::AbstractField::BOOL_T);
             f->setSize(sizeof(v));
             m_message.addField(SharedPointer<AbstractField>(f));
         }
@@ -82,7 +82,7 @@ namespace odcore {
             f->setShortIdentifier(shortId);
             f->setLongName(longName);
             f->setShortName(shortName);
-            f->setFieldDataType(coredata::reflection::AbstractField::CHAR_T);
+            f->setFieldDataType(odcore::data::reflection::AbstractField::CHAR_T);
             f->setSize(sizeof(v));
             m_message.addField(SharedPointer<AbstractField>(f));
         }
@@ -93,7 +93,7 @@ namespace odcore {
             f->setShortIdentifier(shortId);
             f->setLongName(longName);
             f->setShortName(shortName);
-            f->setFieldDataType(coredata::reflection::AbstractField::UCHAR_T);
+            f->setFieldDataType(odcore::data::reflection::AbstractField::UCHAR_T);
             f->setSize(sizeof(v));
             m_message.addField(SharedPointer<AbstractField>(f));
         }
@@ -104,7 +104,7 @@ namespace odcore {
             f->setShortIdentifier(shortId);
             f->setLongName(longName);
             f->setShortName(shortName);
-            f->setFieldDataType(coredata::reflection::AbstractField::INT8_T);
+            f->setFieldDataType(odcore::data::reflection::AbstractField::INT8_T);
             f->setSize(sizeof(v));
             m_message.addField(SharedPointer<AbstractField>(f));
         }
@@ -115,7 +115,7 @@ namespace odcore {
             f->setShortIdentifier(shortId);
             f->setLongName(longName);
             f->setShortName(shortName);
-            f->setFieldDataType(coredata::reflection::AbstractField::INT16_T);
+            f->setFieldDataType(odcore::data::reflection::AbstractField::INT16_T);
             f->setSize(sizeof(v));
             m_message.addField(SharedPointer<AbstractField>(f));
         }
@@ -126,7 +126,7 @@ namespace odcore {
             f->setShortIdentifier(shortId);
             f->setLongName(longName);
             f->setShortName(shortName);
-            f->setFieldDataType(coredata::reflection::AbstractField::UINT16_T);
+            f->setFieldDataType(odcore::data::reflection::AbstractField::UINT16_T);
             f->setSize(sizeof(v));
             m_message.addField(SharedPointer<AbstractField>(f));
         }
@@ -137,7 +137,7 @@ namespace odcore {
             f->setShortIdentifier(shortId);
             f->setLongName(longName);
             f->setShortName(shortName);
-            f->setFieldDataType(coredata::reflection::AbstractField::INT32_T);
+            f->setFieldDataType(odcore::data::reflection::AbstractField::INT32_T);
             f->setSize(sizeof(v));
             m_message.addField(SharedPointer<AbstractField>(f));
         }
@@ -148,7 +148,7 @@ namespace odcore {
             f->setShortIdentifier(shortId);
             f->setLongName(longName);
             f->setShortName(shortName);
-            f->setFieldDataType(coredata::reflection::AbstractField::UINT32_T);
+            f->setFieldDataType(odcore::data::reflection::AbstractField::UINT32_T);
             f->setSize(sizeof(v));
             m_message.addField(SharedPointer<AbstractField>(f));
         }
@@ -159,7 +159,7 @@ namespace odcore {
             f->setShortIdentifier(shortId);
             f->setLongName(longName);
             f->setShortName(shortName);
-            f->setFieldDataType(coredata::reflection::AbstractField::INT64_T);
+            f->setFieldDataType(odcore::data::reflection::AbstractField::INT64_T);
             f->setSize(sizeof(v));
             m_message.addField(SharedPointer<AbstractField>(f));
         }
@@ -170,7 +170,7 @@ namespace odcore {
             f->setShortIdentifier(shortId);
             f->setLongName(longName);
             f->setShortName(shortName);
-            f->setFieldDataType(coredata::reflection::AbstractField::UINT64_T);
+            f->setFieldDataType(odcore::data::reflection::AbstractField::UINT64_T);
             f->setSize(sizeof(v));
             m_message.addField(SharedPointer<AbstractField>(f));
         }
@@ -181,7 +181,7 @@ namespace odcore {
             f->setShortIdentifier(shortId);
             f->setLongName(longName);
             f->setShortName(shortName);
-            f->setFieldDataType(coredata::reflection::AbstractField::FLOAT_T);
+            f->setFieldDataType(odcore::data::reflection::AbstractField::FLOAT_T);
             f->setSize(sizeof(v));
             m_message.addField(SharedPointer<AbstractField>(f));
         }
@@ -192,7 +192,7 @@ namespace odcore {
             f->setShortIdentifier(shortId);
             f->setLongName(longName);
             f->setShortName(shortName);
-            f->setFieldDataType(coredata::reflection::AbstractField::DOUBLE_T);
+            f->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
             f->setSize(sizeof(v));
             m_message.addField(SharedPointer<AbstractField>(f));
         }
@@ -203,7 +203,7 @@ namespace odcore {
             f->setShortIdentifier(shortId);
             f->setLongName(longName);
             f->setShortName(shortName);
-            f->setFieldDataType(coredata::reflection::AbstractField::STRING_T);
+            f->setFieldDataType(odcore::data::reflection::AbstractField::STRING_T);
             f->setSize(v.size());
             m_message.addField(SharedPointer<AbstractField>(f));
         }
@@ -220,7 +220,7 @@ namespace odcore {
                 f->setShortIdentifier(shortId);
                 f->setLongName(longName);
                 f->setShortName(shortName);
-                f->setFieldDataType(coredata::reflection::AbstractField::DATA_T);
+                f->setFieldDataType(odcore::data::reflection::AbstractField::DATA_T);
                 f->setSize(size);
                 m_message.addField(SharedPointer<AbstractField>(f));
             }

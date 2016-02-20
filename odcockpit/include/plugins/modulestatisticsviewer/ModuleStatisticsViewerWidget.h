@@ -31,7 +31,7 @@
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/SharedPointer.h"
 #include "opendavinci/odcore/io/conference/ContainerListener.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleStatistics.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleStatistics.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }
 namespace odcore { namespace data { class Container; } }
@@ -87,7 +87,7 @@ class LoadPlot;
 
         private:
           LoadPlot *m_plot;
-          deque<coredata::dmcp::ModuleStatistics> m_moduleStatistics;
+          deque<odcore::data::dmcp::ModuleStatistics> m_moduleStatistics;
           map<string, odcore::SharedPointer<LoadPerModule> > m_loadPerModule;
           uint32_t m_color;
         };

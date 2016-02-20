@@ -57,7 +57,7 @@ using namespace odcore::data;
 using namespace odcore::dmcp;
 using namespace odcore::io;
 using namespace odcore::io::conference;
-using namespace coredata::dmcp;
+using namespace odcore::data::dmcp;
 
 class PlayerModuleTestService : public Service {
     public:
@@ -66,7 +66,7 @@ class PlayerModuleTestService : public Service {
 
         virtual void beforeStop() {
             // Stop player.
-            myPlayerModule.setModuleState(coredata::dmcp::ModuleStateMessage::NOT_RUNNING);
+            myPlayerModule.setModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
         }
 
         virtual void run() {
@@ -175,8 +175,8 @@ class PlayerModuleTest : public CxxTest::TestSuite,
             ServerInformation serverInformation("127.0.0.1", 19000, ServerInformation::ML_NONE);
             discoverer::Server dmcpDiscovererServer(serverInformation,
                                                     "225.0.0.100",
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_SERVER,
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_CLIENT,
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_SERVER,
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_CLIENT,
                                                     noModulesToIgnore);
             dmcpDiscovererServer.startResponding();
 
@@ -203,8 +203,8 @@ class PlayerModuleTest : public CxxTest::TestSuite,
             ////////////////////////////////////////////////////////////////////
 
             // Start playing.
-            coredata::player::PlayerCommand playerCommand;
-            playerCommand.setCommand(coredata::player::PlayerCommand::PLAY);
+            odcore::data::player::PlayerCommand playerCommand;
+            playerCommand.setCommand(odcore::data::player::PlayerCommand::PLAY);
             Container cPC1(Container::PLAYER_COMMAND, playerCommand);
             conference->send(cPC1);
 
@@ -215,7 +215,7 @@ class PlayerModuleTest : public CxxTest::TestSuite,
             }
 
             // Pause playing.
-            playerCommand.setCommand(coredata::player::PlayerCommand::PAUSE);
+            playerCommand.setCommand(odcore::data::player::PlayerCommand::PAUSE);
             Container cPC2(Container::PLAYER_COMMAND, playerCommand);
             conference->send(cPC2);
 
@@ -238,7 +238,7 @@ class PlayerModuleTest : public CxxTest::TestSuite,
             ////////////////////////////////////////////////////////////////////
 
             // Rewind.
-            playerCommand.setCommand(coredata::player::PlayerCommand::REWIND);
+            playerCommand.setCommand(odcore::data::player::PlayerCommand::REWIND);
             Container cPC3(Container::PLAYER_COMMAND, playerCommand);
             conference->send(cPC3);
 
@@ -251,7 +251,7 @@ class PlayerModuleTest : public CxxTest::TestSuite,
             // Start playing.
             // Clear queue.
             ptcl.getQueue().clear();
-            playerCommand.setCommand(coredata::player::PlayerCommand::PLAY);
+            playerCommand.setCommand(odcore::data::player::PlayerCommand::PLAY);
             Container cPC4(Container::PLAYER_COMMAND, playerCommand);
             conference->send(cPC4);
 
@@ -266,7 +266,7 @@ class PlayerModuleTest : public CxxTest::TestSuite,
             ////////////////////////////////////////////////////////////////////
 
             // Pause playing.
-            playerCommand.setCommand(coredata::player::PlayerCommand::PAUSE);
+            playerCommand.setCommand(odcore::data::player::PlayerCommand::PAUSE);
             Container cPC5(Container::PLAYER_COMMAND, playerCommand);
             conference->send(cPC5);
 
@@ -286,7 +286,7 @@ class PlayerModuleTest : public CxxTest::TestSuite,
             // Start playing.
             // Clear queue.
             ptcl.getQueue().clear();
-            playerCommand.setCommand(coredata::player::PlayerCommand::PLAY);
+            playerCommand.setCommand(odcore::data::player::PlayerCommand::PLAY);
             Container cPC6(Container::PLAYER_COMMAND, playerCommand);
             conference->send(cPC6);
 
@@ -301,7 +301,7 @@ class PlayerModuleTest : public CxxTest::TestSuite,
             ////////////////////////////////////////////////////////////////////
 
             // Pause playing.
-            playerCommand.setCommand(coredata::player::PlayerCommand::PAUSE);
+            playerCommand.setCommand(odcore::data::player::PlayerCommand::PAUSE);
             Container cPC7(Container::PLAYER_COMMAND, playerCommand);
             conference->send(cPC7);
 
@@ -320,7 +320,7 @@ class PlayerModuleTest : public CxxTest::TestSuite,
 
             // Clear queue.
             ptcl.getQueue().clear();
-            playerCommand.setCommand(coredata::player::PlayerCommand::STEP_FORWARD);
+            playerCommand.setCommand(odcore::data::player::PlayerCommand::STEP_FORWARD);
             Container cPC8(Container::PLAYER_COMMAND, playerCommand);
             conference->send(cPC8);
 
@@ -339,7 +339,7 @@ class PlayerModuleTest : public CxxTest::TestSuite,
 
             // Clear queue.
             ptcl.getQueue().clear();
-            playerCommand.setCommand(coredata::player::PlayerCommand::STEP_FORWARD);
+            playerCommand.setCommand(odcore::data::player::PlayerCommand::STEP_FORWARD);
             Container cPC9(Container::PLAYER_COMMAND, playerCommand);
             conference->send(cPC9);
 

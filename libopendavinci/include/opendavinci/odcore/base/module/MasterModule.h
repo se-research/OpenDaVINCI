@@ -23,7 +23,7 @@
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/module/AbstractCIDModule.h"
 #include "opendavinci/odcore/exceptions/Exceptions.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
 
 namespace odcore {
     namespace base {
@@ -87,10 +87,10 @@ namespace odcore {
 
                     virtual ~MasterModule();
 
-                    virtual coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode runModule();
+                    virtual odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode runModule();
 
                 protected:
-                    virtual coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body() = 0;
+                    virtual odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body() = 0;
             };
 
         }

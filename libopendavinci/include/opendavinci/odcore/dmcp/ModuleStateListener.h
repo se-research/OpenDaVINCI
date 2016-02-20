@@ -35,18 +35,18 @@ namespace odcore {
             public:
                 virtual ~ModuleStateListener() {};
 
-                virtual void handleChangeState(const coredata::dmcp::ModuleDescriptor &md,
-                                               const coredata::dmcp::ModuleStateMessage::ModuleState &ms) = 0;
+                virtual void handleChangeState(const odcore::data::dmcp::ModuleDescriptor &md,
+                                               const odcore::data::dmcp::ModuleStateMessage::ModuleState &ms) = 0;
 
-                virtual void handleExitCode(const coredata::dmcp::ModuleDescriptor &md,
-                                            const coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode &me) = 0;
+                virtual void handleExitCode(const odcore::data::dmcp::ModuleDescriptor &md,
+                                            const odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode &me) = 0;
 
-                virtual void handleRuntimeStatistics(const coredata::dmcp::ModuleDescriptor &md,
-                                                     const coredata::dmcp::RuntimeStatistic &rs) = 0;
+                virtual void handleRuntimeStatistics(const odcore::data::dmcp::ModuleDescriptor &md,
+                                                     const odcore::data::dmcp::RuntimeStatistic &rs) = 0;
 
-                virtual void handleConnectionLost(const coredata::dmcp::ModuleDescriptor &md) = 0;
+                virtual void handleConnectionLost(const odcore::data::dmcp::ModuleDescriptor &md) = 0;
 
-                virtual void handleUnkownContainer(const coredata::dmcp::ModuleDescriptor &md,
+                virtual void handleUnkownContainer(const odcore::data::dmcp::ModuleDescriptor &md,
                                                    const odcore::data::Container& container) = 0;
         };
     }

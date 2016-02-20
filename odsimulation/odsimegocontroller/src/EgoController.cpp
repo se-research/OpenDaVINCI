@@ -33,7 +33,7 @@
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/io/conference/ContainerConference.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleStateMessage.h"
 #include "opendlv/data/environment/Point3.h"
 
 namespace egocontroller {
@@ -131,7 +131,7 @@ class ControlBehaviour;
                 kvc.getValue<double>("egocontroller.LinearBicycleModelNew.maxSpeed") );
     }
 
-    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode EgoController::body() {
+    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode EgoController::body() {
         KeyValueConfiguration kvc = getKeyValueConfiguration();
 
         m_device = kvc.getValue<string>("egocontroller.device");
@@ -168,7 +168,7 @@ class ControlBehaviour;
 
         if (behaviour == NULL) {
             cerr << "Cannot create control behavior " << behaviorType << endl;
-            return coredata::dmcp::ModuleExitCodeMessage::SERIOUS_ERROR;
+            return odcore::data::dmcp::ModuleExitCodeMessage::SERIOUS_ERROR;
         }
 
         Controller* controller = NULL;
@@ -182,11 +182,11 @@ class ControlBehaviour;
 
         if (controller == NULL) {
             cerr << "Cannot create controller for " << m_device << endl;
-            return coredata::dmcp::ModuleExitCodeMessage::SERIOUS_ERROR;
+            return odcore::data::dmcp::ModuleExitCodeMessage::SERIOUS_ERROR;
         }
 
 
-        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
             controller->doWork();
 
             Container container(Container::EGOSTATE, controller->getEgoState());
@@ -210,6 +210,6 @@ class ControlBehaviour;
             getConference().send(container);
         }
 
-        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+        return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
     }
 } // egocontroller

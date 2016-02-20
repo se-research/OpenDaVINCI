@@ -53,7 +53,7 @@ namespace automotive {
         }
 
         // This method will do the main data processing job.
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode SidewaysParker::body() {
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode SidewaysParker::body() {
             const double ULTRASONIC_FRONT_RIGHT = 0;
             double distanceOld = 0;
             double absPathStart = 0;
@@ -62,7 +62,7 @@ namespace automotive {
             int stageMoving = 0;
             int stageMeasuring = 0;
 
-            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
 	            // 1. Get most recent vehicle data:
 	            Container containerVehicleData = getKeyValueDataStore().get(Container::VEHICLEDATA);
 	            VehicleData vd = containerVehicleData.getData<VehicleData> ();
@@ -157,7 +157,7 @@ namespace automotive {
 	            getConference().send(c);
             }
 
-            return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
     }
 } // automotive::miniature

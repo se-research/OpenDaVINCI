@@ -27,8 +27,8 @@
 #include "opendavinci/odcore/io/Packet.h"
 #include "opendavinci/odcore/io/udp/UDPFactory.h"
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/generated/coredata/dmcp/Constants.h"
-#include "opendavinci/generated/coredata/dmcp/DiscoverMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/Constants.h"
+#include "opendavinci/generated/odcore/data/dmcp/DiscoverMessage.h"
 
 namespace odcore {
     namespace dmcp {
@@ -39,7 +39,7 @@ namespace odcore {
             using namespace odcore::data;
             using namespace odcore::exceptions;
 
-            using namespace coredata::dmcp;
+            using namespace odcore::data::dmcp;
 
             Client::Client(const string &group,
                            const uint32_t &serverPort,
@@ -111,7 +111,7 @@ namespace odcore {
             void Client::waitForResponse() {
                 Lock  l(m_responseCondition);
                 if (!m_response) {
-                    m_responseCondition.waitOnSignalWithTimeout(coredata::dmcp::Constants::DISCOVER_TIMEOUT);
+                    m_responseCondition.waitOnSignalWithTimeout(odcore::data::dmcp::Constants::DISCOVER_TIMEOUT);
                 }
             }
         }

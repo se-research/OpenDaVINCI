@@ -70,7 +70,7 @@ namespace automotive {
 
 	            virtual ~LaneFollower();
 
-	            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+	            odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
             protected:
 	            /**

@@ -52,7 +52,7 @@ namespace automotive {
         }
 
         // This method will do the main data processing job.
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode Overtaker::body() {
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Overtaker::body() {
             const int32_t ULTRASONIC_FRONT_CENTER = 3;
             const int32_t ULTRASONIC_FRONT_RIGHT = 4;
             const int32_t INFRARED_FRONT_RIGHT = 0;
@@ -76,7 +76,7 @@ namespace automotive {
             double distanceToObstacle = 0;
             double distanceToObstacleOld = 0;
 
-            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
 	            // 1. Get most recent vehicle data:
 	            Container containerVehicleData = getKeyValueDataStore().get(Container::VEHICLEDATA);
 	            VehicleData vd = containerVehicleData.getData<VehicleData> ();
@@ -215,7 +215,7 @@ namespace automotive {
 	            getConference().send(c);
             }
 
-            return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
     }

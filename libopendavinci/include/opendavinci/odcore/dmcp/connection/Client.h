@@ -29,14 +29,14 @@
 #include "opendavinci/odcore/io/Connection.h"
 #include "opendavinci/odcore/io/ConnectionErrorListener.h"
 #include "opendavinci/odcore/io/conference/ContainerListener.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleDescriptor.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
-#include "opendavinci/generated/coredata/dmcp/PulseMessage.h"
-#include "opendavinci/generated/coredata/dmcp/RuntimeStatistic.h"
-#include "opendavinci/generated/coredata/dmcp/ServerInformation.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleDescriptor.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleStateMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/PulseMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/RuntimeStatistic.h"
+#include "opendavinci/generated/odcore/data/dmcp/ServerInformation.h"
 
-namespace coredata { class Configuration; }
+namespace odcore { namespace data { class Configuration; } }
 namespace odcore { namespace data { class Container; } }
 namespace odcore { namespace dmcp { class SupercomponentStateListener; } }
 
@@ -65,20 +65,20 @@ namespace odcore {
                     Client& operator=(const Client &);
 
                 public:
-                    Client(const coredata::dmcp::ModuleDescriptor &moduleDescriptor,
-                           const coredata::dmcp::ServerInformation &serverInformation);
+                    Client(const odcore::data::dmcp::ModuleDescriptor &moduleDescriptor,
+                           const odcore::data::dmcp::ServerInformation &serverInformation);
 
                     virtual ~Client();
 
                     void initialize();
 
-                    void sendModuleExitCode(const coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode &me);
-                    void sendModuleState(const coredata::dmcp::ModuleStateMessage::ModuleState &me);
-                    void sendStatistics(const coredata::dmcp::RuntimeStatistic &rs);
+                    void sendModuleExitCode(const odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode &me);
+                    void sendModuleState(const odcore::data::dmcp::ModuleStateMessage::ModuleState &me);
+                    void sendStatistics(const odcore::data::dmcp::RuntimeStatistic &rs);
 
                     odcore::base::KeyValueConfiguration getConfiguration();
 
-                    const coredata::dmcp::PulseMessage getPulseMessage();
+                    const odcore::data::dmcp::PulseMessage getPulseMessage();
 
                     /**
                      * This method sends the PulseAckMessage to supercomponent.
@@ -102,13 +102,13 @@ namespace odcore {
                     virtual void nextContainer(odcore::data::Container &c);
                     virtual void handleConnectionError();
 
-                    void handleConfiguration(coredata::Configuration &configuration);
+                    void handleConfiguration(odcore::data::Configuration &configuration);
                     void waitForConfiguration();
                     bool isConfigured();
 
                 private:
-                    coredata::dmcp::ModuleDescriptor m_moduleDescriptor;
-                    coredata::dmcp::ServerInformation m_serverInformation;
+                    odcore::data::dmcp::ModuleDescriptor m_moduleDescriptor;
+                    odcore::data::dmcp::ServerInformation m_serverInformation;
 
                     odcore::io::Connection m_connection;
 
@@ -124,7 +124,7 @@ namespace odcore {
 
                     odcore::base::Condition m_pulseCondition;
                     odcore::base::Mutex m_pulseMessageMutex;
-                    coredata::dmcp::PulseMessage m_pulseMessage;
+                    odcore::data::dmcp::PulseMessage m_pulseMessage;
             };
         }
     }

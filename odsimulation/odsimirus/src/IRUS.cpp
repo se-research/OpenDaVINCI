@@ -45,7 +45,7 @@ namespace irus {
 
     void IRUS::tearDown() {}
 
-    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode IRUS::body() {
+    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode IRUS::body() {
         stringstream sstrConfiguration;
         getKeyValueConfiguration().writeTo(sstrConfiguration);
 
@@ -57,7 +57,7 @@ namespace irus {
         // Use the most recent EgoState available.
         KeyValueDataStore &kvs = getKeyValueDataStore();
 
-        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
             // Get current EgoState.
             Container c = kvs.get(Container::EGOSTATE);
             EgoState es = c.getData<EgoState>();
@@ -76,7 +76,7 @@ namespace irus {
 
         irus.tearDown();
 
-        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+        return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
     }
 
 } // irus

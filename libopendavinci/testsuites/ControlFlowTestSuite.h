@@ -53,12 +53,12 @@
 #include "opendavinci/odcore/io/conference/ContainerConference.h"
 #include "opendavinci/odcore/io/conference/ContainerConferenceFactory.h"
 #include "opendavinci/odcore/io/conference/ContainerListener.h"
-#include "opendavinci/generated/coredata/dmcp/Constants.h"  // for Constants, etc
-#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
-#include "opendavinci/generated/coredata/dmcp/ServerInformation.h"
+#include "opendavinci/generated/odcore/data/dmcp/Constants.h"  // for Constants, etc
+#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ServerInformation.h"
 
 namespace odcontext { namespace base { class BlockableContainerReceiver; } }
-namespace coredata { namespace dmcp { class ModuleDescriptor; } }
+namespace odcore { namespace data { namespace dmcp { class ModuleDescriptor; } } }
 namespace odcore { namespace dmcp { namespace connection { class ModuleConnection; } } }
 
 using namespace std;
@@ -70,7 +70,7 @@ using namespace odcore::io;
 using namespace odcore::io::conference;
 using namespace odcontext::base;
 
-using namespace coredata::dmcp;
+using namespace odcore::data::dmcp;
 
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -192,10 +192,10 @@ class ControlFlowTestApp : public TimeTriggeredConferenceClientModule {
 
         void tearDown() {}
 
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
             FIFOQueue myFIFO;
             addDataStoreFor(myFIFO);
-            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
                 const uint32_t SIZE = myFIFO.getSize();
                 for(uint32_t i = 0; i < SIZE; i++) {
                     Container c = myFIFO.leave();
@@ -215,7 +215,7 @@ class ControlFlowTestApp : public TimeTriggeredConferenceClientModule {
                 }
 
             }
-            return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
     private:
@@ -231,7 +231,7 @@ class ControlFlowTestService : public Service {
 
         virtual void beforeStop() {
             // Stop app.
-            myApp.setModuleState(coredata::dmcp::ModuleStateMessage::NOT_RUNNING);
+            myApp.setModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
         }
 
         virtual void run() {
@@ -327,8 +327,8 @@ class ControlFlowTest : public CxxTest::TestSuite,
             ServerInformation serverInformation("127.0.0.1", 19000, ServerInformation::ML_NONE);
             discoverer::Server dmcpDiscovererServer(serverInformation,
                                                     "225.0.0.100",
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_SERVER,
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_CLIENT,
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_SERVER,
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_CLIENT,
                                                     noModulesToIgnore);
             dmcpDiscovererServer.startResponding();
 

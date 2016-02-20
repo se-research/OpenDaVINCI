@@ -34,7 +34,7 @@
 #include "opendlv/data/camera/ImageGrabberCalibration.h"
 #include "opendlv/data/camera/ImageGrabberID.h"
 #include "opendlv/data/environment/Point3.h"
-#include "opendavinci/generated/coredata/image/SharedImage.h"
+#include "opendavinci/generated/odcore/data/image/SharedImage.h"
 
 namespace camgen {
 
@@ -154,7 +154,7 @@ namespace camgen {
 
         // Share information about this image.
         if (m_image.isValid()) {
-            coredata::image::SharedImage si;
+            odcore::data::image::SharedImage si;
             si.setWidth(m_image->getWidth());
             si.setHeight(m_image->getHeight());
             // TODO: Refactor me!
@@ -283,8 +283,8 @@ namespace camgen {
         glMatrixMode(GL_MODELVIEW);
     }
 
-    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode CamGen::body() {
-        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode CamGen::body() {
+        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
             // Trigger event processing.
             glutMainLoopEvent();
 
@@ -295,7 +295,7 @@ namespace camgen {
         // Leave glut main loop.
         glutLeaveMainLoop();
 
-        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+        return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
     }
 
 } // camgen

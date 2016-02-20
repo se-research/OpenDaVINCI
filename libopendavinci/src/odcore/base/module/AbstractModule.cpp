@@ -56,7 +56,7 @@ namespace odcore {
                     while (it != AbstractModule::getListOfModules().end()) {
                         AbstractModule *m = *it++;
                         if (m != NULL) {
-                            m->setModuleState(coredata::dmcp::ModuleStateMessage::NOT_RUNNING);
+                            m->setModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
                         }
                     }
                 }
@@ -71,7 +71,7 @@ namespace odcore {
 
             AbstractModule::AbstractModule() :
                 m_moduleStateMutex(),
-                m_moduleState(coredata::dmcp::ModuleStateMessage::NOT_RUNNING) {
+                m_moduleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING) {
                 m_listOfModules.push_back(this);
 
                 atexit(finalize);
@@ -127,7 +127,7 @@ namespace odcore {
                 return m_listOfModules;
             }
 
-            void AbstractModule::setModuleState(const coredata::dmcp::ModuleStateMessage::ModuleState &s) {
+            void AbstractModule::setModuleState(const odcore::data::dmcp::ModuleStateMessage::ModuleState &s) {
                 Lock l(m_moduleStateMutex);
                 m_moduleState = s;
             }
@@ -140,12 +140,12 @@ namespace odcore {
                 wait();
             }
 
-            coredata::dmcp::ModuleStateMessage::ModuleState AbstractModule::getModuleState() {
+            odcore::data::dmcp::ModuleStateMessage::ModuleState AbstractModule::getModuleState() {
                 Lock l(m_moduleStateMutex);
                 return m_moduleState;
             }
 
-            coredata::dmcp::ModuleStateMessage::ModuleState AbstractModule::getModuleStateAndWaitForRemainingTimeInTimeslice() {
+            odcore::data::dmcp::ModuleStateMessage::ModuleState AbstractModule::getModuleStateAndWaitForRemainingTimeInTimeslice() {
                 calledGetModuleState();
 
                 return getModuleState();

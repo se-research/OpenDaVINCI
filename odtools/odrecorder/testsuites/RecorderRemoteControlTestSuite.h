@@ -55,7 +55,7 @@ using namespace odcore::data;
 using namespace odcore::dmcp;
 using namespace odcore::io;
 using namespace odcore::io::conference;
-using namespace coredata::dmcp;
+using namespace odcore::data::dmcp;
 
 class RecorderTestService : public Service {
     public:
@@ -64,7 +64,7 @@ class RecorderTestService : public Service {
 
         virtual void beforeStop() {
             // Stop recorder.
-            myRecorder.setModuleState(coredata::dmcp::ModuleStateMessage::NOT_RUNNING);
+            myRecorder.setModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
         }
 
         virtual void run() {
@@ -114,8 +114,8 @@ class RecorderTest : public CxxTest::TestSuite,
             ServerInformation serverInformation("127.0.0.1", 19000, ServerInformation::ML_NONE);
             discoverer::Server dmcpDiscovererServer(serverInformation,
                                                     "225.0.0.100",
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_SERVER,
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_CLIENT,
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_SERVER,
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_CLIENT,
                                                     noModulesToIgnore);
             dmcpDiscovererServer.startResponding();
 
@@ -132,7 +132,7 @@ class RecorderTest : public CxxTest::TestSuite,
             argv[1] = const_cast<char*>(argv1.c_str());
 
             RecorderTestService rts(argc, argv);
-            coredata::recorder::RecorderCommand recorderCommand;
+            odcore::data::recorder::RecorderCommand recorderCommand;
 
             rts.start();
 
@@ -146,7 +146,7 @@ class RecorderTest : public CxxTest::TestSuite,
             Thread::usleepFor(100000);
 
             // Start recording.
-            recorderCommand.setCommand(coredata::recorder::RecorderCommand::RECORD);
+            recorderCommand.setCommand(odcore::data::recorder::RecorderCommand::RECORD);
             Container cRC1(Container::RECORDER_COMMAND, recorderCommand);
             conference->send(cRC1);
 
@@ -171,7 +171,7 @@ class RecorderTest : public CxxTest::TestSuite,
             Thread::usleepFor(100000);
 
             // Stop recording.
-            recorderCommand.setCommand(coredata::recorder::RecorderCommand::STOP);
+            recorderCommand.setCommand(odcore::data::recorder::RecorderCommand::STOP);
             Container cRC2(Container::RECORDER_COMMAND, recorderCommand);
             conference->send(cRC2);
 

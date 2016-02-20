@@ -51,7 +51,7 @@ class HelloWorldExample : public odcore::base::module::TimeTriggeredConferenceCl
 
         virtual ~HelloWorldExample();
 
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
     private:
         virtual void setUp();

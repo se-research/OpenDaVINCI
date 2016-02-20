@@ -120,12 +120,12 @@ namespace automotive {
         }
 
         // This method will do the main data processing job.
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode Proxy::body() {
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Proxy::body() {
             uint32_t captureCounter = 0;
-            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
                 // Capture frame.
                 if (m_camera != NULL) {
-                    coredata::image::SharedImage si = m_camera->capture();
+                    odcore::data::image::SharedImage si = m_camera->capture();
 
                     Container c(Container::SHARED_IMAGE, si);
                     distribute(c);
@@ -137,7 +137,7 @@ namespace automotive {
 
             cout << "Proxy: Captured " << captureCounter << " frames." << endl;
 
-            return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
     }

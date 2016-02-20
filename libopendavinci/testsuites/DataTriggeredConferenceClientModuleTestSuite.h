@@ -49,12 +49,12 @@
 #include "opendavinci/odcore/dmcp/discoverer/Server.h"  // for Server
 #include "opendavinci/odcore/io/conference/ContainerConference.h"
 #include "opendavinci/odcore/io/conference/ContainerConferenceFactory.h"
-#include "opendavinci/generated/coredata/dmcp/Constants.h"  // for Constants, etc
-#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
-#include "opendavinci/generated/coredata/dmcp/ServerInformation.h"
+#include "opendavinci/generated/odcore/data/dmcp/Constants.h"  // for Constants, etc
+#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleStateMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ServerInformation.h"
 
-namespace coredata { namespace dmcp { class ModuleDescriptor; } }
+namespace odcore { namespace data { namespace dmcp { class ModuleDescriptor; } } }
 
 using namespace std;
 using namespace odcore::base;
@@ -63,7 +63,7 @@ using namespace odcore::data;
 using namespace odcore::io;
 using namespace odcore::io::conference;
 using namespace odcore::dmcp;
-using namespace coredata::dmcp;
+using namespace odcore::data::dmcp;
 
 class TestSuiteExample7Data : public odcore::data::SerializableData {
 	public:
@@ -137,11 +137,11 @@ class TimeTriggeredConferenceClientModuleTestModule : public TimeTriggeredConfer
             correctOrder &= (setUpCalled && !bodyCalled && !tearDownCalled);
         }
 
-        virtual coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
+        virtual odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
             bodyCalled = true;
             correctOrder &= (setUpCalled && bodyCalled && !tearDownCalled);
 
-            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
                 if (counter-- < 0) {
                     break;
                 }
@@ -157,7 +157,7 @@ class TimeTriggeredConferenceClientModuleTestModule : public TimeTriggeredConfer
         		getConference().send(c);
             }
 
-            return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
         virtual void tearDown() {
@@ -220,7 +220,7 @@ class ConferenceClientModuleTestService : public Service {
                 myACCM(accm) {}
 
         virtual void beforeStop() {
-            myACCM.setModuleState(coredata::dmcp::ModuleStateMessage::NOT_RUNNING);
+            myACCM.setModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
         }
 
         virtual void run() {
@@ -270,8 +270,8 @@ class DataTriggeredConferenceClientModuleTest : public CxxTest::TestSuite,
             ServerInformation serverInformation("127.0.0.1", 19000, ServerInformation::ML_NONE);
             discoverer::Server dmcpDiscovererServer(serverInformation,
                                                     "225.0.0.101",
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_SERVER,
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_CLIENT,
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_SERVER,
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_CLIENT,
                                                     noModulesToIgnore);
             dmcpDiscovererServer.startResponding();
 
@@ -340,8 +340,8 @@ class DataTriggeredConferenceClientModuleTest : public CxxTest::TestSuite,
             ServerInformation serverInformation("127.0.0.1", 19000, ServerInformation::ML_NONE);
             discoverer::Server dmcpDiscovererServer(serverInformation,
                                                     "225.0.0.102",
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_SERVER,
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_CLIENT,
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_SERVER,
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_CLIENT,
                                                     noModulesToIgnore);
             dmcpDiscovererServer.startResponding();
 
@@ -444,8 +444,8 @@ class DataTriggeredConferenceClientModuleTest : public CxxTest::TestSuite,
             ServerInformation serverInformation("127.0.0.1", 19000, ServerInformation::ML_NONE);
             discoverer::Server dmcpDiscovererServer(serverInformation,
                                                     "225.0.0.103",
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_SERVER,
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_CLIENT,
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_SERVER,
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_CLIENT,
                                                     noModulesToIgnore);
             dmcpDiscovererServer.startResponding();
 

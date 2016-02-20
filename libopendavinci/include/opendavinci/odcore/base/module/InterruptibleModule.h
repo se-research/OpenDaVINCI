@@ -23,7 +23,7 @@
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/base/module/AbstractModule.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
 
 namespace odcore {
     namespace base {
@@ -73,7 +73,7 @@ class Breakpoint;
                     /**
                      * This method executes the application body.
                      */
-                    virtual coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode runModule() = 0;
+                    virtual odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode runModule() = 0;
 
                 private:
                     virtual void calledGetModuleState();

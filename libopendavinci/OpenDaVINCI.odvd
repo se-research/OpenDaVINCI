@@ -1,6 +1,6 @@
 /*
- * CoreData.odvd - Core data structures for OpenDaVINCI.
- * Copyright (C) 2015 Christian Berger
+ * OpenDaVINCI.odvd - Core data structures for OpenDaVINCI.
+ * Copyright (C) 2015 - 2016 Christian Berger
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 // Logging messages.
-message coredata.LogMessage [id = 100] {
+message odcore.data.LogMessage [id = 100] {
     enum LogLevel {
         NONE = 0,
         INFO = 1,
@@ -39,7 +39,7 @@ message coredata.LogMessage [id = 100] {
 // Reflection messages.
 
 // This message serves as the base class for a message's field description.
-message coredata.reflection.AbstractField [id = 70] {
+message odcore.data.reflection.AbstractField [id = 70] {
     enum FIELDDATATYPE {
         BOOL_T              = 0,
         INTEGERS_START      = 1,
@@ -75,7 +75,7 @@ message coredata.reflection.AbstractField [id = 70] {
 // DMCP messages.
 
 // This message contains all constants for the Dynamic Module Configuration Protocol (DMCP).
-message coredata.dmcp.Constants [id = 110] {
+message odcore.data.dmcp.Constants [id = 110] {
     enum DMCP {
         CONNECTIONSERVER_PORT_BASE = 19755, // This is the base port for the TCP control connection.
         BROADCAST_PORT_SERVER = 19750,      // This port is the server listening for the DMCP client discovery.
@@ -88,14 +88,14 @@ message coredata.dmcp.Constants [id = 110] {
 }
 
 // This message contains all constants for the test cases for the Dynamic Module Configuration Protocol (DMCP).
-message coredata.dmcp.TestConstants [id = 111] {
+message odcore.data.dmcp.TestConstants [id = 111] {
     const string DMCPCONFIG_TEST_GROUP = "225.0.0.250";
     const uint32 DMCPCONFIG_TEST_SERVERPORT = 25000;
     const uint32 DMCPCONFIG_TEST_CLIENTPORT = 25100;
 }
 
 // This message describes the DMCP server.
-message coredata.dmcp.ServerInformation [id = 112] { 
+message odcore.data.dmcp.ServerInformation [id = 112] { 
     enum ManagedLevel {
         ML_NONE = 0,
         ML_PULSE = 1,
@@ -111,19 +111,19 @@ message coredata.dmcp.ServerInformation [id = 112] {
 }
 
 // This message belongs to the handshake of the DMCP protocol.
-message coredata.dmcp.DiscoverMessage [id = 3] {
+message odcore.data.dmcp.DiscoverMessage [id = 3] {
     enum Type {
         UNDEFINED = 0,
         DISCOVER = 1,
         RESPONSE = 2,
     };
     Type type [id = 1];
-    coredata.dmcp.ServerInformation serverInformation [id = 2];
+    odcore.data.dmcp.ServerInformation serverInformation [id = 2];
     string moduleName [id = 3];
 }
 
 // This message describes a connected software component.
-message coredata.dmcp.ModuleDescriptor [id = 113] {
+message odcore.data.dmcp.ModuleDescriptor [id = 113] {
     string name [id = 1];
     string identifier [id = 2];
     string version [id = 3];
@@ -131,23 +131,23 @@ message coredata.dmcp.ModuleDescriptor [id = 113] {
 }
 
 // This message describes information about a software component's time slice consumption.
-message coredata.dmcp.RuntimeStatistic [id = 9] {
+message odcore.data.dmcp.RuntimeStatistic [id = 9] {
     double sliceConsumption [id = 1, fourbyteid = 0x04C11DD4];
 }
 
 // This message describes runtime statistics about a software component.
-message coredata.dmcp.ModuleStatistic [id = 114] {
-    coredata.dmcp.ModuleDescriptor module [id = 1];
-    coredata.dmcp.RuntimeStatistic runtimeStatistic [id = 2];
+message odcore.data.dmcp.ModuleStatistic [id = 114] {
+    odcore.data.dmcp.ModuleDescriptor module [id = 1];
+    odcore.data.dmcp.RuntimeStatistic runtimeStatistic [id = 2];
 }
 
 // This message describes runtime statistics about a software component.
-message coredata.dmcp.ModuleStatistics [id = 8] {
-    map<string, coredata.dmcp.ModuleStatistic> moduleStatistics [id = 1];
+message odcore.data.dmcp.ModuleStatistics [id = 8] {
+    map<string, odcore.data.dmcp.ModuleStatistic> moduleStatistics [id = 1];
 }
 
 // This message describes a software module's current state.
-message coredata.dmcp.ModuleStateMessage [id = 6] {
+message odcore.data.dmcp.ModuleStateMessage [id = 6] {
     enum ModuleState {
         NOT_RUNNING = 0,
         RUNNING = 1,
@@ -158,7 +158,7 @@ message coredata.dmcp.ModuleStateMessage [id = 6] {
 }
 
 // This message describes the software module's exit code.
-message coredata.dmcp.ModuleExitCodeMessage [id = 7] {
+message odcore.data.dmcp.ModuleExitCodeMessage [id = 7] {
     enum ModuleExitCode {
         OKAY = 0,
         EXCEPTION_CAUGHT = 1,
@@ -172,7 +172,7 @@ message coredata.dmcp.ModuleExitCodeMessage [id = 7] {
 }
 
 // This message is part of centralized scheduling coordinated by supercomponent.
-message coredata.dmcp.PulseMessage [id = 101] {
+message odcore.data.dmcp.PulseMessage [id = 101] {
     odcore::data::TimeStamp realTimeFromSupercomponent [id = 1];
     uint32 nominalTimeSlice [id = 2];
     uint32 cumulatedTimeSlice [id = 3];
@@ -180,17 +180,17 @@ message coredata.dmcp.PulseMessage [id = 101] {
 }
 
 // This message is part of centralized scheduling coordinated by supercomponent.
-message coredata.dmcp.PulseAckMessage [id = 102] {}
+message odcore.data.dmcp.PulseAckMessage [id = 102] {}
 
 // This message is part of centralized scheduling coordinated by supercomponent.
-message coredata.dmcp.PulseAckContainersMessage [id = 103] {
+message odcore.data.dmcp.PulseAckContainersMessage [id = 103] {
     list<odcore::data::Container> containers [id = 1];
 }
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Configuration message.
-message coredata.Configuration [id = 2] {
+message odcore.data.Configuration [id = 2] {
     odcore::base::KeyValueConfiguration keyValueConfiguration [id = 1];
 }
 
@@ -199,7 +199,7 @@ message coredata.Configuration [id = 2] {
 // odplayer and odrecorder messages.
 
 // This message is used to describe memory segments to handle binary large objects like SharedImages or SharedData.
-message coredata.buffer.MemorySegment [id = 29] {
+message odcore.data.buffer.MemorySegment [id = 29] {
     odcore::data::Container header [id = 1];
     uint32 size [id = 2];
     uint32 consumedSize [id = 3];
@@ -207,7 +207,7 @@ message coredata.buffer.MemorySegment [id = 29] {
 }
 
 // This message is used to remotely control the odplayer component.
-message coredata.player.PlayerCommand [id = 10] {
+message odcore.data.player.PlayerCommand [id = 10] {
     enum Command {
         PLAY=0,
         PAUSE=1,
@@ -218,7 +218,7 @@ message coredata.player.PlayerCommand [id = 10] {
 }
 
 // This message is used to remotely control the odrecorder component.
-message coredata.recorder.RecorderCommand [id = 11] {
+message odcore.data.recorder.RecorderCommand [id = 11] {
     enum Command {
         RECORD=0,
         STOP=1,
@@ -231,24 +231,24 @@ message coredata.recorder.RecorderCommand [id = 11] {
 // Shared BLOB messages.
 
 // This message describes
-message coredata.SharedData [id = 13] {
+message odcore.data.SharedData [id = 13] {
     string name [id = 1, fourbyteid = 0x09823BC4];
     uint32 size [id = 2, fourbyteid = 0x0E435993];
 }
 
-message coredata.image.SharedImage extends coredata.SharedData [id = 14] {
+message odcore.data.image.SharedImage extends odcore.data.SharedData [id = 14] {
     uint32 width [id = 1, fourbyteid = 0x0E43598A];
     uint32 height [id = 2, fourbyteid = 0x0E4359BD];
     uint32 bytesPerPixel [id = 3, fourbyteid = 0x09823BBC];
 }
 
 // This message is not complete as dynamic sized arrays are not available yet.
-message coredata.image.CompressedImage [id = 16] { // TO BE INTEGRATED
-    string name [id = 1];
-    uint16 width [id = 2];
-    uint16 height [id = 3];
-    uint8 bytesPerPixel [id = 4];
-    uint16 compressedSize [id = 5];
-//    uint8 *imageData [id = 6]; // Dynamically sized arrays are not available yet.
-}
+// message odcore.data.image.CompressedImage [id = 16] { // TO BE INTEGRATED
+//     string name [id = 1];
+//     uint16 width [id = 2];
+//     uint16 height [id = 3];
+//     uint8 bytesPerPixel [id = 4];
+//     uint16 compressedSize [id = 5];
+//     uint8 *imageData [id = 6]; // Dynamically sized arrays are not available yet.
+// }
 

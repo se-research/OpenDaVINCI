@@ -29,9 +29,9 @@
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
 #include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
-#include "opendavinci/generated/coredata/SharedData.h"
-#include "opendavinci/generated/coredata/buffer/MemorySegment.h"
-#include "opendavinci/generated/coredata/image/SharedImage.h"
+#include "opendavinci/generated/odcore/data/SharedData.h"
+#include "opendavinci/generated/odcore/data/buffer/MemorySegment.h"
+#include "opendavinci/generated/odcore/data/image/SharedImage.h"
 #include "opendavinci/odtools/player/PlayerCache.h"
 
 namespace odtools {
@@ -64,7 +64,7 @@ namespace odtools {
 
             CLOG1 << "PlayerCache: preparing buffer...";
             for(uint16_t id = 0; id < m_cacheSize; id++) {
-                coredata::buffer::MemorySegment ms;
+                odcore::data::buffer::MemorySegment ms;
                 ms.setSize(sizeMemorySegments);
                 ms.setIdentifier(id);
                 void *ptr = ::malloc(ms.getSize());
@@ -250,7 +250,7 @@ namespace odtools {
                 uint32_t size = 0;
 
                 if (header.getDataType() == Container::SHARED_IMAGE) {
-                    coredata::image::SharedImage si = header.getData<coredata::image::SharedImage>();
+                    odcore::data::image::SharedImage si = header.getData<odcore::data::image::SharedImage>();
 
                     nameOfSharedMemory = si.getName();
                     size = si.getSize();
@@ -262,7 +262,7 @@ namespace odtools {
                     si.setSize(size);                    
                 }
                 else if (header.getDataType() == Container::SHARED_DATA) {
-                    coredata::SharedData sd = header.getData<coredata::SharedData>();
+                    odcore::data::SharedData sd = header.getData<odcore::data::SharedData>();
 
                     nameOfSharedMemory = sd.getName();
                     size = sd.getSize();
@@ -280,7 +280,7 @@ namespace odtools {
 
                 // Get pointer to next available memory segment from the buffer.
                 Container c = m_bufferIn.leave();
-                coredata::buffer::MemorySegment ms = c.getData<coredata::buffer::MemorySegment>();
+                odcore::data::buffer::MemorySegment ms = c.getData<odcore::data::buffer::MemorySegment>();
 
                 // Store meta data.
                 ms.setHeader(header);
@@ -311,11 +311,11 @@ namespace odtools {
                 string nameOfSharedMemory = "";
 
                 if (container.getDataType() == Container::SHARED_IMAGE) {
-                    coredata::image::SharedImage si = container.getData<coredata::image::SharedImage>();
+                    odcore::data::image::SharedImage si = container.getData<odcore::data::image::SharedImage>();
                     nameOfSharedMemory = si.getName();
                 }
                 else if (container.getDataType() == Container::SHARED_DATA) {
-                    coredata::SharedData sd = container.getData<coredata::SharedData>();
+                    odcore::data::SharedData sd = container.getData<odcore::data::SharedData>();
                     nameOfSharedMemory = sd.getName();
                 }
 
@@ -324,7 +324,7 @@ namespace odtools {
                 if (it != m_sharedPointers.end()) {
                     // Get next entry to process from output queue.
                     Container c = m_bufferOut.leave();
-                    coredata::buffer::MemorySegment ms = c.getData<coredata::buffer::MemorySegment>();
+                    odcore::data::buffer::MemorySegment ms = c.getData<odcore::data::buffer::MemorySegment>();
 
                     // Get pointer to memory with the data.
                     char *src = m_mapOfMemories[ms.getIdentifier()];

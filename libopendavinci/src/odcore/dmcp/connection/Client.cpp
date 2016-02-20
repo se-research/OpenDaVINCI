@@ -28,10 +28,10 @@
 #include "opendavinci/odcore/dmcp/connection/Client.h"
 #include "opendavinci/odcore/exceptions/Exceptions.h"
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/generated/coredata/Configuration.h"
-#include "opendavinci/generated/coredata/dmcp/Constants.h"
-#include "opendavinci/generated/coredata/dmcp/PulseAckContainersMessage.h"
-#include "opendavinci/generated/coredata/dmcp/PulseAckMessage.h"
+#include "opendavinci/generated/odcore/data/Configuration.h"
+#include "opendavinci/generated/odcore/data/dmcp/Constants.h"
+#include "opendavinci/generated/odcore/data/dmcp/PulseAckContainersMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/PulseAckMessage.h"
 
 namespace odcore {
     namespace dmcp {
@@ -43,7 +43,7 @@ namespace odcore {
             using namespace odcore::io;
             using namespace odcore::data;
             using namespace odcore::dmcp;
-            using namespace coredata::dmcp;
+            using namespace odcore::data::dmcp;
 
             Client::Client(const ModuleDescriptor& moduleDescriptor, const ServerInformation& serverInformation) :
                 m_moduleDescriptor(moduleDescriptor),
@@ -75,17 +75,17 @@ namespace odcore {
                 waitForConfiguration();
             }
 
-            void Client::sendModuleExitCode(const coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode& exitCode) {
+            void Client::sendModuleExitCode(const odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode& exitCode) {
                 Container container(Container::DMCP_MODULEEXITCODEMESSAGE, ModuleExitCodeMessage(exitCode));
                 m_connection.send(container);
             }
 
-            void Client::sendModuleState(const coredata::dmcp::ModuleStateMessage::ModuleState& state) {
+            void Client::sendModuleState(const odcore::data::dmcp::ModuleStateMessage::ModuleState& state) {
                 Container container(Container::DMCP_MODULESTATEMESSAGE, ModuleStateMessage(state));
                 m_connection.send(container);
             }
 
-            void Client::sendStatistics(const coredata::dmcp::RuntimeStatistic& rs) {
+            void Client::sendStatistics(const odcore::data::dmcp::RuntimeStatistic& rs) {
                 Container container(Container::RUNTIMESTATISTIC, rs);
                 m_connection.send(container);
             }
@@ -121,7 +121,7 @@ namespace odcore {
 
             void Client::nextContainer(Container &c) {
                 if (c.getDataType() == Container::CONFIGURATION) {
-                    coredata::Configuration configuration = c.getData<coredata::Configuration>();
+                    odcore::data::Configuration configuration = c.getData<odcore::data::Configuration>();
                     handleConfiguration(configuration);
                 }
 
@@ -138,7 +138,7 @@ namespace odcore {
                 }
             }
 
-            const coredata::dmcp::PulseMessage Client::getPulseMessage() {
+            const odcore::data::dmcp::PulseMessage Client::getPulseMessage() {
                 PulseMessage pm;
 
                 {
@@ -169,7 +169,7 @@ namespace odcore {
                 }
             }
 
-            void Client::handleConfiguration(coredata::Configuration& configuration) {
+            void Client::handleConfiguration(odcore::data::Configuration& configuration) {
                 Lock l(m_configurationRequestCondition);
                 CLOG1 << "(DMCP-Client) Received Configuration" << endl;
 
@@ -194,7 +194,7 @@ namespace odcore {
             void Client::waitForConfiguration() {
                 Lock l(m_configurationRequestCondition);
                 if ( !isConfigured() ) {
-                    m_configurationRequestCondition.waitOnSignalWithTimeout(coredata::dmcp::Constants::CONFIGURATION_TIMEOUT);
+                    m_configurationRequestCondition.waitOnSignalWithTimeout(odcore::data::dmcp::Constants::CONFIGURATION_TIMEOUT);
                 }
 
                 if ( !isConfigured() ) {

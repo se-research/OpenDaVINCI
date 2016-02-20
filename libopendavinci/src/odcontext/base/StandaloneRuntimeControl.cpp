@@ -30,7 +30,7 @@
 #include "opendavinci/odcore/data/TimeStamp.h"
 #include "opendavinci/odcore/io/conference/ContainerConferenceFactory.h"
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleStateMessage.h"
 
 namespace odcore { namespace data { class Container; } }
 
@@ -120,8 +120,8 @@ namespace odcontext {
 
                 Clock time;
                 TimeStamp startTime;
-                setModuleState(coredata::dmcp::ModuleStateMessage::RUNNING);
-                while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+                setModuleState(odcore::data::dmcp::ModuleStateMessage::RUNNING);
+                while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
                     // Get time at the beginning of the time slice.
                     TimeStamp startTimeSlice;
 

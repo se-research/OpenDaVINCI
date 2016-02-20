@@ -36,15 +36,15 @@
 #include "opendavinci/odcore/base/Visitable.h"        // for Visitable
 #include "opendavinci/odcore/base/Visitor.h"          // for Visitor
 #include "opendavinci/odcore/data/SerializableData.h"  // for SerializableData
-#include "opendavinci/generated/coredata/SharedData.h"  // for SharedData
-#include "opendavinci/generated/coredata/dmcp/ModuleDescriptor.h"
-#include "opendavinci/generated/coredata/image/SharedImage.h"  // for SharedImage
+#include "opendavinci/generated/odcore/data/SharedData.h"  // for SharedData
+#include "opendavinci/generated/odcore/data/dmcp/ModuleDescriptor.h"
+#include "opendavinci/generated/odcore/data/image/SharedImage.h"  // for SharedImage
 
 using namespace std;
 using namespace odcore::base;
-using namespace coredata;
-using namespace coredata::dmcp;
-using namespace coredata::image;
+using namespace odcore::data;
+using namespace odcore::data::dmcp;
+using namespace odcore::data::image;
 
 /*
   Generated from:

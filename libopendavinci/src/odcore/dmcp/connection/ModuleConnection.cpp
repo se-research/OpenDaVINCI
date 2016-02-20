@@ -23,12 +23,12 @@
 #include "opendavinci/odcore/dmcp/ModuleConfigurationProvider.h"
 #include "opendavinci/odcore/dmcp/ModuleStateListener.h"
 #include "opendavinci/odcore/dmcp/connection/ModuleConnection.h"
-#include "opendavinci/generated/coredata/Configuration.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
-#include "opendavinci/generated/coredata/dmcp/PulseAckContainersMessage.h"
-#include "opendavinci/generated/coredata/dmcp/PulseMessage.h"
-#include "opendavinci/generated/coredata/dmcp/RuntimeStatistic.h"
+#include "opendavinci/generated/odcore/data/Configuration.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleStateMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/PulseAckContainersMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/PulseMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/RuntimeStatistic.h"
 
 namespace odcore {
     namespace dmcp {
@@ -37,7 +37,7 @@ namespace odcore {
             using namespace std;
             using namespace odcore::base;
             using namespace odcore::data;
-            using namespace coredata::dmcp;
+            using namespace odcore::data::dmcp;
 
             ModuleConnection::ModuleConnection(odcore::SharedPointer<odcore::io::Connection> connection,
                                                ModuleConfigurationProvider &configProvider) :
@@ -82,12 +82,12 @@ namespace odcore {
                 return m_descriptor;
             }
 
-            void ModuleConnection::pulse(const coredata::dmcp::PulseMessage &pm) {
+            void ModuleConnection::pulse(const odcore::data::dmcp::PulseMessage &pm) {
                 Container c(Container::DMCP_PULSE_MESSAGE, pm);
                 m_connection->send(c);
             }
 
-            void ModuleConnection::pulse_ack(const coredata::dmcp::PulseMessage &pm, const uint32_t &timeout) {
+            void ModuleConnection::pulse_ack(const odcore::data::dmcp::PulseMessage &pm, const uint32_t &timeout) {
                 // Unfortunately, we cannot prevent code duplication here (cf. pulse_ack_containers)
                 // as in this case, the dependent client module will NOT send its containers to using
                 // this TCP link but via the regular UDP multicast conference.
@@ -118,7 +118,7 @@ namespace odcore {
                 }
             }
 
-            vector<odcore::data::Container> ModuleConnection::pulse_ack_containers(const coredata::dmcp::PulseMessage &pm, const uint32_t &timeout) {
+            vector<odcore::data::Container> ModuleConnection::pulse_ack_containers(const odcore::data::dmcp::PulseMessage &pm, const uint32_t &timeout) {
                 // Unfortunately, we cannot prevent code duplication here (cf. pulse_ack)
                 // as in this case, the dependent client module will send all its containers
                 // via this TCP link and NOT via the regular UDP multicast conference.
@@ -167,7 +167,7 @@ namespace odcore {
 
                         KeyValueConfiguration config = m_configurationProvider.getConfiguration(m_descriptor);
 
-                        Container c(Container::CONFIGURATION, coredata::Configuration(config));
+                        Container c(Container::CONFIGURATION, odcore::data::Configuration(config));
                         m_connection->send(c);
                         break;
                     }
@@ -196,7 +196,7 @@ namespace odcore {
 
                     case Container::RUNTIMESTATISTIC:
                     {
-                        coredata::dmcp::RuntimeStatistic rs = container.getData<coredata::dmcp::RuntimeStatistic>();
+                        odcore::data::dmcp::RuntimeStatistic rs = container.getData<odcore::data::dmcp::RuntimeStatistic>();
 
                         Lock l(m_stateListenerMutex);
                         if (m_stateListener) {

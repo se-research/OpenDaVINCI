@@ -34,7 +34,7 @@
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
 #include "opendavinci/odcore/base/Thread.h"
 #include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
 
 namespace odcontext { namespace base { class SendContainerToSystemsUnderTest; } }
 namespace odcore { namespace wrapper { class Time; } }
@@ -55,16 +55,16 @@ class RuntimeControlTestModule : public TimeTriggeredConferenceClientModule {
 
         virtual void tearDown() {}
 
-        virtual coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
+        virtual odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
             m_config = getKeyValueConfiguration();
 
             m_config.getValue<string>("runtimecontroltestmodule.key1");
 
-            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
                 m_cycleCounter++;
             }
 
-            return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
         KeyValueConfiguration getConfiguration() {

@@ -46,10 +46,10 @@ namespace cockpit {
 
             using namespace std;
             using namespace odcore::base;
-            using namespace coredata;
-            using namespace coredata::dmcp;
+            using namespace odcore::data;
+            using namespace odcore::data::dmcp;
 
-            LoadPerModule::LoadPerModule( const coredata::dmcp::ModuleDescriptor &md, const QColor &color) :
+            LoadPerModule::LoadPerModule( const odcore::data::dmcp::ModuleDescriptor &md, const QColor &color) :
                     m_moduleDescriptor(md),
                     m_curve(NULL),
                     m_loadMutex(),

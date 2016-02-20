@@ -123,7 +123,7 @@ namespace opendlv { namespace vehiclecontext {
                 opendlv::data::environment::EgoState m_egoState;
                 OpenGLGrabber *m_grabber;
                 odcore::SharedPointer<core::wrapper::Image> m_image;
-                coredata::image::SharedImage m_sharedImage;
+                odcore::data::image::SharedImage m_sharedImage;
 
                 float m_translationX;
                 float m_translationY;

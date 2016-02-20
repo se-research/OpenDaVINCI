@@ -25,7 +25,7 @@
 #include "opendavinci/odcore/SharedPointer.h"
 #include "opendavinci/odcore/base/FIFOQueue.h"
 #include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
 #include "opendlv/data/environment/EgoState.h"
 
 namespace core { namespace wrapper { class Image; } }
@@ -75,7 +75,7 @@ class OpenGLGrabber;
 
             virtual void tearDown();
 
-            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+            odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
             /**
              * This method returns the singleton instance.

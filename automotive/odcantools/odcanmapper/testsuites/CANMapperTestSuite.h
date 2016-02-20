@@ -38,7 +38,7 @@ using namespace odcore;
 using namespace odcore::data;
 using namespace automotive::odcantools;
 using namespace odcore::reflection;
-using namespace coredata::reflection;
+using namespace odcore::data::reflection;
 
 /**
  * This class derives from SensorBoard to allow access to protected methods.
@@ -134,7 +134,7 @@ class CanMapperTest : public CxxTest::TestSuite {
                 f->setShortIdentifier(1); // The identifiers specified here must match with the ones defined in the .odvd file!
                 f->setLongName("WheelSpeed.frontLeft");
                 f->setShortName("frontLeft");
-                f->setFieldDataType(coredata::reflection::AbstractField::DOUBLE_T);
+                f->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
                 f->setSize(sizeof(v));
 
                 message.addField(SharedPointer<AbstractField>(f));
@@ -151,7 +151,7 @@ class CanMapperTest : public CxxTest::TestSuite {
                 f->setShortIdentifier(2); // The identifiers specified here must match with the ones defined in the .odvd file!
                 f->setLongName("WheelSpeed.frontRight");
                 f->setShortName("frontRight");
-                f->setFieldDataType(coredata::reflection::AbstractField::DOUBLE_T);
+                f->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
                 f->setSize(sizeof(v));
 
                 message.addField(SharedPointer<AbstractField>(f));
@@ -168,7 +168,7 @@ class CanMapperTest : public CxxTest::TestSuite {
                 f->setShortIdentifier(3); // The identifiers specified here must match with the ones defined in the .odvd file!
                 f->setLongName("WheelSpeed.rearLeft");
                 f->setShortName("rearLeft");
-                f->setFieldDataType(coredata::reflection::AbstractField::DOUBLE_T);
+                f->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
                 f->setSize(sizeof(v));
 
                 message.addField(SharedPointer<AbstractField>(f));
@@ -185,7 +185,7 @@ class CanMapperTest : public CxxTest::TestSuite {
                 f->setShortIdentifier(4); // The identifiers specified here must match with the ones defined in the .odvd file!
                 f->setLongName("WheelSpeed.rearRight");
                 f->setShortName("rearRight");
-                f->setFieldDataType(coredata::reflection::AbstractField::DOUBLE_T);
+                f->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
                 f->setSize(sizeof(v));
 
                 message.addField(SharedPointer<AbstractField>(f));

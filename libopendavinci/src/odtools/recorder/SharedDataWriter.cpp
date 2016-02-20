@@ -25,7 +25,7 @@
 #include "opendavinci/odcore/base/module/AbstractCIDModule.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/generated/coredata/buffer/MemorySegment.h"
+#include "opendavinci/generated/odcore/data/buffer/MemorySegment.h"
 #include "opendavinci/odtools/recorder/SharedDataWriter.h"
 
 namespace odtools {
@@ -56,7 +56,7 @@ namespace odtools {
                 if (m_out->good()) {
                     // Get next entry to process from output queue.
                     Container c = m_bufferOut.leave();
-                    coredata::buffer::MemorySegment ms = c.getData<coredata::buffer::MemorySegment>();
+                    odcore::data::buffer::MemorySegment ms = c.getData<odcore::data::buffer::MemorySegment>();
 
                     // Get meta data to be written as header.
                     Container header = ms.getHeader();

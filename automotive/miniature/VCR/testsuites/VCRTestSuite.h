@@ -34,7 +34,7 @@
 
 using namespace std;
 using namespace odcore::data;
-using namespace coredata::image;
+using namespace odcore::data::image;
 using namespace automotive::miniature;
 
 /**

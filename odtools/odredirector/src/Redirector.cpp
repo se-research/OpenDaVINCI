@@ -31,7 +31,7 @@
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
 #include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 #include "opendavinci/odcore/data/image/CompressedImage.h"
-#include "opendavinci/generated/coredata/image/SharedImage.h"
+#include "opendavinci/generated/odcore/data/image/SharedImage.h"
 
 #include "Redirector.h"
 #include "StdoutPump.h"
@@ -90,7 +90,7 @@ namespace odredirector {
 
     void Redirector::tearDown() {}
 
-    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode Redirector::body() {
+    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Redirector::body() {
         // Enforce synchronized behavior with C STDIN and STDOUT.
         cin.sync_with_stdio(true);
         cout.sync_with_stdio(true);
@@ -103,7 +103,7 @@ namespace odredirector {
             addDataStoreFor(stdoutPump);
         }
 
-        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
             if (m_fromstdin) {
                 // Please note that reading from stdin does not evaluate sending latencies.
                 while (cin.good()) {
@@ -148,7 +148,7 @@ namespace odredirector {
                             }
 
                             // As we have now the decompressed image data in memory, create a SharedMemory data structure to describe it.
-                            coredata::image::SharedImage si;
+                            odcore::data::image::SharedImage si;
                             si.setName(ci.getName());
                             si.setWidth(ci.getWidth());
                             si.setHeight(ci.getHeight());
@@ -169,7 +169,7 @@ namespace odredirector {
             }
         }
 
-        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+        return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
     }
 
 } // odredirector

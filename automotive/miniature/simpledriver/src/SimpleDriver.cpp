@@ -53,7 +53,7 @@ namespace automotive {
         using namespace std;
         using namespace odcore::base;
         using namespace odcore::data;
-        using namespace coredata;
+        using namespace odcore::data;
         using namespace automotive;
         using namespace automotive::miniature;
         using namespace opendlv::data::environment;
@@ -73,7 +73,7 @@ namespace automotive {
         }
 
         // This method will do the main data processing job.
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode SimpleDriver::body() {
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode SimpleDriver::body() {
             const odcore::io::URL urlOfSCNXFile(getKeyValueConfiguration().getValue<string>("global.scenario"));
             const double GAIN = 1.0;
             const double LENGTH_OF_STEERING_DRAWBAR = 5.0;
@@ -185,7 +185,7 @@ namespace automotive {
                     cerr << "Ready, first point of planned route is in our FOV. Let's go using our simple drawbar controller!" << endl;
 
 
-                    while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+                    while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
                         TimeStamp startTime;
                         double totalDrivenWay = 0;
 
@@ -199,7 +199,7 @@ namespace automotive {
                         nextPointUOR = listOfPointsWaypointsUOR.front();
 
                         const uint32_t SIZE = listOfPointsWaypoints.size();
-                        for (uint32_t i = 0; (i < SIZE) && (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING); i++) {
+                        for (uint32_t i = 0; (i < SIZE) && (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING); i++) {
                             // Get next point.
                             nextPoint = listOfPointsWaypoints.at(i);
 
@@ -212,7 +212,7 @@ namespace automotive {
                             EgoState oldEgoState = es;
                             TimeStamp oldTimeStamp;
                             double V = 0;
-                            while ( (nextWaypointInFrontOfDrawBar) && (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) ) {
+                            while ( (nextWaypointInFrontOfDrawBar) && (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) ) {
                                 c = getKeyValueDataStore().get(Container::EGOSTATE);
                                 es = c.getData<EgoState>();
                                 TimeStamp currentTimeStamp;
@@ -391,7 +391,7 @@ namespace automotive {
                 }
             }
 
-            return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
     }

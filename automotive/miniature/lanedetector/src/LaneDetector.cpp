@@ -42,7 +42,7 @@ namespace automotive {
         using namespace odcore::base;
         using namespace odcore::base::module;
         using namespace odcore::data;
-        using namespace coredata::image;
+        using namespace odcore::data::image;
         using namespace odtools::player;
         using namespace automotive;
 
@@ -144,7 +144,7 @@ namespace automotive {
 
         // This method will do the main data processing job.
         // Therefore, it tries to open the real camera first. If that fails, the virtual camera images from camgen are used.
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode LaneDetector::body() {
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode LaneDetector::body() {
 	        // Get configuration data.
 	        KeyValueConfiguration kv = getKeyValueConfiguration();
 	        m_debug = kv.getValue<int32_t> ("lanedetector.debug") == 1;
@@ -171,7 +171,7 @@ namespace automotive {
 */
 
             // Main data processing loop.
-	        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+	        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
 		        bool has_next_frame = false;
 
 		        // Use the shared memory image.
@@ -196,7 +196,7 @@ namespace automotive {
 		        }
 	        }
 
-	        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+	        return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
     } // miniature

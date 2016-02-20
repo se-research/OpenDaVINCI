@@ -51,7 +51,7 @@ class TimeTriggerExample : public odcore::base::module::TimeTriggeredConferenceC
 
         virtual ~TimeTriggerExample();
 
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
     private:
         virtual void setUp();

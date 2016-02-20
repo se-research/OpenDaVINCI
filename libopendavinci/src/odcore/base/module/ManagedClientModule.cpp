@@ -40,9 +40,9 @@
 #include "opendavinci/odcore/dmcp/connection/Client.h"
 #include "opendavinci/odcore/exceptions/Exceptions.h"
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
-#include "opendavinci/generated/coredata/dmcp/RuntimeStatistic.h"
-#include "opendavinci/generated/coredata/dmcp/ServerInformation.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleStateMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/RuntimeStatistic.h"
+#include "opendavinci/generated/odcore/data/dmcp/ServerInformation.h"
 
 namespace odcore {
     namespace base {
@@ -118,48 +118,48 @@ namespace odcore {
 
             void ManagedClientModule::wait() {
                 // Sanity check for realtime execution.
-                if (isRealtime() && getServerInformation().getManagedLevel() != coredata::dmcp::ServerInformation::ML_NONE) {
+                if (isRealtime() && getServerInformation().getManagedLevel() != odcore::data::dmcp::ServerInformation::ML_NONE) {
                     OPENDAVINCI_CORE_THROW_EXCEPTION(InvalidArgumentException,
                                                   "Realtime scheduling specified but current module shall run in dependent manage level (i.e. supercomponent is running with a different level than --managed=none!)");
                 }
-                if (isRealtime() && getServerInformation().getManagedLevel() == coredata::dmcp::ServerInformation::ML_NONE) {
+                if (isRealtime() && getServerInformation().getManagedLevel() == odcore::data::dmcp::ServerInformation::ML_NONE) {
                     wait_ManagedLevel_None_realtime();
                 }
 
                 if (!isRealtime()) {
-                    if (getServerInformation().getManagedLevel() == coredata::dmcp::ServerInformation::ML_NONE) {
+                    if (getServerInformation().getManagedLevel() == odcore::data::dmcp::ServerInformation::ML_NONE) {
                         wait_ManagedLevel_None();
                     }
 
-                    if (getServerInformation().getManagedLevel() == coredata::dmcp::ServerInformation::ML_PULSE) {
+                    if (getServerInformation().getManagedLevel() == odcore::data::dmcp::ServerInformation::ML_PULSE) {
                         wait_ManagedLevel_Pulse();
                     }
 
-                    if (getServerInformation().getManagedLevel() == coredata::dmcp::ServerInformation::ML_PULSE_SHIFT) {
+                    if (getServerInformation().getManagedLevel() == odcore::data::dmcp::ServerInformation::ML_PULSE_SHIFT) {
                         wait_ManagedLevel_Pulse_Shift();
                     }
 
-                    if (getServerInformation().getManagedLevel() == coredata::dmcp::ServerInformation::ML_PULSE_TIME) {
+                    if (getServerInformation().getManagedLevel() == odcore::data::dmcp::ServerInformation::ML_PULSE_TIME) {
                         wait_ManagedLevel_Pulse_Time();
                     }
 
-                    if (getServerInformation().getManagedLevel() == coredata::dmcp::ServerInformation::ML_PULSE_TIME_ACK) {
+                    if (getServerInformation().getManagedLevel() == odcore::data::dmcp::ServerInformation::ML_PULSE_TIME_ACK) {
                         wait_ManagedLevel_Pulse_Time_Ack();
                     }
 
-                    if ( (getServerInformation().getManagedLevel() == coredata::dmcp::ServerInformation::ML_SIMULATION) || (getServerInformation().getManagedLevel() == coredata::dmcp::ServerInformation::ML_SIMULATION_RT) ) {
+                    if ( (getServerInformation().getManagedLevel() == odcore::data::dmcp::ServerInformation::ML_SIMULATION) || (getServerInformation().getManagedLevel() == odcore::data::dmcp::ServerInformation::ML_SIMULATION_RT) ) {
                         wait_ManagedLevel_Pulse_Time_Ack_Containers();
                     }            
                 }
             }
 
-            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode ManagedClientModule::runModuleImplementation() {
+            odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode ManagedClientModule::runModuleImplementation() {
                 // Sanity check for realtime execution.
-                if (isRealtime() && getServerInformation().getManagedLevel() != coredata::dmcp::ServerInformation::ML_NONE) {
+                if (isRealtime() && getServerInformation().getManagedLevel() != odcore::data::dmcp::ServerInformation::ML_NONE) {
                     OPENDAVINCI_CORE_THROW_EXCEPTION(InvalidArgumentException,
                                                   "Realtime scheduling specified but current module shall run in dependent manage level (i.e. supercomponent is running with a different level than --managed=none!)");
                 }
-                if (isRealtime() && getServerInformation().getManagedLevel() == coredata::dmcp::ServerInformation::ML_NONE) {
+                if (isRealtime() && getServerInformation().getManagedLevel() == odcore::data::dmcp::ServerInformation::ML_NONE) {
 #ifdef HAVE_LINUX_RT
                     // Setup realtime task using FIFO scheduling.
                     struct sched_param param;
@@ -184,59 +184,59 @@ namespace odcore {
                 }
 
                 if (!isRealtime()) {
-                    if (getServerInformation().getManagedLevel() == coredata::dmcp::ServerInformation::ML_NONE) {
+                    if (getServerInformation().getManagedLevel() == odcore::data::dmcp::ServerInformation::ML_NONE) {
                         return runModuleImplementation_ManagedLevel_None();
                     }
 
-                    if (getServerInformation().getManagedLevel() == coredata::dmcp::ServerInformation::ML_PULSE) {
+                    if (getServerInformation().getManagedLevel() == odcore::data::dmcp::ServerInformation::ML_PULSE) {
                         return runModuleImplementation_ManagedLevel_Pulse();
                     }
 
-                    if (getServerInformation().getManagedLevel() == coredata::dmcp::ServerInformation::ML_PULSE_SHIFT) {
+                    if (getServerInformation().getManagedLevel() == odcore::data::dmcp::ServerInformation::ML_PULSE_SHIFT) {
                         return runModuleImplementation_ManagedLevel_Pulse_Shift();
                     }
 
-                    if (getServerInformation().getManagedLevel() == coredata::dmcp::ServerInformation::ML_PULSE_TIME) {
+                    if (getServerInformation().getManagedLevel() == odcore::data::dmcp::ServerInformation::ML_PULSE_TIME) {
                         return runModuleImplementation_ManagedLevel_Pulse_Time();
                     }
 
-                    if (getServerInformation().getManagedLevel() == coredata::dmcp::ServerInformation::ML_PULSE_TIME_ACK) {
+                    if (getServerInformation().getManagedLevel() == odcore::data::dmcp::ServerInformation::ML_PULSE_TIME_ACK) {
                         return runModuleImplementation_ManagedLevel_Pulse_Time_Ack();
                     }
 
-                    if ( (getServerInformation().getManagedLevel() == coredata::dmcp::ServerInformation::ML_SIMULATION) || (getServerInformation().getManagedLevel() == coredata::dmcp::ServerInformation::ML_SIMULATION_RT) ) {
+                    if ( (getServerInformation().getManagedLevel() == odcore::data::dmcp::ServerInformation::ML_SIMULATION) || (getServerInformation().getManagedLevel() == odcore::data::dmcp::ServerInformation::ML_SIMULATION_RT) ) {
                         return runModuleImplementation_ManagedLevel_Pulse_Time_Ack_Containers();
                     }
                 }
 
-                return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+                return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
             }
 
             void ManagedClientModule::reached() {
                 // Sanity check for realtime execution.
-                if (isRealtime() && getServerInformation().getManagedLevel() != coredata::dmcp::ServerInformation::ML_NONE) {
+                if (isRealtime() && getServerInformation().getManagedLevel() != odcore::data::dmcp::ServerInformation::ML_NONE) {
                     OPENDAVINCI_CORE_THROW_EXCEPTION(InvalidArgumentException,
                                                   "Realtime scheduling specified but current module shall run in dependent managed level (i.e. supercomponent is running with a different level than --managed=none!)");
                 }
 
                 if (!isRealtime()) {
-                    if (getServerInformation().getManagedLevel() == coredata::dmcp::ServerInformation::ML_PULSE) {
+                    if (getServerInformation().getManagedLevel() == odcore::data::dmcp::ServerInformation::ML_PULSE) {
                         reached_ManagedLevel_Pulse();
                     }
 
-                    if (getServerInformation().getManagedLevel() == coredata::dmcp::ServerInformation::ML_PULSE_SHIFT) {
+                    if (getServerInformation().getManagedLevel() == odcore::data::dmcp::ServerInformation::ML_PULSE_SHIFT) {
                         reached_ManagedLevel_Pulse_Shift();
                     }
 
-                    if (getServerInformation().getManagedLevel() == coredata::dmcp::ServerInformation::ML_PULSE_TIME) {
+                    if (getServerInformation().getManagedLevel() == odcore::data::dmcp::ServerInformation::ML_PULSE_TIME) {
                         reached_ManagedLevel_Pulse_Time();
                     }
 
-                    if (getServerInformation().getManagedLevel() == coredata::dmcp::ServerInformation::ML_PULSE_TIME_ACK) {
+                    if (getServerInformation().getManagedLevel() == odcore::data::dmcp::ServerInformation::ML_PULSE_TIME_ACK) {
                         reached_ManagedLevel_Pulse_Time_Ack();
                     }
 
-                    if ( (getServerInformation().getManagedLevel() == coredata::dmcp::ServerInformation::ML_SIMULATION) || (getServerInformation().getManagedLevel() == coredata::dmcp::ServerInformation::ML_SIMULATION_RT) ) {
+                    if ( (getServerInformation().getManagedLevel() == odcore::data::dmcp::ServerInformation::ML_SIMULATION) || (getServerInformation().getManagedLevel() == odcore::data::dmcp::ServerInformation::ML_SIMULATION_RT) ) {
                         reached_ManagedLevel_Pulse_Time_Ack_Containers();
                     }
                 }
@@ -282,24 +282,24 @@ namespace odcore {
             // Implementation for managed level none.
             ///////////////////////////////////////////////////////////////////////
 
-            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode ManagedClientModule::runModuleImplementation_ManagedLevel_None() {
-                coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode retVal = coredata::dmcp::ModuleExitCodeMessage::OKAY;
+            odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode ManagedClientModule::runModuleImplementation_ManagedLevel_None() {
+                odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode retVal = odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
 
                 try {
                     // Setup the module itself.
                     setUp();
 
-                    setModuleState(coredata::dmcp::ModuleStateMessage::RUNNING);
+                    setModuleState(odcore::data::dmcp::ModuleStateMessage::RUNNING);
                     if (getDMCPClient().isValid()) {
-                        getDMCPClient()->sendModuleState(coredata::dmcp::ModuleStateMessage::RUNNING);
+                        getDMCPClient()->sendModuleState(odcore::data::dmcp::ModuleStateMessage::RUNNING);
                     }
 
                     // Execute the module's body.
                     retVal = body();
 
-                    setModuleState(coredata::dmcp::ModuleStateMessage::NOT_RUNNING);
+                    setModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
                     if (getDMCPClient().isValid()) {
-                        getDMCPClient()->sendModuleState(coredata::dmcp::ModuleStateMessage::NOT_RUNNING);
+                        getDMCPClient()->sendModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
                     }
 
                     // Clean up.
@@ -307,15 +307,15 @@ namespace odcore {
                 } catch (std::exception &e) {
                     // Try to catch any exception derived from std::exception and print32_t out reason.
                     clog << e.what() << endl;
-                    retVal = coredata::dmcp::ModuleExitCodeMessage::EXCEPTION_CAUGHT;
+                    retVal = odcore::data::dmcp::ModuleExitCodeMessage::EXCEPTION_CAUGHT;
                 } catch (std::string &str) {
                     clog << "string exception caught in ClientModule::run()" << endl;
                     clog << str << endl;
-                    retVal = coredata::dmcp::ModuleExitCodeMessage::SERIOUS_ERROR;
+                    retVal = odcore::data::dmcp::ModuleExitCodeMessage::SERIOUS_ERROR;
                 } catch (...) {
                     // Try to catch anything else print32_t generic error.
                     clog << "Unknown exception caught in ClientModule::run()" << endl;
-                    retVal = coredata::dmcp::ModuleExitCodeMessage::SERIOUS_ERROR;
+                    retVal = odcore::data::dmcp::ModuleExitCodeMessage::SERIOUS_ERROR;
                 }
 
                 return retVal;
@@ -355,7 +355,7 @@ namespace odcore {
 
                 // Send RuntimeStatistic to supercomponent.
                 if (sendStatistics && getDMCPClient().isValid()) {
-                    coredata::dmcp::RuntimeStatistic rts;
+                    odcore::data::dmcp::RuntimeStatistic rts;
                     rts.setSliceConsumption(static_cast<float>(TIME_CONSUMPTION_OF_CURRENT_SLICE)/static_cast<float>(NOMINAL_DURATION_OF_ONE_SLICE));
                     getDMCPClient()->sendStatistics(rts);
                 }
@@ -431,7 +431,7 @@ namespace odcore {
                     // Align the component ten times.
                     uint32_t aligner = 10;
                     while (aligner-- > 0) {
-                        const coredata::dmcp::PulseMessage pm = getDMCPClient()->getPulseMessage();
+                        const odcore::data::dmcp::PulseMessage pm = getDMCPClient()->getPulseMessage();
 
                         const long ONE_SECOND_IN_MICROSECONDS = 1000 * 1000 * 1;
                         const long ADJUSTMENT_TIME_TO_VIRTUAL_ONE_SECOND = (ONE_SECOND_IN_MICROSECONDS - pm.getCumulatedTimeSlice());
@@ -450,28 +450,28 @@ namespace odcore {
                 }
             }
 
-            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode ManagedClientModule::runModuleImplementation_ManagedLevel_Pulse() {
+            odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode ManagedClientModule::runModuleImplementation_ManagedLevel_Pulse() {
                 // For the very first call to getModuleStateAndWaitForRemainingTimeInTimeslice(), delay the sliced execution to the next timeslice.
                 m_firstCallToBreakpoint_ManagedLevel_Pulse = true;
                 setBreakpoint(this);            
 
-                coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode retVal = coredata::dmcp::ModuleExitCodeMessage::OKAY;
+                odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode retVal = odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
 
                 try {
                     // Setup the module itself.
                     setUp();
 
-                    setModuleState(coredata::dmcp::ModuleStateMessage::RUNNING);
+                    setModuleState(odcore::data::dmcp::ModuleStateMessage::RUNNING);
                     if (getDMCPClient().isValid()) {
-                        getDMCPClient()->sendModuleState(coredata::dmcp::ModuleStateMessage::RUNNING);
+                        getDMCPClient()->sendModuleState(odcore::data::dmcp::ModuleStateMessage::RUNNING);
                     }
 
                     // Execute the module's body.
                     retVal = body();
 
-                    setModuleState(coredata::dmcp::ModuleStateMessage::NOT_RUNNING);
+                    setModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
                     if (getDMCPClient().isValid()) {
-                        getDMCPClient()->sendModuleState(coredata::dmcp::ModuleStateMessage::NOT_RUNNING);
+                        getDMCPClient()->sendModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
                     }
 
                     // Clean up.
@@ -479,15 +479,15 @@ namespace odcore {
                 } catch (std::exception &e) {
                     // Try to catch any exception derived from std::exception and print32_t out reason.
                     clog << e.what() << endl;
-                    retVal = coredata::dmcp::ModuleExitCodeMessage::EXCEPTION_CAUGHT;
+                    retVal = odcore::data::dmcp::ModuleExitCodeMessage::EXCEPTION_CAUGHT;
                 } catch (std::string &str) {
                     clog << "string exception caught in ClientModule::run()" << endl;
                     clog << str << endl;
-                    retVal = coredata::dmcp::ModuleExitCodeMessage::SERIOUS_ERROR;
+                    retVal = odcore::data::dmcp::ModuleExitCodeMessage::SERIOUS_ERROR;
                 } catch (...) {
                     // Try to catch anything else print32_t generic error.
                     clog << "Unknown exception caught in ClientModule::run()" << endl;
-                    retVal = coredata::dmcp::ModuleExitCodeMessage::SERIOUS_ERROR;
+                    retVal = odcore::data::dmcp::ModuleExitCodeMessage::SERIOUS_ERROR;
                 }
 
                 return retVal;
@@ -507,7 +507,7 @@ namespace odcore {
                 reached_ManagedLevel_Pulse();
             }
 
-            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode ManagedClientModule::runModuleImplementation_ManagedLevel_Pulse_Shift() {
+            odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode ManagedClientModule::runModuleImplementation_ManagedLevel_Pulse_Shift() {
                 // No specific implementation for waiting in mode managed_level == pulse_shift 
                 return runModuleImplementation_ManagedLevel_Pulse();
             }
@@ -547,7 +547,7 @@ namespace odcore {
                 CLOG2 << "Starting next cycle at " << TimeStamp().toString() << endl;
             }
 
-            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode ManagedClientModule::runModuleImplementation_ManagedLevel_Pulse_Time() {
+            odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode ManagedClientModule::runModuleImplementation_ManagedLevel_Pulse_Time() {
                 // In the controlled pulse_time mode, the time pulses are provided
                 // centrally from supercomponent and each component is incrementing
                 // the local time based on these pulses.
@@ -566,7 +566,7 @@ namespace odcore {
                 m_controlledTimeFactory->setTime(m_time.now());
 
                 // 4) Run the module implementation as usual.
-                coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode moduleExitCode = runModuleImplementation_ManagedLevel_Pulse();
+                odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode moduleExitCode = runModuleImplementation_ManagedLevel_Pulse();
 
                 // 5) Disable the TimeFactory to restore previous behavior.
                 dtf.disable();
@@ -601,7 +601,7 @@ namespace odcore {
                 reached_ManagedLevel_Pulse_Time();
             }
 
-            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode ManagedClientModule::runModuleImplementation_ManagedLevel_Pulse_Time_Ack() {
+            odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode ManagedClientModule::runModuleImplementation_ManagedLevel_Pulse_Time_Ack() {
                 // In managed level ML_PULSE_TIME_ACK, supercomponent is continuously
                 // sending pulses but is awaiting for an acknowledgment for every
                 // successfully received pulse.
@@ -676,7 +676,7 @@ namespace odcore {
                 // in a program's while loop will start.
             }
 
-            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode ManagedClientModule::runModuleImplementation_ManagedLevel_Pulse_Time_Ack_Containers() {
+            odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode ManagedClientModule::runModuleImplementation_ManagedLevel_Pulse_Time_Ack_Containers() {
                 // In managed level ML_SIMULATION and ML_SIMULATION_RT, supercomponent is
                 // continuously sending pulses but is awaiting for an acknowledgment
                 // for every successfully received pulse.

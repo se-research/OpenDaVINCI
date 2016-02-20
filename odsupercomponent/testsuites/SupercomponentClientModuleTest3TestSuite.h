@@ -59,7 +59,7 @@ using namespace odcore::data;
 using namespace odcore::exceptions;
 using namespace odcore::dmcp;
 using namespace odcore::io;
-using namespace coredata::dmcp;
+using namespace odcore::data::dmcp;
 using namespace odsupercomponent;
 
 class SuperComponentApp : public SuperComponent {
@@ -81,8 +81,8 @@ class ClientModuleApp : public TimeTriggeredConferenceClientModule {
 
         void tearDown() {}
 
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
-            return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 };
 
@@ -95,7 +95,7 @@ class ClientModuleTestService : public Service {
 
         virtual void beforeStop() {
             // Stop app.
-            myApp.setModuleState(coredata::dmcp::ModuleStateMessage::NOT_RUNNING);
+            myApp.setModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
         }
 
         virtual void run() {

@@ -25,7 +25,7 @@
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/SharedPointer.h"
 #include "opendavinci/odcore/base/Visitable.h"
-#include "opendavinci/generated/coredata/reflection/AbstractField.h"
+#include "opendavinci/generated/odcore/data/reflection/AbstractField.h"
 
 namespace odcore { namespace base { class Visitor; } }
 
@@ -73,7 +73,7 @@ template <typename T> class Field;
                  * @param f Field to visit.
                  */
                 template<typename T>
-                void visitPrimitiveDataType(odcore::base::Visitor &v, odcore::SharedPointer<coredata::reflection::AbstractField> &f) {
+                void visitPrimitiveDataType(odcore::base::Visitor &v, odcore::SharedPointer<odcore::data::reflection::AbstractField> &f) {
                     // Read value.
                     T value = dynamic_cast<odcore::reflection::Field<T>*>(f.operator->())->getValue();
                     // Visit value.
@@ -89,7 +89,7 @@ template <typename T> class Field;
                  *
                  * @param Field to be added.
                  */
-                void addField(const odcore::SharedPointer<coredata::reflection::AbstractField> &f);
+                void addField(const odcore::SharedPointer<odcore::data::reflection::AbstractField> &f);
 
                 /**
                  * This method tries to find a field using first the long identifier;
@@ -100,7 +100,7 @@ template <typename T> class Field;
                  * @param found Flag modified by this method indicating if the field was found.
                  * @return field Be aware to always check 'found' whether the field was found.
                  */
-                odcore::SharedPointer<coredata::reflection::AbstractField> getFieldByLongIdentifierOrShortIdentifier(const uint32_t &longIdentifier, const uint8_t &shortIdentifier, bool &found);
+                odcore::SharedPointer<odcore::data::reflection::AbstractField> getFieldByLongIdentifierOrShortIdentifier(const uint32_t &longIdentifier, const uint8_t &shortIdentifier, bool &found);
 
             private:
                 /**
@@ -110,7 +110,7 @@ template <typename T> class Field;
                  * @param found Flag modified by this method indicating if the field was found.
                  * @return field Be aware to always check 'found' whether the field was found.
                  */
-                odcore::SharedPointer<coredata::reflection::AbstractField> getFieldByLongIdentifier(const uint32_t &longIdentifier, bool &found);
+                odcore::SharedPointer<odcore::data::reflection::AbstractField> getFieldByLongIdentifier(const uint32_t &longIdentifier, bool &found);
 
                 /**
                  * This method tries to find a field using the short identifier.
@@ -119,10 +119,10 @@ template <typename T> class Field;
                  * @param found Flag modified by this method indicating if the field was found.
                  * @return field Be aware to always check 'found' whether the field was found.
                  */
-                odcore::SharedPointer<coredata::reflection::AbstractField> getFieldByShortIdentifier(const uint8_t &shortIdentifier, bool &found);
+                odcore::SharedPointer<odcore::data::reflection::AbstractField> getFieldByShortIdentifier(const uint8_t &shortIdentifier, bool &found);
 
             private:
-                vector<odcore::SharedPointer<coredata::reflection::AbstractField> > m_fields;
+                vector<odcore::SharedPointer<odcore::data::reflection::AbstractField> > m_fields;
         };
 
     }
