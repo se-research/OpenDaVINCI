@@ -17,12 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <opendavinci/core/io/PacketListener.h>
+#include <opendavinci/odcore/io/PacketListener.h>
 
 // This class will handle packets received via a UDP socket.
-class UDPReceivePackets : public core::io::PacketListener {
+class UDPReceivePackets : public odcore::io::PacketListener {
 
-    // Your class needs to implement the method void void nextPacket(const core::io::Packet &p).
-    virtual void nextPacket(const core::io::Packet &p);
+    // Your class needs to implement the method void void nextPacket(const odcore::io::Packet &p).
+    virtual void nextPacket(const odcore::io::Packet &p);
 };
 

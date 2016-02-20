@@ -19,15 +19,15 @@
 
 #include <iostream>
 
-#include <opendavinci/core/data/TimeStamp.h>
+#include <opendavinci/odcore/data/TimeStamp.h>
 
 #include "TimeTriggeredSender.h"
 
 using namespace std;
 
 // We add some of OpenDaVINCI's namespaces for the sake of readability.
-using namespace core::base::module;
-using namespace core::data;
+using namespace odcore::base::module;
+using namespace odcore::data;
 
 TimeTriggeredSender::TimeTriggeredSender(const int32_t &argc, char **argv) :
     TimeTriggeredConferenceClientModule(argc, argv, "TimeTriggeredSender")

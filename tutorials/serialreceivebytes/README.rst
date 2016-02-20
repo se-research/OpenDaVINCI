@@ -13,10 +13,10 @@ SerialReceiveBytes.hpp:
 
 .. code-block:: c++
 
-    #include <opendavinci/core/io/StringListener.h>
+    #include <opendavinci/odcore/io/StringListener.h>
 
     // This class will handle the bytes received via a serial link.
-    class SerialReceiveBytes : public core::io::StringListener {
+    class SerialReceiveBytes : public odcore::io::StringListener {
 
         // Your class needs to implement the method void nextString(const std::string &s).
         virtual void nextString(const std::string &s);
@@ -34,10 +34,10 @@ SerialReceiveBytes.cpp:
     #include <stdint.h>
     #include <iostream>
     #include <string>
-    #include <opendavinci/core/SharedPointer.h>
-    #include <opendavinci/core/base/Thread.h>
-    #include <opendavinci/core/wrapper/SerialPort.h>
-    #include <opendavinci/core/wrapper/SerialPortFactory.h>
+    #include <opendavinci/odcore/SharedPointer.h>
+    #include <opendavinci/odcore/base/Thread.h>
+    #include <opendavinci/odcore/wrapper/SerialPort.h>
+    #include <opendavinci/odcore/wrapper/SerialPortFactory.h>
 
     #include "SerialReceiveBytes.hpp"
 
@@ -48,8 +48,8 @@ SerialReceiveBytes.cpp:
     }
 
     // We add some of OpenDaVINCI's namespaces for the sake of readability.
-    using namespace core;
-    using namespace core::wrapper;
+    using namespace odcore;
+    using namespace odcore::wrapper;
 
     int32_t main(int32_t argc, char **argv) {
         const string SERIAL_PORT = "/dev/pts/20";
@@ -70,7 +70,7 @@ SerialReceiveBytes.cpp:
             serial->start();
 
             const uint32_t ONE_SECOND = 1000 * 1000;
-            core::base::Thread::usleepFor(10 * ONE_SECOND);
+            odcore::base::Thread::usleepFor(10 * ONE_SECOND);
 
             // Stop receiving bytes and unregister our handler.
             serial->stop();
@@ -82,7 +82,7 @@ SerialReceiveBytes.cpp:
     }
 
 To receive bytes from a serial link, your application needs to include
-``<opendavinci/core/wrapper/SerialPort.h>`` and ``<opendavinci/core/wrapper/SerialPortFactory.h>`` that
+``<opendavinci/odcore/wrapper/SerialPort.h>`` and ``<opendavinci/odcore/wrapper/SerialPortFactory.h>`` that
 encapsulate the platform-specific implementations.
 
 ``SerialPortFactory`` provides a static method called ``createSerialPort`` that allows

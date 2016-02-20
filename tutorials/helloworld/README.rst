@@ -13,9 +13,9 @@ HelloWorldExample.h:
 
 .. code-block:: c++
 
-    #include <opendavinci/core/base/TimeTriggeredConferenceClientModule.h>
+    #include <opendavinci/odcore/base/TimeTriggeredConferenceClientModule.h>
 
-    class HelloWorldExample : public core::base::module::TimeTriggeredConferenceClientModule {
+    class HelloWorldExample : public odcore::base::module::TimeTriggeredConferenceClientModule {
         private:
             HelloWorldExample(const HelloWorldExample &/*obj*/);
             HelloWorldExample& operator=(const HelloWorldExample &/*obj*/);
@@ -52,7 +52,7 @@ HelloWorldExample.cpp:
     using namespace std;
 
     // We add some of OpenDaVINCI's namespaces for the sake of readability.
-    using namespace core::base::module;
+    using namespace odcore::base::module;
 
     HelloWorldExample::HelloWorldExample(const int32_t &argc, char **argv) :
         TimeTriggeredConferenceClientModule(argc, argv, "HelloWorldExample")

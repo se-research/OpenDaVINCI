@@ -20,16 +20,16 @@ Time-triggered sender
 """""""""""""""""""""
 
 A time-triggered software component is derived from ``core::base::TimeTriggeredConferenceClientModule``,
-provided in ``<opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h>`` to
+provided in ``<opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h>`` to
 realize the sending functionality.
 
 TimeTriggeredSender.h:
 
 .. code-block:: c++
 
-    #include <opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h>
+    #include <opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h>
 
-    class TimeTriggeredSender : public core::base::module::TimeTriggeredConferenceClientModule {
+    class TimeTriggeredSender : public odcore::base::module::TimeTriggeredConferenceClientModule {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -88,15 +88,15 @@ TimeTriggeredSender.cpp:
 
     #include <iostream>
 
-    #include "opendavinci/core/data/TimeStamp.h"
+    #include "opendavinci/odcore/data/TimeStamp.h"
 
     #include "TimeTriggeredSender.h"
 
     using namespace std;
 
     // We add some of OpenDaVINCI's namespaces for the sake of readability.
-    using namespace core::base::module;
-    using namespace core::data;
+    using namespace odcore::base::module;
+    using namespace odcore::data;
 
     TimeTriggeredSender::TimeTriggeredSender(const int32_t &argc, char **argv) :
         TimeTriggeredConferenceClientModule(argc, argv, "TimeTriggeredSender")
@@ -186,16 +186,16 @@ Data-triggered receiver
 
 To receive the sent data, a data-triggered software component is derived from
 ``core::base::DataTriggeredConferenceClientModule``, provided in
-``<opendavinci/core/base/module/DataTriggeredConferenceClientModule.h>`` to realize the
+``<opendavinci/odcore/base/module/DataTriggeredConferenceClientModule.h>`` to realize the
 receiving functionality.
 
 DataTriggeredSender.h:
 
 .. code-block:: c++
 
-    #include <opendavinci/core/base/module/DataTriggeredConferenceClientModule.h>
+    #include <opendavinci/odcore/base/module/DataTriggeredConferenceClientModule.h>
 
-    class DataTriggeredReceiver : public core::base::module::DataTriggeredConferenceClientModule {
+    class DataTriggeredReceiver : public odcore::base::module::DataTriggeredConferenceClientModule {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -227,7 +227,7 @@ DataTriggeredSender.h:
 
             virtual ~DataTriggeredReceiver();
 
-            virtual void nextContainer(core::data::Container &c);
+            virtual void nextContainer(odcore::data::Container &c);
 
         private:
             virtual void setUp();
@@ -236,7 +236,7 @@ DataTriggeredSender.h:
     };
 
 The class ``core::base::module::DataTriggeredConferenceClientModule`` provides three methods
-that need to be implemented by the user: ``setUp()``, ``body()``, and ``nextContainer(core::data::Container &c)``.
+that need to be implemented by the user: ``setUp()``, ``body()``, and ``nextContainer(odcore::data::Container &c)``.
 These methods reflect the basic runtime cycle of a software component: An initialization
 phase, followed by a data-triggered execution of an algorithm implemented in the
 method ``nextContainer()``, before the cycle ends with a call to ``tearDown()`` intended to
@@ -255,13 +255,13 @@ DataTriggeredSender.cpp:
     #include <iostream>
 
     #include "DataTriggeredReceiver.h"
-    #include "opendavinci/core/data/TimeStamp.h"
+    #include "opendavinci/odcore/data/TimeStamp.h"
 
     using namespace std;
 
     // We add some of OpenDaVINCI's namespaces for the sake of readability.
-    using namespace core::base::module;
-    using namespace core::data;
+    using namespace odcore::base::module;
+    using namespace odcore::data;
 
     DataTriggeredReceiver::DataTriggeredReceiver(const int32_t &argc, char **argv) :
         DataTriggeredConferenceClientModule(argc, argv, "DataTriggeredReceiver")
@@ -309,7 +309,7 @@ The implementation of the methods ``setUp()`` and ``tearDown()`` simply contain
 explanatory text. They are meant to be used to acquire system resources or to
 open peripheral components like cameras or sensors.
 
-The data-triggered method ``nextContainer(core::data::Container &c)`` is called
+The data-triggered method ``nextContainer(odcore::data::Container &c)`` is called
 whenever a new ``Container`` is received. The first lines simply print some
 meta-information about received container like contained data type as an
 enum-encoded number, time stamp when the container left the sending software

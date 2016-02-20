@@ -24,7 +24,7 @@
 using namespace std;
 
 // We add some of OpenDaVINCI's namespaces for the sake of readability.
-using namespace core::base::module;
+using namespace odcore::base::module;
 
 TimeTriggerExample::TimeTriggerExample(const int32_t &argc, char **argv) :
     TimeTriggeredConferenceClientModule(argc, argv, "TimeTriggerExample")

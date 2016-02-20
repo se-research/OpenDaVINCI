@@ -18,20 +18,20 @@
  */
 
 #include <vector>
-#include <opendavinci/core/base/Mutex.h>
-#include <opendavinci/core/base/Service.h>
+#include <opendavinci/odcore/base/Mutex.h>
+#include <opendavinci/odcore/base/Service.h>
 
-// Concurrency is provided by the class core::base::Service.
-class DiningPhilosopher : public core::base::Service {
+// Concurrency is provided by the class odcore::base::Service.
+class DiningPhilosopher : public odcore::base::Service {
     private:
         uint32_t m_numberOfPhilosophers;
         uint32_t m_id;
-        std::vector<core::base::Mutex*> &m_silverware;
+        std::vector<odcore::base::Mutex*> &m_silverware;
 
     public:
         DiningPhilosopher(const uint32_t &numberOfPhilosophers,
                           const uint32_t &id,
-                          std::vector<core::base::Mutex*> &silverware);
+                          std::vector<odcore::base::Mutex*> &silverware);
 
         // Your class needs to implement the method void beforeStop().
         virtual void beforeStop();

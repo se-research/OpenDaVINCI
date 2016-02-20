@@ -20,13 +20,13 @@
 #include <iostream>
 
 #include "DataTriggeredReceiver.h"
-#include <opendavinci/core/data/TimeStamp.h>
+#include <opendavinci/odcore/data/TimeStamp.h>
 
 using namespace std;
 
 // We add some of OpenDaVINCI's namespaces for the sake of readability.
-using namespace core::base::module;
-using namespace core::data;
+using namespace odcore::base::module;
+using namespace odcore::data;
 
 DataTriggeredReceiver::DataTriggeredReceiver(const int32_t &argc, char **argv) :
     DataTriggeredConferenceClientModule(argc, argv, "DataTriggeredReceiver")

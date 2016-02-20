@@ -19,7 +19,7 @@
 
 #include <stdint.h>
 #include <iostream>
-#include <opendavinci/core/base/Thread.h>
+#include <opendavinci/odcore/base/Thread.h>
 
 #include "MyService.hpp"
 
@@ -43,7 +43,7 @@ void MyService::run() {
         cout << "This message is printed every second." << endl;        
 
         const uint32_t ONE_SECOND = 1000 * 1000;
-        core::base::Thread::usleepFor(ONE_SECOND);
+        odcore::base::Thread::usleepFor(ONE_SECOND);
     }
 }
 
@@ -52,7 +52,7 @@ int32_t main(int32_t argc, char **argv) {
 
     s.start();
     const uint32_t ONE_SECOND = 1000 * 1000;
-    core::base::Thread::usleepFor(10 * ONE_SECOND);
+    odcore::base::Thread::usleepFor(10 * ONE_SECOND);
 
     s.stop();
 }
