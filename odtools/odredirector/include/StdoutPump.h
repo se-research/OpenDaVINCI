@@ -20,17 +20,17 @@
 #ifndef STDOUT_PUMP_H_
 #define STDOUT_PUMP_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/AbstractDataStore.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/AbstractDataStore.h"
 
-namespace core { namespace data { class Container; } }
+namespace odcore { namespace data { class Container; } }
 
 namespace odredirector {
 
     /**
      * Data store ("sink") to pump received containers to stdout.
      */
-    class StdoutPump : public core::base::AbstractDataStore {
+    class StdoutPump : public odcore::base::AbstractDataStore {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -61,7 +61,7 @@ namespace odredirector {
 
             virtual ~StdoutPump();
 
-            virtual void add(const core::data::Container &container);
+            virtual void add(const odcore::data::Container &container);
 
             virtual void clear();
 

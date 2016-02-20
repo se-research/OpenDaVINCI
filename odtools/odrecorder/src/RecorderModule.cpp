@@ -20,19 +20,19 @@
 #include <string>
 
 #include "RecorderModule.h"
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/tools/recorder/Recorder.h"
-#include "opendavinci/tools/recorder/SharedDataListener.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odtools/recorder/Recorder.h"
+#include "opendavinci/odtools/recorder/SharedDataListener.h"
 #include "opendavinci/generated/coredata/recorder/RecorderCommand.h"
 
-namespace core { namespace base { class KeyValueDataStore; } }
+namespace odcore { namespace base { class KeyValueDataStore; } }
 
 namespace odrecorder {
 
     using namespace std;
-    using namespace core::base;
-    using namespace core::data;
-    using namespace core::io;
+    using namespace odcore::base;
+    using namespace odcore::data;
+    using namespace odcore::io;
     using namespace odtools::recorder;
 
     RecorderModule::RecorderModule(const int32_t &argc, char **argv) :

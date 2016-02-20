@@ -23,12 +23,12 @@
 #include <map>
 #include <string>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
-namespace core { namespace wrapper { class SharedMemory; } }
+namespace odcore { namespace wrapper { class SharedMemory; } }
 
 namespace odredirector {
 
@@ -38,7 +38,7 @@ namespace odredirector {
      * This class can be used to simply display data distributed
      * using a conference.
      */
-    class Redirector : public core::base::module::TimeTriggeredConferenceClientModule {
+    class Redirector : public odcore::base::module::TimeTriggeredConferenceClientModule {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -83,7 +83,7 @@ namespace odredirector {
             bool m_fromstdin;
             bool m_tostdout;
             int32_t m_jpegQuality;
-            map<string, core::SharedPointer<core::wrapper::SharedMemory> > m_mapOfSharedMemories;
+            map<string, odcore::SharedPointer<odcore::wrapper::SharedMemory> > m_mapOfSharedMemories;
     };
 
 } // odredirector

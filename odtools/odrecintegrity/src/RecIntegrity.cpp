@@ -22,17 +22,17 @@
 #include <string>
 
 #include "RecIntegrity.h"
-#include "opendavinci/core/base/Serializable.h"
-#include "opendavinci/core/data/Container.h"
+#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/generated/coredata/SharedData.h"
 #include "opendavinci/generated/coredata/image/SharedImage.h"
 
 namespace odrecintegrity {
 
     using namespace std;
-    using namespace core;
-    using namespace core::base;
-    using namespace core::data;
+    using namespace odcore;
+    using namespace odcore::base;
+    using namespace odcore::data;
 
     RecIntegrity::RecIntegrity() {}
 

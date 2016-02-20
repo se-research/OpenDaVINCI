@@ -20,11 +20,11 @@
 #include <cmath>
 #include <iostream>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/io/URL.h"
-#include "opendavinci/tools/player/Player.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/io/URL.h"
+#include "opendavinci/odtools/player/Player.h"
 #include "opendavinci/generated/coredata/player/PlayerCommand.h"
 
 #include "PlayerModule.h"
@@ -32,9 +32,9 @@
 namespace odplayer {
 
     using namespace std;
-    using namespace core::base;
-    using namespace core::data;
-    using namespace core::io;
+    using namespace odcore::base;
+    using namespace odcore::data;
+    using namespace odcore::io;
     using namespace odtools::player;
 
     PlayerModule::PlayerModule(const int32_t &argc, char **argv) :

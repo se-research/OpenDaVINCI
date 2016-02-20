@@ -20,7 +20,7 @@
 #ifndef RECINTEGRITY_H_
 #define RECINTEGRITY_H_
 
-#include "opendavinci/core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 namespace odrecintegrity {
 

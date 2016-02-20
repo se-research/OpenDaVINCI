@@ -20,9 +20,9 @@
 #ifndef PLAYERMODULE_H_
 #define PLAYERMODULE_H_
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/base/FIFOQueue.h"
-#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/FIFOQueue.h"
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
 namespace odplayer {
@@ -33,7 +33,7 @@ namespace odplayer {
      * This class can be used to replay previously recorded
      * data using a conference for distribution.
      */
-    class PlayerModule : public core::base::module::TimeTriggeredConferenceClientModule {
+    class PlayerModule : public odcore::base::module::TimeTriggeredConferenceClientModule {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -70,7 +70,7 @@ namespace odplayer {
             virtual void wait();
 
         private:
-            core::base::FIFOQueue m_playerControl;
+            odcore::base::FIFOQueue m_playerControl;
 
             virtual void setUp();
 

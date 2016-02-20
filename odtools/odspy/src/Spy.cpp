@@ -24,8 +24,8 @@
 namespace odspy {
 
     using namespace std;
-    using namespace core::base;
-    using namespace core::data;
+    using namespace odcore::base;
+    using namespace odcore::data;
 
     Spy::Spy(const int32_t &argc, char **argv) :
         TimeTriggeredConferenceClientModule(argc, argv, "odspy"),

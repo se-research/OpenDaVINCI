@@ -21,16 +21,16 @@
 #include <cstring>
 #include <iostream>
 
-#include "opendavinci/core/opendavinci.h"
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/base/CommandLineArgument.h"
-#include "opendavinci/core/base/CommandLineParser.h"
-#include "opendavinci/core/base/QueryableNetstringsDeserializerABCF.h"
-#include "opendavinci/core/wrapper/jpg/JPG.h"
-#include "opendavinci/core/wrapper/SharedMemory.h"
-#include "opendavinci/core/wrapper/SharedMemoryFactory.h"
-#include "opendavinci/core/data/image/CompressedImage.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/CommandLineArgument.h"
+#include "opendavinci/odcore/base/CommandLineParser.h"
+#include "opendavinci/odcore/base/QueryableNetstringsDeserializerABCF.h"
+#include "opendavinci/odcore/wrapper/jpg/JPG.h"
+#include "opendavinci/odcore/wrapper/SharedMemory.h"
+#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/odcore/data/image/CompressedImage.h"
 #include "opendavinci/generated/coredata/image/SharedImage.h"
 
 #include "Redirector.h"
@@ -39,8 +39,8 @@
 namespace odredirector {
 
     using namespace std;
-    using namespace core::base;
-    using namespace core::data;
+    using namespace odcore::base;
+    using namespace odcore::data;
 
     Redirector::Redirector(const int32_t &argc, char **argv) :
         TimeTriggeredConferenceClientModule(argc, argv, "odredirector"),
@@ -118,24 +118,24 @@ namespace odredirector {
 
                     // Compressed images are transformed into regular shared images again.
                     if (c.getDataType() == Container::COMPRESSED_IMAGE) {
-                        core::data::image::CompressedImage ci = c.getData<core::data::image::CompressedImage>();
+                        odcore::data::image::CompressedImage ci = c.getData<odcore::data::image::CompressedImage>();
 
                         // Check, whether a shared memory was already created for this SharedImage; otherwise, create it and save it for later.
-                        map<string, core::SharedPointer<core::wrapper::SharedMemory> >::iterator it = m_mapOfSharedMemories.find(ci.getName());
+                        map<string, odcore::SharedPointer<odcore::wrapper::SharedMemory> >::iterator it = m_mapOfSharedMemories.find(ci.getName());
                         if (it == m_mapOfSharedMemories.end()) {
-                            core::SharedPointer<core::wrapper::SharedMemory> sp = core::wrapper::SharedMemoryFactory::createSharedMemory(ci.getName(), ci.getSize());
+                            odcore::SharedPointer<odcore::wrapper::SharedMemory> sp = odcore::wrapper::SharedMemoryFactory::createSharedMemory(ci.getName(), ci.getSize());
                             m_mapOfSharedMemories[ci.getName()] = sp;
                         }
 
                         // Get the shared memory to put the uncompressed image into.
-                        core::SharedPointer<core::wrapper::SharedMemory> sp = m_mapOfSharedMemories[ci.getName()];
+                        odcore::SharedPointer<odcore::wrapper::SharedMemory> sp = m_mapOfSharedMemories[ci.getName()];
 
                         int width = 0;
                         int height = 0;
                         int bpp = 0;
 
                         // Decompress image data.
-                        unsigned char *imageData = core::wrapper::jpg::JPG::decompress(ci.getRawData(), ci.getCompressedSize(), &width, &height, &bpp, ci.getBytesPerPixel());
+                        unsigned char *imageData = odcore::wrapper::jpg::JPG::decompress(ci.getRawData(), ci.getCompressedSize(), &width, &height, &bpp, ci.getBytesPerPixel());
 
                         if ( (imageData != NULL) &&
                              (width > 0) &&
