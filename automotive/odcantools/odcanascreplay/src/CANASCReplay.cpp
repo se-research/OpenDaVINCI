@@ -88,7 +88,7 @@ namespace automotive {
                     CLOG1 << gcm.toString() << endl;
 
                     // Distribute data.
-                    Container c(Container::GENERIC_CAN_MESSAGE, gcm);
+                    Container c(gcm);
                     getConference().send(c);
                 }
             }

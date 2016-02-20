@@ -86,6 +86,18 @@ namespace hesperia {
                 m_listOfIdentifiableVertices.push_back(idV);
             }
 
+            int32_t Perimeter::getID() const {
+                return 845;
+            }
+
+            const string Perimeter::getShortName() const {
+                return "Perimeter";
+            }
+
+            const string Perimeter::getLongName() const {
+                return "hesperia.data.scenario.Perimeter";
+            }
+
             const string Perimeter::toString() const {
                 return "";
             }

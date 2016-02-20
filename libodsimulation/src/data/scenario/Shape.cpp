@@ -69,6 +69,18 @@ namespace hesperia {
                 m_type = type;
             }
 
+            int32_t Shape::getID() const {
+                return 846;
+            }
+
+            const string Shape::getShortName() const {
+                return "Shape";
+            }
+
+            const string Shape::getLongName() const {
+                return "hesperia.data.scenario.Shape";
+            }
+
             const string Shape::toString() const {
                 stringstream s;
                 s << "Name: '" << m_name << "', Type: " << static_cast<uint32_t>(m_type);

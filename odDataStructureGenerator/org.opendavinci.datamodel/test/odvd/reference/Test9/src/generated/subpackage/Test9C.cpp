@@ -58,6 +58,18 @@ namespace subpackage {
 			return "subpackage.Test9C";
 		}
 	
+		int32_t Test9C::getID() const {
+			return Test9C::ID();
+		}
+	
+		const string Test9C::getShortName() const {
+			return Test9C::ShortName();
+		}
+	
+		const string Test9C::getLongName() const {
+			return Test9C::LongName();
+		}
+	
 		std::string Test9C::getAttribute1() const {
 			return m_attribute1;
 		}

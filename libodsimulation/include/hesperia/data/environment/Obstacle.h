@@ -60,7 +60,7 @@ namespace hesperia {
                      * @param id Obstacle's id.
                      * @param state Obstacle's state.
                      */
-                    Obstacle(const uint32_t &id, const enum STATE &state);
+                    Obstacle(const uint32_t &obstacleid, const enum STATE &state);
 
                     /**
                      * Constructor.
@@ -73,7 +73,7 @@ namespace hesperia {
                      * @param acceleration Acceleration.
                      * @param polygon Polygon describing the shape.
                      */
-                    Obstacle(const uint32_t &id, const enum STATE &state, const enum CLASSIFICATION &classification,
+                    Obstacle(const uint32_t &obstacleid, const enum STATE &state, const enum CLASSIFICATION &classification,
                              const Point3 &position, const Point3 &rotation,
                              const Point3 &velocity, const Point3 &acceleration,
                              const Polygon &polygon);
@@ -92,14 +92,14 @@ namespace hesperia {
                      *
                      * @return Obstacle's ID.
                      */
-                    uint32_t getID() const;
+                    uint32_t getObstacleID() const;
 
                     /**
                      * This method sets the obstacle's ID.
                      *
                      * @param id Obstacle's ID.
                      */
-                    void setID(const uint32_t &id);
+                    void setObstacleID(const uint32_t &id);
 
                     /**
                      * This method returns the state.
@@ -154,10 +154,14 @@ namespace hesperia {
                     virtual ostream& operator<<(ostream &out) const;
                     virtual istream& operator>>(istream &in);
 
+                    static int32_t ID();
+                    virtual int32_t getID() const;
+                    virtual const string getShortName() const;
+                    virtual const string getLongName() const;
                     virtual const string toString() const;
 
                 private:
-                    uint32_t m_id;
+                    uint32_t m_obstacleid;
                     enum STATE m_state;
                     enum CLASSIFICATION m_classification;
 

@@ -39,19 +39,19 @@ namespace hesperia {
 
             OnMoving::OnMoving() :
                     StartType(),
-                    m_id(0) {
+                    m_identifier(0) {
                 setType(StartType::ONMOVING);
             }
 
             OnMoving::OnMoving(const OnMoving &obj) :
                     StartType(obj),
-                    m_id(obj.getID()) {}
+                    m_identifier(obj.getIdentifier()) {}
 
             OnMoving::~OnMoving() {}
 
             OnMoving& OnMoving::operator=(const OnMoving &obj) {
                 StartType::operator=(obj);
-                setID(obj.getID());
+                setIdentifier(obj.getIdentifier());
                 return (*this);
             }
 
@@ -59,17 +59,29 @@ namespace hesperia {
                 visitor.visit(*this);
             }
 
-            uint32_t OnMoving::getID() const {
-                return m_id;
+            uint32_t OnMoving::getIdentifier() const {
+                return m_identifier;
             }
 
-            void OnMoving::setID(const uint32_t &id) {
-                m_id = id;
+            void OnMoving::setIdentifier(const uint32_t &id) {
+                m_identifier = id;
+            }
+
+            int32_t OnMoving::getID() const {
+                return 866;
+            }
+
+            const string OnMoving::getShortName() const {
+                return "OnMoving";
+            }
+
+            const string OnMoving::getLongName() const {
+                return "hesperia.data.situation.OnMoving";
             }
 
             const string OnMoving::toString() const {
                 stringstream s;
-                s << "Type: " << getType() << " on moving ID: " << getID();
+                s << "Type: " << getType() << " on moving ID: " << getIdentifier();
                 return s.str();
             }
 
@@ -82,7 +94,7 @@ namespace hesperia {
                 core::SharedPointer<Serializer> s = sf.getSerializer(out);
 
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                        getID());
+                        getIdentifier());
 
                 return out;
             }
@@ -96,7 +108,7 @@ namespace hesperia {
                 core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
                 d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                       m_id);
+                       m_identifier);
 
                 return in;
             }

@@ -62,6 +62,18 @@
 		return "Test20a";
 	}
 
+	int32_t Test20a::getID() const {
+		return Test20a::ID();
+	}
+
+	const string Test20a::getShortName() const {
+		return Test20a::ShortName();
+	}
+
+	const string Test20a::getLongName() const {
+		return Test20a::LongName();
+	}
+
 	uint32_t Test20a::getVal1() const {
 		return m_val1;
 	}

@@ -54,6 +54,8 @@ using namespace core::base::module;
 using namespace core::data;
 using namespace context::base;
 
+const int32_t Container_POSITION = 15;
+
 class LocalPoint3 : public core::data::SerializableData {
     private:
         double m_x;
@@ -105,9 +107,24 @@ class LocalPoint3 : public core::data::SerializableData {
             return sqrt(operator*((*this)));
         }
 
+        double getZ() const {
+            return m_z;
+        }
 
         const string toString() const {
             return "";
+        }
+
+        int32_t getID() const {
+            return 35;
+        }
+
+        const string getLongName() const {
+            return "LocalPoint3";
+        }
+
+        const string getShortName() const {
+            return getLongName();
         }
 
         ostream& operator<<(ostream &out) const {
@@ -148,21 +165,37 @@ class LocalPoint3 : public core::data::SerializableData {
 class LocalPosition : public core::data::SerializableData {
     private:
         LocalPoint3 m_position;
+        LocalPoint3 m_rotation;
     public:
         LocalPosition() :
-            m_position() {}
+            m_position(),
+            m_rotation() {}
 
         LocalPosition(const LocalPosition &o) :
             SerializableData(),
-            m_position(o.m_position) {}
+            m_position(o.m_position),
+            m_rotation(o.m_rotation) {}
 
         LocalPosition& operator=(const LocalPosition &o) {
             m_position = o.m_position;
+            m_rotation = o.m_rotation;
             return *this;
         }
 
         const string toString() const {
             return "";
+        }
+
+        int32_t getID() const {
+            return Container_POSITION;
+        }
+
+        const string getLongName() const {
+            return "LocalPosition";
+        }
+
+        const string getShortName() const {
+            return getLongName();
         }
 
         void setPosition(const LocalPoint3 &p) {
@@ -173,6 +206,14 @@ class LocalPosition : public core::data::SerializableData {
             return m_position;
         }
 
+        void setRotation(const LocalPoint3 &p) {
+            m_rotation = p;
+        }
+
+        LocalPoint3 getRotation() const {
+            return m_rotation;
+        }
+
         ostream& operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
@@ -180,6 +221,9 @@ class LocalPosition : public core::data::SerializableData {
 
             s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('p', 'o', 's') >::RESULT,
                     m_position);
+
+            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('r', 'o', 't') >::RESULT,
+                    m_rotation);
 
             return out;
         }
@@ -192,6 +236,9 @@ class LocalPosition : public core::data::SerializableData {
             d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('p', 'o', 's') >::RESULT,
                    m_position);
 
+            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('r', 'o', 't') >::RESULT,
+                   m_rotation);
+
             return in;
         }
 };
@@ -203,6 +250,18 @@ class RuntimeControlContainerTestSampleData : public core::data::SerializableDat
             m_int(0) {}
 
         uint32_t m_int;
+
+        int32_t getID() const {
+            return 37;
+        }
+
+        const string getLongName() const {
+            return "RuntimeControlContainerTestSampleData";
+        }
+
+        const string getShortName() const {
+            return getLongName();
+        }
 
         const string toString() const {
             stringstream sstr;
@@ -250,13 +309,13 @@ class RuntimeControlContainerTestModule : public TimeTriggeredConferenceClientMo
 
             m_config.getValue<string>("runtimecontrolcontainertestmodule.key1");
 
-            addDataStoreFor(Container::POSITION, m_receivedData);
+            addDataStoreFor(Container_POSITION, m_receivedData);
             while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
                 m_cycleCounter++;
 
                 RuntimeControlContainerTestSampleData tcctsd;
                 tcctsd.m_int = m_cycleCounter;
-                Container c(Container::UNDEFINEDDATA, tcctsd);
+                Container c(tcctsd);
                 getConference().send(c);
             }
 
@@ -344,7 +403,7 @@ class RuntimeControlContainerTestDummySystemPartReply : public SystemFeedbackCom
             LocalPosition p;
             p.setPosition(LocalPoint3(m_replyCounter, m_replyCounter+1, m_replyCounter+2));
 
-            Container c(Container::POSITION, p);
+            Container c(p);
             sender.sendToSystemsUnderTest(c);
 
             m_replyCounter++;

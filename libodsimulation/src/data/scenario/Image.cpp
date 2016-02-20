@@ -118,6 +118,18 @@ namespace hesperia {
                 m_rotationZ = rotZ;
             }
 
+            int32_t Image::getID() const {
+                return 842;
+            }
+
+            const string Image::getShortName() const {
+                return "Image";
+            }
+
+            const string Image::getLongName() const {
+                return "hesperia.data.scenario.Image";
+            }
+
             const string Image::toString() const {
                 stringstream s;
                 s << "Filename: '" << m_fileName << "', (0; 0) @ (" << m_originX << "; " << m_originY << "), Resolution: (" << m_meterPerPixelX << "; " << m_meterPerPixelY << "), Rotation: " << m_rotationZ;

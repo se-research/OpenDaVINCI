@@ -83,7 +83,7 @@ namespace core {
             }
 
             void ModuleConnection::pulse(const coredata::dmcp::PulseMessage &pm) {
-                Container c(Container::DMCP_PULSE_MESSAGE, pm);
+                Container c(pm);
                 m_connection->send(c);
             }
 
@@ -105,7 +105,7 @@ namespace core {
                         m_hasReceivedPulseAck = false;
                     }
 
-                    Container c(Container::DMCP_PULSE_MESSAGE, pm);
+                    Container c(pm);
                     m_connection->send(c);
 
                     // Wait for the ACK message from client.
@@ -139,7 +139,7 @@ namespace core {
                         m_hasReceivedPulseAckContainers = false;
                     }
 
-                    Container c(Container::DMCP_PULSE_MESSAGE, pm);
+                    Container c(pm);
                     m_connection->send(c);
 
                     // Wait for the ACK message from client.
@@ -155,84 +155,70 @@ namespace core {
             }
 
             void ModuleConnection::nextContainer(Container &container) {
-                switch (container.getDataType()) {
-                    case Container::DMCP_CONFIGURATION_REQUEST:
+                if (container.getDataType() == Container::DMCP_CONFIGURATION_REQUEST) {
+                    m_descriptor = container.getData<ModuleDescriptor>();
                     {
-                        m_descriptor = container.getData<ModuleDescriptor>();
-                        {
-                            Lock l(m_descriptorCondition);
-                            m_hasDescriptor = true;
-                            m_descriptorCondition.wakeAll();
-                        }
-
-                        KeyValueConfiguration config = m_configurationProvider.getConfiguration(m_descriptor);
-
-                        Container c(Container::CONFIGURATION, coredata::Configuration(config));
-                        m_connection->send(c);
-                        break;
+                        Lock l(m_descriptorCondition);
+                        m_hasDescriptor = true;
+                        m_descriptorCondition.wakeAll();
                     }
 
-                    case Container::DMCP_MODULESTATEMESSAGE:
-                    {
-                        ModuleStateMessage msg = container.getData<ModuleStateMessage>();
+                    KeyValueConfiguration config = m_configurationProvider.getConfiguration(m_descriptor);
 
-                        Lock l(m_stateListenerMutex);
-                        if (m_stateListener) {
-                            m_stateListener->handleChangeState(m_descriptor, msg.getModuleState());
-                        }
-                        break;
+                    coredata::Configuration conf(config);
+                    Container c(conf);
+                    m_connection->send(c);
+                    return;
+                }
+                if (container.getDataType() == ModuleStateMessage::ID()) {
+                    ModuleStateMessage msg = container.getData<ModuleStateMessage>();
+
+                    Lock l(m_stateListenerMutex);
+                    if (m_stateListener) {
+                        m_stateListener->handleChangeState(m_descriptor, msg.getModuleState());
                     }
+                    return;
+                }
+                if (container.getDataType() == ModuleExitCodeMessage::ID()) {
+                    ModuleExitCodeMessage msg = container.getData<ModuleExitCodeMessage>();
 
-                    case Container::DMCP_MODULEEXITCODEMESSAGE:
-                    {
-                        ModuleExitCodeMessage msg = container.getData<ModuleExitCodeMessage>();
-
-                        Lock l(m_stateListenerMutex);
-                        if (m_stateListener) {
-                            m_stateListener->handleExitCode(m_descriptor, msg.getModuleExitCode());
-                        }
-                        break;
+                    Lock l(m_stateListenerMutex);
+                    if (m_stateListener) {
+                        m_stateListener->handleExitCode(m_descriptor, msg.getModuleExitCode());
                     }
+                    return;
+                }
+                if (container.getDataType() == coredata::dmcp::RuntimeStatistic::ID()) {
+                    coredata::dmcp::RuntimeStatistic rs = container.getData<coredata::dmcp::RuntimeStatistic>();
 
-                    case Container::RUNTIMESTATISTIC:
-                    {
-                        coredata::dmcp::RuntimeStatistic rs = container.getData<coredata::dmcp::RuntimeStatistic>();
-
-                        Lock l(m_stateListenerMutex);
-                        if (m_stateListener) {
-                            m_stateListener->handleRuntimeStatistics(m_descriptor, rs);
-                        }
-                        break;
+                    Lock l(m_stateListenerMutex);
+                    if (m_stateListener) {
+                        m_stateListener->handleRuntimeStatistics(m_descriptor, rs);
                     }
+                    return;
+                }
+                if (container.getDataType() == PulseAckMessage::ID()) {
+                    Lock l(m_pulseAckCondition);
+                    m_hasReceivedPulseAck = true;
+                    m_pulseAckCondition.wakeAll();
+                    return;
+                }
+                if (container.getDataType() == PulseAckContainersMessage::ID()) {
+                    Lock l(m_pulseAckContainersCondition);
+                    m_hasReceivedPulseAckContainers = true;
 
-                    case Container::DMCP_PULSE_ACK_MESSAGE:
-                    {
-                        Lock l(m_pulseAckCondition);
-                        m_hasReceivedPulseAck = true;
-                        m_pulseAckCondition.wakeAll();
-                        break;
-                    }
+                    // Get containers to be transferred to supercomponent.
+                    PulseAckContainersMessage pac = container.getData<PulseAckContainersMessage>();
+                    m_containersToBeTransferredToSupercomponent = pac.getListOfContainers();
 
-                    case Container::DMCP_PULSE_ACK_CONTAINERS_MESSAGE:
-                    {
-                        Lock l(m_pulseAckContainersCondition);
-                        m_hasReceivedPulseAckContainers = true;
+                    m_pulseAckContainersCondition.wakeAll();
+                    return;
+                }
 
-                        // Get containers to be transferred to supercomponent.
-                        PulseAckContainersMessage pac = container.getData<PulseAckContainersMessage>();
-                        m_containersToBeTransferredToSupercomponent = pac.getListOfContainers();
-
-                        m_pulseAckContainersCondition.wakeAll();
-                        break;
-                    }
-
-                    default:
-                    {
-                        Lock l(m_stateListenerMutex);
-                        if (m_stateListener) {
-                            m_stateListener->handleUnkownContainer(m_descriptor, container);
-                        }
-                        break;
+                {
+                    Lock l(m_stateListenerMutex);
+                    if (m_stateListener) {
+                        m_stateListener->handleUnkownContainer(m_descriptor, container);
                     }
                 }
             }

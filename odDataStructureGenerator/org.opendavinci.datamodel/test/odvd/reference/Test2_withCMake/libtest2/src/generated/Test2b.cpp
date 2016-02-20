@@ -49,6 +49,18 @@
 		return "Test2b";
 	}
 
+	int32_t Test2b::getID() const {
+		return Test2b::ID();
+	}
+
+	const string Test2b::getShortName() const {
+		return Test2b::ShortName();
+	}
+
+	const string Test2b::getLongName() const {
+		return Test2b::LongName();
+	}
+
 
 	void Test2b::accept(core::base::Visitor &v) {
 		(void)v; // Avoid unused parameter warning.

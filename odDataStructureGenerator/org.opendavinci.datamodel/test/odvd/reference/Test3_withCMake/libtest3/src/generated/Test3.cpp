@@ -87,6 +87,18 @@
 		return "Test3";
 	}
 
+	int32_t Test3::getID() const {
+		return Test3::ID();
+	}
+
+	const string Test3::getShortName() const {
+		return Test3::ShortName();
+	}
+
+	const string Test3::getLongName() const {
+		return Test3::LongName();
+	}
+
 	bool Test3::getAttribute1() const {
 		return m_attribute1;
 	}

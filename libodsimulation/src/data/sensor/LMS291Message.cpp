@@ -37,28 +37,28 @@ namespace hesperia {
 
             LMS291Message::LMS291Message() :
                     SerializableData(),
-                    m_id(),
+                    m_identifier(),
                     m_message() {}
 
             LMS291Message::LMS291Message(const LMS291Message &obj) :
-                    m_id(obj.getID()),
+                    m_identifier(obj.getIdentifier()),
                     m_message(obj.getMessage()) {}
 
             LMS291Message::~LMS291Message() {}
 
             LMS291Message& LMS291Message::operator=(const LMS291Message &obj) {
-                setID(obj.getID());
+                setIdentifier(obj.getIdentifier());
                 setMessage(obj.getMessage());
 
                 return (*this);
             }
 
-            const string LMS291Message::getID() const {
-                return m_id;
+            const string LMS291Message::getIdentifier() const {
+                return m_identifier;
             }
 
-            void LMS291Message::setID(const string &id) {
-                m_id = id;
+            void LMS291Message::setIdentifier(const string &id) {
+                m_identifier = id;
             }
 
             const string LMS291Message::getMessage() const {
@@ -67,6 +67,18 @@ namespace hesperia {
 
             void LMS291Message::setMessage(const string &msg) {
                 m_message = msg;
+            }
+
+            int32_t LMS291Message::getID() const {
+                return 34;
+            }
+
+            const string LMS291Message::getShortName() const {
+                return "LMS291Message";
+            }
+
+            const string LMS291Message::getLongName() const {
+                return "hesperia.data.sensor.LMS291Message";
             }
 
             const string LMS291Message::toString() const {
@@ -80,7 +92,7 @@ namespace hesperia {
                 core::SharedPointer<Serializer> s = sf.getSerializer(out);
 
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                        m_id);
+                        m_identifier);
 
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('m', 'e', 's', 's', 'a', 'g', 'e') >::RESULT,
                         m_message);
@@ -95,7 +107,7 @@ namespace hesperia {
                 core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
                 d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                        m_id);
+                        m_identifier);
 
                 d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('m', 'e', 's', 's', 'a', 'g', 'e') >::RESULT,
                        m_message);

@@ -50,6 +50,18 @@ namespace hesperia {
                 visitor.visit(*this);
             }
 
+            int32_t WarpToStart::getID() const {
+                return 818;
+            }
+
+            const string WarpToStart::getShortName() const {
+                return "WarpToStart";
+            }
+
+            const string WarpToStart::getLongName() const {
+                return "hesperia.data.situation.WarpToStart";
+            }
+
             const string WarpToStart::toString() const {
                 stringstream s;
                 s << getType();

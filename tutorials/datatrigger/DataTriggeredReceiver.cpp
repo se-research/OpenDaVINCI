@@ -47,7 +47,7 @@ void DataTriggeredReceiver::nextContainer(Container &c) {
                               " sent at " << c.getSentTimeStamp().getYYYYMMDD_HHMMSSms() <<
                           " received at " << c.getReceivedTimeStamp().getYYYYMMDD_HHMMSSms() << endl;
 
-    if (c.getDataType() == Container::TIMESTAMP) {
+    if (c.getDataType() == TimeStamp::ID()) {
         TimeStamp ts = c.getData<TimeStamp>();
         cout << "Received the following time stamp: " << ts.toString() << endl;
     }

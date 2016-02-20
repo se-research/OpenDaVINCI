@@ -61,7 +61,7 @@ class ScenarioTest : public CxxTest::TestSuite {
             // This testcase tests the correct serialization of IDVertex3.
             stringstream sstr;
             IDVertex3 idv;
-            idv.setID(1);
+            idv.setIdentifier(1);
             idv.setX(233.1);
             idv.setY(-233.5);
             sstr << idv;
@@ -504,20 +504,20 @@ class ScenarioTest : public CxxTest::TestSuite {
             TS_ASSERT(scn.getListOfLayers().size() == 1);
             const vector<hesperia::data::scenario::Layer> &listOfLayers = scn.getListOfLayers();
             TS_ASSERT_DELTA(listOfLayers.at(0).getHeight(), 0.1, 1e-3);
-            TS_ASSERT(listOfLayers.at(0).getID() == 1);
+            TS_ASSERT(listOfLayers.at(0).getIdentifier() == 1);
             TS_ASSERT(listOfLayers.at(0).getName() == "FirstLayer");
 
             const vector<hesperia::data::scenario::Road> &listOfRoads = listOfLayers.at(0).getListOfRoads();
             TS_ASSERT(listOfRoads.size() == 1);
-            TS_ASSERT(listOfRoads.at(0).getID() == 1);
+            TS_ASSERT(listOfRoads.at(0).getIdentifier() == 1);
             TS_ASSERT(listOfRoads.at(0).getName() == "Road1");
 
             const vector<hesperia::data::scenario::Lane> &listOfLanes = listOfRoads.at(0).getListOfLanes();
             TS_ASSERT(listOfLanes.size() == 4);
-            TS_ASSERT(listOfLanes.at(0).getID() == 1);
-            TS_ASSERT(listOfLanes.at(1).getID() == 2);
-            TS_ASSERT(listOfLanes.at(2).getID() == 3);
-            TS_ASSERT(listOfLanes.at(3).getID() == 4);
+            TS_ASSERT(listOfLanes.at(0).getIdentifier() == 1);
+            TS_ASSERT(listOfLanes.at(1).getIdentifier() == 2);
+            TS_ASSERT(listOfLanes.at(2).getIdentifier() == 3);
+            TS_ASSERT(listOfLanes.at(3).getIdentifier() == 4);
 
             const hesperia::data::scenario::Lane& lane1 = listOfLanes.at(0);
             const vector<hesperia::data::scenario::Connector> &listOfConnectorsLane1 = lane1.getLaneModel()->getListOfConnectors();
@@ -536,7 +536,7 @@ class ScenarioTest : public CxxTest::TestSuite {
             const hesperia::data::scenario::TrafficLight *tl = dynamic_cast<hesperia::data::scenario::TrafficLight*>(listOfTrafficControlsLane1.at(0));
             TS_ASSERT(tl != NULL);
             TS_ASSERT(tl->getName() == "TrafficLight1");
-            TS_ASSERT(tl->getPosition().getID() == 1);
+            TS_ASSERT(tl->getPosition().getIdentifier() == 1);
             TS_ASSERT_DELTA(tl->getPosition().getX(), 832.1, 1e-4);
             TS_ASSERT_DELTA(tl->getPosition().getY(), -832.5, 1e-4);
 
@@ -556,10 +556,10 @@ class ScenarioTest : public CxxTest::TestSuite {
 
             const vector<hesperia::data::scenario::IDVertex3> &listOfIdentifiableVerticesLane1 = pm->getListOfIdentifiableVertices();
             TS_ASSERT(listOfIdentifiableVerticesLane1.size() == 2);
-            TS_ASSERT(listOfIdentifiableVerticesLane1.at(0).getID() == 1);
+            TS_ASSERT(listOfIdentifiableVerticesLane1.at(0).getIdentifier() == 1);
             TS_ASSERT_DELTA(listOfIdentifiableVerticesLane1.at(0).getX(), 32.1, 1e-3);
             TS_ASSERT_DELTA(listOfIdentifiableVerticesLane1.at(0).getY(), -32.5, 1e-3);
-            TS_ASSERT(listOfIdentifiableVerticesLane1.at(1).getID() == 2);
+            TS_ASSERT(listOfIdentifiableVerticesLane1.at(1).getIdentifier() == 2);
             TS_ASSERT_DELTA(listOfIdentifiableVerticesLane1.at(1).getX(), 52.1, 1e-3);
             TS_ASSERT_DELTA(listOfIdentifiableVerticesLane1.at(1).getY(), -52.5, 1e-3);
 
@@ -574,7 +574,7 @@ class ScenarioTest : public CxxTest::TestSuite {
             TS_ASSERT(ts != NULL);
             TS_ASSERT(ts->getName() == "Stopline1");
             TS_ASSERT(ts->getValue() == "stopline");
-            TS_ASSERT(ts->getPosition().getID() == 1);
+            TS_ASSERT(ts->getPosition().getIdentifier() == 1);
             TS_ASSERT_DELTA(ts->getPosition().getX(), 932.1, 1e-4);
             TS_ASSERT_DELTA(ts->getPosition().getY(), -932.5, 1e-4);
 
@@ -593,10 +593,10 @@ class ScenarioTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(tspVertices.at(1).getX(), 932.1, 1e-3);
             TS_ASSERT_DELTA(tspVertices.at(1).getY(), -932.7, 1e-3);
 
-            TS_ASSERT(sl->getStart().getID() == 1);
+            TS_ASSERT(sl->getStart().getIdentifier() == 1);
             TS_ASSERT_DELTA(sl->getStart().getX(), 662.1, 1e-3);
             TS_ASSERT_DELTA(sl->getStart().getY(), -662.5, 1e-3);
-            TS_ASSERT(sl->getEnd().getID() == 2);
+            TS_ASSERT(sl->getEnd().getIdentifier() == 2);
             TS_ASSERT_DELTA(sl->getEnd().getX(), 772.1, 1e-3);
             TS_ASSERT_DELTA(sl->getEnd().getY(), -772.5, 1e-3);
 
@@ -608,14 +608,14 @@ class ScenarioTest : public CxxTest::TestSuite {
             hesperia::data::scenario::Clothoid *cl = dynamic_cast<hesperia::data::scenario::Clothoid*>(lane3.getLaneModel());
             TS_ASSERT(cl != NULL);
 
-            TS_ASSERT(cl->getStart().getID() == 1);
+            TS_ASSERT(cl->getStart().getIdentifier() == 1);
             TS_ASSERT_DELTA(cl->getDK(), -0.0000234065942902206, 1e-19);
 #ifndef WIN32
             TS_ASSERT_DELTA(cl->getK(), 0.0036564644663092702, 1e-19);
 #endif
             TS_ASSERT_DELTA(cl->getStart().getX(), 5662.1, 1e-3);
             TS_ASSERT_DELTA(cl->getStart().getY(), -5662.5, 1e-3);
-            TS_ASSERT(cl->getEnd().getID() == 2);
+            TS_ASSERT(cl->getEnd().getIdentifier() == 2);
             TS_ASSERT_DELTA(cl->getEnd().getX(), 5772.1, 1e-3);
             TS_ASSERT_DELTA(cl->getEnd().getY(), -5772.5, 1e-3);
             TS_ASSERT_DELTA(cl->getRotationZ(), -0.3, 1e-3);
@@ -624,20 +624,20 @@ class ScenarioTest : public CxxTest::TestSuite {
             hesperia::data::scenario::Arc *a = dynamic_cast<hesperia::data::scenario::Arc*>(lane4.getLaneModel());
             TS_ASSERT(a != NULL);
 
-            TS_ASSERT(a->getStart().getID() == 1);
+            TS_ASSERT(a->getStart().getIdentifier() == 1);
             TS_ASSERT_DELTA(a->getRadius(), 20, 1e-3);
             TS_ASSERT_DELTA(a->getBeginInterval(), 0, 1e-3);
             TS_ASSERT_DELTA(a->getEndInterval(), 0.785398164, 1e-9);
             TS_ASSERT_DELTA(a->getStart().getX(), 7662.1, 1e-3);
             TS_ASSERT_DELTA(a->getStart().getY(), -7662.5, 1e-3);
-            TS_ASSERT(a->getEnd().getID() == 2);
+            TS_ASSERT(a->getEnd().getIdentifier() == 2);
             TS_ASSERT_DELTA(a->getEnd().getX(), 7772.1, 1e-3);
             TS_ASSERT_DELTA(a->getEnd().getY(), -7772.5, 1e-3);
             TS_ASSERT_DELTA(a->getRotationZ(), 0, 1e-3);
 
             const vector<Zone> &listOfZones = listOfLayers.at(0).getListOfZones();
             TS_ASSERT(listOfZones.size() == 3);
-            TS_ASSERT(listOfZones.at(0).getID() == 1);
+            TS_ASSERT(listOfZones.at(0).getIdentifier() == 1);
             TS_ASSERT(listOfZones.at(0).getName() == "Zone1");
 
             const Zone& zone1 = listOfZones.at(0);
@@ -666,7 +666,7 @@ class ScenarioTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(listOfSpots.at(0).getSecondVertex().getX(), 78.1, 1e-3);
             TS_ASSERT_DELTA(listOfSpots.at(0).getSecondVertex().getY(), -78.5, 1e-3);
 
-            TS_ASSERT(listOfZones.at(1).getID() == 2);
+            TS_ASSERT(listOfZones.at(1).getIdentifier() == 2);
             TS_ASSERT(listOfZones.at(1).getName() == "Zone2");
 
             const vector<IDVertex3> &listOfIDVertex3_zone2 = listOfZones.at(1).getPerimeter().getListOfIdentifiableVertices();
@@ -678,7 +678,7 @@ class ScenarioTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(listOfIDVertex3_zone2.at(2).getX(), 266.1, 1e-3);
             TS_ASSERT_DELTA(listOfIDVertex3_zone2.at(2).getY(), -266.5, 1e-3);
 
-            TS_ASSERT(listOfZones.at(2).getID() == 3);
+            TS_ASSERT(listOfZones.at(2).getIdentifier() == 3);
             TS_ASSERT(listOfZones.at(2).getName() == "Zone3");
 
             const vector<IDVertex3> &listOfIDVertex3_zone3 = listOfZones.at(2).getPerimeter().getListOfIdentifiableVertices();

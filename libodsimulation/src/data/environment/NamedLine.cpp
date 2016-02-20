@@ -67,6 +67,18 @@ namespace hesperia {
                 m_name = n;
             }
 
+            int32_t NamedLine::getID() const {
+                return 26;
+            }
+
+            const string NamedLine::getShortName() const {
+                return "NamedLine";
+            }
+
+            const string NamedLine::getLongName() const {
+                return "hesperia.data.environment.NamedLine";
+            }
+
             const string NamedLine::toString() const {
                 stringstream sstr;
                 sstr << m_name << ": " << Line::toString();

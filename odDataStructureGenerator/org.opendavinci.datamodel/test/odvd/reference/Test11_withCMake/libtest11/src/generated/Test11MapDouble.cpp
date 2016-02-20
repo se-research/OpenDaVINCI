@@ -87,6 +87,18 @@
 		return "Test11MapDouble";
 	}
 
+	int32_t Test11MapDouble::getID() const {
+		return Test11MapDouble::ID();
+	}
+
+	const string Test11MapDouble::getShortName() const {
+		return Test11MapDouble::ShortName();
+	}
+
+	const string Test11MapDouble::getLongName() const {
+		return Test11MapDouble::LongName();
+	}
+
 	std::map<double, bool> Test11MapDouble::getMapOfMyDoubleBoolMap() const {
 		return m_mapOfMyDoubleBoolMap;
 	}

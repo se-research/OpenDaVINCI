@@ -68,6 +68,18 @@ namespace hesperia {
                 m_rotation = r;
             }
 
+            int32_t CoordinateSystem::getID() const {
+                return 843;
+            }
+
+            const string CoordinateSystem::getShortName() const {
+                return "CoordinateSystem";
+            }
+
+            const string CoordinateSystem::getLongName() const {
+                return "hesperia.data.scenario.CoordinateSystem";
+            }
+
             const string CoordinateSystem::toString() const {
                 stringstream s;
                 s << "Type: '" << m_type << "', Rotation: " << m_rotation;

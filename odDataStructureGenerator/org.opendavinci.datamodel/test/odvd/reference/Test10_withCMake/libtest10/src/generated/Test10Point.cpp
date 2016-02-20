@@ -62,6 +62,18 @@
 		return "Test10Point";
 	}
 
+	int32_t Test10Point::getID() const {
+		return Test10Point::ID();
+	}
+
+	const string Test10Point::getShortName() const {
+		return Test10Point::ShortName();
+	}
+
+	const string Test10Point::getLongName() const {
+		return Test10Point::LongName();
+	}
+
 	float Test10Point::getX() const {
 		return m_x;
 	}

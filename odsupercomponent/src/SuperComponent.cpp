@@ -326,7 +326,7 @@ namespace odsupercomponent {
             {
                 // Update statistics.
                 Lock l(m_moduleStatisticsMutex);
-                Container c(Container::MODULESTATISTICS, m_moduleStatistics);
+                Container c(m_moduleStatistics);
                 m_conference->send(c);
             }
 
@@ -544,7 +544,7 @@ namespace odsupercomponent {
     }
 
     void SuperComponent::nextContainer(Container &container) {
-        if (container.getDataType() == Container::LOG_MESSAGE) {
+        if (container.getDataType() == coredata::LogMessage::ID()) {
             coredata::LogMessage logMessage = container.getData<coredata::LogMessage>();
 
             if (m_logLevel >= logMessage.getLogLevel()) {

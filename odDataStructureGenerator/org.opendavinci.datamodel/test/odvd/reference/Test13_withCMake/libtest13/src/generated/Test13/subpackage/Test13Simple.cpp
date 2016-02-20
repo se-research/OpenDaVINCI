@@ -59,6 +59,18 @@ namespace test13 {
 				return "Test13.subpackage.Test13Simple";
 			}
 		
+			int32_t Test13Simple::getID() const {
+				return Test13Simple::ID();
+			}
+		
+			const string Test13Simple::getShortName() const {
+				return Test13Simple::ShortName();
+			}
+		
+			const string Test13Simple::getLongName() const {
+				return Test13Simple::LongName();
+			}
+		
 			Test13Simple::ButtonState Test13Simple::getButtonState() const {
 				return m_buttonState;
 			}

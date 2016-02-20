@@ -104,7 +104,7 @@ namespace hesperia {
                 if (n == NULL) {
                     OPENDAVINCI_CORE_THROW_EXCEPTION(SITSituationVisitorException, "Node to get value from OBJECTID expected.");
                 }
-                o.setID(n->getValue<uint32_t>());
+                o.setIdentifier(n->getValue<uint32_t>());
 
                 // Parse shape from child.
                 vector<ASTNode*> listOfChildren = node->getChildren("OBJECTID");
@@ -432,7 +432,7 @@ namespace hesperia {
                 if (n == NULL) {
                     OPENDAVINCI_CORE_THROW_EXCEPTION(SITSituationVisitorException, "Node to get name from OBJECTID expected.");
                 }
-                om->setID(n->getValue<uint32_t>());
+                om->setIdentifier(n->getValue<uint32_t>());
             }
 
             return om;
@@ -448,7 +448,7 @@ namespace hesperia {
                 if (n == NULL) {
                     OPENDAVINCI_CORE_THROW_EXCEPTION(SITSituationVisitorException, "Node to get name from OBJECTID expected.");
                 }
-                oep->setID(n->getValue<uint32_t>());
+                oep->setIdentifier(n->getValue<uint32_t>());
 
                 n = findByKey("VERTEX2", node->getParent(), 4);
                 if (n == NULL) {

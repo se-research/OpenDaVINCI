@@ -128,6 +128,25 @@ namespace cockpit {
             }
 
             void LiveFeedWidget::transformContainerToTree(Container &container) {
+/*
+                if (container.getDataType() == coredata::dmcp::ModuleStatistics::ID()) {
+                    coredata::dmcp::ModuleStatistics tmp = container.getData<coredata::dmcp::ModuleStatistics>();
+                    if (dynamic_cast<Visitable*>(&tmp) != NULL) {
+                        addMessageToTree(tmp.LongName(), container, tmp);
+                    }
+                    return;
+                }
+*/
+
+                if (container.getDataType() == automotive::VehicleData::ID()) {
+                    automotive::VehicleData tmp = container.getData<automotive::VehicleData>();
+                    if (dynamic_cast<Visitable*>(&tmp) != NULL) {
+                        addMessageToTree(tmp.LongName(), container, tmp);
+                    }
+                    return;
+                }
+
+/*
                 switch (container.getDataType()) {
                     case Container::CONFIGURATION:
                     {
@@ -260,6 +279,7 @@ namespace cockpit {
                     default:
                     break;
                 }
+*/
             }
         }
     }

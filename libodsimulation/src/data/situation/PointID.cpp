@@ -124,6 +124,18 @@ namespace hesperia {
                 m_pointID = pointID;
             }
 
+            int32_t PointID::getID() const {
+                return 857;
+            }
+
+            const string PointID::getShortName() const {
+                return "PointID";
+            }
+
+            const string PointID::getLongName() const {
+                return "hesperia.data.situation.PointID";
+            }
+
             const string PointID::toString() const {
                 stringstream s;
                 s << getLayerID() << "." << getRoadID() << "." << getLaneID() << "." << getPointID();

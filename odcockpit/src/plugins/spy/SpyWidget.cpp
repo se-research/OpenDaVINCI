@@ -46,6 +46,7 @@
 #include "opendavinci/generated/coredata/player/PlayerCommand.h"
 #include "opendavinci/generated/coredata/recorder/RecorderCommand.h"
 #include "hesperia/data/environment/Position.h"
+#include "hesperia/data/environment/EgoState.h"
 #include "plugins/spy/SpyWidget.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }
@@ -90,26 +91,44 @@ namespace cockpit {
             }
 
             void SpyWidget::nextContainer(Container &container) {
-                //create new Header if needed
-                if (m_dataToType.find(container.getDataType()) == m_dataToType.end()) {
-                    QTreeWidgetItem * newHeader = new QTreeWidgetItem(m_dataView);
-                    newHeader->setText(0, container.toString().c_str());
-                    m_dataToType[container.getDataType()] = newHeader;
-                }
+                const string s = DataToString(container);
+                if (s.size() > 0) {
+                    //create new Header if needed
+                    if (m_dataToType.find(container.getDataType()) == m_dataToType.end()) {
+                        QTreeWidgetItem * newHeader = new QTreeWidgetItem(m_dataView);
+                        newHeader->setText(0, container.toString().c_str());
+                        m_dataToType[container.getDataType()] = newHeader;
+                    }
 
-                //append Data to respective Header
-                QTreeWidgetItem * dataItem = new QTreeWidgetItem();
-                dataItem->setText(0, DataToString(container).c_str());
-                dataItem->setText(1, container.getReceivedTimeStamp().getYYYYMMDD_HHMMSSms().c_str());
-                dataItem->setText(2, container.getSentTimeStamp().getYYYYMMDD_HHMMSSms().c_str());
-                m_dataToType[container.getDataType()]->insertChild(0, dataItem);
+                    //append Data to respective Header
+                    QTreeWidgetItem * dataItem = new QTreeWidgetItem();
+                    dataItem->setText(0, s.c_str());
+                    dataItem->setText(1, container.getReceivedTimeStamp().getYYYYMMDD_HHMMSSms().c_str());
+                    dataItem->setText(2, container.getSentTimeStamp().getYYYYMMDD_HHMMSSms().c_str());
+                    m_dataToType[container.getDataType()]->insertChild(0, dataItem);
 
-                if (m_dataToType[container.getDataType()]->childCount() > 100000) {
-                    m_dataToType[container.getDataType()]->removeChild(m_dataToType[container.getDataType()]->takeChild(100000));
+                    if (m_dataToType[container.getDataType()]->childCount() > 1000) {
+                        m_dataToType[container.getDataType()]->removeChild(m_dataToType[container.getDataType()]->takeChild(1000));
+                    }
                 }
             }
 
             string SpyWidget::DataToString(Container &container) {
+/*
+                if (container.getDataType() == coredata::dmcp::ModuleStatistics::ID()) {
+                   return container.getData<coredata::dmcp::ModuleStatistics>().toString();
+                }
+*/
+
+                if (container.getDataType() == hesperia::data::environment::EgoState::ID()) {
+                   return container.getData<hesperia::data::environment::EgoState>().toString();
+                }
+
+                if (container.getDataType() == automotive::VehicleData::ID()) {
+                   return container.getData<automotive::VehicleData>().toString();
+                }
+                return "";
+/*
                 switch (container.getDataType()) {
                     case Container::CONFIGURATION:
                        return container.getData<coredata::Configuration> ().toString();
@@ -153,6 +172,7 @@ namespace cockpit {
                         return sstrType.str();
                     }
                 }
+*/
             }
         }
     }

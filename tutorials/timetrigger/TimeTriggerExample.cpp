@@ -28,7 +28,7 @@ using namespace core::base::module;
 
 TimeTriggerExample::TimeTriggerExample(const int32_t &argc, char **argv) :
     TimeTriggeredConferenceClientModule(argc, argv, "TimeTriggerExample")
-	{}
+    {}
 
 TimeTriggerExample::~TimeTriggerExample() {}
 
@@ -53,7 +53,7 @@ coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode TimeTriggerExample::body()
     cout << "  " << getKeyValueConfiguration().getValue<string>("timetriggerexample.key4") << endl;
     cout << "  " << (getKeyValueConfiguration().getValue<bool>("timetriggerexample.key5") == 1) << endl;
 
-	while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+    while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
         cout << "Inside the main processing loop." << endl;
     }
 

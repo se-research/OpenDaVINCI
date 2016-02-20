@@ -48,7 +48,7 @@ namespace odredirector {
 
     void StdoutPump::add(const core::data::Container &container) {
         // SharedImages are transformed into compressed images using JPEG compression.
-        if (container.getDataType() == core::data::Container::SHARED_IMAGE) {
+        if (container.getDataType() == coredata::image::SharedImage::ID()) {
             coredata::image::SharedImage si = const_cast<core::data::Container&>(container).getData<coredata::image::SharedImage>();
             
             if ( (1 == si.getBytesPerPixel()) || 
@@ -73,7 +73,7 @@ namespace odredirector {
                     ::memcpy(ci.getRawData(), buffer, compressedSize);
 
                     // Write the CompressedImage container to STDOUT.
-                    core::data::Container c(core::data::Container::COMPRESSED_IMAGE, ci);
+                    core::data::Container c(ci);
                     c.setSentTimeStamp(container.getSentTimeStamp());
                     c.setReceivedTimeStamp(container.getReceivedTimeStamp());
                     std::cout << c;

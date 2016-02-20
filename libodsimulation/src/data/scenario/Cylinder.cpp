@@ -106,6 +106,18 @@ namespace hesperia {
                 m_color = c;
             }
 
+            int32_t Cylinder::getID() const {
+                return 828;
+            }
+
+            const string Cylinder::getShortName() const {
+                return "Cylinder";
+            }
+
+            const string Cylinder::getLongName() const {
+                return "hesperia.data.scenario.Cylinder";
+            }
+
             const string Cylinder::toString() const {
                 stringstream s;
                 s << Shape::toString() << ", Center: " << m_center.toString() << ", Radius: " << m_radius << ", Height: " << m_height << ", Color: " << m_color.toString();

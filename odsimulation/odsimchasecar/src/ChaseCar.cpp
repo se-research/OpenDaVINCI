@@ -33,6 +33,7 @@
 #include "hesperia/data/camera/ImageGrabberCalibration.h"
 #include "hesperia/data/camera/ImageGrabberID.h"
 #include "hesperia/data/environment/Point3.h"
+#include "hesperia/data/environment/Obstacle.h"
 #include "opendavinci/generated/coredata/image/SharedImage.h"
 
 namespace chasecar {
@@ -146,7 +147,7 @@ namespace chasecar {
         static uint32_t frameCounter = 0;
         static clock_t start = clock();
 
-        Container container = getKeyValueDataStore().get(Container::EGOSTATE);
+        Container container = getKeyValueDataStore().get(hesperia::data::environment::EgoState::ID());
         m_egoState = container.getData<hesperia::data::environment::EgoState>();
 
         m_image = m_grabber->getNextImage();
@@ -162,7 +163,7 @@ namespace chasecar {
             si.setBytesPerPixel(3);
             si.setName("ChaseCar");
 
-            Container c(Container::SHARED_IMAGE, si);
+            Container c(si);
             getConference().send(c);
         }
 
@@ -287,7 +288,7 @@ namespace chasecar {
     }
 
     coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode ChaseCar::body() {
-    	addDataStoreFor(Container::OBSTACLE, m_FIFO_Obstacles);
+    	addDataStoreFor(hesperia::data::environment::Obstacle::ID(), m_FIFO_Obstacles);
         
         // The following call never returns!
         glutMainLoop();

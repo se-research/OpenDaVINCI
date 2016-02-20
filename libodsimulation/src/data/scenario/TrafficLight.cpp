@@ -55,6 +55,18 @@ namespace hesperia {
                 }
             }
 
+            int32_t TrafficLight::getID() const {
+                return 822;
+            }
+
+            const string TrafficLight::getShortName() const {
+                return "TrafficLight";
+            }
+
+            const string TrafficLight::getLongName() const {
+                return "hesperia.data.scenario.TrafficLight";
+            }
+
             const string TrafficLight::toString() const {
                 return "Trafficlight";
             }

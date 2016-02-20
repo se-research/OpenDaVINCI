@@ -70,7 +70,7 @@ namespace odrecintegrity {
                         fileNotCorrupt &= (c.getDataType() != Container::UNDEFINEDDATA) && (currPos > 0);
 
                         // If the data is from SHARED_IMAGE, skip the raw data from the shared memory segment.
-                        if (c.getDataType() == Container::SHARED_IMAGE) {
+                        if (c.getDataType() == coredata::image::SharedImage::ID()) {
                             coredata::image::SharedImage si = c.getData<coredata::image::SharedImage>();
 
                             uint32_t lengthToSkip = si.getSize();
@@ -82,7 +82,7 @@ namespace odrecintegrity {
                             cout << "[RecIntegrity]: Found SHARED_IMAGE '" << si.getName() << "' (" << lengthToSkip << " bytes)" << endl;
                             numberOfSharedImages++;
                         }
-                        else if (c.getDataType() == Container::SHARED_DATA) {
+                        else if (c.getDataType() == coredata::SharedData::ID()) {
                             coredata::SharedData sd = c.getData<coredata::SharedData>();
 
                             uint32_t lengthToSkip = sd.getSize();

@@ -306,6 +306,48 @@ namespace canmapping {
 
     		virtual void accept(core::base::Visitor &v);
     		
+
+            /**
+             * This method returns the message id.
+             *
+             * @return Message id.
+             */
+            static int32_t ID();
+
+            /**
+             * This method returns the short message name.
+             *
+             * @return Short message name.
+             */
+            static const string ShortName();
+
+            /**
+             * This method returns the long message name include package/sub structure.
+             *
+             * @return Long message name.
+             */
+            static const string LongName();
+
+            /**
+             * This method returns the message id.
+             *
+             * @return Message id.
+             */
+            virtual int32_t getID() const;
+
+            /**
+             * This method returns the short message name.
+             *
+             * @return Short message name.
+             */
+            virtual const string getShortName() const;
+
+            /**
+             * This method returns the long message name include package/sub structure.
+             *
+             * @return Long message name.
+             */
+            virtual const string getLongName() const;
         private:
         	«FOR capitalizedName : capitalizedNames»
         	double m_«capitalizedName.toFirstLower»;
@@ -513,6 +555,31 @@ namespace canmapping {
 		return in;
 	}
 	
+
+	int32_t «/* Here, we generate the method to return the message ID. */className»::ID() {
+		return 0; // There is no valid message identifier specified as the CAN message will be mapped to a high-level data structure.
+	}
+
+	const string «/* Here, we generate the method to return the short message name. */className»::ShortName() {
+		return "«className»";
+	}
+
+	const string «/* Here, we generate the method to return the long message name. */className»::LongName() {
+		return "«className»";
+	}
+
+	int32_t «/* Here, we generate the method to return the message ID. */className»::getID() const {
+		return 0; // There is no valid message identifier specified as the CAN message will be mapped to a high-level data structure.
+	}
+
+	const string «/* Here, we generate the method to return the short message name. */className»::getShortName() const {
+		return «className»::ShortName();
+	}
+
+	const string «/* Here, we generate the method to return the long message name. */className»::getLongName() const {
+		return «className»::LongName();
+	}
+
 	void «className»::accept(core::base::Visitor &v) {
 	«IF mapping.mappings.size==0»
 	(void)v;
@@ -650,10 +717,10 @@ namespace canmapping {
 			
 			// 4.4 Create a field for a generic message.
 			core::reflection::Field<double> *f = new core::reflection::Field<double>(«memberVarName»);
-			f->setLongIdentifier(«canSignals.get(signalName).m_CANID»); // The identifiers specified here must match with the ones defined in the .odvd file!
-			f->setShortIdentifier(static_cast<uint8_t>(«canSignals.get(signalName).m_CANID»)); // The identifiers specified here must match with the ones defined in the .odvd file!
-			f->setLongName("«canSignals.get(signalName).m_FQDN»");
-			f->setShortName("«{var String[] res; res=canSignals.get(signalName).m_FQDN.split("\\."); res.get(res.size-1)}»");
+			f->setLongFieldIdentifier(«canSignals.get(signalName).m_CANID»); // The identifiers specified here must match with the ones defined in the .odvd file!
+			f->setShortFieldIdentifier(static_cast<uint8_t>(«canSignals.get(signalName).m_CANID»)); // The identifiers specified here must match with the ones defined in the .odvd file!
+			f->setLongFieldName("«canSignals.get(signalName).m_FQDN»");
+			f->setShortFieldName("«{var String[] res; res=canSignals.get(signalName).m_FQDN.split("\\."); res.get(res.size-1)}»");
 			f->setFieldDataType(coredata::reflection::AbstractField::DOUBLE_T);
 			f->setSize(sizeof(«memberVarName»));
 	
@@ -681,7 +748,7 @@ namespace canmapping {
         «HLName».accept(mtvv);
 
 			// 9. Create the resulting container carrying a valid payload.
-			c = core::data::Container(core::data::Container::USER_DATA_9, «HLName»);
+			c = core::data::Container(«HLName»);
 		}
 		return c;
 	}

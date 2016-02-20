@@ -132,7 +132,7 @@ namespace cockpit {
             void StreetMapWidget::nextContainer(Container &c) {
                 const double EPSILON = 1e-4;
                 static WGS84Coordinate old = m_referenceLocation;
-                if (c.getDataType() == Container::WGS84COORDINATE) {
+                if (c.getDataType() == hesperia::data::environment::WGS84Coordinate::ID()) {
                     WGS84Coordinate w = c.getData<WGS84Coordinate>();
                     const double deltaLat = fabs(old.getLatitude() - w.getLatitude());
                     const double deltaLon = fabs(old.getLongitude() - w.getLongitude());

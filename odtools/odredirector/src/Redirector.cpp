@@ -117,7 +117,7 @@ namespace odredirector {
                     containerBuffer >> c;
 
                     // Compressed images are transformed into regular shared images again.
-                    if (c.getDataType() == Container::COMPRESSED_IMAGE) {
+                    if (c.getDataType() == core::data::image::CompressedImage::ID()) {
                         core::data::image::CompressedImage ci = c.getData<core::data::image::CompressedImage>();
 
                         // Check, whether a shared memory was already created for this SharedImage; otherwise, create it and save it for later.
@@ -156,7 +156,7 @@ namespace odredirector {
                             si.setSize(ci.getWidth() * ci.getHeight() * ci.getBytesPerPixel());
 
                             // Distribute the SharedImage information in the UDP multicast session.
-                            Container c2(Container::SHARED_IMAGE, si);
+                            Container c2(si);
                             getConference().send(c2);
                         }
 

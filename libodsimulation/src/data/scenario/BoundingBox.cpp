@@ -96,6 +96,18 @@ namespace hesperia {
                 m_lowerLeft = ll;
             }
 
+            int32_t BoundingBox::getID() const {
+                return 838;
+            }
+
+            const string BoundingBox::getShortName() const {
+                return "BoundingBox";
+            }
+
+            const string BoundingBox::getLongName() const {
+                return "hesperia.data.scenario.BoundingBox";
+            }
+
             const string BoundingBox::toString() const {
                 stringstream s;
                 s << "Upper/left: " << m_upperLeft.toString() << ", Upper/right: " << m_upperRight.toString() << ", Lower/right: " << m_lowerRight.toString() << ", Lower/left: " << m_lowerLeft.toString();

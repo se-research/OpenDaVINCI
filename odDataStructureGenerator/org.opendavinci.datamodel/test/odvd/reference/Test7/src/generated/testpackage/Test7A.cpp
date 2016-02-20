@@ -68,6 +68,18 @@ namespace testpackage {
 			return "testpackage.Test7A";
 		}
 	
+		int32_t Test7A::getID() const {
+			return Test7A::ID();
+		}
+	
+		const string Test7A::getShortName() const {
+			return Test7A::ShortName();
+		}
+	
+		const string Test7A::getLongName() const {
+			return Test7A::LongName();
+		}
+	
 		bool Test7A::getAttribute1() const {
 			return m_attribute1;
 		}

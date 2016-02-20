@@ -163,6 +163,22 @@ namespace hesperia {
                 return result;
             }
 
+            int32_t Line::ID() {
+                return 24;
+            }
+
+            int32_t Line::getID() const {
+                return 24;
+            }
+
+            const string Line::getShortName() const {
+                return "Line";
+            }
+
+            const string Line::getLongName() const {
+                return "hesperia.data.environment.Line";
+            }
+
             const string Line::toString() const {
                 stringstream sstr;
                 sstr << "A: " << m_A.toString() << ", B: " << m_B.toString();

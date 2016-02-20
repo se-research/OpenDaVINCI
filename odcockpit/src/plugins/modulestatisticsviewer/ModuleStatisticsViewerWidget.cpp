@@ -72,7 +72,7 @@ namespace cockpit {
             }
 
             void ModuleStatisticsViewerWidget::nextContainer(Container &c) {
-                if (c.getDataType() == Container::MODULESTATISTICS) {
+                if (c.getDataType() == coredata::dmcp::ModuleStatistics::ID()) {
                     ModuleStatistics ms = c.getData<ModuleStatistics>();
                     m_moduleStatistics.push_back(ms);
 

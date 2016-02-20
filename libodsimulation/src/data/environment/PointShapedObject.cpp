@@ -79,6 +79,18 @@ namespace hesperia {
                 m_acceleration = acceleration;
             }
 
+            int32_t PointShapedObject::getID() const {
+                return 37;
+            }
+
+            const string PointShapedObject::getShortName() const {
+                return "PointShapedObject";
+            }
+
+            const string PointShapedObject::getLongName() const {
+                return "hesperia.data.environment.PointShapedObject";
+            }
+
             const string PointShapedObject::toString() const {
                 stringstream s;
                 s << Position::toString() << "@" << getVelocity().toString() << " with " << getAcceleration().toString();

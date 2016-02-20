@@ -320,6 +320,18 @@ namespace hesperia {
                 return (fabs(angleDelta) < (cartesian::Constants::PI/2.0));
             }
 
+            int32_t Point3::getID() const {
+                return 17;
+            }
+
+            const string Point3::getShortName() const {
+                return "Point3";
+            }
+
+            const string Point3::getLongName() const {
+                return "hesperia.data.environment.Point3";
+            }
+
             const string Point3::toString() const {
                 stringstream s;
                 s << "(" << m_x << "; " << m_y << "; " << m_z << ")";

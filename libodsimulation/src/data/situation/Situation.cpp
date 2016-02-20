@@ -100,6 +100,18 @@ namespace hesperia {
                 m_listOfObjects.push_back(o);
             }
 
+            int32_t Situation::getID() const {
+                return 851;
+            }
+
+            const string Situation::getShortName() const {
+                return "Situation";
+            }
+
+            const string Situation::getLongName() const {
+                return "hesperia.data.situation.Situation";
+            }
+
             const string Situation::toString() const {
                 return m_header.toString();
             }

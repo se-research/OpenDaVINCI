@@ -121,7 +121,7 @@ namespace cockpit {
             }
 
             void IrUsMapWidget::nextContainer(Container &c) {
-                if (c.getDataType() == Container::USER_DATA_0) {
+                if (c.getDataType() == automotive::miniature::SensorBoardData::ID()) {
                     Lock l(m_sensorBoardDataMutex);
         			m_sensorBoardData = c.getData<automotive::miniature::SensorBoardData>();
                 }

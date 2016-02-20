@@ -151,16 +151,16 @@ namespace chasecar {
                     const uint32_t size = m_FIFO_Obstacles.getSize();
                     for(uint32_t i = 0; i < size; i++) {
                         Container c = m_FIFO_Obstacles.leave();
-                        if (c.getDataType() == Container::OBSTACLE) {
+                        if (c.getDataType() == Obstacle::ID()) {
                             Obstacle obstacle = c.getData<Obstacle>();
 
                             // Check if sensor FOV-"Obstacle":
-                            if (obstacle.getID() >= 9000) {
+                            if (obstacle.getObstacleID() >= 9000) {
                                 switch (obstacle.getState()) {
                                     case Obstacle::REMOVE:
                                     {
                                         // Remove obstacle.
-                                        map<uint32_t, Node*>::iterator result = m_mapOfObstacles.find(obstacle.getID());
+                                        map<uint32_t, Node*>::iterator result = m_mapOfObstacles.find(obstacle.getObstacleID());
                                         if (result != m_mapOfObstacles.end()) {
                                             // Remove child from scene graph node.
                                             m_sensors->removeChild(result->second);
@@ -173,7 +173,7 @@ namespace chasecar {
 
                                     case Obstacle::UPDATE:
                                     {
-                                        map<uint32_t, Node*>::iterator result = m_mapOfObstacles.find(obstacle.getID());
+                                        map<uint32_t, Node*>::iterator result = m_mapOfObstacles.find(obstacle.getObstacleID());
                                         if (result != m_mapOfObstacles.end()) {
                                             // Remove child from scene graph node.
                                             m_sensors->removeChild(result->second);
@@ -193,7 +193,7 @@ namespace chasecar {
 
                                             contourTG->addChild(new hesperia::threeD::models::Line(NodeDescriptor(), A, B, Point3(0, 1, 0), 2));
                                         }
-                                        m_mapOfObstacles[obstacle.getID()] = contourTG;
+                                        m_mapOfObstacles[obstacle.getObstacleID()] = contourTG;
 
                                         m_sensors->addChild(contourTG);
                                     }

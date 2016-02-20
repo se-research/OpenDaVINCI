@@ -69,14 +69,14 @@ namespace hesperia {
                      *
                      * @return ID.
                      */
-                    uint32_t getID() const;
+                    uint32_t getIdentifier() const;
 
                     /**
                      * This method sets the ID.
                      *
                      * @param id ID to be set.
                      */
-                    void setID(const uint32_t &id);
+                    void setIdentifier(const uint32_t &id);
 
                     /**
                      * This method returns the lane model.
@@ -109,10 +109,13 @@ namespace hesperia {
                     virtual ostream& operator<<(ostream &out) const;
                     virtual istream& operator>>(istream &in);
 
+                    virtual int32_t getID() const;
+                    virtual const string getShortName() const;
+                    virtual const string getLongName() const;
                     virtual const string toString() const;
 
                 private:
-                    uint32_t m_id;
+                    uint32_t m_identifier;
                     const Road *m_road;
                     LaneModel *m_laneModel;
 

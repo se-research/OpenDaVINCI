@@ -263,7 +263,7 @@ class SituationTest : public CxxTest::TestSuite {
 
             TS_ASSERT(listOfObjects.size() == 4);
             TS_ASSERT(listOfObjects.at(0).getName() == "Test-Objekt1");
-            TS_ASSERT(listOfObjects.at(0).getID() == 1);
+            TS_ASSERT(listOfObjects.at(0).getIdentifier() == 1);
             TS_ASSERT_DELTA(listOfObjects.at(0).getRotationZ(), 1.23456, 1e-5);
             hesperia::data::situation::Polygon *p1 = dynamic_cast<hesperia::data::situation::Polygon*>(listOfObjects.at(0).getShape());
             TS_ASSERT(p1 != NULL);
@@ -288,7 +288,7 @@ class SituationTest : public CxxTest::TestSuite {
 
 
             TS_ASSERT(listOfObjects.at(1).getName() == "Test-Objekt2");
-            TS_ASSERT(listOfObjects.at(1).getID() == 2);
+            TS_ASSERT(listOfObjects.at(1).getIdentifier() == 2);
             TS_ASSERT_DELTA(listOfObjects.at(1).getRotationZ(), 2.34567, 1e-5);
             Rectangle *r2 = dynamic_cast<Rectangle*>(listOfObjects.at(1).getShape());
             TS_ASSERT(r2 != NULL);
@@ -315,7 +315,7 @@ class SituationTest : public CxxTest::TestSuite {
 
 
             TS_ASSERT(listOfObjects.at(2).getName() == "Test-Objekt3");
-            TS_ASSERT(listOfObjects.at(2).getID() == 3);
+            TS_ASSERT(listOfObjects.at(2).getIdentifier() == 3);
             TS_ASSERT_DELTA(listOfObjects.at(2).getRotationZ(), 5.34567, 1e-5);
             hesperia::data::situation::ComplexModel *cm3 = dynamic_cast<hesperia::data::situation::ComplexModel*>(listOfObjects.at(2).getShape());
             TS_ASSERT(cm3 != NULL);
@@ -349,7 +349,7 @@ class SituationTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA((dynamic_cast<PointIDDriver*>(listOfObjects.at(2).getBehavior()))->getConstantVelocity(), 3.2, 1e-4);
             TS_ASSERT((dynamic_cast<PointIDDriver*>(listOfObjects.at(2).getBehavior()))->getStartType()->getType() == hesperia::data::situation::StartType::ONMOVING);
             TS_ASSERT(dynamic_cast<OnMoving*>((dynamic_cast<PointIDDriver*>(listOfObjects.at(2).getBehavior()))->getStartType()) != NULL);
-            TS_ASSERT(dynamic_cast<OnMoving*>((dynamic_cast<PointIDDriver*>(listOfObjects.at(2).getBehavior()))->getStartType())->getID() == 3);
+            TS_ASSERT(dynamic_cast<OnMoving*>((dynamic_cast<PointIDDriver*>(listOfObjects.at(2).getBehavior()))->getStartType())->getIdentifier() == 3);
             TS_ASSERT((dynamic_cast<PointIDDriver*>(listOfObjects.at(2).getBehavior()))->getStopType()->getType() == hesperia::data::situation::StopType::RETURNTOSTART);
             TS_ASSERT(dynamic_cast<ReturnToStart*>((dynamic_cast<PointIDDriver*>(listOfObjects.at(2).getBehavior()))->getStopType()) != NULL);
             vector<hesperia::data::situation::PointID> o2PIDs = dynamic_cast<PointIDDriver*>(listOfObjects.at(2).getBehavior())->getListOfPointIDs();
@@ -359,7 +359,7 @@ class SituationTest : public CxxTest::TestSuite {
 
 
             TS_ASSERT(listOfObjects.at(3).getName() == "Test-Objekt4");
-            TS_ASSERT(listOfObjects.at(3).getID() == 4);
+            TS_ASSERT(listOfObjects.at(3).getIdentifier() == 4);
             TS_ASSERT_DELTA(listOfObjects.at(3).getRotationZ(), 6.34567, 1e-5);
             hesperia::data::situation::Polygon *p4 = dynamic_cast<hesperia::data::situation::Polygon*>(listOfObjects.at(3).getShape());
             TS_ASSERT(p4 != NULL);
@@ -402,7 +402,7 @@ class SituationTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(listOfVerticesOEP.at(3).getX(), 61.1, 1e-3);
             TS_ASSERT_DELTA(listOfVerticesOEP.at(3).getY(), 62.2, 1e-3);
             TS_ASSERT_DELTA(listOfVerticesOEP.at(3).getZ(), 0, 1e-3);
-            TS_ASSERT(dynamic_cast<OnEnteringPolygon*>((dynamic_cast<PointIDDriver*>(listOfObjects.at(3).getBehavior()))->getStartType())->getID() == 1);
+            TS_ASSERT(dynamic_cast<OnEnteringPolygon*>((dynamic_cast<PointIDDriver*>(listOfObjects.at(3).getBehavior()))->getStartType())->getIdentifier() == 1);
             TS_ASSERT((dynamic_cast<PointIDDriver*>(listOfObjects.at(3).getBehavior()))->getStopType()->getType() == hesperia::data::situation::StopType::WARPTOSTART);
             TS_ASSERT(dynamic_cast<WarpToStart*>((dynamic_cast<PointIDDriver*>(listOfObjects.at(3).getBehavior()))->getStopType()) != NULL);
             vector<hesperia::data::situation::PointID> o3PIDs = dynamic_cast<PointIDDriver*>(listOfObjects.at(3).getBehavior())->getListOfPointIDs();

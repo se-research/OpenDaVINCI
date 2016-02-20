@@ -151,12 +151,12 @@ namespace tools {
             }
 
             // If the actual container is a SHARED_IMAGE then copy next entry into the shared memory before sending the actual container.
-            if (m_actual.getDataType() == Container::SHARED_IMAGE) {
+            if (m_actual.getDataType() == coredata::image::SharedImage::ID()) {
                 m_playerCache->copyMemoryToSharedMemory(m_actual);
             }
 
-            // If the actual container is a SHARED_IMAGE then copy next entry into the shared memory before sending the actual container.
-            if (m_actual.getDataType() == Container::SHARED_DATA) {
+            // If the actual container is a SHARED_DATA then copy next entry into the shared memory before sending the actual container.
+            if (m_actual.getDataType() == coredata::SharedData::ID()) {
                 m_playerCache->copyMemoryToSharedMemory(m_actual);
             }
 
@@ -166,7 +166,7 @@ namespace tools {
             retVal = m_actual;
 
             // If the actual container is a COMPRESSED_IMAGE then decode it and replace the container with a shared image before sending the actual container.
-            if (m_actual.getDataType() == Container::COMPRESSED_IMAGE) {
+            if (m_actual.getDataType() == coredata::image::CompressedImage::ID()) {
                 core::data::image::CompressedImage ci = m_actual.getData<core::data::image::CompressedImage>();
 
                 // Check, whether a shared memory was already created for this compressed image; otherwise, create it and save it for later.
@@ -205,7 +205,7 @@ namespace tools {
                     si.setSize(ci.getWidth() * ci.getHeight() * ci.getBytesPerPixel());
 
                     // Distribute the SharedImage information in the UDP multicast session.
-                    retVal = Container(Container::SHARED_IMAGE, si);
+                    retVal = Container(si);
                     retVal.setSentTimeStamp(m_actual.getSentTimeStamp());
                     retVal.setReceivedTimeStamp(m_actual.getReceivedTimeStamp());
                 }

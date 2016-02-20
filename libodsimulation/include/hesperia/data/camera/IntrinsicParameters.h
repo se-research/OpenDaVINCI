@@ -31,7 +31,7 @@ namespace hesperia {
     namespace data {
         namespace camera {
 
-            using namespace core;
+            using namespace std;
 
             /* Parameter:
 
@@ -130,6 +130,9 @@ namespace hesperia {
                     virtual std::ostream& operator<<(std::ostream &out) const;
                     virtual std::istream& operator>>(std::istream &in);
 
+                    virtual int32_t getID() const;
+                    virtual const string getShortName() const;
+                    virtual const string getLongName() const;
                     virtual const std::string toString() const;
 
                 private:

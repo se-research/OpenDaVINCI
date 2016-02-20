@@ -75,7 +75,7 @@ namespace odplayer {
         const bool THREADING = true;
 
         // Add FIFOQueue for controlling the player.
-        addDataStoreFor(Container::PLAYER_COMMAND, m_playerControl);
+        addDataStoreFor(coredata::player::PlayerCommand::ID(), m_playerControl);
 
         // Construct player.
         Player player(url, autoRewind, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING);
@@ -101,7 +101,7 @@ namespace odplayer {
 
                 // Here, the container is sent while discarding player commands.
                 if ( (nextContainerToBeSent.getDataType() != Container::UNDEFINEDDATA) &&
-                        (nextContainerToBeSent.getDataType() != Container::PLAYER_COMMAND) ) {
+                        (nextContainerToBeSent.getDataType() != coredata::player::PlayerCommand::ID()) ) {
 
                     // Process next token only if there's no new command.
                     if (!remoteControl || (m_playerControl.isEmpty())) {

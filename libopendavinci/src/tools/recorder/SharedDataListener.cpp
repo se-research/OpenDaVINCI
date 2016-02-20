@@ -43,8 +43,8 @@ namespace tools {
         SharedDataListener::SharedDataListener(SharedPointer<ostream> out, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const bool &threading) :
             m_threading(threading),
             m_sharedDataWriter(NULL),
-		    m_mapOfAvailableSharedData(),
-		    m_mapOfAvailableSharedImages(),
+            m_mapOfAvailableSharedData(),
+            m_mapOfAvailableSharedImages(),
             m_mapOfMemories(),
             m_bufferIn(),
             m_bufferOut(),
@@ -60,7 +60,7 @@ namespace tools {
                 void *ptr = ::malloc(ms.getSize());
                 m_mapOfMemories[ms.getIdentifier()] = static_cast<char*>(ptr);
 
-                Container c(Container::UNDEFINEDDATA, ms);
+                Container c(ms);
                 m_bufferIn.enter(c);
             }
             CLOG1 << "done." << endl;
@@ -125,7 +125,7 @@ namespace tools {
                             ms.setConsumedSize(memory->getSize());
 
                             // Save meta information.
-                            c = Container(Container::UNDEFINEDDATA, ms);
+                            c = Container(ms);
 
                             copied = true;
                         }
@@ -134,7 +134,7 @@ namespace tools {
 
                 if (copied) {
                     // Enter memory segment to processing queue.
-                    m_bufferOut.enter(c);                
+                    m_bufferOut.enter(c);
                 }
             }
 
@@ -144,12 +144,12 @@ namespace tools {
         void SharedDataListener::add(const Container &container) {
             bool hasCopied = false;
 
-            if (container.getDataType() == Container::SHARED_DATA) {
+            if (container.getDataType() == coredata::SharedData::ID()) {
                 coredata::SharedData sd = const_cast<Container&>(container).getData<coredata::SharedData>();
 
                 map<string, coredata::SharedData>::iterator it = m_mapOfAvailableSharedData.find(sd.getName());
                 if (it == m_mapOfAvailableSharedData.end()) {
-            		m_mapOfAvailableSharedData[sd.getName()] = sd;
+                    m_mapOfAvailableSharedData[sd.getName()] = sd;
 
                     CLOG1 << "Connecting to shared memory " << sd.getName() << " at ";
                     
@@ -163,7 +163,7 @@ namespace tools {
                 hasCopied = copySharedMemoryToMemorySegment(sd.getName(), container);
             }
 
-            if (container.getDataType() == Container::SHARED_IMAGE) {
+            if (container.getDataType() == coredata::image::SharedImage::ID()) {
                 coredata::image::SharedImage si = const_cast<Container&>(container).getData<coredata::image::SharedImage>();
 
                 // For old recordings containing SharedImage, the attribute size is calculated
@@ -172,14 +172,14 @@ namespace tools {
                 uint32_t size = si.getSize();
                 size = (size > 0) ? size : (si.getWidth() * si.getHeight() * si.getBytesPerPixel());
                 si.setSize(size);
-                Container c(Container::SHARED_IMAGE, si);
+                Container c(si);
                 // Preserve the timestamps from the current container.
                 c.setSentTimeStamp(container.getSentTimeStamp());
                 c.setReceivedTimeStamp(container.getReceivedTimeStamp());
 
                 map<string, coredata::image::SharedImage>::iterator it = m_mapOfAvailableSharedImages.find(si.getName());
                 if (it == m_mapOfAvailableSharedImages.end()) {
-            		m_mapOfAvailableSharedImages[si.getName()] = si;
+                    m_mapOfAvailableSharedImages[si.getName()] = si;
 
                     CLOG1 << "Connecting to shared image " << si.getName() << " at ";
 

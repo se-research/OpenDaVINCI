@@ -58,6 +58,18 @@ namespace hesperia {
                 m_type = type;
             }
 
+            int32_t StartType::getID() const {
+                return 853;
+            }
+
+            const string StartType::getShortName() const {
+                return "StartType";
+            }
+
+            const string StartType::getLongName() const {
+                return "hesperia.data.situation.StartType";
+            }
+
             const string StartType::toString() const {
                 stringstream s;
                 s << "Type: " << static_cast<uint32_t>(m_type);

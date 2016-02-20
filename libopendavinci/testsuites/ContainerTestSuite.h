@@ -49,7 +49,7 @@ class ContainerTest : public CxxTest::TestSuite {
 
         void testContainerData() {
             TimeStamp ts(12345, -3000);
-            Container c(Container::TIMESTAMP, ts);
+            Container c(ts);
 
             stringstream s;
             s << c;
@@ -65,7 +65,7 @@ class ContainerTest : public CxxTest::TestSuite {
 
         void testContainerDataUserType() {
             TimeStamp ts;
-            Container c(Container::USER_DATA_9, ts);
+            Container c(ts, 1234);
 
             stringstream s;
             s << c;
@@ -73,14 +73,50 @@ class ContainerTest : public CxxTest::TestSuite {
 
             Container c2;
             s >> c2;
-            TS_ASSERT(c2.getDataType() == Container::USER_DATA_9);
+            TS_ASSERT(c2.getDataType() == 1234);
 
-            if (c2.getDataType() == Container::USER_DATA_9) {
+            if (c2.getDataType() == 1234) {
                 TimeStamp ts2;
                 ts2 = c2.getData<TimeStamp>();
 
                 TS_ASSERT(ts.toString() == ts2.toString());
             }
+        }
+
+        void testSimpleContainerConstructor() {
+            TimeStamp ts(1, 2);
+            Container c(ts);
+
+            stringstream s;
+            s << c;
+            s.flush();
+
+            Container c2;
+            s >> c2;
+            TS_ASSERT(c2.getDataType() == ts.getID());
+
+            TimeStamp ts2;
+            ts2 = c2.getData<TimeStamp>();
+
+            TS_ASSERT(ts.toString() == ts2.toString());
+        }
+
+        void testInt32ContainerConstructor() {
+            TimeStamp ts(3, 4);
+            Container c(ts, ts.getID());
+
+            stringstream s;
+            s << c;
+            s.flush();
+
+            Container c2;
+            s >> c2;
+            TS_ASSERT(c2.getDataType() == ts.getID());
+
+            TimeStamp ts2;
+            ts2 = c2.getData<TimeStamp>();
+
+            TS_ASSERT(ts.toString() == ts2.toString());
         }
 };
 

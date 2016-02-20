@@ -104,6 +104,18 @@ namespace hesperia {
                 m_boundingBox = bb;
             }
 
+            int32_t ComplexModel::getID() const {
+                return 829;
+            }
+
+            const string ComplexModel::getShortName() const {
+                return "ComplexModel";
+            }
+
+            const string ComplexModel::getLongName() const {
+                return "hesperia.data.scenario.ComplexModel";
+            }
+
             const string ComplexModel::toString() const {
                 stringstream s;
                 s << Shape::toString() << ", Modelfile: '" << m_modelFile << "', Position: " << m_position.toString() << ", Rotation:" << m_rotation.toString() << ", BoundingBox: " << m_boundingBox.toString();

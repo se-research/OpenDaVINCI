@@ -135,7 +135,7 @@ namespace core {
 
                     virtual void addDataStoreFor(core::base::AbstractDataStore &dataStore);
 
-                    virtual void addDataStoreFor(const core::data::Container::DATATYPE &datatype, core::base::AbstractDataStore &dataStore);
+                    virtual void addDataStoreFor(const int32_t &datatype, core::base::AbstractDataStore &dataStore);
 
                     virtual core::base::KeyValueDataStore& getKeyValueDataStore();
 
@@ -143,7 +143,7 @@ namespace core {
                     // Distribute input data using thread-safe data stores.
                     core::base::Mutex m_dataStoresMutex;
                     vector<core::base::AbstractDataStore*> m_listOfDataStores;
-                    map<core::data::Container::DATATYPE, vector<core::base::AbstractDataStore*> > m_mapOfListOfDataStores;
+                    map<int32_t, vector<core::base::AbstractDataStore*> > m_mapOfListOfDataStores;
 
                     // Store all received data using Container::DATATYPE as key.
                     core::SharedPointer<core::base::KeyValueDataStore> m_keyValueDataStore;

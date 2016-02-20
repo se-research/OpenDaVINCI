@@ -61,14 +61,14 @@ namespace hesperia {
                      *
                      * @return LMS291's ID.
                      */
-                    const string getID() const;
+                    const string getIdentifier() const;
 
                     /**
                      * This method sets the LMS291 ID.
                      *
                      * @param id ID to be set.
                      */
-                    void setID(const string &id);
+                    void setIdentifier(const string &id);
 
                     /**
                      * This method returns the raw LMS291 message.
@@ -87,10 +87,13 @@ namespace hesperia {
                     virtual ostream& operator<<(ostream &out) const;
                     virtual istream& operator>>(istream &in);
 
+                    virtual int32_t getID() const;
+                    virtual const string getShortName() const;
+                    virtual const string getLongName() const;
                     virtual const string toString() const;
 
                 private:
-                    string m_id;
+                    string m_identifier;
                     string m_message;
             };
 

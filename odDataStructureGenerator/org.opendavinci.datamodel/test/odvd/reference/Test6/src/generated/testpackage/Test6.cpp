@@ -96,6 +96,18 @@ namespace testpackage {
 			return "testpackage.Test6";
 		}
 	
+		int32_t Test6::getID() const {
+			return Test6::ID();
+		}
+	
+		const string Test6::getShortName() const {
+			return Test6::ShortName();
+		}
+	
+		const string Test6::getLongName() const {
+			return Test6::LongName();
+		}
+	
 		bool Test6::getAttribute1() const {
 			return m_attribute1;
 		}

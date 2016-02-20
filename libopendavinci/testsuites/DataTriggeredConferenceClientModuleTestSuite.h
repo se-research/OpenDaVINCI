@@ -110,6 +110,18 @@ class TestSuiteExample7Data : public core::data::SerializableData {
 		    return s.str();
 	    }
 
+        int32_t getID() const {
+            return 2345;
+        }
+
+        const string getLongName() const {
+            return "TestSuiteExample7Data";
+        }
+
+        const string getShortName() const {
+            return getLongName();
+        }
+
 	private:
 		uint32_t m_numericalValue;
 };
@@ -151,7 +163,7 @@ class TimeTriggeredConferenceClientModuleTestModule : public TimeTriggeredConfer
         		data.setNumericalValue(counter);
 
         		// Create container with user data type ID 5.
-        		Container c(Container::USER_DATA_5, data);
+        		Container c(data);
 
         		// Send container.
         		getConference().send(c);
@@ -195,7 +207,8 @@ class DataTriggeredConferenceClientModuleTestModule : public DataTriggeredConfer
         }
 
         virtual void nextContainer(Container &c) {
-            if (c.getDataType() == Container::USER_DATA_5) {
+            TestSuiteExample7Data t;
+            if (c.getDataType() == t.getID()) {
                 nextContainerCalled = true;
                 correctOrder &= nextContainerCalled;
                 counter++;

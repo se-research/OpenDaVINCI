@@ -66,6 +66,18 @@ namespace hesperia {
                 m_origin = o;
             }
 
+            int32_t WGS84CoordinateSystem::getID() const {
+                return 849;
+            }
+
+            const string WGS84CoordinateSystem::getShortName() const {
+                return "WGS84CoordinateSystem";
+            }
+
+            const string WGS84CoordinateSystem::getLongName() const {
+                return "hesperia.data.scenario.WGS84CoordinateSystem";
+            }
+
             const string WGS84CoordinateSystem::toString() const {
                 stringstream s;
                 s << CoordinateSystem::toString() << ", " << m_origin.toString();

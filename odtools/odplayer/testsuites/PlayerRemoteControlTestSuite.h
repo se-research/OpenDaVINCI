@@ -90,7 +90,7 @@ class PlayerModuleTestContainerListener : public ContainerListener {
         }
 
         virtual void nextContainer(Container &c) {
-            if ( (c.getDataType() == Container::TIMESTAMP) ) {
+            if ( (c.getDataType() == TimeStamp::ID()) ) {
                 fifo->enter(c);
             }
         }
@@ -127,27 +127,27 @@ class PlayerModuleTest : public CxxTest::TestSuite,
 
             // Write data.
             TimeStamp ts1(0, 1);
-            Container c1(Container::TIMESTAMP, ts1);
+            Container c1(ts1);
             c1.setReceivedTimeStamp(ts1);
             fout << c1;
 
             TimeStamp ts2(1, 2);
-            Container c2(Container::TIMESTAMP, ts2);
+            Container c2(ts2);
             c2.setReceivedTimeStamp(ts2);
             fout << c2;
 
             TimeStamp ts3(2, 3);
-            Container c3(Container::TIMESTAMP, ts3);
+            Container c3(ts3);
             c3.setReceivedTimeStamp(ts3);
             fout << c3;
 
             TimeStamp ts4(3, 4);
-            Container c4(Container::TIMESTAMP, ts4);
+            Container c4(ts4);
             c4.setReceivedTimeStamp(ts4);
             fout << c4;
 
             TimeStamp ts5(4, 5);
-            Container c5(Container::TIMESTAMP, ts5);
+            Container c5(ts5);
             c5.setReceivedTimeStamp(ts5);
             fout << c5;
 
@@ -205,7 +205,7 @@ class PlayerModuleTest : public CxxTest::TestSuite,
             // Start playing.
             coredata::player::PlayerCommand playerCommand;
             playerCommand.setCommand(coredata::player::PlayerCommand::PLAY);
-            Container cPC1(Container::PLAYER_COMMAND, playerCommand);
+            Container cPC1(playerCommand);
             conference->send(cPC1);
 
             uint32_t numberOfElements = 0;
@@ -216,7 +216,7 @@ class PlayerModuleTest : public CxxTest::TestSuite,
 
             // Pause playing.
             playerCommand.setCommand(coredata::player::PlayerCommand::PAUSE);
-            Container cPC2(Container::PLAYER_COMMAND, playerCommand);
+            Container cPC2(playerCommand);
             conference->send(cPC2);
 
             ////////////////////////////////////////////////////////////////////
@@ -239,7 +239,7 @@ class PlayerModuleTest : public CxxTest::TestSuite,
 
             // Rewind.
             playerCommand.setCommand(coredata::player::PlayerCommand::REWIND);
-            Container cPC3(Container::PLAYER_COMMAND, playerCommand);
+            Container cPC3(playerCommand);
             conference->send(cPC3);
 
             Thread::usleepFor(1000);
@@ -252,7 +252,7 @@ class PlayerModuleTest : public CxxTest::TestSuite,
             // Clear queue.
             ptcl.getQueue().clear();
             playerCommand.setCommand(coredata::player::PlayerCommand::PLAY);
-            Container cPC4(Container::PLAYER_COMMAND, playerCommand);
+            Container cPC4(playerCommand);
             conference->send(cPC4);
 
             numberOfElements = 0;
@@ -267,7 +267,7 @@ class PlayerModuleTest : public CxxTest::TestSuite,
 
             // Pause playing.
             playerCommand.setCommand(coredata::player::PlayerCommand::PAUSE);
-            Container cPC5(Container::PLAYER_COMMAND, playerCommand);
+            Container cPC5(playerCommand);
             conference->send(cPC5);
 
             TS_ASSERT(ptcl.getQueue().getSize() == 1);
@@ -287,7 +287,7 @@ class PlayerModuleTest : public CxxTest::TestSuite,
             // Clear queue.
             ptcl.getQueue().clear();
             playerCommand.setCommand(coredata::player::PlayerCommand::PLAY);
-            Container cPC6(Container::PLAYER_COMMAND, playerCommand);
+            Container cPC6(playerCommand);
             conference->send(cPC6);
 
             numberOfElements = 0;
@@ -302,7 +302,7 @@ class PlayerModuleTest : public CxxTest::TestSuite,
 
             // Pause playing.
             playerCommand.setCommand(coredata::player::PlayerCommand::PAUSE);
-            Container cPC7(Container::PLAYER_COMMAND, playerCommand);
+            Container cPC7(playerCommand);
             conference->send(cPC7);
 
             TS_ASSERT(ptcl.getQueue().getSize() == 1);
@@ -321,7 +321,7 @@ class PlayerModuleTest : public CxxTest::TestSuite,
             // Clear queue.
             ptcl.getQueue().clear();
             playerCommand.setCommand(coredata::player::PlayerCommand::STEP_FORWARD);
-            Container cPC8(Container::PLAYER_COMMAND, playerCommand);
+            Container cPC8(playerCommand);
             conference->send(cPC8);
 
             numberOfElements = 0;
@@ -340,7 +340,7 @@ class PlayerModuleTest : public CxxTest::TestSuite,
             // Clear queue.
             ptcl.getQueue().clear();
             playerCommand.setCommand(coredata::player::PlayerCommand::STEP_FORWARD);
-            Container cPC9(Container::PLAYER_COMMAND, playerCommand);
+            Container cPC9(playerCommand);
             conference->send(cPC9);
 
             numberOfElements = 0;

@@ -87,6 +87,18 @@
 		return "Test11MapBool";
 	}
 
+	int32_t Test11MapBool::getID() const {
+		return Test11MapBool::ID();
+	}
+
+	const string Test11MapBool::getShortName() const {
+		return Test11MapBool::ShortName();
+	}
+
+	const string Test11MapBool::getLongName() const {
+		return Test11MapBool::LongName();
+	}
+
 	std::map<bool, bool> Test11MapBool::getMapOfMyBoolBoolMap() const {
 		return m_mapOfMyBoolBoolMap;
 	}

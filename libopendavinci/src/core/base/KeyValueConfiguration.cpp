@@ -44,6 +44,18 @@ namespace core {
 
         KeyValueConfiguration::~KeyValueConfiguration() {}
 
+        int32_t KeyValueConfiguration::getID() const {
+            return 2;
+        }
+
+        const string KeyValueConfiguration::getShortName() const {
+            return "KeyValueConfiguration";
+        }
+
+        const string KeyValueConfiguration::getLongName() const {
+            return "core.base.KeyValueConfiguration";
+        }
+
         const string KeyValueConfiguration::toString() const {
             stringstream sstr;
             writeTo(sstr);

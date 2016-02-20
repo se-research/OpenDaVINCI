@@ -83,6 +83,27 @@ class Test15Simple : public core::data::SerializableData, public core::base::Vis
 		 */
 		static const string LongName();
 
+		/**
+		 * This method returns the message id.
+		 *
+		 * @return Message id.
+		 */
+		virtual int32_t getID() const;
+
+		/**
+		 * This method returns the short message name.
+		 *
+		 * @return Short message name.
+		 */
+		virtual const string getShortName() const;
+
+		/**
+		 * This method returns the long message name include package/sub structure.
+		 *
+		 * @return Long message name.
+		 */
+		virtual const string getLongName() const;
+
 	public:
 		virtual void accept(core::base::Visitor &v);
 

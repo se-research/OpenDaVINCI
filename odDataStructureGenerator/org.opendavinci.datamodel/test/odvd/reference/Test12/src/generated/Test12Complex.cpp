@@ -87,6 +87,18 @@
 		return "Test12Complex";
 	}
 
+	int32_t Test12Complex::getID() const {
+		return Test12Complex::ID();
+	}
+
+	const string Test12Complex::getShortName() const {
+		return Test12Complex::ShortName();
+	}
+
+	const string Test12Complex::getLongName() const {
+		return Test12Complex::LongName();
+	}
+
 	bool Test12Complex::getAttribute1() const {
 		return m_attribute1;
 	}

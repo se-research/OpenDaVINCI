@@ -55,6 +55,7 @@ using namespace core::base::module;
 using namespace core::data;
 using namespace context::base;
 
+const int32_t Container_POSITION = 15;
 
 class LocalPoint3 : public core::data::SerializableData {
     private:
@@ -113,6 +114,18 @@ class LocalPoint3 : public core::data::SerializableData {
 
         const string toString() const {
             return "";
+        }
+
+        int32_t getID() const {
+            return 35;
+        }
+
+        const string getLongName() const {
+            return "LocalPoint3";
+        }
+
+        const string getShortName() const {
+            return getLongName();
         }
 
         ostream& operator<<(ostream &out) const {
@@ -174,6 +187,18 @@ class LocalPosition : public core::data::SerializableData {
             return "";
         }
 
+        int32_t getID() const {
+            return Container_POSITION;
+        }
+
+        const string getLongName() const {
+            return "LocalPosition";
+        }
+
+        const string getShortName() const {
+            return getLongName();
+        }
+
         void setPosition(const LocalPoint3 &p) {
             m_position = p;
         }
@@ -229,6 +254,18 @@ class RuntimeControlContainerMultipleAppsTestData : public core::data::Serializa
         uint32_t m_int;
         string m_id;
 
+        int32_t getID() const {
+            return 37;
+        }
+
+        const string getLongName() const {
+            return "RuntimeControlContainerMultipleAppsTestData";
+        }
+
+        const string getShortName() const {
+            return getLongName();
+        }
+
         const string toString() const {
             stringstream sstr;
             sstr << m_id << " " << m_int;
@@ -281,7 +318,7 @@ class RuntimeControlContainerMultipleAppsTestModule : public TimeTriggeredConfer
 
             m_config.getValue<string>("runtimecontrolcontainermultipleappstestmodule.key1");
 
-            addDataStoreFor(Container::POSITION, m_receivedData);
+            addDataStoreFor(Container_POSITION, m_receivedData);
             while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
                 m_cycleCounter++;
 
@@ -291,7 +328,7 @@ class RuntimeControlContainerMultipleAppsTestModule : public TimeTriggeredConfer
                 RuntimeControlContainerMultipleAppsTestData tcctsd;
                 tcctsd.m_int = m_cycleCounter;
                 tcctsd.m_id = sstrId.str();
-                Container c(Container::UNDEFINEDDATA, tcctsd);
+                Container c(tcctsd);
                 getConference().send(c);
             }
 
@@ -383,7 +420,7 @@ class RuntimeControlContainerMultipleAppsTestSystemPartReply : public SystemFeed
             LocalPosition p;
             p.setPosition(LocalPoint3(m_replyCounter, m_replyCounter+1, m_replyCounter+2));
 
-            Container c(Container::POSITION, p);
+            Container c(p);
             sender.sendToSystemsUnderTest(c);
 
             m_replyCounter++;
@@ -425,7 +462,7 @@ class RuntimeControlContainerMultipleAppsTestSystemPartReplyRotation : public Sy
             LocalPosition p;
             p.setRotation(LocalPoint3(m_replyCounter, m_replyCounter+1, m_replyCounter+2));
 
-            Container c(Container::POSITION, p);
+            Container c(p);
             sender.sendToSystemsUnderTest(c);
 
             m_replyCounter++;

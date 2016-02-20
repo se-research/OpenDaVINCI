@@ -332,6 +332,18 @@ namespace hesperia {
                 return center;
             }
 
+            int32_t Polygon::getID() const {
+                return 25;
+            }
+
+            const string Polygon::getShortName() const {
+                return "Polygon";
+            }
+
+            const string Polygon::getLongName() const {
+                return "hesperia.data.environment.Polygon";
+            }
+
             const string Polygon::toString() const {
                 stringstream s;
                 s << "Polygon contains " << m_listOfVertices.size() << " vertices: " << endl;

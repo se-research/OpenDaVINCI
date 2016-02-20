@@ -138,31 +138,31 @@ class RecorderTest : public CxxTest::TestSuite,
             Thread::usleepFor(10000000);
             // Send data.
             TimeStamp ts1(0, 1);
-            Container c1(Container::TIMESTAMP, ts1);
+            Container c1(ts1);
             conference->send(c1);
 
             Thread::usleepFor(100000);
 
             TimeStamp ts2(1, 2);
-            Container c2(Container::TIMESTAMP, ts2);
+            Container c2(ts2);
             conference->send(c2);
 
             Thread::usleepFor(100000);
 
             TimeStamp ts3(2, 3);
-            Container c3(Container::TIMESTAMP, ts3);
+            Container c3(ts3);
             conference->send(c3);
 
             Thread::usleepFor(100000);
 
             TimeStamp ts4(3, 4);
-            Container c4(Container::TIMESTAMP, ts4);
+            Container c4(ts4);
             conference->send(c4);
 
             Thread::usleepFor(100000);
 
             TimeStamp ts5(4, 5);
-            Container c5(Container::TIMESTAMP, ts5);
+            Container c5(ts5);
             conference->send(c5);
 
             Thread::usleepFor(100000);

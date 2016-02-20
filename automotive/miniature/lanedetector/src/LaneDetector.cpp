@@ -44,7 +44,6 @@ namespace automotive {
         using namespace core::data;
         using namespace coredata::image;
         using namespace tools::player;
-        using namespace automotive;
 
         LaneDetector::LaneDetector(const int32_t &argc, char **argv) :
             TimeTriggeredConferenceClientModule(argc, argv, "LaneDetector"),
@@ -79,7 +78,7 @@ namespace automotive {
         bool LaneDetector::readSharedImage(Container &c) {
 	        bool retVal = false;
 
-	        if (c.getDataType() == Container::SHARED_IMAGE) {
+	        if (c.getDataType() == coredata::image::SharedImage::ID()) {
 		        SharedImage si = c.getData<SharedImage> ();
 
 		        // Check if we have already attached to the shared memory containing the image from the virtual camera.
@@ -137,7 +136,7 @@ namespace automotive {
             sd.setExampleData(1234.56);
 
             // Create container for finally sending the data.
-            Container c(Container::USER_DATA_1, sd);
+            Container c(sd);
             // Send container.
             getConference().send(c);
         }
@@ -182,10 +181,10 @@ namespace automotive {
                 }
                 else {
 		            // Get the most recent available container for a SHARED_IMAGE.
-		            c = getKeyValueDataStore().get(Container::SHARED_IMAGE);
-                }                
+		            c = getKeyValueDataStore().get(coredata::image::SharedImage::ID());
+                }
 
-		        if (c.getDataType() == Container::SHARED_IMAGE) {
+		        if (c.getDataType() == coredata::image::SharedImage::ID()) {
 			        // Example for processing the received container.
 			        has_next_frame = readSharedImage(c);
 		        }

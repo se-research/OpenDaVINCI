@@ -71,7 +71,7 @@ namespace tools {
                     ms.setConsumedSize(0);
 
                     // Save meta information.
-                    c = Container(Container::UNDEFINEDDATA, ms);
+                    c = Container(ms);
 
                     // After processing, put memory segment back into input queue.
                     m_bufferIn.enter(c);

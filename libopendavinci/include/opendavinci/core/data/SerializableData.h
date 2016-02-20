@@ -40,6 +40,27 @@ namespace core {
                 virtual ~SerializableData();
 
                 /**
+                 * This method returns the message ID.
+                 *
+                 * @return Message identifier.
+                 */
+                virtual int32_t getID() const = 0;
+
+                /**
+                 * This method returns the message name.
+                 *
+                 * @return Message name.
+                 */
+                virtual const string getShortName() const = 0;
+
+                /**
+                 * This method returns the message name including namespace.
+                 *
+                 * @return Message name including namespace.
+                 */
+                virtual const string getLongName() const = 0;
+
+                /**
                  * This method returns a human readable format
                  * of the contained data.
                  *

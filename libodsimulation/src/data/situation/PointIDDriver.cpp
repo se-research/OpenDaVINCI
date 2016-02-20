@@ -198,6 +198,18 @@ namespace hesperia {
             	return m_listOfPointIDs;
             }
 
+            int32_t PointIDDriver::getID() const {
+                return 865;
+            }
+
+            const string PointIDDriver::getShortName() const {
+                return "PointIDDriver";
+            }
+
+            const string PointIDDriver::getLongName() const {
+                return "hesperia.data.situation.PointIDDriver";
+            }
+
             const string PointIDDriver::toString() const {
                 stringstream s;
                 s << "Type: " << getType() << ", start type: " << ((getStartType() != NULL) ? getStartType()->toString() : "" ) << ", stop type: " << ((getStopType() != NULL) ? getStopType()->toString() : "" ) << ", constant acceleration: " << getConstantAcceleration() << ", constant velocity: " << getConstantVelocity();

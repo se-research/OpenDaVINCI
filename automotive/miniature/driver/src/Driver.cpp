@@ -60,22 +60,22 @@ namespace automotive {
                 // In the following, you find example for the various data sources that are available:
 
                 // 1. Get most recent vehicle data:
-                Container containerVehicleData = getKeyValueDataStore().get(Container::VEHICLEDATA);
+                Container containerVehicleData = getKeyValueDataStore().get(automotive::VehicleData::ID());
                 VehicleData vd = containerVehicleData.getData<VehicleData> ();
                 cerr << "Most recent vehicle data: '" << vd.toString() << "'" << endl;
 
                 // 2. Get most recent sensor board data:
-                Container containerSensorBoardData = getKeyValueDataStore().get(Container::USER_DATA_0);
+                Container containerSensorBoardData = getKeyValueDataStore().get(automotive::miniature::SensorBoardData::ID());
                 SensorBoardData sbd = containerSensorBoardData.getData<SensorBoardData> ();
                 cerr << "Most recent sensor board data: '" << sbd.toString() << "'" << endl;
 
                 // 3. Get most recent user button data:
-                Container containerUserButtonData = getKeyValueDataStore().get(Container::USER_BUTTON);
+                Container containerUserButtonData = getKeyValueDataStore().get(automotive::miniature::UserButtonData::ID());
                 UserButtonData ubd = containerUserButtonData.getData<UserButtonData> ();
                 cerr << "Most recent user button data: '" << ubd.toString() << "'" << endl;
 
                 // 4. Get most recent steering data as fill from lanedetector for example:
-                Container containerSteeringData = getKeyValueDataStore().get(Container::USER_DATA_1);
+                Container containerSteeringData = getKeyValueDataStore().get(automotive::miniature::SteeringData::ID());
                 SteeringData sd = containerSteeringData.getData<SteeringData> ();
                 cerr << "Most recent steering data: '" << sd.toString() << "'" << endl;
 
@@ -101,7 +101,7 @@ namespace automotive {
                 vc.setFlashingLightsRight(true);
 
                 // Create container for finally sending the data.
-                Container c(Container::VEHICLECONTROL, vc);
+                Container c(vc);
                 // Send container.
                 getConference().send(c);
             }

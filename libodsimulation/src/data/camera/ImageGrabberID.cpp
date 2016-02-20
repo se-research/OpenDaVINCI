@@ -75,6 +75,18 @@ namespace hesperia {
                 return in;
             }
 
+            int32_t ImageGrabberID::getID() const {
+                return 22;
+            }
+
+            const string ImageGrabberID::getShortName() const {
+                return "ImageGrabberID";
+            }
+
+            const string ImageGrabberID::getLongName() const {
+                return "hesperia.data.camera.ImageGrabberID";
+            }
+
             const string ImageGrabberID::toString() const {
                 return m_name;
             }

@@ -40,39 +40,55 @@ namespace hesperia {
 
             OtherVehicleState::OtherVehicleState() :
                     PointShapedObject(),
-                    m_id(0) {}
+                    m_identifier(0) {}
 
             OtherVehicleState::OtherVehicleState(const uint32_t &id,
-						const Point3 &position, const Point3 &rotation,
-                        const Point3 &velocity, const Point3 &acceleration) :
+                    const Point3 &position, const Point3 &rotation,
+                    const Point3 &velocity, const Point3 &acceleration) :
                     PointShapedObject(position, rotation, velocity, acceleration),
-                    m_id(id) {}
+                    m_identifier(id) {}
 
             OtherVehicleState::OtherVehicleState(const OtherVehicleState &obj) :
                     PointShapedObject(obj),
-                    m_id(obj.getID()) {}
+                    m_identifier(obj.getIdentifier()) {}
 
             OtherVehicleState::~OtherVehicleState() {}
 
             OtherVehicleState& OtherVehicleState::operator=(const OtherVehicleState &obj) {
                 PointShapedObject::operator=(obj);
-                setID(obj.getID());
+                setIdentifier(obj.getIdentifier());
 
                 return (*this);
             }
 
+            int32_t OtherVehicleState::ID() {
+                return 36;
+            }
+
+            int32_t OtherVehicleState::getID() const {
+                return 36;
+            }
+
+            const string OtherVehicleState::getShortName() const {
+                return "OtherVehicleState";
+            }
+
+            const string OtherVehicleState::getLongName() const {
+                return "hesperia.data.environment.OtherVehicleState";
+            }
+
             const string OtherVehicleState::toString() const {
                 stringstream s;
-                s << "Other Vehicle State (ID: " << m_id << ")" << PointShapedObject::toString();
+                s << "Other Vehicle State (ID: " << m_identifier << ")" << PointShapedObject::toString();
                 return s.str();
             }
 
-            uint32_t OtherVehicleState::getID() const {
-            	return m_id;
+            uint32_t OtherVehicleState::getIdentifier() const {
+                return m_identifier;
             }
 
-            void OtherVehicleState::setID(const uint32_t &id) {
-            	m_id = id;
+            void OtherVehicleState::setIdentifier(const uint32_t &id) {
+                m_identifier = id;
             }
 
             ostream& OtherVehicleState::operator<<(ostream &out) const {
@@ -85,7 +101,7 @@ namespace hesperia {
                 core::SharedPointer<Serializer> s = sf.getSerializer(out);
 
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                        m_id);
+                        m_identifier);
 
                 return out;
             }
@@ -100,7 +116,7 @@ namespace hesperia {
                 core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
                 d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                       m_id);
+                       m_identifier);
 
                 return in;
             }

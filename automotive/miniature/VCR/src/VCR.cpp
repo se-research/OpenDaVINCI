@@ -71,7 +71,7 @@ namespace automotive {
         bool VCR::readSharedImage(Container &c) {
 	        bool retVal = false;
 
-	        if (c.getDataType() == Container::SHARED_IMAGE) {
+	        if (c.getDataType() == coredata::image::SharedImage::ID()) {
 		        SharedImage si = c.getData<SharedImage> ();
 
 		        // Check if we have already attached to the shared memory.
@@ -140,10 +140,10 @@ namespace automotive {
 	        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
 		        bool has_next_frame = false;
 
-		        // Get the most recent available container for a SHARED_IMAGE.
-		        Container c = getKeyValueDataStore().get(Container::SHARED_IMAGE);
+		        // Get the most recent available container for a SharedImage.
+		        Container c = getKeyValueDataStore().get(coredata::image::SharedImage::ID());
 
-		        if (c.getDataType() == Container::SHARED_IMAGE) {
+		        if (c.getDataType() == coredata::image::SharedImage::ID()) {
 			        // Example for processing the received container.
 			        has_next_frame = readSharedImage(c);
 		        }

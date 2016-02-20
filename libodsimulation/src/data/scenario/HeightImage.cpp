@@ -87,6 +87,18 @@ namespace hesperia {
                 m_maximumHeight = maxH;
             }
 
+            int32_t HeightImage::getID() const {
+                return 819;
+            }
+
+            const string HeightImage::getShortName() const {
+                return "HeightImage";
+            }
+
+            const string HeightImage::getLongName() const {
+                return "hesperia.data.scenario.HeightImage";
+            }
+
             const string HeightImage::toString() const {
                 stringstream s;
                 s << Image::toString()

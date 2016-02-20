@@ -335,7 +335,7 @@ namespace cockpit {
             }
 
             void BirdsEyeMapMapWidget::nextContainer(Container &c) {
-                if (c.getDataType() == Container::EGOSTATE) {
+                if (c.getDataType() == hesperia::data::environment::EgoState::ID()) {
                     Lock l(m_rootMutex);
                     m_egoState = c.getData<EgoState>();
                     m_numberOfReceivedEgoStates++;
@@ -348,7 +348,7 @@ namespace cockpit {
                     }
                 }
 
-                if (c.getDataType() == Container::ROUTE) {
+                if (c.getDataType() == hesperia::data::planning::Route::ID()) {
                     if (m_plannedRoute != NULL) {
                         Lock l(m_rootMutex);
                         hesperia::data::planning::Route r = c.getData<hesperia::data::planning::Route>();
@@ -369,7 +369,7 @@ namespace cockpit {
                     }
                 }
 
-                if (c.getDataType() == Container::OBSTACLE) {
+                if (c.getDataType() == hesperia::data::environment::Obstacle::ID()) {
                     if (m_obstaclesRoot != NULL) {
                         Lock l(m_rootMutex);
                         Obstacle obstacle = c.getData<Obstacle>();
@@ -377,7 +377,7 @@ namespace cockpit {
                             case Obstacle::REMOVE:
                             {
                                 // Remove obstacle.
-                                map<uint32_t, SceneNode*>::iterator result = m_mapOfObstacles.find(obstacle.getID());
+                                map<uint32_t, SceneNode*>::iterator result = m_mapOfObstacles.find(obstacle.getObstacleID());
                                 if (result != m_mapOfObstacles.end()) {
                                     // Remove child from scene graph node.
                                     m_obstaclesRoot->removeChild(result->second);
@@ -390,7 +390,7 @@ namespace cockpit {
 
                             case Obstacle::UPDATE:
                             {
-                                map<uint32_t, SceneNode*>::iterator result = m_mapOfObstacles.find(obstacle.getID());
+                                map<uint32_t, SceneNode*>::iterator result = m_mapOfObstacles.find(obstacle.getObstacleID());
                                 if (result != m_mapOfObstacles.end()) {
                                     // Remove child from scene graph node.
                                     m_obstaclesRoot->removeChild(result->second);
@@ -401,7 +401,7 @@ namespace cockpit {
                                 stringstream contourName;
                                 contourName << "Obstacles";
                                 hesperia::scenegraph::primitives::Polygon *contour = new hesperia::scenegraph::primitives::Polygon(SceneNodeDescriptor(contourName.str()), obstacle.getPolygon().getVertices(), Point3(0, 1, 0), 2);
-                                m_mapOfObstacles[obstacle.getID()] = contour;
+                                m_mapOfObstacles[obstacle.getObstacleID()] = contour;
                                 m_obstaclesRoot->addChild(contour);
                             }
                             break;

@@ -57,6 +57,18 @@
 		return "Test9B";
 	}
 
+	int32_t Test9B::getID() const {
+		return Test9B::ID();
+	}
+
+	const string Test9B::getShortName() const {
+		return Test9B::ShortName();
+	}
+
+	const string Test9B::getLongName() const {
+		return Test9B::LongName();
+	}
+
 	bool Test9B::getAttribute1() const {
 		return m_attribute1;
 	}

@@ -350,6 +350,18 @@ namespace hesperia {
                     m_message = sstr.str();
                 }
 
+                int32_t GPRMC::getID() const {
+                    return 18;
+                }
+
+                const string GPRMC::getShortName() const {
+                    return "GPRMC";
+                }
+
+                const string GPRMC::getLongName() const {
+                    return "hesperia.data.sensor.nmea.GPRMC";
+                }
+
                 const string GPRMC::toString() const {
                     return m_message;
                 }

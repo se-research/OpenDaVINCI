@@ -94,6 +94,22 @@ class TestSuiteExample7Data : public core::data::SerializableData {
 		    return in;
 	    }
 
+        static int32_t ID() {
+            return 33;
+        }
+
+        virtual int32_t getID() const {
+            return 33;
+        }
+
+        virtual const string getShortName() const {
+            return "TestSuiteExample7Data";
+        }
+
+        virtual const string getLongName() const {
+            return getShortName();
+        }
+
 		virtual const string toString() const {
 		    stringstream s;
 		    s << m_numericalValue;
@@ -132,8 +148,8 @@ class Example7SenderApp : public TimeTriggeredConferenceClientModule {
         		TestSuiteExample7Data data;
         		data.setNumericalValue(counter++);
 
-        		// Create container with user data type ID 5.
-        		Container c(Container::USER_DATA_5, data);
+        		// Create container.
+        		Container c(data);
 
         		// Send container.
         		getConference().send(c);
@@ -178,7 +194,7 @@ class Example7ReceiverApp : public TimeTriggeredConferenceClientModule {
             uint32_t counter = 0;
 
         	while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
-			    Container c = getKeyValueDataStore().get(Container::USER_DATA_5);
+			    Container c = getKeyValueDataStore().get(TestSuiteExample7Data::ID());
 			    TestSuiteExample7Data data = c.getData<TestSuiteExample7Data>();
                 sum += data.getNumericalValue();
 			    cout << "Latest container from data type " << (uint32_t)c.getDataType() << ", content: " << data.toString() << ", sum = " << sum << endl;

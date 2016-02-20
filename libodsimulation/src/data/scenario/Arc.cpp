@@ -103,6 +103,18 @@ namespace hesperia {
                 m_rotationZ = rotationZ;
             }
 
+            int32_t Arc::getID() const {
+                return 826;
+            }
+
+            const string Arc::getShortName() const {
+                return "Arc";
+            }
+
+            const string Arc::getLongName() const {
+                return "hesperia.data.scenario.Arc";
+            }
+
             const string Arc::toString() const {
                 stringstream sstr;
                 sstr << "R: " << getRadius() << ", [" << getBeginInterval() << "; " << getEndInterval() << "], Rotation: " << getRotationZ();

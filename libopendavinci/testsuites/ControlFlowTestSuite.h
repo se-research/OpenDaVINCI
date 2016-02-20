@@ -159,6 +159,18 @@ class ControlFlowTestSampleData : public core::data::SerializableData {
             return sstr.str();
         }
 
+        int32_t getID() const {
+            return 0;
+        }
+
+        const string getLongName() const {
+            return "ControlFlowTestSampleData";
+        }
+
+        const string getShortName() const {
+            return getLongName();
+        }
+
         ostream& operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
@@ -199,7 +211,7 @@ class ControlFlowTestApp : public TimeTriggeredConferenceClientModule {
                 const uint32_t SIZE = myFIFO.getSize();
                 for(uint32_t i = 0; i < SIZE; i++) {
                     Container c = myFIFO.leave();
-                    if (c.getDataType() == Container::TIMESTAMP) {
+                    if (c.getDataType() == TimeStamp::ID()) {
                         TimeStamp ts = c.getData<TimeStamp>();
                         clog << "ControlFlowTestApp received '" << ts.toString() << "'" << endl;
 
@@ -209,7 +221,7 @@ class ControlFlowTestApp : public TimeTriggeredConferenceClientModule {
                         // Send some data.
                         ControlFlowTestSampleData cftsd;
                         cftsd.m_int = m_counter;
-                        Container c2(Container::UNDEFINEDDATA, cftsd);
+                        Container c2(cftsd, Container::UNDEFINEDDATA);
                         getConference().send(c2);
                     }
                 }
@@ -358,7 +370,7 @@ class ControlFlowTest : public CxxTest::TestSuite,
 
                 // Send to application.
                 TimeStamp tsSendFromSimulatorToContainerConference(i, i+1);
-                Container c = Container(Container::TIMESTAMP, tsSendFromSimulatorToContainerConference);
+                Container c = Container(tsSendFromSimulatorToContainerConference);
                 controlledCF->sendToSystemsUnderTest(c);
 
                 cfts.getBlockableContainerReceiver().setNextContainerAllowed(true);

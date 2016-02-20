@@ -121,6 +121,18 @@ namespace hesperia {
                 m_listOfVertices.push_back(v);
             }
 
+            int32_t Polygon::getID() const {
+                return 827;
+            }
+
+            const string Polygon::getShortName() const {
+                return "Polygon";
+            }
+
+            const string Polygon::getLongName() const {
+                return "hesperia.data.scenario.Polygon";
+            }
+
             const string Polygon::toString() const {
                 stringstream s;
                 s << Shape::toString() << ", Height: " << m_height << ", Color: " << m_color.toString();

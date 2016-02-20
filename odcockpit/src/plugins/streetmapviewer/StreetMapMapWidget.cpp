@@ -132,7 +132,7 @@ namespace cockpit {
             }
 
             void StreetMapMapWidget::nextContainer(Container &c) {
-                if (c.getDataType() == Container::EGOSTATE) {
+                if (c.getDataType() == hesperia::data::environment::EgoState::ID()) {
                     EgoState es = c.getData<EgoState>();
                     cout << "[StreetMapMapWidget]: " << es.toString() << endl;
                 }

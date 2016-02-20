@@ -57,6 +57,18 @@
 		return "Test9A";
 	}
 
+	int32_t Test9A::getID() const {
+		return Test9A::ID();
+	}
+
+	const string Test9A::getShortName() const {
+		return Test9A::ShortName();
+	}
+
+	const string Test9A::getLongName() const {
+		return Test9A::LongName();
+	}
+
 	uint32_t Test9A::getAttribute1() const {
 		return m_attribute1;
 	}

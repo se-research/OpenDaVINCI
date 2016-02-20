@@ -189,7 +189,7 @@ class ControlBehaviour;
         while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
             controller->doWork();
 
-            Container container(Container::EGOSTATE, controller->getEgoState());
+            Container container(controller->getEgoState());
 /*
         // Update internal data.
         m_vehicleData.setPosition(position);

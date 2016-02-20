@@ -47,7 +47,7 @@ namespace hesperia {
 
             Object::Object() :
                     m_name(""),
-                    m_id(0),
+                    m_identifier(0),
                     m_shape(NULL),
                     m_rotationZ(0),
                     m_behavior(NULL) {}
@@ -55,7 +55,7 @@ namespace hesperia {
             Object::Object(const Object &obj) :
                     SerializableData(),
                     m_name(obj.m_name),
-                    m_id(obj.m_id),
+                    m_identifier(obj.m_identifier),
                     m_shape(NULL),
                     m_rotationZ(obj.m_rotationZ),
                     m_behavior(NULL) {
@@ -73,7 +73,7 @@ namespace hesperia {
 
             Object& Object::operator=(const Object &obj) {
                 setName(obj.getName());
-                setID(obj.getID());
+                setIdentifier(obj.getIdentifier());
                 setRotationZ(obj.getRotationZ());
 
                 // Clean up.
@@ -153,12 +153,12 @@ namespace hesperia {
                 m_name = name;
             }
 
-            uint32_t Object::getID() const {
-                return m_id;
+            uint32_t Object::getIdentifier() const {
+                return m_identifier;
             }
 
-            void Object::setID(const uint32_t &id) {
-                m_id = id;
+            void Object::setIdentifier(const uint32_t &id) {
+                m_identifier = id;
             }
 
             Shape* Object::getShape() const {
@@ -189,9 +189,21 @@ namespace hesperia {
                 }
             }
 
+            int32_t Object::getID() const {
+                return 854;
+            }
+
+            const string Object::getShortName() const {
+                return "Object";
+            }
+
+            const string Object::getLongName() const {
+                return "hesperia.data.situation.Object";
+            }
+
             const string Object::toString() const {
                 stringstream s;
-                s << "Object: '" << m_name << "', ID: " << m_id << ", RotationZ: " << m_rotationZ;
+                s << "Object: '" << m_name << "', ID: " << m_identifier << ", RotationZ: " << m_rotationZ;
                 return s.str();
             }
 
@@ -204,7 +216,7 @@ namespace hesperia {
                         m_name);
 
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                        m_id);
+                        m_identifier);
 
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('h', 'a', 's', 's', 'h', 'a', 'p', 'e') >::RESULT,
                         (m_shape != NULL));
@@ -246,7 +258,7 @@ namespace hesperia {
                        m_name);
 
                 d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                       m_id);
+                       m_identifier);
 
                 bool hasShape = false;
                 d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('h', 'a', 's', 's', 'h', 'a', 'p', 'e') >::RESULT,

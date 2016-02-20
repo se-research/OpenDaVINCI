@@ -46,13 +46,13 @@ class Road;
             using namespace scenario;
 
             Lane::Lane() :
-                    m_id(0),
+                    m_identifier(0),
                     m_road(NULL),
                     m_laneModel(NULL) {}
 
             Lane::Lane(const Lane &obj) :
                     SerializableData(),
-                    m_id(obj.getID()),
+                    m_identifier(obj.getIdentifier()),
                     m_road(obj.getRoad()),
                     m_laneModel(NULL) {
                 // Create deep copy.
@@ -64,7 +64,7 @@ class Road;
             }
 
             Lane& Lane::operator=(const Lane &obj) {
-                setID(obj.getID());
+                setIdentifier(obj.getIdentifier());
                 setRoad(obj.getRoad());
 
                 // Create deep copy.
@@ -106,12 +106,12 @@ class Road;
                 }
             }
 
-            uint32_t Lane::getID() const {
-                return m_id;
+            uint32_t Lane::getIdentifier() const {
+                return m_identifier;
             }
 
-            void Lane::setID(const uint32_t &id) {
-                m_id = id;
+            void Lane::setIdentifier(const uint32_t &id) {
+                m_identifier = id;
             }
 
             LaneModel* Lane::getLaneModel() const {
@@ -133,9 +133,21 @@ class Road;
                 return m_road;
             }
 
+            int32_t Lane::getID() const {
+                return 831;
+            }
+
+            const string Lane::getShortName() const {
+                return "Lane";
+            }
+
+            const string Lane::getLongName() const {
+                return "hesperia.data.scenario.Lane";
+            }
+
             const string Lane::toString() const {
                 stringstream s;
-                s << "ID: " << getID();
+                s << "ID: " << getIdentifier();
                 return s.str();
             }
 
@@ -145,7 +157,7 @@ class Road;
                 core::SharedPointer<Serializer> s = sf.getSerializer(out);
 
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                        getID());
+                        getIdentifier());
 
                 // Check if we have to serialize a lane model.
                 bool hasLaneModel = (getLaneModel() != NULL);
@@ -171,7 +183,7 @@ class Road;
                 OPENDAVINCI_CORE_DELETE_POINTER(m_laneModel);
 
                 d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                       m_id);
+                       m_identifier);
 
                 // Check if we have to deserialize a lane model.
                 bool hasLaneModel = false;

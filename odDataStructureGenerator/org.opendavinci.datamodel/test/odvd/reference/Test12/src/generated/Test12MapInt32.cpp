@@ -87,6 +87,18 @@
 		return "Test12MapInt32";
 	}
 
+	int32_t Test12MapInt32::getID() const {
+		return Test12MapInt32::ID();
+	}
+
+	const string Test12MapInt32::getShortName() const {
+		return Test12MapInt32::ShortName();
+	}
+
+	const string Test12MapInt32::getLongName() const {
+		return Test12MapInt32::LongName();
+	}
+
 	std::map<int32_t, bool> Test12MapInt32::getMapOfMyInt32BoolMap() const {
 		return m_mapOfMyInt32BoolMap;
 	}

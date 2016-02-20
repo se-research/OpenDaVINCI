@@ -263,11 +263,11 @@ namespace vehiclecontext {
             cerr << "[SimplifiedBicycleModel] " << m_vehicleData.toString() << endl;
 
             // Send EgoState to System-Under-Test.
-            Container c(Container::EGOSTATE, nextEgoState);
+            Container c(nextEgoState);
             retVal.push_back(c);
 
             // Send VehicleData to System-Under-Test.
-            Container c2(Container::VEHICLEDATA, m_vehicleData);
+            Container c2(m_vehicleData);
             retVal.push_back(c2);
 
             return retVal;
@@ -281,7 +281,7 @@ namespace vehiclecontext {
             for (uint32_t i = 0; i < SIZE; i++) {
                 Container c = getFIFO().leave();
                 cerr << "[SimplifiedBicycleModel] Received: " << c.toString() << endl;
-                if (c.getDataType() == Container::VEHICLECONTROL) {
+                if (c.getDataType() == automotive::VehicleControl::ID()) {
                     m_hasReceivedVehicleControl = true;
                     m_vehicleControl = c.getData<automotive::VehicleControl>();
                     break;
@@ -305,11 +305,11 @@ namespace vehiclecontext {
                 cerr << "[SimplifiedBicycleModel] " << m_vehicleData.toString() << endl;
 
                 // Send EgoState to System-Under-Test.
-                Container c(Container::EGOSTATE, nextEgoState);
+                Container c(nextEgoState);
                 toBeSent.push_back(c);
 
                 // Send VehicleData to System-Under-Test.
-                Container c2(Container::VEHICLEDATA, m_vehicleData);
+                Container c2(m_vehicleData);
                 toBeSent.push_back(c2);
             }
 

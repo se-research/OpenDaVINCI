@@ -83,7 +83,7 @@ class SplitTest : public CxxTest::TestSuite {
                 for(uint32_t i = 0; i < 200; i++) {
                     // Create regular container.
                     TimeStamp t(i, 0);
-                    Container c(Container::TIMESTAMP, t);
+                    Container c(t);
                     c.setReceivedTimeStamp(TimeStamp(i,500));
                     recorder.store(c);
 
@@ -96,7 +96,7 @@ class SplitTest : public CxxTest::TestSuite {
 
                     coredata::SharedData sd(memServer->getName(), memServer->getSize());
 
-                    Container c2(Container::SHARED_DATA, sd);
+                    Container c2(sd);
                     c2.setReceivedTimeStamp(TimeStamp(i,1000));
                     recorder.store(c2);
                 }
@@ -154,12 +154,12 @@ class SplitTest : public CxxTest::TestSuite {
                 // Get container to be sent.
                 Container nextContainer = player.getNextContainerToBeSent();
 
-                if (nextContainer.getDataType() == Container::TIMESTAMP) {
+                if (nextContainer.getDataType() == TimeStamp::ID()) {
                     TimeStamp ts = nextContainer.getData<TimeStamp>();
                     TS_ASSERT(ts.getSeconds() == rangeBasis);
                     rangeBasis++;
                 }
-                else if (nextContainer.getDataType() == Container::SHARED_DATA) {
+                else if (nextContainer.getDataType() == coredata::SharedData::ID()) {
                     if (!memClient.isValid()) {
                         coredata::SharedData sd = nextContainer.getData<coredata::SharedData>();
                         memClient = core::wrapper::SharedMemoryFactory::attachToSharedMemory(sd.getName());

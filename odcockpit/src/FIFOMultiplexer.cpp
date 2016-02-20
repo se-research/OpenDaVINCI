@@ -77,7 +77,7 @@ namespace cockpit {
         m_fifo.waitForData();
     }
 
-    void FIFOMultiplexer::distributeContainer(Container &c){
+    void FIFOMultiplexer::distributeContainer(Container c){
     	{
     	  Lock l(m_fifoMutex);
     	  vector<ContainerListener*>::iterator it = m_listOfContainerListeners.begin();
@@ -118,7 +118,8 @@ namespace cockpit {
 
             if (isRunning()) {
                 // Distribute new containers.
-                for (uint32_t i = 0; i < getFIFOSize(); i++) {
+                const uint32_t COUNT = getFIFOSize();
+                for (uint32_t i = 0; i < COUNT; i++) {
                 	Container c = leaveContainer();
                     distributeContainer(c);
                 }

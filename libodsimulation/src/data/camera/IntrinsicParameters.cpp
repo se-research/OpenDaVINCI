@@ -138,6 +138,18 @@ namespace hesperia {
                 return in;
             }
 
+            int32_t IntrinsicParameters::getID() const {
+                return 20;
+            }
+
+            const string IntrinsicParameters::getShortName() const {
+                return "IntrinsicParameters";
+            }
+
+            const string IntrinsicParameters::getLongName() const {
+                return "hesperia.data.camera.IntrinsicParameters";
+            }
+
             const string IntrinsicParameters::toString() const {
                 stringstream sstr;
                 sstr << "principle point = " << m_principlePoint.toString() << ", focal length = " << m_focalLength.toString() << ", focal distance = " << m_focalDistance << ", alpha = " << m_alpha;

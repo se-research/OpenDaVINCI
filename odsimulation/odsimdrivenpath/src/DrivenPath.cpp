@@ -84,7 +84,7 @@ namespace measurements {
             NamedLine l =(*it++);
 
             // Draw line.
-            Container c = Container(Container::DRAW_LINE, l);
+            Container c = Container(l);
             getConference().send(c);
 /*
             cout << "Lines;" << l.getName() << ";" << l.getA().getX()
@@ -107,7 +107,7 @@ namespace measurements {
 
         while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
             // Get current ego state.
-            Container c = kvs.get(Container::EGOSTATE);
+            Container c = kvs.get(hesperia::data::environment::EgoState::ID());
             EgoState es = c.getData<EgoState>();
             cout << counter << ";EgoState: '" << es.toString() << "'" << endl;
             cout << counter << ";EgoState-short;" << es.getPosition().getX() << ";" << es.getPosition().getY() << ";" << es.getPosition().getZ() << endl;
