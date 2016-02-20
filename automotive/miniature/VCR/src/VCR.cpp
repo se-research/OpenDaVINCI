@@ -19,9 +19,9 @@
 
 #include <iostream>
 
-#include "opendavinci/core/base/KeyValueConfiguration.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 
 #include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
@@ -31,8 +31,8 @@ namespace automotive {
     namespace miniature {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::data;
+        using namespace odcore::base;
+        using namespace odcore::data;
         using namespace coredata::image;
 
         VCR::VCR(const int32_t &argc, char **argv) : TimeTriggeredConferenceClientModule(argc, argv, "VCR"),
@@ -77,7 +77,7 @@ namespace automotive {
 		        // Check if we have already attached to the shared memory.
 		        if (!m_hasAttachedToSharedImageMemory) {
 			        m_sharedImageMemory
-					        = core::wrapper::SharedMemoryFactory::attachToSharedMemory(
+					        = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(
 							        si.getName());
 		        }
 

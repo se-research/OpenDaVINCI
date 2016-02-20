@@ -23,9 +23,9 @@
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
 
-#include "opendavinci/core/SharedPointer.h"
-#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "opendavinci/core/wrapper/SharedMemory.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/wrapper/SharedMemory.h"
 
 namespace automotive {
     namespace miniature {
@@ -35,7 +35,7 @@ namespace automotive {
         /**
          * This class records the live stream.
          */
-        class VCR: public core::base::module::TimeTriggeredConferenceClientModule {
+        class VCR: public odcore::base::module::TimeTriggeredConferenceClientModule {
             private:
 	            /**
 	             * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -76,11 +76,11 @@ namespace automotive {
 	             * @param c Container to process.
 	             * @return true if c was successfully processed.
 	             */
-	            bool readSharedImage(core::data::Container &c);
+	            bool readSharedImage(odcore::data::Container &c);
 
             private:
 	            bool m_hasAttachedToSharedImageMemory;
-	            core::SharedPointer<core::wrapper::SharedMemory> m_sharedImageMemory;
+	            odcore::SharedPointer<odcore::wrapper::SharedMemory> m_sharedImageMemory;
 	            IplImage *m_image;
                 bool m_debug;
                 CvVideoWriter *m_writer;

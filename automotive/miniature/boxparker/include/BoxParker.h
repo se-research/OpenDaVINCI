@@ -22,7 +22,7 @@
 
 #include <vector>
 
-#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
 
 namespace automotive {
     namespace miniature {
@@ -33,7 +33,7 @@ namespace automotive {
          * This class is an example demonstrating how to park a simulated vehicle
          * using OpenDaVINCI's driving dynamics simulation.
          */
-        class BoxParker : public core::base::module::TimeTriggeredConferenceClientModule {
+        class BoxParker : public odcore::base::module::TimeTriggeredConferenceClientModule {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn

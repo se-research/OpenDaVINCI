@@ -20,8 +20,8 @@
 #include <cstdio>
 #include <cmath>
 
-#include "opendavinci/core/io/conference/ContainerConference.h"
-#include "opendavinci/core/data/Container.h"
+#include "opendavinci/odcore/io/conference/ContainerConference.h"
+#include "opendavinci/odcore/data/Container.h"
 
 #include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 #include "automotivedata/GeneratedHeaders_AutomotiveData.h"
@@ -32,8 +32,8 @@ namespace automotive {
     namespace miniature {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::data;
+        using namespace odcore::base;
+        using namespace odcore::data;
         using namespace automotive;
         using namespace automotive::miniature;
 

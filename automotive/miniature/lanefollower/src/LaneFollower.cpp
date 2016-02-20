@@ -22,11 +22,11 @@
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
 
-#include "opendavinci/core/base/KeyValueConfiguration.h"
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/io/conference/ContainerConference.h"
-#include "opendavinci/core/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/io/conference/ContainerConference.h"
+#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 
 #include "automotivedata/GeneratedHeaders_AutomotiveData.h"
 #include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
@@ -37,8 +37,8 @@ namespace automotive {
     namespace miniature {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::data;
+        using namespace odcore::base;
+        using namespace odcore::data;
         using namespace coredata::image;
         using namespace automotive;
         using namespace automotive::miniature;
@@ -85,7 +85,7 @@ namespace automotive {
 		        // Check if we have already attached to the shared memory.
 		        if (!m_hasAttachedToSharedImageMemory) {
 			        m_sharedImageMemory
-					        = core::wrapper::SharedMemoryFactory::attachToSharedMemory(
+					        = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(
 							        si.getName());
 		        }
 

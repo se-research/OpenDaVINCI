@@ -24,10 +24,10 @@
 
 #include <iostream>
 
-#include "opendavinci/core/base/Thread.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/io/conference/ContainerConference.h"
-#include "opendavinci/core/io/URL.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/io/conference/ContainerConference.h"
+#include "opendavinci/odcore/io/URL.h"
 #include "opendlv/core/wrapper/graph/DirectedGraph.h"
 #include "opendlv/core/wrapper/graph/Edge.h"
 #include "opendlv/core/wrapper/graph/Vertex.h"
@@ -51,8 +51,8 @@ namespace automotive {
     namespace miniature {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::data;
+        using namespace odcore::base;
+        using namespace odcore::data;
         using namespace coredata;
         using namespace automotive;
         using namespace automotive::miniature;
@@ -74,7 +74,7 @@ namespace automotive {
 
         // This method will do the main data processing job.
         coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode SimpleDriver::body() {
-            const core::io::URL urlOfSCNXFile(getKeyValueConfiguration().getValue<string>("global.scenario"));
+            const odcore::io::URL urlOfSCNXFile(getKeyValueConfiguration().getValue<string>("global.scenario"));
             const double GAIN = 1.0;
             const double LENGTH_OF_STEERING_DRAWBAR = 5.0;
             const double LENGTH_OF_VELOCITY_DRAWBAR = 5.0;

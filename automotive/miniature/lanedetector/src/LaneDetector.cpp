@@ -23,12 +23,12 @@
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
 
-#include "opendavinci/core/base/KeyValueConfiguration.h"
-#include "opendavinci/core/base/Lock.h"
-#include "opendavinci/core/data/Container.h"
-#include "opendavinci/core/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 
-#include "opendavinci/tools/player/Player.h"
+#include "opendavinci/odtools/player/Player.h"
 
 #include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 #include "automotivedata/GeneratedHeaders_AutomotiveData.h"
@@ -39,9 +39,9 @@ namespace automotive {
     namespace miniature {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::base::module;
-        using namespace core::data;
+        using namespace odcore::base;
+        using namespace odcore::base::module;
+        using namespace odcore::data;
         using namespace coredata::image;
         using namespace odtools::player;
         using namespace automotive;
@@ -84,7 +84,7 @@ namespace automotive {
 
 		        // Check if we have already attached to the shared memory containing the image from the virtual camera.
 		        if (!m_hasAttachedToSharedImageMemory) {
-			        m_sharedImageMemory = core::wrapper::SharedMemoryFactory::attachToSharedMemory(si.getName());
+			        m_sharedImageMemory = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(si.getName());
 		        }
 
 		        // Check if we could successfully attach to the shared memory.
@@ -152,7 +152,7 @@ namespace automotive {
             auto_ptr<Player> player;
 /*
             // Lane-detector can also directly read the data from file. This might be interesting to inspect the algorithm step-wisely.
-            core::io::URL url("file://recording.rec");
+            odcore::io::URL url("file://recording.rec");
 
             // Size of the memory buffer.
             const uint32_t MEMORY_SEGMENT_SIZE = kv.getValue<uint32_t>("global.buffer.memorySegmentSize");

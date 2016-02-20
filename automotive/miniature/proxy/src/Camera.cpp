@@ -22,7 +22,7 @@
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
 
-#include "opendavinci/core/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 
 #include "Camera.h"
 
@@ -39,7 +39,7 @@ namespace automotive {
             m_bpp(bpp),
             m_size(0) {
 
-            m_sharedMemory = core::wrapper::SharedMemoryFactory::createSharedMemory(name, width * height * bpp);
+            m_sharedMemory = odcore::wrapper::SharedMemoryFactory::createSharedMemory(name, width * height * bpp);
 
             m_sharedImage.setName(name);
             m_sharedImage.setWidth(width);

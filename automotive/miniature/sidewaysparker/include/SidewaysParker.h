@@ -20,7 +20,7 @@
 #ifndef SIDEWAYSPARKER_H_
 #define SIDEWAYSPARKER_H_
 
-#include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
 
 namespace automotive {
     namespace miniature {
@@ -30,7 +30,7 @@ namespace automotive {
         /**
          * This class is a skeleton to send driving commands to Hesperia-light's vehicle driving dynamics simulation.
          */
-        class SidewaysParker : public core::base::module::TimeTriggeredConferenceClientModule {
+        class SidewaysParker : public odcore::base::module::TimeTriggeredConferenceClientModule {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn

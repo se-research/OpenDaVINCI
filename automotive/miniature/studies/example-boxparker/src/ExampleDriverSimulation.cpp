@@ -24,10 +24,10 @@
 #include <sstream>
 #include <string>
 
-#include "opendavinci/context/base/DirectInterface.h"
-#include "opendavinci/context/base/RecordingContainer.h"
-#include "opendavinci/context/base/RuntimeControl.h"
-#include "opendavinci/context/base/RuntimeEnvironment.h"
+#include "opendavinci/odcontext/base/DirectInterface.h"
+#include "opendavinci/odcontext/base/RecordingContainer.h"
+#include "opendavinci/odcontext/base/RuntimeControl.h"
+#include "opendavinci/odcontext/base/RuntimeEnvironment.h"
 #include "opendlv/vehiclecontext/VehicleRuntimeControl.h"
 #include "opendlv/vehiclecontext/model/IRUS.h"
 #include "opendlv/vehiclecontext/model/SimplifiedBicycleModel.h"

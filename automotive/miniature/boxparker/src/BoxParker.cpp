@@ -19,7 +19,7 @@
 
 #include <iostream>
 
-#include "opendavinci/core/data/Container.h"
+#include "opendavinci/odcore/data/Container.h"
 
 #include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 #include "automotivedata/GeneratedHeaders_AutomotiveData.h"
@@ -30,9 +30,9 @@ namespace automotive {
     namespace miniature {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::base::module;
-        using namespace core::data;
+        using namespace odcore::base;
+        using namespace odcore::base::module;
+        using namespace odcore::data;
         using namespace automotive;
 
         BoxParker::BoxParker(const int32_t &argc, char **argv) :
