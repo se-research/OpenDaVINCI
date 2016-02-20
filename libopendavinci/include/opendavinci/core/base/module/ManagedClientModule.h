@@ -33,7 +33,7 @@
 #include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
 #include "opendavinci/generated/coredata/dmcp/PulseMessage.h"
 
-namespace context { namespace base { class ControlledTimeFactory; } }
+namespace odcontext { namespace base { class ControlledTimeFactory; } }
 
 namespace core {
     namespace base {
@@ -200,8 +200,8 @@ namespace core {
 
                     bool m_firstCallToBreakpoint_ManagedLevel_Pulse;
 
-                    context::base::Clock m_time;
-                    context::base::ControlledTimeFactory *m_controlledTimeFactory;
+                    odcontext::base::Clock m_time;
+                    odcontext::base::ControlledTimeFactory *m_controlledTimeFactory;
 
                     coredata::dmcp::PulseMessage m_pulseMessage;
                     core::SharedPointer<core::io::conference::ContainerConference> m_localContainerConference;

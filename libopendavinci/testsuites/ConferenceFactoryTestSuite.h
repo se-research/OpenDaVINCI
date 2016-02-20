@@ -42,7 +42,7 @@ using namespace core::base;
 using namespace core::data;
 using namespace core::io;
 using namespace core::io::conference;
-using namespace context::base;
+using namespace odcontext::base;
 
 class ConferenceFactoryTestContainerListener : public ContainerListener {
     public:

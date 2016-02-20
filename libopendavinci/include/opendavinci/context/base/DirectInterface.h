@@ -26,7 +26,7 @@
 #include "opendavinci/core/base/KeyValueConfiguration.h"
 #include "opendavinci/context/base/RuntimeControlInterface.h"
 
-namespace context {
+namespace odcontext {
     namespace base {
 
         using namespace std;
@@ -80,6 +80,6 @@ namespace context {
         };
 
     }
-} // context::base
+} // odcontext::base
 
 #endif /*CONTEXT_BASE_DIRECTINTERFACE_H_*/

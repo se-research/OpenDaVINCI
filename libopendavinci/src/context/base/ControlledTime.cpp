@@ -19,7 +19,7 @@
 
 #include "opendavinci/context/base/ControlledTime.h"
 
-namespace context {
+namespace odcontext {
     namespace base {
 
         ControlledTime::ControlledTime() :
@@ -63,4 +63,4 @@ namespace context {
         }
 
     }
-} // context::base
+} // odcontext::base

@@ -26,7 +26,7 @@
 
 namespace core { namespace wrapper { class Time; } }
 
-namespace context {
+namespace odcontext {
     namespace base {
 
         using namespace std;
@@ -72,4 +72,4 @@ namespace context {
 		}
 
     }
-} // context::base
+} // odcontext::base

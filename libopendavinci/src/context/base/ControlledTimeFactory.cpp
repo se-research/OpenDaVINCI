@@ -21,7 +21,7 @@
 #include "opendavinci/core/base/Lock.h"
 #include "opendavinci/core/wrapper/Time.h"
 
-namespace context {
+namespace odcontext {
     namespace base {
 
         using namespace core::base;
@@ -50,4 +50,4 @@ namespace context {
         }
 
     }
-} // context::base
+} // odcontext::base

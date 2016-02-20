@@ -19,10 +19,10 @@
 
 #include "opendavinci/context/base/ControlledContainerConference.h"
 
-namespace context {
+namespace odcontext {
     namespace base {
 
         ControlledContainerConference::~ControlledContainerConference() {}
 
     }
-} // context::base
+} // odcontext::base

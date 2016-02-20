@@ -19,10 +19,10 @@
 
 #include "opendavinci/context/base/RuntimeControlInterface.h"
 
-namespace context {
+namespace odcontext {
     namespace base {
 
         RuntimeControlInterface::~RuntimeControlInterface() {}
 
     }
-} // context::base
+} // odcontext::base

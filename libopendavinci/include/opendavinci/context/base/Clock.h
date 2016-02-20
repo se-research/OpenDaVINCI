@@ -23,7 +23,7 @@
 #include "opendavinci/core/opendavinci.h"
 #include "opendavinci/context/base/ControlledTime.h"
 
-namespace context {
+namespace odcontext {
     namespace base {
 
         /**
@@ -78,6 +78,6 @@ namespace context {
         };
 
     }
-} // context::base
+} // odcontext::base
 
 #endif /*CONTEXT_BASE_CLOCK_H_*/

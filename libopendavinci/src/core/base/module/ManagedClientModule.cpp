@@ -529,7 +529,7 @@ namespace core {
                 // Check whether our clock was already initialized (i.e. getSeconds() > 0).
                 if (m_time.now().getSeconds() < 1) {
                     // Set seconds of our virtual clock to the clock from supercomponents.
-                    m_time = context::base::Clock(m_pulseMessage.getRealTimeFromSupercomponent().getSeconds(), 0);
+                    m_time = odcontext::base::Clock(m_pulseMessage.getRealTimeFromSupercomponent().getSeconds(), 0);
                 }
 
                 // Increment the virtual time by the nominal value of the time slice
@@ -556,11 +556,11 @@ namespace core {
                 // time needs to be disabled and exchanged by a controllable one.
 
                 // 1) Disable the existing TimeFactory.
-                context::base::RuntimeControl::DisableTimeFactory dtf;
+                odcontext::base::RuntimeControl::DisableTimeFactory dtf;
                 dtf.disable();
 
                 // 2) Create a controllable TimeFactory.
-                m_controlledTimeFactory = new context::base::ControlledTimeFactory();
+                m_controlledTimeFactory = new odcontext::base::ControlledTimeFactory();
 
                 // 3) Initialize the new TimeFactory with the new actual time.
                 m_controlledTimeFactory->setTime(m_time.now());

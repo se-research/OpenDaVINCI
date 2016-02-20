@@ -26,7 +26,7 @@
 namespace core { namespace data { class Container; } }
 namespace core { namespace io { namespace conference { class ContainerListener; } } }
 
-namespace context {
+namespace odcontext {
     namespace base {
 
         /**
@@ -74,6 +74,6 @@ namespace context {
         };
 
     }
-} // context::base
+} // odcontext::base
 
 #endif /*CONTEXT_BASE_BLOCKABLECONTAINERRECEIVER_H_*/

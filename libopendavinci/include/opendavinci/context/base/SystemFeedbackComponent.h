@@ -25,7 +25,7 @@
 
 namespace core { namespace wrapper { class Time; } }
 
-namespace context {
+namespace odcontext {
     namespace base {
 
 class SendContainerToSystemsUnderTest;
@@ -50,6 +50,6 @@ class SendContainerToSystemsUnderTest;
         };
 
     }
-} // context::base
+} // odcontext::base
 
 #endif /*CONTEXT_BASE_SYSTEMFEEDBACKCOMPONENT_H_*/

@@ -33,7 +33,7 @@
 
 namespace core { namespace data { class Container; } }
 
-namespace context {
+namespace odcontext {
     namespace base {
 
 class RuntimeControlInterface;
@@ -113,6 +113,6 @@ class SystemFeedbackComponent;
 		};
 
     }
-} // context::base
+} // odcontext::base
 
 #endif /*CONTEXT_BASE_STANDALONERUNTIMECONTROL_H_*/

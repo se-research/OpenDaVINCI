@@ -30,7 +30,7 @@
 
 namespace core { namespace wrapper { class Time; } }
 
-namespace context {
+namespace odcontext {
     namespace base {
 
 class ControlledContainerConferenceFactory;
@@ -230,6 +230,6 @@ class TimeTriggeredConferenceClientModuleRunner;
         };
 
     }
-} // context::base
+} // odcontext::base
 
 #endif /*CONTEXT_BASE_RUNTIMECONTROL_H_*/

@@ -29,7 +29,7 @@
 namespace core { namespace wrapper { class Time; } }
 namespace tools { namespace recorder { class Recorder; } }
 
-namespace context {
+namespace odcontext {
     namespace base {
 
         using namespace std;
@@ -82,6 +82,6 @@ namespace context {
         };
 
     }
-} // context::base
+} // odcontext::base
 
 #endif /*CONTEXT_BASE_RECORDINGCONTAINER_H_*/

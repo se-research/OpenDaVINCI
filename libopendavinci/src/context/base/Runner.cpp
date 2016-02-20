@@ -21,7 +21,7 @@
 #include "opendavinci/context/base/TimeConstants.h"
 #include "opendavinci/core/wrapper/Time.h"
 
-namespace context {
+namespace odcontext {
     namespace base {
 
         Runner::Runner() {}
@@ -48,4 +48,4 @@ namespace context {
         }
 
     }
-} // context::base
+} // odcontext::base

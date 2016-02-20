@@ -49,7 +49,7 @@ namespace opendlv { namespace vehiclecontext {
         using namespace std;
         using namespace core::base;
         using namespace core::data;
-        using namespace context::base;
+        using namespace odcontext::base;
         using namespace core::io;
         using namespace opendlv::data;
         using namespace opendlv::data::environment;

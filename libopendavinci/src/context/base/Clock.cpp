@@ -19,7 +19,7 @@
 
 #include "opendavinci/context/base/Clock.h"
 
-namespace context {
+namespace odcontext {
     namespace base {
 
         Clock::Clock() :
@@ -57,4 +57,4 @@ namespace context {
         }
 
     }
-} // context::base
+} // odcontext::base

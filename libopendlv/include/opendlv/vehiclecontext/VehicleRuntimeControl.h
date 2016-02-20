@@ -31,7 +31,7 @@ namespace opendlv { namespace vehiclecontext {
     /**
      * This class is used to realize a standalone system simulations for vehicle-related simulations.
      */
-    class OPENDAVINCI_API VehicleRuntimeControl : public context::base::StandaloneRuntimeControl {
+    class OPENDAVINCI_API VehicleRuntimeControl : public odcontext::base::StandaloneRuntimeControl {
 		public:
 			enum VEHICLECONTEXTMODULES {
 				SIMPLIFIEDBICYCLEMODEL,
@@ -58,7 +58,7 @@ namespace opendlv { namespace vehiclecontext {
              *
              * @param sci RuntimeControlInterface to be used.
              */
-            VehicleRuntimeControl(const context::base::RuntimeControlInterface &sci);
+            VehicleRuntimeControl(const odcontext::base::RuntimeControlInterface &sci);
 
             virtual ~VehicleRuntimeControl();
 

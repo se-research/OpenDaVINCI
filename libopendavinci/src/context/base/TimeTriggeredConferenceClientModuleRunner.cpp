@@ -36,7 +36,7 @@
 #include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleStateMessage.h"
 
-namespace context {
+namespace odcontext {
     namespace base {
 
         using namespace std;
@@ -140,4 +140,4 @@ namespace context {
         }
 
     }
-} // context::base
+} // odcontext::base

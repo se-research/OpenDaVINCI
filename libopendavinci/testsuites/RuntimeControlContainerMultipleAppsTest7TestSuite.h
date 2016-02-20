@@ -53,7 +53,7 @@ using namespace std;
 using namespace core::base;
 using namespace core::base::module;
 using namespace core::data;
-using namespace context::base;
+using namespace odcontext::base;
 
 
 class LocalPoint3 : public core::data::SerializableData {

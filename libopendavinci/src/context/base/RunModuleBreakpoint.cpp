@@ -22,7 +22,7 @@
 #include "opendavinci/core/base/Lock.h"
 #include "opendavinci/core/base/Thread.h"
 
-namespace context {
+namespace odcontext {
     namespace base {
 
         using namespace std;
@@ -100,4 +100,4 @@ namespace context {
         }
 
     }
-} // context::base
+} // odcontext::base

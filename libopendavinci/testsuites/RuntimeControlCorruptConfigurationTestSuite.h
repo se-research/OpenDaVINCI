@@ -36,13 +36,13 @@
 #include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
 #include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
 
-namespace context { namespace base { class SendContainerToSystemsUnderTest; } }
+namespace odcontext { namespace base { class SendContainerToSystemsUnderTest; } }
 namespace core { namespace wrapper { class Time; } }
 
 using namespace std;
 using namespace core::base;
 using namespace core::base::module;
-using namespace context::base;
+using namespace odcontext::base;
 
 class RuntimeControlTestModule : public TimeTriggeredConferenceClientModule {
     public:

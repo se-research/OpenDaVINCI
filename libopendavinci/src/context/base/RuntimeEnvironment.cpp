@@ -23,7 +23,7 @@
 #include "opendavinci/core/base/Lock.h"
 #include "opendavinci/core/base/module/TimeTriggeredConferenceClientModule.h"
 
-namespace context {
+namespace odcontext {
     namespace base {
 
 class SystemReportingComponent;
@@ -168,4 +168,4 @@ class SystemReportingComponent;
         }
 
     }
-} // context::base
+} // odcontext::base

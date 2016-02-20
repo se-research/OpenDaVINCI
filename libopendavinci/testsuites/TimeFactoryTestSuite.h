@@ -35,7 +35,7 @@ using namespace std;
 using namespace core;
 using namespace core::base;
 using namespace core::data;
-using namespace context::base;
+using namespace odcontext::base;
 
 class TimeFactoryTestDisableTimeFactory : public core::wrapper::TimeFactory {
     public:

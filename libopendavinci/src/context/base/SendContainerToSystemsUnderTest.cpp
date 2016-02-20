@@ -19,10 +19,10 @@
 
 #include "opendavinci/context/base/SendContainerToSystemsUnderTest.h"
 
-namespace context {
+namespace odcontext {
     namespace base {
 
         SendContainerToSystemsUnderTest::~SendContainerToSystemsUnderTest() {}
 
     }
-} // context::base
+} // odcontext::base

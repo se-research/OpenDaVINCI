@@ -29,7 +29,7 @@
 namespace core { namespace base { namespace module { class TimeTriggeredConferenceClientModule; } } }
 namespace core { namespace wrapper { class Time; } }
 
-namespace context {
+namespace odcontext {
     namespace base {
 
 class BlockableContainerListener;
@@ -98,6 +98,6 @@ class BlockableContainerListener;
         };
 
     }
-} // context::base
+} // odcontext::base
 
 #endif /*CONTEXT_BASE_TIMETRIGGEREDCONFERENCECLIENTMODULERUNNER_H_*/

@@ -25,7 +25,7 @@
 
 namespace core { namespace io { namespace conference { class ContainerListener; } } }
 
-namespace context {
+namespace odcontext {
     namespace base {
 
         /**
@@ -47,6 +47,6 @@ namespace context {
         };
 
     }
-} // context::base
+} // odcontext::base
 
 #endif /*CONTEXT_BASE_CONTROLLEDCONTAINERCONFERENCE_H_*/

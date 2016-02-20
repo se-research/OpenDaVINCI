@@ -33,7 +33,7 @@
 namespace core { namespace data { class Container; } }
 namespace core { namespace io { namespace conference { class ContainerConference; } } }
 
-namespace context {
+namespace odcontext {
     namespace base {
 
 class BlockableContainerReceiver;
@@ -112,6 +112,6 @@ class ContainerDeliverer;
         };
 
     }
-} // context::base
+} // odcontext::base
 
 #endif /*CONTEXT_BASE_CONTROLLEDCONTAINERCONFERENCEFACTORY_H_*/

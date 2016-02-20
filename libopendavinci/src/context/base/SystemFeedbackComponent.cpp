@@ -19,10 +19,10 @@
 
 #include "opendavinci/context/base/SystemFeedbackComponent.h"
 
-namespace context {
+namespace odcontext {
     namespace base {
 
         SystemFeedbackComponent::~SystemFeedbackComponent() {}
 
     }
-} // context::base
+} // odcontext::base

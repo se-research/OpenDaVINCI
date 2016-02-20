@@ -33,8 +33,8 @@ namespace opendlv { namespace vehiclecontext {
     using namespace core::base;
     using namespace opendlv::vehiclecontext::model;
 
-    VehicleRuntimeControl::VehicleRuntimeControl(const context::base::RuntimeControlInterface &sci) :
-        context::base::StandaloneRuntimeControl(sci),
+    VehicleRuntimeControl::VehicleRuntimeControl(const odcontext::base::RuntimeControlInterface &sci) :
+        odcontext::base::StandaloneRuntimeControl(sci),
         m_globalConfiguration() {
         m_globalConfiguration = sci.getConfiguration();
     }

@@ -39,7 +39,7 @@
 #include "BoxParker.h"
 
 using namespace std;
-using namespace context::base;
+using namespace odcontext::base;
 using namespace opendlv::vehiclecontext;
 using namespace opendlv::vehiclecontext::model;
 using namespace opendlv::vehiclecontext::report;

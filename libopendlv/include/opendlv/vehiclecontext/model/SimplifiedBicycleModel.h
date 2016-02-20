@@ -41,7 +41,7 @@ namespace opendlv { namespace vehiclecontext {
         /**
          * This class realizes the simplified bicycle model.
          */
-        class OPENDAVINCI_API SimplifiedBicycleModel : public context::base::SystemFeedbackComponent {
+        class OPENDAVINCI_API SimplifiedBicycleModel : public odcontext::base::SystemFeedbackComponent {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -82,7 +82,7 @@ namespace opendlv { namespace vehiclecontext {
 
                 virtual void tearDown();
 
-                virtual void step(const core::wrapper::Time &t, context::base::SendContainerToSystemsUnderTest &sender);
+                virtual void step(const core::wrapper::Time &t, odcontext::base::SendContainerToSystemsUnderTest &sender);
 
             public:
                 /**

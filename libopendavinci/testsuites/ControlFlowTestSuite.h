@@ -57,7 +57,7 @@
 #include "opendavinci/generated/coredata/dmcp/ModuleExitCodeMessage.h"
 #include "opendavinci/generated/coredata/dmcp/ServerInformation.h"
 
-namespace context { namespace base { class BlockableContainerReceiver; } }
+namespace odcontext { namespace base { class BlockableContainerReceiver; } }
 namespace coredata { namespace dmcp { class ModuleDescriptor; } }
 namespace core { namespace dmcp { namespace connection { class ModuleConnection; } } }
 
@@ -68,7 +68,7 @@ using namespace core::data;
 using namespace core::dmcp;
 using namespace core::io;
 using namespace core::io::conference;
-using namespace context::base;
+using namespace odcontext::base;
 
 using namespace coredata::dmcp;
 

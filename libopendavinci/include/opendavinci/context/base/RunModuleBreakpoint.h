@@ -24,7 +24,7 @@
 #include "opendavinci/core/base/Mutex.h"
 #include "opendavinci/core/base/module/Breakpoint.h"
 
-namespace context {
+namespace odcontext {
     namespace base {
 
 class BlockableContainerListener;
@@ -100,6 +100,6 @@ class BlockableContainerListener;
         };
 
     }
-} // context::base
+} // odcontext::base
 
 #endif /*CONTEXT_BASE_RUNMODULEBREAKPOINT_H_*/

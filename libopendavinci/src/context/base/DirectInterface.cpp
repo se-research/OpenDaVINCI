@@ -21,7 +21,7 @@
 
 #include "opendavinci/context/base/DirectInterface.h"
 
-namespace context {
+namespace odcontext {
     namespace base {
 
         using namespace std;
@@ -59,4 +59,4 @@ namespace context {
         	return true;
         }
     }
-} // context::base
+} // odcontext::base

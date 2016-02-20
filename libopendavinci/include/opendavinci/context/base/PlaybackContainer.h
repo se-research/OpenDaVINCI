@@ -29,7 +29,7 @@
 namespace core { namespace wrapper { class Time; } }
 namespace tools { namespace player { class Player; } }
 
-namespace context {
+namespace odcontext {
     namespace base {
 
 class SendContainerToSystemsUnderTest;
@@ -84,6 +84,6 @@ class SendContainerToSystemsUnderTest;
         };
 
     }
-} // context::base
+} // odcontext::base
 
 #endif /*CONTEXT_BASE_PLAYBACKCONTAINER_H_*/

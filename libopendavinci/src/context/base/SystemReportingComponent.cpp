@@ -19,7 +19,7 @@
 
 #include "opendavinci/context/base/SystemReportingComponent.h"
 
-namespace context {
+namespace odcontext {
     namespace base {
 
         SystemReportingComponent::SystemReportingComponent() {}
@@ -31,4 +31,4 @@ namespace context {
         }
 
     }
-} // context::base
+} // odcontext::base

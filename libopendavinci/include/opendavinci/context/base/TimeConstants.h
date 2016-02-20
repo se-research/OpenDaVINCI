@@ -22,7 +22,7 @@
 
 #include "opendavinci/core/opendavinci.h"
 
-namespace context {
+namespace odcontext {
     namespace base {
 
         /**
@@ -43,6 +43,6 @@ namespace context {
         };
 
     }
-} // context::base
+} // odcontext::base
 
 #endif /*CONTEXT_BASE_TIMECONSTANTS_H_*/

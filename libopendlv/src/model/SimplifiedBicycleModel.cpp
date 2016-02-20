@@ -47,7 +47,7 @@ namespace opendlv { namespace vehiclecontext {
         using namespace core::base;
         using namespace core::data;
         using namespace core::io;
-        using namespace context::base;
+        using namespace odcontext::base;
         using namespace opendlv::data::environment;
 
         SimplifiedBicycleModel::SimplifiedBicycleModel(const string &configuration) :

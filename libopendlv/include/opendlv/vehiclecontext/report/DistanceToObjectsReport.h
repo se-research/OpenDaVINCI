@@ -37,7 +37,7 @@ namespace opendlv { namespace vehiclecontext {
         /**
          * This class reports whether the distance to any object is less than a given threshold.
          */
-        class OPENDAVINCI_API DistanceToObjectsReport : public context::base::SystemReportingComponent {
+        class OPENDAVINCI_API DistanceToObjectsReport : public odcontext::base::SystemReportingComponent {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn

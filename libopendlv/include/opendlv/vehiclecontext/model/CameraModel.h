@@ -48,7 +48,7 @@ namespace opendlv { namespace vehiclecontext {
         /**
          * This class realizes a virtual camera feed model.
          */
-        class OPENDAVINCI_API CameraModel : public context::base::SystemFeedbackComponent {
+        class OPENDAVINCI_API CameraModel : public odcontext::base::SystemFeedbackComponent {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -89,7 +89,7 @@ namespace opendlv { namespace vehiclecontext {
 
                 virtual void tearDown();
 
-                virtual void step(const core::wrapper::Time &t, context::base::SendContainerToSystemsUnderTest &sender);
+                virtual void step(const core::wrapper::Time &t, odcontext::base::SendContainerToSystemsUnderTest &sender);
 
             private:
                 core::base::KeyValueConfiguration m_kvc;

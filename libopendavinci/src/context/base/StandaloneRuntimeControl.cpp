@@ -34,7 +34,7 @@
 
 namespace core { namespace data { class Container; } }
 
-namespace context {
+namespace odcontext {
     namespace base {
 
         using namespace std;
@@ -44,7 +44,7 @@ namespace context {
         using namespace core::io::conference;
 
         StandaloneRuntimeControl::StandaloneRuntimeControl(const RuntimeControlInterface &sci) :
-            context::base::RuntimeControl(sci),
+            odcontext::base::RuntimeControl(sci),
             m_conference(NULL),
             m_rte(),
             m_listOfSystemFeedbackComponentsMutex(),
@@ -167,4 +167,4 @@ namespace context {
             return RuntimeControl::NO_ERROR_OCCURRED;
         }
     }
-} // context::base
+} // odcontext::base

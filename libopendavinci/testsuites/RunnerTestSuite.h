@@ -27,7 +27,7 @@
 
 using namespace std;
 
-using namespace context::base;
+using namespace odcontext::base;
 
 class RunnerTestApp : public Runner {
     public:

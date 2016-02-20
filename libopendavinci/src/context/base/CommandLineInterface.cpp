@@ -26,7 +26,7 @@
 #include "opendavinci/core/base/CommandLineArgument.h"
 #include "opendavinci/core/base/CommandLineParser.h"
 
-namespace context {
+namespace odcontext {
     namespace base {
 
         using namespace std;
@@ -117,4 +117,4 @@ namespace context {
         }
 
     }
-} // context::base
+} // odcontext::base

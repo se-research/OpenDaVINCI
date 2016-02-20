@@ -42,7 +42,7 @@ namespace core { namespace dmcp { namespace connection { class ModuleConnection;
 namespace core { namespace dmcp { namespace connection { class Server; } } }
 namespace core { namespace dmcp { namespace discoverer { class Server; } } }
 
-namespace context {
+namespace odcontext {
     namespace base {
 
         using namespace std;
@@ -122,6 +122,6 @@ namespace context {
         };
 
     }
-} // context::base
+} // odcontext::base
 
 #endif /*CONTEXT_BASE_SUPERCOMPONENT_H_*/

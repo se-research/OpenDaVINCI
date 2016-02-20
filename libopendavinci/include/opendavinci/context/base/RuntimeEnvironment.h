@@ -27,7 +27,7 @@
 
 namespace core { namespace base { namespace module { class TimeTriggeredConferenceClientModule; } } }
 
-namespace context {
+namespace odcontext {
     namespace base {
 
 class SystemFeedbackComponent;
@@ -163,6 +163,6 @@ class SystemReportingComponent;
         };
 
     }
-} // context::base
+} // odcontext::base
 
 #endif /*CONTEXT_BASE_RUNTIMEENVIRONMENT_H_*/

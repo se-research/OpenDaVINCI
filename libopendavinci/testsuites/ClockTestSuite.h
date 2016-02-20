@@ -26,7 +26,7 @@
 #include "opendavinci/context/base/ControlledTime.h"  // for ControlledTime
 
 using namespace std;
-using namespace context::base;
+using namespace odcontext::base;
 
 class ClockTest : public CxxTest::TestSuite {
     public:

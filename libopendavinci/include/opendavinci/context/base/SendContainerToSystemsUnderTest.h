@@ -24,7 +24,7 @@
 
 namespace core { namespace data { class Container; } }
 
-namespace context {
+namespace odcontext {
     namespace base {
 
         /**
@@ -46,6 +46,6 @@ namespace context {
         };
 
     }
-} // context::base
+} // odcontext::base
 
 #endif /*CONTEXT_BASE_SENDCONTAINERTOSYSTEMSUNDERTEST_H_*/

@@ -25,7 +25,7 @@
 #include "opendavinci/core/data/TimeStamp.h"
 #include "opendavinci/core/io/conference/ContainerObserver.h"
 
-namespace context {
+namespace odcontext {
     namespace base {
 
         using namespace std;
@@ -68,4 +68,4 @@ namespace context {
         }
 
     }
-} // context::base
+} // odcontext::base

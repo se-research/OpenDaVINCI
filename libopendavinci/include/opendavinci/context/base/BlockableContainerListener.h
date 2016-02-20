@@ -24,7 +24,7 @@
 #include "opendavinci/core/base/Mutex.h"
 #include "opendavinci/core/io/conference/ContainerListener.h"
 
-namespace context {
+namespace odcontext {
     namespace base {
 
         /**
@@ -71,6 +71,6 @@ namespace context {
         };
 
     }
-} // context::base
+} // odcontext::base
 
 #endif /*CONTEXT_BASE_BLOCKABLECONTAINERLISTENER_H_*/

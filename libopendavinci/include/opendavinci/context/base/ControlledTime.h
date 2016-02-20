@@ -23,7 +23,7 @@
 #include "opendavinci/core/opendavinci.h"
 #include "opendavinci/core/wrapper/Time.h"
 
-namespace context {
+namespace odcontext {
     namespace base {
 
         /**
@@ -82,6 +82,6 @@ namespace context {
         };
 
     }
-} // context::base
+} // odcontext::base
 
 #endif /*CONTEXT_BASE_CONTROLLEDTIME_H_*/
