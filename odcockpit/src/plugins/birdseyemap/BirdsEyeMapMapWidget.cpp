@@ -401,7 +401,7 @@ namespace cockpit {
                                 stringstream contourName;
                                 contourName << "Obstacles";
                                 opendlv::scenegraph::primitives::Polygon *contour = new opendlv::scenegraph::primitives::Polygon(SceneNodeDescriptor(contourName.str()), obstacle.getPolygon().getVertices(), Point3(0, 1, 0), 2);
-                                m_mapOfObstacles[obstacle.getID()] = contour;
+                                m_mapOfObstacles[obstacle.getObstacleID()] = contour;
                                 m_obstaclesRoot->addChild(contour);
                             }
                             break;
