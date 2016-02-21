@@ -97,7 +97,7 @@ namespace cockpit {
                 //create new Header if needed
                 if (m_dataToType.find(messageName) == m_dataToType.end()) {
                     QTreeWidgetItem *newHeader = new QTreeWidgetItem(m_dataView.get());
-                    newHeader->setText(0, container.toString().c_str());
+                    newHeader->setText(0, messageName.c_str());
                     m_dataToType[messageName] = newHeader;
                 }
 
