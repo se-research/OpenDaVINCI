@@ -38,7 +38,7 @@ TimeTriggerExample.h:
 
             virtual ~TimeTriggerExample();
 
-            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+            odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
         private:
             virtual void setUp();
@@ -46,7 +46,7 @@ TimeTriggerExample.h:
             virtual void tearDown();
     };
 
-The class ``core::base::module::TimeTriggeredConferenceClientModule`` provides three methods
+The class ``odcore::base::module::TimeTriggeredConferenceClientModule`` provides three methods
 that need to be implemented by the user: ``setUp()``, ``body()``, and ``tearDown()``.
 These methods reflect the basic runtime cycle of a software component: An initialization
 phase, followed by a time-triggered execution of an algorithm implemented in the
@@ -74,7 +74,7 @@ TimeTriggerExample.cpp:
 
     TimeTriggerExample::TimeTriggerExample(const int32_t &argc, char **argv) :
         TimeTriggeredConferenceClientModule(argc, argv, "TimeTriggerExample")
-        {}
+    {}
 
     TimeTriggerExample::~TimeTriggerExample() {}
 
@@ -89,7 +89,7 @@ TimeTriggerExample.cpp:
     coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode TimeTriggerExample::body() {
         cout << "Hello OpenDaVINCI World!" << endl;
 
-        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+        return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
     }
 
     int32_t main(int32_t argc, char **argv) {
@@ -164,7 +164,7 @@ The application will print the following on the console::
 If the container conference session identifier is omitted, the following exception
 will be thrown::
 
-   terminate called after throwing an instance of 'core::exceptions::InvalidArgumentException'
+   terminate called after throwing an instance of 'odcore::exceptions::InvalidArgumentException'
      what():  InvalidArgumentException: Invalid number of arguments. At least a conference group id (--cid=) needed. at /home/berger/GITHUB/Mini-Smart-Vehicles/sources/OpenDaVINCI-msv/libopendavinci/src/core/base/AbstractCIDModule.cpp: 53
    Aborted
 
@@ -195,7 +195,7 @@ TimeTriggerExample.cpp:
 
     TimeTriggerExample::TimeTriggerExample(const int32_t &argc, char **argv) :
         TimeTriggeredConferenceClientModule(argc, argv, "TimeTriggerExample")
-        {}
+    {}
 
     TimeTriggerExample::~TimeTriggerExample() {}
 
@@ -207,7 +207,7 @@ TimeTriggerExample.cpp:
         cout << "This method is called after the program flow returns from the component's body." << endl;
     }
 
-    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode TimeTriggerExample::body() {
+    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode TimeTriggerExample::body() {
         cout << "Hello OpenDaVINCI World!" << endl;
 
         cout << "This is my name: " << getName() << endl;
@@ -220,7 +220,7 @@ TimeTriggerExample.cpp:
         cout << "  " << getKeyValueConfiguration().getValue<string>("timetriggerexample.key4") << endl;
         cout << "  " << (getKeyValueConfiguration().getValue<bool>("timetriggerexample.key5") == 1) << endl;
 
-        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+        return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
     }
 
     int32_t main(int32_t argc, char **argv) {
@@ -318,7 +318,7 @@ TimeTriggerExample.cpp:
 
     TimeTriggerExample::TimeTriggerExample(const int32_t &argc, char **argv) :
         TimeTriggeredConferenceClientModule(argc, argv, "TimeTriggerExample")
-        {}
+    {}
 
     TimeTriggerExample::~TimeTriggerExample() {}
 
@@ -330,7 +330,7 @@ TimeTriggerExample.cpp:
         cout << "This method is called after the program flow returns from the component's body." << endl;
     }
 
-    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode TimeTriggerExample::body() {
+    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode TimeTriggerExample::body() {
         cout << "Hello OpenDaVINCI World!" << endl;
 
         cout << "This is my name: " << getName() << endl;
@@ -343,11 +343,11 @@ TimeTriggerExample.cpp:
         cout << "  " << getKeyValueConfiguration().getValue<string>("timetriggerexample.key4") << endl;
         cout << "  " << (getKeyValueConfiguration().getValue<bool>("timetriggerexample.key5") == 1) << endl;
 
-        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
             cout << "Inside the main processing loop." << endl;
         }
 
-        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+        return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
     }
 
     int32_t main(int32_t argc, char **argv) {

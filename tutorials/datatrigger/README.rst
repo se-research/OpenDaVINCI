@@ -19,7 +19,7 @@ time-triggered modules, please see: https://github.com/se-research/OpenDaVINCI/t
 Time-triggered sender
 """""""""""""""""""""
 
-A time-triggered software component is derived from ``core::base::TimeTriggeredConferenceClientModule``,
+A time-triggered software component is derived from ``odcore::base::TimeTriggeredConferenceClientModule``,
 provided in ``<opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h>`` to
 realize the sending functionality.
 
@@ -61,7 +61,7 @@ TimeTriggeredSender.h:
 
             virtual ~TimeTriggeredSender();
 
-            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+            odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
         private:
             virtual void setUp();
@@ -69,7 +69,7 @@ TimeTriggeredSender.h:
             virtual void tearDown();
     };
 
-The class ``core::base::module::TimeTriggeredConferenceClientModule`` provides three methods
+The class ``odcore::base::module::TimeTriggeredConferenceClientModule`` provides three methods
 that need to be implemented by the user: ``setUp()``, ``body()``, and ``tearDown()``.
 These methods reflect the basic runtime cycle of a software component: An initialization
 phase, followed by a time-triggered execution of an algorithm implemented in the
@@ -100,7 +100,7 @@ TimeTriggeredSender.cpp:
 
     TimeTriggeredSender::TimeTriggeredSender(const int32_t &argc, char **argv) :
         TimeTriggeredConferenceClientModule(argc, argv, "TimeTriggeredSender")
-	    {}
+        {}
 
     TimeTriggeredSender::~TimeTriggeredSender() {}
 
@@ -112,17 +112,17 @@ TimeTriggeredSender.cpp:
         cout << "This method is called after the program flow returns from the component's body." << endl;
     }
 
-    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode TimeTriggeredSender::body() {
+    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode TimeTriggeredSender::body() {
         uint32_t i = 0;
-	    while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
             cout << "Sending " << i << "-th time stamp data...";
             TimeStamp ts(i, 2*i++);
-            Container c(Container::TIMESTAMP, ts);
+            Container c(ts);
             getConference().send(c);
             cout << "done." << endl;
         }
 
-        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+        return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
     }
 
     int32_t main(int32_t argc, char **argv) {
@@ -156,7 +156,7 @@ time point, when the container was received at the other end (e.g. another compu
 
 As an example, we simply send an instance of the class ``TimeStamp`` where we
 pass some example data to its constructor. Next, we create a ``Container`` by
-specifying the containing type and the object to be sent.
+encapsulating object to be sent.
 
 To finally send data with OpenDaVINCI, we use the method ``getConference().send(Container &c)``
 provided for any class deriving from ``TimeTriggeredConferenceClientModule``.
@@ -235,7 +235,7 @@ DataTriggeredSender.h:
             virtual void tearDown();
     };
 
-The class ``core::base::module::DataTriggeredConferenceClientModule`` provides three methods
+The class ``odcore::base::module::DataTriggeredConferenceClientModule`` provides three methods
 that need to be implemented by the user: ``setUp()``, ``body()``, and ``nextContainer(odcore::data::Container &c)``.
 These methods reflect the basic runtime cycle of a software component: An initialization
 phase, followed by a data-triggered execution of an algorithm implemented in the
@@ -265,7 +265,7 @@ DataTriggeredSender.cpp:
 
     DataTriggeredReceiver::DataTriggeredReceiver(const int32_t &argc, char **argv) :
         DataTriggeredConferenceClientModule(argc, argv, "DataTriggeredReceiver")
-	    {}
+    {}
 
     DataTriggeredReceiver::~DataTriggeredReceiver() {}
 
@@ -282,7 +282,7 @@ DataTriggeredSender.cpp:
                                   " sent at " << c.getSentTimeStamp().getYYYYMMDD_HHMMSSms() <<
                               " received at " << c.getReceivedTimeStamp().getYYYYMMDD_HHMMSSms() << endl;
 
-        if (c.getDataType() == Container::TIMESTAMP) {
+        if (c.getDataType() == TimeStamp::ID()) {
             TimeStamp ts = c.getData<TimeStamp>();
             cout << "Received the following time stamp: " << ts.toString() << endl;
         }
@@ -314,7 +314,7 @@ whenever a new ``Container`` is received. The first lines simply print some
 meta-information about received container like contained data type as an
 enum-encoded number, time stamp when the container left the sending software
 component, and the time stamp when it was received at our end. As we are interested
-in data of type ``Container::TIMESTAMP``, we are checking for that type.
+in data of type ``TimeStamp::ID()``, we are checking for that type.
 
 Once we have received the data of interest, the content of the container is
 unpacked by using the template method ``Container::getData<T>()`` where we

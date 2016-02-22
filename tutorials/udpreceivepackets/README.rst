@@ -23,7 +23,7 @@ UDPReceivePackets.hpp:
     };
 
 To receive any packets, we firstly declare a class that implements the interface
-``core::wrapper::PacketListener``. This class will be registered as listener to
+``odcore::wrapper::PacketListener``. This class will be registered as listener to
 our UDP socket that we create later. Packets provide the sending address in
 addition to the pure ``StringListener`` interface.
 

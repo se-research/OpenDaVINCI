@@ -75,7 +75,7 @@ MyService.cpp:
         s.stop();
     }
 
-Your class needs to derive from ``core::base::Service``, which is provided in
+Your class needs to derive from ``odcore::base::Service``, which is provided in
 ``#include <opendavinci/odcore/base/Service.h>`` in the include directory ``opendavinci``.
 This class provides two methods that need to be implemented in deriving classes:
 ``void beforeStop()`` and ``void run()``. The former method is called

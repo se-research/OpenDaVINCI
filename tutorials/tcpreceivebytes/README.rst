@@ -35,10 +35,10 @@ TCPReceiveBytes.hpp:
     };
 
 To receive any data, we firstly declare a class that implements the interfaces
-``core::io::StringListener`` to receive bytes and
-``core::io::tcp::TCPAcceptorListener`` where any newly accepted connections will
+``odcore::io::StringListener`` to receive bytes and
+``odcore::io::tcp::TCPAcceptorListener`` where any newly accepted connections will
 be reported to. This class will be registered as listener to our accepting TCP
-socket that we create later. In addition, we also register a ``core::io::ConnectionLister``
+socket that we create later. In addition, we also register a ``odcore::io::ConnectionLister``
 that is invoked in the case of any connection error like the connecting client
 has closed the connection.
 

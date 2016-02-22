@@ -31,7 +31,7 @@ HelloWorldExample.h:
 
             virtual ~HelloWorldExample();
 
-            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+            odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
         private:
             virtual void setUp();
@@ -56,7 +56,7 @@ HelloWorldExample.cpp:
 
     HelloWorldExample::HelloWorldExample(const int32_t &argc, char **argv) :
         TimeTriggeredConferenceClientModule(argc, argv, "HelloWorldExample")
-        {}
+    {}
 
     HelloWorldExample::~HelloWorldExample() {}
 
@@ -68,7 +68,7 @@ HelloWorldExample.cpp:
         cout << "This method is called after the program flow returns from the component's body." << endl;
     }
 
-    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode HelloWorldExample::body() {
+    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode HelloWorldExample::body() {
         cout << "Hello OpenDaVINCI World!" << endl;
 
         return coredata::dmcp::ModuleExitCodeMessage::OKAY;
