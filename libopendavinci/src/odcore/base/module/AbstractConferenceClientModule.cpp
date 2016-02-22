@@ -17,6 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <sstream>
+
 #include "opendavinci/odcore/SharedPointer.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/module/AbstractConferenceClientModule.h"
@@ -63,7 +65,15 @@ namespace odcore {
 
             void AbstractConferenceClientModule::toLogger(const odcore::data::LogMessage::LogLevel &logLevel, const string &msg) {
                 odcore::data::LogMessage logMessage;
+
                 logMessage.setComponentName(getName());
+
+                if (getIdentifier().size() > 0) {
+                    stringstream componentName;
+                    componentName << getName() << "-" << getIdentifier();
+                    logMessage.setComponentName(componentName.str());
+                }
+
                 logMessage.setLogMessage(msg);
                 logMessage.setLogLevel(logLevel);
 

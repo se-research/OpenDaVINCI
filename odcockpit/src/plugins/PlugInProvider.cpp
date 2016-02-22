@@ -34,6 +34,7 @@
 #include "plugins/iruscharts/IrUsChartsPlugIn.h"
 #include "plugins/irusmap/IrUsMapPlugIn.h"
 #include "plugins/livefeed/LiveFeedPlugIn.h"
+#include "plugins/logmessage/LogMessagePlugIn.h"
 #include "plugins/modulestatisticsviewer/ModuleStatisticsViewerPlugIn.h"
 #include "plugins/objxviewer/OBJXViewerPlugIn.h"
 #include "plugins/player/PlayerPlugIn.h"
@@ -78,6 +79,7 @@ class PlugIn;
             m_listOfAvailablePlugIns.push_back("SCNXViewer");
             m_listOfAvailablePlugIns.push_back("IrUsMap");
             m_listOfAvailablePlugIns.push_back("LiveFeed");
+            m_listOfAvailablePlugIns.push_back("LogMessage");
             m_listOfAvailablePlugIns.push_back("Player");
             m_listOfAvailablePlugIns.push_back("SharedImageViewer");
             m_listOfAvailablePlugIns.push_back("Spy");
@@ -93,6 +95,7 @@ class PlugIn;
             m_listOfDescriptions["SCNXViewer"] = tr("This plugin shows .scnx files.").toStdString();
             m_listOfDescriptions["IrUsMap"] = tr("This plugin displays the current irus readings.").toStdString();
             m_listOfDescriptions["LiveFeed"] = tr("This plugin displays all distributed visitable messages.").toStdString();
+            m_listOfDescriptions["LogMessage"] = tr("This plugin displays log messages from components.").toStdString();
             m_listOfDescriptions["Player"] = tr("This plugin replays previously recorded files.").toStdString();
             m_listOfDescriptions["SharedImageViewer"] = tr("This plugin displays shared images.").toStdString();
             m_listOfDescriptions["Spy"] = tr("This plugin displays all distributed containers.").toStdString();
@@ -162,6 +165,9 @@ class PlugIn;
             } else if (name == "LiveFeed") {
                 cerr << "Creating LiveFeed" << endl;
                 plugIn = odcore::SharedPointer<PlugIn>(new livefeed::LiveFeedPlugIn("LiveFeed", m_kvc, m_parent));
+            } else if (name == "LogMessage") {
+                cerr << "Creating LogMessage" << endl;
+                plugIn = odcore::SharedPointer<PlugIn>(new logmessage::LogMessagePlugIn("LogMessage", m_kvc, m_parent));
             } else if (name == "Player") {
                 cerr << "Creating Player" << endl;
                 plugIn = odcore::SharedPointer<PlugIn>((PlugIn*)(new player::PlayerPlugIn("Player", m_kvc, m_conference, m_parent)));
