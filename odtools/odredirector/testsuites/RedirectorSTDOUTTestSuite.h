@@ -217,6 +217,8 @@ class RedirectorTest : public CxxTest::TestSuite,
             }
             dataWritten = currentDataWritten; 
 
+            Thread::usleepFor(10000);
+
             rts.stop();
 
             delete &(StreamFactory::getInstance());
