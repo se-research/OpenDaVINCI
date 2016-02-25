@@ -257,7 +257,7 @@ message odcore.data.image.SharedImage extends odcore.data.SharedData [id = 14] {
 // PCAP recordings (de-facto standard for raw packet dumps, created for
 // instance with WireShark).
 // A PCAP recording is structured as GlobalHeader - Packet Header - Packet Data - Packet Header - Packet Data - ...
-message coredata.pcap.GlobalHeader [id = 120] {
+message odcore.data.pcap.GlobalHeader [id = 120] {
     uint32 magic_number [id = 1];
     uint16 version_major [id = 2];
     uint16 version_minor [id = 3];
@@ -267,15 +267,15 @@ message coredata.pcap.GlobalHeader [id = 120] {
     uint32 network [id = 7]; // Data link type, cf. http://www.tcpdump.org/linktypes.html
 }
 
-message coredata.pcap.PacketHeader [id = 121] {
+message odcore.data.pcap.PacketHeader [id = 121] {
     uint32 ts_sec [id = 1]; // Timestamp seconds.
     uint32 ts_usec [id = 2]; // Timestamp microseconds.
     uint32 incl_len [id = 3]; // Number of octets from the captured packet in the stored pcap file.
     uint32 orig_len [id = 4]; // Actual length of the packet as appeared on the network.
 }
 
-message coredata.pcap.Packet [id = 122] {
-    coredata.pcap.PacketHeader header [id = 1];
+message odcore.data.pcap.Packet [id = 122] {
+    odcore.data.pcap.PacketHeader header [id = 1];
     string payload [id = 2]; // Raw byte dump.
 }
 

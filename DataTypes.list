@@ -65,6 +65,9 @@ ID;TYPE;legacy OR message;library;comment
 112;coredata.dmcp.ServerInformation;legacy;CoreData.odvd;internal use;
 113;coredata.dmcp.ModuleDescriptor;legacy;CoreData.odvd;internal use;
 114;coredata.dmcp.ModuleStatistic;legacy;CoreData.odvd;internal use;
+120;coredata.pcap.GlobalHeader;;CoreData.odvd;;
+121;coredata.pcap.PacketHeader;;CoreData.odvd;;
+122;coredata.pcap.Packet;;CoreData.odvd;;
 150;OPENDLV_GCDC_MSG00;Revere/GCDC;Revere.odvd;;
 151;OPENDLV_GCDC_MSG01;Revere/GCDC;Revere.odvd;;
 152;OPENDLV_GCDC_MSG02;Revere/GCDC;Revere.odvd;;

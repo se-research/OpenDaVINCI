@@ -1,6 +1,6 @@
 /**
  * OpenDaVINCI - Portable middleware for distributed components.
- * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
+ * Copyright (C) 2016 Christian Berger
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,17 +21,17 @@
 #define OPENDAVINCI_CORE_IO_PROTOCOL_PCAPPROTOCOL_H_
 
 // core/platform.h must be included to setup platform-dependent header files and configurations.
-#include "core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 #include <sstream>
 
-#include "core/base/Mutex.h"
-#include "core/data/Container.h"
-#include "core/io/conference/ContainerListener.h"
-#include "core/io/conference/ContainerObserver.h"
-#include "core/io/protocol/AbstractProtocol.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
+#include "opendavinci/odcore/io/conference/ContainerObserver.h"
+#include "opendavinci/odcore/io/protocol/AbstractProtocol.h"
 
-namespace core {
+namespace odcore {
     namespace io {
         namespace protocol {
 
@@ -40,8 +40,8 @@ namespace core {
             /**
              * This class implements the PCAP protocol: https://wiki.wireshark.org/Development/LibpcapFileFormat
              */
-            class OPENDAVINCI_API PCAPProtocol : public core::io::protocol::AbstractProtocol,
-                                                 public core::io::conference::ContainerObserver {
+            class OPENDAVINCI_API PCAPProtocol : public odcore::io::protocol::AbstractProtocol,
+                                                 public odcore::io::conference::ContainerObserver {
                 private:
                     /**
                      * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -65,7 +65,7 @@ namespace core {
 
                     virtual ~PCAPProtocol();
 
-                    virtual void setContainerListener(core::io::conference::ContainerListener *cl);
+                    virtual void setContainerListener(odcore::io::conference::ContainerListener *cl);
 
                     virtual void nextString(const string &s);
 
@@ -76,12 +76,12 @@ namespace core {
                      * This method is used to pass received data thread-safe
                      * to the registered ContainerListener.
                      */
-                    void invokeContainerListener(core::data::Container &c);
+                    void invokeContainerListener(odcore::data::Container &c);
 
-                    core::base::Mutex m_containerListenerMutex;
-                    core::io::conference::ContainerListener *m_containerListener;
+                    odcore::base::Mutex m_containerListenerMutex;
+                    odcore::io::conference::ContainerListener *m_containerListener;
 
-                    core::base::Mutex m_partialDataMutex;
+                    odcore::base::Mutex m_partialDataMutex;
                     stringstream m_partialData;
             };
 

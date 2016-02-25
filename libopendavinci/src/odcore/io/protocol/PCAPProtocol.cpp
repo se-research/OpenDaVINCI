@@ -1,6 +1,6 @@
 /**
  * OpenDaVINCI - Portable middleware for distributed components.
- * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
+ * Copyright (C) 2016 Christian Berger
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,19 +17,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/base/Lock.h"
-#include "core/io/protocol/PCAPProtocol.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/io/protocol/PCAPProtocol.h"
 
-#include "GeneratedHeaders_CoreData.h"
+#include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
-namespace core {
+namespace odcore {
     namespace io {
         namespace protocol {
 
-            using namespace core::base;
-            using namespace core::data;
-            using namespace core::io::conference;
-            using namespace coredata;
+            using namespace odcore::base;
+            using namespace odcore::data;
+            using namespace odcore::io::conference;
+            using namespace odcore::data;
 
             PCAPProtocol::PCAPProtocol() :
                 AbstractProtocol(),
@@ -94,7 +94,7 @@ namespace core {
 
                         pcap::GlobalHeader gh(magic_number, version_major, version_minor, thiszone, sigfigs, snaplen, network);
 
-                        Container c(Container::USER_DATA_0, gh);
+                        Container c(gh);
                         invokeContainerListener(c);
 
                         return foundHeader;
@@ -117,7 +117,7 @@ namespace core {
 
                         ph = pcap::PacketHeader(ts_sec, ts_usec, incl_len, orig_len);
 
-                        Container c(Container::USER_DATA_1, ph);
+                        Container c(ph);
                         invokeContainerListener(c);
 
                         return foundPacketHeader;
@@ -139,7 +139,7 @@ namespace core {
                     pcap::Packet p(ph, payload);
 
                     // Create packet with the header and the payload.
-                    Container c(Container::USER_DATA_2, p);
+                    Container c(p);
                     invokeContainerListener(c);
 
                     // Reset states.
