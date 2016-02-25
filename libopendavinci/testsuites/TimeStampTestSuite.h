@@ -22,10 +22,10 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/data/TimeStamp.h"        // for TimeStamp
+#include "opendavinci/odcore/data/TimeStamp.h"        // for TimeStamp
 
 using namespace std;
-using namespace core::data;
+using namespace odcore::data;
 
 class TimeStampTest : public CxxTest::TestSuite {
     public:

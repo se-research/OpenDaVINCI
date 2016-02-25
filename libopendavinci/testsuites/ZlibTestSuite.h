@@ -24,11 +24,11 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/strings/StringToolbox.h"
-#include "core/wrapper/zlib/Zlib.h"
+#include "opendavinci/odcore/strings/StringToolbox.h"
+#include "opendavinci/odcore/wrapper/zlib/Zlib.h"
 
 using namespace std;
-using namespace core::wrapper::zlib;
+using namespace odcore::wrapper::zlib;
 
 class ZlibTest : public CxxTest::TestSuite {
     public:
@@ -41,7 +41,7 @@ class ZlibTest : public CxxTest::TestSuite {
             string decompressedOutput = Zlib::decompress(compressedOutput);
             TS_ASSERT(decompressedOutput.size() > 0);
 
-            TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(input, decompressedOutput));
+            TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(input, decompressedOutput));
         }
 
 };

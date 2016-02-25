@@ -21,11 +21,11 @@
 #include <cmath>
 #include <iostream>
 
-#include "core/io/conference/ContainerConference.h"
-#include "core/data/Container.h"
+#include "opendavinci/odcore/io/conference/ContainerConference.h"
+#include "opendavinci/odcore/data/Container.h"
 
-#include "GeneratedHeaders_CoreData.h"
-#include "GeneratedHeaders_AutomotiveData.h"
+#include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
+#include "automotivedata/GeneratedHeaders_AutomotiveData.h"
 
 #include "SidewaysParker.h"
 
@@ -33,8 +33,8 @@ namespace automotive {
     namespace miniature {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::data;
+        using namespace odcore::base;
+        using namespace odcore::data;
         using namespace automotive;
         using namespace automotive::miniature;
 
@@ -53,7 +53,7 @@ namespace automotive {
         }
 
         // This method will do the main data processing job.
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode SidewaysParker::body() {
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode SidewaysParker::body() {
             const double ULTRASONIC_FRONT_RIGHT = 0;
             double distanceOld = 0;
             double absPathStart = 0;
@@ -62,17 +62,17 @@ namespace automotive {
             int stageMoving = 0;
             int stageMeasuring = 0;
 
-            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
-	            // 1. Get most recent vehicle data:
-	            Container containerVehicleData = getKeyValueDataStore().get(Container::VEHICLEDATA);
-	            VehicleData vd = containerVehicleData.getData<VehicleData> ();
+            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
+                // 1. Get most recent vehicle data:
+                Container containerVehicleData = getKeyValueDataStore().get(automotive::VehicleData::ID());
+                VehicleData vd = containerVehicleData.getData<VehicleData> ();
 
-	            // 2. Get most recent sensor board data:
-	            Container containerSensorBoardData = getKeyValueDataStore().get(Container::USER_DATA_0);
-	            SensorBoardData sbd = containerSensorBoardData.getData<SensorBoardData> ();
+                // 2. Get most recent sensor board data:
+                Container containerSensorBoardData = getKeyValueDataStore().get(automotive::miniature::SensorBoardData::ID());
+                SensorBoardData sbd = containerSensorBoardData.getData<SensorBoardData> ();
 
-	            // Create vehicle control data.
-	            VehicleControl vc;
+                // Create vehicle control data.
+                VehicleControl vc;
 
                 // Moving state machine.
                 if (stageMoving == 0) {
@@ -151,13 +151,13 @@ namespace automotive {
                     break;
                 }
 
-	            // Create container for finally sending the data.
-	            Container c(Container::VEHICLECONTROL, vc);
-	            // Send container.
-	            getConference().send(c);
+                // Create container for finally sending the data.
+                Container c(vc);
+                // Send container.
+                getConference().send(c);
             }
 
-            return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
     }
 } // automotive::miniature

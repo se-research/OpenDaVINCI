@@ -22,11 +22,11 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/base/Lock.h"             // for Lock
-#include "core/base/Mutex.h"            // for Mutex
+#include "opendavinci/odcore/base/Lock.h"             // for Lock
+#include "opendavinci/odcore/base/Mutex.h"            // for Mutex
 
 using namespace std;
-using namespace core::base;
+using namespace odcore::base;
 
 class MutexTestDirectLocking : public Mutex {
     public:
@@ -64,7 +64,7 @@ class MutexTest : public CxxTest::TestSuite {
         void testScopedLock() {
             MutexTestDirectLocking m1;
             {
-                core::base::Lock l(m1);
+                odcore::base::Lock l(m1);
                 TS_ASSERT(!m1.doTryLock());
             }
             TS_ASSERT(m1.doTryLock());

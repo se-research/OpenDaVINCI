@@ -16,15 +16,15 @@ UDPSendBytes.cpp:
     #include <stdint.h>
     #include <iostream>
     #include <string>
-    #include <core/SharedPointer.h>
-    #include <core/io/udp/UDPSender.h>
-    #include <core/io/udp/UDPFactory.h>
+    #include <opendavinci/odcore/SharedPointer.h>
+    #include <opendavinci/odcore/io/udp/UDPSender.h>
+    #include <opendavinci/odcore/io/udp/UDPFactory.h>
 
     using namespace std;
 
     // We add some of OpenDaVINCI's namespaces for the sake of readability.
-    using namespace core;
-    using namespace core::io::udp;
+    using namespace odcore;
+    using namespace odcore::io::udp;
 
     int32_t main(int32_t argc, char **argv) {
         const string RECEIVER = "127.0.0.1";
@@ -43,7 +43,7 @@ UDPSendBytes.cpp:
     }
 
 To send bytes over UDP to a UDP socket, your application needs to include
-``<core/io/udp/UDPSender.h>`` and ``<core/io/udp/UDPFactory.h>`` that encapsulate
+``<opendavinci/odcore/io/udp/UDPSender.h>`` and ``<opendavinci/odcore/io/udp/UDPFactory.h>`` that encapsulate
 the platform-specific implementations.
 
 ``UDPFactory`` provides a static method called ``createUDPSender`` that
@@ -61,7 +61,7 @@ is no longer used.
 
 You can compile and link the example::
 
-   g++ -I /usr/include/opendavinci -c UDPSendBytes.cpp -o UDPSendBytes.o
+   g++ -I /usr/include -c UDPSendBytes.cpp -o UDPSendBytes.o
    g++ -o udpsendbytes UDPSendBytes.o -lopendavinci -lpthread
 
 To test the program, we create a simple UDP server awaiting data by using

@@ -23,15 +23,15 @@
 
 #include <vector>
 
-#include "core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "ContainerObserver.h"
-#include "core/base/FIFOQueue.h"
-#include "core/base/Mutex.h"
-#include "core/base/Service.h"
-#include "core/data/Container.h"
+#include "opendavinci/odcore/base/FIFOQueue.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/base/Service.h"
+#include "opendavinci/odcore/data/Container.h"
 
-namespace core { namespace base { class DataStoreManager; } }
-namespace core { namespace io { namespace conference { class ContainerListener; } } }
+namespace odcore { namespace base { class DataStoreManager; } }
+namespace odcore { namespace io { namespace conference { class ContainerListener; } } }
 
 namespace cockpit {
 
@@ -40,7 +40,7 @@ namespace cockpit {
     /**
      * This class implements a simple FIFO for multiplexing incoming containers.
      */
-    class FIFOMultiplexer : public core::base::Service, public ContainerObserver {
+    class FIFOMultiplexer : public odcore::base::Service, public ContainerObserver {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -67,25 +67,25 @@ namespace cockpit {
              *
              * @param dsm DataStoreManager to be used for registering own FIFO.
              */
-            FIFOMultiplexer(core::base::DataStoreManager &dsm);
+            FIFOMultiplexer(odcore::base::DataStoreManager &dsm);
 
             virtual ~FIFOMultiplexer();
 
-            virtual void addContainerListener(core::io::conference::ContainerListener *containerListener);
+            virtual void addContainerListener(odcore::io::conference::ContainerListener *containerListener);
 
-            virtual void removeContainerListener(core::io::conference::ContainerListener *containerListener);
+            virtual void removeContainerListener(odcore::io::conference::ContainerListener *containerListener);
 
         protected:
-            virtual void distributeContainer(core::data::Container &c);
-            virtual core::data::Container leaveContainer();
+            virtual void distributeContainer(odcore::data::Container c);
+            virtual odcore::data::Container leaveContainer();
             virtual uint32_t getFIFOSize();
             virtual void waitForData();
 
         private:
-            core::base::DataStoreManager &m_dataStoreManager;
-            mutable core::base::Mutex m_fifoMutex;
-            vector<core::io::conference::ContainerListener*> m_listOfContainerListeners;
-            core::base::FIFOQueue m_fifo;
+            odcore::base::DataStoreManager &m_dataStoreManager;
+            mutable odcore::base::Mutex m_fifoMutex;
+            vector<odcore::io::conference::ContainerListener*> m_listOfContainerListeners;
+            odcore::base::FIFOQueue m_fifo;
 
             virtual void beforeStop();
 

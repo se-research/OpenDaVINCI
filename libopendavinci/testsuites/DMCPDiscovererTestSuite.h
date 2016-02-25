@@ -25,20 +25,20 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/opendavinci.h"
-#include "core/dmcp/discoverer/Client.h"  // for Client
-#include "core/dmcp/discoverer/Server.h"  // for Server
-#include "generated/coredata/dmcp/ServerInformation.h"
-#include "generated/coredata/dmcp/TestConstants.h"  // for TestConstants, etc
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/dmcp/discoverer/Client.h"  // for Client
+#include "opendavinci/odcore/dmcp/discoverer/Server.h"  // for Server
+#include "opendavinci/generated/odcore/data/dmcp/ServerInformation.h"
+#include "opendavinci/generated/odcore/data/dmcp/TestConstants.h"  // for TestConstants, etc
 #include "mocks/FunctionCallWaiter.h"
 
 using namespace std;
 
-using namespace core::dmcp;
-using namespace core::data;
-using namespace coredata::dmcp;
+using namespace odcore::dmcp;
+using namespace odcore::data;
+using namespace odcore::data::dmcp;
 
-class TestClient : public core::dmcp::discoverer::Client
+class TestClient : public odcore::dmcp::discoverer::Client
 {
     public:
         TestClient(const string& group, const uint32_t &serverPort, const uint32_t &clientPort, const string &name) :
@@ -53,7 +53,7 @@ class TestClient : public core::dmcp::discoverer::Client
     mocks::FunctionCallWaiter WAITER;
 };
 
-class TestServer : public core::dmcp::discoverer::Server
+class TestServer : public odcore::dmcp::discoverer::Server
 {
     public:
         TestServer(const ServerInformation& serverInformation,
@@ -79,9 +79,9 @@ class DMCPDiscovererTestsuite : public CxxTest::TestSuite
             
             vector<string> noModulesToIgnore;
             ServerInformation myServerInfo("0.0.0.0", 12345, ServerInformation::ML_NONE);
-            TestServer server(myServerInfo, coredata::dmcp::TestConstants::DMCPCONFIG_TEST_GROUP, coredata::dmcp::TestConstants::DMCPCONFIG_TEST_SERVERPORT, coredata::dmcp::TestConstants::DMCPCONFIG_TEST_CLIENTPORT, noModulesToIgnore);
+            TestServer server(myServerInfo, odcore::data::dmcp::TestConstants::DMCPCONFIG_TEST_GROUP, odcore::data::dmcp::TestConstants::DMCPCONFIG_TEST_SERVERPORT, odcore::data::dmcp::TestConstants::DMCPCONFIG_TEST_CLIENTPORT, noModulesToIgnore);
 
-            TestClient client(coredata::dmcp::TestConstants::DMCPCONFIG_TEST_GROUP, coredata::dmcp::TestConstants::DMCPCONFIG_TEST_SERVERPORT, coredata::dmcp::TestConstants::DMCPCONFIG_TEST_CLIENTPORT, "myName");
+            TestClient client(odcore::data::dmcp::TestConstants::DMCPCONFIG_TEST_GROUP, odcore::data::dmcp::TestConstants::DMCPCONFIG_TEST_SERVERPORT, odcore::data::dmcp::TestConstants::DMCPCONFIG_TEST_CLIENTPORT, "myName");
             TS_ASSERT( !client.existsServer() );
             TS_ASSERT( !client.WAITER.wasCalled() );
             TS_ASSERT( !server.WAITER.wasCalled() );

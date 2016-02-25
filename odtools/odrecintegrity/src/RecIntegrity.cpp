@@ -22,17 +22,17 @@
 #include <string>
 
 #include "RecIntegrity.h"
-#include "core/base/Serializable.h"
-#include "core/data/Container.h"
-#include "generated/coredata/SharedData.h"
-#include "generated/coredata/image/SharedImage.h"
+#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/generated/odcore/data/SharedData.h"
+#include "opendavinci/generated/odcore/data/image/SharedImage.h"
 
 namespace odrecintegrity {
 
     using namespace std;
-    using namespace core;
-    using namespace core::base;
-    using namespace core::data;
+    using namespace odcore;
+    using namespace odcore::base;
+    using namespace odcore::data;
 
     RecIntegrity::RecIntegrity() {}
 
@@ -70,8 +70,8 @@ namespace odrecintegrity {
                         fileNotCorrupt &= (c.getDataType() != Container::UNDEFINEDDATA) && (currPos > 0);
 
                         // If the data is from SHARED_IMAGE, skip the raw data from the shared memory segment.
-                        if (c.getDataType() == Container::SHARED_IMAGE) {
-                            coredata::image::SharedImage si = c.getData<coredata::image::SharedImage>();
+                        if (c.getDataType() == odcore::data::image::SharedImage::ID()) {
+                            odcore::data::image::SharedImage si = c.getData<odcore::data::image::SharedImage>();
 
                             uint32_t lengthToSkip = si.getSize();
                             if (lengthToSkip == 0) {
@@ -82,8 +82,8 @@ namespace odrecintegrity {
                             cout << "[RecIntegrity]: Found SHARED_IMAGE '" << si.getName() << "' (" << lengthToSkip << " bytes)" << endl;
                             numberOfSharedImages++;
                         }
-                        else if (c.getDataType() == Container::SHARED_DATA) {
-                            coredata::SharedData sd = c.getData<coredata::SharedData>();
+                        else if (c.getDataType() == odcore::data::SharedData::ID()) {
+                            odcore::data::SharedData sd = c.getData<odcore::data::SharedData>();
 
                             uint32_t lengthToSkip = sd.getSize();
 

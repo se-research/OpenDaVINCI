@@ -21,9 +21,9 @@
 #ifndef VEHICLE_H_
 #define VEHICLE_H_
 
-#include "core/opendavinci.h"
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
 
 namespace vehicle {
 
@@ -32,7 +32,7 @@ namespace vehicle {
     /**
      * This class encapsulates the vehicle.
      */
-    class Vehicle : public core::base::module::TimeTriggeredConferenceClientModule {
+    class Vehicle : public odcore::base::module::TimeTriggeredConferenceClientModule {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -64,7 +64,7 @@ namespace vehicle {
 
             virtual ~Vehicle();
 
-            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+            odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
         private:
             virtual void setUp();

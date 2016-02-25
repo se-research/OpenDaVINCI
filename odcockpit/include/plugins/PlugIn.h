@@ -23,8 +23,8 @@
 
 #include <string>
 
-#include "core/base/KeyValueConfiguration.h"
-#include "core/base/Mutex.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/base/Mutex.h"
 
 class QWidget;
 namespace cockpit { class ContainerObserver; }
@@ -62,7 +62,7 @@ namespace cockpit {
                  * @param kvc KeyValueConfiguration for this plugin.
                  * @param prnt Pointer to the containing super window.
                  */
-                PlugIn(const string &name, const core::base::KeyValueConfiguration &kvc, QWidget* prnt);
+                PlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, QWidget* prnt);
 
                 virtual ~PlugIn();
 
@@ -133,14 +133,14 @@ namespace cockpit {
                  *
                  * @return KeyValueConfiguration.
                  */
-                const core::base::KeyValueConfiguration getKeyValueConfiguration() const;
+                const odcore::base::KeyValueConfiguration getKeyValueConfiguration() const;
 
             private:
                 QWidget *m_parent;
                 const string m_name;
                 string m_description;
-                const core::base::KeyValueConfiguration &m_kvc;
-                mutable core::base::Mutex m_containerObserverMutex;
+                const odcore::base::KeyValueConfiguration &m_kvc;
+                mutable odcore::base::Mutex m_containerObserverMutex;
                 cockpit::ContainerObserver *m_containerObserver;
         };
 

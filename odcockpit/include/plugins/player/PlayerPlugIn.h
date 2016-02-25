@@ -26,8 +26,8 @@
 #include "plugins/ControlPlugIn.h"
 
 class QWidget;
-namespace core { namespace base { class KeyValueConfiguration; } }
-namespace core { namespace io { namespace conference { class ContainerConference; } } }
+namespace odcore { namespace base { class KeyValueConfiguration; } }
+namespace odcore { namespace io { namespace conference { class ContainerConference; } } }
 
 namespace cockpit {
 
@@ -62,7 +62,7 @@ class PlayerWidget;
                      * @param conf ContainerConference.
                      * @param prnt Pointer to the container super window.
                      */
-                    PlayerPlugIn(const string &name, const core::base::KeyValueConfiguration &kvc, core::io::conference::ContainerConference &conf, QWidget *prnt);
+                    PlayerPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, QWidget *prnt);
 
                     virtual ~PlayerPlugIn();
 
@@ -73,7 +73,7 @@ class PlayerWidget;
                     virtual void stopPlugin();
 
                 private:
-                    const core::base::KeyValueConfiguration &m_kvc;
+                    const odcore::base::KeyValueConfiguration &m_kvc;
                     PlayerWidget *m_playerWidget;
             };
 

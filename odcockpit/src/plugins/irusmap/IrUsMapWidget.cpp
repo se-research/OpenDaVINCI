@@ -36,12 +36,12 @@
 #include <iostream>
 #include <sstream>
 
-#include "core/opendavinci.h"
-#include "core/base/KeyValueConfiguration.h"
-#include "core/base/Lock.h"
-#include "core/data/Container.h"
-#include "core/strings/StringComparator.h"
-#include "hesperia/data/environment/Point3.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/strings/StringComparator.h"
+#include "opendlv/data/environment/Point3.h"
 #include "plugins/irusmap/IrUsMapWidget.h"
 #include "plugins/irusmap/PointSensor.h"
 
@@ -54,11 +54,11 @@ namespace cockpit {
         namespace irusmap {
 
             using namespace std;
-            using namespace core::base;
-            using namespace core::data;
-            using namespace hesperia::data::environment;
+            using namespace odcore::base;
+            using namespace odcore::data;
+            using namespace opendlv::data::environment;
 
-            IrUsMapWidget::IrUsMapWidget(const PlugIn &/*plugIn*/, const core::base::KeyValueConfiguration &kvc, QWidget *prnt) :
+            IrUsMapWidget::IrUsMapWidget(const PlugIn &/*plugIn*/, const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt) :
                 QWidget(prnt),
                 m_timer(NULL),
                 m_scaleFactorMutex(),
@@ -121,7 +121,7 @@ namespace cockpit {
             }
 
             void IrUsMapWidget::nextContainer(Container &c) {
-                if (c.getDataType() == Container::USER_DATA_0) {
+                if (c.getDataType() == automotive::miniature::SensorBoardData::ID()) {
                     Lock l(m_sensorBoardDataMutex);
         			m_sensorBoardData = c.getData<automotive::miniature::SensorBoardData>();
                 }
@@ -259,7 +259,7 @@ namespace cockpit {
                 const QColor FOVColor = Qt::green;
 
                 // Loop through point sensors.
-                map<string, PointSensor*, core::strings::StringComparator>::iterator sensorIterator = m_mapOfPointSensors.begin();
+                map<string, PointSensor*, odcore::strings::StringComparator>::iterator sensorIterator = m_mapOfPointSensors.begin();
                 for (; sensorIterator != m_mapOfPointSensors.end(); sensorIterator++) {
                     PointSensor *sensor = sensorIterator->second;
 

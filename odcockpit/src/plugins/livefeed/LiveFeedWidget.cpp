@@ -26,26 +26,26 @@
 #include <cstring>
 #include <vector>
 
-#include "core/opendavinci.h"
-#include "core/base/Visitable.h"
-#include "core/data/Container.h"
-#include "core/data/TimeStamp.h"
-#include "generated/automotive/ForceControl.h"
-#include "generated/automotive/GenericCANMessage.h"
-#include "generated/automotive/VehicleData.h"
-#include "generated/automotive/miniature/UserButtonData.h"
-#include "generated/automotive/vehicle/WheelSpeed.h"
-#include "generated/coredata/Configuration.h"
-#include "generated/coredata/SharedData.h"
-#include "generated/coredata/dmcp/DiscoverMessage.h"
-#include "generated/coredata/dmcp/ModuleDescriptor.h"
-#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
-#include "generated/coredata/dmcp/ModuleStateMessage.h"
-#include "generated/coredata/dmcp/ModuleStatistics.h"
-#include "generated/coredata/dmcp/RuntimeStatistic.h"
-#include "generated/coredata/image/SharedImage.h"
-#include "generated/coredata/player/PlayerCommand.h"
-#include "generated/coredata/recorder/RecorderCommand.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Visitable.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
+#include "automotivedata/generated/automotive/ForceControl.h"
+#include "automotivedata/generated/automotive/GenericCANMessage.h"
+#include "automotivedata/generated/automotive/VehicleData.h"
+#include "automotivedata/generated/automotive/miniature/UserButtonData.h"
+#include "automotivedata/generated/automotive/vehicle/WheelSpeed.h"
+#include "opendavinci/generated/odcore/data/Configuration.h"
+#include "opendavinci/generated/odcore/data/SharedData.h"
+#include "opendavinci/generated/odcore/data/dmcp/DiscoverMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleDescriptor.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleStateMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleStatistics.h"
+#include "opendavinci/generated/odcore/data/dmcp/RuntimeStatistic.h"
+#include "opendavinci/generated/odcore/data/image/SharedImage.h"
+#include "opendavinci/generated/odcore/data/player/PlayerCommand.h"
+#include "opendavinci/generated/odcore/data/recorder/RecorderCommand.h"
 #include "plugins/livefeed/LiveFeedWidget.h"
 #include "plugins/livefeed/MessageToTupleVisitor.h"
 
@@ -58,8 +58,8 @@ namespace cockpit {
         namespace livefeed {
 
             using namespace std;
-            using namespace core::base;
-            using namespace core::data;
+            using namespace odcore::base;
+            using namespace odcore::data;
 
             LiveFeedWidget::LiveFeedWidget(const PlugIn &/*plugIn*/, QWidget *prnt) :
                 QWidget(prnt),
@@ -93,11 +93,11 @@ namespace cockpit {
                 transformContainerToTree(container);
             }
 
-            void LiveFeedWidget::addMessageToTree(const string &messageName, core::data::Container &container, core::base::Visitable &v) {
+            void LiveFeedWidget::addMessageToTree(const string &messageName, odcore::data::Container &container, odcore::base::Visitable &v) {
                 //create new Header if needed
                 if (m_dataToType.find(messageName) == m_dataToType.end()) {
                     QTreeWidgetItem *newHeader = new QTreeWidgetItem(m_dataView.get());
-                    newHeader->setText(0, container.toString().c_str());
+                    newHeader->setText(0, messageName.c_str());
                     m_dataToType[messageName] = newHeader;
                 }
 
@@ -128,10 +128,29 @@ namespace cockpit {
             }
 
             void LiveFeedWidget::transformContainerToTree(Container &container) {
+/*
+                if (container.getDataType() == coredata::dmcp::ModuleStatistics::ID()) {
+                    coredata::dmcp::ModuleStatistics tmp = container.getData<coredata::dmcp::ModuleStatistics>();
+                    if (dynamic_cast<Visitable*>(&tmp) != NULL) {
+                        addMessageToTree(tmp.LongName(), container, tmp);
+                    }
+                    return;
+                }
+*/
+
+                if (container.getDataType() == automotive::VehicleData::ID()) {
+                    automotive::VehicleData tmp = container.getData<automotive::VehicleData>();
+                    if (dynamic_cast<Visitable*>(&tmp) != NULL) {
+                        addMessageToTree(tmp.LongName(), container, tmp);
+                    }
+                    return;
+                }
+
+/*
                 switch (container.getDataType()) {
                     case Container::CONFIGURATION:
                     {
-                        coredata::Configuration tmp = container.getData<coredata::Configuration>();
+                        odcore::data::Configuration tmp = container.getData<odcore::data::Configuration>();
                         if (dynamic_cast<Visitable*>(&tmp) != NULL) {
                             addMessageToTree(tmp.LongName(), container, tmp);
                         }
@@ -147,7 +166,7 @@ namespace cockpit {
                     }
                     case Container::DMCP_DISCOVER:
                     {
-                        coredata::dmcp::DiscoverMessage tmp = container.getData<coredata::dmcp::DiscoverMessage>();
+                        odcore::data::dmcp::DiscoverMessage tmp = container.getData<odcore::data::dmcp::DiscoverMessage>();
                         if (dynamic_cast<Visitable*>(&tmp) != NULL) {
                             addMessageToTree(tmp.LongName(), container, tmp);
                         }
@@ -155,7 +174,7 @@ namespace cockpit {
                     }
                     case Container::DMCP_CONFIGURATION_REQUEST:
                     {
-                        coredata::dmcp::ModuleDescriptor tmp = container.getData<coredata::dmcp::ModuleDescriptor>();
+                        odcore::data::dmcp::ModuleDescriptor tmp = container.getData<odcore::data::dmcp::ModuleDescriptor>();
                         if (dynamic_cast<Visitable*>(&tmp) != NULL) {
                             addMessageToTree(tmp.LongName(), container, tmp);
                         }
@@ -163,7 +182,7 @@ namespace cockpit {
                     }
                     case Container::DMCP_MODULESTATEMESSAGE:
                     {
-                        coredata::dmcp::ModuleStateMessage tmp = container.getData<coredata::dmcp::ModuleStateMessage>();
+                        odcore::data::dmcp::ModuleStateMessage tmp = container.getData<odcore::data::dmcp::ModuleStateMessage>();
                         if (dynamic_cast<Visitable*>(&tmp) != NULL) {
                             addMessageToTree(tmp.LongName(), container, tmp);
                         }
@@ -171,7 +190,7 @@ namespace cockpit {
                     }
                     case Container::DMCP_MODULEEXITCODEMESSAGE:
                     {
-                        coredata::dmcp::ModuleExitCodeMessage tmp = container.getData<coredata::dmcp::ModuleExitCodeMessage>();
+                        odcore::data::dmcp::ModuleExitCodeMessage tmp = container.getData<odcore::data::dmcp::ModuleExitCodeMessage>();
                         if (dynamic_cast<Visitable*>(&tmp) != NULL) {
                             addMessageToTree(tmp.LongName(), container, tmp);
                         }
@@ -179,7 +198,7 @@ namespace cockpit {
                     }
                     case Container::MODULESTATISTICS:
                     {
-                        coredata::dmcp::ModuleStatistics tmp = container.getData<coredata::dmcp::ModuleStatistics>();
+                        odcore::data::dmcp::ModuleStatistics tmp = container.getData<odcore::data::dmcp::ModuleStatistics>();
                         if (dynamic_cast<Visitable*>(&tmp) != NULL) {
                             addMessageToTree(tmp.LongName(), container, tmp);
                         }
@@ -195,7 +214,7 @@ namespace cockpit {
                     }
                     case Container::PLAYER_COMMAND:
                     {
-                        coredata::player::PlayerCommand tmp = container.getData<coredata::player::PlayerCommand>();
+                        odcore::data::player::PlayerCommand tmp = container.getData<odcore::data::player::PlayerCommand>();
                         if (dynamic_cast<Visitable*>(&tmp) != NULL) {
                             addMessageToTree(tmp.LongName(), container, tmp);
                         }
@@ -203,7 +222,7 @@ namespace cockpit {
                     }
                     case Container::RECORDER_COMMAND:
                     {
-                        coredata::recorder::RecorderCommand tmp = container.getData<coredata::recorder::RecorderCommand>();
+                        odcore::data::recorder::RecorderCommand tmp = container.getData<odcore::data::recorder::RecorderCommand>();
                         if (dynamic_cast<Visitable*>(&tmp) != NULL) {
                             addMessageToTree(tmp.LongName(), container, tmp);
                         }
@@ -211,7 +230,7 @@ namespace cockpit {
                     }
                     case Container::RUNTIMESTATISTIC:
                     {
-                        coredata::dmcp::RuntimeStatistic tmp = container.getData<coredata::dmcp::RuntimeStatistic>();
+                        odcore::data::dmcp::RuntimeStatistic tmp = container.getData<odcore::data::dmcp::RuntimeStatistic>();
                         if (dynamic_cast<Visitable*>(&tmp) != NULL) {
                             addMessageToTree(tmp.LongName(), container, tmp);
                         }
@@ -219,7 +238,7 @@ namespace cockpit {
                     }
                     case Container::SHARED_DATA:
                     {
-                        coredata::SharedData tmp = container.getData<coredata::SharedData>();
+                        odcore::data::SharedData tmp = container.getData<odcore::data::SharedData>();
                         if (dynamic_cast<Visitable*>(&tmp) != NULL) {
                             addMessageToTree(tmp.LongName(), container, tmp);
                         }
@@ -227,7 +246,7 @@ namespace cockpit {
                     }
                     case Container::SHARED_IMAGE:
                     {
-                        coredata::image::SharedImage tmp = container.getData<coredata::image::SharedImage>();
+                        odcore::data::image::SharedImage tmp = container.getData<odcore::data::image::SharedImage>();
                         if (dynamic_cast<Visitable*>(&tmp) != NULL) {
                             addMessageToTree(tmp.LongName(), container, tmp);
                         }
@@ -260,6 +279,7 @@ namespace cockpit {
                     default:
                     break;
                 }
+*/
             }
         }
     }

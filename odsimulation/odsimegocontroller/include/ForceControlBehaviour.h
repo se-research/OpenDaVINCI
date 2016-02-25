@@ -21,9 +21,9 @@
 #define EGOCONTROLLER_FORCECONTROLBEHAVIOUR_H_
 
 #include "ControlBehaviour.h"
-#include "core/data/TimeStamp.h"
-#include "hesperia/data/environment/EgoState.h"
-#include "hesperia/data/environment/Point3.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
+#include "opendlv/data/environment/EgoState.h"
+#include "opendlv/data/environment/Point3.h"
 
 namespace egocontroller {
 
@@ -50,7 +50,7 @@ namespace egocontroller {
             virtual void turnLeft(const double& value);
             virtual void turnRight(const double& value);
             virtual void stop();
-            virtual hesperia::data::environment::EgoState computeEgoState();
+            virtual opendlv::data::environment::EgoState computeEgoState();
 
         protected:
             double m_minimumTurningRadius;
@@ -81,9 +81,9 @@ namespace egocontroller {
             double m_speed;
             double m_heading;
 
-            core::data::TimeStamp m_previousTime;
-            hesperia::data::environment::Point3 m_oldPosition;
-            hesperia::data::environment::Point3 m_orientation;
+            odcore::data::TimeStamp m_previousTime;
+            opendlv::data::environment::Point3 m_oldPosition;
+            opendlv::data::environment::Point3 m_orientation;
     };
 }
 

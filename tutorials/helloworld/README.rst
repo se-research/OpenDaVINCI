@@ -13,9 +13,9 @@ HelloWorldExample.h:
 
 .. code-block:: c++
 
-    #include <core/base/TimeTriggeredConferenceClientModule.h>
+    #include <opendavinci/odcore/base/TimeTriggeredConferenceClientModule.h>
 
-    class HelloWorldExample : public core::base::module::TimeTriggeredConferenceClientModule {
+    class HelloWorldExample : public odcore::base::module::TimeTriggeredConferenceClientModule {
         private:
             HelloWorldExample(const HelloWorldExample &/*obj*/);
             HelloWorldExample& operator=(const HelloWorldExample &/*obj*/);
@@ -31,7 +31,7 @@ HelloWorldExample.h:
 
             virtual ~HelloWorldExample();
 
-            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+            odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
         private:
             virtual void setUp();
@@ -52,11 +52,11 @@ HelloWorldExample.cpp:
     using namespace std;
 
     // We add some of OpenDaVINCI's namespaces for the sake of readability.
-    using namespace core::base::module;
+    using namespace odcore::base::module;
 
     HelloWorldExample::HelloWorldExample(const int32_t &argc, char **argv) :
         TimeTriggeredConferenceClientModule(argc, argv, "HelloWorldExample")
-        {}
+    {}
 
     HelloWorldExample::~HelloWorldExample() {}
 
@@ -68,7 +68,7 @@ HelloWorldExample.cpp:
         cout << "This method is called after the program flow returns from the component's body." << endl;
     }
 
-    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode HelloWorldExample::body() {
+    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode HelloWorldExample::body() {
         cout << "Hello OpenDaVINCI World!" << endl;
 
         return coredata::dmcp::ModuleExitCodeMessage::OKAY;
@@ -94,8 +94,8 @@ the "Hello World" example, the latter file is simply starting the component.
 
 Now, you can compile and link the example manually::
 
-    $ g++ -I /usr/include/opendavinci -c HelloWorldExample.cpp -o HelloWorldExample.o
-    $ g++ -I /usr/include/opendavinci -c HelloWorldExampleMain.cpp -o HelloWorldExampleMain.o
+    $ g++ -I /usr/include -c HelloWorldExample.cpp -o HelloWorldExample.o
+    $ g++ -I /usr/include -c HelloWorldExampleMain.cpp -o HelloWorldExampleMain.o
     $ g++ -o helloworldexample HelloWorldExampleMain.o HelloWorldExample.o -lopendavinci -lpthread
 
 
@@ -145,7 +145,7 @@ shall be installed to::
     FIND_PACKAGE (OpenDaVINCI REQUIRED)
 
     # (2) Set header files from OpenDaVINCI.
-    INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS}/opendavinci)
+    INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS})
 
     # (3) Build the project.
     SET(SOURCES HelloWorldExample.cpp HelloWorldExampleMain.cpp)

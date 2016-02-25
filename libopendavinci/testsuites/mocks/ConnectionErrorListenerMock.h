@@ -21,12 +21,12 @@
 #define MOCKS__CONNECTIONERRORLISTENERMOCK_H_
 
 #include "FunctionCallWaiter.h"
-#include "core/io/ConnectionErrorListener.h"
+#include "opendavinci/odcore/io/ConnectionErrorListener.h"
 
 namespace mocks {
-    using namespace core;
+    using namespace odcore;
 
-    class ConnectionErrorListenerMock : public core::io::ConnectionErrorListener {
+    class ConnectionErrorListenerMock : public odcore::io::ConnectionErrorListener {
         public:
             ConnectionErrorListenerMock() :
                 CALLWAITER_handleConnectionError()

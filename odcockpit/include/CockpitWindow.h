@@ -26,15 +26,15 @@
 
 #include <vector>
 
-#include "core/SharedPointer.h"
-#include "core/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
 
 class QListWidget;
 class QListWidgetItem;
 class QMdiArea;
 class QMenu;
-namespace core { namespace base { class DataStoreManager; } }
-namespace core { namespace io { namespace conference { class ContainerConference; } } }
+namespace odcore { namespace base { class DataStoreManager; } }
+namespace odcore { namespace io { namespace conference { class ContainerConference; } } }
 
 namespace cockpit {
 
@@ -71,7 +71,7 @@ namespace plugins { class PlugInProvider; }
              * @param dsm DataStoreManager to be used for adding DataStores.
              * @param conf Container conference to send data to.
              */
-            CockpitWindow(const core::base::KeyValueConfiguration &kvc, core::base::DataStoreManager &dsm, core::io::conference::ContainerConference &conf);
+            CockpitWindow(const odcore::base::KeyValueConfiguration &kvc, odcore::base::DataStoreManager &dsm, odcore::io::conference::ContainerConference &conf);
 
             virtual ~CockpitWindow();
 
@@ -86,11 +86,11 @@ namespace plugins { class PlugInProvider; }
             void constructLayout();
 
         private:
-            core::base::KeyValueConfiguration m_kvc;
-            core::base::DataStoreManager &m_dataStoreManager;
+            odcore::base::KeyValueConfiguration m_kvc;
+            odcore::base::DataStoreManager &m_dataStoreManager;
             FIFOMultiplexer *m_multiplexer;
             cockpit::plugins::PlugInProvider &m_plugInProvider;
-            vector<core::SharedPointer<cockpit::plugins::PlugIn> > m_listOfPlugIns;
+            vector<odcore::SharedPointer<cockpit::plugins::PlugIn> > m_listOfPlugIns;
 
             QMdiArea *m_cockpitArea;
             QMenu *m_fileMenu;

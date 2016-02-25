@@ -19,26 +19,26 @@
 
 #include <stdint.h>
 #include <iostream>
-#include <core/base/Thread.h>
+#include <opendavinci/odcore/base/Thread.h>
 
 #include "MyRealtimeService.hpp"
 
 using namespace std;
 
 MyRealtimeService::MyRealtimeService(const enum PERIOD &period) :
-    core::base::RealtimeService(period) {}
+    odcore::base::RealtimeService(period) {}
 
 void MyRealtimeService::nextTimeSlice() {
     cout << "This message is printed every 100 ms." << endl;        
 }
 
 int32_t main(int32_t argc, char **argv) {
-    MyRealtimeService rts(core::base::RealtimeService::ONEHUNDREDMILLISECONDS);
+    MyRealtimeService rts(odcore::base::RealtimeService::ONEHUNDREDMILLISECONDS);
 
     rts.start();
 
     const uint32_t ONE_SECOND = 1000 * 1000;
-    core::base::Thread::usleepFor(5 * ONE_SECOND);
+    odcore::base::Thread::usleepFor(5 * ONE_SECOND);
 
     rts.stop();
 }

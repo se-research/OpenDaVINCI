@@ -80,7 +80,7 @@ Add the public key from our repository:
 
 Add our repository itself to your sources.list:
 
-    $ echo "deb http://opendavinci.cse.chalmers.se/ubuntu/ trusty main" | sudo tee -a /etc/apt/sources.list 
+    $ echo "deb http://opendavinci.cse.chalmers.se/deb/ trusty main" | sudo tee -a /etc/apt/sources.list 
 
 Update your package database:
 
@@ -88,7 +88,7 @@ Update your package database:
 
 Install OpenDaVINCI:
 
-    $ sudo apt-get install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
+    $ sudo apt-get install opendavinci-lib opendavinci-odtools opendavinci-odsupercomponent
 
 
 ### Adding OpenDaVINCI to your Ubuntu 15.04 Linux distribution
@@ -102,7 +102,7 @@ Add the public key from our repository:
 
 Add our repository itself to your sources.list:
 
-    $ sudo echo "deb http://opendavinci.cse.chalmers.se/ubuntu/ vivid main" >> /etc/apt/sources.list
+    $ sudo echo "deb http://opendavinci.cse.chalmers.se/deb/ vivid main" >> /etc/apt/sources.list
 
 Update your package database:
 
@@ -110,7 +110,7 @@ Update your package database:
 
 Install OpenDaVINCI:
 
-    $ sudo apt-get install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
+    $ sudo apt-get install opendavinci-lib opendavinci-odtools opendavinci-odsupercomponent
 
 
 ### Adding OpenDaVINCI to your Ubuntu 15.10 Linux distribution
@@ -132,7 +132,7 @@ Update your package database:
 
 Install OpenDaVINCI:
 
-    $ sudo apt-get install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
+    $ sudo apt-get install opendavinci-lib opendavinci-odtools opendavinci-odsupercomponent
 
 
 ### Adding OpenDaVINCI to your Debian 8 Linux distribution
@@ -143,7 +143,7 @@ Add the public key from our repository:
 
 Add our repository itself to your sources.list:
 
-    $ sudo echo "deb http://opendavinci.cse.chalmers.se/debian/ jessie main" >> /etc/apt/sources.list
+    $ sudo echo "deb http://opendavinci.cse.chalmers.se/deb/ jessie main" >> /etc/apt/sources.list
 
 Update your package database:
 
@@ -151,7 +151,7 @@ Update your package database:
 
 Install OpenDaVINCI:
 
-    $ sudo apt-get install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
+    $ sudo apt-get install opendavinci-lib opendavinci-odtools opendavinci-odsupercomponent
 
 
 ### Adding OpenDaVINCI to your CentOS 7 Linux distribution
@@ -166,7 +166,7 @@ Update your package database:
 
 Install OpenDaVINCI:
 
-    $ sudo yum install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
+    $ sudo yum install opendavinci-lib opendavinci-odtools opendavinci-odsupercomponent
    
 
 ### Adding OpenDaVINCI to your Fedora 21 Linux distribution
@@ -181,7 +181,7 @@ Update your package database:
 
 Install OpenDaVINCI:
 
-    $ sudo yum install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
+    $ sudo yum install opendavinci-lib opendavinci-odtools opendavinci-odsupercomponent
    
 
 ### Adding OpenDaVINCI to your Fedora 22 Linux distribution
@@ -196,7 +196,7 @@ Update your package database:
 
 Install OpenDaVINCI:
 
-    $ sudo dnf install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
+    $ sudo dnf install opendavinci-lib opendavinci-odtools opendavinci-odsupercomponent
 
 
 ### Adding OpenDaVINCI to your openSuSE 13 Linux distribution
@@ -211,6 +211,6 @@ Update your package database:
 
 Install OpenDaVINCI:
 
-    $ sudo zypper install opendavinci-odlib opendavinci-odtools opendavinci-odsupercomponent
+    $ sudo zypper install opendavinci-lib opendavinci-odtools opendavinci-odsupercomponent
 
 ![Screenshot](https://github.com/se-research/OpenDaVINCI/blob/master/docs/Screenshot.png)

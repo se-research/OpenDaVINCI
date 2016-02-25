@@ -33,29 +33,29 @@
 #include <iostream>
 #include <sstream>
 
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "core/base/KeyValueConfiguration.h"
-#include "core/base/Lock.h"
-#include "GeneratedHeaders_CoreData.h"
-#include "core/base/Mutex.h"
-#include "core/base/Service.h"
-#include "core/base/Thread.h"
-#include "core/base/Hash.h"
-#include "core/base/Deserializer.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/base/Service.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 
-#include "core/data/TimeStamp.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
 
 #include "../include/SuperComponent.h"
 
 using namespace std;
-using namespace core::base;
-using namespace core::base::module;
-using namespace core::data;
-using namespace core::exceptions;
+using namespace odcore::base;
+using namespace odcore::base::module;
+using namespace odcore::data;
+using namespace odcore::exceptions;
 
-class TestSuiteExample7Data : public core::data::SerializableData {
+class TestSuiteExample7Data : public odcore::data::SerializableData {
 	public:
 		TestSuiteExample7Data() : m_numericalValue(0) {}
 
@@ -80,7 +80,7 @@ class TestSuiteExample7Data : public core::data::SerializableData {
 
 		virtual ostream& operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();
-		    core::SharedPointer<Serializer> s = sf.getSerializer(out);
+		    odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 		    s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('n', 'u', 'm') >::RESULT,
 				    m_numericalValue);
 		    return out;
@@ -88,11 +88,27 @@ class TestSuiteExample7Data : public core::data::SerializableData {
 
 		virtual istream& operator>>(istream &in) {
             SerializationFactory& sf=SerializationFactory::getInstance();
-		    core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+		    odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 		    d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('n', 'u', 'm') >::RESULT,
 			       m_numericalValue);
 		    return in;
 	    }
+
+        static int32_t ID() {
+            return 33;
+        }
+
+        virtual int32_t getID() const {
+            return 33;
+        }
+
+        virtual const string getShortName() const {
+            return "TestSuiteExample7Data";
+        }
+
+        virtual const string getLongName() const {
+            return getShortName();
+        }
 
 		virtual const string toString() const {
 		    stringstream s;
@@ -121,19 +137,19 @@ class Example7SenderApp : public TimeTriggeredConferenceClientModule {
             tearDownCalled = true;
         }
 
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
             uint32_t seed = 24;
         	uint32_t counter = 0;
 
             srand(seed);
 
-        	while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+        	while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
         		// Create user data.
         		TestSuiteExample7Data data;
         		data.setNumericalValue(counter++);
 
-        		// Create container with user data type ID 5.
-        		Container c(Container::USER_DATA_5, data);
+        		// Create container.
+        		Container c(data);
 
         		// Send container.
         		getConference().send(c);
@@ -149,7 +165,7 @@ class Example7SenderApp : public TimeTriggeredConferenceClientModule {
                 }
             }
 
-        	return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+        	return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 };
 
@@ -172,13 +188,13 @@ class Example7ReceiverApp : public TimeTriggeredConferenceClientModule {
             tearDownCalled = true;
         }
 
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
             uint32_t sum = 0;
             uint32_t expected_sum = 0;
             uint32_t counter = 0;
 
-        	while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
-			    Container c = getKeyValueDataStore().get(Container::USER_DATA_5);
+        	while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
+			    Container c = getKeyValueDataStore().get(TestSuiteExample7Data::ID());
 			    TestSuiteExample7Data data = c.getData<TestSuiteExample7Data>();
                 sum += data.getNumericalValue();
 			    cout << "Latest container from data type " << (uint32_t)c.getDataType() << ", content: " << data.toString() << ", sum = " << sum << endl;
@@ -194,7 +210,7 @@ class Example7ReceiverApp : public TimeTriggeredConferenceClientModule {
                 }
         	}
 
-        	return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+        	return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
         uint32_t getDiff() {
@@ -220,12 +236,12 @@ class ConnectedClientModuleApp : public TimeTriggeredConferenceClientModule {
             tearDownCalled = true;
         }
 
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
-            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
+            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
                 // Do nothing.
             }
 
-            return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
         bool tearDownCalled;
@@ -243,7 +259,7 @@ class ConnectedClientModuleTestService : public Service {
 
         virtual void beforeStop() {
             // Stop app.
-            myApp->setModuleState(coredata::dmcp::ModuleStateMessage::NOT_RUNNING);
+            myApp->setModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
         }
 
         virtual void run() {
@@ -280,7 +296,7 @@ class SupercomponentService : public Service {
 
         virtual void beforeStop() {
             // Stop app.
-            mySC.setModuleState(coredata::dmcp::ModuleStateMessage::NOT_RUNNING);
+            mySC.setModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
         }
 
         virtual void run() {

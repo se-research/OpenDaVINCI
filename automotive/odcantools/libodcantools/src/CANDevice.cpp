@@ -21,10 +21,10 @@
 
 #include <iostream>
 
-#include "core/opendavinci.h"
-#include "core/base/module/AbstractCIDModule.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/module/AbstractCIDModule.h"
 
-#include "generated/automotive/GenericCANMessage.h"
+#include "automotivedata/generated/automotive/GenericCANMessage.h"
 
 #include "CANDevice.h"
 #include "GenericCANMessageListener.h"
@@ -34,8 +34,8 @@ namespace automotive {
     namespace odcantools {
 
         using namespace std;
-        using namespace core::base::module;
-        using namespace core::data;
+        using namespace odcore::base::module;
+        using namespace odcore::data;
 
         CANDevice::CANDevice(const string &deviceNode, GenericCANMessageListener &listener) :
             m_deviceNode(deviceNode),

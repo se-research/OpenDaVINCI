@@ -27,24 +27,24 @@
 
 #include "CamGen.h"
 #include "OpenGLGrabber.h"
-#include "core/base/KeyValueConfiguration.h"
-#include "core/data/Container.h"
-#include "core/opendavinci.h"
-#include "core/wrapper/Image.h"
-#include "hesperia/data/camera/ImageGrabberCalibration.h"
-#include "hesperia/data/camera/ImageGrabberID.h"
-#include "hesperia/data/environment/Point3.h"
-#include "generated/coredata/image/SharedImage.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendlv/core/wrapper/Image.h"
+#include "opendlv/data/camera/ImageGrabberCalibration.h"
+#include "opendlv/data/camera/ImageGrabberID.h"
+#include "opendlv/data/environment/Point3.h"
+#include "opendavinci/generated/odcore/data/image/SharedImage.h"
 
 namespace camgen {
 
     using namespace std;
-    using namespace core::base;
-    using namespace core::data;
-    using namespace hesperia::data;
-    using namespace hesperia::data::camera;
-    using namespace hesperia::data::environment;
-    using namespace hesperia::data::environment;
+    using namespace odcore::base;
+    using namespace odcore::data;
+    using namespace opendlv::data;
+    using namespace opendlv::data::camera;
+    using namespace opendlv::data::environment;
+    using namespace opendlv::data::environment;
 
     CamGen* CamGen::m_singleton = NULL;
 
@@ -146,22 +146,23 @@ namespace camgen {
         static uint32_t frameCounter = 0;
         static clock_t start = clock();
 
-        Container container = getKeyValueDataStore().get(Container::EGOSTATE);
-        m_egoState = container.getData<hesperia::data::environment::EgoState>();
+        Container container = getKeyValueDataStore().get(opendlv::data::environment::EgoState::ID());
+        m_egoState = container.getData<opendlv::data::environment::EgoState>();
+
         m_image = m_grabber->getNextImage();
 
         frameCounter++;
 
         // Share information about this image.
         if (m_image.isValid()) {
-            coredata::image::SharedImage si;
+            odcore::data::image::SharedImage si;
             si.setWidth(m_image->getWidth());
             si.setHeight(m_image->getHeight());
             // TODO: Refactor me!
             si.setBytesPerPixel(3);
             si.setName("odsimcamera");
 
-            Container c(Container::SHARED_IMAGE, si);
+            Container c(si);
             getConference().send(c);
         }
 
@@ -283,8 +284,8 @@ namespace camgen {
         glMatrixMode(GL_MODELVIEW);
     }
 
-    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode CamGen::body() {
-        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode CamGen::body() {
+        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
             // Trigger event processing.
             glutMainLoopEvent();
 
@@ -295,7 +296,7 @@ namespace camgen {
         // Leave glut main loop.
         glutLeaveMainLoop();
 
-        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+        return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
     }
 
 } // camgen

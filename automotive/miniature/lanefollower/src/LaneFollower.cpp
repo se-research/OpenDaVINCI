@@ -22,14 +22,14 @@
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
 
-#include "core/base/KeyValueConfiguration.h"
-#include "core/base/Lock.h"
-#include "core/data/Container.h"
-#include "core/io/conference/ContainerConference.h"
-#include "core/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/io/conference/ContainerConference.h"
+#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 
-#include "GeneratedHeaders_AutomotiveData.h"
-#include "GeneratedHeaders_CoreData.h"
+#include "automotivedata/GeneratedHeaders_AutomotiveData.h"
+#include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
 #include "LaneFollower.h"
 
@@ -37,9 +37,9 @@ namespace automotive {
     namespace miniature {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::data;
-        using namespace coredata::image;
+        using namespace odcore::base;
+        using namespace odcore::data;
+        using namespace odcore::data::image;
         using namespace automotive;
         using namespace automotive::miniature;
 
@@ -79,13 +79,13 @@ namespace automotive {
         bool LaneFollower::readSharedImage(Container &c) {
 	        bool retVal = false;
 
-	        if (c.getDataType() == Container::SHARED_IMAGE) {
+	        if (c.getDataType() == odcore::data::image::SharedImage::ID()) {
 		        SharedImage si = c.getData<SharedImage> ();
 
 		        // Check if we have already attached to the shared memory.
 		        if (!m_hasAttachedToSharedImageMemory) {
 			        m_sharedImageMemory
-					        = core::wrapper::SharedMemoryFactory::attachToSharedMemory(
+					        = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(
 							        si.getName());
 		        }
 
@@ -256,7 +256,7 @@ namespace automotive {
 
         // This method will do the main data processing job.
         // Therefore, it tries to open the real camera first. If that fails, the virtual camera images from camgen are used.
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode LaneFollower::body() {
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode LaneFollower::body() {
 	        // Get configuration data.
 	        KeyValueConfiguration kv = getKeyValueConfiguration();
 	        m_debug = kv.getValue<int32_t> ("lanefollower.debug") == 1;
@@ -295,13 +295,13 @@ namespace automotive {
             double distanceToObstacleOld = 0;
 
             // Overall state machine handler.
-	        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+	        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
 		        bool has_next_frame = false;
 
-		        // Get the most recent available container for a SHARED_IMAGE.
-		        Container c = getKeyValueDataStore().get(Container::SHARED_IMAGE);
+		        // Get the most recent available container for a SharedImage.
+		        Container c = getKeyValueDataStore().get(odcore::data::image::SharedImage::ID());
 
-		        if (c.getDataType() == Container::SHARED_IMAGE) {
+		        if (c.getDataType() == odcore::data::image::SharedImage::ID()) {
 			        // Example for processing the received container.
 			        has_next_frame = readSharedImage(c);
 		        }
@@ -315,11 +315,11 @@ namespace automotive {
                 // Overtaking part.
                 {
 	                // 1. Get most recent vehicle data:
-	                Container containerVehicleData = getKeyValueDataStore().get(Container::VEHICLEDATA);
+	                Container containerVehicleData = getKeyValueDataStore().get(automotive::VehicleData::ID());
 	                VehicleData vd = containerVehicleData.getData<VehicleData> ();
 
 	                // 2. Get most recent sensor board data:
-	                Container containerSensorBoardData = getKeyValueDataStore().get(Container::USER_DATA_0);
+	                Container containerSensorBoardData = getKeyValueDataStore().get(automotive::miniature::SensorBoardData::ID());
 	                SensorBoardData sbd = containerSensorBoardData.getData<SensorBoardData> ();
 
                     // Moving state machine.
@@ -451,12 +451,12 @@ namespace automotive {
                 }
 
                 // Create container for finally sending the set values for the control algorithm.
-                Container c2(Container::VEHICLECONTROL, m_vehicleControl);
+                Container c2(m_vehicleControl);
                 // Send container.
                 getConference().send(c2);
 	        }
 
-	        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+	        return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
     }

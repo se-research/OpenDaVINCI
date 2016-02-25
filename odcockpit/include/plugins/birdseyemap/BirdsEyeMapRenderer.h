@@ -20,14 +20,14 @@
 #ifndef PLUGINS_BIRDSEYEMAP_BIRDSEYEMAPRENDERER_H_
 #define PLUGINS_BIRDSEYEMAP_BIRDSEYEMAPRENDERER_H_
 
-#include "core/opendavinci.h"
-#include "hesperia/scenegraph/renderer/AbstractRenderer.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendlv/scenegraph/renderer/AbstractRenderer.h"
 
 class QPainter;
-namespace hesperia { namespace scenegraph { namespace primitives { class Line; } } }
-namespace hesperia { namespace scenegraph { namespace primitives { class Point; } } }
-namespace hesperia { namespace scenegraph { namespace primitives { class Polygon; } } }
-namespace hesperia { namespace scenegraph { namespace renderer { class RenderingConfiguration; } } }
+namespace opendlv { namespace scenegraph { namespace primitives { class Line; } } }
+namespace opendlv { namespace scenegraph { namespace primitives { class Point; } } }
+namespace opendlv { namespace scenegraph { namespace primitives { class Polygon; } } }
+namespace opendlv { namespace scenegraph { namespace renderer { class RenderingConfiguration; } } }
 
 namespace cockpit {
     namespace plugins {
@@ -36,7 +36,7 @@ namespace cockpit {
             /**
              * This class is responsible for rendering scenegraph primitives.
              */
-            class BirdsEyeMapRenderer : public hesperia::scenegraph::renderer::AbstractRenderer {
+            class BirdsEyeMapRenderer : public opendlv::scenegraph::renderer::AbstractRenderer {
                 private:
                     /**
                      * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -60,20 +60,20 @@ namespace cockpit {
                      * @rC RenderingConfiguration.
                      * @pixelPerMeter Pixel per meter ratio (default: 1px = 1mm --> 1000px = 1m).
                      */
-                    BirdsEyeMapRenderer(QPainter *painter, hesperia::scenegraph::renderer::RenderingConfiguration &rc, const uint32_t &pixelPerMeter = 1000);
+                    BirdsEyeMapRenderer(QPainter *painter, opendlv::scenegraph::renderer::RenderingConfiguration &rc, const uint32_t &pixelPerMeter = 1000);
 
                     virtual ~BirdsEyeMapRenderer();
 
                 protected:
-                    virtual void render(hesperia::scenegraph::primitives::Point *p);
+                    virtual void render(opendlv::scenegraph::primitives::Point *p);
 
-                    virtual void render(hesperia::scenegraph::primitives::Line *l);
+                    virtual void render(opendlv::scenegraph::primitives::Line *l);
 
-                    virtual void render(hesperia::scenegraph::primitives::Polygon *p);
+                    virtual void render(opendlv::scenegraph::primitives::Polygon *p);
 
                 private:
                     QPainter *m_painter;
-                    hesperia::scenegraph::renderer::RenderingConfiguration &m_renderingConfiguration;
+                    opendlv::scenegraph::renderer::RenderingConfiguration &m_renderingConfiguration;
                     uint32_t m_pixelPerMeter;
             };
         }

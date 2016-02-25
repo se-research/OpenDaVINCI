@@ -25,8 +25,8 @@
 #include <cmath>
 #include <sstream>
 
-#include "generated/automotive/miniature/SensorBoardData.h"
-#include "generated/cartesian/Constants.h"
+#include "automotivedata/generated/automotive/miniature/SensorBoardData.h"
+#include "automotivedata/generated/cartesian/Constants.h"
 #include "plugins/irusmap/PointSensor.h"
 
 namespace cockpit {
@@ -36,10 +36,10 @@ namespace cockpit {
         namespace irusmap {
 
             using namespace std;
-            using namespace core::data;
-            using namespace hesperia::data::environment;
+            using namespace odcore::data;
+            using namespace opendlv::data::environment;
 
-            PointSensor::PointSensor(const uint16_t &id, const string &name, const hesperia::data::environment::Point3 &translation, const double &rotZ, const double &angleFOV, const double &distanceFOV, const double &clampDistance) :
+            PointSensor::PointSensor(const uint16_t &id, const string &name, const opendlv::data::environment::Point3 &translation, const double &rotZ, const double &angleFOV, const double &distanceFOV, const double &clampDistance) :
                 m_id(id),
                 m_name(name),
                 m_translation(translation),

@@ -18,13 +18,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "plugins/player/PlayerPlugIn.h"
 #include "plugins/player/PlayerWidget.h"
 
 class QWidget;
-namespace core { namespace base { class KeyValueConfiguration; } }
-namespace core { namespace io { namespace conference { class ContainerConference; } } }
+namespace odcore { namespace base { class KeyValueConfiguration; } }
+namespace odcore { namespace io { namespace conference { class ContainerConference; } } }
 
 namespace cockpit {
 
@@ -34,7 +34,7 @@ namespace cockpit {
 
             using namespace std;
 
-            PlayerPlugIn::PlayerPlugIn(const string &name, const core::base::KeyValueConfiguration &kvc, core::io::conference::ContainerConference &conf, QWidget *prnt) :
+            PlayerPlugIn::PlayerPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, QWidget *prnt) :
                 ControlPlugIn(name, kvc, conf, prnt),
                 m_kvc(kvc),
                 m_playerWidget(NULL) {

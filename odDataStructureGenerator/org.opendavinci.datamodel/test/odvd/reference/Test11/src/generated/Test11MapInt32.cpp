@@ -5,16 +5,16 @@
  */
 
 
-#include "core/base/Hash.h"
-#include "core/base/Deserializer.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 
 
-#include "generated/Test11MapInt32.h"
+#include "test11/generated/Test11MapInt32.h"
 
 	using namespace std;
-	using namespace core::base;
+	using namespace odcore::base;
 
 
 	Test11MapInt32::Test11MapInt32() :
@@ -85,6 +85,18 @@
 
 	const string Test11MapInt32::LongName() {
 		return "Test11MapInt32";
+	}
+
+	int32_t Test11MapInt32::getID() const {
+		return Test11MapInt32::ID();
+	}
+
+	const string Test11MapInt32::getShortName() const {
+		return Test11MapInt32::ShortName();
+	}
+
+	const string Test11MapInt32::getLongName() const {
+		return Test11MapInt32::LongName();
 	}
 
 	std::map<int32_t, bool> Test11MapInt32::getMapOfMyInt32BoolMap() const {
@@ -333,7 +345,7 @@
 		return std::make_pair(m_mapOfMyInt32StringMap.begin(), m_mapOfMyInt32StringMap.end());
 	}
 
-	void Test11MapInt32::accept(core::base::Visitor &v) {
+	void Test11MapInt32::accept(odcore::base::Visitor &v) {
 		(void)v; // Avoid unused parameter warning.
 	}
 
@@ -356,7 +368,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Serializer> s = sf.getSerializer(out);
+		odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 
 		{
 			// Write number of elements in m_mapOfMyInt32BoolMap.
@@ -505,7 +517,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+		odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
 		// Clean up the existing map of MyInt32BoolMap.
 		m_mapOfMyInt32BoolMap.clear();

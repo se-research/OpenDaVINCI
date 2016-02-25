@@ -15,10 +15,10 @@
 #include <string>
 #include <vector>
 
-#include "core/opendavinci.h"
-#include "core/strings/StringToolbox.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/strings/StringToolbox.h"
 
-#include "GeneratedHeaders_Test16.h"
+#include "test16/GeneratedHeaders_Test16.h"
 
 
 class sub_structure_Test16Simple_TestSuite : public CxxTest::TestSuite {
@@ -62,7 +62,7 @@ class sub_structure_Test16Simple_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT_DELTA(obj3.getMyData(), 1.0, 1e-5);
 			TS_ASSERT(obj3.getMyValue() == -3000);
 	
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj3.toString()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj3.toString()));
 		}
 	
 		void testCreateAndAssignObject() {
@@ -89,7 +89,7 @@ class sub_structure_Test16Simple_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT_DELTA(obj2.getMyData(), 1.0, 1e-5);
 			TS_ASSERT(obj2.getMyValue() == -3000);
 	
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
 		}
 	
 		void testCreateAndSerializeObject() {
@@ -119,7 +119,7 @@ class sub_structure_Test16Simple_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT_DELTA(obj2.getMyData(), 1.0, 1e-5);
 			TS_ASSERT(obj2.getMyValue() == -3000);
 	
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
 		}
 
 };

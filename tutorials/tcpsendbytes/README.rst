@@ -16,15 +16,15 @@ TCPSendBytes.cpp:
     #include <stdint.h>
     #include <iostream>
     #include <string>
-    #include <core/SharedPointer.h>
-    #include <core/io/tcp/TCPConnection.h>
-    #include <core/io/tcp/TCPFactory.h>
+    #include <opendavinci/odcore/SharedPointer.h>
+    #include <opendavinci/odcore/io/tcp/TCPConnection.h>
+    #include <opendavinci/odcore/io/tcp/TCPFactory.h>
 
     using namespace std;
 
     // We add some of OpenDaVINCI's namespaces for the sake of readability.
-    using namespace core;
-    using namespace core::io::tcp;
+    using namespace odcore;
+    using namespace odcore::io::tcp;
 
     int32_t main(int32_t argc, char **argv) {
         const string RECEIVER = "127.0.0.1";
@@ -44,7 +44,7 @@ TCPSendBytes.cpp:
     }
 
 To send bytes over a TCP link to a TCP server, your application needs to include
-``<core/io/tcp/TCPConnection.h>`` and ``<core/io/tcp/TCPFactory.h>`` that encapsulate
+``<opendavinci/odcore/io/tcp/TCPConnection.h>`` and ``<opendavinci/odcore/io/tcp/TCPFactory.h>`` that encapsulate
 the platform-specific implementations.
 
 ``TCPFactory`` provides a static method called ``createTCPConnectionTo`` that
@@ -62,7 +62,7 @@ is no longer used.
 
 You can compile and link the example::
 
-   g++ -I /usr/include/opendavinci -c TCPSendBytes.cpp -o TCPSendBytes.o
+   g++ -I /usr/include -c TCPSendBytes.cpp -o TCPSendBytes.o
    g++ -o tcpsendbytes TCPSendBytes.o -lopendavinci -lpthread
 
 To test the program, we create a simple TCP server awaiting connection by using

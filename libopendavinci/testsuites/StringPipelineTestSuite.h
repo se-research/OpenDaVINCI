@@ -25,13 +25,13 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/base/Thread.h"
-#include "core/io/StringListener.h"
-#include "core/io/StringPipeline.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/io/StringListener.h"
+#include "opendavinci/odcore/io/StringPipeline.h"
 
 using namespace std;
-using namespace core::base;
-using namespace core::io;
+using namespace odcore::base;
+using namespace odcore::io;
 
 class StringPipelineTest : public CxxTest::TestSuite, StringListener {
     private:

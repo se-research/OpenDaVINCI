@@ -29,7 +29,7 @@
 #include "plugins/PlugIn.h"
 
 class QWidget;
-namespace core { namespace base { class KeyValueConfiguration; } }
+namespace odcore { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
     namespace plugins {
@@ -67,7 +67,7 @@ class OBJXViewerWidget;
            * @param prnt Pointer to the container super window.
            */
           OBJXViewerPlugIn(const string &name,
-              const core::base::KeyValueConfiguration &kvc, QWidget *prnt);
+              const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt);
 
           virtual
           ~OBJXViewerPlugIn();

@@ -20,15 +20,15 @@
 #include <stdint.h>
 #include <iostream>
 #include <string>
-#include <core/SharedPointer.h>
-#include <core/io/udp/UDPSender.h>
-#include <core/io/udp/UDPFactory.h>
+#include <opendavinci/odcore/SharedPointer.h>
+#include <opendavinci/odcore/io/udp/UDPSender.h>
+#include <opendavinci/odcore/io/udp/UDPFactory.h>
 
 using namespace std;
 
 // We add some of OpenDaVINCI's namespaces for the sake of readability.
-using namespace core;
-using namespace core::io::udp;
+using namespace odcore;
+using namespace odcore::io::udp;
 
 int32_t main(int32_t argc, char **argv) {
     const string RECEIVER = "127.0.0.1";

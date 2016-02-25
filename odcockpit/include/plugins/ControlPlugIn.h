@@ -26,8 +26,8 @@
 #include "plugins/PlugIn.h"
 
 class QWidget;
-namespace core { namespace base { class KeyValueConfiguration; } }
-namespace core { namespace io { namespace conference { class ContainerConference; } } }
+namespace odcore { namespace base { class KeyValueConfiguration; } }
+namespace odcore { namespace io { namespace conference { class ContainerConference; } } }
 
 namespace cockpit {
 
@@ -63,7 +63,7 @@ namespace cockpit {
                  * @param conf client conference to send data to.
                  * @param prnt Pointer to the containing super window.
                  */
-                ControlPlugIn(const string &name, const core::base::KeyValueConfiguration &kvc, core::io::conference::ContainerConference &conf, QWidget* prnt);
+                ControlPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, QWidget* prnt);
 
                 virtual ~ControlPlugIn();
 
@@ -72,10 +72,10 @@ namespace cockpit {
                  *
                  * @return ContainerConference.
                  */
-                core::io::conference::ContainerConference& getConference() const;
+                odcore::io::conference::ContainerConference& getConference() const;
 
             private:
-                core::io::conference::ContainerConference &m_conference;
+                odcore::io::conference::ContainerConference &m_conference;
         };
 
     } // plugins

@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "core/base/Lock.h"
+#include "opendavinci/odcore/base/Lock.h"
 #include "plugins/PlugIn.h"
 
 class QWidget;
@@ -29,7 +29,7 @@ namespace cockpit {
     namespace plugins {
 
         using namespace std;
-        using namespace core::base;
+        using namespace odcore::base;
 
         PlugIn::PlugIn(const string &name, const KeyValueConfiguration &kvc, QWidget* prnt) :
                 m_parent(prnt),

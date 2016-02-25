@@ -8,17 +8,17 @@
 #include <sstream>
 #include <utility>
 
-#include "core/base/Hash.h"
-#include "core/base/Deserializer.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 
 
-#include "generated/testpackage/Test6.h"
+#include "test6/generated/testpackage/Test6.h"
 
 namespace testpackage {
 		using namespace std;
-		using namespace core::base;
+		using namespace odcore::base;
 	
 	
 		Test6::Test6() :
@@ -94,6 +94,18 @@ namespace testpackage {
 	
 		const string Test6::LongName() {
 			return "testpackage.Test6";
+		}
+	
+		int32_t Test6::getID() const {
+			return Test6::ID();
+		}
+	
+		const string Test6::getShortName() const {
+			return Test6::ShortName();
+		}
+	
+		const string Test6::getLongName() const {
+			return Test6::LongName();
 		}
 	
 		bool Test6::getAttribute1() const {
@@ -181,7 +193,7 @@ namespace testpackage {
 			return std::make_pair(m_listOfMyStringList.begin(), m_listOfMyStringList.end());
 		}
 	
-		void Test6::accept(core::base::Visitor &v) {
+		void Test6::accept(odcore::base::Visitor &v) {
 			v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'1', NullType> > > > > > > > > >  >::RESULT, 0, "Test6.attribute1", "attribute1", m_attribute1);
 			v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'2', NullType> > > > > > > > > >  >::RESULT, 0, "Test6.attribute2", "attribute2", m_attribute2);
 			v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'3', NullType> > > > > > > > > >  >::RESULT, 0, "Test6.attribute3", "attribute3", m_attribute3);
@@ -211,7 +223,7 @@ namespace testpackage {
 	
 			SerializationFactory& sf = SerializationFactory::getInstance();
 	
-			core::SharedPointer<Serializer> s = sf.getSerializer(out);
+			odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 	
 			s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'1', NullType> > > > > > > > > >  >::RESULT,
 					m_attribute1);
@@ -250,7 +262,7 @@ namespace testpackage {
 	
 			SerializationFactory& sf = SerializationFactory::getInstance();
 	
-			core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+			odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 	
 			d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'1', NullType> > > > > > > > > >  >::RESULT,
 					m_attribute1);

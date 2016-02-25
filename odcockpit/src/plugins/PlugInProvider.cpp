@@ -24,8 +24,8 @@
 
 #include <iostream>
 
-#include "core/opendavinci.h"
-#include "core/base/Lock.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Lock.h"
 #include "plugins/PlugInProvider.h"
 #include "plugins/birdseyemap/BirdsEyeMapPlugIn.h"
 #include "plugins/configurationviewer/ConfigurationViewerPlugIn.h"
@@ -34,6 +34,7 @@
 #include "plugins/iruscharts/IrUsChartsPlugIn.h"
 #include "plugins/irusmap/IrUsMapPlugIn.h"
 #include "plugins/livefeed/LiveFeedPlugIn.h"
+#include "plugins/logmessage/LogMessagePlugIn.h"
 #include "plugins/modulestatisticsviewer/ModuleStatisticsViewerPlugIn.h"
 #include "plugins/objxviewer/OBJXViewerPlugIn.h"
 #include "plugins/player/PlayerPlugIn.h"
@@ -42,8 +43,8 @@
 #include "plugins/spy/SpyPlugIn.h"
 #include "plugins/streetmapviewer/StreetMapPlugIn.h"
 
-namespace core { namespace base { class DataStoreManager; } }
-namespace core { namespace io { namespace conference { class ContainerConference; } } }
+namespace odcore { namespace base { class DataStoreManager; } }
+namespace odcore { namespace io { namespace conference { class ContainerConference; } } }
 
 namespace cockpit {
 
@@ -52,8 +53,8 @@ namespace cockpit {
 class PlugIn;
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::io::conference;
+        using namespace odcore::base;
+        using namespace odcore::io::conference;
 
         // Initialize singleton instance.
         Mutex PlugInProvider::m_singletonMutex;
@@ -78,6 +79,7 @@ class PlugIn;
             m_listOfAvailablePlugIns.push_back("SCNXViewer");
             m_listOfAvailablePlugIns.push_back("IrUsMap");
             m_listOfAvailablePlugIns.push_back("LiveFeed");
+            m_listOfAvailablePlugIns.push_back("LogMessage");
             m_listOfAvailablePlugIns.push_back("Player");
             m_listOfAvailablePlugIns.push_back("SharedImageViewer");
             m_listOfAvailablePlugIns.push_back("Spy");
@@ -93,6 +95,7 @@ class PlugIn;
             m_listOfDescriptions["SCNXViewer"] = tr("This plugin shows .scnx files.").toStdString();
             m_listOfDescriptions["IrUsMap"] = tr("This plugin displays the current irus readings.").toStdString();
             m_listOfDescriptions["LiveFeed"] = tr("This plugin displays all distributed visitable messages.").toStdString();
+            m_listOfDescriptions["LogMessage"] = tr("This plugin displays log messages from components.").toStdString();
             m_listOfDescriptions["Player"] = tr("This plugin replays previously recorded files.").toStdString();
             m_listOfDescriptions["SharedImageViewer"] = tr("This plugin displays shared images.").toStdString();
             m_listOfDescriptions["Spy"] = tr("This plugin displays all distributed containers.").toStdString();
@@ -122,65 +125,68 @@ class PlugIn;
           return m_listOfDescriptions[pluginName];
         }
 
-        core::SharedPointer<PlugIn> PlugInProvider::createPlugIn(const string &name) {
-            core::SharedPointer<PlugIn> plugIn;
+        odcore::SharedPointer<PlugIn> PlugInProvider::createPlugIn(const string &name) {
+            odcore::SharedPointer<PlugIn> plugIn;
 
             if (name == "ConfigurationViewer") {
                 cerr << "Creating ConfigurationViewer" << endl;
-                plugIn = core::SharedPointer<PlugIn>(new configurationviewer::ConfigurationViewerPlugIn("ConfigurationViewer", m_kvc, m_parent));
+                plugIn = odcore::SharedPointer<PlugIn>(new configurationviewer::ConfigurationViewerPlugIn("ConfigurationViewer", m_kvc, m_parent));
             } else if (name == "Controller") {
                 cerr << "Creating Controller" << endl;
-                plugIn = core::SharedPointer<PlugIn>((PlugIn*)(new controller::ControllerPlugIn("Controller", m_kvc, m_conference, m_parent)));
+                plugIn = odcore::SharedPointer<PlugIn>((PlugIn*)(new controller::ControllerPlugIn("Controller", m_kvc, m_conference, m_parent)));
             }
             else if (name == "BirdsEyeMap") {
                 cerr << "Creating BirdsEyeMap" << endl;
-                plugIn = core::SharedPointer<PlugIn>(new birdseyemap::BirdsEyeMapPlugIn("BirdsEyeMap", m_kvc, m_parent));
+                plugIn = odcore::SharedPointer<PlugIn>(new birdseyemap::BirdsEyeMapPlugIn("BirdsEyeMap", m_kvc, m_parent));
             }
             else if (name == "EnvironmentViewer") {
                 cerr << "Creating EnvironmentViewer" << endl;
-                plugIn = core::SharedPointer<PlugIn>(new environmentviewer::EnvironmentViewerPlugIn("EnvironmentViewer", m_kvc, m_parent));
+                plugIn = odcore::SharedPointer<PlugIn>(new environmentviewer::EnvironmentViewerPlugIn("EnvironmentViewer", m_kvc, m_parent));
             }
             else if (name == "IrUsCharts") {
                 cerr << "Creating IrUsCharts" << endl;
-                plugIn = core::SharedPointer<PlugIn>(new iruscharts::IrUsChartsPlugIn("IrUsCharts", m_kvc, m_parent));
+                plugIn = odcore::SharedPointer<PlugIn>(new iruscharts::IrUsChartsPlugIn("IrUsCharts", m_kvc, m_parent));
             }
             else if (name == "ModuleStatisticsViewer") {
                 cerr << "Creating ModuleStatisticsViewer" << endl;
-                plugIn = core::SharedPointer<PlugIn>(new modulestatisticsviewer::ModuleStatisticsViewerPlugIn("ModuleStatisticsViewer", m_kvc, m_parent));
+                plugIn = odcore::SharedPointer<PlugIn>(new modulestatisticsviewer::ModuleStatisticsViewerPlugIn("ModuleStatisticsViewer", m_kvc, m_parent));
             }
             else if (name == "OBJXViewer") {
                 cerr << "Creating OBJXViewer" << endl;
-                plugIn = core::SharedPointer<PlugIn>(new objxviewer::OBJXViewerPlugIn("OBJXViewer", m_kvc, m_parent));
+                plugIn = odcore::SharedPointer<PlugIn>(new objxviewer::OBJXViewerPlugIn("OBJXViewer", m_kvc, m_parent));
             }
             else if (name == "SCNXViewer") {
                 cerr << "Creating SCNXViewer" << endl;
-                plugIn = core::SharedPointer<PlugIn>(new scnxviewer::SCNXViewerPlugIn("SCNXViewer", m_kvc, m_parent));
+                plugIn = odcore::SharedPointer<PlugIn>(new scnxviewer::SCNXViewerPlugIn("SCNXViewer", m_kvc, m_parent));
             }
             else if (name == "IrUsMap") {
                 cerr << "Creating IrUsMap" << endl;
-                plugIn = core::SharedPointer<PlugIn>(new irusmap::IrUsMapPlugIn("IrUsMap", m_kvc, m_parent));
+                plugIn = odcore::SharedPointer<PlugIn>(new irusmap::IrUsMapPlugIn("IrUsMap", m_kvc, m_parent));
             } else if (name == "LiveFeed") {
                 cerr << "Creating LiveFeed" << endl;
-                plugIn = core::SharedPointer<PlugIn>(new livefeed::LiveFeedPlugIn("LiveFeed", m_kvc, m_parent));
+                plugIn = odcore::SharedPointer<PlugIn>(new livefeed::LiveFeedPlugIn("LiveFeed", m_kvc, m_parent));
+            } else if (name == "LogMessage") {
+                cerr << "Creating LogMessage" << endl;
+                plugIn = odcore::SharedPointer<PlugIn>(new logmessage::LogMessagePlugIn("LogMessage", m_kvc, m_parent));
             } else if (name == "Player") {
                 cerr << "Creating Player" << endl;
-                plugIn = core::SharedPointer<PlugIn>((PlugIn*)(new player::PlayerPlugIn("Player", m_kvc, m_conference, m_parent)));
+                plugIn = odcore::SharedPointer<PlugIn>((PlugIn*)(new player::PlayerPlugIn("Player", m_kvc, m_conference, m_parent)));
             } else if (name == "SharedImageViewer") {
                 cerr << "Creating SharedImageViewer" << endl;
-                plugIn = core::SharedPointer<PlugIn>(new sharedimageviewer::SharedImageViewerPlugIn("SharedImageViewer", m_kvc, m_parent));
+                plugIn = odcore::SharedPointer<PlugIn>(new sharedimageviewer::SharedImageViewerPlugIn("SharedImageViewer", m_kvc, m_parent));
             } else if (name == "Spy") {
                 cerr << "Creating Spy" << endl;
-                plugIn = core::SharedPointer<PlugIn>(new spy::SpyPlugIn("Spy", m_kvc, m_parent));
+                plugIn = odcore::SharedPointer<PlugIn>(new spy::SpyPlugIn("Spy", m_kvc, m_parent));
             } else if (name == "StreetMap") {
                 cerr << "Creating StreetMap" << endl;
-                plugIn = core::SharedPointer<PlugIn>(new streetmap::StreetMapPlugIn("StreetMap", m_kvc, m_parent));
+                plugIn = odcore::SharedPointer<PlugIn>(new streetmap::StreetMapPlugIn("StreetMap", m_kvc, m_parent));
             }
 
             return plugIn;
         }
 
-        core::SharedPointer<PlugIn> PlugInProvider::getPlugIn(const string &name) {
-            core::SharedPointer<PlugIn> plugIn;
+        odcore::SharedPointer<PlugIn> PlugInProvider::getPlugIn(const string &name) {
+            odcore::SharedPointer<PlugIn> plugIn;
 
             // Check if the plugin exists.
             vector<string>::const_iterator it = m_listOfAvailablePlugIns.begin();

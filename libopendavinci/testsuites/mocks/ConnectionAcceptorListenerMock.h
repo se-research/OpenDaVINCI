@@ -23,18 +23,18 @@
 #include <string>
 #include <iostream>
 
-#include "core/SharedPointer.h"
-#include "core/base/Condition.h"
-#include "core/base/Lock.h"
-#include "core/base/Mutex.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Condition.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/Mutex.h"
 
-#include "core/io/ConnectionAcceptorListener.h"
-#include "core/io/Connection.h"
+#include "opendavinci/odcore/io/ConnectionAcceptorListener.h"
+#include "opendavinci/odcore/io/Connection.h"
 
 namespace mocks {
-    using namespace core;
+    using namespace odcore;
 
-    class ConnectionAcceptorListenerMock : public core::io::ConnectionAcceptorListener {
+    class ConnectionAcceptorListenerMock : public odcore::io::ConnectionAcceptorListener {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -51,7 +51,7 @@ namespace mocks {
             ConnectionAcceptorListenerMock& operator=(const ConnectionAcceptorListenerMock&);
 
         private:
-            core::SharedPointer<core::io::Connection> m_connection;
+            odcore::SharedPointer<odcore::io::Connection> m_connection;
             bool m_connected;
             base::Condition m_condition;
 
@@ -63,7 +63,7 @@ namespace mocks {
 
             ~ConnectionAcceptorListenerMock() {};
 
-            core::SharedPointer<io::Connection> getConnection() {
+            odcore::SharedPointer<io::Connection> getConnection() {
                 return m_connection;
             }
 
@@ -82,7 +82,7 @@ namespace mocks {
                 return m_connected;
             }
 
-            virtual void onNewConnection(core::SharedPointer<core::io::Connection> connection) {
+            virtual void onNewConnection(odcore::SharedPointer<odcore::io::Connection> connection) {
                 base::Lock l(m_condition);
                 m_connection = connection;
                 m_connected = true;

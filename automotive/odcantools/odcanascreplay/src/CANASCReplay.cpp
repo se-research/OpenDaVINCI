@@ -19,10 +19,10 @@
 
 #include <iostream>
 
-#include "core/opendavinci.h"
-#include "core/strings/StringToolbox.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/strings/StringToolbox.h"
 
-#include "generated/automotive/GenericCANMessage.h"
+#include "automotivedata/generated/automotive/GenericCANMessage.h"
 
 #include "CANASCReplay.h"
 
@@ -30,9 +30,9 @@ namespace automotive {
     namespace odcantools {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::data;
-        using namespace core::strings;
+        using namespace odcore::base;
+        using namespace odcore::data;
+        using namespace odcore::strings;
 
         CANASCReplay::CANASCReplay(const int32_t &argc, char **argv) :
             TimeTriggeredConferenceClientModule(argc, argv, "odcanascreplay") {}
@@ -43,10 +43,10 @@ namespace automotive {
 
         void CANASCReplay::tearDown() {}
 
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode CANASCReplay::body() {
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode CANASCReplay::body() {
             // Structure of an ASC entry: 'Timestamp Channel  ID             Rx   d Length 00 11 22 33 44 55 66 77'
             char buffer[100];
-            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
                 // Read next line from STDIN.
                 cin.getline(buffer, 100);
 
@@ -88,12 +88,12 @@ namespace automotive {
                     CLOG1 << gcm.toString() << endl;
 
                     // Distribute data.
-                    Container c(Container::GENERIC_CAN_MESSAGE, gcm);
+                    Container c(gcm);
                     getConference().send(c);
                 }
             }
 
-            return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
     } // odcantools

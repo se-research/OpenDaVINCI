@@ -18,13 +18,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "ContainerObserver.h"
 #include "plugins/spy/SpyPlugIn.h"
 #include "plugins/spy/SpyWidget.h"
 
 class QWidget;
-namespace core { namespace base { class KeyValueConfiguration; } }
+namespace odcore { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
 
@@ -32,7 +32,7 @@ namespace cockpit {
 
         namespace spy {
 
-            SpyPlugIn::SpyPlugIn(const string &name, const core::base::KeyValueConfiguration &kvc, QWidget *prnt) :
+            SpyPlugIn::SpyPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt) :
                 PlugIn(name, kvc, prnt),
                 m_viewerWidget(NULL) {
                 setDescription("This plugin displays all distributed containers.");
