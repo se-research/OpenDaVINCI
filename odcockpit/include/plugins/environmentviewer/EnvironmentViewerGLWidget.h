@@ -33,6 +33,8 @@
 #include "hesperia/threeD/RenderingConfiguration.h"
 #include "plugins/AbstractGLWidget.h"
 #include "plugins/environmentviewer/SelectableNodeDescriptorTreeListener.h"
+#include "core/io/protocol/PCAPProtocol.h"
+#include <fstream>
 
 class QWidget;
 namespace cockpit { namespace plugins { class PlugIn; } }
@@ -40,6 +42,7 @@ namespace core { namespace base { template <typename T> class TreeNode; } }
 namespace core { namespace data { class Container; } }
 namespace hesperia { namespace threeD { class Node; } }
 namespace hesperia { namespace threeD { class TransformGroup; } }
+using namespace core::io::protocol;
 
 namespace cockpit {
     namespace plugins {
@@ -107,6 +110,7 @@ class SelectableNodeDescriptor;
                     hesperia::threeD::TransformGroup *m_measurements;
                     hesperia::threeD::TransformGroup *m_plannedRoute;
                     hesperia::threeD::TransformGroup *m_lines;
+                    hesperia::threeD::TransformGroup *m_velodyne;
 
                     hesperia::threeD::NodeDescriptor m_egoStateNodeDescriptor;
                     uint32_t m_numberOfReceivedEgoStates;
@@ -124,6 +128,15 @@ class SelectableNodeDescriptor;
 
                     core::base::TreeNode<SelectableNodeDescriptor> *m_selectableNodeDescriptorTree;
                     SelectableNodeDescriptorTreeListener &m_selectableNodeDescriptorTreeListener;
+                    PCAPProtocol m_pcap;
+                    bool m_readFlag;
+                    fstream lidlarStream;
+                    double distance[32];
+                    vector<int> intensity;
+                    bool upperBlock;
+                    vector<double> xData;
+                    vector<double> yData;
+                    vector<double> zData;
 
                     /**
                      * This method actually modifies the rendering configuration.
