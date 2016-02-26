@@ -22,8 +22,8 @@
 
 #include <stdint.h>
 
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
 
 namespace measurements {
 
@@ -32,7 +32,7 @@ namespace measurements {
     /**
      * This class encapsulates the a measurement module to measure the driven vs. the optimal path.
      */
-    class DrivenPath : public core::base::module::TimeTriggeredConferenceClientModule {
+    class DrivenPath : public odcore::base::module::TimeTriggeredConferenceClientModule {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -64,7 +64,7 @@ namespace measurements {
 
             virtual ~DrivenPath();
 
-            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+            odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
         private:
             virtual void setUp();

@@ -13,7 +13,7 @@ Install the required development packages for libodsimulation sources::
 
     $ sudo urpmi libqt4-devel lib64freeglut3 lib64freeglut-devel lib64boost-devel opencv-devel
     
-Install qwt5-qt4 for hesperia sources::
+Install qwt5-qt4 for OpenDLV sources::
 
     $ sudo urpmi lib64qwt5-devel
     
@@ -43,5 +43,8 @@ Use cmake to create the build scripts for your build folder::
 
 Build, run the tests, and install the OpenDaVINCI::
 
-    $ make all
+    $ sudo make all
+    
+Note that sudo is used here because installing software to system-wide directories (e.g., /usr/local) requires superuser (root) privileges. If OpenDaVINCI is installed in a different directory, e.g., /opt/od, then there is no need to use sudo. Instead, write permission should be given::
 
+    $ sudo chown $USER:$USER /opt/od

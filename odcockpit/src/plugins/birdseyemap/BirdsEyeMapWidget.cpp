@@ -27,23 +27,23 @@
 #include <qnamespace.h>
 #include <qstringlist.h>
 
-#include "core/opendavinci.h"
-#include "core/base/Lock.h"
-#include "core/base/TreeNode.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/TreeNode.h"
 #include "plugins/birdseyemap/BirdsEyeMapMapWidget.h"
 #include "plugins/birdseyemap/BirdsEyeMapWidget.h"
 #include "plugins/birdseyemap/SelectableNodeDescriptor.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }
-namespace core { namespace data { class Container; } }
+namespace odcore { namespace data { class Container; } }
 
 namespace cockpit {
     namespace plugins {
         namespace birdseyemap {
 
-            using namespace core::base;
-            using namespace core::data;
-            using namespace hesperia::scenegraph;
+            using namespace odcore::base;
+            using namespace odcore::data;
+            using namespace opendlv::scenegraph;
 
             BirdsEyeMapWidget::BirdsEyeMapWidget(const PlugIn &plugIn, QWidget *prnt) :
                 QWidget(prnt),
@@ -150,7 +150,7 @@ namespace cockpit {
                 }
             }
 
-            void BirdsEyeMapWidget::update(core::base::TreeNode<SelectableNodeDescriptor> *node) {
+            void BirdsEyeMapWidget::update(odcore::base::TreeNode<SelectableNodeDescriptor> *node) {
                 if (node != NULL) {
                     {
                         Lock l(m_textualSceneGraphRootUpdateMutex);

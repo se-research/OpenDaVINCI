@@ -31,7 +31,7 @@ Update your package database:
 
 ### Installing the OpenDaVINCI library
 
-    $ sudo apt-get install opendavinci-odlib
+    $ sudo apt-get install opendavinci-lib
 
 
 

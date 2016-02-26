@@ -23,9 +23,9 @@
 #include <QtGui>
 #include <QtNetwork>
 
-#include "core/base/Lock.h"
-#include "core/data/Container.h"
-#include "hesperia/data/environment/EgoState.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendlv/data/environment/EgoState.h"
 
 #include "plugins/streetmapviewer/StreetMapMapWidget.h"
 #include "plugins/streetmapviewer/slippymap.h"
@@ -35,9 +35,9 @@ namespace cockpit {
         namespace streetmap {
 
             using namespace std;
-            using namespace core::base;
-            using namespace core::data;
-            using namespace hesperia::data::environment;
+            using namespace odcore::base;
+            using namespace odcore::data;
+            using namespace opendlv::data::environment;
 
             StreetMapMapWidget::StreetMapMapWidget(QWidget *prnt) :
                 QWidget(prnt),
@@ -132,7 +132,7 @@ namespace cockpit {
             }
 
             void StreetMapMapWidget::nextContainer(Container &c) {
-                if (c.getDataType() == Container::EGOSTATE) {
+                if (c.getDataType() == opendlv::data::environment::EgoState::ID()) {
                     EgoState es = c.getData<EgoState>();
                     cout << "[StreetMapMapWidget]: " << es.toString() << endl;
                 }

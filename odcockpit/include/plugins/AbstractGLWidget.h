@@ -24,9 +24,9 @@
 #include <Qt/qgl.h>
 #include <qobjectdefs.h>
 
-#include "core/opendavinci.h"
-#include "core/base/Mutex.h"
-#include "hesperia/data/environment/Point3.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendlv/data/environment/Point3.h"
 
 class QKeyEvent;
 class QMouseEvent;
@@ -78,7 +78,7 @@ class PlugIn;
                  *
                  * @param c Color.
                  */
-                void setBackgroundColor(const hesperia::data::environment::Point3 &c);
+                void setBackgroundColor(const opendlv::data::environment::Point3 &c);
 
                 /**
                  * This method can be overridden in subclasses to perform a
@@ -155,8 +155,8 @@ class PlugIn;
                 int32_t m_mouseY;
                 int32_t m_mouseButton;
 
-                core::base::Mutex m_backgroundColorMutex;
-                hesperia::data::environment::Point3 m_backgroundColor;
+                odcore::base::Mutex m_backgroundColorMutex;
+                opendlv::data::environment::Point3 m_backgroundColor;
 
                 virtual void initializeGL();
 

@@ -15,10 +15,10 @@
 #include <string>
 #include <vector>
 
-#include "core/opendavinci.h"
-#include "core/strings/StringToolbox.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/strings/StringToolbox.h"
 
-#include "GeneratedHeaders_Test11.h"
+#include "test11/GeneratedHeaders_Test11.h"
 
 
 class Test11MapBool_TestSuite : public CxxTest::TestSuite {
@@ -336,9 +336,9 @@ class Test11MapBool_TestSuite : public CxxTest::TestSuite {
 				TS_ASSERT(obj1.getSize_MapOfMyBoolStringMap() == 2);
 				TS_ASSERT(!obj1.isEmpty_MapOfMyBoolStringMap());
 				TS_ASSERT(obj1.containsKey_MapOfMyBoolStringMap(true));
-				TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(true), "Hello World!"));
+				TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(true), "Hello World!"));
 				TS_ASSERT(obj1.containsKey_MapOfMyBoolStringMap(false));
-				TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(false), "Hello Solar System!"));
+				TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(false), "Hello Solar System!"));
 			
 				obj1.clear_MapOfMyBoolStringMap();
 				TS_ASSERT(obj1.getMapOfMyBoolStringMap().size() == 0);
@@ -352,7 +352,7 @@ class Test11MapBool_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getSize_MapOfMyBoolStringMap() == 1);
 			TS_ASSERT(!obj1.isEmpty_MapOfMyBoolStringMap());
 			TS_ASSERT(obj1.containsKey_MapOfMyBoolStringMap(true));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(true), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(true), "Hello World!"));
 			TS_ASSERT(!obj1.containsKey_MapOfMyBoolStringMap(false));
 			
 			obj1.putTo_MapOfMyBoolStringMap(false, "Hello Solar System!");
@@ -360,9 +360,9 @@ class Test11MapBool_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getSize_MapOfMyBoolStringMap() == 2);
 			TS_ASSERT(!obj1.isEmpty_MapOfMyBoolStringMap());
 			TS_ASSERT(obj1.containsKey_MapOfMyBoolStringMap(true));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(true), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(true), "Hello World!"));
 			TS_ASSERT(obj1.containsKey_MapOfMyBoolStringMap(false));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(false), "Hello Solar System!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(false), "Hello Solar System!"));
 			
 	
 			TS_ASSERT(obj1.getMapOfMyBoolBoolMap().size() == 2);
@@ -737,9 +737,9 @@ class Test11MapBool_TestSuite : public CxxTest::TestSuite {
 				TS_ASSERT(obj1.getSize_MapOfMyBoolStringMap() == 2);
 				TS_ASSERT(!obj1.isEmpty_MapOfMyBoolStringMap());
 				TS_ASSERT(obj1.containsKey_MapOfMyBoolStringMap(true));
-				TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(true), "Hello World!"));
+				TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(true), "Hello World!"));
 				TS_ASSERT(obj1.containsKey_MapOfMyBoolStringMap(false));
-				TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(false), "Hello Solar System!"));
+				TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(false), "Hello Solar System!"));
 			
 				obj1.clear_MapOfMyBoolStringMap();
 				TS_ASSERT(obj1.getMapOfMyBoolStringMap().size() == 0);
@@ -753,7 +753,7 @@ class Test11MapBool_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getSize_MapOfMyBoolStringMap() == 1);
 			TS_ASSERT(!obj1.isEmpty_MapOfMyBoolStringMap());
 			TS_ASSERT(obj1.containsKey_MapOfMyBoolStringMap(true));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(true), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(true), "Hello World!"));
 			TS_ASSERT(!obj1.containsKey_MapOfMyBoolStringMap(false));
 			
 			obj1.putTo_MapOfMyBoolStringMap(false, "Hello Solar System!");
@@ -761,9 +761,9 @@ class Test11MapBool_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getSize_MapOfMyBoolStringMap() == 2);
 			TS_ASSERT(!obj1.isEmpty_MapOfMyBoolStringMap());
 			TS_ASSERT(obj1.containsKey_MapOfMyBoolStringMap(true));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(true), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(true), "Hello World!"));
 			TS_ASSERT(obj1.containsKey_MapOfMyBoolStringMap(false));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(false), "Hello Solar System!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(false), "Hello Solar System!"));
 			
 	
 			TS_ASSERT(obj1.getMapOfMyBoolBoolMap().size() == 2);
@@ -868,7 +868,7 @@ class Test11MapBool_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj3.containsKey_MapOfMyBoolStringMap(false));
 			TS_ASSERT(obj3.getValueForKey_MapOfMyBoolStringMap(false) == "Hello Solar System!");
 	
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj3.toString()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj3.toString()));
 		}
 	
 		void testCreateAndAssignObject() {
@@ -1206,9 +1206,9 @@ class Test11MapBool_TestSuite : public CxxTest::TestSuite {
 				TS_ASSERT(obj1.getSize_MapOfMyBoolStringMap() == 2);
 				TS_ASSERT(!obj1.isEmpty_MapOfMyBoolStringMap());
 				TS_ASSERT(obj1.containsKey_MapOfMyBoolStringMap(true));
-				TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(true), "Hello World!"));
+				TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(true), "Hello World!"));
 				TS_ASSERT(obj1.containsKey_MapOfMyBoolStringMap(false));
-				TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(false), "Hello Solar System!"));
+				TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(false), "Hello Solar System!"));
 			
 				obj1.clear_MapOfMyBoolStringMap();
 				TS_ASSERT(obj1.getMapOfMyBoolStringMap().size() == 0);
@@ -1222,7 +1222,7 @@ class Test11MapBool_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getSize_MapOfMyBoolStringMap() == 1);
 			TS_ASSERT(!obj1.isEmpty_MapOfMyBoolStringMap());
 			TS_ASSERT(obj1.containsKey_MapOfMyBoolStringMap(true));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(true), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(true), "Hello World!"));
 			TS_ASSERT(!obj1.containsKey_MapOfMyBoolStringMap(false));
 			
 			obj1.putTo_MapOfMyBoolStringMap(false, "Hello Solar System!");
@@ -1230,9 +1230,9 @@ class Test11MapBool_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getSize_MapOfMyBoolStringMap() == 2);
 			TS_ASSERT(!obj1.isEmpty_MapOfMyBoolStringMap());
 			TS_ASSERT(obj1.containsKey_MapOfMyBoolStringMap(true));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(true), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(true), "Hello World!"));
 			TS_ASSERT(obj1.containsKey_MapOfMyBoolStringMap(false));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(false), "Hello Solar System!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(false), "Hello Solar System!"));
 			
 	
 			TS_ASSERT(obj1.getMapOfMyBoolBoolMap().size() == 2);
@@ -1337,7 +1337,7 @@ class Test11MapBool_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj2.containsKey_MapOfMyBoolStringMap(false));
 			TS_ASSERT(obj2.getValueForKey_MapOfMyBoolStringMap(false) == "Hello Solar System!");
 	
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
 		}
 	
 		void testCreateAndSerializeObject() {
@@ -1675,9 +1675,9 @@ class Test11MapBool_TestSuite : public CxxTest::TestSuite {
 				TS_ASSERT(obj1.getSize_MapOfMyBoolStringMap() == 2);
 				TS_ASSERT(!obj1.isEmpty_MapOfMyBoolStringMap());
 				TS_ASSERT(obj1.containsKey_MapOfMyBoolStringMap(true));
-				TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(true), "Hello World!"));
+				TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(true), "Hello World!"));
 				TS_ASSERT(obj1.containsKey_MapOfMyBoolStringMap(false));
-				TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(false), "Hello Solar System!"));
+				TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(false), "Hello Solar System!"));
 			
 				obj1.clear_MapOfMyBoolStringMap();
 				TS_ASSERT(obj1.getMapOfMyBoolStringMap().size() == 0);
@@ -1691,7 +1691,7 @@ class Test11MapBool_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getSize_MapOfMyBoolStringMap() == 1);
 			TS_ASSERT(!obj1.isEmpty_MapOfMyBoolStringMap());
 			TS_ASSERT(obj1.containsKey_MapOfMyBoolStringMap(true));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(true), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(true), "Hello World!"));
 			TS_ASSERT(!obj1.containsKey_MapOfMyBoolStringMap(false));
 			
 			obj1.putTo_MapOfMyBoolStringMap(false, "Hello Solar System!");
@@ -1699,9 +1699,9 @@ class Test11MapBool_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getSize_MapOfMyBoolStringMap() == 2);
 			TS_ASSERT(!obj1.isEmpty_MapOfMyBoolStringMap());
 			TS_ASSERT(obj1.containsKey_MapOfMyBoolStringMap(true));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(true), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(true), "Hello World!"));
 			TS_ASSERT(obj1.containsKey_MapOfMyBoolStringMap(false));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(false), "Hello Solar System!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyBoolStringMap(false), "Hello Solar System!"));
 			
 	
 			TS_ASSERT(obj1.getMapOfMyBoolBoolMap().size() == 2);
@@ -1809,7 +1809,7 @@ class Test11MapBool_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj2.containsKey_MapOfMyBoolStringMap(false));
 			TS_ASSERT(obj2.getValueForKey_MapOfMyBoolStringMap(false) == "Hello Solar System!");
 	
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
 		}
 
 };

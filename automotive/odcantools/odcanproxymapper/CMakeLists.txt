@@ -64,9 +64,9 @@ SET (ODCANTOOLS_LIB odcantools-static)
 
 ###############################################################################
 # Set header files from OpenDaVINCI.
-INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS}/opendavinci)
+INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS})
 # Set header files from AutomotiveData.
-INCLUDE_DIRECTORIES (${AUTOMOTIVEDATA_INCLUDE_DIRS}/automotivedata)
+INCLUDE_DIRECTORIES (${AUTOMOTIVEDATA_INCLUDE_DIRS})
 # Set include directory from odcanproxy.
 INCLUDE_DIRECTORIES(${odcanproxy_SOURCE_DIR}/include)
 # Set header files from CANMappingMessage.

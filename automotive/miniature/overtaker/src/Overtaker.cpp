@@ -20,11 +20,11 @@
 #include <cstdio>
 #include <cmath>
 
-#include "core/io/conference/ContainerConference.h"
-#include "core/data/Container.h"
+#include "opendavinci/odcore/io/conference/ContainerConference.h"
+#include "opendavinci/odcore/data/Container.h"
 
-#include "GeneratedHeaders_CoreData.h"
-#include "GeneratedHeaders_AutomotiveData.h"
+#include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
+#include "automotivedata/GeneratedHeaders_AutomotiveData.h"
 
 #include "Overtaker.h"
 
@@ -32,8 +32,8 @@ namespace automotive {
     namespace miniature {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::data;
+        using namespace odcore::base;
+        using namespace odcore::data;
         using namespace automotive;
         using namespace automotive::miniature;
 
@@ -52,7 +52,7 @@ namespace automotive {
         }
 
         // This method will do the main data processing job.
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode Overtaker::body() {
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Overtaker::body() {
             const int32_t ULTRASONIC_FRONT_CENTER = 3;
             const int32_t ULTRASONIC_FRONT_RIGHT = 4;
             const int32_t INFRARED_FRONT_RIGHT = 0;
@@ -76,17 +76,17 @@ namespace automotive {
             double distanceToObstacle = 0;
             double distanceToObstacleOld = 0;
 
-            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
 	            // 1. Get most recent vehicle data:
-	            Container containerVehicleData = getKeyValueDataStore().get(Container::VEHICLEDATA);
+	            Container containerVehicleData = getKeyValueDataStore().get(VehicleData::ID());
 	            VehicleData vd = containerVehicleData.getData<VehicleData> ();
 
-	            // 2. Get most recent sensor board data:
-	            Container containerSensorBoardData = getKeyValueDataStore().get(Container::USER_DATA_0);
-	            SensorBoardData sbd = containerSensorBoardData.getData<SensorBoardData> ();
+                // 2. Get most recent sensor board data:
+                Container containerSensorBoardData = getKeyValueDataStore().get(automotive::miniature::SensorBoardData::ID());
+                SensorBoardData sbd = containerSensorBoardData.getData<SensorBoardData> ();
 
-	            // Create vehicle control data.
-	            VehicleControl vc;
+                // Create vehicle control data.
+                VehicleControl vc;
 
                 // Moving state machine.
                 if (stageMoving == FORWARD) {
@@ -161,7 +161,7 @@ namespace automotive {
 
                     // Approaching an obstacle (stationary or driving slower than us).
                     if ( (distanceToObstacle > 0) && (((distanceToObstacleOld - distanceToObstacle) > 0) || (fabs(distanceToObstacleOld - distanceToObstacle) < 1e-2)) ) {
-                        // Check if overtaking shall be started.                        
+                        // Check if overtaking shall be started.
                         stageMeasuring = FIND_OBJECT_PLAUSIBLE;
                     }
 
@@ -209,13 +209,13 @@ namespace automotive {
                     }
                 }
 
-	            // Create container for finally sending the data.
-	            Container c(Container::VEHICLECONTROL, vc);
-	            // Send container.
-	            getConference().send(c);
+                // Create container for finally sending the data.
+                Container c(vc);
+                // Send container.
+                getConference().send(c);
             }
 
-            return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
     }

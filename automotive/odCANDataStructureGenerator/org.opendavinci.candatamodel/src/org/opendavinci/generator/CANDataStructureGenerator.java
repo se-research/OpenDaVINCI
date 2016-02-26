@@ -244,7 +244,7 @@ public class CANDataStructureGenerator {
         sb.append("# along with this program; if not, write to the Free Software"); sb.append("\r\n");
         sb.append("# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA."); sb.append("\r\n");
 
-        sb.append("FIND_PACKAGE (PythonInterp)"); sb.append("\r\n");
+        sb.append("FIND_PACKAGE (PythonInterp 2.7)"); sb.append("\r\n");
 
         sb.append("IF(PYTHONINTERP_FOUND)"); sb.append("\r\n");
         sb.append("    SET (CXXTEST_TESTGEN_ARGS --xunit-printer --have-eh)"); sb.append("\r\n");
@@ -331,7 +331,7 @@ public class CANDataStructureGenerator {
         sb.append("FIND_PACKAGE (OpenDaVINCI REQUIRED)"); sb.append("\r\n");
 
         sb.append("# Include directories from core."); sb.append("\r\n");
-        sb.append("INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS}/opendavinci)"); sb.append("\r\n");
+        sb.append("INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS})"); sb.append("\r\n");
         sb.append("INCLUDE_DIRECTORIES (include)"); sb.append("\r\n");
 
         sb.append("###########################################################################"); sb.append("\r\n");
@@ -339,7 +339,7 @@ public class CANDataStructureGenerator {
         sb.append("SET(AUTOMOTIVEDATA_DIR \"${CMAKE_INSTALL_PREFIX}\")"); sb.append("\r\n");
         sb.append("FIND_PACKAGE (AutomotiveData REQUIRED)"); sb.append("\r\n");
         sb.append("# Set header files from AutomotiveData."); sb.append("\r\n");
-        sb.append("INCLUDE_DIRECTORIES (${AUTOMOTIVEDATA_INCLUDE_DIRS}/automotivedata)"); sb.append("\r\n");
+        sb.append("INCLUDE_DIRECTORIES (${AUTOMOTIVEDATA_INCLUDE_DIRS})"); sb.append("\r\n");
         sb.append("SET (LIBRARIES ${OPENDAVINCI_LIBRARIES}"); sb.append("\r\n");
         sb.append("               ${AUTOMOTIVEDATA_LIBRARIES})"); sb.append("\r\n");
 

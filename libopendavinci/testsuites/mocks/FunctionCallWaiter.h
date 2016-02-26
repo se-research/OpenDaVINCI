@@ -20,8 +20,8 @@
 #ifndef MOCKS_FUNCTIONCALLWAITER_H
 #define MOCKS_FUNCTIONCALLWAITER_H
 
-#include "core/base/Lock.h"
-#include "core/base/Condition.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/Condition.h"
 
 namespace mocks {
 
@@ -38,7 +38,7 @@ namespace mocks {
 			{}
 
             bool wait() {
-            	core::base::Lock lock(m_condition);
+            	odcore::base::Lock lock(m_condition);
                 if (!m_called) {
                     return m_condition.waitOnSignalWithTimeout(2000);
                 }
@@ -47,24 +47,24 @@ namespace mocks {
             }
 
             bool wasCalled() {
-            	core::base::Lock lock(m_condition);
+            	odcore::base::Lock lock(m_condition);
                 return m_called;
             }
 
             void called() {
-            	core::base::Lock lock(m_condition);
+            	odcore::base::Lock lock(m_condition);
                 m_called = true;
                 m_condition.wakeAll();
             }
 
             void reset() {
-                core::base::Lock lock(m_condition);
+                odcore::base::Lock lock(m_condition);
                 m_called = false;
             }
 
         private:
             bool m_called;
-            core::base::Condition m_condition;
+            odcore::base::Condition m_condition;
     };
 }
 

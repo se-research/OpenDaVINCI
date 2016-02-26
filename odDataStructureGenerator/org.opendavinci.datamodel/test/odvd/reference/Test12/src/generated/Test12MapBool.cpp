@@ -5,16 +5,16 @@
  */
 
 
-#include "core/base/Hash.h"
-#include "core/base/Deserializer.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 
 
-#include "generated/Test12MapBool.h"
+#include "test12/generated/Test12MapBool.h"
 
 	using namespace std;
-	using namespace core::base;
+	using namespace odcore::base;
 
 
 	Test12MapBool::Test12MapBool() :
@@ -85,6 +85,18 @@
 
 	const string Test12MapBool::LongName() {
 		return "Test12MapBool";
+	}
+
+	int32_t Test12MapBool::getID() const {
+		return Test12MapBool::ID();
+	}
+
+	const string Test12MapBool::getShortName() const {
+		return Test12MapBool::ShortName();
+	}
+
+	const string Test12MapBool::getLongName() const {
+		return Test12MapBool::LongName();
 	}
 
 	std::map<bool, bool> Test12MapBool::getMapOfMyBoolBoolMap() const {
@@ -333,7 +345,7 @@
 		return std::make_pair(m_mapOfMyBoolStringMap.begin(), m_mapOfMyBoolStringMap.end());
 	}
 
-	void Test12MapBool::accept(core::base::Visitor &v) {
+	void Test12MapBool::accept(odcore::base::Visitor &v) {
 		(void)v; // Avoid unused parameter warning.
 	}
 
@@ -356,7 +368,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Serializer> s = sf.getSerializer(out);
+		odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 
 		{
 			// Write number of elements in m_mapOfMyBoolBoolMap.
@@ -491,7 +503,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+		odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
 		// Clean up the existing map of MyBoolBoolMap.
 		m_mapOfMyBoolBoolMap.clear();

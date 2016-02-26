@@ -27,12 +27,7 @@ Clean up installation::
 
     $ sudo yum autoremove
     $ sudo yum clean all
-  
-Add two missing symbolic links::
 
-    $ sudo ln -sf /usr/include/qwt5-qt4 /usr/include/qwt-qt4
-    $ sudo ln -sf /usr/lib64/libqwt5-qt4.so /usr/lib64/libqwt-qt4.so
-     
 Clone the latest OpenDaVINCI sources from https://github.com/se-research/OpenDaVINCI or download
 the latest OpenDaVINCI sources as zip file: https://github.com/se-research/OpenDaVINCI/archive/master.zip.
 
@@ -46,5 +41,8 @@ Use cmake to create the build scripts for your build folder::
 
 Build, run the tests, and install the OpenDaVINCI::
 
-    $ make all
+    $ sudo make all
+    
+Note that sudo is used here because installing software to system-wide directories (e.g., /usr/local) requires superuser (root) privileges. If OpenDaVINCI is installed in a different directory, e.g., /opt/od, then there is no need to use sudo. Instead, write permission should be given::
 
+    $ sudo chown $USER:$USER /opt/od

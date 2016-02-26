@@ -30,7 +30,7 @@
 #elif defined _MSC_VER
 #pragma warning(push, 1)
 #endif
-    #include <qwt-qt4/qwt_plot.h>
+    #include <qwt_plot.h>
 #if defined __SUNPRO_CC
 #pragma enable_warn
 #elif defined _MSC_VER
@@ -39,7 +39,7 @@
 
 #include <vector>
 
-#include "core/SharedPointer.h"
+#include "opendavinci/odcore/SharedPointer.h"
 
 class QTimer;
 class QWidget;
@@ -77,11 +77,11 @@ class LoadPerModule;
 
 	                ~LoadPlot();
 
-	                void addLoadPerModule(core::SharedPointer<LoadPerModule> lpm);
+	                void addLoadPerModule(odcore::SharedPointer<LoadPerModule> lpm);
 
                 private:
 	                QwtLegend* m_legend;
-	                vector<core::SharedPointer<LoadPerModule> > m_toAdd;
+	                vector<odcore::SharedPointer<LoadPerModule> > m_toAdd;
 	                QTimer* m_toAttachVisitor;
 
                 private slots:

@@ -24,25 +24,24 @@
 #include <map>
 #include <vector>
 
-#include "core/opendavinci.h"
-#include "core/base/Mutex.h"
-#include "core/io/conference/ContainerListener.h"
-#include "hesperia/data/environment/Position.h"
-#include "hesperia/threeD/NodeDescriptor.h"
-#include "hesperia/threeD/NodeDescriptorComparator.h"
-#include "hesperia/threeD/RenderingConfiguration.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
+#include "opendlv/data/environment/Position.h"
+#include "opendlv/threeD/NodeDescriptor.h"
+#include "opendlv/threeD/NodeDescriptorComparator.h"
+#include "opendlv/threeD/RenderingConfiguration.h"
 #include "plugins/AbstractGLWidget.h"
 #include "plugins/environmentviewer/SelectableNodeDescriptorTreeListener.h"
-#include "core/io/protocol/PCAPProtocol.h"
+#include "opendavinci/odcore/io/protocol/PCAPProtocol.h"
 #include <fstream>
 
 class QWidget;
 namespace cockpit { namespace plugins { class PlugIn; } }
-namespace core { namespace base { template <typename T> class TreeNode; } }
-namespace core { namespace data { class Container; } }
-namespace hesperia { namespace threeD { class Node; } }
-namespace hesperia { namespace threeD { class TransformGroup; } }
-using namespace core::io::protocol;
+namespace odcore { namespace base { template <typename T> class TreeNode; } }
+namespace odcore { namespace data { class Container; } }
+namespace opendlv { namespace threeD { class Node; } }
+namespace opendlv { namespace threeD { class TransformGroup; } }
 
 namespace cockpit {
     namespace plugins {
@@ -54,7 +53,7 @@ namespace cockpit {
 class CameraAssignableNodesListener;
 class SelectableNodeDescriptor;
 
-            class EnvironmentViewerGLWidget : public AbstractGLWidget, public core::io::conference::ContainerListener, public SelectableNodeDescriptorTreeListener {
+            class EnvironmentViewerGLWidget : public AbstractGLWidget, public odcore::io::conference::ContainerListener, public SelectableNodeDescriptorTreeListener {
                 private:
                     /**
                      * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -83,7 +82,7 @@ class SelectableNodeDescriptor;
 
                     virtual ~EnvironmentViewerGLWidget();
 
-                    virtual void nextContainer(core::data::Container &c);
+                    virtual void nextContainer(odcore::data::Container &c);
 
                     /**
                      * This method sets the NodeDescriptor to which the camera
@@ -91,9 +90,9 @@ class SelectableNodeDescriptor;
                      *
                      * @param nd NodeDescriptor to which the camera should be assigned.
                      */
-                    void assignCameraTo(const hesperia::threeD::NodeDescriptor &nd);
+                    void assignCameraTo(const opendlv::threeD::NodeDescriptor &nd);
 
-                    virtual void update(core::base::TreeNode<SelectableNodeDescriptor> *node);
+                    virtual void update(odcore::base::TreeNode<SelectableNodeDescriptor> *node);
 
                 protected:
                     virtual void setupOpenGL();
@@ -103,32 +102,34 @@ class SelectableNodeDescriptor;
                     virtual void drawScene();
 
                 private:
-                    core::base::Mutex m_rootMutex;
-                    hesperia::threeD::TransformGroup *m_root;
-                    hesperia::threeD::TransformGroup *m_stationaryElements;
-                    hesperia::threeD::TransformGroup *m_dynamicElements;
-                    hesperia::threeD::TransformGroup *m_measurements;
-                    hesperia::threeD::TransformGroup *m_plannedRoute;
-                    hesperia::threeD::TransformGroup *m_lines;
-                    hesperia::threeD::TransformGroup *m_velodyne;
 
-                    hesperia::threeD::NodeDescriptor m_egoStateNodeDescriptor;
+                    odcore::base::Mutex m_rootMutex;
+                    opendlv::threeD::TransformGroup *m_root;
+                    opendlv::threeD::TransformGroup *m_stationaryElements;
+                    opendlv::threeD::TransformGroup *m_dynamicElements;
+                    opendlv::threeD::TransformGroup *m_measurements;
+                    opendlv::threeD::TransformGroup *m_plannedRoute;
+                    opendlv::threeD::TransformGroup *m_lines;
+                    opendlv::threeD::TransformGroup *m_velodyne;
+
+                    opendlv::threeD::NodeDescriptor m_egoStateNodeDescriptor;
+
                     uint32_t m_numberOfReceivedEgoStates;
-                    hesperia::threeD::TransformGroup *m_egoStateNode;
-                    map<hesperia::threeD::NodeDescriptor, hesperia::threeD::TransformGroup*, hesperia::threeD::NodeDescriptorComparator> m_mapOfTraceablePositions;
-                    hesperia::threeD::TransformGroup *m_contouredObjectsNode;
-                    hesperia::threeD::RenderingConfiguration m_renderingConfiguration;
-                    hesperia::threeD::TransformGroup *m_obstaclesRoot;
-                    map<uint32_t, hesperia::threeD::Node*> m_mapOfObstacles;
+                    opendlv::threeD::TransformGroup *m_egoStateNode;
+                    map<opendlv::threeD::NodeDescriptor, opendlv::threeD::TransformGroup*, opendlv::threeD::NodeDescriptorComparator> m_mapOfTraceablePositions;
+                    opendlv::threeD::TransformGroup *m_contouredObjectsNode;
+                    opendlv::threeD::RenderingConfiguration m_renderingConfiguration;
+                    opendlv::threeD::TransformGroup *m_obstaclesRoot;
+                    map<uint32_t, opendlv::threeD::Node*> m_mapOfObstacles;
 
                     CameraAssignableNodesListener &m_cameraAssignableNodesListener;
-                    vector<hesperia::threeD::NodeDescriptor> m_listOfCameraAssignableNodes;
-                    hesperia::threeD::NodeDescriptor m_cameraAssignedNodeDescriptor;
-                    map<hesperia::threeD::NodeDescriptor, hesperia::data::environment::Position, hesperia::threeD::NodeDescriptorComparator> m_mapOfCurrentPositions;
+                    vector<opendlv::threeD::NodeDescriptor> m_listOfCameraAssignableNodes;
+                    opendlv::threeD::NodeDescriptor m_cameraAssignedNodeDescriptor;
+                    map<opendlv::threeD::NodeDescriptor, opendlv::data::environment::Position, opendlv::threeD::NodeDescriptorComparator> m_mapOfCurrentPositions;
 
-                    core::base::TreeNode<SelectableNodeDescriptor> *m_selectableNodeDescriptorTree;
+                    odcore::base::TreeNode<SelectableNodeDescriptor> *m_selectableNodeDescriptorTree;
                     SelectableNodeDescriptorTreeListener &m_selectableNodeDescriptorTreeListener;
-                    PCAPProtocol m_pcap;
+                    odcore::io::protocol::PCAPProtocol m_pcap;
                     bool m_readFlag;
                     fstream lidlarStream;
                     double distance[32];
@@ -143,7 +144,7 @@ class SelectableNodeDescriptor;
                      *
                      * @param node Node to evaluate.
                      */
-                    void modifyRenderingConfiguration(core::base::TreeNode<SelectableNodeDescriptor> *node);
+                    void modifyRenderingConfiguration(odcore::base::TreeNode<SelectableNodeDescriptor> *node);
 
                     /**
                      * This method creates the scene graph.

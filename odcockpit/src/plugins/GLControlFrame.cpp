@@ -28,15 +28,15 @@
 # endif
 # pragma GCC diagnostic ignored "-Weffc++"
 #endif
-    #include <qwt-qt4/qwt_wheel.h>
+    #include <qwt_wheel.h>
 #ifndef WIN32
 # if !defined(__OpenBSD__) && !defined(__NetBSD__)
 #  pragma GCC diagnostic pop
 # endif
 #endif
 
-#include "core/opendavinci.h"
-#include "generated/cartesian/Constants.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "automotivedata/generated/cartesian/Constants.h"
 #include "plugins/AbstractGLWidget.h"
 #include "plugins/GLControlFrame.h"
 
@@ -107,4 +107,3 @@ namespace cockpit {
         }
     }
 } // cockpit::plugins
-

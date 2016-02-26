@@ -15,12 +15,12 @@
 #include <string>
 #include <vector>
 
-#include "core/opendavinci.h"
-#include "core/strings/StringToolbox.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/strings/StringToolbox.h"
 
-#include "GeneratedHeaders_Test20.h"
+#include "test20/GeneratedHeaders_Test20.h"
 
-#include "generated/sub/structure/Test20b.h"
+#include "test20/generated/sub/structure/Test20b.h"
 
 class sub_structure2_Test20c_TestSuite : public CxxTest::TestSuite {
 
@@ -54,7 +54,7 @@ class sub_structure2_Test20c_TestSuite : public CxxTest::TestSuite {
 	
 			TS_ASSERT(obj3.getVal3() == 4000);
 	
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj3.toString()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj3.toString()));
 		}
 	
 		void testCreateAndAssignObject() {
@@ -75,7 +75,7 @@ class sub_structure2_Test20c_TestSuite : public CxxTest::TestSuite {
 	
 			TS_ASSERT(obj2.getVal3() == 4000);
 	
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
 		}
 	
 		void testCreateAndSerializeObject() {
@@ -99,7 +99,7 @@ class sub_structure2_Test20c_TestSuite : public CxxTest::TestSuite {
 	
 			TS_ASSERT(obj2.getVal3() == 4000);
 	
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
 		}
 
 };

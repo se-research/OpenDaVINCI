@@ -19,11 +19,11 @@
 
 #include <iostream>
 
-#include "core/base/KeyValueConfiguration.h"
-#include "core/data/Container.h"
-#include "core/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 
-#include "GeneratedHeaders_CoreData.h"
+#include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
 #include "VCR.h"
 
@@ -31,9 +31,9 @@ namespace automotive {
     namespace miniature {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::data;
-        using namespace coredata::image;
+        using namespace odcore::base;
+        using namespace odcore::data;
+        using namespace odcore::data::image;
 
         VCR::VCR(const int32_t &argc, char **argv) : TimeTriggeredConferenceClientModule(argc, argv, "VCR"),
 	        m_hasAttachedToSharedImageMemory(false),
@@ -71,13 +71,13 @@ namespace automotive {
         bool VCR::readSharedImage(Container &c) {
 	        bool retVal = false;
 
-	        if (c.getDataType() == Container::SHARED_IMAGE) {
+	        if (c.getDataType() == odcore::data::image::SharedImage::ID()) {
 		        SharedImage si = c.getData<SharedImage> ();
 
 		        // Check if we have already attached to the shared memory.
 		        if (!m_hasAttachedToSharedImageMemory) {
 			        m_sharedImageMemory
-					        = core::wrapper::SharedMemoryFactory::attachToSharedMemory(
+					        = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(
 							        si.getName());
 		        }
 
@@ -132,18 +132,18 @@ namespace automotive {
         }
 
         // This method will do the main data processing job.
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode VCR::body() {
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode VCR::body() {
 	        // Get configuration data.
 	        KeyValueConfiguration kv = getKeyValueConfiguration();
 	        m_debug = kv.getValue<int32_t> ("VCR.debug") == 1;
 
-	        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+	        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
 		        bool has_next_frame = false;
 
-		        // Get the most recent available container for a SHARED_IMAGE.
-		        Container c = getKeyValueDataStore().get(Container::SHARED_IMAGE);
+		        // Get the most recent available container for a SharedImage.
+		        Container c = getKeyValueDataStore().get(odcore::data::image::SharedImage::ID());
 
-		        if (c.getDataType() == Container::SHARED_IMAGE) {
+		        if (c.getDataType() == odcore::data::image::SharedImage::ID()) {
 			        // Example for processing the received container.
 			        has_next_frame = readSharedImage(c);
 		        }
@@ -167,7 +167,7 @@ namespace automotive {
 		        }
 	        }
 
-	        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+	        return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
     }

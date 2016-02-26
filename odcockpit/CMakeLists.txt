@@ -39,7 +39,7 @@ INCLUDE (CompileFlags)
 
 ###########################################################################
 # Find and configure CxxTest.
-SET (CXXTEST_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../cxxtest") 
+SET (CXXTEST_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../cxxtest")
 INCLUDE (CheckCxxTestEnvironment)
 
 ###########################################################################
@@ -53,9 +53,9 @@ SET(AUTOMOTIVEDATA_DIR "${CMAKE_INSTALL_PREFIX}")
 FIND_PACKAGE (AutomotiveData REQUIRED)
 
 ###########################################################################
-# Find odSimulation.
-SET(ODSIMULATION_DIR "${CMAKE_INSTALL_PREFIX}")
-FIND_PACKAGE (odSimulation REQUIRED)
+# Find OpenDLV.
+SET(OPENDLV_DIR "${CMAKE_INSTALL_PREFIX}")
+FIND_PACKAGE (OpenDLV REQUIRED)
 
 ###########################################################################
 # Find Qt.
@@ -70,19 +70,21 @@ FIND_PACKAGE (Qwt5Qt4 REQUIRED)
 # Set linking libraries to successfully link test suites and binaries.
 SET (LIBRARIES ${OPENDAVINCI_LIBRARIES}
                ${AUTOMOTIVEDATA_LIBRARIES}
-               ${ODSIMULATION_LIBRARIES}
+               ${OPENDLV_LIBRARIES}
                ${QT_LIBRARIES}
                ${QWT5QT4_LIBRARIES})
 
 ###########################################################################
 # Set header files from OpenDaVINCI.
-INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS}/opendavinci)
+INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS})
 # Set header files from AutomotiveData.
-INCLUDE_DIRECTORIES (${AUTOMOTIVEDATA_INCLUDE_DIRS}/automotivedata)
-# Set header files from Hesperia.
-INCLUDE_DIRECTORIES (${ODSIMULATION_INCLUDE_DIRS}/odsimulation)
+INCLUDE_DIRECTORIES (${AUTOMOTIVEDATA_INCLUDE_DIRS})
+# Set header files from OpenDLV.
+INCLUDE_DIRECTORIES (${OPENDLV_INCLUDE_DIRS})
 # Set header files from Qwt5-Qt4.
-INCLUDE_DIRECTORIES (${QWT5QT4_INCLUDE_DIRS})
+# Marking this with SYSTEM tells CMake to count this as a system library.
+# Used to suppress warnings from Qwt5-Qt4.
+INCLUDE_DIRECTORIES (SYSTEM ${QWT5QT4_INCLUDE_DIRS})
 # Set include directory.
 INCLUDE_DIRECTORIES(include)
 
@@ -113,13 +115,13 @@ QT4_ADD_TRANSLATION(QM ${myapp_TRANSLATIONS})
 # Artifacts from this project.
 ADD_LIBRARY (${PROJECT_NAME}lib-static STATIC ${thisproject-sources} ${odcockpit-headers-moc})
 ADD_EXECUTABLE (${PROJECT_NAME} "${CMAKE_CURRENT_SOURCE_DIR}/apps/${PROJECT_NAME}.cpp")
-TARGET_LINK_LIBRARIES (${PROJECT_NAME} ${PROJECT_NAME}lib-static ${LIBRARIES}) 
+TARGET_LINK_LIBRARIES (${PROJECT_NAME} ${PROJECT_NAME}lib-static ${LIBRARIES})
 
 ###########################################################################
 # Enable CxxTest for all available testsuites.
 IF(CXXTEST_FOUND)
     FILE(GLOB thisproject-testsuites "${CMAKE_CURRENT_SOURCE_DIR}/testsuites/*.h")
-    
+
     FOREACH(testsuite ${thisproject-testsuites})
         STRING(REPLACE "/" ";" testsuite-list ${testsuite})
 
@@ -203,7 +205,7 @@ IF(    (UNIX)
     ENDIF()
     SET(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "${ARCH}")
     SET(CPACK_DEB_COMPONENT_INSTALL ON)
-    SET(CPACK_DEBIAN_PACKAGE_DEPENDS "opendavinci-odlib,odsimulation-odsimlib,libautomotivedata,libqt4-dev,libqwt5-qt4-dev,libqwt5-qt4,libqt4-opengl-dev,qt4-dev-tools")
+    SET(CPACK_DEBIAN_PACKAGE_DEPENDS "opendavinci-lib,opendlv-lib,libautomotivedata,libqt4-dev,libqwt5-qt4-dev,libqwt5-qt4,libqt4-opengl-dev,qt4-dev-tools")
 
     # RPM packages:
     IF("${ARMHF}" STREQUAL "YES")
@@ -218,7 +220,7 @@ IF(    (UNIX)
     SET(CPACK_RPM_PACKAGE_BUILDARCH "Buildarch: ${CPACK_RPM_PACKAGE_ARCHITECTURE}")
     SET(CPACK_RPM_COMPONENT_INSTALL ON)
     SET(CPACK_RPM_PACKAGE_LICENSE "GPL")
-    SET(CPACK_RPM_PACKAGE_REQUIRES "opendavinci-odlib, odsimulation-odsimlib, libautomotivedata, qt4-devel, qwt-devel")
+    SET(CPACK_RPM_PACKAGE_REQUIRES "opendavinci-lib, opendlv-lib, libautomotivedata, qt4-devel, qwt-devel")
 
     # Resulting package name:
     SET(CPACK_PACKAGE_FILE_NAME ${CPACK_PACKAGE_NAME}_${CPACK_PACKAGE_VERSION}_${ARCH})

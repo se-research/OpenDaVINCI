@@ -24,26 +24,26 @@
 
 #include <iostream>
 
-#include "core/base/Thread.h"
-#include "core/data/Container.h"
-#include "core/io/conference/ContainerConference.h"
-#include "core/io/URL.h"
-#include "core/wrapper/graph/DirectedGraph.h"
-#include "core/wrapper/graph/Edge.h"
-#include "core/wrapper/graph/Vertex.h"
-#include "hesperia/data/environment/EgoState.h"
-#include "hesperia/data/environment/Polygon.h"
-#include "hesperia/data/environment/Obstacle.h"
-#include "hesperia/data/graph/WaypointsEdge.h"
-#include "hesperia/data/graph/WaypointVertex.h"
-#include "hesperia/data/planning/Route.h"
-#include "hesperia/data/scenario/Scenario.h"
-#include "hesperia/scenario/SCNXArchive.h"
-#include "hesperia/scenario/SCNXArchiveFactory.h"
-#include "hesperia/scenario/ScenarioFactory.h"
-#include "hesperia/scenario/LaneVisitor.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/io/conference/ContainerConference.h"
+#include "opendavinci/odcore/io/URL.h"
+#include "opendlv/core/wrapper/graph/DirectedGraph.h"
+#include "opendlv/core/wrapper/graph/Edge.h"
+#include "opendlv/core/wrapper/graph/Vertex.h"
+#include "opendlv/data/environment/EgoState.h"
+#include "opendlv/data/environment/Polygon.h"
+#include "opendlv/data/environment/Obstacle.h"
+#include "opendlv/data/graph/WaypointsEdge.h"
+#include "opendlv/data/graph/WaypointVertex.h"
+#include "opendlv/data/planning/Route.h"
+#include "opendlv/data/scenario/Scenario.h"
+#include "opendlv/scenario/SCNXArchive.h"
+#include "opendlv/scenario/SCNXArchiveFactory.h"
+#include "opendlv/scenario/ScenarioFactory.h"
+#include "opendlv/scenario/LaneVisitor.h"
 
-#include "GeneratedHeaders_AutomotiveData.h"
+#include "automotivedata/GeneratedHeaders_AutomotiveData.h"
 
 #include "SimpleDriver.h"
 
@@ -51,12 +51,12 @@ namespace automotive {
     namespace miniature {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::data;
-        using namespace coredata;
+        using namespace odcore::base;
+        using namespace odcore::data;
+        using namespace odcore::data;
         using namespace automotive;
         using namespace automotive::miniature;
-        using namespace hesperia::data::environment;
+        using namespace opendlv::data::environment;
 
         SimpleDriver::SimpleDriver(const int32_t &argc, char **argv) :
             TimeTriggeredConferenceClientModule(argc, argv, "simpledriver") {
@@ -73,8 +73,8 @@ namespace automotive {
         }
 
         // This method will do the main data processing job.
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode SimpleDriver::body() {
-            const core::io::URL urlOfSCNXFile(getKeyValueConfiguration().getValue<string>("global.scenario"));
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode SimpleDriver::body() {
+            const odcore::io::URL urlOfSCNXFile(getKeyValueConfiguration().getValue<string>("global.scenario"));
             const double GAIN = 1.0;
             const double LENGTH_OF_STEERING_DRAWBAR = 5.0;
             const double LENGTH_OF_VELOCITY_DRAWBAR = 5.0;
@@ -83,12 +83,12 @@ namespace automotive {
 
             core::wrapper::graph::DirectedGraph m_graph;
             if (urlOfSCNXFile.isValid()) {
-                hesperia::scenario::SCNXArchive &scnxArchive = hesperia::scenario::SCNXArchiveFactory::getInstance().getSCNXArchive(urlOfSCNXFile);
+                opendlv::scenario::SCNXArchive &scnxArchive = opendlv::scenario::SCNXArchiveFactory::getInstance().getSCNXArchive(urlOfSCNXFile);
 
-                hesperia::data::scenario::Scenario &scenario = scnxArchive.getScenario();
+                opendlv::data::scenario::Scenario &scenario = scnxArchive.getScenario();
 
                 // Construct road network.
-                hesperia::scenario::LaneVisitor lv(m_graph, scenario);
+                opendlv::scenario::LaneVisitor lv(m_graph, scenario);
                 scenario.accept(lv);
 
                 // Print graph in dot format.
@@ -112,27 +112,27 @@ namespace automotive {
             cout << "Start: '" << startWaypoint << "'" << endl;
             cout << "End: '" << endWaypoint << "'" << endl;
 
-            hesperia::data::scenario::PointID pidStart(startWaypoint);
-            hesperia::data::scenario::PointID pidEnd(endWaypoint);
+            opendlv::data::scenario::PointID pidStart(startWaypoint);
+            opendlv::data::scenario::PointID pidEnd(endWaypoint);
 
-            hesperia::data::graph::WaypointVertex v1;
+            opendlv::data::graph::WaypointVertex v1;
             v1.setLayerID(pidStart.getLayerID());
             v1.setRoadID(pidStart.getRoadID());
             v1.setLaneID(pidStart.getLaneID());
             v1.setWaypointID(pidStart.getPointID());
 
-            hesperia::data::graph::WaypointVertex v2;
+            opendlv::data::graph::WaypointVertex v2;
             v2.setLayerID(pidEnd.getLayerID());
             v2.setRoadID(pidEnd.getRoadID());
             v2.setLaneID(pidEnd.getLaneID());
             v2.setWaypointID(pidEnd.getPointID());
 
-            hesperia::data::planning::Route route;
+            opendlv::data::planning::Route route;
             vector<const core::wrapper::graph::Vertex*> resultingRoute = m_graph.getShortestPath(v1, v2);
             if (resultingRoute.size() > 0) {
                 vector<const core::wrapper::graph::Vertex*>::const_iterator it = resultingRoute.begin();
                 while (it != resultingRoute.end()) {
-                    const hesperia::data::graph::WaypointVertex *v = dynamic_cast<const hesperia::data::graph::WaypointVertex*>(*it++);
+                    const opendlv::data::graph::WaypointVertex *v = dynamic_cast<const opendlv::data::graph::WaypointVertex*>(*it++);
                     if (v != NULL) {
                         route.add(v->getPosition());
                     }
@@ -144,13 +144,13 @@ namespace automotive {
                 cout << route.toString() << endl;
 
                 Container c;
-                c = Container(Container::ROUTE, route);
+                c = Container(route);
                 getConference().send(c);
 
 
 
                 // Check, if the first point is in our field of view.
-                c = getKeyValueDataStore().get(Container::EGOSTATE);
+                c = getKeyValueDataStore().get(opendlv::data::environment::EgoState::ID());
                 EgoState es = c.getData<EgoState>();
 
                 Polygon FOV;
@@ -170,7 +170,7 @@ namespace automotive {
                 // Visualize FOV.
                 Obstacle obstacleFOV(1, Obstacle::UPDATE);
                 obstacleFOV.setPolygon(FOV);
-                c = Container(Container::OBSTACLE, obstacleFOV);
+                c = Container(obstacleFOV);
                 getConference().send(c);
 
                 uint32_t waitingBeforeStart = 5;
@@ -185,7 +185,7 @@ namespace automotive {
                     cerr << "Ready, first point of planned route is in our FOV. Let's go using our simple drawbar controller!" << endl;
 
 
-                    while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+                    while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
                         TimeStamp startTime;
                         double totalDrivenWay = 0;
 
@@ -199,7 +199,7 @@ namespace automotive {
                         nextPointUOR = listOfPointsWaypointsUOR.front();
 
                         const uint32_t SIZE = listOfPointsWaypoints.size();
-                        for (uint32_t i = 0; (i < SIZE) && (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING); i++) {
+                        for (uint32_t i = 0; (i < SIZE) && (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING); i++) {
                             // Get next point.
                             nextPoint = listOfPointsWaypoints.at(i);
 
@@ -212,8 +212,8 @@ namespace automotive {
                             EgoState oldEgoState = es;
                             TimeStamp oldTimeStamp;
                             double V = 0;
-                            while ( (nextWaypointInFrontOfDrawBar) && (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) ) {
-                                c = getKeyValueDataStore().get(Container::EGOSTATE);
+                            while ( (nextWaypointInFrontOfDrawBar) && (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) ) {
+                                c = getKeyValueDataStore().get(opendlv::data::environment::EgoState::ID());
                                 es = c.getData<EgoState>();
                                 TimeStamp currentTimeStamp;
 
@@ -225,8 +225,8 @@ namespace automotive {
                                     V = fabs( drivenWay / passedTime );
                                 }
                                 if (drivenWay > 0) {
-                                	oldEgoState = es;
-                                	oldTimeStamp = currentTimeStamp;
+                                    oldEgoState = es;
+                                    oldTimeStamp = currentTimeStamp;
                                 }
 
                                 totalDrivenWay += drivenWay;
@@ -334,7 +334,7 @@ namespace automotive {
                                     VehicleControl vc;
 
                                     // With setSpeed you can set a desired speed for the vehicle in the range of -2.0 (backwards) .. 0 (stop) .. +2.0 (forwards)
-                                    vc.setSpeed(0.4);
+                                    vc.setSpeed(2);
 
 //                                    // With setSteeringWheelAngle, you can steer in the range of -26 (left) .. 0 (straight) .. +25 (right)
                                     vc.setSteeringWheelAngle(steering);
@@ -345,7 +345,7 @@ namespace automotive {
                                     vc.setFlashingLightsRight(false);
 
                                     // Create container for finally sending the data.
-                                    Container c2(Container::VEHICLECONTROL, vc);
+                                    Container c2(vc);
                                     // Send container.
                                     getConference().send(c2);
 
@@ -361,7 +361,7 @@ namespace automotive {
 
                                     Obstacle o(1, Obstacle::UPDATE);
                                     o.setPolygon(p);
-                                    c2 = Container(Container::OBSTACLE, o);
+                                    c2 = Container(o);
                                     getConference().send(c2);
 
                                     cerr << endl;
@@ -377,7 +377,7 @@ namespace automotive {
                         VehicleControl vc;
 
                         // Create container for finally sending the data.
-                        Container c2(Container::VEHICLECONTROL, vc);
+                        Container c2(vc);
                         // Send container.
                         getConference().send(c2);
 
@@ -391,7 +391,7 @@ namespace automotive {
                 }
             }
 
-            return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
     }

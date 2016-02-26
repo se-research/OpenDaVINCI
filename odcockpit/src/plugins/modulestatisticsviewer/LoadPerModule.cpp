@@ -26,8 +26,8 @@
 # endif
 # pragma GCC diagnostic ignored "-Weffc++"
 #endif
-    #include <qwt-qt4/qwt_plot_curve.h>
-    #include <qwt-qt4/qwt_plot_item.h>
+    #include <qwt_plot_curve.h>
+    #include <qwt_plot_item.h>
 #ifndef WIN32
 # if !defined(__OpenBSD__) && !defined(__NetBSD__)
 #  pragma GCC diagnostic pop
@@ -36,8 +36,8 @@
 
 #include <cstring>
 
-#include "core/opendavinci.h"
-#include "core/base/Lock.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Lock.h"
 #include "plugins/modulestatisticsviewer/LoadPerModule.h"
 
 namespace cockpit {
@@ -45,11 +45,11 @@ namespace cockpit {
         namespace modulestatisticsviewer {
 
             using namespace std;
-            using namespace core::base;
-            using namespace coredata;
-            using namespace coredata::dmcp;
+            using namespace odcore::base;
+            using namespace odcore::data;
+            using namespace odcore::data::dmcp;
 
-            LoadPerModule::LoadPerModule( const coredata::dmcp::ModuleDescriptor &md, const QColor &color) :
+            LoadPerModule::LoadPerModule( const odcore::data::dmcp::ModuleDescriptor &md, const QColor &color) :
                     m_moduleDescriptor(md),
                     m_curve(NULL),
                     m_loadMutex(),

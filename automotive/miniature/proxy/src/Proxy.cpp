@@ -22,9 +22,9 @@
 #include <cmath>
 #include <iostream>
 
-#include "core/base/KeyValueConfiguration.h"
-#include "core/data/Container.h"
-#include "core/data/TimeStamp.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
 
 #include "OpenCVCamera.h"
 
@@ -38,12 +38,12 @@ namespace automotive {
     namespace miniature {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::data;
-        using namespace tools::recorder;
+        using namespace odcore::base;
+        using namespace odcore::data;
+        using namespace odtools::recorder;
 
         Proxy::Proxy(const int32_t &argc, char **argv) :
-	        TimeTriggeredConferenceClientModule(argc, argv, "proxy"),
+            TimeTriggeredConferenceClientModule(argc, argv, "proxy"),
             m_recorder(NULL),
             m_camera(NULL)
         {}
@@ -52,7 +52,7 @@ namespace automotive {
         }
 
         void Proxy::setUp() {
-	        // This method will be call automatically _before_ running body().
+            // This method will be call automatically _before_ running body().
             if (getFrequency() < 20) {
                 cerr << endl << endl << "Proxy: WARNING! Running proxy with a LOW frequency (consequence: data updates are too seldom and will influence your algorithms in a negative manner!) --> suggestions: --freq=20 or higher! Current frequency: " << getFrequency() << " Hz." << endl << endl << endl;
             }
@@ -75,7 +75,7 @@ namespace automotive {
                 // Dump shared images and shared data?
                 const bool DUMP_SHARED_DATA = getKeyValueConfiguration().getValue<uint32_t>("proxy.recorder.dumpshareddata") == 1;
 
-                m_recorder = new Recorder(recordingURL.str(), MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING, DUMP_SHARED_DATA);
+                m_recorder = auto_ptr<Recorder>(new Recorder(recordingURL.str(), MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING, DUMP_SHARED_DATA));
             }
 
             // Create the camera grabber.
@@ -88,28 +88,26 @@ namespace automotive {
             const uint32_t BPP = getKeyValueConfiguration().getValue<uint32_t>("proxy.camera.bpp");
 
             if (TYPE.compare("opencv") == 0) {
-                m_camera = new OpenCVCamera(NAME, ID, WIDTH, HEIGHT, BPP);
+                m_camera = auto_ptr<Camera>(new OpenCVCamera(NAME, ID, WIDTH, HEIGHT, BPP));
             }
             if (TYPE.compare("ueye") == 0) {
-    #ifdef HAVE_UEYE
-                m_camera = new uEyeCamera(NAME, ID, WIDTH, HEIGHT, BPP);
-    #endif
+#ifdef HAVE_UEYE
+                m_camera = auto_ptr<Camera>(new uEyeCamera(NAME, ID, WIDTH, HEIGHT, BPP));
+#endif
             }
 
-            if (m_camera == NULL) {
+            if (m_camera.get() == NULL) {
                 cerr << "No valid camera type defined." << endl;
             }
         }
 
         void Proxy::tearDown() {
-	        // This method will be call automatically _after_ return from body().
-            OPENDAVINCI_CORE_DELETE_POINTER(m_recorder);
-            OPENDAVINCI_CORE_DELETE_POINTER(m_camera);
+            // This method will be call automatically _after_ return from body().
         }
 
         void Proxy::distribute(Container c) {
             // Store data to recorder.
-            if (m_recorder != NULL) {
+            if (m_recorder.get() != NULL) {
                 // Time stamp data before storing.
                 c.setReceivedTimeStamp(TimeStamp());
                 m_recorder->store(c);
@@ -120,14 +118,14 @@ namespace automotive {
         }
 
         // This method will do the main data processing job.
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode Proxy::body() {
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Proxy::body() {
             uint32_t captureCounter = 0;
-            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
                 // Capture frame.
-                if (m_camera != NULL) {
-                    coredata::image::SharedImage si = m_camera->capture();
+                if (m_camera.get() != NULL) {
+                    odcore::data::image::SharedImage si = m_camera->capture();
 
-                    Container c(Container::SHARED_IMAGE, si);
+                    Container c(si);
                     distribute(c);
                     captureCounter++;
                 }
@@ -137,7 +135,7 @@ namespace automotive {
 
             cout << "Proxy: Captured " << captureCounter << " frames." << endl;
 
-            return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
     }

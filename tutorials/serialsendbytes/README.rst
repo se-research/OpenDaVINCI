@@ -16,15 +16,15 @@ SerialSendBytes.cpp:
     #include <stdint.h>
     #include <iostream>
     #include <string>
-    #include <core/SharedPointer.h>
-    #include <core/wrapper/SerialPort.h>
-    #include <core/wrapper/SerialPortFactory.h>
+    #include <opendavinci/odcore/SharedPointer.h>
+    #include <opendavinci/odcore/wrapper/SerialPort.h>
+    #include <opendavinci/odcore/wrapper/SerialPortFactory.h>
 
     using namespace std;
 
     // We add some of OpenDaVINCI's namespaces for the sake of readability.
-    using namespace core;
-    using namespace core::wrapper;
+    using namespace odcore;
+    using namespace odcore::wrapper;
 
     int32_t main(int32_t argc, char **argv) {
         const string SERIAL_PORT = "/dev/pts/19";
@@ -43,7 +43,7 @@ SerialSendBytes.cpp:
     }
 
 To send bytes over a serial link, your application needs to include
-``<core/wrapper/SerialPort.h>`` and ``<core/wrapper/SerialPortFactory.h>`` that
+``<opendavinci/odcore/wrapper/SerialPort.h>`` and ``<opendavinci/odcore/wrapper/SerialPortFactory.h>`` that
 encapsulate the platform-specific implementations.
 
 ``SerialPortFactory`` provides a static method called ``createSerialPort`` that
@@ -61,7 +61,7 @@ is no longer used.
 
 You can compile and link the example::
 
-   g++ -I /usr/include/opendavinci -c SerialSendBytes.cpp -o SerialSendBytes.o
+   g++ -I /usr/include -c SerialSendBytes.cpp -o SerialSendBytes.o
    g++ -o serialsendbytes SerialSendBytes.o -lopendavinci -lpthread
 
 To test the program, we create a simple virtual serial port on Linux using the

@@ -23,22 +23,22 @@
 
 #include "cxxtest/TestSuite.h"
 
-#include <core/SharedPointer.h>
-#include <core/reflection/Message.h>
-#include <core/reflection/MessageToVisitableVisitor.h>
-#include <core/reflection/MessagePrettyPrinterVisitor.h>
+#include <opendavinci/odcore/SharedPointer.h>
+#include <opendavinci/odcore/reflection/Message.h>
+#include <opendavinci/odcore/reflection/MessageToVisitableVisitor.h>
+#include <opendavinci/odcore/reflection/MessagePrettyPrinterVisitor.h>
 
-#include "GeneratedHeaders_AutomotiveData.h"
+#include "automotivedata/GeneratedHeaders_AutomotiveData.h"
 
 // Include local header files.
 #include "../include/CanMapper.h"
 
 using namespace std;
-using namespace core;
-using namespace core::data;
+using namespace odcore;
+using namespace odcore::data;
 using namespace automotive::odcantools;
-using namespace core::reflection;
-using namespace coredata::reflection;
+using namespace odcore::reflection;
+using namespace odcore::data::reflection;
 
 /**
  * This class derives from SensorBoard to allow access to protected methods.
@@ -130,11 +130,11 @@ class CanMapperTest : public CxxTest::TestSuite {
                 double v = _wheel1 * SCALE;
 
                 Field<double> *f = new Field<double>(v);
-                f->setLongIdentifier(1); // The identifiers specified here must match with the ones defined in the .odvd file!
-                f->setShortIdentifier(1); // The identifiers specified here must match with the ones defined in the .odvd file!
-                f->setLongName("WheelSpeed.frontLeft");
-                f->setShortName("frontLeft");
-                f->setFieldDataType(coredata::reflection::AbstractField::DOUBLE_T);
+                f->setLongFieldIdentifier(1); // The identifiers specified here must match with the ones defined in the .odvd file!
+                f->setShortFieldIdentifier(1); // The identifiers specified here must match with the ones defined in the .odvd file!
+                f->setLongFieldName("WheelSpeed.frontLeft");
+                f->setShortFieldName("frontLeft");
+                f->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
                 f->setSize(sizeof(v));
 
                 message.addField(SharedPointer<AbstractField>(f));
@@ -147,11 +147,11 @@ class CanMapperTest : public CxxTest::TestSuite {
                 double v = _wheel2 * SCALE;
 
                 Field<double> *f = new Field<double>(v);
-                f->setLongIdentifier(2); // The identifiers specified here must match with the ones defined in the .odvd file!
-                f->setShortIdentifier(2); // The identifiers specified here must match with the ones defined in the .odvd file!
-                f->setLongName("WheelSpeed.frontRight");
-                f->setShortName("frontRight");
-                f->setFieldDataType(coredata::reflection::AbstractField::DOUBLE_T);
+                f->setLongFieldIdentifier(2); // The identifiers specified here must match with the ones defined in the .odvd file!
+                f->setShortFieldIdentifier(2); // The identifiers specified here must match with the ones defined in the .odvd file!
+                f->setLongFieldName("WheelSpeed.frontRight");
+                f->setShortFieldName("frontRight");
+                f->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
                 f->setSize(sizeof(v));
 
                 message.addField(SharedPointer<AbstractField>(f));
@@ -164,11 +164,11 @@ class CanMapperTest : public CxxTest::TestSuite {
                 double v = _wheel3 * SCALE;
 
                 Field<double> *f = new Field<double>(v);
-                f->setLongIdentifier(3); // The identifiers specified here must match with the ones defined in the .odvd file!
-                f->setShortIdentifier(3); // The identifiers specified here must match with the ones defined in the .odvd file!
-                f->setLongName("WheelSpeed.rearLeft");
-                f->setShortName("rearLeft");
-                f->setFieldDataType(coredata::reflection::AbstractField::DOUBLE_T);
+                f->setLongFieldIdentifier(3); // The identifiers specified here must match with the ones defined in the .odvd file!
+                f->setShortFieldIdentifier(3); // The identifiers specified here must match with the ones defined in the .odvd file!
+                f->setLongFieldName("WheelSpeed.rearLeft");
+                f->setShortFieldName("rearLeft");
+                f->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
                 f->setSize(sizeof(v));
 
                 message.addField(SharedPointer<AbstractField>(f));
@@ -181,11 +181,11 @@ class CanMapperTest : public CxxTest::TestSuite {
                 double v = _wheel4 * SCALE;
 
                 Field<double> *f = new Field<double>(v);
-                f->setLongIdentifier(4); // The identifiers specified here must match with the ones defined in the .odvd file!
-                f->setShortIdentifier(4); // The identifiers specified here must match with the ones defined in the .odvd file!
-                f->setLongName("WheelSpeed.rearRight");
-                f->setShortName("rearRight");
-                f->setFieldDataType(coredata::reflection::AbstractField::DOUBLE_T);
+                f->setLongFieldIdentifier(4); // The identifiers specified here must match with the ones defined in the .odvd file!
+                f->setShortFieldIdentifier(4); // The identifiers specified here must match with the ones defined in the .odvd file!
+                f->setLongFieldName("WheelSpeed.rearRight");
+                f->setShortFieldName("rearRight");
+                f->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
                 f->setSize(sizeof(v));
 
                 message.addField(SharedPointer<AbstractField>(f));

@@ -30,12 +30,12 @@ Update your package database:
 
 ### Installing OpenDaVINCI & automotive data structures library
 
-Next, you need to install the OpenDaVINCI library an the automotive data
+Next, you need to install the OpenDaVINCI library and the automotive data
 structures library: 
 
 Install the OpenDaVINCI library:
 
-    $ sudo apt-get install opendavinci-odlib
+    $ sudo apt-get install opendavinci-lib
 
 Install the automotive data structures:
 
@@ -97,24 +97,26 @@ simply start the Docker image later.
 
 Create a symbolic link in your $HOME folder:
 
-    $ ln -sf $PWD/config $HOME/config
+    $ ln -sf $PWD/../config $HOME
 
 
 
 ## Run the simulation
 
-Now, the simulation as provided in a Docker image can be started:
-
+Now, the simulation as provided in a Docker image can be started.
+Make sure your user is in the "docker" group.
 Start "odsupercomponent" for the software component lifecycle management (this step will download the Docker image):
 
     $ docker run --rm=true --net host -v /home/$USER/config:/opt/data -w "/opt/data" -t -i seresearch/odsimulation:latest odsupercomponent --cid=111 --verbose=1
 
-Next, start the vehicle dynamics simulation "vehicle":
+Next, start the vehicle dynamics simulation "odsimvehicle":
 
     $ docker run --rm=true --net host -v /home/$USER/config:/opt/data -w "/opt/data" -t -i seresearch/odsimulation:latest odsimvehicle --cid=111 --freq=10
 
-Start the camera simulation "camgen" to produce a virtual image feed (the first command grants access to your Xserver):
+Start the camera simulation "odsimcamera" to produce a virtual image feed (the "xhost" command grants access to your Xserver):
 
+    $ sudo mkdir /dev/mqueue && sudo mount -t mqueue none /dev/mqueue
+    
     $ xhost +
 
     $ docker run --rm=true --privileged=true --net="host" --ipc="host" -w "/opt/data" -t -i -e DISPLAY=$DISPLAY -v /dev/shm:/dev/shm -v /home/$USER/config:/opt/data -v /tmp/.X11-unix:/tmp/.X11-unix seresearch/odsimulation:latest odsimcamera --cid=111 --freq=10
@@ -123,7 +125,7 @@ Start the camera simulation "camgen" to produce a virtual image feed (the first 
 
 ## Start lanedetector
 
-Next, change the build directory and start the lanedetector component (sudo is required as "camgen" creates the semaphore to protect the shared memory segment owned by root):
+Next, change the build directory and start the lanedetector component (sudo is required as "odsimcamera" creates the semaphore to protect the shared memory segment owned by root):
 
     $ cd build
 

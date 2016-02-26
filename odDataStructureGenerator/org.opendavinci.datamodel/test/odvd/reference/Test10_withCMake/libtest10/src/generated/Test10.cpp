@@ -8,16 +8,16 @@
 #include <sstream>
 #include <utility>
 
-#include "core/base/Hash.h"
-#include "core/base/Deserializer.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 
 
-#include "generated/Test10.h"
+#include "test10/generated/Test10.h"
 
 	using namespace std;
-	using namespace core::base;
+	using namespace odcore::base;
 
 
 	Test10::Test10() :
@@ -73,6 +73,18 @@
 
 	const string Test10::LongName() {
 		return "Test10";
+	}
+
+	int32_t Test10::getID() const {
+		return Test10::ID();
+	}
+
+	const string Test10::getShortName() const {
+		return Test10::ShortName();
+	}
+
+	const string Test10::getLongName() const {
+		return Test10::LongName();
 	}
 
 	std::vector<std::string> Test10::getListOfMyStringList() const {
@@ -222,7 +234,7 @@
 		return std::make_pair(m_mapOfMyIntPointMap.begin(), m_mapOfMyIntPointMap.end());
 	}
 
-	void Test10::accept(core::base::Visitor &v) {
+	void Test10::accept(odcore::base::Visitor &v) {
 		(void)v; // Avoid unused parameter warning.
 	}
 
@@ -242,7 +254,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Serializer> s = sf.getSerializer(out);
+		odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 
 		// Write number of elements in m_listOfMyStringList.
 		const uint32_t numberOfMyStringList = static_cast<uint32_t>(m_listOfMyStringList.size());
@@ -323,7 +335,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+		odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
 		// Clean up the existing list of MyStringList.
 		m_listOfMyStringList.clear();

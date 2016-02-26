@@ -5,16 +5,16 @@
  */
 
 
-#include "core/base/Hash.h"
-#include "core/base/Deserializer.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 
 
-#include "generated/Test12Simple.h"
+#include "test12/generated/Test12Simple.h"
 
 	using namespace std;
-	using namespace core::base;
+	using namespace odcore::base;
 
 
 	Test12Simple::Test12Simple() :
@@ -87,6 +87,18 @@
 		return "Test12Simple";
 	}
 
+	int32_t Test12Simple::getID() const {
+		return Test12Simple::ID();
+	}
+
+	const string Test12Simple::getShortName() const {
+		return Test12Simple::ShortName();
+	}
+
+	const string Test12Simple::getLongName() const {
+		return Test12Simple::LongName();
+	}
+
 	bool Test12Simple::getAttribute1() const {
 		return m_attribute1;
 	}
@@ -137,7 +149,7 @@
 		m_attribute7 = val;
 	}
 
-	void Test12Simple::accept(core::base::Visitor &v) {
+	void Test12Simple::accept(odcore::base::Visitor &v) {
 		v.visit(1, 0, "Test12Simple.attribute1", "attribute1", m_attribute1);
 		v.visit(2, 0, "Test12Simple.attribute2", "attribute2", m_attribute2);
 		v.visit(3, 0, "Test12Simple.attribute3", "attribute3", m_attribute3);
@@ -166,7 +178,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Serializer> s = sf.getSerializer(out);
+		odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 
 		s->write(1, m_attribute1);
 		s->write(2, m_attribute2);
@@ -182,7 +194,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+		odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
 		d->read(1, m_attribute1);
 		d->read(2, m_attribute2);

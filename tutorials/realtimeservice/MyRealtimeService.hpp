@@ -17,10 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <core/base/RealtimeService.h>
+#include <opendavinci/odcore/base/RealtimeService.h>
 
-// Realtime concurrency is provided by the class core::base::RealtimeService.
-class MyRealtimeService : public core::base::RealtimeService {
+// Realtime concurrency is provided by the class odcore::base::RealtimeService.
+class MyRealtimeService : public odcore::base::RealtimeService {
 
     public:
         MyRealtimeService(const enum PERIOD &period);

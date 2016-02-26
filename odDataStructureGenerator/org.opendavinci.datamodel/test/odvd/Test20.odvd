@@ -1,7 +1,7 @@
 message Test20a [ id = 20 ] {
 //	uint32 *ptr;
 	uint32 val1;
-	core::data::TimeStamp timeStamp;
+    odcore::data::TimeStamp timeStamp;
 }
 
 message sub.structure.Test20b [ id = 21 ] {

@@ -8,16 +8,16 @@
 #include <sstream>
 #include <utility>
 
-#include "core/base/Hash.h"
-#include "core/base/Deserializer.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 
 
-#include "generated/Test11Lists.h"
+#include "test11/generated/Test11Lists.h"
 
 	using namespace std;
-	using namespace core::base;
+	using namespace odcore::base;
 
 
 	Test11Lists::Test11Lists() :
@@ -88,6 +88,18 @@
 
 	const string Test11Lists::LongName() {
 		return "Test11Lists";
+	}
+
+	int32_t Test11Lists::getID() const {
+		return Test11Lists::ID();
+	}
+
+	const string Test11Lists::getShortName() const {
+		return Test11Lists::ShortName();
+	}
+
+	const string Test11Lists::getLongName() const {
+		return Test11Lists::LongName();
 	}
 
 	std::vector<bool> Test11Lists::getListOfMyBoolList() const {
@@ -336,7 +348,7 @@
 		return std::make_pair(m_listOfMyStringList.begin(), m_listOfMyStringList.end());
 	}
 
-	void Test11Lists::accept(core::base::Visitor &v) {
+	void Test11Lists::accept(odcore::base::Visitor &v) {
 		(void)v; // Avoid unused parameter warning.
 	}
 
@@ -359,7 +371,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Serializer> s = sf.getSerializer(out);
+		odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 
 		// Write number of elements in m_listOfMyBoolList.
 		const uint32_t numberOfMyBoolList = static_cast<uint32_t>(m_listOfMyBoolList.size());
@@ -480,7 +492,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+		odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
 		// Clean up the existing list of MyBoolList.
 		m_listOfMyBoolList.clear();

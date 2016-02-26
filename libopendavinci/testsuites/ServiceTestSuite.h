@@ -22,15 +22,15 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/opendavinci.h"
-#include "core/base/Condition.h"        // for Condition
-#include "core/base/Lock.h"             // for Lock
-#include "core/base/Mutex.h"            // for Mutex
-#include "core/base/Service.h"          // for Service
-#include "core/base/Thread.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Condition.h"        // for Condition
+#include "opendavinci/odcore/base/Lock.h"             // for Lock
+#include "opendavinci/odcore/base/Mutex.h"            // for Mutex
+#include "opendavinci/odcore/base/Service.h"          // for Service
+#include "opendavinci/odcore/base/Thread.h"
 
 using namespace std;
-using namespace core::base;
+using namespace odcore::base;
 
 class ServiceTestSuiteService : public Service {
     public:

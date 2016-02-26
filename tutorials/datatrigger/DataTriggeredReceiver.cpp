@@ -20,13 +20,13 @@
 #include <iostream>
 
 #include "DataTriggeredReceiver.h"
-#include "core/data/TimeStamp.h"
+#include <opendavinci/odcore/data/TimeStamp.h>
 
 using namespace std;
 
 // We add some of OpenDaVINCI's namespaces for the sake of readability.
-using namespace core::base::module;
-using namespace core::data;
+using namespace odcore::base::module;
+using namespace odcore::data;
 
 DataTriggeredReceiver::DataTriggeredReceiver(const int32_t &argc, char **argv) :
     DataTriggeredConferenceClientModule(argc, argv, "DataTriggeredReceiver")
@@ -47,7 +47,7 @@ void DataTriggeredReceiver::nextContainer(Container &c) {
                               " sent at " << c.getSentTimeStamp().getYYYYMMDD_HHMMSSms() <<
                           " received at " << c.getReceivedTimeStamp().getYYYYMMDD_HHMMSSms() << endl;
 
-    if (c.getDataType() == Container::TIMESTAMP) {
+    if (c.getDataType() == TimeStamp::ID()) {
         TimeStamp ts = c.getData<TimeStamp>();
         cout << "Received the following time stamp: " << ts.toString() << endl;
     }

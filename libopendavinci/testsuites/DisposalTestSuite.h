@@ -22,14 +22,14 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/opendavinci.h"
-#include "core/base/Thread.h"           // for Thread
-#include "core/wrapper/Disposable.h"    // for Disposable
-#include "core/wrapper/DisposalService.h"  // for DisposalService
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Thread.h"           // for Thread
+#include "opendavinci/odcore/wrapper/Disposable.h"    // for Disposable
+#include "opendavinci/odcore/wrapper/DisposalService.h"  // for DisposalService
 
 using namespace std;
 
-class DisposalTestTrash : public core::wrapper::Disposable {
+class DisposalTestTrash : public odcore::wrapper::Disposable {
     public:
         DisposalTestTrash() :
             data(42) {};
@@ -52,17 +52,17 @@ class DisposalTest : public CxxTest::TestSuite {
             TS_ASSERT(trash1regular != trash2final);
 
             {
-                core::wrapper::DisposalService::getInstance().addDisposableForRegularRemoval((core::wrapper::Disposable**)&trash1regular);
-                core::wrapper::DisposalService::getInstance().addDisposableForFinalRemoval((core::wrapper::Disposable**)&trash2final);
-                core::base::Thread::usleepFor(2 * 1000 * 1000);
+                odcore::wrapper::DisposalService::getInstance().addDisposableForRegularRemoval((odcore::wrapper::Disposable**)&trash1regular);
+                odcore::wrapper::DisposalService::getInstance().addDisposableForFinalRemoval((odcore::wrapper::Disposable**)&trash2final);
+                odcore::base::Thread::usleepFor(2 * 1000 * 1000);
 
-                core::wrapper::DisposalService &ds1 = core::wrapper::DisposalService::getInstance();
-                core::wrapper::DisposalService *ds2 = &ds1;
+                odcore::wrapper::DisposalService &ds1 = odcore::wrapper::DisposalService::getInstance();
+                odcore::wrapper::DisposalService *ds2 = &ds1;
                 delete ds2;
             }
 
             // Allow for some thread yielding so that the DisposalService can release the memory.
-            core::base::Thread::usleepFor(2 * 1000 * 1000);
+            odcore::base::Thread::usleepFor(2 * 1000 * 1000);
 
             // DisposableService must contain a list of pointer to pointers!
             TS_ASSERT(trash1regular == NULL);

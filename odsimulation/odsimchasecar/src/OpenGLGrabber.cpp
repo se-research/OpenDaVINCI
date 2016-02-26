@@ -27,46 +27,46 @@
 #include <vector>
 
 #include "OpenGLGrabber.h"
-#include "core/base/FIFOQueue.h"
-#include "core/base/Thread.h"
-#include "core/data/Container.h"
-#include "core/io/URL.h"
-#include "core/wrapper/ImageFactory.h"
-#include "core/wrapper/SharedMemoryFactory.h"
-#include "hesperia/data/environment/EgoState.h"
-#include "hesperia/data/environment/Obstacle.h"
-#include "hesperia/data/environment/Point3.h"
-#include "hesperia/data/environment/Polygon.h"
-#include "hesperia/data/environment/Position.h"
-#include "hesperia/scenario/SCNXArchiveFactory.h"
-#include "hesperia/threeD/NodeDescriptor.h"
-#include "hesperia/threeD/RenderingConfiguration.h"
-#include "hesperia/threeD/decorator/DecoratorFactory.h"
-#include "hesperia/threeD/loaders/OBJXArchive.h"
-#include "hesperia/threeD/loaders/OBJXArchiveFactory.h"
-#include "hesperia/threeD/models/Grid.h"
-#include "hesperia/threeD/models/Line.h"
-#include "hesperia/threeD/models/XYZAxes.h"
+#include "opendavinci/odcore/base/FIFOQueue.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/io/URL.h"
+#include "opendlv/core/wrapper/ImageFactory.h"
+#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
+#include "opendlv/data/environment/EgoState.h"
+#include "opendlv/data/environment/Obstacle.h"
+#include "opendlv/data/environment/Point3.h"
+#include "opendlv/data/environment/Polygon.h"
+#include "opendlv/data/environment/Position.h"
+#include "opendlv/scenario/SCNXArchiveFactory.h"
+#include "opendlv/threeD/NodeDescriptor.h"
+#include "opendlv/threeD/RenderingConfiguration.h"
+#include "opendlv/threeD/decorator/DecoratorFactory.h"
+#include "opendlv/threeD/loaders/OBJXArchive.h"
+#include "opendlv/threeD/loaders/OBJXArchiveFactory.h"
+#include "opendlv/threeD/models/Grid.h"
+#include "opendlv/threeD/models/Line.h"
+#include "opendlv/threeD/models/XYZAxes.h"
 
-namespace hesperia { namespace data { namespace camera { class ImageGrabberCalibration; } } }
-namespace hesperia { namespace scenario { class SCNXArchive; } }
-namespace hesperia { namespace threeD { class Node; } }
+namespace opendlv { namespace data { namespace camera { class ImageGrabberCalibration; } } }
+namespace opendlv { namespace scenario { class SCNXArchive; } }
+namespace opendlv { namespace threeD { class Node; } }
 
 namespace chasecar {
 
     using namespace std;
-    using namespace core::base;
-    using namespace core::data;
-    using namespace hesperia::data::camera;
-    using namespace hesperia::data::environment;
-    using namespace core::io;
-    using namespace hesperia::scenario;
-    using namespace hesperia::threeD;
-    using namespace hesperia::threeD::decorator;
-    using namespace hesperia::threeD::models;
-    using namespace hesperia::threeD::loaders;
+    using namespace odcore::base;
+    using namespace odcore::data;
+    using namespace opendlv::data::camera;
+    using namespace opendlv::data::environment;
+    using namespace odcore::io;
+    using namespace opendlv::scenario;
+    using namespace opendlv::threeD;
+    using namespace opendlv::threeD::decorator;
+    using namespace opendlv::threeD::models;
+    using namespace opendlv::threeD::loaders;
 
-    OpenGLGrabber::OpenGLGrabber(const KeyValueConfiguration &kvc, const ImageGrabberID &imageGrabberID, const ImageGrabberCalibration &imageGrabberCalibration, hesperia::data::environment::EgoState &egoState, core::base::FIFOQueue &obstacles) :
+    OpenGLGrabber::OpenGLGrabber(const KeyValueConfiguration &kvc, const ImageGrabberID &imageGrabberID, const ImageGrabberCalibration &imageGrabberCalibration, opendlv::data::environment::EgoState &egoState, odcore::base::FIFOQueue &obstacles) :
             ImageGrabber(imageGrabberID, imageGrabberCalibration),
             m_render(OpenGLGrabber::IN_CAR),
             m_kvc(kvc),
@@ -82,9 +82,9 @@ namespace chasecar {
         const URL urlOfSCNXFile(m_kvc.getValue<string>("global.scenario"));
         const bool SHOW_GRID = (m_kvc.getValue<uint8_t>("global.showgrid") == 1);
         if (urlOfSCNXFile.isValid()) {
-            m_root = core::SharedPointer<TransformGroup>(new hesperia::threeD::TransformGroup());
-            m_car = core::SharedPointer<TransformGroup>(new hesperia::threeD::TransformGroup());
-            m_sensors = core::SharedPointer<TransformGroup>(new hesperia::threeD::TransformGroup());
+            m_root = odcore::SharedPointer<TransformGroup>(new opendlv::threeD::TransformGroup());
+            m_car = odcore::SharedPointer<TransformGroup>(new opendlv::threeD::TransformGroup());
+            m_sensors = odcore::SharedPointer<TransformGroup>(new opendlv::threeD::TransformGroup());
 
             SCNXArchive &scnxArchive = SCNXArchiveFactory::getInstance().getSCNXArchive(urlOfSCNXFile);
 
@@ -114,9 +114,9 @@ namespace chasecar {
                 }
             }
 
-            m_sharedMemory = core::wrapper::SharedMemoryFactory::createSharedMemory("ChaseCar", 640 * 480 * 3);
+            m_sharedMemory = odcore::wrapper::SharedMemoryFactory::createSharedMemory("ChaseCar", 640 * 480 * 3);
 
-            m_image = core::SharedPointer<core::wrapper::Image>(core::wrapper::ImageFactory::getInstance().getImage(640, 480, core::wrapper::Image::BGR_24BIT, static_cast<char*>(m_sharedMemory->getSharedMemory())));
+            m_image = odcore::SharedPointer<core::wrapper::Image>(core::wrapper::ImageFactory::getInstance().getImage(640, 480, core::wrapper::Image::BGR_24BIT, static_cast<char*>(m_sharedMemory->getSharedMemory())));
 
             if (m_image.isValid()) {
                 cerr << "OpenGLGrabber initialized." << endl;
@@ -130,7 +130,7 @@ namespace chasecar {
         Thread::usleepFor(1000 * 10);
     }
 
-    core::SharedPointer<core::wrapper::Image> OpenGLGrabber::getNextImage() {
+    odcore::SharedPointer<core::wrapper::Image> OpenGLGrabber::getNextImage() {
         if ( (m_sharedMemory.isValid()) && (m_sharedMemory->isValid()) ) {
             m_sharedMemory->lock();
 
@@ -151,16 +151,16 @@ namespace chasecar {
                     const uint32_t size = m_FIFO_Obstacles.getSize();
                     for(uint32_t i = 0; i < size; i++) {
                         Container c = m_FIFO_Obstacles.leave();
-                        if (c.getDataType() == Container::OBSTACLE) {
+                        if (c.getDataType() == Obstacle::ID()) {
                             Obstacle obstacle = c.getData<Obstacle>();
 
                             // Check if sensor FOV-"Obstacle":
-                            if (obstacle.getID() >= 9000) {
+                            if (obstacle.getObstacleID() >= 9000) {
                                 switch (obstacle.getState()) {
                                     case Obstacle::REMOVE:
                                     {
                                         // Remove obstacle.
-                                        map<uint32_t, Node*>::iterator result = m_mapOfObstacles.find(obstacle.getID());
+                                        map<uint32_t, Node*>::iterator result = m_mapOfObstacles.find(obstacle.getObstacleID());
                                         if (result != m_mapOfObstacles.end()) {
                                             // Remove child from scene graph node.
                                             m_sensors->removeChild(result->second);
@@ -173,7 +173,7 @@ namespace chasecar {
 
                                     case Obstacle::UPDATE:
                                     {
-                                        map<uint32_t, Node*>::iterator result = m_mapOfObstacles.find(obstacle.getID());
+                                        map<uint32_t, Node*>::iterator result = m_mapOfObstacles.find(obstacle.getObstacleID());
                                         if (result != m_mapOfObstacles.end()) {
                                             // Remove child from scene graph node.
                                             m_sensors->removeChild(result->second);
@@ -191,9 +191,9 @@ namespace chasecar {
                                             Point3 A = contour.at(k); A.setZ(0.5);
                                             Point3 B = contour.at(k+1); B.setZ(0.5);
 
-                                            contourTG->addChild(new hesperia::threeD::models::Line(NodeDescriptor(), A, B, Point3(0, 1, 0), 2));
+                                            contourTG->addChild(new opendlv::threeD::models::Line(NodeDescriptor(), A, B, Point3(0, 1, 0), 2));
                                         }
-                                        m_mapOfObstacles[obstacle.getID()] = contourTG;
+                                        m_mapOfObstacles[obstacle.getObstacleID()] = contourTG;
 
                                         m_sensors->addChild(contourTG);
                                     }

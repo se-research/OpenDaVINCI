@@ -25,30 +25,30 @@
 #include <string>
 #include <vector>
 
-#include "core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "ConnectedModules.h"
 #include "GlobalConfigurationProvider.h"
-#include "core/SharedPointer.h"
-#include "core/base/KeyValueConfiguration.h"
-#include "core/base/Mutex.h"
-#include "core/base/module/MasterModule.h"
-#include "core/data/TimeStamp.h"
-#include "core/dmcp/ModuleStateListener.h"
-#include "core/dmcp/connection/ConnectionHandler.h"
-#include "core/io/conference/ContainerListener.h"
-#include "generated/coredata/LogMessage.h"
-#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
-#include "generated/coredata/dmcp/ModuleStateMessage.h"
-#include "generated/coredata/dmcp/ModuleStatistics.h"
-#include "generated/coredata/dmcp/RuntimeStatistic.h"
-#include "generated/coredata/dmcp/ServerInformation.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/base/module/MasterModule.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
+#include "opendavinci/odcore/dmcp/ModuleStateListener.h"
+#include "opendavinci/odcore/dmcp/connection/ConnectionHandler.h"
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
+#include "opendavinci/generated/odcore/data/LogMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleStateMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleStatistics.h"
+#include "opendavinci/generated/odcore/data/dmcp/RuntimeStatistic.h"
+#include "opendavinci/generated/odcore/data/dmcp/ServerInformation.h"
 
-namespace coredata { namespace dmcp { class ModuleDescriptor; } }
-namespace core { namespace data { class Container; } }
-namespace core { namespace dmcp { namespace connection { class ModuleConnection; } } }
-namespace core { namespace dmcp { namespace connection { class Server; } } }
-namespace core { namespace dmcp { namespace discoverer { class Server; } } }
-namespace core { namespace io { namespace conference { class ContainerConference; } } }
+namespace odcore { namespace data { namespace dmcp { class ModuleDescriptor; } } }
+namespace odcore { namespace data { class Container; } }
+namespace odcore { namespace dmcp { namespace connection { class ModuleConnection; } } }
+namespace odcore { namespace dmcp { namespace connection { class Server; } } }
+namespace odcore { namespace dmcp { namespace discoverer { class Server; } } }
+namespace odcore { namespace io { namespace conference { class ContainerConference; } } }
 
 namespace odsupercomponent {
 
@@ -56,10 +56,10 @@ class ConnectedModule;
 
     using namespace std;
 
-    class SuperComponent : public core::base::module::MasterModule,
-                           protected core::dmcp::connection::ConnectionHandler,
-                           protected core::dmcp::ModuleStateListener,
-                           protected core::io::conference::ContainerListener {
+    class SuperComponent : public odcore::base::module::MasterModule,
+                           protected odcore::dmcp::connection::ConnectionHandler,
+                           protected odcore::dmcp::ModuleStateListener,
+                           protected odcore::io::conference::ContainerListener {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -89,53 +89,53 @@ class ConnectedModule;
             /**
              * @return Start time of the current execution cycle.
              */
-            const core::data::TimeStamp getStartOfCurrentCycle() const;
+            const odcore::data::TimeStamp getStartOfCurrentCycle() const;
 
             /**
              * @return End time of the last execution cycle.
              */
-            const core::data::TimeStamp getStartOfLastCycle() const;
+            const odcore::data::TimeStamp getStartOfLastCycle() const;
 
         protected:
             void checkForSuperComponent();
 
-            virtual coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+            virtual odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
-            virtual void onNewModule(core::SharedPointer<core::dmcp::connection::ModuleConnection> mc);
+            virtual void onNewModule(odcore::SharedPointer<odcore::dmcp::connection::ModuleConnection> mc);
 
-            virtual void nextContainer(core::data::Container &c);
+            virtual void nextContainer(odcore::data::Container &c);
 
-            virtual void handleChangeState(const coredata::dmcp::ModuleDescriptor& md,
-                                           const coredata::dmcp::ModuleStateMessage::ModuleState &ms);
+            virtual void handleChangeState(const odcore::data::dmcp::ModuleDescriptor& md,
+                                           const odcore::data::dmcp::ModuleStateMessage::ModuleState &ms);
 
-            virtual void handleExitCode(const coredata::dmcp::ModuleDescriptor& md,
-                                        const coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode &me);
+            virtual void handleExitCode(const odcore::data::dmcp::ModuleDescriptor& md,
+                                        const odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode &me);
 
-            virtual void handleRuntimeStatistics(const coredata::dmcp::ModuleDescriptor& md,
-                                                 const coredata::dmcp::RuntimeStatistic& rs);
+            virtual void handleRuntimeStatistics(const odcore::data::dmcp::ModuleDescriptor& md,
+                                                 const odcore::data::dmcp::RuntimeStatistic& rs);
 
-            virtual void handleConnectionLost(const coredata::dmcp::ModuleDescriptor& md);
+            virtual void handleConnectionLost(const odcore::data::dmcp::ModuleDescriptor& md);
 
-            virtual void handleUnkownContainer(const coredata::dmcp::ModuleDescriptor& md,
-                                               const core::data::Container& container);
+            virtual void handleUnkownContainer(const odcore::data::dmcp::ModuleDescriptor& md,
+                                               const odcore::data::Container& container);
 
-            ConnectedModule* moveToShutdownModules(const coredata::dmcp::ModuleDescriptor& md);
+            ConnectedModule* moveToShutdownModules(const odcore::data::dmcp::ModuleDescriptor& md);
 
-            core::base::KeyValueConfiguration m_configuration;
+            odcore::base::KeyValueConfiguration m_configuration;
 
             GlobalConfigurationProvider m_configurationProvider;
-            core::dmcp::discoverer::Server* m_discovererServer;
-            core::dmcp::connection::Server* m_connectionServer;
+            odcore::dmcp::discoverer::Server* m_discovererServer;
+            odcore::dmcp::connection::Server* m_connectionServer;
 
-            core::SharedPointer<core::io::conference::ContainerConference> m_conference;
+            odcore::SharedPointer<odcore::io::conference::ContainerConference> m_conference;
 
             ConnectedModules m_modules;
             ConnectedModules m_shutdownModules;
 
-            core::base::Mutex m_moduleStatisticsMutex;
-            coredata::dmcp::ModuleStatistics m_moduleStatistics;
+            odcore::base::Mutex m_moduleStatisticsMutex;
+            odcore::data::dmcp::ModuleStatistics m_moduleStatistics;
 
-            coredata::dmcp::ServerInformation::ManagedLevel m_managedLevel;
+            odcore::data::dmcp::ServerInformation::ManagedLevel m_managedLevel;
 
         private:
             /**
@@ -154,16 +154,16 @@ class ConnectedModule;
 
             void parseAdditionalCommandLineParameters(const int &argc, char **argv);
 
-            core::data::TimeStamp m_startOfCurrentCycle;
-            core::data::TimeStamp m_startOfLastCycle;
-            core::data::TimeStamp m_lastCycle;
+            odcore::data::TimeStamp m_startOfCurrentCycle;
+            odcore::data::TimeStamp m_startOfLastCycle;
+            odcore::data::TimeStamp m_lastCycle;
             uint64_t m_lastWaitTime;
             uint32_t m_shiftMicroseconds;
             uint32_t m_timeoutACKMilliseconds;
             uint32_t m_yieldMicroseconds;
 
             vector<string> m_modulesToIgnore;
-            coredata::LogMessage::LogLevel m_logLevel;
+            odcore::data::LogMessage::LogLevel m_logLevel;
             fstream *m_logFile;
     };
 }

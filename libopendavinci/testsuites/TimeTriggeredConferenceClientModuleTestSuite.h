@@ -26,36 +26,36 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"         // for SharedPointer
-#include "core/base/Condition.h"        // for Condition
-#include "core/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
-#include "core/base/Lock.h"             // for Lock
-#include "core/base/Service.h"          // for Service
-#include "core/base/Thread.h"           // for Thread
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "core/dmcp/ModuleConfigurationProvider.h"
-#include "core/dmcp/connection/ConnectionHandler.h"
-#include "core/dmcp/connection/ModuleConnection.h"
-#include "core/dmcp/connection/Server.h"  // for Server
-#include "core/dmcp/discoverer/Server.h"  // for Server
-#include "core/io/conference/ContainerConference.h"
-#include "core/io/conference/ContainerConferenceFactory.h"
-#include "generated/coredata/dmcp/Constants.h"  // for Constants, etc
-#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
-#include "generated/coredata/dmcp/ModuleStateMessage.h"
-#include "generated/coredata/dmcp/ServerInformation.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"         // for SharedPointer
+#include "opendavinci/odcore/base/Condition.h"        // for Condition
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
+#include "opendavinci/odcore/base/Lock.h"             // for Lock
+#include "opendavinci/odcore/base/Service.h"          // for Service
+#include "opendavinci/odcore/base/Thread.h"           // for Thread
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/dmcp/ModuleConfigurationProvider.h"
+#include "opendavinci/odcore/dmcp/connection/ConnectionHandler.h"
+#include "opendavinci/odcore/dmcp/connection/ModuleConnection.h"
+#include "opendavinci/odcore/dmcp/connection/Server.h"  // for Server
+#include "opendavinci/odcore/dmcp/discoverer/Server.h"  // for Server
+#include "opendavinci/odcore/io/conference/ContainerConference.h"
+#include "opendavinci/odcore/io/conference/ContainerConferenceFactory.h"
+#include "opendavinci/generated/odcore/data/dmcp/Constants.h"  // for Constants, etc
+#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleStateMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ServerInformation.h"
 
-namespace coredata { namespace dmcp { class ModuleDescriptor; } }
+namespace odcore { namespace data { namespace dmcp { class ModuleDescriptor; } } }
 
 using namespace std;
-using namespace core::base;
-using namespace core::base::module;
-using namespace core::data;
-using namespace core::io;
-using namespace core::io::conference;
-using namespace core::dmcp;
-using namespace coredata::dmcp;
+using namespace odcore::base;
+using namespace odcore::base::module;
+using namespace odcore::data;
+using namespace odcore::io;
+using namespace odcore::io::conference;
+using namespace odcore::dmcp;
+using namespace odcore::data::dmcp;
 
 
 class TimeTriggeredConferenceClientModuleTestModule : public TimeTriggeredConferenceClientModule {
@@ -102,10 +102,10 @@ class TimeTriggeredConferenceClientModuleTestModule : public TimeTriggeredConfer
             correctOrder &= (setUpCalled && !bodyCalled && !tearDownCalled);
         }
 
-        virtual coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
+        virtual odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
             bodyCalled = true;
             correctOrder &= (setUpCalled && bodyCalled && !tearDownCalled);
-            return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
         virtual void tearDown() {
@@ -123,7 +123,7 @@ class TimeTriggeredConferenceClientModuleTestService : public Service {
                 myCCMTM(argc, argv, condition) {}
 
         virtual void beforeStop() {
-            myCCMTM.setModuleState(coredata::dmcp::ModuleStateMessage::NOT_RUNNING);
+            myCCMTM.setModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
         }
 
         virtual void run() {
@@ -143,19 +143,19 @@ class TimeTriggeredConferenceClientModuleTest : public CxxTest::TestSuite,
             m_connection() {}
 
         KeyValueConfiguration m_configuration;
-        core::SharedPointer<connection::ModuleConnection> m_connection;
+        odcore::SharedPointer<connection::ModuleConnection> m_connection;
 
         virtual KeyValueConfiguration getConfiguration(const ModuleDescriptor& /*md*/) {
             return m_configuration;
         }
 
-        virtual void onNewModule(core::SharedPointer<core::dmcp::connection::ModuleConnection> mc) {
+        virtual void onNewModule(odcore::SharedPointer<odcore::dmcp::connection::ModuleConnection> mc) {
             m_connection = mc;
         }
 
         void testTimeTriggeredTimeTriggeredConferenceClientModule() {
             // Setup ContainerConference.
-            core::SharedPointer<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.101");
+            odcore::SharedPointer<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.101");
 
             // Setup DMCP.
             stringstream sstr;
@@ -172,8 +172,8 @@ class TimeTriggeredConferenceClientModuleTest : public CxxTest::TestSuite,
             ServerInformation serverInformation("127.0.0.1", 19000, ServerInformation::ML_NONE);
             discoverer::Server dmcpDiscovererServer(serverInformation,
                                                     "225.0.0.101",
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_SERVER,
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_CLIENT,
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_SERVER,
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_CLIENT,
                                                     noModulesToIgnore);
             dmcpDiscovererServer.startResponding();
 
@@ -195,10 +195,10 @@ class TimeTriggeredConferenceClientModuleTest : public CxxTest::TestSuite,
             Condition c;
             TimeTriggeredConferenceClientModuleTestService ccmtms(argc, argv, c);
             TS_ASSERT(ccmtms.myCCMTM.getIdentifier() == "ABC");
-            //TS_ASSERT( cmtm.runModule() == coredata::dmcp::ModuleExitCodeMessage::OKAY );
+            //TS_ASSERT( cmtm.runModule() == odcore::data::dmcp::ModuleExitCodeMessage::OKAY );
 
             //Lock l(c);
-            //if ( cmtm.getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING ) {
+            //if ( cmtm.getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING ) {
             //    c.waitOnSignal();
             //}
 

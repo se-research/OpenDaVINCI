@@ -26,7 +26,7 @@
 #include "plugins/PlugIn.h"
 
 class QWidget;
-namespace core { namespace base { class KeyValueConfiguration; } }
+namespace odcore { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
 
@@ -60,7 +60,7 @@ class IrUsChartsWidget;
                  * @param kvc KeyValueConfiguration for this based widget.
                  * @param prnt Pointer to the containing super window.
                  */
-                IrUsChartsPlugIn(const string &name, const core::base::KeyValueConfiguration &kvc, QWidget *prnt);
+                IrUsChartsPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt);
 
                 virtual ~IrUsChartsPlugIn();
 

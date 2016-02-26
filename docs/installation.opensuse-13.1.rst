@@ -18,12 +18,7 @@ Install required development packages for libodsimulation sources::
 
     $ sudo zypper install libusb-devel
     
-Install and configure Oracle's Java according to the following guide http://tutorialforlinux.com/2013/12/12/how-to-install-oracle-java-jdk-7-on-opensuse-13-1-gnome3-3264bit-easy-guide/
-
-Add two missing symbolic links::
-
-    $ sudo ln -sf /usr/include/qwt5 /usr/include/qwt-qt4
-    $ sudo ln -sf /usr/lib64/libqwt.so /usr/lib64/libqwt-qt4.so
+Install and configure Oracle's Java according to the following guide http://tutorialforlinux.com/2013/12/12/how-to-install-oracle-java-jdk-7-on-opensuse-13-1-gnome3-3264bit-easy-guide/ ::
 
     $ sudo apt-get install ant openjdk-7-jdk
 
@@ -48,5 +43,8 @@ Use cmake to create the build scripts for your build folder::
 
 Build, run the tests, and install the OpenDaVINCI::
 
-    $ make all
+    $ sudo make all
+    
+Note that sudo is used here because installing software to system-wide directories (e.g., /usr/local) requires superuser (root) privileges. If OpenDaVINCI is installed in a different directory, e.g., /opt/od, then there is no need to use sudo. Instead, write permission should be given::
 
+    $ sudo chown $USER:$USER /opt/od

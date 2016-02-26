@@ -29,16 +29,16 @@
 # endif
 # pragma GCC diagnostic ignored "-Weffc++"
 #endif
-    #include <qwt-qt4/qwt_legend.h>
-    #include <qwt-qt4/qwt_plot_curve.h>
+    #include <qwt_legend.h>
+    #include <qwt_plot_curve.h>
 #ifndef WIN32
 # if !defined(__OpenBSD__) && !defined(__NetBSD__)
 #  pragma GCC diagnostic pop
 # endif
 #endif
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
 #include "plugins/modulestatisticsviewer/LoadPerModule.h"
 #include "plugins/modulestatisticsviewer/LoadPlot.h"
 
@@ -74,7 +74,7 @@ namespace cockpit {
             LoadPlot::~LoadPlot(){}
 
             void
-            LoadPlot::addLoadPerModule(core::SharedPointer<LoadPerModule> lpm) {
+            LoadPlot::addLoadPerModule(odcore::SharedPointer<LoadPerModule> lpm) {
 	            m_toAdd.push_back(lpm);
 	            m_toAttachVisitor->start(100);
             }
@@ -88,4 +88,3 @@ namespace cockpit {
         }
     }
 }
-

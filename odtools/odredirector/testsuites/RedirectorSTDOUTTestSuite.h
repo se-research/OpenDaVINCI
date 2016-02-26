@@ -22,31 +22,31 @@
 
 #include "cxxtest/TestSuite.h"
 
-#include "core/SharedPointer.h"
-#include "core/base/Service.h"
-#include "core/base/Thread.h"
-#include "core/data/Container.h"
-#include "core/io/conference/ContainerListener.h"
-#include "core/io/conference/ContainerConference.h"
-#include "core/io/conference/ContainerConferenceFactory.h"
-#include "core/io/StreamFactory.h"
-#include "core/io/URL.h"
-#include "core/dmcp/ModuleConfigurationProvider.h"
-#include "core/dmcp/discoverer/Server.h"
-#include "core/dmcp/connection/Server.h"
-#include "core/dmcp/connection/ConnectionHandler.h"
-#include "core/dmcp/connection/ModuleConnection.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Service.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
+#include "opendavinci/odcore/io/conference/ContainerConference.h"
+#include "opendavinci/odcore/io/conference/ContainerConferenceFactory.h"
+#include "opendavinci/odcore/io/StreamFactory.h"
+#include "opendavinci/odcore/io/URL.h"
+#include "opendavinci/odcore/dmcp/ModuleConfigurationProvider.h"
+#include "opendavinci/odcore/dmcp/discoverer/Server.h"
+#include "opendavinci/odcore/dmcp/connection/Server.h"
+#include "opendavinci/odcore/dmcp/connection/ConnectionHandler.h"
+#include "opendavinci/odcore/dmcp/connection/ModuleConnection.h"
 
 // Include local header files.
 #include "../include/Redirector.h"
 
 using namespace std;
-using namespace core::base;
-using namespace core::data;
-using namespace core::dmcp;
-using namespace core::io;
-using namespace core::io::conference;
-using namespace coredata::dmcp;
+using namespace odcore::base;
+using namespace odcore::data;
+using namespace odcore::dmcp;
+using namespace odcore::io;
+using namespace odcore::io::conference;
+using namespace odcore::data::dmcp;
 using namespace odredirector;
 
 /**
@@ -59,7 +59,7 @@ class RedirectorTestService : public Service {
 
         virtual void beforeStop() {
             // Stop redirector.
-            myRedirector.setModuleState(coredata::dmcp::ModuleStateMessage::NOT_RUNNING);
+            myRedirector.setModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
         }
 
         virtual void run() {
@@ -88,14 +88,14 @@ class RedirectorTest : public CxxTest::TestSuite,
         }
 
         KeyValueConfiguration m_configuration;
-        core::SharedPointer<connection::ModuleConnection> m_connection;
+        odcore::SharedPointer<connection::ModuleConnection> m_connection;
         vector<Container> m_listOfContainers;
 
         virtual KeyValueConfiguration getConfiguration(const ModuleDescriptor& /*md*/) {
             return m_configuration;
         }
 
-        virtual void onNewModule(core::SharedPointer<core::dmcp::connection::ModuleConnection> mc) {
+        virtual void onNewModule(odcore::SharedPointer<odcore::dmcp::connection::ModuleConnection> mc) {
             m_connection = mc;
         }
 
@@ -108,7 +108,7 @@ class RedirectorTest : public CxxTest::TestSuite,
             TS_ASSERT(true);
 #else
             // Setup ContainerConference.
-            core::SharedPointer<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.100");
+            odcore::SharedPointer<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.100");
 
             // Setup DMCP.
             stringstream sstr;
@@ -122,8 +122,8 @@ class RedirectorTest : public CxxTest::TestSuite,
             ServerInformation serverInformation("127.0.0.1", 19000, ServerInformation::ML_NONE);
             discoverer::Server dmcpDiscovererServer(serverInformation,
                                                     "225.0.0.100",
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_SERVER,
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_CLIENT,
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_SERVER,
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_CLIENT,
                                                     noModulesToIgnore);
             dmcpDiscovererServer.startResponding();
 
@@ -157,7 +157,7 @@ class RedirectorTest : public CxxTest::TestSuite,
 
             // Send data.
             TimeStamp ts1(0, 1);
-            Container c1(Container::TIMESTAMP, ts1);
+            Container c1(ts1);
             conference->send(c1);
 
             maxWait = 5;
@@ -170,7 +170,7 @@ class RedirectorTest : public CxxTest::TestSuite,
 
 
             TimeStamp ts2(1, 2);
-            Container c2(Container::TIMESTAMP, ts2);
+            Container c2(ts2);
             conference->send(c2);
 
             maxWait = 5;
@@ -182,7 +182,7 @@ class RedirectorTest : public CxxTest::TestSuite,
             dataWritten = currentDataWritten; 
 
             TimeStamp ts3(2, 3);
-            Container c3(Container::TIMESTAMP, ts3);
+            Container c3(ts3);
             conference->send(c3);
 
             maxWait = 5;
@@ -194,7 +194,7 @@ class RedirectorTest : public CxxTest::TestSuite,
             dataWritten = currentDataWritten; 
 
             TimeStamp ts4(3, 4);
-            Container c4(Container::TIMESTAMP, ts4);
+            Container c4(ts4);
             conference->send(c4);
 
             maxWait = 5;
@@ -206,7 +206,7 @@ class RedirectorTest : public CxxTest::TestSuite,
             dataWritten = currentDataWritten; 
 
             TimeStamp ts5(4, 5);
-            Container c5(Container::TIMESTAMP, ts5);
+            Container c5(ts5);
             conference->send(c5);
 
             maxWait = 5;
@@ -216,6 +216,8 @@ class RedirectorTest : public CxxTest::TestSuite,
                 currentDataWritten = out.tellp();
             }
             dataWritten = currentDataWritten; 
+
+            Thread::usleepFor(10000);
 
             rts.stop();
 

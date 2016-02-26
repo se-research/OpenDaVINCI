@@ -31,15 +31,15 @@
 
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/base/Lock.h"
-#include "core/data/Container.h"
-#include "core/io/conference/ContainerConference.h"
-#include "generated/cartesian/Constants.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/io/conference/ContainerConference.h"
+#include "automotivedata/generated/cartesian/Constants.h"
 #include "plugins/controller/ControllerWidget.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }
-namespace core { namespace base { class KeyValueConfiguration; } }
+namespace odcore { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
 
@@ -48,12 +48,12 @@ namespace cockpit {
         namespace controller {
 
             using namespace std;
-            using namespace core::base;
-            using namespace core::io::conference;
-            using namespace core::data;
+            using namespace odcore::base;
+            using namespace odcore::io::conference;
+            using namespace odcore::data;
             using namespace automotive;
 
-            ControllerWidget::ControllerWidget(const PlugIn &/*plugIn*/, const core::base::KeyValueConfiguration &/*kvc*/, ContainerConference &conf, QWidget *prnt) :
+            ControllerWidget::ControllerWidget(const PlugIn &/*plugIn*/, const odcore::base::KeyValueConfiguration &/*kvc*/, ContainerConference &conf, QWidget *prnt) :
                 QWidget(prnt),
                 m_conference(conf),
                 m_vehicleControlMutex(),
@@ -151,7 +151,7 @@ namespace cockpit {
             ControllerWidget::~ControllerWidget() {}
 
             void ControllerWidget::nextContainer(Container &container) {
-                if (container.getDataType() == Container::VEHICLECONTROL) {
+                if (container.getDataType() == automotive::VehicleControl::ID()) {
                     VehicleControl vc = container.getData<VehicleControl>();
                     m_value->setText(vc.toString().c_str());
                 }
@@ -166,7 +166,7 @@ namespace cockpit {
                     m_userButtonData.setButtonStatus(automotive::miniature::UserButtonData::PRESSED);
                     m_userButtonData.setDuration(0);
 
-                    Container c(Container::USER_BUTTON, m_userButtonData);
+                    Container c(m_userButtonData);
                     m_conference.send(c);
                 }
             }
@@ -179,7 +179,7 @@ namespace cockpit {
 
                 m_userButtonData.setButtonStatus(automotive::miniature::UserButtonData::RELEASED);
                 m_userButtonData.setDuration(duration);
-                Container c(Container::USER_BUTTON, m_userButtonData);
+                Container c(m_userButtonData);
                 m_conference.send(c);
             }
 
@@ -209,7 +209,7 @@ namespace cockpit {
                         Lock l3(m_sendVehicleControlDataMutex);
 
                         if (m_sendVehicleControlData) {
-                            Container c(Container::VEHICLECONTROL, m_vehicleControl);
+                            Container c(m_vehicleControl);
                             m_conference.send(c);
                             m_counter = 0;
                         }

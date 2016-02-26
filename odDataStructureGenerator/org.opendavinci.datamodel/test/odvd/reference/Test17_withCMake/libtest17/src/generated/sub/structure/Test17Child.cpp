@@ -5,19 +5,19 @@
  */
 
 
-#include "core/base/Hash.h"
-#include "core/base/Deserializer.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 
-#include "generated/sub/structure/Test17Super.h"
+#include "test17/generated/sub/structure/Test17Super.h"
 
-#include "generated/sub/structure/Test17Child.h"
+#include "test17/generated/sub/structure/Test17Child.h"
 
 namespace sub {
 	namespace structure {
 			using namespace std;
-			using namespace core::base;
+			using namespace odcore::base;
 		
 		
 			Test17Child::Test17Child() :
@@ -61,6 +61,18 @@ namespace sub {
 				return "sub.structure.Test17Child";
 			}
 		
+			int32_t Test17Child::getID() const {
+				return Test17Child::ID();
+			}
+		
+			const string Test17Child::getShortName() const {
+				return Test17Child::ShortName();
+			}
+		
+			const string Test17Child::getLongName() const {
+				return Test17Child::LongName();
+			}
+		
 			std::string Test17Child::getMyName() const {
 				return m_myName;
 			}
@@ -69,7 +81,7 @@ namespace sub {
 				m_myName = val;
 			}
 		
-			void Test17Child::accept(core::base::Visitor &v) {
+			void Test17Child::accept(odcore::base::Visitor &v) {
 				sub::structure::Test17Super::accept(v);
 				v.visit(CRC32 < CharList<'m', CharList<'y', CharList<'N', CharList<'a', CharList<'m', CharList<'e', NullType> > > > > >  >::RESULT, 0, "Test17Child.myName", "myName", m_myName);
 			}
@@ -89,7 +101,7 @@ namespace sub {
 		
 				SerializationFactory& sf = SerializationFactory::getInstance();
 		
-				core::SharedPointer<Serializer> s = sf.getSerializer(out);
+				odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
 		
 				s->write(CRC32 < CharList<'m', CharList<'y', CharList<'N', CharList<'a', CharList<'m', CharList<'e', NullType> > > > > >  >::RESULT,
 						m_myName);
@@ -101,7 +113,7 @@ namespace sub {
 		
 				SerializationFactory& sf = SerializationFactory::getInstance();
 		
-				core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+				odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 		
 				d->read(CRC32 < CharList<'m', CharList<'y', CharList<'N', CharList<'a', CharList<'m', CharList<'e', NullType> > > > > >  >::RESULT,
 						m_myName);

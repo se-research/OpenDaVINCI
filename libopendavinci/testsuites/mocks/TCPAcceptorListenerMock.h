@@ -22,12 +22,12 @@
 
 #include "FunctionCallWaiter.h"
 
-#include "core/SharedPointer.h"
-#include "core/io/tcp/TCPAcceptorListener.h"
-#include "core/io/tcp/TCPConnection.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/io/tcp/TCPAcceptorListener.h"
+#include "opendavinci/odcore/io/tcp/TCPConnection.h"
 
 namespace mocks {
-    class TCPAcceptorListenerMock : public core::io::tcp::TCPAcceptorListener {
+    class TCPAcceptorListenerMock : public odcore::io::tcp::TCPAcceptorListener {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -43,7 +43,7 @@ namespace mocks {
              */
             TCPAcceptorListenerMock& operator=(const TCPAcceptorListenerMock&);
 
-            core::SharedPointer<core::io::tcp::TCPConnection> m_connection;
+            odcore::SharedPointer<odcore::io::tcp::TCPConnection> m_connection;
 
         public:
             TCPAcceptorListenerMock() :
@@ -53,7 +53,7 @@ namespace mocks {
 
             ~TCPAcceptorListenerMock() {};
 
-            core::SharedPointer<core::io::tcp::TCPConnection> getConnection() {
+            odcore::SharedPointer<odcore::io::tcp::TCPConnection> getConnection() {
                 return m_connection;
             }
 
@@ -61,7 +61,7 @@ namespace mocks {
                 m_connection.release();
             }
 
-             virtual void onNewConnection(core::SharedPointer<core::io::tcp::TCPConnection> connection) {
+             virtual void onNewConnection(odcore::SharedPointer<odcore::io::tcp::TCPConnection> connection) {
                 m_connection = connection;
                 CALLWAITER_onNewConnection.called();
             }

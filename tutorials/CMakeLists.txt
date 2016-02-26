@@ -23,6 +23,7 @@ PROJECT (tutorials)
 # Add subdirectories.
 ADD_SUBDIRECTORY (datatrigger)
 ADD_SUBDIRECTORY (diningphilosophers)
+ADD_SUBDIRECTORY (helloworld)
 ADD_SUBDIRECTORY (ipcsharedmemory)
 ADD_SUBDIRECTORY (realtimeservice)
 ADD_SUBDIRECTORY (serialreceivebytes)
@@ -85,7 +86,7 @@ IF(    (UNIX)
     ENDIF()
     SET(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "${ARCH}")
     SET(CPACK_DEB_COMPONENT_INSTALL ON)
-    SET(CPACK_DEBIAN_PACKAGE_DEPENDS "opendavinci-odlib")
+    SET(CPACK_DEBIAN_PACKAGE_DEPENDS "opendavinci-lib")
 
     # RPM packages:
     IF("${ARMHF}" STREQUAL "YES")
@@ -100,7 +101,7 @@ IF(    (UNIX)
     SET(CPACK_RPM_PACKAGE_BUILDARCH "Buildarch: ${CPACK_RPM_PACKAGE_ARCHITECTURE}")
     SET(CPACK_RPM_COMPONENT_INSTALL ON)
     SET(CPACK_RPM_PACKAGE_LICENSE "GPL")
-    SET(CPACK_RPM_PACKAGE_REQUIRES "opendavinci-odlib")
+    SET(CPACK_RPM_PACKAGE_REQUIRES "opendavinci-lib")
 
     # Resulting package name:
     SET(CPACK_PACKAGE_FILE_NAME ${CPACK_PACKAGE_NAME}_${CPACK_PACKAGE_VERSION}_${ARCH})

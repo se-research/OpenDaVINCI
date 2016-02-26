@@ -30,14 +30,14 @@
 #elif defined _MSC_VER
 #pragma warning(push, 1)
 #endif
-    #include <qwt-qt4/qwt_data.h>
+    #include <qwt_data.h>
 #if defined __SUNPRO_CC
 #pragma enable_warn
 #elif defined _MSC_VER
 #pragma warning(pop)
 #endif
 
-#include "core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 namespace automotive { namespace miniature { class SensorBoardData; } }
 
@@ -96,4 +96,3 @@ namespace cockpit {
 }
 
 #endif /*COCKPIT_PLUGINS_IRUSCHARTS_IRUSCHARTDATA_H_*/
-

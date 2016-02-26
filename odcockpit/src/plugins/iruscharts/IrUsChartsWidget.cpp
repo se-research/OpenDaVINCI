@@ -33,9 +33,9 @@
 # endif
 # pragma GCC diagnostic ignored "-Weffc++"
 #endif
-    #include <qwt-qt4/qwt_plot.h>
-    #include <qwt-qt4/qwt_plot_curve.h>
-    #include <qwt-qt4/qwt_plot_item.h>
+    #include <qwt_plot.h>
+    #include <qwt_plot_curve.h>
+    #include <qwt_plot_item.h>
 #ifndef WIN32
 # if !defined(__OpenBSD__) && !defined(__NetBSD__)
 #  pragma GCC diagnostic pop
@@ -46,16 +46,16 @@
 #include <iostream>
 #include <sstream>
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"
-#include "core/base/KeyValueConfiguration.h"
-#include "core/base/Lock.h"
-#include "core/base/Serializable.h"
-#include "core/data/Container.h"
-#include "core/data/TimeStamp.h"
-#include "core/exceptions/Exceptions.h"
-#include "core/io/StreamFactory.h"
-#include "core/io/URL.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
+#include "opendavinci/odcore/exceptions/Exceptions.h"
+#include "opendavinci/odcore/io/StreamFactory.h"
+#include "opendavinci/odcore/io/URL.h"
 #include "plugins/iruscharts/IrUsChartData.h"
 #include "plugins/iruscharts/IrUsChartsWidget.h"
 
@@ -68,11 +68,11 @@ namespace cockpit {
         namespace iruscharts {
 
             using namespace std;
-            using namespace core;
-            using namespace core::base;
-            using namespace core::data;
+            using namespace odcore;
+            using namespace odcore::base;
+            using namespace odcore::data;
 
-            IrUsChartsWidget::IrUsChartsWidget(const PlugIn &/*plugIn*/, const core::base::KeyValueConfiguration &kvc, QWidget *prnt) :
+            IrUsChartsWidget::IrUsChartsWidget(const PlugIn &/*plugIn*/, const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt) :
                 QWidget(prnt),
                 m_listOfPlots(),
                 m_listOfPlotCurves(),
@@ -193,10 +193,10 @@ namespace cockpit {
                     if (!fn.empty()) {
                         stringstream s;
                         s << "file://" << fn;
-                        core::io::URL url(s.str());
+                        odcore::io::URL url(s.str());
 
                         try {
-                            SharedPointer<ostream> out = core::io::StreamFactory::getInstance().getOutputStream(url);
+                            SharedPointer<ostream> out = odcore::io::StreamFactory::getInstance().getOutputStream(url);
 
                             deque<Container>::iterator it = m_receivedSensorBoardDataContainers.begin();
                             for(;it < m_receivedSensorBoardDataContainers.end(); it++) {
@@ -205,7 +205,7 @@ namespace cockpit {
 
                             out->flush();
                         }
-                        catch(core::exceptions::InvalidArgumentException &iae) {
+                        catch(odcore::exceptions::InvalidArgumentException &iae) {
                             cerr << "Error: " << iae.toString() << endl;
                         }
                     }
@@ -221,10 +221,10 @@ namespace cockpit {
                     if (!fn.empty()) {
                         stringstream s;
                         s << "file://" << fn;
-                        core::io::URL url(s.str());
+                        odcore::io::URL url(s.str());
 
                         try {
-                            SharedPointer<ostream> out = core::io::StreamFactory::getInstance().getOutputStream(url);
+                            SharedPointer<ostream> out = odcore::io::StreamFactory::getInstance().getOutputStream(url);
 
                             // Write header.
                             (*out) << "Time stamp sent long" << ";" << "Time stamp sent short [microseconds]" << ";" << "Time stamp received long" << ";" << "Time stamp received short [microseconds]";
@@ -256,7 +256,7 @@ namespace cockpit {
 
                             out->flush();
                         }
-                        catch(core::exceptions::InvalidArgumentException &iae) {
+                        catch(odcore::exceptions::InvalidArgumentException &iae) {
                             cerr << "Error: " << iae.toString() << endl;
                         }
                     }
@@ -265,7 +265,7 @@ namespace cockpit {
             }
 
             void IrUsChartsWidget::nextContainer(Container &container) {
-                if (container.getDataType() == Container::USER_DATA_0) {
+                if (container.getDataType() == automotive::miniature::SensorBoardData::ID()) {
                     automotive::miniature::SensorBoardData sbd = container.getData<automotive::miniature::SensorBoardData>();
 
                     m_data.push_back(sbd);
@@ -286,4 +286,3 @@ namespace cockpit {
         }
     }
 }
-

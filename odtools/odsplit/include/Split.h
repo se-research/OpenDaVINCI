@@ -22,7 +22,7 @@
 
 #include <string>
 
-#include "core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 namespace odsplit {
 

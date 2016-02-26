@@ -21,7 +21,7 @@
 
 #include "CANDevice.h"
 #include "CANMessageReplicator.h"
-#include "core/SharedPointer.h"
+#include "opendavinci/odcore/SharedPointer.h"
 
 namespace automotive { class GenericCANMessage; }
 
@@ -38,7 +38,7 @@ class CANDevice;
 
         CANMessageReplicator::~CANMessageReplicator() {}
 
-        void CANMessageReplicator::setCANDevice(core::SharedPointer<CANDevice> CANDeviceToReplicateTo) {
+        void CANMessageReplicator::setCANDevice(odcore::SharedPointer<CANDevice> CANDeviceToReplicateTo) {
             m_CANDeviceToReplicateTo = CANDeviceToReplicateTo;
         }
 

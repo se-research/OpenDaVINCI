@@ -13,17 +13,17 @@ UDPReceivePackets.hpp:
 
 .. code-block:: c++
 
-    #include <core/io/PacketListener.h>
+    #include <opendavinci/odcore/io/PacketListener.h>
 
     // This class will handle packets received via a UDP socket.
-    class UDPReceivePackets : public core::wrapper::PacketListener {
+    class UDPReceivePackets : public odcore::wrapper::PacketListener {
 
-        // Your class needs to implement the method void void nextPacket(const core::io::Packet &p).
-        virtual void nextPacket(const core::io::Packet &p);
+        // Your class needs to implement the method void void nextPacket(const odcore::io::Packet &p).
+        virtual void nextPacket(const odcore::io::Packet &p);
     };
 
 To receive any packets, we firstly declare a class that implements the interface
-``core::wrapper::PacketListener``. This class will be registered as listener to
+``odcore::wrapper::PacketListener``. This class will be registered as listener to
 our UDP socket that we create later. Packets provide the sending address in
 addition to the pure ``StringListener`` interface.
 
@@ -34,25 +34,25 @@ UDPReceivePackets.cpp:
     #include <stdint.h>
     #include <iostream>
     #include <string>
-    #include <core/SharedPointer.h>
-    #include <core/base/Thread.h>
-    #include <core/io/udp/UDPReceiver.h>
-    #include <core/io/udp/UDPFactory.h>
+    #include <opendavinci/odcore/SharedPointer.h>
+    #include <opendavinci/odcore/base/Thread.h>
+    #include <opendavinci/odcore/io/udp/UDPReceiver.h>
+    #include <opendavinci/odcore/io/udp/UDPFactory.h>
 
     #include "UDPReceivePackets.hpp"
 
     using namespace std;
 
-    void UDPReceivePackets::nextPacket(const core::io::Packet &p) {
+    void UDPReceivePackets::nextPacket(const odcore::io::Packet &p) {
         cout << "Received a packet from " << p.getSender() << ", "
              << "with " << p.getData().length() << " bytes containing '"
              << p.getData() << "'" << endl;
     }
 
     // We add some of OpenDaVINCI's namespaces for the sake of readability.
-    using namespace core;
-    using namespace core::io;
-    using namespace core::io::udp;
+    using namespace odcore;
+    using namespace odcore::io;
+    using namespace odcore::io::udp;
 
     int32_t main(int32_t argc, char **argv) {
         const string RECEIVER = "0.0.0.0";
@@ -73,7 +73,7 @@ UDPReceivePackets.cpp:
             udpreceiver->start();
 
             const uint32_t ONE_SECOND = 1000 * 1000;
-            core::base::Thread::usleepFor(10 * ONE_SECOND);
+            odcore::base::Thread::usleepFor(10 * ONE_SECOND);
 
             // Stop receiving bytes and unregister our handler.
             udpreceiver->stop();
@@ -85,7 +85,7 @@ UDPReceivePackets.cpp:
     }
 
 To receive a packet from a UDP socket, your application needs to include
-``<core/io/udp/UDPReceiver.h>`` and ``<core/io/udp/UDPFactory.h>`` that encapsulate
+``<opendavinci/odcore/io/udp/UDPReceiver.h>`` and ``<opendavinci/odcore/io/udp/UDPFactory.h>`` that encapsulate
 the platform-specific implementations.
 
 ``UDPFactory`` provides a static method called ``createUDPReceiver`` that allows
@@ -113,7 +113,7 @@ thus, you need to create a new one.
 
 You can compile and link the example::
 
-   g++ -I /usr/include/opendavinci -c UDPReceivePackets.cpp -o UDPReceivePackets.o
+   g++ -I /usr/include -c UDPReceivePackets.cpp -o UDPReceivePackets.o
    g++ -o udpreceivepackets UDPReceivePackets.o -lopendavinci -lpthread
 
 The resulting program can be run::

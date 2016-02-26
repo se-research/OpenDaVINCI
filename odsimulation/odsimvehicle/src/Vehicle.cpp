@@ -22,20 +22,20 @@
 #include <string>
 #include <vector>
 
-#include "core/base/Thread.h"
-#include "core/data/Container.h"
-#include "vehiclecontext/model/SimplifiedBicycleModel.h"
-#include "generated/automotive/VehicleControl.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendlv/vehiclecontext/model/SimplifiedBicycleModel.h"
+#include "automotivedata/generated/automotive/VehicleControl.h"
 
 #include "Vehicle.h"
 
-namespace core { namespace base { class KeyValueDataStore; } }
+namespace odcore { namespace base { class KeyValueDataStore; } }
 
 namespace vehicle {
 
     using namespace std;
-    using namespace core::base;
-    using namespace core::data;
+    using namespace odcore::base;
+    using namespace odcore::data;
 
     Vehicle::Vehicle(const int32_t &argc, char **argv) :
         TimeTriggeredConferenceClientModule(argc, argv, "odsimvehicle") {}
@@ -46,13 +46,13 @@ namespace vehicle {
 
     void Vehicle::tearDown() {}
 
-    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode Vehicle::body() {
+    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Vehicle::body() {
         stringstream sstrConfiguration;
         getKeyValueConfiguration().writeTo(sstrConfiguration);
 
         // Use libodsimulation's odsimirus implementation.
         string config = sstrConfiguration.str();
-        vehiclecontext::model::SimplifiedBicycleModel simplifiedBicycleModel(config);
+        opendlv::vehiclecontext::model::SimplifiedBicycleModel simplifiedBicycleModel(config);
         simplifiedBicycleModel.setup();
 
         // Use the most recent EgoState available.
@@ -60,9 +60,9 @@ namespace vehicle {
 
         TimeStamp previousTime;
 
-        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
             // Get current VehicleControl.
-            Container c = kvs.get(Container::VEHICLECONTROL);
+            Container c = kvs.get(automotive::VehicleControl::ID());
             automotive::VehicleControl vc = c.getData<automotive::VehicleControl>();
 
             TimeStamp currentTime;
@@ -84,7 +84,7 @@ namespace vehicle {
 
         simplifiedBicycleModel.tearDown();
 
-        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+        return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
     }
 
 } // vehicle

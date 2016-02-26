@@ -20,11 +20,11 @@
 #ifndef PLUGINS_BIRDSEYEMAP_TREENODEVISITOR_H_
 #define PLUGINS_BIRDSEYEMAP_TREENODEVISITOR_H_
 
-#include "hesperia/scenegraph/SceneNodeVisitor.h"
+#include "opendlv/scenegraph/SceneNodeVisitor.h"
 
-namespace core { namespace base { template <typename T> class TreeNode; } }
-namespace hesperia { namespace scenegraph { class SceneNode; } }
-namespace hesperia { namespace scenegraph { namespace renderer { class RenderingConfiguration; } } }
+namespace odcore { namespace base { template <typename T> class TreeNode; } }
+namespace opendlv { namespace scenegraph { class SceneNode; } }
+namespace opendlv { namespace scenegraph { namespace renderer { class RenderingConfiguration; } } }
 
 namespace cockpit {
     namespace plugins {
@@ -38,7 +38,7 @@ class SelectableNodeDescriptor;
              * This class represents SceneNodeDescriptor combined with a state
              * indicating whether this element was selected by the user.
              */
-            class TreeNodeVisitor : public hesperia::scenegraph::SceneNodeVisitor {
+            class TreeNodeVisitor : public opendlv::scenegraph::SceneNodeVisitor {
                 private:
                     /**
                      * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -60,15 +60,15 @@ class SelectableNodeDescriptor;
                      *
                      * @param root TreeNode for adding SceneNodeDescriptors.
                      */
-                    TreeNodeVisitor(hesperia::scenegraph::renderer::RenderingConfiguration &rc, core::base::TreeNode<SelectableNodeDescriptor> *root);
+                    TreeNodeVisitor(opendlv::scenegraph::renderer::RenderingConfiguration &rc, odcore::base::TreeNode<SelectableNodeDescriptor> *root);
 
                     virtual ~TreeNodeVisitor();
 
-                    virtual void visit(hesperia::scenegraph::SceneNode *snd);
+                    virtual void visit(opendlv::scenegraph::SceneNode *snd);
 
                 private:
-                    hesperia::scenegraph::renderer::RenderingConfiguration &m_renderingConfiguration;
-                    core::base::TreeNode<SelectableNodeDescriptor> *m_root;
+                    opendlv::scenegraph::renderer::RenderingConfiguration &m_renderingConfiguration;
+                    odcore::base::TreeNode<SelectableNodeDescriptor> *m_root;
             };
         }
     }

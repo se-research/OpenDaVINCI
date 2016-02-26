@@ -21,17 +21,17 @@
 #include <cstring>
 #include <iostream>
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"
-#include "core/base/Lock.h"
-#include "core/base/CommandLineArgument.h"
-#include "core/base/CommandLineParser.h"
-#include "core/base/QueryableNetstringsDeserializerABCF.h"
-#include "core/wrapper/jpg/JPG.h"
-#include "core/wrapper/SharedMemory.h"
-#include "core/wrapper/SharedMemoryFactory.h"
-#include "core/data/image/CompressedImage.h"
-#include "generated/coredata/image/SharedImage.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/SharedPointer.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/CommandLineArgument.h"
+#include "opendavinci/odcore/base/CommandLineParser.h"
+#include "opendavinci/odcore/base/QueryableNetstringsDeserializerABCF.h"
+#include "opendavinci/odcore/wrapper/jpg/JPG.h"
+#include "opendavinci/odcore/wrapper/SharedMemory.h"
+#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/odcore/data/image/CompressedImage.h"
+#include "opendavinci/generated/odcore/data/image/SharedImage.h"
 
 #include "Redirector.h"
 #include "StdoutPump.h"
@@ -39,8 +39,8 @@
 namespace odredirector {
 
     using namespace std;
-    using namespace core::base;
-    using namespace core::data;
+    using namespace odcore::base;
+    using namespace odcore::data;
 
     Redirector::Redirector(const int32_t &argc, char **argv) :
         TimeTriggeredConferenceClientModule(argc, argv, "odredirector"),
@@ -90,7 +90,7 @@ namespace odredirector {
 
     void Redirector::tearDown() {}
 
-    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode Redirector::body() {
+    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Redirector::body() {
         // Enforce synchronized behavior with C STDIN and STDOUT.
         cin.sync_with_stdio(true);
         cout.sync_with_stdio(true);
@@ -103,7 +103,7 @@ namespace odredirector {
             addDataStoreFor(stdoutPump);
         }
 
-        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
             if (m_fromstdin) {
                 // Please note that reading from stdin does not evaluate sending latencies.
                 while (cin.good()) {
@@ -117,25 +117,25 @@ namespace odredirector {
                     containerBuffer >> c;
 
                     // Compressed images are transformed into regular shared images again.
-                    if (c.getDataType() == Container::COMPRESSED_IMAGE) {
-                        core::data::image::CompressedImage ci = c.getData<core::data::image::CompressedImage>();
+                    if (c.getDataType() == odcore::data::image::CompressedImage::ID()) {
+                        odcore::data::image::CompressedImage ci = c.getData<odcore::data::image::CompressedImage>();
 
                         // Check, whether a shared memory was already created for this SharedImage; otherwise, create it and save it for later.
-                        map<string, core::SharedPointer<core::wrapper::SharedMemory> >::iterator it = m_mapOfSharedMemories.find(ci.getName());
+                        map<string, odcore::SharedPointer<odcore::wrapper::SharedMemory> >::iterator it = m_mapOfSharedMemories.find(ci.getName());
                         if (it == m_mapOfSharedMemories.end()) {
-                            core::SharedPointer<core::wrapper::SharedMemory> sp = core::wrapper::SharedMemoryFactory::createSharedMemory(ci.getName(), ci.getSize());
+                            odcore::SharedPointer<odcore::wrapper::SharedMemory> sp = odcore::wrapper::SharedMemoryFactory::createSharedMemory(ci.getName(), ci.getSize());
                             m_mapOfSharedMemories[ci.getName()] = sp;
                         }
 
                         // Get the shared memory to put the uncompressed image into.
-                        core::SharedPointer<core::wrapper::SharedMemory> sp = m_mapOfSharedMemories[ci.getName()];
+                        odcore::SharedPointer<odcore::wrapper::SharedMemory> sp = m_mapOfSharedMemories[ci.getName()];
 
                         int width = 0;
                         int height = 0;
                         int bpp = 0;
 
                         // Decompress image data.
-                        unsigned char *imageData = core::wrapper::jpg::JPG::decompress(ci.getRawData(), ci.getCompressedSize(), &width, &height, &bpp, ci.getBytesPerPixel());
+                        unsigned char *imageData = odcore::wrapper::jpg::JPG::decompress(ci.getRawData(), ci.getCompressedSize(), &width, &height, &bpp, ci.getBytesPerPixel());
 
                         if ( (imageData != NULL) &&
                              (width > 0) &&
@@ -148,7 +148,7 @@ namespace odredirector {
                             }
 
                             // As we have now the decompressed image data in memory, create a SharedMemory data structure to describe it.
-                            coredata::image::SharedImage si;
+                            odcore::data::image::SharedImage si;
                             si.setName(ci.getName());
                             si.setWidth(ci.getWidth());
                             si.setHeight(ci.getHeight());
@@ -156,7 +156,7 @@ namespace odredirector {
                             si.setSize(ci.getWidth() * ci.getHeight() * ci.getBytesPerPixel());
 
                             // Distribute the SharedImage information in the UDP multicast session.
-                            Container c2(Container::SHARED_IMAGE, si);
+                            Container c2(si);
                             getConference().send(c2);
                         }
 
@@ -169,7 +169,7 @@ namespace odredirector {
             }
         }
 
-        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+        return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
     }
 
 } // odredirector

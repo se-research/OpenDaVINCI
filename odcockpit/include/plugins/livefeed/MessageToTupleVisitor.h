@@ -24,10 +24,10 @@
 #include <string>
 #include <vector>
 
-#include "core/opendavinci.h"
-#include "core/base/Visitor.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Visitor.h"
 
-namespace core { namespace base { class Serializable; } }
+namespace odcore { namespace base { class Serializable; } }
 
 namespace cockpit {
 
@@ -40,7 +40,7 @@ namespace cockpit {
             /**
              * This class is the container for the livefeed widget.
              */
-            class MessageToTupleVisitor : public core::base::Visitor {
+            class MessageToTupleVisitor : public odcore::base::Visitor {
                 private:
                     /**
                      * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -66,7 +66,7 @@ namespace cockpit {
 
                     virtual ~MessageToTupleVisitor();
 
-                    virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, core::base::Serializable &v);
+                    virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, odcore::base::Serializable &v);
                     virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, bool &v);
                     virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, char &v);
                     virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, unsigned char &v);

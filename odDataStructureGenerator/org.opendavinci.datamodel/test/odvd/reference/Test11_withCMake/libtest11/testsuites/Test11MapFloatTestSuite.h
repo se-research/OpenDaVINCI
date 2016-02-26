@@ -15,10 +15,10 @@
 #include <string>
 #include <vector>
 
-#include "core/opendavinci.h"
-#include "core/strings/StringToolbox.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/strings/StringToolbox.h"
 
-#include "GeneratedHeaders_Test11.h"
+#include "test11/GeneratedHeaders_Test11.h"
 
 
 class Test11MapFloat_TestSuite : public CxxTest::TestSuite {
@@ -423,11 +423,11 @@ class Test11MapFloat_TestSuite : public CxxTest::TestSuite {
 				TS_ASSERT(obj1.getSize_MapOfMyFloatStringMap() == 3);
 				TS_ASSERT(!obj1.isEmpty_MapOfMyFloatStringMap());
 				TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(4.5));
-				TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(4.5), "Hello World!"));
+				TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(4.5), "Hello World!"));
 				TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(5.5));
-				TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(5.5), "Hello Solar System!"));
+				TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(5.5), "Hello Solar System!"));
 				TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(6.5));
-				TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(6.5), "Hello Milky Way!"));
+				TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(6.5), "Hello Milky Way!"));
 			
 				obj1.clear_MapOfMyFloatStringMap();
 				TS_ASSERT(obj1.getMapOfMyFloatStringMap().size() == 0);
@@ -442,7 +442,7 @@ class Test11MapFloat_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getSize_MapOfMyFloatStringMap() == 1);
 			TS_ASSERT(!obj1.isEmpty_MapOfMyFloatStringMap());
 			TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(4.5));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(4.5), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(4.5), "Hello World!"));
 			TS_ASSERT(!obj1.containsKey_MapOfMyFloatStringMap(5.5));
 			TS_ASSERT(!obj1.containsKey_MapOfMyFloatStringMap(6.5));
 			
@@ -451,9 +451,9 @@ class Test11MapFloat_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getSize_MapOfMyFloatStringMap() == 2);
 			TS_ASSERT(!obj1.isEmpty_MapOfMyFloatStringMap());
 			TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(4.5));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(4.5), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(4.5), "Hello World!"));
 			TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(5.5));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(5.5), "Hello Solar System!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(5.5), "Hello Solar System!"));
 			TS_ASSERT(!obj1.containsKey_MapOfMyFloatStringMap(6.5));
 			
 			obj1.putTo_MapOfMyFloatStringMap(6.5, "Hello Milky Way!");
@@ -461,11 +461,11 @@ class Test11MapFloat_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getSize_MapOfMyFloatStringMap() == 3);
 			TS_ASSERT(!obj1.isEmpty_MapOfMyFloatStringMap());
 			TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(4.5));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(4.5), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(4.5), "Hello World!"));
 			TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(5.5));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(5.5), "Hello Solar System!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(5.5), "Hello Solar System!"));
 			TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(6.5));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(6.5), "Hello Milky Way!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(6.5), "Hello Milky Way!"));
 	
 			TS_ASSERT(obj1.getMapOfMyFloatBoolMap().size() == 2);
 			TS_ASSERT(obj1.getSize_MapOfMyFloatBoolMap() == 2);
@@ -938,11 +938,11 @@ class Test11MapFloat_TestSuite : public CxxTest::TestSuite {
 				TS_ASSERT(obj1.getSize_MapOfMyFloatStringMap() == 3);
 				TS_ASSERT(!obj1.isEmpty_MapOfMyFloatStringMap());
 				TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(4.5));
-				TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(4.5), "Hello World!"));
+				TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(4.5), "Hello World!"));
 				TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(5.5));
-				TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(5.5), "Hello Solar System!"));
+				TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(5.5), "Hello Solar System!"));
 				TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(6.5));
-				TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(6.5), "Hello Milky Way!"));
+				TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(6.5), "Hello Milky Way!"));
 			
 				obj1.clear_MapOfMyFloatStringMap();
 				TS_ASSERT(obj1.getMapOfMyFloatStringMap().size() == 0);
@@ -957,7 +957,7 @@ class Test11MapFloat_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getSize_MapOfMyFloatStringMap() == 1);
 			TS_ASSERT(!obj1.isEmpty_MapOfMyFloatStringMap());
 			TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(4.5));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(4.5), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(4.5), "Hello World!"));
 			TS_ASSERT(!obj1.containsKey_MapOfMyFloatStringMap(5.5));
 			TS_ASSERT(!obj1.containsKey_MapOfMyFloatStringMap(6.5));
 			
@@ -966,9 +966,9 @@ class Test11MapFloat_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getSize_MapOfMyFloatStringMap() == 2);
 			TS_ASSERT(!obj1.isEmpty_MapOfMyFloatStringMap());
 			TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(4.5));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(4.5), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(4.5), "Hello World!"));
 			TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(5.5));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(5.5), "Hello Solar System!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(5.5), "Hello Solar System!"));
 			TS_ASSERT(!obj1.containsKey_MapOfMyFloatStringMap(6.5));
 			
 			obj1.putTo_MapOfMyFloatStringMap(6.5, "Hello Milky Way!");
@@ -976,11 +976,11 @@ class Test11MapFloat_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getSize_MapOfMyFloatStringMap() == 3);
 			TS_ASSERT(!obj1.isEmpty_MapOfMyFloatStringMap());
 			TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(4.5));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(4.5), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(4.5), "Hello World!"));
 			TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(5.5));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(5.5), "Hello Solar System!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(5.5), "Hello Solar System!"));
 			TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(6.5));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(6.5), "Hello Milky Way!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(6.5), "Hello Milky Way!"));
 	
 			TS_ASSERT(obj1.getMapOfMyFloatBoolMap().size() == 2);
 			TS_ASSERT(obj1.getSize_MapOfMyFloatBoolMap() == 2);
@@ -1108,7 +1108,7 @@ class Test11MapFloat_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj3.containsKey_MapOfMyFloatStringMap(6.5));
 			TS_ASSERT(obj3.getValueForKey_MapOfMyFloatStringMap(6.5) == "Hello Milky Way!");
 	
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj3.toString()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj3.toString()));
 		}
 	
 		void testCreateAndAssignObject() {
@@ -1533,11 +1533,11 @@ class Test11MapFloat_TestSuite : public CxxTest::TestSuite {
 				TS_ASSERT(obj1.getSize_MapOfMyFloatStringMap() == 3);
 				TS_ASSERT(!obj1.isEmpty_MapOfMyFloatStringMap());
 				TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(4.5));
-				TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(4.5), "Hello World!"));
+				TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(4.5), "Hello World!"));
 				TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(5.5));
-				TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(5.5), "Hello Solar System!"));
+				TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(5.5), "Hello Solar System!"));
 				TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(6.5));
-				TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(6.5), "Hello Milky Way!"));
+				TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(6.5), "Hello Milky Way!"));
 			
 				obj1.clear_MapOfMyFloatStringMap();
 				TS_ASSERT(obj1.getMapOfMyFloatStringMap().size() == 0);
@@ -1552,7 +1552,7 @@ class Test11MapFloat_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getSize_MapOfMyFloatStringMap() == 1);
 			TS_ASSERT(!obj1.isEmpty_MapOfMyFloatStringMap());
 			TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(4.5));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(4.5), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(4.5), "Hello World!"));
 			TS_ASSERT(!obj1.containsKey_MapOfMyFloatStringMap(5.5));
 			TS_ASSERT(!obj1.containsKey_MapOfMyFloatStringMap(6.5));
 			
@@ -1561,9 +1561,9 @@ class Test11MapFloat_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getSize_MapOfMyFloatStringMap() == 2);
 			TS_ASSERT(!obj1.isEmpty_MapOfMyFloatStringMap());
 			TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(4.5));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(4.5), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(4.5), "Hello World!"));
 			TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(5.5));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(5.5), "Hello Solar System!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(5.5), "Hello Solar System!"));
 			TS_ASSERT(!obj1.containsKey_MapOfMyFloatStringMap(6.5));
 			
 			obj1.putTo_MapOfMyFloatStringMap(6.5, "Hello Milky Way!");
@@ -1571,11 +1571,11 @@ class Test11MapFloat_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getSize_MapOfMyFloatStringMap() == 3);
 			TS_ASSERT(!obj1.isEmpty_MapOfMyFloatStringMap());
 			TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(4.5));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(4.5), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(4.5), "Hello World!"));
 			TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(5.5));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(5.5), "Hello Solar System!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(5.5), "Hello Solar System!"));
 			TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(6.5));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(6.5), "Hello Milky Way!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(6.5), "Hello Milky Way!"));
 	
 			TS_ASSERT(obj1.getMapOfMyFloatBoolMap().size() == 2);
 			TS_ASSERT(obj1.getSize_MapOfMyFloatBoolMap() == 2);
@@ -1703,7 +1703,7 @@ class Test11MapFloat_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj2.containsKey_MapOfMyFloatStringMap(6.5));
 			TS_ASSERT(obj2.getValueForKey_MapOfMyFloatStringMap(6.5) == "Hello Milky Way!");
 	
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
 		}
 	
 		void testCreateAndSerializeObject() {
@@ -2128,11 +2128,11 @@ class Test11MapFloat_TestSuite : public CxxTest::TestSuite {
 				TS_ASSERT(obj1.getSize_MapOfMyFloatStringMap() == 3);
 				TS_ASSERT(!obj1.isEmpty_MapOfMyFloatStringMap());
 				TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(4.5));
-				TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(4.5), "Hello World!"));
+				TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(4.5), "Hello World!"));
 				TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(5.5));
-				TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(5.5), "Hello Solar System!"));
+				TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(5.5), "Hello Solar System!"));
 				TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(6.5));
-				TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(6.5), "Hello Milky Way!"));
+				TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(6.5), "Hello Milky Way!"));
 			
 				obj1.clear_MapOfMyFloatStringMap();
 				TS_ASSERT(obj1.getMapOfMyFloatStringMap().size() == 0);
@@ -2147,7 +2147,7 @@ class Test11MapFloat_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getSize_MapOfMyFloatStringMap() == 1);
 			TS_ASSERT(!obj1.isEmpty_MapOfMyFloatStringMap());
 			TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(4.5));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(4.5), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(4.5), "Hello World!"));
 			TS_ASSERT(!obj1.containsKey_MapOfMyFloatStringMap(5.5));
 			TS_ASSERT(!obj1.containsKey_MapOfMyFloatStringMap(6.5));
 			
@@ -2156,9 +2156,9 @@ class Test11MapFloat_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getSize_MapOfMyFloatStringMap() == 2);
 			TS_ASSERT(!obj1.isEmpty_MapOfMyFloatStringMap());
 			TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(4.5));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(4.5), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(4.5), "Hello World!"));
 			TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(5.5));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(5.5), "Hello Solar System!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(5.5), "Hello Solar System!"));
 			TS_ASSERT(!obj1.containsKey_MapOfMyFloatStringMap(6.5));
 			
 			obj1.putTo_MapOfMyFloatStringMap(6.5, "Hello Milky Way!");
@@ -2166,11 +2166,11 @@ class Test11MapFloat_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj1.getSize_MapOfMyFloatStringMap() == 3);
 			TS_ASSERT(!obj1.isEmpty_MapOfMyFloatStringMap());
 			TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(4.5));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(4.5), "Hello World!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(4.5), "Hello World!"));
 			TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(5.5));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(5.5), "Hello Solar System!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(5.5), "Hello Solar System!"));
 			TS_ASSERT(obj1.containsKey_MapOfMyFloatStringMap(6.5));
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(6.5), "Hello Milky Way!"));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.getValueForKey_MapOfMyFloatStringMap(6.5), "Hello Milky Way!"));
 	
 			TS_ASSERT(obj1.getMapOfMyFloatBoolMap().size() == 2);
 			TS_ASSERT(obj1.getSize_MapOfMyFloatBoolMap() == 2);
@@ -2301,7 +2301,7 @@ class Test11MapFloat_TestSuite : public CxxTest::TestSuite {
 			TS_ASSERT(obj2.containsKey_MapOfMyFloatStringMap(6.5));
 			TS_ASSERT(obj2.getValueForKey_MapOfMyFloatStringMap(6.5) == "Hello Milky Way!");
 	
-			TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
+			TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(obj1.toString(), obj2.toString()));
 		}
 
 };

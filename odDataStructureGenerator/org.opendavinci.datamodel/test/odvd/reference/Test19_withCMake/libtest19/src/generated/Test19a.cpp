@@ -5,16 +5,16 @@
  */
 
 
-#include "core/base/Hash.h"
-#include "core/base/Deserializer.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 
 
-#include "generated/Test19a.h"
+#include "test19/generated/Test19a.h"
 
 	using namespace std;
-	using namespace core::base;
+	using namespace odcore::base;
 
 	const uint32_t Test19a::MAGIC_NUMBER = 42;
 	const float Test19a::PI = 3.14159;
@@ -52,8 +52,20 @@
 		return "Test19a";
 	}
 
+	int32_t Test19a::getID() const {
+		return Test19a::ID();
+	}
 
-	void Test19a::accept(core::base::Visitor &v) {
+	const string Test19a::getShortName() const {
+		return Test19a::ShortName();
+	}
+
+	const string Test19a::getLongName() const {
+		return Test19a::LongName();
+	}
+
+
+	void Test19a::accept(odcore::base::Visitor &v) {
 		(void)v; // Avoid unused parameter warning.
 	}
 
@@ -69,7 +81,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Serializer> s = sf.getSerializer(out);(void)s; // Avoid unused variable warning.
+		odcore::SharedPointer<Serializer> s = sf.getSerializer(out);(void)s; // Avoid unused variable warning.
 
 		return out;
 	}
@@ -78,7 +90,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Deserializer> d = sf.getDeserializer(in);(void)d; // Avoid unused variable warning.
+		odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);(void)d; // Avoid unused variable warning.
 
 		return in;
 	}

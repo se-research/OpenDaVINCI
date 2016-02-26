@@ -21,16 +21,16 @@
 #include "plugins/ControlPlugIn.h"
 
 class QWidget;
-namespace core { namespace base { class KeyValueConfiguration; } }
-namespace core { namespace io { namespace conference { class ContainerConference; } } }
+namespace odcore { namespace base { class KeyValueConfiguration; } }
+namespace odcore { namespace io { namespace conference { class ContainerConference; } } }
 
 namespace cockpit {
 
     namespace plugins {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::io::conference;
+        using namespace odcore::base;
+        using namespace odcore::io::conference;
 
         ControlPlugIn::ControlPlugIn(const string &name, const KeyValueConfiguration &kvc, ContainerConference &conf, QWidget* prnt) :
                 PlugIn(name, kvc, prnt),
