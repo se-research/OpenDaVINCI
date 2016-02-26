@@ -128,7 +128,7 @@ namespace cockpit {
                         logMessageEntry->setText(1, lm.getLogMessage().c_str());
                         componentSubEntry->insertChild(0, logMessageEntry);
 
-                        const int32_t MAX_CHILDREN = 4;
+                        const int32_t MAX_CHILDREN = 10;
                         componentSubEntry->takeChild(MAX_CHILDREN);
                    }
                 }
