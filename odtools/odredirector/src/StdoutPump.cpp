@@ -22,7 +22,7 @@
 #include <iostream>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/base/Serializable.h"
 #include "opendavinci/odcore/data/Container.h"
@@ -58,7 +58,7 @@ namespace odredirector {
                 void *buffer = ::malloc(compressedSize);
                 if (buffer != NULL) {
                     // As we are transforming a SharedImage into a CompressedImage, attached to the shared memory segment.
-                    SharedPointer<odcore::wrapper::SharedMemory> memory = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(si.getName());
+                    std::shared_ptr<odcore::wrapper::SharedMemory> memory = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(si.getName());
                     if (memory->isValid()) {
                         Lock l(memory);
                         retVal = odcore::wrapper::jpg::JPG::compress(buffer, compressedSize, si.getWidth(), si.getHeight(), si.getBytesPerPixel(), static_cast<const unsigned char*>(memory->getSharedMemory()), m_jpegQuality);

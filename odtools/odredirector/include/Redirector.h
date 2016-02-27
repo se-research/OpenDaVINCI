@@ -24,7 +24,7 @@
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
 #include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
 
@@ -83,7 +83,7 @@ namespace odredirector {
             bool m_fromstdin;
             bool m_tostdout;
             int32_t m_jpegQuality;
-            map<string, odcore::SharedPointer<odcore::wrapper::SharedMemory> > m_mapOfSharedMemories;
+            map<string, std::shared_ptr<odcore::wrapper::SharedMemory> > m_mapOfSharedMemories;
     };
 
 } // odredirector

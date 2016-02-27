@@ -27,7 +27,7 @@
 
 #include "cxxtest/TestSuite.h"
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/strings/StringToolbox.h"
 #include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 #include "opendavinci/odcore/data/Container.h"
@@ -75,7 +75,7 @@ class SplitTest : public CxxTest::TestSuite {
             Recorder recorder(file, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING, DUMP_SHARED_DATA);
 
             {
-                odcore::SharedPointer<odcore::wrapper::SharedMemory> memServer = odcore::wrapper::SharedMemoryFactory::createSharedMemory("SharedMemoryServer", 50);
+                std::shared_ptr<odcore::wrapper::SharedMemory> memServer = odcore::wrapper::SharedMemoryFactory::createSharedMemory("SharedMemoryServer", 50);
                 TS_ASSERT(memServer->isValid());
                 TS_ASSERT(memServer->getSize() == 50);
 
@@ -147,7 +147,7 @@ class SplitTest : public CxxTest::TestSuite {
             const uint32_t MAX_ITERATIONS = 1000;
             uint32_t i = 0;
 
-            odcore::SharedPointer<odcore::wrapper::SharedMemory> memClient;
+            std::shared_ptr<odcore::wrapper::SharedMemory> memClient;
 
             while (player.hasMoreData() && (i < MAX_ITERATIONS)) {
                 i++;
@@ -160,7 +160,7 @@ class SplitTest : public CxxTest::TestSuite {
                     rangeBasis++;
                 }
                 else if (nextContainer.getDataType() == odcore::data::SharedData::ID()) {
-                    if (!memClient.isValid()) {
+                    if (!memClient.get()) {
                         odcore::data::SharedData sd = nextContainer.getData<odcore::data::SharedData>();
                         memClient = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(sd.getName());
                     }

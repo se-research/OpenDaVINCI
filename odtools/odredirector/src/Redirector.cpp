@@ -22,7 +22,7 @@
 #include <iostream>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/base/CommandLineArgument.h"
 #include "opendavinci/odcore/base/CommandLineParser.h"
@@ -121,14 +121,14 @@ namespace odredirector {
                         odcore::data::image::CompressedImage ci = c.getData<odcore::data::image::CompressedImage>();
 
                         // Check, whether a shared memory was already created for this SharedImage; otherwise, create it and save it for later.
-                        map<string, odcore::SharedPointer<odcore::wrapper::SharedMemory> >::iterator it = m_mapOfSharedMemories.find(ci.getName());
+                        map<string, std::shared_ptr<odcore::wrapper::SharedMemory> >::iterator it = m_mapOfSharedMemories.find(ci.getName());
                         if (it == m_mapOfSharedMemories.end()) {
-                            odcore::SharedPointer<odcore::wrapper::SharedMemory> sp = odcore::wrapper::SharedMemoryFactory::createSharedMemory(ci.getName(), ci.getSize());
+                            std::shared_ptr<odcore::wrapper::SharedMemory> sp = odcore::wrapper::SharedMemoryFactory::createSharedMemory(ci.getName(), ci.getSize());
                             m_mapOfSharedMemories[ci.getName()] = sp;
                         }
 
                         // Get the shared memory to put the uncompressed image into.
-                        odcore::SharedPointer<odcore::wrapper::SharedMemory> sp = m_mapOfSharedMemories[ci.getName()];
+                        std::shared_ptr<odcore::wrapper::SharedMemory> sp = m_mapOfSharedMemories[ci.getName()];
 
                         int width = 0;
                         int height = 0;
