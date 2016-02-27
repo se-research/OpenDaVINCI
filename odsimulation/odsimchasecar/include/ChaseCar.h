@@ -22,7 +22,7 @@
 
 #include <stdint.h>
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/FIFOQueue.h"
 #include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
 #include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
@@ -132,7 +132,7 @@ class OpenGLGrabber;
             odcore::base::FIFOQueue m_FIFO_Obstacles;
 
             OpenGLGrabber *m_grabber;
-            odcore::SharedPointer<core::wrapper::Image> m_image;
+            std::shared_ptr<core::wrapper::Image> m_image;
 
             float m_translationX;
             float m_translationY;

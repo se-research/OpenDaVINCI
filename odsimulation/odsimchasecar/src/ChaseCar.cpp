@@ -155,7 +155,7 @@ namespace chasecar {
         frameCounter++;
 
         // Share information about this image.
-        if (m_image.isValid()) {
+        if (m_image.get()) {
             SharedImage si;
             si.setWidth(m_image->getWidth());
             si.setHeight(m_image->getHeight());
