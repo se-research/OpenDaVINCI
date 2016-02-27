@@ -30,7 +30,7 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 #include "opendavinci/odcore/base/FIFOQueue.h"
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
@@ -134,13 +134,13 @@ class SupercomponentClientModuleTest : public CxxTest::TestSuite,
             m_connection() {}
 
         odsupercomponent::GlobalConfigurationProvider m_globaleConfigurationProvider;
-        odcore::SharedPointer<connection::ModuleConnection> m_connection;
+        std::shared_ptr<connection::ModuleConnection> m_connection;
 
         virtual KeyValueConfiguration getConfiguration(const ModuleDescriptor &md) {
             return m_globaleConfigurationProvider.getConfiguration(md);
         }
 
-        virtual void onNewModule(odcore::SharedPointer<odcore::dmcp::connection::ModuleConnection> mc) {
+        virtual void onNewModule(std::shared_ptr<odcore::dmcp::connection::ModuleConnection> mc) {
             m_connection = mc;
         }
 

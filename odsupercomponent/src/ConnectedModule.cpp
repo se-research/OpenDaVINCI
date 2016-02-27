@@ -30,7 +30,7 @@ namespace odsupercomponent {
     using namespace odcore::base;
     using namespace odcore::dmcp::connection;
 
-    ConnectedModule::ConnectedModule(odcore::SharedPointer<odcore::dmcp::connection::ModuleConnection> connection, const odcore::data::dmcp::ModuleStateMessage::ModuleState& state) :
+    ConnectedModule::ConnectedModule(std::shared_ptr<odcore::dmcp::connection::ModuleConnection> connection, const odcore::data::dmcp::ModuleStateMessage::ModuleState& state) :
         m_state(state),
         m_connection(connection),
         m_hasExitCode(false)

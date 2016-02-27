@@ -120,7 +120,7 @@ namespace odsupercomponent {
         m_connectionServer = new connection::Server(serverInformation, m_configurationProvider);
         m_connectionServer->setConnectionHandler(this);
 
-        m_conference = odcore::SharedPointer<ContainerConference>(ContainerConferenceFactory::getInstance().getContainerConference(getMultiCastGroup()));
+        m_conference = std::shared_ptr<ContainerConference>(ContainerConferenceFactory::getInstance().getContainerConference(getMultiCastGroup()));
         m_conference->setContainerListener(this);
 
         CLOG1 << "[odsupercomponent" << (isRealtime() ? " - real time mode" : "") << "]: Ready - managed level " << m_managedLevel << endl;
@@ -461,8 +461,8 @@ namespace odsupercomponent {
         return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
     }
 
-    void SuperComponent::onNewModule(odcore::SharedPointer<odcore::dmcp::connection::ModuleConnection> mc) {
-        if (mc.isValid()) {
+    void SuperComponent::onNewModule(std::shared_ptr<odcore::dmcp::connection::ModuleConnection> mc) {
+        if (mc.get()) {
             mc->waitForModuleDescription();
             CLOG1 << "[odsupercomponent]: New connected module " << mc->getModuleDescriptor().toString() << endl;
 

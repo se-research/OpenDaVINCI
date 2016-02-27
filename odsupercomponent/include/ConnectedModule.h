@@ -21,7 +21,7 @@
 #ifndef SUPERCOMPONENT_CONNECTEDMODULE_H_
 #define SUPERCOMPONENT_CONNECTEDMODULE_H_
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/generated/odcore/data/dmcp/ModuleStateMessage.h"
 
 namespace odcore { namespace dmcp { namespace connection { class ModuleConnection; } } }
@@ -32,7 +32,7 @@ namespace odsupercomponent {
 
     class ConnectedModule {
         public:
-            ConnectedModule(odcore::SharedPointer<odcore::dmcp::connection::ModuleConnection> connection,
+            ConnectedModule(std::shared_ptr<odcore::dmcp::connection::ModuleConnection> connection,
                             const odcore::data::dmcp::ModuleStateMessage::ModuleState& moduleState );
 
             virtual ~ConnectedModule();
@@ -47,7 +47,7 @@ namespace odsupercomponent {
 
         protected:
             odcore::data::dmcp::ModuleStateMessage::ModuleState m_state;
-            odcore::SharedPointer<odcore::dmcp::connection::ModuleConnection> m_connection;
+            std::shared_ptr<odcore::dmcp::connection::ModuleConnection> m_connection;
             bool m_hasExitCode;
 
         private:
