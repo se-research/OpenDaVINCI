@@ -34,7 +34,7 @@ namespace odcore {
             m_serviceState(INITIALIZED),
             m_serviceReadyCondition(),
             m_serviceReady(false) {
-            m_thread = auto_ptr<odcore::wrapper::Thread>(wrapper::ConcurrencyFactory::createThread(*this));
+            m_thread = unique_ptr<odcore::wrapper::Thread>(wrapper::ConcurrencyFactory::createThread(*this));
             if (m_thread.get() == NULL) {
                 OPENDAVINCI_CORE_THROW_EXCEPTION(ThreadException, "[core::base::Service] Thread could not be created!");
             }

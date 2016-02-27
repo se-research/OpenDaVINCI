@@ -44,8 +44,8 @@ namespace automotive {
 
         Proxy::Proxy(const int32_t &argc, char **argv) :
             TimeTriggeredConferenceClientModule(argc, argv, "proxy"),
-            m_recorder(NULL),
-            m_camera(NULL)
+            m_recorder(),
+            m_camera()
         {}
 
         Proxy::~Proxy() {
@@ -75,7 +75,7 @@ namespace automotive {
                 // Dump shared images and shared data?
                 const bool DUMP_SHARED_DATA = getKeyValueConfiguration().getValue<uint32_t>("proxy.recorder.dumpshareddata") == 1;
 
-                m_recorder = auto_ptr<Recorder>(new Recorder(recordingURL.str(), MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING, DUMP_SHARED_DATA));
+                m_recorder = unique_ptr<Recorder>(new Recorder(recordingURL.str(), MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING, DUMP_SHARED_DATA));
             }
 
             // Create the camera grabber.
@@ -88,11 +88,11 @@ namespace automotive {
             const uint32_t BPP = getKeyValueConfiguration().getValue<uint32_t>("proxy.camera.bpp");
 
             if (TYPE.compare("opencv") == 0) {
-                m_camera = auto_ptr<Camera>(new OpenCVCamera(NAME, ID, WIDTH, HEIGHT, BPP));
+                m_camera = unique_ptr<Camera>(new OpenCVCamera(NAME, ID, WIDTH, HEIGHT, BPP));
             }
             if (TYPE.compare("ueye") == 0) {
 #ifdef HAVE_UEYE
-                m_camera = auto_ptr<Camera>(new uEyeCamera(NAME, ID, WIDTH, HEIGHT, BPP));
+                m_camera = unique_ptr<Camera>(new uEyeCamera(NAME, ID, WIDTH, HEIGHT, BPP));
 #endif
             }
 

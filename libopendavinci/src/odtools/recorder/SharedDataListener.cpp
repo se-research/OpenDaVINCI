@@ -42,7 +42,7 @@ namespace odtools {
 
         SharedDataListener::SharedDataListener(SharedPointer<ostream> out, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const bool &threading) :
             m_threading(threading),
-            m_sharedDataWriter(NULL),
+            m_sharedDataWriter(),
             m_mapOfAvailableSharedData(),
             m_mapOfAvailableSharedImages(),
             m_mapOfAvailableSharedPointCloud(),
@@ -67,7 +67,7 @@ namespace odtools {
             CLOG1 << "done." << endl;
 
             // Hand over the buffer to the writer.
-            m_sharedDataWriter = auto_ptr<SharedDataWriter>(new SharedDataWriter(m_out, m_mapOfMemories, m_bufferIn, m_bufferOut));
+            m_sharedDataWriter = unique_ptr<SharedDataWriter>(new SharedDataWriter(m_out, m_mapOfMemories, m_bufferIn, m_bufferOut));
             if ( (m_sharedDataWriter.get() != NULL) && (m_threading) ) {
                 m_sharedDataWriter->start();
             }

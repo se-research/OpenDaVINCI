@@ -156,14 +156,14 @@ namespace odcore {
 
 
             void POSIXTCPConnection::initialize() {
-                m_thread = auto_ptr<Thread>(ConcurrencyFactory::createThread(*this));
+                m_thread = unique_ptr<Thread>(ConcurrencyFactory::createThread(*this));
                 if (m_thread.get() == NULL) {
                     stringstream s;
                     s << "[core::wrapper::POSIXTCPConnection] Error creating thread: " << strerror(errno);
                     throw s.str();
                 }
 
-                m_socketMutex = auto_ptr<Mutex>(MutexFactory::createMutex());
+                m_socketMutex = unique_ptr<Mutex>(MutexFactory::createMutex());
                 if (m_socketMutex.get() == NULL) {
                     stringstream s;
                     s << "[core::wrapper::POSIXTCPConnection] Error creating mutex: " << strerror(errno);

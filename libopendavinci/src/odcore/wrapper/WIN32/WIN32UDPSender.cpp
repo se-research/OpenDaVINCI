@@ -33,8 +33,8 @@ namespace odcore {
             WIN32UDPSender::WIN32UDPSender(const string &address, const uint32_t &port) :
                 m_address(),
                 m_fd(),
-                m_socketMutex(NULL) {
-                m_socketMutex = auto_ptr<Mutex>(MutexFactory::createMutex());
+                m_socketMutex() {
+                m_socketMutex = unique_ptr<Mutex>(MutexFactory::createMutex());
                 if (m_socketMutex.get() == NULL) {
                     stringstream s;
                     s << "[core::wrapper::WIN32UDPSender] Error while creating mutex.";

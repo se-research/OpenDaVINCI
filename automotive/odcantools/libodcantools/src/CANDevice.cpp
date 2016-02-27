@@ -52,9 +52,9 @@ namespace automotive {
             }
 
             // Create the MessageToCANDataStore to write Containers to the CAN bus.
-            // This needs to be an auto_ptr due to the circular dependencies between
+            // This needs to be an unique_ptr due to the circular dependencies between
             // the two classes.
-            m_messageToCANDataStore = auto_ptr<MessageToCANDataStore>(new MessageToCANDataStore(*this));
+            m_messageToCANDataStore = unique_ptr<MessageToCANDataStore>(new MessageToCANDataStore(*this));
         }
 
         CANDevice::~CANDevice() {

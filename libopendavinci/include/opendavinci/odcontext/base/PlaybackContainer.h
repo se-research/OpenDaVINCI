@@ -80,7 +80,7 @@ class SendContainerToSystemsUnderTest;
                 string m_urlFileName;
                 uint32_t m_memorySegmentSize;
                 uint32_t m_numberOfSegments;
-                auto_ptr<odtools::player::Player> m_player;
+                unique_ptr<odtools::player::Player> m_player;
         };
 
     }

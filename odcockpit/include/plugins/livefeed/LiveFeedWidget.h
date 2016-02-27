@@ -82,7 +82,7 @@ namespace cockpit {
                     virtual void nextContainer(Container &c);
 
                 private:
-                    auto_ptr<QTreeWidget> m_dataView;
+                    unique_ptr<QTreeWidget> m_dataView;
                     map<string, QTreeWidgetItem* > m_dataToType;
 
                     void transformContainerToTree(Container &container);

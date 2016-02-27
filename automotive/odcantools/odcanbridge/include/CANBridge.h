@@ -91,7 +91,7 @@ class CANDevice;
 
             private:
                 odcore::base::FIFOQueue m_fifo;
-                auto_ptr<odtools::recorder::Recorder> m_recorder;
+                unique_ptr<odtools::recorder::Recorder> m_recorder;
                 odcore::SharedPointer<CANDevice> m_deviceA;
                 string m_deviceNodeA;
                 odcore::SharedPointer<CANDevice> m_deviceB;

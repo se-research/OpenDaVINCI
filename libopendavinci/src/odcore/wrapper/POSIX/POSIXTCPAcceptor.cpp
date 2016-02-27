@@ -42,19 +42,19 @@ namespace odcore {
             using namespace std;
 
             POSIXTCPAcceptor::POSIXTCPAcceptor(const uint32_t &port) :
-                m_thread(NULL),
-                m_listenerMutex(NULL),
+                m_thread(),
+                m_listenerMutex(),
                 m_listener(NULL),
                 m_fileDescriptor(0),
                 m_port(port) {
-                m_thread = auto_ptr<Thread>(ConcurrencyFactory::createThread(*this));
+                m_thread = unique_ptr<Thread>(ConcurrencyFactory::createThread(*this));
                 if (m_thread.get() == NULL) {
                     stringstream s;
                     s << "[core::wrapper::POSIXTCPAcceptor] Error creating thread: " << strerror(errno);
                     throw s.str();
                 }
 
-                m_listenerMutex = auto_ptr<Mutex>(MutexFactory::createMutex());
+                m_listenerMutex = unique_ptr<Mutex>(MutexFactory::createMutex());
                 if (m_listenerMutex.get() == NULL) {
                     stringstream s;
                     s << "[POSIXTCPConnection] Error creating mutex: " << strerror(errno);

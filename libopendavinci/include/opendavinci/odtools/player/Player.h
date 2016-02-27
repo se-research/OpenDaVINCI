@@ -110,7 +110,7 @@ class PlayerCache;
                 odcore::SharedPointer<istream> m_inFile;
                 odcore::SharedPointer<istream> m_inSharedMemoryFile;
 
-                auto_ptr<PlayerCache> m_playerCache;
+                unique_ptr<PlayerCache> m_playerCache;
 
                 // The "actual" container contains the data to be sent, ...
                 odcore::data::Container m_actual;

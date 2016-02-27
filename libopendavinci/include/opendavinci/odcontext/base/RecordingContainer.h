@@ -78,7 +78,7 @@ namespace odcontext {
                 string m_urlFileName;
                 uint32_t m_memorySegmentSize;
                 uint32_t m_numberOfSegments;
-                auto_ptr<odtools::recorder::Recorder> m_recorder;
+                unique_ptr<odtools::recorder::Recorder> m_recorder;
         };
 
     }

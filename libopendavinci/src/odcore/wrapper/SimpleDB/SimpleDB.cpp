@@ -28,9 +28,9 @@ namespace odcore {
             using namespace std;
 
             SimpleDB::SimpleDB() :
-                m_mutex(NULL),
+                m_mutex(),
                 m_entries() {
-                m_mutex = auto_ptr<Mutex>(MutexFactory::createMutex());
+                m_mutex = unique_ptr<Mutex>(MutexFactory::createMutex());
                 if (m_mutex.get() == NULL) {
                     throw std::string("[core::wrapper::SimpleDB] Error creating mutex");
                 }

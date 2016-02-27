@@ -33,7 +33,7 @@ namespace odcore {
             m_thread(),
             m_realtimeServiceStateMutex(),
             m_realtimeServiceState(INITIALIZED) {
-            m_thread = auto_ptr<odcore::wrapper::Thread>(odcore::wrapper::ConcurrencyFactory::createThread(*this));
+            m_thread = unique_ptr<odcore::wrapper::Thread>(odcore::wrapper::ConcurrencyFactory::createThread(*this));
             if (m_thread.get() == NULL) {
                 OPENDAVINCI_CORE_THROW_EXCEPTION(ThreadException, "[core::base::RealtimeService] Thread could not be created!");
             }

@@ -28,7 +28,7 @@ namespace odcore {
         // Set up TimeFactory that can be exchanged on runtime.
         TimeFactory* TimeFactory::instance = NULL;
         TimeFactory* TimeFactory::controlledInstance = NULL;
-        auto_ptr<Mutex> TimeFactory::m_singletonMutex = auto_ptr<Mutex>(MutexFactory::createMutex());
+        unique_ptr<Mutex> TimeFactory::m_singletonMutex = unique_ptr<Mutex>(MutexFactory::createMutex());
 
         SystemTimeFactory::worker_type SystemTimeFactory::instance = SystemTimeFactory::worker_type();
         

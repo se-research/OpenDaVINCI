@@ -175,12 +175,12 @@ namespace odcore {
 
 
             void WIN32TCPConnection::initialize() {
-                m_thread = auto_ptr<Thread>(ConcurrencyFactory::createThread(*this));
+                m_thread = unique_ptr<Thread>(ConcurrencyFactory::createThread(*this));
                 if (m_thread.get() == NULL) {
                     throw std::string("[core::wrapper::WIN32TCPConnection] Error creating thread");
                 }
 
-                m_socketMutex = auto_ptr<Mutex>(MutexFactory::createMutex());
+                m_socketMutex = unique_ptr<Mutex>(MutexFactory::createMutex());
                 if (m_socketMutex.get() == NULL) {
                     throw std::string("[core::wrapper::WIN32TCPConnection] Error creating mutex for socket");
                 }

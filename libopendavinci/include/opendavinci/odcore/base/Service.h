@@ -117,7 +117,7 @@ namespace odcore {
                 virtual bool isRunning();
 
             private:
-                auto_ptr<odcore::wrapper::Thread> m_thread;
+                unique_ptr<odcore::wrapper::Thread> m_thread;
 
                 Mutex m_serviceStateMutex;
                 SERVICE_STATE m_serviceState;

@@ -1,6 +1,6 @@
 /**
  * cockpit - Visualization environment
- * Copyright (C) 2012 - 2015 Christian Berger
+ * Copyright (C) 2012 - 2016 Christian Berger
  * Copyright (C) 2008 - 2011 (as monitor component) Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -47,7 +47,7 @@ namespace cockpit {
 
             LogMessageWidget::LogMessageWidget(const PlugIn &/*plugIn*/, QWidget *prnt) :
                 QWidget(prnt),
-                m_dataView(NULL),
+                m_dataView(),
                 m_components(),
                 m_loglevelPerComponent() {
                 // Set size.
@@ -57,7 +57,7 @@ namespace cockpit {
                 QGridLayout* mainBox = new QGridLayout(this);
 
                 //ListView and header construction
-                m_dataView = auto_ptr<QTreeWidget>(new QTreeWidget(this));
+                m_dataView = unique_ptr<QTreeWidget>(new QTreeWidget(this));
                 m_dataView->setColumnCount(2);
                 QStringList headerLabel;
                 headerLabel << tr("Component") << tr("Message");

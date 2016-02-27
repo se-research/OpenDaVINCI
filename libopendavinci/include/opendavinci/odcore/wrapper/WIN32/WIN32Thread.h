@@ -88,7 +88,7 @@ namespace odcore {
                     virtual bool isRunning() const;
 
                 private:
-                    auto_ptr<Mutex> m_threadStateMutex;
+                    unique_ptr<Mutex> m_threadStateMutex;
                     THREAD_STATE m_threadState;
 
                     Runnable &m_runnable;

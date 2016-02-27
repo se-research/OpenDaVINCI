@@ -25,19 +25,9 @@ IF(UNIX)
     ENDIF()
 
     SET (CXX_OPTIONS       "-std=c++11 -Wno-deprecated -Wall -Werror -Wshadow -Wextra -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wpacked")
-    SET (CXX_OPTION_ANSI   "-ansi")
     SET (CXX_EFFECTIVE_CXX "-Wmissing-format-attribute -Wredundant-decls -Wno-error=effc++ -Weffc++")
     
     SET (CXX_WARNING_ALL    "-Wcast-align -Wchar-subscripts -Wcomment -Wdisabled-optimization -Wformat -Wformat=2 -Wformat-nonliteral -Wformat-security -Wformat-y2k -Wfloat-equal -Winit-self -Winline -Winvalid-pch -Wlong-long -Wsign-compare -Wuninitialized -Wunreachable-code -Wunsafe-loop-optimizations -Wunused -Wunused-function -Wunused-label -Wunused-parameter -Wunused-but-set-parameter -Wunused-but-set-variable -Wunused-value -Wunused-variable -Wno-maybe-uninitialized -Wunused-result -Wmissing-braces -Wmissing-field-initializers -Wmissing-format-attribute -Wmissing-include-dirs -Wmissing-noreturn -Wparentheses -Wsign-compare -Wswitch -Wuninitialized -Wunknown-pragmas -Wunreachable-code -Wtrigraphs  -Wvariadic-macros -Wvolatile-register-var -Wwrite-strings -Wpointer-arith -Wredundant-decls -Wreturn-type -Wsequence-point -Wstack-protector -Wstrict-aliasing -Wstrict-aliasing=2 -Wsync-nand -Wsuggest-attribute=const -Warray-bounds -Wtrampolines -Wnormalized=nfc -Wvarargs -Wvector-operation-performance -Wvla -Wtype-limits -Wc++11-compat -Woverloaded-virtual")
-
-    # Remove "-ansi" flag for clang on Darwin.
-    IF(    (NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin") 
-       AND (NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD")
-       AND (NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "NetBSD")
-       AND (NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "DragonFly")
-       AND (NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang") )
-        SET (CXX_OPTIONS "${CXX_OPTIONS} ${CXX_OPTION_ANSI}")
-    ENDIF()
 
     # Additionally, test for Effective C++ warnings except on OpenBSD.
     IF(NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "OpenBSD")

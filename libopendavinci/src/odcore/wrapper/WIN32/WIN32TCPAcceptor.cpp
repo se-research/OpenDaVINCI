@@ -32,17 +32,17 @@ namespace odcore {
             using namespace std;
 
             WIN32TCPAcceptor::WIN32TCPAcceptor(const uint32_t &port) :
-                m_thread(NULL),
-                m_listenerMutex(NULL),
+                m_thread(),
+                m_listenerMutex(),
                 m_listener(NULL),
                 m_fileDescriptor(0),
                 m_port(port) {
-                m_thread = auto_ptr<Thread>(ConcurrencyFactory::createThread(*this));
+                m_thread = unique_ptr<Thread>(ConcurrencyFactory::createThread(*this));
                 if (m_thread.get() == NULL) {
                     throw std::string("[core::wrapper::WIN32TCPAcceptor] Error creating thread");
                 }
 
-                m_listenerMutex = auto_ptr<Mutex>(MutexFactory::createMutex());
+                m_listenerMutex = unique_ptr<Mutex>(MutexFactory::createMutex());
                 if (m_listenerMutex.get() == NULL) {
                     throw std::string("[core::wrapper::WIN32TCPAcceptor] Error creating mutex");
                 }

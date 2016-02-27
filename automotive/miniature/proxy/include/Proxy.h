@@ -79,8 +79,8 @@ namespace automotive {
                 void distribute(odcore::data::Container c);
 
             private:
-                auto_ptr<odtools::recorder::Recorder> m_recorder;
-                auto_ptr<Camera> m_camera;
+                unique_ptr<odtools::recorder::Recorder> m_recorder;
+                unique_ptr<Camera> m_camera;
         };
 
     }

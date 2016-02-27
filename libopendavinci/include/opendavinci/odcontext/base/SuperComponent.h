@@ -113,8 +113,8 @@ namespace odcontext {
                 odcore::base::Mutex m_configurationMutex;
                 odcore::base::KeyValueConfiguration m_configuration;
 
-                auto_ptr<odcore::dmcp::discoverer::Server> m_discovererServer;
-                auto_ptr<odcore::dmcp::connection::Server> m_connectionServer;
+                unique_ptr<odcore::dmcp::discoverer::Server> m_discovererServer;
+                unique_ptr<odcore::dmcp::connection::Server> m_connectionServer;
 
                 odcore::SharedPointer<odcore::io::conference::ContainerConference> m_conference;
 

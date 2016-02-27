@@ -42,7 +42,7 @@ namespace odcore {
                 m_mreq(),
                 m_fd(),
                 m_buffer(NULL),
-                m_thread(NULL) {
+                m_thread() {
                 m_buffer = new char[BUFFER_SIZE];
                 if (m_buffer == NULL) {
                     stringstream s;
@@ -92,7 +92,7 @@ namespace odcore {
                 }
 
                 // Create thread for encapsulating waiting for receiving data.
-                m_thread = auto_ptr<Thread>(ConcurrencyFactory::createThread(*this));
+                m_thread = unique_ptr<Thread>(ConcurrencyFactory::createThread(*this));
                 if (m_thread.get() == NULL) {
                     stringstream s;
                     s << "[POSIXUDPReceiver] Error creating thread: " << strerror(errno);

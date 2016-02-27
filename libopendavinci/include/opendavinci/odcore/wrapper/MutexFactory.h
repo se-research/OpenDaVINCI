@@ -34,7 +34,7 @@ class Mutex;
          * It can be used as follows:
          *
          * @code
-         * auto_ptr<Mutex> m = MutexFactory::createMutex();
+         * unique_ptr<Mutex> m = MutexFactory::createMutex();
          *
          * ...
          *

@@ -33,43 +33,43 @@ namespace odcontext {
         using namespace odcore::data;
         using namespace odtools::recorder;
 
-		RecordingContainer::RecordingContainer(const float &freq, const string &urlFileName, const uint32_t &memorySegmentSize, const uint32_t &numberOfSegments) :
-			m_freq(freq),
+        RecordingContainer::RecordingContainer(const float &freq, const string &urlFileName, const uint32_t &memorySegmentSize, const uint32_t &numberOfSegments) :
+            m_freq(freq),
             m_urlFileName(urlFileName),
             m_memorySegmentSize(memorySegmentSize),
             m_numberOfSegments(numberOfSegments),
-            m_recorder(NULL) {
+            m_recorder() {
         }
 
-		RecordingContainer::~RecordingContainer() {}
+        RecordingContainer::~RecordingContainer() {}
 
-		void RecordingContainer::setup() {
-			if (m_urlFileName != "") {
+        void RecordingContainer::setup() {
+            if (m_urlFileName != "") {
                 // We can use the sychronous recorder as we are running in a deterministic simulation anyways.
                 const bool THREADING = false;
                 // Dump shared data and shared images as well.
                 const bool DUMP_SHARED_DATA = true;
-                m_recorder = auto_ptr<Recorder>(new Recorder(m_urlFileName, m_memorySegmentSize, m_numberOfSegments, THREADING, DUMP_SHARED_DATA));
-			}
-		}
+                m_recorder = unique_ptr<Recorder>(new Recorder(m_urlFileName, m_memorySegmentSize, m_numberOfSegments, THREADING, DUMP_SHARED_DATA));
+            }
+        }
 
         void RecordingContainer::tearDown() {}
 
-		void RecordingContainer::report(const odcore::wrapper::Time &/*t*/) {
-			if (m_recorder.get() != NULL) {
-	            const uint32_t SIZE = getFIFO().getSize();
-	            for (uint32_t i = 0; i < SIZE; i++) {
-	                Container c = getFIFO().leave();
-	                clog << "(RecordingContainer) Storing '" << c.toString() << "'." << endl;
+        void RecordingContainer::report(const odcore::wrapper::Time &/*t*/) {
+            if (m_recorder.get() != NULL) {
+                const uint32_t SIZE = getFIFO().getSize();
+                for (uint32_t i = 0; i < SIZE; i++) {
+                    Container c = getFIFO().leave();
+                    clog << "(RecordingContainer) Storing '" << c.toString() << "'." << endl;
                     m_recorder->store(c);
-	            }
-			}
-			getFIFO().clear();
-		}
+                }
+            }
+            getFIFO().clear();
+        }
 
-		float RecordingContainer::getFrequency() const {
-			return m_freq;
-		}
+        float RecordingContainer::getFrequency() const {
+            return m_freq;
+        }
 
     }
 } // odcontext::base

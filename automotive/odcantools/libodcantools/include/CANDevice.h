@@ -106,7 +106,7 @@ class GenericCANMessageListener;
                 string m_deviceNode;
                 HANDLE m_handle;
                 GenericCANMessageListener &m_listener;
-                auto_ptr<MessageToCANDataStore> m_messageToCANDataStore;
+                unique_ptr<MessageToCANDataStore> m_messageToCANDataStore;
         };
 
     } // odcantools
