@@ -182,9 +182,9 @@ namespace cockpit {
     }
 
     void CockpitWindow::showPlugIn(QListWidgetItem *item) {
-        odcore::SharedPointer<plugins::PlugIn> plugIn = m_plugInProvider.getPlugIn(item->text().toStdString());
+        std::shared_ptr<plugins::PlugIn> plugIn = m_plugInProvider.getPlugIn(item->text().toStdString());
 
-        if (plugIn.isValid()) {
+        if (plugIn.get()) {
             m_listOfPlugIns.push_back(plugIn);
 
             // Set container observer.

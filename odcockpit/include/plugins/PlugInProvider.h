@@ -27,7 +27,7 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
 #include "opendavinci/odcore/base/Mutex.h"
 
@@ -114,7 +114,7 @@ class PlugIn;
                  * @param name Name of the plugin.
                  * @return Plugin.
                  */
-                odcore::SharedPointer<PlugIn> getPlugIn(const string &name);
+                std::shared_ptr<PlugIn> getPlugIn(const string &name);
 
             private:
                 static odcore::base::Mutex m_singletonMutex;
@@ -133,7 +133,7 @@ class PlugIn;
                  * @param name Name of the plugin.
                  * @return New instance.
                  */
-                odcore::SharedPointer<PlugIn> createPlugIn(const string &name);
+                std::shared_ptr<PlugIn> createPlugIn(const string &name);
         };
 
     } // plugins

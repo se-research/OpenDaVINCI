@@ -132,7 +132,7 @@ namespace cockpit {
             void SharedImageViewerWidget::paintEvent(QPaintEvent * /*evnt*/) {
                 Lock l(m_sharedImageMemoryMutex);
 
-                if ( (m_sharedImageMemory.isValid()) && (m_sharedImageMemory->isValid()) ) {
+                if ( (m_sharedImageMemory.get()) && (m_sharedImageMemory->isValid()) ) {
                     m_sharedImageMemory->lock();
 
                     OPENDAVINCI_CORE_DELETE_POINTER(m_drawableImage);

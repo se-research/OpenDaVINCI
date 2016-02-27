@@ -29,7 +29,7 @@
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/io/conference/ContainerListener.h"
 #include "opendavinci/generated/odcore/data/dmcp/ModuleStatistics.h"
 
@@ -88,7 +88,7 @@ class LoadPlot;
         private:
           LoadPlot *m_plot;
           deque<odcore::data::dmcp::ModuleStatistics> m_moduleStatistics;
-          map<string, odcore::SharedPointer<LoadPerModule> > m_loadPerModule;
+          map<string, std::shared_ptr<LoadPerModule> > m_loadPerModule;
           uint32_t m_color;
         };
     }
