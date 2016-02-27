@@ -20,7 +20,7 @@
 #include <stdint.h>
 #include <iostream>
 #include <string>
-#include <opendavinci/odcore/SharedPointer.h>
+#include <memory>
 #include <opendavinci/odcore/io/tcp/TCPConnection.h>
 #include <opendavinci/odcore/io/tcp/TCPFactory.h>
 
@@ -34,10 +34,10 @@ int32_t main(int32_t argc, char **argv) {
     const string RECEIVER = "127.0.0.1";
     const uint32_t PORT = 1234;
 
-    // We are using OpenDaVINCI's SharedPointer to automatically
+    // We are using OpenDaVINCI's std::shared_ptr to automatically
     // release any acquired resources.
     try {
-        SharedPointer<TCPConnection> connection(TCPFactory::createTCPConnectionTo(RECEIVER, PORT));
+        std::shared_ptr<TCPConnection> connection(TCPFactory::createTCPConnectionTo(RECEIVER, PORT));
 
         connection->send("Hello World\r\n");
     }

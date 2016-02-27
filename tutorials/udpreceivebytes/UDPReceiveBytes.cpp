@@ -20,7 +20,7 @@
 #include <stdint.h>
 #include <iostream>
 #include <string>
-#include <opendavinci/odcore/SharedPointer.h>
+#include <memory>
 #include <opendavinci/odcore/base/Thread.h>
 #include <opendavinci/odcore/io/udp/UDPReceiver.h>
 #include <opendavinci/odcore/io/udp/UDPFactory.h>
@@ -42,10 +42,10 @@ int32_t main(int32_t argc, char **argv) {
     const string RECEIVER = "0.0.0.0";
     const uint32_t PORT = 1234;
 
-    // We are using OpenDaVINCI's SharedPointer to automatically
+    // We are using OpenDaVINCI's std::shared_ptr to automatically
     // release any acquired resources.
     try {
-        SharedPointer<UDPReceiver>
+        std::shared_ptr<UDPReceiver>
             udpreceiver(UDPFactory::createUDPReceiver(RECEIVER, PORT));
 
         // This instance will handle any bytes that are received

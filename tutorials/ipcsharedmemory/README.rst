@@ -18,7 +18,7 @@ ipcsharedmemoryproducer.cpp:
     #include <stdint.h>
     #include <iostream>
     #include <string>
-    #include <opendavinci/odcore/SharedPointer.h>
+#include <memory>
     #include <opendavinci/odcore/base/Lock.h>
     #include <opendavinci/odcore/base/Thread.h>
     #include <opendavinci/odcore/wrapper/SharedMemory.h>
@@ -34,10 +34,10 @@ ipcsharedmemoryproducer.cpp:
         const string NAME = "MySharedMemory";
         const uint32_t SIZE = 26;
 
-        // We are using OpenDaVINCI's SharedPointer to automatically
+        // We are using OpenDaVINCI's std::shared_ptr to automatically
         // release any acquired resources.
         try {
-            SharedPointer<SharedMemory> sharedMemory(SharedMemoryFactory::createSharedMemory(NAME, SIZE));
+            std::shared_ptr<SharedMemory> sharedMemory(SharedMemoryFactory::createSharedMemory(NAME, SIZE));
 
             if (sharedMemory->isValid()) {
                 uint32_t counter = 20;
@@ -73,10 +73,10 @@ a system semaphore. Therefore, a name and the size in bytes for the shared memor
 segment need to be provided.
 
 ``SharedMemoryFactory`` returns the ``SharedMemory`` automatically wrapped into
-a ``SharedPointer`` that takes care of releasing system resources when exiting
+a ``std::shared_ptr`` that takes care of releasing system resources when exiting
 your program.
 
-Once you have the ``SharedPointer`` at hand, you can check its validity by calling
+Once you have the ``std::shared_ptr`` at hand, you can check its validity by calling
 ``bool isValid()``. If the shared memory is valid, you can request exclusive access
 to it by using a scoped lock provided by the class ``core::base::Lock``. A scoped
 lock will automatically release a concurrently accessed resource when the current
@@ -95,7 +95,7 @@ ipcsharedmemoryconsumer.cpp:
     #include <stdint.h>
     #include <iostream>
     #include <string>
-    #include <opendavinci/odcore/SharedPointer.h>
+#include <memory>
     #include <opendavinci/odcore/base/Lock.h>
     #include <opendavinci/odcore/base/Thread.h>
     #include <opendavinci/odcore/wrapper/SharedMemory.h>
@@ -110,10 +110,10 @@ ipcsharedmemoryconsumer.cpp:
     int32_t main(int32_t argc, char **argv) {
         const string NAME = "MySharedMemory";
 
-        // We are using OpenDaVINCI's SharedPointer to automatically
+        // We are using OpenDaVINCI's std::shared_ptr to automatically
         // release any acquired resources.
         try {
-            SharedPointer<SharedMemory> sharedMemory(SharedMemoryFactory::attachToSharedMemory(NAME));
+            std::shared_ptr<SharedMemory> sharedMemory(SharedMemoryFactory::attachToSharedMemory(NAME));
 
             if (sharedMemory->isValid()) {
                 uint32_t counter = 10;
@@ -150,10 +150,10 @@ encodes the the size of the shared memory additionally into the shared memory
 segment.
 
 ``SharedMemoryFactory`` returns the ``SharedMemory`` automatically wrapped into
-a ``SharedPointer`` that takes care of releasing system resources when exiting
+a ``std::shared_ptr`` that takes care of releasing system resources when exiting
 your program.
 
-Once you have the ``SharedPointer`` at hand, you can check its validity by calling
+Once you have the ``std::shared_ptr`` at hand, you can check its validity by calling
 ``bool isValid()``. If the shared memory is valid, you can request exclusive access
 to it by using a scoped lock provided by the class ``core::base::Lock``. A scoped
 lock will automatically release a concurrently accessed resource when the current

@@ -20,7 +20,7 @@
 #include <stdint.h>
 #include <iostream>
 #include <string>
-#include <opendavinci/odcore/SharedPointer.h>
+#include <memory>
 #include <opendavinci/odcore/base/Thread.h>
 #include <opendavinci/odcore/io/tcp/TCPAcceptor.h>
 #include <opendavinci/odcore/io/tcp/TCPFactory.h>
@@ -42,8 +42,8 @@ void TCPReceiveBytes::nextString(const std::string &s) {
     cout << "Received " << s.length() << " bytes containing '" << s << "'" << endl;
 }
 
-void TCPReceiveBytes::onNewConnection(odcore::SharedPointer<odcore::io::tcp::TCPConnection> connection) {
-    if (connection.isValid()) {
+void TCPReceiveBytes::onNewConnection(std::shared_ptr<odcore::io::tcp::TCPConnection> connection) {
+    if (connection.get()) {
         cout << "Handle a new connection." << endl;
 
         // Set this class as StringListener to receive
@@ -74,10 +74,10 @@ void TCPReceiveBytes::onNewConnection(odcore::SharedPointer<odcore::io::tcp::TCP
 int32_t main(int32_t argc, char **argv) {
     const uint32_t PORT = 1234;
 
-    // We are using OpenDaVINCI's SharedPointer to automatically
+    // We are using OpenDaVINCI's std::shared_ptr to automatically
     // release any acquired resources.
     try {
-        SharedPointer<TCPAcceptor>
+        std::shared_ptr<TCPAcceptor>
             tcpacceptor(TCPFactory::createTCPAcceptor(PORT));
 
         // This instance will handle any new connections.

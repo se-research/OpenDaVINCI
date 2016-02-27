@@ -34,7 +34,7 @@ SerialReceiveBytes.cpp:
     #include <stdint.h>
     #include <iostream>
     #include <string>
-    #include <opendavinci/odcore/SharedPointer.h>
+#include <memory>
     #include <opendavinci/odcore/base/Thread.h>
     #include <opendavinci/odcore/wrapper/SerialPort.h>
     #include <opendavinci/odcore/wrapper/SerialPortFactory.h>
@@ -55,10 +55,10 @@ SerialReceiveBytes.cpp:
         const string SERIAL_PORT = "/dev/pts/20";
         const uint32_t BAUD_RATE = 19200;
 
-        // We are using OpenDaVINCI's SharedPointer to automatically
+        // We are using OpenDaVINCI's std::shared_ptr to automatically
         // release any acquired resources.
         try {
-            SharedPointer<SerialPort>
+            std::shared_ptr<SerialPort>
                 serial(SerialPortFactory::createSerialPort(SERIAL_PORT, BAUD_RATE));
 
             // This instance will handle any bytes that are received
@@ -101,7 +101,7 @@ time, the program will stop receiving bytes, unregister the ``StringListener``,
 and release the system resources.
 
 To conveniently handle the resource management of releasing the acquired system
-resources, a ``SharedPointer`` is used that automatically releases memory that
+resources, a ``std::shared_ptr`` is used that automatically releases memory that
 is no longer used.
 
 Please note that once you have stopped ``SerialPort`` you cannot reuse it and

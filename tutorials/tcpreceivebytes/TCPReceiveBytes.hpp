@@ -31,8 +31,8 @@ class TCPReceiveBytes :
     // Your class needs to implement the method void nextString(const std::string &s).
     virtual void nextString(const std::string &s);
 
-    // Your class needs to implement the method void onNewConnection(odcore::SharedPointer<odcore::io::tcp::TCPConnection> connection).
-    virtual void onNewConnection(odcore::SharedPointer<odcore::io::tcp::TCPConnection> connection);
+    // Your class needs to implement the method void onNewConnection(std::shared_ptr<odcore::io::tcp::TCPConnection> connection).
+    virtual void onNewConnection(std::shared_ptr<odcore::io::tcp::TCPConnection> connection);
 
     // Your class should implement the method void handleConnectionError() to handle connection errors.
     virtual void handleConnectionError();

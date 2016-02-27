@@ -20,7 +20,7 @@
 #include <stdint.h>
 #include <iostream>
 #include <string>
-#include <opendavinci/odcore/SharedPointer.h>
+#include <memory>
 #include <opendavinci/odcore/base/Thread.h>
 #include <opendavinci/odcore/wrapper/SerialPort.h>
 #include <opendavinci/odcore/wrapper/SerialPortFactory.h>
@@ -41,10 +41,10 @@ int32_t main(int32_t argc, char **argv) {
     const string SERIAL_PORT = "/dev/pts/20";
     const uint32_t BAUD_RATE = 19200;
 
-    // We are using OpenDaVINCI's SharedPointer to automatically
+    // We are using OpenDaVINCI's std::shared_ptr to automatically
     // release any acquired resources.
     try {
-        SharedPointer<SerialPort>
+        std::shared_ptr<SerialPort>
             serial(SerialPortFactory::createSerialPort(SERIAL_PORT, BAUD_RATE));
 
         // This instance will handle any bytes that are received
