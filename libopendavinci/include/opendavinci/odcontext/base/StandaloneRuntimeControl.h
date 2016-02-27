@@ -26,7 +26,7 @@
 #include "opendavinci/odcontext/base/RuntimeControl.h"
 #include "opendavinci/odcontext/base/RuntimeEnvironment.h"
 #include "opendavinci/odcontext/base/SendContainerToSystemsUnderTest.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/io/conference/ContainerConference.h"
 #include "opendavinci/odcore/io/conference/ContainerListener.h"
@@ -100,7 +100,7 @@ class SystemFeedbackComponent;
 				virtual void destroySystemFeedbackComponents();
 
 			private:
-				odcore::SharedPointer<odcore::io::conference::ContainerConference> m_conference;
+				std::shared_ptr<odcore::io::conference::ContainerConference> m_conference;
 
 				RuntimeEnvironment m_rte;
 

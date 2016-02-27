@@ -23,7 +23,7 @@
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/Condition.h"
 #include "opendavinci/odcore/io/PacketListener.h"
 #include "opendavinci/odcore/io/udp/UDPReceiver.h"
@@ -72,8 +72,8 @@ namespace odcore {
                     void waitForResponse();
                     virtual void nextPacket(const odcore::io::Packet &p);
 
-                    odcore::SharedPointer<odcore::io::udp::UDPSender> m_sender;
-                    odcore::SharedPointer<odcore::io::udp::UDPReceiver> m_receiver;
+                    std::shared_ptr<odcore::io::udp::UDPSender> m_sender;
+                    std::shared_ptr<odcore::io::udp::UDPReceiver> m_receiver;
 
                     odcore::base::Condition m_responseCondition;
                     bool m_response;

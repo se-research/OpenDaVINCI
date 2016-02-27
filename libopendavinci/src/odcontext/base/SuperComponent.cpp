@@ -136,8 +136,8 @@ namespace odcontext {
             return m_configuration;
         }
 
-        void SuperComponent::onNewModule(SharedPointer<odcore::dmcp::connection::ModuleConnection> mc) {
-            if (mc.isValid()) {
+        void SuperComponent::onNewModule(std::shared_ptr<odcore::dmcp::connection::ModuleConnection> mc) {
+            if (mc.get()) {
                 clog << "(context::base::SuperComponent) Got new connection from " << mc->getModuleDescriptor().toString() << endl;
 
                 m_listOfModuleConnections.push_back(mc);

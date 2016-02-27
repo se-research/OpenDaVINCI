@@ -19,7 +19,7 @@
 
 #include <iostream>
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/base/module/AbstractCIDModule.h"
 #include "opendavinci/odcore/dmcp/connection/ConnectionHandler.h"
@@ -60,12 +60,12 @@ namespace odcore {
                 m_connectionHandler = connectionHandler;
             }
 
-            void Server::onNewConnection(odcore::SharedPointer<odcore::io::Connection> connection) {
+            void Server::onNewConnection(std::shared_ptr<odcore::io::Connection> connection) {
                 Lock l(m_configProviderMutex);
-                SharedPointer<ModuleConnection> mc;
+                std::shared_ptr<ModuleConnection> mc;
 
                 try {
-                    mc = SharedPointer<ModuleConnection>(new ModuleConnection(connection, m_configProvider));
+                    mc = std::shared_ptr<ModuleConnection>(new ModuleConnection(connection, m_configProvider));
                 }
                 catch (...) {
                     CLOG1 << "[core::dmcp::ConnectionServer] cannot create ModuleConnection for new request!" << endl;
@@ -76,7 +76,7 @@ namespace odcore {
                 }
                 else {
                     CLOG1 << "[core::dmcp::ConnectionServer] received a module connection without set ModuleConnectionHandler" << endl;
-                    // As we cannot forward the newly created ModuleConnection mc, it will be deleted by SharedPointer automatically.
+                    // As we cannot forward the newly created ModuleConnection mc, it will be deleted by std::shared_ptr automatically.
                 }
             }
 

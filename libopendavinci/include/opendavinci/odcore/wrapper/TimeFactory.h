@@ -23,7 +23,7 @@
 #include <memory>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/wrapper/ConfigurationTraits.h"
 #include "opendavinci/odcore/wrapper/Libraries.h"
 #include "opendavinci/odcore/wrapper/SystemLibraryProducts.h"
@@ -50,7 +50,7 @@ namespace odcore {
             * It can be used as follows:
             *
             * @code
-            * SharedPointer<Time> t(TimeFactory::getInstance().now());
+            * std::shared_ptr<Time> t(TimeFactory::getInstance().now());
             *
             * ...
             *
@@ -59,7 +59,7 @@ namespace odcore {
         class OPENDAVINCI_API TimeFactory {
             public:
                 virtual ~TimeFactory();
-                virtual odcore::SharedPointer<odcore::wrapper::Time> now();
+                virtual std::shared_ptr<odcore::wrapper::Time> now();
                 static TimeFactory& getInstance();
 
             protected:

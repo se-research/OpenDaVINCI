@@ -225,8 +225,8 @@ namespace odcontext {
             }
         }
 
-        vector<SharedPointer<TimeTriggeredConferenceClientModuleRunner> > RuntimeControl::createListOfTimeTriggeredConferenceClientModuleRunners(RuntimeEnvironment &rte) {
-            vector<SharedPointer<TimeTriggeredConferenceClientModuleRunner> > listOfWrappedTimeTriggeredConferenceClientModules;
+        vector<std::shared_ptr<TimeTriggeredConferenceClientModuleRunner> > RuntimeControl::createListOfTimeTriggeredConferenceClientModuleRunners(RuntimeEnvironment &rte) {
+            vector<std::shared_ptr<TimeTriggeredConferenceClientModuleRunner> > listOfWrappedTimeTriggeredConferenceClientModules;
 
             if (rte.isValid() && rte.isExecuting()) {
                 // Wrap all ConferenceClientModules. We use SharePointer to
@@ -239,7 +239,7 @@ namespace odcontext {
                     if (ttccm != NULL) {
                         // Create a blockable receiver per system under test.
                         // Register ContainerDispatcher to distribute Containers to all SystemParts.
-                        SharedPointer<TimeTriggeredConferenceClientModuleRunner> wrappedTimeTriggeredConferenceClientModule(new TimeTriggeredConferenceClientModuleRunner(*ttccm));
+                        std::shared_ptr<TimeTriggeredConferenceClientModuleRunner> wrappedTimeTriggeredConferenceClientModule(new TimeTriggeredConferenceClientModuleRunner(*ttccm));
                         listOfWrappedTimeTriggeredConferenceClientModules.push_back(wrappedTimeTriggeredConferenceClientModule);
                     }
                 }
@@ -290,7 +290,7 @@ namespace odcontext {
                         vector<SystemFeedbackComponent*> listOfSystemFeedbackComponents = rte.getListOfSystemFeedbackComponents();
 
                         // Create list of wrapper ConferenceClientModules.
-                        vector<SharedPointer<TimeTriggeredConferenceClientModuleRunner> > listOfWrappedTimeTriggeredConferenceClientModules = createListOfTimeTriggeredConferenceClientModuleRunners(rte);
+                        vector<std::shared_ptr<TimeTriggeredConferenceClientModuleRunner> > listOfWrappedTimeTriggeredConferenceClientModules = createListOfTimeTriggeredConferenceClientModuleRunners(rte);
 
                         // Compute greatest possible time step in the runtime environment.
                         const uint32_t SLEEPING_TIME = rte.getGreatestTimeStep();
@@ -338,17 +338,17 @@ namespace odcontext {
                             }
 
                             // Execute wrapped ConferenceClientModules.
-                            vector<SharedPointer<TimeTriggeredConferenceClientModuleRunner> >::iterator kt = listOfWrappedTimeTriggeredConferenceClientModules.begin();
+                            vector<std::shared_ptr<TimeTriggeredConferenceClientModuleRunner> >::iterator kt = listOfWrappedTimeTriggeredConferenceClientModules.begin();
                             while (kt != listOfWrappedTimeTriggeredConferenceClientModules.end()) {
-                                SharedPointer<TimeTriggeredConferenceClientModuleRunner> runner = (*kt++);
+                                std::shared_ptr<TimeTriggeredConferenceClientModuleRunner> runner = (*kt++);
 
                                 // Check, if further cycles are necessary.
                                 moreModulesSchedulable = false;
-                                moreModulesSchedulable |= ( (runner.isValid()) && (!runner->hasFinished()) );
+                                moreModulesSchedulable |= ( (runner.get()) && (!runner->hasFinished()) );
 
                                 // Check if the application needs to be executed.
                                 bool hasExecutedApplication = false;
-                                if ( runner.isValid() && (runner->needsExecution(time.now())) ) {
+                                if ( runner.get() && (runner->needsExecution(time.now())) ) {
                                     runner->step(time.now());
                                     hasExecutedApplication = true;
                                 }
@@ -367,10 +367,10 @@ namespace odcontext {
                         }
 
                         // Stop wrapped application.
-                        vector<SharedPointer<TimeTriggeredConferenceClientModuleRunner> >::iterator kt = listOfWrappedTimeTriggeredConferenceClientModules.begin();
+                        vector<std::shared_ptr<TimeTriggeredConferenceClientModuleRunner> >::iterator kt = listOfWrappedTimeTriggeredConferenceClientModules.begin();
                         while (kt != listOfWrappedTimeTriggeredConferenceClientModules.end()) {
-                            SharedPointer<TimeTriggeredConferenceClientModuleRunner> runner = (*kt++);
-                            if (runner.isValid()) {
+                            std::shared_ptr<TimeTriggeredConferenceClientModuleRunner> runner = (*kt++);
+                            if (runner.get()) {
                                 runner->stop();
                             }
                         }
@@ -426,8 +426,8 @@ namespace odcontext {
             odcore::wrapper::TimeFactory::setSingleton(NULL);
         }
 
-        odcore::SharedPointer<odcore::wrapper::Time> RuntimeControl::DisableTimeFactory::now() {
-            odcore::SharedPointer<odcore::wrapper::Time> t;
+        std::shared_ptr<odcore::wrapper::Time> RuntimeControl::DisableTimeFactory::now() {
+            std::shared_ptr<odcore::wrapper::Time> t;
             return t;
         }
 

@@ -73,7 +73,7 @@ namespace odcore {
                 m_localContainerConference(NULL),
                 m_hasExternalContainerConference(false),
                 m_containerConference(NULL) {
-                m_localContainerConference = SharedPointer<odcore::io::conference::ContainerConference>(new ManagedClientModuleContainerConference());
+                m_localContainerConference = std::shared_ptr<odcore::io::conference::ContainerConference>(new ManagedClientModuleContainerConference());
             }
 
             ManagedClientModule::~ManagedClientModule() {
@@ -83,7 +83,7 @@ namespace odcore {
                 }
 
                 if (m_hasExternalContainerConference) {
-                    m_containerConference.release();
+                    m_containerConference.reset();
                     m_hasExternalContainerConference = false;
                 }
 
@@ -92,19 +92,19 @@ namespace odcore {
 
             void ManagedClientModule::DMCPconnectionLost() {}
 
-            void ManagedClientModule::setContainerConference(SharedPointer<odcore::io::conference::ContainerConference> c) {
+            void ManagedClientModule::setContainerConference(std::shared_ptr<odcore::io::conference::ContainerConference> c) {
                 if (m_hasExternalContainerConference) {
-                    m_containerConference.release();
+                    m_containerConference.reset();
                     m_hasExternalContainerConference = false;
                 }
 
-                if (c.isValid()) {
+                if (c.get()) {
                     m_containerConference = c;
                     m_hasExternalContainerConference = true;
                 }
             }
 
-            SharedPointer<odcore::io::conference::ContainerConference> ManagedClientModule::getContainerConference() {
+            std::shared_ptr<odcore::io::conference::ContainerConference> ManagedClientModule::getContainerConference() {
                 return m_containerConference;
             }
 
@@ -290,7 +290,7 @@ namespace odcore {
                     setUp();
 
                     setModuleState(odcore::data::dmcp::ModuleStateMessage::RUNNING);
-                    if (getDMCPClient().isValid()) {
+                    if (getDMCPClient().get()) {
                         getDMCPClient()->sendModuleState(odcore::data::dmcp::ModuleStateMessage::RUNNING);
                     }
 
@@ -298,7 +298,7 @@ namespace odcore {
                     retVal = body();
 
                     setModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
-                    if (getDMCPClient().isValid()) {
+                    if (getDMCPClient().get()) {
                         getDMCPClient()->sendModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
                     }
 
@@ -354,7 +354,7 @@ namespace odcore {
                 }
 
                 // Send RuntimeStatistic to supercomponent.
-                if (sendStatistics && getDMCPClient().isValid()) {
+                if (sendStatistics && getDMCPClient().get()) {
                     odcore::data::dmcp::RuntimeStatistic rts;
                     rts.setSliceConsumption(static_cast<float>(TIME_CONSUMPTION_OF_CURRENT_SLICE)/static_cast<float>(NOMINAL_DURATION_OF_ONE_SLICE));
                     getDMCPClient()->sendStatistics(rts);
@@ -462,7 +462,7 @@ namespace odcore {
                     setUp();
 
                     setModuleState(odcore::data::dmcp::ModuleStateMessage::RUNNING);
-                    if (getDMCPClient().isValid()) {
+                    if (getDMCPClient().get()) {
                         getDMCPClient()->sendModuleState(odcore::data::dmcp::ModuleStateMessage::RUNNING);
                     }
 
@@ -470,7 +470,7 @@ namespace odcore {
                     retVal = body();
 
                     setModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
-                    if (getDMCPClient().isValid()) {
+                    if (getDMCPClient().get()) {
                         getDMCPClient()->sendModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
                     }
 
@@ -592,7 +592,7 @@ namespace odcore {
                 //
                 // Here, we simply confirm that we have received AND processed
                 // our recently received pulse message.
-                if (getDMCPClient().isValid()) {
+                if (getDMCPClient().get()) {
                     getDMCPClient()->sendPulseAck();
                 }
 
@@ -649,7 +649,7 @@ namespace odcore {
 
                 // Confirm the successful processing of the received pulse and
                 // deliver all containers from this module to supercomponent.
-                if (getDMCPClient().isValid()) {
+                if (getDMCPClient().get()) {
                     getDMCPClient()->sendPulseAckContainers(reinterpret_cast<ManagedClientModuleContainerConference*>(m_localContainerConference.operator->())->getListOfContainers());
 
                     // After all containers have been delivered to supercomponent,
@@ -699,11 +699,11 @@ namespace odcore {
                 // any existing ContainerConference.
 
                 if (m_hasExternalContainerConference) {
-                    if (m_containerConference.isValid()) {
+                    if (m_containerConference.get()) {
                         m_localContainerConference->setContainerListener(m_containerConference->getContainerListener());
                     }
 
-                    m_containerConference.release();
+                    m_containerConference.reset();
                     m_hasExternalContainerConference = false;
 
                     m_containerConference = m_localContainerConference;

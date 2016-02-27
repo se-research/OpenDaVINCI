@@ -1,7 +1,7 @@
 /**
  * CANDataStructureGenerator - IDL tool to describe the mapping from
  *                             CAN data to high-level messages.
- * Copyright (C) 2015 Christian Berger
+ * Copyright (C) 2015 - 2016 Christian Berger
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -172,7 +172,7 @@ public class CANDataStructureGenerator {
         sb.append("    IF(\"${CMAKE_SYSTEM_NAME}\" STREQUAL \"Darwin\")"); sb.append("\r\n");
         sb.append("        SET(CMAKE_MACOSX_RPATH 1)"); sb.append("\r\n");
         sb.append("    ENDIF()"); sb.append("\r\n");
-        sb.append("    SET (CXX_OPTIONS       \"-Wno-deprecated -Wall -Wshadow -Wextra -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wpacked\")"); sb.append("\r\n");
+        sb.append("    SET (CXX_OPTIONS       \" -std=c++11 -Wno-deprecated -Wall -Wshadow -Wextra -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wpacked\")"); sb.append("\r\n");
         sb.append("    SET (CXX_EFFECTIVE_CXX \"-Wmissing-format-attribute -Wredundant-decls -Weffc++\")"); sb.append("\r\n");
         sb.append("    SET (CXX_UNINITIALIZED \"-Wno-maybe-uninitialized -Wno-error=unused-result\")"); sb.append("\r\n");
 

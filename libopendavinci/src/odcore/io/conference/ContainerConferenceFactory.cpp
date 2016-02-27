@@ -54,8 +54,8 @@ namespace odcore {
                 return (*ContainerConferenceFactory::m_singleton);
             }
 
-            odcore::SharedPointer<ContainerConference> ContainerConferenceFactory::getContainerConference(const string &address, const uint32_t &port) {
-                return odcore::SharedPointer<ContainerConference>(new UDPMultiCastContainerConference(address, port));
+            std::shared_ptr<ContainerConference> ContainerConferenceFactory::getContainerConference(const string &address, const uint32_t &port) {
+                return std::shared_ptr<ContainerConference>(new UDPMultiCastContainerConference(address, port));
             }
 
         }

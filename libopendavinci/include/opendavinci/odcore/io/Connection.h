@@ -23,7 +23,7 @@
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/io/ConnectionListener.h"
 #include "opendavinci/odcore/io/StringListener.h"
@@ -70,7 +70,7 @@ namespace conference { class ContainerListener; }
 
             protected:
                 friend class ConnectionAcceptor;
-                Connection(odcore::SharedPointer<odcore::io::tcp::TCPConnection> connection);
+                Connection(std::shared_ptr<odcore::io::tcp::TCPConnection> connection);
 
                 virtual void nextString(const std::string &s);
                 virtual void handleConnectionError();
@@ -82,7 +82,7 @@ namespace conference { class ContainerListener; }
                 odcore::base::Mutex m_errorHandlerMutex;
                 ConnectionErrorListener* m_errorHandler;
 
-                odcore::SharedPointer<odcore::io::tcp::TCPConnection> m_connection;
+                std::shared_ptr<odcore::io::tcp::TCPConnection> m_connection;
 
                 odcore::base::Mutex m_connectedMutex;
                 bool m_connected;

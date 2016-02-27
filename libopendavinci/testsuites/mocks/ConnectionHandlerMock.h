@@ -37,13 +37,13 @@ namespace mocks {
 
             virtual ~ConnectionHandlerMock() {};
 
-            virtual void onNewModule(odcore::SharedPointer<odcore::dmcp::connection::ModuleConnection> mc)
+            virtual void onNewModule(std::shared_ptr<odcore::dmcp::connection::ModuleConnection> mc)
             {
                 connection = mc;
                 WAITER.called();
             }
 
-            odcore::SharedPointer<odcore::dmcp::connection::ModuleConnection> connection;
+            std::shared_ptr<odcore::dmcp::connection::ModuleConnection> connection;
             FunctionCallWaiter WAITER;
         private:
             ConnectionHandlerMock(const ConnectionHandlerMock &);

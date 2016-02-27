@@ -23,7 +23,7 @@
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/base/module/AbstractModule.h"
 #include "opendavinci/odcore/wrapper/TimeFactory.h"
@@ -199,7 +199,7 @@ class TimeTriggeredConferenceClientModuleRunner;
                  * @param rte RuntimeEnvironment
                  * @return List of wrapped ConferenceClientModules.
                  */
-                vector<odcore::SharedPointer<TimeTriggeredConferenceClientModuleRunner> > createListOfTimeTriggeredConferenceClientModuleRunners(RuntimeEnvironment &rte);
+                vector<std::shared_ptr<TimeTriggeredConferenceClientModuleRunner> > createListOfTimeTriggeredConferenceClientModuleRunners(RuntimeEnvironment &rte);
 
                 /**
                  * This method calls all reporting components.
@@ -216,7 +216,7 @@ class TimeTriggeredConferenceClientModuleRunner;
                     public:
                         void disable();
 
-                        virtual odcore::SharedPointer<odcore::wrapper::Time> now();
+                        virtual std::shared_ptr<odcore::wrapper::Time> now();
                 };
 
             private:

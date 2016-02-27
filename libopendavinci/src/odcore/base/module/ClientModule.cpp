@@ -51,7 +51,7 @@ namespace odcore {
 
             ClientModule::~ClientModule() {}
 
-            odcore::SharedPointer<odcore::dmcp::connection::Client>& ClientModule::getDMCPClient() {
+            std::shared_ptr<odcore::dmcp::connection::Client>& ClientModule::getDMCPClient() {
                 return m_dmcpClient;
             }
 
@@ -70,8 +70,8 @@ namespace odcore {
             odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode ClientModule::runModule() {
                 // Try to discover supercomponent.
                 try {
-                    SharedPointer<discoverer::Client> discovererClient =
-                        SharedPointer<discoverer::Client>(
+                    std::shared_ptr<discoverer::Client> discovererClient =
+                        std::shared_ptr<discoverer::Client>(
                                 new discoverer::Client(getMultiCastGroup(),
                                                        odcore::data::dmcp::Constants::BROADCAST_PORT_SERVER,
                                                        odcore::data::dmcp::Constants::BROADCAST_PORT_CLIENT,
@@ -105,7 +105,7 @@ namespace odcore {
 
                 try {
                     // Try to get configuration from DMCP server.
-                    m_dmcpClient = SharedPointer<connection::Client>(
+                    m_dmcpClient = std::shared_ptr<connection::Client>(
                             new connection::Client(md, m_serverInformation));
                     m_dmcpClient->setSupercomponentStateListener(this);
                     m_dmcpClient->initialize();
@@ -122,7 +122,7 @@ namespace odcore {
                 // Run user implementation from derived ConferenceClientModule.
                 odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode retVal = runModuleImplementation();
 
-                if (m_dmcpClient.isValid()) {
+                if (m_dmcpClient.get()) {
                     m_dmcpClient->sendModuleExitCode(retVal);
                 }
 

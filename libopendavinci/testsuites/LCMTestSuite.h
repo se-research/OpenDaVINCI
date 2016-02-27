@@ -27,7 +27,7 @@
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"         // for SharedPointer
+#include <memory>
 #include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
 #include "opendavinci/odcore/base/LCMDeserializerVisitor.h"
 #include "opendavinci/odcore/base/LCMSerializerVisitor.h"  // for LCMSerializerVisitor
@@ -208,7 +208,7 @@ class LCMVehicleControl : public odcore::data::SerializableData, public odcore::
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
+		std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
 		s->write(0x0E43596B, m_speed);
 		s->write(0x0E435991, m_acceleration);
@@ -223,7 +223,7 @@ class LCMVehicleControl : public odcore::data::SerializableData, public odcore::
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
 		d->read(0x0E43596B, m_speed);
 		d->read(0x0E435991, m_acceleration);

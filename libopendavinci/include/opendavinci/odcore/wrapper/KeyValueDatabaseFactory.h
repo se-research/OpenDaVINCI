@@ -21,7 +21,7 @@
 #define OPENDAVINCI_CORE_WRAPPER_WRAPPEDKEYVALUEDATABASEFACTORY_H_
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 
 namespace odcore {
     namespace wrapper {
@@ -34,7 +34,7 @@ class KeyValueDatabase;
          * It can be used as follows:
          *
          * @code
-         * SharedPointer<KeyValueDatabase> kvdb;
+         * std::shared_ptr<KeyValueDatabase> kvdb;
          *
          * try {
          *     kvdb = KeyValueDatabaseFactory::createKeyValueDatabase();
@@ -54,7 +54,7 @@ class KeyValueDatabase;
          * @endcode
          */
         struct OPENDAVINCI_API KeyValueDatabaseFactory {
-            static SharedPointer<KeyValueDatabase> createKeyValueDatabase();
+            static std::shared_ptr<KeyValueDatabase> createKeyValueDatabase();
         };
     }
 } // odcore::wrapper

@@ -32,8 +32,8 @@ namespace odcore {
 
         template <> class OPENDAVINCI_API ConditionFactoryWorker<SystemLibraryPosix> {
             public:
-                static SharedPointer<Condition> createCondition() {
-                    return SharedPointer<Condition>(new odcore::wrapper::POSIX::POSIXCondition());
+                static std::shared_ptr<Condition> createCondition() {
+                    return std::shared_ptr<Condition>(new odcore::wrapper::POSIX::POSIXCondition());
                 }
         };
 

@@ -41,7 +41,7 @@ namespace odcore {
              * @code
              * const string address = "192.168.0.22";
              * const uint32_t port = 12345;
-             * SharedPointer<UDPSender> s;
+             * std::shared_ptr<UDPSender> s;
              *
              * try {
              *     s = UDPFactory::createUDPSender(address, port);

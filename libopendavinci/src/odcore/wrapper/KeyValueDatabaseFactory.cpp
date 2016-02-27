@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/wrapper/ConfigurationTraits.h"
 #include "opendavinci/odcore/wrapper/KeyValueDatabase.h"
 #include "opendavinci/odcore/wrapper/KeyValueDatabaseFactory.h"
@@ -28,7 +28,7 @@
 namespace odcore {
     namespace wrapper {
 
-        SharedPointer<KeyValueDatabase> KeyValueDatabaseFactory::createKeyValueDatabase() {
+        std::shared_ptr<KeyValueDatabase> KeyValueDatabaseFactory::createKeyValueDatabase() {
             typedef ConfigurationTraits<KeyValueDatabaseLibraryProducts>::configuration configuration;
             return KeyValueDatabaseFactoryWorker<configuration::value>::createKeyValueDatabase();
         }

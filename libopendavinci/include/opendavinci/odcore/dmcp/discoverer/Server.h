@@ -24,7 +24,7 @@
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/io/StringListener.h"
 #include "opendavinci/odcore/io/udp/UDPReceiver.h"
 #include "opendavinci/odcore/io/udp/UDPSender.h"
@@ -68,8 +68,8 @@ namespace odcore {
 
                     void sendResponseMessage(const string &s);
 
-                    odcore::SharedPointer<odcore::io::udp::UDPSender> m_sender;
-                    odcore::SharedPointer<odcore::io::udp::UDPReceiver> m_receiver;
+                    std::shared_ptr<odcore::io::udp::UDPSender> m_sender;
+                    std::shared_ptr<odcore::io::udp::UDPReceiver> m_receiver;
 
                     odcore::data::dmcp::ServerInformation m_serverInformation;
 

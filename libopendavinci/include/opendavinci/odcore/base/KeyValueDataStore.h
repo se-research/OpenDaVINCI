@@ -21,7 +21,7 @@
 #define OPENDAVINCI_CORE_BASE_KEYVALUEDATASTORE_H_
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/exceptions/Exceptions.h"
 #include "opendavinci/odcore/wrapper/KeyValueDatabase.h"
@@ -71,7 +71,7 @@ namespace odcore {
                  * @param keyValueDatabase Associated key/value database.
                  * @throws NoDatabaseAvailableException if keyValueDatabase is NULL.
                  */
-                KeyValueDataStore(SharedPointer<wrapper::KeyValueDatabase> keyValueDatabase) throw (odcore::exceptions::NoDatabaseAvailableException);
+                KeyValueDataStore(std::shared_ptr<wrapper::KeyValueDatabase> keyValueDatabase) throw (odcore::exceptions::NoDatabaseAvailableException);
 
                 virtual ~KeyValueDataStore();
 
@@ -92,7 +92,7 @@ namespace odcore {
                 data::Container get(const int32_t &key) const;
 
             private:
-                SharedPointer<wrapper::KeyValueDatabase> m_keyValueDatabase;
+                std::shared_ptr<wrapper::KeyValueDatabase> m_keyValueDatabase;
         };
 
     }

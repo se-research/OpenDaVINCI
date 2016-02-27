@@ -1,7 +1,7 @@
 /**
  * CANDataStructureGenerator - IDL tool to describe the mapping from
  *                             CAN data to high-level messages.
- * Copyright (C) 2015 Christian Berger
+ * Copyright (C) 2015 - 2016 Christian Berger
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -381,6 +381,7 @@ namespace canmapping {
 #ifndef «mapping.mappingName.toString.toUpperCase.replaceAll("\\.", "_")»_H_
 #define «mapping.mappingName.toString.toUpperCase.replaceAll("\\.", "_")»_H_
 
+#include <memory>
 #include <vector>
 #include <opendavinci/odcore/data/Container.h>
 #include <opendavinci/odcore/base/Visitable.h>
@@ -513,7 +514,7 @@ namespace canmapping {
 	
 	ostream& «className»::operator<<(ostream &out) const {
 		odcore::base::SerializationFactory& sf = odcore::base::SerializationFactory::getInstance();
-		odcore::SharedPointer<odcore::base::Serializer> s = sf.getSerializer(out);
+		std::shared_ptr<odcore::base::Serializer> s = sf.getSerializer(out);
 
 		«IF mapping.mappings.size>0»
 		«var ArrayList<String> opOutBody=new ArrayList<String>»
@@ -534,7 +535,7 @@ namespace canmapping {
 	
 	istream& «className»::operator>>(istream &in) {
 		odcore::base::SerializationFactory& sf = odcore::base::SerializationFactory::getInstance();
-		odcore::SharedPointer<odcore::base::Deserializer> s = sf.getDeserializer(in);
+		std::shared_ptr<odcore::base::Deserializer> s = sf.getDeserializer(in);
 		
 		«IF mapping.mappings.size>0»
 		uint32_t id;
@@ -724,7 +725,7 @@ namespace canmapping {
 			f->setSize(sizeof(«memberVarName»));
 	
 			// 4.5 Add created field to generic message.
-			message.addField(odcore::SharedPointer<odcore::data::reflection::AbstractField>(f));
+			message.addField(std::shared_ptr<odcore::data::reflection::AbstractField>(f));
 		}
 	«ENDFOR»
 		// 5. Depending on the CAN message specification, we are either ready here
@@ -805,7 +806,7 @@ rangeEnd    : «canSignal.m_rangeEnd»
 
 #include "generated/«mapping.mappingName.toString.replaceAll('\\.','/')».h"
 
-#include <opendavinci/odcore/SharedPointer.h>
+#include <memory>
 #include <opendavinci/odcore/reflection/Message.h>
 #include <opendavinci/odcore/reflection/MessageToVisitableVisitor.h>
 #include <opendavinci/odcore/base/SerializationFactory.h>

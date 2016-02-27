@@ -25,7 +25,7 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "opendavinci/odcore/SharedPointer.h"         // for SharedPointer
+#include <memory>
 #include "opendavinci/odcore/io/Connection.h"
 #include "opendavinci/odcore/io/tcp/TCPAcceptor.h"
 #include "opendavinci/odcore/wrapper/NetworkLibraryProducts.h"
@@ -111,8 +111,8 @@ template <typename worker> struct TCPConnectionTests
 
             mocks::ConnectionListenerMock connectionListenerMock1;
             connection1->setConnectionListener(&connectionListenerMock1);
-            SharedPointer<odcore::io::Connection> conn = acceptorListenerMock1.getConnection();
-            conn.release();
+            std::shared_ptr<odcore::io::tcp::TCPConnection> conn = acceptorListenerMock1.getConnection();
+            conn.reset();
             acceptorListenerMock1.dontDeleteConnection();
 
             TS_ASSERT(connectionListenerMock1.CALLWAITER_handleConnectionError.wait());

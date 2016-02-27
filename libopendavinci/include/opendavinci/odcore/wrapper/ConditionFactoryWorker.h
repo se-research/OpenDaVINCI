@@ -20,7 +20,7 @@
 #ifndef OPENDAVINCI_CORE_WRAPPER_CONDITIONFACTORYWORKER_H_
 #define OPENDAVINCI_CORE_WRAPPER_CONDITIONFACTORYWORKER_H_
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/wrapper/SystemLibraryProducts.h"
 
 namespace odcore {
@@ -41,7 +41,7 @@ namespace odcore {
                 /**
                  * This method returns the condition.
                  */
-                static SharedPointer<Condition> createCondition();
+                static std::shared_ptr<Condition> createCondition();
         };
 
     }

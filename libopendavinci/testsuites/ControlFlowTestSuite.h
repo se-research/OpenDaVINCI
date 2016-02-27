@@ -30,7 +30,7 @@
 #include "opendavinci/odcontext/base/BlockableContainerReceiver.h"
 #include "opendavinci/odcontext/base/ControlledContainerConferenceFactory.h"
 #include "opendavinci/odcontext/base/ControlledContainerConferenceForSystemUnderTest.h"
-#include "opendavinci/odcore/SharedPointer.h"         // for SharedPointer
+#include <memory>
 #include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
 #include "opendavinci/odcore/base/FIFOQueue.h"        // for FIFOQueue
 #include "opendavinci/odcore/base/Hash.h"             // for CharList, CRC32, etc
@@ -174,7 +174,7 @@ class ControlFlowTestSampleData : public odcore::data::SerializableData {
         ostream& operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
-            odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
+            std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
             s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 'i', 'n', 't') >::RESULT,
                     m_int);
@@ -185,7 +185,7 @@ class ControlFlowTestSampleData : public odcore::data::SerializableData {
         istream& operator>>(istream &in) {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
-            odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+            std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
             d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 'i', 'n', 't') >::RESULT,
                    m_int);
@@ -287,13 +287,13 @@ class ControlFlowTest : public CxxTest::TestSuite,
             m_connection() {}
 
         KeyValueConfiguration m_configuration;
-        odcore::SharedPointer<connection::ModuleConnection> m_connection;
+        std::shared_ptr<connection::ModuleConnection> m_connection;
 
         virtual KeyValueConfiguration getConfiguration(const ModuleDescriptor& /*md*/) {
             return m_configuration;
         }
 
-        virtual void onNewModule(odcore::SharedPointer<odcore::dmcp::connection::ModuleConnection> mc) {
+        virtual void onNewModule(std::shared_ptr<odcore::dmcp::connection::ModuleConnection> mc) {
             m_connection = mc;
         }
 
@@ -310,9 +310,9 @@ class ControlFlowTest : public CxxTest::TestSuite,
             TS_ASSERT(ccf2 == controlledCF);
 
             // Get ControlledContainerConference.
-            odcore::SharedPointer<ContainerConference> cf = controlledccf.getContainerConference("testControlledContainerFactoryTestSuite");
+            std::shared_ptr<ContainerConference> cf = controlledccf.getContainerConference("testControlledContainerFactoryTestSuite");
             ControlledContainerConferenceForSystemUnderTest *controlledConferenceForSystemUnderTest = NULL;
-            TS_ASSERT(cf.isValid());
+            TS_ASSERT(cf.get());
             bool castIntoCCFSuccessful = false;
             try {
                 controlledConferenceForSystemUnderTest = dynamic_cast<ControlledContainerConferenceForSystemUnderTest*>(cf.operator->());

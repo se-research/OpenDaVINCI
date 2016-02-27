@@ -20,9 +20,9 @@
 #ifndef OPENDAVINCI_CORE_IO_TCP_TCPACCEPTORLISTENER_H_
 #define OPENDAVINCI_CORE_IO_TCP_TCPACCEPTORLISTENER_H_
 
-#include "opendavinci/odcore/opendavinci.h"
+#include <memory>
 
-namespace odcore { template <class T> class SharedPointer; }
+#include "opendavinci/odcore/opendavinci.h"
 
 namespace odcore {
     namespace io {
@@ -39,7 +39,7 @@ class TCPConnection;
                      *
                      * @param connection Newly established connection.
                      */
-                    virtual void onNewConnection(odcore::SharedPointer<odcore::io::tcp::TCPConnection> connection) = 0;
+                    virtual void onNewConnection(std::shared_ptr<odcore::io::tcp::TCPConnection> connection) = 0;
             };
 
         }

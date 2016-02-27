@@ -21,7 +21,7 @@
 #define OPENDAVINCI_CORE_WRAPPER_CONDITIONFACTORY_H_
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 
 namespace odcore {
     namespace wrapper {
@@ -35,7 +35,7 @@ class Condition;
          * It can be used as follows:
          *
          * @code
-         * SharedPointer<Condition> c;
+         * std::shared_ptr<Condition> c;
          *
          * try {
          *     c = ConditionFactory::getInstance().createCondition();
@@ -60,7 +60,7 @@ class Condition;
             /**
              * This method returns the condition.
              */
-            static SharedPointer<Condition> createCondition();
+            static std::shared_ptr<Condition> createCondition();
         };
 
     }

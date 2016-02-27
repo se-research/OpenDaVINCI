@@ -24,7 +24,7 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "opendavinci/odcore/SharedPointer.h"         // for SharedPointer
+#include <memory>
 #include "opendavinci/odcore/wrapper/NetworkLibraryProducts.h"
 #include "mocks/ConnectionListenerMock.h"
 #include "mocks/StringListenerMock.h"
@@ -50,11 +50,11 @@ template <typename worker> struct TCPAcceptorTests
         {
             mocks::TCPAcceptorListenerMock ah;
 
-            SharedPointer<odcore::io::tcp::TCPAcceptor> acceptor(worker::createTCPAcceptor(20000));
+            std::shared_ptr<odcore::io::tcp::TCPAcceptor> acceptor(worker::createTCPAcceptor(20000));
             acceptor->setAcceptorListener(&ah);
             acceptor->start();
 
-            SharedPointer<odcore::io::tcp::TCPConnection> connection(worker::createTCPConnectionTo("127.0.0.1", 20000));
+            std::shared_ptr<odcore::io::tcp::TCPConnection> connection(worker::createTCPConnectionTo("127.0.0.1", 20000));
             connection->start();
 
             TS_ASSERT(ah.CALLWAITER_onNewConnection.wait());
@@ -65,18 +65,18 @@ template <typename worker> struct TCPAcceptorTests
             mocks::TCPAcceptorListenerMock ah1;
             mocks::TCPAcceptorListenerMock ah2;
 
-            SharedPointer<odcore::io::tcp::TCPAcceptor> acceptor(worker::createTCPAcceptor(20000));
+            std::shared_ptr<odcore::io::tcp::TCPAcceptor> acceptor(worker::createTCPAcceptor(20000));
             acceptor->setAcceptorListener(&ah1);
             acceptor->start();
 
-            SharedPointer<odcore::io::tcp::TCPConnection> connection(worker::createTCPConnectionTo("127.0.0.1", 20000));
+            std::shared_ptr<odcore::io::tcp::TCPConnection> connection(worker::createTCPConnectionTo("127.0.0.1", 20000));
             connection->start();
 
             TS_ASSERT(ah1.CALLWAITER_onNewConnection.wait());
 
             acceptor->setAcceptorListener(&ah2);
 
-            SharedPointer<odcore::io::tcp::TCPConnection> connection2(worker::createTCPConnectionTo("127.0.0.1", 20000));
+            std::shared_ptr<odcore::io::tcp::TCPConnection> connection2(worker::createTCPConnectionTo("127.0.0.1", 20000));
             connection->start();
 
             TS_ASSERT(ah2.CALLWAITER_onNewConnection.wait());
@@ -86,11 +86,11 @@ template <typename worker> struct TCPAcceptorTests
             mocks::TCPAcceptorListenerMock am1;
             mocks::TCPAcceptorListenerMock am2;
 
-            SharedPointer<odcore::io::tcp::TCPAcceptor> acceptor(worker::createTCPAcceptor(20000));
+            std::shared_ptr<odcore::io::tcp::TCPAcceptor> acceptor(worker::createTCPAcceptor(20000));
             acceptor->setAcceptorListener(&am1);
             acceptor->start();
 
-            SharedPointer<odcore::io::tcp::TCPConnection> connection(worker::createTCPConnectionTo("127.0.0.1", 20000));
+            std::shared_ptr<odcore::io::tcp::TCPConnection> connection(worker::createTCPConnectionTo("127.0.0.1", 20000));
             connection->start();
 
             TS_ASSERT(am1.CALLWAITER_onNewConnection.wait());

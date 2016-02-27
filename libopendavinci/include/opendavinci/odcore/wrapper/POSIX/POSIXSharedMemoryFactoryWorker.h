@@ -32,12 +32,12 @@ namespace odcore {
 
         template <> class OPENDAVINCI_API SharedMemoryFactoryWorker<SystemLibraryPosix> {
             public:
-                static SharedPointer<SharedMemory> createSharedMemory(const string &name, const uint32_t &size) {
-                    return SharedPointer<SharedMemory>(new POSIX::POSIXSharedMemory(name, size));
+                static std::shared_ptr<SharedMemory> createSharedMemory(const string &name, const uint32_t &size) {
+                    return std::shared_ptr<SharedMemory>(new POSIX::POSIXSharedMemory(name, size));
                 };
 
-                static SharedPointer<SharedMemory> attachToSharedMemory(const string &name) {
-                    return SharedPointer<SharedMemory>(new POSIX::POSIXSharedMemory(name));
+                static std::shared_ptr<SharedMemory> attachToSharedMemory(const string &name) {
+                    return std::shared_ptr<SharedMemory>(new POSIX::POSIXSharedMemory(name));
                 };
         };
 

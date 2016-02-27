@@ -33,7 +33,7 @@
 #include "opendavinci/odcontext/base/SendContainerToSystemsUnderTest.h"
 #include "opendavinci/odcontext/base/SystemFeedbackComponent.h"
 #include "opendavinci/odcontext/base/SystemReportingComponent.h"
-#include "opendavinci/odcore/SharedPointer.h"         // for SharedPointer
+#include <memory>
 #include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
 #include "opendavinci/odcore/base/FIFOQueue.h"        // for FIFOQueue
 #include "opendavinci/odcore/base/Hash.h"             // for CharList, CRC32, etc
@@ -131,7 +131,7 @@ class LocalPoint3 : public odcore::data::SerializableData {
         ostream& operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();;
 
-            odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
+            std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
             stringstream rawData;
             rawData.precision(10);
@@ -147,7 +147,7 @@ class LocalPoint3 : public odcore::data::SerializableData {
         istream& operator>>(istream &in) {
             SerializationFactory& sf=SerializationFactory::getInstance();;
 
-            odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+            std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
             string data;
             d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('d', 'a', 't', 'a') >::RESULT,
@@ -218,7 +218,7 @@ class LocalPosition : public odcore::data::SerializableData {
         ostream& operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
-            odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
+            std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
             s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('p', 'o', 's') >::RESULT,
                     m_position);
@@ -232,7 +232,7 @@ class LocalPosition : public odcore::data::SerializableData {
         istream& operator>>(istream &in) {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
-            odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+            std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
             d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('p', 'o', 's') >::RESULT,
                    m_position);
@@ -275,7 +275,7 @@ class RuntimeControlContainerMultipleAppsTestData : public odcore::data::Seriali
         ostream& operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
-            odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
+            std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
             s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 'i', 'n', 't') >::RESULT,
                     m_int);
@@ -289,7 +289,7 @@ class RuntimeControlContainerMultipleAppsTestData : public odcore::data::Seriali
         istream& operator>>(istream &in) {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
-            odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+            std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
             d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('m', '_', 'i', 'd') >::RESULT,
                    m_id);

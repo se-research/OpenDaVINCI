@@ -23,7 +23,7 @@
 #include <iosfwd>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/Mutex.h"
 
 namespace odcore {
@@ -69,7 +69,7 @@ class Serializer;
                  * @param out Output stream for serialization.
                  * @return Serializer.
                  */
-                SharedPointer<Serializer> getSerializer(ostream &out) const;
+                std::shared_ptr<Serializer> getSerializer(ostream &out) const;
 
                 /**
                  * This method returns a deserializer.
@@ -77,7 +77,7 @@ class Serializer;
                  * @param in Input stream for deserialization.
                  * @return Deserializer.
                  */
-                SharedPointer<Deserializer> getDeserializer(istream &in) const;
+                std::shared_ptr<Deserializer> getDeserializer(istream &in) const;
 
             protected:
                 /**

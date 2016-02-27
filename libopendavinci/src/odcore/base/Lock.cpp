@@ -29,7 +29,7 @@ namespace odcore {
             m_mutex->lock();
         }
 
-        Lock::Lock(odcore::SharedPointer<odcore::wrapper::SharedMemory> sp) :
+        Lock::Lock(std::shared_ptr<odcore::wrapper::SharedMemory> sp) :
                 m_mutex(NULL),
                 m_sharedPointerToSharedMemory(sp) {
             m_sharedPointerToSharedMemory->lock();

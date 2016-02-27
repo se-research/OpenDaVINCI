@@ -24,7 +24,7 @@
 
 #include "opendavinci/odcontext/base/ControlledTime.h"  // for ControlledTime
 #include "opendavinci/odcontext/base/ControlledTimeFactory.h"
-#include "opendavinci/odcore/SharedPointer.h"         // for SharedPointer
+#include <memory>
 #include "opendavinci/odcore/data/TimeStamp.h"        // for TimeStamp
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/wrapper/TimeFactory.h"   // for TimeFactory
@@ -42,8 +42,8 @@ class TimeFactoryTestDisableTimeFactory : public odcore::wrapper::TimeFactory {
         void disable() {
             odcore::wrapper::TimeFactory::setSingleton(NULL);
         }
-        SharedPointer<odcore::wrapper::Time> now() {
-            SharedPointer<odcore::wrapper::Time> t;
+        std::shared_ptr<odcore::wrapper::Time> now() {
+            std::shared_ptr<odcore::wrapper::Time> t;
             return t;
         }
 };

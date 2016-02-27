@@ -27,7 +27,7 @@
 #include "opendavinci/odcontext/base/BlockableContainerReceiver.h"
 #include "opendavinci/odcontext/base/ControlledContainerConferenceFactory.h"
 #include "opendavinci/odcontext/base/ControlledContainerConferenceForSystemUnderTest.h"
-#include "opendavinci/odcore/SharedPointer.h"         // for SharedPointer
+#include <memory>
 #include "opendavinci/odcore/base/FIFOQueue.h"        // for FIFOQueue
 #include "opendavinci/odcore/data/Container.h"        // for Container, etc
 #include "opendavinci/odcore/data/TimeStamp.h"        // for TimeStamp
@@ -92,8 +92,8 @@ class ConferenceFactoryTest : public CxxTest::TestSuite {
 
             // Create regular ContainerConference.
             const string group = "225.0.0.200";
-            odcore::SharedPointer<ContainerConference> udpCF = ContainerConferenceFactory::getInstance().getContainerConference(group);
-            TS_ASSERT(udpCF.isValid());
+            std::shared_ptr<ContainerConference> udpCF = ContainerConferenceFactory::getInstance().getContainerConference(group);
+            TS_ASSERT(udpCF.get());
             bool castIntoUDPCFSuccessful = false;
             try {
                 UDPMultiCastContainerConference *udpmccf = dynamic_cast<UDPMultiCastContainerConference*>(udpCF.operator->());
@@ -108,7 +108,7 @@ class ConferenceFactoryTest : public CxxTest::TestSuite {
             ContainerConferenceFactory &ccfDestroy = ContainerConferenceFactory::getInstance();
             ccf2 = &ccfDestroy;
             OPENDAVINCI_CORE_DELETE_POINTER(ccf2);
-            udpCF.release();
+            udpCF.reset();
 
             // Exchange ContainerConferenceFactory.
             ControlledContainerConferenceFactory *controlledCF = new ControlledContainerConferenceFactory();
@@ -117,9 +117,9 @@ class ConferenceFactoryTest : public CxxTest::TestSuite {
             TS_ASSERT(ccf2 == controlledCF);
 
             // Get ControlledContainerConference.
-            odcore::SharedPointer<ContainerConference> cf = controlledccf.getContainerConference(group);
+            std::shared_ptr<ContainerConference> cf = controlledccf.getContainerConference(group);
             ControlledContainerConferenceForSystemUnderTest *controlledConferenceForSystemUnderTest = NULL;
-            TS_ASSERT(cf.isValid());
+            TS_ASSERT(cf.get());
             bool castIntoCCFSuccessful = false;
             try {
                 controlledConferenceForSystemUnderTest = dynamic_cast<ControlledContainerConferenceForSystemUnderTest*>(cf.operator->());

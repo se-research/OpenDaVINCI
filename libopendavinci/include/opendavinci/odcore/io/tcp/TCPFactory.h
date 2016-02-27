@@ -23,7 +23,7 @@
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 
 namespace odcore {
     namespace io {
@@ -40,7 +40,7 @@ class TCPConnection;
                  *
                  * @param port to listen on.
                  */
-                static SharedPointer<TCPAcceptor> createTCPAcceptor(const uint32_t &port);
+                static std::shared_ptr<TCPAcceptor> createTCPAcceptor(const uint32_t &port);
 
                 /**
                  * This method creates a TCP connection to the specified IP address and port.
@@ -48,7 +48,7 @@ class TCPConnection;
                  * @param ip Ip address to connect to.
                  * @param port to connect to.
                  */
-                static SharedPointer<TCPConnection> createTCPConnectionTo(const string &ip, const uint32_t &port);
+                static std::shared_ptr<TCPConnection> createTCPConnectionTo(const string &ip, const uint32_t &port);
             };
 
         }

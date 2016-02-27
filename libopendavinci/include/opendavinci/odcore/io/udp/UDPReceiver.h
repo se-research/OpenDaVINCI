@@ -55,7 +55,7 @@ namespace odcore {
              * MyStringListener msl;
              * const string address = "0.0.0.0";
              * const uint32_t port = 12345;
-             * SharedPointer<UDPReceiver> r;
+             * std::shared_ptr<UDPReceiver> r;
              *
              * try {
              *     r = UDPFactory::createUDPReceiver(address, port);

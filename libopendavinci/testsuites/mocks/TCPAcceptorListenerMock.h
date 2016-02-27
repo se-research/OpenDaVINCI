@@ -22,7 +22,7 @@
 
 #include "FunctionCallWaiter.h"
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/io/tcp/TCPAcceptorListener.h"
 #include "opendavinci/odcore/io/tcp/TCPConnection.h"
 
@@ -43,7 +43,7 @@ namespace mocks {
              */
             TCPAcceptorListenerMock& operator=(const TCPAcceptorListenerMock&);
 
-            odcore::SharedPointer<odcore::io::tcp::TCPConnection> m_connection;
+            std::shared_ptr<odcore::io::tcp::TCPConnection> m_connection;
 
         public:
             TCPAcceptorListenerMock() :
@@ -53,15 +53,15 @@ namespace mocks {
 
             ~TCPAcceptorListenerMock() {};
 
-            odcore::SharedPointer<odcore::io::tcp::TCPConnection> getConnection() {
+            std::shared_ptr<odcore::io::tcp::TCPConnection> getConnection() {
                 return m_connection;
             }
 
             void dontDeleteConnection() {
-                m_connection.release();
+                m_connection.reset();
             }
 
-             virtual void onNewConnection(odcore::SharedPointer<odcore::io::tcp::TCPConnection> connection) {
+             virtual void onNewConnection(std::shared_ptr<odcore::io::tcp::TCPConnection> connection) {
                 m_connection = connection;
                 CALLWAITER_onNewConnection.called();
             }

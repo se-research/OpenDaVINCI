@@ -60,7 +60,7 @@ namespace odtools {
             // Record remaining entries.
             CLOG1 << "Clearing queue... ";
                 recordQueueEntries();
-                if (m_out.isValid()) {
+                if (m_out.get()) {
                     m_out->flush();
                 }
             CLOG1 << "done." << endl;
@@ -106,13 +106,13 @@ namespace odtools {
                          (c.getDataType() != odcore::data::SharedData::ID())  &&
                          (c.getDataType() != odcore::data::SharedPointCloud::ID())  &&
                          (c.getDataType() != odcore::data::image::SharedImage::ID()) ) {
-                        if (m_out.isValid()) {
+                        if (m_out.get()) {
                             (*m_out) << c;
                         }
                     }
                 }
 
-                if (m_out.isValid()) {
+                if (m_out.get()) {
                     m_out->flush();
                 }
             }

@@ -4,6 +4,7 @@
  * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
  */
 
+#include <memory>
 #include <algorithm>
 #include <sstream>
 #include <utility>
@@ -254,7 +255,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
+		std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
 		// Write number of elements in m_listOfMyStringList.
 		const uint32_t numberOfMyStringList = static_cast<uint32_t>(m_listOfMyStringList.size());
@@ -335,7 +336,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
 		// Clean up the existing list of MyStringList.
 		m_listOfMyStringList.clear();

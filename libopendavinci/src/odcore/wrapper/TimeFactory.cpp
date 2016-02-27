@@ -54,17 +54,17 @@ namespace odcore {
             return *(TimeFactory::instance);
         }
 
-        odcore::SharedPointer<odcore::wrapper::Time> TimeFactory::now() {
-        	odcore::SharedPointer<odcore::wrapper::Time> t;
+        std::shared_ptr<odcore::wrapper::Time> TimeFactory::now() {
+        	std::shared_ptr<odcore::wrapper::Time> t;
 
         	TimeFactory::m_singletonMutex->lock();
                 if (TimeFactory::controlledInstance == NULL) {
-                    t = odcore::SharedPointer<Time>(SystemTimeFactory::getInstance().now());
+                    t = std::shared_ptr<Time>(SystemTimeFactory::getInstance().now());
                 }
             TimeFactory::m_singletonMutex->unlock();
 
             // Otherwise, use this time factory (might be overwritten in sub classes).
-			if (!t.isValid()) {
+			if (!t.get()) {
 				t = TimeFactory::getInstance().now();
 			}
             return t;

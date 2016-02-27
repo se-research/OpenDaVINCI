@@ -27,7 +27,7 @@
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"         // for SharedPointer
+#include <memory>
 #include "opendavinci/odcore/base/Condition.h"        // for Condition
 #include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
 #include "opendavinci/odcore/base/Hash.h"             // for CharList, CRC32, etc
@@ -90,7 +90,7 @@ class TestSuiteExample7Data : public odcore::data::SerializableData {
 
 		virtual ostream& operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();
-		    odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
+		    std::shared_ptr<Serializer> s = sf.getSerializer(out);
 		    s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('n', 'u', 'm') >::RESULT,
 				    m_numericalValue);
 		    return out;
@@ -98,7 +98,7 @@ class TestSuiteExample7Data : public odcore::data::SerializableData {
 
 		virtual istream& operator>>(istream &in) {
             SerializationFactory& sf=SerializationFactory::getInstance();
-		    odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+		    std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 		    d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('n', 'u', 'm') >::RESULT,
 			       m_numericalValue);
 		    return in;
@@ -253,19 +253,19 @@ class DataTriggeredConferenceClientModuleTest : public CxxTest::TestSuite,
             m_connection() {}
 
         KeyValueConfiguration m_configuration;
-        odcore::SharedPointer<connection::ModuleConnection> m_connection;
+        std::shared_ptr<connection::ModuleConnection> m_connection;
 
         virtual KeyValueConfiguration getConfiguration(const ModuleDescriptor& /*md*/) {
             return m_configuration;
         }
 
-        virtual void onNewModule(odcore::SharedPointer<odcore::dmcp::connection::ModuleConnection> mc) {
+        virtual void onNewModule(std::shared_ptr<odcore::dmcp::connection::ModuleConnection> mc) {
             m_connection = mc;
         }
 
         void testTimeTriggeredTimeTriggeredConferenceClientModule() {
             // Setup ContainerConference.
-            odcore::SharedPointer<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.101");
+            std::shared_ptr<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.101");
 
 #if !defined(__OpenBSD__) && !defined(__APPLE__)
             // Setup DMCP.
@@ -335,7 +335,7 @@ class DataTriggeredConferenceClientModuleTest : public CxxTest::TestSuite,
 
         void testDataTriggeredTimeTriggeredConferenceClientModules() {
             // Setup ContainerConference.
-            odcore::SharedPointer<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.102");
+            std::shared_ptr<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.102");
 
 #if !defined(__OpenBSD__) && !defined(__APPLE__)
             // Setup DMCP.
@@ -439,7 +439,7 @@ class DataTriggeredConferenceClientModuleTest : public CxxTest::TestSuite,
 
         void testDataTriggeredTimeTriggeredConferenceClientModulesFreq10() {
             // Setup ContainerConference.
-            odcore::SharedPointer<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.103");
+            std::shared_ptr<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.103");
 
 #if !defined(__OpenBSD__) && !defined(__APPLE__)
             // Setup DMCP.

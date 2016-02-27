@@ -22,7 +22,7 @@
 
 #include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/wrapper/KeyValueDatabase.h"
 #include "opendavinci/odcore/wrapper/KeyValueDatabaseLibraryProducts.h"
 
@@ -48,7 +48,7 @@ namespace odcore {
                  *
                  * @return  key/value database based on the type of instance this factory is.
                  */
-                static SharedPointer<KeyValueDatabase> createKeyValueDatabase();
+                static std::shared_ptr<KeyValueDatabase> createKeyValueDatabase();
         };
 
     }

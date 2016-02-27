@@ -26,7 +26,7 @@
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"         // for SharedPointer
+#include <memory>
 #include "mocks/StringListenerMock.h"
 
 namespace odcore { namespace io { namespace udp { class UDPReceiver; } } }
@@ -47,10 +47,10 @@ using namespace std;
             const string group = "225.0.0.13";
             const uint32_t port = 4567;
 
-            odcore::SharedPointer<odcore::io::udp::UDPReceiver> receiver(
+            std::shared_ptr<odcore::io::udp::UDPReceiver> receiver(
                     odcore::wrapper::UDPFactoryWorker<odcore::wrapper::NetworkLibraryPosix>::createUDPReceiver(group, port));
 
-            odcore::SharedPointer<odcore::io::udp::UDPSender> sender(
+            std::shared_ptr<odcore::io::udp::UDPSender> sender(
                                 odcore::wrapper::UDPFactoryWorker<odcore::wrapper::NetworkLibraryPosix>::createUDPSender(group, port));
 
             receiver->start();
@@ -85,10 +85,10 @@ using namespace std;
             const string group = "225.0.0.13";
             const uint32_t port = 4567;
 
-            odcore::SharedPointer<odcore::io::udp::UDPReceiver> receiver(
+            std::shared_ptr<odcore::io::udp::UDPReceiver> receiver(
                     odcore::wrapper::UDPFactoryWorker<odcore::wrapper::NetworkLibraryWin32>::createUDPReceiver(group, port));
 
-            odcore::SharedPointer<odcore::io::udp::UDPSender> sender(
+            std::shared_ptr<odcore::io::udp::UDPSender> sender(
                                 odcore::wrapper::UDPFactoryWorker<odcore::wrapper::NetworkLibraryWin32>::createUDPSender(group, port));
 
             receiver->start();

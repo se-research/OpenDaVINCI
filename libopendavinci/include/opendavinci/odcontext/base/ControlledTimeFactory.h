@@ -21,7 +21,7 @@
 #define CONTEXT_BASE_CONTROLLEDTIMEFACTORY_H_
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/wrapper/TimeFactory.h"
 #include "opendavinci/odcontext/base/ControlledTime.h"
@@ -57,7 +57,7 @@ namespace odcontext {
 
                 virtual ~ControlledTimeFactory();
 
-                virtual odcore::SharedPointer<odcore::wrapper::Time> now();
+                virtual std::shared_ptr<odcore::wrapper::Time> now();
 
                 /**
                  * This method sets the time.

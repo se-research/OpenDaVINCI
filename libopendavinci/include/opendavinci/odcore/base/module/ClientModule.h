@@ -23,7 +23,7 @@
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
 #include "opendavinci/odcore/base/module/AbstractCIDModule.h"
 #include "opendavinci/odcore/dmcp/SuperComponentStateListener.h"
@@ -113,12 +113,12 @@ namespace odcore {
                     const odcore::base::KeyValueConfiguration getKeyValueConfiguration() const;
 
                     /**
-                     * This method returns the SharedPointer for the
+                     * This method returns the std::shared_ptr for the
                      * DMCP connection.
                      *
-                     * @return SharedPointer for DMCP connection.
+                     * @return std::shared_ptr for DMCP connection.
                      */
-                    odcore::SharedPointer<odcore::dmcp::connection::Client>& getDMCPClient();
+                    std::shared_ptr<odcore::dmcp::connection::Client>& getDMCPClient();
 
                     virtual void handleConnectionLost();
 
@@ -145,7 +145,7 @@ namespace odcore {
                     string m_name;
                     odcore::base::KeyValueConfiguration m_keyValueConfiguration;
                     odcore::data::dmcp::ServerInformation m_serverInformation;
-                    odcore::SharedPointer<odcore::dmcp::connection::Client> m_dmcpClient;
+                    std::shared_ptr<odcore::dmcp::connection::Client> m_dmcpClient;
             };
 
         }

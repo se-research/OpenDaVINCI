@@ -21,7 +21,7 @@
 #define OPENDAVINCI_CORE_WRAPPER_COMPRESSIONFACTORY_H_
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 
 namespace odcore {
     namespace wrapper {
@@ -37,18 +37,18 @@ class DecompressedData;
          *
          * @code
          * fstream fin("zip-file", ios::binary|ios::in);
-         * SharedPointer<DecompressedData> dd = CompressionFactory::getContents(fin);
+         * std::shared_ptr<DecompressedData> dd = CompressionFactory::getContents(fin);
          * fin.close();
          *
          * if (dd.isValid()) {
-         *     SharedPointer<istream> s = dd->getEntryByName("file");
+         *     std::shared_ptr<istream> s = dd->getEntryByName("file");
          * }
          * @endcode
          *
          * @See CompressionFactoryWorker
          */
         struct OPENDAVINCI_API CompressionFactory {
-            static SharedPointer<DecompressedData> getContents(istream &in);
+            static std::shared_ptr<DecompressedData> getContents(istream &in);
         };
 
     }

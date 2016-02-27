@@ -175,14 +175,14 @@ namespace odtools {
                 odcore::data::image::CompressedImage ci = m_actual.getData<odcore::data::image::CompressedImage>();
 
                 // Check, whether a shared memory was already created for this compressed image; otherwise, create it and save it for later.
-                map<string, odcore::SharedPointer<odcore::wrapper::SharedMemory> >::iterator it = m_mapOfSharedMemoriesForCompressedImages.find(ci.getName());
+                map<string, std::shared_ptr<odcore::wrapper::SharedMemory> >::iterator it = m_mapOfSharedMemoriesForCompressedImages.find(ci.getName());
                 if (it == m_mapOfSharedMemoriesForCompressedImages.end()) {
-                    odcore::SharedPointer<odcore::wrapper::SharedMemory> sp = odcore::wrapper::SharedMemoryFactory::createSharedMemory(ci.getName(), ci.getSize());
+                    std::shared_ptr<odcore::wrapper::SharedMemory> sp = odcore::wrapper::SharedMemoryFactory::createSharedMemory(ci.getName(), ci.getSize());
                     m_mapOfSharedMemoriesForCompressedImages[ci.getName()] = sp;
                 }
 
                 // Get the shared memory to put the uncompressed image into.
-                odcore::SharedPointer<odcore::wrapper::SharedMemory> sp = m_mapOfSharedMemoriesForCompressedImages[ci.getName()];
+                std::shared_ptr<odcore::wrapper::SharedMemory> sp = m_mapOfSharedMemoriesForCompressedImages[ci.getName()];
 
                 int width = 0;
                 int height = 0;

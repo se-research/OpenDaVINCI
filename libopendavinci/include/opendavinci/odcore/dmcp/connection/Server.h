@@ -20,6 +20,8 @@
 #ifndef OPENDAVINCI_DMCP_CONNECTION_SERVER_H_
 #define OPENDAVINCI_DMCP_CONNECTION_SERVER_H_
 
+#include <memory>
+
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/io/ConnectionAcceptor.h"
@@ -28,7 +30,6 @@
 namespace odcore { namespace data { namespace dmcp { class ServerInformation; } } }
 namespace odcore { namespace dmcp { class ModuleConfigurationProvider; } }
 namespace odcore { namespace io { class Connection; } }
-namespace odcore { template <class T> class SharedPointer; }
 
 namespace odcore {
     namespace dmcp {
@@ -62,7 +63,7 @@ class ConnectionHandler;
                     void setConnectionHandler(ConnectionHandler* connectionHandler);
 
                 protected:
-                    virtual void onNewConnection(odcore::SharedPointer<odcore::io::Connection> connection);
+                    virtual void onNewConnection(std::shared_ptr<odcore::io::Connection> connection);
 
                     odcore::base::Mutex m_configProviderMutex;
                     ModuleConfigurationProvider& m_configProvider;

@@ -24,7 +24,7 @@
 #include <memory>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/wrapper/Condition.h"
 #include "opendavinci/odcore/wrapper/Runnable.h"
 
@@ -100,7 +100,7 @@ class Thread;
                 static unique_ptr<Mutex> m_singletonMutex;
                 static DisposalService *m_singleton;
 
-                SharedPointer<Condition> m_queueCondition;
+                std::shared_ptr<Condition> m_queueCondition;
                 unique_ptr<Mutex> m_finalRemovalMutex;
                 unique_ptr<Mutex> m_queueMutex;
                 deque<Disposable**> m_queueForRegularRemoval;
@@ -136,7 +136,7 @@ class Thread;
                          * @param mutex Mutex for locking the queue.
                          * @param queue Queue with entries.
                          */
-                        QueueCleaner(SharedPointer<Condition> condition, Mutex &finalRemovalMutex, Mutex &mutex, deque<Disposable**> &queue);
+                        QueueCleaner(std::shared_ptr<Condition> condition, Mutex &finalRemovalMutex, Mutex &mutex, deque<Disposable**> &queue);
 
                         virtual ~QueueCleaner();
 
@@ -148,7 +148,7 @@ class Thread;
                         void setRunning(const bool &b);
 
                     private:
-                        SharedPointer<Condition> m_queueCondition;
+                        std::shared_ptr<Condition> m_queueCondition;
                         Mutex &m_finalRemovalMutex;
                         Mutex &m_queueMutex;
                         deque<Disposable**> &m_queue;

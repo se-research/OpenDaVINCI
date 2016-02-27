@@ -25,7 +25,7 @@ namespace odcore {
 
         Mutex::Mutex() :
             m_mutex() {
-            m_mutex = SharedPointer<wrapper::Mutex>(wrapper::MutexFactory::createMutex());
+            m_mutex = std::shared_ptr<wrapper::Mutex>(wrapper::MutexFactory::createMutex());
         }
 
         Mutex::~Mutex() {

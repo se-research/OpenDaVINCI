@@ -23,7 +23,7 @@
 #include <string>
 #include <iostream>
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/Condition.h"
 #include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/base/Mutex.h"
@@ -51,7 +51,7 @@ namespace mocks {
             ConnectionAcceptorListenerMock& operator=(const ConnectionAcceptorListenerMock&);
 
         private:
-            odcore::SharedPointer<odcore::io::Connection> m_connection;
+            std::shared_ptr<odcore::io::Connection> m_connection;
             bool m_connected;
             base::Condition m_condition;
 
@@ -63,12 +63,12 @@ namespace mocks {
 
             ~ConnectionAcceptorListenerMock() {};
 
-            odcore::SharedPointer<io::Connection> getConnection() {
+            std::shared_ptr<io::Connection> getConnection() {
                 return m_connection;
             }
 
             void dontDeleteConnection() {
-                m_connection.release();
+                m_connection.reset();
             }
 
             void waitForConnection() {
@@ -82,7 +82,7 @@ namespace mocks {
                 return m_connected;
             }
 
-            virtual void onNewConnection(odcore::SharedPointer<odcore::io::Connection> connection) {
+            virtual void onNewConnection(std::shared_ptr<odcore::io::Connection> connection) {
                 base::Lock l(m_condition);
                 m_connection = connection;
                 m_connected = true;

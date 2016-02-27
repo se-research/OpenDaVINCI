@@ -21,7 +21,7 @@
 #define CONTEXT_BASE_SYSTEMCONTEXTCOMPONENT_H_
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/FIFOQueue.h"
 #include "opendavinci/odcore/base/KeyValueDataStore.h"
 #include "opendavinci/odcore/io/conference/ContainerListener.h"
@@ -91,7 +91,7 @@ namespace odcontext {
 
             private:
                 odcore::base::FIFOQueue m_fifo;
-                odcore::SharedPointer<odcore::base::KeyValueDataStore> m_keyValueDataStore;
+                std::shared_ptr<odcore::base::KeyValueDataStore> m_keyValueDataStore;
         };
 
     }

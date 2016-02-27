@@ -25,7 +25,7 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/strings/StringComparator.h"
 #include "opendavinci/odcore/wrapper/CompressionLibraryProducts.h"
 #include "opendavinci/odcore/wrapper/DecompressedData.h"
@@ -80,10 +80,10 @@ namespace odcore {
 
                     virtual vector<string> getListOfEntries();
 
-                    virtual SharedPointer<istream> getInputStreamFor(const string &entry);
+                    virtual std::shared_ptr<istream> getInputStreamFor(const string &entry);
 
                 private:
-                    map<string, SharedPointer<istream>, odcore::strings::StringComparator> m_mapOfDecompressedEntries;
+                    map<string, std::shared_ptr<istream>, odcore::strings::StringComparator> m_mapOfDecompressedEntries;
 
                     /**
                      * This method tries to decompress the given archive and

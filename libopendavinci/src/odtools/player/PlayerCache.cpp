@@ -44,7 +44,7 @@ namespace odtools {
         using namespace odcore::data;
         using namespace odtools;
 
-        PlayerCache::PlayerCache(const uint32_t size, const uint32_t sizeMemorySegments, const bool &autoRewind, SharedPointer<istream> in, SharedPointer<istream> inSharedMemoryFile) :
+        PlayerCache::PlayerCache(const uint32_t size, const uint32_t sizeMemorySegments, const bool &autoRewind, std::shared_ptr<istream> in, std::shared_ptr<istream> inSharedMemoryFile) :
             m_cacheSize(size),
             m_autoRewind(autoRewind),
             m_in(in),
@@ -119,7 +119,7 @@ namespace odtools {
             m_in->seekg(ios::beg);
 
             // If a memory dump file was found, reset it as well.
-            if (m_inSharedMemoryFile.isValid()) {
+            if (m_inSharedMemoryFile.get()) {
                 m_inSharedMemoryFile->clear();
                 m_inSharedMemoryFile->seekg(ios::beg);
             }
@@ -207,7 +207,7 @@ namespace odtools {
                 readFromMemFile = true;
             }
             else {
-                if ( (m_inSharedMemoryFile.isValid()) && (m_inSharedMemoryFile->good()) ) {
+                if ( (m_inSharedMemoryFile.get()) && (m_inSharedMemoryFile->good()) ) {
                     *m_inSharedMemoryFile >> fromMemFile;
 
                     if (m_inSharedMemoryFile->gcount() > 0) {
@@ -276,9 +276,9 @@ namespace odtools {
                 }
 
                 // Check, whether a shared memory was already created for this SharedImage or SharedData; otherwise, create it and save it for later.
-                map<string, SharedPointer<odcore::wrapper::SharedMemory> >::iterator it = m_sharedPointers.find(nameOfSharedMemory);
+                map<string, std::shared_ptr<odcore::wrapper::SharedMemory> >::iterator it = m_sharedPointers.find(nameOfSharedMemory);
                 if (it == m_sharedPointers.end()) {
-                    SharedPointer<odcore::wrapper::SharedMemory> sp = odcore::wrapper::SharedMemoryFactory::createSharedMemory(nameOfSharedMemory, size);
+                    std::shared_ptr<odcore::wrapper::SharedMemory> sp = odcore::wrapper::SharedMemoryFactory::createSharedMemory(nameOfSharedMemory, size);
                     m_sharedPointers[nameOfSharedMemory] = sp;
                 }
 
@@ -331,7 +331,7 @@ namespace odtools {
                 }
 
                 // Check, if a shared memory exists for this container.
-                map<string, SharedPointer<odcore::wrapper::SharedMemory> >::iterator it = m_sharedPointers.find(nameOfSharedMemory);
+                map<string, std::shared_ptr<odcore::wrapper::SharedMemory> >::iterator it = m_sharedPointers.find(nameOfSharedMemory);
                 if (it != m_sharedPointers.end()) {
                     // Get next entry to process from output queue.
                     Container c = m_bufferOut.leave();
@@ -341,7 +341,7 @@ namespace odtools {
                     char *src = m_mapOfMemories[ms.getIdentifier()];
 
                     // Get shared memory based on "header" informaton.
-                    SharedPointer<odcore::wrapper::SharedMemory> sp = it->second;
+                    std::shared_ptr<odcore::wrapper::SharedMemory> sp = it->second;
 
                     // memcpy src to shared memory.
                     ::memcpy(sp->getSharedMemory(), src, ms.getConsumedSize());

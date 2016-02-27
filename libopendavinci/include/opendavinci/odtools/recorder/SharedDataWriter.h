@@ -24,7 +24,7 @@
 #include <map>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/Service.h"
 
 namespace odcore { namespace base { class FIFOQueue; } }
@@ -65,7 +65,7 @@ namespace odtools {
                  *
                  * @param out Output stream to write to.
                  */
-                SharedDataWriter(odcore::SharedPointer<ostream> out, map<uint32_t, char*> &mapOfMemories, odcore::base::FIFOQueue &bufferIn, odcore::base::FIFOQueue &bufferOut);
+                SharedDataWriter(std::shared_ptr<ostream> out, map<uint32_t, char*> &mapOfMemories, odcore::base::FIFOQueue &bufferIn, odcore::base::FIFOQueue &bufferOut);
 
                 virtual ~SharedDataWriter();
 
@@ -77,7 +77,7 @@ namespace odtools {
                 virtual void run();
 
             private:
-                odcore::SharedPointer<ostream> m_out;
+                std::shared_ptr<ostream> m_out;
 
                 map<uint32_t, char*> &m_mapOfMemories;
 

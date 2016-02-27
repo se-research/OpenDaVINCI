@@ -23,7 +23,7 @@
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/exceptions/Exceptions.h"
 #include "opendavinci/odcore/io/URL.h"
@@ -72,7 +72,7 @@ namespace odcore {
                  * @return input stream based on the given URL.
                  * @throws InvalidArgumentException in case of an invalid URL.
                  */
-                odcore::SharedPointer<istream> getInputStream(const URL &url) throw (odcore::exceptions::InvalidArgumentException);
+                std::shared_ptr<istream> getInputStream(const URL &url) throw (odcore::exceptions::InvalidArgumentException);
 
                 /**
                  * This method returns a new output stream based on a given URL.
@@ -81,14 +81,14 @@ namespace odcore {
                  * @return output stream based on the given URL.
                  * @throws InvalidArgumentException in case of an invalid URL.
                  */
-                odcore::SharedPointer<ostream> getOutputStream(const URL &url) throw (odcore::exceptions::InvalidArgumentException);
+                std::shared_ptr<ostream> getOutputStream(const URL &url) throw (odcore::exceptions::InvalidArgumentException);
 
             private:
                 static base::Mutex m_singletonMutex;
                 static StreamFactory* m_singleton;
 
-                vector<odcore::SharedPointer<istream> > m_listOfInputStreams;
-                vector<odcore::SharedPointer<ostream> > m_listOfOutputStreams;
+                vector<std::shared_ptr<istream> > m_listOfInputStreams;
+                vector<std::shared_ptr<ostream> > m_listOfOutputStreams;
         };
 
     }

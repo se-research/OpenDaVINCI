@@ -132,13 +132,13 @@ namespace odcore {
                 m_listenerMutex->unlock();
             }
 
-            void WIN32TCPAcceptor::invokeAcceptorListener(odcore::SharedPointer<odcore::io::tcp::TCPConnection> connection) {
+            void WIN32TCPAcceptor::invokeAcceptorListener(std::shared_ptr<odcore::io::tcp::TCPConnection> connection) {
                 m_listenerMutex->lock();
                 if (m_listener != NULL) {
                     m_listener->onNewConnection(connection);
                 }
                 else {
-                    // No listener available. The SharedPointer will delete the connection automatically to prevent memory leakage.
+                    // No listener available. The std::shared_ptr will delete the connection automatically to prevent memory leakage.
                 }
                 m_listenerMutex->unlock();
             }
@@ -175,7 +175,7 @@ namespace odcore {
                         int32_t client = ::accept(m_fileDescriptor, &clientsock, &csize);
 
                         if (client >= 0) {
-                            invokeAcceptorListener(odcore::SharedPointer<odcore::io::tcp::TCPConnection>(new WIN32TCPConnection(client)));
+                            invokeAcceptorListener(std::shared_ptr<odcore::io::tcp::TCPConnection>(new WIN32TCPConnection(client)));
                         }
                     }
                 }

@@ -25,7 +25,7 @@
 
 #include "cxxtest/TestSuite.h"
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/base/Thread.h"
 #include "opendavinci/odcore/data/Container.h"
@@ -48,7 +48,7 @@ class EigenExamplesTest : public CxxTest::TestSuite {
             const uint32_t SIZE = 12 * sizeof(unsigned char);
 
             try {
-                SharedPointer<SharedMemory> sharedMemory(SharedMemoryFactory::createSharedMemory(NAME, SIZE));
+                std::shared_ptr<SharedMemory> sharedMemory(SharedMemoryFactory::createSharedMemory(NAME, SIZE));
 
                 if (sharedMemory->isValid()) {
                     {
@@ -120,7 +120,7 @@ class EigenExamplesTest : public CxxTest::TestSuite {
             const uint32_t SIZE = 12 * sizeof(float);
 
             try {
-                SharedPointer<SharedMemory> sharedMemory(SharedMemoryFactory::createSharedMemory(NAME, SIZE));
+                std::shared_ptr<SharedMemory> sharedMemory(SharedMemoryFactory::createSharedMemory(NAME, SIZE));
 
                 if (sharedMemory->isValid()) {
                     {
@@ -199,7 +199,7 @@ class EigenExamplesTest : public CxxTest::TestSuite {
 
             try {
                 // This pointer would need to be created once from the sender at startup.
-                SharedPointer<SharedMemory> sharedMemory(SharedMemoryFactory::createSharedMemory(NAME, SIZE));
+                std::shared_ptr<SharedMemory> sharedMemory(SharedMemoryFactory::createSharedMemory(NAME, SIZE));
                 Container toReceiver;
                 // Sender side.
                 {
@@ -264,7 +264,7 @@ class EigenExamplesTest : public CxxTest::TestSuite {
                         cout << senderSharedPointCloud.toString() << endl;
 
                         // Attach ourselves to the same shared memory segment (would be needed just once).
-                        SharedPointer<SharedMemory> receiverSharedMemory(SharedMemoryFactory::attachToSharedMemory(senderSharedPointCloud.getName()));
+                        std::shared_ptr<SharedMemory> receiverSharedMemory(SharedMemoryFactory::attachToSharedMemory(senderSharedPointCloud.getName()));
 
                         if (receiverSharedMemory->isValid()) {
                             {

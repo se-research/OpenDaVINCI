@@ -25,7 +25,7 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "opendavinci/odcore/SharedPointer.h"         // for SharedPointer
+#include <memory>
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
 #include "opendavinci/odcore/dmcp/connection/Client.h"  // for Client
 #include "opendavinci/odcore/dmcp/connection/ConnectionHandler.h"
@@ -57,7 +57,7 @@ class DMCPConnectionTestsuite : public CxxTest::TestSuite,
         DMCPConnectionTestsuite() :
             connection(NULL) {}
 
-        odcore::SharedPointer<odcore::dmcp::connection::ModuleConnection> connection;
+        std::shared_ptr<odcore::dmcp::connection::ModuleConnection> connection;
 
         void testClientAndServer()
         {
@@ -90,7 +90,7 @@ class DMCPConnectionTestsuite : public CxxTest::TestSuite,
             TS_ASSERT(client.getConfiguration().getValue<string>("global.exampleKey") == "exampleValue");
         }
 
-        virtual void onNewModule(odcore::SharedPointer<odcore::dmcp::connection::ModuleConnection> mc)
+        virtual void onNewModule(std::shared_ptr<odcore::dmcp::connection::ModuleConnection> mc)
         {
             connection = mc;
         }

@@ -53,13 +53,13 @@ namespace odcore {
                 OPENDAVINCI_CORE_THROW_EXCEPTION(ConnectException, s);
             }
 
-            if (m_connection.isValid()) {
+            if (m_connection.get()) {
                 m_connection->setStringListener(this);
                 m_connection->setConnectionListener(this);
             }
         }
 
-        Connection::Connection(odcore::SharedPointer<odcore::io::tcp::TCPConnection> connection) :
+        Connection::Connection(std::shared_ptr<odcore::io::tcp::TCPConnection> connection) :
             m_listenerMutex(),
             m_listener(NULL),
             m_errorHandlerMutex(),
@@ -68,14 +68,14 @@ namespace odcore {
             m_connectedMutex(),
             m_connected(false) {
             m_connection = connection;
-            if (m_connection.isValid()) {
+            if (m_connection.get()) {
                 m_connection->setStringListener(this);
                 m_connection->setConnectionListener(this);
             }
         }
 
         Connection::~Connection() {
-            if (m_connection.isValid()) {
+            if (m_connection.get()) {
                 m_connection->setConnectionListener(NULL);
                 m_connection->setStringListener(NULL);
                 m_connection->stop();
@@ -139,7 +139,7 @@ namespace odcore {
         }
 
         void Connection::start() {
-            if (m_connection.isValid()) {
+            if (m_connection.get()) {
                 m_connection->start();
 
                 Lock l(m_connectedMutex);
@@ -148,7 +148,7 @@ namespace odcore {
         }
 
         void Connection::stop() {
-            if (m_connection.isValid()) {
+            if (m_connection.get()) {
                 m_connection->stop();
 
                 Lock l(m_connectedMutex);

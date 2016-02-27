@@ -39,7 +39,7 @@ namespace odcore {
             using namespace odcore::data;
             using namespace odcore::data::dmcp;
 
-            ModuleConnection::ModuleConnection(odcore::SharedPointer<odcore::io::Connection> connection,
+            ModuleConnection::ModuleConnection(std::shared_ptr<odcore::io::Connection> connection,
                                                ModuleConfigurationProvider &configProvider) :
                 m_connection(connection),
                 m_configurationProvider(configProvider),

@@ -48,7 +48,7 @@ namespace odcore {
             m_queueCleaner(NULL) {
 
             m_queueCondition = ConditionFactory::createCondition();
-            if (!m_queueCondition.isValid()) {
+            if (!m_queueCondition.get()) {
                 stringstream s;
                 s << "[core::wrapper::DisposalServer] Error while creating condition.";
                 throw s.str();
@@ -185,7 +185,7 @@ namespace odcore {
             }
         }
 
-        DisposalService::QueueCleaner::QueueCleaner(SharedPointer<Condition> condition, Mutex &finalRemovalMutex, Mutex &mutex, deque<Disposable**> &queue) :
+        DisposalService::QueueCleaner::QueueCleaner(std::shared_ptr<Condition> condition, Mutex &finalRemovalMutex, Mutex &mutex, deque<Disposable**> &queue) :
             m_queueCondition(condition),
             m_finalRemovalMutex(finalRemovalMutex),
             m_queueMutex(mutex),
