@@ -59,9 +59,9 @@ namespace automotive {
             m_deviceNodeB = getKeyValueConfiguration().getValue<string>("odcanbridge.devicenodeB");
 
             // Try to open CAN device A and register this instance as receiver for GenericCANMessages.
-            m_deviceA = SharedPointer<CANDevice>(new CANDevice(m_deviceNodeA, m_replicatorFromAtoB));
+            m_deviceA = std::shared_ptr<CANDevice>(new CANDevice(m_deviceNodeA, m_replicatorFromAtoB));
             // Try to open CAN device B and register this instance as receiver for GenericCANMessages.
-            m_deviceB = SharedPointer<CANDevice>(new CANDevice(m_deviceNodeB, m_replicatorFromBtoA));
+            m_deviceB = std::shared_ptr<CANDevice>(new CANDevice(m_deviceNodeB, m_replicatorFromBtoA));
 
             // If the device could be successfully opened, create a recording file with a dump of the data.
             if (m_deviceA->isOpen() &&

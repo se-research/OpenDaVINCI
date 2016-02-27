@@ -22,7 +22,7 @@
 #ifndef CANBRIDGE_H_
 #define CANBRIDGE_H_
 
-#include <opendavinci/odcore/SharedPointer.h>
+#include <memory>
 #include <stdint.h>
 #include <memory>
 #include <string>
@@ -92,9 +92,9 @@ class CANDevice;
             private:
                 odcore::base::FIFOQueue m_fifo;
                 unique_ptr<odtools::recorder::Recorder> m_recorder;
-                odcore::SharedPointer<CANDevice> m_deviceA;
+                std::shared_ptr<CANDevice> m_deviceA;
                 string m_deviceNodeA;
-                odcore::SharedPointer<CANDevice> m_deviceB;
+                std::shared_ptr<CANDevice> m_deviceB;
                 string m_deviceNodeB;
                 CANMessageReplicator m_replicatorFromAtoB;
                 CANMessageReplicator m_replicatorFromBtoA;

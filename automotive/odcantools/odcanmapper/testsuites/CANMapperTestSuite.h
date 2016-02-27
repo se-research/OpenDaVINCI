@@ -23,7 +23,7 @@
 
 #include "cxxtest/TestSuite.h"
 
-#include <opendavinci/odcore/SharedPointer.h>
+#include <memory>
 #include <opendavinci/odcore/reflection/Message.h>
 #include <opendavinci/odcore/reflection/MessageToVisitableVisitor.h>
 #include <opendavinci/odcore/reflection/MessagePrettyPrinterVisitor.h>
@@ -137,7 +137,7 @@ class CanMapperTest : public CxxTest::TestSuite {
                 f->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
                 f->setSize(sizeof(v));
 
-                message.addField(SharedPointer<AbstractField>(f));
+                message.addField(std::shared_ptr<AbstractField>(f));
             }
 
             {
@@ -154,7 +154,7 @@ class CanMapperTest : public CxxTest::TestSuite {
                 f->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
                 f->setSize(sizeof(v));
 
-                message.addField(SharedPointer<AbstractField>(f));
+                message.addField(std::shared_ptr<AbstractField>(f));
             }
 
             {
@@ -171,7 +171,7 @@ class CanMapperTest : public CxxTest::TestSuite {
                 f->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
                 f->setSize(sizeof(v));
 
-                message.addField(SharedPointer<AbstractField>(f));
+                message.addField(std::shared_ptr<AbstractField>(f));
             }
 
             {
@@ -188,7 +188,7 @@ class CanMapperTest : public CxxTest::TestSuite {
                 f->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
                 f->setSize(sizeof(v));
 
-                message.addField(SharedPointer<AbstractField>(f));
+                message.addField(std::shared_ptr<AbstractField>(f));
             }
 
             MessageToVisitableVisitor mtvv(message);
