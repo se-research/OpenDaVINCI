@@ -79,7 +79,7 @@ namespace automotive {
         odcore::data::image::SharedImage Camera::capture() {
             if (isValid()) {
                 if (captureFrame()) {
-                    if (m_sharedMemory.isValid() && m_sharedMemory->isValid()) {
+                    if (m_sharedMemory.get() && m_sharedMemory->isValid()) {
                         m_sharedMemory->lock();
                             copyImageTo((char*)m_sharedMemory->getSharedMemory(), m_size);
                         m_sharedMemory->unlock();

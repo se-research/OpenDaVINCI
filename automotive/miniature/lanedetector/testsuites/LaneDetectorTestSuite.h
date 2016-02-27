@@ -22,7 +22,7 @@
 
 #include "cxxtest/TestSuite.h"
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
 #include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
@@ -107,7 +107,7 @@ class LaneDetectorTest : public CxxTest::TestSuite {
             const uint32_t WIDTH = 3;
             const uint32_t HEIGHT = 4;
             const uint32_t BYTESPERPIXEL = 3;
-            odcore::SharedPointer<odcore::wrapper::SharedMemory> imageProducer = odcore::wrapper::SharedMemoryFactory::createSharedMemory("ImageProducer", WIDTH * HEIGHT * BYTESPERPIXEL);
+            std::shared_ptr<odcore::wrapper::SharedMemory> imageProducer = odcore::wrapper::SharedMemoryFactory::createSharedMemory("ImageProducer", WIDTH * HEIGHT * BYTESPERPIXEL);
             TS_ASSERT(imageProducer->isValid());
             TS_ASSERT(imageProducer->getSize() == WIDTH * HEIGHT * BYTESPERPIXEL);
             imageProducer->lock();
