@@ -49,7 +49,7 @@ TCPReceiveBytes.cpp:
     #include <stdint.h>
     #include <iostream>
     #include <string>
-#include <memory>
+    #include <memory>
     #include <opendavinci/odcore/base/Thread.h>
     #include <opendavinci/odcore/io/tcp/TCPAcceptor.h>
     #include <opendavinci/odcore/io/tcp/TCPFactory.h>

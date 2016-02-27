@@ -16,7 +16,7 @@ SerialSendBytes.cpp:
     #include <stdint.h>
     #include <iostream>
     #include <string>
-#include <memory>
+    #include <memory>
     #include <opendavinci/odcore/wrapper/SerialPort.h>
     #include <opendavinci/odcore/wrapper/SerialPortFactory.h>
 

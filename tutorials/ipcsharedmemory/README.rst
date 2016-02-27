@@ -18,7 +18,7 @@ ipcsharedmemoryproducer.cpp:
     #include <stdint.h>
     #include <iostream>
     #include <string>
-#include <memory>
+    #include <memory>
     #include <opendavinci/odcore/base/Lock.h>
     #include <opendavinci/odcore/base/Thread.h>
     #include <opendavinci/odcore/wrapper/SharedMemory.h>
@@ -78,7 +78,7 @@ your program.
 
 Once you have the ``std::shared_ptr`` at hand, you can check its validity by calling
 ``bool isValid()``. If the shared memory is valid, you can request exclusive access
-to it by using a scoped lock provided by the class ``core::base::Lock``. A scoped
+to it by using a scoped lock provided by the class ``odcore::base::Lock``. A scoped
 lock will automatically release a concurrently accessed resource when the current
 scope is left. As soon as it gets available, you can access it by calling ``getSharedMemory()``
 returning a ``char*``.
@@ -95,7 +95,7 @@ ipcsharedmemoryconsumer.cpp:
     #include <stdint.h>
     #include <iostream>
     #include <string>
-#include <memory>
+    #include <memory>
     #include <opendavinci/odcore/base/Lock.h>
     #include <opendavinci/odcore/base/Thread.h>
     #include <opendavinci/odcore/wrapper/SharedMemory.h>
@@ -155,7 +155,7 @@ your program.
 
 Once you have the ``std::shared_ptr`` at hand, you can check its validity by calling
 ``bool isValid()``. If the shared memory is valid, you can request exclusive access
-to it by using a scoped lock provided by the class ``core::base::Lock``. A scoped
+to it by using a scoped lock provided by the class ``odcore::base::Lock``. A scoped
 lock will automatically release a concurrently accessed resource when the current
 scope is left. As soon as it gets available, you can access it by calling ``getSharedMemory()``
 returning a ``char*``.

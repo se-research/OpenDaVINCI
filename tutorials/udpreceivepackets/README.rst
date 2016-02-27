@@ -34,7 +34,7 @@ UDPReceivePackets.cpp:
     #include <stdint.h>
     #include <iostream>
     #include <string>
-#include <memory>
+    #include <memory>
     #include <opendavinci/odcore/base/Thread.h>
     #include <opendavinci/odcore/io/udp/UDPReceiver.h>
     #include <opendavinci/odcore/io/udp/UDPFactory.h>

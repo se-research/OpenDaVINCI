@@ -23,7 +23,7 @@ UDPReceiveBytes.hpp:
     };
 
 To receive any data, we firstly declare a class that implements the interface
-``core::io::StringListener``. This class will be registered as listener to
+``odcore::io::StringListener``. This class will be registered as listener to
 our UDP socket that we create later.
 
 UDPReceiveBytes.cpp:
@@ -33,7 +33,7 @@ UDPReceiveBytes.cpp:
     #include <stdint.h>
     #include <iostream>
     #include <string>
-#include <memory>
+    #include <memory>
     #include <opendavinci/odcore/base/Thread.h>
     #include <opendavinci/odcore/io/udp/UDPReceiver.h>
     #include <opendavinci/odcore/io/udp/UDPFactory.h>

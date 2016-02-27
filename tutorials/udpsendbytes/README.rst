@@ -16,7 +16,7 @@ UDPSendBytes.cpp:
     #include <stdint.h>
     #include <iostream>
     #include <string>
-#include <memory>
+    #include <memory>
     #include <opendavinci/odcore/io/udp/UDPSender.h>
     #include <opendavinci/odcore/io/udp/UDPFactory.h>
 

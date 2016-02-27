@@ -185,7 +185,7 @@ Data-triggered receiver
 """""""""""""""""""""""
 
 To receive the sent data, a data-triggered software component is derived from
-``core::base::DataTriggeredConferenceClientModule``, provided in
+``odcore::base::DataTriggeredConferenceClientModule``, provided in
 ``<opendavinci/odcore/base/module/DataTriggeredConferenceClientModule.h>`` to realize the
 receiving functionality.
 

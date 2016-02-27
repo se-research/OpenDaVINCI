@@ -23,7 +23,7 @@ SerialReceiveBytes.hpp:
     };
 
 To receive any data, we firstly declare a class that implements the interface
-``core::io::StringListener``. This method will handle any bytes received
+``odcore::io::StringListener``. This method will handle any bytes received
 from the low level ``SerialPort``. Here, your application should realize an
 application-specific protocol.
 
@@ -34,7 +34,7 @@ SerialReceiveBytes.cpp:
     #include <stdint.h>
     #include <iostream>
     #include <string>
-#include <memory>
+    #include <memory>
     #include <opendavinci/odcore/base/Thread.h>
     #include <opendavinci/odcore/wrapper/SerialPort.h>
     #include <opendavinci/odcore/wrapper/SerialPortFactory.h>
