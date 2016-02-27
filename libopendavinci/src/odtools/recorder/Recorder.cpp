@@ -79,6 +79,7 @@ namespace odtools {
             if ( (c.getDataType() != Container::UNDEFINEDDATA) &&
                  (c.getDataType() != odcore::data::recorder::RecorderCommand::ID())  &&
                  (c.getDataType() != odcore::data::SharedData::ID())  &&
+                 (c.getDataType() != odcore::data::SharedPointCloud::ID())  &&
                  (c.getDataType() != odcore::data::image::SharedImage::ID()) ) {
                 getFIFO().enter(c);
                 recordQueueEntries();
@@ -87,6 +88,7 @@ namespace odtools {
             if (m_dumpSharedData) {
                 // ... or a container that describes a shared memory segment.
                 if ( (c.getDataType() == odcore::data::SharedData::ID())  ||
+                     (c.getDataType() == odcore::data::SharedPointCloud::ID()) ||
                      (c.getDataType() == odcore::data::image::SharedImage::ID()) ) {
                     getDataStoreForSharedData().add(c);
                 }
@@ -102,6 +104,7 @@ namespace odtools {
                     if ( (c.getDataType() != Container::UNDEFINEDDATA) &&
                          (c.getDataType() != odcore::data::recorder::RecorderCommand::ID())  &&
                          (c.getDataType() != odcore::data::SharedData::ID())  &&
+                         (c.getDataType() != odcore::data::SharedPointCloud::ID())  &&
                          (c.getDataType() != odcore::data::image::SharedImage::ID()) ) {
                         if (m_out.isValid()) {
                             (*m_out) << c;

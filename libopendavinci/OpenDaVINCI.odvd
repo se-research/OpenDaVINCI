@@ -252,6 +252,34 @@ message odcore.data.image.SharedImage extends odcore.data.SharedData [id = 14] {
 //     uint8 *imageData [id = 6]; // Dynamically sized arrays are not available yet.
 // }
 
+// This message can be used to provide meta-information about a
+// pointcloud stored in a shared memory segment.
+// Typical use cases are to store a fixed amount (= width, height=1) of vectors
+// with vector's dimension = numberOfComponentsPerPoint of type componentDataType.
+// See libopendavinci/testsuite/EigenExamplesTest.h for examples.
+message odcore.data.SharedPointCloud extends odcore.data.SharedData [id = 28] {
+    enum COMPONENTDATATYPE {
+        BOOL_T              = 0,
+        INTEGERS_START      = 1,
+        UINT8_T             = 2,
+        INT8_T              = 3,
+        UINT16_T            = 4,
+        INT16_T             = 5,
+        UINT32_T            = 6,
+        INT32_T             = 7,
+        UINT64_T            = 8,
+        INT64_T             = 9,
+        INTEGERS_END        = 10,
+        CHAR_T              = 11,
+        UCHAR_T             = 12,
+        FLOAT_T             = 13,
+        DOUBLE_T            = 14,
+    };
+    uint32 width [id = 1];
+    uint32 height [id = 2];
+    uint8 numberOfComponentsPerPoint [id = 3];
+    COMPONENTDATATYPE componentDataType [id = 4];
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // PCAP recordings (de-facto standard for raw packet dumps, created for

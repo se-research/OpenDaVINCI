@@ -45,6 +45,7 @@ namespace odtools {
             m_sharedDataWriter(NULL),
             m_mapOfAvailableSharedData(),
             m_mapOfAvailableSharedImages(),
+            m_mapOfAvailableSharedPointCloud(),
             m_mapOfMemories(),
             m_bufferIn(),
             m_bufferOut(),
@@ -144,6 +145,7 @@ namespace odtools {
         void SharedDataListener::add(const Container &container) {
             bool hasCopied = false;
 
+            // Shared Data.
             if (container.getDataType() == odcore::data::SharedData::ID()) {
                 odcore::data::SharedData sd = const_cast<Container&>(container).getData<odcore::data::SharedData>();
 
@@ -163,6 +165,27 @@ namespace odtools {
                 hasCopied = copySharedMemoryToMemorySegment(sd.getName(), container);
             }
 
+            // Shared Point Cloud.
+            if (container.getDataType() == odcore::data::SharedPointCloud::ID()) {
+                odcore::data::SharedPointCloud spc = const_cast<Container&>(container).getData<odcore::data::SharedPointCloud>();
+
+                map<string, odcore::data::SharedPointCloud>::iterator it = m_mapOfAvailableSharedPointCloud.find(spc.getName());
+                if (it == m_mapOfAvailableSharedPointCloud.end()) {
+                    m_mapOfAvailableSharedPointCloud[spc.getName()] = spc;
+
+                    CLOG1 << "Connecting to shared point cloud " << spc.getName() << " at ";
+                    
+                    SharedPointer<odcore::wrapper::SharedMemory> sp = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(spc.getName());
+                    m_sharedPointers[spc.getName()] = sp;
+
+                    CLOG1 << sp->getSharedMemory() << " ";
+
+                    CLOG1 << "done." << endl;
+                }
+                hasCopied = copySharedMemoryToMemorySegment(spc.getName(), container);
+            }
+
+            // Shared Images.
             if (container.getDataType() == odcore::data::image::SharedImage::ID()) {
                 odcore::data::image::SharedImage si = const_cast<Container&>(container).getData<odcore::data::image::SharedImage>();
 

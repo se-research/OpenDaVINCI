@@ -72,6 +72,7 @@ namespace odrecorder {
         // Connect recorder's data store that can handle shared data.
         addDataStoreFor(odcore::data::SharedData::ID(), r.getDataStoreForSharedData());
         addDataStoreFor(odcore::data::image::SharedImage::ID(), r.getDataStoreForSharedData());
+        addDataStoreFor(odcore::data::SharedPointCloud::ID(), r.getDataStoreForSharedData());
 
         // Get key/value-datastore for controlling the odrecorder.
         KeyValueDataStore &kvds = getKeyValueDataStore();
