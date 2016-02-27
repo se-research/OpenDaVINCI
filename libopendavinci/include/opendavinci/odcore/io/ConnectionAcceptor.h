@@ -21,7 +21,7 @@
 #define OPENDAVINCI_CORE_IO_CONNECTIONACCEPTOR_H_
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/io/tcp/TCPAcceptor.h"
 #include "opendavinci/odcore/io/tcp/TCPAcceptorListener.h"
@@ -66,9 +66,9 @@ namespace tcp { class TCPConnection; }
                 base::Mutex m_listenerMutex;
                 ConnectionAcceptorListener* m_listener;
 
-                odcore::SharedPointer<odcore::io::tcp::TCPAcceptor> m_acceptor;
+                std::shared_ptr<odcore::io::tcp::TCPAcceptor> m_acceptor;
 
-                void onNewConnection(odcore::SharedPointer<odcore::io::tcp::TCPConnection> connection);
+                void onNewConnection(std::shared_ptr<odcore::io::tcp::TCPConnection> connection);
         };
     }
 }

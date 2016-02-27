@@ -26,7 +26,7 @@
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/io/URL.h"
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
@@ -107,10 +107,10 @@ class PlayerCache;
                 bool m_threading;
                 bool m_autoRewind;
 
-                odcore::SharedPointer<istream> m_inFile;
-                odcore::SharedPointer<istream> m_inSharedMemoryFile;
+                std::shared_ptr<istream> m_inFile;
+                std::shared_ptr<istream> m_inSharedMemoryFile;
 
-                auto_ptr<PlayerCache> m_playerCache;
+                unique_ptr<PlayerCache> m_playerCache;
 
                 // The "actual" container contains the data to be sent, ...
                 odcore::data::Container m_actual;
@@ -129,7 +129,7 @@ class PlayerCache;
                 uint32_t m_delay;
 
                 // Map used to store shared memory segments for restored from compressed images.
-                map<string, odcore::SharedPointer<odcore::wrapper::SharedMemory> > m_mapOfSharedMemoriesForCompressedImages;
+                map<string, std::shared_ptr<odcore::wrapper::SharedMemory> > m_mapOfSharedMemoriesForCompressedImages;
         };
 
     } // player

@@ -44,14 +44,14 @@ namespace odcore {
          *     public:
          *        ostream& operator<<(ostream &out) const {
          *            SerializationFactory sf;
-         *            SharedPointer<Serializer> s = sf.getSerializer(out);
+         *            std::shared_ptr<Serializer> s = sf.getSerializer(out);
          *            s->write(CRC32<OPENDAVINCI_CORE_STRINGLITERAL2('I', 'D')>::RESULT, m_data);
          *            return out;
          *        }
          *
          *        istream& operator>>(istream &in) {
          *            SerializationFactory sf;
-         *            SharedPointer<Deserializer> d = sf.getDeserializer(in);
+         *            std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
          *            d->read(CRC32<OPENDAVINCI_CORE_STRINGLITERAL2('I', 'D')>::RESULT, m_data);
          *            return in;
          *        }

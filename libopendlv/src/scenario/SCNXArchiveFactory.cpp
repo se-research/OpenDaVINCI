@@ -23,7 +23,7 @@
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/exceptions/Exceptions.h"
@@ -95,13 +95,13 @@ namespace opendlv {
 
                 string fileName = url.getResource();
                 fstream fin(fileName.c_str(), ios::binary | ios::in);
-                odcore::SharedPointer<odcore::wrapper::DecompressedData> data = odcore::wrapper::CompressionFactory::getContents(fin);
+                std::shared_ptr<odcore::wrapper::DecompressedData> data = odcore::wrapper::CompressionFactory::getContents(fin);
                 fin.close();
 
-                if (data.isValid()) {
+                if (data.get()) {
                     Scenario scenario;
-                    SharedPointer<istream> stream = data->getInputStreamFor("scenario.scn");
-                    if (stream.isValid()) {
+                    std::shared_ptr<istream> stream = data->getInputStreamFor("scenario.scn");
+                    if (stream.get()) {
                         stringstream s;
                         char c;
                         while (stream->good()) {

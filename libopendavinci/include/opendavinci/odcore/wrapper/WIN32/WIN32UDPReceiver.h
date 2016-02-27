@@ -90,7 +90,7 @@ namespace odcore {
                     struct ip_mreq m_mreq;
                     int32_t m_fd;
                     char *m_buffer;
-                    auto_ptr<Thread> m_thread;
+                    unique_ptr<Thread> m_thread;
 
                     virtual void run();
 

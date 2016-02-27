@@ -34,8 +34,8 @@ namespace odcore {
 
         template <> class OPENDAVINCI_API ConditionFactoryWorker<SystemLibraryWin32> {
             public:
-                static SharedPointer<Condition> createCondition() {
-                    return SharedPointer<Condition>(new odcore::wrapper::WIN32Impl::WIN32Condition());
+                static std::shared_ptr<Condition> createCondition() {
+                    return std::shared_ptr<Condition>(new odcore::wrapper::WIN32Impl::WIN32Condition());
                 }
         };
 

@@ -154,7 +154,7 @@ namespace camgen {
         frameCounter++;
 
         // Share information about this image.
-        if (m_image.isValid()) {
+        if (m_image.get()) {
             odcore::data::image::SharedImage si;
             si.setWidth(m_image->getWidth());
             si.setHeight(m_image->getHeight());

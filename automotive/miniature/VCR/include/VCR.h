@@ -23,7 +23,7 @@
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
 
@@ -80,7 +80,7 @@ namespace automotive {
 
             private:
 	            bool m_hasAttachedToSharedImageMemory;
-	            odcore::SharedPointer<odcore::wrapper::SharedMemory> m_sharedImageMemory;
+	            std::shared_ptr<odcore::wrapper::SharedMemory> m_sharedImageMemory;
 	            IplImage *m_image;
                 bool m_debug;
                 CvVideoWriter *m_writer;

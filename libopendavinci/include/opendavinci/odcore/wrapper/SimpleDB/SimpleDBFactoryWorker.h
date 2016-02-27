@@ -33,8 +33,8 @@ namespace odcore {
         using namespace std;
 
         template <> struct OPENDAVINCI_API KeyValueDatabaseFactoryWorker<KeyValueDatabaseSimpleDB> {
-            static SharedPointer<KeyValueDatabase> createKeyValueDatabase() {
-                return SharedPointer<KeyValueDatabase>(new SimpleDB::SimpleDB());
+            static std::shared_ptr<KeyValueDatabase> createKeyValueDatabase() {
+                return std::shared_ptr<KeyValueDatabase>(new SimpleDB::SimpleDB());
             }
         };
 

@@ -23,7 +23,7 @@
 #include <stdint.h>
 #include <map>
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
 #include "opendlv/core/wrapper/Image.h"
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
@@ -92,16 +92,16 @@ namespace chasecar {
 
             virtual void delay();
 
-            virtual odcore::SharedPointer<core::wrapper::Image> getNextImage();
+            virtual std::shared_ptr<core::wrapper::Image> getNextImage();
 
             enum RENDERING m_render;
         private:
             odcore::base::KeyValueConfiguration m_kvc;
-            odcore::SharedPointer<core::wrapper::Image> m_image;
-            odcore::SharedPointer<odcore::wrapper::SharedMemory> m_sharedMemory;
-            odcore::SharedPointer<opendlv::threeD::TransformGroup> m_root;
-            odcore::SharedPointer<opendlv::threeD::TransformGroup> m_car;
-            odcore::SharedPointer<opendlv::threeD::TransformGroup> m_sensors;
+            std::shared_ptr<core::wrapper::Image> m_image;
+            std::shared_ptr<odcore::wrapper::SharedMemory> m_sharedMemory;
+            std::shared_ptr<opendlv::threeD::TransformGroup> m_root;
+            std::shared_ptr<opendlv::threeD::TransformGroup> m_car;
+            std::shared_ptr<opendlv::threeD::TransformGroup> m_sensors;
             map<uint32_t, opendlv::threeD::Node*> m_mapOfObstacles;
 
             opendlv::data::environment::EgoState &m_egoState;

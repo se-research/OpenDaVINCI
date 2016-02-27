@@ -4,6 +4,7 @@
  * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
  */
 
+#include <memory>
 
 #include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/Deserializer.h"
@@ -94,7 +95,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
+		std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
 		s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'1', NullType> > > > > > > > > >  >::RESULT,
 				m_attribute1);
@@ -105,7 +106,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
 		d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'1', NullType> > > > > > > > > >  >::RESULT,
 				m_attribute1);

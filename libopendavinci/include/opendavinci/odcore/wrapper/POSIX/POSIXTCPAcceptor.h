@@ -30,7 +30,6 @@ namespace odcore { namespace io { namespace tcp { class TCPAcceptorListener; } }
 namespace odcore { namespace io { namespace tcp { class TCPConnection; } } }
 namespace odcore { namespace wrapper { class Mutex; } }
 namespace odcore { namespace wrapper { class Thread; } }
-namespace odcore { template <class T> class SharedPointer; }
 
 namespace odcore {
     namespace wrapper {
@@ -70,11 +69,11 @@ namespace odcore {
                     virtual void run();
 
                 protected:
-                    void invokeAcceptorListener(odcore::SharedPointer<odcore::io::tcp::TCPConnection> connection);
+                    void invokeAcceptorListener(std::shared_ptr<odcore::io::tcp::TCPConnection> connection);
 
-                    auto_ptr<Thread> m_thread;
+                    unique_ptr<Thread> m_thread;
 
-                    auto_ptr<Mutex> m_listenerMutex;
+                    unique_ptr<Mutex> m_listenerMutex;
                     odcore::io::tcp::TCPAcceptorListener* m_listener;
 
                     int32_t m_fileDescriptor;

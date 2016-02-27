@@ -13,7 +13,7 @@ https://github.com/se-research/OpenDaVINCI/tree/master/tutorials/timetrigger
 "Hello World" example
 """""""""""""""""""""
 
-A time-triggered software component is derived from ``core::base::TimeTriggeredConferenceClientModule``,
+A time-triggered software component is derived from ``odcore::base::TimeTriggeredConferenceClientModule``,
 provided in ``<opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h>``.
 
 TimeTriggerExample.h:
@@ -86,7 +86,7 @@ TimeTriggerExample.cpp:
         cout << "This method is called after the program flow returns from the component's body." << endl;
     }
 
-    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode TimeTriggerExample::body() {
+    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode TimeTriggerExample::body() {
         cout << "Hello OpenDaVINCI World!" << endl;
 
         return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;

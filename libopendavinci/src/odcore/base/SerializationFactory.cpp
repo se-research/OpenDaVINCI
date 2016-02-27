@@ -59,12 +59,12 @@ namespace odcore {
             setSingleton(NULL);
         }
 
-        SharedPointer<Serializer> SerializationFactory::getSerializer(ostream &out) const {
-            return SharedPointer<Serializer>(new QueryableNetstringsSerializer(out));
+        std::shared_ptr<Serializer> SerializationFactory::getSerializer(ostream &out) const {
+            return std::shared_ptr<Serializer>(new QueryableNetstringsSerializer(out));
         }
 
-        SharedPointer<Deserializer> SerializationFactory::getDeserializer(istream &in) const {
-            return SharedPointer<Deserializer>(new QueryableNetstringsDeserializer(in));
+        std::shared_ptr<Deserializer> SerializationFactory::getDeserializer(istream &in) const {
+            return std::shared_ptr<Deserializer>(new QueryableNetstringsDeserializer(in));
         }
 
     }

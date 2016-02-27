@@ -59,12 +59,12 @@ namespace odcore {
             }
 
             POSIXThread::POSIXThread(Runnable &r) :
-                m_threadStateMutex(NULL),
+                m_threadStateMutex(),
                 m_threadState(INITIALIZED),
                 m_runnable(r),
                 m_threadWrapper() {
                 // Create mutex.
-                m_threadStateMutex = auto_ptr<Mutex>(MutexFactory::createMutex());
+                m_threadStateMutex = unique_ptr<Mutex>(MutexFactory::createMutex());
                 if (m_threadStateMutex.get() == NULL) {
                     stringstream s;
                     s << "[core::wrapper::POSIXThread] Error creating mutex: " << strerror(errno);

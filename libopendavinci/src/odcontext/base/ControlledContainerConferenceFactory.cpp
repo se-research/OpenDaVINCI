@@ -122,7 +122,7 @@ namespace odcontext {
             sendToSCC(c);
         }
 
-        odcore::SharedPointer<ContainerConference> ControlledContainerConferenceFactory::getContainerConference(const string &address, const uint32_t &port) {
+        std::shared_ptr<ContainerConference> ControlledContainerConferenceFactory::getContainerConference(const string &address, const uint32_t &port) {
             // Create a ControlledContainerConference specific synchronous ContainerDeliverer which delivers containers sent TO the system under test.
             ContainerDeliverer *containerDelivererToSystemUnderTest = new ContainerDeliverer();
 
@@ -130,7 +130,7 @@ namespace odcontext {
             BlockableContainerReceiver *blockableContainerReceiverFromSystemUnderTest = new BlockableContainerReceiver(*this);
 
             // Connect the FIFO with a new ControlledContainerConferenceForSystemUnderTest for decoupling it from the factory (the receiving instance will destroy the ControlledContainerConferenceForSystemUnderTest later).
-            odcore::SharedPointer<ContainerConference> ccc(new ControlledContainerConferenceForSystemUnderTest(address, port, *blockableContainerReceiverFromSystemUnderTest, *containerDelivererToSystemUnderTest));
+            std::shared_ptr<ContainerConference> ccc(new ControlledContainerConferenceForSystemUnderTest(address, port, *blockableContainerReceiverFromSystemUnderTest, *containerDelivererToSystemUnderTest));
 
             // Add ContainerDelivererTOSystemUnderTest to list.
             {

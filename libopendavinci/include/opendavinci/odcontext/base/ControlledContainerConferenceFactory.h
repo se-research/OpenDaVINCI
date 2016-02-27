@@ -24,7 +24,7 @@
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/io/conference/ContainerConferenceFactory.h"
 #include "opendavinci/odcore/io/conference/ContainerListener.h"
@@ -72,7 +72,7 @@ class ContainerDeliverer;
                  * @param port Use port for joining.  If omitted, MULTICAST_PORT will be used.
                  * @return ContainerConference or NULL.
                  */
-                virtual odcore::SharedPointer<odcore::io::conference::ContainerConference> getContainerConference(const string &address, const uint32_t &port = odcore::io::conference::ContainerConferenceFactory::MULTICAST_PORT);
+                virtual std::shared_ptr<odcore::io::conference::ContainerConference> getContainerConference(const string &address, const uint32_t &port = odcore::io::conference::ContainerConferenceFactory::MULTICAST_PORT);
 
                 virtual void sendToSystemsUnderTest(odcore::data::Container &c);
 

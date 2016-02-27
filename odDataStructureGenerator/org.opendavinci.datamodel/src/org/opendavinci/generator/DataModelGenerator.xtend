@@ -589,6 +589,7 @@ class «msg.message.substring(msg.message.lastIndexOf('.') + 1) /* These lines g
  * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
  */
 
+#include <memory>
 «var hasGeneratedAlgorithm = false»
 «var hasGeneratedMacros = false»
 «FOR a : msg.attributes /* If we have lists or maps we need to include the proper header files here. */»
@@ -817,7 +818,7 @@ namespace «s.get(i)» {
 		«IF !msg.attributes.empty»
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		odcore::SharedPointer<Serializer> s = sf.getSerializer(out);«IF !hasOtherThanEnumAndConstAttributes»(void)s; // Avoid unused variable warning.«ENDIF»
+		std::shared_ptr<Serializer> s = sf.getSerializer(out);«IF !hasOtherThanEnumAndConstAttributes»(void)s; // Avoid unused variable warning.«ENDIF»
 
 		«FOR a : msg.attributes»
 			«a.generateAttributeSerialization(enums)»
@@ -832,7 +833,7 @@ namespace «s.get(i)» {
 		«IF !msg.attributes.empty»
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);«IF !hasOtherThanEnumAndConstAttributes»(void)d; // Avoid unused variable warning.«ENDIF»
+		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);«IF !hasOtherThanEnumAndConstAttributes»(void)d; // Avoid unused variable warning.«ENDIF»
 
 		«FOR a : msg.attributes»
 			«a.generateAttributeDeserialization(enums)»

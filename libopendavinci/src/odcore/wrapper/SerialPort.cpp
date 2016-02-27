@@ -51,17 +51,17 @@ namespace odcore {
             m_stringListenerMutex(),
             m_stringListener(NULL),
             m_serial(NULL) {
-            m_connectionListenerMutex = auto_ptr<Mutex>(MutexFactory::createMutex());
+            m_connectionListenerMutex = unique_ptr<Mutex>(MutexFactory::createMutex());
             if (m_connectionListenerMutex.get() == NULL) {
                 throw std::string("[core::wrapper::SerialPort] Error creating mutex for connection listener.");
             }
 
-            m_stringListenerMutex = auto_ptr<Mutex>(MutexFactory::createMutex());
+            m_stringListenerMutex = unique_ptr<Mutex>(MutexFactory::createMutex());
             if (m_stringListenerMutex.get() == NULL) {
                 throw std::string("[core::wrapper::SerialPort] Error creating mutex for string listener.");
             }
 
-            m_thread = auto_ptr<Thread>(ConcurrencyFactory::createThread(*this));
+            m_thread = unique_ptr<Thread>(ConcurrencyFactory::createThread(*this));
             if (m_thread.get() == NULL) {
                 throw std::string("[core::wrapper::SerialPort] Error creating thread.");
             }

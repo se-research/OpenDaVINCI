@@ -24,7 +24,7 @@
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendlv/data/environment/EgoState.h"
@@ -293,8 +293,8 @@ namespace opendlv {
         }
 
         void DataRenderer::loadComplexModel(const uint32_t &id, opendlv::data::situation::ComplexModel &cm) {
-            SharedPointer<istream> in = m_scnxArchive->getModelData(cm.getModelFile());
-            if (in.isValid()) {
+            std::shared_ptr<istream> in = m_scnxArchive->getModelData(cm.getModelFile());
+            if (in.get()) {
                 // Load model.
                 OBJXArchive *objxArchive = NULL;
                 if (cm.getModelFile().find(".objx") != string::npos) {

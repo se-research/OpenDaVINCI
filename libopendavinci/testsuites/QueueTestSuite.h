@@ -26,7 +26,7 @@
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"         // for SharedPointer
+#include <memory>
 #include "opendavinci/odcore/base/BufferedFIFOQueue.h"  // for BufferedFIFOQueue
 #include "opendavinci/odcore/base/BufferedLIFOQueue.h"  // for BufferedLIFOQueue
 #include "opendavinci/odcore/base/Condition.h"        // for Condition
@@ -57,7 +57,7 @@ class QueueTestSampleData : public odcore::data::SerializableData {
         ostream& operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
-            odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
+            std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
             s->write(
                 CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 'i', 'n', 't') >::RESULT,
@@ -69,7 +69,7 @@ class QueueTestSampleData : public odcore::data::SerializableData {
         istream& operator>>(istream &in) {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
-            odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+            std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
             d->read(
                 CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 'i', 'n', 't') >::RESULT,

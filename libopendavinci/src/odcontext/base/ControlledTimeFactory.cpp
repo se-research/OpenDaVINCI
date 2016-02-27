@@ -34,11 +34,11 @@ namespace odcontext {
 
         ControlledTimeFactory::~ControlledTimeFactory() {}
 
-        odcore::SharedPointer<odcore::wrapper::Time> ControlledTimeFactory::now() {
-            odcore::SharedPointer<odcore::wrapper::Time> t;
+        std::shared_ptr<odcore::wrapper::Time> ControlledTimeFactory::now() {
+            std::shared_ptr<odcore::wrapper::Time> t;
             {
                 Lock l(m_timeMutex);
-                t = odcore::SharedPointer<odcore::wrapper::Time>(new ControlledTime(m_time));
+                t = std::shared_ptr<odcore::wrapper::Time>(new ControlledTime(m_time));
             }
             return t;
         }

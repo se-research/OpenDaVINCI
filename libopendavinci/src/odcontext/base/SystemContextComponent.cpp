@@ -32,7 +32,7 @@ namespace odcontext {
             m_fifo(),
             m_keyValueDataStore() {
             // Create an in-memory database.
-            m_keyValueDataStore = odcore::SharedPointer<KeyValueDataStore>(new KeyValueDataStore(odcore::wrapper::KeyValueDatabaseFactory::createKeyValueDatabase()));
+            m_keyValueDataStore = std::shared_ptr<KeyValueDataStore>(new KeyValueDataStore(odcore::wrapper::KeyValueDatabaseFactory::createKeyValueDatabase()));
         }
 
         SystemContextComponent::~SystemContextComponent() {}

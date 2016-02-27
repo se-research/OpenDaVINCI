@@ -71,7 +71,7 @@ HelloWorldExample.cpp:
     odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode HelloWorldExample::body() {
         cout << "Hello OpenDaVINCI World!" << endl;
 
-        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+        return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
     }
 
 To start the component, we define the main() function in a separate file.

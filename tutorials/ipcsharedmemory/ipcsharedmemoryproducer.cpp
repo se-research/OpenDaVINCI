@@ -20,7 +20,7 @@
 #include <stdint.h>
 #include <iostream>
 #include <string>
-#include <opendavinci/odcore/SharedPointer.h>
+#include <memory>
 #include <opendavinci/odcore/base/Lock.h>
 #include <opendavinci/odcore/base/Thread.h>
 #include <opendavinci/odcore/wrapper/SharedMemory.h>
@@ -36,10 +36,10 @@ int32_t main(int32_t argc, char **argv) {
     const string NAME = "MySharedMemory";
     const uint32_t SIZE = 26;
 
-    // We are using OpenDaVINCI's SharedPointer to automatically
+    // We are using OpenDaVINCI's std::shared_ptr to automatically
     // release any acquired resources.
     try {
-        SharedPointer<SharedMemory> sharedMemory(SharedMemoryFactory::createSharedMemory(NAME, SIZE));
+        std::shared_ptr<SharedMemory> sharedMemory(SharedMemoryFactory::createSharedMemory(NAME, SIZE));
 
         if (sharedMemory->isValid()) {
             uint32_t counter = 20;

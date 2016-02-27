@@ -61,10 +61,10 @@ namespace odcore {
             m_listener = listener;
         }
 
-        void ConnectionAcceptor::onNewConnection(odcore::SharedPointer<odcore::io::tcp::TCPConnection> connection) {
+        void ConnectionAcceptor::onNewConnection(std::shared_ptr<odcore::io::tcp::TCPConnection> connection) {
             Lock l(m_listenerMutex);
             if (m_listener != NULL) {
-                m_listener->onNewConnection(odcore::SharedPointer<odcore::io::Connection>(new odcore::io::Connection(connection)));
+                m_listener->onNewConnection(std::shared_ptr<odcore::io::Connection>(new odcore::io::Connection(connection)));
             }
             else {
                 CLOG3 << "[core::io::ConnectionAcceptor] no listener to call" << endl;

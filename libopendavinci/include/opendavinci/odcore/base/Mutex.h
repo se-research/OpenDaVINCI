@@ -21,7 +21,7 @@
 #define OPENDAVINCI_CORE_BASE_MUTEX_H_
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/wrapper/Mutex.h"
 
 namespace odcore {
@@ -89,7 +89,7 @@ namespace odcore {
                 virtual void unlock();
 
             private:
-                SharedPointer<odcore::wrapper::Mutex> m_mutex;
+                std::shared_ptr<odcore::wrapper::Mutex> m_mutex;
         };
 
     }

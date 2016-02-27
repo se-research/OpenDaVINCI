@@ -21,7 +21,7 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendlv/data/scenario/Ground.h"
 #include "opendlv/data/scenario/HeightImage.h"
@@ -44,7 +44,7 @@ namespace opendlv {
         using namespace std;
         using namespace odcore;
 
-        SCNXArchive::SCNXArchive(const data::scenario::Scenario &scenario, odcore::SharedPointer<odcore::wrapper::DecompressedData> dd) :
+        SCNXArchive::SCNXArchive(const data::scenario::Scenario &scenario, std::shared_ptr<odcore::wrapper::DecompressedData> dd) :
             m_scenario(scenario),
             m_decompressedData(dd),
             m_aerialImage(NULL),
@@ -53,15 +53,15 @@ namespace opendlv {
             // Try to read the images from the archive.
             stringstream sstr;
             sstr << scenario.getGround().getAerialImage().getFileName();
-            SharedPointer<istream> stream = m_decompressedData->getInputStreamFor(sstr.str());
-            if (stream.isValid()) {
+            std::shared_ptr<istream> stream = m_decompressedData->getInputStreamFor(sstr.str());
+            if (stream.get()) {
                 m_aerialImage = core::wrapper::ImageFactory::getInstance().getImage(*stream);
             }
 
             sstr.str("");
             sstr << scenario.getGround().getHeightImage().getFileName();
             stream = m_decompressedData->getInputStreamFor(sstr.str());
-            if (stream.isValid()) {
+            if (stream.get()) {
                 m_heightImage = core::wrapper::ImageFactory::getInstance().getImage(*stream);
             }
         }
@@ -111,8 +111,8 @@ namespace opendlv {
                 if (entry.find("situations/") != string::npos) {
                     char c = 0;
                     stringstream s;
-                    SharedPointer<istream> in = m_decompressedData->getInputStreamFor(entry);
-                    if ( (in.isValid()) && (in->good()) ) {
+                    std::shared_ptr<istream> in = m_decompressedData->getInputStreamFor(entry);
+                    if ( (in.get()) && (in->good()) ) {
                         while ( in->get( c ) ) {
                             s << c;
                         }
@@ -124,7 +124,7 @@ namespace opendlv {
             return listOfSituations;
         }
 
-        SharedPointer<istream> SCNXArchive::getModelData(const string &modelFile) const {
+        std::shared_ptr<istream> SCNXArchive::getModelData(const string &modelFile) const {
             stringstream sstr;
             sstr << modelFile;
             return m_decompressedData->getInputStreamFor(sstr.str());

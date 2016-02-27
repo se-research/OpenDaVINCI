@@ -24,7 +24,7 @@
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcontext/base/Clock.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/module/Breakpoint.h"
 #include "opendavinci/odcore/base/module/ClientModule.h"
 #include "opendavinci/odcore/data/TimeStamp.h"
@@ -176,7 +176,7 @@ namespace odcore {
                      *
                      * @param c Pointer to the ContainerConference to be used.
                      */
-                    void setContainerConference(odcore::SharedPointer<odcore::io::conference::ContainerConference> c);
+                    void setContainerConference(std::shared_ptr<odcore::io::conference::ContainerConference> c);
 
                     /**
                      * This method returns the ContainerConference to be used. In the case
@@ -185,7 +185,7 @@ namespace odcore {
                      *
                      * @return Pointer to the ContainerConference to be used.
                      */
-                    odcore::SharedPointer<odcore::io::conference::ContainerConference> getContainerConference();
+                    std::shared_ptr<odcore::io::conference::ContainerConference> getContainerConference();
 
                 private:
 #ifndef WIN32
@@ -204,9 +204,9 @@ namespace odcore {
                     odcontext::base::ControlledTimeFactory *m_controlledTimeFactory;
 
                     odcore::data::dmcp::PulseMessage m_pulseMessage;
-                    odcore::SharedPointer<odcore::io::conference::ContainerConference> m_localContainerConference;
+                    std::shared_ptr<odcore::io::conference::ContainerConference> m_localContainerConference;
                     bool m_hasExternalContainerConference;
-                    odcore::SharedPointer<odcore::io::conference::ContainerConference> m_containerConference;
+                    std::shared_ptr<odcore::io::conference::ContainerConference> m_containerConference;
             };
 
         }

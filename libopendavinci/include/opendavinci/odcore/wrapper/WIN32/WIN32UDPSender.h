@@ -83,7 +83,7 @@ namespace odcore {
                     struct sockaddr_in m_address;
                     int32_t m_fd;
 
-                    mutable auto_ptr<Mutex> m_socketMutex;
+                    mutable unique_ptr<Mutex> m_socketMutex;
             };
 
         }

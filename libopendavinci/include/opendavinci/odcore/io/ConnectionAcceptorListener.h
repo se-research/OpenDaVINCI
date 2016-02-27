@@ -22,7 +22,7 @@
 
 #include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/io/Connection.h"
 
 namespace odcore {
@@ -34,7 +34,7 @@ namespace odcore {
             public:
                 virtual ~ConnectionAcceptorListener() {};
 
-                virtual void onNewConnection(odcore::SharedPointer<odcore::io::Connection> connection) = 0;
+                virtual void onNewConnection(std::shared_ptr<odcore::io::Connection> connection) = 0;
         };
     }
 }

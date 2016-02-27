@@ -39,7 +39,7 @@ namespace odtools {
 
         Recorder::Recorder(const string &url, const uint32_t &memorySegmentSize, const uint32_t &numberOfSegments, const bool &threading, const bool &dumpSharedData) :
             m_fifo(),
-            m_sharedDataListener(NULL),
+            m_sharedDataListener(),
             m_out(NULL),
             m_outSharedMemoryFile(NULL),
             m_dumpSharedData(dumpSharedData) {
@@ -53,14 +53,14 @@ namespace odtools {
             m_outSharedMemoryFile = StreamFactory::getInstance().getOutputStream(urlSharedMemoryFile);
 
             // Create data store for shared memory.
-            m_sharedDataListener = auto_ptr<SharedDataListener>(new SharedDataListener(m_outSharedMemoryFile, memorySegmentSize, numberOfSegments, threading));
+            m_sharedDataListener = unique_ptr<SharedDataListener>(new SharedDataListener(m_outSharedMemoryFile, memorySegmentSize, numberOfSegments, threading));
         }
 
         Recorder::~Recorder() {
             // Record remaining entries.
             CLOG1 << "Clearing queue... ";
                 recordQueueEntries();
-                if (m_out.isValid()) {
+                if (m_out.get()) {
                     m_out->flush();
                 }
             CLOG1 << "done." << endl;
@@ -106,13 +106,13 @@ namespace odtools {
                          (c.getDataType() != odcore::data::SharedData::ID())  &&
                          (c.getDataType() != odcore::data::SharedPointCloud::ID())  &&
                          (c.getDataType() != odcore::data::image::SharedImage::ID()) ) {
-                        if (m_out.isValid()) {
+                        if (m_out.get()) {
                             (*m_out) << c;
                         }
                     }
                 }
 
-                if (m_out.isValid()) {
+                if (m_out.get()) {
                     m_out->flush();
                 }
             }

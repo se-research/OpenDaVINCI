@@ -22,7 +22,7 @@
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/Deserializer.h"
 #include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/Serializable.h"
@@ -147,7 +147,7 @@ namespace opendlv {
             ostream& Surroundings::operator<<(ostream &out) const {
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
+                std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
                 // Do not serialize UNKNOWN TYPES.
                 uint32_t numberOfShapes = 0;
@@ -185,7 +185,7 @@ namespace opendlv {
             istream& Surroundings::operator>>(istream &in) {
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+                std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
                 // Clean up.
                 cleanUp();

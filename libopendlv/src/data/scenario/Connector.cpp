@@ -20,7 +20,7 @@
 #include <ostream>
 #include <string>
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/Deserializer.h"
 #include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
@@ -99,7 +99,7 @@ namespace opendlv {
             ostream& Connector::operator<<(ostream &out) const {
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
+                std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('s', 'o', 'u', 'r', 'c', 'e') >::RESULT,
                         getSource());
@@ -113,7 +113,7 @@ namespace opendlv {
             istream& Connector::operator>>(istream &in) {
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+                std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
                 d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('s', 'o', 'u', 'r', 'c', 'e') >::RESULT,
                        m_source);

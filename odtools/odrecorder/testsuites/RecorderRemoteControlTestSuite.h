@@ -28,7 +28,7 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/Service.h"
 #include "opendavinci/odcore/base/Thread.h"
 #include "opendavinci/odcore/data/Container.h"
@@ -85,19 +85,19 @@ class RecorderTest : public CxxTest::TestSuite,
             m_connection() {}
 
         KeyValueConfiguration m_configuration;
-        odcore::SharedPointer<connection::ModuleConnection> m_connection;
+        std::shared_ptr<connection::ModuleConnection> m_connection;
 
         virtual KeyValueConfiguration getConfiguration(const ModuleDescriptor& /*md*/) {
             return m_configuration;
         }
 
-        virtual void onNewModule(odcore::SharedPointer<odcore::dmcp::connection::ModuleConnection> mc) {
+        virtual void onNewModule(std::shared_ptr<odcore::dmcp::connection::ModuleConnection> mc) {
             m_connection = mc;
         }
 
         void testRecorderRemoteControl() {
             // Setup ContainerConference.
-            odcore::SharedPointer<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.100");
+            std::shared_ptr<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.100");
 
             // Setup DMCP.
             stringstream sstr;

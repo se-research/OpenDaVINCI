@@ -27,8 +27,8 @@ TCPReceiveBytes.hpp:
         // Your class needs to implement the method void nextString(const std::string &s).
         virtual void nextString(const std::string &s);
 
-        // Your class needs to implement the method void onNewConnection(odcore::SharedPointer<odcore::io::tcp::TCPConnection> connection).
-        virtual void onNewConnection(odcore::SharedPointer<odcore::io::tcp::TCPConnection> connection);
+        // Your class needs to implement the method void onNewConnection(std::shared_ptr<odcore::io::tcp::TCPConnection> connection).
+        virtual void onNewConnection(std::shared_ptr<odcore::io::tcp::TCPConnection> connection);
 
         // Your class should implement the method void handleConnectionError() to handle connection errors (like terminated connections).
         virtual void handleConnectionError();
@@ -49,7 +49,7 @@ TCPReceiveBytes.cpp:
     #include <stdint.h>
     #include <iostream>
     #include <string>
-    #include <opendavinci/odcore/SharedPointer.h>
+    #include <memory>
     #include <opendavinci/odcore/base/Thread.h>
     #include <opendavinci/odcore/io/tcp/TCPAcceptor.h>
     #include <opendavinci/odcore/io/tcp/TCPFactory.h>
@@ -71,7 +71,7 @@ TCPReceiveBytes.cpp:
         cout << "Received " << s.length() << " bytes containing '" << s << "'" << endl;
     }
 
-    void TCPReceiveBytes::onNewConnection(odcore::SharedPointer<odcore::io::tcp::TCPConnection> connection) {
+    void TCPReceiveBytes::onNewConnection(std::shared_ptr<odcore::io::tcp::TCPConnection> connection) {
         if (connection.isValid()) {
             cout << "Handle a new connection." << endl;
 
@@ -103,10 +103,10 @@ TCPReceiveBytes.cpp:
     int32_t main(int32_t argc, char **argv) {
         const uint32_t PORT = 1234;
 
-        // We are using OpenDaVINCI's SharedPointer to automatically
+        // We are using OpenDaVINCI's std::shared_ptr to automatically
         // release any acquired resources.
         try {
-            SharedPointer<TCPAcceptor>
+            std::shared_ptr<TCPAcceptor>
                 tcpacceptor(TCPFactory::createTCPAcceptor(PORT));
 
             // This instance will handle any new connections.
@@ -156,7 +156,7 @@ incoming TCP connections. After some time, the program will stop waiting for new
 connections, unregister the ``TCPReceiveBytes``, and release the system resources.
 
 To conveniently handle the resource management of releasing the acquired system
-resources, a ``SharedPointer`` is used that automatically releases memory that
+resources, a ``std::shared_ptr`` is used that automatically releases memory that
 is no longer used.
 
 Please note that once you have stopped ``TCPAcceptor`` you cannot reuse it and

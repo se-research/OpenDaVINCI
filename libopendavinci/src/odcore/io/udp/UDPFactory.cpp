@@ -35,14 +35,14 @@ namespace odcore {
     namespace io {
         namespace udp {
 
-            SharedPointer<UDPSender> UDPFactory::createUDPSender(const string &address, const uint32_t &port) {
+            std::shared_ptr<UDPSender> UDPFactory::createUDPSender(const string &address, const uint32_t &port) {
                 typedef odcore::wrapper::ConfigurationTraits<odcore::wrapper::NetworkLibraryProducts>::configuration configuration;
-                return SharedPointer<UDPSender>(odcore::wrapper::UDPFactoryWorker<configuration::value>::createUDPSender(address, port));
+                return std::shared_ptr<UDPSender>(odcore::wrapper::UDPFactoryWorker<configuration::value>::createUDPSender(address, port));
             }
 
-            SharedPointer<UDPReceiver> UDPFactory::createUDPReceiver(const string &address, const uint32_t &port) {
+            std::shared_ptr<UDPReceiver> UDPFactory::createUDPReceiver(const string &address, const uint32_t &port) {
                 typedef odcore::wrapper::ConfigurationTraits<odcore::wrapper::NetworkLibraryProducts>::configuration configuration;
-                return SharedPointer<UDPReceiver>(odcore::wrapper::UDPFactoryWorker<configuration::value>::createUDPReceiver(address, port));
+                return std::shared_ptr<UDPReceiver>(odcore::wrapper::UDPFactoryWorker<configuration::value>::createUDPReceiver(address, port));
             }
 
         }

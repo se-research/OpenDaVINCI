@@ -22,7 +22,7 @@
 
 #include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/dmcp/connection/ModuleConnection.h"
 
 namespace odcore {
@@ -35,7 +35,7 @@ namespace odcore {
                 public:
                     virtual ~ConnectionHandler() {};
 
-                    virtual void onNewModule(odcore::SharedPointer<odcore::dmcp::connection::ModuleConnection> mc) = 0;
+                    virtual void onNewModule(std::shared_ptr<odcore::dmcp::connection::ModuleConnection> mc) = 0;
             };
         }
     }

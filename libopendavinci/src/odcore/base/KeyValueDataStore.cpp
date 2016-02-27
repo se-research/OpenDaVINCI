@@ -30,9 +30,9 @@ namespace odcore {
         using namespace data;
         using namespace exceptions;
 
-        KeyValueDataStore::KeyValueDataStore(SharedPointer<wrapper::KeyValueDatabase> keyValueDatabase) throw (NoDatabaseAvailableException) :
+        KeyValueDataStore::KeyValueDataStore(std::shared_ptr<wrapper::KeyValueDatabase> keyValueDatabase) throw (NoDatabaseAvailableException) :
                 m_keyValueDatabase(keyValueDatabase) {
-            if (!m_keyValueDatabase.isValid()) {
+            if (!m_keyValueDatabase.get()) {
                 OPENDAVINCI_CORE_THROW_EXCEPTION(NoDatabaseAvailableException, "Given database is NULL.");
             }
         }

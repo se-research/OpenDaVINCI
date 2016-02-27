@@ -48,10 +48,10 @@ namespace odcore {
          * ...
          *
          * MyRealtimeRunnable rtr;
-         * auto_ptr<Thread> t;
+         * unique_ptr<Thread> t;
          *
          * try {
-         *     t = auto_ptr<Thread>(ConcurrencyFactory::getInstance().createThread(rtr));
+         *     t = unique_ptr<Thread>(ConcurrencyFactory::getInstance().createThread(rtr));
          * }
          * catch(string &s) {
          *    clog << "Failed: " << s << endl;

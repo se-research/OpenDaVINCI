@@ -71,7 +71,7 @@ namespace camgen {
         const URL urlOfSCNXFile(m_kvc.getValue<string>("global.scenario"));
         const bool SHOW_GRID = (m_kvc.getValue<uint8_t>("global.showgrid") == 1);
         if (urlOfSCNXFile.isValid()) {
-            m_root = odcore::SharedPointer<TransformGroup>(new opendlv::threeD::TransformGroup());
+            m_root = std::shared_ptr<TransformGroup>(new opendlv::threeD::TransformGroup());
             SCNXArchive &scnxArchive = SCNXArchiveFactory::getInstance().getSCNXArchive(urlOfSCNXFile);
 
             // Read scnxArchive and decorate it for getting displayed in an OpenGL scene.
@@ -84,19 +84,19 @@ namespace camgen {
 
             m_sharedMemory = odcore::wrapper::SharedMemoryFactory::createSharedMemory("odsimcamera", 640 * 480 * 3);
 
-            m_image = odcore::SharedPointer<core::wrapper::Image>(core::wrapper::ImageFactory::getInstance().getImage(640, 480, core::wrapper::Image::BGR_24BIT, static_cast<char*>(m_sharedMemory->getSharedMemory())));
+            m_image = std::shared_ptr<core::wrapper::Image>(core::wrapper::ImageFactory::getInstance().getImage(640, 480, core::wrapper::Image::BGR_24BIT, static_cast<char*>(m_sharedMemory->getSharedMemory())));
 
-            if (m_image.isValid()) {
+            if (m_image.get()) {
                 cerr << "OpenGLGrabber initialized." << endl;
             }
         }
 
-        m_intrinsicCalibrationRoot = odcore::SharedPointer<TransformGroup>(new opendlv::threeD::TransformGroup());
+        m_intrinsicCalibrationRoot = std::shared_ptr<TransformGroup>(new opendlv::threeD::TransformGroup());
         m_intrinsicCalibrationRoot->addChild(new XYZAxes(NodeDescriptor("XYZAxes")));
         m_intrinsicCalibrationRoot->addChild(new CheckerBoard(NodeDescriptor("CheckerBoard")));
         m_intrinsicCalibrationRoot->setTranslation(Point3(2.5, 0, 1));
 
-        m_extrinsicCalibrationRoot = odcore::SharedPointer<TransformGroup>(new opendlv::threeD::TransformGroup());
+        m_extrinsicCalibrationRoot = std::shared_ptr<TransformGroup>(new opendlv::threeD::TransformGroup());
         m_extrinsicCalibrationRoot->addChild(new XYZAxes(NodeDescriptor("XYZAxes")));
         m_extrinsicCalibrationRoot->addChild(new CheckerBoard(NodeDescriptor("CheckerBoard")));
         m_extrinsicCalibrationRoot->setTranslation(Point3(2.3, 0, 0));
@@ -109,8 +109,8 @@ namespace camgen {
         Thread::usleepFor(1000 * 10);
     }
 
-    odcore::SharedPointer<core::wrapper::Image> OpenGLGrabber::getNextImage() {
-        if ( (m_sharedMemory.isValid()) && (m_sharedMemory->isValid()) ) {
+    std::shared_ptr<core::wrapper::Image> OpenGLGrabber::getNextImage() {
+        if ( (m_sharedMemory.get()) && (m_sharedMemory->isValid()) ) {
             m_sharedMemory->lock();
 
             // Render the image right before grabbing it.

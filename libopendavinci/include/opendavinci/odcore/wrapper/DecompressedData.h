@@ -24,7 +24,7 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 
 namespace odcore {
     namespace wrapper {
@@ -55,7 +55,7 @@ namespace odcore {
                  *
                  * @return Input stream or NULL if the specified file could not be found.
                  */
-                virtual SharedPointer<istream> getInputStreamFor(const string &entry) = 0;
+                virtual std::shared_ptr<istream> getInputStreamFor(const string &entry) = 0;
         };
 
     }

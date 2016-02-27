@@ -21,7 +21,7 @@
 #define OPENDAVINCI_CORE_BASE_CONDITION_H_
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/wrapper/Condition.h"
 
@@ -128,7 +128,7 @@ namespace odcore {
                 virtual void unlock();
 
             private:
-                SharedPointer<wrapper::Condition> m_condition;
+                std::shared_ptr<wrapper::Condition> m_condition;
         };
 
     }

@@ -42,7 +42,7 @@ MyRealtimeService.cpp:
         odcore::base::RealtimeService(period) {}
 
     void MyRealtimeService::nextTimeSlice() {
-        cout << "This message is printed every 100 ms." << endl;        
+        cout << "This message is printed every 100 ms." << endl;
     }
 
     int32_t main(int32_t argc, char **argv) {
@@ -56,7 +56,7 @@ MyRealtimeService.cpp:
         rts.stop();
     }
 
-Your class needs to derive from ``core::base::RealtimeService``, which is provided in
+Your class needs to derive from ``odcore::base::RealtimeService``, which is provided in
 ``#include <opendavinci/odcore/base/RealtimeService.h>`` in the include directory ``opendavinci``.
 This class provides one method that needs to be implemented in deriving classes:
 ``void nextTimeSlice()``. This method will be called with the specified periodicity.

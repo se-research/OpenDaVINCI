@@ -25,7 +25,7 @@
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/DataStoreManager.h"
 #include "opendavinci/odcore/base/KeyValueDataStore.h"
 #include "opendavinci/odcore/base/Mutex.h"
@@ -146,7 +146,7 @@ namespace odcore {
                     map<int32_t, vector<odcore::base::AbstractDataStore*> > m_mapOfListOfDataStores;
 
                     // Store all received data using Container::DATATYPE as key.
-                    odcore::SharedPointer<odcore::base::KeyValueDataStore> m_keyValueDataStore;
+                    std::shared_ptr<odcore::base::KeyValueDataStore> m_keyValueDataStore;
             };
 
         }

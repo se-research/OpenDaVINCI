@@ -22,7 +22,7 @@
 
 #include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
 #include "opendavinci/odcore/wrapper/SystemLibraryProducts.h"
 
@@ -52,7 +52,7 @@ namespace odcore {
                  * @param size Required size for the new shared memory.
                  * @return Shared memory based on the type of instance this factory is.
                  */
-                static SharedPointer<SharedMemory> createSharedMemory(const string &name, const uint32_t &size);
+                static std::shared_ptr<SharedMemory> createSharedMemory(const string &name, const uint32_t &size);
 
                 /**
                  * This method returns the shared memory.
@@ -60,7 +60,7 @@ namespace odcore {
                  * @param name Name of the shared memory to attach.
                  * @return Shared memory based on the type of instance this factory is.
                  */
-                static SharedPointer<SharedMemory> attachToSharedMemory(const string &name);
+                static std::shared_ptr<SharedMemory> attachToSharedMemory(const string &name);
         };
 
     }

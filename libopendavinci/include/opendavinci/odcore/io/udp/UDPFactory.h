@@ -23,7 +23,7 @@
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 
 namespace odcore {
     namespace io {
@@ -42,7 +42,7 @@ class UDPSender;
                  * @param port Port.
                  * @return A new UDPSender
                  */
-                static SharedPointer<UDPSender> createUDPSender(const string &address, const uint32_t &port);
+                static std::shared_ptr<UDPSender> createUDPSender(const string &address, const uint32_t &port);
 
                 /**
                  * This method creates a UDP receiver.
@@ -51,7 +51,7 @@ class UDPSender;
                  * @param port Port.
                  * @return A new UDPReceiver
                  */
-                static SharedPointer<UDPReceiver> createUDPReceiver(const string &address, const uint32_t &port);
+                static std::shared_ptr<UDPReceiver> createUDPReceiver(const string &address, const uint32_t &port);
             };
 
         }

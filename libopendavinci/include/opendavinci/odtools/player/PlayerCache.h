@@ -25,7 +25,7 @@
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/FIFOQueue.h"
 #include "opendavinci/odcore/base/LIFOQueue.h"
 #include "opendavinci/odcore/base/Mutex.h"
@@ -73,7 +73,7 @@ namespace odtools {
                  * @param in Input stream to read data from.
                  * @param inSharedMemoryFile Input stream to read data from the shared memory dump.
                  */
-                PlayerCache(const uint32_t size, const uint32_t sizeMemorySegments, const bool &autoRewind, odcore::SharedPointer<istream> in, odcore::SharedPointer<istream> inSharedMemoryFile);
+                PlayerCache(const uint32_t size, const uint32_t sizeMemorySegments, const bool &autoRewind, std::shared_ptr<istream> in, std::shared_ptr<istream> inSharedMemoryFile);
 
                 virtual ~PlayerCache();
 
@@ -148,8 +148,8 @@ namespace odtools {
             private:
                 uint32_t m_cacheSize;
                 const bool m_autoRewind;
-                odcore::SharedPointer<istream> m_in;
-                odcore::SharedPointer<istream> m_inSharedMemoryFile;
+                std::shared_ptr<istream> m_in;
+                std::shared_ptr<istream> m_inSharedMemoryFile;
 
                 odcore::base::FIFOQueue m_queue;
                 odcore::base::LIFOQueue m_recBuffer;
@@ -160,7 +160,7 @@ namespace odtools {
                 odcore::base::FIFOQueue m_bufferIn;
                 odcore::base::FIFOQueue m_bufferOut;
 
-                map<string, odcore::SharedPointer<odcore::wrapper::SharedMemory> > m_sharedPointers;
+                map<string, std::shared_ptr<odcore::wrapper::SharedMemory> > m_sharedPointers;
 
                 odcore::base::Mutex m_modifyCacheMutex;
         };

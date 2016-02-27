@@ -40,9 +40,9 @@ namespace odtools {
         using namespace odcore::data;
         using namespace odtools;
 
-        SharedDataListener::SharedDataListener(SharedPointer<ostream> out, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const bool &threading) :
+        SharedDataListener::SharedDataListener(std::shared_ptr<ostream> out, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const bool &threading) :
             m_threading(threading),
-            m_sharedDataWriter(NULL),
+            m_sharedDataWriter(),
             m_mapOfAvailableSharedData(),
             m_mapOfAvailableSharedImages(),
             m_mapOfAvailableSharedPointCloud(),
@@ -67,7 +67,7 @@ namespace odtools {
             CLOG1 << "done." << endl;
 
             // Hand over the buffer to the writer.
-            m_sharedDataWriter = auto_ptr<SharedDataWriter>(new SharedDataWriter(m_out, m_mapOfMemories, m_bufferIn, m_bufferOut));
+            m_sharedDataWriter = unique_ptr<SharedDataWriter>(new SharedDataWriter(m_out, m_mapOfMemories, m_bufferIn, m_bufferOut));
             if ( (m_sharedDataWriter.get() != NULL) && (m_threading) ) {
                 m_sharedDataWriter->start();
             }
@@ -107,8 +107,8 @@ namespace odtools {
                 odcore::data::buffer::MemorySegment ms = c.getData<odcore::data::buffer::MemorySegment>();
 
                 // Copy the data.
-                SharedPointer<odcore::wrapper::SharedMemory> memory = m_sharedPointers[name];
-                if ( (memory.isValid()) && (memory->isValid()) ) {
+                std::shared_ptr<odcore::wrapper::SharedMemory> memory = m_sharedPointers[name];
+                if ( (memory.get()) && (memory->isValid()) ) {
                     char *destPtr = m_mapOfMemories[ms.getIdentifier()];
 
                     // Lock shared memory segment using a scoped lock.
@@ -155,7 +155,7 @@ namespace odtools {
 
                     CLOG1 << "Connecting to shared memory " << sd.getName() << " at ";
                     
-                    SharedPointer<odcore::wrapper::SharedMemory> sp = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(sd.getName());
+                    std::shared_ptr<odcore::wrapper::SharedMemory> sp = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(sd.getName());
                     m_sharedPointers[sd.getName()] = sp;
 
                     CLOG1 << sp->getSharedMemory() << " ";
@@ -175,7 +175,7 @@ namespace odtools {
 
                     CLOG1 << "Connecting to shared point cloud " << spc.getName() << " at ";
                     
-                    SharedPointer<odcore::wrapper::SharedMemory> sp = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(spc.getName());
+                    std::shared_ptr<odcore::wrapper::SharedMemory> sp = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(spc.getName());
                     m_sharedPointers[spc.getName()] = sp;
 
                     CLOG1 << sp->getSharedMemory() << " ";
@@ -206,7 +206,7 @@ namespace odtools {
 
                     CLOG1 << "Connecting to shared image " << si.getName() << " at ";
 
-                    SharedPointer<odcore::wrapper::SharedMemory> sp = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(si.getName());
+                    std::shared_ptr<odcore::wrapper::SharedMemory> sp = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(si.getName());
                     m_sharedPointers[si.getName()] = sp;
 
                     CLOG1 << sp->getSharedMemory() << " ";

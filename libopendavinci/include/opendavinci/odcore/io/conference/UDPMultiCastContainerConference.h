@@ -23,7 +23,7 @@
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/exceptions/Exceptions.h"
 #include "opendavinci/odcore/io/StringListener.h"
 #include "opendavinci/odcore/io/conference/ContainerConference.h"
@@ -82,8 +82,8 @@ namespace odcore {
                     virtual void send(odcore::data::Container &container) const;
 
                 private:
-                    odcore::SharedPointer<odcore::io::udp::UDPSender> m_sender;
-                    odcore::SharedPointer<odcore::io::udp::UDPReceiver> m_receiver;
+                    std::shared_ptr<odcore::io::udp::UDPSender> m_sender;
+                    std::shared_ptr<odcore::io::udp::UDPReceiver> m_receiver;
             };
 
         }

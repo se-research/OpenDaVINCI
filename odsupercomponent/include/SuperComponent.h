@@ -28,7 +28,7 @@
 #include "opendavinci/odcore/opendavinci.h"
 #include "ConnectedModules.h"
 #include "GlobalConfigurationProvider.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
 #include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/base/module/MasterModule.h"
@@ -101,7 +101,7 @@ class ConnectedModule;
 
             virtual odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
-            virtual void onNewModule(odcore::SharedPointer<odcore::dmcp::connection::ModuleConnection> mc);
+            virtual void onNewModule(std::shared_ptr<odcore::dmcp::connection::ModuleConnection> mc);
 
             virtual void nextContainer(odcore::data::Container &c);
 
@@ -127,7 +127,7 @@ class ConnectedModule;
             odcore::dmcp::discoverer::Server* m_discovererServer;
             odcore::dmcp::connection::Server* m_connectionServer;
 
-            odcore::SharedPointer<odcore::io::conference::ContainerConference> m_conference;
+            std::shared_ptr<odcore::io::conference::ContainerConference> m_conference;
 
             ConnectedModules m_modules;
             ConnectedModules m_shutdownModules;

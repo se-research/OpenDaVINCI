@@ -175,7 +175,7 @@ namespace opendlv { namespace vehiclecontext {
             frameCounter++;
 
             // Share information about this image.
-            if (m_image.isValid()) {
+            if (m_image.get()) {
                 m_sharedImage.setWidth(m_image->getWidth());
                 m_sharedImage.setHeight(m_image->getHeight());
                 // TODO: Refactor me!

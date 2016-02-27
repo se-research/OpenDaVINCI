@@ -45,8 +45,8 @@ namespace odcontext {
         SuperComponent::SuperComponent(const string &multicastGroup, const uint32_t &CID, const KeyValueConfiguration &configuration) :
             m_configurationMutex(),
             m_configuration(configuration),
-            m_discovererServer(NULL),
-            m_connectionServer(NULL),
+            m_discovererServer(),
+            m_connectionServer(),
             m_conference(NULL),
             m_listOfModuleConnections() {
             // Run locally.
@@ -55,11 +55,11 @@ namespace odcontext {
             clog << "(context::base::SuperComponent) Server information: " << serverInformation.toString() << endl;
             clog << "(context::base::SuperComponent) Creating discoverer server..." << endl;
             vector<string> noModulesToIgnore;
-            m_discovererServer = auto_ptr<odcore::dmcp::discoverer::Server>(new discoverer::Server(serverInformation, multicastGroup, odcore::data::dmcp::Constants::BROADCAST_PORT_SERVER, odcore::data::dmcp::Constants::BROADCAST_PORT_CLIENT, noModulesToIgnore));
+            m_discovererServer = unique_ptr<odcore::dmcp::discoverer::Server>(new discoverer::Server(serverInformation, multicastGroup, odcore::data::dmcp::Constants::BROADCAST_PORT_SERVER, odcore::data::dmcp::Constants::BROADCAST_PORT_CLIENT, noModulesToIgnore));
             m_discovererServer->startResponding();
 
             clog << "(context::base::SuperComponent) Creating connection server..." << endl;
-            m_connectionServer = auto_ptr<odcore::dmcp::connection::Server>(new connection::Server(serverInformation, *this));
+            m_connectionServer = unique_ptr<odcore::dmcp::connection::Server>(new connection::Server(serverInformation, *this));
             m_connectionServer->setConnectionHandler(this);
 
             clog << "(context::base::SuperComponent) Creating ContainerConference..." << endl;
@@ -136,8 +136,8 @@ namespace odcontext {
             return m_configuration;
         }
 
-        void SuperComponent::onNewModule(SharedPointer<odcore::dmcp::connection::ModuleConnection> mc) {
-            if (mc.isValid()) {
+        void SuperComponent::onNewModule(std::shared_ptr<odcore::dmcp::connection::ModuleConnection> mc) {
+            if (mc.get()) {
                 clog << "(context::base::SuperComponent) Got new connection from " << mc->getModuleDescriptor().toString() << endl;
 
                 m_listOfModuleConnections.push_back(mc);

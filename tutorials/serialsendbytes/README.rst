@@ -16,7 +16,7 @@ SerialSendBytes.cpp:
     #include <stdint.h>
     #include <iostream>
     #include <string>
-    #include <opendavinci/odcore/SharedPointer.h>
+    #include <memory>
     #include <opendavinci/odcore/wrapper/SerialPort.h>
     #include <opendavinci/odcore/wrapper/SerialPortFactory.h>
 
@@ -30,10 +30,10 @@ SerialSendBytes.cpp:
         const string SERIAL_PORT = "/dev/pts/19";
         const uint32_t BAUD_RATE = 19200;
 
-        // We are using OpenDaVINCI's SharedPointer to automatically
+        // We are using OpenDaVINCI's std::shared_ptr to automatically
         // release any acquired resources.
         try {
-            SharedPointer<SerialPort> serial(SerialPortFactory::createSerialPort(SERIAL_PORT, BAUD_RATE));
+            std::shared_ptr<SerialPort> serial(SerialPortFactory::createSerialPort(SERIAL_PORT, BAUD_RATE));
 
             serial->send("Hello World\r\n");
         }
@@ -56,7 +56,7 @@ If the connection could be successfully established, the method ``send`` can be
 used to send data of type ``string`` to the other end of the serial link.
 
 To conveniently handle the resource management of releasing the acquired system
-resources, a ``SharedPointer`` is used that automatically releases memory that
+resources, a ``std::shared_ptr`` is used that automatically releases memory that
 is no longer used.
 
 You can compile and link the example::

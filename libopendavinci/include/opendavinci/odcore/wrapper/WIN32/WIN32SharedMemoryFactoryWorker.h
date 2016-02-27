@@ -34,12 +34,12 @@ namespace odcore {
 
         template <> class OPENDAVINCI_API SharedMemoryFactoryWorker<SystemLibraryWin32> {
             public:
-                static SharedPointer<SharedMemory> createSharedMemory(const string &name, const uint32_t &size) {
-                    return SharedPointer<SharedMemory>(new WIN32Impl::WIN32SharedMemory(name, size));
+                static std::shared_ptr<SharedMemory> createSharedMemory(const string &name, const uint32_t &size) {
+                    return std::shared_ptr<SharedMemory>(new WIN32Impl::WIN32SharedMemory(name, size));
                 };
 
-                static SharedPointer<SharedMemory> attachToSharedMemory(const string &name) {
-                    return SharedPointer<SharedMemory>(new WIN32Impl::WIN32SharedMemory(name));
+                static std::shared_ptr<SharedMemory> attachToSharedMemory(const string &name) {
+                    return std::shared_ptr<SharedMemory>(new WIN32Impl::WIN32SharedMemory(name));
                 };
         };
 

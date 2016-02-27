@@ -19,7 +19,7 @@
 
 #include <sstream>
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/module/AbstractConferenceClientModule.h"
 #include "opendavinci/odcore/data/Container.h"
@@ -41,8 +41,8 @@ namespace odcore {
 
             AbstractConferenceClientModule::AbstractConferenceClientModule(const int32_t &argc, char **argv, const string &name) throw (InvalidArgumentException) :
                     ManagedClientModule(argc, argv, name) {
-                SharedPointer<ContainerConference> containerConference = ContainerConferenceFactory::getInstance().getContainerConference(getMultiCastGroup());
-                if (!containerConference.isValid()) {
+                std::shared_ptr<ContainerConference> containerConference = ContainerConferenceFactory::getInstance().getContainerConference(getMultiCastGroup());
+                if (!containerConference.get()) {
                     OPENDAVINCI_CORE_THROW_EXCEPTION(InvalidArgumentException, "ContainerConference invalid!");
                 }
                 setContainerConference(containerConference);
@@ -54,7 +54,7 @@ namespace odcore {
             }
 
             AbstractConferenceClientModule::~AbstractConferenceClientModule() {
-                if (getContainerConference().isValid()) {
+                if (getContainerConference().get()) {
                     getContainerConference()->setContainerListener(NULL);
                 }
             }

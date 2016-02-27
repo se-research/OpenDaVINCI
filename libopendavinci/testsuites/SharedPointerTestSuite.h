@@ -20,13 +20,13 @@
 #ifndef CORE_SHAREDPOINTERTESTSUITE_H_
 #define CORE_SHAREDPOINTERTESTSUITE_H_
 
+#include <memory>
 #include <iostream>                     // for clog, endl, ostream, etc
 #include <vector>                       // for vector, vector<>::iterator
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"         // for SharedPointer
 
 using namespace std;
 
@@ -60,11 +60,10 @@ class DerivedSharedPointerTestData : public SharedPointerTestData {
 
 class SharedPointerTest : public CxxTest::TestSuite {
     public:
-        void testCreateSharedPointer() {
-            using namespace odcore;
+        void testCreate_shared_ptr() {
             {
                 SharedPointerTestData *sptd = new SharedPointerTestData();
-                SharedPointer<SharedPointerTestData> p1(sptd);
+                shared_ptr<SharedPointerTestData> p1(sptd);
                 p1->val = 10;
 
                 TS_ASSERT(sptd->val == 10);
@@ -74,30 +73,31 @@ class SharedPointerTest : public CxxTest::TestSuite {
             clog << endl;
         }
 
-        void testCreateDestroySharedPointer() {
-            using namespace odcore;
+        void testCreateDestroy_shared_ptr() {
             {
                 SharedPointerTestData *sptd = new SharedPointerTestData();
-                SharedPointer<SharedPointerTestData> p1(sptd);
+                shared_ptr<SharedPointerTestData> p1(sptd);
                 p1->val = 10;
 
                 TS_ASSERT(sptd->val == 10);
                 TS_ASSERT(sptd->val == p1->val);
                 TS_ASSERT(sptd == p1.operator->());
 
-                p1.release();
-                TS_ASSERT(!p1.isValid());
+                p1.reset();
+                TS_ASSERT(!p1.get());
+
+                // shared_ptr does not have ! X.isValid(); must be replaced with !X.get().
+                // shared_ptr does not have .release(); must be replaced with .reset().
             }
             clog << endl;
         }
 
-        void testCreateDestroySharedPointerUsingCopyConstructor() {
-            using namespace odcore;
+        void testCreateDestroy_shared_ptr_UsingCopyConstructor() {
             // Create instance.
-            SharedPointer<SharedPointerTestData> p1(new SharedPointerTestData());
+            shared_ptr<SharedPointerTestData> p1(new SharedPointerTestData());
             {
                 // Handover instance.
-                SharedPointer<SharedPointerTestData> p2(p1);
+                shared_ptr<SharedPointerTestData> p2(p1);
                 p1->val = 11;
 
                 TS_ASSERT(p1->val == 11);
@@ -105,22 +105,21 @@ class SharedPointerTest : public CxxTest::TestSuite {
                 TS_ASSERT(p1.operator ->() == p2.operator->());
 
                 // Remove first instance.
-                p1 = SharedPointer<SharedPointerTestData>();
-                TS_ASSERT(!p1.isValid());
+                p1 = shared_ptr<SharedPointerTestData>();
+                TS_ASSERT(!p1.get());
 
                 TS_ASSERT(p2->val == 11);
             }
-            TS_ASSERT(!p1.isValid());
+            TS_ASSERT(!p1.get());
             clog << endl;
         }
 
-        void testCreateDestroySharedPointerUsingAssignmentOperator() {
-            using namespace odcore;
+        void testCreateDestroy_shared_ptr_UsingAssignmentOperator() {
             // Create instance.
-            SharedPointer<SharedPointerTestData> p1(new SharedPointerTestData());
+            shared_ptr<SharedPointerTestData> p1(new SharedPointerTestData());
             {
                 // Handover instance.
-                SharedPointer<SharedPointerTestData> p2 = p1;
+                shared_ptr<SharedPointerTestData> p2 = p1;
                 p1->val = 12;
 
                 TS_ASSERT(p1->val == 12);
@@ -128,51 +127,47 @@ class SharedPointerTest : public CxxTest::TestSuite {
                 TS_ASSERT(p1.operator ->() == p2.operator->());
 
                 // Remove first instance.
-                p1 = SharedPointer<SharedPointerTestData>();
-                TS_ASSERT(!p1.isValid());
+                p1 = shared_ptr<SharedPointerTestData>();
+                TS_ASSERT(!p1.get());
 
                 TS_ASSERT(p2->val == 12);
             }
-            TS_ASSERT(!p1.isValid());
+            TS_ASSERT(!p1.get());
             clog << endl;
         }
 
-        void testCreateAndKeepSharedPointerUsingCopyConstructor() {
-            using namespace odcore;
-
+        void testCreateAndKeep_shared_ptr_UsingCopyConstructor() {
             // Create empty instance.
-            SharedPointer<SharedPointerTestData> p1;
-            TS_ASSERT(!p1.isValid());
+            shared_ptr<SharedPointerTestData> p1;
+            TS_ASSERT(!p1.get());
             {
-                SharedPointer<SharedPointerTestData> p2(new SharedPointerTestData());
+                shared_ptr<SharedPointerTestData> p2(new SharedPointerTestData());
                 p2->val = 13;
 
                 TS_ASSERT(p2->val == 13);
 
                 // Hand over to first instance.
-                p1 = SharedPointer<SharedPointerTestData>(p2);
+                p1 = shared_ptr<SharedPointerTestData>(p2);
                 TS_ASSERT(p1->val == 13);
                 TS_ASSERT(p2->val == 13);
 
                 // Remove second instance.
-                p2 = SharedPointer<SharedPointerTestData>();
+                p2 = shared_ptr<SharedPointerTestData>();
                 TS_ASSERT(p1->val == 13);
-                TS_ASSERT(!p2.isValid());
+                TS_ASSERT(!p2.get());
             }
-            TS_ASSERT(p1.isValid());
+            TS_ASSERT(p1.get());
             TS_ASSERT(p1->val == 13);
             clog << endl;
         }
 
-        void testCreateAndKeepSharedPointerUsingAssignmentOperator() {
-            using namespace odcore;
-
+        void testCreateAndKeep_shared_ptr_UsingAssignmentOperator() {
             // Create empty instance.
-            SharedPointer<SharedPointerTestData> p1;
-            TS_ASSERT(!p1.isValid());
+            shared_ptr<SharedPointerTestData> p1;
+            TS_ASSERT(!p1.get());
             {
                 // Handover instance.
-                SharedPointer<SharedPointerTestData> p2(new SharedPointerTestData());
+                shared_ptr<SharedPointerTestData> p2(new SharedPointerTestData());
                 p2->val = 14;
 
                 TS_ASSERT(p2->val == 14);
@@ -183,42 +178,40 @@ class SharedPointerTest : public CxxTest::TestSuite {
                 TS_ASSERT(p2->val == 14);
 
                 // Remove second instance.
-                p2 = SharedPointer<SharedPointerTestData>();
+                p2 = shared_ptr<SharedPointerTestData>();
                 TS_ASSERT(p1->val == 14);
-                TS_ASSERT(!p2.isValid());
+                TS_ASSERT(!p2.get());
             }
-            TS_ASSERT(p1.isValid());
+            TS_ASSERT(p1.get());
             TS_ASSERT(p1->val == 14);
             clog << endl;
         }
 
-        void testSharedPointerInsideSTL() {
-            using namespace odcore;
-
-            vector<SharedPointer<SharedPointerTestData> > listOfPtrs;
+        void test_shared_ptr_InsideSTL() {
+            vector<shared_ptr<SharedPointerTestData> > listOfPtrs;
             TS_ASSERT(listOfPtrs.empty());
 
             {
-                SharedPointer<SharedPointerTestData> p1(new SharedPointerTestData());
+                shared_ptr<SharedPointerTestData> p1(new SharedPointerTestData());
                 listOfPtrs.push_back(p1);
                 p1->val = 42;
 
-                SharedPointer<SharedPointerTestData> p2(new SharedPointerTestData());
+                shared_ptr<SharedPointerTestData> p2(new SharedPointerTestData());
                 listOfPtrs.push_back(p2);
                 p2->val = 43;
 
-                SharedPointer<SharedPointerTestData> p3(new SharedPointerTestData());
+                shared_ptr<SharedPointerTestData> p3(new SharedPointerTestData());
                 listOfPtrs.push_back(p3);
                 p3->val = 44;
 
-                SharedPointer<SharedPointerTestData> p4(new SharedPointerTestData());
+                shared_ptr<SharedPointerTestData> p4(new SharedPointerTestData());
                 listOfPtrs.push_back(p4);
                 p4->val = 45;
             }
 
             TS_ASSERT(!listOfPtrs.empty());
 
-            vector<SharedPointer<SharedPointerTestData> >::iterator it = listOfPtrs.begin();
+            vector<shared_ptr<SharedPointerTestData> >::iterator it = listOfPtrs.begin();
             int32_t counter = 42;
             while (it != listOfPtrs.end()) {
                 TS_ASSERT( (*it++)->val == counter );
@@ -227,36 +220,34 @@ class SharedPointerTest : public CxxTest::TestSuite {
             clog << endl;
         }
 
-        void testSharedPointerInsideSTLAndCopy() {
-            using namespace odcore;
-
-            vector<SharedPointer<SharedPointerTestData> > listOfPtrs;
+        void test_shared_ptr_InsideSTLAndCopy() {
+            vector<shared_ptr<SharedPointerTestData> > listOfPtrs;
             TS_ASSERT(listOfPtrs.empty());
 
-            vector<SharedPointer<SharedPointerTestData> > listOfPtrs2;
+            vector<shared_ptr<SharedPointerTestData> > listOfPtrs2;
             TS_ASSERT(listOfPtrs2.empty());
 
             {
-                SharedPointer<SharedPointerTestData> p1(new SharedPointerTestData());
+                shared_ptr<SharedPointerTestData> p1(new SharedPointerTestData());
                 listOfPtrs.push_back(p1);
                 p1->val = 42;
 
-                SharedPointer<SharedPointerTestData> p2(new SharedPointerTestData());
+                shared_ptr<SharedPointerTestData> p2(new SharedPointerTestData());
                 listOfPtrs.push_back(p2);
                 p2->val = 43;
 
-                SharedPointer<SharedPointerTestData> p3(new SharedPointerTestData());
+                shared_ptr<SharedPointerTestData> p3(new SharedPointerTestData());
                 listOfPtrs.push_back(p3);
                 p3->val = 44;
 
-                SharedPointer<SharedPointerTestData> p4(new SharedPointerTestData());
+                shared_ptr<SharedPointerTestData> p4(new SharedPointerTestData());
                 listOfPtrs.push_back(p4);
                 p4->val = 45;
             }
 
             TS_ASSERT(!listOfPtrs.empty());
 
-            vector<SharedPointer<SharedPointerTestData> >::iterator it = listOfPtrs.begin();
+            vector<shared_ptr<SharedPointerTestData> >::iterator it = listOfPtrs.begin();
             int32_t counter = 42;
             while (it != listOfPtrs.end()) {
                 TS_ASSERT( (*it++)->val == counter );
@@ -267,7 +258,7 @@ class SharedPointerTest : public CxxTest::TestSuite {
 
             TS_ASSERT(!listOfPtrs2.empty());
 
-            vector<SharedPointer<SharedPointerTestData> >::iterator jt = listOfPtrs2.begin();
+            vector<shared_ptr<SharedPointerTestData> >::iterator jt = listOfPtrs2.begin();
             counter = 42;
             while (jt != listOfPtrs2.end()) {
                 TS_ASSERT( (*jt++)->val == counter );
@@ -284,11 +275,10 @@ class SharedPointerTest : public CxxTest::TestSuite {
             TS_ASSERT((*(listOfPtrs2.begin()))->val == 24);
         }
 
-        void testCreateSharedPointerFromDerivedClass() {
-            using namespace odcore;
+        void testCreate_shared_ptr_FromDerivedClass() {
             {
                 SharedPointerTestData *sptd = new SharedPointerTestData();
-                SharedPointer<SharedPointerTestData> p1(sptd);
+                shared_ptr<SharedPointerTestData> p1(sptd);
                 p1->val = 10;
 
                 TS_ASSERT(sptd->val == 10);
@@ -296,7 +286,7 @@ class SharedPointerTest : public CxxTest::TestSuite {
                 TS_ASSERT(sptd == p1.operator->());
 
                 DerivedSharedPointerTestData *dsptd = new DerivedSharedPointerTestData();
-                SharedPointer<DerivedSharedPointerTestData> p2(dsptd);
+                shared_ptr<DerivedSharedPointerTestData> p2(dsptd);
                 p2->val2 = 2.5;
 
                 TS_ASSERT((dsptd->val2 - 2.5) < 1e-8);
@@ -304,7 +294,7 @@ class SharedPointerTest : public CxxTest::TestSuite {
                 TS_ASSERT(dsptd == p2.operator->());
 
                 // Test assignment operator.
-                SharedPointer<SharedPointerTestData> p3 = p2;
+                shared_ptr<SharedPointerTestData> p3 = p2;
                 TS_ASSERT(dynamic_cast<DerivedSharedPointerTestData*>(p3.operator->()));
                 dynamic_cast<DerivedSharedPointerTestData*>(p3.operator->())->val2 = 2.5;
 
@@ -313,7 +303,7 @@ class SharedPointerTest : public CxxTest::TestSuite {
                 TS_ASSERT(dsptd == p3.operator->());
 
                 // Test copy constructor operator.
-                SharedPointer<SharedPointerTestData> p4(p2);
+                shared_ptr<SharedPointerTestData> p4(p2);
                 TS_ASSERT(dynamic_cast<DerivedSharedPointerTestData*>(p4.operator->()));
                 dynamic_cast<DerivedSharedPointerTestData*>(p4.operator->())->val2 = 2.5;
 

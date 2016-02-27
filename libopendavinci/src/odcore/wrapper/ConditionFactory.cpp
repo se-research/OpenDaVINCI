@@ -33,7 +33,7 @@
 namespace odcore {
     namespace wrapper {
 
-        SharedPointer<Condition> ConditionFactory::createCondition() {
+        std::shared_ptr<Condition> ConditionFactory::createCondition() {
             typedef ConfigurationTraits<SystemLibraryProducts>::configuration configuration;
             return ConditionFactoryWorker<configuration::value>::createCondition();
         }

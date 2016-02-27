@@ -36,7 +36,7 @@ namespace odtools {
         using namespace odcore::data;
         using namespace odtools;
 
-        SharedDataWriter::SharedDataWriter(SharedPointer<ostream> out, map<uint32_t, char*> &mapOfMemories, FIFOQueue &bufferIn, FIFOQueue &bufferOut) :
+        SharedDataWriter::SharedDataWriter(std::shared_ptr<ostream> out, map<uint32_t, char*> &mapOfMemories, FIFOQueue &bufferIn, FIFOQueue &bufferOut) :
             m_out(out),
             m_mapOfMemories(mapOfMemories),
             m_bufferIn(bufferIn),

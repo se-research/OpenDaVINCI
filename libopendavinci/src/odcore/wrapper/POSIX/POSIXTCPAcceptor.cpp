@@ -25,7 +25,7 @@
 #include <cstring>
 #include <sstream>
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/io/tcp/TCPAcceptorListener.h"
 #include "opendavinci/odcore/io/tcp/TCPConnection.h"
 #include "opendavinci/odcore/wrapper/ConcurrencyFactory.h"
@@ -42,19 +42,19 @@ namespace odcore {
             using namespace std;
 
             POSIXTCPAcceptor::POSIXTCPAcceptor(const uint32_t &port) :
-                m_thread(NULL),
-                m_listenerMutex(NULL),
+                m_thread(),
+                m_listenerMutex(),
                 m_listener(NULL),
                 m_fileDescriptor(0),
                 m_port(port) {
-                m_thread = auto_ptr<Thread>(ConcurrencyFactory::createThread(*this));
+                m_thread = unique_ptr<Thread>(ConcurrencyFactory::createThread(*this));
                 if (m_thread.get() == NULL) {
                     stringstream s;
                     s << "[core::wrapper::POSIXTCPAcceptor] Error creating thread: " << strerror(errno);
                     throw s.str();
                 }
 
-                m_listenerMutex = auto_ptr<Mutex>(MutexFactory::createMutex());
+                m_listenerMutex = unique_ptr<Mutex>(MutexFactory::createMutex());
                 if (m_listenerMutex.get() == NULL) {
                     stringstream s;
                     s << "[POSIXTCPConnection] Error creating mutex: " << strerror(errno);
@@ -114,13 +114,13 @@ namespace odcore {
                 m_listenerMutex->unlock();
             }
 
-            void POSIXTCPAcceptor::invokeAcceptorListener(odcore::SharedPointer<odcore::io::tcp::TCPConnection> connection) {
+            void POSIXTCPAcceptor::invokeAcceptorListener(std::shared_ptr<odcore::io::tcp::TCPConnection> connection) {
                 m_listenerMutex->lock();
                 if (m_listener != NULL) {
                     m_listener->onNewConnection(connection);
                 }
                 else {
-                    // No listener available. The SharedPointer will delete the connection automatically to prevent memory leakage.
+                    // No listener available. The std::shared_ptr will delete the connection automatically to prevent memory leakage.
                 }
                 m_listenerMutex->unlock();
             }
@@ -156,7 +156,7 @@ namespace odcore {
 
                         int32_t client = accept(m_fileDescriptor, &clientsock, &csize);
                         if (client >= 0) {
-                            invokeAcceptorListener(odcore::SharedPointer<odcore::io::tcp::TCPConnection>(new POSIXTCPConnection(client)));
+                            invokeAcceptorListener(std::shared_ptr<odcore::io::tcp::TCPConnection>(new POSIXTCPConnection(client)));
                         }
                     }
                 }

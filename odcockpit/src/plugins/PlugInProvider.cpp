@@ -125,68 +125,68 @@ class PlugIn;
           return m_listOfDescriptions[pluginName];
         }
 
-        odcore::SharedPointer<PlugIn> PlugInProvider::createPlugIn(const string &name) {
-            odcore::SharedPointer<PlugIn> plugIn;
+        std::shared_ptr<PlugIn> PlugInProvider::createPlugIn(const string &name) {
+            std::shared_ptr<PlugIn> plugIn;
 
             if (name == "ConfigurationViewer") {
                 cerr << "Creating ConfigurationViewer" << endl;
-                plugIn = odcore::SharedPointer<PlugIn>(new configurationviewer::ConfigurationViewerPlugIn("ConfigurationViewer", m_kvc, m_parent));
+                plugIn = std::shared_ptr<PlugIn>(new configurationviewer::ConfigurationViewerPlugIn("ConfigurationViewer", m_kvc, m_parent));
             } else if (name == "Controller") {
                 cerr << "Creating Controller" << endl;
-                plugIn = odcore::SharedPointer<PlugIn>((PlugIn*)(new controller::ControllerPlugIn("Controller", m_kvc, m_conference, m_parent)));
+                plugIn = std::shared_ptr<PlugIn>((PlugIn*)(new controller::ControllerPlugIn("Controller", m_kvc, m_conference, m_parent)));
             }
             else if (name == "BirdsEyeMap") {
                 cerr << "Creating BirdsEyeMap" << endl;
-                plugIn = odcore::SharedPointer<PlugIn>(new birdseyemap::BirdsEyeMapPlugIn("BirdsEyeMap", m_kvc, m_parent));
+                plugIn = std::shared_ptr<PlugIn>(new birdseyemap::BirdsEyeMapPlugIn("BirdsEyeMap", m_kvc, m_parent));
             }
             else if (name == "EnvironmentViewer") {
                 cerr << "Creating EnvironmentViewer" << endl;
-                plugIn = odcore::SharedPointer<PlugIn>(new environmentviewer::EnvironmentViewerPlugIn("EnvironmentViewer", m_kvc, m_parent));
+                plugIn = std::shared_ptr<PlugIn>(new environmentviewer::EnvironmentViewerPlugIn("EnvironmentViewer", m_kvc, m_parent));
             }
             else if (name == "IrUsCharts") {
                 cerr << "Creating IrUsCharts" << endl;
-                plugIn = odcore::SharedPointer<PlugIn>(new iruscharts::IrUsChartsPlugIn("IrUsCharts", m_kvc, m_parent));
+                plugIn = std::shared_ptr<PlugIn>(new iruscharts::IrUsChartsPlugIn("IrUsCharts", m_kvc, m_parent));
             }
             else if (name == "ModuleStatisticsViewer") {
                 cerr << "Creating ModuleStatisticsViewer" << endl;
-                plugIn = odcore::SharedPointer<PlugIn>(new modulestatisticsviewer::ModuleStatisticsViewerPlugIn("ModuleStatisticsViewer", m_kvc, m_parent));
+                plugIn = std::shared_ptr<PlugIn>(new modulestatisticsviewer::ModuleStatisticsViewerPlugIn("ModuleStatisticsViewer", m_kvc, m_parent));
             }
             else if (name == "OBJXViewer") {
                 cerr << "Creating OBJXViewer" << endl;
-                plugIn = odcore::SharedPointer<PlugIn>(new objxviewer::OBJXViewerPlugIn("OBJXViewer", m_kvc, m_parent));
+                plugIn = std::shared_ptr<PlugIn>(new objxviewer::OBJXViewerPlugIn("OBJXViewer", m_kvc, m_parent));
             }
             else if (name == "SCNXViewer") {
                 cerr << "Creating SCNXViewer" << endl;
-                plugIn = odcore::SharedPointer<PlugIn>(new scnxviewer::SCNXViewerPlugIn("SCNXViewer", m_kvc, m_parent));
+                plugIn = std::shared_ptr<PlugIn>(new scnxviewer::SCNXViewerPlugIn("SCNXViewer", m_kvc, m_parent));
             }
             else if (name == "IrUsMap") {
                 cerr << "Creating IrUsMap" << endl;
-                plugIn = odcore::SharedPointer<PlugIn>(new irusmap::IrUsMapPlugIn("IrUsMap", m_kvc, m_parent));
+                plugIn = std::shared_ptr<PlugIn>(new irusmap::IrUsMapPlugIn("IrUsMap", m_kvc, m_parent));
             } else if (name == "LiveFeed") {
                 cerr << "Creating LiveFeed" << endl;
-                plugIn = odcore::SharedPointer<PlugIn>(new livefeed::LiveFeedPlugIn("LiveFeed", m_kvc, m_parent));
+                plugIn = std::shared_ptr<PlugIn>(new livefeed::LiveFeedPlugIn("LiveFeed", m_kvc, m_parent));
             } else if (name == "LogMessage") {
                 cerr << "Creating LogMessage" << endl;
-                plugIn = odcore::SharedPointer<PlugIn>(new logmessage::LogMessagePlugIn("LogMessage", m_kvc, m_parent));
+                plugIn = std::shared_ptr<PlugIn>(new logmessage::LogMessagePlugIn("LogMessage", m_kvc, m_parent));
             } else if (name == "Player") {
                 cerr << "Creating Player" << endl;
-                plugIn = odcore::SharedPointer<PlugIn>((PlugIn*)(new player::PlayerPlugIn("Player", m_kvc, m_conference, m_parent)));
+                plugIn = std::shared_ptr<PlugIn>((PlugIn*)(new player::PlayerPlugIn("Player", m_kvc, m_conference, m_parent)));
             } else if (name == "SharedImageViewer") {
                 cerr << "Creating SharedImageViewer" << endl;
-                plugIn = odcore::SharedPointer<PlugIn>(new sharedimageviewer::SharedImageViewerPlugIn("SharedImageViewer", m_kvc, m_parent));
+                plugIn = std::shared_ptr<PlugIn>(new sharedimageviewer::SharedImageViewerPlugIn("SharedImageViewer", m_kvc, m_parent));
             } else if (name == "Spy") {
                 cerr << "Creating Spy" << endl;
-                plugIn = odcore::SharedPointer<PlugIn>(new spy::SpyPlugIn("Spy", m_kvc, m_parent));
+                plugIn = std::shared_ptr<PlugIn>(new spy::SpyPlugIn("Spy", m_kvc, m_parent));
             } else if (name == "StreetMap") {
                 cerr << "Creating StreetMap" << endl;
-                plugIn = odcore::SharedPointer<PlugIn>(new streetmap::StreetMapPlugIn("StreetMap", m_kvc, m_parent));
+                plugIn = std::shared_ptr<PlugIn>(new streetmap::StreetMapPlugIn("StreetMap", m_kvc, m_parent));
             }
 
             return plugIn;
         }
 
-        odcore::SharedPointer<PlugIn> PlugInProvider::getPlugIn(const string &name) {
-            odcore::SharedPointer<PlugIn> plugIn;
+        std::shared_ptr<PlugIn> PlugInProvider::getPlugIn(const string &name) {
+            std::shared_ptr<PlugIn> plugIn;
 
             // Check if the plugin exists.
             vector<string>::const_iterator it = m_listOfAvailablePlugIns.begin();

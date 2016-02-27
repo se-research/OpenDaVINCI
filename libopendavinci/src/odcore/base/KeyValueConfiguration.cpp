@@ -20,7 +20,7 @@
 #include <algorithm>
 #include <functional>
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/Deserializer.h"
 #include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
@@ -65,7 +65,7 @@ namespace odcore {
 
         ostream& KeyValueConfiguration::operator<<(ostream &out) const {
 			SerializationFactory& sf = SerializationFactory::getInstance();
-			odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
+			std::shared_ptr<Serializer> s = sf.getSerializer(out);
             stringstream sstr;
             writeTo(sstr);
 			s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('c', 'o', 'n', 'f', 'i', 'g')  >::RESULT, sstr.str());
@@ -74,7 +74,7 @@ namespace odcore {
 
         istream& KeyValueConfiguration::operator>>(istream &in) {
 			SerializationFactory& sf = SerializationFactory::getInstance();
-			odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+			std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
             string s;
 			d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('c', 'o', 'n', 'f', 'i', 'g')  >::RESULT, s);
             stringstream sstr(s);

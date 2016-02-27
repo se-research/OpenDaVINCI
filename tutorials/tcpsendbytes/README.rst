@@ -16,7 +16,7 @@ TCPSendBytes.cpp:
     #include <stdint.h>
     #include <iostream>
     #include <string>
-    #include <opendavinci/odcore/SharedPointer.h>
+    #include <memory>
     #include <opendavinci/odcore/io/tcp/TCPConnection.h>
     #include <opendavinci/odcore/io/tcp/TCPFactory.h>
 
@@ -30,10 +30,10 @@ TCPSendBytes.cpp:
         const string RECEIVER = "127.0.0.1";
         const uint32_t PORT = 1234;
 
-        // We are using OpenDaVINCI's SharedPointer to automatically
+        // We are using OpenDaVINCI's std::shared_ptr to automatically
         // release any acquired resources.
         try {
-            SharedPointer<TCPConnection>
+            std::shared_ptr<TCPConnection>
                 connection(TCPFactory::createTCPConnectionTo(RECEIVER, PORT));
 
             connection->send("Hello World\r\n");
@@ -57,7 +57,7 @@ If the connection could be successfully established, the method ``send`` can be
 used to send data of type ``string`` to the other end of the TCP link.
 
 To conveniently handle the resource management of releasing the acquired system
-resources, a ``SharedPointer`` is used that automatically releases memory that
+resources, a ``std::shared_ptr`` is used that automatically releases memory that
 is no longer used.
 
 You can compile and link the example::

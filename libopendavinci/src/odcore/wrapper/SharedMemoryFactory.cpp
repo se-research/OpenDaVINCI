@@ -33,12 +33,12 @@
 namespace odcore {
     namespace wrapper {
 
-        SharedPointer<SharedMemory> SharedMemoryFactory::createSharedMemory(const string &name, const uint32_t &size) {
+        std::shared_ptr<SharedMemory> SharedMemoryFactory::createSharedMemory(const string &name, const uint32_t &size) {
             typedef ConfigurationTraits<SystemLibraryProducts>::configuration configuration;
             return SharedMemoryFactoryWorker<configuration::value>::createSharedMemory(name, size);
         }
 
-        SharedPointer<SharedMemory> SharedMemoryFactory::attachToSharedMemory(const string &name) {
+        std::shared_ptr<SharedMemory> SharedMemoryFactory::attachToSharedMemory(const string &name) {
             typedef ConfigurationTraits<SystemLibraryProducts>::configuration configuration;
             return SharedMemoryFactoryWorker<configuration::value>::attachToSharedMemory(name);
         }

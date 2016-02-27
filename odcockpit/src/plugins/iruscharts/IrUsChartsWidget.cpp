@@ -47,7 +47,7 @@
 #include <sstream>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
 #include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/base/Serializable.h"
@@ -196,7 +196,7 @@ namespace cockpit {
                         odcore::io::URL url(s.str());
 
                         try {
-                            SharedPointer<ostream> out = odcore::io::StreamFactory::getInstance().getOutputStream(url);
+                            std::shared_ptr<ostream> out = odcore::io::StreamFactory::getInstance().getOutputStream(url);
 
                             deque<Container>::iterator it = m_receivedSensorBoardDataContainers.begin();
                             for(;it < m_receivedSensorBoardDataContainers.end(); it++) {
@@ -224,7 +224,7 @@ namespace cockpit {
                         odcore::io::URL url(s.str());
 
                         try {
-                            SharedPointer<ostream> out = odcore::io::StreamFactory::getInstance().getOutputStream(url);
+                            std::shared_ptr<ostream> out = odcore::io::StreamFactory::getInstance().getOutputStream(url);
 
                             // Write header.
                             (*out) << "Time stamp sent long" << ";" << "Time stamp sent short [microseconds]" << ";" << "Time stamp received long" << ";" << "Time stamp received short [microseconds]";

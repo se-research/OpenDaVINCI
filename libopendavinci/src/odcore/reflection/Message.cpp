@@ -45,18 +45,18 @@ namespace odcore {
             return *this;
         }
 
-        void Message::addField(const odcore::SharedPointer<odcore::data::reflection::AbstractField> &f) {
+        void Message::addField(const std::shared_ptr<odcore::data::reflection::AbstractField> &f) {
             m_fields.push_back(f);
         }
 
         void Message::accept(Visitor &v) {
-            vector<SharedPointer<AbstractField> >::iterator it = m_fields.begin();
+            vector<std::shared_ptr<AbstractField> >::iterator it = m_fields.begin();
             while (it != m_fields.end()) {
                 switch((*it)->getFieldDataType()) {
                     case odcore::data::reflection::AbstractField::SERIALIZABLE_T:
                     {
                         // If we have a nested message, we need to delegate this Visitor to the nested type.
-                        Field<Message> *f = dynamic_cast<Field<Message>*>((*it).operator->()); // Access the value of the SharedPointer from the iterator.
+                        Field<Message> *f = dynamic_cast<Field<Message>*>((*it).operator->()); // Access the value of the std::shared_ptr from the iterator.
                         if (f != NULL) {
                             f->getValue().accept(v);
                         }
@@ -131,7 +131,7 @@ namespace odcore {
                     case odcore::data::reflection::AbstractField::DATA_T :
                     {
                         // Read value.
-                        SharedPointer<char> value = dynamic_cast<Field<SharedPointer<char> >*>((*it).operator->())->getValue();
+                        std::shared_ptr<char> value = dynamic_cast<Field<std::shared_ptr<char> >*>((*it).operator->())->getValue();
                         char *valuePtr = value.operator->();
                         uint32_t size = (*it)->getSize();
 
@@ -151,11 +151,11 @@ namespace odcore {
             }
         }
 
-        SharedPointer<odcore::data::reflection::AbstractField> Message::getFieldByLongIdentifierOrShortIdentifier(const uint32_t &longIdentifier, const uint8_t &shortIdentifier, bool &found) {
+        std::shared_ptr<odcore::data::reflection::AbstractField> Message::getFieldByLongIdentifierOrShortIdentifier(const uint32_t &longIdentifier, const uint8_t &shortIdentifier, bool &found) {
             bool retVal = false;
 
             // Try the long identifier first.
-            SharedPointer<odcore::data::reflection::AbstractField> field = getFieldByLongIdentifier(longIdentifier, retVal);
+            std::shared_ptr<odcore::data::reflection::AbstractField> field = getFieldByLongIdentifier(longIdentifier, retVal);
 
             // Try the short identifier next.
             if (!retVal) field = getFieldByShortIdentifier(shortIdentifier, retVal);
@@ -164,11 +164,11 @@ namespace odcore {
             return field;
         }
 
-        SharedPointer<odcore::data::reflection::AbstractField> Message::getFieldByLongIdentifier(const uint32_t &longIdentifier, bool &found) {
+        std::shared_ptr<odcore::data::reflection::AbstractField> Message::getFieldByLongIdentifier(const uint32_t &longIdentifier, bool &found) {
             bool retVal = false;
-            SharedPointer<odcore::data::reflection::AbstractField> field;
+            std::shared_ptr<odcore::data::reflection::AbstractField> field;
 
-            vector<SharedPointer<AbstractField> >::iterator it = m_fields.begin();
+            vector<std::shared_ptr<AbstractField> >::iterator it = m_fields.begin();
             while (it != m_fields.end()) {
                 if ( (*it)->getLongFieldIdentifier() == longIdentifier ) {
                     retVal = true;
@@ -182,11 +182,11 @@ namespace odcore {
             return field;
         }
 
-        SharedPointer<odcore::data::reflection::AbstractField> Message::getFieldByShortIdentifier(const uint8_t &shortIdentifier, bool &found) {
+        std::shared_ptr<odcore::data::reflection::AbstractField> Message::getFieldByShortIdentifier(const uint8_t &shortIdentifier, bool &found) {
             bool retVal = false;
-            SharedPointer<odcore::data::reflection::AbstractField> field;
+            std::shared_ptr<odcore::data::reflection::AbstractField> field;
 
-            vector<SharedPointer<AbstractField> >::iterator it = m_fields.begin();
+            vector<std::shared_ptr<AbstractField> >::iterator it = m_fields.begin();
             while (it != m_fields.end()) {
                 if ( (*it)->getShortFieldIdentifier() == shortIdentifier ) {
                     retVal = true;

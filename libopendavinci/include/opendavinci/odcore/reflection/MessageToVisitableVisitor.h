@@ -23,7 +23,7 @@
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/Visitor.h"
 #include "opendavinci/odcore/reflection/Field.h"
 #include "opendavinci/odcore/reflection/Message.h"
@@ -94,7 +94,7 @@ namespace odcore {
                  * @param f Field to visit.
                  */
                 template<typename T>
-                void visitPrimitiveDataType(odcore::SharedPointer<odcore::data::reflection::AbstractField> &f, T &v) {
+                void visitPrimitiveDataType(std::shared_ptr<odcore::data::reflection::AbstractField> &f, T &v) {
                     // If T is != double but f->getFieldDataType() == double, we require a compiler cast.
                     double _v = 0;
                     if (f->getFieldDataType() == odcore::data::reflection::AbstractField::DOUBLE_T) {

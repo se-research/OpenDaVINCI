@@ -20,7 +20,7 @@
 #ifndef CAMGEN_OPENGLGRABBER_H_
 #define CAMGEN_OPENGLGRABBER_H_
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
 #include "opendlv/data/camera/ImageGrabberID.h"
 #include "opendlv/io/camera/ImageGrabber.h"
@@ -85,16 +85,16 @@ namespace camgen {
 
             virtual void delay();
 
-            virtual odcore::SharedPointer<core::wrapper::Image> getNextImage();
+            virtual std::shared_ptr<core::wrapper::Image> getNextImage();
 
             enum RENDERING m_render;
         private:
             odcore::base::KeyValueConfiguration m_kvc;
-            odcore::SharedPointer<core::wrapper::Image> m_image;
-            odcore::SharedPointer<odcore::wrapper::SharedMemory> m_sharedMemory;
-            odcore::SharedPointer<opendlv::threeD::TransformGroup> m_root;
-            odcore::SharedPointer<opendlv::threeD::TransformGroup> m_extrinsicCalibrationRoot;
-            odcore::SharedPointer<opendlv::threeD::TransformGroup> m_intrinsicCalibrationRoot;
+            std::shared_ptr<core::wrapper::Image> m_image;
+            std::shared_ptr<odcore::wrapper::SharedMemory> m_sharedMemory;
+            std::shared_ptr<opendlv::threeD::TransformGroup> m_root;
+            std::shared_ptr<opendlv::threeD::TransformGroup> m_extrinsicCalibrationRoot;
+            std::shared_ptr<opendlv::threeD::TransformGroup> m_intrinsicCalibrationRoot;
             opendlv::data::environment::EgoState &m_egoState;
 
             /**

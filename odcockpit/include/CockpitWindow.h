@@ -26,7 +26,7 @@
 
 #include <vector>
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
 
 class QListWidget;
@@ -90,7 +90,7 @@ namespace plugins { class PlugInProvider; }
             odcore::base::DataStoreManager &m_dataStoreManager;
             FIFOMultiplexer *m_multiplexer;
             cockpit::plugins::PlugInProvider &m_plugInProvider;
-            vector<odcore::SharedPointer<cockpit::plugins::PlugIn> > m_listOfPlugIns;
+            vector<std::shared_ptr<cockpit::plugins::PlugIn> > m_listOfPlugIns;
 
             QMdiArea *m_cockpitArea;
             QMenu *m_fileMenu;

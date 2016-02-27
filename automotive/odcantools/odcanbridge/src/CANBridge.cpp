@@ -59,9 +59,9 @@ namespace automotive {
             m_deviceNodeB = getKeyValueConfiguration().getValue<string>("odcanbridge.devicenodeB");
 
             // Try to open CAN device A and register this instance as receiver for GenericCANMessages.
-            m_deviceA = SharedPointer<CANDevice>(new CANDevice(m_deviceNodeA, m_replicatorFromAtoB));
+            m_deviceA = std::shared_ptr<CANDevice>(new CANDevice(m_deviceNodeA, m_replicatorFromAtoB));
             // Try to open CAN device B and register this instance as receiver for GenericCANMessages.
-            m_deviceB = SharedPointer<CANDevice>(new CANDevice(m_deviceNodeB, m_replicatorFromBtoA));
+            m_deviceB = std::shared_ptr<CANDevice>(new CANDevice(m_deviceNodeB, m_replicatorFromBtoA));
 
             // If the device could be successfully opened, create a recording file with a dump of the data.
             if (m_deviceA->isOpen() &&
@@ -91,7 +91,7 @@ namespace automotive {
                 const bool DUMP_SHARED_DATA = false;
 
                 // Create a recorder instance.
-                m_recorder = auto_ptr<odtools::recorder::Recorder>(new odtools::recorder::Recorder(recordingURL.str(), MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING, DUMP_SHARED_DATA));
+                m_recorder = unique_ptr<odtools::recorder::Recorder>(new odtools::recorder::Recorder(recordingURL.str(), MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING, DUMP_SHARED_DATA));
             }
         }
 

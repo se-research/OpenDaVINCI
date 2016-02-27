@@ -23,7 +23,7 @@
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/Mutex.h"
 
 namespace odcore {
@@ -82,7 +82,7 @@ class ContainerConference;
                      * @param port Use port for joining.  If omitted, MULTICAST_PORT will be used.
                      * @return ContainerConference or NULL.
                      */
-                    virtual odcore::SharedPointer<ContainerConference> getContainerConference(const string &address, const uint32_t &port = ContainerConferenceFactory::MULTICAST_PORT);
+                    virtual std::shared_ptr<ContainerConference> getContainerConference(const string &address, const uint32_t &port = ContainerConferenceFactory::MULTICAST_PORT);
 
                 protected:
                     /**

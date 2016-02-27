@@ -4,6 +4,7 @@
  * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
  */
 
+#include <memory>
 #include <cstring>
 #include "opendavinci/odcore/opendavinci.h"
 
@@ -176,7 +177,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
+		std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
 		s->write(CRC32 < CharList<'m', CharList<'y', CharList<'A', CharList<'r', CharList<'r', CharList<'a', CharList<'y', CharList<'1', NullType> > > > > > > >  >::RESULT,
 				m_myArray1, getSize_MyArray1() * (sizeof(uint32_t)/sizeof(char)));
@@ -193,7 +194,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
 		d->read(CRC32 < CharList<'m', CharList<'y', CharList<'A', CharList<'r', CharList<'r', CharList<'a', CharList<'y', CharList<'1', NullType> > > > > > > >  >::RESULT,
 		       m_myArray1, getSize_MyArray1() * (sizeof(uint32_t)/sizeof(char)));

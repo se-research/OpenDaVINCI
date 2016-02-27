@@ -35,33 +35,33 @@ namespace odcore {
     namespace wrapper {
 
         // Initialization of the singleton instance.
-        auto_ptr<Mutex> DisposalService::m_singletonMutex = auto_ptr<Mutex>(MutexFactory::createMutex());
+        unique_ptr<Mutex> DisposalService::m_singletonMutex = unique_ptr<Mutex>(MutexFactory::createMutex());
         DisposalService* DisposalService::m_singleton = NULL;
 
         DisposalService::DisposalService() :
             m_queueCondition(NULL),
-            m_finalRemovalMutex(NULL),
-            m_queueMutex(NULL),
+            m_finalRemovalMutex(),
+            m_queueMutex(),
             m_queueForRegularRemoval(),
             m_queueForFinalRemoval(),
-            m_thread(NULL),
+            m_thread(),
             m_queueCleaner(NULL) {
 
             m_queueCondition = ConditionFactory::createCondition();
-            if (!m_queueCondition.isValid()) {
+            if (!m_queueCondition.get()) {
                 stringstream s;
                 s << "[core::wrapper::DisposalServer] Error while creating condition.";
                 throw s.str();
             }
 
-            m_finalRemovalMutex = auto_ptr<Mutex>(MutexFactory::createMutex());
+            m_finalRemovalMutex = unique_ptr<Mutex>(MutexFactory::createMutex());
             if (m_finalRemovalMutex.get() == NULL) {
                 stringstream s;
                 s << "[core::wrapper::DisposalServer] Error while creating mutex.";
                 throw s.str();
             }
 
-            m_queueMutex = auto_ptr<Mutex>(MutexFactory::createMutex());
+            m_queueMutex = unique_ptr<Mutex>(MutexFactory::createMutex());
             if (m_queueMutex.get() == NULL) {
                 stringstream s;
                 s << "[core::wrapper::DisposalServer] Error while creating mutex.";
@@ -78,7 +78,7 @@ namespace odcore {
             m_queueCleaner->setRunning(true);
 
             // Create thread for encapsulating string distribution.
-            m_thread = auto_ptr<Thread>(ConcurrencyFactory::createThread(*m_queueCleaner));
+            m_thread = unique_ptr<Thread>(ConcurrencyFactory::createThread(*m_queueCleaner));
             if (m_thread.get() == NULL) {
                 stringstream s;
                 s << "[core::wrapper::DisposalServer] Error while creating thread.";
@@ -185,14 +185,14 @@ namespace odcore {
             }
         }
 
-        DisposalService::QueueCleaner::QueueCleaner(SharedPointer<Condition> condition, Mutex &finalRemovalMutex, Mutex &mutex, deque<Disposable**> &queue) :
+        DisposalService::QueueCleaner::QueueCleaner(std::shared_ptr<Condition> condition, Mutex &finalRemovalMutex, Mutex &mutex, deque<Disposable**> &queue) :
             m_queueCondition(condition),
             m_finalRemovalMutex(finalRemovalMutex),
             m_queueMutex(mutex),
             m_queue(queue),
-            m_threadStateMutex(NULL),
+            m_threadStateMutex(),
             m_threadState(false) {
-            m_threadStateMutex = auto_ptr<Mutex>(MutexFactory::createMutex());
+            m_threadStateMutex = unique_ptr<Mutex>(MutexFactory::createMutex());
             if (m_threadStateMutex.get() == NULL) {
                 stringstream s;
                 s << "[core::wrapper::DisposalServer] Error while creating mutex.";

@@ -25,7 +25,7 @@
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/AbstractDataStore.h"
 #include "opendavinci/odcore/base/FIFOQueue.h"
 #include "opendavinci/generated/odcore/data/SharedData.h"
@@ -75,7 +75,7 @@ class SharedDataWriter;
                  * @param numberOfMemorySegments Number of available memory segments.
                  * @param threading Cf. constructor of Recorder.
                  */
-                SharedDataListener(odcore::SharedPointer<ostream> out, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const bool &threading);
+                SharedDataListener(std::shared_ptr<ostream> out, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const bool &threading);
 
                 virtual ~SharedDataListener();
 
@@ -92,7 +92,7 @@ class SharedDataWriter;
                  * This method copies the data pointed to by SharedData
                  * or SharedImage to the next available MemorySegment.
                  *
-                 * @param name Name of SharedPointer to be used.
+                 * @param name Name of std::shared_ptr to be used.
                  * @param header Container that contains the meta-data for this shared memory segment which shall be used as header in the file.
                  * @return true if the copy succeeded.
                  */
@@ -100,7 +100,7 @@ class SharedDataWriter;
 
             private:
                 bool m_threading;
-                auto_ptr<SharedDataWriter> m_sharedDataWriter;
+                unique_ptr<SharedDataWriter> m_sharedDataWriter;
                 map<string, odcore::data::SharedData> m_mapOfAvailableSharedData;
                 map<string, odcore::data::image::SharedImage> m_mapOfAvailableSharedImages;
                 map<string, odcore::data::SharedPointCloud> m_mapOfAvailableSharedPointCloud;
@@ -112,9 +112,9 @@ class SharedDataWriter;
 
                 uint32_t m_droppedSharedMemories;
 
-                map<string, odcore::SharedPointer<odcore::wrapper::SharedMemory> > m_sharedPointers;
+                map<string, std::shared_ptr<odcore::wrapper::SharedMemory> > m_sharedPointers;
 
-                odcore::SharedPointer<ostream> m_out;
+                std::shared_ptr<ostream> m_out;
         };
 
     } // recorder

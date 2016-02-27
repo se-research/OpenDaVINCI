@@ -30,7 +30,7 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/io/conference/ContainerListener.h"
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
@@ -92,7 +92,7 @@ namespace cockpit {
                 private:
                     mutable odcore::base::Mutex m_sharedImageMemoryMutex;
                     odcore::data::image::SharedImage m_sharedImage;
-                    odcore::SharedPointer<odcore::wrapper::SharedMemory> m_sharedImageMemory;
+                    std::shared_ptr<odcore::wrapper::SharedMemory> m_sharedImageMemory;
                     QImage *m_drawableImage;
                     QVector<QRgb> m_grayscale;
 

@@ -29,9 +29,9 @@
 namespace odcore {
     namespace wrapper {
 
-        SharedPointer<DecompressedData> CompressionFactory::getContents(istream &in) {
+        std::shared_ptr<DecompressedData> CompressionFactory::getContents(istream &in) {
             typedef ConfigurationTraits<CompressionLibraryProducts>::configuration configuration;
-            return SharedPointer<DecompressedData>(CompressionFactoryWorker<configuration::value>::getContents(in));
+            return std::shared_ptr<DecompressedData>(CompressionFactoryWorker<configuration::value>::getContents(in));
         }
     }
 } // odcore::wrapper

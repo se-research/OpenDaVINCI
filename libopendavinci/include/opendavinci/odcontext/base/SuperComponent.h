@@ -25,7 +25,7 @@
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
 #include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/dmcp/ModuleConfigurationProvider.h"
@@ -93,7 +93,7 @@ namespace odcontext {
 
                 virtual odcore::base::KeyValueConfiguration getGlobalConfiguration() const;
 
-                virtual void onNewModule(odcore::SharedPointer<odcore::dmcp::connection::ModuleConnection> mc);
+                virtual void onNewModule(std::shared_ptr<odcore::dmcp::connection::ModuleConnection> mc);
 
                 virtual void handleChangeState(const odcore::data::dmcp::ModuleDescriptor& md,
                                                const odcore::data::dmcp::ModuleStateMessage::ModuleState &ms);
@@ -113,12 +113,12 @@ namespace odcontext {
                 odcore::base::Mutex m_configurationMutex;
                 odcore::base::KeyValueConfiguration m_configuration;
 
-                auto_ptr<odcore::dmcp::discoverer::Server> m_discovererServer;
-                auto_ptr<odcore::dmcp::connection::Server> m_connectionServer;
+                unique_ptr<odcore::dmcp::discoverer::Server> m_discovererServer;
+                unique_ptr<odcore::dmcp::connection::Server> m_connectionServer;
 
-                odcore::SharedPointer<odcore::io::conference::ContainerConference> m_conference;
+                std::shared_ptr<odcore::io::conference::ContainerConference> m_conference;
 
-                vector<odcore::SharedPointer<odcore::dmcp::connection::ModuleConnection> > m_listOfModuleConnections;
+                vector<std::shared_ptr<odcore::dmcp::connection::ModuleConnection> > m_listOfModuleConnections;
         };
 
     }

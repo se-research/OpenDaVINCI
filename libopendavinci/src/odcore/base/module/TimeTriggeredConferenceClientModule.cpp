@@ -42,11 +42,11 @@ namespace odcore {
                 m_mapOfListOfDataStores(),
                 m_keyValueDataStore() {
                 // Create an in-memory database.
-                m_keyValueDataStore = SharedPointer<KeyValueDataStore>(new KeyValueDataStore(wrapper::KeyValueDatabaseFactory::createKeyValueDatabase()));
+                m_keyValueDataStore = std::shared_ptr<KeyValueDataStore>(new KeyValueDataStore(wrapper::KeyValueDatabaseFactory::createKeyValueDatabase()));
             }
 
             TimeTriggeredConferenceClientModule::~TimeTriggeredConferenceClientModule() {
-                // Database will be cleaned up by SharedPointer.
+                // Database will be cleaned up by std::shared_ptr.
                 {
                     Lock l(m_dataStoresMutex);
                     m_listOfDataStores.clear();
@@ -84,7 +84,7 @@ namespace odcore {
                     }
                 }
 
-                if (m_keyValueDataStore.isValid()) {
+                if (m_keyValueDataStore.get()) {
                     // Store data using a plain map.
                     m_keyValueDataStore->put(c.getDataType(), c);
                 }

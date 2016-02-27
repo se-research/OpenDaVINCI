@@ -24,7 +24,7 @@
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/FIFOQueue.h"
 
 namespace odcore { namespace data { class Container; } }
@@ -112,9 +112,9 @@ class SharedDataListener;
 
             private:
                 odcore::base::FIFOQueue m_fifo;
-                auto_ptr<SharedDataListener> m_sharedDataListener;
-                odcore::SharedPointer<ostream> m_out;
-                odcore::SharedPointer<ostream> m_outSharedMemoryFile;
+                unique_ptr<SharedDataListener> m_sharedDataListener;
+                std::shared_ptr<ostream> m_out;
+                std::shared_ptr<ostream> m_outSharedMemoryFile;
                 bool m_dumpSharedData;
         };
 

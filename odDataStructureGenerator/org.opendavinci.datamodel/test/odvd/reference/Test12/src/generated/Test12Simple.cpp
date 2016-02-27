@@ -4,6 +4,7 @@
  * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
  */
 
+#include <memory>
 
 #include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/Deserializer.h"
@@ -178,7 +179,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
+		std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
 		s->write(1, m_attribute1);
 		s->write(2, m_attribute2);
@@ -194,7 +195,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
 		d->read(1, m_attribute1);
 		d->read(2, m_attribute2);

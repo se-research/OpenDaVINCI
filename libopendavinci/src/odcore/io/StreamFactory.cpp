@@ -65,7 +65,7 @@ namespace odcore {
             return (*StreamFactory::m_singleton);
         }
 
-        SharedPointer<istream> StreamFactory::getInputStream(const URL &url) throw (InvalidArgumentException) {
+        std::shared_ptr<istream> StreamFactory::getInputStream(const URL &url) throw (InvalidArgumentException) {
             if (!url.isValid()) {
                 stringstream s;
                 s << "Given URL: " << url.toString() << " is invalid.";
@@ -88,12 +88,12 @@ namespace odcore {
                 OPENDAVINCI_CORE_THROW_EXCEPTION(InvalidArgumentException, s.str());
             }
 
-            SharedPointer<istream> streamIn(in);
+            std::shared_ptr<istream> streamIn(in);
             m_listOfInputStreams.push_back(streamIn);
             return streamIn;
         }
 
-        SharedPointer<ostream> StreamFactory::getOutputStream(const URL &url) throw (InvalidArgumentException) {
+        std::shared_ptr<ostream> StreamFactory::getOutputStream(const URL &url) throw (InvalidArgumentException) {
             if (!url.isValid()) {
                 stringstream s;
                 s << "Given URL: " << url.toString() << " is invalid.";
@@ -116,7 +116,7 @@ namespace odcore {
                 OPENDAVINCI_CORE_THROW_EXCEPTION(InvalidArgumentException, s.str());
             }
 
-            SharedPointer<ostream> streamOut(out);
+            std::shared_ptr<ostream> streamOut(out);
             m_listOfOutputStreams.push_back(streamOut);
             return streamOut;
         }

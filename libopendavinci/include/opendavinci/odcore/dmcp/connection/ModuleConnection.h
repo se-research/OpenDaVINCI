@@ -23,7 +23,7 @@
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/Condition.h"
 #include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/data/Container.h"
@@ -61,7 +61,7 @@ namespace odcore {
                     ModuleConnection& operator=(const ModuleConnection &);
 
                 public:
-                    ModuleConnection(odcore::SharedPointer<odcore::io::Connection> connection,
+                    ModuleConnection(std::shared_ptr<odcore::io::Connection> connection,
                                      ModuleConfigurationProvider &configProvider);
                     virtual ~ModuleConnection();
 
@@ -106,7 +106,7 @@ namespace odcore {
                     virtual void nextContainer(odcore::data::Container &c);
                     virtual void handleConnectionError();
 
-                    odcore::SharedPointer<odcore::io::Connection> m_connection;
+                    std::shared_ptr<odcore::io::Connection> m_connection;
                     ModuleConfigurationProvider& m_configurationProvider;
 
                     odcore::base::Condition m_descriptorCondition;

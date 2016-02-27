@@ -70,9 +70,9 @@ namespace odcore {
                 protected:
                     void initialize();
 
-                    auto_ptr<Thread> m_thread;
+                    unique_ptr<Thread> m_thread;
 
-                    auto_ptr<Mutex> m_socketMutex;
+                    unique_ptr<Mutex> m_socketMutex;
                     int32_t m_fileDescriptor;
 
                     enum {BUFFER_SIZE = 65535};

@@ -84,13 +84,13 @@ namespace cockpit {
                         ModuleStatistic entry = it->second;
 
                         // Lookup module in map.
-                        odcore::SharedPointer<LoadPerModule> lpm = m_loadPerModule[entry.getModule().getName()];
-                        if (!lpm.isValid()) {
+                        std::shared_ptr<LoadPerModule> lpm = m_loadPerModule[entry.getModule().getName()];
+                        if (!lpm.get()) {
                             const uint32_t R = (m_color > 255) ? 255 : m_color;
                             const uint32_t G = (m_color > 510) ? 255 : ( (m_color > 255) ? (m_color-255) : 0 );
                             const uint32_t B = (m_color > 510) ? (m_color-510) : 0;
                             QColor color(R, G, B);
-                            lpm = odcore::SharedPointer<LoadPerModule>(new LoadPerModule(entry.getModule(), color));
+                            lpm = std::shared_ptr<LoadPerModule>(new LoadPerModule(entry.getModule(), color));
                             m_loadPerModule[entry.getModule().getName()] = lpm;
                             m_plot->addLoadPerModule(lpm);
 

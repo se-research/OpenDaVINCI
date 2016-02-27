@@ -22,7 +22,7 @@
 
 #include <stdint.h>
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
 #include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
 #include "opendlv/data/environment/EgoState.h"
@@ -128,7 +128,7 @@ class OpenGLGrabber;
             static CamGen* m_singleton;
             opendlv::data::environment::EgoState m_egoState;
             OpenGLGrabber *m_grabber;
-            odcore::SharedPointer<core::wrapper::Image> m_image;
+            std::shared_ptr<core::wrapper::Image> m_image;
 
             float m_translationX;
             float m_translationY;

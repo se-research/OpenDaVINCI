@@ -22,7 +22,7 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendlv/data/environment/Point3.h"
 #include "opendlv/data/scenario/ComplexModel.h"
@@ -61,8 +61,8 @@ namespace opendlv {
             vector<ComplexModel*>::iterator jt = listOfComplexModels.begin();
             while (jt != listOfComplexModels.end()) {
                 ComplexModel *cm = (*jt++);
-                SharedPointer<istream> in = scnxArchive.getModelData(cm->getModelFile());
-                if (in.isValid()) {
+                std::shared_ptr<istream> in = scnxArchive.getModelData(cm->getModelFile());
+                if (in.get()) {
                     Node *model = NULL;
 
                     // Check model.

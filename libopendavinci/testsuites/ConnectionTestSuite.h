@@ -24,7 +24,7 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "opendavinci/odcore/SharedPointer.h"         // for SharedPointer
+#include <memory>
 #include "opendavinci/odcore/base/Thread.h"           // for Thread
 #include "opendavinci/odcore/data/Container.h"        // for Container, etc
 #include "opendavinci/odcore/data/TimeStamp.h"        // for TimeStamp
@@ -111,12 +111,12 @@ class ConnectionTestsuite : public CxxTest::TestSuite {
             Thread::usleepFor(10000);
             cam.waitForConnection();
             TS_ASSERT( cam.hasConnection() );
-            odcore::SharedPointer<odcore::io::Connection> connection2 = cam.getConnection();
+            std::shared_ptr<odcore::io::Connection> connection2 = cam.getConnection();
             cam.dontDeleteConnection();
 
             // Provoke an error by deleting connection
             clog << "Starting test." << endl;
-            connection2.release();
+            connection2.reset();
 
             TS_ASSERT( cem.CALLWAITER_handleConnectionError.wait() );
 

@@ -50,7 +50,7 @@ namespace automotive {
             m_deviceNode = getKeyValueConfiguration().getValue<string>("odcanproxy.devicenode");
 
             // Try to open CAN device and register this instance as receiver for GenericCANMessages.
-            m_device = auto_ptr<CANDevice>(new CANDevice(m_deviceNode, *this));
+            m_device = unique_ptr<CANDevice>(new CANDevice(m_deviceNode, *this));
 
             // If the device could be successfully opened, create a recording file with a dump of the data.
             if (m_device->isOpen()) {
@@ -67,7 +67,7 @@ namespace automotive {
                 const bool DUMP_SHARED_DATA = false;
 
                 // Create a recorder instance.
-                m_recorder = auto_ptr<odtools::recorder::Recorder>(new odtools::recorder::Recorder(recordingURL.str(), MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING, DUMP_SHARED_DATA));
+                m_recorder = unique_ptr<odtools::recorder::Recorder>(new odtools::recorder::Recorder(recordingURL.str(), MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING, DUMP_SHARED_DATA));
             }
         }
 

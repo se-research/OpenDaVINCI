@@ -27,7 +27,7 @@
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"         // for SharedPointer
+#include <memory>
 #include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
 #include "opendavinci/odcore/base/Hash.h"             // for CharList, CRC32, etc
 #include "opendavinci/odcore/base/Serializable.h"     // for Serializable, operator<<, etc
@@ -48,7 +48,7 @@ class SerializationTestNestedData : public odcore::base::Serializable {
         ostream& operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
-            odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
+            std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
             s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('m', '_', 'd', 'o', 'u', 'b', 'l', 'e') >::RESULT,
                     m_double);
@@ -59,7 +59,7 @@ class SerializationTestNestedData : public odcore::base::Serializable {
         istream& operator>>(istream &in) {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
-            odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+            std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
             d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('m', '_', 'd', 'o', 'u', 'b', 'l', 'e') >::RESULT,
                    m_double);
@@ -84,7 +84,7 @@ class SerializationTestSampleData : public odcore::base::Serializable {
         ostream& operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
-            odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
+            std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
             s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('m', '_', 'b', 'o', 'o', 'l') >::RESULT,
                     m_bool);
@@ -104,7 +104,7 @@ class SerializationTestSampleData : public odcore::base::Serializable {
         istream& operator>>(istream &in) {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
-            odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+            std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
             d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('m', '_', 'n', 'e', 's', 't', 'e', 'd') >::RESULT,
                    m_nestedData);
@@ -160,12 +160,12 @@ class SerializationTest : public CxxTest::TestSuite {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
             {
-                SharedPointer<Serializer> s = sf.getSerializer(stream);
+                std::shared_ptr<Serializer> s = sf.getSerializer(stream);
                 s->write(1, &array, 10);
             }
 
 
-            SharedPointer<Deserializer> d = sf.getDeserializer(stream);
+            std::shared_ptr<Deserializer> d = sf.getDeserializer(stream);
             uint32_t deserializedArray[10];
             d->read(1, &deserializedArray, 10);
 

@@ -36,14 +36,14 @@ namespace odcore {
     namespace io {
         namespace tcp {
 
-            SharedPointer<TCPAcceptor> TCPFactory::createTCPAcceptor(const uint32_t &port) {
+            std::shared_ptr<TCPAcceptor> TCPFactory::createTCPAcceptor(const uint32_t &port) {
                 typedef odcore::wrapper::ConfigurationTraits<odcore::wrapper::NetworkLibraryProducts>::configuration configuration;
-                return SharedPointer<TCPAcceptor>(odcore::wrapper::TCPFactoryWorker<configuration::value>::createTCPAcceptor(port));
+                return std::shared_ptr<TCPAcceptor>(odcore::wrapper::TCPFactoryWorker<configuration::value>::createTCPAcceptor(port));
             }
 
-            SharedPointer<TCPConnection> TCPFactory::createTCPConnectionTo(const std::string& ip, const uint32_t& port) {
+            std::shared_ptr<TCPConnection> TCPFactory::createTCPConnectionTo(const std::string& ip, const uint32_t& port) {
                 typedef odcore::wrapper::ConfigurationTraits<odcore::wrapper::NetworkLibraryProducts>::configuration configuration;
-                return SharedPointer<TCPConnection>(odcore::wrapper::TCPFactoryWorker<configuration::value>::createTCPConnectionTo(ip, port));
+                return std::shared_ptr<TCPConnection>(odcore::wrapper::TCPFactoryWorker<configuration::value>::createTCPConnectionTo(ip, port));
             }
 
         }

@@ -28,7 +28,7 @@
 
 #include "zip.h"
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/module/AbstractCIDModule.h"
 #include "opendavinci/odcore/wrapper/Zip/ZipDecompressedData.h"
 
@@ -118,7 +118,7 @@ namespace odcore {
                                                 }
 
                                                 // Store read content into map.
-                                                m_mapOfDecompressedEntries[name] = SharedPointer<istream>(stream);
+                                                m_mapOfDecompressedEntries[name] = std::shared_ptr<istream>(stream);
                                             }
 
                                             // Close entry.
@@ -148,7 +148,7 @@ namespace odcore {
             vector<string> ZipDecompressedData::getListOfEntries() {
                 vector<string> listOfEntries;
 
-                map<string, SharedPointer<istream>, StringComparator>::const_iterator it = m_mapOfDecompressedEntries.begin();
+                map<string, std::shared_ptr<istream>, StringComparator>::const_iterator it = m_mapOfDecompressedEntries.begin();
                 while (it != m_mapOfDecompressedEntries.end()) {
                     listOfEntries.push_back(it->first);
                     ++it;
@@ -157,15 +157,15 @@ namespace odcore {
                 return listOfEntries;
             }
 
-            SharedPointer<istream> ZipDecompressedData::getInputStreamFor(const string &entry) {
-                SharedPointer<istream> stream;
+            std::shared_ptr<istream> ZipDecompressedData::getInputStreamFor(const string &entry) {
+                std::shared_ptr<istream> stream;
 
                 string key = entry;
                 // Transform key name to lower case for case insensitive lookups.
                 transform(key.begin(), key.end(), key.begin(), ptr_fun(::tolower));
 
                 // Try to find the key/value.
-                map<string, SharedPointer<istream>, StringComparator>::const_iterator it = m_mapOfDecompressedEntries.find(key);
+                map<string, std::shared_ptr<istream>, StringComparator>::const_iterator it = m_mapOfDecompressedEntries.find(key);
                 if (it != m_mapOfDecompressedEntries.end()) {
                     stream = it->second;
                 }

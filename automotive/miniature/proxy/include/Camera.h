@@ -23,7 +23,7 @@
 #include <stdint.h>
 #include <string>
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
 #include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
@@ -104,7 +104,7 @@ namespace automotive {
 
             private:
                 odcore::data::image::SharedImage m_sharedImage;
-                odcore::SharedPointer<odcore::wrapper::SharedMemory> m_sharedMemory;
+                std::shared_ptr<odcore::wrapper::SharedMemory> m_sharedMemory;
                 
             protected:
                 string m_name;
