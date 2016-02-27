@@ -22,7 +22,7 @@
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/Deserializer.h"
 #include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/Serializable.h"
@@ -132,7 +132,7 @@ namespace opendlv {
 
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
+                std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
                 uint32_t numberOfIdentifiableVertices = static_cast<uint32_t>(m_listOfIdentifiableVertices.size());
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('n', 'u', 'm', 'i', 'd', 'v', 's') >::RESULT,
@@ -160,7 +160,7 @@ namespace opendlv {
 
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+                std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
                 // Clean up.
                 m_listOfIdentifiableVertices.clear();

@@ -24,7 +24,7 @@
 
 #include <opencv/cv.h>
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/Condition.h"
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
 #include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
@@ -122,7 +122,7 @@ namespace opendlv { namespace vehiclecontext {
                 int m_renderWindow;
                 opendlv::data::environment::EgoState m_egoState;
                 OpenGLGrabber *m_grabber;
-                odcore::SharedPointer<core::wrapper::Image> m_image;
+                std::shared_ptr<core::wrapper::Image> m_image;
                 odcore::data::image::SharedImage m_sharedImage;
 
                 float m_translationX;

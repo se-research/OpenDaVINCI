@@ -23,7 +23,7 @@
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
 #include "opendlv/core/wrapper/Image.h"
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
@@ -79,13 +79,13 @@ namespace opendlv { namespace vehiclecontext {
 
                 virtual void delay();
 
-                virtual odcore::SharedPointer<core::wrapper::Image> getNextImage();
+                virtual std::shared_ptr<core::wrapper::Image> getNextImage();
 
             private:
                 odcore::base::KeyValueConfiguration m_kvc;
-                odcore::SharedPointer<core::wrapper::Image> m_image;
-                odcore::SharedPointer<odcore::wrapper::SharedMemory> m_sharedMemory;
-                odcore::SharedPointer<opendlv::threeD::TransformGroup> m_root;
+                std::shared_ptr<core::wrapper::Image> m_image;
+                std::shared_ptr<odcore::wrapper::SharedMemory> m_sharedMemory;
+                std::shared_ptr<opendlv::threeD::TransformGroup> m_root;
         };
 
     }

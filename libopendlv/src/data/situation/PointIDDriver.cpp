@@ -22,7 +22,7 @@
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/Deserializer.h"
 #include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/Serializable.h"
@@ -229,7 +229,7 @@ namespace opendlv {
 
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
+                std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('h', 'a', 's', 's', 't', 'a', 'r', 't') >::RESULT,
                         (m_startType != NULL));
@@ -289,7 +289,7 @@ namespace opendlv {
 
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+                std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
                 bool hasStartType = false;
                 d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('h', 'a', 's', 's', 't', 'a', 'r', 't') >::RESULT,

@@ -75,7 +75,7 @@ namespace opendlv {
 //
 //                SerializationFactory& sf=SerializationFactory::getInstance();
 //
-//                odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
+//                std::shared_ptr<Serializer> s = sf.getSerializer(out);
 //
 //                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('t', 'y', 'p', 'e') >::RESULT,
 //                        static_cast<uint32_t>(m_type));
@@ -89,7 +89,7 @@ namespace opendlv {
 
 //                SerializationFactory& sf=SerializationFactory::getInstance();
 //
-//                odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+//                std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 //
 //                uint32_t type = 0;
 //                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('t', 'y', 'p', 'e') >::RESULT,

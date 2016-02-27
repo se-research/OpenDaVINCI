@@ -21,7 +21,7 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/exceptions/Exceptions.h"
@@ -103,9 +103,9 @@ namespace opendlv {
                 OBJXArchive *objxArchive = NULL;
 
                 // Use CompressionFactory to read the contents of the OBJXArchive.
-                SharedPointer<odcore::wrapper::DecompressedData> data = odcore::wrapper::CompressionFactory::getContents(in);
+                std::shared_ptr<odcore::wrapper::DecompressedData> data = odcore::wrapper::CompressionFactory::getContents(in);
 
-                if (data.isValid()) {
+                if (data.get()) {
                     // Create OBJXArchive.
                     objxArchive = new OBJXArchive();
 
@@ -117,8 +117,8 @@ namespace opendlv {
 
                         if (entry.find(".obj") != string::npos) {
                             // Set object file.
-                            SharedPointer<istream> stream = data->getInputStreamFor(entry);
-                            if (stream.isValid()) {
+                            std::shared_ptr<istream> stream = data->getInputStreamFor(entry);
+                            if (stream.get()) {
                                 char c;
                                 stringstream s;
                                 while (stream->good()) {
@@ -129,8 +129,8 @@ namespace opendlv {
                             }
                         } else if (entry.find(".mtl") != string::npos) {
                             // Set material file.
-                            SharedPointer<istream> stream = data->getInputStreamFor(entry);
-                            if (stream.isValid()) {
+                            std::shared_ptr<istream> stream = data->getInputStreamFor(entry);
+                            if (stream.get()) {
                                 char c;
                                 stringstream s;
                                 while (stream->good()) {
@@ -141,9 +141,9 @@ namespace opendlv {
                             }
                         } else {
                             // Try to load an image.
-                            SharedPointer<istream> stream = data->getInputStreamFor(entry);
+                            std::shared_ptr<istream> stream = data->getInputStreamFor(entry);
 
-                            if (stream.isValid()) {
+                            if (stream.get()) {
                                 core::wrapper::Image *image = core::wrapper::ImageFactory::getInstance().getImage(*stream);
 
                                 if (image != NULL) {

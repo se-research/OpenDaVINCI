@@ -24,7 +24,7 @@
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/Deserializer.h"
 #include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/Serializable.h"
@@ -363,7 +363,7 @@ namespace opendlv {
             ostream& Polygon::operator<<(ostream &out) const {
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                odcore::SharedPointer<Serializer> s = sf.getSerializer(out);
+                std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
                 // Write number of vertices.
                 uint32_t numberOfVertices = static_cast<uint32_t>(m_listOfVertices.size());
@@ -388,7 +388,7 @@ namespace opendlv {
             istream& Polygon::operator>>(istream &in) {
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                odcore::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+                std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
                 // Clean up.
                 m_listOfVertices.clear();

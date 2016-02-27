@@ -24,7 +24,7 @@
 
 #include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/wrapper/DecompressedData.h"
 #include "opendlv/core/wrapper/Image.h"
 
@@ -75,7 +75,7 @@ namespace opendlv {
                  * @param scenario Scenario data structure.
                  * @param dd Decompressed contents of an SCNX archive.
                  */
-                SCNXArchive(const data::scenario::Scenario &scenario, odcore::SharedPointer<odcore::wrapper::DecompressedData> dd);
+                SCNXArchive(const data::scenario::Scenario &scenario, std::shared_ptr<odcore::wrapper::DecompressedData> dd);
 
             public:
                 virtual ~SCNXArchive();
@@ -122,11 +122,11 @@ namespace opendlv {
                  * @param modelFile Name of the model file.
                  * @return Input stream to read the model data or NULL if the name could not be found.
                  */
-                odcore::SharedPointer<istream> getModelData(const string &modelFile) const;
+                std::shared_ptr<istream> getModelData(const string &modelFile) const;
 
             private:
                 data::scenario::Scenario m_scenario;
-                odcore::SharedPointer<odcore::wrapper::DecompressedData> m_decompressedData;
+                std::shared_ptr<odcore::wrapper::DecompressedData> m_decompressedData;
                 core::wrapper::Image *m_aerialImage;
                 core::wrapper::Image *m_heightImage;
         };

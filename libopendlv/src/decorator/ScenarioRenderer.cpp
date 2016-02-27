@@ -22,7 +22,7 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/odcore/SharedPointer.h"
+#include <memory>
 #include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendlv/data/scenario/ComplexModel.h"
@@ -137,8 +137,8 @@ namespace models { class OBJXArchive; }
         }
 
         void ScenarioRenderer::loadGroundBasedComplexModel(ComplexModel &cm) {
-            SharedPointer<istream> in = m_scnxArchive->getModelData(cm.getModelFile());
-            if (in.isValid()) {
+            std::shared_ptr<istream> in = m_scnxArchive->getModelData(cm.getModelFile());
+            if (in.get()) {
                 // Load model.
                 OBJXArchive *objxArchive = NULL;
                 if (cm.getModelFile().find(".objx") != string::npos) {
