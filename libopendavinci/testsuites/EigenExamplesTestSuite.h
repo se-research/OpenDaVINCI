@@ -241,6 +241,7 @@ class EigenExamplesTest : public CxxTest::TestSuite {
                             spc.setHeight(1); // We have just a sequence of vectors.
                             spc.setNumberOfComponentsPerPoint(NUMBER_OF_COMPONENTS_PER_POINT);
                             spc.setComponentDataType(SharedPointCloud::FLOAT_T); // Data type per component.
+                            spc.setUserInfo(SharedPointCloud::XYZ_INTENSITY);
 
                             // Prepare container for receiver.
                             toReceiver = Container(spc);
@@ -274,7 +275,8 @@ class EigenExamplesTest : public CxxTest::TestSuite {
                                 // as Eigen is a compile-time type and thus, we cannot
                                 // define dynamic sizes for the InnerStride.
                                 if (senderSharedPointCloud.getComponentDataType() == SharedPointCloud::FLOAT_T
-                                    && (senderSharedPointCloud.getNumberOfComponentsPerPoint() == 4)) {
+                                    && (senderSharedPointCloud.getNumberOfComponentsPerPoint() == 4)
+                                    && (senderSharedPointCloud.getUserInfo() == SharedPointCloud::XYZ_INTENSITY)) {
                                     // Get pointer to the beginning of the data.
                                     float *velodyneRawData = static_cast<float*>(receiverSharedMemory->getSharedMemory());
 

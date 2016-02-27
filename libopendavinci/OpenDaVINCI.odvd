@@ -275,10 +275,14 @@ message odcore.data.SharedPointCloud extends odcore.data.SharedData [id = 28] {
         FLOAT_T             = 13,
         DOUBLE_T            = 14,
     };
+    enum USERINFO {
+        XYZ_INTENSITY       = 0, // This type specifies information about the data layout with (x,y,z) coordinates and intensity.
+    };
     uint32 width [id = 1];
     uint32 height [id = 2];
     uint8 numberOfComponentsPerPoint [id = 3];
     COMPONENTDATATYPE componentDataType [id = 4];
+    uint32 userInfo [id = 5]; // This field can be used to specify further information about the semantic data layout.
 }
 
 ///////////////////////////////////////////////////////////////////////////////
