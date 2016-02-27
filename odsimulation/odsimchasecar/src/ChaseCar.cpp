@@ -162,6 +162,7 @@ namespace chasecar {
             // TODO: Refactor me!
             si.setBytesPerPixel(3);
             si.setName("ChaseCar");
+            si.setSize(si.getWidth() * si.getHeight() * si.getBytesPerPixel());
 
             Container c(si);
             getConference().send(c);

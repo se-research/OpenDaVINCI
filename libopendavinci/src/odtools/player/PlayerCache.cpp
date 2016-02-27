@@ -32,6 +32,7 @@
 #include "opendavinci/generated/odcore/data/SharedData.h"
 #include "opendavinci/generated/odcore/data/buffer/MemorySegment.h"
 #include "opendavinci/generated/odcore/data/image/SharedImage.h"
+#include "opendavinci/generated/odcore/data/SharedPointCloud.h"
 #include "opendavinci/odtools/player/PlayerCache.h"
 
 namespace odtools {
@@ -259,13 +260,19 @@ namespace odtools {
                     // "on-the-fly". The following two lines set the size attribute in the generated
                     // data structure here.
                     size = (size > 0) ? size : (si.getWidth() * si.getHeight() * si.getBytesPerPixel());
-                    si.setSize(size);                    
+                    si.setSize(size);
                 }
                 else if (header.getDataType() == odcore::data::SharedData::ID()) {
                     odcore::data::SharedData sd = header.getData<odcore::data::SharedData>();
 
                     nameOfSharedMemory = sd.getName();
                     size = sd.getSize();
+                }
+                else if (header.getDataType() == odcore::data::SharedPointCloud::ID()) {
+                    odcore::data::SharedPointCloud spc = header.getData<odcore::data::SharedPointCloud>();
+
+                    nameOfSharedMemory = spc.getName();
+                    size = spc.getSize();
                 }
 
                 // Check, whether a shared memory was already created for this SharedImage or SharedData; otherwise, create it and save it for later.
@@ -317,6 +324,10 @@ namespace odtools {
                 else if (container.getDataType() == odcore::data::SharedData::ID()) {
                     odcore::data::SharedData sd = container.getData<odcore::data::SharedData>();
                     nameOfSharedMemory = sd.getName();
+                }
+                else if (container.getDataType() == odcore::data::SharedPointCloud::ID()) {
+                    odcore::data::SharedPointCloud spc = container.getData<odcore::data::SharedPointCloud>();
+                    nameOfSharedMemory = spc.getName();
                 }
 
                 // Check, if a shared memory exists for this container.

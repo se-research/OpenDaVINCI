@@ -150,13 +150,18 @@ namespace odtools {
                 }
             }
 
-            // If the actual container is a SHARED_IMAGE then copy next entry into the shared memory before sending the actual container.
+            // If the actual container is a SharedImage then copy next entry into the shared memory before sending the actual container.
             if (m_actual.getDataType() == odcore::data::image::SharedImage::ID()) {
                 m_playerCache->copyMemoryToSharedMemory(m_actual);
             }
 
-            // If the actual container is a SHARED_DATA then copy next entry into the shared memory before sending the actual container.
+            // If the actual container is a SharedData then copy next entry into the shared memory before sending the actual container.
             if (m_actual.getDataType() == odcore::data::SharedData::ID()) {
+                m_playerCache->copyMemoryToSharedMemory(m_actual);
+            }
+
+            // If the actual container is a SharedPointCloud then copy next entry into the shared memory before sending the actual container.
+            if (m_actual.getDataType() == odcore::data::SharedPointCloud::ID()) {
                 m_playerCache->copyMemoryToSharedMemory(m_actual);
             }
 

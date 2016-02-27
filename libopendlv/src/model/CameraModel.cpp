@@ -180,6 +180,7 @@ namespace opendlv { namespace vehiclecontext {
                 m_sharedImage.setHeight(m_image->getHeight());
                 // TODO: Refactor me!
                 m_sharedImage.setBytesPerPixel(3);
+                m_sharedImage.setSize(m_sharedImage.getWidth() * m_sharedImage.getHeight() * m_sharedImage.getBytesPerPixel());
                 m_sharedImage.setName("odsimcamera");
             }
 

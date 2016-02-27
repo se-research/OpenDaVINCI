@@ -26,6 +26,7 @@
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/generated/odcore/data/SharedData.h"
 #include "opendavinci/generated/odcore/data/image/SharedImage.h"
+#include "opendavinci/generated/odcore/data/SharedPointCloud.h"
 
 namespace odrecintegrity {
 
@@ -60,6 +61,7 @@ namespace odrecintegrity {
                 bool fileNotCorrupt = true;
                 uint32_t numberOfSharedImages = 0;
                 uint32_t numberOfSharedData = 0;
+                uint32_t numberOfSharedPointCloud = 0;
                 while (fin.good()) {
                     Container c;
                     fin >> c;
@@ -79,7 +81,7 @@ namespace odrecintegrity {
                             }
 
                             fin.seekg(currPos + lengthToSkip);
-                            cout << "[RecIntegrity]: Found SHARED_IMAGE '" << si.getName() << "' (" << lengthToSkip << " bytes)" << endl;
+                            cout << "[RecIntegrity]: Found SharedImage '" << si.getName() << "' (" << lengthToSkip << " bytes)" << endl;
                             numberOfSharedImages++;
                         }
                         else if (c.getDataType() == odcore::data::SharedData::ID()) {
@@ -88,8 +90,17 @@ namespace odrecintegrity {
                             uint32_t lengthToSkip = sd.getSize();
 
                             fin.seekg(currPos + lengthToSkip);
-                            cout << "[RecIntegrity]: Found SHARED_DATA '" << sd.getName() << "' (" << lengthToSkip << " bytes)" << endl;
+                            cout << "[RecIntegrity]: Found SharedData '" << sd.getName() << "' (" << lengthToSkip << " bytes)" << endl;
                             numberOfSharedData++;
+                        }
+                        else if (c.getDataType() == odcore::data::SharedPointCloud::ID()) {
+                            odcore::data::SharedPointCloud spc = c.getData<odcore::data::SharedPointCloud>();
+
+                            uint32_t lengthToSkip = spc.getSize();
+
+                            fin.seekg(currPos + lengthToSkip);
+                            cout << "[RecIntegrity]: Found SharedPointCloud '" << spc.getName() << "' (" << lengthToSkip << " bytes)" << endl;
+                            numberOfSharedPointCloud++;
                         }
                         else {
                             cout << "[RecIntegrity]: Found data type '" << c.getDataType() << "'." << endl;
@@ -103,7 +114,7 @@ namespace odrecintegrity {
                         }
                     }
                 }
-                cout << "[RecIntegrity]: Input file is " << ((fileNotCorrupt) ? "not " : "") << "corrupt, contains " << numberOfSharedImages << " shared images and " << numberOfSharedData << " shared data segments." << endl;
+                cout << "[RecIntegrity]: Input file is " << ((fileNotCorrupt) ? "not " : "") << "corrupt, contains " << numberOfSharedImages << " shared images, " << numberOfSharedData << " shared data segments, " << numberOfSharedPointCloud << " shared point clouds." << endl;
 
                 retVal = ((fileNotCorrupt) ? CORRECT : FILE_CORRUPT);
             }

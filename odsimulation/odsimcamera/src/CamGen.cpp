@@ -160,6 +160,7 @@ namespace camgen {
             si.setHeight(m_image->getHeight());
             // TODO: Refactor me!
             si.setBytesPerPixel(3);
+            si.setSize(si.getWidth() * si.getHeight() * si.getBytesPerPixel());
             si.setName("odsimcamera");
 
             Container c(si);

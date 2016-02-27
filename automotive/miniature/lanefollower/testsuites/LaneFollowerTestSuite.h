@@ -122,6 +122,7 @@ class LaneFollowerTest : public CxxTest::TestSuite {
             si.setWidth(WIDTH);
             si.setHeight(HEIGHT);
             si.setBytesPerPixel(BYTESPERPIXEL);
+            si.setSize(si.getWidth() * si.getHeight() * si.getBytesPerPixel());
 
             // Create a container.
             Container c(si);
@@ -141,6 +142,7 @@ class LaneFollowerTest : public CxxTest::TestSuite {
             si.setWidth(WIDTH);
             si.setHeight(HEIGHT);
             si.setBytesPerPixel(BYTESPERPIXEL);
+            si.setSize(si.getWidth() * si.getHeight() * si.getBytesPerPixel());
 
             // Create a container.
             Container c(si);
