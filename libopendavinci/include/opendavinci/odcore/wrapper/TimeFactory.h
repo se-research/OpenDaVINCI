@@ -69,7 +69,7 @@ namespace odcore {
                 static TimeFactory *controlledInstance;
 
             private:
-                static auto_ptr<Mutex> m_singletonMutex;
+                static unique_ptr<Mutex> m_singletonMutex;
         };
 
         class OPENDAVINCI_API SystemTimeFactory {

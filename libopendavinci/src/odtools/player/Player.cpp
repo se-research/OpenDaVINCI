@@ -51,7 +51,7 @@ namespace odtools {
             m_autoRewind(autoRewind),
             m_inFile(NULL),
             m_inSharedMemoryFile(NULL),
-            m_playerCache(NULL),
+            m_playerCache(),
             m_actual(),
             m_successor(),
             m_successorProcessed(true),
@@ -76,7 +76,7 @@ namespace odtools {
             }
 
             // Setup cache.
-            m_playerCache = auto_ptr<PlayerCache>(new PlayerCache(numberOfMemorySegments, memorySegmentSize, m_autoRewind, m_inFile, m_inSharedMemoryFile));
+            m_playerCache = unique_ptr<PlayerCache>(new PlayerCache(numberOfMemorySegments, memorySegmentSize, m_autoRewind, m_inFile, m_inSharedMemoryFile));
             if (m_playerCache.get() != NULL) {
                 // First, fill the cache...
                 m_playerCache->updateCache();

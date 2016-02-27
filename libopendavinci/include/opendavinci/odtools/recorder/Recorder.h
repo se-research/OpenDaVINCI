@@ -112,7 +112,7 @@ class SharedDataListener;
 
             private:
                 odcore::base::FIFOQueue m_fifo;
-                auto_ptr<SharedDataListener> m_sharedDataListener;
+                unique_ptr<SharedDataListener> m_sharedDataListener;
                 odcore::SharedPointer<ostream> m_out;
                 odcore::SharedPointer<ostream> m_outSharedMemoryFile;
                 bool m_dumpSharedData;

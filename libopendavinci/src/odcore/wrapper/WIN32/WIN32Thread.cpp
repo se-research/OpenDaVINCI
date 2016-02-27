@@ -52,12 +52,12 @@ namespace odcore {
             }
 
             WIN32Thread::WIN32Thread(Runnable &r) :
-                m_threadStateMutex(NULL),
+                m_threadStateMutex(),
                 m_threadState(INITIALIZED),
                 m_runnable(r),
                 m_theThread() {
                 // Create mutex.
-                m_threadStateMutex = auto_ptr<Mutex>(MutexFactory::createMutex());
+                m_threadStateMutex = unique_ptr<Mutex>(MutexFactory::createMutex());
                 if (m_threadStateMutex.get() == NULL) {
                     stringstream s;
                     s << "[core::wrapper::WIN32Thread] Error while creating mutex.";

@@ -32,44 +32,44 @@ namespace odcontext {
         using namespace odcore::data;
         using namespace odtools::player;
 
-		PlaybackContainer::PlaybackContainer(const float &freq, const string &urlFileName, const uint32_t &memorySegmentSize, const uint32_t &numberOfSegments) :
-			m_freq(freq),
+        PlaybackContainer::PlaybackContainer(const float &freq, const string &urlFileName, const uint32_t &memorySegmentSize, const uint32_t &numberOfSegments) :
+            m_freq(freq),
             m_urlFileName(urlFileName),
             m_memorySegmentSize(memorySegmentSize),
             m_numberOfSegments(numberOfSegments),
-            m_player(NULL) {
+            m_player() {
         }
 
-		PlaybackContainer::~PlaybackContainer() {}
+        PlaybackContainer::~PlaybackContainer() {}
 
-		void PlaybackContainer::setup() {
-			if (m_urlFileName != "") {
+        void PlaybackContainer::setup() {
+            if (m_urlFileName != "") {
                 // We can use the sychronous player as we are running in a deterministic simulation anyways.
                 const bool THREADING = false;
                 const bool AUTO_REWIND = false;
-                m_player = auto_ptr<Player>(new Player(m_urlFileName, AUTO_REWIND, m_memorySegmentSize, m_numberOfSegments, THREADING));
-			}
-		}
+                m_player = unique_ptr<Player>(new Player(m_urlFileName, AUTO_REWIND, m_memorySegmentSize, m_numberOfSegments, THREADING));
+            }
+        }
 
         void PlaybackContainer::tearDown() {}
 
         void PlaybackContainer::step(const odcore::wrapper::Time &/*t*/, SendContainerToSystemsUnderTest &sender) {
-			if (m_player.get() != NULL) {
+            if (m_player.get() != NULL) {
                 // TODO: Check if the delta between two captures frames matches the t and replay more than one frame potentially.
-			    Container c;
+                Container c;
                 if (m_player->hasMoreData()) {
-    				c = m_player->getNextContainerToBeSent();
+                    c = m_player->getNextContainerToBeSent();
                     sender.sendToSystemsUnderTest(c);
                 }
-			}
+            }
 
             // Discard all received containers.
-			getFIFO().clear();
-		}
+            getFIFO().clear();
+        }
 
-		float PlaybackContainer::getFrequency() const {
-			return m_freq;
-		}
+        float PlaybackContainer::getFrequency() const {
+            return m_freq;
+        }
 
     }
 } // odcontext::base

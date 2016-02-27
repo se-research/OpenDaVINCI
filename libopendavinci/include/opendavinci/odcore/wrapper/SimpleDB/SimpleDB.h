@@ -65,7 +65,7 @@ namespace odcore {
                     virtual const string get(const int32_t &key) const;
 
                 protected:
-                    auto_ptr<Mutex> m_mutex;
+                    unique_ptr<Mutex> m_mutex;
                     mutable map<int, string> m_entries;
             };
 

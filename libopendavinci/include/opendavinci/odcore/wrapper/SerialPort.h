@@ -112,12 +112,12 @@ class Thread;
                 void invokeConnectionListener();
 
             private:
-                auto_ptr<Thread> m_thread;
+                unique_ptr<Thread> m_thread;
 
-                auto_ptr<Mutex> m_connectionListenerMutex;
+                unique_ptr<Mutex> m_connectionListenerMutex;
                 odcore::io::ConnectionListener* m_connectionListener;
 
-                auto_ptr<Mutex> m_stringListenerMutex;
+                unique_ptr<Mutex> m_stringListenerMutex;
                 odcore::io::StringListener *m_stringListener;
 
                 void *m_serial;

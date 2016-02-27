@@ -46,10 +46,10 @@ namespace odcore {
          *
          * MyRunnable r;
          * r.running = false;
-         * auto_ptr<Thread> t;
+         * unique_ptr<Thread> t;
          *
          * try {
-         *     t = auto_ptr<Thread>(ConcurrencyFactory::createThread(r));
+         *     t = unique_ptr<Thread>(ConcurrencyFactory::createThread(r));
          * }
          * catch(string &s) {
          *    clog << "Failed: " << s << endl;

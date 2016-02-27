@@ -72,9 +72,9 @@ namespace odcore {
                 protected:
                     void invokeAcceptorListener(odcore::SharedPointer<odcore::io::tcp::TCPConnection> connection);
 
-                    auto_ptr<Thread> m_thread;
+                    unique_ptr<Thread> m_thread;
 
-                    auto_ptr<Mutex> m_listenerMutex;
+                    unique_ptr<Mutex> m_listenerMutex;
                     odcore::io::tcp::TCPAcceptorListener* m_listener;
 
                     int32_t m_fileDescriptor;

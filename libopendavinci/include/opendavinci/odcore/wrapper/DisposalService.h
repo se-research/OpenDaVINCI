@@ -97,16 +97,16 @@ class Thread;
                 void cleanUpImmediately();
 
             private:
-                static auto_ptr<Mutex> m_singletonMutex;
+                static unique_ptr<Mutex> m_singletonMutex;
                 static DisposalService *m_singleton;
 
                 SharedPointer<Condition> m_queueCondition;
-                auto_ptr<Mutex> m_finalRemovalMutex;
-                auto_ptr<Mutex> m_queueMutex;
+                unique_ptr<Mutex> m_finalRemovalMutex;
+                unique_ptr<Mutex> m_queueMutex;
                 deque<Disposable**> m_queueForRegularRemoval;
                 deque<Disposable**> m_queueForFinalRemoval;
 
-                auto_ptr<Thread> m_thread;
+                unique_ptr<Thread> m_thread;
 
                 /**
                  * This class is responsible for cleaning up the queue.
@@ -153,7 +153,7 @@ class Thread;
                         Mutex &m_queueMutex;
                         deque<Disposable**> &m_queue;
 
-                        auto_ptr<Mutex> m_threadStateMutex;
+                        unique_ptr<Mutex> m_threadStateMutex;
                         bool m_threadState;
 
                         virtual void run();

@@ -39,7 +39,7 @@ namespace odtools {
 
         Recorder::Recorder(const string &url, const uint32_t &memorySegmentSize, const uint32_t &numberOfSegments, const bool &threading, const bool &dumpSharedData) :
             m_fifo(),
-            m_sharedDataListener(NULL),
+            m_sharedDataListener(),
             m_out(NULL),
             m_outSharedMemoryFile(NULL),
             m_dumpSharedData(dumpSharedData) {
@@ -53,7 +53,7 @@ namespace odtools {
             m_outSharedMemoryFile = StreamFactory::getInstance().getOutputStream(urlSharedMemoryFile);
 
             // Create data store for shared memory.
-            m_sharedDataListener = auto_ptr<SharedDataListener>(new SharedDataListener(m_outSharedMemoryFile, memorySegmentSize, numberOfSegments, threading));
+            m_sharedDataListener = unique_ptr<SharedDataListener>(new SharedDataListener(m_outSharedMemoryFile, memorySegmentSize, numberOfSegments, threading));
         }
 
         Recorder::~Recorder() {

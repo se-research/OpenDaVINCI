@@ -20,7 +20,7 @@
 #ifndef CORE_WRAPPER_TCPCONNECTIONTESTSUITE_H_
 #define CORE_WRAPPER_TCPCONNECTIONTESTSUITE_H_
 
-#include <memory>                       // for auto_ptr, etc
+#include <memory>                       // for unique_ptr, etc
 #include <string>                       // for string
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
@@ -54,11 +54,11 @@ template <typename worker> struct TCPConnectionTests
     {
         mocks::TCPAcceptorListenerMock am;
 
-        auto_ptr<odcore::io::tcp::TCPAcceptor> acceptor(worker::createTCPAcceptor(20000));
+        unique_ptr<odcore::io::tcp::TCPAcceptor> acceptor(worker::createTCPAcceptor(20000));
         acceptor->setAcceptorListener(&am);
         acceptor->start();
 
-        auto_ptr<odcore::io::tcp::TCPConnection> connection(worker::createTCPConnectionTo("127.0.0.1", 20000));
+        unique_ptr<odcore::io::tcp::TCPConnection> connection(worker::createTCPConnectionTo("127.0.0.1", 20000));
         connection->start();
 
         TS_ASSERT(am.CALLWAITER_onNewConnection.wait());
@@ -98,12 +98,12 @@ template <typename worker> struct TCPConnectionTests
         try {
             mocks::TCPAcceptorListenerMock acceptorListenerMock1;
 
-            auto_ptr<odcore::io::tcp::TCPAcceptor> acceptor(worker::createTCPAcceptor(20000));
+            unique_ptr<odcore::io::tcp::TCPAcceptor> acceptor(worker::createTCPAcceptor(20000));
             acceptor->setAcceptorListener(&acceptorListenerMock1);
             acceptor->start();
 
             // 1. Case: Remove accepted part of connection.
-            auto_ptr<odcore::io::tcp::TCPConnection> connection1(worker::createTCPConnectionTo("127.0.0.1", 20000));
+            unique_ptr<odcore::io::tcp::TCPConnection> connection1(worker::createTCPConnectionTo("127.0.0.1", 20000));
             connection1->start();
 
             TS_ASSERT(acceptorListenerMock1.CALLWAITER_onNewConnection.wait());

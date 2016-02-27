@@ -100,7 +100,7 @@ class SharedDataWriter;
 
             private:
                 bool m_threading;
-                auto_ptr<SharedDataWriter> m_sharedDataWriter;
+                unique_ptr<SharedDataWriter> m_sharedDataWriter;
                 map<string, odcore::data::SharedData> m_mapOfAvailableSharedData;
                 map<string, odcore::data::image::SharedImage> m_mapOfAvailableSharedImages;
                 map<string, odcore::data::SharedPointCloud> m_mapOfAvailableSharedPointCloud;
