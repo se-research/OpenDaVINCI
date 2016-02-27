@@ -93,8 +93,8 @@ class CANDevice;
 
             private:
                 odcore::base::FIFOQueue m_fifo;
-                auto_ptr<odtools::recorder::Recorder> m_recorder;
-                auto_ptr<CANDevice> m_device;
+                unique_ptr<odtools::recorder::Recorder> m_recorder;
+                unique_ptr<CANDevice> m_device;
                 string m_deviceNode;
         };
 
