@@ -1,3 +1,4 @@
+3.0.0 - Newest release of OpenDaVINCI.
 2.4.11 - Updated deployment process to use aptly over reprepro for deb packages
 2.4.10 - Updated FindOpenCV.cmake
 2.4.9 - Added container identifiers for ReVeRe/GCDC

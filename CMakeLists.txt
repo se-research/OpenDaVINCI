@@ -85,7 +85,7 @@ IF(     NOT("${CMAKE_C_COMPILER}" STREQUAL "")
     MESSAGE(STATUS "Found C++ compiler:         Building opendavinci-tutorials")
     SET(BUILD_TUTORIALS 1)
 
-    IF (OpenCV_FOUND)
+    IF (OPENCV_FOUND)
         IF (    OPENGL_FOUND
             AND GLUT_FOUND
             AND Boost_FOUND)
