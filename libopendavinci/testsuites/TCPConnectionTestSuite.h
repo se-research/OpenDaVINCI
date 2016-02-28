@@ -54,11 +54,19 @@ template <typename worker> struct TCPConnectionTests
     {
         mocks::TCPAcceptorListenerMock am;
 
-        unique_ptr<odcore::io::tcp::TCPAcceptor> acceptor(worker::createTCPAcceptor(20000));
+#ifndef __APPLE__
+        unique_ptr<odcore::io::tcp::TCPAcceptor> acceptor(worker::createTCPAcceptor(20004));
+#else
+        odcore::io::tcp::TCPAcceptor* acceptor(worker::createTCPAcceptor(20004));
+#endif
         acceptor->setAcceptorListener(&am);
         acceptor->start();
 
-        unique_ptr<odcore::io::tcp::TCPConnection> connection(worker::createTCPConnectionTo("127.0.0.1", 20000));
+#ifndef __APPLE__
+        unique_ptr<odcore::io::tcp::TCPConnection> connection(worker::createTCPConnectionTo("127.0.0.1", 20004));
+#else
+        odcore::io::tcp::TCPConnection* connection(worker::createTCPConnectionTo("127.0.0.1", 20004));
+#endif
         connection->start();
 
         TS_ASSERT(am.CALLWAITER_onNewConnection.wait());
@@ -98,12 +106,20 @@ template <typename worker> struct TCPConnectionTests
         try {
             mocks::TCPAcceptorListenerMock acceptorListenerMock1;
 
-            unique_ptr<odcore::io::tcp::TCPAcceptor> acceptor(worker::createTCPAcceptor(20000));
+#ifndef __APPLE__
+            unique_ptr<odcore::io::tcp::TCPAcceptor> acceptor(worker::createTCPAcceptor(20005));
+#else
+            odcore::io::tcp::TCPAcceptor* acceptor(worker::createTCPAcceptor(20005));
+#endif
             acceptor->setAcceptorListener(&acceptorListenerMock1);
             acceptor->start();
 
             // 1. Case: Remove accepted part of connection.
-            unique_ptr<odcore::io::tcp::TCPConnection> connection1(worker::createTCPConnectionTo("127.0.0.1", 20000));
+#ifndef __APPLE__
+            unique_ptr<odcore::io::tcp::TCPConnection> connection1(worker::createTCPConnectionTo("127.0.0.1", 20005));
+#else
+            odcore::io::tcp::TCPConnection* connection1(worker::createTCPConnectionTo("127.0.0.1", 20005));
+#endif
             connection1->start();
 
             TS_ASSERT(acceptorListenerMock1.CALLWAITER_onNewConnection.wait());
@@ -120,7 +136,7 @@ template <typename worker> struct TCPConnectionTests
             // 2. Case: Remove connecting part of connection.
             mocks::TCPAcceptorListenerMock acceptorListenerMock2;
             acceptor->setAcceptorListener(&acceptorListenerMock2);
-            odcore::io::tcp::TCPConnection* connection2(worker::createTCPConnectionTo("127.0.0.1", 20000));
+            odcore::io::tcp::TCPConnection* connection2(worker::createTCPConnectionTo("127.0.0.1", 20005));
             connection2->start();
 
             TS_ASSERT(acceptorListenerMock2.CALLWAITER_onNewConnection.wait());
