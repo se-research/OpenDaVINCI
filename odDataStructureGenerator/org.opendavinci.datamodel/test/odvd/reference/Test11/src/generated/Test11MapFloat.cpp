@@ -4,17 +4,18 @@
  * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
  */
 
+#include <memory>
 
-#include "core/base/Hash.h"
-#include "core/base/Deserializer.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 
 
-#include "generated/Test11MapFloat.h"
+#include "test11/generated/Test11MapFloat.h"
 
 	using namespace std;
-	using namespace core::base;
+	using namespace odcore::base;
 
 
 	Test11MapFloat::Test11MapFloat() :
@@ -85,6 +86,18 @@
 
 	const string Test11MapFloat::LongName() {
 		return "Test11MapFloat";
+	}
+
+	int32_t Test11MapFloat::getID() const {
+		return Test11MapFloat::ID();
+	}
+
+	const string Test11MapFloat::getShortName() const {
+		return Test11MapFloat::ShortName();
+	}
+
+	const string Test11MapFloat::getLongName() const {
+		return Test11MapFloat::LongName();
 	}
 
 	std::map<float, bool> Test11MapFloat::getMapOfMyFloatBoolMap() const {
@@ -333,7 +346,7 @@
 		return std::make_pair(m_mapOfMyFloatStringMap.begin(), m_mapOfMyFloatStringMap.end());
 	}
 
-	void Test11MapFloat::accept(core::base::Visitor &v) {
+	void Test11MapFloat::accept(odcore::base::Visitor &v) {
 		(void)v; // Avoid unused parameter warning.
 	}
 
@@ -356,7 +369,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Serializer> s = sf.getSerializer(out);
+		std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
 		{
 			// Write number of elements in m_mapOfMyFloatBoolMap.
@@ -505,7 +518,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
 		// Clean up the existing map of MyFloatBoolMap.
 		m_mapOfMyFloatBoolMap.clear();

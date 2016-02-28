@@ -22,20 +22,20 @@
 #ifndef CANBRIDGE_H_
 #define CANBRIDGE_H_
 
-#include <core/SharedPointer.h>
+#include <memory>
 #include <stdint.h>
 #include <memory>
 #include <string>
 
 #include "CANMessageReplicator.h"
-#include "GeneratedHeaders_CANMessageMapping.h"
+#include "canmessagemapping/GeneratedHeaders_CANMessageMapping.h"
 #include "GenericCANMessageListener.h"
-#include "core/base/FIFOQueue.h"
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/odcore/base/FIFOQueue.h"
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
 
 namespace automotive { class GenericCANMessage; }
-namespace tools { namespace recorder { class Recorder; } }
+namespace odtools { namespace recorder { class Recorder; } }
 
 namespace automotive {
     namespace odcantools {
@@ -47,7 +47,7 @@ class CANDevice;
         /**
          * This class bridges between two CAN devices and maps GenericCANMessages to high-level C++ messages.
          */
-        class CANBridge : public core::base::module::TimeTriggeredConferenceClientModule,
+        class CANBridge : public odcore::base::module::TimeTriggeredConferenceClientModule,
                           public GenericCANMessageListener {
             private:
                 /**
@@ -80,7 +80,7 @@ class CANDevice;
 
                 virtual ~CANBridge();
 
-                coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+                odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
                 virtual void nextGenericCANMessage(const GenericCANMessage &gcm);
 
@@ -90,11 +90,11 @@ class CANDevice;
                 virtual void tearDown();
 
             private:
-                core::base::FIFOQueue m_fifo;
-                auto_ptr<tools::recorder::Recorder> m_recorder;
-                core::SharedPointer<CANDevice> m_deviceA;
+                odcore::base::FIFOQueue m_fifo;
+                unique_ptr<odtools::recorder::Recorder> m_recorder;
+                std::shared_ptr<CANDevice> m_deviceA;
                 string m_deviceNodeA;
-                core::SharedPointer<CANDevice> m_deviceB;
+                std::shared_ptr<CANDevice> m_deviceB;
                 string m_deviceNodeB;
                 CANMessageReplicator m_replicatorFromAtoB;
                 CANMessageReplicator m_replicatorFromBtoA;

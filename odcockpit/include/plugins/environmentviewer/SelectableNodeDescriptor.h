@@ -21,7 +21,7 @@
 #ifndef PLUGINS_ENVIRONMENTVIEWER_SELECTABLENODESCRIPTOR_H_
 #define PLUGINS_ENVIRONMENTVIEWER_SELECTABLENODESCRIPTOR_H_
 
-#include "hesperia/threeD/NodeDescriptor.h"
+#include "opendlv/threeD/NodeDescriptor.h"
 
 namespace cockpit {
     namespace plugins {
@@ -43,7 +43,7 @@ namespace cockpit {
                      * @param nd NodeDescriptor.
                      * @param selected True iff selected.
                      */
-                    SelectableNodeDescriptor(const hesperia::threeD::NodeDescriptor &nd, const bool &selected);
+                    SelectableNodeDescriptor(const opendlv::threeD::NodeDescriptor &nd, const bool &selected);
 
                     /**
                      * Copy constructor.
@@ -67,14 +67,14 @@ namespace cockpit {
                      *
                      * @return Name.
                      */
-                    const hesperia::threeD::NodeDescriptor getNodeDescriptor() const;
+                    const opendlv::threeD::NodeDescriptor getNodeDescriptor() const;
 
                     /**
                      * This method sets the NodeDescriptor.
                      *
                      * @param nd NodeDescriptor.
                      */
-                    void setNodeDescriptor(const hesperia::threeD::NodeDescriptor &nd);
+                    void setNodeDescriptor(const opendlv::threeD::NodeDescriptor &nd);
 
                     /**
                      * This method returns true if this NodeDescriptor is selected.
@@ -91,7 +91,7 @@ namespace cockpit {
                     void setSelected(const bool &selected);
 
                 private:
-                    hesperia::threeD::NodeDescriptor m_nodeDescriptor;
+                    opendlv::threeD::NodeDescriptor m_nodeDescriptor;
                     bool m_selected;
             };
         }

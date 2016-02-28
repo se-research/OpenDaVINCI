@@ -20,7 +20,7 @@
 #ifndef EGOCONTROLLER_CONTROLLER_H_
 #define EGOCONTROLLER_CONTROLLER_H_
 
-#include "hesperia/data/environment/EgoState.h"
+#include "opendlv/data/environment/EgoState.h"
 
 namespace egocontroller {
 
@@ -33,7 +33,7 @@ namespace egocontroller {
             virtual ~Controller();
 
             virtual void doWork() = 0;
-            virtual hesperia::data::environment::EgoState getEgoState() = 0;
+            virtual opendlv::data::environment::EgoState getEgoState() = 0;
     };
 }
 

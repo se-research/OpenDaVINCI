@@ -25,13 +25,13 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/io/StringListener.h"     // for StringListener
-#include "core/io/StringSender.h"       // for StringSender
-#include "core/io/protocol/NetstringsProtocol.h"
+#include "opendavinci/odcore/io/StringListener.h"     // for StringListener
+#include "opendavinci/odcore/io/StringSender.h"       // for StringSender
+#include "opendavinci/odcore/io/protocol/NetstringsProtocol.h"
 
 using namespace std;
 
-class NetstringsProtocolTest : public CxxTest::TestSuite, public core::io::StringListener, public core::io::StringSender {
+class NetstringsProtocolTest : public CxxTest::TestSuite, public odcore::io::StringListener, public odcore::io::StringSender {
     private:
         string m_receivedData;
         string m_dataToBeSent;
@@ -50,7 +50,7 @@ class NetstringsProtocolTest : public CxxTest::TestSuite, public core::io::Strin
         }
 
         void testNetstringsProtocolSend() {
-            core::io::protocol::NetstringsProtocol nsp;
+            odcore::io::protocol::NetstringsProtocol nsp;
             nsp.setStringListener(this);
             nsp.setStringSender(this);
 
@@ -68,7 +68,7 @@ class NetstringsProtocolTest : public CxxTest::TestSuite, public core::io::Strin
         }
 
         void testNetstringsProtocolReceive() {
-            core::io::protocol::NetstringsProtocol nsp;
+            odcore::io::protocol::NetstringsProtocol nsp;
             nsp.setStringListener(this);
             nsp.setStringSender(this);
 
@@ -87,7 +87,7 @@ class NetstringsProtocolTest : public CxxTest::TestSuite, public core::io::Strin
         }
 
         void testNetstringsProtocolPartialReceive1() {
-            core::io::protocol::NetstringsProtocol nsp;
+            odcore::io::protocol::NetstringsProtocol nsp;
             nsp.setStringListener(this);
             nsp.setStringSender(this);
 
@@ -105,7 +105,7 @@ class NetstringsProtocolTest : public CxxTest::TestSuite, public core::io::Strin
         }
 
         void testNetstringsProtocolPartialReceive2() {
-            core::io::protocol::NetstringsProtocol nsp;
+            odcore::io::protocol::NetstringsProtocol nsp;
             nsp.setStringListener(this);
             nsp.setStringSender(this);
 

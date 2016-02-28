@@ -26,7 +26,7 @@
 #include "plugins/PlugIn.h"
 
 class QWidget;
-namespace core { namespace base { class KeyValueConfiguration; } }
+namespace odcore { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
 
@@ -63,7 +63,7 @@ class SharedImageViewerWidget;
                      * @param kvc KeyValueConfiguration for this widget.
                      * @param prnt Pointer to the container super window.
                      */
-                    SharedImageViewerPlugIn(const string &name, const core::base::KeyValueConfiguration &kvc, QWidget *prnt);
+                    SharedImageViewerPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt);
 
                     virtual ~SharedImageViewerPlugIn();
 

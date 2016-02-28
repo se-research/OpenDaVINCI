@@ -19,10 +19,10 @@
 
 #include <iostream>
 
-#include "core/data/Container.h"
-#include "core/data/TimeStamp.h"
-#include "tools/recorder/Recorder.h"
-#include "generated/automotive/GenericCANMessage.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
+#include "opendavinci/odtools/recorder/Recorder.h"
+#include "automotivedata/generated/automotive/GenericCANMessage.h"
 
 #include "CANDevice.h"
 #include "CANProxy.h"
@@ -32,8 +32,8 @@ namespace automotive {
     namespace odcantools {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::data;
+        using namespace odcore::base;
+        using namespace odcore::data;
 
         CANProxy::CANProxy(const int32_t &argc, char **argv) :
             TimeTriggeredConferenceClientModule(argc, argv, "odcanproxy"),
@@ -50,7 +50,7 @@ namespace automotive {
             m_deviceNode = getKeyValueConfiguration().getValue<string>("odcanproxy.devicenode");
 
             // Try to open CAN device and register this instance as receiver for GenericCANMessages.
-            m_device = auto_ptr<CANDevice>(new CANDevice(m_deviceNode, *this));
+            m_device = unique_ptr<CANDevice>(new CANDevice(m_deviceNode, *this));
 
             // If the device could be successfully opened, create a recording file with a dump of the data.
             if (m_device->isOpen()) {
@@ -67,14 +67,14 @@ namespace automotive {
                 const bool DUMP_SHARED_DATA = false;
 
                 // Create a recorder instance.
-                m_recorder = auto_ptr<tools::recorder::Recorder>(new tools::recorder::Recorder(recordingURL.str(), MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING, DUMP_SHARED_DATA));
+                m_recorder = unique_ptr<odtools::recorder::Recorder>(new odtools::recorder::Recorder(recordingURL.str(), MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING, DUMP_SHARED_DATA));
             }
         }
 
         void CANProxy::tearDown() {}
 
         void CANProxy::nextGenericCANMessage(const GenericCANMessage &gcm) {
-            Container c(Container::GENERIC_CAN_MESSAGE, gcm);
+            Container c(gcm);
             m_fifo.add(c);
         }
 
@@ -82,7 +82,7 @@ namespace automotive {
             m_device->write(gcm);
         }
 
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode CANProxy::body() {
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode CANProxy::body() {
             // Register the CAN device as receiver for all Containers to be
             // potentially written to the CAN bus.
             addDataStoreFor(m_device->getMessageToCANDataStore());
@@ -90,7 +90,7 @@ namespace automotive {
             // Start the wrapped CAN device to receive CAN messages concurrently.
             m_device->start();
 
-            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
                 const uint32_t ENTRIES = m_fifo.getSize();
                 for (uint32_t i = 0; i < ENTRIES; i++) {
                     Container c = m_fifo.leave();
@@ -107,7 +107,7 @@ namespace automotive {
 
             m_device->stop();
 
-            return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
     } // odcantools

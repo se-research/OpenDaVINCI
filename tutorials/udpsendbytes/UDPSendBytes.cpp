@@ -20,24 +20,24 @@
 #include <stdint.h>
 #include <iostream>
 #include <string>
-#include <core/SharedPointer.h>
-#include <core/io/udp/UDPSender.h>
-#include <core/io/udp/UDPFactory.h>
+#include <memory>
+#include <opendavinci/odcore/io/udp/UDPSender.h>
+#include <opendavinci/odcore/io/udp/UDPFactory.h>
 
 using namespace std;
 
 // We add some of OpenDaVINCI's namespaces for the sake of readability.
-using namespace core;
-using namespace core::io::udp;
+using namespace odcore;
+using namespace odcore::io::udp;
 
 int32_t main(int32_t argc, char **argv) {
     const string RECEIVER = "127.0.0.1";
     const uint32_t PORT = 1234;
 
-    // We are using OpenDaVINCI's SharedPointer to automatically
+    // We are using OpenDaVINCI's std::shared_ptr to automatically
     // release any acquired resources.
     try {
-        SharedPointer<UDPSender> udpsender(UDPFactory::createUDPSender(RECEIVER, PORT));
+        std::shared_ptr<UDPSender> udpsender(UDPFactory::createUDPSender(RECEIVER, PORT));
 
         udpsender->send("Hello World\r\n");
     }

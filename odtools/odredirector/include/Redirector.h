@@ -23,12 +23,12 @@
 #include <map>
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include <memory>
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
 
-namespace core { namespace wrapper { class SharedMemory; } }
+namespace odcore { namespace wrapper { class SharedMemory; } }
 
 namespace odredirector {
 
@@ -38,7 +38,7 @@ namespace odredirector {
      * This class can be used to simply display data distributed
      * using a conference.
      */
-    class Redirector : public core::base::module::TimeTriggeredConferenceClientModule {
+    class Redirector : public odcore::base::module::TimeTriggeredConferenceClientModule {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -70,7 +70,7 @@ namespace odredirector {
 
             virtual ~Redirector();
 
-            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+            odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
         private:
             void parseAdditionalCommandLineParameters(const int &argc, char **argv);
@@ -83,7 +83,7 @@ namespace odredirector {
             bool m_fromstdin;
             bool m_tostdout;
             int32_t m_jpegQuality;
-            map<string, core::SharedPointer<core::wrapper::SharedMemory> > m_mapOfSharedMemories;
+            map<string, std::shared_ptr<odcore::wrapper::SharedMemory> > m_mapOfSharedMemories;
     };
 
 } // odredirector

@@ -22,17 +22,18 @@
 #include <string>
 
 #include "RecIntegrity.h"
-#include "core/base/Serializable.h"
-#include "core/data/Container.h"
-#include "generated/coredata/SharedData.h"
-#include "generated/coredata/image/SharedImage.h"
+#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/generated/odcore/data/SharedData.h"
+#include "opendavinci/generated/odcore/data/image/SharedImage.h"
+#include "opendavinci/generated/odcore/data/SharedPointCloud.h"
 
 namespace odrecintegrity {
 
     using namespace std;
-    using namespace core;
-    using namespace core::base;
-    using namespace core::data;
+    using namespace odcore;
+    using namespace odcore::base;
+    using namespace odcore::data;
 
     RecIntegrity::RecIntegrity() {}
 
@@ -60,6 +61,7 @@ namespace odrecintegrity {
                 bool fileNotCorrupt = true;
                 uint32_t numberOfSharedImages = 0;
                 uint32_t numberOfSharedData = 0;
+                uint32_t numberOfSharedPointCloud = 0;
                 while (fin.good()) {
                     Container c;
                     fin >> c;
@@ -70,8 +72,8 @@ namespace odrecintegrity {
                         fileNotCorrupt &= (c.getDataType() != Container::UNDEFINEDDATA) && (currPos > 0);
 
                         // If the data is from SHARED_IMAGE, skip the raw data from the shared memory segment.
-                        if (c.getDataType() == Container::SHARED_IMAGE) {
-                            coredata::image::SharedImage si = c.getData<coredata::image::SharedImage>();
+                        if (c.getDataType() == odcore::data::image::SharedImage::ID()) {
+                            odcore::data::image::SharedImage si = c.getData<odcore::data::image::SharedImage>();
 
                             uint32_t lengthToSkip = si.getSize();
                             if (lengthToSkip == 0) {
@@ -79,17 +81,26 @@ namespace odrecintegrity {
                             }
 
                             fin.seekg(currPos + lengthToSkip);
-                            cout << "[RecIntegrity]: Found SHARED_IMAGE '" << si.getName() << "' (" << lengthToSkip << " bytes)" << endl;
+                            cout << "[RecIntegrity]: Found SharedImage '" << si.getName() << "' (" << lengthToSkip << " bytes)" << endl;
                             numberOfSharedImages++;
                         }
-                        else if (c.getDataType() == Container::SHARED_DATA) {
-                            coredata::SharedData sd = c.getData<coredata::SharedData>();
+                        else if (c.getDataType() == odcore::data::SharedData::ID()) {
+                            odcore::data::SharedData sd = c.getData<odcore::data::SharedData>();
 
                             uint32_t lengthToSkip = sd.getSize();
 
                             fin.seekg(currPos + lengthToSkip);
-                            cout << "[RecIntegrity]: Found SHARED_DATA '" << sd.getName() << "' (" << lengthToSkip << " bytes)" << endl;
+                            cout << "[RecIntegrity]: Found SharedData '" << sd.getName() << "' (" << lengthToSkip << " bytes)" << endl;
                             numberOfSharedData++;
+                        }
+                        else if (c.getDataType() == odcore::data::SharedPointCloud::ID()) {
+                            odcore::data::SharedPointCloud spc = c.getData<odcore::data::SharedPointCloud>();
+
+                            uint32_t lengthToSkip = spc.getSize();
+
+                            fin.seekg(currPos + lengthToSkip);
+                            cout << "[RecIntegrity]: Found SharedPointCloud '" << spc.getName() << "' (" << lengthToSkip << " bytes)" << endl;
+                            numberOfSharedPointCloud++;
                         }
                         else {
                             cout << "[RecIntegrity]: Found data type '" << c.getDataType() << "'." << endl;
@@ -103,7 +114,7 @@ namespace odrecintegrity {
                         }
                     }
                 }
-                cout << "[RecIntegrity]: Input file is " << ((fileNotCorrupt) ? "not " : "") << "corrupt, contains " << numberOfSharedImages << " shared images and " << numberOfSharedData << " shared data segments." << endl;
+                cout << "[RecIntegrity]: Input file is " << ((fileNotCorrupt) ? "not " : "") << "corrupt, contains " << numberOfSharedImages << " shared images, " << numberOfSharedData << " shared data segments, " << numberOfSharedPointCloud << " shared point clouds." << endl;
 
                 retVal = ((fileNotCorrupt) ? CORRECT : FILE_CORRUPT);
             }

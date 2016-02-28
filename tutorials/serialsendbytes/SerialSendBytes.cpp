@@ -20,24 +20,24 @@
 #include <stdint.h>
 #include <iostream>
 #include <string>
-#include <core/SharedPointer.h>
-#include <core/wrapper/SerialPort.h>
-#include <core/wrapper/SerialPortFactory.h>
+#include <memory>
+#include <opendavinci/odcore/wrapper/SerialPort.h>
+#include <opendavinci/odcore/wrapper/SerialPortFactory.h>
 
 using namespace std;
 
 // We add some of OpenDaVINCI's namespaces for the sake of readability.
-using namespace core;
-using namespace core::wrapper;
+using namespace odcore;
+using namespace odcore::wrapper;
 
 int32_t main(int32_t argc, char **argv) {
     const string SERIAL_PORT = "/dev/pts/19";
     const uint32_t BAUD_RATE = 19200;
 
-    // We are using OpenDaVINCI's SharedPointer to automatically
+    // We are using OpenDaVINCI's std::shared_ptr to automatically
     // release any acquired resources.
     try {
-        SharedPointer<SerialPort> serial(SerialPortFactory::createSerialPort(SERIAL_PORT, BAUD_RATE));
+        std::shared_ptr<SerialPort> serial(SerialPortFactory::createSerialPort(SERIAL_PORT, BAUD_RATE));
 
         serial->send("Hello World\r\n");
     }

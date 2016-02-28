@@ -23,13 +23,13 @@
 
 #include <string>
 
-#include "core/base/Mutex.h"
+#include "opendavinci/odcore/base/Mutex.h"
 #include "plugins/AbstractGLWidget.h"
 
 class QWidget;
 namespace cockpit { namespace plugins { class PlugIn; } }
-namespace hesperia { namespace threeD { class Node; } }
-namespace hesperia { namespace threeD { class TransformGroup; } }
+namespace opendlv { namespace threeD { class Node; } }
+namespace opendlv { namespace threeD { class TransformGroup; } }
 
 namespace cockpit {
     namespace plugins {
@@ -82,10 +82,10 @@ namespace cockpit {
                     virtual void drawScene();
 
                 private:
-                    hesperia::threeD::Node *m_root;
+                    opendlv::threeD::Node *m_root;
 
-                    mutable core::base::Mutex m_modelMutex;
-                    hesperia::threeD::TransformGroup *m_model;
+                    mutable odcore::base::Mutex m_modelMutex;
+                    opendlv::threeD::TransformGroup *m_model;
             };
 
         }

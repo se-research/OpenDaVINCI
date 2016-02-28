@@ -67,15 +67,15 @@ SET(COREDATA_DIR ${CMAKE_BINARY_DIR}/coredata)
 # This step invokes the data structure generator during the initial cmake phase.
 # Thus, it is ensured that the recursive file globbing below succeeds to collect
 # all automatically generated source files.
-IF(NOT EXISTS ${CMAKE_BINARY_DIR}/coredata/include/GeneratedHeaders_CoreData.h)
+IF(NOT EXISTS ${COREDATA_DIR}/include/opendavinci/GeneratedHeaders_OpenDaVINCI.h)
     MESSAGE("")
-    MESSAGE("Generating data structures from ${CMAKE_CURRENT_SOURCE_DIR}/CoreData.odvd in ${COREDATA_DIR}")
+    MESSAGE("Generating data structures from ${CMAKE_CURRENT_SOURCE_DIR}/OpenDaVINCI.odvd in ${COREDATA_DIR}")
 
     IF(UNIX)
-        EXECUTE_PROCESS(COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/generateDataStructures.sh ${Java_JAVA_EXECUTABLE} ${ODDATASTRUCTUREGENERATOR_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/CoreData.odvd ${CMAKE_BINARY_DIR}/coredata)
+        EXECUTE_PROCESS(COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/generateDataStructures.sh ${Java_JAVA_EXECUTABLE} ${ODDATASTRUCTUREGENERATOR_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/OpenDaVINCI.odvd ${CMAKE_BINARY_DIR}/coredata)
     ENDIF()
     IF(WIN32)
-        EXECUTE_PROCESS(COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/generateDataStructures.bat ${Java_JAVA_EXECUTABLE} ${ODDATASTRUCTUREGENERATOR_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/CoreData.odvd ${CMAKE_BINARY_DIR}/coredata)
+        EXECUTE_PROCESS(COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/generateDataStructures.bat ${Java_JAVA_EXECUTABLE} ${ODDATASTRUCTUREGENERATOR_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/OpenDaVINCI.odvd ${CMAKE_BINARY_DIR}/coredata)
     ENDIF()
 
     MESSAGE("")
@@ -83,16 +83,16 @@ ENDIF()
 
 # This custom command ensures that on changes to CoreData.odvd, the sources are re-generated.
 IF(UNIX)
-    ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_BINARY_DIR}/coredata/include/GeneratedHeaders_CoreData.h
-                       COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/generateDataStructures.sh ${Java_JAVA_EXECUTABLE} ${ODDATASTRUCTUREGENERATOR_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/CoreData.odvd ${CMAKE_BINARY_DIR}/coredata
-                       DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/CoreData.odvd)
+    ADD_CUSTOM_COMMAND(OUTPUT ${COREDATA_DIR}/include/opendavinci/GeneratedHeaders_OpenDaVINCI.h
+                       COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/generateDataStructures.sh ${Java_JAVA_EXECUTABLE} ${ODDATASTRUCTUREGENERATOR_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/OpenDaVINCI.odvd ${CMAKE_BINARY_DIR}/coredata
+                       DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/OpenDaVINCI.odvd)
 ENDIF()
 IF(WIN32)
-    ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_BINARY_DIR}/coredata/include/GeneratedHeaders_CoreData.h
-                       COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/generateDataStructures.bat ${Java_JAVA_EXECUTABLE} ${ODDATASTRUCTUREGENERATOR_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/CoreData.odvd ${CMAKE_BINARY_DIR}/coredata
-                       DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/CoreData.odvd)
+    ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_BINARY_DIR}/coredata/include/GeneratedHeaders_OpenDaVINCI.h
+                       COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/generateDataStructures.bat ${Java_JAVA_EXECUTABLE} ${ODDATASTRUCTUREGENERATOR_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/OpenDaVINCI.odvd ${CMAKE_BINARY_DIR}/coredata
+                       DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/OpenDaVINCI.odvd)
 ENDIF()
-ADD_CUSTOM_TARGET(GenerateDataStructures DEPENDS ${CMAKE_BINARY_DIR}/coredata/include/GeneratedHeaders_CoreData.h)
+ADD_CUSTOM_TARGET(GenerateDataStructures DEPENDS ${COREDATA_DIR}/include/opendavinci/GeneratedHeaders_OpenDaVINCI.h)
 
 ###########################################################################
 # Set linking libraries to successfully link test suite binaries.
@@ -253,7 +253,7 @@ IF(UNIX)
 ENDIF()
 
 ###############################################################################
-# Set header files for coredata files generated from CoreData.odvd.
+# Set header files for coredata files generated from OpenDaVINCI.odvd.
 INCLUDE_DIRECTORIES(${COREDATA_DIR}/include)
 # Set include directory.
 INCLUDE_DIRECTORIES(include)
@@ -369,31 +369,31 @@ ENDIF(CXXTEST_FOUND)
 
 ###############################################################################
 # Installing "libopendavinci".
-INSTALL(TARGETS opendavinci-static DESTINATION lib COMPONENT odlib)
+INSTALL(TARGETS opendavinci-static DESTINATION lib COMPONENT lib)
 IF(    (NOT WIN32)
    AND (NOT ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")) )
-    INSTALL(TARGETS opendavinci    DESTINATION lib COMPONENT odlib)
+    INSTALL(TARGETS opendavinci    DESTINATION lib COMPONENT lib)
 ENDIF()
 
 # Install header files.
-INSTALL(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/" DESTINATION include/opendavinci COMPONENT odlib)
+INSTALL(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/" DESTINATION include/ COMPONENT lib)
 # Merge header files from generated data structures with the rest of OpenDaVINCI to avoid specifying another include directory at the users' end.
-INSTALL(DIRECTORY "${COREDATA_DIR}/include/" DESTINATION include/opendavinci COMPONENT odlib)
+INSTALL(DIRECTORY "${COREDATA_DIR}/include/" DESTINATION include/ COMPONENT lib)
 
 # Install CMake modules locally.
 IF(UNIX)
-    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindOpenDaVINCI.cmake" DESTINATION share/cmake-2.8/Modules COMPONENT odlib)
-    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindLibRT.cmake" DESTINATION share/cmake-2.8/Modules COMPONENT odlib)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindOpenDaVINCI.cmake" DESTINATION share/cmake-2.8/Modules COMPONENT lib)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindLibRT.cmake" DESTINATION share/cmake-2.8/Modules COMPONENT lib)
 
-    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindOpenDaVINCI.cmake" DESTINATION share/cmake-3.0/Modules COMPONENT odlib)
-    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindLibRT.cmake" DESTINATION share/cmake-3.0/Modules COMPONENT odlib)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindOpenDaVINCI.cmake" DESTINATION share/cmake-3.0/Modules COMPONENT lib)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindLibRT.cmake" DESTINATION share/cmake-3.0/Modules COMPONENT lib)
 
-    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindOpenDaVINCI.cmake" DESTINATION share/cmake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT odlib)
-    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindLibRT.cmake" DESTINATION share/cmake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT odlib)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindOpenDaVINCI.cmake" DESTINATION share/cmake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT lib)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindLibRT.cmake" DESTINATION share/cmake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT lib)
 ENDIF()
 IF(WIN32)
-    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindOpenDaVINCI.cmake" DESTINATION CMake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT odlib)
-    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindLibRT.cmake" DESTINATION CMake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT odlib)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindOpenDaVINCI.cmake" DESTINATION CMake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT lib)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindLibRT.cmake" DESTINATION CMake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT lib)
 ENDIF()
 
 ###########################################################################
@@ -430,7 +430,7 @@ IF(    (UNIX)
     SET(CPACK_PACKAGE_VERSION_MINOR "${MINOR}")
     SET(CPACK_PACKAGE_VERSION_PATCH "${PATCH}")
     SET(CPACK_PACKAGE_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}")
-    SET(CPACK_COMPONENTS_ALL odlib)
+    SET(CPACK_COMPONENTS_ALL lib)
 
     # Debian packages:
     SET(CPACK_DEBIAN_PACKAGE_SECTION "devel")

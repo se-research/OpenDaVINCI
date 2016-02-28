@@ -15,7 +15,7 @@ Coding Guidelines for OpenDaVINCI
 
 1.4 Pointers and references.
 1.4.1 Use const references as preferred interface to your method, e.g.: void myMethod(const uint32_t &parameter);
-1.4.2 Whenever you create a new pointer, wrap it into a C++ auto_ptr<T> if you are sure that your point will NOT be shared outside your method's or class' scope.
+1.4.2 Whenever you create a new pointer, wrap it into a C++ unique_ptr<T> if you are sure that your pointer will NOT be shared outside your method's or class' scope.
 1.4.3 Whenever you create a new pointer that is shared outside your method's or class' scope, wrap it into a core::SharedPointer<T>.
 
 1.5 Exception handling.

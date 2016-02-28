@@ -57,7 +57,7 @@ SET (LIBRARIES ${OPENDAVINCI_LIBRARIES} ${OpenCV_LIBS})
 
 ###########################################################################
 # Set header files from OpenDaVINCI.
-INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS}/opendavinci)
+INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS})
 # Set header files from OpenCV.
 INCLUDE_DIRECTORIES (${OpenCV_INCLUDE_DIR})
 # Set include directory.

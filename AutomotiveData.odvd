@@ -166,10 +166,10 @@ message fxe.Correspondence [id = 304] {
 ///////////////////////////////////////////////////////////////////////////////
 // Vehicle messages.
 message automotive.GenericCANMessage [id = 71] {
-    core::data::TimeStamp driverTimeStamp [id = 1]; // TimeStamp from CAN driver.
-    uint64 identifier [id = 2];                     // ID of the CAN message. 
-    uint8 length [id = 3];                          // Number of data bytes (1-8).
-    uint64 data [id = 4];                           // Payload of the CAN message.
+    odcore::data::TimeStamp driverTimeStamp [id = 1]; // TimeStamp from CAN driver.
+    uint64 identifier [id = 2];                       // ID of the CAN message. 
+    uint8 length [id = 3];                            // Number of data bytes (1-8).
+    uint64 data [id = 4];                             // Payload of the CAN message.
 }
 
 message automotive.vehicle.WheelSpeed [id = 75] {

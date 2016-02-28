@@ -20,10 +20,10 @@
 #include <stdint.h>
 #include <iostream>
 #include <string>
-#include <core/SharedPointer.h>
-#include <core/base/Thread.h>
-#include <core/io/udp/UDPReceiver.h>
-#include <core/io/udp/UDPFactory.h>
+#include <memory>
+#include <opendavinci/odcore/base/Thread.h>
+#include <opendavinci/odcore/io/udp/UDPReceiver.h>
+#include <opendavinci/odcore/io/udp/UDPFactory.h>
 
 #include "UDPReceiveBytes.hpp"
 
@@ -34,18 +34,18 @@ void UDPReceiveBytes::nextString(const string &s) {
 }
 
 // We add some of OpenDaVINCI's namespaces for the sake of readability.
-using namespace core;
-using namespace core::io;
-using namespace core::io::udp;
+using namespace odcore;
+using namespace odcore::io;
+using namespace odcore::io::udp;
 
 int32_t main(int32_t argc, char **argv) {
     const string RECEIVER = "0.0.0.0";
     const uint32_t PORT = 1234;
 
-    // We are using OpenDaVINCI's SharedPointer to automatically
+    // We are using OpenDaVINCI's std::shared_ptr to automatically
     // release any acquired resources.
     try {
-        SharedPointer<UDPReceiver>
+        std::shared_ptr<UDPReceiver>
             udpreceiver(UDPFactory::createUDPReceiver(RECEIVER, PORT));
 
         // This instance will handle any bytes that are received
@@ -57,7 +57,7 @@ int32_t main(int32_t argc, char **argv) {
         udpreceiver->start();
 
         const uint32_t ONE_SECOND = 1000 * 1000;
-        core::base::Thread::usleepFor(10 * ONE_SECOND);
+        odcore::base::Thread::usleepFor(10 * ONE_SECOND);
 
         // Stop receiving bytes and unregister our handler.
         udpreceiver->stop();

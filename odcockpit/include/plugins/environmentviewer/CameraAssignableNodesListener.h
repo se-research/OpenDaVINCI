@@ -23,7 +23,7 @@
 
 #include <vector>
 
-namespace hesperia { namespace threeD { class NodeDescriptor; } }
+namespace opendlv { namespace threeD { class NodeDescriptor; } }
 
 namespace cockpit {
     namespace plugins {
@@ -45,7 +45,7 @@ namespace cockpit {
                      *
                      * @param list List of camera assignable nodes.
                      */
-                    virtual void updateListOfCameraAssignableNodes(const vector<hesperia::threeD::NodeDescriptor> &list) = 0;
+                    virtual void updateListOfCameraAssignableNodes(const vector<opendlv::threeD::NodeDescriptor> &list) = 0;
             };
 
         }

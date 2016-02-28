@@ -22,7 +22,7 @@
 #ifndef CANMESSAGEREPLICATOR_H_
 #define CANMESSAGEREPLICATOR_H_
 
-#include <core/SharedPointer.h>
+#include <memory>
 
 #include "GenericCANMessageListener.h"
 
@@ -70,16 +70,16 @@ class CANDevice;
                 /**
                  * This method sets the CAN device to replicate the data to.
                  *
-                 * @param CANDeviceToReplicateTo SharedPointer to the CAN device where GenericCANMessages received from this listener shall be replicated.
+                 * @param CANDeviceToReplicateTo std::shared_ptr to the CAN device where GenericCANMessages received from this listener shall be replicated.
                  */
-                void setCANDevice(core::SharedPointer<CANDevice> CANDeviceToReplicateTo);
+                void setCANDevice(std::shared_ptr<CANDevice> CANDeviceToReplicateTo);
 
                 virtual ~CANMessageReplicator();
 
                 virtual void nextGenericCANMessage(const GenericCANMessage &gcm);
 
             private:
-                core::SharedPointer<CANDevice> m_CANDeviceToReplicateTo;
+                std::shared_ptr<CANDevice> m_CANDeviceToReplicateTo;
                 GenericCANMessageListener &m_conference;
         };
 

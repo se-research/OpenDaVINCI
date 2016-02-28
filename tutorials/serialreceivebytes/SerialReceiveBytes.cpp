@@ -20,10 +20,10 @@
 #include <stdint.h>
 #include <iostream>
 #include <string>
-#include <core/SharedPointer.h>
-#include <core/base/Thread.h>
-#include <core/wrapper/SerialPort.h>
-#include <core/wrapper/SerialPortFactory.h>
+#include <memory>
+#include <opendavinci/odcore/base/Thread.h>
+#include <opendavinci/odcore/wrapper/SerialPort.h>
+#include <opendavinci/odcore/wrapper/SerialPortFactory.h>
 
 #include "SerialReceiveBytes.hpp"
 
@@ -34,17 +34,17 @@ void SerialReceiveBytes::nextString(const string &s) {
 }
 
 // We add some of OpenDaVINCI's namespaces for the sake of readability.
-using namespace core;
-using namespace core::wrapper;
+using namespace odcore;
+using namespace odcore::wrapper;
 
 int32_t main(int32_t argc, char **argv) {
     const string SERIAL_PORT = "/dev/pts/20";
     const uint32_t BAUD_RATE = 19200;
 
-    // We are using OpenDaVINCI's SharedPointer to automatically
+    // We are using OpenDaVINCI's std::shared_ptr to automatically
     // release any acquired resources.
     try {
-        SharedPointer<SerialPort>
+        std::shared_ptr<SerialPort>
             serial(SerialPortFactory::createSerialPort(SERIAL_PORT, BAUD_RATE));
 
         // This instance will handle any bytes that are received
@@ -56,7 +56,7 @@ int32_t main(int32_t argc, char **argv) {
         serial->start();
 
         const uint32_t ONE_SECOND = 1000 * 1000;
-        core::base::Thread::usleepFor(10 * ONE_SECOND);
+        odcore::base::Thread::usleepFor(10 * ONE_SECOND);
 
         // Stop receiving bytes and unregister our handler.
         serial->stop();

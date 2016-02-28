@@ -26,7 +26,7 @@
 #include "plugins/PlugIn.h"
 
 class QWidget;
-namespace core { namespace base { class KeyValueConfiguration; } }
+namespace odcore { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
 
@@ -63,7 +63,7 @@ class IrUsMapWidgetControl;
                      * @param kvc KeyValueConfiguration for this widget.
                      * @param prnt Pointer to the container super window.
                      */
-                    IrUsMapPlugIn(const string &name, const core::base::KeyValueConfiguration &kvc, QWidget *prnt);
+                    IrUsMapPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt);
 
                     virtual ~IrUsMapPlugIn();
 
@@ -74,7 +74,7 @@ class IrUsMapWidgetControl;
                     virtual void stopPlugin();
 
                 private:
-                    const core::base::KeyValueConfiguration &m_kvc;
+                    const odcore::base::KeyValueConfiguration &m_kvc;
                     IrUsMapWidgetControl *m_irusmapWidgetControl;
             };
 

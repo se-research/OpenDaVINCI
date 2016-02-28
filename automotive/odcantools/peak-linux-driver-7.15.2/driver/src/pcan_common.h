@@ -56,7 +56,7 @@
 // support for MODVERSIONS
 #ifndef AUTOCONF_INCLUDED
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,38)
-#include <generated/autoconf.h>
+#include <opendavinci/generated/autoconf.h>
 #else
 #include <linux/autoconf.h>
 #endif

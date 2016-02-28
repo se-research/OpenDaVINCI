@@ -27,33 +27,33 @@
 
 #include "cxxtest/TestSuite.h"
 
-#include "core/SharedPointer.h"
-#include "core/strings/StringToolbox.h"
-#include "GeneratedHeaders_CoreData.h"
-#include "core/data/Container.h"
-#include "core/data/TimeStamp.h"
-#include "core/io/conference/ContainerConference.h"
-#include "core/io/conference/ContainerConferenceFactory.h"
-#include "core/wrapper/SharedMemory.h"
-#include "core/wrapper/SharedMemoryFactory.h"
+#include <memory>
+#include "opendavinci/odcore/strings/StringToolbox.h"
+#include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
+#include "opendavinci/odcore/io/conference/ContainerConference.h"
+#include "opendavinci/odcore/io/conference/ContainerConferenceFactory.h"
+#include "opendavinci/odcore/wrapper/SharedMemory.h"
+#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 
-#include "GeneratedHeaders_CoreData.h"
+#include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
-#include "tools/player/Player.h"
-#include "tools/recorder/Recorder.h"
+#include "opendavinci/odtools/player/Player.h"
+#include "opendavinci/odtools/recorder/Recorder.h"
 
 // Include local header files.
 #include "../include/Split.h"
 
 using namespace std;
-using namespace core;
-using namespace core::base;
-using namespace core::data;
-using namespace core::io;
-using namespace core::io::conference;
-using namespace coredata::dmcp;
-using namespace tools::player;
-using namespace tools::recorder;
+using namespace odcore;
+using namespace odcore::base;
+using namespace odcore::data;
+using namespace odcore::io;
+using namespace odcore::io::conference;
+using namespace odcore::data::dmcp;
+using namespace odtools::player;
+using namespace odtools::recorder;
 using namespace odsplit;
 
 // Size of the memory buffer.
@@ -75,7 +75,7 @@ class SplitTest : public CxxTest::TestSuite {
             Recorder recorder(file, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING, DUMP_SHARED_DATA);
 
             {
-                core::SharedPointer<core::wrapper::SharedMemory> memServer = core::wrapper::SharedMemoryFactory::createSharedMemory("SharedMemoryServer", 50);
+                std::shared_ptr<odcore::wrapper::SharedMemory> memServer = odcore::wrapper::SharedMemoryFactory::createSharedMemory("SharedMemoryServer", 50);
                 TS_ASSERT(memServer->isValid());
                 TS_ASSERT(memServer->getSize() == 50);
 
@@ -83,7 +83,7 @@ class SplitTest : public CxxTest::TestSuite {
                 for(uint32_t i = 0; i < 200; i++) {
                     // Create regular container.
                     TimeStamp t(i, 0);
-                    Container c(Container::TIMESTAMP, t);
+                    Container c(t);
                     c.setReceivedTimeStamp(TimeStamp(i,500));
                     recorder.store(c);
 
@@ -94,9 +94,9 @@ class SplitTest : public CxxTest::TestSuite {
                         memcpy(memServer->getSharedMemory(), sstr.str().c_str(), sstr.str().size());
                     memServer->unlock();
 
-                    coredata::SharedData sd(memServer->getName(), memServer->getSize());
+                    odcore::data::SharedData sd(memServer->getName(), memServer->getSize());
 
-                    Container c2(Container::SHARED_DATA, sd);
+                    Container c2(sd);
                     c2.setReceivedTimeStamp(TimeStamp(i,1000));
                     recorder.store(c2);
                 }
@@ -147,22 +147,22 @@ class SplitTest : public CxxTest::TestSuite {
             const uint32_t MAX_ITERATIONS = 1000;
             uint32_t i = 0;
 
-            core::SharedPointer<core::wrapper::SharedMemory> memClient;
+            std::shared_ptr<odcore::wrapper::SharedMemory> memClient;
 
             while (player.hasMoreData() && (i < MAX_ITERATIONS)) {
                 i++;
                 // Get container to be sent.
                 Container nextContainer = player.getNextContainerToBeSent();
 
-                if (nextContainer.getDataType() == Container::TIMESTAMP) {
+                if (nextContainer.getDataType() == TimeStamp::ID()) {
                     TimeStamp ts = nextContainer.getData<TimeStamp>();
                     TS_ASSERT(ts.getSeconds() == rangeBasis);
                     rangeBasis++;
                 }
-                else if (nextContainer.getDataType() == Container::SHARED_DATA) {
-                    if (!memClient.isValid()) {
-                        coredata::SharedData sd = nextContainer.getData<coredata::SharedData>();
-                        memClient = core::wrapper::SharedMemoryFactory::attachToSharedMemory(sd.getName());
+                else if (nextContainer.getDataType() == odcore::data::SharedData::ID()) {
+                    if (!memClient.get()) {
+                        odcore::data::SharedData sd = nextContainer.getData<odcore::data::SharedData>();
+                        memClient = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(sd.getName());
                     }
 
                     TS_ASSERT(memClient->isValid());
@@ -174,7 +174,7 @@ class SplitTest : public CxxTest::TestSuite {
                         stringstream sstr2;
                         sstr2 << "Data-" << (rangeBasis-1) << endl;
 
-                        TS_ASSERT(core::strings::StringToolbox::equalsIgnoreCase(s, sstr2.str()));
+                        TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(s, sstr2.str()));
                     memClient->unlock();
 
                     sharedMemorySegments++;

@@ -13,16 +13,16 @@ https://github.com/se-research/OpenDaVINCI/tree/master/tutorials/timetrigger
 "Hello World" example
 """""""""""""""""""""
 
-A time-triggered software component is derived from ``core::base::TimeTriggeredConferenceClientModule``,
-provided in ``<core/base/module/TimeTriggeredConferenceClientModule.h>``.
+A time-triggered software component is derived from ``odcore::base::TimeTriggeredConferenceClientModule``,
+provided in ``<opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h>``.
 
 TimeTriggerExample.h:
 
 .. code-block:: c++
 
-    #include <core/base/TimeTriggeredConferenceClientModule.h>
+    #include <opendavinci/odcore/base/TimeTriggeredConferenceClientModule.h>
 
-    class TimeTriggerExample : public core::base::module::TimeTriggeredConferenceClientModule {
+    class TimeTriggerExample : public odcore::base::module::TimeTriggeredConferenceClientModule {
         private:
             TimeTriggerExample(const TimeTriggerExample &/*obj*/);
             TimeTriggerExample& operator=(const TimeTriggerExample &/*obj*/);
@@ -38,7 +38,7 @@ TimeTriggerExample.h:
 
             virtual ~TimeTriggerExample();
 
-            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+            odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
         private:
             virtual void setUp();
@@ -46,7 +46,7 @@ TimeTriggerExample.h:
             virtual void tearDown();
     };
 
-The class ``core::base::module::TimeTriggeredConferenceClientModule`` provides three methods
+The class ``odcore::base::module::TimeTriggeredConferenceClientModule`` provides three methods
 that need to be implemented by the user: ``setUp()``, ``body()``, and ``tearDown()``.
 These methods reflect the basic runtime cycle of a software component: An initialization
 phase, followed by a time-triggered execution of an algorithm implemented in the
@@ -70,11 +70,11 @@ TimeTriggerExample.cpp:
     using namespace std;
 
     // We add some of OpenDaVINCI's namespaces for the sake of readability.
-    using namespace core::base::module;
+    using namespace odcore::base::module;
 
     TimeTriggerExample::TimeTriggerExample(const int32_t &argc, char **argv) :
         TimeTriggeredConferenceClientModule(argc, argv, "TimeTriggerExample")
-        {}
+    {}
 
     TimeTriggerExample::~TimeTriggerExample() {}
 
@@ -86,10 +86,10 @@ TimeTriggerExample.cpp:
         cout << "This method is called after the program flow returns from the component's body." << endl;
     }
 
-    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode TimeTriggerExample::body() {
+    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode TimeTriggerExample::body() {
         cout << "Hello OpenDaVINCI World!" << endl;
 
-        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+        return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
     }
 
     int32_t main(int32_t argc, char **argv) {
@@ -123,7 +123,7 @@ super-classes.
 
 You can compile and link the example::
 
-   $ g++ -I /usr/include/opendavinci -c TimeTriggerExample.cpp -o TimeTriggerExample.o
+   $ g++ -I /usr/include -c TimeTriggerExample.cpp -o TimeTriggerExample.o
    $ g++ -o timetriggerexample TimeTriggerExample.o -lopendavinci -lpthread
 
 To test the program, we need to run the software component life-cycle management
@@ -164,7 +164,7 @@ The application will print the following on the console::
 If the container conference session identifier is omitted, the following exception
 will be thrown::
 
-   terminate called after throwing an instance of 'core::exceptions::InvalidArgumentException'
+   terminate called after throwing an instance of 'odcore::exceptions::InvalidArgumentException'
      what():  InvalidArgumentException: Invalid number of arguments. At least a conference group id (--cid=) needed. at /home/berger/GITHUB/Mini-Smart-Vehicles/sources/OpenDaVINCI-msv/libopendavinci/src/core/base/AbstractCIDModule.cpp: 53
    Aborted
 
@@ -191,11 +191,11 @@ TimeTriggerExample.cpp:
     using namespace std;
 
     // We add some of OpenDaVINCI's namespaces for the sake of readability.
-    using namespace core::base;
+    using namespace odcore::base;
 
     TimeTriggerExample::TimeTriggerExample(const int32_t &argc, char **argv) :
         TimeTriggeredConferenceClientModule(argc, argv, "TimeTriggerExample")
-        {}
+    {}
 
     TimeTriggerExample::~TimeTriggerExample() {}
 
@@ -207,7 +207,7 @@ TimeTriggerExample.cpp:
         cout << "This method is called after the program flow returns from the component's body." << endl;
     }
 
-    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode TimeTriggerExample::body() {
+    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode TimeTriggerExample::body() {
         cout << "Hello OpenDaVINCI World!" << endl;
 
         cout << "This is my name: " << getName() << endl;
@@ -220,7 +220,7 @@ TimeTriggerExample.cpp:
         cout << "  " << getKeyValueConfiguration().getValue<string>("timetriggerexample.key4") << endl;
         cout << "  " << (getKeyValueConfiguration().getValue<bool>("timetriggerexample.key5") == 1) << endl;
 
-        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+        return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
     }
 
     int32_t main(int32_t argc, char **argv) {
@@ -314,11 +314,11 @@ TimeTriggerExample.cpp:
     using namespace std;
 
     // We add some of OpenDaVINCI's namespaces for the sake of readability.
-    using namespace core::base;
+    using namespace odcore::base;
 
     TimeTriggerExample::TimeTriggerExample(const int32_t &argc, char **argv) :
         TimeTriggeredConferenceClientModule(argc, argv, "TimeTriggerExample")
-        {}
+    {}
 
     TimeTriggerExample::~TimeTriggerExample() {}
 
@@ -330,7 +330,7 @@ TimeTriggerExample.cpp:
         cout << "This method is called after the program flow returns from the component's body." << endl;
     }
 
-    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode TimeTriggerExample::body() {
+    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode TimeTriggerExample::body() {
         cout << "Hello OpenDaVINCI World!" << endl;
 
         cout << "This is my name: " << getName() << endl;
@@ -343,11 +343,11 @@ TimeTriggerExample.cpp:
         cout << "  " << getKeyValueConfiguration().getValue<string>("timetriggerexample.key4") << endl;
         cout << "  " << (getKeyValueConfiguration().getValue<bool>("timetriggerexample.key5") == 1) << endl;
 
-        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
             cout << "Inside the main processing loop." << endl;
         }
 
-        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+        return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
     }
 
     int32_t main(int32_t argc, char **argv) {
@@ -387,7 +387,7 @@ https://rt.wiki.kernel.org/index.php/RT_PREEMPT_HOWTO.
 To run an application with real-time prioritization, it must be linked with the
 real-time library ``rt``::
 
-   $ g++ -I /usr/include/opendavinci -c TimeTriggerExample.cpp -o TimeTriggerExample.o
+   $ g++ -I /usr/include -c TimeTriggerExample.cpp -o TimeTriggerExample.o
    $ g++ -o timetriggerexample TimeTriggerExample.o -lopendavinci -lpthread -lrt
 
 On execution, simply specify the parameter ``--realtime=`` from within the range

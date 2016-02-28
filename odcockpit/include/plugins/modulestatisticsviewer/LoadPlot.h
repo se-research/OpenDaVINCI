@@ -39,7 +39,7 @@
 
 #include <vector>
 
-#include "core/SharedPointer.h"
+#include <memory>
 
 class QTimer;
 class QWidget;
@@ -77,11 +77,11 @@ class LoadPerModule;
 
 	                ~LoadPlot();
 
-	                void addLoadPerModule(core::SharedPointer<LoadPerModule> lpm);
+	                void addLoadPerModule(std::shared_ptr<LoadPerModule> lpm);
 
                 private:
 	                QwtLegend* m_legend;
-	                vector<core::SharedPointer<LoadPerModule> > m_toAdd;
+	                vector<std::shared_ptr<LoadPerModule> > m_toAdd;
 	                QTimer* m_toAttachVisitor;
 
                 private slots:

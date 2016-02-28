@@ -22,28 +22,28 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "context/base/ControlledTime.h"  // for ControlledTime
-#include "context/base/ControlledTimeFactory.h"
-#include "core/SharedPointer.h"         // for SharedPointer
-#include "core/data/TimeStamp.h"        // for TimeStamp
-#include "core/opendavinci.h"
-#include "core/wrapper/TimeFactory.h"   // for TimeFactory
+#include "opendavinci/odcontext/base/ControlledTime.h"  // for ControlledTime
+#include "opendavinci/odcontext/base/ControlledTimeFactory.h"
+#include <memory>
+#include "opendavinci/odcore/data/TimeStamp.h"        // for TimeStamp
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/wrapper/TimeFactory.h"   // for TimeFactory
 
-namespace core { namespace wrapper { class Time; } }
+namespace odcore { namespace wrapper { class Time; } }
 
 using namespace std;
-using namespace core;
-using namespace core::base;
-using namespace core::data;
-using namespace context::base;
+using namespace odcore;
+using namespace odcore::base;
+using namespace odcore::data;
+using namespace odcontext::base;
 
-class TimeFactoryTestDisableTimeFactory : public core::wrapper::TimeFactory {
+class TimeFactoryTestDisableTimeFactory : public odcore::wrapper::TimeFactory {
     public:
         void disable() {
-            core::wrapper::TimeFactory::setSingleton(NULL);
+            odcore::wrapper::TimeFactory::setSingleton(NULL);
         }
-        SharedPointer<core::wrapper::Time> now() {
-            SharedPointer<core::wrapper::Time> t;
+        std::shared_ptr<odcore::wrapper::Time> now() {
+            std::shared_ptr<odcore::wrapper::Time> t;
             return t;
         }
 };
@@ -81,8 +81,8 @@ class TimeFactoryTest : public CxxTest::TestSuite {
 
             // Exchange TimeFactory.
             ControlledTimeFactory *controlledTF = new ControlledTimeFactory();
-            core::wrapper::TimeFactory &controlledtf = core::wrapper::TimeFactory::getInstance();
-            core::wrapper::TimeFactory *tf2 = &controlledtf;
+            odcore::wrapper::TimeFactory &controlledtf = odcore::wrapper::TimeFactory::getInstance();
+            odcore::wrapper::TimeFactory *tf2 = &controlledtf;
             TS_ASSERT(tf2 == controlledTF);
 
             // Get TimeStamp;

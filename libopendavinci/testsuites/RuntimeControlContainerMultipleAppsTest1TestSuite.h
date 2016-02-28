@@ -26,37 +26,38 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/opendavinci.h"
-#include "context/base/DirectInterface.h"  // for DirectInterface
-#include "context/base/RuntimeControl.h"  // for RuntimeControl, etc
-#include "context/base/RuntimeEnvironment.h"  // for RuntimeEnvironment
-#include "context/base/SendContainerToSystemsUnderTest.h"
-#include "context/base/SystemFeedbackComponent.h"
-#include "context/base/SystemReportingComponent.h"
-#include "core/SharedPointer.h"         // for SharedPointer
-#include "core/base/Deserializer.h"     // for Deserializer
-#include "core/base/FIFOQueue.h"        // for FIFOQueue
-#include "core/base/Hash.h"             // for CharList, CRC32, etc
-#include "core/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
-#include "core/base/SerializationFactory.h"  // for SerializationFactory
-#include "core/base/Serializer.h"       // for Serializer
-#include "core/base/Thread.h"           // for Thread
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "core/data/Container.h"        // for Container, etc
-#include "core/data/SerializableData.h"  // for SerializableData
-#include "core/data/TimeStamp.h"        // for TimeStamp
-#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcontext/base/DirectInterface.h"  // for DirectInterface
+#include "opendavinci/odcontext/base/RuntimeControl.h"  // for RuntimeControl, etc
+#include "opendavinci/odcontext/base/RuntimeEnvironment.h"  // for RuntimeEnvironment
+#include "opendavinci/odcontext/base/SendContainerToSystemsUnderTest.h"
+#include "opendavinci/odcontext/base/SystemFeedbackComponent.h"
+#include "opendavinci/odcontext/base/SystemReportingComponent.h"
+#include <memory>
+#include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
+#include "opendavinci/odcore/base/FIFOQueue.h"        // for FIFOQueue
+#include "opendavinci/odcore/base/Hash.h"             // for CharList, CRC32, etc
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
+#include "opendavinci/odcore/base/SerializationFactory.h"  // for SerializationFactory
+#include "opendavinci/odcore/base/Serializer.h"       // for Serializer
+#include "opendavinci/odcore/base/Thread.h"           // for Thread
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/data/Container.h"        // for Container, etc
+#include "opendavinci/odcore/data/SerializableData.h"  // for SerializableData
+#include "opendavinci/odcore/data/TimeStamp.h"        // for TimeStamp
+#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
 
-namespace core { namespace wrapper { class Time; } }
+namespace odcore { namespace wrapper { class Time; } }
 
 using namespace std;
-using namespace core::base;
-using namespace core::base::module;
-using namespace core::data;
-using namespace context::base;
+using namespace odcore::base;
+using namespace odcore::base::module;
+using namespace odcore::data;
+using namespace odcontext::base;
 
+const int32_t Container_POSITION = 15;
 
-class LocalPoint3 : public core::data::SerializableData {
+class LocalPoint3 : public odcore::data::SerializableData {
     private:
         double m_x;
         double m_y;
@@ -115,10 +116,22 @@ class LocalPoint3 : public core::data::SerializableData {
             return "";
         }
 
+        int32_t getID() const {
+            return 35;
+        }
+
+        const string getLongName() const {
+            return "LocalPoint3";
+        }
+
+        const string getShortName() const {
+            return getLongName();
+        }
+
         ostream& operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();;
 
-            core::SharedPointer<Serializer> s = sf.getSerializer(out);
+            std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
             stringstream rawData;
             rawData.precision(10);
@@ -134,7 +147,7 @@ class LocalPoint3 : public core::data::SerializableData {
         istream& operator>>(istream &in) {
             SerializationFactory& sf=SerializationFactory::getInstance();;
 
-            core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+            std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
             string data;
             d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('d', 'a', 't', 'a') >::RESULT,
@@ -150,7 +163,7 @@ class LocalPoint3 : public core::data::SerializableData {
         }
 };
 
-class LocalPosition : public core::data::SerializableData {
+class LocalPosition : public odcore::data::SerializableData {
     private:
         LocalPoint3 m_position;
         LocalPoint3 m_rotation;
@@ -174,6 +187,18 @@ class LocalPosition : public core::data::SerializableData {
             return "";
         }
 
+        int32_t getID() const {
+            return Container_POSITION;
+        }
+
+        const string getLongName() const {
+            return "LocalPosition";
+        }
+
+        const string getShortName() const {
+            return getLongName();
+        }
+
         void setPosition(const LocalPoint3 &p) {
             m_position = p;
         }
@@ -193,7 +218,7 @@ class LocalPosition : public core::data::SerializableData {
         ostream& operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
-            core::SharedPointer<Serializer> s = sf.getSerializer(out);
+            std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
             s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('p', 'o', 's') >::RESULT,
                     m_position);
@@ -207,7 +232,7 @@ class LocalPosition : public core::data::SerializableData {
         istream& operator>>(istream &in) {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
-            core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+            std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
             d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('p', 'o', 's') >::RESULT,
                    m_position);
@@ -220,7 +245,7 @@ class LocalPosition : public core::data::SerializableData {
 };
 
 
-class RuntimeControlContainerMultipleAppsTestData : public core::data::SerializableData {
+class RuntimeControlContainerMultipleAppsTestData : public odcore::data::SerializableData {
     public:
         RuntimeControlContainerMultipleAppsTestData() :
             m_int(0),
@@ -228,6 +253,18 @@ class RuntimeControlContainerMultipleAppsTestData : public core::data::Serializa
 
         uint32_t m_int;
         string m_id;
+
+        int32_t getID() const {
+            return 37;
+        }
+
+        const string getLongName() const {
+            return "RuntimeControlContainerMultipleAppsTestData";
+        }
+
+        const string getShortName() const {
+            return getLongName();
+        }
 
         const string toString() const {
             stringstream sstr;
@@ -238,7 +275,7 @@ class RuntimeControlContainerMultipleAppsTestData : public core::data::Serializa
         ostream& operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
-            core::SharedPointer<Serializer> s = sf.getSerializer(out);
+            std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
             s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 'i', 'n', 't') >::RESULT,
                     m_int);
@@ -252,7 +289,7 @@ class RuntimeControlContainerMultipleAppsTestData : public core::data::Serializa
         istream& operator>>(istream &in) {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
-            core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+            std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
             d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('m', '_', 'i', 'd') >::RESULT,
                    m_id);
@@ -276,13 +313,13 @@ class RuntimeControlContainerMultipleAppsTestModule : public TimeTriggeredConfer
 
         virtual void tearDown() {}
 
-        virtual coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
+        virtual odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
             m_config = getKeyValueConfiguration();
 
             m_config.getValue<string>("runtimecontrolcontainermultipleappstestmodule.key1");
 
-            addDataStoreFor(Container::POSITION, m_receivedData);
-            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+            addDataStoreFor(Container_POSITION, m_receivedData);
+            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
                 m_cycleCounter++;
 
                 stringstream sstrId;
@@ -291,11 +328,11 @@ class RuntimeControlContainerMultipleAppsTestModule : public TimeTriggeredConfer
                 RuntimeControlContainerMultipleAppsTestData tcctsd;
                 tcctsd.m_int = m_cycleCounter;
                 tcctsd.m_id = sstrId.str();
-                Container c(Container::UNDEFINEDDATA, tcctsd);
+                Container c(tcctsd);
                 getConference().send(c);
             }
 
-            return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
         KeyValueConfiguration getConfiguration() {
@@ -327,13 +364,13 @@ class RuntimeControlContainerMultipleAppsTestModuleForSampleData : public TimeTr
 
         virtual void tearDown() {}
 
-        virtual coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
+        virtual odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
             addDataStoreFor(m_receivedData);
-            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
                 m_cycleCounter++;
             }
 
-            return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
         uint32_t getCycleCounter() const {
@@ -367,7 +404,7 @@ class RuntimeControlContainerMultipleAppsTestSystemPartReply : public SystemFeed
 
         virtual void tearDown() {}
 
-        virtual void step(const core::wrapper::Time &t, SendContainerToSystemsUnderTest &sender) {
+        virtual void step(const odcore::wrapper::Time &t, SendContainerToSystemsUnderTest &sender) {
             clog << "Call to RuntimeControlContainerMultipleAppsTestSystemPartReply for t = " << t.getSeconds() << "." << t.getPartialMicroseconds() << ", containing " << getFIFO().getSize() << " containers." << endl;
 
             const uint32_t SIZE = getFIFO().getSize();
@@ -383,7 +420,7 @@ class RuntimeControlContainerMultipleAppsTestSystemPartReply : public SystemFeed
             LocalPosition p;
             p.setPosition(LocalPoint3(m_replyCounter, m_replyCounter+1, m_replyCounter+2));
 
-            Container c(Container::POSITION, p);
+            Container c(p);
             sender.sendToSystemsUnderTest(c);
 
             m_replyCounter++;
@@ -409,7 +446,7 @@ class RuntimeControlContainerMultipleAppsTestSystemPartReplyRotation : public Sy
 
         virtual void tearDown() {}
 
-        virtual void step(const core::wrapper::Time &t, SendContainerToSystemsUnderTest &sender) {
+        virtual void step(const odcore::wrapper::Time &t, SendContainerToSystemsUnderTest &sender) {
             clog << "Call to RuntimeControlContainerMultipleAppsTestSystemPartReply for t = " << t.getSeconds() << "." << t.getPartialMicroseconds() << ", containing " << getFIFO().getSize() << " containers." << endl;
 
             const uint32_t SIZE = getFIFO().getSize();
@@ -425,7 +462,7 @@ class RuntimeControlContainerMultipleAppsTestSystemPartReplyRotation : public Sy
             LocalPosition p;
             p.setRotation(LocalPoint3(m_replyCounter, m_replyCounter+1, m_replyCounter+2));
 
-            Container c(Container::POSITION, p);
+            Container c(p);
             sender.sendToSystemsUnderTest(c);
 
             m_replyCounter++;
@@ -445,7 +482,7 @@ class RuntimeControlContainerMultipleAppsTestSystemReportingComponent : public S
 
         virtual void tearDown() {}
 
-        virtual void report(const core::wrapper::Time &t) {
+        virtual void report(const odcore::wrapper::Time &t) {
             clog << "Call to RuntimeControlContainerMultipleAppsTestSystemReportingComponent for t = " << t.getSeconds() << "." << t.getPartialMicroseconds() << ", containing " << getFIFO().getSize() << " containers." << endl;
 
             // Simply remove all entries.

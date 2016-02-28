@@ -24,25 +24,25 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "context/base/BlockableContainerReceiver.h"
-#include "context/base/ControlledContainerConferenceFactory.h"
-#include "context/base/ControlledContainerConferenceForSystemUnderTest.h"
-#include "core/SharedPointer.h"         // for SharedPointer
-#include "core/base/FIFOQueue.h"        // for FIFOQueue
-#include "core/data/Container.h"        // for Container, etc
-#include "core/data/TimeStamp.h"        // for TimeStamp
-#include "core/io/conference/ContainerConference.h"
-#include "core/io/conference/ContainerConferenceFactory.h"
-#include "core/io/conference/ContainerListener.h"
-#include "core/io/conference/UDPMultiCastContainerConference.h"
-#include "core/opendavinci.h"
+#include "opendavinci/odcontext/base/BlockableContainerReceiver.h"
+#include "opendavinci/odcontext/base/ControlledContainerConferenceFactory.h"
+#include "opendavinci/odcontext/base/ControlledContainerConferenceForSystemUnderTest.h"
+#include <memory>
+#include "opendavinci/odcore/base/FIFOQueue.h"        // for FIFOQueue
+#include "opendavinci/odcore/data/Container.h"        // for Container, etc
+#include "opendavinci/odcore/data/TimeStamp.h"        // for TimeStamp
+#include "opendavinci/odcore/io/conference/ContainerConference.h"
+#include "opendavinci/odcore/io/conference/ContainerConferenceFactory.h"
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
+#include "opendavinci/odcore/io/conference/UDPMultiCastContainerConference.h"
+#include "opendavinci/odcore/opendavinci.h"
 
 using namespace std;
-using namespace core::base;
-using namespace core::data;
-using namespace core::io;
-using namespace core::io::conference;
-using namespace context::base;
+using namespace odcore::base;
+using namespace odcore::data;
+using namespace odcore::io;
+using namespace odcore::io::conference;
+using namespace odcontext::base;
 
 class ConferenceFactoryTestContainerListener : public ContainerListener {
     public:
@@ -92,8 +92,8 @@ class ConferenceFactoryTest : public CxxTest::TestSuite {
 
             // Create regular ContainerConference.
             const string group = "225.0.0.200";
-            core::SharedPointer<ContainerConference> udpCF = ContainerConferenceFactory::getInstance().getContainerConference(group);
-            TS_ASSERT(udpCF.isValid());
+            std::shared_ptr<ContainerConference> udpCF = ContainerConferenceFactory::getInstance().getContainerConference(group);
+            TS_ASSERT(udpCF.get());
             bool castIntoUDPCFSuccessful = false;
             try {
                 UDPMultiCastContainerConference *udpmccf = dynamic_cast<UDPMultiCastContainerConference*>(udpCF.operator->());
@@ -108,7 +108,7 @@ class ConferenceFactoryTest : public CxxTest::TestSuite {
             ContainerConferenceFactory &ccfDestroy = ContainerConferenceFactory::getInstance();
             ccf2 = &ccfDestroy;
             OPENDAVINCI_CORE_DELETE_POINTER(ccf2);
-            udpCF.release();
+            udpCF.reset();
 
             // Exchange ContainerConferenceFactory.
             ControlledContainerConferenceFactory *controlledCF = new ControlledContainerConferenceFactory();
@@ -117,9 +117,9 @@ class ConferenceFactoryTest : public CxxTest::TestSuite {
             TS_ASSERT(ccf2 == controlledCF);
 
             // Get ControlledContainerConference.
-            core::SharedPointer<ContainerConference> cf = controlledccf.getContainerConference(group);
+            std::shared_ptr<ContainerConference> cf = controlledccf.getContainerConference(group);
             ControlledContainerConferenceForSystemUnderTest *controlledConferenceForSystemUnderTest = NULL;
-            TS_ASSERT(cf.isValid());
+            TS_ASSERT(cf.get());
             bool castIntoCCFSuccessful = false;
             try {
                 controlledConferenceForSystemUnderTest = dynamic_cast<ControlledContainerConferenceForSystemUnderTest*>(cf.operator->());
@@ -140,7 +140,7 @@ class ConferenceFactoryTest : public CxxTest::TestSuite {
             controlledCF->add(&cftctlfcfsut);
 
             TimeStamp tsSendFromSimulatorToContainerConference(1, 2);
-            Container c = Container(Container::TIMESTAMP, tsSendFromSimulatorToContainerConference);
+            Container c = Container(tsSendFromSimulatorToContainerConference);
             controlledCF->sendToSystemsUnderTest(c);
 
             TS_ASSERT(listener.getReceivedContainer().getDataType() == c.getDataType());
@@ -151,7 +151,7 @@ class ConferenceFactoryTest : public CxxTest::TestSuite {
             controlledConferenceForSystemUnderTest->getBlockableContainerReceiver().setNextContainerAllowed(true);
             // Send some data from application to controlled container conference.
             TimeStamp tsSendFromApplicationToContainerConference(3, 4);
-            c = Container(Container::TIMESTAMP, tsSendFromApplicationToContainerConference);
+            c = Container(tsSendFromApplicationToContainerConference);
             controlledConferenceForSystemUnderTest->send(c);
             controlledConferenceForSystemUnderTest->getBlockableContainerReceiver().setNextContainerAllowed(false);
 

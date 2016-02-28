@@ -30,11 +30,12 @@
 #include <algorithm>
 #include <iostream>
 
-#include "core/opendavinci.h"
-#include "core/base/Lock.h"
-#include "core/data/Container.h"
-#include "core/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 #include "plugins/sharedimageviewer/SharedImageViewerWidget.h"
+#include "opendavinci/generated/odcore/data/image/SharedImage.h"
 
 class QPaintEvent;
 namespace cockpit { namespace plugins { class PlugIn; } }
@@ -46,20 +47,20 @@ namespace cockpit {
         namespace sharedimageviewer {
 
             using namespace std;
-            using namespace core::base;
-            using namespace core::data;
-            using namespace coredata::image;
+            using namespace odcore::base;
+            using namespace odcore::data;
+            using namespace odcore::data::image;
 
             SharedImageViewerWidget::SharedImageViewerWidget(const PlugIn &/*plugIn*/, QWidget *prnt) :
-                    QWidget(prnt),
-                    m_sharedImageMemoryMutex(),
-                    m_sharedImage(),
-                    m_sharedImageMemory(),
-                    m_drawableImage(NULL),
-                    m_grayscale(),
-                    m_list(NULL),
-				    m_listOfAvailableSharedImages(),
-				    m_mapOfAvailableSharedImages() {
+                QWidget(prnt),
+                m_sharedImageMemoryMutex(),
+                m_sharedImage(),
+                m_sharedImageMemory(),
+                m_drawableImage(NULL),
+                m_grayscale(),
+                m_list(NULL),
+                m_listOfAvailableSharedImages(),
+                m_mapOfAvailableSharedImages() {
 
                 // Set size.
                 setMinimumSize(640, 480);
@@ -89,41 +90,41 @@ namespace cockpit {
             }
 
             void SharedImageViewerWidget::selectedSharedImage(QListWidgetItem *item) {
-            	if (item != NULL) {
-            		// Retrieve stored shared image.
-            		SharedImage si = m_mapOfAvailableSharedImages[item->text().toStdString()];
+                if (item != NULL) {
+                    // Retrieve stored shared image.
+                    SharedImage si = m_mapOfAvailableSharedImages[item->text().toStdString()];
 
-            		if ( (si.getWidth() * si.getHeight()) > 0 ) {
-            			Lock l(m_sharedImageMemoryMutex);
+                    if ( (si.getWidth() * si.getHeight()) > 0 ) {
+                        Lock l(m_sharedImageMemoryMutex);
 
-            			cerr << "Using shared image: " << si.toString() << endl;
+                        cerr << "Using shared image: " << si.toString() << endl;
                         setWindowTitle(QString::fromStdString(si.toString()));
 
-            			m_sharedImageMemory = core::wrapper::SharedMemoryFactory::attachToSharedMemory(si.getName());
-            			m_sharedImage = si;
+                        m_sharedImageMemory = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(si.getName());
+                        m_sharedImage = si;
 
-            			// Remove the selection box.
-            			m_list->hide();
-            		}
-            	}
+                        // Remove the selection box.
+                        m_list->hide();
+                    }
+                }
             }
 
             void SharedImageViewerWidget::nextContainer(Container &c) {
-                if (c.getDataType() == Container::SHARED_IMAGE) {
+                if (c.getDataType() == odcore::data::image::SharedImage::ID()) {
                     SharedImage si = c.getData<SharedImage>();
 
                     if ( ( (si.getWidth() * si.getHeight()) > 0) && (si.getName().size() > 0) ) {
-                    	// Check if this shared image is already in the list.
-                    	vector<string>::iterator result = std::find(m_listOfAvailableSharedImages.begin(), m_listOfAvailableSharedImages.end(), si.getName());
-                    	if (result == m_listOfAvailableSharedImages.end()) {
-                    		m_listOfAvailableSharedImages.push_back(si.getName());
+                        // Check if this shared image is already in the list.
+                        vector<string>::iterator result = std::find(m_listOfAvailableSharedImages.begin(), m_listOfAvailableSharedImages.end(), si.getName());
+                        if (result == m_listOfAvailableSharedImages.end()) {
+                            m_listOfAvailableSharedImages.push_back(si.getName());
 
-                    		QString item = QString::fromStdString(si.getName());
-                    		m_list->addItem(item);
+                            QString item = QString::fromStdString(si.getName());
+                            m_list->addItem(item);
 
-                    		// Store for further usage.
-                    		m_mapOfAvailableSharedImages[si.getName()] = si;
-                    	}
+                            // Store for further usage.
+                            m_mapOfAvailableSharedImages[si.getName()] = si;
+                        }
                     }
                 }
             }
@@ -131,7 +132,7 @@ namespace cockpit {
             void SharedImageViewerWidget::paintEvent(QPaintEvent * /*evnt*/) {
                 Lock l(m_sharedImageMemoryMutex);
 
-                if ( (m_sharedImageMemory.isValid()) && (m_sharedImageMemory->isValid()) ) {
+                if ( (m_sharedImageMemory.get()) && (m_sharedImageMemory->isValid()) ) {
                     m_sharedImageMemory->lock();
 
                     OPENDAVINCI_CORE_DELETE_POINTER(m_drawableImage);

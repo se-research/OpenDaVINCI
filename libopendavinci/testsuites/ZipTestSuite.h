@@ -26,13 +26,13 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"         // for SharedPointer
-#include "core/wrapper/CompressionFactory.h"  // for CompressionFactory
-#include "core/wrapper/DecompressedData.h"  // for DecompressedData
+#include "opendavinci/odcore/opendavinci.h"
+#include <memory>
+#include "opendavinci/odcore/wrapper/CompressionFactory.h"  // for CompressionFactory
+#include "opendavinci/odcore/wrapper/DecompressedData.h"  // for DecompressedData
 
 using namespace std;
-using namespace core;
+using namespace odcore;
 
 class ZipTest : public CxxTest::TestSuite {
     public:
@@ -49,8 +49,8 @@ class ZipTest : public CxxTest::TestSuite {
             fout.close();
 
             fstream fin("ZipTest.zip", ios::binary | ios::in);
-            core::SharedPointer<core::wrapper::DecompressedData> dd = core::wrapper::CompressionFactory::getContents(fin);
-            TS_ASSERT(dd.isValid());
+            std::shared_ptr<odcore::wrapper::DecompressedData> dd = odcore::wrapper::CompressionFactory::getContents(fin);
+            TS_ASSERT(dd.get());
             fin.close();
 
             vector<string> entries = dd->getListOfEntries();
@@ -60,9 +60,9 @@ class ZipTest : public CxxTest::TestSuite {
             TS_ASSERT(entries.at(1) == "directory/file2");
             TS_ASSERT(entries.at(2) == "file1");
 
-            SharedPointer<istream> stream = dd->getInputStreamFor("file1");
-            TS_ASSERT(stream.isValid());
-            if (stream.isValid()) {
+            std::shared_ptr<istream> stream = dd->getInputStreamFor("file1");
+            TS_ASSERT(stream.get());
+            if (stream.get()) {
                 char c;
                 stringstream decompressedData;
                 while (stream->get(c)) {
@@ -76,8 +76,8 @@ class ZipTest : public CxxTest::TestSuite {
             }
 
             stream = dd->getInputStreamFor("directory/file2");
-            TS_ASSERT(stream.isValid());
-            if (stream.isValid()) {
+            TS_ASSERT(stream.get());
+            if (stream.get()) {
                 char c;
                 stringstream decompressedData;
                 while (stream->get(c)) {
@@ -91,7 +91,7 @@ class ZipTest : public CxxTest::TestSuite {
             }
 
             stream = dd->getInputStreamFor("directory/non-existing-file");
-            TS_ASSERT(!stream.isValid());
+            TS_ASSERT(!stream.get());
 
             UNLINK("ZipTest.zip");
         }

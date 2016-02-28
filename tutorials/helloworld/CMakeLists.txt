@@ -30,6 +30,11 @@ IF(WIN32)
 ENDIF()
 
 ###########################################################################
+# Compile flags to enable C++11.
+SET (CXX_OPTIONS       "-std=c++11")
+SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC ${CXX_OPTIONS} -pipe")
+
+###########################################################################
 # Find OpenDaVINCI.
 IF("${OPENDAVINCI_DIR}" STREQUAL "")
     SET(OPENDAVINCI_DIR "${CMAKE_INSTALL_PREFIX}")
@@ -40,7 +45,7 @@ FIND_PACKAGE (OpenDaVINCI REQUIRED)
 
 ###############################################################################
 # Set header files from OpenDaVINCI.
-INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS}/opendavinci)
+INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS})
 
 ###############################################################################
 # Build this project.

@@ -29,17 +29,17 @@
 #include <string>
 #include <vector>
 
-#include "core/opendavinci.h"
-#include "core/base/Mutex.h"
-#include "core/data/Container.h"
-#include "core/io/conference/ContainerListener.h"
-#include "generated/automotive/miniature/SensorBoardData.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
+#include "automotivedata/generated/automotive/miniature/SensorBoardData.h"
 
 class QLabel;
 class QwtPlot;
 class QwtPlotCurve;
 namespace cockpit { namespace plugins { class PlugIn; } }
-namespace core { namespace base { class KeyValueConfiguration; } }
+namespace odcore { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
 
@@ -54,7 +54,7 @@ class IrUsChartData;
             /**
              * This class is the container for the IrUsCharts widget.
              */
-            class IrUsChartsWidget : public QWidget, public core::io::conference::ContainerListener {
+            class IrUsChartsWidget : public QWidget, public odcore::io::conference::ContainerListener {
 
                 Q_OBJECT
 
@@ -81,11 +81,11 @@ class IrUsChartData;
                      * @param kvc KeyValueConfiguration for this based widget.
                      * @param prnt Pointer to the parental widget.
                      */
-                    IrUsChartsWidget(const PlugIn &plugIn, const core::base::KeyValueConfiguration &kvc, QWidget *prnt);
+                    IrUsChartsWidget(const PlugIn &plugIn, const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt);
 
                     virtual ~IrUsChartsWidget();
 
-                    virtual void nextContainer(core::data::Container &c);
+                    virtual void nextContainer(odcore::data::Container &c);
 
                 public slots:
                     void TimerEvent();
@@ -99,8 +99,8 @@ class IrUsChartData;
                     map<uint32_t, string> m_mapOfSensors;
                     deque<automotive::miniature::SensorBoardData> m_data;
                     uint32_t m_bufferMax;
-                    core::base::Mutex m_receivedSensorBoardDataContainersMutex;
-                    deque<core::data::Container> m_receivedSensorBoardDataContainers;
+                    odcore::base::Mutex m_receivedSensorBoardDataContainersMutex;
+                    deque<odcore::data::Container> m_receivedSensorBoardDataContainers;
 
                     QLabel *m_bufferFilling;
             };

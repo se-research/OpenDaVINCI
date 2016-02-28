@@ -20,8 +20,8 @@
 #include <vector>
 
 #include "CANProxyMapper.h"
-#include "core/base/Thread.h"
-#include "core/data/Container.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/data/Container.h"
 
 namespace automotive { class GenericCANMessage; }
 
@@ -29,8 +29,8 @@ namespace automotive {
     namespace odcantools {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::data;
+        using namespace odcore::base;
+        using namespace odcore::data;
 
         CANProxyMapper::CANProxyMapper(const int32_t &argc, char **argv) :
             CANProxy(argc, argv),

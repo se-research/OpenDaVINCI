@@ -4,17 +4,18 @@
  * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
  */
 
+#include <memory>
 
-#include "core/base/Hash.h"
-#include "core/base/Deserializer.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 
 
-#include "generated/Test11MapDouble.h"
+#include "test11/generated/Test11MapDouble.h"
 
 	using namespace std;
-	using namespace core::base;
+	using namespace odcore::base;
 
 
 	Test11MapDouble::Test11MapDouble() :
@@ -85,6 +86,18 @@
 
 	const string Test11MapDouble::LongName() {
 		return "Test11MapDouble";
+	}
+
+	int32_t Test11MapDouble::getID() const {
+		return Test11MapDouble::ID();
+	}
+
+	const string Test11MapDouble::getShortName() const {
+		return Test11MapDouble::ShortName();
+	}
+
+	const string Test11MapDouble::getLongName() const {
+		return Test11MapDouble::LongName();
 	}
 
 	std::map<double, bool> Test11MapDouble::getMapOfMyDoubleBoolMap() const {
@@ -333,7 +346,7 @@
 		return std::make_pair(m_mapOfMyDoubleStringMap.begin(), m_mapOfMyDoubleStringMap.end());
 	}
 
-	void Test11MapDouble::accept(core::base::Visitor &v) {
+	void Test11MapDouble::accept(odcore::base::Visitor &v) {
 		(void)v; // Avoid unused parameter warning.
 	}
 
@@ -356,7 +369,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Serializer> s = sf.getSerializer(out);
+		std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
 		{
 			// Write number of elements in m_mapOfMyDoubleBoolMap.
@@ -505,7 +518,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
 		// Clean up the existing map of MyDoubleBoolMap.
 		m_mapOfMyDoubleBoolMap.clear();

@@ -13,10 +13,10 @@ MyRealtimeService.hpp:
 
 .. code-block:: c++
 
-    #include <core/base/RealtimeService.h>
+    #include <opendavinci/odcore/base/RealtimeService.h>
 
-    // Realtime concurrency is provided by the class core::base::RealtimeService.
-    class MyRealtimeService : public core::base::RealtimeService {
+    // Realtime concurrency is provided by the class odcore::base::RealtimeService.
+    class MyRealtimeService : public odcore::base::RealtimeService {
 
         public:
             MyRealtimeService(const enum PERIOD &period);
@@ -32,32 +32,32 @@ MyRealtimeService.cpp:
 
     #include <stdint.h>
     #include <iostream>
-    #include <core/base/Thread.h>
+    #include <opendavinci/odcore/base/Thread.h>
 
     #include "MyRealtimeService.hpp"
 
     using namespace std;
 
     MyRealtimeService::MyRealtimeService(const enum PERIOD &period) :
-        core::base::RealtimeService(period) {}
+        odcore::base::RealtimeService(period) {}
 
     void MyRealtimeService::nextTimeSlice() {
-        cout << "This message is printed every 100 ms." << endl;        
+        cout << "This message is printed every 100 ms." << endl;
     }
 
     int32_t main(int32_t argc, char **argv) {
-        MyRealtimeService rts(core::base::RealtimeService::ONEHUNDREDMILLISECONDS);
+        MyRealtimeService rts(odcore::base::RealtimeService::ONEHUNDREDMILLISECONDS);
 
         rts.start();
 
         const uint32_t ONE_SECOND = 1000 * 1000;
-        core::base::Thread::usleepFor(5 * ONE_SECOND);
+        odcore::base::Thread::usleepFor(5 * ONE_SECOND);
 
         rts.stop();
     }
 
-Your class needs to derive from ``core::base::RealtimeService``, which is provided in
-``#include <core/base/RealtimeService.h>`` in the include directory ``opendavinci``.
+Your class needs to derive from ``odcore::base::RealtimeService``, which is provided in
+``#include <opendavinci/odcore/base/RealtimeService.h>`` in the include directory ``opendavinci``.
 This class provides one method that needs to be implemented in deriving classes:
 ``void nextTimeSlice()``. This method will be called with the specified periodicity.
 
@@ -65,7 +65,7 @@ Furthermore, the deriving class needs to pass the desired periodicity to the sup
 
 You can compile and link the example::
 
-   g++ -I /usr/include/opendavinci -c MyRealtimeService.cpp -o MyRealtimeService.o
+   g++ -I /usr/include -c MyRealtimeService.cpp -o MyRealtimeService.o
    g++ -o realtimeservice MyRealtimeService.o -lopendavinci -lpthread -lrt
 
 The resulting program can be run as superuser (as the scheduling properties will be

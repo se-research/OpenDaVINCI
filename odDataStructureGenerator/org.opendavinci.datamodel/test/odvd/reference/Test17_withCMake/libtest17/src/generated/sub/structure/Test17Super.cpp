@@ -4,19 +4,20 @@
  * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
  */
 
+#include <memory>
 
-#include "core/base/Hash.h"
-#include "core/base/Deserializer.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 
 
-#include "generated/sub/structure/Test17Super.h"
+#include "test17/generated/sub/structure/Test17Super.h"
 
 namespace sub {
 	namespace structure {
 			using namespace std;
-			using namespace core::base;
+			using namespace odcore::base;
 		
 		
 			Test17Super::Test17Super() :
@@ -64,6 +65,18 @@ namespace sub {
 				return "sub.structure.Test17Super";
 			}
 		
+			int32_t Test17Super::getID() const {
+				return Test17Super::ID();
+			}
+		
+			const string Test17Super::getShortName() const {
+				return Test17Super::ShortName();
+			}
+		
+			const string Test17Super::getLongName() const {
+				return Test17Super::LongName();
+			}
+		
 			double Test17Super::getMyData() const {
 				return m_myData;
 			}
@@ -79,7 +92,7 @@ namespace sub {
 				m_myValue = val;
 			}
 		
-			void Test17Super::accept(core::base::Visitor &v) {
+			void Test17Super::accept(odcore::base::Visitor &v) {
 				v.visit(CRC32 < CharList<'m', CharList<'y', CharList<'D', CharList<'a', CharList<'t', CharList<'a', NullType> > > > > >  >::RESULT, 0, "Test17Super.myData", "myData", m_myData);
 				v.visit(CRC32 < CharList<'m', CharList<'y', CharList<'V', CharList<'a', CharList<'l', CharList<'u', CharList<'e', NullType> > > > > > >  >::RESULT, 0, "Test17Super.myValue", "myValue", m_myValue);
 			}
@@ -98,7 +111,7 @@ namespace sub {
 		
 				SerializationFactory& sf = SerializationFactory::getInstance();
 		
-				core::SharedPointer<Serializer> s = sf.getSerializer(out);
+				std::shared_ptr<Serializer> s = sf.getSerializer(out);
 		
 				s->write(CRC32 < CharList<'m', CharList<'y', CharList<'D', CharList<'a', CharList<'t', CharList<'a', NullType> > > > > >  >::RESULT,
 						m_myData);
@@ -111,7 +124,7 @@ namespace sub {
 		
 				SerializationFactory& sf = SerializationFactory::getInstance();
 		
-				core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+				std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 		
 				d->read(CRC32 < CharList<'m', CharList<'y', CharList<'D', CharList<'a', CharList<'t', CharList<'a', NullType> > > > > >  >::RESULT,
 						m_myData);

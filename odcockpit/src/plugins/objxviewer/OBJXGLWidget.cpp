@@ -23,32 +23,32 @@
 #include <fstream>
 #include <iostream>
 
-#include "core/opendavinci.h"
-#include "core/base/Lock.h"
-#include "hesperia/threeD/Node.h"
-#include "hesperia/threeD/NodeDescriptor.h"
-#include "hesperia/threeD/RenderingConfiguration.h"
-#include "hesperia/threeD/TransformGroup.h"
-#include "hesperia/threeD/decorator/DecoratorFactory.h"
-#include "hesperia/threeD/loaders/OBJXArchiveFactory.h"
-#include "hesperia/threeD/models/Grid.h"
-#include "hesperia/threeD/models/XYZAxes.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendlv/threeD/Node.h"
+#include "opendlv/threeD/NodeDescriptor.h"
+#include "opendlv/threeD/RenderingConfiguration.h"
+#include "opendlv/threeD/TransformGroup.h"
+#include "opendlv/threeD/decorator/DecoratorFactory.h"
+#include "opendlv/threeD/loaders/OBJXArchiveFactory.h"
+#include "opendlv/threeD/models/Grid.h"
+#include "opendlv/threeD/models/XYZAxes.h"
 #include "plugins/objxviewer/OBJXGLWidget.h"
 
 class QWidget;
 namespace cockpit { namespace plugins { class PlugIn; } }
-namespace hesperia { namespace threeD { namespace loaders { class OBJXArchive; } } }
+namespace opendlv { namespace threeD { namespace loaders { class OBJXArchive; } } }
 
 namespace cockpit {
     namespace plugins {
         namespace objxviewer {
 
             using namespace std;
-            using namespace core::base;
-            using namespace hesperia::threeD;
-            using namespace hesperia::threeD::decorator;
-            using namespace hesperia::threeD::loaders;
-            using namespace hesperia::threeD::models;
+            using namespace odcore::base;
+            using namespace opendlv::threeD;
+            using namespace opendlv::threeD::decorator;
+            using namespace opendlv::threeD::loaders;
+            using namespace opendlv::threeD::models;
 
             OBJXGLWidget::OBJXGLWidget(const PlugIn &plugIn, QWidget *prnt) :
                     AbstractGLWidget(plugIn, prnt),

@@ -4,19 +4,20 @@
  * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
  */
 
+#include <memory>
 
-#include "core/base/Hash.h"
-#include "core/base/Deserializer.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 
 
-#include "generated/sub/structure2/Test20c.h"
+#include "test20/generated/sub/structure2/Test20c.h"
 
 namespace sub {
 	namespace structure2 {
 			using namespace std;
-			using namespace core::base;
+			using namespace odcore::base;
 		
 		
 			Test20c::Test20c() :
@@ -64,6 +65,18 @@ namespace sub {
 				return "sub.structure2.Test20c";
 			}
 		
+			int32_t Test20c::getID() const {
+				return Test20c::ID();
+			}
+		
+			const string Test20c::getShortName() const {
+				return Test20c::ShortName();
+			}
+		
+			const string Test20c::getLongName() const {
+				return Test20c::LongName();
+			}
+		
 			uint32_t Test20c::getVal3() const {
 				return m_val3;
 			}
@@ -79,7 +92,7 @@ namespace sub {
 				m_val4 = val;
 			}
 		
-			void Test20c::accept(core::base::Visitor &v) {
+			void Test20c::accept(odcore::base::Visitor &v) {
 				v.visit(CRC32 < CharList<'v', CharList<'a', CharList<'l', CharList<'3', NullType> > > >  >::RESULT, 0, "Test20c.val3", "val3", m_val3);
 				v.visit(CRC32 < CharList<'v', CharList<'a', CharList<'l', CharList<'4', NullType> > > >  >::RESULT, 0, "Test20c.val4", "val4", m_val4);
 			}
@@ -98,7 +111,7 @@ namespace sub {
 		
 				SerializationFactory& sf = SerializationFactory::getInstance();
 		
-				core::SharedPointer<Serializer> s = sf.getSerializer(out);
+				std::shared_ptr<Serializer> s = sf.getSerializer(out);
 		
 				s->write(CRC32 < CharList<'v', CharList<'a', CharList<'l', CharList<'3', NullType> > > >  >::RESULT,
 						m_val3);
@@ -111,7 +124,7 @@ namespace sub {
 		
 				SerializationFactory& sf = SerializationFactory::getInstance();
 		
-				core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+				std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 		
 				d->read(CRC32 < CharList<'v', CharList<'a', CharList<'l', CharList<'3', NullType> > > >  >::RESULT,
 						m_val3);

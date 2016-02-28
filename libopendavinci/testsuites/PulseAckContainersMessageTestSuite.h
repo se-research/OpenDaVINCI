@@ -25,15 +25,15 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/base/Serializable.h"     // for operator<<, operator>>
-#include "core/data/Container.h"        // for Container, etc
-#include "core/data/TimeStamp.h"        // for TimeStamp
-#include "generated/coredata/dmcp/PulseAckContainersMessage.h"
-#include "generated/coredata/dmcp/PulseMessage.h"  // for PulseMessage
+#include "opendavinci/odcore/base/Serializable.h"     // for operator<<, operator>>
+#include "opendavinci/odcore/data/Container.h"        // for Container, etc
+#include "opendavinci/odcore/data/TimeStamp.h"        // for TimeStamp
+#include "opendavinci/generated/odcore/data/dmcp/PulseAckContainersMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/PulseMessage.h"  // for PulseMessage
 
 using namespace std;
-using namespace core::data;
-using namespace coredata::dmcp;
+using namespace odcore::data;
+using namespace odcore::data::dmcp;
 
 class PulseAckContainersTest : public CxxTest::TestSuite {
     public:
@@ -52,13 +52,13 @@ class PulseAckContainersTest : public CxxTest::TestSuite {
 
         void testPulseContainers() {
             TimeStamp ts1(1,2);
-            Container c1(Container::TIMESTAMP, ts1);
+            Container c1(ts1);
 
             TimeStamp ts2(3,4);
-            Container c2(Container::TIMESTAMP, ts2);
+            Container c2(ts2);
 
             TimeStamp ts3(5,6);
-            Container c3(Container::TIMESTAMP, ts3);
+            Container c3(ts3);
 
             PulseMessage pm;
             TS_ASSERT(pm.getListOfContainers().size() == 0);
@@ -98,13 +98,13 @@ class PulseAckContainersTest : public CxxTest::TestSuite {
 
         void testPulseContainersSetValues() {
             TimeStamp ts1(1,2);
-            Container c1(Container::TIMESTAMP, ts1);
+            Container c1(ts1);
 
             TimeStamp ts2(3,4);
-            Container c2(Container::TIMESTAMP, ts2);
+            Container c2(ts2);
 
             TimeStamp ts3(5,6);
-            Container c3(Container::TIMESTAMP, ts3);
+            Container c3(ts3);
 
             vector<Container> l;
             l.push_back(c1);
@@ -156,13 +156,13 @@ class PulseAckContainersTest : public CxxTest::TestSuite {
 
         void testPulseAckContainers() {
             TimeStamp ts1(1,2);
-            Container c1(Container::TIMESTAMP, ts1);
+            Container c1(ts1);
 
             TimeStamp ts2(3,4);
-            Container c2(Container::TIMESTAMP, ts2);
+            Container c2(ts2);
 
             TimeStamp ts3(5,6);
-            Container c3(Container::TIMESTAMP, ts3);
+            Container c3(ts3);
 
             PulseAckContainersMessage pac;
             TS_ASSERT(pac.getListOfContainers().size() == 0);
@@ -202,13 +202,13 @@ class PulseAckContainersTest : public CxxTest::TestSuite {
 
         void testPulseAckContainers_from_list() {
             TimeStamp ts1(1,2);
-            Container c1(Container::TIMESTAMP, ts1);
+            Container c1(ts1);
 
             TimeStamp ts2(3,4);
-            Container c2(Container::TIMESTAMP, ts2);
+            Container c2(ts2);
 
             TimeStamp ts3(5,6);
-            Container c3(Container::TIMESTAMP, ts3);
+            Container c3(ts3);
 
             vector<Container> l;
             l.push_back(c1);

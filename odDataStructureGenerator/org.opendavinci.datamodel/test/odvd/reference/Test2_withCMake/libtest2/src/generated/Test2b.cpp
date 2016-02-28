@@ -4,17 +4,18 @@
  * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
  */
 
+#include <memory>
 
-#include "core/base/Hash.h"
-#include "core/base/Deserializer.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 
 
-#include "generated/Test2b.h"
+#include "test2/generated/Test2b.h"
 
 	using namespace std;
-	using namespace core::base;
+	using namespace odcore::base;
 
 
 	Test2b::Test2b() :
@@ -49,8 +50,20 @@
 		return "Test2b";
 	}
 
+	int32_t Test2b::getID() const {
+		return Test2b::ID();
+	}
 
-	void Test2b::accept(core::base::Visitor &v) {
+	const string Test2b::getShortName() const {
+		return Test2b::ShortName();
+	}
+
+	const string Test2b::getLongName() const {
+		return Test2b::LongName();
+	}
+
+
+	void Test2b::accept(odcore::base::Visitor &v) {
 		(void)v; // Avoid unused parameter warning.
 	}
 

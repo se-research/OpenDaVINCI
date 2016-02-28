@@ -25,24 +25,24 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"         // for SharedPointer
-#include "core/base/Deserializer.h"     // for Deserializer
-#include "core/base/Hash.h"             // for CharList, CRC32, etc
-#include "core/base/QueryableNetstringsDeserializerVisitor.h"
-#include "core/base/QueryableNetstringsSerializerVisitor.h"
-#include "core/base/Serializable.h"     // for operator<<, Serializable
-#include "core/base/SerializationFactory.h"  // for SerializationFactory
-#include "core/base/Serializer.h"       // for Serializer
-#include "core/base/Visitable.h"        // for Visitable
-#include "core/base/Visitor.h"          // for Visitor
+#include "opendavinci/odcore/opendavinci.h"
+#include <memory>
+#include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
+#include "opendavinci/odcore/base/Hash.h"             // for CharList, CRC32, etc
+#include "opendavinci/odcore/base/QueryableNetstringsDeserializerVisitor.h"
+#include "opendavinci/odcore/base/QueryableNetstringsSerializerVisitor.h"
+#include "opendavinci/odcore/base/Serializable.h"     // for operator<<, Serializable
+#include "opendavinci/odcore/base/SerializationFactory.h"  // for SerializationFactory
+#include "opendavinci/odcore/base/Serializer.h"       // for Serializer
+#include "opendavinci/odcore/base/Visitable.h"        // for Visitable
+#include "opendavinci/odcore/base/Visitor.h"          // for Visitor
 
 using namespace std;
-using namespace core;
-using namespace core::base;
+using namespace odcore;
+using namespace odcore::base;
 
 // An example data object.
-class MyNestedVisitable : public core::base::Serializable {
+class MyNestedVisitable : public odcore::base::Serializable {
     public:
         MyNestedVisitable() :
                 m_double(0) {}
@@ -52,7 +52,7 @@ class MyNestedVisitable : public core::base::Serializable {
         ostream& operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
-            core::SharedPointer<Serializer> s = sf.getSerializer(out);
+            std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
             s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('m', '_', 'd', 'o', 'u', 'b', 'l', 'e') >::RESULT,
                     m_double);
@@ -63,7 +63,7 @@ class MyNestedVisitable : public core::base::Serializable {
         istream& operator>>(istream &in) {
             SerializationFactory& sf=SerializationFactory::getInstance();
 
-            core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+            std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
             d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('m', '_', 'd', 'o', 'u', 'b', 'l', 'e') >::RESULT,
                    m_double);
@@ -106,7 +106,7 @@ class MyVisitable : public Serializable, public Visitable {
         virtual ostream& operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();
 		
-			SharedPointer<Serializer> s = sf.getSerializer(out);
+			std::shared_ptr<Serializer> s = sf.getSerializer(out);
 		
 			s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'1', NullType> > > > >::RESULT,
 					m_att1);
@@ -129,7 +129,7 @@ class MyVisitable : public Serializable, public Visitable {
         virtual istream& operator>>(istream &in) {
             SerializationFactory& sf=SerializationFactory::getInstance();
 		
-			SharedPointer<Deserializer> d = sf.getDeserializer(in);
+			std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 		
 			d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'1', NullType> > > > >::RESULT,
 					m_att1);
@@ -149,7 +149,7 @@ class MyVisitable : public Serializable, public Visitable {
 			return in;
         }
 
-        virtual void accept(core::base::Visitor &v) {
+        virtual void accept(odcore::base::Visitor &v) {
             v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'1', NullType> > > > >::RESULT, 1, "MyVisitable::att1", "att1", m_att1);
             v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'2', NullType> > > > >::RESULT, 2, "MyVisitable::att2", "att2", m_att2);
             v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'3', NullType> > > > >::RESULT, 3, "MyVisitable::att3", "att3", m_att3);

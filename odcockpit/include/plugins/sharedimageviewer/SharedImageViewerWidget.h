@@ -30,18 +30,18 @@
 #include <string>
 #include <vector>
 
-#include "core/SharedPointer.h"
-#include "core/base/Mutex.h"
-#include "core/io/conference/ContainerListener.h"
-#include "core/wrapper/SharedMemory.h"
-#include "generated/coredata/image/SharedImage.h"
+#include <memory>
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
+#include "opendavinci/odcore/wrapper/SharedMemory.h"
+#include "opendavinci/generated/odcore/data/image/SharedImage.h"
 
 class QImage;
 class QListWidget;
 class QListWidgetItem;
 class QPaintEvent;
 namespace cockpit { namespace plugins { class PlugIn; } }
-namespace core { namespace data { class Container; } }
+namespace odcore { namespace data { class Container; } }
 
 namespace cockpit {
 
@@ -54,7 +54,7 @@ namespace cockpit {
             /**
              * This class is the container for the shared image viewer widget.
              */
-            class SharedImageViewerWidget : public QWidget, public core::io::conference::ContainerListener {
+            class SharedImageViewerWidget : public QWidget, public odcore::io::conference::ContainerListener {
 
                     Q_OBJECT
 
@@ -84,21 +84,21 @@ namespace cockpit {
 
                     virtual ~SharedImageViewerWidget();
 
-                    virtual void nextContainer(core::data::Container &c);
+                    virtual void nextContainer(odcore::data::Container &c);
 
                 public slots:
 				    void selectedSharedImage(QListWidgetItem *item);
 
                 private:
-                    mutable core::base::Mutex m_sharedImageMemoryMutex;
-                    coredata::image::SharedImage m_sharedImage;
-                    core::SharedPointer<core::wrapper::SharedMemory> m_sharedImageMemory;
+                    mutable odcore::base::Mutex m_sharedImageMemoryMutex;
+                    odcore::data::image::SharedImage m_sharedImage;
+                    std::shared_ptr<odcore::wrapper::SharedMemory> m_sharedImageMemory;
                     QImage *m_drawableImage;
                     QVector<QRgb> m_grayscale;
 
                     QListWidget *m_list;
                     vector<string> m_listOfAvailableSharedImages;
-                    map<string, coredata::image::SharedImage> m_mapOfAvailableSharedImages;
+                    map<string, odcore::data::image::SharedImage> m_mapOfAvailableSharedImages;
 
                     virtual void paintEvent(QPaintEvent *evnt);
             };

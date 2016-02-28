@@ -26,25 +26,25 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"         // for SharedPointer
-#include "core/base/Deserializer.h"     // for Deserializer
-#include "core/base/ProtoDeserializerVisitor.h"
-#include "core/base/ProtoSerializerVisitor.h"
-#include "core/base/SerializationFactory.h"  // for SerializationFactory
-#include "core/base/Serializer.h"       // for Serializer
-#include "core/base/Visitable.h"        // for Visitable
-#include "core/base/Visitor.h"          // for Visitor
-#include "core/data/SerializableData.h"  // for SerializableData
-#include "generated/coredata/SharedData.h"  // for SharedData
-#include "generated/coredata/dmcp/ModuleDescriptor.h"
-#include "generated/coredata/image/SharedImage.h"  // for SharedImage
+#include "opendavinci/odcore/opendavinci.h"
+#include <memory>
+#include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
+#include "opendavinci/odcore/base/ProtoDeserializerVisitor.h"
+#include "opendavinci/odcore/base/ProtoSerializerVisitor.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"  // for SerializationFactory
+#include "opendavinci/odcore/base/Serializer.h"       // for Serializer
+#include "opendavinci/odcore/base/Visitable.h"        // for Visitable
+#include "opendavinci/odcore/base/Visitor.h"          // for Visitor
+#include "opendavinci/odcore/data/SerializableData.h"  // for SerializableData
+#include "opendavinci/generated/odcore/data/SharedData.h"  // for SharedData
+#include "opendavinci/generated/odcore/data/dmcp/ModuleDescriptor.h"
+#include "opendavinci/generated/odcore/data/image/SharedImage.h"  // for SharedImage
 
 using namespace std;
-using namespace core::base;
-using namespace coredata;
-using namespace coredata::dmcp;
-using namespace coredata::image;
+using namespace odcore::base;
+using namespace odcore::data;
+using namespace odcore::data::dmcp;
+using namespace odcore::data::image;
 
 /*
   Generated from:
@@ -58,7 +58,7 @@ using namespace coredata::image;
         bool flashingLightsRight [id = 6, fourbyteid = 0x0E435996];
     }
  */
-class ProtoVehicleControl : public core::data::SerializableData, public core::base::Visitable {
+class ProtoVehicleControl : public odcore::data::SerializableData, public odcore::base::Visitable {
 	public:
 
 	ProtoVehicleControl() :
@@ -126,6 +126,18 @@ class ProtoVehicleControl : public core::data::SerializableData, public core::ba
 		return "automotive.VehicleControl";
 	}
 
+    int32_t getID() const {
+        return 41;
+    }
+
+    const string getLongName() const {
+        return "automotive.VehicleControl";
+    }
+
+    const string getShortName() const {
+        return "VehicleControl";
+    }
+
 	double getSpeed() const {
 		return m_speed;
 	}
@@ -169,7 +181,7 @@ class ProtoVehicleControl : public core::data::SerializableData, public core::ba
 		m_flashingLightsRight = val;
 	}
 
-	void accept(core::base::Visitor &v) {
+	void accept(odcore::base::Visitor &v) {
 		v.visit(0x0E43596B, 1, "ProtoVehicleControl.speed", "speed", m_speed);
 		v.visit(0x0E435991, 2, "ProtoVehicleControl.acceleration", "acceleration", m_acceleration);
 		v.visit(0x0E435969, 3, "ProtoVehicleControl.steeringWheelAngle", "steeringWheelAngle", m_steeringWheelAngle);
@@ -196,7 +208,7 @@ class ProtoVehicleControl : public core::data::SerializableData, public core::ba
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Serializer> s = sf.getSerializer(out);
+		std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
 		s->write(0x0E43596B, m_speed);
 		s->write(0x0E435991, m_acceleration);
@@ -211,7 +223,7 @@ class ProtoVehicleControl : public core::data::SerializableData, public core::ba
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
 		d->read(0x0E43596B, m_speed);
 		d->read(0x0E435991, m_acceleration);

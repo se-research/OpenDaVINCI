@@ -4,20 +4,21 @@
  * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
  */
 
+#include <memory>
 #include <algorithm>
 #include <sstream>
 #include <utility>
 
-#include "core/base/Hash.h"
-#include "core/base/Deserializer.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 
 
-#include "generated/Test12Lists.h"
+#include "test12/generated/Test12Lists.h"
 
 	using namespace std;
-	using namespace core::base;
+	using namespace odcore::base;
 
 
 	Test12Lists::Test12Lists() :
@@ -88,6 +89,18 @@
 
 	const string Test12Lists::LongName() {
 		return "Test12Lists";
+	}
+
+	int32_t Test12Lists::getID() const {
+		return Test12Lists::ID();
+	}
+
+	const string Test12Lists::getShortName() const {
+		return Test12Lists::ShortName();
+	}
+
+	const string Test12Lists::getLongName() const {
+		return Test12Lists::LongName();
 	}
 
 	std::vector<bool> Test12Lists::getListOfMyBoolList() const {
@@ -336,7 +349,7 @@
 		return std::make_pair(m_listOfMyStringList.begin(), m_listOfMyStringList.end());
 	}
 
-	void Test12Lists::accept(core::base::Visitor &v) {
+	void Test12Lists::accept(odcore::base::Visitor &v) {
 		(void)v; // Avoid unused parameter warning.
 	}
 
@@ -359,7 +372,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Serializer> s = sf.getSerializer(out);
+		std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
 		// Write number of elements in m_listOfMyBoolList.
 		const uint32_t numberOfMyBoolList = static_cast<uint32_t>(m_listOfMyBoolList.size());
@@ -466,7 +479,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
 		// Clean up the existing list of MyBoolList.
 		m_listOfMyBoolList.clear();

@@ -4,18 +4,19 @@
  * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
  */
 
+#include <memory>
 
-#include "core/base/Hash.h"
-#include "core/base/Deserializer.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 
 
-#include "generated/subpackage/Test14Simple.h"
+#include "test14/generated/subpackage/Test14Simple.h"
 
 namespace subpackage {
 		using namespace std;
-		using namespace core::base;
+		using namespace odcore::base;
 	
 	
 		Test14Simple::Test14Simple() :
@@ -58,6 +59,18 @@ namespace subpackage {
 			return "subpackage.Test14Simple";
 		}
 	
+		int32_t Test14Simple::getID() const {
+			return Test14Simple::ID();
+		}
+	
+		const string Test14Simple::getShortName() const {
+			return Test14Simple::ShortName();
+		}
+	
+		const string Test14Simple::getLongName() const {
+			return Test14Simple::LongName();
+		}
+	
 		Test14Simple::ButtonState Test14Simple::getButtonState() const {
 			return m_buttonState;
 		}
@@ -66,7 +79,7 @@ namespace subpackage {
 			m_buttonState = val;
 		}
 	
-		void Test14Simple::accept(core::base::Visitor &v) {
+		void Test14Simple::accept(odcore::base::Visitor &v) {
 			int32_t int32t_buttonState = m_buttonState;
 			v.visit(CRC32 < CharList<'b', CharList<'u', CharList<'t', CharList<'t', CharList<'o', CharList<'n', CharList<'S', CharList<'t', CharList<'a', CharList<'t', CharList<'e', NullType> > > > > > > > > > >  >::RESULT, 0, "Test14Simple.buttonState", "buttonState", int32t_buttonState);
 		}
@@ -94,7 +107,7 @@ namespace subpackage {
 	
 			SerializationFactory& sf = SerializationFactory::getInstance();
 	
-			core::SharedPointer<Serializer> s = sf.getSerializer(out);
+			std::shared_ptr<Serializer> s = sf.getSerializer(out);
 	
 			int32_t int32t_buttonState = m_buttonState;
 			s->write(CRC32 < CharList<'b', CharList<'u', CharList<'t', CharList<'t', CharList<'o', CharList<'n', CharList<'S', CharList<'t', CharList<'a', CharList<'t', CharList<'e', NullType> > > > > > > > > > >  >::RESULT,
@@ -106,7 +119,7 @@ namespace subpackage {
 	
 			SerializationFactory& sf = SerializationFactory::getInstance();
 	
-			core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+			std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 	
 			int32_t int32t_buttonState = 0;
 			d->read(CRC32 < CharList<'b', CharList<'u', CharList<'t', CharList<'t', CharList<'o', CharList<'n', CharList<'S', CharList<'t', CharList<'a', CharList<'t', CharList<'e', NullType> > > > > > > > > > >  >::RESULT,

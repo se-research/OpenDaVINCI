@@ -20,10 +20,10 @@
 #ifndef SPY_H_
 #define SPY_H_
 
-#include "core/opendavinci.h"
-#include "core/base/FIFOQueue.h"
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/FIFOQueue.h"
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
 
 namespace odspy {
 
@@ -33,7 +33,7 @@ namespace odspy {
      * This class can be used to simply display data distributed
      * using a conference.
      */
-    class Spy : public core::base::module::TimeTriggeredConferenceClientModule {
+    class Spy : public odcore::base::module::TimeTriggeredConferenceClientModule {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -65,10 +65,10 @@ namespace odspy {
 
             virtual ~Spy();
 
-            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+            odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
         private:
-            core::base::FIFOQueue m_fifo;
+            odcore::base::FIFOQueue m_fifo;
 
             virtual void setUp();
 

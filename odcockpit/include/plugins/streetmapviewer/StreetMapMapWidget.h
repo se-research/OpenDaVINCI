@@ -22,9 +22,9 @@
 
 #include <QWidget>
 
-#include "core/base/Mutex.h"
-#include "core/io/conference/ContainerListener.h"
-#include "hesperia/data/environment/WGS84Coordinate.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
+#include "opendlv/data/environment/WGS84Coordinate.h"
 
 class QTimer;
 class SlippyMap;
@@ -34,7 +34,7 @@ namespace cockpit {
         namespace streetmap {
 
             class StreetMapMapWidget: public QWidget,
-                                      public core::io::conference::ContainerListener {
+                                      public odcore::io::conference::ContainerListener {
 
                 Q_OBJECT
 
@@ -76,12 +76,12 @@ namespace cockpit {
                      *
                      * @param position.
                      */
-                    void setMapCenter(const hesperia::data::environment::WGS84Coordinate &position);
+                    void setMapCenter(const opendlv::data::environment::WGS84Coordinate &position);
 
                     void zoomIn();
                     void zoomOut();
 
-                    virtual void nextContainer(core::data::Container &c);
+                    virtual void nextContainer(odcore::data::Container &c);
 
                 protected:
                     void resizeEvent(QResizeEvent *evnt);
@@ -96,8 +96,8 @@ namespace cockpit {
                     SlippyMap *m_mapTileProvider;
                     QTimer *m_timer;
                     QPoint m_pressedPosition;
-                    core::base::Mutex m_positionMutex;
-                    hesperia::data::environment::WGS84Coordinate m_position;
+                    odcore::base::Mutex m_positionMutex;
+                    opendlv::data::environment::WGS84Coordinate m_position;
             };
         }
     }

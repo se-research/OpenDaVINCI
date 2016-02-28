@@ -33,14 +33,15 @@
 #include <sstream>
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/base/KeyValueConfiguration.h"
-#include "core/data/Container.h"
-#include "core/io/URL.h"
-#include "core/io/conference/ContainerConference.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/io/URL.h"
+#include "opendavinci/odcore/io/conference/ContainerConference.h"
 #include "plugins/player/PlayerWidget.h"
-#include "tools/player/Player.h"
-#include "tools/splitter/Splitter.h"
+#include "opendavinci/generated/odcore/data/player/PlayerCommand.h"
+#include "opendavinci/odtools/player/Player.h"
+#include "opendavinci/odtools/splitter/Splitter.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }
 
@@ -51,11 +52,11 @@ namespace cockpit {
         namespace player {
 
             using namespace std;
-            using namespace core::data;
-            using namespace tools::player;
-            using namespace tools::splitter;
+            using namespace odcore::data;
+            using namespace odtools::player;
+            using namespace odtools::splitter;
 
-            PlayerWidget::PlayerWidget(const PlugIn &/*plugIn*/, const core::base::KeyValueConfiguration &kvc, core::io::conference::ContainerConference &conf, QWidget *prnt) :
+            PlayerWidget::PlayerWidget(const PlugIn &/*plugIn*/, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, QWidget *prnt) :
                 QWidget(prnt),
                 m_kvc(kvc),
                 m_conference(conf),
@@ -209,7 +210,7 @@ namespace cockpit {
 
                     // Send container.
                     if ( (nextContainerToBeSent.getDataType() != Container::UNDEFINEDDATA) &&
-                         (nextContainerToBeSent.getDataType() != Container::PLAYER_COMMAND) ) {
+                         (nextContainerToBeSent.getDataType() != odcore::data::player::PlayerCommand::ID()) ) {
                         m_conference.send(nextContainerToBeSent);
                     }
 
@@ -268,7 +269,7 @@ namespace cockpit {
 
                     stringstream s;
                     s << "file://" << m_fileName;
-                    core::io::URL url(s.str());
+                    odcore::io::URL url(s.str());
 
                     m_desc->setText(url.toString().c_str());
 

@@ -25,13 +25,13 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/opendavinci.h"
-#include "core/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
-#include "core/exceptions/Exceptions.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
+#include "opendavinci/odcore/exceptions/Exceptions.h"
 
 using namespace std;
-using namespace core::base;
-using namespace core::exceptions;
+using namespace odcore::base;
+using namespace odcore::exceptions;
 
 class ConfigurationTest : public CxxTest::TestSuite {
     public:

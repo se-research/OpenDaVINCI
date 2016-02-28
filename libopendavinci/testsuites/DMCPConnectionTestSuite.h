@@ -25,26 +25,26 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/SharedPointer.h"         // for SharedPointer
-#include "core/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
-#include "core/dmcp/connection/Client.h"  // for Client
-#include "core/dmcp/connection/ConnectionHandler.h"
-#include "core/dmcp/connection/Server.h"  // for Server
-#include "generated/coredata/dmcp/ModuleDescriptor.h"
-#include "generated/coredata/dmcp/ServerInformation.h"
-#include "generated/coredata/dmcp/TestConstants.h"  // for TestConstants, etc
+#include <memory>
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
+#include "opendavinci/odcore/dmcp/connection/Client.h"  // for Client
+#include "opendavinci/odcore/dmcp/connection/ConnectionHandler.h"
+#include "opendavinci/odcore/dmcp/connection/Server.h"  // for Server
+#include "opendavinci/generated/odcore/data/dmcp/ModuleDescriptor.h"
+#include "opendavinci/generated/odcore/data/dmcp/ServerInformation.h"
+#include "opendavinci/generated/odcore/data/dmcp/TestConstants.h"  // for TestConstants, etc
 #include "mocks/ConnectionHandlerMock.h"
 #include "mocks/ModuleConfigurationProviderMock.h"
 
-namespace core { namespace dmcp { namespace connection { class ModuleConnection; } } }
+namespace odcore { namespace dmcp { namespace connection { class ModuleConnection; } } }
 
 using namespace std;
 
-using namespace core::base;
-using namespace core::exceptions;
-using namespace core::dmcp;
-using namespace core::data;
-using namespace coredata::dmcp;
+using namespace odcore::base;
+using namespace odcore::exceptions;
+using namespace odcore::dmcp;
+using namespace odcore::data;
+using namespace odcore::data::dmcp;
 
 class DMCPConnectionTestsuite : public CxxTest::TestSuite,
                                 public connection::ConnectionHandler
@@ -57,7 +57,7 @@ class DMCPConnectionTestsuite : public CxxTest::TestSuite,
         DMCPConnectionTestsuite() :
             connection(NULL) {}
 
-        core::SharedPointer<core::dmcp::connection::ModuleConnection> connection;
+        std::shared_ptr<odcore::dmcp::connection::ModuleConnection> connection;
 
         void testClientAndServer()
         {
@@ -72,7 +72,7 @@ class DMCPConnectionTestsuite : public CxxTest::TestSuite,
             mocks::ModuleConfigurationProviderMock configProvider;
             mocks::ConnectionHandlerMock connectionHandler;
 
-            ServerInformation serverInfo("127.0.0.1", coredata::dmcp::TestConstants::DMCPCONFIG_TEST_SERVERPORT, ServerInformation::ML_NONE);
+            ServerInformation serverInfo("127.0.0.1", odcore::data::dmcp::TestConstants::DMCPCONFIG_TEST_SERVERPORT, ServerInformation::ML_NONE);
             ModuleDescriptor descriptor("DMCPConnectionTestSuite", "NONE", "TestVersion", 1);
 
             configProvider.addConfig(descriptor, kv);
@@ -90,7 +90,7 @@ class DMCPConnectionTestsuite : public CxxTest::TestSuite,
             TS_ASSERT(client.getConfiguration().getValue<string>("global.exampleKey") == "exampleValue");
         }
 
-        virtual void onNewModule(core::SharedPointer<core::dmcp::connection::ModuleConnection> mc)
+        virtual void onNewModule(std::shared_ptr<odcore::dmcp::connection::ModuleConnection> mc)
         {
             connection = mc;
         }

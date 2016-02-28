@@ -4,18 +4,19 @@
  * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
  */
 
+#include <memory>
 
-#include "core/base/Hash.h"
-#include "core/base/Deserializer.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 
 
-#include "generated/testpackage/Test8B.h"
+#include "test8/generated/testpackage/Test8B.h"
 
 namespace testpackage {
 		using namespace std;
-		using namespace core::base;
+		using namespace odcore::base;
 	
 	
 		Test8B::Test8B() :
@@ -58,6 +59,18 @@ namespace testpackage {
 			return "testpackage.Test8B";
 		}
 	
+		int32_t Test8B::getID() const {
+			return Test8B::ID();
+		}
+	
+		const string Test8B::getShortName() const {
+			return Test8B::ShortName();
+		}
+	
+		const string Test8B::getLongName() const {
+			return Test8B::LongName();
+		}
+	
 		bool Test8B::getAttribute1() const {
 			return m_attribute1;
 		}
@@ -66,7 +79,7 @@ namespace testpackage {
 			m_attribute1 = val;
 		}
 	
-		void Test8B::accept(core::base::Visitor &v) {
+		void Test8B::accept(odcore::base::Visitor &v) {
 			v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'1', NullType> > > > > > > > > >  >::RESULT, 0, "Test8B.attribute1", "attribute1", m_attribute1);
 		}
 	
@@ -83,7 +96,7 @@ namespace testpackage {
 	
 			SerializationFactory& sf = SerializationFactory::getInstance();
 	
-			core::SharedPointer<Serializer> s = sf.getSerializer(out);
+			std::shared_ptr<Serializer> s = sf.getSerializer(out);
 	
 			s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'1', NullType> > > > > > > > > >  >::RESULT,
 					m_attribute1);
@@ -94,7 +107,7 @@ namespace testpackage {
 	
 			SerializationFactory& sf = SerializationFactory::getInstance();
 	
-			core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+			std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 	
 			d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'1', NullType> > > > > > > > > >  >::RESULT,
 					m_attribute1);

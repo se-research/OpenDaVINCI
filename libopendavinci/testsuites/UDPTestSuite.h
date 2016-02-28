@@ -25,19 +25,19 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"         // for SharedPointer
+#include "opendavinci/odcore/opendavinci.h"
+#include <memory>
 #include "mocks/StringListenerMock.h"
 
-namespace core { namespace io { namespace udp { class UDPReceiver; } } }
-namespace core { namespace io { namespace udp { class UDPSender; } } }
+namespace odcore { namespace io { namespace udp { class UDPReceiver; } } }
+namespace odcore { namespace io { namespace udp { class UDPSender; } } }
 
 using namespace std;
 
 #ifndef WIN32
-    #include "core/wrapper/POSIX/POSIXUDPFactoryWorker.h"
-    #include "core/wrapper/POSIX/POSIXUDPReceiver.h"
-    #include "core/wrapper/POSIX/POSIXUDPSender.h"
+    #include "opendavinci/odcore/wrapper/POSIX/POSIXUDPFactoryWorker.h"
+    #include "opendavinci/odcore/wrapper/POSIX/POSIXUDPReceiver.h"
+    #include "opendavinci/odcore/wrapper/POSIX/POSIXUDPSender.h"
 
     struct UDPTestPOSIX
     {
@@ -47,11 +47,11 @@ using namespace std;
             const string group = "225.0.0.13";
             const uint32_t port = 4567;
 
-            core::SharedPointer<core::io::udp::UDPReceiver> receiver(
-                    core::wrapper::UDPFactoryWorker<core::wrapper::NetworkLibraryPosix>::createUDPReceiver(group, port));
+            std::shared_ptr<odcore::io::udp::UDPReceiver> receiver(
+                    odcore::wrapper::UDPFactoryWorker<odcore::wrapper::NetworkLibraryPosix>::createUDPReceiver(group, port));
 
-            core::SharedPointer<core::io::udp::UDPSender> sender(
-                                core::wrapper::UDPFactoryWorker<core::wrapper::NetworkLibraryPosix>::createUDPSender(group, port));
+            std::shared_ptr<odcore::io::udp::UDPSender> sender(
+                                odcore::wrapper::UDPFactoryWorker<odcore::wrapper::NetworkLibraryPosix>::createUDPSender(group, port));
 
             receiver->start();
 
@@ -73,9 +73,9 @@ using namespace std;
 #endif
 
 #ifdef WIN32
-    #include "core/wrapper/WIN32/WIN32UDPFactoryWorker.h"
-    #include "core/wrapper/WIN32/WIN32UDPReceiver.h"
-    #include "core/wrapper/WIN32/WIN32UDPSender.h"
+    #include "opendavinci/odcore/wrapper/WIN32/WIN32UDPFactoryWorker.h"
+    #include "opendavinci/odcore/wrapper/WIN32/WIN32UDPReceiver.h"
+    #include "opendavinci/odcore/wrapper/WIN32/WIN32UDPSender.h"
 
     struct UDPTestWin32
     {
@@ -85,11 +85,11 @@ using namespace std;
             const string group = "225.0.0.13";
             const uint32_t port = 4567;
 
-            core::SharedPointer<core::io::udp::UDPReceiver> receiver(
-                    core::wrapper::UDPFactoryWorker<core::wrapper::NetworkLibraryWin32>::createUDPReceiver(group, port));
+            std::shared_ptr<odcore::io::udp::UDPReceiver> receiver(
+                    odcore::wrapper::UDPFactoryWorker<odcore::wrapper::NetworkLibraryWin32>::createUDPReceiver(group, port));
 
-            core::SharedPointer<core::io::udp::UDPSender> sender(
-                                core::wrapper::UDPFactoryWorker<core::wrapper::NetworkLibraryWin32>::createUDPSender(group, port));
+            std::shared_ptr<odcore::io::udp::UDPSender> sender(
+                                odcore::wrapper::UDPFactoryWorker<odcore::wrapper::NetworkLibraryWin32>::createUDPSender(group, port));
 
             receiver->start();
 

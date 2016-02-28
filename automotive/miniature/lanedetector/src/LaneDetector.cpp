@@ -23,15 +23,15 @@
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
 
-#include "core/base/KeyValueConfiguration.h"
-#include "core/base/Lock.h"
-#include "core/data/Container.h"
-#include "core/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 
-#include "tools/player/Player.h"
+#include "opendavinci/odtools/player/Player.h"
 
-#include "GeneratedHeaders_CoreData.h"
-#include "GeneratedHeaders_AutomotiveData.h"
+#include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
+#include "automotivedata/GeneratedHeaders_AutomotiveData.h"
 
 #include "LaneDetector.h"
 
@@ -39,11 +39,11 @@ namespace automotive {
     namespace miniature {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::base::module;
-        using namespace core::data;
-        using namespace coredata::image;
-        using namespace tools::player;
+        using namespace odcore::base;
+        using namespace odcore::base::module;
+        using namespace odcore::data;
+        using namespace odcore::data::image;
+        using namespace odtools::player;
         using namespace automotive;
 
         LaneDetector::LaneDetector(const int32_t &argc, char **argv) :
@@ -79,12 +79,12 @@ namespace automotive {
         bool LaneDetector::readSharedImage(Container &c) {
 	        bool retVal = false;
 
-	        if (c.getDataType() == Container::SHARED_IMAGE) {
+	        if (c.getDataType() == odcore::data::image::SharedImage::ID()) {
 		        SharedImage si = c.getData<SharedImage> ();
 
 		        // Check if we have already attached to the shared memory containing the image from the virtual camera.
 		        if (!m_hasAttachedToSharedImageMemory) {
-			        m_sharedImageMemory = core::wrapper::SharedMemoryFactory::attachToSharedMemory(si.getName());
+			        m_sharedImageMemory = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(si.getName());
 		        }
 
 		        // Check if we could successfully attach to the shared memory.
@@ -137,22 +137,22 @@ namespace automotive {
             sd.setExampleData(1234.56);
 
             // Create container for finally sending the data.
-            Container c(Container::USER_DATA_1, sd);
+            Container c(sd);
             // Send container.
             getConference().send(c);
         }
 
         // This method will do the main data processing job.
         // Therefore, it tries to open the real camera first. If that fails, the virtual camera images from camgen are used.
-        coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode LaneDetector::body() {
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode LaneDetector::body() {
 	        // Get configuration data.
 	        KeyValueConfiguration kv = getKeyValueConfiguration();
 	        m_debug = kv.getValue<int32_t> ("lanedetector.debug") == 1;
 
-            auto_ptr<Player> player;
+            unique_ptr<Player> player;
 /*
             // Lane-detector can also directly read the data from file. This might be interesting to inspect the algorithm step-wisely.
-            core::io::URL url("file://recording.rec");
+            odcore::io::URL url("file://recording.rec");
 
             // Size of the memory buffer.
             const uint32_t MEMORY_SEGMENT_SIZE = kv.getValue<uint32_t>("global.buffer.memorySegmentSize");
@@ -167,11 +167,11 @@ namespace automotive {
             const bool THREADING = false;
 
             // Construct the player.
-            player = auto_ptr<Player>(new Player(url, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING));
+            player = unique_ptr<Player>(new Player(url, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING));
 */
 
             // Main data processing loop.
-	        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING) {
+	        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
 		        bool has_next_frame = false;
 
 		        // Use the shared memory image.
@@ -182,10 +182,10 @@ namespace automotive {
                 }
                 else {
 		            // Get the most recent available container for a SHARED_IMAGE.
-		            c = getKeyValueDataStore().get(Container::SHARED_IMAGE);
-                }                
+		            c = getKeyValueDataStore().get(odcore::data::image::SharedImage::ID());
+                }
 
-		        if (c.getDataType() == Container::SHARED_IMAGE) {
+		        if (c.getDataType() == odcore::data::image::SharedImage::ID()) {
 			        // Example for processing the received container.
 			        has_next_frame = readSharedImage(c);
 		        }
@@ -196,7 +196,7 @@ namespace automotive {
 		        }
 	        }
 
-	        return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+	        return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
     } // miniature

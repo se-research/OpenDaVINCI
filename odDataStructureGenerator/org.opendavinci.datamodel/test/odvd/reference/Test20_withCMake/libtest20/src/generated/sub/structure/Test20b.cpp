@@ -4,19 +4,20 @@
  * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
  */
 
+#include <memory>
 
-#include "core/base/Hash.h"
-#include "core/base/Deserializer.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 
 
-#include "generated/sub/structure/Test20b.h"
+#include "test20/generated/sub/structure/Test20b.h"
 
 namespace sub {
 	namespace structure {
 			using namespace std;
-			using namespace core::base;
+			using namespace odcore::base;
 		
 		
 			Test20b::Test20b() :
@@ -59,6 +60,18 @@ namespace sub {
 				return "sub.structure.Test20b";
 			}
 		
+			int32_t Test20b::getID() const {
+				return Test20b::ID();
+			}
+		
+			const string Test20b::getShortName() const {
+				return Test20b::ShortName();
+			}
+		
+			const string Test20b::getLongName() const {
+				return Test20b::LongName();
+			}
+		
 			uint32_t Test20b::getVal2() const {
 				return m_val2;
 			}
@@ -67,7 +80,7 @@ namespace sub {
 				m_val2 = val;
 			}
 		
-			void Test20b::accept(core::base::Visitor &v) {
+			void Test20b::accept(odcore::base::Visitor &v) {
 				v.visit(CRC32 < CharList<'v', CharList<'a', CharList<'l', CharList<'2', NullType> > > >  >::RESULT, 0, "Test20b.val2", "val2", m_val2);
 			}
 		
@@ -84,7 +97,7 @@ namespace sub {
 		
 				SerializationFactory& sf = SerializationFactory::getInstance();
 		
-				core::SharedPointer<Serializer> s = sf.getSerializer(out);
+				std::shared_ptr<Serializer> s = sf.getSerializer(out);
 		
 				s->write(CRC32 < CharList<'v', CharList<'a', CharList<'l', CharList<'2', NullType> > > >  >::RESULT,
 						m_val2);
@@ -95,7 +108,7 @@ namespace sub {
 		
 				SerializationFactory& sf = SerializationFactory::getInstance();
 		
-				core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+				std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 		
 				d->read(CRC32 < CharList<'v', CharList<'a', CharList<'l', CharList<'2', NullType> > > >  >::RESULT,
 						m_val2);

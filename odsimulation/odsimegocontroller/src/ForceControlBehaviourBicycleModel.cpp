@@ -21,13 +21,13 @@
 #include <iostream>
 
 #include "ForceControlBehaviourBicycleModel.h"
-#include "generated/cartesian/Constants.h"
+#include "automotivedata/generated/cartesian/Constants.h"
 
 namespace egocontroller {
-    using namespace core::base;
-    using namespace core::data;
-    using namespace hesperia::data::environment;
-    using namespace hesperia::data::environment;
+    using namespace odcore::base;
+    using namespace odcore::data;
+    using namespace opendlv::data::environment;
+    using namespace opendlv::data::environment;
 
     ForceControlBehaviourBicycleModel::ForceControlBehaviourBicycleModel(
             const double& minimumTurningRadius,

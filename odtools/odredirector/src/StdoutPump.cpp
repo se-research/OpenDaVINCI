@@ -21,35 +21,35 @@
 #include <cstring>
 #include <iostream>
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"
-#include "core/base/Lock.h"
-#include "core/base/Serializable.h"
-#include "core/data/Container.h"
-#include "core/data/image/CompressedImage.h"
-#include "core/wrapper/jpg/JPG.h"
-#include "core/wrapper/SharedMemory.h"
-#include "core/wrapper/SharedMemoryFactory.h"
-#include "generated/coredata/image/SharedImage.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include <memory>
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/data/image/CompressedImage.h"
+#include "opendavinci/odcore/wrapper/jpg/JPG.h"
+#include "opendavinci/odcore/wrapper/SharedMemory.h"
+#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/generated/odcore/data/image/SharedImage.h"
 
 #include "StdoutPump.h"
 
 namespace odredirector {
 
     using namespace std;
-    using namespace core;
-    using namespace core::base;
-    using namespace core::data;
+    using namespace odcore;
+    using namespace odcore::base;
+    using namespace odcore::data;
 
     StdoutPump::StdoutPump(const int32_t &jpegQuality) :
         m_jpegQuality(jpegQuality) {}
 
     StdoutPump::~StdoutPump() {}
 
-    void StdoutPump::add(const core::data::Container &container) {
+    void StdoutPump::add(const odcore::data::Container &container) {
         // SharedImages are transformed into compressed images using JPEG compression.
-        if (container.getDataType() == core::data::Container::SHARED_IMAGE) {
-            coredata::image::SharedImage si = const_cast<core::data::Container&>(container).getData<coredata::image::SharedImage>();
+        if (container.getDataType() == odcore::data::image::SharedImage::ID()) {
+            odcore::data::image::SharedImage si = const_cast<odcore::data::Container&>(container).getData<odcore::data::image::SharedImage>();
             
             if ( (1 == si.getBytesPerPixel()) || 
                  (3 == si.getBytesPerPixel()) ) {
@@ -58,10 +58,10 @@ namespace odredirector {
                 void *buffer = ::malloc(compressedSize);
                 if (buffer != NULL) {
                     // As we are transforming a SharedImage into a CompressedImage, attached to the shared memory segment.
-                    SharedPointer<core::wrapper::SharedMemory> memory = core::wrapper::SharedMemoryFactory::attachToSharedMemory(si.getName());
+                    std::shared_ptr<odcore::wrapper::SharedMemory> memory = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(si.getName());
                     if (memory->isValid()) {
                         Lock l(memory);
-                        retVal = core::wrapper::jpg::JPG::compress(buffer, compressedSize, si.getWidth(), si.getHeight(), si.getBytesPerPixel(), static_cast<const unsigned char*>(memory->getSharedMemory()), m_jpegQuality);
+                        retVal = odcore::wrapper::jpg::JPG::compress(buffer, compressedSize, si.getWidth(), si.getHeight(), si.getBytesPerPixel(), static_cast<const unsigned char*>(memory->getSharedMemory()), m_jpegQuality);
                     }
 
                 }
@@ -69,11 +69,11 @@ namespace odredirector {
                 const int32_t MAX_SIZE_UDP_PAYLOAD = 65000;
                 if ( retVal && (compressedSize < MAX_SIZE_UDP_PAYLOAD) ) {
                     // Create the CompressedImage data structure.
-                    core::data::image::CompressedImage ci(si.getName(), si.getWidth(), si.getHeight(), si.getBytesPerPixel(), compressedSize);
+                    odcore::data::image::CompressedImage ci(si.getName(), si.getWidth(), si.getHeight(), si.getBytesPerPixel(), compressedSize);
                     ::memcpy(ci.getRawData(), buffer, compressedSize);
 
                     // Write the CompressedImage container to STDOUT.
-                    core::data::Container c(core::data::Container::COMPRESSED_IMAGE, ci);
+                    odcore::data::Container c(ci);
                     c.setSentTimeStamp(container.getSentTimeStamp());
                     c.setReceivedTimeStamp(container.getReceivedTimeStamp());
                     std::cout << c;

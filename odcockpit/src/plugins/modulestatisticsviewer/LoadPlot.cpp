@@ -37,8 +37,8 @@
 # endif
 #endif
 
-#include "core/opendavinci.h"
-#include "core/SharedPointer.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include <memory>
 #include "plugins/modulestatisticsviewer/LoadPerModule.h"
 #include "plugins/modulestatisticsviewer/LoadPlot.h"
 
@@ -74,7 +74,7 @@ namespace cockpit {
             LoadPlot::~LoadPlot(){}
 
             void
-            LoadPlot::addLoadPerModule(core::SharedPointer<LoadPerModule> lpm) {
+            LoadPlot::addLoadPerModule(std::shared_ptr<LoadPerModule> lpm) {
 	            m_toAdd.push_back(lpm);
 	            m_toAttachVisitor->start(100);
             }

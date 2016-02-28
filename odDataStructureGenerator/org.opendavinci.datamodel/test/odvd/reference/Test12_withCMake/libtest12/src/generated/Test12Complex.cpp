@@ -4,17 +4,18 @@
  * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
  */
 
+#include <memory>
 
-#include "core/base/Hash.h"
-#include "core/base/Deserializer.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 
 
-#include "generated/Test12Complex.h"
+#include "test12/generated/Test12Complex.h"
 
 	using namespace std;
-	using namespace core::base;
+	using namespace odcore::base;
 
 
 	Test12Complex::Test12Complex() :
@@ -87,6 +88,18 @@
 		return "Test12Complex";
 	}
 
+	int32_t Test12Complex::getID() const {
+		return Test12Complex::ID();
+	}
+
+	const string Test12Complex::getShortName() const {
+		return Test12Complex::ShortName();
+	}
+
+	const string Test12Complex::getLongName() const {
+		return Test12Complex::LongName();
+	}
+
 	bool Test12Complex::getAttribute1() const {
 		return m_attribute1;
 	}
@@ -137,7 +150,7 @@
 		m_attribute7 = val;
 	}
 
-	void Test12Complex::accept(core::base::Visitor &v) {
+	void Test12Complex::accept(odcore::base::Visitor &v) {
 		v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'1', NullType> > > > > > > > > >  >::RESULT, 1, "Test12Complex.attribute1", "attribute1", m_attribute1);
 		v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'2', NullType> > > > > > > > > >  >::RESULT, 2, "Test12Complex.attribute2", "attribute2", m_attribute2);
 		v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'3', NullType> > > > > > > > > >  >::RESULT, 3, "Test12Complex.attribute3", "attribute3", m_attribute3);
@@ -166,7 +179,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Serializer> s = sf.getSerializer(out);
+		std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
 		s->write(1,
 				m_attribute1);
@@ -189,7 +202,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
 		d->read(1,
 				m_attribute1);

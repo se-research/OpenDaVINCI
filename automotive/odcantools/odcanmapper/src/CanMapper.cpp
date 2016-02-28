@@ -22,17 +22,17 @@
 #include <vector>
 
 #include "CanMapper.h"
-#include "core/base/Thread.h"
-#include "core/base/module/DataTriggeredConferenceClientModule.h"
-#include "core/data/Container.h"
-#include "generated/automotive/GenericCANMessage.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/base/module/DataTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "automotivedata/generated/automotive/GenericCANMessage.h"
 
 namespace automotive {
     namespace odcantools {
 
         using namespace std;
-        using namespace core::base;
-        using namespace core::data;
+        using namespace odcore::base;
+        using namespace odcore::data;
 
         CanMapper::CanMapper(const int32_t &argc, char **argv) :
             DataTriggeredConferenceClientModule(argc, argv, "odcanmapper"),
@@ -61,7 +61,7 @@ namespace automotive {
                                 << hex << (int)val[7] << endl;
         }
         void CanMapper::nextContainer(Container &c) {
-            if (c.getDataType() == Container::GENERIC_CAN_MESSAGE) {
+            if (c.getDataType() == GenericCANMessage::ID()) {
                 GenericCANMessage gcm = c.getData<GenericCANMessage>();
 
                 // Optionally: print payload for debug purposes.

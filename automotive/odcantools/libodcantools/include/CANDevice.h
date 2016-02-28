@@ -25,7 +25,7 @@
 
 #include <libpcan.h>
 
-#include <core/base/Service.h>
+#include <opendavinci/odcore/base/Service.h>
 
 namespace automotive { class GenericCANMessage; }
 
@@ -44,7 +44,7 @@ class GenericCANMessageListener;
          * wrapped into a GenericCANMessage and for writing a GenericCANDevice to the
          * device node represented by this class.
          */
-        class CANDevice : public core::base::Service {
+        class CANDevice : public odcore::base::Service {
            private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -106,7 +106,7 @@ class GenericCANMessageListener;
                 string m_deviceNode;
                 HANDLE m_handle;
                 GenericCANMessageListener &m_listener;
-                auto_ptr<MessageToCANDataStore> m_messageToCANDataStore;
+                unique_ptr<MessageToCANDataStore> m_messageToCANDataStore;
         };
 
     } // odcantools

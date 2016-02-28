@@ -9,15 +9,15 @@ In order to use the logging engine in a user-supplied module, you can
 simply call the following method from within your module deriving from
 ``DataTriggeredConferenceClientModule`` or ``TimeTriggeredConferenceClientModule``::
 
-   void toLogger(const core::LogMessage::LogLevel &logLevel, const string &msg);
+   void toLogger(const odcore::data::LogMessage::LogLevel &logLevel, const string &msg);
 
 Example::
 
-   toLogger(core::LogMessage::INFO, "this is an info message");
+   toLogger(odcore::data::LogMessage::INFO, "this is an info message");
 
 By using this method, ``"this is an info message"`` is sent to the UDP
 multicast conference using the logging level ``logLevel``. The ``logLevel`` can
-be either ``core::LogMessage::NONE``, ``core::LogMessage::INFO``, ``core::LogMessage::WARN``, or ``core::LogMessage::DEBUG``. ``odsupercomponent``
+be either ``odcore::data::LogMessage::NONE``, ``odcore::data::LogMessage::INFO``, ``odcore::data::LogMessage::WARN``, or ``odcore::data::LogMessage::DEBUG``. ``odsupercomponent``
 is receiving the log data and storing it to a file depending on its
 command line parameters.
 
@@ -30,10 +30,10 @@ command line parameters to setup the logging:
 The first parameter specifies the logging level up to which messages from
 distributed modules are stored in the log file. Thus,
 if you specify ``--logLevel=INFO`` any messages that are tagged as
-``core::LogMessage::NONE`` or ``core::LogMessage::INFO`` will be stored but
-``core::LogMessage::WARN`` and ``core::LogMessage::DEBUG`` are discarded.
+``odcore::data::LogMessage::NONE`` or ``odcore::data::LogMessage::INFO`` will be stored but
+``odcore::data::LogMessage::WARN`` and ``odcore::data::LogMessage::DEBUG`` are discarded.
 
-If you omit the parameter, ``core::LogMessage::NONE`` is assumed.
+If you omit the parameter, ``odcore::data::LogMessage::NONE`` is assumed.
 
 The second parameter specifies the log file where the log data is stored.
 The data itself has the following format::

@@ -24,12 +24,12 @@
 #include <qobjectdefs.h>
 #include <qwidget.h>
 
-#include "core/base/Mutex.h"
-#include "core/io/conference/ContainerListener.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }
-namespace core { namespace base { class KeyValueConfiguration; } }
-namespace core { namespace data { class Container; } }
+namespace odcore { namespace base { class KeyValueConfiguration; } }
+namespace odcore { namespace data { class Container; } }
 
 namespace cockpit {
 
@@ -44,7 +44,7 @@ class IrUsMapWidget;
             /**
              * This class is the container for the irus map widget control.
              */
-            class IrUsMapWidgetControl : public QWidget, public core::io::conference::ContainerListener {
+            class IrUsMapWidgetControl : public QWidget, public odcore::io::conference::ContainerListener {
 
                     Q_OBJECT
 
@@ -71,17 +71,17 @@ class IrUsMapWidget;
                      * @param kvc KeyValueConfiguration for this based widget.
                      * @param prnt Pointer to the parental widget.
                      */
-                    IrUsMapWidgetControl(const PlugIn &plugIn, const core::base::KeyValueConfiguration &kvc, QWidget *prnt);
+                    IrUsMapWidgetControl(const PlugIn &plugIn, const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt);
 
                     virtual ~IrUsMapWidgetControl();
 
-                    virtual void nextContainer(core::data::Container &c);
+                    virtual void nextContainer(odcore::data::Container &c);
 
                 public slots:
                     void setScale(int val);
 
                 private:
-                    core::base::Mutex m_mapWidgetMutex;
+                    odcore::base::Mutex m_mapWidgetMutex;
                     IrUsMapWidget *m_mapWidget;
             };
 

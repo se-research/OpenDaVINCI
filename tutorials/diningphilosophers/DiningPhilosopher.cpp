@@ -20,13 +20,13 @@
 #include <stdint.h>
 #include <cstdlib>
 #include <iostream>
-#include <core/base/Lock.h>
-#include <core/base/Thread.h>
+#include <opendavinci/odcore/base/Lock.h>
+#include <opendavinci/odcore/base/Thread.h>
 
 #include "DiningPhilosopher.hpp"
 
 using namespace std;
-using namespace core::base;
+using namespace odcore::base;
 
 // Constructor of a dining philosopher.
 DiningPhilosopher::DiningPhilosopher(const uint32_t &numberOfPhilosophers,
@@ -50,7 +50,7 @@ void DiningPhilosopher::run() {
     // This is the body of the concurrently executed method.
     while (isRunning()) {
         cout << "Philosopher " << m_id << " is thinking...";
-        core::base::Thread::usleepFor(ONE_SECOND * (1.0 + (rand()/(float)RAND_MAX)));
+        odcore::base::Thread::usleepFor(ONE_SECOND * (1.0 + (rand()/(float)RAND_MAX)));
         cout << "done." << endl;
 
         cout << "Philosopher " << m_id << " is trying to grab left fork...";
@@ -62,7 +62,7 @@ void DiningPhilosopher::run() {
         cout << "success." << endl;
 
         cout << "Philosopher " << m_id << " is eating..." << endl;        
-        core::base::Thread::usleepFor(ONE_SECOND * (1.0 + (rand()/(float)RAND_MAX)));
+        odcore::base::Thread::usleepFor(ONE_SECOND * (1.0 + (rand()/(float)RAND_MAX)));
         cout << "done." << endl;
     }
 }
@@ -89,7 +89,7 @@ int32_t main(int32_t argc, char **argv) {
     }
 
     // Wait for ten seconds.
-    core::base::Thread::usleepFor(10 * ONE_SECOND);
+    odcore::base::Thread::usleepFor(10 * ONE_SECOND);
 
     // Stop dinner.
     for (uint32_t i = 0; i < PHILOSOPHERS; i++) {

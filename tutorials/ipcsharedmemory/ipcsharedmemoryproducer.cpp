@@ -20,33 +20,33 @@
 #include <stdint.h>
 #include <iostream>
 #include <string>
-#include <core/SharedPointer.h>
-#include <core/base/Lock.h>
-#include <core/base/Thread.h>
-#include <core/wrapper/SharedMemory.h>
-#include <core/wrapper/SharedMemoryFactory.h>
+#include <memory>
+#include <opendavinci/odcore/base/Lock.h>
+#include <opendavinci/odcore/base/Thread.h>
+#include <opendavinci/odcore/wrapper/SharedMemory.h>
+#include <opendavinci/odcore/wrapper/SharedMemoryFactory.h>
 
 using namespace std;
 
 // We add some of OpenDaVINCI's namespaces for the sake of readability.
-using namespace core;
-using namespace core::wrapper;
+using namespace odcore;
+using namespace odcore::wrapper;
 
 int32_t main(int32_t argc, char **argv) {
     const string NAME = "MySharedMemory";
     const uint32_t SIZE = 26;
 
-    // We are using OpenDaVINCI's SharedPointer to automatically
+    // We are using OpenDaVINCI's std::shared_ptr to automatically
     // release any acquired resources.
     try {
-        SharedPointer<SharedMemory> sharedMemory(SharedMemoryFactory::createSharedMemory(NAME, SIZE));
+        std::shared_ptr<SharedMemory> sharedMemory(SharedMemoryFactory::createSharedMemory(NAME, SIZE));
 
         if (sharedMemory->isValid()) {
             uint32_t counter = 20;
             while (counter-- > 0) {
                 {
                     // Using a scoped lock to lock and automatically unlock a shared memory segment.
-                    core::base::Lock l(sharedMemory);
+                    odcore::base::Lock l(sharedMemory);
                     char *p = static_cast<char*>(sharedMemory->getSharedMemory());
                     for (uint32_t i = 0; i < sharedMemory->getSize(); i++) {
                         char c = (char) (65 + ((i+counter)%26));
@@ -56,7 +56,7 @@ int32_t main(int32_t argc, char **argv) {
 
                 // Sleep some time.
                 const uint32_t ONE_SECOND = 1000 * 1000;
-                core::base::Thread::usleepFor(ONE_SECOND);
+                odcore::base::Thread::usleepFor(ONE_SECOND);
             }
         }
     }

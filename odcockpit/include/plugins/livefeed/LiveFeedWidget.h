@@ -28,13 +28,13 @@
 #include <memory>
 #include <string>
 
-#include "core/io/conference/ContainerListener.h"
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
 
 class QTreeWidget;
 class QTreeWidgetItem;
 namespace cockpit { namespace plugins { class PlugIn; } }
-namespace core { namespace base { class Visitable; } }
-namespace core { namespace data { class Container; } }
+namespace odcore { namespace base { class Visitable; } }
+namespace odcore { namespace data { class Container; } }
 
 namespace cockpit {
 
@@ -43,12 +43,12 @@ namespace cockpit {
         namespace livefeed {
 
             using namespace std;
-            using namespace core::data;
+            using namespace odcore::data;
 
             /**
              * This class is the container for the livefeed widget.
              */
-            class LiveFeedWidget : public QWidget, public core::io::conference::ContainerListener {
+            class LiveFeedWidget : public QWidget, public odcore::io::conference::ContainerListener {
 
                     Q_OBJECT
 
@@ -82,12 +82,12 @@ namespace cockpit {
                     virtual void nextContainer(Container &c);
 
                 private:
-                    auto_ptr<QTreeWidget> m_dataView;
+                    unique_ptr<QTreeWidget> m_dataView;
                     map<string, QTreeWidgetItem* > m_dataToType;
 
                     void transformContainerToTree(Container &container);
 
-                    void addMessageToTree(const string &messageName, core::data::Container &container, core::base::Visitable &v);
+                    void addMessageToTree(const string &messageName, odcore::data::Container &container, odcore::base::Visitable &v);
             };
 
         }

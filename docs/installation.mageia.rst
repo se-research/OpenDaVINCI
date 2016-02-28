@@ -13,7 +13,7 @@ Install the required development packages for libodsimulation sources::
 
     $ sudo urpmi libqt4-devel lib64freeglut3 lib64freeglut-devel lib64boost-devel opencv-devel
     
-Install qwt5-qt4 for hesperia sources::
+Install qwt5-qt4 for OpenDLV sources::
 
     $ sudo urpmi lib64qwt5-devel
     

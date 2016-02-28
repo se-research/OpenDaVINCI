@@ -20,25 +20,25 @@
 #include <stdint.h>
 #include <iostream>
 #include <string>
-#include <core/SharedPointer.h>
-#include <core/base/Lock.h>
-#include <core/base/Thread.h>
-#include <core/wrapper/SharedMemory.h>
-#include <core/wrapper/SharedMemoryFactory.h>
+#include <memory>
+#include <opendavinci/odcore/base/Lock.h>
+#include <opendavinci/odcore/base/Thread.h>
+#include <opendavinci/odcore/wrapper/SharedMemory.h>
+#include <opendavinci/odcore/wrapper/SharedMemoryFactory.h>
 
 using namespace std;
 
 // We add some of OpenDaVINCI's namespaces for the sake of readability.
-using namespace core;
-using namespace core::wrapper;
+using namespace odcore;
+using namespace odcore::wrapper;
 
 int32_t main(int32_t argc, char **argv) {
     const string NAME = "MySharedMemory";
 
-    // We are using OpenDaVINCI's SharedPointer to automatically
+    // We are using OpenDaVINCI's std::shared_ptr to automatically
     // release any acquired resources.
     try {
-        SharedPointer<SharedMemory> sharedMemory(SharedMemoryFactory::attachToSharedMemory(NAME));
+        std::shared_ptr<SharedMemory> sharedMemory(SharedMemoryFactory::attachToSharedMemory(NAME));
 
         if (sharedMemory->isValid()) {
             uint32_t counter = 10;
@@ -46,7 +46,7 @@ int32_t main(int32_t argc, char **argv) {
                 string s;
                 {
                     // Using a scoped lock to lock and automatically unlock a shared memory segment.
-                    core::base::Lock l(sharedMemory);
+                    odcore::base::Lock l(sharedMemory);
                     char *p = static_cast<char*>(sharedMemory->getSharedMemory());
                     s = string(p);
                 }
@@ -55,7 +55,7 @@ int32_t main(int32_t argc, char **argv) {
 
                 // Sleep some time.
                 const uint32_t ONE_SECOND = 1000 * 1000;
-                core::base::Thread::usleepFor(0.5 * ONE_SECOND);
+                odcore::base::Thread::usleepFor(0.5 * ONE_SECOND);
             }
         }
     }

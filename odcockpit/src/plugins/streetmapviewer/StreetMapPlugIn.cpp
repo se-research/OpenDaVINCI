@@ -21,24 +21,24 @@
 #include <sstream>
 #include <string>
 
-#include "core/opendavinci.h"
-#include "core/strings/StringToolbox.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/strings/StringToolbox.h"
 #include "ContainerObserver.h"
 
 #include "plugins/streetmapviewer/StreetMapPlugIn.h"
 #include "plugins/streetmapviewer/StreetMapWidget.h"
 
 class QWidget;
-namespace core { namespace base { class KeyValueConfiguration; } }
+namespace odcore { namespace base { class KeyValueConfiguration; } }
 
 namespace cockpit {
     namespace plugins {
         namespace streetmap {
 
             using namespace std;
-            using namespace core::base;
-            using namespace core::strings;
-            using namespace hesperia::data::environment;
+            using namespace odcore::base;
+            using namespace odcore::strings;
+            using namespace opendlv::data::environment;
 
             StreetMapPlugIn::StreetMapPlugIn(const string &name, const KeyValueConfiguration &kvc, QWidget* prnt) :
                     PlugIn(name, kvc, prnt),

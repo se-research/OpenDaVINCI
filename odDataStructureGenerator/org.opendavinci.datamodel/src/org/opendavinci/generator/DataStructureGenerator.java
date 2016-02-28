@@ -157,8 +157,8 @@ public class DataStructureGenerator {
     		sb.append("#include \"" + file.replaceFirst("include/", "") + "\""); sb.append("\r\n");
         }
 
-		System.out.print((DataStructureGenerator.appendGeneratedHeadersFile ? "Appending" : "Creating") + " '" + folder + "/include/GeneratedHeaders_" + odvdFilename + ".h' ");
-		File f = new File(folder + "/include/GeneratedHeaders_" + odvdFilename + ".h");
+		System.out.print((DataStructureGenerator.appendGeneratedHeadersFile ? "Appending" : "Creating") + " '" + folder + "/include/" + odvdFilename.toLowerCase() + "/GeneratedHeaders_" + odvdFilename + ".h' ");
+		File f = new File(folder + "/include/" + odvdFilename.toLowerCase() + "/GeneratedHeaders_" + odvdFilename + ".h");
 		FileWriter fw;
 		try {
 			fw = new FileWriter(f, DataStructureGenerator.appendGeneratedHeadersFile);
@@ -210,19 +210,9 @@ public class DataStructureGenerator {
                 sb.append("    IF(\"${CMAKE_SYSTEM_NAME}\" STREQUAL \"Darwin\")"); sb.append("\r\n");
                 sb.append("        SET(CMAKE_MACOSX_RPATH 1)"); sb.append("\r\n");
                 sb.append("    ENDIF()"); sb.append("\r\n");
-		sb.append("    SET (CXX_OPTIONS       \"-Wno-deprecated -Wall -Wshadow -Wextra -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wpacked\")"); sb.append("\r\n");
-		sb.append("    SET (CXX_OPTION_ANSI   \"-ansi\")"); sb.append("\r\n");
+		sb.append("    SET (CXX_OPTIONS       \" -std=c++11 -Wno-deprecated -Wall -Wshadow -Wextra -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wpacked\")"); sb.append("\r\n");
 		sb.append("    SET (CXX_EFFECTIVE_CXX \"-Wmissing-format-attribute -Wredundant-decls -Weffc++\")"); sb.append("\r\n");
 		sb.append("    SET (CXX_UNINITIALIZED \"-Wno-maybe-uninitialized -Wno-error=unused-result\")"); sb.append("\r\n");
-
-		sb.append("    # Remove \"-ansi\" flag for clang on Darwin."); sb.append("\r\n");
-		sb.append("    IF(    (NOT \"${CMAKE_SYSTEM_NAME}\" STREQUAL \"Darwin\")"); sb.append("\r\n");
-		sb.append("       AND (NOT \"${CMAKE_SYSTEM_NAME}\" STREQUAL \"FreeBSD\")"); sb.append("\r\n");
-		sb.append("       AND (NOT \"${CMAKE_SYSTEM_NAME}\" STREQUAL \"NetBSD\")"); sb.append("\r\n");
-		sb.append("       AND (NOT \"${CMAKE_SYSTEM_NAME}\" STREQUAL \"DragonFly\")"); sb.append("\r\n");
-		sb.append("       AND (NOT \"${CMAKE_CXX_COMPILER_ID}\" STREQUAL \"Clang\") )"); sb.append("\r\n");
-		sb.append("        SET (CXX_OPTIONS \"${CXX_OPTIONS} ${CXX_OPTION_ANSI}\")"); sb.append("\r\n");
-		sb.append("    ENDIF()"); sb.append("\r\n");
 
 		sb.append("    # Additionally, test for Effective C++ warnings except on OpenBSD."); sb.append("\r\n");
 		sb.append("    IF(NOT \"${CMAKE_SYSTEM_NAME}\" STREQUAL \"OpenBSD\")"); sb.append("\r\n");
@@ -367,7 +357,7 @@ public class DataStructureGenerator {
 		sb.append("FIND_PACKAGE (OpenDaVINCI REQUIRED)"); sb.append("\r\n");
 
 		sb.append("# Include directories from core."); sb.append("\r\n");
-		sb.append("INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS}/opendavinci)"); sb.append("\r\n");
+		sb.append("INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS})"); sb.append("\r\n");
 		sb.append("INCLUDE_DIRECTORIES (include)"); sb.append("\r\n");
 
 		sb.append("# Recipe for building " + folder + "."); sb.append("\r\n");
@@ -388,7 +378,7 @@ public class DataStructureGenerator {
 		sb.append("ENDIF()"); sb.append("\r\n");
 
 		sb.append("# Install header files."); sb.append("\r\n");
-		sb.append("INSTALL(DIRECTORY \"${CMAKE_CURRENT_SOURCE_DIR}/include/\" DESTINATION include/" + folder.replaceFirst("lib", "") + " " + "COMPONENT od" + folder.replaceFirst("lib", "") + "lib" + ")"); sb.append("\r\n");
+		sb.append("INSTALL(DIRECTORY \"${CMAKE_CURRENT_SOURCE_DIR}/include/\" DESTINATION include/" + " " + "COMPONENT od" + folder.replaceFirst("lib", "") + "lib" + ")"); sb.append("\r\n");
 
 		sb.append("IF(CXXTEST_FOUND)"); sb.append("\r\n");
 		sb.append("FILE(GLOB " + folder + "-testsuites \"${CMAKE_CURRENT_SOURCE_DIR}/testsuites/*.h\")"); sb.append("\r\n");

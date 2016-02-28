@@ -4,17 +4,18 @@
  * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
  */
 
+#include <memory>
 
-#include "core/base/Hash.h"
-#include "core/base/Deserializer.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 
 
-#include "generated/Test19c.h"
+#include "test19/generated/Test19c.h"
 
 	using namespace std;
-	using namespace core::base;
+	using namespace odcore::base;
 
 	const uint32_t Test19c::MAGIC_NUMBER = 42;
 	const float Test19c::PI = 3.14159;
@@ -51,8 +52,20 @@
 		return "Test19c";
 	}
 
+	int32_t Test19c::getID() const {
+		return Test19c::ID();
+	}
 
-	void Test19c::accept(core::base::Visitor &v) {
+	const string Test19c::getShortName() const {
+		return Test19c::ShortName();
+	}
+
+	const string Test19c::getLongName() const {
+		return Test19c::LongName();
+	}
+
+
+	void Test19c::accept(odcore::base::Visitor &v) {
 		(void)v; // Avoid unused parameter warning.
 	}
 
@@ -68,7 +81,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Serializer> s = sf.getSerializer(out);(void)s; // Avoid unused variable warning.
+		std::shared_ptr<Serializer> s = sf.getSerializer(out);(void)s; // Avoid unused variable warning.
 
 		return out;
 	}
@@ -77,7 +90,7 @@
 
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
-		core::SharedPointer<Deserializer> d = sf.getDeserializer(in);(void)d; // Avoid unused variable warning.
+		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);(void)d; // Avoid unused variable warning.
 
 		return in;
 	}

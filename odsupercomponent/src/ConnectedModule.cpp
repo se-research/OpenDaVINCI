@@ -18,19 +18,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "core/dmcp/connection/ModuleConnection.h"
+#include "opendavinci/odcore/dmcp/connection/ModuleConnection.h"
 
 #include "ConnectedModule.h"
 
-namespace core { namespace dmcp { namespace connection { class ModuleConnection; } } }
+namespace odcore { namespace dmcp { namespace connection { class ModuleConnection; } } }
 
 namespace odsupercomponent {
 
     using namespace std;
-    using namespace core::base;
-    using namespace core::dmcp::connection;
+    using namespace odcore::base;
+    using namespace odcore::dmcp::connection;
 
-    ConnectedModule::ConnectedModule(core::SharedPointer<core::dmcp::connection::ModuleConnection> connection, const coredata::dmcp::ModuleStateMessage::ModuleState& state) :
+    ConnectedModule::ConnectedModule(std::shared_ptr<odcore::dmcp::connection::ModuleConnection> connection, const odcore::data::dmcp::ModuleStateMessage::ModuleState& state) :
         m_state(state),
         m_connection(connection),
         m_hasExitCode(false)
@@ -38,7 +38,7 @@ namespace odsupercomponent {
 
     ConnectedModule::~ConnectedModule() {}
 
-    coredata::dmcp::ModuleStateMessage::ModuleState ConnectedModule::getState() const {
+    odcore::data::dmcp::ModuleStateMessage::ModuleState ConnectedModule::getState() const {
         return m_state;
     }
 
@@ -54,7 +54,7 @@ namespace odsupercomponent {
         return *m_connection;
     }
 
-    void ConnectedModule::setState(const coredata::dmcp::ModuleStateMessage::ModuleState& state) {
+    void ConnectedModule::setState(const odcore::data::dmcp::ModuleStateMessage::ModuleState& state) {
         m_state = state;
     }
 }

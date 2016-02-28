@@ -21,14 +21,14 @@
 #include <iostream>
 
 #include "LinearBicycleModelBehaviour.h"
-#include "generated/cartesian/Constants.h"
-#include "hesperia/data/environment/Point3.h"
+#include "automotivedata/generated/cartesian/Constants.h"
+#include "opendlv/data/environment/Point3.h"
 
 namespace egocontroller {
-    using namespace core::base;
-    using namespace core::data;
-    using namespace hesperia::data::environment;
-    using namespace hesperia::data::environment;
+    using namespace odcore::base;
+    using namespace odcore::data;
+    using namespace opendlv::data::environment;
+    using namespace opendlv::data::environment;
 
     LinearBicycleModelBehaviour::LinearBicycleModelBehaviour(const Point3 &translation, const double &rotZ,
         const double &wheelbase, const double &maxSteeringLeftRad, const double &maxSteeringRightRad,

@@ -24,40 +24,40 @@
 #include <iostream>
 #include <string>
 
-#include "core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "OpenGLGrabber.h"
-#include "core/base/Thread.h"
-#include "core/io/URL.h"
-#include "core/wrapper/ImageFactory.h"
-#include "core/wrapper/SharedMemory.h"
-#include "core/wrapper/SharedMemoryFactory.h"
-#include "hesperia/scenario/SCNXArchiveFactory.h"
-#include "hesperia/threeD/RenderingConfiguration.h"
-#include "hesperia/threeD/TransformGroup.h"
-#include "hesperia/threeD/decorator/DecoratorFactory.h"
-#include "hesperia/threeD/models/CheckerBoard.h"
-#include "hesperia/threeD/models/Grid.h"
-#include "hesperia/threeD/models/XYZAxes.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/io/URL.h"
+#include "opendlv/core/wrapper/ImageFactory.h"
+#include "opendavinci/odcore/wrapper/SharedMemory.h"
+#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
+#include "opendlv/scenario/SCNXArchiveFactory.h"
+#include "opendlv/threeD/RenderingConfiguration.h"
+#include "opendlv/threeD/TransformGroup.h"
+#include "opendlv/threeD/decorator/DecoratorFactory.h"
+#include "opendlv/threeD/models/CheckerBoard.h"
+#include "opendlv/threeD/models/Grid.h"
+#include "opendlv/threeD/models/XYZAxes.h"
 
 namespace core { namespace wrapper { class Image; } }
-namespace hesperia { namespace data { namespace camera { class ImageGrabberCalibration; } } }
-namespace hesperia { namespace data { namespace environment { class EgoState; } } }
-namespace hesperia { namespace scenario { class SCNXArchive; } }
+namespace opendlv { namespace data { namespace camera { class ImageGrabberCalibration; } } }
+namespace opendlv { namespace data { namespace environment { class EgoState; } } }
+namespace opendlv { namespace scenario { class SCNXArchive; } }
 
 namespace camgen {
 
     using namespace std;
-    using namespace core::base;
-    using namespace hesperia::data::camera;
-    using namespace hesperia::data::environment;
-    using namespace hesperia::data::environment;
-    using namespace core::io;
-    using namespace hesperia::scenario;
-    using namespace hesperia::threeD;
-    using namespace hesperia::threeD::decorator;
-    using namespace hesperia::threeD::models;
+    using namespace odcore::base;
+    using namespace opendlv::data::camera;
+    using namespace opendlv::data::environment;
+    using namespace opendlv::data::environment;
+    using namespace odcore::io;
+    using namespace opendlv::scenario;
+    using namespace opendlv::threeD;
+    using namespace opendlv::threeD::decorator;
+    using namespace opendlv::threeD::models;
 
-    OpenGLGrabber::OpenGLGrabber(const KeyValueConfiguration &kvc, const ImageGrabberID &imageGrabberID, const ImageGrabberCalibration &imageGrabberCalibration, hesperia::data::environment::EgoState &egoState) :
+    OpenGLGrabber::OpenGLGrabber(const KeyValueConfiguration &kvc, const ImageGrabberID &imageGrabberID, const ImageGrabberCalibration &imageGrabberCalibration, opendlv::data::environment::EgoState &egoState) :
             ImageGrabber(imageGrabberID, imageGrabberCalibration),
             m_render(OpenGLGrabber::WORLD),
             m_kvc(kvc),
@@ -71,7 +71,7 @@ namespace camgen {
         const URL urlOfSCNXFile(m_kvc.getValue<string>("global.scenario"));
         const bool SHOW_GRID = (m_kvc.getValue<uint8_t>("global.showgrid") == 1);
         if (urlOfSCNXFile.isValid()) {
-            m_root = core::SharedPointer<TransformGroup>(new hesperia::threeD::TransformGroup());
+            m_root = std::shared_ptr<TransformGroup>(new opendlv::threeD::TransformGroup());
             SCNXArchive &scnxArchive = SCNXArchiveFactory::getInstance().getSCNXArchive(urlOfSCNXFile);
 
             // Read scnxArchive and decorate it for getting displayed in an OpenGL scene.
@@ -82,21 +82,21 @@ namespace camgen {
                 m_root->addChild(new Grid(NodeDescriptor("Grid"), 10, 2));
             }
 
-            m_sharedMemory = core::wrapper::SharedMemoryFactory::createSharedMemory("odsimcamera", 640 * 480 * 3);
+            m_sharedMemory = odcore::wrapper::SharedMemoryFactory::createSharedMemory("odsimcamera", 640 * 480 * 3);
 
-            m_image = core::SharedPointer<core::wrapper::Image>(core::wrapper::ImageFactory::getInstance().getImage(640, 480, core::wrapper::Image::BGR_24BIT, static_cast<char*>(m_sharedMemory->getSharedMemory())));
+            m_image = std::shared_ptr<core::wrapper::Image>(core::wrapper::ImageFactory::getInstance().getImage(640, 480, core::wrapper::Image::BGR_24BIT, static_cast<char*>(m_sharedMemory->getSharedMemory())));
 
-            if (m_image.isValid()) {
+            if (m_image.get()) {
                 cerr << "OpenGLGrabber initialized." << endl;
             }
         }
 
-        m_intrinsicCalibrationRoot = core::SharedPointer<TransformGroup>(new hesperia::threeD::TransformGroup());
+        m_intrinsicCalibrationRoot = std::shared_ptr<TransformGroup>(new opendlv::threeD::TransformGroup());
         m_intrinsicCalibrationRoot->addChild(new XYZAxes(NodeDescriptor("XYZAxes")));
         m_intrinsicCalibrationRoot->addChild(new CheckerBoard(NodeDescriptor("CheckerBoard")));
         m_intrinsicCalibrationRoot->setTranslation(Point3(2.5, 0, 1));
 
-        m_extrinsicCalibrationRoot = core::SharedPointer<TransformGroup>(new hesperia::threeD::TransformGroup());
+        m_extrinsicCalibrationRoot = std::shared_ptr<TransformGroup>(new opendlv::threeD::TransformGroup());
         m_extrinsicCalibrationRoot->addChild(new XYZAxes(NodeDescriptor("XYZAxes")));
         m_extrinsicCalibrationRoot->addChild(new CheckerBoard(NodeDescriptor("CheckerBoard")));
         m_extrinsicCalibrationRoot->setTranslation(Point3(2.3, 0, 0));
@@ -109,8 +109,8 @@ namespace camgen {
         Thread::usleepFor(1000 * 10);
     }
 
-    core::SharedPointer<core::wrapper::Image> OpenGLGrabber::getNextImage() {
-        if ( (m_sharedMemory.isValid()) && (m_sharedMemory->isValid()) ) {
+    std::shared_ptr<core::wrapper::Image> OpenGLGrabber::getNextImage() {
+        if ( (m_sharedMemory.get()) && (m_sharedMemory->isValid()) ) {
             m_sharedMemory->lock();
 
             // Render the image right before grabbing it.

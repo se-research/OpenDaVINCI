@@ -16,24 +16,24 @@ SerialSendBytes.cpp:
     #include <stdint.h>
     #include <iostream>
     #include <string>
-    #include <core/SharedPointer.h>
-    #include <core/wrapper/SerialPort.h>
-    #include <core/wrapper/SerialPortFactory.h>
+    #include <memory>
+    #include <opendavinci/odcore/wrapper/SerialPort.h>
+    #include <opendavinci/odcore/wrapper/SerialPortFactory.h>
 
     using namespace std;
 
     // We add some of OpenDaVINCI's namespaces for the sake of readability.
-    using namespace core;
-    using namespace core::wrapper;
+    using namespace odcore;
+    using namespace odcore::wrapper;
 
     int32_t main(int32_t argc, char **argv) {
         const string SERIAL_PORT = "/dev/pts/19";
         const uint32_t BAUD_RATE = 19200;
 
-        // We are using OpenDaVINCI's SharedPointer to automatically
+        // We are using OpenDaVINCI's std::shared_ptr to automatically
         // release any acquired resources.
         try {
-            SharedPointer<SerialPort> serial(SerialPortFactory::createSerialPort(SERIAL_PORT, BAUD_RATE));
+            std::shared_ptr<SerialPort> serial(SerialPortFactory::createSerialPort(SERIAL_PORT, BAUD_RATE));
 
             serial->send("Hello World\r\n");
         }
@@ -43,7 +43,7 @@ SerialSendBytes.cpp:
     }
 
 To send bytes over a serial link, your application needs to include
-``<core/wrapper/SerialPort.h>`` and ``<core/wrapper/SerialPortFactory.h>`` that
+``<opendavinci/odcore/wrapper/SerialPort.h>`` and ``<opendavinci/odcore/wrapper/SerialPortFactory.h>`` that
 encapsulate the platform-specific implementations.
 
 ``SerialPortFactory`` provides a static method called ``createSerialPort`` that
@@ -56,12 +56,12 @@ If the connection could be successfully established, the method ``send`` can be
 used to send data of type ``string`` to the other end of the serial link.
 
 To conveniently handle the resource management of releasing the acquired system
-resources, a ``SharedPointer`` is used that automatically releases memory that
+resources, a ``std::shared_ptr`` is used that automatically releases memory that
 is no longer used.
 
 You can compile and link the example::
 
-   g++ -I /usr/include/opendavinci -c SerialSendBytes.cpp -o SerialSendBytes.o
+   g++ -I /usr/include -c SerialSendBytes.cpp -o SerialSendBytes.o
    g++ -o serialsendbytes SerialSendBytes.o -lopendavinci -lpthread
 
 To test the program, we create a simple virtual serial port on Linux using the

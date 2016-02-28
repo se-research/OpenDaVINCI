@@ -23,9 +23,9 @@
 
 #include <Qt/qapplication.h>
 
-#include "core/opendavinci.h"
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "generated/coredata/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
 
 namespace cockpit {
 
@@ -34,7 +34,7 @@ namespace cockpit {
     /**
      * This class demonstrates how to send data as a Container.
      */
-    class Cockpit : public core::base::module::TimeTriggeredConferenceClientModule {
+    class Cockpit : public odcore::base::module::TimeTriggeredConferenceClientModule {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -66,7 +66,7 @@ namespace cockpit {
 
             virtual ~Cockpit();
 
-            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+            odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
         private:
             virtual void setUp();

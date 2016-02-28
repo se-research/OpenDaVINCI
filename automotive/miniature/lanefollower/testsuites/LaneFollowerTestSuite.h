@@ -22,19 +22,19 @@
 
 #include "cxxtest/TestSuite.h"
 
-#include "core/SharedPointer.h"
-#include "core/data/Container.h"
-#include "core/wrapper/SharedMemory.h"
-#include "core/wrapper/SharedMemoryFactory.h"
+#include <memory>
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/wrapper/SharedMemory.h"
+#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 
-#include "GeneratedHeaders_CoreData.h"
+#include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
 // Include local header files.
 #include "../include/LaneFollower.h"
 
 using namespace std;
-using namespace core::data;
-using namespace coredata::image;
+using namespace odcore::data;
+using namespace odcore::data::image;
 using namespace automotive::miniature;
 
 /**
@@ -107,7 +107,7 @@ class LaneFollowerTest : public CxxTest::TestSuite {
             const uint32_t WIDTH = 3;
             const uint32_t HEIGHT = 4;
             const uint32_t BYTESPERPIXEL = 3;
-            core::SharedPointer<core::wrapper::SharedMemory> imageProducer = core::wrapper::SharedMemoryFactory::createSharedMemory("ImageProducer", WIDTH * HEIGHT * BYTESPERPIXEL);
+            std::shared_ptr<odcore::wrapper::SharedMemory> imageProducer = odcore::wrapper::SharedMemoryFactory::createSharedMemory("ImageProducer", WIDTH * HEIGHT * BYTESPERPIXEL);
             TS_ASSERT(imageProducer->isValid());
             TS_ASSERT(imageProducer->getSize() == WIDTH * HEIGHT * BYTESPERPIXEL);
             imageProducer->lock();
@@ -122,9 +122,10 @@ class LaneFollowerTest : public CxxTest::TestSuite {
             si.setWidth(WIDTH);
             si.setHeight(HEIGHT);
             si.setBytesPerPixel(BYTESPERPIXEL);
+            si.setSize(si.getWidth() * si.getHeight() * si.getBytesPerPixel());
 
             // Create a container.
-    		Container c(Container::SHARED_IMAGE, si);
+            Container c(si);
 
             TS_ASSERT(ldt->callReadSharedImage(c) == true);
         }
@@ -141,9 +142,10 @@ class LaneFollowerTest : public CxxTest::TestSuite {
             si.setWidth(WIDTH);
             si.setHeight(HEIGHT);
             si.setBytesPerPixel(BYTESPERPIXEL);
+            si.setSize(si.getWidth() * si.getHeight() * si.getBytesPerPixel());
 
             // Create a container.
-    		Container c(Container::SHARED_IMAGE, si);
+            Container c(si);
 
             TS_ASSERT(ldt->callReadSharedImage(c) == false);
         }

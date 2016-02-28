@@ -13,17 +13,17 @@ UDPReceiveBytes.hpp:
 
 .. code-block:: c++
 
-    #include <core/io/StringListener.h>
+    #include <opendavinci/odcore/io/StringListener.h>
 
     // This class will handle the bytes received via a UDP socket.
-    class UDPReceiveBytes : public core::io::StringListener {
+    class UDPReceiveBytes : public odcore::io::StringListener {
 
         // Your class needs to implement the method void nextString(const std::string &s).
         virtual void nextString(const std::string &s);
     };
 
 To receive any data, we firstly declare a class that implements the interface
-``core::io::StringListener``. This class will be registered as listener to
+``odcore::io::StringListener``. This class will be registered as listener to
 our UDP socket that we create later.
 
 UDPReceiveBytes.cpp:
@@ -33,10 +33,10 @@ UDPReceiveBytes.cpp:
     #include <stdint.h>
     #include <iostream>
     #include <string>
-    #include <core/SharedPointer.h>
-    #include <core/base/Thread.h>
-    #include <core/io/udp/UDPReceiver.h>
-    #include <core/io/udp/UDPFactory.h>
+    #include <memory>
+    #include <opendavinci/odcore/base/Thread.h>
+    #include <opendavinci/odcore/io/udp/UDPReceiver.h>
+    #include <opendavinci/odcore/io/udp/UDPFactory.h>
 
     #include "UDPReceiveBytes.hpp"
 
@@ -47,18 +47,18 @@ UDPReceiveBytes.cpp:
     }
 
     // We add some of OpenDaVINCI's namespaces for the sake of readability.
-    using namespace core;
-    using namespace core::io;
-    using namespace core::io::udp;
+    using namespace odcore;
+    using namespace odcore::io;
+    using namespace odcore::io::udp;
 
     int32_t main(int32_t argc, char **argv) {
         const string RECEIVER = "0.0.0.0";
         const uint32_t PORT = 1234;
 
-        // We are using OpenDaVINCI's SharedPointer to automatically
+        // We are using OpenDaVINCI's std::shared_ptr to automatically
         // release any acquired resources.
         try {
-            SharedPointer<UDPReceiver>
+            std::shared_ptr<UDPReceiver>
                 udpreceiver(UDPFactory::createUDPReceiver(RECEIVER, PORT));
 
             // This instance will handle any bytes that are received
@@ -70,7 +70,7 @@ UDPReceiveBytes.cpp:
             udpreceiver->start();
 
             const uint32_t ONE_SECOND = 1000 * 1000;
-            core::base::Thread::usleepFor(10 * ONE_SECOND);
+            odcore::base::Thread::usleepFor(10 * ONE_SECOND);
 
             // Stop receiving bytes and unregister our handler.
             udpreceiver->stop();
@@ -82,7 +82,7 @@ UDPReceiveBytes.cpp:
     }
 
 To receive bytes from a UDP socket, your application needs to include
-``<core/io/udp/UDPReceiver.h>`` and ``<core/io/udp/UDPFactory.h>`` that encapsulate
+``<opendavinci/odcore/io/udp/UDPReceiver.h>`` and ``<opendavinci/odcore/io/udp/UDPFactory.h>`` that encapsulate
 the platform-specific implementations.
 
 ``UDPFactory`` provides a static method called ``createUDPReceiver`` that allows
@@ -110,7 +110,7 @@ time, the program will stop receiving bytes, unregister the ``StringListener``,
 and release the system resources.
 
 To conveniently handle the resource management of releasing the acquired system
-resources, a ``SharedPointer`` is used that automatically releases memory that
+resources, a ``std::shared_ptr`` is used that automatically releases memory that
 is no longer used.
 
 Please note that once you have stopped ``UDPReceiver`` you cannot reuse it and
@@ -118,7 +118,7 @@ thus, you need to create a new one.
 
 You can compile and link the example::
 
-   g++ -I /usr/include/opendavinci -c UDPReceiveBytes.cpp -o UDPReceiveBytes.o
+   g++ -I /usr/include -c UDPReceiveBytes.cpp -o UDPReceiveBytes.o
    g++ -o udpreceivebytes UDPReceiveBytes.o -lopendavinci -lpthread
 
 The resulting program can be run::

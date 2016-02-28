@@ -27,13 +27,13 @@
 #include <string>
 #include <vector>
 
-#include "core/SharedPointer.h"
-#include "core/base/KeyValueConfiguration.h"
-#include "core/base/Mutex.h"
+#include <memory>
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/base/Mutex.h"
 
 class QWidget;
-namespace core { namespace base { class DataStoreManager; } }
-namespace core { namespace io { namespace conference { class ContainerConference; } } }
+namespace odcore { namespace base { class DataStoreManager; } }
+namespace odcore { namespace io { namespace conference { class ContainerConference; } } }
 
 namespace cockpit {
 
@@ -70,7 +70,7 @@ class PlugIn;
                  * @param conf Container conference to send data to.
                  * @param prnt Pointer to the container super window.
                  */
-                PlugInProvider(const core::base::KeyValueConfiguration &kvc, core::base::DataStoreManager &dsm, core::io::conference::ContainerConference &conf, QWidget *prnt);
+                PlugInProvider(const odcore::base::KeyValueConfiguration &kvc, odcore::base::DataStoreManager &dsm, odcore::io::conference::ContainerConference &conf, QWidget *prnt);
 
             public:
                 virtual ~PlugInProvider();
@@ -84,7 +84,7 @@ class PlugIn;
                  * @param prnt Pointer to the container super window.
                  * @return Instance of this factory.
                  */
-                static PlugInProvider& getInstance(const core::base::KeyValueConfiguration &kvc, core::base::DataStoreManager &dsm, core::io::conference::ContainerConference &conf, QWidget *prnt);
+                static PlugInProvider& getInstance(const odcore::base::KeyValueConfiguration &kvc, odcore::base::DataStoreManager &dsm, odcore::io::conference::ContainerConference &conf, QWidget *prnt);
 
                 /**
                  * This method returns the list of available plugins.
@@ -114,17 +114,17 @@ class PlugIn;
                  * @param name Name of the plugin.
                  * @return Plugin.
                  */
-                core::SharedPointer<PlugIn> getPlugIn(const string &name);
+                std::shared_ptr<PlugIn> getPlugIn(const string &name);
 
             private:
-                static core::base::Mutex m_singletonMutex;
+                static odcore::base::Mutex m_singletonMutex;
                 static PlugInProvider* m_singleton;
 
                 vector<string> m_listOfAvailablePlugIns;
                 map<string,string> m_listOfDescriptions;
-                core::base::KeyValueConfiguration m_kvc;
-                core::base::DataStoreManager &m_dataStoreManager;
-                core::io::conference::ContainerConference &m_conference;
+                odcore::base::KeyValueConfiguration m_kvc;
+                odcore::base::DataStoreManager &m_dataStoreManager;
+                odcore::io::conference::ContainerConference &m_conference;
                 QWidget *m_parent;
 
                 /**
@@ -133,7 +133,7 @@ class PlugIn;
                  * @param name Name of the plugin.
                  * @return New instance.
                  */
-                core::SharedPointer<PlugIn> createPlugIn(const string &name);
+                std::shared_ptr<PlugIn> createPlugIn(const string &name);
         };
 
     } // plugins

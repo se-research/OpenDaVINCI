@@ -24,25 +24,25 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/SharedPointer.h"         // for SharedPointer
-#include "core/wrapper/NetworkLibraryProducts.h"
+#include <memory>
+#include "opendavinci/odcore/wrapper/NetworkLibraryProducts.h"
 #include "mocks/ConnectionListenerMock.h"
 #include "mocks/StringListenerMock.h"
 #include "mocks/TCPAcceptorListenerMock.h"
 
 #ifndef WIN32
-    #include "core/wrapper/POSIX/POSIXTCPFactoryWorker.h"
+    #include "opendavinci/odcore/wrapper/POSIX/POSIXTCPFactoryWorker.h"
 #endif
 #ifdef WIN32
-    #include "core/wrapper/WIN32/WIN32TCPFactoryWorker.h"
+    #include "opendavinci/odcore/wrapper/WIN32/WIN32TCPFactoryWorker.h"
 #endif
 
-#include "core/io/tcp/TCPAcceptor.h"    // for TCPAcceptor
-#include "core/io/tcp/TCPConnection.h"  // for TCPConnection
+#include "opendavinci/odcore/io/tcp/TCPAcceptor.h"    // for TCPAcceptor
+#include "opendavinci/odcore/io/tcp/TCPConnection.h"  // for TCPConnection
 
 using namespace std;
-using namespace core;
-using namespace core::base;
+using namespace odcore;
+using namespace odcore::base;
 
 template <typename worker> struct TCPAcceptorTests
 {
@@ -50,11 +50,19 @@ template <typename worker> struct TCPAcceptorTests
         {
             mocks::TCPAcceptorListenerMock ah;
 
-            SharedPointer<core::io::tcp::TCPAcceptor> acceptor(worker::createTCPAcceptor(20000));
+#ifdef __APPLE__
+            odcore::io::tcp::TCPAcceptor* acceptor(worker::createTCPAcceptor(20000));
+#else
+            std::shared_ptr<odcore::io::tcp::TCPAcceptor> acceptor(worker::createTCPAcceptor(20000));
+#endif
             acceptor->setAcceptorListener(&ah);
             acceptor->start();
 
-            SharedPointer<core::io::tcp::TCPConnection> connection(worker::createTCPConnectionTo("127.0.0.1", 20000));
+#ifdef __APPLE__
+            odcore::io::tcp::TCPConnection* connection(worker::createTCPConnectionTo("127.0.0.1", 20000));
+#else
+            std::shared_ptr<odcore::io::tcp::TCPConnection> connection(worker::createTCPConnectionTo("127.0.0.1", 20000));
+#endif
             connection->start();
 
             TS_ASSERT(ah.CALLWAITER_onNewConnection.wait());
@@ -62,35 +70,37 @@ template <typename worker> struct TCPAcceptorTests
 
         static void multipleAcceptTest()
         {
+#ifndef __APPLE__
             mocks::TCPAcceptorListenerMock ah1;
             mocks::TCPAcceptorListenerMock ah2;
 
-            SharedPointer<core::io::tcp::TCPAcceptor> acceptor(worker::createTCPAcceptor(20000));
+            odcore::io::tcp::TCPAcceptor* acceptor(worker::createTCPAcceptor(20001));
             acceptor->setAcceptorListener(&ah1);
             acceptor->start();
 
-            SharedPointer<core::io::tcp::TCPConnection> connection(worker::createTCPConnectionTo("127.0.0.1", 20000));
+            odcore::io::tcp::TCPConnection* connection(worker::createTCPConnectionTo("127.0.0.1", 20001));
             connection->start();
 
             TS_ASSERT(ah1.CALLWAITER_onNewConnection.wait());
 
             acceptor->setAcceptorListener(&ah2);
 
-            SharedPointer<core::io::tcp::TCPConnection> connection2(worker::createTCPConnectionTo("127.0.0.1", 20000));
-            connection->start();
+            odcore::io::tcp::TCPConnection* connection2(worker::createTCPConnectionTo("127.0.0.1", 20001));
+            connection2->start();
 
             TS_ASSERT(ah2.CALLWAITER_onNewConnection.wait());
+#endif
         }
 
         static void noAcceptTest() {
             mocks::TCPAcceptorListenerMock am1;
             mocks::TCPAcceptorListenerMock am2;
 
-            SharedPointer<core::io::tcp::TCPAcceptor> acceptor(worker::createTCPAcceptor(20000));
+            std::shared_ptr<odcore::io::tcp::TCPAcceptor> acceptor(worker::createTCPAcceptor(20002));
             acceptor->setAcceptorListener(&am1);
             acceptor->start();
 
-            SharedPointer<core::io::tcp::TCPConnection> connection(worker::createTCPConnectionTo("127.0.0.1", 20000));
+            std::shared_ptr<odcore::io::tcp::TCPConnection> connection(worker::createTCPConnectionTo("127.0.0.1", 20002));
             connection->start();
 
             TS_ASSERT(am1.CALLWAITER_onNewConnection.wait());
@@ -99,9 +109,9 @@ template <typename worker> struct TCPAcceptorTests
             acceptor->stop();
             bool exceptionCaught = false;
             clog << "Test:" << endl;
-            core::io::tcp::TCPConnection* connection2 = NULL;
+            odcore::io::tcp::TCPConnection* connection2 = NULL;
             try {
-                connection2 = worker::createTCPConnectionTo("127.0.0.1", 20000);
+                connection2 = worker::createTCPConnectionTo("127.0.0.1", 20002);
                 connection2->start();
             } catch (string &/*s*/) {
                 exceptionCaught = true;
@@ -123,7 +133,7 @@ class TCPAcceptorTestsuite : public CxxTest::TestSuite
                 clog << endl << "TCPAcceptorTestsuite::testAccept using NetworkLibraryWin32" << endl;
                 TCPAcceptorTests
                 <
-                     core::wrapper::TCPFactoryWorker<core::wrapper::NetworkLibraryWin32>
+                     odcore::wrapper::TCPFactoryWorker<odcore::wrapper::NetworkLibraryWin32>
                 >::acceptTest();
             #endif
 
@@ -131,7 +141,7 @@ class TCPAcceptorTestsuite : public CxxTest::TestSuite
                 clog << endl << "TCPAcceptorTestsuite::testAccept using NetworkLibraryPosix" << endl;
                 TCPAcceptorTests
                 <
-                    core::wrapper::TCPFactoryWorker<core::wrapper::NetworkLibraryPosix>
+                    odcore::wrapper::TCPFactoryWorker<odcore::wrapper::NetworkLibraryPosix>
                 >::acceptTest();
             #endif
         }
@@ -142,7 +152,7 @@ class TCPAcceptorTestsuite : public CxxTest::TestSuite
                 clog << endl << "TCPAcceptorTestsuite::testMultipleAccept using NetworkLibraryWin32" << endl;
                 TCPAcceptorTests
                 <
-                     core::wrapper::TCPFactoryWorker<core::wrapper::NetworkLibraryWin32>
+                     odcore::wrapper::TCPFactoryWorker<odcore::wrapper::NetworkLibraryWin32>
                 >::multipleAcceptTest();
             #endif
 
@@ -150,7 +160,7 @@ class TCPAcceptorTestsuite : public CxxTest::TestSuite
                 clog << endl << "TCPAcceptorTestsuite::testMultipleAccept using NetworkLibraryPosix" << endl;
                 TCPAcceptorTests
                 <
-                    core::wrapper::TCPFactoryWorker<core::wrapper::NetworkLibraryPosix>
+                    odcore::wrapper::TCPFactoryWorker<odcore::wrapper::NetworkLibraryPosix>
                 >::multipleAcceptTest();
             #endif
         }
@@ -161,7 +171,7 @@ class TCPAcceptorTestsuite : public CxxTest::TestSuite
                 clog << endl << "TCPAcceptorTestsuite::testNoAccept using NetworkLibraryWin32" << endl;
                 TCPAcceptorTests
                 <
-                     core::wrapper::TCPFactoryWorker<core::wrapper::NetworkLibraryWin32>
+                     odcore::wrapper::TCPFactoryWorker<odcore::wrapper::NetworkLibraryWin32>
                 >::noAcceptTest();
             #endif
 
@@ -169,7 +179,7 @@ class TCPAcceptorTestsuite : public CxxTest::TestSuite
                 clog << endl << "TCPAcceptorTestsuite::testNoAccept using NetworkLibraryPosix" << endl;
                 TCPAcceptorTests
                 <
-                    core::wrapper::TCPFactoryWorker<core::wrapper::NetworkLibraryPosix>
+                    odcore::wrapper::TCPFactoryWorker<odcore::wrapper::NetworkLibraryPosix>
                 >::noAcceptTest();
             #endif
         }

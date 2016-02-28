@@ -20,13 +20,13 @@
 
 #include <vector>
 
-#include "core/base/TreeNode.h"
-#include "hesperia/scenegraph/SceneNode.h"
-#include "hesperia/scenegraph/renderer/RenderingConfiguration.h"
-#include "hesperia/scenegraph/renderer/SceneNodeRenderingConfiguration.h"
-#include "hesperia/threeD/Node.h"
-#include "hesperia/threeD/NodeRenderingConfiguration.h"
-#include "hesperia/threeD/RenderingConfiguration.h"
+#include "opendavinci/odcore/base/TreeNode.h"
+#include "opendlv/scenegraph/SceneNode.h"
+#include "opendlv/scenegraph/renderer/RenderingConfiguration.h"
+#include "opendlv/scenegraph/renderer/SceneNodeRenderingConfiguration.h"
+#include "opendlv/threeD/Node.h"
+#include "opendlv/threeD/NodeRenderingConfiguration.h"
+#include "opendlv/threeD/RenderingConfiguration.h"
 #include "plugins/environmentviewer/SelectableNodeDescriptor.h"
 #include "plugins/environmentviewer/TreeNodeVisitor.h"
 
@@ -35,8 +35,8 @@ namespace cockpit {
         namespace environmentviewer {
 
             using namespace std;
-            using namespace core::base;
-            using namespace hesperia::threeD;
+            using namespace odcore::base;
+            using namespace opendlv::threeD;
 
             TreeNodeVisitor::TreeNodeVisitor(RenderingConfiguration &rc, TreeNode<SelectableNodeDescriptor> *root) :
                 m_renderingConfiguration(rc),

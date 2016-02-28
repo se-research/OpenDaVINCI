@@ -4,21 +4,22 @@
  * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
  */
 
+#include <memory>
 #include <algorithm>
 #include <sstream>
 #include <utility>
 
-#include "core/base/Hash.h"
-#include "core/base/Deserializer.h"
-#include "core/base/SerializationFactory.h"
-#include "core/base/Serializer.h"
+#include "opendavinci/odcore/base/Hash.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 
 
-#include "generated/testpackage/Test7B.h"
+#include "test7/generated/testpackage/Test7B.h"
 
 namespace testpackage {
 		using namespace std;
-		using namespace core::base;
+		using namespace odcore::base;
 	
 	
 		Test7B::Test7B() :
@@ -94,6 +95,18 @@ namespace testpackage {
 	
 		const string Test7B::LongName() {
 			return "testpackage.Test7B";
+		}
+	
+		int32_t Test7B::getID() const {
+			return Test7B::ID();
+		}
+	
+		const string Test7B::getShortName() const {
+			return Test7B::ShortName();
+		}
+	
+		const string Test7B::getLongName() const {
+			return Test7B::LongName();
 		}
 	
 		bool Test7B::getAttribute1() const {
@@ -181,7 +194,7 @@ namespace testpackage {
 			return std::make_pair(m_listOfMyStringList.begin(), m_listOfMyStringList.end());
 		}
 	
-		void Test7B::accept(core::base::Visitor &v) {
+		void Test7B::accept(odcore::base::Visitor &v) {
 			v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'1', NullType> > > > > > > > > >  >::RESULT, 0, "Test7B.attribute1", "attribute1", m_attribute1);
 			v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'2', NullType> > > > > > > > > >  >::RESULT, 0, "Test7B.attribute2", "attribute2", m_attribute2);
 			v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'3', NullType> > > > > > > > > >  >::RESULT, 0, "Test7B.attribute3", "attribute3", m_attribute3);
@@ -211,7 +224,7 @@ namespace testpackage {
 	
 			SerializationFactory& sf = SerializationFactory::getInstance();
 	
-			core::SharedPointer<Serializer> s = sf.getSerializer(out);
+			std::shared_ptr<Serializer> s = sf.getSerializer(out);
 	
 			s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'1', NullType> > > > > > > > > >  >::RESULT,
 					m_attribute1);
@@ -250,7 +263,7 @@ namespace testpackage {
 	
 			SerializationFactory& sf = SerializationFactory::getInstance();
 	
-			core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
+			std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 	
 			d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'1', NullType> > > > > > > > > >  >::RESULT,
 					m_attribute1);

@@ -24,24 +24,24 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "core/SharedPointer.h"         // for SharedPointer
-#include "core/base/Thread.h"           // for Thread
-#include "core/data/Container.h"        // for Container, etc
-#include "core/data/TimeStamp.h"        // for TimeStamp
-#include "core/exceptions/Exceptions.h"
-#include "core/io/Connection.h"         // for Connection
-#include "core/io/ConnectionAcceptor.h"  // for ConnectionAcceptor
+#include <memory>
+#include "opendavinci/odcore/base/Thread.h"           // for Thread
+#include "opendavinci/odcore/data/Container.h"        // for Container, etc
+#include "opendavinci/odcore/data/TimeStamp.h"        // for TimeStamp
+#include "opendavinci/odcore/exceptions/Exceptions.h"
+#include "opendavinci/odcore/io/Connection.h"         // for Connection
+#include "opendavinci/odcore/io/ConnectionAcceptor.h"  // for ConnectionAcceptor
 #include "mocks/ConnectionAcceptorListenerMock.h"
 #include "mocks/ConnectionErrorListenerMock.h"
 #include "mocks/ContainerListenerMock.h"
 
-namespace core { namespace exceptions { class ConnectException; } }
+namespace odcore { namespace exceptions { class ConnectException; } }
 
 using namespace std;
-using namespace core::base;
-using namespace core::io;
-using namespace core::data;
-using namespace core::exceptions;
+using namespace odcore::base;
+using namespace odcore::io;
+using namespace odcore::data;
+using namespace odcore::exceptions;
 
 class ConnectionTestsuite : public CxxTest::TestSuite {
     public:
@@ -111,12 +111,12 @@ class ConnectionTestsuite : public CxxTest::TestSuite {
             Thread::usleepFor(10000);
             cam.waitForConnection();
             TS_ASSERT( cam.hasConnection() );
-            core::SharedPointer<core::io::Connection> connection2 = cam.getConnection();
+            std::shared_ptr<odcore::io::Connection> connection2 = cam.getConnection();
             cam.dontDeleteConnection();
 
             // Provoke an error by deleting connection
             clog << "Starting test." << endl;
-            connection2.release();
+            connection2.reset();
 
             TS_ASSERT( cem.CALLWAITER_handleConnectionError.wait() );
 
@@ -144,7 +144,7 @@ class ConnectionTestsuite : public CxxTest::TestSuite {
             mocks::ContainerListenerMock clm1;
 
             TimeStamp ts;
-            Container container(Container::TIMESTAMP, ts);
+            Container container(ts);
             clm1.VALUES_nextContainer.addItem(container);
             clm1.VALUES_nextContainer.prepare();
 

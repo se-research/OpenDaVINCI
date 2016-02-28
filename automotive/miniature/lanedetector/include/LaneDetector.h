@@ -22,9 +22,9 @@
 
 #include <opencv/cv.h>
 
-#include "core/SharedPointer.h"
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
-#include "core/wrapper/SharedMemory.h"
+#include <memory>
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/wrapper/SharedMemory.h"
 
 namespace automotive {
     namespace miniature {
@@ -34,7 +34,7 @@ namespace automotive {
         /**
          * This class is an exemplary skeleton for processing video data with OpenDaVINCI.
          */
-        class LaneDetector: public core::base::module::TimeTriggeredConferenceClientModule {
+        class LaneDetector: public odcore::base::module::TimeTriggeredConferenceClientModule {
             private:
 	            /**
 	             * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -66,7 +66,7 @@ namespace automotive {
 
 	            virtual ~LaneDetector();
 
-	            coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+	            odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
             protected:
 	            /**
@@ -75,11 +75,11 @@ namespace automotive {
 	             * @param c Container to process.
 	             * @return true if c was successfully processed.
 	             */
-	            bool readSharedImage(core::data::Container &c);
+	            bool readSharedImage(odcore::data::Container &c);
 
             private:
 	            bool m_hasAttachedToSharedImageMemory;
-	            core::SharedPointer<core::wrapper::SharedMemory> m_sharedImageMemory;
+	            std::shared_ptr<odcore::wrapper::SharedMemory> m_sharedImageMemory;
 	            IplImage *m_image;
                 bool m_debug;
 

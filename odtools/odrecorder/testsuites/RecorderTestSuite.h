@@ -28,34 +28,34 @@
 #include <string>
 #include <vector>
 
-#include "core/base/Service.h"
-#include "core/base/Thread.h"
-#include "core/data/Container.h"
-#include "core/data/TimeStamp.h"
+#include "opendavinci/odcore/base/Service.h"
+#include "opendavinci/odcore/base/Thread.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
 
-#include "GeneratedHeaders_CoreData.h"
+#include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
-#include "core/SharedPointer.h"
-#include "core/io/conference/ContainerConference.h"
-#include "core/io/conference/ContainerConferenceFactory.h"
-#include "core/io/StreamFactory.h"
-#include "core/io/URL.h"
-#include "core/dmcp/ModuleConfigurationProvider.h"
-#include "core/dmcp/discoverer/Server.h"
-#include "core/dmcp/connection/Server.h"
-#include "core/dmcp/connection/ConnectionHandler.h"
-#include "core/dmcp/connection/ModuleConnection.h"
+#include <memory>
+#include "opendavinci/odcore/io/conference/ContainerConference.h"
+#include "opendavinci/odcore/io/conference/ContainerConferenceFactory.h"
+#include "opendavinci/odcore/io/StreamFactory.h"
+#include "opendavinci/odcore/io/URL.h"
+#include "opendavinci/odcore/dmcp/ModuleConfigurationProvider.h"
+#include "opendavinci/odcore/dmcp/discoverer/Server.h"
+#include "opendavinci/odcore/dmcp/connection/Server.h"
+#include "opendavinci/odcore/dmcp/connection/ConnectionHandler.h"
+#include "opendavinci/odcore/dmcp/connection/ModuleConnection.h"
 
 #include "../include/RecorderModule.h"
 
 using namespace std;
 using namespace odrecorder;
-using namespace core::base;
-using namespace core::data;
-using namespace core::dmcp;
-using namespace core::io;
-using namespace core::io::conference;
-using namespace coredata::dmcp;
+using namespace odcore::base;
+using namespace odcore::data;
+using namespace odcore::dmcp;
+using namespace odcore::io;
+using namespace odcore::io::conference;
+using namespace odcore::data::dmcp;
 
 class RecorderTestService : public Service {
     public:
@@ -64,7 +64,7 @@ class RecorderTestService : public Service {
 
         virtual void beforeStop() {
             // Stop recorder.
-            myRecorder.setModuleState(coredata::dmcp::ModuleStateMessage::NOT_RUNNING);
+            myRecorder.setModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
         }
 
         virtual void run() {
@@ -85,19 +85,19 @@ class RecorderTest : public CxxTest::TestSuite,
             m_connection() {}
 
         KeyValueConfiguration m_configuration;
-        core::SharedPointer<connection::ModuleConnection> m_connection;
+        std::shared_ptr<connection::ModuleConnection> m_connection;
 
         virtual KeyValueConfiguration getConfiguration(const ModuleDescriptor& /*md*/) {
             return m_configuration;
         }
 
-        virtual void onNewModule(core::SharedPointer<core::dmcp::connection::ModuleConnection> mc) {
+        virtual void onNewModule(std::shared_ptr<odcore::dmcp::connection::ModuleConnection> mc) {
             m_connection = mc;
         }
 
         void testRecorder() {
             // Setup ContainerConference.
-            core::SharedPointer<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.100");
+            std::shared_ptr<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.100");
 
             // Setup DMCP.
             stringstream sstr;
@@ -114,8 +114,8 @@ class RecorderTest : public CxxTest::TestSuite,
             ServerInformation serverInformation("127.0.0.1", 19000, ServerInformation::ML_NONE);
             discoverer::Server dmcpDiscovererServer(serverInformation,
                                                     "225.0.0.100",
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_SERVER,
-                                                    coredata::dmcp::Constants::BROADCAST_PORT_CLIENT,
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_SERVER,
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_CLIENT,
                                                     noModulesToIgnore);
             dmcpDiscovererServer.startResponding();
 
@@ -138,31 +138,31 @@ class RecorderTest : public CxxTest::TestSuite,
             Thread::usleepFor(10000000);
             // Send data.
             TimeStamp ts1(0, 1);
-            Container c1(Container::TIMESTAMP, ts1);
+            Container c1(ts1);
             conference->send(c1);
 
             Thread::usleepFor(100000);
 
             TimeStamp ts2(1, 2);
-            Container c2(Container::TIMESTAMP, ts2);
+            Container c2(ts2);
             conference->send(c2);
 
             Thread::usleepFor(100000);
 
             TimeStamp ts3(2, 3);
-            Container c3(Container::TIMESTAMP, ts3);
+            Container c3(ts3);
             conference->send(c3);
 
             Thread::usleepFor(100000);
 
             TimeStamp ts4(3, 4);
-            Container c4(Container::TIMESTAMP, ts4);
+            Container c4(ts4);
             conference->send(c4);
 
             Thread::usleepFor(100000);
 
             TimeStamp ts5(4, 5);
-            Container c5(Container::TIMESTAMP, ts5);
+            Container c5(ts5);
             conference->send(c5);
 
             Thread::usleepFor(100000);

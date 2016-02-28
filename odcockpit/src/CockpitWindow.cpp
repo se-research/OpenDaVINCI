@@ -34,21 +34,21 @@
 
 #include <string>
 
-#include "core/opendavinci.h"
+#include "opendavinci/odcore/opendavinci.h"
 #include "CockpitWindow.h"
 #include "FIFOMultiplexer.h"
 #include "MdiPlugIn.h"
 #include "plugins/PlugIn.h"
 #include "plugins/PlugInProvider.h"
 
-namespace core { namespace base { class DataStoreManager; } }
-namespace core { namespace io { namespace conference { class ContainerConference; } } }
+namespace odcore { namespace base { class DataStoreManager; } }
+namespace odcore { namespace io { namespace conference { class ContainerConference; } } }
 
 namespace cockpit {
 
     using namespace std;
-    using namespace core::base;
-    using namespace core::io::conference;
+    using namespace odcore::base;
+    using namespace odcore::io::conference;
 
     CockpitWindow::CockpitWindow(const KeyValueConfiguration &kvc, DataStoreManager &dsm, ContainerConference &conf) :
         m_kvc(kvc),
@@ -182,9 +182,9 @@ namespace cockpit {
     }
 
     void CockpitWindow::showPlugIn(QListWidgetItem *item) {
-        core::SharedPointer<plugins::PlugIn> plugIn = m_plugInProvider.getPlugIn(item->text().toStdString());
+        std::shared_ptr<plugins::PlugIn> plugIn = m_plugInProvider.getPlugIn(item->text().toStdString());
 
-        if (plugIn.isValid()) {
+        if (plugIn.get()) {
             m_listOfPlugIns.push_back(plugIn);
 
             // Set container observer.

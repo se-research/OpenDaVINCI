@@ -43,7 +43,7 @@ ELSE()
 ENDIF()
 FIND_PACKAGE (OpenDaVINCI REQUIRED)
 # Include directories from core.
-INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS}/opendavinci)
+INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS})
 INCLUDE_DIRECTORIES (include)
 # Recipe for building libtest11.
 FILE(GLOB_RECURSE libtest11-sources "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
@@ -60,7 +60,7 @@ IF(    (NOT WIN32)
     INSTALL(TARGETS test11 DESTINATION lib COMPONENT odtest11lib)
 ENDIF()
 # Install header files.
-INSTALL(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/" DESTINATION include/test11 COMPONENT odtest11lib)
+INSTALL(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/" DESTINATION include/ COMPONENT odtest11lib)
 IF(CXXTEST_FOUND)
 FILE(GLOB libtest11-testsuites "${CMAKE_CURRENT_SOURCE_DIR}/testsuites/*.h")
 # Install CMake modules locally.
