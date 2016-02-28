@@ -32,9 +32,8 @@
 #include "vertexarray.h"
 #include "vertexbuffer.h"
 
-#include "GeneratedHeaders_CoreData.h"
-#include "core/SharedPointer.h"
-#include "core/wrapper/SharedMemory.h"
+#include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
+#include "opendavinci/odcore/wrapper/SharedMemory.h"
 
 #include <memory>
 
@@ -124,11 +123,11 @@ public:
 	// todo: RemoveInputTexture ?
 	void AddInputTexture(const std::string & name, TextureInterface * texture);
 
-    coredata::image::SharedImage getSharedImage();
+    odcore::data::image::SharedImage getSharedImage();
 
 private:
     bool m_sharedMemoryInitialized;
-    core::SharedPointer<core::wrapper::SharedMemory> m_sharedMemory;
+    std::shared_ptr<odcore::wrapper::SharedMemory> m_sharedMemory;
 
 	// avoids sending excessive state changes to OpenGL
 	GraphicsState glstate;

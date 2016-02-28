@@ -26,7 +26,7 @@
 #include "vertexattrib.h"
 #include "sky.h"
 
-#include "core/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 
 /// array end ptr
 template <typename T, size_t N>
@@ -643,12 +643,12 @@ void GraphicsGL2::DrawScene(std::ostream & error_output)
 	glstate.BindFramebuffer(GL_FRAMEBUFFER, 0);
 
     if (!m_sharedMemoryInitialized) {
-        m_sharedMemory = core::wrapper::SharedMemoryFactory::createSharedMemory("vdrift", w * h * 3);
+        m_sharedMemory = odcore::wrapper::SharedMemoryFactory::createSharedMemory("vdrift", w * h * 3);
         m_sharedMemoryInitialized = true;
         error_output << "Created image of size " << w << "*" << h << std::endl;
     }
 
-    if ( (m_sharedMemory.isValid()) && (m_sharedMemory->isValid()) ) {
+    if ( (m_sharedMemory.get()) && (m_sharedMemory->isValid()) ) {
         std::vector<unsigned char> temp_rgbdata(3 * w * h);
         glReadPixels(0, 0, w, h, GL_BGR, GL_UNSIGNED_BYTE, &temp_rgbdata[0]);
 
@@ -664,11 +664,12 @@ void GraphicsGL2::DrawScene(std::ostream & error_output)
 
 }
 
-coredata::image::SharedImage GraphicsGL2::getSharedImage() {
-    coredata::image::SharedImage si;
+odcore::data::image::SharedImage GraphicsGL2::getSharedImage() {
+    odcore::data::image::SharedImage si;
     si.setWidth(w);
     si.setHeight(h);
     si.setBytesPerPixel(3);
+    si.setSize(si.getWidth()*si.getHeight()*si.getBytesPerPixel());
     si.setName("vdrift");
     return si;
 }

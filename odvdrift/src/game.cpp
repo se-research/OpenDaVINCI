@@ -47,12 +47,12 @@
 #include <algorithm>
 #include <cstdio>
 
-#include "core/wrapper/Eigen.h"
-#include "GeneratedHeaders_CoreData.h"
-#include "GeneratedHeaders_AutomotiveData.h"
-#include "core/data/Container.h"
-#include "hesperia/data/environment/Point3.h"
-#include "hesperia/data/environment/EgoState.h"
+#include "opendavinci/odcore/wrapper/Eigen.h"
+#include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
+#include "automotivedata/GeneratedHeaders_AutomotiveData.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendlv/data/environment/Point3.h"
+#include "opendlv/data/environment/EgoState.h"
 
 #ifdef _WIN32
 	#define OS_NAME "Windows"
@@ -93,7 +93,7 @@ static std::string GetTimeString(float time)
 }
 
 Game::Game(int argc, char **argv, std::ostream & info_out, std::ostream & error_out) :
-    core::base::module::TimeTriggeredConferenceClientModule(argc, argv, "vdrift"),
+    odcore::base::module::TimeTriggeredConferenceClientModule(argc, argv, "vdrift"),
     inputFromOpenDaVINCI(CarInput::INVALID, 0.0), // Initialize inputFromOpenDaVINCI with CarInput::INVALID elements initialized with 0.0
 	info_output(info_out),
 	error_output(error_out),
@@ -788,9 +788,9 @@ void Game::tearDown() {
     info_output << "tearDown()" << std::endl;
 }
 
-coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
+odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 //	while (!eventsystem.GetQuit())
-    while (getModuleStateAndWaitForRemainingTimeInTimeslice() == coredata::dmcp::ModuleStateMessage::RUNNING)
+    while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING)
 	{        
 		CalculateFPS();
 
@@ -806,7 +806,7 @@ coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 
         {
             // Get commands from OpenDaVINCI.
-            core::data::Container c = getKeyValueDataStore().get(core::data::Container::VEHICLECONTROL);
+            odcore::data::Container c = getKeyValueDataStore().get(automotive::VehicleControl::ID());
             automotive::VehicleControl vc = c.getData<automotive::VehicleControl>();
             info_output << "VehicleControl: '" << vc.toString() << "'" << std::endl;
 
@@ -843,8 +843,8 @@ coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
         ///////////////////////////////////////////////////////////////////////
         // Shared image from renderer.
         {
-            coredata::image::SharedImage si = dynamic_cast<GraphicsGL2*>(graphics)->getSharedImage();
-            core::data::Container c(core::data::Container::SHARED_IMAGE, si);
+            odcore::data::image::SharedImage si = dynamic_cast<GraphicsGL2*>(graphics)->getSharedImage();
+            odcore::data::Container c(si);
             getConference().send(c);
         }
 
@@ -880,29 +880,29 @@ coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 
             info_output << "VD: " << vd.toString() << std::endl;
 
-            core::data::Container c2(core::data::Container::VEHICLEDATA, vd);
+            odcore::data::Container c2(vd);
             getConference().send(c2);
         }
 
         {
             // Setup vehicle data structure.
-            hesperia::data::environment::EgoState es;
+            opendlv::data::environment::EgoState es;
 
             // Position.
-            hesperia::data::environment::Point3 p(car_position[0], car_position[1], 0);
+            opendlv::data::environment::Point3 p(car_position[0], car_position[1], 0);
             es.setPosition(p);
 
             // Orientation.
-            hesperia::data::environment::Point3 o(car_orientation[0], car_orientation[1], 0);
+            opendlv::data::environment::Point3 o(car_orientation[0], car_orientation[1], 0);
             es.setRotation(o);
 
             // Velocity.
-            hesperia::data::environment::Point3 velocity(car.GetVelocity().m_floats[0], car.GetVelocity().m_floats[1], 0);
+            opendlv::data::environment::Point3 velocity(car.GetVelocity().m_floats[0], car.GetVelocity().m_floats[1], 0);
             es.setVelocity(velocity);
 
             info_output << "ES: " << es.toString() << std::endl;
 
-            core::data::Container c3(core::data::Container::EGOSTATE, es);
+            odcore::data::Container c3(es);
             getConference().send(c3);
         }
 
@@ -910,7 +910,7 @@ coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 	}
     info_output << "leaving body()" << std::endl;
 
-    return coredata::dmcp::ModuleExitCodeMessage::OKAY;
+    return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
 }
 
 /* The main game loop... */

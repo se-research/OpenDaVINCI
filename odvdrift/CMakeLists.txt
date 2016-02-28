@@ -51,9 +51,9 @@ SET(AUTOMOTIVEDATA_DIR "${CMAKE_INSTALL_PREFIX}")
 FIND_PACKAGE (AutomotiveData REQUIRED)
 
 ###########################################################################
-# Find odSimulation.
-SET(ODSIMULATION_DIR "${CMAKE_INSTALL_PREFIX}")
-FIND_PACKAGE (odSimulation REQUIRED)
+# Find OpenDLV.
+SET(OPENDLV_DIR "${CMAKE_INSTALL_PREFIX}")
+FIND_PACKAGE (OpenDLV REQUIRED)
 
 ###########################################################################
 # Find Bullet library.
@@ -83,7 +83,7 @@ FIND_PACKAGE (VorbisFile REQUIRED)
 # Set linking libraries to successfully link test suites and binaries.
 SET (LIBRARIES ${OPENDAVINCI_LIBRARIES}
                ${AUTOMOTIVEDATA_LIBRARIES}
-               ${ODSIMULATION_LIBRARIES}
+               ${OPENDLV_LIBRARIES}
                ${BULLET_LIBRARIES}
                ${SDL2_LIBRARY}
                ${SDL2_IMAGE_LIBRARY}
@@ -93,11 +93,11 @@ SET (LIBRARIES ${OPENDAVINCI_LIBRARIES}
 
 ###########################################################################
 # Set header files from OpenDaVINCI.
-INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS}/opendavinci)
+INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS})
 # Set header files from AutomotiveData.
-INCLUDE_DIRECTORIES (${AUTOMOTIVEDATA_INCLUDE_DIRS}/automotivedata)
-# Set header files from odSimulation.
-INCLUDE_DIRECTORIES (${ODSIMULATION_INCLUDE_DIRS}/odsimulation)
+INCLUDE_DIRECTORIES (${AUTOMOTIVEDATA_INCLUDE_DIRS})
+# Set header files from OpenDLV.
+INCLUDE_DIRECTORIES (${OPENDLV_INCLUDE_DIRS})
 # Set header files from Bullet library.
 INCLUDE_DIRECTORIES (${BULLET_INCLUDE_DIRS})
 # Set header files from SDL library.

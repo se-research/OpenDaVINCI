@@ -57,7 +57,7 @@
 #include "BulletCollision/BroadphaseCollision/btDbvtBroadphase.h"
 #include "BulletDynamics/ConstraintSolver/btSequentialImpulseConstraintSolver.h"
 
-#include "core/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
 
 #include <iosfwd>
 #include <string>
@@ -66,7 +66,7 @@
 #include <vector>
 #include <memory>
 
-class Game : public core::base::module::TimeTriggeredConferenceClientModule
+class Game : public odcore::base::module::TimeTriggeredConferenceClientModule
 {
 friend class GameDownloader;
 public:
@@ -77,7 +77,7 @@ public:
 	void Start(std::list <std::string> & args);
 
 private:
-    coredata::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
     virtual void setUp();
     virtual void tearDown();
 	std::vector <float> inputFromOpenDaVINCI;
