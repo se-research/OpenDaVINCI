@@ -74,7 +74,7 @@ template <typename worker> struct TCPAcceptorTests
             mocks::TCPAcceptorListenerMock ah1;
             mocks::TCPAcceptorListenerMock ah2;
 
-            odcore::io::tcp::TCPAcceptor* acceptor(worker::createTCPAcceptor(20000));
+            odcore::io::tcp::TCPAcceptor* acceptor(worker::createTCPAcceptor(20001));
             acceptor->setAcceptorListener(&ah1);
             acceptor->start();
 
