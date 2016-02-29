@@ -176,7 +176,7 @@ super-classes.
 
 You can compile and link the example::
 
-   $ g++ -I /usr/include -c TimeTriggeredSender.cpp -o TimeTriggeredSender.o
+   $ g++ -std=c++11 -I /usr/include -c TimeTriggeredSender.cpp -o TimeTriggeredSender.o
    $ g++ -o timetriggeredsender TimeTriggeredSender.o -lopendavinci -lpthread
 
 
@@ -328,7 +328,7 @@ super-classes.
 
 You can compile and link the example::
 
-   $ g++ -I /usr/include -c DataTriggeredReceiver.cpp -o DataTriggeredReceiver.o
+   $ g++ -std=c++11 -I /usr/include -c DataTriggeredReceiver.cpp -o DataTriggeredReceiver.o
    $ g++ -o datatriggeredreceiver DataTriggeredReceiver.o -lopendavinci -lpthread
 
 
