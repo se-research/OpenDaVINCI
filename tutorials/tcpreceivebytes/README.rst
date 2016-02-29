@@ -164,7 +164,7 @@ thus, you need to create a new one.
 
 You can compile and link the example::
 
-   g++ -I /usr/include -c TCPReceiveBytes.cpp -o TCPReceiveBytes.o
+   g++ -std=c++11 -I /usr/include -c TCPReceiveBytes.cpp -o TCPReceiveBytes.o
    g++ -o tcpreceivebytes TCPReceiveBytes.o -lopendavinci -lpthread
 
 The resulting program can be run::

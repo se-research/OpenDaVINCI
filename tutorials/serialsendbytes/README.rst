@@ -61,7 +61,7 @@ is no longer used.
 
 You can compile and link the example::
 
-   g++ -I /usr/include -c SerialSendBytes.cpp -o SerialSendBytes.o
+   g++ -std=c++11 -I /usr/include -c SerialSendBytes.cpp -o SerialSendBytes.o
    g++ -o serialsendbytes SerialSendBytes.o -lopendavinci -lpthread
 
 To test the program, we create a simple virtual serial port on Linux using the

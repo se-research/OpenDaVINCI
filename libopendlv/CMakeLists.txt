@@ -55,7 +55,7 @@ FIND_PACKAGE (AutomotiveData REQUIRED)
 
 ###########################################################################
 # Find OpenCV.
-SET(OpenCV_DIR "/usr")
+SET(OPENCV_ROOT_DIR "/usr")
 FIND_PACKAGE (OpenCV REQUIRED)
 
 ###########################################################################
@@ -74,7 +74,7 @@ FIND_PACKAGE (GLUT REQUIRED)
 # Set linking libraries to successfully link test suites and binaries.
 SET (LIBRARIES ${OPENDAVINCI_LIBRARIES}
                ${AUTOMOTIVEDATA_LIBRARIES}
-               ${OpenCV_LIBS}
+               ${OPENCV_LIBRARIES}
                ${OPENGL_gl_LIBRARY}
                ${OPENGL_glu_LIBRARY}
                ${GLUT_glut_LIBRARY})
@@ -93,7 +93,7 @@ INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS})
 # Set header files from AutomotiveData.
 INCLUDE_DIRECTORIES (${AUTOMOTIVEDATA_INCLUDE_DIRS})
 # Set header files from OpenCV.
-INCLUDE_DIRECTORIES (${OpenCV_INCLUDE_DIR})
+INCLUDE_DIRECTORIES (${OPENCV_INCLUDE_DIRS})
 # Set header files from Boost.
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 # Set header files from OpenGL.

@@ -21,7 +21,6 @@
 #include <Qt/qgridlayout.h>
 #include <Qt/qlistwidget.h>
 #include <Qt/qtimer.h>
-#include <qatomic_x86_64.h>
 #include <qglobal.h>
 #include <qimage.h>
 #include <qpainter.h>

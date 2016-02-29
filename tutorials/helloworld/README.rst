@@ -94,8 +94,8 @@ the "Hello World" example, the latter file is simply starting the component.
 
 Now, you can compile and link the example manually::
 
-    $ g++ -I /usr/include -c HelloWorldExample.cpp -o HelloWorldExample.o
-    $ g++ -I /usr/include -c HelloWorldExampleMain.cpp -o HelloWorldExampleMain.o
+    $ g++ -std=c++11 -I /usr/include -c HelloWorldExample.cpp -o HelloWorldExample.o
+    $ g++ -std=c++11 -I /usr/include -c HelloWorldExampleMain.cpp -o HelloWorldExampleMain.o
     $ g++ -o helloworldexample HelloWorldExampleMain.o HelloWorldExample.o -lopendavinci -lpthread
 
 
@@ -135,6 +135,9 @@ shall be installed to::
     CMAKE_MINIMUM_REQUIRED (VERSION 2.8)
 
     PROJECT (helloworldexample)
+
+    # Compile flags to enable C++11.
+    SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
     # (1) Find OpenDaVINCI.
     IF("${OPENDAVINCI_DIR}" STREQUAL "")
