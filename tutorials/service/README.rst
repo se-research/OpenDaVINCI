@@ -93,7 +93,7 @@ structures that are needed from a deriving class are set up and ready.
 
 You can compile and link the example assuming the file is called Tutorial-Thread.cpp::
 
-   g++ -I /usr/include -c MyService.cpp -o MyService.o
+   g++ -std=c++11 -I /usr/include -c MyService.cpp -o MyService.o
    g++ -o service MyService.o -lopendavinci -lpthread
 
 Running the example above will print the following on the console::

@@ -123,7 +123,7 @@ super-classes.
 
 You can compile and link the example::
 
-   $ g++ -I /usr/include -c TimeTriggerExample.cpp -o TimeTriggerExample.o
+   $ g++ -std=c++11 -I /usr/include -c TimeTriggerExample.cpp -o TimeTriggerExample.o
    $ g++ -o timetriggerexample TimeTriggerExample.o -lopendavinci -lpthread
 
 To test the program, we need to run the software component life-cycle management
@@ -387,7 +387,7 @@ https://rt.wiki.kernel.org/index.php/RT_PREEMPT_HOWTO.
 To run an application with real-time prioritization, it must be linked with the
 real-time library ``rt``::
 
-   $ g++ -I /usr/include -c TimeTriggerExample.cpp -o TimeTriggerExample.o
+   $ g++ -std=c++11 -I /usr/include -c TimeTriggerExample.cpp -o TimeTriggerExample.o
    $ g++ -o timetriggerexample TimeTriggerExample.o -lopendavinci -lpthread -lrt
 
 On execution, simply specify the parameter ``--realtime=`` from within the range

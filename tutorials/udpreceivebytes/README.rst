@@ -118,7 +118,7 @@ thus, you need to create a new one.
 
 You can compile and link the example::
 
-   g++ -I /usr/include -c UDPReceiveBytes.cpp -o UDPReceiveBytes.o
+   g++ -std=c++11 -I /usr/include -c UDPReceiveBytes.cpp -o UDPReceiveBytes.o
    g++ -o udpreceivebytes UDPReceiveBytes.o -lopendavinci -lpthread
 
 The resulting program can be run::

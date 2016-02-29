@@ -62,7 +62,7 @@ is no longer used.
 
 You can compile and link the example::
 
-   g++ -I /usr/include -c TCPSendBytes.cpp -o TCPSendBytes.o
+   g++ -std=c++11 -I /usr/include -c TCPSendBytes.cpp -o TCPSendBytes.o
    g++ -o tcpsendbytes TCPSendBytes.o -lopendavinci -lpthread
 
 To test the program, we create a simple TCP server awaiting connection by using

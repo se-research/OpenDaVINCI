@@ -61,7 +61,7 @@ is no longer used.
 
 You can compile and link the example::
 
-   g++ -I /usr/include -c UDPSendBytes.cpp -o UDPSendBytes.o
+   g++ -std=c++11 -I /usr/include -c UDPSendBytes.cpp -o UDPSendBytes.o
    g++ -o udpsendbytes UDPSendBytes.o -lopendavinci -lpthread
 
 To test the program, we create a simple UDP server awaiting data by using

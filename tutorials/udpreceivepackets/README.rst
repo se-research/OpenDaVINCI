@@ -113,7 +113,7 @@ thus, you need to create a new one.
 
 You can compile and link the example::
 
-   g++ -I /usr/include -c UDPReceivePackets.cpp -o UDPReceivePackets.o
+   g++ -std=c++11 -I /usr/include -c UDPReceivePackets.cpp -o UDPReceivePackets.o
    g++ -o udpreceivepackets UDPReceivePackets.o -lopendavinci -lpthread
 
 The resulting program can be run::
