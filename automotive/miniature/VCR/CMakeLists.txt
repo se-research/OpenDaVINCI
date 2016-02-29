@@ -48,18 +48,18 @@ FIND_PACKAGE (OpenDaVINCI REQUIRED)
 
 ###########################################################################
 # Find OpenCV.
-SET(OpenCV_DIR "/usr")
+SET(OPENCV_ROOT_DIR "/usr")
 FIND_PACKAGE (OpenCV REQUIRED)
 
 ###########################################################################
 # Set linking libraries to successfully link test suites and binaries.
-SET (LIBRARIES ${OPENDAVINCI_LIBRARIES} ${OpenCV_LIBS})
+SET (LIBRARIES ${OPENDAVINCI_LIBRARIES} ${OPENCV_LIBRARIES})
 
 ###########################################################################
 # Set header files from OpenDaVINCI.
 INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS})
 # Set header files from OpenCV.
-INCLUDE_DIRECTORIES (${OpenCV_INCLUDE_DIR})
+INCLUDE_DIRECTORIES (${OPENCV_INCLUDE_DIRS})
 # Set include directory.
 INCLUDE_DIRECTORIES(include)
 

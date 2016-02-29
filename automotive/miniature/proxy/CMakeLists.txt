@@ -55,7 +55,7 @@ FIND_PACKAGE (AutomotiveData REQUIRED)
 
 ###########################################################################
 # Find OpenCV.
-SET(OpenCV_DIR "/usr")
+SET(OPENCV_ROOT_DIR "/usr")
 FIND_PACKAGE (OpenCV REQUIRED)
 
 ###########################################################################
@@ -66,9 +66,9 @@ FIND_PACKAGE(UEYE)
 ###########################################################################
 # Set linking libraries to successfully link test suites and binaries.
 IF(UEYE_FOUND)
-    SET (LIBRARIES ${OPENDAVINCI_LIBRARIES} ${AUTOMOTIVEDATA_LIBRARIES} ${OpenCV_LIBS} ${UEYE_LIBRARIES})
+    SET (LIBRARIES ${OPENDAVINCI_LIBRARIES} ${AUTOMOTIVEDATA_LIBRARIES} ${OPENCV_LIBRARIES} ${UEYE_LIBRARIES})
 ELSE()
-    SET (LIBRARIES ${OPENDAVINCI_LIBRARIES} ${AUTOMOTIVEDATA_LIBRARIES} ${OpenCV_LIBS})
+    SET (LIBRARIES ${OPENDAVINCI_LIBRARIES} ${AUTOMOTIVEDATA_LIBRARIES} ${OPENCV_LIBRARIES})
 ENDIF()
 
 ###########################################################################
@@ -77,7 +77,7 @@ INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS})
 # Set header files from AutomotiveData.
 INCLUDE_DIRECTORIES (${AUTOMOTIVEDATA_INCLUDE_DIRS})
 # Set header files from OpenCV.
-INCLUDE_DIRECTORIES (${OpenCV_INCLUDE_DIR})
+INCLUDE_DIRECTORIES (${OPENCV_INCLUDE_DIRS})
 IF(UEYE_FOUND)
     SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DHAVE_UEYE")
     # Set header files from uEye.
