@@ -8,6 +8,12 @@ You will find its full documentation and getting started guides here: http://ope
 
 You will find different projects that are using OpenDaVINCI here: http://opendavinci.cse.chalmers.se/www/index.html
 
+**Updating OpenDaVINCI 2.4 to OpenDaVINCI 3.0**
+
+If you have installed OpenDaVINCI from pre-compiled packages, you will find instructions here: https://github.com/se-research/OpenDaVINCI/issues/43
+
+If you have installed OpenDaVINCI from sources, you will find instructions here: https://github.com/se-research/OpenDaVINCI/issues/44
+
 <a href="https://twitter.com/OpenDaVINCI" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @OpenDaVINCI on Twitter</a>
 
 **Overview build status:**
