@@ -27,12 +27,11 @@ using namespace std;
 int32_t main(int32_t argc, char **argv) {
     const string NAME = "MySharedMemory";
     const uint32_t SIZE = 26;
+    int i;
 
-    // We are using OpenDaVINCI's std::shared_ptr to automatically
-    // release any acquired resources.
     try {
         SharedMemoryExample sme(NAME, SIZE);
-
+        i = 10;
         sme.createSharedMemory();
         sme.writeSharedMemory();
         sme.releaseSharedMemory();
