@@ -47,6 +47,9 @@ namespace cockpit {
                 }
             }
 
+            void MessageToTupleVisitor::beginVisit() {}
+            void MessageToTupleVisitor::endVisit() {}
+
             void MessageToTupleVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &shortName, bool &v) {
                 stringstream sstr;
                 sstr << v;

@@ -135,38 +135,38 @@ namespace odcore {
                 v.beginVisit();
                 v.visit(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('n', 'a', 'm', 'e') >::RESULT,
                         1,
-                        "odcore::data::CompressedImage",
-                        "CompressedImage",
+                        "CompressedImage.name",
+                        "name",
                         m_name);
 
                 v.visit(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('w', 'i', 'd', 't', 'h') >::RESULT,
                         2,
-                        "odcore::data::CompressedImage",
-                        "CompressedImage",
+                        "CompressedImage.width",
+                        "width",
                         m_width);
 
                 v.visit(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('h', 'e', 'i', 'g', 'h', 't') >::RESULT,
                         3,
-                        "odcore::data::CompressedImage",
-                        "CompressedImage",
+                        "CompressedImage.height",
+                        "height",
                         m_height);
 
                 v.visit(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('b', 'p', 'p') >::RESULT,
                         4,
-                        "odcore::data::CompressedImage",
-                        "CompressedImage",
+                        "CompressedImage.bytesPerPixel",
+                        "bytesPerPixel",
                         m_bytesPerPixel);
 
                 v.visit(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('c', 's', 'i', 'z', 'e') >::RESULT,
                         5,
-                        "odcore::data::CompressedImage",
-                        "CompressedImage",
+                        "CompressedImage.compressedSize",
+                        "compressedSize",
                         m_compressedSize);
 
                 v.visit(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('d', 'a', 't', 'a') >::RESULT,
                         6,
-                        "odcore::data::CompressedImage",
-                        "CompressedImage",
+                        "CompressedImage.imageData",
+                        "imageData",
                         m_imageData, m_compressedSize);
 
                 v.endVisit();

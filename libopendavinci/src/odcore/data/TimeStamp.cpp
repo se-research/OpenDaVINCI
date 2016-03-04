@@ -428,13 +428,13 @@ namespace odcore {
             v.beginVisit();
             v.visit(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('s', 'e', 'c') >::RESULT,
                     1,
-                    "odcore::data::TimeStamp",
-                    "TimeStamp",
+                    "TimeStamp.seconds",
+                    "seconds",
                     m_seconds);
             v.visit(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('m', 'i', 'c') >::RESULT,
                     2,
-                    "odcore::data::TimeStamp",
-                    "TimeStamp",
+                    "TimeStamp.microseconds",
+                    "microseconds",
                     m_microseconds);
             v.endVisit();
         }
