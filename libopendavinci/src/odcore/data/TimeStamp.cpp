@@ -424,6 +424,21 @@ namespace odcore {
             return s.str();
         }
 
+        void TimeStamp::accept(Visitor &v) {
+            v.beginVisit();
+            v.visit(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('s', 'e', 'c') >::RESULT,
+                    1,
+                    "odcore::data::TimeStamp",
+                    "TimeStamp",
+                    m_seconds);
+            v.visit(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('m', 'i', 'c') >::RESULT,
+                    2,
+                    "odcore::data::TimeStamp",
+                    "TimeStamp",
+                    m_microseconds);
+            v.endVisit();
+        }
+
         ostream& TimeStamp::operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();;
 

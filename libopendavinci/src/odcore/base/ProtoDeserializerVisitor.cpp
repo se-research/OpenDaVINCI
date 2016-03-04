@@ -381,6 +381,10 @@ class Serializable;
         }
 
 
+        void ProtoDeserializerVisitor::beginVisit() {}
+
+        void ProtoDeserializerVisitor::endVisit() {}
+
         void ProtoDeserializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, Serializable &/*v*/) {
             cerr << "[core::base::ProtoDeserializerVisitor]: Proto for Serializable not implemented!" << endl;
         }

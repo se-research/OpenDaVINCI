@@ -131,6 +131,47 @@ namespace odcore {
                 return m_imageData;
             }
 
+            void CompressedImage::accept(Visitor &v) {
+                v.beginVisit();
+                v.visit(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('n', 'a', 'm', 'e') >::RESULT,
+                        1,
+                        "odcore::data::CompressedImage",
+                        "CompressedImage",
+                        m_name);
+
+                v.visit(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('w', 'i', 'd', 't', 'h') >::RESULT,
+                        2,
+                        "odcore::data::CompressedImage",
+                        "CompressedImage",
+                        m_width);
+
+                v.visit(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('h', 'e', 'i', 'g', 'h', 't') >::RESULT,
+                        3,
+                        "odcore::data::CompressedImage",
+                        "CompressedImage",
+                        m_height);
+
+                v.visit(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('b', 'p', 'p') >::RESULT,
+                        4,
+                        "odcore::data::CompressedImage",
+                        "CompressedImage",
+                        m_bytesPerPixel);
+
+                v.visit(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('c', 's', 'i', 'z', 'e') >::RESULT,
+                        5,
+                        "odcore::data::CompressedImage",
+                        "CompressedImage",
+                        m_compressedSize);
+
+                v.visit(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('d', 'a', 't', 'a') >::RESULT,
+                        6,
+                        "odcore::data::CompressedImage",
+                        "CompressedImage",
+                        m_imageData, m_compressedSize);
+
+                v.endVisit();
+            }
+
             ostream& CompressedImage::operator<<(ostream &out) const {
                 SerializationFactory& sf=SerializationFactory::getInstance();;
 

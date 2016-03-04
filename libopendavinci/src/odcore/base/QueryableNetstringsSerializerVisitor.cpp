@@ -30,6 +30,10 @@ class Serializable;
 
         QueryableNetstringsSerializerVisitor::~QueryableNetstringsSerializerVisitor() {}
 
+        void QueryableNetstringsSerializerVisitor::beginVisit() {}
+
+        void QueryableNetstringsSerializerVisitor::endVisit() {}
+
         void QueryableNetstringsSerializerVisitor::visit(const uint32_t &longId, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, Serializable &v) {
             write(longId, v);
         }

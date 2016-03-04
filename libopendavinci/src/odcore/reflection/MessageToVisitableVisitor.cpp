@@ -36,6 +36,10 @@ namespace odcore {
 
         MessageToVisitableVisitor::~MessageToVisitableVisitor() {}
 
+        void MessageToVisitableVisitor::beginVisit() {}
+
+        void MessageToVisitableVisitor::endVisit() {}
+
         void MessageToVisitableVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, Serializable &v) {
             bool found = false;
             std::shared_ptr<odcore::data::reflection::AbstractField> field = m_message.getFieldByLongIdentifierOrShortIdentifier(longId, shortId, found);

@@ -23,6 +23,7 @@
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Visitable.h"
 #include "opendavinci/odcore/data/SerializableData.h"
 
 namespace odcore {
@@ -33,7 +34,8 @@ namespace odcore {
         /**
          * This class can be used for time computations.
          */
-        class OPENDAVINCI_API TimeStamp : public SerializableData {
+        class OPENDAVINCI_API TimeStamp : public SerializableData,
+                                          public odcore::base::Visitable {
             private:
                 enum CUMULATIVE_DAYS {
                     January = 31,   // 31
@@ -205,6 +207,9 @@ namespace odcore {
                 static int32_t ID();
                 static const string ShortName();
                 static const string LongName();
+
+            public:
+                virtual void accept(odcore::base::Visitor &v);
 
             private:
                 int32_t m_seconds;

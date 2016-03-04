@@ -93,8 +93,10 @@ namespace sub {
 			}
 		
 			void Test17Super::accept(odcore::base::Visitor &v) {
+				v.beginVisit();
 				v.visit(CRC32 < CharList<'m', CharList<'y', CharList<'D', CharList<'a', CharList<'t', CharList<'a', NullType> > > > > >  >::RESULT, 0, "Test17Super.myData", "myData", m_myData);
 				v.visit(CRC32 < CharList<'m', CharList<'y', CharList<'V', CharList<'a', CharList<'l', CharList<'u', CharList<'e', NullType> > > > > > >  >::RESULT, 0, "Test17Super.myValue", "myValue", m_myValue);
+				v.endVisit();
 			}
 		
 			const string Test17Super::toString() const {

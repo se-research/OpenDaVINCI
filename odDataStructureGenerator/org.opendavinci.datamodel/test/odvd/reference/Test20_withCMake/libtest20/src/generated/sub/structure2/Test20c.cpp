@@ -93,8 +93,10 @@ namespace sub {
 			}
 		
 			void Test20c::accept(odcore::base::Visitor &v) {
+				v.beginVisit();
 				v.visit(CRC32 < CharList<'v', CharList<'a', CharList<'l', CharList<'3', NullType> > > >  >::RESULT, 0, "Test20c.val3", "val3", m_val3);
 				v.visit(CRC32 < CharList<'v', CharList<'a', CharList<'l', CharList<'4', NullType> > > >  >::RESULT, 0, "Test20c.val4", "val4", m_val4);
+				v.endVisit();
 			}
 		
 			const string Test20c::toString() const {

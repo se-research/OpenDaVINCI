@@ -80,7 +80,9 @@ namespace testpackage {
 		}
 	
 		void Test8B::accept(odcore::base::Visitor &v) {
+			v.beginVisit();
 			v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'1', NullType> > > > > > > > > >  >::RESULT, 0, "Test8B.attribute1", "attribute1", m_attribute1);
+			v.endVisit();
 		}
 	
 		const string Test8B::toString() const {

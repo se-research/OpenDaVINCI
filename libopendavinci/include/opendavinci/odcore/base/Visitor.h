@@ -39,6 +39,18 @@ class Serializable;
                 virtual ~Visitor();
 
                 /**
+                 * This method is called from a Visitable before the first
+                 * visit(...) call.
+                 */
+                virtual void beginVisit() = 0;
+
+                /**
+                 * This method is called from a Visitable after the last
+                 * visit(...) call.
+                 */
+                virtual void endVisit() = 0;
+
+                /**
                  * This method visits a Serializable.
                  *
                  * @param longId 4 byte identifier for the v to be serialized.

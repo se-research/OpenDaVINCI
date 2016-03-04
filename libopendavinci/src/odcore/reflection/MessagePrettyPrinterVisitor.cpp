@@ -43,6 +43,10 @@ namespace odcore {
             o << m_buffer.str();
         }
 
+        void MessagePrettyPrinterVisitor::beginVisit() {}
+
+        void MessagePrettyPrinterVisitor::endVisit() {}
+
         void MessagePrettyPrinterVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, Serializable &v) {
             try {
                 Visitable& visitable = dynamic_cast<Visitable&>(v);

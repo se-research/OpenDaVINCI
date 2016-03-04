@@ -790,14 +790,12 @@ namespace «s.get(i)» {
 	«ENDIF»
 «ENDFOR»
 	void «/* Here, we generate the accept() method. */msg.message.substring(msg.message.lastIndexOf('.') + 1)»::accept(odcore::base::Visitor &v) {
+		v.beginVisit();
 		«IF msg.superMessage != null && msg.superMessage.length > 0»«msg.superMessage.replaceAll("\\.", "::")»::accept(v);«ENDIF»
-		«IF !hasScalarAttributes»
-			(void)v; // Avoid unused parameter warning.
-		«ELSE»
-			«FOR a : msg.attributes»
-				«a.generateVisitableAttribute(msg, enums)»
-			«ENDFOR»
-		«ENDIF»
+		«FOR a : msg.attributes»
+			«a.generateVisitableAttribute(msg, enums)»
+		«ENDFOR»
+		v.endVisit();
 	}
 
 	const string «/* Here, we generate the toString() method. */msg.message.substring(msg.message.lastIndexOf('.') + 1)»::toString() const {

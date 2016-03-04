@@ -71,7 +71,9 @@ class MyRawVisitable : public odcore::base::Serializable, public Visitable {
         uint32_t size;
         
         virtual void accept(odcore::base::Visitor &v) {
+            v.beginVisit();
             v.visit(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('d', 'a', 't', 'a') >::RESULT, 1, "MyNestedVisitable::data", "data", data, size);
+            v.endVisit();
         }
 
         ostream& operator<<(ostream &out) const {
@@ -105,7 +107,9 @@ class MyNestedVisitable : public odcore::base::Serializable, public Visitable {
         double m_double;
         
         virtual void accept(odcore::base::Visitor &v) {
+            v.beginVisit();
             v.visit(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('m', '_', 'd', 'o', 'u', 'b', 'l', 'e') >::RESULT, 1, "MyNestedVisitable::m_double", "m_double", m_double);
+            v.endVisit();
         }
 
         ostream& operator<<(ostream &out) const {

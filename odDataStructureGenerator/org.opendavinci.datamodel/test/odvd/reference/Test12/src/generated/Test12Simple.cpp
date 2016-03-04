@@ -151,6 +151,7 @@
 	}
 
 	void Test12Simple::accept(odcore::base::Visitor &v) {
+		v.beginVisit();
 		v.visit(1, 0, "Test12Simple.attribute1", "attribute1", m_attribute1);
 		v.visit(2, 0, "Test12Simple.attribute2", "attribute2", m_attribute2);
 		v.visit(3, 0, "Test12Simple.attribute3", "attribute3", m_attribute3);
@@ -158,6 +159,7 @@
 		v.visit(5, 0, "Test12Simple.attribute5", "attribute5", m_attribute5);
 		v.visit(6, 0, "Test12Simple.attribute6", "attribute6", m_attribute6);
 		v.visit(7, 0, "Test12Simple.attribute7", "attribute7", m_attribute7);
+		v.endVisit();
 	}
 
 	const string Test12Simple::toString() const {

@@ -64,7 +64,8 @@
 
 
 	void Test2b::accept(odcore::base::Visitor &v) {
-		(void)v; // Avoid unused parameter warning.
+		v.beginVisit();
+		v.endVisit();
 	}
 
 	const string Test2b::toString() const {

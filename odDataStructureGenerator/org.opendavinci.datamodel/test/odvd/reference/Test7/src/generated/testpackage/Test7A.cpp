@@ -104,9 +104,11 @@ namespace testpackage {
 		}
 	
 		void Test7A::accept(odcore::base::Visitor &v) {
+			v.beginVisit();
 			v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'1', NullType> > > > > > > > > >  >::RESULT, 0, "Test7A.attribute1", "attribute1", m_attribute1);
 			v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'2', NullType> > > > > > > > > >  >::RESULT, 0, "Test7A.attribute2", "attribute2", m_attribute2);
 			v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'3', NullType> > > > > > > > > >  >::RESULT, 0, "Test7A.attribute3", "attribute3", m_attribute3);
+			v.endVisit();
 		}
 	
 		const string Test7A::toString() const {

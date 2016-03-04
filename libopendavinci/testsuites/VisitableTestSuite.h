@@ -150,11 +150,13 @@ class MyVisitable : public Serializable, public Visitable {
         }
 
         virtual void accept(odcore::base::Visitor &v) {
+            v.beginVisit();
             v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'1', NullType> > > > >::RESULT, 1, "MyVisitable::att1", "att1", m_att1);
             v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'2', NullType> > > > >::RESULT, 2, "MyVisitable::att2", "att2", m_att2);
             v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'3', NullType> > > > >::RESULT, 3, "MyVisitable::att3", "att3", m_att3);
             v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'4', NullType> > > > >::RESULT, 4, "MyVisitable::att4", "att4", m_att4);
             v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'5', NullType> > > > >::RESULT, 5, "MyVisitable::att5", "att5", m_att5);
+            v.endVisit();
         }
 
     public:
@@ -168,6 +170,10 @@ class MyVisitable : public Serializable, public Visitable {
 // Pretty printer.
 class MyPrintVisitor : public Visitor {
     public:
+        virtual void beginVisit() {}
+
+        virtual void endVisit() {}
+
         virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, Serializable &v) {
             cout << longId << ", " << (int)shortId << ", " << longName << ", " << shortName << ", " << v << endl;
         }

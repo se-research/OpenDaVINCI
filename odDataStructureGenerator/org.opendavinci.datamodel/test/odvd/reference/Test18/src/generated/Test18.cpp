@@ -147,9 +147,11 @@
 	}
 
 	void Test18::accept(odcore::base::Visitor &v) {
+		v.beginVisit();
 		v.visit(CRC32 < CharList<'m', CharList<'y', CharList<'A', CharList<'t', CharList<'t', CharList<'1', NullType> > > > > >  >::RESULT, 5, "Test18.myAtt1", "myAtt1", m_myAtt1);
 		v.visit(0x12345678, 0, "Test18.myAtt2", "myAtt2", m_myAtt2);
 		v.visit(0xAaBbCcDd, 0, "Test18.myAtt3", "myAtt3", m_myAtt3);
+		v.endVisit();
 	}
 
 	const string Test18::toString() const {

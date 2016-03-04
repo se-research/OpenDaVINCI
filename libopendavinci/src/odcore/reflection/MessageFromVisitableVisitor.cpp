@@ -43,6 +43,10 @@ namespace odcore {
             return m_message;
         }
 
+        void MessageFromVisitableVisitor::beginVisit() {}
+
+        void MessageFromVisitableVisitor::endVisit() {}
+
         void MessageFromVisitableVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, Serializable &v) {
             try {
                 // A Serializable is replaced by a generic message representation. Thus,

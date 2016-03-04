@@ -347,7 +347,8 @@
 	}
 
 	void Test11MapBool::accept(odcore::base::Visitor &v) {
-		(void)v; // Avoid unused parameter warning.
+		v.beginVisit();
+		v.endVisit();
 	}
 
 	const string Test11MapBool::toString() const {

@@ -182,12 +182,14 @@ class ProtoVehicleControl : public odcore::data::SerializableData, public odcore
 	}
 
 	void accept(odcore::base::Visitor &v) {
+        v.beginVisit();
 		v.visit(0x0E43596B, 1, "ProtoVehicleControl.speed", "speed", m_speed);
 		v.visit(0x0E435991, 2, "ProtoVehicleControl.acceleration", "acceleration", m_acceleration);
 		v.visit(0x0E435969, 3, "ProtoVehicleControl.steeringWheelAngle", "steeringWheelAngle", m_steeringWheelAngle);
 		v.visit(0x0E43599B, 4, "ProtoVehicleControl.brakeLights", "brakeLights", m_brakeLights);
 		v.visit(0x09823BD7, 5, "ProtoVehicleControl.flashingLightsLeft", "flashingLightsLeft", m_flashingLightsLeft);
 		v.visit(0x0E435996, 6, "ProtoVehicleControl.flashingLightsRight", "flashingLightsRight", m_flashingLightsRight);
+        v.endVisit();
 	}
 
 	const string toString() const {

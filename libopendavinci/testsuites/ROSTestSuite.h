@@ -182,12 +182,14 @@ class ROSVehicleControl : public odcore::data::SerializableData, public odcore::
 	}
 
 	void accept(odcore::base::Visitor &v) {
+        v.beginVisit();
 		v.visit(0x0E43596B, 0, "ROSVehicleControl.speed", "speed", m_speed);
 		v.visit(0x0E435991, 0, "ROSVehicleControl.acceleration", "acceleration", m_acceleration);
 		v.visit(0x0E435969, 0, "ROSVehicleControl.steeringWheelAngle", "steeringWheelAngle", m_steeringWheelAngle);
 		v.visit(0x0E43599B, 0, "ROSVehicleControl.brakeLights", "brakeLights", m_brakeLights);
 		v.visit(0x09823BD7, 0, "ROSVehicleControl.flashingLightsLeft", "flashingLightsLeft", m_flashingLightsLeft);
 		v.visit(0x0E435996, 0, "ROSVehicleControl.flashingLightsRight", "flashingLightsRight", m_flashingLightsRight);
+        v.endVisit();
 	}
 
 	const string toString() const {

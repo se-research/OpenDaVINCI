@@ -63,6 +63,10 @@ class Serializable;
 
                 virtual ~QueryableNetstringsSerializerVisitor();
 
+            public:
+                virtual void beginVisit();
+                virtual void endVisit();
+
                 virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, Serializable &v);
                 virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, bool &v);
                 virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, char &v);

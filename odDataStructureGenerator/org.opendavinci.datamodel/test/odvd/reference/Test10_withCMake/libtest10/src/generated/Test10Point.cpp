@@ -91,8 +91,10 @@
 	}
 
 	void Test10Point::accept(odcore::base::Visitor &v) {
+		v.beginVisit();
 		v.visit(CRC32 < CharList<'x', NullType>  >::RESULT, 0, "Test10Point.x", "x", m_x);
 		v.visit(CRC32 < CharList<'y', NullType>  >::RESULT, 0, "Test10Point.y", "y", m_y);
+		v.endVisit();
 	}
 
 	const string Test10Point::toString() const {

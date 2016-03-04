@@ -83,8 +83,10 @@ namespace sub {
 			}
 		
 			void Test17Child::accept(odcore::base::Visitor &v) {
+				v.beginVisit();
 				sub::structure::Test17Super::accept(v);
 				v.visit(CRC32 < CharList<'m', CharList<'y', CharList<'N', CharList<'a', CharList<'m', CharList<'e', NullType> > > > > >  >::RESULT, 0, "Test17Child.myName", "myName", m_myName);
+				v.endVisit();
 			}
 		
 			const string Test17Child::toString() const {

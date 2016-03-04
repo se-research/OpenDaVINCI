@@ -91,8 +91,10 @@
 	}
 
 	void Test11Simple::accept(odcore::base::Visitor &v) {
+		v.beginVisit();
 		v.visit(CRC32 < CharList<'d', CharList<'a', CharList<'t', CharList<'a', CharList<'1', NullType> > > > >  >::RESULT, 0, "Test11Simple.data1", "data1", m_data1);
 		v.visit(CRC32 < CharList<'d', CharList<'a', CharList<'t', CharList<'a', CharList<'2', NullType> > > > >  >::RESULT, 0, "Test11Simple.data2", "data2", m_data2);
+		v.endVisit();
 	}
 
 	const string Test11Simple::toString() const {

@@ -91,8 +91,10 @@
 	}
 
 	void Test20a::accept(odcore::base::Visitor &v) {
+		v.beginVisit();
 		v.visit(CRC32 < CharList<'v', CharList<'a', CharList<'l', CharList<'1', NullType> > > >  >::RESULT, 0, "Test20a.val1", "val1", m_val1);
 		v.visit(CRC32 < CharList<'t', CharList<'i', CharList<'m', CharList<'e', CharList<'S', CharList<'t', CharList<'a', CharList<'m', CharList<'p', NullType> > > > > > > > >  >::RESULT, 0, "Test20a.timeStamp", "timeStamp", m_timeStamp);
+		v.endVisit();
 	}
 
 	const string Test20a::toString() const {

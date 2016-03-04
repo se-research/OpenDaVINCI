@@ -253,6 +253,10 @@ class Serializable;
         }
 
 
+        void LCMSerializerVisitor::beginVisit() {}
+
+        void LCMSerializerVisitor::endVisit() {}
+
         void LCMSerializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, Serializable &/*v*/) {
             cerr << "[core::base::LCMSerializerVisitor]: LCM for Serializable not implemented!" << endl;
         }

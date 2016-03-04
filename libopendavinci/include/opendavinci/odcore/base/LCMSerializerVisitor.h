@@ -93,6 +93,9 @@ class Serializable;
                 virtual void write(const uint32_t &id, const void *data, const uint32_t &size);
 
             private:
+                virtual void beginVisit();
+                virtual void endVisit();
+
                 virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const Serializable &s);
                 virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const bool &b);
                 virtual void write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const char &c);

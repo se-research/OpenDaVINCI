@@ -230,6 +230,10 @@ class Serializable;
         }
 
 
+        void ROSDeserializerVisitor::beginVisit() {}
+
+        void ROSDeserializerVisitor::endVisit() {}
+
         void ROSDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, Serializable &v) {
             (void)longId;
             (void)v;

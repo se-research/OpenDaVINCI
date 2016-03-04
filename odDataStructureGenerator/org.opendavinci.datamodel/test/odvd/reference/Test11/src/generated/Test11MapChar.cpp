@@ -347,7 +347,8 @@
 	}
 
 	void Test11MapChar::accept(odcore::base::Visitor &v) {
-		(void)v; // Avoid unused parameter warning.
+		v.beginVisit();
+		v.endVisit();
 	}
 
 	const string Test11MapChar::toString() const {

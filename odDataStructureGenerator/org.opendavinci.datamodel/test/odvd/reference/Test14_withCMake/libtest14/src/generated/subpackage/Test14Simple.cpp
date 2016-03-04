@@ -80,8 +80,10 @@ namespace subpackage {
 		}
 	
 		void Test14Simple::accept(odcore::base::Visitor &v) {
+			v.beginVisit();
 			int32_t int32t_buttonState = m_buttonState;
 			v.visit(CRC32 < CharList<'b', CharList<'u', CharList<'t', CharList<'t', CharList<'o', CharList<'n', CharList<'S', CharList<'t', CharList<'a', CharList<'t', CharList<'e', NullType> > > > > > > > > > >  >::RESULT, 0, "Test14Simple.buttonState", "buttonState", int32t_buttonState);
+			v.endVisit();
 		}
 	
 		const string Test14Simple::toString() const {
