@@ -20,9 +20,8 @@
 #ifndef PLUGINS_STREETMAP_STREETMAPWIDGET_H_
 #define PLUGINS_STREETMAP_STREETMAPWIDGET_H_
 
-#include <qobjectdefs.h>
-#include <qstring.h>
-#include <qwidget.h>
+#include <QtCore>
+#include <QtGui>
 
 #include <map>
 #include <string>

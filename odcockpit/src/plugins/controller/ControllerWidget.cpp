@@ -18,16 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <Qt/qcheckbox.h>
-#include <Qt/qevent.h>
-#include <Qt/qgroupbox.h>
-#include <Qt/qlabel.h>
-#include <Qt/qpushbutton.h>
-#include <Qt/qspinbox.h>
-#include <Qt/qtimer.h>
-#include <qboxlayout.h>
-#include <qnamespace.h>
-#include <qstring.h>
+#include <QtCore>
+#include <QtGui>
 
 #include <string>
 

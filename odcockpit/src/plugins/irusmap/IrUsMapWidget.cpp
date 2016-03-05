@@ -18,19 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <Qt/qevent.h>
-#include <Qt/qtimer.h>
-#include <qbrush.h>
-#include <qcolor.h>
-#include <qfont.h>
-#include <qnamespace.h>
-#include <qpainter.h>
-#include <qpalette.h>
-#include <qpen.h>
-#include <qpoint.h>
-#include <qrect.h>
-#include <qstring.h>
-#include <qtransform.h>
+#include <QtCore>
+#include <QtGui>
 
 #include <cmath>
 #include <iostream>

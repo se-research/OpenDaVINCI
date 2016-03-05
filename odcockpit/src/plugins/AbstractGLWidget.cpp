@@ -22,11 +22,9 @@
 #include <GL/glu.h>
 #include <GL/glut.h>
 
-#include <Qt/qevent.h>
-#include <Qt/qtimer.h>
-#include <qglobal.h>
-#include <qnamespace.h>
-#include <qpoint.h>
+#include <QtCore>
+#include <QtGui>
+#include <QtOpenGL>
 
 #include <cmath>
 

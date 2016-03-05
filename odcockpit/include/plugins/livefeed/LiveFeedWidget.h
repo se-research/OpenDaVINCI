@@ -21,8 +21,8 @@
 #ifndef COCKPIT_PLUGINS_LIVEFEEDWIDGET_H_
 #define COCKPIT_PLUGINS_LIVEFEEDWIDGET_H_
 
-#include <qobjectdefs.h>
-#include <qwidget.h>
+#include <QtCore>
+#include <QtGui>
 
 #include <map>
 #include <memory>

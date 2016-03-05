@@ -18,10 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <Qt/qgridlayout.h>
-#include <Qt/qtreewidget.h>
-#include <qstring.h>
-#include <qstringlist.h>
+#include <QtCore>
+#include <QtGui>
 
 #include <cstring>
 #include <sstream>

@@ -21,9 +21,8 @@
 #ifndef PLUGINS_ENVIRONMENTVIEWER_ENVIRONMENTVIEWERWIDGET_H_
 #define PLUGINS_ENVIRONMENTVIEWER_ENVIRONMENTVIEWERWIDGET_H_
 
-#include <qobjectdefs.h>
-#include <qstring.h>
-#include <qwidget.h>
+#include <QtCore>
+#include <QtGui>
 
 #include <map>
 #include <string>

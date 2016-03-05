@@ -18,9 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <Qt/qgridlayout.h>
-#include <Qt/qtimer.h>
-#include <qcolor.h>
+#include <QtCore>
+#include <QtGui>
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/data/Container.h"
