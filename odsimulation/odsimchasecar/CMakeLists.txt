@@ -60,7 +60,8 @@ FIND_PACKAGE (OpenDLV REQUIRED)
 # Set linking libraries to successfully link test suites and binaries.
 SET (LIBRARIES ${OPENDAVINCI_LIBRARIES}
                ${AUTOMOTIVEDATA_LIBRARIES}
-               ${OPENDLV_LIBRARIES})
+               ${OPENDLV_LIBRARIES}
+               /usr/X11/lib/libglut.3.dylib)
 
 ###########################################################################
 # Set header files from OpenDaVINCI.

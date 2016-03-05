@@ -104,7 +104,7 @@ class RedirectorTest : public CxxTest::TestSuite,
         }
 
         void testRedirectorDumpToStdout() {
-#ifdef WIN32
+#if defined(WIN32) || defined(__APPLE__)
             TS_ASSERT(true);
 #else
             // Setup ContainerConference.

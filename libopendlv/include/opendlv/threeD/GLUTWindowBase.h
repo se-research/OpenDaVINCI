@@ -20,8 +20,13 @@
 #ifndef HESPERIA_THREED_GLUTWINDOWBASE_H_
 #define HESPERIA_THREED_GLUTWINDOWBASE_H_
 
-#include <GL/gl.h>
-#include <GL/glut.h>
+#ifdef __APPLE__
+    #include <OpenGL/gl.h>
+    #include <GLUT/glut.h>
+#else
+    #include <GL/gl.h>
+    #include <GL/glut.h>
+#endif
 
 #include "opendlv/threeD/FrameCounter.h"
 
