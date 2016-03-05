@@ -18,9 +18,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glut.h>
+#ifdef __APPLE__
+    #include <OpenGL/gl.h>
+    #include <OpenGL/glu.h>
+    #include <GLUT/glut.h>
+#else
+    #include <GL/gl.h>
+    #include <GL/glu.h>
+    #include <GL/glut.h>
+#endif
 
 #include <QtCore>
 #include <QtGui>

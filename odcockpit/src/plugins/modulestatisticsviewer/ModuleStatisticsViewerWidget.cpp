@@ -114,8 +114,8 @@ namespace cockpit {
 
                         it++;
                     }
-#endif
                 }
+#endif
             }
         }
     }
