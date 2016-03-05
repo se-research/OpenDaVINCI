@@ -21,7 +21,8 @@
 #ifndef COCKPIT_PLUGINS_MODULESTATISTICSVIEWER_LOADPERMODULE_H_
 #define COCKPIT_PLUGINS_MODULESTATISTICSVIEWER_LOADPERMODULE_H_
 
-#include <qcolor.h>
+#include <QtCore>
+#include <QtGui>
 
 #include <deque>
 #include <string>

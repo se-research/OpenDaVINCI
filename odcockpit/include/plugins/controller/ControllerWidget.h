@@ -21,8 +21,8 @@
 #ifndef CONTROLLERWIDGET_H_
 #define CONTROLLERWIDGET_H_
 
-#include <qobjectdefs.h>
-#include <qwidget.h>
+#include <QtCore>
+#include <QtGui>
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/Mutex.h"

@@ -21,8 +21,9 @@
 #ifndef COCKPIT_PLUGINS_ABSTRACTGLWIDGET_H_
 #define COCKPIT_PLUGINS_ABSTRACTGLWIDGET_H_
 
-#include <Qt/qgl.h>
-#include <qobjectdefs.h>
+#include <QtCore>
+#include <QtGui>
+#include <QtOpenGL>
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/Mutex.h"

@@ -20,8 +20,8 @@
 #ifndef COCKPIT_PLUGINS_LOGMESSAGEWIDGET_H_
 #define COCKPIT_PLUGINS_LOGMESSAGEWIDGET_H_
 
-#include <qobjectdefs.h>
-#include <qwidget.h>
+#include <QtCore>
+#include <QtGui>
 
 #include <map>
 #include <memory>

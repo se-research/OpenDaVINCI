@@ -21,8 +21,8 @@
 #ifndef COCKPIT_GLCONTROLFRAME_H_
 #define COCKPIT_GLCONTROLFRAME_H_
 
-#include <qobjectdefs.h>
-#include <qwidget.h>
+#include <QtCore>
+#include <QtGui>
 
 class QwtWheel;
 

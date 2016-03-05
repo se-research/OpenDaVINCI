@@ -21,7 +21,8 @@
 #ifndef LOADPLOT_H_
 #define LOADPLOT_H_
 
-#include <qobjectdefs.h>
+#include <QtCore>
+#include <QtGui>
 
 #if defined __GNUC__
 #pragma GCC system_header

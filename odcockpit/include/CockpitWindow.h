@@ -21,8 +21,8 @@
 #ifndef COCKPITWINDOW_H_
 #define COCKPITWINDOW_H_
 
-#include <Qt/qmainwindow.h>
-#include <qobjectdefs.h>
+#include <QtCore>
+#include <QtGui>
 
 #include <vector>
 
