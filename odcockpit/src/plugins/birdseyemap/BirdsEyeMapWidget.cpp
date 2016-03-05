@@ -17,15 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <Qt/qcombobox.h>
-#include <Qt/qgridlayout.h>
-#include <Qt/qlabel.h>
-#include <Qt/qpushbutton.h>
-#include <Qt/qspinbox.h>
-#include <Qt/qtreewidget.h>
-#include <qglobal.h>
-#include <qnamespace.h>
-#include <qstringlist.h>
+#include <QtCore>
+#include <QtGui>
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/Lock.h"

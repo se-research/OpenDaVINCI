@@ -21,7 +21,7 @@
 #ifndef COCKPIT_H_
 #define COCKPIT_H_
 
-#include <Qt/qapplication.h>
+#include <QApplication>
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"

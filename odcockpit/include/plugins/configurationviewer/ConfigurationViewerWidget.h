@@ -21,8 +21,8 @@
 #ifndef CONFIGURATIONVIEWERWIDGET_H_
 #define CONFIGURATIONVIEWERWIDGET_H_
 
-#include <qobjectdefs.h>
-#include <qwidget.h>
+#include <QtCore>
+#include <QtGui>
 
 class QTextEdit;
 namespace cockpit { namespace plugins { class PlugIn; } }

@@ -18,8 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <Qt/qevent.h>
-#include <qcoreevent.h>
+#include <QtCore>
+#include <QtGui>
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "MdiPlugIn.h"

@@ -18,10 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <Qt/qtimer.h>
-#include <qframe.h>
-#include <qnamespace.h>
-#include <qstring.h>
+#include <QtCore>
+#include <QtGui>
 
 #ifndef WIN32
 # if !defined(__OpenBSD__) && !defined(__NetBSD__)

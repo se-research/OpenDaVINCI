@@ -21,10 +21,8 @@
 #ifndef COCKPIT_PLUGINS_SHAREDIMAGEVIEWER_SHAREDIMAGEVIEWERWIDGET_H_
 #define COCKPIT_PLUGINS_SHAREDIMAGEVIEWER_SHAREDIMAGEVIEWERWIDGET_H_
 
-#include <qobjectdefs.h>
-#include <qrgb.h>
-#include <qvector.h>
-#include <qwidget.h>
+#include <QtCore>
+#include <QtGui>
 
 #include <map>
 #include <string>

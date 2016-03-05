@@ -20,9 +20,8 @@
 #ifndef PLUGINS_BIRDSEYEMAP_BIRDSEYEMAPWIDGET_H_
 #define PLUGINS_BIRDSEYEMAP_BIRDSEYEMAPWIDGET_H_
 
-#include <qobjectdefs.h>
-#include <qstring.h>
-#include <qwidget.h>
+#include <QtCore>
+#include <QtGui>
 
 #include <map>
 #include <string>
