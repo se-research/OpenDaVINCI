@@ -33,9 +33,11 @@
 # endif
 # pragma GCC diagnostic ignored "-Weffc++"
 #endif
+#ifdef HAVE_QWT5QWT4
     #include <qwt_plot.h>
     #include <qwt_plot_curve.h>
     #include <qwt_plot_item.h>
+#endif
 #ifndef WIN32
 # if !defined(__OpenBSD__) && !defined(__NetBSD__)
 #  pragma GCC diagnostic pop
@@ -74,9 +76,11 @@ namespace cockpit {
 
             IrUsChartsWidget::IrUsChartsWidget(const PlugIn &/*plugIn*/, const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt) :
                 QWidget(prnt),
+#ifdef HAVE_QWT5QWT4
                 m_listOfPlots(),
                 m_listOfPlotCurves(),
                 m_listOfData(),
+#endif
                 m_mapOfSensors(),
                 m_data(),
                 m_bufferMax(10000),
@@ -106,6 +110,7 @@ namespace cockpit {
                     stringstream desc;
                     desc << name << " (ID: " << id << ") [m]";
 
+#ifdef HAVE_QWT5QWT4
                     // Setup plot.
                     QwtPlot *plot = new QwtPlot(this);
                     plot->setAxisScale(QwtPlot::yLeft, -2, distanceFOV);
@@ -126,6 +131,7 @@ namespace cockpit {
                     curve->setRenderHint(QwtPlotItem::RenderAntialiased);
                     curve->setData(*dataInterface);
                     curve->attach(plot);
+#endif
                 }
 
                 QScrollArea *scrollArea = new QScrollArea(this);
@@ -134,11 +140,12 @@ namespace cockpit {
                 // Combine all plots.
                 QHBoxLayout *plotsLayout = new QHBoxLayout(widgetForScrolling);
 
+#ifdef HAVE_QWT5QWT4
                 vector<QwtPlot*>::iterator it = m_listOfPlots.begin();
                 for(;it < m_listOfPlots.end(); it++) {
                     plotsLayout->addWidget((*it));
                 }
-
+#endif
                 widgetForScrolling->setLayout(plotsLayout);
                 scrollArea->setWidget(widgetForScrolling);
 
@@ -171,10 +178,12 @@ namespace cockpit {
             IrUsChartsWidget::~IrUsChartsWidget() {}
 
             void IrUsChartsWidget::TimerEvent() {
+#ifdef HAVE_QWT5QWT4
                 vector<QwtPlot*>::iterator it = m_listOfPlots.begin();
                 for(;it < m_listOfPlots.end(); it++) {
                     (*it)->replot();
                 }
+#endif
                 {
                     Lock l(m_receivedSensorBoardDataContainersMutex);
 

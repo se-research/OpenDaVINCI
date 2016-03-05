@@ -86,9 +86,13 @@ class LoadPlot;
           nextContainer(odcore::data::Container &c);
 
         private:
+#ifdef HAVE_QWT5QWT4
           LoadPlot *m_plot;
+#endif
           deque<odcore::data::dmcp::ModuleStatistics> m_moduleStatistics;
+#ifdef HAVE_QWT5QWT4
           map<string, std::shared_ptr<LoadPerModule> > m_loadPerModule;
+#endif
           uint32_t m_color;
         };
     }

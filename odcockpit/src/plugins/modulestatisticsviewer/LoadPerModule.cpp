@@ -26,8 +26,10 @@
 # endif
 # pragma GCC diagnostic ignored "-Weffc++"
 #endif
+#ifdef HAVE_QWT5QWT4
     #include <qwt_plot_curve.h>
     #include <qwt_plot_item.h>
+#endif
 #ifndef WIN32
 # if !defined(__OpenBSD__) && !defined(__NetBSD__)
 #  pragma GCC diagnostic pop
@@ -49,6 +51,7 @@ namespace cockpit {
             using namespace odcore::data;
             using namespace odcore::data::dmcp;
 
+#ifdef HAVE_QWT5QWT4
             LoadPerModule::LoadPerModule( const odcore::data::dmcp::ModuleDescriptor &md, const QColor &color) :
                     m_moduleDescriptor(md),
                     m_curve(NULL),
@@ -102,6 +105,7 @@ namespace cockpit {
             const string LoadPerModule::getModuleName() const{
             	return m_moduleDescriptor.toString();
             }
+#endif
         }
     }
 } // cockpit::plugins::modulestatisticsviewer

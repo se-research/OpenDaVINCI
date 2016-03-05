@@ -29,6 +29,7 @@ namespace cockpit {
 
             using namespace std;
 
+#ifdef HAVE_QWT5QWT4
             IrUsChartData::IrUsChartData(deque<automotive::miniature::SensorBoardData> &data, const uint32_t &dataSelection) :
                 QwtData(),
                 m_data(data),
@@ -52,6 +53,7 @@ namespace cockpit {
                 double value = m_data.at(i).getValueForKey_MapOfDistances(m_dataSelection);
                 return value;
             }
+#endif
 
         }
     }

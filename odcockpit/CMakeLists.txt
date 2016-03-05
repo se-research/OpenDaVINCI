@@ -64,15 +64,19 @@ INCLUDE (${QT_USE_FILE})
 
 ###########################################################################
 # Find Qwt5-Qt4.
-FIND_PACKAGE (Qwt5Qt4 REQUIRED)
+FIND_PACKAGE (Qwt5Qt4)
 
 ###########################################################################
 # Set linking libraries to successfully link test suites and binaries.
 SET (LIBRARIES ${OPENDAVINCI_LIBRARIES}
                ${AUTOMOTIVEDATA_LIBRARIES}
                ${OPENDLV_LIBRARIES}
-               ${QT_LIBRARIES}
-               ${QWT5QT4_LIBRARIES})
+               ${QT_LIBRARIES})
+
+IF(QWT5QT4_FOUND)
+    SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DHAVE_QWT5QWT4")
+    SET (LIBRARIES ${QWT5QT4_LIBRARIES})
+ENDIF()
 
 ###########################################################################
 # Set header files from OpenDaVINCI.
@@ -82,9 +86,11 @@ INCLUDE_DIRECTORIES (${AUTOMOTIVEDATA_INCLUDE_DIRS})
 # Set header files from OpenDLV.
 INCLUDE_DIRECTORIES (${OPENDLV_INCLUDE_DIRS})
 # Set header files from Qwt5-Qt4.
-# Marking this with SYSTEM tells CMake to count this as a system library.
-# Used to suppress warnings from Qwt5-Qt4.
-INCLUDE_DIRECTORIES (SYSTEM ${QWT5QT4_INCLUDE_DIRS})
+IF(QWT5QT4_FOUND)
+    # Marking this with SYSTEM tells CMake to count this as a system library.
+    # Used to suppress warnings from Qwt5-Qt4.
+    INCLUDE_DIRECTORIES (SYSTEM ${QWT5QT4_INCLUDE_DIRS})
+ENDIF()
 # Set include directory.
 INCLUDE_DIRECTORIES(include)
 

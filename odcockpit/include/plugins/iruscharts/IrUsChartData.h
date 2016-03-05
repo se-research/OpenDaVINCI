@@ -30,7 +30,9 @@
 #elif defined _MSC_VER
 #pragma warning(push, 1)
 #endif
+#ifdef HAVE_QWT5QWT4
     #include <qwt_data.h>
+#endif
 #if defined __SUNPRO_CC
 #pragma enable_warn
 #elif defined _MSC_VER
@@ -49,6 +51,7 @@ namespace cockpit {
 
             using namespace std;
 
+#ifdef HAVE_QWT5QWT4
             /**
              * This class is the container of accessing previous SensorBoardData.
              */
@@ -91,6 +94,7 @@ namespace cockpit {
                     deque<automotive::miniature::SensorBoardData> &m_data;
                     const uint32_t m_dataSelection;
             };
+#endif
         }
     }
 }

@@ -30,7 +30,9 @@
 #elif defined _MSC_VER
 #pragma warning(push, 1)
 #endif
+#ifdef HAVE_QWT5QWT4
     #include <qwt_plot.h>
+#endif
 #if defined __SUNPRO_CC
 #pragma enable_warn
 #elif defined _MSC_VER
@@ -43,7 +45,9 @@
 
 class QTimer;
 class QWidget;
-class QwtLegend;
+#ifdef HAVE_QWT5QWT4
+    class QwtLegend;
+#endif
 
 namespace cockpit {
     namespace plugins {
@@ -53,6 +57,7 @@ class LoadPerModule;
 
             using namespace std;
 
+#ifdef HAVE_QWT5QWT4
             class LoadPlot: public QwtPlot {
 
                 Q_OBJECT
@@ -88,6 +93,7 @@ class LoadPerModule;
 	                void attachQueuedLPM();
 
             };
+#endif
         }
     }
 }

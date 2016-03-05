@@ -29,8 +29,10 @@
 # endif
 # pragma GCC diagnostic ignored "-Weffc++"
 #endif
+#ifdef HAVE_QWT5QWT4
     #include <qwt_legend.h>
     #include <qwt_plot_curve.h>
+#endif
 #ifndef WIN32
 # if !defined(__OpenBSD__) && !defined(__NetBSD__)
 #  pragma GCC diagnostic pop
@@ -48,6 +50,7 @@ namespace cockpit {
     namespace plugins {
         namespace modulestatisticsviewer {
 
+#ifdef HAVE_QWT5QWT4
             LoadPlot::LoadPlot(QWidget* prnt) :
 	            QwtPlot(prnt),
 	            m_legend(),
@@ -85,6 +88,7 @@ namespace cockpit {
 	            }
 	            m_toAttachVisitor->stop();
             }
+#endif
         }
     }
 }
