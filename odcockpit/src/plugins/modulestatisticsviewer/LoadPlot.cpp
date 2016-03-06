@@ -27,10 +27,8 @@
 # endif
 # pragma GCC diagnostic ignored "-Weffc++"
 #endif
-#ifdef HAVE_QWT5QWT4
     #include <qwt_legend.h>
     #include <qwt_plot_curve.h>
-#endif
 #ifndef WIN32
 # if !defined(__OpenBSD__) && !defined(__NetBSD__)
 #  pragma GCC diagnostic pop
@@ -48,13 +46,12 @@ namespace cockpit {
     namespace plugins {
         namespace modulestatisticsviewer {
 
-#ifdef HAVE_QWT5QWT4
             LoadPlot::LoadPlot(QWidget* prnt) :
-	            QwtPlot(prnt),
-	            m_legend(),
-	            m_toAdd(),
-	            m_toAttachVisitor(){
-	            //set parameter
+                QwtPlot(prnt),
+                m_legend(),
+                m_toAdd(),
+                m_toAttachVisitor(){
+                //set parameter
                 setCanvasBackground(Qt::white);
                 setTitle(QString("ModuleStatistics"));
                 setFrameStyle(QFrame::NoFrame);
@@ -76,17 +73,18 @@ namespace cockpit {
 
             void
             LoadPlot::addLoadPerModule(std::shared_ptr<LoadPerModule> lpm) {
-	            m_toAdd.push_back(lpm);
-	            m_toAttachVisitor->start(100);
+                m_toAdd.push_back(lpm);
+                m_toAttachVisitor->start(100);
             }
 
             void LoadPlot::attachQueuedLPM(){
-	            for (uint32_t i = 0; i < m_toAdd.size(); i++) {
-		            m_toAdd[i]->getCurve()->attach(this);
-	            }
-	            m_toAttachVisitor->stop();
+                for (uint32_t i = 0; i < m_toAdd.size(); i++) {
+                    m_toAdd[i]->getCurve()->attach(this);
+                }
+                m_toAttachVisitor->stop();
             }
-#endif
+
         }
     }
 }
+

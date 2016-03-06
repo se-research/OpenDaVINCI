@@ -32,9 +32,7 @@
 #include "opendavinci/generated/odcore/data/dmcp/ModuleDescriptor.h"
 #include "opendavinci/generated/odcore/data/dmcp/RuntimeStatistic.h"
 
-#ifdef HAVE_QWT5QWT4
-    class QwtPlotCurve;
-#endif
+class QwtPlotCurve;
 
 namespace cockpit {
     namespace plugins {
@@ -42,7 +40,6 @@ namespace cockpit {
 
             using namespace std;
 
-#ifdef HAVE_QWT5QWT4
             /**
              * This class collects all data per module.
              */
@@ -99,7 +96,6 @@ namespace cockpit {
                     vector<double> m_reference;
                     double m_referenceOffset;
             };
-#endif
 
         }
     }

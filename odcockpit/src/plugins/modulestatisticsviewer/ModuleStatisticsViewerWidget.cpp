@@ -43,19 +43,14 @@ namespace cockpit {
 
             ModuleStatisticsViewerWidget::ModuleStatisticsViewerWidget(const PlugIn &/*plugIn*/, QWidget *prnt) :
                     QWidget(prnt),
-#ifdef HAVE_QWT5QWT4
                     m_plot(NULL),
-#endif
                     m_moduleStatistics(),
-#ifdef HAVE_QWT5QWT4
                     m_loadPerModule(),
-#endif
                     m_color(0) {
 
                 // Set size.
                 setMinimumSize(640, 480);
 
-#ifdef HAVE_QWT5QWT4
                 m_plot = new LoadPlot(this);
 
                 // Show the axes
@@ -68,18 +63,14 @@ namespace cockpit {
                 connect(timer, SIGNAL(timeout()), m_plot, SLOT(replot()));
                 const uint32_t fps = 5;
                 timer->start(1000 / fps);
-#endif
             }
 
             ModuleStatisticsViewerWidget::~ModuleStatisticsViewerWidget() {
-#ifdef HAVE_QWT5QWT4
                 m_loadPerModule.clear();
                 OPENDAVINCI_CORE_DELETE_POINTER(m_plot);
-#endif
             }
 
             void ModuleStatisticsViewerWidget::nextContainer(Container &c) {
-#ifdef HAVE_QWT5QWT4
                 if (c.getDataType() == odcore::data::dmcp::ModuleStatistics::ID()) {
                     ModuleStatistics ms = c.getData<ModuleStatistics>();
                     m_moduleStatistics.push_back(ms);
@@ -115,8 +106,8 @@ namespace cockpit {
                         it++;
                     }
                 }
-#endif
             }
+
         }
     }
 } // plugins::modulestatisticsviewer

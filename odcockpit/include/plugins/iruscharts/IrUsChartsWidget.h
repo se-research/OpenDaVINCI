@@ -36,10 +36,9 @@
 #include "automotivedata/generated/automotive/miniature/SensorBoardData.h"
 
 class QLabel;
-#ifdef HAVE_QWT5QWT4
-    class QwtPlot;
-    class QwtPlotCurve;
-#endif
+class QwtPlot;
+class QwtPlotCurve;
+
 namespace cockpit { namespace plugins { class PlugIn; } }
 namespace odcore { namespace base { class KeyValueConfiguration; } }
 
@@ -95,11 +94,9 @@ class IrUsChartData;
                     void saveCSVFile();
 
                 private:
-#ifdef HAVE_QWT5QWT4
                     vector<QwtPlot*> m_listOfPlots;
                     vector<QwtPlotCurve*> m_listOfPlotCurves;
                     vector<IrUsChartData*> m_listOfData;
-#endif
                     map<uint32_t, string> m_mapOfSensors;
                     deque<automotive::miniature::SensorBoardData> m_data;
                     uint32_t m_bufferMax;
