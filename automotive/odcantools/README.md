@@ -33,35 +33,29 @@ Build OpenDaVINCI:
     
 After a successful compilation, all the OpenDaVINCI binaries will be found in /opt/od/bin/.
 
-### Install third-party packages for odcockpit
-
-Some tools in this folder require the odcockpit visualization environment, which is dependent on a number of third-party packages. Run
-
-    $ sudo apt-get install libcv-dev libhighgui-dev freeglut3 libqt4-dev libqwt5-qt4-dev libqwt5-qt4 libqt4-opengl-dev freeglut3-dev qt4-dev-tools libboost-dev
-
 ### Replay raw CAN data in asc format using odcanascreplay
 
 In /odcanascreplay/example, there is an example "example.asc" from a real CAN dump for the four wheel speed encoders based on data provided by Jeremy Daily: http://tucrrc.utulsa.edu/ToyotaCAN.html. For convenience purposes, two individual CAN messages in the original example are merged into a single one to have an 8 byte payload. The raw CAN data has been transformed to asc format.
+    
+First start odsupercomponent:
 
-Go to /opt/od/bin/ and start odsupercomponent. The execution of odsupercomponent requires a configuration file. Create the configuration file if it does not exist:
+    $ LD_LIBRARY_PATH=/opt/od/lib ./odsupercomponent --cid=111
+
+Note that the execution of odsupercomponent requires a configuration file. Create the configuration file if it does not exist in your current directory:
 
     $ touch configuration
     
-Then start odsupercomponent:
+While odsupercomponent is running, open a new terminal and start odcanasreplay:
 
-    $ ./odsupercomponent --cid=111
-    
-Open a new terminal and start odcanasreplay:
-
-    $ ./odcanascreplay --cid=111 --freq=10 < path/to/the/example/file/stated/above/example.asc
+    $ LD_LIBRARY_PATH=/opt/od/lib ./odcanascreplay --cid=111 --freq=10 < path/to/the/example/file/stated/above/example.asc
     
 Open a new terminal and start odcanmapper:
 
-    $ ./odcanmapper --cid=111
+    $ LD_LIBRARY_PATH=/opt/od/lib ./odcanmapper --cid=111
     
 Open a new terminal and start odcockpit:
 
-    $ ./odcockpit --cid=111
+    $ LD_LIBRARY_PATH=/opt/od/lib ./odcockpit --cid=111
     
 Open the plugin "spy" in odcockpit and you should be able to see the replayed CAN messages.
 
@@ -111,10 +105,10 @@ Open the Spy window. If CAN messages are successfully received, they will be dis
 
 Go to /opt/od/bin and start odsupercomponent:
 
-    $ ./odsupercomponent --cid=111
+    $ LD_LIBRARY_PATH=/opt/od/lib ./odsupercomponent --cid=111
     
 Open a new terminal and start odcockpit:
 
-    $ ./odcockpit --cid=111
+    $ LD_LIBRARY_PATH=/opt/od/lib ./odcockpit --cid=111
     
 Open the Player window. Click "Load recording" to load a rec file which will can then be replayed.
