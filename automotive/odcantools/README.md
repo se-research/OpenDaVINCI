@@ -37,7 +37,7 @@ After a successful compilation, all the OpenDaVINCI binaries will be found in /o
 
 In /odcanascreplay/example, there is an example "example.asc" from a real CAN dump for the four wheel speed encoders based on data provided by Jeremy Daily: http://tucrrc.utulsa.edu/ToyotaCAN.html. For convenience purposes, two individual CAN messages in the original example are merged into a single one to have an 8 byte payload. The raw CAN data has been transformed to asc format.
     
-First start odsupercomponent:
+First go to /opt/od/bin, start odsupercomponent:
 
     $ LD_LIBRARY_PATH=/opt/od/lib ./odsupercomponent --cid=111
 
@@ -89,15 +89,15 @@ Download the driver of the CAN adapter: http://www.peak-system.com/fileadmin/med
     
 Go to /opt/od/bin and start odsupercomponent:
 
-    $ ./odsupercomponent --cid=111
+    $ LD_LIBRARY_PATH=/opt/od/lib ./odsupercomponent --cid=111
     
 Open a new terminal and start odcanproxy:
 
-    $ ./odcanproxy --cid=111 --verbose=1
+    $ LD_LIBRARY_PATH=/opt/od/lib ./odcanproxy --cid=111 --verbose=1
     
 Open a new terminal and start odcockpit:
 
-    $ ./odcockpit --cid=111
+    $ LD_LIBRARY_PATH=/opt/od/lib ./odcockpit --cid=111
     
 Open the Spy window. If CAN messages are successfully received, they will be displayed in the Spy window. odcanproxy is closed either by stopping odcamproxy or stopping odsupercomponent. After odcanproxy is stopped, recording files in rec and rec.mem format will be found in /opt/od/bin.
 
