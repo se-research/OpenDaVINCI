@@ -19,6 +19,7 @@
 #include "opendavinci/odcore/strings/StringToolbox.h"
 
 #include "test16/GeneratedHeaders_Test16.h"
+#include "test16/generated/sub/structure/Test16Simple.h"
 
 
 class sub_structure_Test16Simple_TestSuite : public CxxTest::TestSuite {

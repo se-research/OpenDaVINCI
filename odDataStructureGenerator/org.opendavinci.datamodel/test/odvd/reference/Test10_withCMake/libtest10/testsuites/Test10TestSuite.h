@@ -19,6 +19,7 @@
 #include "opendavinci/odcore/strings/StringToolbox.h"
 
 #include "test10/GeneratedHeaders_Test10.h"
+#include "test10/generated/Test10.h"
 
 #include "test10/generated/Test10Point.h"
 #include "test10/generated/Test10Point.h"

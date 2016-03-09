@@ -112,13 +112,13 @@ class DataModelGenerator implements IGenerator {
 				val enumDescriptions = collectEnumsFromMessage(pdl, e)
 				fsa.generateFile("include/" + toplevelIncludeFolder + "/generated/" + pdlToDirectory + "/" + e.message.toString() + ".h", generateHeaderFileContent(toplevelIncludeFolder, generatedHeadersFile, pdl, e, enumDescriptions))
 				fsa.generateFile("src/generated/" + pdlToDirectory + "/" + e.message.toString() + ".cpp", generateImplementationFileContent(pdl, e, toplevelIncludeFolder, "generated/" + pdlToDirectory, enumDescriptions))
-				fsa.generateFile("testsuites/" + pdl.package.toString().replaceAll("\\.", "_") + "_" + e.message.toString().replaceAll("\\.", "_") + "TestSuite.h", generateTestSuiteContent(pdl, e, toplevelIncludeFolder, generatedHeadersFile, enumDescriptions))
+				fsa.generateFile("testsuites/" + pdl.package.toString().replaceAll("\\.", "_") + "_" + e.message.toString().replaceAll("\\.", "_") + "TestSuite.h", generateTestSuiteContent(pdl, e, toplevelIncludeFolder, "generated/" + pdlToDirectory, generatedHeadersFile, enumDescriptions))
 			}
 			else {
 				val enumDescriptions = collectEnumsFromMessage(pdl, e)
 				fsa.generateFile("include/" + toplevelIncludeFolder + "/generated/" + e.message.toString() + ".h", generateHeaderFileContent(toplevelIncludeFolder, generatedHeadersFile, pdl, e, enumDescriptions))
 				fsa.generateFile("src/generated/" + e.message.toString() + ".cpp", generateImplementationFileContent(pdl, e, toplevelIncludeFolder, "generated", enumDescriptions))
-				fsa.generateFile("testsuites/" + e.message.toString().replaceAll("\\.", "_") + "TestSuite.h", generateTestSuiteContent(pdl, e, toplevelIncludeFolder, generatedHeadersFile, enumDescriptions))
+				fsa.generateFile("testsuites/" + e.message.toString().replaceAll("\\.", "_") + "TestSuite.h", generateTestSuiteContent(pdl, e, toplevelIncludeFolder, "generated", generatedHeadersFile, enumDescriptions))
 			}
 		}
 	}
@@ -1439,7 +1439,7 @@ namespace «s.get(i)» {
 	'''
 
 	// Generate the test suite content (.h).
-	def generateTestSuiteContent(PackageDeclaration pdl, Message msg, String toplevelIncludeFolder, String generatedHeadersFile, HashMap<String, EnumDescription> enums) '''
+	def generateTestSuiteContent(PackageDeclaration pdl, Message msg, String toplevelIncludeFolder, String includeDirectoryPrefix, String generatedHeadersFile, HashMap<String, EnumDescription> enums) '''
 /*
  * This software is open source. Please see COPYING and AUTHORS for further information.
  *
@@ -1466,6 +1466,11 @@ namespace «s.get(i)» {
 #include "opendavinci/odcore/strings/StringToolbox.h"
 
 #include "«toplevelIncludeFolder»/GeneratedHeaders_«generatedHeadersFile + ".h"»"
+«IF msg.message.split("\\.").length > 1 /* Here, we include our own header file. */»
+#include "«toplevelIncludeFolder»/«includeDirectoryPrefix + "/" + msg.message.substring(0, msg.message.lastIndexOf('.')).replaceAll("\\.", "/") + "/" + msg.message.substring(msg.message.lastIndexOf('.') + 1)».h"
+«ELSE»
+#include "«toplevelIncludeFolder»/«includeDirectoryPrefix + "/" + msg.message.substring(msg.message.lastIndexOf('.') + 1)».h"
+«ENDIF»
 
 «FOR a : msg.attributes /*These lines include header files for user generated types used in other messages.*/»
 	«IF a.scalar != null»

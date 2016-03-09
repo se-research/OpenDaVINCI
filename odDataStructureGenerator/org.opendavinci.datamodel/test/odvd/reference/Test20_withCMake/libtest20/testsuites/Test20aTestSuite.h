@@ -19,6 +19,7 @@
 #include "opendavinci/odcore/strings/StringToolbox.h"
 
 #include "test20/GeneratedHeaders_Test20.h"
+#include "test20/generated/Test20a.h"
 
 #include "opendavinci/odcore/data/TimeStamp.h"
 
