@@ -581,6 +581,7 @@ namespace canmapping {
 	}
 
 	void «className»::accept(odcore::base::Visitor &v) {
+	v.beginVisit();
 	«IF mapping.mappings.size==0»
 	(void)v;
 	«ELSE»
@@ -601,6 +602,7 @@ namespace canmapping {
 		«line»
 		«ENDFOR»
 	«ENDIF»
+	v.endVisit();
 	}
 	
 	odcore::data::Container «className»::decode(const ::automotive::GenericCANMessage &gcm) {
