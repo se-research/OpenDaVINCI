@@ -16,7 +16,6 @@ unordered mapping LightSystem {
 }
 
 mapping EmptyCanMessage {
-    
 }
 
 test automotive.vehicle.WheelSpeed {
