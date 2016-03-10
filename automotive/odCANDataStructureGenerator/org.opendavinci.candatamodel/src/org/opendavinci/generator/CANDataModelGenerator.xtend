@@ -762,6 +762,7 @@ namespace canmapping {
 			c = odcore::data::Container(«HLName»);
 		}
 	«ELSE»
+	(void) gcm;
     // Return an empty container
 	«ENDIF»
 		return c;
