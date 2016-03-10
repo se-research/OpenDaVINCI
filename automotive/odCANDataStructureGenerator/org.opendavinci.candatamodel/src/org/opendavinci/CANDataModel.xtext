@@ -24,9 +24,13 @@ grammar org.opendavinci.CANDataModel
 generate canDataModel "http://www.opendavinci.org/CANDataModel"
 
 Model:
+    odvdFiles         += ODVDFile+
     cansignals        += CANSignal+
     cansignalmappings += CANSignalMapping*
     cansignaltestings += CANSignalTesting*;
+
+ODVDFile:
+    'using' odvdFileName = ID ';';
 
 CANSignal:
 	cansignalname = ValidIdentifier	'in' canIdentifier = HEXNUMBER

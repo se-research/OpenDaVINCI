@@ -20,8 +20,10 @@
 
 package org.opendavinci.generator;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -265,7 +267,23 @@ public class CANDataStructureGenerator {
         System.out.println("done.");
     }
 
-    public void generateCMakeFile() {
+    public void generateCMakeFile(File _f) {
+        if (_f == null) return;
+
+        List<String> listOfUsingODVDFiles = new ArrayList<String>();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(_f));
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.startsWith("using")) {
+                    String name = line.split(" ")[1];
+                    name = name.substring(0, name.length()-1);
+                    listOfUsingODVDFiles.add(name);
+                }
+            }
+        }
+        catch(Exception e) {}
+
         StringBuilder sb = new StringBuilder();
         sb.append("# CANDataStructureGenerator - IDL tool to describe the mapping from"); sb.append("\r\n");
         sb.append("#                             CAN data to high-level messages."); sb.append("\r\n");
@@ -324,14 +342,20 @@ public class CANDataStructureGenerator {
         sb.append("INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS})"); sb.append("\r\n");
         sb.append("INCLUDE_DIRECTORIES (include)"); sb.append("\r\n");
 
-        sb.append("###########################################################################"); sb.append("\r\n");
-        sb.append("# Find AutomotiveData."); sb.append("\r\n");
-        sb.append("SET(AUTOMOTIVEDATA_DIR \"${CMAKE_INSTALL_PREFIX}\")"); sb.append("\r\n");
-        sb.append("FIND_PACKAGE (AutomotiveData REQUIRED)"); sb.append("\r\n");
-        sb.append("# Set header files from AutomotiveData."); sb.append("\r\n");
-        sb.append("INCLUDE_DIRECTORIES (${AUTOMOTIVEDATA_INCLUDE_DIRS})"); sb.append("\r\n");
+        // Generate dependencies to data structures.
+        for(String s : listOfUsingODVDFiles) {
+            sb.append("###########################################################################"); sb.append("\r\n");
+            sb.append("# Find " + s + "."); sb.append("\r\n");
+            sb.append("SET(" + s.toUpperCase() + "_DIR \"${CMAKE_INSTALL_PREFIX}\")"); sb.append("\r\n");
+            sb.append("FIND_PACKAGE (" + s + " REQUIRED)"); sb.append("\r\n");
+            sb.append("# Set header files from " + s + "."); sb.append("\r\n");
+            sb.append("INCLUDE_DIRECTORIES (${" + s.toUpperCase() + "_INCLUDE_DIRS})"); sb.append("\r\n");
+        }
         sb.append("SET (LIBRARIES ${OPENDAVINCI_LIBRARIES}"); sb.append("\r\n");
-        sb.append("               ${AUTOMOTIVEDATA_LIBRARIES})"); sb.append("\r\n");
+        for(String s : listOfUsingODVDFiles) {
+            sb.append("               ${" + s.toUpperCase() + "_LIBRARIES}"); sb.append("\r\n");
+        }
+        sb.append(")"); sb.append("\r\n");
 
         sb.append("# Recipe for building " + folder + "."); sb.append("\r\n");
         sb.append("FILE(GLOB_RECURSE " + folder + "-sources \"${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp\")"); sb.append("\r\n");
@@ -602,7 +626,7 @@ public class CANDataStructureGenerator {
                                 canDataStructureGenerator.doGenerate(resource, fileAccess);
 
                                 if (createCMakeFile) {
-                                    dsg.generateCMakeFile();
+                                    dsg.generateCMakeFile(file);
                                     dsg.generateCMakeModules();
                                 }
                                 
