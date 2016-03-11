@@ -168,56 +168,58 @@ class MyVisitable : public Serializable, public Visitable {
 
         virtual ostream& operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();
-		
-			std::shared_ptr<Serializer> s = sf.getSerializer(out);
-		
-			s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'1', NullType> > > > >::RESULT,
-					m_att1);
 
-			s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'2', NullType> > > > >::RESULT,
-					m_att2);
+            std::shared_ptr<Serializer> s = sf.getSerializer(out);
+        
+            s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'1', NullType> > > > >::RESULT,
+                    m_att1);
 
-			s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'3', NullType> > > > >::RESULT,
-					m_att3);
+            s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'2', NullType> > > > >::RESULT,
+                    m_att2);
 
-			s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'4', NullType> > > > >::RESULT,
-					m_att4);
+            s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'3', NullType> > > > >::RESULT,
+                    m_att3);
 
-			s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'5', NullType> > > > >::RESULT,
-					m_att5);
+            s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'4', NullType> > > > >::RESULT,
+                    m_att4);
 
-			return out;
+            s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'5', NullType> > > > >::RESULT,
+                    m_att5);
+
+            return out;
         }
 
         virtual istream& operator>>(istream &in) {
             SerializationFactory& sf=SerializationFactory::getInstance();
-		
-			std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
-		
-			d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'1', NullType> > > > >::RESULT,
-					m_att1);
+        
+            std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+        
+            d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'1', NullType> > > > >::RESULT,
+                    m_att1);
 
-			d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'2', NullType> > > > >::RESULT,
-					m_att2);
+            d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'2', NullType> > > > >::RESULT,
+                    m_att2);
 
-			d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'3', NullType> > > > >::RESULT,
-					m_att3);
+            d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'3', NullType> > > > >::RESULT,
+                    m_att3);
 
-			d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'4', NullType> > > > >::RESULT,
-					m_att4);
+            d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'4', NullType> > > > >::RESULT,
+                    m_att4);
 
-			d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'5', NullType> > > > >::RESULT,
-					m_att5);
+            d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'5', NullType> > > > >::RESULT,
+                    m_att5);
 
-			return in;
+            return in;
         }
 
         virtual void accept(odcore::base::Visitor &v) {
+            v.beginVisit();
             v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'1', NullType> > > > >::RESULT, 1, "MyVisitable::att1", "att1", m_att1);
             v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'2', NullType> > > > >::RESULT, 2, "MyVisitable::att2", "att2", m_att2);
             v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'3', NullType> > > > >::RESULT, 3, "MyVisitable::att3", "att3", m_att3);
             v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'4', NullType> > > > >::RESULT, 4, "MyVisitable::att4", "att4", m_att4);
             m_att5.accept(v);
+            v.endVisit();
         }
 
     public:
@@ -340,6 +342,100 @@ class FieldTest : public CxxTest::TestSuite {
 
             d2.accept(mtvv);
             TS_ASSERT(strcmp(d.data, d2.data) == 0);
+        }
+
+        /**
+         * This method transforms the specified type from AbstractField to
+         * the sub-class Field and extracts the value therein as the specified type.
+         *
+         * @param af AbstractField to transform.
+         * @return Extracted value.
+         */
+        template<typename T>
+        T transformValue(std::shared_ptr<odcore::data::reflection::AbstractField> &af) {
+            T value = 0;
+            switch(af->getFieldDataType()) {
+                case odcore::data::reflection::AbstractField::BOOL_T:
+                    value = static_cast<T>(dynamic_cast<odcore::reflection::Field<bool>*>(af.get())->getValue());
+                break;
+                case odcore::data::reflection::AbstractField::UINT8_T:
+                    value = static_cast<T>(dynamic_cast<odcore::reflection::Field<uint8_t>*>(af.get())->getValue());
+                break;
+                case odcore::data::reflection::AbstractField::INT8_T:
+                    value = static_cast<T>(dynamic_cast<odcore::reflection::Field<int8_t>*>(af.get())->getValue());
+                break;
+                case odcore::data::reflection::AbstractField::UINT16_T:
+                    value = static_cast<T>(dynamic_cast<odcore::reflection::Field<uint16_t>*>(af.get())->getValue());
+                break;
+                case odcore::data::reflection::AbstractField::INT16_T:
+                    value = static_cast<T>(dynamic_cast<odcore::reflection::Field<int16_t>*>(af.get())->getValue());
+                break;
+                case odcore::data::reflection::AbstractField::UINT32_T:
+                    value = static_cast<T>(dynamic_cast<odcore::reflection::Field<uint32_t>*>(af.get())->getValue());
+                break;
+                case odcore::data::reflection::AbstractField::INT32_T:
+                    value = static_cast<T>(dynamic_cast<odcore::reflection::Field<int32_t>*>(af.get())->getValue());
+                break;
+                case odcore::data::reflection::AbstractField::UINT64_T:
+                    value = static_cast<T>(dynamic_cast<odcore::reflection::Field<uint64_t>*>(af.get())->getValue());
+                break;
+                case odcore::data::reflection::AbstractField::INT64_T:
+                    value = static_cast<T>(dynamic_cast<odcore::reflection::Field<int64_t>*>(af.get())->getValue());
+                break;
+                case odcore::data::reflection::AbstractField::FLOAT_T:
+                    value = static_cast<T>(dynamic_cast<odcore::reflection::Field<float>*>(af.get())->getValue());
+                break;
+                case odcore::data::reflection::AbstractField::DOUBLE_T:
+                    value = static_cast<T>(dynamic_cast<odcore::reflection::Field<double>*>(af.get())->getValue());
+                break;
+                default:
+                break;
+            }
+            return value;
+        }
+
+        void testMessageExtractField() {
+            // Create a visitable data structure.
+            MyVisitable d;
+            d.m_att1 = 10;
+            d.m_att2 = 1.234;
+            d.m_att3 = -4.5789;
+            d.m_att4 = "Hello World!";
+            d.m_att5.m_double = 1.234;
+
+            // Create generic representation from our data structure.
+            MessageFromVisitableVisitor mfvv;
+            d.accept(mfvv);
+            Message msg = mfvv.getMessage();
+
+            // Iterate through the number of fields and retrieve the value as double.
+            for (uint8_t i = 0; i < msg.getNumberOfFields(); i++) {
+                // The boolean flag indicates whether the field requested by the given identifier exists.
+                bool found = false;
+                std::shared_ptr<odcore::data::reflection::AbstractField> af = msg.getFieldByLongIdentifierOrShortIdentifier(0, i, found);
+                if (found) {
+                    // Only consider POD fields.
+                    if (static_cast<uint8_t>(af->getSize()) <= sizeof(double)) {
+                        // Extract the value from the field.
+                        double value = transformValue<double>(af);
+                        if (1 == i) {
+                            TS_ASSERT_DELTA(value, 10, 1e-5);
+                        }
+                        if (2 == i) {
+                            TS_ASSERT_DELTA(value, 1.234, 1e-5);
+                        }
+                        if (3 == i) {
+                            TS_ASSERT_DELTA(value, -4.5789, 1e-5);
+                        }
+                    }
+                }
+                if (0 == i) {
+                    TS_ASSERT(!found);
+                }
+                if (6 <= i) {
+                    TS_ASSERT(!found);
+                }
+            }
         }
 };
 

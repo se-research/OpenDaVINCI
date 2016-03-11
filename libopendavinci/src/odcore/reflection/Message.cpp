@@ -49,6 +49,10 @@ namespace odcore {
             m_fields.push_back(f);
         }
 
+        uint32_t Message::getNumberOfFields() const {
+            return m_fields.size();
+        }
+
         void Message::accept(Visitor &v) {
             v.beginVisit();
 

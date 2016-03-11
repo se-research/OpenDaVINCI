@@ -92,13 +92,20 @@ template <typename T> class Field;
                 void addField(const std::shared_ptr<odcore::data::reflection::AbstractField> &f);
 
                 /**
+                 * This method returns the number of fields.
+                 *
+                 * @return The number of fields in this message.
+                 */
+                uint32_t getNumberOfFields() const;
+
+                /**
                  * This method tries to find a field using first the long identifier;
                  * if the field was not found, the short identifier is used.
                  *
                  * @param longIdentifier to find.
                  * @param shortIdentifier to find.
                  * @param found Flag modified by this method indicating if the field was found.
-                 * @return field Be aware to always check 'found' whether the field was found.
+                 * @return found Be aware to always check 'found' whether the field was found.
                  */
                 std::shared_ptr<odcore::data::reflection::AbstractField> getFieldByLongIdentifierOrShortIdentifier(const uint32_t &longIdentifier, const uint8_t &shortIdentifier, bool &found);
 
