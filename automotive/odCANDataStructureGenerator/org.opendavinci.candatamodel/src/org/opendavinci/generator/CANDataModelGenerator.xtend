@@ -31,6 +31,7 @@ import org.opendavinci.canDataModel.CANSignalMapping
 import java.util.Random
 import org.opendavinci.canDataModel.Mapping
 import org.opendavinci.canDataModel.CANSignalTesting
+import org.opendavinci.canDataModel.ODVDFile
 
 class CANDataModelGenerator implements IGenerator {
 
@@ -55,23 +56,26 @@ class CANDataModelGenerator implements IGenerator {
 		// First, extract all CAN signals from .can file.
 		val mapOfDefinedCANSignals = collectDefinedCANSignals(resource.allContents.toIterable.filter(typeof(CANSignal)))
 		
+		// Next, extract all .odvd header names from the 'using' statement.
+		val odvdIncludedFiles = extractOdvdHeaders(resource.allContents.toIterable.filter(typeof(ODVDFile)))
+		
 		// needed for the "super" header and source files
 		var ArrayList<String> includedClasses=new ArrayList<String>
 		for (e : resource.allContents.toIterable.filter(typeof(CANSignalMapping))) {
 			includedClasses.add(e.mappingName.toString().replaceAll("\\.", "/"))
 		}
 		
-		fsa.generateFile("include/GeneratedHeaders_" + generatedHeadersFile + ".h", generateSuperHeaderFileContent(generatedHeadersFile, includedClasses))
+		fsa.generateFile("include/GeneratedHeaders_" + generatedHeadersFile + ".h", generateSuperHeaderFileContent(generatedHeadersFile, includedClasses, odvdIncludedFiles))
 		fsa.generateFile("src/GeneratedHeaders_" + generatedHeadersFile + ".cpp", generateSuperImplementationFileContent(generatedHeadersFile, includedClasses))
 		
 		var ArrayList<CANSignalTesting> tests=new ArrayList<CANSignalTesting>(resource.allContents.toIterable.filter(typeof(CANSignalTesting)).toList);
 		
 		// Next, generate the code for the actual mapping.
 		for (e : resource.allContents.toIterable.filter(typeof(CANSignalMapping))) {
-			fsa.generateFile("include/generated/" + e.mappingName.toString().replaceAll("\\.", "/") + ".h", generateHeaderFileContent(generatedHeadersFile, e))
+			fsa.generateFile("include/generated/" + e.mappingName.toString().replaceAll("\\.", "/") + ".h", generateHeaderFileContent(generatedHeadersFile, odvdIncludedFiles, e))
 			fsa.generateFile("src/generated/" + e.mappingName.toString().replaceAll("\\.", "/") + ".cpp", 
 				generateImplementationFileContent(e, "generated", mapOfDefinedCANSignals))
-			fsa.generateFile("testsuites/" + e.mappingName.toString().replaceAll("\\.", "_") + "TestSuite.h", generateTestSuiteContent(generatedHeadersFile, e, tests, mapOfDefinedCANSignals))
+			fsa.generateFile("testsuites/" + e.mappingName.toString().replaceAll("\\.", "_") + "TestSuite.h", generateTestSuiteContent(generatedHeadersFile, odvdIncludedFiles, e, tests, mapOfDefinedCANSignals))
 			fsa.generateFile("uppaal/generated/" + e.mappingName.toString().replaceAll("\\.", "/"), generateUPPAALFileContent(e, mapOfDefinedCANSignals))
 		}
 	}
@@ -102,8 +106,20 @@ class CANDataModelGenerator implements IGenerator {
         return cansignalsByFQDN
 	}
 
+	/* This method collects all CAN signal definitions. */
+	def extractOdvdHeaders(Iterable<ODVDFile> iter) {
+		val odvdHeaders =  new ArrayList<String>
+		val localIterator = iter.iterator
+		while (localIterator.hasNext) {
+			val odvd = localIterator.next
+			val include="#include <"+odvd.odvdFileName.toLowerCase+"/GeneratedHeaders_"+odvd.odvdFileName+".h>"
+			odvdHeaders.add(include)
+		}
+        return odvdHeaders
+	}
+	
     /* This method generates the header file content. */
-	def generateSuperHeaderFileContent(String generatedHeadersFile, ArrayList<String> includedClasses) '''
+	def generateSuperHeaderFileContent(String generatedHeadersFile, ArrayList<String> includedClasses, ArrayList<String> odvdIncludedFiles) '''
 /*
  * This software is open source. Please see COPYING and AUTHORS for further information.
  *
@@ -122,7 +138,9 @@ class CANDataModelGenerator implements IGenerator {
 
 #include <opendavinci/odcore/data/Container.h>
 
-#include <automotivedata/GeneratedHeaders_AutomotiveData.h>
+«FOR odvd : odvdIncludedFiles»
+«odvd»
+«ENDFOR»
 
 namespace canmapping {
 
@@ -371,7 +389,7 @@ namespace canmapping {
 	'''
 
     /* This method generates the header file content. */
-	def generateHeaderFileContent(String generatedHeadersFile, CANSignalMapping mapping) '''
+	def generateHeaderFileContent(String generatedHeadersFile, ArrayList<String> odvdIncludedFiles, CANSignalMapping mapping) '''
 /*
  * This software is open source. Please see COPYING and AUTHORS for further information.
  *
@@ -387,7 +405,9 @@ namespace canmapping {
 #include <opendavinci/odcore/base/Visitable.h>
 #include <opendavinci/odcore/data/SerializableData.h>
 
-#include <automotivedata/GeneratedHeaders_AutomotiveData.h>
+«FOR odvd : odvdIncludedFiles»
+«odvd»
+«ENDFOR»
 
 namespace canmapping {
 	«var String[] classNames = mapping.mappingName.toString.split('\\.')»
@@ -847,7 +867,7 @@ namespace canmapping {
 '''
 
 	// Generate the test suite content (.h).	
-	def generateTestSuiteContent(String generatedHeadersFile, CANSignalMapping mapping, ArrayList<CANSignalTesting> canSignalTesting, HashMap<String, CANSignalDescription> canSignals) '''
+	def generateTestSuiteContent(String generatedHeadersFile, ArrayList<String> odvdIncludedFiles, CANSignalMapping mapping, ArrayList<CANSignalTesting> canSignalTesting, HashMap<String, CANSignalDescription> canSignals) '''
 /*
  * This software is open source. Please see COPYING and AUTHORS for further information.
  *
@@ -893,7 +913,11 @@ Signal "«signalName»" could not be found. It will be ignored.
 #define CANMAPPINGTESTSUITE_H_
 
 #include "GeneratedHeaders_«generatedHeadersFile».h"
-#include <automotivedata/GeneratedHeaders_AutomotiveData.h>
+
+«FOR odvd : odvdIncludedFiles»
+«odvd»
+«ENDFOR»
+
 #include "cxxtest/TestSuite.h"
 #include <sstream>
 

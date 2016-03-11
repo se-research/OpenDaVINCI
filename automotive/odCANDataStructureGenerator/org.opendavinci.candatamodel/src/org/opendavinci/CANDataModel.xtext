@@ -30,7 +30,7 @@ Model:
     cansignaltestings += CANSignalTesting*;
 
 ODVDFile:
-    'using' odvdFileName = ID ';';
+    'using' odvdFileName = ID (';'|'.odvd' ';');
 
 CANSignal:
 	cansignalname = ValidIdentifier	'in' canIdentifier = HEXNUMBER
