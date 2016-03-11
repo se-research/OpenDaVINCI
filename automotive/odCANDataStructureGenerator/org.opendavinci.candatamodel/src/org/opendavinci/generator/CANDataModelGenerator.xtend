@@ -634,27 +634,27 @@ namespace canmapping {
 		switch(gcm.getIdentifier())
 		{
 	    	«FOR id : canIDs»
-	    	case «id» : 
+	    		case «id» : 
 	    	«IF mapping.unordered!=null && mapping.unordered.compareTo("unordered")==0»
-	    	// since the order doesn't matter, store the payload in a map for future use replacing the current content held there
-	    	m_payloads[gcm.getIdentifier()] = gcm.getData();
+		    	// since the order doesn't matter, store the payload in a map for future use replacing the current content held there
+		    	m_payloads[gcm.getIdentifier()] = gcm.getData();
 	    	«ELSE»
-	    	// since the order matters:
-	    	if(m_neededCanMessages.at(m_index) == «id») // if we got the expected message
-	    	{
-	    		// Store the payload in a map for future use replacing the current content
-	    		m_payloads[«id»] = gcm.getData();
-	    		// modularly increase the internal index
-	    		(m_index==m_neededCanMessages.size()-1) ? m_index=0 : ++m_index;
-	    	}
-	    	else // otherwise reset
-	    		reset=true;
+		    	// since the order matters:
+		    	if(m_neededCanMessages.at(m_index) == «id») // if we got the expected message
+		    	{
+		    		// Store the payload in a map for future use replacing the current content
+		    		m_payloads[«id»] = gcm.getData();
+		    		// modularly increase the internal index
+		    		(m_index==m_neededCanMessages.size()-1) ? m_index=0 : ++m_index;
+		    	}
+		    	else // otherwise reset
+		    		reset=true;
 	    	«ENDIF»
-	    	break;
+	    		break;
 	    	
 	        «ENDFOR»
-	        default : return c; // valid id not found
-	    }
+	        	default : return c; // valid id not found
+	    	}
 	    «IF mapping.unordered==null || mapping.unordered.compareTo("unordered")!=0»
 		if(reset)
 		{		
@@ -757,6 +757,7 @@ namespace canmapping {
 			}
 		«ELSE /*if the signal doesn't exist*/»
 				// Signal "«signalName»" could not be found. It will be ignored.
+				cerr<<"Warning: Signal '«className».«signalName»' could not be found. It will be ignored."<<endl;
 		«ENDIF»
 	«ENDFOR»
 		
@@ -784,6 +785,7 @@ namespace canmapping {
 	«ELSE»
 	(void) gcm;
     // Return an empty container
+	cerr<<"Warning: Mapping '«className»' is empty."<<endl;
 	«ENDIF»
 		return c;
 	}
