@@ -625,6 +625,52 @@ namespace canmapping {
 	«ENDIF»
 	}
 	
+	::automotive::GenericCANMessage «className»::encode(const odcore::data::Container &c) {
+		/*
+		double transformedValue;
+		bool abort=false;
+		switch(c.getDataType())
+		«FOR currentSignalInMapping : mapping.mappings»
+			//////////////////////////// adjust this for each mapping
+			case AccelerationRequest::ID() :
+			AccelerationRequest temp=c.getData<AccelerationRequest>()
+			////////////////////////////
+			
+			MessageFromVisitableVisitor mfvv;
+			temp.accept(mfvv);
+			Message msg=mfvv.getMessage();
+			
+			//////////////////////////// loop this through the fields in the contained message
+			shared_ptr<AbstractField> af=msg.getField(/*longid*/0,/*shortid*/1);
+			////////////////////////////
+			
+			if(af.getsize() > sizeof(double)){
+				abort=true;
+				break;
+			}
+			
+			shared_ptr<Field<double>> f=af;
+			double d=f.getValue<double>()
+			transformedValue=(d-__offset__) / __multiplier__;
+			// fix endianess
+			// shift to right bit position
+			
+			break;
+		«ENDFOR»
+			default: abort=true;
+		}
+		
+		if(abort){
+			// discard and return
+		}
+		
+		::automotive::GenericCANMessage gcm;
+		// set gcm to transformedValue
+		return gcm;
+		
+		*/
+	}
+	
 	odcore::data::Container «className»::decode(const ::automotive::GenericCANMessage &gcm) {
 		odcore::data::Container c;
     «IF canIDs.size>0»
@@ -672,8 +718,8 @@ namespace canmapping {
 		// 1. Create a generic message.
 		odcore::reflection::Message message;
 	
-	«FOR currentMapping : mapping.mappings»
-		«var String signalName=currentMapping.cansignalname»
+	«FOR currentSignalInMapping : mapping.mappings»
+		«var String signalName=currentSignalInMapping.cansignalname»
 		«IF canSignals.get(signalName)!=null /*if the signal exists*/»
 			// addressing signal «signalName»
 			{
@@ -688,7 +734,7 @@ namespace canmapping {
 				«var String finalVarName="transformed_"+signalName.replaceAll("\\.", "_")»
 				«var String capitalizedName»
 				«{
-					var String[] chunks=currentMapping.cansignalname.split('\\.');
+					var String[] chunks=currentSignalInMapping.cansignalname.split('\\.');
 					capitalizedName=""
 					for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
 				}»
