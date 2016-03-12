@@ -60,7 +60,7 @@ namespace cockpit {
                 m_dataView->setColumnCount(4);
                 QStringList headerLabel;
                 headerLabel << tr("Component") << tr("Version") << tr("Frequency") << tr("Slice Consumption");
-                m_dataView->setColumnWidth(0, 200);
+                m_dataView->setColumnWidth(0, 150);
                 m_dataView->setColumnWidth(1, 130);
                 m_dataView->setColumnWidth(2, 80);
                 m_dataView->setColumnWidth(3, 150);
@@ -79,8 +79,10 @@ namespace cockpit {
                 if (container.getDataType() == odcore::data::dmcp::ModuleStatistics::ID()) {
                     odcore::data::dmcp::ModuleStatistics mss = container.getData<odcore::data::dmcp::ModuleStatistics>();
 
+                    // Update widget.
                     auto iterators = mss.iteratorPair_ListOfModuleStatistics();
                     auto it = iterators.first;
+                    vector<string> updatedEntries;
                     while (it != iterators.second) {
                         odcore::data::dmcp::ModuleStatistic ms = (*it);
 
@@ -90,8 +92,30 @@ namespace cockpit {
                             sstr << "-" << ms.getModule().getIdentifier();
                         }
                         addLogMessageToTree(sstr.str(), ms);
+                        updatedEntries.push_back(sstr.str());
 
                         it++;
+                    }
+
+                    // Determine entries to remove due to non-updated values.
+                    vector<string> entriesToRemove;
+                    auto jt = m_components.begin();
+                    while (jt != m_components.end()) {
+                        auto hasEntry = std::find(std::begin(updatedEntries), std::end(updatedEntries), jt->first);
+                        if (hasEntry == std::end(updatedEntries)) {
+                            entriesToRemove.push_back(jt->first);
+                        }
+                        jt++;
+                    }
+
+                    // Remove entries.
+                    auto kt = entriesToRemove.begin();
+                    while (kt != entriesToRemove.end()) {
+                        QTreeWidgetItem *entry = m_components[(*kt)];
+                        auto mt = m_components.find(*kt);
+                        m_components.erase(mt);
+                        delete entry; entry = NULL;
+                        kt++;
                     }
                 }
             }
@@ -108,11 +132,11 @@ namespace cockpit {
                 // Update fields.
                 componentEntry->setText(1, ms.getModule().getVersion().c_str());
 
-                stringstream sstr1; sstr1 << ms.getModule().getFrequency();
+                stringstream sstr1; sstr1 << ms.getModule().getFrequency() << " Hz";
                 string str1(sstr1.str().c_str());
                 componentEntry->setText(2, str1.c_str());
 
-                stringstream sstr2; sstr2 << ms.getRuntimeStatistic().getSliceConsumption() << "%";
+                stringstream sstr2; sstr2 << (ms.getRuntimeStatistic().getSliceConsumption() * 100.0) << "%";
                 string str2(sstr2.str().c_str());
                 componentEntry->setText(3, str2.c_str());
             }
