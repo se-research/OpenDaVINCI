@@ -344,56 +344,6 @@ class FieldTest : public CxxTest::TestSuite {
             TS_ASSERT(strcmp(d.data, d2.data) == 0);
         }
 
-        /**
-         * This method transforms the specified type from AbstractField to
-         * the sub-class Field and extracts the value therein as the specified type.
-         *
-         * @param af AbstractField to transform.
-         * @return Extracted value.
-         */
-        template<typename T>
-        T transformValue(std::shared_ptr<odcore::data::reflection::AbstractField> &af) {
-            T value = 0;
-            switch(af->getFieldDataType()) {
-                case odcore::data::reflection::AbstractField::BOOL_T:
-                    value = static_cast<T>(dynamic_cast<odcore::reflection::Field<bool>*>(af.get())->getValue());
-                break;
-                case odcore::data::reflection::AbstractField::UINT8_T:
-                    value = static_cast<T>(dynamic_cast<odcore::reflection::Field<uint8_t>*>(af.get())->getValue());
-                break;
-                case odcore::data::reflection::AbstractField::INT8_T:
-                    value = static_cast<T>(dynamic_cast<odcore::reflection::Field<int8_t>*>(af.get())->getValue());
-                break;
-                case odcore::data::reflection::AbstractField::UINT16_T:
-                    value = static_cast<T>(dynamic_cast<odcore::reflection::Field<uint16_t>*>(af.get())->getValue());
-                break;
-                case odcore::data::reflection::AbstractField::INT16_T:
-                    value = static_cast<T>(dynamic_cast<odcore::reflection::Field<int16_t>*>(af.get())->getValue());
-                break;
-                case odcore::data::reflection::AbstractField::UINT32_T:
-                    value = static_cast<T>(dynamic_cast<odcore::reflection::Field<uint32_t>*>(af.get())->getValue());
-                break;
-                case odcore::data::reflection::AbstractField::INT32_T:
-                    value = static_cast<T>(dynamic_cast<odcore::reflection::Field<int32_t>*>(af.get())->getValue());
-                break;
-                case odcore::data::reflection::AbstractField::UINT64_T:
-                    value = static_cast<T>(dynamic_cast<odcore::reflection::Field<uint64_t>*>(af.get())->getValue());
-                break;
-                case odcore::data::reflection::AbstractField::INT64_T:
-                    value = static_cast<T>(dynamic_cast<odcore::reflection::Field<int64_t>*>(af.get())->getValue());
-                break;
-                case odcore::data::reflection::AbstractField::FLOAT_T:
-                    value = static_cast<T>(dynamic_cast<odcore::reflection::Field<float>*>(af.get())->getValue());
-                break;
-                case odcore::data::reflection::AbstractField::DOUBLE_T:
-                    value = static_cast<T>(dynamic_cast<odcore::reflection::Field<double>*>(af.get())->getValue());
-                break;
-                default:
-                break;
-            }
-            return value;
-        }
-
         void testMessageExtractField() {
             // Create a visitable data structure.
             MyVisitable d;
@@ -408,34 +358,23 @@ class FieldTest : public CxxTest::TestSuite {
             d.accept(mfvv);
             Message msg = mfvv.getMessage();
 
-            // Iterate through the number of fields and retrieve the value as double.
-            for (uint8_t i = 0; i < msg.getNumberOfFields(); i++) {
-                // The boolean flag indicates whether the field requested by the given identifier exists.
-                bool found = false;
-                std::shared_ptr<odcore::data::reflection::AbstractField> af = msg.getFieldByLongIdentifierOrShortIdentifier(0, i, found);
-                if (found) {
-                    // Only consider POD fields.
-                    if (static_cast<uint8_t>(af->getSize()) <= sizeof(double)) {
-                        // Extract the value from the field.
-                        double value = transformValue<double>(af);
-                        if (1 == i) {
-                            TS_ASSERT_DELTA(value, 10, 1e-5);
-                        }
-                        if (2 == i) {
-                            TS_ASSERT_DELTA(value, 1.234, 1e-5);
-                        }
-                        if (3 == i) {
-                            TS_ASSERT_DELTA(value, -4.5789, 1e-5);
-                        }
-                    }
-                }
-                if (0 == i) {
-                    TS_ASSERT(!found);
-                }
-                if (6 <= i) {
-                    TS_ASSERT(!found);
-                }
-            }
+            double value = 0;
+            bool found = false;
+
+            found = false; value = msg.getValueFromScalarField<double>(0, 1, found);
+            TS_ASSERT(found); TS_ASSERT_DELTA(value, 10, 1e-5);
+
+            found = false; value = msg.getValueFromScalarField<double>(0, 2, found);
+            TS_ASSERT(found); TS_ASSERT_DELTA(value, 1.234, 1e-5);
+
+            found = false; value = msg.getValueFromScalarField<double>(0, 3, found);
+            TS_ASSERT(found); TS_ASSERT_DELTA(value, -4.5789, 1e-5);
+
+            found = false; value = msg.getValueFromScalarField<double>(0, 4, found);
+            TS_ASSERT_DELTA(value, 0, 1e-5);
+
+            found = false; value = msg.getValueFromScalarField<double>(0, 6, found);
+            TS_ASSERT(!found);
         }
 };
 

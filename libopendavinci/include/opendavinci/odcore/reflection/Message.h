@@ -25,14 +25,13 @@
 #include "opendavinci/odcore/opendavinci.h"
 #include <memory>
 #include "opendavinci/odcore/base/Visitable.h"
+#include "opendavinci/odcore/reflection/Field.h"
 #include "opendavinci/generated/odcore/data/reflection/AbstractField.h"
 
 namespace odcore { namespace base { class Visitor; } }
 
 namespace odcore {
     namespace reflection {
-
-template <typename T> class Field;
 
         using namespace std;
 
@@ -108,6 +107,60 @@ template <typename T> class Field;
                  * @return found Be aware to always check 'found' whether the field was found.
                  */
                 std::shared_ptr<odcore::data::reflection::AbstractField> getFieldByLongIdentifierOrShortIdentifier(const uint32_t &longIdentifier, const uint8_t &shortIdentifier, bool &found);
+
+                /**
+                 * This method tries to extract the specified scalar type from AbstractField.
+                 *
+                 * @param longIdentifier to find.
+                 * @param shortIdentifier to find.
+                 * @param found Flag modified by this method indicating if the field was found.
+                 * @return Extracted value.
+                 */
+                template<typename T>
+                T getValueFromScalarField(const uint32_t &longIdentifier, const uint8_t &shortIdentifier, bool &found) {
+                    T value = 0;
+                    std::shared_ptr<odcore::data::reflection::AbstractField> af = getFieldByLongIdentifierOrShortIdentifier(longIdentifier, shortIdentifier, found);
+                    if (found) {
+                        switch(af->getFieldDataType()) {
+                            case odcore::data::reflection::AbstractField::BOOL_T:
+                                value = static_cast<T>(dynamic_cast<odcore::reflection::Field<bool>*>(af.get())->getValue());
+                            break;
+                            case odcore::data::reflection::AbstractField::UINT8_T:
+                                value = static_cast<T>(dynamic_cast<odcore::reflection::Field<uint8_t>*>(af.get())->getValue());
+                            break;
+                            case odcore::data::reflection::AbstractField::INT8_T:
+                                value = static_cast<T>(dynamic_cast<odcore::reflection::Field<int8_t>*>(af.get())->getValue());
+                            break;
+                            case odcore::data::reflection::AbstractField::UINT16_T:
+                                value = static_cast<T>(dynamic_cast<odcore::reflection::Field<uint16_t>*>(af.get())->getValue());
+                            break;
+                            case odcore::data::reflection::AbstractField::INT16_T:
+                                value = static_cast<T>(dynamic_cast<odcore::reflection::Field<int16_t>*>(af.get())->getValue());
+                            break;
+                            case odcore::data::reflection::AbstractField::UINT32_T:
+                                value = static_cast<T>(dynamic_cast<odcore::reflection::Field<uint32_t>*>(af.get())->getValue());
+                            break;
+                            case odcore::data::reflection::AbstractField::INT32_T:
+                                value = static_cast<T>(dynamic_cast<odcore::reflection::Field<int32_t>*>(af.get())->getValue());
+                            break;
+                            case odcore::data::reflection::AbstractField::UINT64_T:
+                                value = static_cast<T>(dynamic_cast<odcore::reflection::Field<uint64_t>*>(af.get())->getValue());
+                            break;
+                            case odcore::data::reflection::AbstractField::INT64_T:
+                                value = static_cast<T>(dynamic_cast<odcore::reflection::Field<int64_t>*>(af.get())->getValue());
+                            break;
+                            case odcore::data::reflection::AbstractField::FLOAT_T:
+                                value = static_cast<T>(dynamic_cast<odcore::reflection::Field<float>*>(af.get())->getValue());
+                            break;
+                            case odcore::data::reflection::AbstractField::DOUBLE_T:
+                                value = static_cast<T>(dynamic_cast<odcore::reflection::Field<double>*>(af.get())->getValue());
+                            break;
+                            default:
+                            break;
+                        }
+                    }
+                    return value;
+                }
 
             private:
                 /**
