@@ -60,10 +60,10 @@ namespace cockpit {
                 m_dataView->setColumnCount(4);
                 QStringList headerLabel;
                 headerLabel << tr("Component") << tr("Version") << tr("Frequency") << tr("Slice Consumption");
-                m_dataView->setColumnWidth(0, 80);
-                m_dataView->setColumnWidth(1, 80);
+                m_dataView->setColumnWidth(0, 200);
+                m_dataView->setColumnWidth(1, 130);
                 m_dataView->setColumnWidth(2, 80);
-                m_dataView->setColumnWidth(3, 200);
+                m_dataView->setColumnWidth(3, 150);
                 m_dataView->setHeaderLabels(headerLabel);
 
                 //add to Layout
@@ -79,10 +79,10 @@ namespace cockpit {
                 if (container.getDataType() == odcore::data::dmcp::ModuleStatistics::ID()) {
                     odcore::data::dmcp::ModuleStatistics mss = container.getData<odcore::data::dmcp::ModuleStatistics>();
 
-                    map<string, odcore::data::dmcp::ModuleStatistic> mapOfModuleStatistics = mss.getMapOfModuleStatistics();
-                    auto it = mapOfModuleStatistics.cbegin();
-                    while(it != mapOfModuleStatistics.cend()) {
-                        odcore::data::dmcp::ModuleStatistic ms = it->second;
+                    auto iterators = mss.iteratorPair_ListOfModuleStatistics();
+                    auto it = iterators.first;
+                    while (it != iterators.second) {
+                        odcore::data::dmcp::ModuleStatistic ms = (*it);
 
                         stringstream sstr;
                         sstr << ms.getModule().getName();
