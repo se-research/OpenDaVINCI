@@ -360,21 +360,22 @@ class FieldTest : public CxxTest::TestSuite {
 
             double value = 0;
             bool found = false;
+            bool extracted = false;
 
-            found = false; value = msg.getValueFromScalarField<double>(0, 1, found);
-            TS_ASSERT(found); TS_ASSERT_DELTA(value, 10, 1e-5);
+            found = false; extracted = false; value = msg.getValueFromScalarField<double>(0, 1, found, extracted);
+            TS_ASSERT(found); TS_ASSERT(extracted); TS_ASSERT_DELTA(value, 10, 1e-5);
 
-            found = false; value = msg.getValueFromScalarField<double>(0, 2, found);
-            TS_ASSERT(found); TS_ASSERT_DELTA(value, 1.234, 1e-5);
+            found = false; extracted = false; value = msg.getValueFromScalarField<double>(0, 2, found, extracted);
+            TS_ASSERT(found); TS_ASSERT(extracted); TS_ASSERT_DELTA(value, 1.234, 1e-5);
 
-            found = false; value = msg.getValueFromScalarField<double>(0, 3, found);
-            TS_ASSERT(found); TS_ASSERT_DELTA(value, -4.5789, 1e-5);
+            found = false; extracted = false; value = msg.getValueFromScalarField<double>(0, 3, found, extracted);
+            TS_ASSERT(found); TS_ASSERT(extracted); TS_ASSERT_DELTA(value, -4.5789, 1e-5);
 
-            found = false; value = msg.getValueFromScalarField<double>(0, 4, found);
-            TS_ASSERT_DELTA(value, 0, 1e-5);
+            found = false; extracted = true; value = msg.getValueFromScalarField<double>(0, 4, found, extracted);
+            TS_ASSERT(found); TS_ASSERT(!extracted); TS_ASSERT_DELTA(value, 0, 1e-5);
 
-            found = false; value = msg.getValueFromScalarField<double>(0, 6, found);
-            TS_ASSERT(!found);
+            found = true; extracted = true; value = msg.getValueFromScalarField<double>(0, 6, found, extracted);
+            TS_ASSERT(!found); TS_ASSERT(!extracted);
         }
 };
 

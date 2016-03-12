@@ -114,13 +114,16 @@ namespace odcore {
                  * @param longIdentifier to find.
                  * @param shortIdentifier to find.
                  * @param found Flag modified by this method indicating if the field was found.
+                 * @param extracted Flag modified by this method indicating if the field was successfully extracted.
                  * @return Extracted value.
                  */
                 template<typename T>
-                T getValueFromScalarField(const uint32_t &longIdentifier, const uint8_t &shortIdentifier, bool &found) {
+                T getValueFromScalarField(const uint32_t &longIdentifier, const uint8_t &shortIdentifier, bool &found, bool &extracted) {
                     T value = 0;
+                    extracted = false;
                     std::shared_ptr<odcore::data::reflection::AbstractField> af = getFieldByLongIdentifierOrShortIdentifier(longIdentifier, shortIdentifier, found);
                     if (found) {
+                        extracted = true;
                         switch(af->getFieldDataType()) {
                             case odcore::data::reflection::AbstractField::BOOL_T:
                                 value = static_cast<T>(dynamic_cast<odcore::reflection::Field<bool>*>(af.get())->getValue());
@@ -156,6 +159,7 @@ namespace odcore {
                                 value = static_cast<T>(dynamic_cast<odcore::reflection::Field<double>*>(af.get())->getValue());
                             break;
                             default:
+                                extracted = false;
                             break;
                         }
                     }
