@@ -143,7 +143,7 @@ message odcore.data.dmcp.ModuleStatistic [id = 114] {
 
 // This message describes runtime statistics about a software component.
 message odcore.data.dmcp.ModuleStatistics [id = 8] {
-    map<string, odcore.data.dmcp.ModuleStatistic> moduleStatistics [id = 1];
+    list<odcore.data.dmcp.ModuleStatistic> moduleStatistics [id = 1];
 }
 
 // This message describes a software module's current state.

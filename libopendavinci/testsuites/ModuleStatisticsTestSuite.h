@@ -25,6 +25,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <vector>
 
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/generated/odcore/data/dmcp/ModuleStatistics.h"
@@ -72,8 +73,8 @@ class ModuleStatisticsTest : public CxxTest::TestSuite {
             stringstream sstr;
 
             ModuleStatistics ms;
-            ms.putTo_MapOfModuleStatistics("Module 1", mod1);
-            ms.putTo_MapOfModuleStatistics("Module 2", mod2);
+            ms.addTo_ListOfModuleStatistics(mod1);
+            ms.addTo_ListOfModuleStatistics(mod2);
 
             Container c(ms);
             sstr << c;
@@ -86,17 +87,19 @@ class ModuleStatisticsTest : public CxxTest::TestSuite {
             // Unpack data:
             ModuleStatistics ms2 = c2.getData<ModuleStatistics>();
 
-            TS_ASSERT(ms2.getValueForKey_MapOfModuleStatistics("Module 1").getModule().getName() == "Module A");
-            TS_ASSERT(ms2.getValueForKey_MapOfModuleStatistics("Module 1").getModule().getIdentifier() == "1");
-            TS_ASSERT(ms2.getValueForKey_MapOfModuleStatistics("Module 1").getModule().getVersion() == "5");
-            TS_ASSERT_DELTA(ms2.getValueForKey_MapOfModuleStatistics("Module 1").getModule().getFrequency(), 2, 1e-2);
-            TS_ASSERT_DELTA(ms2.getValueForKey_MapOfModuleStatistics("Module 1").getRuntimeStatistic().getSliceConsumption(), 0.57, 1e-2);
+            std::vector<odcore::data::dmcp::ModuleStatistic> listOfModuleStatics = ms2.getListOfModuleStatistics();
 
-            TS_ASSERT(ms2.getValueForKey_MapOfModuleStatistics("Module 2").getModule().getName() == "Module B");
-            TS_ASSERT(ms2.getValueForKey_MapOfModuleStatistics("Module 2").getModule().getIdentifier() == "2");
-            TS_ASSERT(ms2.getValueForKey_MapOfModuleStatistics("Module 2").getModule().getVersion() == "7");
-            TS_ASSERT_DELTA(ms2.getValueForKey_MapOfModuleStatistics("Module 2").getModule().getFrequency(), 4, 1e-2);
-            TS_ASSERT_DELTA(ms2.getValueForKey_MapOfModuleStatistics("Module 2").getRuntimeStatistic().getSliceConsumption(), 0.34, 1e-2);
+            TS_ASSERT(listOfModuleStatics.at(0).getModule().getName() == "Module A");
+            TS_ASSERT(listOfModuleStatics.at(0).getModule().getIdentifier() == "1");
+            TS_ASSERT(listOfModuleStatics.at(0).getModule().getVersion() == "5");
+            TS_ASSERT_DELTA(listOfModuleStatics.at(0).getModule().getFrequency(), 2, 1e-2);
+            TS_ASSERT_DELTA(listOfModuleStatics.at(0).getRuntimeStatistic().getSliceConsumption(), 0.57, 1e-2);
+
+            TS_ASSERT(listOfModuleStatics.at(1).getModule().getName() == "Module B");
+            TS_ASSERT(listOfModuleStatics.at(1).getModule().getIdentifier() == "2");
+            TS_ASSERT(listOfModuleStatics.at(1).getModule().getVersion() == "7");
+            TS_ASSERT_DELTA(listOfModuleStatics.at(1).getModule().getFrequency(), 4, 1e-2);
+            TS_ASSERT_DELTA(listOfModuleStatics.at(1).getRuntimeStatistic().getSliceConsumption(), 0.34, 1e-2);
         }
 };
 

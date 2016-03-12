@@ -22,6 +22,7 @@
 #define SUPERCOMPONENT_H_
 
 #include <fstream>
+#include <map>
 #include <string>
 #include <vector>
 
@@ -132,8 +133,8 @@ class ConnectedModule;
             ConnectedModules m_modules;
             ConnectedModules m_shutdownModules;
 
-            odcore::base::Mutex m_moduleStatisticsMutex;
-            odcore::data::dmcp::ModuleStatistics m_moduleStatistics;
+            odcore::base::Mutex m_moduleStatisticsMapMutex;
+            map<string, odcore::data::dmcp::ModuleStatistic> m_moduleStatisticsMap;
 
             odcore::data::dmcp::ServerInformation::ManagedLevel m_managedLevel;
 

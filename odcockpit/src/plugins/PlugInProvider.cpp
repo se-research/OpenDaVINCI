@@ -40,6 +40,7 @@
 #include "plugins/objxviewer/OBJXViewerPlugIn.h"
 #include "plugins/player/PlayerPlugIn.h"
 #include "plugins/scnxviewer/SCNXViewerPlugIn.h"
+#include "plugins/sessionviewer/SessionViewerPlugIn.h"
 #include "plugins/sharedimageviewer/SharedImageViewerPlugIn.h"
 #include "plugins/spy/SpyPlugIn.h"
 #include "plugins/streetmapviewer/StreetMapPlugIn.h"
@@ -84,6 +85,7 @@ class PlugIn;
             m_listOfAvailablePlugIns.push_back("LiveFeed");
             m_listOfAvailablePlugIns.push_back("LogMessage");
             m_listOfAvailablePlugIns.push_back("Player");
+            m_listOfAvailablePlugIns.push_back("SessionViewer");
             m_listOfAvailablePlugIns.push_back("SharedImageViewer");
             m_listOfAvailablePlugIns.push_back("Spy");
             m_listOfAvailablePlugIns.push_back("StreetMap");
@@ -102,6 +104,7 @@ class PlugIn;
             m_listOfDescriptions["LiveFeed"] = tr("This plugin displays all distributed visitable messages.").toStdString();
             m_listOfDescriptions["LogMessage"] = tr("This plugin displays log messages from components.").toStdString();
             m_listOfDescriptions["Player"] = tr("This plugin replays previously recorded files.").toStdString();
+            m_listOfDescriptions["SessionViewer"] = tr("This plugin displays currently running modules.").toStdString();
             m_listOfDescriptions["SharedImageViewer"] = tr("This plugin displays shared images.").toStdString();
             m_listOfDescriptions["Spy"] = tr("This plugin displays all distributed containers.").toStdString();
             m_listOfDescriptions["StreetMap"] = tr("This plugin visualizes the environment data using a map tile provider.").toStdString();
@@ -178,6 +181,9 @@ class PlugIn;
             } else if (name == "Player") {
                 cerr << "Creating Player" << endl;
                 plugIn = std::shared_ptr<PlugIn>((PlugIn*)(new player::PlayerPlugIn("Player", m_kvc, m_conference, m_parent)));
+            } else if (name == "SessionViewer") {
+                cerr << "Creating SessionViewer" << endl;
+                plugIn = std::shared_ptr<PlugIn>(new sessionviewer::SessionViewerPlugIn("SessionViewer", m_kvc, m_parent));
             } else if (name == "SharedImageViewer") {
                 cerr << "Creating SharedImageViewer" << endl;
                 plugIn = std::shared_ptr<PlugIn>(new sharedimageviewer::SharedImageViewerPlugIn("SharedImageViewer", m_kvc, m_parent));
