@@ -528,6 +528,17 @@ namespace odsupercomponent {
             ConnectedModule* module = m_modules.getModule(md);
             m_modules.removeModule(md);
             m_shutdownModules.addModule(md, module);
+
+            // Remove module from RuntimeStatistics.
+            {
+                map<string, ModuleStatistic> mapOfModuleStatistics = m_moduleStatistics.getMapOfModuleStatistics();
+                {
+                    auto it = mapOfModuleStatistics.find(md.getName());
+                    mapOfModuleStatistics.erase(it);
+                }
+
+                m_moduleStatistics.setMapOfModuleStatistics(mapOfModuleStatistics);
+            }
         }
         else {
             if (m_shutdownModules.hasModule(md)) {
