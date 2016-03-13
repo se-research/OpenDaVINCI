@@ -518,6 +518,19 @@ namespace odsupercomponent {
             module->setExitCode();
             m_shutdownModules.addModule(md, module);
         }
+
+        // Remove module from RuntimeStatistics after module shutdown.
+        {
+            Lock l(m_moduleStatisticsMapMutex);
+
+            stringstream sstr;
+            sstr << md.getName() << "-" << md.getIdentifier();
+
+            auto it = m_moduleStatisticsMap.find(sstr.str());
+            if (it != m_moduleStatisticsMap.end()) {
+                m_moduleStatisticsMap.erase(it);
+            }
+        }
     }
 
     void SuperComponent::handleRuntimeStatistics(const ModuleDescriptor& md, const odcore::data::dmcp::RuntimeStatistic& rs) {

@@ -65,6 +65,8 @@ namespace cockpit {
                 m_dataView->setColumnWidth(2, 80);
                 m_dataView->setColumnWidth(3, 150);
                 m_dataView->setHeaderLabels(headerLabel);
+                m_dataView->setSortingEnabled(true);
+                m_dataView->sortByColumn(0, Qt::AscendingOrder);
 
                 //add to Layout
                 mainBox->addWidget(m_dataView.get(), 0, 0);
@@ -77,6 +79,8 @@ namespace cockpit {
 
             void SessionViewerWidget::nextContainer(Container &container) {
                 if (container.getDataType() == odcore::data::dmcp::ModuleStatistics::ID()) {
+                    m_dataView->setSortingEnabled(false);
+
                     odcore::data::dmcp::ModuleStatistics mss = container.getData<odcore::data::dmcp::ModuleStatistics>();
 
                     // Update widget.
@@ -88,6 +92,7 @@ namespace cockpit {
 
                         stringstream sstr;
                         sstr << ms.getModule().getName();
+
                         if (ms.getModule().getIdentifier().size() > 0) {
                             sstr << "-" << ms.getModule().getIdentifier();
                         }
@@ -117,6 +122,8 @@ namespace cockpit {
                         delete entry; entry = NULL;
                         kt++;
                     }
+
+                    m_dataView->setSortingEnabled(true);
                 }
             }
 
