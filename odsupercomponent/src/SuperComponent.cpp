@@ -524,7 +524,11 @@ namespace odsupercomponent {
         Lock l(m_moduleStatisticsMapMutex);
 
         ModuleStatistic entry(md, rs);
-        m_moduleStatisticsMap[md.getName()] = entry;
+
+        stringstream sstr;
+        sstr << md.getName() << "-" << md.getIdentifier();
+
+        m_moduleStatisticsMap[sstr.str()] = entry;
     }
 
     void SuperComponent::handleConnectionLost(const ModuleDescriptor& md) {
@@ -538,8 +542,14 @@ namespace odsupercomponent {
             // Remove module from RuntimeStatistics.
             {
                 Lock l(m_moduleStatisticsMapMutex);
-                auto it = m_moduleStatisticsMap.find(md.getName());
-                m_moduleStatisticsMap.erase(it);
+
+                stringstream sstr;
+                sstr << md.getName() << "-" << md.getIdentifier();
+
+                auto it = m_moduleStatisticsMap.find(sstr.str());
+                if (it != m_moduleStatisticsMap.end()) {
+                    m_moduleStatisticsMap.erase(it);
+                }
             }
         }
         else {
