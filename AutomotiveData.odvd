@@ -179,3 +179,7 @@ message automotive.vehicle.WheelSpeed [id = 75] {
     float rearRight [id = 4];
 }
 
+message automotive.vehicle.LightSystem [id = 76] {
+    uint8 headlights [id = 1];
+}
+
