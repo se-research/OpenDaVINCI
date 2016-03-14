@@ -297,6 +297,8 @@ namespace canmapping {
 
             odcore::data::Container decode(const ::automotive::GenericCANMessage &gcm);
             
+            ::automotive::GenericCANMessage encode(odcore::data::Container &c);
+            
 «var ArrayList<String> capitalizedNames=new ArrayList<String>»
 «{
 			var String[] chunks
@@ -625,7 +627,7 @@ namespace canmapping {
 	«ENDIF»
 	}
 	
-	::automotive::GenericCANMessage «className»::encode(const odcore::data::Container &c) {
+	::automotive::GenericCANMessage «className»::encode(odcore::data::Container &c) {
 	    «IF canIDs.size>0»
 
 	    «IF canIDs.size>1»
@@ -644,10 +646,6 @@ namespace canmapping {
     	«var String finalPrefix="final"»
 		«var String finalVarName»
 
-		«FOR currentSignalInMapping : mapping.mappings»
-		«{varName=currentSignalInMapping.cansignalname.replace('.','_').toFirstUpper;""}»«{finalVarName=finalPrefix+varName;""}»
-			double «finalVarName»=0.0;
-		«ENDFOR»
 			bool found, extracted, abort=false;
 		
 			if(c.getDataType() != «className»::ID())
@@ -659,9 +657,9 @@ namespace canmapping {
 			}
 			
 			«className» temp«className»=c.getData<«className»>();
-			MessageFromVisitableVisitor mfvv;
+			odcore::reflection::MessageFromVisitableVisitor mfvv;
 			temp«className».accept(mfvv);
-			Message msg=mfvv.getMessage();
+			odcore::reflection::Message msg=mfvv.getMessage();
 		
 			«FOR currentSignalInMapping : mapping.mappings»
 			«var CANSignalDescription canSignal=canSignals.get(currentSignalInMapping.cansignalname)»
