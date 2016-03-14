@@ -63,10 +63,19 @@ namespace automotive {
                  *
                  * @param canDevice Reference to the CAN device used for sending the data.
                  */
-                MessageToCANDataStore(CANDevice &canDevice);
+                MessageToCANDataStore(shared_ptr<CANDevice> canDevice);
 
                 virtual ~MessageToCANDataStore();
 
+                /**
+                 * The default behavior for the MessageToCANDataStore is
+                 * to simply relay all Containers of type GenericCANMessage::ID
+                 * directly to the CANDevice.
+                 *
+                 * This method _can_ be overwritten in subclasses to realize a
+                 * different behavior; for instance by selecting high-level
+                 * messages and transform them into GenericCANMessages.
+                 */
                 virtual void add(const odcore::data::Container &container);
 
                 virtual void clear();
@@ -75,8 +84,8 @@ namespace automotive {
 
                 virtual bool isEmpty() const;
 
-            private:
-                CANDevice &m_canDevice;
+            protected:
+                shared_ptr<CANDevice> m_canDevice;
         };
 
     } // odcantools

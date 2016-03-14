@@ -36,9 +36,6 @@ class GenericCANMessageListener;
 
         using namespace std;
 
-        // Forward declaration due to circular dependency.
-        class MessageToCANDataStore;
-
         /**
          * This class encapsulates the service for reading low-level CAN message to be
          * wrapped into a GenericCANMessage and for writing a GenericCANDevice to the
@@ -94,19 +91,10 @@ class GenericCANMessageListener;
 
                 virtual void run();
 
-                /**
-                 * This method returns a reference to the data store that in the end will
-                 * send a Container to the CAN device.
-                 *
-                 * @return Reference to the data store.
-                 */
-                MessageToCANDataStore& getMessageToCANDataStore();
-
             private:
                 string m_deviceNode;
                 HANDLE m_handle;
                 GenericCANMessageListener &m_listener;
-                unique_ptr<MessageToCANDataStore> m_messageToCANDataStore;
         };
 
     } // odcantools
