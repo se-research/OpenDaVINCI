@@ -19,6 +19,7 @@
 #include "opendavinci/odcore/strings/StringToolbox.h"
 
 #include "test9/GeneratedHeaders_Test9.h"
+#include "test9/generated/Test9A.h"
 
 
 class Test9A_TestSuite : public CxxTest::TestSuite {

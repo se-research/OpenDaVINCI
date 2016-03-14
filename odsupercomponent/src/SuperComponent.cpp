@@ -71,8 +71,8 @@ namespace odsupercomponent {
         m_conference(NULL),
         m_modules(),
         m_shutdownModules(),
-        m_moduleStatisticsMutex(),
-        m_moduleStatistics(),
+        m_moduleStatisticsMapMutex(),
+        m_moduleStatisticsMap(),
         m_managedLevel(odcore::data::dmcp::ServerInformation::ML_NONE),
         m_startOfCurrentCycle(),
         m_startOfLastCycle(),
@@ -109,7 +109,7 @@ namespace odsupercomponent {
         CLOG1 << "[odsupercomponent]: Server information: " << serverInformation.toString() << endl;
         CLOG1 << "[odsupercomponent]: Creating discoverer server..." << endl;
         m_discovererServer = new discoverer::Server(serverInformation,
-													getMultiCastGroup(),
+                                                    getMultiCastGroup(),
                                                     odcore::data::dmcp::Constants::BROADCAST_PORT_SERVER,
                                                     odcore::data::dmcp::Constants::BROADCAST_PORT_CLIENT,
                                                     m_modulesToIgnore);
@@ -325,8 +325,14 @@ namespace odsupercomponent {
 
             {
                 // Update statistics.
-                Lock l(m_moduleStatisticsMutex);
-                Container c(m_moduleStatistics);
+                Lock l(m_moduleStatisticsMapMutex);
+                ModuleStatistics ms;
+                auto it = m_moduleStatisticsMap.cbegin();
+                while (it != m_moduleStatisticsMap.cend()) {
+                    ms.addTo_ListOfModuleStatistics(it->second);
+                    it++;
+                }
+                Container c(ms);
                 m_conference->send(c);
             }
 
@@ -512,13 +518,30 @@ namespace odsupercomponent {
             module->setExitCode();
             m_shutdownModules.addModule(md, module);
         }
+
+        // Remove module from RuntimeStatistics after module shutdown.
+        {
+            Lock l(m_moduleStatisticsMapMutex);
+
+            stringstream sstr;
+            sstr << md.getName() << "-" << md.getIdentifier();
+
+            auto it = m_moduleStatisticsMap.find(sstr.str());
+            if (it != m_moduleStatisticsMap.end()) {
+                m_moduleStatisticsMap.erase(it);
+            }
+        }
     }
 
     void SuperComponent::handleRuntimeStatistics(const ModuleDescriptor& md, const odcore::data::dmcp::RuntimeStatistic& rs) {
-        Lock l(m_moduleStatisticsMutex);
+        Lock l(m_moduleStatisticsMapMutex);
 
         ModuleStatistic entry(md, rs);
-        m_moduleStatistics.putTo_MapOfModuleStatistics(md.getName(), entry);
+
+        stringstream sstr;
+        sstr << md.getName() << "-" << md.getIdentifier();
+
+        m_moduleStatisticsMap[sstr.str()] = entry;
     }
 
     void SuperComponent::handleConnectionLost(const ModuleDescriptor& md) {
@@ -528,6 +551,19 @@ namespace odsupercomponent {
             ConnectedModule* module = m_modules.getModule(md);
             m_modules.removeModule(md);
             m_shutdownModules.addModule(md, module);
+
+            // Remove module from RuntimeStatistics.
+            {
+                Lock l(m_moduleStatisticsMapMutex);
+
+                stringstream sstr;
+                sstr << md.getName() << "-" << md.getIdentifier();
+
+                auto it = m_moduleStatisticsMap.find(sstr.str());
+                if (it != m_moduleStatisticsMap.end()) {
+                    m_moduleStatisticsMap.erase(it);
+                }
+            }
         }
         else {
             if (m_shutdownModules.hasModule(md)) {
