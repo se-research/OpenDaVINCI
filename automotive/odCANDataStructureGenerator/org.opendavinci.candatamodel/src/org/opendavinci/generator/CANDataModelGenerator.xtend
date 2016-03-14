@@ -626,49 +626,127 @@ namespace canmapping {
 	}
 	
 	::automotive::GenericCANMessage «className»::encode(const odcore::data::Container &c) {
-		/*
-		double transformedValue;
-		bool abort=false;
-		switch(c.getDataType())
+	    «IF canIDs.size>0»
+
+	    «IF canIDs.size>1»
+		cerr<<"Warning: Mapping '«className»' is defined over more than one concrete CAN messages. Only one of those CAN messages will be returned."<<endl;
+	    «ENDIF»
+
+    «var String gcmPrefix="GCM_"»
+    «var String gcmPayloadPrefix="GCMPayload_"»
+	    «FOR id:canIDs»
+    ::automotive::GenericCANMessage «gcmPrefix+id»;
+	«gcmPrefix+id».setIdentifier(«id»);
+	uint64_t «gcmPayloadPrefix+id»=0x0;
+   		«ENDFOR»
+		
+    	«var String varName»
+    	«var String finalPrefix="final"»
+		«var String finalVarName»
+
 		«FOR currentSignalInMapping : mapping.mappings»
-			//////////////////////////// adjust this for each mapping
-			case AccelerationRequest::ID() :
-			AccelerationRequest temp=c.getData<AccelerationRequest>()
-			////////////////////////////
-			
-			MessageFromVisitableVisitor mfvv;
-			temp.accept(mfvv);
-			Message msg=mfvv.getMessage();
-			
-			//////////////////////////// loop this through the fields in the contained message
-			shared_ptr<AbstractField> af=msg.getField(/*longid*/0,/*shortid*/1);
-			////////////////////////////
-			
-			if(af.getsize() > sizeof(double)){
-				abort=true;
-				break;
+		«{varName=currentSignalInMapping.cansignalname.replace('.','_').toFirstUpper;""}»«{finalVarName=finalPrefix+varName;""}»
+			double «finalVarName»=0.0;
+		«ENDFOR»
+			bool found, extracted, abort=false;
+		
+			if(c.getDataType() != «className»::ID())
+			{
+				// something went wrong
+				::automotive::GenericCANMessage gcm;
+				gcm.setData(0x0);
+				return gcm;
 			}
 			
-			shared_ptr<Field<double>> f=af;
-			double d=f.getValue<double>()
-			transformedValue=(d-__offset__) / __multiplier__;
-			// fix endianess
-			// shift to right bit position
+			«className» temp«className»=c.getData<«className»>();
+			MessageFromVisitableVisitor mfvv;
+			temp«className».accept(mfvv);
+			Message msg=mfvv.getMessage();
+		
+			«FOR currentSignalInMapping : mapping.mappings»
+			«var CANSignalDescription canSignal=canSignals.get(currentSignalInMapping.cansignalname)»
+			«{varName=currentSignalInMapping.cansignalname.replace('.','_').toFirstUpper;""}»
+				///////// manipulating signal «currentSignalInMapping.cansignalname»
+			«IF canSignal!=null»
+				found=extracted=false;
+				«var String rawVarName="raw"+varName»
+				double «rawVarName» = msg.getValueFromScalarField<double>(/*longid*/0,/*shortid*/«currentSignalInMapping.signalIdentifier», found, extracted);
+				
+				if(found && extracted){
+					«var String transformedVarName="transformed"+varName»
+					double «transformedVarName»=(«rawVarName» - «canSignal.m_add») / (double)«canSignal.m_multiplyBy»;
+					
+					//CANID       : «canSignal.m_CANID»
+					
+					if(«transformedVarName»<«canSignal.m_rangeStart»)
+						«transformedVarName»=«canSignal.m_rangeStart»;
+					if(«transformedVarName»>«canSignal.m_rangeEnd»)
+						«transformedVarName»=«canSignal.m_rangeEnd»;
+					
+					// length      : «canSignal.m_length»
+					«var String transformedType»
+					
+					«IF Integer.parseInt(canSignal.m_length) <= 8»
+						«{transformedType="uint8_t";""}»
+					«ELSEIF Integer.parseInt(canSignal.m_length) <= 16»
+						«{transformedType="uint16_t";""}»
+					«ELSEIF Integer.parseInt(canSignal.m_length) <= 32»
+						«{transformedType="uint32_t";""}»
+					«ELSEIF Integer.parseInt(canSignal.m_length) <= 64»
+						«{transformedType="uint64_t";""}»
+					«ENDIF»
+					// the value will be casted to «transformedType»
+					«{finalVarName=finalPrefix+varName;""}»
+					«transformedType» «finalVarName»=static_cast<«transformedType»>(«transformedVarName»);
+					
+					«IF canSignal.m_endian.compareTo("big")==0»
+					// endian      : «canSignal.m_endian»
+					«IF Integer.parseInt(canSignal.m_length) > 8 && Integer.parseInt(canSignal.m_length) <= 16»
+						«finalVarName»=htons(final«varName»);
+					«ELSEIF Integer.parseInt(canSignal.m_length) <= 32»
+						«finalVarName»=htonl(final«varName»);
+					«ELSEIF Integer.parseInt(canSignal.m_length) <= 64»
+						«finalVarName»=htonll(final«varName»);
+					«ELSE»
+						// 4.2 Endianness doesn't need fixing, skipping this step.
+					«ENDIF»
+					«ENDIF»
+					
+					// startBit    : «canSignal.m_startBit»
+					
+					«var String tempPLVarName="tempPL"+varName»
+					uint64_t «tempPLVarName»=0x0;
+					«tempPLVarName»=static_cast<uint64_t>(«finalVarName»);
+					«tempPLVarName»=«tempPLVarName»<<(64-«canSignal.m_length»-«canSignal.m_startBit»);
+					«gcmPayloadPrefix+canSignal.m_CANID»=«gcmPayloadPrefix+canSignal.m_CANID» | «tempPLVarName»;
+				}
+				else {
+					abort=true; // set to true and never reset to false to keep track of failures
+				}
+			«ELSE»
+				cerr<<"Warning: Signal '«className».«currentSignalInMapping.cansignalname»' could not be found. It will be ignored."<<endl;
+			«ENDIF»
+			«ENDFOR»
 			
-			break;
-		«ENDFOR»
-			default: abort=true;
-		}
-		
-		if(abort){
-			// discard and return
-		}
-		
-		::automotive::GenericCANMessage gcm;
-		// set gcm to transformedValue
-		return gcm;
-		
-		*/
+			if(abort){
+				// discard and return
+				::automotive::GenericCANMessage gcm;
+				gcm.setData(0x0);
+				return gcm;
+			}
+			
+			«FOR id:canIDs»
+			// set payload of GenericCANMessage and return
+			«gcmPrefix+id».setData(«gcmPayloadPrefix+id»);
+			return «gcmPrefix+id»;
+	   		«ENDFOR»
+		«ELSE»
+			// Return an empty GenericCANMessage
+			cerr<<"Warning: Mapping '«className»' is empty."<<endl;
+			::automotive::GenericCANMessage gcm;
+			gcm.setData(0x0);
+			return gcm;
+		«ENDIF»
 	}
 	
 	odcore::data::Container «className»::decode(const ::automotive::GenericCANMessage &gcm) {

@@ -1,10 +1,10 @@
 using AutomotiveData;
 
-wheelspeed.frontleft	in 0x123 at bit 0 for 16 bit is little endian multiply by 0.01 add 0 with range [0, 200];
-wheelspeed.frontright	in 0x123 at bit 16 for 2 bytes is little endian multiply by 0.01 add 0 with range [0, 200];
-wheelspeed.rearleft 	in 0x125 at bit 32 for 2 byte is little endian multiply by 0.01 add 0 within range [0, 200];
-wheelspeed.rearright	in 0x125 at bit 48 for 16 bits is little endian multiply by 0.01 add 0 within range [0, 200];
-lightsystem.headlights  in 0x001 at bit 6 for 2 bits is big endian multiply by 1 add 0 within range [0, 4];
+wheelspeed.frontleft	in 0x123 at bit 0 for 16 bit is big endian multiply by 0.01 add 0 with range [0, 200];
+wheelspeed.frontright	in 0x123 at bit 16 for 2 bytes is big endian multiply by 0.01 add 0 with range [0, 200];
+wheelspeed.rearleft 	in 0x123 at bit 32 for 2 byte is big endian multiply by 0.01 add 0 within range [0, 200];
+wheelspeed.rearright	in 0x123 at bit 48 for 16 bits is big endian multiply by 0.01 add 0 within range [0, 200];
+lightsystem.headlights  in 0x001 at bit 6 for 2 bits is big endian multiply by 1 add 0 within range [0, 3];
 
 mapping automotive.vehicle.WheelSpeed {
 	wheelspeed.frontleft : 1;
