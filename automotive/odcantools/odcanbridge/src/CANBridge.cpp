@@ -28,7 +28,6 @@
 
 #include "CANBridge.h"
 #include "CANDevice.h"
-#include "MessageToCANDataStore.h"
 
 namespace automotive {
     namespace odcantools {
@@ -44,8 +43,10 @@ namespace automotive {
             m_recorder(),
             m_deviceA(),
             m_deviceNodeA(),
+            m_messageToCANDataStoreA(),
             m_deviceB(),
             m_deviceNodeB(),
+            m_messageToCANDataStoreB(),
             m_replicatorFromAtoB(*this),
             m_replicatorFromBtoA(*this),
             m_canMapping() {}
@@ -70,12 +71,16 @@ namespace automotive {
                 m_replicatorFromAtoB.setCANDevice(m_deviceB);
                 m_replicatorFromBtoA.setCANDevice(m_deviceA);
 
+                // Create MessageToCANDataStores.
+                m_messageToCANDataStoreA = unique_ptr<MessageToCANDataStore>(new MessageToCANDataStore(m_deviceA));
+                m_messageToCANDataStoreB = unique_ptr<MessageToCANDataStore>(new MessageToCANDataStore(m_deviceB));
+
                 // Set receivers for OpenDaVINCI Containers to be translated as CAN messages.
                 if (getKeyValueConfiguration().getValue<int>("odcanbridge.devicenodeA.receivesContainers") == 1) {
-                    addDataStoreFor(m_deviceA->getMessageToCANDataStore());
+                    addDataStoreFor(*m_messageToCANDataStoreA);
                 }
                 if (getKeyValueConfiguration().getValue<int>("odcanbridge.devicenodeB.receivesContainers") == 1) {
-                    addDataStoreFor(m_deviceB->getMessageToCANDataStore());
+                    addDataStoreFor(*m_messageToCANDataStoreB);
                 }
 
                 // URL for storing containers.

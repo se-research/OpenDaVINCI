@@ -26,7 +26,6 @@
 
 #include "CANDevice.h"
 #include "CANProxy.h"
-#include "MessageToCANDataStore.h"
 
 namespace automotive {
     namespace odcantools {
@@ -41,6 +40,7 @@ namespace automotive {
             m_fifo(),
             m_recorder(),
             m_device(),
+            m_messageToCANDataStore(),
             m_deviceNode() {}
 
         CANProxy::~CANProxy() {}
@@ -50,10 +50,13 @@ namespace automotive {
             m_deviceNode = getKeyValueConfiguration().getValue<string>("odcanproxy.devicenode");
 
             // Try to open CAN device and register this instance as receiver for GenericCANMessages.
-            m_device = unique_ptr<CANDevice>(new CANDevice(m_deviceNode, *this));
+            m_device = shared_ptr<CANDevice>(new CANDevice(m_deviceNode, *this));
 
             // If the device could be successfully opened, create a recording file with a dump of the data.
             if (m_device->isOpen()) {
+                // Associate the CAN device to the data store to transform Containers to CAN messages.
+                m_messageToCANDataStore = unique_ptr<MessageToCANDataStore>(new MessageToCANDataStore(m_device));
+
                 // URL for storing containers.
                 stringstream recordingURL;
                 recordingURL << "file://" << "odcanproxy_" << TimeStamp().getYYYYMMDD_HHMMSS() << ".rec";
@@ -85,7 +88,7 @@ namespace automotive {
         odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode CANProxy::body() {
             // Register the CAN device as receiver for all Containers to be
             // potentially written to the CAN bus.
-            addDataStoreFor(m_device->getMessageToCANDataStore());
+            addDataStoreFor(*m_messageToCANDataStore);
 
             // Start the wrapped CAN device to receive CAN messages concurrently.
             m_device->start();
