@@ -29,6 +29,8 @@
 #include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
 #include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
 
+#include "MessageToCANDataStore.h"
+
 namespace automotive { class GenericCANMessage; }
 namespace odtools { namespace recorder { class Recorder; } }
 
@@ -94,7 +96,8 @@ class CANDevice;
             private:
                 odcore::base::FIFOQueue m_fifo;
                 unique_ptr<odtools::recorder::Recorder> m_recorder;
-                unique_ptr<CANDevice> m_device;
+                shared_ptr<CANDevice> m_device;
+                unique_ptr<MessageToCANDataStore> m_messageToCANDataStore;
                 string m_deviceNode;
         };
 
