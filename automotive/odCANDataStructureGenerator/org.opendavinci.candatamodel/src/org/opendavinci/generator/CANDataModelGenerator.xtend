@@ -658,7 +658,7 @@ namespace canmapping {
 				return gcm;
 			}
 			
-			::automotive::vehicle::«className» temp«className»=c.getData<::automotive::vehicle::«className»>();
+			::«mapping.mappingName.replaceAll("\\.","::")» temp«className»=c.getData<::«mapping.mappingName.replaceAll("\\.","::")»>();
 			odcore::reflection::MessageFromVisitableVisitor mfvv;
 			temp«className».accept(mfvv);
 			odcore::reflection::Message msg=mfvv.getMessage();
