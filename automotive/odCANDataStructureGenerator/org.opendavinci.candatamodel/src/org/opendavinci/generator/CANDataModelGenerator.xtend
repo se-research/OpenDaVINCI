@@ -187,7 +187,7 @@ namespace canmapping {
         
 			«FOR include : includedClasses»
 			«var String className=include.split('\\/').get(include.split('\\/').size-1)»
-				«include.replaceAll('\\/','::')» m_«Character.toLowerCase(className.charAt(0)) + className.substring(1)»;
+				«include.replaceAll('\\/','::')» m_«className.toFirstLower»;
 			«ENDFOR»
 		
     };
@@ -220,7 +220,7 @@ namespace canmapping {
 	while (iter.hasNext()){
 	member=iter.next();
 	var String className=member.split('\\/').get(member.split('\\/').size-1)
-	var String temp="m_"+Character.toLowerCase(className.charAt(0)) + className.substring(1)+" ()";
+	var String temp="m_"+className.toFirstLower+" ()";
 	if(iter.hasNext())temp+=",";
 	members.add(temp);
 }}»
@@ -899,7 +899,7 @@ namespace canmapping {
 			
 			// 7. Create an instance of the named high-level message.
             «var String HLName=mapping.mappingName.toFirstLower.replaceAll("\\.", "_")»
-        ::automotive::vehicle::«/*mapping.mappingName.toString.replaceAll("\\.", "::")*/className» «HLName»;
+        ::«mapping.mappingName.replaceAll("\\.", "::")» «HLName»;
 	
 			// 8. Letting the high-level message accept the visitor to enter the values.
         «HLName».accept(mtvv);
@@ -996,7 +996,8 @@ namespace canmapping {
 '''
 
 	// Generate the test suite content (.h).	
-	def generateTestSuiteContent(String generatedHeadersFile, ArrayList<String> odvdIncludedFiles, CANSignalMapping mapping, ArrayList<CANSignalTesting> canSignalTesting, HashMap<String, CANSignalDescription> canSignals) '''
+	def generateTestSuiteContent(String generatedHeadersFile, ArrayList<String> odvdIncludedFiles, CANSignalMapping mapping, 
+				ArrayList<CANSignalTesting> canSignalTesting, HashMap<String, CANSignalDescription> canSignals) '''
 /*
  * This software is open source. Please see COPYING and AUTHORS for further information.
  *
@@ -1076,7 +1077,7 @@ class CANBridgeTest : public CxxTest::TestSuite {
         	}}»
         	«ENDIF»
         	
-            «var String HLName= (Character.toLowerCase(mapping.mappingName.toString.charAt(0)) + mapping.mappingName.toString.substring(1)).replaceAll("\\.", "_")»
+            «var String HLName= mapping.mappingName.toFirstLower.replaceAll("\\.", "_")»
         	canmapping::«mapping.mappingName.toString.replaceAll("\\.", "::")» «HLName»_1«IF fieldsNum>0»«"("+init+")"»«ENDIF»;
         	canmapping::«mapping.mappingName.toString.replaceAll("\\.", "::")» «HLName»_2;
         	

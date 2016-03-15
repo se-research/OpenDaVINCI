@@ -13,7 +13,7 @@ mapping automotive.vehicle.WheelSpeed {
 	wheelspeed.rearright : 4;
 }
 
-unordered mapping LightSystem {
+unordered mapping automotive.vehicle.LightSystem {
     lightsystem.headlights : 1;
 }
 
