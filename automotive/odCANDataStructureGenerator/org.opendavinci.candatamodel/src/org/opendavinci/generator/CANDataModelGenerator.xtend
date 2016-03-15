@@ -658,7 +658,7 @@ namespace canmapping {
 				return gcm;
 			}
 			
-			«className» temp«className»=c.getData<«className»>();
+			::automotive::vehicle::«className» temp«className»=c.getData<::automotive::vehicle::«className»>();
 			odcore::reflection::MessageFromVisitableVisitor mfvv;
 			temp«className».accept(mfvv);
 			odcore::reflection::Message msg=mfvv.getMessage();
@@ -741,6 +741,7 @@ namespace canmapping {
 			return «gcmPrefix+id»;
 	   		«ENDFOR»
 		«ELSE»
+			(void)c;
 			// Return an empty GenericCANMessage
 			cerr<<"Warning: Mapping '«className»' is empty."<<endl;
 			::automotive::GenericCANMessage gcm;
@@ -897,8 +898,8 @@ namespace canmapping {
 			odcore::reflection::MessageToVisitableVisitor mtvv(message);
 			
 			// 7. Create an instance of the named high-level message.
-            «var String HLName= (Character.toLowerCase(mapping.mappingName.toString.charAt(0)) + mapping.mappingName.toString.substring(1)).replaceAll("\\.", "_")»
-        «mapping.mappingName.toString.replaceAll("\\.", "::")» «HLName»;
+            «var String HLName=mapping.mappingName.toFirstLower.replaceAll("\\.", "_")»
+        ::automotive::vehicle::«/*mapping.mappingName.toString.replaceAll("\\.", "::")*/className» «HLName»;
 	
 			// 8. Letting the high-level message accept the visitor to enter the values.
         «HLName».accept(mtvv);
@@ -909,7 +910,7 @@ namespace canmapping {
 	«ELSE»
 	(void) gcm;
     // Return an empty container
-	cerr<<"Warning: Mapping '«className»' is empty."<<endl;
+	std::cerr<<"Warning: Mapping '«className»' is empty."<<endl;
 	«ENDIF»
 		return c;
 	}
@@ -974,8 +975,10 @@ Signal "«signalName»" could not be found. It will be ignored.
 #include "generated/«mapping.mappingName.toString.replaceAll('\\.','/')».h"
 
 #include <memory>
+#include <iostream>
 #include <opendavinci/odcore/reflection/Message.h>
 #include <opendavinci/odcore/reflection/MessageToVisitableVisitor.h>
+#include <opendavinci/odcore/reflection/MessageFromVisitableVisitor.h>
 #include <opendavinci/odcore/base/SerializationFactory.h>
 #include <opendavinci/odcore/base/Serializer.h>
 #include <opendavinci/odcore/base/Deserializer.h>
