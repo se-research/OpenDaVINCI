@@ -743,7 +743,7 @@ namespace canmapping {
 			«FOR id:canIDs»
 			// set payload of GenericCANMessage and return
 			«gcmPrefix+id».setData(«gcmPayloadPrefix+id»);
-			gcm.setLength(static_cast<uint8_t>(«Math.ceil(payloadLengthInBits/8.0)»));
+			«gcmPrefix+id».setLength(static_cast<uint8_t>(«Math.ceil(payloadLengthInBits/8.0)»));
 			return «gcmPrefix+id»;
 	   		«ENDFOR»
 		«ELSE»
