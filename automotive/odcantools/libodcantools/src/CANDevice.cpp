@@ -105,7 +105,7 @@ namespace automotive {
                     uint64_t data = 0;
                     for (uint8_t i = 0; i < message.Msg.LEN; i++) {
                         CLOG1 << static_cast<uint32_t>(message.Msg.DATA[i]) << " ";
-                        data |= (message.Msg.DATA[i] << ((length-1-i)*8));
+                        data |= (message.Msg.DATA[i] << ((message.Msg.LEN-1-i)*8));
                     }
                     CLOG1 << endl;
                     gcm.setData(data);
