@@ -71,7 +71,7 @@ namespace automotive {
                 msg.LEN = LENGTH;
                 uint64_t data = gcm.getData();
                 for (uint8_t i = 0; i < LENGTH; i++) {
-                    msg.DATA[i] = (data & 0xFF);
+                    msg.DATA[LENGTH-1-i] = (data & 0xFF);
                     data = data >> 8;
                 }
                 int32_t errorCode = CAN_Write(m_handle, &msg);
@@ -105,7 +105,7 @@ namespace automotive {
                     uint64_t data = 0;
                     for (uint8_t i = 0; i < message.Msg.LEN; i++) {
                         CLOG1 << static_cast<uint32_t>(message.Msg.DATA[i]) << " ";
-                        data |= (message.Msg.DATA[i] << (i*8));
+                        data |= (message.Msg.DATA[i] << ((length-1-i)*8));
                     }
                     CLOG1 << endl;
                     gcm.setData(data);
