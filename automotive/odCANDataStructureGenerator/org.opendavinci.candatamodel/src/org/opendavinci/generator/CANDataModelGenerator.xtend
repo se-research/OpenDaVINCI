@@ -647,6 +647,7 @@ namespace canmapping {
     	«var String varName»
     	«var String finalPrefix="final"»
 		«var String finalVarName»
+		«var int payloadLengthInBits=0»
 
 			bool found, extracted, abort=false;
 		
@@ -655,6 +656,7 @@ namespace canmapping {
 				// something went wrong
 				::automotive::GenericCANMessage gcm;
 				gcm.setData(0x0);
+				gcm.setLength(0);
 				return gcm;
 			}
 			
@@ -685,7 +687,6 @@ namespace canmapping {
 					
 					// length      : «canSignal.m_length»
 					«var String transformedType»
-					
 					«IF Integer.parseInt(canSignal.m_length) <= 8»
 						«{transformedType="uint8_t";""}»
 					«ELSEIF Integer.parseInt(canSignal.m_length) <= 16»
@@ -695,8 +696,11 @@ namespace canmapping {
 					«ELSEIF Integer.parseInt(canSignal.m_length) <= 64»
 						«{transformedType="uint64_t";""}»
 					«ENDIF»
-					// the value will be casted to «transformedType»
-					«{finalVarName=finalPrefix+varName;""}»
+					
+					// the value will be casted to «transformedType»«{
+						finalVarName=finalPrefix+varName;
+						payloadLengthInBits+=Integer.parseInt(canSignal.m_length);""
+					}»
 					«transformedType» «finalVarName»=static_cast<«transformedType»>(«transformedVarName»);
 					
 					«IF canSignal.m_endian.compareTo("big")==0»
@@ -732,19 +736,23 @@ namespace canmapping {
 				// discard and return
 				::automotive::GenericCANMessage gcm;
 				gcm.setData(0x0);
+				gcm.setLength(0);
 				return gcm;
 			}
 			
 			«FOR id:canIDs»
 			// set payload of GenericCANMessage and return
 			«gcmPrefix+id».setData(«gcmPayloadPrefix+id»);
+			gcm.setLength(static_cast<uint8_t>(«Math.ceil(payloadLengthInBits/8.0)»));
 			return «gcmPrefix+id»;
 	   		«ENDFOR»
 		«ELSE»
+
 			(void)c;
 			// Return an empty GenericCANMessage
 			cerr<<"Warning: Mapping '«className»' is empty."<<endl;
 			::automotive::GenericCANMessage gcm;
+			gcm.setLength(0);
 			gcm.setData(0x0);
 			return gcm;
 		«ENDIF»
@@ -826,7 +834,7 @@ namespace canmapping {
 				// reset left-hand side of bit field
 				«tempVarName»=«tempVarName» << «Integer.parseInt(canSignals.get(signalName).m_startBit)»;
 				// reset right-hand side of bit field
-				«tempVarName»=«tempVarName» >> (gcm.getLength()-«canSignals.get(signalName).m_length»);
+				«tempVarName»=«tempVarName» >> (gcm.getLength()*8-«canSignals.get(signalName).m_length»);
 				
 				«IF Integer.parseInt(canSignals.get(signalName).m_length)>=8»
 					«IF canSignals.get(signalName).m_endian.compareTo("big")==0»
@@ -871,7 +879,7 @@ namespace canmapping {
 				// 4.4 Create a field for a generic message.
 				odcore::reflection::Field<double> *f = new odcore::reflection::Field<double>(«memberVarName»);
 				f->setLongFieldIdentifier(0); // The identifiers specified here must match with the ones defined in the .odvd file!
-				f->setShortFieldIdentifier(static_cast<uint8_t>(«currentSignalInMapping.signalIdentifier»)); // The identifiers specified here must match with the ones defined in the .odvd file!
+				f->setShortFieldIdentifier(«currentSignalInMapping.signalIdentifier»); // The identifiers specified here must match with the ones defined in the .odvd file!
 				f->setLongFieldName("«canSignals.get(signalName).m_FQDN»");
 				f->setShortFieldName("«{var String[] res; res=canSignals.get(signalName).m_FQDN.split("\\."); res.get(res.size-1)}»");
 				f->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
