@@ -826,7 +826,7 @@ namespace canmapping {
 				// reset left-hand side of bit field
 				«tempVarName»=«tempVarName» << «Integer.parseInt(canSignals.get(signalName).m_startBit)»;
 				// reset right-hand side of bit field
-				«tempVarName»=«tempVarName» >> (gcm.getLength()-«canSignals.get(signalName).m_length»);
+				«tempVarName»=«tempVarName» >> (gcm.getLength()*8-«canSignals.get(signalName).m_length»);
 				
 				«IF Integer.parseInt(canSignals.get(signalName).m_length)>=8»
 					«IF canSignals.get(signalName).m_endian.compareTo("big")==0»
@@ -871,7 +871,7 @@ namespace canmapping {
 				// 4.4 Create a field for a generic message.
 				odcore::reflection::Field<double> *f = new odcore::reflection::Field<double>(«memberVarName»);
 				f->setLongFieldIdentifier(0); // The identifiers specified here must match with the ones defined in the .odvd file!
-				f->setShortFieldIdentifier(static_cast<uint8_t>(«currentSignalInMapping.signalIdentifier»)); // The identifiers specified here must match with the ones defined in the .odvd file!
+				f->setShortFieldIdentifier(«currentSignalInMapping.signalIdentifier»); // The identifiers specified here must match with the ones defined in the .odvd file!
 				f->setLongFieldName("«canSignals.get(signalName).m_FQDN»");
 				f->setShortFieldName("«{var String[] res; res=canSignals.get(signalName).m_FQDN.split("\\."); res.get(res.size-1)}»");
 				f->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
