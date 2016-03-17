@@ -1207,8 +1207,6 @@ class CANBridgeTest : public CxxTest::TestSuite {
 				canmapping::«mapping.mappingName.toString.replaceAll("\\.", "::")» «testName»;
 				::automotive::GenericCANMessage GCM;
 				GCM=«testName».encode(c);
-				std::cout<<"GCM DATA: "<<GCM.getData()<<std::endl;
-				std::cout<<"CAN DATA: "<<static_cast<uint64_t>(«test.CANMessageDescriptions.get(0).payload»)<<std::endl;
 				TS_ASSERT_EQUALS(GCM.getData(),static_cast<uint64_t>(«test.CANMessageDescriptions.get(0).payload»));
 
         		«ELSE»
