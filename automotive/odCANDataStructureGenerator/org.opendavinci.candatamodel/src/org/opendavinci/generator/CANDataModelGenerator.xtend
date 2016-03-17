@@ -651,7 +651,7 @@ namespace canmapping {
 
 			bool found, extracted, abort=false;
 		
-			if(c.getDataType() != ::«mapping.mappingName.replaceAll("\\.","::")::ID())
+			if(c.getDataType() != ::«mapping.mappingName.replaceAll("\\.","::")»::ID())
 			{
 				// something went wrong
 				::automotive::GenericCANMessage gcm;
