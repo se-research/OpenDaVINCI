@@ -81,7 +81,6 @@ namespace automotive {
                 fstream lidarStream;
                 std::shared_ptr<SharedMemory> VelodyneSharedMemory;
                 VelodyneListener m_vListener;
-                //Container imageFrame;
         };
 
 } // automotive

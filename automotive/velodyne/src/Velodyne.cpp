@@ -54,7 +54,7 @@ namespace automotive {
         VelodyneDecoder::VelodyneDecoder(const int32_t &argc, char **argv) :
             TimeTriggeredConferenceClientModule(argc, argv, "VelodyneDecoder"),
             VelodyneSharedMemory(SharedMemoryFactory::createSharedMemory(NAME, SIZE)),
-            m_vListener(VelodyneSharedMemory){}
+            m_vListener(VelodyneSharedMemory,getConference()){}
 
         VelodyneDecoder::~VelodyneDecoder() {}
 

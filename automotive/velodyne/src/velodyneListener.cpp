@@ -96,15 +96,16 @@ namespace automotive {
         using namespace automotive;
         using namespace odcore::wrapper;
 
-        VelodyneListener::VelodyneListener(std::shared_ptr<SharedMemory> m):
+        VelodyneListener::VelodyneListener(std::shared_ptr<SharedMemory> m,
+        odcore::io::conference::ContainerConference& c):
         //VelodyneListener::VelodyneListener():
             packetNr(0),
             pointIndex(0),
             frameIndex(0),
             previousAzimuth(0.00),
             upperBlock(true),
-            VelodyneSharedMemory(m)
-            {}
+            VelodyneSharedMemory(m),
+            velodyneFrame(c){}
 
         VelodyneListener::~VelodyneListener() {}
         
@@ -172,9 +173,9 @@ namespace automotive {
                             spc.setComponentDataType(SharedPointCloud::FLOAT_T); // Data type per component.
                             spc.setUserInfo(SharedPointCloud::XYZ_INTENSITY);
                             
-                            //Container imageFrame;
+                            Container imageFrame(spc);
                             //imageFrame=Container(spc);
-                            //getConference().send(imageFrame);
+                            velodyneFrame.send(imageFrame);
                             
                             /*if(frameIndex==1){
                                 float *verifyData = static_cast<float*>(VelodyneSharedMemory->getSharedMemory());

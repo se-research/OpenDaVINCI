@@ -57,7 +57,7 @@ namespace automotive {
                 VelodyneListener& operator=(const VelodyneListener&);
         
             public:
-                VelodyneListener(std::shared_ptr<SharedMemory>);
+                VelodyneListener(std::shared_ptr<SharedMemory>,odcore::io::conference::ContainerConference&);
                 //VelodyneListener();
                 
                 virtual ~VelodyneListener();
@@ -72,6 +72,7 @@ namespace automotive {
                 bool upperBlock;
                 float distance[32];
                 std::shared_ptr<SharedMemory> VelodyneSharedMemory;
+                odcore::io::conference::ContainerConference& velodyneFrame;
 
         };
 
