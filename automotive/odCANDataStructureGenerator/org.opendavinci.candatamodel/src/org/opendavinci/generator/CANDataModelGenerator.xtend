@@ -402,6 +402,7 @@ namespace canmapping {
 #define «mapping.mappingName.toString.toUpperCase.replaceAll("\\.", "_")»_H_
 
 #include <memory>
+#include <cmath>
 #include <vector>
 #include <opendavinci/odcore/data/Container.h>
 #include <opendavinci/odcore/base/Visitable.h>
@@ -675,13 +676,11 @@ namespace canmapping {
 				double «rawVarName» = msg.getValueFromScalarField<double>(/*longid*/0,/*shortid*/«currentSignalInMapping.signalIdentifier», found, extracted);
 				
 				if(found && extracted){
-					«var String transformedVarName="transformed"+varName»
-					
 					if(«rawVarName»<«canSignal.m_rangeStart»)
 						«rawVarName»=«canSignal.m_rangeStart»;
 					if(«rawVarName»>«canSignal.m_rangeEnd»)
 						«rawVarName»=«canSignal.m_rangeEnd»;
-					
+					«var String transformedVarName="transformed"+varName»
 					double «transformedVarName»=(«rawVarName» - «canSignal.m_add») / (double)«canSignal.m_multiplyBy»;
 					
 					// length      : «canSignal.m_length»
@@ -700,19 +699,19 @@ namespace canmapping {
 						finalVarName=finalPrefix+varName;
 						payloadLengthInBits+=Integer.parseInt(canSignal.m_length);""
 					}»
-					«transformedType» «finalVarName»=static_cast<«transformedType»>(«transformedVarName»);
+					«transformedType» «finalVarName»=static_cast<«transformedType»>(round(«transformedVarName»)); // avoid truncation errors
 					
-					«IF canSignal.m_endian.compareTo("big")==0»
 					// endian      : «canSignal.m_endian»
+					«IF canSignal.m_endian.compareTo("big")==0»
 					«IF Integer.parseInt(canSignal.m_length) > 8 && Integer.parseInt(canSignal.m_length) <= 16»
 						«finalVarName»=htons(final«varName»);
 					«ELSEIF Integer.parseInt(canSignal.m_length) <= 32»
 						«finalVarName»=htonl(final«varName»);
 					«ELSEIF Integer.parseInt(canSignal.m_length) <= 64»
 						«finalVarName»=htonll(final«varName»);
+					«ENDIF»
 					«ELSE»
 						// 4.2 Endianness doesn't need fixing, skipping this step.
-					«ENDIF»
 					«ENDIF»
 					
 					// startBit    : «canSignal.m_startBit»
