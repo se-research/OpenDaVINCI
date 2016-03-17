@@ -33,8 +33,8 @@
 #include "opendlv/threeD/RenderingConfiguration.h"
 #include "plugins/AbstractGLWidget.h"
 #include "plugins/environmentviewer/SelectableNodeDescriptorTreeListener.h"
-#include "opendavinci/odcore/io/protocol/PCAPProtocol.h"
-#include <fstream>
+//#include "opendavinci/odcore/io/protocol/PCAPProtocol.h"
+//#include <fstream>
 
 class QWidget;
 namespace cockpit { namespace plugins { class PlugIn; } }
@@ -129,7 +129,7 @@ class SelectableNodeDescriptor;
 
                     odcore::base::TreeNode<SelectableNodeDescriptor> *m_selectableNodeDescriptorTree;
                     SelectableNodeDescriptorTreeListener &m_selectableNodeDescriptorTreeListener;
-                    odcore::io::protocol::PCAPProtocol m_pcap;
+                    /*odcore::io::protocol::PCAPProtocol m_pcap;
                     bool m_readFlag;
                     fstream lidlarStream;
                     double distance[32];
@@ -137,7 +137,8 @@ class SelectableNodeDescriptor;
                     bool upperBlock;
                     vector<double> xData;
                     vector<double> yData;
-                    vector<double> zData;
+                    vector<double> zData;*/
+                    long frameIndex;
 
                     /**
                      * This method actually modifies the rendering configuration.
