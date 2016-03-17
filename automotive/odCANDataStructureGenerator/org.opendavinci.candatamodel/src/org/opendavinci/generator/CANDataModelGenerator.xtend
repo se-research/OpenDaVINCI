@@ -651,7 +651,7 @@ namespace canmapping {
 
 			bool found, extracted, abort=false;
 		
-			if(c.getDataType() != «className»::ID())
+			if(c.getDataType() != ::«mapping.mappingName.replaceAll("\\.","::")::ID())
 			{
 				// something went wrong
 				::automotive::GenericCANMessage gcm;
@@ -676,14 +676,13 @@ namespace canmapping {
 				
 				if(found && extracted){
 					«var String transformedVarName="transformed"+varName»
+					
+					if(«rawVarName»<«canSignal.m_rangeStart»)
+						«rawVarName»=«canSignal.m_rangeStart»;
+					if(«rawVarName»>«canSignal.m_rangeEnd»)
+						«rawVarName»=«canSignal.m_rangeEnd»;
+					
 					double «transformedVarName»=(«rawVarName» - «canSignal.m_add») / (double)«canSignal.m_multiplyBy»;
-					
-					//CANID       : «canSignal.m_CANID»
-					
-					if(«transformedVarName»<«canSignal.m_rangeStart»)
-						«transformedVarName»=«canSignal.m_rangeStart»;
-					if(«transformedVarName»>«canSignal.m_rangeEnd»)
-						«transformedVarName»=«canSignal.m_rangeEnd»;
 					
 					// length      : «canSignal.m_length»
 					«var String transformedType»
@@ -742,6 +741,9 @@ namespace canmapping {
 			
 			«FOR id:canIDs»
 			// set payload of GenericCANMessage and return
+			«IF (8-Math.ceil(payloadLengthInBits/8.0))>0»
+			«gcmPayloadPrefix+id»=«gcmPayloadPrefix+id»>>static_cast<uint8_t>(8-«Math.ceil(payloadLengthInBits/8.0)»);
+			«ENDIF»
 			«gcmPrefix+id».setData(«gcmPayloadPrefix+id»);
 			«gcmPrefix+id».setLength(static_cast<uint8_t>(«Math.ceil(payloadLengthInBits/8.0)»));
 			return «gcmPrefix+id»;
@@ -1066,7 +1068,7 @@ using namespace std;
  */
 class CANBridgeTest : public CxxTest::TestSuite {
     public:
-        void testSample() {
+        void testDecode() {
         	
         	«var String init=""»
         	«var int fieldsNum=mapping.mappings.size»
@@ -1132,7 +1134,6 @@ class CANBridgeTest : public CxxTest::TestSuite {
 			«ENDFOR»
 			
         	«var ArrayList<String> asserts=new ArrayList<String>»
-        	«var ArrayList<String> gets=new ArrayList<String>»
 			«{
 			for(var int index=0;index<mapping.mappings.size;index++){
 				var String capitalizedName=""
@@ -1147,14 +1148,23 @@ class CANBridgeTest : public CxxTest::TestSuite {
 			«assertions»
 			«ENDFOR»
 			
-			«IF !(mapping.unordered!=null && mapping.unordered.compareTo("unordered")==0)»
+			«/*IF !(mapping.unordered!=null && mapping.unordered.compareTo("unordered")==0)»
 			
-			«{testName="test_"+(testIndex++);""}»
+			«{
+				var int i=0;
+				var String text="";
+				for(canid:canIDs) {
+					text+="::automotive::GenericCANMessage GCMEmpty_"+i+";"+'\n'+"GCMEmpty.setIdentifier("+canid+");"+'\n'+"GCMEmpty.setLength(8);"+'\n'+"GCMEmpty.setData(0x0);"+'\n'
+					i++;
+				}
+				text
+			}»
+			
 			canmapping::«mapping.mappingName.toString.replaceAll("\\.", "::")» «testName»;
 			«var ArrayList<String> decodes=new ArrayList<String>»
         	«var ArrayList<String> orderAsserts=new ArrayList<String>»
 			«{
-				for(var int i=canIDs.length-1;i>=0;i--)
+				for(canid:canIDs)
 					decodes+=testName+".decode("+GCMs.get(canIDs.get(i))+");"
 				for(var int index=0;index<mapping.mappings.size;index++){
 				var String capitalizedName=""
@@ -1171,12 +1181,12 @@ class CANBridgeTest : public CxxTest::TestSuite {
 			«FOR assertions:orderAsserts»
 			«assertions»
 			«ENDFOR»
-			«ENDIF»
+			«ENDIF*/»
 
     		«ELSE»
     		// not enough CAN messages were provided
     		«ENDIF»
-            	«ENDIF»
+            «ENDIF»
             «ENDFOR»
         }
 };
