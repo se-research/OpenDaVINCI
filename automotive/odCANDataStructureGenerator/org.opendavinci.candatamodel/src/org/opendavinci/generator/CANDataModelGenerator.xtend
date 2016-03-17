@@ -742,7 +742,7 @@ namespace canmapping {
 			«FOR id:canIDs»
 			// set payload of GenericCANMessage and return
 			«IF (8-Math.ceil(payloadLengthInBits/8.0))>0»
-			«gcmPayloadPrefix+id»=«gcmPayloadPrefix+id»>>static_cast<uint8_t>(8-«Math.ceil(payloadLengthInBits/8.0)»);
+			«gcmPayloadPrefix+id»=«gcmPayloadPrefix+id»>>static_cast<uint8_t>((8-«Math.ceil(payloadLengthInBits/8.0)»)*8);
 			«ENDIF»
 			«gcmPrefix+id».setData(«gcmPayloadPrefix+id»);
 			«gcmPrefix+id».setLength(static_cast<uint8_t>(«Math.ceil(payloadLengthInBits/8.0)»));
