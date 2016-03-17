@@ -1049,17 +1049,22 @@ Signal "«signalName»" could not be found. It will be ignored.
 «ENDIF»
 «ENDFOR»*/
 
-#ifndef CANMAPPINGTESTSUITE_H_
-#define CANMAPPINGTESTSUITE_H_
+#ifndef CANMAPPINGTESTSUITE_«mapping.mappingName.split('\\.').get(mapping.mappingName.split('\\.').size-1).toUpperCase»_H_
+#define CANMAPPINGTESTSUITE_«mapping.mappingName.split('\\.').get(mapping.mappingName.split('\\.').size-1).toUpperCase»_H_
 
 #include "GeneratedHeaders_«generatedHeadersFile».h"
+#include "generated/«mapping.mappingName.toString.replaceAll('\\.','/')».h"
 
 «FOR odvd : odvdIncludedFiles»
 «odvd»
 «ENDFOR»
-
 #include "cxxtest/TestSuite.h"
 #include <sstream>
+#include <iostream>
+#include "opendavinci/odcore/data/Container.h"
+#include <opendavinci/odcore/reflection/MessageToVisitableVisitor.h>
+#include <opendavinci/odcore/reflection/Message.h>
+#include <opendavinci/odcore/reflection/Field.h>
 
 using namespace std;
 
@@ -1068,7 +1073,7 @@ using namespace std;
  */
 class CANBridgeTest : public CxxTest::TestSuite {
     public:
-        void testDecode() {
+        void testSer_Deser() {
         	
         	«var String init=""»
         	«var int fieldsNum=mapping.mappings.size»
@@ -1107,91 +1112,115 @@ class CANBridgeTest : public CxxTest::TestSuite {
         	//cout<<«HLName»_2.toString();
         	
             TS_ASSERT(ss1.str().compare(ss2.str())==0);
-«var int testIndex=0»
-«FOR test : canSignalTesting»
-«IF test.mappingName.toString.compareTo(mapping.mappingName.toString)==0»
-«var String testName="test_"+(testIndex++)»
-    		«var HashMap<String,String> GCMs=new HashMap<String,String>»
-			// Mapping name «test.mappingName»
-			«var int gcmIndex=0»
-			«FOR description : test.CANMessageDescriptions»
-			// id «description.canIdentifier»
-			// payload «description.payload» : length «(description.payload.length-2)/2»
-			«IF description.payload.length==18»
-			«var String gcmName="gcm_"+(gcmIndex++)»
-			::automotive::GenericCANMessage «gcmName»;
-			«gcmName».setIdentifier(«description.canIdentifier»);
-			«gcmName».setLength(«(description.payload.length-2)/2»);
-			«gcmName».setData(«description.payload»);
-			«GCMs.put(description.canIdentifier,gcmName)»
-			«ENDIF»
-    		«ENDFOR»
-    		
-    		canmapping::«mapping.mappingName.toString.replaceAll("\\.", "::")» «testName»;
-    		«IF canIDs.length==GCMs.size»
-			«FOR canid:canIDs»
-			«testName».decode(«GCMs.get(canid)»);
-			«ENDFOR»
-			
-        	«var ArrayList<String> asserts=new ArrayList<String>»
-			«{
-			for(var int index=0;index<mapping.mappings.size;index++){
-				var String capitalizedName=""
-				var String[] chunks=mapping.mappings.get(index).cansignalname.split('\\.')
-				for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
-				for(result:test.results)
-					if(result.signalIdentifier.compareTo(mapping.mappings.get(index).signalIdentifier)==0)
-						asserts+="TS_ASSERT_DELTA("+testName+".get"+capitalizedName+"() , "+result.expectedResult+", 1e-5);"+'\n'
-			}
-			}»
-			«FOR assertions:asserts»
-			«assertions»
-			«ENDFOR»
-			
-			«/*IF !(mapping.unordered!=null && mapping.unordered.compareTo("unordered")==0)»
-			
-			«{
-				var int i=0;
-				var String text="";
-				for(canid:canIDs) {
-					text+="::automotive::GenericCANMessage GCMEmpty_"+i+";"+'\n'+"GCMEmpty.setIdentifier("+canid+");"+'\n'+"GCMEmpty.setLength(8);"+'\n'+"GCMEmpty.setData(0x0);"+'\n'
-					i++;
-				}
-				text
-			}»
-			
-			canmapping::«mapping.mappingName.toString.replaceAll("\\.", "::")» «testName»;
-			«var ArrayList<String> decodes=new ArrayList<String>»
-        	«var ArrayList<String> orderAsserts=new ArrayList<String>»
-			«{
-				for(canid:canIDs)
-					decodes+=testName+".decode("+GCMs.get(canIDs.get(i))+");"
-				for(var int index=0;index<mapping.mappings.size;index++){
-				var String capitalizedName=""
-				var String[] chunks=mapping.mappings.get(index).cansignalname.split('\\.')
-				for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
-				for(result:test.results)
-					if(result.signalIdentifier.compareTo(mapping.mappings.get(index).signalIdentifier)==0)
-						orderAsserts+="TS_ASSERT_DELTA("+testName+".get"+capitalizedName+"() , 0.0, 1e-5);"+'\n'
-			}
-			}»
-			«FOR decode:decodes»
-			«decode»
-			«ENDFOR»
-			«FOR assertions:orderAsserts»
-			«assertions»
-			«ENDFOR»
-			«ENDIF*/»
+        }
 
-    		«ELSE»
-    		// not enough CAN messages were provided
-    		«ENDIF»
+	void testDecode() {
+		«var int testIndex=0»
+		«FOR test : canSignalTesting»
+			«IF test.mappingName.toString.compareTo(mapping.mappingName.toString)==0»
+				«var String testName="test_"+(testIndex++)»
+				«var HashMap<String,String> GCMs=new HashMap<String,String>»
+				// Mapping name «test.mappingName»
+				«var int gcmIndex=0»
+				«FOR description : test.CANMessageDescriptions»
+				// id «description.canIdentifier»
+				// payload «description.payload» : length «(description.payload.length-2)/2»
+					«IF description.payload.length==18»
+						«var String gcmName="gcm_"+(gcmIndex++)»
+						::automotive::GenericCANMessage «gcmName»;
+						«gcmName».setIdentifier(«description.canIdentifier»);
+						«gcmName».setLength(«(description.payload.length-2)/2»);
+						«gcmName».setData(«description.payload»);
+						«GCMs.put(description.canIdentifier,gcmName)»
+					«ENDIF»
+				«ENDFOR»
+				
+				canmapping::«mapping.mappingName.toString.replaceAll("\\.", "::")» «testName»;
+				«IF canIDs.length==GCMs.size»
+					«FOR canid:canIDs»
+					«testName».decode(«GCMs.get(canid)»);
+					«ENDFOR»
+					
+			    	«var ArrayList<String> asserts=new ArrayList<String>»
+					«{
+						for(var int index=0;index<mapping.mappings.size;index++){
+							var String capitalizedName=""
+							var String[] chunks=mapping.mappings.get(index).cansignalname.split('\\.')
+							for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
+							for(result:test.results)
+								if(result.signalIdentifier.compareTo(mapping.mappings.get(index).signalIdentifier)==0)
+									asserts+="TS_ASSERT_DELTA("+testName+".get"+capitalizedName+"() , "+result.expectedResult+", 1e-5);"+'\n'
+						}
+					}»
+					«FOR assertions:asserts»
+					«assertions»
+					«ENDFOR»
+				«ELSE»
+				// not enough CAN messages were provided
+				«ENDIF»
+		    «ENDIF»
+		«ENDFOR»
+        }
+        
+«{testIndex=0;""}»
+    void testEncode() {
+        «FOR test : canSignalTesting»
+        	«IF test.mappingName.toString.compareTo(mapping.mappingName.toString)==0»
+        		«var String testName="test_"+(testIndex++)»
+        		// Mapping name «test.mappingName»
+
+        		«IF test.CANMessageDescriptions.size==1 && test.CANMessageDescriptions.get(0).payload.length==18»
+
+				// id «test.CANMessageDescriptions.get(0).canIdentifier»
+				// payload «test.CANMessageDescriptions.get(0).payload» : length «(test.CANMessageDescriptions.get(0).payload.length-2)/2»
+
+				odcore::reflection::Message message;
+
+    	    	«var ArrayList<String> assignments=new ArrayList<String>»
+    			«{
+    				for(var int index=0;index<mapping.mappings.size;index++){
+    					//var String capitalizedName=""
+    					//var String[] chunks=mapping.mappings.get(index).cansignalname.split('\\.')
+    					//for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
+    					var int fIndex=0;
+    					for(result:test.results){
+    						fIndex++
+    						if(result.signalIdentifier.compareTo(mapping.mappings.get(index).signalIdentifier)==0){
+								assignments+="odcore::reflection::Field<double> *f_"+fIndex+" = new odcore::reflection::Field<double>("+result.expectedResult+");"+'\n'+
+												"f_"+fIndex+"->setLongFieldIdentifier(0);"+
+												"f_"+fIndex+"->setShortFieldIdentifier("+result.signalIdentifier+");"+'\n'+
+												"f_"+fIndex+"->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);"+'\n'+
+												"message.addField(std::shared_ptr<odcore::data::reflection::AbstractField>(f_"+fIndex+"));"
+    							//assignments+="HLClass.set"+chunks.get(chunks.size-1).toFirstUpper+"("+result.expectedResult+");"+'\n'
+    						}
+    					}
+    				}
+    			}»
+
+    			«FOR assignment:assignments»
+    			«assignment»
+    			«ENDFOR»
+				odcore::reflection::MessageToVisitableVisitor mtvv(message);
+				::«mapping.mappingName.toString.replaceAll("\\.", "::")» HLClass;
+				HLClass.accept(mtvv);
+				odcore::data::Container c(HLClass);
+				
+				canmapping::«mapping.mappingName.toString.replaceAll("\\.", "::")» «testName»;
+				::automotive::GenericCANMessage GCM;
+				GCM=«testName».encode(c);
+				std::cout<<"GCM DATA: "<<GCM.getData()<<std::endl;
+				std::cout<<"CAN DATA: "<<static_cast<uint64_t>(«test.CANMessageDescriptions.get(0).payload»)<<std::endl;
+				TS_ASSERT_EQUALS(GCM.getData(),static_cast<uint64_t>(«test.CANMessageDescriptions.get(0).payload»));
+
+        		«ELSE»
+        		std::cerr<<"Warning: Multiple CAN messages for one mapping are not supported."<<std::endl;
+	            «ENDIF»
             «ENDIF»
-            «ENDFOR»
+        «ENDFOR»
         }
 };
 
-#endif /*CANMAPPINGTESTSUITE_H_*/
+#endif /*CANMAPPINGTESTSUITE_«mapping.mappingName.split('\\.').get(mapping.mappingName.split('\\.').size-1).toUpperCase»_H_*/
 '''
 
 /* This method generates the UPPAAL file content when the order of expected messages does not matter. */
