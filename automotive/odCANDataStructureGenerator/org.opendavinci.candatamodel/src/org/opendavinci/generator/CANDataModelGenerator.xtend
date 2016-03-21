@@ -1153,16 +1153,12 @@ class CANBridgeTest : public CxxTest::TestSuite {
 					«assertions»
 					«ENDFOR»
 				«ELSE»
-				// canids.length «canIDs.length» ; gcm.size «GCMs.size»
-				«FOR g:GCMs.entrySet»
-				// «g.key» : «g.value»
-				«ENDFOR»
-				// not enough CAN messages were provided
+					// not enough CAN messages were provided
 				«ENDIF»
 		    «ENDIF»
 		«ENDFOR»
         }
-        
+
 «{testIndex=0;""}»
     void testEncode() {
         «FOR test : canSignalTesting»
@@ -1170,13 +1166,13 @@ class CANBridgeTest : public CxxTest::TestSuite {
         		«var String testName="test_"+(testIndex++)»
         		// Mapping name «test.mappingName»
 
-        		«IF test.CANMessageDescriptions.size==1 && test.CANMessageDescriptions.get(0).payload.length==18»
+        		«IF test.CANMessageDescriptions.size==1»
 
 				// id «test.CANMessageDescriptions.get(0).canIdentifier»
 				// payload «test.CANMessageDescriptions.get(0).payload» : length «(test.CANMessageDescriptions.get(0).payload.length-2)/2»
 
 				odcore::reflection::Message message;
-
+	
     	    	«var ArrayList<String> assignments=new ArrayList<String>»
     			«{
     				for(var int index=0;index<mapping.mappings.size;index++){
@@ -1191,16 +1187,17 @@ class CANBridgeTest : public CxxTest::TestSuite {
 												"f_"+fIndex+"->setLongFieldIdentifier(0);"+
 												"f_"+fIndex+"->setShortFieldIdentifier("+result.signalIdentifier+");"+'\n'+
 												"f_"+fIndex+"->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);"+'\n'+
-												"message.addField(std::shared_ptr<odcore::data::reflection::AbstractField>(f_"+fIndex+"));"
+												"message.addField(std::shared_ptr<odcore::data::reflection::AbstractField>(f_"+fIndex+"));"+'\n'
     							//assignments+="HLClass.set"+chunks.get(chunks.size-1).toFirstUpper+"("+result.expectedResult+");"+'\n'
     						}
     					}
     				}
     			}»
 
-    			«FOR assignment:assignments»
-    			«assignment»
-    			«ENDFOR»
+			«FOR assignment:assignments»
+			«assignment»
+			«ENDFOR»
+
 				odcore::reflection::MessageToVisitableVisitor mtvv(message);
 				::«mapping.mappingName.toString.replaceAll("\\.", "::")» HLClass;
 				HLClass.accept(mtvv);
@@ -1212,11 +1209,11 @@ class CANBridgeTest : public CxxTest::TestSuite {
 				TS_ASSERT_EQUALS(GCM.getData(),static_cast<uint64_t>(«test.CANMessageDescriptions.get(0).payload»));
 
         		«ELSE»
-        		std::cerr<<"Warning: Multiple CAN messages for one mapping are not supported."<<std::endl;
+        			std::cerr<<"Warning: Multiple CAN messages for one mapping are not supported."<<std::endl;
 	            «ENDIF»
             «ENDIF»
         «ENDFOR»
-        }
+    }
 };
 
 #endif /*CANMAPPINGTESTSUITE_«mapping.mappingName.split('\\.').get(mapping.mappingName.split('\\.').size-1).toUpperCase»_H_*/
