@@ -1115,7 +1115,7 @@ class CANBridgeTest : public CxxTest::TestSuite {
 
 	void testDecode() {
 		«var int testIndex=0»
-		«FOR test : canSignalTesting»
+		«FOR test : canSignalTesting /* this loops over all the provided test suites*/»
 			«IF test.mappingName.toString.compareTo(mapping.mappingName.toString)==0»
 				«var String testName="test_"+(testIndex++)»
 				«var HashMap<String,String> GCMs=new HashMap<String,String>»
@@ -1124,14 +1124,12 @@ class CANBridgeTest : public CxxTest::TestSuite {
 				«FOR description : test.CANMessageDescriptions»
 				// id «description.canIdentifier»
 				// payload «description.payload» : length «(description.payload.length-2)/2»
-					«IF description.payload.length==18»
-						«var String gcmName="gcm_"+(gcmIndex++)»
-						::automotive::GenericCANMessage «gcmName»;
-						«gcmName».setIdentifier(«description.canIdentifier»);
-						«gcmName».setLength(«(description.payload.length-2)/2»);
-						«gcmName».setData(«description.payload»);
-						«GCMs.put(description.canIdentifier,gcmName)»
-					«ENDIF»
+					«var String gcmName="gcm_"+(gcmIndex++)»
+					::automotive::GenericCANMessage «gcmName»;
+					«gcmName».setIdentifier(«description.canIdentifier»);
+					«gcmName».setLength(«(description.payload.length-2)/2»);
+					«gcmName».setData(«description.payload»);
+					«GCMs.put(description.canIdentifier,gcmName)»
 				«ENDFOR»
 				
 				canmapping::«mapping.mappingName.toString.replaceAll("\\.", "::")» «testName»;
@@ -1155,6 +1153,10 @@ class CANBridgeTest : public CxxTest::TestSuite {
 					«assertions»
 					«ENDFOR»
 				«ELSE»
+				// canids.length «canIDs.length» ; gcm.size «GCMs.size»
+				«FOR g:GCMs.entrySet»
+				// «g.key» : «g.value»
+				«ENDFOR»
 				// not enough CAN messages were provided
 				«ENDIF»
 		    «ENDIF»
