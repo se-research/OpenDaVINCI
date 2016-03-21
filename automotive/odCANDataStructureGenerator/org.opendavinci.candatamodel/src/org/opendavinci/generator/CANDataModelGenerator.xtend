@@ -705,9 +705,9 @@ namespace canmapping {
 					«IF canSignal.m_endian.compareTo("big")==0»
 					«IF Integer.parseInt(canSignal.m_length) > 8 && Integer.parseInt(canSignal.m_length) <= 16»
 						«finalVarName»=htons(final«varName»);
-					«ELSEIF Integer.parseInt(canSignal.m_length) <= 32»
+					«ELSEIF Integer.parseInt(canSignal.m_length) > 16 && Integer.parseInt(canSignal.m_length) <= 32»
 						«finalVarName»=htonl(final«varName»);
-					«ELSEIF Integer.parseInt(canSignal.m_length) <= 64»
+					«ELSEIF Integer.parseInt(canSignal.m_length) > 32 && Integer.parseInt(canSignal.m_length) <= 64»
 						«finalVarName»=htonll(final«varName»);
 					«ENDIF»
 					«ELSE»
