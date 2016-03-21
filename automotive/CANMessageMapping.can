@@ -10,6 +10,9 @@ lightsystem.headlights  in 0x001 at bit 6 for 2 bits is big endian multiply by 1
 vehicledynamics.yawrate in 0x104 at bit 32 for 16 bit is little endian multiply by 0.000122 add -3.92 with range [-3.92, 4.07527];
 vehicledynamics.acceleration_y in 0x104 at bit 16 for 16 bit is little endian multiply by 0.00048828125 add -15.687 with range [-15.687, 16.31251171875];
 vehicledynamics.acceleration_x in 0x104 at bit 0 for 16 bit is little endian multiply by 0.00048828125 add -15.687 with range [-15.687, 16.31251171875];
+// CAN message for acceleration.
+accelerationrequest.enable_accrequest in 0x203 at bit 16 for 1 bit is big endian multiply by 1 add 0 with range [0, 1];
+accelerationrequest.accelerationrequest in 0x203 at bit 0 for 16 bit is big endian multiply by 0.00048828125 add -15.687 with range [-15.687, 16.31251171875];
 
 mapping automotive.vehicle.WheelSpeed {
 	wheelspeed.frontleft : 1;
@@ -23,6 +26,11 @@ unordered mapping automotive.vehicle.LightSystem {
 }
 
 mapping EmptyCanMessage {
+}
+
+unordered mapping opendlv.gcdc.fh16.AccelerationRequest {
+    accelerationrequest.enable_accrequest : 1;
+    accelerationrequest.accelerationrequest : 2;
 }
 
 unordered mapping opendlv.gcdc.fh16.VehicleDynamics {
