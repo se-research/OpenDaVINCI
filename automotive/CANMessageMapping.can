@@ -1,4 +1,5 @@
 using AutomotiveData;
+using OpenDLVData;
 
 wheelspeed.frontleft	in 0x123 at bit 0 for 16 bit is little endian multiply by 0.01 add 0 with range [0, 200];
 wheelspeed.frontright	in 0x123 at bit 16 for 2 bytes is little endian multiply by 0.01 add 0 with range [0, 200];
@@ -7,9 +8,10 @@ wheelspeed.rearright	in 0x123 at bit 48 for 16 bits is little endian multiply by
 lightsystem.headlights  in 0x001 at bit 6 for 2 bits is big endian multiply by 1 add 0 within range [0, 3];
 
 // CAN message for reading the vehicle dynamics.
-vehicledynamics.yawrate in 0x104 at bit 32 for 16 bit is little endian multiply by 0.000122 add -3.92 with range [-3.92, 4.07527];
-vehicledynamics.acceleration_y in 0x104 at bit 16 for 16 bit is little endian multiply by 0.00048828125 add -15.687 with range [-15.687, 16.31251171875];
-vehicledynamics.acceleration_x in 0x104 at bit 0 for 16 bit is little endian multiply by 0.00048828125 add -15.687 with range [-15.687, 16.31251171875];
+vehicledynamics.yawrate in 0x104 at bit 32 for 16 bit is big endian multiply by 0.000122 add -3.92 with range [-3.92, 4.07527];
+vehicledynamics.acceleration_y in 0x104 at bit 16 for 16 bit is big endian multiply by 0.00048828125 add -15.687 with range [-15.687, 16.31251171875];
+vehicledynamics.acceleration_x in 0x104 at bit 0 for 16 bit is big endian multiply by 0.00048828125 add -15.687 with range [-15.687, 16.31251171875];
+
 // CAN message for acceleration.
 accelerationrequest.enable_accrequest in 0x203 at bit 16 for 1 bit is big endian multiply by 1 add 0 with range [0, 1];
 accelerationrequest.accelerationrequest in 0x203 at bit 0 for 16 bit is big endian multiply by 0.00048828125 add -15.687 with range [-15.687, 16.31251171875];
@@ -23,9 +25,6 @@ mapping automotive.vehicle.WheelSpeed {
 
 unordered mapping automotive.vehicle.LightSystem {
     lightsystem.headlights : 1;
-}
-
-mapping EmptyCanMessage {
 }
 
 unordered mapping opendlv.gcdc.fh16.AccelerationRequest {
@@ -50,6 +49,7 @@ test automotive.vehicle.WheelSpeed {
 
 test opendlv.gcdc.fh16.VehicleDynamics {
   0x104: 0x7F7DA77D877D
+  
   id 1 = 0.000012
   id 2 = 0.019543
   id 3 = 0.00047

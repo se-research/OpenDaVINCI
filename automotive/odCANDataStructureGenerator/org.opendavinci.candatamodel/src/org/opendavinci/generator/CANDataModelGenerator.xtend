@@ -376,6 +376,9 @@ namespace canmapping {
         	std::map<uint64_t,uint64_t> m_payloads;
         	std::vector<uint64_t> m_neededCanMessages;
         	uint64_t m_index;
+        	
+        	::«mapping.mappingName.replaceAll("\\.", "::")» «"m_"+mapping.mappingName.toFirstLower.replaceAll("\\.", "_")»;
+        	
     }; // end of class "«className»"
     
 	'''
@@ -462,7 +465,8 @@ namespace canmapping {
 		«ENDFOR»
 		m_payloads(),
 		m_neededCanMessages(),
-		m_index(0)
+		m_index(0),
+		«"m_"+mapping.mappingName.toFirstLower.replaceAll("\\.", "_")»()
 	{
 		«FOR id : canIDs»
 		m_neededCanMessages.push_back(«id»);
@@ -907,18 +911,19 @@ namespace canmapping {
 			odcore::reflection::MessageToVisitableVisitor mtvv(message);
 			
 			// 7. Create an instance of the named high-level message.
-            «var String HLName=mapping.mappingName.toFirstLower.replaceAll("\\.", "_")»
-        ::«mapping.mappingName.replaceAll("\\.", "::")» «HLName»;
+            «var String memberHLName="m_"+mapping.mappingName.toFirstLower.replaceAll("\\.", "_")»
+	//::«mapping.mappingName.replaceAll("\\.", "::")» «memberHLName»;
 	
 			// 8. Letting the high-level message accept the visitor to enter the values.
-        «HLName».accept(mtvv);
+        «memberHLName».accept(mtvv);
 
 			// 9. Create the resulting container carrying a valid payload.
-			c = odcore::data::Container(«HLName»);
+			c = odcore::data::Container(«memberHLName»);
 		}
 	«ELSE»
+
 	(void) gcm;
-    // Return an empty container
+	// Return an empty container
 	std::cerr<<"Warning: Mapping '«className»' is empty."<<endl;
 	«ENDIF»
 		return c;
@@ -981,8 +986,6 @@ Signal "«signalName»" could not be found. It will be ignored.
 «ENDFOR»
 */
 
-#include "generated/«mapping.mappingName.toString.replaceAll('\\.','/')».h"
-
 #include <memory>
 #include <iostream>
 #include <opendavinci/odcore/reflection/Message.h>
@@ -991,6 +994,8 @@ Signal "«signalName»" could not be found. It will be ignored.
 #include <opendavinci/odcore/base/SerializationFactory.h>
 #include <opendavinci/odcore/base/Serializer.h>
 #include <opendavinci/odcore/base/Deserializer.h>
+
+#include "generated/«mapping.mappingName.toString.replaceAll('\\.','/')».h"
 
 namespace canmapping {
 
