@@ -184,45 +184,45 @@ message automotive.vehicle.LightSystem [id = 76] {
 }
 
 // Imported data structures from GCDC'16
-message from.opendlv.gcdc.fh16.ManualDriver [id = 191] {
+message from.opendlv.proxy.reverefh16.Pedals [id = 191] {
     double accelerationpedalposition [id = 1];
     double brakepedalposition [id = 2];
     double torsionbartorque [id = 3];
 }
 
-message from.opendlv.gcdc.fh16.AccelerationRequest [id = 192] {
+message from.opendlv.proxy.reverefh16.AccelerationRequest [id = 192] {
     bool enable_accrequest [id = 1];
     double accelerationrequest [id = 2];
 }
 
-message from.opendlv.gcdc.fh16.BrakeRequest [id = 193] {
+message from.opendlv.proxy.reverefh16.BrakeRequest [id = 193] {
     bool enable_brakerequest [id = 1];
     double brakerequest [id = 2];
 }
 
-message from.opendlv.gcdc.fh16.SteerRequest [id = 194] {
+message from.opendlv.proxy.reverefh16.SteeringRequest [id = 194] {
     bool enable_steerreq [id = 1];
     double steerreq_rwa [id = 2];
     double steerreq_deltatrq [id = 3];
 }
 
-message from.opendlv.gcdc.fh16.AxleLoads [id = 195] {
+message from.opendlv.proxy.reverefh16.Axles [id = 195] {
     double frontaxle1load [id = 1];
     double driveaxle1load [id = 2];
     double driveaxle2load [id = 3];
 }
 
-message from.opendlv.gcdc.fh16.VehicleSpeed [id = 196] {
+message from.opendlv.proxy.reverefh16.Propulsion [id = 196] {
     double vehiclespeedpropshaft [id = 1];
 }
 
-message from.opendlv.gcdc.fh16.VehicleDynamics [id = 197] {
+message from.opendlv.proxy.reverefh16.VehicleState [id = 197] {
     double acceleration_x [id = 1];
     double acceleration_y [id = 2];
     double yawrate [id = 3];
 }
 
-message from.opendlv.gcdc.fh16.WheelSpeeds [id = 198] {
+message from.opendlv.proxy.reverefh16.Wheels [id = 198] {
     double frontaxle1wheelspeedleft [id = 1];
     double frontaxle1wheelspeedright [id = 2];
     double driveaxle1wheelspeedleft [id = 3];
@@ -231,7 +231,7 @@ message from.opendlv.gcdc.fh16.WheelSpeeds [id = 198] {
     double driveaxle2wheelspeedright [id = 6];
 }
 
-message from.opendlv.gcdc.fh16.Steering [id = 199] {
+message from.opendlv.proxy.reverefh16.Steering [id = 199] {
     double roadwheelangle [id = 1];
     double steeringwheelangle [id = 2];
 }

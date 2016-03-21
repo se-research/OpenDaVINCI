@@ -32,12 +32,12 @@
 #include "plugins/livefeed/LiveFeedWidget.h"
 #include "plugins/livefeed/MessageToTupleVisitor.h"
 
-#include "automotivedata/generated/from/opendlv/gcdc/fh16/AxleLoads.h"
-#include "automotivedata/generated/from/opendlv/gcdc/fh16/ManualDriver.h"
-#include "automotivedata/generated/from/opendlv/gcdc/fh16/Steering.h"
-#include "automotivedata/generated/from/opendlv/gcdc/fh16/VehicleDynamics.h"
-#include "automotivedata/generated/from/opendlv/gcdc/fh16/VehicleSpeed.h"
-#include "automotivedata/generated/from/opendlv/gcdc/fh16/WheelSpeeds.h"
+#include "automotivedata/generated/from/opendlv/proxy/reverefh16/Axles.h"
+#include "automotivedata/generated/from/opendlv/proxy/reverefh16/Pedals.h"
+#include "automotivedata/generated/from/opendlv/proxy/reverefh16/Steering.h"
+#include "automotivedata/generated/from/opendlv/proxy/reverefh16/VehicleState.h"
+#include "automotivedata/generated/from/opendlv/proxy/reverefh16/Propulsion.h"
+#include "automotivedata/generated/from/opendlv/proxy/reverefh16/Wheels.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }
 
@@ -127,24 +127,24 @@ namespace cockpit {
                 }
 
                 // GCDC FH16
-                if (container.getDataType() == from::opendlv::gcdc::fh16::AxleLoads::ID()) {
-                    from::opendlv::gcdc::fh16::AxleLoads tmp = container.getData<from::opendlv::gcdc::fh16::AxleLoads>();
+                if (container.getDataType() == from::opendlv::proxy::reverefh16::Axles::ID()) {
+                    from::opendlv::proxy::reverefh16::Axles tmp = container.getData<from::opendlv::proxy::reverefh16::Axles>();
                     if (dynamic_cast<Visitable*>(&tmp) != NULL) {
                         addMessageToTree(tmp.LongName(), container, tmp);
                     }
                     return;
                 }
 
-                if (container.getDataType() == from::opendlv::gcdc::fh16::ManualDriver::ID()) {
-                    from::opendlv::gcdc::fh16::ManualDriver tmp = container.getData<from::opendlv::gcdc::fh16::ManualDriver>();
+                if (container.getDataType() == from::opendlv::proxy::reverefh16::Pedals::ID()) {
+                    from::opendlv::proxy::reverefh16::Pedals tmp = container.getData<from::opendlv::proxy::reverefh16::Pedals>();
                     if (dynamic_cast<Visitable*>(&tmp) != NULL) {
                         addMessageToTree(tmp.LongName(), container, tmp);
                     }
                     return;
                 }
 
-                if (container.getDataType() == from::opendlv::gcdc::fh16::Steering::ID()) {
-                    from::opendlv::gcdc::fh16::Steering tmp = container.getData<from::opendlv::gcdc::fh16::Steering>();
+                if (container.getDataType() == from::opendlv::proxy::reverefh16::Steering::ID()) {
+                    from::opendlv::proxy::reverefh16::Steering tmp = container.getData<from::opendlv::proxy::reverefh16::Steering>();
                     if (dynamic_cast<Visitable*>(&tmp) != NULL) {
                         addMessageToTree(tmp.LongName(), container, tmp);
                     }
@@ -152,24 +152,24 @@ namespace cockpit {
                 }
 
 
-                if (container.getDataType() == from::opendlv::gcdc::fh16::VehicleDynamics::ID()) {
-                    from::opendlv::gcdc::fh16::VehicleDynamics tmp = container.getData<from::opendlv::gcdc::fh16::VehicleDynamics>();
+                if (container.getDataType() == from::opendlv::proxy::reverefh16::VehicleState::ID()) {
+                    from::opendlv::proxy::reverefh16::VehicleState tmp = container.getData<from::opendlv::proxy::reverefh16::VehicleState>();
                     if (dynamic_cast<Visitable*>(&tmp) != NULL) {
                         addMessageToTree(tmp.LongName(), container, tmp);
                     }
                     return;
                 }
 
-                if (container.getDataType() == from::opendlv::gcdc::fh16::VehicleSpeed::ID()) {
-                    from::opendlv::gcdc::fh16::VehicleSpeed tmp = container.getData<from::opendlv::gcdc::fh16::VehicleSpeed>();
+                if (container.getDataType() == from::opendlv::proxy::reverefh16::Propulsion::ID()) {
+                    from::opendlv::proxy::reverefh16::Propulsion tmp = container.getData<from::opendlv::proxy::reverefh16::Propulsion>();
                     if (dynamic_cast<Visitable*>(&tmp) != NULL) {
                         addMessageToTree(tmp.LongName(), container, tmp);
                     }
                     return;
                 }
 
-                if (container.getDataType() == from::opendlv::gcdc::fh16::WheelSpeeds::ID()) {
-                    from::opendlv::gcdc::fh16::WheelSpeeds tmp = container.getData<from::opendlv::gcdc::fh16::WheelSpeeds>();
+                if (container.getDataType() == from::opendlv::proxy::reverefh16::Wheels::ID()) {
+                    from::opendlv::proxy::reverefh16::Wheels tmp = container.getData<from::opendlv::proxy::reverefh16::Wheels>();
                     if (dynamic_cast<Visitable*>(&tmp) != NULL) {
                         addMessageToTree(tmp.LongName(), container, tmp);
                     }
