@@ -28,24 +28,16 @@
 #include "opendavinci/odcore/base/Visitable.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/data/TimeStamp.h"
-#include "automotivedata/generated/automotive/ForceControl.h"
-#include "automotivedata/generated/automotive/GenericCANMessage.h"
 #include "automotivedata/generated/automotive/VehicleData.h"
-#include "automotivedata/generated/automotive/miniature/UserButtonData.h"
-#include "automotivedata/generated/automotive/vehicle/WheelSpeed.h"
-#include "opendavinci/generated/odcore/data/Configuration.h"
-#include "opendavinci/generated/odcore/data/SharedData.h"
-#include "opendavinci/generated/odcore/data/dmcp/DiscoverMessage.h"
-#include "opendavinci/generated/odcore/data/dmcp/ModuleDescriptor.h"
-#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
-#include "opendavinci/generated/odcore/data/dmcp/ModuleStateMessage.h"
-#include "opendavinci/generated/odcore/data/dmcp/ModuleStatistics.h"
-#include "opendavinci/generated/odcore/data/dmcp/RuntimeStatistic.h"
-#include "opendavinci/generated/odcore/data/image/SharedImage.h"
-#include "opendavinci/generated/odcore/data/player/PlayerCommand.h"
-#include "opendavinci/generated/odcore/data/recorder/RecorderCommand.h"
 #include "plugins/livefeed/LiveFeedWidget.h"
 #include "plugins/livefeed/MessageToTupleVisitor.h"
+
+#include "automotivedata/generated/from/opendlv/proxy/reverefh16/Axles.h"
+#include "automotivedata/generated/from/opendlv/proxy/reverefh16/Pedals.h"
+#include "automotivedata/generated/from/opendlv/proxy/reverefh16/Steering.h"
+#include "automotivedata/generated/from/opendlv/proxy/reverefh16/VehicleState.h"
+#include "automotivedata/generated/from/opendlv/proxy/reverefh16/Propulsion.h"
+#include "automotivedata/generated/from/opendlv/proxy/reverefh16/Wheels.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }
 
@@ -126,16 +118,6 @@ namespace cockpit {
             }
 
             void LiveFeedWidget::transformContainerToTree(Container &container) {
-/*
-                if (container.getDataType() == coredata::dmcp::ModuleStatistics::ID()) {
-                    coredata::dmcp::ModuleStatistics tmp = container.getData<coredata::dmcp::ModuleStatistics>();
-                    if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                        addMessageToTree(tmp.LongName(), container, tmp);
-                    }
-                    return;
-                }
-*/
-
                 if (container.getDataType() == automotive::VehicleData::ID()) {
                     automotive::VehicleData tmp = container.getData<automotive::VehicleData>();
                     if (dynamic_cast<Visitable*>(&tmp) != NULL) {
@@ -144,140 +126,56 @@ namespace cockpit {
                     return;
                 }
 
-/*
-                switch (container.getDataType()) {
-                    case Container::CONFIGURATION:
-                    {
-                        odcore::data::Configuration tmp = container.getData<odcore::data::Configuration>();
-                        if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                            addMessageToTree(tmp.LongName(), container, tmp);
-                        }
-                        break;
+                // GCDC FH16
+                if (container.getDataType() == from::opendlv::proxy::reverefh16::Axles::ID()) {
+                    from::opendlv::proxy::reverefh16::Axles tmp = container.getData<from::opendlv::proxy::reverefh16::Axles>();
+                    if (dynamic_cast<Visitable*>(&tmp) != NULL) {
+                        addMessageToTree(tmp.LongName(), container, tmp);
                     }
-                    case Container::FORCECONTROL:
-                    {
-                        automotive::ForceControl tmp = container.getData<automotive::ForceControl>();
-                        if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                            addMessageToTree(tmp.LongName(), container, tmp);
-                        }
-                        break;
-                    }
-                    case Container::DMCP_DISCOVER:
-                    {
-                        odcore::data::dmcp::DiscoverMessage tmp = container.getData<odcore::data::dmcp::DiscoverMessage>();
-                        if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                            addMessageToTree(tmp.LongName(), container, tmp);
-                        }
-                        break;
-                    }
-                    case Container::DMCP_CONFIGURATION_REQUEST:
-                    {
-                        odcore::data::dmcp::ModuleDescriptor tmp = container.getData<odcore::data::dmcp::ModuleDescriptor>();
-                        if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                            addMessageToTree(tmp.LongName(), container, tmp);
-                        }
-                        break;
-                    }
-                    case Container::DMCP_MODULESTATEMESSAGE:
-                    {
-                        odcore::data::dmcp::ModuleStateMessage tmp = container.getData<odcore::data::dmcp::ModuleStateMessage>();
-                        if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                            addMessageToTree(tmp.LongName(), container, tmp);
-                        }
-                        break;
-                    }
-                    case Container::DMCP_MODULEEXITCODEMESSAGE:
-                    {
-                        odcore::data::dmcp::ModuleExitCodeMessage tmp = container.getData<odcore::data::dmcp::ModuleExitCodeMessage>();
-                        if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                            addMessageToTree(tmp.LongName(), container, tmp);
-                        }
-                        break;
-                    }
-                    case Container::MODULESTATISTICS:
-                    {
-                        odcore::data::dmcp::ModuleStatistics tmp = container.getData<odcore::data::dmcp::ModuleStatistics>();
-                        if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                            addMessageToTree(tmp.LongName(), container, tmp);
-                        }
-                        break;
-                    }
-                    case Container::VEHICLEDATA:
-                    {
-                        automotive::VehicleData tmp = container.getData<automotive::VehicleData>();
-                        if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                            addMessageToTree(tmp.LongName(), container, tmp);
-                        }
-                        break;
-                    }
-                    case Container::PLAYER_COMMAND:
-                    {
-                        odcore::data::player::PlayerCommand tmp = container.getData<odcore::data::player::PlayerCommand>();
-                        if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                            addMessageToTree(tmp.LongName(), container, tmp);
-                        }
-                        break;
-                    }
-                    case Container::RECORDER_COMMAND:
-                    {
-                        odcore::data::recorder::RecorderCommand tmp = container.getData<odcore::data::recorder::RecorderCommand>();
-                        if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                            addMessageToTree(tmp.LongName(), container, tmp);
-                        }
-                        break;
-                    }
-                    case Container::RUNTIMESTATISTIC:
-                    {
-                        odcore::data::dmcp::RuntimeStatistic tmp = container.getData<odcore::data::dmcp::RuntimeStatistic>();
-                        if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                            addMessageToTree(tmp.LongName(), container, tmp);
-                        }
-                        break;
-                    }
-                    case Container::SHARED_DATA:
-                    {
-                        odcore::data::SharedData tmp = container.getData<odcore::data::SharedData>();
-                        if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                            addMessageToTree(tmp.LongName(), container, tmp);
-                        }
-                        break;
-                    }
-                    case Container::SHARED_IMAGE:
-                    {
-                        odcore::data::image::SharedImage tmp = container.getData<odcore::data::image::SharedImage>();
-                        if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                            addMessageToTree(tmp.LongName(), container, tmp);
-                        }
-                        break;
-                    }
-                    case Container::USER_BUTTON:
-                    {
-                        automotive::miniature::UserButtonData tmp = container.getData<automotive::miniature::UserButtonData>();
-                        if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                            addMessageToTree(tmp.LongName(), container, tmp);
-                        }
-                        break;
-                    }
-                    case Container::GENERIC_CAN_MESSAGE:
-                    {
-                        automotive::GenericCANMessage tmp = container.getData<automotive::GenericCANMessage>();
-                        if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                            addMessageToTree(tmp.LongName(), container, tmp);
-                        }
-                        break;
-                    }
-                    case Container::WHEELSPEED:
-                    {
-                        automotive::vehicle::WheelSpeed tmp = container.getData<automotive::vehicle::WheelSpeed>();
-                        if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                            addMessageToTree(tmp.LongName(), container, tmp);
-                        }
-                        break;
-                    }
-                    default:
-                    break;
+                    return;
                 }
-*/
+
+                if (container.getDataType() == from::opendlv::proxy::reverefh16::Pedals::ID()) {
+                    from::opendlv::proxy::reverefh16::Pedals tmp = container.getData<from::opendlv::proxy::reverefh16::Pedals>();
+                    if (dynamic_cast<Visitable*>(&tmp) != NULL) {
+                        addMessageToTree(tmp.LongName(), container, tmp);
+                    }
+                    return;
+                }
+
+                if (container.getDataType() == from::opendlv::proxy::reverefh16::Steering::ID()) {
+                    from::opendlv::proxy::reverefh16::Steering tmp = container.getData<from::opendlv::proxy::reverefh16::Steering>();
+                    if (dynamic_cast<Visitable*>(&tmp) != NULL) {
+                        addMessageToTree(tmp.LongName(), container, tmp);
+                    }
+                    return;
+                }
+
+
+                if (container.getDataType() == from::opendlv::proxy::reverefh16::VehicleState::ID()) {
+                    from::opendlv::proxy::reverefh16::VehicleState tmp = container.getData<from::opendlv::proxy::reverefh16::VehicleState>();
+                    if (dynamic_cast<Visitable*>(&tmp) != NULL) {
+                        addMessageToTree(tmp.LongName(), container, tmp);
+                    }
+                    return;
+                }
+
+                if (container.getDataType() == from::opendlv::proxy::reverefh16::Propulsion::ID()) {
+                    from::opendlv::proxy::reverefh16::Propulsion tmp = container.getData<from::opendlv::proxy::reverefh16::Propulsion>();
+                    if (dynamic_cast<Visitable*>(&tmp) != NULL) {
+                        addMessageToTree(tmp.LongName(), container, tmp);
+                    }
+                    return;
+                }
+
+                if (container.getDataType() == from::opendlv::proxy::reverefh16::Wheels::ID()) {
+                    from::opendlv::proxy::reverefh16::Wheels tmp = container.getData<from::opendlv::proxy::reverefh16::Wheels>();
+                    if (dynamic_cast<Visitable*>(&tmp) != NULL) {
+                        addMessageToTree(tmp.LongName(), container, tmp);
+                    }
+                    return;
+                }
+
             }
         }
     }
