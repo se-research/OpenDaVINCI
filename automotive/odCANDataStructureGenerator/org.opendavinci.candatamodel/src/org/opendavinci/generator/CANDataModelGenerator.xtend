@@ -499,7 +499,8 @@ namespace canmapping {
 		«FOR initialization:initializations»«initialization+","+'\n'»«ENDFOR»
 		m_payloads(),
 		m_neededCanMessages(),
-		m_index(0)
+		m_index(0),
+		«"m_"+mapping.mappingName.toFirstLower.replaceAll("\\.", "_")»()
 	{
 		«FOR id : canIDs»
 		m_neededCanMessages.push_back(«id»);
@@ -638,7 +639,7 @@ namespace canmapping {
 	    «IF canIDs.size>0»
 
 	    «IF canIDs.size>1»
-		cerr<<"Warning: Mapping '«className»' is defined over more than one concrete CAN messages. Only one of those CAN messages will be returned."<<endl;
+	    cerr<<"Warning: Mapping '«className»' is defined over more than one concrete CAN messages. Only one of those CAN messages will be returned."<<endl;
 	    «ENDIF»
 
     «var String gcmPrefix="GCM_"»
@@ -707,23 +708,37 @@ namespace canmapping {
 					
 					// endian      : «canSignal.m_endian»
 					«IF canSignal.m_endian.compareTo("big")==0»
-					«IF Integer.parseInt(canSignal.m_length) > 8 && Integer.parseInt(canSignal.m_length) <= 16»
-						«finalVarName»=htons(final«varName»);
-					«ELSEIF Integer.parseInt(canSignal.m_length) > 16 && Integer.parseInt(canSignal.m_length) <= 32»
-						«finalVarName»=htonl(final«varName»);
-					«ELSEIF Integer.parseInt(canSignal.m_length) > 32 && Integer.parseInt(canSignal.m_length) <= 64»
-						«finalVarName»=htonll(final«varName»);
-					«ENDIF»
+						«IF Integer.parseInt(canSignal.m_length) > 8 && Integer.parseInt(canSignal.m_length) <= 16»
+							«finalVarName»=htons(final«varName»);
+						«ELSEIF Integer.parseInt(canSignal.m_length) > 16 && Integer.parseInt(canSignal.m_length) <= 32»
+							«finalVarName»=htonl(final«varName»);
+						«ELSEIF Integer.parseInt(canSignal.m_length) > 32 && Integer.parseInt(canSignal.m_length) <= 64»
+							«finalVarName»=htonll(final«varName»);
+						«ENDIF»
 					«ELSE»
 						// 4.2 Endianness doesn't need fixing, skipping this step.
 					«ENDIF»
 					
 					// startBit    : «canSignal.m_startBit»
 					
+					«var int displacement=0»
+					«var int canLengthBit=0»
+					«{
+						for(sig:mapping.mappings) {
+							if(canSignals.get(sig.cansignalname).m_CANID==canSignals.get(currentSignalInMapping.cansignalname).m_CANID) // signals in the same CAN message
+							{
+								canLengthBit+=Integer.parseInt(canSignals.get(sig.cansignalname).m_length);
+								if(canSignals.get(sig.cansignalname).m_startBit>canSignals.get(currentSignalInMapping.cansignalname).m_startBit) // signals to the right-hand side in the bitfield
+								{
+									displacement+=Integer.parseInt(canSignals.get(sig.cansignalname).m_length);
+								}
+							}
+						}
+					;""}»
 					«var String tempPLVarName="tempPL"+varName»
 					uint64_t «tempPLVarName»=0x0;
 					«tempPLVarName»=static_cast<uint64_t>(«finalVarName»);
-					«tempPLVarName»=«tempPLVarName»<<(64-«canSignal.m_length»-«canSignal.m_startBit»);
+					«tempPLVarName»=«tempPLVarName»<<(«displacement»);
 					«gcmPayloadPrefix+canSignal.m_CANID»=«gcmPayloadPrefix+canSignal.m_CANID» | «tempPLVarName»;
 				}
 				else {
@@ -745,7 +760,7 @@ namespace canmapping {
 			«FOR id:canIDs»
 			// set payload of GenericCANMessage and return
 			«IF (8-Math.ceil(payloadLengthInBits/8.0))>0»
-			«gcmPayloadPrefix+id»=«gcmPayloadPrefix+id»>>static_cast<uint8_t>((8-«Math.ceil(payloadLengthInBits/8.0)»)*8);
+			//«gcmPayloadPrefix+id»=«gcmPayloadPrefix+id»>>static_cast<uint8_t>((8-«Math.ceil(payloadLengthInBits/8.0)»)*8);
 			«ENDIF»
 			«gcmPrefix+id».setData(«gcmPayloadPrefix+id»);
 			«gcmPrefix+id».setLength(static_cast<uint8_t>(«Math.ceil(payloadLengthInBits/8.0)»));
@@ -767,6 +782,7 @@ namespace canmapping {
 		odcore::data::Container c;
     «IF canIDs.size>0»
 		«IF mapping.unordered==null || mapping.unordered.compareTo("unordered")!=0»
+
 		bool reset=false;
 		«ENDIF»
 		switch(gcm.getIdentifier())
@@ -774,9 +790,11 @@ namespace canmapping {
 	    	«FOR id : canIDs»
 	    		case «id» : 
 	    	«IF mapping.unordered!=null && mapping.unordered.compareTo("unordered")==0»
+
 		    	// since the order doesn't matter, store the payload in a map for future use replacing the current content held there
 		    	m_payloads[gcm.getIdentifier()] = gcm.getData();
 	    	«ELSE»
+
 		    	// since the order matters:
 		    	if(m_neededCanMessages.at(m_index) == «id») // if we got the expected message
 		    	{
@@ -789,11 +807,12 @@ namespace canmapping {
 		    		reset=true;
 	    	«ENDIF»
 	    		break;
-	    	
+
 	        «ENDFOR»
 	        	default : return c; // valid id not found
 	    	}
 	    «IF mapping.unordered==null || mapping.unordered.compareTo("unordered")!=0»
+
 		if(reset)
 		{		
 			// reset the payloads map
@@ -835,11 +854,29 @@ namespace canmapping {
 				// 4.1 Get raw value from attribute.
 				«tempVarType="uint64_t"» «tempVarName»=0x0000000000000000;
 				«tempVarName»=data;
-				
-				// reset left-hand side of bit field
-				«tempVarName»=«tempVarName» << «Integer.parseInt(canSignals.get(signalName).m_startBit)»;
+
+				«var int displacement=0»
+				«var int canLengthBit=0»
+				«{
+					for(sig:mapping.mappings) {
+						if(canSignals.get(sig.cansignalname).m_CANID==canSignals.get(signalName).m_CANID) // signals in the same CAN message
+						{
+							canLengthBit+=Integer.parseInt(canSignals.get(sig.cansignalname).m_length);
+							if(canSignals.get(sig.cansignalname).m_startBit>canSignals.get(signalName).m_startBit) // signals to the right-hand side in the bitfield
+							{
+								displacement+=Integer.parseInt(canSignals.get(sig.cansignalname).m_length);
+							}
+						}
+					}
+				;""}»
+				// reset left-hand side of bit field (done later with the bitwise AND)
+				//«tempVarName»=«tempVarName» << («canSignals.get(signalName).m_startBit»-«canSignals.get(signalName).m_length»+1);
+
 				// reset right-hand side of bit field
-				«tempVarName»=«tempVarName» >> (gcm.getLength()*8-«canSignals.get(signalName).m_length»);
+				«tempVarName»=«tempVarName» >> («displacement»);
+				«var String mask="0"»
+				«{for(var int i=0;i<Integer.parseInt(canSignals.get(signalName).m_length);i++) mask+="1";""}»
+				«tempVarName»=«tempVarName» & 0b«mask»;
 				
 				«IF Integer.parseInt(canSignals.get(signalName).m_length)>=8»
 					«IF canSignals.get(signalName).m_endian.compareTo("big")==0»
@@ -1124,19 +1161,21 @@ class CANBridgeTest : public CxxTest::TestSuite {
 			«IF test.mappingName.toString.compareTo(mapping.mappingName.toString)==0»
 				«var String testName="test_"+(testIndex++)»
 				«var HashMap<String,String> GCMs=new HashMap<String,String>»
+			{
 				// Mapping name «test.mappingName»
 				«var int gcmIndex=0»
+				«var String gcmName="gcm_"»
 				«FOR description : test.CANMessageDescriptions»
 				// id «description.canIdentifier»
-				// payload «description.payload» : length «(description.payload.length-2)/2»
-					«var String gcmName="gcm_"+(gcmIndex++)»
-					::automotive::GenericCANMessage «gcmName»;
+				// payload «description.payload» : length «(description.payload.length-2)/2» bytes
+
+					::automotive::GenericCANMessage «{gcmIndex+=1;gcmName=gcmName.substring(0,4)+gcmIndex}»;
 					«gcmName».setIdentifier(«description.canIdentifier»);
 					«gcmName».setLength(«(description.payload.length-2)/2»);
 					«gcmName».setData(«description.payload»);
-					«GCMs.put(description.canIdentifier,gcmName)»
+					«{GCMs.put(description.canIdentifier,gcmName);""}»
 				«ENDFOR»
-				
+
 				canmapping::«mapping.mappingName.toString.replaceAll("\\.", "::")» «testName»;
 				«IF canIDs.length==GCMs.size»
 					«FOR canid:canIDs»
@@ -1151,25 +1190,27 @@ class CANBridgeTest : public CxxTest::TestSuite {
 							for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
 							for(result:test.results)
 								if(result.signalIdentifier.compareTo(mapping.mappings.get(index).signalIdentifier)==0)
-									asserts+="TS_ASSERT_DELTA("+testName+".get"+capitalizedName+"() , "+result.expectedResult+", 1e-5);"+'\n'
+									asserts+="TS_ASSERT_DELTA("+testName+".get"+capitalizedName+"() , "+result.expectedResult+", 1e-2);"+'\n'
 						}
 					}»
 					«FOR assertions:asserts»
 					«assertions»
 					«ENDFOR»
 				«ELSE»
-					// not enough CAN messages were provided
+					// not enough CAN messages were provided «canIDs.length» «GCMs.size»
 				«ENDIF»
+			}
 		    «ENDIF»
 		«ENDFOR»
-        }
+    }
 
 «{testIndex=0;""}»
     void testEncode() {
         «FOR test : canSignalTesting»
         	«IF test.mappingName.toString.compareTo(mapping.mappingName.toString)==0»
         		«var String testName="test_"+(testIndex++)»
-        		// Mapping name «test.mappingName»
+    			{
+    			// Mapping name «test.mappingName»
 
         		«IF test.CANMessageDescriptions.size==1»
 
@@ -1212,7 +1253,7 @@ class CANBridgeTest : public CxxTest::TestSuite {
 				::automotive::GenericCANMessage GCM;
 				GCM=«testName».encode(c);
 				TS_ASSERT_EQUALS(GCM.getData(),static_cast<uint64_t>(«test.CANMessageDescriptions.get(0).payload»));
-
+			}
         		«ELSE»
         			std::cerr<<"Warning: Multiple CAN messages for one mapping are not supported."<<std::endl;
 	            «ENDIF»
