@@ -1190,7 +1190,7 @@ class CANBridgeTest : public CxxTest::TestSuite {
 							for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
 							for(result:test.results)
 								if(result.signalIdentifier.compareTo(mapping.mappings.get(index).signalIdentifier)==0)
-									asserts+="TS_ASSERT_DELTA("+testName+".get"+capitalizedName+"() , "+result.expectedResult+", 1e-2);"+'\n'
+									asserts+="TS_ASSERT_DELTA("+testName+".get"+capitalizedName+"() , "+result.expectedResult+", 1e-4);"+'\n'
 						}
 					}»
 					«FOR assertions:asserts»
