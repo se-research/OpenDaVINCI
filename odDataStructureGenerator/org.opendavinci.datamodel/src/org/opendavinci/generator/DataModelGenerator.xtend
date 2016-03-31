@@ -1817,9 +1817,17 @@ class «IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.p
 						TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(«obj».get«a.fixedarray.name.toFirstUpper»()[i], sstr.str()));
 					}
 				«ENDIF»
-				«IF (a.fixedarray.type.equalsIgnoreCase("int32") || a.fixedarray.type.equalsIgnoreCase("uint32"))»
-					for(uint32_t i = 0; i < «obj».getSize_«a.fixedarray.name.toFirstUpper»(); i++) {
+				«IF (a.fixedarray.type.equalsIgnoreCase("uint32"))»
+					for(«a.fixedarray.type.toLowerCase»_t i = 0; i < «obj».getSize_«a.fixedarray.name.toFirstUpper»(); i++) {
 						TS_ASSERT(«obj».get«a.fixedarray.name.toFirstUpper»()[i] == «testValuesMap.get(a.fixedarray.type)» + i);
+					}
+				«ENDIF»
+				«IF (a.fixedarray.type.equalsIgnoreCase("int32"))»
+				{
+				    uint32_t size=0;
+					    for(«a.fixedarray.type.toLowerCase»_t i = 0; size < «obj».getSize_«a.fixedarray.name.toFirstUpper»(); size++, i++) {
+						    TS_ASSERT(«obj».get«a.fixedarray.name.toFirstUpper»()[i] == «testValuesMap.get(a.fixedarray.type)» + i);
+					    }
 					}
 				«ENDIF»
 				«IF (a.fixedarray.type.equalsIgnoreCase("char"))»
@@ -2091,12 +2099,24 @@ class «IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.p
 						TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(«objA».get«a.fixedarray.name.toFirstUpper»()[i], sstr.str()));
 					}
 				«ENDIF»
-				«IF (a.fixedarray.type.equalsIgnoreCase("int32") || a.fixedarray.type.equalsIgnoreCase("uint32"))»
+				«IF (a.fixedarray.type.equalsIgnoreCase("uint32"))»
 					for(uint32_t i = 0; i < «objA».getSize_«a.fixedarray.name.toFirstUpper»(); i++) {
 						«objA».get«a.fixedarray.name.toFirstUpper»()[i] = «testValuesMap.get(a.fixedarray.type)» + i;
 					}
 					for(uint32_t i = 0; i < «objA».getSize_«a.fixedarray.name.toFirstUpper»(); i++) {
 						TS_ASSERT(«objA».get«a.fixedarray.name.toFirstUpper»()[i] == «testValuesMap.get(a.fixedarray.type)» + i);
+					}
+				«ENDIF»
+				«IF (a.fixedarray.type.equalsIgnoreCase("int32"))»
+					{
+					    uint32_t size=0;
+					    for(int32_t i = 0; size < «objA».getSize_«a.fixedarray.name.toFirstUpper»(); size++, i++) {
+						    «objA».get«a.fixedarray.name.toFirstUpper»()[i] = «testValuesMap.get(a.fixedarray.type)» + i;
+					    }
+					    size=0;
+					    for(int32_t i = 0; size < «objA».getSize_«a.fixedarray.name.toFirstUpper»(); size++, i++) {
+						    TS_ASSERT(«objA».get«a.fixedarray.name.toFirstUpper»()[i] == «testValuesMap.get(a.fixedarray.type)» + i);
+					    }
 					}
 				«ENDIF»
 				«IF (a.fixedarray.type.equalsIgnoreCase("char"))»
