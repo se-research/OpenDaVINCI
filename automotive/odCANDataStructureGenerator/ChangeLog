@@ -1,3 +1,4 @@
+3.0.3 - Fixed warning in generated test code
 3.0.2 - Updating CAN message handling
 3.0.1 - Fixed compilation on Mac OSX; added CSVExporter visitor
 3.0.0 - Newest release of OpenDaVINCI.
