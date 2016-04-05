@@ -87,6 +87,7 @@ namespace cockpit {
 
                 protected:
                     void keyPressEvent(QKeyEvent *event);
+                    void keyReleaseEvent(QKeyEvent *event);
 
                 public slots:
                     void TimerEvent();
@@ -101,6 +102,10 @@ namespace cockpit {
                     odcore::io::conference::ContainerConference &m_conference;
                     odcore::base::Mutex m_vehicleControlMutex;
                     automotive::VehicleControl m_vehicleControl;
+
+                    double m_accelerationInc;
+                    double m_speedInc;
+                    double m_steeringWheelInc;
 
                     odcore::base::Mutex m_HzMutex;
                     uint32_t m_Hz;
