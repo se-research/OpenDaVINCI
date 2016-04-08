@@ -876,7 +876,7 @@ namespace canmapping {
 				«{for(var int i=0;i<Integer.parseInt(canSignals.get(signalName).m_length);i++) mask+="1";""}»
 				«tempVarName»=«tempVarName» & 0b«mask»;
 				
-				«IF Integer.parseInt(canSignals.get(signalName).m_length)>=8»
+				«IF Integer.parseInt(canSignals.get(signalName).m_length)>8»
 					«IF canSignals.get(signalName).m_endian.compareTo("big")==0»
 					// Optional: Fix endianness depending on CAN message specification.
 						«IF Integer.parseInt(canSignals.get(signalName).m_length)<=16»
