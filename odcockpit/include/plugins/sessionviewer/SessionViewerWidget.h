@@ -28,6 +28,7 @@
 #include <string>
 
 #include "opendavinci/odcore/io/conference/ContainerListener.h"
+#include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/generated/odcore/data/dmcp/ModuleStatistic.h"
 
 class QTreeWidget;
@@ -82,6 +83,7 @@ namespace cockpit {
                     virtual void nextContainer(Container &c);
 
                 private:
+                    odcore::base::Mutex m_dataViewMutex;
                     unique_ptr<QTreeWidget> m_dataView;
                     map<string, QTreeWidgetItem* > m_components;
 
