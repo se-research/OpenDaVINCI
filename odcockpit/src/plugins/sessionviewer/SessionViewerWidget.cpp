@@ -26,6 +26,7 @@
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/data/TimeStamp.h"
 #include "opendavinci/generated/odcore/data/dmcp/ModuleDescriptor.h"
@@ -47,6 +48,7 @@ namespace cockpit {
 
             SessionViewerWidget::SessionViewerWidget(const PlugIn &/*plugIn*/, QWidget *prnt) :
                 QWidget(prnt),
+                m_dataViewMutex(),
                 m_dataView(),
                 m_components() {
                 // Set size.
@@ -78,6 +80,7 @@ namespace cockpit {
             SessionViewerWidget::~SessionViewerWidget() {}
 
             void SessionViewerWidget::nextContainer(Container &container) {
+                Lock l(m_dataViewMutex);
                 if (container.getDataType() == odcore::data::dmcp::ModuleStatistics::ID()) {
                     m_dataView->setSortingEnabled(false);
 
