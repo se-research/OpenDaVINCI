@@ -740,34 +740,11 @@ namespace canmapping {
 					«ELSE»
 						// Endianness doesn't need fixing, skipping this step.
 					«ENDIF»
-					
-					«var int displacement=0»
-					«{
-						//var int canLengthBit=0;
-						var int lastSignalStart=0;
-						var int lastSignalLength=0;
-						for(sig:mapping.mappings) {
-							if(canSignals.get(sig.cansignalname).m_CANID==canSignals.get(currentSignalInMapping.cansignalname).m_CANID) // signals in the same CAN message
-							{
-								/*canLengthBit+=Integer.parseInt(canSignals.get(sig.cansignalname).m_length);
-								if(canSignals.get(sig.cansignalname).m_startBit>canSignals.get(currentSignalInMapping.cansignalname).m_startBit) // signals to the right-hand side in the bitfield
-								{
-									displacement+=Integer.parseInt(canSignals.get(sig.cansignalname).m_length);
-								}*/
-								if(Integer.parseInt(canSignals.get(sig.cansignalname).m_startBit) >= lastSignalStart)
-								{
-									lastSignalStart=Integer.parseInt(canSignals.get(sig.cansignalname).m_startBit);
-									lastSignalLength=Integer.parseInt(canSignals.get(sig.cansignalname).m_length);
-								}
-							}
-						}
-						displacement=(lastSignalStart+lastSignalLength)-
-									(Integer.parseInt(canSignals.get(currentSignalInMapping.cansignalname).m_startBit)+
-										Integer.parseInt(canSignals.get(currentSignalInMapping.cansignalname).m_length)); ""}»
+
 					«var String tempPLVarName="tempPL"+varName»
 					uint64_t «tempPLVarName»=0x0;
 					«tempPLVarName»=static_cast<uint64_t>(«finalVarName»);
-					«tempPLVarName»=«tempPLVarName»<<(«displacement»);
+					«tempPLVarName»=«tempPLVarName»<<(«canSignal.m_startBit»);
 					«gcmPayloadPrefix+canSignal.m_CANID»=«gcmPayloadPrefix+canSignal.m_CANID» | «tempPLVarName»;
 				}
 				else {
@@ -788,11 +765,19 @@ namespace canmapping {
 			
 			«FOR id:canIDs»
 			// set payload of GenericCANMessage and return
-			«IF (8-Math.ceil(payloadLengthInBits/8.0))>0»
-			//«gcmPayloadPrefix+id»=«gcmPayloadPrefix+id»>>static_cast<uint8_t>((8-«Math.ceil(payloadLengthInBits/8.0)»)*8);
-			«ENDIF»
-			«gcmPrefix+id».setData(«gcmPayloadPrefix+id»);
-			«gcmPrefix+id».setLength(static_cast<uint8_t>(«Math.ceil(payloadLengthInBits/8.0)»));
+			// the rolling is due to Vector's dbc file numeration convention
+			{
+				uint64_t rolledPayload=0x0;
+				for(uint8_t i=0;i<static_cast<uint8_t>(«Math.ceil(payloadLengthInBits/8.0)»); ++i)
+				{
+					rolledPayload=rolledPayload<<8;
+					rolledPayload |= «gcmPayloadPrefix+id» & 0xFF ;
+					«gcmPayloadPrefix+id»=«gcmPayloadPrefix+id»>>8;
+				}
+			
+				«gcmPrefix+id».setData(rolledPayload);
+				«gcmPrefix+id».setLength(static_cast<uint8_t>(«Math.ceil(payloadLengthInBits/8.0)»));
+			}
 			return «gcmPrefix+id»;
 	   		«ENDFOR»
 		«ELSE»
@@ -866,6 +851,19 @@ namespace canmapping {
 			// Get the raw payload.
 			uint64_t data = m_payloads[«canSignals.get(curSignalName).m_CANID»];
 
+			// the rolling is due to Vector's dbc file numeration convention
+			{
+				uint64_t rolledPayload=0x0;
+				for(uint8_t i=0;i<gcm.getLength(); ++i)
+				{
+					rolledPayload=rolledPayload<<8;
+					rolledPayload |= data & 0xFF ;
+					data=data>>8;
+				}
+			
+				data=rolledPayload;
+			}
+
 			«var String tempVarType=""»
 			«var String tempVarName="raw_"+curSignalName.replaceAll("\\.", "_")»
 			«var String finalVarName="transformed_"+curSignalName.replaceAll("\\.", "_")»
@@ -881,31 +879,8 @@ namespace canmapping {
 			«tempVarType="uint64_t"» «tempVarName»=0x0;
 			«tempVarName»=data;
 
-			«var int displacement=0»
-			«{
-				//var int canLengthBit=0;
-				var int lastSignalStart=0;
-				var int lastSignalLength=0;
-				for(sig:mapping.mappings) {
-					if(canSignals.get(sig.cansignalname).m_CANID==canSignals.get(curSignalName).m_CANID) // signals in the same CAN message
-					{
-						/*canLengthBit+=Integer.parseInt(canSignals.get(sig.cansignalname).m_length);
-						if(canSignals.get(sig.cansignalname).m_startBit>canSignals.get(currentSignalInMapping.cansignalname).m_startBit) // signals to the right-hand side in the bitfield
-						{
-							displacement+=Integer.parseInt(canSignals.get(sig.cansignalname).m_length);
-						}*/
-						if(Integer.parseInt(canSignals.get(sig.cansignalname).m_startBit) >= lastSignalStart)
-						{
-							lastSignalStart=Integer.parseInt(canSignals.get(sig.cansignalname).m_startBit);
-							lastSignalLength=Integer.parseInt(canSignals.get(sig.cansignalname).m_length);
-						}
-					}
-				}
-				displacement=(lastSignalStart+lastSignalLength)-
-							(Integer.parseInt(canSignals.get(curSignalName).m_startBit)+
-								Integer.parseInt(canSignals.get(curSignalName).m_length)); ""}»
 				// reset right-hand side of bit field
-				«tempVarName»=«tempVarName» >> («displacement»);
+				«tempVarName»=«tempVarName» >> («canSignals.get(curSignalName).m_startBit»);
 				
 				«var int actualLength=Integer.parseInt(canSignals.get(curSignalName).m_length)»
 				«{
@@ -1223,6 +1198,7 @@ class CANBridgeTest : public CxxTest::TestSuite {
 				«ENDFOR»
 
 				canmapping::«mapping.mappingName.toString.replaceAll("\\.", "::")» «testName»;
+				
 				«IF canIDs.length==GCMs.size»
 					«FOR canid:canIDs»
 					«testName».decode(«GCMs.get(canid)»);
