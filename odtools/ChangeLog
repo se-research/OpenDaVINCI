@@ -1,3 +1,4 @@
+3.0.4 - Fixing and validating CAN message specification handling and code generation
 3.0.3 - Fixed warning in generated test code
 3.0.2 - Updating CAN message handling
 3.0.1 - Fixed compilation on Mac OSX; added CSVExporter visitor
