@@ -183,55 +183,145 @@ message automotive.vehicle.LightSystem [id = 76] {
     uint8 headlights [id = 1];
 }
 
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+
 // Imported data structures from GCDC'16
+message from.opendlv.Constants [id = 150] {
+  const double PI = 3.141592653589793;
+  const double DEG2RAD = 0.017453292522222;  // PI/180.0
+  const double RAD2DEG = 57.295779513082325; // 1.0 / DEG2RAD;
+}
+
+message from.opendlv.proxy.GpsReading [id = 161] {
+  double timestamp [id = 1];
+  double latitude [id = 2];
+  double longitude [id = 3];
+  float altitude [id = 4];
+  float northHeading [id = 5];
+  float speed [id = 6];
+  uint8 latitudeDirection [id = 7];
+  uint8 longitudeDirection [id = 8];
+  uint8 satelliteCount [id = 9];
+  bool hasHeading [id = 10];
+  bool hasRtk [id = 11];
+}
+
+message from.opendlv.proxy.V2vInbound [id = 162] {
+  uint32 size [id = 1];
+  string data [id = 2];
+  //list<uint8> data [id = 3];
+}
+
+message from.opendlv.proxy.V2vOutbound [id = 163] {
+  uint32 size [id = 1];
+  string data [id = 2];
+  //list<uint8> data [id = 3];
+}
+
+message from.opendlv.proxy.Actuation [id = 164] {
+  float acceleration [id = 1];
+  float steering [id = 2];
+  bool isValid [id = 3];
+}
+
+message from.opendlv.proxy.ControlState [id = 165] {
+  bool allowAutonomous [id = 1];
+}
+
+// Sensation
+message from.opendlv.sensation.Voice [id = 166] {
+  string type [id = 1];
+  uint32 size [id = 2];
+  string data [id = 3];
+  //list<uint8> data [id = 4];
+}
+
+// Unused IDs: 174, 177
+
+// Knowledge
+message from.opendlv.knowledge.Message [id = 185] {
+  uint32 size [id = 1];
+  string data [id = 2];
+  //list<uint8> data [id = 3];
+}
+
+message from.opendlv.perception.LanePosition [id = 186] {
+  float offset [id = 1];
+  float heading [id = 2];
+}
+
+message from.opendlv.perception.LeadVehicleSize [id = 187] {
+  float size [id = 1];
+}
+
+message from.opendlv.sensation.OpticalFlow [id = 188] {
+  float flow [id = 1];
+}
+
+message from.opendlv.perception.DesiredOpticalFlow [id = 189] {
+  float flow [id = 1];
+}
+
+// Action messages
+message from.opendlv.action.Correction [id = 190] {
+  odcore::data::TimeStamp startTime [id = 1];
+  string type [id = 2];
+  bool isInhibitory [id = 3];
+  float amplitude [id = 4];
+}
+
+
 message from.opendlv.proxy.reverefh16.Pedals [id = 191] {
-    double accelerationpedalposition [id = 1];
-    double brakepedalposition [id = 2];
-    double torsionbartorque [id = 3];
+    double accelerationPedalPosition [id = 1];
+    double brakePedalPosition [id = 2];
+    double torsionBarTorque [id = 3];
 }
 
 message from.opendlv.proxy.reverefh16.AccelerationRequest [id = 192] {
-    bool enable_accrequest [id = 1];
-    double accelerationrequest [id = 2];
+    bool enableRequest [id = 1];
+    double acceleration [id = 2];
 }
 
 message from.opendlv.proxy.reverefh16.BrakeRequest [id = 193] {
-    bool enable_brakerequest [id = 1];
-    double brakerequest [id = 2];
+    bool enableRequest [id = 1];
+    double brake [id = 2];
 }
 
 message from.opendlv.proxy.reverefh16.SteeringRequest [id = 194] {
-    bool enable_steerreq [id = 1];
-    double steerreq_rwa [id = 2];
-    double steerreq_deltatrq [id = 3];
+    bool enableRequest [id = 1];
+    double steeringRoadWheelAngle [id = 2];
+    double steeringDeltaTorque [id = 3];
 }
 
 message from.opendlv.proxy.reverefh16.Axles [id = 195] {
-    double frontaxle1load [id = 1];
-    double driveaxle1load [id = 2];
-    double driveaxle2load [id = 3];
+    double loadAxle11 [id = 1];
+    double loadAxle12 [id = 2];
+    double loadAxle13 [id = 3];
 }
 
 message from.opendlv.proxy.reverefh16.Propulsion [id = 196] {
-    double vehiclespeedpropshaft [id = 1];
+    double propulsionShaftVehicleSpeed [id = 1];
 }
 
 message from.opendlv.proxy.reverefh16.VehicleState [id = 197] {
-    double acceleration_x [id = 1];
-    double acceleration_y [id = 2];
-    double yawrate [id = 3];
+    double accelerationX [id = 1];
+    double accelerationY [id = 2];
+    double yawRate [id = 3];
 }
 
 message from.opendlv.proxy.reverefh16.Wheels [id = 198] {
-    double frontaxle1wheelspeedleft [id = 1];
-    double frontaxle1wheelspeedright [id = 2];
-    double driveaxle1wheelspeedleft [id = 3];
-    double driveaxle1wheelspeedright [id = 4];
-    double driveaxle2wheelspeedleft [id = 5];
-    double driveaxle2wheelspeedright [id = 6];
+    double speedWheel111 [id = 1];
+    double speedWheel112 [id = 2];
+    double speedWheel121 [id = 3];
+    double speedWheel122 [id = 4];
+    double speedWheel131 [id = 5];
+    double speedWheel132 [id = 6];
 }
 
 message from.opendlv.proxy.reverefh16.Steering [id = 199] {
     double roadwheelangle [id = 1];
     double steeringwheelangle [id = 2];
 }
+
