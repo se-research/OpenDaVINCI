@@ -25,6 +25,7 @@
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/base/Visitable.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/data/TimeStamp.h"
@@ -56,6 +57,7 @@ namespace cockpit {
 
             LiveFeedWidget::LiveFeedWidget(const PlugIn &/*plugIn*/, QWidget *prnt) :
                 QWidget(prnt),
+                m_dataViewMutex(),
                 m_dataView(),
                 m_dataToType() {
                 // Set size.
@@ -83,6 +85,7 @@ namespace cockpit {
             LiveFeedWidget::~LiveFeedWidget() {}
 
             void LiveFeedWidget::nextContainer(Container &container) {
+                Lock l(m_dataViewMutex);
                 transformContainerToTree(container);
             }
 
