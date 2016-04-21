@@ -25,6 +25,7 @@
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/base/Visitable.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/data/TimeStamp.h"
@@ -32,12 +33,15 @@
 #include "plugins/livefeed/LiveFeedWidget.h"
 #include "plugins/livefeed/MessageToTupleVisitor.h"
 
-#include "automotivedata/generated/from/opendlv/proxy/reverefh16/Axles.h"
 #include "automotivedata/generated/from/opendlv/proxy/reverefh16/Pedals.h"
-#include "automotivedata/generated/from/opendlv/proxy/reverefh16/Steering.h"
-#include "automotivedata/generated/from/opendlv/proxy/reverefh16/VehicleState.h"
+#include "automotivedata/generated/from/opendlv/proxy/reverefh16/AccelerationRequest.h"
+#include "automotivedata/generated/from/opendlv/proxy/reverefh16/BrakeRequest.h"
+#include "automotivedata/generated/from/opendlv/proxy/reverefh16/SteeringRequest.h"
+#include "automotivedata/generated/from/opendlv/proxy/reverefh16/Axles.h"
 #include "automotivedata/generated/from/opendlv/proxy/reverefh16/Propulsion.h"
+#include "automotivedata/generated/from/opendlv/proxy/reverefh16/VehicleState.h"
 #include "automotivedata/generated/from/opendlv/proxy/reverefh16/Wheels.h"
+#include "automotivedata/generated/from/opendlv/proxy/reverefh16/Steering.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }
 
@@ -53,6 +57,7 @@ namespace cockpit {
 
             LiveFeedWidget::LiveFeedWidget(const PlugIn &/*plugIn*/, QWidget *prnt) :
                 QWidget(prnt),
+                m_dataViewMutex(),
                 m_dataView(),
                 m_dataToType() {
                 // Set size.
@@ -80,6 +85,7 @@ namespace cockpit {
             LiveFeedWidget::~LiveFeedWidget() {}
 
             void LiveFeedWidget::nextContainer(Container &container) {
+                Lock l(m_dataViewMutex);
                 transformContainerToTree(container);
             }
 
@@ -127,6 +133,30 @@ namespace cockpit {
                 }
 
                 // GCDC FH16
+                if (container.getDataType() == from::opendlv::proxy::reverefh16::SteeringRequest::ID()) {
+                    from::opendlv::proxy::reverefh16::SteeringRequest tmp = container.getData<from::opendlv::proxy::reverefh16::SteeringRequest>();
+                    if (dynamic_cast<Visitable*>(&tmp) != NULL) {
+                        addMessageToTree(tmp.LongName(), container, tmp);
+                    }
+                    return;
+                }
+
+                if (container.getDataType() == from::opendlv::proxy::reverefh16::BrakeRequest::ID()) {
+                    from::opendlv::proxy::reverefh16::BrakeRequest tmp = container.getData<from::opendlv::proxy::reverefh16::BrakeRequest>();
+                    if (dynamic_cast<Visitable*>(&tmp) != NULL) {
+                        addMessageToTree(tmp.LongName(), container, tmp);
+                    }
+                    return;
+                }
+
+                if (container.getDataType() == from::opendlv::proxy::reverefh16::AccelerationRequest::ID()) {
+                    from::opendlv::proxy::reverefh16::AccelerationRequest tmp = container.getData<from::opendlv::proxy::reverefh16::AccelerationRequest>();
+                    if (dynamic_cast<Visitable*>(&tmp) != NULL) {
+                        addMessageToTree(tmp.LongName(), container, tmp);
+                    }
+                    return;
+                }
+
                 if (container.getDataType() == from::opendlv::proxy::reverefh16::Axles::ID()) {
                     from::opendlv::proxy::reverefh16::Axles tmp = container.getData<from::opendlv::proxy::reverefh16::Axles>();
                     if (dynamic_cast<Visitable*>(&tmp) != NULL) {
