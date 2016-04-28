@@ -18,7 +18,7 @@ If you have installed OpenDaVINCI from sources, you will find instructions here:
 
 **Overview build status:**
 
-*Documentation:* [![Documentation Status](https://readthedocs.org/projects/opendavinci/badge/?version=latest)](http://opendavinci.readthedocs.org/en/latest/)
+*Documentation:* [![Documentation Status](https://readthedocs.io/projects/opendavinci/badge/?version=latest)](http://opendavinci.readthedocs.io/en/latest/)
 
 *Lastest source code deployment:* https://github.com/se-research/OpenDaVINCI/releases/latest
 
