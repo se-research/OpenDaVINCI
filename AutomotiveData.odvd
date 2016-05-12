@@ -194,6 +194,10 @@ message from.opendlv.Constants [id = 150] {
   const double RAD2DEG = 57.295779513082325; // 1.0 / DEG2RAD;
 }
 
+message from.opendlv.coordinate.Spherical3 [id = 152] {
+  float p[3] [id = 1]; // radius, zenith, azimuth
+}
+
 message from.opendlv.proxy.GpsReading [id = 161] {
   double timestamp [id = 1];
   double latitude [id = 2];
@@ -238,7 +242,25 @@ message from.opendlv.sensation.Voice [id = 166] {
   //list<uint8> data [id = 4];
 }
 
-// Unused IDs: 174, 177
+message from.opendlv.sensation.Geolocation [id = 169] {
+  float latitude [id = 1];
+  float longitude [id = 2];
+  float altitude [id = 3];
+  float heading [id = 4];
+}
+
+message from.opendlv.sensation.OpticalFlow [id = 174] {
+  uint16 nPoint [id = 1];
+  list<float> x [id = 2];
+  list<float> y [id = 3];
+  list<float> u [id = 4];
+  list<float> v [id = 5];
+  //float flow  [id = 6];
+}
+
+message from.opendlv.sensation.DirectionOfMovement [id = 175] {
+  from.opendlv.coordinate.Spherical3 directionOfMovement [id = 1];
+}
 
 // Knowledge
 message from.opendlv.knowledge.Message [id = 185] {
@@ -254,14 +276,6 @@ message from.opendlv.perception.LanePosition [id = 186] {
 
 message from.opendlv.perception.LeadVehicleSize [id = 187] {
   float size [id = 1];
-}
-
-message from.opendlv.sensation.OpticalFlow [id = 188] {
-  float flow [id = 1];
-}
-
-message from.opendlv.perception.DesiredOpticalFlow [id = 189] {
-  float flow [id = 1];
 }
 
 // Action messages
@@ -281,7 +295,7 @@ message from.opendlv.proxy.reverefh16.Pedals [id = 191] {
 
 message from.opendlv.proxy.reverefh16.AccelerationRequest [id = 192] {
     bool enableRequest [id = 1];
-    double acceleration [id = 2];
+    double accelerationPedalPosition [id = 2];
 }
 
 message from.opendlv.proxy.reverefh16.BrakeRequest [id = 193] {
