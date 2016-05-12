@@ -131,6 +131,15 @@ namespace automotive {
                 pcap::PacketHeader packetHeader = packet.getHeader();
                 if(packetHeader.getIncl_len()==1248)
                 {
+
+                    if(!VelodyneSharedMemory->isValid()) return;
+                    
+                    // Using a scoped lock to lock and automatically unlock a shared memory segment.
+                    odcore::base::Lock l(VelodyneSharedMemory);
+                    float *velodyneRawData = static_cast<float*>(VelodyneSharedMemory->getSharedMemory());
+
+
+
                     const string payload = packet.getPayload();
                     string dataToDecode=payload.substr(42);
                 
@@ -219,11 +228,8 @@ namespace automotive {
                             //Decode intensity: 1 byte
                             int intensityInt=(unsigned int)(uint8_t)(dataToDecode.at(2));
                             intensity=(float)intensityInt;
-                            
-                            if(VelodyneSharedMemory->isValid()){
-                                // Using a scoped lock to lock and automatically unlock a shared memory segment.
-                                odcore::base::Lock l(VelodyneSharedMemory);
-                                float *velodyneRawData = static_cast<float*>(VelodyneSharedMemory->getSharedMemory());
+
+                            {                            
                                 // Alignment of Velodyne data: (x0, y0, z0, intensity0), (x1, y1, z1, intensity1), ...
                                 long startID=NUMBER_OF_COMPONENTS_PER_POINT*pointIndex;
                                 velodyneRawData[startID]=xData;
