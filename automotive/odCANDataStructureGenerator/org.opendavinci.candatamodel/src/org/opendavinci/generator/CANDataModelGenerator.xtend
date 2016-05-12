@@ -197,7 +197,7 @@ namespace canmapping {
 #endif /*GENERATEDHEADERS_«generatedHeadersFile.toUpperCase()»_H_*/
 '''
 
-    /* This method generates the header file content. */
+    /* This method generates the super implementation file content. */
 	def generateSuperImplementationFileContent(String generatedHeadersFile, ArrayList<String> includedClasses) '''
 /*
  * This software is open source. Please see COPYING and AUTHORS for further information.
@@ -253,6 +253,7 @@ namespace canmapping {
 } // canmapping
 '''
 
+// this method generates the header file body
 	def generateHeaderFileBody(String className, CANSignalMapping mapping) '''
     using namespace std;
 
@@ -446,16 +447,16 @@ namespace canmapping {
 
 «var ArrayList<String> capitalizedNames=new ArrayList<String>»
 «{
-			var String[] chunks
-			var String capitalizedName
-			for(currentMapping : mapping.mappings){
-				chunks=currentMapping.cansignalname.split('\\.');
-				capitalizedName=""
-				for(chunk:chunks){
-					capitalizedName+=chunk.toFirstUpper
-				}
-				capitalizedNames+=capitalizedName
+		var String[] chunks
+		var String capitalizedName
+		for(currentMapping : mapping.mappings){
+			chunks=currentMapping.cansignalname.split('\\.');
+			capitalizedName=""
+			for(chunk:chunks){
+				capitalizedName+=chunk.toFirstUpper
 			}
+			capitalizedNames+=capitalizedName
+		}
 	}»
 
 	«className»::«className»() :
@@ -698,7 +699,16 @@ namespace canmapping {
 					var int nextFieldStart=63;
 					var boolean oneFound=false;
 					for(sig:mapping.mappings) {
-						if(canSignals.get(sig.cansignalname).m_CANID==canSignals.get(currentSignalInMapping.cansignalname).m_CANID) // signals in the same CAN message
+						
+						// if the signal is not found stop the code generation
+						if(canSignals.get(sig.cansignalname)==null)
+						{
+							/* This if branch should be unreachable since the generator is supposed to fail when a signal is misspelled or not found*/
+							throwSignalNotFoundException(sig.cansignalname);
+							return -1;
+						}
+						
+						if(canSignals.get(sig.cansignalname).m_CANID==canSignals.get(currentSignalInMapping.cansignalname).m_CANID)// signals in the same CAN message
 						{
 							// find the signals to the left-hand side in the bitfield, consider the closest to the current one 
 							// (i.e. the next signal in the payload going in the direction for which the bit number increases)
@@ -716,6 +726,7 @@ namespace canmapping {
 						actualLength = nextFieldStart - Integer.parseInt(canSignals.get(currentSignalInMapping.cansignalname).m_startBit);
 					}
 					""}»
+
 				«var String transformedType»
 				«IF actualLength <= 8»
 					«{transformedType="uint8_t";""}»
@@ -754,8 +765,11 @@ namespace canmapping {
 			else {
 				abort=true; // set to true and never reset to false to keep track of failures
 			}
-			«ELSE»
-				cerr<<"Warning: Signal '«className».«currentSignalInMapping.cansignalname»' could not be found. It will be ignored."<<endl;
+			«ELSE /* This else branch should be unreachable since the generator is supposed to fail when a signal is misspelled or not found*/»
+				«System.err.println("Warning: Signal "+className+"."+currentSignalInMapping.cansignalname+" could not be found. Check your .can file.")»
+				cerr<<"Warning: Signal '«className».«currentSignalInMapping.cansignalname»' could not be found. Check your .can file."<<endl;
+				«throwSignalNotFoundException(className+'.'+currentSignalInMapping.cansignalname)»
+				«System.exit(-1)»
 			«ENDIF»
 		«ENDFOR»
 		
@@ -855,7 +869,9 @@ namespace canmapping {
 			// addressing signal «curSignalName»
 			{
 				// Get the raw payload.
+
 				uint64_t data = m_payloads[«canSignals.get(curSignalName).m_CANID»];
+
 				// the rolling is due to Vector's dbc file numeration convention
 				{
 					uint64_t rolledPayload=0x0;
@@ -891,6 +907,15 @@ namespace canmapping {
 					var int nextFieldStart=63;
 					var boolean oneFound=false;
 					for(sig:mapping.mappings) {
+						
+						// if the signal is not found stop the code generation
+						if(canSignals.get(sig.cansignalname)==null)
+						{
+							/* This if branch should be unreachable since the generator is supposed to fail when a signal is misspelled or not found*/
+							throwSignalNotFoundException(sig.cansignalname);
+							return -1;
+						}
+						
 						if(canSignals.get(sig.cansignalname).m_CANID==canSignals.get(curSignalName).m_CANID) // signals in the same CAN message
 						{
 							// find the signals to the left-hand side in the bitfield, consider the closest to the current one 
@@ -909,6 +934,7 @@ namespace canmapping {
 						actualLength = nextFieldStart - Integer.parseInt(canSignals.get(curSignalName).m_startBit);
 					}
 					""}»
+
 				«var String mask="0"»«{for(var int i=0;i<actualLength;i++) mask+="1";""}»
 				«tempVarName»=«tempVarName» & 0b«mask»;
 
@@ -963,9 +989,12 @@ namespace canmapping {
 				// Add created field to generic message.
 				message.addField(std::shared_ptr<odcore::data::reflection::AbstractField>(f));
 			}
-			«ELSE /*if the signal doesn't exist*/»
-				// Signal "«curSignalName»" could not be found. It will be ignored.
-				cerr<<"Warning: Signal '«className».«curSignalName»' could not be found. It will be ignored."<<endl;
+			«ELSE /* This else branch should be unreachable since the generator is supposed to fail when a signal is misspelled or not found*/»
+				// Signal "«curSignalName»" could not be found. 
+				«System.err.println("Warning: Signal "+className+"."+currentSignalInMapping.cansignalname+" could not be found. Check your .can file.")»
+				cerr<<"Warning: Signal '«className».«curSignalName»' could not be found. Check your .can file."<<endl;
+				«throwSignalNotFoundException(className+'.'+currentSignalInMapping.cansignalname)»
+				«System.exit(-1)»
 			«ENDIF»
 		«ENDFOR»
 		// Depending on the CAN message specification, we are either ready here
@@ -993,6 +1022,12 @@ namespace canmapping {
 		return c;
 	}
 	'''
+	
+	def throwSignalNotFoundException(String signalLongName) {
+		//either IllegalStateException or UnsupportedOperationException
+		throw new IllegalStateException("Warning: Signal "+signalLongName+" could not be found. Check your .can file.");
+		//System.exit(-1); // doesn't work here
+	}
 	
 	/* This method generates the implementation (.cpp). */
 	def generateImplementationFileContent(CANSignalMapping mapping, String includeDirectoryPrefix, HashMap<String, CANSignalDescription> canSignals) '''
@@ -1033,6 +1068,7 @@ IF(splittedMN.get(splittedMN.size-1).compareTo(signalName.split("\\.").get(0).to
 	}
 	""
 }»
+
 «IF canSignal!=null»
 CANID       : «canSignal.m_CANID»
 FQDN        : «canSignal.m_FQDN»
@@ -1045,7 +1081,10 @@ add         : «canSignal.m_add»
 rangeStart  : «canSignal.m_rangeStart»
 rangeEnd    : «canSignal.m_rangeEnd»
 «ELSE»
-Signal "«signalName»" could not be found. It will be ignored.
+Signal "«signalName»" could not be found. 
+«System.err.println("Warning: Signal "+signalName+" could not be found. Check your .can file.") /*first one to show up in console*/»
+«throwSignalNotFoundException(signalName)»
+«System.exit(-1)»
 «ENDIF»
 «ENDFOR»
 */
@@ -1110,7 +1149,10 @@ add         : «canSignal.m_add»
 rangeStart  : «canSignal.m_rangeStart»
 rangeEnd    : «canSignal.m_rangeEnd»
 «ELSE»
-Signal "«signalName»" could not be found. It will be ignored.
+Signal "«signalName»" could not be found. 
+«System.err.println("Warning: Signal "+signalName+" could not be found. Check your .can file.")»
+«throwSignalNotFoundException(signalName)»
+«System.exit(-1)»
 «ENDIF»
 «ENDFOR»*/
 
@@ -1322,7 +1364,10 @@ IF(splittedMN.get(splittedMN.size-1).compareTo(signalName.split("\\.").get(0).to
 «IF canSignal!=null»
 CANID       : «canSignal.m_CANID»
 «ELSE»
-Signal "«signalName»" could not be found. It will be ignored.
+Signal "«signalName»" could not be found. 
+«System.err.println("Warning: Signal "+signalName+" could not be found. Check your .can file.")»
+«throwSignalNotFoundException(signalName)»
+«System.exit(-1)»
 «ENDIF»
 «ENDFOR»*/
 int ID=0;
@@ -1526,7 +1571,10 @@ IF(splittedMN.get(splittedMN.size-1).compareTo(signalName.split("\\.").get(0).to
 «IF canSignal!=null»
 CANID       : «canSignal.m_CANID»
 «ELSE»
-Signal "«signalName»" could not be found. It will be ignored.
+Signal "«signalName»" could not be found. 
+«System.err.println("Warning: Signal "+signalName+" could not be found. Check your .can file.")»
+«throwSignalNotFoundException(signalName)»
+«System.exit(-1)»
 «ENDIF»
 «ENDFOR»*/
 int ID=0;
@@ -1793,7 +1841,10 @@ system messageGenerator,Receiver,Synchronizer;
 		""
 	}»
 	«IF canSignal==null»
-	Signal "«signalName»" could not be found. It will be ignored.
+	// Warning: Signal "+«signalName»+" could not be found. Check your .can file.
+	«System.err.println("Warning: Signal "+signalName+" could not be found. Check your .can file.")»
+	«throwSignalNotFoundException(signalName)»
+	«System.exit(-1)»
 	«ENDIF»
 	«ENDFOR»
 	«IF canIDs.size>1»
