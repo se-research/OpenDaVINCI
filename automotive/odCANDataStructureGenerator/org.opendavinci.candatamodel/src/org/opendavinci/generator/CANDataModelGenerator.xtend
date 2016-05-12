@@ -766,8 +766,8 @@ namespace canmapping {
 				abort=true; // set to true and never reset to false to keep track of failures
 			}
 			«ELSE /* This else branch should be unreachable since the generator is supposed to fail when a signal is misspelled or not found*/»
-				«System.err.println("Warning: Signal "+className+"."+currentSignalInMapping.cansignalname+" could not be found. Check your .can file.")»
-				cerr<<"Warning: Signal '«className».«currentSignalInMapping.cansignalname»' could not be found. Check your .can file."<<endl;
+				«System.err.println("\n\nWarning: Signal "+className+"."+currentSignalInMapping.cansignalname+" could not be found. Check your .can file. \n\n")»
+				cerr<<endl<<endl<<"Warning: Signal '«className».«currentSignalInMapping.cansignalname»' could not be found. Check your .can file."<<endl<<endl<<endl;
 				«throwSignalNotFoundException(className+'.'+currentSignalInMapping.cansignalname)»
 				«System.exit(-1)»
 			«ENDIF»
@@ -991,8 +991,8 @@ namespace canmapping {
 			}
 			«ELSE /* This else branch should be unreachable since the generator is supposed to fail when a signal is misspelled or not found*/»
 				// Signal "«curSignalName»" could not be found. 
-				«System.err.println("Warning: Signal "+className+"."+currentSignalInMapping.cansignalname+" could not be found. Check your .can file.")»
-				cerr<<"Warning: Signal '«className».«curSignalName»' could not be found. Check your .can file."<<endl;
+				«System.err.println("\n\nWarning: Signal "+className+"."+currentSignalInMapping.cansignalname+" could not be found. Check your .can file. \n\n")»
+				cerr<<endl<<endl<<"Warning: Signal '«className».«curSignalName»' could not be found. Check your .can file."<<endl<<endl<<endl;
 				«throwSignalNotFoundException(className+'.'+currentSignalInMapping.cansignalname)»
 				«System.exit(-1)»
 			«ENDIF»
@@ -1025,7 +1025,7 @@ namespace canmapping {
 	
 	def throwSignalNotFoundException(String signalLongName) {
 		//either IllegalStateException or UnsupportedOperationException
-		throw new IllegalStateException("Warning: Signal "+signalLongName+" could not be found. Check your .can file.");
+		throw new IllegalStateException("\n\nWarning: Signal "+signalLongName+" could not be found. Check your .can file. \n\n");
 		//System.exit(-1); // doesn't work here
 	}
 	
@@ -1082,7 +1082,7 @@ rangeStart  : «canSignal.m_rangeStart»
 rangeEnd    : «canSignal.m_rangeEnd»
 «ELSE»
 Signal "«signalName»" could not be found. 
-«System.err.println("Warning: Signal "+signalName+" could not be found. Check your .can file.") /*first one to show up in console*/»
+«System.err.println("\n\nWarning: Signal "+signalName+" could not be found. Check your .can file. \n\n") /*first one to show up in console*/»
 «throwSignalNotFoundException(signalName)»
 «System.exit(-1)»
 «ENDIF»
@@ -1150,7 +1150,7 @@ rangeStart  : «canSignal.m_rangeStart»
 rangeEnd    : «canSignal.m_rangeEnd»
 «ELSE»
 Signal "«signalName»" could not be found. 
-«System.err.println("Warning: Signal "+signalName+" could not be found. Check your .can file.")»
+«System.err.println("\n\nWarning: Signal "+signalName+" could not be found. Check your .can file. \n\n")»
 «throwSignalNotFoundException(signalName)»
 «System.exit(-1)»
 «ENDIF»
@@ -1365,7 +1365,7 @@ IF(splittedMN.get(splittedMN.size-1).compareTo(signalName.split("\\.").get(0).to
 CANID       : «canSignal.m_CANID»
 «ELSE»
 Signal "«signalName»" could not be found. 
-«System.err.println("Warning: Signal "+signalName+" could not be found. Check your .can file.")»
+«System.err.println("\n\nWarning: Signal "+signalName+" could not be found. Check your .can file. \n\n")»
 «throwSignalNotFoundException(signalName)»
 «System.exit(-1)»
 «ENDIF»
@@ -1572,7 +1572,7 @@ IF(splittedMN.get(splittedMN.size-1).compareTo(signalName.split("\\.").get(0).to
 CANID       : «canSignal.m_CANID»
 «ELSE»
 Signal "«signalName»" could not be found. 
-«System.err.println("Warning: Signal "+signalName+" could not be found. Check your .can file.")»
+«System.err.println("\n\nWarning: Signal "+signalName+" could not be found. Check your .can file. \n\n")»
 «throwSignalNotFoundException(signalName)»
 «System.exit(-1)»
 «ENDIF»
@@ -1842,7 +1842,7 @@ system messageGenerator,Receiver,Synchronizer;
 	}»
 	«IF canSignal==null»
 	// Warning: Signal "+«signalName»+" could not be found. Check your .can file.
-	«System.err.println("Warning: Signal "+signalName+" could not be found. Check your .can file.")»
+	«System.err.println("\n\nWarning: Signal "+signalName+" could not be found. Check your .can file. \n\n")»
 	«throwSignalNotFoundException(signalName)»
 	«System.exit(-1)»
 	«ENDIF»
