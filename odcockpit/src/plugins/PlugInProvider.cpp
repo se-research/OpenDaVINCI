@@ -44,6 +44,7 @@
 #include "plugins/sharedimageviewer/SharedImageViewerPlugIn.h"
 #include "plugins/spy/SpyPlugIn.h"
 #include "plugins/streetmapviewer/StreetMapPlugIn.h"
+#include "plugins/startstop/StartStopPlugIn.h"
 
 namespace odcore { namespace base { class DataStoreManager; } }
 namespace odcore { namespace io { namespace conference { class ContainerConference; } } }
@@ -88,6 +89,7 @@ class PlugIn;
             m_listOfAvailablePlugIns.push_back("SessionViewer");
             m_listOfAvailablePlugIns.push_back("SharedImageViewer");
             m_listOfAvailablePlugIns.push_back("Spy");
+            m_listOfAvailablePlugIns.push_back("StartStop");
             m_listOfAvailablePlugIns.push_back("StreetMap");
 
             m_listOfDescriptions["ConfigurationViewer"] = tr("This plugin displays the current configuration.").toStdString();
@@ -107,6 +109,7 @@ class PlugIn;
             m_listOfDescriptions["SessionViewer"] = tr("This plugin displays currently running modules.").toStdString();
             m_listOfDescriptions["SharedImageViewer"] = tr("This plugin displays shared images.").toStdString();
             m_listOfDescriptions["Spy"] = tr("This plugin displays all distributed containers.").toStdString();
+            m_listOfDescriptions["StartStop"] = tr("This plugin allows to activate/deactivate autonomous control of the vehicle.").toStdString();
             m_listOfDescriptions["StreetMap"] = tr("This plugin visualizes the environment data using a map tile provider.").toStdString();
         }
 
@@ -142,6 +145,9 @@ class PlugIn;
             } else if (name == "Controller") {
                 cerr << "Creating Controller" << endl;
                 plugIn = std::shared_ptr<PlugIn>((PlugIn*)(new controller::ControllerPlugIn("Controller", m_kvc, m_conference, m_parent)));
+            } else if (name == "StartStop") {
+                cerr << "Creating StartStop" << endl;
+                plugIn = std::shared_ptr<PlugIn>((PlugIn*)(new startstop::StartStopPlugIn("StartStop", m_kvc, m_conference, m_parent)));
             }
             else if (name == "BirdsEyeMap") {
                 cerr << "Creating BirdsEyeMap" << endl;
