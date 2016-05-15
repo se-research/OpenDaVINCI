@@ -50,22 +50,46 @@ namespace odsupercomponent {
 
     void ConnectedModules::addModule(const ModuleDescriptor& md, ConnectedModule* module) {
         Lock l(m_modulesMutex);
-        m_modules[md.getName()] = module;
+
+        // Store modules including identifier.
+        stringstream sstr;
+        sstr << md.getName() << "-" << md.getIdentifier();
+        const string s = sstr.str();
+
+        m_modules[s] = module;
     }
 
     ConnectedModule* ConnectedModules::getModule(const ModuleDescriptor& md) {
         Lock l(m_modulesMutex);
-        return m_modules[md.getName()];
+
+        // Query module including identifier.
+        stringstream sstr;
+        sstr << md.getName() << "-" << md.getIdentifier();
+        const string s = sstr.str();
+
+        return m_modules[s];
     }
 
     void ConnectedModules::removeModule(const ModuleDescriptor& md) {
         Lock l(m_modulesMutex);
-        m_modules.erase(md.getName());
+
+        // Remove module including identifier.
+        stringstream sstr;
+        sstr << md.getName() << "-" << md.getIdentifier();
+        const string s = sstr.str();
+
+        m_modules.erase(s);
     }
 
     bool ConnectedModules::hasModule(const ModuleDescriptor& md) {
         Lock l(m_modulesMutex);
-        return (m_modules.count(md.getName()) != 0);
+
+        // Find module including identifier.
+        stringstream sstr;
+        sstr << md.getName() << "-" << md.getIdentifier();
+        const string s = sstr.str();
+
+        return (m_modules.count(s) != 0);
     }
 
     void ConnectedModules::pulse(const odcore::data::dmcp::PulseMessage &pm) {
