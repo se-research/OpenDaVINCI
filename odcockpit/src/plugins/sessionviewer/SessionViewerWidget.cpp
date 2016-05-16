@@ -24,6 +24,7 @@
 #include <algorithm>
 #include <iostream>
 #include <sstream>
+#include <string>
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
@@ -53,7 +54,9 @@ namespace cockpit {
                 m_expectedModulesToParticipateView(),
                 m_participatingModulesView(),
                 m_listOfExpectedModulesToParticipate(listOfExpectedModules),
-                m_participatingModules() {
+                m_participatingModules(),
+                m_expectedModulesToParticipateViewLabel(),
+                m_participatingModulesViewLabel() {
                 // Set size.
                 setMinimumSize(640, 800);
 
@@ -63,8 +66,12 @@ namespace cockpit {
                 // Modules expected to participate in this CID session.
                 QVBoxLayout* expectedModulesBox = new QVBoxLayout();
                 {
-                    QLabel *expectedModulesHeader = new QLabel(tr("Modules expected to participate:"));
-                    expectedModulesBox->addWidget(expectedModulesHeader);
+                    stringstream sstr;
+                    sstr << m_listOfExpectedModulesToParticipate.size() << " modules expected to participate:";
+                    const string s(sstr.str());
+
+                    m_expectedModulesToParticipateViewLabel = unique_ptr<QLabel>(new QLabel(s.c_str()));
+                    expectedModulesBox->addWidget(m_expectedModulesToParticipateViewLabel.get());
 
                     m_expectedModulesToParticipateView = unique_ptr<QListWidget>(new QListWidget(this));
 
@@ -74,8 +81,12 @@ namespace cockpit {
                 // Modules participating in this CID session.
                 QVBoxLayout* participatingModulesBox = new QVBoxLayout();
                 {
-                    QLabel *participatingModulesHeader = new QLabel(tr("Modules currently participating:"));
-                    participatingModulesBox->addWidget(participatingModulesHeader);
+                    stringstream sstr;
+                    sstr << "0/" << m_listOfExpectedModulesToParticipate.size() << " modules currently participating:";
+                    const string s(sstr.str());
+
+                    m_participatingModulesViewLabel = unique_ptr<QLabel>(new QLabel(s.c_str()));
+                    participatingModulesBox->addWidget(m_participatingModulesViewLabel.get());
 
                     m_participatingModulesView = unique_ptr<QTreeWidget>(new QTreeWidget(this));
                     m_participatingModulesView->setColumnCount(4);
@@ -168,6 +179,21 @@ namespace cockpit {
                     while (nt != expectedModulesToParticipate.end()) {
                         m_expectedModulesToParticipateView->addItem(QString(nt->c_str()));
                         nt++;
+                    }
+
+                    // Update labels.
+                    {
+                        stringstream sstr;
+                        sstr << expectedModulesToParticipate.size() << " modules expected to participate:";
+                        const string l1(sstr.str());
+                        m_expectedModulesToParticipateViewLabel->setText(l1.c_str());
+
+                        sstr.str("");
+                        int cnt = (m_listOfExpectedModulesToParticipate.size() - expectedModulesToParticipate.size());
+                        cnt = (cnt < 0) ? 0 : cnt;
+                        sstr << cnt << "/" << m_listOfExpectedModulesToParticipate.size() << " modules currently participating:";
+                        const string l2(sstr.str());
+                        m_participatingModulesViewLabel->setText(l2.c_str());
                     }
 
                     m_participatingModulesView->setSortingEnabled(true);

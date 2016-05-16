@@ -90,6 +90,8 @@ namespace cockpit {
                     unique_ptr<QTreeWidget> m_participatingModulesView;
                     vector<string> m_listOfExpectedModulesToParticipate;
                     map<string, QTreeWidgetItem* > m_participatingModules;
+                    unique_ptr<QLabel> m_expectedModulesToParticipateViewLabel;
+                    unique_ptr<QLabel> m_participatingModulesViewLabel;
 
                     void addLogMessageToTree(const string &module, const odcore::data::dmcp::ModuleStatistic &ms);
             };
