@@ -121,17 +121,19 @@ namespace cockpit {
                     odcore::data::dmcp::ModuleStatistics mss = container.getData<odcore::data::dmcp::ModuleStatistics>();
 
                     // Update widget.
+                    uint32_t totalNumberOfModules = 0;
                     auto iterators = mss.iteratorPair_ListOfModuleStatistics();
                     auto it = iterators.first;
                     vector<string> updatedEntries;
                     while (it != iterators.second) {
+                        totalNumberOfModules++;
                         odcore::data::dmcp::ModuleStatistic ms = (*it);
 
                         stringstream sstr;
                         sstr << ms.getModule().getName();
 
                         if (ms.getModule().getIdentifier().size() > 0) {
-                            sstr << "-" << ms.getModule().getIdentifier();
+                            sstr << ":" << ms.getModule().getIdentifier();
                         }
                         addLogMessageToTree(sstr.str(), ms);
                         updatedEntries.push_back(sstr.str());
@@ -191,7 +193,7 @@ namespace cockpit {
                         sstr.str("");
                         int cnt = (m_listOfExpectedModulesToParticipate.size() - expectedModulesToParticipate.size());
                         cnt = (cnt < 0) ? 0 : cnt;
-                        sstr << cnt << "/" << m_listOfExpectedModulesToParticipate.size() << " modules currently participating:";
+                        sstr << cnt << "/" << m_listOfExpectedModulesToParticipate.size() << " modules currently participating (total: " << totalNumberOfModules << "):";
                         const string l2(sstr.str());
                         m_participatingModulesViewLabel->setText(l2.c_str());
                     }
