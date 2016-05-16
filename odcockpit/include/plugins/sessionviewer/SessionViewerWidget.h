@@ -26,6 +26,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "opendavinci/odcore/io/conference/ContainerListener.h"
 #include "opendavinci/odcore/base/Mutex.h"
@@ -75,17 +76,20 @@ namespace cockpit {
                      *
                      * @param plugIn Reference to the plugin to which this widget belongs.
                      * @param prnt Pointer to the parental widget.
+                     * @param listOfExpectedModules List of modules expected to participate in the session.
                      */
-                    SessionViewerWidget(const PlugIn &plugIn, QWidget *prnt);
+                    SessionViewerWidget(const PlugIn &plugIn, QWidget *prnt, const vector<string> &listOfExpectedModules);
 
                     virtual ~SessionViewerWidget();
 
                     virtual void nextContainer(Container &c);
 
                 private:
-                    odcore::base::Mutex m_dataViewMutex;
-                    unique_ptr<QTreeWidget> m_dataView;
-                    map<string, QTreeWidgetItem* > m_components;
+                    odcore::base::Mutex m_participatingModulesViewMutex;
+                    unique_ptr<QListWidget> m_expectedModulesToParticipateView;
+                    unique_ptr<QTreeWidget> m_participatingModulesView;
+                    vector<string> m_listOfExpectedModulesToParticipate;
+                    map<string, QTreeWidgetItem* > m_participatingModules;
 
                     void addLogMessageToTree(const string &module, const odcore::data::dmcp::ModuleStatistic &ms);
             };

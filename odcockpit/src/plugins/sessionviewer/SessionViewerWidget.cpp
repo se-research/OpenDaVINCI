@@ -21,6 +21,7 @@
 #include <QtGui>
 
 #include <cstring>
+#include <algorithm>
 #include <iostream>
 #include <sstream>
 #include <vector>
@@ -46,32 +47,54 @@ namespace cockpit {
             using namespace odcore::base;
             using namespace odcore::data;
 
-            SessionViewerWidget::SessionViewerWidget(const PlugIn &/*plugIn*/, QWidget *prnt) :
+            SessionViewerWidget::SessionViewerWidget(const PlugIn &/*plugIn*/, QWidget *prnt, const vector<string> &listOfExpectedModules) :
                 QWidget(prnt),
-                m_dataViewMutex(),
-                m_dataView(),
-                m_components() {
+                m_participatingModulesViewMutex(),
+                m_expectedModulesToParticipateView(),
+                m_participatingModulesView(),
+                m_listOfExpectedModulesToParticipate(listOfExpectedModules),
+                m_participatingModules() {
                 // Set size.
-                setMinimumSize(640, 480);
+                setMinimumSize(640, 800);
 
                 // Layout manager.
-                QGridLayout* mainBox = new QGridLayout(this);
+                QHBoxLayout* mainBox = new QHBoxLayout(this);
 
-                //ListView and header construction
-                m_dataView = unique_ptr<QTreeWidget>(new QTreeWidget(this));
-                m_dataView->setColumnCount(4);
-                QStringList headerLabel;
-                headerLabel << tr("Component") << tr("Version") << tr("Frequency") << tr("Slice Consumption");
-                m_dataView->setColumnWidth(0, 150);
-                m_dataView->setColumnWidth(1, 130);
-                m_dataView->setColumnWidth(2, 80);
-                m_dataView->setColumnWidth(3, 150);
-                m_dataView->setHeaderLabels(headerLabel);
-                m_dataView->setSortingEnabled(true);
-                m_dataView->sortByColumn(0, Qt::AscendingOrder);
+                // Modules expected to participate in this CID session.
+                QVBoxLayout* expectedModulesBox = new QVBoxLayout();
+                {
+                    QLabel *expectedModulesHeader = new QLabel(tr("Modules expected to participate:"));
+                    expectedModulesBox->addWidget(expectedModulesHeader);
 
-                //add to Layout
-                mainBox->addWidget(m_dataView.get(), 0, 0);
+                    m_expectedModulesToParticipateView = unique_ptr<QListWidget>(new QListWidget(this));
+
+                    expectedModulesBox->addWidget(m_expectedModulesToParticipateView.get());
+                }
+
+                // Modules participating in this CID session.
+                QVBoxLayout* participatingModulesBox = new QVBoxLayout();
+                {
+                    QLabel *participatingModulesHeader = new QLabel(tr("Modules currently participating:"));
+                    participatingModulesBox->addWidget(participatingModulesHeader);
+
+                    m_participatingModulesView = unique_ptr<QTreeWidget>(new QTreeWidget(this));
+                    m_participatingModulesView->setColumnCount(4);
+                    QStringList headerLabel;
+                    headerLabel << tr("Component") << tr("Version") << tr("Frequency") << tr("Slice Consumption");
+                    m_participatingModulesView->setColumnWidth(0, 150);
+                    m_participatingModulesView->setColumnWidth(1, 130);
+                    m_participatingModulesView->setColumnWidth(2, 80);
+                    m_participatingModulesView->setColumnWidth(3, 150);
+                    m_participatingModulesView->setHeaderLabels(headerLabel);
+                    m_participatingModulesView->setSortingEnabled(true);
+                    m_participatingModulesView->sortByColumn(0, Qt::AscendingOrder);
+
+                    participatingModulesBox->addWidget(m_participatingModulesView.get());
+                }
+
+                // Add to Layout.
+                mainBox->addLayout(expectedModulesBox);
+                mainBox->addLayout(participatingModulesBox);
 
                 // Set layout manager.
                 setLayout(mainBox);
@@ -80,9 +103,9 @@ namespace cockpit {
             SessionViewerWidget::~SessionViewerWidget() {}
 
             void SessionViewerWidget::nextContainer(Container &container) {
-                Lock l(m_dataViewMutex);
+                Lock l(m_participatingModulesViewMutex);
                 if (container.getDataType() == odcore::data::dmcp::ModuleStatistics::ID()) {
-                    m_dataView->setSortingEnabled(false);
+                    m_participatingModulesView->setSortingEnabled(false);
 
                     odcore::data::dmcp::ModuleStatistics mss = container.getData<odcore::data::dmcp::ModuleStatistics>();
 
@@ -107,8 +130,8 @@ namespace cockpit {
 
                     // Determine entries to remove due to non-updated values.
                     vector<string> entriesToRemove;
-                    auto jt = m_components.begin();
-                    while (jt != m_components.end()) {
+                    auto jt = m_participatingModules.begin();
+                    while (jt != m_participatingModules.end()) {
                         auto hasEntry = std::find(std::begin(updatedEntries), std::end(updatedEntries), jt->first);
                         if (hasEntry == std::end(updatedEntries)) {
                             entriesToRemove.push_back(jt->first);
@@ -119,25 +142,46 @@ namespace cockpit {
                     // Remove entries.
                     auto kt = entriesToRemove.begin();
                     while (kt != entriesToRemove.end()) {
-                        QTreeWidgetItem *entry = m_components[(*kt)];
-                        auto mt = m_components.find(*kt);
-                        m_components.erase(mt);
+                        QTreeWidgetItem *entry = m_participatingModules[(*kt)];
+                        auto mt = m_participatingModules.find(*kt);
+                        m_participatingModules.erase(mt);
                         delete entry; entry = NULL;
                         kt++;
                     }
 
-                    m_dataView->setSortingEnabled(true);
+                    // Update list of expected modules to participate by removing those who participate.
+                    vector<string> expectedModulesToParticipate = m_listOfExpectedModulesToParticipate;
+                    auto mt = m_participatingModules.begin();
+                    while (mt != m_participatingModules.end()) {
+                        auto hasEntry = std::find(std::begin(expectedModulesToParticipate), std::end(expectedModulesToParticipate), mt->first);
+                        if (hasEntry != std::end(expectedModulesToParticipate)) {
+                            expectedModulesToParticipate.erase(hasEntry);
+                        }
+                        mt++;
+                    }
+                    // Sort remaining modules.
+                    std::sort(std::begin(expectedModulesToParticipate), std::end(expectedModulesToParticipate));
+
+                    // Update list view of expected modules to participate.
+                    m_expectedModulesToParticipateView->clear();
+                    auto nt = expectedModulesToParticipate.begin();
+                    while (nt != expectedModulesToParticipate.end()) {
+                        m_expectedModulesToParticipateView->addItem(QString(nt->c_str()));
+                        nt++;
+                    }
+
+                    m_participatingModulesView->setSortingEnabled(true);
                 }
             }
 
             void SessionViewerWidget::addLogMessageToTree(const string &module, const odcore::data::dmcp::ModuleStatistic &ms) {
                 // Create new entry if needed
-                if (m_components.find(module) == m_components.end()) {
-                    QTreeWidgetItem *newEntry = new QTreeWidgetItem(m_dataView.get());
+                if (m_participatingModules.find(module) == m_participatingModules.end()) {
+                    QTreeWidgetItem *newEntry = new QTreeWidgetItem(m_participatingModulesView.get());
                     newEntry->setText(0, module.c_str());
-                    m_components[module] = newEntry;
+                    m_participatingModules[module] = newEntry;
                 }
-                QTreeWidgetItem *componentEntry = m_components[module];
+                QTreeWidgetItem *componentEntry = m_participatingModules[module];
 
                 // Update fields.
                 componentEntry->setText(1, ms.getModule().getVersion().c_str());

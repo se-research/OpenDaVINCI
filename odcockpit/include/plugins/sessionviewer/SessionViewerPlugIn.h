@@ -21,6 +21,7 @@
 #define COCKPIT_PLUGINS_SESSIONVIEWERPLUGIN_H_
 
 #include <string>
+#include <vector>
 
 #include "plugins/PlugIn.h"
 
@@ -71,6 +72,7 @@ class SessionViewerWidget;
 
                 private:
                     SessionViewerWidget *m_viewerWidget;
+                    vector<string> m_listOfExpectedModulesToParticipate;
             };
 
         }
