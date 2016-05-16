@@ -18,6 +18,7 @@
  */
 
 #include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/strings/StringToolbox.h"
 #include "ContainerObserver.h"
 #include "plugins/sessionviewer/SessionViewerPlugIn.h"
 #include "plugins/sessionviewer/SessionViewerWidget.h"
@@ -33,14 +34,20 @@ namespace cockpit {
 
             SessionViewerPlugIn::SessionViewerPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt) :
                 PlugIn(name, kvc, prnt),
-                m_viewerWidget(NULL) {
+                m_viewerWidget(NULL),
+                m_listOfExpectedModulesToParticipate() {
                 setDescription("This plugin displays currently running modules.");
+                try {
+                    string s = kvc.getValue<string>("global.session.expectedModules");
+                    m_listOfExpectedModulesToParticipate = odcore::strings::StringToolbox::split(s, ',');
+                }
+                catch(...) {}
             }
 
             SessionViewerPlugIn::~SessionViewerPlugIn() {}
 
             void SessionViewerPlugIn::setupPlugin() {
-                m_viewerWidget = new SessionViewerWidget(*this, getParentQWidget());
+                m_viewerWidget = new SessionViewerWidget(*this, getParentQWidget(), m_listOfExpectedModulesToParticipate);
 
                 ContainerObserver *co = getContainerObserver();
                 if (co != NULL) {

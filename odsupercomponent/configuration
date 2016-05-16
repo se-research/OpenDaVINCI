@@ -33,6 +33,9 @@ global.reference.WGS84.longitude = -11.93831921
 global.buffer.memorySegmentSize = 2800000 # Size of a memory segment in bytes.
 global.buffer.numberOfMemorySegments = 20 # Number of memory segments.
 
+# The following key describes the list of modules expected to participate in this --cid session.
+global.session.expectedModules = HelloWorldExample,HelloWorldExample-2
+
 
 ###############################################################################
 ###############################################################################
