@@ -49,25 +49,27 @@ namespace cockpit {
             HealthStatusViewerWidget::HealthStatusViewerWidget(const PlugIn &/*plugIn*/, QWidget *prnt) :
                 QWidget(prnt),
                 m_healthStatusViewMutex(),
-                m_healthStatusView() {
+                m_healthStatusView(NULL) {
                 // Set size.
                 setMinimumSize(640, 480);
 
                 // Layout manager.
                 QHBoxLayout* mainBox = new QHBoxLayout(this);
 
-                m_healthStatusView = unique_ptr<QTreeWidget>(new QTreeWidget(this));
+                m_healthStatusView = new QTreeWidget(this);
                 m_healthStatusView->setColumnCount(2);
                 QStringList headerLabel;
                 headerLabel << tr("system") << tr("status");
-                m_healthStatusView->setColumnWidth(0, 180);
+                m_healthStatusView->setColumnWidth(0, 280);
                 m_healthStatusView->setColumnWidth(1, 80);
+                m_healthStatusView->header()->setResizeMode(0, QHeaderView::Fixed);
+                m_healthStatusView->header()->setResizeMode(1, QHeaderView::Fixed);
                 m_healthStatusView->setHeaderLabels(headerLabel);
                 m_healthStatusView->setSortingEnabled(true);
                 m_healthStatusView->sortByColumn(0, Qt::AscendingOrder);
 
                 // Add to Layout.
-                mainBox->addWidget(m_healthStatusView.get());
+                mainBox->addWidget(m_healthStatusView);
 
                 // Set layout manager.
                 setLayout(mainBox);
@@ -78,6 +80,7 @@ namespace cockpit {
             void HealthStatusViewerWidget::nextContainer(Container &container) {
                 Lock l(m_healthStatusViewMutex);
                 if (container.getDataType() == from::opendlv::system::diagnostics::HealthStatus::ID()) {
+                    m_healthStatusView->setEnabled(false);
                     m_healthStatusView->setSortingEnabled(false);
                     m_healthStatusView->clear();
 
@@ -87,7 +90,7 @@ namespace cockpit {
                     auto pairOfIterators = hs.iteratorPair_MapOfStatus();
                     auto it = pairOfIterators.first;
                     while (it != pairOfIterators.second) {
-                        QTreeWidgetItem *newEntry = new QTreeWidgetItem(m_healthStatusView.get());
+                        QTreeWidgetItem *newEntry = new QTreeWidgetItem(m_healthStatusView);
                         newEntry->setText(0, it->first.c_str());
                         newEntry->setText(1, it->second.c_str());
 
@@ -95,6 +98,7 @@ namespace cockpit {
                     }
 
                     m_healthStatusView->setSortingEnabled(true);
+                    m_healthStatusView->setEnabled(true);
                 }
             }
 

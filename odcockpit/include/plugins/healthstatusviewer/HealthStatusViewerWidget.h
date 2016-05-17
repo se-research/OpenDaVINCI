@@ -85,7 +85,7 @@ namespace cockpit {
 
                 private:
                     odcore::base::Mutex m_healthStatusViewMutex;
-                    unique_ptr<QTreeWidget> m_healthStatusView;
+                    QTreeWidget *m_healthStatusView;
             };
 
         }
