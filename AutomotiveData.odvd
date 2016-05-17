@@ -339,3 +339,7 @@ message from.opendlv.proxy.reverefh16.Steering [id = 199] {
     double steeringwheelangle [id = 2];
 }
 
+message from.opendlv.system.diagnostics.HealthStatus [id = 200] {
+    map<string,string> status [id = 1];
+}
+
