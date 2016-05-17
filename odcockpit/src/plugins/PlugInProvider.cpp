@@ -30,6 +30,7 @@
 #include "plugins/configurationviewer/ConfigurationViewerPlugIn.h"
 #include "plugins/controller/ControllerPlugIn.h"
 #include "plugins/environmentviewer/EnvironmentViewerPlugIn.h"
+#include "plugins/healthstatusviewer/HealthStatusViewerPlugIn.h"
 #include "plugins/irusmap/IrUsMapPlugIn.h"
 #include "plugins/livefeed/LiveFeedPlugIn.h"
 #include "plugins/logmessage/LogMessagePlugIn.h"
@@ -76,6 +77,7 @@ class PlugIn;
             m_listOfAvailablePlugIns.push_back("Controller");
             m_listOfAvailablePlugIns.push_back("BirdsEyeMap");
             m_listOfAvailablePlugIns.push_back("EnvironmentViewer");
+            m_listOfAvailablePlugIns.push_back("HealthStatusViewer");
 #ifdef HAVE_QWT5QT4
             m_listOfAvailablePlugIns.push_back("IrUsCharts");
             m_listOfAvailablePlugIns.push_back("ModuleStatisticsViewer");
@@ -96,6 +98,7 @@ class PlugIn;
             m_listOfDescriptions["Controller"] = tr("This plugin allows the control of the vehicle by the arrow keys.").toStdString();
             m_listOfDescriptions["BirdsEyeMap"] = tr("This plugin shows the entire environment in 2D.").toStdString();
             m_listOfDescriptions["EnvironmentViewer"] = tr("This plugin shows the entire environment in 3D.").toStdString();
+            m_listOfDescriptions["HealthStatusViewer"] = tr("This plugin displays the system's health.").toStdString();
 #ifdef HAVE_QWT5QT4
             m_listOfDescriptions["IrUsCharts"] = tr("This plugin displays the values of SensorBoardData over time.").toStdString();
             m_listOfDescriptions["ModuleStatisticsViewer"] = tr("This plugin shows module statistics.").toStdString();
@@ -174,6 +177,9 @@ class PlugIn;
             else if (name == "SCNXViewer") {
                 cerr << "Creating SCNXViewer" << endl;
                 plugIn = std::shared_ptr<PlugIn>(new scnxviewer::SCNXViewerPlugIn("SCNXViewer", m_kvc, m_parent));
+            } else if (name == "HealthStatusViewer") {
+                cerr << "Creating HealthStatusViewer" << endl;
+                plugIn = std::shared_ptr<PlugIn>(new healthstatusviewer::HealthStatusViewerPlugIn("HealthStatusViewer", m_kvc, m_parent));
             }
             else if (name == "IrUsMap") {
                 cerr << "Creating IrUsMap" << endl;
