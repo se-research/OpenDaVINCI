@@ -90,7 +90,9 @@ namespace cockpit {
 
                     odcore::base::Mutex m_startedMutex;
                     bool m_started;
+                    bool m_overrideActive;
                     QPushButton *m_startedButton;
+                    QLabel *m_statusLabel;
             };
         }
     }

@@ -30,6 +30,7 @@
 #include "opendavinci/odcore/io/conference/ContainerConference.h"
 #include "plugins/startstop/StartStopWidget.h"
 #include "automotivedata/generated/from/opendlv/proxy/ControlState.h"
+#include "automotivedata/generated/from/opendlv/proxy/ControlOverrideState.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }
 namespace odcore { namespace base { class KeyValueConfiguration; } }
@@ -51,17 +52,34 @@ namespace cockpit {
                 m_conference(conf),
                 m_startedMutex(),
                 m_started(false),
-                m_startedButton(NULL) {
+                m_overrideActive(false),
+                m_startedButton(NULL),
+                m_statusLabel(NULL) {
 
                 // Set size.
                 setMinimumSize(640, 480);
 
-                m_startedButton = new QPushButton(tr("NOT ACTIVATED"));
-                connect(m_startedButton, SIGNAL(released()),this, SLOT(startButtonPressed()));
+                {
+                    m_startedButton = new QPushButton(tr("NOT ACTIVATED"));
+                    m_startedButton->setStyleSheet("background-color: lightgray");
+                    connect(m_startedButton, SIGNAL(released()),this, SLOT(startButtonPressed()));
+                }
 
-                // Combine frequency and LED status.
+                {
+                    m_statusLabel = new QLabel("");
+                    m_statusLabel->setAlignment(Qt::AlignCenter);
+                    QPalette _palette;
+                    _palette.setColor(QPalette::WindowText,Qt::red);
+                    m_statusLabel->setPalette(_palette);
+                }
+
+                // Combine button and status.
+                QVBoxLayout *v_layout = new QVBoxLayout();
+                v_layout->addWidget(m_startedButton);
+                v_layout->addWidget(m_statusLabel);
+
                 QHBoxLayout *h_layout = new QHBoxLayout();
-                h_layout->addWidget(m_startedButton);
+                h_layout->addLayout(v_layout);
 
                 setLayout(h_layout);
 
@@ -74,8 +92,13 @@ namespace cockpit {
             StartStopWidget::~StartStopWidget() {}
 
             void StartStopWidget::nextContainer(Container &container) {
-                cout << "Received ID = " << container.getDataType() << endl;
-                // TODO: Visualize manual override.
+                if (container.getDataType() == from::opendlv::proxy::ControlOverrideState::ID()) {
+                    Lock l(m_startedMutex);
+                    from::opendlv::proxy::ControlOverrideState cos = container.getData<from::opendlv::proxy::ControlOverrideState>();
+                    m_overrideActive = cos.getIsOverridden();
+
+                    m_statusLabel->setText(m_overrideActive ? "manual override" : "");
+                }
             }
 
             void StartStopWidget::startButtonPressed() {
@@ -84,9 +107,13 @@ namespace cockpit {
 
                 if (m_started) {
                     m_startedButton->setText(tr("ACTIVATED"));
+
+                    m_startedButton->setStyleSheet("background-color: lightgreen");
                 }
                 else {
                     m_startedButton->setText(tr("NOT ACTIVATED"));
+
+                    m_startedButton->setStyleSheet("background-color: lightgray");
                 }
             }
 
