@@ -221,7 +221,7 @@ message from.opendlv.proxy.ActuationRequest [id = 164] {
   bool isValid [id = 3];
 }
 
-message from.opendlv.proxy.AccelerometerReading [id = 159] {
+message from.opendlv.proxy.AccelerometerReading [id = 204] { // duplicated ID, was 159!
   float acceleration[3] [id = 1];
 }
 
@@ -233,7 +233,7 @@ message from.opendlv.proxy.CompassReading [id = 157] {
   float heading[3] [id = 1];
 }
 
-message from.opendlv.proxy.ControlOverrideState [id = 165] {
+message from.opendlv.proxy.ControlOverrideState [id = 202] { // duplicated ID, was 202!
   bool isOverridden [id = 1];
 }
 
@@ -270,7 +270,7 @@ message from.opendlv.proxy.LedRequest [id = 159] {
   string data [id = 2];
 }
 
-message from.opendlv.proxy.RelayRequest [id = 159] {
+message from.opendlv.proxy.RelayRequest [id = 203] { // duplicated ID, was 159!
   list<bool> relayState [id = 1];
 }
 
@@ -300,7 +300,7 @@ message from.opendlv.sensation.Geolocation [id = 169] {
   float headingConfidence [id = 7];
 }
 
-message from.opendlv.sensation.DynamicState [id = 170] {
+message from.opendlv.sensation.DynamicState [id = 201] { // duplicated ID, was 170!
  // double speed [id = 7];
  // double speedConfidence [id = 8];
  // double yawRate [id = 9];
@@ -361,23 +361,27 @@ message from.opendlv.sensation.DesiredDirectionOfMovement [id = 178] {
 message from.opendlv.perception.Object [id = 179] {
   odcore::data::TimeStamp identified [id = 1];
   string type [id = 2];
+  float typeConfidence [id = 3];
 
-  from.opendlv.model.Direction direction [id = 3];
-  float directionConfidence [id = 4];
-  from.opendlv.model.Direction directionRate [id = 5];
-  float directionRateConfidence [id = 6];
+  from.opendlv.model.Direction direction [id = 4];
+  float directionConfidence [id = 5];
+  from.opendlv.model.Direction directionRate [id = 6];
+  float directionRateConfidence [id = 7];
 
-  float distance [id = 7];
-  float distanceConfidence [id = 8];
+  float distance [id = 8];
+  float distanceConfidence [id = 9];
 
-  float angularSize [id = 9];
-  float angularSizeConfidence [id = 10];
-  float angularSizeRate [id = 11];
-  float angularSizeRateConfidence [id = 12];
+  float angularSize [id = 10];
+  float angularSizeConfidence [id = 11];
+  float angularSizeRate [id = 12];
+  float angularSizeRateConfidence [id = 13];
 
-  list<string> properties [id = 13];
+  float confidence [id = 14];
+  uint16 sources [id = 15];
 
-  uint16 objectId [id = 14];
+  list<string> properties [id = 16];
+
+  uint16 objectId [id = 17];
 }
 
 message from.opendlv.perception.ObjectDesiredDirection [id = 180] {
