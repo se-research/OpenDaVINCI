@@ -194,17 +194,66 @@ message from.opendlv.Constants [id = 150] {
   const double RAD2DEG = 57.295779513082325; // 1.0 / DEG2RAD;
 }
 
-message from.opendlv.coordinate.Spherical3 [id = 152] {
-  float p[3] [id = 1]; // radius, zenith, azimuth
+message from.opendlv.model.Cartesian3 [id = 151] {
+  float x [id = 1];
+  float y [id = 2];
+  float z [id = 3];
+}
+
+message from.opendlv.model.Direction [id = 152] {
+  float azimuth [id = 1];
+  float zenith [id = 2];
+}
+
+message from.opendlv.model.State [id = 153] {
+  from.opendlv.model.Cartesian3 position [id = 1];
+  from.opendlv.model.Cartesian3 velocity [id = 2];
+  from.opendlv.model.Cartesian3 acceleration [id = 3];
+  from.opendlv.model.Cartesian3 angularDisplacement [id = 4]; // TODO: Should we have a quaternion here to avoid internal transformations?
+  from.opendlv.model.Cartesian3 angularVelocity [id = 5];
+  from.opendlv.model.Cartesian3 angularAcceleration [id = 6];
+  uint16 frameId [id = 7];
+}
+
+message from.opendlv.proxy.ActuationRequest [id = 164] {
+  float acceleration [id = 1];
+  float steering [id = 2];
+  bool isValid [id = 3];
+}
+
+message from.opendlv.proxy.AccelerometerReading [id = 159] {
+  float acceleration[3] [id = 1];
+}
+
+message from.opendlv.proxy.AltimeterReading [id = 160] {
+  float altitude [id = 1];
+}
+
+message from.opendlv.proxy.CompassReading [id = 157] {
+  float heading[3] [id = 1];
+}
+
+message from.opendlv.proxy.ControlOverrideState [id = 165] {
+  bool isOverridden [id = 1];
+}
+
+message from.opendlv.proxy.ControlState [id = 165] {
+  bool isAutonomous [id = 1];
+}
+
+message from.opendlv.proxy.EchoReading [id = 156] {
+  list<from.opendlv.model.Direction> directions [id = 1];
+  list<double> radii [id = 2];
+  uint32 numberOfPoints [id = 3];
 }
 
 message from.opendlv.proxy.GpsReading [id = 161] {
   double timestamp [id = 1];
   double latitude [id = 2];
   double longitude [id = 3];
-  float altitude [id = 4];
-  float northHeading [id = 5];
-  float speed [id = 6];
+  double altitude [id = 4];
+  double northHeading [id = 5];
+  double speed [id = 6];
   uint8 latitudeDirection [id = 7];
   uint8 longitudeDirection [id = 8];
   uint8 satelliteCount [id = 9];
@@ -212,73 +261,140 @@ message from.opendlv.proxy.GpsReading [id = 161] {
   bool hasRtk [id = 11];
 }
 
-message from.opendlv.proxy.V2vInbound [id = 162] {
+message from.opendlv.proxy.GyroscopeReading [id = 158] {
+  float orientation[3] [id = 1];
+}
+
+message from.opendlv.proxy.LedRequest [id = 159] {
+  uint8 numberOfLeds [id = 1];
+  string data [id = 2];
+}
+
+message from.opendlv.proxy.RelayRequest [id = 159] {
+  list<bool> relayState [id = 1];
+}
+
+message from.opendlv.proxy.V2vReading [id = 162] {
   uint32 size [id = 1];
   string data [id = 2];
-  //list<uint8> data [id = 3];
 }
 
-message from.opendlv.proxy.V2vOutbound [id = 163] {
+message from.opendlv.proxy.V2vRequest [id = 163] {
   uint32 size [id = 1];
   string data [id = 2];
-  //list<uint8> data [id = 3];
 }
 
-message from.opendlv.proxy.Actuation [id = 164] {
-  float acceleration [id = 1];
-  float steering [id = 2];
-  bool isValid [id = 3];
-}
-
-message from.opendlv.proxy.ControlState [id = 165] {
-  bool allowAutonomous [id = 1];
-}
-
-// Sensation
 message from.opendlv.sensation.Voice [id = 166] {
   string type [id = 1];
   uint32 size [id = 2];
   string data [id = 3];
-  //list<uint8> data [id = 4];
 }
 
 message from.opendlv.sensation.Geolocation [id = 169] {
-  float latitude [id = 1];
-  float longitude [id = 2];
-  float altitude [id = 3];
-  float heading [id = 4];
+  double latitude [id = 1];
+  float latitudeConfidence [id = 2];
+  double longitude [id = 3];
+  float longitudeConfidence [id = 4];
+  float altitude [id = 5];
+  float heading [id = 6];
+  float headingConfidence [id = 7];
+}
+
+message from.opendlv.sensation.DynamicState [id = 170] {
+ // double speed [id = 7];
+ // double speedConfidence [id = 8];
+ // double yawRate [id = 9];
+ // double yawRateConfidence [id = 10];
+ // double longitudinalAcceleration [id = 11];
+ // double longitudinalAccelerationConfidence [id=12]; 
+}
+
+message from.opendlv.sensation.BodyPart [id = 170] {
+  from.opendlv.model.Cartesian3 position [id = 1]; // From body origo to body part center of mass
+  string gemoetryPath [id = 2];
+  float width [id = 3];
+  float height [id = 4];
+  float depth [id = 5];
+  float mass [id = 6];
+  uint8 partIndex [id = 7];
+}
+
+  message from.opendlv.sensation.Orientation [id = 171] {
+  float roll [id = 1];
+  float pitch [id = 2];
+  float yaw [id = 3];
+  uint8 partIndex [id = 4];
+}
+
+  message from.opendlv.sensation.Balance [id = 172] {
+  float rollRate [id = 1];
+  float pitchRate [id = 2];
+  float yawRate [id = 3];
+  uint8 partIndex [id = 4];
+}
+
+message from.opendlv.sensation.Looming [id = 173] {
+  uint16 numberOfPoints [id = 1];
+  list<float> azimuth [id = 2];
+  list<float> zenith [id = 3];
+  list<float> expansion [id = 4];
 }
 
 message from.opendlv.sensation.OpticalFlow [id = 174] {
-  uint16 nPoint [id = 1];
-  list<float> x [id = 2];
-  list<float> y [id = 3];
+  uint16 numberOfPoints [id = 1];
+  list<float> azimuth [id = 2];
+  list<float> zenith [id = 3];
   list<float> u [id = 4];
   list<float> v [id = 5];
-  //float flow  [id = 6];
 }
 
 message from.opendlv.sensation.DirectionOfMovement [id = 175] {
-  from.opendlv.coordinate.Spherical3 directionOfMovement [id = 1];
+  float azimuth [id = 1];
+  float zenith [id = 2];
 }
 
-// Knowledge
+message from.opendlv.sensation.DesiredDirectionOfMovement [id = 178] {
+  float azimuth [id = 1];
+  float zenith [id = 2];
+}
+
+message from.opendlv.perception.Object [id = 179] {
+  odcore::data::TimeStamp identified [id = 1];
+  string type [id = 2];
+
+  from.opendlv.model.Direction direction [id = 3];
+  float directionConfidence [id = 4];
+  from.opendlv.model.Direction directionRate [id = 5];
+  float directionRateConfidence [id = 6];
+
+  float distance [id = 7];
+  float distanceConfidence [id = 8];
+
+  float angularSize [id = 9];
+  float angularSizeConfidence [id = 10];
+  float angularSizeRate [id = 11];
+  float angularSizeRateConfidence [id = 12];
+
+  list<string> properties [id = 13];
+
+  uint16 objectId [id = 14];
+}
+
+message from.opendlv.perception.ObjectDesiredDirection [id = 180] {
+  from.opendlv.model.Direction desiredDirection [id = 1];
+  uint16 objectId [id = 2];
+}
+
+message from.opendlv.perception.ObjectDesiredAngularSize [id = 181] {
+  float desiredAngularSize [id = 1];
+  uint16 objectId [id = 2];
+}
+
 message from.opendlv.knowledge.Message [id = 185] {
   uint32 size [id = 1];
   string data [id = 2];
-  //list<uint8> data [id = 3];
 }
 
-message from.opendlv.perception.LanePosition [id = 186] {
-  float offset [id = 1];
-  float heading [id = 2];
-}
-
-message from.opendlv.perception.LeadVehicleSize [id = 187] {
-  float size [id = 1];
-}
-
-// Action messages
 message from.opendlv.action.Correction [id = 190] {
   odcore::data::TimeStamp startTime [id = 1];
   string type [id = 2];
@@ -287,6 +403,9 @@ message from.opendlv.action.Correction [id = 190] {
 }
 
 
+// Specific for Revere FH16
+
+// TODO: Change name to ManualControl
 message from.opendlv.proxy.reverefh16.Pedals [id = 191] {
     double accelerationPedalPosition [id = 1];
     double brakePedalPosition [id = 2];
