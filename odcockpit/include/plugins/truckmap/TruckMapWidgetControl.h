@@ -1,6 +1,7 @@
 /**
  * cockpit - Visualization environment
- * Copyright (C) 2016 Christian Berger
+ * Copyright (C) 2012 - 2016 Christian Berger
+ * Copyright (C) 2008 - 2011 (as monitor component) Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,39 +18,35 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef STARTSTOPWIDGET_H_
-#define STARTSTOPWIDGET_H_
+#ifndef COCKPIT_PLUGINS_TRUCKMAP_TRUCKMAPWIDGETCONTROL_H_
+#define COCKPIT_PLUGINS_TRUCKMAP_TRUCKMAPWIDGETCONTROL_H_
 
 #include <QtCore>
 #include <QtGui>
 
-#include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/Mutex.h"
-#include "opendavinci/odcore/data/TimeStamp.h"
 #include "opendavinci/odcore/io/conference/ContainerListener.h"
-#include "automotivedata/generated/automotive/VehicleControl.h"
-#include "automotivedata/generated/automotive/miniature/UserButtonData.h"
 
-class QPushButton;
 namespace cockpit { namespace plugins { class PlugIn; } }
 namespace odcore { namespace base { class KeyValueConfiguration; } }
 namespace odcore { namespace data { class Container; } }
-namespace odcore { namespace io { namespace conference { class ContainerConference; } } }
 
 namespace cockpit {
 
     namespace plugins {
 
-      namespace startstop {
+        namespace truckmap {
 
-          using namespace std;
+class TruckMapWidget;
+
+            using namespace std;
 
             /**
-             * This class is the container for the startstop widget.
+             * This class is the container for the irus map widget control.
              */
-            class StartStopWidget : public QWidget, public odcore::io::conference::ContainerListener {
+            class TruckMapWidgetControl : public QWidget, public odcore::io::conference::ContainerListener {
 
-                Q_OBJECT
+                    Q_OBJECT
 
                 private:
                     /**
@@ -57,14 +54,14 @@ namespace cockpit {
                      * already at compile time for unwanted bugs caused by any misuse
                      * of the copy constructor.
                      */
-                    StartStopWidget(const StartStopWidget &/*obj*/);
+                    TruckMapWidgetControl(const TruckMapWidgetControl &/*obj*/);
 
                     /**
                      * "Forbidden" assignment operator. Goal: The compiler should warn
                      * already at compile time for unwanted bugs caused by any misuse
                      * of the assignment operator.
                      */
-                    StartStopWidget& operator=(const StartStopWidget &/*obj*/);
+                    TruckMapWidgetControl& operator=(const TruckMapWidgetControl &/*obj*/);
 
                 public:
                     /**
@@ -72,31 +69,25 @@ namespace cockpit {
                      *
                      * @param plugIn Reference to the plugin to which this widget belongs.
                      * @param kvc KeyValueConfiguration for this based widget.
-                     * @param conf Client conference to send data to.
                      * @param prnt Pointer to the parental widget.
                      */
-                    StartStopWidget(const PlugIn &plugIn, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, QWidget *prnt);
+                    TruckMapWidgetControl(const PlugIn &plugIn, const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt);
 
-                    virtual ~StartStopWidget();
+                    virtual ~TruckMapWidgetControl();
 
                     virtual void nextContainer(odcore::data::Container &c);
 
                 public slots:
-                    void TimerEvent();
-                    void startButtonPressed();
+                    void setScale(int val);
 
                 private:
-                    odcore::io::conference::ContainerConference &m_conference;
-
-                    odcore::base::Mutex m_startedMutex;
-                    bool m_started;
-                    bool m_overrideActive;
-                    QPushButton *m_startedButton;
-                    QLabel *m_statusLabel;
+                    odcore::base::Mutex m_mapWidgetMutex;
+                    TruckMapWidget *m_mapWidget;
             };
+
         }
     }
 }
 
-#endif /*STARTSTOPWIDGET_H_*/
+#endif /*COCKPIT_PLUGINS_TRUCKMAP_TRUCKMAPWIDGETCONTROL_H_*/
 

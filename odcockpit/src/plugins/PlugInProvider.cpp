@@ -46,6 +46,7 @@
 #include "plugins/spy/SpyPlugIn.h"
 #include "plugins/streetmapviewer/StreetMapPlugIn.h"
 #include "plugins/startstop/StartStopPlugIn.h"
+#include "plugins/truckmap/TruckMapPlugIn.h"
 
 namespace odcore { namespace base { class DataStoreManager; } }
 namespace odcore { namespace io { namespace conference { class ContainerConference; } } }
@@ -93,6 +94,7 @@ class PlugIn;
             m_listOfAvailablePlugIns.push_back("Spy");
             m_listOfAvailablePlugIns.push_back("StartStop");
             m_listOfAvailablePlugIns.push_back("StreetMap");
+            m_listOfAvailablePlugIns.push_back("TruckMap");
 
             m_listOfDescriptions["ConfigurationViewer"] = tr("This plugin displays the current configuration.").toStdString();
             m_listOfDescriptions["Controller"] = tr("This plugin allows the control of the vehicle by the arrow keys.").toStdString();
@@ -114,6 +116,7 @@ class PlugIn;
             m_listOfDescriptions["Spy"] = tr("This plugin displays all distributed containers.").toStdString();
             m_listOfDescriptions["StartStop"] = tr("This plugin allows to activate/deactivate autonomous control of the vehicle.").toStdString();
             m_listOfDescriptions["StreetMap"] = tr("This plugin visualizes the environment data using a map tile provider.").toStdString();
+            m_listOfDescriptions["TruckMap"] = tr("This plugin visualizes the environment data for the truck.").toStdString();
         }
 
         PlugInProvider::~PlugInProvider() {
@@ -184,6 +187,10 @@ class PlugIn;
             else if (name == "IrUsMap") {
                 cerr << "Creating IrUsMap" << endl;
                 plugIn = std::shared_ptr<PlugIn>(new irusmap::IrUsMapPlugIn("IrUsMap", m_kvc, m_parent));
+            }
+            else if (name == "TruckMap") {
+                cerr << "Creating TruckMap" << endl;
+                plugIn = std::shared_ptr<PlugIn>(new truckmap::TruckMapPlugIn("TruckMap", m_kvc, m_parent));
             } else if (name == "LiveFeed") {
                 cerr << "Creating LiveFeed" << endl;
                 plugIn = std::shared_ptr<PlugIn>(new livefeed::LiveFeedPlugIn("LiveFeed", m_kvc, m_parent));
