@@ -231,7 +231,7 @@ namespace cockpit {
 
                         if (obj.getObjectId() > -1) {
                             TimeStamp lastUpdated = m_objectsLastUpdated[obj.getObjectId()];
-                            const uint32_t FIVE_SECONDS = 5 * 1000 * 1000;
+                            const int32_t FIVE_SECONDS = 5 * 1000 * 1000;
                             if ((now-lastUpdated).toMicroseconds() < FIVE_SECONDS) {
                                 Point3 measurementPoint(obj.getDistance(), 0, 0);
                                 measurementPoint.rotateZ(dir.getAzimuth());
