@@ -125,6 +125,12 @@ namespace cockpit {
                 transformationCartesianCoordinateSystem.scale(m_scaleFactor, -m_scaleFactor);
                 transformationCartesianCoordinateSystem.rotate(m_rotation - 90);
 
+                // Transformation into the regular coordinate system for descriptions.
+                QTransform transformationCartesianCoordinateSystemForDescriptions;
+                transformationCartesianCoordinateSystemForDescriptions.translate(evt->rect().width() / 2, evt->rect().height() / 2);
+                transformationCartesianCoordinateSystemForDescriptions.scale(1, 1);
+                transformationCartesianCoordinateSystemForDescriptions.rotate(m_rotation - 90);
+
                 // Transformation for descriptions label in image coordinates.
                 QTransform descriptionTrans;
                 descriptionTrans.translate(0, 0);
@@ -221,7 +227,27 @@ namespace cockpit {
                         int _width = 200 * (m_scaleFactor * 300);
                         int _height = 200 * (m_scaleFactor * 300);
 
+                        painter.setTransform(transformationDIN70000);
                         painter.fillRect(measurementPoint.getX() * 1000, measurementPoint.getY() * 1000, _width, _height, QBrush(Qt::red));
+
+                        {
+                            const QColor objInfoColor = Qt::black;
+                            pen.setColor(objInfoColor);
+
+                            pt_description.setX(measurementPoint.getX() * 1000);
+                            pt_description.setY(measurementPoint.getY() * 1000);
+                            pt_description = transformationDIN70000.map(pt_description);
+                            painter.setTransform(descriptionTrans);
+
+                            painter.setPen(pen);
+                            fontSettings.setPointSize(10);
+                            painter.setFont(fontSettings);
+                            stringstream sstr;
+                            sstr << "Obj: " << obj.getObjectId();
+                            const string s = sstr.str();
+                            description = s.c_str();
+                            painter.drawText(pt_description, description);
+                        }
 
                         it++;
                     }
