@@ -124,7 +124,8 @@ namespace cockpit {
                     m_mapOfCurrentPositions(),
                     m_selectableNodeDescriptorTree(NULL),
                     m_selectableNodeDescriptorTreeListener(sndtl),
-                    frameIndex(0){}
+                    frameIndex(0),
+                    velodyneSharedMemory(NULL){}
 
             EnvironmentViewerGLWidget::~EnvironmentViewerGLWidget() {
                 OPENDAVINCI_CORE_DELETE_POINTER(m_root);
@@ -296,12 +297,77 @@ namespace cockpit {
                                       0, 0, 1);
 
                             // Draw scene.
-
                             m_root->render(m_renderingConfiguration);
-                        glPopMatrix();
+                            /*glPushMatrix();
+                            glColor3f(0.0f,0.0f,1.0f); //blue color
+                            glPointSize(3.0f); //set point size to 10 pixels
+                            float xStart=0.0;
+                            float offset=1.5;
+                            glBegin(GL_POINTS); //starts drawing of points
+                            for(unsigned long iii=0;iii<100;iii++) {
+                                glVertex3f(xStart+offset,xStart+offset,xStart+offset);
+                                glVertex3f(-xStart+offset,xStart+offset,xStart+offset);
+                                glVertex3f(xStart+offset,-xStart+offset,xStart+offset);
+                                glVertex3f(xStart+offset,xStart+offset,-xStart+offset);
+                                offset+=1.5;
+                            }
+                            
+                            glEnd();//end drawing of points*/
+                            glPopMatrix();
                     }
                     else {
-                        m_root->render(m_renderingConfiguration);
+                        //m_root->render(m_renderingConfiguration);
+                        /*glPushMatrix();
+                            glColor3f(0.0f,0.0f,1.0f); //blue color
+                            glPointSize(3.0f); //set point size to 10 pixels
+                            float xStart=0.0;
+                            float offset=1.5;
+                            glBegin(GL_POINTS); //starts drawing of points
+                            for(unsigned long iii=0;iii<100;iii++) {
+                                glVertex3f(xStart+offset,xStart+offset,xStart+offset);
+                                glVertex3f(-xStart+offset,xStart+offset,xStart+offset);
+                                glVertex3f(xStart+offset,-xStart+offset,xStart+offset);
+                                glVertex3f(xStart+offset,xStart+offset,-xStart+offset);
+                                offset+=1.5;
+                            }
+
+                            glEnd();//end drawing of points
+                            glPopMatrix();*/
+                            
+                            if(velodyneSharedMemory.get()!=NULL){
+                            if (velodyneSharedMemory->isValid()) {
+                            glPushMatrix();
+                            // Using a scoped lock to lock and automatically unlock a shared memory segment.
+                            odcore::base::Lock lv(velodyneSharedMemory);
+                            // We need to check (a) are we using the correct type (float)
+                            // and is the number of components per vector correct (4)
+                            // as Eigen is a compile-time type and thus, we cannot
+                            // define dynamic sizes for the InnerStride.
+                            if (velodyneFrame.getComponentDataType() == SharedPointCloud::FLOAT_T
+                                && (velodyneFrame.getNumberOfComponentsPerPoint() == 4)
+                                && (velodyneFrame.getUserInfo() == SharedPointCloud::XYZ_INTENSITY)) {
+                                float *velodyneRawData = static_cast<float*>(velodyneSharedMemory->getSharedMemory());
+                                // Setup the Eigen mapping, where
+                                // 4 == velodyneFrame.getNumberOfComponentsPerPoint()
+                                // that cannot be dynamic due to Eigen's design of being a
+                                // compile-time library.
+                                typedef Map<Matrix<float, Dynamic, Dynamic>, 0, InnerStride<4> > Slice;
+                                Slice xData((float*)velodyneRawData, velodyneFrame.getWidth(), velodyneFrame.getHeight());
+                                Slice yData((float*)velodyneRawData+1, velodyneFrame.getWidth(), velodyneFrame.getHeight());
+                                Slice zData((float*)velodyneRawData+2, velodyneFrame.getWidth(), velodyneFrame.getHeight());
+                                Slice intensity((float*)velodyneRawData+3, velodyneFrame.getWidth(), velodyneFrame.getHeight());
+                            
+                            glColor3f(0.0f,0.0f,1.0f); //blue color
+                            glPointSize(3.0f); //set point size to 10 pixels
+                            glBegin(GL_POINTS); //starts drawing of points
+                            for(unsigned long iii=0;iii<velodyneFrame.getWidth();iii++) {
+                                glVertex3f((float)xData(iii,0),(float)yData(iii,0),(float)zData(iii,0));
+                            }
+                            glEnd();//end drawing of points
+                            glPushMatrix();
+                        }
+                        }
+                      }
                     }
     /*
                     {
@@ -414,9 +480,12 @@ namespace cockpit {
             void EnvironmentViewerGLWidget::nextContainer(Container &c) {
                 
                     if(c.getDataType()==odcore::data::SharedPointCloud::ID()){
-                        SharedPointCloud velodyneFrame=c.getData<SharedPointCloud>();
-                        std::shared_ptr<SharedMemory> velodyneSharedMemory(SharedMemoryFactory::attachToSharedMemory(velodyneFrame.getName()));
-                        if (velodyneSharedMemory->isValid()) {
+                    // Renderer3D r(m_root, velodyneFrame);
+                    // r.render();
+                    
+                        velodyneFrame=c.getData<SharedPointCloud>();
+                        velodyneSharedMemory=SharedMemoryFactory::attachToSharedMemory(velodyneFrame.getName());
+                        /*if (velodyneSharedMemory->isValid()) {
                             // Using a scoped lock to lock and automatically unlock a shared memory segment.
                             odcore::base::Lock l(velodyneSharedMemory);
                             // We need to check (a) are we using the correct type (float)
@@ -436,10 +505,10 @@ namespace cockpit {
                                 Slice yData((float*)velodyneRawData+1, velodyneFrame.getWidth(), velodyneFrame.getHeight());
                                 Slice zData((float*)velodyneRawData+2, velodyneFrame.getWidth(), velodyneFrame.getHeight());
                                 Slice intensity((float*)velodyneRawData+3, velodyneFrame.getWidth(), velodyneFrame.getHeight());
-                
-                                if(frameIndex==1)
-                                {
-                                    m_velodyne-> deleteAllChildren();
+                */
+                                //if(frameIndex==1)
+                                //{
+                                    /*m_velodyne-> deleteAllChildren();
                                     for(unsigned long iii=0;iii<velodyneFrame.getWidth();iii++)
                                     {
                                         Point3 myPoint((float)xData(iii,0),(float)yData(iii,0),(float)zData(iii,0));
@@ -458,13 +527,13 @@ namespace cockpit {
 
                                         opendlv::threeD::models::Point *p = new opendlv::threeD::models::Point(NodeDescriptor("velodyne"), myPoint, color, 1);
                                         m_velodyne->addChild(p);
-                                    }
-                                    cout<<"Visualize frame:"<<frameIndex<<endl;
+                                    }*/
+                                   // cout<<"Visualize frame:"<<frameIndex<<endl;
 
-                                }
-                                frameIndex++;
-                            }
-                        }
+                                //}
+                                //frameIndex++;
+                            //}
+                        //}
                     }
 
                

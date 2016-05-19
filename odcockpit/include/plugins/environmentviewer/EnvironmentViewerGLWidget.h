@@ -23,6 +23,7 @@
 
 #include <map>
 #include <vector>
+#include <memory>
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/Mutex.h"
@@ -33,6 +34,8 @@
 #include "opendlv/threeD/RenderingConfiguration.h"
 #include "plugins/AbstractGLWidget.h"
 #include "plugins/environmentviewer/SelectableNodeDescriptorTreeListener.h"
+#include "opendavinci/odcore/wrapper/SharedMemory.h"
+#include "opendavinci/generated/odcore/data/SharedPointCloud.h"
 //#include "opendavinci/odcore/io/protocol/PCAPProtocol.h"
 //#include <fstream>
 
@@ -139,6 +142,8 @@ class SelectableNodeDescriptor;
                     vector<double> yData;
                     vector<double> zData;*/
                     long frameIndex;
+                    std::shared_ptr<odcore::wrapper::SharedMemory> velodyneSharedMemory;
+                    odcore::data::SharedPointCloud velodyneFrame;
 
                     /**
                      * This method actually modifies the rendering configuration.

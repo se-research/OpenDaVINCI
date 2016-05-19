@@ -204,7 +204,7 @@ namespace automotive {
                         previousAzimuth=rotation;
                         dataToDecode=dataToDecode.substr(2);
 
-                        //Decode distance information and intensity of each sensor in a block
+                        //Decode distance information and intensity of each sensor in a block       
                         for(int counter=0;counter<32;counter++)
                         {
                             //Decode distance: 2 bytes
