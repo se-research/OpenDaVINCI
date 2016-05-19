@@ -176,7 +176,7 @@ namespace canmapping {
              * This method adds the given GenericCANMessage to the internal
              * CAN message decoder. If this message could be decoded (or
              * including the previous sequence, this method returns a valid
-             * Container (ie. Container::UNDEFINEDDATA).
+             * Container (i.e. !Container::UNDEFINEDDATA).
              *
              * @param gcm Next GenericCANMessage.
              * @return Container, where the type needs to be checked to determine invalidity (i.e. !Container::UNDEFINEDDATA).
