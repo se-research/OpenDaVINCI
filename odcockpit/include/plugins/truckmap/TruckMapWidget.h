@@ -97,8 +97,6 @@ class PointSensor;
                     double m_scaleFactor;
                     double m_rotation;
 
-                    map<string, PointSensor*> m_mapOfPointSensors;
-
                     odcore::base::Mutex m_sensorBoardDataMutex;
                     automotive::miniature::SensorBoardData m_sensorBoardData;
             };

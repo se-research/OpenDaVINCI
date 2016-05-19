@@ -190,7 +190,7 @@ class PlugIn;
             }
             else if (name == "TruckMap") {
                 cerr << "Creating TruckMap" << endl;
-                plugIn = std::shared_ptr<PlugIn>(new irusmap::IrUsMapPlugIn("TruckMap", m_kvc, m_parent));
+                plugIn = std::shared_ptr<PlugIn>(new truckmap::TruckMapPlugIn("TruckMap", m_kvc, m_parent));
             } else if (name == "LiveFeed") {
                 cerr << "Creating LiveFeed" << endl;
                 plugIn = std::shared_ptr<PlugIn>(new livefeed::LiveFeedPlugIn("LiveFeed", m_kvc, m_parent));

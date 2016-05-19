@@ -32,7 +32,6 @@
 #include "opendavinci/odcore/strings/StringComparator.h"
 #include "opendlv/data/environment/Point3.h"
 #include "plugins/truckmap/TruckMapWidget.h"
-#include "plugins/truckmap/PointSensor.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }
 
@@ -51,51 +50,13 @@ namespace cockpit {
                 QWidget(prnt),
                 m_timer(NULL),
                 m_scaleFactorMutex(),
-                m_scaleFactor(0.05),
+                m_scaleFactor(0.0125),
                 m_rotation(90),
-                m_mapOfPointSensors(),
                 m_sensorBoardDataMutex(),
                 m_sensorBoardData() {
 
-                // Setup all point sensors.
-                for (uint32_t i = 0; i < kvc.getValue<uint32_t>("odsimirus.numberOfSensors"); i++) {
-                    stringstream sensorID;
-                    sensorID << "odsimirus.sensor" << i << ".id";
-                    uint16_t id(kvc.getValue<uint16_t>(sensorID.str()));
-
-                    stringstream sensorName;
-                    sensorName << "odsimirus.sensor" << i << ".name";
-                    string name(kvc.getValue<string>(sensorName.str()));
-                    
-                    stringstream sensorTranslation;
-                    sensorTranslation << "odsimirus.sensor" << i << ".translation";
-                    Point3 translation(kvc.getValue<string>(sensorTranslation.str()));
-
-                    stringstream sensorRotZ;
-                    sensorRotZ << "odsimirus.sensor" << i << ".rotZ";
-                    const double rotZ = kvc.getValue<double>(sensorRotZ.str());
-                    
-                    stringstream sensorAngleFOV;
-                    sensorAngleFOV << "odsimirus.sensor" << i << ".angleFOV";
-                    const double angleFOV = kvc.getValue<double>(sensorAngleFOV.str());
-                    
-                    stringstream sensorDistanceFOV;
-                    sensorDistanceFOV << "odsimirus.sensor" << i << ".distanceFOV";
-                    const double distanceFOV = kvc.getValue<double>(sensorDistanceFOV.str());
-                    
-                    stringstream sensorClampDistance;
-                    sensorClampDistance << "odsimirus.sensor" << i << ".clampDistance";
-                    const double clampDistance = kvc.getValue<double>(sensorClampDistance.str());
-
-                    PointSensor *ps = new PointSensor(id, name, translation, rotZ, angleFOV, distanceFOV, clampDistance);
-
-                    if (ps != NULL) {
-                        // Save for later.
-                        m_mapOfPointSensors[ps->getName()] = ps;
-
-                        cout << "Registered point sensor " << ps->toString() << "." << endl;
-                    }
-                }
+                // Unused configuration so far.
+                (void)kvc;
 
                 // Timer for sending data regularly.
                 m_timer = new QTimer(this);
@@ -112,14 +73,14 @@ namespace cockpit {
             void TruckMapWidget::nextContainer(Container &c) {
                 if (c.getDataType() == automotive::miniature::SensorBoardData::ID()) {
                     Lock l(m_sensorBoardDataMutex);
-        			m_sensorBoardData = c.getData<automotive::miniature::SensorBoardData>();
+                    m_sensorBoardData = c.getData<automotive::miniature::SensorBoardData>();
                 }
             }
 
             void TruckMapWidget::setScale(const int &val) {
                 if (val > 0) {
                     Lock l(m_scaleFactorMutex);
-                    m_scaleFactor = (val / 100.0);
+                    m_scaleFactor = (val / 400.0);
                 }
             }
 
@@ -188,7 +149,7 @@ namespace cockpit {
                         painter.setPen(gridAxisColor);
                     }
                     else {
-                        description.sprintf("%.0f", i);
+                        description.sprintf("%.0f", i/1000.0);
 
                         pt_description.setY(i);
                         painter.setTransform(descriptionTrans);
@@ -218,7 +179,7 @@ namespace cockpit {
                         painter.setPen(gridAxisColor);
                     }
                     else {
-                        description.sprintf("%.0f", i*-1);
+                        description.sprintf("%.0f", i/1000.0*-1);
 
                         pt_description.setX(i);
                         pt_description.setY(0);
@@ -244,43 +205,22 @@ namespace cockpit {
                     painter.drawLine(i, -yStepFact * step, i, yStepFact * step);
                 }
 
-                // Draw the field of views for the chosen sensor setup.
-                const QColor FOVColor = Qt::green;
+                // Draw points.
+                {
+                    for (uint16_t i = 0; i < 3; i++) {
+                        const double d = m_sensorBoardData.getValueForKey_MapOfDistances(i);
+                        if (d > 0) {
+                            double totalRot = 0 * cartesian::Constants::DEG2RAD;
 
-                // Loop through point sensors.
-                map<string, PointSensor*, odcore::strings::StringComparator>::iterator sensorIterator = m_mapOfPointSensors.begin();
-                for (; sensorIterator != m_mapOfPointSensors.end(); sensorIterator++) {
-                    PointSensor *sensor = sensorIterator->second;
+                            Point3 measurementPoint(d, 0, 0);
+                            measurementPoint.rotateZ(totalRot);
+//                            measurementPoint += m_translation;
 
-                    // Draw field of view.
-                    {
-                        painter.setTransform(transformationDIN70000);
-                        pen.setColor(FOVColor);
-                        painter.setPen(pen);
-                        sensor->drawFOV(painter);
+                            int _width = 200 * (m_scaleFactor * 300);
+                            int _height = 200 * (m_scaleFactor * 300);
 
-                        // Draw distances that belong to this sensor.
-                        {
-                            Lock l2(m_sensorBoardDataMutex);
-                            sensor->drawMatchingDistances(painter, m_sensorBoardData);
+                            painter.fillRect(measurementPoint.getX() * 1000, measurementPoint.getY() * 1000, _width, _height, QBrush(Qt::red));
                         }
-                    }
-
-                    // Add description to the sensor.
-                    {
-                        painter.setPen(QPen(textColor));
-                        fontSettings.setPointSize(10);
-                        painter.setFont(fontSettings);
-                        stringstream desc;
-                        desc << sensor->getName() << " (ID: " << sensor->getID() << ")";
-
-                        pt_description.setX(sensor->getDescPoint().getX()*1000);
-                        pt_description.setY(sensor->getDescPoint().getY()*1000);
-                        painter.setTransform(descriptionTrans);
-                        pt_description = transformationDIN70000.map(pt_description);
-
-                        description = desc.str().c_str();
-                        painter.drawText(pt_description, description);
                     }
                 }
 
@@ -290,10 +230,10 @@ namespace cockpit {
                 painter.setTransform(descriptionTrans);
                 fontSettings.setPointSize(10);
                 painter.setFont(fontSettings);
-                description = "x [mm]";
+                description = "x [m]";
                 painter.drawText(evt->rect().width() / 2 + 15, 15, description);
 
-                description = "y [mm]";
+                description = "y [m]";
                 painter.drawText(15, evt->rect().height() / 2 + 15, description);
 
                 // Arrows for the axes.
