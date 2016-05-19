@@ -35,6 +35,7 @@ ADD_SUBDIRECTORY (odsimchasecar)
 ADD_SUBDIRECTORY (odsimdrivenpath)
 ADD_SUBDIRECTORY (odsimegocontroller)
 ADD_SUBDIRECTORY (odsimirus)
+ADD_SUBDIRECTORY (odsimtruckobjects)
 ADD_SUBDIRECTORY (odsimvehicle)
 
 ###########################################################################
