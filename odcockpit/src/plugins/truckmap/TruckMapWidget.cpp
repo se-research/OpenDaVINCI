@@ -32,6 +32,7 @@
 #include "opendavinci/odcore/strings/StringComparator.h"
 #include "opendlv/data/environment/Point3.h"
 #include "plugins/truckmap/TruckMapWidget.h"
+#include "automotivedata/generated/from/opendlv/model/Direction.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }
 
@@ -52,8 +53,8 @@ namespace cockpit {
                 m_scaleFactorMutex(),
                 m_scaleFactor(0.0125),
                 m_rotation(90),
-                m_sensorBoardDataMutex(),
-                m_sensorBoardData() {
+                m_objectsMutex(),
+                m_objects() {
 
                 // Unused configuration so far.
                 (void)kvc;
@@ -71,9 +72,10 @@ namespace cockpit {
             }
 
             void TruckMapWidget::nextContainer(Container &c) {
-                if (c.getDataType() == automotive::miniature::SensorBoardData::ID()) {
-                    Lock l(m_sensorBoardDataMutex);
-                    m_sensorBoardData = c.getData<automotive::miniature::SensorBoardData>();
+                if (c.getDataType() == from::opendlv::perception::Object::ID()) {
+                    Lock l(m_objectsMutex);
+                    from::opendlv::perception::Object obj = c.getData<from::opendlv::perception::Object>();
+                    m_objects[obj.getObjectId()] = obj;
                 }
             }
 
@@ -205,23 +207,25 @@ namespace cockpit {
                     painter.drawLine(i, -yStepFact * step, i, yStepFact * step);
                 }
 
-                // Draw points.
+                // Draw objects.
                 {
-                    for (uint16_t i = 0; i < 3; i++) {
-                        const double d = m_sensorBoardData.getValueForKey_MapOfDistances(i);
-                        if (d > 0) {
-                            double totalRot = 0 * cartesian::Constants::DEG2RAD;
+                    Lock l2(m_objectsMutex);
+                    auto it = m_objects.begin();
+                    while (it != m_objects.end()) {
+                        from::opendlv::perception::Object obj = it->second;
+                        from::opendlv::model::Direction dir = obj.getDirection();
 
-                            Point3 measurementPoint(d, 0, 0);
-                            measurementPoint.rotateZ(totalRot);
-//                            measurementPoint += m_translation;
+                        Point3 measurementPoint(obj.getDistance(), 0, 0);
+                        measurementPoint.rotateZ(dir.getAzimuth());
 
-                            int _width = 200 * (m_scaleFactor * 300);
-                            int _height = 200 * (m_scaleFactor * 300);
+                        int _width = 200 * (m_scaleFactor * 300);
+                        int _height = 200 * (m_scaleFactor * 300);
 
-                            painter.fillRect(measurementPoint.getX() * 1000, measurementPoint.getY() * 1000, _width, _height, QBrush(Qt::red));
-                        }
+                        painter.fillRect(measurementPoint.getX() * 1000, measurementPoint.getY() * 1000, _width, _height, QBrush(Qt::red));
+
+                        it++;
                     }
+
                 }
 
                 // Draw axes labels.

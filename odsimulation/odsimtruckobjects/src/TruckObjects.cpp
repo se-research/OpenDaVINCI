@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <iostream>
 #include <sstream>
 #include <string>
 
@@ -26,6 +27,9 @@
 #include "opendavinci/odcore/data/Container.h"
 #include "opendlv/data/environment/EgoState.h"
 #include "opendlv/vehiclecontext/model/IRUS.h"
+#include "automotivedata/generated/automotive/miniature/SensorBoardData.h"
+#include "automotivedata/generated/from/opendlv/perception/Object.h"
+#include "automotivedata/generated/from/opendlv/model/Direction.h"
 
 namespace odcore { namespace base { class KeyValueDataStore; } }
 
@@ -62,16 +66,25 @@ namespace gcdc16 {
             Container c = kvs.get(opendlv::data::environment::EgoState::ID());
             EgoState es = c.getData<EgoState>();
 
-            // TODO: Map distance to GCDC data format.
-
             // Calculate result and propagate it.
             vector<Container> toBeSent = irus.calculate(es);
             if (toBeSent.size() > 0) {
                 vector<Container>::iterator it = toBeSent.begin();
-                while(it != toBeSent.end()) {
-                    getConference().send(*it);
-                    it++;
-                    Thread::usleepFor(50);
+
+                // Translate the first object into a from::opendlv::perception::Object.
+                if (it->getDataType() == automotive::miniature::SensorBoardData::ID()) {
+                    automotive::miniature::SensorBoardData sbd = it->getData<automotive::miniature::SensorBoardData>();
+                    const double d = sbd.getValueForKey_MapOfDistances(0);
+                    if (d > 0) {
+                        from::opendlv::model::Direction dir(-4.0 * cartesian::Constants::DEG2RAD, 0);
+                        from::opendlv::perception::Object obj;
+                        obj.setDistance(d);
+                        obj.setDirection(dir);
+                        cout << obj.toString() << endl;
+
+                        Container c2(obj);
+                        getConference().send(c2);
+                    }
                 }
             }
         }

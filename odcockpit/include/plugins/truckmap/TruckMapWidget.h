@@ -29,7 +29,7 @@
 
 #include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/io/conference/ContainerListener.h"
-#include "automotivedata/generated/automotive/miniature/SensorBoardData.h"
+#include "automotivedata/generated/from/opendlv/perception/Object.h"
 
 class QPaintEvent;
 class QTimer;
@@ -97,8 +97,8 @@ class PointSensor;
                     double m_scaleFactor;
                     double m_rotation;
 
-                    odcore::base::Mutex m_sensorBoardDataMutex;
-                    automotive::miniature::SensorBoardData m_sensorBoardData;
+                    odcore::base::Mutex m_objectsMutex;
+                    map<uint16_t, from::opendlv::perception::Object> m_objects;
             };
 
         }
