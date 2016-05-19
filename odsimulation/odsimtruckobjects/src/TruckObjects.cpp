@@ -80,7 +80,7 @@ namespace gcdc16 {
                         from::opendlv::perception::Object obj;
                         obj.setDistance(d);
                         obj.setDirection(dir);
-                        cout << obj.toString() << endl;
+                        obj.setObjectId(2412);
 
                         Container c2(obj);
                         getConference().send(c2);

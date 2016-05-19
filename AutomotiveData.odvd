@@ -207,33 +207,44 @@ message from.opendlv.model.Direction [id = 152] {
 
 message from.opendlv.model.State [id = 153] {
   from.opendlv.model.Cartesian3 position [id = 1];
-  from.opendlv.model.Cartesian3 velocity [id = 2];
-  from.opendlv.model.Cartesian3 acceleration [id = 3];
-  from.opendlv.model.Cartesian3 angularDisplacement [id = 4]; // TODO: Should we have a quaternion here to avoid internal transformations?
-  from.opendlv.model.Cartesian3 angularVelocity [id = 5];
-  from.opendlv.model.Cartesian3 angularAcceleration [id = 6];
-  uint16 frameId [id = 7];
+  from.opendlv.model.Cartesian3 angularDisplacement [id = 2];
+  int16 frameId [id = 3];
 }
 
-message from.opendlv.proxy.ActuationRequest [id = 164] {
+message from.opendlv.model.DynamicState [id = 154] {
+  from.opendlv.model.Cartesian3 velocity [id = 1];
+  from.opendlv.model.Cartesian3 velocityConfidence [id = 2];
+
+  from.opendlv.model.Cartesian3 acceleration [id = 3];
+  from.opendlv.model.Cartesian3 accelerationConfidence [id = 4];
+
+  from.opendlv.model.Cartesian3 angularVelocity [id = 5];
+  from.opendlv.model.Cartesian3 angularVelocityConfidence [id = 6];
+
+  from.opendlv.model.Cartesian3 angularAcceleration [id = 7];
+  from.opendlv.model.Cartesian3 angularAccelerationConfidence [id = 8];
+  int16 frameId [id = 9];
+}
+
+message from.opendlv.proxy.ActuationRequest [id = 160] {
   float acceleration [id = 1];
   float steering [id = 2];
   bool isValid [id = 3];
 }
 
-message from.opendlv.proxy.AccelerometerReading [id = 204] { // duplicated ID, was 159!
+message from.opendlv.proxy.AccelerometerReading [id = 161] {
   float acceleration[3] [id = 1];
 }
 
-message from.opendlv.proxy.AltimeterReading [id = 160] {
+message from.opendlv.proxy.AltimeterReading [id = 162] {
   float altitude [id = 1];
 }
 
-message from.opendlv.proxy.CompassReading [id = 157] {
+message from.opendlv.proxy.CompassReading [id = 163] {
   float heading[3] [id = 1];
 }
 
-message from.opendlv.proxy.ControlOverrideState [id = 202] { // duplicated ID, was 202!
+message from.opendlv.proxy.ControlOverrideState [id = 164] {
   bool isOverridden [id = 1];
 }
 
@@ -241,13 +252,13 @@ message from.opendlv.proxy.ControlState [id = 165] {
   bool isAutonomous [id = 1];
 }
 
-message from.opendlv.proxy.EchoReading [id = 156] {
+message from.opendlv.proxy.EchoReading [id = 166] {
   list<from.opendlv.model.Direction> directions [id = 1];
   list<double> radii [id = 2];
   uint32 numberOfPoints [id = 3];
 }
 
-message from.opendlv.proxy.GpsReading [id = 161] {
+message from.opendlv.proxy.GpsReading [id = 167] {
   double timestamp [id = 1];
   double latitude [id = 2];
   double longitude [id = 3];
@@ -261,36 +272,36 @@ message from.opendlv.proxy.GpsReading [id = 161] {
   bool hasRtk [id = 11];
 }
 
-message from.opendlv.proxy.GyroscopeReading [id = 158] {
+message from.opendlv.proxy.GyroscopeReading [id = 168] {
   float orientation[3] [id = 1];
 }
 
-message from.opendlv.proxy.LedRequest [id = 159] {
+message from.opendlv.proxy.LedRequest [id = 169] {
   uint8 numberOfLeds [id = 1];
   string data [id = 2];
 }
 
-message from.opendlv.proxy.RelayRequest [id = 203] { // duplicated ID, was 159!
+message from.opendlv.proxy.RelayRequest [id = 170] {
   list<bool> relayState [id = 1];
 }
 
-message from.opendlv.proxy.V2vReading [id = 162] {
+message from.opendlv.proxy.V2vReading [id = 171] {
   uint32 size [id = 1];
   string data [id = 2];
 }
 
-message from.opendlv.proxy.V2vRequest [id = 163] {
+message from.opendlv.proxy.V2vRequest [id = 172] {
   uint32 size [id = 1];
   string data [id = 2];
 }
 
-message from.opendlv.sensation.Voice [id = 166] {
+message from.opendlv.sensation.Voice [id = 175] {
   string type [id = 1];
   uint32 size [id = 2];
   string data [id = 3];
 }
 
-message from.opendlv.sensation.Geolocation [id = 169] {
+message from.opendlv.sensation.Geolocation [id = 176] {
   double latitude [id = 1];
   float latitudeConfidence [id = 2];
   double longitude [id = 3];
@@ -300,47 +311,14 @@ message from.opendlv.sensation.Geolocation [id = 169] {
   float headingConfidence [id = 7];
 }
 
-message from.opendlv.sensation.DynamicState [id = 201] { // duplicated ID, was 170!
- // double speed [id = 7];
- // double speedConfidence [id = 8];
- // double yawRate [id = 9];
- // double yawRateConfidence [id = 10];
- // double longitudinalAcceleration [id = 11];
- // double longitudinalAccelerationConfidence [id=12]; 
-}
-
-message from.opendlv.sensation.BodyPart [id = 170] {
-  from.opendlv.model.Cartesian3 position [id = 1]; // From body origo to body part center of mass
-  string gemoetryPath [id = 2];
-  float width [id = 3];
-  float height [id = 4];
-  float depth [id = 5];
-  float mass [id = 6];
-  uint8 partIndex [id = 7];
-}
-
-  message from.opendlv.sensation.Orientation [id = 171] {
-  float roll [id = 1];
-  float pitch [id = 2];
-  float yaw [id = 3];
-  uint8 partIndex [id = 4];
-}
-
-  message from.opendlv.sensation.Balance [id = 172] {
-  float rollRate [id = 1];
-  float pitchRate [id = 2];
-  float yawRate [id = 3];
-  uint8 partIndex [id = 4];
-}
-
-message from.opendlv.sensation.Looming [id = 173] {
+message from.opendlv.sensation.Looming [id = 177] {
   uint16 numberOfPoints [id = 1];
   list<float> azimuth [id = 2];
   list<float> zenith [id = 3];
   list<float> expansion [id = 4];
 }
 
-message from.opendlv.sensation.OpticalFlow [id = 174] {
+message from.opendlv.sensation.OpticalFlow [id = 178] {
   uint16 numberOfPoints [id = 1];
   list<float> azimuth [id = 2];
   list<float> zenith [id = 3];
@@ -348,17 +326,17 @@ message from.opendlv.sensation.OpticalFlow [id = 174] {
   list<float> v [id = 5];
 }
 
-message from.opendlv.sensation.DirectionOfMovement [id = 175] {
+message from.opendlv.sensation.DirectionOfMovement [id = 179] {
   float azimuth [id = 1];
   float zenith [id = 2];
 }
 
-message from.opendlv.sensation.DesiredDirectionOfMovement [id = 178] {
+message from.opendlv.sensation.DesiredDirectionOfMovement [id = 180] {
   float azimuth [id = 1];
   float zenith [id = 2];
 }
 
-message from.opendlv.perception.Object [id = 179] {
+message from.opendlv.perception.Object [id = 181] {
   odcore::data::TimeStamp identified [id = 1];
   string type [id = 2];
   float typeConfidence [id = 3];
@@ -381,17 +359,38 @@ message from.opendlv.perception.Object [id = 179] {
 
   list<string> properties [id = 16];
 
-  uint16 objectId [id = 17];
+  int16 objectId [id = 17];
 }
 
-message from.opendlv.perception.ObjectDesiredDirection [id = 180] {
+message from.opendlv.perception.ObjectDesiredDirection [id = 182] {
   from.opendlv.model.Direction desiredDirection [id = 1];
-  uint16 objectId [id = 2];
+  int16 objectId [id = 2];
 }
 
-message from.opendlv.perception.ObjectDesiredAngularSize [id = 181] {
+message from.opendlv.perception.ObjectDesiredAngularSize [id = 183] {
   float desiredAngularSize [id = 1];
-  uint16 objectId [id = 2];
+  int16 objectId [id = 2];
+}
+
+message from.opendlv.perception.Surface [id = 184] {
+  odcore::data::TimeStamp identified [id = 1];
+  string type [id = 2];
+  float typeConfidence [id = 3];
+
+  list<from.opendlv.model.Cartesian3> edges [id = 4];
+  float edgesConfidence [id = 5];
+
+  bool traversable [id = 6];
+
+  float confidence [id = 7];
+  uint16 sources [id = 8];
+
+  list<string> properties [id = 9];
+
+  int16 surfaceId [id = 10];
+
+  list<int16> connectedWith [id = 11];
+  list<int16> traversableTo [id = 12];
 }
 
 message from.opendlv.knowledge.Message [id = 185] {
@@ -399,7 +398,7 @@ message from.opendlv.knowledge.Message [id = 185] {
   string data [id = 2];
 }
 
-message from.opendlv.action.Correction [id = 190] {
+message from.opendlv.action.Correction [id = 186] {
   odcore::data::TimeStamp startTime [id = 1];
   string type [id = 2];
   bool isInhibitory [id = 3];
