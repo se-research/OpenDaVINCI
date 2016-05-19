@@ -1,6 +1,6 @@
 /**
  * cockpit - Visualization environment
- * Copyright (C) 2012 - 2015 Christian Berger
+ * Copyright (C) 2012 - 2016 Christian Berger
  * Copyright (C) 2008 - 2011 (as monitor component) Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -18,8 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef COCKPIT_PLUGINS_IRUSMAP_IRUSMAPPLUGIN_H_
-#define COCKPIT_PLUGINS_IRUSMAP_IRUSMAPPLUGIN_H_
+#ifndef COCKPIT_PLUGINS_TRUCKMAP_TRUCKMAPPLUGIN_H_
+#define COCKPIT_PLUGINS_TRUCKMAP_TRUCKMAPPLUGIN_H_
 
 #include <string>
 
@@ -32,13 +32,13 @@ namespace cockpit {
 
     namespace plugins {
 
-        namespace irusmap {
+        namespace truckmap {
 
-class IrUsMapWidgetControl;
+class TruckMapWidgetControl;
 
             using namespace std;
 
-            class IrUsMapPlugIn : public PlugIn {
+            class TruckMapPlugIn : public PlugIn {
 
                 private:
                     /**
@@ -46,14 +46,14 @@ class IrUsMapWidgetControl;
                      * already at compile time for unwanted bugs caused by any misuse
                      * of the copy constructor.
                      */
-                    IrUsMapPlugIn(const IrUsMapPlugIn &/*obj*/);
+                    TruckMapPlugIn(const TruckMapPlugIn &/*obj*/);
 
                     /**
                      * "Forbidden" assignment operator. Goal: The compiler should warn
                      * already at compile time for unwanted bugs caused by any misuse
                      * of the assignment operator.
                      */
-                    IrUsMapPlugIn& operator=(const IrUsMapPlugIn &/*obj*/);
+                    TruckMapPlugIn& operator=(const TruckMapPlugIn &/*obj*/);
 
                 public:
                     /**
@@ -63,9 +63,9 @@ class IrUsMapWidgetControl;
                      * @param kvc KeyValueConfiguration for this widget.
                      * @param prnt Pointer to the container super window.
                      */
-                    IrUsMapPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt);
+                    TruckMapPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt);
 
-                    virtual ~IrUsMapPlugIn();
+                    virtual ~TruckMapPlugIn();
 
                     virtual QWidget* getQWidget() const;
 
@@ -75,12 +75,12 @@ class IrUsMapWidgetControl;
 
                 private:
                     const odcore::base::KeyValueConfiguration &m_kvc;
-                    IrUsMapWidgetControl *m_irusmapWidgetControl;
+                    TruckMapWidgetControl *m_truckmapWidgetControl;
             };
 
         }
     }
 }
 
-#endif /*COCKPIT_PLUGINS_IRUSMAP_IRUSMAPPLUGIN_H_*/
+#endif /*COCKPIT_PLUGINS_TRUCKMAP_TRUCKMAPPLUGIN_H_*/
 

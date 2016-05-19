@@ -1,6 +1,6 @@
 /**
  * cockpit - Visualization environment
- * Copyright (C) 2012 - 2015 Christian Berger
+ * Copyright (C) 2012 - 2016 Christian Berger
  * Copyright (C) 2008 - 2011 (as monitor component) Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -18,8 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef COCKPIT_PLUGINS_IRUSMAP_IRUSMAPWIDGET_H_
-#define COCKPIT_PLUGINS_IRUSMAP_IRUSMAPWIDGET_H_
+#ifndef COCKPIT_PLUGINS_TRUCKMAP_TRUCKMAPWIDGET_H_
+#define COCKPIT_PLUGINS_TRUCKMAP_TRUCKMAPWIDGET_H_
 
 #include <QtCore>
 #include <QtGui>
@@ -41,7 +41,7 @@ namespace cockpit {
 
     namespace plugins {
 
-        namespace irusmap {
+        namespace truckmap {
 
 class PointSensor;
 
@@ -50,7 +50,7 @@ class PointSensor;
             /**
              * This class is the container for the irus map widget.
              */
-            class IrUsMapWidget : public QWidget, public odcore::io::conference::ContainerListener {
+            class TruckMapWidget : public QWidget, public odcore::io::conference::ContainerListener {
 
                     Q_OBJECT
 
@@ -60,14 +60,14 @@ class PointSensor;
                      * already at compile time for unwanted bugs caused by any misuse
                      * of the copy constructor.
                      */
-                    IrUsMapWidget(const IrUsMapWidget &/*obj*/);
+                    TruckMapWidget(const TruckMapWidget &/*obj*/);
 
                     /**
                      * "Forbidden" assignment operator. Goal: The compiler should warn
                      * already at compile time for unwanted bugs caused by any misuse
                      * of the assignment operator.
                      */
-                    IrUsMapWidget& operator=(const IrUsMapWidget &/*obj*/);
+                    TruckMapWidget& operator=(const TruckMapWidget &/*obj*/);
 
                 public:
                     /**
@@ -77,9 +77,9 @@ class PointSensor;
                      * @param kvc KeyValueConfiguration for this based widget.
                      * @param prnt Pointer to the parental widget.
                      */
-                    IrUsMapWidget(const PlugIn &plugIn, const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt);
+                    TruckMapWidget(const PlugIn &plugIn, const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt);
 
-                    virtual ~IrUsMapWidget();
+                    virtual ~TruckMapWidget();
 
                     virtual void nextContainer(odcore::data::Container &c);
 
@@ -107,5 +107,5 @@ class PointSensor;
     }
 }
 
-#endif /*COCKPIT_PLUGINS_IRUSMAP_IRUSMAPWIDGET_H_*/
+#endif /*COCKPIT_PLUGINS_TRUCKMAP_TRUCKMAPWIDGET_H_*/
 

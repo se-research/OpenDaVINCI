@@ -1,6 +1,6 @@
 /**
  * cockpit - Visualization environment
- * Copyright (C) 2012 - 2015 Christian Berger
+ * Copyright (C) 2012 - 2016 Christian Berger
  * Copyright (C) 2008 - 2011 (as monitor component) Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -20,8 +20,8 @@
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "ContainerObserver.h"
-#include "plugins/irusmap/IrUsMapPlugIn.h"
-#include "plugins/irusmap/IrUsMapWidgetControl.h"
+#include "plugins/truckmap/TruckMapPlugIn.h"
+#include "plugins/truckmap/TruckMapWidgetControl.h"
 
 class QWidget;
 namespace odcore { namespace base { class KeyValueConfiguration; } }
@@ -30,37 +30,37 @@ namespace cockpit {
 
     namespace plugins {
 
-        namespace irusmap {
+        namespace truckmap {
 
-            IrUsMapPlugIn::IrUsMapPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt) :
+            TruckMapPlugIn::TruckMapPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt) :
                     PlugIn(name, kvc, prnt),
                     m_kvc(kvc),
-                    m_irusmapWidgetControl(NULL) {
-                setDescription("This plugin displays the current irus readings.");
+                    m_truckmapWidgetControl(NULL) {
+                setDescription("This plugin displays the current object readings from the truck.");
             }
 
-            IrUsMapPlugIn::~IrUsMapPlugIn() {
-                // The widget m_irusmapWidget will be destroyed by Qt.
+            TruckMapPlugIn::~TruckMapPlugIn() {
+                // The widget m_truckmapWidget will be destroyed by Qt.
             }
 
-            void IrUsMapPlugIn::setupPlugin() {
-                m_irusmapWidgetControl = new IrUsMapWidgetControl(*this, m_kvc, getParentQWidget());
+            void TruckMapPlugIn::setupPlugin() {
+                m_truckmapWidgetControl = new TruckMapWidgetControl(*this, m_kvc, getParentQWidget());
 
                 cockpit::ContainerObserver *co = getContainerObserver();
                 if (co != NULL) {
-                    co->addContainerListener(m_irusmapWidgetControl);
+                    co->addContainerListener(m_truckmapWidgetControl);
                 }
             }
 
-            void IrUsMapPlugIn::stopPlugin() {
+            void TruckMapPlugIn::stopPlugin() {
                 cockpit::ContainerObserver *co = getContainerObserver();
                 if (co != NULL) {
-                    co->removeContainerListener(m_irusmapWidgetControl);
+                    co->removeContainerListener(m_truckmapWidgetControl);
                 }
             }
 
-            QWidget* IrUsMapPlugIn::getQWidget() const {
-                return m_irusmapWidgetControl;
+            QWidget* TruckMapPlugIn::getQWidget() const {
+                return m_truckmapWidgetControl;
             }
 
         }

@@ -1,6 +1,6 @@
 /**
  * cockpit - Visualization environment
- * Copyright (C) 2012 - 2015 Christian Berger
+ * Copyright (C) 2012 - 2016 Christian Berger
  * Copyright (C) 2008 - 2011 (as monitor component) Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -31,8 +31,8 @@
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/strings/StringComparator.h"
 #include "opendlv/data/environment/Point3.h"
-#include "plugins/irusmap/IrUsMapWidget.h"
-#include "plugins/irusmap/PointSensor.h"
+#include "plugins/truckmap/TruckMapWidget.h"
+#include "plugins/truckmap/PointSensor.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }
 
@@ -40,14 +40,14 @@ namespace cockpit {
 
     namespace plugins {
 
-        namespace irusmap {
+        namespace truckmap {
 
             using namespace std;
             using namespace odcore::base;
             using namespace odcore::data;
             using namespace opendlv::data::environment;
 
-            IrUsMapWidget::IrUsMapWidget(const PlugIn &/*plugIn*/, const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt) :
+            TruckMapWidget::TruckMapWidget(const PlugIn &/*plugIn*/, const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt) :
                 QWidget(prnt),
                 m_timer(NULL),
                 m_scaleFactorMutex(),
@@ -103,27 +103,27 @@ namespace cockpit {
                 m_timer->start(200);
             }
 
-            IrUsMapWidget::~IrUsMapWidget() {}
+            TruckMapWidget::~TruckMapWidget() {}
 
-            void IrUsMapWidget::stopTimer() {
+            void TruckMapWidget::stopTimer() {
                 m_timer->stop();
             }
 
-            void IrUsMapWidget::nextContainer(Container &c) {
+            void TruckMapWidget::nextContainer(Container &c) {
                 if (c.getDataType() == automotive::miniature::SensorBoardData::ID()) {
                     Lock l(m_sensorBoardDataMutex);
         			m_sensorBoardData = c.getData<automotive::miniature::SensorBoardData>();
                 }
             }
 
-            void IrUsMapWidget::setScale(const int &val) {
+            void TruckMapWidget::setScale(const int &val) {
                 if (val > 0) {
                     Lock l(m_scaleFactorMutex);
                     m_scaleFactor = (val / 100.0);
                 }
             }
 
-            void IrUsMapWidget::paintEvent(QPaintEvent *evt) {
+            void TruckMapWidget::paintEvent(QPaintEvent *evt) {
                 Lock l(m_scaleFactorMutex);
 
                 QPainter painter(this);

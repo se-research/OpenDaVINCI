@@ -33,7 +33,7 @@ namespace cockpit {
 
     namespace plugins {
 
-        namespace irusmap {
+        namespace truckmap {
 
             using namespace std;
 

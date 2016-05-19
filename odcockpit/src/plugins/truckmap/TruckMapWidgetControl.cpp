@@ -1,6 +1,6 @@
 /**
  * cockpit - Visualization environment
- * Copyright (C) 2012 - 2015 Christian Berger
+ * Copyright (C) 2012 - 2016 Christian Berger
  * Copyright (C) 2008 - 2011 (as monitor component) Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -23,8 +23,8 @@
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/Lock.h"
-#include "plugins/irusmap/IrUsMapWidget.h"
-#include "plugins/irusmap/IrUsMapWidgetControl.h"
+#include "plugins/truckmap/TruckMapWidget.h"
+#include "plugins/truckmap/TruckMapWidgetControl.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }
 namespace odcore { namespace base { class KeyValueConfiguration; } }
@@ -34,20 +34,20 @@ namespace cockpit {
 
     namespace plugins {
 
-        namespace irusmap {
+        namespace truckmap {
 
             using namespace std;
             using namespace odcore::base;
             using namespace odcore::data;
 
-            IrUsMapWidgetControl::IrUsMapWidgetControl(const PlugIn &plugIn, const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt) :
+            TruckMapWidgetControl::TruckMapWidgetControl(const PlugIn &plugIn, const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt) :
                 QWidget(prnt),
                 m_mapWidgetMutex(),
                 m_mapWidget(NULL) {
 
                 {
                     Lock l(m_mapWidgetMutex);
-                    m_mapWidget = new IrUsMapWidget(plugIn, kvc, prnt);
+                    m_mapWidget = new TruckMapWidget(plugIn, kvc, prnt);
                 }
 
                 QLabel *scaleLabel = new QLabel(tr("Scale: "), this);
@@ -71,20 +71,20 @@ namespace cockpit {
                 setMinimumSize(640, 480);
             }
 
-            IrUsMapWidgetControl::~IrUsMapWidgetControl() {
+            TruckMapWidgetControl::~TruckMapWidgetControl() {
                 Lock l(m_mapWidgetMutex);
                 m_mapWidget->stopTimer();
                 OPENDAVINCI_CORE_DELETE_POINTER(m_mapWidget);
             }
 
-            void IrUsMapWidgetControl::setScale(int val) {
+            void TruckMapWidgetControl::setScale(int val) {
                 Lock l(m_mapWidgetMutex);
                 if (m_mapWidget != NULL) {
                     m_mapWidget->setScale(val);
                 }
             }
 
-            void IrUsMapWidgetControl::nextContainer(Container &c) {
+            void TruckMapWidgetControl::nextContainer(Container &c) {
                 Lock l(m_mapWidgetMutex);
                 if (m_mapWidget != NULL) {
                     m_mapWidget->nextContainer(c);

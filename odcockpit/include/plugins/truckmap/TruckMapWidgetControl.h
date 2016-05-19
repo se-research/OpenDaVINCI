@@ -1,6 +1,6 @@
 /**
  * cockpit - Visualization environment
- * Copyright (C) 2012 - 2015 Christian Berger
+ * Copyright (C) 2012 - 2016 Christian Berger
  * Copyright (C) 2008 - 2011 (as monitor component) Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
@@ -18,8 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef COCKPIT_PLUGINS_IRUSMAP_IRUSMAPWIDGETCONTROL_H_
-#define COCKPIT_PLUGINS_IRUSMAP_IRUSMAPWIDGETCONTROL_H_
+#ifndef COCKPIT_PLUGINS_TRUCKMAP_TRUCKMAPWIDGETCONTROL_H_
+#define COCKPIT_PLUGINS_TRUCKMAP_TRUCKMAPWIDGETCONTROL_H_
 
 #include <QtCore>
 #include <QtGui>
@@ -35,16 +35,16 @@ namespace cockpit {
 
     namespace plugins {
 
-        namespace irusmap {
+        namespace truckmap {
 
-class IrUsMapWidget;
+class TruckMapWidget;
 
             using namespace std;
 
             /**
              * This class is the container for the irus map widget control.
              */
-            class IrUsMapWidgetControl : public QWidget, public odcore::io::conference::ContainerListener {
+            class TruckMapWidgetControl : public QWidget, public odcore::io::conference::ContainerListener {
 
                     Q_OBJECT
 
@@ -54,14 +54,14 @@ class IrUsMapWidget;
                      * already at compile time for unwanted bugs caused by any misuse
                      * of the copy constructor.
                      */
-                    IrUsMapWidgetControl(const IrUsMapWidgetControl &/*obj*/);
+                    TruckMapWidgetControl(const TruckMapWidgetControl &/*obj*/);
 
                     /**
                      * "Forbidden" assignment operator. Goal: The compiler should warn
                      * already at compile time for unwanted bugs caused by any misuse
                      * of the assignment operator.
                      */
-                    IrUsMapWidgetControl& operator=(const IrUsMapWidgetControl &/*obj*/);
+                    TruckMapWidgetControl& operator=(const TruckMapWidgetControl &/*obj*/);
 
                 public:
                     /**
@@ -71,9 +71,9 @@ class IrUsMapWidget;
                      * @param kvc KeyValueConfiguration for this based widget.
                      * @param prnt Pointer to the parental widget.
                      */
-                    IrUsMapWidgetControl(const PlugIn &plugIn, const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt);
+                    TruckMapWidgetControl(const PlugIn &plugIn, const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt);
 
-                    virtual ~IrUsMapWidgetControl();
+                    virtual ~TruckMapWidgetControl();
 
                     virtual void nextContainer(odcore::data::Container &c);
 
@@ -82,12 +82,12 @@ class IrUsMapWidget;
 
                 private:
                     odcore::base::Mutex m_mapWidgetMutex;
-                    IrUsMapWidget *m_mapWidget;
+                    TruckMapWidget *m_mapWidget;
             };
 
         }
     }
 }
 
-#endif /*COCKPIT_PLUGINS_IRUSMAP_IRUSMAPWIDGETCONTROL_H_*/
+#endif /*COCKPIT_PLUGINS_TRUCKMAP_TRUCKMAPWIDGETCONTROL_H_*/
 

@@ -26,13 +26,13 @@
 
 #include "automotivedata/generated/automotive/miniature/SensorBoardData.h"
 #include "automotivedata/generated/cartesian/Constants.h"
-#include "plugins/irusmap/PointSensor.h"
+#include "plugins/truckmap/PointSensor.h"
 
 namespace cockpit {
 
     namespace plugins {
 
-        namespace irusmap {
+        namespace truckmap {
 
             using namespace std;
             using namespace odcore::data;
