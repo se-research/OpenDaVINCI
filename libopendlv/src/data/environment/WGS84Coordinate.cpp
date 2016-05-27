@@ -186,9 +186,9 @@ namespace opendlv {
                 WGS84Coordinate result(*this);
                 Point3 point3Result;
 
-                double addLon = 1e-7;
+                double addLon = 1e-5;
                 int32_t signLon = (coordinate.getX() < 0) ? -1 : 1;
-                double addLat = 1e-7;
+                double addLat = 1e-5;
                 int32_t signLat = (coordinate.getY() < 0) ? -1 : 1;
 
                 double epsilon = accuracy;

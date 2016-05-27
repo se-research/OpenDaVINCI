@@ -22,6 +22,7 @@
 
 #include "cxxtest/TestSuite.h"
 
+#include <iomanip>
 #include <sstream>
 #include <vector>
 
@@ -216,6 +217,25 @@ class WGS84CoordinateTest : public CxxTest::TestSuite {
                 TS_ASSERT_DELTA(coord.getX(), references.at(i).getX(), 1e-2);
                 TS_ASSERT_DELTA(coord.getY(), references.at(i).getY(), 1e-2);
             }
+        }
+
+        void testInverseProjectionCompact() {
+            double latitude = 52.247041;
+            double longitude = 10.575830;
+
+            WGS84Coordinate reference(latitude, WGS84Coordinate::NORTH, longitude, WGS84Coordinate::EAST);
+            WGS84Coordinate expectedValue(52.251011, WGS84Coordinate::NORTH, 10.573568, WGS84Coordinate::EAST);
+
+            Point3 p(-154.48, 441.75, 0);
+
+            TimeStamp before;
+            WGS84Coordinate w = reference.transform(p);
+            TimeStamp after;
+            cout << setprecision(10) << w.getLatitude() << ", " << w.getLongitude() << ", took: " << (after-before).toMicroseconds() << endl;
+
+            TS_ASSERT_DELTA(w.getLatitude(), expectedValue.getLatitude(), 1e-2);
+            TS_ASSERT_DELTA(w.getLongitude(), expectedValue.getLongitude(), 1e-2);
+
         }
 
         void testInverseProjection() {
