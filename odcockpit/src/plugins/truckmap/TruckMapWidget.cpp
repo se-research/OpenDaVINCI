@@ -73,7 +73,7 @@ namespace cockpit {
             }
 
             void TruckMapWidget::nextContainer(Container &c) {
-                if (c.getDataType() == from::opendlv::perception::Object::ID()) {
+                if (c.getDataType() == (from::opendlv::perception::Object::ID() + 300)) {
                     Lock l(m_objectsMutex);
                     from::opendlv::perception::Object obj = c.getData<from::opendlv::perception::Object>();
                     m_objects[obj.getObjectId()] = obj;
