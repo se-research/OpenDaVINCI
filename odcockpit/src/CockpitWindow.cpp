@@ -128,11 +128,6 @@ namespace cockpit {
             item->setText((*it).c_str());
             item->setToolTip(m_plugInProvider.getDescriptionForPlugin((*it)).c_str());
 
-            // Start session viewer immediately.
-            if ((*it) == "SessionViewer") {
-                showPlugIn(item);
-            }
-
             it++;
         }
 
