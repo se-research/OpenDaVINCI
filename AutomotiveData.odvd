@@ -282,7 +282,9 @@ message from.opendlv.proxy.LedRequest [id = 169] {
 }
 
 message from.opendlv.proxy.RelayRequest [id = 170] {
-  list<bool> relayState [id = 1];
+  bool relayValue [id = 1];
+  uint8 relayIndex [id = 2];
+  string deviceId [id = 3];
 }
 
 message from.opendlv.proxy.V2vReading [id = 171] {
@@ -313,27 +315,27 @@ message from.opendlv.sensation.Geolocation [id = 176] {
 
 message from.opendlv.sensation.Looming [id = 177] {
   uint16 numberOfPoints [id = 1];
-  list<float> azimuth [id = 2];
-  list<float> zenith [id = 3];
+  list<from.opendlv.model.Direction> directions [id = 2];
   list<float> expansion [id = 4];
 }
 
 message from.opendlv.sensation.OpticalFlow [id = 178] {
   uint16 numberOfPoints [id = 1];
-  list<float> azimuth [id = 2];
-  list<float> zenith [id = 3];
-  list<float> u [id = 4];
-  list<float> v [id = 5];
+  list<from.opendlv.model.Direction> directions [id = 2];
+  list<float> u [id = 3];
+  list<float> v [id = 4];
 }
 
 message from.opendlv.sensation.DirectionOfMovement [id = 179] {
-  float azimuth [id = 1];
-  float zenith [id = 2];
+  from.opendlv.model.Direction direction [id = 1];
 }
 
 message from.opendlv.sensation.DesiredDirectionOfMovement [id = 180] {
-  float azimuth [id = 1];
-  float zenith [id = 2];
+  from.opendlv.model.Direction direction [id = 1];
+}
+
+message from.opendlv.sensation.DesiredOpticalFlow [id = 174] {
+  float desiredOpticalFlow [id =1];
 }
 
 message from.opendlv.perception.Object [id = 181] {
@@ -355,11 +357,16 @@ message from.opendlv.perception.Object [id = 181] {
   float angularSizeRateConfidence [id = 13];
 
   float confidence [id = 14];
-  uint16 sources [id = 15];
+  list<string> sources [id = 15];
 
   list<string> properties [id = 16];
 
   int16 objectId [id = 17];
+}
+
+message from.opendlv.perception.Environment [id = 189] {
+  odcore::data::TimeStamp validUntil [id = 1];
+  list<from.opendlv.perception.Object> objects [id = 2];
 }
 
 message from.opendlv.perception.ObjectDesiredDirection [id = 182] {
@@ -383,7 +390,7 @@ message from.opendlv.perception.Surface [id = 184] {
   bool traversable [id = 6];
 
   float confidence [id = 7];
-  uint16 sources [id = 8];
+  list<string> sources [id = 8];
 
   list<string> properties [id = 9];
 
@@ -398,6 +405,11 @@ message from.opendlv.knowledge.Message [id = 185] {
   string data [id = 2];
 }
 
+message from.opendlv.knowledge.Insight [id = 187] {
+  odcore::data::TimeStamp insightTime [id = 1];
+  string insight [id = 2];
+}
+
 message from.opendlv.action.Correction [id = 186] {
   odcore::data::TimeStamp startTime [id = 1];
   string type [id = 2];
@@ -405,11 +417,14 @@ message from.opendlv.action.Correction [id = 186] {
   float amplitude [id = 4];
 }
 
+message from.opendlv.action.Estimate [id = 188] {
+  odcore::data::TimeStamp startTime [id = 1];
+  string type [id = 2];
+  float amplitude [id = 3];
+}
 
-// Specific for Revere FH16
 
-// TODO: Change name to ManualControl
-message from.opendlv.proxy.reverefh16.Pedals [id = 191] {
+message from.opendlv.proxy.reverefh16.ManualControl [id = 191] {
     double accelerationPedalPosition [id = 1];
     double brakePedalPosition [id = 2];
     double torsionBarTorque [id = 3];
@@ -461,6 +476,7 @@ message from.opendlv.proxy.reverefh16.Steering [id = 199] {
     double steeringwheelangle [id = 2];
 }
 
+// This message broadcasts the system's health as key/values.
 message from.opendlv.system.diagnostics.HealthStatus [id = 200] {
     map<string,string> status [id = 1];
 }

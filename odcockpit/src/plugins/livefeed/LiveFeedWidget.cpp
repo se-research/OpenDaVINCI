@@ -33,7 +33,7 @@
 #include "plugins/livefeed/LiveFeedWidget.h"
 #include "plugins/livefeed/MessageToTupleVisitor.h"
 
-#include "automotivedata/generated/from/opendlv/proxy/reverefh16/Pedals.h"
+#include "automotivedata/generated/from/opendlv/proxy/reverefh16/ManualControl.h"
 #include "automotivedata/generated/from/opendlv/proxy/reverefh16/AccelerationRequest.h"
 #include "automotivedata/generated/from/opendlv/proxy/reverefh16/BrakeRequest.h"
 #include "automotivedata/generated/from/opendlv/proxy/reverefh16/SteeringRequest.h"
@@ -165,8 +165,8 @@ namespace cockpit {
                     return;
                 }
 
-                if (container.getDataType() == from::opendlv::proxy::reverefh16::Pedals::ID()) {
-                    from::opendlv::proxy::reverefh16::Pedals tmp = container.getData<from::opendlv::proxy::reverefh16::Pedals>();
+                if (container.getDataType() == from::opendlv::proxy::reverefh16::ManualControl::ID()) {
+                    from::opendlv::proxy::reverefh16::ManualControl tmp = container.getData<from::opendlv::proxy::reverefh16::ManualControl>();
                     if (dynamic_cast<Visitable*>(&tmp) != NULL) {
                         addMessageToTree(tmp.LongName(), container, tmp);
                     }
