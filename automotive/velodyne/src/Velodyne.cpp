@@ -80,7 +80,7 @@ namespace automotive {
             while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING){
                 //cout<<"Decoding ongoing"<<endl;
 
-                while (lidarStream.good()) {
+                while (lidarStream.good() && !m_vListener.getStatus()) {
                     char cc;
                     lidarStream.read(&cc, sizeof(uint8_t));
                     stringstream sstr;
@@ -88,7 +88,10 @@ namespace automotive {
                     string s = sstr.str();
                     m_pcap.nextString(s);
                 }
-                lidarStream.close();
+                if(!lidarStream.good()){
+                    lidarStream.close();
+                }
+                m_vListener.sendSPC();
             
             }
             return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;

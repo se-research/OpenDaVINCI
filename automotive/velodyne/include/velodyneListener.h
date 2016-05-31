@@ -56,6 +56,7 @@ namespace automotive {
                  * of the assignment operator.
                  */
                 VelodyneListener& operator=(const VelodyneListener&);
+                
         
             public:
                 VelodyneListener(std::shared_ptr<SharedMemory>,odcore::io::conference::ContainerConference&);
@@ -65,7 +66,9 @@ namespace automotive {
 
                 // This method is called by ControlledContainerConferenceFactory to send c to the registered ContainerListener from an app.
                 virtual void nextContainer(odcore::data::Container &c);
-               
+                
+                void sendSPC();
+                bool getStatus();
                 
             private:
                 long packetNr;
@@ -77,6 +80,7 @@ namespace automotive {
                 std::shared_ptr<SharedMemory> VelodyneSharedMemory;
                 odcore::io::conference::ContainerConference& velodyneFrame;
                 odcore::data::SharedPointCloud spc;
+                bool stopReading;
         };
 
 } // automotive
