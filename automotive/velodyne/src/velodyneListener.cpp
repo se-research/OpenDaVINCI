@@ -105,7 +105,8 @@ namespace automotive {
             previousAzimuth(0.00),
             upperBlock(true),
             VelodyneSharedMemory(m),
-            velodyneFrame(c){}
+            velodyneFrame(c),
+            spc(){}
 
         VelodyneListener::~VelodyneListener() {}
         
@@ -173,7 +174,7 @@ namespace automotive {
                         
                         if(rotation<previousAzimuth)
                         {
-                            SharedPointCloud spc;
+                            //SharedPointCloud spc;
                             spc.setName(NAME); // Name of the shared memory segment with the data.
                             spc.setSize(pointIndex* NUMBER_OF_COMPONENTS_PER_POINT * SIZE_PER_COMPONENT); // Size in raw bytes.
                             spc.setWidth(pointIndex); // Number of points.
@@ -183,7 +184,6 @@ namespace automotive {
                             spc.setUserInfo(SharedPointCloud::XYZ_INTENSITY);
                             
                             Container imageFrame(spc);
-                            //imageFrame=Container(spc);
                             velodyneFrame.send(imageFrame);
                             
                             /*if(frameIndex==1){
@@ -253,5 +253,7 @@ namespace automotive {
             }
 
     }    
+    
+    
 } // automotive
 

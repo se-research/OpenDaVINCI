@@ -31,6 +31,7 @@
 #include "opendavinci/odcore/io/conference/ContainerObserver.h"
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
 //#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/generated/odcore/data/SharedPointCloud.h"
 
 
 namespace automotive {
@@ -64,6 +65,8 @@ namespace automotive {
 
                 // This method is called by ControlledContainerConferenceFactory to send c to the registered ContainerListener from an app.
                 virtual void nextContainer(odcore::data::Container &c);
+               
+                
             private:
                 long packetNr;
                 long pointIndex;
@@ -73,7 +76,7 @@ namespace automotive {
                 float distance[32];
                 std::shared_ptr<SharedMemory> VelodyneSharedMemory;
                 odcore::io::conference::ContainerConference& velodyneFrame;
-
+                odcore::data::SharedPointCloud spc;
         };
 
 } // automotive
