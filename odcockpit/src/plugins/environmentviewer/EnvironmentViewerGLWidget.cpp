@@ -125,7 +125,8 @@ namespace cockpit {
                     m_selectableNodeDescriptorTree(NULL),
                     m_selectableNodeDescriptorTreeListener(sndtl),
                     frameIndex(0),
-                    velodyneSharedMemory(NULL){}
+                    velodyneSharedMemory(NULL),
+                    velodyneFrame(){}
 
             EnvironmentViewerGLWidget::~EnvironmentViewerGLWidget() {
                 OPENDAVINCI_CORE_DELETE_POINTER(m_root);
@@ -336,6 +337,7 @@ namespace cockpit {
                             
                             if(velodyneSharedMemory.get()!=NULL){
                             if (velodyneSharedMemory->isValid()) {
+                            //TimeStamp startRenderT;
                             glPushMatrix();
                             // Using a scoped lock to lock and automatically unlock a shared memory segment.
                             odcore::base::Lock lv(velodyneSharedMemory);
@@ -356,7 +358,7 @@ namespace cockpit {
                                 Slice yData((float*)velodyneRawData+1, velodyneFrame.getWidth(), velodyneFrame.getHeight());
                                 Slice zData((float*)velodyneRawData+2, velodyneFrame.getWidth(), velodyneFrame.getHeight());
                                 Slice intensity((float*)velodyneRawData+3, velodyneFrame.getWidth(), velodyneFrame.getHeight());
-                            
+
                             glColor3f(0.0f,0.0f,1.0f); //blue color
                             glPointSize(3.0f); //set point size to 10 pixels
                             glBegin(GL_POINTS); //starts drawing of points
@@ -365,6 +367,8 @@ namespace cockpit {
                             }
                             glEnd();//end drawing of points
                             glPushMatrix();
+                            //TimeStamp endRenderT;
+                            //cout<<(endRenderT-startRenderT).toMicroseconds()<<endl;
                         }
                         }
                       }
@@ -485,6 +489,7 @@ namespace cockpit {
                     
                         velodyneFrame=c.getData<SharedPointCloud>();
                         velodyneSharedMemory=SharedMemoryFactory::attachToSharedMemory(velodyneFrame.getName());
+                        cout<<"Get frame"<<endl;
                         /*if (velodyneSharedMemory->isValid()) {
                             // Using a scoped lock to lock and automatically unlock a shared memory segment.
                             odcore::base::Lock l(velodyneSharedMemory);

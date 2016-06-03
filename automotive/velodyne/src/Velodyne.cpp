@@ -30,7 +30,7 @@
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/io/conference/ContainerConference.h"
 #include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
-
+#include <opendavinci/odcore/base/Thread.h>
 #include "automotivedata/GeneratedHeaders_AutomotiveData.h"
 
 #include "Velodyne.h"
@@ -56,7 +56,10 @@ namespace automotive {
             m_pcap(),
             lidarStream(),
             VelodyneSharedMemory(SharedMemoryFactory::createSharedMemory(NAME, SIZE)),
-            m_vListener(VelodyneSharedMemory,getConference()){}
+            m_vListener(VelodyneSharedMemory,getConference()),
+            fileClosed(false),
+            frameSent(false),
+            counter(0){}
 
         VelodyneDecoder::~VelodyneDecoder() {}
 
@@ -81,6 +84,7 @@ namespace automotive {
                 //cout<<"Decoding ongoing"<<endl;
 
                 while (lidarStream.good() && !m_vListener.getStatus()) {
+                //while (lidarStream.good()) {
                     char cc;
                     lidarStream.read(&cc, sizeof(uint8_t));
                     stringstream sstr;
@@ -88,11 +92,29 @@ namespace automotive {
                     string s = sstr.str();
                     m_pcap.nextString(s);
                 }
-                if(!lidarStream.good()){
+                if(!fileClosed){
                     lidarStream.close();
+                    cout<<"File read complete."<<endl;
+                    fileClosed=true;
                 }
-                m_vListener.sendSPC();
-            
+                /*if(!frameSent){
+                    for(int iii=0;iii<m_vListener.getFrameIndex();iii++){
+                        m_vListener.sendSPC(50);
+                        cout<<"Send frame "<<iii<<endl;
+                        const uint32_t TEN_MSECOND = 100 * 1000;
+                        Thread::usleepFor(TEN_MSECOND);
+                    }
+                    frameSent=true;
+                }*/
+                /*if(counter<m_vListener.getFrameIndex()){
+                    m_vListener.sendSPC(counter);
+                    cout<<"Send frame "<<counter<<endl;
+                    counter++;
+                }*/
+                if(!frameSent){
+                    m_vListener.sendSPC(100);
+                    frameSent=true;
+                }
             }
             return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }

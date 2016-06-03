@@ -67,8 +67,9 @@ namespace automotive {
                 // This method is called by ControlledContainerConferenceFactory to send c to the registered ContainerListener from an app.
                 virtual void nextContainer(odcore::data::Container &c);
                 
-                void sendSPC();
+                void sendSPC(int frame);
                 bool getStatus();
+                long getFrameIndex();
                 
             private:
                 long packetNr;
@@ -78,9 +79,11 @@ namespace automotive {
                 bool upperBlock;
                 float distance[32];
                 std::shared_ptr<SharedMemory> VelodyneSharedMemory;
+                std::shared_ptr<SharedMemory> frameStore[200];
                 odcore::io::conference::ContainerConference& velodyneFrame;
                 odcore::data::SharedPointCloud spc;
                 bool stopReading;
+                int pointNumberPerFrame[200];
         };
 
 } // automotive
