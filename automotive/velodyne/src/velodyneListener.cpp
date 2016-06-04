@@ -114,13 +114,14 @@ namespace automotive {
                 //memcpy(frameStore[iii]->getSharedMemory(),m->getSharedMemory(),m->getSize());
                     //if(frameStore[iii]->isValid()){
                         //Lock l(frameStore[iii]);
-                        frameStore[iii]=SharedMemoryFactory::createSharedMemory(NAME2, SIZE);
+                        frameStore[iii]=SharedMemoryFactory::createSharedMemory(NAME2+to_string(iii), SIZE);
                     /*}
                     else{
                         cout<<"Memory inialization failed."<<endl;
                         return;
                     }*/
                 }
+                //cout<<frameStore[10]->getName()<<endl;
                 //memcpy(frameStore[0]->getSharedMemory(),m->getSharedMemory(),m->getSize());
             }
             
@@ -173,6 +174,8 @@ namespace automotive {
                     int firstByte,secondByte,dataValue;
                     for(int index=0;index<12;index++)
                     {   
+                        if(stopReading)
+                            return;
                         //Decode header information: 2 bytes                    
                         firstByte=(unsigned int)(uint8_t)(dataToDecode.at(0));
                         secondByte=(unsigned int)(uint8_t)(dataToDecode.at(1));
@@ -220,14 +223,14 @@ namespace automotive {
                             //}
                             
                             pointNumberPerFrame[frameIndex]=pointIndex;
-                            if(frameIndex>=10){
+                            cout<<"Load frame "<<frameIndex<<endl;
+                            if(frameIndex>=45){
                                 stopReading=true;
                             }
                             else{
                                 frameIndex++;
                             }
                             pointIndex=0;
-                            cout<<"Load frame "<<frameIndex<<endl;
                             
                         }
                         
@@ -283,12 +286,14 @@ namespace automotive {
     }    
     
     void VelodyneListener::sendSPC(int frame){
-        if(frameStore[frame]->isValid())
+        if(VelodyneSharedMemory->isValid() && frameStore[frame]->isValid())
         {
-            Lock l(frameStore[frame]);
+            Lock l1(VelodyneSharedMemory);
+            Lock l2(frameStore[frame]);
             memcpy(VelodyneSharedMemory->getSharedMemory(),frameStore[frame]->getSharedMemory(),frameStore[frame]->getSize());
             //cout<<"Memory name:"<<VelodyneSharedMemory->getName()<<endl;
-            spc.setName(NAME); // Name of the shared memory segment with the data.
+            //cout<<frameStore[frame]->getName()<<endl;
+            spc.setName(VelodyneSharedMemory->getName()); // Name of the shared memory segment with the data.
             spc.setSize(pointNumberPerFrame[frame]* NUMBER_OF_COMPONENTS_PER_POINT * SIZE_PER_COMPONENT); // Size in raw bytes.
             spc.setWidth(pointNumberPerFrame[frame]); // Number of points.
             spc.setHeight(1); // We have just a sequence of vectors.

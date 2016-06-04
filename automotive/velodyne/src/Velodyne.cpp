@@ -99,22 +99,27 @@ namespace automotive {
                 }
                 /*if(!frameSent){
                     for(int iii=0;iii<m_vListener.getFrameIndex();iii++){
-                        m_vListener.sendSPC(50);
+                        m_vListener.sendSPC(iii);
                         cout<<"Send frame "<<iii<<endl;
-                        const uint32_t TEN_MSECOND = 100 * 1000;
+                        const uint32_t TEN_MSECOND = 1000 * 1000;
                         Thread::usleepFor(TEN_MSECOND);
                     }
                     frameSent=true;
                 }*/
-                /*if(counter<m_vListener.getFrameIndex()){
+                if(counter<m_vListener.getFrameIndex()){
                     m_vListener.sendSPC(counter);
                     cout<<"Send frame "<<counter<<endl;
-                    counter++;
-                }*/
-                if(!frameSent){
-                    m_vListener.sendSPC(100);
-                    frameSent=true;
+                    counter+=5;
                 }
+                else{
+                    counter=0;
+                    cout<<"Replay"<<endl;
+                }
+                /*if(!frameSent){
+                    m_vListener.sendSPC(0);
+                    cout<<"Send frame 0"<<endl;
+                    frameSent=true;
+                }*/
             }
             return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
