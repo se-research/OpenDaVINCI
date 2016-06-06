@@ -23,7 +23,7 @@
 #include <cmath>
 #include <string>
 #include <iostream>
-//#include <memory>
+#include <memory>
 
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/io/conference/ContainerConference.h"
@@ -36,6 +36,7 @@
 #include "opendavinci/odcore/wrapper/Eigen.h"
 
 #include "opendavinci/generated/odcore/data/SharedPointCloud.h"
+#include "opendavinci/odcore/wrapper/SharedMemory.h"
 #include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 
 #include "velodyneListener.h"
@@ -82,8 +83,8 @@ const float horizOffsetCorrection[64]={2.5999999,-2.5999999,2.5999999,-2.5999999
 2.5999999,-2.5999999,2.5999999,-2.5999999,2.5999999,-2.5999999,2.5999999,-2.5999999};
 
 const float PI=3.1415926;
-const std::string NAME = "VelodyneSharedPointCloud";
-const std::string NAME2 = "PointCloudFrame";
+const std::string NAME = "pointCloud";
+const std::string NAME2 = "spcFrame";
 const uint32_t MAX_POINT_SIZE=125000;
 const uint8_t NUMBER_OF_COMPONENTS_PER_POINT = 4; // How many components do we have per vector?
 const uint32_t SIZE_PER_COMPONENT = sizeof(float);
@@ -121,7 +122,6 @@ namespace automotive {
                         return;
                     }*/
                 }
-                //cout<<frameStore[10]->getName()<<endl;
                 //memcpy(frameStore[0]->getSharedMemory(),m->getSharedMemory(),m->getSize());
             }
             
@@ -161,6 +161,9 @@ namespace automotive {
                         return;
                     }
                     
+                    if(stopReading)
+                         return;
+                    
                     // Using a scoped lock to lock and automatically unlock a shared memory segment.
                     odcore::base::Lock l(frameStore[frameIndex]);
                     float *velodyneRawData = static_cast<float*>(frameStore[frameIndex]->getSharedMemory());
@@ -174,8 +177,6 @@ namespace automotive {
                     int firstByte,secondByte,dataValue;
                     for(int index=0;index<12;index++)
                     {   
-                        if(stopReading)
-                            return;
                         //Decode header information: 2 bytes                    
                         firstByte=(unsigned int)(uint8_t)(dataToDecode.at(0));
                         secondByte=(unsigned int)(uint8_t)(dataToDecode.at(1));
@@ -224,7 +225,7 @@ namespace automotive {
                             
                             pointNumberPerFrame[frameIndex]=pointIndex;
                             cout<<"Load frame "<<frameIndex<<endl;
-                            if(frameIndex>=45){
+                            if(frameIndex>=80){
                                 stopReading=true;
                             }
                             else{
@@ -286,6 +287,7 @@ namespace automotive {
     }    
     
     void VelodyneListener::sendSPC(int frame){
+        //if(frameStore[frame]->isValid())
         if(VelodyneSharedMemory->isValid() && frameStore[frame]->isValid())
         {
             Lock l1(VelodyneSharedMemory);
@@ -293,6 +295,7 @@ namespace automotive {
             memcpy(VelodyneSharedMemory->getSharedMemory(),frameStore[frame]->getSharedMemory(),frameStore[frame]->getSize());
             //cout<<"Memory name:"<<VelodyneSharedMemory->getName()<<endl;
             //cout<<frameStore[frame]->getName()<<endl;
+            //SharedPointCloud spc;
             spc.setName(VelodyneSharedMemory->getName()); // Name of the shared memory segment with the data.
             spc.setSize(pointNumberPerFrame[frame]* NUMBER_OF_COMPONENTS_PER_POINT * SIZE_PER_COMPONENT); // Size in raw bytes.
             spc.setWidth(pointNumberPerFrame[frame]); // Number of points.

@@ -36,7 +36,7 @@
 #include "Velodyne.h"
 #include "velodyneListener.h"
 
-const std::string NAME = "VelodyneSharedPointCloud";
+const std::string NAME = "pointCloud";
 const uint32_t MAX_POINT_SIZE=125000;
 const uint8_t NUMBER_OF_COMPONENTS_PER_POINT = 4; // How many components do we have per vector?
 const uint32_t SIZE_PER_COMPONENT = sizeof(float);
@@ -82,6 +82,7 @@ namespace automotive {
         odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode VelodyneDecoder::body() {
             while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING){
                 //cout<<"Decoding ongoing"<<endl;
+                //counter--;
 
                 while (lidarStream.good() && !m_vListener.getStatus()) {
                 //while (lidarStream.good()) {
@@ -106,18 +107,19 @@ namespace automotive {
                     }
                     frameSent=true;
                 }*/
-                if(counter<m_vListener.getFrameIndex()){
+                if(counter<=m_vListener.getFrameIndex()){
                     m_vListener.sendSPC(counter);
                     cout<<"Send frame "<<counter<<endl;
-                    counter+=5;
+                    counter++;
                 }
                 else{
                     counter=0;
                     cout<<"Replay"<<endl;
                 }
+
                 /*if(!frameSent){
-                    m_vListener.sendSPC(0);
-                    cout<<"Send frame 0"<<endl;
+                    m_vListener.sendSPC(1);
+                    cout<<"Send frame 1"<<endl;
                     frameSent=true;
                 }*/
             }

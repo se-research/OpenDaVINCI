@@ -362,7 +362,7 @@ namespace cockpit {
                             glColor3f(0.0f,0.0f,1.0f); //blue color
                             glPointSize(3.0f); //set point size to 10 pixels
                             glBegin(GL_POINTS); //starts drawing of points
-                            for(unsigned long iii=0;iii<velodyneFrame.getWidth();iii+=8) {
+                            for(unsigned long iii=0;iii<velodyneFrame.getWidth();iii+=2) {
                                 glVertex3f((float)xData(iii,0),(float)yData(iii,0),(float)zData(iii,0));
                             }
                             glEnd();//end drawing of points
