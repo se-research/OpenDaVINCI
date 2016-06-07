@@ -317,7 +317,7 @@ namespace cockpit {
                             glPopMatrix();
                     }
                     else {
-                        //m_root->render(m_renderingConfiguration);
+                        m_root->render(m_renderingConfiguration);
                         /*glPushMatrix();
                             glColor3f(0.0f,0.0f,1.0f); //blue color
                             glPointSize(3.0f); //set point size to 10 pixels
@@ -358,11 +358,35 @@ namespace cockpit {
                                 Slice yData((float*)velodyneRawData+1, velodyneFrame.getWidth(), velodyneFrame.getHeight());
                                 Slice zData((float*)velodyneRawData+2, velodyneFrame.getWidth(), velodyneFrame.getHeight());
                                 Slice intensity((float*)velodyneRawData+3, velodyneFrame.getWidth(), velodyneFrame.getHeight());
-
-                            glColor3f(0.0f,0.0f,1.0f); //blue color
-                            glPointSize(3.0f); //set point size to 10 pixels
+                            
+                            /*
+                            for(unsigned long iii=0;iii<velodyneFrame.getWidth();iii++)
+                                    {
+                                        Point3 myPoint((float)xData(iii,0),(float)yData(iii,0),(float)zData(iii,0));
+                                        //Point3 color(0, 0, 1);
+                                        Point3 color;
+                                        if((float)intensity(iii,0)<=127){
+                                            color.setX(0);
+                                            color.setY((float)intensity(iii,0)*2);
+                                            color.setZ(255-(float)intensity(iii,0)*2);
+                                        }
+                                        else{
+                                            color.setX(((float)intensity(iii,0)-127)*2);
+                                            color.setY(255-((float)intensity(iii,0)-127)*2);
+                                            color.setZ(0);
+                                        }
+                            */
+                            
+                            //glColor3f(0.0f,0.0f,1.0f); //blue color
+                            glPointSize(1.0f); //set point size to 10 pixels
                             glBegin(GL_POINTS); //starts drawing of points
-                            for(unsigned long iii=0;iii<velodyneFrame.getWidth();iii+=2) {
+                            for(unsigned long iii=0;iii<velodyneFrame.getWidth();iii++) {
+                                if((float)intensity(iii,0)<=127){
+                                    glColor3f(0.0f,(float)intensity(iii,0)*2.0,255.0-(float)intensity(iii,0)*2.0);
+                                }
+                                else{
+                                    glColor3f(((float)intensity(iii,0)-127.0)*2.0,255.0-((float)intensity(iii,0)-127.0)*2.0,0.0f);
+                                }
                                 glVertex3f((float)xData(iii,0),(float)yData(iii,0),(float)zData(iii,0));
                             }
                             glEnd();//end drawing of points
@@ -489,7 +513,7 @@ namespace cockpit {
                     
                         velodyneFrame=c.getData<SharedPointCloud>();
                         velodyneSharedMemory=SharedMemoryFactory::attachToSharedMemory(velodyneFrame.getName());
-                        cout<<"Get frame"<<endl;
+                        //cout<<"Get frame"<<endl;
                         /*if (velodyneSharedMemory->isValid()) {
                             // Using a scoped lock to lock and automatically unlock a shared memory segment.
                             odcore::base::Lock l(velodyneSharedMemory);
