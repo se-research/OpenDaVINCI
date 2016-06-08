@@ -29,7 +29,7 @@
 #include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/base/Thread.h"
 #include "opendavinci/odcore/data/Container.h"
-#include "opendavinci/odcore/wrapper/Eigen.h"
+//#include "opendavinci/odcore/wrapper/Eigen.h"
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
 #include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 
@@ -148,7 +148,7 @@ class EigenExamplesTest : public CxxTest::TestSuite {
                                     // 4 == senderSharedPointCloud.getNumberOfComponentsPerPoint()
                                     // that cannot be dynamic due to Eigen's design of being a
                                     // compile-time library.
-                                    typedef Map<Matrix<float, Dynamic, Dynamic>, 0, InnerStride<4> > Slice;
+                                    /*typedef Map<Matrix<float, Dynamic, Dynamic>, 0, InnerStride<4> > Slice;
                                     Slice x((float*)velodyneRawData, senderSharedPointCloud.getWidth(), senderSharedPointCloud.getHeight());
                                     Slice y((float*)velodyneRawData+1, senderSharedPointCloud.getWidth(), senderSharedPointCloud.getHeight());
                                     Slice z((float*)velodyneRawData+2, senderSharedPointCloud.getWidth(), senderSharedPointCloud.getHeight());
@@ -160,8 +160,15 @@ class EigenExamplesTest : public CxxTest::TestSuite {
                                              << ", y = " << (float)y(i, 0)
                                              << ", z = " << (float)z(i, 0)
                                              << ", intensity = " << (float)intensity(i, 0) << endl;
-                                    }
-
+                                    }*/
+                                    long startID=0;
+                                    for(unsigned int i = 0; i < senderSharedPointCloud.getWidth(); i++) {
+                                        cout << "x = " << velodyneRawData[startID]
+                                             << ", y = " << velodyneRawData[startID+1]
+                                             << ", z = " << velodyneRawData[startID+2]
+                                             << ", intensity = " << velodyneRawData[startID+3] << endl;
+                                         startID=NUMBER_OF_COMPONENTS_PER_POINT*i;
+                                     }
                                 }
                             }
                         }

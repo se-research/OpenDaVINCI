@@ -317,7 +317,7 @@ namespace cockpit {
                             glPopMatrix();
                     }
                     else {
-                        m_root->render(m_renderingConfiguration);
+                        //m_root->render(m_renderingConfiguration);
                         /*glPushMatrix();
                             glColor3f(0.0f,0.0f,1.0f); //blue color
                             glPointSize(3.0f); //set point size to 10 pixels
@@ -353,11 +353,11 @@ namespace cockpit {
                                 // 4 == velodyneFrame.getNumberOfComponentsPerPoint()
                                 // that cannot be dynamic due to Eigen's design of being a
                                 // compile-time library.
-                                typedef Map<Matrix<float, Dynamic, Dynamic>, 0, InnerStride<4> > Slice;
+                                /*typedef Map<Matrix<float, Dynamic, Dynamic>, 0, InnerStride<4> > Slice;
                                 Slice xData((float*)velodyneRawData, velodyneFrame.getWidth(), velodyneFrame.getHeight());
                                 Slice yData((float*)velodyneRawData+1, velodyneFrame.getWidth(), velodyneFrame.getHeight());
                                 Slice zData((float*)velodyneRawData+2, velodyneFrame.getWidth(), velodyneFrame.getHeight());
-                                Slice intensity((float*)velodyneRawData+3, velodyneFrame.getWidth(), velodyneFrame.getHeight());
+                                Slice intensity((float*)velodyneRawData+3, velodyneFrame.getWidth(), velodyneFrame.getHeight());*/
                             
                             /*
                             for(unsigned long iii=0;iii<velodyneFrame.getWidth();iii++)
@@ -377,17 +377,20 @@ namespace cockpit {
                                         }
                             */
                             
-                            //glColor3f(0.0f,0.0f,1.0f); //blue color
-                            glPointSize(1.0f); //set point size to 10 pixels
+                            glColor3f(0.0f,0.0f,1.0f); //blue color
+                            glPointSize(3.0f); //set point size to 10 pixels
                             glBegin(GL_POINTS); //starts drawing of points
-                            for(unsigned long iii=0;iii<velodyneFrame.getWidth();iii++) {
-                                if((float)intensity(iii,0)<=127){
+                            long startID=0;
+                            for(unsigned long iii=0;iii<velodyneFrame.getWidth();iii+=4) {
+                                /*if((float)intensity(iii,0)<=127){
                                     glColor3f(0.0f,(float)intensity(iii,0)*2.0,255.0-(float)intensity(iii,0)*2.0);
                                 }
                                 else{
                                     glColor3f(((float)intensity(iii,0)-127.0)*2.0,255.0-((float)intensity(iii,0)-127.0)*2.0,0.0f);
-                                }
-                                glVertex3f((float)xData(iii,0),(float)yData(iii,0),(float)zData(iii,0));
+                                }*/
+                                //glVertex3f((float)xData(iii,0),(float)yData(iii,0),(float)zData(iii,0));
+                                glVertex3f(velodyneRawData[startID],velodyneRawData[startID+1],velodyneRawData[startID+2]);
+                                startID=velodyneFrame.getNumberOfComponentsPerPoint()*iii;
                             }
                             glEnd();//end drawing of points
                             glPushMatrix();
