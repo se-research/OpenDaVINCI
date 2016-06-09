@@ -76,22 +76,21 @@ namespace automotive {
         void VelodyneDecoder::tearDown() {
             //cout<<"Stop decoding"<<endl;
             lidarStream.close();
+            m_vListener.freeSpace();
         }
 
         // This method will do the main data processing job.
         odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode VelodyneDecoder::body() {
-            char *buffer = new char[1000];
             while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING){
-                //cout<<"Decoding ongoing"<<endl;
-                //counter--;
-
-                while (lidarStream.good() && !m_vListener.getStatus()) {
-                   lidarStream.read(buffer, 999 * sizeof(char));
-                   buffer[999] = '\0';
-                   string s(buffer);
-                   m_pcap.nextString(s);
+            while (lidarStream.good() && !m_vListener.getStatus()) {
+                //while (lidarStream.good()) {
+                    char cc;
+                    lidarStream.read(&cc, sizeof(uint8_t));
+                    stringstream sstr;
+                    sstr << cc;
+                    string s = sstr.str();
+                    m_pcap.nextString(s);
                 }
-                
                 if(!fileClosed){
                     lidarStream.close();
                     cout<<"File read complete."<<endl;
@@ -107,7 +106,7 @@ namespace automotive {
                     frameSent=true;
                 }*/
                 //if(counter<=m_vListener.getFrameIndex()){
-                if(counter<=15){
+                if(counter<=79){
                     m_vListener.sendSPC(counter);
                     cout<<"Send frame "<<counter<<endl;
                     counter++;
@@ -123,7 +122,6 @@ namespace automotive {
                     frameSent=true;
                 }*/
             }
-            delete [] buffer;
             return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 } // automotive

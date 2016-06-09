@@ -84,7 +84,7 @@ const float horizOffsetCorrection[64]={2.5999999,-2.5999999,2.5999999,-2.5999999
 
 const float PI=3.1415926;
 const std::string NAME = "pointCloud";
-const std::string NAME2 = "spcFrame";
+//const std::string NAME2 = "spcFrame";
 const uint32_t MAX_POINT_SIZE=125000;
 const uint8_t NUMBER_OF_COMPONENTS_PER_POINT = 4; // How many components do we have per vector?
 const uint32_t SIZE_PER_COMPONENT = sizeof(float);
@@ -111,18 +111,10 @@ namespace automotive {
             velodyneFrame(c),
             spc(),
             stopReading(false){
-                for(int iii=0;iii<200;iii++){
-                //memcpy(frameStore[iii]->getSharedMemory(),m->getSharedMemory(),m->getSize());
-                    //if(frameStore[iii]->isValid()){
-                        //Lock l(frameStore[iii]);
-                        frameStore[iii]=SharedMemoryFactory::createSharedMemory(NAME2+to_string(iii), SIZE);
-                    /*}
-                    else{
-                        cout<<"Memory inialization failed."<<endl;
-                        return;
-                    }*/
+                for(int iii=0;iii<150;iii++){
+                    //frameStore[iii]=SharedMemoryFactory::createSharedMemory(NAME2+to_string(iii), SIZE);
+                    segment[iii]=(float*)malloc(SIZE);
                 }
-                //memcpy(frameStore[0]->getSharedMemory(),m->getSharedMemory(),m->getSize());
             }
             
 
@@ -154,7 +146,7 @@ namespace automotive {
                     //TimeStamp decodeStart;
                     //TimeStamp packetReceiveTime;
                     //cout<<"Packet receive time: "<<packetReceiveTime.toMicroseconds()<<endl; 
-                    if(!frameStore[frameIndex]->isValid()) return;
+                    //if(!frameStore[frameIndex]->isValid()) return;
                     
                     if(frameIndex>200){
                         cout<<"Frame overflow!"<<endl;
@@ -165,10 +157,8 @@ namespace automotive {
                          return;
                     
                     // Using a scoped lock to lock and automatically unlock a shared memory segment.
-                    odcore::base::Lock l(frameStore[frameIndex]);
-                    float *velodyneRawData = static_cast<float*>(frameStore[frameIndex]->getSharedMemory());
-
-
+                    //odcore::base::Lock l(frameStore[frameIndex]);
+                    //float *velodyneRawData = static_cast<float*>(frameStore[frameIndex]->getSharedMemory());
 
                     const string payload = packet.getPayload();
                     string dataToDecode=payload.substr(42);
@@ -266,10 +256,10 @@ namespace automotive {
                             {                            
                                 // Alignment of Velodyne data: (x0, y0, z0, intensity0), (x1, y1, z1, intensity1), ...
                                 long startID=NUMBER_OF_COMPONENTS_PER_POINT*pointIndex;
-                                velodyneRawData[startID]=xData;
-                                velodyneRawData[startID+1]=yData;
-                                velodyneRawData[startID+2]=zData;
-                                velodyneRawData[startID+3]=intensity;
+                                segment[frameIndex][startID]=xData;
+                                segment[frameIndex][startID+1]=yData;
+                                segment[frameIndex][startID+2]=zData;
+                                segment[frameIndex][startID+3]=intensity;
                                 //(float)x(i, 0) = ValueForX, …
                             }
                             
@@ -288,11 +278,10 @@ namespace automotive {
     
     void VelodyneListener::sendSPC(int frame){
         //if(frameStore[frame]->isValid())
-        if(VelodyneSharedMemory->isValid() && frameStore[frame]->isValid())
+        if(VelodyneSharedMemory->isValid())
         {
-            Lock l1(VelodyneSharedMemory);
-            Lock l2(frameStore[frame]);
-            memcpy(VelodyneSharedMemory->getSharedMemory(),frameStore[frame]->getSharedMemory(),frameStore[frame]->getSize());
+            Lock l(VelodyneSharedMemory);
+            memcpy(VelodyneSharedMemory->getSharedMemory(),segment[frame],SIZE);
             //cout<<"Memory name:"<<VelodyneSharedMemory->getName()<<endl;
             //cout<<frameStore[frame]->getName()<<endl;
             //SharedPointCloud spc;
@@ -319,6 +308,12 @@ namespace automotive {
     
     long VelodyneListener::getFrameIndex(){
         return frameIndex;
+    }
+    
+    void VelodyneListener::freeSpace(){
+        for(int i=0;i<60;i++){
+            free(segment[i]);
+        }
     }
     
 } // automotive

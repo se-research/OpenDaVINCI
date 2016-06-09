@@ -70,6 +70,7 @@ namespace automotive {
                 void sendSPC(int frame);
                 bool getStatus();
                 long getFrameIndex();
+                void freeSpace();
                 
             private:
                 long packetNr;
@@ -79,11 +80,12 @@ namespace automotive {
                 bool upperBlock;
                 float distance[32];
                 std::shared_ptr<SharedMemory> VelodyneSharedMemory;
-                std::shared_ptr<SharedMemory> frameStore[200];
+                //std::shared_ptr<SharedMemory> frameStore[200];
+                float* segment[150];
                 odcore::io::conference::ContainerConference& velodyneFrame;
                 odcore::data::SharedPointCloud spc;
                 bool stopReading;
-                int pointNumberPerFrame[200];
+                int pointNumberPerFrame[150];
         };
 
 } // automotive
