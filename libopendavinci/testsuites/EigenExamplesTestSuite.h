@@ -187,7 +187,6 @@ class EigenExamplesTest : public CxxTest::TestSuite {
             }
         }
 
-
         void testEigenDataMappingTwoBytesUsingSharedPointCloud() {
             // Prepare constants to describe the PointCloud
             // stored in shared memory.
@@ -195,12 +194,13 @@ class EigenExamplesTest : public CxxTest::TestSuite {
             const uint32_t SIZE_PER_COMPONENT = sizeof(float);
             const uint8_t NUMBER_OF_COMPONENTS_PER_POINT = 4; // How many components do we have per vector?
             const uint32_t LENGTH = 3; // How many points (i.e. vectors with (x,y,z,intensity)) are stored in the shared memory segment?
-            const uint32_t SIZE = LENGTH * SIZE_PER_COMPONENT; // What is the total size of the shared memory?
+            const uint32_t SIZE = LENGTH * SIZE_PER_COMPONENT * NUMBER_OF_COMPONENTS_PER_POINT; // What is the total size of the shared memory?
 
             try {
                 // This pointer would need to be created once from the sender at startup.
                 std::shared_ptr<SharedMemory> sharedMemory(SharedMemoryFactory::createSharedMemory(NAME, SIZE));
                 Container toReceiver;
+                cout << "Read from shared point cloud." << endl;
                 // Sender side.
                 {
                     if (sharedMemory->isValid()) {
