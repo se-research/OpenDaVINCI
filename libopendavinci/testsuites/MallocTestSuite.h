@@ -46,22 +46,22 @@ class EigenExamplesTest : public CxxTest::TestSuite {
         void testEigenDataMappingTwoBytesUsingSharedPointCloud() {
             // Prepare constants to describe the PointCloud
             // stored in shared memory.
-            //const int FRAME_NUMBER=4;
+            const int FRAME_NUMBER=30;
             const string NAME = "pointCloud";
             //const string NAME2 = "Hang";
             const uint32_t SIZE_PER_COMPONENT = sizeof(float);
             const uint8_t NUMBER_OF_COMPONENTS_PER_POINT = 4; // How many components do we have per vector?
             const uint32_t LENGTH = 3; // How many points (i.e. vectors with (x,y,z,intensity)) are stored in the shared memory segment?
             const uint32_t SIZE = LENGTH * SIZE_PER_COMPONENT * SIZE_PER_COMPONENT; // What is the total size of the shared memory?
-            /*float sampleData[FRAME_NUMBER][12];
+            float sampleData[FRAME_NUMBER][12];
             for(int i=0;i<FRAME_NUMBER;i++){
                 for(int j=0;j<12;j++){
                     sampleData[i][j]=i+(float)j*0.1;
 			        cout<<sampleData[i][j]<<" , ";
 		        }
 		        cout<<endl;
-	        }*/
-	        float sampleData[12]={1.1,2.2,3.3,4.4,5.5,6.6,7.7,8.8,9.9,10.10,11.11,12.12};
+	        }
+	        //float sampleData[12]={1.1,2.2,3.3,4.4,5.5,6.6,7.7,8.8,9.9,10.10,11.11,12.12};
             //Container toReceiver[FRAME_NUMBER];
             //Container fromSender[FRAME_NUMBER];
             Container toReceiver;
@@ -72,38 +72,30 @@ class EigenExamplesTest : public CxxTest::TestSuite {
 
             try {
                 // This pointer would need to be created once from the sender at startup.
-                float* segment=NULL;
-                segment=(float*)malloc(SIZE);
+                float* segment[FRAME_NUMBER];
+                for(int iii=0;iii<FRAME_NUMBER;iii++){
+                    segment[iii]=(float*)malloc(SIZE);
+                }
                 VelodyneSharedMemory=SharedMemoryFactory::createSharedMemory(NAME, SIZE);
-                
-                /*for(int iii=0;iii<FRAME_NUMBER;iii++){
-                    frameStore[iii]=SharedMemoryFactory::createSharedMemory(NAME2+to_string(iii), SIZE);
-                }*/
-                
+
                 // Sender side.
                 cout << "Write to memory:" << endl;
-                {
-                    //for(int iii=0;iii<FRAME_NUMBER;iii++){
+                    for(int iii=0;iii<FRAME_NUMBER;iii++){
                        
 
                             // Alignment of Velodyne data: (x0, y0, z0, intensity0), (x1, y1, z1, intensity1), ...
                             // Add some example data.
                             for(int jjj=0;jjj<12;jjj++){
-                                segment[jjj]=sampleData[jjj];
-                                cout<<segment[jjj]<<" , ";
+                                segment[iii][jjj]=sampleData[iii][jjj];
+                                cout<<segment[iii][jjj]<<" , ";
                             }
-
-                            //cout << "Test" << endl;
-                            /*for(unsigned int i = 0; i < LENGTH * NUMBER_OF_COMPONENTS_PER_POINT; i++) {
-                                cout << (float) velodyneRawData[i] << " , ";
-                            }*/
                             cout << endl;
-                    //}
+                    }
                     cout<<"From memory to point cloud:"<<endl;
-                    //for(int counter=0;counter<FRAME_NUMBER;counter++){
+                    for(int counter=0;counter<FRAME_NUMBER;counter++){
                         if(VelodyneSharedMemory->isValid()){
                             Lock l(VelodyneSharedMemory);
-                            memcpy(VelodyneSharedMemory->getSharedMemory(),segment,SIZE);
+                            memcpy(VelodyneSharedMemory->getSharedMemory(),segment[counter],SIZE);
                             float *readFrame = static_cast<float*>(VelodyneSharedMemory->getSharedMemory());
                             for(unsigned int i = 0; i < LENGTH * NUMBER_OF_COMPONENTS_PER_POINT; i++) {
                                 cout<<readFrame[i]<<" , ";
@@ -121,15 +113,9 @@ class EigenExamplesTest : public CxxTest::TestSuite {
                             
                             toReceiver = Container(spc); 
                             //toReceiver[counter] = Container(spc);
-                    //}
-                }
-                free(segment);
+                
                 cout<<"Read from point cloud:"<<endl;
                      // Receiver side.
-                {
-                    // Let's assume we have received the container
-                    // (would typically happen via the ContainerConference).
-                    //for(int frame=0;frame<FRAME_NUMBER;frame++){
                         //fromSender[frame] = toReceiver[frame];
                         fromSender = toReceiver;
 
@@ -158,7 +144,10 @@ class EigenExamplesTest : public CxxTest::TestSuite {
                             }
                         }
 
-                    //}
+                    }
+                cout<<"Free all memory segments."<<endl;
+                for(int iii=0;iii<FRAME_NUMBER;iii++){
+                    free(segment[iii]);
                 }
             }   
 
