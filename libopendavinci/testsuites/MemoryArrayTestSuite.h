@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef CORE_EIGENEXAMPLESTESTSUITE_H_
-#define CORE_EIGENEXAMPLESTESTSUITE_H_
+#ifndef CORE_MEMORYARRAYTESTSUITE_H_
+#define CORE_MEMORYARRAYTESTSUITE_H_
 
 #include <iostream>
 #include <string>
@@ -41,18 +41,19 @@ using namespace odcore::base;
 using namespace odcore::data;
 using namespace odcore::wrapper;
 
-class EigenExamplesTest : public CxxTest::TestSuite {
+class MemoryArrayTest : public CxxTest::TestSuite {
     public:
         void testEigenDataMappingTwoBytesUsingSharedPointCloud() {
             // Prepare constants to describe the PointCloud
             // stored in shared memory.
-            const int FRAME_NUMBER=5;
+            const int FRAME_NUMBER=30;
             const string NAME = "pointCloud";
             const string NAME2 = "Hang";
             const uint32_t SIZE_PER_COMPONENT = sizeof(float);
             const uint8_t NUMBER_OF_COMPONENTS_PER_POINT = 4; // How many components do we have per vector?
             const uint32_t LENGTH = 3; // How many points (i.e. vectors with (x,y,z,intensity)) are stored in the shared memory segment?
-            const uint32_t SIZE = LENGTH * SIZE_PER_COMPONENT; // What is the total size of the shared memory?
+            const uint32_t SIZE = LENGTH * NUMBER_OF_COMPONENTS_PER_POINT * SIZE_PER_COMPONENT; // What is the total size of the shared memory?
+            //const uint32_t SIZE = LENGTH * SIZE_PER_COMPONENT;
             /*const float sampleData[3][12]={
                 {1.1,2.2,3.3,4.4,5.5,6.6,7.7,8.8,9.9,10.10,11.11,12.12},
                 {13.1,14.1,15.1,16.1,17.1,18.1,19.1,20.1,21.1,22.1,23.1,24.1},
@@ -69,13 +70,13 @@ class EigenExamplesTest : public CxxTest::TestSuite {
             Container fromSender[FRAME_NUMBER];
             
             std::shared_ptr<SharedMemory> VelodyneSharedMemory;
-            std::shared_ptr<SharedMemory> frameStore[3];
+            std::shared_ptr<SharedMemory> frameStore[FRAME_NUMBER];
 
             try {
                 // This pointer would need to be created once from the sender at startup.
                 VelodyneSharedMemory=SharedMemoryFactory::createSharedMemory(NAME, SIZE);
                 for(int iii=0;iii<FRAME_NUMBER;iii++){
-                    frameStore[iii]=SharedMemoryFactory::createSharedMemory(NAME2+to_string(iii), SIZE);
+                    frameStore[iii]=SharedMemoryFactory::createSharedMemory(to_string(iii)+NAME2, SIZE);
                 }
                 /*cout<<frameStore[0]->getSharedMemory()<<endl;
                 cout<<frameStore[1]->getSharedMemory()<<endl;
@@ -118,7 +119,7 @@ class EigenExamplesTest : public CxxTest::TestSuite {
                             
                             SharedPointCloud spc;
                             spc.setName(frameStore[counter]->getName()); // Name of the shared memory segment with the data.
-                            spc.setSize(SIZE); // Size in raw bytes.
+                            spc.setSize(frameStore[counter]->getSize()); // Size in raw bytes.
                             spc.setWidth(LENGTH); // Number of points.
                             spc.setHeight(1); // We have just a sequence of vectors.
                             spc.setNumberOfComponentsPerPoint(NUMBER_OF_COMPONENTS_PER_POINT);
@@ -129,6 +130,8 @@ class EigenExamplesTest : public CxxTest::TestSuite {
                         } 
                     }
                 }
+                
+                cout<<"Read from point cloud:"<<endl;
                      // Receiver side.
                 {
                     // Let's assume we have received the container
@@ -157,15 +160,11 @@ class EigenExamplesTest : public CxxTest::TestSuite {
                                     // Get pointer to the beginning of the data.
                                     float *velodyneRawData = static_cast<float*>(receiverSharedMemory->getSharedMemory());
 
+                                    int startID=0;
                                     for(unsigned int i = 0; i < senderSharedPointCloud.getWidth(); i++) {
-                                        /*cout << "x = " << velodyneRawData[startID]
-                                             << ", y = " << velodyneRawData[startID+1]
-                                             << ", z = " << velodyneRawData[startID+2]
-                                             << ", intensity = " << velodyneRawData[startID+3] << endl;
-                                         startID=NUMBER_OF_COMPONENTS_PER_POINT*i;*/
-                                         cout<<velodyneRawData[i]<<" , ";
+                                         cout<<velodyneRawData[startID]<<" , "<<velodyneRawData[startID+1]<<" , "<<velodyneRawData[startID+2]<<" , "<<velodyneRawData[startID+3]<<endl;
+                                         startID=senderSharedPointCloud.getNumberOfComponentsPerPoint()*(i+1);
                                      }
-                                     cout<<endl;
                                 }
                             }
                         }
@@ -181,4 +180,4 @@ class EigenExamplesTest : public CxxTest::TestSuite {
         }
 };
 
-#endif /*CORE_EIGENEXAMPLESTESTSUITE_H_*/
+#endif /*CORE_MEMORYARRAYTESTSUITE_H_*/

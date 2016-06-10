@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef CORE_EIGENEXAMPLESTESTSUITE_H_
-#define CORE_EIGENEXAMPLESTESTSUITE_H_
+#ifndef CORE_MALLOCTESTSUITE_H_
+#define CORE_MALLOCTESTSUITE_H_
 
 #include <iostream>
 #include <string>
@@ -41,7 +41,7 @@ using namespace odcore::base;
 using namespace odcore::data;
 using namespace odcore::wrapper;
 
-class EigenExamplesTest : public CxxTest::TestSuite {
+class MallocTest : public CxxTest::TestSuite {
     public:
         void testEigenDataMappingTwoBytesUsingSharedPointCloud() {
             // Prepare constants to describe the PointCloud
@@ -158,4 +158,4 @@ class EigenExamplesTest : public CxxTest::TestSuite {
         }
 };
 
-#endif /*CORE_EIGENEXAMPLESTESTSUITE_H_*/
+#endif /*CORE_MALLOCTESTSUITE_H_*/
