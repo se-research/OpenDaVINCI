@@ -111,7 +111,7 @@ namespace automotive {
             velodyneFrame(c),
             spc(),
             stopReading(false){
-                for(int iii=0;iii<150;iii++){
+                for(int iii=0;iii<READ_FRAME_NO;iii++){
                     //frameStore[iii]=SharedMemoryFactory::createSharedMemory(NAME2+to_string(iii), SIZE);
                     segment[iii]=(float*)malloc(SIZE);
                 }
@@ -215,7 +215,7 @@ namespace automotive {
                             
                             pointNumberPerFrame[frameIndex]=pointIndex;
                             cout<<"Load frame "<<frameIndex<<endl;
-                            if(frameIndex>=80){
+                            if(frameIndex>=LOAD_FRAME_NO){
                                 stopReading=true;
                             }
                             else{
@@ -311,7 +311,7 @@ namespace automotive {
     }
     
     void VelodyneListener::freeSpace(){
-        for(int i=0;i<60;i++){
+        for(int i=0;i<READ_FRAME_NO;i++){
             free(segment[i]);
         }
     }

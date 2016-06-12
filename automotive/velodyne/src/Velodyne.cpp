@@ -59,7 +59,7 @@ namespace automotive {
             m_vListener(VelodyneSharedMemory,getConference()),
             fileClosed(false),
             frameSent(false),
-            counter(1){}
+            counter(0){}
 
         VelodyneDecoder::~VelodyneDecoder() {}
 
@@ -70,7 +70,7 @@ namespace automotive {
             //m_pcap.setContainerListener(this);
             //m_vListener.setContainerListener(this);
             m_pcap.setContainerListener(&m_vListener);
-            lidarStream.open("atwall.pcap", ios::binary|ios::in);
+            lidarStream.open("imeangowest.pcap", ios::binary|ios::in);
         }
 
         void VelodyneDecoder::tearDown() {
@@ -105,14 +105,14 @@ namespace automotive {
                     }
                     frameSent=true;
                 }*/
-                //if(counter<=m_vListener.getFrameIndex()){
-                if(counter<=79){
+                if(counter<=m_vListener.getFrameIndex()){
+                //if(counter<=79){
                     m_vListener.sendSPC(counter);
                     cout<<"Send frame "<<counter<<endl;
                     counter++;
                 }
                 else{
-                    counter=1;
+                    counter=0;
                     cout<<"Replay"<<endl;
                 }
 

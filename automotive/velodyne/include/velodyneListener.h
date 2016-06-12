@@ -33,6 +33,8 @@
 //#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 #include "opendavinci/generated/odcore/data/SharedPointCloud.h"
 
+const int READ_FRAME_NO=150;
+const int LOAD_FRAME_NO=149;
 
 namespace automotive {
 
@@ -81,11 +83,11 @@ namespace automotive {
                 float distance[32];
                 std::shared_ptr<SharedMemory> VelodyneSharedMemory;
                 //std::shared_ptr<SharedMemory> frameStore[200];
-                float* segment[150];
+                float* segment[READ_FRAME_NO];
                 odcore::io::conference::ContainerConference& velodyneFrame;
                 odcore::data::SharedPointCloud spc;
                 bool stopReading;
-                int pointNumberPerFrame[150];
+                int pointNumberPerFrame[READ_FRAME_NO];
         };
 
 } // automotive
