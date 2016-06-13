@@ -298,8 +298,43 @@ namespace cockpit {
                                       0, 0, 1);
 
                             // Draw scene.
-                            m_root->render(m_renderingConfiguration);
-                            glPopMatrix();
+                            if(velodyneSharedMemory.get()!=NULL){
+                            if (velodyneSharedMemory->isValid()) {
+                                //TimeStamp startRenderT;
+                                glPushMatrix();
+                                // Using a scoped lock to lock and automatically unlock a shared memory segment.
+                                odcore::base::Lock lv(velodyneSharedMemory);
+                                // We need to check (a) are we using the correct type (float)
+                                // and is the number of components per vector correct (4)
+                                // as Eigen is a compile-time type and thus, we cannot
+                                // define dynamic sizes for the InnerStride.
+                                if (velodyneFrame.getComponentDataType() == SharedPointCloud::FLOAT_T
+                                    && (velodyneFrame.getNumberOfComponentsPerPoint() == 4)
+                                    && (velodyneFrame.getUserInfo() == SharedPointCloud::XYZ_INTENSITY)) {
+                                    float *velodyneRawData = static_cast<float*>(velodyneSharedMemory->getSharedMemory());
+
+                                    glPointSize(1.0f); //set point size to 10 pixels
+                                    glBegin(GL_POINTS); //starts drawing of points
+                                    long startID=0;
+                                    for(unsigned long iii=0;iii<velodyneFrame.getWidth();iii++) {
+                                        if(velodyneRawData[startID+3]<=127.0){
+                                            glColor3f(0.0f,velodyneRawData[startID+3]*2.0,255.0-velodyneRawData[startID+3]*2.0);
+                                        }
+                                        else{
+                                            glColor3f((velodyneRawData[startID+3]-127.0)*2.0,255.0-(velodyneRawData[startID+3]-127.0)*2.0,0.0f);
+                                        }
+                                        glVertex3f(velodyneRawData[startID],velodyneRawData[startID+1],velodyneRawData[startID+2]);
+                                        startID=velodyneFrame.getNumberOfComponentsPerPoint()*(iii+1);
+                                    }
+                                    glEnd();//end drawing of points
+                                    glPopMatrix();
+                                    
+                                    
+                                    m_root->render(m_renderingConfiguration);
+                                    glPopMatrix();
+                                }
+                            }
+                        }
                     }
                     else {
                         m_root->render(m_renderingConfiguration);
