@@ -299,21 +299,6 @@ namespace cockpit {
 
                             // Draw scene.
                             m_root->render(m_renderingConfiguration);
-                            /*glPushMatrix();
-                            glColor3f(0.0f,0.0f,1.0f); //blue color
-                            glPointSize(3.0f); //set point size to 10 pixels
-                            float xStart=0.0;
-                            float offset=1.5;
-                            glBegin(GL_POINTS); //starts drawing of points
-                            for(unsigned long iii=0;iii<100;iii++) {
-                                glVertex3f(xStart+offset,xStart+offset,xStart+offset);
-                                glVertex3f(-xStart+offset,xStart+offset,xStart+offset);
-                                glVertex3f(xStart+offset,-xStart+offset,xStart+offset);
-                                glVertex3f(xStart+offset,xStart+offset,-xStart+offset);
-                                offset+=1.5;
-                            }
-                            
-                            glEnd();//end drawing of points*/
                             glPopMatrix();
                     }
                     else {
@@ -393,7 +378,8 @@ namespace cockpit {
                                 startID=velodyneFrame.getNumberOfComponentsPerPoint()*(iii+1);
                             }
                             glEnd();//end drawing of points
-                            glPushMatrix();
+                            //glPushMatrix();
+                            glPopMatrix();
                             //TimeStamp endRenderT;
                             //cout<<(endRenderT-startRenderT).toMicroseconds()<<endl;
                         }
