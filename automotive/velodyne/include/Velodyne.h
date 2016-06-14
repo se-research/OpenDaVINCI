@@ -77,13 +77,19 @@ namespace automotive {
                 virtual void setUp();
 
                 virtual void tearDown();
+                const std::string NAME = "pointCloud";
+                const uint32_t MAX_POINT_SIZE=125000;
+                const uint8_t NUMBER_OF_COMPONENTS_PER_POINT = 4; // How many components do we have per vector?
+                const uint32_t SIZE_PER_COMPONENT = sizeof(float);
+                const uint32_t SIZE = MAX_POINT_SIZE * NUMBER_OF_COMPONENTS_PER_POINT * SIZE_PER_COMPONENT; // What is the total size of the shared memory? 
+                
                 odcore::io::protocol::PCAPProtocol m_pcap;
                 fstream lidarStream;
                 std::shared_ptr<SharedMemory> VelodyneSharedMemory;
                 VelodyneListener m_vListener;
                 bool fileClosed;
                 bool frameSent;
-                int counter;
+                int counter;      
         };
 
 } // automotive

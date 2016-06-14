@@ -36,11 +36,6 @@
 #include "Velodyne.h"
 #include "velodyneListener.h"
 
-const std::string NAME = "pointCloud";
-const uint32_t MAX_POINT_SIZE=125000;
-const uint8_t NUMBER_OF_COMPONENTS_PER_POINT = 4; // How many components do we have per vector?
-const uint32_t SIZE_PER_COMPONENT = sizeof(float);
-const uint32_t SIZE = MAX_POINT_SIZE * NUMBER_OF_COMPONENTS_PER_POINT * SIZE_PER_COMPONENT; // What is the total size of the shared memory? 
 
 namespace automotive {
 
@@ -71,12 +66,12 @@ namespace automotive {
             //m_vListener.setContainerListener(this);
             m_pcap.setContainerListener(&m_vListener);
             lidarStream.open("imeangowest.pcap", ios::binary|ios::in);
+            //lidarStream.open("atwall.pcap", ios::binary|ios::in);
         }
 
         void VelodyneDecoder::tearDown() {
             //cout<<"Stop decoding"<<endl;
             lidarStream.close();
-            m_vListener.freeSpace();
         }
 
         // This method will do the main data processing job.
@@ -106,7 +101,6 @@ namespace automotive {
                     frameSent=true;
                 }*/
                 if(counter<=m_vListener.getFrameIndex()){
-                //if(counter<=79){
                     m_vListener.sendSPC(counter);
                     cout<<"Send frame "<<counter<<endl;
                     counter++;
@@ -117,7 +111,7 @@ namespace automotive {
                 }
 
                 /*if(!frameSent){
-                    m_vListener.sendSPC(10);
+                    m_vListener.sendSPC(1);
                     cout<<"Send frame"<<endl;
                     frameSent=true;
                 }*/

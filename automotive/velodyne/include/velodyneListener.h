@@ -33,8 +33,8 @@
 //#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 #include "opendavinci/generated/odcore/data/SharedPointCloud.h"
 
-const int READ_FRAME_NO=50;
-const int LOAD_FRAME_NO=49;
+const int READ_FRAME_NO=150;
+const int LOAD_FRAME_NO=149;
 
 namespace automotive {
 
@@ -75,6 +75,12 @@ namespace automotive {
                 void freeSpace();
                 
             private:
+                const float PI=3.1415926;
+	            const uint32_t MAX_POINT_SIZE=125000;
+	            const uint32_t SIZE_PER_COMPONENT = sizeof(float);
+	            const uint8_t NUMBER_OF_COMPONENTS_PER_POINT = 4; // How many components do we have per vector?
+                const uint32_t SIZE = MAX_POINT_SIZE * NUMBER_OF_COMPONENTS_PER_POINT * SIZE_PER_COMPONENT; // What is the total size of the shared memory?    
+                
                 long packetNr;
                 long pointIndex;
                 long frameIndex;
@@ -92,7 +98,7 @@ namespace automotive {
 	            float vertCorrection[64];
 	            float distCorrection[64];
 	            float vertOffsetCorrection[64];
-	            float horizOffsetCorrection[64];
+	            float horizOffsetCorrection[64];                
         };
 
 } // automotive

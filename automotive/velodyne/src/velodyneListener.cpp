@@ -42,12 +42,8 @@
 
 #include "velodyneListener.h"
 
-const float PI=3.1415926;
-const std::string NAME = "pointCloud";
-const uint32_t MAX_POINT_SIZE=125000;
-const uint8_t NUMBER_OF_COMPONENTS_PER_POINT = 4; // How many components do we have per vector?
-const uint32_t SIZE_PER_COMPONENT = sizeof(float);
-const uint32_t SIZE = MAX_POINT_SIZE * NUMBER_OF_COMPONENTS_PER_POINT * SIZE_PER_COMPONENT; // What is the total size of the shared memory? 
+
+//const std::string NAME = "pointCloud";
 #define toRadian(x) ((x)*PI/180.0)
 
 namespace automotive {
