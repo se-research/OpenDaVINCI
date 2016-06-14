@@ -24,6 +24,7 @@
 #include <string>
 #include <iostream>
 #include <memory>
+#include<fstream>
 
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/io/conference/ContainerConference.h"
@@ -41,50 +42,8 @@
 
 #include "velodyneListener.h"
 
-const float rotCorrection[64]={-5.3328056,-3.2344019,2.4376695,4.7373252,-1.0502493,1.2386309,-1.8405367,0.4511103,
-                                3.2611551,5.4685535,2.4743285,4.7189918,-5.3511744,-3.1158857,-6.1270261,-3.852011,
-                                -1.1109436,1.1519098,-1.8682934,0.43604341,3.1763444,5.4284201,2.4024715,4.6698937,
-                                -5.3977456,-3.1504908,-6.1759849,-3.8819003,-1.1136208,1.0969903,-1.9088749,0.36758029,
-                                -8.3386211,-4.7629819,4.1516571,7.3577185,-1.2630961,2.1595552,-2.6141083,0.95595688,
-                                5.5369682,8.9712191,4.4757471,7.8848143,-8.0466499,-4.595552,-9.3918352,-5.9566336,
-                                -1.3779737,2.0754263,-2.5654242,0.87227631,5.2989287,8.7970304,4.1742177,7.5869775,
-                                -7.8831077,-4.5919614,-9.1805763,-5.7835727,-1.2335371,1.9424959,-2.5727935,0.81118912};
-const float vertCorrection[64]={-7.2988362,-6.9644198,0.250889,0.55538797,-6.6410818,-6.2594609,-8.6656351,-8.3104696,
-                                5.9352221,5.587399,-7.9891219,-7.644258,-3.2475569,-2.850472,-5.204318,-4.9137921,
-                                -2.4998751,-2.184176,-4.5764661,-4.2038751,-1.798143,-1.49388,-1.877563,-3.492661,
-                                0.88327599,1.234519,-1.177825,-0.86169797,1.585669,1.925001,-0.486963,-0.123898,
-                                -22.597513,-22.397568,-11.576517,-10.877901,-21.935509,-21.409546,-25.066507,-24.458101,
-                                -20.777454,-20.243195,-23.863358,-23.352007,-16.629311,-16.230633,-19.788239,-19.21587,
-                                -15.754419,-15.166914,-18.828558,-18.312876,-14.641928,-14.048302,-17.687857,-17.16544,
-                                -10.436752,-10.085198,-13.484814,-13.107666,-9.5621262,-9.0374413,-12.651329,-12.115005};
-const float distCorrection[64]={111.0,146.0,131.76823,138.12656,119.0,135.0,132.0,145.0,
-                                116.0,133.99889,117.0,145.0,118.71672,142.90839,120.0,137.0,
-                                101.71324,145.31258,130.0,147.0,115.82812,146.0,129.29713,157.97737,
-                                124.12312,128.0,133.0,130.0,131.0,131.0,138.48773,137.21994,
-                                117.0,100.0,130.0,102.0,106.0,91.0,127.0,95.0,
-                                106.0,97.0,115.0,92.0,135.0,108.0,135.0,98.0,
-                                116.0,105.0,138.0,105.0,123.0,86.0,135.0,92.0,
-                                121.0,103.0,146.0,99.0,123.0,106.0,134.0,104.0,};
-const float vertOffsetCorrection[64]={19.736338,19.778963,20.688799,20.727015,19.82012,19.868624,19.561426,19.606993,
-                                19.909781,19.953875,19.648148,19.692244,20.249313,20.29929,20.00238,20.039125,
-                                20.343384,20.38307,20.081753,20.128786,20.431576,20.469791,20.169943,20.218447,
-                                20.768169,20.812265,20.509478,20.549164,20.856361,20.898987,20.596197,20.641764,
-                                10.828748,10.854152,12.142142,12.220895,10.912581,10.978632,10.508655,10.588678,
-                                11.057385,11.123436,10.666161,10.732212,11.559117,11.606115,11.179325,11.249186,
-                                11.662004,11.730595,11.296184,11.358424,11.791565,11.860156,11.433367,11.495607,
-                                12.270433,12.30981,11.924937,11.968124,12.368239,12.426669,12.020203,12.081173};
-const float horizOffsetCorrection[64]={2.5999999,-2.5999999,2.5999999,-2.5999999,2.5999999,-2.5999999,2.5999999,-2.5999999,
-2.5999999,-2.5999999,2.5999999,-2.5999999,2.5999999,-2.5999999,2.5999999,-2.5999999,
-2.5999999,-2.5999999,2.5999999,-2.5999999,2.5999999,-2.5999999,2.5999999,-2.5999999,
-2.5999999,-2.5999999,2.5999999,-2.5999999,2.5999999,-2.5999999,2.5999999,-2.5999999,
-2.5999999,-2.5999999,2.5999999,-2.5999999,2.5999999,-2.5999999,2.5999999,-2.5999999,
-2.5999999,-2.5999999,2.5999999,-2.5999999,2.5999999,-2.5999999,2.5999999,-2.5999999,
-2.5999999,-2.5999999,2.5999999,-2.5999999,2.5999999,-2.5999999,2.5999999,-2.5999999,
-2.5999999,-2.5999999,2.5999999,-2.5999999,2.5999999,-2.5999999,2.5999999,-2.5999999};
-
 const float PI=3.1415926;
 const std::string NAME = "pointCloud";
-//const std::string NAME2 = "spcFrame";
 const uint32_t MAX_POINT_SIZE=125000;
 const uint8_t NUMBER_OF_COMPONENTS_PER_POINT = 4; // How many components do we have per vector?
 const uint32_t SIZE_PER_COMPONENT = sizeof(float);
@@ -112,13 +71,94 @@ namespace automotive {
             spc(),
             stopReading(false){
                 for(int iii=0;iii<READ_FRAME_NO;iii++){
-                    //frameStore[iii]=SharedMemoryFactory::createSharedMemory(NAME2+to_string(iii), SIZE);
                     segment[iii]=(float*)malloc(SIZE);
                 }
+                string line;
+                ifstream in("db.xml");
+                int counter[5]={0,0,0,0,0};//corresponds to the index of the five calibration values
+	            bool found[5]={false, false, false, false, false};
+
+                while (getline(in,line))
+                {
+		            string tmp; // strip whitespaces from the beginning
+                    for (unsigned int i = 0; i < line.length(); i++)
+                    {
+                        
+			            if ((line[i] == '\t' || line[i]==' ' )&& tmp.size() == 0)
+                        {
+                        }
+                        else
+                        {
+                            if(line[i]=='<'){
+					            if(found[0]){
+						            rotCorrection[counter[0]]=atof(tmp.c_str());
+						            counter[0]++;
+						            found[0]=false;
+						            continue;
+					            }
+					
+					            if(found[1]){
+						            vertCorrection[counter[1]]=atof(tmp.c_str());
+						            counter[1]++;
+						            found[1]=false;
+						            continue;
+					            }
+					
+					            if(found[2]){
+						            distCorrection[counter[2]]=atof(tmp.c_str());
+						            counter[2]++;
+						            found[2]=false;
+						            continue;
+					            }
+					
+					            if(found[3]){
+						            vertOffsetCorrection[counter[3]]=atof(tmp.c_str());
+						            counter[3]++;
+						            found[3]=false;
+						            continue;
+					            }
+					
+					            if(found[4]){
+						            horizOffsetCorrection[counter[4]]=atof(tmp.c_str());
+						            counter[4]++;
+						            found[4]=false;
+						            continue;
+					            }
+					            tmp += line[i];
+				            }
+				            else{
+					            tmp += line[i];
+				            }
+                        }
+			
+			            if(tmp=="<rotCorrection_>"){
+				            found[0]=true;
+				            tmp="";
+			            }
+			            else if(tmp=="<vertCorrection_>"){
+				            found[1]=true;
+				            tmp="";
+			            }
+			            else if(tmp=="<distCorrection_>"){
+				            found[2]=true;
+				            tmp="";
+			            }
+			            else if(tmp=="<vertOffsetCorrection_>"){
+				            found[3]=true;
+				            tmp="";
+			            }
+			            else if(tmp=="<horizOffsetCorrection_>"){
+				            found[4]=true;
+				            tmp="";
+			            }
+			            else{
+			            }
+                    }
+	            }
             }
             
 
-        VelodyneListener::~VelodyneListener() {}
+        VelodyneListener::~VelodyneListener() {freeSpace();}
         
         void VelodyneListener::nextContainer(Container &c) {
             if (c.getDataType() == odcore::data::pcap::GlobalHeader::ID()) {
@@ -277,14 +317,10 @@ namespace automotive {
     }    
     
     void VelodyneListener::sendSPC(int frame){
-        //if(frameStore[frame]->isValid())
         if(VelodyneSharedMemory->isValid())
         {
             Lock l(VelodyneSharedMemory);
             memcpy(VelodyneSharedMemory->getSharedMemory(),segment[frame],SIZE);
-            //cout<<"Memory name:"<<VelodyneSharedMemory->getName()<<endl;
-            //cout<<frameStore[frame]->getName()<<endl;
-            //SharedPointCloud spc;
             spc.setName(VelodyneSharedMemory->getName()); // Name of the shared memory segment with the data.
             spc.setSize(pointNumberPerFrame[frame]* NUMBER_OF_COMPONENTS_PER_POINT * SIZE_PER_COMPONENT); // Size in raw bytes.
             spc.setWidth(pointNumberPerFrame[frame]); // Number of points.

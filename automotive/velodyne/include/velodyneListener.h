@@ -33,8 +33,8 @@
 //#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 #include "opendavinci/generated/odcore/data/SharedPointCloud.h"
 
-const int READ_FRAME_NO=150;
-const int LOAD_FRAME_NO=149;
+const int READ_FRAME_NO=50;
+const int LOAD_FRAME_NO=49;
 
 namespace automotive {
 
@@ -88,6 +88,11 @@ namespace automotive {
                 odcore::data::SharedPointCloud spc;
                 bool stopReading;
                 int pointNumberPerFrame[READ_FRAME_NO];
+                float rotCorrection[64];
+	            float vertCorrection[64];
+	            float distCorrection[64];
+	            float vertOffsetCorrection[64];
+	            float horizOffsetCorrection[64];
         };
 
 } // automotive
