@@ -330,14 +330,6 @@ message from.opendlv.sensation.DirectionOfMovement [id = 179] {
   from.opendlv.model.Direction direction [id = 1];
 }
 
-message from.opendlv.sensation.DesiredDirectionOfMovement [id = 180] {
-  from.opendlv.model.Direction direction [id = 1];
-}
-
-message from.opendlv.sensation.DesiredOpticalFlow [id = 174] {
-  float desiredOpticalFlow [id =1];
-}
-
 message from.opendlv.perception.Object [id = 181] {
   odcore::data::TimeStamp identified [id = 1];
   string type [id = 2];
@@ -369,16 +361,6 @@ message from.opendlv.perception.Environment [id = 189] {
   list<from.opendlv.perception.Object> objects [id = 2];
 }
 
-message from.opendlv.perception.ObjectDesiredDirection [id = 182] {
-  from.opendlv.model.Direction desiredDirection [id = 1];
-  int16 objectId [id = 2];
-}
-
-message from.opendlv.perception.ObjectDesiredAngularSize [id = 183] {
-  float desiredAngularSize [id = 1];
-  int16 objectId [id = 2];
-}
-
 message from.opendlv.perception.Surface [id = 184] {
   odcore::data::TimeStamp identified [id = 1];
   string type [id = 2];
@@ -400,6 +382,27 @@ message from.opendlv.perception.Surface [id = 184] {
   list<int16> traversableTo [id = 12];
 }
 
+message from.opendlv.perception.StimulusDirectionOfMovement [id = 180] {
+  from.opendlv.model.Direction desiredDirectionOfMovement [id = 1];
+  from.opendlv.model.Direction directionOfMovement [id = 2];
+}
+
+message from.opendlv.perception.StimulusOpticalFlow [id = 174] {
+  float desiredOpticalFlow [id = 1];
+  float opticalFlow [id = 2];
+}
+
+message from.opendlv.perception.StimulusDirectionAlignment [id = 182] {
+  from.opendlv.model.Direction direction [id = 1];
+  from.opendlv.model.Direction desiredDirection [id = 2];
+}
+
+message from.opendlv.perception.StimulusAngularSizeAlignment [id = 183] {
+  from.opendlv.model.Direction direction [id = 1];
+  float angularSize [id = 2];
+  float desiredAngularSize [id = 3];
+}
+
 message from.opendlv.knowledge.Message [id = 185] {
   uint32 size [id = 1];
   string data [id = 2];
@@ -415,14 +418,8 @@ message from.opendlv.action.Correction [id = 186] {
   string type [id = 2];
   bool isInhibitory [id = 3];
   float amplitude [id = 4];
+  float priority [id = 5];
 }
-
-message from.opendlv.action.Estimate [id = 188] {
-  odcore::data::TimeStamp startTime [id = 1];
-  string type [id = 2];
-  float amplitude [id = 3];
-}
-
 
 message from.opendlv.proxy.reverefh16.ManualControl [id = 191] {
     double accelerationPedalPosition [id = 1];
