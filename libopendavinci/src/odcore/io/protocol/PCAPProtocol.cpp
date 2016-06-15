@@ -51,7 +51,9 @@ namespace odcore {
             void PCAPProtocol::nextString(const string &s) {
                 Lock l(m_partialDataMutex);
 
+                std::string merge=m_partialData.str()+s;
                 m_partialData.write(s.c_str(), s.length());
+                m_partialData.write(merge.c_str(), merge.length());
 
                 while (tryConsumingData());
             }

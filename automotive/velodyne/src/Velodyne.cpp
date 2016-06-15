@@ -65,8 +65,8 @@ namespace automotive {
             //m_pcap.setContainerListener(this);
             //m_vListener.setContainerListener(this);
             m_pcap.setContainerListener(&m_vListener);
-            lidarStream.open("imeangowest.pcap", ios::binary|ios::in);
-            //lidarStream.open("atwall.pcap", ios::binary|ios::in);
+            //lidarStream.open("imeangowest.pcap", ios::binary|ios::in);
+            lidarStream.open("atwall.pcap", ios::binary|ios::in);
         }
 
         void VelodyneDecoder::tearDown() {
@@ -76,14 +76,19 @@ namespace automotive {
 
         // This method will do the main data processing job.
         odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode VelodyneDecoder::body() {
+            char *buffer = new char[1000];
             while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING){
             while (lidarStream.good() && !m_vListener.getStatus()) {
                 //while (lidarStream.good()) {
-                    char cc;
+                    /*char cc;
                     lidarStream.read(&cc, sizeof(uint8_t));
                     stringstream sstr;
                     sstr << cc;
                     string s = sstr.str();
+                    m_pcap.nextString(s);*/
+                    lidarStream.read(buffer, 999 * sizeof(char));
+                    buffer[999] = '\0';
+                    string s(buffer,999);
                     m_pcap.nextString(s);
                 }
                 if(!fileClosed){
@@ -116,6 +121,7 @@ namespace automotive {
                     frameSent=true;
                 }*/
             }
+            delete [] buffer;
             return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 } // automotive
