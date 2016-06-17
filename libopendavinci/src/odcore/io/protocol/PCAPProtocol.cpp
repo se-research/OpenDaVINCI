@@ -18,8 +18,8 @@
  */
 
 #include "opendavinci/odcore/base/Lock.h"
-#include "opendavinci/odcore/io/protocol/PCAPProtocol.h"
-
+//#include "opendavinci/odcore/io/protocol/PCAPProtocol.h"
+#include "PCAPProtocol.h"
 #include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
 namespace odcore {
@@ -51,9 +51,8 @@ namespace odcore {
             void PCAPProtocol::nextString(const string &s) {
                 Lock l(m_partialDataMutex);
 
-                std::string merge=m_partialData.str()+s;
+                m_partialData.seekp(0, ios_base::end);
                 m_partialData.write(s.c_str(), s.length());
-                m_partialData.write(merge.c_str(), merge.length());
 
                 while (tryConsumingData());
             }
