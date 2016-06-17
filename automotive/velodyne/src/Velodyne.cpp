@@ -34,7 +34,7 @@
 #include "automotivedata/GeneratedHeaders_AutomotiveData.h"
 
 #include "Velodyne.h"
-#include "velodyneListener.h"
+//#include "velodyneListener.h"
 
 
 namespace automotive {
@@ -76,7 +76,7 @@ namespace automotive {
 
         // This method will do the main data processing job.
         odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode VelodyneDecoder::body() {
-            char *buffer = new char[1000];
+            char *buffer = new char[BUFFER_SIZE+1];
             while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING){
             while (lidarStream.good() && !m_vListener.getStatus()) {
                 //while (lidarStream.good()) {
@@ -86,9 +86,9 @@ namespace automotive {
                     sstr << cc;
                     string s = sstr.str();
                     m_pcap.nextString(s);*/
-                    lidarStream.read(buffer, 999 * sizeof(char));
-                    buffer[999] = '\0';
-                    string s(buffer,999);
+                    lidarStream.read(buffer, BUFFER_SIZE * sizeof(char));
+                    buffer[BUFFER_SIZE] = '\0';
+                    string s(buffer,BUFFER_SIZE);
                     m_pcap.nextString(s);
                 }
                 if(!fileClosed){

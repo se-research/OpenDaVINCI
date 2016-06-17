@@ -26,7 +26,8 @@
 #include <memory>
 
 #include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
-#include "opendavinci/odcore/io/protocol/PCAPProtocol.h"
+//#include "opendavinci/odcore/io/protocol/PCAPProtocol.h"
+#include "PCAPProtocol.h"
 #include "velodyneListener.h"
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
 //#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
@@ -82,6 +83,7 @@ namespace automotive {
                 const uint8_t NUMBER_OF_COMPONENTS_PER_POINT = 4; // How many components do we have per vector?
                 const uint32_t SIZE_PER_COMPONENT = sizeof(float);
                 const uint32_t SIZE = MAX_POINT_SIZE * NUMBER_OF_COMPONENTS_PER_POINT * SIZE_PER_COMPONENT; // What is the total size of the shared memory? 
+                const uint32_t BUFFER_SIZE=2000;
                 
                 odcore::io::protocol::PCAPProtocol m_pcap;
                 fstream lidarStream;

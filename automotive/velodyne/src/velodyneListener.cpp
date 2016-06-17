@@ -251,6 +251,8 @@ namespace automotive {
                             
                             pointNumberPerFrame[frameIndex]=pointIndex;
                             cout<<"Load frame "<<frameIndex<<endl;
+                            //sendSPC(frameIndex);
+                            //cout<<"Packet number:"<<packetNr<<endl;
                             if(frameIndex>=LOAD_FRAME_NO){
                                 stopReading=true;
                             }
