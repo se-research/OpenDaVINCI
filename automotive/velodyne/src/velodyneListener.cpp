@@ -63,12 +63,14 @@ namespace automotive {
             previousAzimuth(0.00),
             upperBlock(true),
             VelodyneSharedMemory(m),
+            segment(NULL),
             velodyneFrame(c),
             spc(),
             stopReading(false){
-                for(int iii=0;iii<READ_FRAME_NO;iii++){
+                /*for(int iii=0;iii<READ_FRAME_NO;iii++){
                     segment[iii]=(float*)malloc(SIZE);
-                }
+                }*/
+                segment=(float*)malloc(SIZE);
                 string line;
                 ifstream in("db.xml");
                 int counter[5]={0,0,0,0,0};//corresponds to the index of the five calibration values
@@ -154,7 +156,7 @@ namespace automotive {
             }
             
 
-        VelodyneListener::~VelodyneListener() {freeSpace();}
+        VelodyneListener::~VelodyneListener() {}
         
         void VelodyneListener::nextContainer(Container &c) {
             if (c.getDataType() == odcore::data::pcap::GlobalHeader::ID()) {
@@ -184,10 +186,10 @@ namespace automotive {
                     //cout<<"Packet receive time: "<<packetReceiveTime.toMicroseconds()<<endl; 
                     //if(!frameStore[frameIndex]->isValid()) return;
                     
-                    if(frameIndex>200){
+                    /*if(frameIndex>200){
                         cout<<"Frame overflow!"<<endl;
                         return;
-                    }
+                    }*/
                     
                     if(stopReading)
                          return;
@@ -227,34 +229,26 @@ namespace automotive {
                         
                         if(rotation<previousAzimuth)
                         {
-                            //if(frameIndex==1){
-                                //SharedPointCloud spc;
-                                //TimeStamp a;
-                                /*spc.setName(NAME); // Name of the shared memory segment with the data.
-                                spc.setSize(pointIndex* NUMBER_OF_COMPONENTS_PER_POINT * SIZE_PER_COMPONENT); // Size in raw bytes.
-                                spc.setWidth(pointIndex); // Number of points.
-                                spc.setHeight(1); // We have just a sequence of vectors.
-                                spc.setNumberOfComponentsPerPoint(NUMBER_OF_COMPONENTS_PER_POINT);
-                                spc.setComponentDataType(SharedPointCloud::FLOAT_T); // Data type per component.
-                                spc.setUserInfo(SharedPointCloud::XYZ_INTENSITY);*/
-                                
-                                //Container imageFrame(spc);
-                                //velodyneFrame.send(imageFrame);
-                                //sendSPC();
-                                //TimeStamp b;
-                                //cout<<(b-a).toMicroseconds()<<endl; 
-                                
-                                //stopReading=true;
-                                //frameIndex++;
-                                //pointIndex=0;
-                            //}
-                            
-                            pointNumberPerFrame[frameIndex]=pointIndex;
-                            cout<<"Load frame "<<frameIndex<<endl;
+                            //pointNumberPerFrame[frameIndex]=pointIndex;
+                            //cout<<"Load frame "<<frameIndex<<endl;
                             //sendSPC(frameIndex);
                             //cout<<"Packet number:"<<packetNr<<endl;
+                            Lock l(VelodyneSharedMemory);
+                            memcpy(VelodyneSharedMemory->getSharedMemory(),segment,SIZE);
+                            spc.setName(VelodyneSharedMemory->getName()); // Name of the shared memory segment with the data.
+                            spc.setSize(pointIndex* NUMBER_OF_COMPONENTS_PER_POINT * SIZE_PER_COMPONENT); // Size in raw bytes.
+                            spc.setWidth(pointIndex); // Number of points.
+                            spc.setHeight(1); // We have just a sequence of vectors.
+                            spc.setNumberOfComponentsPerPoint(NUMBER_OF_COMPONENTS_PER_POINT);
+                            spc.setComponentDataType(SharedPointCloud::FLOAT_T); // Data type per component.
+                            spc.setUserInfo(SharedPointCloud::XYZ_INTENSITY);
+                            
+                            Container imageFrame(spc);
+                            velodyneFrame.send(imageFrame);
+            
                             if(frameIndex>=LOAD_FRAME_NO){
                                 stopReading=true;
+                                cout<<"Stop reading"<<endl;
                             }
                             else{
                                 frameIndex++;
@@ -294,10 +288,16 @@ namespace automotive {
                             {                            
                                 // Alignment of Velodyne data: (x0, y0, z0, intensity0), (x1, y1, z1, intensity1), ...
                                 long startID=NUMBER_OF_COMPONENTS_PER_POINT*pointIndex;
-                                segment[frameIndex][startID]=xData;
-                                segment[frameIndex][startID+1]=yData;
-                                segment[frameIndex][startID+2]=zData;
-                                segment[frameIndex][startID+3]=intensity;
+                                /*odcore::base::Lock l(VelodyneSharedMemory);
+                                float *velodyneRawData = static_cast<float*>(VelodyneSharedMemory->getSharedMemory());
+                                velodyneRawData[startID]=xData;
+                                velodyneRawData[startID+1]=yData;
+                                velodyneRawData[startID+2]=zData;
+                                velodyneRawData[startID+3]=intensity;*/
+                                segment[startID]=xData;
+                                segment[startID+1]=yData;
+                                segment[startID+2]=zData;
+                                segment[startID+3]=intensity;
                                 //(float)x(i, 0) = ValueForX, …
                             }
                             
@@ -313,42 +313,8 @@ namespace automotive {
             }
 
     }    
-    
-    void VelodyneListener::sendSPC(int frame){
-        if(VelodyneSharedMemory->isValid())
-        {
-            Lock l(VelodyneSharedMemory);
-            memcpy(VelodyneSharedMemory->getSharedMemory(),segment[frame],SIZE);
-            spc.setName(VelodyneSharedMemory->getName()); // Name of the shared memory segment with the data.
-            spc.setSize(pointNumberPerFrame[frame]* NUMBER_OF_COMPONENTS_PER_POINT * SIZE_PER_COMPONENT); // Size in raw bytes.
-            spc.setWidth(pointNumberPerFrame[frame]); // Number of points.
-            spc.setHeight(1); // We have just a sequence of vectors.
-            spc.setNumberOfComponentsPerPoint(NUMBER_OF_COMPONENTS_PER_POINT);
-            spc.setComponentDataType(SharedPointCloud::FLOAT_T); // Data type per component.
-            spc.setUserInfo(SharedPointCloud::XYZ_INTENSITY);
-            
-            Container imageFrame(spc);
-            velodyneFrame.send(imageFrame);
-        }
-        else{
-            cout<<"Memory copy failed."<<endl;
-            return;
-        }
-    }
-    
     bool VelodyneListener::getStatus(){
         return stopReading;
     }
-    
-    long VelodyneListener::getFrameIndex(){
-        return frameIndex;
-    }
-    
-    void VelodyneListener::freeSpace(){
-        for(int i=0;i<READ_FRAME_NO;i++){
-            free(segment[i]);
-        }
-    }
-    
 } // automotive
 

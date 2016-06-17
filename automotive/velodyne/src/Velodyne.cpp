@@ -52,9 +52,7 @@ namespace automotive {
             lidarStream(),
             VelodyneSharedMemory(SharedMemoryFactory::createSharedMemory(NAME, SIZE)),
             m_vListener(VelodyneSharedMemory,getConference()),
-            fileClosed(false),
-            frameSent(false),
-            counter(0){}
+            fileClosed(false){}
 
         VelodyneDecoder::~VelodyneDecoder() {}
 
@@ -65,8 +63,8 @@ namespace automotive {
             //m_pcap.setContainerListener(this);
             //m_vListener.setContainerListener(this);
             m_pcap.setContainerListener(&m_vListener);
-            //lidarStream.open("imeangowest.pcap", ios::binary|ios::in);
-            lidarStream.open("atwall.pcap", ios::binary|ios::in);
+            lidarStream.open("imeangowest.pcap", ios::binary|ios::in);
+            //lidarStream.open("atwall.pcap", ios::binary|ios::in);
         }
 
         void VelodyneDecoder::tearDown() {
@@ -90,36 +88,12 @@ namespace automotive {
                     buffer[BUFFER_SIZE] = '\0';
                     string s(buffer,BUFFER_SIZE);
                     m_pcap.nextString(s);
-                }
-                if(!fileClosed){
-                    lidarStream.close();
-                    cout<<"File read complete."<<endl;
-                    fileClosed=true;
-                }
-                /*if(!frameSent){
-                    for(int iii=0;iii<m_vListener.getFrameIndex();iii++){
-                        m_vListener.sendSPC(iii);
-                        cout<<"Send frame "<<iii<<endl;
-                        const uint32_t TEN_MSECOND = 1000 * 1000;
-                        Thread::usleepFor(TEN_MSECOND);
-                    }
-                    frameSent=true;
-                }*/
-                if(counter<=m_vListener.getFrameIndex()){
-                    m_vListener.sendSPC(counter);
-                    cout<<"Send frame "<<counter<<endl;
-                    counter++;
-                }
-                else{
-                    counter=0;
-                    cout<<"Replay"<<endl;
-                }
-
-                /*if(!frameSent){
-                    m_vListener.sendSPC(1);
-                    cout<<"Send frame"<<endl;
-                    frameSent=true;
-                }*/
+                } 
+            }
+            if(!fileClosed){
+                lidarStream.close();
+                cout<<"File read complete."<<endl;
+                fileClosed=true;
             }
             delete [] buffer;
             return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
