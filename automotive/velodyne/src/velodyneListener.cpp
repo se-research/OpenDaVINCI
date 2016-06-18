@@ -57,7 +57,7 @@ namespace automotive {
         VelodyneListener::VelodyneListener(std::shared_ptr<SharedMemory> m,
         odcore::io::conference::ContainerConference& c):
         //VelodyneListener::VelodyneListener():
-            packetNr(0),
+            //packetNr(0),
             pointIndex(0),
             frameIndex(0),
             previousAzimuth(0.00),
@@ -67,10 +67,19 @@ namespace automotive {
             velodyneFrame(c),
             spc(),
             stopReading(false){
-                /*for(int iii=0;iii<READ_FRAME_NO;iii++){
-                    segment[iii]=(float*)malloc(SIZE);
-                }*/
+                //Initial setup of the shared point cloud
+                spc.setName(VelodyneSharedMemory->getName()); // Name of the shared memory segment with the data.
+                //spc.setSize(pointIndex* NUMBER_OF_COMPONENTS_PER_POINT * SIZE_PER_COMPONENT); // Size in raw bytes.
+                //spc.setWidth(pointIndex); // Number of points.
+                spc.setHeight(1); // We have just a sequence of vectors.
+                spc.setNumberOfComponentsPerPoint(NUMBER_OF_COMPONENTS_PER_POINT);
+                spc.setComponentDataType(SharedPointCloud::FLOAT_T); // Data type per component.
+                spc.setUserInfo(SharedPointCloud::XYZ_INTENSITY);
+                
+                //Create memory for temporary storage of point cloud data for each frame
                 segment=(float*)malloc(SIZE);
+                
+                //Load calibration data from the calibration file
                 string line;
                 ifstream in("db.xml");
                 int counter[5]={0,0,0,0,0};//corresponds to the index of the five calibration values
@@ -163,18 +172,13 @@ namespace automotive {
                     cout<<"Get the global header"<<endl;
             }
             if (c.getDataType() == odcore::data::pcap::PacketHeader::ID()) {
-                packetNr++;
+                //packetNr++;
                 //cout<<"Received "<<packetNr<<" packets!"<<endl;
             }
             if (c.getDataType() == odcore::data::pcap::Packet::ID()) {
                 // Here, we have a valid packet.
                 //cout<<"Get a valid packet"<<endl;
-                /*if(packetNr>=400)//We only store data from the first 400 packets
-                {
-                    cout<<"Enough!"<<endl;
-                    cout<<"Frame:"<<frameIndex<<", Number of points: "<<pointIndex<<endl;
-                    return;
-                }*/
+                
                 //Decode Velodyne data
                 pcap::Packet packet = c.getData<pcap::Packet>();
                 pcap::PacketHeader packetHeader = packet.getHeader();
@@ -184,64 +188,45 @@ namespace automotive {
                     //TimeStamp decodeStart;
                     //TimeStamp packetReceiveTime;
                     //cout<<"Packet receive time: "<<packetReceiveTime.toMicroseconds()<<endl; 
-                    //if(!frameStore[frameIndex]->isValid()) return;
-                    
-                    /*if(frameIndex>200){
-                        cout<<"Frame overflow!"<<endl;
-                        return;
-                    }*/
                     
                     if(stopReading)
                          return;
-                    
-                    // Using a scoped lock to lock and automatically unlock a shared memory segment.
-                    //odcore::base::Lock l(frameStore[frameIndex]);
-                    //float *velodyneRawData = static_cast<float*>(frameStore[frameIndex]->getSharedMemory());
 
                     const string payload = packet.getPayload();
-                    string dataToDecode=payload.substr(42);
+                    uint32_t position=42;
                 
                     //A packet consists of 12 blocks with 100 bytes each. Decode each block separately.
+                    //int firstByte,secondByte,dataValue;
                     int firstByte,secondByte,dataValue;
                     for(int index=0;index<12;index++)
                     {   
                         //Decode header information: 2 bytes                    
-                        firstByte=(unsigned int)(uint8_t)(dataToDecode.at(0));
-                        secondByte=(unsigned int)(uint8_t)(dataToDecode.at(1));
+                        firstByte=(unsigned int)(uint8_t)(payload.at(position));
+                        secondByte=(unsigned int)(uint8_t)(payload.at(position+1));
                         dataValue=ntohs(firstByte*256+secondByte);
-                        //cout<<"Sensor block ID: "<<hex<<dataValue<<endl;
-                        if(dataValue==0xddff)
-                        {
+                        if(dataValue==0xddff){
                             upperBlock=false;//Lower block
                         }
-                        else
-                        {
+                        else{
                             upperBlock=true;//upper block
                         }
-                        dataToDecode=dataToDecode.substr(2);
 
                         //Decode rotational information: 2 bytes
-                        firstByte=(unsigned int)(uint8_t)(dataToDecode.at(0));
-                        secondByte=(unsigned int)(uint8_t)(dataToDecode.at(1));
+                        firstByte=(unsigned int)(uint8_t)(payload.at(position+2));
+                        secondByte=(unsigned int)(uint8_t)(payload.at(position+3));
                         dataValue=ntohs(firstByte*256+secondByte);                        
                         float rotation=static_cast<float>(dataValue/100.00);
-                        //cout << "R = " << rotation << ", p = " << previousAzimuth << endl;
                         
-                        if(rotation<previousAzimuth)
-                        {
-                            //pointNumberPerFrame[frameIndex]=pointIndex;
-                            //cout<<"Load frame "<<frameIndex<<endl;
-                            //sendSPC(frameIndex);
-                            //cout<<"Packet number:"<<packetNr<<endl;
+                        if(rotation<previousAzimuth){
                             Lock l(VelodyneSharedMemory);
                             memcpy(VelodyneSharedMemory->getSharedMemory(),segment,SIZE);
-                            spc.setName(VelodyneSharedMemory->getName()); // Name of the shared memory segment with the data.
+                            //spc.setName(VelodyneSharedMemory->getName()); // Name of the shared memory segment with the data.
                             spc.setSize(pointIndex* NUMBER_OF_COMPONENTS_PER_POINT * SIZE_PER_COMPONENT); // Size in raw bytes.
                             spc.setWidth(pointIndex); // Number of points.
-                            spc.setHeight(1); // We have just a sequence of vectors.
-                            spc.setNumberOfComponentsPerPoint(NUMBER_OF_COMPONENTS_PER_POINT);
-                            spc.setComponentDataType(SharedPointCloud::FLOAT_T); // Data type per component.
-                            spc.setUserInfo(SharedPointCloud::XYZ_INTENSITY);
+                            //spc.setHeight(1); // We have just a sequence of vectors.
+                            //spc.setNumberOfComponentsPerPoint(NUMBER_OF_COMPONENTS_PER_POINT);
+                            //spc.setComponentDataType(SharedPointCloud::FLOAT_T); // Data type per component.
+                            //spc.setUserInfo(SharedPointCloud::XYZ_INTENSITY);
                             
                             Container imageFrame(spc);
                             velodyneFrame.send(imageFrame);
@@ -258,7 +243,7 @@ namespace automotive {
                         }
                         
                         previousAzimuth=rotation;
-                        dataToDecode=dataToDecode.substr(2);
+                        position+=4;
 
                         //Decode distance information and intensity of each sensor in a block       
                         for(int counter=0;counter<32;counter++)
@@ -269,11 +254,11 @@ namespace automotive {
                                 sensorID=counter;
                             else
                                 sensorID=counter+32;
-                            firstByte=(unsigned int)(uint8_t)(dataToDecode.at(0));
-                            secondByte=(unsigned int)(uint8_t)(dataToDecode.at(1));
+                            firstByte=(unsigned int)(uint8_t)(payload.at(position));
+                            secondByte=(unsigned int)(uint8_t)(payload.at(position+1));
                             dataValue=ntohs(firstByte*256+secondByte);
-                            distance[counter]=static_cast<float>(dataValue*0.200/100.000);
-                                distance[counter]=distance[counter]+distCorrection[sensorID]/100;
+                            distance[counter]=static_cast<float>(dataValue*0.2/100.0);
+                                distance[counter]=distance[counter]+distCorrection[sensorID]/100.0;
                             float xyDistance=distance[counter]*cos(toRadian(vertCorrection[sensorID]));
                             float xData,yData,zData,intensity;
                             xData=xyDistance*sin(toRadian(rotation-rotCorrection[sensorID]))
@@ -282,33 +267,20 @@ namespace automotive {
                                 +horizOffsetCorrection[sensorID]/100.0*sin(toRadian(rotation-rotCorrection[sensorID]));
                             zData=distance[counter]*sin(toRadian(vertCorrection[sensorID]))+vertOffsetCorrection[sensorID]/100.0;
                             //Decode intensity: 1 byte
-                            int intensityInt=(unsigned int)(uint8_t)(dataToDecode.at(2));
+                            int intensityInt=(unsigned int)(uint8_t)(payload.at(position+2));
                             intensity=(float)intensityInt;
-
-                            {                            
-                                // Alignment of Velodyne data: (x0, y0, z0, intensity0), (x1, y1, z1, intensity1), ...
-                                long startID=NUMBER_OF_COMPONENTS_PER_POINT*pointIndex;
-                                /*odcore::base::Lock l(VelodyneSharedMemory);
-                                float *velodyneRawData = static_cast<float*>(VelodyneSharedMemory->getSharedMemory());
-                                velodyneRawData[startID]=xData;
-                                velodyneRawData[startID+1]=yData;
-                                velodyneRawData[startID+2]=zData;
-                                velodyneRawData[startID+3]=intensity;*/
-                                segment[startID]=xData;
-                                segment[startID+1]=yData;
-                                segment[startID+2]=zData;
-                                segment[startID+3]=intensity;
-                                //(float)x(i, 0) = ValueForX, …
-                            }
+                          
+                            //Store coordinate information of each point to the malloc memory
+                            long startID=NUMBER_OF_COMPONENTS_PER_POINT*pointIndex;
+                            segment[startID]=xData;
+                            segment[startID+1]=yData;
+                            segment[startID+2]=zData;
+                            segment[startID+3]=intensity;
                             
-                            dataToDecode=dataToDecode.substr(3);
+                            position+=3;
                             pointIndex++;
                         } 
                     }
-                //TimeStamp decodeEnd;
-                //cout<<(decodeEnd-decodeStart).toMicroseconds()<<endl;   
-                //TimeStamp packetDecodedTime;
-                //cout<<"Packet decoded time: "<<packetDecodedTime.toMicroseconds()<<endl; 
                 }    
             }
 
