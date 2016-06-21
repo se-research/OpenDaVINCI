@@ -33,6 +33,7 @@
 #include "opendlv/data/environment/Point3.h"
 #include "plugins/truckmap/TruckMapWidget.h"
 #include "automotivedata/generated/from/opendlv/model/Direction.h"
+#include "automotivedata/generated/from/opendlv/perception/Object.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }
 
@@ -54,8 +55,7 @@ namespace cockpit {
                 m_scaleFactor(0.0125),
                 m_rotation(90),
                 m_objectsMutex(),
-                m_objects(),
-                m_objectsLastUpdated() {
+                m_environment() {
 
                 // Unused configuration so far.
                 (void)kvc;
@@ -73,14 +73,15 @@ namespace cockpit {
             }
 
             void TruckMapWidget::nextContainer(Container &c) {
-                if (c.getDataType() == (from::opendlv::perception::Object::ID() + 300)) {
+                if (c.getDataType() == (from::opendlv::perception::Environment::ID())) {
                     Lock l(m_objectsMutex);
-                    from::opendlv::perception::Object obj = c.getData<from::opendlv::perception::Object>();
-                    m_objects[obj.getObjectId()] = obj;
+                    // from::opendlv::perception::Object obj = c.getData<from::opendlv::perception::Object>();
+                    // m_objects[obj.getObjectId()] = obj;
 
                     // Store last time stamp of update.
-                    TimeStamp now;
-                    m_objectsLastUpdated[obj.getObjectId()] = now;
+                    // TimeStamp now;
+                    // m_objectsLastUpdated[obj.getObjectId()] = now;
+                    m_environment = c.getData<from::opendlv::perception::Environment>();
                 }
             }
 
@@ -221,55 +222,47 @@ namespace cockpit {
                 // Draw objects.
                 {
                     Lock l2(m_objectsMutex);
-                    map<uint16_t, from::opendlv::perception::Object> objectsToKeep;
-
                     TimeStamp now;
-                    auto it = m_objects.begin();
-                    while (it != m_objects.end()) {
-                        from::opendlv::perception::Object obj = it->second;
-                        from::opendlv::model::Direction dir = obj.getDirection();
+                    TimeStamp validUntil = m_environment.getValidUntil();
 
-                        if (obj.getObjectId() > -1) {
-                            TimeStamp lastUpdated = m_objectsLastUpdated[obj.getObjectId()];
-                            const int32_t FIVE_SECONDS = 5 * 1000 * 1000;
-                            if ((now-lastUpdated).toMicroseconds() < FIVE_SECONDS) {
-                                Point3 measurementPoint(obj.getDistance(), 0, 0);
-                                measurementPoint.rotateZ(dir.getAzimuth());
+                    if((validUntil-now).toMicroseconds() > 0){
+                        std::vector<from::opendlv::perception::Object> objectList = m_environment.getListOfObjects();
+                        auto it = objectList.begin();
+                        while (it != objectList.end()){
+                            from::opendlv::perception::Object obj = *it;
+                            from::opendlv::model::Direction dir = obj.getDirection();
+                            Point3 measurementPoint(obj.getDistance(), 0, 0);
+                            measurementPoint.rotateZ(dir.getAzimuth());
 
-                                int _width = 200 * (m_scaleFactor * 300);
-                                int _height = 200 * (m_scaleFactor * 300);
+                            int _width = 200 * (m_scaleFactor * 300);
+                            int _height = 200 * (m_scaleFactor * 300);
 
-                                painter.setTransform(transformationDIN70000);
-                                painter.fillRect(measurementPoint.getX() * 1000, measurementPoint.getY() * 1000, _width, _height, QBrush(Qt::red));
+                            painter.setTransform(transformationDIN70000);
+                            painter.fillRect(measurementPoint.getX() * 1000,measurementPoint.getY() * 1000, _width, _height, QBrush(Qt::red));
 
-                                {
-                                    const QColor objInfoColor = Qt::black;
-                                    pen.setColor(objInfoColor);
+                            {
+                                const QColor objInfoColor = Qt::black;
+                                pen.setColor(objInfoColor);
 
-                                    pt_description.setX(measurementPoint.getX() * 1000);
-                                    pt_description.setY(measurementPoint.getY() * 1000);
-                                    pt_description = transformationDIN70000.map(pt_description);
-                                    painter.setTransform(descriptionTrans);
+                                pt_description.setX(measurementPoint.getX() * 1000);
+                                pt_description.setY(measurementPoint.getY() * 1000);
+                                pt_description = transformationDIN70000.map(pt_description);
+                                painter.setTransform(descriptionTrans);
 
-                                    painter.setPen(pen);
-                                    fontSettings.setPointSize(10);
-                                    painter.setFont(fontSettings);
-                                    stringstream sstr;
-                                    sstr << "Id=" << obj.getObjectId() << ", d=" << obj.getDistance() << "m.";
-                                    const string s = sstr.str();
-                                    description = s.c_str();
-                                    painter.drawText(pt_description, description);
-                                }
-
-                                objectsToKeep[obj.getObjectId()] = obj;
+                                painter.setPen(pen);
+                                fontSettings.setPointSize(10);
+                                painter.setFont(fontSettings);
+                                stringstream sstr;
+                                sstr << "Id=" << obj.getObjectId() << ", d=" << obj.getDistance() << "m.";
+                                const string s = sstr.str();
+                                description = s.c_str();
+                                painter.drawText(pt_description, description);
                             }
-                        }
 
-                        it++;
+                            it++;
+                        }
                     }
 
-                    // Just keep those objects that are updated.
-                    m_objects = objectsToKeep;
                 }
 
                 // Draw axes labels.

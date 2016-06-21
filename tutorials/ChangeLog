@@ -1,3 +1,5 @@
+3.0.8 - Added sensor time stamping
+3.0.7 - Minor updates from OpenDLV
 3.0.6 - Updated WGS84 coordinate
 3.0.5 - odsupercomponent allows several modules running under the same name; odcockpit visualizes system health and object data
 3.0.4 - Fixing and validating CAN message specification handling and code generation
