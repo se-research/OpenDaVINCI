@@ -36,7 +36,7 @@ CANSignal:
 	cansignalname = ValidIdentifier	'in' canIdentifier = HEXNUMBER
 									'at bit' startBit = FLOATNUMBER
 									'for' (length = FLOATNUMBER ('bit'|'bits') | lengthBytes = FLOATNUMBER ('byte'|'bytes'))
-									'is' (endian = ('big' | 'little')) 'endian'
+									'is' (signed = ('signed' | 'unsigned')) (endian = ('big' | 'little')) 'endian'
 									'multiply by' multiplyBy = FLOATNUMBER
 									'add' add = FLOATNUMBER
 									('with range' | 'within range') '[' rangeStart = FLOATNUMBER ',' rangeEnd = FLOATNUMBER ']'
