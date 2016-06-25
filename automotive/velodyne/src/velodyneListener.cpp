@@ -59,9 +59,11 @@ namespace automotive {
         //VelodyneListener::VelodyneListener():
             //packetNr(0),
             pointIndex(0),
+            startID(0),
             frameIndex(0),
-            previousAzimuth(0.00),
+            previousAzimuth(0.0),
             upperBlock(true),
+            distance(0.0),
             VelodyneSharedMemory(m),
             segment(NULL),
             velodyneFrame(c),
@@ -197,7 +199,7 @@ namespace automotive {
                 
                     //A packet consists of 12 blocks with 100 bytes each. Decode each block separately.
                     //int firstByte,secondByte,dataValue;
-                    int firstByte,secondByte,dataValue;
+                    static int firstByte,secondByte,dataValue;
                     for(int index=0;index<12;index++)
                     {   
                         //Decode header information: 2 bytes                    
@@ -215,9 +217,11 @@ namespace automotive {
                         firstByte=(unsigned int)(uint8_t)(payload.at(position+2));
                         secondByte=(unsigned int)(uint8_t)(payload.at(position+3));
                         dataValue=ntohs(firstByte*256+secondByte);                        
-                        float rotation=static_cast<float>(dataValue/100.00);
+                        float rotation=static_cast<float>(dataValue/100.0);
                         
-                        if(rotation<previousAzimuth){
+                        //Update the shared point cloud when a complete scan is completed.
+                        //Discard points when the preallocated shared memory is full.
+                        if(rotation<previousAzimuth||pointIndex>MAX_POINT_SIZE){
                             Lock l(VelodyneSharedMemory);
                             memcpy(VelodyneSharedMemory->getSharedMemory(),segment,SIZE);
                             //spc.setName(VelodyneSharedMemory->getName()); // Name of the shared memory segment with the data.
@@ -238,8 +242,9 @@ namespace automotive {
                             else{
                                 frameIndex++;
                             }
+                            //cout<<pointIndex<<endl;
                             pointIndex=0;
-                            
+                            startID=0;
                         }
                         
                         previousAzimuth=rotation;
@@ -249,7 +254,7 @@ namespace automotive {
                         for(int counter=0;counter<32;counter++)
                         {
                             //Decode distance: 2 bytes
-                            int sensorID(0);
+                            static int sensorID(0);
                             if(upperBlock)
                                 sensorID=counter;
                             else
@@ -257,26 +262,27 @@ namespace automotive {
                             firstByte=(unsigned int)(uint8_t)(payload.at(position));
                             secondByte=(unsigned int)(uint8_t)(payload.at(position+1));
                             dataValue=ntohs(firstByte*256+secondByte);
-                            distance[counter]=static_cast<float>(dataValue*0.2/100.0);
-                                distance[counter]=distance[counter]+distCorrection[sensorID]/100.0;
-                            float xyDistance=distance[counter]*cos(toRadian(vertCorrection[sensorID]));
-                            float xData,yData,zData,intensity;
+                            distance=static_cast<float>(dataValue*0.2/100.0)+distCorrection[sensorID]/100.0;
+                            static float xyDistance,xData,yData,zData,intensity;
+                            xyDistance=distance*cos(toRadian(vertCorrection[sensorID]));
+                            //float xData,yData,zData,intensity;
                             xData=xyDistance*sin(toRadian(rotation-rotCorrection[sensorID]))
                                 -horizOffsetCorrection[sensorID]/100.0*cos(toRadian(rotation-rotCorrection[sensorID]));
                             yData=xyDistance*cos(toRadian(rotation-rotCorrection[sensorID]))
                                 +horizOffsetCorrection[sensorID]/100.0*sin(toRadian(rotation-rotCorrection[sensorID]));
-                            zData=distance[counter]*sin(toRadian(vertCorrection[sensorID]))+vertOffsetCorrection[sensorID]/100.0;
+                            zData=distance*sin(toRadian(vertCorrection[sensorID]))+vertOffsetCorrection[sensorID]/100.0;
                             //Decode intensity: 1 byte
                             int intensityInt=(unsigned int)(uint8_t)(payload.at(position+2));
                             intensity=(float)intensityInt;
                           
                             //Store coordinate information of each point to the malloc memory
-                            long startID=NUMBER_OF_COMPONENTS_PER_POINT*pointIndex;
+                            //long startID=NUMBER_OF_COMPONENTS_PER_POINT*pointIndex;
                             segment[startID]=xData;
                             segment[startID+1]=yData;
                             segment[startID+2]=zData;
                             segment[startID+3]=intensity;
                             
+                            startID+=NUMBER_OF_COMPONENTS_PER_POINT;
                             position+=3;
                             pointIndex++;
                         } 

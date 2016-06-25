@@ -74,19 +74,22 @@ namespace automotive {
                 
             private:
                 const float PI=3.1415926;
-	            const uint32_t MAX_POINT_SIZE=125000;
+	            //const uint32_t MAX_POINT_SIZE=125000;
+	            const uint32_t MAX_POINT_SIZE=101000;  //The maximum number of points per frame is set based on the observation of the first 100 frames of the pcap file imeangowest.pcap. This upper bound should be set as low as possible, as it affects the shared memory size and thus the frame updating speed.
 	            const uint32_t SIZE_PER_COMPONENT = sizeof(float);
 	            const uint8_t NUMBER_OF_COMPONENTS_PER_POINT = 4; // How many components do we have per vector?
                 const uint32_t SIZE = MAX_POINT_SIZE * NUMBER_OF_COMPONENTS_PER_POINT * SIZE_PER_COMPONENT; // What is the total size of the shared memory?    
                 //const int READ_FRAME_NO=150;
                 const int LOAD_FRAME_NO=100;
                 
-                long packetNr;
+                //long packetNr;
                 long pointIndex;
+                int startID;
                 long frameIndex;
                 float previousAzimuth;
                 bool upperBlock;
-                float distance[32];
+                //float distance[32];
+                float distance;
                 std::shared_ptr<SharedMemory> VelodyneSharedMemory;
                 //std::shared_ptr<SharedMemory> frameStore[200];
                 float* segment;
