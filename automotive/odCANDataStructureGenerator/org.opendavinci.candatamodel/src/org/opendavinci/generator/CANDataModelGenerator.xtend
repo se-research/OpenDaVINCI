@@ -1004,6 +1004,8 @@ namespace canmapping {
 					""
 				}»
 
+				«memberVarName»=«finalVarName»;
+
 				// Create a field for a generic message.
 				odcore::reflection::Field<double> *f = new odcore::reflection::Field<double>(«memberVarName»);
 				f->setLongFieldIdentifier(0); // The identifiers specified here must match with the ones defined in the .odvd file!
