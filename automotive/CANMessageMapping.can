@@ -7,10 +7,10 @@ wheelspeed.rearright	in 0x123 at bit 48 for 16 bits is unsigned little endian mu
 lightsystem.headlights  in 0x001 at bit 6 for 2 bits is signed big endian multiply by 1 add 0 within range [0, 3];
 
 mapping automotive.vehicle.WheelSpeed {
-	wheelspeed.frontleft : 1;
-	wheelspeed.frontright : 2;
-	wheelspeed.rearleft : 3;
-	wheelspeed.rearright : 4;
+    wheelspeed.frontleft : 1;
+    wheelspeed.frontright : 2;
+    wheelspeed.rearleft : 3;
+    wheelspeed.rearright : 4;
 }
 
 unordered mapping automotive.vehicle.LightSystem {
@@ -18,10 +18,15 @@ unordered mapping automotive.vehicle.LightSystem {
 }
 
 test automotive.vehicle.WheelSpeed {
-  0x123: 0x3C2217220D220722
+    0x123: 0x3C2217220D220722
   
-  id 1 = 87.64
-  id 2 = 87.27
-  id 3 = 87.17
-  id 4 = 87.11
+    id 1 = 87.64
+    id 2 = 87.27
+    id 3 = 87.17
+    id 4 = 87.11
+}
+
+test automotive.vehicle.LightSystem {
+    0x001: 0x00
+    id 1 = -1
 }
