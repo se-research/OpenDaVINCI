@@ -195,7 +195,7 @@ namespace automotive {
                          return;
 
                     const string payload = packet.getPayload();
-                    uint32_t position=42;
+                    uint32_t position=42;//position specifies the starting position to read from the 1248 bytes, skip the 42-byte Ethernet header
                 
                     //A packet consists of 12 blocks with 100 bytes each. Decode each block separately.
                     //int firstByte,secondByte,dataValue;
@@ -220,8 +220,7 @@ namespace automotive {
                         float rotation=static_cast<float>(dataValue/100.0);
                         
                         //Update the shared point cloud when a complete scan is completed.
-                        //Discard points when the preallocated shared memory is full.
-                        if(rotation<previousAzimuth||pointIndex>MAX_POINT_SIZE){
+                        if(rotation<previousAzimuth){
                             Lock l(VelodyneSharedMemory);
                             memcpy(VelodyneSharedMemory->getSharedMemory(),segment,SIZE);
                             //spc.setName(VelodyneSharedMemory->getName()); // Name of the shared memory segment with the data.
@@ -249,11 +248,15 @@ namespace automotive {
                         
                         previousAzimuth=rotation;
                         position+=4;
+                        
+                        if(pointIndex<MAX_POINT_SIZE){
 
                         //Decode distance information and intensity of each sensor in a block       
                         for(int counter=0;counter<32;counter++)
                         {
                             //Decode distance: 2 bytes
+                            //Discard points when the preallocated shared memory is full.
+                            
                             static int sensorID(0);
                             if(upperBlock)
                                 sensorID=counter;
@@ -277,6 +280,7 @@ namespace automotive {
                           
                             //Store coordinate information of each point to the malloc memory
                             //long startID=NUMBER_OF_COMPONENTS_PER_POINT*pointIndex;
+                            //Discard points when the preallocated shared memory is full.
                             segment[startID]=xData;
                             segment[startID+1]=yData;
                             segment[startID+2]=zData;
@@ -285,7 +289,15 @@ namespace automotive {
                             startID+=NUMBER_OF_COMPONENTS_PER_POINT;
                             position+=3;
                             pointIndex++;
+                            if(pointIndex>=MAX_POINT_SIZE){
+                                position+=3*(31-counter);//Discard the points of the current frame when the shared memory is full; move the position to be read in the 1248 bytes
+                                break;
+                            }
                         } 
+                        }
+                        else{
+                            position+=96;//32*3
+                        }
                     }
                 }    
             }
