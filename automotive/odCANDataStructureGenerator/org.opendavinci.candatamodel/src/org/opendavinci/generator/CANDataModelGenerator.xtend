@@ -1003,7 +1003,6 @@ namespace canmapping {
 					
 					""
 				}»
-				«memberVarName»=static_cast<«transformedType»>(«finalVarName»);
 
 				// Create a field for a generic message.
 				odcore::reflection::Field<double> *f = new odcore::reflection::Field<double>(«memberVarName»);
