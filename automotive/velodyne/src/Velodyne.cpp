@@ -19,22 +19,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <cstdio>
-#include <cmath>
+//#include <cstdio>
+//#include <cmath>
 #include <string>
 #include <iostream>
 #include <fstream>
 #include <memory>
 
-//#include "opendavinci/odcore/base/Thread.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/io/conference/ContainerConference.h"
 #include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
-#include <opendavinci/odcore/base/Thread.h>
-#include "automotivedata/GeneratedHeaders_AutomotiveData.h"
+//#include <opendavinci/odcore/base/Thread.h>
+//#include "automotivedata/GeneratedHeaders_AutomotiveData.h"
 
 #include "Velodyne.h"
-//#include "velodyneListener.h"
 
 
 namespace automotive {
@@ -59,16 +57,12 @@ namespace automotive {
         void VelodyneDecoder::setUp() {
         // setup share memory.
         // create instance of velodyneListener and pass shared_ptr from shared memory to velodynelister in its constructor
-            //cout<<"Start decoding"<<endl;
-            //m_pcap.setContainerListener(this);
-            //m_vListener.setContainerListener(this);
             m_pcap.setContainerListener(&m_vListener);
-            //lidarStream.open("imeangowest.pcap", ios::binary|ios::in);
-            lidarStream.open("atwall.pcap", ios::binary|ios::in);
+            lidarStream.open("imeangowest.pcap", ios::binary|ios::in);
+            //lidarStream.open("atwall.pcap", ios::binary|ios::in);
         }
 
         void VelodyneDecoder::tearDown() {
-            //cout<<"Stop decoding"<<endl;
             lidarStream.close();
         }
 
@@ -78,14 +72,8 @@ namespace automotive {
             while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING){
             while (lidarStream.good() && !m_vListener.getStatus()) {
                 //while (lidarStream.good()) {
-                    /*char cc;
-                    lidarStream.read(&cc, sizeof(uint8_t));
-                    stringstream sstr;
-                    sstr << cc;
-                    string s = sstr.str();
-                    m_pcap.nextString(s);*/
                     lidarStream.read(buffer, BUFFER_SIZE * sizeof(char));
-                    buffer[BUFFER_SIZE] = '\0';
+                    //buffer[BUFFER_SIZE] = '\0';
                     string s(buffer,BUFFER_SIZE);
                     m_pcap.nextString(s);
                 } 

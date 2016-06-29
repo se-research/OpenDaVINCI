@@ -22,10 +22,8 @@
 #ifndef VELODYNELISTENER_H_
 #define VELODYNELISTENER_H_
 
-//#include <fstream>
 #include <memory>
 
-//#include "opendavinci/odcore/opendavinci.h"
 //#include "opendavinci/odcore/io/protocol/PCAPProtocol.h"
 #include "opendavinci/odcore/io/conference/ContainerListener.h"
 #include "opendavinci/odcore/io/conference/ContainerObserver.h"

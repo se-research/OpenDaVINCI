@@ -19,22 +19,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <cstdio>
 #include <cmath>
+#include <cstring>
 #include <string>
 #include <iostream>
 #include <memory>
-#include<fstream>
+#include <fstream>
 
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/io/conference/ContainerConference.h"
-//#include "opendavinci/odcore/io/URL.h"
 //#include "automotivedata/GeneratedHeaders_AutomotiveData.h"
 #include "opendavinci/generated/odcore/data/pcap/GlobalHeader.h"
 #include "opendavinci/generated/odcore/data/pcap/PacketHeader.h"
 #include "opendavinci/generated/odcore/data/pcap/Packet.h"
 #include "opendavinci/odcore/base/Lock.h"
-#include "opendavinci/odcore/wrapper/Eigen.h"
+//#include "opendavinci/odcore/wrapper/Eigen.h"
 
 #include "opendavinci/generated/odcore/data/SharedPointCloud.h"
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
@@ -43,7 +42,6 @@
 #include "velodyneListener.h"
 
 
-//const std::string NAME = "pointCloud";
 #define toRadian(x) ((x)*PI/180.0)
 
 namespace automotive {
@@ -186,10 +184,6 @@ namespace automotive {
                 pcap::PacketHeader packetHeader = packet.getHeader();
                 if(packetHeader.getIncl_len()==1248)
                 {
-
-                    //TimeStamp decodeStart;
-                    //TimeStamp packetReceiveTime;
-                    //cout<<"Packet receive time: "<<packetReceiveTime.toMicroseconds()<<endl; 
                     
                     if(stopReading)
                          return;
@@ -250,50 +244,48 @@ namespace automotive {
                         position+=4;
                         
                         if(pointIndex<MAX_POINT_SIZE){
-
-                        //Decode distance information and intensity of each sensor in a block       
-                        for(int counter=0;counter<32;counter++)
-                        {
-                            //Decode distance: 2 bytes
-                            //Discard points when the preallocated shared memory is full.
-                            
-                            static int sensorID(0);
-                            if(upperBlock)
-                                sensorID=counter;
-                            else
-                                sensorID=counter+32;
-                            firstByte=(unsigned int)(uint8_t)(payload.at(position));
-                            secondByte=(unsigned int)(uint8_t)(payload.at(position+1));
-                            dataValue=ntohs(firstByte*256+secondByte);
-                            distance=static_cast<float>(dataValue*0.2/100.0)+distCorrection[sensorID]/100.0;
-                            static float xyDistance,xData,yData,zData,intensity;
-                            xyDistance=distance*cos(toRadian(vertCorrection[sensorID]));
-                            //float xData,yData,zData,intensity;
-                            xData=xyDistance*sin(toRadian(rotation-rotCorrection[sensorID]))
-                                -horizOffsetCorrection[sensorID]/100.0*cos(toRadian(rotation-rotCorrection[sensorID]));
-                            yData=xyDistance*cos(toRadian(rotation-rotCorrection[sensorID]))
-                                +horizOffsetCorrection[sensorID]/100.0*sin(toRadian(rotation-rotCorrection[sensorID]));
-                            zData=distance*sin(toRadian(vertCorrection[sensorID]))+vertOffsetCorrection[sensorID]/100.0;
-                            //Decode intensity: 1 byte
-                            int intensityInt=(unsigned int)(uint8_t)(payload.at(position+2));
-                            intensity=(float)intensityInt;
-                          
-                            //Store coordinate information of each point to the malloc memory
-                            //long startID=NUMBER_OF_COMPONENTS_PER_POINT*pointIndex;
-                            //Discard points when the preallocated shared memory is full.
-                            segment[startID]=xData;
-                            segment[startID+1]=yData;
-                            segment[startID+2]=zData;
-                            segment[startID+3]=intensity;
-                            
-                            startID+=NUMBER_OF_COMPONENTS_PER_POINT;
-                            position+=3;
-                            pointIndex++;
-                            if(pointIndex>=MAX_POINT_SIZE){
-                                position+=3*(31-counter);//Discard the points of the current frame when the shared memory is full; move the position to be read in the 1248 bytes
-                                break;
-                            }
-                        } 
+                            //Decode distance information and intensity of each sensor in a block       
+                            for(int counter=0;counter<32;counter++)
+                            {
+                                //Decode distance: 2 bytes
+                                //Discard points when the preallocated shared memory is full.
+                                
+                                static int sensorID(0);
+                                if(upperBlock)
+                                    sensorID=counter;
+                                else
+                                    sensorID=counter+32;
+                                firstByte=(unsigned int)(uint8_t)(payload.at(position));
+                                secondByte=(unsigned int)(uint8_t)(payload.at(position+1));
+                                dataValue=ntohs(firstByte*256+secondByte);
+                                distance=static_cast<float>(dataValue*0.2/100.0)+distCorrection[sensorID]/100.0;
+                                static float xyDistance,xData,yData,zData,intensity;
+                                xyDistance=distance*cos(toRadian(vertCorrection[sensorID]));
+                                //float xData,yData,zData,intensity;
+                                xData=xyDistance*sin(toRadian(rotation-rotCorrection[sensorID]))
+                                    -horizOffsetCorrection[sensorID]/100.0*cos(toRadian(rotation-rotCorrection[sensorID]));
+                                yData=xyDistance*cos(toRadian(rotation-rotCorrection[sensorID]))
+                                    +horizOffsetCorrection[sensorID]/100.0*sin(toRadian(rotation-rotCorrection[sensorID]));
+                                zData=distance*sin(toRadian(vertCorrection[sensorID]))+vertOffsetCorrection[sensorID]/100.0;
+                                //Decode intensity: 1 byte
+                                int intensityInt=(unsigned int)(uint8_t)(payload.at(position+2));
+                                intensity=(float)intensityInt;
+                              
+                                //Store coordinate information of each point to the malloc memory
+                                //long startID=NUMBER_OF_COMPONENTS_PER_POINT*pointIndex;
+                                segment[startID]=xData;
+                                segment[startID+1]=yData;
+                                segment[startID+2]=zData;
+                                segment[startID+3]=intensity;
+                                
+                                startID+=NUMBER_OF_COMPONENTS_PER_POINT;
+                                position+=3;
+                                pointIndex++;
+                                if(pointIndex>=MAX_POINT_SIZE){
+                                    position+=3*(31-counter);//Discard the points of the current frame when the preallocated shared memory is full; move the position to be read in the 1248 bytes
+                                    break;
+                                }
+                            } 
                         }
                         else{
                             position+=96;//32*3
