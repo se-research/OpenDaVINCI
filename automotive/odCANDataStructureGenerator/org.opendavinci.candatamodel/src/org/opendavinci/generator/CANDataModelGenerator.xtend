@@ -42,6 +42,7 @@ class CANDataModelGenerator implements IGenerator {
 		String m_startBit
 		String m_length
 		String m_lengthBytes
+		String m_signed
 		String m_endian
 		String m_multiplyBy
 		String m_add
@@ -96,6 +97,7 @@ class CANDataModelGenerator implements IGenerator {
 			csd.m_lengthBytes = cs.lengthBytes
 			if((cs.lengthBytes==null || cs.lengthBytes=="") && (cs.length!=null || cs.length!="") && Integer.parseInt(cs.length)%8==0)
 				csd.m_lengthBytes = (Integer.parseInt(cs.length)/8)+""
+			csd.m_signed = cs.signed
 			csd.m_endian = cs.endian
 			csd.m_multiplyBy = cs.multiplyBy
 			csd.m_add = cs.add
@@ -308,7 +310,7 @@ namespace canmapping {
 			for(currentMapping : mapping.mappings){
 				chunks=currentMapping.cansignalname.split('\\.');
 				capitalizedName=""
-				for(chunk:chunks){
+				for(chunk:chunks){ // add type information
 					capitalizedName+=chunk.toFirstUpper
 				}
 				capitalizedNames+=capitalizedName
@@ -637,15 +639,16 @@ namespace canmapping {
 	v.endVisit();
 	}
 	
-	::automotive::GenericCANMessage «className»::encode(odcore::data::Container &c) {
+	::automotive::GenericCANMessage «className»::encode(odcore::data::Container &c) 
+	{
     «IF canIDs.size>0»
 
 		«IF canIDs.size>1»
 			cerr<<"Warning: Mapping '«className»' is defined over more than one concrete CAN messages. Only one of those CAN messages will be returned."<<endl;
 	    «ENDIF»
 
-	    «var String gcmPrefix="GCM_"»
-	    «var String gcmPayloadPrefix="GCMPayload_"»
+		«var String gcmPrefix="GCM_"»
+		«var String gcmPayloadPrefix="GCMPayload_"»
 		«FOR id:canIDs»
 			::automotive::GenericCANMessage «gcmPrefix+id»;
 			«gcmPrefix+id».setIdentifier(«id»);
@@ -727,17 +730,24 @@ namespace canmapping {
 					}
 					""}»
 
-				«var String transformedType»
-				«IF actualLength <= 8»
-					«{transformedType="uint8_t";""}»
-				«ELSEIF actualLength <= 16»
-					«{transformedType="uint16_t";""}»
-				«ELSEIF actualLength <= 32»
-					«{transformedType="uint32_t";""}»
-				«ELSEIF actualLength <= 64»
-					«{transformedType="uint64_t";""}»
-				«ENDIF»
-				
+				«var String transformedType = ""»
+
+				«{
+					if(actualLength <= 8)
+						transformedType="int8_t"
+					else if(actualLength <= 16)
+						transformedType="int16_t"
+					else if(actualLength <= 32)
+						transformedType="int32_t"
+					else// if(actualLength <= 64)
+						transformedType="int64_t";
+					
+					if(canSignals.get(currentSignalInMapping.cansignalname).m_signed.compareToIgnoreCase("unsigned")==0)
+						transformedType="u"+transformedType;
+					
+					""
+				}»
+
 				// signal length is «canSignal.m_length» «IF canSignal.m_length.compareTo("1")==0»bit«ELSE»bits«ENDIF» long and the value will be casted to «transformedType»
 				«{	finalVarName=finalPrefix+varName;
 					payloadLengthInBits+=Integer.parseInt(canSignal.m_length); ""}»
@@ -756,6 +766,7 @@ namespace canmapping {
 					// Endianness doesn't need fixing, skipping this step.
 				«ENDIF»
 
+				// move the signal in the right place inside the message payload
 				«var String tempPLVarName="tempPL"+varName»
 				uint64_t «tempPLVarName»=0x0;
 				«tempPLVarName»=static_cast<uint64_t>(«finalVarName»);
@@ -810,7 +821,8 @@ namespace canmapping {
 	«ENDIF»
 	}
 	
-	odcore::data::Container «className»::decode(const ::automotive::GenericCANMessage &gcm) {
+	odcore::data::Container «className»::decode(const ::automotive::GenericCANMessage &gcm) 
+	{
 		odcore::data::Container c;
     «IF canIDs.size>0»
 		«IF mapping.unordered==null || mapping.unordered.compareTo("unordered")!=0»
@@ -881,7 +893,7 @@ namespace canmapping {
 						rolledPayload |= data & 0xFF ;
 						data=data>>8;
 					}
-				
+
 					data=rolledPayload;
 				}
 				«var String tempVarType=""»
@@ -894,7 +906,7 @@ namespace canmapping {
 					for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
 				}»
 				«var String memberVarName="m_"+capitalizedName.toFirstLower»
-				
+
 				// Get raw value from attribute.
 				«tempVarType="uint64_t"» «tempVarName»=0x0;
 				«tempVarName»=data;
@@ -961,22 +973,39 @@ namespace canmapping {
 
 				// variable holding the transformed value
 				double «finalVarName»=static_cast<double>(«tempVarName»);
-				
+
 				// Apply value transformation (i.e. formula) to map raw value to (physically) meaningful value according to CAN message specification.
 				const double SCALE = «canSignals.get(curSignalName).m_multiplyBy»;
 				const double OFFSET = «canSignals.get(curSignalName).m_add»;
-				
+
 				// scaling and adding
 				«finalVarName»=(«finalVarName»*SCALE)+OFFSET;
-				
+
 				// clamping
 				if(«finalVarName»<«canSignals.get(curSignalName).m_rangeStart»)
 					«finalVarName»=«canSignals.get(curSignalName).m_rangeStart»;
 				else if(«finalVarName»>«canSignals.get(curSignalName).m_rangeEnd»)
 					«finalVarName»=«canSignals.get(curSignalName).m_rangeEnd»;
-				
+
+				«var String transformedType = ""»
+				«{
+					if(actualLength <= 8)
+						transformedType="int8_t"
+					else if(actualLength <= 16)
+						transformedType="int16_t"
+					else if(actualLength <= 32)
+						transformedType="int32_t"
+					else// if(actualLength <= 64)
+						transformedType="int64_t";
+					
+					if(canSignals.get(currentSignalInMapping.cansignalname).m_signed.compareToIgnoreCase("unsigned")==0)
+						transformedType="u"+transformedType;
+					
+					""
+				}»
+
 				«memberVarName»=«finalVarName»;
-				
+
 				// Create a field for a generic message.
 				odcore::reflection::Field<double> *f = new odcore::reflection::Field<double>(«memberVarName»);
 				f->setLongFieldIdentifier(0); // The identifiers specified here must match with the ones defined in the .odvd file!
@@ -1075,6 +1104,7 @@ FQDN        : «canSignal.m_FQDN»
 startBit    : «canSignal.m_startBit»
 length      : «canSignal.m_length»
 lengthBytes : «canSignal.m_lengthBytes»
+signed      : «canSignal.m_signed»
 endian      : «canSignal.m_endian»
 multiplyBy  : «canSignal.m_multiplyBy»
 add         : «canSignal.m_add»
@@ -1143,6 +1173,7 @@ FQDN        : «canSignal.m_FQDN»
 startBit    : «canSignal.m_startBit»
 length      : «canSignal.m_length»
 lengthBytes : «canSignal.m_lengthBytes»
+signed      : «canSignal.m_signed»
 endian      : «canSignal.m_endian»
 multiplyBy  : «canSignal.m_multiplyBy»
 add         : «canSignal.m_add»
