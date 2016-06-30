@@ -189,7 +189,7 @@ To receive the sent data, a data-triggered software component is derived from
 ``<opendavinci/odcore/base/module/DataTriggeredConferenceClientModule.h>`` to realize the
 receiving functionality.
 
-DataTriggeredSender.h:
+DataTriggeredReceiver.h:
 
 .. code-block:: c++
 
@@ -248,7 +248,7 @@ unintentionally copied or assigned.
 
 The accompanying implementation for this header file is provided in the following.
 
-DataTriggeredSender.cpp:
+DataTriggeredReceiver.cpp:
 
 .. code-block:: c++
 
