@@ -58,8 +58,8 @@ namespace automotive {
         // setup share memory.
         // create instance of velodyneListener and pass shared_ptr from shared memory to velodynelister in its constructor
             m_pcap.setContainerListener(&m_vListener);
-            lidarStream.open("imeangowest.pcap", ios::binary|ios::in);
-            //lidarStream.open("atwall.pcap", ios::binary|ios::in);
+            //lidarStream.open("imeangowest.pcap", ios::binary|ios::in);
+            lidarStream.open("atwall.pcap", ios::binary|ios::in);
         }
 
         void VelodyneDecoder::tearDown() {

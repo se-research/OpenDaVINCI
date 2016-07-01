@@ -81,6 +81,7 @@ namespace automotive {
                 const int LOAD_FRAME_NO=100;
                 
                 //long packetNr;
+                //long currentPNr;
                 long pointIndex;
                 int startID;
                 long frameIndex;

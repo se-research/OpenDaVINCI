@@ -56,6 +56,7 @@ namespace automotive {
         odcore::io::conference::ContainerConference& c):
         //VelodyneListener::VelodyneListener():
             //packetNr(0),
+            //currentPNr(0),
             pointIndex(0),
             startID(0),
             frameIndex(0),
@@ -238,6 +239,10 @@ namespace automotive {
                             //cout<<pointIndex<<endl;
                             pointIndex=0;
                             startID=0;
+                            /*cout<<"packetNr:"<<packetNr<<",currentPNr:"<<currentPNr<<endl;
+                            currentPNr=packetNr-currentPNr;
+                            cout<<(packetNr-currentPNr)<<endl;
+                            currentPNr=packetNr;*/
                         }
                         
                         previousAzimuth=rotation;
