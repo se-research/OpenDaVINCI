@@ -90,7 +90,8 @@ namespace automotive {
                 const uint32_t SIZE = MAX_POINT_SIZE * NUMBER_OF_COMPONENTS_PER_POINT * SIZE_PER_COMPONENT; // What is the total size of the shared memory? 
                 const string RECEIVER = "127.0.0.1";
                 //const string RECEIVER = "192.168.3.255";
-                const uint32_t PORT = 2368; 
+                const uint32_t PORT = 2368;
+                const uint32_t CONSUME = 5000; //the number of bytes to be sent to the PCAP decoder each time
                 
                 odcore::io::protocol::PCAPProtocol m_pcap;
                 std::shared_ptr<SharedMemory> VelodyneSharedMemory;

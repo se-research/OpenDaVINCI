@@ -28,7 +28,7 @@ namespace automotive {
             virtual ~UDPReceiveBytes();
             virtual void nextString(const std::string &s);
             std::string getBuffer();
-            void clearBuffer();
+            void consume(int);
         private:
             odcore::io::protocol::PCAPProtocol& m_pcap;
             std::string buffer;
