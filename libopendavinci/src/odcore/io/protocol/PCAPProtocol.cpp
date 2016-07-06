@@ -18,8 +18,7 @@
  */
 
 #include "opendavinci/odcore/base/Lock.h"
-//#include "opendavinci/odcore/io/protocol/PCAPProtocol.h"
-#include "PCAPProtocol.h"
+#include "opendavinci/odcore/io/protocol/PCAPProtocol.h"
 #include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
 namespace odcore {
