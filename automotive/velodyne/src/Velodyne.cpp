@@ -71,9 +71,7 @@ namespace automotive {
             char *buffer = new char[BUFFER_SIZE+1];
             while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING){
             while (lidarStream.good() && !m_vListener.getStatus()) {
-                //while (lidarStream.good()) {
                     lidarStream.read(buffer, BUFFER_SIZE * sizeof(char));
-                    //buffer[BUFFER_SIZE] = '\0';
                     string s(buffer,BUFFER_SIZE);
                     m_pcap.nextString(s);
                 } 

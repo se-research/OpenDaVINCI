@@ -24,11 +24,9 @@
 
 #include <memory>
 
-//#include "opendavinci/odcore/io/protocol/PCAPProtocol.h"
 #include "opendavinci/odcore/io/conference/ContainerListener.h"
 #include "opendavinci/odcore/io/conference/ContainerObserver.h"
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
-//#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 #include "opendavinci/generated/odcore/data/SharedPointCloud.h"
 
 
@@ -58,17 +56,13 @@ namespace automotive {
         
             public:
                 VelodyneListener(std::shared_ptr<SharedMemory>,odcore::io::conference::ContainerConference&);
-                //VelodyneListener();
                 
                 virtual ~VelodyneListener();
 
                 // This method is called by ControlledContainerConferenceFactory to send c to the registered ContainerListener from an app.
                 virtual void nextContainer(odcore::data::Container &c);
                 
-                //void sendSPC(int frame);
                 bool getStatus();
-                //long getFrameIndex();
-                //void freeSpace();
                 
             private:
                 const float PI=3.1415926;
@@ -77,25 +71,20 @@ namespace automotive {
 	            const uint32_t SIZE_PER_COMPONENT = sizeof(float);
 	            const uint8_t NUMBER_OF_COMPONENTS_PER_POINT = 4; // How many components do we have per vector?
                 const uint32_t SIZE = MAX_POINT_SIZE * NUMBER_OF_COMPONENTS_PER_POINT * SIZE_PER_COMPONENT; // What is the total size of the shared memory?    
-                //const int READ_FRAME_NO=150;
                 const int LOAD_FRAME_NO=100;
                 
-                //long packetNr;
-                //long currentPNr;
                 long pointIndex;
                 int startID;
                 long frameIndex;
                 float previousAzimuth;
                 bool upperBlock;
-                //float distance[32];
                 float distance;
-                std::shared_ptr<SharedMemory> VelodyneSharedMemory;
-                //std::shared_ptr<SharedMemory> frameStore[200];
-                float* segment;
+                std::shared_ptr<SharedMemory> VelodyneSharedMemory;//shared memory for the shared point cloud
+                float* segment;//temporary memory for transferring data of each frame to the shared memory
                 odcore::io::conference::ContainerConference& velodyneFrame;
-                odcore::data::SharedPointCloud spc;
-                bool stopReading;
-                //int pointNumberPerFrame[READ_FRAME_NO];
+                odcore::data::SharedPointCloud spc;//shared point cloud
+                bool stopReading;//a flag to determine when to stop reading a pcap file
+                //calibration values:
                 float rotCorrection[64];
 	            float vertCorrection[64];
 	            float distCorrection[64];
