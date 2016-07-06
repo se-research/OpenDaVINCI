@@ -36,7 +36,6 @@
 
 #define toRadian(x) ((x)*PI/180.0)
 
-bool stopReading=false;//Stop reading the pcap file after the second frame has been decoded
 long mSize=0;
 float* segment; 
 const float PI=3.1415926;
@@ -55,17 +54,17 @@ using namespace odcore::io::protocol;
 using namespace automotive;
 using namespace odcore::wrapper;
 
-class PCAPTestContainerListener : public CxxTest::TestSuite, public odcore::io::conference::ContainerListener {
+class velodyneTestContainerListener : public odcore::io::conference::ContainerListener {
     public:
-         PCAPTestContainerListener(){
-            pointIndex=0;
-            startID=0;
-            frameIndex=0;
-            previousAzimuth=0.0;
-            upperBlock=true;
-            distance=0.0;
-            stopReading=false;
-           
+         velodyneTestContainerListener():
+         stopDecoding(false),
+         pointIndex(0),
+         startID(0),
+         frameIndex(0),
+         previousAzimuth(0.0),
+         upperBlock(true),
+         distance(0.0){
+
             //Create memory for temporary storage of point cloud data for each frame
             segment=(float*)malloc(SIZE);
             
@@ -154,7 +153,7 @@ class PCAPTestContainerListener : public CxxTest::TestSuite, public odcore::io::
             }   
         }
         
-        ~PCAPTestContainerListener(){
+        ~velodyneTestContainerListener(){
             free(segment);
         }
        
@@ -174,7 +173,7 @@ class PCAPTestContainerListener : public CxxTest::TestSuite, public odcore::io::
                 pcap::PacketHeader packetHeader = packet.getHeader();
                 if(packetHeader.getIncl_len()==1248)
                 {
-                    if(stopReading)
+                    if(stopDecoding)
                          return;
 
                     const string payload = packet.getPayload();
@@ -202,7 +201,7 @@ class PCAPTestContainerListener : public CxxTest::TestSuite, public odcore::io::
                         //Update the shared point cloud when a complete scan is completed.
                         if(rotation<previousAzimuth){
                             if(frameIndex==1){
-                                stopReading=true;
+                                stopDecoding=true;
                                 mSize=pointIndex;
                             }
                             frameIndex++;
@@ -241,7 +240,7 @@ class PCAPTestContainerListener : public CxxTest::TestSuite, public odcore::io::
                                 intensity=(float)intensityInt;
                               
                                 //Store coordinate information of each point to the malloc memory
-                                if(!stopReading){
+                                if(!stopDecoding){
                                     segment[startID]=xData;
                                     segment[startID+1]=yData;
                                     segment[startID+2]=zData;
@@ -271,7 +270,7 @@ class PCAPTestContainerListener : public CxxTest::TestSuite, public odcore::io::
         float distCorrection[64];
         float vertOffsetCorrection[64];
         float horizOffsetCorrection[64]; 
-                 
+        bool stopDecoding=false;//Stop decoding Velodyne packets       
         long pointIndex;
         int startID;
         long frameIndex;
@@ -280,9 +279,8 @@ class PCAPTestContainerListener : public CxxTest::TestSuite, public odcore::io::
         float distance;
 };
 
-class PCAPTest : public CxxTest::TestSuite {
-    public:
-             
+class velodyneTest : public CxxTest::TestSuite {
+    public:         
         void readCsvFile(){
             ifstream file("atwallFrame1.csv");
 	        string value;
@@ -301,23 +299,25 @@ class PCAPTest : public CxxTest::TestSuite {
 	        }
         }
 
-        void testPCAPDecodingFromFile(){
+        void testVelodyneDecodingFromFile(){
             readCsvFile();
             mIndex=0;
             compare=0;
-            PCAPTestContainerListener ptcl;
+            velodyneTestContainerListener ptcl;
             PCAPProtocol pcap;
             pcap.setContainerListener(&ptcl);
             
-            fstream lidarStream("atwall.pcap", ios::binary|ios::in);
-            
+            fstream lidarStream("atwallshort.pcap", ios::binary|ios::in);
+            //ofstream output( "atwallshort.pcap", ios::binary );
             char *buffer = new char[BUFFER_SIZE+1];
-            while (lidarStream.good() && !stopReading) {
+            while (lidarStream.good()) {
                 lidarStream.read(buffer, BUFFER_SIZE * sizeof(char));
+                //output.write(buffer, BUFFER_SIZE * sizeof(char));
                 string s(buffer,BUFFER_SIZE);
                 pcap.nextString(s);
             }
             lidarStream.close();
+            //output.close();
             
             cout<<"File read complete."<<endl;
             delete [] buffer;

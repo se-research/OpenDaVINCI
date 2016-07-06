@@ -73,6 +73,15 @@ ADD_LIBRARY (${PROJECT_NAME}lib-static STATIC ${thisproject-sources})
 ADD_EXECUTABLE (${PROJECT_NAME} "${CMAKE_CURRENT_SOURCE_DIR}/apps/${PROJECT_NAME}.cpp")
 TARGET_LINK_LIBRARIES (${PROJECT_NAME} ${PROJECT_NAME}lib-static ${LIBRARIES})
 
+# This custom command copies the "atwallshort.pcap" recording file to where
+# the test suites are generated (more correctly to the parent folder) so
+# that the test suite "velodyneTestSuite.h" can open it during
+# exection.
+ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/atwallshort.pcap
+                   COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/resources/atwallshort.pcap ${CMAKE_BINARY_DIR}
+                   DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/resources/atwallshort.pcap)
+ADD_CUSTOM_TARGET(${PROJECT_NAME}-CopyPCAPFile DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/atwallshort.pcap)
+
 ###########################################################################
 # Enable CxxTest for all available testsuites.
 IF(CXXTEST_FOUND)
@@ -102,6 +111,10 @@ IF(CXXTEST_FOUND)
         ENDIF()
         SET_TESTS_PROPERTIES(${testsuite-short}-TestSuite PROPERTIES TIMEOUT 3000)
         TARGET_LINK_LIBRARIES(${testsuite-short}-TestSuite ${PROJECT_NAME}lib-static ${LIBRARIES})
+        
+         # For the test suites that use an SCNX scenario, we are additionally copying
+        # the required scenarios to where the simulation runners are going to be executed.
+        ADD_DEPENDENCIES(${testsuite-short}-TestSuite ${PROJECT_NAME}-CopyPCAPFile)
     ENDFOREACH()
 ENDIF(CXXTEST_FOUND)
 
