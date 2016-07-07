@@ -951,6 +951,7 @@ namespace «s.get(i)» {
 					«IF enums.containsKey(a.scalar.type)»
 						int32_t int32t_«a.scalar.name» = m_«a.scalar.name»;
 						v.visit(«a.scalar.fourbyteid», «a.scalar.id», "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", int32t_«a.scalar.name»);
+						m_«a.scalar.name» = static_cast<«enums.get(a.scalar.type).m_enumNameIncludingMessageName.replaceAll("\\.", "::")»>(int32t_«a.scalar.name»);
 					«ELSE»
 						v.visit(«a.scalar.fourbyteid», «a.scalar.id», "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", m_«a.scalar.name»);
 					«ENDIF»
@@ -959,6 +960,7 @@ namespace «s.get(i)» {
 					«IF enums.containsKey(a.scalar.type)»
 						int32_t int32t_«a.scalar.name» = m_«a.scalar.name»;
 						v.visit(«a.scalar.fourbyteid», 0, "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", int32t_«a.scalar.name»);
+						m_«a.scalar.name» = static_cast<«enums.get(a.scalar.type).m_enumNameIncludingMessageName.replaceAll("\\.", "::")»>(int32t_«a.scalar.name»);
 					«ELSE»
 						v.visit(«a.scalar.fourbyteid», 0, "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", m_«a.scalar.name»);
 					«ENDIF»
@@ -967,6 +969,7 @@ namespace «s.get(i)» {
 					«IF enums.containsKey(a.scalar.type)»
 						int32_t int32t_«a.scalar.name» = m_«a.scalar.name»;
 						v.visit(CRC32 < «generateCharList(a.scalar.name, 0)» >::RESULT, «a.scalar.id», "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", int32t_«a.scalar.name»);
+						m_«a.scalar.name» = static_cast<«enums.get(a.scalar.type).m_enumNameIncludingMessageName.replaceAll("\\.", "::")»>(int32t_«a.scalar.name»);
 					«ELSE»
 						v.visit(CRC32 < «generateCharList(a.scalar.name, 0)» >::RESULT, «a.scalar.id», "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", m_«a.scalar.name»);
 					«ENDIF»
@@ -975,6 +978,7 @@ namespace «s.get(i)» {
 					«IF enums.containsKey(a.scalar.type)»
 						int32_t int32t_«a.scalar.name» = m_«a.scalar.name»;
 						v.visit(CRC32 < «generateCharList(a.scalar.name, 0)» >::RESULT, 0, "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", int32t_«a.scalar.name»);
+						m_«a.scalar.name» = static_cast<«enums.get(a.scalar.type).m_enumNameIncludingMessageName.replaceAll("\\.", "::")»>(int32t_«a.scalar.name»);
 					«ELSE»
 						v.visit(CRC32 < «generateCharList(a.scalar.name, 0)» >::RESULT, 0, "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", m_«a.scalar.name»);
 					«ENDIF»

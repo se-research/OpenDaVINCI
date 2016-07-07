@@ -39,6 +39,7 @@
 #include "opendavinci/generated/odcore/data/SharedData.h"  // for SharedData
 #include "opendavinci/generated/odcore/data/dmcp/ModuleDescriptor.h"
 #include "opendavinci/generated/odcore/data/image/SharedImage.h"  // for SharedImage
+#include "opendavinci/generated/odcore/data/dmcp/ServerInformation.h"
 
 using namespace std;
 using namespace odcore::base;
@@ -277,6 +278,35 @@ class ProtoTest : public CxxTest::TestSuite {
 
             TS_ASSERT(sd.getName() == sd2.getName());
             TS_ASSERT(sd.getSize() == sd2.getSize());
+        }
+
+        void testSerializationDeserializationEnum() {
+            ServerInformation si;
+            si.setIP("localhost");
+            si.setPort(7890);
+            si.setManagedLevel(ServerInformation::ML_SIMULATION_RT);
+
+            // Create a Proto serialization visitor.
+            ProtoSerializerVisitor protoSerializerVisitor;
+            si.accept(protoSerializerVisitor);
+
+            // Write the data to a stringstream.
+            stringstream out;
+            protoSerializerVisitor.getSerializedData(out);
+cout << endl;
+cout << "SI = " << si.toString() << endl;
+            // Create a Proto deserialization visitor.
+            ProtoDeserializerVisitor protoDeserializerVisitor;
+            protoDeserializerVisitor.deserializeDataFrom(out);
+
+            // Read back the data by using the visitor.
+            ServerInformation si2;
+            si2.accept(protoDeserializerVisitor);
+
+cout << "SI2 = " << si2.toString() << endl;
+            TS_ASSERT(si.getIP() == si2.getIP());
+            TS_ASSERT(si.getPort() == si2.getPort());
+            TS_ASSERT(si.getManagedLevel() == si2.getManagedLevel());
         }
 
         void testSerializationDeserializationInheritance() {
