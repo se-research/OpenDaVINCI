@@ -293,8 +293,7 @@ class ProtoTest : public CxxTest::TestSuite {
             // Write the data to a stringstream.
             stringstream out;
             protoSerializerVisitor.getSerializedData(out);
-cout << endl;
-cout << "SI = " << si.toString() << endl;
+
             // Create a Proto deserialization visitor.
             ProtoDeserializerVisitor protoDeserializerVisitor;
             protoDeserializerVisitor.deserializeDataFrom(out);
@@ -303,7 +302,6 @@ cout << "SI = " << si.toString() << endl;
             ServerInformation si2;
             si2.accept(protoDeserializerVisitor);
 
-cout << "SI2 = " << si2.toString() << endl;
             TS_ASSERT(si.getIP() == si2.getIP());
             TS_ASSERT(si.getPort() == si2.getPort());
             TS_ASSERT(si.getManagedLevel() == si2.getManagedLevel());
