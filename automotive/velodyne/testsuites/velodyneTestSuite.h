@@ -33,14 +33,13 @@
 #include "opendavinci/odcore/wrapper/CompressionFactory.h"
 #include "opendavinci/odcore/wrapper/DecompressedData.h"
 #include "opendavinci/odcore/io/protocol/PCAPProtocol.h"
-//#include "PCAPProtocol.h"
+#include "automotivedata/generated/cartesian/Constants.h"
 #include "velodyneListener.h"
 
-#define toRadian(x) ((x)*PI/180.0)
+#define toRadian(x) ((x)*cartesian::Constants::PI/180.0)
 
 long mSize=0;
 float* segment; 
-const float PI=3.1415926;
 const uint32_t MAX_POINT_SIZE=125000;//The assumed max number of points per frame
 const uint32_t SIZE_PER_COMPONENT = sizeof(float);
 const uint8_t NUMBER_OF_COMPONENTS_PER_POINT = 4;
@@ -219,8 +218,6 @@ class velodyneTestContainerListener : public odcore::io::conference::ContainerLi
                             for(int counter=0;counter<32;counter++)
                             {
                                 //Decode distance: 2 bytes
-                                //Discard points when the preallocated shared memory is full.
-                                
                                 static int sensorID(0);
                                 if(upperBlock)
                                     sensorID=counter;
@@ -283,23 +280,6 @@ class velodyneTestContainerListener : public odcore::io::conference::ContainerLi
 
 class velodyneTest : public CxxTest::TestSuite {
     public:         
-        /*void readCsvFile(){
-            ifstream file("atwallFrame1.csv");
-	        string value;
-	        getline(file,value);
-	        while(getline(file,value)){
-		        stringstream lineStream(value);
-		        string cell;
-		        getline(lineStream,cell,',');
-		        xDataV.push_back(stof(cell));
-		        getline(lineStream,cell,',');
-		        yDataV.push_back(stof(cell));
-		        getline(lineStream,cell,',');
-		        zDataV.push_back(stof(cell));
-		        getline(lineStream,cell,',');
-		        intensityV.push_back(stof(cell));
-	        }
-        }*/
         void readCsvFile(){
             fstream fin("atwallFrame1New.zip", ios::binary | ios::in);
             std::shared_ptr<odcore::wrapper::DecompressedData> dd = odcore::wrapper::CompressionFactory::getContents(fin);
@@ -327,9 +307,6 @@ class velodyneTest : public CxxTest::TestSuite {
 		        getline(lineStream,cell,',');
 		        intensityV.push_back(stof(cell));
 	        }
-	        /*for(int i=0;i<10;i++){
-	            cout<<xDataV[i]<<","<<yDataV[i]<<","<<zDataV[i]<<","<<intensityV[i]<<endl;
-	        }*/
         }
 
         void testVelodyneDecodingFromFile(){
@@ -339,24 +316,15 @@ class velodyneTest : public CxxTest::TestSuite {
             velodyneTestContainerListener ptcl;
             PCAPProtocol pcap;
             pcap.setContainerListener(&ptcl);
-            
-            /*fstream hang("test.zip", ios::binary | ios::in);
-            std::shared_ptr<odcore::wrapper::DecompressedData> yin = odcore::wrapper::CompressionFactory::getContents(hang);
-            vector<string> entries = yin->getListOfEntries();
-            cout<<entries.size()<<","<<entries.at(0)<<endl;//","<<entries.at(0)<<","<<entries.at(1)<<","<<entries.at(2)<<endl;;
-            hang.close();*/
-             
+
             fstream lidarStream("atwallshort.pcap", ios::binary|ios::in);
-            //ofstream output( "atwallshort.pcap", ios::binary );
             char *buffer = new char[BUFFER_SIZE+1];
             while (lidarStream.good()) {
                 lidarStream.read(buffer, BUFFER_SIZE * sizeof(char));
-                //output.write(buffer, BUFFER_SIZE * sizeof(char));
                 string s(buffer,BUFFER_SIZE);
                 pcap.nextString(s);
             }
             lidarStream.close();
-            //output.close();
             
             cout<<"File read complete."<<endl;
             delete [] buffer;

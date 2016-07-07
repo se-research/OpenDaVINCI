@@ -40,7 +40,7 @@
 #include "velodyneListener.h"
 
 
-#define toRadian(x) ((x)*PI/180.0)
+#define toRadian(x) ((x)*cartesian::Constants::PI/180.0)
 
 namespace automotive {
 
@@ -188,7 +188,6 @@ namespace automotive {
                     uint32_t position=42;//position specifies the starting position to read from the 1248 bytes, skip the 42-byte Ethernet header
                 
                     //A packet consists of 12 blocks with 100 bytes each. Decode each block separately.
-                    //int firstByte,secondByte,dataValue;
                     static int firstByte,secondByte,dataValue;
                     for(int index=0;index<12;index++)
                     {   
@@ -279,8 +278,5 @@ namespace automotive {
             }
 
     }    
-    /*bool VelodyneListener::getStatus(){
-        return stopReading;
-    }*/
 } // automotive
 

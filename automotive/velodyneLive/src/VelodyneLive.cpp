@@ -69,12 +69,6 @@ namespace automotive {
         //While running this module, adjust the frequency to get desired frame rate of the replay. For instance, for an input date rate 3*10⁶Bps, 30Hz gives a good frame rate
         odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode VelodyneDecoder::body() {
             while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING){
-                /*while(!handler.getBuffer().empty()){
-                    rfb.lock();
-                    m_pcap.nextString(handler.getBuffer());
-                    handler.clearBuffer();
-                    rfb.unlock();
-                }*/
                 while(handler.getBuffer().size()>CONSUME){
                     rfb.lock();
                     m_pcap.nextString(handler.getBuffer().substr(0,CONSUME));
