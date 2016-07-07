@@ -24,7 +24,7 @@
 
 #include <opendavinci/odcore/io/StringListener.h>
 #include "opendavinci/odcore/io/protocol/PCAPProtocol.h"
-#include <mutex>
+#include "opendavinci/odcore/base/Mutex.h"
 
 namespace automotive {
     // This class will handle the bytes received via a UDP socket.
@@ -53,7 +53,7 @@ namespace automotive {
         private:
             odcore::io::protocol::PCAPProtocol& m_pcap;
             std::string buffer;
-            std::mutex wtb;
+            odcore::base::Mutex wtb; 
     };
 }
 #endif /*UDPRECEIVEBYTES_H_*/

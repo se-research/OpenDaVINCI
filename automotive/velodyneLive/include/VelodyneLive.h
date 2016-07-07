@@ -23,10 +23,10 @@
 #define VELODYNE_H_
 
 #include <memory>
-#include <mutex>
 
 #include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
 #include "opendavinci/odcore/io/protocol/PCAPProtocol.h"
+#include "opendavinci/odcore/base/Mutex.h"
 #include "velodyneListener.h"
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
 #include <opendavinci/odcore/io/udp/UDPReceiver.h>
@@ -93,8 +93,8 @@ namespace automotive {
                 std::shared_ptr<SharedMemory> VelodyneSharedMemory;
                 VelodyneListener m_vListener;
                 std::shared_ptr<odcore::io::udp::UDPReceiver> udpreceiver;
-                automotive::UDPReceiveBytes handler;
-                std::mutex rfb;    
+                automotive::UDPReceiveBytes handler; 
+                odcore::base::Mutex rfb; 
         };
 
 } // automotive

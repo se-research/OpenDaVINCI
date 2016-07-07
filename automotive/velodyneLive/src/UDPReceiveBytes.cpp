@@ -33,9 +33,8 @@ namespace automotive {
     UDPReceiveBytes::~UDPReceiveBytes(){}
 
     void UDPReceiveBytes::nextString(const std::string &s) {
-        wtb.lock();
+        Lock l(wtb);
         buffer+=s;
-        wtb.unlock();
     }
     
     std::string UDPReceiveBytes::getBuffer(){
@@ -43,8 +42,7 @@ namespace automotive {
     }
     
     void UDPReceiveBytes::consume(int i){
-        wtb.lock();
+        Lock l(wtb);
         buffer.erase(0,i);
-        wtb.unlock();
     }
 }
