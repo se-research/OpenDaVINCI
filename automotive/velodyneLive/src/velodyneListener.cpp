@@ -2,7 +2,7 @@
  * velodyneListener is used to 
  *              decode Velodyne data realized
  *              with OpenDaVINCI
- * Copyright (C) 2015 Christian Berger and Hang Yin
+ * Copyright (C) 2016 Christian Berger and Hang Yin
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,12 +28,10 @@
 
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/io/conference/ContainerConference.h"
-//#include "automotivedata/GeneratedHeaders_AutomotiveData.h"
 #include "opendavinci/generated/odcore/data/pcap/GlobalHeader.h"
 #include "opendavinci/generated/odcore/data/pcap/PacketHeader.h"
 #include "opendavinci/generated/odcore/data/pcap/Packet.h"
 #include "opendavinci/odcore/base/Lock.h"
-//#include "opendavinci/odcore/wrapper/Eigen.h"
 
 #include "opendavinci/generated/odcore/data/SharedPointCloud.h"
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
@@ -54,7 +52,6 @@ namespace automotive {
 
         VelodyneListener::VelodyneListener(std::shared_ptr<SharedMemory> m,
         odcore::io::conference::ContainerConference& c):
-        //VelodyneListener::VelodyneListener():
             //packetNr(0),
             pointIndex(0),
             startID(0),
@@ -226,16 +223,7 @@ namespace automotive {
                             
                             Container imageFrame(spc);
                             velodyneFrame.send(imageFrame);
-            
-                            /*if(frameIndex>=LOAD_FRAME_NO){
-                                stopReading=true;
-                                cout<<"Stop reading"<<endl;
-                            }
-                            else{
-                                frameIndex++;
-                            }*/
                             frameIndex++;
-                            //cout<<pointIndex<<endl;
                             pointIndex=0;
                             startID=0;
                         }
@@ -248,8 +236,6 @@ namespace automotive {
                             for(int counter=0;counter<32;counter++)
                             {
                                 //Decode distance: 2 bytes
-                                //Discard points when the preallocated shared memory is full.
-                                
                                 static int sensorID(0);
                                 if(upperBlock)
                                     sensorID=counter;
@@ -261,7 +247,6 @@ namespace automotive {
                                 distance=static_cast<float>(dataValue*0.2/100.0)+distCorrection[sensorID]/100.0;
                                 static float xyDistance,xData,yData,zData,intensity;
                                 xyDistance=distance*cos(toRadian(vertCorrection[sensorID]));
-                                //float xData,yData,zData,intensity;
                                 xData=xyDistance*sin(toRadian(rotation-rotCorrection[sensorID]))
                                     -horizOffsetCorrection[sensorID]/100.0*cos(toRadian(rotation-rotCorrection[sensorID]));
                                 yData=xyDistance*cos(toRadian(rotation-rotCorrection[sensorID]))
@@ -272,7 +257,6 @@ namespace automotive {
                                 intensity=(float)intensityInt;
                               
                                 //Store coordinate information of each point to the malloc memory
-                                //long startID=NUMBER_OF_COMPONENTS_PER_POINT*pointIndex;
                                 segment[startID]=xData;
                                 segment[startID+1]=yData;
                                 segment[startID+2]=zData;
