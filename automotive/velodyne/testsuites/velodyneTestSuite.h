@@ -30,6 +30,8 @@
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/io/conference/ContainerConference.h"
 #include "opendavinci/odcore/io/conference/ContainerListener.h"
+#include "opendavinci/odcore/wrapper/CompressionFactory.h"
+#include "opendavinci/odcore/wrapper/DecompressedData.h"
 //#include "opendavinci/odcore/io/protocol/PCAPProtocol.h"
 #include "PCAPProtocol.h"
 #include "velodyneListener.h"
@@ -281,7 +283,7 @@ class velodyneTestContainerListener : public odcore::io::conference::ContainerLi
 
 class velodyneTest : public CxxTest::TestSuite {
     public:         
-        void readCsvFile(){
+        /*void readCsvFile(){
             ifstream file("atwallFrame1.csv");
 	        string value;
 	        getline(file,value);
@@ -297,6 +299,37 @@ class velodyneTest : public CxxTest::TestSuite {
 		        getline(lineStream,cell,',');
 		        intensityV.push_back(stof(cell));
 	        }
+        }*/
+        void readCsvFile(){
+            fstream fin("atwallFrame1New.zip", ios::binary | ios::in);
+            std::shared_ptr<odcore::wrapper::DecompressedData> dd = odcore::wrapper::CompressionFactory::getContents(fin);
+            fin.close();
+            vector<string> entries = dd->getListOfEntries();
+            std::shared_ptr<istream> stream = dd->getInputStreamFor(entries.at(0));
+            stringstream decompressedData;
+            if(stream.get()){
+                char c;
+                while(stream->get(c)){
+                    decompressedData<<c;
+                }
+            }
+            string value;
+            getline(decompressedData,value);
+	        while(getline(decompressedData,value)){
+		        stringstream lineStream(value);
+		        string cell;
+		        getline(lineStream,cell,',');
+		        xDataV.push_back(stof(cell));
+		        getline(lineStream,cell,',');
+		        yDataV.push_back(stof(cell));
+		        getline(lineStream,cell,',');
+		        zDataV.push_back(stof(cell));
+		        getline(lineStream,cell,',');
+		        intensityV.push_back(stof(cell));
+	        }
+	        /*for(int i=0;i<10;i++){
+	            cout<<xDataV[i]<<","<<yDataV[i]<<","<<zDataV[i]<<","<<intensityV[i]<<endl;
+	        }*/
         }
 
         void testVelodyneDecodingFromFile(){
@@ -307,6 +340,12 @@ class velodyneTest : public CxxTest::TestSuite {
             PCAPProtocol pcap;
             pcap.setContainerListener(&ptcl);
             
+            /*fstream hang("test.zip", ios::binary | ios::in);
+            std::shared_ptr<odcore::wrapper::DecompressedData> yin = odcore::wrapper::CompressionFactory::getContents(hang);
+            vector<string> entries = yin->getListOfEntries();
+            cout<<entries.size()<<","<<entries.at(0)<<endl;//","<<entries.at(0)<<","<<entries.at(1)<<","<<entries.at(2)<<endl;;
+            hang.close();*/
+             
             fstream lidarStream("atwallshort.pcap", ios::binary|ios::in);
             //ofstream output( "atwallshort.pcap", ios::binary );
             char *buffer = new char[BUFFER_SIZE+1];
