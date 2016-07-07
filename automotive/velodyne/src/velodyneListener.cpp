@@ -2,7 +2,7 @@
  * velodyneListener is used to 
  *              decode Velodyne data realized
  *              with OpenDaVINCI
- * Copyright (C) 2015 Christian Berger and Hang Yin
+ * Copyright (C) 2016 Christian Berger and Hang Yin
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License

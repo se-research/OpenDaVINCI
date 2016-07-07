@@ -2,7 +2,7 @@
  * velodyne is an example application to demonstrate how to 
  *              decode Velodyne data realized
  *              with OpenDaVINCI
- * Copyright (C) 2015 Christian Berger and Hang Yin
+ * Copyright (C) 2016 Christian Berger and Hang Yin
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,8 +19,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-//#include <cstdio>
-//#include <cmath>
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -29,8 +27,6 @@
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/io/conference/ContainerConference.h"
 #include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
-//#include <opendavinci/odcore/base/Thread.h>
-//#include "automotivedata/GeneratedHeaders_AutomotiveData.h"
 
 #include "Velodyne.h"
 

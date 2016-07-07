@@ -2,7 +2,7 @@
  * velodyne is an example application to demonstrate how to 
  *              decode Velodyne data realized
  *              with OpenDaVINCI
- * Copyright (C) 2015 Christian Berger and Hang Yin
+ * Copyright (C) 2016 Christian Berger and Hang Yin
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,11 +26,9 @@
 #include <memory>
 
 #include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
-//#include "opendavinci/odcore/io/protocol/PCAPProtocol.h"
-#include "PCAPProtocol.h"
+#include "opendavinci/odcore/io/protocol/PCAPProtocol.h"
 #include "velodyneListener.h"
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
-//#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 
 namespace automotive {
 
