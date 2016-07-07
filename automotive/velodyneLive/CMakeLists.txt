@@ -19,7 +19,7 @@
 
 CMAKE_MINIMUM_REQUIRED (VERSION 2.8)
 
-PROJECT (velodyne)
+PROJECT (velodyneLive)
 
 ###########################################################################
 # Set the search path for .cmake files.

@@ -29,7 +29,7 @@
 #include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 #include "automotivedata/GeneratedHeaders_AutomotiveData.h"
 
-#include "Velodyne.h"
+#include "VelodyneLive.h"
 
 
 namespace automotive {
