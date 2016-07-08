@@ -21,6 +21,7 @@
 
 #include "UDPReceiveBytes.h"
 #include <string>
+#include "opendavinci/odcore/base/Lock.h"
 
 
 namespace automotive {
@@ -33,7 +34,7 @@ namespace automotive {
     UDPReceiveBytes::~UDPReceiveBytes(){}
 
     void UDPReceiveBytes::nextString(const std::string &s) {
-        Lock l(wtb);
+        odcore::base::Lock l(wtb);
         buffer+=s;
     }
     
@@ -42,7 +43,7 @@ namespace automotive {
     }
     
     void UDPReceiveBytes::consume(int i){
-        Lock l(wtb);
+        odcore::base::Lock l(wtb);
         buffer.erase(0,i);
     }
 }

@@ -28,6 +28,7 @@
 #include "opendavinci/odcore/io/conference/ContainerConference.h"
 #include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 #include "automotivedata/GeneratedHeaders_AutomotiveData.h"
+#include "opendavinci/odcore/base/Lock.h"
 
 #include "VelodyneLive.h"
 
@@ -70,7 +71,7 @@ namespace automotive {
         odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode VelodyneDecoder::body() {
             while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING){
                 while(handler.getBuffer().size()>CONSUME){
-                    Lock l(rfb);
+                    odcore::base::Lock l(rfb);
                     m_pcap.nextString(handler.getBuffer().substr(0,CONSUME));
                     handler.consume(CONSUME);
                 } 

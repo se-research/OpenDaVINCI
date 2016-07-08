@@ -41,7 +41,7 @@ namespace automotive {
 
         void PcapReplay::setUp() {
             //lidarStream.open("../../velodyne/build/imeangowest.pcap", ios::binary|ios::in);
-            lidarStream.open("../../velodyne/build/atwall.pcap", ios::binary|ios::in);
+            lidarStream.open("../../velodyneReadFile/build/atwall.pcap", ios::binary|ios::in);
         }
 
         void PcapReplay::tearDown() {

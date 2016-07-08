@@ -23,7 +23,7 @@ PROJECT (velodyneLive)
 
 ###########################################################################
 # Set the search path for .cmake files.
-SET (CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmake.Modules" ${CMAKE_MODULE_PATH})
+SET (CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../cmake.Modules" ${CMAKE_MODULE_PATH})
 
 # Add a local CMake module search path dependent on the desired installation destination.
 # Thus, artifacts from the complete source build can be given precendence over any installed versions.
@@ -40,7 +40,7 @@ INCLUDE (CompileFlags)
 
 ###########################################################################
 # Find and configure CxxTest.
-SET (CXXTEST_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../cxxtest") 
+SET (CXXTEST_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../../cxxtest") 
 INCLUDE (CheckCxxTestEnvironment)
 
 ###########################################################################
