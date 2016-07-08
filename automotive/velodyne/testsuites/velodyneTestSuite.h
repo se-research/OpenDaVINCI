@@ -77,79 +77,79 @@ class velodyneTestContainerListener : public odcore::io::conference::ContainerLi
 
             while (getline(in,line))
             {
-	            string tmp; // strip whitespaces from the beginning
+                string tmp; // strip whitespaces from the beginning
                 for (unsigned int i = 0; i < line.length(); i++)
                 {
                     
-		            if ((line[i] == '\t' || line[i]==' ' )&& tmp.size() == 0)
+                    if ((line[i] == '\t' || line[i]==' ' )&& tmp.size() == 0)
                     {
                     }
                     else
                     {
                         if(line[i]=='<'){
-				            if(found[0]){
-					            rotCorrection[counter[0]]=atof(tmp.c_str());
-					            counter[0]++;
-					            found[0]=false;
-					            continue;
-				            }
-				
-				            if(found[1]){
-					            vertCorrection[counter[1]]=atof(tmp.c_str());
-					            counter[1]++;
-					            found[1]=false;
-					            continue;
-				            }
-				
-				            if(found[2]){
-					            distCorrection[counter[2]]=atof(tmp.c_str());
-					            counter[2]++;
-					            found[2]=false;
-					            continue;
-				            }
-				
-				            if(found[3]){
-					            vertOffsetCorrection[counter[3]]=atof(tmp.c_str());
-					            counter[3]++;
-					            found[3]=false;
-					            continue;
-				            }
-				
-				            if(found[4]){
-					            horizOffsetCorrection[counter[4]]=atof(tmp.c_str());
-					            counter[4]++;
-					            found[4]=false;
-					            continue;
-				            }
-				            tmp += line[i];
-			            }
-			            else{
-				            tmp += line[i];
-			            }
+                            if(found[0]){
+                                rotCorrection[counter[0]]=atof(tmp.c_str());
+                                counter[0]++;
+                                found[0]=false;
+                                continue;
+                            }
+                
+                            if(found[1]){
+                                vertCorrection[counter[1]]=atof(tmp.c_str());
+                                counter[1]++;
+                                found[1]=false;
+                                continue;
+                            }
+                
+                            if(found[2]){
+                                distCorrection[counter[2]]=atof(tmp.c_str());
+                                counter[2]++;
+                                found[2]=false;
+                                continue;
+                            }
+                
+                            if(found[3]){
+                                vertOffsetCorrection[counter[3]]=atof(tmp.c_str());
+                                counter[3]++;
+                                found[3]=false;
+                                continue;
+                            }
+                
+                            if(found[4]){
+                                horizOffsetCorrection[counter[4]]=atof(tmp.c_str());
+                                counter[4]++;
+                                found[4]=false;
+                                continue;
+                            }
+                            tmp += line[i];
+                        }
+                        else{
+                            tmp += line[i];
+                        }
                     }
-		
-		            if(tmp=="<rotCorrection_>"){
-			            found[0]=true;
-			            tmp="";
-		            }
-		            else if(tmp=="<vertCorrection_>"){
-			            found[1]=true;
-			            tmp="";
-		            }
-		            else if(tmp=="<distCorrection_>"){
-			            found[2]=true;
-			            tmp="";
-		            }
-		            else if(tmp=="<vertOffsetCorrection_>"){
-			            found[3]=true;
-			            tmp="";
-		            }
-		            else if(tmp=="<horizOffsetCorrection_>"){
-			            found[4]=true;
-			            tmp="";
-		            }
-		            else{
-		            }
+        
+                    if(tmp=="<rotCorrection_>"){
+                        found[0]=true;
+                        tmp="";
+                    }
+                    else if(tmp=="<vertCorrection_>"){
+                        found[1]=true;
+                        tmp="";
+                    }
+                    else if(tmp=="<distCorrection_>"){
+                        found[2]=true;
+                        tmp="";
+                    }
+                    else if(tmp=="<vertOffsetCorrection_>"){
+                        found[3]=true;
+                        tmp="";
+                    }
+                    else if(tmp=="<horizOffsetCorrection_>"){
+                        found[4]=true;
+                        tmp="";
+                    }
+                    else{
+                    }
                 }
             }   
         }
@@ -295,18 +295,18 @@ class velodyneTest : public CxxTest::TestSuite {
             }
             string value;
             getline(decompressedData,value);
-	        while(getline(decompressedData,value)){
-		        stringstream lineStream(value);
-		        string cell;
-		        getline(lineStream,cell,',');
-		        xDataV.push_back(stof(cell));
-		        getline(lineStream,cell,',');
-		        yDataV.push_back(stof(cell));
-		        getline(lineStream,cell,',');
-		        zDataV.push_back(stof(cell));
-		        getline(lineStream,cell,',');
-		        intensityV.push_back(stof(cell));
-	        }
+            while(getline(decompressedData,value)){
+                stringstream lineStream(value);
+                string cell;
+                getline(lineStream,cell,',');
+                xDataV.push_back(stof(cell));
+                getline(lineStream,cell,',');
+                yDataV.push_back(stof(cell));
+                getline(lineStream,cell,',');
+                zDataV.push_back(stof(cell));
+                getline(lineStream,cell,',');
+                intensityV.push_back(stof(cell));
+            }
         }
 
         void testVelodyneDecodingFromFile(){
