@@ -69,14 +69,6 @@
 #include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 
 #include "opendavinci/generated/odcore/data/SharedPointCloud.h"
-//#include "opendavinci/odcore/io/protocol/PCAPProtocol.h"
-
-//#include "opendavinci/generated/odcore/data/pcap/GlobalHeader.h"
-//#include "opendavinci/generated/odcore/data/pcap/PacketHeader.h"
-//#include "opendavinci/generated/odcore/data/pcap/Packet.h"
-
-//#include "opendavinci/GeneratedHeaders_OpenDAVINCI.h"
-//#include <cmath>
 
 class QWidget;
 namespace opendlv { namespace scenario { class SCNXArchive; } }
@@ -124,7 +116,6 @@ namespace cockpit {
                     m_mapOfCurrentPositions(),
                     m_selectableNodeDescriptorTree(NULL),
                     m_selectableNodeDescriptorTreeListener(sndtl),
-                    frameIndex(0),
                     velodyneSharedMemory(NULL),
                     velodyneFrame(){}
 
@@ -274,7 +265,8 @@ namespace cockpit {
             void EnvironmentViewerGLWidget::drawScene() {
                 if (m_root != NULL) {
                     Lock l(m_rootMutex);
-
+                    
+                    //EgoCar view
                     if (m_cameraAssignedNodeDescriptor.getName().size() > 0) {
                         Position assignedNode = m_mapOfCurrentPositions[m_cameraAssignedNodeDescriptor];
                         Point3 positionCamera;
@@ -297,25 +289,59 @@ namespace cockpit {
                                       lookAtPointCamera.getX(), lookAtPointCamera.getY(), lookAtPointCamera.getZ(),
                                       0, 0, 1);
 
-                            // Draw scene.
+                            // Draw scene. The shared point cloud is visualized in the same way as the free camera view.
                             if(velodyneSharedMemory.get()!=NULL){
+                                if (velodyneSharedMemory->isValid()) {
+                                    glPushMatrix();
+                                    // Using a scoped lock to lock and automatically unlock a shared memory segment.
+                                    odcore::base::Lock lv(velodyneSharedMemory);
+                                    if (velodyneFrame.getComponentDataType() == SharedPointCloud::FLOAT_T
+                                        && (velodyneFrame.getNumberOfComponentsPerPoint() == 4)
+                                        && (velodyneFrame.getUserInfo() == SharedPointCloud::XYZ_INTENSITY)) {
+                                        float *velodyneRawData = static_cast<float*>(velodyneSharedMemory->getSharedMemory());
+
+                                        glPointSize(1.0f); //set point size to 10 pixels
+                                        glBegin(GL_POINTS); //starts drawing of points
+                                        long startID=0;
+                                        for(unsigned long iii=0;iii<velodyneFrame.getWidth();iii++) {
+                                            if(velodyneRawData[startID+3]<=127.0){
+                                                glColor3f(0.0f,velodyneRawData[startID+3]*2.0,255.0-velodyneRawData[startID+3]*2.0);
+                                            }
+                                            else{
+                                                glColor3f((velodyneRawData[startID+3]-127.0)*2.0,255.0-(velodyneRawData[startID+3]-127.0)*2.0,0.0f);
+                                            }
+                                            glVertex3f(velodyneRawData[startID],velodyneRawData[startID+1],velodyneRawData[startID+2]);
+                                            startID=velodyneFrame.getNumberOfComponentsPerPoint()*(iii+1);
+                                        }
+                                        glEnd();//end drawing of points
+                                        glPopMatrix();
+                                        
+                                        
+                                        m_root->render(m_renderingConfiguration);
+                                        glPopMatrix();
+                                    }
+                                }
+                        }
+                    }
+                    //Free camera view
+                    else {
+                        m_root->render(m_renderingConfiguration); 
+                        //Draw scene. Retrieve the point cloud from the shared memory and visualize it frame by frame when shared point cloud is received via the nextContainer method
+                        if(velodyneSharedMemory.get()!=NULL){
                             if (velodyneSharedMemory->isValid()) {
-                                //TimeStamp startRenderT;
                                 glPushMatrix();
                                 // Using a scoped lock to lock and automatically unlock a shared memory segment.
                                 odcore::base::Lock lv(velodyneSharedMemory);
-                                // We need to check (a) are we using the correct type (float)
-                                // and is the number of components per vector correct (4)
-                                // as Eigen is a compile-time type and thus, we cannot
-                                // define dynamic sizes for the InnerStride.
                                 if (velodyneFrame.getComponentDataType() == SharedPointCloud::FLOAT_T
                                     && (velodyneFrame.getNumberOfComponentsPerPoint() == 4)
                                     && (velodyneFrame.getUserInfo() == SharedPointCloud::XYZ_INTENSITY)) {
                                     float *velodyneRawData = static_cast<float*>(velodyneSharedMemory->getSharedMemory());
-
-                                    glPointSize(1.0f); //set point size to 10 pixels
+                                
+                                    glPointSize(1.0f); //set point size to 1 pixel
                                     glBegin(GL_POINTS); //starts drawing of points
                                     long startID=0;
+                                    //Point color depends on the intensity value. Let I (velodyneRawData[startID+3]) be the intensity value.
+                                    //When I<=127, then R=0, G=I*2, B=255-I*2; when I>127, then R=(I-127)*2, G=255-(I-127)*2, B=0
                                     for(unsigned long iii=0;iii<velodyneFrame.getWidth();iii++) {
                                         if(velodyneRawData[startID+3]<=127.0){
                                             glColor3f(0.0f,velodyneRawData[startID+3]*2.0,255.0-velodyneRawData[startID+3]*2.0);
@@ -328,99 +354,10 @@ namespace cockpit {
                                     }
                                     glEnd();//end drawing of points
                                     glPopMatrix();
-                                    
-                                    
-                                    m_root->render(m_renderingConfiguration);
-                                    glPopMatrix();
                                 }
-                            }
                         }
-                    }
-                    else {
-                        m_root->render(m_renderingConfiguration);
-                        /*glPushMatrix();
-                            glColor3f(0.0f,0.0f,1.0f); //blue color
-                            glPointSize(3.0f); //set point size to 10 pixels
-                            float xStart=0.0;
-                            float offset=1.5;
-                            glBegin(GL_POINTS); //starts drawing of points
-                            for(unsigned long iii=0;iii<100;iii++) {
-                                glVertex3f(xStart+offset,xStart+offset,xStart+offset);
-                                glVertex3f(-xStart+offset,xStart+offset,xStart+offset);
-                                glVertex3f(xStart+offset,-xStart+offset,xStart+offset);
-                                glVertex3f(xStart+offset,xStart+offset,-xStart+offset);
-                                offset+=1.5;
-                            }
-
-                            glEnd();//end drawing of points
-                            glPopMatrix();*/
-                            
-                            if(velodyneSharedMemory.get()!=NULL){
-                            if (velodyneSharedMemory->isValid()) {
-                            //TimeStamp startRenderT;
-                            glPushMatrix();
-                            // Using a scoped lock to lock and automatically unlock a shared memory segment.
-                            odcore::base::Lock lv(velodyneSharedMemory);
-                            // We need to check (a) are we using the correct type (float)
-                            // and is the number of components per vector correct (4)
-                            // as Eigen is a compile-time type and thus, we cannot
-                            // define dynamic sizes for the InnerStride.
-                            if (velodyneFrame.getComponentDataType() == SharedPointCloud::FLOAT_T
-                                && (velodyneFrame.getNumberOfComponentsPerPoint() == 4)
-                                && (velodyneFrame.getUserInfo() == SharedPointCloud::XYZ_INTENSITY)) {
-                                float *velodyneRawData = static_cast<float*>(velodyneSharedMemory->getSharedMemory());
-                                // Setup the Eigen mapping, where
-                                // 4 == velodyneFrame.getNumberOfComponentsPerPoint()
-                                // that cannot be dynamic due to Eigen's design of being a
-                                // compile-time library.
-                                /*typedef Map<Matrix<float, Dynamic, Dynamic>, 0, InnerStride<4> > Slice;
-                                Slice xData((float*)velodyneRawData, velodyneFrame.getWidth(), velodyneFrame.getHeight());
-                                Slice yData((float*)velodyneRawData+1, velodyneFrame.getWidth(), velodyneFrame.getHeight());
-                                Slice zData((float*)velodyneRawData+2, velodyneFrame.getWidth(), velodyneFrame.getHeight());
-                                Slice intensity((float*)velodyneRawData+3, velodyneFrame.getWidth(), velodyneFrame.getHeight());*/
-                            
-                            /*
-                            for(unsigned long iii=0;iii<velodyneFrame.getWidth();iii++)
-                                    {
-                                        Point3 myPoint((float)xData(iii,0),(float)yData(iii,0),(float)zData(iii,0));
-                                        //Point3 color(0, 0, 1);
-                                        Point3 color;
-                                        if((float)intensity(iii,0)<=127){
-                                            color.setX(0);
-                                            color.setY((float)intensity(iii,0)*2);
-                                            color.setZ(255-(float)intensity(iii,0)*2);
-                                        }
-                                        else{
-                                            color.setX(((float)intensity(iii,0)-127)*2);
-                                            color.setY(255-((float)intensity(iii,0)-127)*2);
-                                            color.setZ(0);
-                                        }
-                            */
-                            
-                            //glColor3f(0.0f,0.0f,1.0f); //blue color
-                            glPointSize(1.0f); //set point size to 10 pixels
-                            glBegin(GL_POINTS); //starts drawing of points
-                            long startID=0;
-                            for(unsigned long iii=0;iii<velodyneFrame.getWidth();iii++) {
-                                if(velodyneRawData[startID+3]<=127.0){
-                                    glColor3f(0.0f,velodyneRawData[startID+3]*2.0,255.0-velodyneRawData[startID+3]*2.0);
-                                }
-                                else{
-                                    glColor3f((velodyneRawData[startID+3]-127.0)*2.0,255.0-(velodyneRawData[startID+3]-127.0)*2.0,0.0f);
-                                }
-                                //glVertex3f((float)xData(iii,0),(float)yData(iii,0),(float)zData(iii,0));
-                                glVertex3f(velodyneRawData[startID],velodyneRawData[startID+1],velodyneRawData[startID+2]);
-                                startID=velodyneFrame.getNumberOfComponentsPerPoint()*(iii+1);
-                            }
-                            glEnd();//end drawing of points
-                            //glPushMatrix();
-                            glPopMatrix();
-                            //TimeStamp endRenderT;
-                            //cout<<(endRenderT-startRenderT).toMicroseconds()<<endl;
-                        }
-                        }
-                      }
-                    }
+                  }
+                }
     /*
                     {
                         // Visualize camera using quaternions.
@@ -532,61 +469,8 @@ namespace cockpit {
             void EnvironmentViewerGLWidget::nextContainer(Container &c) {
                 
                     if(c.getDataType()==odcore::data::SharedPointCloud::ID()){
-                    // Renderer3D r(m_root, velodyneFrame);
-                    // r.render();
-                    
-                        velodyneFrame=c.getData<SharedPointCloud>();
-                        velodyneSharedMemory=SharedMemoryFactory::attachToSharedMemory(velodyneFrame.getName());
-                        //cout<<"Get frame"<<endl;
-                        /*if (velodyneSharedMemory->isValid()) {
-                            // Using a scoped lock to lock and automatically unlock a shared memory segment.
-                            odcore::base::Lock l(velodyneSharedMemory);
-                            // We need to check (a) are we using the correct type (float)
-                            // and is the number of components per vector correct (4)
-                            // as Eigen is a compile-time type and thus, we cannot
-                            // define dynamic sizes for the InnerStride.
-                            if (velodyneFrame.getComponentDataType() == SharedPointCloud::FLOAT_T
-                                && (velodyneFrame.getNumberOfComponentsPerPoint() == 4)
-                                && (velodyneFrame.getUserInfo() == SharedPointCloud::XYZ_INTENSITY)) {
-                                float *velodyneRawData = static_cast<float*>(velodyneSharedMemory->getSharedMemory());
-                                // Setup the Eigen mapping, where
-                                // 4 == velodyneFrame.getNumberOfComponentsPerPoint()
-                                // that cannot be dynamic due to Eigen's design of being a
-                                // compile-time library.
-                                typedef Map<Matrix<float, Dynamic, Dynamic>, 0, InnerStride<4> > Slice;
-                                Slice xData((float*)velodyneRawData, velodyneFrame.getWidth(), velodyneFrame.getHeight());
-                                Slice yData((float*)velodyneRawData+1, velodyneFrame.getWidth(), velodyneFrame.getHeight());
-                                Slice zData((float*)velodyneRawData+2, velodyneFrame.getWidth(), velodyneFrame.getHeight());
-                                Slice intensity((float*)velodyneRawData+3, velodyneFrame.getWidth(), velodyneFrame.getHeight());
-                */
-                                //if(frameIndex==1)
-                                //{
-                                    /*m_velodyne-> deleteAllChildren();
-                                    for(unsigned long iii=0;iii<velodyneFrame.getWidth();iii++)
-                                    {
-                                        Point3 myPoint((float)xData(iii,0),(float)yData(iii,0),(float)zData(iii,0));
-                                        //Point3 color(0, 0, 1);
-                                        Point3 color;
-                                        if((float)intensity(iii,0)<=127){
-                                            color.setX(0);
-                                            color.setY((float)intensity(iii,0)*2);
-                                            color.setZ(255-(float)intensity(iii,0)*2);
-                                        }
-                                        else{
-                                            color.setX(((float)intensity(iii,0)-127)*2);
-                                            color.setY(255-((float)intensity(iii,0)-127)*2);
-                                            color.setZ(0);
-                                        }
-
-                                        opendlv::threeD::models::Point *p = new opendlv::threeD::models::Point(NodeDescriptor("velodyne"), myPoint, color, 1);
-                                        m_velodyne->addChild(p);
-                                    }*/
-                                   // cout<<"Visualize frame:"<<frameIndex<<endl;
-
-                                //}
-                                //frameIndex++;
-                            //}
-                        //}
+                        velodyneFrame=c.getData<SharedPointCloud>();//Get shared point cloud
+                        velodyneSharedMemory=SharedMemoryFactory::attachToSharedMemory(velodyneFrame.getName());//Attach the shared point cloud to the shared memory           
                     }
 
                

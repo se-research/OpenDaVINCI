@@ -132,16 +132,6 @@ class SelectableNodeDescriptor;
 
                     odcore::base::TreeNode<SelectableNodeDescriptor> *m_selectableNodeDescriptorTree;
                     SelectableNodeDescriptorTreeListener &m_selectableNodeDescriptorTreeListener;
-                    /*odcore::io::protocol::PCAPProtocol m_pcap;
-                    bool m_readFlag;
-                    fstream lidlarStream;
-                    double distance[32];
-                    vector<int> intensity;
-                    bool upperBlock;
-                    vector<double> xData;
-                    vector<double> yData;
-                    vector<double> zData;*/
-                    long frameIndex;
                     std::shared_ptr<odcore::wrapper::SharedMemory> velodyneSharedMemory;
                     odcore::data::SharedPointCloud velodyneFrame;
 
