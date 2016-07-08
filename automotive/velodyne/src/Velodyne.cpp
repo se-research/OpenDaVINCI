@@ -27,7 +27,7 @@
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/io/conference/ContainerConference.h"
 #include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
-
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
 #include "Velodyne.h"
 
 
@@ -54,8 +54,8 @@ namespace automotive {
         // setup share memory.
         // create instance of velodyneListener and pass shared_ptr from shared memory to velodynelister in its constructor
             m_pcap.setContainerListener(&m_vListener);
-            //lidarStream.open("imeangowest.pcap", ios::binary|ios::in);
-            lidarStream.open("atwall.pcap", ios::binary|ios::in);
+            lidarStream.open(getKeyValueConfiguration().getValue<string>("VelodyneDecoder.readpcap"), ios::binary|ios::in);
+            
         }
 
         void VelodyneDecoder::tearDown() {
