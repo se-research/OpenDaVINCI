@@ -50,12 +50,12 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             // Write the data to a stringstream.
             stringstream out;
-            protoSerializerVisitor.getSerializedData(out);
+            protoSerializerVisitor.getSerializedDataWithHeader(out);
 
 
             // Create a Proto deserialization visitor.
             ProtoDeserializerVisitor protoDeserializerVisitor;
-            protoDeserializerVisitor.deserializeDataFrom(out);
+            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
 
             // Read back the data by using the visitor.
             TestMessage1 tm2;
@@ -102,7 +102,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             // Write the data to a stringstream.
             stringstream out;
-            protoSerializerVisitor.getSerializedDataNoHeader(out);
+            protoSerializerVisitor.getSerializedData(out);
 
             // According to https://developers.google.com/protocol-buffers/docs/encoding, 150 will be encoded as 0x8 0x96 0x1.
             const string s = out.str();
@@ -113,7 +113,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             // Create a Proto deserialization visitor.
             ProtoDeserializerVisitor protoDeserializerVisitor;
-            protoDeserializerVisitor.deserializeDataFromNoHeader(out);
+            protoDeserializerVisitor.deserializeDataFrom(out);
 
             // Read back the data by using the visitor.
             TestMessage1 tm2;
@@ -224,7 +224,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             // Write the data to a stringstream.
             stringstream out;
-            protoSerializerVisitor.getSerializedDataNoHeader(out);
+            protoSerializerVisitor.getSerializedData(out);
 
             // According to https://developers.google.com/protocol-buffers/docs/encoding, "testing" will be encoded as 0x12 0x07 0x74 0x65 0x73 0x74 0x69 0x6e 0x67.
             const string s = out.str();
@@ -241,7 +241,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             // Create a Proto deserialization visitor.
             ProtoDeserializerVisitor protoDeserializerVisitor;
-            protoDeserializerVisitor.deserializeDataFromNoHeader(out);
+            protoDeserializerVisitor.deserializeDataFrom(out);
 
             // Read back the data by using the visitor.
             TestMessage3 tm2;

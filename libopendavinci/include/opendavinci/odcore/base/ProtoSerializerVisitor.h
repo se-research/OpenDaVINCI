@@ -71,11 +71,11 @@ class Serializable;
 
                 /**
                  * This method serializes the data to the given ostream
-                 * without adding header information.
+                 * with adding header information.
                  *
                  * @param o Stream to serialize data to.
                  */
-                void getSerializedDataNoHeader(ostream &o);
+                void getSerializedDataWithHeader(ostream &o);
 
             private:
                 /**

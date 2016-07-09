@@ -35,7 +35,7 @@ class Serializable;
 
         ProtoDeserializerVisitor::~ProtoDeserializerVisitor() {}
 
-        void ProtoDeserializerVisitor::deserializeDataFromNoHeader(istream &in) {
+        void ProtoDeserializerVisitor::deserializeDataFrom(istream &in) {
             // Reset internal states as this deserializer could be reused.
             m_size = 0;
             m_buffer.str("");
@@ -46,7 +46,7 @@ class Serializable;
             }
         }
 
-        void ProtoDeserializerVisitor::deserializeDataFrom(istream &in) {
+        void ProtoDeserializerVisitor::deserializeDataFromWithHeader(istream &in) {
             // Reset internal states as this deserializer could be reused.
             m_size = 0;
             m_buffer.str("");

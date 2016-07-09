@@ -32,15 +32,15 @@ class Serializable;
 
         ProtoSerializerVisitor::~ProtoSerializerVisitor() {}
 
-        void ProtoSerializerVisitor::getSerializedDataNoHeader(ostream &o) {
+        void ProtoSerializerVisitor::getSerializedData(ostream &o) {
             o << m_buffer.str();
         }
 
-        void ProtoSerializerVisitor::getSerializedData(ostream &o) {
+        void ProtoSerializerVisitor::getSerializedDataWithHeader(ostream &o) {
             uint16_t magicNumber = 0xAABB;
             encodeVarInt(o, magicNumber);
             encodeVarInt(o, m_size);
-            getSerializedDataNoHeader(o);
+            getSerializedData(o);
         }
 
         uint32_t ProtoSerializerVisitor::getKey(const uint32_t &fieldNumber, const uint8_t &protoType) {

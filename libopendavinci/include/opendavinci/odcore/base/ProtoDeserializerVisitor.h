@@ -62,13 +62,13 @@ namespace odcore {
                 virtual void deserializeDataFrom(istream &in);
 
                 /**
-                 * This method deserializes a Proto stream where no
+                 * This method deserializes a Proto stream where
                  * additional header information is preceding the
                  * serialized data.
                  *
                  * @param in Stream to serialize from.
                  */
-                void deserializeDataFromNoHeader(istream &in);
+                void deserializeDataFromWithHeader(istream &in);
 
             private:
                 /**
