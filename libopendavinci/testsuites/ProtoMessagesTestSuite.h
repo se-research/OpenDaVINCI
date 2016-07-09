@@ -91,6 +91,37 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             }
         }
 
+        void testSerializationDeserializationTestMessage1OneFieldGoogleExample() {
+            TestMessage1 tm1;
+            tm1.setField1(150);
+
+            // Create a Proto serialization visitor.
+            ProtoSerializerVisitor protoSerializerVisitor;
+            tm1.accept(protoSerializerVisitor);
+
+            // Write the data to a stringstream.
+            stringstream out;
+            protoSerializerVisitor.getSerializedDataNoHeader(out);
+
+            // According to https://developers.google.com/protocol-buffers/docs/encoding, 150 will be encoded as 0x8 0x96 0x1.
+            const string s = out.str();
+            TS_ASSERT(s.size() == 3);
+            TS_ASSERT(static_cast<uint8_t>(s.at(0)) == 0x8);
+            TS_ASSERT(static_cast<uint8_t>(s.at(1)) == 0x96);
+            TS_ASSERT(static_cast<uint8_t>(s.at(2)) == 0x1);
+
+            // Create a Proto deserialization visitor.
+            ProtoDeserializerVisitor protoDeserializerVisitor;
+            protoDeserializerVisitor.deserializeDataFromNoHeader(out);
+
+            // Read back the data by using the visitor.
+            TestMessage1 tm2;
+            tm2.accept(protoDeserializerVisitor);
+
+            TS_ASSERT(tm1.getField1() == tm2.getField1());
+            TS_ASSERT(tm1.getField1() == 150);
+        }
+
         void testSerializationDeserializationTestMessage2TwoFieldsA() {
             TestMessage2 tm1;
             tm1.setField1(60);
