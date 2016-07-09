@@ -91,7 +91,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             }
         }
 
-        void testSerializationDeserializationTestMessage2TwoFields() {
+        void testSerializationDeserializationTestMessage2TwoFieldsA() {
             TestMessage2 tm1;
             tm1.setField1(60);
             tm1.setField2(-60);
@@ -113,15 +113,40 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TestMessage2 tm2;
             tm2.accept(protoDeserializerVisitor);
 
-cout << "TM1 = " << tm1.toString() << ", TM2 = " << tm2.toString() << endl;
-cout << "tm1.f1 = " << (int)tm1.getField1() << ", tm1.f2 = " << (int)tm1.getField2() << endl;
-cout << "tm2.f1 = " << (int)tm2.getField1() << ", tm2.f2 = " << (int)tm2.getField2() << endl;
-
             TS_ASSERT(tm1.getField1() == tm2.getField1());
             TS_ASSERT(tm1.getField1() == 60);
 
             TS_ASSERT(tm1.getField2() == tm2.getField2());
             TS_ASSERT(tm1.getField2() == -60);
+        }
+
+        void testSerializationDeserializationTestMessage2TwoFieldsB() {
+            TestMessage2 tm1;
+            tm1.setField1(12);
+            tm1.setField2(-12);
+
+            // Create a Proto serialization visitor.
+            ProtoSerializerVisitor protoSerializerVisitor;
+            tm1.accept(protoSerializerVisitor);
+
+            // Write the data to a stringstream.
+            stringstream out;
+            protoSerializerVisitor.getSerializedData(out);
+
+
+            // Create a Proto deserialization visitor.
+            ProtoDeserializerVisitor protoDeserializerVisitor;
+            protoDeserializerVisitor.deserializeDataFrom(out);
+
+            // Read back the data by using the visitor.
+            TestMessage2 tm2;
+            tm2.accept(protoDeserializerVisitor);
+
+            TS_ASSERT(tm1.getField1() == tm2.getField1());
+            TS_ASSERT(tm1.getField1() == 12);
+
+            TS_ASSERT(tm1.getField2() == tm2.getField2());
+            TS_ASSERT(tm1.getField2() == -12);
         }
 };
 
