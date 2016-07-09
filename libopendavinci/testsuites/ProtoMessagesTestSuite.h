@@ -32,6 +32,7 @@
 
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage1.h"
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage2.h"
+#include "opendavincitestdata/generated/odcore/testdata/TestMessage3.h"
 
 using namespace std;
 using namespace odcore::base;
@@ -211,6 +212,43 @@ class ProtoMessageTest : public CxxTest::TestSuite {
                     TS_ASSERT(tm1.getField2() == j);
                 }
             }
+        }
+
+        void testSerializationDeserializationTestMessage3OneFieldGoogleExample() {
+            TestMessage3 tm1;
+            tm1.setField1("testing");
+
+            // Create a Proto serialization visitor.
+            ProtoSerializerVisitor protoSerializerVisitor;
+            tm1.accept(protoSerializerVisitor);
+
+            // Write the data to a stringstream.
+            stringstream out;
+            protoSerializerVisitor.getSerializedDataNoHeader(out);
+
+            // According to https://developers.google.com/protocol-buffers/docs/encoding, "testing" will be encoded as 0x12 0x07 0x74 0x65 0x73 0x74 0x69 0x6e 0x67.
+            const string s = out.str();
+            TS_ASSERT(s.size() == 9);
+            TS_ASSERT(static_cast<uint8_t>(s.at(0)) == 0x12);
+            TS_ASSERT(static_cast<uint8_t>(s.at(1)) == 0x7);
+            TS_ASSERT(static_cast<uint8_t>(s.at(2)) == 0x74);
+            TS_ASSERT(static_cast<uint8_t>(s.at(3)) == 0x65);
+            TS_ASSERT(static_cast<uint8_t>(s.at(4)) == 0x73);
+            TS_ASSERT(static_cast<uint8_t>(s.at(5)) == 0x74);
+            TS_ASSERT(static_cast<uint8_t>(s.at(6)) == 0x69);
+            TS_ASSERT(static_cast<uint8_t>(s.at(7)) == 0x6e);
+            TS_ASSERT(static_cast<uint8_t>(s.at(8)) == 0x67);
+
+            // Create a Proto deserialization visitor.
+            ProtoDeserializerVisitor protoDeserializerVisitor;
+            protoDeserializerVisitor.deserializeDataFromNoHeader(out);
+
+            // Read back the data by using the visitor.
+            TestMessage3 tm2;
+            tm2.accept(protoDeserializerVisitor);
+
+            TS_ASSERT(tm1.getField1() == tm2.getField1());
+            TS_ASSERT(tm1.getField1() == "testing");
         }
 };
 

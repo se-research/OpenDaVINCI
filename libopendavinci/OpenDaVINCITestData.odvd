@@ -34,3 +34,7 @@ message odcore.testdata.TestMessage2 [id = 1001] {
     int8 field2 [ id = 2 ];
 }
 
+message odcore.testdata.TestMessage3 [id = 1002] {
+    string field1 [ id = 2 ];
+}
+
