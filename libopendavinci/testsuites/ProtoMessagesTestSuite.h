@@ -148,6 +148,39 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm1.getField2() == tm2.getField2());
             TS_ASSERT(tm1.getField2() == -12);
         }
+
+        void testSerializationDeserializationTestMessage2Complete() {
+            for(uint16_t i = 0; i <= 255; i++) {
+                for(int16_t j = -127; j <= 127; j++) {
+                    TestMessage2 tm1;
+                    tm1.setField1(i);
+                    tm1.setField2(j);
+
+                    // Create a Proto serialization visitor.
+                    ProtoSerializerVisitor protoSerializerVisitor;
+                    tm1.accept(protoSerializerVisitor);
+
+                    // Write the data to a stringstream.
+                    stringstream out;
+                    protoSerializerVisitor.getSerializedData(out);
+
+
+                    // Create a Proto deserialization visitor.
+                    ProtoDeserializerVisitor protoDeserializerVisitor;
+                    protoDeserializerVisitor.deserializeDataFrom(out);
+
+                    // Read back the data by using the visitor.
+                    TestMessage2 tm2;
+                    tm2.accept(protoDeserializerVisitor);
+
+                    TS_ASSERT(tm1.getField1() == tm2.getField1());
+                    TS_ASSERT(tm1.getField1() == i);
+
+                    TS_ASSERT(tm1.getField2() == tm2.getField2());
+                    TS_ASSERT(tm1.getField2() == j);
+                }
+            }
+        }
 };
 
 #endif /*CORE_PROTOMESSAGESTESTSUITE_H_*/
