@@ -17,7 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-// This message serves as the base class for a message's field description.
+
+// This message contains all constants for the test cases for the Dynamic Module Configuration Protocol (DMCP).
+message odcore.testdata.dmcp.TestConstants [id = 111] {
+    const string DMCPCONFIG_TEST_GROUP = "225.0.0.250";
+    const uint32 DMCPCONFIG_TEST_SERVERPORT = 25000;
+    const uint32 DMCPCONFIG_TEST_CLIENTPORT = 25100;
+}
+
 message odcore.testdata.TestMessage1 [id = 1000] {
     uint8 field1 [ id = 1 ];
 }

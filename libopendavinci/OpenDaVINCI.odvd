@@ -87,12 +87,7 @@ message odcore.data.dmcp.Constants [id = 110] {
     };
 }
 
-// This message contains all constants for the test cases for the Dynamic Module Configuration Protocol (DMCP).
-message odcore.data.dmcp.TestConstants [id = 111] {
-    const string DMCPCONFIG_TEST_GROUP = "225.0.0.250";
-    const uint32 DMCPCONFIG_TEST_SERVERPORT = 25000;
-    const uint32 DMCPCONFIG_TEST_CLIENTPORT = 25100;
-}
+// Message ID 111 is used in OpenDaVINCITestData.odvd.
 
 // This message describes the DMCP server.
 message odcore.data.dmcp.ServerInformation [id = 112] { 
