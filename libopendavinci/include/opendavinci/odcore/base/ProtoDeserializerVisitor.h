@@ -70,6 +70,7 @@ namespace odcore {
                  */
                 void deserializeDataFromNoHeader(istream &in);
 
+            private:
                 /**
                  * This method decodes a value from a given varint encoding.
                  *

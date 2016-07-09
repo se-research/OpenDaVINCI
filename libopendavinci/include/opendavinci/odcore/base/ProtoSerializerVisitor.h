@@ -77,6 +77,7 @@ class Serializable;
                  */
                 void getSerializedDataNoHeader(ostream &o);
 
+            private:
                 /**
                  * This method encodes a given value using the varuint encoding.
                  *

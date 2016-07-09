@@ -60,9 +60,12 @@ class Serializable;
                 decodeVarInt(in, value);
                 m_size = static_cast<uint32_t>(value);
 
-                while (in.good()) {
+                // Read up to m_size bytes as long as the input stream is fine.
+                uint32_t size = m_size;
+                while (in.good() && (size > 0)) {
                     char c = in.get();
                     m_buffer.put(c);
+                    size--;
                 }
             }
             else {
