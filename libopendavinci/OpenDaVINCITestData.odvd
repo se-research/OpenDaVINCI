@@ -29,3 +29,8 @@ message odcore.testdata.TestMessage1 [id = 1000] {
     uint8 field1 [ id = 1 ];
 }
 
+message odcore.testdata.TestMessage2 [id = 1001] {
+    uint8 field1 [ id = 1 ];
+    int8 field2 [ id = 2 ];
+}
+

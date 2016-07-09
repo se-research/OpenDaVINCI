@@ -31,6 +31,7 @@
 #include "opendavinci/odcore/base/ProtoSerializerVisitor.h"
 
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage1.h"
+#include "opendavincitestdata/generated/odcore/testdata/TestMessage2.h"
 
 using namespace std;
 using namespace odcore::base;
@@ -38,7 +39,7 @@ using namespace odcore::testdata;
 
 class ProtoMessageTest : public CxxTest::TestSuite {
     public:
-        void testSerializationDeserializationOneField() {
+        void testSerializationDeserializationTestMessage1OneField() {
             TestMessage1 tm1;
             tm1.setField1(12);
 
@@ -63,7 +64,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm1.getField1() == 12);
         }
 
-        void testSerializationDeserializationCompleteOneField() {
+        void testSerializationDeserializationTestMessage1CompleteOneField() {
             for (uint16_t i = 0; i <= 255; i++) {
                 TestMessage1 tm1;
                 tm1.setField1(i);
@@ -88,6 +89,39 @@ class ProtoMessageTest : public CxxTest::TestSuite {
                 TS_ASSERT(tm1.getField1() == tm2.getField1());
                 TS_ASSERT(tm1.getField1() == i);
             }
+        }
+
+        void testSerializationDeserializationTestMessage2TwoFields() {
+            TestMessage2 tm1;
+            tm1.setField1(60);
+            tm1.setField2(-60);
+
+            // Create a Proto serialization visitor.
+            ProtoSerializerVisitor protoSerializerVisitor;
+            tm1.accept(protoSerializerVisitor);
+
+            // Write the data to a stringstream.
+            stringstream out;
+            protoSerializerVisitor.getSerializedData(out);
+
+
+            // Create a Proto deserialization visitor.
+            ProtoDeserializerVisitor protoDeserializerVisitor;
+            protoDeserializerVisitor.deserializeDataFrom(out);
+
+            // Read back the data by using the visitor.
+            TestMessage2 tm2;
+            tm2.accept(protoDeserializerVisitor);
+
+cout << "TM1 = " << tm1.toString() << ", TM2 = " << tm2.toString() << endl;
+cout << "tm1.f1 = " << (int)tm1.getField1() << ", tm1.f2 = " << (int)tm1.getField2() << endl;
+cout << "tm2.f1 = " << (int)tm2.getField1() << ", tm2.f2 = " << (int)tm2.getField2() << endl;
+
+            TS_ASSERT(tm1.getField1() == tm2.getField1());
+            TS_ASSERT(tm1.getField1() == 60);
+
+            TS_ASSERT(tm1.getField2() == tm2.getField2());
+            TS_ASSERT(tm1.getField2() == -60);
         }
 };
 

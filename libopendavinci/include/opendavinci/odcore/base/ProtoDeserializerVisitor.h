@@ -77,7 +77,39 @@ namespace odcore {
                  * @param value Destination variable to be written into.
                  * @return size Number of bytes read.
                  */
-                uint32_t decodeVarInt(istream& in, uint64_t &value);
+                uint8_t decodeVarInt(istream& in, uint64_t &value);
+
+                /**
+                 * This method decodes a given value using zigzag8 decoding.
+                 *
+                 * @param value Value to be decoded.
+                 * @return size Decoded value.
+                 */
+                int8_t decodeZigZag8(uint8_t value);
+
+                /**
+                 * This method decodes a given value using zigzag16 decoding.
+                 *
+                 * @param value Value to be decoded.
+                 * @return size Decoded value.
+                 */
+                int16_t decodeZigZag16(uint16_t value);
+
+                /**
+                 * This method decodes a given value using zigzag32 decoding.
+                 *
+                 * @param value Value to be decoded.
+                 * @return size Decoded value.
+                 */
+                int32_t decodeZigZag32(uint32_t value);
+
+                /**
+                 * This method decodes a given value using zigzag64 decoding.
+                 *
+                 * @param value Value to be decoded.
+                 * @return size Decoded value.
+                 */
+                int64_t decodeZigZag64(uint64_t value);
 
             private:
                 virtual void read(const uint32_t &id, Serializable &s);

@@ -78,13 +78,45 @@ class Serializable;
                 void getSerializedDataNoHeader(ostream &o);
 
                 /**
-                 * This method encodes a given value using the varint encoding.
+                 * This method encodes a given value using the varuint encoding.
                  *
                  * @param out Output stream to be written to.
                  * @param value Value to be encoded.
                  * @return size Number of bytes written.
                  */
                 uint8_t encodeVarInt(ostream &out, uint64_t value);
+
+                /**
+                 * This method encodes a given value using zigzag8 encoding.
+                 *
+                 * @param value Value to be encoded.
+                 * @return size Encoded value.
+                 */
+                uint8_t encodeZigZag8(int8_t value);
+
+                /**
+                 * This method encodes a given value using zigzag16 encoding.
+                 *
+                 * @param value Value to be encoded.
+                 * @return size Encoded value.
+                 */
+                uint16_t encodeZigZag16(int16_t value);
+
+                /**
+                 * This method encodes a given value using zigzag32 encoding.
+                 *
+                 * @param value Value to be encoded.
+                 * @return size Encoded value.
+                 */
+                uint32_t encodeZigZag32(int32_t value);
+
+                /**
+                 * This method encodes a given value using zigzag64 encoding.
+                 *
+                 * @param value Value to be encoded.
+                 * @return size Encoded value.
+                 */
+                uint64_t encodeZigZag64(int64_t value);
 
             private:
                 virtual void write(const uint32_t &id, const Serializable &s);

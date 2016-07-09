@@ -87,7 +87,23 @@ class Serializable;
             return size;
         }
 
-        uint32_t ProtoDeserializerVisitor::decodeVarInt(istream &in, uint64_t &value) {
+        int8_t ProtoDeserializerVisitor::decodeZigZag8(uint8_t value) {
+            return static_cast<int64_t>((value >> 1) ^ -(value & 1));
+        }
+
+        int16_t ProtoDeserializerVisitor::decodeZigZag16(uint16_t value) {
+            return static_cast<int64_t>((value >> 1) ^ -(value & 1));
+        }
+
+        int32_t ProtoDeserializerVisitor::decodeZigZag32(uint32_t value) {
+            return static_cast<int64_t>((value >> 1) ^ -(value & 1));
+        }
+
+        int64_t ProtoDeserializerVisitor::decodeZigZag64(uint64_t value) {
+            return static_cast<int64_t>((value >> 1) ^ -(value & 1));
+        }
+
+        uint8_t ProtoDeserializerVisitor::decodeVarInt(istream &in, uint64_t &value) {
             value = 0;
             uint8_t size = 0;
             while (in.good()) {
@@ -136,7 +152,7 @@ class Serializable;
 
             uint64_t _v = 0;
             m_size -= decodeVarInt(m_buffer, _v);
-            v = static_cast<int8_t>(_v);
+            v = static_cast<int8_t>(decodeZigZag8(_v));
         }
 
         void ProtoDeserializerVisitor::read(const uint32_t &id, int16_t &v) {
@@ -144,7 +160,7 @@ class Serializable;
 
             uint64_t _v = 0;
             m_size -= decodeVarInt(m_buffer, _v);
-            v = static_cast<int16_t>(_v);
+            v = static_cast<int16_t>(decodeZigZag16(_v));
         }
 
         void ProtoDeserializerVisitor::read(const uint32_t &id, uint16_t &v) {
@@ -160,7 +176,7 @@ class Serializable;
 
             uint64_t _v = 0;
             m_size -= decodeVarInt(m_buffer, _v);
-            v = static_cast<int32_t>(_v);
+            v = static_cast<int32_t>(decodeZigZag32(_v));
         }
 
         void ProtoDeserializerVisitor::read(const uint32_t &id, uint32_t &v) {
@@ -176,7 +192,7 @@ class Serializable;
 
             uint64_t _v = 0;
             m_size -= decodeVarInt(m_buffer, _v);
-            v = static_cast<int64_t>(_v);
+            v = static_cast<int64_t>(decodeZigZag64(_v));
         }
 
         void ProtoDeserializerVisitor::read(const uint32_t &id, uint64_t &v) {
@@ -275,7 +291,7 @@ class Serializable;
 
             uint64_t _v = 0;
             m_size -= decodeVarInt(m_buffer, _v);
-            v = static_cast<int8_t>(_v);
+            v = static_cast<int8_t>(decodeZigZag8(_v));
         }
 
         void ProtoDeserializerVisitor::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, int16_t &v) {
@@ -283,7 +299,7 @@ class Serializable;
 
             uint64_t _v = 0;
             m_size -= decodeVarInt(m_buffer, _v);
-            v = static_cast<int16_t>(_v);
+            v = static_cast<int16_t>(decodeZigZag16(_v));
         }
 
         void ProtoDeserializerVisitor::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, uint16_t &v) {
@@ -299,7 +315,7 @@ class Serializable;
 
             uint64_t _v = 0;
             m_size -= decodeVarInt(m_buffer, _v);
-            v = static_cast<int32_t>(_v);
+            v = static_cast<int32_t>(decodeZigZag32(_v));
         }
 
         void ProtoDeserializerVisitor::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, uint32_t &v) {
@@ -315,7 +331,7 @@ class Serializable;
 
             uint64_t _v = 0;
             m_size -= decodeVarInt(m_buffer, _v);
-            v = static_cast<int64_t>(_v);
+            v = static_cast<int64_t>(decodeZigZag64(_v));
         }
 
         void ProtoDeserializerVisitor::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, uint64_t &v) {
