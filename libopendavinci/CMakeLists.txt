@@ -61,6 +61,8 @@ INCLUDE(FindJava REQUIRED)
 SET(ODDATASTRUCTUREGENERATOR_PATH "${CMAKE_INSTALL_PREFIX}")
 INCLUDE(FindodDataStructureGenerator)
 
+###########################################################################
+###########################################################################
 # Define the directory where odDataStructureGenerator is generating the sources.
 SET(COREDATA_DIR ${CMAKE_BINARY_DIR}/coredata)
 
@@ -93,6 +95,41 @@ IF(WIN32)
                        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/OpenDaVINCI.odvd)
 ENDIF()
 ADD_CUSTOM_TARGET(GenerateDataStructures DEPENDS ${COREDATA_DIR}/include/opendavinci/GeneratedHeaders_OpenDaVINCI.h)
+
+###########################################################################
+###########################################################################
+# Define the directory where odDataStructureGenerator is generating the sources.
+SET(TESTDATA_DIR ${CMAKE_BINARY_DIR}/testdata)
+
+# This step invokes the data structure generator during the initial cmake phase.
+# Thus, it is ensured that the recursive file globbing below succeeds to collect
+# all automatically generated source files.
+IF(NOT EXISTS ${TESTDATA_DIR}/include/opendavincitestdata/GeneratedHeaders_OpenDaVINCITestData.h)
+    MESSAGE("")
+    MESSAGE("Generating test data structures from ${CMAKE_CURRENT_SOURCE_DIR}/OpenDaVINCITestData.odvd in ${TESTDATA_DIR}")
+
+    IF(UNIX)
+        EXECUTE_PROCESS(COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/generateDataStructures.sh ${Java_JAVA_EXECUTABLE} ${ODDATASTRUCTUREGENERATOR_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/OpenDaVINCITestData.odvd ${CMAKE_BINARY_DIR}/testdata)
+    ENDIF()
+    IF(WIN32)
+        EXECUTE_PROCESS(COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/generateDataStructures.bat ${Java_JAVA_EXECUTABLE} ${ODDATASTRUCTUREGENERATOR_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/OpenDaVINCITestData.odvd ${CMAKE_BINARY_DIR}/testdata)
+    ENDIF()
+
+    MESSAGE("")
+ENDIF()
+
+# This custom command ensures that on changes to CoreData.odvd, the sources are re-generated.
+IF(UNIX)
+    ADD_CUSTOM_COMMAND(OUTPUT ${TESTDATA_DIR}/include/opendavincitestdata/GeneratedHeaders_OpenDaVINCITestData.h
+                       COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/generateDataStructures.sh ${Java_JAVA_EXECUTABLE} ${ODDATASTRUCTUREGENERATOR_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/OpenDaVINCITestData.odvd ${CMAKE_BINARY_DIR}/testdata
+                       DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/OpenDaVINCITestData.odvd)
+ENDIF()
+IF(WIN32)
+    ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_BINARY_DIR}/testdata/include/GeneratedHeaders_OpenDaVINCITestData.h
+                       COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/generateDataStructures.bat ${Java_JAVA_EXECUTABLE} ${ODDATASTRUCTUREGENERATOR_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/OpenDaVINCITestData.odvd ${CMAKE_BINARY_DIR}/testdata
+                       DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/OpenDaVINCITestData.odvd)
+ENDIF()
+ADD_CUSTOM_TARGET(GenerateDataStructuresTestData DEPENDS ${TESTDATA_DIR}/include/opendavincitestdata/GeneratedHeaders_OpenDaVINCITestData.h)
 
 ###########################################################################
 # Set linking libraries to successfully link test suite binaries.
@@ -255,12 +292,16 @@ ENDIF()
 ###############################################################################
 # Set header files for coredata files generated from OpenDaVINCI.odvd.
 INCLUDE_DIRECTORIES(${COREDATA_DIR}/include)
+# Set header files for testdata files generated from OpenDaVINCITestData.odvd.
+INCLUDE_DIRECTORIES(${TESTDATA_DIR}/include)
 # Set include directory.
 INCLUDE_DIRECTORIES(include)
 
 ###############################################################################
-# Set sources for coredata files generated from CoreData.odvd.
+# Set sources for coredata files generated from OpenDaVINCI.odvd.
 FILE(GLOB_RECURSE libopendavinci-coredata-sources "${COREDATA_DIR}/src/*.cpp")
+# Set sources for testdata files generated from OpenDaVINCITestData.odvd.
+FILE(GLOB_RECURSE libopendavinci-testdata-sources "${TESTDATA_DIR}/src/*.cpp")
 # Collect all source files.
 FILE(GLOB_RECURSE libopendavinci-sources "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 
@@ -292,8 +333,8 @@ ENDIF()
 ###############################################################################
 # Resulting artifacts.
 ADD_LIBRARY (opendavinci-core OBJECT ${libopendavinci-sources}
-                                     ${libopendavinci-coredata-sources} 
-                                     ${libwjwwoodserial-sources} 
+                                     ${libopendavinci-coredata-sources}
+                                     ${libwjwwoodserial-sources}
                                      ${libzip-sources}
                                      ${zlib-sources}
                                      ${jpegcompressor-sources})
@@ -309,8 +350,15 @@ IF(    (NOT WIN32)
     TARGET_LINK_LIBRARIES(opendavinci    ${LIBRARIES})
 ENDIF()
 
+SET(OPENDAVINCI_LIB_FOR_TESTSUITES opendavinci-static-for-testsuites)
+ADD_LIBRARY (${OPENDAVINCI_LIB_FOR_TESTSUITES} STATIC
+                                     $<TARGET_OBJECTS:opendavinci-core>
+                                     ${libopendavinci-testdata-sources}
+)
+
 # Add dependency to generate data structures before building the sources.
 ADD_DEPENDENCIES(opendavinci-core GenerateDataStructures)
+ADD_DEPENDENCIES(opendavinci-core GenerateDataStructuresTestData)
 
 ###############################################################################
 # Enable CxxTest for all available testsuites.
@@ -337,11 +385,10 @@ IF(CXXTEST_FOUND)
             ENDIF()
         ENDIF()
         SET_TESTS_PROPERTIES(${testsuite-short}-TestSuite PROPERTIES TIMEOUT 3000)
-        TARGET_LINK_LIBRARIES(${testsuite-short}-TestSuite ${OPENDAVINCI_LIB} ${THIRDPARTY_LIBS})
+        TARGET_LINK_LIBRARIES(${testsuite-short}-TestSuite ${OPENDAVINCI_LIB_FOR_TESTSUITES} ${LIBRARIES})
     ENDFOREACH()
 
     FILE(GLOB libopendavinci-coredata-testsuites "${COREDATA_DIR}/testsuites/*.h")
-
     FOREACH(testsuite ${libopendavinci-coredata-testsuites})
         STRING(REPLACE "/" ";" testsuite-list ${testsuite})
 
@@ -363,7 +410,32 @@ IF(CXXTEST_FOUND)
         ENDIF()
 
         SET_TESTS_PROPERTIES(${testsuite-short}-TestSuite PROPERTIES TIMEOUT 3000)
-        TARGET_LINK_LIBRARIES(${testsuite-short}-TestSuite ${OPENDAVINCI_LIB} ${LIBRARIES})
+        TARGET_LINK_LIBRARIES(${testsuite-short}-TestSuite ${OPENDAVINCI_LIB_FOR_TESTSUITES} ${LIBRARIES})
+    ENDFOREACH()
+
+    FILE(GLOB libopendavinci-testdata-testsuites "${TESTDATA_DIR}/testsuites/*.h")
+    FOREACH(testsuite ${libopendavinci-testdata-testsuites})
+        STRING(REPLACE "/" ";" testsuite-list ${testsuite})
+
+        LIST(LENGTH testsuite-list len)
+        MATH(EXPR lastItem "${len}-1")
+        LIST(GET testsuite-list "${lastItem}" testsuite-short)
+
+        SET(CXXTEST_TESTGEN_ARGS ${CXXTEST_TESTGEN_ARGS} --world=${PROJECT_NAME}-${testsuite-short})
+        CXXTEST_ADD_TEST(${testsuite-short}-TestSuite ${testsuite-short}-TestSuite.cpp ${testsuite})
+        IF(UNIX)
+            IF( (   ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+                 OR ("${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD")
+                 OR ("${CMAKE_SYSTEM_NAME}" STREQUAL "DragonFly") )
+                AND (NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang") )
+                SET_SOURCE_FILES_PROPERTIES(${testsuite-short}-TestSuite.cpp PROPERTIES COMPILE_FLAGS "-Wno-effc++ -Wno-float-equal -Wno-error=suggest-attribute=noreturn")
+            ELSE()
+                SET_SOURCE_FILES_PROPERTIES(${testsuite-short}-TestSuite.cpp PROPERTIES COMPILE_FLAGS "-Wno-effc++ -Wno-float-equal")
+            ENDIF()
+        ENDIF()
+
+        SET_TESTS_PROPERTIES(${testsuite-short}-TestSuite PROPERTIES TIMEOUT 3000)
+        TARGET_LINK_LIBRARIES(${testsuite-short}-TestSuite ${OPENDAVINCI_LIB_FOR_TESTSUITES} ${LIBRARIES})
     ENDFOREACH()
 ENDIF(CXXTEST_FOUND)
 
