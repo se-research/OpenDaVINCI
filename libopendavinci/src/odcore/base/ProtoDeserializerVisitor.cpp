@@ -19,6 +19,7 @@
 
 #include <cstring>
 #include <iostream>
+#include <vector>
 
 #include "opendavinci/odcore/base/ProtoDeserializerVisitor.h"
 #include "opendavinci/odcore/base/ProtoSerializerVisitor.h"
@@ -232,15 +233,15 @@ class Serializable;
             uint64_t length = 0;
             m_size -= decodeVarInt(m_buffer, length);
 
-            // Read string.
-            char *str = new char[length+1];
-            m_buffer.read(str, length);
+            // Create contiguous buffer.
+            vector<char> buffer(length);
+
+            // Read data from stream.
+            m_buffer.read(&buffer[0], length);
             m_size -= length;
 
-            // Create string.
-            str[length] = 0;
-            v = string(str, length);
-            OPENDAVINCI_CORE_DELETE_ARRAY(str);
+            // Create string from buffer.
+            v = string(&buffer[0], &buffer[length]);
         }
 
         void ProtoDeserializerVisitor::read(const uint32_t &id, void *data, const uint32_t &size) {
