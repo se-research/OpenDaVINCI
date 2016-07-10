@@ -21,6 +21,7 @@
 #include <sstream>
 
 #include "opendavinci/odcore/base/ProtoSerializerVisitor.h"
+#include "opendavinci/odcore/base/Visitable.h"
 
 namespace odcore {
     namespace base {
@@ -102,9 +103,24 @@ class Serializable;
             uint32_t key = getKey(id, ProtoSerializerVisitor::LENGTH_DELIMITED);
             m_size += encodeVarInt(m_buffer, key);
 
-            // Serialize v.
+            // Buffer for serialized data.
             stringstream buffer;
-            buffer << v;
+
+            // Check whether v is from type Visitable to use ProtoSerializerVisitor.
+            try {
+                const Visitable &v2 = dynamic_cast<const Visitable&>(v);
+
+                // Cast succeeded, visited nested class using a ProtoSerializerVisitor.
+                ProtoSerializerVisitor nestedVisitor;
+                const_cast<Visitable&>(v2).accept(nestedVisitor);
+
+                // Get serialized data.
+                nestedVisitor.getSerializedData(buffer);
+            }
+            catch(...) {
+                // Serialize v using the default way as it is not of type Visitable.
+                buffer << v;
+            }
 
             // Get serialized value.
             const string tmp = buffer.str();

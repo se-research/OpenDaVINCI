@@ -266,23 +266,14 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             stringstream out;
             protoSerializerVisitor.getSerializedData(out);
 
-            // According to https://developers.google.com/protocol-buffers/docs/encoding, .
+            // According to https://developers.google.com/protocol-buffers/docs/encoding, 0x1a 0x03 0x08 0x96 0x01.
             const string s = out.str();
-cout << "L = " << s.length() << endl;
-for(unsigned int i=0; i < s.length(); i++) {
-    cout << hex << (int)(uint8_t)s.at(i) << " ";
-}
-cout << endl;
-//            TS_ASSERT(s.size() == 9);
-//            TS_ASSERT(static_cast<uint8_t>(s.at(0)) == 0x12);
-//            TS_ASSERT(static_cast<uint8_t>(s.at(1)) == 0x7);
-//            TS_ASSERT(static_cast<uint8_t>(s.at(2)) == 0x74);
-//            TS_ASSERT(static_cast<uint8_t>(s.at(3)) == 0x65);
-//            TS_ASSERT(static_cast<uint8_t>(s.at(4)) == 0x73);
-//            TS_ASSERT(static_cast<uint8_t>(s.at(5)) == 0x74);
-//            TS_ASSERT(static_cast<uint8_t>(s.at(6)) == 0x69);
-//            TS_ASSERT(static_cast<uint8_t>(s.at(7)) == 0x6e);
-//            TS_ASSERT(static_cast<uint8_t>(s.at(8)) == 0x67);
+            TS_ASSERT(s.size() == 5);
+            TS_ASSERT(static_cast<uint8_t>(s.at(0)) == 0x1a);
+            TS_ASSERT(static_cast<uint8_t>(s.at(1)) == 0x3);
+            TS_ASSERT(static_cast<uint8_t>(s.at(2)) == 0x8);
+            TS_ASSERT(static_cast<uint8_t>(s.at(3)) == 0x96);
+            TS_ASSERT(static_cast<uint8_t>(s.at(4)) == 0x1);
 
             // Create a Proto deserialization visitor.
             ProtoDeserializerVisitor protoDeserializerVisitor;

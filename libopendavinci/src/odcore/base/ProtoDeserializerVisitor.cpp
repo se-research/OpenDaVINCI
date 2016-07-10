@@ -21,9 +21,10 @@
 #include <iostream>
 #include <vector>
 
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/ProtoDeserializerVisitor.h"
 #include "opendavinci/odcore/base/ProtoSerializerVisitor.h"
-#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Visitable.h"
 
 namespace odcore {
     namespace base {
@@ -141,7 +142,24 @@ class Serializable;
 
             // Deserialize v from string using a stringstream.
             stringstream sstr(s);
-            sstr >> v;
+
+            // Check whether v is from type Visitable to use ProtoSerializerVisitor.
+            try {
+                const Visitable &v2 = dynamic_cast<const Visitable&>(v);
+
+                // Cast succeeded, visited nested class using a ProtoSerializerVisitor.
+                ProtoDeserializerVisitor nestedVisitor;
+
+                // Set buffer to deserialize data from.
+                nestedVisitor.deserializeDataFrom(sstr);
+
+                // Visit v and set values.
+                const_cast<Visitable&>(v2).accept(nestedVisitor);
+            }
+            catch(...) {
+                // Deserialize v using the default way as it is not of type Visitable.
+                sstr >> v;
+            }
         }
 
         void ProtoDeserializerVisitor::read(const uint32_t &id, bool &v) {
