@@ -18,6 +18,7 @@
  */
 
 #include <iostream>
+#include <sstream>
 
 #include "opendavinci/odcore/base/ProtoSerializerVisitor.h"
 
@@ -97,18 +98,25 @@ class Serializable;
 
         ///////////////////////////////////////////////////////////////////////
 
-        void ProtoSerializerVisitor::write(const uint32_t &/*id*/, const Serializable &/*v*/) {
-            cerr << "[core::base::ProtoSerializerVisitor]: write(const uint32_t&, const Serializable&) not implemented!" << endl;
+        void ProtoSerializerVisitor::write(const uint32_t &id, const Serializable &v) {
+            uint32_t key = getKey(id, ProtoSerializerVisitor::LENGTH_DELIMITED);
+            m_size += encodeVarInt(m_buffer, key);
 
-//            uint32_t key = getKey( (oneByteID > 0 ? oneByteID : fourByteID) , ProtoSerializerVisitor::LENGTH_DELIMITED);
-//            m_size += encodeVarInt(m_buffer, key);
+            // Serialize v.
+            stringstream buffer;
+            buffer << v;
 
-//            const uint32_t size = v.length();
-//            m_size += encodeVarInt(m_buffer, size);
+            // Get serialized value.
+            const string tmp = buffer.str();
 
-//            m_buffer.write(v.c_str(), size);
-//            m_size += size;
-}
+            // Write length of v into m_buffer.
+            uint64_t size = static_cast<uint32_t>(tmp.length());
+            m_size += encodeVarInt(m_buffer, size);
+
+            // Write actual value.
+            m_buffer.write(tmp.c_str(), size);
+            m_size += size;
+        }
 
         void ProtoSerializerVisitor::write(const uint32_t &id, const bool &v) {
             m_size += writeValue(id, ProtoSerializerVisitor::VARINT, v);

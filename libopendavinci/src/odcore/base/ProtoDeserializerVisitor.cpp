@@ -123,9 +123,25 @@ class Serializable;
         }
 
         void ProtoDeserializerVisitor::read(const uint32_t &id, Serializable &v) {
-            (void)id;
-            (void)v;
-            cerr << "[core::base::ProtoDeserializerVisitor]: read(const uint32_t&, const Serializable&) not implemented!" << endl;
+            m_size -= readAndValidateKey(id, ProtoSerializerVisitor::LENGTH_DELIMITED);
+
+            // Read length.
+            uint64_t length = 0;
+            m_size -= decodeVarInt(m_buffer, length);
+
+            // Create contiguous buffer.
+            vector<char> buffer(length);
+
+            // Read data from stream into buffer.
+            m_buffer.read(&buffer[0], length);
+            m_size -= length;
+
+            // Create string from buffer.
+            const string s(&buffer[0], &buffer[length]);
+
+            // Deserialize v from string using a stringstream.
+            stringstream sstr(s);
+            sstr >> v;
         }
 
         void ProtoDeserializerVisitor::read(const uint32_t &id, bool &v) {
