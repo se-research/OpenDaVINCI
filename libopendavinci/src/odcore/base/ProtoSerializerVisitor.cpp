@@ -47,7 +47,7 @@ class Serializable;
             return (fieldNumber << 3) | protoType;
         }
 
-        uint32_t ProtoSerializerVisitor::write(const uint32_t &id, const ProtoSerializerVisitor::PROTOBUF_TYPE &type, uint64_t value) {
+        uint32_t ProtoSerializerVisitor::writeValue(const uint32_t &id, const ProtoSerializerVisitor::PROTOBUF_TYPE &type, uint64_t value) {
             uint32_t size = 0;
             uint32_t key = getKey(id, type);
             size += encodeVarInt(m_buffer, key);
@@ -95,46 +95,55 @@ class Serializable;
             return size;
         }
 
-        void ProtoSerializerVisitor::write(const uint32_t &/*id*/, const Serializable &/*v*/) {}
+        void ProtoSerializerVisitor::write(const uint32_t &/*id*/, const Serializable &/*v*/) {
+//            uint32_t key = getKey( (oneByteID > 0 ? oneByteID : fourByteID) , ProtoSerializerVisitor::LENGTH_DELIMITED);
+//            m_size += encodeVarInt(m_buffer, key);
+
+//            const uint32_t size = v.length();
+//            m_size += encodeVarInt(m_buffer, size);
+
+//            m_buffer.write(v.c_str(), size);
+//            m_size += size;
+}
 
         void ProtoSerializerVisitor::write(const uint32_t &id, const bool &v) {
-            m_size += write(id, ProtoSerializerVisitor::VARINT, v);
+            m_size += writeValue(id, ProtoSerializerVisitor::VARINT, v);
         }
 
         void ProtoSerializerVisitor::write(const uint32_t &id, const char &v) {
-            m_size += write(id, ProtoSerializerVisitor::VARINT, v);
+            m_size += writeValue(id, ProtoSerializerVisitor::VARINT, v);
         }
 
         void ProtoSerializerVisitor::write(const uint32_t &id, const unsigned char &v) {
-            m_size += write(id, ProtoSerializerVisitor::VARINT, v);
+            m_size += writeValue(id, ProtoSerializerVisitor::VARINT, v);
         }
 
         void ProtoSerializerVisitor::write(const uint32_t &id, const int8_t &v) {
-            m_size += write(id, ProtoSerializerVisitor::VARINT, encodeZigZag8(v));
+            m_size += writeValue(id, ProtoSerializerVisitor::VARINT, encodeZigZag8(v));
         }
 
         void ProtoSerializerVisitor::write(const uint32_t &id, const int16_t &v) {
-            m_size += write(id, ProtoSerializerVisitor::VARINT, encodeZigZag16(v));
+            m_size += writeValue(id, ProtoSerializerVisitor::VARINT, encodeZigZag16(v));
         }
 
         void ProtoSerializerVisitor::write(const uint32_t &id, const uint16_t &v) {
-            m_size += write(id, ProtoSerializerVisitor::VARINT, v);
+            m_size += writeValue(id, ProtoSerializerVisitor::VARINT, v);
         }
 
         void ProtoSerializerVisitor::write(const uint32_t &id, const int32_t &v) {
-            m_size += write(id, ProtoSerializerVisitor::VARINT, encodeZigZag32(v));
+            m_size += writeValue(id, ProtoSerializerVisitor::VARINT, encodeZigZag32(v));
         }
 
         void ProtoSerializerVisitor::write(const uint32_t &id, const uint32_t &v) {
-            m_size += write(id, ProtoSerializerVisitor::VARINT, v);
+            m_size += writeValue(id, ProtoSerializerVisitor::VARINT, v);
         }
 
         void ProtoSerializerVisitor::write(const uint32_t &id, const int64_t &v) {
-            m_size += write(id, ProtoSerializerVisitor::VARINT, encodeZigZag64(v));
+            m_size += writeValue(id, ProtoSerializerVisitor::VARINT, encodeZigZag64(v));
         }
 
         void ProtoSerializerVisitor::write(const uint32_t &id, const uint64_t &v) {
-            m_size += write(id, ProtoSerializerVisitor::VARINT, v);
+            m_size += writeValue(id, ProtoSerializerVisitor::VARINT, v);
         }
 
         void ProtoSerializerVisitor::write(const uint32_t &id, const float &v) {
@@ -162,7 +171,7 @@ class Serializable;
             const uint32_t size = v.length();
             m_size += encodeVarInt(m_buffer, size);
 
-            m_buffer.write(v.c_str(), size);  
+            m_buffer.write(v.c_str(), size);
             m_size += size;
         }
 
@@ -181,83 +190,59 @@ class Serializable;
         }
 
         void ProtoSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const bool &v) {
-            m_size += write( (oneByteID > 0 ? oneByteID : fourByteID) , ProtoSerializerVisitor::VARINT, v);
+            write( (oneByteID > 0 ? oneByteID : fourByteID) , v);
         }
 
         void ProtoSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const char &v) {
-            m_size += write( (oneByteID > 0 ? oneByteID : fourByteID) , ProtoSerializerVisitor::VARINT, v);
+            write( (oneByteID > 0 ? oneByteID : fourByteID) , v);
         }
 
         void ProtoSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const unsigned char &v) {
-            m_size += write( (oneByteID > 0 ? oneByteID : fourByteID) , ProtoSerializerVisitor::VARINT, v);
+            write( (oneByteID > 0 ? oneByteID : fourByteID) , v);
         }
 
         void ProtoSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const int8_t &v) {
-            int32_t _v = v;
-            m_size += write( (oneByteID > 0 ? oneByteID : fourByteID) , ProtoSerializerVisitor::VARINT, encodeZigZag8(_v));
+            write( (oneByteID > 0 ? oneByteID : fourByteID) , v);
         }
 
         void ProtoSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const int16_t &v) {
-            m_size += write( (oneByteID > 0 ? oneByteID : fourByteID) , ProtoSerializerVisitor::VARINT, encodeZigZag16(v));
+            write( (oneByteID > 0 ? oneByteID : fourByteID) , v);
         }
 
         void ProtoSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const uint16_t &v) {
-            m_size += write( (oneByteID > 0 ? oneByteID : fourByteID) , ProtoSerializerVisitor::VARINT, v);
+            write( (oneByteID > 0 ? oneByteID : fourByteID) , v);
         }
 
         void ProtoSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const int32_t &v) {
-            m_size += write( (oneByteID > 0 ? oneByteID : fourByteID) , ProtoSerializerVisitor::VARINT, encodeZigZag32(v));
+            write( (oneByteID > 0 ? oneByteID : fourByteID) , v);
         }
 
         void ProtoSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const uint32_t &v) {
-            m_size += write( (oneByteID > 0 ? oneByteID : fourByteID) , ProtoSerializerVisitor::VARINT, v);
+            write( (oneByteID > 0 ? oneByteID : fourByteID) , v);
         }
 
         void ProtoSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const int64_t &v) {
-            m_size += write( (oneByteID > 0 ? oneByteID : fourByteID) , ProtoSerializerVisitor::VARINT, encodeZigZag64(v));
+            write( (oneByteID > 0 ? oneByteID : fourByteID) , v);
         }
 
         void ProtoSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const uint64_t &v) {
-            m_size += write( (oneByteID > 0 ? oneByteID : fourByteID) , ProtoSerializerVisitor::VARINT, v);
+            write( (oneByteID > 0 ? oneByteID : fourByteID) , v);
         }
 
         void ProtoSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const float &v) {
-            uint32_t key = getKey( (oneByteID > 0 ? oneByteID : fourByteID) , ProtoSerializerVisitor::FOUR_BYTES);
-            m_size += encodeVarInt(m_buffer, key);
-
-            float _v = htonf(v);
-            m_buffer.write(reinterpret_cast<const char*>(&_v), sizeof(const float));
-            m_size += sizeof(const float);
+            write( (oneByteID > 0 ? oneByteID : fourByteID) , v);
         }
 
         void ProtoSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const double &v) {
-            uint32_t key = getKey( (oneByteID > 0 ? oneByteID : fourByteID) , ProtoSerializerVisitor::EIGHT_BYTES);
-            m_size += encodeVarInt(m_buffer, key);
-
-            double _v = htond(v);
-            m_buffer.write(reinterpret_cast<const char*>(&_v), sizeof(const double));
-            m_size += sizeof(const double);
+            write( (oneByteID > 0 ? oneByteID : fourByteID) , v);
         }
 
         void ProtoSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const string &v) {
-            uint32_t key = getKey( (oneByteID > 0 ? oneByteID : fourByteID) , ProtoSerializerVisitor::LENGTH_DELIMITED);
-            m_size += encodeVarInt(m_buffer, key);
-
-            const uint32_t size = v.length();
-            m_size += encodeVarInt(m_buffer, size);
-
-            m_buffer.write(v.c_str(), size);
-            m_size += size;
+            write( (oneByteID > 0 ? oneByteID : fourByteID) , v);
         }
 
         void ProtoSerializerVisitor::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const void *data, const uint32_t &size) {
-            uint32_t key = getKey( (oneByteID > 0 ? oneByteID : fourByteID) , ProtoSerializerVisitor::LENGTH_DELIMITED);
-            m_size += encodeVarInt(m_buffer, key);
-
-            m_size += encodeVarInt(m_buffer, size);
-
-            m_buffer.write(reinterpret_cast<const char*>(data), size);
-            m_size += size;
+            write( (oneByteID > 0 ? oneByteID : fourByteID) , data, size);
         }
 
 
@@ -265,8 +250,8 @@ class Serializable;
 
         void ProtoSerializerVisitor::endVisit() {}
 
-        void ProtoSerializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, Serializable &/*v*/) {
-            cerr << "[core::base::ProtoSerializerVisitor]: Proto for Serializable not implemented!" << endl;
+        void ProtoSerializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, Serializable &v) {
+            write(longId, shortId, longName, shortName, v);
         }
 
         void ProtoSerializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, bool &v) {

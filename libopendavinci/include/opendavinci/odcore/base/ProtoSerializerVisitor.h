@@ -183,7 +183,7 @@ class Serializable;
                  * @param value to be written
                  * @return Number of bytes written
                  */
-                uint32_t write(const uint32_t &id, const PROTOBUF_TYPE &type, uint64_t value);
+                uint32_t writeValue(const uint32_t &id, const PROTOBUF_TYPE &type, uint64_t value);
 
                 /**
                  * This method creates the key for the Protobuf format.

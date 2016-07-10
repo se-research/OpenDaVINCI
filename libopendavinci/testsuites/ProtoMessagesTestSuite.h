@@ -33,6 +33,7 @@
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage1.h"
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage2.h"
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage3.h"
+#include "opendavincitestdata/generated/odcore/testdata/TestMessage4.h"
 
 using namespace std;
 using namespace odcore::base;
@@ -249,6 +250,50 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             TS_ASSERT(tm1.getField1() == tm2.getField1());
             TS_ASSERT(tm1.getField1() == "testing");
+        }
+
+        void testSerializationDeserializationTestMessage4OneFieldGoogleExample() {
+            TestMessage4 tm1;
+            TestMessage1 tm1Embedded;
+            tm1Embedded.setField1(150);
+            tm1.setField1(tm1Embedded);
+
+            // Create a Proto serialization visitor.
+            ProtoSerializerVisitor protoSerializerVisitor;
+            tm1.accept(protoSerializerVisitor);
+
+            // Write the data to a stringstream.
+            stringstream out;
+            protoSerializerVisitor.getSerializedData(out);
+
+            // According to https://developers.google.com/protocol-buffers/docs/encoding, .
+            const string s = out.str();
+cout << "L = " << s.length() << endl;
+for(unsigned int i=0; i < s.length(); i++) {
+    cout << hex << (int)(uint8_t)s.at(i) << " ";
+}
+cout << endl;
+//            TS_ASSERT(s.size() == 9);
+//            TS_ASSERT(static_cast<uint8_t>(s.at(0)) == 0x12);
+//            TS_ASSERT(static_cast<uint8_t>(s.at(1)) == 0x7);
+//            TS_ASSERT(static_cast<uint8_t>(s.at(2)) == 0x74);
+//            TS_ASSERT(static_cast<uint8_t>(s.at(3)) == 0x65);
+//            TS_ASSERT(static_cast<uint8_t>(s.at(4)) == 0x73);
+//            TS_ASSERT(static_cast<uint8_t>(s.at(5)) == 0x74);
+//            TS_ASSERT(static_cast<uint8_t>(s.at(6)) == 0x69);
+//            TS_ASSERT(static_cast<uint8_t>(s.at(7)) == 0x6e);
+//            TS_ASSERT(static_cast<uint8_t>(s.at(8)) == 0x67);
+
+            // Create a Proto deserialization visitor.
+            ProtoDeserializerVisitor protoDeserializerVisitor;
+            protoDeserializerVisitor.deserializeDataFrom(out);
+
+            // Read back the data by using the visitor.
+            TestMessage4 tm2;
+            tm2.accept(protoDeserializerVisitor);
+
+            TS_ASSERT(tm1.getField1().getField1() == tm2.getField1().getField1());
+            TS_ASSERT(tm1.getField1().getField1() == 150);
         }
 };
 
