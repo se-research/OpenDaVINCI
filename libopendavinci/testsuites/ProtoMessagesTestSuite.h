@@ -32,6 +32,8 @@
 
 #include "opendavinci/generated/odcore/data/LogMessage.h"
 #include "opendavinci/generated/odcore/data/reflection/AbstractField.h"
+#include "opendavinci/generated/odcore/data/dmcp/ServerInformation.h"
+
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage1.h"
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage2.h"
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage3.h"
@@ -41,6 +43,7 @@
 using namespace std;
 using namespace odcore::base;
 using namespace odcore::data;
+using namespace odcore::data::dmcp;
 using namespace odcore::data::reflection;
 using namespace odcore::testdata;
 
@@ -457,6 +460,39 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             TS_ASSERT(tm1.getSize() == tm2.getSize());
             TS_ASSERT(tm1.getSize() == -12);
+        }
+
+        void testSerializationDeserializationServerInformation() {
+            ServerInformation tm1;
+            tm1.setIP("123.456.789.abc");
+            tm1.setPort(7890);
+            tm1.setManagedLevel(ServerInformation::ML_PULSE_TIME_ACK);
+
+            // Create a Proto serialization visitor.
+            ProtoSerializerVisitor protoSerializerVisitor;
+            tm1.accept(protoSerializerVisitor);
+
+            // Write the data to a stringstream.
+            stringstream out;
+            protoSerializerVisitor.getSerializedDataWithHeader(out);
+
+
+            // Create a Proto deserialization visitor.
+            ProtoDeserializerVisitor protoDeserializerVisitor;
+            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
+
+            // Read back the data by using the visitor.
+            ServerInformation tm2;
+            tm2.accept(protoDeserializerVisitor);
+
+            TS_ASSERT(tm1.getIP() == tm2.getIP());
+            TS_ASSERT(tm1.getIP() == "123.456.789.abc");
+
+            TS_ASSERT(tm1.getPort() == tm2.getPort());
+            TS_ASSERT(tm1.getPort() == 7890);
+
+            TS_ASSERT(tm1.getManagedLevel() == tm2.getManagedLevel());
+            TS_ASSERT(tm1.getManagedLevel() == ServerInformation::ML_PULSE_TIME_ACK);
         }
 };
 
