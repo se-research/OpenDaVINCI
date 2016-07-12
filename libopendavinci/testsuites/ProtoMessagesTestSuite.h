@@ -34,6 +34,7 @@
 #include "opendavinci/generated/odcore/data/reflection/AbstractField.h"
 #include "opendavinci/generated/odcore/data/dmcp/ServerInformation.h"
 #include "opendavinci/generated/odcore/data/dmcp/DiscoverMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleDescriptor.h"
 
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage1.h"
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage2.h"
@@ -538,6 +539,43 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             TS_ASSERT(dm.getModuleName() == dm2.getModuleName());
             TS_ASSERT(dm.getModuleName() == "TestComponent");
+        }
+
+        void testSerializationDeserializationModuleDescriptor() {
+            ModuleDescriptor tm1;
+            tm1.setName("My component");
+            tm1.setIdentifier("12345");
+            tm1.setVersion("XZY");
+            tm1.setFrequency(1.2345);
+
+            // Create a Proto serialization visitor.
+            ProtoSerializerVisitor protoSerializerVisitor;
+            tm1.accept(protoSerializerVisitor);
+
+            // Write the data to a stringstream.
+            stringstream out;
+            protoSerializerVisitor.getSerializedDataWithHeader(out);
+
+
+            // Create a Proto deserialization visitor.
+            ProtoDeserializerVisitor protoDeserializerVisitor;
+            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
+
+            // Read back the data by using the visitor.
+            ModuleDescriptor tm2;
+            tm2.accept(protoDeserializerVisitor);
+
+            TS_ASSERT(tm1.getName() == tm2.getName());
+            TS_ASSERT(tm1.getName() == "My component");
+
+            TS_ASSERT(tm1.getIdentifier() == tm2.getIdentifier());
+            TS_ASSERT(tm1.getIdentifier() == "12345");
+
+            TS_ASSERT(tm1.getVersion() == tm2.getVersion());
+            TS_ASSERT(tm1.getVersion() == "XZY");
+
+            TS_ASSERT_DELTA(tm1.getFrequency(), tm2.getFrequency(), 1e-4);
+            TS_ASSERT_DELTA(tm1.getFrequency(), 1.2345, 1e-4);
         }
 };
 
