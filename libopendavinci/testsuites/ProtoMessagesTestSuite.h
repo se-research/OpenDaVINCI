@@ -30,6 +30,7 @@
 #include "opendavinci/odcore/base/ProtoDeserializerVisitor.h"
 #include "opendavinci/odcore/base/ProtoSerializerVisitor.h"
 
+#include "opendavinci/generated/odcore/data/LogMessage.h"
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage1.h"
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage2.h"
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage3.h"
@@ -38,6 +39,7 @@
 
 using namespace std;
 using namespace odcore::base;
+using namespace odcore::data;
 using namespace odcore::testdata;
 
 class ProtoMessageTest : public CxxTest::TestSuite {
@@ -375,6 +377,39 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(tm2.getField10(), tm1.getField10(), 1e-4);
             TS_ASSERT(tm2.getField11() == tm1.getField11());
             TS_ASSERT(tm2.getField12().getField1() == tm1.getField12().getField1());
+        }
+
+        void testSerializationDeserializationLogMessage() {
+            LogMessage tm1;
+            tm1.setLogLevel(LogMessage::WARN);
+            tm1.setLogMessage("This is a test message!");
+            tm1.setComponentName("Component ABC");
+
+            // Create a Proto serialization visitor.
+            ProtoSerializerVisitor protoSerializerVisitor;
+            tm1.accept(protoSerializerVisitor);
+
+            // Write the data to a stringstream.
+            stringstream out;
+            protoSerializerVisitor.getSerializedDataWithHeader(out);
+
+
+            // Create a Proto deserialization visitor.
+            ProtoDeserializerVisitor protoDeserializerVisitor;
+            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
+
+            // Read back the data by using the visitor.
+            LogMessage tm2;
+            tm2.accept(protoDeserializerVisitor);
+
+            TS_ASSERT(tm1.getLogLevel() == tm2.getLogLevel());
+            TS_ASSERT(tm1.getLogLevel() == LogMessage::WARN);
+
+            TS_ASSERT(tm1.getLogMessage() == tm2.getLogMessage());
+            TS_ASSERT(tm1.getLogMessage() == "This is a test message!");
+
+            TS_ASSERT(tm1.getComponentName() == tm2.getComponentName());
+            TS_ASSERT(tm1.getComponentName() == "Component ABC");
         }
 };
 
