@@ -33,6 +33,7 @@
 #include "opendavinci/generated/odcore/data/LogMessage.h"
 #include "opendavinci/generated/odcore/data/reflection/AbstractField.h"
 #include "opendavinci/generated/odcore/data/dmcp/ServerInformation.h"
+#include "opendavinci/generated/odcore/data/dmcp/DiscoverMessage.h"
 
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage1.h"
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage2.h"
@@ -493,6 +494,50 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             TS_ASSERT(tm1.getManagedLevel() == tm2.getManagedLevel());
             TS_ASSERT(tm1.getManagedLevel() == ServerInformation::ML_PULSE_TIME_ACK);
+        }
+
+        void testSerializationDeserializationDiscoverMessage() {
+            ServerInformation tm1;
+            tm1.setIP("456.789.abc.123");
+            tm1.setPort(456);
+            tm1.setManagedLevel(ServerInformation::ML_PULSE_TIME);
+
+            DiscoverMessage dm;
+            dm.setType(DiscoverMessage::RESPONSE);
+            dm.setServerInformation(tm1);
+            dm.setModuleName("TestComponent");
+
+            // Create a Proto serialization visitor.
+            ProtoSerializerVisitor protoSerializerVisitor;
+            dm.accept(protoSerializerVisitor);
+
+            // Write the data to a stringstream.
+            stringstream out;
+            protoSerializerVisitor.getSerializedDataWithHeader(out);
+
+
+            // Create a Proto deserialization visitor.
+            ProtoDeserializerVisitor protoDeserializerVisitor;
+            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
+
+            // Read back the data by using the visitor.
+            DiscoverMessage dm2;
+            dm2.accept(protoDeserializerVisitor);
+
+            TS_ASSERT(dm.getServerInformation().getIP() == dm2.getServerInformation().getIP());
+            TS_ASSERT(dm2.getServerInformation().getIP() == "456.789.abc.123");
+
+            TS_ASSERT(dm.getServerInformation().getPort() == dm2.getServerInformation().getPort());
+            TS_ASSERT(dm2.getServerInformation().getPort() == 456);
+
+            TS_ASSERT(dm.getServerInformation().getManagedLevel() == dm2.getServerInformation().getManagedLevel());
+            TS_ASSERT(dm2.getServerInformation().getManagedLevel() == ServerInformation::ML_PULSE_TIME);
+
+            TS_ASSERT(dm.getType() == dm2.getType());
+            TS_ASSERT(dm.getType() == DiscoverMessage::RESPONSE);
+
+            TS_ASSERT(dm.getModuleName() == dm2.getModuleName());
+            TS_ASSERT(dm.getModuleName() == "TestComponent");
         }
 };
 
