@@ -43,6 +43,7 @@
 #include "opendavinci/generated/odcore/data/dmcp/ModuleStatistic.h"
 #include "opendavinci/generated/odcore/data/dmcp/ModuleStatistics.h"
 #include "opendavinci/generated/odcore/data/dmcp/ModuleStateMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
 
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage1.h"
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage2.h"
@@ -792,6 +793,31 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             TS_ASSERT(tm1.getModuleState() == tm2.getModuleState());
             TS_ASSERT(tm2.getModuleState() == ModuleStateMessage::RUNNING);
+        }
+
+        void testSerializationDeserializationModuleExitCodeMessage() {
+            ModuleExitCodeMessage tm1;
+            tm1.setModuleExitCode(ModuleExitCodeMessage::CONNECTION_LOST);
+
+            // Create a Proto serialization visitor.
+            ProtoSerializerVisitor protoSerializerVisitor;
+            tm1.accept(protoSerializerVisitor);
+
+            // Write the data to a stringstream.
+            stringstream out;
+            protoSerializerVisitor.getSerializedDataWithHeader(out);
+
+
+            // Create a Proto deserialization visitor.
+            ProtoDeserializerVisitor protoDeserializerVisitor;
+            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
+
+            // Read back the data by using the visitor.
+            ModuleExitCodeMessage tm2;
+            tm2.accept(protoDeserializerVisitor);
+
+            TS_ASSERT(tm1.getModuleExitCode() == tm2.getModuleExitCode());
+            TS_ASSERT(tm2.getModuleExitCode() == ModuleExitCodeMessage::CONNECTION_LOST);
         }
 };
 
