@@ -36,6 +36,7 @@
 #include "opendavinci/generated/odcore/data/dmcp/DiscoverMessage.h"
 #include "opendavinci/generated/odcore/data/dmcp/ModuleDescriptor.h"
 #include "opendavinci/generated/odcore/data/dmcp/RuntimeStatistic.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleStatistic.h"
 
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage1.h"
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage2.h"
@@ -599,8 +600,56 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             // Read back the data by using the visitor.
             RuntimeStatistic tm2;
             tm2.accept(protoDeserializerVisitor);
+
             TS_ASSERT_DELTA(tm1.getSliceConsumption(), tm2.getSliceConsumption(), 1e-4);
             TS_ASSERT_DELTA(tm1.getSliceConsumption(), -7.2345, 1e-4);
+        }
+
+        void testSerializationDeserializationModuleStatistic() {
+            ModuleDescriptor md;
+            md.setName("My component");
+            md.setIdentifier("12345");
+            md.setVersion("XZY");
+            md.setFrequency(1.2345);
+
+            RuntimeStatistic rs;
+            rs.setSliceConsumption(-7.2345);
+
+            ModuleStatistic tm1;
+            tm1.setModule(md);
+            tm1.setRuntimeStatistic(rs);
+
+            // Create a Proto serialization visitor.
+            ProtoSerializerVisitor protoSerializerVisitor;
+            tm1.accept(protoSerializerVisitor);
+
+            // Write the data to a stringstream.
+            stringstream out;
+            protoSerializerVisitor.getSerializedDataWithHeader(out);
+
+
+            // Create a Proto deserialization visitor.
+            ProtoDeserializerVisitor protoDeserializerVisitor;
+            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
+
+            // Read back the data by using the visitor.
+            ModuleStatistic tm2;
+            tm2.accept(protoDeserializerVisitor);
+
+            TS_ASSERT(tm1.getModule().getName() == tm2.getModule().getName());
+            TS_ASSERT(tm1.getModule().getName() == "My component");
+
+            TS_ASSERT(tm1.getModule().getIdentifier() == tm2.getModule().getIdentifier());
+            TS_ASSERT(tm1.getModule().getIdentifier() == "12345");
+
+            TS_ASSERT(tm1.getModule().getVersion() == tm2.getModule().getVersion());
+            TS_ASSERT(tm1.getModule().getVersion() == "XZY");
+
+            TS_ASSERT_DELTA(tm1.getModule().getFrequency(), tm2.getModule().getFrequency(), 1e-4);
+            TS_ASSERT_DELTA(tm1.getModule().getFrequency(), 1.2345, 1e-4);
+
+            TS_ASSERT_DELTA(tm1.getRuntimeStatistic().getSliceConsumption(), tm2.getRuntimeStatistic().getSliceConsumption(), 1e-4);
+            TS_ASSERT_DELTA(tm1.getRuntimeStatistic().getSliceConsumption(), -7.2345, 1e-4);
         }
 };
 
