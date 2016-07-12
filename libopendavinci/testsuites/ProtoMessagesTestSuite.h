@@ -35,6 +35,7 @@
 #include "opendavinci/generated/odcore/data/dmcp/ServerInformation.h"
 #include "opendavinci/generated/odcore/data/dmcp/DiscoverMessage.h"
 #include "opendavinci/generated/odcore/data/dmcp/ModuleDescriptor.h"
+#include "opendavinci/generated/odcore/data/dmcp/RuntimeStatistic.h"
 
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage1.h"
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage2.h"
@@ -576,6 +577,30 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             TS_ASSERT_DELTA(tm1.getFrequency(), tm2.getFrequency(), 1e-4);
             TS_ASSERT_DELTA(tm1.getFrequency(), 1.2345, 1e-4);
+        }
+
+        void testSerializationDeserializationRuntimeStatistic() {
+            RuntimeStatistic tm1;
+            tm1.setSliceConsumption(-7.2345);
+
+            // Create a Proto serialization visitor.
+            ProtoSerializerVisitor protoSerializerVisitor;
+            tm1.accept(protoSerializerVisitor);
+
+            // Write the data to a stringstream.
+            stringstream out;
+            protoSerializerVisitor.getSerializedDataWithHeader(out);
+
+
+            // Create a Proto deserialization visitor.
+            ProtoDeserializerVisitor protoDeserializerVisitor;
+            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
+
+            // Read back the data by using the visitor.
+            RuntimeStatistic tm2;
+            tm2.accept(protoDeserializerVisitor);
+            TS_ASSERT_DELTA(tm1.getSliceConsumption(), tm2.getSliceConsumption(), 1e-4);
+            TS_ASSERT_DELTA(tm1.getSliceConsumption(), -7.2345, 1e-4);
         }
 };
 
