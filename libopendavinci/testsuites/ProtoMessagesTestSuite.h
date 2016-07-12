@@ -31,6 +31,7 @@
 #include "opendavinci/odcore/base/ProtoSerializerVisitor.h"
 
 #include "opendavinci/generated/odcore/data/LogMessage.h"
+#include "opendavinci/generated/odcore/data/reflection/AbstractField.h"
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage1.h"
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage2.h"
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage3.h"
@@ -40,6 +41,7 @@
 using namespace std;
 using namespace odcore::base;
 using namespace odcore::data;
+using namespace odcore::data::reflection;
 using namespace odcore::testdata;
 
 class ProtoMessageTest : public CxxTest::TestSuite {
@@ -410,6 +412,51 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             TS_ASSERT(tm1.getComponentName() == tm2.getComponentName());
             TS_ASSERT(tm1.getComponentName() == "Component ABC");
+        }
+
+        void testSerializationDeserializationAbstractField() {
+            AbstractField tm1;
+            tm1.setLongFieldIdentifier(123456);
+            tm1.setShortFieldIdentifier(123);
+            tm1.setLongFieldName("odcore.data.reflection.AbstractField");
+            tm1.setShortFieldName("AbstractField");
+            tm1.setFieldDataType(AbstractField::INT8_T);
+            tm1.setSize(-12);
+
+            // Create a Proto serialization visitor.
+            ProtoSerializerVisitor protoSerializerVisitor;
+            tm1.accept(protoSerializerVisitor);
+
+            // Write the data to a stringstream.
+            stringstream out;
+            protoSerializerVisitor.getSerializedDataWithHeader(out);
+
+
+            // Create a Proto deserialization visitor.
+            ProtoDeserializerVisitor protoDeserializerVisitor;
+            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
+
+            // Read back the data by using the visitor.
+            AbstractField tm2;
+            tm2.accept(protoDeserializerVisitor);
+
+            TS_ASSERT(tm1.getLongFieldIdentifier() == tm2.getLongFieldIdentifier());
+            TS_ASSERT(tm1.getLongFieldIdentifier() == 123456);
+
+            TS_ASSERT(tm1.getShortFieldIdentifier() == tm2.getShortFieldIdentifier());
+            TS_ASSERT(tm1.getShortFieldIdentifier() == 123);
+
+            TS_ASSERT(tm1.getLongFieldName() == tm2.getLongFieldName());
+            TS_ASSERT(tm1.getLongFieldName() == "odcore.data.reflection.AbstractField");
+
+            TS_ASSERT(tm1.getShortFieldName() == tm2.getShortFieldName());
+            TS_ASSERT(tm1.getShortFieldName() == "AbstractField");
+
+            TS_ASSERT(tm1.getFieldDataType() == tm2.getFieldDataType());
+            TS_ASSERT(tm1.getFieldDataType() == AbstractField::INT8_T);
+
+            TS_ASSERT(tm1.getSize() == tm2.getSize());
+            TS_ASSERT(tm1.getSize() == -12);
         }
 };
 
