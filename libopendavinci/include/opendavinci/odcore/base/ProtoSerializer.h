@@ -65,6 +65,13 @@ class Serializable;
             public:
                 ProtoSerializer();
 
+                /**
+                 * Contructor.
+                 *
+                 * @param o Stream to serialize data to when the destructor is called.
+                 */
+                ProtoSerializer(ostream &o);
+
                 virtual ~ProtoSerializer();
 
                 virtual void getSerializedData(ostream &o);
@@ -175,6 +182,7 @@ class Serializable;
                 uint32_t getKey(const uint32_t &fieldNumber, const uint8_t &protoType);
 
             private:
+                ostream *m_out; // We have a pointer here that we derive from a reference parameter in our non-standard constructor; thus, the other class is responsible for the lifecycle of the variable to which we point to.
                 uint32_t m_size;
                 stringstream m_buffer;
         };

@@ -23,10 +23,14 @@
 #include <cmath>                        // for fabs
 #include <iostream>                     // for stringstream, operator<<, etc
 #include <string>                       // for operator==, basic_string, etc
+#include <vector>
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
 #include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/ProtoDeserializer.h"
+#include "opendavinci/odcore/base/ProtoSerializer.h"
 #include "opendavinci/odcore/base/ProtoDeserializerVisitor.h"
 #include "opendavinci/odcore/base/ProtoSerializerVisitor.h"
 
@@ -37,6 +41,8 @@
 #include "opendavinci/generated/odcore/data/dmcp/ModuleDescriptor.h"
 #include "opendavinci/generated/odcore/data/dmcp/RuntimeStatistic.h"
 #include "opendavinci/generated/odcore/data/dmcp/ModuleStatistic.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleStatistics.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleStateMessage.h"
 
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage1.h"
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage2.h"
@@ -50,6 +56,28 @@ using namespace odcore::data;
 using namespace odcore::data::dmcp;
 using namespace odcore::data::reflection;
 using namespace odcore::testdata;
+
+class SerializationFactoryTestCase : public SerializationFactory {
+    public:
+        SerializationFactoryTestCase() {
+            SerializationFactory::m_singleton = this;
+        }
+
+        virtual ~SerializationFactoryTestCase() {
+            SerializationFactory::m_singleton = NULL;
+        }
+
+        virtual shared_ptr<Serializer> getSerializer(ostream &out) const {
+            cout << "SerializationFactoryTestCase::getSerializer" << endl;
+            return shared_ptr<Serializer>(new ProtoSerializer(out));
+        }
+
+        virtual shared_ptr<Deserializer> getDeserializer(istream &in) const {
+            cout << "SerializationFactoryTestCase::getDeserializer" << endl;
+            return shared_ptr<Deserializer>(new ProtoDeserializer(in));
+        }
+
+};
 
 class ProtoMessageTest : public CxxTest::TestSuite {
     public:
@@ -412,13 +440,13 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             tm2.accept(protoDeserializerVisitor);
 
             TS_ASSERT(tm1.getLogLevel() == tm2.getLogLevel());
-            TS_ASSERT(tm1.getLogLevel() == LogMessage::WARN);
+            TS_ASSERT(tm2.getLogLevel() == LogMessage::WARN);
 
             TS_ASSERT(tm1.getLogMessage() == tm2.getLogMessage());
-            TS_ASSERT(tm1.getLogMessage() == "This is a test message!");
+            TS_ASSERT(tm2.getLogMessage() == "This is a test message!");
 
             TS_ASSERT(tm1.getComponentName() == tm2.getComponentName());
-            TS_ASSERT(tm1.getComponentName() == "Component ABC");
+            TS_ASSERT(tm2.getComponentName() == "Component ABC");
         }
 
         void testSerializationDeserializationAbstractField() {
@@ -448,22 +476,22 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             tm2.accept(protoDeserializerVisitor);
 
             TS_ASSERT(tm1.getLongFieldIdentifier() == tm2.getLongFieldIdentifier());
-            TS_ASSERT(tm1.getLongFieldIdentifier() == 123456);
+            TS_ASSERT(tm2.getLongFieldIdentifier() == 123456);
 
             TS_ASSERT(tm1.getShortFieldIdentifier() == tm2.getShortFieldIdentifier());
-            TS_ASSERT(tm1.getShortFieldIdentifier() == 123);
+            TS_ASSERT(tm2.getShortFieldIdentifier() == 123);
 
             TS_ASSERT(tm1.getLongFieldName() == tm2.getLongFieldName());
-            TS_ASSERT(tm1.getLongFieldName() == "odcore.data.reflection.AbstractField");
+            TS_ASSERT(tm2.getLongFieldName() == "odcore.data.reflection.AbstractField");
 
             TS_ASSERT(tm1.getShortFieldName() == tm2.getShortFieldName());
-            TS_ASSERT(tm1.getShortFieldName() == "AbstractField");
+            TS_ASSERT(tm2.getShortFieldName() == "AbstractField");
 
             TS_ASSERT(tm1.getFieldDataType() == tm2.getFieldDataType());
-            TS_ASSERT(tm1.getFieldDataType() == AbstractField::INT8_T);
+            TS_ASSERT(tm2.getFieldDataType() == AbstractField::INT8_T);
 
             TS_ASSERT(tm1.getSize() == tm2.getSize());
-            TS_ASSERT(tm1.getSize() == -12);
+            TS_ASSERT(tm2.getSize() == -12);
         }
 
         void testSerializationDeserializationServerInformation() {
@@ -490,13 +518,13 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             tm2.accept(protoDeserializerVisitor);
 
             TS_ASSERT(tm1.getIP() == tm2.getIP());
-            TS_ASSERT(tm1.getIP() == "123.456.789.abc");
+            TS_ASSERT(tm2.getIP() == "123.456.789.abc");
 
             TS_ASSERT(tm1.getPort() == tm2.getPort());
-            TS_ASSERT(tm1.getPort() == 7890);
+            TS_ASSERT(tm2.getPort() == 7890);
 
             TS_ASSERT(tm1.getManagedLevel() == tm2.getManagedLevel());
-            TS_ASSERT(tm1.getManagedLevel() == ServerInformation::ML_PULSE_TIME_ACK);
+            TS_ASSERT(tm2.getManagedLevel() == ServerInformation::ML_PULSE_TIME_ACK);
         }
 
         void testSerializationDeserializationDiscoverMessage() {
@@ -537,10 +565,10 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(dm2.getServerInformation().getManagedLevel() == ServerInformation::ML_PULSE_TIME);
 
             TS_ASSERT(dm.getType() == dm2.getType());
-            TS_ASSERT(dm.getType() == DiscoverMessage::RESPONSE);
+            TS_ASSERT(dm2.getType() == DiscoverMessage::RESPONSE);
 
             TS_ASSERT(dm.getModuleName() == dm2.getModuleName());
-            TS_ASSERT(dm.getModuleName() == "TestComponent");
+            TS_ASSERT(dm2.getModuleName() == "TestComponent");
         }
 
         void testSerializationDeserializationModuleDescriptor() {
@@ -568,16 +596,16 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             tm2.accept(protoDeserializerVisitor);
 
             TS_ASSERT(tm1.getName() == tm2.getName());
-            TS_ASSERT(tm1.getName() == "My component");
+            TS_ASSERT(tm2.getName() == "My component");
 
             TS_ASSERT(tm1.getIdentifier() == tm2.getIdentifier());
-            TS_ASSERT(tm1.getIdentifier() == "12345");
+            TS_ASSERT(tm2.getIdentifier() == "12345");
 
             TS_ASSERT(tm1.getVersion() == tm2.getVersion());
-            TS_ASSERT(tm1.getVersion() == "XZY");
+            TS_ASSERT(tm2.getVersion() == "XZY");
 
             TS_ASSERT_DELTA(tm1.getFrequency(), tm2.getFrequency(), 1e-4);
-            TS_ASSERT_DELTA(tm1.getFrequency(), 1.2345, 1e-4);
+            TS_ASSERT_DELTA(tm2.getFrequency(), 1.2345, 1e-4);
         }
 
         void testSerializationDeserializationRuntimeStatistic() {
@@ -602,7 +630,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             tm2.accept(protoDeserializerVisitor);
 
             TS_ASSERT_DELTA(tm1.getSliceConsumption(), tm2.getSliceConsumption(), 1e-4);
-            TS_ASSERT_DELTA(tm1.getSliceConsumption(), -7.2345, 1e-4);
+            TS_ASSERT_DELTA(tm2.getSliceConsumption(), -7.2345, 1e-4);
         }
 
         void testSerializationDeserializationModuleStatistic() {
@@ -637,19 +665,133 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             tm2.accept(protoDeserializerVisitor);
 
             TS_ASSERT(tm1.getModule().getName() == tm2.getModule().getName());
-            TS_ASSERT(tm1.getModule().getName() == "My component");
+            TS_ASSERT(tm2.getModule().getName() == "My component");
 
             TS_ASSERT(tm1.getModule().getIdentifier() == tm2.getModule().getIdentifier());
-            TS_ASSERT(tm1.getModule().getIdentifier() == "12345");
+            TS_ASSERT(tm2.getModule().getIdentifier() == "12345");
 
             TS_ASSERT(tm1.getModule().getVersion() == tm2.getModule().getVersion());
-            TS_ASSERT(tm1.getModule().getVersion() == "XZY");
+            TS_ASSERT(tm2.getModule().getVersion() == "XZY");
 
             TS_ASSERT_DELTA(tm1.getModule().getFrequency(), tm2.getModule().getFrequency(), 1e-4);
-            TS_ASSERT_DELTA(tm1.getModule().getFrequency(), 1.2345, 1e-4);
+            TS_ASSERT_DELTA(tm2.getModule().getFrequency(), 1.2345, 1e-4);
 
             TS_ASSERT_DELTA(tm1.getRuntimeStatistic().getSliceConsumption(), tm2.getRuntimeStatistic().getSliceConsumption(), 1e-4);
-            TS_ASSERT_DELTA(tm1.getRuntimeStatistic().getSliceConsumption(), -7.2345, 1e-4);
+            TS_ASSERT_DELTA(tm2.getRuntimeStatistic().getSliceConsumption(), -7.2345, 1e-4);
+        }
+
+        void testSerializationDeserializationModuleStatistics() {
+            ModuleStatistics mss1;
+
+            {
+                ModuleDescriptor md;
+                md.setName("My component");
+                md.setIdentifier("12345");
+                md.setVersion("XZY");
+                md.setFrequency(1.2345);
+
+                RuntimeStatistic rs;
+                rs.setSliceConsumption(-7.2345);
+
+                ModuleStatistic ms1;
+                ms1.setModule(md);
+                ms1.setRuntimeStatistic(rs);
+
+                mss1.addTo_ListOfModuleStatistics(ms1);
+            }
+
+            {
+                ModuleDescriptor md;
+                md.setName("My component B");
+                md.setIdentifier("123456789");
+                md.setVersion("XZYABC");
+                md.setFrequency(8.2345);
+
+                RuntimeStatistic rs;
+                rs.setSliceConsumption(-97.2345);
+
+                ModuleStatistic ms1;
+                ms1.setModule(md);
+                ms1.setRuntimeStatistic(rs);
+
+                mss1.addTo_ListOfModuleStatistics(ms1);
+            }
+
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << mss1;
+
+            // Read back the data by using the visitor.
+            ModuleStatistics mss2;
+
+            // Read from buffer.
+            out >> mss2;
+
+            vector<ModuleStatistic> v1 = mss1.getListOfModuleStatistics();
+            vector<ModuleStatistic> v2 = mss2.getListOfModuleStatistics();
+
+            TS_ASSERT(v1.size() == 2);
+            TS_ASSERT(v2.size() == 2);
+
+            TS_ASSERT(v2.at(0).getModule().getName() == v1.at(0).getModule().getName());
+            TS_ASSERT(v2.at(0).getModule().getName() == "My component");
+
+            TS_ASSERT(v2.at(0).getModule().getIdentifier() == v1.at(0).getModule().getIdentifier());
+            TS_ASSERT(v2.at(0).getModule().getIdentifier() == "12345");
+
+            TS_ASSERT(v2.at(0).getModule().getVersion() == v1.at(0).getModule().getVersion());
+            TS_ASSERT(v2.at(0).getModule().getVersion() == "XZY");
+
+            TS_ASSERT_DELTA(v2.at(0).getModule().getFrequency(), v1.at(0).getModule().getFrequency(), 1e-4);
+            TS_ASSERT_DELTA(v2.at(0).getModule().getFrequency(), 1.2345, 1e-4);
+
+            TS_ASSERT_DELTA(v2.at(0).getRuntimeStatistic().getSliceConsumption(), v1.at(0).getRuntimeStatistic().getSliceConsumption(), 1e-4);
+            TS_ASSERT_DELTA(v2.at(0).getRuntimeStatistic().getSliceConsumption(), -7.2345, 1e-4);
+            TS_ASSERT(v2.at(0).getModule().getName() == v1.at(0).getModule().getName());
+
+
+            TS_ASSERT(v2.at(1).getModule().getName() == "My component B");
+
+            TS_ASSERT(v2.at(1).getModule().getIdentifier() == v1.at(1).getModule().getIdentifier());
+            TS_ASSERT(v2.at(1).getModule().getIdentifier() == "123456789");
+
+            TS_ASSERT(v2.at(1).getModule().getVersion() == v1.at(1).getModule().getVersion());
+            TS_ASSERT(v2.at(1).getModule().getVersion() == "XZYABC");
+
+            TS_ASSERT_DELTA(v2.at(1).getModule().getFrequency(), v1.at(1).getModule().getFrequency(), 1e-4);
+            TS_ASSERT_DELTA(v2.at(1).getModule().getFrequency(), 8.2345, 1e-4);
+
+            TS_ASSERT_DELTA(v2.at(1).getRuntimeStatistic().getSliceConsumption(), v1.at(1).getRuntimeStatistic().getSliceConsumption(), 1e-4);
+            TS_ASSERT_DELTA(v2.at(1).getRuntimeStatistic().getSliceConsumption(), -97.2345, 1e-4);
+        }
+
+        void testSerializationDeserializationModuleStateMessage() {
+            ModuleStateMessage tm1;
+            tm1.setModuleState(ModuleStateMessage::RUNNING);
+
+            // Create a Proto serialization visitor.
+            ProtoSerializerVisitor protoSerializerVisitor;
+            tm1.accept(protoSerializerVisitor);
+
+            // Write the data to a stringstream.
+            stringstream out;
+            protoSerializerVisitor.getSerializedDataWithHeader(out);
+
+
+            // Create a Proto deserialization visitor.
+            ProtoDeserializerVisitor protoDeserializerVisitor;
+            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
+
+            // Read back the data by using the visitor.
+            ModuleStateMessage tm2;
+            tm2.accept(protoDeserializerVisitor);
+
+            TS_ASSERT(tm1.getModuleState() == tm2.getModuleState());
+            TS_ASSERT(tm2.getModuleState() == ModuleStateMessage::RUNNING);
         }
 };
 

@@ -55,6 +55,13 @@ namespace odcore {
             public:
                 ProtoDeserializer();
 
+                /**
+                 * Contructor.
+                 *
+                 * @param i Stream to deserialize data from upon construction.
+                 */
+                ProtoDeserializer(istream &i);
+
                 virtual ~ProtoDeserializer();
 
                 virtual void deserializeDataFrom(istream &in);

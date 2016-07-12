@@ -35,6 +35,12 @@ class Serializable;
             m_size(0),
             m_buffer() {}
 
+        ProtoDeserializer::ProtoDeserializer(istream &i) :
+            m_size(0),
+            m_buffer() {
+            deserializeDataFromWithHeader(i);
+        }
+
         ProtoDeserializer::~ProtoDeserializer() {}
 
         void ProtoDeserializer::deserializeDataFrom(istream &in) {
@@ -57,7 +63,7 @@ class Serializable;
             uint64_t value = 0;
             decodeVarInt(in, value);
             uint16_t magicNumber = static_cast<uint16_t>(value);
-            if (magicNumber == 0xAABB) {
+            if (magicNumber == 0x0DA4) {
                 // Read message size and put remaining bytes into m_buffer.
                 decodeVarInt(in, value);
                 m_size = static_cast<uint32_t>(value);

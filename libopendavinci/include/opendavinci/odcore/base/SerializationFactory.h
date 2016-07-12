@@ -26,6 +26,8 @@
 #include <memory>
 #include "opendavinci/odcore/base/Mutex.h"
 
+class SerializationFactoryTestCase;
+
 namespace odcore {
     namespace base {
 
@@ -41,9 +43,11 @@ class Serializer;
          * @See Serializable
          */
         class OPENDAVINCI_API SerializationFactory {
-            private:
+            protected:
+                friend class SerializationFactoryTestCase;
                 SerializationFactory();
-                
+
+            private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn
                  * already at compile time for unwanted bugs caused by any misuse
@@ -69,7 +73,7 @@ class Serializer;
                  * @param out Output stream for serialization.
                  * @return Serializer.
                  */
-                std::shared_ptr<Serializer> getSerializer(ostream &out) const;
+                virtual std::shared_ptr<Serializer> getSerializer(ostream &out) const;
 
                 /**
                  * This method returns a deserializer.
@@ -77,7 +81,7 @@ class Serializer;
                  * @param in Input stream for deserialization.
                  * @return Deserializer.
                  */
-                std::shared_ptr<Deserializer> getDeserializer(istream &in) const;
+                virtual std::shared_ptr<Deserializer> getDeserializer(istream &in) const;
 
             protected:
                 /**
@@ -89,6 +93,8 @@ class Serializer;
 
             private:
                 static base::Mutex m_singletonMutex;
+
+            protected:
                 static SerializationFactory* m_singleton;
         };
 

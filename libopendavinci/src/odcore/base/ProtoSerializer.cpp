@@ -30,17 +30,27 @@ namespace odcore {
 class Serializable;
 
         ProtoSerializer::ProtoSerializer() :
+            m_out(NULL),
             m_size(0),
             m_buffer() {}
 
-        ProtoSerializer::~ProtoSerializer() {}
+        ProtoSerializer::ProtoSerializer(ostream &o) :
+            m_out(&o),
+            m_size(0),
+            m_buffer() {}
+
+        ProtoSerializer::~ProtoSerializer() {
+            if (m_out != NULL) {
+                getSerializedDataWithHeader(*m_out);
+            }
+        }
 
         void ProtoSerializer::getSerializedData(ostream &o) {
             o << m_buffer.str();
         }
 
         void ProtoSerializer::getSerializedDataWithHeader(ostream &o) {
-            uint16_t magicNumber = 0xAABB;
+            uint16_t magicNumber = 0x0DA4;
             encodeVarInt(o, magicNumber);
             encodeVarInt(o, m_size);
             getSerializedData(o);
