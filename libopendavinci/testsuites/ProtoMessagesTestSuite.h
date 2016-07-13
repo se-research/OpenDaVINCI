@@ -726,6 +726,41 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             stringstream out;
             out << mss1;
 
+/*
+The generated serializer needs to pack entries from list of ComplexTypes into separate strings to let serializers correctly add the length:
+
+Write:
+for (uint32_t i = 0; i < numberOfModuleStatistics; i++) {
+    stringstream tmp;
+    tmp << m_listOfModuleStatistics.at(i);
+    s->write(1+1, tmp.str());
+}
+
+Read:
+if (numberOfModuleStatistics > 0) {
+    for (uint32_t i = 0; i < numberOfModuleStatistics; i++) {
+        string s;
+        d->read(1 + 1,
+           s);
+        odcore::data::dmcp::ModuleStatistic element;
+        stringstream sstr(s);
+        sstr >> element;
+        m_listOfModuleStatistics.push_back(element);
+    }
+}
+
+TODO:
+* Adjust odDataStructureGenerator for lists, maps, and fixedArrays
+* Test serialization and deserialization of primitive types and complex types.
+*/
+
+const string s = out.str();
+for (unsigned int i = 0; i<s.size(); i++) {
+    cout << hex << (int)(uint8_t)s.at(i) << " ";
+}
+
+cout << endl;
+
             // Read back the data by using the visitor.
             ModuleStatistics mss2;
 

@@ -38,7 +38,7 @@ class Serializable;
         ProtoDeserializer::ProtoDeserializer(istream &i) :
             m_size(0),
             m_buffer() {
-            deserializeDataFromWithHeader(i);
+            deserializeDataFrom(i);
         }
 
         ProtoDeserializer::~ProtoDeserializer() {}
@@ -60,11 +60,12 @@ class Serializable;
             m_buffer.str("");
 
             // Read magic number.
-            uint64_t value = 0;
-            decodeVarInt(in, value);
-            uint16_t magicNumber = static_cast<uint16_t>(value);
+            uint16_t magicNumber = 0;
+            in.read((char*)(&magicNumber), sizeof(magicNumber));
+            magicNumber = ntohs(magicNumber);
             if (magicNumber == 0x0DA4) {
                 // Read message size and put remaining bytes into m_buffer.
+                uint64_t value = 0;
                 decodeVarInt(in, value);
                 m_size = static_cast<uint32_t>(value);
 

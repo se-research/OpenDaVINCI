@@ -57,3 +57,7 @@ message odcore.testdata.TestMessage5 [id = 1004] {
     odcore.testdata.TestMessage1 field12 [ id = 12 ];
 }
 
+message odcore.testdata.TestMessage6 [id = 1005] {
+    list<int8> field1 [ id = 1 ];
+}
+

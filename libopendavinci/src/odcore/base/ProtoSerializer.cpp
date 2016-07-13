@@ -41,7 +41,7 @@ class Serializable;
 
         ProtoSerializer::~ProtoSerializer() {
             if (m_out != NULL) {
-                getSerializedDataWithHeader(*m_out);
+                getSerializedData(*m_out);
             }
         }
 
@@ -51,7 +51,8 @@ class Serializable;
 
         void ProtoSerializer::getSerializedDataWithHeader(ostream &o) {
             uint16_t magicNumber = 0x0DA4;
-            encodeVarInt(o, magicNumber);
+            magicNumber = htons(magicNumber);
+            o.write((char*)(&magicNumber), sizeof(magicNumber));
             encodeVarInt(o, m_size);
             getSerializedData(o);
         }
