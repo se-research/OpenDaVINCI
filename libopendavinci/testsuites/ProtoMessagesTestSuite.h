@@ -44,6 +44,9 @@
 #include "opendavinci/generated/odcore/data/dmcp/ModuleStatistics.h"
 #include "opendavinci/generated/odcore/data/dmcp/ModuleStateMessage.h"
 #include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/PulseAckMessage.h"
+#include "opendavinci/generated/odcore/data/Configuration.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
 
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage1.h"
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage2.h"
@@ -1300,7 +1303,6 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getModuleExitCode() == ModuleExitCodeMessage::CONNECTION_LOST);
         }
 
-
         void testSerializationDeserializationModuleExitCodeMessageVisitor() {
             ModuleExitCodeMessage tm1;
             tm1.setModuleExitCode(ModuleExitCodeMessage::CONNECTION_LOST);
@@ -1324,6 +1326,128 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             TS_ASSERT(tm1.getModuleExitCode() == tm2.getModuleExitCode());
             TS_ASSERT(tm2.getModuleExitCode() == ModuleExitCodeMessage::CONNECTION_LOST);
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+
+        void testSerializationDeserializationPulseAckMessage() {
+            PulseAckMessage tm1;
+
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << tm1;
+
+            // Read back the data.
+            PulseAckMessage tm2;
+            out >> tm2;
+        }
+
+        void testSerializationDeserializationPulseAckMessageVisitor() {
+            PulseAckMessage tm1;
+
+            // Create a Proto serialization visitor.
+            ProtoSerializerVisitor protoSerializerVisitor;
+            tm1.accept(protoSerializerVisitor);
+
+            // Write the data to a stringstream.
+            stringstream out;
+            protoSerializerVisitor.getSerializedDataWithHeader(out);
+
+
+            // Create a Proto deserialization visitor.
+            ProtoDeserializerVisitor protoDeserializerVisitor;
+            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
+
+            // Read back the data by using the visitor.
+            PulseAckMessage tm2;
+            tm2.accept(protoDeserializerVisitor);
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+
+        void testSerializationDeserializationConfiguration() {
+            KeyValueConfiguration kvc;
+
+            // Setup an example configuration.
+            stringstream sstrConfiguration;
+            sstrConfiguration
+                << "key1 = 123" << endl
+                << "abc.key2 = value2" << endl
+                << "key2:3 = -4.325" << endl;
+            kvc.readFrom(sstrConfiguration);
+
+            Configuration tm1;
+            tm1.setKeyValueConfiguration(kvc);
+
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << tm1;
+
+            // Read back the data.
+            Configuration tm2;
+            out >> tm2;
+
+            KeyValueConfiguration kvc2 = tm2.getKeyValueConfiguration();
+
+            TS_ASSERT(kvc.getValue<int>("key1") == kvc2.getValue<int>("key1"));
+            TS_ASSERT(kvc2.getValue<int>("key1") == 123);
+
+            TS_ASSERT(kvc.getValue<string>("abc.key2") == kvc2.getValue<string>("abc.key2"));
+            TS_ASSERT(kvc2.getValue<string>("abc.key2") == "value2");
+
+            TS_ASSERT_DELTA(kvc.getValue<float>("key2:3"), kvc2.getValue<float>("key2:3"), 1e-3);
+            TS_ASSERT_DELTA(kvc2.getValue<float>("key2:3"), -4.325, 1e-3);
+        }
+
+        void testSerializationDeserializationModuleConfigurationVisitor() {
+            KeyValueConfiguration kvc;
+
+            // Setup an example configuration.
+            stringstream sstrConfiguration;
+            sstrConfiguration
+                << "key1 = 123" << endl
+                << "abc.key2 = value2" << endl
+                << "key2:3 = -4.325" << endl;
+            kvc.readFrom(sstrConfiguration);
+
+            Configuration tm1;
+            tm1.setKeyValueConfiguration(kvc);
+
+            // Create a Proto serialization visitor.
+            ProtoSerializerVisitor protoSerializerVisitor;
+            tm1.accept(protoSerializerVisitor);
+
+            // Write the data to a stringstream.
+            stringstream out;
+            protoSerializerVisitor.getSerializedDataWithHeader(out);
+
+
+            // Create a Proto deserialization visitor.
+            ProtoDeserializerVisitor protoDeserializerVisitor;
+            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
+
+            // Read back the data by using the visitor.
+            Configuration tm2;
+            tm2.accept(protoDeserializerVisitor);
+
+            KeyValueConfiguration kvc2 = tm2.getKeyValueConfiguration();
+
+            TS_ASSERT(kvc.getValue<int>("key1") == kvc2.getValue<int>("key1"));
+            TS_ASSERT(kvc2.getValue<int>("key1") == 123);
+
+            TS_ASSERT(kvc.getValue<string>("abc.key2") == kvc2.getValue<string>("abc.key2"));
+            TS_ASSERT(kvc2.getValue<string>("abc.key2") == "value2");
+
+            TS_ASSERT_DELTA(kvc.getValue<float>("key2:3"), kvc2.getValue<float>("key2:3"), 1e-3);
+            TS_ASSERT_DELTA(kvc2.getValue<float>("key2:3"), -4.325, 1e-3);
         }
 
         ///////////////////////////////////////////////////////////////////////
@@ -1451,6 +1575,11 @@ cout << endl;
             TS_ASSERT_DELTA(v2.at(1).getRuntimeStatistic().getSliceConsumption(), v1.at(1).getRuntimeStatistic().getSliceConsumption(), 1e-4);
             TS_ASSERT_DELTA(v2.at(1).getRuntimeStatistic().getSliceConsumption(), -97.2345, 1e-4);
         }
+
+// To be added:
+// odcore.data.dmcp.PulseMessage
+// odcore.data.dmcp.PulseAckContainersMessage
+
 };
 
 #endif /*CORE_PROTOMESSAGESTESTSUITE_H_*/
