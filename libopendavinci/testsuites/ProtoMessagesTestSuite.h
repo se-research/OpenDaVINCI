@@ -34,6 +34,10 @@
 #include "opendavinci/odcore/base/ProtoDeserializerVisitor.h"
 #include "opendavinci/odcore/base/ProtoSerializerVisitor.h"
 
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
+
 #include "opendavinci/generated/odcore/data/LogMessage.h"
 #include "opendavinci/generated/odcore/data/reflection/AbstractField.h"
 #include "opendavinci/generated/odcore/data/dmcp/ServerInformation.h"
@@ -46,7 +50,7 @@
 #include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
 #include "opendavinci/generated/odcore/data/dmcp/PulseAckMessage.h"
 #include "opendavinci/generated/odcore/data/Configuration.h"
-#include "opendavinci/odcore/base/KeyValueConfiguration.h"
+#include "opendavinci/generated/odcore/data/buffer/MemorySegment.h"
 
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage1.h"
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage2.h"
@@ -57,6 +61,7 @@
 using namespace std;
 using namespace odcore::base;
 using namespace odcore::data;
+using namespace odcore::data::buffer;
 using namespace odcore::data::dmcp;
 using namespace odcore::data::reflection;
 using namespace odcore::testdata;
@@ -1448,6 +1453,83 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             TS_ASSERT_DELTA(kvc.getValue<float>("key2:3"), kvc2.getValue<float>("key2:3"), 1e-3);
             TS_ASSERT_DELTA(kvc2.getValue<float>("key2:3"), -4.325, 1e-3);
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+
+        void testSerializationDeserializationMemorySegment() {
+            // Replace default serializer/deserializers (needs to be here as the Container constructor will immediately serialize its argument.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            TimeStamp payload(7, 8);
+            Container c(payload);
+            c.setSentTimeStamp(TimeStamp(1, 2));
+            c.setReceivedTimeStamp(TimeStamp(3, 4));
+
+            MemorySegment ms;
+            ms.setHeader(c);
+            ms.setSize(123);
+            ms.setConsumedSize(567);
+            ms.setIdentifier(12);
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << ms;
+
+            // Read back the data.
+            MemorySegment ms2;
+            out >> ms2;
+
+            Container c2 = ms2.getHeader();
+            TimeStamp payload2 = c2.getData<TimeStamp>();
+
+            TS_ASSERT(c2.getDataType() == TimeStamp::ID());
+            TS_ASSERT(payload2.getSeconds() == payload.getSeconds());
+            TS_ASSERT(payload2.getFractionalMicroseconds() == payload.getFractionalMicroseconds());
+            TS_ASSERT(ms2.getSize() == 123);
+            TS_ASSERT(ms2.getConsumedSize() == 567);
+            TS_ASSERT(ms2.getIdentifier() == 12);
+        }
+
+        void testSerializationDeserializationMemorySegmentVisitor() {
+            TimeStamp payload(7, 8);
+            Container c(payload);
+            c.setSentTimeStamp(TimeStamp(1, 2));
+            c.setReceivedTimeStamp(TimeStamp(3, 4));
+
+            MemorySegment ms;
+            ms.setHeader(c);
+            ms.setSize(123);
+            ms.setConsumedSize(567);
+            ms.setIdentifier(12);
+
+            // Create a Proto serialization visitor.
+            ProtoSerializerVisitor protoSerializerVisitor;
+            ms.accept(protoSerializerVisitor);
+
+            // Write the data to a stringstream.
+            stringstream out;
+            protoSerializerVisitor.getSerializedDataWithHeader(out);
+
+
+            // Create a Proto deserialization visitor.
+            ProtoDeserializerVisitor protoDeserializerVisitor;
+            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
+
+            // Read back the data by using the visitor.
+            MemorySegment ms2;
+            ms2.accept(protoDeserializerVisitor);
+
+            Container c2 = ms2.getHeader();
+            TimeStamp payload2 = c2.getData<TimeStamp>();
+
+            TS_ASSERT(c2.getDataType() == TimeStamp::ID());
+            TS_ASSERT(payload2.getSeconds() == payload.getSeconds());
+            TS_ASSERT(payload2.getFractionalMicroseconds() == payload.getFractionalMicroseconds());
+            TS_ASSERT(ms2.getSize() == 123);
+            TS_ASSERT(ms2.getConsumedSize() == 567);
+            TS_ASSERT(ms2.getIdentifier() == 12);
         }
 
         ///////////////////////////////////////////////////////////////////////
