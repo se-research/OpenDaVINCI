@@ -53,6 +53,7 @@
 #include "opendavinci/generated/odcore/data/buffer/MemorySegment.h"
 #include "opendavinci/generated/odcore/data/player/PlayerCommand.h"
 #include "opendavinci/generated/odcore/data/recorder/RecorderCommand.h"
+#include "opendavinci/generated/odcore/data/SharedData.h"
 
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage1.h"
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage2.h"
@@ -1632,6 +1633,61 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
+        void testSerializationDeserializationSharedData() {
+            SharedData tm1;
+            tm1.setName("Hello Shared Data");
+            tm1.setSize(1234);
+
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << tm1;
+
+            // Read back the data.
+            SharedData tm2;
+            out >> tm2;
+
+            TS_ASSERT(tm1.getName() == tm2.getName());
+            TS_ASSERT(tm2.getName() == "Hello Shared Data");
+
+            TS_ASSERT(tm1.getSize() == tm2.getSize());
+            TS_ASSERT(tm2.getSize() == 1234);
+        }
+
+        void testSerializationDeserializationSharedDataVisitor() {
+            SharedData tm1;
+            tm1.setName("Hello Shared Data");
+            tm1.setSize(1234);
+
+            // Create a Proto serialization visitor.
+            ProtoSerializerVisitor protoSerializerVisitor;
+            tm1.accept(protoSerializerVisitor);
+
+            // Write the data to a stringstream.
+            stringstream out;
+            protoSerializerVisitor.getSerializedDataWithHeader(out);
+
+
+            // Create a Proto deserialization visitor.
+            ProtoDeserializerVisitor protoDeserializerVisitor;
+            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
+
+            // Read back the data by using the visitor.
+            SharedData tm2;
+            tm2.accept(protoDeserializerVisitor);
+
+            TS_ASSERT(tm1.getName() == tm2.getName());
+            TS_ASSERT(tm2.getName() == "Hello Shared Data");
+
+            TS_ASSERT(tm1.getSize() == tm2.getSize());
+            TS_ASSERT(tm2.getSize() == 1234);
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+
         void testSerializationDeserializationModuleStatistics() {
             ModuleStatistics mss1;
 
@@ -1699,6 +1755,8 @@ if (numberOfModuleStatistics > 0) {
         m_listOfModuleStatistics.push_back(element);
     }
 }
+
+Read needs to return the amount of bytes read so that the input buffer can be adjusted.
 
 TODO:
 * Adjust odDataStructureGenerator for lists, maps, and fixedArrays
