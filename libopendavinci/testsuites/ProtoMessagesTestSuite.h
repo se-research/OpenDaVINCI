@@ -1995,6 +1995,9 @@ cout << endl;
 // odcore.data.dmcp.PulseMessage
 // odcore.data.dmcp.PulseAckContainersMessage
 
+// To be verified:
+// - compatibility with 3rd party Proto implementations
+// - support of evolving message definitions (adding more fields, removing fields)
 };
 
 #endif /*CORE_PROTOMESSAGESTESTSUITE_H_*/
