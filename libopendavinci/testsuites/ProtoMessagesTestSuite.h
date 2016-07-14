@@ -54,6 +54,8 @@
 #include "opendavinci/generated/odcore/data/player/PlayerCommand.h"
 #include "opendavinci/generated/odcore/data/recorder/RecorderCommand.h"
 #include "opendavinci/generated/odcore/data/SharedData.h"
+#include "opendavinci/generated/odcore/data/image/SharedImage.h"
+#include "opendavinci/generated/odcore/data/SharedPointCloud.h"
 
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage1.h"
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage2.h"
@@ -66,6 +68,7 @@ using namespace odcore::base;
 using namespace odcore::data;
 using namespace odcore::data::buffer;
 using namespace odcore::data::dmcp;
+using namespace odcore::data::image;
 using namespace odcore::data::player;
 using namespace odcore::data::recorder;
 using namespace odcore::data::reflection;
@@ -1684,6 +1687,182 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             TS_ASSERT(tm1.getSize() == tm2.getSize());
             TS_ASSERT(tm2.getSize() == 1234);
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+
+        // TODO: This test case will fail until all read-methods will correctly handle the buffers.
+        void NOtestSerializationDeserializationSharedImage() {
+            SharedImage tm1;
+            tm1.setName("Hello Shared Image");
+            tm1.setSize(7890);
+            tm1.setWidth(640);
+            tm1.setHeight(480);
+            tm1.setBytesPerPixel(3);
+
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << tm1;
+
+            // Read back the data.
+            SharedImage tm2;
+            out >> tm2;
+
+            TS_ASSERT(tm1.getName() == tm2.getName());
+            TS_ASSERT(tm2.getName() == "Hello Shared Image");
+
+            TS_ASSERT(tm1.getSize() == tm2.getSize());
+            TS_ASSERT(tm2.getSize() == 7890);
+
+            TS_ASSERT(tm1.getWidth() == tm2.getWidth());
+            TS_ASSERT(tm2.getWidth() == 640);
+
+            TS_ASSERT(tm1.getHeight() == tm2.getHeight());
+            TS_ASSERT(tm2.getHeight() == 480);
+
+            TS_ASSERT(tm1.getBytesPerPixel() == tm2.getBytesPerPixel());
+            TS_ASSERT(tm2.getBytesPerPixel() == 3);
+        }
+
+        void testSerializationDeserializationSharedImageVisitor() {
+            SharedImage tm1;
+            tm1.setName("Hello Shared Image");
+            tm1.setSize(7890);
+            tm1.setWidth(640);
+            tm1.setHeight(480);
+            tm1.setBytesPerPixel(3);
+
+            // Create a Proto serialization visitor.
+            ProtoSerializerVisitor protoSerializerVisitor;
+            tm1.accept(protoSerializerVisitor);
+
+            // Write the data to a stringstream.
+            stringstream out;
+            protoSerializerVisitor.getSerializedDataWithHeader(out);
+
+
+            // Create a Proto deserialization visitor.
+            ProtoDeserializerVisitor protoDeserializerVisitor;
+            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
+
+            // Read back the data by using the visitor.
+            SharedImage tm2;
+            tm2.accept(protoDeserializerVisitor);
+
+            TS_ASSERT(tm1.getName() == tm2.getName());
+            TS_ASSERT(tm2.getName() == "Hello Shared Image");
+
+            TS_ASSERT(tm1.getSize() == tm2.getSize());
+            TS_ASSERT(tm2.getSize() == 7890);
+
+            TS_ASSERT(tm1.getWidth() == tm2.getWidth());
+            TS_ASSERT(tm2.getWidth() == 640);
+
+            TS_ASSERT(tm1.getHeight() == tm2.getHeight());
+            TS_ASSERT(tm2.getHeight() == 480);
+
+            TS_ASSERT(tm1.getBytesPerPixel() == tm2.getBytesPerPixel());
+            TS_ASSERT(tm2.getBytesPerPixel() == 3);
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+
+        // TODO: This test case will fail until all read-methods will correctly handle the buffers.
+        void NOtestSerializationDeserializationSharedPointCloud() {
+            SharedPointCloud tm1;
+            tm1.setName("Hello Shared Point Cloud");
+            tm1.setSize(45678);
+            tm1.setWidth(1234);
+            tm1.setHeight(5678);
+            tm1.setNumberOfComponentsPerPoint(4);
+            tm1.setComponentDataType(SharedPointCloud::UINT32_T);
+            tm1.setUserInfo(SharedPointCloud::XYZ_INTENSITY);
+
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << tm1;
+
+            // Read back the data.
+            SharedPointCloud tm2;
+            out >> tm2;
+
+            TS_ASSERT(tm1.getName() == tm2.getName());
+            TS_ASSERT(tm2.getName() == "Hello Shared Point Cloud");
+
+            TS_ASSERT(tm1.getSize() == tm2.getSize());
+            TS_ASSERT(tm2.getSize() == 45678);
+
+            TS_ASSERT(tm1.getWidth() == tm2.getWidth());
+            TS_ASSERT(tm2.getWidth() == 1234);
+
+            TS_ASSERT(tm1.getHeight() == tm2.getHeight());
+            TS_ASSERT(tm2.getHeight() == 5678);
+
+            TS_ASSERT(tm1.getNumberOfComponentsPerPoint() == tm2.getNumberOfComponentsPerPoint());
+            TS_ASSERT(tm2.getNumberOfComponentsPerPoint() == 4);
+
+            TS_ASSERT(tm1.getComponentDataType() == tm2.getComponentDataType());
+            TS_ASSERT(tm2.getComponentDataType() == SharedPointCloud::UINT32_T);
+
+            TS_ASSERT(tm1.getUserInfo() == tm2.getUserInfo());
+            TS_ASSERT(tm2.getUserInfo() == SharedPointCloud::XYZ_INTENSITY);
+        }
+
+        void testSerializationDeserializationSharedPointCloudVisitor() {
+            SharedPointCloud tm1;
+            tm1.setName("Hello Shared Point Cloud");
+            tm1.setSize(45678);
+            tm1.setWidth(1234);
+            tm1.setHeight(5678);
+            tm1.setNumberOfComponentsPerPoint(4);
+            tm1.setComponentDataType(SharedPointCloud::UINT32_T);
+            tm1.setUserInfo(SharedPointCloud::XYZ_INTENSITY);
+
+            // Create a Proto serialization visitor.
+            ProtoSerializerVisitor protoSerializerVisitor;
+            tm1.accept(protoSerializerVisitor);
+
+            // Write the data to a stringstream.
+            stringstream out;
+            protoSerializerVisitor.getSerializedDataWithHeader(out);
+
+
+            // Create a Proto deserialization visitor.
+            ProtoDeserializerVisitor protoDeserializerVisitor;
+            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
+
+            // Read back the data by using the visitor.
+            SharedPointCloud tm2;
+            tm2.accept(protoDeserializerVisitor);
+
+            TS_ASSERT(tm1.getName() == tm2.getName());
+            TS_ASSERT(tm2.getName() == "Hello Shared Point Cloud");
+
+            TS_ASSERT(tm1.getSize() == tm2.getSize());
+            TS_ASSERT(tm2.getSize() == 45678);
+
+            TS_ASSERT(tm1.getWidth() == tm2.getWidth());
+            TS_ASSERT(tm2.getWidth() == 1234);
+
+            TS_ASSERT(tm1.getHeight() == tm2.getHeight());
+            TS_ASSERT(tm2.getHeight() == 5678);
+
+            TS_ASSERT(tm1.getNumberOfComponentsPerPoint() == tm2.getNumberOfComponentsPerPoint());
+            TS_ASSERT(tm2.getNumberOfComponentsPerPoint() == 4);
+
+            TS_ASSERT(tm1.getComponentDataType() == tm2.getComponentDataType());
+            TS_ASSERT(tm2.getComponentDataType() == SharedPointCloud::UINT32_T);
+
+            TS_ASSERT(tm1.getUserInfo() == tm2.getUserInfo());
+            TS_ASSERT(tm2.getUserInfo() == SharedPointCloud::XYZ_INTENSITY);
         }
 
         ///////////////////////////////////////////////////////////////////////
