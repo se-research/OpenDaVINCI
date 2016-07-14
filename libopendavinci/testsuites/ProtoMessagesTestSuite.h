@@ -51,6 +51,8 @@
 #include "opendavinci/generated/odcore/data/dmcp/PulseAckMessage.h"
 #include "opendavinci/generated/odcore/data/Configuration.h"
 #include "opendavinci/generated/odcore/data/buffer/MemorySegment.h"
+#include "opendavinci/generated/odcore/data/player/PlayerCommand.h"
+#include "opendavinci/generated/odcore/data/recorder/RecorderCommand.h"
 
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage1.h"
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage2.h"
@@ -63,6 +65,8 @@ using namespace odcore::base;
 using namespace odcore::data;
 using namespace odcore::data::buffer;
 using namespace odcore::data::dmcp;
+using namespace odcore::data::player;
+using namespace odcore::data::recorder;
 using namespace odcore::data::reflection;
 using namespace odcore::testdata;
 
@@ -1530,6 +1534,100 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(ms2.getSize() == 123);
             TS_ASSERT(ms2.getConsumedSize() == 567);
             TS_ASSERT(ms2.getIdentifier() == 12);
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+
+        void testSerializationDeserializationPlayerCommand() {
+            PlayerCommand tm1;
+            tm1.setCommand(PlayerCommand::REWIND);
+
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << tm1;
+
+            // Read back the data.
+            PlayerCommand tm2;
+            out >> tm2;
+
+            TS_ASSERT(tm1.getCommand() == tm2.getCommand());
+            TS_ASSERT(tm2.getCommand() == PlayerCommand::REWIND);
+        }
+
+        void testSerializationDeserializationPlayerCommandVisitor() {
+            PlayerCommand tm1;
+            tm1.setCommand(PlayerCommand::REWIND);
+
+            // Create a Proto serialization visitor.
+            ProtoSerializerVisitor protoSerializerVisitor;
+            tm1.accept(protoSerializerVisitor);
+
+            // Write the data to a stringstream.
+            stringstream out;
+            protoSerializerVisitor.getSerializedDataWithHeader(out);
+
+
+            // Create a Proto deserialization visitor.
+            ProtoDeserializerVisitor protoDeserializerVisitor;
+            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
+
+            // Read back the data by using the visitor.
+            PlayerCommand tm2;
+            tm2.accept(protoDeserializerVisitor);
+
+            TS_ASSERT(tm1.getCommand() == tm2.getCommand());
+            TS_ASSERT(tm2.getCommand() == PlayerCommand::REWIND);
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+
+        void testSerializationDeserializationRecorderCommand() {
+            RecorderCommand tm1;
+            tm1.setCommand(RecorderCommand::STOP);
+
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << tm1;
+
+            // Read back the data.
+            RecorderCommand tm2;
+            out >> tm2;
+
+            TS_ASSERT(tm1.getCommand() == tm2.getCommand());
+            TS_ASSERT(tm2.getCommand() == RecorderCommand::STOP);
+        }
+
+        void testSerializationDeserializationRecorderCommandVisitor() {
+            RecorderCommand tm1;
+            tm1.setCommand(RecorderCommand::STOP);
+
+            // Create a Proto serialization visitor.
+            ProtoSerializerVisitor protoSerializerVisitor;
+            tm1.accept(protoSerializerVisitor);
+
+            // Write the data to a stringstream.
+            stringstream out;
+            protoSerializerVisitor.getSerializedDataWithHeader(out);
+
+
+            // Create a Proto deserialization visitor.
+            ProtoDeserializerVisitor protoDeserializerVisitor;
+            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
+
+            // Read back the data by using the visitor.
+            RecorderCommand tm2;
+            tm2.accept(protoDeserializerVisitor);
+
+            TS_ASSERT(tm1.getCommand() == tm2.getCommand());
+            TS_ASSERT(tm2.getCommand() == RecorderCommand::STOP);
         }
 
         ///////////////////////////////////////////////////////////////////////
