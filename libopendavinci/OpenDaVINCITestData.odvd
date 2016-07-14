@@ -38,6 +38,11 @@ message odcore.testdata.TestMessage3 [id = 1002] {
     string field1 [ id = 2 ];
 }
 
+// This is not correctly handled by our Proto implementation yet.
+message odcore.testdata.TestMessage3Derived extends odcore.testdata.TestMessage3 [id = 1005] {
+    uint32 field1 [ id = 1 ];
+}
+
 message odcore.testdata.TestMessage4 [id = 1003] {
     odcore.testdata.TestMessage1 field1 [ id = 3 ];
 }
@@ -57,7 +62,13 @@ message odcore.testdata.TestMessage5 [id = 1004] {
     odcore.testdata.TestMessage1 field12 [ id = 12 ];
 }
 
-message odcore.testdata.TestMessage6 [id = 1005] {
+// This is not correctly handled by our Proto implementation yet.
+message odcore.testdata.TestMessage6 [id = 1006] {
     list<int8> field1 [ id = 1 ];
+}
+
+// This is not correctly handled by our Proto implementation yet.
+message odcore.testdata.TestMessage7 [id = 1007] {
+    list<float> field1 [ id = 1 ];
 }
 

@@ -1691,8 +1691,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        // TODO: This test case will fail until all read-methods will correctly handle the buffers.
-        void NOtestSerializationDeserializationSharedImage() {
+        void testSerializationDeserializationSharedImage() {
             SharedImage tm1;
             tm1.setName("Hello Shared Image");
             tm1.setSize(7890);
@@ -1771,8 +1770,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        // TODO: This test case will fail until all read-methods will correctly handle the buffers.
-        void NOtestSerializationDeserializationSharedPointCloud() {
+        void testSerializationDeserializationSharedPointCloud() {
             SharedPointCloud tm1;
             tm1.setName("Hello Shared Point Cloud");
             tm1.setSize(45678);

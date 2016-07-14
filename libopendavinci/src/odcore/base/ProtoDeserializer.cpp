@@ -33,11 +33,11 @@ class Serializable;
 
         ProtoDeserializer::ProtoDeserializer() :
             m_size(0),
-            m_buffer() {}
+            m_buffer(NULL) {}
 
         ProtoDeserializer::ProtoDeserializer(istream &i) :
             m_size(0),
-            m_buffer() {
+            m_buffer(&i) {
             deserializeDataFrom(i);
         }
 
@@ -46,18 +46,21 @@ class Serializable;
         void ProtoDeserializer::deserializeDataFrom(istream &in) {
             // Reset internal states as this deserializer could be reused.
             m_size = 0;
-            m_buffer.str("");
+            m_buffer = &in;
 
-            while (in.good()) {
-                char c = in.get();
-                m_buffer.put(c);
-            }
+            // Disable copying the data from istream into the decoding buffer
+            // to avoid fully consuming the bytes that cannot be fully processed
+            // by the class using this decoder.
+//            while (in.good()) {
+//                char c = in.get();
+//                m_buffer.put(c);
+//            }
         }
 
         void ProtoDeserializer::deserializeDataFromWithHeader(istream &in) {
             // Reset internal states as this deserializer could be reused.
             m_size = 0;
-            m_buffer.str("");
+            m_buffer = &in;
 
             // Read magic number.
             uint16_t magicNumber = 0;
@@ -69,13 +72,16 @@ class Serializable;
                 decodeVarInt(in, value);
                 m_size = static_cast<uint32_t>(value);
 
-                // Read up to m_size bytes as long as the input stream is fine.
-                uint32_t size = m_size;
-                while (in.good() && (size > 0)) {
-                    char c = in.get();
-                    m_buffer.put(c);
-                    size--;
-                }
+                // Disable copying the data from istream into the decoding buffer
+                // to avoid fully consuming the bytes that cannot be fully processed
+                // by the class using this decoder.
+//                // Read up to m_size bytes as long as the input stream is fine.
+//                uint32_t size = m_size;
+//                while (in.good() && (size > 0)) {
+//                    char c = in.get();
+//                    m_buffer.put(c);
+//                    size--;
+//                }
             }
             else {
                 // Stream is good but still no matching magic number?
@@ -85,7 +91,7 @@ class Serializable;
 
         uint32_t ProtoDeserializer::readAndValidateKey(const uint32_t &id, const ProtoSerializerVisitor::PROTOBUF_TYPE &expectedType) {
             uint64_t key = 0;
-            const uint32_t size = decodeVarInt(m_buffer, key);
+            const uint32_t size = decodeVarInt(*m_buffer, key);
             const uint32_t fieldId = static_cast<uint32_t>(key >> 3);
             const ProtoSerializerVisitor::PROTOBUF_TYPE protoType = static_cast<ProtoSerializerVisitor::PROTOBUF_TYPE>(key & 0x7);
 
@@ -135,13 +141,13 @@ class Serializable;
 
             // Read length.
             uint64_t length = 0;
-            m_size -= decodeVarInt(m_buffer, length);
+            m_size -= decodeVarInt(*m_buffer, length);
 
             // Create contiguous buffer.
             vector<char> buffer(length);
 
             // Read data from stream into buffer.
-            m_buffer.read(&buffer[0], length);
+            m_buffer->read(&buffer[0], length);
             m_size -= length;
 
             // Create string from buffer.
@@ -173,7 +179,7 @@ class Serializable;
             m_size -= readAndValidateKey(id, ProtoSerializerVisitor::VARINT);
 
             uint64_t _v = 0;
-            m_size -= decodeVarInt(m_buffer, _v);
+            m_size -= decodeVarInt(*m_buffer, _v);
             v = static_cast<bool>(_v);
         }
 
@@ -181,7 +187,7 @@ class Serializable;
             m_size -= readAndValidateKey(id, ProtoSerializerVisitor::VARINT);
 
             uint64_t _v = 0;
-            m_size -= decodeVarInt(m_buffer, _v);
+            m_size -= decodeVarInt(*m_buffer, _v);
             v = static_cast<char>(_v);
         }
 
@@ -189,7 +195,7 @@ class Serializable;
             m_size -= readAndValidateKey(id, ProtoSerializerVisitor::VARINT);
 
             uint64_t _v = 0;
-            m_size -= decodeVarInt(m_buffer, _v);
+            m_size -= decodeVarInt(*m_buffer, _v);
             v = static_cast<unsigned char>(_v);
         }
 
@@ -197,7 +203,7 @@ class Serializable;
             m_size -= readAndValidateKey(id, ProtoSerializerVisitor::VARINT);
 
             uint64_t _v = 0;
-            m_size -= decodeVarInt(m_buffer, _v);
+            m_size -= decodeVarInt(*m_buffer, _v);
             v = static_cast<int8_t>(decodeZigZag8(_v));
         }
 
@@ -205,7 +211,7 @@ class Serializable;
             m_size -= readAndValidateKey(id, ProtoSerializerVisitor::VARINT);
 
             uint64_t _v = 0;
-            m_size -= decodeVarInt(m_buffer, _v);
+            m_size -= decodeVarInt(*m_buffer, _v);
             v = static_cast<int16_t>(decodeZigZag16(_v));
         }
 
@@ -213,7 +219,7 @@ class Serializable;
             m_size -= readAndValidateKey(id, ProtoSerializerVisitor::VARINT);
 
             uint64_t _v = 0;
-            m_size -= decodeVarInt(m_buffer, _v);
+            m_size -= decodeVarInt(*m_buffer, _v);
             v = static_cast<uint16_t>(_v);
         }
 
@@ -221,7 +227,7 @@ class Serializable;
             m_size -= readAndValidateKey(id, ProtoSerializerVisitor::VARINT);
 
             uint64_t _v = 0;
-            m_size -= decodeVarInt(m_buffer, _v);
+            m_size -= decodeVarInt(*m_buffer, _v);
             v = static_cast<int32_t>(decodeZigZag32(_v));
         }
 
@@ -229,7 +235,7 @@ class Serializable;
             m_size -= readAndValidateKey(id, ProtoSerializerVisitor::VARINT);
 
             uint64_t _v = 0;
-            m_size -= decodeVarInt(m_buffer, _v);
+            m_size -= decodeVarInt(*m_buffer, _v);
             v = static_cast<uint32_t>(_v);
         }
 
@@ -237,7 +243,7 @@ class Serializable;
             m_size -= readAndValidateKey(id, ProtoSerializerVisitor::VARINT);
 
             uint64_t _v = 0;
-            m_size -= decodeVarInt(m_buffer, _v);
+            m_size -= decodeVarInt(*m_buffer, _v);
             v = static_cast<int64_t>(decodeZigZag64(_v));
         }
 
@@ -245,7 +251,7 @@ class Serializable;
             m_size -= readAndValidateKey(id, ProtoSerializerVisitor::VARINT);
 
             uint64_t _v = 0;
-            m_size -= decodeVarInt(m_buffer, _v);
+            m_size -= decodeVarInt(*m_buffer, _v);
             v = _v;
         }
 
@@ -253,7 +259,7 @@ class Serializable;
             m_size -= readAndValidateKey(id, ProtoSerializerVisitor::FOUR_BYTES);
 
             float _f =0;
-            m_buffer.read(reinterpret_cast<char *>(&_f), sizeof(float));
+            m_buffer->read(reinterpret_cast<char *>(&_f), sizeof(float));
             v = Deserializer::ntohf(_f);
             m_size -= sizeof(float);
         }
@@ -262,7 +268,7 @@ class Serializable;
             m_size -= readAndValidateKey(id, ProtoSerializerVisitor::EIGHT_BYTES);
 
             double _d =0;
-            m_buffer.read(reinterpret_cast<char*>(&_d), sizeof(double));
+            m_buffer->read(reinterpret_cast<char*>(&_d), sizeof(double));
             v = Deserializer::ntohd(_d);
             m_size -= sizeof(double);
         }
@@ -272,13 +278,13 @@ class Serializable;
 
             // Read length.
             uint64_t length = 0;
-            m_size -= decodeVarInt(m_buffer, length);
+            m_size -= decodeVarInt(*m_buffer, length);
 
             // Create contiguous buffer.
             vector<char> buffer(length);
 
             // Read data from stream.
-            m_buffer.read(&buffer[0], length);
+            m_buffer->read(&buffer[0], length);
             m_size -= length;
 
             // Create string from buffer.
@@ -290,11 +296,11 @@ class Serializable;
 
             // Read length.
             uint64_t length = 0;
-            m_size -= decodeVarInt(m_buffer, length);
+            m_size -= decodeVarInt(*m_buffer, length);
 
             // Read data.
             char *_data = new char[length];
-            m_buffer.read(_data, length);
+            m_buffer->read(_data, length);
             m_size -= length;
 
             // Move data.
