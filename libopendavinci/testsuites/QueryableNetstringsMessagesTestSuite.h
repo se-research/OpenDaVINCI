@@ -2879,102 +2879,103 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void testSerializationDeserializationTestMessage6() {
-            TestMessage6 tm1;
+//        void testSerializationDeserializationTestMessage6() {
+//            TestMessage6 tm1;
 
-            {
-                int8_t i = -12;
-                tm1.addTo_ListOfField1(i);
-            }
-            {
-                int8_t i = -34;
-                tm1.addTo_ListOfField1(i);
-            }
-            {
-                int8_t i = 47;
-                tm1.addTo_ListOfField1(i);
-            }
-
-
-            // Replace default serializer/deserializers.
-            SerializationFactoryTestCase tmp;
-            (void)tmp;
-
-            // Serialize via regular Serializer.
-            stringstream out;
-            out << tm1;
-
-            // Read back the data by using the visitor.
-            TestMessage6 tm2;
-
-            // Read from buffer.
-            out >> tm2;
-
-            vector<int8_t> v1 = tm1.getListOfField1();
-            vector<int8_t> v2 = tm2.getListOfField1();
-
-            TS_ASSERT(v1.size() == 3);
-            TS_ASSERT(v2.size() == 3);
-
-            TS_ASSERT(v1.at(0) == v2.at(0));
-            TS_ASSERT(v2.at(0) == -12);
-
-            TS_ASSERT(v1.at(1) == v2.at(1));
-            TS_ASSERT(v2.at(1) == -34);
-
-            TS_ASSERT(v1.at(2) == v2.at(2));
-            TS_ASSERT(v2.at(2) == 47);
-        }
-
-        void testSerializationDeserializationTestMessage6Container() {
-            TestMessage6 tm1;
-
-            {
-                int8_t i = -12;
-                tm1.addTo_ListOfField1(i);
-            }
-            {
-                int8_t i = -34;
-                tm1.addTo_ListOfField1(i);
-            }
-            {
-                int8_t i = 47;
-                tm1.addTo_ListOfField1(i);
-            }
+//            {
+//                int8_t i = -12;
+//                tm1.addTo_ListOfField1(i);
+//            }
+//            {
+//                int8_t i = -34;
+//                tm1.addTo_ListOfField1(i);
+//            }
+//            {
+//                int8_t i = 47;
+//                tm1.addTo_ListOfField1(i);
+//            }
 
 
-            // Replace default serializer/deserializers.
-            SerializationFactoryTestCase tmp;
-            (void)tmp;
+//            // Replace default serializer/deserializers.
+//            SerializationFactoryTestCase tmp;
+//            (void)tmp;
 
-            Container c(tm1);
+//            // Serialize via regular Serializer.
+//            stringstream out;
+//            out << tm1;
 
-            // Serialize via regular Serializer.
-            stringstream out;
-            out << c;
+//            // Read back the data by using the visitor.
+//            TestMessage6 tm2;
 
-            // Read from buffer.
-            Container c2;
-            out >> c2;
-            TS_ASSERT(c2.getDataType() == TestMessage6::ID());
+//            // Read from buffer.
+//            out >> tm2;
 
-            TestMessage6 tm2 = c2.getData<TestMessage6>();
+//            vector<int8_t> v1 = tm1.getListOfField1();
+//            vector<int8_t> v2 = tm2.getListOfField1();
 
-            vector<int8_t> v1 = tm1.getListOfField1();
-            vector<int8_t> v2 = tm2.getListOfField1();
+//            TS_ASSERT(v1.size() == 3);
+//            TS_ASSERT(v2.size() == 3);
 
-            TS_ASSERT(v1.size() == 3);
-            TS_ASSERT(v2.size() == 3);
+//            TS_ASSERT(v1.at(0) == v2.at(0));
+//            TS_ASSERT(v2.at(0) == -12);
 
-            TS_ASSERT(v1.at(0) == v2.at(0));
-            TS_ASSERT(v2.at(0) == -12);
+//            TS_ASSERT(v1.at(1) == v2.at(1));
+//            TS_ASSERT(v2.at(1) == -34);
 
-            TS_ASSERT(v1.at(1) == v2.at(1));
-            TS_ASSERT(v2.at(1) == -34);
+//            TS_ASSERT(v1.at(2) == v2.at(2));
+//            TS_ASSERT(v2.at(2) == 47);
+//        }
 
-            TS_ASSERT(v1.at(2) == v2.at(2));
-            TS_ASSERT(v2.at(2) == 47);
-        }
+//        void testSerializationDeserializationTestMessage6Container() {
+//            TestMessage6 tm1;
+
+//            {
+//                int8_t i = -12;
+//                tm1.addTo_ListOfField1(i);
+//            }
+//            {
+//                int8_t i = -34;
+//                tm1.addTo_ListOfField1(i);
+//            }
+//            {
+//                int8_t i = 47;
+//                tm1.addTo_ListOfField1(i);
+//            }
+
+
+//            // Replace default serializer/deserializers.
+//            SerializationFactoryTestCase tmp;
+//            (void)tmp;
+
+//            Container c(tm1);
+
+//            // Serialize via regular Serializer.
+//            stringstream out;
+//            out << c;
+
+//            // Read from buffer.
+//            Container c2;
+//            out >> c2;
+//            TS_ASSERT(c2.getDataType() == TestMessage6::ID());
+
+//            TestMessage6 tm2 = c2.getData<TestMessage6>();
+
+//            vector<int8_t> v1 = tm1.getListOfField1();
+//            vector<int8_t> v2 = tm2.getListOfField1();
+
+//            TS_ASSERT(v1.size() == 3);
+//            TS_ASSERT(v2.size() == 3);
+
+//            TS_ASSERT(v1.at(0) == v2.at(0));
+//            TS_ASSERT(v2.at(0) == -12);
+
+//            TS_ASSERT(v1.at(1) == v2.at(1));
+//            TS_ASSERT(v2.at(1) == -34);
+
+//            TS_ASSERT(v1.at(2) == v2.at(2));
+//            TS_ASSERT(v2.at(2) == 47);
+//        }
+
         ///////////////////////////////////////////////////////////////////////
 
         void testSerializationDeserializationTestMessage7() {

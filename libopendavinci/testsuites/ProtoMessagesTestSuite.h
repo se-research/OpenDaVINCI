@@ -62,6 +62,8 @@
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage3.h"
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage4.h"
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage5.h"
+#include "opendavincitestdata/generated/odcore/testdata/TestMessage6.h"
+#include "opendavincitestdata/generated/odcore/testdata/TestMessage7.h"
 
 using namespace std;
 using namespace odcore::base;
@@ -2809,6 +2811,60 @@ TODO:
 
             TS_ASSERT_DELTA(v2.at(1).getRuntimeStatistic().getSliceConsumption(), v1.at(1).getRuntimeStatistic().getSliceConsumption(), 1e-4);
             TS_ASSERT_DELTA(v2.at(1).getRuntimeStatistic().getSliceConsumption(), -97.2345, 1e-4);
+        }
+
+
+        void testSerializationDeserializationTestMessage6() {
+            TestMessage6 tm1;
+
+            {
+                uint32_t i = 3;
+                tm1.addTo_ListOfField1(i);
+            }
+            {
+                uint32_t i = 270;
+                tm1.addTo_ListOfField1(i);
+            }
+            {
+                uint32_t i = 86942;
+                tm1.addTo_ListOfField1(i);
+            }
+
+
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << tm1;
+
+const string s = out.str();
+for (unsigned int i = 0; i<s.size(); i++) {
+    cout << hex << (int)(uint8_t)s.at(i) << " ";
+}
+cout << endl;
+
+            // Read back the data by using the visitor.
+            TestMessage6 tm2;
+
+            // Read from buffer.
+            out >> tm2;
+
+            vector<uint32_t> v1 = tm1.getListOfField1();
+            vector<uint32_t> v2 = tm2.getListOfField1();
+
+            TS_ASSERT(v1.size() == 3);
+            TS_ASSERT(v2.size() == 3);
+
+            TS_ASSERT(v1.at(0) == v2.at(0));
+            TS_ASSERT(v2.at(0) == 3);
+
+            TS_ASSERT(v1.at(1) == v2.at(1));
+            TS_ASSERT(v2.at(1) == 270);
+
+            TS_ASSERT(v1.at(2) == v2.at(2));
+            TS_ASSERT(v2.at(2) == 86942);
         }
 
 // TODO:
