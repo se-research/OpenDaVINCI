@@ -2214,6 +2214,31 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getCommand() == PlayerCommand::REWIND);
         }
 
+        void testSerializationDeserializationPlayerCommandContainer() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            PlayerCommand tm1;
+            tm1.setCommand(PlayerCommand::REWIND);
+
+            Container c(tm1);
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << c;
+
+            // Read back the data.
+            Container c2;
+            out >> c2;
+            TS_ASSERT(c2.getDataType() == PlayerCommand::ID());
+
+            PlayerCommand tm2 = c2.getData<PlayerCommand>();
+
+            TS_ASSERT(tm1.getCommand() == tm2.getCommand());
+            TS_ASSERT(tm2.getCommand() == PlayerCommand::REWIND);
+        }
+
         void testSerializationDeserializationPlayerCommandVisitor() {
             PlayerCommand tm1;
             tm1.setCommand(PlayerCommand::REWIND);
