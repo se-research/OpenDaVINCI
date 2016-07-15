@@ -170,13 +170,13 @@ class ProtoMessageTest : public CxxTest::TestSuite {
         ///////////////////////////////////////////////////////////////////////
 
         void testSerializationDeserializationTestMessage1CompleteOneField() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
             for (uint16_t i = 0; i <= 255; i++) {
                 TestMessage1 tm1;
                 tm1.setField1(i);
-
-                // Replace default serializer/deserializers.
-                SerializationFactoryTestCase tmp;
-                (void)tmp;
 
                 // Serialize via regular Serializer.
                 stringstream out;
@@ -476,15 +476,15 @@ class ProtoMessageTest : public CxxTest::TestSuite {
         ///////////////////////////////////////////////////////////////////////
 
         void testSerializationDeserializationTestMessage2Complete() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
             for(uint16_t i = 0; i <= 255; i++) {
                 for(int16_t j = -127; j <= 127; j++) {
                     TestMessage2 tm1;
                     tm1.setField1(i);
                     tm1.setField2(j);
-
-                    // Replace default serializer/deserializers.
-                    SerializationFactoryTestCase tmp;
-                    (void)tmp;
 
                     // Serialize via regular Serializer.
                     stringstream out;
@@ -495,10 +495,43 @@ class ProtoMessageTest : public CxxTest::TestSuite {
                     out >> tm2;
 
                     TS_ASSERT(tm1.getField1() == tm2.getField1());
-                    TS_ASSERT(tm1.getField1() == i);
+                    TS_ASSERT(tm2.getField1() == i);
 
                     TS_ASSERT(tm1.getField2() == tm2.getField2());
-                    TS_ASSERT(tm1.getField2() == j);
+                    TS_ASSERT(tm2.getField2() == j);
+                }
+            }
+        }
+
+        void testSerializationDeserializationTestMessage2CompleteContainer() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            for(uint16_t i = 0; i <= 255; i++) {
+                for(int16_t j = -127; j <= 127; j++) {
+                    TestMessage2 tm1;
+                    tm1.setField1(i);
+                    tm1.setField2(j);
+
+                    Container c(tm1);
+
+                    // Serialize via regular Serializer.
+                    stringstream out;
+                    out << c;
+
+                    // Read from buffer.
+                    Container c2;
+                    out >> c2;
+                    TS_ASSERT(c2.getDataType() == TestMessage2::ID());
+
+                    TestMessage2 tm2 = c2.getData<TestMessage2>();
+
+                    TS_ASSERT(tm1.getField1() == tm2.getField1());
+                    TS_ASSERT(tm2.getField1() == i);
+
+                    TS_ASSERT(tm1.getField2() == tm2.getField2());
+                    TS_ASSERT(tm2.getField2() == j);
                 }
             }
         }
@@ -528,10 +561,10 @@ class ProtoMessageTest : public CxxTest::TestSuite {
                     tm2.accept(protoDeserializerVisitor);
 
                     TS_ASSERT(tm1.getField1() == tm2.getField1());
-                    TS_ASSERT(tm1.getField1() == i);
+                    TS_ASSERT(tm2.getField1() == i);
 
                     TS_ASSERT(tm1.getField2() == tm2.getField2());
-                    TS_ASSERT(tm1.getField2() == j);
+                    TS_ASSERT(tm2.getField2() == j);
                 }
             }
         }
