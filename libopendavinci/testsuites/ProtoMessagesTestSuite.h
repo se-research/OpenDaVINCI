@@ -1766,6 +1766,31 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getModuleState() == ModuleStateMessage::RUNNING);
         }
 
+        void testSerializationDeserializationModuleStateMessageContainer() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            ModuleStateMessage tm1;
+            tm1.setModuleState(ModuleStateMessage::RUNNING);
+
+            Container c(tm1);
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << c;
+
+            // Read back the data.
+            Container c2;
+            out >> c2;
+            TS_ASSERT(c2.getDataType() == ModuleStateMessage::ID());
+
+            ModuleStateMessage tm2 = c2.getData<ModuleStateMessage>();
+
+            TS_ASSERT(tm1.getModuleState() == tm2.getModuleState());
+            TS_ASSERT(tm2.getModuleState() == ModuleStateMessage::RUNNING);
+        }
+
         void testSerializationDeserializationModuleStateMessageVisitor() {
             ModuleStateMessage tm1;
             tm1.setModuleState(ModuleStateMessage::RUNNING);
