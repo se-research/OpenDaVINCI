@@ -2362,6 +2362,35 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getSize() == 1234);
         }
 
+        void testSerializationDeserializationSharedDataContainer() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            SharedData tm1;
+            tm1.setName("Hello Shared Data");
+            tm1.setSize(1234);
+
+            Container c(tm1);
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << c;
+
+            // Read back the data.
+            Container c2;
+            out >> c2;
+            TS_ASSERT(c2.getDataType() == SharedData::ID());
+
+            SharedData tm2 = c2.getData<SharedData>();
+
+            TS_ASSERT(tm1.getName() == tm2.getName());
+            TS_ASSERT(tm2.getName() == "Hello Shared Data");
+
+            TS_ASSERT(tm1.getSize() == tm2.getSize());
+            TS_ASSERT(tm2.getSize() == 1234);
+        }
+
         void testSerializationDeserializationSharedDataVisitor() {
             SharedData tm1;
             tm1.setName("Hello Shared Data");
