@@ -1989,6 +1989,49 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(kvc2.getValue<float>("key2:3"), -4.325, 1e-3);
         }
 
+        void testSerializationDeserializationConfigurationContainer() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            KeyValueConfiguration kvc;
+
+            // Setup an example configuration.
+            stringstream sstrConfiguration;
+            sstrConfiguration
+                << "key1 = 123" << endl
+                << "abc.key2 = value2" << endl
+                << "key2:3 = -4.325" << endl;
+            kvc.readFrom(sstrConfiguration);
+
+            Configuration tm1;
+            tm1.setKeyValueConfiguration(kvc);
+
+            Container c(tm1);
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << c;
+
+            // Read back the data.
+            Container c2;
+            out >> c2;
+            TS_ASSERT(c2.getDataType() == Configuration::ID());
+
+            Configuration tm2 = c2.getData<Configuration>();
+
+            KeyValueConfiguration kvc2 = tm2.getKeyValueConfiguration();
+
+            TS_ASSERT(kvc.getValue<int>("key1") == kvc2.getValue<int>("key1"));
+            TS_ASSERT(kvc2.getValue<int>("key1") == 123);
+
+            TS_ASSERT(kvc.getValue<string>("abc.key2") == kvc2.getValue<string>("abc.key2"));
+            TS_ASSERT(kvc2.getValue<string>("abc.key2") == "value2");
+
+            TS_ASSERT_DELTA(kvc.getValue<float>("key2:3"), kvc2.getValue<float>("key2:3"), 1e-3);
+            TS_ASSERT_DELTA(kvc2.getValue<float>("key2:3"), -4.325, 1e-3);
+        }
+
         void testSerializationDeserializationModuleConfigurationVisitor() {
             KeyValueConfiguration kvc;
 
