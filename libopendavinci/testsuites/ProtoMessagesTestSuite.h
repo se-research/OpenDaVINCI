@@ -1231,6 +1231,39 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getManagedLevel() == ServerInformation::ML_PULSE_TIME_ACK);
         }
 
+        void testSerializationDeserializationServerInformationContainer() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            ServerInformation tm1;
+            tm1.setIP("123.456.789.abc");
+            tm1.setPort(7890);
+            tm1.setManagedLevel(ServerInformation::ML_PULSE_TIME_ACK);
+
+            Container c(tm1);
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << c;
+
+            // Read back the data.
+            Container c2;
+            out >> c2;
+            TS_ASSERT(c2.getDataType() == ServerInformation::ID());
+
+            ServerInformation tm2 = c2.getData<ServerInformation>();
+
+            TS_ASSERT(tm1.getIP() == tm2.getIP());
+            TS_ASSERT(tm2.getIP() == "123.456.789.abc");
+
+            TS_ASSERT(tm1.getPort() == tm2.getPort());
+            TS_ASSERT(tm2.getPort() == 7890);
+
+            TS_ASSERT(tm1.getManagedLevel() == tm2.getManagedLevel());
+            TS_ASSERT(tm2.getManagedLevel() == ServerInformation::ML_PULSE_TIME_ACK);
+        }
+
         void testSerializationDeserializationServerInformationVisitor() {
             ServerInformation tm1;
             tm1.setIP("123.456.789.abc");
