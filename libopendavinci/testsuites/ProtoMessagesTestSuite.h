@@ -1338,6 +1338,50 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(dm2.getModuleName() == "TestComponent");
         }
 
+        void testSerializationDeserializationDiscoverMessageContainer() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            ServerInformation tm1;
+            tm1.setIP("456.789.abc.123");
+            tm1.setPort(456);
+            tm1.setManagedLevel(ServerInformation::ML_PULSE_TIME);
+
+            DiscoverMessage dm;
+            dm.setType(DiscoverMessage::RESPONSE);
+            dm.setServerInformation(tm1);
+            dm.setModuleName("TestComponent");
+
+            Container c(dm);
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << c;
+
+            // Read back the data.
+            Container c2;
+            out >> c2;
+            TS_ASSERT(c2.getDataType() == DiscoverMessage::ID());
+
+            DiscoverMessage dm2 = c2.getData<DiscoverMessage>();
+
+            TS_ASSERT(dm.getServerInformation().getIP() == dm2.getServerInformation().getIP());
+            TS_ASSERT(dm2.getServerInformation().getIP() == "456.789.abc.123");
+
+            TS_ASSERT(dm.getServerInformation().getPort() == dm2.getServerInformation().getPort());
+            TS_ASSERT(dm2.getServerInformation().getPort() == 456);
+
+            TS_ASSERT(dm.getServerInformation().getManagedLevel() == dm2.getServerInformation().getManagedLevel());
+            TS_ASSERT(dm2.getServerInformation().getManagedLevel() == ServerInformation::ML_PULSE_TIME);
+
+            TS_ASSERT(dm.getType() == dm2.getType());
+            TS_ASSERT(dm2.getType() == DiscoverMessage::RESPONSE);
+
+            TS_ASSERT(dm.getModuleName() == dm2.getModuleName());
+            TS_ASSERT(dm2.getModuleName() == "TestComponent");
+        }
+
         void testSerializationDeserializationDiscoverMessageVisitor() {
             ServerInformation tm1;
             tm1.setIP("456.789.abc.123");
