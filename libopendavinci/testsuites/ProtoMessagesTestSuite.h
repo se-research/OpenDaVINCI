@@ -1111,6 +1111,51 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getSize() == -12);
         }
 
+        void testSerializationDeserializationAbstractFieldContainer() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            AbstractField tm1;
+            tm1.setLongFieldIdentifier(123456);
+            tm1.setShortFieldIdentifier(123);
+            tm1.setLongFieldName("odcore.data.reflection.AbstractField");
+            tm1.setShortFieldName("AbstractField");
+            tm1.setFieldDataType(AbstractField::INT8_T);
+            tm1.setSize(-12);
+
+            Container c(tm1);
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << c;
+
+            // Read back the data.
+            Container c2;
+            out >> c2;
+            TS_ASSERT(c2.getDataType() == AbstractField::ID());
+
+            AbstractField tm2 = c2.getData<AbstractField>();
+
+            TS_ASSERT(tm1.getLongFieldIdentifier() == tm2.getLongFieldIdentifier());
+            TS_ASSERT(tm2.getLongFieldIdentifier() == 123456);
+
+            TS_ASSERT(tm1.getShortFieldIdentifier() == tm2.getShortFieldIdentifier());
+            TS_ASSERT(tm2.getShortFieldIdentifier() == 123);
+
+            TS_ASSERT(tm1.getLongFieldName() == tm2.getLongFieldName());
+            TS_ASSERT(tm2.getLongFieldName() == "odcore.data.reflection.AbstractField");
+
+            TS_ASSERT(tm1.getShortFieldName() == tm2.getShortFieldName());
+            TS_ASSERT(tm2.getShortFieldName() == "AbstractField");
+
+            TS_ASSERT(tm1.getFieldDataType() == tm2.getFieldDataType());
+            TS_ASSERT(tm2.getFieldDataType() == AbstractField::INT8_T);
+
+            TS_ASSERT(tm1.getSize() == tm2.getSize());
+            TS_ASSERT(tm2.getSize() == -12);
+        }
+
         void testSerializationDeserializationAbstractFieldVisitor() {
             AbstractField tm1;
             tm1.setLongFieldIdentifier(123456);
