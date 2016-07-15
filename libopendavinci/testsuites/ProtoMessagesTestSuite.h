@@ -2458,6 +2458,47 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getBytesPerPixel() == 3);
         }
 
+        void testSerializationDeserializationSharedImageContainer() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            SharedImage tm1;
+            tm1.setName("Hello Shared Image");
+            tm1.setSize(7890);
+            tm1.setWidth(640);
+            tm1.setHeight(480);
+            tm1.setBytesPerPixel(3);
+
+            Container c(tm1);
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << c;
+
+            // Read back the data.
+            Container c2;
+            out >> c2;
+            TS_ASSERT(c2.getDataType() == SharedImage::ID());
+
+            SharedImage tm2 = c2.getData<SharedImage>();
+
+            TS_ASSERT(tm1.getName() == tm2.getName());
+            TS_ASSERT(tm2.getName() == "Hello Shared Image");
+
+            TS_ASSERT(tm1.getSize() == tm2.getSize());
+            TS_ASSERT(tm2.getSize() == 7890);
+
+            TS_ASSERT(tm1.getWidth() == tm2.getWidth());
+            TS_ASSERT(tm2.getWidth() == 640);
+
+            TS_ASSERT(tm1.getHeight() == tm2.getHeight());
+            TS_ASSERT(tm2.getHeight() == 480);
+
+            TS_ASSERT(tm1.getBytesPerPixel() == tm2.getBytesPerPixel());
+            TS_ASSERT(tm2.getBytesPerPixel() == 3);
+        }
+
         void testSerializationDeserializationSharedImageVisitor() {
             SharedImage tm1;
             tm1.setName("Hello Shared Image");
