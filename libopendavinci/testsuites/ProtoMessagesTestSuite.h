@@ -1838,6 +1838,31 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getModuleExitCode() == ModuleExitCodeMessage::CONNECTION_LOST);
         }
 
+        void testSerializationDeserializationModuleExitCodeMessageContainer() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            ModuleExitCodeMessage tm1;
+            tm1.setModuleExitCode(ModuleExitCodeMessage::CONNECTION_LOST);
+
+            Container c(tm1);
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << c;
+
+            // Read back the data.
+            Container c2;
+            out >> c2;
+            TS_ASSERT(c2.getDataType() == ModuleExitCodeMessage::ID());
+
+            ModuleExitCodeMessage tm2 = c2.getData<ModuleExitCodeMessage>();
+
+            TS_ASSERT(tm1.getModuleExitCode() == tm2.getModuleExitCode());
+            TS_ASSERT(tm2.getModuleExitCode() == ModuleExitCodeMessage::CONNECTION_LOST);
+        }
+
         void testSerializationDeserializationModuleExitCodeMessageVisitor() {
             ModuleExitCodeMessage tm1;
             tm1.setModuleExitCode(ModuleExitCodeMessage::CONNECTION_LOST);
