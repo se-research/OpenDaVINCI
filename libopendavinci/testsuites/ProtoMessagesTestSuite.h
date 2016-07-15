@@ -2112,6 +2112,46 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(ms2.getIdentifier() == 12);
         }
 
+        void testSerializationDeserializationMemorySegmentContainer() {
+            // Replace default serializer/deserializers (needs to be here as the Container constructor will immediately serialize its argument.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            TimeStamp payload(7, 8);
+            Container c(payload);
+            c.setSentTimeStamp(TimeStamp(1, 2));
+            c.setReceivedTimeStamp(TimeStamp(3, 4));
+
+            MemorySegment ms;
+            ms.setHeader(c);
+            ms.setSize(123);
+            ms.setConsumedSize(567);
+            ms.setIdentifier(12);
+
+            Container _c(ms);
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << _c;
+
+            // Read back the data.
+            Container _c2;
+            out >> _c2;
+            TS_ASSERT(_c2.getDataType() == MemorySegment::ID());
+
+            MemorySegment ms2 = _c2.getData<MemorySegment>();
+
+            Container c2 = ms2.getHeader();
+            TimeStamp payload2 = c2.getData<TimeStamp>();
+
+            TS_ASSERT(c2.getDataType() == TimeStamp::ID());
+            TS_ASSERT(payload2.getSeconds() == payload.getSeconds());
+            TS_ASSERT(payload2.getFractionalMicroseconds() == payload.getFractionalMicroseconds());
+            TS_ASSERT(ms2.getSize() == 123);
+            TS_ASSERT(ms2.getConsumedSize() == 567);
+            TS_ASSERT(ms2.getIdentifier() == 12);
+        }
+
         void testSerializationDeserializationMemorySegmentVisitor() {
             TimeStamp payload(7, 8);
             Container c(payload);
