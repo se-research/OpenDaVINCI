@@ -49,6 +49,7 @@
 #include "opendavinci/generated/odcore/data/dmcp/ModuleStateMessage.h"
 #include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
 #include "opendavinci/generated/odcore/data/dmcp/PulseAckMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/PulseMessage.h"
 #include "opendavinci/generated/odcore/data/Configuration.h"
 #include "opendavinci/generated/odcore/data/buffer/MemorySegment.h"
 #include "opendavinci/generated/odcore/data/player/PlayerCommand.h"
@@ -2666,6 +2667,54 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(v2.at(1).getRuntimeStatistic().getSliceConsumption(), v1.at(1).getRuntimeStatistic().getSliceConsumption(), 1e-4);
             TS_ASSERT_DELTA(v2.at(1).getRuntimeStatistic().getSliceConsumption(), -97.2345, 1e-4);
         }
+
+        ///////////////////////////////////////////////////////////////////////
+
+        void testSerializationDeserializationPulseMessage() {
+//    odcore::data::TimeStamp realTimeFromSupercomponent [id = 1];
+//    uint32 nominalTimeSlice [id = 2];
+//    uint32 cumulatedTimeSlice [id = 3];
+//    list<odcore::data::Container> containers [id = 4];
+
+
+            PulseMessage pm1;
+            pm1.setRealTimeFromSupercomponent(TimeStamp(8, 9));
+            pm1.setNominalTimeSlice(12);
+            pm1.setCumulatedTimeSlice(34);
+
+//            {
+//                mss1.addTo_ListOfModuleStatistics(ms1);
+//            }
+
+
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << pm1;
+
+            // Read back the data by using the visitor.
+            PulseMessage pm2;
+
+            // Read from buffer.
+            out >> pm2;
+
+//            vector<ModuleStatistic> v1 = pm1.getListOfModuleStatistics();
+//            vector<ModuleStatistic> v2 = pm2.getListOfModuleStatistics();
+
+//            TS_ASSERT(v1.size() == 2);
+//            TS_ASSERT(v2.size() == 2);
+
+            TS_ASSERT(pm1.getRealTimeFromSupercomponent().getSeconds() == pm2.getRealTimeFromSupercomponent().getSeconds());
+            TS_ASSERT(pm1.getRealTimeFromSupercomponent().getSeconds() == 8);
+
+            TS_ASSERT(pm1.getRealTimeFromSupercomponent().getFractionalMicroseconds() == pm2.getRealTimeFromSupercomponent().getFractionalMicroseconds());
+            TS_ASSERT(pm1.getRealTimeFromSupercomponent().getFractionalMicroseconds() == 9);
+
+        }
+
 };
 
 #endif /*CORE_QUERYABLENETSTRINGSABCFMESSAGESTESTSUITE_H_*/
