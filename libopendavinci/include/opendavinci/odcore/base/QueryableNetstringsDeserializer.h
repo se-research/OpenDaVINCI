@@ -47,7 +47,7 @@ namespace odcore {
          * @See Serializable
          */
         class OPENDAVINCI_API QueryableNetstringsDeserializer : public Deserializer {
-            private:
+            public:
                 // Only the SerializationFactory or its subclasses are allowed to create instances of this Deserializer using the non-standard constructor.
                 friend class SerializationFactory;
 

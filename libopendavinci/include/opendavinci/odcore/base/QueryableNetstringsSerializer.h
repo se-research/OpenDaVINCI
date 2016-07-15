@@ -48,7 +48,7 @@ class Serializable;
          * @See Serializable
          */
         class QueryableNetstringsSerializer : public Serializer {
-            private:
+            public:
                 // Only the SerializationFactory or its subclasses are allowed to create instances of this Serializer using non-standard constructors.
                 friend class SerializationFactory;
 
