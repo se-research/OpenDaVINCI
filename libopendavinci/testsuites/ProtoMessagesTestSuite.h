@@ -116,6 +116,32 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm1.getField1() == 12);
         }
 
+        void testSerializationDeserializationTestMessage1OneFieldContainer() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            TestMessage1 tm1;
+            tm1.setField1(12);
+
+            Container c(tm1);
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << c;
+
+            // Read from buffer.
+            Container c2;
+            out >> c2;
+
+            TS_ASSERT(c2.getDataType() == TestMessage1::ID());
+
+            TestMessage1 tm2 = c2.getData<TestMessage1>();
+
+            TS_ASSERT(tm1.getField1() == tm2.getField1());
+            TS_ASSERT(tm1.getField1() == 12);
+        }
+
         void testSerializationDeserializationTestMessage1OneFieldVisitor() {
             TestMessage1 tm1;
             tm1.setField1(12);
@@ -1991,6 +2017,10 @@ cout << endl;
             TS_ASSERT_DELTA(v2.at(1).getRuntimeStatistic().getSliceConsumption(), -97.2345, 1e-4);
         }
 
+// TODO:
+// - revert change to ProtoDeserializer to eat the data handed over
+// - fix correct encoding of the length
+
 // To be added:
 // odcore.data.dmcp.PulseMessage
 // odcore.data.dmcp.PulseAckContainersMessage
@@ -1998,6 +2028,8 @@ cout << endl;
 // To be verified:
 // - compatibility with 3rd party Proto implementations
 // - support of evolving message definitions (adding more fields, removing fields)
+//   --> should work if the length problem is solved
+//   --> if the decodeFrom... method creates a vector of contained entries
 };
 
 #endif /*CORE_PROTOMESSAGESTESTSUITE_H_*/
