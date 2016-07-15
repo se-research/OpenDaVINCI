@@ -1460,6 +1460,43 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(tm2.getFrequency(), 1.2345, 1e-4);
         }
 
+        void testSerializationDeserializationModuleDescriptorContainer() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            ModuleDescriptor tm1;
+            tm1.setName("My component");
+            tm1.setIdentifier("12345");
+            tm1.setVersion("XZY");
+            tm1.setFrequency(1.2345);
+
+            Container c(tm1);
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << c;
+
+            // Read back the data.
+            Container c2;
+            out >> c2;
+            TS_ASSERT(c2.getDataType() == ModuleDescriptor::ID());
+
+            ModuleDescriptor tm2 = c2.getData<ModuleDescriptor>();
+
+            TS_ASSERT(tm1.getName() == tm2.getName());
+            TS_ASSERT(tm2.getName() == "My component");
+
+            TS_ASSERT(tm1.getIdentifier() == tm2.getIdentifier());
+            TS_ASSERT(tm2.getIdentifier() == "12345");
+
+            TS_ASSERT(tm1.getVersion() == tm2.getVersion());
+            TS_ASSERT(tm2.getVersion() == "XZY");
+
+            TS_ASSERT_DELTA(tm1.getFrequency(), tm2.getFrequency(), 1e-4);
+            TS_ASSERT_DELTA(tm2.getFrequency(), 1.2345, 1e-4);
+        }
+
         void testSerializationDeserializationModuleDescriptorVisitor() {
             ModuleDescriptor tm1;
             tm1.setName("My component");
