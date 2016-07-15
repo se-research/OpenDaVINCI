@@ -1906,6 +1906,28 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             out >> tm2;
         }
 
+        void testSerializationDeserializationPulseAckMessageContainer() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            PulseAckMessage tm1;
+
+            Container c(tm1);
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << c;
+
+            // Read back the data.
+            Container c2;
+            out >> c2;
+            TS_ASSERT(c2.getDataType() == PulseAckMessage::ID());
+
+            PulseAckMessage tm2 = c2.getData<PulseAckMessage>();
+            (void)tm2;
+        }
+
         void testSerializationDeserializationPulseAckMessageVisitor() {
             PulseAckMessage tm1;
 
