@@ -25,29 +25,24 @@ message odcore.testdata.dmcp.TestConstants [id = 111] {
     const uint32 DMCPCONFIG_TEST_CLIENTPORT = 25100;
 }
 
-message odcore.testdata.TestMessage1 [id = 1000] {
+message odcore.testdata.TestMessage1 [id = 1001] {
     uint8 field1 [ default = 12, id = 1 ];
 }
 
-message odcore.testdata.TestMessage2 [id = 1001] {
+message odcore.testdata.TestMessage2 [id = 1002] {
     uint8 field1 [ id = 1 ];
     int8 field2 [ id = 2 ];
 }
 
-message odcore.testdata.TestMessage3 [id = 1002] {
+message odcore.testdata.TestMessage3 [id = 1003] {
     string field1 [ id = 2 ];
 }
 
-// This is not correctly handled by our Proto implementation yet.
-message odcore.testdata.TestMessage3Derived extends odcore.testdata.TestMessage3 [id = 1005] {
-    uint32 field1 [ id = 1 ];
-}
-
-message odcore.testdata.TestMessage4 [id = 1003] {
+message odcore.testdata.TestMessage4 [id = 1004] {
     odcore.testdata.TestMessage1 field1 [ id = 3 ];
 }
 
-message odcore.testdata.TestMessage5 [id = 1004] {
+message odcore.testdata.TestMessage5 [id = 1005] {
     uint8 field1 [ default = 1, id = 1 ];
     int8 field2 [ default = -1, id = 2 ];
     uint16 field3 [ default = 100, id = 3 ];

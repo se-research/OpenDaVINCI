@@ -64,6 +64,8 @@
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage3.h"
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage4.h"
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage5.h"
+#include "opendavincitestdata/generated/odcore/testdata/TestMessage6.h"
+#include "opendavincitestdata/generated/odcore/testdata/TestMessage7.h"
 
 using namespace std;
 using namespace odcore::base;
@@ -2786,6 +2788,7 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(v1.at(1).getData<TimeStamp>().toMicroseconds() == v2.at(1).getData<TimeStamp>().toMicroseconds());
             TS_ASSERT(v2.at(1).getData<TimeStamp>().toMicroseconds() == 3000004);
         }
+
         ///////////////////////////////////////////////////////////////////////
 
         void testSerializationDeserializationPulseAckContainersMessage() {
@@ -2872,6 +2875,204 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
 
             TS_ASSERT(v1.at(1).getData<TimeStamp>().toMicroseconds() == v2.at(1).getData<TimeStamp>().toMicroseconds());
             TS_ASSERT(v2.at(1).getData<TimeStamp>().toMicroseconds() == 3000004);
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+
+        void testSerializationDeserializationTestMessage6() {
+            TestMessage6 tm1;
+
+            {
+                int8_t i = -12;
+                tm1.addTo_ListOfField1(i);
+            }
+            {
+                int8_t i = -34;
+                tm1.addTo_ListOfField1(i);
+            }
+            {
+                int8_t i = 47;
+                tm1.addTo_ListOfField1(i);
+            }
+
+
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << tm1;
+
+            // Read back the data by using the visitor.
+            TestMessage6 tm2;
+
+            // Read from buffer.
+            out >> tm2;
+
+            vector<int8_t> v1 = tm1.getListOfField1();
+            vector<int8_t> v2 = tm2.getListOfField1();
+
+            TS_ASSERT(v1.size() == 3);
+            TS_ASSERT(v2.size() == 3);
+
+            TS_ASSERT(v1.at(0) == v2.at(0));
+            TS_ASSERT(v2.at(0) == -12);
+
+            TS_ASSERT(v1.at(1) == v2.at(1));
+            TS_ASSERT(v2.at(1) == -34);
+
+            TS_ASSERT(v1.at(2) == v2.at(2));
+            TS_ASSERT(v2.at(2) == 47);
+        }
+
+        void testSerializationDeserializationTestMessage6Container() {
+            TestMessage6 tm1;
+
+            {
+                int8_t i = -12;
+                tm1.addTo_ListOfField1(i);
+            }
+            {
+                int8_t i = -34;
+                tm1.addTo_ListOfField1(i);
+            }
+            {
+                int8_t i = 47;
+                tm1.addTo_ListOfField1(i);
+            }
+
+
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            Container c(tm1);
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << c;
+
+            // Read from buffer.
+            Container c2;
+            out >> c2;
+            TS_ASSERT(c2.getDataType() == TestMessage6::ID());
+
+            TestMessage6 tm2 = c2.getData<TestMessage6>();
+
+            vector<int8_t> v1 = tm1.getListOfField1();
+            vector<int8_t> v2 = tm2.getListOfField1();
+
+            TS_ASSERT(v1.size() == 3);
+            TS_ASSERT(v2.size() == 3);
+
+            TS_ASSERT(v1.at(0) == v2.at(0));
+            TS_ASSERT(v2.at(0) == -12);
+
+            TS_ASSERT(v1.at(1) == v2.at(1));
+            TS_ASSERT(v2.at(1) == -34);
+
+            TS_ASSERT(v1.at(2) == v2.at(2));
+            TS_ASSERT(v2.at(2) == 47);
+        }
+        ///////////////////////////////////////////////////////////////////////
+
+        void testSerializationDeserializationTestMessage7() {
+            TestMessage7 tm1;
+
+            {
+                float i = -12.345;
+                tm1.addTo_ListOfField1(i);
+            }
+            {
+                float i = -34.567;
+                tm1.addTo_ListOfField1(i);
+            }
+            {
+                float i = 47.891;
+                tm1.addTo_ListOfField1(i);
+            }
+
+
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << tm1;
+
+            // Read back the data by using the visitor.
+            TestMessage7 tm2;
+
+            // Read from buffer.
+            out >> tm2;
+
+            vector<float> v1 = tm1.getListOfField1();
+            vector<float> v2 = tm2.getListOfField1();
+
+            TS_ASSERT(v1.size() == 3);
+            TS_ASSERT(v2.size() == 3);
+
+            TS_ASSERT_DELTA(v1.at(0), v2.at(0), 1e-3);
+            TS_ASSERT_DELTA(v2.at(0), -12.345, 1e-3);
+
+            TS_ASSERT_DELTA(v1.at(1), v2.at(1), 1e-3);
+            TS_ASSERT_DELTA(v2.at(1), -34.567, 1e-3);
+
+            TS_ASSERT_DELTA(v1.at(2), v2.at(2), 1e-3);
+            TS_ASSERT_DELTA(v2.at(2), 47.891, 1e-3);
+        }
+
+        void testSerializationDeserializationTestMessage7Container() {
+            TestMessage7 tm1;
+
+            {
+                float i = -12.345;
+                tm1.addTo_ListOfField1(i);
+            }
+            {
+                float i = -34.567;
+                tm1.addTo_ListOfField1(i);
+            }
+            {
+                float i = 47.891;
+                tm1.addTo_ListOfField1(i);
+            }
+
+
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            Container c(tm1);
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << c;
+
+
+            // Read from buffer.
+            Container c2;
+            out >> c2;
+            TS_ASSERT(c2.getDataType() == TestMessage7::ID());
+
+            TestMessage7 tm2 = c2.getData<TestMessage7>();
+
+            vector<float> v1 = tm1.getListOfField1();
+            vector<float> v2 = tm2.getListOfField1();
+
+            TS_ASSERT(v1.size() == 3);
+            TS_ASSERT(v2.size() == 3);
+
+            TS_ASSERT_DELTA(v1.at(0), v2.at(0), 1e-3);
+            TS_ASSERT_DELTA(v2.at(0), -12.345, 1e-3);
+
+            TS_ASSERT_DELTA(v1.at(1), v2.at(1), 1e-3);
+            TS_ASSERT_DELTA(v2.at(1), -34.567, 1e-3);
+
+            TS_ASSERT_DELTA(v1.at(2), v2.at(2), 1e-3);
+            TS_ASSERT_DELTA(v2.at(2), 47.891, 1e-3);
         }
 };
 
