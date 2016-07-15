@@ -191,6 +191,33 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             }
         }
 
+        void testSerializationDeserializationTestMessage1CompleteOneFieldContainer() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            for (uint16_t i = 0; i <= 255; i++) {
+                TestMessage1 tm1;
+                tm1.setField1(i);
+
+                Container c(tm1);
+
+                // Serialize via regular Serializer.
+                stringstream out;
+                out << c;
+
+                // Read from buffer.
+                Container c2;
+                out >> c2;
+                TS_ASSERT(c2.getDataType() == TestMessage1::ID());
+
+                TestMessage1 tm2 = c2.getData<TestMessage1>();
+
+                TS_ASSERT(tm1.getField1() == tm2.getField1());
+                TS_ASSERT(tm1.getField1() == i);
+            }
+        }
+
         void testSerializationDeserializationTestMessage1CompleteOneFieldVisitor() {
             for (uint16_t i = 0; i <= 255; i++) {
                 TestMessage1 tm1;
