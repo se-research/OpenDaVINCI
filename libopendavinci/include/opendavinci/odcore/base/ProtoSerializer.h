@@ -127,8 +127,21 @@ class Serializable;
                 uint64_t encodeZigZag64(int64_t value);
 
             public:
-                uint32_t write(ostream &o, const string &v);
-                uint32_t write(ostream &o, const Serializable &v);
+                virtual uint32_t writeValue(ostream &o, const Serializable &v);
+                virtual uint32_t writeValue(ostream &o, const bool &v);
+                virtual uint32_t writeValue(ostream &o, const char &v);
+                virtual uint32_t writeValue(ostream &o, const unsigned char &v);
+                virtual uint32_t writeValue(ostream &o, const int8_t &v);
+                virtual uint32_t writeValue(ostream &o, const int16_t &v);
+                virtual uint32_t writeValue(ostream &o, const uint16_t &v);
+                virtual uint32_t writeValue(ostream &o, const int32_t &v);
+                virtual uint32_t writeValue(ostream &o, const uint32_t &v);
+                virtual uint32_t writeValue(ostream &o, const int64_t &v);
+                virtual uint32_t writeValue(ostream &o, const uint64_t &v);
+                virtual uint32_t writeValue(ostream &o, const float &v);
+                virtual uint32_t writeValue(ostream &o, const double &v);
+                virtual uint32_t writeValue(ostream &o, const string &v);
+                virtual uint32_t writeValue(ostream &o, const void *data, const uint32_t &size);
 
             public:
                 virtual void write(const uint32_t &id, const Serializable &s);
@@ -166,15 +179,20 @@ class Serializable;
 
             private:
                 /**
-                 * This method writes a given value using the provided identifier
-                 * and type into the Protobuf format.
+                 * This method writes a given key/value pair using the provided identifier
+                 * and value into the Protobuf format.
                  *
                  * @param id Identifier
-                 * @param type Type identifier according to Protobuf specification
                  * @param value to be written
-                 * @return Number of bytes written
                  */
-                uint32_t writeValue(const uint32_t &id, const PROTOBUF_TYPE &type, uint64_t value);
+                template<typename T>
+                uint32_t writeKeyValue(const uint32_t &id, T &v) {
+                    uint32_t bytesWritten = 0;
+                    uint32_t key = getKey(id, ProtoSerializer::VARINT);
+                    bytesWritten += encodeVarInt(m_buffer, key);
+                    bytesWritten += writeValue(m_buffer, v);
+                    return bytesWritten;
+                }
 
                 /**
                  * This method creates the key for the Protobuf format.
