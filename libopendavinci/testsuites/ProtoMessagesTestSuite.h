@@ -2286,6 +2286,31 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getCommand() == RecorderCommand::STOP);
         }
 
+        void testSerializationDeserializationRecorderCommandContainer() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            RecorderCommand tm1;
+            tm1.setCommand(RecorderCommand::STOP);
+
+            Container c(tm1);
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << c;
+
+            // Read back the data.
+            Container c2;
+            out >> c2;
+            TS_ASSERT(c2.getDataType() == RecorderCommand::ID());
+
+            RecorderCommand tm2 = c2.getData<RecorderCommand>();
+
+            TS_ASSERT(tm1.getCommand() == tm2.getCommand());
+            TS_ASSERT(tm2.getCommand() == RecorderCommand::STOP);
+        }
+
         void testSerializationDeserializationRecorderCommandVisitor() {
             RecorderCommand tm1;
             tm1.setCommand(RecorderCommand::STOP);
