@@ -50,6 +50,7 @@
 #include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
 #include "opendavinci/generated/odcore/data/dmcp/PulseAckMessage.h"
 #include "opendavinci/generated/odcore/data/dmcp/PulseMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/PulseAckContainersMessage.h"
 #include "opendavinci/generated/odcore/data/Configuration.h"
 #include "opendavinci/generated/odcore/data/buffer/MemorySegment.h"
 #include "opendavinci/generated/odcore/data/player/PlayerCommand.h"
@@ -2778,6 +2779,93 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
 
             TS_ASSERT(pm1.getCumulatedTimeSlice() == pm2.getCumulatedTimeSlice());
             TS_ASSERT(pm2.getCumulatedTimeSlice() == 34);
+
+            TS_ASSERT(v1.at(0).getData<TimeStamp>().toMicroseconds() == v2.at(0).getData<TimeStamp>().toMicroseconds());
+            TS_ASSERT(v2.at(0).getData<TimeStamp>().toMicroseconds() == 1000002);
+
+            TS_ASSERT(v1.at(1).getData<TimeStamp>().toMicroseconds() == v2.at(1).getData<TimeStamp>().toMicroseconds());
+            TS_ASSERT(v2.at(1).getData<TimeStamp>().toMicroseconds() == 3000004);
+        }
+        ///////////////////////////////////////////////////////////////////////
+
+        void testSerializationDeserializationPulseAckContainersMessage() {
+            PulseAckContainersMessage pm1;
+
+            {
+                TimeStamp ts(1, 2);
+                Container c(ts);
+                pm1.addTo_ListOfContainers(c);
+            }
+            {
+                TimeStamp ts(3, 4);
+                Container c(ts);
+                pm1.addTo_ListOfContainers(c);
+            }
+
+
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << pm1;
+
+            // Read back the data by using the visitor.
+            PulseAckContainersMessage pm2;
+
+            // Read from buffer.
+            out >> pm2;
+
+            vector<Container> v1 = pm1.getListOfContainers();
+            vector<Container> v2 = pm2.getListOfContainers();
+
+            TS_ASSERT(v1.size() == 2);
+            TS_ASSERT(v2.size() == 2);
+
+            TS_ASSERT(v1.at(0).getData<TimeStamp>().toMicroseconds() == v2.at(0).getData<TimeStamp>().toMicroseconds());
+            TS_ASSERT(v2.at(0).getData<TimeStamp>().toMicroseconds() == 1000002);
+
+            TS_ASSERT(v1.at(1).getData<TimeStamp>().toMicroseconds() == v2.at(1).getData<TimeStamp>().toMicroseconds());
+            TS_ASSERT(v2.at(1).getData<TimeStamp>().toMicroseconds() == 3000004);
+        }
+
+        void testSerializationDeserializationPulseAckContainersMessageContainer() {
+            PulseAckContainersMessage pm1;
+
+            {
+                TimeStamp ts(1, 2);
+                Container c(ts);
+                pm1.addTo_ListOfContainers(c);
+            }
+            {
+                TimeStamp ts(3, 4);
+                Container c(ts);
+                pm1.addTo_ListOfContainers(c);
+            }
+
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            Container c(pm1);
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << c;
+
+            // Read from buffer.
+            Container c2;
+            out >> c2;
+            TS_ASSERT(c2.getDataType() == PulseAckContainersMessage::ID());
+
+            PulseAckContainersMessage pm2 = c2.getData<PulseAckContainersMessage>();
+
+            vector<Container> v1 = pm1.getListOfContainers();
+            vector<Container> v2 = pm2.getListOfContainers();
+
+            TS_ASSERT(v1.size() == 2);
+            TS_ASSERT(v2.size() == 2);
 
             TS_ASSERT(v1.at(0).getData<TimeStamp>().toMicroseconds() == v2.at(0).getData<TimeStamp>().toMicroseconds());
             TS_ASSERT(v2.at(0).getData<TimeStamp>().toMicroseconds() == 1000002);
