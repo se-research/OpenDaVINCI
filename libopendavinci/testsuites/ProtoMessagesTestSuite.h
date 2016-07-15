@@ -1556,6 +1556,31 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(tm2.getSliceConsumption(), -7.2345, 1e-4);
         }
 
+        void testSerializationDeserializationRuntimeStatisticContainer() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            RuntimeStatistic tm1;
+            tm1.setSliceConsumption(-7.2345);
+
+            Container c(tm1);
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << c;
+
+            // Read back the data.
+            Container c2;
+            out >> c2;
+            TS_ASSERT(c2.getDataType() == RuntimeStatistic::ID());
+
+            RuntimeStatistic tm2 = c2.getData<RuntimeStatistic>();
+
+            TS_ASSERT_DELTA(tm1.getSliceConsumption(), tm2.getSliceConsumption(), 1e-4);
+            TS_ASSERT_DELTA(tm2.getSliceConsumption(), -7.2345, 1e-4);
+        }
+
         void testSerializationDeserializationRuntimeStatisticVisitor() {
             RuntimeStatistic tm1;
             tm1.setSliceConsumption(-7.2345);
