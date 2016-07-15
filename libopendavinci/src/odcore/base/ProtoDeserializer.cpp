@@ -43,6 +43,69 @@ class Serializable;
 
         ProtoDeserializer::~ProtoDeserializer() {}
 
+        uint32_t ProtoDeserializer::read(istream &i, string &v) {
+            uint32_t retVal = 0;
+
+            // Read length.
+            uint64_t length = 0;
+            retVal += decodeVarInt(i, length);
+
+            // Create contiguous buffer.
+            vector<char> buffer(length);
+
+            // Read data from stream.
+            i.read(&buffer[0], length);
+            retVal += length;
+
+            // Create string from buffer.
+            v = string(&buffer[0], &buffer[length]);
+
+            return retVal;
+        }
+
+        uint32_t ProtoDeserializer::read(istream &i, Serializable &v) {
+            uint32_t retVal = 0;
+
+            // Read length.
+            uint64_t length = 0;
+            retVal += decodeVarInt(i, length);
+
+            // Create contiguous buffer.
+            vector<char> buffer(length);
+
+            // Read data from stream into buffer.
+            i.read(&buffer[0], length);
+            retVal += length;
+
+            // Create string from buffer.
+            const string s(&buffer[0], &buffer[length]);
+
+            // Deserialize v from string using a stringstream.
+            stringstream sstr(s);
+
+            // Check whether v is from type Visitable to use ProtoSerializerVisitor.
+            try {
+                const Visitable &v2 = dynamic_cast<const Visitable&>(v);
+
+                // Cast succeeded, visited nested class using a ProtoSerializerVisitor.
+                ProtoDeserializerVisitor nestedVisitor;
+
+                // Set buffer to deserialize data from.
+                nestedVisitor.deserializeDataFrom(sstr);
+
+                // Visit v and set values.
+                const_cast<Visitable&>(v2).accept(nestedVisitor);
+            }
+            catch(...) {
+                // Deserialize v using the default way as it is not of type Visitable.
+                sstr >> v;
+            }
+
+            return retVal;
+        }
+
+
+
         void ProtoDeserializer::deserializeDataFrom(istream &in) {
             // Reset internal states as this deserializer could be reused.
             m_size = 0;

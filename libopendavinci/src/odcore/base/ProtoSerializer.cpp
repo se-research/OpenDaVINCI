@@ -61,6 +61,56 @@ class Serializable;
             return (fieldNumber << 3) | protoType;
         }
 
+        uint32_t ProtoSerializer::write(ostream &o, const string &v) {
+            uint32_t retVal = 0;
+
+            const uint32_t size = v.length();
+            retVal += encodeVarInt(o, size);
+
+            o.write(v.c_str(), size);
+            retVal += size;
+
+            return retVal;
+        }
+
+        uint32_t ProtoSerializer::write(ostream &o, const Serializable &v) {
+            uint32_t retVal = 0;
+
+            // Buffer for serialized data.
+            stringstream buffer;
+
+            // Check whether v is from type Visitable to use ProtoSerializer.
+            try {
+                const Visitable &v2 = dynamic_cast<const Visitable&>(v);
+
+                // Cast succeeded, visited nested class using a ProtoSerializer.
+                ProtoSerializerVisitor nestedVisitor;
+                const_cast<Visitable&>(v2).accept(nestedVisitor);
+
+                // Get serialized data.
+                nestedVisitor.getSerializedData(buffer);
+            }
+            catch(...) {
+                // Serialize v using the default way as it is not of type Visitable.
+                buffer << v;
+            }
+
+            // Get serialized value.
+            const string tmp = buffer.str();
+
+            // Write length of v into m_buffer.
+            uint64_t size = static_cast<uint32_t>(tmp.length());
+            retVal += encodeVarInt(o, size);
+
+            // Write actual value.
+            o.write(tmp.c_str(), size);
+            retVal += size;
+
+            return retVal;
+        }
+
+
+
         uint32_t ProtoSerializer::writeValue(const uint32_t &id, const ProtoSerializer::PROTOBUF_TYPE &type, uint64_t value) {
             uint32_t size = 0;
             uint32_t key = getKey(id, type);

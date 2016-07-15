@@ -127,6 +127,10 @@ class Serializable;
                 uint64_t encodeZigZag64(int64_t value);
 
             public:
+                uint32_t write(ostream &o, const string &v);
+                uint32_t write(ostream &o, const Serializable &v);
+
+            public:
                 virtual void write(const uint32_t &id, const Serializable &s);
                 virtual void write(const uint32_t &id, const bool &b);
                 virtual void write(const uint32_t &id, const char &c);

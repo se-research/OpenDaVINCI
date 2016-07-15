@@ -2761,12 +2761,11 @@ TODO:
 * Test serialization and deserialization of primitive types and complex types.
 */
 
-const string s = out.str();
-for (unsigned int i = 0; i<s.size(); i++) {
-    cout << hex << (int)(uint8_t)s.at(i) << " ";
-}
-
-cout << endl;
+//const string s = out.str();
+//for (unsigned int i = 0; i<s.size(); i++) {
+//    cout << hex << (int)(uint8_t)s.at(i) << " ";
+//}
+//cout << endl;
 
             // Read back the data by using the visitor.
             ModuleStatistics mss2;

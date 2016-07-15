@@ -119,6 +119,10 @@ namespace odcore {
                 int64_t decodeZigZag64(uint64_t value);
 
             public:
+                uint32_t read(istream &i, string &v);
+                uint32_t read(istream &i, Serializable &v);
+
+            public:
                 virtual void read(const uint32_t &id, Serializable &s);
                 virtual void read(const uint32_t &id, bool &b);
                 virtual void read(const uint32_t &id, char &c);
