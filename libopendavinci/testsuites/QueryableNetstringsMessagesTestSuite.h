@@ -2574,6 +2574,98 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(v2.at(1).getRuntimeStatistic().getSliceConsumption(), v1.at(1).getRuntimeStatistic().getSliceConsumption(), 1e-4);
             TS_ASSERT_DELTA(v2.at(1).getRuntimeStatistic().getSliceConsumption(), -97.2345, 1e-4);
         }
+
+        void testSerializationDeserializationModuleStatisticsContainer() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            ModuleStatistics mss1;
+
+            {
+                ModuleDescriptor md;
+                md.setName("My component");
+                md.setIdentifier("12345");
+                md.setVersion("XZY");
+                md.setFrequency(1.2345);
+
+                RuntimeStatistic rs;
+                rs.setSliceConsumption(-7.2345);
+
+                ModuleStatistic ms1;
+                ms1.setModule(md);
+                ms1.setRuntimeStatistic(rs);
+
+                mss1.addTo_ListOfModuleStatistics(ms1);
+            }
+
+            {
+                ModuleDescriptor md;
+                md.setName("My component B");
+                md.setIdentifier("123456789");
+                md.setVersion("XZYABC");
+                md.setFrequency(8.2345);
+
+                RuntimeStatistic rs;
+                rs.setSliceConsumption(-97.2345);
+
+                ModuleStatistic ms1;
+                ms1.setModule(md);
+                ms1.setRuntimeStatistic(rs);
+
+                mss1.addTo_ListOfModuleStatistics(ms1);
+            }
+
+            Container c(mss1);
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << c;
+
+            // Read back the data.
+            Container c2;
+            out >> c2;
+            TS_ASSERT(c2.getDataType() == ModuleStatistics::ID());
+
+            ModuleStatistics mss2 = c2.getData<ModuleStatistics>();
+
+            vector<ModuleStatistic> v1 = mss1.getListOfModuleStatistics();
+            vector<ModuleStatistic> v2 = mss2.getListOfModuleStatistics();
+
+            TS_ASSERT(v1.size() == 2);
+            TS_ASSERT(v2.size() == 2);
+
+            TS_ASSERT(v2.at(0).getModule().getName() == v1.at(0).getModule().getName());
+            TS_ASSERT(v2.at(0).getModule().getName() == "My component");
+
+            TS_ASSERT(v2.at(0).getModule().getIdentifier() == v1.at(0).getModule().getIdentifier());
+            TS_ASSERT(v2.at(0).getModule().getIdentifier() == "12345");
+
+            TS_ASSERT(v2.at(0).getModule().getVersion() == v1.at(0).getModule().getVersion());
+            TS_ASSERT(v2.at(0).getModule().getVersion() == "XZY");
+
+            TS_ASSERT_DELTA(v2.at(0).getModule().getFrequency(), v1.at(0).getModule().getFrequency(), 1e-4);
+            TS_ASSERT_DELTA(v2.at(0).getModule().getFrequency(), 1.2345, 1e-4);
+
+            TS_ASSERT_DELTA(v2.at(0).getRuntimeStatistic().getSliceConsumption(), v1.at(0).getRuntimeStatistic().getSliceConsumption(), 1e-4);
+            TS_ASSERT_DELTA(v2.at(0).getRuntimeStatistic().getSliceConsumption(), -7.2345, 1e-4);
+            TS_ASSERT(v2.at(0).getModule().getName() == v1.at(0).getModule().getName());
+
+
+            TS_ASSERT(v2.at(1).getModule().getName() == "My component B");
+
+            TS_ASSERT(v2.at(1).getModule().getIdentifier() == v1.at(1).getModule().getIdentifier());
+            TS_ASSERT(v2.at(1).getModule().getIdentifier() == "123456789");
+
+            TS_ASSERT(v2.at(1).getModule().getVersion() == v1.at(1).getModule().getVersion());
+            TS_ASSERT(v2.at(1).getModule().getVersion() == "XZYABC");
+
+            TS_ASSERT_DELTA(v2.at(1).getModule().getFrequency(), v1.at(1).getModule().getFrequency(), 1e-4);
+            TS_ASSERT_DELTA(v2.at(1).getModule().getFrequency(), 8.2345, 1e-4);
+
+            TS_ASSERT_DELTA(v2.at(1).getRuntimeStatistic().getSliceConsumption(), v1.at(1).getRuntimeStatistic().getSliceConsumption(), 1e-4);
+            TS_ASSERT_DELTA(v2.at(1).getRuntimeStatistic().getSliceConsumption(), -97.2345, 1e-4);
+        }
 };
 
 #endif /*CORE_QUERYABLENETSTRINGSABCFMESSAGESTESTSUITE_H_*/
