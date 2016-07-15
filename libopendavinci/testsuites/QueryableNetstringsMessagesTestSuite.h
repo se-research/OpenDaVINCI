@@ -2671,20 +2671,21 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
         ///////////////////////////////////////////////////////////////////////
 
         void testSerializationDeserializationPulseMessage() {
-//    odcore::data::TimeStamp realTimeFromSupercomponent [id = 1];
-//    uint32 nominalTimeSlice [id = 2];
-//    uint32 cumulatedTimeSlice [id = 3];
-//    list<odcore::data::Container> containers [id = 4];
-
-
             PulseMessage pm1;
             pm1.setRealTimeFromSupercomponent(TimeStamp(8, 9));
             pm1.setNominalTimeSlice(12);
             pm1.setCumulatedTimeSlice(34);
 
-//            {
-//                mss1.addTo_ListOfModuleStatistics(ms1);
-//            }
+            {
+                TimeStamp ts(1, 2);
+                Container c(ts);
+                pm1.addTo_ListOfContainers(c);
+            }
+            {
+                TimeStamp ts(3, 4);
+                Container c(ts);
+                pm1.addTo_ListOfContainers(c);
+            }
 
 
             // Replace default serializer/deserializers.
@@ -2701,20 +2702,89 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
             // Read from buffer.
             out >> pm2;
 
-//            vector<ModuleStatistic> v1 = pm1.getListOfModuleStatistics();
-//            vector<ModuleStatistic> v2 = pm2.getListOfModuleStatistics();
+            vector<Container> v1 = pm1.getListOfContainers();
+            vector<Container> v2 = pm2.getListOfContainers();
 
-//            TS_ASSERT(v1.size() == 2);
-//            TS_ASSERT(v2.size() == 2);
+            TS_ASSERT(v1.size() == 2);
+            TS_ASSERT(v2.size() == 2);
 
             TS_ASSERT(pm1.getRealTimeFromSupercomponent().getSeconds() == pm2.getRealTimeFromSupercomponent().getSeconds());
-            TS_ASSERT(pm1.getRealTimeFromSupercomponent().getSeconds() == 8);
+            TS_ASSERT(pm2.getRealTimeFromSupercomponent().getSeconds() == 8);
 
             TS_ASSERT(pm1.getRealTimeFromSupercomponent().getFractionalMicroseconds() == pm2.getRealTimeFromSupercomponent().getFractionalMicroseconds());
-            TS_ASSERT(pm1.getRealTimeFromSupercomponent().getFractionalMicroseconds() == 9);
+            TS_ASSERT(pm2.getRealTimeFromSupercomponent().getFractionalMicroseconds() == 9);
 
+            TS_ASSERT(pm1.getNominalTimeSlice() == pm2.getNominalTimeSlice());
+            TS_ASSERT(pm2.getNominalTimeSlice() == 12);
+
+            TS_ASSERT(pm1.getCumulatedTimeSlice() == pm2.getCumulatedTimeSlice());
+            TS_ASSERT(pm2.getCumulatedTimeSlice() == 34);
+
+            TS_ASSERT(v1.at(0).getData<TimeStamp>().toMicroseconds() == v2.at(0).getData<TimeStamp>().toMicroseconds());
+            TS_ASSERT(v2.at(0).getData<TimeStamp>().toMicroseconds() == 1000002);
+
+            TS_ASSERT(v1.at(1).getData<TimeStamp>().toMicroseconds() == v2.at(1).getData<TimeStamp>().toMicroseconds());
+            TS_ASSERT(v2.at(1).getData<TimeStamp>().toMicroseconds() == 3000004);
         }
 
+        void testSerializationDeserializationPulseMessageContainer() {
+            PulseMessage pm1;
+            pm1.setRealTimeFromSupercomponent(TimeStamp(8, 9));
+            pm1.setNominalTimeSlice(12);
+            pm1.setCumulatedTimeSlice(34);
+
+            {
+                TimeStamp ts(1, 2);
+                Container c(ts);
+                pm1.addTo_ListOfContainers(c);
+            }
+            {
+                TimeStamp ts(3, 4);
+                Container c(ts);
+                pm1.addTo_ListOfContainers(c);
+            }
+
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            Container c(pm1);
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << c;
+
+            // Read from buffer.
+            Container c2;
+            out >> c2;
+            TS_ASSERT(c2.getDataType() == PulseMessage::ID());
+
+            PulseMessage pm2 = c2.getData<PulseMessage>();
+
+            vector<Container> v1 = pm1.getListOfContainers();
+            vector<Container> v2 = pm2.getListOfContainers();
+
+            TS_ASSERT(v1.size() == 2);
+            TS_ASSERT(v2.size() == 2);
+
+            TS_ASSERT(pm1.getRealTimeFromSupercomponent().getSeconds() == pm2.getRealTimeFromSupercomponent().getSeconds());
+            TS_ASSERT(pm2.getRealTimeFromSupercomponent().getSeconds() == 8);
+
+            TS_ASSERT(pm1.getRealTimeFromSupercomponent().getFractionalMicroseconds() == pm2.getRealTimeFromSupercomponent().getFractionalMicroseconds());
+            TS_ASSERT(pm2.getRealTimeFromSupercomponent().getFractionalMicroseconds() == 9);
+
+            TS_ASSERT(pm1.getNominalTimeSlice() == pm2.getNominalTimeSlice());
+            TS_ASSERT(pm2.getNominalTimeSlice() == 12);
+
+            TS_ASSERT(pm1.getCumulatedTimeSlice() == pm2.getCumulatedTimeSlice());
+            TS_ASSERT(pm2.getCumulatedTimeSlice() == 34);
+
+            TS_ASSERT(v1.at(0).getData<TimeStamp>().toMicroseconds() == v2.at(0).getData<TimeStamp>().toMicroseconds());
+            TS_ASSERT(v2.at(0).getData<TimeStamp>().toMicroseconds() == 1000002);
+
+            TS_ASSERT(v1.at(1).getData<TimeStamp>().toMicroseconds() == v2.at(1).getData<TimeStamp>().toMicroseconds());
+            TS_ASSERT(v2.at(1).getData<TimeStamp>().toMicroseconds() == 3000004);
+        }
 };
 
 #endif /*CORE_QUERYABLENETSTRINGSABCFMESSAGESTESTSUITE_H_*/
