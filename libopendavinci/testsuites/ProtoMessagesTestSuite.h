@@ -795,6 +795,95 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getField12().getField1() == tm1.getField12().getField1());
         }
 
+        void testSerializationDeserializationTestMessage5Container() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            TestMessage5 tm1;
+            TS_ASSERT(tm1.getField1() == 1);
+            TS_ASSERT(tm1.getField2() == -1);
+            TS_ASSERT(tm1.getField3() == 100);
+            TS_ASSERT(tm1.getField4() == -100);
+            TS_ASSERT(tm1.getField5() == 10000);
+            TS_ASSERT(tm1.getField6() == -10000);
+            TS_ASSERT(tm1.getField7() == 12345);
+            TS_ASSERT(tm1.getField8() == -12345);
+            TS_ASSERT_DELTA(tm1.getField9(), -1.2345, 1e-4);
+            TS_ASSERT_DELTA(tm1.getField10(), -10.2345, 1e-4);
+            TS_ASSERT(tm1.getField11() == "Hello World!");
+            TS_ASSERT(tm1.getField12().getField1() == 12);
+
+            TestMessage1 tm1Embedded;
+            tm1Embedded.setField1(150);
+            tm1.setField12(tm1Embedded);
+
+            tm1.setField1(3);
+            tm1.setField2(-3);
+            tm1.setField3(103);
+            tm1.setField4(-103);
+            tm1.setField5(10003);
+            tm1.setField6(-10003);
+            tm1.setField7(54321);
+            tm1.setField8(-54321);
+            tm1.setField9(-5.4321);
+            tm1.setField10(-50.4321);
+            tm1.setField11("Hello OpenDaVINCI World!");
+
+            Container c(tm1);
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << c;
+
+            // Create a new message instance.
+            TestMessage5 tm2;
+            TS_ASSERT(tm2.getField1() == 1);
+            TS_ASSERT(tm2.getField2() == -1);
+            TS_ASSERT(tm2.getField3() == 100);
+            TS_ASSERT(tm2.getField4() == -100);
+            TS_ASSERT(tm2.getField5() == 10000);
+            TS_ASSERT(tm2.getField6() == -10000);
+            TS_ASSERT(tm2.getField7() == 12345);
+            TS_ASSERT(tm2.getField8() == -12345);
+            TS_ASSERT_DELTA(tm2.getField9(), -1.2345, 1e-4);
+            TS_ASSERT_DELTA(tm2.getField10(), -10.2345, 1e-4);
+            TS_ASSERT(tm2.getField11() == "Hello World!");
+            TS_ASSERT(tm2.getField12().getField1() == 12);
+
+            // Read from buffer.
+            Container c2;
+            out >> c2;
+            TS_ASSERT(c2.getDataType() == TestMessage5::ID());
+            tm2 = c2.getData<TestMessage5>();
+
+            TS_ASSERT(tm2.getField1() == 3);
+            TS_ASSERT(tm2.getField2() == -3);
+            TS_ASSERT(tm2.getField3() == 103);
+            TS_ASSERT(tm2.getField4() == -103);
+            TS_ASSERT(tm2.getField5() == 10003);
+            TS_ASSERT(tm2.getField6() == -10003);
+            TS_ASSERT(tm2.getField7() == 54321);
+            TS_ASSERT(tm2.getField8() == -54321);
+            TS_ASSERT_DELTA(tm2.getField9(), -5.4321, 1e-4);
+            TS_ASSERT_DELTA(tm2.getField10(), -50.4321, 1e-4);
+            TS_ASSERT(tm2.getField11() == "Hello OpenDaVINCI World!");
+            TS_ASSERT(tm2.getField12().getField1() == 150);
+
+            TS_ASSERT(tm2.getField1() == tm1.getField1());
+            TS_ASSERT(tm2.getField2() == tm1.getField2());
+            TS_ASSERT(tm2.getField3() == tm1.getField3());
+            TS_ASSERT(tm2.getField4() == tm1.getField4());
+            TS_ASSERT(tm2.getField5() == tm1.getField5());
+            TS_ASSERT(tm2.getField6() == tm1.getField6());
+            TS_ASSERT(tm2.getField7() == tm1.getField7());
+            TS_ASSERT(tm2.getField8() == tm1.getField8());
+            TS_ASSERT_DELTA(tm2.getField9(), tm1.getField9(), 1e-4);
+            TS_ASSERT_DELTA(tm2.getField10(), tm1.getField10(), 1e-4);
+            TS_ASSERT(tm2.getField11() == tm1.getField11());
+            TS_ASSERT(tm2.getField12().getField1() == tm1.getField12().getField1());
+        }
+
         void testSerializationDeserializationTestMessage5Visitor() {
             TestMessage5 tm1;
             TS_ASSERT(tm1.getField1() == 1);
