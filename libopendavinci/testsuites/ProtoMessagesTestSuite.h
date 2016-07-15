@@ -1003,6 +1003,39 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getComponentName() == "Component ABC");
         }
 
+        void testSerializationDeserializationLogMessageContainer() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            LogMessage tm1;
+            tm1.setLogLevel(LogMessage::WARN);
+            tm1.setLogMessage("This is a test message!");
+            tm1.setComponentName("Component ABC");
+
+            Container c(tm1);
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << c;
+
+            // Read back the data.
+            Container c2;
+            out >> c2;
+            TS_ASSERT(c2.getDataType() == LogMessage::ID());
+
+            LogMessage tm2 = c2.getData<LogMessage>();
+
+            TS_ASSERT(tm1.getLogLevel() == tm2.getLogLevel());
+            TS_ASSERT(tm2.getLogLevel() == LogMessage::WARN);
+
+            TS_ASSERT(tm1.getLogMessage() == tm2.getLogMessage());
+            TS_ASSERT(tm2.getLogMessage() == "This is a test message!");
+
+            TS_ASSERT(tm1.getComponentName() == tm2.getComponentName());
+            TS_ASSERT(tm2.getComponentName() == "Component ABC");
+        }
+
         void testSerializationDeserializationLogMessageVisitor() {
             LogMessage tm1;
             tm1.setLogLevel(LogMessage::WARN);
