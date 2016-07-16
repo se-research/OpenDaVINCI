@@ -2873,6 +2873,38 @@ TODO:
             TS_ASSERT(v2.at(2) == 86942);
         }
 
+/*
+Serialize:
+			        // Write number of elements in m_listOfField1.
+			        const uint32_t numberOfField1 = static_cast<uint32_t>(m_listOfField1.size());
+                    stringstream sstr_field1;
+                    {
+                        for(uint32_t i = 0; i < numberOfField1; i++) {
+                            s->writeValue(sstr_field1, m_listOfField1.at(i));
+                        }
+                    }
+                    const string str_sstr_field1 = sstr_field1.str();
+			        s->write(4,
+			                str_sstr_field1);
+
+Deserialize:
+			    // Clean up the existing list of Field1.
+			    m_listOfField1.clear();
+
+                string str_field1;
+                d->read(4, str_field1);
+                if (str_field1.size() > 0) {
+                    stringstream sstr_str_field1(str_field1);
+                    uint32_t length = str_field1.size();
+                    while (length > 0) {
+                        uint32_t v = 0;
+                        length -= d->readValue(sstr_str_field1, v);
+                        m_listOfField1.push_back(v);
+                    }
+                }
+
+*/
+
 // TODO:
 // 1) test adjusted serialization for ModuleStatics
 // 2) Refactor odDataStructureGenerator to emit new code to use readValue/writeValue for lists and maps
