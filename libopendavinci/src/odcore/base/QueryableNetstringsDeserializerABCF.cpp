@@ -412,11 +412,12 @@ namespace odcore {
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
-//                m_buffer >> v;
 
+                // Read string for serialized Serializable.
                 string str_buffer;
                 readValue(m_buffer, str_buffer);
 
+                // Read Serializable from string.
                 stringstream sstr_buffer(str_buffer);
                 sstr_buffer >> v;
             }

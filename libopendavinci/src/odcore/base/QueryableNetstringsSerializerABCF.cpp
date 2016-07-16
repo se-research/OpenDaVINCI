@@ -230,19 +230,14 @@ namespace odcore {
         void QueryableNetstringsSerializerABCF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const Serializable &v) {
             encodeVarUInt(m_buffer, (oneByteID > 0 ? oneByteID : fourByteID));
 
-//            stringstream buffer;
-//            buffer << v;
-
-//            const string tmp = buffer.str();
-//            uint64_t size = static_cast<uint32_t>(tmp.length());
-//            encodeVarUInt(m_buffer, size);
-
-//            m_buffer << tmp;
-
+            // Write Serializable into stringstream buffer.
             stringstream sstr_buffer;
             uint32_t bytesWritten = writeValue(sstr_buffer, v);
 
+            // Write length of stringstream buffer.
             encodeVarUInt(m_buffer, bytesWritten);
+
+            // Write stringstream buffer.
             m_buffer << sstr_buffer.str();
         }
 
