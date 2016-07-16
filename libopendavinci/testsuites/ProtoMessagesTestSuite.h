@@ -2874,18 +2874,14 @@ TODO:
         }
 
 // TODO:
-// - revert change to ProtoDeserializer to eat the data handed over
-// - fix correct encoding of the length
-
-// To be added:
-// odcore.data.dmcp.PulseMessage
-// odcore.data.dmcp.PulseAckContainersMessage
-
-// To be verified:
-// - compatibility with 3rd party Proto implementations
-// - support of evolving message definitions (adding more fields, removing fields)
-//   --> should work if the length problem is solved
-//   --> if the decodeFrom... method creates a vector of contained entries
+// 1) test adjusted serialization for ModuleStatics
+// 2) Refactor odDataStructureGenerator to emit new code to use readValue/writeValue for lists and maps
+// 3) Add test case for odcore.data.dmcp.PulseMessage
+// 4) Add test case for odcore.data.dmcp.PulseAckContainersMessage
+// 5) Refactor ProtoSerializer and ProtoDeserializer to eat entire istream and create vector of entries to enable "queryable" functionality
+// 6) Check missing fields.
+// 7) Check additional fields.
+// 8) compatibility with 3rd party Proto implementations
 };
 
 #endif /*CORE_PROTOMESSAGESTESTSUITE_H_*/

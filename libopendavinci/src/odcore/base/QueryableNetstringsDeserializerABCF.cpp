@@ -412,7 +412,13 @@ namespace odcore {
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
-                m_buffer >> v;
+//                m_buffer >> v;
+
+                string str_buffer;
+                readValue(m_buffer, str_buffer);
+
+                stringstream sstr_buffer(str_buffer);
+                sstr_buffer >> v;
             }
         }
 
