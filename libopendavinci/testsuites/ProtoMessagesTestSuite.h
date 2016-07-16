@@ -2818,15 +2818,15 @@ TODO:
             TestMessage6 tm1;
 
             {
-                int32_t i = 3;
+                uint32_t i = 3;
                 tm1.addTo_ListOfField1(i);
             }
             {
-                int32_t i = 270;
+                uint32_t i = 270;
                 tm1.addTo_ListOfField1(i);
             }
             {
-                int32_t i = 86942;
+                uint32_t i = 86942;
                 tm1.addTo_ListOfField1(i);
             }
 
@@ -2839,11 +2839,17 @@ TODO:
             stringstream out;
             out << tm1;
 
-const string s = out.str();
-for (unsigned int i = 0; i<s.size(); i++) {
-    cout << hex << (int)(uint8_t)s.at(i) << " ";
-}
-cout << endl;
+            // According to https://developers.google.com/protocol-buffers/docs/encoding, 0x22 0x6 0x3 0x8e 0x2 0x9e 0xa7 0x5.
+            const string s = out.str();
+            TS_ASSERT(s.size() == 8);
+            TS_ASSERT(static_cast<uint8_t>(s.at(0)) == 0x22);
+            TS_ASSERT(static_cast<uint8_t>(s.at(1)) == 0x6);
+            TS_ASSERT(static_cast<uint8_t>(s.at(2)) == 0x3);
+            TS_ASSERT(static_cast<uint8_t>(s.at(3)) == 0x8e);
+            TS_ASSERT(static_cast<uint8_t>(s.at(4)) == 0x2);
+            TS_ASSERT(static_cast<uint8_t>(s.at(5)) == 0x9e);
+            TS_ASSERT(static_cast<uint8_t>(s.at(6)) == 0xa7);
+            TS_ASSERT(static_cast<uint8_t>(s.at(7)) == 0x5);
 
             // Read back the data by using the visitor.
             TestMessage6 tm2;
@@ -2851,8 +2857,8 @@ cout << endl;
             // Read from buffer.
             out >> tm2;
 
-            vector<int32_t> v1 = tm1.getListOfField1();
-            vector<int32_t> v2 = tm2.getListOfField1();
+            vector<uint32_t> v1 = tm1.getListOfField1();
+            vector<uint32_t> v2 = tm2.getListOfField1();
 
             TS_ASSERT(v1.size() == 3);
             TS_ASSERT(v2.size() == 3);

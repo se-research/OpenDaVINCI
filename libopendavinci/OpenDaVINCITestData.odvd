@@ -59,7 +59,7 @@ message odcore.testdata.TestMessage5 [id = 1005] {
 
 // This is not correctly handled by our Proto implementation yet.
 message odcore.testdata.TestMessage6 [id = 1006] {
-    list<int32> field1 [ id = 4 ];
+    list<uint32> field1 [ id = 4 ];
 }
 
 // This is not correctly handled by our Proto implementation yet.
