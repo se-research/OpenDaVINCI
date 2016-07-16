@@ -2818,15 +2818,15 @@ TODO:
             TestMessage6 tm1;
 
             {
-                uint32_t i = 3;
+                int32_t i = 3;
                 tm1.addTo_ListOfField1(i);
             }
             {
-                uint32_t i = 270;
+                int32_t i = 270;
                 tm1.addTo_ListOfField1(i);
             }
             {
-                uint32_t i = 86942;
+                int32_t i = 86942;
                 tm1.addTo_ListOfField1(i);
             }
 
@@ -2851,8 +2851,8 @@ cout << endl;
             // Read from buffer.
             out >> tm2;
 
-            vector<uint32_t> v1 = tm1.getListOfField1();
-            vector<uint32_t> v2 = tm2.getListOfField1();
+            vector<int32_t> v1 = tm1.getListOfField1();
+            vector<int32_t> v2 = tm2.getListOfField1();
 
             TS_ASSERT(v1.size() == 3);
             TS_ASSERT(v2.size() == 3);
