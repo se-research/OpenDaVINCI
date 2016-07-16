@@ -50,6 +50,158 @@ namespace odcore {
 
             public:
                 /**
+                 * This method serializes the given value using raw encoding for
+                 * values of this Serializer implementation.
+                 *
+                 * @param o Stream to be used for serialization.
+                 * @param v Value to be serialized.
+                 * @return Number of bytes written for serialization.
+                 */
+                virtual uint32_t writeValue(ostream &o, const Serializable &v) = 0;
+
+                /**
+                 * This method serializes the given value using raw encoding for
+                 * values of this Serializer implementation.
+                 *
+                 * @param o Stream to be used for serialization.
+                 * @param v Value to be serialized.
+                 * @return Number of bytes written for serialization.
+                 */
+                virtual uint32_t writeValue(ostream &o, const bool &v) = 0;
+
+                /**
+                 * This method serializes the given value using raw encoding for
+                 * values of this Serializer implementation.
+                 *
+                 * @param o Stream to be used for serialization.
+                 * @param v Value to be serialized.
+                 * @return Number of bytes written for serialization.
+                 */
+                virtual uint32_t writeValue(ostream &o, const char &v) = 0;
+
+                /**
+                 * This method serializes the given value using raw encoding for
+                 * values of this Serializer implementation.
+                 *
+                 * @param o Stream to be used for serialization.
+                 * @param v Value to be serialized.
+                 * @return Number of bytes written for serialization.
+                 */
+                virtual uint32_t writeValue(ostream &o, const unsigned char &v) = 0;
+
+                /**
+                 * This method serializes the given value using raw encoding for
+                 * values of this Serializer implementation.
+                 *
+                 * @param o Stream to be used for serialization.
+                 * @param v Value to be serialized.
+                 * @return Number of bytes written for serialization.
+                 */
+                virtual uint32_t writeValue(ostream &o, const int8_t &v) = 0;
+
+                /**
+                 * This method serializes the given value using raw encoding for
+                 * values of this Serializer implementation.
+                 *
+                 * @param o Stream to be used for serialization.
+                 * @param v Value to be serialized.
+                 * @return Number of bytes written for serialization.
+                 */
+                virtual uint32_t writeValue(ostream &o, const int16_t &v) = 0;
+
+                /**
+                 * This method serializes the given value using raw encoding for
+                 * values of this Serializer implementation.
+                 *
+                 * @param o Stream to be used for serialization.
+                 * @param v Value to be serialized.
+                 * @return Number of bytes written for serialization.
+                 */
+                virtual uint32_t writeValue(ostream &o, const uint16_t &v) = 0;
+
+                /**
+                 * This method serializes the given value using raw encoding for
+                 * values of this Serializer implementation.
+                 *
+                 * @param o Stream to be used for serialization.
+                 * @param v Value to be serialized.
+                 * @return Number of bytes written for serialization.
+                 */
+                virtual uint32_t writeValue(ostream &o, const int32_t &v) = 0;
+
+                /**
+                 * This method serializes the given value using raw encoding for
+                 * values of this Serializer implementation.
+                 *
+                 * @param o Stream to be used for serialization.
+                 * @param v Value to be serialized.
+                 * @return Number of bytes written for serialization.
+                 */
+                virtual uint32_t writeValue(ostream &o, const uint32_t &v) = 0;
+
+                /**
+                 * This method serializes the given value using raw encoding for
+                 * values of this Serializer implementation.
+                 *
+                 * @param o Stream to be used for serialization.
+                 * @param v Value to be serialized.
+                 * @return Number of bytes written for serialization.
+                 */
+                virtual uint32_t writeValue(ostream &o, const int64_t &v) = 0;
+
+                /**
+                 * This method serializes the given value using raw encoding for
+                 * values of this Serializer implementation.
+                 *
+                 * @param o Stream to be used for serialization.
+                 * @param v Value to be serialized.
+                 * @return Number of bytes written for serialization.
+                 */
+                virtual uint32_t writeValue(ostream &o, const uint64_t &v) = 0;
+
+                /**
+                 * This method serializes the given value using raw encoding for
+                 * values of this Serializer implementation.
+                 *
+                 * @param o Stream to be used for serialization.
+                 * @param v Value to be serialized.
+                 * @return Number of bytes written for serialization.
+                 */
+                virtual uint32_t writeValue(ostream &o, const float &v) = 0;
+
+                /**
+                 * This method serializes the given value using raw encoding for
+                 * values of this Serializer implementation.
+                 *
+                 * @param o Stream to be used for serialization.
+                 * @param v Value to be serialized.
+                 * @return Number of bytes written for serialization.
+                 */
+                virtual uint32_t writeValue(ostream &o, const double &v) = 0;
+
+                /**
+                 * This method serializes the given value using raw encoding for
+                 * values of this Serializer implementation.
+                 *
+                 * @param o Stream to be used for serialization.
+                 * @param v Value to be serialized.
+                 * @return Number of bytes written for serialization.
+                 */
+                virtual uint32_t writeValue(ostream &o, const string &v) = 0;
+
+                /**
+                 * This method serializes undefined data of length size using
+                 * the raw encoding for values of this Serializer implementation.
+                 *
+                 * @param o Stream to be used for serialization.
+                 * @param data Data to be serialized.
+                 * @param size Length of the data to be serialized.
+                 * @return Number of bytes written for serialization.
+                 */
+                virtual uint32_t writeValue(ostream &o, const void *data, const uint32_t &size) = 0;
+
+            public:
+                /**
                  * This method serializes a Serializable.
                  *
                  * @param id Identifier for the s to be serialized.

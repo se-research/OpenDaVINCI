@@ -49,6 +49,70 @@ class Serializable;
             m_serializer->getSerializedData(o);
         }
 
+        ///////////////////////////////////////////////////////////////////////
+
+        uint32_t QueryableNetstringsSerializer::writeValue(ostream &o, const Serializable &v) {
+            return m_serializer->writeValue(o, v);
+        }
+
+        uint32_t QueryableNetstringsSerializer::writeValue(ostream &o, const bool &v) {
+            return m_serializer->writeValue(o, v);
+        }
+
+        uint32_t QueryableNetstringsSerializer::writeValue(ostream &o, const char &v) {
+            return m_serializer->writeValue(o, v);
+        }
+
+        uint32_t QueryableNetstringsSerializer::writeValue(ostream &o, const unsigned char &v) {
+            return m_serializer->writeValue(o, v);
+        }
+
+        uint32_t QueryableNetstringsSerializer::writeValue(ostream &o, const int8_t &v) {
+            return m_serializer->writeValue(o, v);
+        }
+
+        uint32_t QueryableNetstringsSerializer::writeValue(ostream &o, const int16_t &v) {
+            return m_serializer->writeValue(o, v);
+        }
+
+        uint32_t QueryableNetstringsSerializer::writeValue(ostream &o, const uint16_t &v) {
+            return m_serializer->writeValue(o, v);
+        }
+
+        uint32_t QueryableNetstringsSerializer::writeValue(ostream &o, const int32_t &v) {
+            return m_serializer->writeValue(o, v);
+        }
+
+        uint32_t QueryableNetstringsSerializer::writeValue(ostream &o, const uint32_t &v) {
+            return m_serializer->writeValue(o, v);
+        }
+
+        uint32_t QueryableNetstringsSerializer::writeValue(ostream &o, const int64_t &v) {
+            return m_serializer->writeValue(o, v);
+        }
+
+        uint32_t QueryableNetstringsSerializer::writeValue(ostream &o, const uint64_t &v) {
+            return m_serializer->writeValue(o, v);
+        }
+
+        uint32_t QueryableNetstringsSerializer::writeValue(ostream &o, const float &v) {
+            return m_serializer->writeValue(o, v);
+        }
+
+        uint32_t QueryableNetstringsSerializer::writeValue(ostream &o, const double &v) {
+            return m_serializer->writeValue(o, v);
+        }
+
+        uint32_t QueryableNetstringsSerializer::writeValue(ostream &o, const string &v) {
+            return m_serializer->writeValue(o, v);
+        }
+
+        uint32_t QueryableNetstringsSerializer::writeValue(ostream &o, const void *data, const uint32_t &size) {
+            return m_serializer->writeValue(o, data, size);
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+
         void QueryableNetstringsSerializer::write(const uint32_t &id, const Serializable &s) {
             m_serializer->write(id, s);
         }
@@ -108,6 +172,8 @@ class Serializable;
         void QueryableNetstringsSerializer::write(const uint32_t &id, const void *data, const uint32_t &size) {
             m_serializer->write(id, data, size);
         }
+
+        ///////////////////////////////////////////////////////////////////////
 
         void QueryableNetstringsSerializer::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const Serializable &v) {
             m_serializer->write(fourByteID, oneByteID, longName, shortName, v);

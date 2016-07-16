@@ -86,6 +86,23 @@ class Serializable;
                 virtual void getSerializedData(ostream &o);
 
             public:
+                virtual uint32_t writeValue(ostream &o, const Serializable &v);
+                virtual uint32_t writeValue(ostream &o, const bool &v);
+                virtual uint32_t writeValue(ostream &o, const char &v);
+                virtual uint32_t writeValue(ostream &o, const unsigned char &v);
+                virtual uint32_t writeValue(ostream &o, const int8_t &v);
+                virtual uint32_t writeValue(ostream &o, const int16_t &v);
+                virtual uint32_t writeValue(ostream &o, const uint16_t &v);
+                virtual uint32_t writeValue(ostream &o, const int32_t &v);
+                virtual uint32_t writeValue(ostream &o, const uint32_t &v);
+                virtual uint32_t writeValue(ostream &o, const int64_t &v);
+                virtual uint32_t writeValue(ostream &o, const uint64_t &v);
+                virtual uint32_t writeValue(ostream &o, const float &v);
+                virtual uint32_t writeValue(ostream &o, const double &v);
+                virtual uint32_t writeValue(ostream &o, const string &v);
+                virtual uint32_t writeValue(ostream &o, const void *data, const uint32_t &size);
+
+            public:
                 virtual void write(const uint32_t &id, const Serializable &s);
                 virtual void write(const uint32_t &id, const bool &b);
                 virtual void write(const uint32_t &id, const char &c);

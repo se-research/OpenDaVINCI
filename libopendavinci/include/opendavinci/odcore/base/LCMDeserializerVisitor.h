@@ -83,6 +83,23 @@ namespace odcore {
                 int64_t getCalculatedHash() const;
 
             private:
+                virtual uint32_t readValue(istream &i, Serializable &v) { (void)i; (void)v; return 0; }
+                virtual uint32_t readValue(istream &i, bool &v) { (void)i; (void)v; return 0; }
+                virtual uint32_t readValue(istream &i, char &v) { (void)i; (void)v; return 0; }
+                virtual uint32_t readValue(istream &i, unsigned char &v) { (void)i; (void)v; return 0; }
+                virtual uint32_t readValue(istream &i, int8_t &v) { (void)i; (void)v; return 0; }
+                virtual uint32_t readValue(istream &i, int16_t &v) { (void)i; (void)v; return 0; }
+                virtual uint32_t readValue(istream &i, uint16_t &v) { (void)i; (void)v; return 0; }
+                virtual uint32_t readValue(istream &i, int32_t &v) { (void)i; (void)v; return 0; }
+                virtual uint32_t readValue(istream &i, uint32_t &v) { (void)i; (void)v; return 0; }
+                virtual uint32_t readValue(istream &i, int64_t &v) { (void)i; (void)v; return 0; }
+                virtual uint32_t readValue(istream &i, uint64_t &v) { (void)i; (void)v; return 0; }
+                virtual uint32_t readValue(istream &i, float &v) { (void)i; (void)v; return 0; }
+                virtual uint32_t readValue(istream &i, double &v) { (void)i; (void)v; return 0; }
+                virtual uint32_t readValue(istream &i, string &v) { (void)i; (void)v; return 0; }
+                virtual uint32_t readValue(istream &i, void *data, const uint32_t &size) { (void)i; (void)data; (void)size; return 0; }
+
+            private:
                 virtual void read(const uint32_t &id, Serializable &s);
                 virtual void read(const uint32_t &id, bool &b);
                 virtual void read(const uint32_t &id, char &c);

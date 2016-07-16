@@ -53,6 +53,143 @@ namespace odcore {
 
             public:
                 /**
+                 * This method deserializes the raw value from the stream.
+                 *
+                 * @param i Stream to be used for deserializing the value.
+                 * @param v Value to be deserialized.
+                 * @return Number of bytes read during the deserialization.
+                 */
+                virtual uint32_t readValue(istream &i, Serializable &v) = 0;
+
+                /**
+                 * This method deserializes the raw value from the stream.
+                 *
+                 * @param i Stream to be used for deserializing the value.
+                 * @param v Value to be deserialized.
+                 * @return Number of bytes read during the deserialization.
+                 */
+                virtual uint32_t readValue(istream &i, bool &v) = 0;
+
+                /**
+                 * This method deserializes the raw value from the stream.
+                 *
+                 * @param i Stream to be used for deserializing the value.
+                 * @param v Value to be deserialized.
+                 * @return Number of bytes read during the deserialization.
+                 */
+                virtual uint32_t readValue(istream &i, char &v) = 0;
+
+                /**
+                 * This method deserializes the raw value from the stream.
+                 *
+                 * @param i Stream to be used for deserializing the value.
+                 * @param v Value to be deserialized.
+                 * @return Number of bytes read during the deserialization.
+                 */
+                virtual uint32_t readValue(istream &i, unsigned char &v) = 0;
+
+                /**
+                 * This method deserializes the raw value from the stream.
+                 *
+                 * @param i Stream to be used for deserializing the value.
+                 * @param v Value to be deserialized.
+                 * @return Number of bytes read during the deserialization.
+                 */
+                virtual uint32_t readValue(istream &i, int8_t &v) = 0;
+
+                /**
+                 * This method deserializes the raw value from the stream.
+                 *
+                 * @param i Stream to be used for deserializing the value.
+                 * @param v Value to be deserialized.
+                 * @return Number of bytes read during the deserialization.
+                 */
+                virtual uint32_t readValue(istream &i, int16_t &v) = 0;
+
+                /**
+                 * This method deserializes the raw value from the stream.
+                 *
+                 * @param i Stream to be used for deserializing the value.
+                 * @param v Value to be deserialized.
+                 * @return Number of bytes read during the deserialization.
+                 */
+                virtual uint32_t readValue(istream &i, uint16_t &v) = 0;
+
+                /**
+                 * This method deserializes the raw value from the stream.
+                 *
+                 * @param i Stream to be used for deserializing the value.
+                 * @param v Value to be deserialized.
+                 * @return Number of bytes read during the deserialization.
+                 */
+                virtual uint32_t readValue(istream &i, int32_t &v) = 0;
+
+                /**
+                 * This method deserializes the raw value from the stream.
+                 *
+                 * @param i Stream to be used for deserializing the value.
+                 * @param v Value to be deserialized.
+                 * @return Number of bytes read during the deserialization.
+                 */
+                virtual uint32_t readValue(istream &i, uint32_t &v) = 0;
+
+                /**
+                 * This method deserializes the raw value from the stream.
+                 *
+                 * @param i Stream to be used for deserializing the value.
+                 * @param v Value to be deserialized.
+                 * @return Number of bytes read during the deserialization.
+                 */
+                virtual uint32_t readValue(istream &i, int64_t &v) = 0;
+
+                /**
+                 * This method deserializes the raw value from the stream.
+                 *
+                 * @param i Stream to be used for deserializing the value.
+                 * @param v Value to be deserialized.
+                 * @return Number of bytes read during the deserialization.
+                 */
+                virtual uint32_t readValue(istream &i, uint64_t &v) = 0;
+
+                /**
+                 * This method deserializes the raw value from the stream.
+                 *
+                 * @param i Stream to be used for deserializing the value.
+                 * @param v Value to be deserialized.
+                 * @return Number of bytes read during the deserialization.
+                 */
+                virtual uint32_t readValue(istream &i, float &v) = 0;
+
+                /**
+                 * This method deserializes the raw value from the stream.
+                 *
+                 * @param i Stream to be used for deserializing the value.
+                 * @param v Value to be deserialized.
+                 * @return Number of bytes read during the deserialization.
+                 */
+                virtual uint32_t readValue(istream &i, double &v) = 0;
+
+                /**
+                 * This method deserializes the raw value from the stream.
+                 *
+                 * @param i Stream to be used for deserializing the value.
+                 * @param v Value to be deserialized.
+                 * @return Number of bytes read during the deserialization.
+                 */
+                virtual uint32_t readValue(istream &i, string &v) = 0;
+
+                /**
+                 * This method deserializes the raw value from the stream.
+                 *
+                 * @param i Stream to be used for deserializing the value.
+                 * @param data Data to be deserialized.
+                 * @param size Length of the data to be deserialized.
+                 * @return Number of bytes read during the deserialization.
+                 */
+                virtual uint32_t readValue(istream &i, void *data, const uint32_t &size) = 0;
+
+            public:
+                /**
                  * This method deserializes a Serializable.
                  *
                  * @param id Identifier for the s to be deserialized.

@@ -205,6 +205,146 @@ namespace odcore {
             return bytesRead;
         }
 
+        ///////////////////////////////////////////////////////////////////////
+
+        uint32_t QueryableNetstringsDeserializerABCF::readValue(istream &i, Serializable &v) {
+            string str_buffer;
+            uint32_t bytesRead = readValue(i, str_buffer);
+
+            stringstream sstr_str_buffer(str_buffer);
+            sstr_str_buffer >> v;
+
+            return bytesRead;
+        }
+
+        uint32_t QueryableNetstringsDeserializerABCF::readValue(istream &i, bool &v) {
+            uint64_t tmp = 0;
+            uint32_t bytesRead = decodeVarUInt(i, tmp);
+            v = static_cast<bool>(tmp);
+
+            return bytesRead;
+        }
+
+        uint32_t QueryableNetstringsDeserializerABCF::readValue(istream &i, char &v) {
+            int64_t tmp = 0;
+            uint32_t bytesRead = decodeVarInt(i, tmp);
+            v = static_cast<char>(tmp);
+
+            return bytesRead;
+        }
+
+        uint32_t QueryableNetstringsDeserializerABCF::readValue(istream &i, unsigned char &v) {
+            uint64_t tmp = 0;
+            uint32_t bytesRead = decodeVarUInt(i, tmp);
+            v = static_cast<unsigned char>(tmp);
+
+            return bytesRead;
+        }
+
+        uint32_t QueryableNetstringsDeserializerABCF::readValue(istream &i, int8_t &v) {
+            int64_t tmp = 0;
+            uint32_t bytesRead = decodeVarInt(i, tmp);
+            v = static_cast<int8_t>(tmp);
+
+            return bytesRead;
+        }
+
+        uint32_t QueryableNetstringsDeserializerABCF::readValue(istream &i, int16_t &v) {
+            int64_t tmp = 0;
+            uint32_t bytesRead = decodeVarInt(i, tmp);
+            v = static_cast<int16_t>(tmp);
+
+            return bytesRead;
+        }
+
+        uint32_t QueryableNetstringsDeserializerABCF::readValue(istream &i, uint16_t &v) {
+            uint64_t tmp = 0;
+            uint32_t bytesRead = decodeVarUInt(i, tmp);
+            v = static_cast<uint16_t>(tmp);
+
+            return bytesRead;
+        }
+
+        uint32_t QueryableNetstringsDeserializerABCF::readValue(istream &i, int32_t &v) {
+            int64_t tmp = 0;
+            uint32_t bytesRead = decodeVarInt(i, tmp);
+            v = static_cast<int32_t>(tmp);
+
+            return bytesRead;
+        }
+
+        uint32_t QueryableNetstringsDeserializerABCF::readValue(istream &i, uint32_t &v) {
+            uint64_t tmp = 0;
+            uint32_t bytesRead = decodeVarUInt(i, tmp);
+            v = static_cast<uint32_t>(tmp);
+
+            return bytesRead;
+        }
+
+        uint32_t QueryableNetstringsDeserializerABCF::readValue(istream &i, int64_t &v) {
+            int64_t tmp = 0;
+            uint32_t bytesRead = decodeVarInt(i, tmp);
+            v = static_cast<int64_t>(tmp);
+
+            return bytesRead;
+        }
+
+        uint32_t QueryableNetstringsDeserializerABCF::readValue(istream &i, uint64_t &v) {
+            uint64_t tmp = 0;
+            uint32_t bytesRead = decodeVarUInt(i, tmp);
+            v = static_cast<uint64_t>(tmp);
+
+            return bytesRead;
+        }
+
+        uint32_t QueryableNetstringsDeserializerABCF::readValue(istream &i, float &v) {
+            float _f = 0;
+            i.read(reinterpret_cast<char *>(&_f), sizeof(float));
+            _f = Deserializer::ntohf(_f);
+            v = _f;
+            return sizeof(float);
+        }
+
+        uint32_t QueryableNetstringsDeserializerABCF::readValue(istream &i, double &v) {
+            double _d = 0;
+            i.read(reinterpret_cast<char *>(&_d), sizeof(double));
+            _d = Deserializer::ntohd(_d);
+            v = _d;
+            return sizeof(double);
+        }
+
+        uint32_t QueryableNetstringsDeserializerABCF::readValue(istream &i, string &v) {
+            uint32_t bytesRead = 0;
+
+            uint64_t stringLength = 0;
+            bytesRead += decodeVarUInt(i, stringLength);
+
+#ifdef WIN32
+            char *str = new char[stringLength+1];
+            i.read(str, stringLength);
+            bytesRead += stringLength;
+            str[stringLength] = '\0';
+            // It is absolutely necessary to specify the size of the serialized string, otherwise, s contains only data until the first '\0' is read.
+            v = string(str, stringLength);
+            OPENDAVINCI_CORE_DELETE_ARRAY(str);
+#else
+            string data(stringLength, '\0');
+            char* begin = &(*data.begin());
+            i.read(begin, stringLength);
+            bytesRead += stringLength;
+
+            v = data;
+#endif
+            return bytesRead;
+        }
+
+        uint32_t QueryableNetstringsDeserializerABCF::readValue(istream &i, void *data, const uint32_t &size) {
+            i.read(reinterpret_cast<char*>(data), size);
+            return size;
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+
         void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, Serializable &v) {
             read(id, 0, "", "", v);
         }
@@ -265,11 +405,14 @@ namespace odcore {
             read(id, 0, "", "", data, size);
         }
 
+        ///////////////////////////////////////////////////////////////////////
+
         void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, Serializable &v) {
             map<uint32_t, streampos>::iterator it = m_values.find( (oneByteID > 0 ? oneByteID : fourByteID) );
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
+
                 m_buffer >> v;
             }
         }
@@ -279,9 +422,7 @@ namespace odcore {
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
-                uint64_t tmp = 0;
-                decodeVarUInt(m_buffer, tmp);
-                v = static_cast<bool>(tmp);
+                readValue(m_buffer, v);
             }
         }
 
@@ -290,9 +431,7 @@ namespace odcore {
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
-                int64_t tmp = 0;
-                decodeVarInt(m_buffer, tmp);
-                v = static_cast<char>(tmp);
+                readValue(m_buffer, v);
             }
         }
 
@@ -301,9 +440,7 @@ namespace odcore {
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
-                uint64_t tmp = 0;
-                decodeVarUInt(m_buffer, tmp);
-                v = static_cast<unsigned char>(tmp);
+                readValue(m_buffer, v);
             }
         }
 
@@ -312,9 +449,7 @@ namespace odcore {
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
-                int64_t tmp = 0;
-                decodeVarInt(m_buffer, tmp);
-                v = static_cast<int8_t>(tmp);
+                readValue(m_buffer, v);
             }
         }
 
@@ -323,9 +458,7 @@ namespace odcore {
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
-                int64_t tmp = 0;
-                decodeVarInt(m_buffer, tmp);
-                v = static_cast<int16_t>(tmp);
+                readValue(m_buffer, v);
             }
         }
 
@@ -334,9 +467,7 @@ namespace odcore {
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
-                uint64_t tmp = 0;
-                decodeVarUInt(m_buffer, tmp);
-                v = static_cast<uint16_t>(tmp);
+                readValue(m_buffer, v);
             }
         }
 
@@ -345,9 +476,7 @@ namespace odcore {
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
-                int64_t tmp = 0;
-                decodeVarInt(m_buffer, tmp);
-                v = static_cast<int32_t>(tmp);
+                readValue(m_buffer, v);
             }
         }
 
@@ -356,9 +485,7 @@ namespace odcore {
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
-                uint64_t tmp = 0;
-                decodeVarUInt(m_buffer, tmp);
-                v = static_cast<uint32_t>(tmp);
+                readValue(m_buffer, v);
             }
         }
 
@@ -367,9 +494,7 @@ namespace odcore {
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
-                int64_t tmp = 0;
-                decodeVarInt(m_buffer, tmp);
-                v = static_cast<int64_t>(tmp);
+                readValue(m_buffer, v);
             }
         }
 
@@ -378,9 +503,7 @@ namespace odcore {
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
-                uint64_t tmp = 0;
-                decodeVarUInt(m_buffer, tmp);
-                v = static_cast<uint64_t>(tmp);
+                readValue(m_buffer, v);
             }
         }
 
@@ -389,11 +512,7 @@ namespace odcore {
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
-
-                float _f = 0;
-                m_buffer.read(reinterpret_cast<char *>(&_f), sizeof(float));
-                _f = Deserializer::ntohf(_f);
-                v = _f;
+                readValue(m_buffer, v);
             }
         }
 
@@ -402,11 +521,7 @@ namespace odcore {
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
-
-                double _d = 0;
-                m_buffer.read(reinterpret_cast<char *>(&_d), sizeof(double));
-                _d = Deserializer::ntohd(_d);
-                v = _d;
+                readValue(m_buffer, v);
             }
         }
 
@@ -415,24 +530,7 @@ namespace odcore {
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
-
-                uint64_t stringLength = 0;
-                decodeVarUInt(m_buffer, stringLength);
-
-#ifdef WIN32
-                char *str = new char[stringLength+1];
-                m_buffer.read(str, stringLength);
-                str[stringLength] = '\0';
-                // It is absolutely necessary to specify the size of the serialized string, otherwise, s contains only data until the first '\0' is read.
-                v = string(str, stringLength);
-                OPENDAVINCI_CORE_DELETE_ARRAY(str);
-#else
-                string data(stringLength, '\0');
-                char* begin = &(*data.begin());
-                m_buffer.read(begin, stringLength);
-
-                v = data;
-#endif
+                readValue(m_buffer, v);
             }
         }
 
@@ -441,7 +539,7 @@ namespace odcore {
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
-                m_buffer.read(reinterpret_cast<char*>(data), size);
+                readValue(m_buffer, data, size);
             }
         }
     }

@@ -76,6 +76,23 @@ class Serializable;
                 int64_t getHash() const;
 
             private:
+                virtual uint32_t writeValue(ostream &o, const Serializable &v) {(void)o; (void)v; return 0;}
+                virtual uint32_t writeValue(ostream &o, const bool &v) {(void)o; (void)v; return 0;}
+                virtual uint32_t writeValue(ostream &o, const char &v) {(void)o; (void)v; return 0;}
+                virtual uint32_t writeValue(ostream &o, const unsigned char &v) {(void)o; (void)v; return 0;}
+                virtual uint32_t writeValue(ostream &o, const int8_t &v) {(void)o; (void)v; return 0;}
+                virtual uint32_t writeValue(ostream &o, const int16_t &v) {(void)o; (void)v; return 0;}
+                virtual uint32_t writeValue(ostream &o, const uint16_t &v) {(void)o; (void)v; return 0;}
+                virtual uint32_t writeValue(ostream &o, const int32_t &v) {(void)o; (void)v; return 0;}
+                virtual uint32_t writeValue(ostream &o, const uint32_t &v) {(void)o; (void)v; return 0;}
+                virtual uint32_t writeValue(ostream &o, const int64_t &v) {(void)o; (void)v; return 0;}
+                virtual uint32_t writeValue(ostream &o, const uint64_t &v) {(void)o; (void)v; return 0;}
+                virtual uint32_t writeValue(ostream &o, const float &v) {(void)o; (void)v; return 0;}
+                virtual uint32_t writeValue(ostream &o, const double &v) {(void)o; (void)v; return 0;}
+                virtual uint32_t writeValue(ostream &o, const string &v) {(void)o; (void)v; return 0;}
+                virtual uint32_t writeValue(ostream &o, const void *data, const uint32_t &size) {(void)o; (void)data; (void)size; return 0;}
+
+            private:
                 virtual void write(const uint32_t &id, const Serializable &s);
                 virtual void write(const uint32_t &id, const bool &b);
                 virtual void write(const uint32_t &id, const char &c);

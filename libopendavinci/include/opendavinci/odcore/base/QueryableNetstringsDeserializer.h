@@ -86,6 +86,23 @@ namespace odcore {
                 virtual void deserializeDataFrom(istream &in);
 
             public:
+                virtual uint32_t readValue(istream &i, Serializable &v);
+                virtual uint32_t readValue(istream &i, bool &v);
+                virtual uint32_t readValue(istream &i, char &v);
+                virtual uint32_t readValue(istream &i, unsigned char &v);
+                virtual uint32_t readValue(istream &i, int8_t &v);
+                virtual uint32_t readValue(istream &i, int16_t &v);
+                virtual uint32_t readValue(istream &i, uint16_t &v);
+                virtual uint32_t readValue(istream &i, int32_t &v);
+                virtual uint32_t readValue(istream &i, uint32_t &v);
+                virtual uint32_t readValue(istream &i, int64_t &v);
+                virtual uint32_t readValue(istream &i, uint64_t &v);
+                virtual uint32_t readValue(istream &i, float &v);
+                virtual uint32_t readValue(istream &i, double &v);
+                virtual uint32_t readValue(istream &i, string &v);
+                virtual uint32_t readValue(istream &i, void *data, const uint32_t &size);
+
+            public:
                 virtual void read(const uint32_t &id, Serializable &s);
                 virtual void read(const uint32_t &id, bool &b);
                 virtual void read(const uint32_t &id, char &c);

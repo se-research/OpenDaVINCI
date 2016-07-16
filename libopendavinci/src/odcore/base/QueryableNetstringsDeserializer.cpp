@@ -45,6 +45,8 @@ class Serializable;
             deserializeDataFrom(in);
         }
 
+        QueryableNetstringsDeserializer::~QueryableNetstringsDeserializer() {}
+
         void QueryableNetstringsDeserializer::deserializeDataFrom(istream &in) {
             // Save current position in the stream.
             int32_t currentPosition = in.tellg();
@@ -80,7 +82,69 @@ class Serializable;
             }
         }
 
-        QueryableNetstringsDeserializer::~QueryableNetstringsDeserializer() {}
+        ///////////////////////////////////////////////////////////////////////
+
+        uint32_t QueryableNetstringsDeserializer::readValue(istream &i, Serializable &v) {
+            return m_deserializer->readValue(i, v);
+        }
+
+        uint32_t QueryableNetstringsDeserializer::readValue(istream &i, bool &v) {
+            return m_deserializer->readValue(i, v);
+        }
+
+        uint32_t QueryableNetstringsDeserializer::readValue(istream &i, char &v) {
+            return m_deserializer->readValue(i, v);
+        }
+
+        uint32_t QueryableNetstringsDeserializer::readValue(istream &i, unsigned char &v) {
+            return m_deserializer->readValue(i, v);
+        }
+
+        uint32_t QueryableNetstringsDeserializer::readValue(istream &i, int8_t &v) {
+            return m_deserializer->readValue(i, v);
+        }
+
+        uint32_t QueryableNetstringsDeserializer::readValue(istream &i, int16_t &v) {
+            return m_deserializer->readValue(i, v);
+        }
+
+        uint32_t QueryableNetstringsDeserializer::readValue(istream &i, uint16_t &v) {
+            return m_deserializer->readValue(i, v);
+        }
+
+        uint32_t QueryableNetstringsDeserializer::readValue(istream &i, int32_t &v) {
+            return m_deserializer->readValue(i, v);
+        }
+
+        uint32_t QueryableNetstringsDeserializer::readValue(istream &i, uint32_t &v) {
+            return m_deserializer->readValue(i, v);
+        }
+
+        uint32_t QueryableNetstringsDeserializer::readValue(istream &i, int64_t &v) {
+            return m_deserializer->readValue(i, v);
+        }
+
+        uint32_t QueryableNetstringsDeserializer::readValue(istream &i, uint64_t &v) {
+            return m_deserializer->readValue(i, v);
+        }
+
+        uint32_t QueryableNetstringsDeserializer::readValue(istream &i, float &v) {
+            return m_deserializer->readValue(i, v);
+        }
+
+        uint32_t QueryableNetstringsDeserializer::readValue(istream &i, double &v) {
+            return m_deserializer->readValue(i, v);
+        }
+
+        uint32_t QueryableNetstringsDeserializer::readValue(istream &i, string &v) {
+            return m_deserializer->readValue(i, v);
+        }
+
+        uint32_t QueryableNetstringsDeserializer::readValue(istream &i, void *data, const uint32_t &size) {
+            return m_deserializer->readValue(i, data, size);
+        }
+
+        ///////////////////////////////////////////////////////////////////////
 
         void QueryableNetstringsDeserializer::read(const uint32_t &id, Serializable &s) {
             m_deserializer->read(id, s);
@@ -141,6 +205,8 @@ class Serializable;
         void QueryableNetstringsDeserializer::read(const uint32_t &id, void *data, const uint32_t &size) {
             m_deserializer->read(id, data, size);
         }
+
+        ///////////////////////////////////////////////////////////////////////
 
         void QueryableNetstringsDeserializer::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, Serializable &v) {
             m_deserializer->read(fourByteID, oneByteID, longName, shortName, v);
