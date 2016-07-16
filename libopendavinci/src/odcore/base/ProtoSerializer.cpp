@@ -150,15 +150,17 @@ class Serializable;
         }
 
         uint32_t ProtoSerializer::writeValue(ostream &o, const float &v) {
-            float _v = htonf(v);
-            o.write(reinterpret_cast<const char*>(&_v), sizeof(const float));
-            return sizeof(const float);
+            // 4 bytes values need to obey little endian encoding.
+            uint32_t _v = htole32(*(reinterpret_cast<const uint32_t*>(&v)));
+            o.write(reinterpret_cast<const char*>(&_v), sizeof(const uint32_t));
+            return sizeof(const uint32_t);
         }
 
         uint32_t ProtoSerializer::writeValue(ostream &o, const double &v) {
-            double _v = htond(v);
-            o.write(reinterpret_cast<const char*>(&_v), sizeof(const double));
-            return sizeof(const double);
+            // 8 bytes values need to obey little endian encoding.
+            uint64_t _v = htole64(*(reinterpret_cast<const uint64_t*>(&v)));
+            o.write(reinterpret_cast<const char*>(&_v), sizeof(const uint64_t));
+            return sizeof(const uint64_t);
         }
 
         uint32_t ProtoSerializer::writeValue(ostream &o, const string &v) {

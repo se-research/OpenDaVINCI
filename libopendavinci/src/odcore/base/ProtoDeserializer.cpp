@@ -250,17 +250,21 @@ class Serializable;
         }
 
         uint32_t ProtoDeserializer::readValue(istream &i, float &v) {
-            float _f =0;
-            i.read(reinterpret_cast<char *>(&_f), sizeof(float));
-            v = Deserializer::ntohf(_f);
-            return sizeof(float);
+            // 4 bytes values need to obey little endian encoding.
+            uint32_t _v = 0;
+            i.read(reinterpret_cast<char*>(&_v), sizeof(uint32_t));
+            _v = le32toh(_v);
+            v = *(reinterpret_cast<float*>(&_v));
+            return sizeof(const uint32_t);
         }
 
         uint32_t ProtoDeserializer::readValue(istream &i, double &v) {
-            double _d =0;
-            i.read(reinterpret_cast<char*>(&_d), sizeof(double));
-            v = Deserializer::ntohd(_d);
-            return sizeof(double);
+            // 8 bytes values need to obey little endian encoding.
+            uint64_t _v = 0;
+            i.read(reinterpret_cast<char*>(&_v), sizeof(uint64_t));
+            _v = le64toh(_v);
+            v = *(reinterpret_cast<double*>(&_v));
+            return sizeof(const uint64_t);
         }
 
         uint32_t ProtoDeserializer::readValue(istream &i, string &v) {
