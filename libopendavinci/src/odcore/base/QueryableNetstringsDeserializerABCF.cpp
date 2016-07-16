@@ -412,7 +412,6 @@ namespace odcore {
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
-
                 m_buffer >> v;
             }
         }

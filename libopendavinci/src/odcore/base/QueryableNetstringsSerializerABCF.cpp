@@ -227,10 +227,8 @@ namespace odcore {
         }
 
         ///////////////////////////////////////////////////////////////////////
-
         void QueryableNetstringsSerializerABCF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const Serializable &v) {
             encodeVarUInt(m_buffer, (oneByteID > 0 ? oneByteID : fourByteID));
-
 
             stringstream buffer;
             buffer << v;
