@@ -27,6 +27,7 @@
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odtools/recorder/Recorder.h"
 #include "opendavinci/odtools/recorder/SharedDataListener.h"
+#include "opendavinci/generated/odcore/data/recorder/RecorderCommand.h"
 
 namespace odtools {
 

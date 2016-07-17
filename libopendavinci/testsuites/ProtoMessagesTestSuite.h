@@ -2763,11 +2763,11 @@ TODO:
 * Test serialization and deserialization of primitive types and complex types.
 */
 
-//const string s = out.str();
-//for (unsigned int i = 0; i<s.size(); i++) {
-//    cout << hex << (int)(uint8_t)s.at(i) << " ";
-//}
-//cout << endl;
+const string s = out.str();
+for (unsigned int i = 0; i<s.size(); i++) {
+    cout << hex << (int)(uint8_t)s.at(i) << " ";
+}
+cout << endl;
 
             // Read back the data by using the visitor.
             ModuleStatistics mss2;
@@ -2906,7 +2906,7 @@ Deserialize:
 */
 
 // TODO:
-// 1) test adjusted serialization for ModuleStatics
+// Done - 1) test adjusted serialization for ModuleStatics
 // 2) Refactor odDataStructureGenerator to emit new code to use readValue/writeValue for lists and maps
 // 3) Add test case for odcore.data.dmcp.PulseMessage
 // 4) Add test case for odcore.data.dmcp.PulseAckContainersMessage

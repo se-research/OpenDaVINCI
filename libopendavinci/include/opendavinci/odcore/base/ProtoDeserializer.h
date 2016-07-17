@@ -173,15 +173,17 @@ namespace odcore {
                 /**
                  * This method reads and validates the key for the next value.
                  *
+                 * @param in Stream to read data from.
                  * @param id Identifier to be matched with the key read from the stream.
+                 * @param expectedType Proto type to be expected from the stream.
                  * @return Bytes consumed.
                  */
-                uint32_t readAndValidateKey(const uint32_t &id, const ProtoSerializerVisitor::PROTOBUF_TYPE &expectedType);
+                uint32_t readAndValidateKey(istream &in, const uint32_t &id, const ProtoSerializerVisitor::PROTOBUF_TYPE &expectedType);
 
             private:
                 uint32_t m_size;
-//                stringstream m_buffer;
-                istream *m_buffer;
+                stringstream m_buffer;
+//                istream *m_buffer;
         };
 
     }
