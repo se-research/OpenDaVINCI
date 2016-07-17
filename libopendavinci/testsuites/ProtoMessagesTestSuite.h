@@ -3000,47 +3000,33 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             PulseAckContainersMessage pm1;
 
-cout << __FILE__ << " " << dec << __LINE__ << endl;
             {
                 TimeStamp ts(1, 2);
-cout << __FILE__ << " " << dec << __LINE__ << endl;
                 Container c(ts);
-cout << __FILE__ << " " << dec << __LINE__ << endl;
                 pm1.addTo_ListOfContainers(c);
             }
-cout << __FILE__ << " " << dec << __LINE__ << endl;
             {
                 TimeStamp ts(3, 4);
-cout << __FILE__ << " " << dec << __LINE__ << endl;
                 Container c(ts);
-cout << __FILE__ << " " << dec << __LINE__ << endl;
                 pm1.addTo_ListOfContainers(c);
             }
-cout << __FILE__ << " " << dec << __LINE__ << endl;
 
 
             // Serialize via regular Serializer.
             stringstream out;
             out << pm1;
-cout << __FILE__ << " " << dec << __LINE__ << endl;
 
             // Read back the data by using the visitor.
             PulseAckContainersMessage pm2;
-cout << __FILE__ << " " << dec << __LINE__ << endl;
 
             // Read from buffer.
             out >> pm2;
-cout << __FILE__ << " " << dec << __LINE__ << endl;
 
             vector<Container> v1 = pm1.getListOfContainers();
-cout << __FILE__ << " " << dec << __LINE__ << endl;
             vector<Container> v2 = pm2.getListOfContainers();
-cout << __FILE__ << " " << dec << __LINE__ << endl;
 
             TS_ASSERT(v1.size() == 2);
-cout << __FILE__ << " " << dec << __LINE__ << endl;
             TS_ASSERT(v2.size() == 2);
-
 
             Container v1_c1 = v1.at(0);
             Container v1_c2 = v1.at(1);
