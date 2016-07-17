@@ -2992,7 +2992,6 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        // Failed
         void testSerializationDeserializationPulseAckContainersMessage() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
@@ -3051,8 +3050,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(v2_ts2.toMicroseconds() == 3000004);
         }
 
-        // Failed
-        void NOtestSerializationDeserializationPulseAckContainersMessageContainer() {
+        void testSerializationDeserializationPulseAckContainersMessageContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -3089,11 +3087,27 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(v1.size() == 2);
             TS_ASSERT(v2.size() == 2);
 
-            TS_ASSERT(v1.at(0).getData<TimeStamp>().toMicroseconds() == v2.at(0).getData<TimeStamp>().toMicroseconds());
-            TS_ASSERT(v2.at(0).getData<TimeStamp>().toMicroseconds() == 1000002);
+            Container v1_c1 = v1.at(0);
+            Container v1_c2 = v1.at(1);
+            TS_ASSERT(v1_c1.getDataType() == TimeStamp::ID());
+            TS_ASSERT(v1_c2.getDataType() == TimeStamp::ID());
 
-            TS_ASSERT(v1.at(1).getData<TimeStamp>().toMicroseconds() == v2.at(1).getData<TimeStamp>().toMicroseconds());
-            TS_ASSERT(v2.at(1).getData<TimeStamp>().toMicroseconds() == 3000004);
+            TimeStamp v1_ts1 = v1_c1.getData<TimeStamp>();
+            TimeStamp v1_ts2 = v1_c2.getData<TimeStamp>();
+
+            Container v2_c1 = v2.at(0);
+            Container v2_c2 = v2.at(1);
+            TS_ASSERT(v2_c1.getDataType() == TimeStamp::ID());
+            TS_ASSERT(v2_c2.getDataType() == TimeStamp::ID());
+
+            TimeStamp v2_ts1 = v2_c1.getData<TimeStamp>();
+            TimeStamp v2_ts2 = v2_c2.getData<TimeStamp>();
+
+            TS_ASSERT(v1_ts1.toMicroseconds() == v2_ts1.toMicroseconds());
+            TS_ASSERT(v2_ts1.toMicroseconds() == 1000002);
+
+            TS_ASSERT(v1_ts2.toMicroseconds() == v2_ts2.toMicroseconds());
+            TS_ASSERT(v2_ts2.toMicroseconds() == 3000004);
         }
 
         ///////////////////////////////////////////////////////////////////////
