@@ -100,7 +100,7 @@ class SerializationFactoryTestCase : public SerializationFactory {
 
 class ProtoMessageTest : public CxxTest::TestSuite {
     public:
-        void NOtestSerializationDeserializationTestMessage1OneField() {
+        void testSerializationDeserializationTestMessage1OneField() {
             TestMessage1 tm1;
             tm1.setField1(12);
 
@@ -120,7 +120,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getField1() == 12);
         }
 
-        void NOtestSerializationDeserializationTestMessage1OneFieldContainer() {
+        void testSerializationDeserializationTestMessage1OneFieldContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -146,7 +146,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getField1() == 12);
         }
 
-        void NOtestSerializationDeserializationTestMessage1OneFieldVisitor() {
+        void testSerializationDeserializationTestMessage1OneFieldVisitor() {
             TestMessage1 tm1;
             tm1.setField1(12);
 
@@ -173,7 +173,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationTestMessage1CompleteOneField() {
+        void testSerializationDeserializationTestMessage1CompleteOneField() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -195,7 +195,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             }
         }
 
-        void NOtestSerializationDeserializationTestMessage1CompleteOneFieldContainer() {
+        void testSerializationDeserializationTestMessage1CompleteOneFieldContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -222,7 +222,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             }
         }
 
-        void NOtestSerializationDeserializationTestMessage1CompleteOneFieldVisitor() {
+        void testSerializationDeserializationTestMessage1CompleteOneFieldVisitor() {
             for (uint16_t i = 0; i <= 255; i++) {
                 TestMessage1 tm1;
                 tm1.setField1(i);
@@ -251,7 +251,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationTestMessage1OneFieldGoogleExample() {
+        void testSerializationDeserializationTestMessage1OneFieldGoogleExample() {
             TestMessage1 tm1;
             tm1.setField1(150);
 
@@ -278,7 +278,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getField1() == 150);
         }
 
-        void NOtestSerializationDeserializationTestMessage1OneFieldGoogleExampleVisitor() {
+        void testSerializationDeserializationTestMessage1OneFieldGoogleExampleVisitor() {
             TestMessage1 tm1;
             tm1.setField1(150);
 
@@ -311,7 +311,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationTestMessage2TwoFieldsA() {
+        void testSerializationDeserializationTestMessage2TwoFieldsA() {
             TestMessage2 tm1;
             tm1.setField1(60);
             tm1.setField2(-60);
@@ -335,7 +335,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getField2() == -60);
         }
 
-        void NOtestSerializationDeserializationTestMessage2TwoFieldsAContainer() {
+        void testSerializationDeserializationTestMessage2TwoFieldsAContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -364,7 +364,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getField2() == -60);
         }
 
-        void NOtestSerializationDeserializationTestMessage2TwoFieldsAVisitor() {
+        void testSerializationDeserializationTestMessage2TwoFieldsAVisitor() {
             TestMessage2 tm1;
             tm1.setField1(60);
             tm1.setField2(-60);
@@ -395,7 +395,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationTestMessage2TwoFieldsB() {
+        void testSerializationDeserializationTestMessage2TwoFieldsB() {
             TestMessage2 tm1;
             tm1.setField1(12);
             tm1.setField2(-12);
@@ -419,7 +419,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getField2() == -12);
         }
 
-        void NOtestSerializationDeserializationTestMessage2TwoFieldsBContainer() {
+        void testSerializationDeserializationTestMessage2TwoFieldsBContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -448,7 +448,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getField2() == -12);
         }
 
-        void NOtestSerializationDeserializationTestMessage2TwoFieldsBVisitor() {
+        void testSerializationDeserializationTestMessage2TwoFieldsBVisitor() {
             TestMessage2 tm1;
             tm1.setField1(12);
             tm1.setField2(-12);
@@ -479,7 +479,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationTestMessage2Complete() {
+        void testSerializationDeserializationTestMessage2Complete() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -507,7 +507,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             }
         }
 
-        void NOtestSerializationDeserializationTestMessage2CompleteContainer() {
+        void testSerializationDeserializationTestMessage2CompleteContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -540,7 +540,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             }
         }
 
-        void NOtestSerializationDeserializationTestMessage2CompleteVisitor() {
+        void testSerializationDeserializationTestMessage2CompleteVisitor() {
             for(uint16_t i = 0; i <= 255; i++) {
                 for(int16_t j = -127; j <= 127; j++) {
                     TestMessage2 tm1;
@@ -575,7 +575,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationTestMessage3OneFieldGoogleExample() {
+        void testSerializationDeserializationTestMessage3OneFieldGoogleExample() {
             TestMessage3 tm1;
             tm1.setField1("testing");
 
@@ -608,7 +608,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm1.getField1() == "testing");
         }
 
-        void NOtestSerializationDeserializationTestMessage3OneFieldGoogleExampleVisitor() {
+        void testSerializationDeserializationTestMessage3OneFieldGoogleExampleVisitor() {
             TestMessage3 tm1;
             tm1.setField1("testing");
 
@@ -647,7 +647,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationTestMessage4OneFieldGoogleExample() {
+        void testSerializationDeserializationTestMessage4OneFieldGoogleExample() {
             TestMessage4 tm1;
             TestMessage1 tm1Embedded;
             tm1Embedded.setField1(150);
@@ -678,7 +678,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm1.getField1().getField1() == 150);
         }
 
-        void NOtestSerializationDeserializationTestMessage4OneFieldGoogleExampleVisitor() {
+        void testSerializationDeserializationTestMessage4OneFieldGoogleExampleVisitor() {
             TestMessage4 tm1;
             TestMessage1 tm1Embedded;
             tm1Embedded.setField1(150);
@@ -715,7 +715,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationTestMessage5() {
+        void testSerializationDeserializationTestMessage5() {
             TestMessage5 tm1;
             TS_ASSERT(tm1.getField1() == 1);
             TS_ASSERT(tm1.getField2() == -1);
@@ -799,7 +799,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getField12().getField1() == tm1.getField12().getField1());
         }
 
-        void NOtestSerializationDeserializationTestMessage5Container() {
+        void testSerializationDeserializationTestMessage5Container() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -888,7 +888,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getField12().getField1() == tm1.getField12().getField1());
         }
 
-        void NOtestSerializationDeserializationTestMessage5Visitor() {
+        void testSerializationDeserializationTestMessage5Visitor() {
             TestMessage5 tm1;
             TS_ASSERT(tm1.getField1() == 1);
             TS_ASSERT(tm1.getField2() == -1);
@@ -979,7 +979,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationLogMessage() {
+        void testSerializationDeserializationLogMessage() {
             LogMessage tm1;
             tm1.setLogLevel(LogMessage::WARN);
             tm1.setLogMessage("This is a test message!");
@@ -1007,7 +1007,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getComponentName() == "Component ABC");
         }
 
-        void NOtestSerializationDeserializationLogMessageContainer() {
+        void testSerializationDeserializationLogMessageContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -1040,7 +1040,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getComponentName() == "Component ABC");
         }
 
-        void NOtestSerializationDeserializationLogMessageVisitor() {
+        void testSerializationDeserializationLogMessageVisitor() {
             LogMessage tm1;
             tm1.setLogLevel(LogMessage::WARN);
             tm1.setLogMessage("This is a test message!");
@@ -1075,7 +1075,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationAbstractField() {
+        void testSerializationDeserializationAbstractField() {
             AbstractField tm1;
             tm1.setLongFieldIdentifier(123456);
             tm1.setShortFieldIdentifier(123);
@@ -1115,7 +1115,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getSize() == -12);
         }
 
-        void NOtestSerializationDeserializationAbstractFieldContainer() {
+        void testSerializationDeserializationAbstractFieldContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -1160,7 +1160,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getSize() == -12);
         }
 
-        void NOtestSerializationDeserializationAbstractFieldVisitor() {
+        void testSerializationDeserializationAbstractFieldVisitor() {
             AbstractField tm1;
             tm1.setLongFieldIdentifier(123456);
             tm1.setShortFieldIdentifier(123);
@@ -1207,7 +1207,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationServerInformation() {
+        void testSerializationDeserializationServerInformation() {
             ServerInformation tm1;
             tm1.setIP("123.456.789.abc");
             tm1.setPort(7890);
@@ -1235,7 +1235,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getManagedLevel() == ServerInformation::ML_PULSE_TIME_ACK);
         }
 
-        void NOtestSerializationDeserializationServerInformationContainer() {
+        void testSerializationDeserializationServerInformationContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -1268,7 +1268,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getManagedLevel() == ServerInformation::ML_PULSE_TIME_ACK);
         }
 
-        void NOtestSerializationDeserializationServerInformationVisitor() {
+        void testSerializationDeserializationServerInformationVisitor() {
             ServerInformation tm1;
             tm1.setIP("123.456.789.abc");
             tm1.setPort(7890);
@@ -1303,7 +1303,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationDiscoverMessage() {
+        void testSerializationDeserializationDiscoverMessage() {
             ServerInformation tm1;
             tm1.setIP("456.789.abc.123");
             tm1.setPort(456);
@@ -1342,7 +1342,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(dm2.getModuleName() == "TestComponent");
         }
 
-        void NOtestSerializationDeserializationDiscoverMessageContainer() {
+        void testSerializationDeserializationDiscoverMessageContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -1386,7 +1386,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(dm2.getModuleName() == "TestComponent");
         }
 
-        void NOtestSerializationDeserializationDiscoverMessageVisitor() {
+        void testSerializationDeserializationDiscoverMessageVisitor() {
             ServerInformation tm1;
             tm1.setIP("456.789.abc.123");
             tm1.setPort(456);
@@ -1432,7 +1432,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationModuleDescriptor() {
+        void testSerializationDeserializationModuleDescriptor() {
             ModuleDescriptor tm1;
             tm1.setName("My component");
             tm1.setIdentifier("12345");
@@ -1464,7 +1464,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(tm2.getFrequency(), 1.2345, 1e-4);
         }
 
-        void NOtestSerializationDeserializationModuleDescriptorContainer() {
+        void testSerializationDeserializationModuleDescriptorContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -1501,7 +1501,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(tm2.getFrequency(), 1.2345, 1e-4);
         }
 
-        void NOtestSerializationDeserializationModuleDescriptorVisitor() {
+        void testSerializationDeserializationModuleDescriptorVisitor() {
             ModuleDescriptor tm1;
             tm1.setName("My component");
             tm1.setIdentifier("12345");
@@ -1540,7 +1540,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationRuntimeStatistic() {
+        void testSerializationDeserializationRuntimeStatistic() {
             RuntimeStatistic tm1;
             tm1.setSliceConsumption(-7.2345);
 
@@ -1560,7 +1560,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(tm2.getSliceConsumption(), -7.2345, 1e-4);
         }
 
-        void NOtestSerializationDeserializationRuntimeStatisticContainer() {
+        void testSerializationDeserializationRuntimeStatisticContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -1585,7 +1585,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(tm2.getSliceConsumption(), -7.2345, 1e-4);
         }
 
-        void NOtestSerializationDeserializationRuntimeStatisticVisitor() {
+        void testSerializationDeserializationRuntimeStatisticVisitor() {
             RuntimeStatistic tm1;
             tm1.setSliceConsumption(-7.2345);
 
@@ -1612,7 +1612,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationModuleStatistic() {
+        void testSerializationDeserializationModuleStatistic() {
             ModuleDescriptor md;
             md.setName("My component");
             md.setIdentifier("12345");
@@ -1654,7 +1654,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(tm2.getRuntimeStatistic().getSliceConsumption(), -7.2345, 1e-4);
         }
 
-        void NOtestSerializationDeserializationModuleStatisticContainer() {
+        void testSerializationDeserializationModuleStatisticContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -1701,7 +1701,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(tm2.getRuntimeStatistic().getSliceConsumption(), -7.2345, 1e-4);
         }
 
-        void NOtestSerializationDeserializationModuleStatisticVisitor() {
+        void testSerializationDeserializationModuleStatisticVisitor() {
             ModuleDescriptor md;
             md.setName("My component");
             md.setIdentifier("12345");
@@ -1750,7 +1750,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationModuleStateMessage() {
+        void testSerializationDeserializationModuleStateMessage() {
             ModuleStateMessage tm1;
             tm1.setModuleState(ModuleStateMessage::RUNNING);
 
@@ -1770,7 +1770,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getModuleState() == ModuleStateMessage::RUNNING);
         }
 
-        void NOtestSerializationDeserializationModuleStateMessageContainer() {
+        void testSerializationDeserializationModuleStateMessageContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -1795,7 +1795,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getModuleState() == ModuleStateMessage::RUNNING);
         }
 
-        void NOtestSerializationDeserializationModuleStateMessageVisitor() {
+        void testSerializationDeserializationModuleStateMessageVisitor() {
             ModuleStateMessage tm1;
             tm1.setModuleState(ModuleStateMessage::RUNNING);
 
@@ -1822,7 +1822,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationModuleExitCodeMessage() {
+        void testSerializationDeserializationModuleExitCodeMessage() {
             ModuleExitCodeMessage tm1;
             tm1.setModuleExitCode(ModuleExitCodeMessage::CONNECTION_LOST);
 
@@ -1842,7 +1842,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getModuleExitCode() == ModuleExitCodeMessage::CONNECTION_LOST);
         }
 
-        void NOtestSerializationDeserializationModuleExitCodeMessageContainer() {
+        void testSerializationDeserializationModuleExitCodeMessageContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -1867,7 +1867,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getModuleExitCode() == ModuleExitCodeMessage::CONNECTION_LOST);
         }
 
-        void NOtestSerializationDeserializationModuleExitCodeMessageVisitor() {
+        void testSerializationDeserializationModuleExitCodeMessageVisitor() {
             ModuleExitCodeMessage tm1;
             tm1.setModuleExitCode(ModuleExitCodeMessage::CONNECTION_LOST);
 
@@ -1894,7 +1894,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationPulseAckMessage() {
+        void testSerializationDeserializationPulseAckMessage() {
             PulseAckMessage tm1;
 
             // Replace default serializer/deserializers.
@@ -1910,7 +1910,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             out >> tm2;
         }
 
-        void NOtestSerializationDeserializationPulseAckMessageContainer() {
+        void testSerializationDeserializationPulseAckMessageContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -1932,7 +1932,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             (void)tm2;
         }
 
-        void NOtestSerializationDeserializationPulseAckMessageVisitor() {
+        void testSerializationDeserializationPulseAckMessageVisitor() {
             PulseAckMessage tm1;
 
             // Create a Proto serialization visitor.
@@ -1955,7 +1955,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationConfiguration() {
+        void testSerializationDeserializationConfiguration() {
             KeyValueConfiguration kvc;
 
             // Setup an example configuration.
@@ -1993,7 +1993,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(kvc2.getValue<float>("key2:3"), -4.325, 1e-3);
         }
 
-        void NOtestSerializationDeserializationConfigurationContainer() {
+        void testSerializationDeserializationConfigurationContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -2036,7 +2036,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(kvc2.getValue<float>("key2:3"), -4.325, 1e-3);
         }
 
-        void NOtestSerializationDeserializationModuleConfigurationVisitor() {
+        void testSerializationDeserializationModuleConfigurationVisitor() {
             KeyValueConfiguration kvc;
 
             // Setup an example configuration.
@@ -2081,7 +2081,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationMemorySegment() {
+        void testSerializationDeserializationMemorySegment() {
             // Replace default serializer/deserializers (needs to be here as the Container constructor will immediately serialize its argument.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -2116,7 +2116,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(ms2.getIdentifier() == 12);
         }
 
-        void NOtestSerializationDeserializationMemorySegmentContainer() {
+        void testSerializationDeserializationMemorySegmentContainer() {
             // Replace default serializer/deserializers (needs to be here as the Container constructor will immediately serialize its argument.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -2156,7 +2156,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(ms2.getIdentifier() == 12);
         }
 
-        void NOtestSerializationDeserializationMemorySegmentVisitor() {
+        void testSerializationDeserializationMemorySegmentVisitor() {
             TimeStamp payload(7, 8);
             Container c(payload);
             c.setSentTimeStamp(TimeStamp(1, 2));
@@ -2198,7 +2198,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationPlayerCommand() {
+        void testSerializationDeserializationPlayerCommand() {
             PlayerCommand tm1;
             tm1.setCommand(PlayerCommand::REWIND);
 
@@ -2218,7 +2218,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getCommand() == PlayerCommand::REWIND);
         }
 
-        void NOtestSerializationDeserializationPlayerCommandContainer() {
+        void testSerializationDeserializationPlayerCommandContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -2243,7 +2243,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getCommand() == PlayerCommand::REWIND);
         }
 
-        void NOtestSerializationDeserializationPlayerCommandVisitor() {
+        void testSerializationDeserializationPlayerCommandVisitor() {
             PlayerCommand tm1;
             tm1.setCommand(PlayerCommand::REWIND);
 
@@ -2270,7 +2270,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationRecorderCommand() {
+        void testSerializationDeserializationRecorderCommand() {
             RecorderCommand tm1;
             tm1.setCommand(RecorderCommand::STOP);
 
@@ -2290,7 +2290,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getCommand() == RecorderCommand::STOP);
         }
 
-        void NOtestSerializationDeserializationRecorderCommandContainer() {
+        void testSerializationDeserializationRecorderCommandContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -2315,7 +2315,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getCommand() == RecorderCommand::STOP);
         }
 
-        void NOtestSerializationDeserializationRecorderCommandVisitor() {
+        void testSerializationDeserializationRecorderCommandVisitor() {
             RecorderCommand tm1;
             tm1.setCommand(RecorderCommand::STOP);
 
@@ -2342,7 +2342,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationSharedData() {
+        void testSerializationDeserializationSharedData() {
             SharedData tm1;
             tm1.setName("Hello Shared Data");
             tm1.setSize(1234);
@@ -2366,7 +2366,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getSize() == 1234);
         }
 
-        void NOtestSerializationDeserializationSharedDataContainer() {
+        void testSerializationDeserializationSharedDataContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -2395,7 +2395,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getSize() == 1234);
         }
 
-        void NOtestSerializationDeserializationSharedDataVisitor() {
+        void testSerializationDeserializationSharedDataVisitor() {
             SharedData tm1;
             tm1.setName("Hello Shared Data");
             tm1.setSize(1234);
@@ -2426,7 +2426,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationSharedImage() {
+        void testSerializationDeserializationSharedImage() {
             SharedImage tm1;
             tm1.setName("Hello Shared Image");
             tm1.setSize(7890);
@@ -2462,7 +2462,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getBytesPerPixel() == 3);
         }
 
-        void NOtestSerializationDeserializationSharedImageContainer() {
+        void testSerializationDeserializationSharedImageContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -2503,7 +2503,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getBytesPerPixel() == 3);
         }
 
-        void NOtestSerializationDeserializationSharedImageVisitor() {
+        void testSerializationDeserializationSharedImageVisitor() {
             SharedImage tm1;
             tm1.setName("Hello Shared Image");
             tm1.setSize(7890);
@@ -2546,7 +2546,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationSharedPointCloud() {
+        void testSerializationDeserializationSharedPointCloud() {
             SharedPointCloud tm1;
             tm1.setName("Hello Shared Point Cloud");
             tm1.setSize(45678);
@@ -2590,7 +2590,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getUserInfo() == SharedPointCloud::XYZ_INTENSITY);
         }
 
-        void NOtestSerializationDeserializationSharedPointCloudContainer() {
+        void testSerializationDeserializationSharedPointCloudContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -2639,7 +2639,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getUserInfo() == SharedPointCloud::XYZ_INTENSITY);
         }
 
-        void NOtestSerializationDeserializationSharedPointCloudVisitor() {
+        void testSerializationDeserializationSharedPointCloudVisitor() {
             SharedPointCloud tm1;
             tm1.setName("Hello Shared Point Cloud");
             tm1.setSize(45678);
@@ -2690,7 +2690,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationModuleStatistics() {
+        void testSerializationDeserializationModuleStatistics() {
             ModuleStatistics mss1;
 
             {
@@ -2779,7 +2779,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(v2.at(1).getRuntimeStatistic().getSliceConsumption(), -97.2345, 1e-4);
         }
 
-        void NOtestSerializationDeserializationModuleStatisticsContainer() {
+        void testSerializationDeserializationModuleStatisticsContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -3145,7 +3145,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationTestMessage6() {
+        void testSerializationDeserializationTestMessage6() {
             TestMessage6 tm1;
 
             {
@@ -3204,7 +3204,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(v2.at(2) == 86942);
         }
 
-        void NOtestSerializationDeserializationTestMessage6Container() {
+        void testSerializationDeserializationTestMessage6Container() {
             TestMessage6 tm1;
 
             {
@@ -3256,7 +3256,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationTestMessage7() {
+        void testSerializationDeserializationTestMessage7() {
             TestMessage7 tm1;
 
             {
@@ -3303,7 +3303,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(v2.at(2), 47.891, 1e-3);
         }
 
-        void NOtestSerializationDeserializationTestMessage7Container() {
+        void testSerializationDeserializationTestMessage7Container() {
             TestMessage7 tm1;
 
             {
