@@ -3391,13 +3391,14 @@ Deserialize:
 
 // TODO:
 // Done - 1) test adjusted serialization for ModuleStatics
-// 2) Refactor odDataStructureGenerator to emit new code to use readValue/writeValue for lists, maps, and fixed arrays
-// 3) Add test case for odcore.data.dmcp.PulseMessage
-// 4) Add test case for odcore.data.dmcp.PulseAckContainersMessage
-// Done - 5) Refactor ProtoSerializer and ProtoDeserializer to eat entire istream and create vector of entries to enable "queryable" functionality
+// Done - 2) Add test case for odcore.data.dmcp.PulseMessage
+// Done - 3) Add test case for odcore.data.dmcp.PulseAckContainersMessage
+// Done - 4) Refactor ProtoSerializer and ProtoDeserializer to eat entire istream and create vector of entries to enable "queryable" functionality
+// 5) Refactor odDataStructureGenerator to emit new code to use readValue/writeValue for lists, maps, and fixed arrays
 // 6) Check missing fields.
 // 7) Check additional fields.
-// 8) compatibility with 3rd party Proto implementations
+// 8) Check multiple deserialization in Container (cf test case for PulseAckContainersMessage)
+// 9) compatibility with 3rd party Proto implementations
 
 };
 
