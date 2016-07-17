@@ -25,6 +25,8 @@
 #include "opendavinci/odcore/base/ProtoDeserializer.h"
 #include "opendavinci/odcore/base/ProtoDeserializerVisitor.h"
 #include "opendavinci/odcore/base/Visitable.h"
+#include "opendavinci/odcore/reflection/MessageFromVisitableVisitor.h"
+#include "opendavinci/odcore/reflection/Message.h"
 
 namespace odcore {
     namespace base {
@@ -133,21 +135,15 @@ class Serializable;
         ///////////////////////////////////////////////////////////////////////
 
         uint32_t ProtoDeserializer::readValue(istream &i, Serializable &v) {
-            uint32_t bytesRead = 0;
+            string s;
+            uint32_t bytesRead = readValue(i, s);
 
-            // Read length.
-            uint64_t length = 0;
-            bytesRead += decodeVarInt(i, length);
-
-            // Create contiguous buffer.
-            vector<char> buffer(length);
-
-            // Read data from stream into buffer.
-            i.read(&buffer[0], length);
-            bytesRead += length;
-
-            // Create string from buffer.
-            const string s(&buffer[0], &buffer[length]);
+cout << __FILE__ << " " << dec << __LINE__ << ", length = " << s.size() << endl;
+cout << "PS Read: " << endl;
+for(uint32_t j = 0; j < s.size(); j++) {
+    cout << hex << (uint32_t)(uint8_t)s.at(j) << " ";
+}
+cout << endl;
 
             // Deserialize v from string using a stringstream.
             stringstream sstr(s);
@@ -164,10 +160,13 @@ class Serializable;
 
                 // Visit v and set values.
                 const_cast<Visitable&>(v2).accept(nestedVisitor);
+
+cout << __FILE__ << " " << dec << __LINE__ << endl;
             }
             catch(...) {
                 // Deserialize v using the default way as it is not of type Visitable.
                 sstr >> v;
+cout << __FILE__ << " " << dec << __LINE__ << endl;
             }
 
             return bytesRead;

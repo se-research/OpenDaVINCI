@@ -20,7 +20,6 @@
 #ifndef OPENDAVINCI_CORE_BASE_PROTODESERIALIZER_H_
 #define OPENDAVINCI_CORE_BASE_PROTODESERIALIZER_H_
 
-#include <iostream>
 #include <sstream>
 #include <string>
 
@@ -183,7 +182,6 @@ namespace odcore {
             private:
                 uint32_t m_size;
                 stringstream m_buffer;
-//                istream *m_buffer;
         };
 
     }

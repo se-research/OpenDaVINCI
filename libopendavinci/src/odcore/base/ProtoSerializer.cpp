@@ -64,8 +64,6 @@ class Serializable;
 
 ////////////////////////////
         uint32_t ProtoSerializer::writeValue(ostream &o, const Serializable &v) {
-            uint32_t bytesWritten = 0;
-
             // Buffer for serialized data.
             stringstream buffer;
 
@@ -79,24 +77,24 @@ class Serializable;
 
                 // Get serialized data.
                 nestedVisitor.getSerializedData(buffer);
+cout << __FILE__ << " " << dec << __LINE__ << endl;
             }
             catch(...) {
                 // Serialize v using the default way as it is not of type Visitable.
                 buffer << v;
+cout << __FILE__ << " " << dec << __LINE__ << endl;
             }
 
             // Get serialized value.
             const string tmp = buffer.str();
+cout << __FILE__ << " " << dec << __LINE__ << ", length = " << tmp.size() << endl;
+cout << "PS Write: " << endl;
+for(uint32_t i = 0; i < tmp.size(); i++) {
+    cout << hex << (uint32_t)(uint8_t)tmp.at(i) << " ";
+}
+cout << endl;
 
-            // Write length of v into m_buffer.
-            uint64_t size = static_cast<uint32_t>(tmp.length());
-            bytesWritten += encodeVarInt(o, size);
-
-            // Write actual value.
-            o.write(tmp.c_str(), size);
-            bytesWritten += size;
-
-            return bytesWritten;
+            return writeValue(o, tmp);
         }
 
         uint32_t ProtoSerializer::writeValue(ostream &o, const bool &v) {
