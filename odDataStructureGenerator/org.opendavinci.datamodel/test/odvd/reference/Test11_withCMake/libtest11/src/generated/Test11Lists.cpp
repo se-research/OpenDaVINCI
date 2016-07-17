@@ -375,117 +375,96 @@
 
 		std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
-		// Write number of elements in m_listOfMyBoolList.
-		const uint32_t numberOfMyBoolList = static_cast<uint32_t>(m_listOfMyBoolList.size());
-		s->write(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'B', CharList<'o', CharList<'o', CharList<'l', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > >  >::RESULT,
-		        numberOfMyBoolList);
-		
-		// Write actual elements into a stringstream.
-		std::stringstream sstrOfMyBoolList;
-		for (uint32_t i = 0; i < numberOfMyBoolList; i++) {
-		    sstrOfMyBoolList << m_listOfMyBoolList.at(i) << endl;
-		}
-		
-		// Write string of elements.
-		if (numberOfMyBoolList > 0) {
+		// Store elements from m_listOfMyBoolList into a string.
+		{
+			const uint32_t numberOfMyBoolList = static_cast<uint32_t>(m_listOfMyBoolList.size());
+			std::stringstream sstr_MyBoolList;
+			{
+				for(uint32_t i = 0; i < numberOfMyBoolList; i++) {
+					s->writeValue(sstr_MyBoolList, m_listOfMyBoolList.at(i));
+				}
+			}
+			const std::string str_sstr_MyBoolList = sstr_MyBoolList.str();
 			s->write(CRC32 < CharList<'M', CharList<'y', CharList<'B', CharList<'o', CharList<'o', CharList<'l', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > >  >::RESULT,
-			        sstrOfMyBoolList.str());
+				    str_sstr_MyBoolList);
 		}
-		// Write number of elements in m_listOfMyCharList.
-		const uint32_t numberOfMyCharList = static_cast<uint32_t>(m_listOfMyCharList.size());
-		s->write(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'C', CharList<'h', CharList<'a', CharList<'r', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > >  >::RESULT,
-		        numberOfMyCharList);
-		
-		// Write actual elements into a stringstream.
-		std::stringstream sstrOfMyCharList;
-		for (uint32_t i = 0; i < numberOfMyCharList; i++) {
-		    sstrOfMyCharList << m_listOfMyCharList.at(i) << endl;
-		}
-		
-		// Write string of elements.
-		if (numberOfMyCharList > 0) {
+		// Store elements from m_listOfMyCharList into a string.
+		{
+			const uint32_t numberOfMyCharList = static_cast<uint32_t>(m_listOfMyCharList.size());
+			std::stringstream sstr_MyCharList;
+			{
+				for(uint32_t i = 0; i < numberOfMyCharList; i++) {
+					s->writeValue(sstr_MyCharList, m_listOfMyCharList.at(i));
+				}
+			}
+			const std::string str_sstr_MyCharList = sstr_MyCharList.str();
 			s->write(CRC32 < CharList<'M', CharList<'y', CharList<'C', CharList<'h', CharList<'a', CharList<'r', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > >  >::RESULT,
-			        sstrOfMyCharList.str());
+				    str_sstr_MyCharList);
 		}
-		// Write number of elements in m_listOfMyInt32List.
-		const uint32_t numberOfMyInt32List = static_cast<uint32_t>(m_listOfMyInt32List.size());
-		s->write(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > >  >::RESULT,
-		        numberOfMyInt32List);
-		
-		// Write actual elements into a stringstream.
-		std::stringstream sstrOfMyInt32List;
-		for (uint32_t i = 0; i < numberOfMyInt32List; i++) {
-		    sstrOfMyInt32List << m_listOfMyInt32List.at(i) << endl;
-		}
-		
-		// Write string of elements.
-		if (numberOfMyInt32List > 0) {
+		// Store elements from m_listOfMyInt32List into a string.
+		{
+			const uint32_t numberOfMyInt32List = static_cast<uint32_t>(m_listOfMyInt32List.size());
+			std::stringstream sstr_MyInt32List;
+			{
+				for(uint32_t i = 0; i < numberOfMyInt32List; i++) {
+					s->writeValue(sstr_MyInt32List, m_listOfMyInt32List.at(i));
+				}
+			}
+			const std::string str_sstr_MyInt32List = sstr_MyInt32List.str();
 			s->write(CRC32 < CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > >  >::RESULT,
-			        sstrOfMyInt32List.str());
+				    str_sstr_MyInt32List);
 		}
-		// Write number of elements in m_listOfMyUint32List.
-		const uint32_t numberOfMyUint32List = static_cast<uint32_t>(m_listOfMyUint32List.size());
-		s->write(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'U', CharList<'i', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > > >  >::RESULT,
-		        numberOfMyUint32List);
-		
-		// Write actual elements into a stringstream.
-		std::stringstream sstrOfMyUint32List;
-		for (uint32_t i = 0; i < numberOfMyUint32List; i++) {
-		    sstrOfMyUint32List << m_listOfMyUint32List.at(i) << endl;
-		}
-		
-		// Write string of elements.
-		if (numberOfMyUint32List > 0) {
+		// Store elements from m_listOfMyUint32List into a string.
+		{
+			const uint32_t numberOfMyUint32List = static_cast<uint32_t>(m_listOfMyUint32List.size());
+			std::stringstream sstr_MyUint32List;
+			{
+				for(uint32_t i = 0; i < numberOfMyUint32List; i++) {
+					s->writeValue(sstr_MyUint32List, m_listOfMyUint32List.at(i));
+				}
+			}
+			const std::string str_sstr_MyUint32List = sstr_MyUint32List.str();
 			s->write(CRC32 < CharList<'M', CharList<'y', CharList<'U', CharList<'i', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
-			        sstrOfMyUint32List.str());
+				    str_sstr_MyUint32List);
 		}
-		// Write number of elements in m_listOfMyFloatList.
-		const uint32_t numberOfMyFloatList = static_cast<uint32_t>(m_listOfMyFloatList.size());
-		s->write(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > >  >::RESULT,
-		        numberOfMyFloatList);
-		
-		// Write actual elements into a stringstream.
-		std::stringstream sstrOfMyFloatList;
-		for (uint32_t i = 0; i < numberOfMyFloatList; i++) {
-		    sstrOfMyFloatList << m_listOfMyFloatList.at(i) << endl;
-		}
-		
-		// Write string of elements.
-		if (numberOfMyFloatList > 0) {
+		// Store elements from m_listOfMyFloatList into a string.
+		{
+			const uint32_t numberOfMyFloatList = static_cast<uint32_t>(m_listOfMyFloatList.size());
+			std::stringstream sstr_MyFloatList;
+			{
+				for(uint32_t i = 0; i < numberOfMyFloatList; i++) {
+					s->writeValue(sstr_MyFloatList, m_listOfMyFloatList.at(i));
+				}
+			}
+			const std::string str_sstr_MyFloatList = sstr_MyFloatList.str();
 			s->write(CRC32 < CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > >  >::RESULT,
-			        sstrOfMyFloatList.str());
+				    str_sstr_MyFloatList);
 		}
-		// Write number of elements in m_listOfMyDoubleList.
-		const uint32_t numberOfMyDoubleList = static_cast<uint32_t>(m_listOfMyDoubleList.size());
-		s->write(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'D', CharList<'o', CharList<'u', CharList<'b', CharList<'l', CharList<'e', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > > >  >::RESULT,
-		        numberOfMyDoubleList);
-		
-		// Write actual elements into a stringstream.
-		std::stringstream sstrOfMyDoubleList;
-		for (uint32_t i = 0; i < numberOfMyDoubleList; i++) {
-		    sstrOfMyDoubleList << m_listOfMyDoubleList.at(i) << endl;
-		}
-		
-		// Write string of elements.
-		if (numberOfMyDoubleList > 0) {
+		// Store elements from m_listOfMyDoubleList into a string.
+		{
+			const uint32_t numberOfMyDoubleList = static_cast<uint32_t>(m_listOfMyDoubleList.size());
+			std::stringstream sstr_MyDoubleList;
+			{
+				for(uint32_t i = 0; i < numberOfMyDoubleList; i++) {
+					s->writeValue(sstr_MyDoubleList, m_listOfMyDoubleList.at(i));
+				}
+			}
+			const std::string str_sstr_MyDoubleList = sstr_MyDoubleList.str();
 			s->write(CRC32 < CharList<'M', CharList<'y', CharList<'D', CharList<'o', CharList<'u', CharList<'b', CharList<'l', CharList<'e', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
-			        sstrOfMyDoubleList.str());
+				    str_sstr_MyDoubleList);
 		}
-		// Write number of elements in m_listOfMyStringList.
-		const uint32_t numberOfMyStringList = static_cast<uint32_t>(m_listOfMyStringList.size());
-		s->write(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > > >  >::RESULT,
-		        numberOfMyStringList);
-		
-		// Write actual elements into a stringstream.
-		std::stringstream sstrOfMyStringList;
-		for (uint32_t i = 0; i < numberOfMyStringList; i++) {
-		    sstrOfMyStringList << m_listOfMyStringList.at(i) << endl;
-		}
-		
-		// Write string of elements.
-		if (numberOfMyStringList > 0) {
+		// Store elements from m_listOfMyStringList into a string.
+		{
+			const uint32_t numberOfMyStringList = static_cast<uint32_t>(m_listOfMyStringList.size());
+			std::stringstream sstr_MyStringList;
+			{
+				for(uint32_t i = 0; i < numberOfMyStringList; i++) {
+					s->writeValue(sstr_MyStringList, m_listOfMyStringList.at(i));
+				}
+			}
+			const std::string str_sstr_MyStringList = sstr_MyStringList.str();
 			s->write(CRC32 < CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
-			        sstrOfMyStringList.str());
+				    str_sstr_MyStringList);
 		}
 		return out;
 	}
@@ -496,166 +475,124 @@
 
 		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
-		// Clean up the existing list of MyBoolList.
-		m_listOfMyBoolList.clear();
-		
-		// Read number of elements in m_listOfMyBoolList.
-		uint32_t numberOfMyBoolList = 0;
-		d->read(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'B', CharList<'o', CharList<'o', CharList<'l', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > >  >::RESULT,
-		       numberOfMyBoolList);
-		
-		if (numberOfMyBoolList > 0) {
-		    // Read string of elements.
-		    string elements;
+		// Restore elements from a string into m_listOfMyBoolList.
+		{
+			// Clean up the existing list of MyBoolList.
+			m_listOfMyBoolList.clear();
+			std::string str_MyBoolList;
 			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'B', CharList<'o', CharList<'o', CharList<'l', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > >  >::RESULT,
-			   elements);
-		
-		    stringstream sstr(elements);
-		
-		    // Read actual elements from stringstream.
-		    for (uint32_t i = 0; i < numberOfMyBoolList; i++) {
-		        bool element;
-		        sstr >> element;
-		        m_listOfMyBoolList.push_back(element);
-		    }
+				   str_MyBoolList);
+			if (str_MyBoolList.size() > 0) {
+				std::stringstream sstr_str_MyBoolList(str_MyBoolList);
+				uint32_t length = str_MyBoolList.size();
+				while (length > 0) {
+					bool element;
+					length -= d->readValue(sstr_str_MyBoolList, element);
+					m_listOfMyBoolList.push_back(element);
+				}
+			}
 		}
-		// Clean up the existing list of MyCharList.
-		m_listOfMyCharList.clear();
-		
-		// Read number of elements in m_listOfMyCharList.
-		uint32_t numberOfMyCharList = 0;
-		d->read(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'C', CharList<'h', CharList<'a', CharList<'r', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > >  >::RESULT,
-		       numberOfMyCharList);
-		
-		if (numberOfMyCharList > 0) {
-		    // Read string of elements.
-		    string elements;
+		// Restore elements from a string into m_listOfMyCharList.
+		{
+			// Clean up the existing list of MyCharList.
+			m_listOfMyCharList.clear();
+			std::string str_MyCharList;
 			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'C', CharList<'h', CharList<'a', CharList<'r', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > >  >::RESULT,
-			   elements);
-		
-		    stringstream sstr(elements);
-		
-		    // Read actual elements from stringstream.
-		    for (uint32_t i = 0; i < numberOfMyCharList; i++) {
-		        char element;
-		        sstr >> element;
-		        m_listOfMyCharList.push_back(element);
-		    }
+				   str_MyCharList);
+			if (str_MyCharList.size() > 0) {
+				std::stringstream sstr_str_MyCharList(str_MyCharList);
+				uint32_t length = str_MyCharList.size();
+				while (length > 0) {
+					char element;
+					length -= d->readValue(sstr_str_MyCharList, element);
+					m_listOfMyCharList.push_back(element);
+				}
+			}
 		}
-		// Clean up the existing list of MyInt32List.
-		m_listOfMyInt32List.clear();
-		
-		// Read number of elements in m_listOfMyInt32List.
-		uint32_t numberOfMyInt32List = 0;
-		d->read(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > >  >::RESULT,
-		       numberOfMyInt32List);
-		
-		if (numberOfMyInt32List > 0) {
-		    // Read string of elements.
-		    string elements;
+		// Restore elements from a string into m_listOfMyInt32List.
+		{
+			// Clean up the existing list of MyInt32List.
+			m_listOfMyInt32List.clear();
+			std::string str_MyInt32List;
 			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > >  >::RESULT,
-			   elements);
-		
-		    stringstream sstr(elements);
-		
-		    // Read actual elements from stringstream.
-		    for (uint32_t i = 0; i < numberOfMyInt32List; i++) {
-		        int32_t element;
-		        sstr >> element;
-		        m_listOfMyInt32List.push_back(element);
-		    }
+				   str_MyInt32List);
+			if (str_MyInt32List.size() > 0) {
+				std::stringstream sstr_str_MyInt32List(str_MyInt32List);
+				uint32_t length = str_MyInt32List.size();
+				while (length > 0) {
+					int32_t element;
+					length -= d->readValue(sstr_str_MyInt32List, element);
+					m_listOfMyInt32List.push_back(element);
+				}
+			}
 		}
-		// Clean up the existing list of MyUint32List.
-		m_listOfMyUint32List.clear();
-		
-		// Read number of elements in m_listOfMyUint32List.
-		uint32_t numberOfMyUint32List = 0;
-		d->read(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'U', CharList<'i', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > > >  >::RESULT,
-		       numberOfMyUint32List);
-		
-		if (numberOfMyUint32List > 0) {
-		    // Read string of elements.
-		    string elements;
+		// Restore elements from a string into m_listOfMyUint32List.
+		{
+			// Clean up the existing list of MyUint32List.
+			m_listOfMyUint32List.clear();
+			std::string str_MyUint32List;
 			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'U', CharList<'i', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
-			   elements);
-		
-		    stringstream sstr(elements);
-		
-		    // Read actual elements from stringstream.
-		    for (uint32_t i = 0; i < numberOfMyUint32List; i++) {
-		        uint32_t element;
-		        sstr >> element;
-		        m_listOfMyUint32List.push_back(element);
-		    }
+				   str_MyUint32List);
+			if (str_MyUint32List.size() > 0) {
+				std::stringstream sstr_str_MyUint32List(str_MyUint32List);
+				uint32_t length = str_MyUint32List.size();
+				while (length > 0) {
+					uint32_t element;
+					length -= d->readValue(sstr_str_MyUint32List, element);
+					m_listOfMyUint32List.push_back(element);
+				}
+			}
 		}
-		// Clean up the existing list of MyFloatList.
-		m_listOfMyFloatList.clear();
-		
-		// Read number of elements in m_listOfMyFloatList.
-		uint32_t numberOfMyFloatList = 0;
-		d->read(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > >  >::RESULT,
-		       numberOfMyFloatList);
-		
-		if (numberOfMyFloatList > 0) {
-		    // Read string of elements.
-		    string elements;
+		// Restore elements from a string into m_listOfMyFloatList.
+		{
+			// Clean up the existing list of MyFloatList.
+			m_listOfMyFloatList.clear();
+			std::string str_MyFloatList;
 			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > >  >::RESULT,
-			   elements);
-		
-		    stringstream sstr(elements);
-		
-		    // Read actual elements from stringstream.
-		    for (uint32_t i = 0; i < numberOfMyFloatList; i++) {
-		        float element;
-		        sstr >> element;
-		        m_listOfMyFloatList.push_back(element);
-		    }
+				   str_MyFloatList);
+			if (str_MyFloatList.size() > 0) {
+				std::stringstream sstr_str_MyFloatList(str_MyFloatList);
+				uint32_t length = str_MyFloatList.size();
+				while (length > 0) {
+					float element;
+					length -= d->readValue(sstr_str_MyFloatList, element);
+					m_listOfMyFloatList.push_back(element);
+				}
+			}
 		}
-		// Clean up the existing list of MyDoubleList.
-		m_listOfMyDoubleList.clear();
-		
-		// Read number of elements in m_listOfMyDoubleList.
-		uint32_t numberOfMyDoubleList = 0;
-		d->read(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'D', CharList<'o', CharList<'u', CharList<'b', CharList<'l', CharList<'e', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > > >  >::RESULT,
-		       numberOfMyDoubleList);
-		
-		if (numberOfMyDoubleList > 0) {
-		    // Read string of elements.
-		    string elements;
+		// Restore elements from a string into m_listOfMyDoubleList.
+		{
+			// Clean up the existing list of MyDoubleList.
+			m_listOfMyDoubleList.clear();
+			std::string str_MyDoubleList;
 			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'D', CharList<'o', CharList<'u', CharList<'b', CharList<'l', CharList<'e', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
-			   elements);
-		
-		    stringstream sstr(elements);
-		
-		    // Read actual elements from stringstream.
-		    for (uint32_t i = 0; i < numberOfMyDoubleList; i++) {
-		        double element;
-		        sstr >> element;
-		        m_listOfMyDoubleList.push_back(element);
-		    }
+				   str_MyDoubleList);
+			if (str_MyDoubleList.size() > 0) {
+				std::stringstream sstr_str_MyDoubleList(str_MyDoubleList);
+				uint32_t length = str_MyDoubleList.size();
+				while (length > 0) {
+					double element;
+					length -= d->readValue(sstr_str_MyDoubleList, element);
+					m_listOfMyDoubleList.push_back(element);
+				}
+			}
 		}
-		// Clean up the existing list of MyStringList.
-		m_listOfMyStringList.clear();
-		
-		// Read number of elements in m_listOfMyStringList.
-		uint32_t numberOfMyStringList = 0;
-		d->read(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > > >  >::RESULT,
-		       numberOfMyStringList);
-		
-		if (numberOfMyStringList > 0) {
-		    // Read string of elements.
-		    string elements;
+		// Restore elements from a string into m_listOfMyStringList.
+		{
+			// Clean up the existing list of MyStringList.
+			m_listOfMyStringList.clear();
+			std::string str_MyStringList;
 			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
-			   elements);
-		
-		    stringstream sstr(elements);
-		
-		    // Read actual elements from stringstream.
-		    for (uint32_t i = 0; i < numberOfMyStringList; i++) {
-		        std::string element;
-		        getline(sstr, element);
-		        m_listOfMyStringList.push_back(element);
-		    }
+				   str_MyStringList);
+			if (str_MyStringList.size() > 0) {
+				std::stringstream sstr_str_MyStringList(str_MyStringList);
+				uint32_t length = str_MyStringList.size();
+				while (length > 0) {
+					std::string element;
+					length -= d->readValue(sstr_str_MyStringList, element);
+					m_listOfMyStringList.push_back(element);
+				}
+			}
 		}
 		return in;
 	}

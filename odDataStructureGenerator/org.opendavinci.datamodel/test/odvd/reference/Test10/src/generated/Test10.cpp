@@ -258,37 +258,31 @@
 
 		std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
-		// Write number of elements in m_listOfMyStringList.
-		const uint32_t numberOfMyStringList = static_cast<uint32_t>(m_listOfMyStringList.size());
-		s->write(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > > >  >::RESULT,
-		        numberOfMyStringList);
-		
-		// Write actual elements into a stringstream.
-		std::stringstream sstrOfMyStringList;
-		for (uint32_t i = 0; i < numberOfMyStringList; i++) {
-		    sstrOfMyStringList << m_listOfMyStringList.at(i) << endl;
-		}
-		
-		// Write string of elements.
-		if (numberOfMyStringList > 0) {
+		// Store elements from m_listOfMyStringList into a string.
+		{
+			const uint32_t numberOfMyStringList = static_cast<uint32_t>(m_listOfMyStringList.size());
+			std::stringstream sstr_MyStringList;
+			{
+				for(uint32_t i = 0; i < numberOfMyStringList; i++) {
+					s->writeValue(sstr_MyStringList, m_listOfMyStringList.at(i));
+				}
+			}
+			const std::string str_sstr_MyStringList = sstr_MyStringList.str();
 			s->write(CRC32 < CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
-			        sstrOfMyStringList.str());
+				    str_sstr_MyStringList);
 		}
-		// Write number of elements in m_listOfMyPointList.
-		const uint32_t numberOfMyPointList = static_cast<uint32_t>(m_listOfMyPointList.size());
-		s->write(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'P', CharList<'o', CharList<'i', CharList<'n', CharList<'t', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > >  >::RESULT,
-		        numberOfMyPointList);
-		
-		// Write actual elements into a stringstream.
-		std::stringstream sstrOfMyPointList;
-		for (uint32_t i = 0; i < numberOfMyPointList; i++) {
-		    sstrOfMyPointList << m_listOfMyPointList.at(i);
-		}
-		
-		// Write string of elements.
-		if (numberOfMyPointList > 0) {
+		// Store elements from m_listOfMyPointList into a string.
+		{
+			const uint32_t numberOfMyPointList = static_cast<uint32_t>(m_listOfMyPointList.size());
+			std::stringstream sstr_MyPointList;
+			{
+				for(uint32_t i = 0; i < numberOfMyPointList; i++) {
+					s->writeValue(sstr_MyPointList, m_listOfMyPointList.at(i));
+				}
+			}
+			const std::string str_sstr_MyPointList = sstr_MyPointList.str();
 			s->write(CRC32 < CharList<'M', CharList<'y', CharList<'P', CharList<'o', CharList<'i', CharList<'n', CharList<'t', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > >  >::RESULT,
-			        sstrOfMyPointList.str());
+				    str_sstr_MyPointList);
 		}
 		{
 			// Write number of elements in m_mapOfMyIntStringMap.
@@ -339,51 +333,39 @@
 
 		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
-		// Clean up the existing list of MyStringList.
-		m_listOfMyStringList.clear();
-		
-		// Read number of elements in m_listOfMyStringList.
-		uint32_t numberOfMyStringList = 0;
-		d->read(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > > >  >::RESULT,
-		       numberOfMyStringList);
-		
-		if (numberOfMyStringList > 0) {
-		    // Read string of elements.
-		    string elements;
+		// Restore elements from a string into m_listOfMyStringList.
+		{
+			// Clean up the existing list of MyStringList.
+			m_listOfMyStringList.clear();
+			std::string str_MyStringList;
 			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
-			   elements);
-		
-		    stringstream sstr(elements);
-		
-		    // Read actual elements from stringstream.
-		    for (uint32_t i = 0; i < numberOfMyStringList; i++) {
-		        std::string element;
-		        getline(sstr, element);
-		        m_listOfMyStringList.push_back(element);
-		    }
+				   str_MyStringList);
+			if (str_MyStringList.size() > 0) {
+				std::stringstream sstr_str_MyStringList(str_MyStringList);
+				uint32_t length = str_MyStringList.size();
+				while (length > 0) {
+					std::string element;
+					length -= d->readValue(sstr_str_MyStringList, element);
+					m_listOfMyStringList.push_back(element);
+				}
+			}
 		}
-		// Clean up the existing list of MyPointList.
-		m_listOfMyPointList.clear();
-		
-		// Read number of elements in m_listOfMyPointList.
-		uint32_t numberOfMyPointList = 0;
-		d->read(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'P', CharList<'o', CharList<'i', CharList<'n', CharList<'t', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > >  >::RESULT,
-		       numberOfMyPointList);
-		
-		if (numberOfMyPointList > 0) {
-		    // Read string of elements.
-		    string elements;
+		// Restore elements from a string into m_listOfMyPointList.
+		{
+			// Clean up the existing list of MyPointList.
+			m_listOfMyPointList.clear();
+			std::string str_MyPointList;
 			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'P', CharList<'o', CharList<'i', CharList<'n', CharList<'t', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > >  >::RESULT,
-			   elements);
-		
-		    stringstream sstr(elements);
-		
-		    // Read actual elements from stringstream.
-		    for (uint32_t i = 0; i < numberOfMyPointList; i++) {
-		        Test10Point element;
-		        sstr >> element;
-		        m_listOfMyPointList.push_back(element);
-		    }
+				   str_MyPointList);
+			if (str_MyPointList.size() > 0) {
+				std::stringstream sstr_str_MyPointList(str_MyPointList);
+				uint32_t length = str_MyPointList.size();
+				while (length > 0) {
+					Test10Point element;
+					length -= d->readValue(sstr_str_MyPointList, element);
+					m_listOfMyPointList.push_back(element);
+				}
+			}
 		}
 		// Clean up the existing map of MyIntStringMap.
 		m_mapOfMyIntStringMap.clear();

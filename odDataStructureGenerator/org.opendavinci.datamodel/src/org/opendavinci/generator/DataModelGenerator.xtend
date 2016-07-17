@@ -1192,36 +1192,24 @@ namespace «s.get(i)» {
 			«ENDIF»
 		«ENDIF»
 		«IF a.list != null && a.list.modifier != null && a.list.modifier.length > 0 && a.list.modifier.equalsIgnoreCase("list")»
-		// Write number of elements in m_listOf«a.list.name.toFirstUpper».
-		const uint32_t numberOf«a.list.name.toFirstUpper» = static_cast<uint32_t>(m_listOf«a.list.name.toFirstUpper».size());
-		«IF a.list.fourbyteid != null»
-			s->write(«a.list.fourbyteid», numberOf«a.list.name.toFirstUpper»);
-		«ELSE»
-			«IF a.list.id != null»
-				s->write(«a.list.id», numberOf«a.list.name.toFirstUpper»);
-			«ELSE»
-				s->write(CRC32 < «generateCharList(new String("numberOf" + a.list.name.toFirstUpper), 0)» >::RESULT,
-				        numberOf«a.list.name.toFirstUpper»);
-			«ENDIF»
-		«ENDIF»
-		
-		// Write actual elements into a stringstream.
-		std::stringstream sstrOf«a.list.name.toFirstUpper»;
-		for (uint32_t i = 0; i < numberOf«a.list.name.toFirstUpper»; i++) {
-		    sstrOf«a.list.name.toFirstUpper» << m_listOf«a.list.name.toFirstUpper».at(i)«IF typeMap.containsKey(a.list.type) /* primitive types need to be separated by endl. */» << endl«ENDIF»;
-		}
-		
-		// Write string of elements.
-		if (numberOf«a.list.name.toFirstUpper» > 0) {
+		// Store elements from m_listOf«a.list.name.toFirstUpper» into a string.
+		{
+			const uint32_t numberOf«a.list.name.toFirstUpper» = static_cast<uint32_t>(m_listOf«a.list.name.toFirstUpper».size());
+			std::stringstream sstr_«a.list.name.toFirstUpper»;
+			{
+				for(uint32_t i = 0; i < numberOf«a.list.name.toFirstUpper»; i++) {
+					s->writeValue(sstr_«a.list.name.toFirstUpper», m_listOf«a.list.name.toFirstUpper».at(i));
+				}
+			}
+			const std::string str_sstr_«a.list.name.toFirstUpper» = sstr_«a.list.name.toFirstUpper».str();
 			«IF a.list.fourbyteid != null»
-				s->write(«a.list.fourbyteid» + «((a.eContainer) as Message).attributes.size», sstrOf«a.list.name.toFirstUpper».str());
+				s->write(«a.list.fourbyteid», str_sstr_«a.list.name.toFirstUpper»);
 			«ELSE»
 				«IF a.list.id != null»
-					s->write(«a.list.id» + «((a.eContainer) as Message).attributes.size»,
-					        sstrOf«a.list.name.toFirstUpper».str());
+					s->write(«a.list.id», str_sstr_«a.list.name.toFirstUpper»);
 				«ELSE»
-					s->write(CRC32 < «generateCharList(a.list.name.toFirstUpper, 0)» >::RESULT,
-					        sstrOf«a.list.name.toFirstUpper».str());
+					s->write(CRC32 < «generateCharList(new String(a.list.name.toFirstUpper), 0)» >::RESULT,
+						    str_sstr_«a.list.name.toFirstUpper»);
 				«ENDIF»
 			«ENDIF»
 		}
@@ -1315,46 +1303,30 @@ namespace «s.get(i)» {
 			«ENDIF»
 		«ENDIF»
 		«IF a.list != null && a.list.modifier != null && a.list.modifier.length > 0 && a.list.modifier.equalsIgnoreCase("list")»
-		// Clean up the existing list of «a.list.name.toFirstUpper».
-		m_listOf«a.list.name.toFirstUpper».clear();
-		
-		// Read number of elements in m_listOf«a.list.name.toFirstUpper».
-		uint32_t numberOf«a.list.name.toFirstUpper» = 0;
-		«IF a.list.fourbyteid != null»
-			d->read(«a.list.fourbyteid», numberOf«a.list.name.toFirstUpper»);
-		«ELSE»
-			«IF a.list.id != null»
-				d->read(«a.list.id»,
-				       numberOf«a.list.name.toFirstUpper»);
-			«ELSE»
-				d->read(CRC32 < «generateCharList(new String("numberOf" + a.list.name.toFirstUpper), 0)» >::RESULT,
-				       numberOf«a.list.name.toFirstUpper»);
-			«ENDIF»
-		«ENDIF»
-		
-		if (numberOf«a.list.name.toFirstUpper» > 0) {
-		    // Read string of elements.
-		    string elements;
+		// Restore elements from a string into m_listOf«a.list.name.toFirstUpper».
+		{
+			// Clean up the existing list of «a.list.name.toFirstUpper».
+			m_listOf«a.list.name.toFirstUpper».clear();
+			std::string str_«a.list.name.toFirstUpper»;
 			«IF a.list.fourbyteid != null»
-				d->read(«a.list.fourbyteid» + «((a.eContainer) as Message).attributes.size», elements);
+				d->read(«a.list.fourbyteid», str_«a.list.name.toFirstUpper»);
 			«ELSE»
 				«IF a.list.id != null»
-					d->read(«a.list.id» + «((a.eContainer) as Message).attributes.size»,
-					   elements);
+					d->read(«a.list.id», str_«a.list.name.toFirstUpper»);
 				«ELSE»
-					d->read(CRC32 < «generateCharList(a.list.name.toFirstUpper, 0)» >::RESULT,
-					   elements);
+					d->read(CRC32 < «generateCharList(new String(a.list.name.toFirstUpper), 0)» >::RESULT,
+						   str_«a.list.name.toFirstUpper»);
 				«ENDIF»
 			«ENDIF»
-		
-		    stringstream sstr(elements);
-		
-		    // Read actual elements from stringstream.
-		    for (uint32_t i = 0; i < numberOf«a.list.name.toFirstUpper»; i++) {
-		        «IF typeMap.containsKey(a.list.type)»«typeMap.get(a.list.type)»«ELSE»«a.list.type.replaceAll("\\.", "::")»«ENDIF» element;
-		        «IF a.list.type.equalsIgnoreCase("string")»getline(sstr, element);«ELSE»sstr >> element;«ENDIF»
-		        m_listOf«a.list.name.toFirstUpper».push_back(element);
-		    }
+			if (str_«a.list.name.toFirstUpper».size() > 0) {
+				std::stringstream sstr_str_«a.list.name.toFirstUpper»(str_«a.list.name.toFirstUpper»);
+				uint32_t length = str_«a.list.name.toFirstUpper».size();
+				while (length > 0) {
+					«IF typeMap.containsKey(a.list.type)»«typeMap.get(a.list.type)»«ELSE»«a.list.type.replaceAll("\\.", "::")»«ENDIF» element;
+					length -= d->readValue(sstr_str_«a.list.name.toFirstUpper», element);
+					m_listOf«a.list.name.toFirstUpper».push_back(element);
+				}
+			}
 		}
 		«ENDIF»
 		«IF a.map != null && a.map.modifier != null && a.map.modifier.length > 0 && a.map.modifier.equalsIgnoreCase("map")»

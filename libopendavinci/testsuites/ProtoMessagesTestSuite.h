@@ -3399,7 +3399,8 @@ Deserialize:
 // 7) Check additional fields.
 // 8) Check multiple deserialization in Container (cf test case for PulseAckContainersMessage)
 // 9) compatibility with 3rd party Proto implementations
-
+// 10) Transform map.
+// 11) Transform fixed array.
 };
 
 #endif /*CORE_PROTOMESSAGESTESTSUITE_H_*/
