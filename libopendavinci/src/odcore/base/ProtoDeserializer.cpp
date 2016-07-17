@@ -138,13 +138,6 @@ class Serializable;
             string s;
             uint32_t bytesRead = readValue(i, s);
 
-cout << __FILE__ << " " << dec << __LINE__ << ", length = " << s.size() << endl;
-cout << "PS Read: " << endl;
-for(uint32_t j = 0; j < s.size(); j++) {
-    cout << hex << (uint32_t)(uint8_t)s.at(j) << " ";
-}
-cout << endl;
-
             // Deserialize v from string using a stringstream.
             stringstream sstr(s);
 
@@ -160,13 +153,10 @@ cout << endl;
 
                 // Visit v and set values.
                 const_cast<Visitable&>(v2).accept(nestedVisitor);
-
-cout << __FILE__ << " " << dec << __LINE__ << endl;
             }
             catch(...) {
                 // Deserialize v using the default way as it is not of type Visitable.
                 sstr >> v;
-cout << __FILE__ << " " << dec << __LINE__ << endl;
             }
 
             return bytesRead;

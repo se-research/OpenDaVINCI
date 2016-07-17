@@ -61,8 +61,8 @@ class Serializable;
             return (fieldNumber << 3) | protoType;
         }
 
+        ///////////////////////////////////////////////////////////////////////
 
-////////////////////////////
         uint32_t ProtoSerializer::writeValue(ostream &o, const Serializable &v) {
             // Buffer for serialized data.
             stringstream buffer;
@@ -77,23 +77,14 @@ class Serializable;
 
                 // Get serialized data.
                 nestedVisitor.getSerializedData(buffer);
-cout << __FILE__ << " " << dec << __LINE__ << endl;
             }
             catch(...) {
                 // Serialize v using the default way as it is not of type Visitable.
                 buffer << v;
-cout << __FILE__ << " " << dec << __LINE__ << endl;
             }
 
             // Get serialized value.
             const string tmp = buffer.str();
-cout << __FILE__ << " " << dec << __LINE__ << ", length = " << tmp.size() << endl;
-cout << "PS Write: " << endl;
-for(uint32_t i = 0; i < tmp.size(); i++) {
-    cout << hex << (uint32_t)(uint8_t)tmp.at(i) << " ";
-}
-cout << endl;
-
             return writeValue(o, tmp);
         }
 
