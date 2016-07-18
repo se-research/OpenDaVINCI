@@ -103,6 +103,8 @@ class SerializableData;
                 template<class T>
                 inline T getData() {
                     T containerData;
+                    // Reset failbit as some Deserializer fully consume the entire stream.
+                    m_serializedData.clear();
                     // Read from beginning.
                     m_serializedData.seekg(ios::beg);
                     m_serializedData >> containerData;

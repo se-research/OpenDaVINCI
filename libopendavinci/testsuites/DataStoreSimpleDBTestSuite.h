@@ -165,19 +165,19 @@ class DataStoreTestSampleData : public odcore::data::SerializableData {
 
             std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
-            d->read(
-                CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 's', 't', 'r') >::RESULT,
-                m_string);
-
-            d->read(
-                CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 'i', 'n', 't') >::RESULT,
-                m_int);
-
             d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('m', '_', 'n', 'e', 's',
                     't', 'e', 'd') >::RESULT, m_nestedData);
 
             d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('m', '_', 'b', 'o', 'o',
                     'l') >::RESULT, m_bool);
+
+            d->read(
+                CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 'i', 'n', 't') >::RESULT,
+                m_int);
+
+            d->read(
+                CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 's', 't', 'r') >::RESULT,
+                m_string);
 
             return in;
         }

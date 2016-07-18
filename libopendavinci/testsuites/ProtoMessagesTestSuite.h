@@ -3362,13 +3362,17 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 // Done - 3) Add test case for odcore.data.dmcp.PulseAckContainersMessage
 // Done - 4) Refactor ProtoSerializer and ProtoDeserializer to eat entire istream and create vector of entries to enable "queryable" functionality
 // Done - 5) Refactor odDataStructureGenerator to emit new code to use readValue/writeValue for lists, maps, and fixed arrays
-// 6) Check missing fields.
-// 7) Check additional fields.
-// 8) Enable Proto serialization/deserialization by default & re-test.
-// 9) Check multiple deserialization in Container (cf test case for PulseAckContainersMessage)
-// 10) compatibility with 3rd party Proto implementations
-// 11) Transform map.
-// 12) Transform fixed array.
+// 6) Enable Proto serialization/deserialization by default & re-test libopendavinci.
+// 7) Check missing fields.
+// 8) Check additional fields.
+// 9) Check arbitrary order: FalseSerializationTestSuite, SerializationTestSuite (they had a different order of fields)
+// 10) Change identifiers for built-in types (like Container) to remove fourbyteidentifier
+// 11) Check serializatio/deserialization order for all built-in types
+// 12) Enable Proto serialization/deserialization by default & re-test.
+// 13) Check multiple deserialization in Container (cf test case for PulseAckContainersMessage)
+// 14) compatibility with 3rd party Proto implementations
+// 15) Transform map.
+// 16) Transform fixed array.
 };
 
 #endif /*CORE_PROTOMESSAGESTESTSUITE_H_*/

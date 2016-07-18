@@ -37,9 +37,33 @@
 #include "opendavinci/odcore/base/Visitable.h"        // for Visitable
 #include "opendavinci/odcore/base/Visitor.h"          // for Visitor
 
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/QueryableNetstringsDeserializer.h"
+#include "opendavinci/odcore/base/QueryableNetstringsSerializer.h"
+
 using namespace std;
 using namespace odcore;
 using namespace odcore::base;
+
+class SerializationFactoryTestCase : public SerializationFactory {
+    public:
+        SerializationFactoryTestCase() {
+            SerializationFactory::m_singleton = this;
+        }
+
+        virtual ~SerializationFactoryTestCase() {
+            SerializationFactory::m_singleton = NULL;
+        }
+
+        virtual shared_ptr<Serializer> getSerializer(ostream &out) const {
+            return shared_ptr<Serializer>(new QueryableNetstringsSerializer(out));
+        }
+
+        virtual shared_ptr<Deserializer> getDeserializer(istream &in) const {
+            return shared_ptr<Deserializer>(new QueryableNetstringsDeserializer(in));
+        }
+};
+
 
 // An example data object.
 class MyNestedVisitable : public odcore::base::Serializable {
@@ -239,6 +263,10 @@ class MyPrintVisitor : public Visitor {
 class VisitableTest : public CxxTest::TestSuite {
     public:
         void testSerializationDeserializationVisitors() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
             MyVisitable myV;
 
             // Pretty print the object's attributes.
@@ -293,6 +321,10 @@ class VisitableTest : public CxxTest::TestSuite {
         }
 
         void testReuseDeserializationVisitors() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
             MyVisitable myV;
 
             // Pretty print the object's attributes.

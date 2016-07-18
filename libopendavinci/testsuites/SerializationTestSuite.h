@@ -106,17 +106,17 @@ class SerializationTestSampleData : public odcore::base::Serializable {
 
             std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
+            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('m', '_', 'b', 'o', 'o', 'l') >::RESULT,
+                   m_bool);
+
             d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('m', '_', 'n', 'e', 's', 't', 'e', 'd') >::RESULT,
                    m_nestedData);
-
-            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 's', 't', 'r') >::RESULT,
-                   m_string);
 
             d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 'i', 'n', 't') >::RESULT,
                    m_int);
 
-            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('m', '_', 'b', 'o', 'o', 'l') >::RESULT,
-                   m_bool);
+            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 's', 't', 'r') >::RESULT,
+                   m_string);
 
             return in;
         }
@@ -146,35 +146,6 @@ class SerializationTest : public CxxTest::TestSuite {
             TS_ASSERT(sd2.m_int == 42);
             TS_ASSERT(sd2.m_string == "This is an example.");
             TS_ASSERT_DELTA(sd2.m_nestedData.m_double, -42.42, 1e-5);
-        }
-
-        void testArraySerialisation()
-        {
-            stringstream stream;
-            uint32_t array[10];
-            for (uint32_t i=0; i<10; ++i)
-            {
-                array[i] = i;
-            }
-
-            SerializationFactory& sf=SerializationFactory::getInstance();
-
-            {
-                std::shared_ptr<Serializer> s = sf.getSerializer(stream);
-                s->write(1, &array, 10);
-            }
-
-
-            std::shared_ptr<Deserializer> d = sf.getDeserializer(stream);
-            uint32_t deserializedArray[10];
-            d->read(1, &deserializedArray, 10);
-
-            for (uint32_t i=0; i<10; ++i)
-            {
-                TS_WARN(deserializedArray[i] == i);
-                clog << "Is: " << deserializedArray[i] << ", Should: " << i << endl;
-            }
-
         }
 };
 

@@ -80,11 +80,11 @@ class FalseSerializationTestSuiteSampleData : public odcore::base::Serializable 
 
             std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
-            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('n', 'e', 's', 't', 'e', 'd') >::RESULT,
-                    m_nestedData);
-
             s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('t', 'e', 's', 't') >::RESULT,
                     m_string);
+
+            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('n', 'e', 's', 't', 'e', 'd') >::RESULT,
+                    m_nestedData);
 
             return out;
         }

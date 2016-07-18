@@ -19,8 +19,8 @@
 
 #include "opendavinci/odcore/base/Deserializer.h"
 #include "opendavinci/odcore/base/Lock.h"
-#include "opendavinci/odcore/base/QueryableNetstringsDeserializer.h"
-#include "opendavinci/odcore/base/QueryableNetstringsSerializer.h"
+#include "opendavinci/odcore/base/ProtoDeserializer.h"
+#include "opendavinci/odcore/base/ProtoSerializer.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
 
@@ -60,11 +60,11 @@ namespace odcore {
         }
 
         std::shared_ptr<Serializer> SerializationFactory::getSerializer(ostream &out) const {
-            return std::shared_ptr<Serializer>(new QueryableNetstringsSerializer(out));
+            return std::shared_ptr<Serializer>(new ProtoSerializer(out));
         }
 
         std::shared_ptr<Deserializer> SerializationFactory::getDeserializer(istream &in) const {
-            return std::shared_ptr<Deserializer>(new QueryableNetstringsDeserializer(in));
+            return std::shared_ptr<Deserializer>(new ProtoDeserializer(in));
         }
 
     }
