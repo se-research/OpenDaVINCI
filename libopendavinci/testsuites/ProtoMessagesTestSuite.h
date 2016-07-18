@@ -3145,6 +3145,210 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
+        void testSerializationDeserializationPulseMessageRequireClearFailbit() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            PulseMessage pm1;
+            pm1.setRealTimeFromSupercomponent(TimeStamp(8, 9));
+            pm1.setNominalTimeSlice(12);
+            pm1.setCumulatedTimeSlice(34);
+
+            {
+                TimeStamp ts(1, 2);
+                Container c(ts);
+                pm1.addTo_ListOfContainers(c);
+            }
+            {
+                TimeStamp ts(3, 4);
+                Container c(ts);
+                pm1.addTo_ListOfContainers(c);
+            }
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << pm1;
+
+            // Read back the data by using the visitor.
+            PulseMessage pm2;
+
+            // Read from buffer.
+            out >> pm2;
+
+            vector<Container> v1 = pm1.getListOfContainers();
+            vector<Container> v2 = pm2.getListOfContainers();
+
+            TS_ASSERT(v1.size() == 2);
+            TS_ASSERT(v2.size() == 2);
+
+            TS_ASSERT(pm1.getRealTimeFromSupercomponent().getSeconds() == pm2.getRealTimeFromSupercomponent().getSeconds());
+            TS_ASSERT(pm2.getRealTimeFromSupercomponent().getSeconds() == 8);
+
+            TS_ASSERT(pm1.getRealTimeFromSupercomponent().getFractionalMicroseconds() == pm2.getRealTimeFromSupercomponent().getFractionalMicroseconds());
+            TS_ASSERT(pm2.getRealTimeFromSupercomponent().getFractionalMicroseconds() == 9);
+
+            TS_ASSERT(pm1.getNominalTimeSlice() == pm2.getNominalTimeSlice());
+            TS_ASSERT(pm2.getNominalTimeSlice() == 12);
+
+            TS_ASSERT(pm1.getCumulatedTimeSlice() == pm2.getCumulatedTimeSlice());
+            TS_ASSERT(pm2.getCumulatedTimeSlice() == 34);
+
+            TS_ASSERT(v1.at(0).getData<TimeStamp>().toMicroseconds() == v2.at(0).getData<TimeStamp>().toMicroseconds());
+            TS_ASSERT(v2.at(0).getData<TimeStamp>().toMicroseconds() == 1000002);
+
+            TS_ASSERT(v1.at(1).getData<TimeStamp>().toMicroseconds() == v2.at(1).getData<TimeStamp>().toMicroseconds());
+            TS_ASSERT(v2.at(1).getData<TimeStamp>().toMicroseconds() == 3000004);
+        }
+
+        void testSerializationDeserializationPulseMessageContainerRequireClearFailbit() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            PulseMessage pm1;
+            pm1.setRealTimeFromSupercomponent(TimeStamp(8, 9));
+            pm1.setNominalTimeSlice(12);
+            pm1.setCumulatedTimeSlice(34);
+
+            {
+                TimeStamp ts(1, 2);
+                Container c(ts);
+                pm1.addTo_ListOfContainers(c);
+            }
+            {
+                TimeStamp ts(3, 4);
+                Container c(ts);
+                pm1.addTo_ListOfContainers(c);
+            }
+
+            Container c(pm1);
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << c;
+
+            // Read from buffer.
+            Container c2;
+            out >> c2;
+            TS_ASSERT(c2.getDataType() == PulseMessage::ID());
+
+            PulseMessage pm2 = c2.getData<PulseMessage>();
+
+            vector<Container> v1 = pm1.getListOfContainers();
+            vector<Container> v2 = pm2.getListOfContainers();
+
+            TS_ASSERT(v1.size() == 2);
+            TS_ASSERT(v2.size() == 2);
+
+            TS_ASSERT(pm1.getRealTimeFromSupercomponent().getSeconds() == pm2.getRealTimeFromSupercomponent().getSeconds());
+            TS_ASSERT(pm2.getRealTimeFromSupercomponent().getSeconds() == 8);
+
+            TS_ASSERT(pm1.getRealTimeFromSupercomponent().getFractionalMicroseconds() == pm2.getRealTimeFromSupercomponent().getFractionalMicroseconds());
+            TS_ASSERT(pm2.getRealTimeFromSupercomponent().getFractionalMicroseconds() == 9);
+
+            TS_ASSERT(pm1.getNominalTimeSlice() == pm2.getNominalTimeSlice());
+            TS_ASSERT(pm2.getNominalTimeSlice() == 12);
+
+            TS_ASSERT(pm1.getCumulatedTimeSlice() == pm2.getCumulatedTimeSlice());
+            TS_ASSERT(pm2.getCumulatedTimeSlice() == 34);
+
+            TS_ASSERT(v1.at(0).getData<TimeStamp>().toMicroseconds() == v2.at(0).getData<TimeStamp>().toMicroseconds());
+            TS_ASSERT(v2.at(0).getData<TimeStamp>().toMicroseconds() == 1000002);
+
+            TS_ASSERT(v1.at(1).getData<TimeStamp>().toMicroseconds() == v2.at(1).getData<TimeStamp>().toMicroseconds());
+            TS_ASSERT(v2.at(1).getData<TimeStamp>().toMicroseconds() == 3000004);
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+
+        void testSerializationDeserializationPulseAckContainersMessageRequireClearFailbit() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            PulseAckContainersMessage pm1;
+
+            {
+                TimeStamp ts(1, 2);
+                Container c(ts);
+                pm1.addTo_ListOfContainers(c);
+            }
+            {
+                TimeStamp ts(3, 4);
+                Container c(ts);
+                pm1.addTo_ListOfContainers(c);
+            }
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << pm1;
+
+            // Read back the data by using the visitor.
+            PulseAckContainersMessage pm2;
+
+            // Read from buffer.
+            out >> pm2;
+
+            vector<Container> v1 = pm1.getListOfContainers();
+            vector<Container> v2 = pm2.getListOfContainers();
+
+            TS_ASSERT(v1.size() == 2);
+            TS_ASSERT(v2.size() == 2);
+
+            TS_ASSERT(v1.at(0).getData<TimeStamp>().toMicroseconds() == v2.at(0).getData<TimeStamp>().toMicroseconds());
+            TS_ASSERT(v2.at(0).getData<TimeStamp>().toMicroseconds() == 1000002);
+
+            TS_ASSERT(v1.at(1).getData<TimeStamp>().toMicroseconds() == v2.at(1).getData<TimeStamp>().toMicroseconds());
+            TS_ASSERT(v2.at(1).getData<TimeStamp>().toMicroseconds() == 3000004);
+        }
+
+        void testSerializationDeserializationPulseAckContainersMessageContainerRequireClearFailbit() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            PulseAckContainersMessage pm1;
+
+            {
+                TimeStamp ts(1, 2);
+                Container c(ts);
+                pm1.addTo_ListOfContainers(c);
+            }
+            {
+                TimeStamp ts(3, 4);
+                Container c(ts);
+                pm1.addTo_ListOfContainers(c);
+            }
+
+            Container c(pm1);
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << c;
+
+            // Read from buffer.
+            Container c2;
+            out >> c2;
+            TS_ASSERT(c2.getDataType() == PulseAckContainersMessage::ID());
+
+            PulseAckContainersMessage pm2 = c2.getData<PulseAckContainersMessage>();
+
+            vector<Container> v1 = pm1.getListOfContainers();
+            vector<Container> v2 = pm2.getListOfContainers();
+
+            TS_ASSERT(v1.size() == 2);
+            TS_ASSERT(v2.size() == 2);
+
+            TS_ASSERT(v1.at(0).getData<TimeStamp>().toMicroseconds() == v2.at(0).getData<TimeStamp>().toMicroseconds());
+            TS_ASSERT(v2.at(0).getData<TimeStamp>().toMicroseconds() == 1000002);
+
+            TS_ASSERT(v1.at(1).getData<TimeStamp>().toMicroseconds() == v2.at(1).getData<TimeStamp>().toMicroseconds());
+            TS_ASSERT(v2.at(1).getData<TimeStamp>().toMicroseconds() == 3000004);
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+
         void testSerializationDeserializationTestMessage6() {
             TestMessage6 tm1;
 
