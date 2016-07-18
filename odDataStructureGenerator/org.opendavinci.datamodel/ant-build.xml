@@ -32,7 +32,6 @@
         <delete dir="libtest14"/>
         <delete dir="libtest15"/>
         <delete dir="libtest16"/>
-        <delete dir="libtest17"/>
         <delete dir="libtest18"/>
         <delete dir="libtest19"/>
         <delete dir="libtest20"/>

@@ -102,7 +102,7 @@ namespace opendlv {
             ostream& ContouredObjects::operator<<(ostream &out) const {
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                std::shared_ptr<Serializer> s = sf.getSerializer(out);
+                std::shared_ptr<Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
                 // Write contoured objects.
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('c', 'o', 'b', 'j', 's', 'i', 'z', 'e') >::RESULT,
@@ -127,7 +127,7 @@ namespace opendlv {
             istream& ContouredObjects::operator>>(istream &in) {
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+                std::shared_ptr<Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
                 // Read contoured objects.
                 uint32_t numberOfContouredObjects = 0;

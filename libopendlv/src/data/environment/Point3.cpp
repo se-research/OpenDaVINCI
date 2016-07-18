@@ -341,7 +341,7 @@ namespace opendlv {
             ostream& Point3::operator<<(ostream &out) const {
                 SerializationFactory& sf=SerializationFactory::getInstance();;
 
-                std::shared_ptr<Serializer> s = sf.getSerializer(out);
+                std::shared_ptr<Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
                 stringstream rawData;
                 rawData.precision(10);
@@ -357,7 +357,7 @@ namespace opendlv {
             istream& Point3::operator>>(istream &in) {
                 SerializationFactory& sf=SerializationFactory::getInstance();;
 
-                std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+                std::shared_ptr<Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
                 string data;
                 d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('d', 'a', 't', 'a') >::RESULT,

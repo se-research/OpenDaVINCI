@@ -147,7 +147,7 @@ namespace opendlv {
             ostream& Surroundings::operator<<(ostream &out) const {
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                std::shared_ptr<Serializer> s = sf.getSerializer(out);
+                std::shared_ptr<Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
                 // Do not serialize UNKNOWN TYPES.
                 uint32_t numberOfShapes = 0;
@@ -185,7 +185,7 @@ namespace opendlv {
             istream& Surroundings::operator>>(istream &in) {
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+                std::shared_ptr<Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
                 // Clean up.
                 cleanUp();

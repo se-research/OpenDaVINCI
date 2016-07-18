@@ -83,6 +83,22 @@ class Serializer;
                  */
                 virtual std::shared_ptr<Deserializer> getDeserializer(istream &in) const;
 
+                /**
+                 * This method returns a QueryableNetstringsSerializer.
+                 *
+                 * @param out Output stream for serialization.
+                 * @return Serializer.
+                 */
+                std::shared_ptr<Serializer> getQueryableNetstringsSerializer(ostream &out) const;
+
+                /**
+                 * This method returns a QueryableNetstringsDeserializer.
+                 *
+                 * @param in Input stream for deserialization.
+                 * @return Deserializer.
+                 */
+                std::shared_ptr<Deserializer> getQueryableNetstringsDeserializer(istream &in) const;
+
             protected:
                 /**
                  * This method sets the singleton pointer.

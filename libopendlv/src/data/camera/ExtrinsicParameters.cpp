@@ -77,7 +77,7 @@ namespace opendlv {
             ostream& ExtrinsicParameters::operator<<(ostream &out) const {
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                std::shared_ptr<Serializer> s = sf.getSerializer(out);
+                std::shared_ptr<Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('t', 'r', 'a', 'n', 's') >::RESULT,
                         m_translation);
@@ -91,7 +91,7 @@ namespace opendlv {
             istream& ExtrinsicParameters::operator>>(istream &in) {
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+                std::shared_ptr<Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
                 d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('t', 'r', 'a', 'n', 's') >::RESULT,
                        m_translation);

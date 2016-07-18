@@ -139,7 +139,7 @@ namespace opendlv {
             ostream& Image::operator<<(ostream &out) const {
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                std::shared_ptr<Serializer> s = sf.getSerializer(out);
+                std::shared_ptr<Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('f', 'i', 'l', 'e', 'n', 'a', 'm', 'e') >::RESULT,
                         m_fileName);
@@ -165,7 +165,7 @@ namespace opendlv {
             istream& Image::operator>>(istream &in) {
                 SerializationFactory& sf=SerializationFactory::getInstance();
 
-                std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+                std::shared_ptr<Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
                 d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('f', 'i', 'l', 'e', 'n', 'a', 'm', 'e') >::RESULT,
                        m_fileName);
