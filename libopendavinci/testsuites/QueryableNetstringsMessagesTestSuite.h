@@ -101,12 +101,12 @@ class SerializationFactoryTestCase : public SerializationFactory {
 class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
     public:
         void testSerializationDeserializationTestMessage1OneField() {
-            TestMessage1 tm1;
-            tm1.setField1(12);
-
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
+
+            TestMessage1 tm1;
+            tm1.setField1(12);
 
             // Serialize via regular Serializer.
             stringstream out;
@@ -252,13 +252,13 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
         ///////////////////////////////////////////////////////////////////////
 
         void testSerializationDeserializationTestMessage2TwoFieldsA() {
-            TestMessage2 tm1;
-            tm1.setField1(60);
-            tm1.setField2(-60);
-
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
+
+            TestMessage2 tm1;
+            tm1.setField1(60);
+            tm1.setField2(-60);
 
             // Serialize via regular Serializer.
             stringstream out;
@@ -336,13 +336,13 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
         ///////////////////////////////////////////////////////////////////////
 
         void testSerializationDeserializationTestMessage2TwoFieldsB() {
-            TestMessage2 tm1;
-            tm1.setField1(12);
-            tm1.setField2(-12);
-
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
+
+            TestMessage2 tm1;
+            tm1.setField1(12);
+            tm1.setField2(-12);
 
             // Serialize via regular Serializer.
             stringstream out;
@@ -516,6 +516,10 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
         ///////////////////////////////////////////////////////////////////////
 
         void testSerializationDeserializationTestMessage5() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
             TestMessage5 tm1;
             TS_ASSERT(tm1.getField1() == 1);
             TS_ASSERT(tm1.getField2() == -1);
@@ -545,10 +549,6 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
             tm1.setField9(-5.4321);
             tm1.setField10(-50.4321);
             tm1.setField11("Hello OpenDaVINCI World!");
-
-            // Replace default serializer/deserializers.
-            SerializationFactoryTestCase tmp;
-            (void)tmp;
 
             // Serialize via regular Serializer.
             stringstream out;
@@ -780,14 +780,14 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
         ///////////////////////////////////////////////////////////////////////
 
         void testSerializationDeserializationLogMessage() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
             LogMessage tm1;
             tm1.setLogLevel(LogMessage::WARN);
             tm1.setLogMessage("This is a test message!");
             tm1.setComponentName("Component ABC");
-
-            // Replace default serializer/deserializers.
-            SerializationFactoryTestCase tmp;
-            (void)tmp;
 
             // Serialize via regular Serializer.
             stringstream out;
@@ -876,6 +876,10 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
         ///////////////////////////////////////////////////////////////////////
 
         void testSerializationDeserializationAbstractField() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
             AbstractField tm1;
             tm1.setLongFieldIdentifier(123456);
             tm1.setShortFieldIdentifier(123);
@@ -883,10 +887,6 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
             tm1.setShortFieldName("AbstractField");
             tm1.setFieldDataType(AbstractField::INT8_T);
             tm1.setSize(-12);
-
-            // Replace default serializer/deserializers.
-            SerializationFactoryTestCase tmp;
-            (void)tmp;
 
             // Serialize via regular Serializer.
             stringstream out;
@@ -1008,14 +1008,14 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
         ///////////////////////////////////////////////////////////////////////
 
         void testSerializationDeserializationServerInformation() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
             ServerInformation tm1;
             tm1.setIP("123.456.789.abc");
             tm1.setPort(7890);
             tm1.setManagedLevel(ServerInformation::ML_PULSE_TIME_ACK);
-
-            // Replace default serializer/deserializers.
-            SerializationFactoryTestCase tmp;
-            (void)tmp;
 
             // Serialize via regular Serializer.
             stringstream out;
@@ -1104,6 +1104,10 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
         ///////////////////////////////////////////////////////////////////////
 
         void testSerializationDeserializationDiscoverMessage() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
             ServerInformation tm1;
             tm1.setIP("456.789.abc.123");
             tm1.setPort(456);
@@ -1113,10 +1117,6 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
             dm.setType(DiscoverMessage::RESPONSE);
             dm.setServerInformation(tm1);
             dm.setModuleName("TestComponent");
-
-            // Replace default serializer/deserializers.
-            SerializationFactoryTestCase tmp;
-            (void)tmp;
 
             // Serialize via regular Serializer.
             stringstream out;
@@ -1233,15 +1233,15 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
         ///////////////////////////////////////////////////////////////////////
 
         void testSerializationDeserializationModuleDescriptor() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
             ModuleDescriptor tm1;
             tm1.setName("My component");
             tm1.setIdentifier("12345");
             tm1.setVersion("XZY");
             tm1.setFrequency(1.2345);
-
-            // Replace default serializer/deserializers.
-            SerializationFactoryTestCase tmp;
-            (void)tmp;
 
             // Serialize via regular Serializer.
             stringstream out;
@@ -1341,12 +1341,12 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
         ///////////////////////////////////////////////////////////////////////
 
         void testSerializationDeserializationRuntimeStatistic() {
-            RuntimeStatistic tm1;
-            tm1.setSliceConsumption(-7.2345);
-
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
+
+            RuntimeStatistic tm1;
+            tm1.setSliceConsumption(-7.2345);
 
             // Serialize via regular Serializer.
             stringstream out;
@@ -1413,6 +1413,10 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
         ///////////////////////////////////////////////////////////////////////
 
         void testSerializationDeserializationModuleStatistic() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
             ModuleDescriptor md;
             md.setName("My component");
             md.setIdentifier("12345");
@@ -1425,10 +1429,6 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
             ModuleStatistic tm1;
             tm1.setModule(md);
             tm1.setRuntimeStatistic(rs);
-
-            // Replace default serializer/deserializers.
-            SerializationFactoryTestCase tmp;
-            (void)tmp;
 
             // Serialize via regular Serializer.
             stringstream out;
@@ -1551,12 +1551,12 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
         ///////////////////////////////////////////////////////////////////////
 
         void testSerializationDeserializationModuleStateMessage() {
-            ModuleStateMessage tm1;
-            tm1.setModuleState(ModuleStateMessage::RUNNING);
-
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
+
+            ModuleStateMessage tm1;
+            tm1.setModuleState(ModuleStateMessage::RUNNING);
 
             // Serialize via regular Serializer.
             stringstream out;
@@ -1623,12 +1623,12 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
         ///////////////////////////////////////////////////////////////////////
 
         void testSerializationDeserializationModuleExitCodeMessage() {
-            ModuleExitCodeMessage tm1;
-            tm1.setModuleExitCode(ModuleExitCodeMessage::CONNECTION_LOST);
-
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
+
+            ModuleExitCodeMessage tm1;
+            tm1.setModuleExitCode(ModuleExitCodeMessage::CONNECTION_LOST);
 
             // Serialize via regular Serializer.
             stringstream out;
@@ -1695,11 +1695,11 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
         ///////////////////////////////////////////////////////////////////////
 
         void testSerializationDeserializationPulseAckMessage() {
-            PulseAckMessage tm1;
-
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
+
+            PulseAckMessage tm1;
 
             // Serialize via regular Serializer.
             stringstream out;
@@ -1756,6 +1756,10 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
         ///////////////////////////////////////////////////////////////////////
 
         void testSerializationDeserializationConfiguration() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
             KeyValueConfiguration kvc;
 
             // Setup an example configuration.
@@ -1768,10 +1772,6 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
 
             Configuration tm1;
             tm1.setKeyValueConfiguration(kvc);
-
-            // Replace default serializer/deserializers.
-            SerializationFactoryTestCase tmp;
-            (void)tmp;
 
             // Serialize via regular Serializer.
             stringstream out;
@@ -1999,12 +1999,12 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
         ///////////////////////////////////////////////////////////////////////
 
         void testSerializationDeserializationPlayerCommand() {
-            PlayerCommand tm1;
-            tm1.setCommand(PlayerCommand::REWIND);
-
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
+
+            PlayerCommand tm1;
+            tm1.setCommand(PlayerCommand::REWIND);
 
             // Serialize via regular Serializer.
             stringstream out;
@@ -2071,12 +2071,12 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
         ///////////////////////////////////////////////////////////////////////
 
         void testSerializationDeserializationRecorderCommand() {
-            RecorderCommand tm1;
-            tm1.setCommand(RecorderCommand::STOP);
-
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
+
+            RecorderCommand tm1;
+            tm1.setCommand(RecorderCommand::STOP);
 
             // Serialize via regular Serializer.
             stringstream out;
@@ -2143,13 +2143,13 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
         ///////////////////////////////////////////////////////////////////////
 
         void testSerializationDeserializationSharedData() {
-            SharedData tm1;
-            tm1.setName("Hello Shared Data");
-            tm1.setSize(1234);
-
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
+
+            SharedData tm1;
+            tm1.setName("Hello Shared Data");
+            tm1.setSize(1234);
 
             // Serialize via regular Serializer.
             stringstream out;
@@ -2227,16 +2227,16 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
         ///////////////////////////////////////////////////////////////////////
 
         void testSerializationDeserializationSharedImage() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
             SharedImage tm1;
             tm1.setName("Hello Shared Image");
             tm1.setSize(7890);
             tm1.setWidth(640);
             tm1.setHeight(480);
             tm1.setBytesPerPixel(3);
-
-            // Replace default serializer/deserializers.
-            SerializationFactoryTestCase tmp;
-            (void)tmp;
 
             // Serialize via regular Serializer.
             stringstream out;
@@ -2347,6 +2347,10 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
         ///////////////////////////////////////////////////////////////////////
 
         void testSerializationDeserializationSharedPointCloud() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
             SharedPointCloud tm1;
             tm1.setName("Hello Shared Point Cloud");
             tm1.setSize(45678);
@@ -2355,10 +2359,6 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
             tm1.setNumberOfComponentsPerPoint(4);
             tm1.setComponentDataType(SharedPointCloud::UINT32_T);
             tm1.setUserInfo(SharedPointCloud::XYZ_INTENSITY);
-
-            // Replace default serializer/deserializers.
-            SerializationFactoryTestCase tmp;
-            (void)tmp;
 
             // Serialize via regular Serializer.
             stringstream out;
@@ -2491,6 +2491,10 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
         ///////////////////////////////////////////////////////////////////////
 
         void testSerializationDeserializationModuleStatistics() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
             ModuleStatistics mss1;
 
             {
@@ -2526,10 +2530,6 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
 
                 mss1.addTo_ListOfModuleStatistics(ms1);
             }
-
-            // Replace default serializer/deserializers.
-            SerializationFactoryTestCase tmp;
-            (void)tmp;
 
             // Serialize via regular Serializer.
             stringstream out;
@@ -2674,6 +2674,10 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
         ///////////////////////////////////////////////////////////////////////
 
         void testSerializationDeserializationPulseMessage() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
             PulseMessage pm1;
             pm1.setRealTimeFromSupercomponent(TimeStamp(8, 9));
             pm1.setNominalTimeSlice(12);
@@ -2689,11 +2693,6 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
                 Container c(ts);
                 pm1.addTo_ListOfContainers(c);
             }
-
-
-            // Replace default serializer/deserializers.
-            SerializationFactoryTestCase tmp;
-            (void)tmp;
 
             // Serialize via regular Serializer.
             stringstream out;
@@ -2731,6 +2730,10 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
         }
 
         void testSerializationDeserializationPulseMessageContainer() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
             PulseMessage pm1;
             pm1.setRealTimeFromSupercomponent(TimeStamp(8, 9));
             pm1.setNominalTimeSlice(12);
@@ -2746,10 +2749,6 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
                 Container c(ts);
                 pm1.addTo_ListOfContainers(c);
             }
-
-            // Replace default serializer/deserializers.
-            SerializationFactoryTestCase tmp;
-            (void)tmp;
 
             Container c(pm1);
 
@@ -2792,6 +2791,10 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
         ///////////////////////////////////////////////////////////////////////
 
         void testSerializationDeserializationPulseAckContainersMessage() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
             PulseAckContainersMessage pm1;
 
             {
@@ -2804,11 +2807,6 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
                 Container c(ts);
                 pm1.addTo_ListOfContainers(c);
             }
-
-
-            // Replace default serializer/deserializers.
-            SerializationFactoryTestCase tmp;
-            (void)tmp;
 
             // Serialize via regular Serializer.
             stringstream out;
@@ -2834,6 +2832,10 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
         }
 
         void testSerializationDeserializationPulseAckContainersMessageContainer() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
             PulseAckContainersMessage pm1;
 
             {
@@ -2846,10 +2848,6 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
                 Container c(ts);
                 pm1.addTo_ListOfContainers(c);
             }
-
-            // Replace default serializer/deserializers.
-            SerializationFactoryTestCase tmp;
-            (void)tmp;
 
             Container c(pm1);
 
@@ -2880,6 +2878,10 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
         ///////////////////////////////////////////////////////////////////////
 
         void testSerializationDeserializationTestMessage6() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
             TestMessage6 tm1;
 
             {
@@ -2894,11 +2896,6 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
                 uint32_t i = 86942;
                 tm1.addTo_ListOfField1(i);
             }
-
-
-            // Replace default serializer/deserializers.
-            SerializationFactoryTestCase tmp;
-            (void)tmp;
 
             // Serialize via regular Serializer.
             stringstream out;
@@ -2927,6 +2924,10 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
         }
 
         void testSerializationDeserializationTestMessage6Container() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
             TestMessage6 tm1;
 
             {
@@ -2942,10 +2943,6 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
                 tm1.addTo_ListOfField1(i);
             }
 
-
-            // Replace default serializer/deserializers.
-            SerializationFactoryTestCase tmp;
-            (void)tmp;
 
             Container c(tm1);
 
@@ -2979,6 +2976,10 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
         ///////////////////////////////////////////////////////////////////////
 
         void testSerializationDeserializationTestMessage7() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
             TestMessage7 tm1;
 
             {
@@ -2993,11 +2994,6 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
                 float i = 47.891;
                 tm1.addTo_ListOfField1(i);
             }
-
-
-            // Replace default serializer/deserializers.
-            SerializationFactoryTestCase tmp;
-            (void)tmp;
 
             // Serialize via regular Serializer.
             stringstream out;
@@ -3026,6 +3022,10 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
         }
 
         void testSerializationDeserializationTestMessage7Container() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
             TestMessage7 tm1;
 
             {
@@ -3040,11 +3040,6 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
                 float i = 47.891;
                 tm1.addTo_ListOfField1(i);
             }
-
-
-            // Replace default serializer/deserializers.
-            SerializationFactoryTestCase tmp;
-            (void)tmp;
 
             Container c(tm1);
 
