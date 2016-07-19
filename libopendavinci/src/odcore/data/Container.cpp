@@ -100,7 +100,7 @@ namespace odcore {
         ostream& Container::operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();;
 
-            std::shared_ptr<Serializer> s = sf.getSerializer(out);
+            std::shared_ptr<Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
             // Write container data type.
             int32_t dataType = getDataType();
@@ -130,7 +130,7 @@ namespace odcore {
             string rawData = "";
 
             SerializationFactory& sf=SerializationFactory::getInstance();;
-            std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+            std::shared_ptr<Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
             // Read container data type.
             d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
