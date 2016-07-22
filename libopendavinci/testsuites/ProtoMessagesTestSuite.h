@@ -3568,18 +3568,18 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 // Done - 5) Refactor odDataStructureGenerator to emit new code to use readValue/writeValue for lists, maps, and fixed arrays
 // Done - 6) Enable Proto serialization/deserialization by default & re-test libopendavinci.
 // 7) Fix Player/Recorder for Containers (add header to Proto!)
-// 7) Check missing fields in messages for deserialization.
-// 8) Check additional fields in messages for deserialization.
-// 9) Check arbitrary order: FalseSerializationTestSuite, SerializationTestSuite (they had a different order of fields)
-// 10) Remove extends keyword from odDataStructureGenerator
-// 11) Fix opendlv data structure --> either model them as odvd data structures or fix direction in code
-// 12) Change identifiers for built-in types (like Container) to remove fourbyteidentifier
-// (Started) 13) Check serializatio/deserialization order for all built-in types
-// 14) Enable Proto serialization/deserialization by default & re-test
-// 15) Check multiple deserialization in Container (cf test case for PulseAckContainersMessage)
-// 16) Compatibility with 3rd party Proto implementations
-// 17) Transform map.
-// 18) Transform fixed array.
+// 8) Check missing fields in messages for deserialization.
+// 9) Check additional fields in messages for deserialization.
+// 10) Check arbitrary order: FalseSerializationTestSuite, SerializationTestSuite (they had a different order of fields)
+// 11) Remove extends keyword from odDataStructureGenerator
+// 12) Fix opendlv data structure --> either model them as odvd data structures or fix direction in code
+// 13) Change identifiers for built-in types (like Container) to remove fourbyteidentifier
+// (Started) 14) Check serializatio/deserialization order for all built-in types
+// 15) Enable Proto serialization/deserialization by default & re-test
+// 16) Check multiple deserialization in Container (cf test case for PulseAckContainersMessage)
+// 17) Compatibility with 3rd party Proto implementations
+// 18) Transform map.
+// 19) Transform fixed array.
 };
 
 #endif /*CORE_PROTOMESSAGESTESTSUITE_H_*/

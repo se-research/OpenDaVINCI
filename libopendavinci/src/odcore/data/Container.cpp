@@ -17,9 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <iosfwd>
-
+#include <iostream>
+#include <sstream>
 #include <memory>
+
 #include "opendavinci/odcore/base/Deserializer.h"
 #include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
@@ -98,30 +99,63 @@ namespace odcore {
         }
 
         ostream& Container::operator<<(ostream &out) const {
-            SerializationFactory& sf=SerializationFactory::getInstance();;
+            stringstream bufferOut;
 
-            std::shared_ptr<Serializer> s = sf.getQueryableNetstringsSerializer(out);
+            // We need a dedicated scope as the writing will take place
+            // in the Serializer's destructor.
+            {
+                SerializationFactory& sf=SerializationFactory::getInstance();
+                std::shared_ptr<Serializer> s = sf.getSerializer(bufferOut);
 
-            // Write container data type.
-            int32_t dataType = getDataType();
-            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                     1, "Container.id", "id",
-                     dataType);
+                // Write container data type.
+                int32_t dataType = getDataType();
+                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
+                         1, "Container.id", "id",
+                         dataType);
 
-            // Write container data.
-            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('d', 'a', 't', 'a') >::RESULT,
-                     2, "Container.data", "data",
-                     m_serializedData.str());
+                // Write container data.
+                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('d', 'a', 't', 'a') >::RESULT,
+                         2, "Container.data", "data",
+                         m_serializedData.str());
 
-            // Write sent time stamp data.
-            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('s', 'e', 'n', 't') >::RESULT,
-                     3, "Container.sent", "sent",
-                     m_sent);
+                // Write sent time stamp data.
+                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('s', 'e', 'n', 't') >::RESULT,
+                         3, "Container.sent", "sent",
+                         m_sent);
 
-            // Write received time stamp data.
-            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('r', 'e', 'c', 'v', 'd') >::RESULT,
-                     4, "Container.received", "received",
-                     m_received);
+                // Write received time stamp data.
+                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('r', 'e', 'c', 'v', 'd') >::RESULT,
+                         4, "Container.received", "received",
+                         m_received);
+            }
+
+            // Write Container header.
+            {
+                // Write Proto header: 0x0D 0xA4 A B C <payload>.
+                // 0xA4 A B C can be read as uint32_t, 0xA4 can be cut and
+                // A B C can be read as little endian shifted by 8 bits to
+                // the right.
+                const char byte0 = 0x0D;
+                const uint8_t byte1 = 0xA4;
+
+                const string str_bufferOut = bufferOut.str();
+                uint32_t length = (str_bufferOut.size());
+
+                // Shift length by 8 bits to the left to make space
+                // for 0xA4 header part.
+                length = length << 8;
+
+                // Add 0xA4 as part of OpenDaVINCI container header.
+                length |= byte1;
+
+                // Transform value to little endian.
+                length = htole32(length);
+
+                // Write header and payload.
+                out.write(&byte0, sizeof(byte0));
+                out.write((char*)(&length), sizeof(uint32_t));
+                out << str_bufferOut;
+            }
 
             return out;
         }
@@ -129,8 +163,58 @@ namespace odcore {
         istream& Container::operator>>(istream &in) {
             string rawData = "";
 
-            SerializationFactory& sf=SerializationFactory::getInstance();;
-            std::shared_ptr<Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
+            // Read Container header.
+            stringstream bufferIn;
+            {
+                const uint32_t OPENDAVINCI_CONTAINER_HEADER_SIZE = 5;
+                bool consumedOpenDaVINCIContainerHeader = false;
+                uint32_t bytesRead = 0;
+                uint32_t expectedBytes = 0;
+
+                while (in.good()) {
+                    // Copy bytes to internal buffer.
+                    char c = in.get();
+                    bufferIn.put(c);
+                    bytesRead++;
+
+                    // After consuming the OpenDaVINCI header, decrease the amount of expected bytes.
+                    if (consumedOpenDaVINCIContainerHeader) {
+                        expectedBytes--;
+                        if (expectedBytes == 0) {
+                            break;
+                        }
+                    }
+
+                    if (bytesRead == OPENDAVINCI_CONTAINER_HEADER_SIZE) {
+                        consumedOpenDaVINCIContainerHeader = true;
+
+                        char byte0 = 0;
+                        expectedBytes = 0;
+
+                        // Read five bytes OpenDaVINCI Container header.
+                        bufferIn.read(&byte0, sizeof(char));
+                        bufferIn.read((char*)&expectedBytes, sizeof(uint32_t));
+
+                        // Transform value from little endian to host.
+                        expectedBytes = le32toh(expectedBytes);
+
+                        // Extract first byte as part of OpenDaVINCI Container header.
+                        unsigned char byte1 = (expectedBytes & 0xFF);
+                        expectedBytes = expectedBytes >> 8;
+
+                        // Clear buffer as the remaining bytes are the payload.
+                        bufferIn.str("");
+
+                        // Check validity of the received bytes.
+                        if (!( (0x0D == byte0) && (0xA4 == byte1) )) {
+                            std::cerr << "[core::base::Container] Failed to decode OpenDaVINCI container header." << std::endl;
+                        }
+                    }
+                }
+            }
+
+            SerializationFactory& sf=SerializationFactory::getInstance();
+            std::shared_ptr<Deserializer> d = sf.getDeserializer(bufferIn);
 
             // Read container data type.
             d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
