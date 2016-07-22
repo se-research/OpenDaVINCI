@@ -3568,18 +3568,19 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 // Done - 5) Refactor odDataStructureGenerator to emit new code to use readValue/writeValue for lists, maps, and fixed arrays
 // Done - 6) Enable Proto serialization/deserialization by default & re-test libopendavinci.
 // 7) Fix Player/Recorder for Containers (add header to Proto!)
-// 8) Check missing fields in messages for deserialization.
-// 9) Check additional fields in messages for deserialization.
-// 10) Check arbitrary order: FalseSerializationTestSuite, SerializationTestSuite (they had a different order of fields)
-// 11) Remove extends keyword from odDataStructureGenerator
-// 12) Fix opendlv data structure --> either model them as odvd data structures or fix direction in code
-// 13) Change identifiers for built-in types (like Container) to remove fourbyteidentifier
-// (Started) 14) Check serializatio/deserialization order for all built-in types
-// 15) Enable Proto serialization/deserialization by default & re-test
-// 16) Check multiple deserialization in Container (cf test case for PulseAckContainersMessage)
-// 17) Compatibility with 3rd party Proto implementations
-// 18) Transform map.
-// 19) Transform fixed array.
+// 8) QueryableNetstringsDeserializerABCF::fillBuffer(cin, containerBuffer) --> needs to be added to ProtoSerializer
+// 9) Check missing fields in messages for deserialization.
+// 10) Check additional fields in messages for deserialization.
+// 11) Check arbitrary order: FalseSerializationTestSuite, SerializationTestSuite (they had a different order of fields)
+// 12) Remove extends keyword from odDataStructureGenerator
+// 13) Fix opendlv data structure --> either model them as odvd data structures or fix direction in code
+// 14) Change identifiers for built-in types (like Container) to remove fourbyteidentifier
+// (Started) 15) Check serializatio/deserialization order for all built-in types
+// 16) Enable Proto serialization/deserialization by default & re-test
+// 17) Check multiple deserialization in Container (cf test case for PulseAckContainersMessage)
+// 18) Compatibility with 3rd party Proto implementations
+// 19) Transform map.
+// 20) Transform fixed array.
 };
 
 #endif /*CORE_PROTOMESSAGESTESTSUITE_H_*/
