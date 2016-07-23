@@ -978,7 +978,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationLogMessage() {
+        void testSerializationDeserializationLogMessage() {
             LogMessage tm1;
             tm1.setLogLevel(LogMessage::WARN);
             tm1.setLogMessage("This is a test message!");
@@ -1006,7 +1006,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getComponentName() == "Component ABC");
         }
 
-        void NOtestSerializationDeserializationLogMessageContainer() {
+        void testSerializationDeserializationLogMessageContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -1039,7 +1039,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getComponentName() == "Component ABC");
         }
 
-        void NOtestSerializationDeserializationLogMessageVisitor() {
+        void testSerializationDeserializationLogMessageVisitor() {
             LogMessage tm1;
             tm1.setLogLevel(LogMessage::WARN);
             tm1.setLogMessage("This is a test message!");
