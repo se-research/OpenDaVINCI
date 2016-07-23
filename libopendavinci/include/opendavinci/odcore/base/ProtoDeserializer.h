@@ -66,15 +66,6 @@ namespace odcore {
 
                 virtual void deserializeDataFrom(istream &in);
 
-                /**
-                 * This method deserializes a Proto stream where
-                 * additional header information is preceding the
-                 * serialized data.
-                 *
-                 * @param in Stream to serialize from.
-                 */
-                void deserializeDataFromWithHeader(istream &in);
-
             private:
                 /**
                  * This method decodes a value from a given varint encoding.

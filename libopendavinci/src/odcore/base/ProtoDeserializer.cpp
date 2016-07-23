@@ -56,35 +56,6 @@ class Serializable;
             }
         }
 
-        void ProtoDeserializer::deserializeDataFromWithHeader(istream &in) {
-            // Reset internal states as this deserializer could be reused.
-            m_size = 0;
-            m_buffer.str("");
-
-            // Read magic number.
-            uint16_t magicNumber = 0;
-            in.read((char*)(&magicNumber), sizeof(magicNumber));
-            magicNumber = ntohs(magicNumber);
-            if (magicNumber == 0x0DA4) {
-                // Read message size and put remaining bytes into m_buffer.
-                uint64_t value = 0;
-                decodeVarInt(in, value);
-                m_size = static_cast<uint32_t>(value);
-
-                // Read up to m_size bytes as long as the input stream is fine.
-                uint32_t size = m_size;
-                while (in.good() && (size > 0)) {
-                    char c = in.get();
-                    m_buffer.put(c);
-                    size--;
-                }
-            }
-            else {
-                // Stream is good but still no matching magic number?
-                clog << "[core::base::ProtoDeserializer]: Stream corrupt: magic number not found." << endl;
-            }
-        }
-
         uint32_t ProtoDeserializer::readAndValidateKey(istream &in, const uint32_t &id, const ProtoSerializerVisitor::PROTOBUF_TYPE &expectedType) {
             uint64_t key = 0;
             const uint32_t size = decodeVarInt(in, key);

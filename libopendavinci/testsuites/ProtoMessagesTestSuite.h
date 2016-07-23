@@ -156,12 +156,12 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             // Write the data to a stringstream.
             stringstream out;
-            protoSerializerVisitor.getSerializedDataWithHeader(out);
+            protoSerializerVisitor.getSerializedData(out);
 
 
             // Create a Proto deserialization visitor.
             ProtoDeserializerVisitor protoDeserializerVisitor;
-            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
+            protoDeserializerVisitor.deserializeDataFrom(out);
 
             // Read back the data by using the visitor.
             TestMessage1 tm2;
@@ -1052,12 +1052,12 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             // Write the data to a stringstream.
             stringstream out;
-            protoSerializerVisitor.getSerializedDataWithHeader(out);
+            protoSerializerVisitor.getSerializedData(out);
 
 
             // Create a Proto deserialization visitor.
             ProtoDeserializerVisitor protoDeserializerVisitor;
-            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
+            protoDeserializerVisitor.deserializeDataFrom(out);
 
             // Read back the data by using the visitor.
             LogMessage tm2;
@@ -1175,12 +1175,12 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             // Write the data to a stringstream.
             stringstream out;
-            protoSerializerVisitor.getSerializedDataWithHeader(out);
+            protoSerializerVisitor.getSerializedData(out);
 
 
             // Create a Proto deserialization visitor.
             ProtoDeserializerVisitor protoDeserializerVisitor;
-            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
+            protoDeserializerVisitor.deserializeDataFrom(out);
 
             // Read back the data by using the visitor.
             AbstractField tm2;
@@ -1280,12 +1280,12 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             // Write the data to a stringstream.
             stringstream out;
-            protoSerializerVisitor.getSerializedDataWithHeader(out);
+            protoSerializerVisitor.getSerializedData(out);
 
 
             // Create a Proto deserialization visitor.
             ProtoDeserializerVisitor protoDeserializerVisitor;
-            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
+            protoDeserializerVisitor.deserializeDataFrom(out);
 
             // Read back the data by using the visitor.
             ServerInformation tm2;
@@ -1403,12 +1403,12 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             // Write the data to a stringstream.
             stringstream out;
-            protoSerializerVisitor.getSerializedDataWithHeader(out);
+            protoSerializerVisitor.getSerializedData(out);
 
 
             // Create a Proto deserialization visitor.
             ProtoDeserializerVisitor protoDeserializerVisitor;
-            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
+            protoDeserializerVisitor.deserializeDataFrom(out);
 
             // Read back the data by using the visitor.
             DiscoverMessage dm2;
@@ -1514,12 +1514,12 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             // Write the data to a stringstream.
             stringstream out;
-            protoSerializerVisitor.getSerializedDataWithHeader(out);
+            protoSerializerVisitor.getSerializedData(out);
 
 
             // Create a Proto deserialization visitor.
             ProtoDeserializerVisitor protoDeserializerVisitor;
-            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
+            protoDeserializerVisitor.deserializeDataFrom(out);
 
             // Read back the data by using the visitor.
             ModuleDescriptor tm2;
@@ -1595,12 +1595,12 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             // Write the data to a stringstream.
             stringstream out;
-            protoSerializerVisitor.getSerializedDataWithHeader(out);
+            protoSerializerVisitor.getSerializedData(out);
 
 
             // Create a Proto deserialization visitor.
             ProtoDeserializerVisitor protoDeserializerVisitor;
-            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
+            protoDeserializerVisitor.deserializeDataFrom(out);
 
             // Read back the data by using the visitor.
             RuntimeStatistic tm2;
@@ -1721,12 +1721,12 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             // Write the data to a stringstream.
             stringstream out;
-            protoSerializerVisitor.getSerializedDataWithHeader(out);
+            protoSerializerVisitor.getSerializedData(out);
 
 
             // Create a Proto deserialization visitor.
             ProtoDeserializerVisitor protoDeserializerVisitor;
-            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
+            protoDeserializerVisitor.deserializeDataFrom(out);
 
             // Read back the data by using the visitor.
             ModuleStatistic tm2;
@@ -1805,12 +1805,12 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             // Write the data to a stringstream.
             stringstream out;
-            protoSerializerVisitor.getSerializedDataWithHeader(out);
+            protoSerializerVisitor.getSerializedData(out);
 
 
             // Create a Proto deserialization visitor.
             ProtoDeserializerVisitor protoDeserializerVisitor;
-            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
+            protoDeserializerVisitor.deserializeDataFrom(out);
 
             // Read back the data by using the visitor.
             ModuleStateMessage tm2;
@@ -1877,12 +1877,12 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             // Write the data to a stringstream.
             stringstream out;
-            protoSerializerVisitor.getSerializedDataWithHeader(out);
+            protoSerializerVisitor.getSerializedData(out);
 
 
             // Create a Proto deserialization visitor.
             ProtoDeserializerVisitor protoDeserializerVisitor;
-            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
+            protoDeserializerVisitor.deserializeDataFrom(out);
 
             // Read back the data by using the visitor.
             ModuleExitCodeMessage tm2;
@@ -1941,12 +1941,12 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             // Write the data to a stringstream.
             stringstream out;
-            protoSerializerVisitor.getSerializedDataWithHeader(out);
+            protoSerializerVisitor.getSerializedData(out);
 
 
             // Create a Proto deserialization visitor.
             ProtoDeserializerVisitor protoDeserializerVisitor;
-            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
+            protoDeserializerVisitor.deserializeDataFrom(out);
 
             // Read back the data by using the visitor.
             PulseAckMessage tm2;
@@ -2056,12 +2056,12 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             // Write the data to a stringstream.
             stringstream out;
-            protoSerializerVisitor.getSerializedDataWithHeader(out);
+            protoSerializerVisitor.getSerializedData(out);
 
 
             // Create a Proto deserialization visitor.
             ProtoDeserializerVisitor protoDeserializerVisitor;
-            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
+            protoDeserializerVisitor.deserializeDataFrom(out);
 
             // Read back the data by using the visitor.
             Configuration tm2;
@@ -2174,12 +2174,12 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             // Write the data to a stringstream.
             stringstream out;
-            protoSerializerVisitor.getSerializedDataWithHeader(out);
+            protoSerializerVisitor.getSerializedData(out);
 
 
             // Create a Proto deserialization visitor.
             ProtoDeserializerVisitor protoDeserializerVisitor;
-            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
+            protoDeserializerVisitor.deserializeDataFrom(out);
 
             // Read back the data by using the visitor.
             MemorySegment ms2;
@@ -2253,12 +2253,12 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             // Write the data to a stringstream.
             stringstream out;
-            protoSerializerVisitor.getSerializedDataWithHeader(out);
+            protoSerializerVisitor.getSerializedData(out);
 
 
             // Create a Proto deserialization visitor.
             ProtoDeserializerVisitor protoDeserializerVisitor;
-            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
+            protoDeserializerVisitor.deserializeDataFrom(out);
 
             // Read back the data by using the visitor.
             PlayerCommand tm2;
@@ -2325,12 +2325,12 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             // Write the data to a stringstream.
             stringstream out;
-            protoSerializerVisitor.getSerializedDataWithHeader(out);
+            protoSerializerVisitor.getSerializedData(out);
 
 
             // Create a Proto deserialization visitor.
             ProtoDeserializerVisitor protoDeserializerVisitor;
-            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
+            protoDeserializerVisitor.deserializeDataFrom(out);
 
             // Read back the data by using the visitor.
             RecorderCommand tm2;
@@ -2406,12 +2406,12 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             // Write the data to a stringstream.
             stringstream out;
-            protoSerializerVisitor.getSerializedDataWithHeader(out);
+            protoSerializerVisitor.getSerializedData(out);
 
 
             // Create a Proto deserialization visitor.
             ProtoDeserializerVisitor protoDeserializerVisitor;
-            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
+            protoDeserializerVisitor.deserializeDataFrom(out);
 
             // Read back the data by using the visitor.
             SharedData tm2;
@@ -2517,12 +2517,12 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             // Write the data to a stringstream.
             stringstream out;
-            protoSerializerVisitor.getSerializedDataWithHeader(out);
+            protoSerializerVisitor.getSerializedData(out);
 
 
             // Create a Proto deserialization visitor.
             ProtoDeserializerVisitor protoDeserializerVisitor;
-            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
+            protoDeserializerVisitor.deserializeDataFrom(out);
 
             // Read back the data by using the visitor.
             SharedImage tm2;
@@ -2655,12 +2655,12 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             // Write the data to a stringstream.
             stringstream out;
-            protoSerializerVisitor.getSerializedDataWithHeader(out);
+            protoSerializerVisitor.getSerializedData(out);
 
 
             // Create a Proto deserialization visitor.
             ProtoDeserializerVisitor protoDeserializerVisitor;
-            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
+            protoDeserializerVisitor.deserializeDataFrom(out);
 
             // Read back the data by using the visitor.
             SharedPointCloud tm2;
@@ -3560,6 +3560,18 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
+        // Fails until we have queryable functionality in place.
+        void NOtestSerializationDeserializationTestMessage1OneFieldDefaultContainer() {
+            // Create an uninitialized Container.
+            Container c;
+
+            // Force reading from Container must result in default-initialized message.
+            TestMessage1 tm2 = c.getData<TestMessage1>();
+            TS_ASSERT(tm2.getField1() == 12);
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+
 // TODO:
 // Done - 1) test adjusted serialization for ModuleStatics
 // Done - 2) Add test case for odcore.data.dmcp.PulseMessage
@@ -3567,8 +3579,9 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 // Done - 4) Refactor ProtoSerializer and ProtoDeserializer to eat entire istream and create vector of entries to enable "queryable" functionality
 // Done - 5) Refactor odDataStructureGenerator to emit new code to use readValue/writeValue for lists, maps, and fixed arrays
 // Done - 6) Enable Proto serialization/deserialization by default & re-test libopendavinci.
-// 7) Fix Player/Recorder for Containers (add header to Proto!)
-// 8) QueryableNetstringsDeserializerABCF::fillBuffer(cin, containerBuffer) --> needs to be added to ProtoSerializer
+// Done - 7) Fix Player/Recorder for Containers (add header to Proto!)
+// 8) Test if an uninitialized Container results in default initialized message.
+// TO BE TESTED 8) QueryableNetstringsDeserializerABCF::fillBuffer(cin, containerBuffer) --> needs to be added to ProtoSerializer? --> testCase in odredirector passes by just reading from cin. TODO: Test on terminal.
 // 9) Check missing fields in messages for deserialization.
 // 10) Check additional fields in messages for deserialization.
 // 11) Check arbitrary order: FalseSerializationTestSuite, SerializationTestSuite (they had a different order of fields)

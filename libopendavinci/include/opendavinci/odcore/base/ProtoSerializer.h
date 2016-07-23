@@ -76,14 +76,6 @@ class Serializable;
 
                 virtual void getSerializedData(ostream &o);
 
-                /**
-                 * This method serializes the data to the given ostream
-                 * with adding header information.
-                 *
-                 * @param o Stream to serialize data to.
-                 */
-                void getSerializedDataWithHeader(ostream &o);
-
             private:
                 /**
                  * This method encodes a given value using the varuint encoding.

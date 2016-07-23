@@ -49,14 +49,6 @@ class Serializable;
             o << m_buffer.str();
         }
 
-        void ProtoSerializer::getSerializedDataWithHeader(ostream &o) {
-            uint16_t magicNumber = 0x0DA4;
-            magicNumber = htons(magicNumber);
-            o.write((char*)(&magicNumber), sizeof(magicNumber));
-            encodeVarInt(o, m_size);
-            getSerializedData(o);
-        }
-
         uint32_t ProtoSerializer::getKey(const uint32_t &fieldNumber, const uint8_t &protoType) {
             return (fieldNumber << 3) | protoType;
         }

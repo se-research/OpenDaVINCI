@@ -338,35 +338,6 @@ class ProtoTest : public CxxTest::TestSuite {
             TS_ASSERT(si.getBytesPerPixel() == si2.getBytesPerPixel());
         }
 
-        void testSerializationDeserializationFloatingPointWithHeader() {
-            ModuleDescriptor md;
-            md.setName("Hello World!");
-            md.setIdentifier("42");
-            md.setVersion("2");
-            md.setFrequency(1.234);
-
-            // Create a Proto serialization visitor.
-            ProtoSerializerVisitor protoSerializerVisitor;
-            md.accept(protoSerializerVisitor);
-
-            // Write the data to a stringstream.
-            stringstream out;
-            protoSerializerVisitor.getSerializedDataWithHeader(out);
-
-            // Create a Proto deserialization visitor.
-            ProtoDeserializerVisitor protoDeserializerVisitor;
-            protoDeserializerVisitor.deserializeDataFromWithHeader(out);
-
-            // Read back the data by using the visitor.
-            ModuleDescriptor md2;
-            md2.accept(protoDeserializerVisitor);
-
-            TS_ASSERT(md.getName() == md2.getName());
-            TS_ASSERT(md.getIdentifier() == md2.getIdentifier());
-            TS_ASSERT(md.getVersion() == md2.getVersion());
-            TS_ASSERT(fabs(md.getFrequency() - md2.getFrequency()) < 1e-4);
-        }
-
         void testSerializationDeserializationFloatingPoint() {
             ModuleDescriptor md;
             md.setName("Hello World!");
@@ -471,7 +442,7 @@ class ProtoTest : public CxxTest::TestSuite {
 
             // Deserialize from raw data.
             ProtoDeserializerVisitor protoDeserializerVisitor;
-            protoDeserializerVisitor.deserializeDataFromWithHeader(rawDataStream);
+            protoDeserializerVisitor.deserializeDataFrom(rawDataStream);
 
             // Set data in data structure.
             ProtoVehicleControl vc;
