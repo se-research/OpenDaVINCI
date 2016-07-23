@@ -1954,7 +1954,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationConfiguration() {
+        void testSerializationDeserializationConfiguration() {
             KeyValueConfiguration kvc;
 
             // Setup an example configuration.
@@ -1992,7 +1992,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(kvc2.getValue<float>("key2:3"), -4.325, 1e-3);
         }
 
-        void NOtestSerializationDeserializationConfigurationContainer() {
+        void testSerializationDeserializationConfigurationContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -2035,7 +2035,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(kvc2.getValue<float>("key2:3"), -4.325, 1e-3);
         }
 
-        void NOtestSerializationDeserializationModuleConfigurationVisitor() {
+        void testSerializationDeserializationModuleConfigurationVisitor() {
             KeyValueConfiguration kvc;
 
             // Setup an example configuration.
@@ -2080,7 +2080,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationMemorySegment() {
+        void testSerializationDeserializationMemorySegment() {
             // Replace default serializer/deserializers (needs to be here as the Container constructor will immediately serialize its argument.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -2115,7 +2115,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(ms2.getIdentifier() == 12);
         }
 
-        void NOtestSerializationDeserializationMemorySegmentContainer() {
+        void testSerializationDeserializationMemorySegmentContainer() {
             // Replace default serializer/deserializers (needs to be here as the Container constructor will immediately serialize its argument.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -2155,7 +2155,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(ms2.getIdentifier() == 12);
         }
 
-        void NOtestSerializationDeserializationMemorySegmentVisitor() {
+        void testSerializationDeserializationMemorySegmentVisitor() {
             TimeStamp payload(7, 8);
             Container c(payload);
             c.setSentTimeStamp(TimeStamp(1, 2));
@@ -2197,7 +2197,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationPlayerCommand() {
+        void testSerializationDeserializationPlayerCommand() {
             PlayerCommand tm1;
             tm1.setCommand(PlayerCommand::REWIND);
 
@@ -2217,7 +2217,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getCommand() == PlayerCommand::REWIND);
         }
 
-        void NOtestSerializationDeserializationPlayerCommandContainer() {
+        void testSerializationDeserializationPlayerCommandContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -2242,7 +2242,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getCommand() == PlayerCommand::REWIND);
         }
 
-        void NOtestSerializationDeserializationPlayerCommandVisitor() {
+        void testSerializationDeserializationPlayerCommandVisitor() {
             PlayerCommand tm1;
             tm1.setCommand(PlayerCommand::REWIND);
 
@@ -2269,7 +2269,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationRecorderCommand() {
+        void testSerializationDeserializationRecorderCommand() {
             RecorderCommand tm1;
             tm1.setCommand(RecorderCommand::STOP);
 
@@ -2289,7 +2289,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getCommand() == RecorderCommand::STOP);
         }
 
-        void NOtestSerializationDeserializationRecorderCommandContainer() {
+        void testSerializationDeserializationRecorderCommandContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -2314,7 +2314,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getCommand() == RecorderCommand::STOP);
         }
 
-        void NOtestSerializationDeserializationRecorderCommandVisitor() {
+        void testSerializationDeserializationRecorderCommandVisitor() {
             RecorderCommand tm1;
             tm1.setCommand(RecorderCommand::STOP);
 
@@ -2341,7 +2341,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationSharedData() {
+        void testSerializationDeserializationSharedData() {
             SharedData tm1;
             tm1.setName("Hello Shared Data");
             tm1.setSize(1234);
@@ -2365,7 +2365,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getSize() == 1234);
         }
 
-        void NOtestSerializationDeserializationSharedDataContainer() {
+        void testSerializationDeserializationSharedDataContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -2394,7 +2394,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getSize() == 1234);
         }
 
-        void NOtestSerializationDeserializationSharedDataVisitor() {
+        void testSerializationDeserializationSharedDataVisitor() {
             SharedData tm1;
             tm1.setName("Hello Shared Data");
             tm1.setSize(1234);
@@ -2425,7 +2425,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationSharedImage() {
+        void testSerializationDeserializationSharedImage() {
             SharedImage tm1;
             tm1.setName("Hello Shared Image");
             tm1.setSize(7890);
@@ -2461,7 +2461,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getBytesPerPixel() == 3);
         }
 
-        void NOtestSerializationDeserializationSharedImageContainer() {
+        void testSerializationDeserializationSharedImageContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -2502,7 +2502,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getBytesPerPixel() == 3);
         }
 
-        void NOtestSerializationDeserializationSharedImageVisitor() {
+        void testSerializationDeserializationSharedImageVisitor() {
             SharedImage tm1;
             tm1.setName("Hello Shared Image");
             tm1.setSize(7890);
@@ -2545,7 +2545,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationSharedPointCloud() {
+        void testSerializationDeserializationSharedPointCloud() {
             SharedPointCloud tm1;
             tm1.setName("Hello Shared Point Cloud");
             tm1.setSize(45678);
@@ -2589,7 +2589,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getUserInfo() == SharedPointCloud::XYZ_INTENSITY);
         }
 
-        void NOtestSerializationDeserializationSharedPointCloudContainer() {
+        void testSerializationDeserializationSharedPointCloudContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -2638,7 +2638,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getUserInfo() == SharedPointCloud::XYZ_INTENSITY);
         }
 
-        void NOtestSerializationDeserializationSharedPointCloudVisitor() {
+        void testSerializationDeserializationSharedPointCloudVisitor() {
             SharedPointCloud tm1;
             tm1.setName("Hello Shared Point Cloud");
             tm1.setSize(45678);
