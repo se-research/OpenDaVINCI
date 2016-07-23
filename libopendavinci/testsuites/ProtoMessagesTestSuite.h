@@ -2689,7 +2689,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationModuleStatistics() {
+        void testSerializationDeserializationModuleStatistics() {
             ModuleStatistics mss1;
 
             {
@@ -2778,7 +2778,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(v2.at(1).getRuntimeStatistic().getSliceConsumption(), -97.2345, 1e-4);
         }
 
-        void NOtestSerializationDeserializationModuleStatisticsContainer() {
+        void testSerializationDeserializationModuleStatisticsContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -2872,8 +2872,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        // Failed
-        void NOtestSerializationDeserializationPulseMessage() {
+        void testSerializationDeserializationPulseMessage() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -2946,7 +2945,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(v2_ts2.toMicroseconds() == 3000004);
         }
 
-        void NOtestSerializationDeserializationPulseMessageContainer() {
+        void testSerializationDeserializationPulseMessageContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
