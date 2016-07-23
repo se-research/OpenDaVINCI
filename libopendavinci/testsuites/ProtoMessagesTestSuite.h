@@ -798,7 +798,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getField12().getField1() == tm1.getField12().getField1());
         }
 
-        void NOtestSerializationDeserializationTestMessage5Container() {
+        void testSerializationDeserializationTestMessage5Container() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -887,7 +887,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getField12().getField1() == tm1.getField12().getField1());
         }
 
-        void NOtestSerializationDeserializationTestMessage5Visitor() {
+        void testSerializationDeserializationTestMessage5Visitor() {
             TestMessage5 tm1;
             TS_ASSERT(tm1.getField1() == 1);
             TS_ASSERT(tm1.getField2() == -1);
