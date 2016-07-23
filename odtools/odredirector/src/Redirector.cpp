@@ -107,14 +107,17 @@ namespace odredirector {
             if (m_fromstdin) {
                 // Please note that reading from stdin does not evaluate sending latencies.
                 while (cin.good()) {
-                    // Buffer from cin.
-                    stringstream containerBuffer;
-                    // Fill buffer.
-                    QueryableNetstringsDeserializerABCF::fillBuffer(cin, containerBuffer);
+//                    // Buffer from cin.
+//                    stringstream containerBuffer;
+//                    // Fill buffer.
+//                    QueryableNetstringsDeserializerABCF::fillBuffer(cin, containerBuffer);
 
-                    // Decode container from buffer.
+//                    // Decode container from buffer.
+//                    Container c;
+//                    containerBuffer >> c;
+
                     Container c;
-                    containerBuffer >> c;
+                    cin >> c;
 
                     // Compressed images are transformed into regular shared images again.
                     if (c.getDataType() == odcore::data::image::CompressedImage::ID()) {
