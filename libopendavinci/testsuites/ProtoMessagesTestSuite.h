@@ -1611,7 +1611,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationModuleStatistic() {
+        void testSerializationDeserializationModuleStatistic() {
             ModuleDescriptor md;
             md.setName("My component");
             md.setIdentifier("12345");
@@ -1653,7 +1653,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(tm2.getRuntimeStatistic().getSliceConsumption(), -7.2345, 1e-4);
         }
 
-        void NOtestSerializationDeserializationModuleStatisticContainer() {
+        void testSerializationDeserializationModuleStatisticContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -1700,7 +1700,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(tm2.getRuntimeStatistic().getSliceConsumption(), -7.2345, 1e-4);
         }
 
-        void NOtestSerializationDeserializationModuleStatisticVisitor() {
+        void testSerializationDeserializationModuleStatisticVisitor() {
             ModuleDescriptor md;
             md.setName("My component");
             md.setIdentifier("12345");
