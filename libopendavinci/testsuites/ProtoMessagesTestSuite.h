@@ -100,7 +100,7 @@ class SerializationFactoryTestCase : public SerializationFactory {
 
 class ProtoMessageTest : public CxxTest::TestSuite {
     public:
-        void NOtestSerializationDeserializationTestMessage1OneField() {
+        void testSerializationDeserializationTestMessage1OneField() {
             TestMessage1 tm1;
             tm1.setField1(13);
 
@@ -121,7 +121,6 @@ class ProtoMessageTest : public CxxTest::TestSuite {
         }
 
         void testSerializationDeserializationTestMessage1OneFieldContainer() {
-cout << endl;
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -135,27 +134,15 @@ cout << endl;
             stringstream out;
             out << c;
 
-const string s = out.str();
-for(unsigned int i = 0; i < s.size(); i++) {
-    cout << hex << (uint32_t)(uint8_t)s.at(i) << " ";
-}
-cout << endl;
-
             // Read from buffer.
-cout << __FILE__ << " " << __LINE__ << endl;
             Container c2;
             out >> c2;
-cout << __FILE__ << " " << __LINE__ << endl;
 
             TS_ASSERT(c2.getDataType() == TestMessage1::ID());
-cout << __FILE__ << " " << __LINE__ << endl;
 
             TestMessage1 tm2 = c2.getData<TestMessage1>();
-cout << __FILE__ << " " << __LINE__ << endl;
-cout << "TM2= " << dec << (uint32_t)tm2.getField1() << endl;
             TS_ASSERT(tm1.getField1() == tm2.getField1());
             TS_ASSERT(tm2.getField1() == 13);
-cout << __FILE__ << " " << __LINE__ << endl;
         }
 
         void NOtestSerializationDeserializationTestMessage1OneFieldVisitor() {
@@ -3622,7 +3609,7 @@ cout << "Value = " << i << endl;
         ///////////////////////////////////////////////////////////////////////
 
         // Fails until we have queryable functionality in place.
-        void NOtestSerializationDeserializationTestMessage1OneFieldDefaultContainer() {
+        void testSerializationDeserializationTestMessage1OneFieldDefaultContainer() {
             // Create an uninitialized Container.
             Container c;
 
