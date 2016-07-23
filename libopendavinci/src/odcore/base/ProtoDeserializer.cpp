@@ -126,11 +126,6 @@ class Serializable;
             m_buffer.str("");
             m_mapOfKeyValues.clear();
 
-//            while (in.good()) {
-//                char c = in.get();
-//                m_buffer.put(c);
-//            }
-
             while (in.good()) {
                 // First stage: Read keyFieldType (encoded as VarInt).
                 uint64_t keyFieldType = 0;
@@ -145,14 +140,14 @@ class Serializable;
                         // Read VarInt value directly.
                         uint64_t value = 0;
                         bytesRead = decodeVarInt(in, value);
-cout << "1-FieldId = " << dec << fieldId << ", type = " << dec << protoType << ", value = " << dec << value << ", bytesRead = " << dec << (uint32_t)bytesRead << endl;
+//cout << "1-FieldId = " << dec << fieldId << ", type = " << dec << protoType << ", value = " << dec << value << ", bytesRead = " << dec << (uint32_t)bytesRead << endl;
                         ProtoKeyValue pkv(fieldId, value);
                         m_mapOfKeyValues[fieldId] = pkv;
                     }
                     if (protoType == ProtoSerializer::EIGHT_BYTES) {
-cout << "2-FieldId = " << dec << fieldId << ", type = " << dec << protoType << ", double " << endl;
+//cout << "2-FieldId = " << dec << fieldId << ", type = " << dec << protoType << ", double " << endl;
                         uint8_t bytesToRead = 8;
-                        vector<char> buffer;
+                        vector<char> buffer; // DO NOT USE vector::resize to avoid filling up the buffer with 0.
                         while (in.good() && (bytesToRead > 0)) {
                             char c = in.get();
                             buffer.push_back(c);
@@ -162,9 +157,9 @@ cout << "2-FieldId = " << dec << fieldId << ", type = " << dec << protoType << "
                         m_mapOfKeyValues[fieldId] = pkv;
                     }
                     if (protoType == ProtoSerializer::FOUR_BYTES) {
-cout << "3-FieldId = " << dec << fieldId << ", type = " << dec << protoType << ", float " << endl;
+//cout << "3-FieldId = " << dec << fieldId << ", type = " << dec << protoType << ", float " << endl;
                         uint8_t bytesToRead = 4;
-                        vector<char> buffer;
+                        vector<char> buffer; // DO NOT USE vector::resize to avoid filling up the buffer with 0.
                         while (in.good() && (bytesToRead > 0)) {
                             char c = in.get();
                             buffer.push_back(c);
@@ -177,21 +172,20 @@ cout << "3-FieldId = " << dec << fieldId << ", type = " << dec << protoType << "
                         uint64_t length = 0;
                         bytesRead = decodeVarInt(in, length);
                         uint64_t bytesToRead = length;
-                        vector<char> buffer;
-cout << "4-FieldId = " << dec << fieldId << ", type = " << dec << protoType << ", length delimited = " << dec << length << endl;
-cout << "READ" << endl;
+                        vector<char> buffer; // DO NOT USE vector::resize to avoid filling up the buffer with 0.
+//cout << "4-FieldId = " << dec << fieldId << ", type = " << dec << protoType << ", length delimited = " << dec << length << endl;
                         while (in.good() && (bytesToRead > 0)) {
                             char c = in.get();
                             buffer.push_back(c);
-cout << hex << (uint32_t)(uint8_t)c << " ";
+//cout << hex << (uint32_t)(uint8_t)c << " ";
                             bytesToRead--;
                         }
-cout << dec << endl;
-cout << "BUFFER: " << endl;
-for(unsigned int i = 0; i < buffer.size(); i++) {
-    cout << hex << (uint32_t)(uint8_t)buffer.at(i) << " ";
-}
-cout << dec << endl;
+//cout << dec << endl;
+//cout << "BUFFER: " << endl;
+//for(unsigned int i = 0; i < buffer.size(); i++) {
+//    cout << hex << (uint32_t)(uint8_t)buffer.at(i) << " ";
+//}
+//cout << dec << endl;
 
                         ProtoKeyValue pkv(fieldId, ProtoSerializer::LENGTH_DELIMITED, length, buffer);
                         m_mapOfKeyValues[fieldId] = pkv;
@@ -253,7 +247,7 @@ cout << dec << endl;
 
         void ProtoDeserializer::readValueForSerializable(const string &s, Serializable &v) {
             // Deserialize v from string using a stringstream.
-cout << __FILE__ << " " << __LINE__ << endl;
+//cout << __FILE__ << " " << __LINE__ << endl;
             stringstream sstr(s);
 
 //            // Check whether v is from type Visitable to use ProtoSerializerVisitor.
@@ -420,18 +414,18 @@ cout << __FILE__ << " " << __LINE__ << endl;
         ///////////////////////////////////////////////////////////////////////
 
         void ProtoDeserializer::read(const uint32_t &id, Serializable &v) {
-cout << __FILE__ << " " << __LINE__ << ", ID = " << dec << id << endl;
+//cout << __FILE__ << " " << __LINE__ << ", ID = " << dec << id << endl;
             auto hasKey = m_mapOfKeyValues.find(id);
             if (hasKey != m_mapOfKeyValues.end()) {
                 string s = m_mapOfKeyValues[id].getValueAsString();
-cout << __FILE__ << " " << __LINE__ << ", ID = " << dec << id << endl;
-for(unsigned int i = 0; i < s.size(); i++) {
-    cout << hex << (uint32_t)(uint8_t)s.at(i) << " ";
-}
-cout << dec << endl;
+//cout << __FILE__ << " " << __LINE__ << ", ID = " << dec << id << endl;
+//for(unsigned int i = 0; i < s.size(); i++) {
+//    cout << hex << (uint32_t)(uint8_t)s.at(i) << " ";
+//}
+//cout << dec << endl;
                 stringstream sstr(s);
                 sstr >> v;
-cout << __FILE__ << " " << __LINE__ << ", ID = " << dec << id << endl;
+//cout << __FILE__ << " " << __LINE__ << ", ID = " << dec << id << endl;
             }
         }
 
@@ -452,14 +446,10 @@ cout << __FILE__ << " " << __LINE__ << ", ID = " << dec << id << endl;
         }
 
         void ProtoDeserializer::read(const uint32_t &id, unsigned char &v) {
-cout << __FILE__ << " " << __LINE__ << ", ID = " << dec << id << endl;
             auto hasKey = m_mapOfKeyValues.find(id);
             if (hasKey != m_mapOfKeyValues.end()) {
-cout << __FILE__ << " " << __LINE__ << endl;
                 uint64_t _v = m_mapOfKeyValues[id].getValueAsVarInt();
-cout << __FILE__ << " " << __LINE__ << endl;
                 v = static_cast<unsigned char>(_v);
-cout << __FILE__ << " " << __LINE__ << endl;
             }
         }
 

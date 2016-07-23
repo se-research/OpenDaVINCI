@@ -21,7 +21,6 @@
 #include <sstream>
 
 #include "opendavinci/odcore/base/ProtoSerializer.h"
-#include "opendavinci/odcore/base/ProtoSerializerVisitor.h"
 #include "opendavinci/odcore/base/Visitable.h"
 
 namespace odcore {
@@ -56,36 +55,10 @@ class Serializable;
         uint32_t ProtoSerializer::writeValue(ostream &o, const Serializable &v) {
             // Buffer for serialized data.
             stringstream buffer;
-
-//            // Check whether v is from type Visitable to use ProtoSerializer.
-//            try {
-//                const Visitable &v2 = dynamic_cast<const Visitable&>(v);
-
-//                // Cast succeeded, visited nested class using a ProtoSerializer.
-//                ProtoSerializerVisitor nestedVisitor;
-//                const_cast<Visitable&>(v2).accept(nestedVisitor);
-
-//                // Get serialized data.
-//                nestedVisitor.getSerializedData(buffer);
-//            }
-//            catch(...) {
-//                // Serialize v using the default way as it is not of type Visitable.
-//                buffer << v;
-//            }
-
-cout << __FILE__ << " " << __LINE__ << endl;
             buffer << v;
-cout << __FILE__ << " " << __LINE__ << endl;
 
             // Get serialized value.
             const string tmp = buffer.str();
-const string s = tmp;
-for(unsigned int i = 0; i < s.size(); i++) {
-    cout << hex << (uint32_t)(uint8_t)s.at(i) << " ";
-}
-cout << dec << endl;
-
-cout << __FILE__ << " " << __LINE__ << endl;
             return writeValue(o, tmp);
         }
 
@@ -156,13 +129,11 @@ cout << __FILE__ << " " << __LINE__ << endl;
         uint32_t ProtoSerializer::writeValue(ostream &o, const string &v) {
             uint32_t bytesWritten = 0;
 
-cout << __FILE__ << " " << __LINE__ << endl;
             const uint32_t size = v.length();
             bytesWritten += encodeVarInt(o, size);
 
             o.write(v.c_str(), size);
             bytesWritten += size;
-cout << __FILE__ << " " << __LINE__ << endl;
 
             return bytesWritten;
         }
