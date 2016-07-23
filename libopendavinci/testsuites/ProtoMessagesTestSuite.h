@@ -28,6 +28,7 @@
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
 #include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/ProtoDeserializer.h"
 #include "opendavinci/odcore/base/ProtoSerializer.h"
@@ -95,7 +96,128 @@ class SerializationFactoryTestCase : public SerializationFactory {
         virtual shared_ptr<Deserializer> getDeserializer(istream &in) const {
             return shared_ptr<Deserializer>(new ProtoDeserializer(in));
         }
+};
 
+class ProtoMessages1SampleDataVersion1 : public odcore::base::Serializable {
+    public:
+        ProtoMessages1SampleDataVersion1() :
+            m_bool(false) {}
+
+        bool m_bool;
+
+        ostream& operator<<(ostream &out) const {
+            SerializationFactory& sf=SerializationFactory::getInstance();
+
+            std::shared_ptr<Serializer> s = sf.getSerializer(out);
+
+            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('m', '_', 'b', 'o', 'o', 'l') >::RESULT,
+                    m_bool);
+
+            return out;
+        }
+
+        istream& operator>>(istream &in) {
+            SerializationFactory& sf=SerializationFactory::getInstance();
+
+            std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+
+            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('m', '_', 'b', 'o', 'o', 'l') >::RESULT,
+                   m_bool);
+
+            return in;
+        }
+};
+
+class ProtoMessages1SampleDataVersion2 : public odcore::base::Serializable {
+    public:
+        ProtoMessages1SampleDataVersion2() :
+            m_bool(false),
+            m_int(37),
+            m_string("Hello World") {}
+
+        bool m_bool;
+        int32_t m_int;
+        string m_string;
+
+        ostream& operator<<(ostream &out) const {
+            SerializationFactory& sf=SerializationFactory::getInstance();
+
+            std::shared_ptr<Serializer> s = sf.getSerializer(out);
+
+            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('m', '_', 'b', 'o', 'o', 'l') >::RESULT,
+                    m_bool);
+
+            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 'i', 'n', 't') >::RESULT,
+                    m_int);
+
+            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 's', 't', 'r') >::RESULT,
+                    m_string);
+
+            return out;
+        }
+
+        istream& operator>>(istream &in) {
+            SerializationFactory& sf=SerializationFactory::getInstance();
+
+            std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+
+            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('m', '_', 'b', 'o', 'o', 'l') >::RESULT,
+                   m_bool);
+
+            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 'i', 'n', 't') >::RESULT,
+                   m_int);
+
+            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 's', 't', 'r') >::RESULT,
+                   m_string);
+
+            return in;
+        }
+};
+
+class ProtoMessages1SampleDataVersion2Reordered : public odcore::base::Serializable {
+    public:
+        ProtoMessages1SampleDataVersion2Reordered() :
+            m_bool(false),
+            m_int(20),
+            m_string("") {}
+
+        bool m_bool;
+        int32_t m_int;
+        string m_string;
+
+        ostream& operator<<(ostream &out) const {
+            SerializationFactory& sf=SerializationFactory::getInstance();
+
+            std::shared_ptr<Serializer> s = sf.getSerializer(out);
+
+            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('m', '_', 'b', 'o', 'o', 'l') >::RESULT,
+                    m_bool);
+
+            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 'i', 'n', 't') >::RESULT,
+                    m_int);
+
+            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 's', 't', 'r') >::RESULT,
+                    m_string);
+
+            return out;
+        }
+
+        istream& operator>>(istream &in) {
+            SerializationFactory& sf=SerializationFactory::getInstance();
+
+            std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+
+            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 'i', 'n', 't') >::RESULT,
+                   m_int);
+
+            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('m', '_', 'b', 'o', 'o', 'l') >::RESULT,
+                   m_bool);
+
+            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 's', 't', 'r') >::RESULT,
+                   m_string);
+
+            return in;
+        }
 };
 
 class ProtoMessageTest : public CxxTest::TestSuite {
@@ -3618,6 +3740,48 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
+        void testReorderedFields() {
+            // Create some data.
+            ProtoMessages1SampleDataVersion2 sd;
+            sd.m_bool = true;
+            sd.m_int = 42;
+            sd.m_string = "This is an example.";
+
+            // Create a data sink.
+            stringstream inout;
+            inout << sd;
+            inout.flush();
+
+            // Read from the previously created data sink.
+            ProtoMessages1SampleDataVersion2Reordered sd2;
+            inout >> sd2;
+
+            TS_ASSERT(sd2.m_bool);
+            TS_ASSERT(sd2.m_int == 42);
+            TS_ASSERT(sd2.m_string == "This is an example.");
+        }
+
+        void testExtendedFields() {
+            // Create some data.
+            ProtoMessages1SampleDataVersion1 sd;
+            sd.m_bool = true;
+
+            // Create a data sink.
+            stringstream inout;
+            inout << sd;
+            inout.flush();
+
+            // Read from the previously created data sink.
+            ProtoMessages1SampleDataVersion2 sd2;
+            inout >> sd2;
+
+            TS_ASSERT(sd2.m_bool);
+            TS_ASSERT(sd2.m_int == 37);
+            TS_ASSERT(sd2.m_string == "Hello World");
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+
 // TODO:
 // Done - 1) test adjusted serialization for ModuleStatics
 // Done - 2) Add test case for odcore.data.dmcp.PulseMessage
@@ -3626,20 +3790,20 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 // Done - 5) Refactor odDataStructureGenerator to emit new code to use readValue/writeValue for lists, maps, and fixed arrays
 // Done - 6) Enable Proto serialization/deserialization by default & re-test libopendavinci.
 // Done - 7) Fix Player/Recorder for Containers (add header to Proto!)
-// 8) Test if an uninitialized Container results in default initialized message.
-// TO BE TESTED 8) QueryableNetstringsDeserializerABCF::fillBuffer(cin, containerBuffer) --> needs to be added to ProtoSerializer? --> testCase in odredirector passes by just reading from cin. TODO: Test on terminal.
-// 9) Check missing fields in messages for deserialization.
-// 10) Check additional fields in messages for deserialization.
-// 11) Check arbitrary order: FalseSerializationTestSuite, SerializationTestSuite (they had a different order of fields)
-// 12) Remove extends keyword from odDataStructureGenerator
-// 13) Fix opendlv data structure --> either model them as odvd data structures or fix direction in code
-// 14) Change identifiers for built-in types (like Container) to remove fourbyteidentifier
-// (Started) 15) Check serializatio/deserialization order for all built-in types
-// 16) Enable Proto serialization/deserialization by default & re-test
-// 17) Check multiple deserialization in Container (cf test case for PulseAckContainersMessage)
-// 18) Compatibility with 3rd party Proto implementations
-// 19) Transform map.
-// 20) Transform fixed array.
+// Done - 8) Test if an uninitialized Container results in default initialized message.
+// Done - 9) Check missing fields in messages for deserialization.
+// Done - 10) Check additional fields in messages for deserialization.
+// Done - 11) Check arbitrary order: FalseSerializationTestSuite, SerializationTestSuite (they had a different order of fields)
+// Done - 12) Check multiple deserialization in Container (cf test case for PulseAckContainersMessage)
+// TO BE TESTED 13) QueryableNetstringsDeserializerABCF::fillBuffer(cin, containerBuffer) --> needs to be added to ProtoSerializer? --> testCase in odredirector passes by just reading from cin. TODO: Test on terminal.
+// 14) Remove extends keyword from odDataStructureGenerator
+// 15) Fix opendlv data structure --> either model them as odvd data structures or fix direction in code
+// 16) Change identifiers for built-in types (like Container) to remove fourbyteidentifier
+// (Started) 17) Check serializatio/deserialization order for all built-in types
+// 18) Enable Proto serialization/deserialization by default & re-test
+// 19) Compatibility with 3rd party Proto implementations
+// 20) Transform map.
+// 21) Transform fixed array.
 };
 
 #endif /*CORE_PROTOMESSAGESTESTSUITE_H_*/
