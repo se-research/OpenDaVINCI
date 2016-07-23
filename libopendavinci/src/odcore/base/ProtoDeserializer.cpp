@@ -140,12 +140,10 @@ class Serializable;
                         // Read VarInt value directly.
                         uint64_t value = 0;
                         bytesRead = decodeVarInt(in, value);
-//cout << "1-FieldId = " << dec << fieldId << ", type = " << dec << protoType << ", value = " << dec << value << ", bytesRead = " << dec << (uint32_t)bytesRead << endl;
                         ProtoKeyValue pkv(fieldId, value);
                         m_mapOfKeyValues[fieldId] = pkv;
                     }
                     if (protoType == ProtoSerializer::EIGHT_BYTES) {
-//cout << "2-FieldId = " << dec << fieldId << ", type = " << dec << protoType << ", double " << endl;
                         uint8_t bytesToRead = 8;
                         vector<char> buffer; // DO NOT USE vector::resize to avoid filling up the buffer with 0.
                         while (in.good() && (bytesToRead > 0)) {
@@ -157,7 +155,6 @@ class Serializable;
                         m_mapOfKeyValues[fieldId] = pkv;
                     }
                     if (protoType == ProtoSerializer::FOUR_BYTES) {
-//cout << "3-FieldId = " << dec << fieldId << ", type = " << dec << protoType << ", float " << endl;
                         uint8_t bytesToRead = 4;
                         vector<char> buffer; // DO NOT USE vector::resize to avoid filling up the buffer with 0.
                         while (in.good() && (bytesToRead > 0)) {
@@ -173,20 +170,11 @@ class Serializable;
                         bytesRead = decodeVarInt(in, length);
                         uint64_t bytesToRead = length;
                         vector<char> buffer; // DO NOT USE vector::resize to avoid filling up the buffer with 0.
-//cout << "4-FieldId = " << dec << fieldId << ", type = " << dec << protoType << ", length delimited = " << dec << length << endl;
                         while (in.good() && (bytesToRead > 0)) {
                             char c = in.get();
                             buffer.push_back(c);
-//cout << hex << (uint32_t)(uint8_t)c << " ";
                             bytesToRead--;
                         }
-//cout << dec << endl;
-//cout << "BUFFER: " << endl;
-//for(unsigned int i = 0; i < buffer.size(); i++) {
-//    cout << hex << (uint32_t)(uint8_t)buffer.at(i) << " ";
-//}
-//cout << dec << endl;
-
                         ProtoKeyValue pkv(fieldId, ProtoSerializer::LENGTH_DELIMITED, length, buffer);
                         m_mapOfKeyValues[fieldId] = pkv;
                     }
