@@ -478,7 +478,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationTestMessage2Complete() {
+        void testSerializationDeserializationTestMessage2Complete() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -506,7 +506,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             }
         }
 
-        void NOtestSerializationDeserializationTestMessage2CompleteContainer() {
+        void testSerializationDeserializationTestMessage2CompleteContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -539,7 +539,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             }
         }
 
-        void NOtestSerializationDeserializationTestMessage2CompleteVisitor() {
+        void testSerializationDeserializationTestMessage2CompleteVisitor() {
             for(uint16_t i = 0; i <= 255; i++) {
                 for(int16_t j = -127; j <= 127; j++) {
                     TestMessage2 tm1;
