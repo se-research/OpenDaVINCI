@@ -20,17 +20,82 @@
 #ifndef OPENDAVINCI_CORE_BASE_PROTODESERIALIZER_H_
 #define OPENDAVINCI_CORE_BASE_PROTODESERIALIZER_H_
 
+#include <map>
 #include <sstream>
 #include <string>
+#include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/ProtoSerializer.h"
 #include "opendavinci/odcore/base/ProtoSerializerVisitor.h"
 
 namespace odcore {
     namespace base {
 
         using namespace std;
+
+        /**
+         * This class represents an entry for the hash map used by
+         * ProtoDeserializer.
+         */
+        class ProtoKeyValue {
+            public:
+                /**
+                 * Constructor.
+                 *
+                 * @param key Associated Proto key.
+                 * @param type Associated Proto type.
+                 * @param length Length of the contained value.
+                 * @param value Actual value (represented as vector of char making use of the vector's contiguous storage capability).
+                 */
+                ProtoKeyValue(const uint32_t &key,
+                              const ProtoSerializer::PROTOBUF_TYPE &type,
+                              const uint64_t &length,
+                              const vector<char> &value);
+
+                uint32_t getKey() const;
+                ProtoSerializer::PROTOBUF_TYPE getType() const;
+                uint64_t getLength() const;
+
+                /**
+                 * This method returns the contained value
+                 * as uint64_t (base type for VarInt).
+                 *
+                 * @return value as uint64_t.
+                 */
+                uint64_t getValueAsVarInt() const;
+
+                /**
+                 * This method returns the contained value
+                 * as float.
+                 *
+                 * @return value as float.
+                 */
+                float getValueAsFloat() const;
+
+                /**
+                 * This method returns the contained value
+                 * as double.
+                 *
+                 * @return value as double.
+                 */
+                double getValueAsDouble() const;
+
+                /**
+                 * This method returns the contained value
+                 * as string.
+                 *
+                 * @return value as string.
+                 */
+                string getValueAsString() const;
+
+            private:
+                uint32_t m_key;
+                ProtoSerializer::PROTOBUF_TYPE m_type;
+                uint64_t m_length;
+                vector<char> m_value;
+        };
 
         /**
          * This class provides a deserialization to decode data
@@ -173,6 +238,7 @@ namespace odcore {
             private:
                 uint32_t m_size;
                 stringstream m_buffer;
+                map<uint32_t, ProtoKeyValue> m_mapOfKeyValues;
         };
 
     }

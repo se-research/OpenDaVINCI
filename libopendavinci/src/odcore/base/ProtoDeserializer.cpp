@@ -33,13 +33,71 @@ namespace odcore {
 
 class Serializable;
 
+        ProtoKeyValue::ProtoKeyValue(const uint32_t &key,
+                                     const ProtoSerializer::PROTOBUF_TYPE &type,
+                                     const uint64_t &length,
+                                     const vector<char> &value) :
+            m_key(key),
+            m_type(type),
+            m_length(length),
+            m_value(value) {}
+
+        uint32_t ProtoKeyValue::getKey() const {
+            return m_key;
+        }
+
+        ProtoSerializer::PROTOBUF_TYPE ProtoKeyValue::getType() const {
+            return m_type;
+        }
+
+        uint64_t ProtoKeyValue::getLength() const {
+            return m_length;
+        }
+
+        uint64_t ProtoKeyValue::getValueAsVarInt() const {
+            uint64_t retVal = 0;
+            if ( (m_value.size() > 0) && (m_length > 0) && (m_value.size() <= sizeof(uint64_t)) && (m_type == ProtoSerializer::VARINT) ) {
+                retVal = *((uint64_t*)(&m_value[0]));
+            }
+            return retVal;
+        }
+
+        float ProtoKeyValue::getValueAsFloat() const {
+            float retVal = 0;
+            if ( (m_value.size() > 0) && (m_length == sizeof(float)) && (m_value.size() == sizeof(float)) && (m_type == ProtoSerializer::FOUR_BYTES) ) {
+                retVal = *((float*)(&m_value[0]));
+            }
+            return retVal;
+        }
+
+        double ProtoKeyValue::getValueAsDouble() const {
+            double retVal = 0;
+            if ( (m_value.size() > 0) && (m_length == sizeof(double)) && (m_value.size() == sizeof(double)) && (m_type == ProtoSerializer::EIGHT_BYTES) ) {
+                retVal = *((double*)(&m_value[0]));
+            }
+            return retVal;
+        }
+
+        string ProtoKeyValue::getValueAsString() const {
+            string retVal = "";
+            if ( (m_value.size() > 0) && (m_length > 0) && (m_type == ProtoSerializer::LENGTH_DELIMITED) ) {
+                // Create string from buffer.
+                retVal = string(&m_value[0], &m_value[m_length]);
+            }
+            return retVal;
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+
         ProtoDeserializer::ProtoDeserializer() :
             m_size(0),
-            m_buffer() {}
+            m_buffer(),
+            m_mapOfKeyValues() {}
 
         ProtoDeserializer::ProtoDeserializer(istream &i) :
             m_size(0),
-            m_buffer() {
+            m_buffer(),
+            m_mapOfKeyValues() {
             deserializeDataFrom(i);
         }
 
