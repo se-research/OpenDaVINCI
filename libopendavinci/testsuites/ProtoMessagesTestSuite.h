@@ -478,7 +478,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void testSerializationDeserializationTestMessage2Complete() {
+        void NOtestSerializationDeserializationTestMessage2Complete() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -506,7 +506,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             }
         }
 
-        void testSerializationDeserializationTestMessage2CompleteContainer() {
+        void NOtestSerializationDeserializationTestMessage2CompleteContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -539,7 +539,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             }
         }
 
-        void testSerializationDeserializationTestMessage2CompleteVisitor() {
+        void NOtestSerializationDeserializationTestMessage2CompleteVisitor() {
             for(uint16_t i = 0; i <= 255; i++) {
                 for(int16_t j = -127; j <= 127; j++) {
                     TestMessage2 tm1;
@@ -574,7 +574,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationTestMessage3OneFieldGoogleExample() {
+        void testSerializationDeserializationTestMessage3OneFieldGoogleExample() {
             TestMessage3 tm1;
             tm1.setField1("testing");
 
@@ -607,7 +607,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm1.getField1() == "testing");
         }
 
-        void NOtestSerializationDeserializationTestMessage3OneFieldGoogleExampleVisitor() {
+        void testSerializationDeserializationTestMessage3OneFieldGoogleExampleVisitor() {
             TestMessage3 tm1;
             tm1.setField1("testing");
 
@@ -646,7 +646,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationTestMessage4OneFieldGoogleExample() {
+        void testSerializationDeserializationTestMessage4OneFieldGoogleExample() {
             TestMessage4 tm1;
             TestMessage1 tm1Embedded;
             tm1Embedded.setField1(150);
@@ -677,7 +677,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm1.getField1().getField1() == 150);
         }
 
-        void NOtestSerializationDeserializationTestMessage4OneFieldGoogleExampleVisitor() {
+        void testSerializationDeserializationTestMessage4OneFieldGoogleExampleVisitor() {
             TestMessage4 tm1;
             TestMessage1 tm1Embedded;
             tm1Embedded.setField1(150);
@@ -714,7 +714,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationTestMessage5() {
+        void testSerializationDeserializationTestMessage5() {
             TestMessage5 tm1;
             TS_ASSERT(tm1.getField1() == 1);
             TS_ASSERT(tm1.getField2() == -1);
