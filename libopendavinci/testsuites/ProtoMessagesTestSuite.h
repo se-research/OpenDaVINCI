@@ -1749,7 +1749,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationModuleStateMessage() {
+        void testSerializationDeserializationModuleStateMessage() {
             ModuleStateMessage tm1;
             tm1.setModuleState(ModuleStateMessage::RUNNING);
 
@@ -1769,7 +1769,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getModuleState() == ModuleStateMessage::RUNNING);
         }
 
-        void NOtestSerializationDeserializationModuleStateMessageContainer() {
+        void testSerializationDeserializationModuleStateMessageContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -1794,7 +1794,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getModuleState() == ModuleStateMessage::RUNNING);
         }
 
-        void NOtestSerializationDeserializationModuleStateMessageVisitor() {
+        void testSerializationDeserializationModuleStateMessageVisitor() {
             ModuleStateMessage tm1;
             tm1.setModuleState(ModuleStateMessage::RUNNING);
 
@@ -1821,7 +1821,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationModuleExitCodeMessage() {
+        void testSerializationDeserializationModuleExitCodeMessage() {
             ModuleExitCodeMessage tm1;
             tm1.setModuleExitCode(ModuleExitCodeMessage::CONNECTION_LOST);
 
@@ -1841,7 +1841,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getModuleExitCode() == ModuleExitCodeMessage::CONNECTION_LOST);
         }
 
-        void NOtestSerializationDeserializationModuleExitCodeMessageContainer() {
+        void testSerializationDeserializationModuleExitCodeMessageContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -1866,7 +1866,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getModuleExitCode() == ModuleExitCodeMessage::CONNECTION_LOST);
         }
 
-        void NOtestSerializationDeserializationModuleExitCodeMessageVisitor() {
+        void testSerializationDeserializationModuleExitCodeMessageVisitor() {
             ModuleExitCodeMessage tm1;
             tm1.setModuleExitCode(ModuleExitCodeMessage::CONNECTION_LOST);
 
@@ -1893,7 +1893,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationPulseAckMessage() {
+        void testSerializationDeserializationPulseAckMessage() {
             PulseAckMessage tm1;
 
             // Replace default serializer/deserializers.
@@ -1909,7 +1909,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             out >> tm2;
         }
 
-        void NOtestSerializationDeserializationPulseAckMessageContainer() {
+        void testSerializationDeserializationPulseAckMessageContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -1931,7 +1931,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             (void)tm2;
         }
 
-        void NOtestSerializationDeserializationPulseAckMessageVisitor() {
+        void testSerializationDeserializationPulseAckMessageVisitor() {
             PulseAckMessage tm1;
 
             // Create a Proto serialization visitor.
