@@ -17,7 +17,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <iostream>
 #include <sstream>
 
 #include "opendavinci/odcore/base/ProtoSerializer.h"
@@ -57,7 +56,7 @@ class Serializable;
             stringstream buffer;
             buffer << v;
 
-            // Get serialized value.
+            // Get serialized value as string.
             const string tmp = buffer.str();
             return writeValue(o, tmp);
         }

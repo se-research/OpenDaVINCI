@@ -393,7 +393,7 @@ class Serializable;
         void ProtoDeserializer::read(const uint32_t &id, Serializable &v) {
             auto hasKey = m_mapOfKeyValues.find(id);
             if (hasKey != m_mapOfKeyValues.end()) {
-                string s = m_mapOfKeyValues[id].getValueAsString();
+                const string s = m_mapOfKeyValues[id].getValueAsString();
                 readValueForSerializable(s, v);
             }
         }
@@ -499,13 +499,12 @@ class Serializable;
         }
 
         void ProtoDeserializer::read(const uint32_t &id, void *data, const uint32_t &size) {
-            (void)id;
-            (void)data;
-            (void)size;
-cerr << "read for data, size not implemented." << endl;
-
-//            readAndValidateKey(m_buffer, id, ProtoSerializer::LENGTH_DELIMITED);
-//            readValue(m_buffer, data, size);
+            auto hasKey = m_mapOfKeyValues.find(id);
+            if (hasKey != m_mapOfKeyValues.end()) {
+                const string s = m_mapOfKeyValues[id].getValueAsString();
+                memset(data, 0, size);
+                memcpy(data, s.c_str(), (size < s.size() ? size : s.size()));
+            }
         }
 
         ///////////////////////////////////////////////////////////////////////
