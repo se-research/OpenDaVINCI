@@ -40,12 +40,14 @@ class Serializable;
         class ProtoSerializer : public Serializer {
             public:
                 // Protobuf type specification.
-                enum PROTOBUF_TYPE { VARINT           = 0,
-                                     EIGHT_BYTES      = 1, 
-                                     LENGTH_DELIMITED = 2, 
-                                     START_GROUP_DEPRECATED = 3, 
-                                     END_GROUP_DEPRECATED = 4, 
-                                     FOUR_BYTES       = 5 };
+                enum PROTOBUF_TYPE { VARINT                 = 0,
+                                     EIGHT_BYTES            = 1,
+                                     LENGTH_DELIMITED       = 2,
+                                     START_GROUP_DEPRECATED = 3,
+                                     END_GROUP_DEPRECATED   = 4,
+                                     FOUR_BYTES             = 5,
+                                     UNUSED_6               = 6,
+                                     UNUSED_7               = 7 };
 
             private:
                 /**

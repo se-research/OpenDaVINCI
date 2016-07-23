@@ -233,10 +233,9 @@ namespace odcore {
                  * @param expectedType Proto type to be expected from the stream.
                  * @return Bytes consumed.
                  */
-                uint32_t readAndValidateKey(istream &in, const uint32_t &id, const ProtoSerializerVisitor::PROTOBUF_TYPE &expectedType);
+                uint32_t readAndValidateKey(istream &in, const uint32_t &id, const ProtoSerializer::PROTOBUF_TYPE &expectedType);
 
             private:
-                uint32_t m_size;
                 stringstream m_buffer;
                 map<uint32_t, ProtoKeyValue> m_mapOfKeyValues;
         };
