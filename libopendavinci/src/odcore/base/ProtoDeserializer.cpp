@@ -247,30 +247,7 @@ class Serializable;
 
         void ProtoDeserializer::readValueForSerializable(const string &s, Serializable &v) {
             // Deserialize v from string using a stringstream.
-//cout << __FILE__ << " " << __LINE__ << endl;
             stringstream sstr(s);
-
-//            // Check whether v is from type Visitable to use ProtoSerializerVisitor.
-//            try {
-//cout << __FILE__ << " " << __LINE__ << endl;
-//                const Visitable &v2 = dynamic_cast<const Visitable&>(v);
-
-//                // Cast succeeded, visited nested class using a ProtoSerializerVisitor.
-//                ProtoDeserializerVisitor nestedVisitor;
-//cout << __FILE__ << " " << __LINE__ << endl;
-
-//                // Set buffer to deserialize data from.
-//                nestedVisitor.deserializeDataFrom(sstr);
-//cout << __FILE__ << " " << __LINE__ << endl;
-
-//                // Visit v and set values.
-//                const_cast<Visitable&>(v2).accept(nestedVisitor);
-//            }
-//            catch(...) {
-//                // Deserialize v using the default way as it is not of type Visitable.
-//                sstr >> v;
-//            }
-
             sstr >> v;
         }
 
@@ -414,18 +391,10 @@ class Serializable;
         ///////////////////////////////////////////////////////////////////////
 
         void ProtoDeserializer::read(const uint32_t &id, Serializable &v) {
-//cout << __FILE__ << " " << __LINE__ << ", ID = " << dec << id << endl;
             auto hasKey = m_mapOfKeyValues.find(id);
             if (hasKey != m_mapOfKeyValues.end()) {
                 string s = m_mapOfKeyValues[id].getValueAsString();
-//cout << __FILE__ << " " << __LINE__ << ", ID = " << dec << id << endl;
-//for(unsigned int i = 0; i < s.size(); i++) {
-//    cout << hex << (uint32_t)(uint8_t)s.at(i) << " ";
-//}
-//cout << dec << endl;
-                stringstream sstr(s);
-                sstr >> v;
-//cout << __FILE__ << " " << __LINE__ << ", ID = " << dec << id << endl;
+                readValueForSerializable(s, v);
             }
         }
 
