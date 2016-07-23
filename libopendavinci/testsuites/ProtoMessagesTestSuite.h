@@ -1302,7 +1302,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationDiscoverMessage() {
+        void testSerializationDeserializationDiscoverMessage() {
             ServerInformation tm1;
             tm1.setIP("456.789.abc.123");
             tm1.setPort(456);
@@ -1341,7 +1341,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(dm2.getModuleName() == "TestComponent");
         }
 
-        void NOtestSerializationDeserializationDiscoverMessageContainer() {
+        void testSerializationDeserializationDiscoverMessageContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -1385,7 +1385,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(dm2.getModuleName() == "TestComponent");
         }
 
-        void NOtestSerializationDeserializationDiscoverMessageVisitor() {
+        void testSerializationDeserializationDiscoverMessageVisitor() {
             ServerInformation tm1;
             tm1.setIP("456.789.abc.123");
             tm1.setPort(456);
@@ -1431,7 +1431,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationModuleDescriptor() {
+        void testSerializationDeserializationModuleDescriptor() {
             ModuleDescriptor tm1;
             tm1.setName("My component");
             tm1.setIdentifier("12345");
@@ -1463,7 +1463,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(tm2.getFrequency(), 1.2345, 1e-4);
         }
 
-        void NOtestSerializationDeserializationModuleDescriptorContainer() {
+        void testSerializationDeserializationModuleDescriptorContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -1500,7 +1500,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(tm2.getFrequency(), 1.2345, 1e-4);
         }
 
-        void NOtestSerializationDeserializationModuleDescriptorVisitor() {
+        void testSerializationDeserializationModuleDescriptorVisitor() {
             ModuleDescriptor tm1;
             tm1.setName("My component");
             tm1.setIdentifier("12345");
@@ -1539,7 +1539,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationRuntimeStatistic() {
+        void testSerializationDeserializationRuntimeStatistic() {
             RuntimeStatistic tm1;
             tm1.setSliceConsumption(-7.2345);
 
@@ -1559,7 +1559,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(tm2.getSliceConsumption(), -7.2345, 1e-4);
         }
 
-        void NOtestSerializationDeserializationRuntimeStatisticContainer() {
+        void testSerializationDeserializationRuntimeStatisticContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -1584,7 +1584,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(tm2.getSliceConsumption(), -7.2345, 1e-4);
         }
 
-        void NOtestSerializationDeserializationRuntimeStatisticVisitor() {
+        void testSerializationDeserializationRuntimeStatisticVisitor() {
             RuntimeStatistic tm1;
             tm1.setSliceConsumption(-7.2345);
 
