@@ -33,6 +33,13 @@ namespace odcore {
 
 class Serializable;
 
+        ProtoKeyValue::ProtoKeyValue() :
+            m_key(0),
+            m_type(ProtoSerializer::UNUSED_7),
+            m_length(0),
+            m_value(),
+            m_varIntValue(0) {}
+
         ProtoKeyValue::ProtoKeyValue(const uint32_t &key,
                                      const ProtoSerializer::PROTOBUF_TYPE &type,
                                      const uint64_t &length,
@@ -40,7 +47,16 @@ class Serializable;
             m_key(key),
             m_type(type),
             m_length(length),
-            m_value(value) {}
+            m_value(value),
+            m_varIntValue(0) {}
+
+        ProtoKeyValue::ProtoKeyValue(const uint32_t &key,
+                                     const uint64_t &value) :
+            m_key(key),
+            m_type(ProtoSerializer::VARINT),
+            m_length(0),
+            m_value(),
+            m_varIntValue(value) {}
 
         uint32_t ProtoKeyValue::getKey() const {
             return m_key;
@@ -56,8 +72,8 @@ class Serializable;
 
         uint64_t ProtoKeyValue::getValueAsVarInt() const {
             uint64_t retVal = 0;
-            if ( (m_value.size() > 0) && (m_length > 0) && (m_value.size() <= sizeof(uint64_t)) && (m_type == ProtoSerializer::VARINT) ) {
-                retVal = *((uint64_t*)(&m_value[0]));
+            if (m_type == ProtoSerializer::VARINT) {
+                retVal = m_varIntValue;
             }
             return retVal;
         }
@@ -65,7 +81,9 @@ class Serializable;
         float ProtoKeyValue::getValueAsFloat() const {
             float retVal = 0;
             if ( (m_value.size() > 0) && (m_length == sizeof(float)) && (m_value.size() == sizeof(float)) && (m_type == ProtoSerializer::FOUR_BYTES) ) {
-                retVal = *((float*)(&m_value[0]));
+                uint32_t *_v = (uint32_t*)(&m_value[0]);
+                uint32_t _v2 = le32toh(*_v);
+                retVal = *(reinterpret_cast<float*>(&_v2));
             }
             return retVal;
         }
@@ -73,7 +91,9 @@ class Serializable;
         double ProtoKeyValue::getValueAsDouble() const {
             double retVal = 0;
             if ( (m_value.size() > 0) && (m_length == sizeof(double)) && (m_value.size() == sizeof(double)) && (m_type == ProtoSerializer::EIGHT_BYTES) ) {
-                retVal = *((double*)(&m_value[0]));
+                uint64_t *_v = (uint64_t*)(&m_value[0]);
+                uint64_t _v2 = le64toh(*_v);
+                retVal = *(reinterpret_cast<double*>(&_v2));
             }
             return retVal;
         }
@@ -104,34 +124,98 @@ class Serializable;
         void ProtoDeserializer::deserializeDataFrom(istream &in) {
             // Reset internal states as this deserializer could be reused.
             m_buffer.str("");
+            m_mapOfKeyValues.clear();
 
-            while (in.good()) {
-                char c = in.get();
-                m_buffer.put(c);
-            }
-
-
-
-//            while (in.good()) {
-//                // First stage: Read keyFieldType (encoded as VarInt).
-//                uint64_t keyFieldType = 0;
-//                uint8_t bytesRead = decodeVarInt(in, keyFieldType);
-
-//                if (bytesRead > 0) {
-//                    // Succeeded to read keyFieldType entry; extract information.
-//                    const uint32_t fieldId = static_cast<uint32_t>(keyFieldType >> 3);
-//                    const ProtoSerializer::PROTOBUF_TYPE protoType = static_cast<ProtoSerializerVisitor::PROTOBUF_TYPE>(key & 0x7);
-
-//                    if ()
-//                }
-//            }
-
-//            vector<char> buffer;
 //            while (in.good()) {
 //                char c = in.get();
-//                buffer.push_back(c);
+//                m_buffer.put(c);
 //            }
+
+            while (in.good()) {
+                // First stage: Read keyFieldType (encoded as VarInt).
+                uint64_t keyFieldType = 0;
+                uint8_t bytesRead = decodeVarInt(in, keyFieldType);
+
+                if (bytesRead > 0) {
+                    // Succeeded to read keyFieldType entry; extract information.
+                    const uint32_t fieldId = static_cast<uint32_t>(keyFieldType >> 3);
+                    const ProtoSerializer::PROTOBUF_TYPE protoType = static_cast<ProtoSerializer::PROTOBUF_TYPE>(keyFieldType & 0x7);
+
+                    if (protoType == ProtoSerializer::VARINT) {
+                        // Read VarInt value directly.
+                        uint64_t value = 0;
+                        bytesRead = decodeVarInt(in, value);
+cout << "1-FieldId = " << dec << fieldId << ", type = " << dec << protoType << ", value = " << dec << value << ", bytesRead = " << dec << (uint32_t)bytesRead << endl;
+                        ProtoKeyValue pkv(fieldId, value);
+                        m_mapOfKeyValues[fieldId] = pkv;
+                    }
+                    if (protoType == ProtoSerializer::EIGHT_BYTES) {
+cout << "2-FieldId = " << dec << fieldId << ", type = " << dec << protoType << ", double " << endl;
+                        uint8_t bytesToRead = 8;
+                        vector<char> buffer;
+                        while (in.good() && (bytesToRead > 0)) {
+                            char c = in.get();
+                            buffer.push_back(c);
+                            bytesToRead--;
+                        }
+                        ProtoKeyValue pkv(fieldId, ProtoSerializer::EIGHT_BYTES, sizeof(double), buffer);
+                        m_mapOfKeyValues[fieldId] = pkv;
+                    }
+                    if (protoType == ProtoSerializer::FOUR_BYTES) {
+cout << "3-FieldId = " << dec << fieldId << ", type = " << dec << protoType << ", float " << endl;
+                        uint8_t bytesToRead = 4;
+                        vector<char> buffer;
+                        while (in.good() && (bytesToRead > 0)) {
+                            char c = in.get();
+                            buffer.push_back(c);
+                            bytesToRead--;
+                        }
+                        ProtoKeyValue pkv(fieldId, ProtoSerializer::FOUR_BYTES, sizeof(float), buffer);
+                        m_mapOfKeyValues[fieldId] = pkv;
+                    }
+                    if (protoType == ProtoSerializer::LENGTH_DELIMITED) {
+                        uint64_t length = 0;
+                        bytesRead = decodeVarInt(in, length);
+                        uint64_t bytesToRead = length;
+                        vector<char> buffer;
+cout << "4-FieldId = " << dec << fieldId << ", type = " << dec << protoType << ", length delimited = " << dec << length << endl;
+cout << "READ" << endl;
+                        while (in.good() && (bytesToRead > 0)) {
+                            char c = in.get();
+                            buffer.push_back(c);
+cout << hex << (uint32_t)(uint8_t)c << " ";
+                            bytesToRead--;
+                        }
+cout << dec << endl;
+cout << "BUFFER: " << endl;
+for(unsigned int i = 0; i < buffer.size(); i++) {
+    cout << hex << (uint32_t)(uint8_t)buffer.at(i) << " ";
+}
+cout << dec << endl;
+
+                        ProtoKeyValue pkv(fieldId, ProtoSerializer::LENGTH_DELIMITED, length, buffer);
+                        m_mapOfKeyValues[fieldId] = pkv;
+                    }
+                }
+            }
         }
+
+        uint8_t ProtoDeserializer::decodeVarInt(istream &in, uint64_t &value) {
+            value = 0;
+            uint8_t size = 0;
+            while (in.good()) {
+                char c = in.get();
+                value |= static_cast<unsigned int>( (c & 0x7f) << (0x7 * size++) );
+                if ( !(c & 0x80) ) break;
+            }
+
+            // Protobuf's VarInt is based on little endian.
+            value = le64toh(value);
+
+            return size;
+        }
+
+        ///////////////////////////////////////////////////////////////////////
 
         uint32_t ProtoDeserializer::readAndValidateKey(istream &in, const uint32_t &id, const ProtoSerializer::PROTOBUF_TYPE &expectedType) {
             uint64_t key = 0;
@@ -165,47 +249,42 @@ class Serializable;
             return static_cast<int64_t>((value >> 1) ^ -(value & 1));
         }
 
-        uint8_t ProtoDeserializer::decodeVarInt(istream &in, uint64_t &value) {
-            value = 0;
-            uint8_t size = 0;
-            while (in.good()) {
-                char c = in.get();
-                value |= static_cast<unsigned int>( (c & 0x7f) << (0x7 * size++) );
-                if ( !(c & 0x80) ) break;
-            }
-
-            // Protobuf's VarInt is based on little endian.
-            value = le64toh(value);
-
-            return size;
-        }
-
         ///////////////////////////////////////////////////////////////////////
+
+        void ProtoDeserializer::readValueForSerializable(const string &s, Serializable &v) {
+            // Deserialize v from string using a stringstream.
+cout << __FILE__ << " " << __LINE__ << endl;
+            stringstream sstr(s);
+
+//            // Check whether v is from type Visitable to use ProtoSerializerVisitor.
+//            try {
+//cout << __FILE__ << " " << __LINE__ << endl;
+//                const Visitable &v2 = dynamic_cast<const Visitable&>(v);
+
+//                // Cast succeeded, visited nested class using a ProtoSerializerVisitor.
+//                ProtoDeserializerVisitor nestedVisitor;
+//cout << __FILE__ << " " << __LINE__ << endl;
+
+//                // Set buffer to deserialize data from.
+//                nestedVisitor.deserializeDataFrom(sstr);
+//cout << __FILE__ << " " << __LINE__ << endl;
+
+//                // Visit v and set values.
+//                const_cast<Visitable&>(v2).accept(nestedVisitor);
+//            }
+//            catch(...) {
+//                // Deserialize v using the default way as it is not of type Visitable.
+//                sstr >> v;
+//            }
+
+            sstr >> v;
+        }
 
         uint32_t ProtoDeserializer::readValue(istream &i, Serializable &v) {
             string s;
             uint32_t bytesRead = readValue(i, s);
 
-            // Deserialize v from string using a stringstream.
-            stringstream sstr(s);
-
-            // Check whether v is from type Visitable to use ProtoSerializerVisitor.
-            try {
-                const Visitable &v2 = dynamic_cast<const Visitable&>(v);
-
-                // Cast succeeded, visited nested class using a ProtoSerializerVisitor.
-                ProtoDeserializerVisitor nestedVisitor;
-
-                // Set buffer to deserialize data from.
-                nestedVisitor.deserializeDataFrom(sstr);
-
-                // Visit v and set values.
-                const_cast<Visitable&>(v2).accept(nestedVisitor);
-            }
-            catch(...) {
-                // Deserialize v using the default way as it is not of type Visitable.
-                sstr >> v;
-            }
+            readValueForSerializable(s, v);
 
             return bytesRead;
         }
@@ -341,78 +420,133 @@ class Serializable;
         ///////////////////////////////////////////////////////////////////////
 
         void ProtoDeserializer::read(const uint32_t &id, Serializable &v) {
-            readAndValidateKey(m_buffer, id, ProtoSerializer::LENGTH_DELIMITED);
-            readValue(m_buffer, v);
+cout << __FILE__ << " " << __LINE__ << ", ID = " << dec << id << endl;
+            auto hasKey = m_mapOfKeyValues.find(id);
+            if (hasKey != m_mapOfKeyValues.end()) {
+                string s = m_mapOfKeyValues[id].getValueAsString();
+cout << __FILE__ << " " << __LINE__ << ", ID = " << dec << id << endl;
+for(unsigned int i = 0; i < s.size(); i++) {
+    cout << hex << (uint32_t)(uint8_t)s.at(i) << " ";
+}
+cout << dec << endl;
+                stringstream sstr(s);
+                sstr >> v;
+cout << __FILE__ << " " << __LINE__ << ", ID = " << dec << id << endl;
+            }
         }
 
         void ProtoDeserializer::read(const uint32_t &id, bool &v) {
-            readAndValidateKey(m_buffer, id, ProtoSerializer::VARINT);
-            readValue(m_buffer, v);
+            auto hasKey = m_mapOfKeyValues.find(id);
+            if (hasKey != m_mapOfKeyValues.end()) {
+                uint64_t _v = m_mapOfKeyValues[id].getValueAsVarInt();
+                v = static_cast<bool>(_v);
+            }
         }
 
         void ProtoDeserializer::read(const uint32_t &id, char &v) {
-            readAndValidateKey(m_buffer, id, ProtoSerializer::VARINT);
-            readValue(m_buffer, v);
+            auto hasKey = m_mapOfKeyValues.find(id);
+            if (hasKey != m_mapOfKeyValues.end()) {
+                uint64_t _v = m_mapOfKeyValues[id].getValueAsVarInt();
+                v = static_cast<char>(_v);
+            }
         }
 
         void ProtoDeserializer::read(const uint32_t &id, unsigned char &v) {
-            readAndValidateKey(m_buffer, id, ProtoSerializer::VARINT);
-            readValue(m_buffer, v);
+cout << __FILE__ << " " << __LINE__ << ", ID = " << dec << id << endl;
+            auto hasKey = m_mapOfKeyValues.find(id);
+            if (hasKey != m_mapOfKeyValues.end()) {
+cout << __FILE__ << " " << __LINE__ << endl;
+                uint64_t _v = m_mapOfKeyValues[id].getValueAsVarInt();
+cout << __FILE__ << " " << __LINE__ << endl;
+                v = static_cast<unsigned char>(_v);
+cout << __FILE__ << " " << __LINE__ << endl;
+            }
         }
 
         void ProtoDeserializer::read(const uint32_t &id, int8_t &v) {
-            readAndValidateKey(m_buffer, id, ProtoSerializer::VARINT);
-            readValue(m_buffer, v);
+            auto hasKey = m_mapOfKeyValues.find(id);
+            if (hasKey != m_mapOfKeyValues.end()) {
+                uint64_t _v = m_mapOfKeyValues[id].getValueAsVarInt();
+                v = static_cast<int8_t>(decodeZigZag8(_v));
+            }
         }
 
         void ProtoDeserializer::read(const uint32_t &id, int16_t &v) {
-            readAndValidateKey(m_buffer, id, ProtoSerializer::VARINT);
-            readValue(m_buffer, v);
+            auto hasKey = m_mapOfKeyValues.find(id);
+            if (hasKey != m_mapOfKeyValues.end()) {
+                uint64_t _v = m_mapOfKeyValues[id].getValueAsVarInt();
+                v = static_cast<int16_t>(decodeZigZag16(_v));
+            }
         }
 
         void ProtoDeserializer::read(const uint32_t &id, uint16_t &v) {
-            readAndValidateKey(m_buffer, id, ProtoSerializer::VARINT);
-            readValue(m_buffer, v);
+            auto hasKey = m_mapOfKeyValues.find(id);
+            if (hasKey != m_mapOfKeyValues.end()) {
+                uint64_t _v = m_mapOfKeyValues[id].getValueAsVarInt();
+                v = static_cast<uint16_t>(_v);
+            }
         }
 
         void ProtoDeserializer::read(const uint32_t &id, int32_t &v) {
-            readAndValidateKey(m_buffer, id, ProtoSerializer::VARINT);
-            readValue(m_buffer, v);
+            auto hasKey = m_mapOfKeyValues.find(id);
+            if (hasKey != m_mapOfKeyValues.end()) {
+                uint64_t _v = m_mapOfKeyValues[id].getValueAsVarInt();
+                v = static_cast<int32_t>(decodeZigZag32(_v));
+            }
         }
 
         void ProtoDeserializer::read(const uint32_t &id, uint32_t &v) {
-            readAndValidateKey(m_buffer, id, ProtoSerializer::VARINT);
-            readValue(m_buffer, v);
+            auto hasKey = m_mapOfKeyValues.find(id);
+            if (hasKey != m_mapOfKeyValues.end()) {
+                uint64_t _v = m_mapOfKeyValues[id].getValueAsVarInt();
+                v = static_cast<uint32_t>(_v);
+            }
         }
 
         void ProtoDeserializer::read(const uint32_t &id, int64_t &v) {
-            readAndValidateKey(m_buffer, id, ProtoSerializer::VARINT);
-            readValue(m_buffer, v);
+            auto hasKey = m_mapOfKeyValues.find(id);
+            if (hasKey != m_mapOfKeyValues.end()) {
+                uint64_t _v = m_mapOfKeyValues[id].getValueAsVarInt();
+                v = static_cast<int64_t>(decodeZigZag64(_v));
+            }
         }
 
         void ProtoDeserializer::read(const uint32_t &id, uint64_t &v) {
-            readAndValidateKey(m_buffer, id, ProtoSerializer::VARINT);
-            readValue(m_buffer, v);
+            auto hasKey = m_mapOfKeyValues.find(id);
+            if (hasKey != m_mapOfKeyValues.end()) {
+                v = m_mapOfKeyValues[id].getValueAsVarInt();
+            }
         }
 
         void ProtoDeserializer::read(const uint32_t &id, float &v) {
-            readAndValidateKey(m_buffer, id, ProtoSerializer::FOUR_BYTES);
-            readValue(m_buffer, v);
+            auto hasKey = m_mapOfKeyValues.find(id);
+            if (hasKey != m_mapOfKeyValues.end()) {
+                v = m_mapOfKeyValues[id].getValueAsFloat();
+            }
         }
 
         void ProtoDeserializer::read(const uint32_t &id, double &v) {
-            readAndValidateKey(m_buffer, id, ProtoSerializer::EIGHT_BYTES);
-            readValue(m_buffer, v);
+            auto hasKey = m_mapOfKeyValues.find(id);
+            if (hasKey != m_mapOfKeyValues.end()) {
+                v = m_mapOfKeyValues[id].getValueAsDouble();
+            }
         }
 
         void ProtoDeserializer::read(const uint32_t &id, string &v) {
-            readAndValidateKey(m_buffer, id, ProtoSerializer::LENGTH_DELIMITED);
-            readValue(m_buffer, v);
+            auto hasKey = m_mapOfKeyValues.find(id);
+            if (hasKey != m_mapOfKeyValues.end()) {
+                v = m_mapOfKeyValues[id].getValueAsString();
+            }
         }
 
         void ProtoDeserializer::read(const uint32_t &id, void *data, const uint32_t &size) {
-            readAndValidateKey(m_buffer, id, ProtoSerializer::LENGTH_DELIMITED);
-            readValue(m_buffer, data, size);
+            (void)id;
+            (void)data;
+            (void)size;
+cerr << "read for data, size not implemented." << endl;
+
+//            readAndValidateKey(m_buffer, id, ProtoSerializer::LENGTH_DELIMITED);
+//            readValue(m_buffer, data, size);
         }
 
         ///////////////////////////////////////////////////////////////////////

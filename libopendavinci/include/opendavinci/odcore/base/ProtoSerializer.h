@@ -180,9 +180,9 @@ class Serializable;
                  * @param value to be written
                  */
                 template<typename T>
-                uint32_t writeKeyValue(const uint32_t &id, T &v) {
+                uint64_t writeKeyValue(const uint32_t &id, T &v) {
                     uint32_t bytesWritten = 0;
-                    uint32_t key = getKey(id, ProtoSerializer::VARINT);
+                    uint64_t key = getKey(id, ProtoSerializer::VARINT);
                     bytesWritten += encodeVarInt(m_buffer, key);
                     bytesWritten += writeValue(m_buffer, v);
                     return bytesWritten;
@@ -195,11 +195,10 @@ class Serializable;
                  * @param protoType Protobuf type identifier
                  * @return Protobuf compliant key.
                  */
-                uint32_t getKey(const uint32_t &fieldNumber, const uint8_t &protoType);
+                uint64_t getKey(const uint32_t &fieldNumber, const uint8_t &protoType);
 
             private:
                 ostream *m_out; // We have a pointer here that we derive from a reference parameter in our non-standard constructor; thus, the other class is responsible for the lifecycle of the variable to which we point to.
-                uint32_t m_size;
                 stringstream m_buffer;
         };
 

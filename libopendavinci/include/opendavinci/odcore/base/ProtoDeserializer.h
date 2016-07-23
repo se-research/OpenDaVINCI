@@ -41,6 +41,8 @@ namespace odcore {
          */
         class ProtoKeyValue {
             public:
+                ProtoKeyValue();
+
                 /**
                  * Constructor.
                  *
@@ -53,6 +55,17 @@ namespace odcore {
                               const ProtoSerializer::PROTOBUF_TYPE &type,
                               const uint64_t &length,
                               const vector<char> &value);
+
+                /**
+                 * Constructor.
+                 *
+                 * @param key Associated Proto key.
+                 * @param type Associated Proto type.
+                 * @param length Length of the contained value.
+                 * @param value Actual VaInt value.
+                 */
+                ProtoKeyValue(const uint32_t &key,
+                              const uint64_t &value);
 
                 uint32_t getKey() const;
                 ProtoSerializer::PROTOBUF_TYPE getType() const;
@@ -95,6 +108,7 @@ namespace odcore {
                 ProtoSerializer::PROTOBUF_TYPE m_type;
                 uint64_t m_length;
                 vector<char> m_value;
+                uint64_t m_varIntValue;
         };
 
         /**
@@ -225,6 +239,8 @@ namespace odcore {
                 virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, void *data, const uint32_t &size);
 
             private:
+                void readValueForSerializable(const string &s, Serializable &v);
+
                 /**
                  * This method reads and validates the key for the next value.
                  *

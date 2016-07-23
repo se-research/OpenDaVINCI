@@ -129,6 +129,12 @@ namespace odcore {
                          m_received);
             }
 
+const string s = bufferOut.str();
+for(unsigned int i = 0; i < s.size(); i++) {
+    cout << hex << (uint32_t)(uint8_t)s.at(i) << " ";
+}
+cout << endl;
+
             // Write Container header.
             {
                 // Write Proto header: 0x0D 0xA4 A B C <payload>.
@@ -177,6 +183,7 @@ namespace odcore {
                     bufferIn.put(c);
                     bytesRead++;
 
+cout << hex << (uint32_t)(uint8_t) c << " ";
                     // After consuming the OpenDaVINCI header, decrease the amount of expected bytes.
                     if (consumedOpenDaVINCIContainerHeader) {
                         expectedBytes--;
@@ -212,6 +219,13 @@ namespace odcore {
                     }
                 }
             }
+cout << endl;
+
+const string s = bufferIn.str();
+for(unsigned int i = 0; i < s.size(); i++) {
+    cout << hex << (uint32_t)(uint8_t)s.at(i) << " ";
+}
+cout << endl;
 
             SerializationFactory& sf=SerializationFactory::getInstance();
             std::shared_ptr<Deserializer> d = sf.getDeserializer(bufferIn);

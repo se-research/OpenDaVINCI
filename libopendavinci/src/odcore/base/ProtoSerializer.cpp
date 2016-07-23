@@ -31,12 +31,10 @@ class Serializable;
 
         ProtoSerializer::ProtoSerializer() :
             m_out(NULL),
-            m_size(0),
             m_buffer() {}
 
         ProtoSerializer::ProtoSerializer(ostream &o) :
             m_out(&o),
-            m_size(0),
             m_buffer() {}
 
         ProtoSerializer::~ProtoSerializer() {
@@ -49,7 +47,7 @@ class Serializable;
             o << m_buffer.str();
         }
 
-        uint32_t ProtoSerializer::getKey(const uint32_t &fieldNumber, const uint8_t &protoType) {
+        uint64_t ProtoSerializer::getKey(const uint32_t &fieldNumber, const uint8_t &protoType) {
             return (fieldNumber << 3) | protoType;
         }
 
@@ -59,24 +57,35 @@ class Serializable;
             // Buffer for serialized data.
             stringstream buffer;
 
-            // Check whether v is from type Visitable to use ProtoSerializer.
-            try {
-                const Visitable &v2 = dynamic_cast<const Visitable&>(v);
+//            // Check whether v is from type Visitable to use ProtoSerializer.
+//            try {
+//                const Visitable &v2 = dynamic_cast<const Visitable&>(v);
 
-                // Cast succeeded, visited nested class using a ProtoSerializer.
-                ProtoSerializerVisitor nestedVisitor;
-                const_cast<Visitable&>(v2).accept(nestedVisitor);
+//                // Cast succeeded, visited nested class using a ProtoSerializer.
+//                ProtoSerializerVisitor nestedVisitor;
+//                const_cast<Visitable&>(v2).accept(nestedVisitor);
 
-                // Get serialized data.
-                nestedVisitor.getSerializedData(buffer);
-            }
-            catch(...) {
-                // Serialize v using the default way as it is not of type Visitable.
-                buffer << v;
-            }
+//                // Get serialized data.
+//                nestedVisitor.getSerializedData(buffer);
+//            }
+//            catch(...) {
+//                // Serialize v using the default way as it is not of type Visitable.
+//                buffer << v;
+//            }
+
+cout << __FILE__ << " " << __LINE__ << endl;
+            buffer << v;
+cout << __FILE__ << " " << __LINE__ << endl;
 
             // Get serialized value.
             const string tmp = buffer.str();
+const string s = tmp;
+for(unsigned int i = 0; i < s.size(); i++) {
+    cout << hex << (uint32_t)(uint8_t)s.at(i) << " ";
+}
+cout << dec << endl;
+
+cout << __FILE__ << " " << __LINE__ << endl;
             return writeValue(o, tmp);
         }
 
@@ -147,11 +156,13 @@ class Serializable;
         uint32_t ProtoSerializer::writeValue(ostream &o, const string &v) {
             uint32_t bytesWritten = 0;
 
+cout << __FILE__ << " " << __LINE__ << endl;
             const uint32_t size = v.length();
             bytesWritten += encodeVarInt(o, size);
 
             o.write(v.c_str(), size);
             bytesWritten += size;
+cout << __FILE__ << " " << __LINE__ << endl;
 
             return bytesWritten;
         }
@@ -167,8 +178,7 @@ class Serializable;
             return bytesWritten;
         }
 
-
-///////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////
 
         uint8_t ProtoSerializer::encodeZigZag8(int8_t value) {
             return static_cast<uint8_t>((value << 1) ^ (value >> 7));
@@ -214,72 +224,72 @@ class Serializable;
 
         void ProtoSerializer::write(const uint32_t &id, const Serializable &v) {
             uint32_t key = getKey(id, ProtoSerializer::LENGTH_DELIMITED);
-            m_size += encodeVarInt(m_buffer, key);
-            m_size += writeValue(m_buffer, v);
+            encodeVarInt(m_buffer, key);
+            writeValue(m_buffer, v);
         }
 
         void ProtoSerializer::write(const uint32_t &id, const bool &v) {
-            m_size += writeKeyValue<const bool>(id, v);
+            writeKeyValue<const bool>(id, v);
         }
 
         void ProtoSerializer::write(const uint32_t &id, const char &v) {
-            m_size += writeKeyValue<const char>(id, v);
+            writeKeyValue<const char>(id, v);
         }
 
         void ProtoSerializer::write(const uint32_t &id, const unsigned char &v) {
-            m_size += writeKeyValue<const unsigned>(id, v);
+            writeKeyValue<const unsigned>(id, v);
         }
 
         void ProtoSerializer::write(const uint32_t &id, const int8_t &v) {
-            m_size += writeKeyValue<const int8_t>(id, v);
+            writeKeyValue<const int8_t>(id, v);
         }
 
         void ProtoSerializer::write(const uint32_t &id, const int16_t &v) {
-            m_size += writeKeyValue<const int16_t>(id, v);
+            writeKeyValue<const int16_t>(id, v);
         }
 
         void ProtoSerializer::write(const uint32_t &id, const uint16_t &v) {
-            m_size += writeKeyValue<const uint16_t>(id, v);
+            writeKeyValue<const uint16_t>(id, v);
         }
 
         void ProtoSerializer::write(const uint32_t &id, const int32_t &v) {
-            m_size += writeKeyValue<const int32_t>(id, v);
+            writeKeyValue<const int32_t>(id, v);
         }
 
         void ProtoSerializer::write(const uint32_t &id, const uint32_t &v) {
-            m_size += writeKeyValue<const uint32_t>(id, v);
+            writeKeyValue<const uint32_t>(id, v);
         }
 
         void ProtoSerializer::write(const uint32_t &id, const int64_t &v) {
-            m_size += writeKeyValue<const int64_t>(id, v);
+            writeKeyValue<const int64_t>(id, v);
         }
 
         void ProtoSerializer::write(const uint32_t &id, const uint64_t &v) {
-            m_size += writeKeyValue<const uint64_t>(id, v);
+            writeKeyValue<const uint64_t>(id, v);
         }
 
         void ProtoSerializer::write(const uint32_t &id, const float &v) {
             uint32_t key = getKey(id, ProtoSerializer::FOUR_BYTES);
-            m_size += encodeVarInt(m_buffer, key);
-            m_size += writeValue(m_buffer, v);
+            encodeVarInt(m_buffer, key);
+            writeValue(m_buffer, v);
         }
 
         void ProtoSerializer::write(const uint32_t &id, const double &v) {
             uint32_t key = getKey(id, ProtoSerializer::EIGHT_BYTES);
-            m_size += encodeVarInt(m_buffer, key);
-            m_size += writeValue(m_buffer, v);
+            encodeVarInt(m_buffer, key);
+            writeValue(m_buffer, v);
         }
 
         void ProtoSerializer::write(const uint32_t &id, const string &v) {
             uint32_t key = getKey(id, ProtoSerializer::LENGTH_DELIMITED);
-            m_size += encodeVarInt(m_buffer, key);
-            m_size += writeValue(m_buffer, v);
+            encodeVarInt(m_buffer, key);
+            writeValue(m_buffer, v);
         }
 
         void ProtoSerializer::write(const uint32_t &id, const void *data, const uint32_t &size) {
             uint32_t key = getKey(id, ProtoSerializer::LENGTH_DELIMITED);
-            m_size += encodeVarInt(m_buffer, key);
-            m_size += writeValue(m_buffer, data, size);
+            encodeVarInt(m_buffer, key);
+            writeValue(m_buffer, data, size);
         }
 
         ///////////////////////////////////////////////////////////////////////
