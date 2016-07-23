@@ -145,9 +145,9 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getField1() == 13);
         }
 
-        void NOtestSerializationDeserializationTestMessage1OneFieldVisitor() {
+        void testSerializationDeserializationTestMessage1OneFieldVisitor() {
             TestMessage1 tm1;
-            tm1.setField1(12);
+            tm1.setField1(11);
 
             // Create a Proto serialization visitor.
             ProtoSerializerVisitor protoSerializerVisitor;
@@ -167,12 +167,12 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             tm2.accept(protoDeserializerVisitor);
 
             TS_ASSERT(tm1.getField1() == tm2.getField1());
-            TS_ASSERT(tm2.getField1() == 12);
+            TS_ASSERT(tm2.getField1() == 11);
         }
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationTestMessage1CompleteOneField() {
+        void testSerializationDeserializationTestMessage1CompleteOneField() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -194,7 +194,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             }
         }
 
-        void NOtestSerializationDeserializationTestMessage1CompleteOneFieldContainer() {
+        void testSerializationDeserializationTestMessage1CompleteOneFieldContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -221,7 +221,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             }
         }
 
-        void NOtestSerializationDeserializationTestMessage1CompleteOneFieldVisitor() {
+        void testSerializationDeserializationTestMessage1CompleteOneFieldVisitor() {
             for (uint16_t i = 0; i <= 255; i++) {
                 TestMessage1 tm1;
                 tm1.setField1(i);
@@ -245,7 +245,6 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
                 TS_ASSERT(tm1.getField1() == tm2.getField1());
                 TS_ASSERT(tm2.getField1() == i);
-cout << "Value = " << i << endl;
             }
         }
 
@@ -3560,7 +3559,7 @@ cout << "Value = " << i << endl;
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestProtoKeyValueInt() {
+        void testProtoKeyValueInt() {
             uint64_t i = 654321;
 
             ProtoKeyValue pkv(123, i);
@@ -3570,7 +3569,7 @@ cout << "Value = " << i << endl;
             TS_ASSERT(pkv.getValueAsVarInt() == 654321);
         }
 
-        void NOtestProtoKeyValueFloat() {
+        void testProtoKeyValueFloat() {
             vector<char> v;
             v.resize(4);
             float *f = (float*)(&v[0]);
@@ -3583,7 +3582,7 @@ cout << "Value = " << i << endl;
             TS_ASSERT_DELTA(pkv.getValueAsFloat(), -3.12345, 1e-5);
         }
 
-        void NOtestProtoKeyValueDouble() {
+        void testProtoKeyValueDouble() {
             vector<char> v;
             v.resize(8);
             double *d = (double*)(&v[0]);
@@ -3596,7 +3595,7 @@ cout << "Value = " << i << endl;
             TS_ASSERT_DELTA(pkv.getValueAsDouble(), 3.123456789, 1e-9);
         }
 
-        void NOtestProtoKeyValueString() {
+        void testProtoKeyValueString() {
             vector<char> v = { 'O', 'p', 'e', 'n', 'D', 'a', 'V', 'I', 'N', 'C', 'I' };
 
             ProtoKeyValue pkv(456, ProtoSerializer::LENGTH_DELIMITED, 11, v);
