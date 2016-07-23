@@ -1074,7 +1074,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationAbstractField() {
+        void testSerializationDeserializationAbstractField() {
             AbstractField tm1;
             tm1.setLongFieldIdentifier(123456);
             tm1.setShortFieldIdentifier(123);
@@ -1114,7 +1114,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getSize() == -12);
         }
 
-        void NOtestSerializationDeserializationAbstractFieldContainer() {
+        void testSerializationDeserializationAbstractFieldContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -1159,7 +1159,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getSize() == -12);
         }
 
-        void NOtestSerializationDeserializationAbstractFieldVisitor() {
+        void testSerializationDeserializationAbstractFieldVisitor() {
             AbstractField tm1;
             tm1.setLongFieldIdentifier(123456);
             tm1.setShortFieldIdentifier(123);
@@ -1206,7 +1206,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationServerInformation() {
+        void testSerializationDeserializationServerInformation() {
             ServerInformation tm1;
             tm1.setIP("123.456.789.abc");
             tm1.setPort(7890);
@@ -1234,7 +1234,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getManagedLevel() == ServerInformation::ML_PULSE_TIME_ACK);
         }
 
-        void NOtestSerializationDeserializationServerInformationContainer() {
+        void testSerializationDeserializationServerInformationContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -1267,7 +1267,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getManagedLevel() == ServerInformation::ML_PULSE_TIME_ACK);
         }
 
-        void NOtestSerializationDeserializationServerInformationVisitor() {
+        void testSerializationDeserializationServerInformationVisitor() {
             ServerInformation tm1;
             tm1.setIP("123.456.789.abc");
             tm1.setPort(7890);
