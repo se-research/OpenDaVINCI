@@ -250,7 +250,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationTestMessage1OneFieldGoogleExample() {
+        void testSerializationDeserializationTestMessage1OneFieldGoogleExample() {
             TestMessage1 tm1;
             tm1.setField1(150);
 
@@ -277,7 +277,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getField1() == 150);
         }
 
-        void NOtestSerializationDeserializationTestMessage1OneFieldGoogleExampleVisitor() {
+        void testSerializationDeserializationTestMessage1OneFieldGoogleExampleVisitor() {
             TestMessage1 tm1;
             tm1.setField1(150);
 
@@ -310,7 +310,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void NOtestSerializationDeserializationTestMessage2TwoFieldsA() {
+        void testSerializationDeserializationTestMessage2TwoFieldsA() {
             TestMessage2 tm1;
             tm1.setField1(60);
             tm1.setField2(-60);
@@ -334,7 +334,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getField2() == -60);
         }
 
-        void NOtestSerializationDeserializationTestMessage2TwoFieldsAContainer() {
+        void testSerializationDeserializationTestMessage2TwoFieldsAContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
@@ -363,7 +363,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getField2() == -60);
         }
 
-        void NOtestSerializationDeserializationTestMessage2TwoFieldsAVisitor() {
+        void testSerializationDeserializationTestMessage2TwoFieldsAVisitor() {
             TestMessage2 tm1;
             tm1.setField1(60);
             tm1.setField2(-60);
