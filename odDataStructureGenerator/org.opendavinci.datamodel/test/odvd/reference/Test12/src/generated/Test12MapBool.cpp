@@ -373,130 +373,172 @@
 		std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
 		{
-			// Write number of elements in m_mapOfMyBoolBoolMap.
-			const uint32_t numberOfMyBoolBoolMap = static_cast<uint32_t>(m_mapOfMyBoolBoolMap.size());
-			s->write(1, numberOfMyBoolBoolMap);
+			std::stringstream sstr_MyBoolBoolMap;
+			{
+				std::map<bool, bool>::const_iterator it = m_mapOfMyBoolBoolMap.begin();
+				while (it != m_mapOfMyBoolBoolMap.end()) {
+					// Write key/value into a joint string.
+					std::stringstream sstr_keyValueEntry;
+					{
+						std::shared_ptr<Serializer> keyValueSerializer = sf.getSerializer(sstr_keyValueEntry);
+						keyValueSerializer->write(1, it->first);  // Write key as field 1 from a "virtual" class.
+						keyValueSerializer->write(2, it->second); // Write value as field 2 from a "virtual" class.
+					}
 		
-			// Write actual elements into a stringstream.
-			std::stringstream sstrOfMyBoolBoolMap;
-			std::map<bool, bool>::const_iterator it = m_mapOfMyBoolBoolMap.begin();
-			while (it != m_mapOfMyBoolBoolMap.end()) {
-			    sstrOfMyBoolBoolMap << it->first << "=" << it->second << endl;
-			    it++;
+					// Write string into super-stringstream.
+					const string str_sstr_keyValueEntry = sstr_keyValueEntry.str();
+					s->writeValue(sstr_MyBoolBoolMap, str_sstr_keyValueEntry);
+		
+					// Process next entry.
+					it++;
+				}
 			}
-			
-			// Write string of elements.
-			if (numberOfMyBoolBoolMap > 0) {
-				s->write(1 + 7, sstrOfMyBoolBoolMap.str());
-			}
+			const std::string str_sstr_MyBoolBoolMap = sstr_MyBoolBoolMap.str();
+			s->write(1, str_sstr_MyBoolBoolMap);
 		}
 		{
-			// Write number of elements in m_mapOfMyBoolCharMap.
-			const uint32_t numberOfMyBoolCharMap = static_cast<uint32_t>(m_mapOfMyBoolCharMap.size());
-			s->write(2, numberOfMyBoolCharMap);
+			std::stringstream sstr_MyBoolCharMap;
+			{
+				std::map<bool, char>::const_iterator it = m_mapOfMyBoolCharMap.begin();
+				while (it != m_mapOfMyBoolCharMap.end()) {
+					// Write key/value into a joint string.
+					std::stringstream sstr_keyValueEntry;
+					{
+						std::shared_ptr<Serializer> keyValueSerializer = sf.getSerializer(sstr_keyValueEntry);
+						keyValueSerializer->write(1, it->first);  // Write key as field 1 from a "virtual" class.
+						keyValueSerializer->write(2, it->second); // Write value as field 2 from a "virtual" class.
+					}
 		
-			// Write actual elements into a stringstream.
-			std::stringstream sstrOfMyBoolCharMap;
-			std::map<bool, char>::const_iterator it = m_mapOfMyBoolCharMap.begin();
-			while (it != m_mapOfMyBoolCharMap.end()) {
-			    sstrOfMyBoolCharMap << it->first << "=" << it->second << endl;
-			    it++;
+					// Write string into super-stringstream.
+					const string str_sstr_keyValueEntry = sstr_keyValueEntry.str();
+					s->writeValue(sstr_MyBoolCharMap, str_sstr_keyValueEntry);
+		
+					// Process next entry.
+					it++;
+				}
 			}
-			
-			// Write string of elements.
-			if (numberOfMyBoolCharMap > 0) {
-				s->write(2 + 7, sstrOfMyBoolCharMap.str());
-			}
+			const std::string str_sstr_MyBoolCharMap = sstr_MyBoolCharMap.str();
+			s->write(2, str_sstr_MyBoolCharMap);
 		}
 		{
-			// Write number of elements in m_mapOfMyBoolInt32Map.
-			const uint32_t numberOfMyBoolInt32Map = static_cast<uint32_t>(m_mapOfMyBoolInt32Map.size());
-			s->write(3, numberOfMyBoolInt32Map);
+			std::stringstream sstr_MyBoolInt32Map;
+			{
+				std::map<bool, int32_t>::const_iterator it = m_mapOfMyBoolInt32Map.begin();
+				while (it != m_mapOfMyBoolInt32Map.end()) {
+					// Write key/value into a joint string.
+					std::stringstream sstr_keyValueEntry;
+					{
+						std::shared_ptr<Serializer> keyValueSerializer = sf.getSerializer(sstr_keyValueEntry);
+						keyValueSerializer->write(1, it->first);  // Write key as field 1 from a "virtual" class.
+						keyValueSerializer->write(2, it->second); // Write value as field 2 from a "virtual" class.
+					}
 		
-			// Write actual elements into a stringstream.
-			std::stringstream sstrOfMyBoolInt32Map;
-			std::map<bool, int32_t>::const_iterator it = m_mapOfMyBoolInt32Map.begin();
-			while (it != m_mapOfMyBoolInt32Map.end()) {
-			    sstrOfMyBoolInt32Map << it->first << "=" << it->second << endl;
-			    it++;
+					// Write string into super-stringstream.
+					const string str_sstr_keyValueEntry = sstr_keyValueEntry.str();
+					s->writeValue(sstr_MyBoolInt32Map, str_sstr_keyValueEntry);
+		
+					// Process next entry.
+					it++;
+				}
 			}
-			
-			// Write string of elements.
-			if (numberOfMyBoolInt32Map > 0) {
-				s->write(3 + 7, sstrOfMyBoolInt32Map.str());
-			}
+			const std::string str_sstr_MyBoolInt32Map = sstr_MyBoolInt32Map.str();
+			s->write(3, str_sstr_MyBoolInt32Map);
 		}
 		{
-			// Write number of elements in m_mapOfMyBoolUint32Map.
-			const uint32_t numberOfMyBoolUint32Map = static_cast<uint32_t>(m_mapOfMyBoolUint32Map.size());
-			s->write(4, numberOfMyBoolUint32Map);
+			std::stringstream sstr_MyBoolUint32Map;
+			{
+				std::map<bool, uint32_t>::const_iterator it = m_mapOfMyBoolUint32Map.begin();
+				while (it != m_mapOfMyBoolUint32Map.end()) {
+					// Write key/value into a joint string.
+					std::stringstream sstr_keyValueEntry;
+					{
+						std::shared_ptr<Serializer> keyValueSerializer = sf.getSerializer(sstr_keyValueEntry);
+						keyValueSerializer->write(1, it->first);  // Write key as field 1 from a "virtual" class.
+						keyValueSerializer->write(2, it->second); // Write value as field 2 from a "virtual" class.
+					}
 		
-			// Write actual elements into a stringstream.
-			std::stringstream sstrOfMyBoolUint32Map;
-			std::map<bool, uint32_t>::const_iterator it = m_mapOfMyBoolUint32Map.begin();
-			while (it != m_mapOfMyBoolUint32Map.end()) {
-			    sstrOfMyBoolUint32Map << it->first << "=" << it->second << endl;
-			    it++;
+					// Write string into super-stringstream.
+					const string str_sstr_keyValueEntry = sstr_keyValueEntry.str();
+					s->writeValue(sstr_MyBoolUint32Map, str_sstr_keyValueEntry);
+		
+					// Process next entry.
+					it++;
+				}
 			}
-			
-			// Write string of elements.
-			if (numberOfMyBoolUint32Map > 0) {
-				s->write(4 + 7, sstrOfMyBoolUint32Map.str());
-			}
+			const std::string str_sstr_MyBoolUint32Map = sstr_MyBoolUint32Map.str();
+			s->write(4, str_sstr_MyBoolUint32Map);
 		}
 		{
-			// Write number of elements in m_mapOfMyBoolFloatMap.
-			const uint32_t numberOfMyBoolFloatMap = static_cast<uint32_t>(m_mapOfMyBoolFloatMap.size());
-			s->write(5, numberOfMyBoolFloatMap);
+			std::stringstream sstr_MyBoolFloatMap;
+			{
+				std::map<bool, float>::const_iterator it = m_mapOfMyBoolFloatMap.begin();
+				while (it != m_mapOfMyBoolFloatMap.end()) {
+					// Write key/value into a joint string.
+					std::stringstream sstr_keyValueEntry;
+					{
+						std::shared_ptr<Serializer> keyValueSerializer = sf.getSerializer(sstr_keyValueEntry);
+						keyValueSerializer->write(1, it->first);  // Write key as field 1 from a "virtual" class.
+						keyValueSerializer->write(2, it->second); // Write value as field 2 from a "virtual" class.
+					}
 		
-			// Write actual elements into a stringstream.
-			std::stringstream sstrOfMyBoolFloatMap;
-			std::map<bool, float>::const_iterator it = m_mapOfMyBoolFloatMap.begin();
-			while (it != m_mapOfMyBoolFloatMap.end()) {
-			    sstrOfMyBoolFloatMap << it->first << "=" << it->second << endl;
-			    it++;
+					// Write string into super-stringstream.
+					const string str_sstr_keyValueEntry = sstr_keyValueEntry.str();
+					s->writeValue(sstr_MyBoolFloatMap, str_sstr_keyValueEntry);
+		
+					// Process next entry.
+					it++;
+				}
 			}
-			
-			// Write string of elements.
-			if (numberOfMyBoolFloatMap > 0) {
-				s->write(5 + 7, sstrOfMyBoolFloatMap.str());
-			}
+			const std::string str_sstr_MyBoolFloatMap = sstr_MyBoolFloatMap.str();
+			s->write(5, str_sstr_MyBoolFloatMap);
 		}
 		{
-			// Write number of elements in m_mapOfMyBoolDoubleMap.
-			const uint32_t numberOfMyBoolDoubleMap = static_cast<uint32_t>(m_mapOfMyBoolDoubleMap.size());
-			s->write(6, numberOfMyBoolDoubleMap);
+			std::stringstream sstr_MyBoolDoubleMap;
+			{
+				std::map<bool, double>::const_iterator it = m_mapOfMyBoolDoubleMap.begin();
+				while (it != m_mapOfMyBoolDoubleMap.end()) {
+					// Write key/value into a joint string.
+					std::stringstream sstr_keyValueEntry;
+					{
+						std::shared_ptr<Serializer> keyValueSerializer = sf.getSerializer(sstr_keyValueEntry);
+						keyValueSerializer->write(1, it->first);  // Write key as field 1 from a "virtual" class.
+						keyValueSerializer->write(2, it->second); // Write value as field 2 from a "virtual" class.
+					}
 		
-			// Write actual elements into a stringstream.
-			std::stringstream sstrOfMyBoolDoubleMap;
-			std::map<bool, double>::const_iterator it = m_mapOfMyBoolDoubleMap.begin();
-			while (it != m_mapOfMyBoolDoubleMap.end()) {
-			    sstrOfMyBoolDoubleMap << it->first << "=" << it->second << endl;
-			    it++;
+					// Write string into super-stringstream.
+					const string str_sstr_keyValueEntry = sstr_keyValueEntry.str();
+					s->writeValue(sstr_MyBoolDoubleMap, str_sstr_keyValueEntry);
+		
+					// Process next entry.
+					it++;
+				}
 			}
-			
-			// Write string of elements.
-			if (numberOfMyBoolDoubleMap > 0) {
-				s->write(6 + 7, sstrOfMyBoolDoubleMap.str());
-			}
+			const std::string str_sstr_MyBoolDoubleMap = sstr_MyBoolDoubleMap.str();
+			s->write(6, str_sstr_MyBoolDoubleMap);
 		}
 		{
-			// Write number of elements in m_mapOfMyBoolStringMap.
-			const uint32_t numberOfMyBoolStringMap = static_cast<uint32_t>(m_mapOfMyBoolStringMap.size());
-			s->write(7, numberOfMyBoolStringMap);
+			std::stringstream sstr_MyBoolStringMap;
+			{
+				std::map<bool, std::string>::const_iterator it = m_mapOfMyBoolStringMap.begin();
+				while (it != m_mapOfMyBoolStringMap.end()) {
+					// Write key/value into a joint string.
+					std::stringstream sstr_keyValueEntry;
+					{
+						std::shared_ptr<Serializer> keyValueSerializer = sf.getSerializer(sstr_keyValueEntry);
+						keyValueSerializer->write(1, it->first);  // Write key as field 1 from a "virtual" class.
+						keyValueSerializer->write(2, it->second); // Write value as field 2 from a "virtual" class.
+					}
 		
-			// Write actual elements into a stringstream.
-			std::stringstream sstrOfMyBoolStringMap;
-			std::map<bool, std::string>::const_iterator it = m_mapOfMyBoolStringMap.begin();
-			while (it != m_mapOfMyBoolStringMap.end()) {
-			    sstrOfMyBoolStringMap << it->first << "=" << it->second << endl;
-			    it++;
+					// Write string into super-stringstream.
+					const string str_sstr_keyValueEntry = sstr_keyValueEntry.str();
+					s->writeValue(sstr_MyBoolStringMap, str_sstr_keyValueEntry);
+		
+					// Process next entry.
+					it++;
+				}
 			}
-			
-			// Write string of elements.
-			if (numberOfMyBoolStringMap > 0) {
-				s->write(7 + 7, sstrOfMyBoolStringMap.str());
-			}
+			const std::string str_sstr_MyBoolStringMap = sstr_MyBoolStringMap.str();
+			s->write(7, str_sstr_MyBoolStringMap);
 		}
 		return out;
 	}
@@ -507,347 +549,242 @@
 
 		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
-		// Clean up the existing map of MyBoolBoolMap.
-		m_mapOfMyBoolBoolMap.clear();
+		// Restore elements from a string into MyBoolBoolMap.
+		{
+			// Clean up the existing map of MyBoolBoolMap.
+			m_mapOfMyBoolBoolMap.clear();
 		
-		// Read number of elements in m_mapOfMyBoolBoolMap.
-		uint32_t numberOfMyBoolBoolMap = 0;
-		d->read(1, numberOfMyBoolBoolMap);
+			std::string str_MyBoolBoolMap;
+			d->read(1, str_MyBoolBoolMap);
+			if (str_MyBoolBoolMap.size() > 0) {
+				std::stringstream sstr_str_MyBoolBoolMap(str_MyBoolBoolMap);
 		
-		if (numberOfMyBoolBoolMap > 0) {
-		    // Read string of elements.
-		    string elements;
-			d->read(1 + 7, elements);
+				// str_MyBoolBoolMap contains a sequence of strings containing pairs of key/values.
+				uint32_t length = str_MyBoolBoolMap.size();
+				while (length > 0) {
+					std::string str_sstr_keyValue;
+					length -= d->readValue(sstr_str_MyBoolBoolMap, str_sstr_keyValue);
 		
-			stringstream sstr(elements);
+					if (str_sstr_keyValue.size() > 0) {
+						// We have in str_sstr_keyValue a string at hand containing a pair key/value.
+						// Now, we restore the key and value therefrom.
+						std::stringstream sstr_keyValueEntry(str_sstr_keyValue);
 		
-			while (!sstr.eof()) {
-			    string line;
-			    getline(sstr, line);
-		
-			    // Trying to find key-value-pair.
-			    size_t delimiter = line.find_first_of("=");
-		
-			    // Compute length of value-entry by allowing comments right after values.
-			    size_t valueLength = line.length();
-		
-			    // Skip lines with invalid position pointers.
-			    if (! ( (delimiter > 0) && (valueLength > 0) ) ) {
-			        continue;
-			    }
-		
-			    string key = line.substr(0, delimiter);
-			    string value = line.substr(delimiter + 1, valueLength);
-		
-			    // Skip lines with invalid keys or values.
-			    if ( (key.length() == 0) || (value.length() == 0) ) {
-			        continue;
-			    }
-		
-			    stringstream sstrKey(key);
-			    bool _key;
-		        sstrKey >> _key;
-		
-			    stringstream sstrValue(value);
-			    bool _value;
-		        sstrValue >> _value;
-		
-				// Store key/value pair.
-				putTo_MapOfMyBoolBoolMap(_key, _value);
+						{
+							std::shared_ptr<Deserializer> keyValueDeserializer = sf.getDeserializer(sstr_keyValueEntry);
+							bool key;
+							bool value;
+							keyValueDeserializer->read(1, key);
+							keyValueDeserializer->read(2, value);
+							// Store key/value pair in the map.
+							putTo_MapOfMyBoolBoolMap(key, value);
+						}
+					}
+				}
 			}
 		}
-		// Clean up the existing map of MyBoolCharMap.
-		m_mapOfMyBoolCharMap.clear();
+		// Restore elements from a string into MyBoolCharMap.
+		{
+			// Clean up the existing map of MyBoolCharMap.
+			m_mapOfMyBoolCharMap.clear();
 		
-		// Read number of elements in m_mapOfMyBoolCharMap.
-		uint32_t numberOfMyBoolCharMap = 0;
-		d->read(2, numberOfMyBoolCharMap);
+			std::string str_MyBoolCharMap;
+			d->read(2, str_MyBoolCharMap);
+			if (str_MyBoolCharMap.size() > 0) {
+				std::stringstream sstr_str_MyBoolCharMap(str_MyBoolCharMap);
 		
-		if (numberOfMyBoolCharMap > 0) {
-		    // Read string of elements.
-		    string elements;
-			d->read(2 + 7, elements);
+				// str_MyBoolCharMap contains a sequence of strings containing pairs of key/values.
+				uint32_t length = str_MyBoolCharMap.size();
+				while (length > 0) {
+					std::string str_sstr_keyValue;
+					length -= d->readValue(sstr_str_MyBoolCharMap, str_sstr_keyValue);
 		
-			stringstream sstr(elements);
+					if (str_sstr_keyValue.size() > 0) {
+						// We have in str_sstr_keyValue a string at hand containing a pair key/value.
+						// Now, we restore the key and value therefrom.
+						std::stringstream sstr_keyValueEntry(str_sstr_keyValue);
 		
-			while (!sstr.eof()) {
-			    string line;
-			    getline(sstr, line);
-		
-			    // Trying to find key-value-pair.
-			    size_t delimiter = line.find_first_of("=");
-		
-			    // Compute length of value-entry by allowing comments right after values.
-			    size_t valueLength = line.length();
-		
-			    // Skip lines with invalid position pointers.
-			    if (! ( (delimiter > 0) && (valueLength > 0) ) ) {
-			        continue;
-			    }
-		
-			    string key = line.substr(0, delimiter);
-			    string value = line.substr(delimiter + 1, valueLength);
-		
-			    // Skip lines with invalid keys or values.
-			    if ( (key.length() == 0) || (value.length() == 0) ) {
-			        continue;
-			    }
-		
-			    stringstream sstrKey(key);
-			    bool _key;
-		        sstrKey >> _key;
-		
-			    stringstream sstrValue(value);
-			    char _value;
-		        sstrValue >> _value;
-		
-				// Store key/value pair.
-				putTo_MapOfMyBoolCharMap(_key, _value);
+						{
+							std::shared_ptr<Deserializer> keyValueDeserializer = sf.getDeserializer(sstr_keyValueEntry);
+							bool key;
+							char value;
+							keyValueDeserializer->read(1, key);
+							keyValueDeserializer->read(2, value);
+							// Store key/value pair in the map.
+							putTo_MapOfMyBoolCharMap(key, value);
+						}
+					}
+				}
 			}
 		}
-		// Clean up the existing map of MyBoolInt32Map.
-		m_mapOfMyBoolInt32Map.clear();
+		// Restore elements from a string into MyBoolInt32Map.
+		{
+			// Clean up the existing map of MyBoolInt32Map.
+			m_mapOfMyBoolInt32Map.clear();
 		
-		// Read number of elements in m_mapOfMyBoolInt32Map.
-		uint32_t numberOfMyBoolInt32Map = 0;
-		d->read(3, numberOfMyBoolInt32Map);
+			std::string str_MyBoolInt32Map;
+			d->read(3, str_MyBoolInt32Map);
+			if (str_MyBoolInt32Map.size() > 0) {
+				std::stringstream sstr_str_MyBoolInt32Map(str_MyBoolInt32Map);
 		
-		if (numberOfMyBoolInt32Map > 0) {
-		    // Read string of elements.
-		    string elements;
-			d->read(3 + 7, elements);
+				// str_MyBoolInt32Map contains a sequence of strings containing pairs of key/values.
+				uint32_t length = str_MyBoolInt32Map.size();
+				while (length > 0) {
+					std::string str_sstr_keyValue;
+					length -= d->readValue(sstr_str_MyBoolInt32Map, str_sstr_keyValue);
 		
-			stringstream sstr(elements);
+					if (str_sstr_keyValue.size() > 0) {
+						// We have in str_sstr_keyValue a string at hand containing a pair key/value.
+						// Now, we restore the key and value therefrom.
+						std::stringstream sstr_keyValueEntry(str_sstr_keyValue);
 		
-			while (!sstr.eof()) {
-			    string line;
-			    getline(sstr, line);
-		
-			    // Trying to find key-value-pair.
-			    size_t delimiter = line.find_first_of("=");
-		
-			    // Compute length of value-entry by allowing comments right after values.
-			    size_t valueLength = line.length();
-		
-			    // Skip lines with invalid position pointers.
-			    if (! ( (delimiter > 0) && (valueLength > 0) ) ) {
-			        continue;
-			    }
-		
-			    string key = line.substr(0, delimiter);
-			    string value = line.substr(delimiter + 1, valueLength);
-		
-			    // Skip lines with invalid keys or values.
-			    if ( (key.length() == 0) || (value.length() == 0) ) {
-			        continue;
-			    }
-		
-			    stringstream sstrKey(key);
-			    bool _key;
-		        sstrKey >> _key;
-		
-			    stringstream sstrValue(value);
-			    int32_t _value;
-		        sstrValue >> _value;
-		
-				// Store key/value pair.
-				putTo_MapOfMyBoolInt32Map(_key, _value);
+						{
+							std::shared_ptr<Deserializer> keyValueDeserializer = sf.getDeserializer(sstr_keyValueEntry);
+							bool key;
+							int32_t value;
+							keyValueDeserializer->read(1, key);
+							keyValueDeserializer->read(2, value);
+							// Store key/value pair in the map.
+							putTo_MapOfMyBoolInt32Map(key, value);
+						}
+					}
+				}
 			}
 		}
-		// Clean up the existing map of MyBoolUint32Map.
-		m_mapOfMyBoolUint32Map.clear();
+		// Restore elements from a string into MyBoolUint32Map.
+		{
+			// Clean up the existing map of MyBoolUint32Map.
+			m_mapOfMyBoolUint32Map.clear();
 		
-		// Read number of elements in m_mapOfMyBoolUint32Map.
-		uint32_t numberOfMyBoolUint32Map = 0;
-		d->read(4, numberOfMyBoolUint32Map);
+			std::string str_MyBoolUint32Map;
+			d->read(4, str_MyBoolUint32Map);
+			if (str_MyBoolUint32Map.size() > 0) {
+				std::stringstream sstr_str_MyBoolUint32Map(str_MyBoolUint32Map);
 		
-		if (numberOfMyBoolUint32Map > 0) {
-		    // Read string of elements.
-		    string elements;
-			d->read(4 + 7, elements);
+				// str_MyBoolUint32Map contains a sequence of strings containing pairs of key/values.
+				uint32_t length = str_MyBoolUint32Map.size();
+				while (length > 0) {
+					std::string str_sstr_keyValue;
+					length -= d->readValue(sstr_str_MyBoolUint32Map, str_sstr_keyValue);
 		
-			stringstream sstr(elements);
+					if (str_sstr_keyValue.size() > 0) {
+						// We have in str_sstr_keyValue a string at hand containing a pair key/value.
+						// Now, we restore the key and value therefrom.
+						std::stringstream sstr_keyValueEntry(str_sstr_keyValue);
 		
-			while (!sstr.eof()) {
-			    string line;
-			    getline(sstr, line);
-		
-			    // Trying to find key-value-pair.
-			    size_t delimiter = line.find_first_of("=");
-		
-			    // Compute length of value-entry by allowing comments right after values.
-			    size_t valueLength = line.length();
-		
-			    // Skip lines with invalid position pointers.
-			    if (! ( (delimiter > 0) && (valueLength > 0) ) ) {
-			        continue;
-			    }
-		
-			    string key = line.substr(0, delimiter);
-			    string value = line.substr(delimiter + 1, valueLength);
-		
-			    // Skip lines with invalid keys or values.
-			    if ( (key.length() == 0) || (value.length() == 0) ) {
-			        continue;
-			    }
-		
-			    stringstream sstrKey(key);
-			    bool _key;
-		        sstrKey >> _key;
-		
-			    stringstream sstrValue(value);
-			    uint32_t _value;
-		        sstrValue >> _value;
-		
-				// Store key/value pair.
-				putTo_MapOfMyBoolUint32Map(_key, _value);
+						{
+							std::shared_ptr<Deserializer> keyValueDeserializer = sf.getDeserializer(sstr_keyValueEntry);
+							bool key;
+							uint32_t value;
+							keyValueDeserializer->read(1, key);
+							keyValueDeserializer->read(2, value);
+							// Store key/value pair in the map.
+							putTo_MapOfMyBoolUint32Map(key, value);
+						}
+					}
+				}
 			}
 		}
-		// Clean up the existing map of MyBoolFloatMap.
-		m_mapOfMyBoolFloatMap.clear();
+		// Restore elements from a string into MyBoolFloatMap.
+		{
+			// Clean up the existing map of MyBoolFloatMap.
+			m_mapOfMyBoolFloatMap.clear();
 		
-		// Read number of elements in m_mapOfMyBoolFloatMap.
-		uint32_t numberOfMyBoolFloatMap = 0;
-		d->read(5, numberOfMyBoolFloatMap);
+			std::string str_MyBoolFloatMap;
+			d->read(5, str_MyBoolFloatMap);
+			if (str_MyBoolFloatMap.size() > 0) {
+				std::stringstream sstr_str_MyBoolFloatMap(str_MyBoolFloatMap);
 		
-		if (numberOfMyBoolFloatMap > 0) {
-		    // Read string of elements.
-		    string elements;
-			d->read(5 + 7, elements);
+				// str_MyBoolFloatMap contains a sequence of strings containing pairs of key/values.
+				uint32_t length = str_MyBoolFloatMap.size();
+				while (length > 0) {
+					std::string str_sstr_keyValue;
+					length -= d->readValue(sstr_str_MyBoolFloatMap, str_sstr_keyValue);
 		
-			stringstream sstr(elements);
+					if (str_sstr_keyValue.size() > 0) {
+						// We have in str_sstr_keyValue a string at hand containing a pair key/value.
+						// Now, we restore the key and value therefrom.
+						std::stringstream sstr_keyValueEntry(str_sstr_keyValue);
 		
-			while (!sstr.eof()) {
-			    string line;
-			    getline(sstr, line);
-		
-			    // Trying to find key-value-pair.
-			    size_t delimiter = line.find_first_of("=");
-		
-			    // Compute length of value-entry by allowing comments right after values.
-			    size_t valueLength = line.length();
-		
-			    // Skip lines with invalid position pointers.
-			    if (! ( (delimiter > 0) && (valueLength > 0) ) ) {
-			        continue;
-			    }
-		
-			    string key = line.substr(0, delimiter);
-			    string value = line.substr(delimiter + 1, valueLength);
-		
-			    // Skip lines with invalid keys or values.
-			    if ( (key.length() == 0) || (value.length() == 0) ) {
-			        continue;
-			    }
-		
-			    stringstream sstrKey(key);
-			    bool _key;
-		        sstrKey >> _key;
-		
-			    stringstream sstrValue(value);
-			    float _value;
-		        sstrValue >> _value;
-		
-				// Store key/value pair.
-				putTo_MapOfMyBoolFloatMap(_key, _value);
+						{
+							std::shared_ptr<Deserializer> keyValueDeserializer = sf.getDeserializer(sstr_keyValueEntry);
+							bool key;
+							float value;
+							keyValueDeserializer->read(1, key);
+							keyValueDeserializer->read(2, value);
+							// Store key/value pair in the map.
+							putTo_MapOfMyBoolFloatMap(key, value);
+						}
+					}
+				}
 			}
 		}
-		// Clean up the existing map of MyBoolDoubleMap.
-		m_mapOfMyBoolDoubleMap.clear();
+		// Restore elements from a string into MyBoolDoubleMap.
+		{
+			// Clean up the existing map of MyBoolDoubleMap.
+			m_mapOfMyBoolDoubleMap.clear();
 		
-		// Read number of elements in m_mapOfMyBoolDoubleMap.
-		uint32_t numberOfMyBoolDoubleMap = 0;
-		d->read(6, numberOfMyBoolDoubleMap);
+			std::string str_MyBoolDoubleMap;
+			d->read(6, str_MyBoolDoubleMap);
+			if (str_MyBoolDoubleMap.size() > 0) {
+				std::stringstream sstr_str_MyBoolDoubleMap(str_MyBoolDoubleMap);
 		
-		if (numberOfMyBoolDoubleMap > 0) {
-		    // Read string of elements.
-		    string elements;
-			d->read(6 + 7, elements);
+				// str_MyBoolDoubleMap contains a sequence of strings containing pairs of key/values.
+				uint32_t length = str_MyBoolDoubleMap.size();
+				while (length > 0) {
+					std::string str_sstr_keyValue;
+					length -= d->readValue(sstr_str_MyBoolDoubleMap, str_sstr_keyValue);
 		
-			stringstream sstr(elements);
+					if (str_sstr_keyValue.size() > 0) {
+						// We have in str_sstr_keyValue a string at hand containing a pair key/value.
+						// Now, we restore the key and value therefrom.
+						std::stringstream sstr_keyValueEntry(str_sstr_keyValue);
 		
-			while (!sstr.eof()) {
-			    string line;
-			    getline(sstr, line);
-		
-			    // Trying to find key-value-pair.
-			    size_t delimiter = line.find_first_of("=");
-		
-			    // Compute length of value-entry by allowing comments right after values.
-			    size_t valueLength = line.length();
-		
-			    // Skip lines with invalid position pointers.
-			    if (! ( (delimiter > 0) && (valueLength > 0) ) ) {
-			        continue;
-			    }
-		
-			    string key = line.substr(0, delimiter);
-			    string value = line.substr(delimiter + 1, valueLength);
-		
-			    // Skip lines with invalid keys or values.
-			    if ( (key.length() == 0) || (value.length() == 0) ) {
-			        continue;
-			    }
-		
-			    stringstream sstrKey(key);
-			    bool _key;
-		        sstrKey >> _key;
-		
-			    stringstream sstrValue(value);
-			    double _value;
-		        sstrValue >> _value;
-		
-				// Store key/value pair.
-				putTo_MapOfMyBoolDoubleMap(_key, _value);
+						{
+							std::shared_ptr<Deserializer> keyValueDeserializer = sf.getDeserializer(sstr_keyValueEntry);
+							bool key;
+							double value;
+							keyValueDeserializer->read(1, key);
+							keyValueDeserializer->read(2, value);
+							// Store key/value pair in the map.
+							putTo_MapOfMyBoolDoubleMap(key, value);
+						}
+					}
+				}
 			}
 		}
-		// Clean up the existing map of MyBoolStringMap.
-		m_mapOfMyBoolStringMap.clear();
+		// Restore elements from a string into MyBoolStringMap.
+		{
+			// Clean up the existing map of MyBoolStringMap.
+			m_mapOfMyBoolStringMap.clear();
 		
-		// Read number of elements in m_mapOfMyBoolStringMap.
-		uint32_t numberOfMyBoolStringMap = 0;
-		d->read(7, numberOfMyBoolStringMap);
+			std::string str_MyBoolStringMap;
+			d->read(7, str_MyBoolStringMap);
+			if (str_MyBoolStringMap.size() > 0) {
+				std::stringstream sstr_str_MyBoolStringMap(str_MyBoolStringMap);
 		
-		if (numberOfMyBoolStringMap > 0) {
-		    // Read string of elements.
-		    string elements;
-			d->read(7 + 7, elements);
+				// str_MyBoolStringMap contains a sequence of strings containing pairs of key/values.
+				uint32_t length = str_MyBoolStringMap.size();
+				while (length > 0) {
+					std::string str_sstr_keyValue;
+					length -= d->readValue(sstr_str_MyBoolStringMap, str_sstr_keyValue);
 		
-			stringstream sstr(elements);
+					if (str_sstr_keyValue.size() > 0) {
+						// We have in str_sstr_keyValue a string at hand containing a pair key/value.
+						// Now, we restore the key and value therefrom.
+						std::stringstream sstr_keyValueEntry(str_sstr_keyValue);
 		
-			while (!sstr.eof()) {
-			    string line;
-			    getline(sstr, line);
-		
-			    // Trying to find key-value-pair.
-			    size_t delimiter = line.find_first_of("=");
-		
-			    // Compute length of value-entry by allowing comments right after values.
-			    size_t valueLength = line.length();
-		
-			    // Skip lines with invalid position pointers.
-			    if (! ( (delimiter > 0) && (valueLength > 0) ) ) {
-			        continue;
-			    }
-		
-			    string key = line.substr(0, delimiter);
-			    string value = line.substr(delimiter + 1, valueLength);
-		
-			    // Skip lines with invalid keys or values.
-			    if ( (key.length() == 0) || (value.length() == 0) ) {
-			        continue;
-			    }
-		
-			    stringstream sstrKey(key);
-			    bool _key;
-		        sstrKey >> _key;
-		
-			    stringstream sstrValue(value);
-			    std::string _value;
-		        getline(sstrValue, _value);
-		
-				// Store key/value pair.
-				putTo_MapOfMyBoolStringMap(_key, _value);
+						{
+							std::shared_ptr<Deserializer> keyValueDeserializer = sf.getDeserializer(sstr_keyValueEntry);
+							bool key;
+							std::string value;
+							keyValueDeserializer->read(1, key);
+							keyValueDeserializer->read(2, value);
+							// Store key/value pair in the map.
+							putTo_MapOfMyBoolStringMap(key, value);
+						}
+					}
+				}
 			}
 		}
 		return in;

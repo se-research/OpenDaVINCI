@@ -373,130 +373,172 @@
 		std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
 		{
-			// Write number of elements in m_mapOfMyUint32BoolMap.
-			const uint32_t numberOfMyUint32BoolMap = static_cast<uint32_t>(m_mapOfMyUint32BoolMap.size());
-			s->write(1, numberOfMyUint32BoolMap);
+			std::stringstream sstr_MyUint32BoolMap;
+			{
+				std::map<uint32_t, bool>::const_iterator it = m_mapOfMyUint32BoolMap.begin();
+				while (it != m_mapOfMyUint32BoolMap.end()) {
+					// Write key/value into a joint string.
+					std::stringstream sstr_keyValueEntry;
+					{
+						std::shared_ptr<Serializer> keyValueSerializer = sf.getSerializer(sstr_keyValueEntry);
+						keyValueSerializer->write(1, it->first);  // Write key as field 1 from a "virtual" class.
+						keyValueSerializer->write(2, it->second); // Write value as field 2 from a "virtual" class.
+					}
 		
-			// Write actual elements into a stringstream.
-			std::stringstream sstrOfMyUint32BoolMap;
-			std::map<uint32_t, bool>::const_iterator it = m_mapOfMyUint32BoolMap.begin();
-			while (it != m_mapOfMyUint32BoolMap.end()) {
-			    sstrOfMyUint32BoolMap << it->first << "=" << it->second << endl;
-			    it++;
+					// Write string into super-stringstream.
+					const string str_sstr_keyValueEntry = sstr_keyValueEntry.str();
+					s->writeValue(sstr_MyUint32BoolMap, str_sstr_keyValueEntry);
+		
+					// Process next entry.
+					it++;
+				}
 			}
-			
-			// Write string of elements.
-			if (numberOfMyUint32BoolMap > 0) {
-				s->write(1 + 7, sstrOfMyUint32BoolMap.str());
-			}
+			const std::string str_sstr_MyUint32BoolMap = sstr_MyUint32BoolMap.str();
+			s->write(1, str_sstr_MyUint32BoolMap);
 		}
 		{
-			// Write number of elements in m_mapOfMyUint32CharMap.
-			const uint32_t numberOfMyUint32CharMap = static_cast<uint32_t>(m_mapOfMyUint32CharMap.size());
-			s->write(2, numberOfMyUint32CharMap);
+			std::stringstream sstr_MyUint32CharMap;
+			{
+				std::map<uint32_t, char>::const_iterator it = m_mapOfMyUint32CharMap.begin();
+				while (it != m_mapOfMyUint32CharMap.end()) {
+					// Write key/value into a joint string.
+					std::stringstream sstr_keyValueEntry;
+					{
+						std::shared_ptr<Serializer> keyValueSerializer = sf.getSerializer(sstr_keyValueEntry);
+						keyValueSerializer->write(1, it->first);  // Write key as field 1 from a "virtual" class.
+						keyValueSerializer->write(2, it->second); // Write value as field 2 from a "virtual" class.
+					}
 		
-			// Write actual elements into a stringstream.
-			std::stringstream sstrOfMyUint32CharMap;
-			std::map<uint32_t, char>::const_iterator it = m_mapOfMyUint32CharMap.begin();
-			while (it != m_mapOfMyUint32CharMap.end()) {
-			    sstrOfMyUint32CharMap << it->first << "=" << it->second << endl;
-			    it++;
+					// Write string into super-stringstream.
+					const string str_sstr_keyValueEntry = sstr_keyValueEntry.str();
+					s->writeValue(sstr_MyUint32CharMap, str_sstr_keyValueEntry);
+		
+					// Process next entry.
+					it++;
+				}
 			}
-			
-			// Write string of elements.
-			if (numberOfMyUint32CharMap > 0) {
-				s->write(2 + 7, sstrOfMyUint32CharMap.str());
-			}
+			const std::string str_sstr_MyUint32CharMap = sstr_MyUint32CharMap.str();
+			s->write(2, str_sstr_MyUint32CharMap);
 		}
 		{
-			// Write number of elements in m_mapOfMyUint32Int32Map.
-			const uint32_t numberOfMyUint32Int32Map = static_cast<uint32_t>(m_mapOfMyUint32Int32Map.size());
-			s->write(3, numberOfMyUint32Int32Map);
+			std::stringstream sstr_MyUint32Int32Map;
+			{
+				std::map<uint32_t, int32_t>::const_iterator it = m_mapOfMyUint32Int32Map.begin();
+				while (it != m_mapOfMyUint32Int32Map.end()) {
+					// Write key/value into a joint string.
+					std::stringstream sstr_keyValueEntry;
+					{
+						std::shared_ptr<Serializer> keyValueSerializer = sf.getSerializer(sstr_keyValueEntry);
+						keyValueSerializer->write(1, it->first);  // Write key as field 1 from a "virtual" class.
+						keyValueSerializer->write(2, it->second); // Write value as field 2 from a "virtual" class.
+					}
 		
-			// Write actual elements into a stringstream.
-			std::stringstream sstrOfMyUint32Int32Map;
-			std::map<uint32_t, int32_t>::const_iterator it = m_mapOfMyUint32Int32Map.begin();
-			while (it != m_mapOfMyUint32Int32Map.end()) {
-			    sstrOfMyUint32Int32Map << it->first << "=" << it->second << endl;
-			    it++;
+					// Write string into super-stringstream.
+					const string str_sstr_keyValueEntry = sstr_keyValueEntry.str();
+					s->writeValue(sstr_MyUint32Int32Map, str_sstr_keyValueEntry);
+		
+					// Process next entry.
+					it++;
+				}
 			}
-			
-			// Write string of elements.
-			if (numberOfMyUint32Int32Map > 0) {
-				s->write(3 + 7, sstrOfMyUint32Int32Map.str());
-			}
+			const std::string str_sstr_MyUint32Int32Map = sstr_MyUint32Int32Map.str();
+			s->write(3, str_sstr_MyUint32Int32Map);
 		}
 		{
-			// Write number of elements in m_mapOfMyUint32Uint32Map.
-			const uint32_t numberOfMyUint32Uint32Map = static_cast<uint32_t>(m_mapOfMyUint32Uint32Map.size());
-			s->write(4, numberOfMyUint32Uint32Map);
+			std::stringstream sstr_MyUint32Uint32Map;
+			{
+				std::map<uint32_t, uint32_t>::const_iterator it = m_mapOfMyUint32Uint32Map.begin();
+				while (it != m_mapOfMyUint32Uint32Map.end()) {
+					// Write key/value into a joint string.
+					std::stringstream sstr_keyValueEntry;
+					{
+						std::shared_ptr<Serializer> keyValueSerializer = sf.getSerializer(sstr_keyValueEntry);
+						keyValueSerializer->write(1, it->first);  // Write key as field 1 from a "virtual" class.
+						keyValueSerializer->write(2, it->second); // Write value as field 2 from a "virtual" class.
+					}
 		
-			// Write actual elements into a stringstream.
-			std::stringstream sstrOfMyUint32Uint32Map;
-			std::map<uint32_t, uint32_t>::const_iterator it = m_mapOfMyUint32Uint32Map.begin();
-			while (it != m_mapOfMyUint32Uint32Map.end()) {
-			    sstrOfMyUint32Uint32Map << it->first << "=" << it->second << endl;
-			    it++;
+					// Write string into super-stringstream.
+					const string str_sstr_keyValueEntry = sstr_keyValueEntry.str();
+					s->writeValue(sstr_MyUint32Uint32Map, str_sstr_keyValueEntry);
+		
+					// Process next entry.
+					it++;
+				}
 			}
-			
-			// Write string of elements.
-			if (numberOfMyUint32Uint32Map > 0) {
-				s->write(4 + 7, sstrOfMyUint32Uint32Map.str());
-			}
+			const std::string str_sstr_MyUint32Uint32Map = sstr_MyUint32Uint32Map.str();
+			s->write(4, str_sstr_MyUint32Uint32Map);
 		}
 		{
-			// Write number of elements in m_mapOfMyUint32FloatMap.
-			const uint32_t numberOfMyUint32FloatMap = static_cast<uint32_t>(m_mapOfMyUint32FloatMap.size());
-			s->write(5, numberOfMyUint32FloatMap);
+			std::stringstream sstr_MyUint32FloatMap;
+			{
+				std::map<uint32_t, float>::const_iterator it = m_mapOfMyUint32FloatMap.begin();
+				while (it != m_mapOfMyUint32FloatMap.end()) {
+					// Write key/value into a joint string.
+					std::stringstream sstr_keyValueEntry;
+					{
+						std::shared_ptr<Serializer> keyValueSerializer = sf.getSerializer(sstr_keyValueEntry);
+						keyValueSerializer->write(1, it->first);  // Write key as field 1 from a "virtual" class.
+						keyValueSerializer->write(2, it->second); // Write value as field 2 from a "virtual" class.
+					}
 		
-			// Write actual elements into a stringstream.
-			std::stringstream sstrOfMyUint32FloatMap;
-			std::map<uint32_t, float>::const_iterator it = m_mapOfMyUint32FloatMap.begin();
-			while (it != m_mapOfMyUint32FloatMap.end()) {
-			    sstrOfMyUint32FloatMap << it->first << "=" << it->second << endl;
-			    it++;
+					// Write string into super-stringstream.
+					const string str_sstr_keyValueEntry = sstr_keyValueEntry.str();
+					s->writeValue(sstr_MyUint32FloatMap, str_sstr_keyValueEntry);
+		
+					// Process next entry.
+					it++;
+				}
 			}
-			
-			// Write string of elements.
-			if (numberOfMyUint32FloatMap > 0) {
-				s->write(5 + 7, sstrOfMyUint32FloatMap.str());
-			}
+			const std::string str_sstr_MyUint32FloatMap = sstr_MyUint32FloatMap.str();
+			s->write(5, str_sstr_MyUint32FloatMap);
 		}
 		{
-			// Write number of elements in m_mapOfMyUint32DoubleMap.
-			const uint32_t numberOfMyUint32DoubleMap = static_cast<uint32_t>(m_mapOfMyUint32DoubleMap.size());
-			s->write(6, numberOfMyUint32DoubleMap);
+			std::stringstream sstr_MyUint32DoubleMap;
+			{
+				std::map<uint32_t, double>::const_iterator it = m_mapOfMyUint32DoubleMap.begin();
+				while (it != m_mapOfMyUint32DoubleMap.end()) {
+					// Write key/value into a joint string.
+					std::stringstream sstr_keyValueEntry;
+					{
+						std::shared_ptr<Serializer> keyValueSerializer = sf.getSerializer(sstr_keyValueEntry);
+						keyValueSerializer->write(1, it->first);  // Write key as field 1 from a "virtual" class.
+						keyValueSerializer->write(2, it->second); // Write value as field 2 from a "virtual" class.
+					}
 		
-			// Write actual elements into a stringstream.
-			std::stringstream sstrOfMyUint32DoubleMap;
-			std::map<uint32_t, double>::const_iterator it = m_mapOfMyUint32DoubleMap.begin();
-			while (it != m_mapOfMyUint32DoubleMap.end()) {
-			    sstrOfMyUint32DoubleMap << it->first << "=" << it->second << endl;
-			    it++;
+					// Write string into super-stringstream.
+					const string str_sstr_keyValueEntry = sstr_keyValueEntry.str();
+					s->writeValue(sstr_MyUint32DoubleMap, str_sstr_keyValueEntry);
+		
+					// Process next entry.
+					it++;
+				}
 			}
-			
-			// Write string of elements.
-			if (numberOfMyUint32DoubleMap > 0) {
-				s->write(6 + 7, sstrOfMyUint32DoubleMap.str());
-			}
+			const std::string str_sstr_MyUint32DoubleMap = sstr_MyUint32DoubleMap.str();
+			s->write(6, str_sstr_MyUint32DoubleMap);
 		}
 		{
-			// Write number of elements in m_mapOfMyUint32StringMap.
-			const uint32_t numberOfMyUint32StringMap = static_cast<uint32_t>(m_mapOfMyUint32StringMap.size());
-			s->write(7, numberOfMyUint32StringMap);
+			std::stringstream sstr_MyUint32StringMap;
+			{
+				std::map<uint32_t, std::string>::const_iterator it = m_mapOfMyUint32StringMap.begin();
+				while (it != m_mapOfMyUint32StringMap.end()) {
+					// Write key/value into a joint string.
+					std::stringstream sstr_keyValueEntry;
+					{
+						std::shared_ptr<Serializer> keyValueSerializer = sf.getSerializer(sstr_keyValueEntry);
+						keyValueSerializer->write(1, it->first);  // Write key as field 1 from a "virtual" class.
+						keyValueSerializer->write(2, it->second); // Write value as field 2 from a "virtual" class.
+					}
 		
-			// Write actual elements into a stringstream.
-			std::stringstream sstrOfMyUint32StringMap;
-			std::map<uint32_t, std::string>::const_iterator it = m_mapOfMyUint32StringMap.begin();
-			while (it != m_mapOfMyUint32StringMap.end()) {
-			    sstrOfMyUint32StringMap << it->first << "=" << it->second << endl;
-			    it++;
+					// Write string into super-stringstream.
+					const string str_sstr_keyValueEntry = sstr_keyValueEntry.str();
+					s->writeValue(sstr_MyUint32StringMap, str_sstr_keyValueEntry);
+		
+					// Process next entry.
+					it++;
+				}
 			}
-			
-			// Write string of elements.
-			if (numberOfMyUint32StringMap > 0) {
-				s->write(7 + 7, sstrOfMyUint32StringMap.str());
-			}
+			const std::string str_sstr_MyUint32StringMap = sstr_MyUint32StringMap.str();
+			s->write(7, str_sstr_MyUint32StringMap);
 		}
 		return out;
 	}
@@ -507,347 +549,242 @@
 
 		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
-		// Clean up the existing map of MyUint32BoolMap.
-		m_mapOfMyUint32BoolMap.clear();
+		// Restore elements from a string into MyUint32BoolMap.
+		{
+			// Clean up the existing map of MyUint32BoolMap.
+			m_mapOfMyUint32BoolMap.clear();
 		
-		// Read number of elements in m_mapOfMyUint32BoolMap.
-		uint32_t numberOfMyUint32BoolMap = 0;
-		d->read(1, numberOfMyUint32BoolMap);
+			std::string str_MyUint32BoolMap;
+			d->read(1, str_MyUint32BoolMap);
+			if (str_MyUint32BoolMap.size() > 0) {
+				std::stringstream sstr_str_MyUint32BoolMap(str_MyUint32BoolMap);
 		
-		if (numberOfMyUint32BoolMap > 0) {
-		    // Read string of elements.
-		    string elements;
-			d->read(1 + 7, elements);
+				// str_MyUint32BoolMap contains a sequence of strings containing pairs of key/values.
+				uint32_t length = str_MyUint32BoolMap.size();
+				while (length > 0) {
+					std::string str_sstr_keyValue;
+					length -= d->readValue(sstr_str_MyUint32BoolMap, str_sstr_keyValue);
 		
-			stringstream sstr(elements);
+					if (str_sstr_keyValue.size() > 0) {
+						// We have in str_sstr_keyValue a string at hand containing a pair key/value.
+						// Now, we restore the key and value therefrom.
+						std::stringstream sstr_keyValueEntry(str_sstr_keyValue);
 		
-			while (!sstr.eof()) {
-			    string line;
-			    getline(sstr, line);
-		
-			    // Trying to find key-value-pair.
-			    size_t delimiter = line.find_first_of("=");
-		
-			    // Compute length of value-entry by allowing comments right after values.
-			    size_t valueLength = line.length();
-		
-			    // Skip lines with invalid position pointers.
-			    if (! ( (delimiter > 0) && (valueLength > 0) ) ) {
-			        continue;
-			    }
-		
-			    string key = line.substr(0, delimiter);
-			    string value = line.substr(delimiter + 1, valueLength);
-		
-			    // Skip lines with invalid keys or values.
-			    if ( (key.length() == 0) || (value.length() == 0) ) {
-			        continue;
-			    }
-		
-			    stringstream sstrKey(key);
-			    uint32_t _key;
-		        sstrKey >> _key;
-		
-			    stringstream sstrValue(value);
-			    bool _value;
-		        sstrValue >> _value;
-		
-				// Store key/value pair.
-				putTo_MapOfMyUint32BoolMap(_key, _value);
+						{
+							std::shared_ptr<Deserializer> keyValueDeserializer = sf.getDeserializer(sstr_keyValueEntry);
+							uint32_t key;
+							bool value;
+							keyValueDeserializer->read(1, key);
+							keyValueDeserializer->read(2, value);
+							// Store key/value pair in the map.
+							putTo_MapOfMyUint32BoolMap(key, value);
+						}
+					}
+				}
 			}
 		}
-		// Clean up the existing map of MyUint32CharMap.
-		m_mapOfMyUint32CharMap.clear();
+		// Restore elements from a string into MyUint32CharMap.
+		{
+			// Clean up the existing map of MyUint32CharMap.
+			m_mapOfMyUint32CharMap.clear();
 		
-		// Read number of elements in m_mapOfMyUint32CharMap.
-		uint32_t numberOfMyUint32CharMap = 0;
-		d->read(2, numberOfMyUint32CharMap);
+			std::string str_MyUint32CharMap;
+			d->read(2, str_MyUint32CharMap);
+			if (str_MyUint32CharMap.size() > 0) {
+				std::stringstream sstr_str_MyUint32CharMap(str_MyUint32CharMap);
 		
-		if (numberOfMyUint32CharMap > 0) {
-		    // Read string of elements.
-		    string elements;
-			d->read(2 + 7, elements);
+				// str_MyUint32CharMap contains a sequence of strings containing pairs of key/values.
+				uint32_t length = str_MyUint32CharMap.size();
+				while (length > 0) {
+					std::string str_sstr_keyValue;
+					length -= d->readValue(sstr_str_MyUint32CharMap, str_sstr_keyValue);
 		
-			stringstream sstr(elements);
+					if (str_sstr_keyValue.size() > 0) {
+						// We have in str_sstr_keyValue a string at hand containing a pair key/value.
+						// Now, we restore the key and value therefrom.
+						std::stringstream sstr_keyValueEntry(str_sstr_keyValue);
 		
-			while (!sstr.eof()) {
-			    string line;
-			    getline(sstr, line);
-		
-			    // Trying to find key-value-pair.
-			    size_t delimiter = line.find_first_of("=");
-		
-			    // Compute length of value-entry by allowing comments right after values.
-			    size_t valueLength = line.length();
-		
-			    // Skip lines with invalid position pointers.
-			    if (! ( (delimiter > 0) && (valueLength > 0) ) ) {
-			        continue;
-			    }
-		
-			    string key = line.substr(0, delimiter);
-			    string value = line.substr(delimiter + 1, valueLength);
-		
-			    // Skip lines with invalid keys or values.
-			    if ( (key.length() == 0) || (value.length() == 0) ) {
-			        continue;
-			    }
-		
-			    stringstream sstrKey(key);
-			    uint32_t _key;
-		        sstrKey >> _key;
-		
-			    stringstream sstrValue(value);
-			    char _value;
-		        sstrValue >> _value;
-		
-				// Store key/value pair.
-				putTo_MapOfMyUint32CharMap(_key, _value);
+						{
+							std::shared_ptr<Deserializer> keyValueDeserializer = sf.getDeserializer(sstr_keyValueEntry);
+							uint32_t key;
+							char value;
+							keyValueDeserializer->read(1, key);
+							keyValueDeserializer->read(2, value);
+							// Store key/value pair in the map.
+							putTo_MapOfMyUint32CharMap(key, value);
+						}
+					}
+				}
 			}
 		}
-		// Clean up the existing map of MyUint32Int32Map.
-		m_mapOfMyUint32Int32Map.clear();
+		// Restore elements from a string into MyUint32Int32Map.
+		{
+			// Clean up the existing map of MyUint32Int32Map.
+			m_mapOfMyUint32Int32Map.clear();
 		
-		// Read number of elements in m_mapOfMyUint32Int32Map.
-		uint32_t numberOfMyUint32Int32Map = 0;
-		d->read(3, numberOfMyUint32Int32Map);
+			std::string str_MyUint32Int32Map;
+			d->read(3, str_MyUint32Int32Map);
+			if (str_MyUint32Int32Map.size() > 0) {
+				std::stringstream sstr_str_MyUint32Int32Map(str_MyUint32Int32Map);
 		
-		if (numberOfMyUint32Int32Map > 0) {
-		    // Read string of elements.
-		    string elements;
-			d->read(3 + 7, elements);
+				// str_MyUint32Int32Map contains a sequence of strings containing pairs of key/values.
+				uint32_t length = str_MyUint32Int32Map.size();
+				while (length > 0) {
+					std::string str_sstr_keyValue;
+					length -= d->readValue(sstr_str_MyUint32Int32Map, str_sstr_keyValue);
 		
-			stringstream sstr(elements);
+					if (str_sstr_keyValue.size() > 0) {
+						// We have in str_sstr_keyValue a string at hand containing a pair key/value.
+						// Now, we restore the key and value therefrom.
+						std::stringstream sstr_keyValueEntry(str_sstr_keyValue);
 		
-			while (!sstr.eof()) {
-			    string line;
-			    getline(sstr, line);
-		
-			    // Trying to find key-value-pair.
-			    size_t delimiter = line.find_first_of("=");
-		
-			    // Compute length of value-entry by allowing comments right after values.
-			    size_t valueLength = line.length();
-		
-			    // Skip lines with invalid position pointers.
-			    if (! ( (delimiter > 0) && (valueLength > 0) ) ) {
-			        continue;
-			    }
-		
-			    string key = line.substr(0, delimiter);
-			    string value = line.substr(delimiter + 1, valueLength);
-		
-			    // Skip lines with invalid keys or values.
-			    if ( (key.length() == 0) || (value.length() == 0) ) {
-			        continue;
-			    }
-		
-			    stringstream sstrKey(key);
-			    uint32_t _key;
-		        sstrKey >> _key;
-		
-			    stringstream sstrValue(value);
-			    int32_t _value;
-		        sstrValue >> _value;
-		
-				// Store key/value pair.
-				putTo_MapOfMyUint32Int32Map(_key, _value);
+						{
+							std::shared_ptr<Deserializer> keyValueDeserializer = sf.getDeserializer(sstr_keyValueEntry);
+							uint32_t key;
+							int32_t value;
+							keyValueDeserializer->read(1, key);
+							keyValueDeserializer->read(2, value);
+							// Store key/value pair in the map.
+							putTo_MapOfMyUint32Int32Map(key, value);
+						}
+					}
+				}
 			}
 		}
-		// Clean up the existing map of MyUint32Uint32Map.
-		m_mapOfMyUint32Uint32Map.clear();
+		// Restore elements from a string into MyUint32Uint32Map.
+		{
+			// Clean up the existing map of MyUint32Uint32Map.
+			m_mapOfMyUint32Uint32Map.clear();
 		
-		// Read number of elements in m_mapOfMyUint32Uint32Map.
-		uint32_t numberOfMyUint32Uint32Map = 0;
-		d->read(4, numberOfMyUint32Uint32Map);
+			std::string str_MyUint32Uint32Map;
+			d->read(4, str_MyUint32Uint32Map);
+			if (str_MyUint32Uint32Map.size() > 0) {
+				std::stringstream sstr_str_MyUint32Uint32Map(str_MyUint32Uint32Map);
 		
-		if (numberOfMyUint32Uint32Map > 0) {
-		    // Read string of elements.
-		    string elements;
-			d->read(4 + 7, elements);
+				// str_MyUint32Uint32Map contains a sequence of strings containing pairs of key/values.
+				uint32_t length = str_MyUint32Uint32Map.size();
+				while (length > 0) {
+					std::string str_sstr_keyValue;
+					length -= d->readValue(sstr_str_MyUint32Uint32Map, str_sstr_keyValue);
 		
-			stringstream sstr(elements);
+					if (str_sstr_keyValue.size() > 0) {
+						// We have in str_sstr_keyValue a string at hand containing a pair key/value.
+						// Now, we restore the key and value therefrom.
+						std::stringstream sstr_keyValueEntry(str_sstr_keyValue);
 		
-			while (!sstr.eof()) {
-			    string line;
-			    getline(sstr, line);
-		
-			    // Trying to find key-value-pair.
-			    size_t delimiter = line.find_first_of("=");
-		
-			    // Compute length of value-entry by allowing comments right after values.
-			    size_t valueLength = line.length();
-		
-			    // Skip lines with invalid position pointers.
-			    if (! ( (delimiter > 0) && (valueLength > 0) ) ) {
-			        continue;
-			    }
-		
-			    string key = line.substr(0, delimiter);
-			    string value = line.substr(delimiter + 1, valueLength);
-		
-			    // Skip lines with invalid keys or values.
-			    if ( (key.length() == 0) || (value.length() == 0) ) {
-			        continue;
-			    }
-		
-			    stringstream sstrKey(key);
-			    uint32_t _key;
-		        sstrKey >> _key;
-		
-			    stringstream sstrValue(value);
-			    uint32_t _value;
-		        sstrValue >> _value;
-		
-				// Store key/value pair.
-				putTo_MapOfMyUint32Uint32Map(_key, _value);
+						{
+							std::shared_ptr<Deserializer> keyValueDeserializer = sf.getDeserializer(sstr_keyValueEntry);
+							uint32_t key;
+							uint32_t value;
+							keyValueDeserializer->read(1, key);
+							keyValueDeserializer->read(2, value);
+							// Store key/value pair in the map.
+							putTo_MapOfMyUint32Uint32Map(key, value);
+						}
+					}
+				}
 			}
 		}
-		// Clean up the existing map of MyUint32FloatMap.
-		m_mapOfMyUint32FloatMap.clear();
+		// Restore elements from a string into MyUint32FloatMap.
+		{
+			// Clean up the existing map of MyUint32FloatMap.
+			m_mapOfMyUint32FloatMap.clear();
 		
-		// Read number of elements in m_mapOfMyUint32FloatMap.
-		uint32_t numberOfMyUint32FloatMap = 0;
-		d->read(5, numberOfMyUint32FloatMap);
+			std::string str_MyUint32FloatMap;
+			d->read(5, str_MyUint32FloatMap);
+			if (str_MyUint32FloatMap.size() > 0) {
+				std::stringstream sstr_str_MyUint32FloatMap(str_MyUint32FloatMap);
 		
-		if (numberOfMyUint32FloatMap > 0) {
-		    // Read string of elements.
-		    string elements;
-			d->read(5 + 7, elements);
+				// str_MyUint32FloatMap contains a sequence of strings containing pairs of key/values.
+				uint32_t length = str_MyUint32FloatMap.size();
+				while (length > 0) {
+					std::string str_sstr_keyValue;
+					length -= d->readValue(sstr_str_MyUint32FloatMap, str_sstr_keyValue);
 		
-			stringstream sstr(elements);
+					if (str_sstr_keyValue.size() > 0) {
+						// We have in str_sstr_keyValue a string at hand containing a pair key/value.
+						// Now, we restore the key and value therefrom.
+						std::stringstream sstr_keyValueEntry(str_sstr_keyValue);
 		
-			while (!sstr.eof()) {
-			    string line;
-			    getline(sstr, line);
-		
-			    // Trying to find key-value-pair.
-			    size_t delimiter = line.find_first_of("=");
-		
-			    // Compute length of value-entry by allowing comments right after values.
-			    size_t valueLength = line.length();
-		
-			    // Skip lines with invalid position pointers.
-			    if (! ( (delimiter > 0) && (valueLength > 0) ) ) {
-			        continue;
-			    }
-		
-			    string key = line.substr(0, delimiter);
-			    string value = line.substr(delimiter + 1, valueLength);
-		
-			    // Skip lines with invalid keys or values.
-			    if ( (key.length() == 0) || (value.length() == 0) ) {
-			        continue;
-			    }
-		
-			    stringstream sstrKey(key);
-			    uint32_t _key;
-		        sstrKey >> _key;
-		
-			    stringstream sstrValue(value);
-			    float _value;
-		        sstrValue >> _value;
-		
-				// Store key/value pair.
-				putTo_MapOfMyUint32FloatMap(_key, _value);
+						{
+							std::shared_ptr<Deserializer> keyValueDeserializer = sf.getDeserializer(sstr_keyValueEntry);
+							uint32_t key;
+							float value;
+							keyValueDeserializer->read(1, key);
+							keyValueDeserializer->read(2, value);
+							// Store key/value pair in the map.
+							putTo_MapOfMyUint32FloatMap(key, value);
+						}
+					}
+				}
 			}
 		}
-		// Clean up the existing map of MyUint32DoubleMap.
-		m_mapOfMyUint32DoubleMap.clear();
+		// Restore elements from a string into MyUint32DoubleMap.
+		{
+			// Clean up the existing map of MyUint32DoubleMap.
+			m_mapOfMyUint32DoubleMap.clear();
 		
-		// Read number of elements in m_mapOfMyUint32DoubleMap.
-		uint32_t numberOfMyUint32DoubleMap = 0;
-		d->read(6, numberOfMyUint32DoubleMap);
+			std::string str_MyUint32DoubleMap;
+			d->read(6, str_MyUint32DoubleMap);
+			if (str_MyUint32DoubleMap.size() > 0) {
+				std::stringstream sstr_str_MyUint32DoubleMap(str_MyUint32DoubleMap);
 		
-		if (numberOfMyUint32DoubleMap > 0) {
-		    // Read string of elements.
-		    string elements;
-			d->read(6 + 7, elements);
+				// str_MyUint32DoubleMap contains a sequence of strings containing pairs of key/values.
+				uint32_t length = str_MyUint32DoubleMap.size();
+				while (length > 0) {
+					std::string str_sstr_keyValue;
+					length -= d->readValue(sstr_str_MyUint32DoubleMap, str_sstr_keyValue);
 		
-			stringstream sstr(elements);
+					if (str_sstr_keyValue.size() > 0) {
+						// We have in str_sstr_keyValue a string at hand containing a pair key/value.
+						// Now, we restore the key and value therefrom.
+						std::stringstream sstr_keyValueEntry(str_sstr_keyValue);
 		
-			while (!sstr.eof()) {
-			    string line;
-			    getline(sstr, line);
-		
-			    // Trying to find key-value-pair.
-			    size_t delimiter = line.find_first_of("=");
-		
-			    // Compute length of value-entry by allowing comments right after values.
-			    size_t valueLength = line.length();
-		
-			    // Skip lines with invalid position pointers.
-			    if (! ( (delimiter > 0) && (valueLength > 0) ) ) {
-			        continue;
-			    }
-		
-			    string key = line.substr(0, delimiter);
-			    string value = line.substr(delimiter + 1, valueLength);
-		
-			    // Skip lines with invalid keys or values.
-			    if ( (key.length() == 0) || (value.length() == 0) ) {
-			        continue;
-			    }
-		
-			    stringstream sstrKey(key);
-			    uint32_t _key;
-		        sstrKey >> _key;
-		
-			    stringstream sstrValue(value);
-			    double _value;
-		        sstrValue >> _value;
-		
-				// Store key/value pair.
-				putTo_MapOfMyUint32DoubleMap(_key, _value);
+						{
+							std::shared_ptr<Deserializer> keyValueDeserializer = sf.getDeserializer(sstr_keyValueEntry);
+							uint32_t key;
+							double value;
+							keyValueDeserializer->read(1, key);
+							keyValueDeserializer->read(2, value);
+							// Store key/value pair in the map.
+							putTo_MapOfMyUint32DoubleMap(key, value);
+						}
+					}
+				}
 			}
 		}
-		// Clean up the existing map of MyUint32StringMap.
-		m_mapOfMyUint32StringMap.clear();
+		// Restore elements from a string into MyUint32StringMap.
+		{
+			// Clean up the existing map of MyUint32StringMap.
+			m_mapOfMyUint32StringMap.clear();
 		
-		// Read number of elements in m_mapOfMyUint32StringMap.
-		uint32_t numberOfMyUint32StringMap = 0;
-		d->read(7, numberOfMyUint32StringMap);
+			std::string str_MyUint32StringMap;
+			d->read(7, str_MyUint32StringMap);
+			if (str_MyUint32StringMap.size() > 0) {
+				std::stringstream sstr_str_MyUint32StringMap(str_MyUint32StringMap);
 		
-		if (numberOfMyUint32StringMap > 0) {
-		    // Read string of elements.
-		    string elements;
-			d->read(7 + 7, elements);
+				// str_MyUint32StringMap contains a sequence of strings containing pairs of key/values.
+				uint32_t length = str_MyUint32StringMap.size();
+				while (length > 0) {
+					std::string str_sstr_keyValue;
+					length -= d->readValue(sstr_str_MyUint32StringMap, str_sstr_keyValue);
 		
-			stringstream sstr(elements);
+					if (str_sstr_keyValue.size() > 0) {
+						// We have in str_sstr_keyValue a string at hand containing a pair key/value.
+						// Now, we restore the key and value therefrom.
+						std::stringstream sstr_keyValueEntry(str_sstr_keyValue);
 		
-			while (!sstr.eof()) {
-			    string line;
-			    getline(sstr, line);
-		
-			    // Trying to find key-value-pair.
-			    size_t delimiter = line.find_first_of("=");
-		
-			    // Compute length of value-entry by allowing comments right after values.
-			    size_t valueLength = line.length();
-		
-			    // Skip lines with invalid position pointers.
-			    if (! ( (delimiter > 0) && (valueLength > 0) ) ) {
-			        continue;
-			    }
-		
-			    string key = line.substr(0, delimiter);
-			    string value = line.substr(delimiter + 1, valueLength);
-		
-			    // Skip lines with invalid keys or values.
-			    if ( (key.length() == 0) || (value.length() == 0) ) {
-			        continue;
-			    }
-		
-			    stringstream sstrKey(key);
-			    uint32_t _key;
-		        sstrKey >> _key;
-		
-			    stringstream sstrValue(value);
-			    std::string _value;
-		        getline(sstrValue, _value);
-		
-				// Store key/value pair.
-				putTo_MapOfMyUint32StringMap(_key, _value);
+						{
+							std::shared_ptr<Deserializer> keyValueDeserializer = sf.getDeserializer(sstr_keyValueEntry);
+							uint32_t key;
+							std::string value;
+							keyValueDeserializer->read(1, key);
+							keyValueDeserializer->read(2, value);
+							// Store key/value pair in the map.
+							putTo_MapOfMyUint32StringMap(key, value);
+						}
+					}
+				}
 			}
 		}
 		return in;

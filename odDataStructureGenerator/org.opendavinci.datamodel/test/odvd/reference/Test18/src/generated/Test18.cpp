@@ -148,9 +148,9 @@
 
 	void Test18::accept(odcore::base::Visitor &v) {
 		v.beginVisit();
-		v.visit(CRC32 < CharList<'m', CharList<'y', CharList<'A', CharList<'t', CharList<'t', CharList<'1', NullType> > > > > >  >::RESULT, 5, "Test18.myAtt1", "myAtt1", m_myAtt1);
-		v.visit(0x12345678, 0, "Test18.myAtt2", "myAtt2", m_myAtt2);
-		v.visit(0xAaBbCcDd, 0, "Test18.myAtt3", "myAtt3", m_myAtt3);
+		v.visit(CRC32 < CharList<'m', CharList<'y', CharList<'A', CharList<'t', CharList<'t', CharList<'1', NullType> > > > > >  >::RESULT, 3, "Test18.myAtt1", "myAtt1", m_myAtt1);
+		v.visit(CRC32 < CharList<'m', CharList<'y', CharList<'A', CharList<'t', CharList<'t', CharList<'2', NullType> > > > > >  >::RESULT, 4, "Test18.myAtt2", "myAtt2", m_myAtt2);
+		v.visit(CRC32 < CharList<'m', CharList<'y', CharList<'A', CharList<'t', CharList<'t', CharList<'3', NullType> > > > > >  >::RESULT, 5, "Test18.myAtt3", "myAtt3", m_myAtt3);
 		v.endVisit();
 	}
 
@@ -181,14 +181,16 @@
 
 		std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
-		s->write(CRC32 < CharList<'m', CharList<'y', CharList<'A', CharList<'r', CharList<'r', CharList<'a', CharList<'y', CharList<'1', NullType> > > > > > > >  >::RESULT,
+		s->write(1,
 				m_myArray1, getSize_MyArray1() * (sizeof(uint32_t)/sizeof(char)));
-		s->write(4,
+		s->write(2,
 				m_myArray2, getSize_MyArray2() * (sizeof(float)/sizeof(char)));
-		s->write(5,
+		s->write(3,
 				m_myAtt1);
-		s->write(0x12345678, m_myAtt2);
-		s->write(0xAaBbCcDd, m_myAtt3);
+		s->write(4,
+				m_myAtt2);
+		s->write(5,
+				m_myAtt3);
 		return out;
 	}
 
@@ -198,13 +200,15 @@
 
 		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
-		d->read(CRC32 < CharList<'m', CharList<'y', CharList<'A', CharList<'r', CharList<'r', CharList<'a', CharList<'y', CharList<'1', NullType> > > > > > > >  >::RESULT,
+		d->read(1,
 		       m_myArray1, getSize_MyArray1() * (sizeof(uint32_t)/sizeof(char)));
-		d->read(4,
+		d->read(2,
 		       m_myArray2, getSize_MyArray2() * (sizeof(float)/sizeof(char)));
-		d->read(5,
+		d->read(3,
 				m_myAtt1);
-		d->read(0x12345678, m_myAtt2);
-		d->read(0xAaBbCcDd, m_myAtt3);
+		d->read(4,
+				m_myAtt2);
+		d->read(5,
+				m_myAtt3);
 		return in;
 	}

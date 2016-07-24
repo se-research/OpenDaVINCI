@@ -92,8 +92,8 @@
 
 	void Test10Point::accept(odcore::base::Visitor &v) {
 		v.beginVisit();
-		v.visit(CRC32 < CharList<'x', NullType>  >::RESULT, 0, "Test10Point.x", "x", m_x);
-		v.visit(CRC32 < CharList<'y', NullType>  >::RESULT, 0, "Test10Point.y", "y", m_y);
+		v.visit(CRC32 < CharList<'x', NullType>  >::RESULT, 1, "Test10Point.x", "x", m_x);
+		v.visit(CRC32 < CharList<'y', NullType>  >::RESULT, 2, "Test10Point.y", "y", m_y);
 		v.endVisit();
 	}
 
@@ -113,9 +113,9 @@
 
 		std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
-		s->write(CRC32 < CharList<'x', NullType>  >::RESULT,
+		s->write(1,
 				m_x);
-		s->write(CRC32 < CharList<'y', NullType>  >::RESULT,
+		s->write(2,
 				m_y);
 		return out;
 	}
@@ -126,9 +126,9 @@
 
 		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
-		d->read(CRC32 < CharList<'x', NullType>  >::RESULT,
+		d->read(1,
 				m_x);
-		d->read(CRC32 < CharList<'y', NullType>  >::RESULT,
+		d->read(2,
 				m_y);
 		return in;
 	}

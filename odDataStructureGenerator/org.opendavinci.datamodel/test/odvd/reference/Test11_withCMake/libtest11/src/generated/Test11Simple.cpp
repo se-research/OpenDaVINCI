@@ -92,8 +92,8 @@
 
 	void Test11Simple::accept(odcore::base::Visitor &v) {
 		v.beginVisit();
-		v.visit(CRC32 < CharList<'d', CharList<'a', CharList<'t', CharList<'a', CharList<'1', NullType> > > > >  >::RESULT, 0, "Test11Simple.data1", "data1", m_data1);
-		v.visit(CRC32 < CharList<'d', CharList<'a', CharList<'t', CharList<'a', CharList<'2', NullType> > > > >  >::RESULT, 0, "Test11Simple.data2", "data2", m_data2);
+		v.visit(CRC32 < CharList<'d', CharList<'a', CharList<'t', CharList<'a', CharList<'1', NullType> > > > >  >::RESULT, 1, "Test11Simple.data1", "data1", m_data1);
+		v.visit(CRC32 < CharList<'d', CharList<'a', CharList<'t', CharList<'a', CharList<'2', NullType> > > > >  >::RESULT, 2, "Test11Simple.data2", "data2", m_data2);
 		v.endVisit();
 	}
 
@@ -113,9 +113,9 @@
 
 		std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
-		s->write(CRC32 < CharList<'d', CharList<'a', CharList<'t', CharList<'a', CharList<'1', NullType> > > > >  >::RESULT,
+		s->write(1,
 				m_data1);
-		s->write(CRC32 < CharList<'d', CharList<'a', CharList<'t', CharList<'a', CharList<'2', NullType> > > > >  >::RESULT,
+		s->write(2,
 				m_data2);
 		return out;
 	}
@@ -126,9 +126,9 @@
 
 		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
-		d->read(CRC32 < CharList<'d', CharList<'a', CharList<'t', CharList<'a', CharList<'1', NullType> > > > >  >::RESULT,
+		d->read(1,
 				m_data1);
-		d->read(CRC32 < CharList<'d', CharList<'a', CharList<'t', CharList<'a', CharList<'2', NullType> > > > >  >::RESULT,
+		d->read(2,
 				m_data2);
 		return in;
 	}

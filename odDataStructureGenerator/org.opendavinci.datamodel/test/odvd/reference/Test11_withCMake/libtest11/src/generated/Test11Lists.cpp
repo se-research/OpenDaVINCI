@@ -385,8 +385,7 @@
 				}
 			}
 			const std::string str_sstr_MyBoolList = sstr_MyBoolList.str();
-			s->write(CRC32 < CharList<'M', CharList<'y', CharList<'B', CharList<'o', CharList<'o', CharList<'l', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > >  >::RESULT,
-				    str_sstr_MyBoolList);
+			s->write(1, str_sstr_MyBoolList);
 		}
 		// Store elements from m_listOfMyCharList into a string.
 		{
@@ -398,8 +397,7 @@
 				}
 			}
 			const std::string str_sstr_MyCharList = sstr_MyCharList.str();
-			s->write(CRC32 < CharList<'M', CharList<'y', CharList<'C', CharList<'h', CharList<'a', CharList<'r', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > >  >::RESULT,
-				    str_sstr_MyCharList);
+			s->write(2, str_sstr_MyCharList);
 		}
 		// Store elements from m_listOfMyInt32List into a string.
 		{
@@ -411,8 +409,7 @@
 				}
 			}
 			const std::string str_sstr_MyInt32List = sstr_MyInt32List.str();
-			s->write(CRC32 < CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > >  >::RESULT,
-				    str_sstr_MyInt32List);
+			s->write(3, str_sstr_MyInt32List);
 		}
 		// Store elements from m_listOfMyUint32List into a string.
 		{
@@ -424,8 +421,7 @@
 				}
 			}
 			const std::string str_sstr_MyUint32List = sstr_MyUint32List.str();
-			s->write(CRC32 < CharList<'M', CharList<'y', CharList<'U', CharList<'i', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
-				    str_sstr_MyUint32List);
+			s->write(4, str_sstr_MyUint32List);
 		}
 		// Store elements from m_listOfMyFloatList into a string.
 		{
@@ -437,8 +433,7 @@
 				}
 			}
 			const std::string str_sstr_MyFloatList = sstr_MyFloatList.str();
-			s->write(CRC32 < CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > >  >::RESULT,
-				    str_sstr_MyFloatList);
+			s->write(5, str_sstr_MyFloatList);
 		}
 		// Store elements from m_listOfMyDoubleList into a string.
 		{
@@ -450,8 +445,7 @@
 				}
 			}
 			const std::string str_sstr_MyDoubleList = sstr_MyDoubleList.str();
-			s->write(CRC32 < CharList<'M', CharList<'y', CharList<'D', CharList<'o', CharList<'u', CharList<'b', CharList<'l', CharList<'e', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
-				    str_sstr_MyDoubleList);
+			s->write(6, str_sstr_MyDoubleList);
 		}
 		// Store elements from m_listOfMyStringList into a string.
 		{
@@ -463,8 +457,7 @@
 				}
 			}
 			const std::string str_sstr_MyStringList = sstr_MyStringList.str();
-			s->write(CRC32 < CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
-				    str_sstr_MyStringList);
+			s->write(7, str_sstr_MyStringList);
 		}
 		return out;
 	}
@@ -480,8 +473,7 @@
 			// Clean up the existing list of MyBoolList.
 			m_listOfMyBoolList.clear();
 			std::string str_MyBoolList;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'B', CharList<'o', CharList<'o', CharList<'l', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > >  >::RESULT,
-				   str_MyBoolList);
+			d->read(1, str_MyBoolList);
 			if (str_MyBoolList.size() > 0) {
 				std::stringstream sstr_str_MyBoolList(str_MyBoolList);
 				uint32_t length = str_MyBoolList.size();
@@ -497,8 +489,7 @@
 			// Clean up the existing list of MyCharList.
 			m_listOfMyCharList.clear();
 			std::string str_MyCharList;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'C', CharList<'h', CharList<'a', CharList<'r', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > >  >::RESULT,
-				   str_MyCharList);
+			d->read(2, str_MyCharList);
 			if (str_MyCharList.size() > 0) {
 				std::stringstream sstr_str_MyCharList(str_MyCharList);
 				uint32_t length = str_MyCharList.size();
@@ -514,8 +505,7 @@
 			// Clean up the existing list of MyInt32List.
 			m_listOfMyInt32List.clear();
 			std::string str_MyInt32List;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > >  >::RESULT,
-				   str_MyInt32List);
+			d->read(3, str_MyInt32List);
 			if (str_MyInt32List.size() > 0) {
 				std::stringstream sstr_str_MyInt32List(str_MyInt32List);
 				uint32_t length = str_MyInt32List.size();
@@ -531,8 +521,7 @@
 			// Clean up the existing list of MyUint32List.
 			m_listOfMyUint32List.clear();
 			std::string str_MyUint32List;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'U', CharList<'i', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
-				   str_MyUint32List);
+			d->read(4, str_MyUint32List);
 			if (str_MyUint32List.size() > 0) {
 				std::stringstream sstr_str_MyUint32List(str_MyUint32List);
 				uint32_t length = str_MyUint32List.size();
@@ -548,8 +537,7 @@
 			// Clean up the existing list of MyFloatList.
 			m_listOfMyFloatList.clear();
 			std::string str_MyFloatList;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > >  >::RESULT,
-				   str_MyFloatList);
+			d->read(5, str_MyFloatList);
 			if (str_MyFloatList.size() > 0) {
 				std::stringstream sstr_str_MyFloatList(str_MyFloatList);
 				uint32_t length = str_MyFloatList.size();
@@ -565,8 +553,7 @@
 			// Clean up the existing list of MyDoubleList.
 			m_listOfMyDoubleList.clear();
 			std::string str_MyDoubleList;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'D', CharList<'o', CharList<'u', CharList<'b', CharList<'l', CharList<'e', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
-				   str_MyDoubleList);
+			d->read(6, str_MyDoubleList);
 			if (str_MyDoubleList.size() > 0) {
 				std::stringstream sstr_str_MyDoubleList(str_MyDoubleList);
 				uint32_t length = str_MyDoubleList.size();
@@ -582,8 +569,7 @@
 			// Clean up the existing list of MyStringList.
 			m_listOfMyStringList.clear();
 			std::string str_MyStringList;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
-				   str_MyStringList);
+			d->read(7, str_MyStringList);
 			if (str_MyStringList.size() > 0) {
 				std::stringstream sstr_str_MyStringList(str_MyStringList);
 				uint32_t length = str_MyStringList.size();

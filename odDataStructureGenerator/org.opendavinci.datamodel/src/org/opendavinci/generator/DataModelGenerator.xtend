@@ -1216,41 +1216,37 @@ namespace «s.get(i)» {
 		«ENDIF»
 		«IF a.map != null && a.map.modifier != null && a.map.modifier.length > 0 && a.map.modifier.equalsIgnoreCase("map")»
 		{
-			// Write number of elements in m_mapOf«a.map.name.toFirstUpper».
-			const uint32_t numberOf«a.map.name.toFirstUpper» = static_cast<uint32_t>(m_mapOf«a.map.name.toFirstUpper».size());
+			std::stringstream sstr_«a.map.name.toFirstUpper»;
+			{
+				std::map<«IF typeMap.containsKey(a.map.primaryType)»«typeMap.get(a.map.primaryType)»«ELSE»«a.map.primaryType.replaceAll("\\.", "::")»«ENDIF», «IF typeMap.containsKey(a.map.secondaryType)»«typeMap.get(a.map.secondaryType)»«ELSE»«a.map.secondaryType.replaceAll("\\.", "::")»«ENDIF»>::const_iterator it = m_mapOf«a.map.name.toFirstUpper».begin();
+				while (it != m_mapOf«a.map.name.toFirstUpper».end()) {
+					// Write key/value into a joint string.
+					std::stringstream sstr_keyValueEntry;
+					{
+						std::shared_ptr<Serializer> keyValueSerializer = sf.getSerializer(sstr_keyValueEntry);
+						keyValueSerializer->write(1, it->first);  // Write key as field 1 from a "virtual" class.
+						keyValueSerializer->write(2, it->second); // Write value as field 2 from a "virtual" class.
+					}
+
+					// Write string into super-stringstream.
+					const string str_sstr_keyValueEntry = sstr_keyValueEntry.str();
+					s->writeValue(sstr_«a.map.name.toFirstUpper», str_sstr_keyValueEntry);
+
+					// Process next entry.
+					it++;
+				}
+			}
+			const std::string str_sstr_«a.map.name.toFirstUpper» = sstr_«a.map.name.toFirstUpper».str();
 			«IF a.map.fourbyteid != null»
-				s->write(«a.map.fourbyteid», numberOf«a.map.name.toFirstUpper»);
+				s->write(«a.map.fourbyteid», str_sstr_«a.map.name.toFirstUpper»);
 			«ELSE»
 				«IF a.map.id != null»
-					s->write(«a.map.id», numberOf«a.map.name.toFirstUpper»);
+					s->write(«a.map.id», str_sstr_«a.map.name.toFirstUpper»);
 				«ELSE»
-					s->write(CRC32 < «generateCharList(new String("numberOf" + a.map.name.toFirstUpper), 0)» >::RESULT,
-					        numberOf«a.map.name.toFirstUpper»);
+					s->write(CRC32 < «generateCharList(a.map.name.toFirstUpper, 0)» >::RESULT,
+							 str_sstr_«a.map.name.toFirstUpper»);
 				«ENDIF»
 			«ENDIF»
-
-			// Write actual elements into a stringstream.
-			std::stringstream sstrOf«a.map.name.toFirstUpper»;
-			std::map<«IF typeMap.containsKey(a.map.primaryType)»«typeMap.get(a.map.primaryType)»«ELSE»«a.map.primaryType.replaceAll("\\.", "::")»«ENDIF», «IF typeMap.containsKey(a.map.secondaryType)»«typeMap.get(a.map.secondaryType)»«ELSE»«a.map.secondaryType.replaceAll("\\.", "::")»«ENDIF»>::const_iterator it = m_mapOf«a.map.name.toFirstUpper».begin();
-			while (it != m_mapOf«a.map.name.toFirstUpper».end()) {
-			    sstrOf«a.map.name.toFirstUpper» << it->first << "=" << it->second << endl;
-			    it++;
-			}
-			
-			// Write string of elements.
-			if (numberOf«a.map.name.toFirstUpper» > 0) {
-				«IF a.map.fourbyteid != null»
-					s->write(«a.map.fourbyteid» + «((a.eContainer) as Message).attributes.size», sstrOf«a.map.name.toFirstUpper».str());
-				«ELSE»
-					«IF a.map.id != null»
-						s->write(«a.map.id» + «((a.eContainer) as Message).attributes.size»,
-								sstrOf«a.map.name.toFirstUpper».str());
-					«ELSE»
-						s->write(CRC32 < «generateCharList(a.map.name.toFirstUpper, 0)» >::RESULT,
-								sstrOf«a.map.name.toFirstUpper».str());
-					«ENDIF»
-				«ENDIF»
-			}
 		}
 		«ENDIF»
 		«IF a.fixedarray != null»
@@ -1330,72 +1326,47 @@ namespace «s.get(i)» {
 		}
 		«ENDIF»
 		«IF a.map != null && a.map.modifier != null && a.map.modifier.length > 0 && a.map.modifier.equalsIgnoreCase("map")»
-		// Clean up the existing map of «a.map.name.toFirstUpper».
-		m_mapOf«a.map.name.toFirstUpper».clear();
-		
-		// Read number of elements in m_mapOf«a.map.name.toFirstUpper».
-		uint32_t numberOf«a.map.name.toFirstUpper» = 0;
-		«IF a.map.fourbyteid != null»
-			d->read(«a.map.fourbyteid», numberOf«a.map.name.toFirstUpper»);
-		«ELSE»
-			«IF a.map.id != null»
-				d->read(«a.map.id», numberOf«a.map.name.toFirstUpper»);
-			«ELSE»
-				d->read(CRC32 < «generateCharList(new String("numberOf" + a.map.name.toFirstUpper), 0)» >::RESULT,
-					   numberOf«a.map.name.toFirstUpper»);
-			«ENDIF»
-		«ENDIF»
-		
-		if (numberOf«a.map.name.toFirstUpper» > 0) {
-		    // Read string of elements.
-		    string elements;
+		// Restore elements from a string into «a.map.name.toFirstUpper».
+		{
+			// Clean up the existing map of «a.map.name.toFirstUpper».
+			m_mapOf«a.map.name.toFirstUpper».clear();
+
+			std::string str_«a.map.name.toFirstUpper»;
 			«IF a.map.fourbyteid != null»
-				d->read(«a.map.fourbyteid» + «((a.eContainer) as Message).attributes.size», elements);
+				d->read(«a.map.fourbyteid», str_«a.map.name.toFirstUpper»);
 			«ELSE»
 				«IF a.map.id != null»
-					d->read(«a.map.id» + «((a.eContainer) as Message).attributes.size»,
-							elements);
+					d->read(«a.map.id», str_«a.map.name.toFirstUpper»);
 				«ELSE»
 					d->read(CRC32 < «generateCharList(a.map.name.toFirstUpper, 0)» >::RESULT,
-					       elements);
+						   str_«a.map.name.toFirstUpper»);
 				«ENDIF»
 			«ENDIF»
+			if (str_«a.map.name.toFirstUpper».size() > 0) {
+				std::stringstream sstr_str_«a.map.name.toFirstUpper»(str_«a.map.name.toFirstUpper»);
 
-			stringstream sstr(elements);
+				// str_«a.map.name.toFirstUpper» contains a sequence of strings containing pairs of key/values.
+				uint32_t length = str_«a.map.name.toFirstUpper».size();
+				while (length > 0) {
+					std::string str_sstr_keyValue;
+					length -= d->readValue(sstr_str_«a.map.name.toFirstUpper», str_sstr_keyValue);
 
-			while (!sstr.eof()) {
-			    string line;
-			    getline(sstr, line);
+					if (str_sstr_keyValue.size() > 0) {
+						// We have in str_sstr_keyValue a string at hand containing a pair key/value.
+						// Now, we restore the key and value therefrom.
+						std::stringstream sstr_keyValueEntry(str_sstr_keyValue);
 
-			    // Trying to find key-value-pair.
-			    size_t delimiter = line.find_first_of("=");
-
-			    // Compute length of value-entry by allowing comments right after values.
-			    size_t valueLength = line.length();
-
-			    // Skip lines with invalid position pointers.
-			    if (! ( (delimiter > 0) && (valueLength > 0) ) ) {
-			        continue;
-			    }
-
-			    string key = line.substr(0, delimiter);
-			    string value = line.substr(delimiter + 1, valueLength);
-
-			    // Skip lines with invalid keys or values.
-			    if ( (key.length() == 0) || (value.length() == 0) ) {
-			        continue;
-			    }
-
-			    stringstream sstrKey(key);
-			    «IF typeMap.containsKey(a.map.primaryType)»«typeMap.get(a.map.primaryType)»«ELSE»«a.map.primaryType.replaceAll("\\.", "::")»«ENDIF» _key;
-		        «IF a.map.primaryType.equalsIgnoreCase("string")»getline(sstrKey, _key);«ELSE»sstrKey >> _key;«ENDIF»
-
-			    stringstream sstrValue(value);
-			    «IF typeMap.containsKey(a.map.secondaryType)»«typeMap.get(a.map.secondaryType)»«ELSE»«a.map.secondaryType.replaceAll("\\.", "::")»«ENDIF» _value;
-		        «IF a.map.secondaryType.equalsIgnoreCase("string")»getline(sstrValue, _value);«ELSE»sstrValue >> _value;«ENDIF»
-
-				// Store key/value pair.
-				putTo_MapOf«a.map.name.toFirstUpper»(_key, _value);
+						{
+							std::shared_ptr<Deserializer> keyValueDeserializer = sf.getDeserializer(sstr_keyValueEntry);
+							«IF typeMap.containsKey(a.map.primaryType)»«typeMap.get(a.map.primaryType)»«ELSE»«a.map.primaryType.replaceAll("\\.", "::")»«ENDIF» key;
+							«IF typeMap.containsKey(a.map.secondaryType)»«typeMap.get(a.map.secondaryType)»«ELSE»«a.map.secondaryType.replaceAll("\\.", "::")»«ENDIF» value;
+							keyValueDeserializer->read(1, key);
+							keyValueDeserializer->read(2, value);
+							// Store key/value pair in the map.
+							putTo_MapOf«a.map.name.toFirstUpper»(key, value);
+						}
+					}
+				}
 			}
 		}
 		«ENDIF»
