@@ -67,6 +67,8 @@
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage5.h"
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage6.h"
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage7.h"
+#include "opendavincitestdata/generated/odcore/testdata/TestMessage8.h"
+#include "opendavincitestdata/generated/odcore/testdata/TestMessage9.h"
 
 using namespace std;
 using namespace odcore::base;
@@ -3733,7 +3735,9 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             // Create an uninitialized Container.
             Container c;
 
-            // Force reading from Container must result in default-initialized message.
+            // Force reading from Container must result in default-initialized message
+            // as the content of an uninitialized Container is an empty payload that
+            // does not carry any meaningful data.
             TestMessage1 tm2 = c.getData<TestMessage1>();
             TS_ASSERT(tm2.getField1() == 12);
         }
@@ -3782,6 +3786,76 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
+        void testSerializationDeserializationTestMessage8() {
+            TestMessage8 tm1;
+            tm1.putTo_MapOfField1(1, 8);
+            tm1.putTo_MapOfField1(2, 7);
+            tm1.putTo_MapOfField1(3, 6);
+
+            TS_ASSERT(tm1.containsKey_MapOfField1(1));
+            TS_ASSERT(tm1.containsKey_MapOfField1(2));
+            TS_ASSERT(tm1.containsKey_MapOfField1(3));
+            TS_ASSERT(!tm1.containsKey_MapOfField1(4));
+            TS_ASSERT(tm1.getValueForKey_MapOfField1(1) == 8);
+            TS_ASSERT(tm1.getValueForKey_MapOfField1(2) == 7);
+            TS_ASSERT(tm1.getValueForKey_MapOfField1(3) == 6);
+
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << tm1;
+
+            // Read from buffer.
+            TestMessage8 tm2;
+            out >> tm2;
+
+            TS_ASSERT(tm2.containsKey_MapOfField1(1));
+            TS_ASSERT(tm2.containsKey_MapOfField1(2));
+            TS_ASSERT(tm2.containsKey_MapOfField1(3));
+            TS_ASSERT(!tm2.containsKey_MapOfField1(4));
+            TS_ASSERT(tm2.getValueForKey_MapOfField1(1) == 8);
+            TS_ASSERT(tm2.getValueForKey_MapOfField1(2) == 7);
+            TS_ASSERT(tm2.getValueForKey_MapOfField1(3) == 6);
+        }
+
+        void testSerializationDeserializationTestMessage8Container() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            TestMessage8 tm1;
+            tm1.putTo_MapOfField1(1, 8);
+            tm1.putTo_MapOfField1(2, 7);
+            tm1.putTo_MapOfField1(3, 6);
+
+            Container c(tm1);
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << c;
+
+            // Read from buffer.
+            Container c2;
+            out >> c2;
+
+            TS_ASSERT(c2.getDataType() == TestMessage8::ID());
+
+            TestMessage8 tm2 = c2.getData<TestMessage8>();
+
+            TS_ASSERT(tm2.containsKey_MapOfField1(1));
+            TS_ASSERT(tm2.containsKey_MapOfField1(2));
+            TS_ASSERT(tm2.containsKey_MapOfField1(3));
+            TS_ASSERT(!tm2.containsKey_MapOfField1(4));
+            TS_ASSERT(tm2.getValueForKey_MapOfField1(1) == 8);
+            TS_ASSERT(tm2.getValueForKey_MapOfField1(2) == 7);
+            TS_ASSERT(tm2.getValueForKey_MapOfField1(3) == 6);
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+
 // TODO:
 // Done - 1) test adjusted serialization for ModuleStatics
 // Done - 2) Add test case for odcore.data.dmcp.PulseMessage
@@ -3795,15 +3869,15 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 // Done - 10) Check additional fields in messages for deserialization.
 // Done - 11) Check arbitrary order: FalseSerializationTestSuite, SerializationTestSuite (they had a different order of fields)
 // Done - 12) Check multiple deserialization in Container (cf test case for PulseAckContainersMessage)
-// TO BE TESTED 13) QueryableNetstringsDeserializerABCF::fillBuffer(cin, containerBuffer) --> needs to be added to ProtoSerializer? --> testCase in odredirector passes by just reading from cin. TODO: Test on terminal.
-// 14) Remove extends keyword from odDataStructureGenerator
-// 15) Fix opendlv data structure --> either model them as odvd data structures or fix direction in code
-// 16) Change identifiers for built-in types (like Container) to remove fourbyteidentifier
-// (Started) 17) Check serializatio/deserialization order for all built-in types
-// 18) Enable Proto serialization/deserialization by default & re-test
-// 19) Compatibility with 3rd party Proto implementations
-// 20) Transform map.
-// 21) Transform fixed array.
+// Done - 13) Enable Proto serialization/deserialization by default & re-test
+// Done - 14) Transform map.
+// 15) Transform fixed array.
+// (To be tested)  16) QueryableNetstringsDeserializerABCF::fillBuffer(cin, containerBuffer) --> needs to be added to ProtoSerializer? --> testCase in odredirector passes by just reading from cin. TODO: Test on terminal.
+// 17) Remove extends and fourbyteid keyword from odDataStructureGenerator
+// 18) Fix opendlv data structure --> either model them as odvd data structures or fix direction in code
+// 19) Change identifiers for built-in types (like Container) to remove fourbyteidentifier
+// (Started) 20) Check serializatio/deserialization order for all built-in types
+// 21) Compatibility with 3rd party Proto implementations
 };
 
 #endif /*CORE_PROTOMESSAGESTESTSUITE_H_*/

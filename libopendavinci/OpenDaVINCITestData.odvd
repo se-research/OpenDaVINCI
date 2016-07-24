@@ -17,7 +17,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-
 // This message contains all constants for the test cases for the Dynamic Module Configuration Protocol (DMCP).
 message odcore.testdata.dmcp.TestConstants [id = 111] {
     const string DMCPCONFIG_TEST_GROUP = "225.0.0.250";
@@ -57,13 +56,20 @@ message odcore.testdata.TestMessage5 [id = 1005] {
     odcore.testdata.TestMessage1 field12 [ id = 12 ];
 }
 
-// This is not correctly handled by our Proto implementation yet.
 message odcore.testdata.TestMessage6 [id = 1006] {
     list<uint32> field1 [ id = 4 ];
 }
 
-// This is not correctly handled by our Proto implementation yet.
 message odcore.testdata.TestMessage7 [id = 1007] {
     list<float> field1 [ id = 1 ];
+}
+
+message odcore.testdata.TestMessage8 [id = 1008] {
+    map<uint32, uint32> field1 [ id = 1 ];
+}
+
+// To be tested.
+message odcore.testdata.TestMessage9 [id = 1009] {
+    map<uint32, odcore.testdata.TestMessage1> field1 [ id = 1 ];
 }
 
