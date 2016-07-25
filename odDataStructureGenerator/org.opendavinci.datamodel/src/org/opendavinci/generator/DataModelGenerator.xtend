@@ -1243,24 +1243,33 @@ namespace «s.get(i)» {
 				«IF a.map.id != null»
 					s->write(«a.map.id», str_sstr_«a.map.name.toFirstUpper»);
 				«ELSE»
-					s->write(CRC32 < «generateCharList(a.map.name.toFirstUpper, 0)» >::RESULT,
+					s->write(CRC32 < «generateCharList(new String(a.map.name.toFirstUpper), 0)» >::RESULT,
 							 str_sstr_«a.map.name.toFirstUpper»);
 				«ENDIF»
 			«ENDIF»
 		}
 		«ENDIF»
 		«IF a.fixedarray != null»
-			«IF a.fixedarray.fourbyteid != null»
-				s->write(«a.fixedarray.fourbyteid», m_«a.fixedarray.name», getSize_«a.fixedarray.name.toFirstUpper»() * (sizeof(«IF typeMap.containsKey(a.fixedarray.type)»«typeMap.get(a.fixedarray.type)»«ELSE»«a.fixedarray.type.replaceAll("\\.", "::")»«ENDIF»)/sizeof(char)));
-			«ELSE»
-				«IF a.fixedarray.id != null»
-					s->write(«a.fixedarray.id»,
-							m_«a.fixedarray.name», getSize_«a.fixedarray.name.toFirstUpper»() * (sizeof(«IF typeMap.containsKey(a.fixedarray.type)»«typeMap.get(a.fixedarray.type)»«ELSE»«a.fixedarray.type.replaceAll("\\.", "::")»«ENDIF»)/sizeof(char)));
+			// Store elements from m_«a.fixedarray.name» into a string.
+			{
+				std::stringstream sstr_«a.fixedarray.name.toFirstUpper»;
+				{
+					for(uint32_t i = 0; i < getSize_«a.fixedarray.name.toFirstUpper»(); i++) {
+						s->writeValue(sstr_«a.fixedarray.name.toFirstUpper», m_«a.fixedarray.name»[i]);
+					}
+				}
+				const std::string str_sstr_«a.fixedarray.name.toFirstUpper» = sstr_«a.fixedarray.name.toFirstUpper».str();
+				«IF a.fixedarray.fourbyteid != null»
+					s->write(«a.fixedarray.fourbyteid», str_sstr_«a.fixedarray.name.toFirstUpper»);
 				«ELSE»
-					s->write(CRC32 < «generateCharList(a.fixedarray.name, 0)» >::RESULT,
-							m_«a.fixedarray.name», getSize_«a.fixedarray.name.toFirstUpper»() * (sizeof(«IF typeMap.containsKey(a.fixedarray.type)»«typeMap.get(a.fixedarray.type)»«ELSE»«a.fixedarray.type.replaceAll("\\.", "::")»«ENDIF»)/sizeof(char)));
+					«IF a.fixedarray.id != null»
+						s->write(«a.fixedarray.id», str_sstr_«a.fixedarray.name.toFirstUpper»);
+					«ELSE»
+						s->write(CRC32 < «generateCharList(new String(a.fixedarray.name.toFirstUpper), 0)» >::RESULT,
+								str_sstr_«a.fixedarray.name.toFirstUpper»);
+					«ENDIF»
 				«ENDIF»
-			«ENDIF»
+			}
 		«ENDIF»
 	'''
 	
@@ -1338,7 +1347,7 @@ namespace «s.get(i)» {
 				«IF a.map.id != null»
 					d->read(«a.map.id», str_«a.map.name.toFirstUpper»);
 				«ELSE»
-					d->read(CRC32 < «generateCharList(a.map.name.toFirstUpper, 0)» >::RESULT,
+					d->read(CRC32 < «generateCharList(new String(a.map.name.toFirstUpper), 0)» >::RESULT,
 						   str_«a.map.name.toFirstUpper»);
 				«ENDIF»
 			«ENDIF»
@@ -1371,17 +1380,34 @@ namespace «s.get(i)» {
 		}
 		«ENDIF»
 		«IF a.fixedarray != null»
-			«IF a.fixedarray.fourbyteid != null»
-				d->read(«a.fixedarray.fourbyteid», m_«a.fixedarray.name», getSize_«a.fixedarray.name.toFirstUpper»() * (sizeof(«IF typeMap.containsKey(a.fixedarray.type)»«typeMap.get(a.fixedarray.type)»«ELSE»«a.fixedarray.type.replaceAll("\\.", "::")»«ENDIF»)/sizeof(char)));
-			«ELSE»
-				«IF a.fixedarray.id != null»
-					d->read(«a.fixedarray.id»,
-					       m_«a.fixedarray.name», getSize_«a.fixedarray.name.toFirstUpper»() * (sizeof(«IF typeMap.containsKey(a.fixedarray.type)»«typeMap.get(a.fixedarray.type)»«ELSE»«a.fixedarray.type.replaceAll("\\.", "::")»«ENDIF»)/sizeof(char)));
+			// Restore values for «a.fixedarray.name»
+			{
+				std::string str_«a.fixedarray.name.toFirstUpper»;
+				«IF a.fixedarray.fourbyteid != null»
+					d->read(«a.fixedarray.fourbyteid», str_«a.fixedarray.name.toFirstUpper»);
 				«ELSE»
-					d->read(CRC32 < «generateCharList(a.fixedarray.name, 0)» >::RESULT,
-					       m_«a.fixedarray.name», getSize_«a.fixedarray.name.toFirstUpper»() * (sizeof(«IF typeMap.containsKey(a.fixedarray.type)»«typeMap.get(a.fixedarray.type)»«ELSE»«a.fixedarray.type.replaceAll("\\.", "::")»«ENDIF»)/sizeof(char)));
+					«IF a.fixedarray.id != null»
+						d->read(«a.fixedarray.id», str_«a.fixedarray.name.toFirstUpper»);
+					«ELSE»
+						d->read(CRC32 < «generateCharList(new String(a.fixedarray.name), 0)» >::RESULT,
+						       str_«a.fixedarray.name.toFirstUpper»);
+					«ENDIF»
 				«ENDIF»
-			«ENDIF»
+
+				if (str_«a.fixedarray.name.toFirstUpper».size() > 0) {
+					std::stringstream sstr_str_«a.fixedarray.name.toFirstUpper»(str_«a.fixedarray.name.toFirstUpper»);
+					uint32_t length = str_«a.fixedarray.name.toFirstUpper».size();
+					uint32_t elementCounter = 0;
+					while (length > 0) {
+						«IF typeMap.containsKey(a.fixedarray.type)»«typeMap.get(a.fixedarray.type)»«ELSE»«a.fixedarray.type.replaceAll("\\.", "::")»«ENDIF» element;
+						length -= d->readValue(sstr_str_«a.fixedarray.name.toFirstUpper», element);
+						if (elementCounter < getSize_«a.fixedarray.name.toFirstUpper»()) {
+							m_«a.fixedarray.name»[elementCounter] = element;
+						}
+						elementCounter++;
+					}
+				}
+			}
 		«ENDIF»
 	'''
 

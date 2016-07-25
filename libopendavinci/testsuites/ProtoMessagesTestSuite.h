@@ -4050,7 +4050,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 // Done - 12) Check multiple deserialization in Container (cf test case for PulseAckContainersMessage)
 // Done - 13) Enable Proto serialization/deserialization by default & re-test
 // Done - 14) Transform map.
-// 15) Transform fixed array.
+// Done - 15) Transform fixed array.
 // 16) Remove extends and fourbyteid keyword from odDataStructureGenerator
 // 17) Change identifiers for built-in types (like Container) to remove fourbyteidentifier
 // 18) Fix opendlv data structure --> either model them as odvd data structures or fix direction in code
