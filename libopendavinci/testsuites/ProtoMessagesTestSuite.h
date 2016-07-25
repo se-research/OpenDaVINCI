@@ -3731,7 +3731,6 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        // Fails until we have queryable functionality in place.
         void testSerializationDeserializationTestMessage1OneFieldDefaultContainer() {
             // Create an uninitialized Container.
             Container c;
@@ -4053,7 +4052,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 // Done - 15) Transform fixed array.
 // 16) Remove extends and fourbyteid keyword from odDataStructureGenerator
 // 17) Change identifiers for built-in types (like Container) to remove fourbyteidentifier
-// 18) Fix opendlv data structure --> either model them as odvd data structures or fix direction in code
+// 18) Fix opendlv data structure --> either model them as odvd data structures or fix directly in code
 // (To be tested)  19) QueryableNetstringsDeserializerABCF::fillBuffer(cin, containerBuffer) --> needs to be added to ProtoSerializer? --> testCase in odredirector passes by just reading from cin. TODO: Test on terminal.
 // (Started) 20) Check serializatio/deserialization order for all built-in types
 // 21) Compatibility with 3rd party Proto implementations

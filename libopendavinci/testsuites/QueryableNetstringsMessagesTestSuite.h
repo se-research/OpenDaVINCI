@@ -66,6 +66,9 @@
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage5.h"
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage6.h"
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage7.h"
+#include "opendavincitestdata/generated/odcore/testdata/TestMessage8.h"
+#include "opendavincitestdata/generated/odcore/testdata/TestMessage9.h"
+#include "opendavincitestdata/generated/odcore/testdata/TestMessage10.h"
 
 using namespace std;
 using namespace odcore::base;
@@ -3070,6 +3073,270 @@ class QueryableNetstringsSerializerMessageTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(v1.at(2), v2.at(2), 1e-3);
             TS_ASSERT_DELTA(v2.at(2), 47.891, 1e-3);
         }
+
+        ///////////////////////////////////////////////////////////////////////
+
+        void testSerializationDeserializationTestMessage1OneFieldDefaultContainer() {
+            // Create an uninitialized Container.
+            Container c;
+
+            // Force reading from Container must result in default-initialized message
+            // as the content of an uninitialized Container is an empty payload that
+            // does not carry any meaningful data.
+            TestMessage1 tm2 = c.getData<TestMessage1>();
+            TS_ASSERT(tm2.getField1() == 12);
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+
+        void testSerializationDeserializationTestMessage8() {
+            TestMessage8 tm1;
+            tm1.putTo_MapOfField1(1, 8);
+            tm1.putTo_MapOfField1(2, 7);
+            tm1.putTo_MapOfField1(3, 6);
+
+            TS_ASSERT(tm1.containsKey_MapOfField1(1));
+            TS_ASSERT(tm1.containsKey_MapOfField1(2));
+            TS_ASSERT(tm1.containsKey_MapOfField1(3));
+            TS_ASSERT(!tm1.containsKey_MapOfField1(4));
+            TS_ASSERT(tm1.getValueForKey_MapOfField1(1) == 8);
+            TS_ASSERT(tm1.getValueForKey_MapOfField1(2) == 7);
+            TS_ASSERT(tm1.getValueForKey_MapOfField1(3) == 6);
+
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << tm1;
+
+            // Read from buffer.
+            TestMessage8 tm2;
+            out >> tm2;
+
+            TS_ASSERT(tm2.containsKey_MapOfField1(1));
+            TS_ASSERT(tm2.containsKey_MapOfField1(2));
+            TS_ASSERT(tm2.containsKey_MapOfField1(3));
+            TS_ASSERT(!tm2.containsKey_MapOfField1(4));
+            TS_ASSERT(tm2.getValueForKey_MapOfField1(1) == 8);
+            TS_ASSERT(tm2.getValueForKey_MapOfField1(2) == 7);
+            TS_ASSERT(tm2.getValueForKey_MapOfField1(3) == 6);
+        }
+
+        void testSerializationDeserializationTestMessage8Container() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            TestMessage8 tm1;
+            tm1.putTo_MapOfField1(1, 8);
+            tm1.putTo_MapOfField1(2, 7);
+            tm1.putTo_MapOfField1(3, 6);
+
+            Container c(tm1);
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << c;
+
+            // Read from buffer.
+            Container c2;
+            out >> c2;
+
+            TS_ASSERT(c2.getDataType() == TestMessage8::ID());
+
+            TestMessage8 tm2 = c2.getData<TestMessage8>();
+
+            TS_ASSERT(tm2.containsKey_MapOfField1(1));
+            TS_ASSERT(tm2.containsKey_MapOfField1(2));
+            TS_ASSERT(tm2.containsKey_MapOfField1(3));
+            TS_ASSERT(!tm2.containsKey_MapOfField1(4));
+            TS_ASSERT(tm2.getValueForKey_MapOfField1(1) == 8);
+            TS_ASSERT(tm2.getValueForKey_MapOfField1(2) == 7);
+            TS_ASSERT(tm2.getValueForKey_MapOfField1(3) == 6);
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+
+        void testSerializationDeserializationTestMessage9() {
+            TestMessage9 tm1;
+            {
+                TestMessage1 tm;
+                tm.setField1(158);
+                tm1.putTo_MapOfField1(1, tm);
+            }
+            {
+                TestMessage1 tm;
+                tm.setField1(157);
+                tm1.putTo_MapOfField1(2, tm);
+            }
+            {
+                TestMessage1 tm;
+                tm.setField1(156);
+                tm1.putTo_MapOfField1(3, tm);
+            }
+
+            TS_ASSERT(tm1.containsKey_MapOfField1(1));
+            TS_ASSERT(tm1.containsKey_MapOfField1(2));
+            TS_ASSERT(tm1.containsKey_MapOfField1(3));
+            TS_ASSERT(!tm1.containsKey_MapOfField1(4));
+            TS_ASSERT(tm1.getValueForKey_MapOfField1(1).getField1() == 158);
+            TS_ASSERT(tm1.getValueForKey_MapOfField1(2).getField1() == 157);
+            TS_ASSERT(tm1.getValueForKey_MapOfField1(3).getField1() == 156);
+
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << tm1;
+
+            // Read from buffer.
+            TestMessage9 tm2;
+            out >> tm2;
+
+            TS_ASSERT(tm2.containsKey_MapOfField1(1));
+            TS_ASSERT(tm2.containsKey_MapOfField1(2));
+            TS_ASSERT(tm2.containsKey_MapOfField1(3));
+            TS_ASSERT(!tm2.containsKey_MapOfField1(4));
+            TS_ASSERT(tm2.getValueForKey_MapOfField1(1).getField1() == 158);
+            TS_ASSERT(tm2.getValueForKey_MapOfField1(2).getField1() == 157);
+            TS_ASSERT(tm2.getValueForKey_MapOfField1(3).getField1() == 156);
+        }
+
+        void testSerializationDeserializationTestMessage9Container() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            TestMessage9 tm1;
+            {
+                TestMessage1 tm;
+                tm.setField1(158);
+                tm1.putTo_MapOfField1(1, tm);
+            }
+            {
+                TestMessage1 tm;
+                tm.setField1(157);
+                tm1.putTo_MapOfField1(2, tm);
+            }
+            {
+                TestMessage1 tm;
+                tm.setField1(156);
+                tm1.putTo_MapOfField1(3, tm);
+            }
+
+            TS_ASSERT(tm1.containsKey_MapOfField1(1));
+            TS_ASSERT(tm1.containsKey_MapOfField1(2));
+            TS_ASSERT(tm1.containsKey_MapOfField1(3));
+            TS_ASSERT(!tm1.containsKey_MapOfField1(4));
+            TS_ASSERT(tm1.getValueForKey_MapOfField1(1).getField1() == 158);
+            TS_ASSERT(tm1.getValueForKey_MapOfField1(2).getField1() == 157);
+            TS_ASSERT(tm1.getValueForKey_MapOfField1(3).getField1() == 156);
+
+            Container c(tm1);
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << c;
+
+            // Read from buffer.
+            Container c2;
+            out >> c2;
+
+            TS_ASSERT(c2.getDataType() == TestMessage9::ID());
+
+            TestMessage9 tm2 = c2.getData<TestMessage9>();
+
+            TS_ASSERT(tm2.containsKey_MapOfField1(1));
+            TS_ASSERT(tm2.containsKey_MapOfField1(2));
+            TS_ASSERT(tm2.containsKey_MapOfField1(3));
+            TS_ASSERT(!tm2.containsKey_MapOfField1(4));
+            TS_ASSERT(tm2.getValueForKey_MapOfField1(1).getField1() == 158);
+            TS_ASSERT(tm2.getValueForKey_MapOfField1(2).getField1() == 157);
+            TS_ASSERT(tm2.getValueForKey_MapOfField1(3).getField1() == 156);
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+
+        void testSerializationDeserializationTestMessage10() {
+            TestMessage10 tm1;
+            TS_ASSERT(tm1.getSize_MyArray1() == 2);
+            TS_ASSERT(tm1.getSize_MyArray2() == 3);
+
+            uint32_t *tm1_arr1 = tm1.getMyArray1();
+            tm1_arr1[0] = 1; tm1_arr1[1] = 2;
+            float *tm1_arr2 = tm1.getMyArray2();
+            tm1_arr2[0] = -1.2345; tm1_arr2[1] = -2.3456; tm1_arr2[2] = -3.4567;
+
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << tm1;
+
+            // Read from buffer.
+            TestMessage10 tm2;
+            out >> tm2;
+
+            uint32_t *tm2_arr1 = tm2.getMyArray1();
+            float *tm2_arr2 = tm2.getMyArray2();
+
+            TS_ASSERT(tm2.getSize_MyArray1() == 2);
+            TS_ASSERT(tm2.getSize_MyArray2() == 3);
+            TS_ASSERT(tm2_arr1[0] == 1);
+            TS_ASSERT(tm2_arr1[1] == 2);
+            TS_ASSERT_DELTA(tm2_arr2[0], -1.2345, 1e-4);
+            TS_ASSERT_DELTA(tm2_arr2[1], -2.3456, 1e-4);
+            TS_ASSERT_DELTA(tm2_arr2[2], -3.4567, 1e-4);
+        }
+
+        void testSerializationDeserializationTestMessage10Container() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            TestMessage10 tm1;
+            TS_ASSERT(tm1.getSize_MyArray1() == 2);
+            TS_ASSERT(tm1.getSize_MyArray2() == 3);
+
+            uint32_t *tm1_arr1 = tm1.getMyArray1();
+            tm1_arr1[0] = 1; tm1_arr1[1] = 2;
+            float *tm1_arr2 = tm1.getMyArray2();
+            tm1_arr2[0] = -1.2345; tm1_arr2[1] = -2.3456; tm1_arr2[2] = -3.4567;
+
+            Container c(tm1);
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << c;
+
+            // Read from buffer.
+            Container c2;
+            out >> c2;
+
+            TS_ASSERT(c2.getDataType() == TestMessage10::ID());
+
+            TestMessage10 tm2 = c2.getData<TestMessage10>();
+
+            uint32_t *tm2_arr1 = tm2.getMyArray1();
+            float *tm2_arr2 = tm2.getMyArray2();
+
+            TS_ASSERT(tm2.getSize_MyArray1() == 2);
+            TS_ASSERT(tm2.getSize_MyArray2() == 3);
+            TS_ASSERT(tm2_arr1[0] == 1);
+            TS_ASSERT(tm2_arr1[1] == 2);
+            TS_ASSERT_DELTA(tm2_arr2[0], -1.2345, 1e-4);
+            TS_ASSERT_DELTA(tm2_arr2[1], -2.3456, 1e-4);
+            TS_ASSERT_DELTA(tm2_arr2[2], -3.4567, 1e-4);
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+
 };
 
 #endif /*CORE_QUERYABLENETSTRINGSABCFMESSAGESTESTSUITE_H_*/
