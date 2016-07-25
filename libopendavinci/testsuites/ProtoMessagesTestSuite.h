@@ -3856,6 +3856,108 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
+        void testSerializationDeserializationTestMessage9() {
+            TestMessage9 tm1;
+            {
+                TestMessage1 tm;
+                tm.setField1(158);
+                tm1.putTo_MapOfField1(1, tm);
+            }
+            {
+                TestMessage1 tm;
+                tm.setField1(157);
+                tm1.putTo_MapOfField1(2, tm);
+            }
+            {
+                TestMessage1 tm;
+                tm.setField1(156);
+                tm1.putTo_MapOfField1(3, tm);
+            }
+
+            TS_ASSERT(tm1.containsKey_MapOfField1(1));
+            TS_ASSERT(tm1.containsKey_MapOfField1(2));
+            TS_ASSERT(tm1.containsKey_MapOfField1(3));
+            TS_ASSERT(!tm1.containsKey_MapOfField1(4));
+            TS_ASSERT(tm1.getValueForKey_MapOfField1(1).getField1() == 158);
+            TS_ASSERT(tm1.getValueForKey_MapOfField1(2).getField1() == 157);
+            TS_ASSERT(tm1.getValueForKey_MapOfField1(3).getField1() == 156);
+
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << tm1;
+
+            // Read from buffer.
+            TestMessage9 tm2;
+            out >> tm2;
+
+            TS_ASSERT(tm2.containsKey_MapOfField1(1));
+            TS_ASSERT(tm2.containsKey_MapOfField1(2));
+            TS_ASSERT(tm2.containsKey_MapOfField1(3));
+            TS_ASSERT(!tm2.containsKey_MapOfField1(4));
+            TS_ASSERT(tm2.getValueForKey_MapOfField1(1).getField1() == 158);
+            TS_ASSERT(tm2.getValueForKey_MapOfField1(2).getField1() == 157);
+            TS_ASSERT(tm2.getValueForKey_MapOfField1(3).getField1() == 156);
+        }
+
+        void testSerializationDeserializationTestMessage9Container() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            TestMessage9 tm1;
+            {
+                TestMessage1 tm;
+                tm.setField1(158);
+                tm1.putTo_MapOfField1(1, tm);
+            }
+            {
+                TestMessage1 tm;
+                tm.setField1(157);
+                tm1.putTo_MapOfField1(2, tm);
+            }
+            {
+                TestMessage1 tm;
+                tm.setField1(156);
+                tm1.putTo_MapOfField1(3, tm);
+            }
+
+            TS_ASSERT(tm1.containsKey_MapOfField1(1));
+            TS_ASSERT(tm1.containsKey_MapOfField1(2));
+            TS_ASSERT(tm1.containsKey_MapOfField1(3));
+            TS_ASSERT(!tm1.containsKey_MapOfField1(4));
+            TS_ASSERT(tm1.getValueForKey_MapOfField1(1).getField1() == 158);
+            TS_ASSERT(tm1.getValueForKey_MapOfField1(2).getField1() == 157);
+            TS_ASSERT(tm1.getValueForKey_MapOfField1(3).getField1() == 156);
+
+            Container c(tm1);
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << c;
+
+            // Read from buffer.
+            Container c2;
+            out >> c2;
+
+            TS_ASSERT(c2.getDataType() == TestMessage9::ID());
+
+            TestMessage9 tm2 = c2.getData<TestMessage9>();
+
+            TS_ASSERT(tm2.containsKey_MapOfField1(1));
+            TS_ASSERT(tm2.containsKey_MapOfField1(2));
+            TS_ASSERT(tm2.containsKey_MapOfField1(3));
+            TS_ASSERT(!tm2.containsKey_MapOfField1(4));
+            TS_ASSERT(tm2.getValueForKey_MapOfField1(1).getField1() == 158);
+            TS_ASSERT(tm2.getValueForKey_MapOfField1(2).getField1() == 157);
+            TS_ASSERT(tm2.getValueForKey_MapOfField1(3).getField1() == 156);
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+
 // TODO:
 // Done - 1) test adjusted serialization for ModuleStatics
 // Done - 2) Add test case for odcore.data.dmcp.PulseMessage
@@ -3872,10 +3974,10 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 // Done - 13) Enable Proto serialization/deserialization by default & re-test
 // Done - 14) Transform map.
 // 15) Transform fixed array.
-// (To be tested)  16) QueryableNetstringsDeserializerABCF::fillBuffer(cin, containerBuffer) --> needs to be added to ProtoSerializer? --> testCase in odredirector passes by just reading from cin. TODO: Test on terminal.
-// 17) Remove extends and fourbyteid keyword from odDataStructureGenerator
+// 16) Remove extends and fourbyteid keyword from odDataStructureGenerator
+// 17) Change identifiers for built-in types (like Container) to remove fourbyteidentifier
 // 18) Fix opendlv data structure --> either model them as odvd data structures or fix direction in code
-// 19) Change identifiers for built-in types (like Container) to remove fourbyteidentifier
+// (To be tested)  19) QueryableNetstringsDeserializerABCF::fillBuffer(cin, containerBuffer) --> needs to be added to ProtoSerializer? --> testCase in odredirector passes by just reading from cin. TODO: Test on terminal.
 // (Started) 20) Check serializatio/deserialization order for all built-in types
 // 21) Compatibility with 3rd party Proto implementations
 };
