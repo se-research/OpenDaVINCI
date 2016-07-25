@@ -68,7 +68,6 @@ message odcore.testdata.TestMessage8 [id = 1008] {
     map<uint32, uint32> field1 [ id = 1 ];
 }
 
-// To be tested.
 message odcore.testdata.TestMessage9 [id = 1009] {
     map<uint32, odcore.testdata.TestMessage1> field1 [ id = 1 ];
 }
