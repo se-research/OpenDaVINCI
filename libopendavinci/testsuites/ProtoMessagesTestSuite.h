@@ -69,6 +69,7 @@
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage7.h"
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage8.h"
 #include "opendavincitestdata/generated/odcore/testdata/TestMessage9.h"
+#include "opendavincitestdata/generated/odcore/testdata/TestMessage10.h"
 
 using namespace std;
 using namespace odcore::base;
@@ -3954,6 +3955,82 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getValueForKey_MapOfField1(1).getField1() == 158);
             TS_ASSERT(tm2.getValueForKey_MapOfField1(2).getField1() == 157);
             TS_ASSERT(tm2.getValueForKey_MapOfField1(3).getField1() == 156);
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+
+        void testSerializationDeserializationTestMessage10() {
+            TestMessage10 tm1;
+            TS_ASSERT(tm1.getSize_MyArray1() == 2);
+            TS_ASSERT(tm1.getSize_MyArray2() == 3);
+
+            uint32_t *tm1_arr1 = tm1.getMyArray1();
+            tm1_arr1[0] = 1; tm1_arr1[1] = 2;
+            float *tm1_arr2 = tm1.getMyArray2();
+            tm1_arr2[0] = -1.2345; tm1_arr2[1] = -2.3456; tm1_arr2[2] = -3.4567;
+
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << tm1;
+
+            // Read from buffer.
+            TestMessage10 tm2;
+            out >> tm2;
+
+            uint32_t *tm2_arr1 = tm2.getMyArray1();
+            float *tm2_arr2 = tm2.getMyArray2();
+
+            TS_ASSERT(tm2.getSize_MyArray1() == 2);
+            TS_ASSERT(tm2.getSize_MyArray2() == 3);
+            TS_ASSERT(tm2_arr1[0] == 1);
+            TS_ASSERT(tm2_arr1[1] == 2);
+            TS_ASSERT_DELTA(tm2_arr2[0], -1.2345, 1e-4);
+            TS_ASSERT_DELTA(tm2_arr2[1], -2.3456, 1e-4);
+            TS_ASSERT_DELTA(tm2_arr2[2], -3.4567, 1e-4);
+        }
+
+        void testSerializationDeserializationTestMessage10Container() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            TestMessage10 tm1;
+            TS_ASSERT(tm1.getSize_MyArray1() == 2);
+            TS_ASSERT(tm1.getSize_MyArray2() == 3);
+
+            uint32_t *tm1_arr1 = tm1.getMyArray1();
+            tm1_arr1[0] = 1; tm1_arr1[1] = 2;
+            float *tm1_arr2 = tm1.getMyArray2();
+            tm1_arr2[0] = -1.2345; tm1_arr2[1] = -2.3456; tm1_arr2[2] = -3.4567;
+
+            Container c(tm1);
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << c;
+
+            // Read from buffer.
+            Container c2;
+            out >> c2;
+
+            TS_ASSERT(c2.getDataType() == TestMessage10::ID());
+
+            TestMessage10 tm2 = c2.getData<TestMessage10>();
+
+            uint32_t *tm2_arr1 = tm2.getMyArray1();
+            float *tm2_arr2 = tm2.getMyArray2();
+
+            TS_ASSERT(tm2.getSize_MyArray1() == 2);
+            TS_ASSERT(tm2.getSize_MyArray2() == 3);
+            TS_ASSERT(tm2_arr1[0] == 1);
+            TS_ASSERT(tm2_arr1[1] == 2);
+            TS_ASSERT_DELTA(tm2_arr2[0], -1.2345, 1e-4);
+            TS_ASSERT_DELTA(tm2_arr2[1], -2.3456, 1e-4);
+            TS_ASSERT_DELTA(tm2_arr2[2], -3.4567, 1e-4);
         }
 
         ///////////////////////////////////////////////////////////////////////
