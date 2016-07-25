@@ -28,6 +28,8 @@
 # endif
 # pragma GCC diagnostic ignored "-Weffc++"
 # pragma GCC diagnostic ignored "-Wshadow"
+# pragma GCC diagnostic ignored "-Wignored-attributes"
+# pragma GCC diagnostic ignored "-Wmisleading-indentation"
 #endif
     #include "opendavinci/Eigen/Core"
     #include "opendavinci/Eigen/Geometry"
