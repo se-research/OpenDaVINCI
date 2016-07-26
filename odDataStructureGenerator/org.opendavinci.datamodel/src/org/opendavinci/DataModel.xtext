@@ -34,7 +34,7 @@ PackageIdentifier:
 	ID (('.') ID)*;
 
 Message:
-	'message' message = MessageIdentifier ('extends' superMessage = MessageIdentifier)? ('[' 'id' '=' id=NUMBER ']') '{'
+	'message' message = MessageIdentifier ('[' 'id' '=' id=NUMBER ']') '{'
 		attributes += Attribute*
 	'}';
 

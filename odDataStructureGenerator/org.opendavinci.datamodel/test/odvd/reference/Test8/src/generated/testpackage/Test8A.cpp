@@ -11,7 +11,6 @@
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
 
-
 #include "test8/generated/testpackage/Test8A.h"
 
 namespace testpackage {
@@ -88,14 +87,12 @@ namespace testpackage {
 		const string Test8A::toString() const {
 			stringstream s;
 	
-	
 			s << "Attribute1: " << getAttribute1() << " ";
 	
 			return s.str();
 		}
 	
 		ostream& Test8A::operator<<(ostream &out) const {
-	
 			SerializationFactory& sf = SerializationFactory::getInstance();
 	
 			std::shared_ptr<Serializer> s = sf.getSerializer(out);
@@ -106,7 +103,6 @@ namespace testpackage {
 		}
 	
 		istream& Test8A::operator>>(istream &in) {
-	
 			SerializationFactory& sf = SerializationFactory::getInstance();
 	
 			std::shared_ptr<Deserializer> d = sf.getDeserializer(in);

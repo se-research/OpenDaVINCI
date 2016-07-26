@@ -226,9 +226,6 @@ class DataModelGenerator implements IGenerator {
 	«ENDIF»
 «ENDFOR»
 
-«IF msg != null && msg.superMessage != null && msg.superMessage.length > 0 /*In the case of a message extending another message, we include GeneratedHeaders_<Filename>.h that points to all headers generated from <Filename>.*/»
-	#include "«toplevelIncludeFolder»/GeneratedHeaders_«generatedHeadersFile + ".h"»"
-«ENDIF»
 «IF pdl != null && pdl.package != null && pdl.package.length > 0»
 	«IF msg.message.split("\\.").length > 1»
 	«generateNamespacesForHeader(msg, (pdl.package + "." + msg.message.substring(0, msg.message.lastIndexOf('.'))).toLowerCase().split("\\."), 0, enums)»
@@ -265,7 +262,7 @@ namespace «s.get(i)» {
 	def generateHeaderFileContentBody(Message msg, HashMap<String, EnumDescription> enums) '''
 using namespace std;
 
-class «msg.message.substring(msg.message.lastIndexOf('.') + 1) /* These lines generate the class structure and the superclass (i.e. the one from which this class is deriving or SerializableData as default. */» : «IF msg.superMessage != null && msg.superMessage.length > 0»public «msg.superMessage.replaceAll("\\.", "::")»«ELSE»public odcore::data::SerializableData, public odcore::base::Visitable«ENDIF» {
+class «msg.message.substring(msg.message.lastIndexOf('.') + 1) /* These lines generate the class structure and SerializableData and Visitable as default. */» : public odcore::data::SerializableData, public odcore::base::Visitable {
 	«IF enums.size > 0 /*These lines generate the enum declarations.*/»
 	«generateHeaderFileEnum(msg, enums)»
 	«ENDIF»
@@ -611,10 +608,6 @@ class «msg.message.substring(msg.message.lastIndexOf('.') + 1) /* These lines g
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
 
-«IF msg.superMessage != null && msg.superMessage.length > 0 /* If this message is a derived one, we need to include the supermessage here. */»
-#include "«toplevelIncludeFolder»/«includeDirectoryPrefix + "/" + msg.superMessage.substring(0, msg.superMessage.lastIndexOf('.')).replaceAll("\\.", "/") + "/" + msg.superMessage.substring(msg.superMessage.lastIndexOf('.') + 1)».h"
-«ENDIF»
-
 «IF msg.message.split("\\.").length > 1 /* Here, we include our own header file. */»
 #include "«toplevelIncludeFolder»/«includeDirectoryPrefix + "/" + msg.message.substring(0, msg.message.lastIndexOf('.')).replaceAll("\\.", "/") + "/" + msg.message.substring(msg.message.lastIndexOf('.') + 1)».h"
 «ELSE»
@@ -657,7 +650,7 @@ namespace «s.get(i)» {
 	«ENDFOR»
 
 	«msg.message.substring(msg.message.lastIndexOf('.') + 1)»::«msg.message.substring(msg.message.lastIndexOf('.') + 1) /* Here, we generate the default constructor. */»() :
-	    «IF msg.superMessage != null && msg.superMessage.length > 0»«msg.superMessage.replaceAll("\\.", "::")»()«ELSE»SerializableData(), Visitable()«ENDIF»
+	    SerializableData(), Visitable()
 		«FOR a : msg.attributes»
 			«a.generateAttributeInitialization»
 		«ENDFOR»
@@ -696,7 +689,7 @@ namespace «s.get(i)» {
 			«ENDIF»
 		«ENDFOR»
 	) :
-	    «IF msg.superMessage != null && msg.superMessage.length > 0»«msg.superMessage.replaceAll("\\.", "::")»()«ELSE»SerializableData(), Visitable()«ENDIF»
+	    SerializableData(), Visitable()
 		«var counterParameter = 0»
 		«FOR a : msg.attributes»
 			«IF a.enumdec == null»«a.generateAttributeInitializationWithParameters(counterParameter++)»«ENDIF»
@@ -716,7 +709,7 @@ namespace «s.get(i)» {
 	«ENDIF»
 
 	«/* Next, we generate the copy constructor. */ msg.message.substring(msg.message.lastIndexOf('.') + 1)»::«msg.message.substring(msg.message.lastIndexOf('.') + 1)»(const «msg.message.substring(msg.message.lastIndexOf('.') + 1)» &obj) :
-	    «IF msg.superMessage != null && msg.superMessage.length > 0»«msg.superMessage.replaceAll("\\.", "::")»(obj)«ELSE»SerializableData(), Visitable()«ENDIF»
+	    SerializableData(), Visitable()
 		«IF !msg.attributes.empty»
 		«FOR a : msg.attributes»
 			«a.generateAttributeCopyConstructor»
@@ -743,7 +736,6 @@ namespace «s.get(i)» {
 	}
 
 	«/* Here, we create the assignment operator. */ msg.message.substring(msg.message.lastIndexOf('.') + 1)»& «msg.message.substring(msg.message.lastIndexOf('.') + 1)»::operator=(const «msg.message.substring(msg.message.lastIndexOf('.') + 1)» &obj) {
-		«IF msg.superMessage != null && msg.superMessage.length > 0»«msg.superMessage.replaceAll("\\.", "::")»::operator=(obj);«ENDIF»
 		«FOR a : msg.attributes»
 			«a.generateAttributeAssignmentOperator»
 		«ENDFOR»
@@ -791,7 +783,6 @@ namespace «s.get(i)» {
 «ENDFOR»
 	void «/* Here, we generate the accept() method. */msg.message.substring(msg.message.lastIndexOf('.') + 1)»::accept(odcore::base::Visitor &v) {
 		v.beginVisit();
-		«IF msg.superMessage != null && msg.superMessage.length > 0»«msg.superMessage.replaceAll("\\.", "::")»::accept(v);«ENDIF»
 		«FOR a : msg.attributes»
 			«a.generateVisitableAttribute(msg, enums)»
 		«ENDFOR»
@@ -801,8 +792,6 @@ namespace «s.get(i)» {
 	const string «/* Here, we generate the toString() method. */msg.message.substring(msg.message.lastIndexOf('.') + 1)»::toString() const {
 		stringstream s;
 
-		«IF msg.superMessage != null && msg.superMessage.length > 0»s << «msg.superMessage.replaceAll("\\.", "::")»::toString() << " ";«ENDIF»
-
 		«FOR a : msg.attributes»
 			«a.generateAttributeToStringStream(enums)»
 		«ENDFOR»
@@ -811,8 +800,6 @@ namespace «s.get(i)» {
 	}
 
 	ostream& «/* Here, we generate the serialization method. */ msg.message.substring(msg.message.lastIndexOf('.') + 1)»::operator<<(ostream &out) const {
-		«IF msg.superMessage != null && msg.superMessage.length > 0»«msg.superMessage.replaceAll("\\.", "::")»::operator<<(out);«ENDIF»
-
 		«IF !msg.attributes.empty»
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
@@ -826,8 +813,6 @@ namespace «s.get(i)» {
 	}
 
 	istream& «/* Here, we generate the deserialization method. */msg.message.substring(msg.message.lastIndexOf('.') + 1)»::operator>>(istream &in) {
-		«IF msg.superMessage != null && msg.superMessage.length > 0»«msg.superMessage.replaceAll("\\.", "::")»::operator>>(in);«ENDIF»
-
 		«IF !msg.attributes.empty»
 		SerializationFactory& sf = SerializationFactory::getInstance();
 

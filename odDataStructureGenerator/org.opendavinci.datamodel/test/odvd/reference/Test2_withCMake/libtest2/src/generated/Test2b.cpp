@@ -11,7 +11,6 @@
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
 
-
 #include "test2/generated/Test2b.h"
 
 	using namespace std;
@@ -72,16 +71,13 @@
 		stringstream s;
 
 
-
 		return s.str();
 	}
 
 	ostream& Test2b::operator<<(ostream &out) const {
-
 		return out;
 	}
 
 	istream& Test2b::operator>>(istream &in) {
-
 		return in;
 	}

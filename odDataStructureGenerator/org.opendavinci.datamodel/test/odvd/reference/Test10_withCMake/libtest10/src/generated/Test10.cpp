@@ -14,7 +14,6 @@
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
 
-
 #include "test10/generated/Test10.h"
 
 	using namespace std;
@@ -243,7 +242,6 @@
 	const string Test10::toString() const {
 		stringstream s;
 
-
 		s << "Number of elements in list of MyStringList: " << getSize_ListOfMyStringList() << " ";
 		s << "Number of elements in list of MyPointList: " << getSize_ListOfMyPointList() << " ";
 		s << "Number of elements in map of MyIntStringMap: " << getSize_MapOfMyIntStringMap() << " ";
@@ -253,7 +251,6 @@
 	}
 
 	ostream& Test10::operator<<(ostream &out) const {
-
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
 		std::shared_ptr<Serializer> s = sf.getSerializer(out);
@@ -334,7 +331,6 @@
 	}
 
 	istream& Test10::operator>>(istream &in) {
-
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
 		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);

@@ -11,7 +11,6 @@
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
 
-
 #include "test12/generated/Test12MapBool.h"
 
 	using namespace std;
@@ -354,7 +353,6 @@
 	const string Test12MapBool::toString() const {
 		stringstream s;
 
-
 		s << "Number of elements in map of MyBoolBoolMap: " << getSize_MapOfMyBoolBoolMap() << " ";
 		s << "Number of elements in map of MyBoolCharMap: " << getSize_MapOfMyBoolCharMap() << " ";
 		s << "Number of elements in map of MyBoolInt32Map: " << getSize_MapOfMyBoolInt32Map() << " ";
@@ -367,7 +365,6 @@
 	}
 
 	ostream& Test12MapBool::operator<<(ostream &out) const {
-
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
 		std::shared_ptr<Serializer> s = sf.getSerializer(out);
@@ -544,7 +541,6 @@
 	}
 
 	istream& Test12MapBool::operator>>(istream &in) {
-
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
 		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);

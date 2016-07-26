@@ -11,7 +11,6 @@
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
 
-
 #include "test11/generated/Test11MapFloat.h"
 
 	using namespace std;
@@ -354,7 +353,6 @@
 	const string Test11MapFloat::toString() const {
 		stringstream s;
 
-
 		s << "Number of elements in map of MyFloatBoolMap: " << getSize_MapOfMyFloatBoolMap() << " ";
 		s << "Number of elements in map of MyFloatCharMap: " << getSize_MapOfMyFloatCharMap() << " ";
 		s << "Number of elements in map of MyFloatInt32Map: " << getSize_MapOfMyFloatInt32Map() << " ";
@@ -367,7 +365,6 @@
 	}
 
 	ostream& Test11MapFloat::operator<<(ostream &out) const {
-
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
 		std::shared_ptr<Serializer> s = sf.getSerializer(out);
@@ -544,7 +541,6 @@
 	}
 
 	istream& Test11MapFloat::operator>>(istream &in) {
-
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
 		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);

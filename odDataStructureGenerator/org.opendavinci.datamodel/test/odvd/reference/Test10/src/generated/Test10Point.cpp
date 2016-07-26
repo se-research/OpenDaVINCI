@@ -11,7 +11,6 @@
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
 
-
 #include "test10/generated/Test10Point.h"
 
 	using namespace std;
@@ -100,7 +99,6 @@
 	const string Test10Point::toString() const {
 		stringstream s;
 
-
 		s << "X: " << getX() << " ";
 		s << "Y: " << getY() << " ";
 
@@ -108,7 +106,6 @@
 	}
 
 	ostream& Test10Point::operator<<(ostream &out) const {
-
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
 		std::shared_ptr<Serializer> s = sf.getSerializer(out);
@@ -121,7 +118,6 @@
 	}
 
 	istream& Test10Point::operator>>(istream &in) {
-
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
 		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);

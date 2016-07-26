@@ -11,7 +11,6 @@
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
 
-
 #include "test12/generated/Test12Simple.h"
 
 	using namespace std;
@@ -165,7 +164,6 @@
 	const string Test12Simple::toString() const {
 		stringstream s;
 
-
 		s << "Attribute1: " << getAttribute1() << " ";
 		s << "Attribute2: " << getAttribute2() << " ";
 		s << "Attribute3: " << getAttribute3() << " ";
@@ -178,7 +176,6 @@
 	}
 
 	ostream& Test12Simple::operator<<(ostream &out) const {
-
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
 		std::shared_ptr<Serializer> s = sf.getSerializer(out);
@@ -194,7 +191,6 @@
 	}
 
 	istream& Test12Simple::operator>>(istream &in) {
-
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
 		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);

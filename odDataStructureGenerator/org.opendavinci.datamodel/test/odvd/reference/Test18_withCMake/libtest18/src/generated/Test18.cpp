@@ -13,7 +13,6 @@
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
 
-
 #include "test18/generated/Test18.h"
 
 	using namespace std;
@@ -157,7 +156,6 @@
 	const string Test18::toString() const {
 		stringstream s;
 
-
 		s << "myArray1: (";
 		for(uint32_t i = 0; i < getSize_MyArray1(); i++) {
 			s << (m_myArray1[i]) << (((i+1) < getSize_MyArray1()) ? ", " : "");
@@ -176,7 +174,6 @@
 	}
 
 	ostream& Test18::operator<<(ostream &out) const {
-
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
 		std::shared_ptr<Serializer> s = sf.getSerializer(out);
@@ -213,7 +210,6 @@
 	}
 
 	istream& Test18::operator>>(istream &in) {
-
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
 		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);

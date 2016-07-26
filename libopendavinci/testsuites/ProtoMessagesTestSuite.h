@@ -4051,7 +4051,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 // Done - 14) Transform map.
 // Done - 15) Transform fixed array.
 // Done - 16) Fourbyteid does not seem to work properly. Check if fourbyteid is working again after fixing odDataStructureGenerator (remove fix: https://github.com/se-research/OpenDaVINCI/blob/2016Q3.refactoring.proto/odDataStructureGenerator/org.opendavinci.datamodel/src/org/opendavinci/generator/DataModelGenerator.xtend#L1211)
-// 17) Remove extends keyword from odDataStructureGenerator
+// Done - 17) Remove extends keyword from odDataStructureGenerator
 // 18) Remove fourbyteid keyword from odDataStructureGenerator
 // 19) Change identifiers for built-in types (like Container) to remove fourbyteidentifier
 // 20) Fix opendlv data structure --> either model them as odvd data structures or fix directly in code

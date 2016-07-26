@@ -11,7 +11,6 @@
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
 
-
 #include "test15/generated/Test15Simple.h"
 
 	using namespace std;
@@ -89,7 +88,6 @@
 	const string Test15Simple::toString() const {
 		stringstream s;
 
-
 		switch(getButtonState()) {
 			case PRESSED :
 			s << "ButtonState: Test15Simple::PRESSED (1) ";
@@ -106,7 +104,6 @@
 	}
 
 	ostream& Test15Simple::operator<<(ostream &out) const {
-
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
 		std::shared_ptr<Serializer> s = sf.getSerializer(out);
@@ -118,7 +115,6 @@
 	}
 
 	istream& Test15Simple::operator>>(istream &in) {
-
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
 		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
