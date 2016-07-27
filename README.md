@@ -24,7 +24,7 @@ If you have installed OpenDaVINCI from sources, you will find instructions here:
 
 *Latest Docker simulation deployment:* https://hub.docker.com/r/seresearch/odsimulation/tags/
 
-Architecture  | DragonFlyBSD 4.4 | FreeBSD 10.3 | NetBSD 7.0 | OpenBSD 5.9 | Mac OS X
+Architecture  | DragonFlyBSD 4.4 | FreeBSD 10.3 | NetBSD 7.0.1 | OpenBSD 5.9 | Mac OS X
 ------------- | ---------------- | ------------ | ------------ | ----------- | --------
 32bit         | - | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-FreeBSD10-32/badge/icon)](https://github.com/se-research/OpenDaVINCI) | - | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-OpenBSD59-32/badge/icon)](https://github.com/se-research/OpenDaVINCI) | -
 64bit         | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-DragonFlyBSD-4.4/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-FreeBSD10/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-NetBSD7.0/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-OpenBSD59/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-MacOSX/badge/icon)](https://github.com/se-research/OpenDaVINCI)
