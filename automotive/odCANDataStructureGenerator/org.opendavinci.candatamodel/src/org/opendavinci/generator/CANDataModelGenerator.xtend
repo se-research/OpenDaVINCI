@@ -692,10 +692,10 @@ namespace canmapping {
 					«rawVarName»=«canSignal.m_rangeEnd»;
 				«var String transformedVarName="transformed"+varName»
 				
-				const double SCALE = «canSignal.m_add» ;
-				const double OFFSET = «canSignal.m_multiplyBy» ;
+				const double OFFSET = «canSignal.m_add» ;
+				const double SCALE = «canSignal.m_multiplyBy» ;
 				
-				double «transformedVarName»=static_cast<double>((«rawVarName» - SCALE) / (double) OFFSET);
+				double «transformedVarName»=static_cast<double>((«rawVarName» - OFFSET) / (double) SCALE);
 
 				«var int actualLength=Integer.parseInt(canSignal.m_length)»
 				«{

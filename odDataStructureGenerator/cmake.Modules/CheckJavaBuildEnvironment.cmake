@@ -29,7 +29,7 @@ ENDIF()
 
 ###########################################################################
 # Try to find Ant to build odDataStructureGenerator.
-FIND_FILE(ANT_EXECUTABLE NAMES ant)
+FIND_FILE(ANT_EXECUTABLE NAMES ant HINTS /usr/bin /usr/local/bin)
 MARK_AS_ADVANCED(ANT_EXECUTABLE)
 
 IF("${ANT_EXECUTABLE}" STREQUAL "ANT_EXECUTABLE-NOTFOUND")
