@@ -4052,12 +4052,13 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 // Done - 15) Transform fixed array.
 // Done - 16) Fourbyteid does not seem to work properly. Check if fourbyteid is working again after fixing odDataStructureGenerator (remove fix: https://github.com/se-research/OpenDaVINCI/blob/2016Q3.refactoring.proto/odDataStructureGenerator/org.opendavinci.datamodel/src/org/opendavinci/generator/DataModelGenerator.xtend#L1211)
 // Done - 17) Remove extends keyword from odDataStructureGenerator
-// 18) Remove fourbyteid keyword from odDataStructureGenerator
-// 19) Change identifiers for built-in types (like Container) to remove fourbyteidentifier
-// 20) Fix opendlv data structure --> either model them as odvd data structures or fix directly in code
-// (To be tested)  21) QueryableNetstringsDeserializerABCF::fillBuffer(cin, containerBuffer) --> needs to be added to ProtoSerializer? --> testCase in odredirector passes by just reading from cin. TODO: Test on terminal.
-// (Started) 22) Check serializatio/deserialization order for all built-in types
-// 23) Compatibility with 3rd party Proto implementations
+// Done - 18) QueryableNetstringsDeserializerABCF::fillBuffer(cin, containerBuffer) --> needs to be added to ProtoSerializer? --> testCase in odredirector passes by just reading from cin. TODO: Test on terminal.
+// Done - 19) Check serializatio/deserialization order for all built-in types
+// 20) Change identifiers for built-in types (like Container) to remove fourbyteidentifier (remove CRC32<...>)
+// 21) Remove fourbyteid keyword from odDataStructureGenerator
+// 22) Check serializatio/deserialization order for all built-in types
+// 23) Fix opendlv data structure --> either model them as odvd data structures or fix directly in code
+// 24) Compatibility with 3rd party Proto implementations
 };
 
 #endif /*CORE_PROTOMESSAGESTESTSUITE_H_*/

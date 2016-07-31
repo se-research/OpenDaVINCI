@@ -20,13 +20,12 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
+#include <memory>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
 #include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/base/CommandLineArgument.h"
 #include "opendavinci/odcore/base/CommandLineParser.h"
-#include "opendavinci/odcore/base/QueryableNetstringsDeserializerABCF.h"
 #include "opendavinci/odcore/wrapper/jpg/JPG.h"
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
 #include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
@@ -107,15 +106,7 @@ namespace odredirector {
             if (m_fromstdin) {
                 // Please note that reading from stdin does not evaluate sending latencies.
                 while (cin.good()) {
-//                    // Buffer from cin.
-//                    stringstream containerBuffer;
-//                    // Fill buffer.
-//                    QueryableNetstringsDeserializerABCF::fillBuffer(cin, containerBuffer);
-
-//                    // Decode container from buffer.
-//                    Container c;
-//                    containerBuffer >> c;
-
+                    // Read next Container.
                     Container c;
                     cin >> c;
 
