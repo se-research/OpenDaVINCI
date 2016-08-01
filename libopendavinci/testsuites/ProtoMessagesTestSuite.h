@@ -4374,6 +4374,76 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getFractionalMicroseconds() == tm1.getFractionalMicroseconds());
         }
 
+        void testSerializationDeserializationTestMessage2IntoContainerValidatedWithGoogleProtobuf() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            TestMessage2 tm1;
+            tm1.setField1(123);
+            tm1.setField2(-123);
+
+            Container c(tm1);
+            c.setSentTimeStamp(TimeStamp(456, 789));
+            c.setReceivedTimeStamp(TimeStamp(987, 654));
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << c;
+
+            const string s = out.str();
+            uint32_t cnt=0;
+            TS_ASSERT(s.size() == 31);
+            // Container header:
+            // d a4 1a 0 0
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x0D);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xA4);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x1A);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0);
+
+            // Actual container:
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x8);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xd4);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xf);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x12);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x5);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x8);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x7b);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x10);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xf5);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x1);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x1a);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x6);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x8);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x90);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x7);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x10);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xaa);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xc);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x22);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x6);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x8);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xb6);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xf);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x10);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x9c);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xa);
+
+            // Read from buffer.
+            Container c2;
+            out >> c2;
+
+            TS_ASSERT(c2.getDataType() == TestMessage2::ID());
+            TestMessage2 tm2 = c2.getData<TestMessage2>();
+
+            TS_ASSERT(tm1.getField1() == tm2.getField1());
+            TS_ASSERT(tm2.getField1() == 123);
+
+            TS_ASSERT(tm1.getField2() == tm2.getField2());
+            TS_ASSERT(tm2.getField2() == -123);
+        }
+
         ///////////////////////////////////////////////////////////////////////
 
 // TODO:
@@ -4397,10 +4467,11 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 // Done - 18) QueryableNetstringsDeserializerABCF::fillBuffer(cin, containerBuffer) --> needs to be added to ProtoSerializer? --> testCase in odredirector passes by just reading from cin. TODO: Test on terminal.
 // Done - 19) Check serializatio/deserialization order for all built-in types
 // Done - 20) Compatibility with 3rd party Proto implementations
-// 21) Change identifiers for built-in types (like Container) to remove fourbyteidentifier (remove CRC32<...>)
-// 22) Remove fourbyteid keyword from odDataStructureGenerator
-// 23) Check serializatio/deserialization order for all built-in types after removal of fourbyteidentifier
-// 24) Fix opendlv data structure --> either model them as odvd data structures or fix directly in code
+// 21) Serialize data into a Container structure, write to disk, and read it back in Python
+// 22) Change identifiers for built-in types (like Container) to remove fourbyteidentifier (remove CRC32<...>)
+// 23) Remove fourbyteid keyword from odDataStructureGenerator
+// 24) Check serializatio/deserialization order for all built-in types after removal of fourbyteidentifier
+// 25) Fix opendlv data structure --> either model them as odvd data structures or fix directly in code
 };
 
 #endif /*CORE_PROTOMESSAGESTESTSUITE_H_*/
