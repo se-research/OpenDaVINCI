@@ -22,14 +22,13 @@
 
 #include <cmath>                        // for sqrt
 #include <iostream>                     // for operator<<, basic_ostream, etc
+#include <memory>
 #include <string>                       // for string, operator<<, etc
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
 #include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
-#include "opendavinci/odcore/base/Hash.h"             // for CharList, CRC32, etc
 #include "opendavinci/odcore/base/Serializable.h"     // for Serializable, operator<<, etc
 #include "opendavinci/odcore/base/SerializationFactory.h"  // for SerializationFactory
 #include "opendavinci/odcore/base/Serializer.h"       // for Serializer
@@ -50,8 +49,7 @@ class SerializationTestNestedData : public odcore::base::Serializable {
 
             std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
-            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('m', '_', 'd', 'o', 'u', 'b', 'l', 'e') >::RESULT,
-                    m_double);
+            s->write(1, m_double);
 
             return out;
         }
@@ -61,8 +59,7 @@ class SerializationTestNestedData : public odcore::base::Serializable {
 
             std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
-            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('m', '_', 'd', 'o', 'u', 'b', 'l', 'e') >::RESULT,
-                   m_double);
+            d->read(1, m_double);
 
             return in;
         }
@@ -86,17 +83,13 @@ class SerializationTestSampleData : public odcore::base::Serializable {
 
             std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
-            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('m', '_', 'b', 'o', 'o', 'l') >::RESULT,
-                    m_bool);
+            s->write(1, m_bool);
 
-            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('m', '_', 'n', 'e', 's', 't', 'e', 'd') >::RESULT,
-                    m_nestedData);
+            s->write(2, m_nestedData);
 
-            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 'i', 'n', 't') >::RESULT,
-                    m_int);
+            s->write(3, m_int);
 
-            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 's', 't', 'r') >::RESULT,
-                    m_string);
+            s->write(4, m_string);
 
             return out;
         }
@@ -106,17 +99,13 @@ class SerializationTestSampleData : public odcore::base::Serializable {
 
             std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
-            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('m', '_', 'b', 'o', 'o', 'l') >::RESULT,
-                   m_bool);
+            d->read(1, m_bool);
 
-            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('m', '_', 'n', 'e', 's', 't', 'e', 'd') >::RESULT,
-                   m_nestedData);
+            d->read(2, m_nestedData);
 
-            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 'i', 'n', 't') >::RESULT,
-                   m_int);
+            d->read(3, m_int);
 
-            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 's', 't', 'r') >::RESULT,
-                   m_string);
+            d->read(4, m_string);
 
             return in;
         }

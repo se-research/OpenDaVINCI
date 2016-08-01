@@ -22,12 +22,12 @@
 
 #include <cmath>                        // for fabs
 #include <iostream>                     // for stringstream, operator<<, etc
+#include <memory>
 #include <string>                       // for operator==, string, etc
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
 #include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
 #include "opendavinci/odcore/base/ROSDeserializerVisitor.h"
 #include "opendavinci/odcore/base/ROSSerializerVisitor.h"  // for ROSSerializerVisitor

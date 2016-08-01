@@ -21,16 +21,15 @@
 #define OPENDAVINCI_DATATRIGGEREDCONFERENCECLIENTMODULETESTSUITE_H_
 
 #include <fstream>                      // for operator<<, basic_ostream, etc
+#include <memory>
 #include <string>                       // for string, char_traits
 #include <vector>                       // for vector
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
 #include "opendavinci/odcore/base/Condition.h"        // for Condition
 #include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
-#include "opendavinci/odcore/base/Hash.h"             // for CharList, CRC32, etc
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
 #include "opendavinci/odcore/base/Lock.h"             // for Lock
 #include "opendavinci/odcore/base/SerializationFactory.h"  // for SerializationFactory
@@ -66,49 +65,47 @@ using namespace odcore::dmcp;
 using namespace odcore::data::dmcp;
 
 class TestSuiteExample7Data : public odcore::data::SerializableData {
-	public:
-		TestSuiteExample7Data() : m_numericalValue(0) {}
+    public:
+        TestSuiteExample7Data() : m_numericalValue(0) {}
 
-		virtual ~TestSuiteExample7Data() {}
+        virtual ~TestSuiteExample7Data() {}
 
-		TestSuiteExample7Data(const TestSuiteExample7Data &obj) :
-			SerializableData(),
-			m_numericalValue(obj.m_numericalValue) {}
+        TestSuiteExample7Data(const TestSuiteExample7Data &obj) :
+            SerializableData(),
+            m_numericalValue(obj.m_numericalValue) {}
 
-		TestSuiteExample7Data& operator=(const TestSuiteExample7Data &obj) {
-		    m_numericalValue = obj.m_numericalValue;
-		    return (*this);
-	    }
+        TestSuiteExample7Data& operator=(const TestSuiteExample7Data &obj) {
+            m_numericalValue = obj.m_numericalValue;
+            return (*this);
+        }
 
-		uint32_t getNumericalValue() const {
+        uint32_t getNumericalValue() const {
             return m_numericalValue;
         }
 
-		void setNumericalValue(const uint32_t &nv) {
+        void setNumericalValue(const uint32_t &nv) {
             m_numericalValue = nv;
         }
 
-		virtual ostream& operator<<(ostream &out) const {
+        virtual ostream& operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();
-		    std::shared_ptr<Serializer> s = sf.getSerializer(out);
-		    s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('n', 'u', 'm') >::RESULT,
-				    m_numericalValue);
-		    return out;
-	    }
+            std::shared_ptr<Serializer> s = sf.getSerializer(out);
+            s->write(1, m_numericalValue);
+            return out;
+        }
 
-		virtual istream& operator>>(istream &in) {
+        virtual istream& operator>>(istream &in) {
             SerializationFactory& sf=SerializationFactory::getInstance();
-		    std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
-		    d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('n', 'u', 'm') >::RESULT,
-			       m_numericalValue);
-		    return in;
-	    }
+            std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+            d->read(1, m_numericalValue);
+            return in;
+        }
 
-		virtual const string toString() const {
-		    stringstream s;
-		    s << m_numericalValue;
-		    return s.str();
-	    }
+        virtual const string toString() const {
+            stringstream s;
+            s << m_numericalValue;
+            return s.str();
+        }
 
         int32_t getID() const {
             return 2345;
@@ -122,8 +119,8 @@ class TestSuiteExample7Data : public odcore::data::SerializableData {
             return getLongName();
         }
 
-	private:
-		uint32_t m_numericalValue;
+    private:
+        uint32_t m_numericalValue;
 };
 
 class TimeTriggeredConferenceClientModuleTestModule : public TimeTriggeredConferenceClientModule {
@@ -158,15 +155,15 @@ class TimeTriggeredConferenceClientModuleTestModule : public TimeTriggeredConfer
                     break;
                 }
 
-        		// Create user data.
-        		TestSuiteExample7Data data;
-        		data.setNumericalValue(counter);
+                // Create user data.
+                TestSuiteExample7Data data;
+                data.setNumericalValue(counter);
 
-        		// Create container with user data type ID 5.
-        		Container c(data);
+                // Create container with user data type ID 5.
+                Container c(data);
 
-        		// Send container.
-        		getConference().send(c);
+                // Send container.
+                getConference().send(c);
             }
 
             return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;

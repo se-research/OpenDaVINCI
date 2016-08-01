@@ -21,11 +21,11 @@
 #define CORE_EIGENEXAMPLESTESTSUITE_H_
 
 #include <iostream>
+#include <memory>
 #include <string>
 
 #include "cxxtest/TestSuite.h"
 
-#include <memory>
 #include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/base/Thread.h"
 #include "opendavinci/odcore/data/Container.h"

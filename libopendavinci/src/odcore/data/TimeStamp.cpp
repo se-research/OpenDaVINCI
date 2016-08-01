@@ -22,7 +22,6 @@
 #include <memory>
 
 #include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
 #include "opendavinci/odcore/data/TimeStamp.h"
@@ -427,12 +426,12 @@ namespace odcore {
 
         void TimeStamp::accept(Visitor &v) {
             v.beginVisit();
-            v.visit(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('s', 'e', 'c') >::RESULT,
+            v.visit(0,
                     1,
                     "TimeStamp.seconds",
                     "seconds",
                     m_seconds);
-            v.visit(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('m', 'i', 'c') >::RESULT,
+            v.visit(0,
                     2,
                     "TimeStamp.microseconds",
                     "microseconds",
@@ -445,13 +444,9 @@ namespace odcore {
 
             std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
-            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('s', 'e', 'c') >::RESULT,
-                    1, "TimeStamp.seconds", "seconds",
-                    m_seconds);
+            s->write(1, m_seconds);
 
-            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('m', 'i', 'c') >::RESULT,
-                    2, "TimeStamp.microseconds", "microseconds",
-                    m_microseconds);
+            s->write(2, m_microseconds);
 
             return out;
         }
@@ -461,13 +456,9 @@ namespace odcore {
 
             std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
-            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('s', 'e', 'c') >::RESULT,
-                    1, "TimeStamp.seconds", "seconds",
-                    m_seconds);
+            d->read(1, m_seconds);
 
-            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('m', 'i', 'c') >::RESULT,
-                    2, "TimeStamp.microseconds", "microseconds",
-                    m_microseconds);
+            d->read(2, m_microseconds);
 
             return in;
         }

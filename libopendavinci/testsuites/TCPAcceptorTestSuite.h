@@ -21,10 +21,10 @@
 #define CORE_WRAPPER_TCPACCEPTORTESTSUITE_H_
 
 #include <string>                       // for string
+#include <memory>
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include <memory>
 #include "opendavinci/odcore/wrapper/NetworkLibraryProducts.h"
 #include "mocks/ConnectionListenerMock.h"
 #include "mocks/StringListenerMock.h"

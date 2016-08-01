@@ -21,6 +21,7 @@
 #define CONTEXT_CONTROLFLOWTESTSUITE_H_
 
 #include <iostream>                     // for operator<<, basic_ostream, etc
+#include <memory>
 #include <string>                       // for string, char_traits
 #include <vector>                       // for vector
 
@@ -30,10 +31,8 @@
 #include "opendavinci/odcontext/base/BlockableContainerReceiver.h"
 #include "opendavinci/odcontext/base/ControlledContainerConferenceFactory.h"
 #include "opendavinci/odcontext/base/ControlledContainerConferenceForSystemUnderTest.h"
-#include <memory>
 #include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
 #include "opendavinci/odcore/base/FIFOQueue.h"        // for FIFOQueue
-#include "opendavinci/odcore/base/Hash.h"             // for CharList, CRC32, etc
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
 #include "opendavinci/odcore/base/Lock.h"             // for Lock
 #include "opendavinci/odcore/base/Mutex.h"            // for Mutex
@@ -176,8 +175,7 @@ class ControlFlowTestSampleData : public odcore::data::SerializableData {
 
             std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
-            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 'i', 'n', 't') >::RESULT,
-                    m_int);
+            s->write(1, m_int);
 
             return out;
         }
@@ -187,8 +185,7 @@ class ControlFlowTestSampleData : public odcore::data::SerializableData {
 
             std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
-            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 'i', 'n', 't') >::RESULT,
-                   m_int);
+            d->read(1, m_int);
 
             return in;
         }

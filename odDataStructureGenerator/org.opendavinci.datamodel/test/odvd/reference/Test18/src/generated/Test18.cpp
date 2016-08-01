@@ -8,7 +8,6 @@
 #include <cstring>
 #include "opendavinci/odcore/opendavinci.h"
 
-#include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/Deserializer.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
@@ -147,9 +146,9 @@
 
 	void Test18::accept(odcore::base::Visitor &v) {
 		v.beginVisit();
-		v.visit(CRC32 < CharList<'m', CharList<'y', CharList<'A', CharList<'t', CharList<'t', CharList<'1', NullType> > > > > >  >::RESULT, 3, "Test18.myAtt1", "myAtt1", m_myAtt1);
-		v.visit(CRC32 < CharList<'m', CharList<'y', CharList<'A', CharList<'t', CharList<'t', CharList<'2', NullType> > > > > >  >::RESULT, 4, "Test18.myAtt2", "myAtt2", m_myAtt2);
-		v.visit(CRC32 < CharList<'m', CharList<'y', CharList<'A', CharList<'t', CharList<'t', CharList<'3', NullType> > > > > >  >::RESULT, 5, "Test18.myAtt3", "myAtt3", m_myAtt3);
+		v.visit(0, 3, "Test18.myAtt1", "myAtt1", m_myAtt1);
+		v.visit(0, 4, "Test18.myAtt2", "myAtt2", m_myAtt2);
+		v.visit(0, 5, "Test18.myAtt3", "myAtt3", m_myAtt3);
 		v.endVisit();
 	}
 

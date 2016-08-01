@@ -22,7 +22,6 @@
 #include <memory>
 
 #include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
 #include "opendavinci/odcore/data/Container.h"
@@ -109,24 +108,16 @@ namespace odcore {
 
                 // Write container data type.
                 int32_t dataType = getDataType();
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                         1, "Container.id", "id",
-                         dataType);
+                s->write(1, dataType);
 
                 // Write container data.
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('d', 'a', 't', 'a') >::RESULT,
-                         2, "Container.data", "data",
-                         m_serializedData.str());
+                s->write(2, m_serializedData.str());
 
                 // Write sent time stamp data.
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('s', 'e', 'n', 't') >::RESULT,
-                         3, "Container.sent", "sent",
-                         m_sent);
+                s->write(3, m_sent);
 
                 // Write received time stamp data.
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('r', 'e', 'c', 'v', 'd') >::RESULT,
-                         4, "Container.received", "received",
-                         m_received);
+                s->write(4, m_received);
             }
 
             // Write Container header.
@@ -217,25 +208,17 @@ namespace odcore {
             std::shared_ptr<Deserializer> d = sf.getDeserializer(bufferIn);
 
             // Read container data type.
-            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                    1, "Container.id", "id",
-                    m_dataType);
+            d->read(1, m_dataType);
 
             // Read container data.
-            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('d', 'a', 't', 'a') >::RESULT,
-                    2, "Container.data", "data",
-                    rawData);
+            d->read(2, rawData);
             m_serializedData.str(rawData);
 
             // Read sent time stamp data.
-            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('s', 'e', 'n', 't') >::RESULT,
-                    3, "Container.sent", "sent",
-                    m_sent);
+            d->read(3, m_sent);
 
             // Read received time stamp data.
-            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('r', 'e', 'c', 'v', 'd') >::RESULT,
-                    4, "Container.received", "received",
-                    m_received);
+            d->read(4, m_received);
 
             return in;
         }

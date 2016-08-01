@@ -72,21 +72,21 @@ message automotive.VehicleData [id = 39] {
 }
 
 message automotive.VehicleControl [id = 41] {
-    double speed [id = 1, fourbyteid = 0x0E43596B];
-    double acceleration [id = 2, fourbyteid = 0x0E435991];
-    double steeringWheelAngle [id = 3, fourbyteid = 0x0E435969];
-    bool brakeLights [id = 4, fourbyteid = 0x0E43599B];
-    bool flashingLightsLeft [id = 5, fourbyteid = 0x09823BD7];
-    bool flashingLightsRight [id = 6, fourbyteid = 0x0E435996];
+    double speed [id = 1];
+    double acceleration [id = 2];
+    double steeringWheelAngle [id = 3];
+    bool brakeLights [id = 4];
+    bool flashingLightsLeft [id = 5];
+    bool flashingLightsRight [id = 6];
 }
 
 message automotive.ForceControl [id = 33] {
-    double accelerationForce [id = 1, fourbyteid = 0x0E435991];
-    double brakeForce [id = 2, fourbyteid = 0x0E43598D];
-    double steeringForce [id = 3, fourbyteid = 0x0E435969];
-    bool brakeLights [id = 4, fourbyteid = 0x0E43599B];
-    bool flashingLightsLeft [id = 5, fourbyteid = 0x09823BD7];
-    bool flashingLightsRight [id = 6, fourbyteid = 0x0E435996];
+    double accelerationForce [id = 1];
+    double brakeForce [id = 2];
+    double steeringForce [id = 3];
+    bool brakeLights [id = 4];
+    bool flashingLightsLeft [id = 5];
+    bool flashingLightsRight [id = 6];
 }
 
 

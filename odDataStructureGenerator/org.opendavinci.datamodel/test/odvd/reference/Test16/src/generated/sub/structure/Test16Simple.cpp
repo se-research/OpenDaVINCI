@@ -6,7 +6,6 @@
 
 #include <memory>
 
-#include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/Deserializer.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
@@ -93,8 +92,8 @@ namespace sub {
 		
 			void Test16Simple::accept(odcore::base::Visitor &v) {
 				v.beginVisit();
-				v.visit(CRC32 < CharList<'m', CharList<'y', CharList<'D', CharList<'a', CharList<'t', CharList<'a', NullType> > > > > >  >::RESULT, 0, "Test16Simple.myData", "myData", m_myData);
-				v.visit(CRC32 < CharList<'m', CharList<'y', CharList<'V', CharList<'a', CharList<'l', CharList<'u', CharList<'e', NullType> > > > > > >  >::RESULT, 0, "Test16Simple.myValue", "myValue", m_myValue);
+				v.visit(0, 1, "Test16Simple.myData", "myData", m_myData);
+				v.visit(0, 2, "Test16Simple.myValue", "myValue", m_myValue);
 				v.endVisit();
 			}
 		
@@ -112,9 +111,9 @@ namespace sub {
 		
 				std::shared_ptr<Serializer> s = sf.getSerializer(out);
 		
-				s->write(CRC32 < CharList<'m', CharList<'y', CharList<'D', CharList<'a', CharList<'t', CharList<'a', NullType> > > > > >  >::RESULT,
+				s->write(1,
 						m_myData);
-				s->write(CRC32 < CharList<'m', CharList<'y', CharList<'V', CharList<'a', CharList<'l', CharList<'u', CharList<'e', NullType> > > > > > >  >::RESULT,
+				s->write(2,
 						m_myValue);
 				return out;
 			}
@@ -124,9 +123,9 @@ namespace sub {
 		
 				std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 		
-				d->read(CRC32 < CharList<'m', CharList<'y', CharList<'D', CharList<'a', CharList<'t', CharList<'a', NullType> > > > > >  >::RESULT,
+				d->read(1,
 						m_myData);
-				d->read(CRC32 < CharList<'m', CharList<'y', CharList<'V', CharList<'a', CharList<'l', CharList<'u', CharList<'e', NullType> > > > > > >  >::RESULT,
+				d->read(2,
 						m_myValue);
 				return in;
 			}

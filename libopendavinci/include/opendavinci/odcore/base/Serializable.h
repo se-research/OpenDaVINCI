@@ -35,8 +35,6 @@ namespace odcore {
          * It can be used as follows:
          *
          * @code
-         * #include "base/Hash.h"
-         *
          * class MyData : Serializable {
          *     private:
          *        int32_t m_data;
@@ -45,14 +43,14 @@ namespace odcore {
          *        ostream& operator<<(ostream &out) const {
          *            SerializationFactory sf;
          *            std::shared_ptr<Serializer> s = sf.getSerializer(out);
-         *            s->write(CRC32<OPENDAVINCI_CORE_STRINGLITERAL2('I', 'D')>::RESULT, m_data);
+         *            s->write(1, m_data);
          *            return out;
          *        }
          *
          *        istream& operator>>(istream &in) {
          *            SerializationFactory sf;
          *            std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
-         *            d->read(CRC32<OPENDAVINCI_CORE_STRINGLITERAL2('I', 'D')>::RESULT, m_data);
+         *            d->read(1, m_data);
          *            return in;
          *        }
          * }

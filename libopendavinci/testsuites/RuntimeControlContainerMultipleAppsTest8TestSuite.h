@@ -22,6 +22,7 @@
 
 #include <cmath>                        // for sqrt
 #include <iostream>                     // for operator<<, basic_ostream, etc
+#include <memory>
 #include <string>                       // for string, operator<<, etc
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
@@ -33,10 +34,8 @@
 #include "opendavinci/odcontext/base/SendContainerToSystemsUnderTest.h"
 #include "opendavinci/odcontext/base/SystemFeedbackComponent.h"
 #include "opendavinci/odcontext/base/SystemReportingComponent.h"
-#include <memory>
 #include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
 #include "opendavinci/odcore/base/FIFOQueue.h"        // for FIFOQueue
-#include "opendavinci/odcore/base/Hash.h"             // for CharList, CRC32, etc
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
 #include "opendavinci/odcore/base/SerializationFactory.h"  // for SerializationFactory
 #include "opendavinci/odcore/base/Serializer.h"       // for Serializer
@@ -138,7 +137,7 @@ class LocalPoint3 : public odcore::data::SerializableData {
 
             rawData << m_x << endl << m_y << endl << m_z;
 
-            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('d', 'a', 't', 'a') >::RESULT,
+            s->write(1,
                     rawData.str());
 
             return out;
@@ -150,7 +149,7 @@ class LocalPoint3 : public odcore::data::SerializableData {
             std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
             string data;
-            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('d', 'a', 't', 'a') >::RESULT,
+            d->read(1,
                    data);
 
             stringstream rawData;
@@ -220,10 +219,10 @@ class LocalPosition : public odcore::data::SerializableData {
 
             std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
-            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('p', 'o', 's') >::RESULT,
+            s->write(1,
                     m_position);
 
-            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('r', 'o', 't') >::RESULT,
+            s->write(2,
                     m_rotation);
 
             return out;
@@ -234,15 +233,16 @@ class LocalPosition : public odcore::data::SerializableData {
 
             std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
-            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('p', 'o', 's') >::RESULT,
+            d->read(1,
                    m_position);
 
-            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('r', 'o', 't') >::RESULT,
+            d->read(2,
                    m_rotation);
 
             return in;
         }
 };
+
 
 
 class RuntimeControlContainerMultipleAppsTestData : public odcore::data::SerializableData {
@@ -277,11 +277,9 @@ class RuntimeControlContainerMultipleAppsTestData : public odcore::data::Seriali
 
             std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
-            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 'i', 'n', 't') >::RESULT,
-                    m_int);
+            s->write(2, m_int);
 
-            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('m', '_', 'i', 'd') >::RESULT,
-                    m_id);
+            s->write(1, m_id);
 
             return out;
         }
@@ -291,15 +289,15 @@ class RuntimeControlContainerMultipleAppsTestData : public odcore::data::Seriali
 
             std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
-            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('m', '_', 'i', 'd') >::RESULT,
-                   m_id);
+            d->read(1, m_id);
 
-            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 'i', 'n', 't') >::RESULT,
-                   m_int);
+            d->read(2, m_int);
 
             return in;
         }
 };
+
+
 
 class RuntimeControlContainerMultipleAppsTestModule : public TimeTriggeredConferenceClientModule {
     public:

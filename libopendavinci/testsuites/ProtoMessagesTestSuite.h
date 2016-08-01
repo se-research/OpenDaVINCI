@@ -28,7 +28,6 @@
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/ProtoDeserializer.h"
 #include "opendavinci/odcore/base/ProtoSerializer.h"
@@ -113,8 +112,7 @@ class ProtoMessages1SampleDataVersion1 : public odcore::base::Serializable {
 
             std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
-            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('m', '_', 'b', 'o', 'o', 'l') >::RESULT,
-                    m_bool);
+            s->write(1, m_bool);
 
             return out;
         }
@@ -124,8 +122,7 @@ class ProtoMessages1SampleDataVersion1 : public odcore::base::Serializable {
 
             std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
-            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('m', '_', 'b', 'o', 'o', 'l') >::RESULT,
-                   m_bool);
+            d->read(1, m_bool);
 
             return in;
         }
@@ -147,14 +144,11 @@ class ProtoMessages1SampleDataVersion2 : public odcore::base::Serializable {
 
             std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
-            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('m', '_', 'b', 'o', 'o', 'l') >::RESULT,
-                    m_bool);
+            s->write(1, m_bool);
 
-            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 'i', 'n', 't') >::RESULT,
-                    m_int);
+            s->write(2, m_int);
 
-            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 's', 't', 'r') >::RESULT,
-                    m_string);
+            s->write(3, m_string);
 
             return out;
         }
@@ -164,14 +158,11 @@ class ProtoMessages1SampleDataVersion2 : public odcore::base::Serializable {
 
             std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
-            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('m', '_', 'b', 'o', 'o', 'l') >::RESULT,
-                   m_bool);
+            d->read(1, m_bool);
 
-            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 'i', 'n', 't') >::RESULT,
-                   m_int);
+            d->read(2, m_int);
 
-            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 's', 't', 'r') >::RESULT,
-                   m_string);
+            d->read(3, m_string);
 
             return in;
         }
@@ -193,14 +184,11 @@ class ProtoMessages1SampleDataVersion2Reordered : public odcore::base::Serializa
 
             std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
-            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('m', '_', 'b', 'o', 'o', 'l') >::RESULT,
-                    m_bool);
+            s->write(1, m_bool);
 
-            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 'i', 'n', 't') >::RESULT,
-                    m_int);
+            s->write(2, m_int);
 
-            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 's', 't', 'r') >::RESULT,
-                    m_string);
+            s->write(3, m_string);
 
             return out;
         }
@@ -210,14 +198,11 @@ class ProtoMessages1SampleDataVersion2Reordered : public odcore::base::Serializa
 
             std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
-            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 'i', 'n', 't') >::RESULT,
-                   m_int);
+            d->read(2, m_int);
 
-            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('m', '_', 'b', 'o', 'o', 'l') >::RESULT,
-                   m_bool);
+            d->read(1, m_bool);
 
-            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', '_', 's', 't', 'r') >::RESULT,
-                   m_string);
+            d->read(3, m_string);
 
             return in;
         }

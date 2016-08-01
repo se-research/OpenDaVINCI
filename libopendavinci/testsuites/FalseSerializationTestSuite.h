@@ -21,13 +21,12 @@
 #define CORE_FALSESERIALIZATIONTESTSUITE_H_
 
 #include <iostream>                     // for stringstream, istream, etc
+#include <memory>
 #include <string>                       // for operator==, string, etc
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include <memory>
 #include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
-#include "opendavinci/odcore/base/Hash.h"             // for CharList, CRC32, etc
 #include "opendavinci/odcore/base/Serializable.h"     // for operator<<, operator>>, etc
 #include "opendavinci/odcore/base/SerializationFactory.h"  // for SerializationFactory
 #include "opendavinci/odcore/base/Serializer.h"       // for Serializer
@@ -49,8 +48,7 @@ class FalseSerializationTestSuiteNestedData : public odcore::base::Serializable 
 
             std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
-            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('t', 'e', 's', 't') >::RESULT,
-                    m_string);
+            s->write(1, m_string);
 
             return out;
         }
@@ -60,8 +58,7 @@ class FalseSerializationTestSuiteNestedData : public odcore::base::Serializable 
 
             std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
-            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('t', 'e', 's', 't') >::RESULT,
-                   m_string);
+            d->read(1, m_string);
 
             return in;
         }
@@ -80,11 +77,9 @@ class FalseSerializationTestSuiteSampleData : public odcore::base::Serializable 
 
             std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
-            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('t', 'e', 's', 't') >::RESULT,
-                    m_string);
+            s->write(1, m_string);
 
-            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('n', 'e', 's', 't', 'e', 'd') >::RESULT,
-                    m_nestedData);
+            s->write(2, m_nestedData);
 
             return out;
         }
@@ -94,11 +89,9 @@ class FalseSerializationTestSuiteSampleData : public odcore::base::Serializable 
 
             std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
-            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('t', 'e', 's', 't') >::RESULT,
-                   m_string);
+            d->read(1, m_string);
 
-            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('n', 'e', 's', 't', 'e', 'd') >::RESULT,
-                   m_nestedData);
+            d->read(2, m_nestedData);
 
             return in;
         }

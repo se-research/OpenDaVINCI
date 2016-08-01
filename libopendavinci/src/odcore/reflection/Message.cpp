@@ -176,14 +176,16 @@ namespace odcore {
             bool retVal = false;
             std::shared_ptr<odcore::data::reflection::AbstractField> field;
 
-            vector<std::shared_ptr<AbstractField> >::iterator it = m_fields.begin();
-            while (it != m_fields.end()) {
-                if ( (*it)->getLongFieldIdentifier() == longIdentifier ) {
-                    retVal = true;
-                    field = (*it);
-                    break;
+            if (longIdentifier > 0) {
+                vector<std::shared_ptr<AbstractField> >::iterator it = m_fields.begin();
+                while (it != m_fields.end()) {
+                    if ( (*it)->getLongFieldIdentifier() == longIdentifier ) {
+                        retVal = true;
+                        field = (*it);
+                        break;
+                    }
+                    ++it;
                 }
-                ++it;
             }
 
             found = retVal;
@@ -194,14 +196,16 @@ namespace odcore {
             bool retVal = false;
             std::shared_ptr<odcore::data::reflection::AbstractField> field;
 
-            vector<std::shared_ptr<AbstractField> >::iterator it = m_fields.begin();
-            while (it != m_fields.end()) {
-                if ( (*it)->getShortFieldIdentifier() == shortIdentifier ) {
-                    retVal = true;
-                    field = (*it);
-                    break;
+            if (shortIdentifier > 0) {
+                vector<std::shared_ptr<AbstractField> >::iterator it = m_fields.begin();
+                while (it != m_fields.end()) {
+                    if ( (*it)->getShortFieldIdentifier() == shortIdentifier ) {
+                        retVal = true;
+                        field = (*it);
+                        break;
+                    }
+                    ++it;
                 }
-                ++it;
             }
 
             found = retVal;

@@ -6,7 +6,6 @@
 
 #include <memory>
 
-#include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/Deserializer.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
@@ -81,7 +80,7 @@ namespace sub {
 		
 			void Test20b::accept(odcore::base::Visitor &v) {
 				v.beginVisit();
-				v.visit(CRC32 < CharList<'v', CharList<'a', CharList<'l', CharList<'2', NullType> > > >  >::RESULT, 0, "Test20b.val2", "val2", m_val2);
+				v.visit(0, 1, "Test20b.val2", "val2", m_val2);
 				v.endVisit();
 			}
 		
@@ -98,7 +97,7 @@ namespace sub {
 		
 				std::shared_ptr<Serializer> s = sf.getSerializer(out);
 		
-				s->write(CRC32 < CharList<'v', CharList<'a', CharList<'l', CharList<'2', NullType> > > >  >::RESULT,
+				s->write(1,
 						m_val2);
 				return out;
 			}
@@ -108,7 +107,7 @@ namespace sub {
 		
 				std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 		
-				d->read(CRC32 < CharList<'v', CharList<'a', CharList<'l', CharList<'2', NullType> > > >  >::RESULT,
+				d->read(1,
 						m_val2);
 				return in;
 			}

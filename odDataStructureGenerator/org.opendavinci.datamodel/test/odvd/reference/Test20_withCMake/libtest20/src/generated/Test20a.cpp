@@ -6,7 +6,6 @@
 
 #include <memory>
 
-#include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/Deserializer.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
@@ -91,8 +90,8 @@
 
 	void Test20a::accept(odcore::base::Visitor &v) {
 		v.beginVisit();
-		v.visit(CRC32 < CharList<'v', CharList<'a', CharList<'l', CharList<'1', NullType> > > >  >::RESULT, 0, "Test20a.val1", "val1", m_val1);
-		v.visit(CRC32 < CharList<'t', CharList<'i', CharList<'m', CharList<'e', CharList<'S', CharList<'t', CharList<'a', CharList<'m', CharList<'p', NullType> > > > > > > > >  >::RESULT, 0, "Test20a.timeStamp", "timeStamp", m_timeStamp);
+		v.visit(0, 2, "Test20a.val1", "val1", m_val1);
+		v.visit(0, 3, "Test20a.timeStamp", "timeStamp", m_timeStamp);
 		v.endVisit();
 	}
 
@@ -110,9 +109,9 @@
 
 		std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
-		s->write(CRC32 < CharList<'v', CharList<'a', CharList<'l', CharList<'1', NullType> > > >  >::RESULT,
+		s->write(2,
 				m_val1);
-		s->write(CRC32 < CharList<'t', CharList<'i', CharList<'m', CharList<'e', CharList<'S', CharList<'t', CharList<'a', CharList<'m', CharList<'p', NullType> > > > > > > > >  >::RESULT,
+		s->write(3,
 				m_timeStamp);
 		return out;
 	}
@@ -122,9 +121,9 @@
 
 		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
-		d->read(CRC32 < CharList<'v', CharList<'a', CharList<'l', CharList<'1', NullType> > > >  >::RESULT,
+		d->read(2,
 				m_val1);
-		d->read(CRC32 < CharList<'t', CharList<'i', CharList<'m', CharList<'e', CharList<'S', CharList<'t', CharList<'a', CharList<'m', CharList<'p', NullType> > > > > > > > >  >::RESULT,
+		d->read(3,
 				m_timeStamp);
 		return in;
 	}

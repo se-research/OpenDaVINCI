@@ -6,7 +6,6 @@
 
 #include <memory>
 
-#include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/Deserializer.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
@@ -151,13 +150,13 @@
 
 	void Test12Complex::accept(odcore::base::Visitor &v) {
 		v.beginVisit();
-		v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'1', NullType> > > > > > > > > >  >::RESULT, 1, "Test12Complex.attribute1", "attribute1", m_attribute1);
-		v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'2', NullType> > > > > > > > > >  >::RESULT, 2, "Test12Complex.attribute2", "attribute2", m_attribute2);
-		v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'3', NullType> > > > > > > > > >  >::RESULT, 3, "Test12Complex.attribute3", "attribute3", m_attribute3);
-		v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'4', NullType> > > > > > > > > >  >::RESULT, 4, "Test12Complex.attribute4", "attribute4", m_attribute4);
-		v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'5', NullType> > > > > > > > > >  >::RESULT, 5, "Test12Complex.attribute5", "attribute5", m_attribute5);
-		v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'6', NullType> > > > > > > > > >  >::RESULT, 6, "Test12Complex.attribute6", "attribute6", m_attribute6);
-		v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'7', NullType> > > > > > > > > >  >::RESULT, 7, "Test12Complex.attribute7", "attribute7", m_attribute7);
+		v.visit(0, 1, "Test12Complex.attribute1", "attribute1", m_attribute1);
+		v.visit(0, 2, "Test12Complex.attribute2", "attribute2", m_attribute2);
+		v.visit(0, 3, "Test12Complex.attribute3", "attribute3", m_attribute3);
+		v.visit(0, 4, "Test12Complex.attribute4", "attribute4", m_attribute4);
+		v.visit(0, 5, "Test12Complex.attribute5", "attribute5", m_attribute5);
+		v.visit(0, 6, "Test12Complex.attribute6", "attribute6", m_attribute6);
+		v.visit(0, 7, "Test12Complex.attribute7", "attribute7", m_attribute7);
 		v.endVisit();
 	}
 

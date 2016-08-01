@@ -6,7 +6,6 @@
 
 #include <memory>
 
-#include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/Deserializer.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
@@ -91,8 +90,8 @@
 
 	void Test11Simple::accept(odcore::base::Visitor &v) {
 		v.beginVisit();
-		v.visit(CRC32 < CharList<'d', CharList<'a', CharList<'t', CharList<'a', CharList<'1', NullType> > > > >  >::RESULT, 1, "Test11Simple.data1", "data1", m_data1);
-		v.visit(CRC32 < CharList<'d', CharList<'a', CharList<'t', CharList<'a', CharList<'2', NullType> > > > >  >::RESULT, 2, "Test11Simple.data2", "data2", m_data2);
+		v.visit(0, 1, "Test11Simple.data1", "data1", m_data1);
+		v.visit(0, 2, "Test11Simple.data2", "data2", m_data2);
 		v.endVisit();
 	}
 

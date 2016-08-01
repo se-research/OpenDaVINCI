@@ -25,7 +25,6 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include <memory>
 #include "opendavinci/odcore/io/Connection.h"
 #include "opendavinci/odcore/io/tcp/TCPAcceptor.h"
 #include "opendavinci/odcore/wrapper/NetworkLibraryProducts.h"

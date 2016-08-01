@@ -20,12 +20,12 @@
 #ifndef CORE_DMCPCONNECTIONTESTSUITE_H_
 #define CORE_DMCPCONNECTIONTESTSUITE_H_
 
+#include <memory>
 #include <sstream>                      // for basic_ostream, operator<<, etc
 #include <string>                       // for string, operator==, etc
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include <memory>
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
 #include "opendavinci/odcore/dmcp/connection/Client.h"  // for Client
 #include "opendavinci/odcore/dmcp/connection/ConnectionHandler.h"

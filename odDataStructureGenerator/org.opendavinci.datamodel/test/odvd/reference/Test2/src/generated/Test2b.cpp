@@ -6,7 +6,6 @@
 
 #include <memory>
 
-#include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/Deserializer.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
@@ -38,7 +37,7 @@
 	}
 
 	int32_t Test2b::ID() {
-		return 2;
+		return 3;
 	}
 
 	const string Test2b::ShortName() {

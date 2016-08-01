@@ -603,7 +603,6 @@ class «msg.message.substring(msg.message.lastIndexOf('.') + 1) /* These lines g
 	«ENDIF»
 «ENDFOR»
 
-#include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/Deserializer.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
@@ -918,10 +917,10 @@ namespace «s.get(i)» {
 					v.visit(«a.scalar.fourbyteid», 0, "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", m_«a.scalar.name»);
 				«ENDIF»
 				«IF !hasFourByteID && hasId»
-					v.visit(CRC32 < «generateCharList(a.scalar.name, 0)» >::RESULT, «a.scalar.id», "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", m_«a.scalar.name»);
+					v.visit(0, «a.scalar.id», "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", m_«a.scalar.name»);
 				«ENDIF»
 				«IF !hasFourByteID && !hasId»
-					v.visit(CRC32 < «generateCharList(a.scalar.name, 0)» >::RESULT, 0, "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", m_«a.scalar.name»);
+					v.visit(0, 0, "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", m_«a.scalar.name»);
 				«ENDIF»
 			«ELSE»
 				«var hasFourByteID = false»
@@ -953,19 +952,19 @@ namespace «s.get(i)» {
 				«IF !hasFourByteID && hasId»
 					«IF enums.containsKey(a.scalar.type)»
 						int32_t int32t_«a.scalar.name» = m_«a.scalar.name»;
-						v.visit(CRC32 < «generateCharList(a.scalar.name, 0)» >::RESULT, «a.scalar.id», "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", int32t_«a.scalar.name»);
+						v.visit(0, «a.scalar.id», "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", int32t_«a.scalar.name»);
 						m_«a.scalar.name» = static_cast<«enums.get(a.scalar.type).m_enumNameIncludingMessageName.replaceAll("\\.", "::")»>(int32t_«a.scalar.name»);
 					«ELSE»
-						v.visit(CRC32 < «generateCharList(a.scalar.name, 0)» >::RESULT, «a.scalar.id», "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", m_«a.scalar.name»);
+						v.visit(0, «a.scalar.id», "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", m_«a.scalar.name»);
 					«ENDIF»
 				«ENDIF»
 				«IF !hasFourByteID && !hasId»
 					«IF enums.containsKey(a.scalar.type)»
 						int32_t int32t_«a.scalar.name» = m_«a.scalar.name»;
-						v.visit(CRC32 < «generateCharList(a.scalar.name, 0)» >::RESULT, 0, "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", int32t_«a.scalar.name»);
+						v.visit(0, 0, "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", int32t_«a.scalar.name»);
 						m_«a.scalar.name» = static_cast<«enums.get(a.scalar.type).m_enumNameIncludingMessageName.replaceAll("\\.", "::")»>(int32t_«a.scalar.name»);
 					«ELSE»
-						v.visit(CRC32 < «generateCharList(a.scalar.name, 0)» >::RESULT, 0, "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", m_«a.scalar.name»);
+						v.visit(0, 0, "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", m_«a.scalar.name»);
 					«ENDIF»
 				«ENDIF»
 			«ENDIF»
@@ -1167,10 +1166,10 @@ namespace «s.get(i)» {
 				«ELSE»
 					«IF enums.containsKey(a.scalar.type)»
 					int32_t int32t_«a.scalar.name» = m_«a.scalar.name»;
-					s->write(CRC32 < «generateCharList(a.scalar.name, 0)» >::RESULT,
+					s->write(0,
 							int32t_«a.scalar.name»);
 					«ELSE»
-					s->write(CRC32 < «generateCharList(a.scalar.name, 0)» >::RESULT,
+					s->write(0,
 							m_«a.scalar.name»);
 					«ENDIF»
 				«ENDIF»
@@ -1193,7 +1192,7 @@ namespace «s.get(i)» {
 				«IF a.list.id != null»
 					s->write(«a.list.id», str_sstr_«a.list.name.toFirstUpper»);
 				«ELSE»
-					s->write(CRC32 < «generateCharList(new String(a.list.name.toFirstUpper), 0)» >::RESULT,
+					s->write(0,
 						    str_sstr_«a.list.name.toFirstUpper»);
 				«ENDIF»
 			«ENDIF»
@@ -1228,7 +1227,7 @@ namespace «s.get(i)» {
 				«IF a.map.id != null»
 					s->write(«a.map.id», str_sstr_«a.map.name.toFirstUpper»);
 				«ELSE»
-					s->write(CRC32 < «generateCharList(new String(a.map.name.toFirstUpper), 0)» >::RESULT,
+					s->write(0,
 							 str_sstr_«a.map.name.toFirstUpper»);
 				«ENDIF»
 			«ENDIF»
@@ -1250,7 +1249,7 @@ namespace «s.get(i)» {
 					«IF a.fixedarray.id != null»
 						s->write(«a.fixedarray.id», str_sstr_«a.fixedarray.name.toFirstUpper»);
 					«ELSE»
-						s->write(CRC32 < «generateCharList(new String(a.fixedarray.name.toFirstUpper), 0)» >::RESULT,
+						s->write(0,
 								str_sstr_«a.fixedarray.name.toFirstUpper»);
 					«ENDIF»
 				«ENDIF»
@@ -1282,11 +1281,11 @@ namespace «s.get(i)» {
 				«ELSE»
 					«IF enums.containsKey(a.scalar.type)»
 					int32_t int32t_«a.scalar.name» = 0;
-					d->read(CRC32 < «generateCharList(a.scalar.name, 0)» >::RESULT,
+					d->read(0,
 							int32t_«a.scalar.name»);
 					m_«a.scalar.name» = static_cast<«enums.get(a.scalar.type).m_enumNameIncludingMessageName.replaceAll("\\.", "::")»>(int32t_«a.scalar.name»);
 					«ELSE»
-					d->read(CRC32 < «generateCharList(a.scalar.name, 0)» >::RESULT,
+					d->read(0,
 							m_«a.scalar.name»);
 					«ENDIF»
 				«ENDIF»
@@ -1304,7 +1303,7 @@ namespace «s.get(i)» {
 				«IF a.list.id != null»
 					d->read(«a.list.id», str_«a.list.name.toFirstUpper»);
 				«ELSE»
-					d->read(CRC32 < «generateCharList(new String(a.list.name.toFirstUpper), 0)» >::RESULT,
+					d->read(0,
 						   str_«a.list.name.toFirstUpper»);
 				«ENDIF»
 			«ENDIF»
@@ -1332,7 +1331,7 @@ namespace «s.get(i)» {
 				«IF a.map.id != null»
 					d->read(«a.map.id», str_«a.map.name.toFirstUpper»);
 				«ELSE»
-					d->read(CRC32 < «generateCharList(new String(a.map.name.toFirstUpper), 0)» >::RESULT,
+					d->read(0,
 						   str_«a.map.name.toFirstUpper»);
 				«ENDIF»
 			«ENDIF»
@@ -1374,7 +1373,7 @@ namespace «s.get(i)» {
 					«IF a.fixedarray.id != null»
 						d->read(«a.fixedarray.id», str_«a.fixedarray.name.toFirstUpper»);
 					«ELSE»
-						d->read(CRC32 < «generateCharList(new String(a.fixedarray.name), 0)» >::RESULT,
+						d->read(0,
 						       str_«a.fixedarray.name.toFirstUpper»);
 					«ENDIF»
 				«ENDIF»

@@ -20,10 +20,10 @@
 #ifndef MOCKS__CONNECTIONACCEPTORLISTENERMOCK_H
 #define MOCKS__CONNECTIONACCEPTORLISTENERMOCK_H
 
-#include <string>
 #include <iostream>
-
 #include <memory>
+#include <string>
+
 #include "opendavinci/odcore/base/Condition.h"
 #include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/base/Mutex.h"

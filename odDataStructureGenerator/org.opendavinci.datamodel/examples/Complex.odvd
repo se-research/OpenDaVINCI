@@ -1,22 +1,22 @@
 package Data.Test;
 
 message ComplexDataStructure1 {
-   uint32 data1;
-   float data2;
+   uint32 data1 [id = 1];
+   float data2 [id = 2];
 }
 
 message ComplexDataStructure2 {
-   uint32 data1 [default = 42];
-   uint32 data2 [default = 0];
-   uint32 data1 [default = -0];
-   uint32 data4 [default = -7];
-   float data5 [default = 32.5];
-   float data6 [default = -32.5];
-   bool active [default = false];
-   bool dactive [default = true];
-   listOf float myFloats;
-   string dataString;
-   string dataString2 [default = "Hello World."];
-   required ComplexDataStructure1 cds1;
+   uint32 data1 [default = 42, id = 1];
+   uint32 data2 [default = 0, id = 2];
+   uint32 data1 [default = -0, id = 3];
+   uint32 data4 [default = -7, id = 4];
+   float data5 [default = 32.5, id = 5];
+   float data6 [default = -32.5, id = 6];
+   bool active [default = false, id = 7];
+   bool dactive [default = true, id = 8];
+   listOf float myFloats [id = 9];
+   string dataString [id = 10];
+   string dataString2 [default = "Hello World.", id = 11];
+   required ComplexDataStructure1 cds1 [ id = 12 ];
 }
 

@@ -1,18 +1,18 @@
 package testpackage;
 
 message Test7A [ id = 7 ] {
-	bool attribute1;
-	char attribute2;
-	int32 attribute3;
+	bool attribute1 [ id = 1 ];
+	char attribute2 [ id = 2 ];
+	int32 attribute3 [ id = 3 ];
 }
 
 message Test7B [ id = 8 ] {
-	bool attribute1 [default = true];
-	char attribute2 [default = 'c'];
-	int32 attribute3 [default = -12];
-	uint32 attribute4 [default = +45];
-	float attribute5 [default = -0.12];
-	double attribute6 [default = +0.45678];
-	string attribute7 [default = "Hello World."];
-	list<string> myStringList;
+	bool attribute1 [default = true, id = 1];
+	char attribute2 [default = 'c', id = 2];
+	int32 attribute3 [default = -12, id = 3];
+	uint32 attribute4 [default = +45, id = 4];
+	float attribute5 [default = -0.12, id = 5];
+	double attribute6 [default = +0.45678, id = 6];
+	string attribute7 [default = "Hello World.", id = 7];
+	list<string> myStringList [ id = 8 ];
 }
