@@ -3912,7 +3912,6 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             stringstream out;
             out << c;
 
-
             // Read from buffer.
             Container c2;
             out >> c2;
@@ -4467,7 +4466,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 // Done - 18) QueryableNetstringsDeserializerABCF::fillBuffer(cin, containerBuffer) --> needs to be added to ProtoSerializer? --> testCase in odredirector passes by just reading from cin. TODO: Test on terminal.
 // Done - 19) Check serializatio/deserialization order for all built-in types
 // Done - 20) Compatibility with 3rd party Proto implementations
-// 21) Serialize data into a Container structure, write to disk, and read it back in Python
+// Done - 21) Serialize data into a Container structure, write to disk, and read it back in Python
 // 22) Change identifiers for built-in types (like Container) to remove fourbyteidentifier (remove CRC32<...>)
 // 23) Remove fourbyteid keyword from odDataStructureGenerator
 // 24) Check serializatio/deserialization order for all built-in types after removal of fourbyteidentifier

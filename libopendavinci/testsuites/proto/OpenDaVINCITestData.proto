@@ -1,0 +1,74 @@
+syntax = "proto2";
+
+package odcore.testdata;
+
+message TestMessage1 {
+    optional uint32 a = 1 [default = 12];
+}
+
+message TestMessage2 {
+    optional uint32 field1 = 1;
+    optional sint32 field2 = 2;
+}
+
+message TestMessage3 {
+    optional string field1 = 2;
+}
+
+message TestMessage4 {
+    optional TestMessage1 field1 = 3;
+}
+
+message TestMessage5 {
+    optional uint32 field1 = 1 [ default = 1 ];
+    optional sint32 field2 = 2 [ default = -1 ];
+    optional uint32 field3 = 3 [ default = 100 ];
+    optional sint32 field4 = 4 [ default = -100 ];
+    optional uint32 field5 = 5 [ default = 10000 ];
+    optional sint32 field6 = 6 [ default = -10000 ];
+    optional uint64 field7 = 7 [ default = 12345 ];
+    optional sint64 field8 = 8 [ default = -12345 ];
+    optional float field9 = 9 [ default = -1.2345 ];
+    optional double field10 = 10 [ default = -10.2345 ];
+    optional string field11 = 11 [ default = "Hello World!" ];
+    optional TestMessage1 field12 = 12;
+}
+
+message TestMessage6 {
+    repeated uint32 field1 = 4 [packed=true];
+}
+
+message TestMessage7 {
+    repeated float field1 = 1 [packed=true];
+}
+
+message TestMessage8Entry {
+    optional uint32 key = 1;
+    optional uint32 value = 2;
+}
+
+// Does not generate the add_field1(...) correctly.
+message TestMessage8 {
+    repeated TestMessage8Entry field1 = 1;
+}
+
+// TestMessage 9 missing due to failing TestMessage8.
+
+message TestMessage10 {
+    repeated uint32 myArray1 = 1 [ packed=true ];
+    repeated float myArray2 = 2 [ packed=true ];
+}
+
+
+message TimeStamp {
+    optional sint32 seconds = 1;
+    optional sint32 microseconds = 2;
+}
+
+message Container {
+    optional sint32 dataType = 1;
+    optional bytes serializedData = 2;
+    optional TimeStamp sent = 3;
+    optional TimeStamp received = 4;
+}
+
