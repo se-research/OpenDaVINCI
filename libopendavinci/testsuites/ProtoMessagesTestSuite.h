@@ -459,6 +459,39 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(tm2.getField2() == -60);
         }
 
+
+        void testSerializationDeserializationTestMessage2TwoFieldsAValidatedWithGoogleProtobuf() {
+            TestMessage2 tm1;
+            tm1.setField1(123);
+            tm1.setField2(-123);
+
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << tm1;
+
+            const string s = out.str();
+            TS_ASSERT(s.size() == 5);
+            TS_ASSERT(static_cast<uint8_t>(s.at(0)) == 0x8);
+            TS_ASSERT(static_cast<uint8_t>(s.at(1)) == 0x7b);
+            TS_ASSERT(static_cast<uint8_t>(s.at(2)) == 0x10);
+            TS_ASSERT(static_cast<uint8_t>(s.at(3)) == 0xf5);
+            TS_ASSERT(static_cast<uint8_t>(s.at(4)) == 0x1);
+
+            // Read from buffer.
+            TestMessage2 tm2;
+            out >> tm2;
+
+            TS_ASSERT(tm1.getField1() == tm2.getField1());
+            TS_ASSERT(tm2.getField1() == 123);
+
+            TS_ASSERT(tm1.getField2() == tm2.getField2());
+            TS_ASSERT(tm2.getField2() == -123);
+        }
+
         void testSerializationDeserializationTestMessage2TwoFieldsAContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
@@ -877,6 +910,163 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             // Serialize via regular Serializer.
             stringstream out;
             out << tm1;
+
+            // Create a new message instance.
+            TestMessage5 tm2;
+            TS_ASSERT(tm2.getField1() == 1);
+            TS_ASSERT(tm2.getField2() == -1);
+            TS_ASSERT(tm2.getField3() == 100);
+            TS_ASSERT(tm2.getField4() == -100);
+            TS_ASSERT(tm2.getField5() == 10000);
+            TS_ASSERT(tm2.getField6() == -10000);
+            TS_ASSERT(tm2.getField7() == 12345);
+            TS_ASSERT(tm2.getField8() == -12345);
+            TS_ASSERT_DELTA(tm2.getField9(), -1.2345, 1e-4);
+            TS_ASSERT_DELTA(tm2.getField10(), -10.2345, 1e-4);
+            TS_ASSERT(tm2.getField11() == "Hello World!");
+            TS_ASSERT(tm2.getField12().getField1() == 12);
+
+            // Read from buffer.
+            out >> tm2;
+
+            TS_ASSERT(tm2.getField1() == 3);
+            TS_ASSERT(tm2.getField2() == -3);
+            TS_ASSERT(tm2.getField3() == 103);
+            TS_ASSERT(tm2.getField4() == -103);
+            TS_ASSERT(tm2.getField5() == 10003);
+            TS_ASSERT(tm2.getField6() == -10003);
+            TS_ASSERT(tm2.getField7() == 54321);
+            TS_ASSERT(tm2.getField8() == -54321);
+            TS_ASSERT_DELTA(tm2.getField9(), -5.4321, 1e-4);
+            TS_ASSERT_DELTA(tm2.getField10(), -50.4321, 1e-4);
+            TS_ASSERT(tm2.getField11() == "Hello OpenDaVINCI World!");
+            TS_ASSERT(tm2.getField12().getField1() == 150);
+
+            TS_ASSERT(tm2.getField1() == tm1.getField1());
+            TS_ASSERT(tm2.getField2() == tm1.getField2());
+            TS_ASSERT(tm2.getField3() == tm1.getField3());
+            TS_ASSERT(tm2.getField4() == tm1.getField4());
+            TS_ASSERT(tm2.getField5() == tm1.getField5());
+            TS_ASSERT(tm2.getField6() == tm1.getField6());
+            TS_ASSERT(tm2.getField7() == tm1.getField7());
+            TS_ASSERT(tm2.getField8() == tm1.getField8());
+            TS_ASSERT_DELTA(tm2.getField9(), tm1.getField9(), 1e-4);
+            TS_ASSERT_DELTA(tm2.getField10(), tm1.getField10(), 1e-4);
+            TS_ASSERT(tm2.getField11() == tm1.getField11());
+            TS_ASSERT(tm2.getField12().getField1() == tm1.getField12().getField1());
+        }
+
+        void testSerializationDeserializationTestMessage5ValidatedWithGoogleProtobuf() {
+            TestMessage5 tm1;
+            TS_ASSERT(tm1.getField1() == 1);
+            TS_ASSERT(tm1.getField2() == -1);
+            TS_ASSERT(tm1.getField3() == 100);
+            TS_ASSERT(tm1.getField4() == -100);
+            TS_ASSERT(tm1.getField5() == 10000);
+            TS_ASSERT(tm1.getField6() == -10000);
+            TS_ASSERT(tm1.getField7() == 12345);
+            TS_ASSERT(tm1.getField8() == -12345);
+            TS_ASSERT_DELTA(tm1.getField9(), -1.2345, 1e-4);
+            TS_ASSERT_DELTA(tm1.getField10(), -10.2345, 1e-4);
+            TS_ASSERT(tm1.getField11() == "Hello World!");
+            TS_ASSERT(tm1.getField12().getField1() == 12);
+
+            TestMessage1 tm1Embedded;
+            tm1Embedded.setField1(150);
+            tm1.setField12(tm1Embedded);
+
+            tm1.setField1(3);
+            tm1.setField2(-3);
+            tm1.setField3(103);
+            tm1.setField4(-103);
+            tm1.setField5(10003);
+            tm1.setField6(-10003);
+            tm1.setField7(54321);
+            tm1.setField8(-54321);
+            tm1.setField9(-5.4321);
+            tm1.setField10(-50.4321);
+            tm1.setField11("Hello OpenDaVINCI World!");
+
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << tm1;
+
+            const string s = out.str();
+            TS_ASSERT(s.size() == 69);
+            uint32_t cnt = 0;
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x8);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x3);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x10);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x5);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x18);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x67);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x20);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xcd);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x1);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x28);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x93);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x4e);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x30);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xa5);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x9c);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x1);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x38);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xb1);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xa8);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x3);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x40);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xe1);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xd0);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x6);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x4d);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xc3);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xd3);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xad);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xc0);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x51);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x1);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x4d);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x84);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xd);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x4f);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x37);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x49);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xc0);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x5a);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x18);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x48);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x65);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x6c);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x6c);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x6f);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x20);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x4f);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x70);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x65);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x6e);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x44);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x61);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x56);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x49);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x4e);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x43);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x49);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x20);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x57);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x6f);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x72);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x6c);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x64);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x21);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x62);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x3);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x8);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x96);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x1);
 
             // Create a new message instance.
             TestMessage5 tm2;
@@ -3630,6 +3820,71 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(v2.at(2), 47.891, 1e-3);
         }
 
+        void testSerializationDeserializationTestMessage7ValidatedWithGoogleProtobuf() {
+            TestMessage7 tm1;
+
+            {
+                float i = -12.345;
+                tm1.addTo_ListOfField1(i);
+            }
+            {
+                float i = -34.567;
+                tm1.addTo_ListOfField1(i);
+            }
+            {
+                float i = 47.891;
+                tm1.addTo_ListOfField1(i);
+            }
+
+
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << tm1;
+
+            const string s = out.str();
+            TS_ASSERT(s.size() == 14);
+            uint32_t cnt=0;
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xa);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xc);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x1f);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x85);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x45);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xc1);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x9c);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x44);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xa);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xc2);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x62);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x90);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x3f);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x42);
+
+            // Read back the data by using the visitor.
+            TestMessage7 tm2;
+
+            // Read from buffer.
+            out >> tm2;
+
+            vector<float> v1 = tm1.getListOfField1();
+            vector<float> v2 = tm2.getListOfField1();
+
+            TS_ASSERT(v1.size() == 3);
+            TS_ASSERT(v2.size() == 3);
+
+            TS_ASSERT_DELTA(v1.at(0), v2.at(0), 1e-3);
+            TS_ASSERT_DELTA(v2.at(0), -12.345, 1e-3);
+
+            TS_ASSERT_DELTA(v1.at(1), v2.at(1), 1e-3);
+            TS_ASSERT_DELTA(v2.at(1), -34.567, 1e-3);
+
+            TS_ASSERT_DELTA(v1.at(2), v2.at(2), 1e-3);
+            TS_ASSERT_DELTA(v2.at(2), 47.891, 1e-3);
+        }
+
         void testSerializationDeserializationTestMessage7Container() {
             TestMessage7 tm1;
 
@@ -3992,6 +4247,62 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT_DELTA(tm2_arr2[2], -3.4567, 1e-4);
         }
 
+        void testSerializationDeserializationTestMessage10ValidatedWithGoogleProtobuf() {
+            TestMessage10 tm1;
+            TS_ASSERT(tm1.getSize_MyArray1() == 2);
+            TS_ASSERT(tm1.getSize_MyArray2() == 3);
+
+            uint32_t *tm1_arr1 = tm1.getMyArray1();
+            tm1_arr1[0] = 1; tm1_arr1[1] = 2;
+            float *tm1_arr2 = tm1.getMyArray2();
+            tm1_arr2[0] = -1.2345; tm1_arr2[1] = -2.3456; tm1_arr2[2] = -3.4567;
+
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << tm1;
+
+            const string s = out.str();
+            TS_ASSERT(s.size() == 18);
+            uint32_t cnt=0;
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xa);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x2);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x1);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x2);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x12);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xc);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x19);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x4);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x9e);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xbf);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x4f);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x1e);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x16);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xc0);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x93);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x3a);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x5d);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xc0);
+
+            // Read from buffer.
+            TestMessage10 tm2;
+            out >> tm2;
+
+            uint32_t *tm2_arr1 = tm2.getMyArray1();
+            float *tm2_arr2 = tm2.getMyArray2();
+
+            TS_ASSERT(tm2.getSize_MyArray1() == 2);
+            TS_ASSERT(tm2.getSize_MyArray2() == 3);
+            TS_ASSERT(tm2_arr1[0] == 1);
+            TS_ASSERT(tm2_arr1[1] == 2);
+            TS_ASSERT_DELTA(tm2_arr2[0], -1.2345, 1e-4);
+            TS_ASSERT_DELTA(tm2_arr2[1], -2.3456, 1e-4);
+            TS_ASSERT_DELTA(tm2_arr2[2], -3.4567, 1e-4);
+        }
+
         void testSerializationDeserializationTestMessage10Container() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
@@ -4034,6 +4345,37 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
+        void testSerializationDeserializationTestMessageTimeStampValidatedWithGoogleProtobuf() {
+            TimeStamp tm1(123, 456);
+
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
+            // Serialize via regular Serializer.
+            stringstream out;
+            out << tm1;
+
+            const string s = out.str();
+            TS_ASSERT(s.size() == 6);
+            uint32_t cnt=0;
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x8);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xf6);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x1);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x10);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x90);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x7);
+
+            // Read from buffer.
+            TimeStamp tm2;
+            out >> tm2;
+
+            TS_ASSERT(tm2.getSeconds() == tm1.getSeconds());
+            TS_ASSERT(tm2.getFractionalMicroseconds() == tm1.getFractionalMicroseconds());
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+
 // TODO:
 // Done - 1) test adjusted serialization for ModuleStatics
 // Done - 2) Add test case for odcore.data.dmcp.PulseMessage
@@ -4054,11 +4396,11 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 // Done - 17) Remove extends keyword from odDataStructureGenerator
 // Done - 18) QueryableNetstringsDeserializerABCF::fillBuffer(cin, containerBuffer) --> needs to be added to ProtoSerializer? --> testCase in odredirector passes by just reading from cin. TODO: Test on terminal.
 // Done - 19) Check serializatio/deserialization order for all built-in types
-// 20) Change identifiers for built-in types (like Container) to remove fourbyteidentifier (remove CRC32<...>)
-// 21) Remove fourbyteid keyword from odDataStructureGenerator
-// 22) Check serializatio/deserialization order for all built-in types
-// 23) Fix opendlv data structure --> either model them as odvd data structures or fix directly in code
-// 24) Compatibility with 3rd party Proto implementations
+// Done - 20) Compatibility with 3rd party Proto implementations
+// 21) Change identifiers for built-in types (like Container) to remove fourbyteidentifier (remove CRC32<...>)
+// 22) Remove fourbyteid keyword from odDataStructureGenerator
+// 23) Check serializatio/deserialization order for all built-in types after removal of fourbyteidentifier
+// 24) Fix opendlv data structure --> either model them as odvd data structures or fix directly in code
 };
 
 #endif /*CORE_PROTOMESSAGESTESTSUITE_H_*/
