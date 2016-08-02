@@ -324,7 +324,7 @@ class DataTriggeredConferenceClientModuleTest : public CxxTest::TestSuite,
             m_connection = mc;
         }
 
-        void NOtestTimeTriggeredTimeTriggeredConferenceClientModule() {
+        void testTimeTriggeredTimeTriggeredConferenceClientModule() {
             // Setup ContainerConference.
             std::shared_ptr<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.101");
 
@@ -394,7 +394,7 @@ class DataTriggeredConferenceClientModuleTest : public CxxTest::TestSuite,
             Thread::usleepFor(1000 * 1);
         }
 
-        void NOtestDataTriggeredTimeTriggeredConferenceClientModules() {
+        void testDataTriggeredTimeTriggeredConferenceClientModules() {
             // Setup ContainerConference.
             std::shared_ptr<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.102");
 
@@ -498,7 +498,7 @@ class DataTriggeredConferenceClientModuleTest : public CxxTest::TestSuite,
             Thread::usleepFor(1000 * 1);
         }
 
-        void NOtestDataTriggeredTimeTriggeredConferenceClientModulesFreq10() {
+        void testDataTriggeredTimeTriggeredConferenceClientModulesFreq10() {
             // Setup ContainerConference.
             std::shared_ptr<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.103");
 
