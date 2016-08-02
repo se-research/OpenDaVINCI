@@ -81,9 +81,9 @@ namespace odcore {
                     uint32_t attempt  = 0;
 
                     while ( !supercomponentFound && ( attempt < odcore::data::dmcp::Constants::CONNECTION_RETRIES)) {
-                    	CLOG1 << "(ClientModule) discovering supercomponent..." << endl;
-                    	supercomponentFound = discovererClient->existsServer();
-                    	attempt++;
+                        CLOG1 << "(ClientModule) discovering supercomponent..." << endl;
+                        supercomponentFound = discovererClient->existsServer();
+                        attempt++;
                     }
 
                     if ( !supercomponentFound ) {

@@ -30,6 +30,7 @@
 #include "opendavinci/odcore/data/TimeStamp.h"
 #include "opendavinci/odcore/exceptions/Exceptions.h"
 #include "opendavinci/odcore/io/conference/ContainerConference.h"
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
 #include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
 #include "opendavinci/generated/odcore/data/dmcp/PulseMessage.h"
 
@@ -48,7 +49,7 @@ namespace odcore {
              *
              * @See AbstractConferenceClientModule
              */
-            class OPENDAVINCI_API ManagedClientModule : public odcore::base::module::ClientModule, public odcore::base::module::Breakpoint {
+            class OPENDAVINCI_API ManagedClientModule : public odcore::base::module::ClientModule, public odcore::base::module::Breakpoint, public odcore::io::conference::ContainerListener {
                 private:
                     friend class AbstractConferenceClientModule;
 
@@ -100,6 +101,8 @@ namespace odcore {
                      * This method is called after returning from body.
                      */
                     virtual void tearDown() = 0;
+
+                    virtual void nextContainer(odcore::data::Container &c) = 0;
 
                     /**
                      * This method contains the real module body.

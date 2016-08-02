@@ -289,6 +289,9 @@ namespace odcore {
                     // Setup the module itself.
                     setUp();
 
+                    // Once setUp() has completed, register ourselves as ContainerListener.
+                    getContainerConference()->setContainerListener(this);
+
                     setModuleState(odcore::data::dmcp::ModuleStateMessage::RUNNING);
                     if (getDMCPClient().get()) {
                         getDMCPClient()->sendModuleState(odcore::data::dmcp::ModuleStateMessage::RUNNING);
@@ -346,7 +349,7 @@ namespace odcore {
                     m_cycleCounter = (m_cycleCounter % 1000);
                 }
                 else {
-				    const int32_t CYCLES_PER_SECOND = static_cast<int32_t>(fabs(floor(FREQ + 0.5)));
+                    const int32_t CYCLES_PER_SECOND = static_cast<int32_t>(fabs(floor(FREQ + 0.5)));
                     if ( (m_cycleCounter % CYCLES_PER_SECOND) == 0 ) {
                         sendStatistics = true;
                         m_cycleCounter = 0;
@@ -460,6 +463,9 @@ namespace odcore {
                 try {
                     // Setup the module itself.
                     setUp();
+
+                    // Once setUp() has completed, register ourselves as ContainerListener.
+                    getContainerConference()->setContainerListener(this);
 
                     setModuleState(odcore::data::dmcp::ModuleStateMessage::RUNNING);
                     if (getDMCPClient().get()) {

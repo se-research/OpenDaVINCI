@@ -47,9 +47,6 @@ namespace odcore {
                 }
                 setContainerConference(containerConference);
 
-                // Register ourselves as ContainerListener.
-                getContainerConference()->setContainerListener(this);
-                
                 SerializationFactory::getInstance();
             }
 
