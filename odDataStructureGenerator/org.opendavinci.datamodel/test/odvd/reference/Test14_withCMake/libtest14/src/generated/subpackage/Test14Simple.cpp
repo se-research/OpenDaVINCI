@@ -80,7 +80,7 @@ namespace subpackage {
 		void Test14Simple::accept(odcore::base::Visitor &v) {
 			v.beginVisit();
 			int32_t int32t_buttonState = m_buttonState;
-			v.visit(0, 1, "Test14Simple.buttonState", "buttonState", int32t_buttonState);
+			v.visit(1, "Test14Simple.buttonState", "buttonState", int32t_buttonState);
 			m_buttonState = static_cast<Test14Simple::ButtonState>(int32t_buttonState);
 			v.endVisit();
 		}

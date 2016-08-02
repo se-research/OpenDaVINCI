@@ -79,7 +79,7 @@ namespace subpackage {
 	
 		void Test9C::accept(odcore::base::Visitor &v) {
 			v.beginVisit();
-			v.visit(0, 1, "Test9C.attribute1", "attribute1", m_attribute1);
+			v.visit(1, "Test9C.attribute1", "attribute1", m_attribute1);
 			v.endVisit();
 		}
 	

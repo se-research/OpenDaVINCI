@@ -92,8 +92,8 @@ namespace sub {
 		
 			void Test20c::accept(odcore::base::Visitor &v) {
 				v.beginVisit();
-				v.visit(0, 1, "Test20c.val3", "val3", m_val3);
-				v.visit(0, 2, "Test20c.val4", "val4", m_val4);
+				v.visit(1, "Test20c.val3", "val3", m_val3);
+				v.visit(2, "Test20c.val4", "val4", m_val4);
 				v.endVisit();
 			}
 		

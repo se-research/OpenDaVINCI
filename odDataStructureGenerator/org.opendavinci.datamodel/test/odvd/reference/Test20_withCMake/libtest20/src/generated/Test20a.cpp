@@ -90,8 +90,8 @@
 
 	void Test20a::accept(odcore::base::Visitor &v) {
 		v.beginVisit();
-		v.visit(0, 2, "Test20a.val1", "val1", m_val1);
-		v.visit(0, 3, "Test20a.timeStamp", "timeStamp", m_timeStamp);
+		v.visit(2, "Test20a.val1", "val1", m_val1);
+		v.visit(3, "Test20a.timeStamp", "timeStamp", m_timeStamp);
 		v.endVisit();
 	}
 

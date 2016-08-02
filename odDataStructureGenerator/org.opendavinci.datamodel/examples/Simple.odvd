@@ -1,4 +1,4 @@
-message SimpleDataStructure {
-   uint32 data1 [ id = 1 ];
-   float data2 [ id = 2 ];
+message SimpleDataStructure [id = 123] {
+    uint32 data1 [ id = 1 ];
+    float data2 [ id = 2 ];
 }

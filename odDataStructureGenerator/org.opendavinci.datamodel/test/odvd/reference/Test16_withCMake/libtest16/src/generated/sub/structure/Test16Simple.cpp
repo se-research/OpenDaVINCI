@@ -92,8 +92,8 @@ namespace sub {
 		
 			void Test16Simple::accept(odcore::base::Visitor &v) {
 				v.beginVisit();
-				v.visit(0, 1, "Test16Simple.myData", "myData", m_myData);
-				v.visit(0, 2, "Test16Simple.myValue", "myValue", m_myValue);
+				v.visit(1, "Test16Simple.myData", "myData", m_myData);
+				v.visit(2, "Test16Simple.myValue", "myValue", m_myValue);
 				v.endVisit();
 			}
 		

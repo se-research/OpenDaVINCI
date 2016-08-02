@@ -90,8 +90,8 @@
 
 	void Test10Point::accept(odcore::base::Visitor &v) {
 		v.beginVisit();
-		v.visit(0, 1, "Test10Point.x", "x", m_x);
-		v.visit(0, 2, "Test10Point.y", "y", m_y);
+		v.visit(1, "Test10Point.x", "x", m_x);
+		v.visit(2, "Test10Point.y", "y", m_y);
 		v.endVisit();
 	}
 

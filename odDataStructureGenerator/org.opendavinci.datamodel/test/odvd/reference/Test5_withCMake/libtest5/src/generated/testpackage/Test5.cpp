@@ -151,13 +151,13 @@ namespace testpackage {
 	
 		void Test5::accept(odcore::base::Visitor &v) {
 			v.beginVisit();
-			v.visit(0, 1, "Test5.attribute1", "attribute1", m_attribute1);
-			v.visit(0, 2, "Test5.attribute2", "attribute2", m_attribute2);
-			v.visit(0, 3, "Test5.attribute3", "attribute3", m_attribute3);
-			v.visit(0, 4, "Test5.attribute4", "attribute4", m_attribute4);
-			v.visit(0, 5, "Test5.attribute5", "attribute5", m_attribute5);
-			v.visit(0, 6, "Test5.attribute6", "attribute6", m_attribute6);
-			v.visit(0, 7, "Test5.attribute7", "attribute7", m_attribute7);
+			v.visit(1, "Test5.attribute1", "attribute1", m_attribute1);
+			v.visit(2, "Test5.attribute2", "attribute2", m_attribute2);
+			v.visit(3, "Test5.attribute3", "attribute3", m_attribute3);
+			v.visit(4, "Test5.attribute4", "attribute4", m_attribute4);
+			v.visit(5, "Test5.attribute5", "attribute5", m_attribute5);
+			v.visit(6, "Test5.attribute6", "attribute6", m_attribute6);
+			v.visit(7, "Test5.attribute7", "attribute7", m_attribute7);
 			v.endVisit();
 		}
 	

@@ -4445,9 +4445,11 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 // 24) Remove fourbyteid keyword from odDataStructureGenerator
 // 25) Check serializatio/deserialization order for all built-in types after removal of fourbyteidentifier
 // 26) Test components for correct behavior: boxparker, boxparker in managed mode, lane follower, webcam, webcam + odredirector
+// 27) Emit .proto file in odDataStructureGenerator by default
 
 // Outside the scope for refactoring OpenDaVINCI.
-// 27) Fix opendlv data structure --> either model them as odvd data structures or fix directly in code
+// 28) Generate Container --> Message mapping in odDataStructureGenerator
+// 29) Fix opendlv data structure --> either model them as odvd data structures or fix directly in code
 };
 
 #endif /*CORE_PROTOMESSAGESTESTSUITE_H_*/

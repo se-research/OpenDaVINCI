@@ -78,7 +78,7 @@
 
 	void Test9A::accept(odcore::base::Visitor &v) {
 		v.beginVisit();
-		v.visit(0, 1, "Test9A.attribute1", "attribute1", m_attribute1);
+		v.visit(1, "Test9A.attribute1", "attribute1", m_attribute1);
 		v.endVisit();
 	}
 

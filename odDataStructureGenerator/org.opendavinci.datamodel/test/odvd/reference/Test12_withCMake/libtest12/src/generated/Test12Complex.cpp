@@ -150,13 +150,13 @@
 
 	void Test12Complex::accept(odcore::base::Visitor &v) {
 		v.beginVisit();
-		v.visit(0, 1, "Test12Complex.attribute1", "attribute1", m_attribute1);
-		v.visit(0, 2, "Test12Complex.attribute2", "attribute2", m_attribute2);
-		v.visit(0, 3, "Test12Complex.attribute3", "attribute3", m_attribute3);
-		v.visit(0, 4, "Test12Complex.attribute4", "attribute4", m_attribute4);
-		v.visit(0, 5, "Test12Complex.attribute5", "attribute5", m_attribute5);
-		v.visit(0, 6, "Test12Complex.attribute6", "attribute6", m_attribute6);
-		v.visit(0, 7, "Test12Complex.attribute7", "attribute7", m_attribute7);
+		v.visit(1, "Test12Complex.attribute1", "attribute1", m_attribute1);
+		v.visit(2, "Test12Complex.attribute2", "attribute2", m_attribute2);
+		v.visit(3, "Test12Complex.attribute3", "attribute3", m_attribute3);
+		v.visit(4, "Test12Complex.attribute4", "attribute4", m_attribute4);
+		v.visit(5, "Test12Complex.attribute5", "attribute5", m_attribute5);
+		v.visit(6, "Test12Complex.attribute6", "attribute6", m_attribute6);
+		v.visit(7, "Test12Complex.attribute7", "attribute7", m_attribute7);
 		v.endVisit();
 	}
 

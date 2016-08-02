@@ -78,7 +78,7 @@
 
 	void Test2::accept(odcore::base::Visitor &v) {
 		v.beginVisit();
-		v.visit(0, 1, "Test2.attribute1", "attribute1", m_attribute1);
+		v.visit(1, "Test2.attribute1", "attribute1", m_attribute1);
 		v.endVisit();
 	}
 

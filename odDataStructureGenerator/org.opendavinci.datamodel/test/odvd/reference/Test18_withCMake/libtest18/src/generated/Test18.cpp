@@ -146,9 +146,9 @@
 
 	void Test18::accept(odcore::base::Visitor &v) {
 		v.beginVisit();
-		v.visit(0, 3, "Test18.myAtt1", "myAtt1", m_myAtt1);
-		v.visit(0, 4, "Test18.myAtt2", "myAtt2", m_myAtt2);
-		v.visit(0, 5, "Test18.myAtt3", "myAtt3", m_myAtt3);
+		v.visit(3, "Test18.myAtt1", "myAtt1", m_myAtt1);
+		v.visit(4, "Test18.myAtt2", "myAtt2", m_myAtt2);
+		v.visit(5, "Test18.myAtt3", "myAtt3", m_myAtt3);
 		v.endVisit();
 	}
 

@@ -902,70 +902,14 @@ namespace «s.get(i)» {
 	def generateVisitableAttribute(Attribute a, Message msg, HashMap<String, EnumDescription> enums) '''
 		«IF a.scalar != null»
 			«IF typeMap.containsKey(a.scalar.type)»
-				«var hasFourByteID = false»
-				«IF a.scalar.fourbyteid != null»
-					«{hasFourByteID = true; ""}»
-				«ENDIF»
-				«var hasId = false»
-				«IF a.scalar.id != null»
-					«{hasId = true; ""}»
-				«ENDIF»
-				«IF hasFourByteID && hasId»
-					v.visit(«a.scalar.fourbyteid», «a.scalar.id», "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", m_«a.scalar.name»);
-				«ENDIF»
-				«IF hasFourByteID && !hasId»
-					v.visit(«a.scalar.fourbyteid», 0, "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", m_«a.scalar.name»);
-				«ENDIF»
-				«IF !hasFourByteID && hasId»
-					v.visit(0, «a.scalar.id», "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", m_«a.scalar.name»);
-				«ENDIF»
-				«IF !hasFourByteID && !hasId»
-					v.visit(0, 0, "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", m_«a.scalar.name»);
-				«ENDIF»
+				v.visit(«a.scalar.id», "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", m_«a.scalar.name»);
 			«ELSE»
-				«var hasFourByteID = false»
-				«IF a.scalar.fourbyteid != null»
-					«{hasFourByteID = true; ""}»
-				«ENDIF»
-				«var hasId = false»
-				«IF a.scalar.id != null»
-					«{hasId = true; ""}»
-				«ENDIF»
-				«IF hasFourByteID && hasId»
-					«IF enums.containsKey(a.scalar.type)»
-						int32_t int32t_«a.scalar.name» = m_«a.scalar.name»;
-						v.visit(«a.scalar.fourbyteid», «a.scalar.id», "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", int32t_«a.scalar.name»);
-						m_«a.scalar.name» = static_cast<«enums.get(a.scalar.type).m_enumNameIncludingMessageName.replaceAll("\\.", "::")»>(int32t_«a.scalar.name»);
-					«ELSE»
-						v.visit(«a.scalar.fourbyteid», «a.scalar.id», "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", m_«a.scalar.name»);
-					«ENDIF»
-				«ENDIF»
-				«IF hasFourByteID && !hasId»
-					«IF enums.containsKey(a.scalar.type)»
-						int32_t int32t_«a.scalar.name» = m_«a.scalar.name»;
-						v.visit(«a.scalar.fourbyteid», 0, "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", int32t_«a.scalar.name»);
-						m_«a.scalar.name» = static_cast<«enums.get(a.scalar.type).m_enumNameIncludingMessageName.replaceAll("\\.", "::")»>(int32t_«a.scalar.name»);
-					«ELSE»
-						v.visit(«a.scalar.fourbyteid», 0, "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", m_«a.scalar.name»);
-					«ENDIF»
-				«ENDIF»
-				«IF !hasFourByteID && hasId»
-					«IF enums.containsKey(a.scalar.type)»
-						int32_t int32t_«a.scalar.name» = m_«a.scalar.name»;
-						v.visit(0, «a.scalar.id», "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", int32t_«a.scalar.name»);
-						m_«a.scalar.name» = static_cast<«enums.get(a.scalar.type).m_enumNameIncludingMessageName.replaceAll("\\.", "::")»>(int32t_«a.scalar.name»);
-					«ELSE»
-						v.visit(0, «a.scalar.id», "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", m_«a.scalar.name»);
-					«ENDIF»
-				«ENDIF»
-				«IF !hasFourByteID && !hasId»
-					«IF enums.containsKey(a.scalar.type)»
-						int32_t int32t_«a.scalar.name» = m_«a.scalar.name»;
-						v.visit(0, 0, "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", int32t_«a.scalar.name»);
-						m_«a.scalar.name» = static_cast<«enums.get(a.scalar.type).m_enumNameIncludingMessageName.replaceAll("\\.", "::")»>(int32t_«a.scalar.name»);
-					«ELSE»
-						v.visit(0, 0, "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", m_«a.scalar.name»);
-					«ENDIF»
+				«IF enums.containsKey(a.scalar.type)»
+					int32_t int32t_«a.scalar.name» = m_«a.scalar.name»;
+					v.visit(«a.scalar.id», "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", int32t_«a.scalar.name»);
+					m_«a.scalar.name» = static_cast<«enums.get(a.scalar.type).m_enumNameIncludingMessageName.replaceAll("\\.", "::")»>(int32t_«a.scalar.name»);
+				«ELSE»
+					v.visit(«a.scalar.id», "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", m_«a.scalar.name»);
 				«ENDIF»
 			«ENDIF»
 		«ENDIF»
@@ -1146,33 +1090,13 @@ namespace «s.get(i)» {
 	
 	def generateAttributeSerialization(Attribute a, HashMap<String, EnumDescription> enums) '''
 		«IF a.scalar != null»
-			«IF a.scalar.fourbyteid != null»
-				«IF enums.containsKey(a.scalar.type)»
-				int32_t int32t_«a.scalar.name» = m_«a.scalar.name»;
-				s->write(«a.scalar.fourbyteid», int32t_«a.scalar.name»);
-				«ELSE»
-				s->write(«a.scalar.fourbyteid», m_«a.scalar.name»);
-				«ENDIF»
+			«IF enums.containsKey(a.scalar.type)»
+			int32_t int32t_«a.scalar.name» = m_«a.scalar.name»;
+			s->write(«a.scalar.id»,
+					int32t_«a.scalar.name»);
 			«ELSE»
-				«IF a.scalar.id != null»
-					«IF enums.containsKey(a.scalar.type)»
-					int32_t int32t_«a.scalar.name» = m_«a.scalar.name»;
-					s->write(«a.scalar.id»,
-							int32t_«a.scalar.name»);
-					«ELSE»
-					s->write(«a.scalar.id»,
-							m_«a.scalar.name»);
-					«ENDIF»
-				«ELSE»
-					«IF enums.containsKey(a.scalar.type)»
-					int32_t int32t_«a.scalar.name» = m_«a.scalar.name»;
-					s->write(0,
-							int32t_«a.scalar.name»);
-					«ELSE»
-					s->write(0,
-							m_«a.scalar.name»);
-					«ENDIF»
-				«ENDIF»
+			s->write(«a.scalar.id»,
+					m_«a.scalar.name»);
 			«ENDIF»
 		«ENDIF»
 		«IF a.list != null && a.list.modifier != null && a.list.modifier.length > 0 && a.list.modifier.equalsIgnoreCase("list")»
@@ -1186,16 +1110,7 @@ namespace «s.get(i)» {
 				}
 			}
 			const std::string str_sstr_«a.list.name.toFirstUpper» = sstr_«a.list.name.toFirstUpper».str();
-			«IF a.list.fourbyteid != null»
-				s->write(«a.list.fourbyteid», str_sstr_«a.list.name.toFirstUpper»);
-			«ELSE»
-				«IF a.list.id != null»
-					s->write(«a.list.id», str_sstr_«a.list.name.toFirstUpper»);
-				«ELSE»
-					s->write(0,
-						    str_sstr_«a.list.name.toFirstUpper»);
-				«ENDIF»
-			«ENDIF»
+			s->write(«a.list.id», str_sstr_«a.list.name.toFirstUpper»);
 		}
 		«ENDIF»
 		«IF a.map != null && a.map.modifier != null && a.map.modifier.length > 0 && a.map.modifier.equalsIgnoreCase("map")»
@@ -1221,16 +1136,7 @@ namespace «s.get(i)» {
 				}
 			}
 			const std::string str_sstr_«a.map.name.toFirstUpper» = sstr_«a.map.name.toFirstUpper».str();
-			«IF a.map.fourbyteid != null»
-				s->write(«a.map.fourbyteid», str_sstr_«a.map.name.toFirstUpper»);
-			«ELSE»
-				«IF a.map.id != null»
-					s->write(«a.map.id», str_sstr_«a.map.name.toFirstUpper»);
-				«ELSE»
-					s->write(0,
-							 str_sstr_«a.map.name.toFirstUpper»);
-				«ENDIF»
-			«ENDIF»
+			s->write(«a.map.id», str_sstr_«a.map.name.toFirstUpper»);
 		}
 		«ENDIF»
 		«IF a.fixedarray != null»
@@ -1243,52 +1149,21 @@ namespace «s.get(i)» {
 					}
 				}
 				const std::string str_sstr_«a.fixedarray.name.toFirstUpper» = sstr_«a.fixedarray.name.toFirstUpper».str();
-				«IF a.fixedarray.fourbyteid != null»
-					s->write(«a.fixedarray.fourbyteid», str_sstr_«a.fixedarray.name.toFirstUpper»);
-				«ELSE»
-					«IF a.fixedarray.id != null»
-						s->write(«a.fixedarray.id», str_sstr_«a.fixedarray.name.toFirstUpper»);
-					«ELSE»
-						s->write(0,
-								str_sstr_«a.fixedarray.name.toFirstUpper»);
-					«ENDIF»
-				«ENDIF»
+				s->write(«a.fixedarray.id», str_sstr_«a.fixedarray.name.toFirstUpper»);
 			}
 		«ENDIF»
 	'''
 	
 	def generateAttributeDeserialization(Attribute a, HashMap<String, EnumDescription> enums) '''
 		«IF a.scalar != null»
-			«IF a.scalar.fourbyteid != null»
-				«IF enums.containsKey(a.scalar.type)»
-				int32_t int32t_«a.scalar.name» = 0;
-				d->read(«a.scalar.fourbyteid», int32t_«a.scalar.name»);
-				m_«a.scalar.name» = static_cast<«enums.get(a.scalar.type).m_enumNameIncludingMessageName.replaceAll("\\.", "::")»>(int32t_«a.scalar.name»);
-				«ELSE»
-				d->read(«a.scalar.fourbyteid», m_«a.scalar.name»);
-				«ENDIF»
+			«IF enums.containsKey(a.scalar.type)»
+			int32_t int32t_«a.scalar.name» = 0;
+			d->read(«a.scalar.id»,
+					int32t_«a.scalar.name»);
+			m_«a.scalar.name» = static_cast<«enums.get(a.scalar.type).m_enumNameIncludingMessageName.replaceAll("\\.", "::")»>(int32t_«a.scalar.name»);
 			«ELSE»
-				«IF a.scalar.id != null»
-					«IF enums.containsKey(a.scalar.type)»
-					int32_t int32t_«a.scalar.name» = 0;
-					d->read(«a.scalar.id»,
-							int32t_«a.scalar.name»);
-					m_«a.scalar.name» = static_cast<«enums.get(a.scalar.type).m_enumNameIncludingMessageName.replaceAll("\\.", "::")»>(int32t_«a.scalar.name»);
-					«ELSE»
-					d->read(«a.scalar.id»,
-							m_«a.scalar.name»);
-					«ENDIF»
-				«ELSE»
-					«IF enums.containsKey(a.scalar.type)»
-					int32_t int32t_«a.scalar.name» = 0;
-					d->read(0,
-							int32t_«a.scalar.name»);
-					m_«a.scalar.name» = static_cast<«enums.get(a.scalar.type).m_enumNameIncludingMessageName.replaceAll("\\.", "::")»>(int32t_«a.scalar.name»);
-					«ELSE»
-					d->read(0,
-							m_«a.scalar.name»);
-					«ENDIF»
-				«ENDIF»
+			d->read(«a.scalar.id»,
+					m_«a.scalar.name»);
 			«ENDIF»
 		«ENDIF»
 		«IF a.list != null && a.list.modifier != null && a.list.modifier.length > 0 && a.list.modifier.equalsIgnoreCase("list")»
@@ -1297,16 +1172,7 @@ namespace «s.get(i)» {
 			// Clean up the existing list of «a.list.name.toFirstUpper».
 			m_listOf«a.list.name.toFirstUpper».clear();
 			std::string str_«a.list.name.toFirstUpper»;
-			«IF a.list.fourbyteid != null»
-				d->read(«a.list.fourbyteid», str_«a.list.name.toFirstUpper»);
-			«ELSE»
-				«IF a.list.id != null»
-					d->read(«a.list.id», str_«a.list.name.toFirstUpper»);
-				«ELSE»
-					d->read(0,
-						   str_«a.list.name.toFirstUpper»);
-				«ENDIF»
-			«ENDIF»
+			d->read(«a.list.id», str_«a.list.name.toFirstUpper»);
 			if (str_«a.list.name.toFirstUpper».size() > 0) {
 				std::stringstream sstr_str_«a.list.name.toFirstUpper»(str_«a.list.name.toFirstUpper»);
 				uint32_t length = str_«a.list.name.toFirstUpper».size();
@@ -1325,16 +1191,7 @@ namespace «s.get(i)» {
 			m_mapOf«a.map.name.toFirstUpper».clear();
 
 			std::string str_«a.map.name.toFirstUpper»;
-			«IF a.map.fourbyteid != null»
-				d->read(«a.map.fourbyteid», str_«a.map.name.toFirstUpper»);
-			«ELSE»
-				«IF a.map.id != null»
-					d->read(«a.map.id», str_«a.map.name.toFirstUpper»);
-				«ELSE»
-					d->read(0,
-						   str_«a.map.name.toFirstUpper»);
-				«ENDIF»
-			«ENDIF»
+			d->read(«a.map.id», str_«a.map.name.toFirstUpper»);
 			if (str_«a.map.name.toFirstUpper».size() > 0) {
 				std::stringstream sstr_str_«a.map.name.toFirstUpper»(str_«a.map.name.toFirstUpper»);
 
@@ -1367,16 +1224,7 @@ namespace «s.get(i)» {
 			// Restore values for «a.fixedarray.name»
 			{
 				std::string str_«a.fixedarray.name.toFirstUpper»;
-				«IF a.fixedarray.fourbyteid != null»
-					d->read(«a.fixedarray.fourbyteid», str_«a.fixedarray.name.toFirstUpper»);
-				«ELSE»
-					«IF a.fixedarray.id != null»
-						d->read(«a.fixedarray.id», str_«a.fixedarray.name.toFirstUpper»);
-					«ELSE»
-						d->read(0,
-						       str_«a.fixedarray.name.toFirstUpper»);
-					«ENDIF»
-				«ENDIF»
+				d->read(«a.fixedarray.id», str_«a.fixedarray.name.toFirstUpper»);
 
 				if (str_«a.fixedarray.name.toFirstUpper».size() > 0) {
 					std::stringstream sstr_str_«a.fixedarray.name.toFirstUpper»(str_«a.fixedarray.name.toFirstUpper»);
