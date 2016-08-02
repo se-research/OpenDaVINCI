@@ -21,6 +21,9 @@
 #include <string>
 
 #include "opendavinci/odcore/base/Visitor.h"
+#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/base/Serializer.h"
 #include "opendavinci/odcore/reflection/Field.h"
 #include "opendavinci/odcore/reflection/Message.h"
 
@@ -53,6 +56,21 @@ namespace odcore {
             return m_fields.size();
         }
 
+        ostream& Message::operator<<(ostream &out) const {
+//            SerializationFactory& sf=SerializationFactory::getInstance();;
+//            std::shared_ptr<Serializer> s = sf.getSerializer(out);
+//            s->write(1, "ABC");
+            return out;
+        }
+
+        istream& Message::operator>>(istream &in) {
+//            SerializationFactory& sf=SerializationFactory::getInstance();;
+//            std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+//            string st;
+//            d->read(1, st);
+            return in;
+        }
+
         void Message::accept(Visitor &v) {
             v.beginVisit();
 
@@ -64,7 +82,11 @@ namespace odcore {
                         // If we have a nested message, we need to delegate this Visitor to the nested type.
                         Field<Message> *f = dynamic_cast<Field<Message>*>((*it).operator->()); // Access the value of the std::shared_ptr from the iterator.
                         if (f != NULL) {
-                            f->getValue().accept(v);
+                            // Visit value.
+                            Message msg = f->getValue();
+                            v.visit((*it)->getLongFieldIdentifier(), (*it)->getShortFieldIdentifier(),
+                                    (*it)->getLongFieldName(), (*it)->getShortFieldName(), msg);
+                            f->setValue(msg);
                         }
                     }
                     break;

@@ -20,10 +20,11 @@
 #ifndef OPENDAVINCI_CORE_REFLECTION_MESSAGE_H_
 #define OPENDAVINCI_CORE_REFLECTION_MESSAGE_H_
 
+#include <memory>
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
+#include "opendavinci/odcore/base/Serializable.h"
 #include "opendavinci/odcore/base/Visitable.h"
 #include "opendavinci/odcore/reflection/Field.h"
 #include "opendavinci/generated/odcore/data/reflection/AbstractField.h"
@@ -38,7 +39,7 @@ namespace odcore {
         /**
          * This class is a generic Message representation.
          */
-        class OPENDAVINCI_API Message : public odcore::base::Visitable {
+        class OPENDAVINCI_API Message : public odcore::base::Serializable, public odcore::base::Visitable {
             public:
                 Message();
 
@@ -58,6 +59,13 @@ namespace odcore {
                  * @return Reference to this instance.
                  */
                 Message& operator=(const Message &obj);
+
+            private:
+                // Implementation of serialization of a Message's content is by design disabled.
+                virtual ostream& operator<<(ostream &out) const;
+
+                // Implementation of serialization of a Message's content is by design disabled.
+                virtual istream& operator>>(istream &in);
 
             public:
                 virtual void accept(odcore::base::Visitor &v);

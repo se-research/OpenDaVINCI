@@ -277,9 +277,6 @@ class FieldTest : public CxxTest::TestSuite {
             stringstream sstr2;
             mpp2.getOutput(sstr2);
 
-cout << "s1 = '" << sstr1.str() << "'" << endl;
-cout << "s2 = '" << sstr2.str() << "'" << endl;
-
             // Assert both pretty printed representations are identical.
             TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(sstr1.str(), sstr2.str()));
 
