@@ -162,63 +162,63 @@ namespace odcore {
         ///////////////////////////////////////////////////////////////////////
 
         void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const Serializable &v) {
-            write(id, 0, "", "", v);
+            write(id, "", "", v);
         }
 
         void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const bool &v) {
-            write(id, 0, "", "", v);
+            write(id, "", "", v);
         }
 
         void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const char &v) {
-            write(id, 0, "", "", v);
+            write(id, "", "", v);
         }
 
         void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const unsigned char &v) {
-            write(id, 0, "", "", v);
+            write(id, "", "", v);
         }
 
         void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const int8_t &v) {
-            write(id, 0, "", "", v);
+            write(id, "", "", v);
         }
 
         void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const int16_t &v) {
-            write(id, 0, "", "", v);
+            write(id, "", "", v);
         }
 
         void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const uint16_t &v) {
-            write(id, 0, "", "", v);
+            write(id, "", "", v);
         }
 
         void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const int32_t &v) {
-            write(id, 0, "", "", v);
+            write(id, "", "", v);
         }
 
         void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const uint32_t &v) {
-            write(id, 0, "", "", v);
+            write(id, "", "", v);
         }
 
         void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const int64_t &v) {
-            write(id, 0, "", "", v);
+            write(id, "", "", v);
         }
 
         void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const uint64_t &v) {
-            write(id, 0, "", "", v);
+            write(id, "", "", v);
         }
 
         void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const float &v) {
-            write(id, 0, "", "", v);
+            write(id, "", "", v);
         }
 
         void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const double &v) {
-            write(id, 0, "", "", v);
+            write(id, "", "", v);
         }
 
         void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const string &v) {
-            write(id, 0, "", "", v);
+            write(id, "", "", v);
         }
 
         void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const void *data, const uint32_t &size) {
-            write(id, 0, "", "", data, size);
+            write(id, "", "", data, size);
         }
 
         ///////////////////////////////////////////////////////////////////////

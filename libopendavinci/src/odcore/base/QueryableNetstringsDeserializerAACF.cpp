@@ -256,63 +256,63 @@ namespace odcore {
         ///////////////////////////////////////////////////////////////////////
 
         void QueryableNetstringsDeserializerAACF::read(const uint32_t &id, Serializable &v) {
-            read(id, 0, "", "", v);
+            read(id, "", "", v);
         }
 
         void QueryableNetstringsDeserializerAACF::read(const uint32_t &id, bool &v) {
-            read(id, 0, "", "", v);
+            read(id, "", "", v);
         }
 
         void QueryableNetstringsDeserializerAACF::read(const uint32_t &id, char &v) {
-            read(id, 0, "", "", v);
+            read(id, "", "", v);
         }
 
         void QueryableNetstringsDeserializerAACF::read(const uint32_t &id, unsigned char &v) {
-            read(id, 0, "", "", v);
+            read(id, "", "", v);
         }
 
         void QueryableNetstringsDeserializerAACF::read(const uint32_t &id, int8_t &v) {
-            read(id, 0, "", "", v);
+            read(id, "", "", v);
         }
 
         void QueryableNetstringsDeserializerAACF::read(const uint32_t &id, int16_t &v) {
-            read(id, 0, "", "", v);
+            read(id, "", "", v);
         }
 
         void QueryableNetstringsDeserializerAACF::read(const uint32_t &id, uint16_t &v) {
-            read(id, 0, "", "", v);
+            read(id, "", "", v);
         }
 
         void QueryableNetstringsDeserializerAACF::read(const uint32_t &id, int32_t &v) {
-            read(id, 0, "", "", v);
+            read(id, "", "", v);
         }
 
         void QueryableNetstringsDeserializerAACF::read(const uint32_t &id, uint32_t &v) {
-            read(id, 0, "", "", v);
+            read(id, "", "", v);
         }
 
         void QueryableNetstringsDeserializerAACF::read(const uint32_t &id, int64_t &v) {
-            read(id, 0, "", "", v);
+            read(id, "", "", v);
         }
 
         void QueryableNetstringsDeserializerAACF::read(const uint32_t &id, uint64_t &v) {
-            read(id, 0, "", "", v);
+            read(id, "", "", v);
         }
 
         void QueryableNetstringsDeserializerAACF::read(const uint32_t &id, float &v) {
-            read(id, 0, "", "", v);
+            read(id, "", "", v);
         }
 
         void QueryableNetstringsDeserializerAACF::read(const uint32_t &id, double &v) {
-            read(id, 0, "", "", v);
+            read(id, "", "", v);
         }
 
         void QueryableNetstringsDeserializerAACF::read(const uint32_t &id, string &v) {
-            read(id, 0, "", "", v);
+            read(id, "", "", v);
         }
 
         void QueryableNetstringsDeserializerAACF::read(const uint32_t &id, void *data, const uint32_t &size) {
-            read(id, 0, "", "", data, size);
+            read(id, "", "", data, size);
         }
 
         ///////////////////////////////////////////////////////////////////////

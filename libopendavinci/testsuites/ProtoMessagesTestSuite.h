@@ -1416,7 +1416,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             (void)tmp;
 
             AbstractField tm1;
-            tm1.setShortFieldIdentifier(123);
+            tm1.setFieldIdentifier(123);
             tm1.setLongFieldName("odcore.data.reflection.AbstractField");
             tm1.setShortFieldName("AbstractField");
             tm1.setFieldDataType(AbstractField::INT8_T);
@@ -1453,7 +1453,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         void testSerializationDeserializationAbstractFieldVisitor() {
             AbstractField tm1;
-            tm1.setShortFieldIdentifier(123);
+            tm1.setFieldIdentifier(123);
             tm1.setLongFieldName("odcore.data.reflection.AbstractField");
             tm1.setShortFieldName("AbstractField");
             tm1.setFieldDataType(AbstractField::INT8_T);

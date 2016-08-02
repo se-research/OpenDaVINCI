@@ -234,8 +234,8 @@ class Serializable;
 
         void ROSDeserializerVisitor::endVisit() {}
 
-        void ROSDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, Serializable &v) {
-            (void)longId;
+        void ROSDeserializerVisitor::visit(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, Serializable &v) {
+            (void)id;
             (void)v;
             cerr << "[core::base::ROSDeserializerVisitor]: ROS for Serializable not implemented!" << endl;
         }
