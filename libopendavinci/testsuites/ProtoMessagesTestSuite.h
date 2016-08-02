@@ -4418,38 +4418,6 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-// TODO:
-// Done - 1) test adjusted serialization for ModuleStatics
-// Done - 2) Add test case for odcore.data.dmcp.PulseMessage
-// Done - 3) Add test case for odcore.data.dmcp.PulseAckContainersMessage
-// Done - 4) Refactor ProtoSerializer and ProtoDeserializer to eat entire istream and create vector of entries to enable "queryable" functionality
-// Done - 5) Refactor odDataStructureGenerator to emit new code to use readValue/writeValue for lists, maps, and fixed arrays
-// Done - 6) Enable Proto serialization/deserialization by default & re-test libopendavinci.
-// Done - 7) Fix Player/Recorder for Containers (add header to Proto!)
-// Done - 8) Test if an uninitialized Container results in default initialized message.
-// Done - 9) Check missing fields in messages for deserialization.
-// Done - 10) Check additional fields in messages for deserialization.
-// Done - 11) Check arbitrary order: FalseSerializationTestSuite, SerializationTestSuite (they had a different order of fields)
-// Done - 12) Check multiple deserialization in Container (cf test case for PulseAckContainersMessage)
-// Done - 13) Enable Proto serialization/deserialization by default & re-test
-// Done - 14) Transform map.
-// Done - 15) Transform fixed array.
-// Done - 16) Fourbyteid does not seem to work properly. Check if fourbyteid is working again after fixing odDataStructureGenerator (remove fix: https://github.com/se-research/OpenDaVINCI/blob/2016Q3.refactoring.proto/odDataStructureGenerator/org.opendavinci.datamodel/src/org/opendavinci/generator/DataModelGenerator.xtend#L1211)
-// Done - 17) Remove extends keyword from odDataStructureGenerator
-// Done - 18) QueryableNetstringsDeserializerABCF::fillBuffer(cin, containerBuffer) --> needs to be added to ProtoSerializer? --> testCase in odredirector passes by just reading from cin. TODO: Test on terminal.
-// Done - 19) Check serializatio/deserialization order for all built-in types
-// Done - 20) Compatibility with 3rd party Proto implementations
-// Done - 21) Serialize data into a Container structure, write to disk, and read it back in Python
-// Done - 22) Change identifiers for built-in types (like Container) to remove fourbyteidentifier (remove CRC32<...>)
-// Done - 23) Remove fourbyteid from serializing/deserializing/visiting signatures
-// Done - 24) Remove fourbyteid keyword from odDataStructureGenerator
-// Done - 25) Check serializatio/deserialization order for all built-in types after removal of fourbyteidentifier
-// Done - 26) Test components for correct behavior: boxparker, boxparker in managed mode, lane follower, webcam, webcam + odredirector
-
-// Outside the scope for refactoring OpenDaVINCI towards Proto default serialization.
-// 27) Emit .proto file in odDataStructureGenerator by default
-// 28) Generate Container --> Message mapping in odDataStructureGenerator
-// 29) Fix opendlv data structure --> either model them as odvd data structures or fix directly in code
 };
 
 #endif /*CORE_PROTOMESSAGESTESTSUITE_H_*/
