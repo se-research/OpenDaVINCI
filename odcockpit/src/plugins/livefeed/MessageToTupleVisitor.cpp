@@ -37,7 +37,7 @@ namespace cockpit {
 
             MessageToTupleVisitor::~MessageToTupleVisitor() {}
 
-            void MessageToTupleVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &shortName, odcore::base::Serializable &v) {
+            void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, odcore::base::Serializable &v) {
                 try {
                     odcore::data::SerializableData& tmp = dynamic_cast<odcore::data::SerializableData&>(v);
                     m_entries.push_back(make_pair(shortName, tmp.toString()));
@@ -50,83 +50,83 @@ namespace cockpit {
             void MessageToTupleVisitor::beginVisit() {}
             void MessageToTupleVisitor::endVisit() {}
 
-            void MessageToTupleVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &shortName, bool &v) {
+            void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, bool &v) {
                 stringstream sstr;
                 sstr << v;
                 m_entries.push_back(make_pair(shortName, sstr.str()));
             }
 
-            void MessageToTupleVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &shortName, char &v) {
+            void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, char &v) {
                 stringstream sstr;
                 sstr << static_cast<int32_t>(v);
                 m_entries.push_back(make_pair(shortName, sstr.str()));
             }
 
-            void MessageToTupleVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &shortName, unsigned char &v) {
+            void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, unsigned char &v) {
                 stringstream sstr;
                 sstr << static_cast<uint32_t>(v);
                 m_entries.push_back(make_pair(shortName, sstr.str()));
             }
 
-            void MessageToTupleVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &shortName, int8_t &v) {
+            void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, int8_t &v) {
                 stringstream sstr;
                 sstr << static_cast<int32_t>(v);
                 m_entries.push_back(make_pair(shortName, sstr.str()));
             }
 
-            void MessageToTupleVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &shortName, int16_t &v) {
+            void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, int16_t &v) {
                 stringstream sstr;
                 sstr << static_cast<int32_t>(v);
                 m_entries.push_back(make_pair(shortName, sstr.str()));
             }
 
-            void MessageToTupleVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &shortName, uint16_t &v) {
+            void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, uint16_t &v) {
                 stringstream sstr;
                 sstr << static_cast<uint32_t>(v);
                 m_entries.push_back(make_pair(shortName, sstr.str()));
             }
 
-            void MessageToTupleVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &shortName, int32_t &v) {
+            void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, int32_t &v) {
                 stringstream sstr;
                 sstr << v;
                 m_entries.push_back(make_pair(shortName, sstr.str()));
             }
 
-            void MessageToTupleVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &shortName, uint32_t &v) {
+            void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, uint32_t &v) {
                 stringstream sstr;
                 sstr << v;
                 m_entries.push_back(make_pair(shortName, sstr.str()));
             }
 
-            void MessageToTupleVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &shortName, int64_t &v) {
+            void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, int64_t &v) {
                 stringstream sstr;
                 sstr << v;
                 m_entries.push_back(make_pair(shortName, sstr.str()));
             }
 
-            void MessageToTupleVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &shortName, uint64_t &v) {
+            void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, uint64_t &v) {
                 stringstream sstr;
                 sstr << v;
                 m_entries.push_back(make_pair(shortName, sstr.str()));
             }
 
-            void MessageToTupleVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &shortName, float &v) {
+            void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, float &v) {
                 stringstream sstr;
                 sstr << v;
                 m_entries.push_back(make_pair(shortName, sstr.str()));
             }
 
-            void MessageToTupleVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &shortName, double &v) {
+            void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, double &v) {
                 stringstream sstr;
                 sstr << v;
                 m_entries.push_back(make_pair(shortName, sstr.str()));
             }
 
-            void MessageToTupleVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &shortName, string &v) {
+            void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, string &v) {
                 m_entries.push_back(make_pair(shortName, v));
             }
 
-            void MessageToTupleVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &shortName, void */*data*/, const uint32_t &/*size*/) {
+            void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, void */*data*/, const uint32_t &/*size*/) {
                m_entries.push_back(make_pair(shortName, "Could not display data."));
              }
 

@@ -132,38 +132,32 @@ namespace odcore {
 
             void CompressedImage::accept(Visitor &v) {
                 v.beginVisit();
-                v.visit(0,
-                        1,
+                v.visit(1,
                         "CompressedImage.name",
                         "name",
                         m_name);
 
-                v.visit(0,
-                        2,
+                v.visit(2,
                         "CompressedImage.width",
                         "width",
                         m_width);
 
-                v.visit(0,
-                        3,
+                v.visit(3,
                         "CompressedImage.height",
                         "height",
                         m_height);
 
-                v.visit(0,
-                        4,
+                v.visit(4,
                         "CompressedImage.bytesPerPixel",
                         "bytesPerPixel",
                         m_bytesPerPixel);
 
-                v.visit(0,
-                        5,
+                v.visit(5,
                         "CompressedImage.compressedSize",
                         "compressedSize",
                         m_compressedSize);
 
-                v.visit(0,
-                        6,
+                v.visit(6,
                         "CompressedImage.imageData",
                         "imageData",
                         m_imageData, m_compressedSize);

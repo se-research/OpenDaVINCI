@@ -1376,8 +1376,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         void testSerializationDeserializationAbstractField() {
             AbstractField tm1;
-            tm1.setLongFieldIdentifier(123456);
-            tm1.setShortFieldIdentifier(123);
+            tm1.setFieldIdentifier(123);
             tm1.setLongFieldName("odcore.data.reflection.AbstractField");
             tm1.setShortFieldName("AbstractField");
             tm1.setFieldDataType(AbstractField::INT8_T);
@@ -1395,11 +1394,8 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             AbstractField tm2;
             out >> tm2;
 
-            TS_ASSERT(tm1.getLongFieldIdentifier() == tm2.getLongFieldIdentifier());
-            TS_ASSERT(tm2.getLongFieldIdentifier() == 123456);
-
-            TS_ASSERT(tm1.getShortFieldIdentifier() == tm2.getShortFieldIdentifier());
-            TS_ASSERT(tm2.getShortFieldIdentifier() == 123);
+            TS_ASSERT(tm1.getFieldIdentifier() == tm2.getFieldIdentifier());
+            TS_ASSERT(tm2.getFieldIdentifier() == 123);
 
             TS_ASSERT(tm1.getLongFieldName() == tm2.getLongFieldName());
             TS_ASSERT(tm2.getLongFieldName() == "odcore.data.reflection.AbstractField");
@@ -1420,7 +1416,6 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             (void)tmp;
 
             AbstractField tm1;
-            tm1.setLongFieldIdentifier(123456);
             tm1.setShortFieldIdentifier(123);
             tm1.setLongFieldName("odcore.data.reflection.AbstractField");
             tm1.setShortFieldName("AbstractField");
@@ -1440,11 +1435,8 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             AbstractField tm2 = c2.getData<AbstractField>();
 
-            TS_ASSERT(tm1.getLongFieldIdentifier() == tm2.getLongFieldIdentifier());
-            TS_ASSERT(tm2.getLongFieldIdentifier() == 123456);
-
-            TS_ASSERT(tm1.getShortFieldIdentifier() == tm2.getShortFieldIdentifier());
-            TS_ASSERT(tm2.getShortFieldIdentifier() == 123);
+            TS_ASSERT(tm1.getFieldIdentifier() == tm2.getFieldIdentifier());
+            TS_ASSERT(tm2.getFieldIdentifier() == 123);
 
             TS_ASSERT(tm1.getLongFieldName() == tm2.getLongFieldName());
             TS_ASSERT(tm2.getLongFieldName() == "odcore.data.reflection.AbstractField");
@@ -1461,7 +1453,6 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         void testSerializationDeserializationAbstractFieldVisitor() {
             AbstractField tm1;
-            tm1.setLongFieldIdentifier(123456);
             tm1.setShortFieldIdentifier(123);
             tm1.setLongFieldName("odcore.data.reflection.AbstractField");
             tm1.setShortFieldName("AbstractField");
@@ -1485,11 +1476,8 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             AbstractField tm2;
             tm2.accept(protoDeserializerVisitor);
 
-            TS_ASSERT(tm1.getLongFieldIdentifier() == tm2.getLongFieldIdentifier());
-            TS_ASSERT(tm2.getLongFieldIdentifier() == 123456);
-
-            TS_ASSERT(tm1.getShortFieldIdentifier() == tm2.getShortFieldIdentifier());
-            TS_ASSERT(tm2.getShortFieldIdentifier() == 123);
+            TS_ASSERT(tm1.getFieldIdentifier() == tm2.getFieldIdentifier());
+            TS_ASSERT(tm2.getFieldIdentifier() == 123);
 
             TS_ASSERT(tm1.getLongFieldName() == tm2.getLongFieldName());
             TS_ASSERT(tm2.getLongFieldName() == "odcore.data.reflection.AbstractField");

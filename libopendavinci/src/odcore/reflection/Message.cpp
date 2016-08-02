@@ -86,8 +86,7 @@ namespace odcore {
                         if (f != NULL) {
                             // Visit value.
                             Message msg = f->getValue();
-                            v.visit((*it)->getLongFieldIdentifier(), (*it)->getShortFieldIdentifier(),
-                                    (*it)->getLongFieldName(), (*it)->getShortFieldName(), msg);
+                            v.visit((*it)->getFieldIdentifier(), (*it)->getLongFieldName(), (*it)->getShortFieldName(), msg);
                             f->setValue(msg);
                         }
                     }
@@ -150,8 +149,7 @@ namespace odcore {
                         // Read value.
                         string value = dynamic_cast<Field<string>*>((*it).operator->())->getValue();
                         // Visit value.
-                        v.visit((*it)->getLongFieldIdentifier(), (*it)->getShortFieldIdentifier(),
-                                (*it)->getLongFieldName(), (*it)->getShortFieldName(), value);
+                        v.visit((*it)->getFieldIdentifier(), (*it)->getLongFieldName(), (*it)->getShortFieldName(), value);
                         // Update value.
                         dynamic_cast<Field<string>*>((*it).operator->())->setValue(value);
                         (*it)->setSize(value.size());
@@ -166,8 +164,7 @@ namespace odcore {
                         uint32_t size = (*it)->getSize();
 
                         // Visit value.
-                        v.visit((*it)->getLongFieldIdentifier(), (*it)->getShortFieldIdentifier(),
-                                (*it)->getLongFieldName(), (*it)->getShortFieldName(), valuePtr, size);
+                        v.visit((*it)->getFieldIdentifier(), (*it)->getLongFieldName(), (*it)->getShortFieldName(), valuePtr, size);
                         // Update value is not required as we deal with a pointer to a memory.
                     }
                     break;
@@ -183,53 +180,18 @@ namespace odcore {
             v.endVisit();
         }
 
-        std::shared_ptr<odcore::data::reflection::AbstractField> Message::getFieldByLongIdentifierOrShortIdentifier(const uint32_t &longIdentifier, const uint8_t &shortIdentifier, bool &found) {
-            bool retVal = false;
-
-            // Try the long identifier first.
-            std::shared_ptr<odcore::data::reflection::AbstractField> field = getFieldByLongIdentifier(longIdentifier, retVal);
-
-            // Try the short identifier next.
-            if (!retVal) field = getFieldByShortIdentifier(shortIdentifier, retVal);
-
-            found = retVal;
-            return field;
-        }
-
-        std::shared_ptr<odcore::data::reflection::AbstractField> Message::getFieldByLongIdentifier(const uint32_t &longIdentifier, bool &found) {
+        std::shared_ptr<odcore::data::reflection::AbstractField> Message::getFieldByIdentifier(const uint32_t &id, bool &found) {
             bool retVal = false;
             std::shared_ptr<odcore::data::reflection::AbstractField> field;
 
-            if (longIdentifier > 0) {
-                vector<std::shared_ptr<AbstractField> >::iterator it = m_fields.begin();
-                while (it != m_fields.end()) {
-                    if ( (*it)->getLongFieldIdentifier() == longIdentifier ) {
-                        retVal = true;
-                        field = (*it);
-                        break;
-                    }
-                    ++it;
+            vector<std::shared_ptr<AbstractField> >::iterator it = m_fields.begin();
+            while (it != m_fields.end()) {
+                if ( (*it)->getFieldIdentifier() == id ) {
+                    retVal = true;
+                    field = (*it);
+                    break;
                 }
-            }
-
-            found = retVal;
-            return field;
-        }
-
-        std::shared_ptr<odcore::data::reflection::AbstractField> Message::getFieldByShortIdentifier(const uint8_t &shortIdentifier, bool &found) {
-            bool retVal = false;
-            std::shared_ptr<odcore::data::reflection::AbstractField> field;
-
-            if (shortIdentifier > 0) {
-                vector<std::shared_ptr<AbstractField> >::iterator it = m_fields.begin();
-                while (it != m_fields.end()) {
-                    if ( (*it)->getShortFieldIdentifier() == shortIdentifier ) {
-                        retVal = true;
-                        field = (*it);
-                        break;
-                    }
-                    ++it;
-                }
+                ++it;
             }
 
             found = retVal;

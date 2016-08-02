@@ -40,9 +40,9 @@ namespace odcore {
 
         void MessageToVisitableVisitor::endVisit() {}
 
-        void MessageToVisitableVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, Serializable &v) {
+        void MessageToVisitableVisitor::visit(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, Serializable &v) {
             bool found = false;
-            std::shared_ptr<odcore::data::reflection::AbstractField> field = m_message.getFieldByLongIdentifierOrShortIdentifier(longId, shortId, found);
+            std::shared_ptr<odcore::data::reflection::AbstractField> field = m_message.getFieldByIdentifier(id, found);
             if (found) {
                 try {
                     Visitable &visitable = dynamic_cast<Visitable&>(v);
@@ -60,114 +60,114 @@ namespace odcore {
             }
         }
 
-        void MessageToVisitableVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, bool &v) {
+        void MessageToVisitableVisitor::visit(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, bool &v) {
             bool found = false;
-            std::shared_ptr<odcore::data::reflection::AbstractField> field = m_message.getFieldByLongIdentifierOrShortIdentifier(longId, shortId, found);
+            std::shared_ptr<odcore::data::reflection::AbstractField> field = m_message.getFieldByIdentifier(id, found);
             if (found) {
                 visitPrimitiveDataType<bool>(field, v);
             }
         }
 
-        void MessageToVisitableVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, char &v) {
+        void MessageToVisitableVisitor::visit(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, char &v) {
             bool found = false;
-            std::shared_ptr<odcore::data::reflection::AbstractField> field = m_message.getFieldByLongIdentifierOrShortIdentifier(longId, shortId, found);
+            std::shared_ptr<odcore::data::reflection::AbstractField> field = m_message.getFieldByIdentifier(id, found);
             if (found) {
                 visitPrimitiveDataType<char>(field, v);
             }
         }
 
-        void MessageToVisitableVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, unsigned char &v) {
+        void MessageToVisitableVisitor::visit(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, unsigned char &v) {
             bool found = false;
-            std::shared_ptr<odcore::data::reflection::AbstractField> field = m_message.getFieldByLongIdentifierOrShortIdentifier(longId, shortId, found);
+            std::shared_ptr<odcore::data::reflection::AbstractField> field = m_message.getFieldByIdentifier(id, found);
             if (found) {
                 visitPrimitiveDataType<unsigned char>(field, v);
             }
         }
 
-        void MessageToVisitableVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, int8_t &v) {
+        void MessageToVisitableVisitor::visit(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, int8_t &v) {
             bool found = false;
-            std::shared_ptr<odcore::data::reflection::AbstractField> field = m_message.getFieldByLongIdentifierOrShortIdentifier(longId, shortId, found);
+            std::shared_ptr<odcore::data::reflection::AbstractField> field = m_message.getFieldByIdentifier(id, found);
             if (found) {
                 visitPrimitiveDataType<int8_t>(field, v);
             }
         }
 
-        void MessageToVisitableVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, int16_t &v) {
+        void MessageToVisitableVisitor::visit(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, int16_t &v) {
             bool found = false;
-            std::shared_ptr<odcore::data::reflection::AbstractField> field = m_message.getFieldByLongIdentifierOrShortIdentifier(longId, shortId, found);
+            std::shared_ptr<odcore::data::reflection::AbstractField> field = m_message.getFieldByIdentifier(id, found);
             if (found) {
                 visitPrimitiveDataType<int16_t>(field, v);
             }
         }
 
-        void MessageToVisitableVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, uint16_t &v) {
+        void MessageToVisitableVisitor::visit(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, uint16_t &v) {
             bool found = false;
-            std::shared_ptr<odcore::data::reflection::AbstractField> field = m_message.getFieldByLongIdentifierOrShortIdentifier(longId, shortId, found);
+            std::shared_ptr<odcore::data::reflection::AbstractField> field = m_message.getFieldByIdentifier(id, found);
             if (found) {
                 visitPrimitiveDataType<uint16_t>(field, v);
             }
         }
 
-        void MessageToVisitableVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, int32_t &v) {
+        void MessageToVisitableVisitor::visit(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, int32_t &v) {
             bool found = false;
-            std::shared_ptr<odcore::data::reflection::AbstractField> field = m_message.getFieldByLongIdentifierOrShortIdentifier(longId, shortId, found);
+            std::shared_ptr<odcore::data::reflection::AbstractField> field = m_message.getFieldByIdentifier(id, found);
             if (found) {
                 visitPrimitiveDataType<int32_t>(field, v);
             }
         }
 
-        void MessageToVisitableVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, uint32_t &v) {
+        void MessageToVisitableVisitor::visit(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, uint32_t &v) {
             bool found = false;
-            std::shared_ptr<odcore::data::reflection::AbstractField> field = m_message.getFieldByLongIdentifierOrShortIdentifier(longId, shortId, found);
+            std::shared_ptr<odcore::data::reflection::AbstractField> field = m_message.getFieldByIdentifier(id, found);
             if (found) {
                 visitPrimitiveDataType<uint32_t>(field, v);
             }
         }
 
-        void MessageToVisitableVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, int64_t &v) {
+        void MessageToVisitableVisitor::visit(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, int64_t &v) {
             bool found = false;
-            std::shared_ptr<odcore::data::reflection::AbstractField> field = m_message.getFieldByLongIdentifierOrShortIdentifier(longId, shortId, found);
+            std::shared_ptr<odcore::data::reflection::AbstractField> field = m_message.getFieldByIdentifier(id, found);
             if (found) {
                 visitPrimitiveDataType<int64_t>(field, v);
             }
         }
 
-        void MessageToVisitableVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, uint64_t &v) {
+        void MessageToVisitableVisitor::visit(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, uint64_t &v) {
             bool found = false;
-            std::shared_ptr<odcore::data::reflection::AbstractField> field = m_message.getFieldByLongIdentifierOrShortIdentifier(longId, shortId, found);
+            std::shared_ptr<odcore::data::reflection::AbstractField> field = m_message.getFieldByIdentifier(id, found);
             if (found) {
                 visitPrimitiveDataType<uint64_t>(field, v);
             }
         }
 
-        void MessageToVisitableVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, float &v) {
+        void MessageToVisitableVisitor::visit(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, float &v) {
             bool found = false;
-            std::shared_ptr<odcore::data::reflection::AbstractField> field = m_message.getFieldByLongIdentifierOrShortIdentifier(longId, shortId, found);
+            std::shared_ptr<odcore::data::reflection::AbstractField> field = m_message.getFieldByIdentifier(id, found);
             if (found) {
                 visitPrimitiveDataType<float>(field, v);
             }
         }
 
-        void MessageToVisitableVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, double &v) {
+        void MessageToVisitableVisitor::visit(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, double &v) {
             bool found = false;
-            std::shared_ptr<odcore::data::reflection::AbstractField> field = m_message.getFieldByLongIdentifierOrShortIdentifier(longId, shortId, found);
+            std::shared_ptr<odcore::data::reflection::AbstractField> field = m_message.getFieldByIdentifier(id, found);
             if (found) {
                 visitPrimitiveDataType<double>(field, v);
             }
         }
 
-        void MessageToVisitableVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, string &v) {
+        void MessageToVisitableVisitor::visit(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, string &v) {
             bool found = false;
-            std::shared_ptr<odcore::data::reflection::AbstractField> field = m_message.getFieldByLongIdentifierOrShortIdentifier(longId, shortId, found);
+            std::shared_ptr<odcore::data::reflection::AbstractField> field = m_message.getFieldByIdentifier(id, found);
             if (found) {
                 visitPrimitiveDataType<string>(field, v);
             }
         }
 
-        void MessageToVisitableVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, void *data, const uint32_t &size) {
+        void MessageToVisitableVisitor::visit(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, void *data, const uint32_t &size) {
             if ( (data != NULL) && (size > 0) ) {
                 bool found = false;
-                std::shared_ptr<odcore::data::reflection::AbstractField> field = m_message.getFieldByLongIdentifierOrShortIdentifier(longId, shortId, found);
+                std::shared_ptr<odcore::data::reflection::AbstractField> field = m_message.getFieldByIdentifier(id, found);
                 if (found) {
                     odcore::reflection::Field<std::shared_ptr<char> > *fValue = dynamic_cast<odcore::reflection::Field<std::shared_ptr<char> >*>(field.operator->());
                     const uint32_t fSize = fValue->getSize();

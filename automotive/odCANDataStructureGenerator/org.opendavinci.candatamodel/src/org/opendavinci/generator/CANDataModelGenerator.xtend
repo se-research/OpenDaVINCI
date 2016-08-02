@@ -627,7 +627,6 @@ namespace canmapping {
 			for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
 			
 			acceptBody+="v.visit(static_cast<uint32_t>("+mapping.mappings.get(i).signalIdentifier+"), "
-						+mapping.mappings.get(i).signalIdentifier+", \""
 						+mapping.mappings.get(i).cansignalname+"\", \""
 						+chunks.get(chunks.size-1)+"\", m_"
 						+capitalizedName.toFirstLower+");"
@@ -1008,8 +1007,7 @@ namespace canmapping {
 
 				// Create a field for a generic message.
 				odcore::reflection::Field<double> *f = new odcore::reflection::Field<double>(«memberVarName»);
-				f->setLongFieldIdentifier(0); // The identifiers specified here must match with the ones defined in the .odvd file!
-				f->setShortFieldIdentifier(«currentSignalInMapping.signalIdentifier»); // The identifiers specified here must match with the ones defined in the .odvd file!
+				f->setFieldIdentifier(«currentSignalInMapping.signalIdentifier»); // The identifiers specified here must match with the ones defined in the .odvd file!
 				f->setLongFieldName("«canSignals.get(curSignalName).m_FQDN»");
 				f->setShortFieldName("«{var String[] res; res=canSignals.get(curSignalName).m_FQDN.split("\\."); res.get(res.size-1)}»");
 				f->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
@@ -1328,8 +1326,7 @@ class CANBridgeTest : public CxxTest::TestSuite {
     						fIndex++
     						if(result.signalIdentifier.compareTo(mapping.mappings.get(index).signalIdentifier)==0){
 								assignments+="odcore::reflection::Field<double> *f_"+fIndex+" = new odcore::reflection::Field<double>("+result.expectedResult+");"+'\n'+
-												"f_"+fIndex+"->setLongFieldIdentifier(0);"+
-												"f_"+fIndex+"->setShortFieldIdentifier("+result.signalIdentifier+");"+'\n'+
+												"f_"+fIndex+"->setFieldIdentifier("+result.signalIdentifier+");"+'\n'+
 												"f_"+fIndex+"->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);"+'\n'+
 												"message.addField(std::shared_ptr<odcore::data::reflection::AbstractField>(f_"+fIndex+"));"+'\n'
     							//assignments+="HLClass.set"+chunks.get(chunks.size-1).toFirstUpper+"("+result.expectedResult+");"+'\n'

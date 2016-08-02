@@ -84,8 +84,7 @@ namespace odcore {
                     // Read value.
                     T value = dynamic_cast<odcore::reflection::Field<T>*>(f.operator->())->getValue();
                     // Visit value.
-                    v.visit(f->getLongFieldIdentifier(), f->getShortFieldIdentifier(),
-                            f->getLongFieldName(), f->getShortFieldName(), value);
+                    v.visit(f->getFieldIdentifier(), f->getLongFieldName(), f->getShortFieldName(), value);
                     // Update value.
                     dynamic_cast<odcore::reflection::Field<T>*>(f.operator->())->setValue(value);
                 }
@@ -106,30 +105,27 @@ namespace odcore {
                 uint32_t getNumberOfFields() const;
 
                 /**
-                 * This method tries to find a field using first the long identifier;
-                 * if the field was not found, the short identifier is used.
+                 * This method tries to find a field with the given identifier.
                  *
-                 * @param longIdentifier to find.
-                 * @param shortIdentifier to find.
+                 * @param ID to find.
                  * @param found Flag modified by this method indicating if the field was found.
                  * @return found Be aware to always check 'found' whether the field was found.
                  */
-                std::shared_ptr<odcore::data::reflection::AbstractField> getFieldByLongIdentifierOrShortIdentifier(const uint32_t &longIdentifier, const uint8_t &shortIdentifier, bool &found);
+                std::shared_ptr<odcore::data::reflection::AbstractField> getFieldByIdentifier(const uint32_t &id, bool &found);
 
                 /**
                  * This method tries to extract the specified scalar type from AbstractField.
                  *
-                 * @param longIdentifier to find.
-                 * @param shortIdentifier to find.
+                 * @param id to find.
                  * @param found Flag modified by this method indicating if the field was found.
                  * @param extracted Flag modified by this method indicating if the field was successfully extracted.
                  * @return Extracted value.
                  */
                 template<typename T>
-                T getValueFromScalarField(const uint32_t &longIdentifier, const uint8_t &shortIdentifier, bool &found, bool &extracted) {
+                T getValueFromScalarField(const uint32_t &id, bool &found, bool &extracted) {
                     T value = 0;
                     extracted = false;
-                    std::shared_ptr<odcore::data::reflection::AbstractField> af = getFieldByLongIdentifierOrShortIdentifier(longIdentifier, shortIdentifier, found);
+                    std::shared_ptr<odcore::data::reflection::AbstractField> af = getFieldByIdentifier(id, found);
                     if (found) {
                         extracted = true;
                         switch(af->getFieldDataType()) {
@@ -173,25 +169,6 @@ namespace odcore {
                     }
                     return value;
                 }
-
-            private:
-                /**
-                 * This method tries to find a field using the long identifier.
-                 *
-                 * @param longIdentifier to find.
-                 * @param found Flag modified by this method indicating if the field was found.
-                 * @return field Be aware to always check 'found' whether the field was found.
-                 */
-                std::shared_ptr<odcore::data::reflection::AbstractField> getFieldByLongIdentifier(const uint32_t &longIdentifier, bool &found);
-
-                /**
-                 * This method tries to find a field using the short identifier.
-                 *
-                 * @param shortIdentifier to find.
-                 * @param found Flag modified by this method indicating if the field was found.
-                 * @return field Be aware to always check 'found' whether the field was found.
-                 */
-                std::shared_ptr<odcore::data::reflection::AbstractField> getFieldByShortIdentifier(const uint8_t &shortIdentifier, bool &found);
 
             private:
                 vector<std::shared_ptr<odcore::data::reflection::AbstractField> > m_fields;

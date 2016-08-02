@@ -176,75 +176,75 @@ class Serializable;
         void LCMDeserializerVisitor::read(const uint32_t &/*id*/, void */*data*/, const uint32_t &/*size*/) {}
 
 
-        void LCMDeserializerVisitor::read(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, Serializable &/*v*/) {
+        void LCMDeserializerVisitor::read(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, Serializable &/*v*/) {
             cerr << "[core::base::LCMDeserializerVisitor]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
         }
 
-        void LCMDeserializerVisitor::read(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, bool &v) {
+        void LCMDeserializerVisitor::read(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, bool &v) {
             m_buffer.read(reinterpret_cast<char*>(&v), sizeof(bool));
         }
 
-        void LCMDeserializerVisitor::read(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, char &v) {
+        void LCMDeserializerVisitor::read(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, char &v) {
             m_buffer.read(&v, sizeof(char));
         }
 
-        void LCMDeserializerVisitor::read(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, unsigned char &v) {
+        void LCMDeserializerVisitor::read(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, unsigned char &v) {
             m_buffer.read(reinterpret_cast<char*>(&v), sizeof(unsigned char));
         }
 
-        void LCMDeserializerVisitor::read(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, int8_t &v) {
+        void LCMDeserializerVisitor::read(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, int8_t &v) {
             m_buffer.read(reinterpret_cast<char*>(&v), sizeof(int8_t));
         }
 
-        void LCMDeserializerVisitor::read(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, int16_t &v) {
+        void LCMDeserializerVisitor::read(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, int16_t &v) {
             int16_t _v = 0;
             m_buffer.read(reinterpret_cast<char *>(&_v), sizeof(int16_t));
             v = ntohs(_v);
         }
 
-        void LCMDeserializerVisitor::read(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, uint16_t &v) {
+        void LCMDeserializerVisitor::read(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, uint16_t &v) {
             uint16_t _v = 0;
             m_buffer.read(reinterpret_cast<char *>(&_v), sizeof(uint16_t));
             v = ntohs(_v);
         }
 
-        void LCMDeserializerVisitor::read(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, int32_t &v) {
+        void LCMDeserializerVisitor::read(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, int32_t &v) {
             int32_t _v = 0;
             m_buffer.read(reinterpret_cast<char *>(&_v), sizeof(int32_t));
             v = ntohl(_v);
         }
 
-        void LCMDeserializerVisitor::read(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, uint32_t &v) {
+        void LCMDeserializerVisitor::read(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, uint32_t &v) {
             uint32_t _v = 0;
             m_buffer.read(reinterpret_cast<char *>(&_v), sizeof(uint32_t));
             v = ntohl(_v);
         }
 
-        void LCMDeserializerVisitor::read(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, int64_t &v) {
+        void LCMDeserializerVisitor::read(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, int64_t &v) {
             int64_t _v = 0;
             m_buffer.read(reinterpret_cast<char *>(&_v), sizeof(int64_t));
             v = __ntohll(_v);
         }
 
-        void LCMDeserializerVisitor::read(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, uint64_t &v) {
+        void LCMDeserializerVisitor::read(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, uint64_t &v) {
             uint64_t _v = 0;
             m_buffer.read(reinterpret_cast<char *>(&_v), sizeof(uint64_t));
             v = __ntohll(_v);
         }
 
-        void LCMDeserializerVisitor::read(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, float &v) {
+        void LCMDeserializerVisitor::read(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, float &v) {
             float _v = 0;
             m_buffer.read(reinterpret_cast<char *>(&_v), sizeof(float));
             v = ntohf(_v);
         }
 
-        void LCMDeserializerVisitor::read(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, double &v) {
+        void LCMDeserializerVisitor::read(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, double &v) {
             double _v = 0;
             m_buffer.read(reinterpret_cast<char *>(&_v), sizeof(double));
             v = ntohd(_v);
         }
 
-        void LCMDeserializerVisitor::read(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, string &v) {
+        void LCMDeserializerVisitor::read(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, string &v) {
             int32_t _length;
             m_buffer.read(reinterpret_cast<char *>(&_length), sizeof(const int32_t));
             int32_t length = ntohl(_length);
@@ -255,7 +255,7 @@ class Serializable;
             OPENDAVINCI_CORE_DELETE_ARRAY(str);
         }
 
-        void LCMDeserializerVisitor::read(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, void */*data*/, const uint32_t &/*size*/) {
+        void LCMDeserializerVisitor::read(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, void */*data*/, const uint32_t &/*size*/) {
             cerr << "[core::base::LCMDeserializerVisitor]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
         }
 
@@ -264,115 +264,115 @@ class Serializable;
 
         void LCMDeserializerVisitor::endVisit() {}
 
-        void LCMDeserializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, Serializable &/*v*/) {
+        void LCMDeserializerVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, Serializable &/*v*/) {
             cerr << "[core::base::LCMDeserializerVisitor]: LCM for Serializable not implemented!" << endl;
         }
 
-        void LCMDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, bool &v) {
+        void LCMDeserializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, bool &v) {
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, shortName);
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, "boolean");
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, 0);
 
-            read(longId, shortId, longName, shortName, v);
+            read(id, longName, shortName, v);
         }
 
-        void LCMDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, char &v) {
+        void LCMDeserializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, char &v) {
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, shortName);
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, "char");
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, 0);
 
-            read(longId, shortId, longName, shortName, v);
+            read(id, longName, shortName, v);
         }
 
-        void LCMDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, unsigned char &v) {
+        void LCMDeserializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, unsigned char &v) {
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, shortName);
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, "unsigned char");
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, 0);
 
-            read(longId, shortId, longName, shortName, v);
+            read(id, longName, shortName, v);
         }
 
-        void LCMDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int8_t &v) {
+        void LCMDeserializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, int8_t &v) {
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, shortName);
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, "int8");
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, 0);
 
-            read(longId, shortId, longName, shortName, v);
+            read(id, longName, shortName, v);
         }
 
-        void LCMDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int16_t &v) {
+        void LCMDeserializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, int16_t &v) {
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, shortName);
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, "int16");
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, 0);
 
-            read(longId, shortId, longName, shortName, v);
+            read(id, longName, shortName, v);
         }
 
-        void LCMDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint16_t &v) {
+        void LCMDeserializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, uint16_t &v) {
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, shortName);
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, "uint16");
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, 0);
 
-            read(longId, shortId, longName, shortName, v);
+            read(id, longName, shortName, v);
         }
 
-        void LCMDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int32_t &v) {
+        void LCMDeserializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, int32_t &v) {
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, shortName);
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, "int32");
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, 0);
 
-            read(longId, shortId, longName, shortName, v);
+            read(id, longName, shortName, v);
         }
 
-        void LCMDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint32_t &v) {
+        void LCMDeserializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, uint32_t &v) {
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, shortName);
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, "uint32");
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, 0);
 
-            read(longId, shortId, longName, shortName, v);
+            read(id, longName, shortName, v);
         }
 
-        void LCMDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int64_t &v) {
+        void LCMDeserializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, int64_t &v) {
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, shortName);
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, "int64");
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, 0);
 
-            read(longId, shortId, longName, shortName, v);
+            read(id, longName, shortName, v);
         }
 
-        void LCMDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint64_t &v) {
+        void LCMDeserializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, uint64_t &v) {
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, shortName);
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, "uint64");
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, 0);
 
-            read(longId, shortId, longName, shortName, v);
+            read(id, longName, shortName, v);
         }
 
-        void LCMDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, float &v) {
+        void LCMDeserializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, float &v) {
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, shortName);
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, "float");
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, 0);
 
-            read(longId, shortId, longName, shortName, v);
+            read(id, longName, shortName, v);
         }
 
-        void LCMDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, double &v) {
+        void LCMDeserializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, double &v) {
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, shortName);
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, "double");
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, 0);
 
-            read(longId, shortId, longName, shortName, v);
+            read(id, longName, shortName, v);
         }
 
-        void LCMDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, string &v) {
+        void LCMDeserializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, string &v) {
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, shortName);
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, "string");
             m_calculatedHash = LCMSerializerVisitor::calculateHash(m_calculatedHash, 0);
 
-            read(longId, shortId, longName, shortName, v);
+            read(id, longName, shortName, v);
         }
 
-        void LCMDeserializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, void */*data*/, const uint32_t &/*size*/) {
+        void LCMDeserializerVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, void */*data*/, const uint32_t &/*size*/) {
             cerr << "[core::base::LCMDeserializerVisitor]: LCM for void* not implemented!" << endl;
         }
 

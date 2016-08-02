@@ -34,64 +34,64 @@ class Serializable;
 
         void QueryableNetstringsSerializerVisitor::endVisit() {}
 
-        void QueryableNetstringsSerializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, Serializable &v) {
-            write(shortId, v);
+        void QueryableNetstringsSerializerVisitor::visit(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, Serializable &v) {
+            write(id, v);
         }
 
-        void QueryableNetstringsSerializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, bool &v) {
-            write(shortId, v);
+        void QueryableNetstringsSerializerVisitor::visit(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, bool &v) {
+            write(id, v);
         }
 
-        void QueryableNetstringsSerializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, char &v) {
-            write(shortId, v);
+        void QueryableNetstringsSerializerVisitor::visit(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, char &v) {
+            write(id, v);
         }
 
-        void QueryableNetstringsSerializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, unsigned char &v) {
-            write(shortId, v);
+        void QueryableNetstringsSerializerVisitor::visit(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, unsigned char &v) {
+            write(id, v);
         }
 
-        void QueryableNetstringsSerializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, int8_t &v) {
-            write(shortId, v);
+        void QueryableNetstringsSerializerVisitor::visit(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, int8_t &v) {
+            write(id, v);
         }
 
-        void QueryableNetstringsSerializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, int16_t &v) {
-            write(shortId, v);
+        void QueryableNetstringsSerializerVisitor::visit(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, int16_t &v) {
+            write(id, v);
         }
 
-        void QueryableNetstringsSerializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, uint16_t &v) {
-            write(shortId, v);
+        void QueryableNetstringsSerializerVisitor::visit(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, uint16_t &v) {
+            write(id, v);
         }
 
-        void QueryableNetstringsSerializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, int32_t &v) {
-            write(shortId, v);
+        void QueryableNetstringsSerializerVisitor::visit(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, int32_t &v) {
+            write(id, v);
         }
 
-        void QueryableNetstringsSerializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, uint32_t &v) {
-            write(shortId, v);
+        void QueryableNetstringsSerializerVisitor::visit(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, uint32_t &v) {
+            write(id, v);
         }
 
-        void QueryableNetstringsSerializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, int64_t &v) {
-            write(shortId, v);
+        void QueryableNetstringsSerializerVisitor::visit(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, int64_t &v) {
+            write(id, v);
         }
 
-        void QueryableNetstringsSerializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, uint64_t &v) {
-            write(shortId, v);
+        void QueryableNetstringsSerializerVisitor::visit(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, uint64_t &v) {
+            write(id, v);
         }
 
-        void QueryableNetstringsSerializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, float &v) {
-            write(shortId, v);
+        void QueryableNetstringsSerializerVisitor::visit(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, float &v) {
+            write(id, v);
         }
 
-        void QueryableNetstringsSerializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, double &v) {
-            write(shortId, v);
+        void QueryableNetstringsSerializerVisitor::visit(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, double &v) {
+            write(id, v);
         }
 
-        void QueryableNetstringsSerializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, string &v) {
-            write(shortId, v);
+        void QueryableNetstringsSerializerVisitor::visit(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, string &v) {
+            write(id, v);
         }
 
-        void QueryableNetstringsSerializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, void *data, const uint32_t &size) {
-            write(shortId, data, size);
+        void QueryableNetstringsSerializerVisitor::visit(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, void *data, const uint32_t &size) {
+            write(id, data, size);
         }
     }
 } // odcore::base

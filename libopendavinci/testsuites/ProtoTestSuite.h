@@ -184,12 +184,12 @@ class ProtoVehicleControl : public odcore::data::SerializableData, public odcore
 
     void accept(odcore::base::Visitor &v) {
         v.beginVisit();
-        v.visit(0, 1, "ProtoVehicleControl.speed", "speed", m_speed);
-        v.visit(0, 2, "ProtoVehicleControl.acceleration", "acceleration", m_acceleration);
-        v.visit(0, 3, "ProtoVehicleControl.steeringWheelAngle", "steeringWheelAngle", m_steeringWheelAngle);
-        v.visit(0, 4, "ProtoVehicleControl.brakeLights", "brakeLights", m_brakeLights);
-        v.visit(0, 5, "ProtoVehicleControl.flashingLightsLeft", "flashingLightsLeft", m_flashingLightsLeft);
-        v.visit(0, 6, "ProtoVehicleControl.flashingLightsRight", "flashingLightsRight", m_flashingLightsRight);
+        v.visit(1, "ProtoVehicleControl.speed", "speed", m_speed);
+        v.visit(2, "ProtoVehicleControl.acceleration", "acceleration", m_acceleration);
+        v.visit(3, "ProtoVehicleControl.steeringWheelAngle", "steeringWheelAngle", m_steeringWheelAngle);
+        v.visit(4, "ProtoVehicleControl.brakeLights", "brakeLights", m_brakeLights);
+        v.visit(5, "ProtoVehicleControl.flashingLightsLeft", "flashingLightsLeft", m_flashingLightsLeft);
+        v.visit(6, "ProtoVehicleControl.flashingLightsRight", "flashingLightsRight", m_flashingLightsRight);
         v.endVisit();
     }
 

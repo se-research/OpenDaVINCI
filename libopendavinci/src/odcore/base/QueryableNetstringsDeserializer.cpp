@@ -208,64 +208,64 @@ class Serializable;
 
         ///////////////////////////////////////////////////////////////////////
 
-        void QueryableNetstringsDeserializer::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, Serializable &v) {
-            m_deserializer->read(fourByteID, oneByteID, longName, shortName, v);
+        void QueryableNetstringsDeserializer::read(const uint32_t &id, const string &longName, const string &shortName, Serializable &v) {
+            m_deserializer->read(id, longName, shortName, v);
         }
 
-        void QueryableNetstringsDeserializer::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, bool &v) {
-            m_deserializer->read(fourByteID, oneByteID, longName, shortName, v);
+        void QueryableNetstringsDeserializer::read(const uint32_t &id, const string &longName, const string &shortName, bool &v) {
+            m_deserializer->read(id, longName, shortName, v);
         }
 
-        void QueryableNetstringsDeserializer::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, char &v) {
-            m_deserializer->read(fourByteID, oneByteID, longName, shortName, v);
+        void QueryableNetstringsDeserializer::read(const uint32_t &id, const string &longName, const string &shortName, char &v) {
+            m_deserializer->read(id, longName, shortName, v);
         }
 
-        void QueryableNetstringsDeserializer::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, unsigned char &v) {
-            m_deserializer->read(fourByteID, oneByteID, longName, shortName, v);
+        void QueryableNetstringsDeserializer::read(const uint32_t &id, const string &longName, const string &shortName, unsigned char &v) {
+            m_deserializer->read(id, longName, shortName, v);
         }
 
-        void QueryableNetstringsDeserializer::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, int8_t &v) {
-            m_deserializer->read(fourByteID, oneByteID, longName, shortName, v);
+        void QueryableNetstringsDeserializer::read(const uint32_t &id, const string &longName, const string &shortName, int8_t &v) {
+            m_deserializer->read(id, longName, shortName, v);
         }
 
-        void QueryableNetstringsDeserializer::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, int16_t &v) {
-            m_deserializer->read(fourByteID, oneByteID, longName, shortName, v);
+        void QueryableNetstringsDeserializer::read(const uint32_t &id, const string &longName, const string &shortName, int16_t &v) {
+            m_deserializer->read(id, longName, shortName, v);
         }
 
-        void QueryableNetstringsDeserializer::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, uint16_t &v) {
-            m_deserializer->read(fourByteID, oneByteID, longName, shortName, v);
+        void QueryableNetstringsDeserializer::read(const uint32_t &id, const string &longName, const string &shortName, uint16_t &v) {
+            m_deserializer->read(id, longName, shortName, v);
         }
 
-        void QueryableNetstringsDeserializer::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, int32_t &v) {
-            m_deserializer->read(fourByteID, oneByteID, longName, shortName, v);
+        void QueryableNetstringsDeserializer::read(const uint32_t &id, const string &longName, const string &shortName, int32_t &v) {
+            m_deserializer->read(id, longName, shortName, v);
         }
 
-        void QueryableNetstringsDeserializer::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, uint32_t &v) {
-            m_deserializer->read(fourByteID, oneByteID, longName, shortName, v);
+        void QueryableNetstringsDeserializer::read(const uint32_t &id, const string &longName, const string &shortName, uint32_t &v) {
+            m_deserializer->read(id, longName, shortName, v);
         }
 
-        void QueryableNetstringsDeserializer::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, int64_t &v) {
-            m_deserializer->read(fourByteID, oneByteID, longName, shortName, v);
+        void QueryableNetstringsDeserializer::read(const uint32_t &id, const string &longName, const string &shortName, int64_t &v) {
+            m_deserializer->read(id, longName, shortName, v);
         }
 
-        void QueryableNetstringsDeserializer::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, uint64_t &v) {
-            m_deserializer->read(fourByteID, oneByteID, longName, shortName, v);
+        void QueryableNetstringsDeserializer::read(const uint32_t &id, const string &longName, const string &shortName, uint64_t &v) {
+            m_deserializer->read(id, longName, shortName, v);
         }
 
-        void QueryableNetstringsDeserializer::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, float &v) {
-            m_deserializer->read(fourByteID, oneByteID, longName, shortName, v);
+        void QueryableNetstringsDeserializer::read(const uint32_t &id, const string &longName, const string &shortName, float &v) {
+            m_deserializer->read(id, longName, shortName, v);
         }
 
-        void QueryableNetstringsDeserializer::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, double &v) {
-            m_deserializer->read(fourByteID, oneByteID, longName, shortName, v);
+        void QueryableNetstringsDeserializer::read(const uint32_t &id, const string &longName, const string &shortName, double &v) {
+            m_deserializer->read(id, longName, shortName, v);
         }
 
-        void QueryableNetstringsDeserializer::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, string &v) {
-            m_deserializer->read(fourByteID, oneByteID, longName, shortName, v);
+        void QueryableNetstringsDeserializer::read(const uint32_t &id, const string &longName, const string &shortName, string &v) {
+            m_deserializer->read(id, longName, shortName, v);
         }
 
-        void QueryableNetstringsDeserializer::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, void *data, const uint32_t &size) {
-            m_deserializer->read(fourByteID, oneByteID, longName, shortName, data, size);
+        void QueryableNetstringsDeserializer::read(const uint32_t &id, const string &longName, const string &shortName, void *data, const uint32_t &size) {
+            m_deserializer->read(id, longName, shortName, data, size);
         }
     }
 } // odcore::base

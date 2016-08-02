@@ -426,16 +426,8 @@ namespace odcore {
 
         void TimeStamp::accept(Visitor &v) {
             v.beginVisit();
-            v.visit(0,
-                    1,
-                    "TimeStamp.seconds",
-                    "seconds",
-                    m_seconds);
-            v.visit(0,
-                    2,
-                    "TimeStamp.microseconds",
-                    "microseconds",
-                    m_microseconds);
+            v.visit(1, "TimeStamp.seconds", "seconds", m_seconds);
+            v.visit(2, "TimeStamp.microseconds", "microseconds", m_microseconds);
             v.endVisit();
         }
 

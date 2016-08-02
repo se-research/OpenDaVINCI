@@ -59,12 +59,11 @@ message odcore.data.reflection.AbstractField [id = 70] {
         SERIALIZABLE_T      = 53,
         NON_PRIMITIVE_END   = 54,
     };
-    uint32 longFieldIdentifier [ id = 1 ];
-    uint8 shortFieldIdentifier [ id = 2 ];
-    string longFieldName [ id = 3 ];
-    string shortFieldName [ id = 4 ];
-    FIELDDATATYPE fieldDataType [ id = 5 ];
-    int8 size [ default = -1, id = 6 ];
+    uint32 fieldIdentifier [ id = 1 ];
+    string longFieldName [ id = 2 ];
+    string shortFieldName [ id = 3 ];
+    FIELDDATATYPE fieldDataType [ id = 4 ];
+    int8 size [ default = -1, id = 5 ];
 }
 
 

@@ -407,8 +407,8 @@ namespace odcore {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, Serializable &v) {
-            map<uint32_t, streampos>::iterator it = m_values.find( (oneByteID > 0 ? oneByteID : fourByteID) );
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, Serializable &v) {
+            map<uint32_t, streampos>::iterator it = m_values.find(id);
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
@@ -423,8 +423,8 @@ namespace odcore {
             }
         }
 
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, bool &v) {
-            map<uint32_t, streampos>::iterator it = m_values.find( (oneByteID > 0 ? oneByteID : fourByteID) );
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, bool &v) {
+            map<uint32_t, streampos>::iterator it = m_values.find(id);
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
@@ -432,8 +432,8 @@ namespace odcore {
             }
         }
 
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, char &v) {
-            map<uint32_t, streampos>::iterator it = m_values.find( (oneByteID > 0 ? oneByteID : fourByteID) );
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, char &v) {
+            map<uint32_t, streampos>::iterator it = m_values.find(id);
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
@@ -441,8 +441,8 @@ namespace odcore {
             }
         }
 
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, unsigned char &v) {
-            map<uint32_t, streampos>::iterator it = m_values.find( (oneByteID > 0 ? oneByteID : fourByteID) );
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, unsigned char &v) {
+            map<uint32_t, streampos>::iterator it = m_values.find(id);
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
@@ -450,8 +450,8 @@ namespace odcore {
             }
         }
 
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, int8_t &v) {
-            map<uint32_t, streampos>::iterator it = m_values.find( (oneByteID > 0 ? oneByteID : fourByteID) );
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, int8_t &v) {
+            map<uint32_t, streampos>::iterator it = m_values.find(id);
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
@@ -459,8 +459,8 @@ namespace odcore {
             }
         }
 
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, int16_t &v) {
-            map<uint32_t, streampos>::iterator it = m_values.find( (oneByteID > 0 ? oneByteID : fourByteID) );
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, int16_t &v) {
+            map<uint32_t, streampos>::iterator it = m_values.find(id);
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
@@ -468,8 +468,8 @@ namespace odcore {
             }
         }
 
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, uint16_t &v) {
-            map<uint32_t, streampos>::iterator it = m_values.find( (oneByteID > 0 ? oneByteID : fourByteID) );
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, uint16_t &v) {
+            map<uint32_t, streampos>::iterator it = m_values.find(id);
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
@@ -477,8 +477,8 @@ namespace odcore {
             }
         }
 
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, int32_t &v) {
-            map<uint32_t, streampos>::iterator it = m_values.find( (oneByteID > 0 ? oneByteID : fourByteID) );
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, int32_t &v) {
+            map<uint32_t, streampos>::iterator it = m_values.find(id);
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
@@ -486,8 +486,8 @@ namespace odcore {
             }
         }
 
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, uint32_t &v) {
-            map<uint32_t, streampos>::iterator it = m_values.find( (oneByteID > 0 ? oneByteID : fourByteID) );
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, uint32_t &v) {
+            map<uint32_t, streampos>::iterator it = m_values.find(id);
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
@@ -495,8 +495,8 @@ namespace odcore {
             }
         }
 
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, int64_t &v) {
-            map<uint32_t, streampos>::iterator it = m_values.find( (oneByteID > 0 ? oneByteID : fourByteID) );
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, int64_t &v) {
+            map<uint32_t, streampos>::iterator it = m_values.find(id);
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
@@ -504,8 +504,8 @@ namespace odcore {
             }
         }
 
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, uint64_t &v) {
-            map<uint32_t, streampos>::iterator it = m_values.find( (oneByteID > 0 ? oneByteID : fourByteID) );
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, uint64_t &v) {
+            map<uint32_t, streampos>::iterator it = m_values.find(id);
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
@@ -513,8 +513,8 @@ namespace odcore {
             }
         }
 
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, float &v) {
-            map<uint32_t, streampos>::iterator it = m_values.find( (oneByteID > 0 ? oneByteID : fourByteID) );
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, float &v) {
+            map<uint32_t, streampos>::iterator it = m_values.find(id);
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
@@ -522,8 +522,8 @@ namespace odcore {
             }
         }
 
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, double &v) {
-            map<uint32_t, streampos>::iterator it = m_values.find( (oneByteID > 0 ? oneByteID : fourByteID) );
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, double &v) {
+            map<uint32_t, streampos>::iterator it = m_values.find(id);
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
@@ -531,8 +531,8 @@ namespace odcore {
             }
         }
 
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, string &v) {
-            map<uint32_t, streampos>::iterator it = m_values.find( (oneByteID > 0 ? oneByteID : fourByteID) );
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, string &v) {
+            map<uint32_t, streampos>::iterator it = m_values.find(id);
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);
@@ -540,8 +540,8 @@ namespace odcore {
             }
         }
 
-        void QueryableNetstringsDeserializerABCF::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, void *data, const uint32_t &size) {
-            map<uint32_t, streampos>::iterator it = m_values.find( (oneByteID > 0 ? oneByteID : fourByteID) );
+        void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, void *data, const uint32_t &size) {
+            map<uint32_t, streampos>::iterator it = m_values.find(id);
 
             if (it != m_values.end()) {
                 m_buffer.seekg(it->second);

@@ -47,7 +47,7 @@ namespace odcore {
 
         void MessageFromVisitableVisitor::endVisit() {}
 
-        void MessageFromVisitableVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, Serializable &v) {
+        void MessageFromVisitableVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, Serializable &v) {
             try {
                 // A Serializable is replaced by a generic message representation. Thus,
                 // try to cast v into a Visitable and visit it using a fresh Message.
@@ -57,8 +57,7 @@ namespace odcore {
 
                 // Store the generic message representation.
                 Field<Message> *f = new Field<Message>(msgFromVisitableVisitor.getMessage());
-                f->setLongFieldIdentifier(longId);
-                f->setShortFieldIdentifier(shortId);
+                f->setFieldIdentifier(id);
                 f->setLongFieldName(longName);
                 f->setShortFieldName(shortName);
                 f->setFieldDataType(odcore::data::reflection::AbstractField::SERIALIZABLE_T);
@@ -69,10 +68,9 @@ namespace odcore {
             }
         }
 
-        void MessageFromVisitableVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, bool &v) {
+        void MessageFromVisitableVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, bool &v) {
             Field<bool> *f = new Field<bool>(v);
-            f->setLongFieldIdentifier(longId);
-            f->setShortFieldIdentifier(shortId);
+            f->setFieldIdentifier(id);
             f->setLongFieldName(longName);
             f->setShortFieldName(shortName);
             f->setFieldDataType(odcore::data::reflection::AbstractField::BOOL_T);
@@ -80,10 +78,9 @@ namespace odcore {
             m_message.addField(std::shared_ptr<AbstractField>(f));
         }
 
-        void MessageFromVisitableVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, char &v) {
+        void MessageFromVisitableVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, char &v) {
             Field<char> *f = new Field<char>(v);
-            f->setLongFieldIdentifier(longId);
-            f->setShortFieldIdentifier(shortId);
+            f->setFieldIdentifier(id);
             f->setLongFieldName(longName);
             f->setShortFieldName(shortName);
             f->setFieldDataType(odcore::data::reflection::AbstractField::CHAR_T);
@@ -91,10 +88,9 @@ namespace odcore {
             m_message.addField(std::shared_ptr<AbstractField>(f));
         }
 
-        void MessageFromVisitableVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, unsigned char &v) {
+        void MessageFromVisitableVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, unsigned char &v) {
             Field<unsigned char> *f = new Field<unsigned char>(v);
-            f->setLongFieldIdentifier(longId);
-            f->setShortFieldIdentifier(shortId);
+            f->setFieldIdentifier(id);
             f->setLongFieldName(longName);
             f->setShortFieldName(shortName);
             f->setFieldDataType(odcore::data::reflection::AbstractField::UCHAR_T);
@@ -102,10 +98,9 @@ namespace odcore {
             m_message.addField(std::shared_ptr<AbstractField>(f));
         }
 
-        void MessageFromVisitableVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int8_t &v) {
+        void MessageFromVisitableVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, int8_t &v) {
             Field<int8_t> *f = new Field<int8_t>(v);
-            f->setLongFieldIdentifier(longId);
-            f->setShortFieldIdentifier(shortId);
+            f->setFieldIdentifier(id);
             f->setLongFieldName(longName);
             f->setShortFieldName(shortName);
             f->setFieldDataType(odcore::data::reflection::AbstractField::INT8_T);
@@ -113,10 +108,9 @@ namespace odcore {
             m_message.addField(std::shared_ptr<AbstractField>(f));
         }
 
-        void MessageFromVisitableVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int16_t &v) {
+        void MessageFromVisitableVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, int16_t &v) {
             Field<int16_t> *f = new Field<int16_t>(v);
-            f->setLongFieldIdentifier(longId);
-            f->setShortFieldIdentifier(shortId);
+            f->setFieldIdentifier(id);
             f->setLongFieldName(longName);
             f->setShortFieldName(shortName);
             f->setFieldDataType(odcore::data::reflection::AbstractField::INT16_T);
@@ -124,10 +118,9 @@ namespace odcore {
             m_message.addField(std::shared_ptr<AbstractField>(f));
         }
 
-        void MessageFromVisitableVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint16_t &v) {
+        void MessageFromVisitableVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, uint16_t &v) {
             Field<uint16_t> *f = new Field<uint16_t>(v);
-            f->setLongFieldIdentifier(longId);
-            f->setShortFieldIdentifier(shortId);
+            f->setFieldIdentifier(id);
             f->setLongFieldName(longName);
             f->setShortFieldName(shortName);
             f->setFieldDataType(odcore::data::reflection::AbstractField::UINT16_T);
@@ -135,10 +128,9 @@ namespace odcore {
             m_message.addField(std::shared_ptr<AbstractField>(f));
         }
 
-        void MessageFromVisitableVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int32_t &v) {
+        void MessageFromVisitableVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, int32_t &v) {
             Field<int32_t> *f = new Field<int32_t>(v);
-            f->setLongFieldIdentifier(longId);
-            f->setShortFieldIdentifier(shortId);
+            f->setFieldIdentifier(id);
             f->setLongFieldName(longName);
             f->setShortFieldName(shortName);
             f->setFieldDataType(odcore::data::reflection::AbstractField::INT32_T);
@@ -146,10 +138,9 @@ namespace odcore {
             m_message.addField(std::shared_ptr<AbstractField>(f));
         }
 
-        void MessageFromVisitableVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint32_t &v) {
+        void MessageFromVisitableVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, uint32_t &v) {
             Field<uint32_t> *f = new Field<uint32_t>(v);
-            f->setLongFieldIdentifier(longId);
-            f->setShortFieldIdentifier(shortId);
+            f->setFieldIdentifier(id);
             f->setLongFieldName(longName);
             f->setShortFieldName(shortName);
             f->setFieldDataType(odcore::data::reflection::AbstractField::UINT32_T);
@@ -157,10 +148,9 @@ namespace odcore {
             m_message.addField(std::shared_ptr<AbstractField>(f));
         }
 
-        void MessageFromVisitableVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int64_t &v) {
+        void MessageFromVisitableVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, int64_t &v) {
             Field<int64_t> *f = new Field<int64_t>(v);
-            f->setLongFieldIdentifier(longId);
-            f->setShortFieldIdentifier(shortId);
+            f->setFieldIdentifier(id);
             f->setLongFieldName(longName);
             f->setShortFieldName(shortName);
             f->setFieldDataType(odcore::data::reflection::AbstractField::INT64_T);
@@ -168,10 +158,9 @@ namespace odcore {
             m_message.addField(std::shared_ptr<AbstractField>(f));
         }
 
-        void MessageFromVisitableVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint64_t &v) {
+        void MessageFromVisitableVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, uint64_t &v) {
             Field<uint64_t> *f = new Field<uint64_t>(v);
-            f->setLongFieldIdentifier(longId);
-            f->setShortFieldIdentifier(shortId);
+            f->setFieldIdentifier(id);
             f->setLongFieldName(longName);
             f->setShortFieldName(shortName);
             f->setFieldDataType(odcore::data::reflection::AbstractField::UINT64_T);
@@ -179,10 +168,9 @@ namespace odcore {
             m_message.addField(std::shared_ptr<AbstractField>(f));
         }
 
-        void MessageFromVisitableVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, float &v) {
+        void MessageFromVisitableVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, float &v) {
             Field<float> *f = new Field<float>(v);
-            f->setLongFieldIdentifier(longId);
-            f->setShortFieldIdentifier(shortId);
+            f->setFieldIdentifier(id);
             f->setLongFieldName(longName);
             f->setShortFieldName(shortName);
             f->setFieldDataType(odcore::data::reflection::AbstractField::FLOAT_T);
@@ -190,10 +178,9 @@ namespace odcore {
             m_message.addField(std::shared_ptr<AbstractField>(f));
         }
 
-        void MessageFromVisitableVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, double &v) {
+        void MessageFromVisitableVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, double &v) {
             Field<double> *f = new Field<double>(v);
-            f->setLongFieldIdentifier(longId);
-            f->setShortFieldIdentifier(shortId);
+            f->setFieldIdentifier(id);
             f->setLongFieldName(longName);
             f->setShortFieldName(shortName);
             f->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
@@ -201,10 +188,9 @@ namespace odcore {
             m_message.addField(std::shared_ptr<AbstractField>(f));
         }
 
-        void MessageFromVisitableVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, string &v) {
+        void MessageFromVisitableVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, string &v) {
             Field<string> *f = new Field<string>(v);
-            f->setLongFieldIdentifier(longId);
-            f->setShortFieldIdentifier(shortId);
+            f->setFieldIdentifier(id);
             f->setLongFieldName(longName);
             f->setShortFieldName(shortName);
             f->setFieldDataType(odcore::data::reflection::AbstractField::STRING_T);
@@ -212,7 +198,7 @@ namespace odcore {
             m_message.addField(std::shared_ptr<AbstractField>(f));
         }
 
-        void MessageFromVisitableVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, void *data, const uint32_t &size) {
+        void MessageFromVisitableVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, void *data, const uint32_t &size) {
             if (data != NULL) {
                 // Copy the data.
                 char* ptr = static_cast<char*>(malloc(size));
@@ -220,8 +206,7 @@ namespace odcore {
 
                 // Create a field.
                 Field<std::shared_ptr<char> > *f = new Field<std::shared_ptr<char> >(std::shared_ptr<char>(ptr));
-                f->setLongFieldIdentifier(longId);
-                f->setShortFieldIdentifier(shortId);
+                f->setFieldIdentifier(id);
                 f->setLongFieldName(longName);
                 f->setShortFieldName(shortName);
                 f->setFieldDataType(odcore::data::reflection::AbstractField::DATA_T);

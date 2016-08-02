@@ -497,64 +497,64 @@ class Serializable;
 
         ///////////////////////////////////////////////////////////////////////
 
-        void ProtoDeserializer::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, Serializable &v) {
-            read( (oneByteID > 0 ? oneByteID : fourByteID) , v);
+        void ProtoDeserializer::read(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, Serializable &v) {
+            read(id, v);
         }
 
-        void ProtoDeserializer::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, bool &v) {
-            read( (oneByteID > 0 ? oneByteID : fourByteID) , v);
+        void ProtoDeserializer::read(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, bool &v) {
+            read(id, v);
         }
 
-        void ProtoDeserializer::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, char &v) {
-            read( (oneByteID > 0 ? oneByteID : fourByteID) , v);
+        void ProtoDeserializer::read(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, char &v) {
+            read(id, v);
         }
 
-        void ProtoDeserializer::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, unsigned char &v) {
-            read( (oneByteID > 0 ? oneByteID : fourByteID) , v);
+        void ProtoDeserializer::read(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, unsigned char &v) {
+            read(id, v);
         }
 
-        void ProtoDeserializer::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, int8_t &v) {
-            read( (oneByteID > 0 ? oneByteID : fourByteID) , v);
+        void ProtoDeserializer::read(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, int8_t &v) {
+            read(id, v);
         }
 
-        void ProtoDeserializer::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, int16_t &v) {
-            read( (oneByteID > 0 ? oneByteID : fourByteID) , v);
+        void ProtoDeserializer::read(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, int16_t &v) {
+            read(id, v);
         }
 
-        void ProtoDeserializer::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, uint16_t &v) {
-            read( (oneByteID > 0 ? oneByteID : fourByteID) , v);
+        void ProtoDeserializer::read(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, uint16_t &v) {
+            read(id, v);
         }
 
-        void ProtoDeserializer::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, int32_t &v) {
-            read( (oneByteID > 0 ? oneByteID : fourByteID) , v);
+        void ProtoDeserializer::read(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, int32_t &v) {
+            read(id, v);
         }
 
-        void ProtoDeserializer::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, uint32_t &v) {
-            read( (oneByteID > 0 ? oneByteID : fourByteID) , v);
+        void ProtoDeserializer::read(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, uint32_t &v) {
+            read(id, v);
         }
 
-        void ProtoDeserializer::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, int64_t &v) {
-            read( (oneByteID > 0 ? oneByteID : fourByteID) , v);
+        void ProtoDeserializer::read(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, int64_t &v) {
+            read(id, v);
         }
 
-        void ProtoDeserializer::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, uint64_t &v) {
-            read( (oneByteID > 0 ? oneByteID : fourByteID) , v);
+        void ProtoDeserializer::read(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, uint64_t &v) {
+            read(id, v);
         }
 
-        void ProtoDeserializer::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, float &v) {
-            read( (oneByteID > 0 ? oneByteID : fourByteID) , v);
+        void ProtoDeserializer::read(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, float &v) {
+            read(id, v);
         }
 
-        void ProtoDeserializer::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, double &v) {
-            read( (oneByteID > 0 ? oneByteID : fourByteID) , v);
+        void ProtoDeserializer::read(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, double &v) {
+            read(id, v);
         }
 
-        void ProtoDeserializer::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, string &v) {
-            read( (oneByteID > 0 ? oneByteID : fourByteID) , v);
+        void ProtoDeserializer::read(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, string &v) {
+            read(id, v);
         }
 
-        void ProtoDeserializer::read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, void *data, const uint32_t &size) {
-            read( (oneByteID > 0 ? oneByteID : fourByteID) , data, size);
+        void ProtoDeserializer::read(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, void *data, const uint32_t &size) {
+            read(id, data, size);
         }
 
     }

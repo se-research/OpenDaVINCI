@@ -264,64 +264,64 @@ class Serializable;
 
         ///////////////////////////////////////////////////////////////////////
 
-        void ProtoSerializer::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const Serializable &v) {
-            write( (oneByteID > 0 ? oneByteID : fourByteID) , v);
+        void ProtoSerializer::write(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, const Serializable &v) {
+            write(id, v);
         }
 
-        void ProtoSerializer::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const bool &v) {
-            write( (oneByteID > 0 ? oneByteID : fourByteID) , v);
+        void ProtoSerializer::write(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, const bool &v) {
+            write(id, v);
         }
 
-        void ProtoSerializer::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const char &v) {
-            write( (oneByteID > 0 ? oneByteID : fourByteID) , v);
+        void ProtoSerializer::write(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, const char &v) {
+            write(id, v);
         }
 
-        void ProtoSerializer::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const unsigned char &v) {
-            write( (oneByteID > 0 ? oneByteID : fourByteID) , v);
+        void ProtoSerializer::write(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, const unsigned char &v) {
+            write(id, v);
         }
 
-        void ProtoSerializer::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const int8_t &v) {
-            write( (oneByteID > 0 ? oneByteID : fourByteID) , v);
+        void ProtoSerializer::write(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, const int8_t &v) {
+            write(id, v);
         }
 
-        void ProtoSerializer::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const int16_t &v) {
-            write( (oneByteID > 0 ? oneByteID : fourByteID) , v);
+        void ProtoSerializer::write(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, const int16_t &v) {
+            write(id, v);
         }
 
-        void ProtoSerializer::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const uint16_t &v) {
-            write( (oneByteID > 0 ? oneByteID : fourByteID) , v);
+        void ProtoSerializer::write(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, const uint16_t &v) {
+            write(id, v);
         }
 
-        void ProtoSerializer::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const int32_t &v) {
-            write( (oneByteID > 0 ? oneByteID : fourByteID) , v);
+        void ProtoSerializer::write(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, const int32_t &v) {
+            write(id, v);
         }
 
-        void ProtoSerializer::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const uint32_t &v) {
-            write( (oneByteID > 0 ? oneByteID : fourByteID) , v);
+        void ProtoSerializer::write(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, const uint32_t &v) {
+            write(id, v);
         }
 
-        void ProtoSerializer::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const int64_t &v) {
-            write( (oneByteID > 0 ? oneByteID : fourByteID) , v);
+        void ProtoSerializer::write(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, const int64_t &v) {
+            write(id, v);
         }
 
-        void ProtoSerializer::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const uint64_t &v) {
-            write( (oneByteID > 0 ? oneByteID : fourByteID) , v);
+        void ProtoSerializer::write(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, const uint64_t &v) {
+            write(id, v);
         }
 
-        void ProtoSerializer::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const float &v) {
-            write( (oneByteID > 0 ? oneByteID : fourByteID) , v);
+        void ProtoSerializer::write(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, const float &v) {
+            write(id, v);
         }
 
-        void ProtoSerializer::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const double &v) {
-            write( (oneByteID > 0 ? oneByteID : fourByteID) , v);
+        void ProtoSerializer::write(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, const double &v) {
+            write(id, v);
         }
 
-        void ProtoSerializer::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const string &v) {
-            write( (oneByteID > 0 ? oneByteID : fourByteID) , v);
+        void ProtoSerializer::write(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, const string &v) {
+            write(id, v);
         }
 
-        void ProtoSerializer::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const void *data, const uint32_t &size) {
-            write( (oneByteID > 0 ? oneByteID : fourByteID) , data, size);
+        void ProtoSerializer::write(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, const void *data, const uint32_t &size) {
+            write(id, data, size);
         }
 
     }

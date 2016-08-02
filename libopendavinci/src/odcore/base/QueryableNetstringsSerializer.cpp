@@ -175,64 +175,64 @@ class Serializable;
 
         ///////////////////////////////////////////////////////////////////////
 
-        void QueryableNetstringsSerializer::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const Serializable &v) {
-            m_serializer->write(fourByteID, oneByteID, longName, shortName, v);
+        void QueryableNetstringsSerializer::write(const uint32_t &id, const string &longName, const string &shortName, const Serializable &v) {
+            m_serializer->write(id, longName, shortName, v);
         }
 
-        void QueryableNetstringsSerializer::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const bool &v) {
-            m_serializer->write(fourByteID, oneByteID, longName, shortName, v);
+        void QueryableNetstringsSerializer::write(const uint32_t &id, const string &longName, const string &shortName, const bool &v) {
+            m_serializer->write(id, longName, shortName, v);
         }
 
-        void QueryableNetstringsSerializer::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const char &v) {
-            m_serializer->write(fourByteID, oneByteID, longName, shortName, v);
+        void QueryableNetstringsSerializer::write(const uint32_t &id, const string &longName, const string &shortName, const char &v) {
+            m_serializer->write(id, longName, shortName, v);
         }
 
-        void QueryableNetstringsSerializer::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const unsigned char &v) {
-            m_serializer->write(fourByteID, oneByteID, longName, shortName, v);
+        void QueryableNetstringsSerializer::write(const uint32_t &id, const string &longName, const string &shortName, const unsigned char &v) {
+            m_serializer->write(id, longName, shortName, v);
         }
 
-        void QueryableNetstringsSerializer::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const int8_t &v) {
-            m_serializer->write(fourByteID, oneByteID, longName, shortName, v);
+        void QueryableNetstringsSerializer::write(const uint32_t &id, const string &longName, const string &shortName, const int8_t &v) {
+            m_serializer->write(id, longName, shortName, v);
         }
 
-        void QueryableNetstringsSerializer::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const int16_t &v) {
-            m_serializer->write(fourByteID, oneByteID, longName, shortName, v);
+        void QueryableNetstringsSerializer::write(const uint32_t &id, const string &longName, const string &shortName, const int16_t &v) {
+            m_serializer->write(id, longName, shortName, v);
         }
 
-        void QueryableNetstringsSerializer::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const uint16_t &v) {
-            m_serializer->write(fourByteID, oneByteID, longName, shortName, v);
+        void QueryableNetstringsSerializer::write(const uint32_t &id, const string &longName, const string &shortName, const uint16_t &v) {
+            m_serializer->write(id, longName, shortName, v);
         }
 
-        void QueryableNetstringsSerializer::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const int32_t &v) {
-            m_serializer->write(fourByteID, oneByteID, longName, shortName, v);
+        void QueryableNetstringsSerializer::write(const uint32_t &id, const string &longName, const string &shortName, const int32_t &v) {
+            m_serializer->write(id, longName, shortName, v);
         }
 
-        void QueryableNetstringsSerializer::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const uint32_t &v) {
-            m_serializer->write(fourByteID, oneByteID, longName, shortName, v);
+        void QueryableNetstringsSerializer::write(const uint32_t &id, const string &longName, const string &shortName, const uint32_t &v) {
+            m_serializer->write(id, longName, shortName, v);
         }
 
-        void QueryableNetstringsSerializer::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const int64_t &v) {
-            m_serializer->write(fourByteID, oneByteID, longName, shortName, v);
+        void QueryableNetstringsSerializer::write(const uint32_t &id, const string &longName, const string &shortName, const int64_t &v) {
+            m_serializer->write(id, longName, shortName, v);
         }
 
-        void QueryableNetstringsSerializer::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const uint64_t &v) {
-            m_serializer->write(fourByteID, oneByteID, longName, shortName, v);
+        void QueryableNetstringsSerializer::write(const uint32_t &id, const string &longName, const string &shortName, const uint64_t &v) {
+            m_serializer->write(id, longName, shortName, v);
         }
 
-        void QueryableNetstringsSerializer::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const float &v) {
-            m_serializer->write(fourByteID, oneByteID, longName, shortName, v);
+        void QueryableNetstringsSerializer::write(const uint32_t &id, const string &longName, const string &shortName, const float &v) {
+            m_serializer->write(id, longName, shortName, v);
         }
 
-        void QueryableNetstringsSerializer::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const double &v) {
-            m_serializer->write(fourByteID, oneByteID, longName, shortName, v);
+        void QueryableNetstringsSerializer::write(const uint32_t &id, const string &longName, const string &shortName, const double &v) {
+            m_serializer->write(id, longName, shortName, v);
         }
 
-        void QueryableNetstringsSerializer::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const string &v) {
-            m_serializer->write(fourByteID, oneByteID, longName, shortName, v);
+        void QueryableNetstringsSerializer::write(const uint32_t &id, const string &longName, const string &shortName, const string &v) {
+            m_serializer->write(id, longName, shortName, v);
         }
 
-        void QueryableNetstringsSerializer::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, const void *data, const uint32_t &size) {
-            m_serializer->write(fourByteID, oneByteID, longName, shortName, data, size);
+        void QueryableNetstringsSerializer::write(const uint32_t &id, const string &longName, const string &shortName, const void *data, const uint32_t &size) {
+            m_serializer->write(id, longName, shortName, data, size);
         }
     }
 } // odcore::base

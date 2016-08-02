@@ -314,168 +314,153 @@ namespace odcore {
                 /**
                  * This method deserializes a Serializable.
                  *
-                 * @param fourByteID Identifier for the value to be deserialized.
-                 * @param oneByteID Identifier for the value to be deserialized.
+                 * @param id Identifier for the value to be deserialized.
                  * @param longName Long string name of the field.
                  * @param shortName Short string name of the field.
                  * @param s Serializable to be deserialized.
                  */
-                virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, Serializable &s) = 0;
+                virtual void read(const uint32_t &id, const string &longName, const string &shortName, Serializable &s) = 0;
 
                 /**
                  * This method deserializes a bool.
                  *
-                 * @param fourByteID Identifier for the value to be deserialized.
-                 * @param oneByteID Identifier for the value to be deserialized.
+                 * @param id Identifier for the value to be deserialized.
                  * @param longName Long string name of the field.
                  * @param shortName Short string name of the field.
                  * @param b Bool to be deserialized.
                  */
-                virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, bool &b) = 0;
+                virtual void read(const uint32_t &id, const string &longName, const string &shortName, bool &b) = 0;
 
                 /**
                  * This method deserializes a char.
                  *
-                 * @param fourByteID Identifier for the value to be deserialized.
-                 * @param oneByteID Identifier for the value to be deserialized.
+                 * @param id Identifier for the value to be deserialized.
                  * @param longName Long string name of the field.
                  * @param shortName Short string name of the field.
                  * @param c Char to be deserialized.
                  */
-                virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, char &c) = 0;
+                virtual void read(const uint32_t &id, const string &longName, const string &shortName, char &c) = 0;
 
                 /**
                  * This method deserializes an unsigned char.
                  *
-                 * @param fourByteID Identifier for the value to be deserialized.
-                 * @param oneByteID Identifier for the value to be deserialized.
+                 * @param id Identifier for the value to be deserialized.
                  * @param longName Long string name of the field.
                  * @param shortName Short string name of the field.
                  * @param uc Unsigned char to be deserialized.
                  */
-                virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, unsigned char &uc) = 0;
+                virtual void read(const uint32_t &id, const string &longName, const string &shortName, unsigned char &uc) = 0;
 
                 /**
                  * This method deserializes an int.
                  *
-                 * @param fourByteID Identifier for the value to be deserialized.
-                 * @param oneByteID Identifier for the value to be deserialized.
+                 * @param id Identifier for the value to be deserialized.
                  * @param longName Long string name of the field.
                  * @param shortName Short string name of the field.
                  * @param i Int to be deserialized.
                  */
-                virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, int8_t &i) = 0;
+                virtual void read(const uint32_t &id, const string &longName, const string &shortName, int8_t &i) = 0;
 
                 /**
                  * This method deserializes an int.
                  *
-                 * @param fourByteID Identifier for the value to be deserialized.
-                 * @param oneByteID Identifier for the value to be deserialized.
+                 * @param id Identifier for the value to be deserialized.
                  * @param longName Long string name of the field.
                  * @param shortName Short string name of the field.
                  * @param i Int to be deserialized.
                  */
-                virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, int16_t &i) = 0;
+                virtual void read(const uint32_t &id, const string &longName, const string &shortName, int16_t &i) = 0;
 
                 /**
                  * This method deserializes an uint32_t.
                  *
-                 * @param fourByteID Identifier for the value to be deserialized.
-                 * @param oneByteID Identifier for the value to be deserialized.
+                 * @param id Identifier for the value to be deserialized.
                  * @param longName Long string name of the field.
                  * @param shortName Short string name of the field.
                  * @param ui Unsigned int32_t to be deserialized.
                  */
-                virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, uint16_t &ui) = 0;
+                virtual void read(const uint32_t &id, const string &longName, const string &shortName, uint16_t &ui) = 0;
 
                 /**
                  * This method deserializes an int.
                  *
-                 * @param fourByteID Identifier for the value to be deserialized.
-                 * @param oneByteID Identifier for the value to be deserialized.
+                 * @param id Identifier for the value to be deserialized.
                  * @param longName Long string name of the field.
                  * @param shortName Short string name of the field.
                  * @param i Int to be deserialized.
                  */
-                virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, int32_t &i) = 0;
+                virtual void read(const uint32_t &id, const string &longName, const string &shortName, int32_t &i) = 0;
 
                 /**
                  * This method deserializes an uint32_t.
                  *
-                 * @param fourByteID Identifier for the value to be deserialized.
-                 * @param oneByteID Identifier for the value to be deserialized.
+                 * @param id Identifier for the value to be deserialized.
                  * @param longName Long string name of the field.
                  * @param shortName Short string name of the field.
                  * @param ui Unsigned int32_t to be deserialized.
                  */
-                virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, uint32_t &ui) = 0;
+                virtual void read(const uint32_t &id, const string &longName, const string &shortName, uint32_t &ui) = 0;
 
                 /**
                  * This method deserializes an int.
                  *
-                 * @param fourByteID Identifier for the value to be deserialized.
-                 * @param oneByteID Identifier for the value to be deserialized.
+                 * @param id Identifier for the value to be deserialized.
                  * @param longName Long string name of the field.
                  * @param shortName Short string name of the field.
                  * @param i Int to be deserialized.
                  */
-                virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, int64_t &i) = 0;
+                virtual void read(const uint32_t &id, const string &longName, const string &shortName, int64_t &i) = 0;
 
                 /**
                  * This method deserializes an uint32_t.
                  *
-                 * @param fourByteID Identifier for the value to be deserialized.
-                 * @param oneByteID Identifier for the value to be deserialized.
+                 * @param id Identifier for the value to be deserialized.
                  * @param longName Long string name of the field.
                  * @param shortName Short string name of the field.
                  * @param ui Unsigned int32_t to be deserialized.
                  */
-                virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, uint64_t &ui) = 0;
+                virtual void read(const uint32_t &id, const string &longName, const string &shortName, uint64_t &ui) = 0;
 
                 /**
                  * This method deserializes a float.
                  *
-                 * @param fourByteID Identifier for the value to be deserialized.
-                 * @param oneByteID Identifier for the value to be deserialized.
+                 * @param id Identifier for the value to be deserialized.
                  * @param longName Long string name of the field.
                  * @param shortName Short string name of the field.
                  * @param f Float to be deserialized.
                  */
-                virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, float &f) = 0;
+                virtual void read(const uint32_t &id, const string &longName, const string &shortName, float &f) = 0;
 
                 /**
                  * This method deserializes a double.
                  *
-                 * @param fourByteID Identifier for the value to be deserialized.
-                 * @param oneByteID Identifier for the value to be deserialized.
+                 * @param id Identifier for the value to be deserialized.
                  * @param longName Long string name of the field.
                  * @param shortName Short string name of the field.
                  * @param d Double to be deserialized.
                  */
-                virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, double &d) = 0;
+                virtual void read(const uint32_t &id, const string &longName, const string &shortName, double &d) = 0;
 
                 /**
                  * This method deserializes a string.
                  *
-                 * @param fourByteID Identifier for the value to be deserialized.
-                 * @param oneByteID Identifier for the value to be deserialized.
+                 * @param id Identifier for the value to be deserialized.
                  * @param longName Long string name of the field.
                  * @param shortName Short string name of the field.
                  * @param s String to be deserialized.
                  */
-                virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, string &s) = 0;
+                virtual void read(const uint32_t &id, const string &longName, const string &shortName, string &s) = 0;
 
                 /**
                  * This method deserializes undefined data of length size.
                  *
-                 * @param fourByteID Identifier for the value to be deserialized.
-                 * @param oneByteID Identifier for the value to be deserialized.
+                 * @param id Identifier for the value to be deserialized.
                  * @param longName Long string name of the field.
                  * @param shortName Short string name of the field.
                  * @param data Data to be deserialized.
                  * @param size Length of the data to be deserialized.
                  */
-                virtual void read(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &longName, const string &shortName, void *data, const uint32_t &size) = 0;
+                virtual void read(const uint32_t &id, const string &longName, const string &shortName, void *data, const uint32_t &size) = 0;
 
             public:
                 /**

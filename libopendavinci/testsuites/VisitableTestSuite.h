@@ -162,11 +162,11 @@ class MyVisitable : public Serializable, public Visitable {
 
         virtual void accept(odcore::base::Visitor &v) {
             v.beginVisit();
-            v.visit(0, 1, "MyVisitable::att1", "att1", m_att1);
-            v.visit(0, 2, "MyVisitable::att2", "att2", m_att2);
-            v.visit(0, 3, "MyVisitable::att3", "att3", m_att3);
-            v.visit(0, 4, "MyVisitable::att4", "att4", m_att4);
-            v.visit(0, 5, "MyVisitable::att5", "att5", m_att5);
+            v.visit(1, "MyVisitable::att1", "att1", m_att1);
+            v.visit(2, "MyVisitable::att2", "att2", m_att2);
+            v.visit(3, "MyVisitable::att3", "att3", m_att3);
+            v.visit(4, "MyVisitable::att4", "att4", m_att4);
+            v.visit(5, "MyVisitable::att5", "att5", m_att5);
             v.endVisit();
         }
 
@@ -185,64 +185,64 @@ class MyPrintVisitor : public Visitor {
 
         virtual void endVisit() {}
 
-        virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, Serializable &v) {
-            cout << longId << ", " << (int)shortId << ", " << longName << ", " << shortName << ", " << v << endl;
+        virtual void visit(const uint32_t &id, const string &longName, const string &shortName, Serializable &v) {
+            cout << (int)id << ", " << longName << ", " << shortName << ", " << v << endl;
         }
 
-        virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, bool &v) {
-            cout << longId << ", " << (int)shortId << ", " << longName << ", " << shortName << ", " << v << endl;
+        virtual void visit(const uint32_t &id, const string &longName, const string &shortName, bool &v) {
+            cout << (int)id << ", " << longName << ", " << shortName << ", " << v << endl;
         }
 
-        virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, char &v) {
-            cout << longId << ", " << (int)shortId << ", " << longName << ", " << shortName << ", " << v << endl;
+        virtual void visit(const uint32_t &id, const string &longName, const string &shortName, char &v) {
+            cout << (int)id << ", " << longName << ", " << shortName << ", " << v << endl;
         }
 
-        virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, unsigned char &v) {
-            cout << longId << ", " << (int)shortId << ", " << longName << ", " << shortName << ", " << v << endl;
+        virtual void visit(const uint32_t &id, const string &longName, const string &shortName, unsigned char &v) {
+            cout << (int)id << ", " << longName << ", " << shortName << ", " << v << endl;
         }
 
-        virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int8_t &v) {
-            cout << longId << ", " << (int)shortId << ", " << longName << ", " << shortName << ", " << v << endl;
+        virtual void visit(const uint32_t &id, const string &longName, const string &shortName, int8_t &v) {
+            cout << (int)id << ", " << longName << ", " << shortName << ", " << v << endl;
         }
 
-        virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int16_t &v) {
-            cout << longId << ", " << (int)shortId << ", " << longName << ", " << shortName << ", " << v << endl;
+        virtual void visit(const uint32_t &id, const string &longName, const string &shortName, int16_t &v) {
+            cout << (int)id << ", " << longName << ", " << shortName << ", " << v << endl;
         }
 
-        virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint16_t &v) {
-            cout << longId << ", " << (int)shortId << ", " << longName << ", " << shortName << ", " << v << endl;
+        virtual void visit(const uint32_t &id, const string &longName, const string &shortName, uint16_t &v) {
+            cout << (int)id << ", " << longName << ", " << shortName << ", " << v << endl;
         }
 
-        virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int32_t &v) {
-            cout << longId << ", " << (int)shortId << ", " << longName << ", " << shortName << ", " << v << endl;
+        virtual void visit(const uint32_t &id, const string &longName, const string &shortName, int32_t &v) {
+            cout << (int)id << ", " << longName << ", " << shortName << ", " << v << endl;
         }
 
-        virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint32_t &v) {
-            cout << longId << ", " << (int)shortId << ", " << longName << ", " << shortName << ", " << v << endl;
+        virtual void visit(const uint32_t &id, const string &longName, const string &shortName, uint32_t &v) {
+            cout << (int)id << ", " << longName << ", " << shortName << ", " << v << endl;
         }
 
-        virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int64_t &v) {
-            cout << longId << ", " << (int)shortId << ", " << longName << ", " << shortName << ", " << v << endl;
+        virtual void visit(const uint32_t &id, const string &longName, const string &shortName, int64_t &v) {
+            cout << (int)id << ", " << longName << ", " << shortName << ", " << v << endl;
         }
 
-        virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint64_t &v) {
-            cout << longId << ", " << (int)shortId << ", " << longName << ", " << shortName << ", " << v << endl;
+        virtual void visit(const uint32_t &id, const string &longName, const string &shortName, uint64_t &v) {
+            cout << (int)id << ", " << longName << ", " << shortName << ", " << v << endl;
         }
 
-        virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, float &v) {
-            cout << longId << ", " << (int)shortId << ", " << longName << ", " << shortName << ", " << v << endl;
+        virtual void visit(const uint32_t &id, const string &longName, const string &shortName, float &v) {
+            cout << (int)id << ", " << longName << ", " << shortName << ", " << v << endl;
         }
 
-        virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, double &v) {
-            cout << longId << ", " << (int)shortId << ", " << longName << ", " << shortName << ", " << v << endl;
+        virtual void visit(const uint32_t &id, const string &longName, const string &shortName, double &v) {
+            cout << (int)id << ", " << longName << ", " << shortName << ", " << v << endl;
         }
 
-        virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, string &v) {
-            cout << longId << ", " << (int)shortId << ", " << longName << ", " << shortName << ", " << v << endl;
+        virtual void visit(const uint32_t &id, const string &longName, const string &shortName, string &v) {
+            cout << (int)id << ", " << longName << ", " << shortName << ", " << v << endl;
         }
 
-        virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, void *data, const uint32_t &size) {
-            cout << longId << ", " << (int)shortId << ", " << longName << ", " << shortName << ", " << data << ", " << size << endl;
+        virtual void visit(const uint32_t &id, const string &longName, const string &shortName, void *data, const uint32_t &size) {
+            cout << (int)id << ", " << longName << ", " << shortName << ", " << data << ", " << size << endl;
         }
 };
 

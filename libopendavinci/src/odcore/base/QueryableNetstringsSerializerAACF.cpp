@@ -223,9 +223,8 @@ namespace odcore {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const Serializable &v) {
-            uint32_t _id = (oneByteID > 0 ? oneByteID : fourByteID);
-            _id = htonl(_id);
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, const Serializable &v) {
+            uint32_t _id = htonl(id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
             // Serialize the Serializable.
@@ -242,9 +241,8 @@ namespace odcore {
             writeValue(m_buffer, buffer_str);
         }
 
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const bool &v) {
-            uint32_t _id = (oneByteID > 0 ? oneByteID : fourByteID);
-            _id = htonl(_id);
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, const bool &v) {
+            uint32_t _id = htonl(id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
             uint32_t size = static_cast<uint32_t>(sizeof(v));
@@ -254,9 +252,8 @@ namespace odcore {
             writeValue(m_buffer, v);
         }
 
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const char &v) {
-            uint32_t _id = (oneByteID > 0 ? oneByteID : fourByteID);
-            _id = htonl(_id);
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, const char &v) {
+            uint32_t _id = htonl(id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
             uint32_t size = static_cast<uint32_t>(sizeof(v));
@@ -266,9 +263,8 @@ namespace odcore {
             writeValue(m_buffer, v);
         }
 
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const unsigned char &v) {
-            uint32_t _id = (oneByteID > 0 ? oneByteID : fourByteID);
-            _id = htonl(_id);
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, const unsigned char &v) {
+            uint32_t _id = htonl(id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
             uint32_t size = static_cast<uint32_t>(sizeof(v));
@@ -278,9 +274,8 @@ namespace odcore {
             writeValue(m_buffer, v);
         }
 
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const int8_t &v) {
-            uint32_t _id = (oneByteID > 0 ? oneByteID : fourByteID);
-            _id = htonl(_id);
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, const int8_t &v) {
+            uint32_t _id = htonl(id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
             uint32_t size = static_cast<uint32_t>(sizeof(v));
@@ -290,9 +285,8 @@ namespace odcore {
             writeValue(m_buffer, v);
         }
 
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const int16_t &v) {
-            uint32_t _id = (oneByteID > 0 ? oneByteID : fourByteID);
-            _id = htonl(_id);
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, const int16_t &v) {
+            uint32_t _id = htonl(id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
             uint32_t size = static_cast<uint32_t>(sizeof(v));
@@ -302,9 +296,8 @@ namespace odcore {
             writeValue(m_buffer, v);
         }
 
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const uint16_t &v) {
-            uint32_t _id = (oneByteID > 0 ? oneByteID : fourByteID);
-            _id = htonl(_id);
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, const uint16_t &v) {
+            uint32_t _id = htonl(id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
             uint32_t size = static_cast<uint32_t>(sizeof(v));
@@ -314,9 +307,8 @@ namespace odcore {
             writeValue(m_buffer, v);
         }
 
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const int32_t &v) {
-            uint32_t _id = (oneByteID > 0 ? oneByteID : fourByteID);
-            _id = htonl(_id);
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, const int32_t &v) {
+            uint32_t _id = htonl(id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
             uint32_t size = static_cast<uint32_t>(sizeof(v));
@@ -326,9 +318,8 @@ namespace odcore {
             writeValue(m_buffer, v);
         }
 
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const uint32_t &v) {
-            uint32_t _id = (oneByteID > 0 ? oneByteID : fourByteID);
-            _id = htonl(_id);
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, const uint32_t &v) {
+            uint32_t _id = htonl(id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
             uint32_t size = static_cast<uint32_t>(sizeof(v));
@@ -338,9 +329,8 @@ namespace odcore {
             writeValue(m_buffer, v);
         }
 
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const int64_t &v) {
-            uint32_t _id = (oneByteID > 0 ? oneByteID : fourByteID);
-            _id = htonl(_id);
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, const int64_t &v) {
+            uint32_t _id = htonl(id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
             uint32_t size = static_cast<uint32_t>(sizeof(v));
@@ -350,9 +340,8 @@ namespace odcore {
             writeValue(m_buffer, v);
         }
 
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const uint64_t &v) {
-            uint32_t _id = (oneByteID > 0 ? oneByteID : fourByteID);
-            _id = htonl(_id);
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, const uint64_t &v) {
+            uint32_t _id = htonl(id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
             uint32_t size = static_cast<uint32_t>(sizeof(v));
@@ -362,9 +351,8 @@ namespace odcore {
             writeValue(m_buffer, v);
         }
 
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const float &v) {
-            uint32_t _id = (oneByteID > 0 ? oneByteID : fourByteID);
-            _id = htonl(_id);
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, const float &v) {
+            uint32_t _id = htonl(id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
             uint32_t size = static_cast<uint32_t>(sizeof(v));
@@ -374,9 +362,8 @@ namespace odcore {
             writeValue(m_buffer, v);
         }
 
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const double &v) {
-            uint32_t _id = (oneByteID > 0 ? oneByteID : fourByteID);
-            _id = htonl(_id);
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, const double &v) {
+            uint32_t _id = htonl(id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
             uint32_t size = static_cast<uint32_t>(sizeof(v));
@@ -386,9 +373,8 @@ namespace odcore {
             writeValue(m_buffer, v);
         }
 
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const string &v) {
-            uint32_t _id = (oneByteID > 0 ? oneByteID : fourByteID);
-            _id = htonl(_id);
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, const string &v) {
+            uint32_t _id = htonl(id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
             uint32_t stringLength = v.length();
@@ -399,9 +385,8 @@ namespace odcore {
             writeValue(m_buffer, v);
         }
 
-        void QueryableNetstringsSerializerAACF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const void *data, const uint32_t &size) {
-            uint32_t _id = (oneByteID > 0 ? oneByteID : fourByteID);
-            _id = htonl(_id);
+        void QueryableNetstringsSerializerAACF::write(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, const void *data, const uint32_t &size) {
+            uint32_t _id = htonl(id);
             m_buffer.write(reinterpret_cast<const char *>(&_id), sizeof(uint32_t));
 
             uint32_t realSize = size;

@@ -71,7 +71,7 @@ class MyRawVisitable : public odcore::base::Serializable, public Visitable {
         
         virtual void accept(odcore::base::Visitor &v) {
             v.beginVisit();
-            v.visit(0, 1, "MyNestedVisitable::data", "data", data, size);
+            v.visit(1, "MyNestedVisitable::data", "data", data, size);
             v.endVisit();
         }
 
@@ -107,7 +107,7 @@ class MyNestedVisitable : public odcore::base::Serializable, public Visitable {
         
         virtual void accept(odcore::base::Visitor &v) {
             v.beginVisit();
-            v.visit(0, 1, "MyNestedVisitable::m_double", "m_double", m_double);
+            v.visit(1, "MyNestedVisitable::m_double", "m_double", m_double);
             v.endVisit();
         }
 
@@ -201,11 +201,11 @@ class MyVisitable : public Serializable, public Visitable {
 
         virtual void accept(odcore::base::Visitor &v) {
             v.beginVisit();
-            v.visit(0, 1, "MyVisitable::att1", "att1", m_att1);
-            v.visit(0, 2, "MyVisitable::att2", "att2", m_att2);
-            v.visit(0, 3, "MyVisitable::att3", "att3", m_att3);
-            v.visit(0, 4, "MyVisitable::att4", "att4", m_att4);
-            v.visit(0, 5, "MyVisitable::att5", "att5", m_att5);
+            v.visit(1, "MyVisitable::att1", "att1", m_att1);
+            v.visit(2, "MyVisitable::att2", "att2", m_att2);
+            v.visit(3, "MyVisitable::att3", "att3", m_att3);
+            v.visit(4, "MyVisitable::att4", "att4", m_att4);
+            v.visit(5, "MyVisitable::att5", "att5", m_att5);
             v.endVisit();
         }
 

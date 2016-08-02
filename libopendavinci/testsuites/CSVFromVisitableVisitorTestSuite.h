@@ -114,10 +114,10 @@ class MyVisitable : public Serializable, public Visitable {
 
         virtual void accept(odcore::base::Visitor &v) {
             v.beginVisit();
-            v.visit(0, 1, "MyVisitable::att1", "att1", m_att1);
-            v.visit(0, 2, "MyVisitable::att2", "att2", m_att2);
-            v.visit(0, 3, "MyVisitable::att3", "att3", m_att3);
-            v.visit(0, 4, "MyVisitable::att4", "att4", m_att4);
+            v.visit(1, "MyVisitable::att1", "att1", m_att1);
+            v.visit(2, "MyVisitable::att2", "att2", m_att2);
+            v.visit(3, "MyVisitable::att3", "att3", m_att3);
+            v.visit(4, "MyVisitable::att4", "att4", m_att4);
             v.endVisit();
         }
 

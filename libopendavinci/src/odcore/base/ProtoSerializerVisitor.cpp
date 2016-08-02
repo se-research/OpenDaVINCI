@@ -33,64 +33,64 @@ class Serializable;
 
         void ProtoSerializerVisitor::endVisit() {}
 
-        void ProtoSerializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, Serializable &v) {
-            write(longId, shortId, longName, shortName, v);
+        void ProtoSerializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, Serializable &v) {
+            write(id, longName, shortName, v);
         }
 
-        void ProtoSerializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, bool &v) {
-            write(longId, shortId, longName, shortName, v);
+        void ProtoSerializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, bool &v) {
+            write(id, longName, shortName, v);
         }
 
-        void ProtoSerializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, char &v) {
-            write(longId, shortId, longName, shortName, v);
+        void ProtoSerializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, char &v) {
+            write(id, longName, shortName, v);
         }
 
-        void ProtoSerializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, unsigned char &v) {
-            write(longId, shortId, longName, shortName, v);
+        void ProtoSerializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, unsigned char &v) {
+            write(id, longName, shortName, v);
         }
 
-        void ProtoSerializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int8_t &v) {
-            write(longId, shortId, longName, shortName, v);
+        void ProtoSerializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, int8_t &v) {
+            write(id, longName, shortName, v);
         }
 
-        void ProtoSerializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int16_t &v) {
-            write(longId, shortId, longName, shortName, v);
+        void ProtoSerializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, int16_t &v) {
+            write(id, longName, shortName, v);
         }
 
-        void ProtoSerializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint16_t &v) {
-            write(longId, shortId, longName, shortName, v);
+        void ProtoSerializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, uint16_t &v) {
+            write(id, longName, shortName, v);
         }
 
-        void ProtoSerializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int32_t &v) {
-            write(longId, shortId, longName, shortName, v);
+        void ProtoSerializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, int32_t &v) {
+            write(id, longName, shortName, v);
         }
 
-        void ProtoSerializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint32_t &v) {
-            write(longId, shortId, longName, shortName, v);
+        void ProtoSerializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, uint32_t &v) {
+            write(id, longName, shortName, v);
         }
 
-        void ProtoSerializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int64_t &v) {
-            write(longId, shortId, longName, shortName, v);
+        void ProtoSerializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, int64_t &v) {
+            write(id, longName, shortName, v);
         }
 
-        void ProtoSerializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint64_t &v) {
-            write(longId, shortId, longName, shortName, v);
+        void ProtoSerializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, uint64_t &v) {
+            write(id, longName, shortName, v);
         }
 
-        void ProtoSerializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, float &v) {
-            write(longId, shortId, longName, shortName, v);
+        void ProtoSerializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, float &v) {
+            write(id, longName, shortName, v);
         }
 
-        void ProtoSerializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, double &v) {
-            write(longId, shortId, longName, shortName, v);
+        void ProtoSerializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, double &v) {
+            write(id, longName, shortName, v);
         }
 
-        void ProtoSerializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, string &v) {
-            write(longId, shortId, longName, shortName, v);
+        void ProtoSerializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, string &v) {
+            write(id, longName, shortName, v);
         }
 
-        void ProtoSerializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, void *data, const uint32_t &size) {
-            write(longId, shortId, longName, shortName, data, size);
+        void ProtoSerializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, void *data, const uint32_t &size) {
+            write(id, longName, shortName, data, size);
         }
 
     }

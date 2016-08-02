@@ -137,79 +137,79 @@ class Serializable;
 
         void ROSSerializerVisitor::write(const uint32_t &/*id*/, const void */*data*/, const uint32_t &/*size*/) {}
 
-        void ROSSerializerVisitor::write(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, const Serializable &/*v*/) {
+        void ROSSerializerVisitor::write(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, const Serializable &/*v*/) {
             cerr << "[core::base::ROSSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
         }
 
-        void ROSSerializerVisitor::write(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, const bool &v) {
+        void ROSSerializerVisitor::write(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, const bool &v) {
             m_size += sizeof(const bool);
             m_buffer.write(reinterpret_cast<const char*>(&v), sizeof(const bool));
         }
 
-        void ROSSerializerVisitor::write(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, const char &v) {
+        void ROSSerializerVisitor::write(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, const char &v) {
             m_size += sizeof(const char);
             m_buffer.write(&v, sizeof(const char));
         }
 
-        void ROSSerializerVisitor::write(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, const unsigned char &v) {
+        void ROSSerializerVisitor::write(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, const unsigned char &v) {
             m_size += sizeof(const unsigned char);
             m_buffer.write(reinterpret_cast<const char*>(&v), sizeof(const unsigned char));
         }
 
-        void ROSSerializerVisitor::write(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, const int8_t &v) {
+        void ROSSerializerVisitor::write(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, const int8_t &v) {
             m_size += sizeof(const int8_t);
             m_buffer.write(reinterpret_cast<const char*>(&v), sizeof(const int8_t));
         }
 
-        void ROSSerializerVisitor::write(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, const int16_t &v) {
+        void ROSSerializerVisitor::write(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, const int16_t &v) {
             m_size += sizeof(const int16_t);
             int16_t _v = htons(v);
             m_buffer.write(reinterpret_cast<const char*>(&_v), sizeof(const int16_t));
         }
 
-        void ROSSerializerVisitor::write(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, const uint16_t &v) {
+        void ROSSerializerVisitor::write(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, const uint16_t &v) {
             m_size += sizeof(const uint16_t);
             uint16_t _v = htons(v);
             m_buffer.write(reinterpret_cast<const char*>(&_v), sizeof(const uint16_t));
         }
 
-        void ROSSerializerVisitor::write(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, const int32_t &v) {
+        void ROSSerializerVisitor::write(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, const int32_t &v) {
             m_size += sizeof(const int32_t);
             int32_t _v = htonl(v);
             m_buffer.write(reinterpret_cast<const char*>(&_v), sizeof(const int32_t));
         }
 
-        void ROSSerializerVisitor::write(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, const uint32_t &v) {
+        void ROSSerializerVisitor::write(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, const uint32_t &v) {
             m_size += sizeof(const uint32_t);
             uint32_t _v = htonl(v);
             m_buffer.write(reinterpret_cast<const char*>(&_v), sizeof(const uint32_t));
         }
 
-        void ROSSerializerVisitor::write(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, const int64_t &v) {
+        void ROSSerializerVisitor::write(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, const int64_t &v) {
             m_size += sizeof(const int64_t);
             int64_t _v = Serializer::__htonll(v);
             m_buffer.write(reinterpret_cast<const char*>(&_v), sizeof(const int64_t));
         }
 
-        void ROSSerializerVisitor::write(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, const uint64_t &v) {
+        void ROSSerializerVisitor::write(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, const uint64_t &v) {
             m_size += sizeof(const uint64_t);
             uint64_t _v = Serializer::__htonll(v);
             m_buffer.write(reinterpret_cast<const char*>(&_v), sizeof(const uint64_t));
         }
 
-        void ROSSerializerVisitor::write(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, const float &v) {
+        void ROSSerializerVisitor::write(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, const float &v) {
             m_size += sizeof(const float);
             float _v = htonf(v);
             m_buffer.write(reinterpret_cast<const char*>(&_v), sizeof(const float));
         }
 
-        void ROSSerializerVisitor::write(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, const double &v) {
+        void ROSSerializerVisitor::write(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, const double &v) {
             m_size += sizeof(const double);
             double _v = htond(v);
             m_buffer.write(reinterpret_cast<const char*>(&_v), sizeof(const double));
         }
 
-        void ROSSerializerVisitor::write(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, const string &v) {
+        void ROSSerializerVisitor::write(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, const string &v) {
             // The length field for string will consume 4 bytes.
             m_size += sizeof(uint32_t);
 
@@ -221,7 +221,7 @@ class Serializable;
             m_buffer.write(v.c_str(), length);
         }
 
-        void ROSSerializerVisitor::write(const uint32_t &/*fourByteID*/, const uint8_t &/*oneByteID*/, const string &/*longName*/, const string &/*shortName*/, const void *data, const uint32_t &size) {
+        void ROSSerializerVisitor::write(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, const void *data, const uint32_t &size) {
             (void)data;
             (void)size;
             cerr << "[core::base::ROSSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
@@ -232,70 +232,68 @@ class Serializable;
 
         void ROSSerializerVisitor::endVisit() {}
 
-        void ROSSerializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, Serializable &v) {
-            (void)longId;
-            (void)shortId;
+        void ROSSerializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, Serializable &v) {
+            (void)id;
             (void)longName;
             (void)shortName;
             (void)v;
             cerr << "[core::base::ROSSerializerVisitor]: ROS for Serializable not implemented!" << endl;
         }
 
-        void ROSSerializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, bool &v) {
-            write(longId, shortId, longName, shortName, v);
+        void ROSSerializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, bool &v) {
+            write(id, longName, shortName, v);
         }
 
-        void ROSSerializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, char &v) {
-            write(longId, shortId, longName, shortName, v);
+        void ROSSerializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, char &v) {
+            write(id, longName, shortName, v);
         }
 
-        void ROSSerializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, unsigned char &v) {
-            write(longId, shortId, longName, shortName, v);
+        void ROSSerializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, unsigned char &v) {
+            write(id, longName, shortName, v);
         }
 
-        void ROSSerializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int8_t &v) {
-            write(longId, shortId, longName, shortName, v);
+        void ROSSerializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, int8_t &v) {
+            write(id, longName, shortName, v);
         }
 
-        void ROSSerializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int16_t &v) {
-            write(longId, shortId, longName, shortName, v);
+        void ROSSerializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, int16_t &v) {
+            write(id, longName, shortName, v);
         }
 
-        void ROSSerializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint16_t &v) {
-            write(longId, shortId, longName, shortName, v);
+        void ROSSerializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, uint16_t &v) {
+            write(id, longName, shortName, v);
         }
 
-        void ROSSerializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int32_t &v) {
-            write(longId, shortId, longName, shortName, v);
+        void ROSSerializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, int32_t &v) {
+            write(id, longName, shortName, v);
         }
 
-        void ROSSerializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint32_t &v) {
-            write(longId, shortId, longName, shortName, v);
+        void ROSSerializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, uint32_t &v) {
+            write(id, longName, shortName, v);
         }
 
-        void ROSSerializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int64_t &v) {
-            write(longId, shortId, longName, shortName, v);
+        void ROSSerializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, int64_t &v) {
+            write(id, longName, shortName, v);
         }
 
-        void ROSSerializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint64_t &v) {
-            write(longId, shortId, longName, shortName, v);
+        void ROSSerializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, uint64_t &v) {
+            write(id, longName, shortName, v);
         }
 
-        void ROSSerializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, float &v) {
-            write(longId, shortId, longName, shortName, v);
+        void ROSSerializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, float &v) {
+            write(id, longName, shortName, v);
         }
 
-        void ROSSerializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, double &v) {
-            write(longId, shortId, longName, shortName, v);
+        void ROSSerializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, double &v) {
+            write(id, longName, shortName, v);
         }
 
-        void ROSSerializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, string &v) {
-            write(longId, shortId, longName, shortName, v);
+        void ROSSerializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, string &v) {
+            write(id, longName, shortName, v);
         }
 
-        void ROSSerializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, void *data, const uint32_t &size) {
-            (void)longId;
-            (void)shortId;
+        void ROSSerializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, void *data, const uint32_t &size) {
+            (void)id;
             (void)longName;
             (void)shortName;
             (void)data;

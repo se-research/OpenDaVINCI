@@ -33,64 +33,64 @@ class Serializable;
 
         void ProtoDeserializerVisitor::endVisit() {}
 
-        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, Serializable &v) {
-            read(longId, shortId, longName, shortName, v);
+        void ProtoDeserializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, Serializable &v) {
+            read(id, longName, shortName, v);
         }
 
-        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, bool &v) {
-            read(longId, shortId, longName, shortName, v);
+        void ProtoDeserializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, bool &v) {
+            read(id, longName, shortName, v);
         }
 
-        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, char &v) {
-            read(longId, shortId, longName, shortName, v);
+        void ProtoDeserializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, char &v) {
+            read(id, longName, shortName, v);
         }
 
-        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, unsigned char &v) {
-            read(longId, shortId, longName, shortName, v);
+        void ProtoDeserializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, unsigned char &v) {
+            read(id, longName, shortName, v);
         }
 
-        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int8_t &v) {
-            read(longId, shortId, longName, shortName, v);
+        void ProtoDeserializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, int8_t &v) {
+            read(id, longName, shortName, v);
         }
 
-        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int16_t &v) {
-            read(longId, shortId, longName, shortName, v);
+        void ProtoDeserializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, int16_t &v) {
+            read(id, longName, shortName, v);
         }
 
-        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint16_t &v) {
-            read(longId, shortId, longName, shortName, v);
+        void ProtoDeserializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, uint16_t &v) {
+            read(id, longName, shortName, v);
         }
 
-        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int32_t &v) {
-            read(longId, shortId, longName, shortName, v);
+        void ProtoDeserializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, int32_t &v) {
+            read(id, longName, shortName, v);
         }
 
-        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint32_t &v) {
-            read(longId, shortId, longName, shortName, v);
+        void ProtoDeserializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, uint32_t &v) {
+            read(id, longName, shortName, v);
         }
 
-        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int64_t &v) {
-            read(longId, shortId, longName, shortName, v);
+        void ProtoDeserializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, int64_t &v) {
+            read(id, longName, shortName, v);
         }
 
-        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint64_t &v) {
-            read(longId, shortId, longName, shortName, v);
+        void ProtoDeserializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, uint64_t &v) {
+            read(id, longName, shortName, v);
         }
 
-        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, float &v) {
-            read(longId, shortId, longName, shortName, v);
+        void ProtoDeserializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, float &v) {
+            read(id, longName, shortName, v);
         }
 
-        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, double &v) {
-            read(longId, shortId, longName, shortName, v);
+        void ProtoDeserializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, double &v) {
+            read(id, longName, shortName, v);
         }
 
-        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, string &v) {
-            read(longId, shortId, longName, shortName, v);
+        void ProtoDeserializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, string &v) {
+            read(id, longName, shortName, v);
         }
 
-        void ProtoDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, void *data, const uint32_t &size) {
-            read(longId, shortId, longName, shortName, data, size);
+        void ProtoDeserializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, void *data, const uint32_t &size) {
+            read(id, longName, shortName, data, size);
         }
 
     }
