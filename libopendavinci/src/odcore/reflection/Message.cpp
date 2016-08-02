@@ -57,6 +57,7 @@ namespace odcore {
         }
 
         ostream& Message::operator<<(ostream &out) const {
+// TODO: Implement serialization if needed for Message.
 //            SerializationFactory& sf=SerializationFactory::getInstance();;
 //            std::shared_ptr<Serializer> s = sf.getSerializer(out);
 //            s->write(1, "ABC");
@@ -64,6 +65,7 @@ namespace odcore {
         }
 
         istream& Message::operator>>(istream &in) {
+// TODO: Implement deserialization if needed for Message.
 //            SerializationFactory& sf=SerializationFactory::getInstance();;
 //            std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 //            string st;
