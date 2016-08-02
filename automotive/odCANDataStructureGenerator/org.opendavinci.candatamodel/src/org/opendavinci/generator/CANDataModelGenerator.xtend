@@ -626,7 +626,7 @@ namespace canmapping {
 			capitalizedName=""
 			for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
 			
-			acceptBody+="v.visit(static_cast<uint32_t>("+mapping.mappings.get(i).signalIdentifier+"), "
+			acceptBody+="v.visit(static_cast<uint32_t>("+mapping.mappings.get(i).signalIdentifier+"), \""
 						+mapping.mappings.get(i).cansignalname+"\", \""
 						+chunks.get(chunks.size-1)+"\", m_"
 						+capitalizedName.toFirstLower+");"
@@ -682,7 +682,7 @@ namespace canmapping {
 			«IF canSignal!=null»
 			found=extracted=false;
 				«var String rawVarName="raw"+varName»
-			double «rawVarName» = msg.getValueFromScalarField<double>(/*longid*/0,/*shortid*/«currentSignalInMapping.signalIdentifier», found, extracted);
+			double «rawVarName» = msg.getValueFromScalarField<double>(«currentSignalInMapping.signalIdentifier», found, extracted);
 			
 			if(found && extracted){
 				if(«rawVarName»<«canSignal.m_rangeStart»)

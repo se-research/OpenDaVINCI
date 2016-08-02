@@ -4441,9 +4441,9 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 // Done - 20) Compatibility with 3rd party Proto implementations
 // Done - 21) Serialize data into a Container structure, write to disk, and read it back in Python
 // Done - 22) Change identifiers for built-in types (like Container) to remove fourbyteidentifier (remove CRC32<...>)
-// 23) Remove fourbyteid from serializing/deserializing/visiting signatures
-// 24) Remove fourbyteid keyword from odDataStructureGenerator
-// 25) Check serializatio/deserialization order for all built-in types after removal of fourbyteidentifier
+// Done - 23) Remove fourbyteid from serializing/deserializing/visiting signatures
+// Done - 24) Remove fourbyteid keyword from odDataStructureGenerator
+// Done - 25) Check serializatio/deserialization order for all built-in types after removal of fourbyteidentifier
 // 26) Test components for correct behavior: boxparker, boxparker in managed mode, lane follower, webcam, webcam + odredirector
 // 27) Emit .proto file in odDataStructureGenerator by default
 
