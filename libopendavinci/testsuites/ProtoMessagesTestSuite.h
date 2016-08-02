@@ -4444,10 +4444,10 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 // Done - 23) Remove fourbyteid from serializing/deserializing/visiting signatures
 // Done - 24) Remove fourbyteid keyword from odDataStructureGenerator
 // Done - 25) Check serializatio/deserialization order for all built-in types after removal of fourbyteidentifier
-// 26) Test components for correct behavior: boxparker, boxparker in managed mode, lane follower, webcam, webcam + odredirector
-// 27) Emit .proto file in odDataStructureGenerator by default
+// Done - 26) Test components for correct behavior: boxparker, boxparker in managed mode, lane follower, webcam, webcam + odredirector
 
-// Outside the scope for refactoring OpenDaVINCI.
+// Outside the scope for refactoring OpenDaVINCI towards Proto default serialization.
+// 27) Emit .proto file in odDataStructureGenerator by default
 // 28) Generate Container --> Message mapping in odDataStructureGenerator
 // 29) Fix opendlv data structure --> either model them as odvd data structures or fix directly in code
 };
