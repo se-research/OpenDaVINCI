@@ -34,64 +34,64 @@ class Serializable;
 
         void QueryableNetstringsDeserializerVisitor::endVisit() {}
 
-        void QueryableNetstringsDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, Serializable &v) {
-            read(longId, v);
+        void QueryableNetstringsDeserializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, Serializable &v) {
+            read(shortId, v);
         }
 
-        void QueryableNetstringsDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, bool &v) {
-            read(longId, v);
+        void QueryableNetstringsDeserializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, bool &v) {
+            read(shortId, v);
         }
 
-        void QueryableNetstringsDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, char &v) {
-            read(longId, v);
+        void QueryableNetstringsDeserializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, char &v) {
+            read(shortId, v);
         }
 
-        void QueryableNetstringsDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, unsigned char &v) {
-            read(longId, v);
+        void QueryableNetstringsDeserializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, unsigned char &v) {
+            read(shortId, v);
         }
 
-        void QueryableNetstringsDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, int8_t &v) {
-            read(longId, v);
+        void QueryableNetstringsDeserializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, int8_t &v) {
+            read(shortId, v);
         }
 
-        void QueryableNetstringsDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, int16_t &v) {
-            read(longId, v);
+        void QueryableNetstringsDeserializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, int16_t &v) {
+            read(shortId, v);
         }
 
-        void QueryableNetstringsDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, uint16_t &v) {
-            read(longId, v);
+        void QueryableNetstringsDeserializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, uint16_t &v) {
+            read(shortId, v);
         }
 
-        void QueryableNetstringsDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, int32_t &v) {
-            read(longId, v);
+        void QueryableNetstringsDeserializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, int32_t &v) {
+            read(shortId, v);
         }
 
-        void QueryableNetstringsDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, uint32_t &v) {
-            read(longId, v);
+        void QueryableNetstringsDeserializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, uint32_t &v) {
+            read(shortId, v);
         }
 
-        void QueryableNetstringsDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, int64_t &v) {
-            read(longId, v);
+        void QueryableNetstringsDeserializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, int64_t &v) {
+            read(shortId, v);
         }
 
-        void QueryableNetstringsDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, uint64_t &v) {
-            read(longId, v);
+        void QueryableNetstringsDeserializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, uint64_t &v) {
+            read(shortId, v);
         }
 
-        void QueryableNetstringsDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, float &v) {
-            read(longId, v);
+        void QueryableNetstringsDeserializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, float &v) {
+            read(shortId, v);
         }
 
-        void QueryableNetstringsDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, double &v) {
-            read(longId, v);
+        void QueryableNetstringsDeserializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, double &v) {
+            read(shortId, v);
         }
 
-        void QueryableNetstringsDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, string &v) {
-            read(longId, v);
+        void QueryableNetstringsDeserializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, string &v) {
+            read(shortId, v);
         }
 
-        void QueryableNetstringsDeserializerVisitor::visit(const uint32_t &longId, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, void *data, const uint32_t &size) {
-            read(longId, data, size);
+        void QueryableNetstringsDeserializerVisitor::visit(const uint32_t &/*longId*/, const uint8_t &shortId, const string &/*longName*/, const string &/*shortName*/, void *data, const uint32_t &size) {
+            read(shortId, data, size);
         }
     }
 } // odcore::base
