@@ -40,7 +40,6 @@
 #include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/base/Service.h"
 #include "opendavinci/odcore/base/Thread.h"
-#include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/Deserializer.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"

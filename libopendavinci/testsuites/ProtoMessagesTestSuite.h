@@ -4452,10 +4452,14 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 // Done - 19) Check serializatio/deserialization order for all built-in types
 // Done - 20) Compatibility with 3rd party Proto implementations
 // Done - 21) Serialize data into a Container structure, write to disk, and read it back in Python
-// 22) Change identifiers for built-in types (like Container) to remove fourbyteidentifier (remove CRC32<...>)
-// 23) Remove fourbyteid keyword from odDataStructureGenerator
-// 24) Check serializatio/deserialization order for all built-in types after removal of fourbyteidentifier
-// 25) Fix opendlv data structure --> either model them as odvd data structures or fix directly in code
+// Done - 22) Change identifiers for built-in types (like Container) to remove fourbyteidentifier (remove CRC32<...>)
+// 23) Remove fourbyteid from serializing/deserializing/visiting signatures
+// 24) Remove fourbyteid keyword from odDataStructureGenerator
+// 25) Check serializatio/deserialization order for all built-in types after removal of fourbyteidentifier
+// 26) Test components for correct behavior: boxparker, boxparker in managed mode, lane follower, webcam, webcam + odredirector
+
+// Outside the scope for refactoring OpenDaVINCI.
+// 27) Fix opendlv data structure --> either model them as odvd data structures or fix directly in code
 };
 
 #endif /*CORE_PROTOMESSAGESTESTSUITE_H_*/
