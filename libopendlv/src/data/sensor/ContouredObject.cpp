@@ -17,14 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <memory>
 #include <ostream>
 #include <string>
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
 #include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/Serializable.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
@@ -104,8 +103,7 @@ namespace opendlv {
                 std::shared_ptr<Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
                 // Write contour.
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('c', 'o', 'n', 't', 's', 'i', 'z', 'e') >::RESULT,
-                        static_cast<uint32_t>(m_contour.size()));
+                s->write(1, static_cast<uint32_t>(m_contour.size()));
 
                 // Coordinates.
                 stringstream sstr;
@@ -113,8 +111,7 @@ namespace opendlv {
                 while (it != m_contour.end()) {
                     sstr << (*it++);
                 }
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('c', 'o', 'n', 't', 'o', 'u', 'r') >::RESULT,
-                        sstr.str());
+                s->write(2, sstr.str());
 
                 return out;
             }
@@ -130,13 +127,11 @@ namespace opendlv {
 
                 // Read contour.
                 uint32_t numberOfContourPoints = 0;
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('c', 'o', 'n', 't', 's', 'i', 'z', 'e') >::RESULT,
-                       numberOfContourPoints);
+                d->read(1, numberOfContourPoints);
                 m_contour.clear();
 
                 string contour;
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('c', 'o', 'n', 't', 'o', 'u', 'r') >::RESULT,
-                       contour);
+                d->read(2, contour);
                 stringstream sstr;
                 sstr.str(contour);
                 while (numberOfContourPoints > 0) {

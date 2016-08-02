@@ -17,13 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <memory>
 #include <ostream>
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
 #include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
 #include "opendlv/data/environment/Obstacle.h"
@@ -146,17 +145,13 @@ namespace opendlv {
 
                 std::shared_ptr<Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                        static_cast<uint32_t>(m_obstacleid));
+                s->write(1, static_cast<uint32_t>(m_obstacleid));
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('s', 't', 'a', 't', 'e') >::RESULT,
-                        static_cast<uint32_t>(m_state));
+                s->write(2, static_cast<uint32_t>(m_state));
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('c', 'l', 'a', 's', 's') >::RESULT,
-                        static_cast<uint32_t>(m_classification));
+                s->write(3, static_cast<uint32_t>(m_classification));
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('p', 'o', 'l', 'y', 'g', 'o', 'n') >::RESULT,
-                        m_polygon);
+                s->write(4, m_polygon);
 
                 return out;
             }
@@ -170,21 +165,17 @@ namespace opendlv {
 
                 std::shared_ptr<Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                       m_obstacleid);
+                d->read(1, m_obstacleid);
 
                 uint32_t v = 0;
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('s', 't', 'a', 't', 'e') >::RESULT,
-                       v);
+                d->read(2, v);
                 m_state = static_cast<Obstacle::STATE>(v);
 
                 v = 0;
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('c', 'l', 'a', 's', 's') >::RESULT,
-                       v);
+                d->read(3, v);
                 m_classification = static_cast<Obstacle::CLASSIFICATION>(v);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('p', 'o', 'l', 'y', 'g', 'o', 'n') >::RESULT,
-                       m_polygon);
+                d->read(4, m_polygon);
 
                 return in;
             }

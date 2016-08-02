@@ -18,13 +18,12 @@
  */
 
 #include <cmath>
+#include <memory>
 #include <istream>
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
 #include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
 #include "opendavinci/odcore/data/SerializableData.h"
@@ -348,8 +347,7 @@ namespace opendlv {
 
                 rawData << m_x << endl << m_y << endl << m_z;
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('d', 'a', 't', 'a') >::RESULT,
-                        rawData.str());
+                s->write(1, rawData.str());
 
                 return out;
             }
@@ -360,8 +358,7 @@ namespace opendlv {
                 std::shared_ptr<Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
                 string data;
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('d', 'a', 't', 'a') >::RESULT,
-                       data);
+                d->read(1, data);
 
                 stringstream rawData;
                 rawData.precision(10);

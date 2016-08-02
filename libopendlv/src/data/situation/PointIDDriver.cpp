@@ -18,13 +18,12 @@
  */
 
 #include <istream>
+#include <memory>
 #include <string>
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
 #include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/Serializable.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
@@ -231,8 +230,7 @@ namespace opendlv {
 
                 std::shared_ptr<Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('h', 'a', 's', 's', 't', 'a', 'r', 't') >::RESULT,
-                        (m_startType != NULL));
+                s->write(1, (m_startType != NULL));
 
                 if (m_startType != NULL) {
                     // Write data to stringstream.
@@ -240,12 +238,10 @@ namespace opendlv {
                     sstr << static_cast<uint32_t>(m_startType->getType())
                     << *m_startType;
 
-                    s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('s', 't', 'a', 'r', 't') >::RESULT,
-                            sstr.str());
+                    s->write(2, sstr.str());
                 }
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('h', 'a', 's', 's', 't', 'o', 'p') >::RESULT,
-                        (m_stopType != NULL));
+                s->write(3, (m_stopType != NULL));
 
                 if (m_stopType != NULL) {
                     // Write data to stringstream.
@@ -253,19 +249,15 @@ namespace opendlv {
                     sstr << static_cast<uint32_t>(m_stopType->getType())
                     << *m_stopType;
 
-                    s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('s', 't', 'o', 'p') >::RESULT,
-                            sstr.str());
+                    s->write(4, sstr.str());
                 }
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL1('a') >::RESULT,
-                        m_constantAcceleration);
+                s->write(5, m_constantAcceleration);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL1('v') >::RESULT,
-                        m_constantVelocity);
+                s->write(6, m_constantVelocity);
 
                 uint32_t numberOfPointIDs = static_cast<uint32_t>(m_listOfPointIDs.size());
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('n', 'u', 'm', 'p', 'i', 'd', 's') >::RESULT,
-                        numberOfPointIDs);
+                s->write(7, numberOfPointIDs);
 
                 // Write PointIDs to stringstream.
                 stringstream sstr;
@@ -276,8 +268,7 @@ namespace opendlv {
 
                 // Write PointIDs.
                 if (numberOfPointIDs > 0) {
-                    s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('p', 'i', 'd', 's') >::RESULT,
-						sstr.str());
+                    s->write(8, sstr.str());
                 }
 
                 return out;
@@ -292,14 +283,12 @@ namespace opendlv {
                 std::shared_ptr<Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
                 bool hasStartType = false;
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('h', 'a', 's', 's', 't', 'a', 'r', 't') >::RESULT,
-                       hasStartType);
+                d->read(1, hasStartType);
 
                 if (hasStartType) {
                     string str;
                     // Read shapes into stringstream.
-                    d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('s', 't', 'a', 'r', 't') >::RESULT,
-                           str);
+                    d->read(2, str);
 
                     stringstream sstr(str);
 
@@ -333,14 +322,12 @@ namespace opendlv {
                 }
 
                 bool hasStopType = false;
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('h', 'a', 's', 's', 't', 'o', 'p') >::RESULT,
-                       hasStopType);
+                d->read(3, hasStopType);
 
                 if (hasStopType) {
                     string str;
                     // Read shapes into stringstream.
-                    d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('s', 't', 'o', 'p') >::RESULT,
-                           str);
+                    d->read(4, str);
 
                     stringstream sstr(str);
 
@@ -373,27 +360,23 @@ namespace opendlv {
                     }
                 }
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL1('a') >::RESULT,
-                       m_constantAcceleration);
+                d->read(5, m_constantAcceleration);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL1('v') >::RESULT,
-                       m_constantVelocity);
+                d->read(6, m_constantVelocity);
 
                 uint32_t numberOfPointIDs = 0;
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('n', 'u', 'm', 'p', 'i', 'd', 's') >::RESULT,
-                       numberOfPointIDs);
+                d->read(7, numberOfPointIDs);
 
                 if (numberOfPointIDs > 0) {
                     string str;
                     // Read identifiable vertices into stringstream.
-                    d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('p', 'i', 'd', 's') >::RESULT,
-                           str);
+                    d->read(8, str);
 
                     stringstream sstr(str);
 
                     // Read PointIDs from stringstream.
                     for (uint32_t i = 0; i < numberOfPointIDs; i++) {
-                    	PointID pid;
+                        PointID pid;
                         sstr >> pid;
                         addPointID(pid);
                     }

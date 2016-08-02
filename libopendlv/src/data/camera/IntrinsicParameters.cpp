@@ -17,12 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <memory>
 #include <sstream>
 #include <string>
 
-#include <memory>
 #include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
 #include "opendlv/data/camera/IntrinsicParameters.h"
@@ -103,17 +102,13 @@ namespace opendlv {
 
                 std::shared_ptr<Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('p', 'r', 'i', 'n', 'c', 'i', 'p', 'l') >::RESULT,
-                        m_principlePoint);
+                s->write(1, m_principlePoint);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('f', 'o', 'c', 'a', 'l', 'l', 'e', 'n') >::RESULT,
-                        m_focalLength);
+                s->write(2, m_focalLength);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('f', 'o', 'c', 'd', 'i', 's', 't') >::RESULT,
-                        m_focalDistance);
+                s->write(3, m_focalDistance);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('a', 'l', 'p', 'h', 'a') >::RESULT,
-                        m_alpha);
+                s->write(4, m_alpha);
 
                 return out;
             }
@@ -123,17 +118,13 @@ namespace opendlv {
 
                 std::shared_ptr<Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('p', 'r', 'i', 'n', 'c', 'i', 'p', 'l') >::RESULT,
-                       m_principlePoint);
+                d->read(1, m_principlePoint);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('f', 'o', 'c', 'a', 'l', 'l', 'e', 'n') >::RESULT,
-                       m_focalLength);
+                d->read(2, m_focalLength);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('f', 'o', 'c', 'd', 'i', 's', 't') >::RESULT,
-                       m_focalDistance);
+                d->read(3, m_focalDistance);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('a', 'l', 'p', 'h', 'a') >::RESULT,
-                       m_alpha);
+                d->read(4, m_alpha);
 
                 return in;
             }

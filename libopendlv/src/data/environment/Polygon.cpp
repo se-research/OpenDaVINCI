@@ -19,14 +19,13 @@
 
 #include <algorithm>
 #include <cmath>
+#include <memory>
 #include <sstream>
 #include <string>
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
 #include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/Serializable.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
@@ -367,8 +366,7 @@ namespace opendlv {
 
                 // Write number of vertices.
                 uint32_t numberOfVertices = static_cast<uint32_t>(m_listOfVertices.size());
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('n', 'u', 'm', 'v', 'e', 'r', 't', 's') >::RESULT,
-                        numberOfVertices);
+                s->write(1, numberOfVertices);
 
                 // Write actual vertices to stringstream.
                 stringstream sstr;
@@ -378,8 +376,7 @@ namespace opendlv {
 
                 // Write string of vertices.
                 if (numberOfVertices > 0) {
-                    s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('v', 'e', 'r', 't', 'i', 'c', 'e', 's') >::RESULT,
-                            sstr.str());
+                    s->write(2, sstr.str());
                 }
 
                 return out;
@@ -395,14 +392,12 @@ namespace opendlv {
 
                 // Read number of vertices.
                 uint32_t numberOfVertices = 0;
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('n', 'u', 'm', 'v', 'e', 'r', 't', 's') >::RESULT,
-                       numberOfVertices);
+                d->read(1, numberOfVertices);
 
                 if (numberOfVertices > 0) {
                     // Read string of vertices.
                     string vertices;
-                    d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('v', 'e', 'r', 't', 'i', 'c', 'e', 's') >::RESULT,
-                           vertices);
+                    d->read(2, vertices);
 
                     stringstream sstr(vertices);
 

@@ -17,12 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <memory>
 #include <ostream>
 #include <string>
 
-#include <memory>
 #include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
 #include "opendlv/data/scenario/Cylinder.h"
@@ -132,17 +131,13 @@ namespace opendlv {
 
                 std::shared_ptr<Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('c', 'e', 'n', 't', 'e', 'r') >::RESULT,
-                        m_center);
+                s->write(1, m_center);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('r', 'a', 'd', 'i', 'u', 's') >::RESULT,
-                        m_radius);
+                s->write(2, m_radius);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('h', 'e', 'i', 'g', 'h', 't') >::RESULT,
-                        m_height);
+                s->write(3, m_height);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('c', 'o', 'l', 'o', 'r') >::RESULT,
-                        m_color);
+                s->write(4, m_color);
 
                 return out;
             }
@@ -155,17 +150,13 @@ namespace opendlv {
 
                 std::shared_ptr<Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('c', 'e', 'n', 't', 'e', 'r') >::RESULT,
-                       m_center);
+                d->read(1, m_center);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('r', 'a', 'd', 'i', 'u', 's') >::RESULT,
-                       m_radius);
+                d->read(2, m_radius);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('h', 'e', 'i', 'g', 'h', 't') >::RESULT,
-                       m_height);
+                d->read(3, m_height);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('c', 'o', 'l', 'o', 'r') >::RESULT,
-                       m_color);
+                d->read(4, m_color);
 
                 return in;
             }

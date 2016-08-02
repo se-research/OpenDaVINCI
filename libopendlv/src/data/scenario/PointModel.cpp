@@ -17,14 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <memory>
 #include <iosfwd>
 #include <string>
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
 #include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/Serializable.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
@@ -135,8 +134,7 @@ namespace opendlv {
                 std::shared_ptr<Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
                 uint32_t numberOfIdentifiableVertices = static_cast<uint32_t>(m_listOfIdentifiableVertices.size());
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('n', 'u', 'm', 'i', 'd', 'v', 's') >::RESULT,
-                        numberOfIdentifiableVertices);
+                s->write(1, numberOfIdentifiableVertices);
 
                 // Write identifiable vertices to stringstream.
                 stringstream sstr;
@@ -147,8 +145,7 @@ namespace opendlv {
 
                 // Write identifiable vertices.
                 if (numberOfIdentifiableVertices > 0) {
-                    s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('i', 'd', 'v', 's') >::RESULT,
-                            sstr.str());
+                    s->write(2, sstr.str());
                 }
 
                 return out;
@@ -166,14 +163,12 @@ namespace opendlv {
                 m_listOfIdentifiableVertices.clear();
 
                 uint32_t numberOfIdentifiableVertices = 0;
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('n', 'u', 'm', 'i', 'd', 'v', 's') >::RESULT,
-                       numberOfIdentifiableVertices);
+                d->read(1, numberOfIdentifiableVertices);
 
                 if (numberOfIdentifiableVertices > 0) {
                     string str;
                     // Read identifiable vertices into stringstream.
-                    d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('i', 'd', 'v', 's') >::RESULT,
-                           str);
+                    d->read(2, str);
 
                     stringstream sstr(str);
 

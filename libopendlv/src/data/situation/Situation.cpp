@@ -18,13 +18,12 @@
  */
 
 #include <iosfwd>
+#include <memory>
 #include <string>
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
 #include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/Serializable.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
@@ -121,12 +120,10 @@ namespace opendlv {
 
                 std::shared_ptr<Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('h', 'e', 'a', 'd', 'e', 'r') >::RESULT,
-                        m_header);
+                s->write(1, m_header);
 
                 uint32_t numberOfObjects = static_cast<uint32_t>(m_listOfObjects.size());
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('n', 'u', 'm', 'o', 'b', 's') >::RESULT,
-                        numberOfObjects);
+                s->write(2, numberOfObjects);
 
                 // Write roads to stringstream.
                 stringstream sstr;
@@ -137,8 +134,7 @@ namespace opendlv {
 
                 // Write objects.
                 if (numberOfObjects > 0) {
-                    s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('o', 'b', 'j', 'e', 'c', 't', 's') >::RESULT,
-                            sstr.str());
+                    s->write(3, sstr.str());
                 }
 
                 return out;
@@ -149,18 +145,15 @@ namespace opendlv {
 
                 std::shared_ptr<Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('h', 'e', 'a', 'd', 'e', 'r') >::RESULT,
-                       m_header);
+                d->read(1, m_header);
 
                 uint32_t numberOfObjects = 0;
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('n', 'u', 'm', 'o', 'b', 's') >::RESULT,
-                       numberOfObjects);
+                d->read(2, numberOfObjects);
 
                 if (numberOfObjects > 0) {
                     string str;
                     // Read layers into stringstream.
-                    d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('o', 'b', 'j', 'e', 'c', 't', 's') >::RESULT,
-                           str);
+                    d->read(3, str);
 
                     stringstream sstr(str);
 

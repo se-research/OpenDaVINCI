@@ -17,13 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <memory>
 #include <ostream>
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
 #include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
 #include "opendavinci/odcore/data/SerializableData.h"
@@ -104,14 +103,11 @@ namespace opendlv {
 
                 std::shared_ptr<Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('n', 'a', 'm', 'e') >::RESULT,
-                        m_name);
+                s->write(1, m_name);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('t', 'y', 'p', 'e') >::RESULT,
-                        static_cast<uint32_t>(m_type));
+                s->write(2, static_cast<uint32_t>(m_type));
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('f', 'r', 'o', 'n', 't') >::RESULT,
-                        m_front);
+                s->write(3, m_front);
 
                 return out;
             }
@@ -121,17 +117,14 @@ namespace opendlv {
 
                 std::shared_ptr<Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('n', 'a', 'm', 'e') >::RESULT,
-                       m_name);
+                d->read(1, m_name);
 
                 uint32_t type = 0;
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('t', 'y', 'p', 'e') >::RESULT,
-                       type);
+                d->read(2, type);
 
                 m_type = static_cast<enum Shape::SHAPETYPE>(type);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('f', 'r', 'o', 'n', 't') >::RESULT,
-                       m_front);
+                d->read(3, m_front);
 
                 return in;
             }

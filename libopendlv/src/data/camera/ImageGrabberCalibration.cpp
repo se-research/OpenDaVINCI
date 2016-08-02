@@ -17,12 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <memory>
 #include <sstream>
 #include <string>
 
-#include <memory>
 #include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
 #include "opendlv/data/camera/ExtrinsicParameters.h"
@@ -75,11 +74,9 @@ namespace opendlv {
 
                 std::shared_ptr<Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('e', 'x', 't') >::RESULT,
-                        m_extrinsicParameters);
+                s->write(1, m_extrinsicParameters);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('i', 'n', 't') >::RESULT,
-                        m_intrinsicParameters);
+                s->write(2, m_intrinsicParameters);
 
                 return out;
             }
@@ -89,11 +86,9 @@ namespace opendlv {
 
                 std::shared_ptr<Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('e', 'x', 't') >::RESULT,
-                       m_extrinsicParameters);
+                d->read(1, m_extrinsicParameters);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('i', 'n', 't') >::RESULT,
-                       m_intrinsicParameters);
+                d->read(2, m_intrinsicParameters);
 
                 return in;
             }

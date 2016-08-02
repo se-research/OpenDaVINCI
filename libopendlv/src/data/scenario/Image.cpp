@@ -17,13 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <memory>
 #include <ostream>
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
 #include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
 #include "opendavinci/odcore/data/SerializableData.h"
@@ -141,23 +140,17 @@ namespace opendlv {
 
                 std::shared_ptr<Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('f', 'i', 'l', 'e', 'n', 'a', 'm', 'e') >::RESULT,
-                        m_fileName);
+                s->write(1, m_fileName);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL1('x') >::RESULT,
-                        m_originX);
+                s->write(2, m_originX);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL1('y') >::RESULT,
-                        m_originY);
+                s->write(3, m_originY);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('m', 'p', 'p', 'x') >::RESULT,
-                        m_meterPerPixelX);
+                s->write(4, m_meterPerPixelX);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('m', 'p', 'p', 'y') >::RESULT,
-                        m_meterPerPixelY);
+                s->write(5, m_meterPerPixelY);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('r', 'o', 't', 'z') >::RESULT,
-                        m_rotationZ);
+                s->write(6, m_rotationZ);
 
                 return out;
             }
@@ -167,23 +160,17 @@ namespace opendlv {
 
                 std::shared_ptr<Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('f', 'i', 'l', 'e', 'n', 'a', 'm', 'e') >::RESULT,
-                       m_fileName);
+                d->read(1, m_fileName);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL1('x') >::RESULT,
-                       m_originX);
+                d->read(2, m_originX);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL1('y') >::RESULT,
-                       m_originY);
+                d->read(3, m_originY);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('m', 'p', 'p', 'x') >::RESULT,
-                       m_meterPerPixelX);
+                d->read(4, m_meterPerPixelX);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('m', 'p', 'p', 'y') >::RESULT,
-                       m_meterPerPixelY);
+                d->read(5, m_meterPerPixelY);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('r', 'o', 't', 'z') >::RESULT,
-                       m_rotationZ);
+                d->read(6, m_rotationZ);
 
                 return in;
             }

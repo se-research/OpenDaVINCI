@@ -17,13 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <memory>
 #include <sstream>
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
 #include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/Serializable.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
@@ -212,14 +211,11 @@ namespace opendlv {
 
                 std::shared_ptr<Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('n', 'a', 'm', 'e') >::RESULT,
-                        m_name);
+                s->write(1, m_name);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                        m_identifier);
+                s->write(2, m_identifier);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('h', 'a', 's', 's', 'h', 'a', 'p', 'e') >::RESULT,
-                        (m_shape != NULL));
+                s->write(3, (m_shape != NULL));
 
                 if (m_shape != NULL) {
                     // Write data to stringstream.
@@ -227,15 +223,12 @@ namespace opendlv {
                     sstr << static_cast<uint32_t>(m_shape->getType())
                     << *m_shape;
 
-                    s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('s', 'h', 'a', 'p', 'e') >::RESULT,
-                            sstr.str());
+                    s->write(4, sstr.str());
                 }
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('r', 'o', 't', 'z') >::RESULT,
-                        m_rotationZ);
+                s->write(5, m_rotationZ);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('h', 'a', 's', 'b', 'e', 'h', 'a', 'v') >::RESULT,
-                        (m_behavior != NULL));
+                s->write(6, (m_behavior != NULL));
 
                 if (m_behavior != NULL) {
                     // Write data to stringstream.
@@ -243,8 +236,7 @@ namespace opendlv {
                     sstr << static_cast<uint32_t>(m_behavior->getType())
                     << *m_behavior;
 
-                    s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('b', 'e', 'h', 'a', 'v') >::RESULT,
-                            sstr.str());
+                    s->write(7, sstr.str());
                 }
                 return out;
             }
@@ -254,21 +246,17 @@ namespace opendlv {
 
                 std::shared_ptr<Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('n', 'a', 'm', 'e') >::RESULT,
-                       m_name);
+                d->read(1, m_name);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                       m_identifier);
+                d->read(2, m_identifier);
 
                 bool hasShape = false;
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('h', 'a', 's', 's', 'h', 'a', 'p', 'e') >::RESULT,
-                       hasShape);
+                d->read(3, hasShape);
 
                 if (hasShape) {
                     string str;
                     // Read shapes into stringstream.
-                    d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('s', 'h', 'a', 'p', 'e') >::RESULT,
-                           str);
+                    d->read(4, str);
 
                     stringstream sstr(str);
 
@@ -301,18 +289,15 @@ namespace opendlv {
                     }
                 }
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('r', 'o', 't', 'z') >::RESULT,
-                       m_rotationZ);
+                d->read(5, m_rotationZ);
 
                 bool hasBehavior = false;
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('h', 'a', 's', 'b', 'e', 'h', 'a', 'v') >::RESULT,
-                       hasBehavior);
+                d->read(6, hasBehavior);
 
                 if (hasBehavior) {
                     string str;
                     // Read shapes into stringstream.
-                    d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('b', 'e', 'h', 'a', 'v') >::RESULT,
-                           str);
+                    d->read(7, str);
 
                     stringstream sstr(str);
 

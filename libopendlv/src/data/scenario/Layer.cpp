@@ -17,14 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <memory>
 #include <ostream>
 #include <string>
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
 #include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/Serializable.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
@@ -170,18 +169,14 @@ namespace opendlv {
 
                 std::shared_ptr<Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('n', 'a', 'm', 'e') >::RESULT,
-                        getName());
+                s->write(1, getName());
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                        getIdentifier());
+                s->write(2, getIdentifier());
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('h', 'e', 'i', 'g', 'h', 't') >::RESULT,
-                        getHeight());
+                s->write(3, getHeight());
 
                 uint32_t numberOfRoads = static_cast<uint32_t>(m_listOfRoads.size());
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('n', 'u', 'm', 'r', 'o', 'a', 'd', 's') >::RESULT,
-                        numberOfRoads);
+                s->write(4, numberOfRoads);
 
                 // Write roads to stringstream.
                 stringstream sstr;
@@ -192,13 +187,11 @@ namespace opendlv {
 
                 // Write roads.
                 if (numberOfRoads > 0) {
-                    s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('r', 'o', 'a', 'd', 's') >::RESULT,
-                            sstr.str());
+                    s->write(5, sstr.str());
                 }
 
                 uint32_t numberOfZones = static_cast<uint32_t>(m_listOfZones.size());
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('n', 'u', 'm', 'z', 'o', 'n', 'e', 's') >::RESULT,
-                        numberOfZones);
+                s->write(6, numberOfZones);
 
                 // Write zones to stringstream.
                 sstr.str("");
@@ -209,8 +202,7 @@ namespace opendlv {
 
                 // Write zones.
                 if (numberOfZones > 0) {
-                    s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('z', 'o', 'n', 'e', 's') >::RESULT,
-                            sstr.str());
+                    s->write(7, sstr.str());
                 }
 
                 return out;
@@ -225,24 +217,19 @@ namespace opendlv {
                 m_listOfRoads.clear();
                 m_listOfZones.clear();
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('n', 'a', 'm', 'e') >::RESULT,
-                       m_name);
+                d->read(1, m_name);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                       m_identifier);
+                d->read(2, m_identifier);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('h', 'e', 'i', 'g', 'h', 't') >::RESULT,
-                       m_height);
+                d->read(3, m_height);
 
                 uint32_t numberOfRoads = 0;
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('n', 'u', 'm', 'r', 'o', 'a', 'd', 's') >::RESULT,
-                       numberOfRoads);
+                d->read(4, numberOfRoads);
 
                 if (numberOfRoads > 0) {
                     string str;
                     // Read roads into stringstream.
-                    d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('r', 'o', 'a', 'd', 's') >::RESULT,
-                           str);
+                    d->read(5, str);
 
                     stringstream sstr(str);
 
@@ -255,14 +242,12 @@ namespace opendlv {
                 }
 
                 uint32_t numberOfZones = 0;
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('n', 'u', 'm', 'z', 'o', 'n', 'e', 's') >::RESULT,
-                       numberOfZones);
+                d->read(6, numberOfZones);
 
                 if (numberOfZones > 0) {
                     string str;
                     // Read zones into stringstream.
-                    d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('z', 'o', 'n', 'e', 's') >::RESULT,
-                           str);
+                    d->read(7, str);
 
                     stringstream sstr(str);
 

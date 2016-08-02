@@ -18,12 +18,11 @@
  */
 
 #include <istream>
+#include <memory>
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
 #include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
 #include "opendavinci/odcore/data/SerializableData.h"
@@ -147,17 +146,13 @@ namespace opendlv {
 
                 std::shared_ptr<Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('l', 'a', 'y', 'e', 'r') >::RESULT,
-                        getLayerID());
+                s->write(1, getLayerID());
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('r', 'o', 'a', 'd') >::RESULT,
-                        getRoadID());
+                s->write(2, getRoadID());
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('l', 'a', 'n', 'e') >::RESULT,
-                        getLaneID());
+                s->write(3, getLaneID());
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('p', 'o', 'i', 'n', 't') >::RESULT,
-                        getPointID());
+                s->write(4, getPointID());
 
                 return out;
             }
@@ -167,17 +162,13 @@ namespace opendlv {
 
                 std::shared_ptr<Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('l', 'a', 'y', 'e', 'r') >::RESULT,
-                       m_layerID);
+                d->read(1, m_layerID);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('r', 'o', 'a', 'd') >::RESULT,
-                       m_roadID);
+                d->read(2, m_roadID);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('l', 'a', 'n', 'e') >::RESULT,
-                       m_laneID);
+                d->read(3, m_laneID);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('p', 'o', 'i', 'n', 't') >::RESULT,
-                       m_pointID);
+                d->read(4, m_pointID);
 
                 return in;
             }

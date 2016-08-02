@@ -17,13 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <memory>
 #include <ostream>
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
 #include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
 #include "opendavinci/odcore/data/SerializableData.h"
@@ -81,8 +80,7 @@ namespace opendlv {
 
                 std::shared_ptr<Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('t', 'y', 'p', 'e') >::RESULT,
-                        static_cast<uint32_t>(m_type));
+                s->write(1, static_cast<uint32_t>(m_type));
 
                 return out;
             }
@@ -93,8 +91,7 @@ namespace opendlv {
                 std::shared_ptr<Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
                 uint32_t type = 0;
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('t', 'y', 'p', 'e') >::RESULT,
-                       type);
+                d->read(1, type);
 
                 m_type = static_cast<enum StopType::STOPTYPE>(type);
 

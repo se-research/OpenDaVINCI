@@ -17,14 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <memory>
 #include <istream>
 #include <string>
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
 #include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/Serializable.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
@@ -158,8 +157,7 @@ namespace opendlv {
                         numberOfShapes++;
                     }
                 }
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('n', 'u', 'm', 's', 'h', 'a', 'p', 'e') >::RESULT,
-                        numberOfShapes);
+                s->write(1, numberOfShapes);
 
                 // Write shapes to stringstream.
                 stringstream sstr;
@@ -175,8 +173,7 @@ namespace opendlv {
 
                 // Write shapes.
                 if (numberOfShapes > 0) {
-                    s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('s', 'h', 'a', 'p', 'e', 's') >::RESULT,
-                            sstr.str());
+                    s->write(2, sstr.str());
                 }
 
                 return out;
@@ -191,14 +188,12 @@ namespace opendlv {
                 cleanUp();
 
                 uint32_t numberOfShapes = 0;
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('n', 'u', 'm', 's', 'h', 'a', 'p', 'e') >::RESULT,
-                       numberOfShapes);
+                d->read(1, numberOfShapes);
 
                 if (numberOfShapes > 0) {
                     string str;
                     // Read shapes into stringstream.
-                    d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('s', 'h', 'a', 'p', 'e', 's') >::RESULT,
-                           str);
+                    d->read(2, str);
 
                     stringstream sstr(str);
 

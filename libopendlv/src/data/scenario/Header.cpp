@@ -17,12 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <memory>
 #include <ostream>
 #include <string>
 
-#include <memory>
 #include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
 #include "opendavinci/odcore/data/SerializableData.h"
@@ -122,17 +121,13 @@ namespace opendlv {
 
                 std::shared_ptr<Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('n', 'a', 'm', 'e') >::RESULT,
-                        m_name);
+                s->write(1, m_name);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('v', 'e', 'r', 's', 'i', 'o', 'n') >::RESULT,
-                        m_version);
+                s->write(2, m_version);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('d', 'a', 't', 'e') >::RESULT,
-                        m_date);
+                s->write(3, m_date);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('c', 'o', 'o', 'r', 'd') >::RESULT,
-                        m_coordinateSystem);
+                s->write(4, m_coordinateSystem);
 
                 return out;
             }
@@ -142,17 +137,13 @@ namespace opendlv {
 
                 std::shared_ptr<Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('n', 'a', 'm', 'e') >::RESULT,
-                       m_name);
+                d->read(1, m_name);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('v', 'e', 'r', 's', 'i', 'o', 'n') >::RESULT,
-                       m_version);
+                d->read(2, m_version);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('d', 'a', 't', 'e') >::RESULT,
-                       m_date);
+                d->read(3, m_date);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('c', 'o', 'o', 'r', 'd') >::RESULT,
-                       m_coordinateSystem);
+                d->read(4, m_coordinateSystem);
 
                 return in;
             }

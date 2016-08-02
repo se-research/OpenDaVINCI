@@ -18,11 +18,10 @@
  */
 
 #include <iosfwd>
+#include <memory>
 #include <string>
 
-#include <memory>
 #include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
 #include "opendlv/data/scenario/IDVertex3.h"
@@ -107,11 +106,9 @@ namespace opendlv {
 
                 std::shared_ptr<Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('s', 't', 'a', 'r', 't') >::RESULT,
-                        getStart());
+                s->write(1, getStart());
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('e', 'n', 'd') >::RESULT,
-                        getEnd());
+                s->write(2, getEnd());
 
                 return out;
             }
@@ -124,11 +121,9 @@ namespace opendlv {
 
                 std::shared_ptr<Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('s', 't', 'a', 'r', 't') >::RESULT,
-                       m_start);
+                d->read(1, m_start);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('e', 'n', 'd') >::RESULT,
-                       m_end);
+                d->read(2, m_end);
 
                 return in;
             }
