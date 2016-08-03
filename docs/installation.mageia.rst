@@ -33,18 +33,18 @@ Install the required development packages for the DataStructureGenerator sources
 Clone the latest OpenDaVINCI sources from https://github.com/se-research/OpenDaVINCI or download
 the latest OpenDaVINCI sources as zip file: https://github.com/se-research/OpenDaVINCI/archive/master.zip.
 
+Create an installation folder::
+
+    $ sudo mkdir -p /opt/od && sudo chown $USER:$USER /opt/od
+
 Change to your source folder and create a build directory::
 
     $ cd OpenDaVINCI && mkdir build
 
 Use cmake to create the build scripts for your build folder::
 
-    $ cd build && cmake -D CMAKE_INSTALL_PREFIX=/usr/local ..
+    $ cd build && cmake -D CMAKE_INSTALL_PREFIX=/opt/od ..
 
 Build, run the tests, and install the OpenDaVINCI::
 
-    $ sudo make all
-    
-Note that sudo is used here because installing software to system-wide directories (e.g., /usr/local) requires superuser (root) privileges. If OpenDaVINCI is installed in a different directory, e.g., /opt/od, then there is no need to use sudo. Instead, write permission should be given::
-
-    $ sudo chown $USER:$USER /opt/od
+    $ make
