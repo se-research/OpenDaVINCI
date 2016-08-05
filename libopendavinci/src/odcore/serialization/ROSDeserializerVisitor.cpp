@@ -19,7 +19,7 @@
 
 #include <iostream>
 
-#include "opendavinci/odcore/base/ROSDeserializerVisitor.h"
+#include "opendavinci/odcore/serialization/ROSDeserializerVisitor.h"
 #include "opendavinci/odcore/opendavinci.h"
 
 namespace odcore {
