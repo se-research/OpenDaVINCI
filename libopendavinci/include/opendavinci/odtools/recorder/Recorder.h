@@ -128,7 +128,7 @@ class SharedDataListener;
                 std::shared_ptr<ostream> m_outSharedMemoryFile;
                 bool m_dumpSharedData;
                 odcore::base::Mutex m_mapOfRecorderDelegatesMutex;
-                map<int32_t, RecorderDelegate* > m_mapOfRecorderDelegates;
+                map<int32_t, RecorderDelegate*> m_mapOfRecorderDelegates;
         };
 
     } // recorder

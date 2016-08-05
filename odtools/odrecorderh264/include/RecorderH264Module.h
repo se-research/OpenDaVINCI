@@ -23,8 +23,6 @@
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
 #include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
-#include "opendavinci/odtools/recorder/RecorderDelegate.h"
-
 
 namespace odrecorderh264 {
 
@@ -34,8 +32,7 @@ namespace odrecorderh264 {
      * This class can be used to record data distributed in a Container conference
      * and to encode SharedImage containers as h264 video streams.
      */
-    class RecorderH264Module : public odcore::base::module::TimeTriggeredConferenceClientModule,
-                               public odtools::recorder::RecorderDelegate {
+    class RecorderH264Module : public odcore::base::module::TimeTriggeredConferenceClientModule {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -70,8 +67,6 @@ namespace odrecorderh264 {
             virtual void wait();
 
             odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
-
-            virtual odcore::data::Container store(odcore::data::Container &c);
 
         private:
             virtual void setUp();

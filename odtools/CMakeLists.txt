@@ -33,8 +33,8 @@ INCLUDE (CheckCxxTestEnvironment)
 FIND_PACKAGE (OpenCV)
 FIND_PACKAGE (FFMPEGMODULES)
 IF (FFMPEGMODULES_FOUND)
-    ADD_SUBDIRECTORY (odrecorder.h264)
-    ADD_SUBDIRECTORY (odplayer.h264)
+    ADD_SUBDIRECTORY (odrecorderh264)
+    ADD_SUBDIRECTORY (odplayerh264)
 ENDIF()
 
 ###########################################################################

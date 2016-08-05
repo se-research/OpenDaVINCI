@@ -1,4 +1,4 @@
-# odplayer.h264 - Tool for playing back recorded data and videos encoded in h264
+# odrecorder.h264 - Tool for recording data and encoding video streams with h264.
 # Copyright (C) 2016 Christian Berger
 #
 # This program is free software; you can redistribute it and/or
@@ -17,7 +17,7 @@
 
 CMAKE_MINIMUM_REQUIRED (VERSION 2.8)
 
-PROJECT (odplayer.h264)
+PROJECT (odrecorderh264)
 
 ###########################################################################
 # Set the search path for .cmake files.

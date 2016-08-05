@@ -107,9 +107,7 @@ namespace odtools {
                 Lock l(m_mapOfRecorderDelegatesMutex);
                 auto delegate = m_mapOfRecorderDelegates.find(c.getDataType());
                 if (delegate != m_mapOfRecorderDelegates.end()) {
-cout << __FILE__ << " " << __LINE__ << endl;
-
-                    Container replacementContainer = delegate->second->store(c);
+                    Container replacementContainer = delegate->second->process(c);
                     getFIFO().enter(replacementContainer);
                     recordQueueEntries();
 
@@ -150,7 +148,7 @@ cout << __FILE__ << " " << __LINE__ << endl;
                         Lock l(m_mapOfRecorderDelegatesMutex);
                         auto delegate = m_mapOfRecorderDelegates.find(c.getDataType());
                         if (delegate != m_mapOfRecorderDelegates.end()) {
-                            Container replacementContainer = delegate->second->store(c);
+                            Container replacementContainer = delegate->second->process(c);
                             if (m_out.get()) {
                                 (*m_out) << replacementContainer;
                             }

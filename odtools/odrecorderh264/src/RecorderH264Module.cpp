@@ -20,11 +20,12 @@
 #include <iostream>
 #include <string>
 
-#include "RecorderH264Module.h"
 #include "opendavinci/odcore/base/Thread.h"
-#include "opendavinci/odtools/recorder/Recorder.h"
 #include "opendavinci/odtools/recorder/SharedDataListener.h"
 #include "opendavinci/generated/odcore/data/recorder/RecorderCommand.h"
+
+#include "RecorderH264.h"
+#include "RecorderH264Module.h"
 
 namespace odcore { namespace base { class KeyValueDataStore; } }
 
@@ -49,11 +50,6 @@ namespace odrecorderh264 {
         AbstractModule::wait();
     }
 
-    odcore::data::Container RecorderH264Module::store(odcore::data::Container &c) {
-        cout << "RecorderH264Module: Got called for " << c.getDataType() << endl;
-        return c;
-    }
-
     odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode RecorderH264Module::body() {
         // Check if the recorder is remotely controlled.
         bool remoteControl = (getKeyValueConfiguration().getValue<bool>("odrecorderh264.remoteControl") != 0);
@@ -70,17 +66,17 @@ namespace odrecorderh264 {
         const bool DUMP_SHARED_DATA = getKeyValueConfiguration().getValue<uint32_t>("odrecorderh264.dumpshareddata") == 1;
 
         // Actual "recording" interface.
-        Recorder r(recorderOutputURL, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING, DUMP_SHARED_DATA);
+        RecorderH264 rh264(recorderOutputURL, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING, DUMP_SHARED_DATA);
 
         // Connect recorder's FIFOQueue to record all containers except for shared images/shared data.
-        addDataStoreFor(r.getFIFO());
+        addDataStoreFor(rh264.getFIFO());
 
         // Connect recorder's data store that can handle shared data except for SharedImages.
-        addDataStoreFor(odcore::data::SharedData::ID(), r.getDataStoreForSharedData());
-        addDataStoreFor(odcore::data::SharedPointCloud::ID(), r.getDataStoreForSharedData());
+        addDataStoreFor(odcore::data::SharedData::ID(), rh264.getDataStoreForSharedData());
+        addDataStoreFor(odcore::data::SharedPointCloud::ID(), rh264.getDataStoreForSharedData());
 
-        // SharedImages will be encoded as h264 data.
-        r.registerRecorderDelegate(odcore::data::image::SharedImage::ID(), this);
+        // SharedImages will be encoded as h264 data. RecorderH264's constructor
+        // will take care of that automatically.
 
         // Get key/value-datastore for controlling the odrecorder.
         KeyValueDataStore &kvds = getKeyValueDataStore();
@@ -90,8 +86,8 @@ namespace odrecorderh264 {
         while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
             // Recording queued entries.
             if (recording) {
-                if (!r.getFIFO().isEmpty()) {
-                    r.recordQueueEntries();
+                if (!rh264.getFIFO().isEmpty()) {
+                    rh264.recordQueueEntries();
                 }
                 else {
                     Thread::usleepFor(500);
@@ -110,7 +106,7 @@ namespace odrecorderh264 {
 
                 // Discard existing entries.
                 if (!recording) {
-                    r.getFIFO().clear();
+                    rh264.getFIFO().clear();
                 }
             }
         }
