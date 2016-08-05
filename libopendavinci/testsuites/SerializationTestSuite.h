@@ -37,7 +37,7 @@ using namespace std;
 using namespace odcore;
 using namespace odcore::base;
 
-class SerializationTestNestedData : public odcore::base::Serializable {
+class SerializationTestNestedData : public odcore::serialization::Serializable {
     public:
         SerializationTestNestedData() :
                 m_double(0) {}
@@ -65,7 +65,7 @@ class SerializationTestNestedData : public odcore::base::Serializable {
         }
 };
 
-class SerializationTestSampleData : public odcore::base::Serializable {
+class SerializationTestSampleData : public odcore::serialization::Serializable {
     public:
         SerializationTestSampleData() :
                 m_bool(false),

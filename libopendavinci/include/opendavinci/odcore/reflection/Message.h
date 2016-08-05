@@ -39,7 +39,7 @@ namespace odcore {
         /**
          * This class is a generic Message representation.
          */
-        class OPENDAVINCI_API Message : public odcore::base::Serializable, public odcore::base::Visitable {
+        class OPENDAVINCI_API Message : public odcore::serialization::Serializable, public odcore::base::Visitable {
             public:
                 Message();
 

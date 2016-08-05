@@ -36,7 +36,7 @@ using namespace std;
 using namespace odcore::base;
 using namespace odcore::data;
 
-class FalseSerializationTestSuiteNestedData : public odcore::base::Serializable {
+class FalseSerializationTestSuiteNestedData : public odcore::serialization::Serializable {
     public:
         FalseSerializationTestSuiteNestedData() :
                 m_string("BlaBla") {}
@@ -64,7 +64,7 @@ class FalseSerializationTestSuiteNestedData : public odcore::base::Serializable 
         }
 };
 
-class FalseSerializationTestSuiteSampleData : public odcore::base::Serializable {
+class FalseSerializationTestSuiteSampleData : public odcore::serialization::Serializable {
     public:
         FalseSerializationTestSuiteSampleData() :
                 m_string("Bla"), m_nestedData() {}

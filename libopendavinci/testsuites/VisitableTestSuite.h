@@ -65,7 +65,7 @@ class SerializationFactoryTestCase : public SerializationFactory {
 
 
 // An example data object.
-class MyNestedVisitable : public odcore::base::Serializable {
+class MyNestedVisitable : public odcore::serialization::Serializable {
     public:
         MyNestedVisitable() :
                 m_double(0) {}

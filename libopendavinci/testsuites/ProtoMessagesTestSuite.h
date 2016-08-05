@@ -100,7 +100,7 @@ class SerializationFactoryTestCase : public SerializationFactory {
         }
 };
 
-class ProtoMessages1SampleDataVersion1 : public odcore::base::Serializable {
+class ProtoMessages1SampleDataVersion1 : public odcore::serialization::Serializable {
     public:
         ProtoMessages1SampleDataVersion1() :
             m_bool(false) {}
@@ -128,7 +128,7 @@ class ProtoMessages1SampleDataVersion1 : public odcore::base::Serializable {
         }
 };
 
-class ProtoMessages1SampleDataVersion2 : public odcore::base::Serializable {
+class ProtoMessages1SampleDataVersion2 : public odcore::serialization::Serializable {
     public:
         ProtoMessages1SampleDataVersion2() :
             m_bool(false),
@@ -168,7 +168,7 @@ class ProtoMessages1SampleDataVersion2 : public odcore::base::Serializable {
         }
 };
 
-class ProtoMessages1SampleDataVersion2Reordered : public odcore::base::Serializable {
+class ProtoMessages1SampleDataVersion2Reordered : public odcore::serialization::Serializable {
     public:
         ProtoMessages1SampleDataVersion2Reordered() :
             m_bool(false),

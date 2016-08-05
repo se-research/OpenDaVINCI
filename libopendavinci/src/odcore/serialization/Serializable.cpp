@@ -29,11 +29,11 @@ namespace odcore {
 
 namespace std {
 
-    ostream &operator<<(ostream &out, const odcore::base::Serializable &s) {
+    ostream &operator<<(ostream &out, const odcore::serialization::Serializable &s) {
         return s.operator << (out);
     }
 
-    istream &operator>>(istream &in, odcore::base::Serializable &s) {
+    istream &operator>>(istream &in, odcore::serialization::Serializable &s) {
         return s.operator >> (in);
     }
 

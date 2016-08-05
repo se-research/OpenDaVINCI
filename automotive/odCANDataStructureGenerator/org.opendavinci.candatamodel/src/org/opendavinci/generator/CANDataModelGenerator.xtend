@@ -547,8 +547,8 @@ namespace canmapping {
 	«ENDFOR»
 	
 	ostream& «className»::operator<<(ostream &out) const {
-		odcore::base::SerializationFactory& sf = odcore::base::SerializationFactory::getInstance();
-		std::shared_ptr<odcore::base::Serializer> s = sf.getSerializer(out);
+		odcore::serialization::SerializationFactory& sf = odcore::serialization::SerializationFactory::getInstance();
+		std::shared_ptr<odcore::serialization::Serializer> s = sf.getSerializer(out);
 
 		«IF mapping.mappings.size>0»
 		«var ArrayList<String> opOutBody=new ArrayList<String>»
@@ -568,7 +568,7 @@ namespace canmapping {
 	}
 	
 	istream& «className»::operator>>(istream &in) {
-		odcore::base::SerializationFactory& sf = odcore::base::SerializationFactory::getInstance();
+		odcore::serialization::SerializationFactory& sf = odcore::serialization::SerializationFactory::getInstance();
 		std::shared_ptr<odcore::base::Deserializer> s = sf.getDeserializer(in);
 		
 		«IF mapping.mappings.size>0»

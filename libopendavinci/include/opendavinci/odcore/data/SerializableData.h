@@ -33,7 +33,7 @@ namespace odcore {
         /**
          * This class is the superclass for all data.
          */
-        class OPENDAVINCI_API SerializableData : public odcore::base::Serializable {
+        class OPENDAVINCI_API SerializableData : public odcore::serialization::Serializable {
             public:
                 SerializableData();
 

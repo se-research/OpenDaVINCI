@@ -49,7 +49,7 @@ using namespace odcore::data;
 using namespace odcore::reflection;
 using namespace odcore::data::reflection;
 
-class MyRawVisitable : public odcore::base::Serializable, public Visitable {
+class MyRawVisitable : public odcore::serialization::Serializable, public Visitable {
     public:
         MyRawVisitable() :
             data(NULL) {}
@@ -98,7 +98,7 @@ class MyRawVisitable : public odcore::base::Serializable, public Visitable {
         }
 };
 
-class MyNestedVisitable : public odcore::base::Serializable, public Visitable {
+class MyNestedVisitable : public odcore::serialization::Serializable, public Visitable {
     public:
         MyNestedVisitable() :
                 m_double(0) {}
