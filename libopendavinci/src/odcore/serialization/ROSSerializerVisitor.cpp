@@ -22,7 +22,7 @@
 #include "opendavinci/odcore/serialization/ROSSerializerVisitor.h"
 
 namespace odcore {
-    namespace base {
+    namespace serialization {
 
 class Serializable;
 
@@ -302,5 +302,5 @@ class Serializable;
         }
 
     }
-} // odcore::base
+} // odcore::serialization
 

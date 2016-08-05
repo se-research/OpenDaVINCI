@@ -21,7 +21,7 @@
 #include "opendavinci/odcore/serialization/QueryableNetstringsSerializerABCF.h"
 
 namespace odcore {
-    namespace base {
+    namespace serialization {
 
 class Serializable;
 
@@ -235,4 +235,4 @@ class Serializable;
             m_serializer->write(id, longName, shortName, data, size);
         }
     }
-} // odcore::base
+} // odcore::serialization

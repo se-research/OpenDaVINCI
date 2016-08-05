@@ -23,7 +23,7 @@
 #include "opendavinci/odcore/base/Visitable.h"
 
 namespace odcore {
-    namespace base {
+    namespace serialization {
 
 class Serializable;
 
@@ -325,5 +325,5 @@ class Serializable;
         }
 
     }
-} // odcore::base
+} // odcore::serialization
 

@@ -20,12 +20,12 @@
 #include "opendavinci/odcore/serialization/Serializable.h"
 
 namespace odcore {
-    namespace base {
+    namespace serialization {
 
         Serializable::~Serializable() {}
 
     }
-} // odcore::base
+} // odcore::serialization
 
 namespace std {
 

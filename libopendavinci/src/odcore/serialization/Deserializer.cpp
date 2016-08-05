@@ -21,7 +21,7 @@
 #include "opendavinci/odcore/wrapper/Libraries.h"
 
 namespace odcore {
-    namespace base {
+    namespace serialization {
 
         Deserializer::Deserializer() {}
 
@@ -77,4 +77,4 @@ namespace odcore {
             }
         }
     }
-} // odcore::base
+} // odcore::serialization

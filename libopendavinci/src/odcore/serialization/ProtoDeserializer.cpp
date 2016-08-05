@@ -29,7 +29,7 @@
 #include "opendavinci/odcore/reflection/Message.h"
 
 namespace odcore {
-    namespace base {
+    namespace serialization {
 
 class Serializable;
 
@@ -558,5 +558,5 @@ class Serializable;
         }
 
     }
-} // odcore::base
+} // odcore::serialization
 

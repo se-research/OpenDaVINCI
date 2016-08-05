@@ -21,7 +21,7 @@
 #include "opendavinci/odcore/serialization/Serializable.h"
 
 namespace odcore {
-    namespace base {
+    namespace serialization {
 
         using namespace std;
 
@@ -396,4 +396,4 @@ namespace odcore {
             writeValue(m_buffer, data, size);
         }
     }
-} // odcore::base
+} // odcore::serialization
