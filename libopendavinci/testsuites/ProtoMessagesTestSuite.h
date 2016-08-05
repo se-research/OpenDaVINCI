@@ -29,10 +29,10 @@
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/ProtoDeserializer.h"
-#include "opendavinci/odcore/base/ProtoSerializer.h"
-#include "opendavinci/odcore/base/ProtoDeserializerVisitor.h"
-#include "opendavinci/odcore/base/ProtoSerializerVisitor.h"
+#include "opendavinci/odcore/serialization/ProtoDeserializer.h"
+#include "opendavinci/odcore/serialization/ProtoSerializer.h"
+#include "opendavinci/odcore/serialization/ProtoDeserializerVisitor.h"
+#include "opendavinci/odcore/serialization/ProtoSerializerVisitor.h"
 
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
 #include "opendavinci/odcore/data/Container.h"

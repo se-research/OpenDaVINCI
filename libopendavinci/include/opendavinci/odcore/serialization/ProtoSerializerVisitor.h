@@ -23,7 +23,7 @@
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/base/ProtoSerializer.h"
+#include "opendavinci/odcore/serialization/ProtoSerializer.h"
 #include "opendavinci/odcore/base/Visitor.h"
 
 namespace odcore {

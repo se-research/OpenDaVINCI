@@ -22,8 +22,8 @@
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/base/ProtoDeserializer.h"
-#include "opendavinci/odcore/base/ProtoDeserializerVisitor.h"
+#include "opendavinci/odcore/serialization/ProtoDeserializer.h"
+#include "opendavinci/odcore/serialization/ProtoDeserializerVisitor.h"
 #include "opendavinci/odcore/base/Visitable.h"
 #include "opendavinci/odcore/reflection/MessageFromVisitableVisitor.h"
 #include "opendavinci/odcore/reflection/Message.h"

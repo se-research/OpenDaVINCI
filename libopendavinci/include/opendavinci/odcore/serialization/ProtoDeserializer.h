@@ -27,8 +27,8 @@
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/serialization/Deserializer.h"
-#include "opendavinci/odcore/base/ProtoSerializer.h"
-#include "opendavinci/odcore/base/ProtoSerializerVisitor.h"
+#include "opendavinci/odcore/serialization/ProtoSerializer.h"
+#include "opendavinci/odcore/serialization/ProtoSerializerVisitor.h"
 
 namespace odcore {
     namespace base {

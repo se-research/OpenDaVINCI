@@ -19,7 +19,7 @@
 
 #include <sstream>
 
-#include "opendavinci/odcore/base/ProtoSerializer.h"
+#include "opendavinci/odcore/serialization/ProtoSerializer.h"
 #include "opendavinci/odcore/base/Visitable.h"
 
 namespace odcore {

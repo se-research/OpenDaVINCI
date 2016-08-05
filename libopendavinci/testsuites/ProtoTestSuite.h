@@ -29,8 +29,8 @@
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/serialization/Deserializer.h"     // for Deserializer
-#include "opendavinci/odcore/base/ProtoDeserializerVisitor.h"
-#include "opendavinci/odcore/base/ProtoSerializerVisitor.h"
+#include "opendavinci/odcore/serialization/ProtoDeserializerVisitor.h"
+#include "opendavinci/odcore/serialization/ProtoSerializerVisitor.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"  // for SerializationFactory
 #include "opendavinci/odcore/base/Serializer.h"       // for Serializer
 #include "opendavinci/odcore/base/Visitable.h"        // for Visitable
