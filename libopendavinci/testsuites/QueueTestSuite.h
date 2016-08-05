@@ -45,6 +45,7 @@
 using namespace std;
 using namespace odcore::base;
 using namespace odcore::data;
+using namespace odcore::serialization;
 
 class QueueTestSampleData : public odcore::data::SerializableData {
     public:

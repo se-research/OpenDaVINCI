@@ -38,6 +38,7 @@ namespace odcore {
             using namespace odcore::io;
             using namespace odcore::io::conference;
             using namespace odcore::exceptions;
+            using namespace odcore::serialization;
 
             AbstractConferenceClientModule::AbstractConferenceClientModule(const int32_t &argc, char **argv, const string &name) throw (InvalidArgumentException) :
                     ManagedClientModule(argc, argv, name) {

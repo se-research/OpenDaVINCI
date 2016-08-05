@@ -30,6 +30,7 @@ namespace odcore {
 
             using namespace std;
             using namespace exceptions;
+            using namespace odcore::serialization;
 
             MasterModule::MasterModule(const int32_t &argc, char **argv) throw (InvalidArgumentException) :
                 AbstractCIDModule(argc, argv) {

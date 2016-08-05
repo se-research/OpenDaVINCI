@@ -14,6 +14,7 @@
 
 	using namespace std;
 	using namespace odcore::base;
+	using namespace odcore::serialization;
 
 
 	Test9A::Test9A() :

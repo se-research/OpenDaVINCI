@@ -31,7 +31,7 @@ namespace odcore {
 
         using namespace std;
 
-        Mutex SerializationFactory::m_singletonMutex;
+        odcore::base::Mutex SerializationFactory::m_singletonMutex;
         SerializationFactory* SerializationFactory::m_singleton = NULL;
 
         void SerializationFactory::setSingleton(SerializationFactory *singleton) {
@@ -45,7 +45,7 @@ namespace odcore {
             // Double-Checked Locking
             {
                 if (SerializationFactory::m_singleton == NULL) {
-                    Lock l(SerializationFactory::m_singletonMutex);
+                    odcore::base::Lock l(SerializationFactory::m_singletonMutex);
                     if (SerializationFactory::m_singleton == NULL) {
                         SerializationFactory::setSingleton(new SerializationFactory());
                     }

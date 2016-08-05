@@ -37,7 +37,7 @@ namespace odcore {
          * This class provides a deserialization visitor to decode data
          * encoded in ROS format.
          */
-        class ROSDeserializerVisitor : public Deserializer, public Visitor {
+        class ROSDeserializerVisitor : public Deserializer, public odcore::base::Visitor {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn

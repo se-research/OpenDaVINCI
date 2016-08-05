@@ -36,7 +36,7 @@ namespace odcore {
          * This class provides a deserialization visitor to decode data
          * encoded in Google's Protobuf format.
          */
-        class ProtoDeserializerVisitor : public ProtoDeserializer, public Visitor {
+        class ProtoDeserializerVisitor : public ProtoDeserializer, public odcore::base::Visitor {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn

@@ -38,7 +38,7 @@ class Serializable;
          * This class provides a serialization visitor to encode data
          * in ROS format.
          */
-        class ROSSerializerVisitor : public Serializer, public Visitor {
+        class ROSSerializerVisitor : public Serializer, public odcore::base::Visitor {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn

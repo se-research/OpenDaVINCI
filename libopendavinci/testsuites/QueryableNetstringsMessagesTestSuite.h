@@ -80,6 +80,7 @@ using namespace odcore::data::player;
 using namespace odcore::data::recorder;
 using namespace odcore::data::reflection;
 using namespace odcore::testdata;
+using namespace odcore::serialization;
 
 class SerializationFactoryTestCase : public SerializationFactory {
     public:

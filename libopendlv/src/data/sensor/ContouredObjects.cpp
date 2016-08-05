@@ -99,9 +99,9 @@ namespace opendlv {
             }
 
             ostream& ContouredObjects::operator<<(ostream &out) const {
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Serializer> s = sf.getQueryableNetstringsSerializer(out);
+                std::shared_ptr<odcore::serialization::Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
                 // Write contoured objects.
                 s->write(1, static_cast<uint32_t>(m_contouredObjects.size()));
@@ -121,9 +121,9 @@ namespace opendlv {
             }
 
             istream& ContouredObjects::operator>>(istream &in) {
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
+                std::shared_ptr<odcore::serialization::Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
                 // Read contoured objects.
                 uint32_t numberOfContouredObjects = 0;

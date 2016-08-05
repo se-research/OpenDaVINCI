@@ -17,6 +17,7 @@
 
 	using namespace std;
 	using namespace odcore::base;
+	using namespace odcore::serialization;
 
 
 	Test11Lists::Test11Lists() :

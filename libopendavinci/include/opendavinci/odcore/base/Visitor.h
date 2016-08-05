@@ -24,10 +24,10 @@
 
 #include "opendavinci/odcore/opendavinci.h"
 
+namespace odcore { namespace serialization { class Serializable; } }
+
 namespace odcore {
     namespace base {
-
-class Serializable;
 
         using namespace std;
 
@@ -58,7 +58,7 @@ class Serializable;
                  * @param shortName Short identifier for the v to be serialized.
                  * @param v Serializable to be serialized.
                  */
-                virtual void visit(const uint32_t &id, const string &longName, const string &shortName, odcore::base::Serializable &v) = 0;
+                virtual void visit(const uint32_t &id, const string &longName, const string &shortName, odcore::serialization::Serializable &v) = 0;
 
                 /**
                  * This method visits a bool.

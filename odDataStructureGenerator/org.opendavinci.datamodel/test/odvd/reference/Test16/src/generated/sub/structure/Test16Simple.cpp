@@ -16,6 +16,7 @@ namespace sub {
 	namespace structure {
 			using namespace std;
 			using namespace odcore::base;
+			using namespace odcore::serialization;
 		
 		
 			Test16Simple::Test16Simple() :

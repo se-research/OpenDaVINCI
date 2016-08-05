@@ -33,6 +33,7 @@ namespace odcore {
 
             using namespace std;
             using namespace odcore::base;
+            using namespace odcore::serialization;
 
             CompressedImage::CompressedImage() :
                     SerializableData(),

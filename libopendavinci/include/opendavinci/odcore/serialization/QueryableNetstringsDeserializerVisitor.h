@@ -38,7 +38,7 @@ namespace odcore {
          *
          * @See QueryableNetstringsDeserializer
          */
-        class QueryableNetstringsDeserializerVisitor : public QueryableNetstringsDeserializer, public Visitor {
+        class QueryableNetstringsDeserializerVisitor : public QueryableNetstringsDeserializer, public odcore::base::Visitor {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn

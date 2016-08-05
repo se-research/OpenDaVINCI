@@ -37,7 +37,7 @@ class Serializable;
          * This class provides a serialization visitor to encode data
          * in Google's Protobuf format.
          */
-        class ProtoSerializerVisitor : public ProtoSerializer, public Visitor {
+        class ProtoSerializerVisitor : public ProtoSerializer, public odcore::base::Visitor {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn

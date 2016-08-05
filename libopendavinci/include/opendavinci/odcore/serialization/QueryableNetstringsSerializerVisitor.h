@@ -39,7 +39,7 @@ class Serializable;
          *
          * @See QueryableNetstringsSerializer
          */
-        class QueryableNetstringsSerializerVisitor : public QueryableNetstringsSerializer, public Visitor {
+        class QueryableNetstringsSerializerVisitor : public QueryableNetstringsSerializer, public odcore::base::Visitor {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn

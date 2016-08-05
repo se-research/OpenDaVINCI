@@ -16,6 +16,7 @@ namespace test13 {
 	namespace subpackage {
 			using namespace std;
 			using namespace odcore::base;
+			using namespace odcore::serialization;
 		
 		
 			Test13Simple::Test13Simple() :

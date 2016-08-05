@@ -37,7 +37,7 @@ namespace odcore {
          * This class provides a deserialization visitor to decode data
          * encoded in LCM format (cf. https://github.com/lcm-proj/lcm).
          */
-        class LCMDeserializerVisitor : public Deserializer, public Visitor {
+        class LCMDeserializerVisitor : public Deserializer, public odcore::base::Visitor {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn

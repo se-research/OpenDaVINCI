@@ -46,6 +46,7 @@ using namespace odcore::base;
 using namespace odcore::data;
 using namespace odcore::data::dmcp;
 using namespace odcore::data::image;
+using namespace odcore::serialization;
 
 /*
   Generated from:

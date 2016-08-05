@@ -68,6 +68,7 @@ using namespace odcore::dmcp;
 using namespace odcore::io;
 using namespace odcore::io::conference;
 using namespace odcontext::base;
+using namespace odcore::serialization;
 
 using namespace odcore::data::dmcp;
 

@@ -32,7 +32,8 @@ namespace odcore {
     namespace data {
 
         using namespace std;
-        using namespace base;
+        using namespace odcore::base;
+        using namespace odcore::serialization;
 
         TimeStamp::TimeStamp() :
             m_seconds(0),

@@ -29,7 +29,6 @@ namespace opendlv {
         namespace situation {
 
             using namespace std;
-            using namespace odcore::base;
 
             Stop::Stop() :
                     StopType() {
@@ -73,9 +72,9 @@ namespace opendlv {
                 StopType::operator<<(out);
 
 //
-//                SerializationFactory& sf=SerializationFactory::getInstance();
+//                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 //
-//                std::shared_ptr<Serializer> s = sf.getQueryableNetstringsSerializer(out);
+//                std::shared_ptr<odcore::serialization::Serializer> s = sf.getQueryableNetstringsSerializer(out);
 //
 //                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('t', 'y', 'p', 'e') >::RESULT,
 //                        static_cast<uint32_t>(m_type));
@@ -87,9 +86,9 @@ namespace opendlv {
                 // Deserializer super class.
                 StopType::operator>>(in);
 
-//                SerializationFactory& sf=SerializationFactory::getInstance();
+//                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 //
-//                std::shared_ptr<Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
+//                std::shared_ptr<odcore::serialization::Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 //
 //                uint32_t type = 0;
 //                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('t', 'y', 'p', 'e') >::RESULT,

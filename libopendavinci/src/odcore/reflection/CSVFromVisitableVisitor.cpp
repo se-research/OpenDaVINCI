@@ -26,6 +26,7 @@ namespace odcore {
 
         using namespace odcore;
         using namespace odcore::base;
+        using namespace odcore::serialization;
 
         CSVFromVisitableVisitor::CSVFromVisitableVisitor(ostream &out, const bool &header, const char &delimiter) :
             m_buffer(out),

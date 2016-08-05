@@ -30,6 +30,8 @@
 namespace odcore {
     namespace base {
 
+        using namespace odcore::serialization;
+
         KeyValueConfiguration::KeyValueConfiguration() : m_keyValueConfiguration() {}
 
         KeyValueConfiguration::KeyValueConfiguration(const KeyValueConfiguration &obj) :

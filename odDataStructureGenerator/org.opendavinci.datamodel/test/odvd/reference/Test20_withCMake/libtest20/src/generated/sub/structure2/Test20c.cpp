@@ -16,6 +16,7 @@ namespace sub {
 	namespace structure2 {
 			using namespace std;
 			using namespace odcore::base;
+			using namespace odcore::serialization;
 		
 		
 			Test20c::Test20c() :

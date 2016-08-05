@@ -43,6 +43,7 @@
 using namespace std;
 using namespace odcore::base;
 using namespace odcore::data;
+using namespace odcore::serialization;
 
 class MySimpleDB : public odcore::wrapper::SimpleDB::SimpleDB {
     public:

@@ -32,6 +32,7 @@ namespace odcore {
 
         using namespace odcore;
         using namespace odcore::base;
+        using namespace odcore::serialization;
         using namespace odcore::data::reflection;
 
         MessageFromVisitableVisitor::MessageFromVisitableVisitor() :

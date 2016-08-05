@@ -643,6 +643,7 @@ namespace «s.get(i)» {
 	def generateImplementationFileContentBody(PackageDeclaration pdl, Message msg, HashMap<String, EnumDescription> enums) '''
 	using namespace std;
 	using namespace odcore::base;
+	using namespace odcore::serialization;
 
 	«FOR a : msg.attributes /* Here, we generate the const definitions. */»
 		«a.generateImplementationFileConstants(msg)»

@@ -35,6 +35,7 @@ namespace odfilter {
     using namespace std;
     using namespace odcore::base;
     using namespace odcore::data;
+    using namespace odcore::serialization;
 
     Filter::Filter() :
         m_keep(),

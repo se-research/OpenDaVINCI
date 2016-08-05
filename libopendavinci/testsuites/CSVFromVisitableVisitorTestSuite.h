@@ -43,6 +43,7 @@ using namespace std;
 using namespace odcore;
 using namespace odcore::base;
 using namespace odcore::reflection;
+using namespace odcore::serialization;
 
 class MyVisitable : public Serializable, public Visitable {
     public:

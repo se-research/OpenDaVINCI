@@ -64,6 +64,7 @@ using namespace odcore::io;
 using namespace odcore::io::conference;
 using namespace odcore::dmcp;
 using namespace odcore::data::dmcp;
+using namespace odcore::serialization;
 
 class TestSuiteExample7Data : public odcore::data::SerializableData {
     public:

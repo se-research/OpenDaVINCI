@@ -52,6 +52,7 @@ using namespace std;
 using namespace odcore::base;
 using namespace odcore::base::module;
 using namespace odcore::data;
+using namespace odcore::serialization;
 using namespace odcontext::base;
 
 const int32_t Container_POSITION = 15;

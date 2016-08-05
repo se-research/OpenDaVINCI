@@ -36,6 +36,7 @@
 using namespace std;
 using namespace odcore;
 using namespace odcore::base;
+using namespace odcore::serialization;
 
 class SerializationTestNestedData : public odcore::serialization::Serializable {
     public:

@@ -38,7 +38,7 @@ class Serializable;
          * This class provides a serialization visitor to encode data
          * in LCM format (cf. https://github.com/lcm-proj/lcm).
          */
-        class LCMSerializerVisitor : public Serializer, public Visitor {
+        class LCMSerializerVisitor : public Serializer, public odcore::base::Visitor {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn

@@ -82,8 +82,8 @@ namespace odcore {
 
 namespace std {
     // The following methods are declarations for convenient usage.
-    ostream OPENDAVINCI_API &operator<<(ostream &out, const odcore::base::Serializable &s);
-    istream OPENDAVINCI_API &operator>>(istream &in, odcore::base::Serializable &s);
+    ostream OPENDAVINCI_API &operator<<(ostream &out, const odcore::serialization::Serializable &s);
+    istream OPENDAVINCI_API &operator>>(istream &in, odcore::serialization::Serializable &s);
 }
 
 #endif /*OPENDAVINCI_CORE_SERIALIZATION_SERIALIZEABLE_H_*/

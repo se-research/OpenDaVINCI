@@ -28,6 +28,7 @@ namespace odcore {
 
         using namespace std;
         using namespace odcore::base;
+        using namespace odcore::serialization;
 
         MessagePrettyPrinterVisitor::MessagePrettyPrinterVisitor() :
             m_indent(0),

@@ -15,6 +15,7 @@
 namespace testpackage {
 		using namespace std;
 		using namespace odcore::base;
+		using namespace odcore::serialization;
 	
 	
 		Test8A::Test8A() :

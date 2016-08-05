@@ -48,6 +48,7 @@ using namespace odcore::base;
 using namespace odcore::data;
 using namespace odcore::reflection;
 using namespace odcore::data::reflection;
+using namespace odcore::serialization;
 
 class MyRawVisitable : public odcore::serialization::Serializable, public Visitable {
     public:

@@ -338,9 +338,9 @@ namespace opendlv {
             }
 
             ostream& Point3::operator<<(ostream &out) const {
-                SerializationFactory& sf=SerializationFactory::getInstance();;
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();;
 
-                std::shared_ptr<Serializer> s = sf.getQueryableNetstringsSerializer(out);
+                std::shared_ptr<odcore::serialization::Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
                 stringstream rawData;
                 rawData.precision(10);
@@ -353,9 +353,9 @@ namespace opendlv {
             }
 
             istream& Point3::operator>>(istream &in) {
-                SerializationFactory& sf=SerializationFactory::getInstance();;
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();;
 
-                std::shared_ptr<Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
+                std::shared_ptr<odcore::serialization::Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
                 string data;
                 d->read(1, data);

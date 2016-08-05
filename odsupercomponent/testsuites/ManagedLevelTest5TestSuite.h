@@ -53,6 +53,7 @@ using namespace odcore::base;
 using namespace odcore::base::module;
 using namespace odcore::data;
 using namespace odcore::exceptions;
+using namespace odcore::serialization;
 
 class TestSuiteExample7Data : public odcore::data::SerializableData {
     public:

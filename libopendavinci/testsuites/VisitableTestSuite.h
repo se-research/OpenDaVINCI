@@ -43,6 +43,7 @@
 using namespace std;
 using namespace odcore;
 using namespace odcore::base;
+using namespace odcore::serialization;
 
 class SerializationFactoryTestCase : public SerializationFactory {
     public:

@@ -14,6 +14,7 @@
 
 	using namespace std;
 	using namespace odcore::base;
+	using namespace odcore::serialization;
 
 	const uint32_t Test19c::MAGIC_NUMBER = 42;
 	const float Test19c::PI = 3.14159;

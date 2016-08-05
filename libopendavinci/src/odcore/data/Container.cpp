@@ -31,7 +31,8 @@ namespace odcore {
     namespace data {
 
         using namespace std;
-        using namespace base;
+        using namespace odcore::base;
+        using namespace odcore::serialization;
 
         Container::Container() :
                 m_dataType(UNDEFINEDDATA),
