@@ -206,10 +206,10 @@ class Serializable;
             const ProtoSerializer::PROTOBUF_TYPE protoType = static_cast<ProtoSerializer::PROTOBUF_TYPE>(key & 0x7);
 
             if (fieldId != id) {
-                clog << "[core::base::ProtoDeserializer]: ERROR! Field ids do not match: Found " << fieldId << ", expected: " << id << endl;
+                clog << "[core::serialization::ProtoDeserializer]: ERROR! Field ids do not match: Found " << fieldId << ", expected: " << id << endl;
             }
             if (protoType != expectedType) {
-                clog << "[core::base::ProtoDeserializer]: ERROR! Expected type does not match: Found " << protoType << ", expected " << expectedType << endl;
+                clog << "[core::serialization::ProtoDeserializer]: ERROR! Expected type does not match: Found " << protoType << ", expected " << expectedType << endl;
             }
 
             return size;
