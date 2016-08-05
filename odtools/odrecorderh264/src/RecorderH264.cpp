@@ -33,6 +33,8 @@ extern "C" {
 #include <string>
 
 
+#include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 #include "opendavinci/generated/odcore/data/image/SharedImage.h"
 #include "opendavinci/generated/odcore/data/image/H264Frame.h"
 
@@ -58,7 +60,9 @@ namespace odrecorderh264 {
 
     RecorderH264::RecorderH264(const string &url, const uint32_t &memorySegmentSize, const uint32_t &numberOfSegments, const bool &threading, const bool &dumpSharedData) :
         Recorder(url, memorySegmentSize, numberOfSegments, threading, dumpSharedData),
-        m_frameCounter(0) {
+        m_frameCounter(0),
+        m_hasAttachedToSharedImageMemory(false),
+        m_sharedImageMemory() {
         registerRecorderDelegate(odcore::data::image::SharedImage::ID(), this);
     }
 
@@ -188,34 +192,45 @@ namespace odrecorderh264 {
                 frame->pts = m_frameCounter;
 
                 // Transform frame from BGR to YUV420P for encoding.
-//                {
-//                    uint8_t *inData[1] = { cvFrame.data };
-//                    int inLinesize[1] = { 3*width };
-//                    sws_scale(pixelTransformationContext, inData, inLinesize, 0, height, frame->data, frame->linesize);
-//                }
-
-                // Encoding image.
-                int ret = avcodec_encode_video2(encodeContext, &packet, frame, &succeeded);
-                if (ret < 0) {
-                    cout << "Error encoding frame." << endl;
-                    return retVal;
+                if (!m_hasAttachedToSharedImageMemory) {
+                    m_sharedImageMemory = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(si.getName());
+                    m_hasAttachedToSharedImageMemory = true;
                 }
-                if (succeeded) {
-                    cout << "Writing frame " << m_frameCounter << ", size = " << packet.size << endl;
-                    fwrite(packet.data, 1, packet.size, f);
 
-                    odcore::data::image::H264Frame h264Frame;
-                    h264Frame.setH264Filename("output.mp4");
-                    h264Frame.setFrameIdentifier(m_frameCounter);
-                    h264Frame.setFrameSize(packet.size);
-                    h264Frame.setAssociatedSharedImage(si);
+                // Check if we could successfully attach to the shared memory.
+                if (m_sharedImageMemory->isValid()) {
+                    // Lock the memory region to gain exclusive access using a scoped lock.
+                    {
+                        Lock l(m_sharedImageMemory);
+
+                        uint8_t *inData[1] = { (uint8_t*)(m_sharedImageMemory->getSharedMemory()) };
+                        int inLinesize[1] = { (int)(si.getBytesPerPixel() * si.getWidth()) };
+                        sws_scale(pixelTransformationContext, inData, inLinesize, 0, height, frame->data, frame->linesize);
+                    }
+
+                    // Encoding image.
+                    int ret = avcodec_encode_video2(encodeContext, &packet, frame, &succeeded);
+                    if (ret < 0) {
+                        cout << "Error encoding frame." << endl;
+                        return retVal;
+                    }
+                    if (succeeded) {
+                        cout << "Writing frame " << m_frameCounter << ", size = " << packet.size << endl;
+                        fwrite(packet.data, 1, packet.size, f);
+
+                        odcore::data::image::H264Frame h264Frame;
+                        h264Frame.setH264Filename("output.mp4");
+                        h264Frame.setFrameIdentifier(m_frameCounter);
+                        h264Frame.setFrameSize(packet.size);
+                        h264Frame.setAssociatedSharedImage(si);
 
 cout << "F: " << h264Frame.toString() << endl;
 
-                    retVal = Container(h264Frame);
+                        retVal = Container(h264Frame);
 
-                    // Release packet.
-                    av_free_packet(&packet);
+                        // Release packet.
+                        av_free_packet(&packet);
+                    }
                 }
             }
             m_frameCounter++;

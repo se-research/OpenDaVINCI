@@ -20,8 +20,11 @@
 #ifndef RECORDERH264_H_
 #define RECORDERH264_H_
 
+#include <memory>
+
 #include "opendavinci/odtools/recorder/Recorder.h"
 #include "opendavinci/odtools/recorder/RecorderDelegate.h"
+#include "opendavinci/odcore/wrapper/SharedMemory.h"
 
 namespace odrecorderh264 {
 
@@ -78,6 +81,9 @@ namespace odrecorderh264 {
 
         private:
             uint32_t m_frameCounter;
+            bool m_hasAttachedToSharedImageMemory;
+            std::shared_ptr<odcore::wrapper::SharedMemory> m_sharedImageMemory;
+
             // TODO: Add management for different SharedImage sources.
     };
 
