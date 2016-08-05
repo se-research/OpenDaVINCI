@@ -183,6 +183,13 @@ SET (zlib-sources
     ${zlib_SOURCE_DIR}/uncompr.c
     ${zlib_SOURCE_DIR}/zutil.c
 )
+# Set compile flags for libzip sources.
+IF(UNIX)
+    SET(ZLIB_COMPILE_FLAGS "-Wno-error -Wno-implicit-function-declaration")
+    SET_SOURCE_FILES_PROPERTIES(${zlib_SOURCE_DIR}/gzlib.c PROPERTIES COMPILE_FLAGS "${ZLIB_COMPILE_FLAGS}")
+    SET_SOURCE_FILES_PROPERTIES(${zlib_SOURCE_DIR}/gzread.c PROPERTIES COMPILE_FLAGS "${ZLIB_COMPILE_FLAGS}")
+    SET_SOURCE_FILES_PROPERTIES(${zlib_SOURCE_DIR}/gzwrite.c PROPERTIES COMPILE_FLAGS "${ZLIB_COMPILE_FLAGS}")
+ENDIF()
 
 INCLUDE_DIRECTORIES (${libzip_SOURCE_DIR}/include)
 SET (libzip-sources
@@ -241,6 +248,12 @@ SET (libzip-sources
     ${libzip_SOURCE_DIR}/src/zip_unchange.c
     ${libzip_SOURCE_DIR}/src/zip_unchange_data.c    
 )
+# Set compile flags for libzip sources.
+IF(UNIX)
+    SET(ZIP_COMPILE_FLAGS "-Wno-error -Wno-implicit-function-declaration")
+    SET_SOURCE_FILES_PROPERTIES(${libzip_SOURCE_DIR}/src/mkstemp.c PROPERTIES COMPILE_FLAGS "${ZIP_COMPILE_FLAGS}")
+    SET_SOURCE_FILES_PROPERTIES(${libzip_SOURCE_DIR}/src/zip_close.c PROPERTIES COMPILE_FLAGS "${ZIP_COMPILE_FLAGS}")
+ENDIF()
 
 INCLUDE_DIRECTORIES (${libwjwwoodserial_SOURCE_DIR}/include)
 IF(UNIX)
@@ -254,7 +267,7 @@ IF(UNIX)
     # Set compile flags for wjwwood serial library.
     SET(WJWWOOD_SERIAL_COMPILE_FLAGS "-Wno-effc++ -Wno-error -Wno-sign-compare")
     IF (GCC_VERSION VERSION_GREATER 4.7 OR GCC_VERSION VERSION_EQUAL 4.7)
-        SET(WJWWOOD_SERIAL_COMPILE_FLAGS "${WJWWOOD_SERIAL_COMPILE_FLAGS} -Wno-unused-but-set-variable -Wno-suggest-attribute=format")
+        SET(WJWWOOD_SERIAL_COMPILE_FLAGS "${WJWWOOD_SERIAL_COMPILE_FLAGS} -Wno-unused-but-set-variable -Wno-suggest-attribute=format -Wno-stack-protector")
     ENDIF()
     SET_SOURCE_FILES_PROPERTIES(${libwjwwoodserial_SOURCE_DIR}/src/serial.cc PROPERTIES COMPILE_FLAGS "${WJWWOOD_SERIAL_COMPILE_FLAGS}")
     SET_SOURCE_FILES_PROPERTIES(${libwjwwoodserial_SOURCE_DIR}/src/impl/unix.cc PROPERTIES COMPILE_FLAGS "${WJWWOOD_SERIAL_COMPILE_FLAGS}")
