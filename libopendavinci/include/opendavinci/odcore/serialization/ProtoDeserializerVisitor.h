@@ -28,7 +28,7 @@
 #include "opendavinci/odcore/base/Visitor.h"
 
 namespace odcore {
-    namespace base {
+    namespace seriaization {
 
         using namespace std;
 

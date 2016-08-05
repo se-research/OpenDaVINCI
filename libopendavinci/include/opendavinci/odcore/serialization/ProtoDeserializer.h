@@ -31,7 +31,7 @@
 #include "opendavinci/odcore/serialization/ProtoSerializerVisitor.h"
 
 namespace odcore {
-    namespace base {
+    namespace seriaization {
 
         using namespace std;
 

@@ -29,7 +29,7 @@
 #include "opendavinci/odcore/serialization/Deserializer.h"
 
 namespace odcore {
-    namespace base {
+    namespace seriaization {
 
         using namespace std;
 

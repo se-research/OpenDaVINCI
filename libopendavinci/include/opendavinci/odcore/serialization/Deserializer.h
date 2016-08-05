@@ -25,7 +25,7 @@
 #include "opendavinci/odcore/opendavinci.h"
 
 namespace odcore {
-    namespace base {
+    namespace seriaization {
 
         using namespace std;
 

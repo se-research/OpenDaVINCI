@@ -29,7 +29,7 @@
 class SerializationFactoryTestCase;
 
 namespace odcore {
-    namespace base {
+    namespace seriaization {
 
 class Deserializer;
 class Serializer;
