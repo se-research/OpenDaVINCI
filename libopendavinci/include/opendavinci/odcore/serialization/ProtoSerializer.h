@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef OPENDAVINCI_CORE_BASE_PROTOSERIALIZER_H_
-#define OPENDAVINCI_CORE_BASE_PROTOSERIALIZER_H_
+#ifndef OPENDAVINCI_CORE_SERIALIZATION_PROTOSERIALIZER_H_
+#define OPENDAVINCI_CORE_SERIALIZATION_PROTOSERIALIZER_H_
 
 #include <sstream>
 #include <string>
@@ -205,4 +205,4 @@ class Serializable;
     }
 } // odcore::base
 
-#endif /*OPENDAVINCI_CORE_BASE_PROTOSERIALIZER_H_*/
+#endif /*OPENDAVINCI_CORE_SERIALIZATION_PROTOSERIALIZER_H_*/

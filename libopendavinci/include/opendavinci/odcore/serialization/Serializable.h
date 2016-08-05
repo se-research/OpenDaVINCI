@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef OPENDAVINCI_CORE_BASE_SERIALIZABLE_H_
-#define OPENDAVINCI_CORE_BASE_SERIALIZABLE_H_
+#ifndef OPENDAVINCI_CORE_SERIALIZATION_SERIALIZABLE_H_
+#define OPENDAVINCI_CORE_SERIALIZATION_SERIALIZABLE_H_
 
 #include <sstream>
 
@@ -86,4 +86,4 @@ namespace std {
     istream OPENDAVINCI_API &operator>>(istream &in, odcore::base::Serializable &s);
 }
 
-#endif /*OPENDAVINCI_CORE_BASE_SERIALIZEABLE_H_*/
+#endif /*OPENDAVINCI_CORE_SERIALIZATION_SERIALIZEABLE_H_*/
