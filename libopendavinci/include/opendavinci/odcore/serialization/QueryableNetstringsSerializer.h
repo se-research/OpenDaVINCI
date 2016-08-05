@@ -24,8 +24,8 @@
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/base/QueryableNetstringsSerializerAACF.h"
-#include "opendavinci/odcore/base/QueryableNetstringsSerializerABCF.h"
+#include "opendavinci/odcore/serialization/QueryableNetstringsSerializerAACF.h"
+#include "opendavinci/odcore/serialization/QueryableNetstringsSerializerABCF.h"
 #include "opendavinci/odcore/serialization/Serializer.h"
 
 namespace odcore {

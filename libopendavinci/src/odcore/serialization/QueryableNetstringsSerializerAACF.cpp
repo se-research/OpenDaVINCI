@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/odcore/base/QueryableNetstringsSerializerAACF.h"
+#include "opendavinci/odcore/serialization/QueryableNetstringsSerializerAACF.h"
 #include "opendavinci/odcore/serialization/Serializable.h"
 
 namespace odcore {

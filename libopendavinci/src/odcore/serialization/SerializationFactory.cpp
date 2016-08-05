@@ -21,8 +21,8 @@
 #include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/serialization/ProtoDeserializer.h"
 #include "opendavinci/odcore/serialization/ProtoSerializer.h"
-#include "opendavinci/odcore/base/QueryableNetstringsDeserializer.h"
-#include "opendavinci/odcore/base/QueryableNetstringsSerializer.h"
+#include "opendavinci/odcore/serialization/QueryableNetstringsDeserializer.h"
+#include "opendavinci/odcore/serialization/QueryableNetstringsSerializer.h"
 #include "opendavinci/odcore/serialization/SerializationFactory.h"
 #include "opendavinci/odcore/serialization/Serializer.h"
 

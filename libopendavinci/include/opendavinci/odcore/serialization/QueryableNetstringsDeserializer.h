@@ -26,8 +26,8 @@
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendavinci/odcore/serialization/Deserializer.h"
-#include "opendavinci/odcore/base/QueryableNetstringsDeserializerAACF.h"
-#include "opendavinci/odcore/base/QueryableNetstringsDeserializerABCF.h"
+#include "opendavinci/odcore/serialization/QueryableNetstringsDeserializerAACF.h"
+#include "opendavinci/odcore/serialization/QueryableNetstringsDeserializerABCF.h"
 
 namespace odcore {
     namespace base {

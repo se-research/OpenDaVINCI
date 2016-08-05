@@ -19,9 +19,9 @@
 
 #include <iostream>
 
-#include "opendavinci/odcore/base/QueryableNetstringsDeserializer.h"
-#include "opendavinci/odcore/base/QueryableNetstringsDeserializerAACF.h"
-#include "opendavinci/odcore/base/QueryableNetstringsDeserializerABCF.h"
+#include "opendavinci/odcore/serialization/QueryableNetstringsDeserializer.h"
+#include "opendavinci/odcore/serialization/QueryableNetstringsDeserializerAACF.h"
+#include "opendavinci/odcore/serialization/QueryableNetstringsDeserializerABCF.h"
 #include "opendavinci/odcore/base/module/AbstractCIDModule.h"
 #include "opendavinci/odcore/opendavinci.h"
 

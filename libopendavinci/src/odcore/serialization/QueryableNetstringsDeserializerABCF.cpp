@@ -19,7 +19,7 @@
 
 #include <iostream>
 
-#include "opendavinci/odcore/base/QueryableNetstringsDeserializerABCF.h"
+#include "opendavinci/odcore/serialization/QueryableNetstringsDeserializerABCF.h"
 #include "opendavinci/odcore/serialization/Serializable.h"
 #include "opendavinci/odcore/base/module/AbstractCIDModule.h"
 #include "opendavinci/odcore/opendavinci.h"

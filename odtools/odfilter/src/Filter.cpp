@@ -22,7 +22,7 @@
 #include <sstream>
 
 #include "opendavinci/odcore/base/CommandLineParser.h"
-#include "opendavinci/odcore/base/QueryableNetstringsDeserializerABCF.h"
+#include "opendavinci/odcore/serialization/QueryableNetstringsDeserializerABCF.h"
 #include "opendavinci/odcore/strings/StringToolbox.h"
 #include "opendavinci/odcore/data/Container.h"
 
