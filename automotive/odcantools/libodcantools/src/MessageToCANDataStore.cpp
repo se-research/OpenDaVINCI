@@ -33,9 +33,9 @@ namespace automotive {
 
         MessageToCANDataStore::~MessageToCANDataStore() {}
 
-        void MessageToCANDataStore::add(const odcore::data::Container &container) {
+        void MessageToCANDataStore::add(odcore::data::Container &container) {
             if (container.getDataType() == automotive::GenericCANMessage::ID()) {
-                GenericCANMessage gcm = const_cast<odcore::data::Container &>(container).getData<GenericCANMessage>();
+                GenericCANMessage gcm = container.getData<GenericCANMessage>();
                 m_canDevice->write(gcm);
             }
         }

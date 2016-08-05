@@ -77,7 +77,7 @@ namespace odcore {
             return container;
         }
 
-        void LIFOQueue::add(const Container &container) {
+        void LIFOQueue::add(Container &container) {
             push(container);
         }
 

@@ -62,7 +62,7 @@ namespace odcore {
 
                 const data::Container pop();
 
-                virtual void add(const data::Container &container);
+                virtual void add(odcore::data::Container &container);
 
                 virtual uint32_t getSize() const;
 

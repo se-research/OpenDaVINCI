@@ -142,12 +142,12 @@ namespace odtools {
             return copied;
         }
 
-        void SharedDataListener::add(const Container &container) {
+        void SharedDataListener::add(Container &container) {
             bool hasCopied = false;
 
             // Shared Data.
             if (container.getDataType() == odcore::data::SharedData::ID()) {
-                odcore::data::SharedData sd = const_cast<Container&>(container).getData<odcore::data::SharedData>();
+                odcore::data::SharedData sd = container.getData<odcore::data::SharedData>();
 
                 map<string, odcore::data::SharedData>::iterator it = m_mapOfAvailableSharedData.find(sd.getName());
                 if (it == m_mapOfAvailableSharedData.end()) {
@@ -167,7 +167,7 @@ namespace odtools {
 
             // Shared Point Cloud.
             if (container.getDataType() == odcore::data::SharedPointCloud::ID()) {
-                odcore::data::SharedPointCloud spc = const_cast<Container&>(container).getData<odcore::data::SharedPointCloud>();
+                odcore::data::SharedPointCloud spc = container.getData<odcore::data::SharedPointCloud>();
 
                 map<string, odcore::data::SharedPointCloud>::iterator it = m_mapOfAvailableSharedPointCloud.find(spc.getName());
                 if (it == m_mapOfAvailableSharedPointCloud.end()) {
@@ -187,7 +187,7 @@ namespace odtools {
 
             // Shared Images.
             if (container.getDataType() == odcore::data::image::SharedImage::ID()) {
-                odcore::data::image::SharedImage si = const_cast<Container&>(container).getData<odcore::data::image::SharedImage>();
+                odcore::data::image::SharedImage si = container.getData<odcore::data::image::SharedImage>();
 
                 // For old recordings containing SharedImage, the attribute size is calculated
                 // "on-the-fly". The following four lines set the size attribute in the generated

@@ -46,10 +46,10 @@ namespace odredirector {
 
     StdoutPump::~StdoutPump() {}
 
-    void StdoutPump::add(const odcore::data::Container &container) {
+    void StdoutPump::add(odcore::data::Container &container) {
         // SharedImages are transformed into compressed images using JPEG compression.
         if (container.getDataType() == odcore::data::image::SharedImage::ID()) {
-            odcore::data::image::SharedImage si = const_cast<odcore::data::Container&>(container).getData<odcore::data::image::SharedImage>();
+            odcore::data::image::SharedImage si = container.getData<odcore::data::image::SharedImage>();
             
             if ( (1 == si.getBytesPerPixel()) || 
                  (3 == si.getBytesPerPixel()) ) {
