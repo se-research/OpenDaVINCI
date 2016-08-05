@@ -20,6 +20,7 @@
 #include <iostream>
 
 #include "opendavinci/generated/odcore/data/image/SharedImage.h"
+#include "opendavinci/generated/odcore/data/image/H264Frame.h"
 
 #include "RecorderH264.h"
 
@@ -31,15 +32,36 @@ namespace odrecorderh264 {
     using namespace odtools::recorder;
 
     RecorderH264::RecorderH264(const string &url, const uint32_t &memorySegmentSize, const uint32_t &numberOfSegments, const bool &threading, const bool &dumpSharedData) :
-        Recorder(url, memorySegmentSize, numberOfSegments, threading, dumpSharedData) {
+        Recorder(url, memorySegmentSize, numberOfSegments, threading, dumpSharedData),
+        m_frameCounter(0) {
         registerRecorderDelegate(odcore::data::image::SharedImage::ID(), this);
     }
 
-    RecorderH264::~RecorderH264() {}
+    RecorderH264::~RecorderH264() {
+        registerRecorderDelegate(odcore::data::image::SharedImage::ID(), NULL);
+    }
 
     Container RecorderH264::process(Container &c) {
-        cout << "RecorderH264: Got called for " << c.getDataType() << endl;
-        return c;
+        Container retVal;
+
+        if (c.getDataType() == odcore::data::image::SharedImage::ID()) {
+            cout << "RecorderH264: Got called for " << c.getDataType() << endl;
+
+            odcore::data::image::SharedImage si = c.getData<odcore::data::image::SharedImage>();
+
+            odcore::data::image::H264Frame h264Frame;
+            h264Frame.setH264Filename("output.mp4");
+            h264Frame.setFrameIdentifier(m_frameCounter);
+            h264Frame.setFrameSize(0);
+            h264Frame.setAssociatedSharedImage(si);
+
+cout << "F: " << h264Frame.toString() << endl;
+
+            retVal = Container(h264Frame);
+            m_frameCounter++;
+        }
+
+        return retVal;
     }
 
 } // odrecorderh264
