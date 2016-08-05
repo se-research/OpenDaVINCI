@@ -53,7 +53,7 @@ namespace odcore {
                  *
                  * @param container Container to be added.
                  */
-                virtual void add(const data::Container &container) = 0;
+                virtual void add(odcore::data::Container &container) = 0;
 
                 /**
                  * This method clears a datastore.

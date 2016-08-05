@@ -76,7 +76,7 @@ namespace automotive {
                  * different behavior; for instance by selecting high-level
                  * messages and transform them into GenericCANMessages.
                  */
-                virtual void add(const odcore::data::Container &container);
+                virtual void add(odcore::data::Container &container);
 
                 virtual void clear();
 

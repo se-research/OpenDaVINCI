@@ -61,7 +61,7 @@ namespace odredirector {
 
             virtual ~StdoutPump();
 
-            virtual void add(const odcore::data::Container &container);
+            virtual void add(odcore::data::Container &container);
 
             virtual void clear();
 
