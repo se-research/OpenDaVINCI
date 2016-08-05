@@ -28,7 +28,7 @@
 #include "opendavinci/odcore/base/Visitor.h"
 
 namespace odcore {
-    namespace seriaization {
+    namespace serialization {
 
         using namespace std;
 
@@ -79,6 +79,6 @@ namespace odcore {
         };
 
     }
-} // odcore::base
+} // odcore::serialization
 
 #endif /*OPENDAVINCI_CORE_SERIALIZATION_PROTODESERIALIZERVISITOR_H_*/

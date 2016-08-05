@@ -29,7 +29,7 @@
 #include "opendavinci/odcore/serialization/Deserializer.h"
 
 namespace odcore {
-    namespace seriaization {
+    namespace serialization {
 
         using namespace std;
 
@@ -170,6 +170,6 @@ namespace odcore {
         };
 
     }
-} // odcore::base
+} // odcore::serialization
 
 #endif /*OPENDAVINCI_CORE_SERIALIZATION_QUERYABLENETSTRINGSDESERIALIZERABCF_H_*/

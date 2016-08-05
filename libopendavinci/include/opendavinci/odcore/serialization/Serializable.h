@@ -25,7 +25,7 @@
 #include "opendavinci/odcore/opendavinci.h"
 
 namespace odcore {
-    namespace seriaization {
+    namespace serialization {
 
         using namespace std;
 
@@ -78,7 +78,7 @@ namespace odcore {
         };
 
     }
-} // odcore::base
+} // odcore::serialization
 
 namespace std {
     // The following methods are declarations for convenient usage.

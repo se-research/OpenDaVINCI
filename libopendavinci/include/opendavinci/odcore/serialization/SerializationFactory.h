@@ -29,7 +29,7 @@
 class SerializationFactoryTestCase;
 
 namespace odcore {
-    namespace seriaization {
+    namespace serialization {
 
 class Deserializer;
 class Serializer;
@@ -115,6 +115,6 @@ class Serializer;
         };
 
     }
-} // odcore::base
+} // odcore::serialization
 
 #endif /*OPENDAVINCI_CORE_SERIALIZATION_SERIALIZATIONFACTORY_H_*/

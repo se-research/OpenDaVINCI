@@ -27,7 +27,7 @@
 #include "opendavinci/odcore/serialization/Serializer.h"
 
 namespace odcore {
-    namespace seriaization {
+    namespace serialization {
 
 class Serializable;
 
@@ -125,6 +125,6 @@ class Serializable;
         };
 
     }
-} // odcore::base
+} // odcore::serialization
 
 #endif /*OPENDAVINCI_CORE_SERIALIZATION_QUERYABLENETSTRINGSSERIALIZERAACF_H_*/

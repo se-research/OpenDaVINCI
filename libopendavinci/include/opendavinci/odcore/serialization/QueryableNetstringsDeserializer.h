@@ -30,7 +30,7 @@
 #include "opendavinci/odcore/serialization/QueryableNetstringsDeserializerABCF.h"
 
 namespace odcore {
-    namespace seriaization {
+    namespace serialization {
 
         using namespace std;
 
@@ -143,6 +143,6 @@ namespace odcore {
         };
 
     }
-} // odcore::base
+} // odcore::serialization
 
 #endif /*OPENDAVINCI_CORE_SERIALIZATION_QUERYABLENETSTRINGSDESERIALIZER_H_*/

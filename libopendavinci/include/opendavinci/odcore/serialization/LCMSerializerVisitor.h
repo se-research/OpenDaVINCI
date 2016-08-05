@@ -28,7 +28,7 @@
 #include "opendavinci/odcore/base/Visitor.h"
 
 namespace odcore {
-    namespace seriaization {
+    namespace serialization {
 
 class Serializable;
 
@@ -164,6 +164,6 @@ class Serializable;
         };
 
     }
-} // odcore::base
+} // odcore::serialization
 
 #endif /*OPENDAVINCI_CORE_SERIALIZATION_LCMSERIALIZERVISITOR_H_*/
