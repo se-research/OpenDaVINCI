@@ -138,7 +138,7 @@ class Serializable;
         void ROSSerializerVisitor::write(const uint32_t &/*id*/, const void */*data*/, const uint32_t &/*size*/) {}
 
         void ROSSerializerVisitor::write(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, const Serializable &/*v*/) {
-            cerr << "[core::base::ROSSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
+            cerr << "[core::serialization::ROSSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
         }
 
         void ROSSerializerVisitor::write(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, const bool &v) {
@@ -224,7 +224,7 @@ class Serializable;
         void ROSSerializerVisitor::write(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, const void *data, const uint32_t &size) {
             (void)data;
             (void)size;
-            cerr << "[core::base::ROSSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
+            cerr << "[core::serialization::ROSSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
         }
 
 
@@ -237,7 +237,7 @@ class Serializable;
             (void)longName;
             (void)shortName;
             (void)v;
-            cerr << "[core::base::ROSSerializerVisitor]: ROS for Serializable not implemented!" << endl;
+            cerr << "[core::serialization::ROSSerializerVisitor]: ROS for Serializable not implemented!" << endl;
         }
 
         void ROSSerializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, bool &v) {
@@ -298,7 +298,7 @@ class Serializable;
             (void)shortName;
             (void)data;
             (void)size;
-            cerr << "[core::base::ROSSerializerVisitor]: ROS for void* not implemented!" << endl;
+            cerr << "[core::serialization::ROSSerializerVisitor]: ROS for void* not implemented!" << endl;
         }
 
     }
