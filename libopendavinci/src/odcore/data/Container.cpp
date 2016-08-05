@@ -21,9 +21,9 @@
 #include <sstream>
 #include <memory>
 
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/data/SerializableData.h"
 
@@ -31,7 +31,8 @@ namespace odcore {
     namespace data {
 
         using namespace std;
-        using namespace base;
+        using namespace odcore::base;
+        using namespace odcore::serialization;
 
         Container::Container() :
                 m_dataType(UNDEFINEDDATA),

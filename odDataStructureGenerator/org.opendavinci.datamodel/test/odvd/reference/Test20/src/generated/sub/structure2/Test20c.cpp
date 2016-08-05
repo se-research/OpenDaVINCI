@@ -6,9 +6,9 @@
 
 #include <memory>
 
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 
 #include "test20/generated/sub/structure2/Test20c.h"
 
@@ -16,6 +16,7 @@ namespace sub {
 	namespace structure2 {
 			using namespace std;
 			using namespace odcore::base;
+			using namespace odcore::serialization;
 		
 		
 			Test20c::Test20c() :

@@ -21,9 +21,9 @@
 #include <sstream>
 #include <memory>
 
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendavinci/odcore/data/image/CompressedImage.h"
 #include "opendavinci/odcore/opendavinci.h"
 
@@ -33,6 +33,7 @@ namespace odcore {
 
             using namespace std;
             using namespace odcore::base;
+            using namespace odcore::serialization;
 
             CompressedImage::CompressedImage() :
                     SerializableData(),

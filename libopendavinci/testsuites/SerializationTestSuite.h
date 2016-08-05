@@ -28,16 +28,17 @@
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
-#include "opendavinci/odcore/base/Serializable.h"     // for Serializable, operator<<, etc
-#include "opendavinci/odcore/base/SerializationFactory.h"  // for SerializationFactory
-#include "opendavinci/odcore/base/Serializer.h"       // for Serializer
+#include "opendavinci/odcore/serialization/Deserializer.h"     // for Deserializer
+#include "opendavinci/odcore/serialization/Serializable.h"     // for Serializable, operator<<, etc
+#include "opendavinci/odcore/serialization/SerializationFactory.h"  // for SerializationFactory
+#include "opendavinci/odcore/serialization/Serializer.h"       // for Serializer
 
 using namespace std;
 using namespace odcore;
 using namespace odcore::base;
+using namespace odcore::serialization;
 
-class SerializationTestNestedData : public odcore::base::Serializable {
+class SerializationTestNestedData : public odcore::serialization::Serializable {
     public:
         SerializationTestNestedData() :
                 m_double(0) {}
@@ -65,7 +66,7 @@ class SerializationTestNestedData : public odcore::base::Serializable {
         }
 };
 
-class SerializationTestSampleData : public odcore::base::Serializable {
+class SerializationTestSampleData : public odcore::serialization::Serializable {
     public:
         SerializationTestSampleData() :
                 m_bool(false),

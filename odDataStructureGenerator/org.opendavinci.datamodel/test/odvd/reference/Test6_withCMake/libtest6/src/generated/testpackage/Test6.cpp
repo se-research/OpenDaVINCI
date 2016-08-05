@@ -9,15 +9,16 @@
 #include <sstream>
 #include <utility>
 
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 
 #include "test6/generated/testpackage/Test6.h"
 
 namespace testpackage {
 		using namespace std;
 		using namespace odcore::base;
+		using namespace odcore::serialization;
 	
 	
 		Test6::Test6() :

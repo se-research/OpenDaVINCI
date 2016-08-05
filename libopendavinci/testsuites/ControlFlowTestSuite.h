@@ -31,13 +31,13 @@
 #include "opendavinci/odcontext/base/BlockableContainerReceiver.h"
 #include "opendavinci/odcontext/base/ControlledContainerConferenceFactory.h"
 #include "opendavinci/odcontext/base/ControlledContainerConferenceForSystemUnderTest.h"
-#include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
+#include "opendavinci/odcore/serialization/Deserializer.h"     // for Deserializer
 #include "opendavinci/odcore/base/FIFOQueue.h"        // for FIFOQueue
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
 #include "opendavinci/odcore/base/Lock.h"             // for Lock
 #include "opendavinci/odcore/base/Mutex.h"            // for Mutex
-#include "opendavinci/odcore/base/SerializationFactory.h"  // for SerializationFactory
-#include "opendavinci/odcore/base/Serializer.h"       // for Serializer
+#include "opendavinci/odcore/serialization/SerializationFactory.h"  // for SerializationFactory
+#include "opendavinci/odcore/serialization/Serializer.h"       // for Serializer
 #include "opendavinci/odcore/base/Service.h"          // for Service
 #include "opendavinci/odcore/base/Thread.h"           // for Thread
 #include "opendavinci/odcore/base/module/Breakpoint.h"  // for Breakpoint
@@ -68,6 +68,7 @@ using namespace odcore::dmcp;
 using namespace odcore::io;
 using namespace odcore::io::conference;
 using namespace odcontext::base;
+using namespace odcore::serialization;
 
 using namespace odcore::data::dmcp;
 

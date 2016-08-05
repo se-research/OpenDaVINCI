@@ -20,7 +20,7 @@
 #include <sstream>
 
 #include <memory>
-#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
 #include "opendavinci/odcore/base/module/AbstractConferenceClientModule.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/io/conference/ContainerConference.h"
@@ -38,6 +38,7 @@ namespace odcore {
             using namespace odcore::io;
             using namespace odcore::io::conference;
             using namespace odcore::exceptions;
+            using namespace odcore::serialization;
 
             AbstractConferenceClientModule::AbstractConferenceClientModule(const int32_t &argc, char **argv, const string &name) throw (InvalidArgumentException) :
                     ManagedClientModule(argc, argv, name) {

@@ -28,11 +28,11 @@
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/QueryableNetstringsDeserializer.h"
-#include "opendavinci/odcore/base/QueryableNetstringsSerializer.h"
-#include "opendavinci/odcore/base/QueryableNetstringsDeserializerVisitor.h"
-#include "opendavinci/odcore/base/QueryableNetstringsSerializerVisitor.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/QueryableNetstringsDeserializer.h"
+#include "opendavinci/odcore/serialization/QueryableNetstringsSerializer.h"
+#include "opendavinci/odcore/serialization/QueryableNetstringsDeserializerVisitor.h"
+#include "opendavinci/odcore/serialization/QueryableNetstringsSerializerVisitor.h"
 
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
 #include "opendavinci/odcore/data/Container.h"
@@ -80,6 +80,7 @@ using namespace odcore::data::player;
 using namespace odcore::data::recorder;
 using namespace odcore::data::reflection;
 using namespace odcore::testdata;
+using namespace odcore::serialization;
 
 class SerializationFactoryTestCase : public SerializationFactory {
     public:

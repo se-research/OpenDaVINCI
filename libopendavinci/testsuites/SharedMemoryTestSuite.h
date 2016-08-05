@@ -28,7 +28,7 @@
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/Lock.h"             // for Lock
-#include "opendavinci/odcore/base/Serializable.h"     // for operator<<, operator>>
+#include "opendavinci/odcore/serialization/Serializable.h"     // for operator<<, operator>>
 #include "opendavinci/odcore/wrapper/SharedMemory.h"  // for SharedMemory
 #include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"  // for SharedMemoryFactory
 #include "opendavinci/generated/odcore/data/SharedData.h"  // for SharedData

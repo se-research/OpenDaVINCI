@@ -19,7 +19,7 @@
 
 #include <cstring>
 
-#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/serialization/Serializable.h"
 #include "opendavinci/odcore/base/Visitable.h"
 #include "opendavinci/odcore/reflection/Field.h"
 #include "opendavinci/odcore/reflection/MessageToVisitableVisitor.h"
@@ -29,6 +29,7 @@ namespace odcore {
 
         using namespace odcore;
         using namespace odcore::base;
+        using namespace odcore::serialization;
         using namespace odcore::data::reflection;
 
         MessageToVisitableVisitor::MessageToVisitableVisitor(const Message &m) :

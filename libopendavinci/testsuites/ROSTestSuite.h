@@ -28,11 +28,11 @@
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
-#include "opendavinci/odcore/base/ROSDeserializerVisitor.h"
-#include "opendavinci/odcore/base/ROSSerializerVisitor.h"  // for ROSSerializerVisitor
-#include "opendavinci/odcore/base/SerializationFactory.h"  // for SerializationFactory
-#include "opendavinci/odcore/base/Serializer.h"       // for Serializer
+#include "opendavinci/odcore/serialization/Deserializer.h"     // for Deserializer
+#include "opendavinci/odcore/serialization/ROSDeserializerVisitor.h"
+#include "opendavinci/odcore/serialization/ROSSerializerVisitor.h"  // for ROSSerializerVisitor
+#include "opendavinci/odcore/serialization/SerializationFactory.h"  // for SerializationFactory
+#include "opendavinci/odcore/serialization/Serializer.h"       // for Serializer
 #include "opendavinci/odcore/base/Visitable.h"        // for Visitable
 #include "opendavinci/odcore/base/Visitor.h"          // for Visitor
 #include "opendavinci/odcore/data/SerializableData.h"  // for SerializableData
@@ -45,6 +45,7 @@ using namespace odcore::base;
 using namespace odcore::data;
 using namespace odcore::data::dmcp;
 using namespace odcore::data::image;
+using namespace odcore::serialization;
 
 class ROSVehicleControl : public odcore::data::SerializableData, public odcore::base::Visitable {
     public:

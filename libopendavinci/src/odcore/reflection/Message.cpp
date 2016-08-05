@@ -21,9 +21,9 @@
 #include <string>
 
 #include "opendavinci/odcore/base/Visitor.h"
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendavinci/odcore/reflection/Field.h"
 #include "opendavinci/odcore/reflection/Message.h"
 
@@ -32,6 +32,7 @@ namespace odcore {
 
         using namespace odcore;
         using namespace odcore::base;
+        using namespace odcore::serialization;
         using namespace odcore::data::reflection;
 
         Message::Message() :

@@ -603,9 +603,9 @@ class «msg.message.substring(msg.message.lastIndexOf('.') + 1) /* These lines g
 	«ENDIF»
 «ENDFOR»
 
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 
 «IF msg.message.split("\\.").length > 1 /* Here, we include our own header file. */»
 #include "«toplevelIncludeFolder»/«includeDirectoryPrefix + "/" + msg.message.substring(0, msg.message.lastIndexOf('.')).replaceAll("\\.", "/") + "/" + msg.message.substring(msg.message.lastIndexOf('.') + 1)».h"
@@ -643,6 +643,7 @@ namespace «s.get(i)» {
 	def generateImplementationFileContentBody(PackageDeclaration pdl, Message msg, HashMap<String, EnumDescription> enums) '''
 	using namespace std;
 	using namespace odcore::base;
+	using namespace odcore::serialization;
 
 	«FOR a : msg.attributes /* Here, we generate the const definitions. */»
 		«a.generateImplementationFileConstants(msg)»

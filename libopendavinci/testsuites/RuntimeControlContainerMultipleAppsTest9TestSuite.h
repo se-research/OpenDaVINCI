@@ -34,11 +34,11 @@
 #include "opendavinci/odcontext/base/SendContainerToSystemsUnderTest.h"
 #include "opendavinci/odcontext/base/SystemFeedbackComponent.h"
 #include "opendavinci/odcontext/base/SystemReportingComponent.h"
-#include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
+#include "opendavinci/odcore/serialization/Deserializer.h"     // for Deserializer
 #include "opendavinci/odcore/base/FIFOQueue.h"        // for FIFOQueue
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
-#include "opendavinci/odcore/base/SerializationFactory.h"  // for SerializationFactory
-#include "opendavinci/odcore/base/Serializer.h"       // for Serializer
+#include "opendavinci/odcore/serialization/SerializationFactory.h"  // for SerializationFactory
+#include "opendavinci/odcore/serialization/Serializer.h"       // for Serializer
 #include "opendavinci/odcore/base/Thread.h"           // for Thread
 #include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
 #include "opendavinci/odcore/data/Container.h"        // for Container, etc
@@ -52,6 +52,7 @@ using namespace std;
 using namespace odcore::base;
 using namespace odcore::base::module;
 using namespace odcore::data;
+using namespace odcore::serialization;
 using namespace odcontext::base;
 
 const int32_t Container_POSITION = 15;

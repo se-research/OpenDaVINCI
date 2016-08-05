@@ -25,10 +25,10 @@
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Serializable.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/Serializable.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendlv/data/environment/Line.h"
 #include "opendlv/data/environment/Point3.h"
 #include "opendlv/data/environment/Polygon.h"
@@ -360,9 +360,9 @@ namespace opendlv {
             }
 
             ostream& Polygon::operator<<(ostream &out) const {
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Serializer> s = sf.getQueryableNetstringsSerializer(out);
+                std::shared_ptr<odcore::serialization::Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
                 // Write number of vertices.
                 uint32_t numberOfVertices = static_cast<uint32_t>(m_listOfVertices.size());
@@ -383,9 +383,9 @@ namespace opendlv {
             }
 
             istream& Polygon::operator>>(istream &in) {
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
+                std::shared_ptr<odcore::serialization::Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
                 // Clean up.
                 m_listOfVertices.clear();

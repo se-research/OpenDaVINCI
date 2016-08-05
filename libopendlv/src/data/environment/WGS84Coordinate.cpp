@@ -24,9 +24,9 @@
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "automotivedata/generated/cartesian/Constants.h"
 #include "opendlv/data/environment/Point3.h"
 #include "opendlv/data/environment/WGS84Coordinate.h"
@@ -279,9 +279,9 @@ namespace opendlv {
             }
 
             ostream& WGS84Coordinate::operator<<(ostream &out) const {
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Serializer> s = sf.getSerializer(out);
+                std::shared_ptr<odcore::serialization::Serializer> s = sf.getSerializer(out);
 
                 s->write(1, m_lat);
 
@@ -295,9 +295,9 @@ namespace opendlv {
             }
 
             istream& WGS84Coordinate::operator>>(istream &in) {
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+                std::shared_ptr<odcore::serialization::Deserializer> d = sf.getDeserializer(in);
 
                 d->read(1, m_lat);
 

@@ -29,12 +29,12 @@
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/Condition.h"        // for Condition
-#include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
+#include "opendavinci/odcore/serialization/Deserializer.h"     // for Deserializer
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
 #include "opendavinci/odcore/base/Lock.h"             // for Lock
 #include "opendavinci/odcore/base/Mutex.h"             // for Lock
-#include "opendavinci/odcore/base/SerializationFactory.h"  // for SerializationFactory
-#include "opendavinci/odcore/base/Serializer.h"       // for Serializer
+#include "opendavinci/odcore/serialization/SerializationFactory.h"  // for SerializationFactory
+#include "opendavinci/odcore/serialization/Serializer.h"       // for Serializer
 #include "opendavinci/odcore/base/Service.h"          // for Service
 #include "opendavinci/odcore/base/Thread.h"           // for Thread
 #include "opendavinci/odcore/base/module/AbstractConferenceClientModule.h"
@@ -64,6 +64,7 @@ using namespace odcore::io;
 using namespace odcore::io::conference;
 using namespace odcore::dmcp;
 using namespace odcore::data::dmcp;
+using namespace odcore::serialization;
 
 class TestSuiteExample7Data : public odcore::data::SerializableData {
     public:

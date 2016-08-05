@@ -21,9 +21,9 @@
 #include <sstream>
 #include <string>
 
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "automotivedata/generated/cartesian/Matrix3x3.h"
 #include "opendlv/data/camera/ExtrinsicParameters.h"
 #include "opendlv/data/environment/Point3.h"
@@ -74,9 +74,9 @@ namespace opendlv {
             }
 
             ostream& ExtrinsicParameters::operator<<(ostream &out) const {
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Serializer> s = sf.getQueryableNetstringsSerializer(out);
+                std::shared_ptr<odcore::serialization::Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
                 s->write(1, m_translation);
 
@@ -86,9 +86,9 @@ namespace opendlv {
             }
 
             istream& ExtrinsicParameters::operator>>(istream &in) {
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
+                std::shared_ptr<odcore::serialization::Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
                 d->read(1, m_translation);
 

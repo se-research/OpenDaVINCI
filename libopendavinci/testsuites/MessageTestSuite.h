@@ -30,10 +30,10 @@
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
-#include "opendavinci/odcore/base/Serializable.h"     // for Serializable
-#include "opendavinci/odcore/base/SerializationFactory.h"  // for SerializationFactory
-#include "opendavinci/odcore/base/Serializer.h"       // for Serializer
+#include "opendavinci/odcore/serialization/Deserializer.h"     // for Deserializer
+#include "opendavinci/odcore/serialization/Serializable.h"     // for Serializable
+#include "opendavinci/odcore/serialization/SerializationFactory.h"  // for SerializationFactory
+#include "opendavinci/odcore/serialization/Serializer.h"       // for Serializer
 #include "opendavinci/odcore/base/Visitable.h"        // for Visitable
 #include "opendavinci/odcore/base/Visitor.h"          // for Visitor
 #include "opendavinci/odcore/reflection/Message.h"    // for Message
@@ -48,8 +48,9 @@ using namespace odcore::base;
 using namespace odcore::data;
 using namespace odcore::reflection;
 using namespace odcore::data::reflection;
+using namespace odcore::serialization;
 
-class MyRawVisitable : public odcore::base::Serializable, public Visitable {
+class MyRawVisitable : public odcore::serialization::Serializable, public Visitable {
     public:
         MyRawVisitable() :
             data(NULL) {}
@@ -98,7 +99,7 @@ class MyRawVisitable : public odcore::base::Serializable, public Visitable {
         }
 };
 
-class MyNestedVisitable : public odcore::base::Serializable, public Visitable {
+class MyNestedVisitable : public odcore::serialization::Serializable, public Visitable {
     public:
         MyNestedVisitable() :
                 m_double(0) {}

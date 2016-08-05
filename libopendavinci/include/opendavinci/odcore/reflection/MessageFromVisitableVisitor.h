@@ -26,7 +26,7 @@
 #include "opendavinci/odcore/base/Visitor.h"
 #include "opendavinci/odcore/reflection/Message.h"
 
-namespace odcore { namespace base { class Serializable; } }
+namespace odcore { namespace serialization { class Serializable; } }
 
 namespace odcore {
     namespace reflection {
@@ -62,7 +62,7 @@ namespace odcore {
                 virtual void beginVisit();
                 virtual void endVisit();
 
-                virtual void visit(const uint32_t &id, const string &longName, const string &shortName, odcore::base::Serializable &v);
+                virtual void visit(const uint32_t &id, const string &longName, const string &shortName, odcore::serialization::Serializable &v);
                 virtual void visit(const uint32_t &id, const string &longName, const string &shortName, bool &v);
                 virtual void visit(const uint32_t &id, const string &longName, const string &shortName, char &v);
                 virtual void visit(const uint32_t &id, const string &longName, const string &shortName, unsigned char &v);

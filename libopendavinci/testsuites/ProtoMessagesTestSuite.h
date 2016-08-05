@@ -28,11 +28,11 @@
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/ProtoDeserializer.h"
-#include "opendavinci/odcore/base/ProtoSerializer.h"
-#include "opendavinci/odcore/base/ProtoDeserializerVisitor.h"
-#include "opendavinci/odcore/base/ProtoSerializerVisitor.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/ProtoDeserializer.h"
+#include "opendavinci/odcore/serialization/ProtoSerializer.h"
+#include "opendavinci/odcore/serialization/ProtoDeserializerVisitor.h"
+#include "opendavinci/odcore/serialization/ProtoSerializerVisitor.h"
 
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
 #include "opendavinci/odcore/data/Container.h"
@@ -80,6 +80,7 @@ using namespace odcore::data::player;
 using namespace odcore::data::recorder;
 using namespace odcore::data::reflection;
 using namespace odcore::testdata;
+using namespace odcore::serialization;
 
 class SerializationFactoryTestCase : public SerializationFactory {
     public:
@@ -100,7 +101,7 @@ class SerializationFactoryTestCase : public SerializationFactory {
         }
 };
 
-class ProtoMessages1SampleDataVersion1 : public odcore::base::Serializable {
+class ProtoMessages1SampleDataVersion1 : public odcore::serialization::Serializable {
     public:
         ProtoMessages1SampleDataVersion1() :
             m_bool(false) {}
@@ -128,7 +129,7 @@ class ProtoMessages1SampleDataVersion1 : public odcore::base::Serializable {
         }
 };
 
-class ProtoMessages1SampleDataVersion2 : public odcore::base::Serializable {
+class ProtoMessages1SampleDataVersion2 : public odcore::serialization::Serializable {
     public:
         ProtoMessages1SampleDataVersion2() :
             m_bool(false),
@@ -168,7 +169,7 @@ class ProtoMessages1SampleDataVersion2 : public odcore::base::Serializable {
         }
 };
 
-class ProtoMessages1SampleDataVersion2Reordered : public odcore::base::Serializable {
+class ProtoMessages1SampleDataVersion2Reordered : public odcore::serialization::Serializable {
     public:
         ProtoMessages1SampleDataVersion2Reordered() :
             m_bool(false),

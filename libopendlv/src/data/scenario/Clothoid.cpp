@@ -21,9 +21,9 @@
 #include <memory>
 #include <string>
 
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendlv/data/scenario/Clothoid.h"
 #include "opendlv/data/scenario/LaneModel.h"
 #include "opendlv/data/scenario/ScenarioVisitor.h"
@@ -111,9 +111,9 @@ namespace opendlv {
                 // Serializer super class.
                 StraightLine::operator<<(out);
 
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Serializer> s = sf.getQueryableNetstringsSerializer(out);
+                std::shared_ptr<odcore::serialization::Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
                 s->write(1, getDK());
 
@@ -128,9 +128,9 @@ namespace opendlv {
                 // Deserializer super class.
                 StraightLine::operator>>(in);
 
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
+                std::shared_ptr<odcore::serialization::Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
                 d->read(1, m_dk);
 

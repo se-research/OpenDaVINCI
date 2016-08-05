@@ -20,7 +20,7 @@
 #include <exception>
 #include <iostream>
 
-#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
 #include "opendavinci/odcore/base/module/MasterModule.h"
 #include "opendavinci/generated/odcore/data/dmcp/ModuleStateMessage.h"
 
@@ -30,6 +30,7 @@ namespace odcore {
 
             using namespace std;
             using namespace exceptions;
+            using namespace odcore::serialization;
 
             MasterModule::MasterModule(const int32_t &argc, char **argv) throw (InvalidArgumentException) :
                 AbstractCIDModule(argc, argv) {

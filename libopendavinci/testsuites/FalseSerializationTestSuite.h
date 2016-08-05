@@ -26,17 +26,18 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
-#include "opendavinci/odcore/base/Serializable.h"     // for operator<<, operator>>, etc
-#include "opendavinci/odcore/base/SerializationFactory.h"  // for SerializationFactory
-#include "opendavinci/odcore/base/Serializer.h"       // for Serializer
+#include "opendavinci/odcore/serialization/Deserializer.h"     // for Deserializer
+#include "opendavinci/odcore/serialization/Serializable.h"     // for operator<<, operator>>, etc
+#include "opendavinci/odcore/serialization/SerializationFactory.h"  // for SerializationFactory
+#include "opendavinci/odcore/serialization/Serializer.h"       // for Serializer
 #include "opendavinci/odcore/data/TimeStamp.h"        // for TimeStamp
 
 using namespace std;
 using namespace odcore::base;
 using namespace odcore::data;
+using namespace odcore::serialization;
 
-class FalseSerializationTestSuiteNestedData : public odcore::base::Serializable {
+class FalseSerializationTestSuiteNestedData : public odcore::serialization::Serializable {
     public:
         FalseSerializationTestSuiteNestedData() :
                 m_string("BlaBla") {}
@@ -64,7 +65,7 @@ class FalseSerializationTestSuiteNestedData : public odcore::base::Serializable 
         }
 };
 
-class FalseSerializationTestSuiteSampleData : public odcore::base::Serializable {
+class FalseSerializationTestSuiteSampleData : public odcore::serialization::Serializable {
     public:
         FalseSerializationTestSuiteSampleData() :
                 m_string("Bla"), m_nestedData() {}

@@ -21,7 +21,7 @@
 #include <cstring>
 
 #include <memory>
-#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/serialization/Serializable.h"
 #include "opendavinci/odcore/base/Visitable.h"
 #include "opendavinci/odcore/reflection/Field.h"
 #include "opendavinci/odcore/reflection/MessageFromVisitableVisitor.h"
@@ -32,6 +32,7 @@ namespace odcore {
 
         using namespace odcore;
         using namespace odcore::base;
+        using namespace odcore::serialization;
         using namespace odcore::data::reflection;
 
         MessageFromVisitableVisitor::MessageFromVisitableVisitor() :

@@ -24,7 +24,7 @@
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/serialization/Serializable.h"
 #include "opendavinci/odcore/base/Visitable.h"
 #include "opendavinci/odcore/reflection/Field.h"
 #include "opendavinci/generated/odcore/data/reflection/AbstractField.h"
@@ -39,7 +39,7 @@ namespace odcore {
         /**
          * This class is a generic Message representation.
          */
-        class OPENDAVINCI_API Message : public odcore::base::Serializable, public odcore::base::Visitable {
+        class OPENDAVINCI_API Message : public odcore::serialization::Serializable, public odcore::base::Visitable {
             public:
                 Message();
 

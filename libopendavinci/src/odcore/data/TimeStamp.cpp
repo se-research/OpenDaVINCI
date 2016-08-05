@@ -21,9 +21,9 @@
 #include <sstream>
 #include <memory>
 
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendavinci/odcore/data/TimeStamp.h"
 #include "opendavinci/odcore/wrapper/Time.h"
 #include "opendavinci/odcore/wrapper/TimeFactory.h"
@@ -32,7 +32,8 @@ namespace odcore {
     namespace data {
 
         using namespace std;
-        using namespace base;
+        using namespace odcore::base;
+        using namespace odcore::serialization;
 
         TimeStamp::TimeStamp() :
             m_seconds(0),

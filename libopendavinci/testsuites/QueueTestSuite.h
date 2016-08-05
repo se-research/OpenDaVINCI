@@ -30,14 +30,14 @@
 #include "opendavinci/odcore/base/BufferedFIFOQueue.h"  // for BufferedFIFOQueue
 #include "opendavinci/odcore/base/BufferedLIFOQueue.h"  // for BufferedLIFOQueue
 #include "opendavinci/odcore/base/Condition.h"        // for Condition
-#include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
+#include "opendavinci/odcore/serialization/Deserializer.h"     // for Deserializer
 #include "opendavinci/odcore/base/FIFOQueue.h"        // for FIFOQueue
 #include "opendavinci/odcore/base/LIFOQueue.h"        // for LIFOQueue
 #include "opendavinci/odcore/base/Lock.h"             // for Lock
 #include "opendavinci/odcore/base/Mutex.h"            // for Mutex
 #include "opendavinci/odcore/base/Thread.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"  // for SerializationFactory
-#include "opendavinci/odcore/base/Serializer.h"       // for Serializer
+#include "opendavinci/odcore/serialization/SerializationFactory.h"  // for SerializationFactory
+#include "opendavinci/odcore/serialization/Serializer.h"       // for Serializer
 #include "opendavinci/odcore/base/Service.h"          // for Service
 #include "opendavinci/odcore/data/Container.h"        // for Container, etc
 #include "opendavinci/odcore/data/SerializableData.h"  // for SerializableData
@@ -45,6 +45,7 @@
 using namespace std;
 using namespace odcore::base;
 using namespace odcore::data;
+using namespace odcore::serialization;
 
 class QueueTestSampleData : public odcore::data::SerializableData {
     public:

@@ -547,8 +547,8 @@ namespace canmapping {
 	«ENDFOR»
 	
 	ostream& «className»::operator<<(ostream &out) const {
-		odcore::base::SerializationFactory& sf = odcore::base::SerializationFactory::getInstance();
-		std::shared_ptr<odcore::base::Serializer> s = sf.getSerializer(out);
+		odcore::serialization::SerializationFactory& sf = odcore::serialization::SerializationFactory::getInstance();
+		std::shared_ptr<odcore::serialization::Serializer> s = sf.getSerializer(out);
 
 		«IF mapping.mappings.size>0»
 		«var ArrayList<String> opOutBody=new ArrayList<String>»
@@ -568,8 +568,8 @@ namespace canmapping {
 	}
 	
 	istream& «className»::operator>>(istream &in) {
-		odcore::base::SerializationFactory& sf = odcore::base::SerializationFactory::getInstance();
-		std::shared_ptr<odcore::base::Deserializer> s = sf.getDeserializer(in);
+		odcore::serialization::SerializationFactory& sf = odcore::serialization::SerializationFactory::getInstance();
+		std::shared_ptr<odcore::serialization::Deserializer> s = sf.getDeserializer(in);
 		
 		«IF mapping.mappings.size>0»
 		uint32_t id;
@@ -1122,9 +1122,9 @@ Signal "«signalName»" could not be found.
 #include <opendavinci/odcore/reflection/Message.h>
 #include <opendavinci/odcore/reflection/MessageToVisitableVisitor.h>
 #include <opendavinci/odcore/reflection/MessageFromVisitableVisitor.h>
-#include <opendavinci/odcore/base/SerializationFactory.h>
-#include <opendavinci/odcore/base/Serializer.h>
-#include <opendavinci/odcore/base/Deserializer.h>
+#include <opendavinci/odcore/serialization/SerializationFactory.h>
+#include <opendavinci/odcore/serialization/Serializer.h>
+#include <opendavinci/odcore/serialization/Deserializer.h>
 
 #include "generated/«mapping.mappingName.toString.replaceAll('\\.','/')».h"
 

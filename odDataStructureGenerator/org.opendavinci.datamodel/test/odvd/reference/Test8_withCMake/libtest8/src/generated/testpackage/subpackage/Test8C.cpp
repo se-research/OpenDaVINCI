@@ -6,9 +6,9 @@
 
 #include <memory>
 
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 
 #include "test8/generated/testpackage/subpackage/Test8C.h"
 
@@ -16,6 +16,7 @@ namespace testpackage {
 	namespace subpackage {
 			using namespace std;
 			using namespace odcore::base;
+			using namespace odcore::serialization;
 		
 		
 			Test8C::Test8C() :
