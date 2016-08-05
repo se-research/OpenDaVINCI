@@ -569,7 +569,7 @@ namespace canmapping {
 	
 	istream& «className»::operator>>(istream &in) {
 		odcore::serialization::SerializationFactory& sf = odcore::serialization::SerializationFactory::getInstance();
-		std::shared_ptr<odcore::base::Deserializer> s = sf.getDeserializer(in);
+		std::shared_ptr<odcore::serialization::Deserializer> s = sf.getDeserializer(in);
 		
 		«IF mapping.mappings.size>0»
 		uint32_t id;
