@@ -28,7 +28,7 @@
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
 #include "opendavinci/odcore/serialization/ProtoDeserializer.h"
 #include "opendavinci/odcore/serialization/ProtoSerializer.h"
 #include "opendavinci/odcore/serialization/ProtoDeserializerVisitor.h"

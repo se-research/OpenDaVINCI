@@ -41,8 +41,8 @@
 #include "opendavinci/odcore/base/Service.h"
 #include "opendavinci/odcore/base/Thread.h"
 #include "opendavinci/odcore/serialization/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 
 #include "opendavinci/odcore/data/TimeStamp.h"
 

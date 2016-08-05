@@ -22,8 +22,8 @@
 #include <memory>
 
 #include "opendavinci/odcore/serialization/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendavinci/odcore/data/TimeStamp.h"
 #include "opendavinci/odcore/wrapper/Time.h"
 #include "opendavinci/odcore/wrapper/TimeFactory.h"

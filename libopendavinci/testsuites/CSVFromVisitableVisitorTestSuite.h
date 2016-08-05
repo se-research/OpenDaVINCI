@@ -31,9 +31,9 @@
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/serialization/Deserializer.h"     // for Deserializer
-#include "opendavinci/odcore/base/Serializable.h"     // for Serializable
-#include "opendavinci/odcore/base/SerializationFactory.h"  // for SerializationFactory
-#include "opendavinci/odcore/base/Serializer.h"       // for Serializer
+#include "opendavinci/odcore/serialization/Serializable.h"     // for Serializable
+#include "opendavinci/odcore/serialization/SerializationFactory.h"  // for SerializationFactory
+#include "opendavinci/odcore/serialization/Serializer.h"       // for Serializer
 #include "opendavinci/odcore/base/Visitable.h"        // for Visitable
 #include "opendavinci/odcore/base/Visitor.h"          // for Visitor
 #include "opendavinci/odcore/reflection/CSVFromVisitableVisitor.h"

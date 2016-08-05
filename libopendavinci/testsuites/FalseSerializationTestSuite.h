@@ -27,9 +27,9 @@
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
 #include "opendavinci/odcore/serialization/Deserializer.h"     // for Deserializer
-#include "opendavinci/odcore/base/Serializable.h"     // for operator<<, operator>>, etc
-#include "opendavinci/odcore/base/SerializationFactory.h"  // for SerializationFactory
-#include "opendavinci/odcore/base/Serializer.h"       // for Serializer
+#include "opendavinci/odcore/serialization/Serializable.h"     // for operator<<, operator>>, etc
+#include "opendavinci/odcore/serialization/SerializationFactory.h"  // for SerializationFactory
+#include "opendavinci/odcore/serialization/Serializer.h"       // for Serializer
 #include "opendavinci/odcore/data/TimeStamp.h"        // for TimeStamp
 
 using namespace std;

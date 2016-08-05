@@ -24,7 +24,7 @@
 #include <cstring>
 #include <sstream>
 
-#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/serialization/Serializable.h"
 #include "opendavinci/odcore/data/TimeStamp.h"
 #include "opendavinci/odcore/opendavinci.h"
 #include "automotivedata/generated/automotive/ForceControl.h"

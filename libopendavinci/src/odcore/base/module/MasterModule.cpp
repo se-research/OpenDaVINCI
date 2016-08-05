@@ -20,7 +20,7 @@
 #include <exception>
 #include <iostream>
 
-#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
 #include "opendavinci/odcore/base/module/MasterModule.h"
 #include "opendavinci/generated/odcore/data/dmcp/ModuleStateMessage.h"
 

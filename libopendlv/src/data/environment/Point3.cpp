@@ -24,8 +24,8 @@
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/serialization/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendavinci/odcore/data/SerializableData.h"
 #include "opendavinci/odcore/strings/StringToolbox.h"
 #include "automotivedata/generated/cartesian/Constants.h"

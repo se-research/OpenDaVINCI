@@ -30,8 +30,8 @@
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/serialization/Deserializer.h"     // for Deserializer
 #include "opendavinci/odcore/base/KeyValueDataStore.h"  // for KeyValueDataStore
-#include "opendavinci/odcore/base/SerializationFactory.h"  // for SerializationFactory
-#include "opendavinci/odcore/base/Serializer.h"       // for Serializer
+#include "opendavinci/odcore/serialization/SerializationFactory.h"  // for SerializationFactory
+#include "opendavinci/odcore/serialization/Serializer.h"       // for Serializer
 #include "opendavinci/odcore/base/Service.h"          // for Service
 #include "opendavinci/odcore/base/Thread.h"           // for Thread
 #include "opendavinci/odcore/data/Container.h"        // for Container, etc

@@ -20,7 +20,7 @@
 #include <sstream>
 
 #include <memory>
-#include "opendavinci/odcore/base/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
 #include "opendavinci/odcore/base/module/AbstractConferenceClientModule.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/io/conference/ContainerConference.h"

@@ -23,8 +23,8 @@
 #include "opendavinci/odcore/serialization/ProtoSerializer.h"
 #include "opendavinci/odcore/base/QueryableNetstringsDeserializer.h"
 #include "opendavinci/odcore/base/QueryableNetstringsSerializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 
 namespace odcore {
     namespace base {

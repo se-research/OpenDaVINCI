@@ -24,7 +24,7 @@
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendavinci/odcore/serialization/Deserializer.h"
 #include "opendavinci/odcore/base/QueryableNetstringsDeserializerAACF.h"
 #include "opendavinci/odcore/base/QueryableNetstringsDeserializerABCF.h"

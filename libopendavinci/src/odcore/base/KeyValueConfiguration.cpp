@@ -23,8 +23,8 @@
 
 #include "opendavinci/odcore/serialization/Deserializer.h"
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendavinci/odcore/strings/StringToolbox.h"
 
 namespace odcore {

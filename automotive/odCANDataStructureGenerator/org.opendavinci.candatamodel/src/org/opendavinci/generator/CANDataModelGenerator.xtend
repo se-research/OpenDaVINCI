@@ -1122,8 +1122,8 @@ Signal "«signalName»" could not be found.
 #include <opendavinci/odcore/reflection/Message.h>
 #include <opendavinci/odcore/reflection/MessageToVisitableVisitor.h>
 #include <opendavinci/odcore/reflection/MessageFromVisitableVisitor.h>
-#include <opendavinci/odcore/base/SerializationFactory.h>
-#include <opendavinci/odcore/base/Serializer.h>
+#include <opendavinci/odcore/serialization/SerializationFactory.h>
+#include <opendavinci/odcore/serialization/Serializer.h>
 #include <opendavinci/odcore/serialization/Deserializer.h>
 
 #include "generated/«mapping.mappingName.toString.replaceAll('\\.','/')».h"

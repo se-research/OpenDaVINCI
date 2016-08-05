@@ -22,8 +22,8 @@
 #include <string>
 
 #include "opendavinci/odcore/serialization/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "automotivedata/generated/cartesian/Matrix3x3.h"
 #include "opendlv/data/camera/ExtrinsicParameters.h"
 #include "opendlv/data/environment/Point3.h"

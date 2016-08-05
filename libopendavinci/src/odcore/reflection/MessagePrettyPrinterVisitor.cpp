@@ -19,7 +19,7 @@
 
 #include <ostream>
 
-#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/serialization/Serializable.h"
 #include "opendavinci/odcore/base/Visitable.h"
 #include "opendavinci/odcore/reflection/MessagePrettyPrinterVisitor.h"
 

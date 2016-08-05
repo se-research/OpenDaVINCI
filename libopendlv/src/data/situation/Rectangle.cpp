@@ -22,8 +22,8 @@
 #include <string>
 
 #include "opendavinci/odcore/serialization/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendlv/data/situation/Rectangle.h"
 #include "opendlv/data/situation/Shape.h"
 #include "opendlv/data/situation/SituationVisitor.h"

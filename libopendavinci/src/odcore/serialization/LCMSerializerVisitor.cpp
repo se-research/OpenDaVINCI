@@ -20,7 +20,7 @@
 #include <iostream>
 
 #include "opendavinci/odcore/serialization/LCMSerializerVisitor.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 
 namespace odcore {
     namespace base {

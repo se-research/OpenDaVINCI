@@ -24,9 +24,9 @@
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/serialization/Deserializer.h"
-#include "opendavinci/odcore/base/Serializable.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Serializable.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendavinci/odcore/data/SerializableData.h"
 #include "opendlv/data/scenario/IDVertex3.h"
 #include "opendlv/data/scenario/Perimeter.h"

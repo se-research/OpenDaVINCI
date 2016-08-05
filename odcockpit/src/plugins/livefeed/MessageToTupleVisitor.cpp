@@ -20,7 +20,7 @@
 
 #include <ostream>
 
-#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/serialization/Serializable.h"
 #include "opendavinci/odcore/data/SerializableData.h"
 #include "plugins/livefeed/MessageToTupleVisitor.h"
 

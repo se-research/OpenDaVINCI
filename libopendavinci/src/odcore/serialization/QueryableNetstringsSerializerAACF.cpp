@@ -18,7 +18,7 @@
  */
 
 #include "opendavinci/odcore/base/QueryableNetstringsSerializerAACF.h"
-#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/serialization/Serializable.h"
 
 namespace odcore {
     namespace base {
