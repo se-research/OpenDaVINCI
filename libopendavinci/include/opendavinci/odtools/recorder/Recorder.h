@@ -20,12 +20,14 @@
 #ifndef OPENDAVINCI_TOOLS_RECORDER_RECORDER_H_
 #define OPENDAVINCI_TOOLS_RECORDER_RECORDER_H_
 
+#include <map>
 #include <memory>
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
 #include "opendavinci/odcore/base/FIFOQueue.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odtools/recorder/RecorderDelegate.h"
 
 namespace odcore { namespace data { class Container; } }
 
@@ -94,6 +96,15 @@ class SharedDataListener;
                 odcore::base::FIFOQueue& getFIFO();
 
                 /**
+                 * This method registers a RecorderDelegate to process a specific
+                 * Container differently.
+                 *
+                 * @param containerID Container ID to listen for.
+                 * @param r RecorderDelegate.
+                 */
+                void registerRecorderDelegate(const uint32_t &containerID, std::shared_ptr<RecorderDelegate> r);
+
+                /**
                  * This method returns the data store to be used
                  * for storing shared memory.
                  *
@@ -116,6 +127,8 @@ class SharedDataListener;
                 std::shared_ptr<ostream> m_out;
                 std::shared_ptr<ostream> m_outSharedMemoryFile;
                 bool m_dumpSharedData;
+                odcore::base::Mutex m_mapOfRecorderDelegatesMutex;
+                map<int32_t, std::shared_ptr<RecorderDelegate> > m_mapOfRecorderDelegates;
         };
 
     } // recorder

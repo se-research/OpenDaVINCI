@@ -19,12 +19,13 @@
 
 #include <iostream>
 
-#include "opendavinci/odcore/serialization/Serializable.h"
+#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/base/module/AbstractCIDModule.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/io/StreamFactory.h"
 #include "opendavinci/odcore/io/URL.h"
-#include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/serialization/Serializable.h"
 #include "opendavinci/odtools/recorder/Recorder.h"
 #include "opendavinci/odtools/recorder/SharedDataListener.h"
 #include "opendavinci/generated/odcore/data/recorder/RecorderCommand.h"
@@ -43,7 +44,9 @@ namespace odtools {
             m_sharedDataListener(),
             m_out(NULL),
             m_outSharedMemoryFile(NULL),
-            m_dumpSharedData(dumpSharedData) {
+            m_dumpSharedData(dumpSharedData),
+            m_mapOfRecorderDelegatesMutex(),
+            m_mapOfRecorderDelegates() {
 
             // Get output file.
             URL _url(url);
@@ -60,7 +63,16 @@ namespace odtools {
         Recorder::~Recorder() {
             // Record remaining entries.
             CLOG1 << "Clearing queue... ";
+                // First, recording any pending entries.
                 recordQueueEntries();
+
+                // Next, clean up any RecorderDelegates that might have deferred storing.
+                {
+                    Lock l(m_mapOfRecorderDelegatesMutex);
+                    m_mapOfRecorderDelegates.clear();
+                }
+
+                // Flush the file's content.
                 if (m_out.get()) {
                     m_out->flush();
                 }
@@ -75,7 +87,36 @@ namespace odtools {
             return *m_sharedDataListener;
         }
 
+        void Recorder::registerRecorderDelegate(const uint32_t &containerID, std::shared_ptr<RecorderDelegate> r) {
+            Lock l(m_mapOfRecorderDelegatesMutex);
+
+            // First, check if we have registered an existing RecorderDelegate for the given ID.
+            auto delegate = m_mapOfRecorderDelegates.find(containerID);
+            if (delegate != m_mapOfRecorderDelegates.end()) {
+                m_mapOfRecorderDelegates.erase(delegate);
+            }
+
+            if (r.get() != NULL) {
+                m_mapOfRecorderDelegates[containerID] = r;
+            }
+        }
+
         void Recorder::store(odcore::data::Container c) {
+            // First, check if we need to delegate storing this container.
+            {
+                Lock l(m_mapOfRecorderDelegatesMutex);
+                auto delegate = m_mapOfRecorderDelegates.find(c.getDataType());
+                if (delegate != m_mapOfRecorderDelegates.end()) {
+                    Container replacementContainer = delegate->second->store(c);
+                    getFIFO().enter(replacementContainer);
+                    recordQueueEntries();
+
+                    // Return from this call as a delegated RecorderDelegate has
+                    // handled this Container.
+                    return;
+                }
+            }
+
             // Check if the container to be stored is a "regular" data type.
             if ( (c.getDataType() != Container::UNDEFINEDDATA) &&
                  (c.getDataType() != odcore::data::recorder::RecorderCommand::ID())  &&
