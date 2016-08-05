@@ -19,8 +19,8 @@
 
 #include <iostream>
 
-#include "opendavinci/odcore/base/LCMDeserializerVisitor.h"
-#include "opendavinci/odcore/base/LCMSerializerVisitor.h"
+#include "opendavinci/odcore/serialization/LCMDeserializerVisitor.h"
+#include "opendavinci/odcore/serialization/LCMSerializerVisitor.h"
 #include "opendavinci/odcore/opendavinci.h"
 
 namespace odcore {
