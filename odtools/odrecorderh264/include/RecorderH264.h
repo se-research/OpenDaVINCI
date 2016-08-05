@@ -74,6 +74,9 @@ namespace odrecorderh264 {
             virtual odcore::data::Container process(odcore::data::Container &c);
 
         private:
+            int initialize();
+
+        private:
             uint32_t m_frameCounter;
             // TODO: Add management for different SharedImage sources.
     };
