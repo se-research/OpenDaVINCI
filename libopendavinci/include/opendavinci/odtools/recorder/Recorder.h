@@ -102,7 +102,7 @@ class SharedDataListener;
                  * @param containerID Container ID to listen for.
                  * @param r RecorderDelegate.
                  */
-                void registerRecorderDelegate(const uint32_t &containerID, std::shared_ptr<RecorderDelegate> r);
+                void registerRecorderDelegate(const uint32_t &containerID, RecorderDelegate* r);
 
                 /**
                  * This method returns the data store to be used
@@ -128,7 +128,7 @@ class SharedDataListener;
                 std::shared_ptr<ostream> m_outSharedMemoryFile;
                 bool m_dumpSharedData;
                 odcore::base::Mutex m_mapOfRecorderDelegatesMutex;
-                map<int32_t, std::shared_ptr<RecorderDelegate> > m_mapOfRecorderDelegates;
+                map<int32_t, RecorderDelegate* > m_mapOfRecorderDelegates;
         };
 
     } // recorder

@@ -1,6 +1,6 @@
 /**
- * odrecorder - Tool for recording data
- * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe 
+ * odrecorder.h264 - Tool for recording data and encoding video streams with h264.
+ * Copyright (C) 2016 Christian Berger
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,9 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <iostream>
 #include <string>
 
-#include "RecorderModule.h"
+#include "RecorderH264Module.h"
 #include "opendavinci/odcore/base/Thread.h"
 #include "opendavinci/odtools/recorder/Recorder.h"
 #include "opendavinci/odtools/recorder/SharedDataListener.h"
@@ -27,7 +28,7 @@
 
 namespace odcore { namespace base { class KeyValueDataStore; } }
 
-namespace odrecorder {
+namespace odrecorderh264 {
 
     using namespace std;
     using namespace odcore::base;
@@ -35,25 +36,30 @@ namespace odrecorder {
     using namespace odcore::io;
     using namespace odtools::recorder;
 
-    RecorderModule::RecorderModule(const int32_t &argc, char **argv) :
-        TimeTriggeredConferenceClientModule(argc, argv, "odrecorder") {}
+    RecorderH264Module::RecorderH264Module(const int32_t &argc, char **argv) :
+        TimeTriggeredConferenceClientModule(argc, argv, "odrecorderh264") {}
 
-    RecorderModule::~RecorderModule() {}
+    RecorderH264Module::~RecorderH264Module() {}
 
-    void RecorderModule::setUp() {}
+    void RecorderH264Module::setUp() {}
 
-    void RecorderModule::tearDown() {}
+    void RecorderH264Module::tearDown() {}
 
-    void RecorderModule::wait() {
+    void RecorderH264Module::wait() {
         AbstractModule::wait();
     }
 
-    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode RecorderModule::body() {
+    odcore::data::Container RecorderH264Module::store(odcore::data::Container &c) {
+        cout << "RecorderH264Module: Got called for " << c.getDataType() << endl;
+        return c;
+    }
+
+    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode RecorderH264Module::body() {
         // Check if the recorder is remotely controlled.
-        bool remoteControl = (getKeyValueConfiguration().getValue<bool>("odrecorder.remoteControl") != 0);
+        bool remoteControl = (getKeyValueConfiguration().getValue<bool>("odrecorderh264.remoteControl") != 0);
 
         // URL for storing containers.
-        const string recorderOutputURL = getKeyValueConfiguration().getValue<string>("odrecorder.output");
+        const string recorderOutputURL = getKeyValueConfiguration().getValue<string>("odrecorderh264.output");
         // Size of memory segments.
         const uint32_t MEMORY_SEGMENT_SIZE = getKeyValueConfiguration().getValue<uint32_t>("global.buffer.memorySegmentSize");
         // Number of memory segments.
@@ -61,7 +67,7 @@ namespace odrecorder {
         // Run recorder in asynchronous mode to allow real-time recording in background.
         const bool THREADING = true;
         // Dump shared images and shared data?
-        const bool DUMP_SHARED_DATA = getKeyValueConfiguration().getValue<uint32_t>("odrecorder.dumpshareddata") == 1;
+        const bool DUMP_SHARED_DATA = getKeyValueConfiguration().getValue<uint32_t>("odrecorderh264.dumpshareddata") == 1;
 
         // Actual "recording" interface.
         Recorder r(recorderOutputURL, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING, DUMP_SHARED_DATA);
@@ -69,10 +75,12 @@ namespace odrecorder {
         // Connect recorder's FIFOQueue to record all containers except for shared images/shared data.
         addDataStoreFor(r.getFIFO());
 
-        // Connect recorder's data store that can handle shared data.
+        // Connect recorder's data store that can handle shared data except for SharedImages.
         addDataStoreFor(odcore::data::SharedData::ID(), r.getDataStoreForSharedData());
-        addDataStoreFor(odcore::data::image::SharedImage::ID(), r.getDataStoreForSharedData());
         addDataStoreFor(odcore::data::SharedPointCloud::ID(), r.getDataStoreForSharedData());
+
+        // SharedImages will be encoded as h264 data.
+        r.registerRecorderDelegate(odcore::data::image::SharedImage::ID(), this);
 
         // Get key/value-datastore for controlling the odrecorder.
         KeyValueDataStore &kvds = getKeyValueDataStore();
@@ -110,4 +118,4 @@ namespace odrecorder {
         return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
     }
 
-} // odrecorder
+} // odrecorderh264

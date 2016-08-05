@@ -87,7 +87,7 @@ namespace odtools {
             return *m_sharedDataListener;
         }
 
-        void Recorder::registerRecorderDelegate(const uint32_t &containerID, std::shared_ptr<RecorderDelegate> r) {
+        void Recorder::registerRecorderDelegate(const uint32_t &containerID, RecorderDelegate *r) {
             Lock l(m_mapOfRecorderDelegatesMutex);
 
             // First, check if we have registered an existing RecorderDelegate for the given ID.
@@ -96,7 +96,7 @@ namespace odtools {
                 m_mapOfRecorderDelegates.erase(delegate);
             }
 
-            if (r.get() != NULL) {
+            if (r != NULL) {
                 m_mapOfRecorderDelegates[containerID] = r;
             }
         }
@@ -107,6 +107,8 @@ namespace odtools {
                 Lock l(m_mapOfRecorderDelegatesMutex);
                 auto delegate = m_mapOfRecorderDelegates.find(c.getDataType());
                 if (delegate != m_mapOfRecorderDelegates.end()) {
+cout << __FILE__ << " " << __LINE__ << endl;
+
                     Container replacementContainer = delegate->second->store(c);
                     getFIFO().enter(replacementContainer);
                     recordQueueEntries();
@@ -142,6 +144,23 @@ namespace odtools {
                 uint32_t numberOfEntries = m_fifo.getSize();
                 for (uint32_t i = 0; i < numberOfEntries; i++) {
                     Container c = m_fifo.leave();
+
+                    // First, check if we need to delegate storing this container.
+                    {
+                        Lock l(m_mapOfRecorderDelegatesMutex);
+                        auto delegate = m_mapOfRecorderDelegates.find(c.getDataType());
+                        if (delegate != m_mapOfRecorderDelegates.end()) {
+                            Container replacementContainer = delegate->second->store(c);
+                            if (m_out.get()) {
+                                (*m_out) << replacementContainer;
+                            }
+
+                            // Continue processing as a delegated RecorderDelegate has
+                            // handled this Container.
+                            continue;
+                        }
+                    }
+
                     // Filter undefined data as well as recorder commands.
                     if ( (c.getDataType() != Container::UNDEFINEDDATA) &&
                          (c.getDataType() != odcore::data::recorder::RecorderCommand::ID())  &&

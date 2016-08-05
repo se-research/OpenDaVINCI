@@ -1,6 +1,6 @@
 /**
- * odrecorder - Tool for recording data
- * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe 
+ * odrecorder.h264 - Tool for recording data and encoding video streams with h264.
+ * Copyright (C) 2016 Christian Berger
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,22 +17,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef RECORDERMODULE_H_
-#define RECORDERMODULE_H_
+#ifndef RECORDERH264MODULE_H_
+#define RECORDERH264MODULE_H_
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
 #include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/odtools/recorder/RecorderDelegate.h"
 
-namespace odrecorder {
+
+namespace odrecorderh264 {
 
     using namespace std;
 
     /**
-     * This class can be used to record data distributed
-     * using a conference.
+     * This class can be used to record data distributed in a Container conference
+     * and to encode SharedImage containers as h264 video streams.
      */
-    class RecorderModule : public odcore::base::module::TimeTriggeredConferenceClientModule {
+    class RecorderH264Module : public odcore::base::module::TimeTriggeredConferenceClientModule,
+                               public odtools::recorder::RecorderDelegate {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -41,7 +44,7 @@ namespace odrecorder {
              *
              * @param obj Reference to an object of this class.
              */
-            RecorderModule(const RecorderModule &/*obj*/);
+            RecorderH264Module(const RecorderH264Module &/*obj*/);
 
             /**
              * "Forbidden" assignment operator. Goal: The compiler should warn
@@ -51,7 +54,7 @@ namespace odrecorder {
              * @param obj Reference to an object of this class.
              * @return Reference to this instance.
              */
-            RecorderModule& operator=(const RecorderModule &/*obj*/);
+            RecorderH264Module& operator=(const RecorderH264Module &/*obj*/);
 
         public:
             /**
@@ -60,13 +63,15 @@ namespace odrecorder {
              * @param argc Number of command line arguments.
              * @param argv Command line arguments.
              */
-            RecorderModule(const int32_t &argc, char **argv);
+            RecorderH264Module(const int32_t &argc, char **argv);
 
-            virtual ~RecorderModule();
+            virtual ~RecorderH264Module();
 
             virtual void wait();
 
             odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+
+            virtual odcore::data::Container store(odcore::data::Container &c);
 
         private:
             virtual void setUp();
@@ -74,6 +79,6 @@ namespace odrecorder {
             virtual void tearDown();
     };
 
-} // odrecorder
+} // odrecorderh264
 
-#endif /*RECORDERMODULE_H_*/
+#endif /*RECORDERH264MODULE_H_*/
