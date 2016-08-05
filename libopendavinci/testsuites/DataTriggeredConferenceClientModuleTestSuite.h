@@ -29,7 +29,7 @@
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/Condition.h"        // for Condition
-#include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
+#include "opendavinci/odcore/serialization/Deserializer.h"     // for Deserializer
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
 #include "opendavinci/odcore/base/Lock.h"             // for Lock
 #include "opendavinci/odcore/base/Mutex.h"             // for Lock

@@ -30,7 +30,7 @@
 #include "opendavinci/odcore/base/BufferedFIFOQueue.h"  // for BufferedFIFOQueue
 #include "opendavinci/odcore/base/BufferedLIFOQueue.h"  // for BufferedLIFOQueue
 #include "opendavinci/odcore/base/Condition.h"        // for Condition
-#include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
+#include "opendavinci/odcore/serialization/Deserializer.h"     // for Deserializer
 #include "opendavinci/odcore/base/FIFOQueue.h"        // for FIFOQueue
 #include "opendavinci/odcore/base/LIFOQueue.h"        // for LIFOQueue
 #include "opendavinci/odcore/base/Lock.h"             // for Lock

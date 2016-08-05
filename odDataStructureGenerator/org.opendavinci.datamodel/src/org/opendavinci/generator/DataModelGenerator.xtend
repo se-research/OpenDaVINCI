@@ -603,7 +603,7 @@ class «msg.message.substring(msg.message.lastIndexOf('.') + 1) /* These lines g
 	«ENDIF»
 «ENDFOR»
 
-#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
 

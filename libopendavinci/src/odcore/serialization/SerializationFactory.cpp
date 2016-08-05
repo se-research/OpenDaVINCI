@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
 #include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/base/ProtoDeserializer.h"
 #include "opendavinci/odcore/base/ProtoSerializer.h"

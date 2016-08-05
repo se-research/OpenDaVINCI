@@ -26,7 +26,7 @@
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
 #include "opendavinci/odcore/base/ProtoSerializer.h"
 #include "opendavinci/odcore/base/ProtoSerializerVisitor.h"
 

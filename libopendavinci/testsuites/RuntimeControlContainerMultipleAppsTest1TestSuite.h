@@ -34,7 +34,7 @@
 #include "opendavinci/odcontext/base/SendContainerToSystemsUnderTest.h"
 #include "opendavinci/odcontext/base/SystemFeedbackComponent.h"
 #include "opendavinci/odcontext/base/SystemReportingComponent.h"
-#include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
+#include "opendavinci/odcore/serialization/Deserializer.h"     // for Deserializer
 #include "opendavinci/odcore/base/FIFOQueue.h"        // for FIFOQueue
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
 #include "opendavinci/odcore/base/SerializationFactory.h"  // for SerializationFactory

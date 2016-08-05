@@ -6,7 +6,7 @@
 
 #include <memory>
 
-#include "opendavinci/odcore/base/Deserializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
 #include "opendavinci/odcore/base/SerializationFactory.h"
 #include "opendavinci/odcore/base/Serializer.h"
 

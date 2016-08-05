@@ -27,7 +27,7 @@
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
+#include "opendavinci/odcore/serialization/Deserializer.h"     // for Deserializer
 #include "opendavinci/odcore/base/QueryableNetstringsDeserializerVisitor.h"
 #include "opendavinci/odcore/base/QueryableNetstringsSerializerVisitor.h"
 #include "opendavinci/odcore/base/Serializable.h"     // for operator<<, Serializable
