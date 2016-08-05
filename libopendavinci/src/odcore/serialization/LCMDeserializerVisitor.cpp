@@ -92,7 +92,7 @@ class Serializable;
             }
             else {
                 // Stream is good but still no matching magic number?
-                clog << "[core::base::LCMDeserializerVisitor]: Stream corrupt: magic number not found." << endl;
+                clog << "[core::serialization::LCMDeserializerVisitor]: Stream corrupt: magic number not found." << endl;
             }
         }
 
@@ -177,7 +177,7 @@ class Serializable;
 
 
         void LCMDeserializerVisitor::read(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, Serializable &/*v*/) {
-            cerr << "[core::base::LCMDeserializerVisitor]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
+            cerr << "[core::serialization::LCMDeserializerVisitor]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
         }
 
         void LCMDeserializerVisitor::read(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, bool &v) {
@@ -256,7 +256,7 @@ class Serializable;
         }
 
         void LCMDeserializerVisitor::read(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, void */*data*/, const uint32_t &/*size*/) {
-            cerr << "[core::base::LCMDeserializerVisitor]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
+            cerr << "[core::serialization::LCMDeserializerVisitor]: read(const uint32_t&, const uint8_t&, const string&, const string&, T) not implemented!" << endl;
         }
 
 
@@ -265,7 +265,7 @@ class Serializable;
         void LCMDeserializerVisitor::endVisit() {}
 
         void LCMDeserializerVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, Serializable &/*v*/) {
-            cerr << "[core::base::LCMDeserializerVisitor]: LCM for Serializable not implemented!" << endl;
+            cerr << "[core::serialization::LCMDeserializerVisitor]: LCM for Serializable not implemented!" << endl;
         }
 
         void LCMDeserializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, bool &v) {
@@ -373,7 +373,7 @@ class Serializable;
         }
 
         void LCMDeserializerVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, void */*data*/, const uint32_t &/*size*/) {
-            cerr << "[core::base::LCMDeserializerVisitor]: LCM for void* not implemented!" << endl;
+            cerr << "[core::serialization::LCMDeserializerVisitor]: LCM for void* not implemented!" << endl;
         }
 
     }

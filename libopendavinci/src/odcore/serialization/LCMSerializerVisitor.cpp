@@ -182,7 +182,7 @@ class Serializable;
 
 
         void LCMSerializerVisitor::write(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, const Serializable &/*v*/) {
-            cerr << "[core::base::LCMSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
+            cerr << "[core::serialization::LCMSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
         }
 
         void LCMSerializerVisitor::write(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, const bool &v) {
@@ -249,7 +249,7 @@ class Serializable;
         }
 
         void LCMSerializerVisitor::write(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, const void */*data*/, const uint32_t &/*size*/) {
-            cerr << "[core::base::LCMSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
+            cerr << "[core::serialization::LCMSerializerVisitor]: write(const uint32_t&, const uint8_t&, const string&, const string&, T&) not implemented!" << endl;
         }
 
 
@@ -258,7 +258,7 @@ class Serializable;
         void LCMSerializerVisitor::endVisit() {}
 
         void LCMSerializerVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, Serializable &/*v*/) {
-            cerr << "[core::base::LCMSerializerVisitor]: LCM for Serializable not implemented!" << endl;
+            cerr << "[core::serialization::LCMSerializerVisitor]: LCM for Serializable not implemented!" << endl;
         }
 
         void LCMSerializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, bool &v) {
@@ -366,7 +366,7 @@ class Serializable;
         }
 
         void LCMSerializerVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, void */*data*/, const uint32_t &/*size*/) {
-            cerr << "[core::base::LCMSerializerVisitor]: LCM for void* not implemented!" << endl;
+            cerr << "[core::serialization::LCMSerializerVisitor]: LCM for void* not implemented!" << endl;
         }
 
     }
