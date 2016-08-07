@@ -20,6 +20,19 @@
 #ifndef PLAYERH264_H_
 #define PLAYERH264_H_
 
+// Include files from FFMPEG to have h264 encoding.
+extern "C" {
+    #include <libavcodec/avcodec.h>
+    #include <libavutil/imgutils.h>
+    #include <libswscale/swscale.h>
+}
+
+#include <memory>
+#include <vector>
+
+#include "opendavinci/odcore/wrapper/SharedMemory.h"
+#include "opendavinci/generated/odcore/data/image/SharedImage.h"
+
 #include "opendavinci/odtools/player/Player.h"
 #include "opendavinci/odtools/player/PlayerDelegate.h"
 
@@ -72,6 +85,45 @@ namespace odplayerh264 {
 
         private:
             // TODO: Add management for different SharedImage sources.
+
+        private:
+            bool initialize();
+            bool getNextFrame();
+            int fillBuffer();
+            bool update(bool &readMoreBytes);
+            void decodeFrame(uint8_t* data, int size);
+            void nextFrameReady(AVFrame* frame);
+
+        private:
+            std::shared_ptr<odcore::wrapper::SharedMemory> m_mySharedMemory;
+            odcore::data::image::SharedImage m_mySharedImage;
+            string filename;
+
+            uint32_t frameCounter;
+
+            // Buffer to read from video file.
+            uint8_t *inbuf;
+
+            // Internal buffer to handle processed and unprocessed data.
+            std::vector<uint8_t> buffer;
+
+            // Handle to input file.
+            FILE *f;
+
+            // Decoder context.
+            AVCodecContext *decodeContext;
+
+            // Parser for decoding.
+            AVCodecParserContext *parser;
+
+            // Picture will hold the decoded picture.
+            AVFrame* picture;
+
+            // Image pixel transformation context.
+            SwsContext *pixelTransformationContext;
+
+            // OpenCV uses BGR pixel format; thus, we need to transform the data from the decoder.
+            AVFrame *frameBGR;
     };
 
 } // odplayerh264
