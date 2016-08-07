@@ -42,12 +42,6 @@ SET (CXXTEST_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../cxxtest")
 INCLUDE (CheckCxxTestEnvironment)
 
 ###########################################################################
-# Find OpenCV.
-FIND_PACKAGE (OpenCV REQUIRED)
-SET(LIBRARIES ${LIBRARIES} ${OPENCV_LIBRARIES})
-INCLUDE_DIRECTORIES (${OPENCV_INCLUDE_DIRS})
-
-###########################################################################
 # Find FFMPEG modules.
 FIND_PACKAGE (FFMPEGMODULES REQUIRED)
 SET(LIBRARIES ${LIBRARIES} ${FFMPEGMODULES_LIBRARIES})

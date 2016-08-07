@@ -87,12 +87,43 @@ namespace odplayerh264 {
             // TODO: Add management for different SharedImage sources.
 
         private:
+            /**
+             * This method initializes the h.264 decoder.
+             *
+             * @return true if initialization succeeded.
+             */
             bool initialize();
+
+            /**
+             * This method returns the next frame from the given h264 file.
+             *
+             * @return true if succeeded; the shared memory segment contains the decoded frame in BGR24 format.
+             */
             bool getNextFrame();
+
+            /**
+             * This method fills up the internal buffe with bytes.
+             *
+             * @return The amount of bytes read into the internal buffer.
+             */
             int fillBuffer();
+
+            /**
+             * This method is called whenever more bytes in the internal buffer
+             * are needed.
+             *
+             * @param readMoreBytes indicate whether we need to read more bytes.
+             * @return true if succeeded.
+             */
             bool update(bool &readMoreBytes);
-            void decodeFrame(uint8_t* data, int size);
-            void nextFrameReady(AVFrame* frame);
+
+            /**
+             * This method does the actual decoding.
+             *
+             * @param data Raw h264-encoded data.
+             * @param size Size of encoded data.
+             */
+            void decodeFrame(uint8_t *data, uint32_t size);
 
         private:
             std::shared_ptr<odcore::wrapper::SharedMemory> m_mySharedMemory;

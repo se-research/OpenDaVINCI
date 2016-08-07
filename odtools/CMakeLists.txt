@@ -30,7 +30,6 @@ INCLUDE (CheckCxxTestEnvironment)
 
 ###########################################################################
 # Find FFMEG to enable recording and playback of h264 encoded video streams.
-FIND_PACKAGE (OpenCV)
 FIND_PACKAGE (FFMPEGMODULES)
 IF (FFMPEGMODULES_FOUND)
     ADD_SUBDIRECTORY (odrecorderh264)

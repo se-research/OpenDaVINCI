@@ -188,9 +188,6 @@ namespace odrecorderh264 {
                 packet.data = NULL;
                 packet.size = 0;
 
-                // Frame counter.
-                frame->pts = m_frameCounter;
-
                 // Transform frame from BGR to YUV420P for encoding.
                 if (!m_hasAttachedToSharedImageMemory) {
                     m_sharedImageMemory = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(si.getName());
@@ -207,6 +204,9 @@ namespace odrecorderh264 {
                         int inLinesize[1] = { (int)(si.getBytesPerPixel() * si.getWidth()) };
                         sws_scale(pixelTransformationContext, inData, inLinesize, 0, height, frame->data, frame->linesize);
                     }
+
+                    // Frame counter.
+                    frame->pts = m_frameCounter;
 
                     // Encoding image.
                     int ret = avcodec_encode_video2(encodeContext, &packet, frame, &succeeded);

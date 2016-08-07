@@ -17,10 +17,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Include files to open a capturing device.
-#include "opencv2/imgproc/imgproc.hpp"
-#include "opencv2/highgui/highgui.hpp"
-
 // Include files from FFMPEG to have h264 encoding.
 extern "C" {
     #include <libavcodec/avcodec.h>
@@ -181,18 +177,6 @@ namespace odplayerh264 {
         return true;
     }
 
-    void PlayerH264::nextFrameReady(AVFrame* frame) {
-        frameCounter++;
-        cout << "Call back for frame = " << frameCounter << endl;
-
-        sws_scale(pixelTransformationContext, frame->data, frame->linesize, 0, m_mySharedImage.getHeight(), frameBGR->data, frameBGR->linesize);
-
-        if (m_mySharedMemory->isValid()) {
-            Lock l(m_mySharedMemory);
-            memcpy(m_mySharedMemory->getSharedMemory(), frameBGR->data[0], m_mySharedImage.getWidth() * m_mySharedImage.getHeight() * m_mySharedImage.getBytesPerPixel());
-        }
-    }
-
     bool PlayerH264::getNextFrame() {
         bool readMore = false;
 
@@ -209,9 +193,9 @@ namespace odplayerh264 {
     }
 
     int PlayerH264::fillBuffer() {
-        int nbytes = (int)fread(inbuf, 1, BUFFER_SIZE, f);
+        int32_t nbytes = (int)fread(inbuf, 1, BUFFER_SIZE, f);
 
-        if (nbytes) {
+        if (nbytes > 0) {
             copy(inbuf, inbuf + nbytes, back_inserter(buffer));
         }
 
@@ -253,7 +237,7 @@ namespace odplayerh264 {
         return false;
     }
 
-    void PlayerH264::decodeFrame(uint8_t* data, int size) {
+    void PlayerH264::decodeFrame(uint8_t *data, uint32_t size) {
         AVPacket packet;
         int gotPicture = 0;
         int len = 0;
@@ -266,9 +250,20 @@ namespace odplayerh264 {
         if (len < 0) {
             cout << "Error while decoding a frame." << endl;
         }
+        else {
+            if (gotPicture) {
+                frameCounter++;
+                cout << "Read frame " << picture->pts << endl;
 
-        if (gotPicture) {
-            nextFrameReady(picture);
+                // Transform from YUV420p into BGR24 format.
+                sws_scale(pixelTransformationContext, picture->data, picture->linesize, 0, m_mySharedImage.getHeight(), frameBGR->data, frameBGR->linesize);
+
+                // Copy resulting frame into the shared memory segment.
+                if (m_mySharedMemory->isValid()) {
+                    Lock l(m_mySharedMemory);
+                    memcpy(m_mySharedMemory->getSharedMemory(), frameBGR->data[0], m_mySharedImage.getWidth() * m_mySharedImage.getHeight() * m_mySharedImage.getBytesPerPixel());
+                }
+            }
         }
     }
 
