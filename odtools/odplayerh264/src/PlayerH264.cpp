@@ -17,13 +17,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Include files from FFMPEG to have h264 encoding.
-extern "C" {
-    #include <libavcodec/avcodec.h>
-    #include <libavutil/imgutils.h>
-    #include <libswscale/swscale.h>
-}
-
 #include <cstring>
 #include <iostream>
 #include <string>
@@ -48,38 +41,47 @@ namespace odplayerh264 {
         Player(url, autoRewind, memorySegmentSize, numberOfMemorySegments, threading),
         m_mySharedMemory(NULL),
         m_mySharedImage(),
-        filename(),
-        frameCounter(0),
-        inbuf(NULL),
-        buffer(),
-        f(NULL),
-        decodeContext(NULL),
-        parser(NULL),
-        picture(NULL),
-        pixelTransformationContext(NULL),
-        frameBGR(NULL) {
+        m_frameCounter(0),
+        m_readFromFileBuffer(NULL),
+        m_internalBuffer(),
+        m_inputFile(NULL),
+        m_decodeContext(NULL),
+        m_parser(NULL),
+        m_picture(NULL),
+        m_pixelTransformationContext(NULL),
+        m_frameBGR(NULL) {
+
         // Register all codecs from FFMPEG.
         avcodec_register_all();
 
-        inbuf = new uint8_t[BUFFER_SIZE + FF_INPUT_BUFFER_PADDING_SIZE];
+        // Create a buffer to read from file.
+        m_readFromFileBuffer = new uint8_t[BUFFER_SIZE + FF_INPUT_BUFFER_PADDING_SIZE];
 
+        // Register us as delegate to handle odcore::data::image::H264Frame messages.
         registerPlayerDelegate(odcore::data::image::H264Frame::ID(), this);
     }
 
     PlayerH264::~PlayerH264() {
+        // Unregister us as delegate to handle odcore::data::image::H264Frame messages.
         registerPlayerDelegate(odcore::data::image::H264Frame::ID(), NULL);
 
-        // Cleanup.
-        av_parser_close(parser);
-        avcodec_close(decodeContext);
-        av_free(decodeContext);
-        av_free(picture);
-        av_free(frameBGR);
-        fclose(f);
+        // Close decoder.
+        av_parser_close(m_parser);
+        avcodec_close(m_decodeContext);
 
-        if (inbuf != NULL) {
-            delete [] inbuf;
-            inbuf = NULL;
+        // Free acquired memory.
+        av_free(m_decodeContext);
+        av_free(m_picture);
+        av_free(m_frameBGR);
+
+        // Close input file.
+        fclose(m_inputFile);
+
+        // Free buffer.
+        m_internalBuffer.clear();
+        if (m_readFromFileBuffer != NULL) {
+            delete [] m_readFromFileBuffer;
+            m_readFromFileBuffer = NULL;
         }
     }
 
@@ -88,103 +90,116 @@ namespace odplayerh264 {
 
         Container replacementContainer;
 
-        cout << "PlayerH264 called for " << c.getDataType() << endl;
-
+        // Translate an H264Frame message into a proper SharedImage one.
         if (c.getDataType() == odcore::data::image::H264Frame::ID()) {
             odcore::data::image::H264Frame h264frame = c.getData<odcore::data::image::H264Frame>();
             m_mySharedImage = h264frame.getAssociatedSharedImage();
 
-            cout << "Replace " << h264frame.toString() << endl;
-
+            // If not initialized, initialze the h.264 decoder structure.
             if (!isInitialized) {
-                filename = h264frame.getH264Filename();
-                isInitialized = initialize();
+                isInitialized = initialize(h264frame.getH264Filename());
             }
 
-            if (getNextFrame()) {
-                replacementContainer = Container(m_mySharedImage);
-                replacementContainer.setSentTimeStamp(c.getSentTimeStamp());
-                replacementContainer.setReceivedTimeStamp(c.getReceivedTimeStamp());
+            // If we have a valid shared memory segment, decode next frame.
+            if (m_mySharedMemory->isValid()) {
+                if (getNextFrame()) {
+                    replacementContainer = Container(m_mySharedImage);
+                    replacementContainer.setSentTimeStamp(c.getSentTimeStamp());
+                    replacementContainer.setReceivedTimeStamp(c.getReceivedTimeStamp());
+
+cout << "[odplayerh264] Created replacement for " << h264frame.toString() << endl;
+                }
             }
         }
 
         return replacementContainer;
     }
 
-    bool PlayerH264::initialize() {
+    bool PlayerH264::initialize(const string &filename) {
+        bool retVal = false;
+
+        // Acquire shared memory.
         if (m_mySharedMemory.get() == NULL) {
             m_mySharedMemory = odcore::wrapper::SharedMemoryFactory::createSharedMemory(m_mySharedImage.getName(), m_mySharedImage.getSize());
         }
 
-        // Allocating memory to hold resulting image.
-        frameBGR = av_frame_alloc();
-        if (!frameBGR) {
-            cout << "Could not allocate buffer for resulting frame." << endl;
-            return false;
+        if (m_mySharedMemory->isValid()) {
+            // Allocating memory to hold resulting image.
+            m_frameBGR = av_frame_alloc();
+            if (!m_frameBGR) {
+                cerr << "[odplayerh264] Could not allocate buffer for resulting frame." << endl;
+                return false;
+            }
+
+            // Acquire memory for raw picture.
+            const uint32_t BYTES = avpicture_get_size(PIX_FMT_BGR24, m_mySharedImage.getWidth(), m_mySharedImage.getHeight());
+            uint8_t *myPixelBuffer = static_cast<uint8_t*>(av_malloc(BYTES * sizeof(uint8_t)));
+            avpicture_fill(reinterpret_cast<AVPicture*>(m_frameBGR),
+                           myPixelBuffer, PIX_FMT_BGR24,
+                           m_mySharedImage.getWidth(), m_mySharedImage.getHeight());
+
+            // Image pixel transformation context to transform from YUV420p to BGR24.
+            m_pixelTransformationContext = sws_getContext(m_mySharedImage.getWidth(), m_mySharedImage.getHeight(),
+                                 AV_PIX_FMT_YUV420P, m_mySharedImage.getWidth(), m_mySharedImage.getHeight(),
+                                 AV_PIX_FMT_BGR24, 0, 0, 0, 0);
+
+            // Find proper decoder for h264.
+            AVCodec *decodeCodec = avcodec_find_decoder(AV_CODEC_ID_H264);
+            if (!decodeCodec) {
+                cerr << "[odplayerh264] Codec h264 not found." << endl;
+                return false;
+            }
+
+            // Configure decoding context.
+            m_decodeContext = avcodec_alloc_context3(decodeCodec);
+
+            // Allow partial data handed over from file to decoder.
+            if (decodeCodec->capabilities & CODEC_CAP_TRUNCATED) {
+                m_decodeContext->flags |= CODEC_FLAG_TRUNCATED;
+            }
+
+            // Open actual codec.
+            if (avcodec_open2(m_decodeContext, decodeCodec, NULL) < 0) {
+                cerr << "[odplayerh264] Could not open codec h264 with given parameters." << endl;
+                return false;
+            }
+
+            // Open video file.
+            m_inputFile = fopen(filename.c_str(), "rb");
+            if (!m_inputFile) {
+                cerr << "[odplayerh264] Could not open " << filename << endl;
+                return false;
+            }
+
+            // Allocate picture buffer.
+            m_picture = av_frame_alloc();
+
+            // Initialize decoding parser.
+            m_parser = av_parser_init(AV_CODEC_ID_H264);
+            if (!m_parser) {
+                cerr << "[odplayerh264] Could not create H264 parser." << endl;
+                return false;
+            }
+
+            // Fill buffer from file.
+            fillBuffer();
+
+            retVal = true;
         }
-
-        // Acquire memory for raw picture.
-        const uint32_t bytes = avpicture_get_size(PIX_FMT_BGR24, m_mySharedImage.getWidth(), m_mySharedImage.getHeight());
-        uint8_t *buf = static_cast<uint8_t*>(av_malloc(bytes * sizeof(uint8_t)));
-        avpicture_fill((AVPicture *)frameBGR, buf, PIX_FMT_BGR24, m_mySharedImage.getWidth(), m_mySharedImage.getHeight());
-
-        // Image pixel transformation context.
-        pixelTransformationContext = sws_getContext(m_mySharedImage.getWidth(), m_mySharedImage.getHeight(),
-                             AV_PIX_FMT_YUV420P, m_mySharedImage.getWidth(), m_mySharedImage.getHeight(),
-                             AV_PIX_FMT_BGR24, 0, 0, 0, 0);
-
-        // Find proper decoder for h264.
-        AVCodec *decodeCodec = avcodec_find_decoder(AV_CODEC_ID_H264);
-        if (!decodeCodec) {
-            cout << "Codec h264 not found." << endl;
-            return false;
-        }
-
-        // Configure decoding context.
-        decodeContext = avcodec_alloc_context3(decodeCodec);
-
-        // Allow partial data handover to decoder.
-        if (decodeCodec->capabilities & CODEC_CAP_TRUNCATED) {
-            decodeContext->flags |= CODEC_FLAG_TRUNCATED;
-        }
-
-        // Open codec.
-        if (avcodec_open2(decodeContext, decodeCodec, NULL) < 0) {
-            cout << "Could not open codec h264 with given parameters." << endl;
-            return false;
-        }
-
-        // Open video file.
-        f = fopen(filename.c_str(), "rb");
-        if (!f) {
-            cout << "Could not open " << filename << endl;
-            return false;
-        }
-
-        // Allocate picture.
-        picture = av_frame_alloc();
-
-        // Initialize parser.
-        parser = av_parser_init(AV_CODEC_ID_H264);
-        if (!parser) {
-            cout << "Could not create H264 parser." << endl;
-            return false;
-        }
-
-        // Fill buffer.
-        fillBuffer();
-
-        return true;
+        return retVal;
     }
 
     bool PlayerH264::getNextFrame() {
         bool readMore = false;
 
+        // Decode next frame (or fill buffer if needed).
         while (!update(readMore)) {
             if (readMore) {
                 fillBuffer();
             }
-            if (feof(f)) {
+
+            // Leave loop if EOF.
+            if (feof(m_inputFile)) {
                 return false;
             }
         }
@@ -193,10 +208,11 @@ namespace odplayerh264 {
     }
 
     int PlayerH264::fillBuffer() {
-        int32_t nbytes = (int)fread(inbuf, 1, BUFFER_SIZE, f);
+        int32_t nbytes = static_cast<int32_t>(fread(m_readFromFileBuffer, sizeof(uint8_t), BUFFER_SIZE, m_inputFile));
 
         if (nbytes > 0) {
-            copy(inbuf, inbuf + nbytes, back_inserter(buffer));
+            // Add bytes from file to our internal buffer.
+            copy(m_readFromFileBuffer, m_readFromFileBuffer + nbytes, back_inserter(m_internalBuffer));
         }
 
         return nbytes;
@@ -205,32 +221,34 @@ namespace odplayerh264 {
     bool PlayerH264::update(bool &readMoreBytes) {
         readMoreBytes = false;
 
-        if (feof(f)) {
+        if (feof(m_inputFile)) {
             return false;
         }
 
-        if (!f) {
-            cout << "Cannot read from file." << endl;
+        if (!m_inputFile) {
+            cerr << "[odplayerh264] Cannot read from file." << endl;
             return false;
         }
 
-        if (buffer.size() == 0) {
+        if (m_internalBuffer.size() == 0) {
             readMoreBytes = true;
             return false;
         }
      
         uint8_t* data = NULL;
         int size = 0;
-        int len = av_parser_parse2(parser, decodeContext, &data, &size, &buffer[0], buffer.size(), 0, 0, AV_NOPTS_VALUE);
+        int length = av_parser_parse2(m_parser, m_decodeContext, &data, &size,
+                                      &m_internalBuffer[0], m_internalBuffer.size(),
+                                      0, 0, AV_NOPTS_VALUE);
 
-        if (size == 0 && len >= 0) {
+        if ((size == 0) && (length >= 0)) {
             readMoreBytes = true;
             return false;
         }
 
-        if (len) {
-            decodeFrame(&buffer[0], size);
-            buffer.erase(buffer.begin(), buffer.begin() + len);
+        if (length > 0) {
+            decodeFrame(&m_internalBuffer[0], size);
+            m_internalBuffer.erase(m_internalBuffer.begin(), m_internalBuffer.begin() + length);
             return true;
         }
 
@@ -240,28 +258,28 @@ namespace odplayerh264 {
     void PlayerH264::decodeFrame(uint8_t *data, uint32_t size) {
         AVPacket packet;
         int gotPicture = 0;
-        int len = 0;
+        int length = 0;
 
         av_init_packet(&packet);
         packet.data = data;
         packet.size = size;
 
-        len = avcodec_decode_video2(decodeContext, picture, &gotPicture, &packet);
-        if (len < 0) {
-            cout << "Error while decoding a frame." << endl;
+        length = avcodec_decode_video2(m_decodeContext, m_picture, &gotPicture, &packet);
+        if (length < 0) {
+            cerr << "[odplayerh264] Error while decoding a frame." << endl;
         }
         else {
             if (gotPicture) {
-                frameCounter++;
-                cout << "Read frame " << picture->pts << endl;
+                m_frameCounter++;
+cout << "Read frame " << m_picture->pts << endl;
 
                 // Transform from YUV420p into BGR24 format.
-                sws_scale(pixelTransformationContext, picture->data, picture->linesize, 0, m_mySharedImage.getHeight(), frameBGR->data, frameBGR->linesize);
+                sws_scale(m_pixelTransformationContext, m_picture->data, m_picture->linesize, 0, m_mySharedImage.getHeight(), m_frameBGR->data, m_frameBGR->linesize);
 
                 // Copy resulting frame into the shared memory segment.
                 if (m_mySharedMemory->isValid()) {
                     Lock l(m_mySharedMemory);
-                    memcpy(m_mySharedMemory->getSharedMemory(), frameBGR->data[0], m_mySharedImage.getWidth() * m_mySharedImage.getHeight() * m_mySharedImage.getBytesPerPixel());
+                    memcpy(m_mySharedMemory->getSharedMemory(), m_frameBGR->data[0], m_mySharedImage.getWidth() * m_mySharedImage.getHeight() * m_mySharedImage.getBytesPerPixel());
                 }
             }
         }

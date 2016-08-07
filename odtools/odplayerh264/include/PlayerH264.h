@@ -20,6 +20,8 @@
 #ifndef PLAYERH264_H_
 #define PLAYERH264_H_
 
+#include <cstdio>
+
 // Include files from FFMPEG to have h264 encoding.
 extern "C" {
     #include <libavcodec/avcodec.h>
@@ -90,9 +92,10 @@ namespace odplayerh264 {
             /**
              * This method initializes the h.264 decoder.
              *
+             * @param filename Name of the file to read data from.
              * @return true if initialization succeeded.
              */
-            bool initialize();
+            bool initialize(const string &filename);
 
             /**
              * This method returns the next frame from the given h264 file.
@@ -126,35 +129,39 @@ namespace odplayerh264 {
             void decodeFrame(uint8_t *data, uint32_t size);
 
         private:
+            // This shared memory will contain the resulting decoded image frame.
             std::shared_ptr<odcore::wrapper::SharedMemory> m_mySharedMemory;
-            odcore::data::image::SharedImage m_mySharedImage;
-            string filename;
 
-            uint32_t frameCounter;
+            // This SharedImage described the resuling frame.
+            odcore::data::image::SharedImage m_mySharedImage;
+
+        private:
+            // Counter for successfully decoded frames.
+            uint32_t m_frameCounter;
 
             // Buffer to read from video file.
-            uint8_t *inbuf;
+            uint8_t *m_readFromFileBuffer;
 
             // Internal buffer to handle processed and unprocessed data.
-            std::vector<uint8_t> buffer;
+            vector<uint8_t> m_internalBuffer;
 
             // Handle to input file.
-            FILE *f;
+            FILE *m_inputFile;
 
             // Decoder context.
-            AVCodecContext *decodeContext;
+            AVCodecContext *m_decodeContext;
 
             // Parser for decoding.
-            AVCodecParserContext *parser;
+            AVCodecParserContext *m_parser;
 
             // Picture will hold the decoded picture.
-            AVFrame* picture;
+            AVFrame* m_picture;
 
             // Image pixel transformation context.
-            SwsContext *pixelTransformationContext;
+            SwsContext *m_pixelTransformationContext;
 
-            // OpenCV uses BGR pixel format; thus, we need to transform the data from the decoder.
-            AVFrame *frameBGR;
+            // We return the image in BGR pixel format; thus, we need to transform the data from the decoder.
+            AVFrame *m_frameBGR;
     };
 
 } // odplayerh264
