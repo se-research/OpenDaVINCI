@@ -27,6 +27,7 @@
 #include "opendavinci/odcore/io/URL.h"
 #include "opendavinci/odcore/serialization/Serializable.h"
 #include "opendavinci/odtools/recorder/Recorder.h"
+#include "opendavinci/odtools/recorder/RecorderDelegate.h"
 #include "opendavinci/odtools/recorder/SharedDataListener.h"
 #include "opendavinci/generated/odcore/data/recorder/RecorderCommand.h"
 

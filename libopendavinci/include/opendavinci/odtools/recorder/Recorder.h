@@ -27,14 +27,14 @@
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/FIFOQueue.h"
 #include "opendavinci/odcore/base/Mutex.h"
-#include "opendavinci/odtools/recorder/RecorderDelegate.h"
 
 namespace odcore { namespace data { class Container; } }
 
 namespace odtools {
     namespace recorder {
 
-class SharedDataListener;
+        class RecorderDelegate;
+        class SharedDataListener;
 
         using namespace std;
 

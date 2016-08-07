@@ -17,46 +17,45 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef OPENDAVINCI_TOOLS_RECORDER_RECORDERDELEGATE_H_
-#define OPENDAVINCI_TOOLS_RECORDER_RECORDERDELEGATE_H_
+#ifndef OPENDAVINCI_TOOLS_PLAYER_PLAYERDELEGATE_H_
+#define OPENDAVINCI_TOOLS_PLAYER_PLAYERDELEGATE_H_
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/data/Container.h"
 
 namespace odtools {
-    namespace recorder {
+    namespace player {
 
         using namespace std;
 
         /**
          * This interface allows other components to change the way how Containers
-         * are written to the .rec file. recorder's default behavior is to dump
+         * are read from the .rec file. player's default behavior is to restore
          * Containers as they come and to extract BLOB data from shared memory
-         * segments to disk in a file named .rec.mem.
-         * This behavior can be changed by registering a RecorderDelegate instance
+         * segments from a file named .rec.mem.
+         * This behavior can be changed by registering a PlayerDelegate instance
          * for a certain message ID.
          * Whenever a Container with that specified message ID is encountered,
-         * the appropriate RecorderDelegate is called to process that container.
+         * the appropriate PlayerDelegate is called to process that container.
          */
-        class RecorderDelegate {
+        class PlayerDelegate {
             public:
-                virtual ~RecorderDelegate();
+                virtual ~PlayerDelegate();
 
                 /**
                  * This method stores the given container using the
-                 * RecorderDelegate logic (for instance, the Container could
-                 * be encoded into a different format). To indicate
-                 * in the original .rec data stream that the original Container
-                 * has been replaced, a placeholder Container is expected
-                 * that is written to the .rec file instead of c.
+                 * PlayerDelegate logic (for instance, the Container needs to
+                 * be restored from a different format). Thus, in the original
+                 * .rec data stream might be a replacement container that
+                 * needs to be restored to the original Container.
                  *
-                 * @param c Container to be stored externally.
-                 * @return Container that is written instead of c into the .rec file.
+                 * @param c Container to be restored.
+                 * @return Restored container.
                  */
                 virtual odcore::data::Container process(odcore::data::Container &c) = 0;
         };
 
-    } // recorder
+    } // player
 } // tools
 
-#endif /*OPENDAVINCI_TOOLS_RECORDER_RECORDERDELEGATE_H_*/
+#endif /*OPENDAVINCI_TOOLS_PLAYER_PLAYERDELEGATE_H_*/

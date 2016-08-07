@@ -1,5 +1,5 @@
 /**
- * odrecorder.h264 - Tool for recording data and encoding video streams with h264.
+ * odrecorderh264 - Tool for recording data and encoding video streams with h264.
  * Copyright (C) 2016 Christian Berger
  *
  * This program is free software; you can redistribute it and/or

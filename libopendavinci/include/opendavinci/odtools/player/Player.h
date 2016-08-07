@@ -26,7 +26,7 @@
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
+#include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/io/URL.h"
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
@@ -34,7 +34,8 @@
 namespace odtools {
     namespace player {
 
-class PlayerCache;
+        class PlayerCache;
+        class PlayerDelegate;
 
         using namespace std;
 
@@ -85,6 +86,15 @@ class PlayerCache;
                 odcore::data::Container getNextContainerToBeSent();
 
                 /**
+                 * This method registers a PlayerDelegate to process a specific
+                 * Container differently.
+                 *
+                 * @param containerID Container ID to listen for.
+                 * @param p PlayerDelegate.
+                 */
+                void registerPlayerDelegate(const uint32_t &containerID, PlayerDelegate* p);
+
+                /**
                  * This method returns the delay to be waited before the next container should be delivered.
                  *
                  * @return delay to the next container in real time microseconds (us).
@@ -130,6 +140,10 @@ class PlayerCache;
 
                 // Map used to store shared memory segments for restored from compressed images.
                 map<string, std::shared_ptr<odcore::wrapper::SharedMemory> > m_mapOfSharedMemoriesForCompressedImages;
+
+                // Map to handle PlayerDelegates.
+                odcore::base::Mutex m_mapOfPlayerDelegatesMutex;
+                map<int32_t, PlayerDelegate*> m_mapOfPlayerDelegates;
         };
 
     } // player

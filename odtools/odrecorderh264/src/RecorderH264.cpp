@@ -227,6 +227,8 @@ namespace odrecorderh264 {
 cout << "F: " << h264Frame.toString() << endl;
 
                         retVal = Container(h264Frame);
+                        retVal.setSentTimeStamp(c.getSentTimeStamp());
+                        retVal.setReceivedTimeStamp(c.getReceivedTimeStamp());
 
                         // Release packet.
                         av_free_packet(&packet);

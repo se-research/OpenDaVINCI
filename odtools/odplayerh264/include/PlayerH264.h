@@ -1,6 +1,6 @@
 /**
- * odplayer - Tool for playing back recorded data
- * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe 
+ * odplayerh264 - Tool for replaying video streams encoded with h264.
+ * Copyright (C) 2016 Christian Berger
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,23 +17,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef PLAYERMODULE_H_
-#define PLAYERMODULE_H_
+#ifndef PLAYERH264_H_
+#define PLAYERH264_H_
 
-#include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/base/FIFOQueue.h"
-#include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
-#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
+#include "opendavinci/odtools/player/Player.h"
+#include "opendavinci/odtools/player/PlayerDelegate.h"
 
-namespace odplayer {
+namespace odplayerh264 {
 
     using namespace std;
 
     /**
-     * This class can be used to replay previously recorded
-     * data using a conference for distribution.
+     * This class can be used to replay previously recorded data using a
+     * conference for distribution. In addition, this class is also
+     * restoring h264 video streams.
      */
-    class PlayerModule : public odcore::base::module::TimeTriggeredConferenceClientModule {
+    class PlayerH264 : public odtools::player::Player,
+                       public odtools::player::PlayerDelegate {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -42,7 +42,7 @@ namespace odplayer {
              *
              * @param obj Reference to an object of this class.
              */
-            PlayerModule(const PlayerModule &/*obj*/);
+            PlayerH264(const PlayerH264 &/*obj*/);
 
             /**
              * "Forbidden" assignment operator. Goal: The compiler should warn
@@ -52,32 +52,28 @@ namespace odplayer {
              * @param obj Reference to an object of this class.
              * @return Reference to this instance.
              */
-            PlayerModule& operator=(const PlayerModule &/*obj*/);
+            PlayerH264& operator=(const PlayerH264 &/*obj*/);
 
         public:
             /**
              * Constructor.
              *
-             * @param argc Number of command line arguments.
-             * @param argv Command line arguments.
+             * @param url Resource to play.
+             * @param autoRewind True if the file should be rewind at EOF.
+             * @param memorySegmentSize Size of the memory segment to be used for buffering.
+             * @param numberOfMemorySegments Number of memory segments to be used for buffering.
+             * @param threading If set to true, player will load new containers from the file in background.
              */
-            PlayerModule(const int32_t &argc, char **argv);
+            PlayerH264(const odcore::io::URL &url, const bool &autoRewind, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const bool &threading);
 
-            virtual ~PlayerModule();
+            virtual ~PlayerH264();
 
-            odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
-
-        private:
-            virtual void wait();
-
-            virtual void setUp();
-
-            virtual void tearDown();
+            virtual odcore::data::Container process(odcore::data::Container &c);
 
         private:
-            odcore::base::FIFOQueue m_playerControl;
+            // TODO: Add management for different SharedImage sources.
     };
 
-} // odplayer
+} // odplayerh264
 
-#endif /*PLAYERMODULE_H_*/
+#endif /*PLAYERH264_H_*/
