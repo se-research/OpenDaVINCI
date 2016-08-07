@@ -20,7 +20,16 @@
 #ifndef RECORDERH264_H_
 #define RECORDERH264_H_
 
+// Include files from FFMPEG to have h264 encoding.
+extern "C" {
+    #include <libavcodec/avcodec.h>
+    #include <libavutil/imgutils.h>
+    #include <libswscale/swscale.h>
+}
+
+#include <cstdio>
 #include <memory>
+#include <string>
 
 #include "opendavinci/odtools/recorder/Recorder.h"
 #include "opendavinci/odtools/recorder/RecorderDelegate.h"
@@ -77,14 +86,28 @@ namespace odrecorderh264 {
             virtual odcore::data::Container process(odcore::data::Container &c);
 
         private:
-            int initialize();
+            /**
+             * This method initializes the h.264 decoder.
+             *
+             * @return 0 if initialization succeeded, a value < 0 otherwise.
+             */
+            int initialize(const uint32_t &width, const uint32_t &height, const string &filename, const bool &lossless);
 
         private:
-            uint32_t m_frameCounter;
+            // TODO: Add management for different SharedImage sources.
+
+        private:
             bool m_hasAttachedToSharedImageMemory;
             std::shared_ptr<odcore::wrapper::SharedMemory> m_sharedImageMemory;
 
-            // TODO: Add management for different SharedImage sources.
+        private:
+            uint32_t m_frameCounter;
+
+            AVCodec *m_encodeCodec;
+            AVCodecContext *m_encodeContext;
+            SwsContext *m_pixelTransformationContext;
+            FILE *m_outputFile;
+            AVFrame *m_frame;
     };
 
 } // odrecorderh264
