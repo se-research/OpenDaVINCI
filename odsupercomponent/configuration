@@ -98,6 +98,7 @@ odrecorder.dumpSharedData = 1 # 0 = do not dump shared images and shared images,
 odrecorderh264.output = file://recorder.rec
 odrecorderh264.remoteControl = 0 # 0 = no remote control, 1 = allowing remote control (i.e. start and stop recording)
 odrecorderh264.dumpSharedData = 1 # 0 = do not dump shared images and shared images, 1 = otherwise
+odrecorderh264.lossless = 1 # Set to 1 to enable h264 lossless encoding.
 
 
 ###############################################################################

@@ -17,14 +17,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <cstring>
+// Include files from FFMPEG to have h264 encoding.
+extern "C" {
+    #include <libavcodec/avcodec.h>
+}
+
 #include <iostream>
-#include <string>
 
 #include "opendavinci/odcore/base/Lock.h"
-#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/odcore/io/URL.h"
+#include "opendavinci/odcore/strings/StringToolbox.h"
 #include "opendavinci/generated/odcore/data/image/SharedImage.h"
-#include "opendavinci/generated/odcore/data/image/H264Frame.h"
 
 #include "RecorderH264.h"
 
@@ -35,191 +38,61 @@ namespace odrecorderh264 {
     using namespace odcore::data;
     using namespace odtools::recorder;
 
-    RecorderH264::RecorderH264(const string &url, const uint32_t &memorySegmentSize, const uint32_t &numberOfSegments, const bool &threading, const bool &dumpSharedData) :
+    RecorderH264::RecorderH264(const string &url, const uint32_t &memorySegmentSize, const uint32_t &numberOfSegments, const bool &threading, const bool &dumpSharedData, const bool &lossless) :
         Recorder(url, memorySegmentSize, numberOfSegments, threading, dumpSharedData),
-        m_hasAttachedToSharedImageMemory(false),
-        m_sharedImageMemory(),
-        m_frameCounter(0),
-        m_encodeCodec(NULL),
-        m_encodeContext(NULL),
-        m_pixelTransformationContext(NULL),
-        m_outputFile(NULL),
-        m_frame(NULL) {
-        // Register us as delegate for odcore::data::image::SharedImages.
+        m_filenameBase(""),
+        m_lossless(lossless),
+        m_mapOfEncodersPerSharedImageSourceMutex(),
+        m_mapOfEncodersPerSharedImageSource() {
+        odcore::io::URL u(url);
+        m_filenameBase = u.getResource();
+
+        // Register all codecs from FFMPEG.
+        avcodec_register_all();
+
+        // This instance is handling all SharedImages by delegating to the corresponding entry in the map.
         registerRecorderDelegate(odcore::data::image::SharedImage::ID(), this);
     }
 
     RecorderH264::~RecorderH264() {
-        // Unregister us as delegate for odcore::data::image::SharedImages.
+        // Unregister us.
         registerRecorderDelegate(odcore::data::image::SharedImage::ID(), NULL);
 
-        // Process any delayed frames in the encoder (feeding NULL images).
-        for (int succeeded = 1; succeeded; m_frameCounter++) {
-            AVPacket packet;
-            av_init_packet(&packet);
-            packet.data = NULL;
-            packet.size = 0;
-
-            // Feeding NULL to indicate end-of-stream.
-            int ret = avcodec_encode_video2(m_encodeContext, &packet, NULL, &succeeded);
-            if (ret < 0) {
-                cerr << "Error encoding frame." << endl;
-                break;
-            }
-            if (succeeded) {
-                cout << "Delayed writing frame " << m_frameCounter++ << ", size = " << packet.size << endl;
-                fwrite(packet.data, 1, packet.size, m_outputFile);
-                av_free_packet(&packet);
-            }
-        }
-
-        // Close file.
-        fclose(m_outputFile);
-
-        // Cleanup.
-        avcodec_close(m_encodeContext);
-        av_free(m_encodeContext);
-        av_freep(&m_frame->data[0]);
-        av_frame_free(&m_frame);
-    }
-
-    int RecorderH264::initialize(const uint32_t &width, const uint32_t &height, const string &filename, const bool &lossless) {
-        // Register all codecs from FFMPEG.
-        avcodec_register_all();
-
-        // Find proper encoder for h264.
-        m_encodeCodec = avcodec_find_encoder(AV_CODEC_ID_H264);
-        if (!m_encodeCodec) {
-            cerr << "Codec h264 not found." << endl;
-            return -2;
-        }
-
-        // Configure encoding context.
-        m_encodeContext = avcodec_alloc_context3(m_encodeCodec);
-        m_encodeContext->width = width;
-        m_encodeContext->height = height;
-        m_encodeContext->pix_fmt = AV_PIX_FMT_YUV420P; // Output pixel format.
-
-        // Setup h264-specific parameters.
-        AVDictionary *param = NULL;
-        if (lossless) {
-            av_dict_set(&param, "qp", "0", 0);
-        }
-        av_dict_set(&param, "preset", "ultrafast", 0);
-
-        // Try to open codec.
-        if (avcodec_open2(m_encodeContext, m_encodeCodec, &param) < 0) {
-            cerr << "Could not open codec h264 with given parameters." << endl;
-            return -3;
-        }
-
-        // Setup output file.
-        m_outputFile = fopen(filename.c_str(), "wb");
-        if (!m_outputFile) {
-            cerr << "Could not open " << filename << endl;
-            return -4;
-        }
-
-        // Allocate memory to transfer raw uncompressed image data to encoder.
-        m_frame = av_frame_alloc();
-        if (!m_frame) {
-            cerr << "Could not allocate video frame." << endl;
-            return -5;
-        }
-        m_frame->width  = m_encodeContext->width;
-        m_frame->height = m_encodeContext->height;
-        m_frame->format = m_encodeContext->pix_fmt;
-
-        // Allocate raw picture buffer.
-        int ret = av_image_alloc(m_frame->data, m_frame->linesize,
-                                 m_encodeContext->width, m_encodeContext->height, m_encodeContext->pix_fmt, 32);
-        if (ret < 0) {
-            cerr << "Could not allocate raw picture buffer." << endl;
-            return -6;
-        }
-
-        // Image pixel transformation context.
-        m_pixelTransformationContext = sws_getContext(width, height,
-                                                      AV_PIX_FMT_BGR24, width, height,
-                                                      AV_PIX_FMT_YUV420P, 0, 0, 0, 0);
-
-        return 0;
+        // Clean up map.
+        m_mapOfEncodersPerSharedImageSource.clear();
     }
 
     Container RecorderH264::process(Container &c) {
-        static bool isInitialized = false;
+        Lock l(m_mapOfEncodersPerSharedImageSourceMutex);
 
         Container retVal;
 
         if (c.getDataType() == odcore::data::image::SharedImage::ID()) {
-cout << "RecorderH264: Got called for " << c.getDataType() << endl;
-
-            const string FILENAME = "output.mp4";
             odcore::data::image::SharedImage si = c.getData<odcore::data::image::SharedImage>();
 
-            if (!isInitialized) {
-                const bool LOSSLESS = true;
-                initialize(si.getWidth(), si.getHeight(), FILENAME, LOSSLESS);
-                isInitialized = true;
+            // Find existing or create new encoder.
+            shared_ptr<RecorderH264Encoder> encoder;
+            auto delegateEntry = m_mapOfEncodersPerSharedImageSource.find(si.getName());
+            if (delegateEntry != m_mapOfEncodersPerSharedImageSource.end()) {
+                encoder = m_mapOfEncodersPerSharedImageSource[si.getName()];
             }
-
-            {
-                int succeeded = 0;
-
-                // This variable contains the encoded packets to be written to file.
-                AVPacket packet;
-                av_init_packet(&packet);
-                packet.data = NULL;
-                packet.size = 0;
-
-                // Transform frame from BGR to YUV420P for encoding.
-                if (!m_hasAttachedToSharedImageMemory) {
-                    m_sharedImageMemory = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(si.getName());
-                    m_hasAttachedToSharedImageMemory = true;
+            else {
+                if (m_mapOfEncodersPerSharedImageSource.size() == 0) {
+                    // Create a new encoder for this SharedImage.
+                    const string FILENAME = m_filenameBase + "-" + odcore::strings::StringToolbox::replaceAll(si.getName(), ' ', '_') + ".mp4";
+                    encoder = shared_ptr<RecorderH264Encoder>(new RecorderH264Encoder(FILENAME, m_lossless));
+                    m_mapOfEncodersPerSharedImageSource[si.getName()] = encoder;
                 }
-
-                // Check if we could successfully attach to the shared memory.
-                if (m_sharedImageMemory->isValid()) {
-                    // Lock the memory region to gain exclusive access using a scoped lock.
-                    {
-                        Lock l(m_sharedImageMemory);
-
-                        uint8_t *inData[1] = { static_cast<uint8_t*>(m_sharedImageMemory->getSharedMemory()) };
-                        int inLinesize[1] = { static_cast<int>(si.getBytesPerPixel() * si.getWidth()) };
-                        sws_scale(m_pixelTransformationContext, inData, inLinesize, 0, si.getHeight(), m_frame->data, m_frame->linesize);
-                    }
-
-                    // Frame counter.
-                    m_frame->pts = m_frameCounter;
-
-                    // Encoding image.
-                    int ret = avcodec_encode_video2(m_encodeContext, &packet, m_frame, &succeeded);
-                    if (ret < 0) {
-                        cerr << "Error encoding frame." << endl;
-                        return retVal;
-                    }
-                    if (succeeded) {
-cout << "Writing frame " << m_frameCounter << ", size = " << packet.size << endl;
-                        fwrite(packet.data, sizeof(uint8_t), packet.size, m_outputFile);
-
-                        odcore::data::image::H264Frame h264Frame;
-                        h264Frame.setH264Filename(FILENAME);
-                        h264Frame.setFrameIdentifier(m_frameCounter);
-                        h264Frame.setFrameSize(packet.size);
-                        h264Frame.setAssociatedSharedImage(si);
-
-cout << "F: " << h264Frame.toString() << endl;
-
-                        retVal = Container(h264Frame);
-                        retVal.setSentTimeStamp(c.getSentTimeStamp());
-                        retVal.setReceivedTimeStamp(c.getReceivedTimeStamp());
-
-                        // Release packet.
-                        av_free_packet(&packet);
-                    }
+                else {
+                    // TODO: Fix multi-source handling.
+                    cerr << "[odrecorderh264] Multi-source processing not fully supported yet; discarding " << si.getName() << endl;
                 }
             }
-            m_frameCounter++;
+
+            if (encoder.get() != NULL) {
+                // Use encoder for this SharedImage to encode next frame.
+                retVal = encoder->process(c);
+            }
         }
 
         return retVal;
