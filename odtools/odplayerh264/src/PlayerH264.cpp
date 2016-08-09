@@ -56,6 +56,8 @@ namespace odplayerh264 {
     }
 
     Container PlayerH264::process(Container &c) {
+//        static uint32_t decodersCounter = 0;
+
         Lock l(m_mapOfDecodersMutex);
 
         Container replacementContainer;
@@ -63,6 +65,21 @@ namespace odplayerh264 {
         // Translate an H264Frame message into a proper SharedImage one.
         if (c.getDataType() == odcore::data::image::H264Frame::ID()) {
             odcore::data::image::H264Frame h264frame = c.getData<odcore::data::image::H264Frame>();
+//            odcore::data::image::SharedImage si = h264frame.getAssociatedSharedImage();
+
+//            if (decodersCounter == 0) {
+//                si.setName("WebCam");
+//                h264frame.setH264Filename("recorder-rec.WebCam.mp4");
+//                h264frame.setAssociatedSharedImage(si);
+//            }
+//            if (decodersCounter == 1) {
+//                si.setName("odsimcamera");
+//                h264frame.setH264Filename("recorder-rec.odsimcamera.mp4");
+//                h264frame.setAssociatedSharedImage(si);
+//            }
+//cout << "Replaying: " << h264frame.toString() << endl;
+//            ++decodersCounter;
+//            decodersCounter %= 2;
 
             // Find existing or create new decoder.
             shared_ptr<PlayerH264Decoder> decoder;
@@ -71,9 +88,15 @@ namespace odplayerh264 {
                 decoder = m_mapOfDecoders[h264frame.getH264Filename()];
             }
             else {
-                // Create a new decoder for this H264Frame.
-                decoder = shared_ptr<PlayerH264Decoder>(new PlayerH264Decoder());
-                m_mapOfDecoders[h264frame.getH264Filename()] = decoder;
+                if (m_mapOfDecoders.size() == 0) {
+                    // Create a new decoder for this H264Frame.
+                    decoder = shared_ptr<PlayerH264Decoder>(new PlayerH264Decoder());
+                    m_mapOfDecoders[h264frame.getH264Filename()] = decoder;
+                }
+                else {
+                    // TODO: Fix multi-source handling.
+                    cerr << "[odplayerh264] Multi-source processing not fully supported yet; discarding " << h264frame.toString() << endl;
+                }
             }
 
             if (decoder.get() != NULL) {
