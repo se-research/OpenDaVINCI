@@ -20,19 +20,59 @@
 #ifndef RECORDERH264_H_
 #define RECORDERH264_H_
 
+#include <unistd.h>
+
 #include <map>
 #include <memory>
 #include <string>
+#include <vector>
 
+#include "opendavinci/odcore/base/Condition.h"
 #include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odtools/recorder/Recorder.h"
 #include "opendavinci/odtools/recorder/RecorderDelegate.h"
+
+#include <opendavinci/odcore/io/ConnectionListener.h>
+#include <opendavinci/odcore/io/StringListener.h>
+#include <opendavinci/odcore/io/tcp/TCPAcceptorListener.h>
+#include <opendavinci/odcore/io/tcp/TCPConnection.h>
+#include <opendavinci/odcore/io/tcp/TCPAcceptor.h>
 
 #include "RecorderH264Encoder.h"
 
 namespace odrecorderh264 {
 
     using namespace std;
+
+    class RecorderH264ChildHandler : public odtools::recorder::RecorderDelegate,
+                                     public odcore::io::tcp::TCPAcceptorListener,
+                                     public odcore::io::ConnectionListener,
+                                     public odcore::io::StringListener {
+        public:
+            RecorderH264ChildHandler();
+            RecorderH264ChildHandler(const uint32_t &port);
+            virtual ~RecorderH264ChildHandler();
+            virtual void onNewConnection(std::shared_ptr<odcore::io::tcp::TCPConnection> connection);
+            virtual void nextString(const std::string &s);
+            virtual void handleConnectionError();
+
+            virtual odcore::data::Container process(odcore::data::Container &c);
+
+            void waitForClientToConnect();
+
+        public:
+            pid_t m_childPID;
+
+        private:
+            shared_ptr<odcore::io::tcp::TCPAcceptor> m_tcpacceptor;
+
+        public:
+            shared_ptr<odcore::io::tcp::TCPConnection> m_connection;
+
+        private:
+            odcore::base::Condition m_condition;
+            odcore::data::Container m_response;
+    };
 
     /**
      * This class can be used to record data distributed in a Container conference
@@ -81,11 +121,15 @@ namespace odrecorderh264 {
 
             virtual odcore::data::Container process(odcore::data::Container &c);
 
+            virtual odcore::data::Container processOld(odcore::data::Container &c);
+
         private:
             string m_filenameBase;
             bool m_lossless;
             odcore::base::Mutex m_mapOfEncodersPerSharedImageSourceMutex;
             map<string, shared_ptr<RecorderH264Encoder> > m_mapOfEncodersPerSharedImageSource;
+
+            map<string, shared_ptr<RecorderH264ChildHandler> > m_mapOfEncoders;
     };
 
 } // odrecorderh264

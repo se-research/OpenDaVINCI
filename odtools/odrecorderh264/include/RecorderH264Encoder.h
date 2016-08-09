@@ -31,6 +31,10 @@ extern "C" {
 #include <memory>
 #include <string>
 
+#include <opendavinci/odcore/io/ConnectionListener.h>
+#include <opendavinci/odcore/io/StringListener.h>
+#include <opendavinci/odcore/io/tcp/TCPConnection.h>
+
 #include "opendavinci/odtools/recorder/RecorderDelegate.h"
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
 
@@ -42,7 +46,9 @@ namespace odrecorderh264 {
      * This class can be used to record data distributed in a Container conference
      * and to encode SharedImage containers as h264 video streams.
      */
-    class RecorderH264Encoder : public odtools::recorder::RecorderDelegate {
+    class RecorderH264Encoder : public odtools::recorder::RecorderDelegate,
+                                public odcore::io::ConnectionListener,
+                                public odcore::io::StringListener {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -69,7 +75,7 @@ namespace odrecorderh264 {
              *
              * @param filename Name of the file to write the video stream to.
              */
-            RecorderH264Encoder(const string &filename, const bool &lossless);
+            RecorderH264Encoder(const string &filename, const bool &lossless, const uint32_t &port);
 
             virtual ~RecorderH264Encoder();
 
@@ -82,6 +88,16 @@ namespace odrecorderh264 {
              * @return 0 if initialization succeeded, a value < 0 otherwise.
              */
             int initialize(const uint32_t &width, const uint32_t &height);
+
+        public:
+            virtual void nextString(const std::string &s);
+            virtual void handleConnectionError();
+
+            bool hasConnection() const;
+
+        private:
+            shared_ptr<odcore::io::tcp::TCPConnection> m_connection;
+            bool m_hasConnection;
 
         private:
             string m_filename;

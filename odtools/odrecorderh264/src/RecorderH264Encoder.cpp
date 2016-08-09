@@ -21,7 +21,11 @@
 #include <iostream>
 #include <string>
 
+#include <opendavinci/odcore/io/tcp/TCPFactory.h>
+#include <opendavinci/odcore/io/tcp/TCPConnection.h>
+
 #include "opendavinci/odcore/base/Lock.h"
+#include "opendavinci/odcore/base/Thread.h"
 #include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 #include "opendavinci/generated/odcore/data/image/SharedImage.h"
 #include "opendavinci/generated/odcore/data/image/H264Frame.h"
@@ -33,9 +37,12 @@ namespace odrecorderh264 {
     using namespace std;
     using namespace odcore::base;
     using namespace odcore::data;
+    using namespace odcore::io::tcp;
     using namespace odtools::recorder;
 
-    RecorderH264Encoder::RecorderH264Encoder(const string &filename, const bool &lossless) :
+    RecorderH264Encoder::RecorderH264Encoder(const string &filename, const bool &lossless, const uint32_t &port) :
+        m_connection(),
+        m_hasConnection(false),
         m_filename(filename),
         m_lossless(lossless),
         m_hasAttachedToSharedImageMemory(false),
@@ -45,7 +52,19 @@ namespace odrecorderh264 {
         m_encodeContext(NULL),
         m_pixelTransformationContext(NULL),
         m_outputFile(NULL),
-        m_frame(NULL) {}
+        m_frame(NULL) {
+
+        try {
+            m_connection = shared_ptr<TCPConnection>(TCPFactory::createTCPConnectionTo("127.0.0.1", port));
+            m_connection->setConnectionListener(this);
+            m_connection->setStringListener(this);
+            m_connection->start();
+            m_hasConnection = true;
+        }
+        catch(string &exception) {
+            cerr << "Data could not be sent: " << exception << endl;
+        }
+    }
 
     RecorderH264Encoder::~RecorderH264Encoder() {
         // Process any delayed frames in the encoder (feeding NULL images).
@@ -76,6 +95,31 @@ namespace odrecorderh264 {
         av_free(m_encodeContext);
         av_freep(&m_frame->data[0]);
         av_frame_free(&m_frame);
+    }
+
+    bool RecorderH264Encoder::hasConnection() const {
+        return m_hasConnection;
+    }
+
+    void RecorderH264Encoder::nextString(const std::string &s) {
+//        cout << "Child received: " << s << endl;
+        stringstream sstr(s);
+        Container c;
+        sstr >> c;
+
+//        cout << "Before processing" << endl;
+        Container retVal = process(c);
+Thread::usleepFor(5000);
+//        cout << "After processing" << endl;
+
+        stringstream sstr2;
+        sstr2 << retVal;
+        m_connection->send(sstr2.str());
+    }
+
+    void RecorderH264Encoder::handleConnectionError() {
+        cout << "Connection closed." << endl;
+        m_hasConnection = false;
     }
 
     int RecorderH264Encoder::initialize(const uint32_t &width, const uint32_t &height) {
