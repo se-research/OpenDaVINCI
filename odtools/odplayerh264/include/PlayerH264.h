@@ -20,23 +20,15 @@
 #ifndef PLAYERH264_H_
 #define PLAYERH264_H_
 
-#include <cstdio>
-
-// Include files from FFMPEG to have h264 encoding.
-extern "C" {
-    #include <libavcodec/avcodec.h>
-    #include <libavutil/imgutils.h>
-    #include <libswscale/swscale.h>
-}
-
+#include <map>
 #include <memory>
-#include <vector>
+#include <string>
 
-#include "opendavinci/odcore/wrapper/SharedMemory.h"
-#include "opendavinci/generated/odcore/data/image/SharedImage.h"
-
+#include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odtools/player/Player.h"
 #include "opendavinci/odtools/player/PlayerDelegate.h"
+
+#include "PlayerH264Decoder.h"
 
 namespace odplayerh264 {
 
@@ -86,82 +78,8 @@ namespace odplayerh264 {
             virtual odcore::data::Container process(odcore::data::Container &c);
 
         private:
-            // TODO: Add management for different SharedImage sources.
-
-        private:
-            /**
-             * This method initializes the h.264 decoder.
-             *
-             * @param filename Name of the file to read data from.
-             * @return true if initialization succeeded.
-             */
-            bool initialize(const string &filename);
-
-            /**
-             * This method returns the next frame from the given h264 file.
-             *
-             * @return true if succeeded; the shared memory segment contains the decoded frame in BGR24 format.
-             */
-            bool getNextFrame();
-
-            /**
-             * This method fills up the internal buffe with bytes.
-             *
-             * @return The amount of bytes read into the internal buffer.
-             */
-            int fillBuffer();
-
-            /**
-             * This method is called whenever more bytes in the internal buffer
-             * are needed.
-             *
-             * @param readMoreBytes indicate whether we need to read more bytes.
-             * @return true if succeeded.
-             */
-            bool update(bool &readMoreBytes);
-
-            /**
-             * This method does the actual decoding.
-             *
-             * @param data Raw h264-encoded data.
-             * @param size Size of encoded data.
-             */
-            void decodeFrame(uint8_t *data, uint32_t size);
-
-        private:
-            // This shared memory will contain the resulting decoded image frame.
-            std::shared_ptr<odcore::wrapper::SharedMemory> m_mySharedMemory;
-
-            // This SharedImage described the resuling frame.
-            odcore::data::image::SharedImage m_mySharedImage;
-
-        private:
-            // Counter for successfully decoded frames.
-            uint32_t m_frameCounter;
-
-            // Buffer to read from video file.
-            uint8_t *m_readFromFileBuffer;
-
-            // Internal buffer to handle processed and unprocessed data.
-            vector<uint8_t> m_internalBuffer;
-
-            // Handle to input file.
-            FILE *m_inputFile;
-
-            // Decoder context.
-            AVCodecContext *m_decodeContext;
-
-            // Parser for decoding.
-            AVCodecParserContext *m_parser;
-
-            // Picture will hold the decoded picture.
-            AVFrame* m_picture;
-
-            // Image pixel transformation context.
-            SwsContext *m_pixelTransformationContext;
-
-            // We return the image in BGR pixel format; thus, we need to transform the data from the decoder.
-            AVFrame *m_frameBGR;
+            odcore::base::Mutex m_mapOfDecodersMutex;
+            map<string, shared_ptr<PlayerH264Decoder> > m_mapOfDecoders;
     };
 
 } // odplayerh264
