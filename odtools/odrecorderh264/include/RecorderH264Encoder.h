@@ -75,7 +75,7 @@ namespace odrecorderh264 {
              *
              * @param filename Name of the file to write the video stream to.
              */
-            RecorderH264Encoder(const string &filename, const bool &lossless, const uint32_t &port);
+            RecorderH264Encoder(const string &filenameBase, const bool &lossless, const uint32_t &port);
 
             virtual ~RecorderH264Encoder();
 
@@ -87,7 +87,7 @@ namespace odrecorderh264 {
              *
              * @return 0 if initialization succeeded, a value < 0 otherwise.
              */
-            int initialize(const uint32_t &width, const uint32_t &height);
+            int initialize(const string &filename, const uint32_t &width, const uint32_t &height);
 
         public:
             virtual void nextString(const std::string &s);
@@ -100,6 +100,7 @@ namespace odrecorderh264 {
             bool m_hasConnection;
 
         private:
+            string m_filenameBase;
             string m_filename;
             bool m_lossless;
 

@@ -21,14 +21,14 @@
 #include <iostream>
 #include <string>
 
+#include <opendavinci/odcore/base/Lock.h>
+#include <opendavinci/odcore/base/Thread.h>
 #include <opendavinci/odcore/io/tcp/TCPFactory.h>
 #include <opendavinci/odcore/io/tcp/TCPConnection.h>
-
-#include "opendavinci/odcore/base/Lock.h"
-#include "opendavinci/odcore/base/Thread.h"
-#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
-#include "opendavinci/generated/odcore/data/image/SharedImage.h"
-#include "opendavinci/generated/odcore/data/image/H264Frame.h"
+#include <opendavinci/odcore/strings/StringToolbox.h>
+#include <opendavinci/odcore/wrapper/SharedMemoryFactory.h>
+#include <opendavinci/generated/odcore/data/image/SharedImage.h>
+#include <opendavinci/generated/odcore/data/image/H264Frame.h>
 
 #include "RecorderH264Encoder.h"
 
@@ -40,10 +40,11 @@ namespace odrecorderh264 {
     using namespace odcore::io::tcp;
     using namespace odtools::recorder;
 
-    RecorderH264Encoder::RecorderH264Encoder(const string &filename, const bool &lossless, const uint32_t &port) :
+    RecorderH264Encoder::RecorderH264Encoder(const string &filenameBase, const bool &lossless, const uint32_t &port) :
         m_connection(),
         m_hasConnection(false),
-        m_filename(filename),
+        m_filenameBase(filenameBase),
+        m_filename(),
         m_lossless(lossless),
         m_hasAttachedToSharedImageMemory(false),
         m_sharedImageMemory(),
@@ -102,27 +103,29 @@ namespace odrecorderh264 {
     }
 
     void RecorderH264Encoder::nextString(const std::string &s) {
-//        cout << "Child received: " << s << endl;
-        stringstream sstr(s);
-        Container c;
-        sstr >> c;
+        Container in;
+        Container out;
 
-//        cout << "Before processing" << endl;
-        Container retVal = process(c);
-Thread::usleepFor(5000);
-//        cout << "After processing" << endl;
+        {
+            stringstream sstr(s);
+            sstr >> in;
+        }
 
-        stringstream sstr2;
-        sstr2 << retVal;
-        m_connection->send(sstr2.str());
+        out = process(in);
+        Thread::usleepFor(5000);
+
+        {
+            stringstream sstr;
+            sstr << out;
+            m_connection->send(sstr.str());
+        }
     }
 
     void RecorderH264Encoder::handleConnectionError() {
-        cout << "Connection closed." << endl;
         m_hasConnection = false;
     }
 
-    int RecorderH264Encoder::initialize(const uint32_t &width, const uint32_t &height) {
+    int RecorderH264Encoder::initialize(const string &filename, const uint32_t &width, const uint32_t &height) {
         // Find proper encoder for h264.
         m_encodeCodec = avcodec_find_encoder(AV_CODEC_ID_H264);
         if (!m_encodeCodec) {
@@ -150,9 +153,9 @@ Thread::usleepFor(5000);
         }
 
         // Setup output file.
-        m_outputFile = fopen(m_filename.c_str(), "wb");
+        m_outputFile = fopen(filename.c_str(), "wb");
         if (!m_outputFile) {
-            cerr << "[odrecorderh264] Could not open " << m_filename << endl;
+            cerr << "[odrecorderh264] Could not open " << filename << endl;
             return -4;
         }
 
@@ -191,7 +194,8 @@ Thread::usleepFor(5000);
             odcore::data::image::SharedImage si = c.getData<odcore::data::image::SharedImage>();
 
             if (!isInitialized) {
-                initialize(si.getWidth(), si.getHeight());
+                m_filename = m_filenameBase + "-" + odcore::strings::StringToolbox::replaceAll(si.getName(), ' ', '_') + ".mp4";
+                initialize(m_filename, si.getWidth(), si.getHeight());
                 isInitialized = true;
             }
 

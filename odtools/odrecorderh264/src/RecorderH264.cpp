@@ -30,7 +30,6 @@ extern "C" {
 #include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/base/Thread.h"
 #include "opendavinci/odcore/io/URL.h"
-#include "opendavinci/odcore/strings/StringToolbox.h"
 #include "opendavinci/generated/odcore/data/image/SharedImage.h"
 
 #include <opendavinci/odcore/io/tcp/TCPFactory.h>
@@ -47,12 +46,11 @@ namespace odrecorderh264 {
     using namespace odtools::recorder;
 
 
-    int pipefd[2];
+    string filenameBase;
     __attribute__((noreturn))
     void handleInChild(int id) {
-        stringstream sstr;
-        sstr << "output-" << id << ".mp4";
-        RecorderH264Encoder encoder(sstr.str(), true, 1234 + id);
+        const bool LOSSLESS = true;
+        RecorderH264Encoder encoder(filenameBase, LOSSLESS, 1234 + id);
 
         const uint32_t ONE_SECOND = 1000 * 1000;
         while (encoder.hasConnection()) {
@@ -60,11 +58,6 @@ namespace odrecorderh264 {
         }
 
         cout << "Goodbye from " << id << endl;
-//        close(pipefd[1]); // close the write-end of the pipe, I'm not going to use it
-//        while (read(pipefd[0], &buf, 1) > 0) // read while EOF
-//            write(1, &buf, 1);
-//        write(1, "\n", 1);
-//        close(pipefd[0]); // close the read-end of the pipe
         exit(EXIT_SUCCESS);
     }
 
@@ -81,14 +74,11 @@ namespace odrecorderh264 {
         m_connection(),
         m_condition(),
         m_response() {
-        // We are using OpenDaVINCI's std::shared_ptr to automatically
-        // release any acquired resources.
+
         try {
             m_tcpacceptor = odcore::io::tcp::TCPFactory::createTCPAcceptor(port);
-
             m_tcpacceptor->setAcceptorListener(this);
-
-            // Start accepting new connections.
+            // Start accepting new connections to receive data.
             m_tcpacceptor->start();
         }
         catch(string &exception) {
@@ -127,11 +117,8 @@ namespace odrecorderh264 {
     }
 
     void RecorderH264ChildHandler::nextString(const std::string &s) {
-//        cout << "Received " << s.length() << " bytes containing '" << s << "'" << endl;
-
         Lock l(m_condition);
         m_condition.wakeAll();
-//cout << "Woken up." << endl;
 
         stringstream sstr(s);
         sstr >> m_response;
@@ -154,6 +141,7 @@ namespace odrecorderh264 {
             // Start receiving data from this connection.
             m_connection->start();
 
+            // Indicate that we have a valid connection.
             Lock l(m_condition);
             m_condition.wakeAll();
         }
@@ -165,11 +153,11 @@ namespace odrecorderh264 {
         sstr << c;
         m_connection->send(sstr.str());
 
-//cout << "Waiting for response." << endl;
+        // Wait for the child's response.
         Lock l(m_condition);
         m_condition.waitOnSignal();
-//cout << "Got response." << endl;
 
+        // The child's response is in m_response.
         return m_response;
     }
 
@@ -183,6 +171,7 @@ namespace odrecorderh264 {
         m_mapOfEncoders() {
         odcore::io::URL u(url);
         m_filenameBase = u.getResource();
+        filenameBase = m_filenameBase;
 
         // Register all codecs from FFMPEG.
         avcodec_register_all();
@@ -248,7 +237,7 @@ namespace odrecorderh264 {
                 }
             }
             else {
-                cout << "To handle in child " << m_mapOfEncoders[si.getName()]->m_childPID << endl;
+//                cout << "To handle in child " << m_mapOfEncoders[si.getName()]->m_childPID << endl;
                 retVal = m_mapOfEncoders[si.getName()]->process(c);
             }
         }
