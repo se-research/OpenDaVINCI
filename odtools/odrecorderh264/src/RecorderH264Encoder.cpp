@@ -127,7 +127,6 @@ namespace odrecorderh264 {
         }
 
         out = process(in);
-        Thread::usleepFor(2000);
 
         {
             stringstream sstr;
