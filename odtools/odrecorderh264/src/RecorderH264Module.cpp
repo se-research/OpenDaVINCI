@@ -66,9 +66,11 @@ namespace odrecorderh264 {
         const bool DUMP_SHARED_DATA = getKeyValueConfiguration().getValue<uint32_t>("odrecorderh264.dumpshareddata") == 1;
         // Encode videos in a lossless way?
         const bool LOSSLESS = getKeyValueConfiguration().getValue<uint32_t>("odrecorderh264.lossless") == 1;
+        // Base port for TCP connections
+        const uint32_t BASE_PORT = getKeyValueConfiguration().getValue<uint32_t>("odrecorderh264.portbaseforchildprocesses");
 
         // Actual "recording" interface.
-        RecorderH264 rh264(recorderOutputURL, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING, DUMP_SHARED_DATA, LOSSLESS);
+        RecorderH264 rh264(recorderOutputURL, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING, DUMP_SHARED_DATA, LOSSLESS, BASE_PORT);
 
         // Connect recorder's FIFOQueue to record all containers except for shared images/shared data.
         addDataStoreFor(rh264.getFIFO());

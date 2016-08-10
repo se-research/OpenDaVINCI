@@ -46,138 +46,43 @@ namespace odrecorderh264 {
     using namespace odtools::recorder;
 
 
-    string filenameBase;
+    string filenameBaseForChildProcesses = "";
+    bool losslessForChildProcesses = true;
+    uint32_t basePortForChildProcesses = 1234;
+
     __attribute__((noreturn))
     void handleInChild(int id) {
-        const bool LOSSLESS = true;
-        RecorderH264Encoder encoder(filenameBase, LOSSLESS, 1234 + id);
+        RecorderH264Encoder encoder(filenameBaseForChildProcesses, losslessForChildProcesses, basePortForChildProcesses + id);
 
         const uint32_t ONE_SECOND = 1000 * 1000;
         while (encoder.hasConnection()) {
             odcore::base::Thread::usleepFor(ONE_SECOND);
         }
 
-        cout << "Goodbye from " << id << endl;
+        cout << "[odrecorderh264] Goodbye from " << id << endl;
         exit(EXIT_SUCCESS);
     }
 
-    RecorderH264ChildHandler::RecorderH264ChildHandler() :
-        m_childPID(0),
-        m_tcpacceptor(),
-        m_connection(),
-        m_condition(),
-        m_response() {}
+    ///////////////////////////////////////////////////////////////////////////
 
-    RecorderH264ChildHandler::RecorderH264ChildHandler(const uint32_t &port) :
-        m_childPID(0),
-        m_tcpacceptor(),
-        m_connection(),
-        m_condition(),
-        m_response() {
-
-        try {
-            m_tcpacceptor = odcore::io::tcp::TCPFactory::createTCPAcceptor(port);
-            m_tcpacceptor->setAcceptorListener(this);
-            // Start accepting new connections to receive data.
-            m_tcpacceptor->start();
-        }
-        catch(string &exception) {
-            cerr << "Error while creating TCP receiver: " << exception << endl;
-        }
-    }
-
-    RecorderH264ChildHandler::~RecorderH264ChildHandler() {
-        try {
-            // Stop accepting new connections and unregister our handler.
-            m_tcpacceptor->stop();
-            m_tcpacceptor->setAcceptorListener(NULL);
-        }
-        catch(string &exception) {
-            cerr << "Error while creating TCP receiver: " << exception << endl;
-        }
-    }
-
-    void RecorderH264ChildHandler::waitForClientToConnect() {
-        // Wait for the connecting client.
-        cout << "Waiting for client to connect...";
-        Lock l(m_condition);
-        m_condition.waitOnSignal();
-        cout << " Client connected." << endl;
-    }
-
-    void RecorderH264ChildHandler::handleConnectionError() {
-        cout << "Connection terminated." << endl;
-
-        // Stop this connection.
-        m_connection->stop();
-
-        // Unregister the listeners.
-        m_connection->setStringListener(NULL);
-        m_connection->setConnectionListener(NULL);
-    }
-
-    void RecorderH264ChildHandler::nextString(const std::string &s) {
-        Lock l(m_condition);
-        m_condition.wakeAll();
-
-        stringstream sstr(s);
-        sstr >> m_response;
-    }
-
-    void RecorderH264ChildHandler::onNewConnection(shared_ptr<TCPConnection> connection) {
-        if (connection.get()) {
-            cout << "Handle a new connection." << endl;
-
-            m_connection = connection;
-
-            // Set this class as StringListener to receive
-            // data from this connection.
-            m_connection->setStringListener(this);
-
-            // Set this class also as ConnectionListener to
-            // handle errors originating from this connection.
-            m_connection->setConnectionListener(this);
-
-            // Start receiving data from this connection.
-            m_connection->start();
-
-            // Indicate that we have a valid connection.
-            Lock l(m_condition);
-            m_condition.wakeAll();
-        }
-    }
-
-    Container RecorderH264ChildHandler::process(Container &c) {
-        // First, send the container to the child process.
-        stringstream sstr;
-        sstr << c;
-        m_connection->send(sstr.str());
-
-        // Wait for the child's response.
-        Lock l(m_condition);
-        m_condition.waitOnSignal();
-
-        // The child's response is in m_response.
-        return m_response;
-    }
-
-
-    RecorderH264::RecorderH264(const string &url, const uint32_t &memorySegmentSize, const uint32_t &numberOfSegments, const bool &threading, const bool &dumpSharedData, const bool &lossless) :
+    RecorderH264::RecorderH264(const string &url, const uint32_t &memorySegmentSize, const uint32_t &numberOfSegments, const bool &threading, const bool &dumpSharedData, const bool &lossless, const uint32_t &basePort) :
         Recorder(url, memorySegmentSize, numberOfSegments, threading, dumpSharedData),
         m_filenameBase(""),
         m_lossless(lossless),
-        m_mapOfEncodersPerSharedImageSourceMutex(),
-        m_mapOfEncodersPerSharedImageSource(),
+        m_basePort(basePort),
+        m_mapOfEncodersMutex(),
         m_mapOfEncoders() {
         odcore::io::URL u(url);
         m_filenameBase = u.getResource();
-        filenameBase = m_filenameBase;
-
-        // Register all codecs from FFMPEG.
-        avcodec_register_all();
+        filenameBaseForChildProcesses = m_filenameBase;
+        losslessForChildProcesses = m_lossless;
+        basePortForChildProcesses = m_basePort;
 
         // This instance is handling all SharedImages by delegating to the corresponding entry in the map.
         registerRecorderDelegate(odcore::data::image::SharedImage::ID(), this);
+
+        // Register all codecs from FFMPEG.
+        avcodec_register_all();
     }
 
     RecorderH264::~RecorderH264() {
@@ -186,24 +91,21 @@ namespace odrecorderh264 {
 
         // Close connection to child.
         for(auto entry : m_mapOfEncoders) {
-            entry.second->m_connection->stop();
+            entry.second->getConnection()->stop();
         }
 
         // Terminate child processes.
         const uint32_t ONE_SECOND = 1000 * 1000;
-        odcore::base::Thread::usleepFor(ONE_SECOND * 5);
+        odcore::base::Thread::usleepFor(ONE_SECOND);
         for(auto entry : m_mapOfEncoders) {
-            ::kill(entry.second->m_childPID, SIGKILL);
+            ::kill(entry.second->getPID(), SIGKILL);
         }
         m_mapOfEncoders.clear();
-
-        // Clean up map.
-        m_mapOfEncodersPerSharedImageSource.clear();
     }
 
     Container RecorderH264::process(Container &c) {
         static uint32_t id = 0;
-        Lock l(m_mapOfEncodersPerSharedImageSourceMutex);
+        Lock l(m_mapOfEncodersMutex);
 
         Container retVal;
 
@@ -213,70 +115,31 @@ namespace odrecorderh264 {
             // Find existing or create new encoder.
             auto delegateEntry = m_mapOfEncoders.find(si.getName());
             if (delegateEntry == m_mapOfEncoders.end()) {
-                const uint32_t PORT = 1234 + id;
-
-                shared_ptr<RecorderH264ChildHandler> handler(new RecorderH264ChildHandler(PORT));
+                shared_ptr<RecorderH264ChildHandler> handler(new RecorderH264ChildHandler(m_basePort + id));
 
                 // Duplicate the current process.
                 pid_t cpid = fork();
                 if (cpid == 0) {
-                    // Child process.
+                    // Here, we are in the child process.
                     handleInChild(id);
                 }
                 else {
-                    // Parent process.
-                    handler->m_childPID = cpid;
-                    m_mapOfEncoders[si.getName()] = handler;
-
+                    // Here, we are in the parent process.
+                    handler->setPID(cpid);
                     handler->waitForClientToConnect();
 
-                    cout << "Created child " << handler->m_childPID << endl;
+                    m_mapOfEncoders[si.getName()] = handler;
+
+                    cout << "[odrecorderh264] Created encoding child process " << handler->getPID() << endl;
                     id++;
 
                     retVal = m_mapOfEncoders[si.getName()]->process(c);
                 }
             }
             else {
-//                cout << "To handle in child " << m_mapOfEncoders[si.getName()]->m_childPID << endl;
+                // Reuse existing encoder.
                 retVal = m_mapOfEncoders[si.getName()]->process(c);
             }
-        }
-
-        return retVal;
-    }
-
-
-    Container RecorderH264::processOld(Container &c) {
-        Lock l(m_mapOfEncodersPerSharedImageSourceMutex);
-
-        Container retVal;
-
-        if (c.getDataType() == odcore::data::image::SharedImage::ID()) {
-//            odcore::data::image::SharedImage si = c.getData<odcore::data::image::SharedImage>();
-
-//            // Find existing or create new encoder.
-//            shared_ptr<RecorderH264Encoder> encoder;
-//            auto delegateEntry = m_mapOfEncodersPerSharedImageSource.find(si.getName());
-//            if (delegateEntry != m_mapOfEncodersPerSharedImageSource.end()) {
-//                encoder = m_mapOfEncodersPerSharedImageSource[si.getName()];
-//            }
-//            else {
-//                if (m_mapOfEncodersPerSharedImageSource.size() == 0) {
-//                    // Create a new encoder for this SharedImage.
-//                    const string FILENAME = m_filenameBase + "-" + odcore::strings::StringToolbox::replaceAll(si.getName(), ' ', '_') + ".mp4";
-//                    encoder = shared_ptr<RecorderH264Encoder>(new RecorderH264Encoder(FILENAME, m_lossless));
-//                    m_mapOfEncodersPerSharedImageSource[si.getName()] = encoder;
-//                }
-//                else {
-//                    // TODO: Fix multi-source handling.
-//                    cerr << "[odrecorderh264] Multi-source processing not fully supported yet; discarding " << si.getName() << endl;
-//                }
-//            }
-
-//            if (encoder.get() != NULL) {
-//                // Use encoder for this SharedImage to encode next frame.
-//                retVal = encoder->process(c);
-//            }
         }
 
         return retVal;

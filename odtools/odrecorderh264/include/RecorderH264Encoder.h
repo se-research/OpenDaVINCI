@@ -27,7 +27,6 @@ extern "C" {
     #include <libswscale/swscale.h>
 }
 
-#include <cstdio>
 #include <memory>
 #include <string>
 
@@ -121,8 +120,6 @@ namespace odrecorderh264 {
             bool m_lossless;
 
         private:
-            odcore::base::Mutex m_isInitializedMutex;
-            bool m_isInitialized;
             bool m_hasAttachedToSharedImageMemory;
             std::shared_ptr<odcore::wrapper::SharedMemory> m_sharedImageMemory;
 

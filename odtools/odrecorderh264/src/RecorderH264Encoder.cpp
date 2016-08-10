@@ -47,8 +47,6 @@ namespace odrecorderh264 {
         m_filenameBase(filenameBase),
         m_filename(),
         m_lossless(lossless),
-        m_isInitializedMutex(),
-        m_isInitialized(false),
         m_hasAttachedToSharedImageMemory(false),
         m_sharedImageMemory(),
         m_frameCounter(0),
@@ -85,42 +83,38 @@ namespace odrecorderh264 {
     void RecorderH264Encoder::handleConnectionError() {
         Lock l(m_hasConnectionMutex);
         m_hasConnection = false;
+        cerr << "[odrecorderh264] Lost connection to odrecorderh264." << endl;
     }
 
     void RecorderH264Encoder::stopAndCleanUpEncoding() {
-        Lock l(m_isInitializedMutex);
-        if (m_isInitialized) {
-            // Process any delayed frames in the encoder (feeding NULL images).
-            for (int succeeded = 1; succeeded; m_frameCounter++) {
-                AVPacket packet;
-                av_init_packet(&packet);
-                packet.data = NULL;
-                packet.size = 0;
+        // Process any delayed frames in the encoder (feeding NULL images).
+        for (int succeeded = 1; succeeded; m_frameCounter++) {
+            AVPacket packet;
+            av_init_packet(&packet);
+            packet.data = NULL;
+            packet.size = 0;
 
-                // Feeding NULL to indicate end-of-stream.
-                int ret = avcodec_encode_video2(m_encodeContext, &packet, NULL, &succeeded);
-                if (ret < 0) {
-                    cerr << "[odrecorderh264] Error encoding frame." << endl;
-                    break;
-                }
-                if (succeeded) {
-                    cout << "[odrecorderh264] Delayed writing frame " << m_frameCounter++ << ", size = " << packet.size << endl;
-                    fwrite(packet.data, 1, packet.size, m_outputFile);
-                    av_free_packet(&packet);
-                }
+            // Feeding NULL to indicate end-of-stream.
+            int ret = avcodec_encode_video2(m_encodeContext, &packet, NULL, &succeeded);
+            if (ret < 0) {
+                cerr << "[odrecorderh264] Error encoding frame." << endl;
+                break;
             }
-
-            // Close file.
-            fclose(m_outputFile);
-
-            // Cleanup.
-            avcodec_close(m_encodeContext);
-            av_free(m_encodeContext);
-            av_freep(&m_frame->data[0]);
-            av_frame_free(&m_frame);
-
-            m_isInitialized = false;
+            if (succeeded) {
+                cout << "[odrecorderh264] Delayed writing frame " << m_frameCounter++ << ", size = " << packet.size << endl;
+                fwrite(packet.data, 1, packet.size, m_outputFile);
+                av_free_packet(&packet);
+            }
         }
+
+        // Close file.
+        fclose(m_outputFile);
+
+        // Cleanup.
+        avcodec_close(m_encodeContext);
+        av_free(m_encodeContext);
+        av_freep(&m_frame->data[0]);
+        av_frame_free(&m_frame);
     }
 
     void RecorderH264Encoder::nextString(const std::string &s) {
@@ -133,7 +127,7 @@ namespace odrecorderh264 {
         }
 
         out = process(in);
-        Thread::usleepFor(5000);
+        Thread::usleepFor(2000);
 
         {
             stringstream sstr;
@@ -203,19 +197,20 @@ namespace odrecorderh264 {
     }
 
     Container RecorderH264Encoder::process(Container &c) {
+        static bool isInitialized = false;
+
         Container retVal;
 
         if (c.getDataType() == odcore::data::image::SharedImage::ID()) {
             odcore::data::image::SharedImage si = c.getData<odcore::data::image::SharedImage>();
 
-            Lock l(m_isInitializedMutex);
-            if (!m_isInitialized) {
+            if (!isInitialized) {
                 m_filename = m_filenameBase + "-" + odcore::strings::StringToolbox::replaceAll(si.getName(), ' ', '_') + ".mp4";
                 initialize(si.getWidth(), si.getHeight());
-                m_isInitialized = true;
+                isInitialized = true;
             }
 
-            if (m_isInitialized) {
+            if (isInitialized) {
                 int succeeded = 0;
 
                 // This variable contains the encoded packets to be written to file.
@@ -243,6 +238,7 @@ namespace odrecorderh264 {
 
                     // Frame counter.
                     m_frame->pts = m_frameCounter;
+                    m_frameCounter++;
 
                     // Encoding image.
                     int ret = avcodec_encode_video2(m_encodeContext, &packet, m_frame, &succeeded);
@@ -265,8 +261,6 @@ namespace odrecorderh264 {
 
                         // Release packet.
                         av_free_packet(&packet);
-
-                        m_frameCounter++;
                     }
                 }
             }
