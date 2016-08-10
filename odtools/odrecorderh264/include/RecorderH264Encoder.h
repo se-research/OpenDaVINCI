@@ -31,24 +31,26 @@ extern "C" {
 #include <memory>
 #include <string>
 
+#include <opendavinci/odcore/base/Mutex.h>
 #include <opendavinci/odcore/io/ConnectionListener.h>
 #include <opendavinci/odcore/io/StringListener.h>
 #include <opendavinci/odcore/io/tcp/TCPConnection.h>
-
-#include "opendavinci/odtools/recorder/RecorderDelegate.h"
-#include "opendavinci/odcore/wrapper/SharedMemory.h"
+#include <opendavinci/odcore/wrapper/SharedMemory.h>
+#include <opendavinci/odtools/recorder/RecorderDelegate.h>
 
 namespace odrecorderh264 {
 
     using namespace std;
 
     /**
-     * This class can be used to record data distributed in a Container conference
-     * and to encode SharedImage containers as h264 video streams.
+     * This class handles the actual video stream encoding. An instance is
+     * embedded in an own process context and communicates with the
+     * recorder instance via TCP to get information about the next SharedImage
+     * to encode and to return the replacement H264Frame instance.
      */
-    class RecorderH264Encoder : public odtools::recorder::RecorderDelegate,
-                                public odcore::io::ConnectionListener,
-                                public odcore::io::StringListener {
+    class RecorderH264Encoder : public odcore::io::ConnectionListener,
+                                public odcore::io::StringListener,
+                                public odtools::recorder::RecorderDelegate {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -73,7 +75,9 @@ namespace odrecorderh264 {
             /**
              * Constructor.
              *
-             * @param filename Name of the file to write the video stream to.
+             * @param filenameBase Base file name of the file to write the video stream to where the actual video stream name is appended.
+             * @param lossless If true, h264 is encoding the video frames in a lossless way.
+             * @param port TCP port to connect to the recorder instance for communication.
              */
             RecorderH264Encoder(const string &filenameBase, const bool &lossless, const uint32_t &port);
 
@@ -81,22 +85,34 @@ namespace odrecorderh264 {
 
             virtual odcore::data::Container process(odcore::data::Container &c);
 
+            virtual void nextString(const std::string &s);
+
+            virtual void handleConnectionError();
+
+            /**
+             * This method returns true as long as we have an established
+             * connection to the recorder instance.
+             *
+             * @return true as long as this child process has a connection to the recorder.
+             */
+            bool hasConnection();
+
         private:
             /**
              * This method initializes the h.264 decoder.
              *
              * @return 0 if initialization succeeded, a value < 0 otherwise.
              */
-            int initialize(const string &filename, const uint32_t &width, const uint32_t &height);
+            int initialize(const uint32_t &width, const uint32_t &height);
 
-        public:
-            virtual void nextString(const std::string &s);
-            virtual void handleConnectionError();
-
-            bool hasConnection() const;
+            /**
+             * This method is cleaning up the encoding.
+             */
+            void stopAndCleanUpEncoding();
 
         private:
             shared_ptr<odcore::io::tcp::TCPConnection> m_connection;
+            odcore::base::Mutex m_hasConnectionMutex;
             bool m_hasConnection;
 
         private:
@@ -105,6 +121,8 @@ namespace odrecorderh264 {
             bool m_lossless;
 
         private:
+            odcore::base::Mutex m_isInitializedMutex;
+            bool m_isInitialized;
             bool m_hasAttachedToSharedImageMemory;
             std::shared_ptr<odcore::wrapper::SharedMemory> m_sharedImageMemory;
 
