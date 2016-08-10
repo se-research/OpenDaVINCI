@@ -42,6 +42,7 @@
 #include "automotivedata/generated/from/opendlv/proxy/reverefh16/VehicleState.h"
 #include "automotivedata/generated/from/opendlv/proxy/reverefh16/Wheels.h"
 #include "automotivedata/generated/from/opendlv/proxy/reverefh16/Steering.h"
+#include "automotivedata/generated/commaai/Vehicle.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }
 
@@ -200,6 +201,14 @@ namespace cockpit {
 
                 if (container.getDataType() == from::opendlv::proxy::reverefh16::Wheels::ID()) {
                     from::opendlv::proxy::reverefh16::Wheels tmp = container.getData<from::opendlv::proxy::reverefh16::Wheels>();
+                    if (dynamic_cast<Visitable*>(&tmp) != NULL) {
+                        addMessageToTree(tmp.LongName(), container, tmp);
+                    }
+                    return;
+                }
+
+                if (container.getDataType() == commaai::Vehicle::ID()) {
+                    commaai::Vehicle tmp = container.getData<commaai::Vehicle>();
                     if (dynamic_cast<Visitable*>(&tmp) != NULL) {
                         addMessageToTree(tmp.LongName(), container, tmp);
                     }

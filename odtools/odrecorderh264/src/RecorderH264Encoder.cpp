@@ -205,7 +205,7 @@ namespace odrecorderh264 {
             odcore::data::image::SharedImage si = c.getData<odcore::data::image::SharedImage>();
 
             if (!isInitialized) {
-                m_filename = m_filenameBase + "-" + odcore::strings::StringToolbox::replaceAll(si.getName(), ' ', '_') + ".mp4";
+                m_filename = m_filenameBase + "-" + odcore::strings::StringToolbox::replaceAll(si.getName(), ' ', '_') + ".h264";
                 initialize(si.getWidth(), si.getHeight());
                 isInitialized = true;
             }
