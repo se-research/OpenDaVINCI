@@ -24,11 +24,11 @@
 #include <memory>
 #include <string>
 
-#include "opendavinci/odcore/base/Mutex.h"
-#include "opendavinci/odtools/player/Player.h"
-#include "opendavinci/odtools/player/PlayerDelegate.h"
+#include <opendavinci/odcore/base/Mutex.h>
+#include <opendavinci/odtools/player/Player.h>
+#include <opendavinci/odtools/player/PlayerDelegate.h>
 
-#include "PlayerH264Decoder.h"
+#include "PlayerH264ChildHandler.h"
 
 namespace odplayerh264 {
 
@@ -70,16 +70,19 @@ namespace odplayerh264 {
              * @param memorySegmentSize Size of the memory segment to be used for buffering.
              * @param numberOfMemorySegments Number of memory segments to be used for buffering.
              * @param threading If set to true, player will load new containers from the file in background.
+             * @param basePort Base port for letting spawned children connect to the parent process.
              */
-            PlayerH264(const odcore::io::URL &url, const bool &autoRewind, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const bool &threading);
+            PlayerH264(const odcore::io::URL &url, const bool &autoRewind, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const bool &threading, const uint32_t &basePort);
 
             virtual ~PlayerH264();
 
             virtual odcore::data::Container process(odcore::data::Container &c);
 
         private:
+            uint32_t m_basePort;
+
             odcore::base::Mutex m_mapOfDecodersMutex;
-            map<string, shared_ptr<PlayerH264Decoder> > m_mapOfDecoders;
+            map<string, shared_ptr<PlayerH264ChildHandler> > m_mapOfDecoders;
     };
 
 } // odplayerh264

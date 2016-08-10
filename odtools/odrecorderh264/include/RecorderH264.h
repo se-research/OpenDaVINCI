@@ -24,9 +24,9 @@
 #include <memory>
 #include <string>
 
-#include "opendavinci/odcore/base/Mutex.h"
-#include "opendavinci/odtools/recorder/Recorder.h"
-#include "opendavinci/odtools/recorder/RecorderDelegate.h"
+#include <opendavinci/odcore/base/Mutex.h>
+#include <opendavinci/odtools/recorder/Recorder.h>
+#include <opendavinci/odtools/recorder/RecorderDelegate.h>
 
 #include "RecorderH264Encoder.h"
 #include "RecorderH264ChildHandler.h"

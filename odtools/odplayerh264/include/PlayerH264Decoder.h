@@ -32,11 +32,16 @@ extern "C" {
 #include <memory>
 #include <vector>
 
-#include "opendavinci/odcore/wrapper/SharedMemory.h"
+#include <opendavinci/odcore/base/Mutex.h>
+#include <opendavinci/odcore/io/ConnectionListener.h>
+#include <opendavinci/odcore/io/StringListener.h>
+#include <opendavinci/odcore/io/tcp/TCPConnection.h>
+#include <opendavinci/odcore/wrapper/SharedMemory.h>
+
 #include "opendavinci/generated/odcore/data/image/SharedImage.h"
 
-#include "opendavinci/odtools/player/Player.h"
-#include "opendavinci/odtools/player/PlayerDelegate.h"
+#include <opendavinci/odtools/player/Player.h>
+#include <opendavinci/odtools/player/PlayerDelegate.h>
 
 namespace odplayerh264 {
 
@@ -47,7 +52,9 @@ namespace odplayerh264 {
      * conference for distribution. In addition, this class is also
      * restoring h264 video streams.
      */
-    class PlayerH264Decoder : public odtools::player::PlayerDelegate {
+    class PlayerH264Decoder : public odcore::io::ConnectionListener,
+                              public odcore::io::StringListener,
+                              public odtools::player::PlayerDelegate {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -71,12 +78,26 @@ namespace odplayerh264 {
         public:
             /**
              * Constructor.
+             *
+             * @param Port to connect to the parent process.
              */
-            PlayerH264Decoder();
+            PlayerH264Decoder(const uint32_t &port);
 
             virtual ~PlayerH264Decoder();
 
             virtual odcore::data::Container process(odcore::data::Container &c);
+
+            virtual void nextString(const std::string &s);
+
+            virtual void handleConnectionError();
+
+            /**
+             * This method returns true as long as we have an established
+             * connection to the recorder instance.
+             *
+             * @return true as long as this child process has a connection to the recorder.
+             */
+            bool hasConnection();
 
         private:
             /**
@@ -86,6 +107,11 @@ namespace odplayerh264 {
              * @return true if initialization succeeded.
              */
             bool initialize(const string &filename);
+
+            /**
+             * This method is cleaning up the encoding.
+             */
+            void stopAndCleanUpDecoding();
 
             /**
              * This method returns the next frame from the given h264 file.
@@ -117,6 +143,11 @@ namespace odplayerh264 {
              * @param size Size of encoded data.
              */
             void decodeFrame(uint8_t *data, uint32_t size);
+
+        private:
+            shared_ptr<odcore::io::tcp::TCPConnection> m_connection;
+            odcore::base::Mutex m_hasConnectionMutex;
+            bool m_hasConnection;
 
         private:
             // This shared memory will contain the resulting decoded image frame.

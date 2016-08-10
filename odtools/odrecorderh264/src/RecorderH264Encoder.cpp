@@ -24,9 +24,9 @@
 #include <opendavinci/odcore/base/Lock.h>
 #include <opendavinci/odcore/base/Thread.h>
 #include <opendavinci/odcore/io/tcp/TCPFactory.h>
-#include <opendavinci/odcore/io/tcp/TCPConnection.h>
 #include <opendavinci/odcore/strings/StringToolbox.h>
 #include <opendavinci/odcore/wrapper/SharedMemoryFactory.h>
+
 #include <opendavinci/generated/odcore/data/image/SharedImage.h>
 #include <opendavinci/generated/odcore/data/image/H264Frame.h>
 
@@ -83,6 +83,7 @@ namespace odrecorderh264 {
     void RecorderH264Encoder::handleConnectionError() {
         Lock l(m_hasConnectionMutex);
         m_hasConnection = false;
+        stopAndCleanUpEncoding();
         cerr << "[odrecorderh264] Lost connection to odrecorderh264." << endl;
     }
 

@@ -21,9 +21,12 @@
 #include <iostream>
 #include <string>
 
-#include "opendavinci/odcore/base/Lock.h"
-#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
-#include "opendavinci/odtools/player/Player.h"
+#include <opendavinci/odcore/base/Lock.h>
+#include <opendavinci/odcore/base/Thread.h>
+#include <opendavinci/odcore/io/tcp/TCPFactory.h>
+#include <opendavinci/odcore/strings/StringToolbox.h>
+#include <opendavinci/odcore/wrapper/SharedMemoryFactory.h>
+
 #include "opendavinci/generated/odcore/data/image/H264Frame.h"
 
 #include "PlayerH264Decoder.h"
@@ -33,11 +36,15 @@ namespace odplayerh264 {
     using namespace std;
     using namespace odcore::base;
     using namespace odcore::data;
+    using namespace odcore::io::tcp;
     using namespace odtools::player;
 
     const uint32_t BUFFER_SIZE = 16384;
 
-    PlayerH264Decoder::PlayerH264Decoder() :
+    PlayerH264Decoder::PlayerH264Decoder(const uint32_t &port) :
+        m_connection(),
+        m_hasConnectionMutex(),
+        m_hasConnection(false),
         m_mySharedMemory(NULL),
         m_mySharedImage(),
         m_frameCounter(0),
@@ -49,15 +56,42 @@ namespace odplayerh264 {
         m_picture(NULL),
         m_pixelTransformationContext(NULL),
         m_frameBGR(NULL) {
-
-        // Register all codecs from FFMPEG.
-        avcodec_register_all();
+        // Try to connect to odrecorderh264 process to exchange Containers to encode.
+        try {
+            m_connection = shared_ptr<TCPConnection>(TCPFactory::createTCPConnectionTo("127.0.0.1", port));
+            m_connection->setConnectionListener(this);
+            m_connection->setStringListener(this);
+            m_connection->start();
+            {
+                Lock l(m_hasConnectionMutex);
+                m_hasConnection = true;
+            }
+        }
+        catch(string &exception) {
+            cerr << "[odplayerh264] Could not connect to odplayerh264: " << exception << endl;
+        }
 
         // Create a buffer to read from file.
         m_readFromFileBuffer = new uint8_t[BUFFER_SIZE + FF_INPUT_BUFFER_PADDING_SIZE];
     }
 
     PlayerH264Decoder::~PlayerH264Decoder() {
+        stopAndCleanUpDecoding();
+    }
+
+    bool PlayerH264Decoder::hasConnection() {
+        Lock l(m_hasConnectionMutex);
+        return m_hasConnection;
+    }
+
+    void PlayerH264Decoder::handleConnectionError() {
+        Lock l(m_hasConnectionMutex);
+        m_hasConnection = false;
+        stopAndCleanUpDecoding();
+        cerr << "[odplayerh264] Lost connection to odplayerh264." << endl;
+    }
+
+    void PlayerH264Decoder::stopAndCleanUpDecoding() {
         // Close decoder.
         av_parser_close(m_parser);
         avcodec_close(m_decodeContext);
@@ -75,6 +109,24 @@ namespace odplayerh264 {
         if (m_readFromFileBuffer != NULL) {
             delete [] m_readFromFileBuffer;
             m_readFromFileBuffer = NULL;
+        }
+    }
+
+    void PlayerH264Decoder::nextString(const std::string &s) {
+        Container in;
+        Container out;
+
+        {
+            stringstream sstr(s);
+            sstr >> in;
+        }
+
+        out = process(in);
+
+        {
+            stringstream sstr;
+            sstr << out;
+            m_connection->send(sstr.str());
         }
     }
 
@@ -100,7 +152,7 @@ namespace odplayerh264 {
                     replacementContainer.setSentTimeStamp(c.getSentTimeStamp());
                     replacementContainer.setReceivedTimeStamp(c.getReceivedTimeStamp());
 
-cout << "[odplayerh264] Created replacement for " << h264frame.toString() << endl;
+                    //cout << "[odplayerh264] Created replacement for " << h264frame.toString() << endl;
                 }
             }
         }
@@ -264,7 +316,8 @@ cout << "[odplayerh264] Created replacement for " << h264frame.toString() << end
         else {
             if (gotPicture) {
                 m_frameCounter++;
-cout << "Read frame " << m_picture->pts << endl;
+
+                // cout << "[odplayerh264] Read frame " << m_picture->pts << endl;
 
                 // Transform from YUV420p into BGR24 format.
                 sws_scale(m_pixelTransformationContext, m_picture->data, m_picture->linesize, 0, m_mySharedImage.getHeight(), m_frameBGR->data, m_frameBGR->linesize);

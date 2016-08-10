@@ -1,5 +1,5 @@
 /**
- * odrecorderh264 - Tool for recording data and encoding video streams with h264.
+ * odplayerh264 - Tool for replaying video streams encoded with h264.
  * Copyright (C) 2016 Christian Berger
  *
  * This program is free software; you can redistribute it and/or
@@ -27,16 +27,16 @@
 #include <opendavinci/odcore/io/tcp/TCPFactory.h>
 #include <opendavinci/odcore/io/tcp/TCPConnection.h>
 
-#include "RecorderH264.h"
+#include "PlayerH264ChildHandler.h"
 
-namespace odrecorderh264 {
+namespace odplayerh264 {
 
     using namespace std;
     using namespace odcore::base;
     using namespace odcore::data;
     using namespace odcore::io::tcp;
 
-    RecorderH264ChildHandler::RecorderH264ChildHandler() :
+    PlayerH264ChildHandler::PlayerH264ChildHandler() :
         m_PID(0),
         m_tcpacceptor(),
         m_connection(),
@@ -45,7 +45,7 @@ namespace odrecorderh264 {
         m_hasResponse(false),
         m_response() {}
 
-    RecorderH264ChildHandler::RecorderH264ChildHandler(const uint32_t &port) :
+    PlayerH264ChildHandler::PlayerH264ChildHandler(const uint32_t &port) :
         m_PID(0),
         m_tcpacceptor(),
         m_connection(),
@@ -65,42 +65,42 @@ namespace odrecorderh264 {
         }
     }
 
-    RecorderH264ChildHandler::~RecorderH264ChildHandler() {
+    PlayerH264ChildHandler::~PlayerH264ChildHandler() {
         try {
             // Stop accepting new connections and unregister our handler.
             m_tcpacceptor->stop();
             m_tcpacceptor->setAcceptorListener(NULL);
         }
         catch(string &exception) {
-            cerr << "[odrecorderh264] Error while creating TCP receiver: " << exception << endl;
+            cerr << "[odplayerh264] Error while creating TCP receiver: " << exception << endl;
         }
     }
 
-    void RecorderH264ChildHandler::setConnection(shared_ptr<odcore::io::tcp::TCPConnection> c) {
+    void PlayerH264ChildHandler::setConnection(shared_ptr<odcore::io::tcp::TCPConnection> c) {
         m_connection = c;
     }
 
-    shared_ptr<odcore::io::tcp::TCPConnection> RecorderH264ChildHandler::getConnection() const {
+    shared_ptr<odcore::io::tcp::TCPConnection> PlayerH264ChildHandler::getConnection() const {
         return m_connection;
     }
 
-    void RecorderH264ChildHandler::setPID(pid_t pid) {
+    void PlayerH264ChildHandler::setPID(pid_t pid) {
         m_PID = pid;
     }
 
-    pid_t RecorderH264ChildHandler::getPID() const {
+    pid_t PlayerH264ChildHandler::getPID() const {
         return m_PID;
     }
 
-    void RecorderH264ChildHandler::waitForClientToConnect() {
+    void PlayerH264ChildHandler::waitForClientToConnect() {
         // Wait for the connecting client.
-        cout << "[odrecorderh264] Waiting for client to connect...";
+        cout << "[odplayerh264] Waiting for client to connect...";
         Lock l(m_condition);
         m_condition.waitOnSignal();
         cout << " Client connected." << endl;
     }
 
-    void RecorderH264ChildHandler::handleConnectionError() {
+    void PlayerH264ChildHandler::handleConnectionError() {
         // Stop this connection.
         m_connection->stop();
 
@@ -109,14 +109,14 @@ namespace odrecorderh264 {
         m_connection->setConnectionListener(NULL);
     }
 
-    void RecorderH264ChildHandler::nextString(const std::string &s) {
+    void PlayerH264ChildHandler::nextString(const std::string &s) {
         Lock l(m_hasResponseMutex);
         stringstream sstr(s);
         sstr >> m_response;
         m_hasResponse = true;
     }
 
-    void RecorderH264ChildHandler::onNewConnection(shared_ptr<TCPConnection> connection) {
+    void PlayerH264ChildHandler::onNewConnection(shared_ptr<TCPConnection> connection) {
         if (connection.get()) {
             m_connection = connection;
             m_connection->setStringListener(this);
@@ -131,7 +131,7 @@ namespace odrecorderh264 {
         }
     }
 
-    Container RecorderH264ChildHandler::process(Container &c) {
+    Container PlayerH264ChildHandler::process(Container &c) {
         {
             Lock l(m_hasResponseMutex);
             m_hasResponse = false;
@@ -156,4 +156,4 @@ namespace odrecorderh264 {
         return m_response;
     }
 
-} // odrecorderh264
+} // odplayerh264

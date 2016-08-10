@@ -27,9 +27,10 @@ extern "C" {
 
 #include <iostream>
 
-#include "opendavinci/odcore/base/Lock.h"
-#include "opendavinci/odcore/base/Thread.h"
-#include "opendavinci/odcore/io/URL.h"
+#include <opendavinci/odcore/base/Lock.h>
+#include <opendavinci/odcore/base/Thread.h>
+#include <opendavinci/odcore/io/URL.h>
+
 #include "opendavinci/generated/odcore/data/image/SharedImage.h"
 
 #include <opendavinci/odcore/io/tcp/TCPFactory.h>
