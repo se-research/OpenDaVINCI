@@ -221,18 +221,32 @@ message odcore.data.recorder.RecorderCommand [id = 11] {
 ///////////////////////////////////////////////////////////////////////////////
 // Shared BLOB messages.
 
-// This message describes
+// This message describes generic shared data residing in a shared memory segment.
 message odcore.data.SharedData [id = 13] {
     string name [id = 1];
     uint32 size [id = 2];
 }
 
+// This message describes image data residing in a shared memory segment.
 message odcore.data.image.SharedImage [id = 14] {
     string name [id = 1];
     uint32 size [id = 2];
     uint32 width [id = 3];
     uint32 height [id = 4];
     uint32 bytesPerPixel [id = 5];
+}
+
+// This message describes an H264 frame created from a SharedImage message
+// to encode/decode to/from an H264 video stream.
+// Purpose: In a Container recording file, the original SharedImage will be
+// replaced by an instance of this message after the original frame has been
+// encoded (for recording); on replay, any occurring instance of this message
+// will be loaded from the specified h264 file and restored into a SharedImage.
+message odcore.data.image.H264Frame [id = 27] {
+    string h264Filename [id = 1];    // Name of the file containing the h264 stream.
+    uint32 frameIdentifier [id = 2]; // Increasing identifier of this frame.
+    uint32 frameSize [id = 3];       // Size of the h264-encoded frame in bytes.
+    odcore.data.image.SharedImage associatedSharedImage [id = 4]; // Original SharedImage data structure.
 }
 
 // This message is not complete as dynamic sized arrays are not available yet.

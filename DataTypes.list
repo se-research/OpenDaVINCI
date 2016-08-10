@@ -28,6 +28,7 @@ ID;TYPE;legacy OR message;library;comment
 24;LINE;legacy;libodsimulation;don't use;
 25;POLYGON;legacy;libodsimulation;don't use;
 26;NAMEDLINE;legacy;libodsimulation;don't use;
+27;odcore.data.image.H264Frame;legacy;OpenDaVINCI.odvd;internal use;
 28;odcore.data.image.SharedPointCloud;legacy;OpenDaVINCI.odvd;internal use;
 29;odcore.data.buffer.MemorySegment;legacy;OpenDaVINCI.odvd;internal use;
 30;CONTOUREDOBJECT;legacy;libodsimulation;don't use;

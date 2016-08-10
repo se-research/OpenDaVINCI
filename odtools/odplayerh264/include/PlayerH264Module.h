@@ -1,6 +1,6 @@
 /**
- * odplayer - Tool for playing back recorded data
- * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe 
+ * odplayerh264 - Tool for replaying video streams encoded with h264.
+ * Copyright (C) 2016 Christian Berger
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,23 +17,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef PLAYERMODULE_H_
-#define PLAYERMODULE_H_
+#ifndef PLAYERH264MODULE_H_
+#define PLAYERH264MODULE_H_
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/FIFOQueue.h"
 #include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
 #include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
 
-namespace odplayer {
+namespace odplayerh264 {
 
     using namespace std;
 
     /**
-     * This class can be used to replay previously recorded
-     * data using a conference for distribution.
+     * This class can be used to replay previously recorded data using a
+     * conference for distribution. In addition, this class is also
+     * restoring h264 video streams.
      */
-    class PlayerModule : public odcore::base::module::TimeTriggeredConferenceClientModule {
+    class PlayerH264Module : public odcore::base::module::TimeTriggeredConferenceClientModule {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -42,7 +43,7 @@ namespace odplayer {
              *
              * @param obj Reference to an object of this class.
              */
-            PlayerModule(const PlayerModule &/*obj*/);
+            PlayerH264Module(const PlayerH264Module &/*obj*/);
 
             /**
              * "Forbidden" assignment operator. Goal: The compiler should warn
@@ -52,7 +53,7 @@ namespace odplayer {
              * @param obj Reference to an object of this class.
              * @return Reference to this instance.
              */
-            PlayerModule& operator=(const PlayerModule &/*obj*/);
+            PlayerH264Module& operator=(const PlayerH264Module &/*obj*/);
 
         public:
             /**
@@ -61,15 +62,15 @@ namespace odplayer {
              * @param argc Number of command line arguments.
              * @param argv Command line arguments.
              */
-            PlayerModule(const int32_t &argc, char **argv);
+            PlayerH264Module(const int32_t &argc, char **argv);
 
-            virtual ~PlayerModule();
+            virtual ~PlayerH264Module();
+
+            virtual void wait();
 
             odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
         private:
-            virtual void wait();
-
             virtual void setUp();
 
             virtual void tearDown();
@@ -78,6 +79,6 @@ namespace odplayer {
             odcore::base::FIFOQueue m_playerControl;
     };
 
-} // odplayer
+} // odplayerh264
 
-#endif /*PLAYERMODULE_H_*/
+#endif /*PLAYERH264MODULE_H_*/
