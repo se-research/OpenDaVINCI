@@ -52,7 +52,7 @@ ExternalProject_Add (odCANDataStructureGenerator
     DOWNLOAD_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/org.opendavinci.candatamodel ${CMAKE_BINARY_DIR}/org.opendavinci.candatamodel
     UPDATE_COMMAND ""
     PATCH_COMMAND ""
-    SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/org.opendavinci.candatamodel"
+    SOURCE_DIR "${CMAKE_BINARY_DIR}/org.opendavinci.candatamodel"
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ${ANT_EXECUTABLE} -lib lib -f ant-build.xml compile-java
     BUILD_IN_SOURCE 1

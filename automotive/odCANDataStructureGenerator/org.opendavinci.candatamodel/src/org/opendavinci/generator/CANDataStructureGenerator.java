@@ -392,9 +392,6 @@ public class CANDataStructureGenerator {
         sb.append("# Install header files."); sb.append("\r\n");
         sb.append("INSTALL(DIRECTORY \"${CMAKE_CURRENT_SOURCE_DIR}/include/\" DESTINATION include/" + folder.replaceFirst("lib", "") + " " + "COMPONENT od" + folder.replaceFirst("lib", "") + "lib" + ")"); sb.append("\r\n");
 
-        sb.append("IF(CXXTEST_FOUND)"); sb.append("\r\n");
-        sb.append("FILE(GLOB " + folder + "-testsuites \"${CMAKE_CURRENT_SOURCE_DIR}/testsuites/*.h\")"); sb.append("\r\n");
-
         sb.append("# Install CMake modules locally."); sb.append("\r\n");
         sb.append("IF(UNIX)"); sb.append("\r\n");
         sb.append("    INSTALL(FILES \"${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/Find" + canmappingFilename + ".cmake\" DESTINATION share/cmake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules" + " COMPONENT od" + folder.replaceFirst("lib", "") + "lib" + ")"); sb.append("\r\n");
@@ -402,6 +399,9 @@ public class CANDataStructureGenerator {
         sb.append("IF(WIN32)"); sb.append("\r\n");
         sb.append("    INSTALL(FILES \"${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/Find" + canmappingFilename + ".cmake\" DESTINATION CMake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules" + " COMPONENT od" + folder.replaceFirst("lib", "") + "lib" + ")"); sb.append("\r\n");
         sb.append("ENDIF()"); sb.append("\r\n");
+
+        sb.append("IF(CXXTEST_FOUND)"); sb.append("\r\n");
+        sb.append("FILE(GLOB " + folder + "-testsuites \"${CMAKE_CURRENT_SOURCE_DIR}/testsuites/*.h\")"); sb.append("\r\n");
 
         sb.append("FOREACH(testsuite ${" + folder + "-testsuites})"); sb.append("\r\n");
         sb.append("    STRING(REPLACE \"/\" \";\" testsuite-list ${testsuite})"); sb.append("\r\n");
