@@ -4,7 +4,9 @@
 OpenDaVINCI is a compact middleware OpenDaVINCI written entirely in standard C++.
 It runs on a variety of POSIX-compatible OS. And Windows.
 
-You will find its full documentation and getting started guides here: http://opendavinci.readthedocs.org/en/latest/
+You will find its full documentation and getting started guides here: http://docs.opendavinci.org
+
+You will find its API documentation here: http://api.opendavinci.org
 
 You will find different projects that are using OpenDaVINCI here: http://opendavinci.cse.chalmers.se/www/index.html
 
