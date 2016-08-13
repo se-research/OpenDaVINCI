@@ -9,8 +9,8 @@
 #include <opendavinci/odcore/reflection/MessageFromVisitableVisitor.h>
 void GeneratedHeaders_Test13_Helper::delegateVistor(odcore::data::Container &c, odcore::base::Visitor &v, bool &successfullyDelegated) {
     successfullyDelegated = false;
-    if (c.getDataType() == Test13::subpackage::Test13Simple::ID()) {
-        Test13::subpackage::Test13Simple payload = c.getData<Test13::subpackage::Test13Simple>();
+    if (c.getDataType() == test13::subpackage::Test13Simple::ID()) {
+        test13::subpackage::Test13Simple payload = c.getData<test13::subpackage::Test13Simple>();
         payload.accept(v);
         successfullyDelegated = true;
     }

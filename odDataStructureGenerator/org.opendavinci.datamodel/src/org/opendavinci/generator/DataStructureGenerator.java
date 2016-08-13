@@ -238,10 +238,15 @@ public class DataStructureGenerator {
             int pos = file.indexOf("generated/");
             int lastPos = file.lastIndexOf(".h");
             String extractedMessage = file.substring(pos + 10, lastPos);
-            String extractedMessage2 = extractedMessage.replace("/", "::");
+            String extractedMessageSplit[] = extractedMessage.split("/");
+            String extractedMessageFinal = "";
+            for (int i = 0; i < extractedMessageSplit.length - 1; i++) {
+                extractedMessageFinal += extractedMessageSplit[i].toLowerCase() + "::";
+            }
+            extractedMessageFinal += extractedMessageSplit[extractedMessageSplit.length-1];
 
-            sb.append("    if (c.getDataType() == " + extractedMessage2 + "::ID()) {"); sb.append("\r\n");
-            sb.append("        " + extractedMessage2 + " payload = c.getData<" + extractedMessage2 + ">();"); sb.append("\r\n");
+            sb.append("    if (c.getDataType() == " + extractedMessageFinal + "::ID()) {"); sb.append("\r\n");
+            sb.append("        " + extractedMessageFinal + " payload = c.getData<" + extractedMessageFinal + ">();"); sb.append("\r\n");
             sb.append("        payload.accept(v);"); sb.append("\r\n");
             sb.append("        successfullyDelegated = true;"); sb.append("\r\n");
             sb.append("    }"); sb.append("\r\n");

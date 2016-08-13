@@ -4,6 +4,7 @@ plugin.xml
 src-gen
 xtend-gen
 src/generated
+src/GeneratedHeaders_*
 include
 testsuites
 libtest*
