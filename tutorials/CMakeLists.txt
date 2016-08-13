@@ -45,6 +45,7 @@ ADD_SUBDIRECTORY (timetrigger)
 ADD_SUBDIRECTORY (udpreceivebytes)
 ADD_SUBDIRECTORY (udpreceivepackets)
 ADD_SUBDIRECTORY (udpsendbytes)
+ADD_SUBDIRECTORY (readzipfile)
 
 ###########################################################################
 # Enable CPack to create .deb and .rpm.

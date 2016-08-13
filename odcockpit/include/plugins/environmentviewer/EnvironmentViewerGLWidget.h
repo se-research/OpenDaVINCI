@@ -23,6 +23,7 @@
 
 #include <map>
 #include <vector>
+#include <memory>
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/Mutex.h"
@@ -33,6 +34,10 @@
 #include "opendlv/threeD/RenderingConfiguration.h"
 #include "plugins/AbstractGLWidget.h"
 #include "plugins/environmentviewer/SelectableNodeDescriptorTreeListener.h"
+#include "opendavinci/odcore/wrapper/SharedMemory.h"
+#include "opendavinci/generated/odcore/data/SharedPointCloud.h"
+//#include "opendavinci/odcore/io/protocol/PCAPProtocol.h"
+//#include <fstream>
 
 class QWidget;
 namespace cockpit { namespace plugins { class PlugIn; } }
@@ -100,6 +105,7 @@ class SelectableNodeDescriptor;
                     virtual void drawScene();
 
                 private:
+
                     odcore::base::Mutex m_rootMutex;
                     opendlv::threeD::TransformGroup *m_root;
                     opendlv::threeD::TransformGroup *m_stationaryElements;
@@ -107,8 +113,10 @@ class SelectableNodeDescriptor;
                     opendlv::threeD::TransformGroup *m_measurements;
                     opendlv::threeD::TransformGroup *m_plannedRoute;
                     opendlv::threeD::TransformGroup *m_lines;
+                    opendlv::threeD::TransformGroup *m_velodyne;
 
                     opendlv::threeD::NodeDescriptor m_egoStateNodeDescriptor;
+
                     uint32_t m_numberOfReceivedEgoStates;
                     opendlv::threeD::TransformGroup *m_egoStateNode;
                     map<opendlv::threeD::NodeDescriptor, opendlv::threeD::TransformGroup*, opendlv::threeD::NodeDescriptorComparator> m_mapOfTraceablePositions;
@@ -124,6 +132,8 @@ class SelectableNodeDescriptor;
 
                     odcore::base::TreeNode<SelectableNodeDescriptor> *m_selectableNodeDescriptorTree;
                     SelectableNodeDescriptorTreeListener &m_selectableNodeDescriptorTreeListener;
+                    std::shared_ptr<odcore::wrapper::SharedMemory> velodyneSharedMemory;
+                    odcore::data::SharedPointCloud velodyneFrame;
 
                     /**
                      * This method actually modifies the rendering configuration.
