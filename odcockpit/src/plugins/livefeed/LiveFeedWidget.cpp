@@ -26,12 +26,14 @@
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/Lock.h"
-#include "opendavinci/odcore/base/Visitable.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/data/TimeStamp.h"
+#include "opendavinci/odcore/reflection/Message.h"
+
 #include "plugins/livefeed/LiveFeedWidget.h"
 #include "plugins/livefeed/MessageToTupleVisitor.h"
 
+#include "opendavinci/GeneratedHeaders_OpenDaVINCI_Helper.h"
 #include "automotivedata/GeneratedHeaders_AutomotiveData_Helper.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }
@@ -45,6 +47,7 @@ namespace cockpit {
             using namespace std;
             using namespace odcore::base;
             using namespace odcore::data;
+            using namespace odcore::reflection;
 
             LiveFeedWidget::LiveFeedWidget(const PlugIn &/*plugIn*/, QWidget *prnt) :
                 QWidget(prnt),
@@ -81,17 +84,28 @@ namespace cockpit {
             }
 
             void LiveFeedWidget::transformContainerToTree(Container &container) {
-                vector<pair<string, string> > entries;
-                entries.push_back(make_pair("Sent", container.getSentTimeStamp().getYYYYMMDD_HHMMSSms()));
-                entries.push_back(make_pair("Received", container.getReceivedTimeStamp().getYYYYMMDD_HHMMSSms()));
-
                 // Map attributes from message to the entries.
-                MessageToTupleVisitor mttv(entries);
-                bool successfullyDelegated = false;
-                GeneratedHeaders_AutomotiveData_Helper::delegateVistor(container, mttv, successfullyDelegated);
+                bool successfullyMapped = false;
+                Message msg;
 
-                if (successfullyDelegated) {
-                    Message msg = mttv.getMessage();
+                // Try AutomotiveData first.
+                if (!successfullyMapped) {
+                    msg = GeneratedHeaders_AutomotiveData_Helper::map(container, successfullyMapped);
+                }
+
+                // If failed, try regular OpenDaVINCI messages.
+                if (!successfullyMapped) {
+                    msg = GeneratedHeaders_OpenDaVINCI_Helper::map(container, successfullyMapped);
+                }
+
+                if (successfullyMapped) {
+                    vector<pair<string, string> > entries;
+                    entries.push_back(make_pair("Sent", container.getSentTimeStamp().getYYYYMMDD_HHMMSSms()));
+                    entries.push_back(make_pair("Received", container.getReceivedTimeStamp().getYYYYMMDD_HHMMSSms()));
+
+                    MessageToTupleVisitor mttv(entries);
+                    msg.accept(mttv);
+
                     //create new Header if needed
                     if (m_dataToType.find(msg.getLongName()) == m_dataToType.end()) {
                         QTreeWidgetItem *newHeader = new QTreeWidgetItem(m_dataView.get());
