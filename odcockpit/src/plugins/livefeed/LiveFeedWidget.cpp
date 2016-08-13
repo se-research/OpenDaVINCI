@@ -18,10 +18,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#ifdef HAS_DL
+    #include <dlfcn.h>
+#endif
+
 #include <QtCore>
 #include <QtGui>
 
 #include <cstring>
+#include <iostream>
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
@@ -53,7 +58,9 @@ namespace cockpit {
                 QWidget(prnt),
                 m_dataViewMutex(),
                 m_dataView(),
-                m_dataToType() {
+                m_dataToType(),
+                m_dynamicObjectHandle(NULL),
+                m_helper(NULL) {
                 // Set size.
                 setMinimumSize(640, 480);
 
@@ -74,9 +81,51 @@ namespace cockpit {
 
                 // Set layout manager.
                 setLayout(mainBox);
+
+#ifdef HAS_DL
+cout << "Opening libodvdcommaai.so...\n";
+m_dynamicObjectHandle = dlopen("libodvdcommaai.so", RTLD_LAZY);
+
+if (!m_dynamicObjectHandle) {
+    cerr << "Cannot open library: " << dlerror() << '\n';
+}
+else {
+    typedef odcore::reflection::Helper *createHelper_t();
+
+    // reset errors
+    dlerror();
+    createHelper_t* getHelper = (createHelper_t*) dlsym(m_dynamicObjectHandle, "newHelper");
+    const char *dlsym_error = dlerror();
+    if (dlsym_error) {
+        cerr << "Cannot load symbol 'mapper': " << dlsym_error << endl;
+        dlclose(m_dynamicObjectHandle);
+    }
+    else {
+        // Get pointer to external message handling.
+        m_helper = getHelper();
+    }
+}
+#endif
             }
 
-            LiveFeedWidget::~LiveFeedWidget() {}
+            LiveFeedWidget::~LiveFeedWidget() {
+#ifdef HAS_DL
+if (m_dynamicObjectHandle && m_helper) {
+    typedef void deleteHelper_t(odcore::reflection::Helper *);
+
+    // reset errors
+    dlerror();
+    deleteHelper_t* delHelper = (deleteHelper_t*) dlsym(m_dynamicObjectHandle, "deleteHelper");
+    const char *dlsym_error = dlerror();
+    if (dlsym_error) {
+        cerr << "Cannot load symbol 'mapper': " << dlsym_error << endl;
+        dlclose(m_dynamicObjectHandle);
+    }
+    delHelper(m_helper);
+    dlclose(m_dynamicObjectHandle);
+}
+#endif
+            }
 
             void LiveFeedWidget::nextContainer(Container &container) {
                 Lock l(m_dataViewMutex);
@@ -90,12 +139,17 @@ namespace cockpit {
 
                 // Try AutomotiveData first.
                 if (!successfullyMapped) {
-                    msg = GeneratedHeaders_AutomotiveData_Helper::map(container, successfullyMapped);
+                    msg = GeneratedHeaders_AutomotiveData_Helper::__map(container, successfullyMapped);
                 }
 
                 // If failed, try regular OpenDaVINCI messages.
                 if (!successfullyMapped) {
-                    msg = GeneratedHeaders_OpenDaVINCI_Helper::map(container, successfullyMapped);
+                    msg = GeneratedHeaders_OpenDaVINCI_Helper::__map(container, successfullyMapped);
+                }
+
+                // Try dynamic shared object as last.
+                if (!successfullyMapped && (m_helper != NULL)) {
+                    msg = m_helper->map(container, successfullyMapped);
                 }
 
                 if (successfullyMapped) {

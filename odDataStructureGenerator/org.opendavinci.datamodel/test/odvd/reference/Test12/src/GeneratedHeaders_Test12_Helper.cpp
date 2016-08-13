@@ -7,7 +7,22 @@
 #include <test12/GeneratedHeaders_Test12_Helper.h>
 #include <opendavinci/odcore/base/Visitable.h>
 #include <opendavinci/odcore/reflection/MessageFromVisitableVisitor.h>
+extern "C" {
+    odcore::reflection::Helper *newHelper() {
+        return new GeneratedHeaders_Test12_Helper;
+    }
+    void deleteHelper(odcore::reflection::Helper *h) {
+        delete h;
+    }
+}
+GeneratedHeaders_Test12_Helper::~GeneratedHeaders_Test12_Helper() {}
 void GeneratedHeaders_Test12_Helper::delegateVistor(odcore::data::Container &c, odcore::base::Visitor &v, bool &successfullyDelegated) {
+    GeneratedHeaders_Test12_Helper::__delegateVistor(c, v, successfullyDelegated);
+}
+odcore::reflection::Message GeneratedHeaders_Test12_Helper::map(odcore::data::Container &c, bool &successfullyMapped) {
+    return GeneratedHeaders_Test12_Helper::__map(c, successfullyMapped);
+}
+void GeneratedHeaders_Test12_Helper::__delegateVistor(odcore::data::Container &c, odcore::base::Visitor &v, bool &successfullyDelegated) {
     successfullyDelegated = false;
     if (c.getDataType() == Test12Simple::ID()) {
         Test12Simple payload = c.getData<Test12Simple>();
@@ -60,11 +75,11 @@ void GeneratedHeaders_Test12_Helper::delegateVistor(odcore::data::Container &c, 
         successfullyDelegated = true;
     }
 }
-odcore::reflection::Message GeneratedHeaders_Test12_Helper::map(odcore::data::Container &c, bool &successfullyMapped) {
+odcore::reflection::Message GeneratedHeaders_Test12_Helper::__map(odcore::data::Container &c, bool &successfullyMapped) {
     successfullyMapped = false;
     odcore::reflection::Message msg;
     odcore::reflection::MessageFromVisitableVisitor mfvv;
-    delegateVistor(c, mfvv, successfullyMapped);
+    __delegateVistor(c, mfvv, successfullyMapped);
     if (successfullyMapped) {
         msg = mfvv.getMessage();
     }

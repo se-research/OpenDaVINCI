@@ -41,7 +41,7 @@ class Container2MessageTest : public CxxTest::TestSuite {
             Container c(pc);
 
             bool successfullyMapped = false;
-            odcore::reflection::Message msg = GeneratedHeaders_OpenDaVINCI_Helper::map(c, successfullyMapped);
+            odcore::reflection::Message msg = GeneratedHeaders_OpenDaVINCI_Helper::__map(c, successfullyMapped);
 
             TS_ASSERT(successfullyMapped);
 

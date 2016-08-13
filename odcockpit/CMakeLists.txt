@@ -88,6 +88,16 @@ ELSE()
 ENDIF()
 
 ###########################################################################
+# Find dl.
+IF(UNIX)
+    FIND_PACKAGE (DL)
+    SET (LIBRARIES ${LIBRARIES}
+                   ${DL_LIBRARIES})
+    INCLUDE_DIRECTORIES (${DL_INCLUDE_DIRS})
+    SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DHAS_DL=YES")
+ENDIF()
+
+###########################################################################
 # Set header files from OpenDaVINCI.
 INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS})
 # Set header files from AutomotiveData.

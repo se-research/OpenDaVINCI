@@ -30,6 +30,7 @@
 
 #include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/io/conference/ContainerListener.h"
+#include "opendavinci/odcore/reflection/Helper.h"
 
 class QTreeWidget;
 class QTreeWidgetItem;
@@ -87,6 +88,10 @@ namespace cockpit {
                     unique_ptr<QTreeWidget> m_dataView;
                     map<string, QTreeWidgetItem* > m_dataToType;
 
+                    void *m_dynamicObjectHandle;
+                    odcore::reflection::Helper *m_helper;
+
+                private:
                     void transformContainerToTree(Container &container);
             };
 

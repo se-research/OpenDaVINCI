@@ -191,11 +191,16 @@ public class DataStructureGenerator {
         sb.append("#include <opendavinci/odcore/data/Container.h>"); sb.append("\r\n");
         sb.append("#include <opendavinci/odcore/base/Visitor.h>"); sb.append("\r\n");
         sb.append("#include <opendavinci/odcore/reflection/Message.h>"); sb.append("\r\n");
+        sb.append("#include <opendavinci/odcore/reflection/Helper.h>"); sb.append("\r\n");
 
-        sb.append("class GeneratedHeaders_" + odvdFilename + "_Helper {"); sb.append("\r\n");
+        sb.append("class GeneratedHeaders_" + odvdFilename + "_Helper : public odcore::reflection::Helper {"); sb.append("\r\n");
         sb.append("    public:"); sb.append("\r\n");
-        sb.append("        static void delegateVistor(odcore::data::Container &c, odcore::base::Visitor &v, bool &successfullyDelegated);"); sb.append("\r\n");
-        sb.append("        static odcore::reflection::Message map(odcore::data::Container &c, bool &successfullyMapped);"); sb.append("\r\n");
+        sb.append("        virtual ~GeneratedHeaders_" + odvdFilename + "_Helper();"); sb.append("\r\n");
+        sb.append("        virtual void delegateVistor(odcore::data::Container &c, odcore::base::Visitor &v, bool &successfullyDelegated);"); sb.append("\r\n");
+        sb.append("        virtual odcore::reflection::Message map(odcore::data::Container &c, bool &successfullyMapped);"); sb.append("\r\n");
+
+        sb.append("        static void __delegateVistor(odcore::data::Container &c, odcore::base::Visitor &v, bool &successfullyDelegated);"); sb.append("\r\n");
+        sb.append("        static odcore::reflection::Message __map(odcore::data::Container &c, bool &successfullyMapped);"); sb.append("\r\n");
         sb.append("};"); sb.append("\r\n");
 
 
@@ -231,7 +236,27 @@ public class DataStructureGenerator {
         sb.append("#include <opendavinci/odcore/base/Visitable.h>"); sb.append("\r\n");
         sb.append("#include <opendavinci/odcore/reflection/MessageFromVisitableVisitor.h>"); sb.append("\r\n");
 
+        sb.append("extern \"C\" {"); sb.append("\r\n");
+        sb.append("    odcore::reflection::Helper *newHelper() {"); sb.append("\r\n");
+        sb.append("        return new GeneratedHeaders_" + odvdFilename + "_Helper;"); sb.append("\r\n");
+        sb.append("    }"); sb.append("\r\n");
+
+        sb.append("    void deleteHelper(odcore::reflection::Helper *h) {"); sb.append("\r\n");
+        sb.append("        delete h;"); sb.append("\r\n");
+        sb.append("    }"); sb.append("\r\n");
+        sb.append("}"); sb.append("\r\n");
+
+        sb.append("GeneratedHeaders_" + odvdFilename + "_Helper::~GeneratedHeaders_" + odvdFilename + "_Helper() {}"); sb.append("\r\n");
+
         sb.append("void GeneratedHeaders_" + odvdFilename + "_Helper::delegateVistor(odcore::data::Container &c, odcore::base::Visitor &v, bool &successfullyDelegated) {"); sb.append("\r\n");
+        sb.append("    GeneratedHeaders_" + odvdFilename + "_Helper::__delegateVistor(c, v, successfullyDelegated);"); sb.append("\r\n");
+        sb.append("}"); sb.append("\r\n");
+
+        sb.append("odcore::reflection::Message GeneratedHeaders_" + odvdFilename + "_Helper::map(odcore::data::Container &c, bool &successfullyMapped) {"); sb.append("\r\n");
+        sb.append("    return GeneratedHeaders_" + odvdFilename + "_Helper::__map(c, successfullyMapped);"); sb.append("\r\n");
+        sb.append("}"); sb.append("\r\n");
+
+        sb.append("void GeneratedHeaders_" + odvdFilename + "_Helper::__delegateVistor(odcore::data::Container &c, odcore::base::Visitor &v, bool &successfullyDelegated) {"); sb.append("\r\n");
         sb.append("    successfullyDelegated = false;"); sb.append("\r\n");
 
         for(String file : listOfGeneratedHeaderFiles) {
@@ -253,12 +278,12 @@ public class DataStructureGenerator {
         }
         sb.append("}"); sb.append("\r\n");
 
-        sb.append("odcore::reflection::Message GeneratedHeaders_" + odvdFilename + "_Helper::map(odcore::data::Container &c, bool &successfullyMapped) {"); sb.append("\r\n");
+        sb.append("odcore::reflection::Message GeneratedHeaders_" + odvdFilename + "_Helper::__map(odcore::data::Container &c, bool &successfullyMapped) {"); sb.append("\r\n");
         sb.append("    successfullyMapped = false;"); sb.append("\r\n");
         sb.append("    odcore::reflection::Message msg;"); sb.append("\r\n");
 
         sb.append("    odcore::reflection::MessageFromVisitableVisitor mfvv;"); sb.append("\r\n");
-        sb.append("    delegateVistor(c, mfvv, successfullyMapped);"); sb.append("\r\n");
+        sb.append("    __delegateVistor(c, mfvv, successfullyMapped);"); sb.append("\r\n");
         sb.append("    if (successfullyMapped) {"); sb.append("\r\n");
         sb.append("        msg = mfvv.getMessage();"); sb.append("\r\n");
         sb.append("    }"); sb.append("\r\n");

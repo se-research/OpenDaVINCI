@@ -82,6 +82,9 @@ IF(     NOT("${CMAKE_C_COMPILER}" STREQUAL "")
     MESSAGE(STATUS "Found C++ compiler:         Building automotivedata")
     SET(BUILD_AUTOMOTIVEDATA 1)
 
+    MESSAGE(STATUS "Found C++ compiler:         Building ODVDCommaAI")
+    SET(BUILD_ODVDCOMMAAI 1)
+
     MESSAGE(STATUS "Found C++ compiler:         Building opendavinci-tutorials")
     SET(BUILD_TUTORIALS 1)
 
@@ -264,6 +267,34 @@ IF(${BUILD_AUTOMOTIVEDATA})
         TEST_BEFORE_INSTALL 1
         TEST_COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}
         INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libautomotivedata-prefix/src/libautomotivedata-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libautomotivedata-prefix/src/libautomotivedata-build --target ${MAKE_PACKAGE})
+ENDIF()
+
+# Next, the project for the CommaAI data structures is built.
+IF(${BUILD_ODVDCOMMAAI})
+    # This "external project" simply deletes the existing libautomotivedata.
+    ExternalProject_Add (libodvdcommaai-cleanup
+        DEPENDS libopendavinci
+        DOWNLOAD_COMMAND ""
+        UPDATE_COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_BINARY_DIR}/libodvdcommaai
+        PATCH_COMMAND ""
+        SOURCE_DIR ""
+        CONFIGURE_COMMAND ""
+        BUILD_COMMAND ""
+        TEST_COMMAND ""
+        INSTALL_COMMAND "")
+
+    ExternalProject_Add (libodvdcommaai
+        DEPENDS libodvdcommaai-cleanup
+        DOWNLOAD_COMMAND ""
+        UPDATE_COMMAND cd ${CMAKE_CURRENT_BINARY_DIR} && ${Java_JAVA_EXECUTABLE} -jar ${ODDATASTRUCTUREGENERATOR_EXECUTABLE} --withCMake ${CMAKE_CURRENT_SOURCE_DIR}/ODVDCommaAI.odvd
+        PATCH_COMMAND ""
+        SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/libodvdcommaai"
+        CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
+        CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}"
+        CMAKE_ARGS "-DCXXTEST_INCLUDE_DIR=${CXXTEST_INCLUDE_DIR}"
+        TEST_BEFORE_INSTALL 1
+        TEST_COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}
+        INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodvdcommaai-prefix/src/libodvdcommaai-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodvdcommaai-prefix/src/libodvdcommaai-build --target ${MAKE_PACKAGE})
 ENDIF()
 
 # Next, build libopendlv.
