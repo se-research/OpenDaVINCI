@@ -41,8 +41,12 @@ namespace odcore {
                 /**
                  * This method is called from a Visitable before the first
                  * visit(...) call.
+                 *
+                 * @param id Identifier of the visitable; typically the ID() of the visited message.
+                 * @param shortName of the visited message.
+                 * @param longName of the visited message.
                  */
-                virtual void beginVisit() = 0;
+                virtual void beginVisit(const int32_t &id, const string &shortName, const string &longName) = 0;
 
                 /**
                  * This method is called from a Visitable after the last

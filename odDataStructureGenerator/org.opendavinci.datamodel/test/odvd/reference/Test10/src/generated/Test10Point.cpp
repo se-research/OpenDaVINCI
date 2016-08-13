@@ -6,9 +6,9 @@
 
 #include <memory>
 
-#include "opendavinci/odcore/serialization/Deserializer.h"
-#include "opendavinci/odcore/serialization/SerializationFactory.h"
-#include "opendavinci/odcore/serialization/Serializer.h"
+#include <opendavinci/odcore/serialization/Deserializer.h>
+#include <opendavinci/odcore/serialization/SerializationFactory.h>
+#include <opendavinci/odcore/serialization/Serializer.h>
 
 #include "test10/generated/Test10Point.h"
 
@@ -90,7 +90,7 @@
 	}
 
 	void Test10Point::accept(odcore::base::Visitor &v) {
-		v.beginVisit();
+		v.beginVisit(ID(), ShortName(), LongName());
 		v.visit(1, "Test10Point.x", "x", m_x);
 		v.visit(2, "Test10Point.y", "y", m_y);
 		v.endVisit();

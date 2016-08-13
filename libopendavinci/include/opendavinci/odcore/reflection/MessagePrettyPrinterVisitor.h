@@ -67,7 +67,7 @@ namespace odcore {
                 virtual void getOutput(ostream &o);
 
             public:
-                virtual void beginVisit();
+                virtual void beginVisit(const int32_t &id, const string &shortName, const string &longName);
                 virtual void endVisit();
 
                 virtual void visit(const uint32_t &id, const string &longName, const string &shortName, odcore::serialization::Serializable &v);

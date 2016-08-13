@@ -9,9 +9,9 @@
 #include <sstream>
 #include <utility>
 
-#include "opendavinci/odcore/serialization/Deserializer.h"
-#include "opendavinci/odcore/serialization/SerializationFactory.h"
-#include "opendavinci/odcore/serialization/Serializer.h"
+#include <opendavinci/odcore/serialization/Deserializer.h>
+#include <opendavinci/odcore/serialization/SerializationFactory.h>
+#include <opendavinci/odcore/serialization/Serializer.h>
 
 #include "test6/generated/testpackage/Test6.h"
 
@@ -194,7 +194,7 @@ namespace testpackage {
 		}
 	
 		void Test6::accept(odcore::base::Visitor &v) {
-			v.beginVisit();
+			v.beginVisit(ID(), ShortName(), LongName());
 			v.visit(1, "Test6.attribute1", "attribute1", m_attribute1);
 			v.visit(2, "Test6.attribute2", "attribute2", m_attribute2);
 			v.visit(3, "Test6.attribute3", "attribute3", m_attribute3);

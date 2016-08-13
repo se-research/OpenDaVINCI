@@ -45,6 +45,11 @@
                 <include name="TEST-*.xml"/>
             </fileset>
         </delete>
+        <delete>
+            <fileset dir="src">
+                <include name="GeneratedHeaders*.cpp"/>
+            </fileset>
+        </delete>
     </target>
     
     <target name="generate-xtext-artifacts">

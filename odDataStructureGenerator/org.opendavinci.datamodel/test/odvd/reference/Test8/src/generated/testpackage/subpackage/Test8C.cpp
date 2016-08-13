@@ -6,9 +6,9 @@
 
 #include <memory>
 
-#include "opendavinci/odcore/serialization/Deserializer.h"
-#include "opendavinci/odcore/serialization/SerializationFactory.h"
-#include "opendavinci/odcore/serialization/Serializer.h"
+#include <opendavinci/odcore/serialization/Deserializer.h>
+#include <opendavinci/odcore/serialization/SerializationFactory.h>
+#include <opendavinci/odcore/serialization/Serializer.h>
 
 #include "test8/generated/testpackage/subpackage/Test8C.h"
 
@@ -80,7 +80,7 @@ namespace testpackage {
 			}
 		
 			void Test8C::accept(odcore::base::Visitor &v) {
-				v.beginVisit();
+				v.beginVisit(ID(), ShortName(), LongName());
 				v.visit(1, "Test8C.attribute1", "attribute1", m_attribute1);
 				v.endVisit();
 			}

@@ -9,9 +9,9 @@
 #include <sstream>
 #include <utility>
 
-#include "opendavinci/odcore/serialization/Deserializer.h"
-#include "opendavinci/odcore/serialization/SerializationFactory.h"
-#include "opendavinci/odcore/serialization/Serializer.h"
+#include <opendavinci/odcore/serialization/Deserializer.h>
+#include <opendavinci/odcore/serialization/SerializationFactory.h>
+#include <opendavinci/odcore/serialization/Serializer.h>
 
 #include "test11/generated/Test11Lists.h"
 
@@ -349,7 +349,7 @@
 	}
 
 	void Test11Lists::accept(odcore::base::Visitor &v) {
-		v.beginVisit();
+		v.beginVisit(ID(), ShortName(), LongName());
 		v.endVisit();
 	}
 

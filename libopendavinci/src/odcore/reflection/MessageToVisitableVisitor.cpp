@@ -37,7 +37,7 @@ namespace odcore {
 
         MessageToVisitableVisitor::~MessageToVisitableVisitor() {}
 
-        void MessageToVisitableVisitor::beginVisit() {}
+        void MessageToVisitableVisitor::beginVisit(const int32_t &/*id*/, const string &/*shortName*/, const string &/*longName*/) {}
 
         void MessageToVisitableVisitor::endVisit() {}
 

@@ -44,7 +44,7 @@ namespace odcore {
             o << m_buffer.str();
         }
 
-        void MessagePrettyPrinterVisitor::beginVisit() {}
+        void MessagePrettyPrinterVisitor::beginVisit(const int32_t &/*id*/, const string &/*shortName*/, const string &/*longName*/) {}
 
         void MessagePrettyPrinterVisitor::endVisit() {}
 

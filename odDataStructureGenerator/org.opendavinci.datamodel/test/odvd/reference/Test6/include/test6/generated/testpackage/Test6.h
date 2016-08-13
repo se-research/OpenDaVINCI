@@ -18,7 +18,7 @@
 namespace testpackage {
 	using namespace std;
 	
-	class Test6 : public odcore::data::SerializableData, public odcore::base::Visitable {
+	class OPENDAVINCI_API Test6 : public odcore::data::SerializableData, public odcore::base::Visitable {
 		public:
 			Test6();
 	

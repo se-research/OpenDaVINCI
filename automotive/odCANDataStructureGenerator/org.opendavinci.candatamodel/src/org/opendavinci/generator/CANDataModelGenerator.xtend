@@ -615,7 +615,7 @@ namespace canmapping {
 	}
 
 	void «className»::accept(odcore::base::Visitor &v) {
-	v.beginVisit();
+	v.beginVisit(ID(), ShortName(), LongName());
 	«IF mapping.mappings.size==0»
 	(void)v;
 	«ELSE»

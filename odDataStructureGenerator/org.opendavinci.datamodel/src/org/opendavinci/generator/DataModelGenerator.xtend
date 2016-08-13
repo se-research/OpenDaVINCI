@@ -262,7 +262,7 @@ namespace «s.get(i)» {
 	def generateHeaderFileContentBody(Message msg, HashMap<String, EnumDescription> enums) '''
 using namespace std;
 
-class «msg.message.substring(msg.message.lastIndexOf('.') + 1) /* These lines generate the class structure and SerializableData and Visitable as default. */» : public odcore::data::SerializableData, public odcore::base::Visitable {
+class OPENDAVINCI_API «msg.message.substring(msg.message.lastIndexOf('.') + 1) /* These lines generate the class structure and SerializableData and Visitable as default. */» : public odcore::data::SerializableData, public odcore::base::Visitable {
 	«IF enums.size > 0 /*These lines generate the enum declarations.*/»
 	«generateHeaderFileEnum(msg, enums)»
 	«ENDIF»
@@ -598,14 +598,14 @@ class «msg.message.substring(msg.message.lastIndexOf('.') + 1) /* These lines g
 	«ENDIF»
 	«IF !hasGeneratedMacros && a.fixedarray != null && a.fixedarray.name != null && a.fixedarray.name.length > 0»
 #include <cstring>
-#include "opendavinci/odcore/opendavinci.h"
+#include <opendavinci/odcore/opendavinci.h>
 		«{hasGeneratedMacros = true; ""}»
 	«ENDIF»
 «ENDFOR»
 
-#include "opendavinci/odcore/serialization/Deserializer.h"
-#include "opendavinci/odcore/serialization/SerializationFactory.h"
-#include "opendavinci/odcore/serialization/Serializer.h"
+#include <opendavinci/odcore/serialization/Deserializer.h>
+#include <opendavinci/odcore/serialization/SerializationFactory.h>
+#include <opendavinci/odcore/serialization/Serializer.h>
 
 «IF msg.message.split("\\.").length > 1 /* Here, we include our own header file. */»
 #include "«toplevelIncludeFolder»/«includeDirectoryPrefix + "/" + msg.message.substring(0, msg.message.lastIndexOf('.')).replaceAll("\\.", "/") + "/" + msg.message.substring(msg.message.lastIndexOf('.') + 1)».h"
@@ -782,7 +782,7 @@ namespace «s.get(i)» {
 	«ENDIF»
 «ENDFOR»
 	void «/* Here, we generate the accept() method. */msg.message.substring(msg.message.lastIndexOf('.') + 1)»::accept(odcore::base::Visitor &v) {
-		v.beginVisit();
+		v.beginVisit(ID(), ShortName(), LongName());
 		«FOR a : msg.attributes»
 			«a.generateVisitableAttribute(msg, enums)»
 		«ENDFOR»
@@ -1268,8 +1268,8 @@ namespace «s.get(i)» {
 #include <string>
 #include <vector>
 
-#include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/strings/StringToolbox.h"
+#include <opendavinci/odcore/opendavinci.h>
+#include <opendavinci/odcore/strings/StringToolbox.h>
 
 #include "«toplevelIncludeFolder»/GeneratedHeaders_«generatedHeadersFile + ".h"»"
 «IF msg.message.split("\\.").length > 1 /* Here, we include our own header file. */»
@@ -1282,7 +1282,7 @@ namespace «s.get(i)» {
 	«IF a.scalar != null»
 		«IF !typeMap.containsKey(a.scalar.type) && !enums.containsKey(a.scalar.type)»
 			«IF a.scalar.type.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
-				#include "«IF a.scalar.type.contains("odcore::")»opendavinci/«ENDIF»«a.scalar.type.replaceAll("::", "/")».h"
+				#include <«IF a.scalar.type.contains("odcore::")»opendavinci/«ENDIF»«a.scalar.type.replaceAll("::", "/")».h>
 			«ELSE /* Use the types only as specified by the user. */»
 				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.scalar.type.replaceAll("\\.", "/")».h"
 			«ENDIF»
@@ -1291,7 +1291,7 @@ namespace «s.get(i)» {
 	«IF a.list != null && a.list.modifier != null && a.list.modifier.length > 0 && a.list.modifier.equalsIgnoreCase("list")»
 		«IF !typeMap.containsKey(a.list.type) && !enums.containsKey(a.list.type)»
 			«IF a.list.type.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
-				#include "«IF a.list.type.contains("odcore::")»opendavinci/«ENDIF»«a.list.type.replaceAll("::", "/")».h"
+				#include <«IF a.list.type.contains("odcore::")»opendavinci/«ENDIF»«a.list.type.replaceAll("::", "/")».h>
 			«ELSE /* Use the types only as specified by the user. */»
 				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.list.type.replaceAll("\\.", "/")».h"
 			«ENDIF»
@@ -1300,14 +1300,14 @@ namespace «s.get(i)» {
 	«IF a.map != null && a.map.modifier != null && a.map.modifier.length > 0 && a.map.modifier.equalsIgnoreCase("map")»
 		«IF !typeMap.containsKey(a.map.primaryType) && !enums.containsKey(a.map.primaryType)»
 			«IF a.map.primaryType.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
-				#include "«IF a.map.primaryType.contains("odcore::")»opendavinci/«ENDIF»«a.map.primaryType.replaceAll("::", "/")».h"
+				#include <«IF a.map.primaryType.contains("odcore::")»opendavinci/«ENDIF»«a.map.primaryType.replaceAll("::", "/")».h>
 			«ELSE /* Use the types only as specified by the user. */»
 				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.map.primaryType.replaceAll("\\.", "/")».h"
 			«ENDIF»
 		«ENDIF»
 		«IF !typeMap.containsKey(a.map.secondaryType) && !enums.containsKey(a.map.secondaryType)»
 			«IF a.map.secondaryType.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
-				#include "«IF a.map.secondaryType.contains("odcore::")»opendavinci/«ENDIF»«a.map.secondaryType.replaceAll("::", "/")».h"
+				#include <«IF a.map.secondaryType.contains("odcore::")»opendavinci/«ENDIF»«a.map.secondaryType.replaceAll("::", "/")».h>
 			«ELSE /* Use the types only as specified by the user. */»
 				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.map.secondaryType.replaceAll("\\.", "/")».h"
 			«ENDIF»
@@ -1316,7 +1316,7 @@ namespace «s.get(i)» {
 	«IF a.fixedarray != null»
 		«IF !typeMap.containsKey(a.fixedarray.type) && !enums.containsKey(a.fixedarray.type)»
 			«IF a.fixedarray.type.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
-				#include "«IF a.fixedarray.type.contains("odcore::")»opendavinci/«ENDIF»«a.fixedarray.type.replaceAll("::", "/")».h"
+				#include <«IF a.fixedarray.type.contains("odcore::")»opendavinci/«ENDIF»«a.fixedarray.type.replaceAll("::", "/")».h>
 			«ELSE /* Use the types only as specified by the user. */»
 				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.fixedarray.type.replaceAll("\\.", "/")».h"
 			«ENDIF»

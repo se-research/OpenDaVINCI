@@ -132,7 +132,7 @@ namespace odcore {
             }
 
             void CompressedImage::accept(Visitor &v) {
-                v.beginVisit();
+                v.beginVisit(ID(), ShortName(), LongName());
                 v.visit(1,
                         "CompressedImage.name",
                         "name",

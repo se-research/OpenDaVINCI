@@ -29,7 +29,7 @@ class Serializable;
 
         ProtoDeserializerVisitor::~ProtoDeserializerVisitor() {}
 
-        void ProtoDeserializerVisitor::beginVisit() {}
+        void ProtoDeserializerVisitor::beginVisit(const int32_t &/*id*/, const string &/*shortName*/, const string &/*longName*/) {}
 
         void ProtoDeserializerVisitor::endVisit() {}
 

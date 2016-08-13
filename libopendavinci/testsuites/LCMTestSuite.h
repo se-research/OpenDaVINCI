@@ -171,7 +171,7 @@ class LCMVehicleControl : public odcore::data::SerializableData, public odcore::
     }
 
     void accept(odcore::base::Visitor &v) {
-        v.beginVisit();
+        v.beginVisit(ID(), ShortName(), LongName());
         v.visit(1, "automotive.LCMVehicleControl.speed", "speed", m_speed);
         v.visit(2, "automotive.LCMVehicleControl.acceleration", "acceleration", m_acceleration);
         v.visit(3, "automotive.LCMVehicleControl.steeringWheelAngle", "steeringWheelAngle", m_steeringWheelAngle);

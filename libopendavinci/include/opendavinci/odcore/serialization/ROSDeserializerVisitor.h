@@ -102,7 +102,7 @@ namespace odcore {
                 virtual void read(const uint32_t &id, void *data, const uint32_t &size);
 
             private:
-                virtual void beginVisit();
+                virtual void beginVisit(const int32_t &id, const string &shortName, const string &longName);
                 virtual void endVisit();
 
                 virtual void read(const uint32_t &id, const string &longName, const string &shortName, Serializable &s);

@@ -114,7 +114,7 @@ namespace odcore {
         }
 
         void Message::accept(Visitor &v) {
-            v.beginVisit();
+            v.beginVisit(getID(), getShortName(), getLongName());
 
             vector<std::shared_ptr<AbstractField> >::iterator it = m_fields.begin();
             while (it != m_fields.end()) {

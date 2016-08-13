@@ -15,8 +15,8 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/strings/StringToolbox.h"
+#include <opendavinci/odcore/opendavinci.h>
+#include <opendavinci/odcore/strings/StringToolbox.h>
 
 #include "test7/GeneratedHeaders_Test7.h"
 #include "test7/generated/testpackage/Test7A.h"

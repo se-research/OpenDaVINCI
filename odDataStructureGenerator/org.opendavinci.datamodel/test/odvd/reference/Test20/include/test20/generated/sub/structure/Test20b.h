@@ -18,7 +18,7 @@ namespace sub {
 	namespace structure {
 		using namespace std;
 		
-		class Test20b : public odcore::data::SerializableData, public odcore::base::Visitable {
+		class OPENDAVINCI_API Test20b : public odcore::data::SerializableData, public odcore::base::Visitable {
 			public:
 				Test20b();
 		

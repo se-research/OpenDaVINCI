@@ -162,7 +162,7 @@ class MyVisitable : public Serializable, public Visitable {
         }
 
         virtual void accept(odcore::base::Visitor &v) {
-            v.beginVisit();
+            v.beginVisit(1, "MyVisitable", "MyVisitable");
             v.visit(1, "MyVisitable::att1", "att1", m_att1);
             v.visit(2, "MyVisitable::att2", "att2", m_att2);
             v.visit(3, "MyVisitable::att3", "att3", m_att3);
@@ -182,7 +182,7 @@ class MyVisitable : public Serializable, public Visitable {
 // Pretty printer.
 class MyPrintVisitor : public Visitor {
     public:
-        virtual void beginVisit() {}
+        virtual void beginVisit(const int32_t &/*id*/, const string &/*shortName*/, const string &/*longName*/) {}
 
         virtual void endVisit() {}
 

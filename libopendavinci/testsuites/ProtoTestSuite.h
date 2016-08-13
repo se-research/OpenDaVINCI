@@ -184,7 +184,7 @@ class ProtoVehicleControl : public odcore::data::SerializableData, public odcore
     }
 
     void accept(odcore::base::Visitor &v) {
-        v.beginVisit();
+        v.beginVisit(ID(), ShortName(), LongName());
         v.visit(1, "ProtoVehicleControl.speed", "speed", m_speed);
         v.visit(2, "ProtoVehicleControl.acceleration", "acceleration", m_acceleration);
         v.visit(3, "ProtoVehicleControl.steeringWheelAngle", "steeringWheelAngle", m_steeringWheelAngle);

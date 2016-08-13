@@ -30,7 +30,7 @@ class Serializable;
 
         QueryableNetstringsSerializerVisitor::~QueryableNetstringsSerializerVisitor() {}
 
-        void QueryableNetstringsSerializerVisitor::beginVisit() {}
+        void QueryableNetstringsSerializerVisitor::beginVisit(const int32_t &/*id*/, const string &/*shortName*/, const string &/*longName*/) {}
 
         void QueryableNetstringsSerializerVisitor::endVisit() {}
 

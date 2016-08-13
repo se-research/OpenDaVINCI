@@ -6,9 +6,9 @@
 
 #include <memory>
 
-#include "opendavinci/odcore/serialization/Deserializer.h"
-#include "opendavinci/odcore/serialization/SerializationFactory.h"
-#include "opendavinci/odcore/serialization/Serializer.h"
+#include <opendavinci/odcore/serialization/Deserializer.h>
+#include <opendavinci/odcore/serialization/SerializationFactory.h>
+#include <opendavinci/odcore/serialization/Serializer.h>
 
 #include "test20/generated/sub/structure2/Test20c.h"
 
@@ -92,7 +92,7 @@ namespace sub {
 			}
 		
 			void Test20c::accept(odcore::base::Visitor &v) {
-				v.beginVisit();
+				v.beginVisit(ID(), ShortName(), LongName());
 				v.visit(1, "Test20c.val3", "val3", m_val3);
 				v.visit(2, "Test20c.val4", "val4", m_val4);
 				v.endVisit();

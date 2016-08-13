@@ -71,7 +71,7 @@ class MyRawVisitable : public odcore::serialization::Serializable, public Visita
         uint32_t size;
         
         virtual void accept(odcore::base::Visitor &v) {
-            v.beginVisit();
+            v.beginVisit(1, "MyNestedVisitable", "MyNestedVisitable");
             v.visit(1, "MyNestedVisitable::data", "data", data, size);
             v.endVisit();
         }
@@ -107,7 +107,7 @@ class MyNestedVisitable : public odcore::serialization::Serializable, public Vis
         double m_double;
         
         virtual void accept(odcore::base::Visitor &v) {
-            v.beginVisit();
+            v.beginVisit(1, "MyNestedVisitable", "MyNestedVisitable");
             v.visit(1, "MyNestedVisitable::m_double", "m_double", m_double);
             v.endVisit();
         }
@@ -201,7 +201,7 @@ class MyVisitable : public Serializable, public Visitable {
         }
 
         virtual void accept(odcore::base::Visitor &v) {
-            v.beginVisit();
+            v.beginVisit(1, "MyVisitable", "MyVisitable");
             v.visit(1, "MyVisitable::att1", "att1", m_att1);
             v.visit(2, "MyVisitable::att2", "att2", m_att2);
             v.visit(3, "MyVisitable::att3", "att3", m_att3);

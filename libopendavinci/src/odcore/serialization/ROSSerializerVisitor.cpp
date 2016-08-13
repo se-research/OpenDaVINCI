@@ -228,7 +228,7 @@ class Serializable;
         }
 
 
-        void ROSSerializerVisitor::beginVisit() {}
+        void ROSSerializerVisitor::beginVisit(const int32_t &/*id*/, const string &/*shortName*/, const string &/*longName*/) {}
 
         void ROSSerializerVisitor::endVisit() {}
 

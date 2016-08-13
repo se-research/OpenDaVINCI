@@ -49,9 +49,9 @@ class Container2MessageTest : public CxxTest::TestSuite {
             msg.accept(mppv);
             mppv.getOutput(cout);
 
-//            TS_ASSERT(msg.getID() == odcore::data::player::PlayerCommand::ID());
-//            TS_ASSERT(msg.getLongName() == "odcore::data::player::PlayerCommand");
-//            TS_ASSERT(msg.getShortName() == "PlayerCommand");
+            TS_ASSERT(msg.getID() == odcore::data::player::PlayerCommand::ID());
+            TS_ASSERT(msg.getLongName() == "odcore.data.player.PlayerCommand");
+            TS_ASSERT(msg.getShortName() == "PlayerCommand");
         }
 };
 

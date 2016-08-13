@@ -6,9 +6,9 @@
 
 #include <memory>
 
-#include "opendavinci/odcore/serialization/Deserializer.h"
-#include "opendavinci/odcore/serialization/SerializationFactory.h"
-#include "opendavinci/odcore/serialization/Serializer.h"
+#include <opendavinci/odcore/serialization/Deserializer.h>
+#include <opendavinci/odcore/serialization/SerializationFactory.h>
+#include <opendavinci/odcore/serialization/Serializer.h>
 
 #include "test12/generated/Test12Complex.h"
 
@@ -150,7 +150,7 @@
 	}
 
 	void Test12Complex::accept(odcore::base::Visitor &v) {
-		v.beginVisit();
+		v.beginVisit(ID(), ShortName(), LongName());
 		v.visit(1, "Test12Complex.attribute1", "attribute1", m_attribute1);
 		v.visit(2, "Test12Complex.attribute2", "attribute2", m_attribute2);
 		v.visit(3, "Test12Complex.attribute3", "attribute3", m_attribute3);

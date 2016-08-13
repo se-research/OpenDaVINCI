@@ -18,7 +18,7 @@ namespace test13 {
 	namespace subpackage {
 		using namespace std;
 		
-		class Test13Simple : public odcore::data::SerializableData, public odcore::base::Visitable {
+		class OPENDAVINCI_API Test13Simple : public odcore::data::SerializableData, public odcore::base::Visitable {
 			public:
 				enum ButtonState {
 					PRESSED = 1,

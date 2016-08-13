@@ -93,13 +93,13 @@ namespace cockpit {
                 if (successfullyDelegated) {
                     Message msg = mttv.getMessage();
                     //create new Header if needed
-                    if (m_dataToType.find(msg.getShortName()) == m_dataToType.end()) {
+                    if (m_dataToType.find(msg.getLongName()) == m_dataToType.end()) {
                         QTreeWidgetItem *newHeader = new QTreeWidgetItem(m_dataView.get());
-                        newHeader->setText(0, msg.getShortName().c_str());
-                        m_dataToType[msg.getShortName()] = newHeader;
+                        newHeader->setText(0, msg.getLongName().c_str());
+                        m_dataToType[msg.getLongName()] = newHeader;
                     }
 
-                    QTreeWidgetItem *entry = m_dataToType[msg.getShortName()];
+                    QTreeWidgetItem *entry = m_dataToType[msg.getLongName()];
                     if (static_cast<uint32_t>(entry->childCount()) != entries.size()) {
                         entry->takeChildren();
 

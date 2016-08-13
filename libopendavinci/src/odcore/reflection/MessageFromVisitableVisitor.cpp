@@ -44,7 +44,11 @@ namespace odcore {
             return m_message;
         }
 
-        void MessageFromVisitableVisitor::beginVisit() {}
+        void MessageFromVisitableVisitor::beginVisit(const int32_t &id, const string &shortName, const string &longName) {
+            m_message.setID(id);
+            m_message.setShortName(shortName);
+            m_message.setLongName(longName);
+        }
 
         void MessageFromVisitableVisitor::endVisit() {}
 

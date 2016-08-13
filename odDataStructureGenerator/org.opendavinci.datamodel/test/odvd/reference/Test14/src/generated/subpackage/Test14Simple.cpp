@@ -6,9 +6,9 @@
 
 #include <memory>
 
-#include "opendavinci/odcore/serialization/Deserializer.h"
-#include "opendavinci/odcore/serialization/SerializationFactory.h"
-#include "opendavinci/odcore/serialization/Serializer.h"
+#include <opendavinci/odcore/serialization/Deserializer.h>
+#include <opendavinci/odcore/serialization/SerializationFactory.h>
+#include <opendavinci/odcore/serialization/Serializer.h>
 
 #include "test14/generated/subpackage/Test14Simple.h"
 
@@ -79,7 +79,7 @@ namespace subpackage {
 		}
 	
 		void Test14Simple::accept(odcore::base::Visitor &v) {
-			v.beginVisit();
+			v.beginVisit(ID(), ShortName(), LongName());
 			int32_t int32t_buttonState = m_buttonState;
 			v.visit(1, "Test14Simple.buttonState", "buttonState", int32t_buttonState);
 			m_buttonState = static_cast<Test14Simple::ButtonState>(int32t_buttonState);

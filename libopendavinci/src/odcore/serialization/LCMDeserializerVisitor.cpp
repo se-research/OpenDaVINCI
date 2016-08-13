@@ -260,7 +260,7 @@ class Serializable;
         }
 
 
-        void LCMDeserializerVisitor::beginVisit() {}
+        void LCMDeserializerVisitor::beginVisit(const int32_t &/*id*/, const string &/*shortName*/, const string &/*longName*/) {}
 
         void LCMDeserializerVisitor::endVisit() {}
 

@@ -37,7 +37,7 @@ namespace odcore {
 
         CSVFromVisitableVisitor::~CSVFromVisitableVisitor() {}
 
-        void CSVFromVisitableVisitor::beginVisit() {}
+        void CSVFromVisitableVisitor::beginVisit(const int32_t &/*id*/, const string &/*shortName*/, const string &/*longName*/) {}
 
         void CSVFromVisitableVisitor::endVisit() {
             if (m_addHeader) {

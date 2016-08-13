@@ -63,7 +63,7 @@ namespace odcore {
                 virtual ~QueryableNetstringsDeserializerVisitor();
 
             public:
-                virtual void beginVisit();
+                virtual void beginVisit(const int32_t &id, const string &shortName, const string &longName);
                 virtual void endVisit();
 
                 virtual void visit(const uint32_t &id, const string &longName, const string &shortName, Serializable &v);
