@@ -24,7 +24,7 @@
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/serialization/Serializable.h"
+#include "opendavinci/odcore/data/SerializableData.h"
 #include "opendavinci/odcore/base/Visitable.h"
 #include "opendavinci/odcore/reflection/Field.h"
 #include "opendavinci/generated/odcore/data/reflection/AbstractField.h"
@@ -39,7 +39,7 @@ namespace odcore {
         /**
          * This class is a generic Message representation.
          */
-        class OPENDAVINCI_API Message : public odcore::serialization::Serializable, public odcore::base::Visitable {
+        class OPENDAVINCI_API Message : public odcore::data::SerializableData, public odcore::base::Visitable {
             public:
                 Message();
 
@@ -69,6 +69,19 @@ namespace odcore {
 
             public:
                 virtual void accept(odcore::base::Visitor &v);
+
+                virtual int32_t getID() const;
+
+                virtual const string getShortName() const;
+
+                virtual const string getLongName() const;
+
+                virtual const string toString() const;
+
+            public:
+                void setID(const int32_t &id);
+                void setShortName(const string &sn);
+                void setLongName(const string &ln);
 
             private:
                 /**
@@ -171,6 +184,9 @@ namespace odcore {
                 }
 
             private:
+                int32_t m_ID;
+                string m_shortName;
+                string m_longName;
                 vector<std::shared_ptr<odcore::data::reflection::AbstractField> > m_fields;
         };
 

@@ -88,8 +88,6 @@ namespace cockpit {
                     map<string, QTreeWidgetItem* > m_dataToType;
 
                     void transformContainerToTree(Container &container);
-
-                    void addMessageToTree(const string &messageName, odcore::data::Container &container, odcore::base::Visitable &v);
             };
 
         }
