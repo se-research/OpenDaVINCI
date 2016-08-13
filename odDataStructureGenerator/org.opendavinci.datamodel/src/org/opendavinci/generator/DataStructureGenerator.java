@@ -152,10 +152,16 @@ public class DataStructureGenerator {
 		sb.append(" * THIS IS A GENERATED FILE - CHANGES WILL BE OVERWRITTEN."); sb.append("\r\n");
 		sb.append(" */"); sb.append("\r\n");
         sb.append("\r\n");
+        String headerGuard = "GeneratedHeaders_" + odvdFilename + "_H";
+        sb.append("#ifndef " + headerGuard.toUpperCase()); sb.append("\r\n");
+        sb.append("#define " + headerGuard.toUpperCase()); sb.append("\r\n");
+        sb.append("\r\n");
 
         for(String file : listOfGeneratedHeaderFiles) {
     		sb.append("#include \"" + file.replaceFirst("include/", "") + "\""); sb.append("\r\n");
         }
+        sb.append("\r\n");
+        sb.append("#endif //" + headerGuard.toUpperCase()); sb.append("\r\n");
 
 		System.out.print((DataStructureGenerator.appendGeneratedHeadersFile ? "Appending" : "Creating") + " '" + folder + "/include/" + odvdFilename.toLowerCase() + "/GeneratedHeaders_" + odvdFilename + ".h' ");
 		File f = new File(folder + "/include/" + odvdFilename.toLowerCase() + "/GeneratedHeaders_" + odvdFilename + ".h");
@@ -169,6 +175,109 @@ public class DataStructureGenerator {
 			e.printStackTrace();
 		}
 		System.out.println("done.");
+    }
+
+	public void generateUtilsClassFileHeader() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("/*"); sb.append("\r\n");
+		sb.append(" * THIS IS A GENERATED FILE - CHANGES WILL BE OVERWRITTEN."); sb.append("\r\n");
+		sb.append(" */"); sb.append("\r\n");
+        sb.append("\r\n");
+        String headerGuard = "GeneratedHeaders_" + odvdFilename + "_HELPER_H";
+        sb.append("#ifndef " + headerGuard.toUpperCase()); sb.append("\r\n");
+        sb.append("#define " + headerGuard.toUpperCase()); sb.append("\r\n");
+        sb.append("\r\n");
+
+        sb.append("#include <opendavinci/odcore/data/Container.h>"); sb.append("\r\n");
+        sb.append("#include <opendavinci/odcore/base/Visitor.h>"); sb.append("\r\n");
+        sb.append("#include <opendavinci/odcore/reflection/Message.h>"); sb.append("\r\n");
+
+        sb.append("class GeneratedHeaders_" + odvdFilename + "_Helper {"); sb.append("\r\n");
+        sb.append("    public:"); sb.append("\r\n");
+        sb.append("        static void delegateVistor(odcore::data::Container &c, odcore::base::Visitor &v, bool &successfullyDelegated);"); sb.append("\r\n");
+        sb.append("        static odcore::reflection::Message map(odcore::data::Container &c, bool &successfullyMapped);"); sb.append("\r\n");
+        sb.append("};"); sb.append("\r\n");
+
+
+        sb.append("\r\n");
+        sb.append("#endif //" + headerGuard.toUpperCase()); sb.append("\r\n");
+
+		System.out.print((DataStructureGenerator.appendGeneratedHeadersFile ? "Appending" : "Creating") + " '" + folder + "/include/" + odvdFilename.toLowerCase() + "/GeneratedHeaders_" + odvdFilename + "_Helper.h' ");
+		File f = new File(folder + "/include/" + odvdFilename.toLowerCase() + "/GeneratedHeaders_" + odvdFilename + "_Helper.h");
+		FileWriter fw;
+		try {
+			fw = new FileWriter(f, DataStructureGenerator.appendGeneratedHeadersFile);
+			fw.append(sb.toString());
+			fw.flush();
+			fw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println("done.");
+    }
+
+	public void generateUtilsClassFileBody() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("/*"); sb.append("\r\n");
+		sb.append(" * THIS IS A GENERATED FILE - CHANGES WILL BE OVERWRITTEN."); sb.append("\r\n");
+		sb.append(" */"); sb.append("\r\n");
+        sb.append("\r\n");
+
+        sb.append("#include <iostream>"); sb.append("\r\n");
+
+        sb.append("#include <" + odvdFilename.toLowerCase() + "/GeneratedHeaders_" + odvdFilename + ".h>"); sb.append("\r\n");
+        sb.append("#include <" + odvdFilename.toLowerCase() + "/GeneratedHeaders_" + odvdFilename + "_Helper.h>"); sb.append("\r\n");
+
+        sb.append("#include <opendavinci/odcore/base/Visitable.h>"); sb.append("\r\n");
+        sb.append("#include <opendavinci/odcore/reflection/MessageFromVisitableVisitor.h>"); sb.append("\r\n");
+
+        sb.append("void GeneratedHeaders_" + odvdFilename + "_Helper::delegateVistor(odcore::data::Container &c, odcore::base::Visitor &v, bool &successfullyDelegated) {"); sb.append("\r\n");
+        sb.append("    successfullyDelegated = false;"); sb.append("\r\n");
+
+        for(String file : listOfGeneratedHeaderFiles) {
+            int pos = file.indexOf("generated/");
+            int lastPos = file.lastIndexOf(".h");
+            String extractedMessage = file.substring(pos + 10, lastPos);
+            String extractedMessage2 = extractedMessage.replace("/", "::");
+
+            sb.append("    if (c.getDataType() == " + extractedMessage2 + "::ID()) {"); sb.append("\r\n");
+            sb.append("        " + extractedMessage2 + " payload = c.getData<" + extractedMessage2 + ">();"); sb.append("\r\n");
+            sb.append("        payload.accept(v);"); sb.append("\r\n");
+            sb.append("        successfullyDelegated = true;"); sb.append("\r\n");
+            sb.append("    }"); sb.append("\r\n");
+        }
+        sb.append("}"); sb.append("\r\n");
+
+        sb.append("odcore::reflection::Message GeneratedHeaders_" + odvdFilename + "_Helper::map(odcore::data::Container &c, bool &successfullyMapped) {"); sb.append("\r\n");
+        sb.append("    successfullyMapped = false;"); sb.append("\r\n");
+        sb.append("    odcore::reflection::Message msg;"); sb.append("\r\n");
+
+        sb.append("    odcore::reflection::MessageFromVisitableVisitor mfvv;"); sb.append("\r\n");
+        sb.append("    delegateVistor(c, mfvv, successfullyMapped);"); sb.append("\r\n");
+        sb.append("    if (successfullyMapped) {"); sb.append("\r\n");
+        sb.append("        msg = mfvv.getMessage();"); sb.append("\r\n");
+        sb.append("    }"); sb.append("\r\n");
+
+        sb.append("    return msg;"); sb.append("\r\n");
+        sb.append("}"); sb.append("\r\n");
+
+		System.out.print((DataStructureGenerator.appendGeneratedHeadersFile ? "Appending" : "Creating") + " '" + folder + "/src/GeneratedHeaders_" + odvdFilename + "_Helper.cpp' ");
+		File f = new File(folder + "/src/GeneratedHeaders_" + odvdFilename + "_Helper.cpp");
+		FileWriter fw;
+		try {
+			fw = new FileWriter(f, DataStructureGenerator.appendGeneratedHeadersFile);
+			fw.append(sb.toString());
+			fw.flush();
+			fw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println("done.");
+    }
+
+	public void generateUtilsClassFile() {
+        generateUtilsClassFileHeader();
+        generateUtilsClassFileBody();
     }
 
 	public void generateCMakeModules() {
@@ -634,6 +743,9 @@ public class DataStructureGenerator {
 
 						        // Generate super header file.
                                 dsg.generateSuperHeaderFile();
+
+						        // Generate utils class with useful methods.
+                                dsg.generateUtilsClassFile();
 
 						        if (createCMakeFile) {
 						        	dsg.generateCMakeFile();
