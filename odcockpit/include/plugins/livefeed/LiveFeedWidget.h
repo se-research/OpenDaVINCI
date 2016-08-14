@@ -48,7 +48,17 @@ namespace cockpit {
             using namespace std;
             using namespace odcore::data;
 
-            struct HelperEntry {
+            class HelperEntry {
+                public:
+                    HelperEntry(const HelperEntry &/*obj*/);
+                    HelperEntry& operator=(const HelperEntry &/*obj*/);
+
+                public:
+                    HelperEntry();
+                    virtual ~HelperEntry();
+
+                public:
+                    string m_library;
                     void *m_dynamicObjectHandle;
                     odcore::reflection::Helper *m_helper;
             };
@@ -80,10 +90,11 @@ namespace cockpit {
                     /**
                      * Constructor.
                      *
+                     * @param kvc KeyValueConfiguration for this widget.
                      * @param plugIn Reference to the plugin to which this widget belongs.
                      * @param prnt Pointer to the parental widget.
                      */
-                    LiveFeedWidget(const PlugIn &plugIn, QWidget *prnt);
+                    LiveFeedWidget(const odcore::base::KeyValueConfiguration &kvc, const PlugIn &plugIn, QWidget *prnt);
 
                     virtual ~LiveFeedWidget();
 
@@ -92,16 +103,17 @@ namespace cockpit {
                 private:
                     void findAndLoadSharedLibraries();
                     void unloadSharedLibraries();
+                    vector<string> getListOfLibrariesToLoad(const vector<string> &paths);
+
+                    void transformContainerToTree(Container &container);
 
                 private:
                     odcore::base::Mutex m_dataViewMutex;
                     unique_ptr<QTreeWidget> m_dataView;
                     map<string, QTreeWidgetItem* > m_dataToType;
 
+                    vector<string> m_listOfLibrariesToLoad;
                     vector<HelperEntry> m_listOfHelpers;
-
-                private:
-                    void transformContainerToTree(Container &container);
             };
 
         }

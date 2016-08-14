@@ -20,6 +20,7 @@
 
 #ifdef HAS_DL
     #include <dlfcn.h>
+    #include <experimental/filesystem>
 #endif
 
 #include <QtCore>
@@ -34,6 +35,7 @@
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/data/TimeStamp.h"
 #include "opendavinci/odcore/reflection/Message.h"
+#include "opendavinci/odcore/strings/StringToolbox.h"
 
 #include "plugins/livefeed/LiveFeedWidget.h"
 #include "plugins/livefeed/MessageToTupleVisitor.h"
@@ -54,13 +56,35 @@ namespace cockpit {
             using namespace odcore::data;
             using namespace odcore::reflection;
 
+            HelperEntry::HelperEntry() : 
+                 m_library(""),
+                 m_dynamicObjectHandle(NULL),
+                 m_helper(NULL)
+            {}
+
+            HelperEntry::HelperEntry(const HelperEntry &obj) :
+                m_library(obj.m_library),
+                m_dynamicObjectHandle(obj.m_dynamicObjectHandle),
+                m_helper(obj.m_helper)
+            {}
+
+            HelperEntry& HelperEntry::operator=(const HelperEntry &obj) {
+                m_library = obj.m_library;
+                m_dynamicObjectHandle = obj.m_dynamicObjectHandle;
+                m_helper = obj.m_helper;
+                return *this;
+            }
+
+            HelperEntry::~HelperEntry() {}
+
             ///////////////////////////////////////////////////////////////////
 
-            LiveFeedWidget::LiveFeedWidget(const PlugIn &/*plugIn*/, QWidget *prnt) :
+            LiveFeedWidget::LiveFeedWidget(const odcore::base::KeyValueConfiguration &kvc, const PlugIn &/*plugIn*/, QWidget *prnt) :
                 QWidget(prnt),
                 m_dataViewMutex(),
                 m_dataView(),
                 m_dataToType(),
+                m_listOfLibrariesToLoad(),
                 m_listOfHelpers() {
                 // Set size.
                 setMinimumSize(640, 480);
@@ -83,6 +107,13 @@ namespace cockpit {
                 // Set layout manager.
                 setLayout(mainBox);
 
+                // Try to load shared libaries.
+                const string SEARCH_PATH = kvc.getValue<string>("odcockpit.directoriesForSharedLibaries");
+                cout << "[odcockpit/livefeed] Trying to find libodvd*.so files in: " << SEARCH_PATH << endl;
+
+                const vector<string> paths = odcore::strings::StringToolbox::split(SEARCH_PATH, ',');
+                m_listOfLibrariesToLoad = getListOfLibrariesToLoad(paths);
+
                 findAndLoadSharedLibraries();
             }
 
@@ -90,33 +121,71 @@ namespace cockpit {
                 unloadSharedLibraries();
             }
 
+            vector<string> LiveFeedWidget::getListOfLibrariesToLoad(const vector<string> &paths) {
+                vector<string> librariesToLoad;
+#ifdef HAS_DL
+                for(auto pathToSearch : paths) {
+                    try {
+                        for(auto &pathElement : std::experimental::filesystem::recursive_directory_iterator(pathToSearch)) {
+                            stringstream sstr;
+                            sstr << pathElement;
+                            string entry = sstr.str();
+                            if (entry.find("libodvd") != string::npos) {
+                                if (entry.find(".so") != string::npos) {
+                                    vector<string> path = odcore::strings::StringToolbox::split(entry, '/');
+                                    if (path.size() > 0) {
+                                        string lib = path[path.size()-1];
+                                        if (lib.size() > 0) {
+                                            lib = lib.substr(0, lib.size()-1);
+                                            librariesToLoad.push_back(lib);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch(...) {}
+                }
+#endif
+                return librariesToLoad;
+            }
+
             void LiveFeedWidget::findAndLoadSharedLibraries() {
 #ifdef HAS_DL
-                HelperEntry e;
+                auto it = m_listOfLibrariesToLoad.begin();
+                while (it != m_listOfLibrariesToLoad.end()) {
+                    const string libraryToLoad = *it;
 
-                cout << "[odcockpit/livefeed] Opening libodvdcommaai.so...\n";
-                e.m_dynamicObjectHandle = dlopen("libodvdcommaai.so", RTLD_LAZY);
+                    {
+                        HelperEntry e;
 
-                if (!e.m_dynamicObjectHandle) {
-                    cerr << "[odcockpit/livefeed] Cannot open library: " << dlerror() << '\n';
-                }
-                else {
-                    typedef odcore::reflection::Helper *createHelper_t();
+                        cout << "[odcockpit/livefeed] Opening '" + libraryToLoad + "'..." << endl;
+                        e.m_dynamicObjectHandle = dlopen(libraryToLoad.c_str(), RTLD_LAZY);
 
-                    // reset errors
-                    dlerror();
-                    createHelper_t* getHelper = (createHelper_t*) dlsym(e.m_dynamicObjectHandle, "newHelper");
-                    const char *dlsym_error = dlerror();
-                    if (dlsym_error) {
-                        cerr << "[odcockpit/livefeed] Cannot load symbol 'newHelper': " << dlsym_error << endl;
-                        dlclose(e.m_dynamicObjectHandle);
+                        if (!e.m_dynamicObjectHandle) {
+                            cerr << "[odcockpit/livefeed] Cannot open library '" + libraryToLoad + "': " << dlerror() << endl;
+                        }
+                        else {
+                            typedef odcore::reflection::Helper *createHelper_t();
+
+                            // reset errors
+                            dlerror();
+                            createHelper_t* getHelper = (createHelper_t*) dlsym(e.m_dynamicObjectHandle, "newHelper");
+                            const char *dlsym_error = dlerror();
+                            if (dlsym_error) {
+                                cerr << "[odcockpit/livefeed] Cannot load symbol 'newHelper' from '" + libraryToLoad + "': " << dlsym_error << endl;
+                                dlclose(e.m_dynamicObjectHandle);
+                            }
+                            else {
+                                // Get pointer to external message handling.
+                                e.m_helper = getHelper();
+                                e.m_library = libraryToLoad;
+                                m_listOfHelpers.push_back(e);
+                            }
+                        }
                     }
-                    else {
-                        // Get pointer to external message handling.
-                        e.m_helper = getHelper();
 
-                        m_listOfHelpers.push_back(e);
-                    }
+                    it++;
                 }
 #endif
             }
@@ -136,9 +205,11 @@ namespace cockpit {
                     const char *dlsym_error = dlerror();
                     if (dlsym_error) {
                         cerr << "[odcockpit/livefeed] Cannot load symbol 'deleteHelper': " << dlsym_error << endl;
-                        dlclose(e.m_dynamicObjectHandle);
                     }
-                    delHelper(e.m_helper);
+                    else {
+                        cout << "[odcockpit/livefeed] Closing link to '" + e.m_library + "'" << endl;
+                        delHelper(e.m_helper);
+                    }
                     dlclose(e.m_dynamicObjectHandle);
 
                     it++;
