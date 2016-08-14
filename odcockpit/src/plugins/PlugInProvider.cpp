@@ -46,7 +46,6 @@
 #include "plugins/scnxviewer/SCNXViewerPlugIn.h"
 #include "plugins/sessionviewer/SessionViewerPlugIn.h"
 #include "plugins/sharedimageviewer/SharedImageViewerPlugIn.h"
-#include "plugins/spy/SpyPlugIn.h"
 #include "plugins/streetmapviewer/StreetMapPlugIn.h"
 #include "plugins/startstop/StartStopPlugIn.h"
 #include "plugins/truckmap/TruckMapPlugIn.h"
@@ -121,8 +120,6 @@ class PlugIn;
                 m_listOfAvailablePlugIns.push_back("SessionViewer");
             if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("sharedimageviewer") != string::npos) )
                 m_listOfAvailablePlugIns.push_back("SharedImageViewer");
-            if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("spy") != string::npos) )
-                m_listOfAvailablePlugIns.push_back("Spy");
             if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("startstop") != string::npos) )
                 m_listOfAvailablePlugIns.push_back("StartStop");
             if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("streetmap") != string::npos) )
@@ -148,7 +145,6 @@ class PlugIn;
             m_listOfDescriptions["Player"] = tr("This plugin replays previously recorded files.").toStdString();
             m_listOfDescriptions["SessionViewer"] = tr("This plugin displays currently running modules.").toStdString();
             m_listOfDescriptions["SharedImageViewer"] = tr("This plugin displays shared images.").toStdString();
-            m_listOfDescriptions["Spy"] = tr("This plugin displays all distributed containers.").toStdString();
             m_listOfDescriptions["StartStop"] = tr("This plugin allows to activate/deactivate autonomous control of the vehicle.").toStdString();
             m_listOfDescriptions["StreetMap"] = tr("This plugin visualizes the environment data using a map tile provider.").toStdString();
             m_listOfDescriptions["TruckMap"] = tr("This plugin visualizes the environment data for the truck.").toStdString();
@@ -241,9 +237,6 @@ class PlugIn;
             } else if (name == "SharedImageViewer") {
                 cerr << "Creating SharedImageViewer" << endl;
                 plugIn = std::shared_ptr<PlugIn>(new sharedimageviewer::SharedImageViewerPlugIn("SharedImageViewer", m_kvc, m_parent));
-            } else if (name == "Spy") {
-                cerr << "Creating Spy" << endl;
-                plugIn = std::shared_ptr<PlugIn>(new spy::SpyPlugIn("Spy", m_kvc, m_parent));
             } else if (name == "StreetMap") {
                 cerr << "Creating StreetMap" << endl;
                 plugIn = std::shared_ptr<PlugIn>(new streetmap::StreetMapPlugIn("StreetMap", m_kvc, m_parent));
