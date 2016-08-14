@@ -84,6 +84,8 @@ IF(     NOT("${CMAKE_C_COMPILER}" STREQUAL "")
 
     MESSAGE(STATUS "Found C++ compiler:         Building ODVDCommaAI")
     SET(BUILD_ODVDCOMMAAI 1)
+    MESSAGE(STATUS "Found C++ compiler:         Building ODVDOpenDLV")
+    SET(BUILD_ODVDOPENDLV 1)
 
     MESSAGE(STATUS "Found C++ compiler:         Building opendavinci-tutorials")
     SET(BUILD_TUTORIALS 1)
@@ -271,7 +273,7 @@ ENDIF()
 
 # Next, the project for the CommaAI data structures is built.
 IF(${BUILD_ODVDCOMMAAI})
-    # This "external project" simply deletes the existing libautomotivedata.
+    # This "external project" simply deletes the existing libodvdcommaai.
     ExternalProject_Add (libodvdcommaai-cleanup
         DEPENDS libopendavinci
         DOWNLOAD_COMMAND ""
@@ -295,6 +297,34 @@ IF(${BUILD_ODVDCOMMAAI})
         TEST_BEFORE_INSTALL 1
         TEST_COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}
         INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodvdcommaai-prefix/src/libodvdcommaai-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodvdcommaai-prefix/src/libodvdcommaai-build --target ${MAKE_PACKAGE})
+ENDIF()
+
+# Next, the project for the OpenDLV data structures is built.
+IF(${BUILD_ODVDOPENDLV})
+    # This "external project" simply deletes the existing libodvdopendlv.
+    ExternalProject_Add (libodvdopendlv-cleanup
+        DEPENDS libopendavinci
+        DOWNLOAD_COMMAND ""
+        UPDATE_COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_BINARY_DIR}/libodvdopendlv
+        PATCH_COMMAND ""
+        SOURCE_DIR ""
+        CONFIGURE_COMMAND ""
+        BUILD_COMMAND ""
+        TEST_COMMAND ""
+        INSTALL_COMMAND "")
+
+    ExternalProject_Add (libodvdopendlv
+        DEPENDS libodvdopendlv-cleanup
+        DOWNLOAD_COMMAND ""
+        UPDATE_COMMAND cd ${CMAKE_CURRENT_BINARY_DIR} && ${Java_JAVA_EXECUTABLE} -jar ${ODDATASTRUCTUREGENERATOR_EXECUTABLE} --withCMake ${CMAKE_CURRENT_SOURCE_DIR}/ODVDOpenDLV.odvd
+        PATCH_COMMAND ""
+        SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/libodvdopendlv"
+        CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
+        CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}"
+        CMAKE_ARGS "-DCXXTEST_INCLUDE_DIR=${CXXTEST_INCLUDE_DIR}"
+        TEST_BEFORE_INSTALL 1
+        TEST_COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}
+        INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodvdopendlv-prefix/src/libodvdopendlv-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodvdopendlv-prefix/src/libodvdopendlv-build --target ${MAKE_PACKAGE})
 ENDIF()
 
 # Next, build libopendlv.

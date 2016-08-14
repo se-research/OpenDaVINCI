@@ -53,6 +53,11 @@ SET(AUTOMOTIVEDATA_DIR "${CMAKE_INSTALL_PREFIX}")
 FIND_PACKAGE (AutomotiveData REQUIRED)
 
 ###########################################################################
+# Find ODVDOpenDLV.
+SET(ODVDOPENDLV_DIR "${CMAKE_INSTALL_PREFIX}")
+FIND_PACKAGE (ODVDOpenDLV REQUIRED)
+
+###########################################################################
 # Find OpenDLV.
 SET(OPENDLV_DIR "${CMAKE_INSTALL_PREFIX}")
 FIND_PACKAGE (OpenDLV REQUIRED)
@@ -73,18 +78,16 @@ IF("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
     SET (CMAKE_CXX_FLAGS " -std=c++11 -Wall -Wextra -Weffc++")
 ENDIF()
 
+SET (LIBRARIES ${OPENDAVINCI_LIBRARIES}
+               ${AUTOMOTIVEDATA_LIBRARIES}
+               ${OPENDLV_LIBRARIES}
+               ${QT_LIBRARIES}
+               ${ODVDOPENDLV_LIBRARIES})
+
 IF(QWT5QT4_FOUND)
     SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DHAVE_QWT5QT4")
-    SET (LIBRARIES ${OPENDAVINCI_LIBRARIES}
-                   ${AUTOMOTIVEDATA_LIBRARIES}
-                   ${OPENDLV_LIBRARIES}
-                   ${QT_LIBRARIES}
+    SET (LIBRARIES ${LIBRARIES}
                    ${QWT5QT4_LIBRARIES})
-ELSE()
-    SET (LIBRARIES ${OPENDAVINCI_LIBRARIES}
-                   ${AUTOMOTIVEDATA_LIBRARIES}
-                   ${OPENDLV_LIBRARIES}
-                   ${QT_LIBRARIES})
 ENDIF()
 
 ###########################################################################
@@ -102,6 +105,8 @@ ENDIF()
 INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS})
 # Set header files from AutomotiveData.
 INCLUDE_DIRECTORIES (${AUTOMOTIVEDATA_INCLUDE_DIRS})
+# Set header files from ODVDOpenDLV.
+INCLUDE_DIRECTORIES (${ODVDOPENDLV_INCLUDE_DIRS})
 # Set header files from OpenDLV.
 INCLUDE_DIRECTORIES (${OPENDLV_INCLUDE_DIRS})
 # Set header files from Qwt5-Qt4.
