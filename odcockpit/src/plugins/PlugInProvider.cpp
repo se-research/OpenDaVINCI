@@ -21,6 +21,9 @@
 #include <QtCore>
 #include <QtGui>
 
+#include <ctype.h>
+
+#include <algorithm>
 #include <iostream>
 
 #include "opendavinci/odcore/opendavinci.h"
@@ -73,28 +76,60 @@ class PlugIn;
             m_dataStoreManager(dsm),
             m_conference(conf),
             m_parent(prnt) {
+
+            // Read list of allowed plugins to show.
+            string listOfPlugins;
+            try {
+                listOfPlugins = m_kvc.getValue<string>("odcockpit.plugins");
+                std::transform(listOfPlugins.begin(), listOfPlugins.end(), listOfPlugins.begin(), ::tolower);
+                cout << "[odcockpit] Showing plugins: " << listOfPlugins << endl;
+            }
+            catch(...){}
+
             // TODO: Read available plugins from .so-files.
-            m_listOfAvailablePlugIns.push_back("ConfigurationViewer");
-            m_listOfAvailablePlugIns.push_back("Controller");
-            m_listOfAvailablePlugIns.push_back("BirdsEyeMap");
-            m_listOfAvailablePlugIns.push_back("EnvironmentViewer");
-            m_listOfAvailablePlugIns.push_back("HealthStatusViewer");
+            if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("birdseyemap") != string::npos) )
+                m_listOfAvailablePlugIns.push_back("BirdsEyeMap");
+            if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("configurationviewer") != string::npos) )
+                m_listOfAvailablePlugIns.push_back("ConfigurationViewer");
+            if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("controller") != string::npos) )
+                m_listOfAvailablePlugIns.push_back("Controller");
+            if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("environmentviewer") != string::npos) )
+                m_listOfAvailablePlugIns.push_back("EnvironmentViewer");
+            if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("healthstatusviewer") != string::npos) )
+                m_listOfAvailablePlugIns.push_back("HealthStatusViewer");
 #ifdef HAVE_QWT5QT4
-            m_listOfAvailablePlugIns.push_back("IrUsCharts");
-            m_listOfAvailablePlugIns.push_back("ModuleStatisticsViewer");
+            if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("iruscharts") != string::npos) )
+                m_listOfAvailablePlugIns.push_back("IrUsCharts");
 #endif
-            m_listOfAvailablePlugIns.push_back("OBJXViewer");
-            m_listOfAvailablePlugIns.push_back("SCNXViewer");
-            m_listOfAvailablePlugIns.push_back("IrUsMap");
-            m_listOfAvailablePlugIns.push_back("LiveFeed");
-            m_listOfAvailablePlugIns.push_back("LogMessage");
-            m_listOfAvailablePlugIns.push_back("Player");
-            m_listOfAvailablePlugIns.push_back("SessionViewer");
-            m_listOfAvailablePlugIns.push_back("SharedImageViewer");
-            m_listOfAvailablePlugIns.push_back("Spy");
-            m_listOfAvailablePlugIns.push_back("StartStop");
-            m_listOfAvailablePlugIns.push_back("StreetMap");
-            m_listOfAvailablePlugIns.push_back("TruckMap");
+            if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("irusmaps") != string::npos) )
+                m_listOfAvailablePlugIns.push_back("IrUsMap");
+            if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("livefeed") != string::npos) )
+                m_listOfAvailablePlugIns.push_back("LiveFeed");
+            if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("logmessage") != string::npos) )
+                m_listOfAvailablePlugIns.push_back("LogMessage");
+#ifdef HAVE_QWT5QT4
+            if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("modulestatisticsviewer") != string::npos) )
+                m_listOfAvailablePlugIns.push_back("ModuleStatisticsViewer");
+#endif
+            if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("objxviewer") != string::npos) )
+                m_listOfAvailablePlugIns.push_back("OBJXViewer");
+            if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("player") != string::npos) )
+                m_listOfAvailablePlugIns.push_back("Player");
+            if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("scnxviewer") != string::npos) )
+                m_listOfAvailablePlugIns.push_back("SCNXViewer");
+            if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("sessionviewer") != string::npos) )
+                m_listOfAvailablePlugIns.push_back("SessionViewer");
+            if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("sharedimageviewer") != string::npos) )
+                m_listOfAvailablePlugIns.push_back("SharedImageViewer");
+            if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("spy") != string::npos) )
+                m_listOfAvailablePlugIns.push_back("Spy");
+            if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("startstop") != string::npos) )
+                m_listOfAvailablePlugIns.push_back("StartStop");
+            if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("streetmap") != string::npos) )
+                m_listOfAvailablePlugIns.push_back("StreetMap");
+            if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("truckmap") != string::npos) )
+                m_listOfAvailablePlugIns.push_back("TruckMap");
+
 
             m_listOfDescriptions["ConfigurationViewer"] = tr("This plugin displays the current configuration.").toStdString();
             m_listOfDescriptions["Controller"] = tr("This plugin allows the control of the vehicle by the arrow keys.").toStdString();
