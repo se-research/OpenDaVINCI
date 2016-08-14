@@ -27,6 +27,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/io/conference/ContainerListener.h"
@@ -46,6 +47,11 @@ namespace cockpit {
 
             using namespace std;
             using namespace odcore::data;
+
+            struct HelperEntry {
+                    void *m_dynamicObjectHandle;
+                    odcore::reflection::Helper *m_helper;
+            };
 
             /**
              * This class is the container for the livefeed widget.
@@ -84,12 +90,15 @@ namespace cockpit {
                     virtual void nextContainer(Container &c);
 
                 private:
+                    void findAndLoadSharedLibraries();
+                    void unloadSharedLibraries();
+
+                private:
                     odcore::base::Mutex m_dataViewMutex;
                     unique_ptr<QTreeWidget> m_dataView;
                     map<string, QTreeWidgetItem* > m_dataToType;
 
-                    void *m_dynamicObjectHandle;
-                    odcore::reflection::Helper *m_helper;
+                    vector<HelperEntry> m_listOfHelpers;
 
                 private:
                     void transformContainerToTree(Container &container);

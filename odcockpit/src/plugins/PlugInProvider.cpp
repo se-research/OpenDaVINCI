@@ -177,68 +177,68 @@ class PlugIn;
             std::shared_ptr<PlugIn> plugIn;
 
             if (name == "ConfigurationViewer") {
-                cerr << "Creating ConfigurationViewer" << endl;
+                cerr << "[odcockpit] Creating plugin: ConfigurationViewer" << endl;
                 plugIn = std::shared_ptr<PlugIn>(new configurationviewer::ConfigurationViewerPlugIn("ConfigurationViewer", m_kvc, m_parent));
             } else if (name == "Controller") {
-                cerr << "Creating Controller" << endl;
+                cerr << "[odcockpit] Creating plugin: Controller" << endl;
                 plugIn = std::shared_ptr<PlugIn>((PlugIn*)(new controller::ControllerPlugIn("Controller", m_kvc, m_conference, m_parent)));
             } else if (name == "StartStop") {
-                cerr << "Creating StartStop" << endl;
+                cerr << "[odcockpit] Creating plugin: StartStop" << endl;
                 plugIn = std::shared_ptr<PlugIn>((PlugIn*)(new startstop::StartStopPlugIn("StartStop", m_kvc, m_conference, m_parent)));
             }
             else if (name == "BirdsEyeMap") {
-                cerr << "Creating BirdsEyeMap" << endl;
+                cerr << "[odcockpit] Creating plugin: BirdsEyeMap" << endl;
                 plugIn = std::shared_ptr<PlugIn>(new birdseyemap::BirdsEyeMapPlugIn("BirdsEyeMap", m_kvc, m_parent));
             }
             else if (name == "EnvironmentViewer") {
-                cerr << "Creating EnvironmentViewer" << endl;
+                cerr << "[odcockpit] Creating plugin: EnvironmentViewer" << endl;
                 plugIn = std::shared_ptr<PlugIn>(new environmentviewer::EnvironmentViewerPlugIn("EnvironmentViewer", m_kvc, m_parent));
             }
 #ifdef HAVE_QWT5QT4
             else if (name == "IrUsCharts") {
-                cerr << "Creating IrUsCharts" << endl;
+                cerr << "[odcockpit] Creating plugin: IrUsCharts" << endl;
                 plugIn = std::shared_ptr<PlugIn>(new iruscharts::IrUsChartsPlugIn("IrUsCharts", m_kvc, m_parent));
             }
             else if (name == "ModuleStatisticsViewer") {
-                cerr << "Creating ModuleStatisticsViewer" << endl;
+                cerr << "[odcockpit] Creating plugin: ModuleStatisticsViewer" << endl;
                 plugIn = std::shared_ptr<PlugIn>(new modulestatisticsviewer::ModuleStatisticsViewerPlugIn("ModuleStatisticsViewer", m_kvc, m_parent));
             }
 #endif
             else if (name == "OBJXViewer") {
-                cerr << "Creating OBJXViewer" << endl;
+                cerr << "[odcockpit] Creating plugin: OBJXViewer" << endl;
                 plugIn = std::shared_ptr<PlugIn>(new objxviewer::OBJXViewerPlugIn("OBJXViewer", m_kvc, m_parent));
             }
             else if (name == "SCNXViewer") {
-                cerr << "Creating SCNXViewer" << endl;
+                cerr << "[odcockpit] Creating plugin: SCNXViewer" << endl;
                 plugIn = std::shared_ptr<PlugIn>(new scnxviewer::SCNXViewerPlugIn("SCNXViewer", m_kvc, m_parent));
             } else if (name == "HealthStatusViewer") {
-                cerr << "Creating HealthStatusViewer" << endl;
+                cerr << "[odcockpit] Creating plugin: HealthStatusViewer" << endl;
                 plugIn = std::shared_ptr<PlugIn>(new healthstatusviewer::HealthStatusViewerPlugIn("HealthStatusViewer", m_kvc, m_parent));
             }
             else if (name == "IrUsMap") {
-                cerr << "Creating IrUsMap" << endl;
+                cerr << "[odcockpit] Creating plugin: IrUsMap" << endl;
                 plugIn = std::shared_ptr<PlugIn>(new irusmap::IrUsMapPlugIn("IrUsMap", m_kvc, m_parent));
             }
             else if (name == "TruckMap") {
-                cerr << "Creating TruckMap" << endl;
+                cerr << "[odcockpit] Creating plugin: TruckMap" << endl;
                 plugIn = std::shared_ptr<PlugIn>(new truckmap::TruckMapPlugIn("TruckMap", m_kvc, m_parent));
             } else if (name == "LiveFeed") {
-                cerr << "Creating LiveFeed" << endl;
+                cerr << "[odcockpit] Creating plugin: LiveFeed" << endl;
                 plugIn = std::shared_ptr<PlugIn>(new livefeed::LiveFeedPlugIn("LiveFeed", m_kvc, m_parent));
             } else if (name == "LogMessage") {
-                cerr << "Creating LogMessage" << endl;
+                cerr << "[odcockpit] Creating plugin: LogMessage" << endl;
                 plugIn = std::shared_ptr<PlugIn>(new logmessage::LogMessagePlugIn("LogMessage", m_kvc, m_parent));
             } else if (name == "Player") {
-                cerr << "Creating Player" << endl;
+                cerr << "[odcockpit] Creating plugin: Player" << endl;
                 plugIn = std::shared_ptr<PlugIn>((PlugIn*)(new player::PlayerPlugIn("Player", m_kvc, m_conference, m_parent)));
             } else if (name == "SessionViewer") {
-                cerr << "Creating SessionViewer" << endl;
+                cerr << "[odcockpit] Creating plugin: SessionViewer" << endl;
                 plugIn = std::shared_ptr<PlugIn>(new sessionviewer::SessionViewerPlugIn("SessionViewer", m_kvc, m_parent));
             } else if (name == "SharedImageViewer") {
-                cerr << "Creating SharedImageViewer" << endl;
+                cerr << "[odcockpit] Creating plugin: SharedImageViewer" << endl;
                 plugIn = std::shared_ptr<PlugIn>(new sharedimageviewer::SharedImageViewerPlugIn("SharedImageViewer", m_kvc, m_parent));
             } else if (name == "StreetMap") {
-                cerr << "Creating StreetMap" << endl;
+                cerr << "[odcockpit] Creating plugin: StreetMap" << endl;
                 plugIn = std::shared_ptr<PlugIn>(new streetmap::StreetMapPlugIn("StreetMap", m_kvc, m_parent));
             }
 

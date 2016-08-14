@@ -54,13 +54,14 @@ namespace cockpit {
             using namespace odcore::data;
             using namespace odcore::reflection;
 
+            ///////////////////////////////////////////////////////////////////
+
             LiveFeedWidget::LiveFeedWidget(const PlugIn &/*plugIn*/, QWidget *prnt) :
                 QWidget(prnt),
                 m_dataViewMutex(),
                 m_dataView(),
                 m_dataToType(),
-                m_dynamicObjectHandle(NULL),
-                m_helper(NULL) {
+                m_listOfHelpers() {
                 // Set size.
                 setMinimumSize(640, 480);
 
@@ -82,48 +83,66 @@ namespace cockpit {
                 // Set layout manager.
                 setLayout(mainBox);
 
-#ifdef HAS_DL
-cout << "Opening libodvdcommaai.so...\n";
-m_dynamicObjectHandle = dlopen("libodvdcommaai.so", RTLD_LAZY);
-
-if (!m_dynamicObjectHandle) {
-    cerr << "Cannot open library: " << dlerror() << '\n';
-}
-else {
-    typedef odcore::reflection::Helper *createHelper_t();
-
-    // reset errors
-    dlerror();
-    createHelper_t* getHelper = (createHelper_t*) dlsym(m_dynamicObjectHandle, "newHelper");
-    const char *dlsym_error = dlerror();
-    if (dlsym_error) {
-        cerr << "Cannot load symbol 'mapper': " << dlsym_error << endl;
-        dlclose(m_dynamicObjectHandle);
-    }
-    else {
-        // Get pointer to external message handling.
-        m_helper = getHelper();
-    }
-}
-#endif
+                findAndLoadSharedLibraries();
             }
 
             LiveFeedWidget::~LiveFeedWidget() {
-#ifdef HAS_DL
-if (m_dynamicObjectHandle && m_helper) {
-    typedef void deleteHelper_t(odcore::reflection::Helper *);
+                unloadSharedLibraries();
+            }
 
-    // reset errors
-    dlerror();
-    deleteHelper_t* delHelper = (deleteHelper_t*) dlsym(m_dynamicObjectHandle, "deleteHelper");
-    const char *dlsym_error = dlerror();
-    if (dlsym_error) {
-        cerr << "Cannot load symbol 'mapper': " << dlsym_error << endl;
-        dlclose(m_dynamicObjectHandle);
-    }
-    delHelper(m_helper);
-    dlclose(m_dynamicObjectHandle);
-}
+            void LiveFeedWidget::findAndLoadSharedLibraries() {
+#ifdef HAS_DL
+                HelperEntry e;
+
+                cout << "[odcockpit/livefeed] Opening libodvdcommaai.so...\n";
+                e.m_dynamicObjectHandle = dlopen("libodvdcommaai.so", RTLD_LAZY);
+
+                if (!e.m_dynamicObjectHandle) {
+                    cerr << "[odcockpit/livefeed] Cannot open library: " << dlerror() << '\n';
+                }
+                else {
+                    typedef odcore::reflection::Helper *createHelper_t();
+
+                    // reset errors
+                    dlerror();
+                    createHelper_t* getHelper = (createHelper_t*) dlsym(e.m_dynamicObjectHandle, "newHelper");
+                    const char *dlsym_error = dlerror();
+                    if (dlsym_error) {
+                        cerr << "[odcockpit/livefeed] Cannot load symbol 'newHelper': " << dlsym_error << endl;
+                        dlclose(e.m_dynamicObjectHandle);
+                    }
+                    else {
+                        // Get pointer to external message handling.
+                        e.m_helper = getHelper();
+
+                        m_listOfHelpers.push_back(e);
+                    }
+                }
+#endif
+            }
+
+            void LiveFeedWidget::unloadSharedLibraries() {
+#ifdef HAS_DL
+                auto it = m_listOfHelpers.begin();
+                while (it != m_listOfHelpers.end()) {
+                    HelperEntry e = *it;
+
+                    // Type to refer to the destroy method inside the shared library.
+                    typedef void deleteHelper_t(odcore::reflection::Helper *);
+
+                    // Reset error messages from dynamically loading shared object.
+                    dlerror();
+                    deleteHelper_t* delHelper = (deleteHelper_t*) dlsym(e.m_dynamicObjectHandle, "deleteHelper");
+                    const char *dlsym_error = dlerror();
+                    if (dlsym_error) {
+                        cerr << "[odcockpit/livefeed] Cannot load symbol 'deleteHelper': " << dlsym_error << endl;
+                        dlclose(e.m_dynamicObjectHandle);
+                    }
+                    delHelper(e.m_helper);
+                    dlclose(e.m_dynamicObjectHandle);
+
+                    it++;
+                }
 #endif
             }
 
@@ -148,8 +167,13 @@ if (m_dynamicObjectHandle && m_helper) {
                 }
 
                 // Try dynamic shared object as last.
-                if (!successfullyMapped && (m_helper != NULL)) {
-                    msg = m_helper->map(container, successfullyMapped);
+                if (!successfullyMapped && (m_listOfHelpers.size() > 0)) {
+                    auto it = m_listOfHelpers.begin();
+                    while ( (!successfullyMapped) && (it != m_listOfHelpers.end())) {
+                        HelperEntry e = *it;
+                        msg = e.m_helper->map(container, successfullyMapped);
+                        it++;
+                    }
                 }
 
                 if (successfullyMapped) {
