@@ -1023,7 +1023,7 @@ namespace canmapping {
 					
 					var boolean closestFound=false;
 					for(sig:mapping.mappings) {
-						var CANSignalDescription RollingCANSignal=canSignals.get(currentSignalInMapping.cansignalname)
+						var CANSignalDescription RollingCANSignal=canSignals.get(sig.cansignalname)
 						// if the signal is not found stop the code generation
 						if(RollingCANSignal==null)
 						{
