@@ -763,11 +763,6 @@ namespace canmapping {
 					{
 						bitLength = Integer.parseInt(CurrentCANSignal.m_startBit)-nextFieldStart;
 					}
-					
-					// use the smaller of the two measurements
-					if(signalLength_signed < bitLength) 
-						bitLength=signalLength_signed;
-					
 				""}»
 				«var String transformedType = ""»
 
@@ -1011,14 +1006,14 @@ namespace canmapping {
 				«var int bitLength=signalLength»
 				«{
 					var int nextFieldStart=0;
-					if(canSignals.get(currentSignalInMapping.cansignalname).m_endian.compareTo("little")==0)
+					if(CurrentCANSignal.m_endian.compareTo("little")==0)
 					{
 						nextFieldStart=63;
 					}
 					
 					var boolean closestFound=false;
 					for(sig:mapping.mappings) {
-						var CANSignalDescription RollingCANSignal=canSignals.get(currentSignalInMapping.cansignalname)
+						var CANSignalDescription RollingCANSignal=canSignals.get(sig.cansignalname)
 						// if the signal is not found stop the code generation
 						if(RollingCANSignal==null)
 						{
@@ -1026,13 +1021,13 @@ namespace canmapping {
 							throwSignalNotFoundException(sig.cansignalname);
 							return -1;
 						}
-						if(RollingCANSignal.m_CANID==canSignals.get(currentSignalInMapping.cansignalname).m_CANID)// signals in the same CAN message
+						if(RollingCANSignal.m_CANID==CurrentCANSignal.m_CANID)// signals in the same CAN message
 						{
 							if(CurrentCANSignal.m_endian.compareToIgnoreCase("big")==0) // assumes all signals are big endian
 							{
 								// find the signals to the right-hand side in the bitfield, consider the closest to the current one 
 								// (i.e. the next signal in the payload going in the direction for which the bit number decreases)
-								if(Integer.parseInt(RollingCANSignal.m_startBit) < Integer.parseInt(canSignals.get(currentSignalInMapping.cansignalname).m_startBit)
+								if(Integer.parseInt(RollingCANSignal.m_startBit) < Integer.parseInt(CurrentCANSignal.m_startBit)
 									&& Integer.parseInt(RollingCANSignal.m_startBit) >= nextFieldStart)
 								{
 									closestFound=true;
@@ -1043,7 +1038,7 @@ namespace canmapping {
 							{
 								// find the signals to the left-hand side in the bitfield, consider the closest to the current one 
 								// (i.e. the next signal in the payload going in the direction for which the bit number decreases)
-								if(Integer.parseInt(RollingCANSignal.m_startBit) > Integer.parseInt(canSignals.get(currentSignalInMapping.cansignalname).m_startBit)
+								if(Integer.parseInt(RollingCANSignal.m_startBit) > Integer.parseInt(CurrentCANSignal.m_startBit)
 									&& Integer.parseInt(RollingCANSignal.m_startBit) <= nextFieldStart)
 								{
 									closestFound=true;
@@ -1054,7 +1049,7 @@ namespace canmapping {
 					}
 					if(closestFound)
 					{
-						bitLength = Integer.parseInt(canSignals.get(currentSignalInMapping.cansignalname).m_startBit)-nextFieldStart;
+						bitLength = Integer.parseInt(CurrentCANSignal.m_startBit)-nextFieldStart;
 					}
 					// use the smaller of the two measurements
 					if(signalLength < bitLength) bitLength=signalLength;
@@ -1150,7 +1145,7 @@ namespace canmapping {
 					else// if(actualLength <= 64)
 						transformedType="int64_t";
 					
-					if(canSignals.get(currentSignalInMapping.cansignalname).m_signed.compareToIgnoreCase("unsigned")==0)
+					if(CurrentCANSignal.m_signed.compareToIgnoreCase("unsigned")==0)
 						transformedType="u"+transformedType;
 					
 					""
@@ -1161,8 +1156,8 @@ namespace canmapping {
 				// Create a field for a generic message.
 				odcore::reflection::Field<double> *f = new odcore::reflection::Field<double>(«memberVarName»);
 				f->setFieldIdentifier(«currentSignalInMapping.signalIdentifier»); // The identifiers specified here must match with the ones defined in the .odvd file!
-				f->setLongFieldName("«canSignals.get(curSignalName).m_FQDN»");
-				f->setShortFieldName("«{var String[] res; res=canSignals.get(curSignalName).m_FQDN.split("\\."); res.get(res.size-1)}»");
+				f->setLongFieldName("«CurrentCANSignal.m_FQDN»");
+				f->setShortFieldName("«{var String[] res; res=CurrentCANSignal.m_FQDN.split("\\."); res.get(res.size-1)}»");
 				f->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
 				f->setSize(sizeof(«memberVarName»));
 
