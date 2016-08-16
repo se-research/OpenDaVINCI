@@ -1103,13 +1103,10 @@ namespace canmapping {
 					if( («tempVarName» & rollingMask) != 0b0)
 					{
 						// msb bit position
-						«IF CurrentCANSignal.m_endian.compareToIgnoreCase("big")==0»
-							uint8_t msbPos=«CurrentCANSignal.m_startBit»;
-						«ELSE»
-							uint8_t msbPos==«CurrentCANSignal.m_startBit»+«CurrentCANSignal.m_length»-1;
-						«ENDIF»
+						uint8_t msbPos=«CurrentCANSignal.m_length»;
+						rollingMask<<=1;
 						// replicate the msb until the end of the variable (to the left)
-						for(;63-msbPos>0;++msbPos,rollingMask<<=1)
+						for(;63-msbPos>=0;++msbPos,rollingMask<<=1)
 						{
 							«tempVarName»|=rollingMask;
 						}
