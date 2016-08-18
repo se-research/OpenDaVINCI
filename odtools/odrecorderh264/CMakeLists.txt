@@ -101,5 +101,19 @@ ENDIF(CXXTEST_FOUND)
 ###############################################################################
 # Install this project.
 INSTALL(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin COMPONENT odtools)
+INSTALL(TARGETS ${PROJECT_NAME}-static DESTINATION lib COMPONENT odtools)
 INSTALL(FILES man/${PROJECT_NAME}.1 DESTINATION man/man1 COMPONENT odtools)
+
+# Install header files.
+INSTALL(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/" DESTINATION include/odrecorderh264 COMPONENT odtools)
+
+# Install CMake modules locally.
+IF(UNIX)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/Findodrecorderh264.cmake" DESTINATION share/cmake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT lib)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/Findodrecorderh264.cmake" DESTINATION share/cmake-2.8/Modules COMPONENT odtools)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/Findodrecorderh264.cmake" DESTINATION share/cmake-3.0/Modules COMPONENT odtools)
+ENDIF()
+IF(WIN32)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/Findodrecorderh264.cmake" DESTINATION CMake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT odtools)
+ENDIF()
 
