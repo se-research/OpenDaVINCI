@@ -53,7 +53,7 @@ ENDIF()
 IF("${ODRECORDERH264_INCLUDE_DIR}" STREQUAL "")
     MESSAGE(FATAL_ERROR "Could not find odrecorderh264 library.")
 ELSE()
-    SET (FOUND_ODRECORDERH264 1)
+    SET (ODRECORDERH264_FOUND 1)
 ENDIF()
 
 ###########################################################################
@@ -70,7 +70,7 @@ SET(ODRECORDERH264_LIBRARIES ${OPENDAVINCI_LIBRARIES}
                              ${ODRECORDERH264_LIBRARY}
                              ${FFMPEGMODULES_LIBRARIES})
 
-SET(ODRECORDERH264_INCLUDE_DIRS ${ODRECORDERH264_INCLUDE_DIR})
+SET(ODRECORDERH264_INCLUDE_DIRS ${ODRECORDERH264_INCLUDE_DIR}/odrecorderh264)
 
 ###########################################################################
 INCLUDE(FindPackageHandleStandardArgs)

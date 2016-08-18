@@ -63,6 +63,11 @@ SET(OPENDLV_DIR "${CMAKE_INSTALL_PREFIX}")
 FIND_PACKAGE (OpenDLV REQUIRED)
 
 ###########################################################################
+# Find odplayerh264.
+SET(ODPLAYERH264_DIR "${CMAKE_INSTALL_PREFIX}")
+FIND_PACKAGE (odplayerh264)
+
+###########################################################################
 # Find Qt.
 FIND_PACKAGE(Qt4 4.0.0 REQUIRED QtCore QtGui QtOpenGL QtNetwork)
 INCLUDE (${QT_USE_FILE})
@@ -88,6 +93,13 @@ IF(QWT5QT4_FOUND)
     SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DHAVE_QWT5QT4")
     SET (LIBRARIES ${LIBRARIES}
                    ${QWT5QT4_LIBRARIES})
+ENDIF()
+
+IF(ODPLAYERH264_FOUND)
+    SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DHAVE_ODPLAYERH264")
+    SET (LIBRARIES ${LIBRARIES}
+                   ${ODPLAYERH264_LIBRARIES})
+    INCLUDE_DIRECTORIES (${ODPLAYERH264_INCLUDE_DIRS})
 ENDIF()
 
 ###########################################################################

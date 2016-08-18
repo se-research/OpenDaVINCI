@@ -35,6 +35,10 @@
 #include "opendavinci/odtools/player/Player.h"
 #include "opendavinci/odtools/splitter/Splitter.h"
 
+#ifdef HAVE_ODPLAYERH264
+    #include "PlayerH264.h"
+#endif
+
 namespace cockpit { namespace plugins { class PlugIn; } }
 
 namespace cockpit {
@@ -274,7 +278,13 @@ namespace cockpit {
                     // We use the asychronous player to allow data caching in background.
                     const bool THREADING = false;
                     const bool AUTO_REWIND = false;
+#ifdef HAVE_ODPLAYERH264
+                    // Base port for letting spawned children connect to parent process.
+                    const uint32_t BASE_PORT = m_kvc.getValue<uint32_t>("odplayerh264.portbaseforchildprocesses");
+                    m_player = new odplayerh264::PlayerH264(url, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING, BASE_PORT);
+#else
                     m_player = new Player(url, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING);
+#endif
 
                     m_playBtn->setEnabled(true);
                     m_pauseBtn->setEnabled(false);

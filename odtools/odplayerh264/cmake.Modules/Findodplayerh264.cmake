@@ -53,7 +53,7 @@ ENDIF()
 IF("${ODPLAYERH264_INCLUDE_DIR}" STREQUAL "")
     MESSAGE(FATAL_ERROR "Could not find odplayerh264 library.")
 ELSE()
-    SET (FOUND_ODPLAYERH264 1)
+    SET (ODPLAYERH264_FOUND 1)
 ENDIF()
 
 ###########################################################################
@@ -70,7 +70,7 @@ SET(ODPLAYERH264_LIBRARIES ${OPENDAVINCI_LIBRARIES}
                            ${ODPLAYERH264_LIBRARY}
                            ${FFMPEGMODULES_LIBRARIES})
 
-SET(ODPLAYERH264_INCLUDE_DIRS ${ODPLAYERH264_INCLUDE_DIR})
+SET(ODPLAYERH264_INCLUDE_DIRS ${ODPLAYERH264_INCLUDE_DIR}/odplayerh264)
 
 ###########################################################################
 INCLUDE(FindPackageHandleStandardArgs)
