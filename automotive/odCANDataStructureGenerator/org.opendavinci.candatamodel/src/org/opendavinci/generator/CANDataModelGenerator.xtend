@@ -1458,13 +1458,13 @@ class CANBridgeTest : public CxxTest::TestSuite {
 
 «{testIndex=0;""}»
     void testEncode() {
-        «FOR test : canSignalTesting»
-        	«IF test.mappingName.toString.compareToIgnoreCase(mapping.mappingName.toString)==0»
-        		«var String testName="test_"+(testIndex++)»
-    			{
-    			// Mapping name «test.mappingName»
+    «FOR test : canSignalTesting»
+    	«IF test.mappingName.toString.compareToIgnoreCase(mapping.mappingName.toString)==0»
+    		«var String testName="test_"+(testIndex++)»
+			{
+			 // Mapping name «test.mappingName»
 
-        		«IF test.CANMessageDescriptions.size==1»
+    		«IF test.CANMessageDescriptions.size==1»
 
 				// id «test.CANMessageDescriptions.get(0).canIdentifier»
 				// payload «test.CANMessageDescriptions.get(0).payload» : length «(test.CANMessageDescriptions.get(0).payload.length-2)/2»
@@ -1474,9 +1474,6 @@ class CANBridgeTest : public CxxTest::TestSuite {
     	    	«var ArrayList<String> assignments=new ArrayList<String>»
     			«{
     				for(var int index=0;index<mapping.mappings.size;index++){
-    					//var String capitalizedName=""
-    					//var String[] chunks=mapping.mappings.get(index).cansignalname.split('\\.')
-    					//for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
     					var int fIndex=0;
     					for(result:test.results){
     						fIndex++
@@ -1486,15 +1483,14 @@ class CANBridgeTest : public CxxTest::TestSuite {
 												"f_"+fIndex+"->setShortFieldIdentifier("+result.signalIdentifier+");"+'\n'+
 												"f_"+fIndex+"->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);"+'\n'+
 												"message.addField(std::shared_ptr<odcore::data::reflection::AbstractField>(f_"+fIndex+"));"+'\n'
-    							//assignments+="HLClass.set"+chunks.get(chunks.size-1).toFirstUpper+"("+result.expectedResult+");"+'\n'
     						}
     					}
     				}
     			}»
 
-			«FOR assignment:assignments»
-			«assignment»
-			«ENDFOR»
+    			«FOR assignment:assignments»
+    			«assignment»
+    			«ENDFOR»
 
 				odcore::reflection::MessageToVisitableVisitor mtvv(message);
 				::«mapping.mappingName.toString.replaceAll("\\.", "::")» HLClass;
@@ -1504,10 +1500,24 @@ class CANBridgeTest : public CxxTest::TestSuite {
 				canmapping::«mapping.mappingName.toString.replaceAll("\\.", "::")» «testName»;
 				::automotive::GenericCANMessage GCM;
 				GCM=«testName».encode(c);
+
+	// Testing the ID of the resulting CAN message
+	TS_ASSERT_EQUALS(GCM.getIdentifier(),«test.CANMessageDescriptions.get(0).canIdentifier»);
+				// Testing the length of the resulting CAN message
+				«{
+    				// add a test for the length of the produced CAN message
+    				var int payloadLength=test.CANMessageDescriptions.get(0).payload.length;
+    				// subtracting the substring "0x"
+    				if(test.CANMessageDescriptions.get(0).payload.substring(0,2).compareToIgnoreCase("0x")==0)
+    				    payloadLength-=2;
+				    payloadLength/=2;
+    				"TS_ASSERT_EQUALS(GCM.getLength(),"+payloadLength+");"
+				}»
+	// Testing the payload of the resulting CAN message
 				TS_ASSERT_EQUALS(GCM.getData(),static_cast<uint64_t>(«test.CANMessageDescriptions.get(0).payload»));
-			}
+	}
         		«ELSE»
-        			std::cerr<<"Warning: Multiple CAN messages for one mapping are not supported."<<std::endl;
+    		std::cerr<<"Warning: Multiple CAN messages for one mapping are not supported."<<std::endl;
 	            «ENDIF»
             «ENDIF»
         «ENDFOR»
@@ -1531,9 +1541,6 @@ Unordered messages*/
 «FOR currentMapping : mapping.mappings»
 «var String signalName=currentMapping.cansignalname»
 «var CANSignalDescription canSignal=canSignals.get(signalName)»
-«/* DON'T NEED TO RUN THIS CHECK
-var String[] splittedMN=mapping.mappingName.toString.toLowerCase.split("\\.")»
-IF(splittedMN.get(splittedMN.size-1).compareToIgnoreCase(signalName.split("\\.").get(0).toLowerCase)==0)*/»
 «{ // make sure we don't add 2 times the same CAN id
 	if(canSignal!=null)
 	{
