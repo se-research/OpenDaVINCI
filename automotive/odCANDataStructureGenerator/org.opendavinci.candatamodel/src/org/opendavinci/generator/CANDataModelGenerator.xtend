@@ -638,7 +638,14 @@ namespace canmapping {
 	«ENDIF»
 	v.endVisit();
 	}
-	
+
+/*
+	**********************************************************
+	**                                                      **
+	**                        ENCODE                        **
+	**                                                      **
+	**********************************************************
+*/
 	::automotive::GenericCANMessage «className»::encode(odcore::data::Container &c) 
 	{
     «IF canIDs.size>0»
@@ -655,8 +662,6 @@ namespace canmapping {
 			uint64_t «gcmPayloadPrefix+id»=0x0;
    		«ENDFOR»
 		
-			bool found, extracted, abort=false;
-		
 			if(c.getDataType() != ::«mapping.mappingName.replaceAll("\\.","::")»::ID())
 			{
 				// something went wrong
@@ -665,7 +670,8 @@ namespace canmapping {
 				gcm.setLength(0);
 				return gcm;
 			}
-			
+
+			bool found, extracted, abort=false;		
 			::«mapping.mappingName.replaceAll("\\.","::")» temp«className»=c.getData<::«mapping.mappingName.replaceAll("\\.","::")»>();
 			odcore::reflection::MessageFromVisitableVisitor mfvv;
 			temp«className».accept(mfvv);
@@ -677,101 +683,186 @@ namespace canmapping {
 		«var int payloadLengthInBits=0»
 
 		«FOR currentSignalInMapping : mapping.mappings»
-		«var CANSignalDescription canSignal=canSignals.get(currentSignalInMapping.cansignalname)»
-		«{varName=currentSignalInMapping.cansignalname.replace('.','_').toFirstUpper;""}»
+			«var CANSignalDescription CurrentCANSignal=canSignals.get(currentSignalInMapping.cansignalname)»
+			«{varName=currentSignalInMapping.cansignalname.replace('.','_').toFirstUpper;""}»
+			
 			///////// manipulating signal «currentSignalInMapping.cansignalname»
-			«IF canSignal!=null»
+			«IF CurrentCANSignal!=null»
 			found=extracted=false;
-				«var String rawVarName="raw"+varName»
+			«var String rawVarName="raw"+varName»
 			double «rawVarName» = msg.getValueFromScalarField<double>(/*longid*/0,/*shortid*/«currentSignalInMapping.signalIdentifier», found, extracted);
 			
-			if(found && extracted){
-				if(«rawVarName»<«canSignal.m_rangeStart»)
-					«rawVarName»=«canSignal.m_rangeStart»;
-				if(«rawVarName»>«canSignal.m_rangeEnd»)
-					«rawVarName»=«canSignal.m_rangeEnd»;
+			if(found && extracted) {
+
+				// clamping only if the range is different from [0,0]
+				if(!( («CurrentCANSignal.m_rangeStart» >= -0.0000000001 && «CurrentCANSignal.m_rangeStart» <= 0.0000000001) && 
+					  («CurrentCANSignal.m_rangeEnd» >= -0.0000000001 && «CurrentCANSignal.m_rangeEnd» <= 0.0000000001) ))
+				{
+					if(«rawVarName»<«CurrentCANSignal.m_rangeStart»)
+						«rawVarName»=«CurrentCANSignal.m_rangeStart»;
+					if(«rawVarName»>«CurrentCANSignal.m_rangeEnd»)
+						«rawVarName»=«CurrentCANSignal.m_rangeEnd»;
+				}
+
 				«var String transformedVarName="transformed"+varName»
 				
-				const double OFFSET = «canSignal.m_add» ;
-				const double SCALE = «canSignal.m_multiplyBy» ;
-				
-				double «transformedVarName»=static_cast<double>((«rawVarName» - OFFSET) / (double) SCALE);
+				const double OFFSET = «CurrentCANSignal.m_add» ;
+				const double SCALE = «CurrentCANSignal.m_multiplyBy» ;
+				double «transformedVarName»=static_cast<double>((«rawVarName» - OFFSET) / SCALE);
 
-				«var int actualLength=Integer.parseInt(canSignal.m_length)»
+				«/* the logical signal length and the number of bits used to encode the signal in the CAN payload can differ (for big endian signals) */»
+				«var int signalLength=Integer.parseInt(CurrentCANSignal.m_length)»
+				«var int bitLength=signalLength»
 				«{
-					var int nextFieldStart=63;
-					var boolean oneFound=false;
+					// updating the payload length in bits
+					payloadLengthInBits+=Integer.parseInt(CurrentCANSignal.m_length);
+					
+					// comparison variable, the initial value is adjusted depending on the endianness of the signals in the CAN message
+					var int nextFieldStart=0;
+					if(CurrentCANSignal.m_endian.compareTo("little")==0)
+					{
+						nextFieldStart=63;
+					}
+					
+					var boolean closestFound=false;
 					for(sig:mapping.mappings) {
-						
+						var CANSignalDescription RollingCANSignal=canSignals.get(sig.cansignalname);
 						// if the signal is not found stop the code generation
-						if(canSignals.get(sig.cansignalname)==null)
+						if(RollingCANSignal==null)
 						{
 							/* This if branch should be unreachable since the generator is supposed to fail when a signal is misspelled or not found*/
 							throwSignalNotFoundException(sig.cansignalname);
 							return -1;
 						}
-						
-						if(canSignals.get(sig.cansignalname).m_CANID==canSignals.get(currentSignalInMapping.cansignalname).m_CANID)// signals in the same CAN message
+						if(RollingCANSignal.m_CANID==CurrentCANSignal.m_CANID)// signals in the same CAN message
 						{
-							// find the signals to the left-hand side in the bitfield, consider the closest to the current one 
-							// (i.e. the next signal in the payload going in the direction for which the bit number increases)
-							if(Integer.parseInt(canSignals.get(sig.cansignalname).m_startBit) > Integer.parseInt(canSignals.get(currentSignalInMapping.cansignalname).m_startBit)
-								&& Integer.parseInt(canSignals.get(sig.cansignalname).m_startBit) <= nextFieldStart)
+							if(CurrentCANSignal.m_endian.compareTo("big")==0) // assumes all signals are big endian
 							{
-								oneFound=true;
-								nextFieldStart=Integer.parseInt(canSignals.get(sig.cansignalname).m_startBit);
+								// find the signals to the right-hand side in the bitfield, consider the closest to the current one 
+								// (i.e. the next signal in the payload going in the direction for which the bit number decreases)
+								if(Integer.parseInt(RollingCANSignal.m_startBit) < Integer.parseInt(CurrentCANSignal.m_startBit)
+									&& Integer.parseInt(RollingCANSignal.m_startBit) >= nextFieldStart)
+								{
+									closestFound=true;
+									nextFieldStart=Integer.parseInt(RollingCANSignal.m_startBit);
+								}
+							}
+							else // assumes all signals are little endian
+							{
+								// find the signals to the left-hand side in the bitfield, consider the closest to the current one 
+								// (i.e. the next signal in the payload going in the direction for which the bit number increases)
+								if(Integer.parseInt(RollingCANSignal.m_startBit) > Integer.parseInt(CurrentCANSignal.m_startBit)
+									&& Integer.parseInt(RollingCANSignal.m_startBit) <= nextFieldStart)
+								{
+									closestFound=true;
+									nextFieldStart=Integer.parseInt(RollingCANSignal.m_startBit);
+								}
 							}
 						}
 					}
-					
-					if(oneFound)
+					if(closestFound)
 					{
-						actualLength = nextFieldStart - Integer.parseInt(canSignals.get(currentSignalInMapping.cansignalname).m_startBit);
+						bitLength = Integer.parseInt(CurrentCANSignal.m_startBit)-nextFieldStart;
 					}
-					""}»
-
+					
+					// the sign bit is ignored in the endianness adjustment-> this must be confirmed
+					var int signalLength_signed=signalLength;
+					if(CurrentCANSignal.m_signed.compareToIgnoreCase("signed")==0)
+						signalLength_signed=signalLength-1;
+					
+					// use the smaller of the two measurements
+					if(signalLength_signed < bitLength) 
+						bitLength=signalLength_signed;
+					
+				""}»
 				«var String transformedType = ""»
-
 				«{
-					if(actualLength <= 8)
+					if(signalLength <= 8)
 						transformedType="int8_t"
-					else if(actualLength <= 16)
+					else if(signalLength <= 16)
 						transformedType="int16_t"
-					else if(actualLength <= 32)
+					else if(signalLength <= 32)
 						transformedType="int32_t"
 					else// if(actualLength <= 64)
 						transformedType="int64_t";
 					
-					if(canSignals.get(currentSignalInMapping.cansignalname).m_signed.compareToIgnoreCase("unsigned")==0)
+					if(CurrentCANSignal.m_signed.compareToIgnoreCase("unsigned")==0)
 						transformedType="u"+transformedType;
-					
+
+					finalVarName=finalPrefix+varName;
 					""
 				}»
 
-				// signal length is «canSignal.m_length» «IF canSignal.m_length.compareTo("1")==0»bit«ELSE»bits«ENDIF» long and the value will be casted to «transformedType»
-				«{	finalVarName=finalPrefix+varName;
-					payloadLengthInBits+=Integer.parseInt(canSignal.m_length); ""}»
+				// signal length is «CurrentCANSignal.m_length» «IF CurrentCANSignal.m_length.compareTo("1")==0»bit«ELSE»bits«ENDIF» and the value will be casted to «transformedType»
 				«transformedType» «finalVarName»=static_cast<«transformedType»>(round(«transformedVarName»)); // avoid truncation errors
-
-				«IF canSignal.m_endian.compareTo("big")==0»
-				// endian      : «canSignal.m_endian»
-					«IF actualLength > 8 && actualLength <= 16»
-						«finalVarName»=htons(final«varName»);
-					«ELSEIF actualLength > 16 && actualLength <= 32»
-						«finalVarName»=htonl(final«varName»);
-					«ELSEIF actualLength > 32 && actualLength <= 64»
-						«finalVarName»=htonll(final«varName»);
-					«ENDIF»
-				«ELSE»
-					// Endianness doesn't need fixing, skipping this step.
-				«ENDIF»
 
 				// move the signal in the right place inside the message payload
 				«var String tempPLVarName="tempPL"+varName»
 				uint64_t «tempPLVarName»=0x0;
 				«tempPLVarName»=static_cast<uint64_t>(«finalVarName»);
-				«tempPLVarName»=«tempPLVarName»<<(«canSignal.m_startBit»);
-				«gcmPayloadPrefix+canSignal.m_CANID»=«gcmPayloadPrefix+canSignal.m_CANID» | «tempPLVarName»;
+
+				«var int startBit=0»
+				«var int endBit=63»
+				«{
+					// create the shift statement and keep track of the new real signal's boundaries inside the payload 
+					var String shiftStatement="";
+					if(CurrentCANSignal.m_endian.compareTo("big")==0)
+					{
+						if(mapping.bit_numbering==null || mapping.bit_numbering.compareTo("vector")!=0)
+						{
+							endBit=Integer.parseInt(CurrentCANSignal.m_startBit);
+							startBit=endBit-signalLength+1;
+							if(startBit >= 0)
+							{
+								shiftStatement= tempPLVarName+" = "+tempPLVarName+" << ( "+endBit+" - "+signalLength+" + 1 ) ;";
+							}
+							else
+							{
+								startBit=0;
+								shiftStatement= tempPLVarName+" = "+tempPLVarName+" >> ( abs( "+endBit+" - "+signalLength+" + 1 ) ) ;";
+							}
+						}
+						else // if vector numbering
+						{
+							endBit=(7-(Integer.parseInt(CurrentCANSignal.m_startBit)/8))*8+(Integer.parseInt(CurrentCANSignal.m_startBit)%8);
+							startBit=endBit-signalLength+1;
+							if( startBit >= 0)
+							{
+								shiftStatement= tempPLVarName+" = "+tempPLVarName+" << ( "+endBit+" - "+signalLength+" + 1 ) ;";
+							}
+							else
+							{
+								startBit=0;
+								shiftStatement= tempPLVarName+" = "+tempPLVarName+" >> ( abs( "+endBit+" - "+signalLength+" + 1 ) ) ;";
+							}
+						}
+					}
+					else
+					{
+						shiftStatement= tempPLVarName+" = "+tempPLVarName+" << "+CurrentCANSignal.m_startBit+" ;";
+						if(mapping.bit_numbering==null || mapping.bit_numbering.compareTo("vector")!=0)
+						{
+							startBit=Integer.parseInt(CurrentCANSignal.m_startBit);
+						}
+						else // if vector numbering
+						{
+							startBit=(7-(Integer.parseInt(CurrentCANSignal.m_startBit)/8))*8+(Integer.parseInt(CurrentCANSignal.m_startBit)%8);
+						}
+						endBit=startBit+signalLength-1;
+					}
+					
+					// printing the shift statement
+					shiftStatement
+				}»
+				uint64_t signalMask=0b1;
+				«IF startBit>0»
+				for(uint8_t count=0;count<«startBit»;++count)
+					signalMask<<=1;
+				«ENDIF»
+
+				// copy the signal in the right place inside the payload, skipping the possible 1 bits in case of negative numbers
+				for(uint8_t position=«startBit»;position<=«endBit»;++position,signalMask<<=1)
+					«gcmPayloadPrefix+CurrentCANSignal.m_CANID» |= («tempPLVarName» & signalMask);
 			}
 			else {
 				abort=true; // set to true and never reset to false to keep track of failures
@@ -794,20 +885,27 @@ namespace canmapping {
 		
 		«FOR id:canIDs»
 		// set payload of GenericCANMessage and return
-		// the rolling is due to Vector's dbc file numeration convention
-		{
-			uint64_t rolledPayload=0x0;
-			for(uint8_t i=0;i<static_cast<uint8_t>(«Math.ceil(payloadLengthInBits/8.0)»); ++i)
-			{
-				rolledPayload=rolledPayload<<8;
-				rolledPayload |= «gcmPayloadPrefix+id» & 0xFF ;
-				«gcmPayloadPrefix+id»=«gcmPayloadPrefix+id»>>8;
-			}
-		
-			«gcmPrefix+id».setData(rolledPayload);
-			«gcmPrefix+id».setLength(static_cast<uint8_t>(«Math.ceil(payloadLengthInBits/8.0)»));
-		}
-		return «gcmPrefix+id»;
+			«IF mapping.bit_numbering==null || mapping.bit_numbering.compareTo("vector")!=0»
+				{
+					// the rolling is due to Vector's dbc file numeration convention
+					uint64_t rolledPayload=0x0;
+					for(uint8_t i=0;i<static_cast<uint8_t>(«Math.ceil(payloadLengthInBits/8.0)»); ++i)
+					{
+						rolledPayload=rolledPayload<<8;
+						rolledPayload |= «gcmPayloadPrefix+id» & 0xFF ;
+						«gcmPayloadPrefix+id»=«gcmPayloadPrefix+id»>>8;
+					}
+					«gcmPayloadPrefix+id»=rolledPayload;
+				}
+			«ENDIF»
+			«gcmPrefix+id».setData(«gcmPayloadPrefix+id»);
+			«IF mapping.payloadLength==null || mapping.payloadLength.compareTo("")==0»
+                «gcmPrefix+id».setLength(static_cast<uint8_t>(«Math.ceil(payloadLengthInBits/8.0)»));
+			«ELSE»
+                «gcmPrefix+id».setLength(static_cast<uint8_t>(«mapping.payloadLength»));
+			«ENDIF»
+
+			return «gcmPrefix+id»;
    		«ENDFOR»
 	«ELSE»
 
@@ -820,7 +918,14 @@ namespace canmapping {
 		return gcm;
 	«ENDIF»
 	}
-	
+
+/*
+	**********************************************************
+	**                                                      **
+	**                        DECODE                        **
+	**                                                      **
+	**********************************************************
+*/
 	odcore::data::Container «className»::decode(const ::automotive::GenericCANMessage &gcm) 
 	{
 		odcore::data::Container c;
@@ -876,29 +981,30 @@ namespace canmapping {
 		odcore::reflection::Message message;
 
 		«FOR currentSignalInMapping : mapping.mappings»
-			«var String curSignalName=currentSignalInMapping.cansignalname»
-			«IF canSignals.get(curSignalName)!=null /*if the signal exists*/»
-			// addressing signal «curSignalName»
+			«var CANSignalDescription CurrentCANSignal=canSignals.get(currentSignalInMapping.cansignalname)»
+			«IF CurrentCANSignal!=null /*if the signal exists*/»
+			
+			// addressing signal «currentSignalInMapping.cansignalname»
 			{
 				// Get the raw payload.
+				uint64_t data = m_payloads[«CurrentCANSignal.m_CANID»];
 
-				uint64_t data = m_payloads[«canSignals.get(curSignalName).m_CANID»];
-
-				// the rolling is due to Vector's dbc file numeration convention
-				{
-					uint64_t rolledPayload=0x0;
-					for(uint8_t i=0;i<gcm.getLength(); ++i)
+				«IF mapping.bit_numbering==null || mapping.bit_numbering.compareTo("vector")!=0»
+					// the rolling is due to Vector's dbc file numeration convention
 					{
-						rolledPayload=rolledPayload<<8;
-						rolledPayload |= data & 0xFF ;
-						data=data>>8;
+						uint64_t rolledPayload=0x0;
+						for(uint8_t i=0;i<gcm.getLength(); ++i)
+						{
+							rolledPayload=rolledPayload<<8;
+							rolledPayload |= data & 0xFF ;
+							data=data>>8;
+						}
+						data=rolledPayload;
 					}
-
-					data=rolledPayload;
-				}
+				«ENDIF»
 				«var String tempVarType=""»
-				«var String tempVarName="raw_"+curSignalName.replaceAll("\\.", "_")»
-				«var String finalVarName="transformed_"+curSignalName.replaceAll("\\.", "_")»
+				«var String tempVarName="raw_"+currentSignalInMapping.cansignalname.replaceAll("\\.", "_")»
+				«var String finalVarName="transformed_"+currentSignalInMapping.cansignalname.replaceAll("\\.", "_")»
 				«var String capitalizedName»
 				«{
 					var String[] chunks=currentSignalInMapping.cansignalname.split('\\.');
@@ -908,92 +1014,144 @@ namespace canmapping {
 				«var String memberVarName="m_"+capitalizedName.toFirstLower»
 
 				// Get raw value from attribute.
-				«tempVarType="uint64_t"» «tempVarName»=0x0;
-				«tempVarName»=data;
+				«tempVarType="uint64_t"» «tempVarName»=data;
 
-				// reset right-hand side of bit field
-				«tempVarName»=«tempVarName» >> («canSignals.get(curSignalName).m_startBit»);
-
-				«var int actualLength=Integer.parseInt(canSignals.get(curSignalName).m_length)»
+				«var int signalLength=Integer.parseInt(CurrentCANSignal.m_length)»
+				«var int bitLength=signalLength»
 				«{
-					var int nextFieldStart=63;
-					var boolean oneFound=false;
+					var int nextFieldStart=0;
+					if(canSignals.get(currentSignalInMapping.cansignalname).m_endian.compareTo("little")==0)
+					{
+						nextFieldStart=63;
+					}
+					
+					var boolean closestFound=false;
 					for(sig:mapping.mappings) {
-						
+						var CANSignalDescription RollingCANSignal=canSignals.get(sig.cansignalname)
 						// if the signal is not found stop the code generation
-						if(canSignals.get(sig.cansignalname)==null)
+						if(RollingCANSignal==null)
 						{
 							/* This if branch should be unreachable since the generator is supposed to fail when a signal is misspelled or not found*/
 							throwSignalNotFoundException(sig.cansignalname);
 							return -1;
 						}
-						
-						if(canSignals.get(sig.cansignalname).m_CANID==canSignals.get(curSignalName).m_CANID) // signals in the same CAN message
+						if(RollingCANSignal.m_CANID==canSignals.get(currentSignalInMapping.cansignalname).m_CANID)// signals in the same CAN message
 						{
-							// find the signals to the left-hand side in the bitfield, consider the closest to the current one 
-							// (i.e. the next signal in the payload going in the direction for which the bit number increases)
-							if(Integer.parseInt(canSignals.get(sig.cansignalname).m_startBit) > Integer.parseInt(canSignals.get(curSignalName).m_startBit)
-								&& Integer.parseInt(canSignals.get(sig.cansignalname).m_startBit) <= nextFieldStart)
+							if(CurrentCANSignal.m_endian.compareToIgnoreCase("big")==0) // assumes all signals are big endian
 							{
-								oneFound=true;
-								nextFieldStart=Integer.parseInt(canSignals.get(sig.cansignalname).m_startBit);
+								// find the signals to the right-hand side in the bitfield, consider the closest to the current one 
+								// (i.e. the next signal in the payload going in the direction for which the bit number decreases)
+								if(Integer.parseInt(RollingCANSignal.m_startBit) < Integer.parseInt(canSignals.get(currentSignalInMapping.cansignalname).m_startBit)
+									&& Integer.parseInt(RollingCANSignal.m_startBit) >= nextFieldStart)
+								{
+									closestFound=true;
+									nextFieldStart=Integer.parseInt(RollingCANSignal.m_startBit);
+								}
+							}
+							else  // assumes all signals are little endian
+							{
+								// find the signals to the left-hand side in the bitfield, consider the closest to the current one 
+								// (i.e. the next signal in the payload going in the direction for which the bit number decreases)
+								if(Integer.parseInt(RollingCANSignal.m_startBit) > Integer.parseInt(canSignals.get(currentSignalInMapping.cansignalname).m_startBit)
+									&& Integer.parseInt(RollingCANSignal.m_startBit) <= nextFieldStart)
+								{
+									closestFound=true;
+									nextFieldStart=Integer.parseInt(RollingCANSignal.m_startBit);
+								}
 							}
 						}
 					}
-					
-					if(oneFound)
+					if(closestFound)
 					{
-						actualLength = nextFieldStart - Integer.parseInt(canSignals.get(curSignalName).m_startBit);
+						bitLength = Integer.parseInt(canSignals.get(currentSignalInMapping.cansignalname).m_startBit)-nextFieldStart;
 					}
-					""}»
+					// use the smaller of the two measurements
+					if(signalLength < bitLength) bitLength=signalLength;
+				""}»
 
-				«var String mask="0"»«{for(var int i=0;i<actualLength;i++) mask+="1";""}»
-				«tempVarName»=«tempVarName» & 0b«mask»;
-
-				«IF actualLength>8»
-					«IF canSignals.get(curSignalName).m_endian.compareTo("big")==0»
-					// Optional: Fix endianness depending on CAN message specification.
-						«IF actualLength<=16»
-						uint16_t temp_cast=static_cast<uint16_t>(«tempVarName»);
-						temp_cast=ntohs(temp_cast);
-						«tempVarName» = static_cast<uint64_t>(temp_cast);
-						«ELSEIF actualLength<=32»
-						uint32_t temp_cast=static_cast<uint32_t>(«tempVarName»);
-						temp_cast=ntohl(temp_cast);
-						«tempVarName» = static_cast<uint64_t>(temp_cast);
-						«ELSEIF actualLength<=64»
-						«tempVarName» = ntohll(«tempVarName»);
+				// reset right-hand side of bit field
+				«IF CurrentCANSignal.m_endian.compareToIgnoreCase("big")==0»
+					«IF mapping.bit_numbering==null || mapping.bit_numbering.compareTo("vector")!=0»
+						«IF (Integer.parseInt(CurrentCANSignal.m_startBit)-signalLength+1)>=0»
+							«tempVarName» >>= («CurrentCANSignal.m_startBit»-«signalLength»+1);
+						«ELSE»
+							«tempVarName» <<= abs(«CurrentCANSignal.m_startBit»-«signalLength»+1);
 						«ENDIF»
 					«ELSE»
-					// Endianness doesn't need fixing, skipping this step.
+						«var int transfStart=(7-(Integer.parseInt(CurrentCANSignal.m_startBit)/8))*8+(Integer.parseInt(CurrentCANSignal.m_startBit)%8)»
+						«IF (transfStart-signalLength+1)>=0»
+							«tempVarName» >>= («transfStart»-«signalLength»+1);
+						«ELSE»
+							«tempVarName» <<= abs(«transfStart»-«signalLength»+1);
+						«ENDIF»
 					«ENDIF»
 				«ELSE»
-					// Field too short for endianness adjustment, skipping this step.
+					«IF mapping.bit_numbering==null || mapping.bit_numbering.compareTo("vector")!=0»
+						«tempVarName» >>= «CurrentCANSignal.m_startBit»;
+					«ELSE»
+						«tempVarName» >>= «(7-(Integer.parseInt(CurrentCANSignal.m_startBit)/8))*8+(Integer.parseInt(CurrentCANSignal.m_startBit)%8)»;
+					«ENDIF»
+				«ENDIF»
+
+				// reset left-hand side of bit field
+				«var String mask="0"»«{for(var int i=0;i<signalLength;i++) mask+="1";""}»
+				«tempVarName» &= 0b«mask»;
+
+				«IF CurrentCANSignal.m_signed.compareToIgnoreCase("signed")==0»
+					«var String msbMask="1"»
+					«{for(var int i=1;i<signalLength;i++) msbMask+="0";""}»
+					bool isNegative=false;
+					// align the rolling mask to the number's msb
+					uint64_t rollingMask=0b0«msbMask»;
+					// if msb is 1 the number is negative and the msb must be replicated
+					if( («tempVarName» & rollingMask) != 0b0)
+					{
+						// msb bit position
+						uint8_t msbPos=«CurrentCANSignal.m_length»;
+						rollingMask<<=1;
+						// replicate the msb until the end of the variable (to the left)
+						for(;63-msbPos>=0;++msbPos,rollingMask<<=1)
+						{
+							«tempVarName»|=rollingMask;
+						}
+						isNegative=true;
+						// make it positive before casting it to double
+						«tempVarName»*=-1;
+					}
+					// otherwise the number is positive and it can be left as it is
 				«ENDIF»
 
 				// variable holding the transformed value
 				double «finalVarName»=static_cast<double>(«tempVarName»);
+				«IF CurrentCANSignal.m_signed.compareToIgnoreCase("signed")==0»
+					if(isNegative)
+						«finalVarName»*=-1;
+				«ENDIF»
 
 				// Apply value transformation (i.e. formula) to map raw value to (physically) meaningful value according to CAN message specification.
-				const double SCALE = «canSignals.get(curSignalName).m_multiplyBy»;
-				const double OFFSET = «canSignals.get(curSignalName).m_add»;
+				const double SCALE = «CurrentCANSignal.m_multiplyBy»;
+				const double OFFSET = «CurrentCANSignal.m_add»;
 
 				// scaling and adding
 				«finalVarName»=(«finalVarName»*SCALE)+OFFSET;
 
-				// clamping
-				if(«finalVarName»<«canSignals.get(curSignalName).m_rangeStart»)
-					«finalVarName»=«canSignals.get(curSignalName).m_rangeStart»;
-				else if(«finalVarName»>«canSignals.get(curSignalName).m_rangeEnd»)
-					«finalVarName»=«canSignals.get(curSignalName).m_rangeEnd»;
+				// clamping only if the range is different from [0,0]
+				if(!( («CurrentCANSignal.m_rangeStart» >= -0.0000000001 && «CurrentCANSignal.m_rangeStart» <= 0.0000000001) && 
+					  («CurrentCANSignal.m_rangeEnd» >= -0.0000000001 && «CurrentCANSignal.m_rangeEnd» <= 0.0000000001) ))
+				{
+					if(«finalVarName»<«CurrentCANSignal.m_rangeStart»)
+						«finalVarName»=«CurrentCANSignal.m_rangeStart»;
+					else if(«finalVarName»>«CurrentCANSignal.m_rangeEnd»)
+						«finalVarName»=«CurrentCANSignal.m_rangeEnd»;
+				}
 
 				«var String transformedType = ""»
 				«{
-					if(actualLength <= 8)
+					if(signalLength <= 8)
 						transformedType="int8_t"
-					else if(actualLength <= 16)
+					else if(signalLength <= 16)
 						transformedType="int16_t"
-					else if(actualLength <= 32)
+					else if(signalLength <= 32)
 						transformedType="int32_t"
 					else// if(actualLength <= 64)
 						transformedType="int64_t";
@@ -1010,8 +1168,8 @@ namespace canmapping {
 				odcore::reflection::Field<double> *f = new odcore::reflection::Field<double>(«memberVarName»);
 				f->setLongFieldIdentifier(0); // The identifiers specified here must match with the ones defined in the .odvd file!
 				f->setShortFieldIdentifier(«currentSignalInMapping.signalIdentifier»); // The identifiers specified here must match with the ones defined in the .odvd file!
-				f->setLongFieldName("«canSignals.get(curSignalName).m_FQDN»");
-				f->setShortFieldName("«{var String[] res; res=canSignals.get(curSignalName).m_FQDN.split("\\."); res.get(res.size-1)}»");
+				f->setLongFieldName("«CurrentCANSignal.m_FQDN»");
+				f->setShortFieldName("«{var String[] res; res=CurrentCANSignal.m_FQDN.split("\\."); res.get(res.size-1)}»");
 				f->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
 				f->setSize(sizeof(«memberVarName»));
 
@@ -1019,9 +1177,9 @@ namespace canmapping {
 				message.addField(std::shared_ptr<odcore::data::reflection::AbstractField>(f));
 			}
 			«ELSE /* This else branch should be unreachable since the generator is supposed to fail when a signal is misspelled or not found*/»
-				// Signal "«curSignalName»" could not be found. 
+				// Signal "«currentSignalInMapping.cansignalname»" could not be found. 
 				«System.err.println("\n\nWarning: Signal "+className+"."+currentSignalInMapping.cansignalname+" could not be found. Check your .can file. \n\n")»
-				cerr<<endl<<endl<<"Warning: Signal '«className».«curSignalName»' could not be found. Check your .can file."<<endl<<endl<<endl;
+				cerr<<endl<<endl<<"Warning: Signal '«className».«currentSignalInMapping.cansignalname»' could not be found. Check your .can file."<<endl<<endl<<endl;
 				«throwSignalNotFoundException(className+'.'+currentSignalInMapping.cansignalname)»
 				«System.exit(-1)»
 			«ENDIF»
@@ -1084,13 +1242,13 @@ none.
 «var CANSignalDescription canSignal=canSignals.get(signalName)»
 «/* DON'T NEED TO RUN THIS CHECK
 var String[] splittedMN=mapping.mappingName.toString.toLowerCase.split("\\.")»
-IF(splittedMN.get(splittedMN.size-1).compareTo(signalName.split("\\.").get(0).toLowerCase)==0)*/»
+IF(splittedMN.get(splittedMN.size-1).compareToIgnoreCase(signalName.split("\\.").get(0).toLowerCase)==0)*/»
 «{ // make sure we don't add 2 times the same CAN id
 	if(canSignal!=null)
 	{
 		var boolean test=true;
 		for(id:canIDs)
-			if(id.compareTo(canSignal.m_CANID)==0)
+			if(id.compareToIgnoreCase(canSignal.m_CANID)==0)
 				test=false;
 		if(test)
 			canIDs.add(canSignal.m_CANID);		
@@ -1160,7 +1318,7 @@ namespace canmapping {
 	{
 		var boolean test=true;
 		for(id:canIDs)
-			if(id.compareTo(canSignal.m_CANID)==0)
+			if(id.compareToIgnoreCase(canSignal.m_CANID)==0)
 				test=false;
 		if(test)
 			canIDs.add(canSignal.m_CANID);		
@@ -1255,7 +1413,7 @@ class CANBridgeTest : public CxxTest::TestSuite {
 	void testDecode() {
 		«var int testIndex=0»
 		«FOR test : canSignalTesting /* this loops over all the provided test suites*/»
-			«IF test.mappingName.toString.compareTo(mapping.mappingName.toString)==0»
+			«IF test.mappingName.toString.compareToIgnoreCase(mapping.mappingName.toString)==0»
 				«var String testName="test_"+(testIndex++)»
 				«var HashMap<String,String> GCMs=new HashMap<String,String>»
 			{
@@ -1287,7 +1445,7 @@ class CANBridgeTest : public CxxTest::TestSuite {
 							var String[] chunks=mapping.mappings.get(index).cansignalname.split('\\.')
 							for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
 							for(result:test.results)
-								if(result.signalIdentifier.compareTo(mapping.mappings.get(index).signalIdentifier)==0)
+								if(result.signalIdentifier.compareToIgnoreCase(mapping.mappings.get(index).signalIdentifier)==0)
 									asserts+="TS_ASSERT_DELTA("+testName+".get"+capitalizedName+"() , "+result.expectedResult+", 1e-4);"+'\n'
 						}
 					}»
@@ -1304,13 +1462,13 @@ class CANBridgeTest : public CxxTest::TestSuite {
 
 «{testIndex=0;""}»
     void testEncode() {
-        «FOR test : canSignalTesting»
-        	«IF test.mappingName.toString.compareTo(mapping.mappingName.toString)==0»
-        		«var String testName="test_"+(testIndex++)»
-    			{
-    			// Mapping name «test.mappingName»
+    «FOR test : canSignalTesting»
+    	«IF test.mappingName.toString.compareToIgnoreCase(mapping.mappingName.toString)==0»
+    		«var String testName="test_"+(testIndex++)»
+			{
+			 // Mapping name «test.mappingName»
 
-        		«IF test.CANMessageDescriptions.size==1»
+    		«IF test.CANMessageDescriptions.size==1»
 
 				// id «test.CANMessageDescriptions.get(0).canIdentifier»
 				// payload «test.CANMessageDescriptions.get(0).payload» : length «(test.CANMessageDescriptions.get(0).payload.length-2)/2»
@@ -1320,27 +1478,23 @@ class CANBridgeTest : public CxxTest::TestSuite {
     	    	«var ArrayList<String> assignments=new ArrayList<String>»
     			«{
     				for(var int index=0;index<mapping.mappings.size;index++){
-    					//var String capitalizedName=""
-    					//var String[] chunks=mapping.mappings.get(index).cansignalname.split('\\.')
-    					//for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
     					var int fIndex=0;
     					for(result:test.results){
     						fIndex++
-    						if(result.signalIdentifier.compareTo(mapping.mappings.get(index).signalIdentifier)==0){
+    						if(result.signalIdentifier.compareToIgnoreCase(mapping.mappings.get(index).signalIdentifier)==0){
 								assignments+="odcore::reflection::Field<double> *f_"+fIndex+" = new odcore::reflection::Field<double>("+result.expectedResult+");"+'\n'+
 												"f_"+fIndex+"->setLongFieldIdentifier(0);"+
 												"f_"+fIndex+"->setShortFieldIdentifier("+result.signalIdentifier+");"+'\n'+
 												"f_"+fIndex+"->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);"+'\n'+
 												"message.addField(std::shared_ptr<odcore::data::reflection::AbstractField>(f_"+fIndex+"));"+'\n'
-    							//assignments+="HLClass.set"+chunks.get(chunks.size-1).toFirstUpper+"("+result.expectedResult+");"+'\n'
     						}
     					}
     				}
     			}»
 
-			«FOR assignment:assignments»
-			«assignment»
-			«ENDFOR»
+    			«FOR assignment:assignments»
+    			«assignment»
+    			«ENDFOR»
 
 				odcore::reflection::MessageToVisitableVisitor mtvv(message);
 				::«mapping.mappingName.toString.replaceAll("\\.", "::")» HLClass;
@@ -1350,10 +1504,24 @@ class CANBridgeTest : public CxxTest::TestSuite {
 				canmapping::«mapping.mappingName.toString.replaceAll("\\.", "::")» «testName»;
 				::automotive::GenericCANMessage GCM;
 				GCM=«testName».encode(c);
+
+	// Testing the ID of the resulting CAN message
+	TS_ASSERT_EQUALS(GCM.getIdentifier(),«test.CANMessageDescriptions.get(0).canIdentifier»);
+				// Testing the length of the resulting CAN message
+				«{
+    				// add a test for the length of the produced CAN message
+    				var int payloadLength=test.CANMessageDescriptions.get(0).payload.length;
+    				// subtracting the substring "0x"
+    				if(test.CANMessageDescriptions.get(0).payload.substring(0,2).compareToIgnoreCase("0x")==0)
+    				    payloadLength-=2;
+				    payloadLength/=2;
+    				"TS_ASSERT_EQUALS(GCM.getLength(),"+payloadLength+");"
+				}»
+	// Testing the payload of the resulting CAN message
 				TS_ASSERT_EQUALS(GCM.getData(),static_cast<uint64_t>(«test.CANMessageDescriptions.get(0).payload»));
-			}
+	}
         		«ELSE»
-        			std::cerr<<"Warning: Multiple CAN messages for one mapping are not supported."<<std::endl;
+    		std::cerr<<"Warning: Multiple CAN messages for one mapping are not supported."<<std::endl;
 	            «ENDIF»
             «ENDIF»
         «ENDFOR»
@@ -1377,15 +1545,12 @@ Unordered messages*/
 «FOR currentMapping : mapping.mappings»
 «var String signalName=currentMapping.cansignalname»
 «var CANSignalDescription canSignal=canSignals.get(signalName)»
-«/* DON'T NEED TO RUN THIS CHECK
-var String[] splittedMN=mapping.mappingName.toString.toLowerCase.split("\\.")»
-IF(splittedMN.get(splittedMN.size-1).compareTo(signalName.split("\\.").get(0).toLowerCase)==0)*/»
 «{ // make sure we don't add 2 times the same CAN id
 	if(canSignal!=null)
 	{
 		var boolean test=true;
 		for(id:canIDs)
-			if(id.compareTo(canSignal.m_CANID)==0)
+			if(id.compareToIgnoreCase(canSignal.m_CANID)==0)
 				test=false;
 		if(test)
 			canIDs.add(canSignal.m_CANID);		
@@ -1586,13 +1751,13 @@ Ordered messages*/
 «var CANSignalDescription canSignal=canSignals.get(signalName)»
 «/* DON'T NEED TO RUN THIS CHECK
 var String[] splittedMN=mapping.mappingName.toString.toLowerCase.split("\\.")»
-IF(splittedMN.get(splittedMN.size-1).compareTo(signalName.split("\\.").get(0).toLowerCase)==0)*/»
+IF(splittedMN.get(splittedMN.size-1).compareToIgnoreCase(signalName.split("\\.").get(0).toLowerCase)==0)*/»
 «{ // make sure we don't add 2 times the same CAN id
 	if(canSignal!=null)
 	{
 		var boolean test=true;
 		for(id:canIDs)
-			if(id.compareTo(canSignal.m_CANID)==0)
+			if(id.compareToIgnoreCase(canSignal.m_CANID)==0)
 				test=false;
 		if(test)
 			canIDs.add(canSignal.m_CANID);		
