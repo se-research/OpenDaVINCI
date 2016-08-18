@@ -180,7 +180,7 @@ message automotive.vehicle.WheelSpeed [id = 75] {
 }
 
 message automotive.vehicle.LightSystem [id = 76] {
-    uint8 headlights [id = 1];
+    int8 headlights [id = 1];
 }
 
 /////////////////////////////////////////////////////////////////////
