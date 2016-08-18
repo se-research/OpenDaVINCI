@@ -62,9 +62,9 @@ INCLUDE_DIRECTORIES(include)
 ###############################################################################
 # Build this project.
 FILE(GLOB_RECURSE thisproject-sources "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
-ADD_LIBRARY (${PROJECT_NAME}lib-static STATIC ${thisproject-sources})
+ADD_LIBRARY (${PROJECT_NAME}-static STATIC ${thisproject-sources})
 ADD_EXECUTABLE (${PROJECT_NAME} "${CMAKE_CURRENT_SOURCE_DIR}/apps/${PROJECT_NAME}.cpp")
-TARGET_LINK_LIBRARIES (${PROJECT_NAME} ${PROJECT_NAME}lib-static ${LIBRARIES}) 
+TARGET_LINK_LIBRARIES (${PROJECT_NAME} ${PROJECT_NAME}-static ${LIBRARIES}) 
 
 ###############################################################################
 # Enable CxxTest for all available testsuites.
@@ -94,7 +94,7 @@ IF(CXXTEST_FOUND)
             SET_SOURCE_FILES_PROPERTIES(${testsuite-short}-TestSuite.cpp PROPERTIES COMPILE_FLAGS "")
         ENDIF()
         SET_TESTS_PROPERTIES(${testsuite-short}-TestSuite PROPERTIES TIMEOUT 3000)
-        TARGET_LINK_LIBRARIES(${testsuite-short}-TestSuite ${PROJECT_NAME}lib-static ${LIBRARIES})
+        TARGET_LINK_LIBRARIES(${testsuite-short}-TestSuite ${PROJECT_NAME}-static ${LIBRARIES})
     ENDFOREACH()
 ENDIF(CXXTEST_FOUND)
 

@@ -62,9 +62,9 @@ INCLUDE_DIRECTORIES(include)
 ###############################################################################
 # Build this project.
 FILE(GLOB_RECURSE thisproject-sources "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
-ADD_LIBRARY (${PROJECT_NAME}lib-static STATIC ${thisproject-sources})
+ADD_LIBRARY (${PROJECT_NAME}-static STATIC ${thisproject-sources})
 ADD_EXECUTABLE (${PROJECT_NAME} "${CMAKE_CURRENT_SOURCE_DIR}/apps/${PROJECT_NAME}.cpp")
-TARGET_LINK_LIBRARIES (${PROJECT_NAME} ${PROJECT_NAME}lib-static ${LIBRARIES}) 
+TARGET_LINK_LIBRARIES (${PROJECT_NAME} ${PROJECT_NAME}-static ${LIBRARIES}) 
 
 ###############################################################################
 # Enable CxxTest for all available testsuites.
@@ -94,12 +94,27 @@ IF(CXXTEST_FOUND)
             SET_SOURCE_FILES_PROPERTIES(${testsuite-short}-TestSuite.cpp PROPERTIES COMPILE_FLAGS "")
         ENDIF()
         SET_TESTS_PROPERTIES(${testsuite-short}-TestSuite PROPERTIES TIMEOUT 3000)
-        TARGET_LINK_LIBRARIES(${testsuite-short}-TestSuite ${PROJECT_NAME}lib-static ${LIBRARIES})
+        TARGET_LINK_LIBRARIES(${testsuite-short}-TestSuite ${PROJECT_NAME}-static ${LIBRARIES})
     ENDFOREACH()
 ENDIF(CXXTEST_FOUND)
 
 ###############################################################################
 # Install this project.
 INSTALL(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin COMPONENT odtools)
+INSTALL(TARGETS ${PROJECT_NAME}-static DESTINATION lib COMPONENT odtools)
 INSTALL(FILES man/${PROJECT_NAME}.1 DESTINATION man/man1 COMPONENT odtools)
+
+# Install header files.
+INSTALL(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/" DESTINATION include/odplayerh264 COMPONENT odtools)
+
+# Install CMake modules locally.
+IF(UNIX)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/Findodplayerh264.cmake" DESTINATION share/cmake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT lib)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/Findodplayerh264.cmake" DESTINATION share/cmake-2.8/Modules COMPONENT odtools)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/Findodplayerh264.cmake" DESTINATION share/cmake-3.0/Modules COMPONENT odtools)
+ENDIF()
+IF(WIN32)
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/Findodplayerh264.cmake" DESTINATION CMake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT odtools)
+ENDIF()
+
 
