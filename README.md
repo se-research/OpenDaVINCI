@@ -28,7 +28,7 @@ Architecture  | DragonFlyBSD 4.4 | FreeBSD 10.3 | NetBSD 7.0.1 | OpenBSD 5.9 | M
 Architecture  | ArchLinux | CentOS 7 | Debian 8.5 | Elementary Freya
 ------------- | --------- | -------- | ---------- | ----------------
 32bit         | -         | -        | -          | -                
-64bit         | [![Build Status](http://opendavinci.cse.chalmers.se:8889/job/OpenDaVINCI-ArchLinux/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8889/job/OpenDaVINCI-CentOS7/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8889/job/opendavinci-debian-jessie/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8889/job/OpenDaVINCI-ElementaryFreya/badge/icon)](https://github.com/se-research/OpenDaVINCI)
+64bit         | [![Build Status](http://opendavinci.cse.chalmers.se:8889/job/opendavinci-archlinux/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8889/job/OpenDaVINCI-CentOS7/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8889/job/opendavinci-debian-jessie/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8889/job/OpenDaVINCI-ElementaryFreya/badge/icon)](https://github.com/se-research/OpenDaVINCI)
 
 Architecture  | Ubuntu 14.04 | Ubuntu 15.04 | Ubuntu 15.10 | Ubuntu 16.04
 ------------- | ------------ | ------------ | ------------ | ------------
