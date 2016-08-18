@@ -54,7 +54,8 @@ namespace odcore {
 
                 SerializationFactory::getInstance();
 #ifdef HAVE_SYSLOG
-                ::openlog(getName().c_str(), LOG_CONS | LOG_PID | LOG_NDELAY, LOG_LOCAL1);
+                const string MY_NAME = getName();
+                ::openlog(MY_NAME.c_str(), LOG_CONS | LOG_PID | LOG_NDELAY, LOG_LOCAL1);
 #endif
             }
 
