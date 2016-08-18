@@ -91,13 +91,16 @@ IF(QWT5QT4_FOUND)
 ENDIF()
 
 ###########################################################################
-# Find dl.
+# Find dl and stdc++.
 IF(UNIX)
     FIND_PACKAGE (DL)
-    SET (LIBRARIES ${LIBRARIES}
-                   ${DL_LIBRARIES} stdc++fs)
-    INCLUDE_DIRECTORIES (${DL_INCLUDE_DIRS})
-    SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DHAS_DL=YES")
+    FIND_PACKAGE (CPPexperimental)
+    IF(DL_FOUND AND CPPEXPERIMENTAL_FOUND)
+        SET (LIBRARIES ${LIBRARIES}
+                       ${DL_LIBRARIES} ${CPPEXPERIMENTAL_LIBRARIES})
+        INCLUDE_DIRECTORIES (${DL_INCLUDE_DIRS})
+        SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DHAVE_DL=YES")
+    ENDIF()
 ENDIF()
 
 ###########################################################################

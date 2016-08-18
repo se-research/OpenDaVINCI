@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifdef HAS_DL
+#ifdef HAVE_DL
     #include <dlfcn.h>
     #include <experimental/filesystem>
 #endif
@@ -123,7 +123,7 @@ namespace cockpit {
 
             vector<string> LiveFeedWidget::getListOfLibrariesToLoad(const vector<string> &paths) {
                 vector<string> librariesToLoad;
-#ifdef HAS_DL
+#ifdef HAVE_DL
                 for(auto pathToSearch : paths) {
                     try {
                         for(auto &pathElement : std::experimental::filesystem::recursive_directory_iterator(pathToSearch)) {
@@ -151,7 +151,7 @@ namespace cockpit {
             }
 
             void LiveFeedWidget::findAndLoadSharedLibraries() {
-#ifdef HAS_DL
+#ifdef HAVE_DL
                 auto it = m_listOfLibrariesToLoad.begin();
                 while (it != m_listOfLibrariesToLoad.end()) {
                     const string libraryToLoad = *it;
@@ -191,7 +191,7 @@ namespace cockpit {
             }
 
             void LiveFeedWidget::unloadSharedLibraries() {
-#ifdef HAS_DL
+#ifdef HAVE_DL
                 auto it = m_listOfHelpers.begin();
                 while (it != m_listOfHelpers.end()) {
                     HelperEntry e = *it;
