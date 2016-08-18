@@ -42,6 +42,13 @@ SET (CXXTEST_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../cxxtest")
 INCLUDE (CheckCxxTestEnvironment)
 
 ###########################################################################
+# Check for syslog.
+FIND_PACKAGE (Syslog)
+IF(NOT ("${SYSLOG_INCLUDE_DIR}" STREQUAL "SYSLOG_INCLUDE_DIR-NOTFOUND"))
+    SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DHAVE_SYSLOG")
+ENDIF()
+
+###########################################################################
 # Check for a working threading and potential realtime library environment.
 FIND_PACKAGE (Threads REQUIRED)
 FIND_PACKAGE (LibRT)

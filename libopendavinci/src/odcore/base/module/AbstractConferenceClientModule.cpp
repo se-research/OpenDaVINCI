@@ -17,9 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <sstream>
+#ifdef HAVE_SYSLOG
+    #include <syslog.h>
+#endif
 
+#include <sstream>
 #include <memory>
+
 #include "opendavinci/odcore/serialization/SerializationFactory.h"
 #include "opendavinci/odcore/base/module/AbstractConferenceClientModule.h"
 #include "opendavinci/odcore/data/Container.h"
@@ -49,12 +53,19 @@ namespace odcore {
                 setContainerConference(containerConference);
 
                 SerializationFactory::getInstance();
+#ifdef HAVE_SYSLOG
+                ::openlog(getName().c_str(), LOG_CONS | LOG_PID | LOG_NDELAY, LOG_LOCAL1);
+#endif
             }
 
             AbstractConferenceClientModule::~AbstractConferenceClientModule() {
                 if (getContainerConference().get()) {
                     getContainerConference()->setContainerListener(NULL);
                 }
+
+#ifdef HAVE_SYSLOG
+                ::closelog();
+#endif
             }
 
             ContainerConference& AbstractConferenceClientModule::getConference() {
@@ -77,6 +88,19 @@ namespace odcore {
 
                 Container c(logMessage);
                 getConference().send(c);
+
+#ifdef HAVE_SYSLOG
+                if (logLevel == odcore::data::LogMessage::INFO) {
+                    ::syslog(LOG_INFO, "%s", msg.c_str());
+                }
+                if (logLevel == odcore::data::LogMessage::DEBUG) {
+                    ::syslog(LOG_DEBUG, "%s", msg.c_str());
+                }
+                if (logLevel == odcore::data::LogMessage::WARN) {
+                    ::syslog(LOG_WARNING, "%s", msg.c_str());
+                }
+#endif
+
             }
 
         }
