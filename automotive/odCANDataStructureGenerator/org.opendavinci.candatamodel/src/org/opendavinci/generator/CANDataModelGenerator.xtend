@@ -899,7 +899,11 @@ namespace canmapping {
 				}
 			«ENDIF»
 			«gcmPrefix+id».setData(«gcmPayloadPrefix+id»);
-			«gcmPrefix+id».setLength(static_cast<uint8_t>(«Math.ceil(payloadLengthInBits/8.0)»));
+			«IF mapping.payloadLength==null || mapping.payloadLength.compareTo("")==0»
+                «gcmPrefix+id».setLength(static_cast<uint8_t>(«Math.ceil(payloadLengthInBits/8.0)»));
+			«ELSE»
+                «gcmPrefix+id».setLength(static_cast<uint8_t>(«mapping.payloadLength»));
+			«ENDIF»
 
 			return «gcmPrefix+id»;
    		«ENDFOR»
