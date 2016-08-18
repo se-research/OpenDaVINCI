@@ -113,6 +113,7 @@ namespace cockpit {
                     odtools::player::Player *m_player;
 
                     string m_fileName;
+                    string m_currentWorkingDirectory;
             };
 
         }
