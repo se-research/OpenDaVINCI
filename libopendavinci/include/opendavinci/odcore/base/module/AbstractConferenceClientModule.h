@@ -23,6 +23,7 @@
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/base/module/ManagedClientModule.h"
 #include "opendavinci/odcore/exceptions/Exceptions.h"
 #include "opendavinci/generated/odcore/data/LogMessage.h"
@@ -97,6 +98,10 @@ namespace odcore {
                      * @param msg Message to be logged.
                      */
                     void toLogger(const odcore::data::LogMessage::LogLevel &logLevel, const string &msg);
+
+                private:
+                    odcore::base::Mutex m_loggerInitializedMutex;
+                    bool m_loggerInitialized;
             };
 
         }

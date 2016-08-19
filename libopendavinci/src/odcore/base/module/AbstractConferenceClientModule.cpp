@@ -24,6 +24,7 @@
 #include <sstream>
 #include <memory>
 
+#include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/serialization/SerializationFactory.h"
 #include "opendavinci/odcore/base/module/AbstractConferenceClientModule.h"
 #include "opendavinci/odcore/data/Container.h"
@@ -45,7 +46,9 @@ namespace odcore {
             using namespace odcore::serialization;
 
             AbstractConferenceClientModule::AbstractConferenceClientModule(const int32_t &argc, char **argv, const string &name) throw (InvalidArgumentException) :
-                    ManagedClientModule(argc, argv, name) {
+                    ManagedClientModule(argc, argv, name),
+                    m_loggerInitializedMutex(),
+                    m_loggerInitialized(false) {
                 std::shared_ptr<ContainerConference> containerConference = ContainerConferenceFactory::getInstance().getContainerConference(getMultiCastGroup());
                 if (!containerConference.get()) {
                     OPENDAVINCI_CORE_THROW_EXCEPTION(InvalidArgumentException, "ContainerConference invalid!");
@@ -53,10 +56,6 @@ namespace odcore {
                 setContainerConference(containerConference);
 
                 SerializationFactory::getInstance();
-#ifdef HAVE_SYSLOG
-                const string MY_NAME = getName();
-                ::openlog(MY_NAME.c_str(), LOG_CONS | LOG_PID | LOG_NDELAY, LOG_LOCAL1);
-#endif
             }
 
             AbstractConferenceClientModule::~AbstractConferenceClientModule() {
@@ -65,7 +64,10 @@ namespace odcore {
                 }
 
 #ifdef HAVE_SYSLOG
-                ::closelog();
+                Lock l(m_loggerInitializedMutex);
+                if (m_loggerInitialized) {
+                    ::closelog();
+                }
 #endif
             }
 
@@ -76,14 +78,12 @@ namespace odcore {
             void AbstractConferenceClientModule::toLogger(const odcore::data::LogMessage::LogLevel &logLevel, const string &msg) {
                 odcore::data::LogMessage logMessage;
 
-                logMessage.setComponentName(getName());
-
+                stringstream componentName;
+                componentName << getName();
                 if (getIdentifier().size() > 0) {
-                    stringstream componentName;
-                    componentName << getName() << "-" << getIdentifier();
-                    logMessage.setComponentName(componentName.str());
+                    componentName << "-" << getIdentifier();
                 }
-
+                logMessage.setComponentName(componentName.str());
                 logMessage.setLogMessage(msg);
                 logMessage.setLogLevel(logLevel);
 
@@ -91,14 +91,23 @@ namespace odcore {
                 getConference().send(c);
 
 #ifdef HAVE_SYSLOG
-                if (logLevel == odcore::data::LogMessage::INFO) {
-                    ::syslog(LOG_INFO, "%s", msg.c_str());
-                }
-                if (logLevel == odcore::data::LogMessage::DEBUG) {
-                    ::syslog(LOG_DEBUG, "%s", msg.c_str());
-                }
-                if (logLevel == odcore::data::LogMessage::WARN) {
-                    ::syslog(LOG_WARNING, "%s", msg.c_str());
+                {
+                    Lock l(m_loggerInitializedMutex);
+                    if (m_loggerInitialized) {
+                        const string MY_NAME = componentName.str();
+                        ::openlog(MY_NAME.c_str(), LOG_CONS | LOG_PID | LOG_NDELAY, LOG_LOCAL1);
+                        m_loggerInitialized = true;
+                    }
+
+                    if (logLevel == odcore::data::LogMessage::INFO) {
+                        ::syslog(LOG_INFO, "%s", msg.c_str());
+                    }
+                    if (logLevel == odcore::data::LogMessage::DEBUG) {
+                        ::syslog(LOG_DEBUG, "%s", msg.c_str());
+                    }
+                    if (logLevel == odcore::data::LogMessage::WARN) {
+                        ::syslog(LOG_WARNING, "%s", msg.c_str());
+                    }
                 }
 #endif
 
