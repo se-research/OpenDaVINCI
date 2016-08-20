@@ -34,7 +34,7 @@ if [ "$TESTRUNNER_DISABLED" == "NO" ]; then
     make -j1
 else
     cmake -D TESTRUNNER_DISABLED=YES -D CMAKE_INSTALL_PREFIX=/opt/od4 /opt/OpenDaVINCI.sources
-    make -j2
+    make -j4
 fi
 EOF
 

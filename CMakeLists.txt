@@ -349,7 +349,7 @@ ENDIF()
 # Next, build odsimulation.
 IF(${BUILD_ODSIMULATION})
     ExternalProject_Add (odsimulation
-        DEPENDS libopendlv
+        DEPENDS libopendlv libodvdopendlv
         DOWNLOAD_COMMAND ""
         UPDATE_COMMAND ""
         SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odsimulation"

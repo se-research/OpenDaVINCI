@@ -45,7 +45,7 @@ DOCKER_IMAGE_NAME_WITH_GIT_COMMITS_IN_CURRENT_BRANCH=$(shell echo $(BASE_IMAGE) 
 .PHONY: all pull build
 
 
-all: pull build
+all: pull build createDockerImage
 
 overview:
 	echo "0: '$(DOCKERFILE_BASEIMAGE)'"
@@ -74,7 +74,7 @@ build:
 
 # This target creates a new Docker image based on the specified Docker image using the freshly built binaries.
 createDockerImage:
-	cd $(BUILD_PATH) && $(DOCKER) build -t seresearch/$(DOCKER_IMAGE_NAME_WITH_GIT_COMMITS_IN_CURRENT_BRANCH) .
 	cat $(SOURCE_TREE_PATH)/docker/Dockerfile.template | sed -e $(DOCKERFILE_BASEIMAGE) > $(BUILD_PATH)/Dockerfile
 	echo "OpenDaVINCI.build" > $(BUILD_PATH)/.dockerignore
+	cd $(BUILD_PATH) && $(DOCKER) build -t seresearch/$(DOCKER_IMAGE_NAME_WITH_GIT_COMMITS_IN_CURRENT_BRANCH) .
 
