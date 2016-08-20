@@ -33,7 +33,7 @@ GIT_CURRENT_BRANCH=$(shell git rev-parse --abbrev-ref HEAD)
 GIT_HASH=$(shell git rev-parse --short HEAD)
 GIT_COMMITS_IN_CURRENT_BRANCH=$(shell git rev-list --count `git rev-parse --abbrev-ref HEAD`)
 GIT_HAS_UNCOMMITTED_CHANGES=$(shell if [ "`git ls-files -m ..`" != "" ]; then echo "-modified"; else echo ""; fi)
-BUILD_PATH=$(BUILD_PATH_BASE)/$(shell echo $(BASE_IMAGE) | cut -f2 -d"/")-$(GIT_CURRENT_BRANCH)-$(GIT_HASH)
+BUILD_PATH=$(BUILD_PATH_BASE)/$(shell echo $(BASE_IMAGE) | cut -f2 -d"/")-$(GIT_CURRENT_BRANCH)
 
 # Docker settings.
 DOCKERFILE_BASEIMAGE=s%BASEIMAGE%$(BASE_IMAGE)%
