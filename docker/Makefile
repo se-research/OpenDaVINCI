@@ -100,3 +100,9 @@ createDockerImage: buildIncremental
 	cd $(BUILD_PATH) && $(DOCKER) build -t seresearch/$(DOCKER_IMAGE_NAME_WITH_GIT_COMMITS_IN_CURRENT_BRANCH) . | tee $(BUILD_PATH)/OpenDaVINCI.build/build.log || exit 1
 	$(DOCKER) images | grep $$(tail -1 $(BUILD_PATH)/OpenDaVINCI.build/build.log | cut -f3 -d" ") | grep "latest" && exit 0 || $(DOCKER) tag $$(tail -1 $(BUILD_PATH)/OpenDaVINCI.build/build.log | cut -f3 -d" ") $(DOCKER_IMAGE_NAME_SHORT_NAME)
 
+###############################################################################
+
+pushDockerImage: createDockerImage
+	$(DOCKER) push $(DOCKER_IMAGE_NAME_SHORT_NAME)
+	$(DOCKER) push seresearch/$(DOCKER_IMAGE_NAME_WITH_GIT_COMMITS_IN_CURRENT_BRANCH)
+
