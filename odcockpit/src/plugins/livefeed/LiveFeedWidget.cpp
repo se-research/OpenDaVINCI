@@ -123,6 +123,10 @@ namespace cockpit {
 
             vector<string> LiveFeedWidget::getListOfLibrariesToLoad(const vector<string> &paths) {
                 vector<string> librariesToLoad;
+#ifndef HAVE_DL
+                (void)paths;
+#endif
+
 #ifdef HAVE_DL
                 for(auto pathToSearch : paths) {
                     try {

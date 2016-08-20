@@ -42,28 +42,30 @@ DOCKER_NETWORK_NAME=nw_$(shell echo $(BASE_IMAGE) | cut -f2 -d"/")-$(GIT_HASH)
 DOCKER_IMAGE_NAME_WITH_GIT_COMMITS_IN_CURRENT_BRANCH=$(shell echo $(BASE_IMAGE) | cut -f2 -d"/")-$(GIT_HASH):$(GIT_COMMITS_IN_CURRENT_BRANCH)
 
 
-.PHONY: all pull build
+.PHONY: all buildComplete createDockerImage clean cleanDocker removeNoneImagesFromDocker removeExistingImagesForBaseImageFromDocker
 
 
-all: pull build createDockerImage
+all: createDockerImage
 
-overview:
-	echo "0: '$(DOCKERFILE_BASEIMAGE)'"
-	echo "0: '$(DISABLE_TESTCASES)'"
-	echo "0: '$(BASE_IMAGE)'"
-	echo "1: '$(GIT_CURRENT_BRANCH)'"
-	echo "2: '$(GIT_COMMITS_IN_CURRENT_BRANCH)'"
-	echo "3: '$(GIT_HAS_UNCOMMITTED_CHANGES)'"
-	echo "4: '$(GIT_HASH)'"
-	echo "5: '$(HOST_PATH)'"
-	echo "6: '$(BUILD_PATH)'"
+clean:
+	$(CMAKE) -E remove_directory $(BUILD_PATH)
 
-pull:
-	$(DOCKER) pull $(BASE_IMAGE)
+cleanDocker: stopExitedContainers removeNoneImagesFromDocker removeExistingImagesForBaseImageFromDocker
+
+stopExitedContainers:
+	$(DOCKER) rm $$($(DOCKER) ps -a -q) || exit 0
+
+removeNoneImagesFromDocker:
+	for i in $$($(DOCKER) images | grep none | tr -s " " ";" | cut -f3 -d";"); do $(DOCKER) rmi $$i; done
+
+removeExistingImagesForBaseImageFromDocker:
+	for i in $$($(DOCKER) images | grep $(BASE_IMAGE)- | tr -s " " ";" | cut -f3 -d";"); do $(DOCKER) rmi $$i; done
 
 # This target uses a Docker container to build the OpenDaVINCI source tree using the specified Docker image.
-build:
-	$(CMAKE) -E remove_directory $(BUILD_PATH)
+buildComplete: $(BUILD_PATH)/build.incremental
+
+# The complete build creates a stamp file.
+$(BUILD_PATH)/OpenDaVINCI.build/build.incremental:
 	$(CMAKE) -E make_directory $(BUILD_PATH)
 	$(CMAKE) -E make_directory $(BUILD_PATH)/opt/od4
 	$(CMAKE) -E make_directory $(BUILD_PATH)/OpenDaVINCI.build
@@ -71,9 +73,16 @@ build:
 	$(DOCKER) network ls
 	$(DOCKER) run -ti --rm -v $(SOURCE_TREE_PATH):/opt/OpenDaVINCI.sources -v $(BUILD_PATH)/OpenDaVINCI.build:/opt/OpenDaVINCI.build -v $(BUILD_PATH)/opt/od4:/opt/od4 -v $(SOURCE_TREE_PATH)/docker/doBuild.sh:/opt/doBuild.sh -w /opt $(BASE_IMAGE) /opt/doBuild.sh $(RUN_BUILD_AS) $(TESTRUNNER_DISABLED)
 	$(DOCKER) network rm nw_$(DOCKER_IMAGE_NAME)
+	touch $(BUILD_PATH)/OpenDaVINCI.build/build.incremental
+
+
+# Dependency to allow incremental builds.
+buildIncremental: $(BUILD_PATH)/OpenDaVINCI.build/build.incremental
+	$(DOCKER) run -ti --rm -v $(SOURCE_TREE_PATH):/opt/OpenDaVINCI.sources -v $(BUILD_PATH)/OpenDaVINCI.build:/opt/OpenDaVINCI.build -v $(BUILD_PATH)/opt/od4:/opt/od4 -v $(SOURCE_TREE_PATH)/docker/doBuild.sh:/opt/doBuild.sh -w /opt $(BASE_IMAGE) /opt/doBuild.sh $(RUN_BUILD_AS) TESTRUNNER_DISABLED=YES INCREMENTAL
+
 
 # This target creates a new Docker image based on the specified Docker image using the freshly built binaries.
-createDockerImage:
+createDockerImage: buildIncremental
 	cat $(SOURCE_TREE_PATH)/docker/Dockerfile.template | sed -e $(DOCKERFILE_BASEIMAGE) > $(BUILD_PATH)/Dockerfile
 	echo "OpenDaVINCI.build" > $(BUILD_PATH)/.dockerignore
 	cd $(BUILD_PATH) && $(DOCKER) build -t seresearch/$(DOCKER_IMAGE_NAME_WITH_GIT_COMMITS_IN_CURRENT_BRANCH) .

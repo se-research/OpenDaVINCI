@@ -19,5 +19,20 @@
 FROM BASEIMAGE
 MAINTAINER Christian Berger "christian.berger@gu.se"
 
-ADD opt /opt
+# Add binaries.
+#ADD opt /opt
+RUN mkdir /opt/od4
+
+# Change owner for binaries.
+RUN groupadd odv && \
+    useradd odv -g odv && \
+    chown odv:odv /opt/od4
+
+# Run as user odv.
+USER odv
+
+# Environment parameters to allow GUIs.
+ENV QT_X11_NO_MITSHM=1
+ENV LD_LIBRARY_PATH=/opt/od4/lib
+WORKDIR /opt/od4/bin
 

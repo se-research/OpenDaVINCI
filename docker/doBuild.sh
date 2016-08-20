@@ -19,6 +19,7 @@
 
 BUILD_AS=$1
 TESTRUNNER_DISABLED=$2
+BUILD_INCREMENTAL=$3
 
 # Adding user for building.
 groupadd $BUILD_AS
@@ -26,14 +27,14 @@ useradd $BUILD_AS -g $BUILD_AS
 
 cat <<EOF > /opt/OpenDaVINCI.build/build.sh
 #!/bin/bash
-# Clean build folder.
 cd /opt/OpenDaVINCI.build
-cmake -E remove_directory .
-if [ "$TESTRUNNER_DISABLED" == "NO" ]; then
-    cmake -D CMAKE_INSTALL_PREFIX=/opt/od4 /opt/OpenDaVINCI.sources
+if [ "$BUILD_INCREMENTAL" == "" ]; then
+    echo "[OpenDaVINCI Docker builder] Complete build."
+    cmake -E remove_directory .
+    cmake -D TESTRUNNER_DISABLED=$TESTRUNNER_DISABLED -D CMAKE_INSTALL_PREFIX=/opt/od4 /opt/OpenDaVINCI.sources
     make -j1
 else
-    cmake -D TESTRUNNER_DISABLED=YES -D CMAKE_INSTALL_PREFIX=/opt/od4 /opt/OpenDaVINCI.sources
+    echo "[OpenDaVINCI Docker builder] Incremental build."
     make -j4
 fi
 EOF
