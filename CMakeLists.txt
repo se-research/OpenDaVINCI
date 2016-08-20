@@ -130,6 +130,10 @@ IF(     (UNIX)
     AND ("${ARMHF}" STREQUAL "YES") )
     SET(CTEST_PARAMETERS "--show-only") # Do not run test cases on arm-hf cross compile build.
 ENDIF()
+IF(     (UNIX)
+    AND ("${TESTRUNNER_DISABLED}" STREQUAL "YES") )
+    SET(CTEST_PARAMETERS "--show-only") # Do not run test cases on arm-hf cross compile build.
+ENDIF()
 MESSAGE("Test command: \"${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}\"")
 
 # If dpkg and rpmbuild are available, .deb and .rpm packages will be
