@@ -364,7 +364,7 @@ ENDIF()
 # Next, build odcockpit.
 IF(${BUILD_ODCOCKPIT})
     ExternalProject_Add (odcockpit
-        DEPENDS libopendlv
+        DEPENDS libopendlv odtools
         DOWNLOAD_COMMAND ""
         UPDATE_COMMAND ""
         SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odcockpit"
