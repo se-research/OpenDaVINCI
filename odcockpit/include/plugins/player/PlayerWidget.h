@@ -24,6 +24,7 @@
 #include <QtCore>
 #include <QtGui>
 
+#include <memory>
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
@@ -110,7 +111,7 @@ namespace cockpit {
                     QLineEdit *m_start;
                     QLineEdit *m_end;
 
-                    odtools::player::Player *m_player;
+                    shared_ptr<odtools::player::Player> m_player;
 
                     string m_fileName;
                     string m_currentWorkingDirectory;

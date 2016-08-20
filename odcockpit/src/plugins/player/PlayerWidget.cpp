@@ -147,9 +147,7 @@ namespace cockpit {
                 setLayout(mainLayout);
             }
 
-            PlayerWidget::~PlayerWidget() {
-                OPENDAVINCI_CORE_DELETE_POINTER(m_player);
-            }
+            PlayerWidget::~PlayerWidget() {}
 
             void PlayerWidget::play() {
                 m_playBtn->setEnabled(false);
@@ -190,7 +188,7 @@ namespace cockpit {
             }
 
             void PlayerWidget::sendNextContainer() {
-                if (m_player != NULL) {
+                if (m_player.get() != NULL) {
                     if (!m_player->hasMoreData() && m_autoRewind->isChecked()) {
                         m_player->rewind();
                         m_containerCounter = 0;
@@ -272,7 +270,7 @@ namespace cockpit {
                 m_fileName = QFileDialog::getOpenFileName(this, tr("Open previous recording file"), "", tr("Recording files (*.rec)")).toStdString();
 
                 if (!m_fileName.empty()) {
-                    OPENDAVINCI_CORE_DELETE_POINTER(m_player);
+                    m_player.reset();
 
                     // Set current working directory.
                     {
@@ -304,9 +302,9 @@ namespace cockpit {
 #ifdef HAVE_ODPLAYERH264
                     // Base port for letting spawned children connect to parent process.
                     const uint32_t BASE_PORT = m_kvc.getValue<uint32_t>("odplayerh264.portbaseforchildprocesses");
-                    m_player = new odplayerh264::PlayerH264(url, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING, BASE_PORT);
+                    m_player = shared_ptr<Player>(new odplayerh264::PlayerH264(url, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING, BASE_PORT));
 #else
-                    m_player = new Player(url, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING);
+                    m_player = shared_ptr<Player>(new Player(url, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING));
 #endif
 
                     m_playBtn->setEnabled(true);
