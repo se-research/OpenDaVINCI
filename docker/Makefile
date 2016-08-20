@@ -71,7 +71,7 @@ removeNoneImagesFromDocker:
 	for i in $$($(DOCKER) images | grep none | tr -s " " ";" | cut -f3 -d";"); do $(DOCKER) rmi $$i; done
 
 removeExistingImagesForBaseImageFromDocker:
-	for i in $$($(DOCKER) images | grep $(BASE_IMAGE)- | tr -s " " ";" | cut -f3 -d";"); do $(DOCKER) rmi $$i; done
+	$(DOCKER) rmi -f `$(DOCKER) images | grep $(BASE_IMAGE)- | tr -s " " ";" | cut -f3 -d";"` || exit 0
 
 ###############################################################################
 # This target uses a Docker container to build the OpenDaVINCI source tree using the selected Docker image.
