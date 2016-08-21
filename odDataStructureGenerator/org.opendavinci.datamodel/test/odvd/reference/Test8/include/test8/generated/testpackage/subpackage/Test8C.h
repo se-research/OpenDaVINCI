@@ -18,7 +18,7 @@ namespace testpackage {
 	namespace subpackage {
 		using namespace std;
 		
-		class Test8C : public odcore::data::SerializableData, public odcore::base::Visitable {
+		class OPENDAVINCI_API Test8C : public odcore::data::SerializableData, public odcore::base::Visitable {
 			public:
 				Test8C();
 		

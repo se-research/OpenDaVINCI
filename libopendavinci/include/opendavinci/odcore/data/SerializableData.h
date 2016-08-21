@@ -23,7 +23,7 @@
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/serialization/Serializable.h"
 
 namespace odcore {
     namespace data {
@@ -33,7 +33,7 @@ namespace odcore {
         /**
          * This class is the superclass for all data.
          */
-        class OPENDAVINCI_API SerializableData : public odcore::base::Serializable {
+        class OPENDAVINCI_API SerializableData : public odcore::serialization::Serializable {
             public:
                 SerializableData();
 

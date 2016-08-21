@@ -1,8 +1,0 @@
-message sub.structure.Test17Super [ id = 17 ] {
-	double myData [default = 4.6];
-	int32 myValue [default = 1];
-}
-
-message sub.structure.Test17Child extends sub.structure.Test17Super [ id = 18 ] {
-	string myName [default = "ABC"];
-}

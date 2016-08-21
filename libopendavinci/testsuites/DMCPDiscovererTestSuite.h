@@ -29,7 +29,7 @@
 #include "opendavinci/odcore/dmcp/discoverer/Client.h"  // for Client
 #include "opendavinci/odcore/dmcp/discoverer/Server.h"  // for Server
 #include "opendavinci/generated/odcore/data/dmcp/ServerInformation.h"
-#include "opendavinci/generated/odcore/data/dmcp/TestConstants.h"  // for TestConstants, etc
+#include "opendavincitestdata/generated/odcore/testdata/dmcp/TestConstants.h"  // for TestConstants, etc
 #include "mocks/FunctionCallWaiter.h"
 
 using namespace std;
@@ -79,9 +79,9 @@ class DMCPDiscovererTestsuite : public CxxTest::TestSuite
             
             vector<string> noModulesToIgnore;
             ServerInformation myServerInfo("0.0.0.0", 12345, ServerInformation::ML_NONE);
-            TestServer server(myServerInfo, odcore::data::dmcp::TestConstants::DMCPCONFIG_TEST_GROUP, odcore::data::dmcp::TestConstants::DMCPCONFIG_TEST_SERVERPORT, odcore::data::dmcp::TestConstants::DMCPCONFIG_TEST_CLIENTPORT, noModulesToIgnore);
+            TestServer server(myServerInfo, odcore::testdata::dmcp::TestConstants::DMCPCONFIG_TEST_GROUP, odcore::testdata::dmcp::TestConstants::DMCPCONFIG_TEST_SERVERPORT, odcore::testdata::dmcp::TestConstants::DMCPCONFIG_TEST_CLIENTPORT, noModulesToIgnore);
 
-            TestClient client(odcore::data::dmcp::TestConstants::DMCPCONFIG_TEST_GROUP, odcore::data::dmcp::TestConstants::DMCPCONFIG_TEST_SERVERPORT, odcore::data::dmcp::TestConstants::DMCPCONFIG_TEST_CLIENTPORT, "myName");
+            TestClient client(odcore::testdata::dmcp::TestConstants::DMCPCONFIG_TEST_GROUP, odcore::testdata::dmcp::TestConstants::DMCPCONFIG_TEST_SERVERPORT, odcore::testdata::dmcp::TestConstants::DMCPCONFIG_TEST_CLIENTPORT, "myName");
             TS_ASSERT( !client.existsServer() );
             TS_ASSERT( !client.WAITER.wasCalled() );
             TS_ASSERT( !server.WAITER.wasCalled() );

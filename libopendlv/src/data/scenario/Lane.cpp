@@ -17,15 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <memory>
 #include <ostream>
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendavinci/odcore/data/SerializableData.h"
 #include "opendlv/data/scenario/Arc.h"
 #include "opendlv/data/scenario/Clothoid.h"
@@ -152,56 +151,48 @@ class Road;
             }
 
             ostream& Lane::operator<<(ostream &out) const {
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Serializer> s = sf.getSerializer(out);
+                std::shared_ptr<odcore::serialization::Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                        getIdentifier());
+                s->write(1, getIdentifier());
 
                 // Check if we have to serialize a lane model.
                 bool hasLaneModel = (getLaneModel() != NULL);
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('h', 'a', 's', 'l', 'a', 'm', 'd') >::RESULT,
-                        hasLaneModel);
+                s->write(2, hasLaneModel);
 
                 if (hasLaneModel) {
-                    s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('l', 'a', 'n', 'e', 'm', 'd', 'l') >::RESULT,
-                            static_cast<uint32_t>(getLaneModel()->getType()));
+                    s->write(3, static_cast<uint32_t>(getLaneModel()->getType()));
 
-                    s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', 'o', 'd', 'e', 'l') >::RESULT,
-                            *getLaneModel());
+                    s->write(4, *getLaneModel());
                 }
 
                 return out;
             }
 
             istream& Lane::operator>>(istream &in) {
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+                std::shared_ptr<odcore::serialization::Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
                 OPENDAVINCI_CORE_DELETE_POINTER(m_laneModel);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                       m_identifier);
+                d->read(1, m_identifier);
 
                 // Check if we have to deserialize a lane model.
                 bool hasLaneModel = false;
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('h', 'a', 's', 'l', 'a', 'm', 'd') >::RESULT,
-                       hasLaneModel);
+                d->read(2, hasLaneModel);
 
                 if (hasLaneModel) {
                     uint32_t type = 0;
-                    d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('l', 'a', 'n', 'e', 'm', 'd', 'l') >::RESULT,
-                           type);
+                    d->read(3, type);
 
                     enum LaneModel::LANEMODELTYPE laneModelType = static_cast<enum LaneModel::LANEMODELTYPE>(type);
                     switch (laneModelType) {
                     case LaneModel::ARC: {
                             Arc *a = new Arc();
 
-                            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', 'o', 'd', 'e', 'l') >::RESULT,
-                                   *a);
+                            d->read(4, *a);
 
                             setLaneModel(a);
                             break;
@@ -209,8 +200,7 @@ class Road;
                     case LaneModel::CLOTHOID: {
                             Clothoid *c = new Clothoid();
 
-                            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', 'o', 'd', 'e', 'l') >::RESULT,
-                                   *c);
+                            d->read(4, *c);
 
                             setLaneModel(c);
                             break;
@@ -218,8 +208,7 @@ class Road;
                     case LaneModel::POINTMODEL: {
                             PointModel *pm = new PointModel();
 
-                            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', 'o', 'd', 'e', 'l') >::RESULT,
-                                   *pm);
+                            d->read(4, *pm);
 
                             setLaneModel(pm);
                             break;
@@ -227,8 +216,7 @@ class Road;
                     case LaneModel::STRAIGHTLINE: {
                             StraightLine *sl = new StraightLine();
 
-                            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('m', 'o', 'd', 'e', 'l') >::RESULT,
-                                   *sl);
+                            d->read(4, *sl);
 
                             setLaneModel(sl);
                             break;

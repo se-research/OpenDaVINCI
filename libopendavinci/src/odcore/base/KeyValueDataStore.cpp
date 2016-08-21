@@ -21,7 +21,7 @@
 #include <string>
 
 #include "opendavinci/odcore/base/KeyValueDataStore.h"
-#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/serialization/Serializable.h"
 #include "opendavinci/odcore/opendavinci.h"
 
 namespace odcore {

@@ -34,10 +34,9 @@
 #include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/base/Service.h"
 #include "opendavinci/odcore/base/Thread.h"
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendavinci/odcore/data/TimeStamp.h"
 #include "opendavinci/odcore/strings/StringToolbox.h"
 
@@ -48,6 +47,7 @@ using namespace odcore::base;
 using namespace odcore::base::module;
 using namespace odcore::data;
 using namespace odcore::exceptions;
+using namespace odcore::serialization;
 
 class ExampleLoggerApp : public TimeTriggeredConferenceClientModule {
     public:
@@ -68,13 +68,13 @@ class ExampleLoggerApp : public TimeTriggeredConferenceClientModule {
 
         odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
             uint32_t cnt = 0;
-        	while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
+            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
                 stringstream msg;
                 msg << "Log message: " << cnt++;
                 toLogger(static_cast<odcore::data::LogMessage::LogLevel>(m_loggingLevel), msg.str());
             }
 
-        	return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 };
 

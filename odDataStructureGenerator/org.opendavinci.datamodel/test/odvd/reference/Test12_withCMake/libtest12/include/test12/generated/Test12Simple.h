@@ -16,7 +16,7 @@
 
 using namespace std;
 
-class Test12Simple : public odcore::data::SerializableData, public odcore::base::Visitable {
+class OPENDAVINCI_API Test12Simple : public odcore::data::SerializableData, public odcore::base::Visitable {
 	public:
 		Test12Simple();
 

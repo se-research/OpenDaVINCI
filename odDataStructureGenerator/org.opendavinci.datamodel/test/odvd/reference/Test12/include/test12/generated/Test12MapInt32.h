@@ -17,7 +17,7 @@
 
 using namespace std;
 
-class Test12MapInt32 : public odcore::data::SerializableData, public odcore::base::Visitable {
+class OPENDAVINCI_API Test12MapInt32 : public odcore::data::SerializableData, public odcore::base::Visitable {
 	public:
 		Test12MapInt32();
 

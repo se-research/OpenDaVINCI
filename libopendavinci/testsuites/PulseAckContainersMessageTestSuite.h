@@ -25,7 +25,7 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "opendavinci/odcore/base/Serializable.h"     // for operator<<, operator>>
+#include "opendavinci/odcore/serialization/Serializable.h"     // for operator<<, operator>>
 #include "opendavinci/odcore/data/Container.h"        // for Container, etc
 #include "opendavinci/odcore/data/TimeStamp.h"        // for TimeStamp
 #include "opendavinci/generated/odcore/data/dmcp/PulseAckContainersMessage.h"

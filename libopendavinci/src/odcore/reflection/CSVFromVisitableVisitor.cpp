@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/serialization/Serializable.h"
 #include "opendavinci/odcore/base/Visitable.h"
 #include "opendavinci/odcore/reflection/CSVFromVisitableVisitor.h"
 
@@ -26,6 +26,7 @@ namespace odcore {
 
         using namespace odcore;
         using namespace odcore::base;
+        using namespace odcore::serialization;
 
         CSVFromVisitableVisitor::CSVFromVisitableVisitor(ostream &out, const bool &header, const char &delimiter) :
             m_buffer(out),
@@ -36,7 +37,7 @@ namespace odcore {
 
         CSVFromVisitableVisitor::~CSVFromVisitableVisitor() {}
 
-        void CSVFromVisitableVisitor::beginVisit() {}
+        void CSVFromVisitableVisitor::beginVisit(const int32_t &/*id*/, const string &/*shortName*/, const string &/*longName*/) {}
 
         void CSVFromVisitableVisitor::endVisit() {
             if (m_addHeader) {
@@ -49,101 +50,101 @@ namespace odcore {
             m_entry.str("");
         }
 
-        void CSVFromVisitableVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, Serializable &/*v*/) {
+        void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, Serializable &/*v*/) {
         }
 
-        void CSVFromVisitableVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &shortName, bool &v) {
+        void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, bool &v) {
             if (m_addHeader) {
                 m_header << shortName << m_delimiter;
             }
             m_entry << v << m_delimiter;
         }
 
-        void CSVFromVisitableVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &shortName, char &v) {
+        void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, char &v) {
             if (m_addHeader) {
                 m_header << shortName << m_delimiter;
             }
             m_entry << v << m_delimiter;
         }
 
-        void CSVFromVisitableVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &shortName, unsigned char &v) {
+        void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, unsigned char &v) {
             if (m_addHeader) {
                 m_header << shortName << m_delimiter;
             }
             m_entry << v << m_delimiter;
         }
 
-        void CSVFromVisitableVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &shortName, int8_t &v) {
+        void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, int8_t &v) {
             if (m_addHeader) {
                 m_header << shortName << m_delimiter;
             }
             m_entry << (int32_t)v << m_delimiter;
         }
 
-        void CSVFromVisitableVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &shortName, int16_t &v) {
+        void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, int16_t &v) {
             if (m_addHeader) {
                 m_header << shortName << m_delimiter;
             }
             m_entry << (int32_t)v << m_delimiter;
         }
 
-        void CSVFromVisitableVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &shortName, uint16_t &v) {
+        void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, uint16_t &v) {
             if (m_addHeader) {
                 m_header << shortName << m_delimiter;
             }
             m_entry << (uint32_t)v << m_delimiter;
         }
 
-        void CSVFromVisitableVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &shortName, int32_t &v) {
+        void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, int32_t &v) {
             if (m_addHeader) {
                 m_header << shortName << m_delimiter;
             }
             m_entry << v << m_delimiter;
         }
 
-        void CSVFromVisitableVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &shortName, uint32_t &v) {
+        void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, uint32_t &v) {
             if (m_addHeader) {
                 m_header << shortName << m_delimiter;
             }
             m_entry << v << m_delimiter;
         }
 
-        void CSVFromVisitableVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &shortName, int64_t &v) {
+        void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, int64_t &v) {
             if (m_addHeader) {
                 m_header << shortName << m_delimiter;
             }
             m_entry << v << m_delimiter;
         }
 
-        void CSVFromVisitableVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &shortName, uint64_t &v) {
+        void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, uint64_t &v) {
             if (m_addHeader) {
                 m_header << shortName << m_delimiter;
             }
             m_entry << v << m_delimiter;
         }
 
-        void CSVFromVisitableVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &shortName, float &v) {
+        void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, float &v) {
             if (m_addHeader) {
                 m_header << shortName << m_delimiter;
             }
             m_entry << v << m_delimiter;
         }
 
-        void CSVFromVisitableVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &shortName, double &v) {
+        void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, double &v) {
             if (m_addHeader) {
                 m_header << shortName << m_delimiter;
             }
             m_entry << v << m_delimiter;
         }
 
-        void CSVFromVisitableVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &shortName, string &v) {
+        void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, string &v) {
             if (m_addHeader) {
                 m_header << shortName << m_delimiter;
             }
             m_entry << v << m_delimiter;
         }
 
-        void CSVFromVisitableVisitor::visit(const uint32_t &/*longId*/, const uint8_t &/*shortId*/, const string &/*longName*/, const string &/*shortName*/, void */*data*/, const uint32_t &/*size*/) {
+        void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, void */*data*/, const uint32_t &/*size*/) {
         }
 
     }

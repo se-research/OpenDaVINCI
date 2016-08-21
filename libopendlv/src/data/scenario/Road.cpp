@@ -17,17 +17,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <memory>
 #include <ostream>
 #include <string>
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/Serializable.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/Serializable.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendavinci/odcore/data/SerializableData.h"
 #include "opendlv/data/scenario/Lane.h"
 #include "opendlv/data/scenario/Road.h"
@@ -143,19 +142,16 @@ class Layer;
             }
 
             ostream& Road::operator<<(ostream &out) const {
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Serializer> s = sf.getSerializer(out);
+                std::shared_ptr<odcore::serialization::Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                        getIdentifier());
+                s->write(1, getIdentifier());
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('n', 'a', 'm', 'e') >::RESULT,
-                        getName());
+                s->write(2, getName());
 
                 uint32_t numberOfLanes = static_cast<uint32_t>(m_listOfLanes.size());
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('n', 'u', 'm', 'l', 'a', 'n', 'e', 's') >::RESULT,
-                        numberOfLanes);
+                s->write(3, numberOfLanes);
 
                 // Write lanes to stringstream.
                 stringstream sstr;
@@ -166,36 +162,31 @@ class Layer;
 
                 // Write lanes.
                 if (numberOfLanes > 0) {
-                    s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('l', 'a', 'n', 'e', 's') >::RESULT,
-                            sstr.str());
+                    s->write(4, sstr.str());
                 }
 
                 return out;
             }
 
             istream& Road::operator>>(istream &in) {
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+                std::shared_ptr<odcore::serialization::Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
                 // Clean up.
                 m_listOfLanes.clear();
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                       m_identifier);
+                d->read(1, m_identifier);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('n', 'a', 'm', 'e') >::RESULT,
-                       m_name);
+                d->read(2, m_name);
 
                 uint32_t numberOfLanes = 0;
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('n', 'u', 'm', 'l', 'a', 'n', 'e', 's') >::RESULT,
-                       numberOfLanes);
+                d->read(3, numberOfLanes);
 
                 if (numberOfLanes > 0) {
                     string str;
                     // Read lanes into stringstream.
-                    d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('l', 'a', 'n', 'e', 's') >::RESULT,
-                           str);
+                    d->read(4, str);
 
                     stringstream sstr(str);
 

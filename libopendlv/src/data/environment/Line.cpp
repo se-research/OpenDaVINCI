@@ -18,14 +18,13 @@
  */
 
 #include <cmath>
+#include <memory>
 #include <sstream>
 #include <string>
 
-#include <memory>
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendlv/data/environment/Line.h"
 #include "opendlv/data/environment/Point3.h"
 
@@ -186,29 +185,25 @@ namespace opendlv {
             }
 
             ostream& Line::operator<<(ostream &out) const {
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Serializer> s = sf.getSerializer(out);
+                std::shared_ptr<odcore::serialization::Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL1('a') >::RESULT,
-                        m_A);
+                s->write(1, m_A);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL1('b') >::RESULT,
-                        m_B);
+                s->write(2, m_B);
 
                 return out;
             }
 
             istream& Line::operator>>(istream &in) {
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+                std::shared_ptr<odcore::serialization::Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL1('a') >::RESULT,
-                       m_A);
+                d->read(1, m_A);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL1('b') >::RESULT,
-                       m_B);
+                d->read(2, m_B);
 
                 return in;
             }

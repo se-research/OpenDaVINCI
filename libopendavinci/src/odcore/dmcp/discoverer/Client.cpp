@@ -20,7 +20,7 @@
 #include <iostream>
 
 #include "opendavinci/odcore/base/Lock.h"
-#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/serialization/Serializable.h"
 #include "opendavinci/odcore/base/module/AbstractCIDModule.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/dmcp/discoverer/Client.h"

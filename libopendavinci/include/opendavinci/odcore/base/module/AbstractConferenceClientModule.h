@@ -23,9 +23,9 @@
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/base/module/ManagedClientModule.h"
 #include "opendavinci/odcore/exceptions/Exceptions.h"
-#include "opendavinci/odcore/io/conference/ContainerListener.h"
 #include "opendavinci/generated/odcore/data/LogMessage.h"
 #include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
 
@@ -47,7 +47,7 @@ namespace odcore {
              * - @See DataTriggeredConferenceClientModule
              * - @See TimeTriggeredConferenceClientModule
              */
-            class OPENDAVINCI_API AbstractConferenceClientModule : public ManagedClientModule, public odcore::io::conference::ContainerListener {
+            class OPENDAVINCI_API AbstractConferenceClientModule : public ManagedClientModule {
                 private:
                     /**
                      * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -90,8 +90,6 @@ namespace odcore {
 
                     virtual odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body() = 0;
 
-                    virtual void nextContainer(odcore::data::Container &c) = 0;
-
                 public:
                     /**
                      * This method propagates the message msg to the central logger.
@@ -100,6 +98,10 @@ namespace odcore {
                      * @param msg Message to be logged.
                      */
                     void toLogger(const odcore::data::LogMessage::LogLevel &logLevel, const string &msg);
+
+                private:
+                    odcore::base::Mutex m_loggerInitializedMutex;
+                    bool m_loggerInitialized;
             };
 
         }

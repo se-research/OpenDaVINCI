@@ -17,7 +17,7 @@
 
 using namespace std;
 
-class Test11MapBool : public odcore::data::SerializableData, public odcore::base::Visitable {
+class OPENDAVINCI_API Test11MapBool : public odcore::data::SerializableData, public odcore::base::Visitable {
 	public:
 		Test11MapBool();
 

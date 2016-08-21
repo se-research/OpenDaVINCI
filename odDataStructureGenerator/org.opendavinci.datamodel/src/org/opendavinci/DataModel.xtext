@@ -34,7 +34,7 @@ PackageIdentifier:
 	ID (('.') ID)*;
 
 Message:
-	'message' message = MessageIdentifier ('extends' superMessage = MessageIdentifier)? ('[' 'id' '=' id=NUMBER ']') '{'
+	'message' message = MessageIdentifier ('[' 'id' '=' id=NUMBER ']') '{'
 		attributes += Attribute*
 	'}';
 
@@ -61,15 +61,15 @@ Attribute:
 
 ScalarDeclaration:
 	type=(TYPE | TypeIdentifier) (isPointer = '*')? name=ID
-	('[' ('default' '=' value=(BOOL | NUMBER | STRING | ID))? (',')? ('id' '=' id=NUMBER)? (',')? ('fourbyteid' '=' fourbyteid=(NUMBER|HEXNUMBER))? ']')?;
+	('[' ('default' '=' value=(BOOL | NUMBER | STRING | ID))? (',')? ('id' '=' id=NUMBER) ']');
 
 ListDeclaration:
 	modifier=('list') '<' type=(TYPE | TypeIdentifier) '>' name=ID
-	('['  ('id' '=' id=NUMBER)? (',')? ('fourbyteid' '=' fourbyteid=(NUMBER|HEXNUMBER))? ']')?;
+	('[' ('id' '=' id=NUMBER) ']');
 
 MapDeclaration:
 	modifier=('map') '<' primaryType=TYPE ',' secondaryType=(TYPE | TypeIdentifier) '>' name=ID
-	('['  ('id' '=' id=NUMBER)? (',')? ('fourbyteid' '=' fourbyteid=(NUMBER|HEXNUMBER))? ']')?;
+	('[' ('id' '=' id=NUMBER) ']');
 
 EnumDeclaration:
 	modifier=('enum') name=ID '{' enumerators += EnumEntry+ '}';
@@ -79,7 +79,7 @@ EnumEntry:
 
 FixedArrayDeclaration:
 	type=(TYPE | TypeIdentifier) name=ID '[' size=NUMBER ']'
-	('[' ('id' '=' id=NUMBER)? (',')? ('fourbyteid' '=' fourbyteid=(NUMBER|HEXNUMBER))? ']')?;
+	('[' ('id' '=' id=NUMBER) ']');
 
 ConstDeclaration:
 	'const' type=TYPE name=ID '=' value=(BOOL | NUMBER | STRING);

@@ -18,13 +18,12 @@
  */
 
 #include <iosfwd>
+#include <memory>
 #include <string>
 
-#include <memory>
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendlv/data/scenario/Clothoid.h"
 #include "opendlv/data/scenario/LaneModel.h"
 #include "opendlv/data/scenario/ScenarioVisitor.h"
@@ -112,18 +111,15 @@ namespace opendlv {
                 // Serializer super class.
                 StraightLine::operator<<(out);
 
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Serializer> s = sf.getSerializer(out);
+                std::shared_ptr<odcore::serialization::Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('d', 'k') >::RESULT,
-                        getDK());
+                s->write(1, getDK());
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL1('k') >::RESULT,
-                        getK());
+                s->write(2, getK());
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('r', 'o', 't', 'z') >::RESULT,
-                        getRotationZ());
+                s->write(3, getRotationZ());
 
                 return out;
             }
@@ -132,18 +128,15 @@ namespace opendlv {
                 // Deserializer super class.
                 StraightLine::operator>>(in);
 
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+                std::shared_ptr<odcore::serialization::Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('d', 'k') >::RESULT,
-                       m_dk);
+                d->read(1, m_dk);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL1('k') >::RESULT,
-                       m_k);
+                d->read(2, m_k);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('r', 'o', 't', 'z') >::RESULT,
-                       m_rotationZ);
+                d->read(3, m_rotationZ);
 
                 return in;
             }

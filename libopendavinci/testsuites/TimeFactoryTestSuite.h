@@ -20,11 +20,12 @@
 #ifndef CONTEXT_TIMEFACTORYTESTSUITE_H_
 #define CONTEXT_TIMEFACTORYTESTSUITE_H_
 
+#include <memory>
+
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
 #include "opendavinci/odcontext/base/ControlledTime.h"  // for ControlledTime
 #include "opendavinci/odcontext/base/ControlledTimeFactory.h"
-#include <memory>
 #include "opendavinci/odcore/data/TimeStamp.h"        // for TimeStamp
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/wrapper/TimeFactory.h"   // for TimeFactory

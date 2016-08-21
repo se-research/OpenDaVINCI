@@ -20,7 +20,7 @@
 #include <iosfwd>
 #include <sstream>
 
-#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/serialization/Serializable.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/data/TimeStamp.h"
 #include "opendavinci/odcore/io/conference/UDPMultiCastContainerConference.h"

@@ -18,13 +18,12 @@
  */
 
 #include <iosfwd>
+#include <memory>
 #include <string>
 
-#include <memory>
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendlv/data/scenario/IDVertex3.h"
 #include "opendlv/data/scenario/LaneModel.h"
 #include "opendlv/data/scenario/ScenarioVisitor.h"
@@ -103,15 +102,13 @@ namespace opendlv {
                 // Serializer super class.
                 LaneModel::operator<<(out);
 
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Serializer> s = sf.getSerializer(out);
+                std::shared_ptr<odcore::serialization::Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('s', 't', 'a', 'r', 't') >::RESULT,
-                        getStart());
+                s->write(1, getStart());
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('e', 'n', 'd') >::RESULT,
-                        getEnd());
+                s->write(2, getEnd());
 
                 return out;
             }
@@ -120,15 +117,13 @@ namespace opendlv {
                 // Deserializer super class.
                 LaneModel::operator>>(in);
 
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+                std::shared_ptr<odcore::serialization::Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('s', 't', 'a', 'r', 't') >::RESULT,
-                       m_start);
+                d->read(1, m_start);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('e', 'n', 'd') >::RESULT,
-                       m_end);
+                d->read(2, m_end);
 
                 return in;
             }

@@ -7,5 +7,5 @@ message subpackage.Test13Simple [ id = 13 ] {
 		PRESSED = 1,
 	};
 
-	ButtonState buttonState [default = UNDEFINED];
+	ButtonState buttonState [default = UNDEFINED, id = 1];
 }

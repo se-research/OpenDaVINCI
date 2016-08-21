@@ -27,9 +27,11 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/io/conference/ContainerListener.h"
+#include "opendavinci/odcore/reflection/Helper.h"
 
 class QTreeWidget;
 class QTreeWidgetItem;
@@ -45,6 +47,21 @@ namespace cockpit {
 
             using namespace std;
             using namespace odcore::data;
+
+            class HelperEntry {
+                public:
+                    HelperEntry(const HelperEntry &/*obj*/);
+                    HelperEntry& operator=(const HelperEntry &/*obj*/);
+
+                public:
+                    HelperEntry();
+                    virtual ~HelperEntry();
+
+                public:
+                    string m_library;
+                    void *m_dynamicObjectHandle;
+                    odcore::reflection::Helper *m_helper;
+            };
 
             /**
              * This class is the container for the livefeed widget.
@@ -73,23 +90,30 @@ namespace cockpit {
                     /**
                      * Constructor.
                      *
+                     * @param kvc KeyValueConfiguration for this widget.
                      * @param plugIn Reference to the plugin to which this widget belongs.
                      * @param prnt Pointer to the parental widget.
                      */
-                    LiveFeedWidget(const PlugIn &plugIn, QWidget *prnt);
+                    LiveFeedWidget(const odcore::base::KeyValueConfiguration &kvc, const PlugIn &plugIn, QWidget *prnt);
 
                     virtual ~LiveFeedWidget();
 
                     virtual void nextContainer(Container &c);
 
                 private:
+                    void findAndLoadSharedLibraries();
+                    void unloadSharedLibraries();
+                    vector<string> getListOfLibrariesToLoad(const vector<string> &paths);
+
+                    void transformContainerToTree(Container &container);
+
+                private:
                     odcore::base::Mutex m_dataViewMutex;
                     unique_ptr<QTreeWidget> m_dataView;
                     map<string, QTreeWidgetItem* > m_dataToType;
 
-                    void transformContainerToTree(Container &container);
-
-                    void addMessageToTree(const string &messageName, odcore::data::Container &container, odcore::base::Visitable &v);
+                    vector<string> m_listOfLibrariesToLoad;
+                    vector<HelperEntry> m_listOfHelpers;
             };
 
         }

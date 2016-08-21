@@ -22,17 +22,17 @@
 
 #include <cmath>                        // for fabs
 #include <iostream>                     // for stringstream, operator<<, etc
+#include <memory>
 #include <string>                       // for operator==, basic_string, etc
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
-#include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
-#include "opendavinci/odcore/base/LCMDeserializerVisitor.h"
-#include "opendavinci/odcore/base/LCMSerializerVisitor.h"  // for LCMSerializerVisitor
-#include "opendavinci/odcore/base/SerializationFactory.h"  // for SerializationFactory
-#include "opendavinci/odcore/base/Serializer.h"       // for Serializer
+#include "opendavinci/odcore/serialization/Deserializer.h"     // for Deserializer
+#include "opendavinci/odcore/serialization/LCMDeserializerVisitor.h"
+#include "opendavinci/odcore/serialization/LCMSerializerVisitor.h"  // for LCMSerializerVisitor
+#include "opendavinci/odcore/serialization/SerializationFactory.h"  // for SerializationFactory
+#include "opendavinci/odcore/serialization/Serializer.h"       // for Serializer
 #include "opendavinci/odcore/base/Visitable.h"        // for Visitable
 #include "opendavinci/odcore/base/Visitor.h"          // for Visitor
 #include "opendavinci/odcore/data/SerializableData.h"  // for SerializableData
@@ -45,86 +45,75 @@ using namespace odcore::base;
 using namespace odcore::data;
 using namespace odcore::data::dmcp;
 using namespace odcore::data::image;
+using namespace odcore::serialization;
 
-/*
-  Generated from:
-
-    message LCMVehicleControl [id = 41] {
-        double speed [fourbyteid = 0x0E43596B];
-        double acceleration [fourbyteid = 0x0E435991];
-        double steeringWheelAngle [fourbyteid = 0x0E435969];
-        bool brakeLights [fourbyteid = 0x0E43599B];
-        bool flashingLightsLeft [fourbyteid = 0x09823BD7];
-        bool flashingLightsRight [fourbyteid = 0x0E435996];
-    }
- */
 class LCMVehicleControl : public odcore::data::SerializableData, public odcore::base::Visitable {
-	public:
+    public:
 
-	LCMVehicleControl() :
-	    SerializableData(), Visitable()
-		, m_speed(0.0)
-		, m_acceleration(0.0)
-		, m_steeringWheelAngle(0.0)
-		, m_brakeLights(false)
-		, m_flashingLightsLeft(false)
-		, m_flashingLightsRight(false)
-	{
-	}
+    LCMVehicleControl() :
+        SerializableData(), Visitable()
+        , m_speed(0.0)
+        , m_acceleration(0.0)
+        , m_steeringWheelAngle(0.0)
+        , m_brakeLights(false)
+        , m_flashingLightsLeft(false)
+        , m_flashingLightsRight(false)
+    {
+    }
 
-	LCMVehicleControl(
-		const double &val0, 
-		const double &val1, 
-		const double &val2, 
-		const bool &val3, 
-		const bool &val4, 
-		const bool &val5
-	) :
-	    SerializableData(), Visitable()
-		, m_speed(val0)
-		, m_acceleration(val1)
-		, m_steeringWheelAngle(val2)
-		, m_brakeLights(val3)
-		, m_flashingLightsLeft(val4)
-		, m_flashingLightsRight(val5)
-	{
-	}
+    LCMVehicleControl(
+        const double &val0, 
+        const double &val1, 
+        const double &val2, 
+        const bool &val3, 
+        const bool &val4, 
+        const bool &val5
+    ) :
+        SerializableData(), Visitable()
+        , m_speed(val0)
+        , m_acceleration(val1)
+        , m_steeringWheelAngle(val2)
+        , m_brakeLights(val3)
+        , m_flashingLightsLeft(val4)
+        , m_flashingLightsRight(val5)
+    {
+    }
 
-	LCMVehicleControl(const LCMVehicleControl &obj) :
-	    SerializableData(), Visitable()
-		, m_speed(obj.m_speed)
-		, m_acceleration(obj.m_acceleration)
-		, m_steeringWheelAngle(obj.m_steeringWheelAngle)
-		, m_brakeLights(obj.m_brakeLights)
-		, m_flashingLightsLeft(obj.m_flashingLightsLeft)
-		, m_flashingLightsRight(obj.m_flashingLightsRight)
-	{
-	}
-	
-	~LCMVehicleControl() {
-	}
+    LCMVehicleControl(const LCMVehicleControl &obj) :
+        SerializableData(), Visitable()
+        , m_speed(obj.m_speed)
+        , m_acceleration(obj.m_acceleration)
+        , m_steeringWheelAngle(obj.m_steeringWheelAngle)
+        , m_brakeLights(obj.m_brakeLights)
+        , m_flashingLightsLeft(obj.m_flashingLightsLeft)
+        , m_flashingLightsRight(obj.m_flashingLightsRight)
+    {
+    }
+    
+    ~LCMVehicleControl() {
+    }
 
-	LCMVehicleControl& operator=(const LCMVehicleControl &obj) {
-		m_speed = obj.m_speed;
-		m_acceleration = obj.m_acceleration;
-		m_steeringWheelAngle = obj.m_steeringWheelAngle;
-		m_brakeLights = obj.m_brakeLights;
-		m_flashingLightsLeft = obj.m_flashingLightsLeft;
-		m_flashingLightsRight = obj.m_flashingLightsRight;
-		return (*this);
-	}
+    LCMVehicleControl& operator=(const LCMVehicleControl &obj) {
+        m_speed = obj.m_speed;
+        m_acceleration = obj.m_acceleration;
+        m_steeringWheelAngle = obj.m_steeringWheelAngle;
+        m_brakeLights = obj.m_brakeLights;
+        m_flashingLightsLeft = obj.m_flashingLightsLeft;
+        m_flashingLightsRight = obj.m_flashingLightsRight;
+        return (*this);
+    }
 
-	int32_t ID() {
-		return 41;
-	}
+    int32_t ID() {
+        return 41;
+    }
 
-	const string ShortName() {
-		return "VehicleControl";
-	}
+    const string ShortName() {
+        return "VehicleControl";
+    }
 
-	const string LongName() {
-		return "automotive.VehicleControl";
-	}
+    const string LongName() {
+        return "automotive.VehicleControl";
+    }
 
     int32_t getID() const {
         return 41;
@@ -138,116 +127,116 @@ class LCMVehicleControl : public odcore::data::SerializableData, public odcore::
         return "VehicleControl";
     }
 
-	double getSpeed() const {
-		return m_speed;
-	}
-	
-	void setSpeed(const double &val) {
-		m_speed = val;
-	}
-	double getAcceleration() const {
-		return m_acceleration;
-	}
-	
-	void setAcceleration(const double &val) {
-		m_acceleration = val;
-	}
-	double getSteeringWheelAngle() const {
-		return m_steeringWheelAngle;
-	}
-	
-	void setSteeringWheelAngle(const double &val) {
-		m_steeringWheelAngle = val;
-	}
-	bool getBrakeLights() const {
-		return m_brakeLights;
-	}
-	
-	void setBrakeLights(const bool &val) {
-		m_brakeLights = val;
-	}
-	bool getLeftFlashingLights() const {
-		return m_flashingLightsLeft;
-	}
-	
-	void setLeftFlashingLights(const bool &val) {
-		m_flashingLightsLeft = val;
-	}
-	bool getRightFlashingLights() const {
-		return m_flashingLightsRight;
-	}
-	
-	void setRightFlashingLights(const bool &val) {
-		m_flashingLightsRight = val;
-	}
+    double getSpeed() const {
+        return m_speed;
+    }
+    
+    void setSpeed(const double &val) {
+        m_speed = val;
+    }
+    double getAcceleration() const {
+        return m_acceleration;
+    }
+    
+    void setAcceleration(const double &val) {
+        m_acceleration = val;
+    }
+    double getSteeringWheelAngle() const {
+        return m_steeringWheelAngle;
+    }
+    
+    void setSteeringWheelAngle(const double &val) {
+        m_steeringWheelAngle = val;
+    }
+    bool getBrakeLights() const {
+        return m_brakeLights;
+    }
+    
+    void setBrakeLights(const bool &val) {
+        m_brakeLights = val;
+    }
+    bool getLeftFlashingLights() const {
+        return m_flashingLightsLeft;
+    }
+    
+    void setLeftFlashingLights(const bool &val) {
+        m_flashingLightsLeft = val;
+    }
+    bool getRightFlashingLights() const {
+        return m_flashingLightsRight;
+    }
+    
+    void setRightFlashingLights(const bool &val) {
+        m_flashingLightsRight = val;
+    }
 
-	void accept(odcore::base::Visitor &v) {
-        v.beginVisit();
-		v.visit(0x0E43596B, 0, "automotive.LCMVehicleControl.speed", "speed", m_speed);
-		v.visit(0x0E435991, 0, "automotive.LCMVehicleControl.acceleration", "acceleration", m_acceleration);
-		v.visit(0x0E435969, 0, "automotive.LCMVehicleControl.steeringWheelAngle", "steeringWheelAngle", m_steeringWheelAngle);
-		v.visit(0x0E43599B, 0, "automotive.LCMVehicleControl.brakeLights", "brakeLights", m_brakeLights);
-		v.visit(0x09823BD7, 0, "automotive.LCMVehicleControl.flashingLightsLeft", "flashingLightsLeft", m_flashingLightsLeft);
-		v.visit(0x0E435996, 0, "automotive.LCMVehicleControl.flashingLightsRight", "flashingLightsRight", m_flashingLightsRight);
+    void accept(odcore::base::Visitor &v) {
+        v.beginVisit(ID(), ShortName(), LongName());
+        v.visit(1, "automotive.LCMVehicleControl.speed", "speed", m_speed);
+        v.visit(2, "automotive.LCMVehicleControl.acceleration", "acceleration", m_acceleration);
+        v.visit(3, "automotive.LCMVehicleControl.steeringWheelAngle", "steeringWheelAngle", m_steeringWheelAngle);
+        v.visit(4, "automotive.LCMVehicleControl.brakeLights", "brakeLights", m_brakeLights);
+        v.visit(5, "automotive.LCMVehicleControl.flashingLightsLeft", "flashingLightsLeft", m_flashingLightsLeft);
+        v.visit(6, "automotive.LCMVehicleControl.flashingLightsRight", "flashingLightsRight", m_flashingLightsRight);
         v.endVisit();
-	}
+    }
 
-	const string toString() const {
-		stringstream s;
+    const string toString() const {
+        stringstream s;
 
 
-		s << "Speed: " << getSpeed() << " ";
-		s << "Acceleration: " << getAcceleration() << " ";
-		s << "SteeringWheelAngle: " << getSteeringWheelAngle() << " ";
-		s << "BrakeLights: " << getBrakeLights() << " ";
-		s << "FlashingLightsLeft: " << getLeftFlashingLights() << " ";
-		s << "FlashingLightsRight: " << getRightFlashingLights() << " ";
+        s << "Speed: " << getSpeed() << " ";
+        s << "Acceleration: " << getAcceleration() << " ";
+        s << "SteeringWheelAngle: " << getSteeringWheelAngle() << " ";
+        s << "BrakeLights: " << getBrakeLights() << " ";
+        s << "FlashingLightsLeft: " << getLeftFlashingLights() << " ";
+        s << "FlashingLightsRight: " << getRightFlashingLights() << " ";
 
-		return s.str();
-	}
+        return s.str();
+    }
 
-	ostream& operator<<(ostream &out) const {
+    ostream& operator<<(ostream &out) const {
 
-		SerializationFactory& sf = SerializationFactory::getInstance();
+        SerializationFactory& sf = SerializationFactory::getInstance();
 
-		std::shared_ptr<Serializer> s = sf.getSerializer(out);
+        std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
-		s->write(0x0E43596B, m_speed);
-		s->write(0x0E435991, m_acceleration);
-		s->write(0x0E435969, m_steeringWheelAngle);
-		s->write(0x0E43599B, m_brakeLights);
-		s->write(0x09823BD7, m_flashingLightsLeft);
-		s->write(0x0E435996, m_flashingLightsRight);
-		return out;
-	}
+        s->write(1, m_speed);
+        s->write(2, m_acceleration);
+        s->write(3, m_steeringWheelAngle);
+        s->write(4, m_brakeLights);
+        s->write(5, m_flashingLightsLeft);
+        s->write(6, m_flashingLightsRight);
+        return out;
+    }
 
-	istream& operator>>(istream &in) {
+    istream& operator>>(istream &in) {
 
-		SerializationFactory& sf = SerializationFactory::getInstance();
+        SerializationFactory& sf = SerializationFactory::getInstance();
 
-		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+        std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
-		d->read(0x0E43596B, m_speed);
-		d->read(0x0E435991, m_acceleration);
-		d->read(0x0E435969, m_steeringWheelAngle);
-		d->read(0x0E43599B, m_brakeLights);
-		d->read(0x09823BD7, m_flashingLightsLeft);
-		d->read(0x0E435996, m_flashingLightsRight);
-		return in;
-	}
+        d->read(1, m_speed);
+        d->read(2, m_acceleration);
+        d->read(3, m_steeringWheelAngle);
+        d->read(4, m_brakeLights);
+        d->read(5, m_flashingLightsLeft);
+        d->read(6, m_flashingLightsRight);
+        return in;
+    }
 
-	private:
-		double m_speed;
-	private:
-		double m_acceleration;
-	private:
-		double m_steeringWheelAngle;
-	private:
-		bool m_brakeLights;
-	private:
-		bool m_flashingLightsLeft;
-	private:
-		bool m_flashingLightsRight;
+    private:
+        double m_speed;
+    private:
+        double m_acceleration;
+    private:
+        double m_steeringWheelAngle;
+    private:
+        bool m_brakeLights;
+    private:
+        bool m_flashingLightsLeft;
+    private:
+        bool m_flashingLightsRight;
 };
 
 

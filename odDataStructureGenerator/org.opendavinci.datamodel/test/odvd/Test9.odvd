@@ -1,11 +1,11 @@
 message Test9A [ id = 9 ] {
-	uint32 attribute1;
+	uint32 attribute1 [ id = 1 ];
 }
 
 message Test9B [ id = 10 ] {
-	bool attribute1 [default = true];
+	bool attribute1 [default = true, id = 1];
 }
 
 message subpackage.Test9C [ id = 11 ] {
-	string attribute1;
+	string attribute1 [ id = 1 ];
 }

@@ -1,0 +1,55 @@
+/*
+ * ODVDCommaAI.odvd - Data structures for comma.ai vehicle.
+ * Copyright (C) 2016 Christian Berger 
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// comma.ai messages.
+message commaai.Vehicle [id = 400] {
+    bool blinker [ id = 1 ];
+    int32 brake [ id = 2 ];
+    bool brake_computer [ id = 3 ];
+    int32 brake_user [ id = 4 ];
+    double car_accel [ id = 5 ];
+    double fiber_accel_x [ id = 6 ];
+    double fiber_accel_y [ id = 7 ];
+    double fiber_accel_z [ id = 8 ];
+    double fiber_compass_x [ id = 9 ];
+    double fiber_compass_y [ id = 10 ];
+    double fiber_compass_z [ id = 11 ];
+    double fiber_gyro_x [ id = 12 ];
+    double fiber_gyro_y [ id = 13 ];
+    double fiber_gyro_z [ id = 14 ];
+    double gas [ id = 15 ];
+    double gear_choice [ id = 16 ];
+    double rpm [ id = 17 ];
+    double rpm_post_torque [ id = 18 ];
+    bool selfdrive [ id = 19 ];
+    double speed [ id = 20 ];
+    double speed_abs [ id = 21 ];
+    double speed_fl [ id = 22 ];
+    double speed_fr [ id = 23 ];
+    double speed_rl [ id = 24 ];
+    double speed_rr [ id = 25 ];
+    bool standstill [ id = 26 ];
+    double steering_angle [ id = 27 ];
+    double steering_torque [ id = 28 ];    
+    double velodyne_gps_latitude [ id = 29 ];
+    double velodyne_gps_longitude [ id = 30 ];
+    double velodyne_heading [ id = 31 ];
+}
+

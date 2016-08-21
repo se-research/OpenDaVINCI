@@ -52,6 +52,11 @@ SET(AUTOMOTIVEDATA_DIR "${CMAKE_INSTALL_PREFIX}")
 FIND_PACKAGE (AutomotiveData REQUIRED)
 
 ###########################################################################
+# Find ODVDOpenDLV.
+SET(ODVDOPENDLV_DIR "${CMAKE_INSTALL_PREFIX}")
+FIND_PACKAGE (ODVDOpenDLV REQUIRED)
+
+###########################################################################
 # Find OpenDLV.
 SET(OPENDLV_DIR "${CMAKE_INSTALL_PREFIX}")
 FIND_PACKAGE (OpenDLV REQUIRED)
@@ -60,13 +65,16 @@ FIND_PACKAGE (OpenDLV REQUIRED)
 # Set linking libraries to successfully link test suites and binaries.
 SET (LIBRARIES ${OPENDAVINCI_LIBRARIES}
                ${AUTOMOTIVEDATA_LIBRARIES}
-               ${OPENDLV_LIBRARIES})
+               ${OPENDLV_LIBRARIES}
+               ${ODVDOPENDLV_LIBRARIES})
 
 ###########################################################################
 # Set header files from OpenDaVINCI.
 INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS})
 # Set header files from AutomotiveData.
 INCLUDE_DIRECTORIES (${AUTOMOTIVEDATA_INCLUDE_DIRS})
+# Set header files from ODVDOpenDLV.
+INCLUDE_DIRECTORIES (${ODVDOPENDLV_INCLUDE_DIRS})
 # Set header files from OpenDLV.
 INCLUDE_DIRECTORIES (${OPENDLV_INCLUDE_DIRS})
 # Set include directory.

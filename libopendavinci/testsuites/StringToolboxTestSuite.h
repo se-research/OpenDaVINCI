@@ -31,6 +31,28 @@ using namespace std;
 
 class StringToolboxTest : public CxxTest::TestSuite {
     public:
+        void testReplace() {
+            string s1 = " ABC";
+            string s1_out = odcore::strings::StringToolbox::replaceAll(s1, ' ', '_');
+            string ref_s1 = "_ABC";
+            TS_ASSERT(ref_s1.compare(s1_out) == 0);
+
+            string s2 = " ABC ";
+            string s2_out = odcore::strings::StringToolbox::replaceAll(s2, ' ', '_');
+            string ref_s2 = "_ABC_";
+            TS_ASSERT(ref_s2.compare(s2_out) == 0);
+
+            string s3 = " AB C ";
+            string s3_out = odcore::strings::StringToolbox::replaceAll(s3, ' ', '_');
+            string ref_s3 = "_AB_C_";
+            TS_ASSERT(ref_s3.compare(s3_out) == 0);
+
+            string s4 = " A  B C  ";
+            string s4_out = odcore::strings::StringToolbox::replaceAll(s4, ' ', '_');
+            string ref_s4 = "_A__B_C__";
+            TS_ASSERT(ref_s4.compare(s4_out) == 0);
+        }
+
         void testTrim() {
             string s1 = " ABC";
             odcore::strings::StringToolbox::trim(s1);

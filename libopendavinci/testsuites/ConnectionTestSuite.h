@@ -21,10 +21,10 @@
 #define CORE_CONNECTIONTESTSUITE_H_
 
 #include <iostream>                     // for operator<<, basic_ostream, etc
+#include <memory>
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include <memory>
 #include "opendavinci/odcore/base/Thread.h"           // for Thread
 #include "opendavinci/odcore/data/Container.h"        // for Container, etc
 #include "opendavinci/odcore/data/TimeStamp.h"        // for TimeStamp

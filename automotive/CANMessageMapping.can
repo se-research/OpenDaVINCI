@@ -30,3 +30,4 @@ test automotive.vehicle.LightSystem {
     0x001: 0x00
     id 1 = -1
 }
+

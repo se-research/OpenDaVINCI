@@ -51,7 +51,7 @@ namespace cockpit {
     odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Cockpit::body() {
         // Get apropriate translator.
         QTranslator qtTranslator;
-        std::cerr << QLocale::system().name().toStdString() << std::endl;
+        std::cerr << "[odcockpit] Language: " << QLocale::system().name().toStdString() << std::endl;
         qtTranslator.load("cockpit_" + QLocale::system().name());
         m_cockpitApp.installTranslator(&qtTranslator);
 

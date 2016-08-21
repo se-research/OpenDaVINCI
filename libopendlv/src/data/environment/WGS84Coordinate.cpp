@@ -20,14 +20,13 @@
 #include <cmath>
 #include <iostream>
 #include <limits>
+#include <memory>
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "automotivedata/generated/cartesian/Constants.h"
 #include "opendlv/data/environment/Point3.h"
 #include "opendlv/data/environment/WGS84Coordinate.h"
@@ -280,44 +279,36 @@ namespace opendlv {
             }
 
             ostream& WGS84Coordinate::operator<<(ostream &out) const {
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Serializer> s = sf.getSerializer(out);
+                std::shared_ptr<odcore::serialization::Serializer> s = sf.getSerializer(out);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('l', 'a', 't') >::RESULT,
-                        m_lat);
+                s->write(1, m_lat);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('l', 'a', 't', 'd', 'i', 'r') >::RESULT,
-                        static_cast<uint32_t>(m_LATITUDE));
+                s->write(2, static_cast<uint32_t>(m_LATITUDE));
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('l', 'o', 'n') >::RESULT,
-                        m_lon);
+                s->write(3, m_lon);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('l', 'o', 'n', 'd', 'i', 'r') >::RESULT,
-                        static_cast<uint32_t>(m_LONGITUDE));
+                s->write(4, static_cast<uint32_t>(m_LONGITUDE));
 
                 return out;
             }
 
             istream& WGS84Coordinate::operator>>(istream &in) {
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+                std::shared_ptr<odcore::serialization::Deserializer> d = sf.getDeserializer(in);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('l', 'a', 't') >::RESULT,
-                       m_lat);
+                d->read(1, m_lat);
 
                 uint32_t l = 0;
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('l', 'a', 't', 'd', 'i', 'r') >::RESULT,
-                       l);
+                d->read(2, l);
                 m_LATITUDE = static_cast<WGS84Coordinate::LATITUDE>(l);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('l', 'o', 'n') >::RESULT,
-                       m_lon);
+                d->read(3, m_lon);
 
                 l = 0;
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('l', 'o', 'n', 'd', 'i', 'r') >::RESULT,
-                       l);
+                d->read(4, l);
                 m_LONGITUDE = static_cast<WGS84Coordinate::LONGITUDE>(l);
 
                 return in;

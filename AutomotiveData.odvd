@@ -1,6 +1,6 @@
 /*
  * AutomotiveData.odvd - Data structures for automotive applications.
- * Copyright (C) 2015 Christian Berger 
+ * Copyright (C) 2015 - 2016 Christian Berger 
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -59,6 +59,7 @@ message automotive.Constants [id = 60] {
     const double G = 9.81;
 }
 
+// TODO: Refactor me to ODVDCaroloCup.odvd.
 message automotive.VehicleData [id = 39] {
     cartesian.Point2 position [id = 1];
     cartesian.Point2 velocity [id = 2];
@@ -71,44 +72,51 @@ message automotive.VehicleData [id = 39] {
     double temp [id = 9];
 }
 
+// TODO: Refactor me to ODVDCaroloCup.odvd.
 message automotive.VehicleControl [id = 41] {
-    double speed [id = 1, fourbyteid = 0x0E43596B];
-    double acceleration [id = 2, fourbyteid = 0x0E435991];
-    double steeringWheelAngle [id = 3, fourbyteid = 0x0E435969];
-    bool brakeLights [id = 4, fourbyteid = 0x0E43599B];
-    bool flashingLightsLeft [id = 5, fourbyteid = 0x09823BD7];
-    bool flashingLightsRight [id = 6, fourbyteid = 0x0E435996];
+    double speed [id = 1];
+    double acceleration [id = 2];
+    double steeringWheelAngle [id = 3];
+    bool brakeLights [id = 4];
+    bool flashingLightsLeft [id = 5];
+    bool flashingLightsRight [id = 6];
 }
 
+// TODO: Refactor me to ODVDCaroloCup.odvd.
 message automotive.ForceControl [id = 33] {
-    double accelerationForce [id = 1, fourbyteid = 0x0E435991];
-    double brakeForce [id = 2, fourbyteid = 0x0E43598D];
-    double steeringForce [id = 3, fourbyteid = 0x0E435969];
-    bool brakeLights [id = 4, fourbyteid = 0x0E43599B];
-    bool flashingLightsLeft [id = 5, fourbyteid = 0x09823BD7];
-    bool flashingLightsRight [id = 6, fourbyteid = 0x0E435996];
+    double accelerationForce [id = 1];
+    double brakeForce [id = 2];
+    double steeringForce [id = 3];
+    bool brakeLights [id = 4];
+    bool flashingLightsLeft [id = 5];
+    bool flashingLightsRight [id = 6];
 }
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Miniature car messages.
+// TODO: Refactor me to ODVDCaroloCup.odvd.
 message automotive.miniature.SteeringData [id = 80] {
     double exampleData [id = 1];
 }
 
+// TODO: Refactor me to ODVDCaroloCup.odvd.
 message automotive.miniature.SensorBoardData [id = 81] {
     uint32 numberOfSensors [id = 1];
     map<uint32, double> distances [id = 2];
 }
 
+// TODO: Refactor me to ODVDCaroloCup.odvd.
 message automotive.miniature.STM32F4Control [id = 82] {
     uint32 dataFeed [id = 1];
 }
 
+// TODO: Refactor me to ODVDCaroloCup.odvd.
 message automotive.miniature.STM32F4Data [id = 83] {
     string rawData [id = 1];
 }
 
+// TODO: Refactor me to ODVDCaroloCup.odvd.
 message automotive.miniature.UserButtonData [id = 84] {
     enum ButtonStatus {
         UNDEFINED = -1,
@@ -119,6 +127,7 @@ message automotive.miniature.UserButtonData [id = 84] {
     double duration [id = 2];
 }
 
+// TODO: Refactor me to ODVDCaroloCup.odvd.
 message automotive.carolocup.Sensors [id = 87] {
     uint32 usFront [id = 1];
     uint32 usRear [id = 2];
@@ -133,11 +142,35 @@ message automotive.carolocup.Sensors [id = 87] {
     uint32 lightReading [id = 11];
 }
 
+// TODO: Refactor me to ODVDCaroloCup.odvd.
 message automotive.carolocup.Control [id = 88] {
     uint32 steering [id = 1];
     uint32 speed [id = 2];
     uint32 lights [id = 3]; // 0 = no lights, 1 = brake lights, 2 = blinking left, 4 = blinking right, 8 = emergency light
     uint32 gyroTrigger [id = 4];
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Vehicle messages.
+// TODO: Keep me.
+message automotive.GenericCANMessage [id = 71] {
+    odcore::data::TimeStamp driverTimeStamp [id = 1]; // TimeStamp from CAN driver.
+    uint64 identifier [id = 2];                       // ID of the CAN message. 
+    uint8 length [id = 3];                            // Number of data bytes (1-8).
+    uint64 data [id = 4];                             // Payload of the CAN message.
+}
+
+// TODO: Remove me.
+message automotive.vehicle.WheelSpeed [id = 75] {
+    float frontLeft [id = 1];
+    float frontRight [id = 2];
+    float rearLeft [id = 3];
+    float rearRight [id = 4];
+}
+
+// TODO: Remove me.
+message automotive.vehicle.LightSystem [id = 76] {
+    int8 headlights [id = 1];
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -161,330 +194,5 @@ message fxe.Recording [id = 303] {
 message fxe.Correspondence [id = 304] {
     fxe.Recording simulation [id = 1];
     list<fxe.Recording> realRecordings [id = 2];
-}
-
-///////////////////////////////////////////////////////////////////////////////
-// Vehicle messages.
-message automotive.GenericCANMessage [id = 71] {
-    odcore::data::TimeStamp driverTimeStamp [id = 1]; // TimeStamp from CAN driver.
-    uint64 identifier [id = 2];                       // ID of the CAN message. 
-    uint8 length [id = 3];                            // Number of data bytes (1-8).
-    uint64 data [id = 4];                             // Payload of the CAN message.
-}
-
-message automotive.vehicle.WheelSpeed [id = 75] {
-    float frontLeft [id = 1];
-    float frontRight [id = 2];
-    float rearLeft [id = 3];
-    float rearRight [id = 4];
-}
-
-message automotive.vehicle.LightSystem [id = 76] {
-    int8 headlights [id = 1];
-}
-
-/////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////
-
-// Imported data structures from GCDC'16
-message from.opendlv.Constants [id = 150] {
-  const double PI = 3.141592653589793;
-  const double DEG2RAD = 0.017453292522222;  // PI/180.0
-  const double RAD2DEG = 57.295779513082325; // 1.0 / DEG2RAD;
-}
-
-message from.opendlv.model.Cartesian3 [id = 151] {
-  float x [id = 1];
-  float y [id = 2];
-  float z [id = 3];
-}
-
-message from.opendlv.model.Direction [id = 152] {
-  float azimuth [id = 1];
-  float zenith [id = 2];
-}
-
-message from.opendlv.model.State [id = 153] {
-  from.opendlv.model.Cartesian3 position [id = 1];
-  from.opendlv.model.Cartesian3 angularDisplacement [id = 2];
-  int16 frameId [id = 3];
-}
-
-message from.opendlv.model.DynamicState [id = 154] {
-  from.opendlv.model.Cartesian3 velocity [id = 1];
-  from.opendlv.model.Cartesian3 velocityConfidence [id = 2];
-
-  from.opendlv.model.Cartesian3 acceleration [id = 3];
-  from.opendlv.model.Cartesian3 accelerationConfidence [id = 4];
-
-  from.opendlv.model.Cartesian3 angularVelocity [id = 5];
-  from.opendlv.model.Cartesian3 angularVelocityConfidence [id = 6];
-
-  from.opendlv.model.Cartesian3 angularAcceleration [id = 7];
-  from.opendlv.model.Cartesian3 angularAccelerationConfidence [id = 8];
-  int16 frameId [id = 9];
-}
-
-message from.opendlv.proxy.ActuationRequest [id = 160] {
-  float acceleration [id = 1];
-  float steering [id = 2];
-  bool isValid [id = 3];
-}
-
-message from.opendlv.proxy.AccelerometerReading [id = 161] {
-  float acceleration[3] [id = 1];
-}
-
-message from.opendlv.proxy.AltimeterReading [id = 162] {
-  float altitude [id = 1];
-}
-
-message from.opendlv.proxy.CompassReading [id = 163] {
-  float heading[3] [id = 1];
-}
-
-message from.opendlv.proxy.ControlOverrideState [id = 164] {
-  bool isOverridden [id = 1];
-}
-
-message from.opendlv.proxy.ControlState [id = 165] {
-  bool isAutonomous [id = 1];
-}
-
-message from.opendlv.proxy.EchoReading [id = 166] {
-  list<from.opendlv.model.Direction> directions [id = 1];
-  list<double> radii [id = 2];
-  uint32 numberOfPoints [id = 3];
-}
-
-message from.opendlv.proxy.GpsReading [id = 167] {
-  double timestamp [id = 1];
-  double latitude [id = 2];
-  double longitude [id = 3];
-  double altitude [id = 4];
-  double northHeading [id = 5];
-  double speed [id = 6];
-  uint8 latitudeDirection [id = 7];
-  uint8 longitudeDirection [id = 8];
-  uint8 satelliteCount [id = 9];
-  bool hasHeading [id = 10];
-  bool hasRtk [id = 11];
-}
-
-message from.opendlv.proxy.GyroscopeReading [id = 168] {
-  float orientation[3] [id = 1];
-}
-
-message from.opendlv.proxy.LedRequest [id = 169] {
-  uint8 numberOfLeds [id = 1];
-  string data [id = 2];
-}
-
-message from.opendlv.proxy.RelayRequest [id = 170] {
-  bool relayValue [id = 1];
-  uint8 relayIndex [id = 2];
-  string deviceId [id = 3];
-}
-
-message from.opendlv.proxy.V2vReading [id = 171] {
-  uint32 size [id = 1];
-  string data [id = 2];
-}
-
-message from.opendlv.proxy.V2vRequest [id = 172] {
-  uint32 size [id = 1];
-  string data [id = 2];
-}
-
-message from.opendlv.sensation.Voice [id = 175] {
-  string type [id = 1];
-  uint32 size [id = 2];
-  string data [id = 3];
-}
-
-message from.opendlv.sensation.Geolocation [id = 176] {
-  double latitude [id = 1];
-  float latitudeConfidence [id = 2];
-  double longitude [id = 3];
-  float longitudeConfidence [id = 4];
-  float altitude [id = 5];
-  float heading [id = 6];
-  float headingConfidence [id = 7];
-}
-
-message from.opendlv.sensation.Looming [id = 177] {
-  uint16 numberOfPoints [id = 1];
-  list<from.opendlv.model.Direction> directions [id = 2];
-  list<float> expansion [id = 4];
-}
-
-message from.opendlv.sensation.OpticalFlow [id = 178] {
-  uint16 numberOfPoints [id = 1];
-  list<from.opendlv.model.Direction> directions [id = 2];
-  list<float> u [id = 3];
-  list<float> v [id = 4];
-}
-
-message from.opendlv.sensation.DirectionOfMovement [id = 179] {
-  from.opendlv.model.Direction direction [id = 1];
-}
-
-message from.opendlv.perception.Object [id = 181] {
-  odcore::data::TimeStamp identified [id = 1];
-  string type [id = 2];
-  float typeConfidence [id = 3];
-
-  from.opendlv.model.Direction direction [id = 4];
-  float directionConfidence [id = 5];
-  from.opendlv.model.Direction directionRate [id = 6];
-  float directionRateConfidence [id = 7];
-
-  float distance [id = 8];
-  float distanceConfidence [id = 9];
-
-  float angularSize [id = 10];
-  float angularSizeConfidence [id = 11];
-  float angularSizeRate [id = 12];
-  float angularSizeRateConfidence [id = 13];
-
-  float confidence [id = 14];
-  list<string> sources [id = 15];
-
-  list<string> properties [id = 16];
-
-  int16 objectId [id = 17];
-}
-
-message from.opendlv.perception.Environment [id = 189] {
-  odcore::data::TimeStamp validUntil [id = 1];
-  list<from.opendlv.perception.Object> objects [id = 2];
-}
-
-message from.opendlv.perception.Surface [id = 184] {
-  odcore::data::TimeStamp identified [id = 1];
-  string type [id = 2];
-  float typeConfidence [id = 3];
-
-  list<from.opendlv.model.Cartesian3> edges [id = 4];
-  float edgesConfidence [id = 5];
-
-  bool traversable [id = 6];
-
-  float confidence [id = 7];
-  list<string> sources [id = 8];
-
-  list<string> properties [id = 9];
-
-  int16 surfaceId [id = 10];
-
-  list<int16> connectedWith [id = 11];
-  list<int16> traversableTo [id = 12];
-}
-
-message from.opendlv.perception.StimulusDirectionOfMovement [id = 180] {
-  odcore::data::TimeStamp identified [id = 1];
-  from.opendlv.model.Direction desiredDirectionOfMovement [id = 2];
-  from.opendlv.model.Direction directionOfMovement [id = 3];
-}
-
-message from.opendlv.perception.StimulusOpticalFlow [id = 174] {
-  odcore::data::TimeStamp identified [id = 1];
-  float desiredOpticalFlow [id = 2];
-  float opticalFlow [id = 3];
-}
-
-message from.opendlv.perception.StimulusDirectionAlignment [id = 182] {
-  odcore::data::TimeStamp identified [id = 1];
-  from.opendlv.model.Direction direction [id = 2];
-  from.opendlv.model.Direction desiredDirection [id = 3];
-}
-
-message from.opendlv.perception.StimulusAngularSizeAlignment [id = 183] {
-  odcore::data::TimeStamp identified [id = 1];
-  from.opendlv.model.Direction direction [id = 2];
-  float angularSize [id = 3];
-  float desiredAngularSize [id = 4];
-}
-
-message from.opendlv.knowledge.Message [id = 185] {
-  uint32 size [id = 1];
-  string data [id = 2];
-}
-
-message from.opendlv.knowledge.Insight [id = 187] {
-  odcore::data::TimeStamp insightTime [id = 1];
-  string insight [id = 2];
-}
-
-message from.opendlv.action.Correction [id = 186] {
-  odcore::data::TimeStamp startTime [id = 1];
-  string type [id = 2];
-  bool isInhibitory [id = 3];
-  float amplitude [id = 4];
-  float priority [id = 5];
-}
-
-message from.opendlv.proxy.reverefh16.ManualControl [id = 191] {
-    double accelerationPedalPosition [id = 1];
-    double brakePedalPosition [id = 2];
-    double torsionBarTorque [id = 3];
-    odcore::data::TimeStamp fromSensor [id = 4];
-}
-
-message from.opendlv.proxy.reverefh16.AccelerationRequest [id = 192] {
-    bool enableRequest [id = 1];
-    double accelerationPedalPosition [id = 2];
-}
-
-message from.opendlv.proxy.reverefh16.BrakeRequest [id = 193] {
-    bool enableRequest [id = 1];
-    double brake [id = 2];
-}
-
-message from.opendlv.proxy.reverefh16.SteeringRequest [id = 194] {
-    bool enableRequest [id = 1];
-    double steeringRoadWheelAngle [id = 2];
-    double steeringDeltaTorque [id = 3];
-}
-
-message from.opendlv.proxy.reverefh16.Axles [id = 195] {
-    double loadAxle11 [id = 1];
-    double loadAxle12 [id = 2];
-    double loadAxle13 [id = 3];
-    odcore::data::TimeStamp fromSensor [id = 4];
-}
-
-message from.opendlv.proxy.reverefh16.Propulsion [id = 196] {
-    double propulsionShaftVehicleSpeed [id = 1];
-    odcore::data::TimeStamp fromSensor [id = 2];
-}
-
-message from.opendlv.proxy.reverefh16.VehicleState [id = 197] {
-    double accelerationX [id = 1];
-    double accelerationY [id = 2];
-    double yawRate [id = 3];
-    odcore::data::TimeStamp fromSensor [id = 4];
-}
-
-message from.opendlv.proxy.reverefh16.Wheels [id = 198] {
-    double speedWheel111 [id = 1];
-    double speedWheel112 [id = 2];
-    double speedWheel121 [id = 3];
-    double speedWheel122 [id = 4];
-    double speedWheel131 [id = 5];
-    double speedWheel132 [id = 6];
-    odcore::data::TimeStamp fromSensor [id = 7];
-}
-
-message from.opendlv.proxy.reverefh16.Steering [id = 199] {
-    double roadwheelangle [id = 1];
-    double steeringwheelangle [id = 2];
-    odcore::data::TimeStamp fromSensor [id = 3];
-}
-
-// This message broadcasts the system's health as key/values.
-message from.opendlv.system.diagnostics.HealthStatus [id = 200] {
-    map<string,string> status [id = 1];
 }
 

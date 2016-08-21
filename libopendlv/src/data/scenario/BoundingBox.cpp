@@ -17,14 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <memory>
 #include <ostream>
 #include <string>
 
-#include <memory>
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendavinci/odcore/data/SerializableData.h"
 #include "opendlv/data/scenario/BoundingBox.h"
 #include "opendlv/data/scenario/ScenarioVisitor.h"
@@ -115,41 +114,33 @@ namespace opendlv {
             }
 
             ostream& BoundingBox::operator<<(ostream &out) const {
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Serializer> s = sf.getSerializer(out);
+                std::shared_ptr<odcore::serialization::Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('u', 'p', 'l', 'e', 'f', 't') >::RESULT,
-                        m_upperLeft);
+                s->write(1, m_upperLeft);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('u', 'p', 'r', 'i', 'g', 'h', 't') >::RESULT,
-                        m_upperRight);
+                s->write(2, m_upperRight);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('l', 'o', 'r', 'i', 'g', 'h', 't') >::RESULT,
-                        m_lowerRight);
+                s->write(3, m_lowerRight);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('l', 'o', 'l', 'e', 'f', 't') >::RESULT,
-                        m_lowerLeft);
+                s->write(4, m_lowerLeft);
 
                 return out;
             }
 
             istream& BoundingBox::operator>>(istream &in) {
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+                std::shared_ptr<odcore::serialization::Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('u', 'p', 'l', 'e', 'f', 't') >::RESULT,
-                       m_upperLeft);
+                d->read(1, m_upperLeft);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('u', 'p', 'r', 'i', 'g', 'h', 't') >::RESULT,
-                       m_upperRight);
+                d->read(2, m_upperRight);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('l', 'o', 'r', 'i', 'g', 'h', 't') >::RESULT,
-                       m_lowerRight);
+                d->read(3, m_lowerRight);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('l', 'o', 'l', 'e', 'f', 't') >::RESULT,
-                       m_lowerLeft);
+                d->read(4, m_lowerLeft);
 
                 return in;
             }

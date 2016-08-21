@@ -40,10 +40,9 @@
 #include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/base/Service.h"
 #include "opendavinci/odcore/base/Thread.h"
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 
 #include "opendavinci/odcore/data/TimeStamp.h"
 
@@ -54,45 +53,44 @@ using namespace odcore::base;
 using namespace odcore::base::module;
 using namespace odcore::data;
 using namespace odcore::exceptions;
+using namespace odcore::serialization;
 
 class TestSuiteExample7Data : public odcore::data::SerializableData {
-	public:
-		TestSuiteExample7Data() : m_numericalValue(0) {}
+    public:
+        TestSuiteExample7Data() : m_numericalValue(0) {}
 
-		virtual ~TestSuiteExample7Data() {}
+        virtual ~TestSuiteExample7Data() {}
 
-		TestSuiteExample7Data(const TestSuiteExample7Data &obj) :
-			SerializableData(),
-			m_numericalValue(obj.m_numericalValue) {}
+        TestSuiteExample7Data(const TestSuiteExample7Data &obj) :
+            SerializableData(),
+            m_numericalValue(obj.m_numericalValue) {}
 
-		TestSuiteExample7Data& operator=(const TestSuiteExample7Data &obj) {
-		    m_numericalValue = obj.m_numericalValue;
-		    return (*this);
-	    }
+        TestSuiteExample7Data& operator=(const TestSuiteExample7Data &obj) {
+            m_numericalValue = obj.m_numericalValue;
+            return (*this);
+        }
 
-		uint32_t getNumericalValue() const {
+        uint32_t getNumericalValue() const {
             return m_numericalValue;
         }
 
-		void setNumericalValue(const uint32_t &nv) {
+        void setNumericalValue(const uint32_t &nv) {
             m_numericalValue = nv;
         }
 
-		virtual ostream& operator<<(ostream &out) const {
+        virtual ostream& operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();
-		    std::shared_ptr<Serializer> s = sf.getSerializer(out);
-		    s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('n', 'u', 'm') >::RESULT,
-				    m_numericalValue);
-		    return out;
-	    }
+            std::shared_ptr<Serializer> s = sf.getSerializer(out);
+            s->write(1, m_numericalValue);
+            return out;
+        }
 
-		virtual istream& operator>>(istream &in) {
+        virtual istream& operator>>(istream &in) {
             SerializationFactory& sf=SerializationFactory::getInstance();
-		    std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
-		    d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('n', 'u', 'm') >::RESULT,
-			       m_numericalValue);
-		    return in;
-	    }
+            std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+            d->read(1, m_numericalValue);
+            return in;
+        }
 
         static int32_t ID() {
             return 33;
@@ -110,14 +108,14 @@ class TestSuiteExample7Data : public odcore::data::SerializableData {
             return getShortName();
         }
 
-		virtual const string toString() const {
-		    stringstream s;
-		    s << m_numericalValue;
-		    return s.str();
-	    }
+        virtual const string toString() const {
+            stringstream s;
+            s << m_numericalValue;
+            return s.str();
+        }
 
-	private:
-		uint32_t m_numericalValue;
+    private:
+        uint32_t m_numericalValue;
 };
 
 class Example7SenderApp : public TimeTriggeredConferenceClientModule {
@@ -139,23 +137,23 @@ class Example7SenderApp : public TimeTriggeredConferenceClientModule {
 
         odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
             uint32_t seed = 24;
-        	uint32_t counter = 0;
+            uint32_t counter = 0;
 
             srand(seed);
 
-        	while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
-        		// Create user data.
-        		TestSuiteExample7Data data;
-        		data.setNumericalValue(counter++);
+            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
+                // Create user data.
+                TestSuiteExample7Data data;
+                data.setNumericalValue(counter++);
 
-        		// Create container.
-        		Container c(data);
+                // Create container.
+                Container c(data);
 
-        		// Send container.
-        		getConference().send(c);
+                // Send container.
+                getConference().send(c);
 
-        		// Restrict counter.
-        		if (counter > 10000) counter = 0;
+                // Restrict counter.
+                if (counter > 10000) counter = 0;
 
                 if (m_withRandomSleep) {
                     // Provoke unexpected delays to demonstrate the need for --pulse in supercomponent.
@@ -165,7 +163,7 @@ class Example7SenderApp : public TimeTriggeredConferenceClientModule {
                 }
             }
 
-        	return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 };
 
@@ -193,11 +191,11 @@ class Example7ReceiverApp : public TimeTriggeredConferenceClientModule {
             uint32_t expected_sum = 0;
             uint32_t counter = 0;
 
-        	while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
-			    Container c = getKeyValueDataStore().get(TestSuiteExample7Data::ID());
-			    TestSuiteExample7Data data = c.getData<TestSuiteExample7Data>();
+            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
+                Container c = getKeyValueDataStore().get(TestSuiteExample7Data::ID());
+                TestSuiteExample7Data data = c.getData<TestSuiteExample7Data>();
                 sum += data.getNumericalValue();
-			    cout << "Latest container from data type " << (uint32_t)c.getDataType() << ", content: " << data.toString() << ", sum = " << sum << endl;
+                cout << "Latest container from data type " << (uint32_t)c.getDataType() << ", content: " << data.toString() << ", sum = " << sum << endl;
 
                 if (sum > 0) {
                     counter++;
@@ -208,9 +206,9 @@ class Example7ReceiverApp : public TimeTriggeredConferenceClientModule {
                         cout << "Diff: " << m_diff << endl;
                     }
                 }
-        	}
+            }
 
-        	return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
         uint32_t getDiff() {

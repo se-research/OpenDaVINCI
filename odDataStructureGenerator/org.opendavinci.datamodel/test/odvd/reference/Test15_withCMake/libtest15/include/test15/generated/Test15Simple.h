@@ -16,7 +16,7 @@
 
 using namespace std;
 
-class Test15Simple : public odcore::data::SerializableData, public odcore::base::Visitable {
+class OPENDAVINCI_API Test15Simple : public odcore::data::SerializableData, public odcore::base::Visitable {
 	public:
 		enum ButtonState {
 			PRESSED = 1,

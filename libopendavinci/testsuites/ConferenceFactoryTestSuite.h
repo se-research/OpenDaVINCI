@@ -20,6 +20,7 @@
 #ifndef CONTEXT_CONFERENCEFACTORYTESTSUITE_H_
 #define CONTEXT_CONFERENCEFACTORYTESTSUITE_H_
 
+#include <memory>
 #include <string>                       // for operator==, basic_string, etc
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
@@ -27,7 +28,6 @@
 #include "opendavinci/odcontext/base/BlockableContainerReceiver.h"
 #include "opendavinci/odcontext/base/ControlledContainerConferenceFactory.h"
 #include "opendavinci/odcontext/base/ControlledContainerConferenceForSystemUnderTest.h"
-#include <memory>
 #include "opendavinci/odcore/base/FIFOQueue.h"        // for FIFOQueue
 #include "opendavinci/odcore/data/Container.h"        // for Container, etc
 #include "opendavinci/odcore/data/TimeStamp.h"        // for TimeStamp

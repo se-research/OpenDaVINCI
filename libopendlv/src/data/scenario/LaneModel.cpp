@@ -18,16 +18,15 @@
  */
 
 #include <istream>
+#include <memory>
 #include <string>
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/Serializable.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/Serializable.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendavinci/odcore/data/SerializableData.h"
 #include "opendlv/data/scenario/Connector.h"
 #include "opendlv/data/scenario/LaneAttribute.h"
@@ -201,15 +200,13 @@ class Lane;
             }
 
             ostream& LaneModel::operator<<(ostream &out) const {
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Serializer> s = sf.getSerializer(out);
+                std::shared_ptr<odcore::serialization::Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('l', 'a', 't', 't', 'r') >::RESULT,
-                        getLaneAttribute());
+                s->write(1, getLaneAttribute());
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('t', 'y', 'p', 'e') >::RESULT,
-                        static_cast<uint32_t>(m_type));
+                s->write(2, static_cast<uint32_t>(m_type));
 
                 // Serialize traffic controls.
                 uint32_t numberOfTrafficControls = 0;
@@ -220,8 +217,7 @@ class Lane;
                         numberOfTrafficControls++;
                     }
                 }
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('n', 'u', 'm', 't', 'r', 'a', 'f', 'c') >::RESULT,
-                        numberOfTrafficControls);
+                s->write(3, numberOfTrafficControls);
 
                 // Write traffic controls to stringstream.
                 stringstream sstr;
@@ -237,14 +233,12 @@ class Lane;
 
                 // Write traffic controls.
                 if (numberOfTrafficControls > 0) {
-                    s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('t', 'r', 'a', 'f', 'c', 's') >::RESULT,
-                            sstr.str());
+                    s->write(4, sstr.str());
                 }
 
                 // Serialize connectors.
                 uint32_t numberOfConnectors = static_cast<uint32_t>(m_listOfConnectors.size());
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('n', 'u', 'm', 'c', 'o', 'n', 'n', 's') >::RESULT,
-                        numberOfConnectors);
+                s->write(5, numberOfConnectors);
 
                 // Write connectors to stringstream.
                 sstr.str("");
@@ -255,40 +249,35 @@ class Lane;
 
                 // Write lanes.
                 if (numberOfConnectors > 0) {
-                    s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('c', 'o', 'n', 'n') >::RESULT,
-                            sstr.str());
+                    s->write(6, sstr.str());
                 }
 
                 return out;
             }
 
             istream& LaneModel::operator>>(istream &in) {
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+                std::shared_ptr<odcore::serialization::Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
                 // Clean up.
                 cleanUp();
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('l', 'a', 't', 't', 'r') >::RESULT,
-                       m_laneAttribute);
+                d->read(1, m_laneAttribute);
 
                 uint32_t type = 0;
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('t', 'y', 'p', 'e') >::RESULT,
-                       type);
+                d->read(2, type);
 
                 m_type = static_cast<enum LaneModel::LANEMODELTYPE>(type);
 
                 // Deserialize traffic controls.
                 uint32_t numberOfTrafficControls = 0;
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('n', 'u', 'm', 't', 'r', 'a', 'f', 'c') >::RESULT,
-                       numberOfTrafficControls);
+                d->read(3, numberOfTrafficControls);
 
                 if (numberOfTrafficControls > 0) {
                     string str;
                     // Read traffic controls into stringstream.
-                    d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('t', 'r', 'a', 'f', 'c', 's') >::RESULT,
-                           str);
+                    d->read(4, str);
 
                     stringstream sstr(str);
 
@@ -321,14 +310,12 @@ class Lane;
 
                 // Deserialize connectors.
                 uint32_t numberOfConnectors = 0;
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('n', 'u', 'm', 'c', 'o', 'n', 'n', 's') >::RESULT,
-                       numberOfConnectors);
+                d->read(5, numberOfConnectors);
 
                 if (numberOfConnectors > 0) {
                     string str;
                     // Read connectors into stringstream.
-                    d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('c', 'o', 'n', 'n') >::RESULT,
-                           str);
+                    d->read(6, str);
 
                     stringstream sstr(str);
 

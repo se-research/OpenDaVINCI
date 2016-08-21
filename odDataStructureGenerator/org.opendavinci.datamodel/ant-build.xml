@@ -32,7 +32,6 @@
         <delete dir="libtest14"/>
         <delete dir="libtest15"/>
         <delete dir="libtest16"/>
-        <delete dir="libtest17"/>
         <delete dir="libtest18"/>
         <delete dir="libtest19"/>
         <delete dir="libtest20"/>
@@ -44,6 +43,11 @@
             <fileset dir=".">
                 <include name="TEST-*.txt"/>
                 <include name="TEST-*.xml"/>
+            </fileset>
+        </delete>
+        <delete>
+            <fileset dir="src">
+                <include name="GeneratedHeaders*.cpp"/>
             </fileset>
         </delete>
     </target>

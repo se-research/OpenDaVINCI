@@ -17,9 +17,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-// The optional parameter fourbyteid for the attributes is specified
-// to ensure backwards compatibility with existing recordings.
-
 ///////////////////////////////////////////////////////////////////////////////
 // Logging messages.
 message odcore.data.LogMessage [id = 100] {
@@ -62,12 +59,11 @@ message odcore.data.reflection.AbstractField [id = 70] {
         SERIALIZABLE_T      = 53,
         NON_PRIMITIVE_END   = 54,
     };
-    uint32 longFieldIdentifier [ id = 1 ];
-    uint8 shortFieldIdentifier [ id = 2 ];
-    string longFieldName [ id = 3 ];
-    string shortFieldName [ id = 4 ];
-    FIELDDATATYPE fieldDataType [ id = 5 ];
-    int8 size [ default = -1, id = 6 ];
+    uint32 fieldIdentifier [ id = 1 ];
+    string longFieldName [ id = 2 ];
+    string shortFieldName [ id = 3 ];
+    FIELDDATATYPE fieldDataType [ id = 4 ];
+    int8 size [ default = -1, id = 5 ];
 }
 
 
@@ -87,12 +83,7 @@ message odcore.data.dmcp.Constants [id = 110] {
     };
 }
 
-// This message contains all constants for the test cases for the Dynamic Module Configuration Protocol (DMCP).
-message odcore.data.dmcp.TestConstants [id = 111] {
-    const string DMCPCONFIG_TEST_GROUP = "225.0.0.250";
-    const uint32 DMCPCONFIG_TEST_SERVERPORT = 25000;
-    const uint32 DMCPCONFIG_TEST_CLIENTPORT = 25100;
-}
+// Message ID 111 is used in OpenDaVINCITestData.odvd.
 
 // This message describes the DMCP server.
 message odcore.data.dmcp.ServerInformation [id = 112] { 
@@ -132,7 +123,7 @@ message odcore.data.dmcp.ModuleDescriptor [id = 113] {
 
 // This message describes information about a software component's time slice consumption.
 message odcore.data.dmcp.RuntimeStatistic [id = 9] {
-    double sliceConsumption [id = 1, fourbyteid = 0x04C11DD4];
+    double sliceConsumption [id = 1];
 }
 
 // This message describes runtime statistics about a software component.
@@ -214,7 +205,7 @@ message odcore.data.player.PlayerCommand [id = 10] {
         REWIND=2,
         STEP_FORWARD=3,
     };
-    Command command [id = 1, fourbyteid = 0x1304776F];
+    Command command [id = 1];
 }
 
 // This message is used to remotely control the odrecorder component.
@@ -223,23 +214,39 @@ message odcore.data.recorder.RecorderCommand [id = 11] {
         RECORD=0,
         STOP=1,
     };
-    Command command [id = 1, fourbyteid = 0x1304776F];
+    Command command [id = 1];
 }
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Shared BLOB messages.
 
-// This message describes
+// This message describes generic shared data residing in a shared memory segment.
 message odcore.data.SharedData [id = 13] {
-    string name [id = 1, fourbyteid = 0x09823BC4];
-    uint32 size [id = 2, fourbyteid = 0x0E435993];
+    string name [id = 1];
+    uint32 size [id = 2];
 }
 
-message odcore.data.image.SharedImage extends odcore.data.SharedData [id = 14] {
-    uint32 width [id = 1, fourbyteid = 0x0E43598A];
-    uint32 height [id = 2, fourbyteid = 0x0E4359BD];
-    uint32 bytesPerPixel [id = 3, fourbyteid = 0x09823BBC];
+// This message describes image data residing in a shared memory segment.
+message odcore.data.image.SharedImage [id = 14] {
+    string name [id = 1];
+    uint32 size [id = 2];
+    uint32 width [id = 3];
+    uint32 height [id = 4];
+    uint32 bytesPerPixel [id = 5];
+}
+
+// This message describes an H264 frame created from a SharedImage message
+// to encode/decode to/from an H264 video stream.
+// Purpose: In a Container recording file, the original SharedImage will be
+// replaced by an instance of this message after the original frame has been
+// encoded (for recording); on replay, any occurring instance of this message
+// will be loaded from the specified h264 file and restored into a SharedImage.
+message odcore.data.image.H264Frame [id = 27] {
+    string h264Filename [id = 1];    // Name of the file containing the h264 stream.
+    uint32 frameIdentifier [id = 2]; // Increasing identifier of this frame.
+    uint32 frameSize [id = 3];       // Size of the h264-encoded frame in bytes.
+    odcore.data.image.SharedImage associatedSharedImage [id = 4]; // Original SharedImage data structure.
 }
 
 // This message is not complete as dynamic sized arrays are not available yet.
@@ -257,7 +264,7 @@ message odcore.data.image.SharedImage extends odcore.data.SharedData [id = 14] {
 // Typical use cases are to store a fixed amount (= width, height=1) of vectors
 // with vector's dimension = numberOfComponentsPerPoint of type componentDataType.
 // See libopendavinci/testsuite/EigenExamplesTest.h for examples.
-message odcore.data.SharedPointCloud extends odcore.data.SharedData [id = 28] {
+message odcore.data.SharedPointCloud [id = 28] {
     enum COMPONENTDATATYPE {
         BOOL_T              = 0,
         INTEGERS_START      = 1,
@@ -278,10 +285,12 @@ message odcore.data.SharedPointCloud extends odcore.data.SharedData [id = 28] {
     enum USERINFO {
         XYZ_INTENSITY       = 0, // This type specifies information about the data layout with (x,y,z) coordinates and intensity.
     };
-    uint32 width [id = 1];
-    uint32 height [id = 2];
-    uint8 numberOfComponentsPerPoint [id = 3];
-    COMPONENTDATATYPE componentDataType [id = 4];
-    uint32 userInfo [id = 5]; // This field can be used to specify further information about the semantic data layout.
+    string name [id = 1];
+    uint32 size [id = 2];
+    uint32 width [id = 3];
+    uint32 height [id = 4];
+    uint8 numberOfComponentsPerPoint [id = 5];
+    COMPONENTDATATYPE componentDataType [id = 6];
+    uint32 userInfo [id = 7]; // This field can be used to specify further information about the semantic data layout.
 }
 

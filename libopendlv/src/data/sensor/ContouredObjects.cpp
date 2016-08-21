@@ -17,17 +17,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <memory>
 #include <sstream>
 #include <string>
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/Serializable.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/Serializable.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendavinci/odcore/data/SerializableData.h"
 #include "opendlv/data/sensor/ContouredObject.h"
 #include "opendlv/data/sensor/ContouredObjects.h"
@@ -100,13 +99,12 @@ namespace opendlv {
             }
 
             ostream& ContouredObjects::operator<<(ostream &out) const {
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Serializer> s = sf.getSerializer(out);
+                std::shared_ptr<odcore::serialization::Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
                 // Write contoured objects.
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('c', 'o', 'b', 'j', 's', 'i', 'z', 'e') >::RESULT,
-                        static_cast<uint32_t>(m_contouredObjects.size()));
+                s->write(1, static_cast<uint32_t>(m_contouredObjects.size()));
 
                 // Contour.
                 stringstream sstr;
@@ -114,30 +112,26 @@ namespace opendlv {
                 while (it != m_contouredObjects.end()) {
                     sstr << (*it++);
                 }
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('c', 'o', 'n', 't', 'o', 'u', 'r') >::RESULT,
-                        sstr.str());
+                s->write(2, sstr.str());
 
                 // Color.
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('c', 'o', 'l', 'o', 'r') >::RESULT,
-                        static_cast<uint32_t>(m_color));
+                s->write(3, static_cast<uint32_t>(m_color));
 
                 return out;
             }
 
             istream& ContouredObjects::operator>>(istream &in) {
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+                std::shared_ptr<odcore::serialization::Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
                 // Read contoured objects.
                 uint32_t numberOfContouredObjects = 0;
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('c', 'o', 'b', 'j', 's', 'i', 'z', 'e') >::RESULT,
-                       numberOfContouredObjects);
+                d->read(1, numberOfContouredObjects);
                 reset();
 
                 string contour;
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('c', 'o', 'n', 't', 'o', 'u', 'r') >::RESULT,
-                       contour);
+                d->read(2, contour);
                 stringstream sstr;
                 sstr.str(contour);
                 while (numberOfContouredObjects > 0) {
@@ -148,8 +142,7 @@ namespace opendlv {
                 }
 
                 uint32_t color = 0;
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('c', 'o', 'l', 'o', 'r') >::RESULT,
-                       color);
+                d->read(3, color);
                 m_color = static_cast<enum COLOR>(color);
 
                 return in;

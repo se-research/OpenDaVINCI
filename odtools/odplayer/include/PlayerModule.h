@@ -67,14 +67,15 @@ namespace odplayer {
 
             odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
-            virtual void wait();
-
         private:
-            odcore::base::FIFOQueue m_playerControl;
+            virtual void wait();
 
             virtual void setUp();
 
             virtual void tearDown();
+
+        private:
+            odcore::base::FIFOQueue m_playerControl;
     };
 
 } // odplayer

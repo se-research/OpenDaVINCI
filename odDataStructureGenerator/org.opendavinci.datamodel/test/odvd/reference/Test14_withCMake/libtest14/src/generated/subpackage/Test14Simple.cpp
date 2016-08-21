@@ -6,17 +6,16 @@
 
 #include <memory>
 
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
-
+#include <opendavinci/odcore/serialization/Deserializer.h>
+#include <opendavinci/odcore/serialization/SerializationFactory.h>
+#include <opendavinci/odcore/serialization/Serializer.h>
 
 #include "test14/generated/subpackage/Test14Simple.h"
 
 namespace subpackage {
 		using namespace std;
 		using namespace odcore::base;
+		using namespace odcore::serialization;
 	
 	
 		Test14Simple::Test14Simple() :
@@ -80,15 +79,15 @@ namespace subpackage {
 		}
 	
 		void Test14Simple::accept(odcore::base::Visitor &v) {
-			v.beginVisit();
+			v.beginVisit(ID(), ShortName(), LongName());
 			int32_t int32t_buttonState = m_buttonState;
-			v.visit(CRC32 < CharList<'b', CharList<'u', CharList<'t', CharList<'t', CharList<'o', CharList<'n', CharList<'S', CharList<'t', CharList<'a', CharList<'t', CharList<'e', NullType> > > > > > > > > > >  >::RESULT, 0, "Test14Simple.buttonState", "buttonState", int32t_buttonState);
+			v.visit(1, "Test14Simple.buttonState", "buttonState", int32t_buttonState);
+			m_buttonState = static_cast<Test14Simple::ButtonState>(int32t_buttonState);
 			v.endVisit();
 		}
 	
 		const string Test14Simple::toString() const {
 			stringstream s;
-	
 	
 			switch(getButtonState()) {
 				case PRESSED :
@@ -106,25 +105,23 @@ namespace subpackage {
 		}
 	
 		ostream& Test14Simple::operator<<(ostream &out) const {
-	
 			SerializationFactory& sf = SerializationFactory::getInstance();
 	
 			std::shared_ptr<Serializer> s = sf.getSerializer(out);
 	
 			int32_t int32t_buttonState = m_buttonState;
-			s->write(CRC32 < CharList<'b', CharList<'u', CharList<'t', CharList<'t', CharList<'o', CharList<'n', CharList<'S', CharList<'t', CharList<'a', CharList<'t', CharList<'e', NullType> > > > > > > > > > >  >::RESULT,
+			s->write(1,
 					int32t_buttonState);
 			return out;
 		}
 	
 		istream& Test14Simple::operator>>(istream &in) {
-	
 			SerializationFactory& sf = SerializationFactory::getInstance();
 	
 			std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 	
 			int32_t int32t_buttonState = 0;
-			d->read(CRC32 < CharList<'b', CharList<'u', CharList<'t', CharList<'t', CharList<'o', CharList<'n', CharList<'S', CharList<'t', CharList<'a', CharList<'t', CharList<'e', NullType> > > > > > > > > > >  >::RESULT,
+			d->read(1,
 					int32t_buttonState);
 			m_buttonState = static_cast<Test14Simple::ButtonState>(int32t_buttonState);
 			return in;

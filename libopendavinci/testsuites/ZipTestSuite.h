@@ -21,13 +21,13 @@
 #define CORE_ZIPTESTSUITE_H_
 
 #include <fstream>                      // for stringstream, operator<<, etc
+#include <memory>
 #include <string>                       // for string, operator==, etc
 #include <vector>                       // for vector
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
 #include "opendavinci/odcore/wrapper/CompressionFactory.h"  // for CompressionFactory
 #include "opendavinci/odcore/wrapper/DecompressedData.h"  // for DecompressedData
 

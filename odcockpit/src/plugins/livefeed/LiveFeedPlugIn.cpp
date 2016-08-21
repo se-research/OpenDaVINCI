@@ -34,6 +34,7 @@ namespace cockpit {
 
             LiveFeedPlugIn::LiveFeedPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt) :
                 PlugIn(name, kvc, prnt),
+                m_kvc(kvc),
                 m_viewerWidget(NULL) {
                 setDescription("This plugin displays all distributed containers.");
             }
@@ -41,7 +42,7 @@ namespace cockpit {
             LiveFeedPlugIn::~LiveFeedPlugIn() {}
 
             void LiveFeedPlugIn::setupPlugin() {
-                m_viewerWidget = new LiveFeedWidget(*this, getParentQWidget());
+                m_viewerWidget = new LiveFeedWidget(m_kvc, *this, getParentQWidget());
 
                 ContainerObserver *co = getContainerObserver();
                 if (co != NULL) {

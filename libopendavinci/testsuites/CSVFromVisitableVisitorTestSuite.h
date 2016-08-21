@@ -24,17 +24,16 @@
 #include <cstdlib>                      // for calloc
 #include <cstring>                      // for strcmp
 #include <iosfwd>                       // for stringstream, istream, etc
+#include <memory>
 #include <string>                       // for string
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
-#include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
-#include "opendavinci/odcore/base/Hash.h"             // for CharList, CRC32, etc
-#include "opendavinci/odcore/base/Serializable.h"     // for Serializable
-#include "opendavinci/odcore/base/SerializationFactory.h"  // for SerializationFactory
-#include "opendavinci/odcore/base/Serializer.h"       // for Serializer
+#include "opendavinci/odcore/serialization/Deserializer.h"     // for Deserializer
+#include "opendavinci/odcore/serialization/Serializable.h"     // for Serializable
+#include "opendavinci/odcore/serialization/SerializationFactory.h"  // for SerializationFactory
+#include "opendavinci/odcore/serialization/Serializer.h"       // for Serializer
 #include "opendavinci/odcore/base/Visitable.h"        // for Visitable
 #include "opendavinci/odcore/base/Visitor.h"          // for Visitor
 #include "opendavinci/odcore/reflection/CSVFromVisitableVisitor.h"
@@ -44,6 +43,7 @@ using namespace std;
 using namespace odcore;
 using namespace odcore::base;
 using namespace odcore::reflection;
+using namespace odcore::serialization;
 
 class MyVisitable : public Serializable, public Visitable {
     public:
@@ -75,50 +75,50 @@ class MyVisitable : public Serializable, public Visitable {
 
         virtual ostream& operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();
-		
-			std::shared_ptr<Serializer> s = sf.getSerializer(out);
-		
-			s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'1', NullType> > > > >::RESULT,
-					m_att1);
+        
+            std::shared_ptr<Serializer> s = sf.getSerializer(out);
+        
+            s->write(1,
+                    m_att1);
 
-			s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'2', NullType> > > > >::RESULT,
-					m_att2);
+            s->write(2,
+                    m_att2);
 
-			s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'3', NullType> > > > >::RESULT,
-					m_att3);
+            s->write(3,
+                    m_att3);
 
-			s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'4', NullType> > > > >::RESULT,
-					m_att4);
+            s->write(4,
+                    m_att4);
 
-			return out;
+            return out;
         }
 
         virtual istream& operator>>(istream &in) {
             SerializationFactory& sf=SerializationFactory::getInstance();
-		
-			std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
-		
-			d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'1', NullType> > > > >::RESULT,
-					m_att1);
+        
+            std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+        
+            d->read(1,
+                    m_att1);
 
-			d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'2', NullType> > > > >::RESULT,
-					m_att2);
+            d->read(2,
+                    m_att2);
 
-			d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'3', NullType> > > > >::RESULT,
-					m_att3);
+            d->read(3,
+                    m_att3);
 
-			d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'4', NullType> > > > >::RESULT,
-					m_att4);
+            d->read(4,
+                    m_att4);
 
-			return in;
+            return in;
         }
 
         virtual void accept(odcore::base::Visitor &v) {
-            v.beginVisit();
-            v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'1', NullType> > > > >::RESULT, 1, "MyVisitable::att1", "att1", m_att1);
-            v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'2', NullType> > > > >::RESULT, 2, "MyVisitable::att2", "att2", m_att2);
-            v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'3', NullType> > > > >::RESULT, 3, "MyVisitable::att3", "att3", m_att3);
-            v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'4', NullType> > > > >::RESULT, 4, "MyVisitable::att4", "att4", m_att4);
+            v.beginVisit(1, "MyVisitable", "MyVisitable");
+            v.visit(1, "MyVisitable::att1", "att1", m_att1);
+            v.visit(2, "MyVisitable::att2", "att2", m_att2);
+            v.visit(3, "MyVisitable::att3", "att3", m_att3);
+            v.visit(4, "MyVisitable::att4", "att4", m_att4);
             v.endVisit();
         }
 

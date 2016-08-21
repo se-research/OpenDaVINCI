@@ -18,14 +18,13 @@
  */
 
 #include <istream>
+#include <memory>
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendavinci/odcore/data/SerializableData.h"
 #include "opendlv/data/situation/PointID.h"
 #include "opendlv/data/situation/SituationVisitor.h"
@@ -143,41 +142,33 @@ namespace opendlv {
             }
 
             ostream& PointID::operator<<(ostream &out) const {
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Serializer> s = sf.getSerializer(out);
+                std::shared_ptr<odcore::serialization::Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('l', 'a', 'y', 'e', 'r') >::RESULT,
-                        getLayerID());
+                s->write(1, getLayerID());
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('r', 'o', 'a', 'd') >::RESULT,
-                        getRoadID());
+                s->write(2, getRoadID());
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('l', 'a', 'n', 'e') >::RESULT,
-                        getLaneID());
+                s->write(3, getLaneID());
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('p', 'o', 'i', 'n', 't') >::RESULT,
-                        getPointID());
+                s->write(4, getPointID());
 
                 return out;
             }
 
             istream& PointID::operator>>(istream &in) {
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+                std::shared_ptr<odcore::serialization::Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('l', 'a', 'y', 'e', 'r') >::RESULT,
-                       m_layerID);
+                d->read(1, m_layerID);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('r', 'o', 'a', 'd') >::RESULT,
-                       m_roadID);
+                d->read(2, m_roadID);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('l', 'a', 'n', 'e') >::RESULT,
-                       m_laneID);
+                d->read(3, m_laneID);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('p', 'o', 'i', 'n', 't') >::RESULT,
-                       m_pointID);
+                d->read(4, m_pointID);
 
                 return in;
             }
