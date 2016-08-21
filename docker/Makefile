@@ -21,12 +21,6 @@ BASE_IMAGE=seresearch/opendavinci-ubuntu-16.04
 TESTRUNNER_DISABLED=NO
 
 ###############################################################################
-# Directories.
-SOURCE_TREE_PATH=$(shell dirname $(shell pwd))
-BUILD_PATH_BASE=$(SOURCE_TREE_PATH)/docker/builds
-RUN_BUILD_AS=$(shell whoami)
-
-###############################################################################
 # Tools.
 DOCKER=$(shell which docker)
 CMAKE=$(shell which cmake)
@@ -40,10 +34,18 @@ GIT_HAS_UNCOMMITTED_CHANGES=$(shell if [ "`git ls-files -m ..`" != "" ]; then ec
 BUILD_PATH=$(BUILD_PATH_BASE)/$(shell echo $(BASE_IMAGE) | cut -f2 -d"/")-$(GIT_CURRENT_BRANCH)
 
 ###############################################################################
+# Directories.
+SOURCE_TREE_PATH=$(shell dirname $(shell pwd))
+BUILD_PATH_BASE=$(SOURCE_TREE_PATH)/docker/builds
+RUN_BUILD_AS=$(shell whoami)
+PACKAGES_DIR=$(BUILD_PATH)
+
+###############################################################################
 # Docker settings.
 DOCKERFILE_BASEIMAGE=s%BASEIMAGE%$(BASE_IMAGE)%
-DOCKER_IMAGE_NAME=$(shell echo $(BASE_IMAGE) | cut -f2 -d"/")-$(GIT_HASH)
-DOCKER_NETWORK_NAME=nw_$(shell echo $(BASE_IMAGE) | cut -f2 -d"/")-$(GIT_HASH)
+DOCKER_IMAGE_NAME=$(shell echo $(BASE_IMAGE) | cut -f2 -d"/")
+DOCKER_IMAGE_NAME_WITH_GIT_HASH=$(DOCKER_IMAGE_NAME)-$(GIT_HASH)
+DOCKER_NETWORK_NAME=nw_$(DOCKER_IMAGE_NAME_WITH_GIT_HASH)
 DOCKER_IMAGE_NAME_WITH_GIT_COMMITS_IN_CURRENT_BRANCH=$(shell echo $(BASE_IMAGE) | cut -f2 -d"/")-$(GIT_HASH):$(GIT_COMMITS_IN_CURRENT_BRANCH)
 DOCKER_IMAGE_NAME_SHORT_NAME=$(BASE_IMAGE)-complete:latest
 
@@ -86,13 +88,13 @@ $(BUILD_PATH)/OpenDaVINCI.build/build.incremental:
 	$(DOCKER) network inspect $(DOCKER_NETWORK_NAME) || $(DOCKER) network create $(DOCKER_NETWORK_NAME)
 	$(DOCKER) network ls
 	$(DOCKER) run -ti --rm -v $(SOURCE_TREE_PATH):/opt/OpenDaVINCI.sources -v $(BUILD_PATH)/OpenDaVINCI.build:/opt/OpenDaVINCI.build -v $(BUILD_PATH)/opt/od4:/opt/od4 -v $(SOURCE_TREE_PATH)/docker/doBuild.sh:/opt/doBuild.sh -w /opt $(BASE_IMAGE) /opt/doBuild.sh $(RUN_BUILD_AS) $(TESTRUNNER_DISABLED)
-	$(DOCKER) network rm nw_$(DOCKER_IMAGE_NAME)
-	for i in $$(find $(BUILD_PATH)/OpenDaVINCI.build -type f -name "*deb" | grep -v CPack); do cp $$i $(BUILD_PATH)/OpenDaVINCI.deb; done
+	$(DOCKER) network rm $(DOCKER_NETWORK_NAME)
 	touch $(BUILD_PATH)/OpenDaVINCI.build/build.incremental
 
 # Dependency to allow incremental builds.
 buildIncremental: $(BUILD_PATH)/OpenDaVINCI.build/build.incremental
 	$(DOCKER) run -ti --rm -v $(SOURCE_TREE_PATH):/opt/OpenDaVINCI.sources -v $(BUILD_PATH)/OpenDaVINCI.build:/opt/OpenDaVINCI.build -v $(BUILD_PATH)/opt/od4:/opt/od4 -v $(SOURCE_TREE_PATH)/docker/doBuild.sh:/opt/doBuild.sh -w /opt $(BASE_IMAGE) /opt/doBuild.sh $(RUN_BUILD_AS) TESTRUNNER_DISABLED=YES INCREMENTAL
+	mkdir -p $(PACKAGES_DIR)/$(DOCKER_IMAGE_NAME) && for i in $$(find $(BUILD_PATH)/OpenDaVINCI.build -type f -name "*deb" | grep -v CPack); do cp $$i $(PACKAGES_DIR)/$(DOCKER_IMAGE_NAME); done
 
 ###############################################################################
 # This target creates a new Docker image based on the selected Docker image using the freshly built binaries.
