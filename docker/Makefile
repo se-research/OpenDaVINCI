@@ -82,10 +82,12 @@ $(BUILD_PATH)/OpenDaVINCI.build/build.incremental:
 	$(CMAKE) -E make_directory $(BUILD_PATH)
 	$(CMAKE) -E make_directory $(BUILD_PATH)/opt/od4
 	$(CMAKE) -E make_directory $(BUILD_PATH)/OpenDaVINCI.build
+	$(CMAKE) -E make_directory $(BUILD_PATH)/OpenDaVINCI.deb
 	$(DOCKER) network inspect $(DOCKER_NETWORK_NAME) || $(DOCKER) network create $(DOCKER_NETWORK_NAME)
 	$(DOCKER) network ls
 	$(DOCKER) run -ti --rm -v $(SOURCE_TREE_PATH):/opt/OpenDaVINCI.sources -v $(BUILD_PATH)/OpenDaVINCI.build:/opt/OpenDaVINCI.build -v $(BUILD_PATH)/opt/od4:/opt/od4 -v $(SOURCE_TREE_PATH)/docker/doBuild.sh:/opt/doBuild.sh -w /opt $(BASE_IMAGE) /opt/doBuild.sh $(RUN_BUILD_AS) $(TESTRUNNER_DISABLED)
 	$(DOCKER) network rm nw_$(DOCKER_IMAGE_NAME)
+	for i in $$(find $(BUILD_PATH)/OpenDaVINCI.build -type f -name "*deb" | grep -v CPack); do cp $$i $(BUILD_PATH)/OpenDaVINCI.deb; done
 	touch $(BUILD_PATH)/OpenDaVINCI.build/build.incremental
 
 # Dependency to allow incremental builds.
