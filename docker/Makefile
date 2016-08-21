@@ -76,8 +76,7 @@ removeExistingImagesForBaseImageFromDocker:
 	$(DOCKER) rmi -f `$(DOCKER) images | grep $(BASE_IMAGE)- | tr -s " " ";" | cut -f3 -d";"` || exit 0
 
 ###############################################################################
-# This target uses a Docker container to build the OpenDaVINCI source tree using the selected Docker image.
-buildComplete:
+define compile
 	$(CMAKE) -E make_directory $(BUILD_PATH)
 	$(CMAKE) -E make_directory $(BUILD_PATH)/opt/od4
 	$(CMAKE) -E make_directory $(BUILD_PATH)/OpenDaVINCI.build
@@ -87,10 +86,16 @@ buildComplete:
 	$(DOCKER) run -ti --rm -v $(SOURCE_TREE_PATH):/opt/OpenDaVINCI.sources -v $(BUILD_PATH)/OpenDaVINCI.build:/opt/OpenDaVINCI.build -v $(BUILD_PATH)/opt/od4:/opt/od4 -v $(SOURCE_TREE_PATH)/docker/doBuild.sh:/opt/doBuild.sh -w /opt $(BASE_IMAGE) /opt/doBuild.sh $(RUN_BUILD_AS) $(TESTRUNNER_DISABLED)
 	$(DOCKER) network rm $(DOCKER_NETWORK_NAME)
 	mkdir -p $(PACKAGES_DIR)/$(DOCKER_IMAGE_NAME) && for i in $$(find $(BUILD_PATH)/OpenDaVINCI.build -type f -name "*deb" | grep -v CPack); do cp $$i $(PACKAGES_DIR)/$(DOCKER_IMAGE_NAME); done
-
-# The complete build creates a stamp file.
-$(BUILD_PATH)/OpenDaVINCI.build/build.incremental: buildComplete
 	touch $(BUILD_PATH)/OpenDaVINCI.build/build.incremental
+endef
+
+###############################################################################
+# This target uses a Docker container to build the OpenDaVINCI source tree using the selected Docker image.
+$(BUILD_PATH)/OpenDaVINCI.build/build.incremental:
+	$(call compile)
+
+buildComplete:
+	$(call compile)
 
 # Dependency to allow incremental builds.
 buildIncremental: $(BUILD_PATH)/OpenDaVINCI.build/build.incremental

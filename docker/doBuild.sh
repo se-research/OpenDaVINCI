@@ -28,14 +28,19 @@ useradd $BUILD_AS -g $BUILD_AS
 cat <<EOF > /opt/OpenDaVINCI.build/build.sh
 #!/bin/bash
 cd /opt/OpenDaVINCI.build
+
 if [ "$BUILD_INCREMENTAL" == "" ]; then
     echo "[OpenDaVINCI Docker builder] Complete build."
     cmake -E remove_directory .
     cmake -D TESTRUNNER_DISABLED=$TESTRUNNER_DISABLED -D CMAKE_INSTALL_PREFIX=/opt/od4 /opt/OpenDaVINCI.sources
-    make -j1
 else
     echo "[OpenDaVINCI Docker builder] Incremental build."
+fi
+
+if [ "$TESTRUNNER_DISABLED" == "YES" ]; then
     make -j4
+else
+    make -j1
 fi
 EOF
 
