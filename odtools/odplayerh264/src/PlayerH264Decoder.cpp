@@ -21,6 +21,11 @@
 #include <iostream>
 #include <string>
 
+// Include files from FFMPEG to have h264 encoding.
+extern "C" {
+    #include <libavutil/mem.h>
+}
+
 #include <opendavinci/odcore/base/Lock.h>
 #include <opendavinci/odcore/base/Thread.h>
 #include <opendavinci/odcore/io/tcp/TCPFactory.h>
