@@ -20,7 +20,7 @@
 
 using namespace std;
 
-class Test10 : public odcore::data::SerializableData, public odcore::base::Visitable {
+class OPENDAVINCI_API Test10 : public odcore::data::SerializableData, public odcore::base::Visitable {
 	public:
 		Test10();
 

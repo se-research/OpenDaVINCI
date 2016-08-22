@@ -4,15 +4,11 @@
 OpenDaVINCI is a compact middleware OpenDaVINCI written entirely in standard C++.
 It runs on a variety of POSIX-compatible OS. And Windows.
 
-You will find its full documentation and getting started guides here: http://opendavinci.readthedocs.org/en/latest/
+You will find its full documentation and getting started guides here: http://docs.opendavinci.org
+
+You will find its API documentation here: http://api.opendavinci.org
 
 You will find different projects that are using OpenDaVINCI here: http://opendavinci.cse.chalmers.se/www/index.html
-
-**Updating OpenDaVINCI 2.4 to OpenDaVINCI 3.0**
-
-If you have installed OpenDaVINCI from pre-compiled packages, you will find instructions here: https://github.com/se-research/OpenDaVINCI/issues/43
-
-If you have installed OpenDaVINCI from sources, you will find instructions here: https://github.com/se-research/OpenDaVINCI/issues/44
 
 <a href="https://twitter.com/OpenDaVINCI" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @OpenDaVINCI on Twitter</a>
 
@@ -26,29 +22,28 @@ If you have installed OpenDaVINCI from sources, you will find instructions here:
 
 Architecture  | DragonFlyBSD 4.4 | FreeBSD 10.3 | NetBSD 7.0.1 | OpenBSD 5.9 | Mac OS X
 ------------- | ---------------- | ------------ | ------------ | ----------- | --------
-32bit         | - | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-FreeBSD10-32/badge/icon)](https://github.com/se-research/OpenDaVINCI) | - | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-OpenBSD59-32/badge/icon)](https://github.com/se-research/OpenDaVINCI) | -
-64bit         | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-DragonFlyBSD-4.4/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-FreeBSD10/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-NetBSD7.0/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-OpenBSD59/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-MacOSX/badge/icon)](https://github.com/se-research/OpenDaVINCI)
+32bit         | - | [![Build Status](http://opendavinci.cse.chalmers.se:8889/job/OpenDaVINCI-FreeBSD10-32/badge/icon)](https://github.com/se-research/OpenDaVINCI) | - | [![Build Status](http://opendavinci.cse.chalmers.se:8889/job/OpenDaVINCI-OpenBSD59-32/badge/icon)](https://github.com/se-research/OpenDaVINCI) | -
+64bit         | [![Build Status](http://opendavinci.cse.chalmers.se:8889/job/OpenDaVINCI-DragonFlyBSD-4.4/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8889/job/OpenDaVINCI-FreeBSD10/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8889/job/OpenDaVINCI-NetBSD7.0/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8889/job/OpenDaVINCI-OpenBSD59/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8889/job/OpenDaVINCI-MacOSX/badge/icon)](https://github.com/se-research/OpenDaVINCI)
 
 Architecture  | ArchLinux | CentOS 7 | Debian 8.5 | Elementary Freya
 ------------- | --------- | -------- | ---------- | ----------------
 32bit         | -         | -        | -          | -                
-64bit         | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-ArchLinux/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-CentOS7/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-Debian-8.5/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-ElementaryFreya/badge/icon)](https://github.com/se-research/OpenDaVINCI)
+64bit         | [![Build Status](http://opendavinci.cse.chalmers.se:8889/job/opendavinci-archlinux/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8889/job/OpenDaVINCI-CentOS7/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8889/job/opendavinci-debian-jessie/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8889/job/OpenDaVINCI-ElementaryFreya/badge/icon)](https://github.com/se-research/OpenDaVINCI)
 
 Architecture  | Ubuntu 14.04 | Ubuntu 15.04 | Ubuntu 15.10 | Ubuntu 16.04
 ------------- | ------------ | ------------ | ------------ | ------------
-32bit         | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-Ubuntu14.04-32/badge/icon)](https://github.com/se-research/OpenDaVINCI) | -            | -            | -
-64bit         | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-ElementaryFreya/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-Ubuntu14.04/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-Ubuntu15.04/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-Ubuntu15.10/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-Ubuntu16.04/badge/icon)](https://github.com/se-research/OpenDaVINCI)
+32bit         | [![Build Status](http://opendavinci.cse.chalmers.se:8889/job/OpenDaVINCI-Ubuntu14.04-32/badge/icon)](https://github.com/se-research/OpenDaVINCI) | -            | -            | -
+64bit         | [![Build Status](http://opendavinci.cse.chalmers.se:8889/job/opendavinci-ubuntu-14.04/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8889/job/opendavinci-ubuntu-15.04/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8889/job/opendavinci-ubuntu-15.10/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8889/job/opendavinci-ubuntu-16.04/badge/icon)](https://github.com/se-research/OpenDaVINCI)
 
 Architecture  | Fedora 24 | openSuSE 13.2 | openSuSE 42.1 | Scientific Linux 7
 ------------- | --------- | ------------- | ------------- | ------------------
 32bit         | -         | -             | -             | -  
-64bit         | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-Fedora24/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-openSuSE13.2/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-OpenSuSE42.1/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-ScientificLinux7/badge/icon)](https://github.com/se-research/OpenDaVINCI)
+64bit         | [![Build Status](http://opendavinci.cse.chalmers.se:8889/job/opendavinci-fedora-24/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8889/job/opendavinci-opensuse-13.2/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8889/job/opendavinci-opensuse-42.1/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8889/job/OpenDaVINCI-ScientificLinux7/badge/icon)](https://github.com/se-research/OpenDaVINCI)
 
 Architecture  | Windows 7 | Windows 8.1 | Windows 10
 ------------- | --------- | ----------- | ----------
-32bit         | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-Windows7/badge/icon)](https://github.com/se-research/OpenDaVINCI) | - | -
-64bit         | -         | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-Windows8.1/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8888/job/OpenDaVINCI-Windows10/badge/icon)](https://github.com/se-research/OpenDaVINCI)
-
+32bit         | [![Build Status](http://opendavinci.cse.chalmers.se:8889/job/OpenDaVINCI-Windows7/badge/icon)](https://github.com/se-research/OpenDaVINCI) | - | -
+64bit         | -         | [![Build Status](http://opendavinci.cse.chalmers.se:8889/job/OpenDaVINCI-Windows8.1/badge/icon)](https://github.com/se-research/OpenDaVINCI) | [![Build Status](http://opendavinci.cse.chalmers.se:8889/job/OpenDaVINCI-Windows10/badge/icon)](https://github.com/se-research/OpenDaVINCI)
 
 ## Using OpenDaVINCI in your Projects
 

@@ -29,8 +29,8 @@
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/io/conference/ContainerConference.h"
 #include "plugins/startstop/StartStopWidget.h"
-#include "automotivedata/generated/from/opendlv/proxy/ControlState.h"
-#include "automotivedata/generated/from/opendlv/proxy/ControlOverrideState.h"
+#include "odvdopendlv/generated/opendlv/proxy/ControlState.h"
+#include "odvdopendlv/generated/opendlv/proxy/ControlOverrideState.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }
 namespace odcore { namespace base { class KeyValueConfiguration; } }
@@ -92,9 +92,9 @@ namespace cockpit {
             StartStopWidget::~StartStopWidget() {}
 
             void StartStopWidget::nextContainer(Container &container) {
-                if (container.getDataType() == from::opendlv::proxy::ControlOverrideState::ID()) {
+                if (container.getDataType() == opendlv::proxy::ControlOverrideState::ID()) {
                     Lock l(m_startedMutex);
-                    from::opendlv::proxy::ControlOverrideState cos = container.getData<from::opendlv::proxy::ControlOverrideState>();
+                    opendlv::proxy::ControlOverrideState cos = container.getData<opendlv::proxy::ControlOverrideState>();
                     m_overrideActive = cos.getIsOverridden();
 
                     m_statusLabel->setText(m_overrideActive ? "manual override" : "");
@@ -121,7 +121,7 @@ namespace cockpit {
                 Lock l(m_startedMutex);
                 
                 if (m_started) {
-                    from::opendlv::proxy::ControlState cs(m_started);
+                    opendlv::proxy::ControlState cs(m_started);
                     Container c(cs);
                     m_conference.send(c);
                 }

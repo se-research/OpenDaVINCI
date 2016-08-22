@@ -9,17 +9,16 @@
 #include <sstream>
 #include <utility>
 
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
-
+#include <opendavinci/odcore/serialization/Deserializer.h>
+#include <opendavinci/odcore/serialization/SerializationFactory.h>
+#include <opendavinci/odcore/serialization/Serializer.h>
 
 #include "test6/generated/testpackage/Test6.h"
 
 namespace testpackage {
 		using namespace std;
 		using namespace odcore::base;
+		using namespace odcore::serialization;
 	
 	
 		Test6::Test6() :
@@ -195,20 +194,19 @@ namespace testpackage {
 		}
 	
 		void Test6::accept(odcore::base::Visitor &v) {
-			v.beginVisit();
-			v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'1', NullType> > > > > > > > > >  >::RESULT, 0, "Test6.attribute1", "attribute1", m_attribute1);
-			v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'2', NullType> > > > > > > > > >  >::RESULT, 0, "Test6.attribute2", "attribute2", m_attribute2);
-			v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'3', NullType> > > > > > > > > >  >::RESULT, 0, "Test6.attribute3", "attribute3", m_attribute3);
-			v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'4', NullType> > > > > > > > > >  >::RESULT, 0, "Test6.attribute4", "attribute4", m_attribute4);
-			v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'5', NullType> > > > > > > > > >  >::RESULT, 0, "Test6.attribute5", "attribute5", m_attribute5);
-			v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'6', NullType> > > > > > > > > >  >::RESULT, 0, "Test6.attribute6", "attribute6", m_attribute6);
-			v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'7', NullType> > > > > > > > > >  >::RESULT, 0, "Test6.attribute7", "attribute7", m_attribute7);
+			v.beginVisit(ID(), ShortName(), LongName());
+			v.visit(1, "Test6.attribute1", "attribute1", m_attribute1);
+			v.visit(2, "Test6.attribute2", "attribute2", m_attribute2);
+			v.visit(3, "Test6.attribute3", "attribute3", m_attribute3);
+			v.visit(4, "Test6.attribute4", "attribute4", m_attribute4);
+			v.visit(5, "Test6.attribute5", "attribute5", m_attribute5);
+			v.visit(6, "Test6.attribute6", "attribute6", m_attribute6);
+			v.visit(7, "Test6.attribute7", "attribute7", m_attribute7);
 			v.endVisit();
 		}
 	
 		const string Test6::toString() const {
 			stringstream s;
-	
 	
 			s << "Attribute1: " << getAttribute1() << " ";
 			s << "Attribute2: " << getAttribute2() << " ";
@@ -223,86 +221,73 @@ namespace testpackage {
 		}
 	
 		ostream& Test6::operator<<(ostream &out) const {
-	
 			SerializationFactory& sf = SerializationFactory::getInstance();
 	
 			std::shared_ptr<Serializer> s = sf.getSerializer(out);
 	
-			s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'1', NullType> > > > > > > > > >  >::RESULT,
+			s->write(1,
 					m_attribute1);
-			s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'2', NullType> > > > > > > > > >  >::RESULT,
+			s->write(2,
 					m_attribute2);
-			s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'3', NullType> > > > > > > > > >  >::RESULT,
+			s->write(3,
 					m_attribute3);
-			s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'4', NullType> > > > > > > > > >  >::RESULT,
+			s->write(4,
 					m_attribute4);
-			s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'5', NullType> > > > > > > > > >  >::RESULT,
+			s->write(5,
 					m_attribute5);
-			s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'6', NullType> > > > > > > > > >  >::RESULT,
+			s->write(6,
 					m_attribute6);
-			s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'7', NullType> > > > > > > > > >  >::RESULT,
+			s->write(7,
 					m_attribute7);
-			// Write number of elements in m_listOfMyStringList.
-			const uint32_t numberOfMyStringList = static_cast<uint32_t>(m_listOfMyStringList.size());
-			s->write(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > > >  >::RESULT,
-			        numberOfMyStringList);
-			
-			// Write actual elements into a stringstream.
-			std::stringstream sstrOfMyStringList;
-			for (uint32_t i = 0; i < numberOfMyStringList; i++) {
-			    sstrOfMyStringList << m_listOfMyStringList.at(i) << endl;
-			}
-			
-			// Write string of elements.
-			if (numberOfMyStringList > 0) {
-				s->write(CRC32 < CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
-				        sstrOfMyStringList.str());
+			// Store elements from m_listOfMyStringList into a string.
+			{
+				const uint32_t numberOfMyStringList = static_cast<uint32_t>(m_listOfMyStringList.size());
+				std::stringstream sstr_MyStringList;
+				{
+					for(uint32_t i = 0; i < numberOfMyStringList; i++) {
+						s->writeValue(sstr_MyStringList, m_listOfMyStringList.at(i));
+					}
+				}
+				const std::string str_sstr_MyStringList = sstr_MyStringList.str();
+				s->write(8, str_sstr_MyStringList);
 			}
 			return out;
 		}
 	
 		istream& Test6::operator>>(istream &in) {
-	
 			SerializationFactory& sf = SerializationFactory::getInstance();
 	
 			std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 	
-			d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'1', NullType> > > > > > > > > >  >::RESULT,
+			d->read(1,
 					m_attribute1);
-			d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'2', NullType> > > > > > > > > >  >::RESULT,
+			d->read(2,
 					m_attribute2);
-			d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'3', NullType> > > > > > > > > >  >::RESULT,
+			d->read(3,
 					m_attribute3);
-			d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'4', NullType> > > > > > > > > >  >::RESULT,
+			d->read(4,
 					m_attribute4);
-			d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'5', NullType> > > > > > > > > >  >::RESULT,
+			d->read(5,
 					m_attribute5);
-			d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'6', NullType> > > > > > > > > >  >::RESULT,
+			d->read(6,
 					m_attribute6);
-			d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'7', NullType> > > > > > > > > >  >::RESULT,
+			d->read(7,
 					m_attribute7);
-			// Clean up the existing list of MyStringList.
-			m_listOfMyStringList.clear();
-			
-			// Read number of elements in m_listOfMyStringList.
-			uint32_t numberOfMyStringList = 0;
-			d->read(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > > >  >::RESULT,
-			       numberOfMyStringList);
-			
-			if (numberOfMyStringList > 0) {
-			    // Read string of elements.
-			    string elements;
-				d->read(CRC32 < CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
-				   elements);
-			
-			    stringstream sstr(elements);
-			
-			    // Read actual elements from stringstream.
-			    for (uint32_t i = 0; i < numberOfMyStringList; i++) {
-			        std::string element;
-			        getline(sstr, element);
-			        m_listOfMyStringList.push_back(element);
-			    }
+			// Restore elements from a string into m_listOfMyStringList.
+			{
+				// Clean up the existing list of MyStringList.
+				m_listOfMyStringList.clear();
+				std::string str_MyStringList;
+				d->read(8, str_MyStringList);
+				if (str_MyStringList.size() > 0) {
+					std::stringstream sstr_str_MyStringList(str_MyStringList);
+					uint32_t length = str_MyStringList.size();
+					while (length > 0) {
+						std::string element;
+						length -= d->readValue(sstr_str_MyStringList, element);
+						m_listOfMyStringList.push_back(element);
+					}
+				}
 			}
 			return in;
 		}

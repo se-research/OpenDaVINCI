@@ -1,4 +1,4 @@
 message sub.structure.Test16Simple [ id = 16 ] {
-	double myData [default = 4.6];
-	int32 myValue [default = 1];
+	double myData [default = 4.6, id = 1];
+	int32 myValue [default = 1, id = 2];
 }

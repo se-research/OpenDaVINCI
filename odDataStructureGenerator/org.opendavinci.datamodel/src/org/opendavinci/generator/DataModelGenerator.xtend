@@ -226,9 +226,6 @@ class DataModelGenerator implements IGenerator {
 	«ENDIF»
 «ENDFOR»
 
-«IF msg != null && msg.superMessage != null && msg.superMessage.length > 0 /*In the case of a message extending another message, we include GeneratedHeaders_<Filename>.h that points to all headers generated from <Filename>.*/»
-	#include "«toplevelIncludeFolder»/GeneratedHeaders_«generatedHeadersFile + ".h"»"
-«ENDIF»
 «IF pdl != null && pdl.package != null && pdl.package.length > 0»
 	«IF msg.message.split("\\.").length > 1»
 	«generateNamespacesForHeader(msg, (pdl.package + "." + msg.message.substring(0, msg.message.lastIndexOf('.'))).toLowerCase().split("\\."), 0, enums)»
@@ -265,7 +262,7 @@ namespace «s.get(i)» {
 	def generateHeaderFileContentBody(Message msg, HashMap<String, EnumDescription> enums) '''
 using namespace std;
 
-class «msg.message.substring(msg.message.lastIndexOf('.') + 1) /* These lines generate the class structure and the superclass (i.e. the one from which this class is deriving or SerializableData as default. */» : «IF msg.superMessage != null && msg.superMessage.length > 0»public «msg.superMessage.replaceAll("\\.", "::")»«ELSE»public odcore::data::SerializableData, public odcore::base::Visitable«ENDIF» {
+class OPENDAVINCI_API «msg.message.substring(msg.message.lastIndexOf('.') + 1) /* These lines generate the class structure and SerializableData and Visitable as default. */» : public odcore::data::SerializableData, public odcore::base::Visitable {
 	«IF enums.size > 0 /*These lines generate the enum declarations.*/»
 	«generateHeaderFileEnum(msg, enums)»
 	«ENDIF»
@@ -601,19 +598,14 @@ class «msg.message.substring(msg.message.lastIndexOf('.') + 1) /* These lines g
 	«ENDIF»
 	«IF !hasGeneratedMacros && a.fixedarray != null && a.fixedarray.name != null && a.fixedarray.name.length > 0»
 #include <cstring>
-#include "opendavinci/odcore/opendavinci.h"
+#include <opendavinci/odcore/opendavinci.h>
 		«{hasGeneratedMacros = true; ""}»
 	«ENDIF»
 «ENDFOR»
 
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
-
-«IF msg.superMessage != null && msg.superMessage.length > 0 /* If this message is a derived one, we need to include the supermessage here. */»
-#include "«toplevelIncludeFolder»/«includeDirectoryPrefix + "/" + msg.superMessage.substring(0, msg.superMessage.lastIndexOf('.')).replaceAll("\\.", "/") + "/" + msg.superMessage.substring(msg.superMessage.lastIndexOf('.') + 1)».h"
-«ENDIF»
+#include <opendavinci/odcore/serialization/Deserializer.h>
+#include <opendavinci/odcore/serialization/SerializationFactory.h>
+#include <opendavinci/odcore/serialization/Serializer.h>
 
 «IF msg.message.split("\\.").length > 1 /* Here, we include our own header file. */»
 #include "«toplevelIncludeFolder»/«includeDirectoryPrefix + "/" + msg.message.substring(0, msg.message.lastIndexOf('.')).replaceAll("\\.", "/") + "/" + msg.message.substring(msg.message.lastIndexOf('.') + 1)».h"
@@ -651,13 +643,14 @@ namespace «s.get(i)» {
 	def generateImplementationFileContentBody(PackageDeclaration pdl, Message msg, HashMap<String, EnumDescription> enums) '''
 	using namespace std;
 	using namespace odcore::base;
+	using namespace odcore::serialization;
 
 	«FOR a : msg.attributes /* Here, we generate the const definitions. */»
 		«a.generateImplementationFileConstants(msg)»
 	«ENDFOR»
 
 	«msg.message.substring(msg.message.lastIndexOf('.') + 1)»::«msg.message.substring(msg.message.lastIndexOf('.') + 1) /* Here, we generate the default constructor. */»() :
-	    «IF msg.superMessage != null && msg.superMessage.length > 0»«msg.superMessage.replaceAll("\\.", "::")»()«ELSE»SerializableData(), Visitable()«ENDIF»
+	    SerializableData(), Visitable()
 		«FOR a : msg.attributes»
 			«a.generateAttributeInitialization»
 		«ENDFOR»
@@ -696,7 +689,7 @@ namespace «s.get(i)» {
 			«ENDIF»
 		«ENDFOR»
 	) :
-	    «IF msg.superMessage != null && msg.superMessage.length > 0»«msg.superMessage.replaceAll("\\.", "::")»()«ELSE»SerializableData(), Visitable()«ENDIF»
+	    SerializableData(), Visitable()
 		«var counterParameter = 0»
 		«FOR a : msg.attributes»
 			«IF a.enumdec == null»«a.generateAttributeInitializationWithParameters(counterParameter++)»«ENDIF»
@@ -716,7 +709,7 @@ namespace «s.get(i)» {
 	«ENDIF»
 
 	«/* Next, we generate the copy constructor. */ msg.message.substring(msg.message.lastIndexOf('.') + 1)»::«msg.message.substring(msg.message.lastIndexOf('.') + 1)»(const «msg.message.substring(msg.message.lastIndexOf('.') + 1)» &obj) :
-	    «IF msg.superMessage != null && msg.superMessage.length > 0»«msg.superMessage.replaceAll("\\.", "::")»(obj)«ELSE»SerializableData(), Visitable()«ENDIF»
+	    SerializableData(), Visitable()
 		«IF !msg.attributes.empty»
 		«FOR a : msg.attributes»
 			«a.generateAttributeCopyConstructor»
@@ -743,7 +736,6 @@ namespace «s.get(i)» {
 	}
 
 	«/* Here, we create the assignment operator. */ msg.message.substring(msg.message.lastIndexOf('.') + 1)»& «msg.message.substring(msg.message.lastIndexOf('.') + 1)»::operator=(const «msg.message.substring(msg.message.lastIndexOf('.') + 1)» &obj) {
-		«IF msg.superMessage != null && msg.superMessage.length > 0»«msg.superMessage.replaceAll("\\.", "::")»::operator=(obj);«ENDIF»
 		«FOR a : msg.attributes»
 			«a.generateAttributeAssignmentOperator»
 		«ENDFOR»
@@ -790,8 +782,7 @@ namespace «s.get(i)» {
 	«ENDIF»
 «ENDFOR»
 	void «/* Here, we generate the accept() method. */msg.message.substring(msg.message.lastIndexOf('.') + 1)»::accept(odcore::base::Visitor &v) {
-		v.beginVisit();
-		«IF msg.superMessage != null && msg.superMessage.length > 0»«msg.superMessage.replaceAll("\\.", "::")»::accept(v);«ENDIF»
+		v.beginVisit(ID(), ShortName(), LongName());
 		«FOR a : msg.attributes»
 			«a.generateVisitableAttribute(msg, enums)»
 		«ENDFOR»
@@ -801,8 +792,6 @@ namespace «s.get(i)» {
 	const string «/* Here, we generate the toString() method. */msg.message.substring(msg.message.lastIndexOf('.') + 1)»::toString() const {
 		stringstream s;
 
-		«IF msg.superMessage != null && msg.superMessage.length > 0»s << «msg.superMessage.replaceAll("\\.", "::")»::toString() << " ";«ENDIF»
-
 		«FOR a : msg.attributes»
 			«a.generateAttributeToStringStream(enums)»
 		«ENDFOR»
@@ -811,8 +800,6 @@ namespace «s.get(i)» {
 	}
 
 	ostream& «/* Here, we generate the serialization method. */ msg.message.substring(msg.message.lastIndexOf('.') + 1)»::operator<<(ostream &out) const {
-		«IF msg.superMessage != null && msg.superMessage.length > 0»«msg.superMessage.replaceAll("\\.", "::")»::operator<<(out);«ENDIF»
-
 		«IF !msg.attributes.empty»
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
@@ -826,8 +813,6 @@ namespace «s.get(i)» {
 	}
 
 	istream& «/* Here, we generate the deserialization method. */msg.message.substring(msg.message.lastIndexOf('.') + 1)»::operator>>(istream &in) {
-		«IF msg.superMessage != null && msg.superMessage.length > 0»«msg.superMessage.replaceAll("\\.", "::")»::operator>>(in);«ENDIF»
-
 		«IF !msg.attributes.empty»
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
@@ -918,66 +903,14 @@ namespace «s.get(i)» {
 	def generateVisitableAttribute(Attribute a, Message msg, HashMap<String, EnumDescription> enums) '''
 		«IF a.scalar != null»
 			«IF typeMap.containsKey(a.scalar.type)»
-				«var hasFourByteID = false»
-				«IF a.scalar.fourbyteid != null»
-					«{hasFourByteID = true; ""}»
-				«ENDIF»
-				«var hasId = false»
-				«IF a.scalar.id != null»
-					«{hasId = true; ""}»
-				«ENDIF»
-				«IF hasFourByteID && hasId»
-					v.visit(«a.scalar.fourbyteid», «a.scalar.id», "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", m_«a.scalar.name»);
-				«ENDIF»
-				«IF hasFourByteID && !hasId»
-					v.visit(«a.scalar.fourbyteid», 0, "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", m_«a.scalar.name»);
-				«ENDIF»
-				«IF !hasFourByteID && hasId»
-					v.visit(CRC32 < «generateCharList(a.scalar.name, 0)» >::RESULT, «a.scalar.id», "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", m_«a.scalar.name»);
-				«ENDIF»
-				«IF !hasFourByteID && !hasId»
-					v.visit(CRC32 < «generateCharList(a.scalar.name, 0)» >::RESULT, 0, "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", m_«a.scalar.name»);
-				«ENDIF»
+				v.visit(«a.scalar.id», "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", m_«a.scalar.name»);
 			«ELSE»
-				«var hasFourByteID = false»
-				«IF a.scalar.fourbyteid != null»
-					«{hasFourByteID = true; ""}»
-				«ENDIF»
-				«var hasId = false»
-				«IF a.scalar.id != null»
-					«{hasId = true; ""}»
-				«ENDIF»
-				«IF hasFourByteID && hasId»
-					«IF enums.containsKey(a.scalar.type)»
-						int32_t int32t_«a.scalar.name» = m_«a.scalar.name»;
-						v.visit(«a.scalar.fourbyteid», «a.scalar.id», "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", int32t_«a.scalar.name»);
-					«ELSE»
-						v.visit(«a.scalar.fourbyteid», «a.scalar.id», "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", m_«a.scalar.name»);
-					«ENDIF»
-				«ENDIF»
-				«IF hasFourByteID && !hasId»
-					«IF enums.containsKey(a.scalar.type)»
-						int32_t int32t_«a.scalar.name» = m_«a.scalar.name»;
-						v.visit(«a.scalar.fourbyteid», 0, "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", int32t_«a.scalar.name»);
-					«ELSE»
-						v.visit(«a.scalar.fourbyteid», 0, "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", m_«a.scalar.name»);
-					«ENDIF»
-				«ENDIF»
-				«IF !hasFourByteID && hasId»
-					«IF enums.containsKey(a.scalar.type)»
-						int32_t int32t_«a.scalar.name» = m_«a.scalar.name»;
-						v.visit(CRC32 < «generateCharList(a.scalar.name, 0)» >::RESULT, «a.scalar.id», "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", int32t_«a.scalar.name»);
-					«ELSE»
-						v.visit(CRC32 < «generateCharList(a.scalar.name, 0)» >::RESULT, «a.scalar.id», "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", m_«a.scalar.name»);
-					«ENDIF»
-				«ENDIF»
-				«IF !hasFourByteID && !hasId»
-					«IF enums.containsKey(a.scalar.type)»
-						int32_t int32t_«a.scalar.name» = m_«a.scalar.name»;
-						v.visit(CRC32 < «generateCharList(a.scalar.name, 0)» >::RESULT, 0, "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", int32t_«a.scalar.name»);
-					«ELSE»
-						v.visit(CRC32 < «generateCharList(a.scalar.name, 0)» >::RESULT, 0, "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", m_«a.scalar.name»);
-					«ENDIF»
+				«IF enums.containsKey(a.scalar.type)»
+					int32_t int32t_«a.scalar.name» = m_«a.scalar.name»;
+					v.visit(«a.scalar.id», "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", int32t_«a.scalar.name»);
+					m_«a.scalar.name» = static_cast<«enums.get(a.scalar.type).m_enumNameIncludingMessageName.replaceAll("\\.", "::")»>(int32t_«a.scalar.name»);
+				«ELSE»
+					v.visit(«a.scalar.id», "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", m_«a.scalar.name»);
 				«ENDIF»
 			«ENDIF»
 		«ENDIF»
@@ -1158,283 +1091,156 @@ namespace «s.get(i)» {
 	
 	def generateAttributeSerialization(Attribute a, HashMap<String, EnumDescription> enums) '''
 		«IF a.scalar != null»
-			«IF a.scalar.fourbyteid != null»
-				«IF enums.containsKey(a.scalar.type)»
-				int32_t int32t_«a.scalar.name» = m_«a.scalar.name»;
-				s->write(«a.scalar.fourbyteid», int32t_«a.scalar.name»);
-				«ELSE»
-				s->write(«a.scalar.fourbyteid», m_«a.scalar.name»);
-				«ENDIF»
+			«IF enums.containsKey(a.scalar.type)»
+			int32_t int32t_«a.scalar.name» = m_«a.scalar.name»;
+			s->write(«a.scalar.id»,
+					int32t_«a.scalar.name»);
 			«ELSE»
-				«IF a.scalar.id != null»
-					«IF enums.containsKey(a.scalar.type)»
-					int32_t int32t_«a.scalar.name» = m_«a.scalar.name»;
-					s->write(«a.scalar.id»,
-							int32t_«a.scalar.name»);
-					«ELSE»
-					s->write(«a.scalar.id»,
-							m_«a.scalar.name»);
-					«ENDIF»
-				«ELSE»
-					«IF enums.containsKey(a.scalar.type)»
-					int32_t int32t_«a.scalar.name» = m_«a.scalar.name»;
-					s->write(CRC32 < «generateCharList(a.scalar.name, 0)» >::RESULT,
-							int32t_«a.scalar.name»);
-					«ELSE»
-					s->write(CRC32 < «generateCharList(a.scalar.name, 0)» >::RESULT,
-							m_«a.scalar.name»);
-					«ENDIF»
-				«ENDIF»
+			s->write(«a.scalar.id»,
+					m_«a.scalar.name»);
 			«ENDIF»
 		«ENDIF»
 		«IF a.list != null && a.list.modifier != null && a.list.modifier.length > 0 && a.list.modifier.equalsIgnoreCase("list")»
-		// Write number of elements in m_listOf«a.list.name.toFirstUpper».
-		const uint32_t numberOf«a.list.name.toFirstUpper» = static_cast<uint32_t>(m_listOf«a.list.name.toFirstUpper».size());
-		«IF a.list.fourbyteid != null»
-			s->write(«a.list.fourbyteid», numberOf«a.list.name.toFirstUpper»);
-		«ELSE»
-			«IF a.list.id != null»
-				s->write(«a.list.id», numberOf«a.list.name.toFirstUpper»);
-			«ELSE»
-				s->write(CRC32 < «generateCharList(new String("numberOf" + a.list.name.toFirstUpper), 0)» >::RESULT,
-				        numberOf«a.list.name.toFirstUpper»);
-			«ENDIF»
-		«ENDIF»
-		
-		// Write actual elements into a stringstream.
-		std::stringstream sstrOf«a.list.name.toFirstUpper»;
-		for (uint32_t i = 0; i < numberOf«a.list.name.toFirstUpper»; i++) {
-		    sstrOf«a.list.name.toFirstUpper» << m_listOf«a.list.name.toFirstUpper».at(i)«IF typeMap.containsKey(a.list.type) /* primitive types need to be separated by endl. */» << endl«ENDIF»;
-		}
-		
-		// Write string of elements.
-		if (numberOf«a.list.name.toFirstUpper» > 0) {
-			«IF a.list.fourbyteid != null»
-				s->write(«a.list.fourbyteid» + «((a.eContainer) as Message).attributes.size», sstrOf«a.list.name.toFirstUpper».str());
-			«ELSE»
-				«IF a.list.id != null»
-					s->write(«a.list.id» + «((a.eContainer) as Message).attributes.size»,
-					        sstrOf«a.list.name.toFirstUpper».str());
-				«ELSE»
-					s->write(CRC32 < «generateCharList(a.list.name.toFirstUpper, 0)» >::RESULT,
-					        sstrOf«a.list.name.toFirstUpper».str());
-				«ENDIF»
-			«ENDIF»
+		// Store elements from m_listOf«a.list.name.toFirstUpper» into a string.
+		{
+			const uint32_t numberOf«a.list.name.toFirstUpper» = static_cast<uint32_t>(m_listOf«a.list.name.toFirstUpper».size());
+			std::stringstream sstr_«a.list.name.toFirstUpper»;
+			{
+				for(uint32_t i = 0; i < numberOf«a.list.name.toFirstUpper»; i++) {
+					s->writeValue(sstr_«a.list.name.toFirstUpper», m_listOf«a.list.name.toFirstUpper».at(i));
+				}
+			}
+			const std::string str_sstr_«a.list.name.toFirstUpper» = sstr_«a.list.name.toFirstUpper».str();
+			s->write(«a.list.id», str_sstr_«a.list.name.toFirstUpper»);
 		}
 		«ENDIF»
 		«IF a.map != null && a.map.modifier != null && a.map.modifier.length > 0 && a.map.modifier.equalsIgnoreCase("map")»
 		{
-			// Write number of elements in m_mapOf«a.map.name.toFirstUpper».
-			const uint32_t numberOf«a.map.name.toFirstUpper» = static_cast<uint32_t>(m_mapOf«a.map.name.toFirstUpper».size());
-			«IF a.map.fourbyteid != null»
-				s->write(«a.map.fourbyteid», numberOf«a.map.name.toFirstUpper»);
-			«ELSE»
-				«IF a.map.id != null»
-					s->write(«a.map.id», numberOf«a.map.name.toFirstUpper»);
-				«ELSE»
-					s->write(CRC32 < «generateCharList(new String("numberOf" + a.map.name.toFirstUpper), 0)» >::RESULT,
-					        numberOf«a.map.name.toFirstUpper»);
-				«ENDIF»
-			«ENDIF»
+			std::stringstream sstr_«a.map.name.toFirstUpper»;
+			{
+				std::map<«IF typeMap.containsKey(a.map.primaryType)»«typeMap.get(a.map.primaryType)»«ELSE»«a.map.primaryType.replaceAll("\\.", "::")»«ENDIF», «IF typeMap.containsKey(a.map.secondaryType)»«typeMap.get(a.map.secondaryType)»«ELSE»«a.map.secondaryType.replaceAll("\\.", "::")»«ENDIF»>::const_iterator it = m_mapOf«a.map.name.toFirstUpper».begin();
+				while (it != m_mapOf«a.map.name.toFirstUpper».end()) {
+					// Write key/value into a joint string.
+					std::stringstream sstr_keyValueEntry;
+					{
+						std::shared_ptr<Serializer> keyValueSerializer = sf.getSerializer(sstr_keyValueEntry);
+						keyValueSerializer->write(1, it->first);  // Write key as field 1 from a "virtual" class.
+						keyValueSerializer->write(2, it->second); // Write value as field 2 from a "virtual" class.
+					}
 
-			// Write actual elements into a stringstream.
-			std::stringstream sstrOf«a.map.name.toFirstUpper»;
-			std::map<«IF typeMap.containsKey(a.map.primaryType)»«typeMap.get(a.map.primaryType)»«ELSE»«a.map.primaryType.replaceAll("\\.", "::")»«ENDIF», «IF typeMap.containsKey(a.map.secondaryType)»«typeMap.get(a.map.secondaryType)»«ELSE»«a.map.secondaryType.replaceAll("\\.", "::")»«ENDIF»>::const_iterator it = m_mapOf«a.map.name.toFirstUpper».begin();
-			while (it != m_mapOf«a.map.name.toFirstUpper».end()) {
-			    sstrOf«a.map.name.toFirstUpper» << it->first << "=" << it->second << endl;
-			    it++;
+					// Write string into super-stringstream.
+					const string str_sstr_keyValueEntry = sstr_keyValueEntry.str();
+					s->writeValue(sstr_«a.map.name.toFirstUpper», str_sstr_keyValueEntry);
+
+					// Process next entry.
+					it++;
+				}
 			}
-			
-			// Write string of elements.
-			if (numberOf«a.map.name.toFirstUpper» > 0) {
-				«IF a.map.fourbyteid != null»
-					s->write(«a.map.fourbyteid» + «((a.eContainer) as Message).attributes.size», sstrOf«a.map.name.toFirstUpper».str());
-				«ELSE»
-					«IF a.map.id != null»
-						s->write(«a.map.id» + «((a.eContainer) as Message).attributes.size»,
-								sstrOf«a.map.name.toFirstUpper».str());
-					«ELSE»
-						s->write(CRC32 < «generateCharList(a.map.name.toFirstUpper, 0)» >::RESULT,
-								sstrOf«a.map.name.toFirstUpper».str());
-					«ENDIF»
-				«ENDIF»
-			}
+			const std::string str_sstr_«a.map.name.toFirstUpper» = sstr_«a.map.name.toFirstUpper».str();
+			s->write(«a.map.id», str_sstr_«a.map.name.toFirstUpper»);
 		}
 		«ENDIF»
 		«IF a.fixedarray != null»
-			«IF a.fixedarray.fourbyteid != null»
-				s->write(«a.fixedarray.fourbyteid», m_«a.fixedarray.name», getSize_«a.fixedarray.name.toFirstUpper»() * (sizeof(«IF typeMap.containsKey(a.fixedarray.type)»«typeMap.get(a.fixedarray.type)»«ELSE»«a.fixedarray.type.replaceAll("\\.", "::")»«ENDIF»)/sizeof(char)));
-			«ELSE»
-				«IF a.fixedarray.id != null»
-					s->write(«a.fixedarray.id»,
-							m_«a.fixedarray.name», getSize_«a.fixedarray.name.toFirstUpper»() * (sizeof(«IF typeMap.containsKey(a.fixedarray.type)»«typeMap.get(a.fixedarray.type)»«ELSE»«a.fixedarray.type.replaceAll("\\.", "::")»«ENDIF»)/sizeof(char)));
-				«ELSE»
-					s->write(CRC32 < «generateCharList(a.fixedarray.name, 0)» >::RESULT,
-							m_«a.fixedarray.name», getSize_«a.fixedarray.name.toFirstUpper»() * (sizeof(«IF typeMap.containsKey(a.fixedarray.type)»«typeMap.get(a.fixedarray.type)»«ELSE»«a.fixedarray.type.replaceAll("\\.", "::")»«ENDIF»)/sizeof(char)));
-				«ENDIF»
-			«ENDIF»
+			// Store elements from m_«a.fixedarray.name» into a string.
+			{
+				std::stringstream sstr_«a.fixedarray.name.toFirstUpper»;
+				{
+					for(uint32_t i = 0; i < getSize_«a.fixedarray.name.toFirstUpper»(); i++) {
+						s->writeValue(sstr_«a.fixedarray.name.toFirstUpper», m_«a.fixedarray.name»[i]);
+					}
+				}
+				const std::string str_sstr_«a.fixedarray.name.toFirstUpper» = sstr_«a.fixedarray.name.toFirstUpper».str();
+				s->write(«a.fixedarray.id», str_sstr_«a.fixedarray.name.toFirstUpper»);
+			}
 		«ENDIF»
 	'''
 	
 	def generateAttributeDeserialization(Attribute a, HashMap<String, EnumDescription> enums) '''
 		«IF a.scalar != null»
-			«IF a.scalar.fourbyteid != null»
-				«IF enums.containsKey(a.scalar.type)»
-				int32_t int32t_«a.scalar.name» = 0;
-				d->read(«a.scalar.fourbyteid», int32t_«a.scalar.name»);
-				m_«a.scalar.name» = static_cast<«enums.get(a.scalar.type).m_enumNameIncludingMessageName.replaceAll("\\.", "::")»>(int32t_«a.scalar.name»);
-				«ELSE»
-				d->read(«a.scalar.fourbyteid», m_«a.scalar.name»);
-				«ENDIF»
+			«IF enums.containsKey(a.scalar.type)»
+			int32_t int32t_«a.scalar.name» = 0;
+			d->read(«a.scalar.id»,
+					int32t_«a.scalar.name»);
+			m_«a.scalar.name» = static_cast<«enums.get(a.scalar.type).m_enumNameIncludingMessageName.replaceAll("\\.", "::")»>(int32t_«a.scalar.name»);
 			«ELSE»
-				«IF a.scalar.id != null»
-					«IF enums.containsKey(a.scalar.type)»
-					int32_t int32t_«a.scalar.name» = 0;
-					d->read(«a.scalar.id»,
-							int32t_«a.scalar.name»);
-					m_«a.scalar.name» = static_cast<«enums.get(a.scalar.type).m_enumNameIncludingMessageName.replaceAll("\\.", "::")»>(int32t_«a.scalar.name»);
-					«ELSE»
-					d->read(«a.scalar.id»,
-							m_«a.scalar.name»);
-					«ENDIF»
-				«ELSE»
-					«IF enums.containsKey(a.scalar.type)»
-					int32_t int32t_«a.scalar.name» = 0;
-					d->read(CRC32 < «generateCharList(a.scalar.name, 0)» >::RESULT,
-							int32t_«a.scalar.name»);
-					m_«a.scalar.name» = static_cast<«enums.get(a.scalar.type).m_enumNameIncludingMessageName.replaceAll("\\.", "::")»>(int32t_«a.scalar.name»);
-					«ELSE»
-					d->read(CRC32 < «generateCharList(a.scalar.name, 0)» >::RESULT,
-							m_«a.scalar.name»);
-					«ENDIF»
-				«ENDIF»
+			d->read(«a.scalar.id»,
+					m_«a.scalar.name»);
 			«ENDIF»
 		«ENDIF»
 		«IF a.list != null && a.list.modifier != null && a.list.modifier.length > 0 && a.list.modifier.equalsIgnoreCase("list")»
-		// Clean up the existing list of «a.list.name.toFirstUpper».
-		m_listOf«a.list.name.toFirstUpper».clear();
-		
-		// Read number of elements in m_listOf«a.list.name.toFirstUpper».
-		uint32_t numberOf«a.list.name.toFirstUpper» = 0;
-		«IF a.list.fourbyteid != null»
-			d->read(«a.list.fourbyteid», numberOf«a.list.name.toFirstUpper»);
-		«ELSE»
-			«IF a.list.id != null»
-				d->read(«a.list.id»,
-				       numberOf«a.list.name.toFirstUpper»);
-			«ELSE»
-				d->read(CRC32 < «generateCharList(new String("numberOf" + a.list.name.toFirstUpper), 0)» >::RESULT,
-				       numberOf«a.list.name.toFirstUpper»);
-			«ENDIF»
-		«ENDIF»
-		
-		if (numberOf«a.list.name.toFirstUpper» > 0) {
-		    // Read string of elements.
-		    string elements;
-			«IF a.list.fourbyteid != null»
-				d->read(«a.list.fourbyteid» + «((a.eContainer) as Message).attributes.size», elements);
-			«ELSE»
-				«IF a.list.id != null»
-					d->read(«a.list.id» + «((a.eContainer) as Message).attributes.size»,
-					   elements);
-				«ELSE»
-					d->read(CRC32 < «generateCharList(a.list.name.toFirstUpper, 0)» >::RESULT,
-					   elements);
-				«ENDIF»
-			«ENDIF»
-		
-		    stringstream sstr(elements);
-		
-		    // Read actual elements from stringstream.
-		    for (uint32_t i = 0; i < numberOf«a.list.name.toFirstUpper»; i++) {
-		        «IF typeMap.containsKey(a.list.type)»«typeMap.get(a.list.type)»«ELSE»«a.list.type.replaceAll("\\.", "::")»«ENDIF» element;
-		        «IF a.list.type.equalsIgnoreCase("string")»getline(sstr, element);«ELSE»sstr >> element;«ENDIF»
-		        m_listOf«a.list.name.toFirstUpper».push_back(element);
-		    }
+		// Restore elements from a string into m_listOf«a.list.name.toFirstUpper».
+		{
+			// Clean up the existing list of «a.list.name.toFirstUpper».
+			m_listOf«a.list.name.toFirstUpper».clear();
+			std::string str_«a.list.name.toFirstUpper»;
+			d->read(«a.list.id», str_«a.list.name.toFirstUpper»);
+			if (str_«a.list.name.toFirstUpper».size() > 0) {
+				std::stringstream sstr_str_«a.list.name.toFirstUpper»(str_«a.list.name.toFirstUpper»);
+				uint32_t length = str_«a.list.name.toFirstUpper».size();
+				while (length > 0) {
+					«IF typeMap.containsKey(a.list.type)»«typeMap.get(a.list.type)»«ELSE»«a.list.type.replaceAll("\\.", "::")»«ENDIF» element;
+					length -= d->readValue(sstr_str_«a.list.name.toFirstUpper», element);
+					m_listOf«a.list.name.toFirstUpper».push_back(element);
+				}
+			}
 		}
 		«ENDIF»
 		«IF a.map != null && a.map.modifier != null && a.map.modifier.length > 0 && a.map.modifier.equalsIgnoreCase("map")»
-		// Clean up the existing map of «a.map.name.toFirstUpper».
-		m_mapOf«a.map.name.toFirstUpper».clear();
-		
-		// Read number of elements in m_mapOf«a.map.name.toFirstUpper».
-		uint32_t numberOf«a.map.name.toFirstUpper» = 0;
-		«IF a.map.fourbyteid != null»
-			d->read(«a.map.fourbyteid», numberOf«a.map.name.toFirstUpper»);
-		«ELSE»
-			«IF a.map.id != null»
-				d->read(«a.map.id», numberOf«a.map.name.toFirstUpper»);
-			«ELSE»
-				d->read(CRC32 < «generateCharList(new String("numberOf" + a.map.name.toFirstUpper), 0)» >::RESULT,
-					   numberOf«a.map.name.toFirstUpper»);
-			«ENDIF»
-		«ENDIF»
-		
-		if (numberOf«a.map.name.toFirstUpper» > 0) {
-		    // Read string of elements.
-		    string elements;
-			«IF a.map.fourbyteid != null»
-				d->read(«a.map.fourbyteid» + «((a.eContainer) as Message).attributes.size», elements);
-			«ELSE»
-				«IF a.map.id != null»
-					d->read(«a.map.id» + «((a.eContainer) as Message).attributes.size»,
-							elements);
-				«ELSE»
-					d->read(CRC32 < «generateCharList(a.map.name.toFirstUpper, 0)» >::RESULT,
-					       elements);
-				«ENDIF»
-			«ENDIF»
+		// Restore elements from a string into «a.map.name.toFirstUpper».
+		{
+			// Clean up the existing map of «a.map.name.toFirstUpper».
+			m_mapOf«a.map.name.toFirstUpper».clear();
 
-			stringstream sstr(elements);
+			std::string str_«a.map.name.toFirstUpper»;
+			d->read(«a.map.id», str_«a.map.name.toFirstUpper»);
+			if (str_«a.map.name.toFirstUpper».size() > 0) {
+				std::stringstream sstr_str_«a.map.name.toFirstUpper»(str_«a.map.name.toFirstUpper»);
 
-			while (!sstr.eof()) {
-			    string line;
-			    getline(sstr, line);
+				// str_«a.map.name.toFirstUpper» contains a sequence of strings containing pairs of key/values.
+				uint32_t length = str_«a.map.name.toFirstUpper».size();
+				while (length > 0) {
+					std::string str_sstr_keyValue;
+					length -= d->readValue(sstr_str_«a.map.name.toFirstUpper», str_sstr_keyValue);
 
-			    // Trying to find key-value-pair.
-			    size_t delimiter = line.find_first_of("=");
+					if (str_sstr_keyValue.size() > 0) {
+						// We have in str_sstr_keyValue a string at hand containing a pair key/value.
+						// Now, we restore the key and value therefrom.
+						std::stringstream sstr_keyValueEntry(str_sstr_keyValue);
 
-			    // Compute length of value-entry by allowing comments right after values.
-			    size_t valueLength = line.length();
-
-			    // Skip lines with invalid position pointers.
-			    if (! ( (delimiter > 0) && (valueLength > 0) ) ) {
-			        continue;
-			    }
-
-			    string key = line.substr(0, delimiter);
-			    string value = line.substr(delimiter + 1, valueLength);
-
-			    // Skip lines with invalid keys or values.
-			    if ( (key.length() == 0) || (value.length() == 0) ) {
-			        continue;
-			    }
-
-			    stringstream sstrKey(key);
-			    «IF typeMap.containsKey(a.map.primaryType)»«typeMap.get(a.map.primaryType)»«ELSE»«a.map.primaryType.replaceAll("\\.", "::")»«ENDIF» _key;
-		        «IF a.map.primaryType.equalsIgnoreCase("string")»getline(sstrKey, _key);«ELSE»sstrKey >> _key;«ENDIF»
-
-			    stringstream sstrValue(value);
-			    «IF typeMap.containsKey(a.map.secondaryType)»«typeMap.get(a.map.secondaryType)»«ELSE»«a.map.secondaryType.replaceAll("\\.", "::")»«ENDIF» _value;
-		        «IF a.map.secondaryType.equalsIgnoreCase("string")»getline(sstrValue, _value);«ELSE»sstrValue >> _value;«ENDIF»
-
-				// Store key/value pair.
-				putTo_MapOf«a.map.name.toFirstUpper»(_key, _value);
+						{
+							std::shared_ptr<Deserializer> keyValueDeserializer = sf.getDeserializer(sstr_keyValueEntry);
+							«IF typeMap.containsKey(a.map.primaryType)»«typeMap.get(a.map.primaryType)»«ELSE»«a.map.primaryType.replaceAll("\\.", "::")»«ENDIF» key;
+							«IF typeMap.containsKey(a.map.secondaryType)»«typeMap.get(a.map.secondaryType)»«ELSE»«a.map.secondaryType.replaceAll("\\.", "::")»«ENDIF» value;
+							keyValueDeserializer->read(1, key);
+							keyValueDeserializer->read(2, value);
+							// Store key/value pair in the map.
+							putTo_MapOf«a.map.name.toFirstUpper»(key, value);
+						}
+					}
+				}
 			}
 		}
 		«ENDIF»
 		«IF a.fixedarray != null»
-			«IF a.fixedarray.fourbyteid != null»
-				d->read(«a.fixedarray.fourbyteid», m_«a.fixedarray.name», getSize_«a.fixedarray.name.toFirstUpper»() * (sizeof(«IF typeMap.containsKey(a.fixedarray.type)»«typeMap.get(a.fixedarray.type)»«ELSE»«a.fixedarray.type.replaceAll("\\.", "::")»«ENDIF»)/sizeof(char)));
-			«ELSE»
-				«IF a.fixedarray.id != null»
-					d->read(«a.fixedarray.id»,
-					       m_«a.fixedarray.name», getSize_«a.fixedarray.name.toFirstUpper»() * (sizeof(«IF typeMap.containsKey(a.fixedarray.type)»«typeMap.get(a.fixedarray.type)»«ELSE»«a.fixedarray.type.replaceAll("\\.", "::")»«ENDIF»)/sizeof(char)));
-				«ELSE»
-					d->read(CRC32 < «generateCharList(a.fixedarray.name, 0)» >::RESULT,
-					       m_«a.fixedarray.name», getSize_«a.fixedarray.name.toFirstUpper»() * (sizeof(«IF typeMap.containsKey(a.fixedarray.type)»«typeMap.get(a.fixedarray.type)»«ELSE»«a.fixedarray.type.replaceAll("\\.", "::")»«ENDIF»)/sizeof(char)));
-				«ENDIF»
-			«ENDIF»
+			// Restore values for «a.fixedarray.name»
+			{
+				std::string str_«a.fixedarray.name.toFirstUpper»;
+				d->read(«a.fixedarray.id», str_«a.fixedarray.name.toFirstUpper»);
+
+				if (str_«a.fixedarray.name.toFirstUpper».size() > 0) {
+					std::stringstream sstr_str_«a.fixedarray.name.toFirstUpper»(str_«a.fixedarray.name.toFirstUpper»);
+					uint32_t length = str_«a.fixedarray.name.toFirstUpper».size();
+					uint32_t elementCounter = 0;
+					while (length > 0) {
+						«IF typeMap.containsKey(a.fixedarray.type)»«typeMap.get(a.fixedarray.type)»«ELSE»«a.fixedarray.type.replaceAll("\\.", "::")»«ENDIF» element;
+						length -= d->readValue(sstr_str_«a.fixedarray.name.toFirstUpper», element);
+						if (elementCounter < getSize_«a.fixedarray.name.toFirstUpper»()) {
+							m_«a.fixedarray.name»[elementCounter] = element;
+						}
+						elementCounter++;
+					}
+				}
+			}
 		«ENDIF»
 	'''
 
@@ -1462,8 +1268,8 @@ namespace «s.get(i)» {
 #include <string>
 #include <vector>
 
-#include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/strings/StringToolbox.h"
+#include <opendavinci/odcore/opendavinci.h>
+#include <opendavinci/odcore/strings/StringToolbox.h>
 
 #include "«toplevelIncludeFolder»/GeneratedHeaders_«generatedHeadersFile + ".h"»"
 «IF msg.message.split("\\.").length > 1 /* Here, we include our own header file. */»
@@ -1476,7 +1282,7 @@ namespace «s.get(i)» {
 	«IF a.scalar != null»
 		«IF !typeMap.containsKey(a.scalar.type) && !enums.containsKey(a.scalar.type)»
 			«IF a.scalar.type.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
-				#include "«IF a.scalar.type.contains("odcore::")»opendavinci/«ENDIF»«a.scalar.type.replaceAll("::", "/")».h"
+				#include <«IF a.scalar.type.contains("odcore::")»opendavinci/«ENDIF»«a.scalar.type.replaceAll("::", "/")».h>
 			«ELSE /* Use the types only as specified by the user. */»
 				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.scalar.type.replaceAll("\\.", "/")».h"
 			«ENDIF»
@@ -1485,7 +1291,7 @@ namespace «s.get(i)» {
 	«IF a.list != null && a.list.modifier != null && a.list.modifier.length > 0 && a.list.modifier.equalsIgnoreCase("list")»
 		«IF !typeMap.containsKey(a.list.type) && !enums.containsKey(a.list.type)»
 			«IF a.list.type.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
-				#include "«IF a.list.type.contains("odcore::")»opendavinci/«ENDIF»«a.list.type.replaceAll("::", "/")».h"
+				#include <«IF a.list.type.contains("odcore::")»opendavinci/«ENDIF»«a.list.type.replaceAll("::", "/")».h>
 			«ELSE /* Use the types only as specified by the user. */»
 				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.list.type.replaceAll("\\.", "/")».h"
 			«ENDIF»
@@ -1494,14 +1300,14 @@ namespace «s.get(i)» {
 	«IF a.map != null && a.map.modifier != null && a.map.modifier.length > 0 && a.map.modifier.equalsIgnoreCase("map")»
 		«IF !typeMap.containsKey(a.map.primaryType) && !enums.containsKey(a.map.primaryType)»
 			«IF a.map.primaryType.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
-				#include "«IF a.map.primaryType.contains("odcore::")»opendavinci/«ENDIF»«a.map.primaryType.replaceAll("::", "/")».h"
+				#include <«IF a.map.primaryType.contains("odcore::")»opendavinci/«ENDIF»«a.map.primaryType.replaceAll("::", "/")».h>
 			«ELSE /* Use the types only as specified by the user. */»
 				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.map.primaryType.replaceAll("\\.", "/")».h"
 			«ENDIF»
 		«ENDIF»
 		«IF !typeMap.containsKey(a.map.secondaryType) && !enums.containsKey(a.map.secondaryType)»
 			«IF a.map.secondaryType.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
-				#include "«IF a.map.secondaryType.contains("odcore::")»opendavinci/«ENDIF»«a.map.secondaryType.replaceAll("::", "/")».h"
+				#include <«IF a.map.secondaryType.contains("odcore::")»opendavinci/«ENDIF»«a.map.secondaryType.replaceAll("::", "/")».h>
 			«ELSE /* Use the types only as specified by the user. */»
 				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.map.secondaryType.replaceAll("\\.", "/")».h"
 			«ENDIF»
@@ -1510,7 +1316,7 @@ namespace «s.get(i)» {
 	«IF a.fixedarray != null»
 		«IF !typeMap.containsKey(a.fixedarray.type) && !enums.containsKey(a.fixedarray.type)»
 			«IF a.fixedarray.type.contains("::") /* The type of this attribute is of type ExternalClass and thus, we have to include an external header file. */»
-				#include "«IF a.fixedarray.type.contains("odcore::")»opendavinci/«ENDIF»«a.fixedarray.type.replaceAll("::", "/")».h"
+				#include <«IF a.fixedarray.type.contains("odcore::")»opendavinci/«ENDIF»«a.fixedarray.type.replaceAll("::", "/")».h>
 			«ELSE /* Use the types only as specified by the user. */»
 				#include "«toplevelIncludeFolder»/generated/«IF pdl != null && pdl.package != null && pdl.package.length > 0»«pdl.package.replaceAll('.', '/')»/«ENDIF»«a.fixedarray.type.replaceAll("\\.", "/")».h"
 			«ENDIF»

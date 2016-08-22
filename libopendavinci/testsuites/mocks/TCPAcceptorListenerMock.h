@@ -20,9 +20,10 @@
 #ifndef MOCKS__TCPACCEPTORLISTENERMOCK_H
 #define MOCKS__TCPACCEPTORLISTENERMOCK_H
 
+#include <memory>
+
 #include "FunctionCallWaiter.h"
 
-#include <memory>
 #include "opendavinci/odcore/io/tcp/TCPAcceptorListener.h"
 #include "opendavinci/odcore/io/tcp/TCPConnection.h"
 

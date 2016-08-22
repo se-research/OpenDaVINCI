@@ -6,16 +6,15 @@
 
 #include <memory>
 
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
-
+#include <opendavinci/odcore/serialization/Deserializer.h>
+#include <opendavinci/odcore/serialization/SerializationFactory.h>
+#include <opendavinci/odcore/serialization/Serializer.h>
 
 #include "test2/generated/Test2b.h"
 
 	using namespace std;
 	using namespace odcore::base;
+	using namespace odcore::serialization;
 
 
 	Test2b::Test2b() :
@@ -39,7 +38,7 @@
 	}
 
 	int32_t Test2b::ID() {
-		return 2;
+		return 3;
 	}
 
 	const string Test2b::ShortName() {
@@ -64,7 +63,7 @@
 
 
 	void Test2b::accept(odcore::base::Visitor &v) {
-		v.beginVisit();
+		v.beginVisit(ID(), ShortName(), LongName());
 		v.endVisit();
 	}
 
@@ -72,16 +71,13 @@
 		stringstream s;
 
 
-
 		return s.str();
 	}
 
 	ostream& Test2b::operator<<(ostream &out) const {
-
 		return out;
 	}
 
 	istream& Test2b::operator>>(istream &in) {
-
 		return in;
 	}

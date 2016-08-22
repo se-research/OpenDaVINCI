@@ -17,13 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <iostream>
 #include <sstream>
-
 #include <memory>
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendavinci/odcore/data/TimeStamp.h"
 #include "opendavinci/odcore/wrapper/Time.h"
 #include "opendavinci/odcore/wrapper/TimeFactory.h"
@@ -32,7 +32,8 @@ namespace odcore {
     namespace data {
 
         using namespace std;
-        using namespace base;
+        using namespace odcore::base;
+        using namespace odcore::serialization;
 
         TimeStamp::TimeStamp() :
             m_seconds(0),
@@ -425,17 +426,9 @@ namespace odcore {
         }
 
         void TimeStamp::accept(Visitor &v) {
-            v.beginVisit();
-            v.visit(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('s', 'e', 'c') >::RESULT,
-                    1,
-                    "TimeStamp.seconds",
-                    "seconds",
-                    m_seconds);
-            v.visit(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('m', 'i', 'c') >::RESULT,
-                    2,
-                    "TimeStamp.microseconds",
-                    "microseconds",
-                    m_microseconds);
+            v.beginVisit(ID(), ShortName(), LongName());
+            v.visit(1, "TimeStamp.seconds", "seconds", m_seconds);
+            v.visit(2, "TimeStamp.microseconds", "microseconds", m_microseconds);
             v.endVisit();
         }
 
@@ -444,11 +437,9 @@ namespace odcore {
 
             std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
-            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('s', 'e', 'c') >::RESULT,
-                    m_seconds);
+            s->write(1, m_seconds);
 
-            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('m', 'i', 'c') >::RESULT,
-                    m_microseconds);
+            s->write(2, m_microseconds);
 
             return out;
         }
@@ -458,11 +449,9 @@ namespace odcore {
 
             std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
-            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('s', 'e', 'c') >::RESULT,
-                   m_seconds);
+            d->read(1, m_seconds);
 
-            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('m', 'i', 'c') >::RESULT,
-                   m_microseconds);
+            d->read(2, m_microseconds);
 
             return in;
         }

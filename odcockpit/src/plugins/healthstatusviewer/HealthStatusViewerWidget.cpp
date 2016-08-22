@@ -32,7 +32,7 @@
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/data/TimeStamp.h"
 #include "plugins/healthstatusviewer/HealthStatusViewerWidget.h"
-#include "automotivedata/generated/from/opendlv/system/diagnostics/HealthStatus.h"
+#include "odvdopendlv/generated/opendlv/system/diagnostics/HealthStatus.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }
 
@@ -79,12 +79,12 @@ namespace cockpit {
 
             void HealthStatusViewerWidget::nextContainer(Container &container) {
                 Lock l(m_healthStatusViewMutex);
-                if (container.getDataType() == from::opendlv::system::diagnostics::HealthStatus::ID()) {
+                if (container.getDataType() == opendlv::system::diagnostics::HealthStatus::ID()) {
                     m_healthStatusView->setEnabled(false);
                     m_healthStatusView->setSortingEnabled(false);
                     m_healthStatusView->clear();
 
-                    from::opendlv::system::diagnostics::HealthStatus hs = container.getData<from::opendlv::system::diagnostics::HealthStatus>();
+                    opendlv::system::diagnostics::HealthStatus hs = container.getData<opendlv::system::diagnostics::HealthStatus>();
 
                     // Update widget.
                     auto pairOfIterators = hs.iteratorPair_MapOfStatus();

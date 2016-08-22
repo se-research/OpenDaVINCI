@@ -24,10 +24,12 @@
 
 #include <sstream>
 
+#include "opendavinci/odcore/data/Container.h"
 #include "opendlv/data/environment/Point3.h"
 #include "opendlv/data/environment/EgoState.h"
 
 using namespace std;
+using namespace odcore::data;
 using namespace opendlv::data;
 using namespace opendlv::data::environment;
 using namespace opendlv::data::environment;
@@ -49,6 +51,28 @@ class EgoStateTest : public CxxTest::TestSuite {
             EgoState es2;
             s >> es2;
 
+            TS_ASSERT(es.toString() == es2.toString());
+        }
+
+        void testEgoStateContainer() {
+            Point3 position(1, 2, 3);
+            Point3 rotation(4, 5, 6);
+            Point3 velocity(7, 8, 9);
+            Point3 acceleration(10, 11, 12);
+
+            EgoState es(position, rotation, velocity, acceleration);
+
+            Container c(es);
+
+            stringstream s;
+            s << c;
+            s.flush();
+
+            Container c2;
+            s >> c2;
+            TS_ASSERT(c2.getDataType() == EgoState::ID());
+
+            EgoState es2 = c2.getData<EgoState>();
             TS_ASSERT(es.toString() == es2.toString());
         }
 };

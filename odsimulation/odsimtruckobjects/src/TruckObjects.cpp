@@ -28,8 +28,8 @@
 #include "opendlv/data/environment/EgoState.h"
 #include "opendlv/vehiclecontext/model/IRUS.h"
 #include "automotivedata/generated/automotive/miniature/SensorBoardData.h"
-#include "automotivedata/generated/from/opendlv/perception/Object.h"
-#include "automotivedata/generated/from/opendlv/model/Direction.h"
+#include "odvdopendlv/generated/opendlv/perception/Object.h"
+#include "odvdopendlv/generated/opendlv/model/Direction.h"
 
 namespace odcore { namespace base { class KeyValueDataStore; } }
 
@@ -76,8 +76,8 @@ namespace gcdc16 {
                     automotive::miniature::SensorBoardData sbd = it->getData<automotive::miniature::SensorBoardData>();
                     const double d = sbd.getValueForKey_MapOfDistances(0);
                     if (d > 0) {
-                        from::opendlv::model::Direction dir(-4.0 * cartesian::Constants::DEG2RAD, 0);
-                        from::opendlv::perception::Object obj;
+                        opendlv::model::Direction dir(-4.0 * cartesian::Constants::DEG2RAD, 0);
+                        opendlv::perception::Object obj;
                         obj.setDistance(d);
                         obj.setDirection(dir);
                         obj.setObjectId(2412);

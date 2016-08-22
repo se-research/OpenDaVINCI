@@ -23,7 +23,7 @@
 
 #include "opendavinci/odcore/base/module/AbstractCIDModule.h"
 #include "opendavinci/odcore/base/Lock.h"
-#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/serialization/Serializable.h"
 #include "opendavinci/odcore/base/Thread.h"
 #include "opendavinci/odcore/data/TimeStamp.h"
 #include "opendavinci/odcore/opendavinci.h"

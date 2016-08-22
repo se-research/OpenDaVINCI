@@ -17,14 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <memory>
 #include <sstream>
 #include <string>
 
-#include <memory>
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendlv/data/camera/ExtrinsicParameters.h"
 #include "opendlv/data/camera/ImageGrabberCalibration.h"
 #include "opendlv/data/camera/IntrinsicParameters.h"
@@ -71,29 +70,25 @@ namespace opendlv {
             }
 
             ostream& ImageGrabberCalibration::operator<<(ostream &out) const {
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Serializer> s = sf.getSerializer(out);
+                std::shared_ptr<odcore::serialization::Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('e', 'x', 't') >::RESULT,
-                        m_extrinsicParameters);
+                s->write(1, m_extrinsicParameters);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('i', 'n', 't') >::RESULT,
-                        m_intrinsicParameters);
+                s->write(2, m_intrinsicParameters);
 
                 return out;
             }
 
             istream& ImageGrabberCalibration::operator>>(istream &in) {
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+                std::shared_ptr<odcore::serialization::Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('e', 'x', 't') >::RESULT,
-                       m_extrinsicParameters);
+                d->read(1, m_extrinsicParameters);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('i', 'n', 't') >::RESULT,
-                       m_intrinsicParameters);
+                d->read(2, m_intrinsicParameters);
 
                 return in;
             }

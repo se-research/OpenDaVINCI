@@ -30,7 +30,7 @@
 #include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/data/TimeStamp.h"
 #include "opendavinci/odcore/io/conference/ContainerListener.h"
-#include "automotivedata/generated/from/opendlv/perception/Environment.h"
+#include "odvdopendlv/generated/opendlv/perception/Environment.h"
 
 class QPaintEvent;
 class QTimer;
@@ -99,7 +99,7 @@ class PointSensor;
                     double m_rotation;
 
                     odcore::base::Mutex m_objectsMutex;
-                    from::opendlv::perception::Environment m_environment;
+                    opendlv::perception::Environment m_environment;
             };
 
         }

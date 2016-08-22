@@ -17,17 +17,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <memory>
 #include <iosfwd>
 #include <string>
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/Serializable.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/Serializable.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendavinci/odcore/exceptions/Exceptions.h"
 #include "opendlv/data/scenario/IDVertex3.h"
 #include "opendlv/data/scenario/LaneModel.h"
@@ -130,13 +129,12 @@ namespace opendlv {
                 // Serializer super class.
                 LaneModel::operator<<(out);
 
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Serializer> s = sf.getSerializer(out);
+                std::shared_ptr<odcore::serialization::Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
                 uint32_t numberOfIdentifiableVertices = static_cast<uint32_t>(m_listOfIdentifiableVertices.size());
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('n', 'u', 'm', 'i', 'd', 'v', 's') >::RESULT,
-                        numberOfIdentifiableVertices);
+                s->write(1, numberOfIdentifiableVertices);
 
                 // Write identifiable vertices to stringstream.
                 stringstream sstr;
@@ -147,8 +145,7 @@ namespace opendlv {
 
                 // Write identifiable vertices.
                 if (numberOfIdentifiableVertices > 0) {
-                    s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('i', 'd', 'v', 's') >::RESULT,
-                            sstr.str());
+                    s->write(2, sstr.str());
                 }
 
                 return out;
@@ -158,22 +155,20 @@ namespace opendlv {
                 // Deserializer super class.
                 LaneModel::operator>>(in);
 
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+                std::shared_ptr<odcore::serialization::Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
                 // Clean up.
                 m_listOfIdentifiableVertices.clear();
 
                 uint32_t numberOfIdentifiableVertices = 0;
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('n', 'u', 'm', 'i', 'd', 'v', 's') >::RESULT,
-                       numberOfIdentifiableVertices);
+                d->read(1, numberOfIdentifiableVertices);
 
                 if (numberOfIdentifiableVertices > 0) {
                     string str;
                     // Read identifiable vertices into stringstream.
-                    d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('i', 'd', 'v', 's') >::RESULT,
-                           str);
+                    d->read(2, str);
 
                     stringstream sstr(str);
 

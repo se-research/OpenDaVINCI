@@ -546,8 +546,8 @@ namespace canmapping {
 	«ENDFOR»
 	
 	ostream& «className»::operator<<(ostream &out) const {
-		odcore::base::SerializationFactory& sf = odcore::base::SerializationFactory::getInstance();
-		std::shared_ptr<odcore::base::Serializer> s = sf.getSerializer(out);
+		odcore::serialization::SerializationFactory& sf = odcore::serialization::SerializationFactory::getInstance();
+		std::shared_ptr<odcore::serialization::Serializer> s = sf.getSerializer(out);
 
 		«IF mapping.mappings.size>0»
 		«var ArrayList<String> opOutBody=new ArrayList<String>»
@@ -567,8 +567,8 @@ namespace canmapping {
 	}
 	
 	istream& «className»::operator>>(istream &in) {
-		odcore::base::SerializationFactory& sf = odcore::base::SerializationFactory::getInstance();
-		std::shared_ptr<odcore::base::Deserializer> s = sf.getDeserializer(in);
+		odcore::serialization::SerializationFactory& sf = odcore::serialization::SerializationFactory::getInstance();
+		std::shared_ptr<odcore::serialization::Deserializer> s = sf.getDeserializer(in);
 		
 		«IF mapping.mappings.size>0»
 		uint32_t id;
@@ -614,7 +614,7 @@ namespace canmapping {
 	}
 
 	void «className»::accept(odcore::base::Visitor &v) {
-	v.beginVisit();
+	v.beginVisit(ID(), ShortName(), LongName());
 	«IF mapping.mappings.size==0»
 	(void)v;
 	«ELSE»
@@ -625,8 +625,7 @@ namespace canmapping {
 			capitalizedName=""
 			for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
 			
-			acceptBody+="v.visit(static_cast<uint32_t>("+mapping.mappings.get(i).signalIdentifier+"), "
-						+mapping.mappings.get(i).signalIdentifier+", \""
+			acceptBody+="v.visit(static_cast<uint32_t>("+mapping.mappings.get(i).signalIdentifier+"), \""
 						+mapping.mappings.get(i).cansignalname+"\", \""
 						+chunks.get(chunks.size-1)+"\", m_"
 						+capitalizedName.toFirstLower+");"
@@ -688,8 +687,8 @@ namespace canmapping {
 			///////// manipulating signal «currentSignalInMapping.cansignalname»
 			«IF CurrentCANSignal!=null»
 			found=extracted=false;
-			«var String rawVarName="raw"+varName»
-			double «rawVarName» = msg.getValueFromScalarField<double>(/*longid*/0,/*shortid*/«currentSignalInMapping.signalIdentifier», found, extracted);
+				«var String rawVarName="raw"+varName»
+			double «rawVarName» = msg.getValueFromScalarField<double>(«currentSignalInMapping.signalIdentifier», found, extracted);
 			
 			if(found && extracted) {
 
@@ -763,18 +762,9 @@ namespace canmapping {
 					{
 						bitLength = Integer.parseInt(CurrentCANSignal.m_startBit)-nextFieldStart;
 					}
-					
-					// the sign bit is ignored in the endianness adjustment-> this must be confirmed
-					var int signalLength_signed=signalLength;
-					if(CurrentCANSignal.m_signed.compareToIgnoreCase("signed")==0)
-						signalLength_signed=signalLength-1;
-					
-					// use the smaller of the two measurements
-					if(signalLength_signed < bitLength) 
-						bitLength=signalLength_signed;
-					
 				""}»
 				«var String transformedType = ""»
+
 				«{
 					if(signalLength <= 8)
 						transformedType="int8_t"
@@ -1027,7 +1017,7 @@ namespace canmapping {
 				«var int bitLength=signalLength»
 				«{
 					var int nextFieldStart=0;
-					if(canSignals.get(currentSignalInMapping.cansignalname).m_endian.compareTo("little")==0)
+					if(CurrentCANSignal.m_endian.compareTo("little")==0)
 					{
 						nextFieldStart=63;
 					}
@@ -1042,13 +1032,13 @@ namespace canmapping {
 							throwSignalNotFoundException(sig.cansignalname);
 							return -1;
 						}
-						if(RollingCANSignal.m_CANID==canSignals.get(currentSignalInMapping.cansignalname).m_CANID)// signals in the same CAN message
+						if(RollingCANSignal.m_CANID==CurrentCANSignal.m_CANID)// signals in the same CAN message
 						{
 							if(CurrentCANSignal.m_endian.compareToIgnoreCase("big")==0) // assumes all signals are big endian
 							{
 								// find the signals to the right-hand side in the bitfield, consider the closest to the current one 
 								// (i.e. the next signal in the payload going in the direction for which the bit number decreases)
-								if(Integer.parseInt(RollingCANSignal.m_startBit) < Integer.parseInt(canSignals.get(currentSignalInMapping.cansignalname).m_startBit)
+								if(Integer.parseInt(RollingCANSignal.m_startBit) < Integer.parseInt(CurrentCANSignal.m_startBit)
 									&& Integer.parseInt(RollingCANSignal.m_startBit) >= nextFieldStart)
 								{
 									closestFound=true;
@@ -1059,7 +1049,7 @@ namespace canmapping {
 							{
 								// find the signals to the left-hand side in the bitfield, consider the closest to the current one 
 								// (i.e. the next signal in the payload going in the direction for which the bit number decreases)
-								if(Integer.parseInt(RollingCANSignal.m_startBit) > Integer.parseInt(canSignals.get(currentSignalInMapping.cansignalname).m_startBit)
+								if(Integer.parseInt(RollingCANSignal.m_startBit) > Integer.parseInt(CurrentCANSignal.m_startBit)
 									&& Integer.parseInt(RollingCANSignal.m_startBit) <= nextFieldStart)
 								{
 									closestFound=true;
@@ -1070,7 +1060,7 @@ namespace canmapping {
 					}
 					if(closestFound)
 					{
-						bitLength = Integer.parseInt(canSignals.get(currentSignalInMapping.cansignalname).m_startBit)-nextFieldStart;
+						bitLength = Integer.parseInt(CurrentCANSignal.m_startBit)-nextFieldStart;
 					}
 					// use the smaller of the two measurements
 					if(signalLength < bitLength) bitLength=signalLength;
@@ -1199,7 +1189,7 @@ namespace canmapping {
 					else// if(actualLength <= 64)
 						transformedType="int64_t";
 					
-					if(canSignals.get(currentSignalInMapping.cansignalname).m_signed.compareToIgnoreCase("unsigned")==0)
+					if(CurrentCANSignal.m_signed.compareToIgnoreCase("unsigned")==0)
 						transformedType="u"+transformedType;
 					
 					""
@@ -1209,8 +1199,7 @@ namespace canmapping {
 
 				// Create a field for a generic message.
 				odcore::reflection::Field<double> *f = new odcore::reflection::Field<double>(«memberVarName»);
-				f->setLongFieldIdentifier(0); // The identifiers specified here must match with the ones defined in the .odvd file!
-				f->setShortFieldIdentifier(«currentSignalInMapping.signalIdentifier»); // The identifiers specified here must match with the ones defined in the .odvd file!
+				f->setFieldIdentifier(«currentSignalInMapping.signalIdentifier»); // The identifiers specified here must match with the ones defined in the .odvd file!
 				f->setLongFieldName("«CurrentCANSignal.m_FQDN»");
 				f->setShortFieldName("«{var String[] res; res=CurrentCANSignal.m_FQDN.split("\\."); res.get(res.size-1)}»");
 				f->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
@@ -1325,9 +1314,9 @@ Signal "«signalName»" could not be found.
 #include <opendavinci/odcore/reflection/Message.h>
 #include <opendavinci/odcore/reflection/MessageToVisitableVisitor.h>
 #include <opendavinci/odcore/reflection/MessageFromVisitableVisitor.h>
-#include <opendavinci/odcore/base/SerializationFactory.h>
-#include <opendavinci/odcore/base/Serializer.h>
-#include <opendavinci/odcore/base/Deserializer.h>
+#include <opendavinci/odcore/serialization/SerializationFactory.h>
+#include <opendavinci/odcore/serialization/Serializer.h>
+#include <opendavinci/odcore/serialization/Deserializer.h>
 
 #include "generated/«mapping.mappingName.toString.replaceAll('\\.','/')».h"
 
@@ -1526,8 +1515,7 @@ class CANBridgeTest : public CxxTest::TestSuite {
     						fIndex++
     						if(result.signalIdentifier.compareToIgnoreCase(mapping.mappings.get(index).signalIdentifier)==0){
 								assignments+="odcore::reflection::Field<double> *f_"+fIndex+" = new odcore::reflection::Field<double>("+result.expectedResult+");"+'\n'+
-												"f_"+fIndex+"->setLongFieldIdentifier(0);"+
-												"f_"+fIndex+"->setShortFieldIdentifier("+result.signalIdentifier+");"+'\n'+
+												"f_"+fIndex+"->setFieldIdentifier("+result.signalIdentifier+");"+'\n'+
 												"f_"+fIndex+"->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);"+'\n'+
 												"message.addField(std::shared_ptr<odcore::data::reflection::AbstractField>(f_"+fIndex+"));"+'\n'
     						}

@@ -1,3 +1,5 @@
+4.0.0 - Next major release of OpenDaVINCI
+3.2.0 - CAN library fixes
 3.1.0 - Enabling signedness in CAN specs
 3.0.8 - Added sensor time stamping
 3.0.7 - Minor updates from OpenDLV

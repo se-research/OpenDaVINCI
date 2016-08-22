@@ -24,7 +24,7 @@
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/serialization/Serializable.h"
 #include "opendavinci/odcore/data/TimeStamp.h"
 
 namespace odcore {
@@ -37,7 +37,7 @@ class SerializableData;
         /**
          * Container for all interchangeable data.
          */
-        class OPENDAVINCI_API Container : public odcore::base::Serializable {
+        class OPENDAVINCI_API Container : public odcore::serialization::Serializable {
             public:
                 enum DATATYPE {
                     UNDEFINEDDATA                =  1,
@@ -103,6 +103,8 @@ class SerializableData;
                 template<class T>
                 inline T getData() {
                     T containerData;
+                    // Reset failbit as some Deserializer fully consume the entire stream.
+                    m_serializedData.clear();
                     // Read from beginning.
                     m_serializedData.seekg(ios::beg);
                     m_serializedData >> containerData;

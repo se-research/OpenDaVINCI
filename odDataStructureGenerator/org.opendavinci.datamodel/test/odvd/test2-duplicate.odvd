@@ -1,4 +1,4 @@
 message Test2 [ id = 2 ] {
-	uint32 attribute1;
-	float attribute1;
+	uint32 attribute1 [ id = 1 ];
+	float attribute1 [ id = 2 ];
 }

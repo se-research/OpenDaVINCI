@@ -17,17 +17,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <memory>
 #include <iosfwd>
 #include <string>
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/Serializable.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/Serializable.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendavinci/odcore/data/SerializableData.h"
 #include "opendlv/data/scenario/IDVertex3.h"
 #include "opendlv/data/scenario/Perimeter.h"
@@ -103,13 +102,12 @@ namespace opendlv {
             }
 
             ostream& Perimeter::operator<<(ostream &out) const {
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Serializer> s = sf.getSerializer(out);
+                std::shared_ptr<odcore::serialization::Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
                 uint32_t numberOfIDVertices = static_cast<uint32_t>(m_listOfIdentifiableVertices.size());
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('n', 'u', 'm', 'i', 'd', 'v', 'e', 'x') >::RESULT,
-                        numberOfIDVertices);
+                s->write(1, numberOfIDVertices);
 
                 // Write lanes to stringstream.
                 stringstream sstr;
@@ -120,30 +118,27 @@ namespace opendlv {
 
                 // Write lanes.
                 if (numberOfIDVertices > 0) {
-                    s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('i', 'd', 'v', 'e', 'x') >::RESULT,
-                            sstr.str());
+                    s->write(2, sstr.str());
                 }
 
                 return out;
             }
 
             istream& Perimeter::operator>>(istream &in) {
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+                std::shared_ptr<odcore::serialization::Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
                 // Clean up.
                 m_listOfIdentifiableVertices.clear();
 
                 uint32_t numberOfIDVertices = 0;
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('n', 'u', 'm', 'i', 'd', 'v', 'e', 'x') >::RESULT,
-                       numberOfIDVertices);
+                d->read(1, numberOfIDVertices);
 
                 if (numberOfIDVertices > 0) {
                     string str;
                     // Read lanes into stringstream.
-                    d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('i', 'd', 'v', 'e', 'x') >::RESULT,
-                           str);
+                    d->read(2, str);
 
                     stringstream sstr(str);
 

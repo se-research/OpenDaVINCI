@@ -32,8 +32,8 @@
 #include "opendavinci/odcore/strings/StringComparator.h"
 #include "opendlv/data/environment/Point3.h"
 #include "plugins/truckmap/TruckMapWidget.h"
-#include "automotivedata/generated/from/opendlv/model/Direction.h"
-#include "automotivedata/generated/from/opendlv/perception/Object.h"
+#include "odvdopendlv/generated/opendlv/model/Direction.h"
+#include "odvdopendlv/generated/opendlv/perception/Object.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }
 
@@ -73,15 +73,15 @@ namespace cockpit {
             }
 
             void TruckMapWidget::nextContainer(Container &c) {
-                if (c.getDataType() == (from::opendlv::perception::Environment::ID())) {
+                if (c.getDataType() == (opendlv::perception::Environment::ID())) {
                     Lock l(m_objectsMutex);
-                    // from::opendlv::perception::Object obj = c.getData<from::opendlv::perception::Object>();
+                    // opendlv::perception::Object obj = c.getData<opendlv::perception::Object>();
                     // m_objects[obj.getObjectId()] = obj;
 
                     // Store last time stamp of update.
                     // TimeStamp now;
                     // m_objectsLastUpdated[obj.getObjectId()] = now;
-                    m_environment = c.getData<from::opendlv::perception::Environment>();
+                    m_environment = c.getData<opendlv::perception::Environment>();
                 }
             }
 
@@ -226,11 +226,11 @@ namespace cockpit {
                     TimeStamp validUntil = m_environment.getValidUntil();
 
                     if((validUntil-now).toMicroseconds() > 0){
-                        std::vector<from::opendlv::perception::Object> objectList = m_environment.getListOfObjects();
+                        std::vector<opendlv::perception::Object> objectList = m_environment.getListOfObjects();
                         auto it = objectList.begin();
                         while (it != objectList.end()){
-                            from::opendlv::perception::Object obj = *it;
-                            from::opendlv::model::Direction dir = obj.getDirection();
+                            opendlv::perception::Object obj = *it;
+                            opendlv::model::Direction dir = obj.getDirection();
                             Point3 measurementPoint(obj.getDistance(), 0, 0);
                             measurementPoint.rotateZ(dir.getAzimuth());
 

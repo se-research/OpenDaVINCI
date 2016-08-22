@@ -22,13 +22,14 @@
 
 #include "opendavinci/odcore/opendavinci.h"
 
+#include <algorithm>
 #include <string>
 #include <vector>
 
 namespace odcore {
     namespace strings {
 
-	    using namespace std;
+        using namespace std;
 
         /**
          * This class can be used to perform some useful operations on strings (i.e. remove leading
@@ -43,19 +44,16 @@ namespace odcore {
                  *
                  * @param s String to be trimmed.
                  */
-                static void trim(string &s) {
-	                string::size_type pos = s.find_last_not_of(' ');
-	                if(pos != string::npos) {
-		                s.erase(pos + 1);
+                static void trim(string &s);
 
-		                pos = s.find_first_not_of(' ');
-		                if(pos != string::npos) {
-			                s.erase(0, pos);
-		                }
-	                } else {
-		                s.erase(s.begin(), s.end());
-	                }
-                };
+                /**
+                 * This method replaces all occurrences of character FROM
+                 * to character TO.
+                 *
+                 * @param FROM replace any occurrence of this character
+                 * @param TO by this character.
+                 */
+                static string replaceAll(const string &s, const char &FROM, const char &TO);
 
                 /**
                  * This method compares two strings while ignoring case.
@@ -64,17 +62,7 @@ namespace odcore {
                  * @param s2 String 2
                  * @return true if s1 equals s2
                  */
-                static bool equalsIgnoreCase(const string &s1, const string &s2) {
-                    if (s1.size() != s2.size()) {
-                        return false;
-                    }
-                    for (string::const_iterator c1 = s1.begin(), c2 = s2.begin(); c1 != s1.end(); ++c1, ++c2) {
-                        if (tolower(*c1) != tolower(*c2)) {
-                            return false;
-                        }
-                    }
-                    return true;
-                };
+                static bool equalsIgnoreCase(const string &s1, const string &s2);
 
                 /**
                  * This method splits a string using the delimiter.
@@ -83,22 +71,8 @@ namespace odcore {
                  * @param delimiter
                  * @return Vector of tokens.
                  */
-                static vector<string> split(const string &s, const char &delimiter) {
-                    vector<string> v;
-                    string::size_type start = 0;
-                    string::size_type pos = s.find_first_of(delimiter, start);
-                    while (pos != string::npos) {
-                        if(pos != start) {
-                            v.push_back(s.substr(start, pos - start));
-                        }
-                        start = pos + 1;
-                        pos = s.find_first_of(delimiter, start);
-                    }
-                    if ((start > 0) && (start < s.length())) {
-                        v.push_back(s.substr(start, s.length() - start));
-                    }
-                    return v;
-                }
+                static vector<string> split(const string &s, const char &delimiter);
+
         };
     }
 }
