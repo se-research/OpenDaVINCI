@@ -372,8 +372,8 @@ public class DataStructureGenerator {
 		sb.append("        ENDIF()"); sb.append("\r\n");
 		sb.append("    ENDIF()"); sb.append("\r\n");
 
-		sb.append("    SET (CMAKE_C_FLAGS ${CMAKE_C_FLAGS} \" -fPIC\")"); sb.append("\r\n");
-		sb.append("    SET (CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} \" -fPIC ${CXX_OPTIONS} -pipe\")"); sb.append("\r\n");
+		sb.append("    SET (CMAKE_C_FLAGS \" ${CMAKE_C_FLAGS} -fPIC\")"); sb.append("\r\n");
+		sb.append("    SET (CMAKE_CXX_FLAGS \" ${CMAKE_CXX_FLAGS} -fPIC ${CXX_OPTIONS} -pipe\")"); sb.append("\r\n");
 		sb.append("ENDIF()"); sb.append("\r\n");
 
 		System.out.print("Creating '" + folder + "/cmake.Modules/CompileFlags.cmake' ");

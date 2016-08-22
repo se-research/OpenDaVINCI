@@ -89,7 +89,7 @@ namespace odplayerh264 {
         const uint32_t ONE_SECOND = 1000 * 1000;
         odcore::base::Thread::usleepFor(ONE_SECOND);
         for(auto entry : m_mapOfDecoders) {
-            ::kill(entry.second->getPID(), SIGKILL);
+            kill(entry.second->getPID(), SIGKILL);
         }
 
         m_mapOfDecoders.clear();
