@@ -543,7 +543,6 @@ namespace canmapping {
 	void «className»::set«capitalizedName»(const double &«capitalizedName.toFirstLower») {
 		m_«capitalizedName.toFirstLower»=«capitalizedName.toFirstLower»;
 	}
-
 	«ENDFOR»
 	
 	ostream& «className»::operator<<(ostream &out) const {
@@ -814,7 +813,11 @@ namespace canmapping {
 						}
 						else // if vector numbering
 						{
-							endBit=(7-(Integer.parseInt(CurrentCANSignal.m_startBit)/8))*8+(Integer.parseInt(CurrentCANSignal.m_startBit)%8);
+                            var int pLength=7;
+                            if(mapping.payloadLength!=null && mapping.payloadLength.compareTo("")!=0)
+                                pLength=Integer.parseInt(mapping.payloadLength)-1;
+                            
+							endBit=(pLength-(Integer.parseInt(CurrentCANSignal.m_startBit)/8))*8+(Integer.parseInt(CurrentCANSignal.m_startBit)%8);
 							startBit=endBit-signalLength+1;
 							if( startBit >= 0)
 							{
@@ -836,7 +839,11 @@ namespace canmapping {
 						}
 						else // if vector numbering
 						{
-							startBit=(7-(Integer.parseInt(CurrentCANSignal.m_startBit)/8))*8+(Integer.parseInt(CurrentCANSignal.m_startBit)%8);
+						    var int pLength=7;
+                            if(mapping.payloadLength!=null && mapping.payloadLength.compareTo("")!=0)
+                                pLength=Integer.parseInt(mapping.payloadLength)-1;
+                            
+							startBit=(pLength-(Integer.parseInt(CurrentCANSignal.m_startBit)/8))*8+(Integer.parseInt(CurrentCANSignal.m_startBit)%8);
 						}
 						endBit=startBit+signalLength-1;
 					}
@@ -1060,28 +1067,64 @@ namespace canmapping {
 				""}»
 
 				// reset right-hand side of bit field
-				«IF CurrentCANSignal.m_endian.compareToIgnoreCase("big")==0»
-					«IF mapping.bit_numbering==null || mapping.bit_numbering.compareTo("vector")!=0»
-						«IF (Integer.parseInt(CurrentCANSignal.m_startBit)-signalLength+1)>=0»
-							«tempVarName» >>= («CurrentCANSignal.m_startBit»-«signalLength»+1);
-						«ELSE»
-							«tempVarName» <<= abs(«CurrentCANSignal.m_startBit»-«signalLength»+1);
-						«ENDIF»
-					«ELSE»
-						«var int transfStart=(7-(Integer.parseInt(CurrentCANSignal.m_startBit)/8))*8+(Integer.parseInt(CurrentCANSignal.m_startBit)%8)»
-						«IF (transfStart-signalLength+1)>=0»
-							«tempVarName» >>= («transfStart»-«signalLength»+1);
-						«ELSE»
-							«tempVarName» <<= abs(«transfStart»-«signalLength»+1);
-						«ENDIF»
-					«ENDIF»
-				«ELSE»
-					«IF mapping.bit_numbering==null || mapping.bit_numbering.compareTo("vector")!=0»
-						«tempVarName» >>= «CurrentCANSignal.m_startBit»;
-					«ELSE»
-						«tempVarName» >>= «(7-(Integer.parseInt(CurrentCANSignal.m_startBit)/8))*8+(Integer.parseInt(CurrentCANSignal.m_startBit)%8)»;
-					«ENDIF»
-				«ENDIF»
+				
+				«{
+				    var String shiftStatement="";
+				    // if big endian
+				    if(CurrentCANSignal.m_endian.compareToIgnoreCase("big")==0)
+				    {
+				        // if not vector
+				        if(mapping.bit_numbering==null || mapping.bit_numbering.compareTo("vector")!=0)
+				        {
+				            if((Integer.parseInt(CurrentCANSignal.m_startBit)-signalLength+1)>=0)
+				            {
+				                shiftStatement=tempVarName+" >>= ("+CurrentCANSignal.m_startBit+" - "+signalLength+"+1);";
+				            }
+				            else
+				            {
+				                shiftStatement=tempVarName+" <<= abs("+CurrentCANSignal.m_startBit+" - "+signalLength+"+1);";
+				            }
+				        }
+				        else // if vector numbering
+				        {
+				            var int transfStart=0;
+				            var int pLength=7;
+				            if(mapping.payloadLength!=null && mapping.payloadLength.compareTo("")!=0)
+                                pLength=Integer.parseInt(mapping.payloadLength)-1;
+                            
+                            transfStart=(pLength-(Integer.parseInt(CurrentCANSignal.m_startBit)/8))*8+(Integer.parseInt(CurrentCANSignal.m_startBit)%8);
+                            if((transfStart-signalLength+1)>=0)
+                            {
+                                shiftStatement=tempVarName+" >>= ("+transfStart+" - "+signalLength+"+1);";
+                            }
+                            else
+                            {
+                                shiftStatement=tempVarName+" <<= abs("+transfStart+" - "+signalLength+"+1);";
+                            }
+				        }
+				    }
+				    else // if little endian
+				    {
+				        // if not vector
+				        if(mapping.bit_numbering==null || mapping.bit_numbering.compareTo("vector")!=0)
+                        {
+                            shiftStatement=tempVarName+" >>= "+CurrentCANSignal.m_startBit+";";
+                        }
+                        else // if vector numbering
+                        {
+                            var int transfStart=0;
+                            var int pLength=7;
+                            if(mapping.payloadLength!=null && mapping.payloadLength.compareTo("")!=0)
+                                pLength=Integer.parseInt(mapping.payloadLength)-1;
+                            
+                            transfStart=(pLength-(Integer.parseInt(CurrentCANSignal.m_startBit)/8))*8+(Integer.parseInt(CurrentCANSignal.m_startBit)%8);
+                            shiftStatement=tempVarName+" >>= "+transfStart+";";
+                        }
+				    }
+				    
+                    // printing the shift statement
+				    shiftStatement
+				}»
 
 				// reset left-hand side of bit field
 				«var String mask="0"»«{for(var int i=0;i<signalLength;i++) mask+="1";""}»
