@@ -23,6 +23,7 @@
 
 // Include files from FFMPEG to have h264 encoding.
 extern "C" {
+    #include <libavutil/avutil.h>
     #include <libavutil/mem.h>
 }
 
@@ -153,7 +154,7 @@ namespace odrecorderh264 {
         m_encodeContext = avcodec_alloc_context3(m_encodeCodec);
         m_encodeContext->width = width;
         m_encodeContext->height = height;
-        m_encodeContext->pix_fmt = AV_PIX_FMT_YUV420P; // Output pixel format.
+        m_encodeContext->pix_fmt = AVPixelFormat::AV_PIX_FMT_YUV420P; // Output pixel format.
 
         // Setup h264-specific parameters.
         AVDictionary *param = NULL;
@@ -195,8 +196,8 @@ namespace odrecorderh264 {
 
         // Image pixel transformation context.
         m_pixelTransformationContext = sws_getContext(width, height,
-                                                      AV_PIX_FMT_BGR24, width, height,
-                                                      AV_PIX_FMT_YUV420P, 0, 0, 0, 0);
+                                                      AVPixelFormat::AV_PIX_FMT_BGR24, width, height,
+                                                      AVPixelFormat::AV_PIX_FMT_YUV420P, 0, 0, 0, 0);
 
         return 0;
     }

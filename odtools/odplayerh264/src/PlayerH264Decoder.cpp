@@ -23,6 +23,7 @@
 
 // Include files from FFMPEG to have h264 encoding.
 extern "C" {
+    #include <libavutil/avutil.h>
     #include <libavutil/mem.h>
 }
 
@@ -182,16 +183,16 @@ namespace odplayerh264 {
             }
 
             // Acquire memory for raw picture.
-            const uint32_t BYTES = avpicture_get_size(PIX_FMT_BGR24, m_mySharedImage.getWidth(), m_mySharedImage.getHeight());
+            const uint32_t BYTES = avpicture_get_size(AVPixelFormat::AV_PIX_FMT_BGR24, m_mySharedImage.getWidth(), m_mySharedImage.getHeight());
             uint8_t *myPixelBuffer = static_cast<uint8_t*>(av_malloc(BYTES * sizeof(uint8_t)));
             avpicture_fill(reinterpret_cast<AVPicture*>(m_frameBGR),
-                           myPixelBuffer, PIX_FMT_BGR24,
+                           myPixelBuffer, AVPixelFormat::AV_PIX_FMT_BGR24,
                            m_mySharedImage.getWidth(), m_mySharedImage.getHeight());
 
             // Image pixel transformation context to transform from YUV420p to BGR24.
             m_pixelTransformationContext = sws_getContext(m_mySharedImage.getWidth(), m_mySharedImage.getHeight(),
-                                 AV_PIX_FMT_YUV420P, m_mySharedImage.getWidth(), m_mySharedImage.getHeight(),
-                                 AV_PIX_FMT_BGR24, 0, 0, 0, 0);
+                                 AVPixelFormat::AV_PIX_FMT_YUV420P, m_mySharedImage.getWidth(), m_mySharedImage.getHeight(),
+                                 AVPixelFormat::AV_PIX_FMT_BGR24, 0, 0, 0, 0);
 
             // Find proper decoder for h264.
             AVCodec *decodeCodec = avcodec_find_decoder(AV_CODEC_ID_H264);
