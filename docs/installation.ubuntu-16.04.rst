@@ -13,7 +13,7 @@ Install development packages for OpenDaVINCI sources::
 
 Install development packages for libodsimulation sources::
 
-    $ sudo apt-get install --no-install-recommends libpopt-dev libopencv-dev ant ant-junit openjdk-8-jdk-headless libqt4-dev rpm libboost-dev freeglut3-dev libqwt5-qt4-dev libqt4-opengl-dev
+    $ sudo apt-get install --no-install-recommends libpopt-dev libopencv-dev ant ant-optional openjdk-8-jdk-headless libqt4-dev rpm libboost-dev freeglut3-dev libqwt5-qt4-dev libqt4-opengl-dev
 
 Clean up installation::
 
