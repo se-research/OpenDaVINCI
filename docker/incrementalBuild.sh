@@ -30,6 +30,7 @@ cd /opt/OpenDaVINCI.build
 
 echo "[OpenDaVINCI Docker builder] Incremental build."
 
+# Force rebuild with ExternalProjects
 rm -f odsimulation-prefix/src/odsimulation-stamp/odsimulation-install
 rm -f odtools-prefix/src/odtools-stamp/odtools-install
 rm -f automotive-odcantools-prefix/src/automotive-odcantools-stamp/automotive-odcantools-install

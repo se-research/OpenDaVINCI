@@ -32,11 +32,11 @@ echo "[OpenDaVINCI Docker builder] Complete build."
 #cmake -E remove_directory .
 #cmake -D TESTRUNNER_DISABLED=$TESTRUNNER_DISABLED -D CMAKE_INSTALL_PREFIX=/opt/od4 /opt/OpenDaVINCI.sources
 
-#if [ "$TESTRUNNER_DISABLED" == "YES" ]; then
-#    make -j4
-#else
-#    make -j1
-#fi
+if [ "$TESTRUNNER_DISABLED" == "YES" ]; then
+    make -j4
+else
+    make -j1
+fi
 EOF
 
 chmod 755 /opt/OpenDaVINCI.build/build.sh
