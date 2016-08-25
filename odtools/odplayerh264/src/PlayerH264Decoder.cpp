@@ -27,6 +27,12 @@ extern "C" {
     #include <libavutil/mem.h>
 }
 
+// Fix for FFMPEG on Ubuntu 14.04
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(55,28,1)
+    #define av_frame_alloc  avcodec_alloc_frame
+    #define av_frame_free   avcodec_free_frame
+#endif
+
 #include <opendavinci/odcore/base/Lock.h>
 #include <opendavinci/odcore/base/Thread.h>
 #include <opendavinci/odcore/io/tcp/TCPFactory.h>
