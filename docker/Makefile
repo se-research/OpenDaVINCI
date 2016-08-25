@@ -98,9 +98,8 @@ buildComplete:
 	$(call compile)
 
 # Dependency to allow incremental builds.
-#buildIncremental: $(BUILD_PATH)/OpenDaVINCI.build/build.incremental
-buildIncremental:
-	$(DOCKER) run -ti --rm -v $(SOURCE_TREE_PATH):/opt/OpenDaVINCI.sources -v $(BUILD_PATH)/OpenDaVINCI.build:/opt/OpenDaVINCI.build -v $(BUILD_PATH)/opt/od4:/opt/od4 -v $(SOURCE_TREE_PATH)/docker/incrementalBuild.sh:/opt/incrementalBuild.sh -w /opt $(BASE_IMAGE) /opt/incrementalBuild.sh $(RUN_BUILD_AS) TESTRUNNER_DISABLED=YES
+buildIncremental: $(BUILD_PATH)/OpenDaVINCI.build/build.incremental
+	$(DOCKER) run -ti --rm -v $(SOURCE_TREE_PATH):/opt/OpenDaVINCI.sources -v $(BUILD_PATH)/OpenDaVINCI.build:/opt/OpenDaVINCI.build -v $(BUILD_PATH)/opt/od4:/opt/od4 -v $(SOURCE_TREE_PATH)/docker/incrementalBuild.sh:/opt/incrementalBuild.sh -w /opt $(BASE_IMAGE) /opt/incrementalBuild.sh $(RUN_BUILD_AS) YES
 	mkdir -p $(PACKAGES_DIR)/$(DOCKER_IMAGE_NAME) && for i in $$(find $(BUILD_PATH)/OpenDaVINCI.build -type f -name "*deb" | grep -v CPack); do cp $$i $(PACKAGES_DIR)/$(DOCKER_IMAGE_NAME); done
 
 ###############################################################################
