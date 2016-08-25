@@ -22,6 +22,7 @@ extern "C" {
     #include <libavcodec/avcodec.h>
 }
 
+#include <signal.h>
 #include <unistd.h>
 #include <sys/wait.h>
 
