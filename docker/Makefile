@@ -55,7 +55,7 @@ DOCKER_IMAGE_NAME_SHORT_NAME=$(BASE_IMAGE)-complete:latest
 
 ###############################################################################
 
-all: createDockerImage
+all: buildIncremental createDockerImage
 
 ###############################################################################
 
@@ -104,7 +104,7 @@ buildIncremental: $(BUILD_PATH)/OpenDaVINCI.build/build.incremental
 
 ###############################################################################
 # This target creates a new Docker image based on the selected Docker image using the freshly built binaries.
-createDockerImage: buildIncremental
+createDockerImage:
 	cat $(SOURCE_TREE_PATH)/docker/Dockerfile.template | sed -e $(DOCKERFILE_BASEIMAGE) > $(BUILD_PATH)/Dockerfile
 	echo "OpenDaVINCI.build" > $(BUILD_PATH)/.dockerignore
 	cd $(BUILD_PATH) && $(DOCKER) build -t seresearch/$(DOCKER_IMAGE_NAME_WITH_GIT_COMMITS_IN_CURRENT_BRANCH) . | tee $(BUILD_PATH)/OpenDaVINCI.build/build.log || exit 1
