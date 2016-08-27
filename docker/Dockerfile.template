@@ -25,10 +25,7 @@ ADD opt /opt
 # Change owner for binaries.
 RUN groupadd odv && \
     useradd odv -g odv && \
-    chown odv:odv /opt/od4
-
-# Run as user odv.
-USER odv
+    chown -R odv:odv /opt/od4
 
 # Environment parameters to allow GUIs.
 ENV QT_X11_NO_MITSHM=1

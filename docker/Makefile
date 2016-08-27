@@ -114,5 +114,4 @@ createDockerImage:
 
 pushDockerImage: createDockerImage
 	$(DOCKER) push $(DOCKER_IMAGE_NAME_SHORT_NAME)
-	$(DOCKER) push seresearch/$(DOCKER_IMAGE_NAME_WITH_GIT_COMMITS_IN_CURRENT_BRANCH)
 
