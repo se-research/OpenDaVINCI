@@ -18,7 +18,7 @@
 ###############################################################################
 # Parameters for this Makefile.
 BASE_IMAGE=seresearch/opendavinci-ubuntu-16.04
-TESTRUNNER_DISABLED=YES
+TESTRUNNER_DISABLED=NO
 
 ###############################################################################
 # Tools.
