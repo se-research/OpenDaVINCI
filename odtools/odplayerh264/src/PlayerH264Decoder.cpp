@@ -30,8 +30,10 @@ extern "C" {
 // Fix for FFMPEG on Ubuntu 14.04 but exclude MacOS.
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(55,28,1)
     #ifndef __APPLE__
-        #define av_frame_alloc  avcodec_alloc_frame
-        #define av_frame_free   avcodec_free_frame
+        #if ((__GNUC__ * 100) + __GNUC_MINOR__) < 600
+            #define av_frame_alloc  avcodec_alloc_frame
+            #define av_frame_free   avcodec_free_frame
+        #endif
     #endif
 #endif
 
