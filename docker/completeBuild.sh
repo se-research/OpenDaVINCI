@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# doBuild.sh - Script to build OpenDaVINCI.
+# completeBuild.sh - Script to build OpenDaVINCI.
 # Copyright (C) 2016 Christian Berger
 #
 # This program is free software; you can redistribute it and/or
@@ -42,5 +42,5 @@ EOF
 chmod 755 /opt/OpenDaVINCI.build/build.sh
 chown $BUILD_AS:$BUILD_AS /opt/OpenDaVINCI.build/build.sh
 
-su -m $BUILD_AS -c /opt/OpenDaVINCI.build/build.sh
+su -m `getent passwd 1000|cut -f1 -d":"` -c /opt/OpenDaVINCI.build/build.sh
 
