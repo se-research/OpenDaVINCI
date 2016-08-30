@@ -3943,7 +3943,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             //double *d = (double*)(&v[0]);
             //*d = 3.123456789;
 
-            double _d = -3.123456789;
+            double _d = 3.123456789;
             memcpy((&v[0]), &_d, sizeof(double));
 
             ProtoKeyValue pkv(345, ProtoSerializer::EIGHT_BYTES, sizeof(double), v);
