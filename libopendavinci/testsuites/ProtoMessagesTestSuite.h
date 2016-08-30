@@ -3924,8 +3924,11 @@ class ProtoMessageTest : public CxxTest::TestSuite {
         void testProtoKeyValueFloat() {
             vector<char> v;
             v.resize(4);
-            float *f = (float*)(&v[0]);
-            *f = -3.12345;
+            //float *f = (float*)(&v[0]);
+            //*f = -3.12345;
+
+            float _f = -3.12345;
+            memcpy((&v[0]), &_f, sizeof(float));
 
             ProtoKeyValue pkv(234, ProtoSerializer::FOUR_BYTES, sizeof(float), v);
             TS_ASSERT(pkv.getKey() == 234);
@@ -3937,8 +3940,11 @@ class ProtoMessageTest : public CxxTest::TestSuite {
         void testProtoKeyValueDouble() {
             vector<char> v;
             v.resize(8);
-            double *d = (double*)(&v[0]);
-            *d = 3.123456789;
+            //double *d = (double*)(&v[0]);
+            //*d = 3.123456789;
+
+            double _d = -3.123456789;
+            memcpy((&v[0]), &_d, sizeof(double));
 
             ProtoKeyValue pkv(345, ProtoSerializer::EIGHT_BYTES, sizeof(double), v);
             TS_ASSERT(pkv.getKey() == 345);
