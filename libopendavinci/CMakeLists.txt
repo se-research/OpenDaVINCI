@@ -157,9 +157,8 @@ IF(WIN32)
     SET(LIBRARIES ${LIBRARIES} setupapi)
 ENDIF()
 
-# No shared libraries on Mac OS X and Windows.
-IF(   WIN32
-   OR ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin") )
+# No shared libraries on Mac OS X.
+IF(WIN32
     SET (OPENDAVINCI_LIB opendavinci-static)
 ELSE()
     SET (OPENDAVINCI_LIB opendavinci)
@@ -359,14 +358,12 @@ ADD_LIBRARY (opendavinci-core OBJECT ${libopendavinci-sources}
                                      ${zlib-sources}
                                      ${jpegcompressor-sources})
 ADD_LIBRARY (opendavinci-static STATIC $<TARGET_OBJECTS:opendavinci-core>)
-IF(    (NOT WIN32)
-   AND (NOT ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")) )
+IF(NOT WIN32)
     ADD_LIBRARY (opendavinci    SHARED $<TARGET_OBJECTS:opendavinci-core>)
 ENDIF()
 
 TARGET_LINK_LIBRARIES(opendavinci-static ${LIBRARIES})
-IF(    (NOT WIN32)
-   AND (NOT ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")) )
+IF(NOT WIN32)
     TARGET_LINK_LIBRARIES(opendavinci    ${LIBRARIES})
 ENDIF()
 
@@ -462,8 +459,7 @@ ENDIF(CXXTEST_FOUND)
 ###############################################################################
 # Installing "libopendavinci".
 INSTALL(TARGETS opendavinci-static DESTINATION lib COMPONENT lib)
-IF(    (NOT WIN32)
-   AND (NOT ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")) )
+IF(NOT WIN32)
     INSTALL(TARGETS opendavinci    DESTINATION lib COMPONENT lib)
 ENDIF()
 
