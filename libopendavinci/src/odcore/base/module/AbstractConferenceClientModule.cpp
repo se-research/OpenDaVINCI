@@ -100,13 +100,13 @@ namespace odcore {
                     }
 
                     if (logLevel == odcore::data::LogMessage::INFO) {
-                        ::syslog(LOG_INFO, "%s", msg.c_str());
+                        ::syslog(LOG_INFO, "%s", logMessage.toString().c_str());
                     }
                     if (logLevel == odcore::data::LogMessage::DEBUG) {
-                        ::syslog(LOG_DEBUG, "%s", msg.c_str());
+                        ::syslog(LOG_DEBUG, "%s", logMessage.toString().c_str());
                     }
                     if (logLevel == odcore::data::LogMessage::WARN) {
-                        ::syslog(LOG_WARNING, "%s", msg.c_str());
+                        ::syslog(LOG_WARNING, "%s", logMessage.toString().c_str());
                     }
                 }
 #endif

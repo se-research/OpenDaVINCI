@@ -26,9 +26,9 @@ message odcore.data.LogMessage [id = 100] {
         WARN = 2,
         DEBUG = 3,
     };
-    LogLevel logLevel [id = 1];
-    string logMessage [id = 2];
-    string componentName [id = 3];
+    string componentName [id = 1];
+    LogLevel logLevel [id = 2];
+    string logMessage [id = 3];
 }
 
 
