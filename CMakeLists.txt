@@ -103,7 +103,7 @@ IF(     NOT("${CMAKE_C_COMPILER}" STREQUAL "")
             MESSAGE(STATUS "Found C++ compiler, OpenCV, OpenGL, GLUT, and Boost: Building automotive/miniature")
             SET(BUILD_AUTOMOTIVE_MINIATURE 1)
 
-            IF (QWT5QT4_FOUND)
+            IF (Qt4_FOUND OR QWT5QT4_FOUND)
                 IF (NOT (${CMAKE_SYSTEM_PROCESSOR} MATCHES "arm"))  # Compiling odcockpit on ARM fails due to conflicts in Qt/OpenGL typedefs
                     MESSAGE(STATUS "Found C++ compiler, OpenCV, OpenGL, GLUT, Boost, QT4, and Qwt: Building odcockpit")
                     SET(BUILD_ODCOCKPIT 1)
