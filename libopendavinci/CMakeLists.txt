@@ -158,7 +158,7 @@ IF(WIN32)
 ENDIF()
 
 # No shared libraries on Mac OS X.
-IF(WIN32
+IF(WIN32)
     SET (OPENDAVINCI_LIB opendavinci-static)
 ELSE()
     SET (OPENDAVINCI_LIB opendavinci)
