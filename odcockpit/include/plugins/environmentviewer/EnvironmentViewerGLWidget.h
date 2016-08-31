@@ -23,6 +23,7 @@
 
 #include <map>
 #include <vector>
+#include <memory>
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/Mutex.h"
@@ -33,6 +34,8 @@
 #include "opendlv/threeD/RenderingConfiguration.h"
 #include "plugins/AbstractGLWidget.h"
 #include "plugins/environmentviewer/SelectableNodeDescriptorTreeListener.h"
+#include "opendavinci/odcore/wrapper/SharedMemory.h"
+#include "opendavinci/generated/odcore/data/SharedPointCloud.h"
 
 class QWidget;
 namespace cockpit { namespace plugins { class PlugIn; } }
@@ -107,6 +110,7 @@ class SelectableNodeDescriptor;
                     opendlv::threeD::TransformGroup *m_measurements;
                     opendlv::threeD::TransformGroup *m_plannedRoute;
                     opendlv::threeD::TransformGroup *m_lines;
+                    opendlv::threeD::TransformGroup *m_velodyne;
 
                     opendlv::threeD::NodeDescriptor m_egoStateNodeDescriptor;
                     uint32_t m_numberOfReceivedEgoStates;
@@ -124,6 +128,8 @@ class SelectableNodeDescriptor;
 
                     odcore::base::TreeNode<SelectableNodeDescriptor> *m_selectableNodeDescriptorTree;
                     SelectableNodeDescriptorTreeListener &m_selectableNodeDescriptorTreeListener;
+                    std::shared_ptr<odcore::wrapper::SharedMemory> velodyneSharedMemory;
+                    odcore::data::SharedPointCloud velodyneFrame;
 
                     /**
                      * This method actually modifies the rendering configuration.
