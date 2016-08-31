@@ -38,22 +38,19 @@ SET (userlib-sources
 # Resulting artifacts.
 ADD_LIBRARY (${PROJECT_NAME}-core OBJECT ${userlib-sources})
 ADD_LIBRARY (${PROJECT_NAME}-static STATIC $<TARGET_OBJECTS:${PROJECT_NAME}-core>)
-IF(    (NOT WIN32)
-   AND (NOT ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")) )
+IF(NOT WIN32)
     ADD_LIBRARY (${PROJECT_NAME}    SHARED $<TARGET_OBJECTS:${PROJECT_NAME}-core>)
 ENDIF()
 
 TARGET_LINK_LIBRARIES(${PROJECT_NAME}-static)
-IF(    (NOT WIN32)
-   AND (NOT ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")) )
+IF(NOT WIN32)
     TARGET_LINK_LIBRARIES(${PROJECT_NAME})
 ENDIF()
 
 ###############################################################################
 # Install this project.
 INSTALL(TARGETS ${PROJECT_NAME}-static DESTINATION lib COMPONENT odcantools)
-IF(    (NOT WIN32)
-   AND (NOT ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")) )
+IF(NOT WIN32)
     INSTALL(TARGETS ${PROJECT_NAME}    DESTINATION lib COMPONENT odcantools)
 ENDIF()
 
