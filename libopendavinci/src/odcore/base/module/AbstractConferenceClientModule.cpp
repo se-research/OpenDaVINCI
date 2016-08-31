@@ -84,8 +84,8 @@ namespace odcore {
                     componentName << "-" << getIdentifier();
                 }
                 logMessage.setComponentName(componentName.str());
-                logMessage.setLogLevel(logLevel);
                 logMessage.setLogMessage(msg);
+                logMessage.setLogLevel(logLevel);
 
                 Container c(logMessage);
                 getConference().send(c);
