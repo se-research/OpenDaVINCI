@@ -98,15 +98,18 @@ namespace odcore {
                         ::openlog(MY_NAME.c_str(), LOG_CONS | LOG_PID | LOG_NDELAY, LOG_LOCAL1);
                         m_loggerInitialized = true;
                     }
-
+                    stringstream sstr_tmp;
+                    sstr_tmp << "[" << componentName.str() << " : LogLevel " << logMessage.getLogLevel() << "] " << logMessage.getLogMessage() ;
+                    const string tmp = sstr_tmp.str();
+                    
                     if (logLevel == odcore::data::LogMessage::INFO) {
-                        ::syslog(LOG_INFO, "%s", msg.c_str());
+                        ::syslog(LOG_INFO, "%s", tmp.c_str());
                     }
                     if (logLevel == odcore::data::LogMessage::DEBUG) {
-                        ::syslog(LOG_DEBUG, "%s", msg.c_str());
+                        ::syslog(LOG_DEBUG, "%s", tmp.c_str());
                     }
                     if (logLevel == odcore::data::LogMessage::WARN) {
-                        ::syslog(LOG_WARNING, "%s", msg.c_str());
+                        ::syslog(LOG_WARNING, "%s", tmp.c_str());
                     }
                 }
 #endif

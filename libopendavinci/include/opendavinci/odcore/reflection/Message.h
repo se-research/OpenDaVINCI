@@ -151,6 +151,12 @@ namespace odcore {
                             case odcore::data::reflection::AbstractField::INT8_T:
                                 value = static_cast<T>(dynamic_cast<odcore::reflection::Field<int8_t>*>(af.get())->getValue());
                             break;
+                            case odcore::data::reflection::AbstractField::UCHAR_T:
+                                value = static_cast<T>(dynamic_cast<odcore::reflection::Field<unsigned char>*>(af.get())->getValue());
+                            break;
+                            case odcore::data::reflection::AbstractField::CHAR_T:
+                                value = static_cast<T>(dynamic_cast<odcore::reflection::Field<char>*>(af.get())->getValue());
+                            break;
                             case odcore::data::reflection::AbstractField::UINT16_T:
                                 value = static_cast<T>(dynamic_cast<odcore::reflection::Field<uint16_t>*>(af.get())->getValue());
                             break;
