@@ -81,9 +81,12 @@ class Serializable;
         float ProtoKeyValue::getValueAsFloat() const {
             float retVal = 0;
             if ( (m_value.size() > 0) && (m_length == sizeof(float)) && (m_value.size() == sizeof(float)) && (m_type == ProtoSerializer::FOUR_BYTES) ) {
-                uint32_t *_v = (uint32_t*)(&m_value[0]);
-                uint32_t _v2 = le32toh(*_v);
-                retVal = *(reinterpret_cast<float*>(&_v2));
+                //uint32_t *_v = (uint32_t*)(&m_value[0]);
+                //uint32_t _v2 = le32toh(*_v);
+                //retVal = *(reinterpret_cast<float*>(&_v2));
+                uint32_t _v = 0;
+                memcpy(&_v, &m_value[0], sizeof(uint32_t));
+                retVal = *(reinterpret_cast<float*>(&_v));
             }
             return retVal;
         }
@@ -91,9 +94,12 @@ class Serializable;
         double ProtoKeyValue::getValueAsDouble() const {
             double retVal = 0;
             if ( (m_value.size() > 0) && (m_length == sizeof(double)) && (m_value.size() == sizeof(double)) && (m_type == ProtoSerializer::EIGHT_BYTES) ) {
-                uint64_t *_v = (uint64_t*)(&m_value[0]);
-                uint64_t _v2 = le64toh(*_v);
-                retVal = *(reinterpret_cast<double*>(&_v2));
+                //uint64_t *_v = (uint64_t*)(&m_value[0]);
+                //uint64_t _v2 = le64toh(*_v);
+                //retVal = *(reinterpret_cast<double*>(&_v2));
+                uint64_t _v = 0;
+                memcpy(&_v, &m_value[0], sizeof(uint64_t));
+                retVal = *(reinterpret_cast<double*>(&_v));
             }
             return retVal;
         }
