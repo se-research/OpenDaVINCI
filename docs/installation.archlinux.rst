@@ -5,7 +5,7 @@ Download and install ArchLinux and install using the following instructions: htt
 
 .. Install some core packages::
 
-    # pacman -S net-tools openssh sudo
+    $ pacman -S net-tools openssh sudo
 
 Install some core packages::
 
