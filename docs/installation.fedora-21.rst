@@ -3,25 +3,16 @@ Compiling OpenDaVINCI on Fedora 21
 
 Download and install Fedora 21 and install its latest package updates::
 
-    $ sudo yum update
-    $ sudo yum upgrade
-    $ sudo yum distro-sync
+    $ sudo yum -y update
+    $ sudo yum -y upgrade
   
-Install the required development packages for OpenDaVINCI sources::
+Install OpenDaVINCI dependencies::
 
-    $ sudo yum install cmake gcc gcc-c++ git
-    
-Install the required development packages for libodsimulation sources::
-
-    $ sudo yum install freeglut qt4 boost boost-devel qt4-devel freeglut-devel opencv-devel qwt5-qt4-devel
+    $ sudo yum -y install ant ant-junit automake boost-devel cmake freeglut-devel gcc gcc-c++ git python2 iproute kernel-devel make opencv-devel psmisc qt4-devel qwt5-qt4-devel tar wget
     
 .. Install the required development packages for host-tools sources::
 
     $ sudo yum install libusb-devel
-    
-Install the required development packages for the DataStructureGenerator sources::
-
-    $ sudo yum install java-1.8.0-openjdk ant ant-junit
     
 Clean up installation::
 

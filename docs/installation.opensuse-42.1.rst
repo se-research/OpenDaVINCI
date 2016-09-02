@@ -1,24 +1,23 @@
-Compiling OpenDaVINCI on CentOS7
---------------------------------
+Compiling OpenDaVINCI on OpenSuSE 42.1
+--------------------------------------
 
-Download and install CentOS 7 and install its latest package updates::
+Download and install openSuSE 42.1 and install its latest package updates::
 
-    $ sudo yum -y update
-    $ sudo yum -y upgrade
-
+    $ sudo zypper --non-interactive --no-gpg-checks refresh
+    $ sudo zypper --non-interactive --no-gpg-checks update
+  
 Install OpenDaVINCI dependencies::
 
-    $ sudo yum -y install ant ant-junit automake boost-devel cmake freeglut-devel gcc gcc-c++ git python27 iproute make opencv-devel psmisc qt4-devel qwt5-qt4-devel kernel-devel wget
+    $ sudo zypper --non-interactive --no-gpg-checks install ant ant-junit boost-devel cmake git freeglut-devel gcc gcc-c++ iproute2 make python opencv-devel psmisc libqt4-devel qwt-devel wget ffmpeg
+    
+.. Install required development packages for host-tools sources::
 
-.. Install the required development packages for host-tools sources::
-
-    $ sudo yum install libusb-devel
-
+    $ sudo zypper install libusb-devel
+    
 Clean up installation::
 
-    $ sudo yum autoremove
-    $ sudo yum clean all
-
+    $ sudo zypper clean
+  
 Clone the latest OpenDaVINCI sources from https://github.com/se-research/OpenDaVINCI or download
 the latest OpenDaVINCI sources as zip file: https://github.com/se-research/OpenDaVINCI/archive/master.zip.
 

@@ -1,7 +1,7 @@
-Compiling OpenDaVINCI on Ubuntu 15.04
--------------------------------------
+Compiling OpenDaVINCI on Debian Jessie
+-----------------------------------
 
-Download and install Ubuntu 15.04 and install its latest package updates::
+Download and install Debian Jessie and install its latest package updates::
 
     $ sudo apt-get update -y
     $ sudo apt-get upgrade -y
@@ -9,7 +9,7 @@ Download and install Ubuntu 15.04 and install its latest package updates::
 
 Install OpenDaVINCI dependencies::
 
-    $ sudo apt-get install -y --no-install-recommends ant build-essential cmake default-jre default-jdk freeglut3 freeglut3-dev git libboost-dev libopencv-dev libopencv-core-dev libopencv-highgui-dev libopencv-imgproc-dev libpopt-dev libqt4-dev libqt4-opengl-dev libqwt5-qt4-dev libqwt5-qt4 qt4-dev-tools rpm psmisc wget
+    $ sudo apt-get install -y --no-install-recommends ant build-essential cmake default-jre default-jdk freeglut3 freeglut3-dev git libboost-dev libopencv-dev libopencv-core-dev libopencv-highgui-dev libopencv-imgproc-dev libqt4-dev libqt4-opengl-dev libqwt5-qt4-dev libqwt5-qt4 qt4-dev-tools rpm psmisc wget
 
 .. Install development packages for host-tools sources::
 
@@ -19,10 +19,6 @@ Clean up installation::
 
     $ sudo apt-get clean
     $ sudo apt-get autoremove
-
-Install ffmpeg::
-
-    $ sudo apt-get install -y --no-install-recommends ffmpeg
 
 Clone the latest OpenDaVINCI sources from https://github.com/se-research/OpenDaVINCI or download
 the latest OpenDaVINCI sources as zip file: https://github.com/se-research/OpenDaVINCI/archive/master.zip.

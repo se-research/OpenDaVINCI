@@ -1,28 +1,24 @@
-Compiling OpenDaVINCI on ArchLinux
+Compiling OpenDaVINCI on Fedora 24
 ----------------------------------
 
-Download and install ArchLinux and install using the following instructions: https://wiki.archlinux.org/index.php/Installation_guide
+Download and install Fedora 24 and install its latest package updates::
 
-.. Install some core packages::
-
-    # pacman -S net-tools openssh sudo
-
-Install some core packages::
-
-    # sudo pacman -S net-tools
-
+    $ sudo yum -y update
+    $ sudo yum -y upgrade
+  
 Install OpenDaVINCI dependencies::
 
-    $ sudo pacman --no-confirm -S apache-ant jdk8-openjdk boost cmake ffmpeg2.8 freeglut gcc git junit make opencv python2 qt4 qwt5
+    $ sudo yum -y install ant ant-junit automake boost-devel cmake freeglut-devel git python2 gcc gcc-c++ iproute kernel-devel make opencv-devel psmisc qt4-devel qwt5-qt4-devel tar wget
+    
+.. Install the required development packages for host-tools sources::
 
-.. Install the required development packages for host-tools sources:
+    $ sudo dnf install libusb-devel
+    
+Clean up installation::
 
-    $ sudo pacman -S libusb
-
-.. Add a missing symbolic link:
-
-    $ sudo ln -sf /usr/include/libusb-1.0/libusb.h /usr/include/usb.h
-
+    $ sudo yum autoremove
+    $ sudo yum clean all
+  
 Clone the latest OpenDaVINCI sources from https://github.com/se-research/OpenDaVINCI or download
 the latest OpenDaVINCI sources as zip file: https://github.com/se-research/OpenDaVINCI/archive/master.zip.
 
