@@ -49,6 +49,7 @@ EOF
 
 chmod 755 /opt/OpenDaVINCI.build/build.sh
 chown $BUILD_AS:$BUILD_AS /opt/OpenDaVINCI.build/build.sh
+chown -R $BUILD_AS:$BUILD_AS /opt
 
 su -m `getent passwd 1000|cut -f1 -d":"` -c /opt/OpenDaVINCI.build/build.sh
 
