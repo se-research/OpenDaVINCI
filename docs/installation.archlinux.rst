@@ -7,9 +7,15 @@ Download and install ArchLinux and install using the following instructions: htt
 
     $ pacman -S net-tools openssh sudo
 
-Install some core packages::
+Update the keys and the package database::
 
-    # sudo pacman -S net-tools
+	$ pacman-key --init
+	$ yes | pacman --noconfirm -Sc
+	$ yes | pacman --noconfirm -Sy pacman
+	$ pacman-db-upgrade
+	$ yes | pacman --noconfirm -S archlinux-keyring
+	$ pacman-key --init
+	$ yes | pacman --noconfirm -Syu
 
 Install OpenDaVINCI dependencies::
 
