@@ -10,10 +10,6 @@ Install OpenDaVINCI dependencies::
 
     $ sudo zypper --non-interactive --no-gpg-checks install ant ant-junit boost-devel cmake git freeglut-devel gcc gcc-c++ iproute2 make python opencv-devel psmisc libqt4-devel qwt-devel wget
     
-.. Install required development packages for host-tools sources::
-
-    $ sudo zypper install libusb-devel
-    
 Clean up installation::
 
     $ sudo zypper clean

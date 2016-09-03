@@ -10,10 +10,6 @@ Install OpenDaVINCI dependencies::
 
     $ sudo yum -y install ant ant-junit automake boost-devel cmake freeglut-devel gcc gcc-c++ git python2 iproute kernel-devel make opencv-devel psmisc qt4-devel qwt5-qt4-devel tar wget 
     
-.. Install the required development packages for host-tools sources::
-
-    $ sudo dnf install libusb-devel
-    
 Clean up installation::
 
     $ sudo yum autoremove

@@ -11,10 +11,6 @@ Install OpenDaVINCI dependencies::
 
     $ sudo apt-get install -y --no-install-recommends ant build-essential cmake default-jre default-jdk freeglut3 freeglut3-dev git libboost-dev libopencv-dev libopencv-core-dev libopencv-highgui-dev libopencv-imgproc-dev libqt4-dev libqt4-opengl-dev libqwt5-qt4-dev libqwt5-qt4 qt4-dev-tools rpm psmisc wget
 
-.. Install development packages for host-tools sources::
-
-    $ sudo apt-get install libusb-dev
-
 Clean up installation::
 
     $ sudo apt-get clean
