@@ -3,17 +3,17 @@ Compiling OpenDaVINCI on Fedora 24
 
 Download and install Fedora 24 and install its latest package updates::
 
-    $ sudo yum -y update
-    $ sudo yum -y upgrade
+    $ sudo dnf -y update
+    $ sudo dnf -y upgrade
   
 Install OpenDaVINCI dependencies::
 
-    $ sudo yum -y install ant ant-junit automake boost-devel cmake freeglut-devel git python2 gcc gcc-c++ iproute kernel-devel make opencv-devel psmisc qt4-devel qwt5-qt4-devel tar wget
+    $ sudo dnf -y install ant ant-junit automake boost-devel cmake freeglut-devel git python2 gcc gcc-c++ iproute kernel-devel make opencv-devel psmisc qt4-devel qwt5-qt4-devel tar wget
     
 Clean up installation::
 
-    $ sudo yum autoremove
-    $ sudo yum clean all
+    $ sudo dnf autoremove
+    $ sudo dnf clean all
   
 Clone the latest OpenDaVINCI sources from https://github.com/se-research/OpenDaVINCI or download
 the latest OpenDaVINCI sources as zip file: https://github.com/se-research/OpenDaVINCI/archive/master.zip.
