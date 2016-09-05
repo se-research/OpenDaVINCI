@@ -3,25 +3,12 @@ Compiling OpenDaVINCI on Fedora 23
 
 Download and install Fedora 23 and install its latest package updates::
 
-    $ sudo dnf update
-    $ sudo dnf upgrade
-    $ sudo dnf distro-sync
+    $ sudo dnf -y update
+    $ sudo dnf -y upgrade
   
-Install the required development packages for OpenDaVINCI sources::
+Install OpenDaVINCI dependencies::
 
-    $ sudo dnf install cmake gcc gcc-c++ git
-    
-Install the required development packages for libodsimulation sources::
-
-    $ sudo dnf install freeglut qt4 boost boost-devel qt4-devel freeglut-devel opencv-devel qwt5-qt4-devel
-    
-.. Install the required development packages for host-tools sources::
-
-    $ sudo dnf install libusb-devel
-    
-Install the required development packages for the DataStructureGenerator sources::
-
-    $ sudo dnf install java-1.8.0-openjdk ant ant-junit
+    $ sudo dnf -y install ant ant-junit automake boost-devel cmake freeglut-devel git python2 gcc gcc-c++ iproute kernel-devel make opencv-devel psmisc qt4-devel qwt5-qt4-devel tar wget
     
 Clean up installation::
 

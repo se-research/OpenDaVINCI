@@ -1,19 +1,20 @@
-Compiling OpenDaVINCI on Fedora 21
-----------------------------------
+Compiling OpenDaVINCI on Debian Jessie
+-----------------------------------
 
-Download and install Fedora 21 and install its latest package updates::
+Download and install Debian Jessie and install its latest package updates::
 
-    $ sudo yum -y update
-    $ sudo yum -y upgrade
-  
+    $ sudo apt-get update -y
+    $ sudo apt-get upgrade -y
+    $ sudo apt-get dist-upgrade -y
+
 Install OpenDaVINCI dependencies::
 
-    $ sudo yum -y install ant ant-junit automake boost-devel cmake freeglut-devel gcc gcc-c++ git python2 iproute kernel-devel make opencv-devel psmisc qt4-devel qwt5-qt4-devel tar wget
-    
+    $ sudo apt-get install -y --no-install-recommends ant build-essential cmake default-jre default-jdk freeglut3 freeglut3-dev git libboost-dev libopencv-dev libopencv-core-dev libopencv-highgui-dev libopencv-imgproc-dev libqt4-dev libqt4-opengl-dev libqwt5-qt4-dev libqwt5-qt4 qt4-dev-tools rpm psmisc wget
+
 Clean up installation::
 
-    $ sudo yum autoremove
-    $ sudo yum clean all
+    $ sudo apt-get clean
+    $ sudo apt-get autoremove
 
 Clone the latest OpenDaVINCI sources from https://github.com/se-research/OpenDaVINCI or download
 the latest OpenDaVINCI sources as zip file: https://github.com/se-research/OpenDaVINCI/archive/master.zip.
