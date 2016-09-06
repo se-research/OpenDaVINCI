@@ -156,7 +156,7 @@ class RedirectorTest : public CxxTest::TestSuite,
             int dataWritten = 0, currentDataWritten = 0, maxWait = 5;
 
             // Send data.
-            TimeStamp ts1(0, 1);
+            TimeStamp ts1(0, 1, 2);
             Container c1(ts1);
             conference->send(c1);
 
@@ -169,7 +169,7 @@ class RedirectorTest : public CxxTest::TestSuite,
             dataWritten = currentDataWritten; 
 
 
-            TimeStamp ts2(1, 2);
+            TimeStamp ts2(1, 2, 3);
             Container c2(ts2);
             conference->send(c2);
 
@@ -181,7 +181,7 @@ class RedirectorTest : public CxxTest::TestSuite,
             }
             dataWritten = currentDataWritten; 
 
-            TimeStamp ts3(2, 3);
+            TimeStamp ts3(2, 3, 4);
             Container c3(ts3);
             conference->send(c3);
 
@@ -193,7 +193,7 @@ class RedirectorTest : public CxxTest::TestSuite,
             }
             dataWritten = currentDataWritten; 
 
-            TimeStamp ts4(3, 4);
+            TimeStamp ts4(3, 4, 5);
             Container c4(ts4);
             conference->send(c4);
 
@@ -205,7 +205,7 @@ class RedirectorTest : public CxxTest::TestSuite,
             }
             dataWritten = currentDataWritten; 
 
-            TimeStamp ts5(4, 5);
+            TimeStamp ts5(4, 5, 6);
             Container c5(ts5);
             conference->send(c5);
 

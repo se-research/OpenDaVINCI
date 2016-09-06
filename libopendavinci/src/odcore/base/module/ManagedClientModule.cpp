@@ -535,7 +535,7 @@ namespace odcore {
                 // Check whether our clock was already initialized (i.e. getSeconds() > 0).
                 if (m_time.now().getSeconds() < 1) {
                     // Set seconds of our virtual clock to the clock from supercomponents.
-                    m_time = odcontext::base::Clock(m_pulseMessage.getRealTimeFromSupercomponent().getSeconds(), 0);
+                    m_time = odcontext::base::Clock(m_pulseMessage.getRealTimeFromSupercomponent().getSeconds(), 0, 0);
                 }
 
                 // Increment the virtual time by the nominal value of the time slice

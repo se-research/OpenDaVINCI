@@ -18,6 +18,11 @@
  */
 
 #include <sys/time.h>
+#include <math.h>
+
+#ifdef HAVE_LINUX_RT
+    #include <time.h>
+#endif
 
 #include "opendavinci/odcore/wrapper/POSIX/POSIXTime.h"
 
@@ -27,11 +32,22 @@ namespace odcore {
 
             POSIXTime::POSIXTime() :
                 m_seconds(0),
-                m_partialMicroseconds(0) {
-                struct timeval t;
-                gettimeofday(&t, NULL);
-                m_seconds = t.tv_sec;
-                m_partialMicroseconds = t.tv_usec;
+                m_partialMicroseconds(0),
+                m_partialNanoseconds(0) {
+
+                #ifdef HAVE_LINUX_RT
+                    timespec t1;
+                    clock_gettime(CLOCK_REALTIME, &t1);
+                    m_seconds = t1.tv_sec;
+                    m_partialMicroseconds = trunc(t1.tv_nsec/1000);
+                    m_partialNanoseconds = t1.tv_nsec-(m_partialMicroseconds*1000);
+                #else
+                    struct timeval t;
+                    gettimeofday(&t, NULL);
+                    m_seconds = t.tv_sec;
+                    m_partialMicroseconds = t.tv_usec;
+                    m_partialNanoseconds = 0;
+                #endif
             }
 
             POSIXTime::~POSIXTime() {}
@@ -42,6 +58,10 @@ namespace odcore {
 
             int32_t POSIXTime::getPartialMicroseconds() const {
                 return m_partialMicroseconds;
+            }
+
+            int32_t POSIXTime::getPartialNanoseconds() const {
+                return m_partialNanoseconds;
             }
 
         }

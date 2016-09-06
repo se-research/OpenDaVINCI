@@ -139,7 +139,7 @@ class RecorderTest : public CxxTest::TestSuite,
             Thread::usleepFor(10000000);
 
             // Send data.
-            TimeStamp ts1(0, 1);
+            TimeStamp ts1(0, 1, 3);
             Container c1(ts1);
             conference->send(c1);
 
@@ -152,19 +152,19 @@ class RecorderTest : public CxxTest::TestSuite,
 
             Thread::usleepFor(100000);
 
-            TimeStamp ts2(1, 2);
+            TimeStamp ts2(1, 2, 3);
             Container c2(ts2);
             conference->send(c2);
 
             Thread::usleepFor(100000);
 
-            TimeStamp ts3(2, 3);
+            TimeStamp ts3(2, 3, 4);
             Container c3(ts3);
             conference->send(c3);
 
             Thread::usleepFor(100000);
 
-            TimeStamp ts4(3, 4);
+            TimeStamp ts4(3, 4, 5);
             Container c4(ts4);
             conference->send(c4);
 
@@ -177,7 +177,7 @@ class RecorderTest : public CxxTest::TestSuite,
 
             Thread::usleepFor(100000);
 
-            TimeStamp ts5(4, 5);
+            TimeStamp ts5(4, 5, 6);
             Container c5(ts5);
             conference->send(c5);
 

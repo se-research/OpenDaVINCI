@@ -534,7 +534,7 @@ class WGS84CoordinateTest : public CxxTest::TestSuite {
 
             WGS84Coordinate reference(latitude, WGS84Coordinate::NORTH, longitude, WGS84Coordinate::EAST);
 
-            TimeStamp ts(1240926174, 0);
+            TimeStamp ts(1240926174, 0, 0);
             GPRMC gprmc;
             gprmc.setTimeStamp(ts);
             gprmc.setCoordinate(reference);

@@ -60,8 +60,9 @@ namespace odcore {
                  *
                  * @param seconds Seconds.
                  * @param microseconds Microseconds.
+                 * @param nanoseconds Nanoseconds.
                  */
-                TimeStamp(const int32_t &seconds, const int32_t &microseconds);
+                TimeStamp(const int32_t &seconds, const int32_t &microseconds, const int32_t &nanoseconds);
 
                 virtual ~TimeStamp();
 
@@ -119,12 +120,28 @@ namespace odcore {
                 long toMicroseconds() const;
 
                 /**
+                 * This method converts the specified time into
+                 * nanoseconds.
+                 *
+                 * @return This time converted into nanoseconds.
+                 */
+                long toNanoseconds() const;
+
+                /**
                  * This method returns the fractional microseconds
                  * to the next full second.
                  *
                  * @return microseconds.
                  */
                 int32_t getFractionalMicroseconds() const;
+
+                /**
+                 * This method returns the fractional nanoseconds
+                 * to the next full second.
+                 *
+                 * @return nanoseconds.
+                 */
+                int32_t getFractionalNanoseconds() const;
 
                 /**
                  * This method returns the seconds.
@@ -214,6 +231,7 @@ namespace odcore {
             private:
                 int32_t m_seconds;
                 int32_t m_microseconds;
+                int32_t m_nanoseconds;
 
                 /**
                  * This method returns true if the given year is

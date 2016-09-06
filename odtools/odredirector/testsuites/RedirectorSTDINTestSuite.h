@@ -146,27 +146,27 @@ class RedirectorTest : public CxxTest::TestSuite,
             fstream fout("testRedirectorPumpFromStdin.in", ios::binary | ios::out);
             TS_ASSERT(fout.good());
 
-            TimeStamp ts1(0, 1);
+            TimeStamp ts1(0, 1, 2);
             Container c1(ts1);
             fout << c1;
             fout.flush();
 
-            TimeStamp ts2(1, 2);
+            TimeStamp ts2(1, 2, 3);
             Container c2(ts2);
             fout << c2;
             fout.flush();
 
-            TimeStamp ts3(2, 3);
+            TimeStamp ts3(2, 3, 4);
             Container c3(ts3);
             fout << c3;
             fout.flush();
 
-            TimeStamp ts4(3, 4);
+            TimeStamp ts4(3, 4, 5);
             Container c4(ts4);
             fout << c4;
             fout.flush();
 
-            TimeStamp ts5(4, 5);
+            TimeStamp ts5(4, 5, 6);
             Container c5(ts5);
             fout << c5;
 

@@ -37,21 +37,25 @@ namespace odcore {
 
         TimeStamp::TimeStamp() :
             m_seconds(0),
-            m_microseconds(0) {
+            m_microseconds(0),
+            m_nanoseconds(0) {
             std::shared_ptr<odcore::wrapper::Time> time(odcore::wrapper::TimeFactory::getInstance().now());
             if (time.get()) {
                 m_seconds = time->getSeconds();
                 m_microseconds = time->getPartialMicroseconds();
+                m_nanoseconds = time->getPartialNanoseconds();
             }
         }
 
-        TimeStamp::TimeStamp(const int32_t &seconds, const int32_t &microSeconds) :
+        TimeStamp::TimeStamp(const int32_t &seconds, const int32_t &microSeconds, const int32_t &nanoSeconds) :
             m_seconds(seconds),
-            m_microseconds(microSeconds) {}
+            m_microseconds(microSeconds),
+            m_nanoseconds(nanoSeconds) {}
 
         TimeStamp::TimeStamp(const string &ddmmyyyyhhmmss) :
             m_seconds(0),
-            m_microseconds(0) {
+            m_microseconds(0),
+            m_nanoseconds(0) {
             if (ddmmyyyyhhmmss.size() == 14) {
                 stringstream dataDD;
                 dataDD.str(ddmmyyyyhhmmss.substr(0, 2));
@@ -140,38 +144,53 @@ namespace odcore {
         TimeStamp::TimeStamp(const TimeStamp &obj) :
             SerializableData(),
             m_seconds(obj.m_seconds),
-            m_microseconds(obj.m_microseconds) {}
+            m_microseconds(obj.m_microseconds),
+            m_nanoseconds(obj.m_nanoseconds) {}
 
         TimeStamp::~TimeStamp() {}
 
         TimeStamp& TimeStamp::operator=(const TimeStamp &obj) {
             m_seconds = obj.m_seconds;
             m_microseconds = obj.m_microseconds;
+            m_nanoseconds = obj.m_nanoseconds;
             return (*this);
         }
 
         TimeStamp TimeStamp::operator+(const TimeStamp & t) const {
             int32_t sumSeconds = m_seconds + t.getSeconds();
             int32_t sumMicroseconds = m_microseconds + t.getFractionalMicroseconds();
+            int32_t sumNanoseconds = m_nanoseconds + t.getFractionalNanoseconds();
+
+            while (sumNanoseconds >= 1000L) {
+                sumMicroseconds++;
+                sumNanoseconds -= 1000L;
+            }
 
             while (sumMicroseconds > 1000000L) {
                 sumSeconds++;
                 sumMicroseconds -= 1000000L;
             }
 
-            return TimeStamp(sumSeconds, sumMicroseconds);
+            return TimeStamp(sumSeconds, sumMicroseconds, sumNanoseconds);
         }
 
         TimeStamp TimeStamp::operator-(const TimeStamp & t) const {
             int32_t deltaSeconds = m_seconds - t.getSeconds();
             int32_t deltaMicroseconds = m_microseconds - t.getFractionalMicroseconds();
+            int32_t deltaNanoseconds = m_nanoseconds - t.getFractionalNanoseconds();
 
+            while (deltaNanoseconds < 0) {
+                deltaMicroseconds--;
+                deltaNanoseconds += 1000L;
+            }
+            
             while (deltaMicroseconds < 0) {
                 deltaSeconds--;
                 deltaMicroseconds += 1000000L;
             }
 
-            return TimeStamp(deltaSeconds, deltaMicroseconds);
+
+            return TimeStamp(deltaSeconds, deltaMicroseconds, deltaNanoseconds);
         }
 
         bool TimeStamp::operator==(const TimeStamp& t) const {
@@ -206,8 +225,16 @@ namespace odcore {
             return getSeconds() * 1000000L + getFractionalMicroseconds();
         }
 
+        long TimeStamp::toNanoseconds() const {
+            return getSeconds() * 1000000000L + (getFractionalMicroseconds() * 1000L + getFractionalNanoseconds());
+        }
+
         int32_t TimeStamp::getFractionalMicroseconds() const {
             return m_microseconds;
+        }
+
+        int32_t TimeStamp::getFractionalNanoseconds() const {
+            return m_nanoseconds;
         }
 
         int32_t TimeStamp::getSeconds() const {
@@ -421,7 +448,11 @@ namespace odcore {
 
         const string TimeStamp::toString() const {
             stringstream s;
-            s << m_seconds << "s/" << m_microseconds << "us.";
+            #ifdef HAVE_LINUX_RT
+                s << m_seconds << "s/" << m_microseconds << "us./" << m_nanoseconds << "ns.";
+            #else
+                s << m_seconds << "s/" << m_microseconds << "us.";
+            #endif
             return s.str();
         }
 
@@ -441,6 +472,9 @@ namespace odcore {
 
             s->write(2, m_microseconds);
 
+            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('n', 'a', 'n') >::RESULT,
+                    m_nanoseconds);
+
             return out;
         }
 
@@ -452,6 +486,9 @@ namespace odcore {
             d->read(1, m_seconds);
 
             d->read(2, m_microseconds);
+
+            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('n', 'a', 'n') >::RESULT,
+                   m_nanoseconds);
 
             return in;
         }

@@ -39,7 +39,7 @@ namespace odcontext {
                  * @param s Seconds.
                  * @param ps Partial microseconds.
                  */
-                Clock(const uint32_t &s, const uint32_t &ps);
+                Clock(const uint32_t &s, const uint32_t &ps, const uint32_t &ns);
 
                 /**
                  * Copy constructor.

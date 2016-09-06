@@ -63,9 +63,12 @@ namespace odcore {
 
                     virtual int32_t getPartialMicroseconds() const;
 
+                    virtual int32_t getPartialNanoseconds() const;
+
                 private:
                     int32_t m_seconds;
                     int32_t m_partialMicroseconds;
+                    int32_t m_partialNanoseconds;
             };
 
         }

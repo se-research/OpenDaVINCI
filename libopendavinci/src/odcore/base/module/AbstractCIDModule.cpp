@@ -169,7 +169,7 @@ namespace odcore {
                     // Suspend this thread to the beginning of the secondsIncrement-th full second only
                     // if we are not executed with realtime flag because ManagedClientModule will do
                     // that for us.
-                    Thread::usleepUntil(odcore::data::TimeStamp(odcore::data::TimeStamp().getSeconds() + secondsIncrement, 0));
+                    Thread::usleepUntil(odcore::data::TimeStamp(odcore::data::TimeStamp().getSeconds() + secondsIncrement, 0, 0));
                 }
             }
 

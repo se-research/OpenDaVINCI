@@ -47,7 +47,7 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode TimeTriggeredSender::b
     uint32_t i = 0;
     while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
         cout << "Sending " << i << "-th time stamp data...";
-        TimeStamp ts(i, 2*i++);
+        TimeStamp ts(i, 2*i++, 0);
         Container c(ts);
         getConference().send(c);
         cout << "done." << endl;

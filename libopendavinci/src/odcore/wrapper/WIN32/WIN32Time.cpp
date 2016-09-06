@@ -28,7 +28,8 @@ namespace odcore {
 
             WIN32Time::WIN32Time() :
                 m_seconds(0),
-                m_partialMicroseconds(0) {
+                m_partialMicroseconds(0),
+                m_partialNanoseconds(0) {
                 std::chrono::time_point<std::chrono::system_clock> t(std::chrono::system_clock::now());
                 auto duration = t.time_since_epoch();
 
@@ -43,6 +44,7 @@ namespace odcore {
                 // The following calculations ensure identical behavior to the gettimeofday call.
                 m_seconds = s.count();
                 m_partialMicroseconds = partial_us.count();
+                m_partialNanoseconds = 0;
             }
 
             WIN32Time::~WIN32Time() {}
@@ -53,6 +55,10 @@ namespace odcore {
 
             int32_t WIN32Time::getPartialMicroseconds() const {
                 return m_partialMicroseconds;
+            }
+
+            int32_t WIN32Time::getPartialNanoseconds() const {
+                return m_partialNanoseconds;
             }
 
         }

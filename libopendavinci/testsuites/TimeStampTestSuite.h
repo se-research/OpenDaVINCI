@@ -30,43 +30,52 @@ using namespace odcore::data;
 class TimeStampTest : public CxxTest::TestSuite {
     public:
         void testAdd1() {
-            TimeStamp ts1(1, 2);
-            TimeStamp ts2(3, 4);
+            TimeStamp ts1(1, 2, 3);
+            TimeStamp ts2(3, 4, 5);
             TimeStamp ts = ts1 + ts2;
 
             TS_ASSERT(ts.getSecond() == 4);
             TS_ASSERT(ts.getFractionalMicroseconds() == 6);
+            TS_ASSERT(ts.getFractionalNanoseconds() == 8);
         }
 
         void testAdd2() {
-            TimeStamp ts1(1, 900*1000);
-            TimeStamp ts2(3, 200*1000);
+            TimeStamp ts1(1, 800*1000, 190*1000*1000+50);
+            TimeStamp ts2(3, 100*1000, 10*1000*1000+10);
             TimeStamp ts = ts1 + ts2;
 
             TS_ASSERT(ts.getSecond() == 5);
             TS_ASSERT(ts.getFractionalMicroseconds() == 100*1000);
+            TS_ASSERT(ts.getFractionalNanoseconds() == 60);
         }
 
         void testSub1() {
-            TimeStamp ts1(3, 5);
-            TimeStamp ts2(1, 4);
+            TimeStamp ts1(3, 5, 7);
+            TimeStamp ts2(1, 4, 5);
             TimeStamp ts = ts1 - ts2;
 
             TS_ASSERT(ts.getSecond() == 2);
             TS_ASSERT(ts.getFractionalMicroseconds() == 1);
+            TS_ASSERT(ts.getFractionalNanoseconds() == 2);
         }
 
         void testSub2() {
-            TimeStamp ts1(3, 4);
-            TimeStamp ts2(1, 5);
+            TimeStamp ts1(3, 4, 4);
+            TimeStamp ts2(1, 5, 5);
             TimeStamp ts = ts1 - ts2;
 
+            cout << endl;
+            cout << ts.getSecond() << endl;
+            cout << ts.getFractionalMicroseconds() << endl;
+            cout << ts.getFractionalNanoseconds() << endl;
+
             TS_ASSERT(ts.getSecond() == 1);
-            TS_ASSERT(ts.getFractionalMicroseconds() == 999999);
+            TS_ASSERT(ts.getFractionalMicroseconds() == 999998);
+            TS_ASSERT(ts.getFractionalNanoseconds() == 999);
         }
 
         void testTimeStamp28042009() {
-            TimeStamp ts(1240926174, 1234);
+            TimeStamp ts(1240926174, 1234, 0);
 
             TS_ASSERT(ts.getDay() == 28);
             TS_ASSERT(ts.getMonth() == 4);

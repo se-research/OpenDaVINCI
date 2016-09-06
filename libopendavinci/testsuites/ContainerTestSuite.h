@@ -35,7 +35,7 @@ using namespace odcore::data;
 class ContainerTest : public CxxTest::TestSuite {
     public:
         void testTimeStampData() {
-            TimeStamp ts(1, -2);
+            TimeStamp ts(1, -2, 0);
 
             stringstream s;
             s << ts;
@@ -48,7 +48,7 @@ class ContainerTest : public CxxTest::TestSuite {
         }
 
         void testContainerData() {
-            TimeStamp ts(12345, -3000);
+            TimeStamp ts(12345, -3000, 0);
             Container c(ts);
 
             stringstream s;
@@ -84,7 +84,7 @@ class ContainerTest : public CxxTest::TestSuite {
         }
 
         void testSimpleContainerConstructor() {
-            TimeStamp ts(1, 2);
+            TimeStamp ts(1, 2, 0);
             Container c(ts);
 
             stringstream s;
@@ -102,7 +102,7 @@ class ContainerTest : public CxxTest::TestSuite {
         }
 
         void testInt32ContainerConstructor() {
-            TimeStamp ts(3, 4);
+            TimeStamp ts(3, 4, 0);
             Container c(ts, ts.getID());
 
             stringstream s;

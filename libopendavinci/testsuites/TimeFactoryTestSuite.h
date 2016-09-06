@@ -52,16 +52,18 @@ class TimeFactoryTestDisableTimeFactory : public odcore::wrapper::TimeFactory {
 class TimeFactoryTest : public CxxTest::TestSuite {
     public:
         void testCopyControlledTime() {
-            ControlledTime t1(1, 2);
+            ControlledTime t1(1, 2, 3);
             ControlledTime t2(t1);
             ControlledTime t3;
             t3 = t2;
 
             TS_ASSERT(t1.getSeconds() == t2.getSeconds());
             TS_ASSERT(t1.getPartialMicroseconds() == t2.getPartialMicroseconds());
+            TS_ASSERT(t1.getPartialNanoseconds() == t2.getPartialNanoseconds());
 
             TS_ASSERT(t2.getSeconds() == t3.getSeconds());
             TS_ASSERT(t2.getPartialMicroseconds() == t3.getPartialMicroseconds());
+            TS_ASSERT(t2.getPartialNanoseconds() == t3.getPartialNanoseconds());
         }
 
         void testControlledTimeFactoryTestSuite() {
@@ -91,15 +93,19 @@ class TimeFactoryTest : public CxxTest::TestSuite {
             TS_ASSERT(ts2.getSeconds() == 0);
             TS_ASSERT(ts2.getFractionalMicroseconds() == 0);
             TS_ASSERT(ts2.toMicroseconds() == 0);
+            TS_ASSERT(ts2.toNanoseconds() == 0);
 
             // Modify global time.
-            controlledTF->setTime(ControlledTime(1, 2));
+            controlledTF->setTime(ControlledTime(1, 2, 3));
 
             // Get updated time.
             TimeStamp ts3;
             TS_ASSERT(ts3.getSeconds() == 1);
             TS_ASSERT(ts3.getFractionalMicroseconds() == 2);
+            TS_ASSERT(ts3.getFractionalNanoseconds() == 3);
             TS_ASSERT(ts3.toMicroseconds() == 1000002);
+            TS_ASSERT(ts3.toNanoseconds() == 1000002003);
+
 
             // Destroy existing TimeFactory. At this time, controlledTF gets destroyed.
             OPENDAVINCI_CORE_DELETE_POINTER(tf2);
@@ -111,6 +117,7 @@ class TimeFactoryTest : public CxxTest::TestSuite {
             TimeStamp ts4;
             TS_ASSERT(ts4.getSeconds() > 1000);
             TS_ASSERT(!(ts.toMicroseconds() > ts4.toMicroseconds()));
+            TS_ASSERT(!(ts.toNanoseconds() > ts4.toNanoseconds()));
         }
 };
 

@@ -77,7 +77,7 @@ class FieldTest : public CxxTest::TestSuite {
             f1.setLongFieldName("testField.myTimeStamp");
             f1.setShortFieldName("myTimeStamp");
             f1.setFieldDataType(odcore::data::reflection::AbstractField::SERIALIZABLE_T);
-            f1.setValue(TimeStamp(1, 2));
+            f1.setValue(TimeStamp(1, 2, 3));
 
             TS_ASSERT(f1.getFieldIdentifier() == 3);
             TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(f1.getLongFieldName(), "testField.myTimeStamp"));
@@ -87,6 +87,7 @@ class FieldTest : public CxxTest::TestSuite {
             TimeStamp ts = f1.getValue();
             TS_ASSERT(ts.getSeconds() == 1);
             TS_ASSERT(ts.getFractionalMicroseconds() == 2);
+            TS_ASSERT(ts.getFractionalNanoseconds() == 3);
             TS_ASSERT(f1.getSize() == -1);
         }
 };

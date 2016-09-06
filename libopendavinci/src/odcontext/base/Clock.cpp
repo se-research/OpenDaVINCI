@@ -25,8 +25,8 @@ namespace odcontext {
         Clock::Clock() :
             m_theTime() {}
 
-        Clock::Clock(const uint32_t &s, const uint32_t &ps) :
-            m_theTime(s, ps) {}
+        Clock::Clock(const uint32_t &s, const uint32_t &ps, const uint32_t &ns) :
+            m_theTime(s, ps, ns) {}
 
         Clock::Clock(const Clock &obj) :
             m_theTime(obj.now()) {}

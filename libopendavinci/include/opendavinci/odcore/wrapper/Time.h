@@ -51,6 +51,14 @@ namespace odcore {
                  */
                 virtual int32_t getPartialMicroseconds() const = 0;
 
+                /**
+                 * This method returns the partial nanoseconds from
+                 * the next full second.
+                 *
+                 * @return Partial nanoseconds from the next full second.
+                 */
+                virtual int32_t getPartialNanoseconds() const = 0;
+
         };
 
     }

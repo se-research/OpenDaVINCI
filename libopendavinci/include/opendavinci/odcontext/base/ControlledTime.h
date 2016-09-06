@@ -39,7 +39,7 @@ namespace odcontext {
                  * @param s Seconds.
                  * @param ps Partial microseconds.
                  */
-                ControlledTime(const uint32_t &s, const uint32_t &ps);
+                ControlledTime(const uint32_t &s, const uint32_t &ps, const uint32_t &ns);
 
                 /**
                  * Copy constructor.
@@ -62,6 +62,8 @@ namespace odcontext {
 
                 virtual int32_t getPartialMicroseconds() const;
 
+                virtual int32_t getPartialNanoseconds() const;
+
                 /**
                  * This method sets the seconds.
                  *
@@ -76,9 +78,17 @@ namespace odcontext {
                  */
                 void setPartialMicroseconds(const int32_t &partialMS);
 
+                /**
+                 * This method sets the partial nanoseconds.
+                 *
+                 * @param partialNS Partial nanoseconds.
+                 */
+                void setPartialNanoseconds(const int32_t &partialNS);
+
             private:
                 int32_t m_seconds;
                 int32_t m_partialMicroseconds;
+                int32_t m_partialNanoseconds;
         };
 
     }

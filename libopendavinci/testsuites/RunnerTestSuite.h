@@ -46,22 +46,22 @@ class RunnerTest : public CxxTest::TestSuite {
     public:
         void testFrequencies() {
             RunnerTestApp r1(1);
-            TS_ASSERT(r1.needsExecution(ControlledTime(0, 0)));
-            TS_ASSERT(r1.needsExecution(ControlledTime(1, 0)));
-            TS_ASSERT(!r1.needsExecution(ControlledTime(1, 999999)));
+            TS_ASSERT(r1.needsExecution(ControlledTime(0, 0, 0)));
+            TS_ASSERT(r1.needsExecution(ControlledTime(1, 0, 0)));
+            TS_ASSERT(!r1.needsExecution(ControlledTime(1, 999999, 0)));
 
             RunnerTestApp r2(2);
-            TS_ASSERT(r2.needsExecution(ControlledTime(0, 0)));
-            TS_ASSERT(r2.needsExecution(ControlledTime(1, 0)));
-            TS_ASSERT(r2.needsExecution(ControlledTime(1, 500000)));
-            TS_ASSERT(!r2.needsExecution(ControlledTime(1, 999999)));
+            TS_ASSERT(r2.needsExecution(ControlledTime(0, 0, 0)));
+            TS_ASSERT(r2.needsExecution(ControlledTime(1, 0, 0)));
+            TS_ASSERT(r2.needsExecution(ControlledTime(1, 500000, 0)));
+            TS_ASSERT(!r2.needsExecution(ControlledTime(1, 999999, 0)));
 
             RunnerTestApp r3(0.5);
-            TS_ASSERT(r3.needsExecution(ControlledTime(0, 0)));
-            TS_ASSERT(!r3.needsExecution(ControlledTime(1, 0)));
-            TS_ASSERT(!r3.needsExecution(ControlledTime(1, 500000)));
-            TS_ASSERT(!r3.needsExecution(ControlledTime(1, 999999)));
-            TS_ASSERT(r3.needsExecution(ControlledTime(2, 0)));
+            TS_ASSERT(r3.needsExecution(ControlledTime(0, 0, 0)));
+            TS_ASSERT(!r3.needsExecution(ControlledTime(1, 0, 0)));
+            TS_ASSERT(!r3.needsExecution(ControlledTime(1, 500000, 0)));
+            TS_ASSERT(!r3.needsExecution(ControlledTime(1, 999999, 0)));
+            TS_ASSERT(r3.needsExecution(ControlledTime(2, 0, 0)));
         }
 };
 

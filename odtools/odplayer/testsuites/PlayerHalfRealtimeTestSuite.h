@@ -125,27 +125,27 @@ class PlayerModuleTest : public CxxTest::TestSuite,
             fstream fout("PlayerModuleTest.rec", ios::out | ios::binary | ios::trunc);
 
             // Write data.
-            TimeStamp ts1(0, 0);
+            TimeStamp ts1(0, 0, 0);
             Container c1(ts1);
             c1.setReceivedTimeStamp(ts1);
             fout << c1;
 
-            TimeStamp ts2(1, 0);
+            TimeStamp ts2(1, 0, 0);
             Container c2(ts2);
             c2.setReceivedTimeStamp(ts2);
             fout << c2;
 
-            TimeStamp ts3(2, 0);
+            TimeStamp ts3(2, 0, 0);
             Container c3(ts3);
             c3.setReceivedTimeStamp(ts3);
             fout << c3;
 
-            TimeStamp ts4(3, 0);
+            TimeStamp ts4(3, 0, 0);
             Container c4(ts4);
             c4.setReceivedTimeStamp(ts4);
             fout << c4;
 
-            TimeStamp ts5(4, 0);
+            TimeStamp ts5(4, 0, 0);
             Container c5(ts5);
             c5.setReceivedTimeStamp(ts5);
             fout << c5;

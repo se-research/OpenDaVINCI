@@ -25,23 +25,27 @@ namespace odcontext {
         ControlledTime::ControlledTime() :
             Time(),
             m_seconds(0),
-            m_partialMicroseconds(0) {}
+            m_partialMicroseconds(0),
+            m_partialNanoseconds(0) {}
 
-        ControlledTime::ControlledTime(const uint32_t &s, const uint32_t &ps) :
+        ControlledTime::ControlledTime(const uint32_t &s, const uint32_t &ps, const uint32_t &ns) :
             Time(),
             m_seconds(s),
-            m_partialMicroseconds(ps) {}
+            m_partialMicroseconds(ps),
+            m_partialNanoseconds(ns) {}
 
         ControlledTime::ControlledTime(const ControlledTime &ct) :
             Time(ct),
             m_seconds(ct.getSeconds()),
-            m_partialMicroseconds(ct.getPartialMicroseconds()) {}
+            m_partialMicroseconds(ct.getPartialMicroseconds()),
+            m_partialNanoseconds(ct.getPartialNanoseconds()) {}
 
         ControlledTime::~ControlledTime() {}
 
         ControlledTime& ControlledTime::operator=(const ControlledTime &ct) {
             setSeconds(ct.getSeconds());
             setPartialMicroseconds(ct.getPartialMicroseconds());
+            setPartialNanoseconds(ct.getPartialNanoseconds());
 
             return (*this);
         }
@@ -54,12 +58,20 @@ namespace odcontext {
             return m_partialMicroseconds;
         }
 
+        int32_t ControlledTime::getPartialNanoseconds() const {
+            return m_partialNanoseconds;
+        }
+
         void ControlledTime::setSeconds(const int32_t &s) {
             m_seconds = s;
         }
 
         void ControlledTime::setPartialMicroseconds(const int32_t &partialMS) {
             m_partialMicroseconds = partialMS;
+        }
+
+        void ControlledTime::setPartialNanoseconds(const int32_t &partialNS) {
+            m_partialNanoseconds = partialNS;
         }
 
     }

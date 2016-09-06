@@ -367,7 +367,7 @@ class ControlFlowTest : public CxxTest::TestSuite,
                 clog << "Do some computation." << endl;
 
                 // Send to application.
-                TimeStamp tsSendFromSimulatorToContainerConference(i, i+1);
+                TimeStamp tsSendFromSimulatorToContainerConference(i, i+1, i+2);
                 Container c = Container(tsSendFromSimulatorToContainerConference);
                 controlledCF->sendToSystemsUnderTest(c);
 

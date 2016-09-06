@@ -47,6 +47,7 @@ namespace odcontext {
             Lock l(m_timeMutex);
             m_time.setSeconds(ct.getSeconds());
             m_time.setPartialMicroseconds(ct.getPartialMicroseconds());
+            m_time.setPartialNanoseconds(ct.getPartialNanoseconds());
         }
 
     }

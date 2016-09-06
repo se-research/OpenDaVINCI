@@ -51,13 +51,13 @@ class PulseAckContainersTest : public CxxTest::TestSuite {
         }
 
         void testPulseContainers() {
-            TimeStamp ts1(1,2);
+            TimeStamp ts1(1,2,3);
             Container c1(ts1);
 
-            TimeStamp ts2(3,4);
+            TimeStamp ts2(3,4,5);
             Container c2(ts2);
 
-            TimeStamp ts3(5,6);
+            TimeStamp ts3(5,6,7);
             Container c3(ts3);
 
             PulseMessage pm;
@@ -97,13 +97,13 @@ class PulseAckContainersTest : public CxxTest::TestSuite {
         }
 
         void testPulseContainersSetValues() {
-            TimeStamp ts1(1,2);
+            TimeStamp ts1(1,2,3);
             Container c1(ts1);
 
-            TimeStamp ts2(3,4);
+            TimeStamp ts2(3,4,5);
             Container c2(ts2);
 
-            TimeStamp ts3(5,6);
+            TimeStamp ts3(5,6,7);
             Container c3(ts3);
 
             vector<Container> l;
@@ -155,13 +155,13 @@ class PulseAckContainersTest : public CxxTest::TestSuite {
         }
 
         void testPulseAckContainers() {
-            TimeStamp ts1(1,2);
+            TimeStamp ts1(1,2,3);
             Container c1(ts1);
 
-            TimeStamp ts2(3,4);
+            TimeStamp ts2(3,4,5);
             Container c2(ts2);
 
-            TimeStamp ts3(5,6);
+            TimeStamp ts3(5,6,7);
             Container c3(ts3);
 
             PulseAckContainersMessage pac;
@@ -201,13 +201,13 @@ class PulseAckContainersTest : public CxxTest::TestSuite {
         }
 
         void testPulseAckContainers_from_list() {
-            TimeStamp ts1(1,2);
+            TimeStamp ts1(1,2,3);
             Container c1(ts1);
 
-            TimeStamp ts2(3,4);
+            TimeStamp ts2(3,4,5);
             Container c2(ts2);
 
-            TimeStamp ts3(5,6);
+            TimeStamp ts3(5,6,7);
             Container c3(ts3);
 
             vector<Container> l;

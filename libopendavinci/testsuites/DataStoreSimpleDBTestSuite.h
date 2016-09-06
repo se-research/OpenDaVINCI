@@ -194,7 +194,7 @@ class DataStoreTest : public CxxTest::TestSuite {
         void testDataStore() {
             KeyValueDataStore *ds = new KeyValueDataStore(std::shared_ptr<odcore::wrapper::KeyValueDatabase>(new MySimpleDB()));
             int32_t key1 = 1;
-            TimeStamp ts1(0, 35);
+            TimeStamp ts1(0, 35, 0);
             Container v1(ts1);
             ds->put(key1, v1);
 

@@ -110,7 +110,7 @@ namespace odsupercomponent {
         const odcore::data::TimeStamp pm_org_ts = pm.getRealTimeFromSupercomponent();
 
         for (iter = m_modules.begin(); iter != m_modules.end(); ++iter) {
-            odcore::data::TimeStamp ts(0, shift * connectedModulesCounter);
+            odcore::data::TimeStamp ts(0, shift * connectedModulesCounter, 0);
             odcore::data::TimeStamp shiftedTime = pm_org_ts + ts;
 
             pm_shifted.setRealTimeFromSupercomponent(shiftedTime);

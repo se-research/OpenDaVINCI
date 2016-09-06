@@ -139,7 +139,7 @@ class ConferenceFactoryTest : public CxxTest::TestSuite {
             ConferenceFactoryTestContainerListenerForContainerFromSystemsUnderTest cftctlfcfsut;
             controlledCF->add(&cftctlfcfsut);
 
-            TimeStamp tsSendFromSimulatorToContainerConference(1, 2);
+            TimeStamp tsSendFromSimulatorToContainerConference(1, 2, 3);
             Container c = Container(tsSendFromSimulatorToContainerConference);
             controlledCF->sendToSystemsUnderTest(c);
 
@@ -150,7 +150,7 @@ class ConferenceFactoryTest : public CxxTest::TestSuite {
 
             controlledConferenceForSystemUnderTest->getBlockableContainerReceiver().setNextContainerAllowed(true);
             // Send some data from application to controlled container conference.
-            TimeStamp tsSendFromApplicationToContainerConference(3, 4);
+            TimeStamp tsSendFromApplicationToContainerConference(3, 4, 5);
             c = Container(tsSendFromApplicationToContainerConference);
             controlledConferenceForSystemUnderTest->send(c);
             controlledConferenceForSystemUnderTest->getBlockableContainerReceiver().setNextContainerAllowed(false);

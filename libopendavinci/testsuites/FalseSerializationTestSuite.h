@@ -122,7 +122,7 @@ class FalseSerializationTest : public CxxTest::TestSuite {
         void testTimeStamp35() {
             // This test case yielded an error if the payload contains a '#' sign in the last few bytes.
             stringstream sstr;
-            TimeStamp ts1(0, 35);
+            TimeStamp ts1(0, 35, 0);
             sstr << ts1;
 
             TimeStamp ts2;
