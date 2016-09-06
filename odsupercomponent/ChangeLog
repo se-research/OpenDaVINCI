@@ -1,3 +1,4 @@
+4.0.6 - Compile fixes ARM and MacOS
 4.0.5 - Compile fixes for ARM
 4.0.4 - Fixing Docker-ized build for different users
 4.0.3 - Fixing Docker image creation
