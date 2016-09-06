@@ -3,22 +3,22 @@ Compiling OpenDaVINCI on Ubuntu 16.04
 
 Download and install Ubuntu 16.04 and install its latest package updates::
 
-    $ sudo apt-get update
-    $ sudo apt-get upgrade
-    $ sudo apt-get dist-upgrade
+    $ sudo apt-get update -y
+    $ sudo apt-get upgrade -y
+    $ sudo apt-get dist-upgrade -y
 
-Install development packages for OpenDaVINCI sources::
+Install OpenDaVINCI dependencies::
 
-    $ sudo apt-get install --no-install-recommends build-essential python cmake git
-
-Install development packages for libodsimulation sources::
-
-    $ sudo apt-get install --no-install-recommends libpopt-dev libopencv-dev ant ant-optional openjdk-8-jdk-headless libqt4-dev rpm libboost-dev freeglut3-dev libqwt5-qt4-dev libqt4-opengl-dev
+    $ sudo apt-get install -y --no-install-recommends ant build-essential cmake default-jre default-jdk freeglut3 freeglut3-dev git libboost-dev libopencv-dev libopencv-core-dev libopencv-highgui-dev libopencv-imgproc-dev libpopt-dev libqt4-dev libqt4-opengl-dev libqwt5-qt4-dev libqwt5-qt4 qt4-dev-tools rpm psmisc wget
 
 Clean up installation::
 
     $ sudo apt-get clean
     $ sudo apt-get autoremove
+
+Install ffmpeg::
+
+    $ sudo apt-get install -y --no-install-recommends ffmpeg   
 
 Clone the latest OpenDaVINCI sources from https://github.com/se-research/OpenDaVINCI or download
 the latest OpenDaVINCI sources as zip file: https://github.com/se-research/OpenDaVINCI/archive/master.zip.

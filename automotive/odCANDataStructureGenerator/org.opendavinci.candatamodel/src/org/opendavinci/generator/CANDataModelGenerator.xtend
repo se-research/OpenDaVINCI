@@ -524,7 +524,7 @@ namespace canmapping {
 			var String[] chunks=mapping.mappings.get(i).cansignalname.split('\\.');
 			var String capitalizedName=""
 			for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
-			result+='\t'+'\t'+"<<\" "+mapping.mappings.get(i).cansignalname.toString+" : \"<< m_"+capitalizedName.toFirstLower+"<<endl";
+			result+='\t'+'\t'+"<<\" "+mapping.mappings.get(i).cansignalname.toString+" : \"<< +m_"+capitalizedName.toFirstLower+" << endl";
 			i++;
 			if(iter.hasNext())result+='\n';
     	}}»

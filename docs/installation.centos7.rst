@@ -3,32 +3,12 @@ Compiling OpenDaVINCI on CentOS7
 
 Download and install CentOS 7 and install its latest package updates::
 
-    $ sudo yum update
-    $ sudo yum upgrade
-    $ sudo yum distro-sync
+    $ sudo yum -y update
+    $ sudo yum -y upgrade
 
-Install the required development packages for OpenDaVINCI sources::
+Install OpenDaVINCI dependencies::
 
-    $ sudo yum install cmake gcc gcc-c++ git net-tools
-
-Install the required development packages for libodsimulation sources::
-
-    $ sudo yum install freeglut qt4 boost boost-devel qt4-devel freeglut-devel opencv-devel
-
-Install qwt5-qt4 for OpenDLV sources::
-
-    $ sudo yum install wget
-    $ wget http://li.nux.ro/download/nux/dextop/el7/x86_64/qwt5-qt4-5.2.2-26.el7.nux.x86_64.rpm
-    $ wget http://li.nux.ro/download/nux/dextop/el7/x86_64/qwt5-qt4-devel-5.2.2-26.el7.nux.x86_64.rpm
-    $ sudo rpm --install qwt5*.rpm
-
-.. Install the required development packages for host-tools sources::
-
-    $ sudo yum install libusb-devel
-
-Install the required development packages for the DataStructureGenerator sources::
-
-    $sudo yum install java-1.8.0-openjdk ant ant-junit
+    $ sudo yum -y install ant ant-junit automake boost-devel cmake freeglut-devel gcc gcc-c++ git python27 iproute make opencv-devel psmisc qt4-devel qwt5-qt4-devel kernel-devel wget
 
 Clean up installation::
 

@@ -75,8 +75,6 @@ namespace cockpit {
             using namespace odcore::data;
             using namespace odcore::exceptions;
             using namespace odcore::io;
-            using namespace odcore::data;
-            using namespace opendlv::data::environment;
             using namespace opendlv::data::environment;
             using namespace opendlv::data::planning;
             using namespace opendlv::data::scenario;

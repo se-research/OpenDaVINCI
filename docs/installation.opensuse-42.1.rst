@@ -1,22 +1,19 @@
-Compiling OpenDaVINCI on ArchLinux
-----------------------------------
+Compiling OpenDaVINCI on OpenSuSE 42.1
+--------------------------------------
 
-Download and install ArchLinux and install using the following instructions: https://wiki.archlinux.org/index.php/Installation_guide
+Download and install openSuSE 42.1 and install its latest package updates::
 
-Update the keys and the package database::
-
-	$ pacman-key --init
-	$ yes | pacman --noconfirm -Sc
-	$ yes | pacman --noconfirm -Sy pacman
-	$ pacman-db-upgrade
-	$ yes | pacman --noconfirm -S archlinux-keyring
-	$ pacman-key --init
-	$ yes | pacman --noconfirm -Syu
-
+    $ sudo zypper --non-interactive --no-gpg-checks refresh
+    $ sudo zypper --non-interactive --no-gpg-checks update
+  
 Install OpenDaVINCI dependencies::
 
-    $ sudo pacman --no-confirm -S apache-ant jdk8-openjdk boost cmake ffmpeg2.8 freeglut gcc git junit make opencv python2 qt4 qwt5
+    $ sudo zypper --non-interactive --no-gpg-checks install ant ant-junit boost-devel cmake git freeglut-devel gcc gcc-c++ iproute2 make python opencv-devel psmisc libqt4-devel qwt-devel wget ffmpeg
+    
+Clean up installation::
 
+    $ sudo zypper clean
+  
 Clone the latest OpenDaVINCI sources from https://github.com/se-research/OpenDaVINCI or download
 the latest OpenDaVINCI sources as zip file: https://github.com/se-research/OpenDaVINCI/archive/master.zip.
 
