@@ -55,7 +55,7 @@ DOCKER_IMAGE_NAME_SHORT_NAME=$(BASE_IMAGE)-complete:latest
 
 ###############################################################################
 
-all: buildIncremental createDockerImage
+all: buildComplete createDockerImage
 
 ###############################################################################
 
