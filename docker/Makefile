@@ -27,6 +27,7 @@ CMAKE=$(shell which cmake)
 
 ###############################################################################
 # Determine Git-related setting.
+VERSION=v$(shell head -1 ../VERSION | cut -f1 -d" ")
 GIT_CURRENT_BRANCH=$(shell git rev-parse --abbrev-ref HEAD)
 GIT_HASH=$(shell git rev-parse --short HEAD)
 GIT_COMMITS_IN_CURRENT_BRANCH=$(shell git rev-list --count `git rev-parse --abbrev-ref HEAD`)
@@ -47,7 +48,7 @@ DOCKER_IMAGE_NAME=$(shell echo $(BASE_IMAGE) | cut -f2 -d"/")
 DOCKER_IMAGE_NAME_WITH_GIT_HASH=$(DOCKER_IMAGE_NAME)-$(GIT_HASH)
 DOCKER_NETWORK_NAME=nw_$(DOCKER_IMAGE_NAME_WITH_GIT_HASH)
 DOCKER_IMAGE_NAME_WITH_GIT_COMMITS_IN_CURRENT_BRANCH=$(shell echo $(BASE_IMAGE) | cut -f2 -d"/")-$(GIT_HASH):$(GIT_COMMITS_IN_CURRENT_BRANCH)
-DOCKER_IMAGE_NAME_SHORT_NAME=$(BASE_IMAGE)-complete:latest
+DOCKER_IMAGE_NAME_SHORT_NAME=$(BASE_IMAGE)-complete
 
 ###############################################################################
 
@@ -108,10 +109,12 @@ createDockerImage:
 	cat $(SOURCE_TREE_PATH)/docker/Dockerfile.template | sed -e $(DOCKERFILE_BASEIMAGE) > $(BUILD_PATH)/Dockerfile
 	echo "OpenDaVINCI.build" > $(BUILD_PATH)/.dockerignore
 	cd $(BUILD_PATH) && $(DOCKER) build -t seresearch/$(DOCKER_IMAGE_NAME_WITH_GIT_COMMITS_IN_CURRENT_BRANCH) . | tee $(BUILD_PATH)/OpenDaVINCI.build/build.log || exit 1
-	$(DOCKER) images | grep $$(tail -1 $(BUILD_PATH)/OpenDaVINCI.build/build.log | cut -f3 -d" ") | grep "latest" && exit 0 || $(DOCKER) tag $$(tail -1 $(BUILD_PATH)/OpenDaVINCI.build/build.log | cut -f3 -d" ") $(DOCKER_IMAGE_NAME_SHORT_NAME)
+	$(DOCKER) images | grep $$(tail -1 $(BUILD_PATH)/OpenDaVINCI.build/build.log | cut -f3 -d" ") | grep "latest" && exit 0 || $(DOCKER) tag $$(tail -1 $(BUILD_PATH)/OpenDaVINCI.build/build.log | cut -f3 -d" ") $(DOCKER_IMAGE_NAME_SHORT_NAME):latest
+	$(DOCKER) tag $(DOCKER_IMAGE_NAME_SHORT_NAME):latest $(DOCKER_IMAGE_NAME_SHORT_NAME):$(VERSION)
 
 ###############################################################################
 
 pushDockerImage: createDockerImage
-	$(DOCKER) push $(DOCKER_IMAGE_NAME_SHORT_NAME)
+	$(DOCKER) push $(DOCKER_IMAGE_NAME_SHORT_NAME):latest
+	$(DOCKER) push $(DOCKER_IMAGE_NAME_SHORT_NAME):$(VERSION)
 
