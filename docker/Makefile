@@ -52,11 +52,11 @@ DOCKER_IMAGE_NAME_SHORT_NAME=$(BASE_IMAGE)-complete
 
 ###############################################################################
 
-.PHONY: all buildComplete createDockerImage clean cleanAll cleanDocker removeExitedContainers removeNoneImagesFromDocker removeExistingImagesForBaseImageFromDocker
+.PHONY: all buildComplete createDockerImage clean cleanAll cleanDocker removeExitedContainers removeNoneImagesFromDocker removeExistingImagesForBaseImageFromDocker updateDockerBaseImage updateBuildComplete
 
 ###############################################################################
 
-all: buildComplete createDockerImage
+all: updateBuildComplete createDockerImage
 
 ###############################################################################
 
@@ -75,6 +75,9 @@ removeNoneImagesFromDocker:
 
 removeExistingImagesForBaseImageFromDocker:
 	$(DOCKER) rmi -f `$(DOCKER) images | grep $(BASE_IMAGE)- | tr -s " " ";" | cut -f3 -d";"` || exit 0
+
+updateDockerBaseImage:
+	$(DOCKER) pull $(BASE_IMAGE):$(BASE_IMAGE_VERSION)
 
 ###############################################################################
 define compile
@@ -96,6 +99,9 @@ $(BUILD_PATH)/OpenDaVINCI.build/build.incremental:
 	$(call compile)
 
 buildComplete:
+	$(call compile)
+
+updateBuildComplete: updateDockerBaseImage
 	$(call compile)
 
 # Dependency to allow incremental builds.
