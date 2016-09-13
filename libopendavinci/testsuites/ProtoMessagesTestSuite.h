@@ -4365,6 +4365,7 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             Container c(tm1);
             c.setSentTimeStamp(TimeStamp(456, 789));
             c.setReceivedTimeStamp(TimeStamp(987, 654));
+            c.setSampleTimeStamp(TimeStamp(123, 456));
 
             // Serialize via regular Serializer.
             stringstream out;
@@ -4372,12 +4373,12 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             const string s = out.str();
             uint32_t cnt=0;
-            TS_ASSERT(s.size() == 31);
+            TS_ASSERT(s.size() == 39);
             // Container header:
             // d a4 1a 0 0
             TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x0D);
             TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xA4);
-            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x1A);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x22);
             TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0);
             TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0);
 
@@ -4408,6 +4409,14 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x10);
             TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x9c);
             TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xa);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x2a);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x6);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x8);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xf6);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x1);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x10);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x90);
+            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x7);
 
             // Read from buffer.
             Container c2;

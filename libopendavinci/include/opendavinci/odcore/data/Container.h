@@ -144,6 +144,21 @@ class SerializableData;
                 void setReceivedTimeStamp(const TimeStamp &receivedTimeStamp);
 
                 /**
+                 * This method returns the time stamp when the sample 
+                 * contained in this container was created.
+                 *
+                 * @return Time stamp when the content for this container was created.
+                 */
+                const TimeStamp getSampleTimeStamp() const;
+
+                /**
+                 * This method sets the time stamp for the contained sample.
+                 *
+                 * @param sampleTimeStamp Time stamp for the content.
+                 */
+                void setSampleTimeStamp(const TimeStamp &sampleTimeStamp);
+
+                /**
                  * This method returns the data type as String.
                  *
                  * @return The data type.
@@ -156,6 +171,7 @@ class SerializableData;
 
                 TimeStamp m_sent;
                 TimeStamp m_received;
+                TimeStamp m_sampleTimeStamp;
         };
 
     }

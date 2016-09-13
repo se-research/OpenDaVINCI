@@ -38,13 +38,15 @@ namespace odcore {
                 m_dataType(UNDEFINEDDATA),
                 m_serializedData(),
                 m_sent(TimeStamp(0, 0)),
-                m_received(TimeStamp(0, 0)) {}
+                m_received(TimeStamp(0, 0)),
+                m_sampleTimeStamp(TimeStamp(0, 0)) {}
 
         Container::Container(const SerializableData &serializableData) :
                 m_dataType(serializableData.getID()),
                 m_serializedData(),
                 m_sent(TimeStamp(0, 0)),
-                m_received(TimeStamp(0, 0)) {
+                m_received(TimeStamp(0, 0)),
+                m_sampleTimeStamp(TimeStamp(0, 0)) {
             // Get data for container.
             m_serializedData << serializableData;
         }
@@ -53,7 +55,8 @@ namespace odcore {
                 m_dataType(dataType),
                 m_serializedData(),
                 m_sent(TimeStamp(0, 0)),
-                m_received(TimeStamp(0, 0)) {
+                m_received(TimeStamp(0, 0)),
+                m_sampleTimeStamp(TimeStamp(0, 0)) {
             // Get data for container.
             m_serializedData << serializableData;
         }
@@ -63,7 +66,8 @@ namespace odcore {
                 m_dataType(obj.getDataType()),
                 m_serializedData(),
                 m_sent(obj.m_sent),
-                m_received(obj.m_received) {
+                m_received(obj.m_received),
+                m_sampleTimeStamp(obj.m_sampleTimeStamp) {
             m_serializedData.str(obj.m_serializedData.str());
         }
 
@@ -72,6 +76,7 @@ namespace odcore {
             m_serializedData.str(obj.m_serializedData.str());
             setSentTimeStamp(obj.getSentTimeStamp());
             setReceivedTimeStamp(obj.getReceivedTimeStamp());
+            setSampleTimeStamp(obj.getSampleTimeStamp());
 
             return (*this);
         }
@@ -98,6 +103,14 @@ namespace odcore {
             m_received = receivedTimeStamp;
         }
 
+        const TimeStamp Container::getSampleTimeStamp() const {
+            return m_sampleTimeStamp;
+        }
+
+        void Container::setSampleTimeStamp(const TimeStamp &sampleTimeStamp) {
+            m_sampleTimeStamp = sampleTimeStamp;
+        }
+
         ostream& Container::operator<<(ostream &out) const {
             stringstream bufferOut;
 
@@ -119,6 +132,9 @@ namespace odcore {
 
                 // Write received time stamp data.
                 s->write(4, m_received);
+
+                // Write sample time stamp.
+                s->write(5, m_sampleTimeStamp);
             }
 
             // Write Container header.
@@ -220,6 +236,9 @@ namespace odcore {
 
             // Read received time stamp data.
             d->read(4, m_received);
+
+            // Read sample time stamp.
+            d->read(5, m_sampleTimeStamp);
 
             return in;
         }
