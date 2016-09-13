@@ -236,7 +236,7 @@ DataTriggeredReceiver.h:
     };
 
 The class ``odcore::base::module::DataTriggeredConferenceClientModule`` provides three methods
-that need to be implemented by the user: ``setUp()``, ``body()``, and ``nextContainer(odcore::data::Container &c)``.
+that need to be implemented by the user: ``setUp()``, ``tearDowny()``, and ``nextContainer(odcore::data::Container &c)``.
 These methods reflect the basic runtime cycle of a software component: An initialization
 phase, followed by a data-triggered execution of an algorithm implemented in the
 method ``nextContainer()``, before the cycle ends with a call to ``tearDown()`` intended to
