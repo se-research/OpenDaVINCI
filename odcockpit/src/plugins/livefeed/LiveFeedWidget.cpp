@@ -255,6 +255,7 @@ namespace cockpit {
                     vector<pair<string, string> > entries;
                     entries.push_back(make_pair("Sent", container.getSentTimeStamp().getYYYYMMDD_HHMMSSms()));
                     entries.push_back(make_pair("Received", container.getReceivedTimeStamp().getYYYYMMDD_HHMMSSms()));
+                    entries.push_back(make_pair("Sample time", container.getSampleTimeStamp().getYYYYMMDD_HHMMSSms()));
 
                     MessageToTupleVisitor mttv(entries);
                     msg.accept(mttv);
