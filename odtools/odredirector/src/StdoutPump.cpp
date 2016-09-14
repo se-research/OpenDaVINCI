@@ -76,6 +76,7 @@ namespace odredirector {
                     odcore::data::Container c(ci);
                     c.setSentTimeStamp(container.getSentTimeStamp());
                     c.setReceivedTimeStamp(container.getReceivedTimeStamp());
+                    c.setSampleTimeStamp(container.getSampleTimeStamp());
                     std::cout << c;
                 }
                 if (compressedSize >= MAX_SIZE_UDP_PAYLOAD) {

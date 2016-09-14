@@ -274,6 +274,7 @@ namespace odrecorderh264 {
                         retVal = Container(h264Frame);
                         retVal.setSentTimeStamp(c.getSentTimeStamp());
                         retVal.setReceivedTimeStamp(c.getReceivedTimeStamp());
+                        retVal.setSampleTimeStamp(c.getSampleTimeStamp());
 
                         // Release packet.
                         av_free_packet(&packet);

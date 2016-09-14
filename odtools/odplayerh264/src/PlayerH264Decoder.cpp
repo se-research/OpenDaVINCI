@@ -167,6 +167,7 @@ namespace odplayerh264 {
                     replacementContainer = Container(m_mySharedImage);
                     replacementContainer.setSentTimeStamp(c.getSentTimeStamp());
                     replacementContainer.setReceivedTimeStamp(c.getReceivedTimeStamp());
+                    replacementContainer.setSampleTimeStamp(c.getSampleTimeStamp());
 
                     //cout << "[odplayerh264] Created replacement for " << h264frame.toString() << endl;
                 }

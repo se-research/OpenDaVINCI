@@ -255,6 +255,7 @@ namespace odtools {
                     retVal = Container(si);
                     retVal.setSentTimeStamp(m_actual.getSentTimeStamp());
                     retVal.setReceivedTimeStamp(m_actual.getReceivedTimeStamp());
+                    retVal.setSampleTimeStamp(m_actual.getSampleTimeStamp());
                 }
 
                 OPENDAVINCI_CORE_FREE_POINTER(imageData);

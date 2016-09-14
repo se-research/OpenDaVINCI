@@ -199,6 +199,7 @@ namespace odtools {
                 // Preserve the timestamps from the current container.
                 c.setSentTimeStamp(container.getSentTimeStamp());
                 c.setReceivedTimeStamp(container.getReceivedTimeStamp());
+                c.setSampleTimeStamp(container.getSampleTimeStamp());
 
                 map<string, odcore::data::image::SharedImage>::iterator it = m_mapOfAvailableSharedImages.find(si.getName());
                 if (it == m_mapOfAvailableSharedImages.end()) {
