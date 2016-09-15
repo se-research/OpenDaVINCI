@@ -55,7 +55,18 @@ namespace odrecorderh264 {
         bool remoteControl = (getKeyValueConfiguration().getValue<bool>("odrecorderh264.remoteControl") != 0);
 
         // URL for storing containers.
-        const string recorderOutputURL = getKeyValueConfiguration().getValue<string>("odrecorderh264.output");
+        string recorderOutputURL;
+        try {
+            recorderOutputURL = getKeyValueConfiguration().getValue<string>("odrecorderh264.output");
+        }
+        catch(...) {
+            // If omitted, generate a CID/Name/TimeStamp-based one.
+            stringstream recordingURL;
+            TimeStamp startOfRecording;
+            recordingURL << "file://" << "CID-" << getCID() << "-" << getName() << "_" << startOfRecording.getYYYYMMDD_HHMMSS_noBlank() << ".rec";
+            recorderOutputURL = recordingURL.str();
+        }
+
         // Size of memory segments.
         const uint32_t MEMORY_SEGMENT_SIZE = getKeyValueConfiguration().getValue<uint32_t>("global.buffer.memorySegmentSize");
         // Number of memory segments.

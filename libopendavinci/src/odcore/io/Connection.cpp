@@ -93,6 +93,11 @@ namespace odcore {
         void Connection::send(Container &container) {
             container.setSentTimeStamp(TimeStamp());
 
+            // If sample time stamp is unset, use sent time stamp.
+            if (container.getSampleTimeStamp().toMicroseconds() == 0) {
+                container.setSampleTimeStamp(container.getSentTimeStamp());
+            }
+
             stringstream stringstreamValue;
             stringstreamValue << container;
 

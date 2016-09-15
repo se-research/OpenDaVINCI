@@ -84,7 +84,7 @@ class SplitTest : public CxxTest::TestSuite {
                     // Create regular container.
                     TimeStamp t(i, 0);
                     Container c(t);
-                    c.setReceivedTimeStamp(TimeStamp(i,500));
+                    c.setSampleTimeStamp(TimeStamp(i,500));
                     recorder.store(c);
 
                     // Create shared memory.
@@ -97,7 +97,7 @@ class SplitTest : public CxxTest::TestSuite {
                     odcore::data::SharedData sd(memServer->getName(), memServer->getSize());
 
                     Container c2(sd);
-                    c2.setReceivedTimeStamp(TimeStamp(i,1000));
+                    c2.setSampleTimeStamp(TimeStamp(i,1000));
                     recorder.store(c2);
                 }
             }

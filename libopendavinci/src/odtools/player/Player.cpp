@@ -168,7 +168,7 @@ namespace odtools {
             // Here, the time gap between two containers is calculated.
             if ( (m_actual.getDataType() != Container::UNDEFINEDDATA) &&
                  (m_successor.getDataType() != Container::UNDEFINEDDATA) ) {
-                TimeStamp delta = m_successor.getReceivedTimeStamp() - m_actual.getReceivedTimeStamp();
+                TimeStamp delta = m_successor.getSampleTimeStamp() - m_actual.getSampleTimeStamp();
                 if (!(delta.toMicroseconds() < 0)) {
                     m_delay = static_cast<long>(delta.toMicroseconds());
                 }
@@ -255,6 +255,7 @@ namespace odtools {
                     retVal = Container(si);
                     retVal.setSentTimeStamp(m_actual.getSentTimeStamp());
                     retVal.setReceivedTimeStamp(m_actual.getReceivedTimeStamp());
+                    retVal.setSampleTimeStamp(m_actual.getSampleTimeStamp());
                 }
 
                 OPENDAVINCI_CORE_FREE_POINTER(imageData);

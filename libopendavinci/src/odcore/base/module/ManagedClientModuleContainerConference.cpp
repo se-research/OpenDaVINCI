@@ -35,6 +35,11 @@ namespace odcore {
                 // Put container to be sent into our list of data to be distributed.
                 container.setSentTimeStamp(TimeStamp());
 
+                // If sample time stamp is unset, use sent time stamp.
+                if (container.getSampleTimeStamp().toMicroseconds() == 0) {
+                    container.setSampleTimeStamp(container.getSentTimeStamp());
+                }
+
                 // The const cast is required as the method signature is designed to be const...
                 const_cast<ManagedClientModuleContainerConference*>(this)->m_listOfContainersToBeDelivered.push_back(container);
             }

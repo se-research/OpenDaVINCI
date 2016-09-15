@@ -51,6 +51,11 @@ namespace odcontext {
             // Set sending time stamp.
             container.setSentTimeStamp(TimeStamp());
 
+            // If sample time stamp is unset, use sent time stamp.
+            if (container.getSampleTimeStamp().toMicroseconds() == 0) {
+                container.setSampleTimeStamp(container.getSentTimeStamp());
+            }
+
             clog << "Sending '" << container.toString() << "' in ControlledContainerConferenceForSystemUnderTest." << endl;
 
             m_sendToListener.nextContainer(container);

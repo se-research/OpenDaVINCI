@@ -79,6 +79,11 @@ namespace odcontext {
             // Set sent time.
             c.setSentTimeStamp(TimeStamp());
 
+            // If sample time stamp is unset, use sent time stamp.
+            if (c.getSampleTimeStamp().toMicroseconds() == 0) {
+                c.setSampleTimeStamp(c.getSentTimeStamp());
+            }
+
             vector<ContainerDeliverer*>::iterator it = m_listOfContainerDelivererToSystemUnderTest.begin();
             while (it != m_listOfContainerDelivererToSystemUnderTest.end()) {
                 ContainerDeliverer *containerDeliverer = (*it++);
@@ -114,6 +119,11 @@ namespace odcontext {
         void ControlledContainerConferenceFactory::sendToSystemsUnderTest(Container &c) {
             // Set sent time.
             c.setSentTimeStamp(TimeStamp());
+
+            // If sample time stamp is unset, use sent time stamp.
+            if (c.getSampleTimeStamp().toMicroseconds() == 0) {
+                c.setSampleTimeStamp(c.getSentTimeStamp());
+            }
 
             // Send to all systems under test.
             sendToSUD(c);

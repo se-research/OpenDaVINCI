@@ -220,7 +220,7 @@ namespace odtools {
             // Multiplexing if both, a .rec and a .mem file were found.
             if (readFromRecFile && readFromMemFile) {
                 // Compare timestamps from both Containers, put the older one into the queue and the younger one into the mem/recBuffer.
-                if (fromRecFile.getReceivedTimeStamp() < fromMemFile.getReceivedTimeStamp()) {
+                if (fromRecFile.getSampleTimeStamp() < fromMemFile.getSampleTimeStamp()) {
                     m_queue.enter(fromRecFile);
                     m_memBuffer.push(fromMemFile);
                 }
