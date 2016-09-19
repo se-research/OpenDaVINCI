@@ -881,12 +881,24 @@ namespace canmapping {
 		}
 		
 		«FOR id:canIDs»
-		// set payload of GenericCANMessage and return
+            // set payload of GenericCANMessage and return
+            «var String payloadLength=""»
+            «{
+                if(mapping.payloadLength==null || mapping.payloadLength.compareTo("")==0)
+                {
+                    payloadLength=Math.ceil(payloadLengthInBits/8.0)+"";
+                }
+                else
+                {
+                    payloadLength=mapping.payloadLength;
+                }
+                ""
+            }»
 			«IF mapping.bit_numbering==null || mapping.bit_numbering.compareTo("vector")!=0»
 				{
 					// the rolling is due to Vector's dbc file numeration convention
 					uint64_t rolledPayload=0x0;
-					for(uint8_t i=0;i<static_cast<uint8_t>(«Math.ceil(payloadLengthInBits/8.0)»); ++i)
+					for(uint8_t i=0;i<static_cast<uint8_t>(«payloadLength»); ++i)
 					{
 						rolledPayload=rolledPayload<<8;
 						rolledPayload |= «gcmPayloadPrefix+id» & 0xFF ;
@@ -896,11 +908,7 @@ namespace canmapping {
 				}
 			«ENDIF»
 			«gcmPrefix+id».setData(«gcmPayloadPrefix+id»);
-			«IF mapping.payloadLength==null || mapping.payloadLength.compareTo("")==0»
-                «gcmPrefix+id».setLength(static_cast<uint8_t>(«Math.ceil(payloadLengthInBits/8.0)»));
-			«ELSE»
-                «gcmPrefix+id».setLength(static_cast<uint8_t>(«mapping.payloadLength»));
-			«ENDIF»
+            «gcmPrefix+id».setLength(static_cast<uint8_t>(«payloadLength»));
 
 			return «gcmPrefix+id»;
    		«ENDFOR»
@@ -1258,23 +1266,9 @@ namespace canmapping {
 // Source file for: «mapping.mappingName.toString»
 
 «var ArrayList<String> canIDs=new ArrayList<String>»
-/*
-signals of interest:
-
-«IF(mapping.mappings.size>0)»
-«FOR currentMapping : mapping.mappings»
-«currentMapping.cansignalname»
-«ENDFOR»
-«ELSE»
-none.
-«ENDIF»
-
 «FOR currentMapping : mapping.mappings»
 «var String signalName=currentMapping.cansignalname»
 «var CANSignalDescription canSignal=canSignals.get(signalName)»
-«/* DON'T NEED TO RUN THIS CHECK
-var String[] splittedMN=mapping.mappingName.toString.toLowerCase.split("\\.")»
-IF(splittedMN.get(splittedMN.size-1).compareToIgnoreCase(signalName.split("\\.").get(0).toLowerCase)==0)*/»
 «{ // make sure we don't add 2 times the same CAN id
 	if(canSignal!=null)
 	{
@@ -1287,27 +1281,12 @@ IF(splittedMN.get(splittedMN.size-1).compareToIgnoreCase(signalName.split("\\.")
 	}
 	""
 }»
-
-«IF canSignal!=null»
-CANID       : «canSignal.m_CANID»
-FQDN        : «canSignal.m_FQDN»
-startBit    : «canSignal.m_startBit»
-length      : «canSignal.m_length»
-lengthBytes : «canSignal.m_lengthBytes»
-signed      : «canSignal.m_signed»
-endian      : «canSignal.m_endian»
-multiplyBy  : «canSignal.m_multiplyBy»
-add         : «canSignal.m_add»
-rangeStart  : «canSignal.m_rangeStart»
-rangeEnd    : «canSignal.m_rangeEnd»
-«ELSE»
-Signal "«signalName»" could not be found. 
+«IF canSignal==null»
 «System.err.println("\n\nWarning: Signal "+signalName+" could not be found. Check your .can file. \n\n") /*first one to show up in console*/»
 «throwSignalNotFoundException(signalName)»
 «System.exit(-1)»
 «ENDIF»
 «ENDFOR»
-*/
 
 #include <memory>
 #include <iostream>
@@ -1341,7 +1320,7 @@ namespace canmapping {
  * This file is auto-generated. DO NOT CHANGE AS YOUR CHANGES MIGHT BE OVERWRITTEN!
  */
 // Test suite file for: «mapping.mappingName.toString»
-«var ArrayList<String> canIDs=new ArrayList<String>»/*
+«var ArrayList<String> canIDs=new ArrayList<String>»
 «FOR currentMapping : mapping.mappings»
 «var String signalName=currentMapping.cansignalname»
 «var CANSignalDescription canSignal=canSignals.get(signalName)»
@@ -1357,25 +1336,12 @@ namespace canmapping {
 	}
 	""
 }»
-«IF canSignal!=null»
-CANID       : «canSignal.m_CANID»
-FQDN        : «canSignal.m_FQDN»
-startBit    : «canSignal.m_startBit»
-length      : «canSignal.m_length»
-lengthBytes : «canSignal.m_lengthBytes»
-signed      : «canSignal.m_signed»
-endian      : «canSignal.m_endian»
-multiplyBy  : «canSignal.m_multiplyBy»
-add         : «canSignal.m_add»
-rangeStart  : «canSignal.m_rangeStart»
-rangeEnd    : «canSignal.m_rangeEnd»
-«ELSE»
-Signal "«signalName»" could not be found. 
+«IF canSignal==null»
 «System.err.println("\n\nWarning: Signal "+signalName+" could not be found. Check your .can file. \n\n")»
 «throwSignalNotFoundException(signalName)»
 «System.exit(-1)»
 «ENDIF»
-«ENDFOR»*/
+«ENDFOR»
 
 #ifndef CANMAPPINGTESTSUITE_«mapping.mappingName.split('\\.').get(mapping.mappingName.split('\\.').size-1).toUpperCase»_H_
 #define CANMAPPINGTESTSUITE_«mapping.mappingName.split('\\.').get(mapping.mappingName.split('\\.').size-1).toUpperCase»_H_
@@ -1432,13 +1398,6 @@ class CANBridgeTest : public CxxTest::TestSuite {
             ss1 >> «HLName»_2;
             ss2 << «HLName»_2;
             
-        	//cout << endl;
-        	//cout << ss1.str() << endl;
-        	//cout << ss2.str() << endl;
-            //cout << endl;
-        	//cout<<«HLName»_1.toString();
-        	//cout<<«HLName»_2.toString();
-        	
             TS_ASSERT(ss1.str().compare(ss2.str())==0);
         }
 
