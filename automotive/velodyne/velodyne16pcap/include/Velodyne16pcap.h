@@ -2,7 +2,7 @@
  * velodyne16pcap is a program that reads VLP-16 data in .pcap format and 
  * sends out the decoded data as 3D shared point cloud, including x, y, z, and intensity (all float)
  *              with OpenDaVINCI
- * Copyright (C) 2016 Christian Berger and Hang Yin
+ * Copyright (C) 2016 Hang Yin and Christian Berger
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -88,7 +88,7 @@ namespace automotive {
                 std::shared_ptr<SharedMemory> VelodyneSharedMemory;
                 VelodyneListener16 m_vListener;
                 bool fileClosed;   
-                uint8_t counter;
+                uint8_t counter; //Used to tune the pcap file reading speed
         };
 
 } // automotive

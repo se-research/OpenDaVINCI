@@ -1,7 +1,7 @@
 /**
  * velodyne16pcap is a program that reads VLP-16 data in .pcap format and 
  * sends out the decoded data as 3D shared point cloud, including x, y, z, and intensity (all float)
- * Copyright (C) 2016 Christian Berger and Hang Yin
+ * Copyright (C) 2016 Hang Yin and Christian Berger
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License

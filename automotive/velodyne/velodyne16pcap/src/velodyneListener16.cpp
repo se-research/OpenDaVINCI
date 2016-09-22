@@ -1,8 +1,6 @@
 /**
- * velodyneListener16 is used to 
- *              decode Velodyne data realized
- *              with OpenDaVINCI
- * Copyright (C) 2016 Christian Berger and Hang Yin
+ * velodyneListener16 is used to decode VLP-16 data realized with OpenDaVINCI
+ * Copyright (C) 2016 Hang Yin
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -74,6 +72,8 @@ namespace automotive {
                 segment=(float*)malloc(SIZE);
                 
                 //Load calibration data from the calibration file
+                //VLP-16 has 16 channels/sensors. Each sensor has a specific vertical angle, which can be read from
+                //vertCorrection[sensor ID] specified in the calibration file.
                 string line;
                 ifstream in("VLP-16.xml");
                 uint8_t counter=0;//corresponds to the index of the vertical angle of each beam
@@ -131,7 +131,7 @@ namespace automotive {
                 // Here, we have a valid packet.
                 //cout<<"Get a valid packet"<<endl;
                 
-                //Decode Velodyne data
+                //Decode VLP-16 data
                 pcap::Packet packet = c.getData<pcap::Packet>();
                 pcap::PacketHeader packetHeader = packet.getHeader();
                 if(packetHeader.getIncl_len()==1248)
@@ -148,10 +148,10 @@ namespace automotive {
                     static uint32_t dataValue;
                     for(uint8_t blockID=0;blockID<12;blockID++)
                     {   
-                        //Flag: 0xFFEE(2 bytes)                    
+                        //Skip the flag: 0xFFEE(2 bytes)                    
                         position+=2;
 
-                        //Decode azimuth information: 2 bytes
+                        //Decode azimuth information: 2 bytes. Swap the two bytes, change to decimal, and divide it by 100
                         firstByte=(uint8_t)(payload.at(position));
                         secondByte=(uint8_t)(payload.at(position+1));
                         dataValue=ntohs(firstByte*256+secondByte);                        
@@ -159,7 +159,6 @@ namespace automotive {
                         
                         //Update the shared point cloud when a complete scan is completed.
                         if(azimuth<previousAzimuth){
-                            //if(frameIndex==3){
                             Lock l(VelodyneSharedMemory);
                             memcpy(VelodyneSharedMemory->getSharedMemory(),segment,SIZE);
                             //spc.setName(VelodyneSharedMemory->getName()); // Name of the shared memory segment with the data.
@@ -172,8 +171,8 @@ namespace automotive {
                             
                             Container imageFrame(spc);
                             velodyneFrame.send(imageFrame);
-                            //}
-            
+                            
+                            //Stop reading the file after a predefined number of frames
                             if(frameIndex>=LOAD_FRAME_NO){
                                 stopReading=true;
                                 cout<<"Stop reading"<<endl;
@@ -186,11 +185,9 @@ namespace automotive {
                         }
                         
                         previousAzimuth=azimuth;
-                        /*if(frameIndex==0 && blockID==0){
-                            cout<<"Azimuth:"<<azimuth<<endl;
-                        }*/
                         position+=2;
                         
+                        //Only decode the data if the maximum number of points of the current frame has not been reached
                         if(pointIndex<MAX_POINT_SIZE){
                             //Decode distance information and intensity of each beam/channel in a block, which contains two firing sequences       
                             for(int counter=0;counter<32;counter++)
@@ -219,24 +216,25 @@ namespace automotive {
                                     previousAzimuth=azimuth;
                                 }
                                 
-                                //Decode distance: 2 bytes
                                 uint8_t sensorID=counter;
                                 if(counter>15){
                                     sensorID=counter-16;
                                 }
-                                
+                                //Decode distance: 2 bytes. Swap the bytes, change to decimal, and divide it by 500
                                 firstByte=(uint8_t)(payload.at(position));
                                 secondByte=(uint8_t)(payload.at(position+1));
                                 dataValue=ntohs(firstByte*256+secondByte);
                                 distance=dataValue/500.0; //*2mm-->/1000 for meter
                                 
+                                //Discard distances shorter than 1m
                                 if(distance>1.0){
                                     static float xyDistance,xData,yData,zData,intensity;
+                                    //Compute x, y, z cooridnate
                                     xyDistance=distance*cos(toRadian(vertCorrection[sensorID]));
                                     xData=xyDistance*sin(toRadian(azimuth));
                                     yData=xyDistance*cos(toRadian(azimuth));
                                     zData=distance*sin(toRadian(vertCorrection[sensorID]));
-                                    //Decode intensity: 1 byte
+                                    //Get intensity/reflectivity: 1 byte
                                     uint8_t intensityInt=(uint8_t)(payload.at(position+2));
                                     intensity=(float)intensityInt;
                                   
@@ -259,9 +257,10 @@ namespace automotive {
                             } 
                         }
                         else{
-                            position+=96;//32*3
+                            position+=96;//32*3(bytes), skip one block
                         }
                     }
+                    //Ignore the last 6 bytes: 4 bytes timestamp and 2 factory bytes
                 }    
             }
 

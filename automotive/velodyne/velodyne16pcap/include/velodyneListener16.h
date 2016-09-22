@@ -1,8 +1,6 @@
 /**
- * velodyneListener16 is used to 
- *              decode VLP-16 data realized
- *              with OpenDaVINCI
- * Copyright (C) 2016 Christian Berger and Hang Yin
+ * velodyneListener16 is used to decode VLP-16 data realized with OpenDaVINCI
+ * Copyright (C) 2016 Hang Yin
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -83,12 +81,7 @@ namespace automotive {
                 odcore::io::conference::ContainerConference& velodyneFrame;
                 odcore::data::SharedPointCloud spc;//shared point cloud
                 bool stopReading;//a flag to determine when to stop reading a pcap file
-                //calibration values:
-                //float rotCorrection[NO_OF_CHANNELS];
-                float vertCorrection[16];  //Vertal angle of each sensor beam
-                //float distCorrection[NO_OF_CHANNELS];
-                //float vertOffsetCorrection[NO_OF_CHANNELS];
-                //float horizOffsetCorrection[NO_OF_CHANNELS];      
+                float vertCorrection[16];  //Vertal angle of each sensor beam    
         };
 
 } // automotive
