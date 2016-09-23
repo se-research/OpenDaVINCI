@@ -26,6 +26,9 @@
 
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/io/conference/ContainerConference.h"
+#include "opendavinci/generated/odcore/data/pcap/GlobalHeader.h"
+#include "opendavinci/generated/odcore/data/pcap/PacketHeader.h"
+#include "opendavinci/generated/odcore/data/pcap/Packet.h"
 #include "opendavinci/odcore/base/Lock.h"
 
 #include "opendavinci/generated/odcore/data/SharedPointCloud.h"
