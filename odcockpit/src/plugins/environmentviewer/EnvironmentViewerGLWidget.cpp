@@ -296,7 +296,6 @@ namespace cockpit {
                         // Draw scene. The shared point cloud is visualized in the same way as the free camera view.
                         if(velodyneSharedMemory.get()!=NULL){
                             if (velodyneSharedMemory->isValid()) {
-                                glPushMatrix();
                                 // Using a scoped lock to lock and automatically unlock a shared memory segment.
                                 odcore::base::Lock lv(velodyneSharedMemory);
                                 if (velodyneFrame.getComponentDataType() == SharedPointCloud::FLOAT_T
@@ -319,7 +318,6 @@ namespace cockpit {
                                         startID=velodyneFrame.getNumberOfComponentsPerPoint()*(iii+1);
                                     }
                                     glEnd();//end drawing of points
-                                    //glPopMatrix();
                                     
                                     m_root->render(m_renderingConfiguration);
                                     glPopMatrix();
@@ -332,8 +330,7 @@ namespace cockpit {
                         m_root->render(m_renderingConfiguration); 
                         //Draw scene. Retrieve the point cloud from the shared memory and visualize it frame by frame when shared point cloud is received via the nextContainer method
                         if(velodyneSharedMemory.get()!=NULL){
-                            if (velodyneSharedMemory->isValid()) {
-                                //glPushMatrix();
+                            if (velodyneSharedMemory->isValid()) 
                                 // Using a scoped lock to lock and automatically unlock a shared memory segment.
                                 odcore::base::Lock lv(velodyneSharedMemory);
                                 if (velodyneFrame.getComponentDataType() == SharedPointCloud::FLOAT_T
