@@ -129,6 +129,7 @@ class SelectableNodeDescriptor;
                     odcore::base::TreeNode<SelectableNodeDescriptor> *m_selectableNodeDescriptorTree;
                     SelectableNodeDescriptorTreeListener &m_selectableNodeDescriptorTreeListener;
                     std::shared_ptr<odcore::wrapper::SharedMemory> velodyneSharedMemory;
+                    bool m_hasAttachedToSharedImageMemory;
                     odcore::data::SharedPointCloud velodyneFrame;
 
                     /**

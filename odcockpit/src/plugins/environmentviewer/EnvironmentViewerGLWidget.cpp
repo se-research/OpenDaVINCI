@@ -119,6 +119,7 @@ namespace cockpit {
                     m_selectableNodeDescriptorTree(NULL),
                     m_selectableNodeDescriptorTreeListener(sndtl),
                     velodyneSharedMemory(NULL),
+                    m_hasAttachedToSharedImageMemory(false),
                     velodyneFrame() {}
 
             EnvironmentViewerGLWidget::~EnvironmentViewerGLWidget() {
@@ -301,9 +302,10 @@ namespace cockpit {
                                 if (velodyneFrame.getComponentDataType() == SharedPointCloud::FLOAT_T
                                     && (velodyneFrame.getNumberOfComponentsPerPoint() == 4)
                                     && (velodyneFrame.getUserInfo() == SharedPointCloud::XYZ_INTENSITY)) {
+                                    glPushMatrix();
                                     float *velodyneRawData = static_cast<float*>(velodyneSharedMemory->getSharedMemory());
 
-                                    glPointSize(1.0f); //set point size to 10 pixels
+                                    glPointSize(1.0f); //set point size to 1 pixel
                                     glBegin(GL_POINTS); //starts drawing of points
                                     long startID=0;
                                     for(unsigned long iii=0;iii<velodyneFrame.getWidth();iii++) {
@@ -317,7 +319,7 @@ namespace cockpit {
                                         startID=velodyneFrame.getNumberOfComponentsPerPoint()*(iii+1);
                                     }
                                     glEnd();//end drawing of points
-                                    glPopMatrix();
+                                    //glPopMatrix();
                                     
                                     m_root->render(m_renderingConfiguration);
                                     glPopMatrix();
@@ -331,12 +333,13 @@ namespace cockpit {
                         //Draw scene. Retrieve the point cloud from the shared memory and visualize it frame by frame when shared point cloud is received via the nextContainer method
                         if(velodyneSharedMemory.get()!=NULL){
                             if (velodyneSharedMemory->isValid()) {
-                                glPushMatrix();
+                                //glPushMatrix();
                                 // Using a scoped lock to lock and automatically unlock a shared memory segment.
                                 odcore::base::Lock lv(velodyneSharedMemory);
                                 if (velodyneFrame.getComponentDataType() == SharedPointCloud::FLOAT_T
                                     && (velodyneFrame.getNumberOfComponentsPerPoint() == 4)
                                     && (velodyneFrame.getUserInfo() == SharedPointCloud::XYZ_INTENSITY)) {
+                                    glPushMatrix();
                                     float *velodyneRawData = static_cast<float*>(velodyneSharedMemory->getSharedMemory());
                                 
                                     glPointSize(1.0f); //set point size to 1 pixel
@@ -472,7 +475,10 @@ namespace cockpit {
                 
                 if(c.getDataType()==odcore::data::SharedPointCloud::ID()){
                     velodyneFrame=c.getData<SharedPointCloud>();//Get shared point cloud
-                    velodyneSharedMemory=SharedMemoryFactory::attachToSharedMemory(velodyneFrame.getName());//Attach the shared point cloud to the shared memory           
+                    if (!m_hasAttachedToSharedImageMemory) {
+                        velodyneSharedMemory=SharedMemoryFactory::attachToSharedMemory(velodyneFrame.getName());//Attach the shared point cloud to the shared memory  
+                        m_hasAttachedToSharedImageMemory = true; 
+                    }  
                 }
                 
                 if (c.getDataType() == opendlv::data::environment::EgoState::ID()) {
