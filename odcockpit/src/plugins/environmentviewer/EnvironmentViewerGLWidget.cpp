@@ -330,7 +330,7 @@ namespace cockpit {
                         m_root->render(m_renderingConfiguration); 
                         //Draw scene. Retrieve the point cloud from the shared memory and visualize it frame by frame when shared point cloud is received via the nextContainer method
                         if(velodyneSharedMemory.get()!=NULL){
-                            if (velodyneSharedMemory->isValid()) 
+                            if (velodyneSharedMemory->isValid()){ 
                                 // Using a scoped lock to lock and automatically unlock a shared memory segment.
                                 odcore::base::Lock lv(velodyneSharedMemory);
                                 if (velodyneFrame.getComponentDataType() == SharedPointCloud::FLOAT_T
