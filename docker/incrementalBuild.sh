@@ -19,6 +19,7 @@
 
 BUILD_AS=$1
 TESTRUNNER_DISABLED=$2
+UID_AS=$3
 
 # Adding user for building.
 groupadd $BUILD_AS
@@ -51,5 +52,5 @@ chmod 755 /opt/OpenDaVINCI.build/build.sh
 chown $BUILD_AS:$BUILD_AS /opt/OpenDaVINCI.build/build.sh
 chown -R $BUILD_AS:$BUILD_AS /opt
 
-su -m `getent passwd 1000|cut -f1 -d":"` -c /opt/OpenDaVINCI.build/build.sh
+su -m `getent passwd $UID_AS|cut -f1 -d":"` -c /opt/OpenDaVINCI.build/build.sh
 
