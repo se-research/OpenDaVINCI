@@ -30,6 +30,8 @@ cat <<EOF > /opt/OpenDaVINCI.build/build.sh
 cd /opt/OpenDaVINCI.build
 
 echo "[OpenDaVINCI Docker builder] Incremental build."
+export PATH=/usr/lib/ccache:$PATH
+export CCACHE_DIR=/opt/ccache
 
 # Force rebuild with ExternalProjects
 rm -f odsimulation-prefix/src/odsimulation-stamp/odsimulation-install
