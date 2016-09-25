@@ -39,7 +39,7 @@ BUILD_PATH=$(BUILD_PATH_BASE)/$(shell echo $(BASE_IMAGE) | cut -f2 -d"/")-$(GIT_
 # Directories.
 SOURCE_TREE_PATH=$(shell dirname $(shell pwd))
 BUILD_PATH_BASE=$(SOURCE_TREE_PATH)/docker/builds
-RUN_BUILD_AS=$(shell whoami)
+RUN_BUILD_AS=odv # OpenDaVINCI is built as odv.
 RUN_BUILD_UID_AS=$(shell getent passwd `whoami` | cut -f3 -d":")
 PACKAGES_DIR=$(BUILD_PATH)
 
