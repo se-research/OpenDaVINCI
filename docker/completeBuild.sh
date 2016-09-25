@@ -41,8 +41,8 @@ fi
 EOF
 
 chmod 755 /opt/OpenDaVINCI.build/build.sh
-chown $BUILD_AS:$BUILD_AS /opt/OpenDaVINCI.build/build.sh
-chown -R $BUILD_AS:$BUILD_AS /opt
+chown $UID_AS:$UID_AS /opt/OpenDaVINCI.build/build.sh
+chown -R $UID_AS:$UID_AS /opt
 
 su -m `getent passwd $UID_AS|cut -f1 -d":"` -c /opt/OpenDaVINCI.build/build.sh
 
