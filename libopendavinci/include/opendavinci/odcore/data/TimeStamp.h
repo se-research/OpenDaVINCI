@@ -116,7 +116,7 @@ namespace odcore {
                  *
                  * @return This time converted into microseconds.
                  */
-                long toMicroseconds() const;
+                int64_t toMicroseconds() const;
 
                 /**
                  * This method returns the fractional microseconds

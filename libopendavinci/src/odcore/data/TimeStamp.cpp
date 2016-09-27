@@ -202,7 +202,7 @@ namespace odcore {
             return toMicroseconds() >= t.toMicroseconds();
         }
 
-        long TimeStamp::toMicroseconds() const {
+        int64_t TimeStamp::toMicroseconds() const {
             return getSeconds() * 1000000L + getFractionalMicroseconds();
         }
 
