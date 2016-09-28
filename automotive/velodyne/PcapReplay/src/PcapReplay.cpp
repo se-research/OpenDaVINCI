@@ -25,6 +25,7 @@
 #include "PcapReplay.h"
 #include <opendavinci/odcore/io/udp/UDPSender.h>
 #include <opendavinci/odcore/io/udp/UDPFactory.h>
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
 
 namespace automotive {
 
@@ -33,6 +34,7 @@ namespace automotive {
 
         PcapReplay::PcapReplay(const int32_t &argc, char **argv) :
             TimeTriggeredConferenceClientModule(argc, argv, "PcapReplay"),
+            BUFFER_SIZE(),
             lidarStream(),
             udpsender(UDPFactory::createUDPSender(RECEIVER, PORT)),
             stop(false){}
@@ -40,8 +42,8 @@ namespace automotive {
         PcapReplay::~PcapReplay() {}
 
         void PcapReplay::setUp() {
-            //lidarStream.open("../../velodyne/build/imeangowest.pcap", ios::binary|ios::in);
-            lidarStream.open("../../velodyneReadFile/build/atwall.pcap", ios::binary|ios::in);
+            lidarStream.open(getKeyValueConfiguration().getValue<string>("PcapReplay.readpcap"), ios::binary|ios::in);
+            BUFFER_SIZE=getKeyValueConfiguration().getValue<uint32_t>("PcapReplay.bufferSize");
         }
 
         void PcapReplay::tearDown() {
@@ -49,7 +51,6 @@ namespace automotive {
         }
 
         // This method will do the main data processing job.
-        //Running this module with a frequency of 60Hz gives a data rate 3*10⁶Bps
         odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode PcapReplay::body() {
             char *buffer = new char[BUFFER_SIZE+1];
             while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING){

@@ -74,7 +74,8 @@ namespace automotive {
                 
                 const string RECEIVER = "127.0.0.1";
                 const uint32_t PORT = 2368;
-                const uint32_t BUFFER_SIZE=50000; //number of bytes read from the pcap file each time
+                //const uint32_t BUFFER_SIZE=5000; //number of bytes read from the pcap file each time
+                uint32_t BUFFER_SIZE;
                 fstream lidarStream;   
                 std::shared_ptr<odcore::io::udp::UDPSender> udpsender;
                 bool stop;
