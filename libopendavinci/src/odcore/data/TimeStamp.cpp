@@ -253,6 +253,20 @@ namespace odcore {
         }
 
         void TimeStamp::computeHumanReadableRepresentation() {
+#ifdef _WIN32
+            computeHumanReadableRepresentationPOSIX();
+#else
+            computeHumanReadableRepresentationPOSIX();
+#endif
+        }
+
+        void TimeStamp::computeHumanReadableRepresentationWindows() {
+#ifdef _WIN32
+            computeHumanReadableRepresentationPOSIX();
+#endif
+        }
+
+        void TimeStamp::computeHumanReadableRepresentationPOSIX() {
             if (!( 0 < (m_readableYear + m_readableMonth + m_readableDayOfMonth + m_readableHours + m_readableMinutes + m_readableSeconds) )) {
                 const int32_t seconds = getSeconds();
                 const int32_t daysSince01011970 = seconds / (60*60*24);

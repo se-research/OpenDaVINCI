@@ -234,6 +234,9 @@ namespace odcore {
                  */
                 void computeHumanReadableRepresentation();
 
+                void computeHumanReadableRepresentationPOSIX();
+                void computeHumanReadableRepresentationWindows();
+
             private:
                 int32_t m_seconds;
                 int32_t m_microseconds;
