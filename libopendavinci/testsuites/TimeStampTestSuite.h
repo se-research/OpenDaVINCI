@@ -69,55 +69,21 @@ class TimeStampTest : public CxxTest::TestSuite {
             TS_ASSERT(ts.getFractionalMicroseconds() == 999999);
         }
 
-        void testTimeStampNow() {
-            TimeStamp now;
-            cout << now.toString() << endl;
-            cout << now.getYYYYMMDD_HHMMSS_noBlank() << endl;
-
-            TimeStamp ts(1240926174, 1234);
-            cout << ts.toString() << endl;
-            cout << ts.getYYYYMMDD_HHMMSS_noBlank() << endl;
-
-            {
-                struct timeval  tv;
-                struct timezone tz;
-                struct tm      *tm;
-
-                gettimeofday(&tv, &tz);
-                tm = localtime(&tv.tv_sec);
-
-                cout << (1900 + tm->tm_year) << " " << (1 + tm->tm_mon) << " " << tm->tm_mday << " " << tm->tm_hour << " " << tm->tm_min << " " << tm->tm_sec << " " << tv.tv_usec << endl;
-            }
-
-            {
-                struct timeval  tv;
-                struct timezone tz;
-                struct tm      *tm;
-
-                gettimeofday(&tv, &tz);
-                tv.tv_sec = 1240926174;
-                tm = localtime(&tv.tv_sec);
-
-                cout << (1900 + tm->tm_year) << " " << (1 + tm->tm_mon) << " " << tm->tm_mday << " " << tm->tm_hour << " " << tm->tm_min << " " << tm->tm_sec << " " << tv.tv_usec << endl;
-            }
-        }
-
         void testTimeStamp28042009() {
             TimeStamp ts(1240926174, 1234);
 
             TS_ASSERT(ts.getDay() == 28);
             TS_ASSERT(ts.getMonth() == 4);
             TS_ASSERT(ts.getYear() == 2009);
-            TS_ASSERT(ts.getHour() == 13);
+            TS_ASSERT(ts.getHour() == 15);
             TS_ASSERT(ts.getMinute() == 42);
             TS_ASSERT(ts.getSecond() == 54);
 
             TimeStamp ts2("28042009134254");
-
             TS_ASSERT(ts2.getDay() == 28);
             TS_ASSERT(ts2.getMonth() == 4);
             TS_ASSERT(ts2.getYear() == 2009);
-            TS_ASSERT(ts2.getHour() == 13);
+            TS_ASSERT(ts2.getHour() == 15);
             TS_ASSERT(ts2.getMinute() == 42);
             TS_ASSERT(ts2.getSecond() == 54);
         }

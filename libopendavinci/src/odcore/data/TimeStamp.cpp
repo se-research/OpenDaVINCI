@@ -17,6 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <ctime>
+
 #include <iostream>
 #include <sstream>
 #include <memory>
@@ -253,121 +255,15 @@ namespace odcore {
         }
 
         void TimeStamp::computeHumanReadableRepresentation() {
-#ifdef _WIN32
-            computeHumanReadableRepresentationPOSIX();
-#else
-            computeHumanReadableRepresentationPOSIX();
-#endif
-        }
+            const long int seconds = m_seconds;
+            struct tm *tm = localtime(&seconds);
 
-        void TimeStamp::computeHumanReadableRepresentationWindows() {
-#ifdef _WIN32
-            computeHumanReadableRepresentationPOSIX();
-#endif
-        }
-
-        void TimeStamp::computeHumanReadableRepresentationPOSIX() {
-            if (!( 0 < (m_readableYear + m_readableMonth + m_readableDayOfMonth + m_readableHours + m_readableMinutes + m_readableSeconds) )) {
-                const int32_t seconds = getSeconds();
-                const int32_t daysSince01011970 = seconds / (60*60*24);
-                const int32_t secondsSinceMidnight = seconds - daysSince01011970 * 60*60*24;
-
-                m_readableHours = secondsSinceMidnight / (60*60);
-                m_readableMinutes = static_cast<int32_t>((static_cast<double>(secondsSinceMidnight) / (60.0*60.0) - m_readableHours) * 60);
-                m_readableSeconds = secondsSinceMidnight - m_readableHours*60*60 - m_readableMinutes*60;
-
-                {
-                    const int32_t yearsSince01011970 = daysSince01011970 / 365;
-                    uint32_t additionalLeapDays = 0;
-                    uint32_t year = 1970;
-                    for(int32_t i = 0; i < yearsSince01011970; i++) {
-                        if (isLeapYear(year)) {
-                            additionalLeapDays++;
-                        }
-                        year++;
-                    }
-                    const int32_t days = daysSince01011970 - yearsSince01011970*365 - additionalLeapDays + 1; // 01.01.1970 is the 0. day.
-                    {
-                        m_readableDayOfMonth = days;
-                        if (days > TimeStamp::January) {
-                            m_readableDayOfMonth = days - TimeStamp::January;
-                        }
-                        if (days > TimeStamp::February) {
-                            m_readableDayOfMonth = days - TimeStamp::February;
-                        }
-                        if (days > TimeStamp::March) {
-                            m_readableDayOfMonth = days - TimeStamp::March;
-                        }
-                        if (days > TimeStamp::April) {
-                            m_readableDayOfMonth = days - TimeStamp::April;
-                        }
-                        if (days > TimeStamp::May) {
-                            m_readableDayOfMonth = days - TimeStamp::May;
-                        }
-                        if (days > TimeStamp::June) {
-                            m_readableDayOfMonth = days - TimeStamp::June;
-                        }
-                        if (days > TimeStamp::July) {
-                            m_readableDayOfMonth = days - TimeStamp::July;
-                        }
-                        if (days > TimeStamp::August) {
-                            m_readableDayOfMonth = days - TimeStamp::August;
-                        }
-                        if (days > TimeStamp::September) {
-                            m_readableDayOfMonth = days - TimeStamp::September;
-                        }
-                        if (days > TimeStamp::October) {
-                            m_readableDayOfMonth = days - TimeStamp::October;
-                        }
-                        if (days > TimeStamp::November) {
-                            m_readableDayOfMonth = days - TimeStamp::November;
-                        }
-                    }
-                    {
-                        m_readableMonth = 1;
-                        if (days < TimeStamp::December) {
-                            m_readableMonth = 12;
-                        }
-                        if (days < TimeStamp::November) {
-                            m_readableMonth = 11;
-                        }
-                        if (days < TimeStamp::October) {
-                            m_readableMonth = 10;
-                        }
-                        if (days < TimeStamp::September) {
-                            m_readableMonth = 9;
-                        }
-                        if (days < TimeStamp::August) {
-                            m_readableMonth = 8;
-                        }
-                        if (days < TimeStamp::July) {
-                            m_readableMonth = 7;
-                        }
-                        if (days < TimeStamp::June) {
-                            m_readableMonth = 6;
-                        }
-                        if (days < TimeStamp::May) {
-                            m_readableMonth = 5;
-                        }
-                        if (days < TimeStamp::April) {
-                            m_readableMonth = 4;
-                        }
-                        if (days < TimeStamp::March) {
-                            m_readableMonth = 3;
-                        }
-                        if (days < TimeStamp::February) {
-                            m_readableMonth = 2;
-                        }
-                        if (days < TimeStamp::January) {
-                            m_readableMonth = 1;
-                        }
-                    }
-                    {
-                        const int32_t yearsSince01011970_internal = static_cast<int>(daysSince01011970 / 365.24);
-                        m_readableYear = 1970 + yearsSince01011970_internal;
-                    }
-                }
-            }
+            m_readableYear = (1900 + tm->tm_year);
+            m_readableMonth = (1 + tm->tm_mon);
+            m_readableDayOfMonth = tm->tm_mday;
+            m_readableHours = tm->tm_hour;
+            m_readableMinutes = tm->tm_min;
+            m_readableSeconds = tm->tm_sec;
         }
 
         uint32_t TimeStamp::getHour() const {
