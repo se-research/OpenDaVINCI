@@ -20,10 +20,6 @@
 #ifndef CORE_TIMESTAMPTESTSUITE_H_
 #define CORE_TIMESTAMPTESTSUITE_H_
 
-
-#include <sys/time.h>
-#include <time.h>
-
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
 #include "opendavinci/odcore/data/TimeStamp.h"        // for TimeStamp
