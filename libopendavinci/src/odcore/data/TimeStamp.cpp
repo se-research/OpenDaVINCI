@@ -37,21 +37,43 @@ namespace odcore {
 
         TimeStamp::TimeStamp() :
             m_seconds(0),
-            m_microseconds(0) {
+            m_microseconds(0),
+            m_readableYear(0),
+            m_readableMonth(0),
+            m_readableDayOfMonth(0),
+            m_readableHours(0),
+            m_readableMinutes(0),
+            m_readableSeconds(0) {
             std::shared_ptr<odcore::wrapper::Time> time(odcore::wrapper::TimeFactory::getInstance().now());
             if (time.get()) {
                 m_seconds = time->getSeconds();
                 m_microseconds = time->getPartialMicroseconds();
+                computeHumanReadableRepresentation();
             }
         }
 
         TimeStamp::TimeStamp(const int32_t &seconds, const int32_t &microSeconds) :
             m_seconds(seconds),
-            m_microseconds(microSeconds) {}
+            m_microseconds(microSeconds),
+            m_readableYear(0),
+            m_readableMonth(0),
+            m_readableDayOfMonth(0),
+            m_readableHours(0),
+            m_readableMinutes(0),
+            m_readableSeconds(0) {
+            computeHumanReadableRepresentation();
+        }
 
         TimeStamp::TimeStamp(const string &ddmmyyyyhhmmss) :
             m_seconds(0),
-            m_microseconds(0) {
+            m_microseconds(0),
+            m_readableYear(0),
+            m_readableMonth(0),
+            m_readableDayOfMonth(0),
+            m_readableHours(0),
+            m_readableMinutes(0),
+            m_readableSeconds(0) {
+
             if (ddmmyyyyhhmmss.size() == 14) {
                 stringstream dataDD;
                 dataDD.str(ddmmyyyyhhmmss.substr(0, 2));
@@ -134,19 +156,35 @@ namespace odcore {
                 }
 
                 m_seconds = (yearsSince01011970 * 365 + additionalLeapDays + cumulativeDays + dd - 1) * 24 * 60 * 60 + hour*60*60 + min*60 + sec;
+                computeHumanReadableRepresentation();
             }
         }
 
         TimeStamp::TimeStamp(const TimeStamp &obj) :
             SerializableData(),
             m_seconds(obj.m_seconds),
-            m_microseconds(obj.m_microseconds) {}
+            m_microseconds(obj.m_microseconds),
+            m_readableYear(obj.m_readableYear),
+            m_readableMonth(obj.m_readableMonth),
+            m_readableDayOfMonth(obj.m_readableDayOfMonth),
+            m_readableHours(obj.m_readableHours),
+            m_readableMinutes(obj.m_readableMinutes),
+            m_readableSeconds(obj.m_readableSeconds) {}
 
         TimeStamp::~TimeStamp() {}
 
         TimeStamp& TimeStamp::operator=(const TimeStamp &obj) {
             m_seconds = obj.m_seconds;
             m_microseconds = obj.m_microseconds;
+            m_readableYear = obj.m_readableYear;
+            m_readableMonth = obj.m_readableMonth;
+            m_readableDayOfMonth = obj.m_readableDayOfMonth;
+            m_readableHours = obj.m_readableHours;
+            m_readableMinutes = obj.m_readableMinutes;
+            m_readableSeconds = obj.m_readableSeconds;
+
+            computeHumanReadableRepresentation();
+
             return (*this);
         }
 
@@ -214,146 +252,133 @@ namespace odcore {
             return m_seconds;
         }
 
+        void TimeStamp::computeHumanReadableRepresentation() {
+            if (!( 0 < (m_readableYear + m_readableMonth + m_readableDayOfMonth + m_readableHours + m_readableMinutes + m_readableSeconds) )) {
+                const int32_t seconds = getSeconds();
+                const int32_t daysSince01011970 = seconds / (60*60*24);
+                const int32_t secondsSinceMidnight = seconds - daysSince01011970 * 60*60*24;
+
+                m_readableHours = secondsSinceMidnight / (60*60);
+                m_readableMinutes = static_cast<int32_t>((static_cast<double>(secondsSinceMidnight) / (60.0*60.0) - m_readableHours) * 60);
+                m_readableSeconds = secondsSinceMidnight - m_readableHours*60*60 - m_readableMinutes*60;
+
+                {
+                    const int32_t yearsSince01011970 = daysSince01011970 / 365;
+                    uint32_t additionalLeapDays = 0;
+                    uint32_t year = 1970;
+                    for(int32_t i = 0; i < yearsSince01011970; i++) {
+                        if (isLeapYear(year)) {
+                            additionalLeapDays++;
+                        }
+                        year++;
+                    }
+                    const int32_t days = daysSince01011970 - yearsSince01011970*365 - additionalLeapDays + 1; // 01.01.1970 is the 0. day.
+                    {
+                        m_readableDayOfMonth = days;
+                        if (days > TimeStamp::January) {
+                            m_readableDayOfMonth = days - TimeStamp::January;
+                        }
+                        if (days > TimeStamp::February) {
+                            m_readableDayOfMonth = days - TimeStamp::February;
+                        }
+                        if (days > TimeStamp::March) {
+                            m_readableDayOfMonth = days - TimeStamp::March;
+                        }
+                        if (days > TimeStamp::April) {
+                            m_readableDayOfMonth = days - TimeStamp::April;
+                        }
+                        if (days > TimeStamp::May) {
+                            m_readableDayOfMonth = days - TimeStamp::May;
+                        }
+                        if (days > TimeStamp::June) {
+                            m_readableDayOfMonth = days - TimeStamp::June;
+                        }
+                        if (days > TimeStamp::July) {
+                            m_readableDayOfMonth = days - TimeStamp::July;
+                        }
+                        if (days > TimeStamp::August) {
+                            m_readableDayOfMonth = days - TimeStamp::August;
+                        }
+                        if (days > TimeStamp::September) {
+                            m_readableDayOfMonth = days - TimeStamp::September;
+                        }
+                        if (days > TimeStamp::October) {
+                            m_readableDayOfMonth = days - TimeStamp::October;
+                        }
+                        if (days > TimeStamp::November) {
+                            m_readableDayOfMonth = days - TimeStamp::November;
+                        }
+                    }
+                    {
+                        m_readableMonth = 1;
+                        if (days < TimeStamp::December) {
+                            m_readableMonth = 12;
+                        }
+                        if (days < TimeStamp::November) {
+                            m_readableMonth = 11;
+                        }
+                        if (days < TimeStamp::October) {
+                            m_readableMonth = 10;
+                        }
+                        if (days < TimeStamp::September) {
+                            m_readableMonth = 9;
+                        }
+                        if (days < TimeStamp::August) {
+                            m_readableMonth = 8;
+                        }
+                        if (days < TimeStamp::July) {
+                            m_readableMonth = 7;
+                        }
+                        if (days < TimeStamp::June) {
+                            m_readableMonth = 6;
+                        }
+                        if (days < TimeStamp::May) {
+                            m_readableMonth = 5;
+                        }
+                        if (days < TimeStamp::April) {
+                            m_readableMonth = 4;
+                        }
+                        if (days < TimeStamp::March) {
+                            m_readableMonth = 3;
+                        }
+                        if (days < TimeStamp::February) {
+                            m_readableMonth = 2;
+                        }
+                        if (days < TimeStamp::January) {
+                            m_readableMonth = 1;
+                        }
+                    }
+                    {
+                        const int32_t yearsSince01011970_internal = static_cast<int>(daysSince01011970 / 365.24);
+                        m_readableYear = 1970 + yearsSince01011970_internal;
+                    }
+                }
+            }
+        }
+
         uint32_t TimeStamp::getHour() const {
-            const int32_t seconds = getSeconds();
-            const int32_t daysSince01011970 = seconds / (60*60*24);
-            const int32_t secondsSinceMidnight = seconds - daysSince01011970 * 60*60*24;
-            const int32_t hour = secondsSinceMidnight / (60*60);
-            return hour;
+            return m_readableHours;
         }
 
         uint32_t TimeStamp::getMinute() const {
-            const int32_t seconds = getSeconds();
-            const int32_t daysSince01011970 = seconds / (60*60*24);
-            const int32_t secondsSinceMidnight = seconds - daysSince01011970 * (60*60*24);
-            const int32_t hour = secondsSinceMidnight / (60*60);
-            const int32_t minute = static_cast<int32_t>((static_cast<double>(secondsSinceMidnight) / (60.0*60.0) - hour) * 60);
-            return minute;
+            return m_readableMinutes;
         }
 
         uint32_t TimeStamp::getSecond() const {
-            const int32_t seconds = getSeconds();
-            const int32_t daysSince01011970 = seconds / (60*60*24);
-            const int32_t secondsSinceMidnight = seconds - daysSince01011970 * 60*60*24;
-            const int32_t hour = secondsSinceMidnight / (60*60);
-            const int32_t minute = static_cast<int32_t>((static_cast<double>(secondsSinceMidnight) / (60.0*60.0) - hour) * 60);
-            return secondsSinceMidnight - hour*60*60 - minute*60;
+            return m_readableSeconds;
         }
 
         uint32_t TimeStamp::getDay() const {
-            const int32_t seconds = getSeconds();
-            const int32_t daysSince01011970 = seconds / (60*60*24);
-            const int32_t yearsSince01011970 = daysSince01011970 / 365;
-
-            uint32_t additionalLeapDays = 0;
-            uint32_t year = 1970;
-            for(int32_t i = 0; i < yearsSince01011970; i++) {
-                if (isLeapYear(year)) {
-                    additionalLeapDays++;
-                }
-                year++;
-            }
-
-            const int32_t days = daysSince01011970 - yearsSince01011970*365 - additionalLeapDays + 1; // 01.01.1970 is the 0. day.
-            uint32_t day = days;
-            if (days > TimeStamp::January) {
-                day = days - TimeStamp::January;
-            }
-            if (days > TimeStamp::February) {
-                day = days - TimeStamp::February;
-            }
-            if (days > TimeStamp::March) {
-                day = days - TimeStamp::March;
-            }
-            if (days > TimeStamp::April) {
-                day = days - TimeStamp::April;
-            }
-            if (days > TimeStamp::May) {
-                day = days - TimeStamp::May;
-            }
-            if (days > TimeStamp::June) {
-                day = days - TimeStamp::June;
-            }
-            if (days > TimeStamp::July) {
-                day = days - TimeStamp::July;
-            }
-            if (days > TimeStamp::August) {
-                day = days - TimeStamp::August;
-            }
-            if (days > TimeStamp::September) {
-                day = days - TimeStamp::September;
-            }
-            if (days > TimeStamp::October) {
-                day = days - TimeStamp::October;
-            }
-            if (days > TimeStamp::November) {
-                day = days - TimeStamp::November;
-            }
-
-            return day;
+            return m_readableDayOfMonth;
         }
 
         uint32_t TimeStamp::getMonth() const {
-            const int32_t seconds = getSeconds();
-            const int32_t daysSince01011970 = seconds / (60*60*24);
-            const int32_t yearsSince01011970 = daysSince01011970 / 365;
+            return m_readableMonth;
 
-            uint32_t additionalLeapDays = 0;
-            uint32_t year = 1970;
-            for(int32_t i = 0; i < yearsSince01011970; i++) {
-                if (isLeapYear(year)) {
-                    additionalLeapDays++;
-                }
-                year++;
-            }
-
-            const int32_t days = daysSince01011970 - yearsSince01011970*365 - additionalLeapDays;
-            uint32_t month = 1;
-            if (days < TimeStamp::December) {
-                month = 12;
-            }
-            if (days < TimeStamp::November) {
-                month = 11;
-            }
-            if (days < TimeStamp::October) {
-                month = 10;
-            }
-            if (days < TimeStamp::September) {
-                month = 9;
-            }
-            if (days < TimeStamp::August) {
-                month = 8;
-            }
-            if (days < TimeStamp::July) {
-                month = 7;
-            }
-            if (days < TimeStamp::June) {
-                month = 6;
-            }
-            if (days < TimeStamp::May) {
-                month = 5;
-            }
-            if (days < TimeStamp::April) {
-                month = 4;
-            }
-            if (days < TimeStamp::March) {
-                month = 3;
-            }
-            if (days < TimeStamp::February) {
-                month = 2;
-            }
-            if (days < TimeStamp::January) {
-                month = 1;
-            }
-
-            return month;
         }
 
         uint32_t TimeStamp::getYear() const {
-            const int32_t seconds = getSeconds();
-            const int32_t daysSince01011970 = seconds / (60*60*24);
-            const int32_t yearsSince01011970 = static_cast<int>(daysSince01011970 / 365.24);
-            return 1970 + yearsSince01011970;
+            return m_readableYear;
         }
 
         bool TimeStamp::isLeapYear(const uint32_t &year) const {

@@ -20,6 +20,10 @@
 #ifndef CORE_TIMESTAMPTESTSUITE_H_
 #define CORE_TIMESTAMPTESTSUITE_H_
 
+
+#include <sys/time.h>
+#include <time.h>
+
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
 #include "opendavinci/odcore/data/TimeStamp.h"        // for TimeStamp
@@ -63,6 +67,39 @@ class TimeStampTest : public CxxTest::TestSuite {
 
             TS_ASSERT(ts.getSecond() == 1);
             TS_ASSERT(ts.getFractionalMicroseconds() == 999999);
+        }
+
+        void testTimeStampNow() {
+            TimeStamp now;
+            cout << now.toString() << endl;
+            cout << now.getYYYYMMDD_HHMMSS_noBlank() << endl;
+
+            TimeStamp ts(1240926174, 1234);
+            cout << ts.toString() << endl;
+            cout << ts.getYYYYMMDD_HHMMSS_noBlank() << endl;
+
+            {
+                struct timeval  tv;
+                struct timezone tz;
+                struct tm      *tm;
+
+                gettimeofday(&tv, &tz);
+                tm = localtime(&tv.tv_sec);
+
+                cout << (1900 + tm->tm_year) << " " << (1 + tm->tm_mon) << " " << tm->tm_mday << " " << tm->tm_hour << " " << tm->tm_min << " " << tm->tm_sec << " " << tv.tv_usec << endl;
+            }
+
+            {
+                struct timeval  tv;
+                struct timezone tz;
+                struct tm      *tm;
+
+                gettimeofday(&tv, &tz);
+                tv.tv_sec = 1240926174;
+                tm = localtime(&tv.tv_sec);
+
+                cout << (1900 + tm->tm_year) << " " << (1 + tm->tm_mon) << " " << tm->tm_mday << " " << tm->tm_hour << " " << tm->tm_min << " " << tm->tm_sec << " " << tv.tv_usec << endl;
+            }
         }
 
         void testTimeStamp28042009() {
