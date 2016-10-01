@@ -22,6 +22,7 @@
 
 #include <string>
 
+#include "opendavinci/generated/odcore/data/TimePoint.h"
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/Visitable.h"
 #include "opendavinci/odcore/data/SerializableData.h"
@@ -34,8 +35,7 @@ namespace odcore {
         /**
          * This class can be used for time computations.
          */
-        class OPENDAVINCI_API TimeStamp : public SerializableData,
-                                          public odcore::base::Visitable {
+        class OPENDAVINCI_API TimeStamp : public odcore::data::TimePoint {
             private:
                 enum CUMULATIVE_DAYS {
                     January = 31,   // 31
@@ -127,13 +127,6 @@ namespace odcore {
                 int32_t getFractionalMicroseconds() const;
 
                 /**
-                 * This method returns the seconds.
-                 *
-                 * @return seconds
-                 */
-                int32_t getSeconds() const;
-
-                /**
                  * This method returns the hour for today
                  * since 01.01.1970.
                  *
@@ -205,24 +198,7 @@ namespace odcore {
                  */
                 const string getYYYYMMDD_HHMMSSms() const;
 
-                virtual ostream& operator<<(ostream &out) const;
-                virtual istream& operator>>(istream &in);
-
-                virtual int32_t getID() const;
-                virtual const string getShortName() const;
-                virtual const string getLongName() const;
-                virtual const string toString() const;
-                static int32_t ID();
-                static const string ShortName();
-                static const string LongName();
-
-            public:
-                virtual void accept(odcore::base::Visitor &v);
-
             private:
-                int32_t m_seconds;
-                int32_t m_microseconds;
-
                 /**
                  * This method returns true if the given year is
                  * a leap year.

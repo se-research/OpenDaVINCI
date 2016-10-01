@@ -18,6 +18,25 @@
  */
 
 ///////////////////////////////////////////////////////////////////////////////
+// OpenDaVINCI core data messages.
+
+// This message will be the base class for odcore::data::TimeStamp.
+// It is not meant to be used directly but via its deriving subclass TimeStamp.
+message odcore.data.TimePoint [id = 12] {
+    int32 seconds [id = 1];
+    int32 microseconds [id = 2];
+}
+
+// This message will be the base class for odcore::data::Container.
+message odcore.data.MessageContainer [id = 0] {
+    int32 dataType [id = 1];
+    string serializedData [id = 2];
+    odcore.data.TimePoint sent [id = 3];
+    odcore.data.TimePoint received [id = 4];
+    odcore.data.TimePoint sampleTimeStamp [id = 5];
+}
+
+///////////////////////////////////////////////////////////////////////////////
 // Logging messages.
 message odcore.data.LogMessage [id = 100] {
     enum LogLevel {

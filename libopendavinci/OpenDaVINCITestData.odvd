@@ -29,9 +29,12 @@ message odcore.testdata.TestMessage1 [id = 1001] {
 }
 /* Protobuf syntax:
 syntax = "proto2";
-package odcore.testdata;
+message odcore {
+message testdata {
 message TestMessage1 {
     optional uint32 a = 1 [default = 12];
+}
+}
 }
 Value: 150 ==> 0x8 0x96 0x1
 */
