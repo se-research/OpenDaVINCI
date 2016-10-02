@@ -29,12 +29,9 @@ message odcore.testdata.TestMessage1 [id = 1001] {
 }
 /* Protobuf syntax:
 syntax = "proto2";
-message odcore {
-message testdata {
+package odcore.testdata;
 message TestMessage1 {
     optional uint32 a = 1 [default = 12];
-}
-}
 }
 Value: 150 ==> 0x8 0x96 0x1
 */
@@ -47,7 +44,7 @@ message odcore.testdata.TestMessage2 [id = 1002] {
 syntax = "proto2";
 package odcore.testdata;
 message TestMessage2 {
-    optional uint38 field1 = 1;
+    optional uint32 field1 = 1;
     optional sint32 field2 = 2;
 }
 Values: 123, -123 ==> 0x8 0x7b 0x10 0xf5 0x1
@@ -203,6 +200,26 @@ Transformation rules:
 6) list<X> --> repeated X (if X is a primitive type).
 7) map<X> is currently not correctly supported by Google Protobuf.
 8) [ id = X ] --> = X
+
+Transformation rules:
+
+const --> ignore
+
+uint8 -> optional uint32
+int8 -> optional sint32
+uint16 -> optional uint32
+int16 -> optional sint32
+uint32 -> optional uint32
+int32 -> optional sint32
+uint64 -> optional uint64
+int64 -> optional sint64
+string -> optional string
+float -> optional float
+double -> optional double
+list<X> -> repeated X [ packed=true ]; // X is POD type
+map<X, Y> -> repeated Entry; + new message Entry { optional X key; optional Y value;}
+float myArray2[3] -> repeated float myArray [packed = true];
+
 */
 
 /*
