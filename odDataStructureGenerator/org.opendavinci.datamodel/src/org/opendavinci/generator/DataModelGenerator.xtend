@@ -151,7 +151,7 @@ class DataModelGenerator implements IGenerator {
 				ed.m_enumName = att.enumdec.name
 				ed.m_enumNameIncludingMessageName = msg.message.substring(msg.message.lastIndexOf(".") + 1) + "." + ed.m_enumName
 				ed.m_FQDN = msg.message + "." + ed.m_enumName
-				if ( (pdl.package != null) && (pdl.package.length > 0) )
+				if ( (pdl != null) && (pdl.package != null) && (pdl.package.length > 0) )
 					ed.m_FQDN = pdl.package.toString + "." + ed.m_FQDN
 				ed.enumerators = new HashMap<String, String>
 				for (enumerator : att.enumdec.enumerators) {
@@ -171,13 +171,27 @@ class DataModelGenerator implements IGenerator {
 syntax = "proto2";
 
 «FOR msg : msgs»
+    «var enums = collectEnumsFromMessage(null, msg)»
+    // Message identifier: «msg.id».
     message «msg.message.replaceAll("\\.", "_")» {
         «FOR a : msg.attributes»
             «IF a.scalar != null && protoTypeMap.containsKey(a.scalar.type)»
                 optional «protoTypeMap.get(a.scalar.type)» «a.scalar.name» = «a.scalar.id»«IF a.scalar.value != null»«IF !a.scalar.type.equalsIgnoreCase("char") && !a.scalar.type.equalsIgnoreCase("bool")» [ default = «IF a.scalar.type.equalsIgnoreCase("string")»"«a.scalar.value»"«ELSE»«a.scalar.value.replaceFirst("\\+", "")»«ENDIF» ]«ELSE» /* No valid mapping for «a.scalar.value» for type «a.scalar.type» found. */«ENDIF»«ENDIF»;
             «ENDIF»
+            «IF a.scalar != null && !protoTypeMap.containsKey(a.scalar.type) && !enums.containsKey(a.scalar.type)  && !a.scalar.type.contains("::")»
+                optional «a.scalar.type.replaceAll("\\.", "_")» «a.scalar.name» = «a.scalar.id»;
+            «ENDIF»
             «IF a.list != null && protoTypeMap.containsKey(a.list.type)»
                 repeated «protoTypeMap.get(a.list.type)» «a.list.name» = «a.list.id»«IF !a.list.type.equalsIgnoreCase("string")» [ packed = true ]«ENDIF»;
+            «ENDIF»
+            «IF a.list != null && !protoTypeMap.containsKey(a.list.type) && !enums.containsKey(a.list.type)  && !a.list.type.contains("::")»
+                repeated «a.list.type.replaceAll("\\.", "_")» «a.list.name» = «a.list.id»;
+            «ENDIF»
+            «IF a.map != null»
+                /* No valid mapping for «a.map.name» of type map found. */
+            «ENDIF»
+            «IF a.fixedarray != null»
+                /* No valid mapping for «a.fixedarray.name» of type fixed array found. */
             «ENDIF»
         «ENDFOR»
     }
