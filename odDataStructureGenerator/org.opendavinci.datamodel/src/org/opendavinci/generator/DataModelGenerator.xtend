@@ -55,19 +55,19 @@ class DataModelGenerator implements IGenerator {
   	)
 
     /* This hashmap maps the ODVD language's types to C++ types. */
- 	val protoTypeMap = newHashMap("double"-> "optional double",
-  							 "float"-> "optional float",
-  							 "int8"-> "optional sint32",
-  							 "uint8"-> "optional uint32",
-  							 "int16"-> "optional sint32",
-  							 "uint16"-> "optional uint32",
-  							 "int32"-> "optional sint32",
-  							 "uint32"-> "optional uint32",
-  							 "int64"-> "optional sint64",
-  							 "uint64"-> "optonal uint64",
-  							 "bool"-> "optional uint32",
-  							 "char" -> "optional uint32",
-  							 "string"-> "optional string"
+ 	val protoTypeMap = newHashMap("double"-> "double",
+  							 "float"-> "float",
+  							 "int8"-> "sint32",
+  							 "uint8"-> "uint32",
+  							 "int16"-> "sint32",
+  							 "uint16"-> "uint32",
+  							 "int32"-> "sint32",
+  							 "uint32"-> "uint32",
+  							 "int64"-> "sint64",
+  							 "uint64"-> "uint64",
+  							 "bool"-> "uint32",
+  							 "char" -> "sint32",
+  							 "string"-> "string"
   	)
 
     /* This hashmap assigns initializing values to attributes of the respective type. */
@@ -173,8 +173,11 @@ syntax = "proto2";
 «FOR msg : msgs»
     message «msg.message.replaceAll("\\.", "_")» {
         «FOR a : msg.attributes»
-            «IF a.scalar != null && protoTypeMap.containsKey(a.scalar.type) /*&& !enums.containsKey(a.scalar.type)*/ »
-                «protoTypeMap.get(a.scalar.type)» «a.scalar.name» = «a.scalar.id»«IF a.scalar.value != null»«IF !a.scalar.type.equalsIgnoreCase("char") && !a.scalar.type.equalsIgnoreCase("bool")» [ default = «IF a.scalar.type.equalsIgnoreCase("string")»"«a.scalar.value»"«ELSE»«a.scalar.value.replaceFirst("\\+", "")»«ENDIF» ]«ENDIF»«ENDIF»;
+            «IF a.scalar != null && protoTypeMap.containsKey(a.scalar.type)»
+                optional «protoTypeMap.get(a.scalar.type)» «a.scalar.name» = «a.scalar.id»«IF a.scalar.value != null»«IF !a.scalar.type.equalsIgnoreCase("char") && !a.scalar.type.equalsIgnoreCase("bool")» [ default = «IF a.scalar.type.equalsIgnoreCase("string")»"«a.scalar.value»"«ELSE»«a.scalar.value.replaceFirst("\\+", "")»«ENDIF» ]«ELSE» /* No valid mapping for «a.scalar.value» for type «a.scalar.type» found. */«ENDIF»«ENDIF»;
+            «ENDIF»
+            «IF a.list != null && protoTypeMap.containsKey(a.list.type)»
+                repeated «protoTypeMap.get(a.list.type)» «a.list.name» = «a.list.id»«IF !a.list.type.equalsIgnoreCase("string")» [ packed = true ]«ENDIF»;
             «ENDIF»
         «ENDFOR»
     }

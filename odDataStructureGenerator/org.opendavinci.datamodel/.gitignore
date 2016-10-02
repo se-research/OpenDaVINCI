@@ -10,3 +10,4 @@ testsuites
 libtest*
 TEST-*
 odDataStructureGenerator-latest.jar
+proto
