@@ -100,6 +100,7 @@ public class DataStructureGenerator {
 			String filenameWithSubpackage = fileName.replaceAll("\\.", "/");
 			filenameWithSubpackage = filenameWithSubpackage.replaceAll("/h$", ".h");
 			filenameWithSubpackage = filenameWithSubpackage.replaceAll("/cpp$", ".cpp");
+			filenameWithSubpackage = filenameWithSubpackage.replaceAll("/proto$", ".proto");
 			System.out.print("Creating '" + folder + "/" + filenameWithSubpackage + "' ");
 			if (filenameWithSubpackage.contains("/")) {
 				File d = new File(folder + "/" + filenameWithSubpackage.substring(0, filenameWithSubpackage.lastIndexOf('/')));

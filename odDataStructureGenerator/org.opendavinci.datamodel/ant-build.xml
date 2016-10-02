@@ -11,6 +11,7 @@
     </path>
     
     <target name="clean">
+        <delete dir="proto"/>
         <delete dir="bin"/>
         <delete dir="obj"/>
         <delete dir="model"/>
