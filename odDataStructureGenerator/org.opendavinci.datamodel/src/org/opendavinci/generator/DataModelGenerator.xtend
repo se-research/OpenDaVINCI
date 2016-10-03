@@ -176,7 +176,7 @@ syntax = "proto2";
     message «msg.message.replaceAll("\\.", "_")» {
         «FOR a : msg.attributes»
             «IF a.scalar != null && protoTypeMap.containsKey(a.scalar.type)»
-                optional «protoTypeMap.get(a.scalar.type)» «a.scalar.name» = «a.scalar.id»«IF a.scalar.value != null»«IF !a.scalar.type.equalsIgnoreCase("char") && !a.scalar.type.equalsIgnoreCase("bool")» [ default = «IF a.scalar.type.equalsIgnoreCase("string")»"«a.scalar.value»"«ELSE»«a.scalar.value.replaceFirst("\\+", "")»«ENDIF» ]«ELSE» /* No valid mapping for «a.scalar.value» for type «a.scalar.type» found. */«ENDIF»«ENDIF»;
+                optional «protoTypeMap.get(a.scalar.type)» «a.scalar.name» = «a.scalar.id»«IF a.scalar.value != null»«IF !a.scalar.type.equalsIgnoreCase("char") && !a.scalar.type.equalsIgnoreCase("bool")» [ default = «IF a.scalar.type.equalsIgnoreCase("string")»"«a.scalar.value»"«ELSE»«a.scalar.value.replaceFirst("\\+", "")»«ENDIF» ]«ELSE» /* No valid mapping for value '«a.scalar.value»' of type '«a.scalar.type»' found. */«ENDIF»«ENDIF»;
             «ENDIF»
             «IF a.scalar != null && !protoTypeMap.containsKey(a.scalar.type) && !enums.containsKey(a.scalar.type)  && !a.scalar.type.contains("::")»
                 optional «a.scalar.type.replaceAll("\\.", "_")» «a.scalar.name» = «a.scalar.id»;
@@ -190,8 +190,8 @@ syntax = "proto2";
             «IF a.map != null»
                 /* No valid mapping for «a.map.name» of type map found. */
             «ENDIF»
-            «IF a.fixedarray != null»
-                /* No valid mapping for «a.fixedarray.name» of type fixed array found. */
+            «IF a.fixedarray != null && protoTypeMap.containsKey(a.fixedarray.type) && !a.fixedarray.type.equalsIgnoreCase("string")»
+                repeated «protoTypeMap.get(a.fixedarray.type)» «a.fixedarray.name» = «a.fixedarray.id» [ packed = true ];
             «ENDIF»
         «ENDFOR»
     }
