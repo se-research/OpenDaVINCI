@@ -57,7 +57,7 @@ namespace automotive {
                 
                 virtual ~VelodyneListener16();
                 
-                void sendSPC(float oldAzimuth, float newAzimuth);
+                void sendSPC(const float &oldAzimuth, const float &newAzimuth);
 
                 // This method is called by ControlledContainerConferenceFactory to send c to the registered ContainerListener from an app.
                 virtual void nextContainer(odcore::data::Container &c);

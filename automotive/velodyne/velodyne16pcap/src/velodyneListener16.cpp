@@ -122,7 +122,7 @@ namespace automotive {
         VelodyneListener16::~VelodyneListener16() {}
         
         //Update the shared point cloud when a complete scan is completed.
-        void VelodyneListener16::sendSPC(float oldAzimuth, float newAzimuth){
+        void VelodyneListener16::sendSPC(const float &oldAzimuth, const float &newAzimuth){
             if(newAzimuth<oldAzimuth){
                 if(VelodyneSharedMemory->isValid()){
                     Lock l(VelodyneSharedMemory);
