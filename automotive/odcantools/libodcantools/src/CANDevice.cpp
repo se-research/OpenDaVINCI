@@ -76,7 +76,7 @@ namespace automotive {
                 }
                 int32_t errorCode = CAN_Write(m_handle, &msg);
 
-                CLOG1 << "[CANDevice] Writing ID = " << msg.ID << ", LEN = " << msg.LEN << ", errorCode = " << errorCode << endl;
+                CLOG1 << "[CANDevice] Writing ID = " << msg.ID << ", LEN = " << +msg.LEN << ", errorCode = " << errorCode << endl;
             }
         }
 
