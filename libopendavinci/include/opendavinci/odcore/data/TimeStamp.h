@@ -116,7 +116,7 @@ namespace odcore {
                  *
                  * @return This time converted into microseconds.
                  */
-                long toMicroseconds() const;
+                int64_t toMicroseconds() const;
 
                 /**
                  * This method returns the fractional microseconds
@@ -207,6 +207,22 @@ namespace odcore {
                  * @return true iff year is a leap year.
                  */
                 bool isLeapYear(const uint32_t &year) const;
+
+                /**
+                 * This methods computes the human readable representation.
+                 */
+                void computeHumanReadableRepresentation();
+
+            private:
+                int32_t m_seconds;
+                int32_t m_microseconds;
+
+                uint32_t m_readableYear;
+                uint32_t m_readableMonth;
+                uint32_t m_readableDayOfMonth;
+                uint32_t m_readableHours;
+                uint32_t m_readableMinutes;
+                uint32_t m_readableSeconds;
         };
 
     }
