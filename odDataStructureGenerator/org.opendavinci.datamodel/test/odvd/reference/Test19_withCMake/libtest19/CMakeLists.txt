@@ -62,6 +62,8 @@ IF(NOT WIN32)
 ENDIF()
 # Install header files.
 INSTALL(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/" DESTINATION include/ COMPONENT odtest19lib)
+# Install proto files.
+INSTALL(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/proto/" DESTINATION share/proto/ COMPONENT odtest19lib)
 # Install CMake modules locally.
 IF(UNIX)
     INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindTest19.cmake" DESTINATION share/cmake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules COMPONENT odtest19lib)

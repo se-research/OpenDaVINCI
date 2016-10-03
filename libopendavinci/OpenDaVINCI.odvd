@@ -30,7 +30,7 @@ message odcore.data.TimePoint [id = 12] {
 // This message will be the base class for odcore::data::Container.
 message odcore.data.MessageContainer [id = 0] {
     int32 dataType [id = 1];
-    string serializedData [id = 2];
+    bytes serializedData [id = 2];
     odcore.data.TimePoint sent [id = 3];
     odcore.data.TimePoint received [id = 4];
     odcore.data.TimePoint sampleTimeStamp [id = 5];

@@ -468,6 +468,9 @@ INSTALL(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/" DESTINATION include/ CO
 # Merge header files from generated data structures with the rest of OpenDaVINCI to avoid specifying another include directory at the users' end.
 INSTALL(DIRECTORY "${COREDATA_DIR}/include/" DESTINATION include/ COMPONENT lib)
 
+# Install proto file.
+INSTALL(DIRECTORY "${COREDATA_DIR}/proto/" DESTINATION share/proto/ COMPONENT lib)
+
 # Install CMake modules locally.
 IF(UNIX)
     INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/FindOpenDaVINCI.cmake" DESTINATION share/cmake-2.8/Modules COMPONENT lib)

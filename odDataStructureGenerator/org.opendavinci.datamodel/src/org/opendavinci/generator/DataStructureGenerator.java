@@ -521,6 +521,9 @@ public class DataStructureGenerator {
 		sb.append("# Install header files."); sb.append("\r\n");
 		sb.append("INSTALL(DIRECTORY \"${CMAKE_CURRENT_SOURCE_DIR}/include/\" DESTINATION include/" + " " + "COMPONENT od" + folder.replaceFirst("lib", "") + "lib" + ")"); sb.append("\r\n");
 
+		sb.append("# Install proto files."); sb.append("\r\n");
+		sb.append("INSTALL(DIRECTORY \"${CMAKE_CURRENT_SOURCE_DIR}/proto/\" DESTINATION share/proto/" + " " + "COMPONENT od" + folder.replaceFirst("lib", "") + "lib" + ")"); sb.append("\r\n");
+
 		sb.append("# Install CMake modules locally."); sb.append("\r\n");
 		sb.append("IF(UNIX)"); sb.append("\r\n");
 		sb.append("    INSTALL(FILES \"${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/Find" + odvdFilename + ".cmake\" DESTINATION share/cmake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules" + " COMPONENT od" + folder.replaceFirst("lib", "") + "lib" + ")"); sb.append("\r\n");

@@ -51,7 +51,8 @@ class DataModelGenerator implements IGenerator {
   							 "uint64"-> "uint64_t",
   							 "bool"-> "bool",
   							 "char" -> "char",
-  							 "string"-> "std::string"
+  							 "string"-> "std::string",
+  							 "bytes"-> "std::string"
   	)
 
     /* This hashmap maps the ODVD language's types to C++ types. */
@@ -67,7 +68,8 @@ class DataModelGenerator implements IGenerator {
   							 "uint64"-> "uint64",
   							 "bool"-> "uint32",
   							 "char" -> "sint32",
-  							 "string"-> "string"
+  							 "string"-> "string",
+  							 "bytes"-> "bytes"
   	)
 
     /* This hashmap assigns initializing values to attributes of the respective type. */
@@ -83,7 +85,8 @@ class DataModelGenerator implements IGenerator {
   							 "uint64"-> "0",
   							 "bool"-> "false",
   							 "char"-> "'\\0'",
-  							 "string"-> "\"\""
+  							 "string"-> "\"\"",
+  							 "bytes"-> "\"\""
   	)
 
     /* This hashmap defines test values for attribues of the respective type. */
@@ -99,7 +102,8 @@ class DataModelGenerator implements IGenerator {
   							 "uint64"-> "40000",
   							 "bool"-> "true",
   							 "char"-> "'c'",
-  							 "string"-> "\"Hello World!\""
+  							 "string"-> "\"Hello World!\"",
+  							 "bytes"-> "\"Hello World!\""
   	)
  
     /* This hashmap defines test values for attribues of the respective type used as a list. */
@@ -115,7 +119,8 @@ class DataModelGenerator implements IGenerator {
   							 "uint64"-> #[6000, 7000, 8000],
   							 "bool"-> #[true, false],
   							 "char"-> #["'d'", "'e'", "'f'"],
-  							 "string"-> #["\"Hello World!\"", "\"Hello Solar System!\"", "\"Hello Milky Way!\""]
+  							 "string"-> #["\"Hello World!\"", "\"Hello Solar System!\"", "\"Hello Milky Way!\""],
+  							 "bytes"-> #["\"Hello World!\"", "\"Hello Solar System!\"", "\"Hello Milky Way!\""]
   	)
  
     /* This method is our interface to an outside caller. */

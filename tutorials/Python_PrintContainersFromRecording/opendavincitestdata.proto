@@ -1,0 +1,72 @@
+// This is an auto-generated file from a .odvd message specification using OpenDaVINCI's odDataStructureGenerator.
+
+// This line is only needed when using Google Protobuf 3.
+syntax = "proto2";
+
+// Message identifier: 111.
+message odcore_testdata_dmcp_TestConstants {
+}
+
+// Message identifier: 1001.
+message odcore_testdata_TestMessage1 {
+    optional uint32 field1 = 1 [ default = 12 ];
+}
+
+// Message identifier: 1002.
+message odcore_testdata_TestMessage2 {
+    optional uint32 field1 = 1;
+    optional sint32 field2 = 2;
+}
+
+// Message identifier: 1003.
+message odcore_testdata_TestMessage3 {
+    optional string field1 = 2;
+}
+
+// Message identifier: 1004.
+message odcore_testdata_TestMessage4 {
+    optional odcore_testdata_TestMessage1 field1 = 3;
+}
+
+// Message identifier: 1005.
+message odcore_testdata_TestMessage5 {
+    optional uint32 field1 = 1 [ default = 1 ];
+    optional sint32 field2 = 2 [ default = -1 ];
+    optional uint32 field3 = 3 [ default = 100 ];
+    optional sint32 field4 = 4 [ default = -100 ];
+    optional uint32 field5 = 5 [ default = 10000 ];
+    optional sint32 field6 = 6 [ default = -10000 ];
+    optional uint64 field7 = 7 [ default = 12345 ];
+    optional sint64 field8 = 8 [ default = -12345 ];
+    optional float field9 = 9 [ default = -1.2345 ];
+    optional double field10 = 10 [ default = -10.2345 ];
+    optional string field11 = 11 [ default = "Hello World!" ];
+    optional odcore_testdata_TestMessage1 field12 = 12;
+}
+
+// Message identifier: 1006.
+message odcore_testdata_TestMessage6 {
+    repeated uint32 field1 = 4 [ packed = true ];
+}
+
+// Message identifier: 1007.
+message odcore_testdata_TestMessage7 {
+    repeated float field1 = 1 [ packed = true ];
+}
+
+// Message identifier: 1008.
+message odcore_testdata_TestMessage8 {
+    /* No valid mapping for field1 of type map found. */
+}
+
+// Message identifier: 1009.
+message odcore_testdata_TestMessage9 {
+    /* No valid mapping for field1 of type map found. */
+}
+
+// Message identifier: 1010.
+message odcore_testdata_TestMessage10 {
+    repeated uint32 myArray1 = 1 [ packed = true ];
+    repeated float myArray2 = 2 [ packed = true ];
+}
+
