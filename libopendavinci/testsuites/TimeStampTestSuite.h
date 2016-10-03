@@ -71,16 +71,15 @@ class TimeStampTest : public CxxTest::TestSuite {
             TS_ASSERT(ts.getDay() == 28);
             TS_ASSERT(ts.getMonth() == 4);
             TS_ASSERT(ts.getYear() == 2009);
-            TS_ASSERT(ts.getHour() == 13);
+            TS_ASSERT(ts.getHour() == 15);
             TS_ASSERT(ts.getMinute() == 42);
             TS_ASSERT(ts.getSecond() == 54);
 
             TimeStamp ts2("28042009134254");
-
             TS_ASSERT(ts2.getDay() == 28);
             TS_ASSERT(ts2.getMonth() == 4);
             TS_ASSERT(ts2.getYear() == 2009);
-            TS_ASSERT(ts2.getHour() == 13);
+            TS_ASSERT(ts2.getHour() == 15);
             TS_ASSERT(ts2.getMinute() == 42);
             TS_ASSERT(ts2.getSecond() == 54);
         }
