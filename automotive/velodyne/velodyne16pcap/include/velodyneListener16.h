@@ -56,11 +56,14 @@ namespace automotive {
                 VelodyneListener16(std::shared_ptr<SharedMemory>,odcore::io::conference::ContainerConference&);
                 
                 virtual ~VelodyneListener16();
+                
+                void sendSPC(float oldAzimuth, float newAzimuth);
 
                 // This method is called by ControlledContainerConferenceFactory to send c to the registered ContainerListener from an app.
                 virtual void nextContainer(odcore::data::Container &c);
                 
                 bool getStatus();
+                
                 
             private:
                 const uint32_t MAX_POINT_SIZE=30000;  // The maximum number of points per frame is set based on the observation of the first 100 frames of a sample pcap file. This upper bound should be set as low as possible, as it affects the shared memory size and thus the frame updating speed.

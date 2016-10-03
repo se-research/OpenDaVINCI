@@ -62,65 +62,95 @@ namespace automotive {
             velodyneFrame(c),
             spc(),
             stopReading(false){
-                //Initial setup of the shared point cloud
-                spc.setName(VelodyneSharedMemory->getName()); // Name of the shared memory segment with the data.
-                //spc.setSize(pointIndex* NUMBER_OF_COMPONENTS_PER_POINT * SIZE_PER_COMPONENT); // Size in raw bytes.
-                //spc.setWidth(pointIndex); // Number of points.
-                spc.setHeight(1); // We have just a sequence of vectors.
-                spc.setNumberOfComponentsPerPoint(NUMBER_OF_COMPONENTS_PER_POINT);
-                spc.setComponentDataType(SharedPointCloud::FLOAT_T); // Data type per component.
-                spc.setUserInfo(SharedPointCloud::XYZ_INTENSITY);
-                
-                //Create memory for temporary storage of point cloud data for each frame
-                segment=(float*)malloc(SIZE);
-                
-                //Load calibration data from the calibration file
-                //VLP-16 has 16 channels/sensors. Each sensor has a specific vertical angle, which can be read from
-                //vertCorrection[sensor ID] specified in the calibration file.
-                string line;
-                ifstream in("VLP-16.xml");
-                uint8_t counter=0;//corresponds to the index of the vertical angle of each beam
-                bool found=false;
-
-                while (getline(in,line) && counter<16)
-                {
-                    string tmp; // strip whitespaces from the beginning
-                    for (uint8_t i = 0; i < line.length(); i++)
-                    {
-                        
-                        if ((line[i] == '\t' || line[i]==' ' )&& tmp.size() == 0)
-                        {
-                        }
-                        else
-                        {
-                            if(line[i]=='<'){
-                    
-                                if(found){
-                                    vertCorrection[counter]=atof(tmp.c_str());
-                                    
-                                    counter++;
-                                    found=false;
-                                    continue;
-                                }
-                                tmp += line[i];
-                            }                   
-                            else{
-                                tmp += line[i];
-                            }
-                        }
+            //Initial setup of the shared point cloud
+            spc.setName(VelodyneSharedMemory->getName()); // Name of the shared memory segment with the data.
+            //spc.setSize(pointIndex* NUMBER_OF_COMPONENTS_PER_POINT * SIZE_PER_COMPONENT); // Size in raw bytes.
+            //spc.setWidth(pointIndex); // Number of points.
+            spc.setHeight(1); // We have just a sequence of vectors.
+            spc.setNumberOfComponentsPerPoint(NUMBER_OF_COMPONENTS_PER_POINT);
+            spc.setComponentDataType(SharedPointCloud::FLOAT_T); // Data type per component.
+            spc.setUserInfo(SharedPointCloud::XYZ_INTENSITY);
             
-                        if(tmp=="<vertCorrection_>"){
-                            found=true;
-                            tmp="";
-                        }
+            //Create memory for temporary storage of point cloud data for each frame
+            segment=(float*)malloc(SIZE);
+            
+            //Load calibration data from the calibration file
+            //VLP-16 has 16 channels/sensors. Each sensor has a specific vertical angle, which can be read from
+            //vertCorrection[sensor ID] specified in the calibration file.
+            string line;
+            ifstream in("VLP-16.xml");
+            uint8_t counter=0;//corresponds to the index of the vertical angle of each beam
+            bool found=false;
+
+            while (getline(in,line) && counter<16)
+            {
+                string tmp; // strip whitespaces from the beginning
+                for (uint8_t i = 0; i < line.length(); i++)
+                {
+                    
+                    if ((line[i] == '\t' || line[i]==' ' )&& tmp.size() == 0)
+                    {
+                    }
+                    else
+                    {
+                        if(line[i]=='<'){
+                
+                            if(found){
+                                vertCorrection[counter]=atof(tmp.c_str());
+                                
+                                counter++;
+                                found=false;
+                                continue;
+                            }
+                            tmp += line[i];
+                        }                   
                         else{
+                            tmp += line[i];
                         }
+                    }
+        
+                    if(tmp=="<vertCorrection_>"){
+                        found=true;
+                        tmp="";
+                    }
+                    else{
                     }
                 }
             }
-            
+        }            
 
         VelodyneListener16::~VelodyneListener16() {}
+        
+        //Update the shared point cloud when a complete scan is completed.
+        void VelodyneListener16::sendSPC(float oldAzimuth, float newAzimuth){
+            if(newAzimuth<oldAzimuth){
+                if(VelodyneSharedMemory->isValid()){
+                    Lock l(VelodyneSharedMemory);
+                    memcpy(VelodyneSharedMemory->getSharedMemory(),segment,SIZE);
+                    //spc.setName(VelodyneSharedMemory->getName()); // Name of the shared memory segment with the data.
+                    spc.setSize(pointIndex* NUMBER_OF_COMPONENTS_PER_POINT * SIZE_PER_COMPONENT); // Size in raw bytes.
+                    spc.setWidth(pointIndex); // Number of points.
+                    //spc.setHeight(1); // We have just a sequence of vectors.
+                    //spc.setNumberOfComponentsPerPoint(NUMBER_OF_COMPONENTS_PER_POINT);
+                    //spc.setComponentDataType(SharedPointCloud::FLOAT_T); // Data type per component.
+                    //spc.setUserInfo(SharedPointCloud::XYZ_INTENSITY);
+                    
+                    Container imageFrame(spc);
+                    velodyneFrame.send(imageFrame);
+                }
+                
+                //Stop reading the file after a predefined number of frames
+                if(frameIndex>=LOAD_FRAME_NO){
+                    stopReading=true;
+                    cout<<"Stop reading"<<endl;
+                }
+                else{
+                    frameIndex++;
+                }
+                pointIndex=0;
+                startID=0;
+            }
+        }
         
         void VelodyneListener16::nextContainer(Container &c) {
             if (c.getDataType() == odcore::data::pcap::GlobalHeader::ID()) {
@@ -159,33 +189,7 @@ namespace automotive {
                         secondByte=(uint8_t)(payload.at(position+1));
                         dataValue=ntohs(firstByte*256+secondByte);                        
                         float azimuth=static_cast<float>(dataValue/100.0);
-                        
-                        //Update the shared point cloud when a complete scan is completed.
-                        if(azimuth<previousAzimuth){
-                            Lock l(VelodyneSharedMemory);
-                            memcpy(VelodyneSharedMemory->getSharedMemory(),segment,SIZE);
-                            //spc.setName(VelodyneSharedMemory->getName()); // Name of the shared memory segment with the data.
-                            spc.setSize(pointIndex* NUMBER_OF_COMPONENTS_PER_POINT * SIZE_PER_COMPONENT); // Size in raw bytes.
-                            spc.setWidth(pointIndex); // Number of points.
-                            //spc.setHeight(1); // We have just a sequence of vectors.
-                            //spc.setNumberOfComponentsPerPoint(NUMBER_OF_COMPONENTS_PER_POINT);
-                            //spc.setComponentDataType(SharedPointCloud::FLOAT_T); // Data type per component.
-                            //spc.setUserInfo(SharedPointCloud::XYZ_INTENSITY);
-                            
-                            Container imageFrame(spc);
-                            velodyneFrame.send(imageFrame);
-                            
-                            //Stop reading the file after a predefined number of frames
-                            if(frameIndex>=LOAD_FRAME_NO){
-                                stopReading=true;
-                                cout<<"Stop reading"<<endl;
-                            }
-                            else{
-                                frameIndex++;
-                            }
-                            pointIndex=0;
-                            startID=0;
-                        }
+                        sendSPC(previousAzimuth,azimuth);
                         
                         previousAzimuth=azimuth;
                         position+=2;
@@ -216,6 +220,8 @@ namespace automotive {
                                     if(azimuth>360.0){
                                         azimuth-=360.0;
                                     }
+                                    
+                                    sendSPC(previousAzimuth,azimuth);
                                     previousAzimuth=azimuth;
                                 }
                                 
