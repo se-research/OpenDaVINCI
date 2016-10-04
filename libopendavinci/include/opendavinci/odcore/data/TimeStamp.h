@@ -214,9 +214,6 @@ namespace odcore {
                 void computeHumanReadableRepresentation();
 
             private:
-                int32_t m_seconds;
-                int32_t m_microseconds;
-
                 uint32_t m_readableYear;
                 uint32_t m_readableMonth;
                 uint32_t m_readableDayOfMonth;

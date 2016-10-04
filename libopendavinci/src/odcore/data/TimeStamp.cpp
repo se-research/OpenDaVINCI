@@ -36,8 +36,6 @@ namespace odcore {
 
         TimeStamp::TimeStamp() :
             TimePoint(),
-            m_seconds(0),
-            m_microseconds(0),
             m_readableYear(0),
             m_readableMonth(0),
             m_readableDayOfMonth(0),
@@ -53,12 +51,18 @@ namespace odcore {
         }
 
         TimeStamp::TimeStamp(const int32_t &seconds, const int32_t &microSeconds) :
-            TimePoint(seconds, microSeconds) {}
+            TimePoint(seconds, microSeconds),
+            m_readableYear(0),
+            m_readableMonth(0),
+            m_readableDayOfMonth(0),
+            m_readableHours(0),
+            m_readableMinutes(0),
+            m_readableSeconds(0) {
+            computeHumanReadableRepresentation();
+        }
 
         TimeStamp::TimeStamp(const string &ddmmyyyyhhmmss) :
             TimePoint(),
-            m_seconds(0),
-            m_microseconds(0),
             m_readableYear(0),
             m_readableMonth(0),
             m_readableDayOfMonth(0),
@@ -153,8 +157,6 @@ namespace odcore {
 
         TimeStamp::TimeStamp(const TimeStamp &obj) :
             TimePoint(obj),
-            m_seconds(obj.m_seconds),
-            m_microseconds(obj.m_microseconds),
             m_readableYear(obj.m_readableYear),
             m_readableMonth(obj.m_readableMonth),
             m_readableDayOfMonth(obj.m_readableDayOfMonth),
@@ -166,8 +168,6 @@ namespace odcore {
 
         TimeStamp& TimeStamp::operator=(const TimeStamp &obj) {
             TimePoint::operator=(obj);
-            m_seconds = obj.m_seconds;
-            m_microseconds = obj.m_microseconds;
             m_readableYear = obj.m_readableYear;
             m_readableMonth = obj.m_readableMonth;
             m_readableDayOfMonth = obj.m_readableDayOfMonth;
@@ -239,7 +239,7 @@ namespace odcore {
         }
 
         void TimeStamp::computeHumanReadableRepresentation() {
-            const long int seconds = m_seconds;
+            const long int seconds = getSeconds();
             struct tm *tm = localtime(&seconds);
 
             m_readableYear = (1900 + tm->tm_year);

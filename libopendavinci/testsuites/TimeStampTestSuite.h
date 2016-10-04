@@ -34,7 +34,7 @@ class TimeStampTest : public CxxTest::TestSuite {
             TimeStamp ts2(3, 4);
             TimeStamp ts = ts1 + ts2;
 
-            TS_ASSERT(ts.getSecond() == 4);
+            TS_ASSERT(ts.getSeconds() == 4);
             TS_ASSERT(ts.getFractionalMicroseconds() == 6);
         }
 
@@ -43,7 +43,7 @@ class TimeStampTest : public CxxTest::TestSuite {
             TimeStamp ts2(3, 200*1000);
             TimeStamp ts = ts1 + ts2;
 
-            TS_ASSERT(ts.getSecond() == 5);
+            TS_ASSERT(ts.getSeconds() == 5);
             TS_ASSERT(ts.getFractionalMicroseconds() == 100*1000);
         }
 
@@ -52,7 +52,7 @@ class TimeStampTest : public CxxTest::TestSuite {
             TimeStamp ts2(1, 4);
             TimeStamp ts = ts1 - ts2;
 
-            TS_ASSERT(ts.getSecond() == 2);
+            TS_ASSERT(ts.getSeconds() == 2);
             TS_ASSERT(ts.getFractionalMicroseconds() == 1);
         }
 
@@ -61,7 +61,7 @@ class TimeStampTest : public CxxTest::TestSuite {
             TimeStamp ts2(1, 5);
             TimeStamp ts = ts1 - ts2;
 
-            TS_ASSERT(ts.getSecond() == 1);
+            TS_ASSERT(ts.getSeconds() == 1);
             TS_ASSERT(ts.getFractionalMicroseconds() == 999999);
         }
 
