@@ -85,7 +85,7 @@ ConstDeclaration:
 	'const' type=TYPE name=ID '=' value=(BOOL | NUMBER | STRING);
 
 TYPE:
-	'bool' | 'char' | 'int8' | 'uint8' | 'int16' | 'uint16' | 'int32' | 'uint32' | 'float' | 'double' | 'string';
+	'bool' | 'char' | 'int8' | 'uint8' | 'int16' | 'uint16' | 'int32' | 'uint32' | 'float' | 'double' | 'string' | 'bytes';
 
 terminal BOOL: 'true' | 'false';
 terminal fragment SIGN: ('+'|'-');

@@ -44,7 +44,7 @@ message odcore.testdata.TestMessage2 [id = 1002] {
 syntax = "proto2";
 package odcore.testdata;
 message TestMessage2 {
-    optional uint38 field1 = 1;
+    optional uint32 field1 = 1;
     optional sint32 field2 = 2;
 }
 Values: 123, -123 ==> 0x8 0x7b 0x10 0xf5 0x1

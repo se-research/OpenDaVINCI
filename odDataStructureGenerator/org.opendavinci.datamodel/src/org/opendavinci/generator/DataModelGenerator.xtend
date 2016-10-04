@@ -25,6 +25,7 @@ import org.eclipse.xtext.generator.IFileSystemAccess
 import org.opendavinci.dataModel.Message
 import org.opendavinci.dataModel.PackageDeclaration
 import org.opendavinci.dataModel.Attribute
+import java.lang.Iterable
 import java.util.HashMap
 
 class DataModelGenerator implements IGenerator {
@@ -50,7 +51,25 @@ class DataModelGenerator implements IGenerator {
   							 "uint64"-> "uint64_t",
   							 "bool"-> "bool",
   							 "char" -> "char",
-  							 "string"-> "std::string"
+  							 "string"-> "std::string",
+  							 "bytes"-> "std::string"
+  	)
+
+    /* This hashmap maps the ODVD language's types to C++ types. */
+ 	val protoTypeMap = newHashMap("double"-> "double",
+  							 "float"-> "float",
+  							 "int8"-> "sint32",
+  							 "uint8"-> "uint32",
+  							 "int16"-> "sint32",
+  							 "uint16"-> "uint32",
+  							 "int32"-> "sint32",
+  							 "uint32"-> "uint32",
+  							 "int64"-> "sint64",
+  							 "uint64"-> "uint64",
+  							 "bool"-> "uint32",
+  							 "char" -> "sint32",
+  							 "string"-> "string",
+  							 "bytes"-> "bytes"
   	)
 
     /* This hashmap assigns initializing values to attributes of the respective type. */
@@ -66,7 +85,8 @@ class DataModelGenerator implements IGenerator {
   							 "uint64"-> "0",
   							 "bool"-> "false",
   							 "char"-> "'\\0'",
-  							 "string"-> "\"\""
+  							 "string"-> "\"\"",
+  							 "bytes"-> "\"\""
   	)
 
     /* This hashmap defines test values for attribues of the respective type. */
@@ -82,7 +102,8 @@ class DataModelGenerator implements IGenerator {
   							 "uint64"-> "40000",
   							 "bool"-> "true",
   							 "char"-> "'c'",
-  							 "string"-> "\"Hello World!\""
+  							 "string"-> "\"Hello World!\"",
+  							 "bytes"-> "\"Hello World!\""
   	)
  
     /* This hashmap defines test values for attribues of the respective type used as a list. */
@@ -98,7 +119,8 @@ class DataModelGenerator implements IGenerator {
   							 "uint64"-> #[6000, 7000, 8000],
   							 "bool"-> #[true, false],
   							 "char"-> #["'d'", "'e'", "'f'"],
-  							 "string"-> #["\"Hello World!\"", "\"Hello Solar System!\"", "\"Hello Milky Way!\""]
+  							 "string"-> #["\"Hello World!\"", "\"Hello Solar System!\"", "\"Hello Milky Way!\""],
+  							 "bytes"-> #["\"Hello World!\"", "\"Hello Solar System!\"", "\"Hello Milky Way!\""]
   	)
  
     /* This method is our interface to an outside caller. */
@@ -121,6 +143,8 @@ class DataModelGenerator implements IGenerator {
 				fsa.generateFile("testsuites/" + e.message.toString().replaceAll("\\.", "_") + "TestSuite.h", generateTestSuiteContent(pdl, e, toplevelIncludeFolder, "generated", generatedHeadersFile, enumDescriptions))
 			}
 		}
+		val msgs = resource.allContents.toIterable.filter(typeof(Message))
+		fsa.generateFile("proto/" + toplevelIncludeFolder + ".proto", generateProtoFileContent(msgs))
 	}
 
     /* This iterates over all defined enums in a message and stores the single enum values in EnumDescription. */
@@ -132,7 +156,7 @@ class DataModelGenerator implements IGenerator {
 				ed.m_enumName = att.enumdec.name
 				ed.m_enumNameIncludingMessageName = msg.message.substring(msg.message.lastIndexOf(".") + 1) + "." + ed.m_enumName
 				ed.m_FQDN = msg.message + "." + ed.m_enumName
-				if ( (pdl.package != null) && (pdl.package.length > 0) )
+				if ( (pdl != null) && (pdl.package != null) && (pdl.package.length > 0) )
 					ed.m_FQDN = pdl.package.toString + "." + ed.m_FQDN
 				ed.enumerators = new HashMap<String, String>
 				for (enumerator : att.enumdec.enumerators) {
@@ -143,6 +167,42 @@ class DataModelGenerator implements IGenerator {
 		}
         return enums
 	}
+
+    /* This method generates the header file content. */
+	def generateProtoFileContent(Iterable<Message> msgs) '''
+// This is an auto-generated file from a .odvd message specification using OpenDaVINCI's odDataStructureGenerator.
+
+// This line is only needed when using Google Protobuf 3.
+syntax = "proto2";
+
+«FOR msg : msgs»
+    «var enums = collectEnumsFromMessage(null, msg)»
+    // Message identifier: «msg.id».
+    message «msg.message.replaceAll("\\.", "_")» {
+        «FOR a : msg.attributes»
+            «IF a.scalar != null && protoTypeMap.containsKey(a.scalar.type)»
+                optional «protoTypeMap.get(a.scalar.type)» «a.scalar.name» = «a.scalar.id»«IF a.scalar.value != null»«IF !a.scalar.type.equalsIgnoreCase("char") && !a.scalar.type.equalsIgnoreCase("bool")» [ default = «IF a.scalar.type.equalsIgnoreCase("string")»"«a.scalar.value»"«ELSE»«a.scalar.value.replaceFirst("\\+", "")»«ENDIF» ]«ELSE» /* No valid mapping for value '«a.scalar.value»' of type '«a.scalar.type»' found. */«ENDIF»«ENDIF»;
+            «ENDIF»
+            «IF a.scalar != null && !protoTypeMap.containsKey(a.scalar.type) && !enums.containsKey(a.scalar.type)  && !a.scalar.type.contains("::")»
+                optional «a.scalar.type.replaceAll("\\.", "_")» «a.scalar.name» = «a.scalar.id»;
+            «ENDIF»
+            «IF a.list != null && protoTypeMap.containsKey(a.list.type)»
+                repeated «protoTypeMap.get(a.list.type)» «a.list.name» = «a.list.id»«IF !a.list.type.equalsIgnoreCase("string")» [ packed = true ]«ENDIF»;
+            «ENDIF»
+            «IF a.list != null && !protoTypeMap.containsKey(a.list.type) && !enums.containsKey(a.list.type)  && !a.list.type.contains("::")»
+                repeated «a.list.type.replaceAll("\\.", "_")» «a.list.name» = «a.list.id»;
+            «ENDIF»
+            «IF a.map != null»
+                /* No valid mapping for «a.map.name» of type map found. */
+            «ENDIF»
+            «IF a.fixedarray != null && protoTypeMap.containsKey(a.fixedarray.type) && !a.fixedarray.type.equalsIgnoreCase("string")»
+                repeated «protoTypeMap.get(a.fixedarray.type)» «a.fixedarray.name» = «a.fixedarray.id» [ packed = true ];
+            «ENDIF»
+        «ENDFOR»
+    }
+
+«ENDFOR»
+'''
 
     /* This method generates the header file content. */
 	def generateHeaderFileContent(String toplevelIncludeFolder, String generatedHeadersFile, PackageDeclaration pdl, Message msg, HashMap<String, EnumDescription> enums) '''

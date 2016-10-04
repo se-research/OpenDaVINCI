@@ -23,9 +23,6 @@
 #include <sstream>
 #include <memory>
 
-#include "opendavinci/odcore/serialization/Deserializer.h"
-#include "opendavinci/odcore/serialization/SerializationFactory.h"
-#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendavinci/odcore/data/TimeStamp.h"
 #include "opendavinci/odcore/wrapper/Time.h"
 #include "opendavinci/odcore/wrapper/TimeFactory.h"
@@ -38,8 +35,7 @@ namespace odcore {
         using namespace odcore::serialization;
 
         TimeStamp::TimeStamp() :
-            m_seconds(0),
-            m_microseconds(0),
+            TimePoint(),
             m_readableYear(0),
             m_readableMonth(0),
             m_readableDayOfMonth(0),
@@ -48,15 +44,14 @@ namespace odcore {
             m_readableSeconds(0) {
             std::shared_ptr<odcore::wrapper::Time> time(odcore::wrapper::TimeFactory::getInstance().now());
             if (time.get()) {
-                m_seconds = time->getSeconds();
-                m_microseconds = time->getPartialMicroseconds();
+                setSeconds(time->getSeconds());
+                setMicroseconds(time->getPartialMicroseconds());
                 computeHumanReadableRepresentation();
             }
         }
 
         TimeStamp::TimeStamp(const int32_t &seconds, const int32_t &microSeconds) :
-            m_seconds(seconds),
-            m_microseconds(microSeconds),
+            TimePoint(seconds, microSeconds),
             m_readableYear(0),
             m_readableMonth(0),
             m_readableDayOfMonth(0),
@@ -67,15 +62,13 @@ namespace odcore {
         }
 
         TimeStamp::TimeStamp(const string &ddmmyyyyhhmmss) :
-            m_seconds(0),
-            m_microseconds(0),
+            TimePoint(),
             m_readableYear(0),
             m_readableMonth(0),
             m_readableDayOfMonth(0),
             m_readableHours(0),
             m_readableMinutes(0),
             m_readableSeconds(0) {
-
             if (ddmmyyyyhhmmss.size() == 14) {
                 stringstream dataDD;
                 dataDD.str(ddmmyyyyhhmmss.substr(0, 2));
@@ -157,15 +150,13 @@ namespace odcore {
                     break;
                 }
 
-                m_seconds = (yearsSince01011970 * 365 + additionalLeapDays + cumulativeDays + dd - 1) * 24 * 60 * 60 + hour*60*60 + min*60 + sec;
+                setSeconds((yearsSince01011970 * 365 + additionalLeapDays + cumulativeDays + dd - 1) * 24 * 60 * 60 + hour*60*60 + min*60 + sec);
                 computeHumanReadableRepresentation();
             }
         }
 
         TimeStamp::TimeStamp(const TimeStamp &obj) :
-            SerializableData(),
-            m_seconds(obj.m_seconds),
-            m_microseconds(obj.m_microseconds),
+            TimePoint(obj),
             m_readableYear(obj.m_readableYear),
             m_readableMonth(obj.m_readableMonth),
             m_readableDayOfMonth(obj.m_readableDayOfMonth),
@@ -176,23 +167,20 @@ namespace odcore {
         TimeStamp::~TimeStamp() {}
 
         TimeStamp& TimeStamp::operator=(const TimeStamp &obj) {
-            m_seconds = obj.m_seconds;
-            m_microseconds = obj.m_microseconds;
+            TimePoint::operator=(obj);
             m_readableYear = obj.m_readableYear;
             m_readableMonth = obj.m_readableMonth;
             m_readableDayOfMonth = obj.m_readableDayOfMonth;
             m_readableHours = obj.m_readableHours;
             m_readableMinutes = obj.m_readableMinutes;
             m_readableSeconds = obj.m_readableSeconds;
-
             computeHumanReadableRepresentation();
-
             return (*this);
         }
 
         TimeStamp TimeStamp::operator+(const TimeStamp & t) const {
-            int32_t sumSeconds = m_seconds + t.getSeconds();
-            int32_t sumMicroseconds = m_microseconds + t.getFractionalMicroseconds();
+            int32_t sumSeconds = getSeconds() + t.getSeconds();
+            int32_t sumMicroseconds = getFractionalMicroseconds() + t.getFractionalMicroseconds();
 
             while (sumMicroseconds > 1000000L) {
                 sumSeconds++;
@@ -203,8 +191,8 @@ namespace odcore {
         }
 
         TimeStamp TimeStamp::operator-(const TimeStamp & t) const {
-            int32_t deltaSeconds = m_seconds - t.getSeconds();
-            int32_t deltaMicroseconds = m_microseconds - t.getFractionalMicroseconds();
+            int32_t deltaSeconds = getSeconds() - t.getSeconds();
+            int32_t deltaMicroseconds = getFractionalMicroseconds() - t.getFractionalMicroseconds();
 
             while (deltaMicroseconds < 0) {
                 deltaSeconds--;
@@ -247,15 +235,11 @@ namespace odcore {
         }
 
         int32_t TimeStamp::getFractionalMicroseconds() const {
-            return m_microseconds;
-        }
-
-        int32_t TimeStamp::getSeconds() const {
-            return m_seconds;
+            return getMicroseconds();
         }
 
         void TimeStamp::computeHumanReadableRepresentation() {
-            const long int seconds = m_seconds;
+            const long int seconds = getSeconds();
             struct tm *tm = localtime(&seconds);
 
             m_readableYear = (1900 + tm->tm_year);
@@ -341,69 +325,8 @@ namespace odcore {
 
         const string TimeStamp::getYYYYMMDD_HHMMSSms() const {
             stringstream s;
-            s << getYYYYMMDD_HHMMSS() << "." << m_microseconds;
+            s << getYYYYMMDD_HHMMSS() << "." << getMicroseconds();
             return s.str();
-        }
-
-        int32_t TimeStamp::getID() const {
-            return 12;
-        }
-
-        const string TimeStamp::getShortName() const {
-            return "TimeStamp";
-        }
-
-        const string TimeStamp::getLongName() const {
-            return "core.data.TimeStamp";
-        }
-
-        int32_t TimeStamp::ID() {
-            return 12;
-        }
-
-        const string TimeStamp::ShortName() {
-            return "TimeStamp";
-        }
-
-        const string TimeStamp::LongName() {
-            return "core.data.TimeStamp";
-        }
-
-        const string TimeStamp::toString() const {
-            stringstream s;
-            s << m_seconds << "s/" << m_microseconds << "us.";
-            return s.str();
-        }
-
-        void TimeStamp::accept(Visitor &v) {
-            v.beginVisit(ID(), ShortName(), LongName());
-            v.visit(1, "TimeStamp.seconds", "seconds", m_seconds);
-            v.visit(2, "TimeStamp.microseconds", "microseconds", m_microseconds);
-            v.endVisit();
-        }
-
-        ostream& TimeStamp::operator<<(ostream &out) const {
-            SerializationFactory& sf=SerializationFactory::getInstance();;
-
-            std::shared_ptr<Serializer> s = sf.getSerializer(out);
-
-            s->write(1, m_seconds);
-
-            s->write(2, m_microseconds);
-
-            return out;
-        }
-
-        istream& TimeStamp::operator>>(istream &in) {
-            SerializationFactory& sf=SerializationFactory::getInstance();;
-
-            std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
-
-            d->read(1, m_seconds);
-
-            d->read(2, m_microseconds);
-
-            return in;
         }
 
     }

@@ -100,6 +100,7 @@ public class DataStructureGenerator {
 			String filenameWithSubpackage = fileName.replaceAll("\\.", "/");
 			filenameWithSubpackage = filenameWithSubpackage.replaceAll("/h$", ".h");
 			filenameWithSubpackage = filenameWithSubpackage.replaceAll("/cpp$", ".cpp");
+			filenameWithSubpackage = filenameWithSubpackage.replaceAll("/proto$", ".proto");
 			System.out.print("Creating '" + folder + "/" + filenameWithSubpackage + "' ");
 			if (filenameWithSubpackage.contains("/")) {
 				File d = new File(folder + "/" + filenameWithSubpackage.substring(0, filenameWithSubpackage.lastIndexOf('/')));
@@ -519,6 +520,9 @@ public class DataStructureGenerator {
 
 		sb.append("# Install header files."); sb.append("\r\n");
 		sb.append("INSTALL(DIRECTORY \"${CMAKE_CURRENT_SOURCE_DIR}/include/\" DESTINATION include/" + " " + "COMPONENT od" + folder.replaceFirst("lib", "") + "lib" + ")"); sb.append("\r\n");
+
+		sb.append("# Install proto files."); sb.append("\r\n");
+		sb.append("INSTALL(DIRECTORY \"${CMAKE_CURRENT_SOURCE_DIR}/proto/\" DESTINATION share/proto/" + " " + "COMPONENT od" + folder.replaceFirst("lib", "") + "lib" + ")"); sb.append("\r\n");
 
 		sb.append("# Install CMake modules locally."); sb.append("\r\n");
 		sb.append("IF(UNIX)"); sb.append("\r\n");
