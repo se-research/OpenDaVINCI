@@ -1,5 +1,5 @@
 /**
- * PcapReplay reads a pcap file and sends out strings periodically.
+ * PcapReplay reads a Velodyne recording (pcap format) and sends out strings periodically. Suport HDL-64E and VLP-16 recordings.
  * Copyright (C) 2016 Hang Yin
  *
  * This program is free software; you can redistribute it and/or
@@ -20,19 +20,17 @@
 #ifndef PCAPREPLAY_H_
 #define PCAPREPLAY_H_
 
-//#include <memory>
 #include <fstream>
 
 #include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
+#include "opendavinci/odcore/io/protocol/PCAPProtocol.h"
 #include <opendavinci/odcore/io/udp/UDPSender.h>
 #include <opendavinci/odcore/io/udp/UDPFactory.h>
 
 namespace automotive {
 
         using namespace std;
-        /**
-         * This class is a skeleton to send driving commands to Hesperia-light's vehicle driving dynamics simulation.
-         */
+
         class PcapReplay : public odcore::base::module::TimeTriggeredConferenceClientModule {
             private:
                 /**
@@ -66,6 +64,8 @@ namespace automotive {
                 virtual ~PcapReplay();
 
                 odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
+                
+                virtual void nextContainer(odcore::data::Container &c);
 
             private:
                 virtual void setUp();
@@ -74,9 +74,9 @@ namespace automotive {
                 
                 const string RECEIVER = "127.0.0.1";
                 const uint32_t PORT = 2368;
-                //const uint32_t BUFFER_SIZE=5000; //number of bytes read from the pcap file each time
                 uint32_t BUFFER_SIZE;
                 fstream lidarStream;   
+                odcore::io::protocol::PCAPProtocol m_pcap;
                 std::shared_ptr<odcore::io::udp::UDPSender> udpsender;
                 bool stop;
         };
