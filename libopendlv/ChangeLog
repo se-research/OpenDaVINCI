@@ -1,3 +1,4 @@
+4.3.0 - proto message exporter for odDataStructureGenerator and absolute time base for CANDevice
 4.2.0 - Visualization of SharedPointCloud
 4.1.1 - Minor fixes after testing at the lab.
 4.1.0 - Added sample time stamping to container
