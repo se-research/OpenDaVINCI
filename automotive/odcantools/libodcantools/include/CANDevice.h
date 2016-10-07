@@ -26,6 +26,7 @@
 #include <libpcan.h>
 
 #include <opendavinci/odcore/base/Service.h>
+#include <opendavinci/odcore/data/TimeStamp.h>
 
 namespace automotive { class GenericCANMessage; }
 
@@ -95,6 +96,7 @@ class GenericCANMessageListener;
                 string m_deviceNode;
                 HANDLE m_handle;
                 GenericCANMessageListener &m_listener;
+                odcore::data::TimeStamp m_deviceDriverStartTime;
         };
 
     } // odcantools
