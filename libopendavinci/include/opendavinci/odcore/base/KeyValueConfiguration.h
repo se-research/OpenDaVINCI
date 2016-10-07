@@ -162,24 +162,6 @@ namespace odcore {
                 };
 
                 /**
-                 * This method returns an optional configuration value
-                 *
-                 * @code
-                 * KeyValueConfiguration kvc;
-                 * ...
-                 * T t = kvc.getOptionalValue<T>(key);
-                 * @endcode
-                 *
-                 * @param key Key for retrieving the value.
-                 * @return Value if the parameter is found, undefined otherwise.
-                 */
-                template<class T>
-                inline T getOptionalValue(const string &key) const {
-                    bool ignore;
-                    return getOptionalValue<T>(key, ignore);
-                };
-
-                /**
                  * This method returns a subset of this key/value-configuration, i.e.
                  * all key/value-pairs starting with "section" and removes the leading
                  * "section" from the resulting subset.
