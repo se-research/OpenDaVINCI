@@ -23,6 +23,7 @@
 #include <cerrno>
 #include <map>
 #include <iosfwd>
+#include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -31,6 +32,7 @@
 #include "opendavinci/odcore/data/SerializableData.h"
 #include "opendavinci/odcore/exceptions/Exceptions.h"
 #include "opendavinci/odcore/strings/StringComparator.h"
+#include "opendavinci/generated/odcore/data/LogMessage.h"
 
 namespace odcore {
     namespace base {
@@ -107,7 +109,7 @@ namespace odcore {
                  * @code
                  * KeyValueConfiguration kvc;
                  * ...
-                 * T t = kvc.getValue<T>();
+                 * T t = kvc.getValue<T>(key);
                  * @endcode
                  *
                  * @param key Key for retrieving the value.
@@ -127,6 +129,55 @@ namespace odcore {
                     T value;
                     s >> value;
                     return value;
+                };
+
+                /**
+                 * This method returns an optional configuration value
+                 *
+                 * @code
+                 * KeyValueConfiguration kvc;
+                 * ...
+                 * T t = kvc.getOptionalValue<T>(key, isFound);
+                 * @endcode
+                 *
+                 * @param key Key for retrieving the value.
+                 * @param isFound Flag set to true if the parameter is found, false otherwise.
+                 * @return Value if the parameter is found, undefined otherwise.
+                 */
+                template<class T>
+                inline T getOptionalValue(const string &key, bool &isFound) const {
+                    string stringValue(getValueFor(key));
+                    if (stringValue == "") {
+                        isFound=false;
+                        stringstream s;
+                        T value;
+                        s << "Value for optional key '" << key << "' not found.";
+                        odcore::data::LogMessage lm("odcore::base::KeyValueConfiguration", odcore::data::LogMessage::LogLevel::INFO, s.str());
+                        return value;
+                    }
+                    isFound=true;
+                    stringstream s(stringValue);
+                    T value;
+                    s >> value;
+                    return value;
+                };
+
+                /**
+                 * This method returns an optional configuration value
+                 *
+                 * @code
+                 * KeyValueConfiguration kvc;
+                 * ...
+                 * T t = kvc.getOptionalValue<T>(key);
+                 * @endcode
+                 *
+                 * @param key Key for retrieving the value.
+                 * @return Value if the parameter is found, undefined otherwise.
+                 */
+                template<class T>
+                inline T getOptionalValue(const string &key) const {
+                    bool ignore;
+                    return getOptionalValue<T>(key, ignore);
                 };
 
                 /**
