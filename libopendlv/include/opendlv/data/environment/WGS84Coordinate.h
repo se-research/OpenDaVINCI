@@ -26,6 +26,7 @@
 
 #include "opendavinci/odcore/data/SerializableData.h"
 #include "opendlv/data/environment/Point3.h"
+#include "automotivedata/generated/geodetic/WGS84.h"
 
 namespace opendlv {
     namespace data {
@@ -38,7 +39,7 @@ namespace opendlv {
             /**
              * This class is the main class for a WGS84 coordinate.
              */
-            class OPENDAVINCI_API WGS84Coordinate : public odcore::data::SerializableData {
+            class OPENDAVINCI_API WGS84Coordinate : public geodetic::WGS84 {
                 private:
                     // The following constants are necessary the project WGS84 coordinates.
                     const static double EQUATOR_RADIUS;
@@ -90,34 +91,6 @@ namespace opendlv {
                     WGS84Coordinate& operator=(const WGS84Coordinate &obj);
 
                     /**
-                     * This method returns the latitude.
-                     *
-                     * @return Latitude.
-                     */
-                    double getLatitude() const;
-
-                    /**
-                     * This method sets the latitude.
-                     *
-                     * @param lat.
-                     */
-                    void setLatitude(const double &lat);
-
-                    /**
-                     * This method returns the longitude.
-                     *
-                     * @return Longitude.
-                     */
-                    double getLongitude() const;
-
-                    /**
-                     * This method sets the longitude.
-                     *
-                     * @param lon.
-                     */
-                    void setLongitude(const double &lon);
-
-                    /**
                      * This method transforms the given WGS84 coordinate
                      * using this as reference coordinate.
                      *
@@ -146,13 +119,6 @@ namespace opendlv {
                      */
                     const WGS84Coordinate transform(const Point3 &coordinate, const double &accuracy) const;
 
-                    virtual ostream& operator<<(ostream &out) const;
-                    virtual istream& operator>>(istream &in);
-
-                    static int32_t ID();
-                    virtual int32_t getID() const;
-                    virtual const string getShortName() const;
-                    virtual const string getLongName() const;
                     virtual const string toString() const;
 
                 private:
@@ -194,9 +160,6 @@ namespace opendlv {
                     pair<double, double> project(double lat, double lon) const;
 
                 private:
-                    double m_lat;
-                    double m_lon;
-
                     // These members are used in projective computations.
                     double m_latitude;
                     double m_longitude;

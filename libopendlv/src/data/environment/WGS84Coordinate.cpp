@@ -68,8 +68,7 @@ namespace opendlv {
             const double WGS84Coordinate::R4 = WGS84Coordinate::R3T * WGS84Coordinate::SQUARED_ECCENTRICITY * WGS84Coordinate::C88;
 
             WGS84Coordinate::WGS84Coordinate() :
-                m_lat(0),
-                m_lon(0),
+                geodetic::WGS84(),
                 m_latitude(0),
                 m_longitude(0),
                 m_ml0(0) {
@@ -77,8 +76,7 @@ namespace opendlv {
             }
 
             WGS84Coordinate::WGS84Coordinate(const double &lat, const double &lon) :
-                m_lat(lat),
-                m_lon(lon),
+                geodetic::WGS84(lat, lon),
                 m_latitude(0),
                 m_longitude(0),
                 m_ml0(0) {
@@ -88,8 +86,7 @@ namespace opendlv {
             WGS84Coordinate::~WGS84Coordinate() {}
 
             WGS84Coordinate& WGS84Coordinate::operator=(const WGS84Coordinate &obj) {
-                m_lat = obj.m_lat;
-                m_lon = obj.m_lon;
+                geodetic::WGS84::operator=(obj);
                 m_latitude = obj.m_latitude;
                 m_longitude = obj.m_longitude;
                 m_ml0 = obj.m_ml0;
@@ -100,8 +97,8 @@ namespace opendlv {
             }
 
             void WGS84Coordinate::initialize() {
-                m_latitude = m_lat * cartesian::Constants::DEG2RAD;
-                m_longitude = m_lon * cartesian::Constants::DEG2RAD;
+                m_latitude = getLatitude() * cartesian::Constants::DEG2RAD;
+                m_longitude = getLongitude() * cartesian::Constants::DEG2RAD;
 
                 m_ml0 = mlfn(m_latitude);
             }
@@ -219,66 +216,10 @@ namespace opendlv {
                 return result;
             }
 
-            double WGS84Coordinate::getLatitude() const {
-                return m_lat;
-            }
-
-            void WGS84Coordinate::setLatitude(const double &lat) {
-                m_lat = lat;
-            }
-
-            double WGS84Coordinate::getLongitude() const {
-                return m_lon;
-            }
-
-            void WGS84Coordinate::setLongitude(const double &lon) {
-                m_lon = lon;
-            }
-
-            int32_t WGS84Coordinate::ID() {
-                return 19;
-            }
-
-            int32_t WGS84Coordinate::getID() const {
-                return 19;
-            }
-
-            const string WGS84Coordinate::getShortName() const {
-                return "WGS84Coordinate";
-            }
-
-            const string WGS84Coordinate::getLongName() const {
-                return "opendlv.data.environment.WGS84Coordinate";
-            }
-
             const string WGS84Coordinate::toString() const {
                 stringstream s;
-                s << "(" << setprecision(10) << m_lat << (!(m_lat < 0) ? "N" : "S") << "; " << setprecision(10) << m_lon << (!(m_lon < 0) ? "E" : "W") << ")";
+                s << "(" << setprecision(10) << getLatitude() << (!(getLatitude() < 0) ? "N" : "S") << "; " << setprecision(10) << getLongitude() << (!(getLongitude() < 0) ? "E" : "W") << ")";
                 return s.str();
-            }
-
-            ostream& WGS84Coordinate::operator<<(ostream &out) const {
-                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
-
-                std::shared_ptr<odcore::serialization::Serializer> s = sf.getSerializer(out);
-
-                s->write(1, m_lat);
-
-                s->write(3, m_lon);
-
-                return out;
-            }
-
-            istream& WGS84Coordinate::operator>>(istream &in) {
-                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
-
-                std::shared_ptr<odcore::serialization::Deserializer> d = sf.getDeserializer(in);
-
-                d->read(1, m_lat);
-
-                d->read(3, m_lon);
-
-                return in;
             }
 
         }
