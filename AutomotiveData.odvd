@@ -32,6 +32,10 @@ message cartesian.Matrix3x3 [id = 52] {
     double ZZ [id = 9];
 }
 
+message geodetic.WGS84 [id = 19] {
+  double latitude [id = 1];
+  double longitude [id = 3];
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Messages describing entities in the Cartesian environment.
