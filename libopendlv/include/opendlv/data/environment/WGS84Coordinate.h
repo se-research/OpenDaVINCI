@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef HESPERIA_DATA_ENVIRONMENT_WGS84COORDINATE_H_
-#define HESPERIA_DATA_ENVIRONMENT_WGS84COORDINATE_H_
+#ifndef OPENDLV_DATA_ENVIRONMENT_WGS84COORDINATE_H_
+#define OPENDLV_DATA_ENVIRONMENT_WGS84COORDINATE_H_
 
 #include <map>
 
@@ -69,28 +69,15 @@ namespace opendlv {
                     const static double R4;
 
                 public:
-                    enum LATITUDE {
-                        NORTH,
-                        SOUTH
-                    };
-
-                    enum LONGITUDE {
-                        WEST,
-                        EAST
-                    };
-
-                public:
                     WGS84Coordinate();
 
                     /**
                      * Constructor.
                      *
-                     * @param lat Latitude.
-                     * @param LAT WGS84Coordinate::NORTH or WGS84Coordinate::SOUTH
-                     * @param lon Longitude.
-                     * @param LON WGS84Coordinate::WEST or WGS84Coordinate::EAST
+                     * @param lat Latitude (positive is north, negative is south).
+                     * @param lon Longitude (negative is west, positive is east).
                      */
-                    WGS84Coordinate(const double &lat, const enum LATITUDE &LAT, const double &lon, const enum LONGITUDE &LON);
+                    WGS84Coordinate(const double &lat, const double &lon);
 
                     virtual ~WGS84Coordinate();
 
@@ -131,34 +118,6 @@ namespace opendlv {
                     void setLongitude(const double &lon);
 
                     /**
-                     * This method returns the LATITUDE.
-                     *
-                     * @return LATITUDE.
-                     */
-                    enum LATITUDE getLATITUDE() const;
-
-                    /**
-                     * This method sets the LATITUDE.
-                     *
-                     * @param LAT.
-                     */
-                    void setLATITUDE(const enum LATITUDE &LAT);
-
-                    /**
-                     * This method returns the LONGITUDE.
-                     *
-                     * @return LONGITUDE.
-                     */
-                    enum LONGITUDE getLONGITUDE() const;
-
-                    /**
-                     * This method sets the LONGITUDE.
-                     *
-                     * @param LON.
-                     */
-                    void setLONGITUDE(const enum LONGITUDE &LON);
-
-                    /**
                      * This method transforms the given WGS84 coordinate
                      * using this as reference coordinate.
                      *
@@ -197,16 +156,6 @@ namespace opendlv {
                     virtual const string toString() const;
 
                 private:
-                    double m_lat;
-                    double m_lon;
-                    enum LATITUDE m_LATITUDE;
-                    enum LONGITUDE m_LONGITUDE;
-
-                    // These members are used in projective computations.
-                    double m_latitude;
-                    double m_longitude;
-                    double m_ml0;
-
                     /**
                      * This method initializes the transformation.
                      */
@@ -243,10 +192,19 @@ namespace opendlv {
                      * @return fwd
                      */
                     pair<double, double> project(double lat, double lon) const;
+
+                private:
+                    double m_lat;
+                    double m_lon;
+
+                    // These members are used in projective computations.
+                    double m_latitude;
+                    double m_longitude;
+                    double m_ml0;
             };
 
         }
     }
 } // opendlv::data::environment
 
-#endif /*HESPERIA_DATA_ENVIRONMENT_WGS84COORDINATE_H_*/
+#endif /*OPENDLV_DATA_ENVIRONMENT_WGS84COORDINATE_H_*/

@@ -147,8 +147,7 @@ namespace opendlv {
                         pos = pos + 7 + 1; // Consume value + ","
                         char LAT = m_message.at(pos);
 
-                        m_coordinate.setLatitude(latitude);
-                        m_coordinate.setLATITUDE((LAT == 'N') ? WGS84Coordinate::NORTH : WGS84Coordinate::SOUTH);
+                        m_coordinate.setLatitude(latitude * ((LAT == 'N') ? 1 : -1));
 
                         ////////////////////////////////////////////////////////
 
@@ -169,8 +168,7 @@ namespace opendlv {
                         pos = pos + 7 + 1; // Consume value + ","
                         char LON = m_message.at(pos);
 
-                        m_coordinate.setLongitude(longitude);
-                        m_coordinate.setLONGITUDE((LON == 'W') ? WGS84Coordinate::WEST: WGS84Coordinate::EAST);
+                        m_coordinate.setLongitude(longitude * ((LON == 'E') ? 1 : -1));
 
                         ////////////////////////////////////////////////////////
 
@@ -273,6 +271,7 @@ namespace opendlv {
                     sstr << "A" << ",";
 
                     double latitude = m_coordinate.getLatitude();
+                    const string LAT = (latitude > 0) ? "N" : "S";
                     uint32_t lat = static_cast<uint32_t>(latitude);
                     latitude -= lat;
 
@@ -288,9 +287,10 @@ namespace opendlv {
                     latArcMinuteStr << latitude * 60;
 
                     sstr << latStr.str() << latArcMinuteStr.str() << ",";
-                    sstr << ((m_coordinate.getLATITUDE() == WGS84Coordinate::NORTH) ? "N" : "S") << ",";
+                    sstr << LAT << ",";
 
                     double longitude = m_coordinate.getLongitude();
+                    const string LON = (longitude > 0) ? "E" : "W";
                     uint32_t lon = static_cast<uint32_t>(longitude);
                     longitude -= lon;
 
@@ -306,7 +306,7 @@ namespace opendlv {
                     lonArcMinuteStr << longitude * 60;
 
                     sstr << lonStr.str() << lonArcMinuteStr.str() << ",";
-                    sstr << ((m_coordinate.getLONGITUDE() == WGS84Coordinate::WEST) ? "W" : "E") << ",";
+                    sstr << LON << ",";
 
                     sstr << "0.0" << ",";
                     sstr << "0.0" << ",";
@@ -328,7 +328,7 @@ namespace opendlv {
 
                     sstr << day.str() << month.str() << year.str() << ",";
                     sstr << "0.0" << ",";
-                    sstr << ((m_coordinate.getLONGITUDE() == WGS84Coordinate::WEST) ? "W" : "E") << ",";
+                    sstr << LON << ",";
                     sstr << "S" << "*";
 
                     // Compute check sum.
@@ -358,7 +358,7 @@ namespace opendlv {
                 }
 
                 const string GPRMC::getLongName() const {
-                    return "hesperia.data.sensor.nmea.GPRMC";
+                    return "opendlv.data.sensor.nmea.GPRMC";
                 }
 
                 const string GPRMC::toString() const {

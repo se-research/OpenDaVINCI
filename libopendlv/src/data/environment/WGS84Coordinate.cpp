@@ -19,6 +19,7 @@
 
 #include <cmath>
 #include <iostream>
+#include <iomanip>
 #include <limits>
 #include <memory>
 #include <string>
@@ -67,24 +68,20 @@ namespace opendlv {
             const double WGS84Coordinate::R4 = WGS84Coordinate::R3T * WGS84Coordinate::SQUARED_ECCENTRICITY * WGS84Coordinate::C88;
 
             WGS84Coordinate::WGS84Coordinate() :
-                    m_lat(0),
-                    m_lon(0),
-                    m_LATITUDE(WGS84Coordinate::NORTH),
-                    m_LONGITUDE(WGS84Coordinate::EAST),
-                    m_latitude(0),
-                    m_longitude(0),
-                    m_ml0(0) {
+                m_lat(0),
+                m_lon(0),
+                m_latitude(0),
+                m_longitude(0),
+                m_ml0(0) {
                 initialize();
             }
 
-            WGS84Coordinate::WGS84Coordinate(const double &lat, const enum LATITUDE &LAT, const double &lon, const enum LONGITUDE &LON) :
-                    m_lat(lat),
-                    m_lon(lon),
-                    m_LATITUDE(LAT),
-                    m_LONGITUDE(LON),
-                    m_latitude(0),
-                    m_longitude(0),
-                    m_ml0(0) {
+            WGS84Coordinate::WGS84Coordinate(const double &lat, const double &lon) :
+                m_lat(lat),
+                m_lon(lon),
+                m_latitude(0),
+                m_longitude(0),
+                m_ml0(0) {
                 initialize();
             }
 
@@ -93,8 +90,6 @@ namespace opendlv {
             WGS84Coordinate& WGS84Coordinate::operator=(const WGS84Coordinate &obj) {
                 m_lat = obj.m_lat;
                 m_lon = obj.m_lon;
-                setLATITUDE(obj.getLATITUDE());
-                setLONGITUDE(obj.getLONGITUDE());
                 m_latitude = obj.m_latitude;
                 m_longitude = obj.m_longitude;
                 m_ml0 = obj.m_ml0;
@@ -130,7 +125,7 @@ namespace opendlv {
                 double t = abs(lat) - cartesian::Constants::PI / 2.0;
 
                 if ( (t > 1.0e-12) ||
-                        (abs(lon) > 10.0) ) {
+                     (abs(lon) > 10.0) ) {
                     return result;
                 }
 
@@ -201,7 +196,7 @@ namespace opendlv {
                 uint32_t iterations = 0;
 //                while ( (d < dOld) && (d > epsilon) && (iterations < 50000)) {
                 while ( (d < dOld) && (d > epsilon) ) {
-                    result = WGS84Coordinate(result.getLatitude() + signLat * addLat, result.getLATITUDE(), result.getLongitude(), result.getLONGITUDE());
+                    result = WGS84Coordinate(result.getLatitude() + signLat * addLat, result.getLongitude());
                     point3Result = transform(result);
                     dOld = d;
                     d = abs(coordinate.getY() - point3Result.getY());
@@ -214,7 +209,7 @@ namespace opendlv {
                 iterations = 0;
 //                while ( (d < dOld) && (d > epsilon) && (iterations < 50000)) {
                 while ( (d < dOld) && (d > epsilon) ) {
-                    result = WGS84Coordinate(result.getLatitude(), result.getLATITUDE(), result.getLongitude() + signLon * addLon, result.getLONGITUDE());
+                    result = WGS84Coordinate(result.getLatitude(), result.getLongitude() + signLon * addLon);
                     point3Result = transform(result);
                     dOld = d;
                     d = abs(coordinate.getX() - point3Result.getX());
@@ -240,22 +235,6 @@ namespace opendlv {
                 m_lon = lon;
             }
 
-            enum WGS84Coordinate::LATITUDE WGS84Coordinate::getLATITUDE() const {
-                return m_LATITUDE;
-            }
-
-            void WGS84Coordinate::setLATITUDE(const enum WGS84Coordinate::LATITUDE &LAT) {
-                m_LATITUDE = LAT;
-            }
-
-            enum WGS84Coordinate::LONGITUDE WGS84Coordinate::getLONGITUDE() const {
-                return m_LONGITUDE;
-            }
-
-            void WGS84Coordinate::setLONGITUDE(const enum WGS84Coordinate::LONGITUDE &LON) {
-                m_LONGITUDE = LON;
-            }
-
             int32_t WGS84Coordinate::ID() {
                 return 19;
             }
@@ -269,12 +248,12 @@ namespace opendlv {
             }
 
             const string WGS84Coordinate::getLongName() const {
-                return "hesperia.data.environment.WGS84Coordinate";
+                return "opendlv.data.environment.WGS84Coordinate";
             }
 
             const string WGS84Coordinate::toString() const {
                 stringstream s;
-                s << "(" << m_lat << ((getLATITUDE() == WGS84Coordinate::NORTH) ? "N" : "S") << "; " << m_lon << ((getLONGITUDE() == WGS84Coordinate::WEST) ? "W" : "E") << ")";
+                s << "(" << setprecision(10) << m_lat << (!(m_lat < 0) ? "N" : "S") << "; " << setprecision(10) << m_lon << (!(m_lon < 0) ? "E" : "W") << ")";
                 return s.str();
             }
 
@@ -285,11 +264,7 @@ namespace opendlv {
 
                 s->write(1, m_lat);
 
-                s->write(2, static_cast<uint32_t>(m_LATITUDE));
-
                 s->write(3, m_lon);
-
-                s->write(4, static_cast<uint32_t>(m_LONGITUDE));
 
                 return out;
             }
@@ -301,15 +276,7 @@ namespace opendlv {
 
                 d->read(1, m_lat);
 
-                uint32_t l = 0;
-                d->read(2, l);
-                m_LATITUDE = static_cast<WGS84Coordinate::LATITUDE>(l);
-
                 d->read(3, m_lon);
-
-                l = 0;
-                d->read(4, l);
-                m_LONGITUDE = static_cast<WGS84Coordinate::LONGITUDE>(l);
 
                 return in;
             }
