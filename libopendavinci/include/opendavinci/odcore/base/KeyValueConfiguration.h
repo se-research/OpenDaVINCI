@@ -130,6 +130,43 @@ namespace odcore {
                 };
 
                 /**
+<<<<<<< HEAD
+                 * This method returns an optional configuration value
+                 *
+                 * @code
+                 * KeyValueConfiguration kvc;
+                 * ...
+                 * T t = kvc.getOptionalValue<T>(key, isFound);
+                 * @endcode
+                 *
+                 * @param key Key for retrieving the value.
+                 * @param isFound Flag set to true if the parameter is found, false otherwise.
+                 * @return Value if the parameter is found, undefined otherwise.
+                 */
+                template<class T>
+                inline T getOptionalValue(const string &key, bool &isFound) const {
+                    string stringValue(getValueFor(key));
+                    if (stringValue == "") {
+                        isFound=false;
+                        stringstream s;
+                        T value;
+                        s << "Value for optional key '" << key << "' not found.";
+                        odcore::data::LogMessage lm("odcore::base::KeyValueConfiguration", odcore::data::LogMessage::LogLevel::INFO, s.str());
+                        #pragma GCC diagnostic push
+                        #pragma GCC diagnostic ignored "-Wuninitialized"
+                        return value;
+                        #pragma GCC diagnostic pop
+                    }
+                    isFound=true;
+                    stringstream s(stringValue);
+                    T value;
+                    s >> value;
+                    return value;
+                };
+
+                /**
+=======
+>>>>>>> master
                  * This method returns a subset of this key/value-configuration, i.e.
                  * all key/value-pairs starting with "section" and removes the leading
                  * "section" from the resulting subset.
