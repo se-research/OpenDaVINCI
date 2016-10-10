@@ -31,7 +31,6 @@
 #include "opendavinci/odcore/data/SerializableData.h"
 #include "opendavinci/odcore/exceptions/Exceptions.h"
 #include "opendavinci/odcore/strings/StringComparator.h"
-#include "opendavinci/generated/odcore/data/LogMessage.h"
 
 namespace odcore {
     namespace base {
@@ -108,7 +107,7 @@ namespace odcore {
                  * @code
                  * KeyValueConfiguration kvc;
                  * ...
-                 * T t = kvc.getValue<T>(key);
+                 * T t = kvc.getValue<T>();
                  * @endcode
                  *
                  * @param key Key for retrieving the value.
@@ -131,6 +130,7 @@ namespace odcore {
                 };
 
                 /**
+<<<<<<< HEAD
                  * This method returns an optional configuration value
                  *
                  * @code
@@ -165,6 +165,8 @@ namespace odcore {
                 };
 
                 /**
+=======
+>>>>>>> master
                  * This method returns a subset of this key/value-configuration, i.e.
                  * all key/value-pairs starting with "section" and removes the leading
                  * "section" from the resulting subset.
