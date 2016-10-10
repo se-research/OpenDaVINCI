@@ -152,7 +152,10 @@ namespace odcore {
                         T value;
                         s << "Value for optional key '" << key << "' not found.";
                         odcore::data::LogMessage lm("odcore::base::KeyValueConfiguration", odcore::data::LogMessage::LogLevel::INFO, s.str());
+                        #pragma GCC diagnostic push
+                        #pragma GCC diagnostic ignored "-Wuninitialized"
                         return value;
+                        #pragma GCC diagnostic pop
                     }
                     isFound=true;
                     stringstream s(stringValue);
