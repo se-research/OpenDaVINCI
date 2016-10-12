@@ -20,20 +20,40 @@
 #ifndef CANTOOLSTESTSUITE_H_
 #define CANTOOLSTESTSUITE_H_
 
+#include <string>
+
 #include "cxxtest/TestSuite.h"
 
+#include <opendavinci/odcore/base/Thread.h>
+#include "automotivedata/generated/automotive/GenericCANMessage.h"
+
 // Include local header files.
-//#include "../include/....h"
+#include "../include/CANDevice.h"
+#include "../include/GenericCANMessageListener.h"
 
 using namespace std;
+using namespace odcore::base;
+using namespace automotive;
+using namespace automotive::odcantools;
 
 /**
  * The actual testsuite starts here.
  */
-class CANToolsTest : public CxxTest::TestSuite {
+class CANToolsTest : public CxxTest::TestSuite, public GenericCANMessageListener {
     public:
+        virtual void nextGenericCANMessage(const GenericCANMessage &gcm) {
+            cout << gcm.toString() << endl;
+        }
+
         void testCase1() {
-            TS_ASSERT(1 != 2);
+            const string DEV_NODE = "/dev/pcan0";
+            CANDevice dev(DEV_NODE, *this);
+            cout << endl;
+            cout << "Starting CAN receive..." << endl;
+            dev.start();
+            Thread::usleepFor(5 * 1000 * 1000);
+            dev.stop();
+            cout << "Stopping CAN receive..." << endl;
         }
 };
 

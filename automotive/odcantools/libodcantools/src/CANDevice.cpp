@@ -123,6 +123,7 @@ namespace automotive {
                     // Set time stamp from driver.
                     const uint64_t TIME_IN_MICROSECONDS = message.dwTime * 1000 + message.wUsec;
                     TimeStamp absoluteDriverTimeStamp = m_deviceDriverStartTime + TimeStamp(0, TIME_IN_MICROSECONDS);
+cout << "dwTime = " << message.dwTime << ", message.wUsec = " << message.wUsec << ", TIM = " << TIME_IN_MICROSECONDS << ", ABS = " << absoluteDriverTimeStamp.toString() << endl;
 
                     // Create generic CAN message representation.
                     GenericCANMessage gcm;
