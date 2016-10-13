@@ -114,7 +114,7 @@ namespace automotive {
             while ( (m_handle != NULL) && 
                     isRunning() ) {
                 TPCANRdMsg message;
-                const int32_t TIMEOUT_IN_MICROSECONDS = 1000*1000;
+                const int32_t TIMEOUT_IN_MICROSECONDS = 1000 * 1000;
                 int32_t errorCode = LINUX_CAN_Read_Timeout(m_handle, &message, TIMEOUT_IN_MICROSECONDS);
 
                 if ( !(errorCode < 0) && (errorCode != CAN_ERR_QRCVEMPTY) ) {
@@ -124,9 +124,11 @@ namespace automotive {
                     const uint64_t TIME_IN_MICROSECONDS =
                           m_deviceDriverStartTime.toMicroseconds()
                         + (message.dwTime * 1000 + message.wUsec);
-                    TimeStamp absoluteDriverTimeStamp = TimeStamp(TIME_IN_MICROSECONDS / 1000000L, TIME_IN_MICROSECONDS % 1000000L);
-                    TimeStamp now;
-cout << "dwTime = " << message.dwTime << ", message.wUsec = " << message.wUsec << ", TIM = " << TIME_IN_MICROSECONDS << ", ABS = " << absoluteDriverTimeStamp.toString() << endl << " hr = " << absoluteDriverTimeStamp.getYYYYMMDD_HHMMSSms() << endl << " nw = " << now.getYYYYMMDD_HHMMSSms() << endl;
+                    const TimeStamp absoluteDriverTimeStamp(TIME_IN_MICROSECONDS / 1000000L, TIME_IN_MICROSECONDS % 1000000L);
+//{
+//    TimeStamp now;
+//    cout << "dwTime = " << message.dwTime << ", message.wUsec = " << message.wUsec << ", TIM = " << TIME_IN_MICROSECONDS << ", ABS = " << absoluteDriverTimeStamp.toString() << endl << " hr = " << absoluteDriverTimeStamp.getYYYYMMDD_HHMMSSms() << endl << " nw = " << now.getYYYYMMDD_HHMMSSms() << endl;
+//}
 
                     // Create generic CAN message representation.
                     GenericCANMessage gcm;

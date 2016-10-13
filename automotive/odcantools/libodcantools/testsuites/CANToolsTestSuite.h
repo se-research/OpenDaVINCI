@@ -44,10 +44,14 @@ using namespace automotive::odcantools;
 class CANToolsTest : public CxxTest::TestSuite, public GenericCANMessageListener {
     public:
         virtual void nextGenericCANMessage(const GenericCANMessage &gcm) {
-            cout << gcm.toString() << endl;
+            cout << gcm.toString() << ", " << gcm.getDriverTimeStamp().getYYYYMMDD_HHMMSSms() << endl;
         }
 
         void testCase1() {
+            TS_ASSERT(1 != 0);
+        }
+        // This is just for testing purposes.
+        void NO_testCase1() {
             TimeStamp ts(1476343200, 705547);
             cout << endl;
             cout << ts.toString() << endl;
