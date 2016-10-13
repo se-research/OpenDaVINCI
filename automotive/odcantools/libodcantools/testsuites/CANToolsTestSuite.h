@@ -24,6 +24,7 @@
 
 #include "cxxtest/TestSuite.h"
 
+#include <opendavinci/odcore/data/TimeStamp.h>
 #include <opendavinci/odcore/base/Thread.h>
 #include "automotivedata/generated/automotive/GenericCANMessage.h"
 
@@ -33,6 +34,7 @@
 
 using namespace std;
 using namespace odcore::base;
+using namespace odcore::data;
 using namespace automotive;
 using namespace automotive::odcantools;
 
@@ -46,12 +48,16 @@ class CANToolsTest : public CxxTest::TestSuite, public GenericCANMessageListener
         }
 
         void testCase1() {
-            const string DEV_NODE = "/dev/pcan0";
+            TimeStamp ts(1476343200, 705547);
+            cout << endl;
+            cout << ts.toString() << endl;
+            cout << ts.getYYYYMMDD_HHMMSSms() << endl;
+            const string DEV_NODE = "/dev/pcan32";
             CANDevice dev(DEV_NODE, *this);
             cout << endl;
             cout << "Starting CAN receive..." << endl;
             dev.start();
-            Thread::usleepFor(5 * 1000 * 1000);
+            Thread::usleepFor(5 * 1000);
             dev.stop();
             cout << "Stopping CAN receive..." << endl;
         }

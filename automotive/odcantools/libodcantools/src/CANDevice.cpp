@@ -121,9 +121,12 @@ namespace automotive {
                     CLOG1 << "[CANDevice] ID = " << message.Msg.ID << ", LEN = " << message.Msg.LEN << ", DATA = ";
 
                     // Set time stamp from driver.
-                    const uint64_t TIME_IN_MICROSECONDS = message.dwTime * 1000 + message.wUsec;
-                    TimeStamp absoluteDriverTimeStamp = m_deviceDriverStartTime + TimeStamp(0, TIME_IN_MICROSECONDS);
-cout << "dwTime = " << message.dwTime << ", message.wUsec = " << message.wUsec << ", TIM = " << TIME_IN_MICROSECONDS << ", ABS = " << absoluteDriverTimeStamp.toString() << endl;
+                    const uint64_t TIME_IN_MICROSECONDS =
+                          m_deviceDriverStartTime.toMicroseconds()
+                        + (message.dwTime * 1000 + message.wUsec);
+                    TimeStamp absoluteDriverTimeStamp = TimeStamp(TIME_IN_MICROSECONDS / 1000000L, TIME_IN_MICROSECONDS % 1000000L);
+                    TimeStamp now;
+cout << "dwTime = " << message.dwTime << ", message.wUsec = " << message.wUsec << ", TIM = " << TIME_IN_MICROSECONDS << ", ABS = " << absoluteDriverTimeStamp.toString() << endl << " hr = " << absoluteDriverTimeStamp.getYYYYMMDD_HHMMSSms() << endl << " nw = " << now.getYYYYMMDD_HHMMSSms() << endl;
 
                     // Create generic CAN message representation.
                     GenericCANMessage gcm;
