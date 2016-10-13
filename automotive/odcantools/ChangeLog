@@ -1,3 +1,4 @@
+4.3.2 - Enabled ccache
 4.3.1 - Refactored WGS84 coordinate interface
 4.3.0 - proto message exporter for odDataStructureGenerator and absolute time base for CANDevice
 4.2.0 - Visualization of SharedPointCloud
