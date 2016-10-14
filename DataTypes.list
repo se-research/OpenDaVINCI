@@ -20,7 +20,7 @@ ID;TYPE;legacy OR message;library;comment
 16;odcore.data.image.CompressedImage;legacy;OpenDaVINCI.odvd;internal use, incomplete;
 17;POINT3;legacy;libodsimulation;don't use;
 18;GPRMC;legacy;libodsimulation;;
-19;WGS84COORDINATE;legacy;libodsimulation;;
+19;opendlv.model.geodetic.WGS84;legacy;AutomotiveData.odvd;;
 20;CAMERAINTRINSICPARAMETERS;legacy;libodsimulation;don't use;
 21;CAMERAEXTRINSICPARAMETERS;legacy;libodsimulation;don't use;
 22;CAMERAIMAGEGRABBERID;legacy;libodsimulation;don't use;
