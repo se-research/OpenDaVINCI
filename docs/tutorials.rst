@@ -40,3 +40,6 @@ How to use simulation and visualization
 ------------------------------------------
 .. include:: simulation.visualization.rst
 
+How to read content from a zip file
+------------------------------------------
+.. include:: tutorial.readzipfile.rst
