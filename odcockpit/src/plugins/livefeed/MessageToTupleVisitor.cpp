@@ -113,13 +113,13 @@ namespace cockpit {
 
             void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, float &v) {
                 stringstream sstr;
-                sstr << setprecision(10) << v;
+                sstr << setprecision(10) << v << setprecision(6);
                 m_entries.push_back(make_pair(shortName, sstr.str()));
             }
 
             void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, double &v) {
                 stringstream sstr;
-                sstr << setprecision(10) << v;
+                sstr << setprecision(10) << v << setprecision(6);
                 m_entries.push_back(make_pair(shortName, sstr.str()));
             }
 
