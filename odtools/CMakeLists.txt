@@ -39,6 +39,7 @@ ENDIF()
 ###########################################################################
 # Add subdirectories.
 ADD_SUBDIRECTORY (odfilter)
+ADD_SUBDIRECTORY (odpcapreplay)
 ADD_SUBDIRECTORY (odplayer)
 ADD_SUBDIRECTORY (odrecintegrity)
 ADD_SUBDIRECTORY (odrecorder)
