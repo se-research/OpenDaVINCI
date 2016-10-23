@@ -21,7 +21,6 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-#include <opendavinci/odcore/base/Thread.h>
 
 #include "PcapReplay.h"
 #include "opendavinci/odcore/data/Container.h"
