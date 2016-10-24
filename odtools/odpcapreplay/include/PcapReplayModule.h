@@ -18,8 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef PCAPREPLAY_H_
-#define PCAPREPLAY_H_
+#ifndef PCAPREPLAYMODULE_H_
+#define PCAPREPLAYMODULE_H_
 
 #include <fstream>
 
@@ -28,11 +28,11 @@
 #include <opendavinci/odcore/io/udp/UDPSender.h>
 #include <opendavinci/odcore/io/udp/UDPFactory.h>
 
-namespace automotive {
+namespace odpcapreplay {
 
         using namespace std;
 
-        class PcapReplay : public odcore::base::module::TimeTriggeredConferenceClientModule {
+        class PcapReplayModule : public odcore::base::module::TimeTriggeredConferenceClientModule {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -41,7 +41,7 @@ namespace automotive {
                  *
                  * @param obj Reference to an object of this class.
                  */
-                PcapReplay(const PcapReplay &/*obj*/);
+                PcapReplayModule(const PcapReplayModule &/*obj*/);
 
                 /**
                  * "Forbidden" assignment operator. Goal: The compiler should warn
@@ -51,7 +51,7 @@ namespace automotive {
                  * @param obj Reference to an object of this class.
                  * @return Reference to this instance.
                  */
-                PcapReplay& operator=(const PcapReplay &/*obj*/);
+                PcapReplayModule& operator=(const PcapReplayModule &/*obj*/);
 
             public:
                 /**
@@ -60,9 +60,9 @@ namespace automotive {
                  * @param argc Number of command line arguments.
                  * @param argv Command line arguments.
                  */
-                PcapReplay(const int32_t &argc, char **argv);
+                PcapReplayModule(const int32_t &argc, char **argv);
 
-                virtual ~PcapReplay();
+                virtual ~PcapReplayModule();
 
                 odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
                 
@@ -82,6 +82,6 @@ namespace automotive {
                 bool stop;
         };
 
-} // automotive
+} // odpcapreplay
 
-#endif /*PCAPREPLAY_H_*/
+#endif /*PCAPREPLAYMODULE_H_*/

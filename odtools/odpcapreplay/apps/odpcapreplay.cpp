@@ -18,9 +18,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "PcapReplay.h"
+#include "PcapReplayModule.h"
 
 int32_t main(int32_t argc, char **argv) {
-    automotive::PcapReplay pr(argc, argv);
+    odpcapreplay::PcapReplayModule pr(argc, argv);
     return pr.runModule();
 }

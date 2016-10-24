@@ -22,20 +22,20 @@
 #include <iostream>
 #include <fstream>
 
-#include "PcapReplay.h"
+#include "PcapReplayModule.h"
 #include "opendavinci/odcore/data/Container.h"
 #include <opendavinci/odcore/io/udp/UDPSender.h>
 #include <opendavinci/odcore/io/udp/UDPFactory.h>
 #include "opendavinci/generated/odcore/data/pcap/Packet.h"
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
 
-namespace automotive {
+namespace odpcapreplay {
 
         using namespace std;
         using namespace odcore::data;
         using namespace odcore::io::udp;
 
-        PcapReplay::PcapReplay(const int32_t &argc, char **argv) :
+        PcapReplayModule::PcapReplayModule(const int32_t &argc, char **argv) :
             TimeTriggeredConferenceClientModule(argc, argv, "PcapReplay"),
             BUFFER_SIZE(),
             lidarStream(),
@@ -43,9 +43,9 @@ namespace automotive {
             udpsender(UDPFactory::createUDPSender(RECEIVER, PORT)),
             stop(false){}
 
-        PcapReplay::~PcapReplay() {}
+        PcapReplayModule::~PcapReplayModule() {}
 
-        void PcapReplay::setUp() {
+        void PcapReplayModule::setUp() {
             lidarStream.open(getKeyValueConfiguration().getValue<string>("PcapReplay.readpcap"), ios::binary|ios::in);
             BUFFER_SIZE=getKeyValueConfiguration().getValue<uint32_t>("PcapReplay.bufferSize");
             
@@ -53,13 +53,13 @@ namespace automotive {
             m_pcap.setContainerListener(this);
         }
 
-        void PcapReplay::tearDown() {
+        void PcapReplayModule::tearDown() {
             // Unregister PcapReplay as ContainerListener from PCAPDecoder
             lidarStream.close();
             m_pcap.setContainerListener(NULL);
         }
         
-        void PcapReplay::nextContainer(Container &c) {
+        void PcapReplayModule::nextContainer(Container &c) {
             // Check if container is of type PCAPPacket. If true, send the payload of each Velodyne packet (1206 bytes)
             if (c.getDataType() == odcore::data::pcap::Packet::ID()) {
                 pcap::Packet packet = c.getData<pcap::Packet>();
@@ -76,7 +76,7 @@ namespace automotive {
         // This method will do the main data processing job.
         //In the configuration file for odsupercomponent, adjust buffer size and the frequency of this module to tune the byte sending rate. 
         //For VLP-16, the data rate is roughly 1MB/s. So 4000 for buffer size and 250 for frequency of PcapReplay is a good combination.
-        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode PcapReplay::body() {
+        odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode PcapReplayModule::body() {
             char *buffer = new char[BUFFER_SIZE+1];
             while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING){
                 if (lidarStream.good()) {
@@ -95,5 +95,5 @@ namespace automotive {
             
             return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
-} // automotive
+} // odpcapreplay
 
