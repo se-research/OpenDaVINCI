@@ -36,6 +36,7 @@
 #include "plugins/environmentviewer/SelectableNodeDescriptorTreeListener.h"
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
 #include "opendavinci/generated/odcore/data/SharedPointCloud.h"
+#include "opendlv/data/environment/EgoState.h"
 
 class QWidget;
 namespace cockpit { namespace plugins { class PlugIn; } }
@@ -111,6 +112,7 @@ class SelectableNodeDescriptor;
                     opendlv::threeD::TransformGroup *m_plannedRoute;
                     opendlv::threeD::TransformGroup *m_lines;
                     opendlv::threeD::TransformGroup *m_velodyne;
+                    opendlv::data::environment::EgoState m_egoState;
 
                     opendlv::threeD::NodeDescriptor m_egoStateNodeDescriptor;
                     uint32_t m_numberOfReceivedEgoStates;

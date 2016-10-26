@@ -104,6 +104,7 @@ namespace cockpit {
                     m_plannedRoute(NULL),
                     m_lines(NULL),
                     m_velodyne(NULL),
+                    m_egoState(),
                     m_egoStateNodeDescriptor(),
                     m_numberOfReceivedEgoStates(0),
                     m_egoStateNode(NULL),
@@ -276,10 +277,10 @@ namespace cockpit {
                         Point3 positionCamera;
                         Point3 lookAtPointCamera;
                         Point3 dirCamera(-10, 0, 0);
-                        dirCamera.rotateZ(assignedNode.getRotation().getAngleXY());
+                        dirCamera.rotateZ(assignedNode.getRotation().getAngleXY() + cartesian::Constants::PI);
                         positionCamera.setX(assignedNode.getPosition().getX() + dirCamera.getX());
                         positionCamera.setY(assignedNode.getPosition().getY() + dirCamera.getY());
-                        positionCamera.setZ(10);
+                        positionCamera.setZ(25);
 
                         lookAtPointCamera.setX(assignedNode.getPosition().getX());
                         lookAtPointCamera.setY(assignedNode.getPosition().getY());
@@ -302,6 +303,17 @@ namespace cockpit {
                                     && (velodyneFrame.getNumberOfComponentsPerPoint() == 4)
                                     && (velodyneFrame.getUserInfo() == SharedPointCloud::XYZ_INTENSITY)) {
                                     glPushMatrix();
+
+//// Translate the model.
+//glTranslated(m_egoState.getPosition().getX(), m_egoState.getPosition().getY(), 0);
+
+//// Rotate the model using DEG (m_rotation is in RAD!).
+//glRotated(/*m_egoState.getRotation().getX()*180.0 / cartesian::Constants::PI*/0, 1, 0, 0);
+//glRotated(/*m_egoState.getRotation().getY()*180.0 / cartesian::Constants::PI*/0, 0, 1, 0);
+//// Rotate around z-axis and turn by 10 DEG.
+//glRotated(/*m_egoState.getRotation().getZ()*/ (m_egoState.getRotation().getAngleXY() + M_PI/2.0)*180.0 / cartesian::Constants::PI + 13.0, 0, 0, 1);
+
+
                                     float *velodyneRawData = static_cast<float*>(velodyneSharedMemory->getSharedMemory());
 
                                     glPointSize(1.0f); //set point size to 1 pixel
@@ -324,6 +336,7 @@ namespace cockpit {
                                 }
                             }
                         }
+                        glPopMatrix();
                     }
                     //Free camera view
                     else {
@@ -337,6 +350,17 @@ namespace cockpit {
                                     && (velodyneFrame.getNumberOfComponentsPerPoint() == 4)
                                     && (velodyneFrame.getUserInfo() == SharedPointCloud::XYZ_INTENSITY)) {
                                     glPushMatrix();
+
+// Translate the model.
+glTranslated(m_egoState.getPosition().getX(), m_egoState.getPosition().getY(), 0);
+
+// Rotate the model using DEG (m_rotation is in RAD!).
+glRotated(/*m_egoState.getRotation().getX()*180.0 / cartesian::Constants::PI*/0, 1, 0, 0);
+glRotated(/*m_egoState.getRotation().getY()*180.0 / cartesian::Constants::PI*/0, 0, 1, 0);
+// Rotate around z-axis and turn by 10 DEG.
+glRotated(/*m_egoState.getRotation().getZ()*/ (m_egoState.getRotation().getAngleXY() + M_PI/2.0)*180.0 / cartesian::Constants::PI + 13.0, 0, 0, 1);
+
+
                                     float *velodyneRawData = static_cast<float*>(velodyneSharedMemory->getSharedMemory());
                                 
                                     glPointSize(1.0f); //set point size to 1 pixel
@@ -359,6 +383,7 @@ namespace cockpit {
                                 }
                             }
                         }
+                        glPopMatrix();
                     }
     /*
                     {
@@ -484,7 +509,8 @@ namespace cockpit {
                     if (m_egoStateNode != NULL) {
                         Lock l(m_rootMutex);
                         EgoState egostate = c.getData<EgoState>();
-                        Point3 dir(0, 0, egostate.getRotation().getAngleXY());
+                        m_egoState = egostate;
+                        Point3 dir(0, 0, egostate.getRotation().getAngleXY() + cartesian::Constants::PI);
                         m_egoStateNode->setRotation(dir);
                         m_egoStateNode->setTranslation(egostate.getPosition());
 
