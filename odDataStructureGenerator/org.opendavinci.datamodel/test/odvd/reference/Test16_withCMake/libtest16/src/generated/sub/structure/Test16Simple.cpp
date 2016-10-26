@@ -6,11 +6,9 @@
 
 #include <memory>
 
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
-
+#include <opendavinci/odcore/serialization/Deserializer.h>
+#include <opendavinci/odcore/serialization/SerializationFactory.h>
+#include <opendavinci/odcore/serialization/Serializer.h>
 
 #include "test16/generated/sub/structure/Test16Simple.h"
 
@@ -18,6 +16,7 @@ namespace sub {
 	namespace structure {
 			using namespace std;
 			using namespace odcore::base;
+			using namespace odcore::serialization;
 		
 		
 			Test16Simple::Test16Simple() :
@@ -93,13 +92,14 @@ namespace sub {
 			}
 		
 			void Test16Simple::accept(odcore::base::Visitor &v) {
-				v.visit(CRC32 < CharList<'m', CharList<'y', CharList<'D', CharList<'a', CharList<'t', CharList<'a', NullType> > > > > >  >::RESULT, 0, "Test16Simple.myData", "myData", m_myData);
-				v.visit(CRC32 < CharList<'m', CharList<'y', CharList<'V', CharList<'a', CharList<'l', CharList<'u', CharList<'e', NullType> > > > > > >  >::RESULT, 0, "Test16Simple.myValue", "myValue", m_myValue);
+				v.beginVisit(ID(), ShortName(), LongName());
+				v.visit(1, "Test16Simple.myData", "myData", m_myData);
+				v.visit(2, "Test16Simple.myValue", "myValue", m_myValue);
+				v.endVisit();
 			}
 		
 			const string Test16Simple::toString() const {
 				stringstream s;
-		
 		
 				s << "MyData: " << getMyData() << " ";
 				s << "MyValue: " << getMyValue() << " ";
@@ -108,27 +108,25 @@ namespace sub {
 			}
 		
 			ostream& Test16Simple::operator<<(ostream &out) const {
-		
 				SerializationFactory& sf = SerializationFactory::getInstance();
 		
 				std::shared_ptr<Serializer> s = sf.getSerializer(out);
 		
-				s->write(CRC32 < CharList<'m', CharList<'y', CharList<'D', CharList<'a', CharList<'t', CharList<'a', NullType> > > > > >  >::RESULT,
+				s->write(1,
 						m_myData);
-				s->write(CRC32 < CharList<'m', CharList<'y', CharList<'V', CharList<'a', CharList<'l', CharList<'u', CharList<'e', NullType> > > > > > >  >::RESULT,
+				s->write(2,
 						m_myValue);
 				return out;
 			}
 		
 			istream& Test16Simple::operator>>(istream &in) {
-		
 				SerializationFactory& sf = SerializationFactory::getInstance();
 		
 				std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 		
-				d->read(CRC32 < CharList<'m', CharList<'y', CharList<'D', CharList<'a', CharList<'t', CharList<'a', NullType> > > > > >  >::RESULT,
+				d->read(1,
 						m_myData);
-				d->read(CRC32 < CharList<'m', CharList<'y', CharList<'V', CharList<'a', CharList<'l', CharList<'u', CharList<'e', NullType> > > > > > >  >::RESULT,
+				d->read(2,
 						m_myValue);
 				return in;
 			}

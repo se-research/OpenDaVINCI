@@ -21,9 +21,8 @@
 #ifndef MDIPLUGIN_H_
 #define MDIPLUGIN_H_
 
-#include <Qt/qmdisubwindow.h>
-#include <qnamespace.h>
-#include <qobjectdefs.h>
+#include <QtCore>
+#include <QtGui>
 
 class QCloseEvent;
 class QWidget;

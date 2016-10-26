@@ -49,34 +49,11 @@ namespace cockpit {
                 try {
                     const double LAT = kvc.getValue<double>("global.reference.WGS84.latitude");
                     const double LON = kvc.getValue<double>("global.reference.WGS84.longitude");
-
-                    WGS84Coordinate ref;
-                    if (!(LAT < 0) && !(LON < 0) ) {
-                        // NORTH/WEST
-                        ref = WGS84Coordinate(LAT, WGS84Coordinate::NORTH, LON, WGS84Coordinate::WEST);
-                    }
-                    else if (!(LAT < 0) && (LON < 0) ) {
-                        // NORTH/EAST
-                        ref = WGS84Coordinate(LAT, WGS84Coordinate::NORTH, LON * -1.0, WGS84Coordinate::EAST);
-                    }
-                    else if ((LAT < 0) && !(LON < 0) ) {
-                        // SOUTH/WEST
-                        ref = WGS84Coordinate(LAT * -1.0, WGS84Coordinate::SOUTH, LON, WGS84Coordinate::WEST);
-                    }
-                    else if ((LAT < 0) && (LON < 0) ) {
-                        // SOUTH/EAST
-                        ref = WGS84Coordinate(LAT * -1.0, WGS84Coordinate::SOUTH, LON * -1.0, WGS84Coordinate::EAST);
-                    }
-                    else {
-                        cerr << "[StreetMapPlugIn] Invalid specification of global.reference.WGS84.latitude and global.reference.WGS84.longitude." << endl;
-                        cerr << "[StreetMapPlugIn] Expected values like global.reference.WGS84.latitude = 57.687745843 and global.reference.WGS84.longitude = -11.98219965283333." << endl;
-                        ref = WGS84Coordinate(57.70485804, WGS84Coordinate::NORTH, 11.93831921, WGS84Coordinate::EAST);
-                    }
-                    m_referenceLocation = ref;
+                    m_referenceLocation = WGS84Coordinate(LAT, LON);
                 }
                 catch(...) {
-                    cerr << "[StreetMapPlugIn] No WGS84 reference location specified like global.reference.WGS84.latitude = 57.687745843 and global.reference.WGS84.longitude = -11.98219965283333." << endl;
-                    m_referenceLocation = WGS84Coordinate(57.70485804, WGS84Coordinate::NORTH, 11.93831921, WGS84Coordinate::EAST);
+                    cerr << "[StreetMapPlugIn] No WGS84 reference location specified like global.reference.WGS84.latitude = 57.687745843 and global.reference.WGS84.longitude = 11.98219965283333." << endl;
+                    m_referenceLocation = WGS84Coordinate(57.70485804, 11.93831921);
                 }
                 clog << "[StreetMapPlugIn] Reference frame located at " << m_referenceLocation.toString() << endl;
             }

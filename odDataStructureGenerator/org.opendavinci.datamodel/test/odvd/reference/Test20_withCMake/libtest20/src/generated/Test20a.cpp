@@ -6,16 +6,15 @@
 
 #include <memory>
 
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
-
+#include <opendavinci/odcore/serialization/Deserializer.h>
+#include <opendavinci/odcore/serialization/SerializationFactory.h>
+#include <opendavinci/odcore/serialization/Serializer.h>
 
 #include "test20/generated/Test20a.h"
 
 	using namespace std;
 	using namespace odcore::base;
+	using namespace odcore::serialization;
 
 
 	Test20a::Test20a() :
@@ -91,13 +90,14 @@
 	}
 
 	void Test20a::accept(odcore::base::Visitor &v) {
-		v.visit(CRC32 < CharList<'v', CharList<'a', CharList<'l', CharList<'1', NullType> > > >  >::RESULT, 0, "Test20a.val1", "val1", m_val1);
-		v.visit(CRC32 < CharList<'t', CharList<'i', CharList<'m', CharList<'e', CharList<'S', CharList<'t', CharList<'a', CharList<'m', CharList<'p', NullType> > > > > > > > >  >::RESULT, 0, "Test20a.timeStamp", "timeStamp", m_timeStamp);
+		v.beginVisit(ID(), ShortName(), LongName());
+		v.visit(2, "Test20a.val1", "val1", m_val1);
+		v.visit(3, "Test20a.timeStamp", "timeStamp", m_timeStamp);
+		v.endVisit();
 	}
 
 	const string Test20a::toString() const {
 		stringstream s;
-
 
 		s << "Val1: " << getVal1() << " ";
 		s << "TimeStamp: " << getTimeStamp().toString() << " ";
@@ -106,27 +106,25 @@
 	}
 
 	ostream& Test20a::operator<<(ostream &out) const {
-
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
 		std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
-		s->write(CRC32 < CharList<'v', CharList<'a', CharList<'l', CharList<'1', NullType> > > >  >::RESULT,
+		s->write(2,
 				m_val1);
-		s->write(CRC32 < CharList<'t', CharList<'i', CharList<'m', CharList<'e', CharList<'S', CharList<'t', CharList<'a', CharList<'m', CharList<'p', NullType> > > > > > > > >  >::RESULT,
+		s->write(3,
 				m_timeStamp);
 		return out;
 	}
 
 	istream& Test20a::operator>>(istream &in) {
-
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
 		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
-		d->read(CRC32 < CharList<'v', CharList<'a', CharList<'l', CharList<'1', NullType> > > >  >::RESULT,
+		d->read(2,
 				m_val1);
-		d->read(CRC32 < CharList<'t', CharList<'i', CharList<'m', CharList<'e', CharList<'S', CharList<'t', CharList<'a', CharList<'m', CharList<'p', NullType> > > > > > > > >  >::RESULT,
+		d->read(3,
 				m_timeStamp);
 		return in;
 	}

@@ -1,4 +1,5 @@
 /**
+
  * cockpit - Visualization environment
  * Copyright (C) 2012 - 2015 Christian Berger
  * Copyright (C) 2008 - 2011 (as monitor component) Christian Berger, Bernhard Rumpe
@@ -18,11 +19,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <Qt/qdesktopwidget.h>
-#include <Qt/qtranslator.h>
-#include <qlocale.h>
-#include <qsize.h>
-#include <qstring.h>
+#include <QtCore>
+#include <QtGui>
 
 #include <iostream>
 #include <string>
@@ -53,7 +51,7 @@ namespace cockpit {
     odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Cockpit::body() {
         // Get apropriate translator.
         QTranslator qtTranslator;
-        std::cerr << QLocale::system().name().toStdString() << std::endl;
+        std::cerr << "[odcockpit] Language: " << QLocale::system().name().toStdString() << std::endl;
         qtTranslator.load("cockpit_" + QLocale::system().name());
         m_cockpitApp.installTranslator(&qtTranslator);
 

@@ -21,12 +21,12 @@
 #define CORE_WRAPPER_UDPTESTSUITE_H_
 
 #include <iostream>                     // for endl, operator<<, etc
+#include <memory>
 #include <string>                       // for string
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
 #include "mocks/StringListenerMock.h"
 
 namespace odcore { namespace io { namespace udp { class UDPReceiver; } } }

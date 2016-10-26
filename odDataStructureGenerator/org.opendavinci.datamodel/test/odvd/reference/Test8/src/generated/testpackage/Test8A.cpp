@@ -6,17 +6,16 @@
 
 #include <memory>
 
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
-
+#include <opendavinci/odcore/serialization/Deserializer.h>
+#include <opendavinci/odcore/serialization/SerializationFactory.h>
+#include <opendavinci/odcore/serialization/Serializer.h>
 
 #include "test8/generated/testpackage/Test8A.h"
 
 namespace testpackage {
 		using namespace std;
 		using namespace odcore::base;
+		using namespace odcore::serialization;
 	
 	
 		Test8A::Test8A() :
@@ -80,12 +79,13 @@ namespace testpackage {
 		}
 	
 		void Test8A::accept(odcore::base::Visitor &v) {
-			v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'1', NullType> > > > > > > > > >  >::RESULT, 0, "Test8A.attribute1", "attribute1", m_attribute1);
+			v.beginVisit(ID(), ShortName(), LongName());
+			v.visit(1, "Test8A.attribute1", "attribute1", m_attribute1);
+			v.endVisit();
 		}
 	
 		const string Test8A::toString() const {
 			stringstream s;
-	
 	
 			s << "Attribute1: " << getAttribute1() << " ";
 	
@@ -93,23 +93,21 @@ namespace testpackage {
 		}
 	
 		ostream& Test8A::operator<<(ostream &out) const {
-	
 			SerializationFactory& sf = SerializationFactory::getInstance();
 	
 			std::shared_ptr<Serializer> s = sf.getSerializer(out);
 	
-			s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'1', NullType> > > > > > > > > >  >::RESULT,
+			s->write(1,
 					m_attribute1);
 			return out;
 		}
 	
 		istream& Test8A::operator>>(istream &in) {
-	
 			SerializationFactory& sf = SerializationFactory::getInstance();
 	
 			std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 	
-			d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'1', NullType> > > > > > > > > >  >::RESULT,
+			d->read(1,
 					m_attribute1);
 			return in;
 		}

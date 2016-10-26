@@ -6,11 +6,9 @@
 
 #include <memory>
 
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
-
+#include <opendavinci/odcore/serialization/Deserializer.h>
+#include <opendavinci/odcore/serialization/SerializationFactory.h>
+#include <opendavinci/odcore/serialization/Serializer.h>
 
 #include "test20/generated/sub/structure2/Test20c.h"
 
@@ -18,6 +16,7 @@ namespace sub {
 	namespace structure2 {
 			using namespace std;
 			using namespace odcore::base;
+			using namespace odcore::serialization;
 		
 		
 			Test20c::Test20c() :
@@ -93,13 +92,14 @@ namespace sub {
 			}
 		
 			void Test20c::accept(odcore::base::Visitor &v) {
-				v.visit(CRC32 < CharList<'v', CharList<'a', CharList<'l', CharList<'3', NullType> > > >  >::RESULT, 0, "Test20c.val3", "val3", m_val3);
-				v.visit(CRC32 < CharList<'v', CharList<'a', CharList<'l', CharList<'4', NullType> > > >  >::RESULT, 0, "Test20c.val4", "val4", m_val4);
+				v.beginVisit(ID(), ShortName(), LongName());
+				v.visit(1, "Test20c.val3", "val3", m_val3);
+				v.visit(2, "Test20c.val4", "val4", m_val4);
+				v.endVisit();
 			}
 		
 			const string Test20c::toString() const {
 				stringstream s;
-		
 		
 				s << "Val3: " << getVal3() << " ";
 				s << "Val4: " << getVal4().toString() << " ";
@@ -108,27 +108,25 @@ namespace sub {
 			}
 		
 			ostream& Test20c::operator<<(ostream &out) const {
-		
 				SerializationFactory& sf = SerializationFactory::getInstance();
 		
 				std::shared_ptr<Serializer> s = sf.getSerializer(out);
 		
-				s->write(CRC32 < CharList<'v', CharList<'a', CharList<'l', CharList<'3', NullType> > > >  >::RESULT,
+				s->write(1,
 						m_val3);
-				s->write(CRC32 < CharList<'v', CharList<'a', CharList<'l', CharList<'4', NullType> > > >  >::RESULT,
+				s->write(2,
 						m_val4);
 				return out;
 			}
 		
 			istream& Test20c::operator>>(istream &in) {
-		
 				SerializationFactory& sf = SerializationFactory::getInstance();
 		
 				std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 		
-				d->read(CRC32 < CharList<'v', CharList<'a', CharList<'l', CharList<'3', NullType> > > >  >::RESULT,
+				d->read(1,
 						m_val3);
-				d->read(CRC32 < CharList<'v', CharList<'a', CharList<'l', CharList<'4', NullType> > > >  >::RESULT,
+				d->read(2,
 						m_val4);
 				return in;
 			}

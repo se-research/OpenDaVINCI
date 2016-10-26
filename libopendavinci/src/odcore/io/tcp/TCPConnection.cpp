@@ -1,3 +1,4 @@
+
 /**
  * OpenDaVINCI - Portable middleware for distributed components.
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
@@ -17,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <iostream>
+
 #include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/io/ConnectionListener.h"
 #include "opendavinci/odcore/io/StringListener.h"
@@ -34,7 +37,8 @@ namespace odcore {
                 m_stringListenerMutex(),
                 m_stringListener(NULL),
                 m_partialDataMutex(),
-                m_partialData() {}
+                m_partialData(),
+                m_raw(false) {}
 
             TCPConnection::~TCPConnection() {
                 setStringListener(NULL);
@@ -66,38 +70,53 @@ namespace odcore {
             }
 
             void TCPConnection::send(const string& data) {
-                const uint32_t dataSize = htonl(data.length());
                 stringstream dataStream;
-                dataStream.write(reinterpret_cast<const char*>(&dataSize), sizeof(uint32_t));
+                if (!isRaw()) {
+                    const uint32_t dataSize = htonl(data.length());
+                    dataStream.write(reinterpret_cast<const char*>(&dataSize), sizeof(uint32_t));
+                }
                 dataStream << data;
 
                 sendImplementation(dataStream.str());
             }
 
+            void TCPConnection::setRaw(const bool &raw) {
+                m_raw = raw;
+            }
+
+            bool TCPConnection::isRaw() const {
+                return m_raw;
+            }
+
             void TCPConnection::receivedString(const string &s) {
                 Lock l(m_partialDataMutex);
 
-                m_partialData.write(s.c_str(), s.length());
+                if (isRaw()) {
+                    invokeStringListener(s);
+                }
+                else {
+                    m_partialData.write(s.c_str(), s.length());
 
-                if (hasCompleteData()) {
-                    m_partialData.seekg(0, ios_base::beg);
+                    if (hasCompleteData()) {
+                        m_partialData.seekg(0, ios_base::beg);
 
-                    uint32_t dataSize = 0;
-                    m_partialData.read(reinterpret_cast<char*>(&dataSize), sizeof(uint32_t));
-                    dataSize = ntohl(dataSize);
-                    const uint32_t bytesToIgnore = m_partialData.gcount();
+                        uint32_t dataSize = 0;
+                        m_partialData.read(reinterpret_cast<char*>(&dataSize), sizeof(uint32_t));
+                        dataSize = ntohl(dataSize);
+                        const uint32_t bytesToIgnore = m_partialData.gcount();
 
-                    // Split the stringstreams's string into to pieces. The first
-                    // piece contains the data for the StringListener, the second
-                    // piece will remain in the stringstream.
-                    invokeStringListener(m_partialData.str().substr(bytesToIgnore, dataSize));
-                    m_partialData.str(m_partialData.str().substr(bytesToIgnore+dataSize));
+                        // Split the stringstreams's string into to pieces. The first
+                        // piece contains the data for the StringListener, the second
+                        // piece will remain in the stringstream.
+                        invokeStringListener(m_partialData.str().substr(bytesToIgnore, dataSize));
+                        m_partialData.str(m_partialData.str().substr(bytesToIgnore+dataSize));
 
-                    // After using str() to set the remaining string, the write pointer
-                    // points to the beginning of the stream and further receivedString() calls
-                    // would override existing data. So the write pointer as to point to the
-                    // end of the stream.
-                    m_partialData.seekp(0, ios_base::end);
+                        // After using str() to set the remaining string, the write pointer
+                        // points to the beginning of the stream and further receivedString() calls
+                        // would override existing data. So the write pointer as to point to the
+                        // end of the stream.
+                        m_partialData.seekp(0, ios_base::end);
+                    }
                 }
             }
 

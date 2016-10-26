@@ -33,6 +33,7 @@
 #include "opendavinci/odcore/base/FIFOQueue.h"
 #include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
 #include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
+#include "MessageToCANDataStore.h"
 
 namespace automotive { class GenericCANMessage; }
 namespace odtools { namespace recorder { class Recorder; } }
@@ -94,8 +95,10 @@ class CANDevice;
                 unique_ptr<odtools::recorder::Recorder> m_recorder;
                 std::shared_ptr<CANDevice> m_deviceA;
                 string m_deviceNodeA;
+                unique_ptr<MessageToCANDataStore> m_messageToCANDataStoreA;
                 std::shared_ptr<CANDevice> m_deviceB;
                 string m_deviceNodeB;
+                unique_ptr<MessageToCANDataStore> m_messageToCANDataStoreB;
                 CANMessageReplicator m_replicatorFromAtoB;
                 CANMessageReplicator m_replicatorFromBtoA;
                 canmapping::CanMapping m_canMapping;

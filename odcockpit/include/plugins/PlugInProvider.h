@@ -21,7 +21,8 @@
 #ifndef COCKPIT_PLUGINS_PLUGINPROVIDER_H_
 #define COCKPIT_PLUGINS_PLUGINPROVIDER_H_
 
-#include <qobject.h>
+#include <QtCore>
+#include <QtGui>
 
 #include <map>
 #include <string>

@@ -24,22 +24,29 @@ grammar org.opendavinci.CANDataModel
 generate canDataModel "http://www.opendavinci.org/CANDataModel"
 
 Model:
+    odvdFiles         += ODVDFile+
     cansignals        += CANSignal+
     cansignalmappings += CANSignalMapping*
     cansignaltestings += CANSignalTesting*;
+
+ODVDFile:
+    'using' odvdFileName = ID (';'|'.odvd' ';');
 
 CANSignal:
 	cansignalname = ValidIdentifier	'in' canIdentifier = HEXNUMBER
 									'at bit' startBit = FLOATNUMBER
 									'for' (length = FLOATNUMBER ('bit'|'bits') | lengthBytes = FLOATNUMBER ('byte'|'bytes'))
-									'is' (endian = ('big' | 'little')) 'endian'
+									'is' (signed = ('signed' | 'unsigned')) (endian = ('big' | 'little')) 'endian'
 									'multiply by' multiplyBy = FLOATNUMBER
 									'add' add = FLOATNUMBER
 									('with range' | 'within range') '[' rangeStart = FLOATNUMBER ',' rangeEnd = FLOATNUMBER ']'
 									';';
 
 CANSignalMapping:
-    (unordered='unordered')? 'mapping' mappingName = ValidIdentifier '{'
+    (unordered='unordered')? (bit_numbering = ('vector'))?
+    'mapping' mappingName = ValidIdentifier
+    ('[length' '=' payloadLength = FLOATNUMBER ']')?
+    '{'
     	mappings += Mapping*
     '}';
 

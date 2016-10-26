@@ -20,11 +20,13 @@
 #ifndef OPENDAVINCI_CORE_REFLECTION_MESSAGE_H_
 #define OPENDAVINCI_CORE_REFLECTION_MESSAGE_H_
 
+#include <memory>
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
+#include "opendavinci/odcore/data/SerializableData.h"
 #include "opendavinci/odcore/base/Visitable.h"
+#include "opendavinci/odcore/reflection/Field.h"
 #include "opendavinci/generated/odcore/data/reflection/AbstractField.h"
 
 namespace odcore { namespace base { class Visitor; } }
@@ -32,14 +34,12 @@ namespace odcore { namespace base { class Visitor; } }
 namespace odcore {
     namespace reflection {
 
-template <typename T> class Field;
-
         using namespace std;
 
         /**
          * This class is a generic Message representation.
          */
-        class OPENDAVINCI_API Message : public odcore::base::Visitable {
+        class OPENDAVINCI_API Message : public odcore::data::SerializableData, public odcore::base::Visitable {
             public:
                 Message();
 
@@ -60,8 +60,28 @@ template <typename T> class Field;
                  */
                 Message& operator=(const Message &obj);
 
+            private:
+                // Implementation of serialization of a Message's content is by design disabled.
+                virtual ostream& operator<<(ostream &out) const;
+
+                // Implementation of serialization of a Message's content is by design disabled.
+                virtual istream& operator>>(istream &in);
+
             public:
                 virtual void accept(odcore::base::Visitor &v);
+
+                virtual int32_t getID() const;
+
+                virtual const string getShortName() const;
+
+                virtual const string getLongName() const;
+
+                virtual const string toString() const;
+
+            public:
+                void setID(const int32_t &id);
+                void setShortName(const string &sn);
+                void setLongName(const string &ln);
 
             private:
                 /**
@@ -77,8 +97,7 @@ template <typename T> class Field;
                     // Read value.
                     T value = dynamic_cast<odcore::reflection::Field<T>*>(f.operator->())->getValue();
                     // Visit value.
-                    v.visit(f->getLongFieldIdentifier(), f->getShortFieldIdentifier(),
-                            f->getLongFieldName(), f->getShortFieldName(), value);
+                    v.visit(f->getFieldIdentifier(), f->getLongFieldName(), f->getShortFieldName(), value);
                     // Update value.
                     dynamic_cast<odcore::reflection::Field<T>*>(f.operator->())->setValue(value);
                 }
@@ -92,36 +111,88 @@ template <typename T> class Field;
                 void addField(const std::shared_ptr<odcore::data::reflection::AbstractField> &f);
 
                 /**
-                 * This method tries to find a field using first the long identifier;
-                 * if the field was not found, the short identifier is used.
+                 * This method returns the number of fields.
                  *
-                 * @param longIdentifier to find.
-                 * @param shortIdentifier to find.
-                 * @param found Flag modified by this method indicating if the field was found.
-                 * @return field Be aware to always check 'found' whether the field was found.
+                 * @return The number of fields in this message.
                  */
-                std::shared_ptr<odcore::data::reflection::AbstractField> getFieldByLongIdentifierOrShortIdentifier(const uint32_t &longIdentifier, const uint8_t &shortIdentifier, bool &found);
-
-            private:
-                /**
-                 * This method tries to find a field using the long identifier.
-                 *
-                 * @param longIdentifier to find.
-                 * @param found Flag modified by this method indicating if the field was found.
-                 * @return field Be aware to always check 'found' whether the field was found.
-                 */
-                std::shared_ptr<odcore::data::reflection::AbstractField> getFieldByLongIdentifier(const uint32_t &longIdentifier, bool &found);
+                uint32_t getNumberOfFields() const;
 
                 /**
-                 * This method tries to find a field using the short identifier.
+                 * This method tries to find a field with the given identifier.
                  *
-                 * @param shortIdentifier to find.
+                 * @param ID to find.
                  * @param found Flag modified by this method indicating if the field was found.
-                 * @return field Be aware to always check 'found' whether the field was found.
+                 * @return found Be aware to always check 'found' whether the field was found.
                  */
-                std::shared_ptr<odcore::data::reflection::AbstractField> getFieldByShortIdentifier(const uint8_t &shortIdentifier, bool &found);
+                std::shared_ptr<odcore::data::reflection::AbstractField> getFieldByIdentifier(const uint32_t &id, bool &found);
+
+                /**
+                 * This method tries to extract the specified scalar type from AbstractField.
+                 *
+                 * @param id to find.
+                 * @param found Flag modified by this method indicating if the field was found.
+                 * @param extracted Flag modified by this method indicating if the field was successfully extracted.
+                 * @return Extracted value.
+                 */
+                template<typename T>
+                T getValueFromScalarField(const uint32_t &id, bool &found, bool &extracted) {
+                    T value = 0;
+                    extracted = false;
+                    std::shared_ptr<odcore::data::reflection::AbstractField> af = getFieldByIdentifier(id, found);
+                    if (found) {
+                        extracted = true;
+                        switch(af->getFieldDataType()) {
+                            case odcore::data::reflection::AbstractField::BOOL_T:
+                                value = static_cast<T>(dynamic_cast<odcore::reflection::Field<bool>*>(af.get())->getValue());
+                            break;
+                            case odcore::data::reflection::AbstractField::UINT8_T:
+                                value = static_cast<T>(dynamic_cast<odcore::reflection::Field<uint8_t>*>(af.get())->getValue());
+                            break;
+                            case odcore::data::reflection::AbstractField::INT8_T:
+                                value = static_cast<T>(dynamic_cast<odcore::reflection::Field<int8_t>*>(af.get())->getValue());
+                            break;
+                            case odcore::data::reflection::AbstractField::UCHAR_T:
+                                value = static_cast<T>(dynamic_cast<odcore::reflection::Field<unsigned char>*>(af.get())->getValue());
+                            break;
+                            case odcore::data::reflection::AbstractField::CHAR_T:
+                                value = static_cast<T>(dynamic_cast<odcore::reflection::Field<char>*>(af.get())->getValue());
+                            break;
+                            case odcore::data::reflection::AbstractField::UINT16_T:
+                                value = static_cast<T>(dynamic_cast<odcore::reflection::Field<uint16_t>*>(af.get())->getValue());
+                            break;
+                            case odcore::data::reflection::AbstractField::INT16_T:
+                                value = static_cast<T>(dynamic_cast<odcore::reflection::Field<int16_t>*>(af.get())->getValue());
+                            break;
+                            case odcore::data::reflection::AbstractField::UINT32_T:
+                                value = static_cast<T>(dynamic_cast<odcore::reflection::Field<uint32_t>*>(af.get())->getValue());
+                            break;
+                            case odcore::data::reflection::AbstractField::INT32_T:
+                                value = static_cast<T>(dynamic_cast<odcore::reflection::Field<int32_t>*>(af.get())->getValue());
+                            break;
+                            case odcore::data::reflection::AbstractField::UINT64_T:
+                                value = static_cast<T>(dynamic_cast<odcore::reflection::Field<uint64_t>*>(af.get())->getValue());
+                            break;
+                            case odcore::data::reflection::AbstractField::INT64_T:
+                                value = static_cast<T>(dynamic_cast<odcore::reflection::Field<int64_t>*>(af.get())->getValue());
+                            break;
+                            case odcore::data::reflection::AbstractField::FLOAT_T:
+                                value = static_cast<T>(dynamic_cast<odcore::reflection::Field<float>*>(af.get())->getValue());
+                            break;
+                            case odcore::data::reflection::AbstractField::DOUBLE_T:
+                                value = static_cast<T>(dynamic_cast<odcore::reflection::Field<double>*>(af.get())->getValue());
+                            break;
+                            default:
+                                extracted = false;
+                            break;
+                        }
+                    }
+                    return value;
+                }
 
             private:
+                int32_t m_ID;
+                string m_shortName;
+                string m_longName;
                 vector<std::shared_ptr<odcore::data::reflection::AbstractField> > m_fields;
         };
 

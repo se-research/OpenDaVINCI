@@ -15,12 +15,13 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/strings/StringToolbox.h"
+#include <opendavinci/odcore/opendavinci.h>
+#include <opendavinci/odcore/strings/StringToolbox.h>
 
 #include "test20/GeneratedHeaders_Test20.h"
+#include "test20/generated/Test20a.h"
 
-#include "opendavinci/odcore/data/TimeStamp.h"
+#include <opendavinci/odcore/data/TimeStamp.h>
 
 class Test20a_TestSuite : public CxxTest::TestSuite {
 

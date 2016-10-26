@@ -22,7 +22,7 @@
 #include <string>
 
 #include "RecIntegrity.h"
-#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/serialization/Serializable.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/generated/odcore/data/SharedData.h"
 #include "opendavinci/generated/odcore/data/image/SharedImage.h"

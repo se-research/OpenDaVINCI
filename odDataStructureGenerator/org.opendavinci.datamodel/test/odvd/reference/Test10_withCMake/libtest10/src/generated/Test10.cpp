@@ -9,16 +9,15 @@
 #include <sstream>
 #include <utility>
 
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
-
+#include <opendavinci/odcore/serialization/Deserializer.h>
+#include <opendavinci/odcore/serialization/SerializationFactory.h>
+#include <opendavinci/odcore/serialization/Serializer.h>
 
 #include "test10/generated/Test10.h"
 
 	using namespace std;
 	using namespace odcore::base;
+	using namespace odcore::serialization;
 
 
 	Test10::Test10() :
@@ -236,12 +235,12 @@
 	}
 
 	void Test10::accept(odcore::base::Visitor &v) {
-		(void)v; // Avoid unused parameter warning.
+		v.beginVisit(ID(), ShortName(), LongName());
+		v.endVisit();
 	}
 
 	const string Test10::toString() const {
 		stringstream s;
-
 
 		s << "Number of elements in list of MyStringList: " << getSize_ListOfMyStringList() << " ";
 		s << "Number of elements in list of MyPointList: " << getSize_ListOfMyPointList() << " ";
@@ -252,238 +251,188 @@
 	}
 
 	ostream& Test10::operator<<(ostream &out) const {
-
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
 		std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
-		// Write number of elements in m_listOfMyStringList.
-		const uint32_t numberOfMyStringList = static_cast<uint32_t>(m_listOfMyStringList.size());
-		s->write(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > > >  >::RESULT,
-		        numberOfMyStringList);
-		
-		// Write actual elements into a stringstream.
-		std::stringstream sstrOfMyStringList;
-		for (uint32_t i = 0; i < numberOfMyStringList; i++) {
-		    sstrOfMyStringList << m_listOfMyStringList.at(i) << endl;
+		// Store elements from m_listOfMyStringList into a string.
+		{
+			const uint32_t numberOfMyStringList = static_cast<uint32_t>(m_listOfMyStringList.size());
+			std::stringstream sstr_MyStringList;
+			{
+				for(uint32_t i = 0; i < numberOfMyStringList; i++) {
+					s->writeValue(sstr_MyStringList, m_listOfMyStringList.at(i));
+				}
+			}
+			const std::string str_sstr_MyStringList = sstr_MyStringList.str();
+			s->write(1, str_sstr_MyStringList);
 		}
-		
-		// Write string of elements.
-		if (numberOfMyStringList > 0) {
-			s->write(CRC32 < CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
-			        sstrOfMyStringList.str());
-		}
-		// Write number of elements in m_listOfMyPointList.
-		const uint32_t numberOfMyPointList = static_cast<uint32_t>(m_listOfMyPointList.size());
-		s->write(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'P', CharList<'o', CharList<'i', CharList<'n', CharList<'t', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > >  >::RESULT,
-		        numberOfMyPointList);
-		
-		// Write actual elements into a stringstream.
-		std::stringstream sstrOfMyPointList;
-		for (uint32_t i = 0; i < numberOfMyPointList; i++) {
-		    sstrOfMyPointList << m_listOfMyPointList.at(i);
-		}
-		
-		// Write string of elements.
-		if (numberOfMyPointList > 0) {
-			s->write(CRC32 < CharList<'M', CharList<'y', CharList<'P', CharList<'o', CharList<'i', CharList<'n', CharList<'t', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > >  >::RESULT,
-			        sstrOfMyPointList.str());
+		// Store elements from m_listOfMyPointList into a string.
+		{
+			const uint32_t numberOfMyPointList = static_cast<uint32_t>(m_listOfMyPointList.size());
+			std::stringstream sstr_MyPointList;
+			{
+				for(uint32_t i = 0; i < numberOfMyPointList; i++) {
+					s->writeValue(sstr_MyPointList, m_listOfMyPointList.at(i));
+				}
+			}
+			const std::string str_sstr_MyPointList = sstr_MyPointList.str();
+			s->write(2, str_sstr_MyPointList);
 		}
 		{
-			// Write number of elements in m_mapOfMyIntStringMap.
-			const uint32_t numberOfMyIntStringMap = static_cast<uint32_t>(m_mapOfMyIntStringMap.size());
-			s->write(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > > > > > > > >  >::RESULT,
-			        numberOfMyIntStringMap);
+			std::stringstream sstr_MyIntStringMap;
+			{
+				std::map<int32_t, std::string>::const_iterator it = m_mapOfMyIntStringMap.begin();
+				while (it != m_mapOfMyIntStringMap.end()) {
+					// Write key/value into a joint string.
+					std::stringstream sstr_keyValueEntry;
+					{
+						std::shared_ptr<Serializer> keyValueSerializer = sf.getSerializer(sstr_keyValueEntry);
+						keyValueSerializer->write(1, it->first);  // Write key as field 1 from a "virtual" class.
+						keyValueSerializer->write(2, it->second); // Write value as field 2 from a "virtual" class.
+					}
 		
-			// Write actual elements into a stringstream.
-			std::stringstream sstrOfMyIntStringMap;
-			std::map<int32_t, std::string>::const_iterator it = m_mapOfMyIntStringMap.begin();
-			while (it != m_mapOfMyIntStringMap.end()) {
-			    sstrOfMyIntStringMap << it->first << "=" << it->second << endl;
-			    it++;
+					// Write string into super-stringstream.
+					const string str_sstr_keyValueEntry = sstr_keyValueEntry.str();
+					s->writeValue(sstr_MyIntStringMap, str_sstr_keyValueEntry);
+		
+					// Process next entry.
+					it++;
+				}
 			}
-			
-			// Write string of elements.
-			if (numberOfMyIntStringMap > 0) {
-				s->write(CRC32 < CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > >  >::RESULT,
-						sstrOfMyIntStringMap.str());
-			}
+			const std::string str_sstr_MyIntStringMap = sstr_MyIntStringMap.str();
+			s->write(3, str_sstr_MyIntStringMap);
 		}
 		{
-			// Write number of elements in m_mapOfMyIntPointMap.
-			const uint32_t numberOfMyIntPointMap = static_cast<uint32_t>(m_mapOfMyIntPointMap.size());
-			s->write(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'P', CharList<'o', CharList<'i', CharList<'n', CharList<'t', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > > > > > > >  >::RESULT,
-			        numberOfMyIntPointMap);
+			std::stringstream sstr_MyIntPointMap;
+			{
+				std::map<int32_t, Test10Point>::const_iterator it = m_mapOfMyIntPointMap.begin();
+				while (it != m_mapOfMyIntPointMap.end()) {
+					// Write key/value into a joint string.
+					std::stringstream sstr_keyValueEntry;
+					{
+						std::shared_ptr<Serializer> keyValueSerializer = sf.getSerializer(sstr_keyValueEntry);
+						keyValueSerializer->write(1, it->first);  // Write key as field 1 from a "virtual" class.
+						keyValueSerializer->write(2, it->second); // Write value as field 2 from a "virtual" class.
+					}
 		
-			// Write actual elements into a stringstream.
-			std::stringstream sstrOfMyIntPointMap;
-			std::map<int32_t, Test10Point>::const_iterator it = m_mapOfMyIntPointMap.begin();
-			while (it != m_mapOfMyIntPointMap.end()) {
-			    sstrOfMyIntPointMap << it->first << "=" << it->second << endl;
-			    it++;
+					// Write string into super-stringstream.
+					const string str_sstr_keyValueEntry = sstr_keyValueEntry.str();
+					s->writeValue(sstr_MyIntPointMap, str_sstr_keyValueEntry);
+		
+					// Process next entry.
+					it++;
+				}
 			}
-			
-			// Write string of elements.
-			if (numberOfMyIntPointMap > 0) {
-				s->write(CRC32 < CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'P', CharList<'o', CharList<'i', CharList<'n', CharList<'t', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > >  >::RESULT,
-						sstrOfMyIntPointMap.str());
-			}
+			const std::string str_sstr_MyIntPointMap = sstr_MyIntPointMap.str();
+			s->write(4, str_sstr_MyIntPointMap);
 		}
 		return out;
 	}
 
 	istream& Test10::operator>>(istream &in) {
-
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
 		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
-		// Clean up the existing list of MyStringList.
-		m_listOfMyStringList.clear();
-		
-		// Read number of elements in m_listOfMyStringList.
-		uint32_t numberOfMyStringList = 0;
-		d->read(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > > >  >::RESULT,
-		       numberOfMyStringList);
-		
-		if (numberOfMyStringList > 0) {
-		    // Read string of elements.
-		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
-			   elements);
-		
-		    stringstream sstr(elements);
-		
-		    // Read actual elements from stringstream.
-		    for (uint32_t i = 0; i < numberOfMyStringList; i++) {
-		        std::string element;
-		        getline(sstr, element);
-		        m_listOfMyStringList.push_back(element);
-		    }
-		}
-		// Clean up the existing list of MyPointList.
-		m_listOfMyPointList.clear();
-		
-		// Read number of elements in m_listOfMyPointList.
-		uint32_t numberOfMyPointList = 0;
-		d->read(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'P', CharList<'o', CharList<'i', CharList<'n', CharList<'t', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > >  >::RESULT,
-		       numberOfMyPointList);
-		
-		if (numberOfMyPointList > 0) {
-		    // Read string of elements.
-		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'P', CharList<'o', CharList<'i', CharList<'n', CharList<'t', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > >  >::RESULT,
-			   elements);
-		
-		    stringstream sstr(elements);
-		
-		    // Read actual elements from stringstream.
-		    for (uint32_t i = 0; i < numberOfMyPointList; i++) {
-		        Test10Point element;
-		        sstr >> element;
-		        m_listOfMyPointList.push_back(element);
-		    }
-		}
-		// Clean up the existing map of MyIntStringMap.
-		m_mapOfMyIntStringMap.clear();
-		
-		// Read number of elements in m_mapOfMyIntStringMap.
-		uint32_t numberOfMyIntStringMap = 0;
-		d->read(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > > > > > > > >  >::RESULT,
-			   numberOfMyIntStringMap);
-		
-		if (numberOfMyIntStringMap > 0) {
-		    // Read string of elements.
-		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > >  >::RESULT,
-			       elements);
-		
-			stringstream sstr(elements);
-		
-			while (!sstr.eof()) {
-			    string line;
-			    getline(sstr, line);
-		
-			    // Trying to find key-value-pair.
-			    size_t delimiter = line.find_first_of("=");
-		
-			    // Compute length of value-entry by allowing comments right after values.
-			    size_t valueLength = line.length();
-		
-			    // Skip lines with invalid position pointers.
-			    if (! ( (delimiter > 0) && (valueLength > 0) ) ) {
-			        continue;
-			    }
-		
-			    string key = line.substr(0, delimiter);
-			    string value = line.substr(delimiter + 1, valueLength);
-		
-			    // Skip lines with invalid keys or values.
-			    if ( (key.length() == 0) || (value.length() == 0) ) {
-			        continue;
-			    }
-		
-			    stringstream sstrKey(key);
-			    int32_t _key;
-		        sstrKey >> _key;
-		
-			    stringstream sstrValue(value);
-			    std::string _value;
-		        getline(sstrValue, _value);
-		
-				// Store key/value pair.
-				putTo_MapOfMyIntStringMap(_key, _value);
+		// Restore elements from a string into m_listOfMyStringList.
+		{
+			// Clean up the existing list of MyStringList.
+			m_listOfMyStringList.clear();
+			std::string str_MyStringList;
+			d->read(1, str_MyStringList);
+			if (str_MyStringList.size() > 0) {
+				std::stringstream sstr_str_MyStringList(str_MyStringList);
+				uint32_t length = str_MyStringList.size();
+				while (length > 0) {
+					std::string element;
+					length -= d->readValue(sstr_str_MyStringList, element);
+					m_listOfMyStringList.push_back(element);
+				}
 			}
 		}
-		// Clean up the existing map of MyIntPointMap.
-		m_mapOfMyIntPointMap.clear();
+		// Restore elements from a string into m_listOfMyPointList.
+		{
+			// Clean up the existing list of MyPointList.
+			m_listOfMyPointList.clear();
+			std::string str_MyPointList;
+			d->read(2, str_MyPointList);
+			if (str_MyPointList.size() > 0) {
+				std::stringstream sstr_str_MyPointList(str_MyPointList);
+				uint32_t length = str_MyPointList.size();
+				while (length > 0) {
+					Test10Point element;
+					length -= d->readValue(sstr_str_MyPointList, element);
+					m_listOfMyPointList.push_back(element);
+				}
+			}
+		}
+		// Restore elements from a string into MyIntStringMap.
+		{
+			// Clean up the existing map of MyIntStringMap.
+			m_mapOfMyIntStringMap.clear();
 		
-		// Read number of elements in m_mapOfMyIntPointMap.
-		uint32_t numberOfMyIntPointMap = 0;
-		d->read(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'P', CharList<'o', CharList<'i', CharList<'n', CharList<'t', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > > > > > > >  >::RESULT,
-			   numberOfMyIntPointMap);
+			std::string str_MyIntStringMap;
+			d->read(3, str_MyIntStringMap);
+			if (str_MyIntStringMap.size() > 0) {
+				std::stringstream sstr_str_MyIntStringMap(str_MyIntStringMap);
 		
-		if (numberOfMyIntPointMap > 0) {
-		    // Read string of elements.
-		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'P', CharList<'o', CharList<'i', CharList<'n', CharList<'t', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > >  >::RESULT,
-			       elements);
+				// str_MyIntStringMap contains a sequence of strings containing pairs of key/values.
+				uint32_t length = str_MyIntStringMap.size();
+				while (length > 0) {
+					std::string str_sstr_keyValue;
+					length -= d->readValue(sstr_str_MyIntStringMap, str_sstr_keyValue);
 		
-			stringstream sstr(elements);
+					if (str_sstr_keyValue.size() > 0) {
+						// We have in str_sstr_keyValue a string at hand containing a pair key/value.
+						// Now, we restore the key and value therefrom.
+						std::stringstream sstr_keyValueEntry(str_sstr_keyValue);
 		
-			while (!sstr.eof()) {
-			    string line;
-			    getline(sstr, line);
+						{
+							std::shared_ptr<Deserializer> keyValueDeserializer = sf.getDeserializer(sstr_keyValueEntry);
+							int32_t key;
+							std::string value;
+							keyValueDeserializer->read(1, key);
+							keyValueDeserializer->read(2, value);
+							// Store key/value pair in the map.
+							putTo_MapOfMyIntStringMap(key, value);
+						}
+					}
+				}
+			}
+		}
+		// Restore elements from a string into MyIntPointMap.
+		{
+			// Clean up the existing map of MyIntPointMap.
+			m_mapOfMyIntPointMap.clear();
 		
-			    // Trying to find key-value-pair.
-			    size_t delimiter = line.find_first_of("=");
+			std::string str_MyIntPointMap;
+			d->read(4, str_MyIntPointMap);
+			if (str_MyIntPointMap.size() > 0) {
+				std::stringstream sstr_str_MyIntPointMap(str_MyIntPointMap);
 		
-			    // Compute length of value-entry by allowing comments right after values.
-			    size_t valueLength = line.length();
+				// str_MyIntPointMap contains a sequence of strings containing pairs of key/values.
+				uint32_t length = str_MyIntPointMap.size();
+				while (length > 0) {
+					std::string str_sstr_keyValue;
+					length -= d->readValue(sstr_str_MyIntPointMap, str_sstr_keyValue);
 		
-			    // Skip lines with invalid position pointers.
-			    if (! ( (delimiter > 0) && (valueLength > 0) ) ) {
-			        continue;
-			    }
+					if (str_sstr_keyValue.size() > 0) {
+						// We have in str_sstr_keyValue a string at hand containing a pair key/value.
+						// Now, we restore the key and value therefrom.
+						std::stringstream sstr_keyValueEntry(str_sstr_keyValue);
 		
-			    string key = line.substr(0, delimiter);
-			    string value = line.substr(delimiter + 1, valueLength);
-		
-			    // Skip lines with invalid keys or values.
-			    if ( (key.length() == 0) || (value.length() == 0) ) {
-			        continue;
-			    }
-		
-			    stringstream sstrKey(key);
-			    int32_t _key;
-		        sstrKey >> _key;
-		
-			    stringstream sstrValue(value);
-			    Test10Point _value;
-		        sstrValue >> _value;
-		
-				// Store key/value pair.
-				putTo_MapOfMyIntPointMap(_key, _value);
+						{
+							std::shared_ptr<Deserializer> keyValueDeserializer = sf.getDeserializer(sstr_keyValueEntry);
+							int32_t key;
+							Test10Point value;
+							keyValueDeserializer->read(1, key);
+							keyValueDeserializer->read(2, value);
+							// Store key/value pair in the map.
+							putTo_MapOfMyIntPointMap(key, value);
+						}
+					}
+				}
 			}
 		}
 		return in;

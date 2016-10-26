@@ -18,30 +18,29 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <Qt/qcheckbox.h>
-#include <Qt/qfiledialog.h>
-#include <Qt/qlabel.h>
-#include <Qt/qlineedit.h>
-#include <Qt/qmessagebox.h>
-#include <Qt/qpushbutton.h>
-#include <Qt/qtimer.h>
-#include <qboxlayout.h>
-#include <qobject.h>
-#include <qstring.h>
+#include <QtCore>
+#include <QtGui>
 
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/io/URL.h"
 #include "opendavinci/odcore/io/conference/ContainerConference.h"
-#include "plugins/player/PlayerWidget.h"
-#include "opendavinci/generated/odcore/data/player/PlayerCommand.h"
+#include "opendavinci/odcore/strings/StringToolbox.h"
 #include "opendavinci/odtools/player/Player.h"
 #include "opendavinci/odtools/splitter/Splitter.h"
+#include "opendavinci/generated/odcore/data/player/PlayerCommand.h"
+
+#include "plugins/player/PlayerWidget.h"
+
+#ifdef HAVE_ODPLAYERH264
+    #include "PlayerH264.h"
+#endif
 
 namespace cockpit { namespace plugins { class PlugIn; } }
 
@@ -73,7 +72,10 @@ namespace cockpit {
                 m_start(NULL),
                 m_end(NULL),
                 m_player(NULL),
-                m_fileName("") {
+                m_fileName(""),
+                m_currentWorkingDirectory("") {
+                m_currentWorkingDirectory = QDir::currentPath().toStdString();
+
                 // Set size.
                 setMinimumSize(400, 150);
 
@@ -96,39 +98,42 @@ namespace cockpit {
                 m_pauseBtn->setEnabled(false);
                 QObject::connect(m_pauseBtn, SIGNAL(clicked()), this, SLOT(pause()));
 
-                m_rewindBtn = new QPushButton("Rewind", this);
-                m_rewindBtn->setEnabled(false);
-                QObject::connect(m_rewindBtn, SIGNAL(clicked()), this, SLOT(rewind()));
+//                m_rewindBtn = new QPushButton("Rewind", this);
+//                m_rewindBtn->setEnabled(false);
+//                QObject::connect(m_rewindBtn, SIGNAL(clicked()), this, SLOT(rewind()));
 
                 m_stepBtn = new QPushButton("Step", this);
                 m_stepBtn->setEnabled(false);
                 QObject::connect(m_stepBtn, SIGNAL(clicked()), this, SLOT(step()));
 
-                m_autoRewind = new QCheckBox("Auto rewind", this);
+//                m_autoRewind = new QCheckBox("Auto rewind", this);
 
                 QHBoxLayout *operations = new QHBoxLayout();
                 operations->addWidget(m_playBtn);
                 operations->addWidget(m_pauseBtn);
-                operations->addWidget(m_rewindBtn);
+//TODO: Implement rewind for h264 files.
+//                operations->addWidget(m_rewindBtn);
                 operations->addWidget(m_stepBtn);
-                operations->addWidget(m_autoRewind);
+//TODO: Implement autorewind for h264 files.
+//                operations->addWidget(m_autoRewind);
 
-                // Splitting file.
-                m_processBtn = new QPushButton("Split", this);
-                m_processBtn->setEnabled(false);
-                QObject::connect(m_processBtn, SIGNAL(clicked()), this, SLOT(process()));
+//                // Splitting file.
+//                m_processBtn = new QPushButton("Split", this);
+//                m_processBtn->setEnabled(false);
+//                QObject::connect(m_processBtn, SIGNAL(clicked()), this, SLOT(process()));
 
-                QLabel *lblStart = new QLabel(tr("Start container:"));
-                QLabel *lblEnd = new QLabel(tr("End container:"));
-                m_start = new QLineEdit();
-                m_end = new QLineEdit();
+//                QLabel *lblStart = new QLabel(tr("Start container:"));
+//                QLabel *lblEnd = new QLabel(tr("End container:"));
+//                m_start = new QLineEdit();
+//                m_end = new QLineEdit();
 
-                QHBoxLayout *splitting = new QHBoxLayout();
-                splitting->addWidget(m_processBtn);
-                splitting->addWidget(lblStart);
-                splitting->addWidget(m_start);
-                splitting->addWidget(lblEnd);
-                splitting->addWidget(m_end);
+//                QHBoxLayout *splitting = new QHBoxLayout();
+////TODO: Validate splitting for h264 files
+//                splitting->addWidget(m_processBtn);
+//                splitting->addWidget(lblStart);
+//                splitting->addWidget(m_start);
+//                splitting->addWidget(lblEnd);
+//                splitting->addWidget(m_end);
 
                 // Final layout.
                 QVBoxLayout *mainLayout = new QVBoxLayout(this);
@@ -136,21 +141,20 @@ namespace cockpit {
                 mainLayout->addWidget(m_desc);
                 mainLayout->addWidget(m_containerCounterDesc);
                 mainLayout->addLayout(operations);
-                mainLayout->addLayout(splitting);
+//TODO: Validate splitting for h264 files.
+//                mainLayout->addLayout(splitting);
 
                 setLayout(mainLayout);
             }
 
-            PlayerWidget::~PlayerWidget() {
-                OPENDAVINCI_CORE_DELETE_POINTER(m_player);
-            }
+            PlayerWidget::~PlayerWidget() {}
 
             void PlayerWidget::play() {
                 m_playBtn->setEnabled(false);
                 m_pauseBtn->setEnabled(true);
-                m_rewindBtn->setEnabled(false);
                 m_stepBtn->setEnabled(false);
-                m_processBtn->setEnabled(false);
+//                m_rewindBtn->setEnabled(false);
+//                m_processBtn->setEnabled(false);
 
                 sendNextContainer();
             }
@@ -159,8 +163,8 @@ namespace cockpit {
                 m_playBtn->setEnabled(true);
                 m_pauseBtn->setEnabled(false);
                 m_stepBtn->setEnabled(true);
-                m_rewindBtn->setEnabled(true);
-                m_processBtn->setEnabled(true);
+//                m_rewindBtn->setEnabled(true);
+//                m_processBtn->setEnabled(true);
             }
 
             void PlayerWidget::rewind() {
@@ -171,8 +175,8 @@ namespace cockpit {
                 m_playBtn->setEnabled(true);
                 m_pauseBtn->setEnabled(false);
                 m_stepBtn->setEnabled(true);
-                m_rewindBtn->setEnabled(false);
-                m_processBtn->setEnabled(true);
+//                m_rewindBtn->setEnabled(false);
+//                m_processBtn->setEnabled(true);
 
                 stringstream sstr;
                 sstr << m_containerCounter << "/" << m_containerCounterTotal << " container(s) replayed.";
@@ -184,7 +188,7 @@ namespace cockpit {
             }
 
             void PlayerWidget::sendNextContainer() {
-                if (m_player != NULL) {
+                if (m_player.get() != NULL) {
                     if (!m_player->hasMoreData() && m_autoRewind->isChecked()) {
                         m_player->rewind();
                         m_containerCounter = 0;
@@ -262,10 +266,23 @@ namespace cockpit {
             }
 
             void PlayerWidget::loadFile() {
+                QDir::setCurrent(m_currentWorkingDirectory.c_str());
                 m_fileName = QFileDialog::getOpenFileName(this, tr("Open previous recording file"), "", tr("Recording files (*.rec)")).toStdString();
 
                 if (!m_fileName.empty()) {
-                    OPENDAVINCI_CORE_DELETE_POINTER(m_player);
+                    m_player.reset();
+
+                    // Set current working directory.
+                    {
+                        m_currentWorkingDirectory = "";
+                        vector<string> tokens = odcore::strings::StringToolbox::split(m_fileName, '/');
+                        auto it = tokens.begin();
+                        while ((it+1) != tokens.end()) {
+                            m_currentWorkingDirectory += "/" + (*it);
+                            it++;
+                        }
+                        QDir::setCurrent(m_currentWorkingDirectory.c_str());
+                    }
 
                     stringstream s;
                     s << "file://" << m_fileName;
@@ -282,12 +299,18 @@ namespace cockpit {
                     // We use the asychronous player to allow data caching in background.
                     const bool THREADING = false;
                     const bool AUTO_REWIND = false;
-                    m_player = new Player(url, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING);
+#ifdef HAVE_ODPLAYERH264
+                    // Base port for letting spawned children connect to parent process.
+                    const uint32_t BASE_PORT = m_kvc.getValue<uint32_t>("odplayerh264.portbaseforchildprocesses");
+                    m_player = shared_ptr<Player>(new odplayerh264::PlayerH264(url, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING, BASE_PORT));
+#else
+                    m_player = shared_ptr<Player>(new Player(url, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING));
+#endif
 
                     m_playBtn->setEnabled(true);
                     m_pauseBtn->setEnabled(false);
                     m_stepBtn->setEnabled(true);
-                    m_rewindBtn->setEnabled(false);
+//                    m_rewindBtn->setEnabled(false);
 
                     m_containerCounter = 0;
                     m_containerCounterTotal = 0;

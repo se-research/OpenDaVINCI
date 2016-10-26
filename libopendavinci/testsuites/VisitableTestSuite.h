@@ -21,28 +21,52 @@
 #define CORE_VISITABLETESTSUITE_H_
 
 #include <iostream>                     // for operator<<, basic_ostream, etc
+#include <memory>
 #include <string>                       // for operator<<, string, etc
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
-#include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
-#include "opendavinci/odcore/base/Hash.h"             // for CharList, CRC32, etc
-#include "opendavinci/odcore/base/QueryableNetstringsDeserializerVisitor.h"
-#include "opendavinci/odcore/base/QueryableNetstringsSerializerVisitor.h"
-#include "opendavinci/odcore/base/Serializable.h"     // for operator<<, Serializable
-#include "opendavinci/odcore/base/SerializationFactory.h"  // for SerializationFactory
-#include "opendavinci/odcore/base/Serializer.h"       // for Serializer
+#include "opendavinci/odcore/serialization/Deserializer.h"     // for Deserializer
+#include "opendavinci/odcore/serialization/QueryableNetstringsDeserializerVisitor.h"
+#include "opendavinci/odcore/serialization/QueryableNetstringsSerializerVisitor.h"
+#include "opendavinci/odcore/serialization/Serializable.h"     // for operator<<, Serializable
+#include "opendavinci/odcore/serialization/SerializationFactory.h"  // for SerializationFactory
+#include "opendavinci/odcore/serialization/Serializer.h"       // for Serializer
 #include "opendavinci/odcore/base/Visitable.h"        // for Visitable
 #include "opendavinci/odcore/base/Visitor.h"          // for Visitor
+
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/QueryableNetstringsDeserializer.h"
+#include "opendavinci/odcore/serialization/QueryableNetstringsSerializer.h"
 
 using namespace std;
 using namespace odcore;
 using namespace odcore::base;
+using namespace odcore::serialization;
+
+class SerializationFactoryTestCase : public SerializationFactory {
+    public:
+        SerializationFactoryTestCase() {
+            SerializationFactory::m_singleton = this;
+        }
+
+        virtual ~SerializationFactoryTestCase() {
+            SerializationFactory::m_singleton = NULL;
+        }
+
+        virtual shared_ptr<Serializer> getSerializer(ostream &out) const {
+            return shared_ptr<Serializer>(new QueryableNetstringsSerializer(out));
+        }
+
+        virtual shared_ptr<Deserializer> getDeserializer(istream &in) const {
+            return shared_ptr<Deserializer>(new QueryableNetstringsDeserializer(in));
+        }
+};
+
 
 // An example data object.
-class MyNestedVisitable : public odcore::base::Serializable {
+class MyNestedVisitable : public odcore::serialization::Serializable {
     public:
         MyNestedVisitable() :
                 m_double(0) {}
@@ -54,8 +78,7 @@ class MyNestedVisitable : public odcore::base::Serializable {
 
             std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
-            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('m', '_', 'd', 'o', 'u', 'b', 'l', 'e') >::RESULT,
-                    m_double);
+            s->write(10, m_double);
 
             return out;
         }
@@ -65,8 +88,7 @@ class MyNestedVisitable : public odcore::base::Serializable {
 
             std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
-            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('m', '_', 'd', 'o', 'u', 'b', 'l', 'e') >::RESULT,
-                   m_double);
+            d->read(10, m_double);
 
             return in;
         }
@@ -90,7 +112,7 @@ class MyVisitable : public Serializable, public Visitable {
             m_att2(obj.m_att2),
             m_att3(obj.m_att3),
             m_att4(obj.m_att4),
-            m_att5() {}
+            m_att5(obj.m_att5) {}
 
         ~MyVisitable() {}
 
@@ -105,56 +127,48 @@ class MyVisitable : public Serializable, public Visitable {
 
         virtual ostream& operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();
-		
-			std::shared_ptr<Serializer> s = sf.getSerializer(out);
-		
-			s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'1', NullType> > > > >::RESULT,
-					m_att1);
+        
+            std::shared_ptr<Serializer> s = sf.getSerializer(out);
+        
+            s->write(1, m_att1);
 
-			s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'2', NullType> > > > >::RESULT,
-					m_att2);
+            s->write(2, m_att2);
 
-			s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'3', NullType> > > > >::RESULT,
-					m_att3);
+            s->write(3, m_att3);
 
-			s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'4', NullType> > > > >::RESULT,
-					m_att4);
+            s->write(4, m_att4);
 
-			s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'5', NullType> > > > >::RESULT,
-					m_att5);
+            s->write(5, m_att5);
 
-			return out;
+            return out;
         }
 
         virtual istream& operator>>(istream &in) {
             SerializationFactory& sf=SerializationFactory::getInstance();
-		
-			std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
-		
-			d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'1', NullType> > > > >::RESULT,
-					m_att1);
+        
+            std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+        
+            d->read(1, m_att1);
 
-			d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'2', NullType> > > > >::RESULT,
-					m_att2);
+            d->read(2, m_att2);
 
-			d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'3', NullType> > > > >::RESULT,
-					m_att3);
+            d->read(3, m_att3);
 
-			d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'4', NullType> > > > >::RESULT,
-					m_att4);
+            d->read(4, m_att4);
 
-			d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'5', NullType> > > > >::RESULT,
-					m_att5);
+            d->read(5, m_att5);
 
-			return in;
+            return in;
         }
 
         virtual void accept(odcore::base::Visitor &v) {
-            v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'1', NullType> > > > >::RESULT, 1, "MyVisitable::att1", "att1", m_att1);
-            v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'2', NullType> > > > >::RESULT, 2, "MyVisitable::att2", "att2", m_att2);
-            v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'3', NullType> > > > >::RESULT, 3, "MyVisitable::att3", "att3", m_att3);
-            v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'4', NullType> > > > >::RESULT, 4, "MyVisitable::att4", "att4", m_att4);
-            v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'5', NullType> > > > >::RESULT, 5, "MyVisitable::att5", "att5", m_att5);
+            v.beginVisit(1, "MyVisitable", "MyVisitable");
+            v.visit(1, "MyVisitable::att1", "att1", m_att1);
+            v.visit(2, "MyVisitable::att2", "att2", m_att2);
+            v.visit(3, "MyVisitable::att3", "att3", m_att3);
+            v.visit(4, "MyVisitable::att4", "att4", m_att4);
+            v.visit(5, "MyVisitable::att5", "att5", m_att5);
+            v.endVisit();
         }
 
     public:
@@ -168,64 +182,68 @@ class MyVisitable : public Serializable, public Visitable {
 // Pretty printer.
 class MyPrintVisitor : public Visitor {
     public:
-        virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, Serializable &v) {
-            cout << longId << ", " << (int)shortId << ", " << longName << ", " << shortName << ", " << v << endl;
+        virtual void beginVisit(const int32_t &/*id*/, const string &/*shortName*/, const string &/*longName*/) {}
+
+        virtual void endVisit() {}
+
+        virtual void visit(const uint32_t &id, const string &longName, const string &shortName, Serializable &v) {
+            cout << (int)id << ", " << longName << ", " << shortName << ", " << v << endl;
         }
 
-        virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, bool &v) {
-            cout << longId << ", " << (int)shortId << ", " << longName << ", " << shortName << ", " << v << endl;
+        virtual void visit(const uint32_t &id, const string &longName, const string &shortName, bool &v) {
+            cout << (int)id << ", " << longName << ", " << shortName << ", " << v << endl;
         }
 
-        virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, char &v) {
-            cout << longId << ", " << (int)shortId << ", " << longName << ", " << shortName << ", " << v << endl;
+        virtual void visit(const uint32_t &id, const string &longName, const string &shortName, char &v) {
+            cout << (int)id << ", " << longName << ", " << shortName << ", " << v << endl;
         }
 
-        virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, unsigned char &v) {
-            cout << longId << ", " << (int)shortId << ", " << longName << ", " << shortName << ", " << v << endl;
+        virtual void visit(const uint32_t &id, const string &longName, const string &shortName, unsigned char &v) {
+            cout << (int)id << ", " << longName << ", " << shortName << ", " << v << endl;
         }
 
-        virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int8_t &v) {
-            cout << longId << ", " << (int)shortId << ", " << longName << ", " << shortName << ", " << v << endl;
+        virtual void visit(const uint32_t &id, const string &longName, const string &shortName, int8_t &v) {
+            cout << (int)id << ", " << longName << ", " << shortName << ", " << v << endl;
         }
 
-        virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int16_t &v) {
-            cout << longId << ", " << (int)shortId << ", " << longName << ", " << shortName << ", " << v << endl;
+        virtual void visit(const uint32_t &id, const string &longName, const string &shortName, int16_t &v) {
+            cout << (int)id << ", " << longName << ", " << shortName << ", " << v << endl;
         }
 
-        virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint16_t &v) {
-            cout << longId << ", " << (int)shortId << ", " << longName << ", " << shortName << ", " << v << endl;
+        virtual void visit(const uint32_t &id, const string &longName, const string &shortName, uint16_t &v) {
+            cout << (int)id << ", " << longName << ", " << shortName << ", " << v << endl;
         }
 
-        virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int32_t &v) {
-            cout << longId << ", " << (int)shortId << ", " << longName << ", " << shortName << ", " << v << endl;
+        virtual void visit(const uint32_t &id, const string &longName, const string &shortName, int32_t &v) {
+            cout << (int)id << ", " << longName << ", " << shortName << ", " << v << endl;
         }
 
-        virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint32_t &v) {
-            cout << longId << ", " << (int)shortId << ", " << longName << ", " << shortName << ", " << v << endl;
+        virtual void visit(const uint32_t &id, const string &longName, const string &shortName, uint32_t &v) {
+            cout << (int)id << ", " << longName << ", " << shortName << ", " << v << endl;
         }
 
-        virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int64_t &v) {
-            cout << longId << ", " << (int)shortId << ", " << longName << ", " << shortName << ", " << v << endl;
+        virtual void visit(const uint32_t &id, const string &longName, const string &shortName, int64_t &v) {
+            cout << (int)id << ", " << longName << ", " << shortName << ", " << v << endl;
         }
 
-        virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint64_t &v) {
-            cout << longId << ", " << (int)shortId << ", " << longName << ", " << shortName << ", " << v << endl;
+        virtual void visit(const uint32_t &id, const string &longName, const string &shortName, uint64_t &v) {
+            cout << (int)id << ", " << longName << ", " << shortName << ", " << v << endl;
         }
 
-        virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, float &v) {
-            cout << longId << ", " << (int)shortId << ", " << longName << ", " << shortName << ", " << v << endl;
+        virtual void visit(const uint32_t &id, const string &longName, const string &shortName, float &v) {
+            cout << (int)id << ", " << longName << ", " << shortName << ", " << v << endl;
         }
 
-        virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, double &v) {
-            cout << longId << ", " << (int)shortId << ", " << longName << ", " << shortName << ", " << v << endl;
+        virtual void visit(const uint32_t &id, const string &longName, const string &shortName, double &v) {
+            cout << (int)id << ", " << longName << ", " << shortName << ", " << v << endl;
         }
 
-        virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, string &v) {
-            cout << longId << ", " << (int)shortId << ", " << longName << ", " << shortName << ", " << v << endl;
+        virtual void visit(const uint32_t &id, const string &longName, const string &shortName, string &v) {
+            cout << (int)id << ", " << longName << ", " << shortName << ", " << v << endl;
         }
 
-        virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, void *data, const uint32_t &size) {
-            cout << longId << ", " << (int)shortId << ", " << longName << ", " << shortName << ", " << data << ", " << size << endl;
+        virtual void visit(const uint32_t &id, const string &longName, const string &shortName, void *data, const uint32_t &size) {
+            cout << (int)id << ", " << longName << ", " << shortName << ", " << data << ", " << size << endl;
         }
 };
 
@@ -233,6 +251,10 @@ class MyPrintVisitor : public Visitor {
 class VisitableTest : public CxxTest::TestSuite {
     public:
         void testSerializationDeserializationVisitors() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
             MyVisitable myV;
 
             // Pretty print the object's attributes.
@@ -287,6 +309,10 @@ class VisitableTest : public CxxTest::TestSuite {
         }
 
         void testReuseDeserializationVisitors() {
+            // Replace default serializer/deserializers.
+            SerializationFactoryTestCase tmp;
+            (void)tmp;
+
             MyVisitable myV;
 
             // Pretty print the object's attributes.
@@ -330,7 +356,7 @@ class VisitableTest : public CxxTest::TestSuite {
             TS_ASSERT(ser_sstr.str() == sstr3.str());
 
             // Modify the object's attributes.
-            myV.m_att1 = -1;
+            myV.m_att1 = 2;
             myV.m_att2 = -3.2;
             myV.m_att3 = 1.3;
             myV.m_att4 = "Hello again, World!";

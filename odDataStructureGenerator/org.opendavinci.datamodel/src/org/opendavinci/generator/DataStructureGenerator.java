@@ -100,6 +100,7 @@ public class DataStructureGenerator {
 			String filenameWithSubpackage = fileName.replaceAll("\\.", "/");
 			filenameWithSubpackage = filenameWithSubpackage.replaceAll("/h$", ".h");
 			filenameWithSubpackage = filenameWithSubpackage.replaceAll("/cpp$", ".cpp");
+			filenameWithSubpackage = filenameWithSubpackage.replaceAll("/proto$", ".proto");
 			System.out.print("Creating '" + folder + "/" + filenameWithSubpackage + "' ");
 			if (filenameWithSubpackage.contains("/")) {
 				File d = new File(folder + "/" + filenameWithSubpackage.substring(0, filenameWithSubpackage.lastIndexOf('/')));
@@ -152,10 +153,16 @@ public class DataStructureGenerator {
 		sb.append(" * THIS IS A GENERATED FILE - CHANGES WILL BE OVERWRITTEN."); sb.append("\r\n");
 		sb.append(" */"); sb.append("\r\n");
         sb.append("\r\n");
+        String headerGuard = "GeneratedHeaders_" + odvdFilename + "_H";
+        sb.append("#ifndef " + headerGuard.toUpperCase()); sb.append("\r\n");
+        sb.append("#define " + headerGuard.toUpperCase()); sb.append("\r\n");
+        sb.append("\r\n");
 
         for(String file : listOfGeneratedHeaderFiles) {
     		sb.append("#include \"" + file.replaceFirst("include/", "") + "\""); sb.append("\r\n");
         }
+        sb.append("\r\n");
+        sb.append("#endif //" + headerGuard.toUpperCase()); sb.append("\r\n");
 
 		System.out.print((DataStructureGenerator.appendGeneratedHeadersFile ? "Appending" : "Creating") + " '" + folder + "/include/" + odvdFilename.toLowerCase() + "/GeneratedHeaders_" + odvdFilename + ".h' ");
 		File f = new File(folder + "/include/" + odvdFilename.toLowerCase() + "/GeneratedHeaders_" + odvdFilename + ".h");
@@ -169,6 +176,139 @@ public class DataStructureGenerator {
 			e.printStackTrace();
 		}
 		System.out.println("done.");
+    }
+
+	public void generateUtilsClassFileHeader() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("/*"); sb.append("\r\n");
+		sb.append(" * THIS IS A GENERATED FILE - CHANGES WILL BE OVERWRITTEN."); sb.append("\r\n");
+		sb.append(" */"); sb.append("\r\n");
+        sb.append("\r\n");
+        String headerGuard = "GeneratedHeaders_" + odvdFilename + "_HELPER_H";
+        sb.append("#ifndef " + headerGuard.toUpperCase()); sb.append("\r\n");
+        sb.append("#define " + headerGuard.toUpperCase()); sb.append("\r\n");
+        sb.append("\r\n");
+
+        sb.append("#include <opendavinci/odcore/data/Container.h>"); sb.append("\r\n");
+        sb.append("#include <opendavinci/odcore/base/Visitor.h>"); sb.append("\r\n");
+        sb.append("#include <opendavinci/odcore/reflection/Message.h>"); sb.append("\r\n");
+        sb.append("#include <opendavinci/odcore/reflection/Helper.h>"); sb.append("\r\n");
+
+        sb.append("class GeneratedHeaders_" + odvdFilename + "_Helper : public odcore::reflection::Helper {"); sb.append("\r\n");
+        sb.append("    public:"); sb.append("\r\n");
+        sb.append("        virtual ~GeneratedHeaders_" + odvdFilename + "_Helper();"); sb.append("\r\n");
+        sb.append("        virtual void delegateVistor(odcore::data::Container &c, odcore::base::Visitor &v, bool &successfullyDelegated);"); sb.append("\r\n");
+        sb.append("        virtual odcore::reflection::Message map(odcore::data::Container &c, bool &successfullyMapped);"); sb.append("\r\n");
+
+        sb.append("        static void __delegateVistor(odcore::data::Container &c, odcore::base::Visitor &v, bool &successfullyDelegated);"); sb.append("\r\n");
+        sb.append("        static odcore::reflection::Message __map(odcore::data::Container &c, bool &successfullyMapped);"); sb.append("\r\n");
+        sb.append("};"); sb.append("\r\n");
+
+
+        sb.append("\r\n");
+        sb.append("#endif //" + headerGuard.toUpperCase()); sb.append("\r\n");
+
+		System.out.print((DataStructureGenerator.appendGeneratedHeadersFile ? "Appending" : "Creating") + " '" + folder + "/include/" + odvdFilename.toLowerCase() + "/GeneratedHeaders_" + odvdFilename + "_Helper.h' ");
+		File f = new File(folder + "/include/" + odvdFilename.toLowerCase() + "/GeneratedHeaders_" + odvdFilename + "_Helper.h");
+		FileWriter fw;
+		try {
+			fw = new FileWriter(f, DataStructureGenerator.appendGeneratedHeadersFile);
+			fw.append(sb.toString());
+			fw.flush();
+			fw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println("done.");
+    }
+
+	public void generateUtilsClassFileBody() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("/*"); sb.append("\r\n");
+		sb.append(" * THIS IS A GENERATED FILE - CHANGES WILL BE OVERWRITTEN."); sb.append("\r\n");
+		sb.append(" */"); sb.append("\r\n");
+        sb.append("\r\n");
+
+        sb.append("#include <iostream>"); sb.append("\r\n");
+
+        sb.append("#include <" + odvdFilename.toLowerCase() + "/GeneratedHeaders_" + odvdFilename + ".h>"); sb.append("\r\n");
+        sb.append("#include <" + odvdFilename.toLowerCase() + "/GeneratedHeaders_" + odvdFilename + "_Helper.h>"); sb.append("\r\n");
+
+        sb.append("#include <opendavinci/odcore/base/Visitable.h>"); sb.append("\r\n");
+        sb.append("#include <opendavinci/odcore/reflection/MessageFromVisitableVisitor.h>"); sb.append("\r\n");
+
+        sb.append("extern \"C\" {"); sb.append("\r\n");
+        sb.append("    odcore::reflection::Helper *newHelper() {"); sb.append("\r\n");
+        sb.append("        return new GeneratedHeaders_" + odvdFilename + "_Helper;"); sb.append("\r\n");
+        sb.append("    }"); sb.append("\r\n");
+
+        sb.append("    void deleteHelper(odcore::reflection::Helper *h) {"); sb.append("\r\n");
+        sb.append("        delete h;"); sb.append("\r\n");
+        sb.append("    }"); sb.append("\r\n");
+        sb.append("}"); sb.append("\r\n");
+
+        sb.append("GeneratedHeaders_" + odvdFilename + "_Helper::~GeneratedHeaders_" + odvdFilename + "_Helper() {}"); sb.append("\r\n");
+
+        sb.append("void GeneratedHeaders_" + odvdFilename + "_Helper::delegateVistor(odcore::data::Container &c, odcore::base::Visitor &v, bool &successfullyDelegated) {"); sb.append("\r\n");
+        sb.append("    GeneratedHeaders_" + odvdFilename + "_Helper::__delegateVistor(c, v, successfullyDelegated);"); sb.append("\r\n");
+        sb.append("}"); sb.append("\r\n");
+
+        sb.append("odcore::reflection::Message GeneratedHeaders_" + odvdFilename + "_Helper::map(odcore::data::Container &c, bool &successfullyMapped) {"); sb.append("\r\n");
+        sb.append("    return GeneratedHeaders_" + odvdFilename + "_Helper::__map(c, successfullyMapped);"); sb.append("\r\n");
+        sb.append("}"); sb.append("\r\n");
+
+        sb.append("void GeneratedHeaders_" + odvdFilename + "_Helper::__delegateVistor(odcore::data::Container &c, odcore::base::Visitor &v, bool &successfullyDelegated) {"); sb.append("\r\n");
+        sb.append("    successfullyDelegated = false;"); sb.append("\r\n");
+
+        for(String file : listOfGeneratedHeaderFiles) {
+            int pos = file.indexOf("generated/");
+            int lastPos = file.lastIndexOf(".h");
+            String extractedMessage = file.substring(pos + 10, lastPos);
+            String extractedMessageSplit[] = extractedMessage.split("/");
+            String extractedMessageFinal = "";
+            for (int i = 0; i < extractedMessageSplit.length - 1; i++) {
+                extractedMessageFinal += extractedMessageSplit[i].toLowerCase() + "::";
+            }
+            extractedMessageFinal += extractedMessageSplit[extractedMessageSplit.length-1];
+
+            sb.append("    if (c.getDataType() == " + extractedMessageFinal + "::ID()) {"); sb.append("\r\n");
+            sb.append("        " + extractedMessageFinal + " payload = c.getData<" + extractedMessageFinal + ">();"); sb.append("\r\n");
+            sb.append("        payload.accept(v);"); sb.append("\r\n");
+            sb.append("        successfullyDelegated = true;"); sb.append("\r\n");
+            sb.append("    }"); sb.append("\r\n");
+        }
+        sb.append("}"); sb.append("\r\n");
+
+        sb.append("odcore::reflection::Message GeneratedHeaders_" + odvdFilename + "_Helper::__map(odcore::data::Container &c, bool &successfullyMapped) {"); sb.append("\r\n");
+        sb.append("    successfullyMapped = false;"); sb.append("\r\n");
+        sb.append("    odcore::reflection::Message msg;"); sb.append("\r\n");
+
+        sb.append("    odcore::reflection::MessageFromVisitableVisitor mfvv;"); sb.append("\r\n");
+        sb.append("    __delegateVistor(c, mfvv, successfullyMapped);"); sb.append("\r\n");
+        sb.append("    if (successfullyMapped) {"); sb.append("\r\n");
+        sb.append("        msg = mfvv.getMessage();"); sb.append("\r\n");
+        sb.append("    }"); sb.append("\r\n");
+
+        sb.append("    return msg;"); sb.append("\r\n");
+        sb.append("}"); sb.append("\r\n");
+
+		System.out.print((DataStructureGenerator.appendGeneratedHeadersFile ? "Appending" : "Creating") + " '" + folder + "/src/GeneratedHeaders_" + odvdFilename + "_Helper.cpp' ");
+		File f = new File(folder + "/src/GeneratedHeaders_" + odvdFilename + "_Helper.cpp");
+		FileWriter fw;
+		try {
+			fw = new FileWriter(f, DataStructureGenerator.appendGeneratedHeadersFile);
+			fw.append(sb.toString());
+			fw.flush();
+			fw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println("done.");
+    }
+
+	public void generateUtilsClassFile() {
+        generateUtilsClassFileHeader();
+        generateUtilsClassFileBody();
     }
 
 	public void generateCMakeModules() {
@@ -233,8 +373,8 @@ public class DataStructureGenerator {
 		sb.append("        ENDIF()"); sb.append("\r\n");
 		sb.append("    ENDIF()"); sb.append("\r\n");
 
-		sb.append("    SET (CMAKE_C_FLAGS ${CMAKE_C_FLAGS} \" -fPIC\")"); sb.append("\r\n");
-		sb.append("    SET (CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} \" -fPIC ${CXX_OPTIONS} -pipe\")"); sb.append("\r\n");
+		sb.append("    SET (CMAKE_C_FLAGS \" ${CMAKE_C_FLAGS} -fPIC\")"); sb.append("\r\n");
+		sb.append("    SET (CMAKE_CXX_FLAGS \" ${CMAKE_CXX_FLAGS} -fPIC ${CXX_OPTIONS} -pipe\")"); sb.append("\r\n");
 		sb.append("ENDIF()"); sb.append("\r\n");
 
 		System.out.print("Creating '" + folder + "/cmake.Modules/CompileFlags.cmake' ");
@@ -365,23 +505,24 @@ public class DataStructureGenerator {
 
 		sb.append("ADD_LIBRARY (" + folder.replaceFirst("lib", "") + "-core OBJECT ${" + folder + "-sources})"); sb.append("\r\n");
 		sb.append("ADD_LIBRARY (" + folder.replaceFirst("lib", "") + "-static STATIC $<TARGET_OBJECTS:" + folder.replaceFirst("lib", "") + "-core>)"); sb.append("\r\n");
-		sb.append("IF(    (NOT WIN32)"); sb.append("\r\n");
-		sb.append("   AND (NOT (\"${CMAKE_SYSTEM_NAME}\" STREQUAL \"Darwin\")) )"); sb.append("\r\n");
+		sb.append("IF(NOT WIN32)"); sb.append("\r\n");
 		sb.append("    ADD_LIBRARY (" + folder.replaceFirst("lib", "") + " SHARED $<TARGET_OBJECTS:" + folder.replaceFirst("lib", "") + "-core>)"); sb.append("\r\n");
+		sb.append("ENDIF()"); sb.append("\r\n");
+		sb.append("IF(\"${CMAKE_SYSTEM_NAME}\" STREQUAL \"Darwin\")"); sb.append("\r\n");
+		sb.append("    TARGET_LINK_LIBRARIES(" + folder.replaceFirst("lib", "") + " ${OPENDAVINCI_LIBRARIES})"); sb.append("\r\n");
 		sb.append("ENDIF()"); sb.append("\r\n");
 
 		sb.append("# Installing " + folder + "."); sb.append("\r\n");
 		sb.append("INSTALL(TARGETS " + folder.replaceFirst("lib", "") + "-static DESTINATION lib" + " " + "COMPONENT od" + folder.replaceFirst("lib", "") + "lib" + ")"); sb.append("\r\n");
-		sb.append("IF(    (NOT WIN32)"); sb.append("\r\n");
-                sb.append("   AND (NOT (\"${CMAKE_SYSTEM_NAME}\" STREQUAL \"Darwin\")) )"); sb.append("\r\n");
+		sb.append("IF(NOT WIN32)"); sb.append("\r\n");
 		sb.append("    INSTALL(TARGETS " + folder.replaceFirst("lib", "") + " DESTINATION lib" + " " + "COMPONENT od" + folder.replaceFirst("lib", "") + "lib" + ")"); sb.append("\r\n");
 		sb.append("ENDIF()"); sb.append("\r\n");
 
 		sb.append("# Install header files."); sb.append("\r\n");
 		sb.append("INSTALL(DIRECTORY \"${CMAKE_CURRENT_SOURCE_DIR}/include/\" DESTINATION include/" + " " + "COMPONENT od" + folder.replaceFirst("lib", "") + "lib" + ")"); sb.append("\r\n");
 
-		sb.append("IF(CXXTEST_FOUND)"); sb.append("\r\n");
-		sb.append("FILE(GLOB " + folder + "-testsuites \"${CMAKE_CURRENT_SOURCE_DIR}/testsuites/*.h\")"); sb.append("\r\n");
+		sb.append("# Install proto files."); sb.append("\r\n");
+		sb.append("INSTALL(DIRECTORY \"${CMAKE_CURRENT_SOURCE_DIR}/proto/\" DESTINATION share/proto/" + " " + "COMPONENT od" + folder.replaceFirst("lib", "") + "lib" + ")"); sb.append("\r\n");
 
 		sb.append("# Install CMake modules locally."); sb.append("\r\n");
 		sb.append("IF(UNIX)"); sb.append("\r\n");
@@ -392,6 +533,9 @@ public class DataStructureGenerator {
 		sb.append("IF(WIN32)"); sb.append("\r\n");
 		sb.append("    INSTALL(FILES \"${CMAKE_CURRENT_SOURCE_DIR}/cmake.Modules/Find" + odvdFilename + ".cmake\" DESTINATION CMake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules" + " COMPONENT od" + folder.replaceFirst("lib", "") + "lib" + ")"); sb.append("\r\n");
 		sb.append("ENDIF()"); sb.append("\r\n");
+
+		sb.append("IF(CXXTEST_FOUND)"); sb.append("\r\n");
+		sb.append("FILE(GLOB " + folder + "-testsuites \"${CMAKE_CURRENT_SOURCE_DIR}/testsuites/*.h\")"); sb.append("\r\n");
 
 		sb.append("FOREACH(testsuite ${" + folder + "-testsuites})"); sb.append("\r\n");
 		sb.append("    STRING(REPLACE \"/\" \";\" testsuite-list ${testsuite})"); sb.append("\r\n");
@@ -634,6 +778,9 @@ public class DataStructureGenerator {
 
 						        // Generate super header file.
                                 dsg.generateSuperHeaderFile();
+
+						        // Generate utils class with useful methods.
+                                dsg.generateUtilsClassFile();
 
 						        if (createCMakeFile) {
 						        	dsg.generateCMakeFile();

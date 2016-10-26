@@ -18,13 +18,12 @@
  */
 
 #include <iosfwd>
+#include <memory>
 #include <string>
 
-#include <memory>
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendavinci/odcore/data/SerializableData.h"
 #include "opendlv/data/sensor/LMS291Message.h"
 
@@ -87,30 +86,26 @@ namespace opendlv {
 
             ostream& LMS291Message::operator<<(ostream &out) const {
                 // Serialize this class.
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Serializer> s = sf.getSerializer(out);
+                std::shared_ptr<odcore::serialization::Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                        m_identifier);
+                s->write(1, m_identifier);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('m', 'e', 's', 's', 'a', 'g', 'e') >::RESULT,
-                        m_message);
+                s->write(2, m_message);
 
                 return out;
             }
 
             istream& LMS291Message::operator>>(istream &in) {
                 // Deserialize this class.
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+                std::shared_ptr<odcore::serialization::Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                        m_identifier);
+                d->read(1, m_identifier);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('m', 'e', 's', 's', 'a', 'g', 'e') >::RESULT,
-                       m_message);
+                d->read(2, m_message);
 
                 return in;
             }

@@ -6,18 +6,17 @@
 
 #include <memory>
 #include <cstring>
-#include "opendavinci/odcore/opendavinci.h"
+#include <opendavinci/odcore/opendavinci.h>
 
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
-
+#include <opendavinci/odcore/serialization/Deserializer.h>
+#include <opendavinci/odcore/serialization/SerializationFactory.h>
+#include <opendavinci/odcore/serialization/Serializer.h>
 
 #include "test18/generated/Test18.h"
 
 	using namespace std;
 	using namespace odcore::base;
+	using namespace odcore::serialization;
 
 
 	Test18::Test18() :
@@ -147,14 +146,15 @@
 	}
 
 	void Test18::accept(odcore::base::Visitor &v) {
-		v.visit(CRC32 < CharList<'m', CharList<'y', CharList<'A', CharList<'t', CharList<'t', CharList<'1', NullType> > > > > >  >::RESULT, 5, "Test18.myAtt1", "myAtt1", m_myAtt1);
-		v.visit(0x12345678, 0, "Test18.myAtt2", "myAtt2", m_myAtt2);
-		v.visit(0xAaBbCcDd, 0, "Test18.myAtt3", "myAtt3", m_myAtt3);
+		v.beginVisit(ID(), ShortName(), LongName());
+		v.visit(3, "Test18.myAtt1", "myAtt1", m_myAtt1);
+		v.visit(4, "Test18.myAtt2", "myAtt2", m_myAtt2);
+		v.visit(5, "Test18.myAtt3", "myAtt3", m_myAtt3);
+		v.endVisit();
 	}
 
 	const string Test18::toString() const {
 		stringstream s;
-
 
 		s << "myArray1: (";
 		for(uint32_t i = 0; i < getSize_MyArray1(); i++) {
@@ -174,35 +174,89 @@
 	}
 
 	ostream& Test18::operator<<(ostream &out) const {
-
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
 		std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
-		s->write(CRC32 < CharList<'m', CharList<'y', CharList<'A', CharList<'r', CharList<'r', CharList<'a', CharList<'y', CharList<'1', NullType> > > > > > > >  >::RESULT,
-				m_myArray1, getSize_MyArray1() * (sizeof(uint32_t)/sizeof(char)));
-		s->write(4,
-				m_myArray2, getSize_MyArray2() * (sizeof(float)/sizeof(char)));
-		s->write(5,
+		// Store elements from m_myArray1 into a string.
+		{
+			std::stringstream sstr_MyArray1;
+			{
+				for(uint32_t i = 0; i < getSize_MyArray1(); i++) {
+					s->writeValue(sstr_MyArray1, m_myArray1[i]);
+				}
+			}
+			const std::string str_sstr_MyArray1 = sstr_MyArray1.str();
+			s->write(1, str_sstr_MyArray1);
+		}
+		// Store elements from m_myArray2 into a string.
+		{
+			std::stringstream sstr_MyArray2;
+			{
+				for(uint32_t i = 0; i < getSize_MyArray2(); i++) {
+					s->writeValue(sstr_MyArray2, m_myArray2[i]);
+				}
+			}
+			const std::string str_sstr_MyArray2 = sstr_MyArray2.str();
+			s->write(2, str_sstr_MyArray2);
+		}
+		s->write(3,
 				m_myAtt1);
-		s->write(0x12345678, m_myAtt2);
-		s->write(0xAaBbCcDd, m_myAtt3);
+		s->write(4,
+				m_myAtt2);
+		s->write(5,
+				m_myAtt3);
 		return out;
 	}
 
 	istream& Test18::operator>>(istream &in) {
-
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
 		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
-		d->read(CRC32 < CharList<'m', CharList<'y', CharList<'A', CharList<'r', CharList<'r', CharList<'a', CharList<'y', CharList<'1', NullType> > > > > > > >  >::RESULT,
-		       m_myArray1, getSize_MyArray1() * (sizeof(uint32_t)/sizeof(char)));
-		d->read(4,
-		       m_myArray2, getSize_MyArray2() * (sizeof(float)/sizeof(char)));
-		d->read(5,
+		// Restore values for myArray1
+		{
+			std::string str_MyArray1;
+			d->read(1, str_MyArray1);
+		
+			if (str_MyArray1.size() > 0) {
+				std::stringstream sstr_str_MyArray1(str_MyArray1);
+				uint32_t length = str_MyArray1.size();
+				uint32_t elementCounter = 0;
+				while (length > 0) {
+					uint32_t element;
+					length -= d->readValue(sstr_str_MyArray1, element);
+					if (elementCounter < getSize_MyArray1()) {
+						m_myArray1[elementCounter] = element;
+					}
+					elementCounter++;
+				}
+			}
+		}
+		// Restore values for myArray2
+		{
+			std::string str_MyArray2;
+			d->read(2, str_MyArray2);
+		
+			if (str_MyArray2.size() > 0) {
+				std::stringstream sstr_str_MyArray2(str_MyArray2);
+				uint32_t length = str_MyArray2.size();
+				uint32_t elementCounter = 0;
+				while (length > 0) {
+					float element;
+					length -= d->readValue(sstr_str_MyArray2, element);
+					if (elementCounter < getSize_MyArray2()) {
+						m_myArray2[elementCounter] = element;
+					}
+					elementCounter++;
+				}
+			}
+		}
+		d->read(3,
 				m_myAtt1);
-		d->read(0x12345678, m_myAtt2);
-		d->read(0xAaBbCcDd, m_myAtt3);
+		d->read(4,
+				m_myAtt2);
+		d->read(5,
+				m_myAtt3);
 		return in;
 	}

@@ -19,7 +19,7 @@
 
 #include <ostream>
 
-#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/serialization/Serializable.h"
 #include "opendavinci/odcore/base/Visitable.h"
 #include "opendavinci/odcore/reflection/MessagePrettyPrinterVisitor.h"
 
@@ -28,6 +28,7 @@ namespace odcore {
 
         using namespace std;
         using namespace odcore::base;
+        using namespace odcore::serialization;
 
         MessagePrettyPrinterVisitor::MessagePrettyPrinterVisitor() :
             m_indent(0),
@@ -43,7 +44,11 @@ namespace odcore {
             o << m_buffer.str();
         }
 
-        void MessagePrettyPrinterVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, Serializable &v) {
+        void MessagePrettyPrinterVisitor::beginVisit(const int32_t &/*id*/, const string &/*shortName*/, const string &/*longName*/) {}
+
+        void MessagePrettyPrinterVisitor::endVisit() {}
+
+        void MessagePrettyPrinterVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, Serializable &v) {
             try {
                 Visitable& visitable = dynamic_cast<Visitable&>(v);
                 stringstream buffer;
@@ -54,79 +59,79 @@ namespace odcore {
                 prettyPrinter.getOutput(buffer);
 
                 for (uint16_t i = 0; i < m_indent; i++) m_buffer << "\t";
-                m_buffer << "longIdentifier = " << longId << ", shortIdentifier = " << shortId << ", longName = " << longName << ", shortName = " << shortName << ", v = " << buffer.str() << endl;
+                m_buffer << "identifier = " << id << ", longName = " << longName << ", shortName = " << shortName << ", v = " << buffer.str() << endl;
             }
             catch(...) {}
         }
 
-        void MessagePrettyPrinterVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, bool &v) {
+        void MessagePrettyPrinterVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, bool &v) {
             for (uint16_t i = 0; i < m_indent; i++) m_buffer << "\t";
-            m_buffer << "longIdentifier = " << longId << ", shortIdentifier = " << shortId << ", longName = " << longName << ", shortName = " << shortName << ", v = " << v << endl;
+            m_buffer << "identifier = " << id << ", longName = " << longName << ", shortName = " << shortName << ", v = " << v << endl;
         }
 
-        void MessagePrettyPrinterVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, char &v) {
+        void MessagePrettyPrinterVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, char &v) {
             for (uint16_t i = 0; i < m_indent; i++) m_buffer << "\t";
-            m_buffer << "longIdentifier = " << longId << ", shortIdentifier = " << shortId << ", longName = " << longName << ", shortName = " << shortName << ", v = " << v << endl;
+            m_buffer << "identifier = " << id << ", longName = " << longName << ", shortName = " << shortName << ", v = " << v << endl;
         }
 
-        void MessagePrettyPrinterVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, unsigned char &v) {
+        void MessagePrettyPrinterVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, unsigned char &v) {
             for (uint16_t i = 0; i < m_indent; i++) m_buffer << "\t";
-            m_buffer << "longIdentifier = " << longId << ", shortIdentifier = " << shortId << ", longName = " << longName << ", shortName = " << shortName << ", v = " << v << endl;
+            m_buffer << "identifier = " << id << ", longName = " << longName << ", shortName = " << shortName << ", v = " << v << endl;
         }
 
-        void MessagePrettyPrinterVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int8_t &v) {
+        void MessagePrettyPrinterVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, int8_t &v) {
             for (uint16_t i = 0; i < m_indent; i++) m_buffer << "\t";
-            m_buffer << "longIdentifier = " << longId << ", shortIdentifier = " << shortId << ", longName = " << longName << ", shortName = " << shortName << ", v = " << v << endl;
+            m_buffer << "identifier = " << id << ", longName = " << longName << ", shortName = " << shortName << ", v = " << v << endl;
         }
 
-        void MessagePrettyPrinterVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int16_t &v) {
+        void MessagePrettyPrinterVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, int16_t &v) {
             for (uint16_t i = 0; i < m_indent; i++) m_buffer << "\t";
-            m_buffer << "longIdentifier = " << longId << ", shortIdentifier = " << shortId << ", longName = " << longName << ", shortName = " << shortName << ", v = " << v << endl;
+            m_buffer << "identifier = " << id << ", longName = " << longName << ", shortName = " << shortName << ", v = " << v << endl;
         }
 
-        void MessagePrettyPrinterVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint16_t &v) {
+        void MessagePrettyPrinterVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, uint16_t &v) {
             for (uint16_t i = 0; i < m_indent; i++) m_buffer << "\t";
-            m_buffer << "longIdentifier = " << longId << ", shortIdentifier = " << shortId << ", longName = " << longName << ", shortName = " << shortName << ", v = " << v << endl;
+            m_buffer << "identifier = " << id << ", longName = " << longName << ", shortName = " << shortName << ", v = " << v << endl;
         }
 
-        void MessagePrettyPrinterVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int32_t &v) {
+        void MessagePrettyPrinterVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, int32_t &v) {
             for (uint16_t i = 0; i < m_indent; i++) m_buffer << "\t";
-            m_buffer << "longIdentifier = " << longId << ", shortIdentifier = " << shortId << ", longName = " << longName << ", shortName = " << shortName << ", v = " << v << endl;
+            m_buffer << "identifier = " << id << ", longName = " << longName << ", shortName = " << shortName << ", v = " << v << endl;
         }
 
-        void MessagePrettyPrinterVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint32_t &v) {
+        void MessagePrettyPrinterVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, uint32_t &v) {
             for (uint16_t i = 0; i < m_indent; i++) m_buffer << "\t";
-            m_buffer << "longIdentifier = " << longId << ", shortIdentifier = " << shortId << ", longName = " << longName << ", shortName = " << shortName << ", v = " << v << endl;
+            m_buffer << "identifier = " << id << ", longName = " << longName << ", shortName = " << shortName << ", v = " << v << endl;
         }
 
-        void MessagePrettyPrinterVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int64_t &v) {
+        void MessagePrettyPrinterVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, int64_t &v) {
             for (uint16_t i = 0; i < m_indent; i++) m_buffer << "\t";
-            m_buffer << "longIdentifier = " << longId << ", shortIdentifier = " << shortId << ", longName = " << longName << ", shortName = " << shortName << ", v = " << v << endl;
+            m_buffer << "identifier = " << id << ", longName = " << longName << ", shortName = " << shortName << ", v = " << v << endl;
         }
 
-        void MessagePrettyPrinterVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint64_t &v) {
+        void MessagePrettyPrinterVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, uint64_t &v) {
             for (uint16_t i = 0; i < m_indent; i++) m_buffer << "\t";
-            m_buffer << "longIdentifier = " << longId << ", shortIdentifier = " << shortId << ", longName = " << longName << ", shortName = " << shortName << ", v = " << v << endl;
+            m_buffer << "identifier = " << id << ", longName = " << longName << ", shortName = " << shortName << ", v = " << v << endl;
         }
 
-        void MessagePrettyPrinterVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, float &v) {
+        void MessagePrettyPrinterVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, float &v) {
             for (uint16_t i = 0; i < m_indent; i++) m_buffer << "\t";
-            m_buffer << "longIdentifier = " << longId << ", shortIdentifier = " << shortId << ", longName = " << longName << ", shortName = " << shortName << ", v = " << v << endl;
+            m_buffer << "identifier = " << id << ", longName = " << longName << ", shortName = " << shortName << ", v = " << v << endl;
         }
 
-        void MessagePrettyPrinterVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, double &v) {
+        void MessagePrettyPrinterVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, double &v) {
             for (uint16_t i = 0; i < m_indent; i++) m_buffer << "\t";
-            m_buffer << "longIdentifier = " << longId << ", shortIdentifier = " << shortId << ", longName = " << longName << ", shortName = " << shortName << ", v = " << v << endl;
+            m_buffer << "identifier = " << id << ", longName = " << longName << ", shortName = " << shortName << ", v = " << v << endl;
         }
 
-        void MessagePrettyPrinterVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, string &v) {
+        void MessagePrettyPrinterVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, string &v) {
             for (uint16_t i = 0; i < m_indent; i++) m_buffer << "\t";
-            m_buffer << "longIdentifier = " << longId << ", shortIdentifier = " << shortId << ", longName = " << longName << ", shortName = " << shortName << ", v = " << v << endl;
+            m_buffer << "identifier = " << id << ", longName = " << longName << ", shortName = " << shortName << ", v = " << v << endl;
         }
 
-        void MessagePrettyPrinterVisitor::visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, void *data, const uint32_t &size) {
+        void MessagePrettyPrinterVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, void *data, const uint32_t &size) {
             for (uint16_t i = 0; i < m_indent; i++) m_buffer << "\t";
-            m_buffer << "longIdentifier = " << longId << ", shortIdentifier = " << shortId << ", longName = " << longName << ", shortName = " << shortName << ", size " << size << ", data = " << static_cast<char*>(data) << endl;
+            m_buffer << "identifier = " << id << ", longName = " << longName << ", shortName = " << shortName << ", size " << size << ", data = " << static_cast<char*>(data) << endl;
         }
 
     }

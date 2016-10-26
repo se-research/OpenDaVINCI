@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <ctime>
 #include <sys/time.h>
 
 #include "opendavinci/odcore/wrapper/POSIX/POSIXTime.h"
@@ -28,10 +29,17 @@ namespace odcore {
             POSIXTime::POSIXTime() :
                 m_seconds(0),
                 m_partialMicroseconds(0) {
+#ifdef __APPLE__
                 struct timeval t;
                 gettimeofday(&t, NULL);
                 m_seconds = t.tv_sec;
                 m_partialMicroseconds = t.tv_usec;
+#else
+                timespec ts;
+                clock_gettime(CLOCK_REALTIME, &ts);
+                m_seconds = ts.tv_sec;
+                m_partialMicroseconds = ts.tv_nsec/1000;
+#endif
             }
 
             POSIXTime::~POSIXTime() {}

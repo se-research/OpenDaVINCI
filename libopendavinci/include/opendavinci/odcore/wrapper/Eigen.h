@@ -28,6 +28,12 @@
 # endif
 # pragma GCC diagnostic ignored "-Weffc++"
 # pragma GCC diagnostic ignored "-Wshadow"
+
+# if ((__GNUC__ * 100) + __GNUC_MINOR__) >= 600
+#  pragma GCC diagnostic ignored "-Wignored-attributes"
+#  pragma GCC diagnostic ignored "-Wmisleading-indentation"
+# endif
+
 #endif
     #include "opendavinci/Eigen/Core"
     #include "opendavinci/Eigen/Geometry"

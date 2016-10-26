@@ -20,17 +20,29 @@ CMAKE_MINIMUM_REQUIRED (VERSION 2.8)
 PROJECT (tutorials)
 
 ###########################################################################
+# Set the search path for .cmake files.
+SET (CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/Modules" ${CMAKE_MODULE_PATH})
+
+###########################################################################
+# Find and configure CxxTest.
+SET (CXXTEST_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../cxxtest") 
+INCLUDE (CheckCxxTestEnvironment)
+
+###########################################################################
 # Add subdirectories.
 ADD_SUBDIRECTORY (datatrigger)
 ADD_SUBDIRECTORY (diningphilosophers)
 ADD_SUBDIRECTORY (helloworld)
+ADD_SUBDIRECTORY (logmessage)
 ADD_SUBDIRECTORY (ipcsharedmemory)
+ADD_SUBDIRECTORY (readzipfile)
 ADD_SUBDIRECTORY (realtimeservice)
 ADD_SUBDIRECTORY (serialreceivebytes)
 ADD_SUBDIRECTORY (serialsendbytes)
 ADD_SUBDIRECTORY (service)
 ADD_SUBDIRECTORY (tcpreceivebytes)
 ADD_SUBDIRECTORY (tcpsendbytes)
+ADD_SUBDIRECTORY (testsuite)
 ADD_SUBDIRECTORY (timetrigger)
 ADD_SUBDIRECTORY (udpreceivebytes)
 ADD_SUBDIRECTORY (udpreceivepackets)

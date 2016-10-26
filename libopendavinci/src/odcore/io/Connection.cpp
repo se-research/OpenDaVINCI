@@ -20,7 +20,7 @@
 #include <iosfwd>
 
 #include "opendavinci/odcore/base/Lock.h"
-#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/serialization/Serializable.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/data/TimeStamp.h"
 #include "opendavinci/odcore/exceptions/Exceptions.h"
@@ -92,6 +92,11 @@ namespace odcore {
 
         void Connection::send(Container &container) {
             container.setSentTimeStamp(TimeStamp());
+
+            // If sample time stamp is unset, use sent time stamp.
+            if (container.getSampleTimeStamp().toMicroseconds() == 0) {
+                container.setSampleTimeStamp(container.getSentTimeStamp());
+            }
 
             stringstream stringstreamValue;
             stringstreamValue << container;

@@ -1,11 +1,11 @@
 message Test10Point [ id = 10 ] {
-	float x;
-	float y;
+	float x [ id = 1 ];
+	float y [ id = 2 ];
 }
 
 message Test10  [ id = 11 ]{
-	list<string> myStringList;
-	list<Test10Point> myPointList;
-	map<int32, string> myIntStringMap;
-	map<int32, Test10Point> myIntPointMap;
+	list<string> myStringList [ id = 1 ];
+	list<Test10Point> myPointList [ id = 2 ];
+	map<int32, string> myIntStringMap [ id = 3 ];
+	map<int32, Test10Point> myIntPointMap [ id = 4 ];
 }

@@ -1,14 +1,14 @@
 message Test20a [ id = 20 ] {
-//	uint32 *ptr;
-	uint32 val1;
-    odcore::data::TimeStamp timeStamp;
+//	uint32 *ptr [ id = 1 ];
+	uint32 val1 [ id = 2 ];
+	odcore::data::TimeStamp timeStamp [ id = 3 ];
 }
 
 message sub.structure.Test20b [ id = 21 ] {
-	uint32 val2;
+	uint32 val2 [ id = 1 ];
 }
 
 message sub.structure2.Test20c [ id = 22 ] {
-	uint32 val3;
-	sub.structure.Test20b val4;
+	uint32 val3 [ id = 1 ];
+	sub.structure.Test20b val4 [ id = 2 ];
 }

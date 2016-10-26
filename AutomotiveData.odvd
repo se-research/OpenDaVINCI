@@ -1,6 +1,6 @@
 /*
  * AutomotiveData.odvd - Data structures for automotive applications.
- * Copyright (C) 2015 Christian Berger 
+ * Copyright (C) 2015 - 2016 Christian Berger 
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -32,6 +32,10 @@ message cartesian.Matrix3x3 [id = 52] {
     double ZZ [id = 9];
 }
 
+message geodetic.WGS84 [id = 19] {
+  double latitude [id = 1];
+  double longitude [id = 3];
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Messages describing entities in the Cartesian environment.
@@ -59,6 +63,7 @@ message automotive.Constants [id = 60] {
     const double G = 9.81;
 }
 
+// TODO: Refactor me to ODVDCaroloCup.odvd.
 message automotive.VehicleData [id = 39] {
     cartesian.Point2 position [id = 1];
     cartesian.Point2 velocity [id = 2];
@@ -71,44 +76,51 @@ message automotive.VehicleData [id = 39] {
     double temp [id = 9];
 }
 
+// TODO: Refactor me to ODVDCaroloCup.odvd.
 message automotive.VehicleControl [id = 41] {
-    double speed [id = 1, fourbyteid = 0x0E43596B];
-    double acceleration [id = 2, fourbyteid = 0x0E435991];
-    double steeringWheelAngle [id = 3, fourbyteid = 0x0E435969];
-    bool brakeLights [id = 4, fourbyteid = 0x0E43599B];
-    bool flashingLightsLeft [id = 5, fourbyteid = 0x09823BD7];
-    bool flashingLightsRight [id = 6, fourbyteid = 0x0E435996];
+    double speed [id = 1];
+    double acceleration [id = 2];
+    double steeringWheelAngle [id = 3];
+    bool brakeLights [id = 4];
+    bool flashingLightsLeft [id = 5];
+    bool flashingLightsRight [id = 6];
 }
 
+// TODO: Refactor me to ODVDCaroloCup.odvd.
 message automotive.ForceControl [id = 33] {
-    double accelerationForce [id = 1, fourbyteid = 0x0E435991];
-    double brakeForce [id = 2, fourbyteid = 0x0E43598D];
-    double steeringForce [id = 3, fourbyteid = 0x0E435969];
-    bool brakeLights [id = 4, fourbyteid = 0x0E43599B];
-    bool flashingLightsLeft [id = 5, fourbyteid = 0x09823BD7];
-    bool flashingLightsRight [id = 6, fourbyteid = 0x0E435996];
+    double accelerationForce [id = 1];
+    double brakeForce [id = 2];
+    double steeringForce [id = 3];
+    bool brakeLights [id = 4];
+    bool flashingLightsLeft [id = 5];
+    bool flashingLightsRight [id = 6];
 }
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Miniature car messages.
+// TODO: Refactor me to ODVDCaroloCup.odvd.
 message automotive.miniature.SteeringData [id = 80] {
     double exampleData [id = 1];
 }
 
+// TODO: Refactor me to ODVDCaroloCup.odvd.
 message automotive.miniature.SensorBoardData [id = 81] {
     uint32 numberOfSensors [id = 1];
     map<uint32, double> distances [id = 2];
 }
 
+// TODO: Refactor me to ODVDCaroloCup.odvd.
 message automotive.miniature.STM32F4Control [id = 82] {
     uint32 dataFeed [id = 1];
 }
 
+// TODO: Refactor me to ODVDCaroloCup.odvd.
 message automotive.miniature.STM32F4Data [id = 83] {
     string rawData [id = 1];
 }
 
+// TODO: Refactor me to ODVDCaroloCup.odvd.
 message automotive.miniature.UserButtonData [id = 84] {
     enum ButtonStatus {
         UNDEFINED = -1,
@@ -119,6 +131,7 @@ message automotive.miniature.UserButtonData [id = 84] {
     double duration [id = 2];
 }
 
+// TODO: Refactor me to ODVDCaroloCup.odvd.
 message automotive.carolocup.Sensors [id = 87] {
     uint32 usFront [id = 1];
     uint32 usRear [id = 2];
@@ -133,11 +146,35 @@ message automotive.carolocup.Sensors [id = 87] {
     uint32 lightReading [id = 11];
 }
 
+// TODO: Refactor me to ODVDCaroloCup.odvd.
 message automotive.carolocup.Control [id = 88] {
     uint32 steering [id = 1];
     uint32 speed [id = 2];
     uint32 lights [id = 3]; // 0 = no lights, 1 = brake lights, 2 = blinking left, 4 = blinking right, 8 = emergency light
     uint32 gyroTrigger [id = 4];
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Vehicle messages.
+// TODO: Keep me.
+message automotive.GenericCANMessage [id = 71] {
+    odcore::data::TimeStamp driverTimeStamp [id = 1]; // TimeStamp from CAN driver.
+    uint64 identifier [id = 2];                       // ID of the CAN message. 
+    uint8 length [id = 3];                            // Number of data bytes (1-8).
+    uint64 data [id = 4];                             // Payload of the CAN message.
+}
+
+// TODO: Remove me.
+message automotive.vehicle.WheelSpeed [id = 75] {
+    float frontLeft [id = 1];
+    float frontRight [id = 2];
+    float rearLeft [id = 3];
+    float rearRight [id = 4];
+}
+
+// TODO: Remove me.
+message automotive.vehicle.LightSystem [id = 76] {
+    int8 headlights [id = 1];
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -161,21 +198,5 @@ message fxe.Recording [id = 303] {
 message fxe.Correspondence [id = 304] {
     fxe.Recording simulation [id = 1];
     list<fxe.Recording> realRecordings [id = 2];
-}
-
-///////////////////////////////////////////////////////////////////////////////
-// Vehicle messages.
-message automotive.GenericCANMessage [id = 71] {
-    odcore::data::TimeStamp driverTimeStamp [id = 1]; // TimeStamp from CAN driver.
-    uint64 identifier [id = 2];                       // ID of the CAN message. 
-    uint8 length [id = 3];                            // Number of data bytes (1-8).
-    uint64 data [id = 4];                             // Payload of the CAN message.
-}
-
-message automotive.vehicle.WheelSpeed [id = 75] {
-    float frontLeft [id = 1];
-    float frontRight [id = 2];
-    float rearLeft [id = 3];
-    float rearRight [id = 4];
 }
 

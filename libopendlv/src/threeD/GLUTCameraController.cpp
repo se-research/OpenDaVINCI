@@ -17,7 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <GL/freeglut.h>
+#ifdef __APPLE__
+    #include <GLUT/glut.h>
+#else
+    #include <GL/freeglut.h>
+#endif
 
 #include "opendlv/threeD/Camera.h"
 #include "opendlv/threeD/GLUTCameraController.h"

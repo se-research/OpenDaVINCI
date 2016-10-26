@@ -6,16 +6,15 @@
 
 #include <memory>
 
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
-
+#include <opendavinci/odcore/serialization/Deserializer.h>
+#include <opendavinci/odcore/serialization/SerializationFactory.h>
+#include <opendavinci/odcore/serialization/Serializer.h>
 
 #include "test2/generated/Test2.h"
 
 	using namespace std;
 	using namespace odcore::base;
+	using namespace odcore::serialization;
 
 
 	Test2::Test2() :
@@ -79,12 +78,13 @@
 	}
 
 	void Test2::accept(odcore::base::Visitor &v) {
-		v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'1', NullType> > > > > > > > > >  >::RESULT, 0, "Test2.attribute1", "attribute1", m_attribute1);
+		v.beginVisit(ID(), ShortName(), LongName());
+		v.visit(1, "Test2.attribute1", "attribute1", m_attribute1);
+		v.endVisit();
 	}
 
 	const string Test2::toString() const {
 		stringstream s;
-
 
 		s << "Attribute1: " << getAttribute1() << " ";
 
@@ -92,23 +92,21 @@
 	}
 
 	ostream& Test2::operator<<(ostream &out) const {
-
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
 		std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
-		s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'1', NullType> > > > > > > > > >  >::RESULT,
+		s->write(1,
 				m_attribute1);
 		return out;
 	}
 
 	istream& Test2::operator>>(istream &in) {
-
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
 		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
-		d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'1', NullType> > > > > > > > > >  >::RESULT,
+		d->read(1,
 				m_attribute1);
 		return in;
 	}

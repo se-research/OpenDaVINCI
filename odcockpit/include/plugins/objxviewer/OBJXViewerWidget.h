@@ -21,8 +21,8 @@
 #ifndef COCKPIT_PLUGINS_OBJXVIEWER_OBJXVIEWERWIDGET_H_
 #define COCKPIT_PLUGINS_OBJXVIEWER_OBJXVIEWERWIDGET_H_
 
-#include <qobjectdefs.h>
-#include <qwidget.h>
+#include <QtCore>
+#include <QtGui>
 
 namespace cockpit { namespace plugins { class GLControlFrame; } }
 namespace cockpit { namespace plugins { class PlugIn; } }

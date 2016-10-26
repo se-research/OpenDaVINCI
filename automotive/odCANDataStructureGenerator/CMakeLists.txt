@@ -49,10 +49,10 @@ MESSAGE("")
 # As this project uses ant to build the binary, we simply delegate
 # the actual compilation, test, and packaging to ant.
 ExternalProject_Add (odCANDataStructureGenerator
-    DOWNLOAD_COMMAND ""
+    DOWNLOAD_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/org.opendavinci.candatamodel ${CMAKE_BINARY_DIR}/org.opendavinci.candatamodel
     UPDATE_COMMAND ""
-    PATCH_COMMAND ${ANT_EXECUTABLE} -lib lib -f ant-build.xml clean
-    SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/org.opendavinci.candatamodel"
+    PATCH_COMMAND ""
+    SOURCE_DIR "${CMAKE_BINARY_DIR}/org.opendavinci.candatamodel"
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ${ANT_EXECUTABLE} -lib lib -f ant-build.xml compile-java
     BUILD_IN_SOURCE 1
@@ -60,7 +60,7 @@ ExternalProject_Add (odCANDataStructureGenerator
 #    TEST_BEFORE_INSTALL 1
     TEST_COMMAND ""
     INSTALL_COMMAND ${ANT_EXECUTABLE} -lib lib -f ant-build.xml create-runnable-jar
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/org.opendavinci.candatamodel/odCANDataStructureGenerator-latest.jar ${CMAKE_BINARY_DIR})
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/org.opendavinci.candatamodel/odCANDataStructureGenerator-latest.jar ${CMAKE_BINARY_DIR})
 
 # Install odCANDataStructureGenerator.
 INSTALL(FILES "${CMAKE_BINARY_DIR}/odCANDataStructureGenerator-latest.jar" DESTINATION bin COMPONENT odCANDataStructureGenerator)

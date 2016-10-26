@@ -20,7 +20,7 @@
 #include <iostream>
 
 #include "opendavinci/odcore/base/FIFOQueue.h"
-#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/serialization/Serializable.h"
 #include "opendavinci/odcore/base/Thread.h"
 #include "opendavinci/odcore/base/module/AbstractCIDModule.h"
 #include "opendavinci/odcore/data/Container.h"

@@ -24,7 +24,7 @@
 #include "opendavinci/odcore/opendavinci.h"
 #include <memory>
 #include "opendavinci/odcore/base/Lock.h"
-#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/serialization/Serializable.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/data/image/CompressedImage.h"
 #include "opendavinci/odcore/wrapper/jpg/JPG.h"
@@ -46,10 +46,10 @@ namespace odredirector {
 
     StdoutPump::~StdoutPump() {}
 
-    void StdoutPump::add(const odcore::data::Container &container) {
+    void StdoutPump::add(odcore::data::Container &container) {
         // SharedImages are transformed into compressed images using JPEG compression.
         if (container.getDataType() == odcore::data::image::SharedImage::ID()) {
-            odcore::data::image::SharedImage si = const_cast<odcore::data::Container&>(container).getData<odcore::data::image::SharedImage>();
+            odcore::data::image::SharedImage si = container.getData<odcore::data::image::SharedImage>();
             
             if ( (1 == si.getBytesPerPixel()) || 
                  (3 == si.getBytesPerPixel()) ) {
@@ -76,6 +76,7 @@ namespace odredirector {
                     odcore::data::Container c(ci);
                     c.setSentTimeStamp(container.getSentTimeStamp());
                     c.setReceivedTimeStamp(container.getReceivedTimeStamp());
+                    c.setSampleTimeStamp(container.getSampleTimeStamp());
                     std::cout << c;
                 }
                 if (compressedSize >= MAX_SIZE_UDP_PAYLOAD) {

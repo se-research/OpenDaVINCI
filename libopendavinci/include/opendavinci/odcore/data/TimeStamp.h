@@ -22,7 +22,9 @@
 
 #include <string>
 
+#include "opendavinci/generated/odcore/data/TimePoint.h"
 #include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Visitable.h"
 #include "opendavinci/odcore/data/SerializableData.h"
 
 namespace odcore {
@@ -33,7 +35,7 @@ namespace odcore {
         /**
          * This class can be used for time computations.
          */
-        class OPENDAVINCI_API TimeStamp : public SerializableData {
+        class OPENDAVINCI_API TimeStamp : public odcore::data::TimePoint {
             private:
                 enum CUMULATIVE_DAYS {
                     January = 31,   // 31
@@ -114,7 +116,7 @@ namespace odcore {
                  *
                  * @return This time converted into microseconds.
                  */
-                long toMicroseconds() const;
+                int64_t toMicroseconds() const;
 
                 /**
                  * This method returns the fractional microseconds
@@ -123,13 +125,6 @@ namespace odcore {
                  * @return microseconds.
                  */
                 int32_t getFractionalMicroseconds() const;
-
-                /**
-                 * This method returns the seconds.
-                 *
-                 * @return seconds
-                 */
-                int32_t getSeconds() const;
 
                 /**
                  * This method returns the hour for today
@@ -189,27 +184,21 @@ namespace odcore {
 
                 /**
                  * This method returns this time in the following format:
+                 * YYYY-MM-DD_HH:MM:SS
+                 *
+                 * @return Time in the given specified format.
+                 */
+                const string getYYYYMMDD_HHMMSS_noBlank() const;
+
+                /**
+                 * This method returns this time in the following format:
                  * YYYY-MM-DD HH:MM:SS.ms
                  *
                  * @return Time in the given specified format.
                  */
                 const string getYYYYMMDD_HHMMSSms() const;
 
-                virtual ostream& operator<<(ostream &out) const;
-                virtual istream& operator>>(istream &in);
-
-                virtual int32_t getID() const;
-                virtual const string getShortName() const;
-                virtual const string getLongName() const;
-                virtual const string toString() const;
-                static int32_t ID();
-                static const string ShortName();
-                static const string LongName();
-
             private:
-                int32_t m_seconds;
-                int32_t m_microseconds;
-
                 /**
                  * This method returns true if the given year is
                  * a leap year.
@@ -218,6 +207,19 @@ namespace odcore {
                  * @return true iff year is a leap year.
                  */
                 bool isLeapYear(const uint32_t &year) const;
+
+                /**
+                 * This methods computes the human readable representation.
+                 */
+                void computeHumanReadableRepresentation();
+
+            private:
+                uint32_t m_readableYear;
+                uint32_t m_readableMonth;
+                uint32_t m_readableDayOfMonth;
+                uint32_t m_readableHours;
+                uint32_t m_readableMinutes;
+                uint32_t m_readableSeconds;
         };
 
     }

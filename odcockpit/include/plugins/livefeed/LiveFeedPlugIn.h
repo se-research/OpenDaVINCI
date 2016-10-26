@@ -71,6 +71,7 @@ class LiveFeedWidget;
                     virtual void stopPlugin();
 
                 private:
+                    odcore::base::KeyValueConfiguration m_kvc;
                     LiveFeedWidget *m_viewerWidget;
             };
 

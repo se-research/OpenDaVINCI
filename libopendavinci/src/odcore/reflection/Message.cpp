@@ -21,6 +21,9 @@
 #include <string>
 
 #include "opendavinci/odcore/base/Visitor.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendavinci/odcore/reflection/Field.h"
 #include "opendavinci/odcore/reflection/Message.h"
 
@@ -29,18 +32,30 @@ namespace odcore {
 
         using namespace odcore;
         using namespace odcore::base;
+        using namespace odcore::data;
+        using namespace odcore::serialization;
         using namespace odcore::data::reflection;
 
         Message::Message() :
+            m_ID(0),
+            m_shortName(),
+            m_longName(),
             m_fields() {}
 
         Message::Message(const Message &obj) : 
+            SerializableData(obj),
             Visitable(obj),
+            m_ID(obj.m_ID),
+            m_shortName(obj.m_shortName),
+            m_longName(obj.m_longName),
             m_fields(obj.m_fields) {}
 
         Message::~Message() {}
 
         Message& Message::operator=(const Message &obj) {
+            m_ID = obj.m_ID;
+            m_shortName = obj.m_shortName;
+            m_longName = obj.m_longName;
             m_fields = obj.m_fields;
             return *this;
         }
@@ -49,7 +64,58 @@ namespace odcore {
             m_fields.push_back(f);
         }
 
+        uint32_t Message::getNumberOfFields() const {
+            return m_fields.size();
+        }
+
+        void Message::setID(const int32_t &id) {
+            m_ID = id;
+        }
+
+        void Message::setShortName(const string &sn) {
+            m_shortName = sn;
+        }
+
+        void Message::setLongName(const string &ln) {
+            m_longName = ln;
+        }
+
+        int32_t Message::getID() const {
+            return m_ID;
+        }
+
+        const string Message::getShortName() const {
+            return m_shortName;
+        }
+
+        const string Message::getLongName() const {
+            return m_longName;
+        }
+
+        const string Message::toString() const {
+            return getLongName();
+        }
+
+        ostream& Message::operator<<(ostream &out) const {
+// TODO: Implement serialization if needed for Message.
+//            SerializationFactory& sf=SerializationFactory::getInstance();;
+//            std::shared_ptr<Serializer> s = sf.getSerializer(out);
+//            s->write(1, "ABC");
+            return out;
+        }
+
+        istream& Message::operator>>(istream &in) {
+// TODO: Implement deserialization if needed for Message.
+//            SerializationFactory& sf=SerializationFactory::getInstance();;
+//            std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+//            string st;
+//            d->read(1, st);
+            return in;
+        }
+
         void Message::accept(Visitor &v) {
+            v.beginVisit(getID(), getShortName(), getLongName());
+
             vector<std::shared_ptr<AbstractField> >::iterator it = m_fields.begin();
             while (it != m_fields.end()) {
                 switch((*it)->getFieldDataType()) {
@@ -58,7 +124,10 @@ namespace odcore {
                         // If we have a nested message, we need to delegate this Visitor to the nested type.
                         Field<Message> *f = dynamic_cast<Field<Message>*>((*it).operator->()); // Access the value of the std::shared_ptr from the iterator.
                         if (f != NULL) {
-                            f->getValue().accept(v);
+                            // Visit value.
+                            Message msg = f->getValue();
+                            v.visit((*it)->getFieldIdentifier(), (*it)->getLongFieldName(), (*it)->getShortFieldName(), msg);
+                            f->setValue(msg);
                         }
                     }
                     break;
@@ -120,8 +189,7 @@ namespace odcore {
                         // Read value.
                         string value = dynamic_cast<Field<string>*>((*it).operator->())->getValue();
                         // Visit value.
-                        v.visit((*it)->getLongFieldIdentifier(), (*it)->getShortFieldIdentifier(),
-                                (*it)->getLongFieldName(), (*it)->getShortFieldName(), value);
+                        v.visit((*it)->getFieldIdentifier(), (*it)->getLongFieldName(), (*it)->getShortFieldName(), value);
                         // Update value.
                         dynamic_cast<Field<string>*>((*it).operator->())->setValue(value);
                         (*it)->setSize(value.size());
@@ -136,8 +204,7 @@ namespace odcore {
                         uint32_t size = (*it)->getSize();
 
                         // Visit value.
-                        v.visit((*it)->getLongFieldIdentifier(), (*it)->getShortFieldIdentifier(),
-                                (*it)->getLongFieldName(), (*it)->getShortFieldName(), valuePtr, size);
+                        v.visit((*it)->getFieldIdentifier(), (*it)->getLongFieldName(), (*it)->getShortFieldName(), valuePtr, size);
                         // Update value is not required as we deal with a pointer to a memory.
                     }
                     break;
@@ -149,46 +216,17 @@ namespace odcore {
 
                 ++it;
             }
+
+            v.endVisit();
         }
 
-        std::shared_ptr<odcore::data::reflection::AbstractField> Message::getFieldByLongIdentifierOrShortIdentifier(const uint32_t &longIdentifier, const uint8_t &shortIdentifier, bool &found) {
-            bool retVal = false;
-
-            // Try the long identifier first.
-            std::shared_ptr<odcore::data::reflection::AbstractField> field = getFieldByLongIdentifier(longIdentifier, retVal);
-
-            // Try the short identifier next.
-            if (!retVal) field = getFieldByShortIdentifier(shortIdentifier, retVal);
-
-            found = retVal;
-            return field;
-        }
-
-        std::shared_ptr<odcore::data::reflection::AbstractField> Message::getFieldByLongIdentifier(const uint32_t &longIdentifier, bool &found) {
+        std::shared_ptr<odcore::data::reflection::AbstractField> Message::getFieldByIdentifier(const uint32_t &id, bool &found) {
             bool retVal = false;
             std::shared_ptr<odcore::data::reflection::AbstractField> field;
 
             vector<std::shared_ptr<AbstractField> >::iterator it = m_fields.begin();
             while (it != m_fields.end()) {
-                if ( (*it)->getLongFieldIdentifier() == longIdentifier ) {
-                    retVal = true;
-                    field = (*it);
-                    break;
-                }
-                ++it;
-            }
-
-            found = retVal;
-            return field;
-        }
-
-        std::shared_ptr<odcore::data::reflection::AbstractField> Message::getFieldByShortIdentifier(const uint8_t &shortIdentifier, bool &found) {
-            bool retVal = false;
-            std::shared_ptr<odcore::data::reflection::AbstractField> field;
-
-            vector<std::shared_ptr<AbstractField> >::iterator it = m_fields.begin();
-            while (it != m_fields.end()) {
-                if ( (*it)->getShortFieldIdentifier() == shortIdentifier ) {
+                if ( (*it)->getFieldIdentifier() == id ) {
                     retVal = true;
                     field = (*it);
                     break;

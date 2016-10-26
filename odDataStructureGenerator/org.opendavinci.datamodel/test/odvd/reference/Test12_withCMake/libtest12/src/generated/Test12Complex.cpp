@@ -6,16 +6,15 @@
 
 #include <memory>
 
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
-
+#include <opendavinci/odcore/serialization/Deserializer.h>
+#include <opendavinci/odcore/serialization/SerializationFactory.h>
+#include <opendavinci/odcore/serialization/Serializer.h>
 
 #include "test12/generated/Test12Complex.h"
 
 	using namespace std;
 	using namespace odcore::base;
+	using namespace odcore::serialization;
 
 
 	Test12Complex::Test12Complex() :
@@ -151,18 +150,19 @@
 	}
 
 	void Test12Complex::accept(odcore::base::Visitor &v) {
-		v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'1', NullType> > > > > > > > > >  >::RESULT, 1, "Test12Complex.attribute1", "attribute1", m_attribute1);
-		v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'2', NullType> > > > > > > > > >  >::RESULT, 2, "Test12Complex.attribute2", "attribute2", m_attribute2);
-		v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'3', NullType> > > > > > > > > >  >::RESULT, 3, "Test12Complex.attribute3", "attribute3", m_attribute3);
-		v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'4', NullType> > > > > > > > > >  >::RESULT, 4, "Test12Complex.attribute4", "attribute4", m_attribute4);
-		v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'5', NullType> > > > > > > > > >  >::RESULT, 5, "Test12Complex.attribute5", "attribute5", m_attribute5);
-		v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'6', NullType> > > > > > > > > >  >::RESULT, 6, "Test12Complex.attribute6", "attribute6", m_attribute6);
-		v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'7', NullType> > > > > > > > > >  >::RESULT, 7, "Test12Complex.attribute7", "attribute7", m_attribute7);
+		v.beginVisit(ID(), ShortName(), LongName());
+		v.visit(1, "Test12Complex.attribute1", "attribute1", m_attribute1);
+		v.visit(2, "Test12Complex.attribute2", "attribute2", m_attribute2);
+		v.visit(3, "Test12Complex.attribute3", "attribute3", m_attribute3);
+		v.visit(4, "Test12Complex.attribute4", "attribute4", m_attribute4);
+		v.visit(5, "Test12Complex.attribute5", "attribute5", m_attribute5);
+		v.visit(6, "Test12Complex.attribute6", "attribute6", m_attribute6);
+		v.visit(7, "Test12Complex.attribute7", "attribute7", m_attribute7);
+		v.endVisit();
 	}
 
 	const string Test12Complex::toString() const {
 		stringstream s;
-
 
 		s << "Attribute1: " << getAttribute1() << " ";
 		s << "Attribute2: " << getAttribute2() << " ";
@@ -176,7 +176,6 @@
 	}
 
 	ostream& Test12Complex::operator<<(ostream &out) const {
-
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
 		std::shared_ptr<Serializer> s = sf.getSerializer(out);
@@ -199,7 +198,6 @@
 	}
 
 	istream& Test12Complex::operator>>(istream &in) {
-
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
 		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);

@@ -17,14 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <memory>
 #include <ostream>
 #include <string>
 
-#include <memory>
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendavinci/odcore/data/SerializableData.h"
 #include "opendlv/data/scenario/Ground.h"
 #include "opendlv/data/scenario/HeightImage.h"
@@ -121,41 +120,33 @@ namespace opendlv {
             }
 
             ostream& Ground::operator<<(ostream &out) const {
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Serializer> s = sf.getSerializer(out);
+                std::shared_ptr<odcore::serialization::Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('n', 'a', 'm', 'e') >::RESULT,
-                        m_name);
+                s->write(1, m_name);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('a', 'e', 'r', 'i', 'a', 'l') >::RESULT,
-                        m_aerialImage);
+                s->write(2, m_aerialImage);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('h', 'e', 'i', 'g', 'h', 't') >::RESULT,
-                        m_heightImage);
+                s->write(3, m_heightImage);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('s', 'u', 'r', 'r', 'o', 'u', 'n', 'd') >::RESULT,
-                        m_surroundings);
+                s->write(4, m_surroundings);
 
                 return out;
             }
 
             istream& Ground::operator>>(istream &in) {
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+                std::shared_ptr<odcore::serialization::Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('n', 'a', 'm', 'e') >::RESULT,
-                       m_name);
+                d->read(1, m_name);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('a', 'e', 'r', 'i', 'a', 'l') >::RESULT,
-                       m_aerialImage);
+                d->read(2, m_aerialImage);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('h', 'e', 'i', 'g', 'h', 't') >::RESULT,
-                       m_heightImage);
+                d->read(3, m_heightImage);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('s', 'u', 'r', 'r', 'o', 'u', 'n', 'd') >::RESULT,
-                       m_surroundings);
+                d->read(4, m_surroundings);
 
                 return in;
             }

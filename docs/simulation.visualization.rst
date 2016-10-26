@@ -57,9 +57,9 @@ OpenDaVINCI provides a noise model for the odsimirus component to test the robus
 - odsimirus.sensor0.faultModel.noise = 0.1
 - odsimirus.sensor0.faultModel.skip = 0.05
 
-The first parameter ranges from 0 to 1 and reflects an additional noise to be added from the range [-1,+1]. The implementation is at https://github.com/se-research/OpenDaVINCI/blob/master/libodsimulation/src/model/PointSensor.cpp#L164.
+The first parameter ranges from 0 to 1 and reflects an additional noise to be added from the range [-1,+1]. The implementation is at https://github.com/se-research/OpenDaVINCI/blob/master/libopendlv/src/model/PointSensor.cpp#L164.
 
-The second parameter ranges from 0 to 1 and reflects the dropped frames/missing readings. The implementation is at https://github.com/se-research/OpenDaVINCI/blob/master/libodsimulation/src/model/PointSensor.cpp#L187.
+The second parameter ranges from 0 to 1 and reflects the dropped frames/missing readings. The implementation is at https://github.com/se-research/OpenDaVINCI/blob/master/libopendlv/src/model/PointSensor.cpp#L187.
 
 The figure below shows a visualization screenshot using the aforementioned parameters.
 

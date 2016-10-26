@@ -18,13 +18,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <GL/gl.h>
-#include <GL/glu.h>
+#ifdef __APPLE__
+    #include <OpenGL/gl.h>
+    #include <OpenGL/glu.h>
+#else
+    #include <GL/gl.h>
+    #include <GL/glu.h>
+#endif
 
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
+#include <memory>
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
@@ -59,6 +65,14 @@
 #include "plugins/environmentviewer/SelectableNodeDescriptor.h"
 #include "plugins/environmentviewer/TreeNodeVisitor.h"
 
+#include <sstream>
+
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
+#include "opendavinci/odcore/wrapper/Eigen.h"
+#include "opendavinci/odcore/wrapper/SharedMemory.h"
+#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/generated/odcore/data/SharedPointCloud.h"
+
 class QWidget;
 namespace opendlv { namespace scenario { class SCNXArchive; } }
 
@@ -70,8 +84,7 @@ namespace cockpit {
             using namespace odcore::data;
             using namespace odcore::exceptions;
             using namespace odcore::io;
-            using namespace odcore::data;
-            using namespace opendlv::data::environment;
+            using namespace odcore::wrapper;
             using namespace opendlv::data::environment;
             using namespace opendlv::data::planning;
             using namespace opendlv::data::scenario;
@@ -90,6 +103,7 @@ namespace cockpit {
                     m_measurements(NULL),
                     m_plannedRoute(NULL),
                     m_lines(NULL),
+                    m_velodyne(NULL),
                     m_egoStateNodeDescriptor(),
                     m_numberOfReceivedEgoStates(0),
                     m_egoStateNode(NULL),
@@ -103,7 +117,10 @@ namespace cockpit {
                     m_cameraAssignedNodeDescriptor(),
                     m_mapOfCurrentPositions(),
                     m_selectableNodeDescriptorTree(NULL),
-                    m_selectableNodeDescriptorTreeListener(sndtl) {}
+                    m_selectableNodeDescriptorTreeListener(sndtl),
+                    velodyneSharedMemory(NULL),
+                    m_hasAttachedToSharedImageMemory(false),
+                    velodyneFrame() {}
 
             EnvironmentViewerGLWidget::~EnvironmentViewerGLWidget() {
                 OPENDAVINCI_CORE_DELETE_POINTER(m_root);
@@ -189,6 +206,10 @@ namespace cockpit {
 
                 m_obstaclesRoot = new TransformGroup(NodeDescriptor("Obstacles"));
                 m_measurements->addChild(m_obstaclesRoot);
+                
+                m_velodyne = new TransformGroup(NodeDescriptor("Velodyne"));
+                m_measurements->addChild(m_velodyne);
+
             }
 
             void EnvironmentViewerGLWidget::initScene() {
@@ -249,6 +270,7 @@ namespace cockpit {
                 if (m_root != NULL) {
                     Lock l(m_rootMutex);
 
+                    //EgoCar view
                     if (m_cameraAssignedNodeDescriptor.getName().size() > 0) {
                         Position assignedNode = m_mapOfCurrentPositions[m_cameraAssignedNodeDescriptor];
                         Point3 positionCamera;
@@ -264,20 +286,79 @@ namespace cockpit {
                         lookAtPointCamera.setZ(0);
 
                         glPushMatrix();
-                            glLoadIdentity();
+                        glLoadIdentity();
 
-                            // Setup camera.
-                            gluLookAt(positionCamera.getX(), positionCamera.getY(), positionCamera.getZ(),
-                                      lookAtPointCamera.getX(), lookAtPointCamera.getY(), lookAtPointCamera.getZ(),
-                                      0, 0, 1);
+                        // Setup camera.
+                        gluLookAt(positionCamera.getX(), positionCamera.getY(), positionCamera.getZ(),
+                                  lookAtPointCamera.getX(), lookAtPointCamera.getY(), lookAtPointCamera.getZ(),
+                                  0, 0, 1);
 
-                            // Draw scene.
+                        // Draw scene. The shared point cloud is visualized in the same way as the free camera view.
+                        if(velodyneSharedMemory.get()!=NULL){
+                            if (velodyneSharedMemory->isValid()) {
+                                // Using a scoped lock to lock and automatically unlock a shared memory segment.
+                                odcore::base::Lock lv(velodyneSharedMemory);
+                                if (velodyneFrame.getComponentDataType() == SharedPointCloud::FLOAT_T
+                                    && (velodyneFrame.getNumberOfComponentsPerPoint() == 4)
+                                    && (velodyneFrame.getUserInfo() == SharedPointCloud::XYZ_INTENSITY)) {
+                                    glPushMatrix();
+                                    float *velodyneRawData = static_cast<float*>(velodyneSharedMemory->getSharedMemory());
 
-                            m_root->render(m_renderingConfiguration);
-                        glPopMatrix();
+                                    glPointSize(1.0f); //set point size to 1 pixel
+                                    glBegin(GL_POINTS); //starts drawing of points
+                                    long startID=0;
+                                    for(unsigned long iii=0;iii<velodyneFrame.getWidth();iii++) {
+                                        if(velodyneRawData[startID+3]<=127.0){
+                                            glColor3f(0.0f,velodyneRawData[startID+3]*2.0,255.0-velodyneRawData[startID+3]*2.0);
+                                        }
+                                        else{
+                                            glColor3f((velodyneRawData[startID+3]-127.0)*2.0,255.0-(velodyneRawData[startID+3]-127.0)*2.0,0.0f);
+                                        }
+                                        glVertex3f(velodyneRawData[startID],velodyneRawData[startID+1],velodyneRawData[startID+2]);
+                                        startID=velodyneFrame.getNumberOfComponentsPerPoint()*(iii+1);
+                                    }
+                                    glEnd();//end drawing of points
+                                    
+                                    m_root->render(m_renderingConfiguration);
+                                    glPopMatrix();
+                                }
+                            }
+                        }
                     }
+                    //Free camera view
                     else {
-                        m_root->render(m_renderingConfiguration);
+                        m_root->render(m_renderingConfiguration); 
+                        //Draw scene. Retrieve the point cloud from the shared memory and visualize it frame by frame when shared point cloud is received via the nextContainer method
+                        if(velodyneSharedMemory.get()!=NULL){
+                            if (velodyneSharedMemory->isValid()){ 
+                                // Using a scoped lock to lock and automatically unlock a shared memory segment.
+                                odcore::base::Lock lv(velodyneSharedMemory);
+                                if (velodyneFrame.getComponentDataType() == SharedPointCloud::FLOAT_T
+                                    && (velodyneFrame.getNumberOfComponentsPerPoint() == 4)
+                                    && (velodyneFrame.getUserInfo() == SharedPointCloud::XYZ_INTENSITY)) {
+                                    glPushMatrix();
+                                    float *velodyneRawData = static_cast<float*>(velodyneSharedMemory->getSharedMemory());
+                                
+                                    glPointSize(1.0f); //set point size to 1 pixel
+                                    glBegin(GL_POINTS); //starts drawing of points
+                                    long startID=0;
+                                    //Point color depends on the intensity value. Let I (velodyneRawData[startID+3]) be the intensity value.
+                                    //When I<=127, then R=0, G=I*2, B=255-I*2; when I>127, then R=(I-127)*2, G=255-(I-127)*2, B=0
+                                    for(unsigned long iii=0;iii<velodyneFrame.getWidth();iii++) {
+                                        if(velodyneRawData[startID+3]<=127.0){
+                                            glColor3f(0.0f,velodyneRawData[startID+3]*2.0,255.0-velodyneRawData[startID+3]*2.0);
+                                        }
+                                        else{
+                                            glColor3f((velodyneRawData[startID+3]-127.0)*2.0,255.0-(velodyneRawData[startID+3]-127.0)*2.0,0.0f);
+                                        }
+                                        glVertex3f(velodyneRawData[startID],velodyneRawData[startID+1],velodyneRawData[startID+2]);
+                                        startID=velodyneFrame.getNumberOfComponentsPerPoint()*(iii+1);
+                                    }
+                                    glEnd();//end drawing of points
+                                    glPopMatrix();
+                                }
+                            }
+                        }
                     }
     /*
                     {
@@ -388,6 +469,15 @@ namespace cockpit {
             }
 
             void EnvironmentViewerGLWidget::nextContainer(Container &c) {
+                
+                if(c.getDataType()==odcore::data::SharedPointCloud::ID()){
+                    velodyneFrame=c.getData<SharedPointCloud>();//Get shared point cloud
+                    if (!m_hasAttachedToSharedImageMemory) {
+                        velodyneSharedMemory=SharedMemoryFactory::attachToSharedMemory(velodyneFrame.getName());//Attach the shared point cloud to the shared memory  
+                        m_hasAttachedToSharedImageMemory = true; 
+                    }  
+                }
+                
                 if (c.getDataType() == opendlv::data::environment::EgoState::ID()) {
                     m_numberOfReceivedEgoStates++;
 

@@ -79,7 +79,7 @@ class SharedDataWriter;
 
                 virtual ~SharedDataListener();
 
-                virtual void add(const odcore::data::Container &container);
+                virtual void add(odcore::data::Container &container);
 
                 virtual void clear();
 

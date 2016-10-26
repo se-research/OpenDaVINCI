@@ -18,19 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <Qt/qaction.h>
-#include <Qt/qapplication.h>
-#include <Qt/qdockwidget.h>
-#include <Qt/qlistwidget.h>
-#include <Qt/qmdiarea.h>
-#include <Qt/qmdisubwindow.h>
-#include <Qt/qmenu.h>
-#include <Qt/qmenubar.h>
-#include <qglobal.h>
-#include <qlist.h>
-#include <qnamespace.h>
-#include <qstring.h>
-#include <qwidget.h>
+#include <QtCore>
+#include <QtGui>
 
 #include <string>
 
@@ -138,6 +127,7 @@ namespace cockpit {
             QListWidgetItem *item = new QListWidgetItem(m_availablePlugInsList);
             item->setText((*it).c_str());
             item->setToolTip(m_plugInProvider.getDescriptionForPlugin((*it)).c_str());
+
             it++;
         }
 

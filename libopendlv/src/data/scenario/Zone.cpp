@@ -17,17 +17,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <memory>
 #include <ostream>
 #include <string>
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/Serializable.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/Serializable.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendavinci/odcore/data/SerializableData.h"
 #include "opendlv/data/scenario/Connector.h"
 #include "opendlv/data/scenario/Perimeter.h"
@@ -177,22 +176,18 @@ class Layer;
             }
 
             ostream& Zone::operator<<(ostream &out) const {
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Serializer> s = sf.getSerializer(out);
+                std::shared_ptr<odcore::serialization::Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                        getIdentifier());
+                s->write(1, getIdentifier());
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('n', 'a', 'm', 'e') >::RESULT,
-                        getName());
+                s->write(2, getName());
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('p', 'e', 'r', 'i', 'm', 't', 'e', 'r') >::RESULT,
-                        getPerimeter());
+                s->write(3, getPerimeter());
 
                 uint32_t numberOfConnectors = static_cast<uint32_t>(m_listOfConnectors.size());
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('n', 'u', 'm', 'c', 'o', 'n', 'n', 's') >::RESULT,
-                        numberOfConnectors);
+                s->write(4, numberOfConnectors);
 
                 // Write connectors to stringstream.
                 stringstream sstr;
@@ -203,13 +198,11 @@ class Layer;
 
                 // Write connectors.
                 if (numberOfConnectors > 0) {
-                    s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('c', 'o', 'n', 'n', 's') >::RESULT,
-                            sstr.str());
+                    s->write(5, sstr.str());
                 }
 
                 uint32_t numberOfSpots = static_cast<uint32_t>(m_listOfSpots.size());
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('n', 'u', 'm', 's', 'p', 'o', 't', 's') >::RESULT,
-                        numberOfSpots);
+                s->write(6, numberOfSpots);
 
                 // Write spots to stringstream.
                 sstr.str("");
@@ -220,36 +213,30 @@ class Layer;
 
                 // Write spots.
                 if (numberOfSpots > 0) {
-                    s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('s', 'p', 'o', 't', 's') >::RESULT,
-                            sstr.str());
+                    s->write(7, sstr.str());
                 }
 
                 return out;
             }
 
             istream& Zone::operator>>(istream &in) {
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+                std::shared_ptr<odcore::serialization::Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
-                       m_identifier);
+                d->read(1, m_identifier);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('n', 'a', 'm', 'e') >::RESULT,
-                       m_name);
+                d->read(2, m_name);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('p', 'e', 'r', 'i', 'm', 't', 'e', 'r') >::RESULT,
-                       m_perimeter);
+                d->read(3, m_perimeter);
 
                 uint32_t numberOfConnectors = 0;
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('n', 'u', 'm', 'c', 'o', 'n', 'n', 's') >::RESULT,
-                       numberOfConnectors);
+                d->read(4, numberOfConnectors);
 
                 if (numberOfConnectors > 0) {
                     string str;
                     // Read connectors into stringstream.
-                    d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('c', 'o', 'n', 'n', 's') >::RESULT,
-                           str);
+                    d->read(5, str);
 
                     stringstream sstr(str);
 
@@ -262,14 +249,12 @@ class Layer;
                 }
 
                 uint32_t numberOfSpots = 0;
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('n', 'u', 'm', 's', 'p', 'o', 't', 's') >::RESULT,
-                       numberOfSpots);
+                d->read(6, numberOfSpots);
 
                 if (numberOfSpots > 0) {
                     string str;
                     // Read spots into stringstream.
-                    d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('s', 'p', 'o', 't', 's') >::RESULT,
-                           str);
+                    d->read(7, str);
 
                     stringstream sstr(str);
 

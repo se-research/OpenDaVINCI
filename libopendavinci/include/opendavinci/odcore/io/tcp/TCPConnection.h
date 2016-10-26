@@ -95,6 +95,19 @@ namespace odcore {
                      */
                     virtual void stop() = 0;
 
+                    /**
+                     * This method returns if we have configured a raw
+                     * TCP connection (i.e. without the size of the payload
+                     * information).
+                     */
+                    bool isRaw() const;
+
+                    /**
+                     * This method configures a TCP connection to just
+                     * transport the raw bytes.
+                     */
+                    void setRaw(const bool &raw);
+
                 protected:
                     /**
                      * This method has to be called by subclasses whenever
@@ -142,6 +155,8 @@ namespace odcore {
 
                     odcore::base::Mutex m_partialDataMutex;
                     stringstream m_partialData;
+
+                    bool m_raw;
             };
 
         }

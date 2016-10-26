@@ -21,14 +21,14 @@
 #define CORE_SHAREDMEMORYTESTSUITE_H_
 
 #include <iosfwd>                       // for stringstream, istream, etc
+#include <memory>
 #include <string>                       // for operator==, basic_string
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
 #include "opendavinci/odcore/base/Lock.h"             // for Lock
-#include "opendavinci/odcore/base/Serializable.h"     // for operator<<, operator>>
+#include "opendavinci/odcore/serialization/Serializable.h"     // for operator<<, operator>>
 #include "opendavinci/odcore/wrapper/SharedMemory.h"  // for SharedMemory
 #include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"  // for SharedMemoryFactory
 #include "opendavinci/generated/odcore/data/SharedData.h"  // for SharedData

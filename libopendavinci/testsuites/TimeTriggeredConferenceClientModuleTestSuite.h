@@ -21,13 +21,13 @@
 #define OPENDAVINCI_TIMETRIGGEREDCONFERENCECLIENTMODULETESTSUITE_H_
 
 #include <fstream>                      // for operator<<, basic_ostream, etc
+#include <memory>
 #include <string>                       // for string, operator==, etc
 #include <vector>                       // for vector
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
 #include "opendavinci/odcore/base/Condition.h"        // for Condition
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
 #include "opendavinci/odcore/base/Lock.h"             // for Lock

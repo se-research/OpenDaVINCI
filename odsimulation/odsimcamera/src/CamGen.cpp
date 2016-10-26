@@ -17,8 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <GL/freeglut.h>
-#include <GL/gl.h>
+#ifdef __APPLE__
+    #include <OpenGL/gl.h>
+    #include </usr/X11/include/GL/freeglut.h>
+#else
+    #include <GL/gl.h>
+    #include <GL/freeglut.h>
+#endif
 
 #include <cmath>
 #include <cstdlib>

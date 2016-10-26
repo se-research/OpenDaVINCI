@@ -37,6 +37,7 @@
 
 #include "opendavinci/odtools/player/Player.h"
 #include "opendavinci/odtools/player/PlayerCache.h"
+#include "opendavinci/odtools/player/PlayerDelegate.h"
 
 namespace odtools {
     namespace player {
@@ -58,7 +59,9 @@ namespace odtools {
             m_seekToTheBeginning(true),
             m_noMoreData(false),
             m_delay(0),
-            m_mapOfSharedMemoriesForCompressedImages() {
+            m_mapOfSharedMemoriesForCompressedImages(),
+            m_mapOfPlayerDelegatesMutex(),
+            m_mapOfPlayerDelegates() {
 
             // Get the stream using the StreamFactory with the given URL.
             m_inFile = StreamFactory::getInstance().getInputStream(url);
@@ -93,8 +96,29 @@ namespace odtools {
                 m_playerCache->stop();
             }
 
+            // Next, clean up any PlayerDelegates that might have deferred playback.
+            {
+                Lock l(m_mapOfPlayerDelegatesMutex);
+                m_mapOfPlayerDelegates.clear();
+            }
+
+
             // Clear shared memories created for compressed images.
             m_mapOfSharedMemoriesForCompressedImages.clear();
+        }
+
+        void Player::registerPlayerDelegate(const uint32_t &containerID, PlayerDelegate *p) {
+            Lock l(m_mapOfPlayerDelegatesMutex);
+
+            // First, check if we have registered an existing PlayerDelegate for the given ID.
+            auto delegate = m_mapOfPlayerDelegates.find(containerID);
+            if (delegate != m_mapOfPlayerDelegates.end()) {
+                m_mapOfPlayerDelegates.erase(delegate);
+            }
+
+            if (p != NULL) {
+                m_mapOfPlayerDelegates[containerID] = p;
+            }
         }
 
         Container Player::getNextContainerToBeSent() {
@@ -144,25 +168,43 @@ namespace odtools {
             // Here, the time gap between two containers is calculated.
             if ( (m_actual.getDataType() != Container::UNDEFINEDDATA) &&
                  (m_successor.getDataType() != Container::UNDEFINEDDATA) ) {
-                TimeStamp delta = m_successor.getReceivedTimeStamp() - m_actual.getReceivedTimeStamp();
+                TimeStamp delta = m_successor.getSampleTimeStamp() - m_actual.getSampleTimeStamp();
                 if (!(delta.toMicroseconds() < 0)) {
                     m_delay = static_cast<long>(delta.toMicroseconds());
                 }
             }
 
-            // If the actual container is a SharedImage then copy next entry into the shared memory before sending the actual container.
-            if (m_actual.getDataType() == odcore::data::image::SharedImage::ID()) {
-                m_playerCache->copyMemoryToSharedMemory(m_actual);
+            // First, check if we need to delegate storing this container.
+            bool wasContainerDelegated = false;
+            {
+                Lock l(m_mapOfPlayerDelegatesMutex);
+                auto delegate = m_mapOfPlayerDelegates.find(m_actual.getDataType());
+                if (delegate != m_mapOfPlayerDelegates.end()) {
+                    Container replacementContainer = delegate->second->process(m_actual);
+
+                    wasContainerDelegated = true;
+
+                    // Replace m_actual with the replacement Container.
+                    m_actual = replacementContainer;
+                }
             }
 
-            // If the actual container is a SharedData then copy next entry into the shared memory before sending the actual container.
-            if (m_actual.getDataType() == odcore::data::SharedData::ID()) {
-                m_playerCache->copyMemoryToSharedMemory(m_actual);
-            }
 
-            // If the actual container is a SharedPointCloud then copy next entry into the shared memory before sending the actual container.
-            if (m_actual.getDataType() == odcore::data::SharedPointCloud::ID()) {
-                m_playerCache->copyMemoryToSharedMemory(m_actual);
+            if (!wasContainerDelegated) {
+                // If the actual container is a SharedImage then copy next entry into the shared memory before sending the actual container.
+                if (m_actual.getDataType() == odcore::data::image::SharedImage::ID()) {
+                    m_playerCache->copyMemoryToSharedMemory(m_actual);
+                }
+
+                // If the actual container is a SharedData then copy next entry into the shared memory before sending the actual container.
+                if (m_actual.getDataType() == odcore::data::SharedData::ID()) {
+                    m_playerCache->copyMemoryToSharedMemory(m_actual);
+                }
+
+                // If the actual container is a SharedPointCloud then copy next entry into the shared memory before sending the actual container.
+                if (m_actual.getDataType() == odcore::data::SharedPointCloud::ID()) {
+                    m_playerCache->copyMemoryToSharedMemory(m_actual);
+                }
             }
 
             // Return the m_actual container as retVal in the case of a
@@ -213,6 +255,7 @@ namespace odtools {
                     retVal = Container(si);
                     retVal.setSentTimeStamp(m_actual.getSentTimeStamp());
                     retVal.setReceivedTimeStamp(m_actual.getReceivedTimeStamp());
+                    retVal.setSampleTimeStamp(m_actual.getSampleTimeStamp());
                 }
 
                 OPENDAVINCI_CORE_FREE_POINTER(imageData);

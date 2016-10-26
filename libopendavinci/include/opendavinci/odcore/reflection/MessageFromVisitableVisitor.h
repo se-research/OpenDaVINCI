@@ -26,7 +26,7 @@
 #include "opendavinci/odcore/base/Visitor.h"
 #include "opendavinci/odcore/reflection/Message.h"
 
-namespace odcore { namespace base { class Serializable; } }
+namespace odcore { namespace serialization { class Serializable; } }
 
 namespace odcore {
     namespace reflection {
@@ -59,21 +59,24 @@ namespace odcore {
                 virtual ~MessageFromVisitableVisitor();
 
             public:
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, odcore::base::Serializable &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, bool &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, char &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, unsigned char &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int8_t &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int16_t &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint16_t &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int32_t &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint32_t &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, int64_t &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, uint64_t &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, float &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, double &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, string &v);
-                virtual void visit(const uint32_t &longId, const uint8_t &shortId, const string &longName, const string &shortName, void *data, const uint32_t &size);
+                virtual void beginVisit(const int32_t &id, const string &shortName, const string &longName);
+                virtual void endVisit();
+
+                virtual void visit(const uint32_t &id, const string &longName, const string &shortName, odcore::serialization::Serializable &v);
+                virtual void visit(const uint32_t &id, const string &longName, const string &shortName, bool &v);
+                virtual void visit(const uint32_t &id, const string &longName, const string &shortName, char &v);
+                virtual void visit(const uint32_t &id, const string &longName, const string &shortName, unsigned char &v);
+                virtual void visit(const uint32_t &id, const string &longName, const string &shortName, int8_t &v);
+                virtual void visit(const uint32_t &id, const string &longName, const string &shortName, int16_t &v);
+                virtual void visit(const uint32_t &id, const string &longName, const string &shortName, uint16_t &v);
+                virtual void visit(const uint32_t &id, const string &longName, const string &shortName, int32_t &v);
+                virtual void visit(const uint32_t &id, const string &longName, const string &shortName, uint32_t &v);
+                virtual void visit(const uint32_t &id, const string &longName, const string &shortName, int64_t &v);
+                virtual void visit(const uint32_t &id, const string &longName, const string &shortName, uint64_t &v);
+                virtual void visit(const uint32_t &id, const string &longName, const string &shortName, float &v);
+                virtual void visit(const uint32_t &id, const string &longName, const string &shortName, double &v);
+                virtual void visit(const uint32_t &id, const string &longName, const string &shortName, string &v);
+                virtual void visit(const uint32_t &id, const string &longName, const string &shortName, void *data, const uint32_t &size);
 
             public:
                 /**

@@ -6,16 +6,15 @@
 
 #include <memory>
 
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
-
+#include <opendavinci/odcore/serialization/Deserializer.h>
+#include <opendavinci/odcore/serialization/SerializationFactory.h>
+#include <opendavinci/odcore/serialization/Serializer.h>
 
 #include "test19/generated/Test19b.h"
 
 	using namespace std;
 	using namespace odcore::base;
+	using namespace odcore::serialization;
 
 
 	Test19b::Test19b() :
@@ -64,19 +63,18 @@
 
 
 	void Test19b::accept(odcore::base::Visitor &v) {
-		(void)v; // Avoid unused parameter warning.
+		v.beginVisit(ID(), ShortName(), LongName());
+		v.endVisit();
 	}
 
 	const string Test19b::toString() const {
 		stringstream s;
 
 
-
 		return s.str();
 	}
 
 	ostream& Test19b::operator<<(ostream &out) const {
-
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
 		std::shared_ptr<Serializer> s = sf.getSerializer(out);(void)s; // Avoid unused variable warning.
@@ -85,7 +83,6 @@
 	}
 
 	istream& Test19b::operator>>(istream &in) {
-
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
 		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);(void)d; // Avoid unused variable warning.

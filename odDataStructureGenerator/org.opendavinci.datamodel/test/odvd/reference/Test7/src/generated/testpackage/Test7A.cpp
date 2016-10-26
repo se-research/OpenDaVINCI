@@ -6,17 +6,16 @@
 
 #include <memory>
 
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
-
+#include <opendavinci/odcore/serialization/Deserializer.h>
+#include <opendavinci/odcore/serialization/SerializationFactory.h>
+#include <opendavinci/odcore/serialization/Serializer.h>
 
 #include "test7/generated/testpackage/Test7A.h"
 
 namespace testpackage {
 		using namespace std;
 		using namespace odcore::base;
+		using namespace odcore::serialization;
 	
 	
 		Test7A::Test7A() :
@@ -104,14 +103,15 @@ namespace testpackage {
 		}
 	
 		void Test7A::accept(odcore::base::Visitor &v) {
-			v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'1', NullType> > > > > > > > > >  >::RESULT, 0, "Test7A.attribute1", "attribute1", m_attribute1);
-			v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'2', NullType> > > > > > > > > >  >::RESULT, 0, "Test7A.attribute2", "attribute2", m_attribute2);
-			v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'3', NullType> > > > > > > > > >  >::RESULT, 0, "Test7A.attribute3", "attribute3", m_attribute3);
+			v.beginVisit(ID(), ShortName(), LongName());
+			v.visit(1, "Test7A.attribute1", "attribute1", m_attribute1);
+			v.visit(2, "Test7A.attribute2", "attribute2", m_attribute2);
+			v.visit(3, "Test7A.attribute3", "attribute3", m_attribute3);
+			v.endVisit();
 		}
 	
 		const string Test7A::toString() const {
 			stringstream s;
-	
 	
 			s << "Attribute1: " << getAttribute1() << " ";
 			s << "Attribute2: " << getAttribute2() << " ";
@@ -121,31 +121,29 @@ namespace testpackage {
 		}
 	
 		ostream& Test7A::operator<<(ostream &out) const {
-	
 			SerializationFactory& sf = SerializationFactory::getInstance();
 	
 			std::shared_ptr<Serializer> s = sf.getSerializer(out);
 	
-			s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'1', NullType> > > > > > > > > >  >::RESULT,
+			s->write(1,
 					m_attribute1);
-			s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'2', NullType> > > > > > > > > >  >::RESULT,
+			s->write(2,
 					m_attribute2);
-			s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'3', NullType> > > > > > > > > >  >::RESULT,
+			s->write(3,
 					m_attribute3);
 			return out;
 		}
 	
 		istream& Test7A::operator>>(istream &in) {
-	
 			SerializationFactory& sf = SerializationFactory::getInstance();
 	
 			std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 	
-			d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'1', NullType> > > > > > > > > >  >::RESULT,
+			d->read(1,
 					m_attribute1);
-			d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'2', NullType> > > > > > > > > >  >::RESULT,
+			d->read(2,
 					m_attribute2);
-			d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'r', CharList<'i', CharList<'b', CharList<'u', CharList<'t', CharList<'e', CharList<'3', NullType> > > > > > > > > >  >::RESULT,
+			d->read(3,
 					m_attribute3);
 			return in;
 		}

@@ -18,7 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <qpen.h>
+#include <QtCore>
+#include <QtGui>
 
 #ifndef WIN32
 # if !defined(__OpenBSD__) && !defined(__NetBSD__)
@@ -96,12 +97,13 @@ namespace cockpit {
             }
 
             QwtPlotCurve* LoadPerModule::getCurve(){
-            	return m_curve;
+                return m_curve;
             }
 
             const string LoadPerModule::getModuleName() const{
-            	return m_moduleDescriptor.toString();
+                return m_moduleDescriptor.toString();
             }
+
         }
     }
 } // cockpit::plugins::modulestatisticsviewer

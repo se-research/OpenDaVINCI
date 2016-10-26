@@ -19,17 +19,18 @@
 
 #include <algorithm>
 #include <functional>
-
 #include <memory>
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
+
+#include "opendavinci/odcore/serialization/Deserializer.h"
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendavinci/odcore/strings/StringToolbox.h"
 
 namespace odcore {
     namespace base {
+
+        using namespace odcore::serialization;
 
         KeyValueConfiguration::KeyValueConfiguration() : m_keyValueConfiguration() {}
 
@@ -64,19 +65,19 @@ namespace odcore {
         }
 
         ostream& KeyValueConfiguration::operator<<(ostream &out) const {
-			SerializationFactory& sf = SerializationFactory::getInstance();
-			std::shared_ptr<Serializer> s = sf.getSerializer(out);
+            SerializationFactory& sf = SerializationFactory::getInstance();
+            std::shared_ptr<Serializer> s = sf.getSerializer(out);
             stringstream sstr;
             writeTo(sstr);
-			s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('c', 'o', 'n', 'f', 'i', 'g')  >::RESULT, sstr.str());
-			return out;
+            s->write(1, sstr.str());
+            return out;
         }
 
         istream& KeyValueConfiguration::operator>>(istream &in) {
-			SerializationFactory& sf = SerializationFactory::getInstance();
-			std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+            SerializationFactory& sf = SerializationFactory::getInstance();
+            std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
             string s;
-			d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('c', 'o', 'n', 'f', 'i', 'g')  >::RESULT, s);
+            d->read(1, s);
             stringstream sstr(s);
             readFrom(sstr);
             return in;
@@ -88,7 +89,6 @@ namespace odcore {
             for (; it != m_keyValueConfiguration.end(); ++it) {
                 out << it->first << "=" << it->second << endl;
             }
-
             return out;
         }
 

@@ -17,15 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <memory>
 #include <ostream>
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendavinci/odcore/data/SerializableData.h"
 #include "opendlv/data/scenario/ComplexModel.h"
 #include "opendlv/data/scenario/Cylinder.h"
@@ -151,58 +150,48 @@ namespace opendlv {
             }
 
             ostream& TrafficControl::operator<<(ostream &out) const {
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Serializer> s = sf.getSerializer(out);
+                std::shared_ptr<odcore::serialization::Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('n', 'a', 'm', 'e') >::RESULT,
-                        getName());
+                s->write(1, getName());
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('t', 'y', 'p', 'e') >::RESULT,
-                        static_cast<uint32_t>(m_type));
+                s->write(2, static_cast<uint32_t>(m_type));
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('p', 'o', 's', 'i', 't', 'i', 'o', 'n') >::RESULT,
-                        getPosition());
+                s->write(3, getPosition());
 
                 if (getShape() == NULL) {
-                    s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('s', 'h', 'a', 'p', 't', 'y', 'p', 'e') >::RESULT,
-                            static_cast<uint32_t>(Shape::UNDEFINED));
+                    s->write(4, static_cast<uint32_t>(Shape::UNDEFINED));
 
                 } else {
-                    s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('s', 'h', 'a', 'p', 't', 'y', 'p', 'e') >::RESULT,
-                            static_cast<uint32_t>(getShape()->getType()));
+                    s->write(4, static_cast<uint32_t>(getShape()->getType()));
 
-                    s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('s', 'h', 'a', 'p', 'e') >::RESULT,
-                            *(getShape()));
+                    s->write(5, *(getShape()));
                 }
 
                 return out;
             }
 
             istream& TrafficControl::operator>>(istream &in) {
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+                std::shared_ptr<odcore::serialization::Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('n', 'a', 'm', 'e') >::RESULT,
-                       m_name);
+                d->read(1, m_name);
 
                 uint32_t type = 0;
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('t', 'y', 'p', 'e') >::RESULT,
-                       type);
+                d->read(2, type);
 
                 m_type = static_cast<enum TrafficControl::TRAFFICCONTROLTYPE>(type);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('p', 'o', 's', 'i', 't', 'i', 'o', 'n') >::RESULT,
-                       m_position);
+                d->read(3, m_position);
 
                 // Read shape.
                 OPENDAVINCI_CORE_DELETE_POINTER(m_shape);
 
                 type = 0;
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('s', 'h', 'a', 'p', 't', 'y', 'p', 'e') >::RESULT,
-                       type);
+                d->read(4, type);
 
                 enum Shape::SHAPETYPE shapeType = static_cast<enum Shape::SHAPETYPE>(type);
 
@@ -210,8 +199,7 @@ namespace opendlv {
                 case Shape::COMPLEXMODEL: {
                         ComplexModel *cm = new ComplexModel();
 
-                        d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('s', 'h', 'a', 'p', 'e') >::RESULT,
-                               *cm);
+                        d->read(5, *cm);
 
                         setShape(cm);
                         break;
@@ -219,8 +207,7 @@ namespace opendlv {
                 case Shape::CYLINDER: {
                         Cylinder *c = new Cylinder();
 
-                        d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('s', 'h', 'a', 'p', 'e') >::RESULT,
-                               *c);
+                        d->read(5, *c);
 
                         setShape(c);
                         break;
@@ -228,8 +215,7 @@ namespace opendlv {
                 case Shape::POLYGON: {
                         Polygon *p = new Polygon();
 
-                        d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('s', 'h', 'a', 'p', 'e') >::RESULT,
-                               *p);
+                        d->read(5, *p);
 
                         setShape(p);
                         break;

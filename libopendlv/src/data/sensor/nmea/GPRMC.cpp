@@ -18,14 +18,13 @@
  */
 
 #include <iostream>
+#include <memory>
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendavinci/odcore/data/SerializableData.h"
 #include "opendavinci/odcore/data/TimeStamp.h"
 #include "opendlv/data/environment/WGS84Coordinate.h"
@@ -148,8 +147,7 @@ namespace opendlv {
                         pos = pos + 7 + 1; // Consume value + ","
                         char LAT = m_message.at(pos);
 
-                        m_coordinate.setLatitude(latitude);
-                        m_coordinate.setLATITUDE((LAT == 'N') ? WGS84Coordinate::NORTH : WGS84Coordinate::SOUTH);
+                        m_coordinate.setLatitude(latitude * ((LAT == 'N') ? 1 : -1));
 
                         ////////////////////////////////////////////////////////
 
@@ -170,8 +168,7 @@ namespace opendlv {
                         pos = pos + 7 + 1; // Consume value + ","
                         char LON = m_message.at(pos);
 
-                        m_coordinate.setLongitude(longitude);
-                        m_coordinate.setLONGITUDE((LON == 'W') ? WGS84Coordinate::WEST: WGS84Coordinate::EAST);
+                        m_coordinate.setLongitude(longitude * ((LON == 'E') ? 1 : -1));
 
                         ////////////////////////////////////////////////////////
 
@@ -274,6 +271,7 @@ namespace opendlv {
                     sstr << "A" << ",";
 
                     double latitude = m_coordinate.getLatitude();
+                    const string LAT = (latitude > 0) ? "N" : "S";
                     uint32_t lat = static_cast<uint32_t>(latitude);
                     latitude -= lat;
 
@@ -289,9 +287,10 @@ namespace opendlv {
                     latArcMinuteStr << latitude * 60;
 
                     sstr << latStr.str() << latArcMinuteStr.str() << ",";
-                    sstr << ((m_coordinate.getLATITUDE() == WGS84Coordinate::NORTH) ? "N" : "S") << ",";
+                    sstr << LAT << ",";
 
                     double longitude = m_coordinate.getLongitude();
+                    const string LON = (longitude > 0) ? "E" : "W";
                     uint32_t lon = static_cast<uint32_t>(longitude);
                     longitude -= lon;
 
@@ -307,7 +306,7 @@ namespace opendlv {
                     lonArcMinuteStr << longitude * 60;
 
                     sstr << lonStr.str() << lonArcMinuteStr.str() << ",";
-                    sstr << ((m_coordinate.getLONGITUDE() == WGS84Coordinate::WEST) ? "W" : "E") << ",";
+                    sstr << LON << ",";
 
                     sstr << "0.0" << ",";
                     sstr << "0.0" << ",";
@@ -329,7 +328,7 @@ namespace opendlv {
 
                     sstr << day.str() << month.str() << year.str() << ",";
                     sstr << "0.0" << ",";
-                    sstr << ((m_coordinate.getLONGITUDE() == WGS84Coordinate::WEST) ? "W" : "E") << ",";
+                    sstr << LON << ",";
                     sstr << "S" << "*";
 
                     // Compute check sum.
@@ -359,7 +358,7 @@ namespace opendlv {
                 }
 
                 const string GPRMC::getLongName() const {
-                    return "hesperia.data.sensor.nmea.GPRMC";
+                    return "opendlv.data.sensor.nmea.GPRMC";
                 }
 
                 const string GPRMC::toString() const {
@@ -368,24 +367,22 @@ namespace opendlv {
 
                 ostream& GPRMC::operator<<(ostream &out) const {
                     // Serialize this class.
-                    SerializationFactory& sf=SerializationFactory::getInstance();
+                    odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                    std::shared_ptr<Serializer> s = sf.getSerializer(out);
+                    std::shared_ptr<odcore::serialization::Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
-                    s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('m', 'e', 's', 's', 'a', 'g', 'e') >::RESULT,
-                            m_message);
+                    s->write(1, m_message);
 
                     return out;
                 }
 
                 istream& GPRMC::operator>>(istream &in) {
                     // Deserialize this class.
-                    SerializationFactory& sf=SerializationFactory::getInstance();
+                    odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                    std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+                    std::shared_ptr<odcore::serialization::Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
-                    d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL7('m', 'e', 's', 's', 'a', 'g', 'e') >::RESULT,
-                           m_message);
+                    d->read(1, m_message);
 
                     // Decode message.
                     decode();

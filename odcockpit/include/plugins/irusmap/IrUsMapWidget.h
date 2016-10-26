@@ -21,8 +21,8 @@
 #ifndef COCKPIT_PLUGINS_IRUSMAP_IRUSMAPWIDGET_H_
 #define COCKPIT_PLUGINS_IRUSMAP_IRUSMAPWIDGET_H_
 
-#include <qobjectdefs.h>
-#include <qwidget.h>
+#include <QtCore>
+#include <QtGui>
 
 #include <map>
 #include <string>

@@ -24,17 +24,16 @@
 #include <cstdlib>                      // for calloc
 #include <cstring>                      // for strcmp
 #include <iosfwd>                       // for stringstream, istream, etc
+#include <memory>
 #include <string>                       // for string
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
-#include "opendavinci/odcore/base/Deserializer.h"     // for Deserializer
-#include "opendavinci/odcore/base/Hash.h"             // for CharList, CRC32, etc
-#include "opendavinci/odcore/base/Serializable.h"     // for Serializable
-#include "opendavinci/odcore/base/SerializationFactory.h"  // for SerializationFactory
-#include "opendavinci/odcore/base/Serializer.h"       // for Serializer
+#include "opendavinci/odcore/serialization/Deserializer.h"     // for Deserializer
+#include "opendavinci/odcore/serialization/Serializable.h"     // for Serializable
+#include "opendavinci/odcore/serialization/SerializationFactory.h"  // for SerializationFactory
+#include "opendavinci/odcore/serialization/Serializer.h"       // for Serializer
 #include "opendavinci/odcore/base/Visitable.h"        // for Visitable
 #include "opendavinci/odcore/base/Visitor.h"          // for Visitor
 #include "opendavinci/odcore/reflection/Message.h"    // for Message
@@ -49,8 +48,9 @@ using namespace odcore::base;
 using namespace odcore::data;
 using namespace odcore::reflection;
 using namespace odcore::data::reflection;
+using namespace odcore::serialization;
 
-class MyRawVisitable : public odcore::base::Serializable, public Visitable {
+class MyRawVisitable : public odcore::serialization::Serializable, public Visitable {
     public:
         MyRawVisitable() :
             data(NULL) {}
@@ -71,7 +71,9 @@ class MyRawVisitable : public odcore::base::Serializable, public Visitable {
         uint32_t size;
         
         virtual void accept(odcore::base::Visitor &v) {
-            v.visit(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('d', 'a', 't', 'a') >::RESULT, 1, "MyNestedVisitable::data", "data", data, size);
+            v.beginVisit(1, "MyNestedVisitable", "MyNestedVisitable");
+            v.visit(1, "MyNestedVisitable::data", "data", data, size);
+            v.endVisit();
         }
 
         ostream& operator<<(ostream &out) const {
@@ -79,7 +81,7 @@ class MyRawVisitable : public odcore::base::Serializable, public Visitable {
 
             std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
-            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('d', 'a', 't', 'a') >::RESULT,
+            s->write(1,
                     data, 13);
 
             return out;
@@ -90,14 +92,14 @@ class MyRawVisitable : public odcore::base::Serializable, public Visitable {
 
             std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
-            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('d', 'a', 't', 'a') >::RESULT,
+            d->read(1,
                    data, 13);
 
             return in;
         }
 };
 
-class MyNestedVisitable : public odcore::base::Serializable, public Visitable {
+class MyNestedVisitable : public odcore::serialization::Serializable, public Visitable {
     public:
         MyNestedVisitable() :
                 m_double(0) {}
@@ -105,7 +107,9 @@ class MyNestedVisitable : public odcore::base::Serializable, public Visitable {
         double m_double;
         
         virtual void accept(odcore::base::Visitor &v) {
-            v.visit(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('m', '_', 'd', 'o', 'u', 'b', 'l', 'e') >::RESULT, 1, "MyNestedVisitable::m_double", "m_double", m_double);
+            v.beginVisit(1, "MyNestedVisitable", "MyNestedVisitable");
+            v.visit(1, "MyNestedVisitable::m_double", "m_double", m_double);
+            v.endVisit();
         }
 
         ostream& operator<<(ostream &out) const {
@@ -113,8 +117,7 @@ class MyNestedVisitable : public odcore::base::Serializable, public Visitable {
 
             std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
-            s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('m', '_', 'd', 'o', 'u', 'b', 'l', 'e') >::RESULT,
-                    m_double);
+            s->write(1, m_double);
 
             return out;
         }
@@ -124,8 +127,7 @@ class MyNestedVisitable : public odcore::base::Serializable, public Visitable {
 
             std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
-            d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL8('m', '_', 'd', 'o', 'u', 'b', 'l', 'e') >::RESULT,
-                   m_double);
+            d->read(1, m_double);
 
             return in;
         }
@@ -149,7 +151,7 @@ class MyVisitable : public Serializable, public Visitable {
             m_att2(obj.m_att2),
             m_att3(obj.m_att3),
             m_att4(obj.m_att4),
-            m_att5() {}
+            m_att5(obj.m_att5) {}
 
         ~MyVisitable() {}
 
@@ -164,56 +166,48 @@ class MyVisitable : public Serializable, public Visitable {
 
         virtual ostream& operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();
-		
-			std::shared_ptr<Serializer> s = sf.getSerializer(out);
-		
-			s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'1', NullType> > > > >::RESULT,
-					m_att1);
 
-			s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'2', NullType> > > > >::RESULT,
-					m_att2);
+            std::shared_ptr<Serializer> s = sf.getSerializer(out);
+        
+            s->write(1, m_att1);
 
-			s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'3', NullType> > > > >::RESULT,
-					m_att3);
+            s->write(2, m_att2);
 
-			s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'4', NullType> > > > >::RESULT,
-					m_att4);
+            s->write(3, m_att3);
 
-			s->write(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'5', NullType> > > > >::RESULT,
-					m_att5);
+            s->write(4, m_att4);
 
-			return out;
+            s->write(5, m_att5);
+
+            return out;
         }
 
         virtual istream& operator>>(istream &in) {
             SerializationFactory& sf=SerializationFactory::getInstance();
-		
-			std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
-		
-			d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'1', NullType> > > > >::RESULT,
-					m_att1);
+        
+            std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+        
+            d->read(1, m_att1);
 
-			d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'2', NullType> > > > >::RESULT,
-					m_att2);
+            d->read(2, m_att2);
 
-			d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'3', NullType> > > > >::RESULT,
-					m_att3);
+            d->read(3, m_att3);
 
-			d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'4', NullType> > > > >::RESULT,
-					m_att4);
+            d->read(4, m_att4);
 
-			d->read(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'5', NullType> > > > >::RESULT,
-					m_att5);
+            d->read(5, m_att5);
 
-			return in;
+            return in;
         }
 
         virtual void accept(odcore::base::Visitor &v) {
-            v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'1', NullType> > > > >::RESULT, 1, "MyVisitable::att1", "att1", m_att1);
-            v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'2', NullType> > > > >::RESULT, 2, "MyVisitable::att2", "att2", m_att2);
-            v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'3', NullType> > > > >::RESULT, 3, "MyVisitable::att3", "att3", m_att3);
-            v.visit(CRC32 < CharList<'a', CharList<'t', CharList<'t', CharList<'4', NullType> > > > >::RESULT, 4, "MyVisitable::att4", "att4", m_att4);
-            m_att5.accept(v);
+            v.beginVisit(1, "MyVisitable", "MyVisitable");
+            v.visit(1, "MyVisitable::att1", "att1", m_att1);
+            v.visit(2, "MyVisitable::att2", "att2", m_att2);
+            v.visit(3, "MyVisitable::att3", "att3", m_att3);
+            v.visit(4, "MyVisitable::att4", "att4", m_att4);
+            v.visit(5, "MyVisitable::att5", "att5", m_att5);
+            v.endVisit();
         }
 
     public:
@@ -336,6 +330,40 @@ class FieldTest : public CxxTest::TestSuite {
 
             d2.accept(mtvv);
             TS_ASSERT(strcmp(d.data, d2.data) == 0);
+        }
+
+        void testMessageExtractField() {
+            // Create a visitable data structure.
+            MyVisitable d;
+            d.m_att1 = 10;
+            d.m_att2 = 1.234;
+            d.m_att3 = -4.5789;
+            d.m_att4 = "Hello World!";
+            d.m_att5.m_double = 1.234;
+
+            // Create generic representation from our data structure.
+            MessageFromVisitableVisitor mfvv;
+            d.accept(mfvv);
+            Message msg = mfvv.getMessage();
+
+            double value = 0;
+            bool found = false;
+            bool extracted = false;
+
+            found = false; extracted = false; value = msg.getValueFromScalarField<double>(1, found, extracted);
+            TS_ASSERT(found); TS_ASSERT(extracted); TS_ASSERT_DELTA(value, 10, 1e-5);
+
+            found = false; extracted = false; value = msg.getValueFromScalarField<double>(2, found, extracted);
+            TS_ASSERT(found); TS_ASSERT(extracted); TS_ASSERT_DELTA(value, 1.234, 1e-5);
+
+            found = false; extracted = false; value = msg.getValueFromScalarField<double>(3, found, extracted);
+            TS_ASSERT(found); TS_ASSERT(extracted); TS_ASSERT_DELTA(value, -4.5789, 1e-5);
+
+            found = false; extracted = true; value = msg.getValueFromScalarField<double>(4, found, extracted);
+            TS_ASSERT(found); TS_ASSERT(!extracted); TS_ASSERT_DELTA(value, 0, 1e-5);
+
+            found = true; extracted = true; value = msg.getValueFromScalarField<double>(6, found, extracted);
+            TS_ASSERT(!found); TS_ASSERT(!extracted);
         }
 };
 

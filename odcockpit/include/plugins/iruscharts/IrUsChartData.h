@@ -42,9 +42,7 @@
 namespace automotive { namespace miniature { class SensorBoardData; } }
 
 namespace cockpit {
-
     namespace plugins {
-
       namespace iruscharts {
 
             using namespace std;
@@ -91,6 +89,7 @@ namespace cockpit {
                     deque<automotive::miniature::SensorBoardData> &m_data;
                     const uint32_t m_dataSelection;
             };
+
         }
     }
 }

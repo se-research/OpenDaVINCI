@@ -19,6 +19,7 @@ How to install OpenDaVINCI on Linux-based Platforms
 .. include:: installation.ubuntu-14.04.rst
 .. include:: installation.ubuntu-15.04.rst
 .. include:: installation.ubuntu-15.10.rst
+.. include:: installation.ubuntu-16.04.rst
 .. include:: installation.zorin-9.1.rst
 .. include:: installation.zorin-10.rst
 

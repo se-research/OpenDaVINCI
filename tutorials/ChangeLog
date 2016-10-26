@@ -1,3 +1,28 @@
+4.3.4 - Fix CAN device, tutorial for reading zip files.
+4.3.3 - CAN time stamping and WGS84 coordinate interface update
+4.3.2 - Enabled ccache
+4.3.1 - Refactored WGS84 coordinate interface
+4.3.0 - proto message exporter for odDataStructureGenerator and absolute time base for CANDevice
+4.2.0 - Visualization of SharedPointCloud
+4.1.1 - Minor fixes after testing at the lab.
+4.1.0 - Added sample time stamping to container
+4.0.6 - Compile fixes ARM and MacOS
+4.0.5 - Compile fixes for ARM
+4.0.4 - Fixing Docker-ized build for different users
+4.0.3 - Fixing Docker image creation
+4.0.2 - Compile fix for ArchLinux
+4.0.1 - Compile fixes for Ubuntu 14.04 and MacOS
+4.0.0 - Next major release of OpenDaVINCI
+3.2.0 - CAN library fixes
+3.1.0 - Enabling signedness in CAN specs
+3.0.8 - Added sensor time stamping
+3.0.7 - Minor updates from OpenDLV
+3.0.6 - Updated WGS84 coordinate
+3.0.5 - odsupercomponent allows several modules running under the same name; odcockpit visualizes system health and object data
+3.0.4 - Fixing and validating CAN message specification handling and code generation
+3.0.3 - Fixed warning in generated test code
+3.0.2 - Updating CAN message handling
+3.0.1 - Fixed compilation on Mac OSX; added CSVExporter visitor
 3.0.0 - Newest release of OpenDaVINCI.
 2.4.11 - Updated deployment process to use aptly over reprepro for deb packages
 2.4.10 - Updated FindOpenCV.cmake

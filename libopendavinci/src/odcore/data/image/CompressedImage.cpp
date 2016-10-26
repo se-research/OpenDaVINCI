@@ -19,12 +19,11 @@
 
 #include <cstring>
 #include <sstream>
-
 #include <memory>
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendavinci/odcore/data/image/CompressedImage.h"
 #include "opendavinci/odcore/opendavinci.h"
 
@@ -34,6 +33,7 @@ namespace odcore {
 
             using namespace std;
             using namespace odcore::base;
+            using namespace odcore::serialization;
 
             CompressedImage::CompressedImage() :
                     SerializableData(),
@@ -131,28 +131,57 @@ namespace odcore {
                 return m_imageData;
             }
 
+            void CompressedImage::accept(Visitor &v) {
+                v.beginVisit(ID(), ShortName(), LongName());
+                v.visit(1,
+                        "CompressedImage.name",
+                        "name",
+                        m_name);
+
+                v.visit(2,
+                        "CompressedImage.width",
+                        "width",
+                        m_width);
+
+                v.visit(3,
+                        "CompressedImage.height",
+                        "height",
+                        m_height);
+
+                v.visit(4,
+                        "CompressedImage.bytesPerPixel",
+                        "bytesPerPixel",
+                        m_bytesPerPixel);
+
+                v.visit(5,
+                        "CompressedImage.compressedSize",
+                        "compressedSize",
+                        m_compressedSize);
+
+                v.visit(6,
+                        "CompressedImage.imageData",
+                        "imageData",
+                        m_imageData, m_compressedSize);
+
+                v.endVisit();
+            }
+
             ostream& CompressedImage::operator<<(ostream &out) const {
                 SerializationFactory& sf=SerializationFactory::getInstance();;
 
                 std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('n', 'a', 'm', 'e') >::RESULT,
-                        getName());
+                s->write(1, getName());
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('w', 'i', 'd', 't', 'h') >::RESULT,
-                        getWidth());
+                s->write(2, getWidth());
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('h', 'e', 'i', 'g', 'h', 't') >::RESULT,
-                        getHeight());
+                s->write(3, getHeight());
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('b', 'p', 'p') >::RESULT,
-                        getBytesPerPixel());
+                s->write(4, getBytesPerPixel());
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('c', 's', 'i', 'z', 'e') >::RESULT,
-                        getCompressedSize());
+                s->write(5, getCompressedSize());
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('d', 'a', 't', 'a') >::RESULT,
-                        m_imageData, m_compressedSize);
+                s->write(6, m_imageData, m_compressedSize);
 
                 return out;
             }
@@ -162,26 +191,20 @@ namespace odcore {
 
                 std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('n', 'a', 'm', 'e') >::RESULT,
-                       m_name);
+                d->read(1, m_name);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('w', 'i', 'd', 't', 'h') >::RESULT,
-                       m_width);
+                d->read(2, m_width);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('h', 'e', 'i', 'g', 'h', 't') >::RESULT,
-                       m_height);
+                d->read(3, m_height);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('b', 'p', 'p') >::RESULT,
-                       m_bytesPerPixel);
+                d->read(4, m_bytesPerPixel);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('c', 's', 'i', 'z', 'e') >::RESULT,
-                       m_compressedSize);
+                d->read(5, m_compressedSize);
 
                 OPENDAVINCI_CORE_DELETE_ARRAY(m_imageData);
                 m_imageData = new uint8_t[m_compressedSize];
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('d', 'a', 't', 'a') >::RESULT,
-                       m_imageData, m_compressedSize);
+                d->read(6, m_imageData, m_compressedSize);
 
                 return in;
             }

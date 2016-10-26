@@ -27,6 +27,7 @@ IF(NOT POPT_FOUND)
         PATHS ${LIBPOPT_PATH}/lib/
               /usr/local/lib64/
               /usr/local/lib/
+              /usr/lib/arm-linux-gnueabihf/
               /usr/lib/i386-linux-gnu/
               /usr/lib/x86_64-linux-gnu/
               /usr/lib64/

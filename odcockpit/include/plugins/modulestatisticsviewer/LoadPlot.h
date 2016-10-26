@@ -21,7 +21,8 @@
 #ifndef LOADPLOT_H_
 #define LOADPLOT_H_
 
-#include <qobjectdefs.h>
+#include <QtCore>
+#include <QtGui>
 
 #if defined __GNUC__
 #pragma GCC system_header
@@ -58,34 +59,34 @@ class LoadPerModule;
                 Q_OBJECT
 
                 private:
-	                /**
-	                 * "Forbidden" copy constructor. Goal: The compiler should warn
-	                 * already at compile time for unwanted bugs caused by any misuse
-	                 * of the copy constructor.
-	                 */
-	                LoadPlot(const LoadPlot &/*obj*/);
+                    /**
+                     * "Forbidden" copy constructor. Goal: The compiler should warn
+                     * already at compile time for unwanted bugs caused by any misuse
+                     * of the copy constructor.
+                     */
+                    LoadPlot(const LoadPlot &/*obj*/);
 
-	                /**
-	                 * "Forbidden" assignment operator. Goal: The compiler should warn
-	                 * already at compile time for unwanted bugs caused by any misuse
-	                 * of the assignment operator.
-	                 */
-	                LoadPlot& operator=(const LoadPlot &/*obj*/);
+                    /**
+                     * "Forbidden" assignment operator. Goal: The compiler should warn
+                     * already at compile time for unwanted bugs caused by any misuse
+                     * of the assignment operator.
+                     */
+                    LoadPlot& operator=(const LoadPlot &/*obj*/);
 
                 public:
-	                LoadPlot(QWidget* prnt = 0);
+                    LoadPlot(QWidget* prnt = 0);
 
-	                ~LoadPlot();
+                    virtual ~LoadPlot();
 
-	                void addLoadPerModule(std::shared_ptr<LoadPerModule> lpm);
+                    void addLoadPerModule(std::shared_ptr<LoadPerModule> lpm);
 
                 private:
-	                QwtLegend* m_legend;
-	                vector<std::shared_ptr<LoadPerModule> > m_toAdd;
-	                QTimer* m_toAttachVisitor;
+                    QwtLegend* m_legend;
+                    vector<std::shared_ptr<LoadPerModule> > m_toAdd;
+                    QTimer* m_toAttachVisitor;
 
                 private slots:
-	                void attachQueuedLPM();
+                    void attachQueuedLPM();
 
             };
         }

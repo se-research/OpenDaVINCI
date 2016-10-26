@@ -6,16 +6,15 @@
 
 #include <memory>
 
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
-
+#include <opendavinci/odcore/serialization/Deserializer.h>
+#include <opendavinci/odcore/serialization/SerializationFactory.h>
+#include <opendavinci/odcore/serialization/Serializer.h>
 
 #include "test10/generated/Test10Point.h"
 
 	using namespace std;
 	using namespace odcore::base;
+	using namespace odcore::serialization;
 
 
 	Test10Point::Test10Point() :
@@ -91,13 +90,14 @@
 	}
 
 	void Test10Point::accept(odcore::base::Visitor &v) {
-		v.visit(CRC32 < CharList<'x', NullType>  >::RESULT, 0, "Test10Point.x", "x", m_x);
-		v.visit(CRC32 < CharList<'y', NullType>  >::RESULT, 0, "Test10Point.y", "y", m_y);
+		v.beginVisit(ID(), ShortName(), LongName());
+		v.visit(1, "Test10Point.x", "x", m_x);
+		v.visit(2, "Test10Point.y", "y", m_y);
+		v.endVisit();
 	}
 
 	const string Test10Point::toString() const {
 		stringstream s;
-
 
 		s << "X: " << getX() << " ";
 		s << "Y: " << getY() << " ";
@@ -106,27 +106,25 @@
 	}
 
 	ostream& Test10Point::operator<<(ostream &out) const {
-
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
 		std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
-		s->write(CRC32 < CharList<'x', NullType>  >::RESULT,
+		s->write(1,
 				m_x);
-		s->write(CRC32 < CharList<'y', NullType>  >::RESULT,
+		s->write(2,
 				m_y);
 		return out;
 	}
 
 	istream& Test10Point::operator>>(istream &in) {
-
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
 		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
-		d->read(CRC32 < CharList<'x', NullType>  >::RESULT,
+		d->read(1,
 				m_x);
-		d->read(CRC32 < CharList<'y', NullType>  >::RESULT,
+		d->read(2,
 				m_y);
 		return in;
 	}

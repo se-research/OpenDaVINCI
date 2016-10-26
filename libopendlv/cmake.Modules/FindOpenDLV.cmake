@@ -71,12 +71,32 @@ FIND_PACKAGE (OpenGL REQUIRED)
 FIND_PACKAGE (GLUT REQUIRED)
 
 ###########################################################################
+# Find OpenCV.
+SET(OPENCV_ROOT_DIR "/usr")
+IF("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
+    SET(OPENCV_ROOT_DIR "/usr/local")
+ENDIF()
+FIND_PACKAGE (OpenCV REQUIRED)
+
+###########################################################################
 # Set linking libraries.
-SET(OPENDLV_LIBRARIES ${OPENDAVINCI_LIBRARIES}
-                           ${OPENDLV_LIBRARY}
-                           ${OPENGL_gl_LIBRARY}
-                           ${OPENGL_glu_LIBRARY}
-                           ${GLUT_glut_LIBRARY})
+IF("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
+    SET(OPENDLV_LIBRARIES ${OPENDAVINCI_LIBRARIES}
+                               ${OPENDLV_LIBRARY}
+                               ${OPENGL_gl_LIBRARY}
+                               ${OPENGL_glu_LIBRARY}
+                               ${OPENCV_LIBRARIES}
+                               ${GLUT_glut_LIBRARY}
+                               /usr/X11/lib/libglut.3.dylib)
+ELSE()
+    SET(OPENDLV_LIBRARIES ${OPENDAVINCI_LIBRARIES}
+                               ${OPENDLV_LIBRARY}
+                               ${OPENGL_gl_LIBRARY}
+                               ${OPENGL_glu_LIBRARY}
+                               ${OPENCV_LIBRARIES}
+                               ${GLUT_glut_LIBRARY})
+ENDIF()
+
 SET(OPENDLV_INCLUDE_DIRS ${OPENDLV_INCLUDE_DIR})
 
 ###########################################################################

@@ -6,16 +6,15 @@
 
 #include <memory>
 
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
-
+#include <opendavinci/odcore/serialization/Deserializer.h>
+#include <opendavinci/odcore/serialization/SerializationFactory.h>
+#include <opendavinci/odcore/serialization/Serializer.h>
 
 #include "test11/generated/Test11Simple.h"
 
 	using namespace std;
 	using namespace odcore::base;
+	using namespace odcore::serialization;
 
 
 	Test11Simple::Test11Simple() :
@@ -91,13 +90,14 @@
 	}
 
 	void Test11Simple::accept(odcore::base::Visitor &v) {
-		v.visit(CRC32 < CharList<'d', CharList<'a', CharList<'t', CharList<'a', CharList<'1', NullType> > > > >  >::RESULT, 0, "Test11Simple.data1", "data1", m_data1);
-		v.visit(CRC32 < CharList<'d', CharList<'a', CharList<'t', CharList<'a', CharList<'2', NullType> > > > >  >::RESULT, 0, "Test11Simple.data2", "data2", m_data2);
+		v.beginVisit(ID(), ShortName(), LongName());
+		v.visit(1, "Test11Simple.data1", "data1", m_data1);
+		v.visit(2, "Test11Simple.data2", "data2", m_data2);
+		v.endVisit();
 	}
 
 	const string Test11Simple::toString() const {
 		stringstream s;
-
 
 		s << "Data1: " << getData1() << " ";
 		s << "Data2: " << getData2() << " ";
@@ -106,27 +106,25 @@
 	}
 
 	ostream& Test11Simple::operator<<(ostream &out) const {
-
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
 		std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
-		s->write(CRC32 < CharList<'d', CharList<'a', CharList<'t', CharList<'a', CharList<'1', NullType> > > > >  >::RESULT,
+		s->write(1,
 				m_data1);
-		s->write(CRC32 < CharList<'d', CharList<'a', CharList<'t', CharList<'a', CharList<'2', NullType> > > > >  >::RESULT,
+		s->write(2,
 				m_data2);
 		return out;
 	}
 
 	istream& Test11Simple::operator>>(istream &in) {
-
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
 		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
-		d->read(CRC32 < CharList<'d', CharList<'a', CharList<'t', CharList<'a', CharList<'1', NullType> > > > >  >::RESULT,
+		d->read(1,
 				m_data1);
-		d->read(CRC32 < CharList<'d', CharList<'a', CharList<'t', CharList<'a', CharList<'2', NullType> > > > >  >::RESULT,
+		d->read(2,
 				m_data2);
 		return in;
 	}

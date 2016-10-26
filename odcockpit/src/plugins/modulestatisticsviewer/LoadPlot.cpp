@@ -18,10 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <Qt/qtimer.h>
-#include <qframe.h>
-#include <qnamespace.h>
-#include <qstring.h>
+#include <QtCore>
+#include <QtGui>
 
 #ifndef WIN32
 # if !defined(__OpenBSD__) && !defined(__NetBSD__)
@@ -49,11 +47,11 @@ namespace cockpit {
         namespace modulestatisticsviewer {
 
             LoadPlot::LoadPlot(QWidget* prnt) :
-	            QwtPlot(prnt),
-	            m_legend(),
-	            m_toAdd(),
-	            m_toAttachVisitor(){
-	            //set parameter
+                QwtPlot(prnt),
+                m_legend(),
+                m_toAdd(),
+                m_toAttachVisitor(){
+                //set parameter
                 setCanvasBackground(Qt::white);
                 setTitle(QString("ModuleStatistics"));
                 setFrameStyle(QFrame::NoFrame);
@@ -75,16 +73,18 @@ namespace cockpit {
 
             void
             LoadPlot::addLoadPerModule(std::shared_ptr<LoadPerModule> lpm) {
-	            m_toAdd.push_back(lpm);
-	            m_toAttachVisitor->start(100);
+                m_toAdd.push_back(lpm);
+                m_toAttachVisitor->start(100);
             }
 
             void LoadPlot::attachQueuedLPM(){
-	            for (uint32_t i = 0; i < m_toAdd.size(); i++) {
-		            m_toAdd[i]->getCurve()->attach(this);
-	            }
-	            m_toAttachVisitor->stop();
+                for (uint32_t i = 0; i < m_toAdd.size(); i++) {
+                    m_toAdd[i]->getCurve()->attach(this);
+                }
+                m_toAttachVisitor->stop();
             }
+
         }
     }
 }
+

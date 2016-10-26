@@ -21,12 +21,9 @@
 #include <iomanip>
 #include <iostream>
 
+#include <QtCore>
+#include <QtGui>
 #include <QtNetwork>
-#include <Qt/qgridlayout.h>
-#include <Qt/qlabel.h>
-#include <Qt/qspinbox.h>
-#include <qglobal.h>
-#include <qnamespace.h>
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/data/Container.h"

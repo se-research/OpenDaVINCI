@@ -22,8 +22,13 @@
 #include <windows.h>
 #endif
 
-#include <GL/gl.h>
 #include <string>
+
+#ifdef __APPLE__
+    #include <OpenGL/gl.h>
+#else
+    #include <GL/gl.h>
+#endif
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendlv/data/environment/Point3.h"

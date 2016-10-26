@@ -18,7 +18,7 @@
  */
 
 
-#if !defined(WIN32) && !defined(__gnu_hurd__)
+#if !defined(WIN32) && !defined(__gnu_hurd__) && !defined(__APPLE__)
 #include <cstdlib>
 #include <fcntl.h>
 #include <sys/ioctl.h>
@@ -30,7 +30,7 @@
 #include "ControlBehaviour.h"
 #include "JoystickController.h"
 
-#if !defined(WIN32) && !defined(__gnu_hurd__)
+#if !defined(WIN32) && !defined(__gnu_hurd__) && !defined(__APPLE__)
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <cstdlib>
@@ -53,7 +53,7 @@ namespace egocontroller {
         m_lastAxis1(0.0)
     {
         cerr << "Trying to open joystick " << device << endl;
-#if !defined(WIN32) && !defined(__gnu_hurd__)
+#if !defined(WIN32) && !defined(__gnu_hurd__) && !defined(__APPLE__)
         int num_of_axes = 0;
         int num_of_buttons = 0;
 
@@ -83,7 +83,7 @@ namespace egocontroller {
 
     void JoystickController::doWork()
     {
-#if !defined(WIN32) && !defined(__gnu_hurd__)
+#if !defined(WIN32) && !defined(__gnu_hurd__) && !defined(__APPLE__)
         struct js_event js;
         read(m_joy_fd, &js, sizeof(struct js_event));
 

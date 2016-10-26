@@ -25,7 +25,7 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include "opendavinci/odcore/base/Serializable.h"     // for operator<<, operator>>
+#include "opendavinci/odcore/serialization/Serializable.h"     // for operator<<, operator>>
 #include "opendavinci/odcore/data/Container.h"        // for Container, etc
 #include "opendavinci/odcore/data/TimeStamp.h"        // for TimeStamp
 
@@ -117,6 +117,31 @@ class ContainerTest : public CxxTest::TestSuite {
             ts2 = c2.getData<TimeStamp>();
 
             TS_ASSERT(ts.toString() == ts2.toString());
+        }
+
+        void testTimeStamps() {
+            TimeStamp ts(9, 10);
+            Container c1(ts);
+            c1.setSentTimeStamp(TimeStamp(1, 2));
+            c1.setReceivedTimeStamp(TimeStamp(3, 4));
+            c1.setSampleTimeStamp(TimeStamp(5, 6));
+
+            stringstream s;
+            s << c1;
+            s.flush();
+
+            Container c2;
+            s >> c2;
+            TS_ASSERT(c2.getDataType() == ts.getID());
+
+            TimeStamp ts2;
+            ts2 = c2.getData<TimeStamp>();
+
+            TS_ASSERT(ts.toString() == ts2.toString());
+
+            TS_ASSERT(c2.getSentTimeStamp().toString() == c1.getSentTimeStamp().toString());
+            TS_ASSERT(c2.getReceivedTimeStamp().toString() == c1.getReceivedTimeStamp().toString());
+            TS_ASSERT(c2.getSampleTimeStamp().toString() == c1.getSampleTimeStamp().toString());
         }
 };
 

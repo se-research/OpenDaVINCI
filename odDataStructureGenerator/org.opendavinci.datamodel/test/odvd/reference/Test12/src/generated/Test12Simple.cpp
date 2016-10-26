@@ -6,16 +6,15 @@
 
 #include <memory>
 
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
-
+#include <opendavinci/odcore/serialization/Deserializer.h>
+#include <opendavinci/odcore/serialization/SerializationFactory.h>
+#include <opendavinci/odcore/serialization/Serializer.h>
 
 #include "test12/generated/Test12Simple.h"
 
 	using namespace std;
 	using namespace odcore::base;
+	using namespace odcore::serialization;
 
 
 	Test12Simple::Test12Simple() :
@@ -151,18 +150,19 @@
 	}
 
 	void Test12Simple::accept(odcore::base::Visitor &v) {
-		v.visit(1, 0, "Test12Simple.attribute1", "attribute1", m_attribute1);
-		v.visit(2, 0, "Test12Simple.attribute2", "attribute2", m_attribute2);
-		v.visit(3, 0, "Test12Simple.attribute3", "attribute3", m_attribute3);
-		v.visit(4, 0, "Test12Simple.attribute4", "attribute4", m_attribute4);
-		v.visit(5, 0, "Test12Simple.attribute5", "attribute5", m_attribute5);
-		v.visit(6, 0, "Test12Simple.attribute6", "attribute6", m_attribute6);
-		v.visit(7, 0, "Test12Simple.attribute7", "attribute7", m_attribute7);
+		v.beginVisit(ID(), ShortName(), LongName());
+		v.visit(1, "Test12Simple.attribute1", "attribute1", m_attribute1);
+		v.visit(2, "Test12Simple.attribute2", "attribute2", m_attribute2);
+		v.visit(3, "Test12Simple.attribute3", "attribute3", m_attribute3);
+		v.visit(4, "Test12Simple.attribute4", "attribute4", m_attribute4);
+		v.visit(5, "Test12Simple.attribute5", "attribute5", m_attribute5);
+		v.visit(6, "Test12Simple.attribute6", "attribute6", m_attribute6);
+		v.visit(7, "Test12Simple.attribute7", "attribute7", m_attribute7);
+		v.endVisit();
 	}
 
 	const string Test12Simple::toString() const {
 		stringstream s;
-
 
 		s << "Attribute1: " << getAttribute1() << " ";
 		s << "Attribute2: " << getAttribute2() << " ";
@@ -176,33 +176,45 @@
 	}
 
 	ostream& Test12Simple::operator<<(ostream &out) const {
-
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
 		std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
-		s->write(1, m_attribute1);
-		s->write(2, m_attribute2);
-		s->write(3, m_attribute3);
-		s->write(4, m_attribute4);
-		s->write(5, m_attribute5);
-		s->write(6, m_attribute6);
-		s->write(7, m_attribute7);
+		s->write(1,
+				m_attribute1);
+		s->write(2,
+				m_attribute2);
+		s->write(3,
+				m_attribute3);
+		s->write(4,
+				m_attribute4);
+		s->write(5,
+				m_attribute5);
+		s->write(6,
+				m_attribute6);
+		s->write(7,
+				m_attribute7);
 		return out;
 	}
 
 	istream& Test12Simple::operator>>(istream &in) {
-
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
 		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
-		d->read(1, m_attribute1);
-		d->read(2, m_attribute2);
-		d->read(3, m_attribute3);
-		d->read(4, m_attribute4);
-		d->read(5, m_attribute5);
-		d->read(6, m_attribute6);
-		d->read(7, m_attribute7);
+		d->read(1,
+				m_attribute1);
+		d->read(2,
+				m_attribute2);
+		d->read(3,
+				m_attribute3);
+		d->read(4,
+				m_attribute4);
+		d->read(5,
+				m_attribute5);
+		d->read(6,
+				m_attribute6);
+		d->read(7,
+				m_attribute7);
 		return in;
 	}

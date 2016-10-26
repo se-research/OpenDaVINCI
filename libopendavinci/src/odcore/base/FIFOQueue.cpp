@@ -75,7 +75,7 @@ namespace odcore {
             return container;
         }
 
-        void FIFOQueue::add(const Container &container) {
+        void FIFOQueue::add(Container &container) {
             enter(container);
         }
 

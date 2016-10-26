@@ -19,16 +19,20 @@
 
 #include <fcntl.h>
 
+#include <fstream>
 #include <iostream>
+#include <string>
+#include <sstream>
+#include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/module/AbstractCIDModule.h"
+#include <opendavinci/odcore/strings/StringToolbox.h>
 
 #include "automotivedata/generated/automotive/GenericCANMessage.h"
 
 #include "CANDevice.h"
 #include "GenericCANMessageListener.h"
-#include "MessageToCANDataStore.h"
 
 namespace automotive {
     namespace odcantools {
@@ -41,7 +45,7 @@ namespace automotive {
             m_deviceNode(deviceNode),
             m_handle(NULL),
             m_listener(listener),
-            m_messageToCANDataStore() {
+            m_deviceDriverStartTime() {
             CLOG << "[CANDevice] Opening " << m_deviceNode << "... ";
             m_handle = LINUX_CAN_Open(m_deviceNode.c_str(), O_RDWR);
             if (m_handle == NULL) {
@@ -49,12 +53,27 @@ namespace automotive {
             }
             else {
                 CLOG << "done." << endl;
-            }
 
-            // Create the MessageToCANDataStore to write Containers to the CAN bus.
-            // This needs to be an unique_ptr due to the circular dependencies between
-            // the two classes.
-            m_messageToCANDataStore = unique_ptr<MessageToCANDataStore>(new MessageToCANDataStore(*this));
+                {
+                    // Read time point when device driver was loaded.
+                    ifstream pcanStartTimeProcFile("/proc/pcan.starttime", ios::in);
+                    if (pcanStartTimeProcFile.good()) {
+                        string pcanStartTime;
+                        getline(pcanStartTimeProcFile, pcanStartTime);
+                        vector<string> tokens = odcore::strings::StringToolbox::split(pcanStartTime, '.');
+                        if (tokens.size() == 2) {
+                            stringstream sstrSeconds; uint64_t seconds = 0;
+                            sstrSeconds << tokens.at(0); sstrSeconds >> seconds;
+
+                            stringstream sstrMicroseconds; uint64_t microseconds = 0;
+                            sstrMicroseconds << tokens.at(1); sstrMicroseconds >> microseconds;
+
+                            m_deviceDriverStartTime = TimeStamp(seconds, microseconds);
+                            CLOG << "[CANDevice] Kernel module start time: " << m_deviceDriverStartTime.getYYYYMMDD_HHMMSSms() << endl;
+                        }
+                    }
+                }
+            }
         }
 
         CANDevice::~CANDevice() {
@@ -63,10 +82,6 @@ namespace automotive {
                 CAN_Close(m_handle);
             }
             CLOG << "done." << endl;
-        }
-
-        MessageToCANDataStore& CANDevice::getMessageToCANDataStore() {
-            return *m_messageToCANDataStore;
         }
 
         bool CANDevice::isOpen() const {
@@ -82,12 +97,12 @@ namespace automotive {
                 msg.LEN = LENGTH;
                 uint64_t data = gcm.getData();
                 for (uint8_t i = 0; i < LENGTH; i++) {
-                    msg.DATA[i] = (data & 0xFF);
+                    msg.DATA[LENGTH-1-i] = (data & 0xFF);
                     data = data >> 8;
                 }
                 int32_t errorCode = CAN_Write(m_handle, &msg);
 
-                CLOG1 << "[CANDevice] Writing ID = " << msg.ID << ", LEN = " << msg.LEN << ", errorCode = " << errorCode << endl;
+                CLOG1 << "[CANDevice] Writing ID = " << msg.ID << ", LEN = " << +msg.LEN << ", errorCode = " << errorCode << endl;
             }
         }
 
@@ -99,24 +114,31 @@ namespace automotive {
             while ( (m_handle != NULL) && 
                     isRunning() ) {
                 TPCANRdMsg message;
-                const int32_t TIMEOUT_IN_MICROSECONDS = 1000*1000;
+                const int32_t TIMEOUT_IN_MICROSECONDS = 1000 * 1000;
                 int32_t errorCode = LINUX_CAN_Read_Timeout(m_handle, &message, TIMEOUT_IN_MICROSECONDS);
 
                 if ( !(errorCode < 0) && (errorCode != CAN_ERR_QRCVEMPTY) ) {
                     CLOG1 << "[CANDevice] ID = " << message.Msg.ID << ", LEN = " << message.Msg.LEN << ", DATA = ";
 
                     // Set time stamp from driver.
-                    TimeStamp driverTimeStamp(message.dwTime, message.wUsec);
+                    const uint64_t TIME_IN_MICROSECONDS =
+                          m_deviceDriverStartTime.toMicroseconds()
+                        + (message.dwTime * 1000 + message.wUsec);
+                    const TimeStamp absoluteDriverTimeStamp(TIME_IN_MICROSECONDS / 1000000L, TIME_IN_MICROSECONDS % 1000000L);
+//{
+//    TimeStamp now;
+//    cout << "dwTime = " << message.dwTime << ", message.wUsec = " << message.wUsec << ", TIM = " << TIME_IN_MICROSECONDS << ", ABS = " << absoluteDriverTimeStamp.toString() << endl << " hr = " << absoluteDriverTimeStamp.getYYYYMMDD_HHMMSSms() << endl << " nw = " << now.getYYYYMMDD_HHMMSSms() << endl;
+//}
 
                     // Create generic CAN message representation.
                     GenericCANMessage gcm;
-                    gcm.setDriverTimeStamp(driverTimeStamp);
+                    gcm.setDriverTimeStamp(absoluteDriverTimeStamp);
                     gcm.setIdentifier(message.Msg.ID);
                     gcm.setLength(message.Msg.LEN);
                     uint64_t data = 0;
                     for (uint8_t i = 0; i < message.Msg.LEN; i++) {
                         CLOG1 << static_cast<uint32_t>(message.Msg.DATA[i]) << " ";
-                        data |= (message.Msg.DATA[i] << (i*8));
+                        data |= (static_cast<uint64_t>(message.Msg.DATA[i]) << ((message.Msg.LEN-1-i)*8));
                     }
                     CLOG1 << endl;
                     gcm.setData(data);

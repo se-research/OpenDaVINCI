@@ -18,36 +18,30 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <Qt/qgridlayout.h>
-#include <Qt/qtreewidget.h>
-#include <qstring.h>
-#include <qstringlist.h>
+#ifdef HAVE_DL
+    #include <dlfcn.h>
+    #include <experimental/filesystem>
+#endif
+
+#include <QtCore>
+#include <QtGui>
 
 #include <cstring>
+#include <iostream>
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/base/Visitable.h"
+#include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/data/TimeStamp.h"
-#include "automotivedata/generated/automotive/ForceControl.h"
-#include "automotivedata/generated/automotive/GenericCANMessage.h"
-#include "automotivedata/generated/automotive/VehicleData.h"
-#include "automotivedata/generated/automotive/miniature/UserButtonData.h"
-#include "automotivedata/generated/automotive/vehicle/WheelSpeed.h"
-#include "opendavinci/generated/odcore/data/Configuration.h"
-#include "opendavinci/generated/odcore/data/SharedData.h"
-#include "opendavinci/generated/odcore/data/dmcp/DiscoverMessage.h"
-#include "opendavinci/generated/odcore/data/dmcp/ModuleDescriptor.h"
-#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
-#include "opendavinci/generated/odcore/data/dmcp/ModuleStateMessage.h"
-#include "opendavinci/generated/odcore/data/dmcp/ModuleStatistics.h"
-#include "opendavinci/generated/odcore/data/dmcp/RuntimeStatistic.h"
-#include "opendavinci/generated/odcore/data/image/SharedImage.h"
-#include "opendavinci/generated/odcore/data/player/PlayerCommand.h"
-#include "opendavinci/generated/odcore/data/recorder/RecorderCommand.h"
+#include "opendavinci/odcore/reflection/Message.h"
+#include "opendavinci/odcore/strings/StringToolbox.h"
+
 #include "plugins/livefeed/LiveFeedWidget.h"
 #include "plugins/livefeed/MessageToTupleVisitor.h"
+
+#include "opendavinci/GeneratedHeaders_OpenDaVINCI_Helper.h"
+#include "automotivedata/GeneratedHeaders_AutomotiveData_Helper.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }
 
@@ -60,11 +54,38 @@ namespace cockpit {
             using namespace std;
             using namespace odcore::base;
             using namespace odcore::data;
+            using namespace odcore::reflection;
 
-            LiveFeedWidget::LiveFeedWidget(const PlugIn &/*plugIn*/, QWidget *prnt) :
+            HelperEntry::HelperEntry() : 
+                 m_library(""),
+                 m_dynamicObjectHandle(NULL),
+                 m_helper(NULL)
+            {}
+
+            HelperEntry::HelperEntry(const HelperEntry &obj) :
+                m_library(obj.m_library),
+                m_dynamicObjectHandle(obj.m_dynamicObjectHandle),
+                m_helper(obj.m_helper)
+            {}
+
+            HelperEntry& HelperEntry::operator=(const HelperEntry &obj) {
+                m_library = obj.m_library;
+                m_dynamicObjectHandle = obj.m_dynamicObjectHandle;
+                m_helper = obj.m_helper;
+                return *this;
+            }
+
+            HelperEntry::~HelperEntry() {}
+
+            ///////////////////////////////////////////////////////////////////
+
+            LiveFeedWidget::LiveFeedWidget(const odcore::base::KeyValueConfiguration &kvc, const PlugIn &/*plugIn*/, QWidget *prnt) :
                 QWidget(prnt),
+                m_dataViewMutex(),
                 m_dataView(),
-                m_dataToType() {
+                m_dataToType(),
+                m_listOfLibrariesToLoad(),
+                m_listOfHelpers() {
                 // Set size.
                 setMinimumSize(640, 480);
 
@@ -85,201 +106,184 @@ namespace cockpit {
 
                 // Set layout manager.
                 setLayout(mainBox);
+
+                // Try to load shared libaries.
+                const string SEARCH_PATH = kvc.getValue<string>("odcockpit.directoriesForSharedLibaries");
+                cout << "[odcockpit/livefeed] Trying to find libodvd*.so files in: " << SEARCH_PATH << endl;
+
+                const vector<string> paths = odcore::strings::StringToolbox::split(SEARCH_PATH, ',');
+                m_listOfLibrariesToLoad = getListOfLibrariesToLoad(paths);
+
+                findAndLoadSharedLibraries();
             }
 
-            LiveFeedWidget::~LiveFeedWidget() {}
+            LiveFeedWidget::~LiveFeedWidget() {
+                unloadSharedLibraries();
+            }
+
+            vector<string> LiveFeedWidget::getListOfLibrariesToLoad(const vector<string> &paths) {
+                vector<string> librariesToLoad;
+#ifndef HAVE_DL
+                (void)paths;
+#endif
+
+#ifdef HAVE_DL
+                for(auto pathToSearch : paths) {
+                    try {
+                        for(auto &pathElement : std::experimental::filesystem::recursive_directory_iterator(pathToSearch)) {
+                            stringstream sstr;
+                            sstr << pathElement;
+                            string entry = sstr.str();
+                            if (entry.find("libodvd") != string::npos) {
+                                if (entry.find(".so") != string::npos) {
+                                    vector<string> path = odcore::strings::StringToolbox::split(entry, '/');
+                                    if (path.size() > 0) {
+                                        string lib = path[path.size()-1];
+                                        if (lib.size() > 0) {
+                                            lib = lib.substr(0, lib.size()-1);
+                                            librariesToLoad.push_back(lib);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch(...) {}
+                }
+#endif
+                return librariesToLoad;
+            }
+
+            void LiveFeedWidget::findAndLoadSharedLibraries() {
+#ifdef HAVE_DL
+                auto it = m_listOfLibrariesToLoad.begin();
+                while (it != m_listOfLibrariesToLoad.end()) {
+                    const string libraryToLoad = *it;
+
+                    {
+                        HelperEntry e;
+
+                        cout << "[odcockpit/livefeed] Opening '" + libraryToLoad + "'..." << endl;
+                        e.m_dynamicObjectHandle = dlopen(libraryToLoad.c_str(), RTLD_LAZY);
+
+                        if (!e.m_dynamicObjectHandle) {
+                            cerr << "[odcockpit/livefeed] Cannot open library '" + libraryToLoad + "': " << dlerror() << endl;
+                        }
+                        else {
+                            typedef odcore::reflection::Helper *createHelper_t();
+
+                            // reset errors
+                            dlerror();
+                            createHelper_t* getHelper = (createHelper_t*) dlsym(e.m_dynamicObjectHandle, "newHelper");
+                            const char *dlsym_error = dlerror();
+                            if (dlsym_error) {
+                                cerr << "[odcockpit/livefeed] Cannot load symbol 'newHelper' from '" + libraryToLoad + "': " << dlsym_error << endl;
+                                dlclose(e.m_dynamicObjectHandle);
+                            }
+                            else {
+                                // Get pointer to external message handling.
+                                e.m_helper = getHelper();
+                                e.m_library = libraryToLoad;
+                                m_listOfHelpers.push_back(e);
+                            }
+                        }
+                    }
+
+                    it++;
+                }
+#endif
+            }
+
+            void LiveFeedWidget::unloadSharedLibraries() {
+#ifdef HAVE_DL
+                auto it = m_listOfHelpers.begin();
+                while (it != m_listOfHelpers.end()) {
+                    HelperEntry e = *it;
+
+                    // Type to refer to the destroy method inside the shared library.
+                    typedef void deleteHelper_t(odcore::reflection::Helper *);
+
+                    // Reset error messages from dynamically loading shared object.
+                    dlerror();
+                    deleteHelper_t* delHelper = (deleteHelper_t*) dlsym(e.m_dynamicObjectHandle, "deleteHelper");
+                    const char *dlsym_error = dlerror();
+                    if (dlsym_error) {
+                        cerr << "[odcockpit/livefeed] Cannot load symbol 'deleteHelper': " << dlsym_error << endl;
+                    }
+                    else {
+                        cout << "[odcockpit/livefeed] Closing link to '" + e.m_library + "'" << endl;
+                        delHelper(e.m_helper);
+                    }
+                    dlclose(e.m_dynamicObjectHandle);
+
+                    it++;
+                }
+#endif
+            }
 
             void LiveFeedWidget::nextContainer(Container &container) {
+                Lock l(m_dataViewMutex);
                 transformContainerToTree(container);
             }
 
-            void LiveFeedWidget::addMessageToTree(const string &messageName, odcore::data::Container &container, odcore::base::Visitable &v) {
-                //create new Header if needed
-                if (m_dataToType.find(messageName) == m_dataToType.end()) {
-                    QTreeWidgetItem *newHeader = new QTreeWidgetItem(m_dataView.get());
-                    newHeader->setText(0, messageName.c_str());
-                    m_dataToType[messageName] = newHeader;
-                }
-
-                vector<pair<string, string> > entries;
-                entries.push_back(make_pair("Sent", container.getSentTimeStamp().getYYYYMMDD_HHMMSSms()));
-                entries.push_back(make_pair("Received", container.getReceivedTimeStamp().getYYYYMMDD_HHMMSSms()));
-
-                // Map attributes from message to the entries.
-                MessageToTupleVisitor mttv(entries);
-                v.accept(mttv);
-
-                QTreeWidgetItem *entry = m_dataToType[messageName];
-                if (static_cast<uint32_t>(entry->childCount()) != entries.size()) {
-                    entry->takeChildren();
-
-                    for (uint32_t i = 0; i < entries.size(); i++) {
-                        QTreeWidgetItem *sent = new QTreeWidgetItem();
-                        entry->insertChild(i, sent);
-                    }
-                }
-
-                // Map tuples of <string, string> to the tree.
-                for (uint32_t i = 0; i < entries.size(); i++) {
-                    QTreeWidgetItem *child = entry->child(i);
-                    child->setText(0, entries.at(i).first.c_str());
-                    child->setText(1, entries.at(i).second.c_str());
-                }
-            }
-
             void LiveFeedWidget::transformContainerToTree(Container &container) {
-/*
-                if (container.getDataType() == coredata::dmcp::ModuleStatistics::ID()) {
-                    coredata::dmcp::ModuleStatistics tmp = container.getData<coredata::dmcp::ModuleStatistics>();
-                    if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                        addMessageToTree(tmp.LongName(), container, tmp);
-                    }
-                    return;
-                }
-*/
+                // Map attributes from message to the entries.
+                bool successfullyMapped = false;
+                Message msg;
 
-                if (container.getDataType() == automotive::VehicleData::ID()) {
-                    automotive::VehicleData tmp = container.getData<automotive::VehicleData>();
-                    if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                        addMessageToTree(tmp.LongName(), container, tmp);
-                    }
-                    return;
+                // Try AutomotiveData first.
+                if (!successfullyMapped) {
+                    msg = GeneratedHeaders_AutomotiveData_Helper::__map(container, successfullyMapped);
                 }
 
-/*
-                switch (container.getDataType()) {
-                    case Container::CONFIGURATION:
-                    {
-                        odcore::data::Configuration tmp = container.getData<odcore::data::Configuration>();
-                        if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                            addMessageToTree(tmp.LongName(), container, tmp);
-                        }
-                        break;
-                    }
-                    case Container::FORCECONTROL:
-                    {
-                        automotive::ForceControl tmp = container.getData<automotive::ForceControl>();
-                        if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                            addMessageToTree(tmp.LongName(), container, tmp);
-                        }
-                        break;
-                    }
-                    case Container::DMCP_DISCOVER:
-                    {
-                        odcore::data::dmcp::DiscoverMessage tmp = container.getData<odcore::data::dmcp::DiscoverMessage>();
-                        if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                            addMessageToTree(tmp.LongName(), container, tmp);
-                        }
-                        break;
-                    }
-                    case Container::DMCP_CONFIGURATION_REQUEST:
-                    {
-                        odcore::data::dmcp::ModuleDescriptor tmp = container.getData<odcore::data::dmcp::ModuleDescriptor>();
-                        if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                            addMessageToTree(tmp.LongName(), container, tmp);
-                        }
-                        break;
-                    }
-                    case Container::DMCP_MODULESTATEMESSAGE:
-                    {
-                        odcore::data::dmcp::ModuleStateMessage tmp = container.getData<odcore::data::dmcp::ModuleStateMessage>();
-                        if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                            addMessageToTree(tmp.LongName(), container, tmp);
-                        }
-                        break;
-                    }
-                    case Container::DMCP_MODULEEXITCODEMESSAGE:
-                    {
-                        odcore::data::dmcp::ModuleExitCodeMessage tmp = container.getData<odcore::data::dmcp::ModuleExitCodeMessage>();
-                        if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                            addMessageToTree(tmp.LongName(), container, tmp);
-                        }
-                        break;
-                    }
-                    case Container::MODULESTATISTICS:
-                    {
-                        odcore::data::dmcp::ModuleStatistics tmp = container.getData<odcore::data::dmcp::ModuleStatistics>();
-                        if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                            addMessageToTree(tmp.LongName(), container, tmp);
-                        }
-                        break;
-                    }
-                    case Container::VEHICLEDATA:
-                    {
-                        automotive::VehicleData tmp = container.getData<automotive::VehicleData>();
-                        if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                            addMessageToTree(tmp.LongName(), container, tmp);
-                        }
-                        break;
-                    }
-                    case Container::PLAYER_COMMAND:
-                    {
-                        odcore::data::player::PlayerCommand tmp = container.getData<odcore::data::player::PlayerCommand>();
-                        if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                            addMessageToTree(tmp.LongName(), container, tmp);
-                        }
-                        break;
-                    }
-                    case Container::RECORDER_COMMAND:
-                    {
-                        odcore::data::recorder::RecorderCommand tmp = container.getData<odcore::data::recorder::RecorderCommand>();
-                        if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                            addMessageToTree(tmp.LongName(), container, tmp);
-                        }
-                        break;
-                    }
-                    case Container::RUNTIMESTATISTIC:
-                    {
-                        odcore::data::dmcp::RuntimeStatistic tmp = container.getData<odcore::data::dmcp::RuntimeStatistic>();
-                        if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                            addMessageToTree(tmp.LongName(), container, tmp);
-                        }
-                        break;
-                    }
-                    case Container::SHARED_DATA:
-                    {
-                        odcore::data::SharedData tmp = container.getData<odcore::data::SharedData>();
-                        if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                            addMessageToTree(tmp.LongName(), container, tmp);
-                        }
-                        break;
-                    }
-                    case Container::SHARED_IMAGE:
-                    {
-                        odcore::data::image::SharedImage tmp = container.getData<odcore::data::image::SharedImage>();
-                        if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                            addMessageToTree(tmp.LongName(), container, tmp);
-                        }
-                        break;
-                    }
-                    case Container::USER_BUTTON:
-                    {
-                        automotive::miniature::UserButtonData tmp = container.getData<automotive::miniature::UserButtonData>();
-                        if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                            addMessageToTree(tmp.LongName(), container, tmp);
-                        }
-                        break;
-                    }
-                    case Container::GENERIC_CAN_MESSAGE:
-                    {
-                        automotive::GenericCANMessage tmp = container.getData<automotive::GenericCANMessage>();
-                        if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                            addMessageToTree(tmp.LongName(), container, tmp);
-                        }
-                        break;
-                    }
-                    case Container::WHEELSPEED:
-                    {
-                        automotive::vehicle::WheelSpeed tmp = container.getData<automotive::vehicle::WheelSpeed>();
-                        if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                            addMessageToTree(tmp.LongName(), container, tmp);
-                        }
-                        break;
-                    }
-                    default:
-                    break;
+                // If failed, try regular OpenDaVINCI messages.
+                if (!successfullyMapped) {
+                    msg = GeneratedHeaders_OpenDaVINCI_Helper::__map(container, successfullyMapped);
                 }
-*/
+
+                // Try dynamic shared object as last.
+                if (!successfullyMapped && (m_listOfHelpers.size() > 0)) {
+                    auto it = m_listOfHelpers.begin();
+                    while ( (!successfullyMapped) && (it != m_listOfHelpers.end())) {
+                        HelperEntry e = *it;
+                        msg = e.m_helper->map(container, successfullyMapped);
+                        it++;
+                    }
+                }
+
+                if (successfullyMapped) {
+                    vector<pair<string, string> > entries;
+                    entries.push_back(make_pair("Sent", container.getSentTimeStamp().getYYYYMMDD_HHMMSSms()));
+                    entries.push_back(make_pair("Received", container.getReceivedTimeStamp().getYYYYMMDD_HHMMSSms()));
+                    entries.push_back(make_pair("Sample time", container.getSampleTimeStamp().getYYYYMMDD_HHMMSSms()));
+
+                    MessageToTupleVisitor mttv(entries);
+                    msg.accept(mttv);
+
+                    //create new Header if needed
+                    if (m_dataToType.find(msg.getLongName()) == m_dataToType.end()) {
+                        QTreeWidgetItem *newHeader = new QTreeWidgetItem(m_dataView.get());
+                        newHeader->setText(0, msg.getLongName().c_str());
+                        m_dataToType[msg.getLongName()] = newHeader;
+                    }
+
+                    QTreeWidgetItem *entry = m_dataToType[msg.getLongName()];
+                    if (static_cast<uint32_t>(entry->childCount()) != entries.size()) {
+                        entry->takeChildren();
+
+                        for (uint32_t i = 0; i < entries.size(); i++) {
+                            QTreeWidgetItem *sent = new QTreeWidgetItem();
+                            entry->insertChild(i, sent);
+                        }
+                    }
+
+                    // Map tuples of <string, string> to the tree.
+                    for (uint32_t i = 0; i < entries.size(); i++) {
+                        QTreeWidgetItem *child = entry->child(i);
+                        child->setText(0, entries.at(i).first.c_str());
+                        child->setText(1, entries.at(i).second.c_str());
+                    }
+                }
             }
         }
     }

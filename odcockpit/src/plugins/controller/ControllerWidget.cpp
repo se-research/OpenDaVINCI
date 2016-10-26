@@ -18,18 +18,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <Qt/qcheckbox.h>
-#include <Qt/qevent.h>
-#include <Qt/qgroupbox.h>
-#include <Qt/qlabel.h>
-#include <Qt/qpushbutton.h>
-#include <Qt/qspinbox.h>
-#include <Qt/qtimer.h>
-#include <qboxlayout.h>
-#include <qnamespace.h>
-#include <qstring.h>
+#include <QtCore>
+#include <QtGui>
 
 #include <string>
+#include <iostream>
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/Lock.h"
@@ -58,6 +51,9 @@ namespace cockpit {
                 m_conference(conf),
                 m_vehicleControlMutex(),
                 m_vehicleControl(),
+                m_accelerationInc(0.0),
+                m_speedInc(0.0),
+                m_steeringWheelInc(0.0),
                 m_HzMutex(),
                 m_Hz(10),
                 m_counter(0),
@@ -230,44 +226,45 @@ namespace cockpit {
                 }
             }
 
+            void ControllerWidget::keyReleaseEvent(QKeyEvent *evt) {
+                if(!evt->isAutoRepeat())
+                {
+                    if(evt->key() == Qt::Key_W || evt->key() == Qt::Key_S)
+                        m_accelerationInc=0.0;
+                    if(evt->key() == Qt::Key_Up || evt->key() == Qt::Key_Down)
+                        m_speedInc=0.0;
+                    if(evt->key() == Qt::Key_Left || evt->key() == Qt::Key_Right)
+                        m_steeringWheelInc=0.0;
+                }
+            }
+            
             void ControllerWidget::keyPressEvent(QKeyEvent *evt) {
-                switch(evt->key()){
-                    case Qt::Key_W:
-                        {
-                            Lock l2(m_vehicleControlMutex);
-                            m_vehicleControl.setAcceleration(m_vehicleControl.getAcceleration() + 0.25);
-                            break;
-                        }
-                    case Qt::Key_S:
-                        {
-                            Lock l2(m_vehicleControlMutex);
-                            m_vehicleControl.setAcceleration(m_vehicleControl.getAcceleration() - 0.25);
-                            break;
-                        }
-                    case Qt::Key_Up:
-                        {
-                            Lock l2(m_vehicleControlMutex);
-                            m_vehicleControl.setSpeed(m_vehicleControl.getSpeed() + 0.5);
-                            break;
-                        }
-                    case Qt::Key_Down:
-                        {
-                            Lock l2(m_vehicleControlMutex);
-                            m_vehicleControl.setSpeed(m_vehicleControl.getSpeed() - 0.5);
-                            break;
-                        }
-                    case Qt::Key_Left:
-                        {
-                            Lock l2(m_vehicleControlMutex);
-                            m_vehicleControl.setSteeringWheelAngle(m_vehicleControl.getSteeringWheelAngle() - 1*cartesian::Constants::DEG2RAD);
-                            break;
-                        }
-                    case Qt::Key_Right:
-                        {
-                            Lock l2(m_vehicleControlMutex);
-                            m_vehicleControl.setSteeringWheelAngle(m_vehicleControl.getSteeringWheelAngle() + 1*cartesian::Constants::DEG2RAD);
-                            break;
-                        }
+                uint8_t validKeyPressed=0;
+                
+                if(evt->key() == Qt::Key_W)
+                    m_accelerationInc=0.25;
+                else if(evt->key() == Qt::Key_S)
+                    m_accelerationInc=-0.25;
+                else validKeyPressed+=1;
+                
+                if(evt->key() == Qt::Key_Up)
+                    m_speedInc=0.5;
+                else if(evt->key() == Qt::Key_Down)
+                    m_speedInc=-0.5;
+                else validKeyPressed+=1;
+                
+                if(evt->key() == Qt::Key_Left)
+                    m_steeringWheelInc=-1*cartesian::Constants::DEG2RAD;
+                else if(evt->key() == Qt::Key_Right)
+                    m_steeringWheelInc=1*cartesian::Constants::DEG2RAD;
+                else validKeyPressed+=1;
+                
+                if(validKeyPressed<3)
+                {
+                    Lock l2(m_vehicleControlMutex);
+                    m_vehicleControl.setAcceleration(m_vehicleControl.getAcceleration() + m_accelerationInc);
+                    m_vehicleControl.setSpeed(m_vehicleControl.getSpeed() + m_speedInc);
+                    m_vehicleControl.setSteeringWheelAngle(m_vehicleControl.getSteeringWheelAngle() + m_steeringWheelInc);
                 }
             }
         }

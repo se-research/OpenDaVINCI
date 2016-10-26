@@ -2,4 +2,9 @@
  * THIS IS A GENERATED FILE - CHANGES WILL BE OVERWRITTEN.
  */
 
+#ifndef GENERATEDHEADERS_TEST14_H
+#define GENERATEDHEADERS_TEST14_H
+
 #include "test14/generated/subpackage/Test14Simple.h"
+
+#endif //GENERATEDHEADERS_TEST14_H

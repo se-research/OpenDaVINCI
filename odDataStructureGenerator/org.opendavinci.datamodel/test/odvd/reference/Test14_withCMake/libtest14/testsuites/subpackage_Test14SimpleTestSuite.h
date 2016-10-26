@@ -15,10 +15,11 @@
 #include <string>
 #include <vector>
 
-#include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/strings/StringToolbox.h"
+#include <opendavinci/odcore/opendavinci.h>
+#include <opendavinci/odcore/strings/StringToolbox.h>
 
 #include "test14/GeneratedHeaders_Test14.h"
+#include "test14/generated/subpackage/Test14Simple.h"
 
 
 class subpackage_Test14Simple_TestSuite : public CxxTest::TestSuite {

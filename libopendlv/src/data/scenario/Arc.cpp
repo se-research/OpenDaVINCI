@@ -17,14 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <memory>
 #include <ostream>
 #include <string>
 
-#include <memory>
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
+#include "opendavinci/odcore/serialization/Deserializer.h"
+#include "opendavinci/odcore/serialization/SerializationFactory.h"
+#include "opendavinci/odcore/serialization/Serializer.h"
 #include "opendlv/data/scenario/Arc.h"
 #include "opendlv/data/scenario/LaneModel.h"
 #include "opendlv/data/scenario/ScenarioVisitor.h"
@@ -125,21 +124,17 @@ namespace opendlv {
                 // Serializer super class.
                 StraightLine::operator<<(out);
 
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Serializer> s = sf.getSerializer(out);
+                std::shared_ptr<odcore::serialization::Serializer> s = sf.getQueryableNetstringsSerializer(out);
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('r', 'a', 'd', 'i', 'u', 's') >::RESULT,
-                        getRadius());
+                s->write(1, getRadius());
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('b', 'e', 'g', 'i', 'n') >::RESULT,
-                        getBeginInterval());
+                s->write(2, getBeginInterval());
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('e', 'n', 'd') >::RESULT,
-                        getEndInterval());
+                s->write(3, getEndInterval());
 
-                s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('r', 'o', 't', 'z') >::RESULT,
-                        getRotationZ());
+                s->write(4, getRotationZ());
 
                 return out;
             }
@@ -148,21 +143,17 @@ namespace opendlv {
                 // Deserializer super class.
                 StraightLine::operator>>(in);
 
-                SerializationFactory& sf=SerializationFactory::getInstance();
+                odcore::serialization::SerializationFactory& sf=odcore::serialization::SerializationFactory::getInstance();
 
-                std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
+                std::shared_ptr<odcore::serialization::Deserializer> d = sf.getQueryableNetstringsDeserializer(in);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('r', 'a', 'd', 'i', 'u', 's') >::RESULT,
-                       m_radius);
+                d->read(1, m_radius);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('b', 'e', 'g', 'i', 'n') >::RESULT,
-                       m_beginInterval);
+                d->read(2, m_beginInterval);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('e', 'n', 'd') >::RESULT,
-                       m_endInterval);
+                d->read(3, m_endInterval);
 
-                d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('r', 'o', 't', 'z') >::RESULT,
-                       m_rotationZ);
+                d->read(4, m_rotationZ);
 
                 return in;
             }

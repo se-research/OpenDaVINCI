@@ -23,6 +23,7 @@
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Visitable.h"
 #include "opendavinci/odcore/data/SerializableData.h"
 
 namespace odcore {
@@ -35,7 +36,8 @@ namespace odcore {
              * This class provides information about a compressed image using
              * JPEG encoding based on IJG.
              */
-            class OPENDAVINCI_API CompressedImage : public odcore::data::SerializableData {
+            class OPENDAVINCI_API CompressedImage : public odcore::data::SerializableData,
+                                                    public odcore::base::Visitable {
                 public:
                     CompressedImage();
 
@@ -156,6 +158,9 @@ namespace odcore {
                     static int32_t ID();
                     static const string ShortName();
                     static const string LongName();
+
+                public:
+                    virtual void accept(odcore::base::Visitor &v);
 
                 private:
                     string m_name;

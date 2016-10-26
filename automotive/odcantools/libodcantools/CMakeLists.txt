@@ -81,14 +81,12 @@ FILE(GLOB_RECURSE thisproject-sources "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 # Resulting artifacts.
 ADD_LIBRARY (odcantools-core   OBJECT ${thisproject-sources})
 ADD_LIBRARY (odcantools-static STATIC $<TARGET_OBJECTS:odcantools-core>)
-IF(    (NOT WIN32)
-   AND (NOT ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")) )
+IF(NOT WIN32)
     ADD_LIBRARY (odcantools    SHARED $<TARGET_OBJECTS:odcantools-core>)
 ENDIF()
 
 TARGET_LINK_LIBRARIES(odcantools-static ${LIBRARIES})
-IF(    (NOT WIN32)
-   AND (NOT ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")) )
+IF(NOT WIN32)
     TARGET_LINK_LIBRARIES(odcantools    ${LIBRARIES})
 ENDIF()
 
@@ -127,8 +125,7 @@ ENDIF(CXXTEST_FOUND)
 ###############################################################################
 # Install this project.
 INSTALL(TARGETS odcantools-static DESTINATION lib COMPONENT odcantools)
-IF(    (NOT WIN32)
-   AND (NOT ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")) )
+IF(NOT WIN32)
     INSTALL(TARGETS odcantools    DESTINATION lib COMPONENT odcantools)
 ENDIF()
 

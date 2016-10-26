@@ -18,14 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <Qt/qfiledialog.h>
-#include <Qt/qlabel.h>
-#include <Qt/qpushbutton.h>
-#include <Qt/qscrollarea.h>
-#include <Qt/qtimer.h>
-#include <qboxlayout.h>
-#include <qframe.h>
-#include <qnamespace.h>
+#include <QtCore>
+#include <QtGui>
 
 #ifndef WIN32
 # if !defined(__OpenBSD__) && !defined(__NetBSD__)
@@ -50,7 +44,7 @@
 #include <memory>
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
 #include "opendavinci/odcore/base/Lock.h"
-#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/serialization/Serializable.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/data/TimeStamp.h"
 #include "opendavinci/odcore/exceptions/Exceptions.h"
@@ -138,7 +132,6 @@ namespace cockpit {
                 for(;it < m_listOfPlots.end(); it++) {
                     plotsLayout->addWidget((*it));
                 }
-
                 widgetForScrolling->setLayout(plotsLayout);
                 scrollArea->setWidget(widgetForScrolling);
 

@@ -23,7 +23,7 @@
 
 #include "opendavinci/odcore/base/module/AbstractCIDModule.h"
 #include "opendavinci/odcore/base/Lock.h"
-#include "opendavinci/odcore/base/Serializable.h"
+#include "opendavinci/odcore/serialization/Serializable.h"
 #include "opendavinci/odcore/base/Thread.h"
 #include "opendavinci/odcore/data/TimeStamp.h"
 #include "opendavinci/odcore/opendavinci.h"
@@ -220,7 +220,7 @@ namespace odtools {
             // Multiplexing if both, a .rec and a .mem file were found.
             if (readFromRecFile && readFromMemFile) {
                 // Compare timestamps from both Containers, put the older one into the queue and the younger one into the mem/recBuffer.
-                if (fromRecFile.getReceivedTimeStamp() < fromMemFile.getReceivedTimeStamp()) {
+                if (fromRecFile.getSampleTimeStamp() < fromMemFile.getSampleTimeStamp()) {
                     m_queue.enter(fromRecFile);
                     m_memBuffer.push(fromMemFile);
                 }

@@ -56,6 +56,9 @@ FIND_PACKAGE (AutomotiveData REQUIRED)
 ###########################################################################
 # Find OpenCV.
 SET(OPENCV_ROOT_DIR "/usr")
+IF("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
+    SET(OPENCV_ROOT_DIR "/usr/local")
+ENDIF()
 FIND_PACKAGE (OpenCV REQUIRED)
 
 ###########################################################################
@@ -79,9 +82,13 @@ SET (LIBRARIES ${OPENDAVINCI_LIBRARIES}
                ${OPENGL_glu_LIBRARY}
                ${GLUT_glut_LIBRARY})
 
-# No shared libraries on Mac OS X and Windows.
-IF(   WIN32
-   OR ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin") )
+IF("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
+    SET(LIBRARIES ${LIBRARIES}
+                  /usr/X11/lib/libglut.3.dylib)
+ENDIF()
+
+# No shared libraries on Windows.
+IF(WIN32)
     SET (OPENDLV_LIB opendlv-static)
 ELSE()
     SET (OPENDLV_LIB opendlv)
@@ -111,14 +118,12 @@ FILE(GLOB_RECURSE libopendlv-sources "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 # Resulting artifacts.
 ADD_LIBRARY (opendlv-core   OBJECT ${libopendlv-sources})
 ADD_LIBRARY (opendlv-static STATIC $<TARGET_OBJECTS:opendlv-core>)
-IF(    (NOT WIN32)
-   AND (NOT ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")) )
+IF(NOT WIN32)
     ADD_LIBRARY (opendlv    SHARED $<TARGET_OBJECTS:opendlv-core>)
 ENDIF()
 
 TARGET_LINK_LIBRARIES(opendlv-static ${LIBRARIES})
-IF(    (NOT WIN32)
-   AND (NOT ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")) )
+IF(NOT WIN32)
     TARGET_LINK_LIBRARIES(opendlv    ${LIBRARIES})
 ENDIF()
 
@@ -157,8 +162,7 @@ ENDIF(CXXTEST_FOUND)
 ###############################################################################
 # Installing "libopendlv".
 INSTALL(TARGETS opendlv-static DESTINATION lib COMPONENT lib)
-IF(    (NOT WIN32)
-   AND (NOT ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")) )
+IF(NOT WIN32)
     INSTALL(TARGETS opendlv    DESTINATION lib COMPONENT lib)
 ENDIF()
 

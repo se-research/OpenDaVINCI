@@ -6,16 +6,15 @@
 
 #include <memory>
 
-#include "opendavinci/odcore/base/Hash.h"
-#include "opendavinci/odcore/base/Deserializer.h"
-#include "opendavinci/odcore/base/SerializationFactory.h"
-#include "opendavinci/odcore/base/Serializer.h"
-
+#include <opendavinci/odcore/serialization/Deserializer.h>
+#include <opendavinci/odcore/serialization/SerializationFactory.h>
+#include <opendavinci/odcore/serialization/Serializer.h>
 
 #include "test11/generated/Test11MapFloat.h"
 
 	using namespace std;
 	using namespace odcore::base;
+	using namespace odcore::serialization;
 
 
 	Test11MapFloat::Test11MapFloat() :
@@ -347,12 +346,12 @@
 	}
 
 	void Test11MapFloat::accept(odcore::base::Visitor &v) {
-		(void)v; // Avoid unused parameter warning.
+		v.beginVisit(ID(), ShortName(), LongName());
+		v.endVisit();
 	}
 
 	const string Test11MapFloat::toString() const {
 		stringstream s;
-
 
 		s << "Number of elements in map of MyFloatBoolMap: " << getSize_MapOfMyFloatBoolMap() << " ";
 		s << "Number of elements in map of MyFloatCharMap: " << getSize_MapOfMyFloatCharMap() << " ";
@@ -366,515 +365,422 @@
 	}
 
 	ostream& Test11MapFloat::operator<<(ostream &out) const {
-
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
 		std::shared_ptr<Serializer> s = sf.getSerializer(out);
 
 		{
-			// Write number of elements in m_mapOfMyFloatBoolMap.
-			const uint32_t numberOfMyFloatBoolMap = static_cast<uint32_t>(m_mapOfMyFloatBoolMap.size());
-			s->write(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'B', CharList<'o', CharList<'o', CharList<'l', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > > > > > > > >  >::RESULT,
-			        numberOfMyFloatBoolMap);
+			std::stringstream sstr_MyFloatBoolMap;
+			{
+				std::map<float, bool>::const_iterator it = m_mapOfMyFloatBoolMap.begin();
+				while (it != m_mapOfMyFloatBoolMap.end()) {
+					// Write key/value into a joint string.
+					std::stringstream sstr_keyValueEntry;
+					{
+						std::shared_ptr<Serializer> keyValueSerializer = sf.getSerializer(sstr_keyValueEntry);
+						keyValueSerializer->write(1, it->first);  // Write key as field 1 from a "virtual" class.
+						keyValueSerializer->write(2, it->second); // Write value as field 2 from a "virtual" class.
+					}
 		
-			// Write actual elements into a stringstream.
-			std::stringstream sstrOfMyFloatBoolMap;
-			std::map<float, bool>::const_iterator it = m_mapOfMyFloatBoolMap.begin();
-			while (it != m_mapOfMyFloatBoolMap.end()) {
-			    sstrOfMyFloatBoolMap << it->first << "=" << it->second << endl;
-			    it++;
+					// Write string into super-stringstream.
+					const string str_sstr_keyValueEntry = sstr_keyValueEntry.str();
+					s->writeValue(sstr_MyFloatBoolMap, str_sstr_keyValueEntry);
+		
+					// Process next entry.
+					it++;
+				}
 			}
-			
-			// Write string of elements.
-			if (numberOfMyFloatBoolMap > 0) {
-				s->write(CRC32 < CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'B', CharList<'o', CharList<'o', CharList<'l', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > >  >::RESULT,
-						sstrOfMyFloatBoolMap.str());
-			}
+			const std::string str_sstr_MyFloatBoolMap = sstr_MyFloatBoolMap.str();
+			s->write(1, str_sstr_MyFloatBoolMap);
 		}
 		{
-			// Write number of elements in m_mapOfMyFloatCharMap.
-			const uint32_t numberOfMyFloatCharMap = static_cast<uint32_t>(m_mapOfMyFloatCharMap.size());
-			s->write(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'C', CharList<'h', CharList<'a', CharList<'r', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > > > > > > > >  >::RESULT,
-			        numberOfMyFloatCharMap);
+			std::stringstream sstr_MyFloatCharMap;
+			{
+				std::map<float, char>::const_iterator it = m_mapOfMyFloatCharMap.begin();
+				while (it != m_mapOfMyFloatCharMap.end()) {
+					// Write key/value into a joint string.
+					std::stringstream sstr_keyValueEntry;
+					{
+						std::shared_ptr<Serializer> keyValueSerializer = sf.getSerializer(sstr_keyValueEntry);
+						keyValueSerializer->write(1, it->first);  // Write key as field 1 from a "virtual" class.
+						keyValueSerializer->write(2, it->second); // Write value as field 2 from a "virtual" class.
+					}
 		
-			// Write actual elements into a stringstream.
-			std::stringstream sstrOfMyFloatCharMap;
-			std::map<float, char>::const_iterator it = m_mapOfMyFloatCharMap.begin();
-			while (it != m_mapOfMyFloatCharMap.end()) {
-			    sstrOfMyFloatCharMap << it->first << "=" << it->second << endl;
-			    it++;
+					// Write string into super-stringstream.
+					const string str_sstr_keyValueEntry = sstr_keyValueEntry.str();
+					s->writeValue(sstr_MyFloatCharMap, str_sstr_keyValueEntry);
+		
+					// Process next entry.
+					it++;
+				}
 			}
-			
-			// Write string of elements.
-			if (numberOfMyFloatCharMap > 0) {
-				s->write(CRC32 < CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'C', CharList<'h', CharList<'a', CharList<'r', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > >  >::RESULT,
-						sstrOfMyFloatCharMap.str());
-			}
+			const std::string str_sstr_MyFloatCharMap = sstr_MyFloatCharMap.str();
+			s->write(2, str_sstr_MyFloatCharMap);
 		}
 		{
-			// Write number of elements in m_mapOfMyFloatInt32Map.
-			const uint32_t numberOfMyFloatInt32Map = static_cast<uint32_t>(m_mapOfMyFloatInt32Map.size());
-			s->write(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > > > > > > > > >  >::RESULT,
-			        numberOfMyFloatInt32Map);
+			std::stringstream sstr_MyFloatInt32Map;
+			{
+				std::map<float, int32_t>::const_iterator it = m_mapOfMyFloatInt32Map.begin();
+				while (it != m_mapOfMyFloatInt32Map.end()) {
+					// Write key/value into a joint string.
+					std::stringstream sstr_keyValueEntry;
+					{
+						std::shared_ptr<Serializer> keyValueSerializer = sf.getSerializer(sstr_keyValueEntry);
+						keyValueSerializer->write(1, it->first);  // Write key as field 1 from a "virtual" class.
+						keyValueSerializer->write(2, it->second); // Write value as field 2 from a "virtual" class.
+					}
 		
-			// Write actual elements into a stringstream.
-			std::stringstream sstrOfMyFloatInt32Map;
-			std::map<float, int32_t>::const_iterator it = m_mapOfMyFloatInt32Map.begin();
-			while (it != m_mapOfMyFloatInt32Map.end()) {
-			    sstrOfMyFloatInt32Map << it->first << "=" << it->second << endl;
-			    it++;
+					// Write string into super-stringstream.
+					const string str_sstr_keyValueEntry = sstr_keyValueEntry.str();
+					s->writeValue(sstr_MyFloatInt32Map, str_sstr_keyValueEntry);
+		
+					// Process next entry.
+					it++;
+				}
 			}
-			
-			// Write string of elements.
-			if (numberOfMyFloatInt32Map > 0) {
-				s->write(CRC32 < CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > >  >::RESULT,
-						sstrOfMyFloatInt32Map.str());
-			}
+			const std::string str_sstr_MyFloatInt32Map = sstr_MyFloatInt32Map.str();
+			s->write(3, str_sstr_MyFloatInt32Map);
 		}
 		{
-			// Write number of elements in m_mapOfMyFloatUint32Map.
-			const uint32_t numberOfMyFloatUint32Map = static_cast<uint32_t>(m_mapOfMyFloatUint32Map.size());
-			s->write(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'U', CharList<'i', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > > > > > > > > > >  >::RESULT,
-			        numberOfMyFloatUint32Map);
+			std::stringstream sstr_MyFloatUint32Map;
+			{
+				std::map<float, uint32_t>::const_iterator it = m_mapOfMyFloatUint32Map.begin();
+				while (it != m_mapOfMyFloatUint32Map.end()) {
+					// Write key/value into a joint string.
+					std::stringstream sstr_keyValueEntry;
+					{
+						std::shared_ptr<Serializer> keyValueSerializer = sf.getSerializer(sstr_keyValueEntry);
+						keyValueSerializer->write(1, it->first);  // Write key as field 1 from a "virtual" class.
+						keyValueSerializer->write(2, it->second); // Write value as field 2 from a "virtual" class.
+					}
 		
-			// Write actual elements into a stringstream.
-			std::stringstream sstrOfMyFloatUint32Map;
-			std::map<float, uint32_t>::const_iterator it = m_mapOfMyFloatUint32Map.begin();
-			while (it != m_mapOfMyFloatUint32Map.end()) {
-			    sstrOfMyFloatUint32Map << it->first << "=" << it->second << endl;
-			    it++;
+					// Write string into super-stringstream.
+					const string str_sstr_keyValueEntry = sstr_keyValueEntry.str();
+					s->writeValue(sstr_MyFloatUint32Map, str_sstr_keyValueEntry);
+		
+					// Process next entry.
+					it++;
+				}
 			}
-			
-			// Write string of elements.
-			if (numberOfMyFloatUint32Map > 0) {
-				s->write(CRC32 < CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'U', CharList<'i', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > >  >::RESULT,
-						sstrOfMyFloatUint32Map.str());
-			}
+			const std::string str_sstr_MyFloatUint32Map = sstr_MyFloatUint32Map.str();
+			s->write(4, str_sstr_MyFloatUint32Map);
 		}
 		{
-			// Write number of elements in m_mapOfMyFloatFloatMap.
-			const uint32_t numberOfMyFloatFloatMap = static_cast<uint32_t>(m_mapOfMyFloatFloatMap.size());
-			s->write(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > > > > > > > > >  >::RESULT,
-			        numberOfMyFloatFloatMap);
+			std::stringstream sstr_MyFloatFloatMap;
+			{
+				std::map<float, float>::const_iterator it = m_mapOfMyFloatFloatMap.begin();
+				while (it != m_mapOfMyFloatFloatMap.end()) {
+					// Write key/value into a joint string.
+					std::stringstream sstr_keyValueEntry;
+					{
+						std::shared_ptr<Serializer> keyValueSerializer = sf.getSerializer(sstr_keyValueEntry);
+						keyValueSerializer->write(1, it->first);  // Write key as field 1 from a "virtual" class.
+						keyValueSerializer->write(2, it->second); // Write value as field 2 from a "virtual" class.
+					}
 		
-			// Write actual elements into a stringstream.
-			std::stringstream sstrOfMyFloatFloatMap;
-			std::map<float, float>::const_iterator it = m_mapOfMyFloatFloatMap.begin();
-			while (it != m_mapOfMyFloatFloatMap.end()) {
-			    sstrOfMyFloatFloatMap << it->first << "=" << it->second << endl;
-			    it++;
+					// Write string into super-stringstream.
+					const string str_sstr_keyValueEntry = sstr_keyValueEntry.str();
+					s->writeValue(sstr_MyFloatFloatMap, str_sstr_keyValueEntry);
+		
+					// Process next entry.
+					it++;
+				}
 			}
-			
-			// Write string of elements.
-			if (numberOfMyFloatFloatMap > 0) {
-				s->write(CRC32 < CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > >  >::RESULT,
-						sstrOfMyFloatFloatMap.str());
-			}
+			const std::string str_sstr_MyFloatFloatMap = sstr_MyFloatFloatMap.str();
+			s->write(5, str_sstr_MyFloatFloatMap);
 		}
 		{
-			// Write number of elements in m_mapOfMyFloatDoubleMap.
-			const uint32_t numberOfMyFloatDoubleMap = static_cast<uint32_t>(m_mapOfMyFloatDoubleMap.size());
-			s->write(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'D', CharList<'o', CharList<'u', CharList<'b', CharList<'l', CharList<'e', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > > > > > > > > > >  >::RESULT,
-			        numberOfMyFloatDoubleMap);
+			std::stringstream sstr_MyFloatDoubleMap;
+			{
+				std::map<float, double>::const_iterator it = m_mapOfMyFloatDoubleMap.begin();
+				while (it != m_mapOfMyFloatDoubleMap.end()) {
+					// Write key/value into a joint string.
+					std::stringstream sstr_keyValueEntry;
+					{
+						std::shared_ptr<Serializer> keyValueSerializer = sf.getSerializer(sstr_keyValueEntry);
+						keyValueSerializer->write(1, it->first);  // Write key as field 1 from a "virtual" class.
+						keyValueSerializer->write(2, it->second); // Write value as field 2 from a "virtual" class.
+					}
 		
-			// Write actual elements into a stringstream.
-			std::stringstream sstrOfMyFloatDoubleMap;
-			std::map<float, double>::const_iterator it = m_mapOfMyFloatDoubleMap.begin();
-			while (it != m_mapOfMyFloatDoubleMap.end()) {
-			    sstrOfMyFloatDoubleMap << it->first << "=" << it->second << endl;
-			    it++;
+					// Write string into super-stringstream.
+					const string str_sstr_keyValueEntry = sstr_keyValueEntry.str();
+					s->writeValue(sstr_MyFloatDoubleMap, str_sstr_keyValueEntry);
+		
+					// Process next entry.
+					it++;
+				}
 			}
-			
-			// Write string of elements.
-			if (numberOfMyFloatDoubleMap > 0) {
-				s->write(CRC32 < CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'D', CharList<'o', CharList<'u', CharList<'b', CharList<'l', CharList<'e', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > >  >::RESULT,
-						sstrOfMyFloatDoubleMap.str());
-			}
+			const std::string str_sstr_MyFloatDoubleMap = sstr_MyFloatDoubleMap.str();
+			s->write(6, str_sstr_MyFloatDoubleMap);
 		}
 		{
-			// Write number of elements in m_mapOfMyFloatStringMap.
-			const uint32_t numberOfMyFloatStringMap = static_cast<uint32_t>(m_mapOfMyFloatStringMap.size());
-			s->write(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > > > > > > > > > >  >::RESULT,
-			        numberOfMyFloatStringMap);
+			std::stringstream sstr_MyFloatStringMap;
+			{
+				std::map<float, std::string>::const_iterator it = m_mapOfMyFloatStringMap.begin();
+				while (it != m_mapOfMyFloatStringMap.end()) {
+					// Write key/value into a joint string.
+					std::stringstream sstr_keyValueEntry;
+					{
+						std::shared_ptr<Serializer> keyValueSerializer = sf.getSerializer(sstr_keyValueEntry);
+						keyValueSerializer->write(1, it->first);  // Write key as field 1 from a "virtual" class.
+						keyValueSerializer->write(2, it->second); // Write value as field 2 from a "virtual" class.
+					}
 		
-			// Write actual elements into a stringstream.
-			std::stringstream sstrOfMyFloatStringMap;
-			std::map<float, std::string>::const_iterator it = m_mapOfMyFloatStringMap.begin();
-			while (it != m_mapOfMyFloatStringMap.end()) {
-			    sstrOfMyFloatStringMap << it->first << "=" << it->second << endl;
-			    it++;
+					// Write string into super-stringstream.
+					const string str_sstr_keyValueEntry = sstr_keyValueEntry.str();
+					s->writeValue(sstr_MyFloatStringMap, str_sstr_keyValueEntry);
+		
+					// Process next entry.
+					it++;
+				}
 			}
-			
-			// Write string of elements.
-			if (numberOfMyFloatStringMap > 0) {
-				s->write(CRC32 < CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > >  >::RESULT,
-						sstrOfMyFloatStringMap.str());
-			}
+			const std::string str_sstr_MyFloatStringMap = sstr_MyFloatStringMap.str();
+			s->write(7, str_sstr_MyFloatStringMap);
 		}
 		return out;
 	}
 
 	istream& Test11MapFloat::operator>>(istream &in) {
-
 		SerializationFactory& sf = SerializationFactory::getInstance();
 
 		std::shared_ptr<Deserializer> d = sf.getDeserializer(in);
 
-		// Clean up the existing map of MyFloatBoolMap.
-		m_mapOfMyFloatBoolMap.clear();
+		// Restore elements from a string into MyFloatBoolMap.
+		{
+			// Clean up the existing map of MyFloatBoolMap.
+			m_mapOfMyFloatBoolMap.clear();
 		
-		// Read number of elements in m_mapOfMyFloatBoolMap.
-		uint32_t numberOfMyFloatBoolMap = 0;
-		d->read(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'B', CharList<'o', CharList<'o', CharList<'l', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > > > > > > > >  >::RESULT,
-			   numberOfMyFloatBoolMap);
+			std::string str_MyFloatBoolMap;
+			d->read(1, str_MyFloatBoolMap);
+			if (str_MyFloatBoolMap.size() > 0) {
+				std::stringstream sstr_str_MyFloatBoolMap(str_MyFloatBoolMap);
 		
-		if (numberOfMyFloatBoolMap > 0) {
-		    // Read string of elements.
-		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'B', CharList<'o', CharList<'o', CharList<'l', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > >  >::RESULT,
-			       elements);
+				// str_MyFloatBoolMap contains a sequence of strings containing pairs of key/values.
+				uint32_t length = str_MyFloatBoolMap.size();
+				while (length > 0) {
+					std::string str_sstr_keyValue;
+					length -= d->readValue(sstr_str_MyFloatBoolMap, str_sstr_keyValue);
 		
-			stringstream sstr(elements);
+					if (str_sstr_keyValue.size() > 0) {
+						// We have in str_sstr_keyValue a string at hand containing a pair key/value.
+						// Now, we restore the key and value therefrom.
+						std::stringstream sstr_keyValueEntry(str_sstr_keyValue);
 		
-			while (!sstr.eof()) {
-			    string line;
-			    getline(sstr, line);
-		
-			    // Trying to find key-value-pair.
-			    size_t delimiter = line.find_first_of("=");
-		
-			    // Compute length of value-entry by allowing comments right after values.
-			    size_t valueLength = line.length();
-		
-			    // Skip lines with invalid position pointers.
-			    if (! ( (delimiter > 0) && (valueLength > 0) ) ) {
-			        continue;
-			    }
-		
-			    string key = line.substr(0, delimiter);
-			    string value = line.substr(delimiter + 1, valueLength);
-		
-			    // Skip lines with invalid keys or values.
-			    if ( (key.length() == 0) || (value.length() == 0) ) {
-			        continue;
-			    }
-		
-			    stringstream sstrKey(key);
-			    float _key;
-		        sstrKey >> _key;
-		
-			    stringstream sstrValue(value);
-			    bool _value;
-		        sstrValue >> _value;
-		
-				// Store key/value pair.
-				putTo_MapOfMyFloatBoolMap(_key, _value);
+						{
+							std::shared_ptr<Deserializer> keyValueDeserializer = sf.getDeserializer(sstr_keyValueEntry);
+							float key;
+							bool value;
+							keyValueDeserializer->read(1, key);
+							keyValueDeserializer->read(2, value);
+							// Store key/value pair in the map.
+							putTo_MapOfMyFloatBoolMap(key, value);
+						}
+					}
+				}
 			}
 		}
-		// Clean up the existing map of MyFloatCharMap.
-		m_mapOfMyFloatCharMap.clear();
+		// Restore elements from a string into MyFloatCharMap.
+		{
+			// Clean up the existing map of MyFloatCharMap.
+			m_mapOfMyFloatCharMap.clear();
 		
-		// Read number of elements in m_mapOfMyFloatCharMap.
-		uint32_t numberOfMyFloatCharMap = 0;
-		d->read(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'C', CharList<'h', CharList<'a', CharList<'r', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > > > > > > > >  >::RESULT,
-			   numberOfMyFloatCharMap);
+			std::string str_MyFloatCharMap;
+			d->read(2, str_MyFloatCharMap);
+			if (str_MyFloatCharMap.size() > 0) {
+				std::stringstream sstr_str_MyFloatCharMap(str_MyFloatCharMap);
 		
-		if (numberOfMyFloatCharMap > 0) {
-		    // Read string of elements.
-		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'C', CharList<'h', CharList<'a', CharList<'r', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > >  >::RESULT,
-			       elements);
+				// str_MyFloatCharMap contains a sequence of strings containing pairs of key/values.
+				uint32_t length = str_MyFloatCharMap.size();
+				while (length > 0) {
+					std::string str_sstr_keyValue;
+					length -= d->readValue(sstr_str_MyFloatCharMap, str_sstr_keyValue);
 		
-			stringstream sstr(elements);
+					if (str_sstr_keyValue.size() > 0) {
+						// We have in str_sstr_keyValue a string at hand containing a pair key/value.
+						// Now, we restore the key and value therefrom.
+						std::stringstream sstr_keyValueEntry(str_sstr_keyValue);
 		
-			while (!sstr.eof()) {
-			    string line;
-			    getline(sstr, line);
-		
-			    // Trying to find key-value-pair.
-			    size_t delimiter = line.find_first_of("=");
-		
-			    // Compute length of value-entry by allowing comments right after values.
-			    size_t valueLength = line.length();
-		
-			    // Skip lines with invalid position pointers.
-			    if (! ( (delimiter > 0) && (valueLength > 0) ) ) {
-			        continue;
-			    }
-		
-			    string key = line.substr(0, delimiter);
-			    string value = line.substr(delimiter + 1, valueLength);
-		
-			    // Skip lines with invalid keys or values.
-			    if ( (key.length() == 0) || (value.length() == 0) ) {
-			        continue;
-			    }
-		
-			    stringstream sstrKey(key);
-			    float _key;
-		        sstrKey >> _key;
-		
-			    stringstream sstrValue(value);
-			    char _value;
-		        sstrValue >> _value;
-		
-				// Store key/value pair.
-				putTo_MapOfMyFloatCharMap(_key, _value);
+						{
+							std::shared_ptr<Deserializer> keyValueDeserializer = sf.getDeserializer(sstr_keyValueEntry);
+							float key;
+							char value;
+							keyValueDeserializer->read(1, key);
+							keyValueDeserializer->read(2, value);
+							// Store key/value pair in the map.
+							putTo_MapOfMyFloatCharMap(key, value);
+						}
+					}
+				}
 			}
 		}
-		// Clean up the existing map of MyFloatInt32Map.
-		m_mapOfMyFloatInt32Map.clear();
+		// Restore elements from a string into MyFloatInt32Map.
+		{
+			// Clean up the existing map of MyFloatInt32Map.
+			m_mapOfMyFloatInt32Map.clear();
 		
-		// Read number of elements in m_mapOfMyFloatInt32Map.
-		uint32_t numberOfMyFloatInt32Map = 0;
-		d->read(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > > > > > > > > >  >::RESULT,
-			   numberOfMyFloatInt32Map);
+			std::string str_MyFloatInt32Map;
+			d->read(3, str_MyFloatInt32Map);
+			if (str_MyFloatInt32Map.size() > 0) {
+				std::stringstream sstr_str_MyFloatInt32Map(str_MyFloatInt32Map);
 		
-		if (numberOfMyFloatInt32Map > 0) {
-		    // Read string of elements.
-		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > >  >::RESULT,
-			       elements);
+				// str_MyFloatInt32Map contains a sequence of strings containing pairs of key/values.
+				uint32_t length = str_MyFloatInt32Map.size();
+				while (length > 0) {
+					std::string str_sstr_keyValue;
+					length -= d->readValue(sstr_str_MyFloatInt32Map, str_sstr_keyValue);
 		
-			stringstream sstr(elements);
+					if (str_sstr_keyValue.size() > 0) {
+						// We have in str_sstr_keyValue a string at hand containing a pair key/value.
+						// Now, we restore the key and value therefrom.
+						std::stringstream sstr_keyValueEntry(str_sstr_keyValue);
 		
-			while (!sstr.eof()) {
-			    string line;
-			    getline(sstr, line);
-		
-			    // Trying to find key-value-pair.
-			    size_t delimiter = line.find_first_of("=");
-		
-			    // Compute length of value-entry by allowing comments right after values.
-			    size_t valueLength = line.length();
-		
-			    // Skip lines with invalid position pointers.
-			    if (! ( (delimiter > 0) && (valueLength > 0) ) ) {
-			        continue;
-			    }
-		
-			    string key = line.substr(0, delimiter);
-			    string value = line.substr(delimiter + 1, valueLength);
-		
-			    // Skip lines with invalid keys or values.
-			    if ( (key.length() == 0) || (value.length() == 0) ) {
-			        continue;
-			    }
-		
-			    stringstream sstrKey(key);
-			    float _key;
-		        sstrKey >> _key;
-		
-			    stringstream sstrValue(value);
-			    int32_t _value;
-		        sstrValue >> _value;
-		
-				// Store key/value pair.
-				putTo_MapOfMyFloatInt32Map(_key, _value);
+						{
+							std::shared_ptr<Deserializer> keyValueDeserializer = sf.getDeserializer(sstr_keyValueEntry);
+							float key;
+							int32_t value;
+							keyValueDeserializer->read(1, key);
+							keyValueDeserializer->read(2, value);
+							// Store key/value pair in the map.
+							putTo_MapOfMyFloatInt32Map(key, value);
+						}
+					}
+				}
 			}
 		}
-		// Clean up the existing map of MyFloatUint32Map.
-		m_mapOfMyFloatUint32Map.clear();
+		// Restore elements from a string into MyFloatUint32Map.
+		{
+			// Clean up the existing map of MyFloatUint32Map.
+			m_mapOfMyFloatUint32Map.clear();
 		
-		// Read number of elements in m_mapOfMyFloatUint32Map.
-		uint32_t numberOfMyFloatUint32Map = 0;
-		d->read(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'U', CharList<'i', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > > > > > > > > > >  >::RESULT,
-			   numberOfMyFloatUint32Map);
+			std::string str_MyFloatUint32Map;
+			d->read(4, str_MyFloatUint32Map);
+			if (str_MyFloatUint32Map.size() > 0) {
+				std::stringstream sstr_str_MyFloatUint32Map(str_MyFloatUint32Map);
 		
-		if (numberOfMyFloatUint32Map > 0) {
-		    // Read string of elements.
-		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'U', CharList<'i', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > >  >::RESULT,
-			       elements);
+				// str_MyFloatUint32Map contains a sequence of strings containing pairs of key/values.
+				uint32_t length = str_MyFloatUint32Map.size();
+				while (length > 0) {
+					std::string str_sstr_keyValue;
+					length -= d->readValue(sstr_str_MyFloatUint32Map, str_sstr_keyValue);
 		
-			stringstream sstr(elements);
+					if (str_sstr_keyValue.size() > 0) {
+						// We have in str_sstr_keyValue a string at hand containing a pair key/value.
+						// Now, we restore the key and value therefrom.
+						std::stringstream sstr_keyValueEntry(str_sstr_keyValue);
 		
-			while (!sstr.eof()) {
-			    string line;
-			    getline(sstr, line);
-		
-			    // Trying to find key-value-pair.
-			    size_t delimiter = line.find_first_of("=");
-		
-			    // Compute length of value-entry by allowing comments right after values.
-			    size_t valueLength = line.length();
-		
-			    // Skip lines with invalid position pointers.
-			    if (! ( (delimiter > 0) && (valueLength > 0) ) ) {
-			        continue;
-			    }
-		
-			    string key = line.substr(0, delimiter);
-			    string value = line.substr(delimiter + 1, valueLength);
-		
-			    // Skip lines with invalid keys or values.
-			    if ( (key.length() == 0) || (value.length() == 0) ) {
-			        continue;
-			    }
-		
-			    stringstream sstrKey(key);
-			    float _key;
-		        sstrKey >> _key;
-		
-			    stringstream sstrValue(value);
-			    uint32_t _value;
-		        sstrValue >> _value;
-		
-				// Store key/value pair.
-				putTo_MapOfMyFloatUint32Map(_key, _value);
+						{
+							std::shared_ptr<Deserializer> keyValueDeserializer = sf.getDeserializer(sstr_keyValueEntry);
+							float key;
+							uint32_t value;
+							keyValueDeserializer->read(1, key);
+							keyValueDeserializer->read(2, value);
+							// Store key/value pair in the map.
+							putTo_MapOfMyFloatUint32Map(key, value);
+						}
+					}
+				}
 			}
 		}
-		// Clean up the existing map of MyFloatFloatMap.
-		m_mapOfMyFloatFloatMap.clear();
+		// Restore elements from a string into MyFloatFloatMap.
+		{
+			// Clean up the existing map of MyFloatFloatMap.
+			m_mapOfMyFloatFloatMap.clear();
 		
-		// Read number of elements in m_mapOfMyFloatFloatMap.
-		uint32_t numberOfMyFloatFloatMap = 0;
-		d->read(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > > > > > > > > >  >::RESULT,
-			   numberOfMyFloatFloatMap);
+			std::string str_MyFloatFloatMap;
+			d->read(5, str_MyFloatFloatMap);
+			if (str_MyFloatFloatMap.size() > 0) {
+				std::stringstream sstr_str_MyFloatFloatMap(str_MyFloatFloatMap);
 		
-		if (numberOfMyFloatFloatMap > 0) {
-		    // Read string of elements.
-		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > >  >::RESULT,
-			       elements);
+				// str_MyFloatFloatMap contains a sequence of strings containing pairs of key/values.
+				uint32_t length = str_MyFloatFloatMap.size();
+				while (length > 0) {
+					std::string str_sstr_keyValue;
+					length -= d->readValue(sstr_str_MyFloatFloatMap, str_sstr_keyValue);
 		
-			stringstream sstr(elements);
+					if (str_sstr_keyValue.size() > 0) {
+						// We have in str_sstr_keyValue a string at hand containing a pair key/value.
+						// Now, we restore the key and value therefrom.
+						std::stringstream sstr_keyValueEntry(str_sstr_keyValue);
 		
-			while (!sstr.eof()) {
-			    string line;
-			    getline(sstr, line);
-		
-			    // Trying to find key-value-pair.
-			    size_t delimiter = line.find_first_of("=");
-		
-			    // Compute length of value-entry by allowing comments right after values.
-			    size_t valueLength = line.length();
-		
-			    // Skip lines with invalid position pointers.
-			    if (! ( (delimiter > 0) && (valueLength > 0) ) ) {
-			        continue;
-			    }
-		
-			    string key = line.substr(0, delimiter);
-			    string value = line.substr(delimiter + 1, valueLength);
-		
-			    // Skip lines with invalid keys or values.
-			    if ( (key.length() == 0) || (value.length() == 0) ) {
-			        continue;
-			    }
-		
-			    stringstream sstrKey(key);
-			    float _key;
-		        sstrKey >> _key;
-		
-			    stringstream sstrValue(value);
-			    float _value;
-		        sstrValue >> _value;
-		
-				// Store key/value pair.
-				putTo_MapOfMyFloatFloatMap(_key, _value);
+						{
+							std::shared_ptr<Deserializer> keyValueDeserializer = sf.getDeserializer(sstr_keyValueEntry);
+							float key;
+							float value;
+							keyValueDeserializer->read(1, key);
+							keyValueDeserializer->read(2, value);
+							// Store key/value pair in the map.
+							putTo_MapOfMyFloatFloatMap(key, value);
+						}
+					}
+				}
 			}
 		}
-		// Clean up the existing map of MyFloatDoubleMap.
-		m_mapOfMyFloatDoubleMap.clear();
+		// Restore elements from a string into MyFloatDoubleMap.
+		{
+			// Clean up the existing map of MyFloatDoubleMap.
+			m_mapOfMyFloatDoubleMap.clear();
 		
-		// Read number of elements in m_mapOfMyFloatDoubleMap.
-		uint32_t numberOfMyFloatDoubleMap = 0;
-		d->read(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'D', CharList<'o', CharList<'u', CharList<'b', CharList<'l', CharList<'e', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > > > > > > > > > >  >::RESULT,
-			   numberOfMyFloatDoubleMap);
+			std::string str_MyFloatDoubleMap;
+			d->read(6, str_MyFloatDoubleMap);
+			if (str_MyFloatDoubleMap.size() > 0) {
+				std::stringstream sstr_str_MyFloatDoubleMap(str_MyFloatDoubleMap);
 		
-		if (numberOfMyFloatDoubleMap > 0) {
-		    // Read string of elements.
-		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'D', CharList<'o', CharList<'u', CharList<'b', CharList<'l', CharList<'e', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > >  >::RESULT,
-			       elements);
+				// str_MyFloatDoubleMap contains a sequence of strings containing pairs of key/values.
+				uint32_t length = str_MyFloatDoubleMap.size();
+				while (length > 0) {
+					std::string str_sstr_keyValue;
+					length -= d->readValue(sstr_str_MyFloatDoubleMap, str_sstr_keyValue);
 		
-			stringstream sstr(elements);
+					if (str_sstr_keyValue.size() > 0) {
+						// We have in str_sstr_keyValue a string at hand containing a pair key/value.
+						// Now, we restore the key and value therefrom.
+						std::stringstream sstr_keyValueEntry(str_sstr_keyValue);
 		
-			while (!sstr.eof()) {
-			    string line;
-			    getline(sstr, line);
-		
-			    // Trying to find key-value-pair.
-			    size_t delimiter = line.find_first_of("=");
-		
-			    // Compute length of value-entry by allowing comments right after values.
-			    size_t valueLength = line.length();
-		
-			    // Skip lines with invalid position pointers.
-			    if (! ( (delimiter > 0) && (valueLength > 0) ) ) {
-			        continue;
-			    }
-		
-			    string key = line.substr(0, delimiter);
-			    string value = line.substr(delimiter + 1, valueLength);
-		
-			    // Skip lines with invalid keys or values.
-			    if ( (key.length() == 0) || (value.length() == 0) ) {
-			        continue;
-			    }
-		
-			    stringstream sstrKey(key);
-			    float _key;
-		        sstrKey >> _key;
-		
-			    stringstream sstrValue(value);
-			    double _value;
-		        sstrValue >> _value;
-		
-				// Store key/value pair.
-				putTo_MapOfMyFloatDoubleMap(_key, _value);
+						{
+							std::shared_ptr<Deserializer> keyValueDeserializer = sf.getDeserializer(sstr_keyValueEntry);
+							float key;
+							double value;
+							keyValueDeserializer->read(1, key);
+							keyValueDeserializer->read(2, value);
+							// Store key/value pair in the map.
+							putTo_MapOfMyFloatDoubleMap(key, value);
+						}
+					}
+				}
 			}
 		}
-		// Clean up the existing map of MyFloatStringMap.
-		m_mapOfMyFloatStringMap.clear();
+		// Restore elements from a string into MyFloatStringMap.
+		{
+			// Clean up the existing map of MyFloatStringMap.
+			m_mapOfMyFloatStringMap.clear();
 		
-		// Read number of elements in m_mapOfMyFloatStringMap.
-		uint32_t numberOfMyFloatStringMap = 0;
-		d->read(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > > > > > > > > > >  >::RESULT,
-			   numberOfMyFloatStringMap);
+			std::string str_MyFloatStringMap;
+			d->read(7, str_MyFloatStringMap);
+			if (str_MyFloatStringMap.size() > 0) {
+				std::stringstream sstr_str_MyFloatStringMap(str_MyFloatStringMap);
 		
-		if (numberOfMyFloatStringMap > 0) {
-		    // Read string of elements.
-		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > >  >::RESULT,
-			       elements);
+				// str_MyFloatStringMap contains a sequence of strings containing pairs of key/values.
+				uint32_t length = str_MyFloatStringMap.size();
+				while (length > 0) {
+					std::string str_sstr_keyValue;
+					length -= d->readValue(sstr_str_MyFloatStringMap, str_sstr_keyValue);
 		
-			stringstream sstr(elements);
+					if (str_sstr_keyValue.size() > 0) {
+						// We have in str_sstr_keyValue a string at hand containing a pair key/value.
+						// Now, we restore the key and value therefrom.
+						std::stringstream sstr_keyValueEntry(str_sstr_keyValue);
 		
-			while (!sstr.eof()) {
-			    string line;
-			    getline(sstr, line);
-		
-			    // Trying to find key-value-pair.
-			    size_t delimiter = line.find_first_of("=");
-		
-			    // Compute length of value-entry by allowing comments right after values.
-			    size_t valueLength = line.length();
-		
-			    // Skip lines with invalid position pointers.
-			    if (! ( (delimiter > 0) && (valueLength > 0) ) ) {
-			        continue;
-			    }
-		
-			    string key = line.substr(0, delimiter);
-			    string value = line.substr(delimiter + 1, valueLength);
-		
-			    // Skip lines with invalid keys or values.
-			    if ( (key.length() == 0) || (value.length() == 0) ) {
-			        continue;
-			    }
-		
-			    stringstream sstrKey(key);
-			    float _key;
-		        sstrKey >> _key;
-		
-			    stringstream sstrValue(value);
-			    std::string _value;
-		        getline(sstrValue, _value);
-		
-				// Store key/value pair.
-				putTo_MapOfMyFloatStringMap(_key, _value);
+						{
+							std::shared_ptr<Deserializer> keyValueDeserializer = sf.getDeserializer(sstr_keyValueEntry);
+							float key;
+							std::string value;
+							keyValueDeserializer->read(1, key);
+							keyValueDeserializer->read(2, value);
+							// Store key/value pair in the map.
+							putTo_MapOfMyFloatStringMap(key, value);
+						}
+					}
+				}
 			}
 		}
 		return in;

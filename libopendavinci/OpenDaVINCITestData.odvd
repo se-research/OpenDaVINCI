@@ -1,0 +1,503 @@
+/*
+ * OpenDaVINCITestData.odvd - Test data structures for OpenDaVINCI.
+ * Copyright (C) 2015 - 2016 Christian Berger
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+
+// This message contains all constants for the test cases for the Dynamic Module Configuration Protocol (DMCP).
+message odcore.testdata.dmcp.TestConstants [id = 111] {
+    const string DMCPCONFIG_TEST_GROUP = "225.0.0.250";
+    const uint32 DMCPCONFIG_TEST_SERVERPORT = 25000;
+    const uint32 DMCPCONFIG_TEST_CLIENTPORT = 25100;
+}
+
+message odcore.testdata.TestMessage1 [id = 1001] {
+    uint8 field1 [ default = 12, id = 1 ];
+}
+/* Protobuf syntax:
+syntax = "proto2";
+package odcore.testdata;
+message TestMessage1 {
+    optional uint32 a = 1 [default = 12];
+}
+Value: 150 ==> 0x8 0x96 0x1
+*/
+
+message odcore.testdata.TestMessage2 [id = 1002] {
+    uint8 field1 [ id = 1 ];
+    int8 field2 [ id = 2 ];
+}
+/* Protobuf syntax:
+syntax = "proto2";
+package odcore.testdata;
+message TestMessage2 {
+    optional uint32 field1 = 1;
+    optional sint32 field2 = 2;
+}
+Values: 123, -123 ==> 0x8 0x7b 0x10 0xf5 0x1
+*/
+
+message odcore.testdata.TestMessage3 [id = 1003] {
+    string field1 [ id = 2 ];
+}
+/* Protobuf syntax:
+syntax = "proto2";
+package odcore.testdata;
+message TestMessage3 {
+    optional string field1 = 2;
+}
+Values: testing ==> 0x12 0x7 0x74 0x65 0x73 0x74 0x69 0x6e 0x67
+*/
+
+message odcore.testdata.TestMessage4 [id = 1004] {
+    odcore.testdata.TestMessage1 field1 [ id = 3 ];
+}
+/* Protobuf syntax:
+syntax = "proto2";
+package odcore.testdata;
+message TestMessage1 {
+    optional uint32 a = 1 [default = 12];
+}
+message TestMessage4 {
+    optional TestMessage1 field1 = 3;
+}
+Values: 150 in nested TestMessage1 ==> 0x1a 0x3 0x8 0x96 0x1
+*/
+
+message odcore.testdata.TestMessage5 [id = 1005] {
+    uint8 field1 [ default = 1, id = 1 ];
+    int8 field2 [ default = -1, id = 2 ];
+    uint16 field3 [ default = 100, id = 3 ];
+    int16 field4 [ default = -100, id = 4 ];
+    uint32 field5 [ default = 10000, id = 5 ];
+    int32 field6 [ default = -10000, id = 6 ];
+    uint64 field7 [ default = 12345, id = 7 ];
+    int64 field8 [ default = -12345, id = 8 ];
+    float field9 [ default = -1.2345, id = 9 ];
+    double field10 [ default = -10.2345, id = 10 ];
+    string field11 [ default = "Hello World!", id = 11 ];
+    odcore.testdata.TestMessage1 field12 [ id = 12 ];
+}
+/* Protobuf syntax:
+syntax = "proto2";
+package odcore.testdata;
+message TestMessage5 {
+    optional uint32 field1 = 1 [ default = 1 ];
+    optional sint32 field2 = 2 [ default = -1 ];
+    optional uint32 field3 = 3 [ default = 100 ];
+    optional sint32 field4 = 4 [ default = -100 ];
+    optional uint32 field5 = 5 [ default = 10000 ];
+    optional sint32 field6 = 6 [ default = -10000 ];
+    optional uint64 field7 = 7 [ default = 12345 ];
+    optional sint64 field8 = 8 [ default = -12345 ];
+    optional float field9 = 9 [ default = -1.2345 ];
+    optional double field10 = 10 [ default = -10.2345 ];
+    optional string field11 = 11 [ default = "Hello World!" ];
+    optional TestMessage1 field12 = 12;
+}
+Values:
+    field1 = 3
+    field2 = -3
+    field3 = 103
+    field4 = -103
+    field5 = 10003
+    field6 = -10003
+    field7 = 54321
+    field8 = -54321
+    field9 = -5.4321
+    field10 = -50.4321
+    field11 = "Hello OpenDaVINCI World!"
+    field12.a = 150
+==> 0x8 0x3 0x10 0x5 0x18 0x67 0x20 0xcd 0x1 0x28 0x93 0x4e 0x30 0xa5 0x9c 0x1 0x38 0xb1 0xa8 0x3 0x40 0xe1 0xd0 0x6 0x4d 0xc3 0xd3 0xad 0xc0 0x51 0x1 0x4d 0x84 0xd 0x4f 0x37 0x49 0xc0 0x5a 0x18 0x48 0x65 0x6c 0x6c 0x6f 0x20 0x4f 0x70 0x65 0x6e 0x44 0x61 0x56 0x49 0x4e 0x43 0x49 0x20 0x57 0x6f 0x72 0x6c 0x64 0x21 0x62 0x3 0x8 0x96 0x1
+*/
+
+message odcore.testdata.TestMessage6 [id = 1006] {
+    list<uint32> field1 [ id = 4 ];
+}
+/* Protobuf syntax:
+syntax = "proto2";
+package odcore.testdata;
+message TestMessage6 {
+    repeated uint32 field1 = 4 [ packed=true ];
+}
+Values: 3, 270, 86942 ==> 0x22 0x6 0x3 0x8e 0x2 0x9e 0xa7 0x5
+*/
+
+message odcore.testdata.TestMessage7 [id = 1007] {
+    list<float> field1 [ id = 1 ];
+}
+/* Protobuf syntax:
+syntax = "proto2";
+package odcore.testdata;
+message TestMessage7 {
+    repeated uint32 field1 = 4 [ packed=true ];
+}
+Values:  -12.345, -34.567, 47.891 ==> 0xa 0xc 0x1f 0x85 0x45 0xc1 0x9c 0x44 0xa 0xc2 0x62 0x90 0x3f 0x42
+*/
+
+message odcore.testdata.TestMessage8 [id = 1008] {
+    map<uint32, uint32> field1 [ id = 1 ];
+}
+/* Protobuf syntax:
+syntax = "proto2";
+package odcore.testdata;
+message TestMessage8Entry {
+    optional uint32 key = 1;
+    optional uint32 value = 2;
+}
+
+message TestMessage8 {
+    repeated TestMessage8Entry field1 = 1;
+}
+
+This message specification results in an empty setter for field1 in Google Protobuf. OpenDaVINCI produces the following ouput: 0xa 0xf 0x4 0x8 0x1 0x10 0x8 0x4 0x8 0x2 0x10 0x7 0x4 0x8 0x3 0x10 0x6
+*/
+
+message odcore.testdata.TestMessage9 [id = 1009] {
+    map<uint32, odcore.testdata.TestMessage1> field1 [ id = 1 ];
+}
+// Untested.
+
+message odcore.testdata.TestMessage10 [id = 1010] {
+    uint32 myArray1[2] [ id = 1 ];
+    float myArray2[3] [id = 2];
+}
+/* Protobuf syntax:
+syntax = "proto2";
+package odcore.testdata;
+message TestMessage10 {
+    repeated uint32 myArray1 = 1 [ packed=true ];
+    repeated float myArray2 = 2 [ packed=true ];
+}
+Values:
+    1, 2
+    -1.2345, -2.3456, -3.4567
+==> 0xa 0x2 0x1 0x2 0x12 0xc 0x19 0x4 0x9e 0xbf 0x4f 0x1e 0x16 0xc0 0x93 0x3a 0x5d 0xc0
+*/
+
+/*
+Transformation rules:
+
+0) syntax = "proto2";
+1) Full-qualified message name -> package My.Package; and reduce message name to last part.
+2) All fields are optional.
+3) uint8, uint16, uint32 --> uint32.
+4) int8, int16, int32 --> sint32.
+5) int64 --> sint64.
+6) list<X> --> repeated X (if X is a primitive type).
+7) map<X> is currently not correctly supported by Google Protobuf.
+8) [ id = X ] --> = X
+*/
+
+/*
+Transformed ODVD to Protobuf:
+syntax = "proto2";
+
+package odcore.testdata;
+
+message TestMessage1 {
+    optional uint32 a = 1 [default = 12];
+}
+
+message TestMessage2 {
+    optional uint32 field1 = 1;
+    optional sint32 field2 = 2;
+}
+
+message TestMessage3 {
+    optional string field1 = 2;
+}
+
+message TestMessage4 {
+    optional TestMessage1 field1 = 3;
+}
+
+message TestMessage5 {
+    optional uint32 field1 = 1 [ default = 1 ];
+    optional sint32 field2 = 2 [ default = -1 ];
+    optional uint32 field3 = 3 [ default = 100 ];
+    optional sint32 field4 = 4 [ default = -100 ];
+    optional uint32 field5 = 5 [ default = 10000 ];
+    optional sint32 field6 = 6 [ default = -10000 ];
+    optional uint64 field7 = 7 [ default = 12345 ];
+    optional sint64 field8 = 8 [ default = -12345 ];
+    optional float field9 = 9 [ default = -1.2345 ];
+    optional double field10 = 10 [ default = -10.2345 ];
+    optional string field11 = 11 [ default = "Hello World!" ];
+    optional TestMessage1 field12 = 12;
+}
+
+message TestMessage6 {
+    repeated uint32 field1 = 4 [packed=true];
+}
+
+message TestMessage7 {
+    repeated float field1 = 1 [packed=true];
+}
+
+message TestMessage8Entry {
+    optional uint32 key = 1;
+    optional uint32 value = 2;
+}
+
+// Does not generate the add_field1(...) correctly.
+message TestMessage8 {
+    repeated TestMessage8Entry field1 = 1;
+}
+
+// TestMessage 9 missing due to failing TestMessage8.
+
+message TestMessage10 {
+    repeated uint32 myArray1 = 1 [ packed=true ];
+    repeated float myArray2 = 2 [ packed=true ];
+}
+
+message TimeStamp {
+    optional sint32 seconds = 1;
+    optional sint32 microseconds = 2;
+}
+
+message Container {
+    optional sint32 dataType = 1;
+    optional bytes serializedData = 2;
+    optional TimeStamp sent = 3;
+    optional TimeStamp received = 4;
+}
+*/
+
+/*
+Example implementation:
+
+Makefile:
+all:
+	g++ -c OpenDaVINCITestData.pb.cc -o OpenDaVINCITestData.pb.cc.o -I ../include
+	g++ -c test.cc -o test.cc.o -I ../include
+	g++ -o test OpenDaVINCITestData.pb.cc.o test.cc.o -L../lib -lprotobuf
+
+test.cc:
+#include <stdint.h>
+#include <iostream>
+#include <sstream>
+#include <string>
+
+#include "OpenDaVINCITestData.pb.h"
+
+using namespace std;
+
+void print(const string &s) {
+    for(uint32_t i = 0; i < s.size(); i++) {
+        cout << hex << (uint32_t)(uint8_t)s.at(i) << " ";
+    }
+    cout << dec << endl;
+}
+
+int main() {
+    stringstream sstr;
+    {
+        sstr.str("");
+        odcore::testdata::TestMessage1 tm1;
+        tm1.set_a(150);
+        tm1.SerializeToOstream(&sstr);
+        print(sstr.str());
+    }
+
+    {
+        sstr.str("");
+        odcore::testdata::TestMessage2 tm1;
+        tm1.set_field1(123);
+        tm1.set_field2(-123);
+        tm1.SerializeToOstream(&sstr);
+        print(sstr.str());
+    }
+
+    {
+        sstr.str("");
+        odcore::testdata::TestMessage3 tm1;
+        tm1.set_field1("testing");
+        tm1.SerializeToOstream(&sstr);
+        print(sstr.str());
+    }
+
+    {
+        sstr.str("");
+        odcore::testdata::TestMessage1 *tm1nested = new odcore::testdata::TestMessage1();
+        tm1nested->set_a(150);
+
+        odcore::testdata::TestMessage4 tm1;
+        tm1.set_allocated_field1(tm1nested);
+        tm1.SerializeToOstream(&sstr);
+        print(sstr.str());
+    }
+
+    {
+        sstr.str("");
+        odcore::testdata::TestMessage1 *tm1nested = new odcore::testdata::TestMessage1();
+        tm1nested->set_a(150);
+
+        odcore::testdata::TestMessage5 tm1;
+        tm1.set_field1(3);
+        tm1.set_field2(-3);
+        tm1.set_field3(103);
+        tm1.set_field4(-103);
+        tm1.set_field5(10003);
+        tm1.set_field6(-10003);
+        tm1.set_field7(54321);
+        tm1.set_field8(-54321);
+        tm1.set_field9(-5.4321);
+        tm1.set_field10(-50.4321);
+        tm1.set_field11("Hello OpenDaVINCI World!");
+        tm1.set_allocated_field12(tm1nested);
+        tm1.SerializeToOstream(&sstr);
+        print(sstr.str());
+    }
+
+    {
+        sstr.str("");
+        odcore::testdata::TestMessage6 tm1;
+        tm1.add_field1(3);
+        tm1.add_field1(270);
+        tm1.add_field1(86942);
+        tm1.SerializeToOstream(&sstr);
+        print(sstr.str());
+    }
+
+    {
+        sstr.str("");
+        odcore::testdata::TestMessage7 tm1;
+        tm1.add_field1(-12.345);
+        tm1.add_field1(-34.567);
+        tm1.add_field1(47.891);
+        tm1.SerializeToOstream(&sstr);
+        print(sstr.str());
+    }
+
+    {
+        sstr.str("");
+        odcore::testdata::TestMessage10 tm1;
+        tm1.add_myarray1(1);
+        tm1.add_myarray1(2);
+        tm1.add_myarray2(-1.2345);
+        tm1.add_myarray2(-2.3456);
+        tm1.add_myarray2(-3.4567);
+        tm1.SerializeToOstream(&sstr);
+        print(sstr.str());
+    }
+
+
+    {
+        sstr.str("");
+        odcore::testdata::TimeStamp ts;
+        ts.set_seconds(123);
+        ts.set_microseconds(456);
+        sstr.str("");
+        ts.SerializeToOstream(&sstr);
+        print(sstr.str());
+    }
+}
+*/
+
+/*
+Using Python to print serialized Containers:
+
+import OpenDaVINCITestData_pb2
+import sys
+import struct
+
+# Print Container's payload.
+def extractAndPrintPayload(identifier, p):
+    if identifier == 1002: # TestMessage2
+        tm = OpenDaVINCITestData_pb2.TestMessage2()
+        tm.ParseFromString(p)
+        print "Payload: " + str(tm)
+
+    if identifier == 1005: # TestMessage5
+        tm = OpenDaVINCITestData_pb2.TestMessage5()
+        tm.ParseFromString(p)
+        print "Payload: " + str(tm)
+
+    if identifier == 1006: # TestMessage6
+        tm = OpenDaVINCITestData_pb2.TestMessage6()
+        tm.ParseFromString(p)
+        print "Payload: " + str(tm)
+
+    if identifier == 1007: # TestMessage7
+        tm = OpenDaVINCITestData_pb2.TestMessage7()
+        tm.ParseFromString(p)
+        print "Payload: " + str(tm)
+
+# Print Container's content.
+def printContainer(c):
+    print "Container ID = " + str(c.dataType)
+    print "Container sent = " + str(c.sent)
+    print "Container received = " + str(c.received)
+    extractAndPrintPayload(c.dataType, c.serializedData)
+
+
+# Main.
+containers = []
+
+if len(sys.argv) != 2:
+    print "Display OpenDaVINCI Containers."
+    print "  Usage:", sys.argv[0], "recording_file.rec"
+    sys.exit(-1)
+
+# Read contents from file.
+with open(sys.argv[1], "rb") as f:
+    buf = ""
+    bytesRead = 0
+    expectedBytes = 0
+    LENGTH_OPENDAVINCI_HEADER = 5
+    consumedOpenDaVINCIContainerHeader = False
+
+    byte = f.read(1)
+    while byte != "":
+        buf = buf + byte
+        bytesRead = bytesRead + 1
+
+        if consumedOpenDaVINCIContainerHeader:
+            expectedBytes = expectedBytes - 1
+            if expectedBytes == 0:
+                container = OpenDaVINCITestData_pb2.Container()
+                container.ParseFromString(buf)
+                containers = containers + [container]
+                # Start over and read next container.
+                consumedOpenDaVINCIContainerHeader = False
+                bytesRead = 0
+                buf = ""
+
+        if not consumedOpenDaVINCIContainerHeader:
+            if bytesRead == LENGTH_OPENDAVINCI_HEADER:
+                consumedOpenDaVINCIContainerHeader = True
+                byte0 = buf[0]
+                byte1 = buf[1]
+
+                # Check for OpenDaVINCI header.
+                if ord(byte0) == int('0x0D',16) and ord(byte1) == int('0xA4',16):
+                    v = struct.unpack('<L', buf[1:5]) # Read uint32_t and convert to little endian.
+                    expectedBytes = v[0] >> 8 # The second byte belongs to OpenDaVINCI's Container header.
+                    buf = "" # Reset buffer as we will read now the actual serialized data from Protobuf.
+                else:
+                    print "Failed to consume OpenDaVINCI container."
+
+        # Read next byte.
+        byte = f.read(1)
+f.close()
+
+# Print containers.
+print "Found " + str(len(containers)) + " containers."
+for cont in containers:
+    printContainer(cont)
+*/

@@ -24,7 +24,7 @@ IF(UNIX)
         SET(CMAKE_MACOSX_RPATH 1)
     ENDIF()
 
-    SET (CXX_OPTIONS       "-std=c++11 -Wno-deprecated -Wall -Werror -Wshadow -Wextra -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wpacked")
+    SET (CXX_OPTIONS       "-std=c++11 -Wno-deprecated -Wall -Werror -Wshadow -Wextra -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wpacked -Wno-error=deprecated-declarations")
     SET (CXX_EFFECTIVE_CXX "-Wmissing-format-attribute -Wredundant-decls -Wno-error=effc++ -Weffc++")
     
     SET (CXX_WARNING_ALL    "-Wcast-align -Wchar-subscripts -Wcomment -Wdisabled-optimization -Wformat -Wformat=2 -Wformat-nonliteral -Wformat-security -Wformat-y2k -Wfloat-equal -Winit-self -Winline -Winvalid-pch -Wlong-long -Wsign-compare -Wuninitialized -Wunreachable-code -Wunsafe-loop-optimizations -Wunused -Wunused-function -Wunused-label -Wunused-parameter -Wunused-but-set-parameter -Wunused-but-set-variable -Wunused-value -Wunused-variable -Wno-maybe-uninitialized -Wunused-result -Wmissing-braces -Wmissing-field-initializers -Wmissing-format-attribute -Wmissing-include-dirs -Wmissing-noreturn -Wparentheses -Wsign-compare -Wswitch -Wuninitialized -Wunknown-pragmas -Wunreachable-code -Wtrigraphs  -Wvariadic-macros -Wvolatile-register-var -Wwrite-strings -Wpointer-arith -Wredundant-decls -Wreturn-type -Wsequence-point -Wstack-protector -Wstrict-aliasing -Wstrict-aliasing=2 -Wsync-nand -Wsuggest-attribute=const -Warray-bounds -Wtrampolines -Wnormalized=nfc -Wvarargs -Wvector-operation-performance -Wvla -Wtype-limits -Wc++11-compat -Woverloaded-virtual")
@@ -48,7 +48,7 @@ IF(UNIX)
         ENDIF()
     ENDIF()
 
-    SET (CMAKE_C_FLAGS ${CMAKE_C_FLAGS} " -fPIC")
-    SET (CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} " -fPIC ${CXX_OPTIONS} -pipe")
+    SET (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC -Wno-error=deprecated-declarations")
+    SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC ${CXX_OPTIONS} -pipe")
 ENDIF()
 

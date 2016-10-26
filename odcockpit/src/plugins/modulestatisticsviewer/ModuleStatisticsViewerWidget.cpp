@@ -18,9 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <Qt/qgridlayout.h>
-#include <Qt/qtimer.h>
-#include <qcolor.h>
+#include <QtCore>
+#include <QtGui>
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/data/Container.h"
@@ -77,11 +76,10 @@ namespace cockpit {
                     m_moduleStatistics.push_back(ms);
 
                     // Get the iterator to the entries.
-    				std::pair<std::map<std::string, odcore::data::dmcp::ModuleStatistic>::iterator, std::map<std::string, odcore::data::dmcp::ModuleStatistic>::iterator> iterators = ms.iteratorPair_MapOfModuleStatistics();
-
-                    std::map<std::string, odcore::data::dmcp::ModuleStatistic>::iterator it = iterators.first;
+                    auto iterators = ms.iteratorPair_ListOfModuleStatistics();
+                    auto it = iterators.first;
                     while (it != iterators.second) {
-                        ModuleStatistic entry = it->second;
+                        ModuleStatistic entry = (*it);
 
                         // Lookup module in map.
                         std::shared_ptr<LoadPerModule> lpm = m_loadPerModule[entry.getModule().getName()];
@@ -108,6 +106,7 @@ namespace cockpit {
                     }
                 }
             }
+
         }
     }
 } // plugins::modulestatisticsviewer
