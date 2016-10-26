@@ -58,10 +58,16 @@ namespace cockpit {
                 m_dataView = unique_ptr<QTreeWidget>(new QTreeWidget(this));
                 m_dataView->setColumnCount(2);
                 QStringList headerLabel;
+                //Federico: Here you can change the column names, number of columns, and size of columns
                 headerLabel << tr("Component") << tr("Message");
                 m_dataView->setColumnWidth(0, 200);
                 m_dataView->setColumnWidth(1, 200);
                 m_dataView->setHeaderLabels(headerLabel);
+                
+                //The following 3 lines can print something in the window:
+                QTreeWidgetItem *newHeader = new QTreeWidgetItem(m_dataView.get());
+                newHeader->setText(0,"123"); //Left column
+                newHeader->setText(1,"456"); //Right column
 
                 //add to Layout
                 mainBox->addWidget(m_dataView.get(), 0, 0);
@@ -72,9 +78,17 @@ namespace cockpit {
 
             PerformanceMonitorWidget::~PerformanceMonitorWidget() {}
 
-            void PerformanceMonitorWidget::nextContainer(Container &) {}
+            void PerformanceMonitorWidget::nextContainer(Container &) {
+                /*if (container.getDataType() == odcore::data::LogMessage::ID()) {
+                        addLogMessageToTree(container);
+                    }*/
+                //Federico: I commented the original code for LogMessage. Here we need to specify what type of container to be handled
+            }
 
-            void PerformanceMonitorWidget::addPerformanceMonitorToTree(Container &){}
+            void PerformanceMonitorWidget::addPerformanceMonitorToTree(Container &){
+            //Federico: I removed the entire content of this method originally from LogMessage. This method is the key to this new plugin.
+            
+            }
        }
     }
 }

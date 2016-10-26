@@ -35,7 +35,7 @@ namespace cockpit {
             PerformanceMonitorPlugIn::PerformanceMonitorPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt) :
                 PlugIn(name, kvc, prnt),
                 m_viewerWidget(NULL) {
-                setDescription("This plugin displays log messages from components.");
+                setDescription("This plugin displays CPU and network usage from components.");
             }
 
             PerformanceMonitorPlugIn::~PerformanceMonitorPlugIn() {}
