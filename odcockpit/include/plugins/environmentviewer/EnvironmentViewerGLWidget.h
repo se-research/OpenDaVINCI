@@ -104,6 +104,9 @@ class SelectableNodeDescriptor;
                     virtual void drawScene();
 
                 private:
+                    void drawSceneInternal();
+
+                private:
                     odcore::base::Mutex m_rootMutex;
                     opendlv::threeD::TransformGroup *m_root;
                     opendlv::threeD::TransformGroup *m_stationaryElements;
