@@ -117,11 +117,19 @@ namespace opendlv {
                         ////////////////////////////////////////////////////////
 
                         pos = pos + 6 + 1; // Consume value + ","
-                        stringstream timeStr(m_message.substr(pos, 6));
+
+                        stringstream timeStr;
+                        char c = m_message.at(pos);
+                        while (c != ',') {
+                            timeStr << c;
+                            pos++;
+                            c = m_message.at(pos);
+                        }
                         uint32_t time;
                         timeStr >> time;
 
-                        pos = pos + 6 + 1; // Consume value + ","
+                        pos = pos + 1; // Consume ","
+
                         char type = m_message.at(pos);
                         if (type != 'A') {
                             clog << "No data message." << endl;
@@ -175,7 +183,7 @@ namespace opendlv {
                         pos = pos + 1 + 1; // Consume value + ","
 
                         stringstream velocityStr;
-                        char c = m_message.at(pos);
+                        c = m_message.at(pos);
                         while (c != ',') {
                             velocityStr << c;
                             pos++;
