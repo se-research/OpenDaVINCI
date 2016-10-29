@@ -1,7 +1,6 @@
 /**
  * cockpit - Visualization environment
  * Copyright (C) 2012 - 2016 Christian Berger
- * Copyright (C) 2008 - 2011 (as monitor component) Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -253,9 +252,9 @@ namespace cockpit {
 
                 if (successfullyMapped) {
                     vector<pair<string, string> > entries;
-                    entries.push_back(make_pair("Sent", container.getSentTimeStamp().getYYYYMMDD_HHMMSSms()));
-                    entries.push_back(make_pair("Received", container.getReceivedTimeStamp().getYYYYMMDD_HHMMSSms()));
-                    entries.push_back(make_pair("Sample time", container.getSampleTimeStamp().getYYYYMMDD_HHMMSSms()));
+                    entries.push_back(make_pair("sent", container.getSentTimeStamp().getYYYYMMDD_HHMMSSms()));
+                    entries.push_back(make_pair("received", container.getReceivedTimeStamp().getYYYYMMDD_HHMMSSms()));
+                    entries.push_back(make_pair("sample time", container.getSampleTimeStamp().getYYYYMMDD_HHMMSSms()));
 
                     MessageToTupleVisitor mttv(entries);
                     msg.accept(mttv);
