@@ -84,6 +84,7 @@ namespace odplayerh264 {
         // Close connection to child.
         for(auto entry : m_mapOfDecoders) {
             entry.second->getConnection()->stop();
+            entry.second->closeConnection();
         }
 
         // Terminate child processes.
