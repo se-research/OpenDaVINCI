@@ -22,6 +22,8 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
+#include <iostream>
+
 #include "opendavinci/odcore/wrapper/half_float.h"
 
 using namespace std;
@@ -41,11 +43,24 @@ class HalfFloatTest : public CxxTest::TestSuite {
             float f = c;
             //cout << "a = " << a << ", b = " << b << ", c = " << c << ", d = " << d << ", e = " << f << endl;
 
+            // Write data to string.
+            stringstream sstr;
+            sstr.write((char*)(&a), 2);
+
+            const string s = sstr.str();
+
+            // Read back from string.
+            stringstream sstr2(s);
+
+            half g;
+            sstr.read((char*)(&g), 2);
+
             TS_ASSERT_DELTA(a, 3.4f, 0.01);
             TS_ASSERT_DELTA(b, 5.0f, 0.01);
             TS_ASSERT_DELTA(c, 17.0f, 0.02);
             TS_ASSERT_DELTA(d, 7.5f, 0.01);
             TS_ASSERT_DELTA(f, 17.0f, 0.02);
+            TS_ASSERT_DELTA(g, 3.4f, 0.01);
         }
 };
 
