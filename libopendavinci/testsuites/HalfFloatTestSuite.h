@@ -22,7 +22,7 @@
 
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
-#include <iostream>
+#include <sstream>
 
 #include "opendavinci/odcore/wrapper/half_float.h"
 
