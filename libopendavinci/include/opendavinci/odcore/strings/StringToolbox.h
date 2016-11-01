@@ -65,7 +65,14 @@ namespace odcore {
                 static bool equalsIgnoreCase(const string &s1, const string &s2);
 
                 /**
-                 * This method splits a string using the delimiter.
+                 * This method splits a string using the delimiter according to
+                 * the following semantics:
+                 *
+                 * split("tokenA", ';').size() == 1.
+                 * split("tokenA;", ';').size() == 1.
+                 * split(";tokenA", ';').size() == 2.
+                 * split(";tokenA;", ';').size() == 2.
+                 * split(";tokenA;;", ';').size() == 3.
                  *
                  * @param s String to split.
                  * @param delimiter
