@@ -29,11 +29,6 @@
 # pragma GCC diagnostic ignored "-Weffc++"
 # pragma GCC diagnostic ignored "-Wshadow"
 # pragma GCC diagnostic ignored "-Wlong-long"
-
-//# if ((__GNUC__ * 100) + __GNUC_MINOR__) >= 600
-//#  pragma GCC diagnostic ignored "-Wignored-attributes"
-//#  pragma GCC diagnostic ignored "-Wmisleading-indentation"
-//# endif
 #endif
 
     #include "opendavinci/half.hpp"
