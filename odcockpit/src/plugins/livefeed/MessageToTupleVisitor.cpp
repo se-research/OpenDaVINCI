@@ -1,7 +1,6 @@
 /**
  * cockpit - Visualization environment
  * Copyright (C) 2012 - 2015 Christian Berger
- * Copyright (C) 2008 - 2011 (as monitor component) Christian Berger, Bernhard Rumpe
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,6 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <iomanip>
 #include <ostream>
 
 #include "opendavinci/odcore/serialization/Serializable.h"
@@ -30,6 +30,7 @@ namespace cockpit {
 
         namespace livefeed {
 
+            using namespace std;
             using namespace odcore::base;
 
             MessageToTupleVisitor::MessageToTupleVisitor(vector<pair<string, string> > &entries) :
@@ -112,13 +113,13 @@ namespace cockpit {
 
             void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, float &v) {
                 stringstream sstr;
-                sstr << v;
+                sstr << setprecision(10) << v << setprecision(6);
                 m_entries.push_back(make_pair(shortName, sstr.str()));
             }
 
             void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, double &v) {
                 stringstream sstr;
-                sstr << v;
+                sstr << setprecision(10) << v << setprecision(6);
                 m_entries.push_back(make_pair(shortName, sstr.str()));
             }
 
