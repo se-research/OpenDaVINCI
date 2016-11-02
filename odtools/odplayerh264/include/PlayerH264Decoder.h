@@ -150,6 +150,8 @@ namespace odplayerh264 {
             bool m_hasConnection;
 
         private:
+            bool m_ready;
+
             // This shared memory will contain the resulting decoded image frame.
             std::shared_ptr<odcore::wrapper::SharedMemory> m_mySharedMemory;
 
