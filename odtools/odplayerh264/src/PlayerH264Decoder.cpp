@@ -61,6 +61,7 @@ namespace odplayerh264 {
         m_connection(),
         m_hasConnectionMutex(),
         m_hasConnection(false),
+        m_ready(true),
         m_mySharedMemory(NULL),
         m_mySharedImage(),
         m_frameCounter(0),
@@ -108,23 +109,31 @@ namespace odplayerh264 {
     }
 
     void PlayerH264Decoder::stopAndCleanUpDecoding() {
-        // Close decoder.
-        av_parser_close(m_parser);
-        avcodec_close(m_decodeContext);
+        if (m_ready) {
+            // Release shared memory.
+            m_mySharedMemory.reset();
+            m_ready = false;
 
-        // Free acquired memory.
-        av_free(m_decodeContext);
-        av_free(m_picture);
-        av_free(m_frameBGR);
+            // Close decoder.
+            av_parser_close(m_parser);
+            avcodec_close(m_decodeContext);
 
-        // Close input file.
-        fclose(m_inputFile);
+            // Free acquired memory.
+            av_free(m_decodeContext);
+            av_free(m_picture);
+            av_free(m_frameBGR);
 
-        // Free buffer.
-        m_internalBuffer.clear();
-        if (m_readFromFileBuffer != NULL) {
-            delete [] m_readFromFileBuffer;
-            m_readFromFileBuffer = NULL;
+            // Close input file.
+            fclose(m_inputFile);
+
+            // Free buffer.
+            m_internalBuffer.clear();
+            if (m_readFromFileBuffer != NULL) {
+                delete [] m_readFromFileBuffer;
+                m_readFromFileBuffer = NULL;
+            }
+
+            cout << "[odplayerh264] Cleaned H264 decoding child." << endl;
         }
     }
 
@@ -137,7 +146,9 @@ namespace odplayerh264 {
             sstr >> in;
         }
 
-        out = process(in);
+        if (m_ready) {
+            out = process(in);
+        }
 
         {
             stringstream sstr;
@@ -296,7 +307,7 @@ namespace odplayerh264 {
             readMoreBytes = true;
             return false;
         }
-     
+
         uint8_t* data = NULL;
         int size = 0;
         int length = av_parser_parse2(m_parser, m_decodeContext, &data, &size,
