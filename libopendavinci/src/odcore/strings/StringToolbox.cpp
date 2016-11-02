@@ -60,13 +60,11 @@ namespace odcore {
             string::size_type start = 0;
             string::size_type pos = s.find_first_of(delimiter, start);
             while (pos != string::npos) {
-                if(pos != start) {
-                    v.push_back(s.substr(start, pos - start));
-                }
+                v.push_back(s.substr(start, pos - start));
                 start = pos + 1;
                 pos = s.find_first_of(delimiter, start);
             }
-            if ((start > 0) && (start < s.length())) {
+            if (start <= s.length()) {
                 v.push_back(s.substr(start, s.length() - start));
             }
             return v;

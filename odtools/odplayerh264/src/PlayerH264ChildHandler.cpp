@@ -76,6 +76,10 @@ namespace odplayerh264 {
         }
     }
 
+    void PlayerH264ChildHandler::closeConnection() {
+        m_connection.reset();
+    }
+
     void PlayerH264ChildHandler::setConnection(shared_ptr<odcore::io::tcp::TCPConnection> c) {
         m_connection = c;
     }
