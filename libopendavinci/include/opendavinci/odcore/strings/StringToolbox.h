@@ -71,8 +71,8 @@ namespace odcore {
                  * split("tokenA", ';').size() == 1.
                  * split("tokenA;", ';').size() == 2, second token is "".
                  * split(";tokenA", ';').size() == 2, first token is "".
-                 * split(";tokenA;", ';').size() == 3, first and last token are "".
-                 * split(";tokenA;;", ';').size() == 4, first, third, and fourth token are "".
+                 * split(";tokenA;", ';').size() == 3, first and last tokens are "".
+                 * split(";tokenA;;", ';').size() == 4, first, third, and fourth tokens are "".
                  *
                  * @param s String to split.
                  * @param delimiter
