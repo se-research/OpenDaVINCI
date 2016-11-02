@@ -1,3 +1,4 @@
+4.3.6 - Adjusted semantics for StringToolbox::split, added float half type
 4.3.5 - Fix WGS84 test suite and increased precision for odcockpit/livefeed.
 4.3.4 - Fix CAN device, tutorial for reading zip files.
 4.3.3 - CAN time stamping and WGS84 coordinate interface update
