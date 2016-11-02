@@ -111,8 +111,9 @@ class StringToolboxTest : public CxxTest::TestSuite {
 
             string s1a = "abc;";
             vector<string> vs1a = odcore::strings::StringToolbox::split(s1a, ';');
-            TS_ASSERT(vs1a.size() == 1);
+            TS_ASSERT(vs1a.size() == 2);
             TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(vs1a.at(0), "abc"));
+            TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(vs1a.at(1), ""));
 
             string s1b = ";abc";
             vector<string> vs1b = odcore::strings::StringToolbox::split(s1b, ';');
@@ -122,16 +123,18 @@ class StringToolboxTest : public CxxTest::TestSuite {
 
             string s1c = ";abc;";
             vector<string> vs1c = odcore::strings::StringToolbox::split(s1c, ';');
-            TS_ASSERT(vs1c.size() == 2);
+            TS_ASSERT(vs1c.size() == 3);
             TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(vs1c.at(0), ""));
             TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(vs1c.at(1), "abc"));
+            TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(vs1c.at(2), ""));
 
             string s1d = ";abc;;";
             vector<string> vs1d = odcore::strings::StringToolbox::split(s1d, ';');
-            TS_ASSERT(vs1d.size() == 3);
+            TS_ASSERT(vs1d.size() == 4);
             TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(vs1d.at(0), ""));
             TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(vs1d.at(1), "abc"));
             TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(vs1d.at(2), ""));
+            TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(vs1d.at(3), ""));
 
             string s2 = "abc;def";
             vector<string> vs2_no = odcore::strings::StringToolbox::split(s2, ',');
@@ -150,24 +153,27 @@ class StringToolboxTest : public CxxTest::TestSuite {
 
             string s4 = "abc;def;";
             vector<string> vs4 = odcore::strings::StringToolbox::split(s4, ';');
-            TS_ASSERT(vs4.size() == 2);
+            TS_ASSERT(vs4.size() == 3);
             TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(vs4.at(0), "abc"));
             TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(vs4.at(1), "def"));
+            TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(vs4.at(2), ""));
 
             string s5 = ";abc;def;";
             vector<string> vs5 = odcore::strings::StringToolbox::split(s5, ';');
-            TS_ASSERT(vs5.size() == 3);
+            TS_ASSERT(vs5.size() == 4);
             TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(vs5.at(0), ""));
             TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(vs5.at(1), "abc"));
             TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(vs5.at(2), "def"));
+            TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(vs5.at(3), ""));
 
             string s6 = ";abc;def;;";
             vector<string> vs6 = odcore::strings::StringToolbox::split(s6, ';');
-            TS_ASSERT(vs6.size() == 4);
+            TS_ASSERT(vs6.size() == 5);
             TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(vs6.at(0), ""));
             TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(vs6.at(1), "abc"));
             TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(vs6.at(2), "def"));
             TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(vs6.at(3), ""));
+            TS_ASSERT(odcore::strings::StringToolbox::equalsIgnoreCase(vs6.at(4), ""));
         }
 
 };

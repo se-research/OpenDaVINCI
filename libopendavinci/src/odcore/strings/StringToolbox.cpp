@@ -64,7 +64,7 @@ namespace odcore {
                 start = pos + 1;
                 pos = s.find_first_of(delimiter, start);
             }
-            if (start < s.length()) {
+            if (start <= s.length()) {
                 v.push_back(s.substr(start, s.length() - start));
             }
             return v;
