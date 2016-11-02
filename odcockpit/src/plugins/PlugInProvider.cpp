@@ -108,14 +108,14 @@ class PlugIn;
 
             if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("logmessage") != string::npos) )
                 m_listOfAvailablePlugIns.push_back("LogMessage");
-            if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("performancemonitor") != string::npos) )
-                m_listOfAvailablePlugIns.push_back("PerformanceMonitor");
 #ifdef HAVE_QWT5QT4
             if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("modulestatisticsviewer") != string::npos) )
                 m_listOfAvailablePlugIns.push_back("ModuleStatisticsViewer");
 #endif
             if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("objxviewer") != string::npos) )
                 m_listOfAvailablePlugIns.push_back("OBJXViewer");
+            if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("performancemonitor") != string::npos) )
+                m_listOfAvailablePlugIns.push_back("PerformanceMonitor");
             if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("player") != string::npos) )
                 m_listOfAvailablePlugIns.push_back("Player");
             if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("scnxviewer") != string::npos) )
@@ -146,7 +146,7 @@ class PlugIn;
             m_listOfDescriptions["IrUsMap"] = tr("This plugin displays the current irus readings.").toStdString();
             m_listOfDescriptions["LiveFeed"] = tr("This plugin displays all distributed visitable messages.").toStdString();
             m_listOfDescriptions["LogMessage"] = tr("This plugin displays log messages from components.").toStdString();
-            m_listOfDescriptions["PerformanceMonitor"] = tr("This plugin displays CPU and network usage from components.").toStdString();
+            m_listOfDescriptions["PerformanceMonitor"] = tr("This plugin displays system usage statistics of components.").toStdString();
             m_listOfDescriptions["Player"] = tr("This plugin replays previously recorded files.").toStdString();
             m_listOfDescriptions["SessionViewer"] = tr("This plugin displays currently running modules.").toStdString();
             m_listOfDescriptions["SharedImageViewer"] = tr("This plugin displays shared images.").toStdString();
@@ -232,7 +232,7 @@ class PlugIn;
                 plugIn = std::shared_ptr<PlugIn>(new livefeed::LiveFeedPlugIn("LiveFeed", m_kvc, m_parent));
             } else if (name == "LogMessage") {
                 cerr << "[odcockpit] Creating plugin: LogMessage" << endl;
-                plugIn = std::shared_ptr<PlugIn>(new logmessage::LogMessagePlugIn("LogMesage", m_kvc, m_parent));
+                plugIn = std::shared_ptr<PlugIn>(new logmessage::LogMessagePlugIn("LogMessage", m_kvc, m_parent));
             } else if (name == "PerformanceMonitor") {
                 cerr << "[odcockpit] Creating plugin: PerformanceMonitor" << endl;
                 plugIn = std::shared_ptr<PlugIn>(new performancemonitor::PerformanceMonitorPlugIn("PerformanceMonitor", m_kvc, m_parent));

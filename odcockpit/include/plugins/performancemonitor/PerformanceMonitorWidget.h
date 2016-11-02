@@ -83,9 +83,13 @@ namespace cockpit {
                 private:
                     unique_ptr<QTreeWidget> m_dataView;
                     map<string, QTreeWidgetItem* > m_components;
-                    map<string, QTreeWidgetItem* > m_loglevelPerComponent;
+                    map<string, QTreeWidgetItem* > m_CPUStatisticsPerComponent;
+                    map<string, QTreeWidgetItem* > m_MEMStatisticsPerComponent;
 
-                    void addPerformanceMonitorToTree(Container &container);
+                    void addContainerToTree(Container &container);
+
+                    uint8_t m_MAX_CPU_HISTORY;
+                    uint8_t m_MAX_MEM_HISTORY;
             };
 
         }
