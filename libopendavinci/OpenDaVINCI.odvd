@@ -140,9 +140,16 @@ message odcore.data.dmcp.ModuleDescriptor [id = 113] {
     float frequency [id = 4];
 }
 
+// This message describes information about a software component's CPU consumption.
+message odcore.data.dmcp.CPUConsumption [id = 115] {
+    float average [id = 1];
+    float lastSecond [id = 2];
+}
+
 // This message describes information about a software component's time slice consumption.
 message odcore.data.dmcp.RuntimeStatistic [id = 9] {
     double sliceConsumption [id = 1];
+    odcore.data.dmcp.CPUConsumption cpuConsumption [id = 2];
 }
 
 // This message describes runtime statistics about a software component.

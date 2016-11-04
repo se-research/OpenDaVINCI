@@ -189,6 +189,18 @@ namespace odcore {
                      * @return Pointer to the ContainerConference to be used.
                      */
                     std::shared_ptr<odcore::io::conference::ContainerConference> getContainerConference();
+                
+                public:
+                    /**
+                     * This module sends advanced statistics through the conference 
+                     * in a ModuleStatistics message. 
+                     * The included statistics are avg CPU load in the module's lifetime 
+                     * and CPU load in the last approx. 1 second.
+                     *
+                     * @return Boolean true if the needed /proc/[*] system file were successfully accessed, 
+                     * false otherwise.
+                     */
+                    bool sendAdvancedStatistics();
 
                 private:
 #ifndef WIN32
@@ -210,6 +222,9 @@ namespace odcore {
                     std::shared_ptr<odcore::io::conference::ContainerConference> m_localContainerConference;
                     bool m_hasExternalContainerConference;
                     std::shared_ptr<odcore::io::conference::ContainerConference> m_containerConference;
+                    
+                    float m_stats_cpu_time;
+                    float m_stats_exc_time;
             };
 
         }

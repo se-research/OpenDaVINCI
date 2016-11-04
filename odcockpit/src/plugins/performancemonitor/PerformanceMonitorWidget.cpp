@@ -24,7 +24,7 @@
 #include <cstring>
 #include <sstream>
 #include <vector>
-//#include <iostream>
+#include <iostream>
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/data/Container.h"
@@ -96,15 +96,15 @@ namespace cockpit {
 
                 string componentName="componentName";
                 string componentIdentifier="componentIdentifier";
+std::cout<<"modulestatistics size: "<<pm.getListOfModuleStatistics().size()<<std::endl;
                 if(pm.getListOfModuleStatistics().size() > 0)
                 {
-//                    cout<<"SIZE > 0"<<endl;
                     odcore::data::dmcp::ModuleDescriptor md=pm.getListOfModuleStatistics().at(0).getModule();
                     componentName=md.getName();
                     componentIdentifier=md.getIdentifier();
                 }
-//                else cout<<"SIZE <= 0"<<endl;
-                
+                std::cout << "DEBUG: process " << ::getpid() << " (parent: " << ::getppid() << ")" << std::endl;
+
                 // Create new entry if needed
                 if (m_components.find(componentName) == m_components.end()) {
                     QTreeWidgetItem *newHeader = new QTreeWidgetItem(m_dataView.get());

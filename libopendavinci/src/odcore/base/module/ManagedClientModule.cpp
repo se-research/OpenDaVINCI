@@ -22,6 +22,10 @@
     #include <sys/time.h>
 #endif
 
+#ifdef __linux__
+    #include <sys/sysinfo.h>
+#endif 
+
 #include <cmath>
 #include <exception>
 #include <fstream>
@@ -41,7 +45,10 @@
 #include "opendavinci/odcore/exceptions/Exceptions.h"
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/generated/odcore/data/dmcp/ModuleStateMessage.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleDescriptor.h"
+#include "opendavinci/generated/odcore/data/dmcp/ModuleStatistic.h"
 #include "opendavinci/generated/odcore/data/dmcp/RuntimeStatistic.h"
+#include "opendavinci/generated/odcore/data/dmcp/CPUConsumption.h"
 #include "opendavinci/generated/odcore/data/dmcp/ServerInformation.h"
 
 namespace odcore {
@@ -72,7 +79,9 @@ namespace odcore {
                 m_pulseMessage(),
                 m_localContainerConference(NULL),
                 m_hasExternalContainerConference(false),
-                m_containerConference(NULL) {
+                m_containerConference(NULL),
+                m_stats_cpu_time(0.0),
+                m_stats_exc_time(0.0) {
                 m_localContainerConference = std::shared_ptr<odcore::io::conference::ContainerConference>(new ManagedClientModuleContainerConference());
             }
 
@@ -116,12 +125,91 @@ namespace odcore {
                 return m_startOfLastCycle;
             }
 
+            bool ManagedClientModule::sendAdvancedStatistics() {
+                bool proc_read=false;
+                std::cout<<"[ManagedClientModule] sendAdvancedStatistics() modified"<<std::endl;
+                
+                try
+                {
+                    ifstream proc_file;
+                    proc_file.open("/proc/self/stat");
+                    
+                    int numCPU = sysconf(_SC_NPROCESSORS_ONLN);
+                    long tickspersec = sysconf(_SC_CLK_TCK);
+                    //cout<<endl<<"tickspersec: "<<tickspersec<<endl;
+                    float utime,stime,start_time;
+                    
+                    uint64_t number;
+                    char chr;
+                    string str;
+                    
+                    // discard values of no interest
+                    proc_file>>number;
+                    proc_file>>str;
+                    proc_file>>chr;
+                    for(uint8_t i=0;i<11;++i)
+                        proc_file>>number;
+                    
+                    // get utime and stime
+                    utime=(float)number/tickspersec/numCPU;
+                    proc_file>>number;
+                    stime=(float)number/tickspersec/numCPU;
+                    
+                    // discard values of no interest
+                    for(uint8_t i=0;i<7;++i)
+                        proc_file>>number;
+                    
+                    // get start_time
+                    start_time=(float)number/tickspersec;
+                    
+                    proc_file.close();
+                    
+                    struct sysinfo si;
+                    sysinfo (&si);
+                    
+                    float cpu_time_now=stime+utime;
+                    float exec_time_now=si.uptime-start_time;
+                    float cpu_time_delta=cpu_time_now-m_stats_cpu_time;
+                    float exec_time_delta=exec_time_now-m_stats_exc_time;
+                    float avg_cpu=m_stats_cpu_time/m_stats_exc_time*100.0;
+                    float del_cpu=cpu_time_delta/exec_time_delta*100.0;
+                    
+                    cout<<endl<<"["<<str<<"] avg cpu time/exec time*100 "<<m_stats_cpu_time<<"/"<<m_stats_exc_time<<"*100 = "<<avg_cpu<<"%"<<endl
+                        <<"["<<str<<"] del cpu time/exec time*100 "<<cpu_time_delta<<"/"<<exec_time_delta<<"*100 = "<<del_cpu<<"%"<<endl<<endl;
+                    
+                    // update stored values for next calculation
+                    m_stats_cpu_time=cpu_time_now;
+                    m_stats_exc_time=exec_time_now;
+                    
+                    //send statistics to conference
+                    if(!std::isnan(avg_cpu) && !std::isnan(del_cpu)) {
+                        string noVerSet = "No version set.";
+                        odcore::data::dmcp::ModuleDescriptor md(getName(), getIdentifier(), noVerSet, getFrequency());
+                        odcore::data::dmcp::CPUConsumption cpuc;
+                        cpuc.setAverage(avg_cpu);
+                        cpuc.setLastSecond(del_cpu);
+                        odcore::data::dmcp::RuntimeStatistic rs;
+                        rs.setCpuConsumption(cpuc);
+                        odcore::data::dmcp::ModuleStatistic ms(md,rs);
+                        Container c(ms);
+                        getContainerConference()->send(c);
+                    }
+                    proc_read=true;
+                }
+                catch(std::ifstream::failure &readErr)
+                {}
+                
+                return proc_read;
+            }
+            
             void ManagedClientModule::wait() {
+                sendAdvancedStatistics();
                 // Sanity check for realtime execution.
                 if (isRealtime() && getServerInformation().getManagedLevel() != odcore::data::dmcp::ServerInformation::ML_NONE) {
                     OPENDAVINCI_CORE_THROW_EXCEPTION(InvalidArgumentException,
                                                   "Realtime scheduling specified but current module shall run in dependent manage level (i.e. supercomponent is running with a different level than --managed=none!)");
                 }
+                
                 if (isRealtime() && getServerInformation().getManagedLevel() == odcore::data::dmcp::ServerInformation::ML_NONE) {
                     wait_ManagedLevel_None_realtime();
                 }
@@ -248,7 +336,6 @@ namespace odcore {
                     sstr << getName() << "_" << TimeStamp().getYYYYMMDD_HHMMSS() << ".profiling.csv";
                     m_profilingFile = new ofstream();
                     m_profilingFile->open(sstr.str().c_str(), ios::out | ios::app);
-
                     (*m_profilingFile) <<
                         "timestamp_current_cycle" << ";" <<
                         "timestamp_last_cycle" << ";" <<
@@ -358,6 +445,27 @@ namespace odcore {
 
                 // Send RuntimeStatistic to supercomponent.
                 if (sendStatistics && getDMCPClient().get()) {
+                // sending runtime statistics should happen here
+                // sending runtime statistics should happen here
+                // sending runtime statistics should happen here
+                // sending runtime statistics should happen here
+                // sending runtime statistics should happen here
+                // sending runtime statistics should happen here
+                // sending runtime statistics should happen here
+                // sending runtime statistics should happen here
+                // sending runtime statistics should happen here
+                // sending runtime statistics should happen here
+                // sending runtime statistics should happen here
+                // sending runtime statistics should happen here
+                // sending runtime statistics should happen here
+                // sending runtime statistics should happen here
+                // sending runtime statistics should happen here
+                // sending runtime statistics should happen here
+                // sending runtime statistics should happen here
+                // sending runtime statistics should happen here
+                // sending runtime statistics should happen here
+                // sending runtime statistics should happen here
+                // sending runtime statistics should happen here
                     odcore::data::dmcp::RuntimeStatistic rts;
                     rts.setSliceConsumption(static_cast<float>(TIME_CONSUMPTION_OF_CURRENT_SLICE)/static_cast<float>(NOMINAL_DURATION_OF_ONE_SLICE));
                     getDMCPClient()->sendStatistics(rts);

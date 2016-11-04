@@ -166,6 +166,8 @@ class ConnectedModule;
             vector<string> m_modulesToIgnore;
             odcore::data::LogMessage::LogLevel m_logLevel;
             fstream *m_logFile;
+            void getCPUUsage();
+            double cpu_time, exec_time;
     };
 }
 
