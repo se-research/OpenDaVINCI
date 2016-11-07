@@ -24,6 +24,7 @@
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcontext/base/Clock.h"
+#include <vector>
 #include <memory>
 #include "opendavinci/odcore/base/module/Breakpoint.h"
 #include "opendavinci/odcore/base/module/ClientModule.h"
@@ -192,15 +193,14 @@ namespace odcore {
                 
                 public:
                     /**
-                     * This module sends advanced statistics through the conference 
-                     * in a ModuleStatistics message. 
-                     * The included statistics are avg CPU load in the module's lifetime 
-                     * and CPU load in the last approx. 1 second.
+                     * This module computes advanced statistics to be later sent through the conference. 
+                     * The involved statistics are avg CPU load in the module's lifetime 
+                     * and CPU load since the last time the method was invoked.
                      *
-                     * @return Boolean true if the needed /proc/[*] system file were successfully accessed, 
-                     * false otherwise.
+                     * @return Vector of two floats holding respectively the average and on-demand CPU load, 
+                     * if for any reason the values could not be computed the vector is empty.
                      */
-                    bool sendAdvancedStatistics();
+                    std::vector<double> computeAdvancedStatistics();
 
                 private:
 #ifndef WIN32
@@ -223,10 +223,9 @@ namespace odcore {
                     bool m_hasExternalContainerConference;
                     std::shared_ptr<odcore::io::conference::ContainerConference> m_containerConference;
                     
-                    float m_stats_cpu_time;
-                    float m_stats_exc_time;
+                    double m_stats_cpu_time;
+                    double m_stats_exc_time;
             };
-
         }
     }
 } // odcore::base::module

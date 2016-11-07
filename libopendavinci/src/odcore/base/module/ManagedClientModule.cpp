@@ -31,7 +31,6 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <vector>
 
 #include "opendavinci/odcontext/base/ControlledTime.h"
 #include "opendavinci/odcontext/base/ControlledTimeFactory.h"
@@ -125,85 +124,105 @@ namespace odcore {
                 return m_startOfLastCycle;
             }
 
-            bool ManagedClientModule::sendAdvancedStatistics() {
-                bool proc_read=false;
-                std::cout<<"[ManagedClientModule] sendAdvancedStatistics() modified"<<std::endl;
+            std::vector<double> ManagedClientModule::computeAdvancedStatistics() {
+#ifdef __linux__
+                bool success=false;
+                double cpu_stats[4];
                 
                 try
                 {
+                    // get system info
+                    
+                    // The number of processors currently online
+                    int numCPU = sysconf(_SC_NPROCESSORS_ONLN);
+                    if(numCPU == -1) OPENDAVINCI_CORE_THROW_EXCEPTION(IOException,"Could not get system info");
+                    // Size of a page in bytes
+                    int pagesize_in_bytes = sysconf(_SC_PAGESIZE);
+                    if(pagesize_in_bytes < 1) OPENDAVINCI_CORE_THROW_EXCEPTION(IOException,"Could not get system info");
+cout<<"pagesize in bytes "<<pagesize_in_bytes<<" bytes"<<endl;
+                    // The number of clock ticks per second
+                    long tickspersec = sysconf(_SC_CLK_TCK);
+                    if(tickspersec == -1) OPENDAVINCI_CORE_THROW_EXCEPTION(IOException,"Could not get system info");
+                    
+                    double utime, stime, start_time, total_vm_size, resident_set_size;
+                    
                     ifstream proc_file;
                     proc_file.open("/proc/self/stat");
-                    
-                    int numCPU = sysconf(_SC_NPROCESSORS_ONLN);
-                    long tickspersec = sysconf(_SC_CLK_TCK);
-                    //cout<<endl<<"tickspersec: "<<tickspersec<<endl;
-                    float utime,stime,start_time;
-                    
-                    uint64_t number;
-                    char chr;
-                    string str;
-                    
-                    // discard values of no interest
-                    proc_file>>number;
-                    proc_file>>str;
-                    proc_file>>chr;
-                    for(uint8_t i=0;i<11;++i)
-                        proc_file>>number;
-                    
-                    // get utime and stime
-                    utime=(float)number/tickspersec/numCPU;
-                    proc_file>>number;
-                    stime=(float)number/tickspersec/numCPU;
-                    
-                    // discard values of no interest
-                    for(uint8_t i=0;i<7;++i)
-                        proc_file>>number;
-                    
-                    // get start_time
-                    start_time=(float)number/tickspersec;
-                    
+                    {
+                        uint64_t temp_buffer=0;
+                        char chr;
+                        string str;
+                        // discard values of no interest
+                        proc_file>>temp_buffer;
+                        proc_file>>str;
+                        proc_file>>chr;
+                        for(uint8_t i=0;i<11;++i)
+                            proc_file>>temp_buffer;
+                        // Amount of time that this process has been scheduled in user mode (in clock ticks)
+                        utime=(double)temp_buffer/tickspersec/numCPU;
+                        proc_file>>temp_buffer;
+                        // Amount of time that this process has been scheduled in kernel mode (in clock ticks)
+                        stime=(double)temp_buffer/tickspersec/numCPU;
+                        // discard values of no interest
+                        for(uint8_t i=0;i<7;++i)
+                            proc_file>>temp_buffer;
+                        // The time the process started after system boot
+                        start_time=(double)temp_buffer/tickspersec;
+                        // Virtual memory size in bytes
+                        proc_file>>temp_buffer;
+                        total_vm_size=temp_buffer;
+                        // Resident Set Size: temp_buffer of pages the process has in real memory
+                        proc_file>>temp_buffer;
+                        resident_set_size=temp_buffer*pagesize_in_bytes;
+                    }
                     proc_file.close();
                     
                     struct sysinfo si;
-                    sysinfo (&si);
+                    if(sysinfo (&si) != 0) OPENDAVINCI_CORE_THROW_EXCEPTION(IOException,"Could not get system info");
                     
-                    float cpu_time_now=stime+utime;
-                    float exec_time_now=si.uptime-start_time;
-                    float cpu_time_delta=cpu_time_now-m_stats_cpu_time;
-                    float exec_time_delta=exec_time_now-m_stats_exc_time;
-                    float avg_cpu=m_stats_cpu_time/m_stats_exc_time*100.0;
-                    float del_cpu=cpu_time_delta/exec_time_delta*100.0;
+                    double cpu_time_now=stime+utime;
+                    double exec_time_now=si.uptime-start_time;
+                    double cpu_time_delta=cpu_time_now-m_stats_cpu_time;
+                    double exec_time_delta=exec_time_now-m_stats_exc_time;
+                    double avg_cpu=m_stats_cpu_time/m_stats_exc_time*100.0;
+                    double ondemand_cpu=cpu_time_delta/exec_time_delta*100.0;
                     
-                    cout<<endl<<"["<<str<<"] avg cpu time/exec time*100 "<<m_stats_cpu_time<<"/"<<m_stats_exc_time<<"*100 = "<<avg_cpu<<"%"<<endl
-                        <<"["<<str<<"] del cpu time/exec time*100 "<<cpu_time_delta<<"/"<<exec_time_delta<<"*100 = "<<del_cpu<<"%"<<endl<<endl;
+                    //cout<<endl<<"["<<str<<"] avg cpu time/exec time*100 "<<m_stats_cpu_time<<"/"<<m_stats_exc_time<<"*100 = "<<avg_cpu<<"%"<<endl <<"["<<str<<"] del cpu time/exec time*100 "<<cpu_time_delta<<"/"<<exec_time_delta<<"*100 = "<<ondemand_cpu<<"%"<<endl<<endl;
                     
                     // update stored values for next calculation
                     m_stats_cpu_time=cpu_time_now;
                     m_stats_exc_time=exec_time_now;
                     
                     //send statistics to conference
-                    if(!std::isnan(avg_cpu) && !std::isnan(del_cpu)) {
-                        string noVerSet = "No version set.";
-                        odcore::data::dmcp::ModuleDescriptor md(getName(), getIdentifier(), noVerSet, getFrequency());
-                        odcore::data::dmcp::CPUConsumption cpuc;
-                        cpuc.setAverage(avg_cpu);
-                        cpuc.setLastSecond(del_cpu);
-                        odcore::data::dmcp::RuntimeStatistic rs;
-                        rs.setCpuConsumption(cpuc);
-                        odcore::data::dmcp::ModuleStatistic ms(md,rs);
-                        Container c(ms);
-                        getContainerConference()->send(c);
+                    if(!std::isnan(avg_cpu) && !std::isnan(ondemand_cpu) && 
+                       !std::isnan(total_vm_size) && !std::isnan(resident_set_size)) {
+                        cpu_stats[0]=avg_cpu;
+                        cpu_stats[1]=ondemand_cpu;
+                        cpu_stats[2]=total_vm_size;
+                        cpu_stats[3]=resident_set_size;
+                        success=true;
                     }
-                    proc_read=true;
+                    else
+                        success=false;
                 }
-                catch(std::ifstream::failure &readErr)
+                catch(...)
                 {}
                 
-                return proc_read;
+                if(success)
+                {
+                    // resulting vector<double> created using its range constructor
+                    std::vector<double> result(cpu_stats, cpu_stats+4);
+                    return result;
+                }
+#endif
+                
+                // in case of failure or non-linux platform return an empty vector<double>
+                std::vector<double> empty;
+                (void)empty;
+                return empty;
             }
             
             void ManagedClientModule::wait() {
-                sendAdvancedStatistics();
                 // Sanity check for realtime execution.
                 if (isRealtime() && getServerInformation().getManagedLevel() != odcore::data::dmcp::ServerInformation::ML_NONE) {
                     OPENDAVINCI_CORE_THROW_EXCEPTION(InvalidArgumentException,
@@ -445,29 +464,25 @@ namespace odcore {
 
                 // Send RuntimeStatistic to supercomponent.
                 if (sendStatistics && getDMCPClient().get()) {
-                // sending runtime statistics should happen here
-                // sending runtime statistics should happen here
-                // sending runtime statistics should happen here
-                // sending runtime statistics should happen here
-                // sending runtime statistics should happen here
-                // sending runtime statistics should happen here
-                // sending runtime statistics should happen here
-                // sending runtime statistics should happen here
-                // sending runtime statistics should happen here
-                // sending runtime statistics should happen here
-                // sending runtime statistics should happen here
-                // sending runtime statistics should happen here
-                // sending runtime statistics should happen here
-                // sending runtime statistics should happen here
-                // sending runtime statistics should happen here
-                // sending runtime statistics should happen here
-                // sending runtime statistics should happen here
-                // sending runtime statistics should happen here
-                // sending runtime statistics should happen here
-                // sending runtime statistics should happen here
-                // sending runtime statistics should happen here
                     odcore::data::dmcp::RuntimeStatistic rts;
+                    vector<double> stats=computeAdvancedStatistics();
+                    if(stats.size()==4)
+                    {
+                        // set cpu stats
+                        odcore::data::dmcp::CPUConsumption cpuc;
+                        cpuc.setAverage(stats.at(0));
+                        cpuc.setOnDemand(stats.at(1));
+                        rts.setCpuConsumption(cpuc);
+                        // set memory stats
+                        odcore::data::dmcp::MEMConsumption memc;
+                        uint64_t temp=floor(stats.at(2));
+                        memc.setTotalVM(temp);
+                        temp=floor(stats.at(3));
+                        memc.setRSS(temp);
+                        rts.setMemConsumption(memc);
+                    }
                     rts.setSliceConsumption(static_cast<float>(TIME_CONSUMPTION_OF_CURRENT_SLICE)/static_cast<float>(NOMINAL_DURATION_OF_ONE_SLICE));
+                    cout<<"set slice consumption invoked. rts: "<<rts.toString()<<endl;
                     getDMCPClient()->sendStatistics(rts);
                 }
 

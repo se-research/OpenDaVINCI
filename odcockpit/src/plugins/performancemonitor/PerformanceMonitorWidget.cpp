@@ -29,10 +29,10 @@
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/data/TimeStamp.h"
-//#include "opendavinci/generated/odcore/data/PerformanceMonitor.h"
 #include "opendavinci/generated/odcore/data/dmcp/ModuleDescriptor.h"
 #include "opendavinci/generated/odcore/data/dmcp/ModuleStatistics.h"
 #include "opendavinci/generated/odcore/data/dmcp/RuntimeStatistic.h"
+#include "opendavinci/generated/odcore/data/dmcp/CPUConsumption.h"
 #include "plugins/performancemonitor/PerformanceMonitorWidget.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }
@@ -67,15 +67,10 @@ namespace cockpit {
                 QStringList headerLabel;
                 //Federico: Here you can change the column names, number of columns, and size of columns
                 headerLabel << tr("Component") << tr("Statistics");
-                m_dataView->setColumnWidth(0, 200);
+                m_dataView->setColumnWidth(0, 350);
                 m_dataView->setColumnWidth(1, 200);
                 m_dataView->setHeaderLabels(headerLabel);
                 
-                //The following 3 lines can print something in the window:
-//                QTreeWidgetItem *newHeader = new QTreeWidgetItem(m_dataView.get());
-//                newHeader->setText(0,"123"); //Left column
-//                newHeader->setText(1,"456"); //Right column
-
                 //add to Layout
                 mainBox->addWidget(m_dataView.get(), 0, 0);
 
@@ -92,19 +87,29 @@ namespace cockpit {
             }
 
             void PerformanceMonitorWidget::addContainerToTree(Container &container){
-                odcore::data::dmcp::ModuleStatistics pm = container.getData<odcore::data::dmcp::ModuleStatistics>();
-
-                string componentName="componentName";
-                string componentIdentifier="componentIdentifier";
-std::cout<<"modulestatistics size: "<<pm.getListOfModuleStatistics().size()<<std::endl;
-                if(pm.getListOfModuleStatistics().size() > 0)
+                odcore::data::dmcp::ModuleStatistics ms = container.getData<odcore::data::dmcp::ModuleStatistics>();
+                
+                string componentName="noName";
+                string componentIdentifier="noIdentifier";
+                bool empty=true;
+                double cpu_avg=0.0, cpu_od=0.0;
+                uint64_t mem_vm=0, mem_rss=0;
+                
+                if(! ms.isEmpty_ListOfModuleStatistics())
                 {
-                    odcore::data::dmcp::ModuleDescriptor md=pm.getListOfModuleStatistics().at(0).getModule();
+                    odcore::data::dmcp::ModuleDescriptor md=ms.getListOfModuleStatistics().at(0).getModule();
                     componentName=md.getName();
                     componentIdentifier=md.getIdentifier();
+                    cpu_avg= ms.getListOfModuleStatistics().at(0).getRuntimeStatistic().getCpuConsumption().getAverage();
+                    cpu_od = ms.getListOfModuleStatistics().at(0).getRuntimeStatistic().getCpuConsumption().getOnDemand();
+                    mem_vm = ms.getListOfModuleStatistics().at(0).getRuntimeStatistic().getMemConsumption().getTotalVM();
+                    mem_rss= ms.getListOfModuleStatistics().at(0).getRuntimeStatistic().getMemConsumption().getRSS();
+                    empty=false;
                 }
-                std::cout << "DEBUG: process " << ::getpid() << " (parent: " << ::getppid() << ")" << std::endl;
-
+                
+                if(empty)
+                    return;
+                
                 // Create new entry if needed
                 if (m_components.find(componentName) == m_components.end()) {
                     QTreeWidgetItem *newHeader = new QTreeWidgetItem(m_dataView.get());
@@ -113,60 +118,127 @@ std::cout<<"modulestatistics size: "<<pm.getListOfModuleStatistics().size()<<std
                 }
                 QTreeWidgetItem *componentEntry = m_components[componentName];
 
-                // Search for CPU statistics entry.
-                stringstream sstr;
-                sstr << componentName << "-"<< componentIdentifier << "-CPU";
-                const string subentryCPU = sstr.str();
-                
-                if (m_CPUStatisticsPerComponent.find(subentryCPU) == m_CPUStatisticsPerComponent.end()) {
-                    QTreeWidgetItem *newComponentStatisticsHeader = new QTreeWidgetItem();
-                    stringstream ss;
-                    ss<<"CPU Usage Level (history="<<+m_MAX_CPU_HISTORY<<")";
-                    newComponentStatisticsHeader->setText(0, ss.str().c_str());
-                    m_CPUStatisticsPerComponent[subentryCPU] = newComponentStatisticsHeader;
-
-                    componentEntry->insertChild(0, newComponentStatisticsHeader);
-                }
-
-                QTreeWidgetItem *componentSubEntryCPU = m_CPUStatisticsPerComponent[subentryCPU];
                 {
-                    QTreeWidgetItem *entry = new QTreeWidgetItem();
-                    stringstream sstr2;
-                    sstr2 << container.getSampleTimeStamp().getYYYYMMDD_HHMMSSms();
+                    // Search for avg CPU statistics entry.
+                    stringstream sstr;
+                    sstr << componentName << "-"<< componentIdentifier << "-CPU-AVG";
+                    const string subentryCPU = sstr.str();
+                    // search for the avg CPU stats container
+                    if (m_CPUStatisticsPerComponent.find(subentryCPU) == m_CPUStatisticsPerComponent.end()) {
+                        QTreeWidgetItem *newComponentStatisticsHeader = new QTreeWidgetItem();
+                        stringstream ss;
+                        ss<<"CPU Average Usage Level [%] (history="<<+m_MAX_CPU_HISTORY<<")";
+                        newComponentStatisticsHeader->setText(0, ss.str().c_str());
+                        m_CPUStatisticsPerComponent[subentryCPU] = newComponentStatisticsHeader;
 
-                    entry->setText(0, sstr2.str().c_str());
-                    entry->setText(1, "CPU X%");
-                    componentSubEntryCPU->insertChild(0, entry);
+                        componentEntry->insertChild(0, newComponentStatisticsHeader);
+                    }
+                    // add the new value
+                    QTreeWidgetItem *componentSubEntryCPU = m_CPUStatisticsPerComponent[subentryCPU];
+                    {
+                        QTreeWidgetItem *entry = new QTreeWidgetItem();
+                        stringstream timestamp;
+                        timestamp << container.getSampleTimeStamp().getYYYYMMDD_HHMMSSms();
+                        stringstream cpu;
+                        cpu<<"CPU "<<cpu_avg<<"%";
 
-                    componentSubEntryCPU->takeChild(m_MAX_CPU_HISTORY);
+                        entry->setText(0, timestamp.str().c_str());
+                        entry->setText(1, cpu.str().c_str());
+                        componentSubEntryCPU->insertChild(0, entry);
+
+                        componentSubEntryCPU->takeChild(m_MAX_CPU_HISTORY);
+                    }
                 }
-               
-               
-                // Search for MEM statistics entry.
-                sstr.str("");
-                sstr << componentName << "-"<< componentIdentifier << "-MEM";
-                const string subentryMEM = sstr.str();
-                
-                if (m_MEMStatisticsPerComponent.find(subentryMEM) == m_MEMStatisticsPerComponent.end()) {
-                    QTreeWidgetItem *newComponentStatisticsHeader = new QTreeWidgetItem();
-                    stringstream ss;
-                    ss<<"MEM Usage Level (history="<<+m_MAX_MEM_HISTORY<<")";
-                    newComponentStatisticsHeader->setText(0, ss.str().c_str());
-                    m_MEMStatisticsPerComponent[subentryMEM] = newComponentStatisticsHeader;
-
-                    componentEntry->insertChild(1, newComponentStatisticsHeader);
-                }
-
-                QTreeWidgetItem *componentSubEntryMEM = m_MEMStatisticsPerComponent[subentryMEM];
                 {
-                    QTreeWidgetItem *entry = new QTreeWidgetItem();
-                    stringstream sstr2;
-                    sstr2 << container.getSampleTimeStamp().getYYYYMMDD_HHMMSSms();
-                    entry->setText(0, sstr2.str().c_str());
-                    entry->setText(1, "MEM X%");
-                    componentSubEntryMEM->insertChild(0, entry);
+                    // Search for od CPU statistics entry.
+                    stringstream sstr;
+                    sstr << componentName << "-"<< componentIdentifier << "-CPU-OD";
+                    const string subentryCPU = sstr.str();
+                    // search for the od CPU stats container
+                    if (m_CPUStatisticsPerComponent.find(subentryCPU) == m_CPUStatisticsPerComponent.end()) {
+                        QTreeWidgetItem *newComponentStatisticsHeader = new QTreeWidgetItem();
+                        stringstream ss;
+                        ss<<"CPU On-demand Usage Level [%] (history="<<+m_MAX_CPU_HISTORY<<")";
+                        newComponentStatisticsHeader->setText(0, ss.str().c_str());
+                        m_CPUStatisticsPerComponent[subentryCPU] = newComponentStatisticsHeader;
 
-                    componentSubEntryMEM->takeChild(m_MAX_MEM_HISTORY);
+                        componentEntry->insertChild(0, newComponentStatisticsHeader);
+                    }
+                    // add the new value
+                    QTreeWidgetItem *componentSubEntryCPU = m_CPUStatisticsPerComponent[subentryCPU];
+                    {
+                        QTreeWidgetItem *entry = new QTreeWidgetItem();
+                        stringstream timestamp;
+                        timestamp << container.getSampleTimeStamp().getYYYYMMDD_HHMMSSms();
+                        stringstream cpu;
+                        cpu<<"CPU "<<cpu_od<<"%";
+
+                        entry->setText(0, timestamp.str().c_str());
+                        entry->setText(1, cpu.str().c_str());
+                        componentSubEntryCPU->insertChild(0, entry);
+
+                        componentSubEntryCPU->takeChild(m_MAX_CPU_HISTORY);
+                    }
+                }
+                {
+                    // Search for MEM statistics entry.
+                    stringstream sstr;
+                    sstr << componentName << "-"<< componentIdentifier << "-MEM-TVM";
+                    const string subentryMEM = sstr.str();
+                    
+                    if (m_MEMStatisticsPerComponent.find(subentryMEM) == m_MEMStatisticsPerComponent.end()) {
+                        QTreeWidgetItem *newComponentStatisticsHeader = new QTreeWidgetItem();
+                        stringstream ss;
+                        ss<<"MEM Total VM Allocated [Bytes] (history="<<+m_MAX_MEM_HISTORY<<")";
+                        newComponentStatisticsHeader->setText(0, ss.str().c_str());
+                        m_MEMStatisticsPerComponent[subentryMEM] = newComponentStatisticsHeader;
+
+                        componentEntry->insertChild(1, newComponentStatisticsHeader);
+                    }
+                    // add the new value
+                    QTreeWidgetItem *componentSubEntryMEM = m_MEMStatisticsPerComponent[subentryMEM];
+                    {
+                        QTreeWidgetItem *entry = new QTreeWidgetItem();
+                        stringstream timestamp;
+                        timestamp << container.getSampleTimeStamp().getYYYYMMDD_HHMMSSms();
+                        stringstream mem;
+                        mem<<"MEM "<<mem_vm<<"B";
+                        entry->setText(0, timestamp.str().c_str());
+                        entry->setText(1, mem.str().c_str());
+                        componentSubEntryMEM->insertChild(0, entry);
+
+                        componentSubEntryMEM->takeChild(m_MAX_MEM_HISTORY);
+                    }
+                }
+                {
+                    // Search for MEM statistics entry.
+                    stringstream sstr;
+                    sstr << componentName << "-"<< componentIdentifier << "-MEM-RSS";
+                    const string subentryMEM = sstr.str();
+                    
+                    if (m_MEMStatisticsPerComponent.find(subentryMEM) == m_MEMStatisticsPerComponent.end()) {
+                        QTreeWidgetItem *newComponentStatisticsHeader = new QTreeWidgetItem();
+                        stringstream ss;
+                        ss<<"MEM Resident Set Size [Bytes] (history="<<+m_MAX_MEM_HISTORY<<")";
+                        newComponentStatisticsHeader->setText(0, ss.str().c_str());
+                        m_MEMStatisticsPerComponent[subentryMEM] = newComponentStatisticsHeader;
+
+                        componentEntry->insertChild(1, newComponentStatisticsHeader);
+                    }
+                    // add the new value
+                    QTreeWidgetItem *componentSubEntryMEM = m_MEMStatisticsPerComponent[subentryMEM];
+                    {
+                        QTreeWidgetItem *entry = new QTreeWidgetItem();
+                        stringstream timestamp;
+                        timestamp << container.getSampleTimeStamp().getYYYYMMDD_HHMMSSms();
+                        stringstream mem;
+                        mem<<"MEM "<<mem_rss<<"B";
+                        entry->setText(0, timestamp.str().c_str());
+                        entry->setText(1, mem.str().c_str());
+                        componentSubEntryMEM->insertChild(0, entry);
+
+                        componentSubEntryMEM->takeChild(m_MAX_MEM_HISTORY);
+                    }
                 }
             }
        }
