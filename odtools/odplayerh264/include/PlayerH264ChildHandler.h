@@ -122,6 +122,11 @@ namespace odplayerh264 {
              */
             pid_t getPID() const;
 
+            /**
+             * This method closes the connection to the child.
+             */
+            void closeConnection();
+
         private:
             pid_t m_PID;
             shared_ptr<odcore::io::tcp::TCPAcceptor> m_tcpacceptor;

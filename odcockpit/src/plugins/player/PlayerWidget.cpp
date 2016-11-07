@@ -147,7 +147,9 @@ namespace cockpit {
                 setLayout(mainLayout);
             }
 
-            PlayerWidget::~PlayerWidget() {}
+            PlayerWidget::~PlayerWidget() {
+                m_player.reset();
+            }
 
             void PlayerWidget::play() {
                 m_playBtn->setEnabled(false);
@@ -189,43 +191,45 @@ namespace cockpit {
 
             void PlayerWidget::sendNextContainer() {
                 if (m_player.get() != NULL) {
-                    if (!m_player->hasMoreData() && m_autoRewind->isChecked()) {
+                    if (!m_player->hasMoreData() && (m_autoRewind != NULL) && m_autoRewind->isChecked()) {
                         m_player->rewind();
                         m_containerCounter = 0;
                     }
 
-                    // Get container to be sent.
-                    Container nextContainerToBeSent = m_player->getNextContainerToBeSent();
-
-                    // Increment the counters.
                     if (m_player->hasMoreData()) {
-                        m_containerCounter++;
-                        if (!(m_containerCounter < m_containerCounterTotal)) {
-                            m_containerCounterTotal = m_containerCounter;
+                        // Get container to be sent.
+                        Container nextContainerToBeSent = m_player->getNextContainerToBeSent();
+
+                        // Increment the counters.
+                        if (m_player->hasMoreData()) {
+                            m_containerCounter++;
+                            if (!(m_containerCounter < m_containerCounterTotal)) {
+                                m_containerCounterTotal = m_containerCounter;
+                            }
                         }
-                    }
 
-                    stringstream sstr;
-                    sstr << m_containerCounter << "/" << m_containerCounterTotal << " container(s) replayed.";
-                    m_containerCounterDesc->setText(sstr.str().c_str());
+                        stringstream sstr;
+                        sstr << m_containerCounter << "/" << m_containerCounterTotal << " container(s) replayed.";
+                        m_containerCounterDesc->setText(sstr.str().c_str());
 
-                    // Get delay to wait _after_ sending the container.
-                    uint32_t delay = m_player->getDelay() / 1000;
+                        // Get delay to wait _after_ sending the container.
+                        uint32_t delay = m_player->getDelay() / 1000;
 
-                    // Send container.
-                    if ( (nextContainerToBeSent.getDataType() != Container::UNDEFINEDDATA) &&
-                         (nextContainerToBeSent.getDataType() != odcore::data::player::PlayerCommand::ID()) ) {
-                        m_conference.send(nextContainerToBeSent);
-                    }
+                        // Send container.
+                        if ( (nextContainerToBeSent.getDataType() != Container::UNDEFINEDDATA) &&
+                             (nextContainerToBeSent.getDataType() != odcore::data::player::PlayerCommand::ID()) ) {
+                            m_conference.send(nextContainerToBeSent);
+                        }
 
-                    // Continously playing if "pause" button is enabled.
-                    if (m_pauseBtn->isEnabled()) {
-                        QTimer::singleShot(delay, this, SLOT(sendNextContainer()));
-                    }
+                        // Continously playing if "pause" button is enabled.
+                        if (m_pauseBtn->isEnabled()) {
+                            QTimer::singleShot(delay, this, SLOT(sendNextContainer()));
+                        }
 
-                    // If end of file has been reached, stop playback.
-                    if (!m_player->hasMoreData() && !m_autoRewind->isChecked()) {
-                        pause();
+                        // If end of file has been reached, stop playback.
+                        if (!m_player->hasMoreData() && (m_autoRewind != NULL) && !m_autoRewind->isChecked()) {
+                            pause();
+                        }
                     }
                 }
             }
