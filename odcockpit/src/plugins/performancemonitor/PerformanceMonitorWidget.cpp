@@ -140,7 +140,7 @@ namespace cockpit {
                         stringstream timestamp;
                         timestamp << container.getSampleTimeStamp().getYYYYMMDD_HHMMSSms();
                         stringstream cpu;
-                        cpu<<"CPU "<<cpu_avg<<"%";
+                        cpu<<"CPU "<<cpu_avg<<" %";
 
                         entry->setText(0, timestamp.str().c_str());
                         entry->setText(1, cpu.str().c_str());
@@ -158,7 +158,7 @@ namespace cockpit {
                     if (m_CPUStatisticsPerComponent.find(subentryCPU) == m_CPUStatisticsPerComponent.end()) {
                         QTreeWidgetItem *newComponentStatisticsHeader = new QTreeWidgetItem();
                         stringstream ss;
-                        ss<<"CPU On-demand Usage Level [%] (history="<<+m_MAX_CPU_HISTORY<<")";
+                        ss<<"CPU On-demand Usage Level [ %] (history="<<+m_MAX_CPU_HISTORY<<")";
                         newComponentStatisticsHeader->setText(0, ss.str().c_str());
                         m_CPUStatisticsPerComponent[subentryCPU] = newComponentStatisticsHeader;
 
