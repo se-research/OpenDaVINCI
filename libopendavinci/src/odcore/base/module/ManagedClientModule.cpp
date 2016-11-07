@@ -44,10 +44,7 @@
 #include "opendavinci/odcore/exceptions/Exceptions.h"
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/generated/odcore/data/dmcp/ModuleStateMessage.h"
-#include "opendavinci/generated/odcore/data/dmcp/ModuleDescriptor.h"
-#include "opendavinci/generated/odcore/data/dmcp/ModuleStatistic.h"
 #include "opendavinci/generated/odcore/data/dmcp/RuntimeStatistic.h"
-#include "opendavinci/generated/odcore/data/dmcp/CPUConsumption.h"
 #include "opendavinci/generated/odcore/data/dmcp/ServerInformation.h"
 
 namespace odcore {
@@ -139,7 +136,6 @@ namespace odcore {
                     // Size of a page in bytes
                     int pagesize_in_bytes = sysconf(_SC_PAGESIZE);
                     if(pagesize_in_bytes < 1) OPENDAVINCI_CORE_THROW_EXCEPTION(IOException,"Could not get system info");
-cout<<"pagesize in bytes "<<pagesize_in_bytes<<" bytes"<<endl;
                     // The number of clock ticks per second
                     long tickspersec = sysconf(_SC_CLK_TCK);
                     if(tickspersec == -1) OPENDAVINCI_CORE_THROW_EXCEPTION(IOException,"Could not get system info");
@@ -186,8 +182,6 @@ cout<<"pagesize in bytes "<<pagesize_in_bytes<<" bytes"<<endl;
                     double exec_time_delta=exec_time_now-m_stats_exc_time;
                     double avg_cpu=m_stats_cpu_time/m_stats_exc_time*100.0;
                     double ondemand_cpu=cpu_time_delta/exec_time_delta*100.0;
-                    
-                    //cout<<endl<<"["<<str<<"] avg cpu time/exec time*100 "<<m_stats_cpu_time<<"/"<<m_stats_exc_time<<"*100 = "<<avg_cpu<<"%"<<endl <<"["<<str<<"] del cpu time/exec time*100 "<<cpu_time_delta<<"/"<<exec_time_delta<<"*100 = "<<ondemand_cpu<<"%"<<endl<<endl;
                     
                     // update stored values for next calculation
                     m_stats_cpu_time=cpu_time_now;
@@ -482,7 +476,6 @@ cout<<"pagesize in bytes "<<pagesize_in_bytes<<" bytes"<<endl;
                         rts.setMemConsumption(memc);
                     }
                     rts.setSliceConsumption(static_cast<float>(TIME_CONSUMPTION_OF_CURRENT_SLICE)/static_cast<float>(NOMINAL_DURATION_OF_ONE_SLICE));
-                    cout<<"set slice consumption invoked. rts: "<<rts.toString()<<endl;
                     getDMCPClient()->sendStatistics(rts);
                 }
 
