@@ -57,56 +57,53 @@ namespace automotive {
         // This method will do the main data processing job.
         odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Driver::body() {
             while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
-            
-                cout<<"main loop"<<endl;
-            
-//                // In the following, you find example for the various data sources that are available:
+                // In the following, you find example for the various data sources that are available:
 
-//                // 1. Get most recent vehicle data:
-//                Container containerVehicleData = getKeyValueDataStore().get(automotive::VehicleData::ID());
-//                VehicleData vd = containerVehicleData.getData<VehicleData> ();
-//                cerr << "Most recent vehicle data: '" << vd.toString() << "'" << endl;
+                // 1. Get most recent vehicle data:
+                Container containerVehicleData = getKeyValueDataStore().get(automotive::VehicleData::ID());
+                VehicleData vd = containerVehicleData.getData<VehicleData> ();
+                cerr << "Most recent vehicle data: '" << vd.toString() << "'" << endl;
 
-//                // 2. Get most recent sensor board data:
-//                Container containerSensorBoardData = getKeyValueDataStore().get(automotive::miniature::SensorBoardData::ID());
-//                SensorBoardData sbd = containerSensorBoardData.getData<SensorBoardData> ();
-//                cerr << "Most recent sensor board data: '" << sbd.toString() << "'" << endl;
+                // 2. Get most recent sensor board data:
+                Container containerSensorBoardData = getKeyValueDataStore().get(automotive::miniature::SensorBoardData::ID());
+                SensorBoardData sbd = containerSensorBoardData.getData<SensorBoardData> ();
+                cerr << "Most recent sensor board data: '" << sbd.toString() << "'" << endl;
 
-//                // 3. Get most recent user button data:
-//                Container containerUserButtonData = getKeyValueDataStore().get(automotive::miniature::UserButtonData::ID());
-//                UserButtonData ubd = containerUserButtonData.getData<UserButtonData> ();
-//                cerr << "Most recent user button data: '" << ubd.toString() << "'" << endl;
+                // 3. Get most recent user button data:
+                Container containerUserButtonData = getKeyValueDataStore().get(automotive::miniature::UserButtonData::ID());
+                UserButtonData ubd = containerUserButtonData.getData<UserButtonData> ();
+                cerr << "Most recent user button data: '" << ubd.toString() << "'" << endl;
 
-//                // 4. Get most recent steering data as fill from lanedetector for example:
-//                Container containerSteeringData = getKeyValueDataStore().get(automotive::miniature::SteeringData::ID());
-//                SteeringData sd = containerSteeringData.getData<SteeringData> ();
-//                cerr << "Most recent steering data: '" << sd.toString() << "'" << endl;
+                // 4. Get most recent steering data as fill from lanedetector for example:
+                Container containerSteeringData = getKeyValueDataStore().get(automotive::miniature::SteeringData::ID());
+                SteeringData sd = containerSteeringData.getData<SteeringData> ();
+                cerr << "Most recent steering data: '" << sd.toString() << "'" << endl;
 
 
 
-//                // Design your control algorithm here depending on the input data from above.
+                // Design your control algorithm here depending on the input data from above.
 
 
 
-//                // Create vehicle control data.
-//                VehicleControl vc;
+                // Create vehicle control data.
+                VehicleControl vc;
 
-//                // With setSpeed you can set a desired speed for the vehicle in the range of -2.0 (backwards) .. 0 (stop) .. +2.0 (forwards)
-//                vc.setSpeed(0.4);
+                // With setSpeed you can set a desired speed for the vehicle in the range of -2.0 (backwards) .. 0 (stop) .. +2.0 (forwards)
+                vc.setSpeed(0.4);
 
-//                // With setSteeringWheelAngle, you can steer in the range of -26 (left) .. 0 (straight) .. +25 (right)
-//                double desiredSteeringWheelAngle = 4; // 4 degree but SteeringWheelAngle expects the angle in radians!
-//                vc.setSteeringWheelAngle(desiredSteeringWheelAngle * cartesian::Constants::DEG2RAD);
+                // With setSteeringWheelAngle, you can steer in the range of -26 (left) .. 0 (straight) .. +25 (right)
+                double desiredSteeringWheelAngle = 4; // 4 degree but SteeringWheelAngle expects the angle in radians!
+                vc.setSteeringWheelAngle(desiredSteeringWheelAngle * cartesian::Constants::DEG2RAD);
 
-//                // You can also turn on or off various lights:
-//                vc.setBrakeLights(false);
-//                vc.setFlashingLightsLeft(false);
-//                vc.setFlashingLightsRight(true);
+                // You can also turn on or off various lights:
+                vc.setBrakeLights(false);
+                vc.setFlashingLightsLeft(false);
+                vc.setFlashingLightsRight(true);
 
-//                // Create container for finally sending the data.
-//                Container c(vc);
-//                // Send container.
-//                getConference().send(c);
+                // Create container for finally sending the data.
+                Container c(vc);
+                // Send container.
+                getConference().send(c);
             }
 
             return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
