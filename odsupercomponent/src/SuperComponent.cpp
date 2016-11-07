@@ -28,7 +28,6 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
-#include <sys/sysinfo.h>
 
 #include "opendavinci/odcore/opendavinci.h"
 
@@ -84,9 +83,7 @@ namespace odsupercomponent {
         m_yieldMicroseconds(0),
         m_modulesToIgnore(),
         m_logLevel(odcore::data::LogMessage::NONE),
-        m_logFile(NULL),
-        cpu_time(0),
-        exec_time(0) {
+        m_logFile(NULL) {
 
         // Check for any running supercomponents.
         checkForSuperComponent();
@@ -290,66 +287,6 @@ namespace odsupercomponent {
          }
     }
     
-    void SuperComponent::getCPUUsage()
-    {
-        int numCPU = sysconf(_SC_NPROCESSORS_ONLN);
-        long tickspersec = sysconf(_SC_CLK_TCK);
-        //cout<<endl<<"tickspersec: "<<tickspersec<<endl;
-        double utime,stime,start_time;
-        
-        ifstream proc_file;
-        proc_file.open("/proc/self/stat");
-        uint64_t number;
-        char chr;
-        string str;
-        
-        proc_file>>number;
-        proc_file>>str;
-        //cout<<str<<endl;
-        proc_file>>chr;
-        proc_file>>number;
-        proc_file>>number;
-        proc_file>>number;
-        proc_file>>number;
-        proc_file>>number;
-        proc_file>>number;
-        proc_file>>number;
-        proc_file>>number;
-        proc_file>>number;
-        proc_file>>number;
-        proc_file>>number;
-        utime=(double)number/tickspersec/numCPU;
-        //cout<<"utime: "<<utime<<"s"<<endl;
-        proc_file>>number;
-        stime=(double)number/tickspersec/numCPU;
-        //cout<<"stime: "<<stime<<"s"<<endl;
-        proc_file>>number;
-        proc_file>>number;
-        proc_file>>number;
-        proc_file>>number;
-        proc_file>>number;
-        proc_file>>number;
-        proc_file>>number;
-        start_time=(double)number/tickspersec;
-        //cout<<"start time: "<<start_time<<"s"<<endl;
-        proc_file.close();
-        
-        struct sysinfo si;
-        sysinfo (&si);
-        //cout<<"total uptime: "<<si.uptime<<"s"<<endl;
-        double cpu_time_delta=(stime+utime)-cpu_time;
-        
-        double exec_time_delta=(si.uptime-start_time)-exec_time;
-        //int min=seconds/60;
-        //int hrs=min/60;
-        //cout<<"Seconds process has been running: "<<seconds<<"s ("<<hrs<<":"<<min%60<<":"<<seconds%60<<")"<<endl;
-        
-        cout<<endl<<"[CPUUSAGE] tot cpu time("<<cpu_time<<")/exec time("<<exec_time<<")*100 = "<<cpu_time/exec_time*100.0<<"%"<<endl;
-        cout<<"[CPUUSAGE] del cpu time("<<cpu_time_delta<<")/exec time("<<exec_time_delta<<")*100 = "<<cpu_time_delta/exec_time_delta*100.0<<"%"<<endl<<endl;
-        exec_time=si.uptime-start_time;
-        cpu_time=stime+utime;
-    }
-
     odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode SuperComponent::body() {
 #ifdef HAVE_LINUX_RT
         struct timespec waitForSlice;
@@ -382,9 +319,6 @@ namespace odsupercomponent {
 
         m_lastCycle = TimeStamp();
         while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
-        
-        getCPUUsage();
-        
             TimeStamp current;
             m_startOfCurrentCycle = current;
             m_startOfLastCycle = m_lastCycle;
