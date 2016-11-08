@@ -194,9 +194,12 @@ namespace odcore {
                 public:
                     /**
                      * This module computes advanced statistics to be later sent through the conference. 
-                     * The involved statistics are avg CPU load in the module's lifetime 
-                     * and CPU load since the last time the method was invoked.
-                     *
+                     * The involved statistics are 
+                     * 1) average CPU load in the module's lifetime
+                     * 2) CPU load since the last time the method was invoked
+                     * 3) total amount of (virtual) memory used
+                     * 4) resident set size (portion of memory occupied by a process that is held in main memory)
+                     * 
                      * @return Vector of two floats holding respectively the average and on-demand CPU load, 
                      * if for any reason the values could not be computed the vector is empty.
                      */
