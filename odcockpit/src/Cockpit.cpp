@@ -76,7 +76,7 @@ namespace cockpit {
 
         mainWindow.show();
         m_cockpitApp.exec();
-        
+
     	return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
     }
 

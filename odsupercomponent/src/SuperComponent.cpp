@@ -286,7 +286,7 @@ namespace odsupercomponent {
              exit(-1);
          }
     }
-    
+
     odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode SuperComponent::body() {
 #ifdef HAVE_LINUX_RT
         struct timespec waitForSlice;
