@@ -158,7 +158,7 @@ namespace cockpit {
                     if (m_CPUStatisticsPerComponent.find(subentryCPU) == m_CPUStatisticsPerComponent.end()) {
                         QTreeWidgetItem *newComponentStatisticsHeader = new QTreeWidgetItem();
                         stringstream ss;
-                        ss<<"CPU On-demand Usage Level [ %] (history="<<+m_MAX_CPU_HISTORY<<")";
+                        ss<<"CPU On-demand Usage Level [%] (history="<<+m_MAX_CPU_HISTORY<<")";
                         newComponentStatisticsHeader->setText(0, ss.str().c_str());
                         m_CPUStatisticsPerComponent[subentryCPU] = newComponentStatisticsHeader;
 
@@ -171,7 +171,7 @@ namespace cockpit {
                         stringstream timestamp;
                         timestamp << container.getSampleTimeStamp().getYYYYMMDD_HHMMSSms();
                         stringstream cpu;
-                        cpu<<"CPU "<<cpu_od<<"%";
+                        cpu<<"CPU "<<cpu_od<<" %";
 
                         entry->setText(0, timestamp.str().c_str());
                         entry->setText(1, cpu.str().c_str());
@@ -202,7 +202,7 @@ namespace cockpit {
                         stringstream timestamp;
                         timestamp << container.getSampleTimeStamp().getYYYYMMDD_HHMMSSms();
                         stringstream mem;
-                        mem<<"MEM "<<mem_vm<<"B";
+                        mem<<"MEM "<<mem_vm<<" B";
                         entry->setText(0, timestamp.str().c_str());
                         entry->setText(1, mem.str().c_str());
                         componentSubEntryMEM->insertChild(0, entry);
@@ -232,7 +232,7 @@ namespace cockpit {
                         stringstream timestamp;
                         timestamp << container.getSampleTimeStamp().getYYYYMMDD_HHMMSSms();
                         stringstream mem;
-                        mem<<"MEM "<<mem_rss<<"B";
+                        mem<<"MEM "<<mem_rss<<" B";
                         entry->setText(0, timestamp.str().c_str());
                         entry->setText(1, mem.str().c_str());
                         componentSubEntryMEM->insertChild(0, entry);
