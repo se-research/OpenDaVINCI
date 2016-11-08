@@ -196,8 +196,6 @@ namespace odcore {
                         cpu_stats[3]=resident_set_size;
                         success=true;
                     }
-                    else
-                        success=false;
                 }
                 catch(...)
                 {}
