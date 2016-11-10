@@ -813,7 +813,7 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 		eventsystem.BeginFrame();
 
 		// Do CPU intensive stuff in parallel with the GPU...
-//		Tick(dt);
+		//Tick(dt);
 
         {
             // Get commands from OpenDaVINCI.
@@ -835,11 +835,15 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 	        else if (steer_value < -1.0) steer_value = -1.0;
 
 	        inputFromOpenDaVINCI[CarInput::STEER_RIGHT] = steer_value;
-
+            
+            ProcessCarInputs(0);
+            
             info_output << inputFromOpenDaVINCI[CarInput::START_ENGINE] << ";"
                         << inputFromOpenDaVINCI[CarInput::THROTTLE] << ";"
                         << inputFromOpenDaVINCI[CarInput::BRAKE] << ";"
                         << inputFromOpenDaVINCI[CarInput::STEER_RIGHT] << std::endl;
+                        
+            
         }
 
 
@@ -859,7 +863,7 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
             getConference().send(c);
 	        
 	        //SEED
-	        attachToSharedMemory(si);
+	        /*attachToSharedMemory(si);
             odcore::base::Lock lock(sharedImageMemory_);
             
              Canny(imageHeader_, testImage, 50, 200, 3); 
@@ -869,6 +873,11 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
             // detect lines
             HoughLines(testImage, lines, 1, CV_PI/180, 150, 0, 0 );
          
+            //maximum different colors
+            int colorDelta = 255*255*255/lines.size();
+            int b,g,r=0;
+            
+            
             // draw lines
             for( size_t i = 0; i < lines.size(); i++ )
             {
@@ -880,14 +889,21 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
                 pt1.y = cvRound(y0 + 1000*(a));
                 pt2.x = cvRound(x0 - 1000*(-b));
                 pt2.y = cvRound(y0 - 1000*(a));
-                line( testImage2, pt1, pt2, Scalar(0,0,255), 3, CV_AA);
-            }
+                
+                line( testImage2, pt1, pt2, Scalar(b,g,r), 1, CV_AA);
+                
+                //next color:
+                if(i<lines.size()-1)
+                {
+                    
+                }
+            }   
          
             //imshow("source", imageHeader_);
             imshow("detected lines", testImage2);
          
             waitKey(1);
-
+            */
         }
 
         // Get data for "EgoCar".
@@ -1559,8 +1575,57 @@ void Game::UpdateCars(float dt)
 		UpdateDriftScore(i, dt);
 	}
 }
-
 void Game::ProcessCarInputs(const size_t carid)
+{
+	CarDynamics & car = car_dynamics[carid];
+	CarGraphics & car_gfx = car_graphics[carid];
+   
+    
+	std::vector <float> carinputs(CarInput::INVALID, 0.0f);
+	if (replay.GetPlaying())
+	{
+		const std::vector<float> inputs = replay.PlayFrame(carid, car);
+		assert(inputs.size() <= carinputs.size());
+		for (size_t i = 0; i < inputs.size(); ++i)
+		{
+			inputFromOpenDaVINCI[i] = inputs[i];
+		}
+	}
+	
+	// Causes game to crash randomly due to failing assertion in CarDynamics
+	// Force brake at start and once the race is over.
+	/*if (timer.Staging())
+	{
+		inputFromOpenDaVINCI[CarInput::BRAKE] = 1.0;
+		inputFromOpenDaVINCI[CarInput::CLUTCH] = 1.0;
+	}
+	else if (race_laps > 0 && (int)timer.GetCurrentLap(carid) > race_laps)
+	{
+		inputFromOpenDaVINCI[CarInput::BRAKE] = 1.0;
+		inputFromOpenDaVINCI[CarInput::CLUTCH] = 1.0;
+		inputFromOpenDaVINCI[CarInput::THROTTLE] = 0.0;
+
+		if (benchmode)
+			eventsystem.Quit();
+	}*/
+
+	//car.Update(carinputs);
+	//car_gfx.Update(carinputs);
+
+	// Record car state.
+	if (replay.GetRecording()) {
+
+		replay.RecordFrame(carid, inputFromOpenDaVINCI, car);
+
+    }
+   	/*if (carid == player_car_id)
+	{
+		if (settings.GetHUD() != "NoHud")
+			UpdateHUD(carid, inputFromOpenDaVINCI);
+	}*/ 
+}
+
+/*void Game::ProcessCarInputs(const size_t carid)
 {
 	CarDynamics & car = car_dynamics[carid];
 	CarGraphics & car_gfx = car_graphics[carid];
@@ -1644,7 +1709,7 @@ void Game::ProcessCarInputs(const size_t carid)
 		if (settings.GetHUD() != "NoHud")
 			UpdateHUD(carid, carinputs);
 	}
-}
+}*/
 
 void Game::ProcessCameraInputs()
 {
