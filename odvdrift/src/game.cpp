@@ -37,9 +37,6 @@
 #include "tobullet.h"
 #include "hsvtorgb.h"
 #include "camera_orbit.h"
-#include "lmvp/VanishingPointDetection.h"
-#include "lmvp/ScanRegion.h"
-#include "lmvp/RegionOfInterestGeometry.h"
 
 #include <fstream>
 #include <string>
@@ -861,34 +858,11 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
             odcore::data::Container c(si);
             getConference().send(c);
 	        
-	          //SEED
-	          attachToSharedMemory(si);
+	        //SEED
+	        attachToSharedMemory(si);
             odcore::base::Lock lock(sharedImageMemory_);
             
-            // vanishingpoint.roi = topLeft(0,169), bottomRight(726,479)
-            cv::Rect roiRect(0,169,728,479);
-            lmvp:RegionOfInterestGeometry roi = RegionOfInterestGeometry(roiRect)
-            
-            // vanishingpoint.leftscanregion = bottomLeft(11,337), topLeft(272,173), topRight(344,331), bottomRight(240,457)
-            cv:Point aBottomLeft(11,337);
-            cv:Point aTopLeft(272,173);
-            cv:Point aBottomRight(240, 457);
-            cv:Point aTopRight(344,331);
-            lmvp:ScanRegion leftScanRegion(pBottomLeft, pTopLeft, pLowerRight, pTopRight);
-            
-            // vanishingpoint.rightscanregion = bottomLeft(467,456), topLeft(393,325), topRight(563,187), bottomRight(778,291)
-            cv:Point bBottomLeft(467,456);
-            cv:Point bTopLeft(393,325);
-            cv:Point bBottomRight(563,187);
-            cv:Point bTopRight(778,291);
-            lmvp:ScanRegion rightScanRegion(pBottomLeft, pTopLeft, pLowerRight, pTopRight);
-
-            lmvp:VanishingPointDetection vpd = lmvp:VanishingPointDetection(const RegionOfInterestGeometry & roiGeometry, 0, 100, 
-                          // scanning parameters
-                          const ScanRegion & leftScanRegion, const ScanRegion & rightScanRegion, 30, 40, 3, 20);
-            vpd.detectVanishingPoint(imageHeader_);
-            
-            Canny(imageHeader_, testImage, 50, 200, 3); 
+             Canny(imageHeader_, testImage, 50, 200, 3); 
             cvtColor(testImage, testImage2, CV_GRAY2BGR); 
          
             vector<Vec2f> lines;
