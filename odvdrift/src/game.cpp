@@ -53,15 +53,6 @@
 #include "opendavinci/odcore/data/Container.h"
 #include "opendlv/data/environment/Point3.h"
 #include "opendlv/data/environment/EgoState.h"
-#include "opendavinci/odcore/base/Lock.h"
-#include <opendavinci/odcore/base/Lock.h>
-#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
-#include "opendavinci/generated/odcore/data/image/SharedImage.h"
-#include "opendavinci/odcore/base/module/DataTriggeredConferenceClientModule.h"
-
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
 
 #ifdef _WIN32
 	#define OS_NAME "Windows"
@@ -70,8 +61,6 @@
 #else
 	#define OS_NAME "Unix"
 #endif
-
-using namespace cv;
 
 template <typename T>
 static std::string cast(const T &t) {
@@ -830,7 +819,7 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 		    inputFromOpenDaVINCI[CarInput::THROTTLE] = vc.getAcceleration();
 		    inputFromOpenDaVINCI[CarInput::BRAKE] = 0.0;
 
-	        float steer_value = 20*vc.getSteeringWheelAngle() / car.GetMaxSteeringAngle();
+	        float steer_value = vc.getSteeringWheelAngle() / car.GetMaxSteeringAngle();
 	        if (steer_value > 1.0) steer_value = 1.0;
 	        else if (steer_value < -1.0) steer_value = -1.0;
 
@@ -857,37 +846,6 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
             odcore::data::image::SharedImage si = dynamic_cast<GraphicsGL2*>(graphics)->getSharedImage();
             odcore::data::Container c(si);
             getConference().send(c);
-	        
-	        //SEED
-	        attachToSharedMemory(si);
-            odcore::base::Lock lock(sharedImageMemory_);
-            
-             Canny(imageHeader_, testImage, 50, 200, 3); 
-            cvtColor(testImage, testImage2, CV_GRAY2BGR); 
-         
-            vector<Vec2f> lines;
-            // detect lines
-            HoughLines(testImage, lines, 1, CV_PI/180, 150, 0, 0 );
-         
-            // draw lines
-            for( size_t i = 0; i < lines.size(); i++ )
-            {
-                float rho = lines[i][0], theta = lines[i][1];
-                Point pt1, pt2;
-                double a = cos(theta), b = sin(theta);
-                double x0 = a*rho, y0 = b*rho;
-                pt1.x = cvRound(x0 + 1000*(-b));
-                pt1.y = cvRound(y0 + 1000*(a));
-                pt2.x = cvRound(x0 - 1000*(-b));
-                pt2.y = cvRound(y0 - 1000*(a));
-                line( testImage2, pt1, pt2, Scalar(0,0,255), 3, CV_AA);
-            }
-         
-            //imshow("source", imageHeader_);
-            imshow("detected lines", testImage2);
-         
-            waitKey(1);
-
         }
 
         // Get data for "EgoCar".
@@ -954,20 +912,6 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 
     return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
 }
-
-
-void Game::attachToSharedMemory(const odcore::data::image::SharedImage & sharedImage) {
-	sharedImageMemory_ = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(sharedImage.getName());
-
-	if(!sharedImageMemory_->isValid()) {
-	    ;
-	}
-
-	imageHeader_ = cv::Mat(sharedImage.getHeight(), sharedImage.getWidth(),
-		               CV_MAKETYPE(CV_8U, sharedImage.getBytesPerPixel()),
-		               sharedImageMemory_->getSharedMemory());
-}
-
 
 /* The main game loop... */
 void Game::MainLoop()

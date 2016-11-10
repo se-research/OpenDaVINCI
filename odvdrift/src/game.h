@@ -58,11 +58,7 @@
 #include "BulletDynamics/ConstraintSolver/btSequentialImpulseConstraintSolver.h"
 
 #include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
-#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
-#include "opendavinci/generated/odcore/data/image/SharedImage.h"
 
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
 #include <iosfwd>
 #include <string>
 #include <list>
@@ -86,7 +82,7 @@ private:
     virtual void tearDown();
 	std::vector <float> inputFromOpenDaVINCI;
 
-    void attachToSharedMemory(const odcore::data::image::SharedImage & sharedImage);
+
 	void End();
 
 	void MainLoop();
@@ -262,7 +258,6 @@ private:
 	void SetCarsNum(const std::string & value);
 	void SetControl(const std::string & value);
 
-
 	void BindActionsToGUI();
 	void RegisterActions();
 	void InitActionMap(std::map<std::string, Slot0*> & actionmap);
@@ -387,10 +382,6 @@ private:
 
 	std::unique_ptr <ForceFeedback> forcefeedback;
 	double ff_update_time;
-	
-	
-    std::shared_ptr<odcore::wrapper::SharedMemory> sharedImageMemory_;
-    cv::Mat imageHeader_, testImage, testImage2;
 };
 
 #endif

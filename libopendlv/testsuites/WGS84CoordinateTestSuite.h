@@ -523,7 +523,7 @@ class WGS84CoordinateTest : public CxxTest::TestSuite {
             }
         }
 
-        void no_testGPRMC() {
+        void testGPRMC() {
             double latitude = 52.247041;
             double longitude = 10.575830;
 
