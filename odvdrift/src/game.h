@@ -391,6 +391,9 @@ private:
 	
     std::shared_ptr<odcore::wrapper::SharedMemory> sharedImageMemory_;
     cv::Mat imageHeader_, testImage, testImage2;
+
+    std::ostringstream m_frameFilename;
+    time_t m_lastScreenshot;
 };
 
 #endif

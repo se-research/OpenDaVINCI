@@ -160,6 +160,7 @@ Game::Game(int argc, char **argv, std::ostream & info_out, std::ostream & error_
 	carcontrols_local.first = NULL;
 	dynamics.setContactAddedCallback(&CarDynamics::WheelContactCallback);
 	RegisterActions();
+	m_lastScreenshot = time(0);
 }
 
 Game::~Game()
@@ -901,55 +902,29 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
             lmvp::VanishingPointDetection vpd = lmvp::VanishingPointDetection(roi , 0, 100, leftScanRegion,  rightScanRegion, 30, 40, 3, 20);
             std::cout << "=== CALCULATING VANISHING POINT ===" << std::endl;            
             std::shared_ptr<cv::Point2f> vp = vpd.detectVanishingPoint(imageHeader_);
-            // std::shared_ptr<cv::Point2f> vp = std::make_shared<cv::Point2f>(467,456);
             
             std::cout << "=== FOUND VANISHING POINT AT (" << vp->x << "," << vp->y << ") ===" << std::endl;
-            
-            // cv::Point vpDraw(std::min(std::max(0, (int)vp->x),imageHeader_.cols), std::min(std::max(0, (int)vp->y),imageHeader_.rows));
-          
-            //std::cout << vanishingPoint->x<< std::endl;
 
-            //cv::circle( imageHeader_, vpDraw, 2.0,Scalar( 0, 0, 255 ),2,8 );
-            
-            /*
-             Canny(imageHeader_, testImage, 50, 200, 3); 
-            cvtColor(testImage, testImage2, CV_GRAY2BGR); 
-         
-            vector<Vec2f> lines;
-            // detect lines
-            HoughLines(testImage, lines, 1, CV_PI/180, 150, 0, 0 );
-         
-            //maximum different colors
-            int colorDelta = 255*255*255/lines.size();
-            int b,g,r=0;
-            
-            
-            // draw lines
-            for( size_t i = 0; i < lines.size(); i++ )
-            {
-                float rho = lines[i][0], theta = lines[i][1];
-                Point pt1, pt2;
-                double a = cos(theta), b = sin(theta);
-                double x0 = a*rho, y0 = b*rho;
-                pt1.x = cvRound(x0 + 1000*(-b));
-                pt1.y = cvRound(y0 + 1000*(a));
-                pt2.x = cvRound(x0 - 1000*(-b));
-                pt2.y = cvRound(y0 - 1000*(a));
-                
-                line( testImage2, pt1, pt2, Scalar(b,g,r), 1, CV_AA);
-                
-                //next color:
-                if(i<lines.size()-1)
-                {
-                    
-                }
-            }   
-          */
-
-            if(lmvp::DEBUG_SHOW_SCAN_REGIONS) {
+            if (lmvp::DEBUG_SHOW_SCAN_REGIONS) {
             	leftScanRegion.draw(imageHeader_, cv::Scalar(0,212,89));
             	rightScanRegion.draw(imageHeader_, cv::Scalar(212,195,0));
             }
+
+            std::cout << "=== TIME SINCE LAST SCREENSHOT " << (time(0) - m_lastScreenshot) << " ===" << std::endl;
+            if (time(0) - m_lastScreenshot > 3) {
+            	std::cout << "=== CREATING SCREENSHOT ===" << std::endl;
+            	// reset stream
+            	m_frameFilename.str("");
+            	m_frameFilename.clear();
+            	// create new filename
+            	m_frameFilename << "FRAME_" << this->frame << "_VP_" << vp->x << "_" << vp->y <<".png";
+            	std::cout << "=== FILENAME WILL BE " << m_frameFilename.str() <<  " ===" << std::endl;
+            	// save image to file
+            	cv::imwrite(m_frameFilename.str(), imageHeader_);
+            	std::cout << "=== WROTE IMAGE ===" << std::endl;
+            	m_lastScreenshot = time(0);
+            }
+
             imshow("vp detection", imageHeader_);
          
             waitKey(1);

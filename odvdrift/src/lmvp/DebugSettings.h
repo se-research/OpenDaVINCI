@@ -7,7 +7,7 @@ namespace lmvp {
 
 // change as desired
 const bool DEBUG_SHOW_SCAN_COURSE     = false;
-const bool DEBUG_SHOW_SCAN_REGIONS    = true;
+const bool DEBUG_SHOW_SCAN_REGIONS    = false;
 const bool DEBUG_SHOW_DETECTED_RECTS  = false;
 const bool DEBUG_SHOW_LANE_BOUNDARIES = true;
 const bool DEBUG_SHOW_PREPROCESSING   = true;
