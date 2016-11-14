@@ -10,7 +10,7 @@
 class Arguments {
     public:
     Arguments(std::initializer_list<std::string> argList)
-        : argvPtr_(std::make_unique<char *[]>(argList.size()))
+        : argvPtr_(new char *[argList.size()])
     {
 
         // copy the initializer list into this object
@@ -19,7 +19,7 @@ class Arguments {
             int32_t lengthIncludingTerminatingZero = std::strlen(arg.c_str()) + 1;
 
             // allocate space
-            auto cArg = std::make_unique<char[]>(lengthIncludingTerminatingZero);
+            std::unique_ptr<char[]> cArg(new char[lengthIncludingTerminatingZero]);
 
             // copy content
             std::strncpy(cArg.get(), arg.c_str(), lengthIncludingTerminatingZero);
