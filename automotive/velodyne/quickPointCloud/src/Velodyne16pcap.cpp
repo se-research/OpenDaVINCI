@@ -89,7 +89,9 @@ namespace automotive {
                 sstr.write((char*)(&a_h),2);
                 sstr.write((char*)(&b_h),2);
                 
-                QuickPointCloud qpc(5.5,306.78,2,sstr.str());
+                uint8_t entriesPerAzimuth=2;
+                cout<<+entriesPerAzimuth<<endl;
+                QuickPointCloud qpc(5.5,306.78,entriesPerAzimuth,sstr.str());
                 Container c(qpc);
                 getConference().send(c);
                 

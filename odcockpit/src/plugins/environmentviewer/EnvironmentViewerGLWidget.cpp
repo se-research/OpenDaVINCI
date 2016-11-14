@@ -482,19 +482,19 @@ namespace cockpit {
                 }
                 
                 if(c.getDataType()==odcore::data::QuickPointCloud::ID()){
-                    /*QuickPointCloud qpc=c.getData<QuickPointCloud>();
+                    QuickPointCloud qpc=c.getData<QuickPointCloud>();
                     float startAzimuth=qpc.getStartAzimuth();
                     float endAzimuth=qpc.getEndAzimuth();
                     uint8_t entriesPerAzimuth=qpc.getEntriesPerAzimuth();
-                    cout<<"startAzimuth:"<<startAzimuth<<", endAzimuth:"<<endAzimuth<<",entriesPerAzimuth:"<<entriesPerAzimuth<<endl;
+                    cout<<"startAzimuth:"<<startAzimuth<<", endAzimuth:"<<endAzimuth<<",entriesPerAzimuth:"<<+entriesPerAzimuth<<endl;
                     string distances=qpc.getDistances();
                     stringstream sstr(distances);
                     half distance(0.0);
                     sstr.read((char*)(&distance), entriesPerAzimuth);
                     cout<<"Distance 1:"<<distance<<endl;
                     sstr.read((char*)(&distance), entriesPerAzimuth);
-                    cout<<"Distance 2:"<<distance<<endl;*/
-                    cout<<"Received quick point cloud!"<<endl;
+                    cout<<"Distance 2:"<<distance<<endl;
+                    //cout<<"Received quick point cloud!"<<endl;
                 
                 }
                 
