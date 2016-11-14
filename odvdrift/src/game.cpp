@@ -903,26 +903,28 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
             std::cout << "=== CALCULATING VANISHING POINT ===" << std::endl;            
             std::shared_ptr<cv::Point2f> vp = vpd.detectVanishingPoint(imageHeader_);
             
-            std::cout << "=== FOUND VANISHING POINT AT (" << vp->x << "," << vp->y << ") ===" << std::endl;
+            if (vp) {
+				std::cout << "=== FOUND VANISHING POINT AT (" << vp->x << "," << vp->y << ") ===" << std::endl;
 
-            if (lmvp::DEBUG_SHOW_SCAN_REGIONS) {
-            	leftScanRegion.draw(imageHeader_, cv::Scalar(0,212,89));
-            	rightScanRegion.draw(imageHeader_, cv::Scalar(212,195,0));
-            }
+				if (lmvp::DEBUG_SHOW_SCAN_REGIONS) {
+					leftScanRegion.draw(imageHeader_, cv::Scalar(0,212,89));
+					rightScanRegion.draw(imageHeader_, cv::Scalar(212,195,0));
+				}
 
-            std::cout << "=== TIME SINCE LAST SCREENSHOT " << (time(0) - m_lastScreenshot) << " ===" << std::endl;
-            if (time(0) - m_lastScreenshot > 3) {
-            	std::cout << "=== CREATING SCREENSHOT ===" << std::endl;
-            	// reset stream
-            	m_frameFilename.str("");
-            	m_frameFilename.clear();
-            	// create new filename
-            	m_frameFilename << "FRAME_" << this->frame << "_VP_" << vp->x << "_" << vp->y <<".png";
-            	std::cout << "=== FILENAME WILL BE " << m_frameFilename.str() <<  " ===" << std::endl;
-            	// save image to file
-            	cv::imwrite(m_frameFilename.str(), imageHeader_);
-            	std::cout << "=== WROTE IMAGE ===" << std::endl;
-            	m_lastScreenshot = time(0);
+				std::cout << "=== TIME SINCE LAST SCREENSHOT " << (time(0) - m_lastScreenshot) << " ===" << std::endl;
+				if (time(0) - m_lastScreenshot > 1) {
+					std::cout << "=== CREATING SCREENSHOT ===" << std::endl;
+					// reset stream
+					m_frameFilename.str("");
+					m_frameFilename.clear();
+					// create new filename
+					m_frameFilename << "FRAME_" << this->frame << "_VP_" << vp->x << "_" << vp->y <<".png";
+					std::cout << "=== FILENAME WILL BE " << m_frameFilename.str() <<  " ===" << std::endl;
+					// save image to file
+					cv::imwrite(m_frameFilename.str(), imageHeader_);
+					std::cout << "=== WROTE IMAGE ===" << std::endl;
+					m_lastScreenshot = time(0);
+				}
             }
 
             imshow("vp detection", imageHeader_);

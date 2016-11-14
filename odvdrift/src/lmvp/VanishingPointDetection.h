@@ -217,24 +217,33 @@ private:
         std::shared_ptr<DirInfLinef> leftLaneBoundary = leftLowpass_.lowpass(computeLaneBoundary(debugImage, laneMarkings.at(RelativeDirection::LEFT))),
                                      rightLaneBoundary = rightLowpass_.lowpass(computeLaneBoundary(debugImage, laneMarkings.at(RelativeDirection::RIGHT)));
 
+        std::cout << "<<< computeVanishingPoint() >>>" << std::endl;
         if(DEBUG_SHOW_LANE_BOUNDARIES) {
             if(leftLaneBoundary) {
+            	std::cout << "<<< leftLaneBoundary >>>" << std::endl;
                 leftLaneBoundary->toImageCoordinates(roiGeometry_).draw(debugImage, cv::Scalar(0,255,0));
             }
             if(rightLaneBoundary) {
+            	std::cout << "<<< rightLaneBoundary >>>" << std::endl;
                 rightLaneBoundary->toImageCoordinates(roiGeometry_).draw(debugImage, cv::Scalar(0,255,0));
             }
         }
 
         if(!leftLaneBoundary || !rightLaneBoundary) {
-            return std::shared_ptr<cv::Point2f>();
+        	std::cout << "<<< !leftLaneBoundary || !rightLaneBoundary >>>" << std::endl;
+            // return std::shared_ptr<cv::Point2f>(new cv::Point2f(0,400));
+        	return std::shared_ptr<cv::Point2f>();
         }
 
+        std::cout << "<<< roiVanishingPoint >>>" << std::endl;
         cv::Point2f roiVanishingPoint = leftLaneBoundary->intersection(*rightLaneBoundary);
+
+        std::cout << "<<< vanishingPoint >>>" << std::endl;
         std::shared_ptr<cv::Point2f> vanishingPoint(new cv::Point2f(roiGeometry_.toImageCoordinates(roiVanishingPoint)));
 
 #ifndef NDEBUG
         if(DEBUG_SHOW_VANISHING_POINT) {
+        	std::cout << "<<< drawVanishingPoint >>>" << std::endl;
             drawVanishingPoint(debugImage, *vanishingPoint, cv::Scalar(0,0,255));
             std::cout << "VP: (" << vanishingPoint->x << ", " << vanishingPoint->y << ")" << std::endl;
         }
