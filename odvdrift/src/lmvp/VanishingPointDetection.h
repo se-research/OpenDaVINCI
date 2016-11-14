@@ -235,7 +235,7 @@ private:
 
 #ifndef NDEBUG
         if(DEBUG_SHOW_VANISHING_POINT) {
-            drawVanishingPoint(debugImage, *vanishingPoint, cv::Scalar(255,0,0));
+            drawVanishingPoint(debugImage, *vanishingPoint, cv::Scalar(0,0,255));
             std::cout << "VP: (" << vanishingPoint->x << ", " << vanishingPoint->y << ")" << std::endl;
         }
 #endif

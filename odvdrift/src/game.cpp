@@ -885,17 +885,17 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
                         
             // vanishingpoint.leftscanregion = bottomLeft(11,337), topLeft(272,173), topRight(344,331), bottomRight(240,457)
             cv::Point aBottomLeft = cv::Point(11,337);
-            cv::Point aTopLeft(272,173);
+            cv::Point aTopLeft(72,173); // was 272,173
+            cv::Point aTopRight(344,131); // was 344,331
             cv::Point aBottomRight(240, 457);
-            cv::Point aTopRight(344,331);
-            lmvp::ScanRegion leftScanRegion(aBottomLeft, aTopLeft, aBottomRight, aTopRight);
+            lmvp::ScanRegion leftScanRegion(aBottomLeft, aTopLeft, aTopRight, aBottomRight);
                        
             // vanishingpoint.rightscanregion = bottomLeft(467,456), topLeft(393,325), topRight(563,187), bottomRight(778,291)
-            cv::Point bBottomLeft(467,456);
-            cv::Point bTopLeft(393,325);
-            cv::Point bBottomRight(563,187);
-            cv::Point bTopRight(778,291);
-            lmvp::ScanRegion rightScanRegion(bBottomLeft, bTopLeft, bBottomRight, bTopRight);
+            cv::Point bBottomLeft(567,456);
+            cv::Point bTopLeft(493,125); // was 393,325
+            cv::Point bTopRight(763,187); // was 563,187
+            cv::Point bBottomRight(778,291);
+            lmvp::ScanRegion rightScanRegion(bBottomLeft, bTopLeft, bTopRight, bBottomRight);
             
             std::cout << "=== CREATING VANISHING POINT DETECTOR ===" << std::endl;
             lmvp::VanishingPointDetection vpd = lmvp::VanishingPointDetection(roi , 0, 100, leftScanRegion,  rightScanRegion, 30, 40, 3, 20);
@@ -903,7 +903,7 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
             std::shared_ptr<cv::Point2f> vp = vpd.detectVanishingPoint(imageHeader_);
             // std::shared_ptr<cv::Point2f> vp = std::make_shared<cv::Point2f>(467,456);
             
-            std::cout << "=== FOUND VANISHING POINT AT " << vp << " ===" << std::endl;
+            std::cout << "=== FOUND VANISHING POINT AT (" << vp->x << "," << vp->y << ") ===" << std::endl;
             
             // cv::Point vpDraw(std::min(std::max(0, (int)vp->x),imageHeader_.cols), std::min(std::max(0, (int)vp->y),imageHeader_.rows));
           
