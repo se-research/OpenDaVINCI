@@ -31,6 +31,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <sstream>
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
@@ -72,6 +73,8 @@
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
 #include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 #include "opendavinci/generated/odcore/data/SharedPointCloud.h"
+#include "opendavinci/generated/odcore/data/QuickPointCloud.h"
+#include "opendavinci/odcore/wrapper/half_float.h"
 
 class QWidget;
 namespace opendlv { namespace scenario { class SCNXArchive; } }
@@ -476,6 +479,23 @@ namespace cockpit {
                         velodyneSharedMemory=SharedMemoryFactory::attachToSharedMemory(velodyneFrame.getName());//Attach the shared point cloud to the shared memory  
                         m_hasAttachedToSharedImageMemory = true; 
                     }  
+                }
+                
+                if(c.getDataType()==odcore::data::QuickPointCloud::ID()){
+                    /*QuickPointCloud qpc=c.getData<QuickPointCloud>();
+                    float startAzimuth=qpc.getStartAzimuth();
+                    float endAzimuth=qpc.getEndAzimuth();
+                    uint8_t entriesPerAzimuth=qpc.getEntriesPerAzimuth();
+                    cout<<"startAzimuth:"<<startAzimuth<<", endAzimuth:"<<endAzimuth<<",entriesPerAzimuth:"<<entriesPerAzimuth<<endl;
+                    string distances=qpc.getDistances();
+                    stringstream sstr(distances);
+                    half distance(0.0);
+                    sstr.read((char*)(&distance), entriesPerAzimuth);
+                    cout<<"Distance 1:"<<distance<<endl;
+                    sstr.read((char*)(&distance), entriesPerAzimuth);
+                    cout<<"Distance 2:"<<distance<<endl;*/
+                    cout<<"Received quick point cloud!"<<endl;
+                
                 }
                 
                 if (c.getDataType() == opendlv::data::environment::EgoState::ID()) {
