@@ -37,9 +37,14 @@
 #include "tobullet.h"
 #include "hsvtorgb.h"
 #include "camera_orbit.h"
+#include "lmvp/LaneMarkingsScan.h"
+#include "lmvp/LmvpTypes.h"
 #include "lmvp/VanishingPointDetection.h"
 #include "lmvp/ScanRegion.h"
 #include "lmvp/RegionOfInterestGeometry.h"
+
+
+
 
 #include <fstream>
 #include <string>
@@ -865,32 +870,46 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
             odcore::data::Container c(si);
             getConference().send(c);
 	        
+	        
+	        
 	        //SEED
 	        attachToSharedMemory(si);
             odcore::base::Lock lock(sharedImageMemory_);
             
+            //std::cout <<"Cols " << imageHeader_.cols; //800
+	        //std::cout <<"Rows " << imageHeader_.rows << std::endl; //600
+            
             // vanishingpoint.roi = topLeft(0,169), bottomRight(726,479)
             cv::Rect roiRect(0,169,728,479);
-            lmvp:RegionOfInterestGeometry roi = RegionOfInterestGeometry(roiRect)
-            
+            lmvp::RegionOfInterestGeometry roi = lmvp::RegionOfInterestGeometry(roiRect);
+                        
             // vanishingpoint.leftscanregion = bottomLeft(11,337), topLeft(272,173), topRight(344,331), bottomRight(240,457)
-            cv:Point aBottomLeft(11,337);
-            cv:Point aTopLeft(272,173);
-            cv:Point aBottomRight(240, 457);
-            cv:Point aTopRight(344,331);
-            lmvp:ScanRegion leftScanRegion(pBottomLeft, pTopLeft, pLowerRight, pTopRight);
-            
+            cv::Point aBottomLeft = cv::Point(11,337);
+            cv::Point aTopLeft(272,173);
+            cv::Point aBottomRight(240, 457);
+            cv::Point aTopRight(344,331);
+            lmvp::ScanRegion leftScanRegion(aBottomLeft, aTopLeft, aBottomRight, aTopRight);
+                       
             // vanishingpoint.rightscanregion = bottomLeft(467,456), topLeft(393,325), topRight(563,187), bottomRight(778,291)
-            cv:Point bBottomLeft(467,456);
-            cv:Point bTopLeft(393,325);
-            cv:Point bBottomRight(563,187);
-            cv:Point bTopRight(778,291);
-            lmvp:ScanRegion rightScanRegion(pBottomLeft, pTopLeft, pLowerRight, pTopRight);
-
-            lmvp:VanishingPointDetection vpd = lmvp:VanishingPointDetection(const RegionOfInterestGeometry & roiGeometry, 0, 100, 
+            cv::Point bBottomLeft;
+            cv::Point bTopLeft(393,325);
+            cv::Point bBottomRight(563,187);
+            cv::Point bTopRight(778,291);
+            lmvp::ScanRegion rightScanRegion(bBottomLeft, bTopLeft, bBottomRight, bTopRight);
+            
+            lmvp::VanishingPointDetection vpd = lmvp::VanishingPointDetection(roi , 0, 100, 
                           // scanning parameters
-                          const ScanRegion & leftScanRegion, const ScanRegion & rightScanRegion, 30, 40, 3, 20);
-            vpd.detectVanishingPoint(imageHeader_);
+                           leftScanRegion,  rightScanRegion, 30, 40, 3, 20);
+            
+            
+                    
+            std::shared_ptr<cv::Point2f> vanishingPoint;// = vpd.detectVanishingPoint(imageHeader_);
+            //vanishingPoint = std::make_shared<cv::Point2f>(467,456);
+            cv::Point vpDraw(std::min(std::max(0, (int)vanishingPoint->x),imageHeader_.cols), std::min(std::max(0, (int)vanishingPoint->y),imageHeader_.rows));
+          
+            //std::cout << vanishingPoint->x<< std::endl;
+
+            //cv::circle( imageHeader_, vpDraw, 2.0,Scalar( 0, 0, 255 ),2,8 );
             
             /*
              Canny(imageHeader_, testImage, 50, 200, 3); 
@@ -925,12 +944,13 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
                     
                 }
             }   
-         
+          */
             //imshow("source", imageHeader_);
-            imshow("detected lines", testImage2);
+            
+            imshow("vp detection", imageHeader_);
          
             waitKey(1);
-            */
+           
         }
 
         // Get data for "EgoCar".

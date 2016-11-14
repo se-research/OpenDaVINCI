@@ -1,6 +1,6 @@
 #ifndef LMVP_TYPES_H_
 #define LMVP_TYPES_H_
-
+#warning "test" LMVP_TYPES_H_
 #include <vector>
 #include <stdexcept>
 

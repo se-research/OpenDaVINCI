@@ -3,8 +3,9 @@
 
 #include <memory>
 
-#include "MatVisitInterface.h"
 #include "LmvpTypes.h"
+#include "MatVisitInterface.h"
+
 
 namespace lmvp {
 
