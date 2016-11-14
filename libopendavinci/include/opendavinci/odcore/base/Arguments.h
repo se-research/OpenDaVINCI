@@ -11,49 +11,28 @@ class Arguments {
     public:
     Arguments(std::initializer_list<std::string> argList)
         : argvPtr_(new char *[argList.size()])
+        , argc(argList.size())
+        , argv(argvPtr_.get())  
     {
-
         // copy the initializer list into this object
         int32_t i = 0;
         for (const auto &arg : argList) {
-            int32_t lengthIncludingTerminatingZero = std::strlen(arg.c_str()) + 1;
+            const int32_t lengthIncludingTerminatingZero = arg.length() + 1;
 
             // allocate space
-            std::unique_ptr<char[]> cArg(new char[lengthIncludingTerminatingZero]);
+            argvValues_.emplace_back(new char[lengthIncludingTerminatingZero]);
+
+            char * cstring = argvValues_.rbegin()->get();
 
             // copy content
-            std::strncpy(cArg.get(), arg.c_str(), lengthIncludingTerminatingZero);
+            std::strncpy(cstring, arg.c_str(), lengthIncludingTerminatingZero);
 
-            // save in the vector
-            argvValues_.push_back(std::move(cArg));
+            argvPtr_[i++] = cstring;
         }
     }
 
-    /**
-     * Get the number of arguments.
-     */
-    int32_t argc() const
-    {
-        return argvValues_.size();
-    }
-
-    /**
-     * Get a C-style string array containing the arguments. This gets freed
-     * when the Arguments object is destructed, so manual freeing is not needed,
-     * but it should be taken care of that the Arguments object lifetime is
-     * longer than the last use of the return value of this function.
-     */
-    char **argv() const
-    {
-        // build the argvPtr_ object to contain pointers to the strings
-        // in argvValues_.
-        int32_t i = 0;
-        for (const auto &arg : argvValues_) {
-            argvPtr_[i++] = arg.get();
-        }
-
-        return argvPtr_.get();
-    }
+    const int32_t argc;
+    char ** const argv;
 
     private:
     /**
