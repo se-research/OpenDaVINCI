@@ -70,6 +70,7 @@
 #include <vector>
 #include <memory>
 
+
 class Game : public odcore::base::module::TimeTriggeredConferenceClientModule
 {
 friend class GameDownloader;
@@ -394,6 +395,9 @@ private:
 
     std::ostringstream m_frameFilename;
     time_t m_lastScreenshot;
+    bool textured = false;
+
+
 };
 
 #endif

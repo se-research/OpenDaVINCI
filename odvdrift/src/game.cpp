@@ -17,6 +17,12 @@
 /*                                                                      */
 /************************************************************************/
 
+#include "lmvp/LaneMarkingsScan.h"
+#include "lmvp/LmvpTypes.h"
+#include "lmvp/VanishingPointDetection.h"
+#include "lmvp/ScanRegion.h"
+#include "lmvp/RegionOfInterestGeometry.h"
+
 #include "game.h"
 #include "unittest.h"
 #include "definitions.h"
@@ -37,14 +43,6 @@
 #include "tobullet.h"
 #include "hsvtorgb.h"
 #include "camera_orbit.h"
-#include "lmvp/LaneMarkingsScan.h"
-#include "lmvp/LmvpTypes.h"
-#include "lmvp/VanishingPointDetection.h"
-#include "lmvp/ScanRegion.h"
-#include "lmvp/RegionOfInterestGeometry.h"
-#include "lmvp/RegionOfInterestGeometry.h"
-
-
 
 #include <fstream>
 #include <string>
@@ -110,6 +108,27 @@ static std::string GetTimeString(float time)
 	}
 	return "--:--.---";
 }
+
+// vanishingpoint.roi = topLeft(0,169), bottomRight(726,479)
+cv::Rect roiRect = cv::Rect(cv::Point(0,0),cv::Point(799,599));
+lmvp::RegionOfInterestGeometry roi = lmvp::RegionOfInterestGeometry(roiRect);
+
+// vanishingpoint.leftscanregion = bottomLeft(11,337), topLeft(272,173), topRight(344,331), bottomRight(240,457)
+cv::Point aBottomLeft = cv::Point(11,337);
+cv::Point aTopLeft = cv::Point(72,173); // was 272,173
+cv::Point aTopRight = cv::Point(344,131); // was 344,331
+cv::Point aBottomRight = cv::Point(240, 457);
+lmvp::ScanRegion leftScanRegion = lmvp::ScanRegion(aBottomLeft, aTopLeft, aTopRight, aBottomRight);
+
+// vanishingpoint.rightscanregion = bottomLeft(467,456), topLeft(393,325), topRight(563,187), bottomRight(778,291)
+cv::Point bBottomLeft = cv::Point(567,456);
+cv::Point bTopLeft = cv::Point(493,125); // was 393,325
+cv::Point bTopRight = cv::Point(763,187); // was 563,187
+cv::Point bBottomRight = cv::Point(778,291);
+lmvp::ScanRegion rightScanRegion = lmvp::ScanRegion(bBottomLeft, bTopLeft, bTopRight, bBottomRight);
+
+lmvp::VanishingPointDetection vpd = lmvp::VanishingPointDetection(roi , 0, 100, leftScanRegion,  rightScanRegion, 30, 40, 3, 20);
+std::shared_ptr<cv::Point2f> vp;
 
 Game::Game(int argc, char **argv, std::ostream & info_out, std::ostream & error_out) :
     odcore::base::module::TimeTriggeredConferenceClientModule(argc, argv, "vdrift"),
@@ -572,6 +591,12 @@ bool Game::ParseArguments(std::list <std::string> & args)
 	}
 	arghelp["-test"] = "Run unit tests.";
 
+	if (argmap.find("-textured") != argmap.end())
+	{
+		textured = true;
+	}
+	arghelp["-textured"] = "Simulating real world environment. No synthetic information such as lane markings.";
+
 	if (!argmap["-cartest"].empty())
 	{
 		pathmanager.Init(info_output, error_output);
@@ -871,45 +896,30 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
             odcore::data::Container c(si);
             getConference().send(c);
 	        
-	        
+	        std::cout << "TEXTURED: " << textured <<std::endl;
 	        
 	        //SEED
 	        attachToSharedMemory(si);
             odcore::base::Lock lock(sharedImageMemory_);
             
+
             //std::cout <<"Cols " << imageHeader_.cols; //800
 	          //std::cout <<"Rows " << imageHeader_.rows << std::endl; //600
-            
-            // vanishingpoint.roi = topLeft(0,169), bottomRight(726,479)
-            cv::Rect roiRect(cv::Point(0,0),cv::Point(799,599));
-            lmvp::RegionOfInterestGeometry roi = lmvp::RegionOfInterestGeometry(roiRect);
-                        
-            // vanishingpoint.leftscanregion = bottomLeft(11,337), topLeft(272,173), topRight(344,331), bottomRight(240,457)
-            cv::Point aBottomLeft = cv::Point(11,337);
-            cv::Point aTopLeft(72,173); // was 272,173
-            cv::Point aTopRight(344,131); // was 344,331
-            cv::Point aBottomRight(240, 457);
-            lmvp::ScanRegion leftScanRegion(aBottomLeft, aTopLeft, aTopRight, aBottomRight);
-                       
-            // vanishingpoint.rightscanregion = bottomLeft(467,456), topLeft(393,325), topRight(563,187), bottomRight(778,291)
-            cv::Point bBottomLeft(567,456);
-            cv::Point bTopLeft(493,125); // was 393,325
-            cv::Point bTopRight(763,187); // was 563,187
-            cv::Point bBottomRight(778,291);
-            lmvp::ScanRegion rightScanRegion(bBottomLeft, bTopLeft, bTopRight, bBottomRight);
-            
-            std::cout << "=== CREATING VANISHING POINT DETECTOR ===" << std::endl;
-            lmvp::VanishingPointDetection vpd = lmvp::VanishingPointDetection(roi , 0, 100, leftScanRegion,  rightScanRegion, 30, 40, 3, 20);
-            std::cout << "=== CALCULATING VANISHING POINT ===" << std::endl;            
-            std::shared_ptr<cv::Point2f> vp = vpd.detectVanishingPoint(imageHeader_);
-            
-            if (vp) {
-				std::cout << "=== FOUND VANISHING POINT AT (" << vp->x << "," << vp->y << ") ===" << std::endl;
+            if(!textured)
+            {
+				std::cout << "=== CALCULATING VANISHING POINT ===" << std::endl;
 
+				vp = vpd.detectVanishingPoint(imageHeader_);
+				if(vp)
+				{
+					std::cout << "=== FOUND VANISHING POINT AT (" << vp->x << "," << vp->y << ") ===" << std::endl;
+				}
 				if (lmvp::DEBUG_SHOW_SCAN_REGIONS) {
 					leftScanRegion.draw(imageHeader_, cv::Scalar(0,212,89));
 					rightScanRegion.draw(imageHeader_, cv::Scalar(212,195,0));
 				}
+            }
+            if (vp||textured) {
 
 				std::cout << "=== TIME SINCE LAST SCREENSHOT " << (time(0) - m_lastScreenshot) << " ===" << std::endl;
 				if (time(0) - m_lastScreenshot > 1) {
@@ -918,7 +928,7 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 					m_frameFilename.str("");
 					m_frameFilename.clear();
 					// create new filename
-					m_frameFilename << "FRAME_" << this->frame << "_VP_" << vp->x << "_" << vp->y <<".png";
+					m_frameFilename << "FRAME_" << this->frame << "_VP_" << (textured ? 0 : vp->x) << "_" << (textured ? 0 : vp->y) <<".png";
 					std::cout << "=== FILENAME WILL BE " << m_frameFilename.str() <<  " ===" << std::endl;
 					// save image to file
 					cv::imwrite(m_frameFilename.str(), imageHeader_);
@@ -927,6 +937,7 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 				}
             }
 
+            std::cout << "=== RENDERING IMAGE ===" << std::endl;
             imshow("vp detection", imageHeader_);
          
             waitKey(1);

@@ -73,8 +73,9 @@ public:
     }
 
     std::shared_ptr<cv::Point2f> detectVanishingPoint(cv::Mat & image) {
+    	std::cout << "<<< detectLaneMarkings >>>>" << std::endl;
         auto laneMarkings = detectLaneMarkings(image);
-
+        std::cout << "<<< computeVanishingPoint >>>>" << std::endl;
         return computeVanishingPoint(image, laneMarkings);
     }
 
