@@ -21,7 +21,7 @@
 #include <cstring>
 #include <string>
 #include <iostream>
-#include <memory>
+//#include <memory>
 #include <fstream>
 
 #include "opendavinci/odcore/data/Container.h"
@@ -29,11 +29,12 @@
 #include "opendavinci/generated/odcore/data/pcap/GlobalHeader.h"
 #include "opendavinci/generated/odcore/data/pcap/PacketHeader.h"
 #include "opendavinci/generated/odcore/data/pcap/Packet.h"
-#include "opendavinci/odcore/base/Lock.h"
+//#include "opendavinci/odcore/base/Lock.h"
 
-#include "opendavinci/generated/odcore/data/SharedPointCloud.h"
-#include "opendavinci/odcore/wrapper/SharedMemory.h"
-#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
+//#include "opendavinci/generated/odcore/data/SharedPointCloud.h"
+#include "opendavinci/generated/odcore/data/QuickPointCloud.h"
+//#include "opendavinci/odcore/wrapper/SharedMemory.h"
+//#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 
 #include "velodyneListener16.h"
 
@@ -48,8 +49,7 @@ namespace automotive {
         using namespace automotive;
         using namespace odcore::wrapper;
 
-        VelodyneListener16::VelodyneListener16(std::shared_ptr<SharedMemory> m,
-        odcore::io::conference::ContainerConference& c):
+        VelodyneListener16::VelodyneListener16(odcore::io::conference::ContainerConference& c):
             //packetNr(0),
             pointIndex(0),
             startID(0),
@@ -57,26 +57,32 @@ namespace automotive {
             previousAzimuth(0.0),
             deltaAzimuth(0.0),
             distance(0.0),
-            VelodyneSharedMemory(m),
-            segment(NULL),
             velodyneFrame(c),
-            spc(),
-            stopReading(false){
-            //Initial setup of the shared point cloud
-            spc.setName(VelodyneSharedMemory->getName()); // Name of the shared memory segment with the data.
-            //spc.setSize(pointIndex* NUMBER_OF_COMPONENTS_PER_POINT * SIZE_PER_COMPONENT); // Size in raw bytes.
-            //spc.setWidth(pointIndex); // Number of points.
-            spc.setHeight(1); // We have just a sequence of vectors.
-            spc.setNumberOfComponentsPerPoint(NUMBER_OF_COMPONENTS_PER_POINT);
-            spc.setComponentDataType(SharedPointCloud::FLOAT_T); // Data type per component.
-            spc.setUserInfo(SharedPointCloud::XYZ_INTENSITY);
-            
-            //Create memory for temporary storage of point cloud data for each frame
-            segment=(float*)malloc(SIZE);
+            stopReading(false),
+            startAzimuth(0.0),
+            distanceStringStream(""),
+            isStartAzimuth(true){
             
             //Load calibration data from the calibration file
             //VLP-16 has 16 channels/sensors. Each sensor has a specific vertical angle, which can be read from
             //vertCorrection[sensor ID] specified in the calibration file.
+            sensorOrderIndex[0]=0;
+            sensorOrderIndex[1]=2;
+            sensorOrderIndex[2]=4;
+            sensorOrderIndex[3]=6;
+            sensorOrderIndex[4]=8;
+            sensorOrderIndex[5]=10;
+            sensorOrderIndex[6]=12;
+            sensorOrderIndex[7]=14;
+            sensorOrderIndex[8]=1;
+            sensorOrderIndex[9]=3;
+            sensorOrderIndex[10]=5;
+            sensorOrderIndex[11]=7;
+            sensorOrderIndex[12]=9;
+            sensorOrderIndex[13]=11;
+            sensorOrderIndex[14]=13;
+            sensorOrderIndex[15]=15;
+            
             string line;
             ifstream in("VLP-16.xml");
             uint8_t counter=0;//corresponds to the index of the vertical angle of each beam
@@ -122,22 +128,13 @@ namespace automotive {
         VelodyneListener16::~VelodyneListener16() {}
         
         //Update the shared point cloud when a complete scan is completed.
-        void VelodyneListener16::sendSPC(const float &oldAzimuth, const float &newAzimuth){
+        void VelodyneListener16::sendQPC(const float &oldAzimuth, const float &newAzimuth){
             if(newAzimuth<oldAzimuth){
-                if(VelodyneSharedMemory->isValid()){
-                    Lock l(VelodyneSharedMemory);
-                    memcpy(VelodyneSharedMemory->getSharedMemory(),segment,SIZE);
-                    //spc.setName(VelodyneSharedMemory->getName()); // Name of the shared memory segment with the data.
-                    spc.setSize(pointIndex* NUMBER_OF_COMPONENTS_PER_POINT * SIZE_PER_COMPONENT); // Size in raw bytes.
-                    spc.setWidth(pointIndex); // Number of points.
-                    //spc.setHeight(1); // We have just a sequence of vectors.
-                    //spc.setNumberOfComponentsPerPoint(NUMBER_OF_COMPONENTS_PER_POINT);
-                    //spc.setComponentDataType(SharedPointCloud::FLOAT_T); // Data type per component.
-                    //spc.setUserInfo(SharedPointCloud::XYZ_INTENSITY);
-                    
-                    Container imageFrame(spc);
-                    velodyneFrame.send(imageFrame);
-                }
+                cout<<"startAzimuth:"<<startAzimuth<<",endAzimuth:"<<oldAzimuth<<", stringSize"<<distanceStringStream.str().size()<<endl;
+                
+                QuickPointCloud qpc(startAzimuth,oldAzimuth,entriesPerAzimuth,distanceStringStream.str());    
+                Container c(qpc);
+                velodyneFrame.send(c);
                 
                 //Stop reading the file after a predefined number of frames
                 if(frameIndex>=LOAD_FRAME_NO){
@@ -149,6 +146,9 @@ namespace automotive {
                 }
                 pointIndex=0;
                 startID=0;
+                startAzimuth=newAzimuth;
+                isStartAzimuth=false;
+                distanceStringStream.str("");
             }
         }
         
@@ -175,7 +175,7 @@ namespace automotive {
 
                     const string payload = packet.getPayload();
                     uint32_t position=42;//position specifies the starting position to read from the 1248 bytes, skip the 42-byte Ethernet header
-                
+                    
                     //A packet consists of 12 blocks with 100 bytes each. Decode each block separately.
                     static uint8_t firstByte,secondByte;
                     static uint32_t dataValue;
@@ -189,7 +189,12 @@ namespace automotive {
                         secondByte=(uint8_t)(payload.at(position+1));
                         dataValue=ntohs(firstByte*256+secondByte);                        
                         float azimuth=static_cast<float>(dataValue/100.0);
-                        sendSPC(previousAzimuth,azimuth);
+                        if(isStartAzimuth){
+                            startAzimuth=azimuth;
+                            isStartAzimuth=false;
+                        }
+                            
+                        sendQPC(previousAzimuth,azimuth);
                         
                         previousAzimuth=azimuth;
                         position+=2;
@@ -221,7 +226,7 @@ namespace automotive {
                                         azimuth-=360.0;
                                     }
                                     
-                                    sendSPC(previousAzimuth,azimuth);
+                                    sendQPC(previousAzimuth,azimuth);
                                     previousAzimuth=azimuth;
                                 }
                                 
@@ -234,28 +239,27 @@ namespace automotive {
                                 secondByte=(uint8_t)(payload.at(position+1));
                                 dataValue=ntohs(firstByte*256+secondByte);
                                 distance=dataValue/500.0; //*2mm-->/1000 for meter
-                                
-                                //Discard distances shorter than 1m
-                                if(distance>1.0){
-                                    static float xyDistance,xData,yData,zData,intensity;
-                                    //Compute x, y, z cooridnate
-                                    xyDistance=distance*cos(toRadian(vertCorrection[sensorID]));
-                                    xData=xyDistance*sin(toRadian(azimuth));
-                                    yData=xyDistance*cos(toRadian(azimuth));
-                                    zData=distance*sin(toRadian(vertCorrection[sensorID]));
-                                    //Get intensity/reflectivity: 1 byte
-                                    uint8_t intensityInt=(uint8_t)(payload.at(position+2));
-                                    intensity=(float)intensityInt;
-                                  
-                                    //Store coordinate information of each point to the malloc memory
-                                    segment[startID]=xData;
-                                    segment[startID+1]=yData;
-                                    segment[startID+2]=zData;
-                                    segment[startID+3]=intensity;                             
+                                ordered16Sensors[sensorOrderIndex[sensorID]]=static_cast<half>(distance);
+                                if(sensorID==15){
+                                    for(uint8_t index=0;index<16;index++){
+                                        distanceStringStream.write((char*)(&ordered16Sensors[index]),entriesPerAzimuth);
+                                    }
+                                }
+
+                                /*static float xyDistance,xData,yData,zData,intensity;
+                                //Compute x, y, z cooridnate
+                                xyDistance=distance*cos(toRadian(vertCorrection[sensorID]));
+                                xData=xyDistance*sin(toRadian(azimuth));
+                                yData=xyDistance*cos(toRadian(azimuth));
+                                zData=distance*sin(toRadian(vertCorrection[sensorID]));
+                              
+                                //Store coordinate information of each point to the malloc memory
+                                segment[startID]=xData;
+                                segment[startID+1]=yData;
+                                segment[startID+2]=zData; */                      
                                 
                                 pointIndex++;
                                 startID+=NUMBER_OF_COMPONENTS_PER_POINT;
-                                }
                                 position+=3;
                                 
                                 if(pointIndex>=MAX_POINT_SIZE){

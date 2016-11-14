@@ -23,12 +23,12 @@
 #define VELODYNE16PCAP_H_
 
 #include <fstream>
-#include <memory>
+//#include <memory>
 
 #include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
 #include "opendavinci/odcore/io/protocol/PCAPProtocol.h"
 #include "velodyneListener16.h"
-#include "opendavinci/odcore/wrapper/SharedMemory.h"
+//#include "opendavinci/odcore/wrapper/SharedMemory.h"
 
 namespace automotive {
 
@@ -86,7 +86,7 @@ namespace automotive {
                 odcore::io::protocol::PCAPProtocol m_pcap;
                 fstream lidarStream;
                 //std::shared_ptr<SharedMemory> VelodyneSharedMemory;
-                //VelodyneListener16 m_vListener;
+                VelodyneListener16 m_vListener;
                 bool fileClosed;   
                 uint8_t counter; //Used to tune the pcap file reading speed
         };

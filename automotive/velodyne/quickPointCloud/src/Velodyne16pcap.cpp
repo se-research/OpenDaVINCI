@@ -21,15 +21,15 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-#include <memory>
+//#include <memory>
 #include <sstream>
 
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/io/conference/ContainerConference.h"
-#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
+//#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
-#include "opendavinci/generated/odcore/data/QuickPointCloud.h"
-#include "opendavinci/odcore/wrapper/half_float.h"
+//#include "opendavinci/generated/odcore/data/QuickPointCloud.h"
+//#include "opendavinci/odcore/wrapper/half_float.h"
 #include "Velodyne16pcap.h"
 
 
@@ -47,7 +47,7 @@ namespace automotive {
             m_pcap(),
             lidarStream(),
             //VelodyneSharedMemory(SharedMemoryFactory::createSharedMemory(NAME, SIZE)),
-            //m_vListener(VelodyneSharedMemory,getConference()),
+            m_vListener(getConference()),
             fileClosed(false),
             counter(0){}
 
@@ -56,32 +56,31 @@ namespace automotive {
         void VelodyneDecoder16pcap::setUp() {
         // setup share memory.
         // create instance of velodyneListener and pass shared_ptr from shared memory to velodynelister in its constructor
-            //m_pcap.setContainerListener(&m_vListener);
-            //lidarStream.open(getKeyValueConfiguration().getValue<string>("VelodyneDecoder16pcap.readpcap"), ios::binary|ios::in);
+            m_pcap.setContainerListener(&m_vListener);
+            lidarStream.open(getKeyValueConfiguration().getValue<string>("VelodyneDecoder16pcap.readpcap"), ios::binary|ios::in);
             
         }
 
         void VelodyneDecoder16pcap::tearDown() {
-            //lidarStream.close();
+            lidarStream.close();
         }
 
         // This method will do the main data processing job.
         odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode VelodyneDecoder16pcap::body() {
-            //char *buffer = new char[BUFFER_SIZE+1];
+            char *buffer = new char[BUFFER_SIZE+1];
             while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING){
                 counter=0;
-                //while (lidarStream.good() && !m_vListener.getStatus() && counter<100) {
-                /*while (lidarStream.good() && counter<100) {
+                while (lidarStream.good() && !m_vListener.getStatus() && counter<100) {
                         lidarStream.read(buffer, BUFFER_SIZE * sizeof(char));
                         string s(buffer,BUFFER_SIZE);
                         m_pcap.nextString(s);
                         counter++;
-                } */
+                }
                 //float startAzimuth=5.5;
                 //float endAzimuth=306.78;
                 //uint8_t entriesPerAzimuth=2;
                 //string distances="Hello";
-                float a=1.56;
+                /*float a=1.56;
                 half a_h=static_cast<half>(a);
                 float b=2.78;
                 half b_h=static_cast<half>(b);
@@ -93,15 +92,15 @@ namespace automotive {
                 cout<<+entriesPerAzimuth<<endl;
                 QuickPointCloud qpc(5.5,306.78,entriesPerAzimuth,sstr.str());
                 Container c(qpc);
-                getConference().send(c);
+                getConference().send(c);*/
                 
             }
-            /*if(!fileClosed){
+            if(!fileClosed){
                 lidarStream.close();
                 cout<<"File read complete."<<endl;
                 fileClosed=true;
             }
-            delete [] buffer;*/
+            delete [] buffer;
             return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 } // automotive

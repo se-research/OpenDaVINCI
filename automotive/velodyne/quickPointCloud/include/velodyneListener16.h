@@ -20,13 +20,16 @@
 #ifndef VELODYNELISTENER16_H_
 #define VELODYNELISTENER16_H_
 
-#include <memory>
+//#include <memory>
+#include <sstream>
 
 #include "opendavinci/odcore/io/conference/ContainerListener.h"
 #include "opendavinci/odcore/io/conference/ContainerObserver.h"
-#include "opendavinci/odcore/wrapper/SharedMemory.h"
-#include "opendavinci/generated/odcore/data/SharedPointCloud.h"
+//#include "opendavinci/odcore/wrapper/SharedMemory.h"
+//#include "opendavinci/generated/odcore/data/SharedPointCloud.h"
+#include "opendavinci/generated/odcore/data/QuickPointCloud.h"
 #include "automotivedata/generated/cartesian/Constants.h"
+#include "opendavinci/odcore/wrapper/half_float.h"
 
 namespace automotive {
 
@@ -53,11 +56,11 @@ namespace automotive {
                 
         
             public:
-                VelodyneListener16(std::shared_ptr<SharedMemory>,odcore::io::conference::ContainerConference&);
+                VelodyneListener16(odcore::io::conference::ContainerConference&);
                 
                 virtual ~VelodyneListener16();
                 
-                void sendSPC(const float &oldAzimuth, const float &newAzimuth);
+                void sendQPC(const float &oldAzimuth, const float &newAzimuth);
 
                 // This method is called by ControlledContainerConferenceFactory to send c to the registered ContainerListener from an app.
                 virtual void nextContainer(odcore::data::Container &c);
@@ -67,9 +70,9 @@ namespace automotive {
                 
             private:
                 const uint32_t MAX_POINT_SIZE=30000;  // The maximum number of points per frame is set based on the observation of the first 100 frames of a sample pcap file. This upper bound should be set as low as possible, as it affects the shared memory size and thus the frame updating speed.
-                const uint32_t SIZE_PER_COMPONENT = sizeof(float);
+                //const uint32_t SIZE_PER_COMPONENT = sizeof(float);
                 const uint8_t NUMBER_OF_COMPONENTS_PER_POINT = 4; // How many components do we have per vector?
-                const uint32_t SIZE = MAX_POINT_SIZE * NUMBER_OF_COMPONENTS_PER_POINT * SIZE_PER_COMPONENT; // What is the total size of the shared memory?    
+                //const uint32_t SIZE = MAX_POINT_SIZE * NUMBER_OF_COMPONENTS_PER_POINT * SIZE_PER_COMPONENT; // What is the total size of the shared memory?    
                 const int32_t LOAD_FRAME_NO=100;
                 const uint8_t NO_OF_CHANNELS=16; 
                 
@@ -79,12 +82,20 @@ namespace automotive {
                 float previousAzimuth;
                 float deltaAzimuth;
                 float distance;
-                std::shared_ptr<SharedMemory> VelodyneSharedMemory;//shared memory for the shared point cloud
-                float* segment;//temporary memory for transferring data of each frame to the shared memory
+                //std::shared_ptr<SharedMemory> VelodyneSharedMemory;//shared memory for the shared point cloud
+                //float* segment;//temporary memory for transferring data of each frame to the shared memory
                 odcore::io::conference::ContainerConference& velodyneFrame;
-                odcore::data::SharedPointCloud spc;//shared point cloud
+                //odcore::data::SharedPointCloud spc;//shared point cloud
                 bool stopReading;//a flag to determine when to stop reading a pcap file
                 float vertCorrection[16];  //Vertal angle of each sensor beam    
+                float startAzimuth;
+                //float endAzimuth;
+                const uint8_t entriesPerAzimuth=2;
+                stringstream distanceStringStream;
+                bool isStartAzimuth;
+                uint8_t sensorOrderIndex[16];
+                half ordered16Sensors[16];
+                
         };
 
 } // automotive
