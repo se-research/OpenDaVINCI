@@ -1,3 +1,6 @@
+#ifndef ODCORE_BASE_ARGUMENTS_H_
+#define ODCORE_BASE_ARGUMENTS_H_
+
 #include <memory>
 #include <vector>
 
@@ -37,3 +40,5 @@ namespace odcore {
         };
     }
 }
+
+#endif /* ODCORE_BASE_ARGUMENTS_H_ */
