@@ -42,7 +42,7 @@
 #include "lmvp/VanishingPointDetection.h"
 #include "lmvp/ScanRegion.h"
 #include "lmvp/RegionOfInterestGeometry.h"
-
+#include "lmvp/RegionOfInterestGeometry.h"
 
 
 
@@ -877,10 +877,10 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
             odcore::base::Lock lock(sharedImageMemory_);
             
             //std::cout <<"Cols " << imageHeader_.cols; //800
-	        //std::cout <<"Rows " << imageHeader_.rows << std::endl; //600
+	          //std::cout <<"Rows " << imageHeader_.rows << std::endl; //600
             
             // vanishingpoint.roi = topLeft(0,169), bottomRight(726,479)
-            cv::Rect roiRect(0,169,728,479);
+            cv::Rect roiRect(cv::Point(0,0),cv::Point(799,599));
             lmvp::RegionOfInterestGeometry roi = lmvp::RegionOfInterestGeometry(roiRect);
                         
             // vanishingpoint.leftscanregion = bottomLeft(11,337), topLeft(272,173), topRight(344,331), bottomRight(240,457)
@@ -891,21 +891,21 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
             lmvp::ScanRegion leftScanRegion(aBottomLeft, aTopLeft, aBottomRight, aTopRight);
                        
             // vanishingpoint.rightscanregion = bottomLeft(467,456), topLeft(393,325), topRight(563,187), bottomRight(778,291)
-            cv::Point bBottomLeft;
+            cv::Point bBottomLeft(467,456);
             cv::Point bTopLeft(393,325);
             cv::Point bBottomRight(563,187);
             cv::Point bTopRight(778,291);
             lmvp::ScanRegion rightScanRegion(bBottomLeft, bTopLeft, bBottomRight, bTopRight);
             
-            lmvp::VanishingPointDetection vpd = lmvp::VanishingPointDetection(roi , 0, 100, 
-                          // scanning parameters
-                           leftScanRegion,  rightScanRegion, 30, 40, 3, 20);
+            std::cout << "=== CREATING VANISHING POINT DETECTOR ===" << std::endl;
+            lmvp::VanishingPointDetection vpd = lmvp::VanishingPointDetection(roi , 0, 100, leftScanRegion,  rightScanRegion, 30, 40, 3, 20);
+            std::cout << "=== CALCULATING VANISHING POINT ===" << std::endl;            
+            std::shared_ptr<cv::Point2f> vp = vpd.detectVanishingPoint(imageHeader_);
+            // std::shared_ptr<cv::Point2f> vp = std::make_shared<cv::Point2f>(467,456);
             
+            std::cout << "=== FOUND VANISHING POINT AT " << vp << " ===" << std::endl;
             
-                    
-            std::shared_ptr<cv::Point2f> vanishingPoint;// = vpd.detectVanishingPoint(imageHeader_);
-            //vanishingPoint = std::make_shared<cv::Point2f>(467,456);
-            cv::Point vpDraw(std::min(std::max(0, (int)vanishingPoint->x),imageHeader_.cols), std::min(std::max(0, (int)vanishingPoint->y),imageHeader_.rows));
+            // cv::Point vpDraw(std::min(std::max(0, (int)vp->x),imageHeader_.cols), std::min(std::max(0, (int)vp->y),imageHeader_.rows));
           
             //std::cout << vanishingPoint->x<< std::endl;
 
@@ -945,8 +945,11 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
                 }
             }   
           */
-            //imshow("source", imageHeader_);
-            
+
+            if(lmvp::DEBUG_SHOW_SCAN_REGIONS) {
+            	leftScanRegion.draw(imageHeader_, cv::Scalar(0,212,89));
+            	rightScanRegion.draw(imageHeader_, cv::Scalar(212,195,0));
+            }
             imshow("vp detection", imageHeader_);
          
             waitKey(1);

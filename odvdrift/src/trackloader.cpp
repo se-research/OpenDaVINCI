@@ -920,6 +920,7 @@ bool Track::Loader::LoadRoads()
 
 bool Track::Loader::CreateRacingLines()
 {
+  // SEED: removed optimized racing lines
 	K1999 k1999data;
 	for (std::list <RoadStrip>::iterator i = data.roads.begin(); i != data.roads.end(); ++i)
 	{
