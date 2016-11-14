@@ -7,17 +7,16 @@
  *
  * The template parameter is the type to be used for `argc`.
  */
-template <typename I>
-class ArgumentsT {
+class Arguments {
     public:
-    ArgumentsT(std::initializer_list<std::string> argList)
+    Arguments(std::initializer_list<std::string> argList)
         : argvPtr_(std::make_unique<char *[]>(argList.size()))
     {
 
         // copy the initializer list into this object
-        I i = 0;
+        int32_t i = 0;
         for (const auto &arg : argList) {
-            I lengthIncludingTerminatingZero = std::strlen(arg.c_str()) + 1;
+            int32_t lengthIncludingTerminatingZero = std::strlen(arg.c_str()) + 1;
 
             // allocate space
             auto cArg = std::make_unique<char[]>(lengthIncludingTerminatingZero);
@@ -33,7 +32,7 @@ class ArgumentsT {
     /**
      * Get the number of arguments.
      */
-    I argc() const
+    int32_t argc() const
     {
         return argvValues_.size();
     }
@@ -48,7 +47,7 @@ class ArgumentsT {
     {
         // build the argvPtr_ object to contain pointers to the strings
         // in argvValues_.
-        I i = 0;
+        int32_t i = 0;
         for (const auto &arg : argvValues_) {
             argvPtr_[i++] = arg.get();
         }
@@ -69,5 +68,3 @@ class ArgumentsT {
      */
     std::unique_ptr<char *[]> argvPtr_;
 };
-
-typedef ArgumentsT<int32_t> Arguments;
