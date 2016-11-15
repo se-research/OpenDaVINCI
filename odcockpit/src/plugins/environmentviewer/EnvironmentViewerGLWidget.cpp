@@ -74,7 +74,6 @@
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
 #include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 #include "opendavinci/generated/odcore/data/SharedPointCloud.h"
-#include "opendavinci/generated/odcore/data/QuickPointCloud.h"
 #include "opendavinci/odcore/wrapper/half_float.h"
 #include "automotivedata/generated/cartesian/Constants.h"
 
@@ -126,7 +125,10 @@ namespace cockpit {
                     velodyneSharedMemory(NULL),
                     m_hasAttachedToSharedImageMemory(false),
                     velodyneFrame(),
-                    frameIndex(0) {}
+                    m_frameIndex(0),
+                    m_QPCreceived(false),
+                    m_qpc(),
+                    m_qpcMutex() {}
 
             EnvironmentViewerGLWidget::~EnvironmentViewerGLWidget() {
                 OPENDAVINCI_CORE_DELETE_POINTER(m_root);
@@ -448,6 +450,57 @@ namespace cockpit {
                         glEnd();
                     }
     */
+                    if(m_QPCreceived){
+                        Lock lockQPC(m_qpcMutex);
+                        float startAzimuth=m_qpc.getStartAzimuth();
+                        float endAzimuth=m_qpc.getEndAzimuth();
+                        uint8_t entriesPerAzimuth=m_qpc.getEntriesPerAzimuth();
+                        //cout<<"startAzimuth:"<<startAzimuth<<", endAzimuth:"<<endAzimuth<<",entriesPerAzimuth:"<<entriesPerAzimuth<<endl;
+                        string distances=m_qpc.getDistances();
+                        uint32_t numberOfPoints=distances.size()/entriesPerAzimuth;
+                        uint32_t numberOfAzimuths=numberOfPoints/16;
+                        float azimuthIncrement=(endAzimuth-startAzimuth)/numberOfAzimuths;
+                        stringstream sstr(distances);
+                        /*half distance(0.0);
+                        sstr.read((char*)(&distance), entriesPerAzimuth);
+                        cout<<"Distance 1:"<<distance<<endl;
+                        sstr.read((char*)(&distance), entriesPerAzimuth);
+                        cout<<"Distance 2:"<<distance<<endl;*/
+                        
+                        m_root->render(m_renderingConfiguration); 
+                        glPushMatrix();
+                        glPointSize(1.0f); //set point size to 1 pixel
+                        glBegin(GL_POINTS); //starts drawing of points
+                        glColor3f(255.0f,255.0f,0.0);//Yellow color
+                        
+                        static half distance_h(0.0);
+                        static float xyDistance, xData, yData, zData;
+                        float azimuth=startAzimuth;             
+                        for(uint32_t azimuthIndex=0;azimuthIndex<numberOfAzimuths;azimuthIndex++){
+                            float verticalAngle=START_V_ANGLE;
+                            for(uint8_t sensorIndex=0;sensorIndex<16;sensorIndex++){
+                                sstr.read((char*)(&distance_h), entriesPerAzimuth);
+                                float distance=static_cast<float>(distance_h);
+                                /*if(m_frameIndex==1){    
+                                    cout<<distance<<endl;
+                                }*/
+                                xyDistance=distance*cos(toRadian(verticalAngle));
+                                xData=xyDistance*sin(toRadian(azimuth));
+                                yData=xyDistance*cos(toRadian(azimuth));
+                                zData=distance*sin(toRadian(verticalAngle));
+                                /*if(m_frameIndex==1){    
+                                    cout<<xData<<","<<yData<<","<<zData<<","<<distance<<","<<azimuth<<endl;
+                                }*/
+                                glVertex3f(xData,yData,zData);
+                                verticalAngle+=V_INCREMENT;
+                            }
+                            azimuth+=azimuthIncrement;
+                        }
+
+                        glEnd();//end drawing of points
+                        glPopMatrix();
+                        m_frameIndex++;    
+                    }
                 }
             }
 
@@ -485,58 +538,13 @@ namespace cockpit {
                 }
                 
                 if(c.getDataType()==odcore::data::QuickPointCloud::ID()){
-                    QuickPointCloud qpc=c.getData<QuickPointCloud>();
-                    float startAzimuth=qpc.getStartAzimuth();
-                    float endAzimuth=qpc.getEndAzimuth();
-                    uint8_t entriesPerAzimuth=qpc.getEntriesPerAzimuth();
-                    //cout<<"startAzimuth:"<<startAzimuth<<", endAzimuth:"<<endAzimuth<<",entriesPerAzimuth:"<<entriesPerAzimuth<<endl;
-                    string distances=qpc.getDistances();
-                    uint32_t numberOfPoints=distances.size()/entriesPerAzimuth;
-                    uint32_t numberOfAzimuths=numberOfPoints/16;
-                    float azimuthIncrement=(endAzimuth-startAzimuth)/numberOfAzimuths;
-                    stringstream sstr(distances);
-                    /*half distance(0.0);
-                    sstr.read((char*)(&distance), entriesPerAzimuth);
-                    cout<<"Distance 1:"<<distance<<endl;
-                    sstr.read((char*)(&distance), entriesPerAzimuth);
-                    cout<<"Distance 2:"<<distance<<endl;*/
-                    
-                    if (m_root != NULL) {
-                        Lock l(m_rootMutex);
-                        m_root->render(m_renderingConfiguration); 
-                        glPushMatrix();
-                        glPointSize(1.0f); //set point size to 1 pixel
-                        glBegin(GL_POINTS); //starts drawing of points
-                        glColor3f(0.0f,0.0f,255.0);
-                        
-                        static half distance_h(0.0);
-                        static float xyDistance, xData, yData, zData;
-                        float azimuth=startAzimuth;             
-                        for(uint32_t azimuthIndex=0;azimuthIndex<numberOfAzimuths;azimuthIndex++){
-                            float verticalAngle=START_V_ANGLE;
-                            for(uint8_t sensorIndex=0;sensorIndex<16;sensorIndex++){
-                                sstr.read((char*)(&distance_h), entriesPerAzimuth);
-                                float distance=static_cast<float>(distance_h);
-                                /*if(frameIndex==1){    
-                                    cout<<distance<<endl;
-                                }*/
-                                xyDistance=distance*cos(toRadian(verticalAngle));
-                                xData=xyDistance*sin(toRadian(azimuth));
-                                yData=xyDistance*cos(toRadian(azimuth));
-                                zData=distance*sin(toRadian(verticalAngle));
-                                /*if(frameIndex==1){    
-                                    cout<<xData<<","<<yData<<","<<zData<<","<<distance<<","<<azimuth<<endl;
-                                }*/
-                                glVertex3f(xData,yData,zData);
-                                verticalAngle+=V_INCREMENT;
-                            }
-                            azimuth+=azimuthIncrement;
-                        }
-
-                        glEnd();//end drawing of points
-                        glPopMatrix();
+                    if(!m_QPCreceived){
+                        m_QPCreceived=true;
                     }
-                    frameIndex++;
+                    {
+                        Lock lockQPC(m_qpcMutex);
+                        m_qpc=c.getData<QuickPointCloud>();  
+                    }
                 }
                 
                 if (c.getDataType() == opendlv::data::environment::EgoState::ID()) {

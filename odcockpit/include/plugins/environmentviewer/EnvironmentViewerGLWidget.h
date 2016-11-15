@@ -36,6 +36,7 @@
 #include "plugins/environmentviewer/SelectableNodeDescriptorTreeListener.h"
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
 #include "opendavinci/generated/odcore/data/SharedPointCloud.h"
+#include "opendavinci/generated/odcore/data/QuickPointCloud.h"
 
 class QWidget;
 namespace cockpit { namespace plugins { class PlugIn; } }
@@ -135,7 +136,10 @@ class SelectableNodeDescriptor;
                     odcore::data::SharedPointCloud velodyneFrame;
                     const float START_V_ANGLE=-15.0;
                     const float V_INCREMENT=2.0;
-                    uint32_t frameIndex;
+                    uint32_t m_frameIndex;
+                    bool m_QPCreceived;
+                    odcore::data::QuickPointCloud m_qpc;
+                    odcore::base::Mutex m_qpcMutex;
 
                     /**
                      * This method actually modifies the rendering configuration.
