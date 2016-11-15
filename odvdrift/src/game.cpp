@@ -49,6 +49,7 @@
 #include <map>
 #include <list>
 #include <iostream>
+#include <fstream>
 #include <sstream>
 #include <algorithm>
 #include <cstdio>
@@ -830,6 +831,12 @@ void Game::setUp() {
 }
 
 void Game::tearDown() {
+	// reset stream
+	m_frameFilename.str("");
+	m_frameFilename.clear();
+
+	m_frameFilename << time(0) << ".csv";
+	this->writeResults(m_frameFilename.str());
     info_output << "tearDown()" << std::endl;
 }
 
@@ -913,6 +920,8 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 				if(vp)
 				{
 					std::cout << "=== FOUND VANISHING POINT AT (" << vp->x << "," << vp->y << ") ===" << std::endl;
+					std::string tmp = std::to_string(this->frame) + ",,,,,,,,,"+std::to_string(vp->x)+","+std::to_string(vp->y);
+					vanishingPoints.push_back(tmp);
 				}
 				if (lmvp::DEBUG_SHOW_SCAN_REGIONS) {
 					leftScanRegion.draw(imageHeader_, cv::Scalar(0,212,89));
@@ -3642,4 +3651,17 @@ void Game::InitSignalMap(std::map<std::string, Signal1<const std::string &>*> & 
 	signalmap["car.tcs"] = &signal_tcs;
 	signalmap["car.gas"] = &signal_gas;
 	signalmap["car.nos"] = &signal_nos;
+}
+void  Game::writeResults(const std::string filename)
+{
+  std::ofstream myfile;
+  myfile.open(filename);
+  std::cout << "Writing results to " << filename;
+
+  myfile << "8,BL_x,BL_y,TL_x,TL_y,TR_x,TR_y,BR_x,BR_y,399.000031,481.166656" << std::endl;
+  for(auto it = vanishingPoints.begin() ; it != vanishingPoints.end(); ++it) {
+
+    myfile << *it <<  std::endl;
+  }
+  myfile.close();
 }

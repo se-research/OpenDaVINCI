@@ -269,6 +269,8 @@ private:
 	void InitActionMap(std::map<std::string, Slot0*> & actionmap);
 	void InitSignalMap(std::map<std::string, Signal1<const std::string &>*> & signalmap);
 
+	void writeResults(const std::string filename);
+
 	Slot1<const std::string &> set_car_toedit;
 	Slot1<const std::string &> set_car_startpos;
 	Slot1<const std::string &> set_car_name;
@@ -396,6 +398,9 @@ private:
     std::ostringstream m_frameFilename;
     time_t m_lastScreenshot;
     bool textured = false;
+    const int ROW_COUNT = 3;
+    int m_line = 0;
+    std::vector<std::string> vanishingPoints; // frameID, x, y
 
 
 };
