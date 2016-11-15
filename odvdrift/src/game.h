@@ -102,9 +102,9 @@ private:
 		return val;
 	}
 
-//	void renderText(std::string& text, int y) {
-//		cv::putText(imageHeader_, text, cv::Point(30,y),cv::FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,0), 1, CV_AA);
-//	}
+	void renderText(const std::string& text, int y) {
+		cv::putText(imageHeader_, text, cv::Point(30,y),cv::FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,0), 1, CV_AA);
+	}
 
     void attachToSharedMemory(const odcore::data::image::SharedImage & sharedImage);
 	void End();

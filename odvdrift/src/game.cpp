@@ -970,12 +970,15 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
             		cv::line(imageHeader_, Point(int(vp->x),int(vp->y)), car, Scalar(255,255,0));
             		cv::line(imageHeader_, Point(int(vp->x),int(vp->y)), pp, Scalar(255,255,0));
 
+            		renderText(std::string("stAngleDeg = " + std::to_string(stAngleDeg)), 30);
+            		renderText(std::string("VP (" + std::to_string(int(vp->x)) + "," + std::to_string(int(vp->y)) + ")"), 60);
             		// cv::putText(imageHeader_, "scalar  = " + std::to_string(scalar), cv::Point(30,30),FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,0), 1, CV_AA);
             		// cv::putText(imageHeader_, "normed  = " + std::to_string(normed), cv::Point(30,60),FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,0), 1, CV_AA);
             		// cv::putText(imageHeader_, "vpAngle = " + std::to_string(vpAngle), cv::Point(30,90),FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,0), 1, CV_AA);
             		// cv::putText(imageHeader_, "vpAngleDeg = " + std::to_string(vpAngleDeg), cv::Point(30,120),FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,0), 1, CV_AA);
-            		cv::putText(imageHeader_, "stAngleDeg = " + std::to_string(stAngleDeg), cv::Point(30,150),FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,0), 1, CV_AA);
-            		cv::putText(imageHeader_, "VP (" + std::to_string(int(vp->x)) + "," + std::to_string(int(vp->y)) + ")", cv::Point(30,180),FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,0), 1, CV_AA);
+
+            		// cv::putText(imageHeader_, "stAngleDeg = " + std::to_string(stAngleDeg), cv::Point(30,150),FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,0), 1, CV_AA);
+            		// cv::putText(imageHeader_, "VP (" + std::to_string(int(vp->x)) + "," + std::to_string(int(vp->y)) + ")", cv::Point(30,180),FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,0), 1, CV_AA);
             		// cv::putText(imageHeader_, "v = (" + std::to_string(v.x) + "," + std::to_string(v.y) + ")", cv::Point(30,210),FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,0), 1, CV_AA);
             		// cv::putText(imageHeader_, "w = (" + std::to_string(w.x) + "," + std::to_string(w.y) + ")", cv::Point(30,240),FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,0), 1, CV_AA);
             	}
