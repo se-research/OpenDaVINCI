@@ -919,7 +919,7 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 				vp = vpd.detectVanishingPoint(imageHeader_);
 				if(vp)
 				{
-					std::cout << "=== FOUND VANISHING POINT AT (" << vp->x << "," << vp->y << ") ===" << std::endl;
+					std::cout << "=== FOUND VANISHING POINT AT (" << (int)vp->x << "," << vp->y << ") ===" << std::endl;
 					std::string tmp = std::to_string(this->frame) + ",,,,,,,,,"+std::to_string(vp->x)+","+std::to_string(vp->y);
 					vanishingPoints.push_back(tmp);
 				}
