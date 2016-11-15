@@ -831,10 +831,10 @@ void Game::setUp() {
 }
 
 void Game::tearDown() {
-	// reset stream
-	m_frameFilename.str("");
-	m_frameFilename.clear();
-
+	if(!textured) {
+		m_frameFilename.str("");
+		m_frameFilename.clear();
+	}
 	m_frameFilename << time(0) << ".csv";
 	this->writeResults(m_frameFilename.str());
     info_output << "tearDown()" << std::endl;
@@ -919,8 +919,8 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 				vp = vpd.detectVanishingPoint(imageHeader_);
 				if(vp)
 				{
-					std::cout << "=== FOUND VANISHING POINT AT (" << (int)vp->x << "," << vp->y << ") ===" << std::endl;
-					std::string tmp = std::to_string(this->frame) + ",,,,,,,,,"+std::to_string(vp->x)+","+std::to_string(vp->y);
+					std::cout << "=== FOUND VANISHING POINT AT (" << (int)vp->x << "," << (int)vp->y << ") ===" << std::endl;
+					std::string tmp = std::to_string(this->frame) + ",,,,,,,,,"+std::to_string((int)vp->x)+","+std::to_string((int)vp->y);
 					vanishingPoints.push_back(tmp);
 				}
 				if (lmvp::DEBUG_SHOW_SCAN_REGIONS) {
