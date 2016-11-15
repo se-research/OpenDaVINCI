@@ -103,6 +103,8 @@ class SelectableNodeDescriptor;
                     virtual void drawScene();
 
                 private:
+                    float toRadian(float);
+                private:
                     odcore::base::Mutex m_rootMutex;
                     opendlv::threeD::TransformGroup *m_root;
                     opendlv::threeD::TransformGroup *m_stationaryElements;
@@ -131,6 +133,9 @@ class SelectableNodeDescriptor;
                     std::shared_ptr<odcore::wrapper::SharedMemory> velodyneSharedMemory;
                     bool m_hasAttachedToSharedImageMemory;
                     odcore::data::SharedPointCloud velodyneFrame;
+                    const float START_V_ANGLE=-15.0;
+                    const float V_INCREMENT=2.0;
+                    uint32_t frameIndex;
 
                     /**
                      * This method actually modifies the rendering configuration.

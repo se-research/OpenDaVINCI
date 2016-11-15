@@ -123,6 +123,9 @@ namespace automotive {
                     }
                 }
             }
+            /*for(uint8_t iii=0;iii<16;iii++){
+                cout<<vertCorrection[iii]<<endl;
+            }*/
         }            
 
         VelodyneListener16::~VelodyneListener16() {}
@@ -130,7 +133,7 @@ namespace automotive {
         //Update the shared point cloud when a complete scan is completed.
         void VelodyneListener16::sendQPC(const float &oldAzimuth, const float &newAzimuth){
             if(newAzimuth<oldAzimuth){
-                cout<<"startAzimuth:"<<startAzimuth<<",endAzimuth:"<<oldAzimuth<<", stringSize"<<distanceStringStream.str().size()<<endl;
+                //cout<<"startAzimuth:"<<startAzimuth<<",endAzimuth:"<<oldAzimuth<<", stringSize"<<distanceStringStream.str().size()<<endl;
                 
                 QuickPointCloud qpc(startAzimuth,oldAzimuth,entriesPerAzimuth,distanceStringStream.str());    
                 Container c(qpc);
@@ -239,10 +242,14 @@ namespace automotive {
                                 secondByte=(uint8_t)(payload.at(position+1));
                                 dataValue=ntohs(firstByte*256+secondByte);
                                 distance=dataValue/500.0; //*2mm-->/1000 for meter
-                                ordered16Sensors[sensorOrderIndex[sensorID]]=static_cast<half>(distance);
+                                ordered16Sensors[sensorID]=static_cast<half>(distance);
+                                
                                 if(sensorID==15){
                                     for(uint8_t index=0;index<16;index++){
-                                        distanceStringStream.write((char*)(&ordered16Sensors[index]),entriesPerAzimuth);
+                                        distanceStringStream.write((char*)(&ordered16Sensors[sensorOrderIndex[index]]),entriesPerAzimuth);
+                                        /*if(frameIndex==1){
+                                            cout<<ordered16Sensors[index]<<endl;
+                                        }*/
                                     }
                                 }
 
