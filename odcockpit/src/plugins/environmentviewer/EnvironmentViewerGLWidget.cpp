@@ -459,8 +459,8 @@ namespace cockpit {
                         float endAzimuth = m_qpc.getEndAzimuth();
                         uint8_t entriesPerAzimuth = m_qpc.getEntriesPerAzimuth();
                         string distances = m_qpc.getDistances();
-                        uint32_t numberOfPoints = distances.size()/entriesPerAzimuth;
-                        uint32_t numberOfAzimuths = numberOfPoints/16;
+                        uint32_t numberOfPoints = distances.size()/2;
+                        uint32_t numberOfAzimuths = numberOfPoints/entriesPerAzimuth;
                         float azimuthIncrement = (endAzimuth-startAzimuth)/numberOfAzimuths;//Calculate the azimuth increment
                         stringstream sstr(distances);
                         
@@ -475,8 +475,8 @@ namespace cockpit {
                         float azimuth = startAzimuth;             
                         for (uint32_t azimuthIndex = 0; azimuthIndex < numberOfAzimuths; azimuthIndex++) {
                             float verticalAngle = START_V_ANGLE;
-                            for (uint8_t sensorIndex = 0; sensorIndex<16; sensorIndex++) {
-                                sstr.read((char*)(&distance_h), entriesPerAzimuth);//Read distance value from the string in a QPC container point by point
+                            for (uint8_t sensorIndex = 0; sensorIndex<entriesPerAzimuth; sensorIndex++) {
+                                sstr.read((char*)(&distance_h), 2);//Read distance value from the string in a QPC container point by point
                                 float distance = static_cast<float>(distance_h);
                                 //Compute x, y, z coordinate based on distance, azimuth, and vertical angle
                                 xyDistance = distance*cos(toRadian(verticalAngle));

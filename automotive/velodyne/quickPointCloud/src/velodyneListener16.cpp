@@ -246,7 +246,7 @@ namespace automotive {
                                 
                                 if(sensorID==15){
                                     for(uint8_t index=0;index<16;index++){
-                                        distanceStringStream.write((char*)(&ordered16Sensors[sensorOrderIndex[index]]),entriesPerAzimuth);
+                                        distanceStringStream.write((char*)(&ordered16Sensors[sensorOrderIndex[index]]),2);
                                         /*if(frameIndex==1){
                                             cout<<ordered16Sensors[index]<<endl;
                                         }*/

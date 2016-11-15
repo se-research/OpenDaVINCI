@@ -90,7 +90,7 @@ namespace automotive {
                 float vertCorrection[16];  //Vertal angle of each sensor beam    
                 float startAzimuth;
                 //float endAzimuth;
-                const uint8_t entriesPerAzimuth=2;
+                const uint8_t entriesPerAzimuth=16;
                 stringstream distanceStringStream;
                 bool isStartAzimuth;
                 uint8_t sensorOrderIndex[16];
