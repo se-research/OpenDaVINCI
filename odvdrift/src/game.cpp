@@ -886,18 +886,7 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
                         << inputFromOpenDaVINCI[CarInput::THROTTLE] << ";"
                         << inputFromOpenDaVINCI[CarInput::BRAKE] << ";"
                         << inputFromOpenDaVINCI[CarInput::STEER_RIGHT] << std::endl;
-                        
-            
         }
-
-
-        TickOpenDaVINCI(dt);
-
-		Draw(dt);
-
-		eventsystem.EndFrame();
-
-		PROFILER.endCycle();
 
         ///////////////////////////////////////////////////////////////////////
         // Shared image from renderer.
@@ -958,11 +947,9 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
             	Point pp = Point(vp->x,599); // perpendicular line from VP
             	Point v = Point((vp->y - car.y),(vp->x - car.x)); // Point v = vp - car;
             	Point w = Point((vp->y - pp.y),(vp->x - pp.x));; // Point w = vp - perpendicular;
-            	double scalar = v.dot(w);
-            	double normed = scalar / (cv::norm(v) * cv::norm(w));
-            	double vpAngle = acos(normed);
-            	double vpAngleDeg = vpAngle * (180/CV_PI);
-            	double stAngleDeg = 90 - vpAngleDeg;
+            	double normed = acos(normed) / (cv::norm(v) * cv::norm(w));
+            	double gamma = acos(normed) * (180/CV_PI);
+            	double stAngleDeg = 90 - gamma;
 
             	// Draw steering hint lines
             	if (lmvp::DEBUG_SHOW_STEERING_HINTS) {
@@ -972,15 +959,21 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 
             		renderText(std::string("stAngleDeg = " + std::to_string(stAngleDeg)), 30);
             		renderText(std::string("VP (" + std::to_string(int(vp->x)) + "," + std::to_string(int(vp->y)) + ")"), 60);
-            		// cv::putText(imageHeader_, "scalar  = " + std::to_string(scalar), cv::Point(30,30),FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,0), 1, CV_AA);
-            		// cv::putText(imageHeader_, "normed  = " + std::to_string(normed), cv::Point(30,60),FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,0), 1, CV_AA);
-            		// cv::putText(imageHeader_, "vpAngle = " + std::to_string(vpAngle), cv::Point(30,90),FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,0), 1, CV_AA);
-            		// cv::putText(imageHeader_, "vpAngleDeg = " + std::to_string(vpAngleDeg), cv::Point(30,120),FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,0), 1, CV_AA);
+            	}
 
-            		// cv::putText(imageHeader_, "stAngleDeg = " + std::to_string(stAngleDeg), cv::Point(30,150),FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,0), 1, CV_AA);
-            		// cv::putText(imageHeader_, "VP (" + std::to_string(int(vp->x)) + "," + std::to_string(int(vp->y)) + ")", cv::Point(30,180),FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,0), 1, CV_AA);
-            		// cv::putText(imageHeader_, "v = (" + std::to_string(v.x) + "," + std::to_string(v.y) + ")", cv::Point(30,210),FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,0), 1, CV_AA);
-            		// cv::putText(imageHeader_, "w = (" + std::to_string(w.x) + "," + std::to_string(w.y) + ")", cv::Point(30,240),FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,0), 1, CV_AA);
+            	if (lmvp::DEBUG_AUTOMATED_DRIVER) {
+            		CarDynamics &cd = car_dynamics[0];
+					if (vp->x < car.x) {
+						gamma = -1 * gamma;
+					}
+					const float STEERING_DELTA = 0.001;
+            		inputFromOpenDaVINCI[CarInput::STEER_RIGHT] = STEERING_DELTA * gamma;
+
+            		const float SPEED_DELTA = 0.01;
+            		const float REF_SPEED = 30;
+            		float speed = (float)cd.GetSpeed();
+            		float speed_error = REF_SPEED - speed;
+            		inputFromOpenDaVINCI[CarInput::THROTTLE] = SPEED_DELTA * speed_error;
             	}
             }
 
@@ -990,6 +983,14 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
             waitKey(1);
            
         }
+
+        TickOpenDaVINCI(dt);
+
+		Draw(dt);
+
+		eventsystem.EndFrame();
+
+		PROFILER.endCycle();
 
         // Get data for "EgoCar".
         CarDynamics &car = car_dynamics[0];
