@@ -122,10 +122,9 @@ namespace cockpit {
                     m_mapOfCurrentPositions(),
                     m_selectableNodeDescriptorTree(NULL),
                     m_selectableNodeDescriptorTreeListener(sndtl),
-                    velodyneSharedMemory(NULL),
+                    m_velodyneSharedMemory(NULL),
                     m_hasAttachedToSharedImageMemory(false),
-                    velodyneFrame(),
-                    m_frameIndex(0),
+                    m_velodyneFrame(),
                     m_QPCreceived(false),
                     m_qpc(),
                     m_qpcMutex() {}
@@ -302,20 +301,20 @@ namespace cockpit {
                                   0, 0, 1);
 
                         // Draw scene. The shared point cloud is visualized in the same way as the free camera view.
-                        if(velodyneSharedMemory.get()!=NULL){
-                            if (velodyneSharedMemory->isValid()) {
+                        if(m_velodyneSharedMemory.get()!=NULL){
+                            if (m_velodyneSharedMemory->isValid()) {
                                 // Using a scoped lock to lock and automatically unlock a shared memory segment.
-                                odcore::base::Lock lv(velodyneSharedMemory);
-                                if (velodyneFrame.getComponentDataType() == SharedPointCloud::FLOAT_T
-                                    && (velodyneFrame.getNumberOfComponentsPerPoint() == 4)
-                                    && (velodyneFrame.getUserInfo() == SharedPointCloud::XYZ_INTENSITY)) {
+                                odcore::base::Lock lv(m_velodyneSharedMemory);
+                                if (m_velodyneFrame.getComponentDataType() == SharedPointCloud::FLOAT_T
+                                    && (m_velodyneFrame.getNumberOfComponentsPerPoint() == 4)
+                                    && (m_velodyneFrame.getUserInfo() == SharedPointCloud::XYZ_INTENSITY)) {
                                     glPushMatrix();
-                                    float *velodyneRawData = static_cast<float*>(velodyneSharedMemory->getSharedMemory());
+                                    float *velodyneRawData = static_cast<float*>(m_velodyneSharedMemory->getSharedMemory());
 
                                     glPointSize(1.0f); //set point size to 1 pixel
                                     glBegin(GL_POINTS); //starts drawing of points
                                     long startID=0;
-                                    for(unsigned long iii=0;iii<velodyneFrame.getWidth();iii++) {
+                                    for(unsigned long iii=0;iii<m_velodyneFrame.getWidth();iii++) {
                                         if(velodyneRawData[startID+3]<=127.0){
                                             glColor3f(0.0f,velodyneRawData[startID+3]*2.0,255.0-velodyneRawData[startID+3]*2.0);
                                         }
@@ -323,7 +322,7 @@ namespace cockpit {
                                             glColor3f((velodyneRawData[startID+3]-127.0)*2.0,255.0-(velodyneRawData[startID+3]-127.0)*2.0,0.0f);
                                         }
                                         glVertex3f(velodyneRawData[startID],velodyneRawData[startID+1],velodyneRawData[startID+2]);
-                                        startID=velodyneFrame.getNumberOfComponentsPerPoint()*(iii+1);
+                                        startID=m_velodyneFrame.getNumberOfComponentsPerPoint()*(iii+1);
                                     }
                                     glEnd();//end drawing of points
                                     
@@ -337,22 +336,22 @@ namespace cockpit {
                     else {
                         m_root->render(m_renderingConfiguration); 
                         //Draw scene. Retrieve the point cloud from the shared memory and visualize it frame by frame when shared point cloud is received via the nextContainer method
-                        if(velodyneSharedMemory.get()!=NULL){
-                            if (velodyneSharedMemory->isValid()){ 
+                        if(m_velodyneSharedMemory.get()!=NULL){
+                            if (m_velodyneSharedMemory->isValid()){ 
                                 // Using a scoped lock to lock and automatically unlock a shared memory segment.
-                                odcore::base::Lock lv(velodyneSharedMemory);
-                                if (velodyneFrame.getComponentDataType() == SharedPointCloud::FLOAT_T
-                                    && (velodyneFrame.getNumberOfComponentsPerPoint() == 4)
-                                    && (velodyneFrame.getUserInfo() == SharedPointCloud::XYZ_INTENSITY)) {
+                                odcore::base::Lock lv(m_velodyneSharedMemory);
+                                if (m_velodyneFrame.getComponentDataType() == SharedPointCloud::FLOAT_T
+                                    && (m_velodyneFrame.getNumberOfComponentsPerPoint() == 4)
+                                    && (m_velodyneFrame.getUserInfo() == SharedPointCloud::XYZ_INTENSITY)) {
                                     glPushMatrix();
-                                    float *velodyneRawData = static_cast<float*>(velodyneSharedMemory->getSharedMemory());
+                                    float *velodyneRawData = static_cast<float*>(m_velodyneSharedMemory->getSharedMemory());
                                 
                                     glPointSize(1.0f); //set point size to 1 pixel
                                     glBegin(GL_POINTS); //starts drawing of points
                                     long startID=0;
                                     //Point color depends on the intensity value. Let I (velodyneRawData[startID+3]) be the intensity value.
                                     //When I<=127, then R=0, G=I*2, B=255-I*2; when I>127, then R=(I-127)*2, G=255-(I-127)*2, B=0
-                                    for(unsigned long iii=0;iii<velodyneFrame.getWidth();iii++) {
+                                    for(unsigned long iii=0;iii<m_velodyneFrame.getWidth();iii++) {
                                         if(velodyneRawData[startID+3]<=127.0){
                                             glColor3f(0.0f,velodyneRawData[startID+3]*2.0,255.0-velodyneRawData[startID+3]*2.0);
                                         }
@@ -360,7 +359,7 @@ namespace cockpit {
                                             glColor3f((velodyneRawData[startID+3]-127.0)*2.0,255.0-(velodyneRawData[startID+3]-127.0)*2.0,0.0f);
                                         }
                                         glVertex3f(velodyneRawData[startID],velodyneRawData[startID+1],velodyneRawData[startID+2]);
-                                        startID=velodyneFrame.getNumberOfComponentsPerPoint()*(iii+1);
+                                        startID=m_velodyneFrame.getNumberOfComponentsPerPoint()*(iii+1);
                                     }
                                     glEnd();//end drawing of points
                                     glPopMatrix();
@@ -450,22 +449,20 @@ namespace cockpit {
                         glEnd();
                     }
     */
-                    if(m_QPCreceived){
+                    //Visualize quick point cloud, where points are sorted by increasing azimuth (increment the azimuth after every 16 points) and 
+                    //vertical angle (from -15 to 15 with increment 2 for each 16 points).
+                    //A quick point cloud contains: (1) the starting azimuth, (2) the ending azimuth, (3) the number of bytes per distance value, 
+                    //and (4) a string with the distance values of all points in the container
+                    if (m_QPCreceived) {
                         Lock lockQPC(m_qpcMutex);
-                        float startAzimuth=m_qpc.getStartAzimuth();
-                        float endAzimuth=m_qpc.getEndAzimuth();
-                        uint8_t entriesPerAzimuth=m_qpc.getEntriesPerAzimuth();
-                        //cout<<"startAzimuth:"<<startAzimuth<<", endAzimuth:"<<endAzimuth<<",entriesPerAzimuth:"<<entriesPerAzimuth<<endl;
-                        string distances=m_qpc.getDistances();
-                        uint32_t numberOfPoints=distances.size()/entriesPerAzimuth;
-                        uint32_t numberOfAzimuths=numberOfPoints/16;
-                        float azimuthIncrement=(endAzimuth-startAzimuth)/numberOfAzimuths;
+                        float startAzimuth = m_qpc.getStartAzimuth();
+                        float endAzimuth = m_qpc.getEndAzimuth();
+                        uint8_t entriesPerAzimuth = m_qpc.getEntriesPerAzimuth();
+                        string distances = m_qpc.getDistances();
+                        uint32_t numberOfPoints = distances.size()/entriesPerAzimuth;
+                        uint32_t numberOfAzimuths = numberOfPoints/16;
+                        float azimuthIncrement = (endAzimuth-startAzimuth)/numberOfAzimuths;//Calculate the azimuth increment
                         stringstream sstr(distances);
-                        /*half distance(0.0);
-                        sstr.read((char*)(&distance), entriesPerAzimuth);
-                        cout<<"Distance 1:"<<distance<<endl;
-                        sstr.read((char*)(&distance), entriesPerAzimuth);
-                        cout<<"Distance 2:"<<distance<<endl;*/
                         
                         m_root->render(m_renderingConfiguration); 
                         glPushMatrix();
@@ -475,31 +472,25 @@ namespace cockpit {
                         
                         static half distance_h(0.0);
                         static float xyDistance, xData, yData, zData;
-                        float azimuth=startAzimuth;             
-                        for(uint32_t azimuthIndex=0;azimuthIndex<numberOfAzimuths;azimuthIndex++){
-                            float verticalAngle=START_V_ANGLE;
-                            for(uint8_t sensorIndex=0;sensorIndex<16;sensorIndex++){
-                                sstr.read((char*)(&distance_h), entriesPerAzimuth);
-                                float distance=static_cast<float>(distance_h);
-                                /*if(m_frameIndex==1){    
-                                    cout<<distance<<endl;
-                                }*/
-                                xyDistance=distance*cos(toRadian(verticalAngle));
-                                xData=xyDistance*sin(toRadian(azimuth));
-                                yData=xyDistance*cos(toRadian(azimuth));
-                                zData=distance*sin(toRadian(verticalAngle));
-                                /*if(m_frameIndex==1){    
-                                    cout<<xData<<","<<yData<<","<<zData<<","<<distance<<","<<azimuth<<endl;
-                                }*/
-                                glVertex3f(xData,yData,zData);
-                                verticalAngle+=V_INCREMENT;
+                        float azimuth = startAzimuth;             
+                        for (uint32_t azimuthIndex = 0; azimuthIndex < numberOfAzimuths; azimuthIndex++) {
+                            float verticalAngle = START_V_ANGLE;
+                            for (uint8_t sensorIndex = 0; sensorIndex<16; sensorIndex++) {
+                                sstr.read((char*)(&distance_h), entriesPerAzimuth);//Read distance value from the string in a QPC container point by point
+                                float distance = static_cast<float>(distance_h);
+                                //Compute x, y, z coordinate based on distance, azimuth, and vertical angle
+                                xyDistance = distance*cos(toRadian(verticalAngle));
+                                xData = xyDistance*sin(toRadian(azimuth));
+                                yData = xyDistance*cos(toRadian(azimuth));
+                                zData = distance*sin(toRadian(verticalAngle));
+                                glVertex3f(xData,yData,zData);//Plot the point
+                                verticalAngle += V_INCREMENT;
                             }
                             azimuth+=azimuthIncrement;
                         }
 
                         glEnd();//end drawing of points
-                        glPopMatrix();
-                        m_frameIndex++;    
+                        glPopMatrix(); 
                     }
                 }
             }
@@ -530,9 +521,9 @@ namespace cockpit {
             void EnvironmentViewerGLWidget::nextContainer(Container &c) {
                 
                 if(c.getDataType()==odcore::data::SharedPointCloud::ID()){
-                    velodyneFrame=c.getData<SharedPointCloud>();//Get shared point cloud
+                    m_velodyneFrame=c.getData<SharedPointCloud>();//Get shared point cloud
                     if (!m_hasAttachedToSharedImageMemory) {
-                        velodyneSharedMemory=SharedMemoryFactory::attachToSharedMemory(velodyneFrame.getName());//Attach the shared point cloud to the shared memory  
+                        m_velodyneSharedMemory=SharedMemoryFactory::attachToSharedMemory(m_velodyneFrame.getName());//Attach the shared point cloud to the shared memory  
                         m_hasAttachedToSharedImageMemory = true; 
                     }  
                 }

@@ -131,13 +131,12 @@ class SelectableNodeDescriptor;
 
                     odcore::base::TreeNode<SelectableNodeDescriptor> *m_selectableNodeDescriptorTree;
                     SelectableNodeDescriptorTreeListener &m_selectableNodeDescriptorTreeListener;
-                    std::shared_ptr<odcore::wrapper::SharedMemory> velodyneSharedMemory;
+                    std::shared_ptr<odcore::wrapper::SharedMemory> m_velodyneSharedMemory;
                     bool m_hasAttachedToSharedImageMemory;
-                    odcore::data::SharedPointCloud velodyneFrame;
-                    const float START_V_ANGLE=-15.0;
-                    const float V_INCREMENT=2.0;
-                    uint32_t m_frameIndex;
-                    bool m_QPCreceived;
+                    odcore::data::SharedPointCloud m_velodyneFrame;
+                    const float START_V_ANGLE = -15.0;//For each azimuth there are 16 points with unique vertical angles from -15 to 15 degrees
+                    const float V_INCREMENT = 2.0;  //The vertical angle increment for the 16 points with the same azimuth is 2 degrees
+                    bool m_QPCreceived;//Set to true when the first quick point cloud is received
                     odcore::data::QuickPointCloud m_qpc;
                     odcore::base::Mutex m_qpcMutex;
 
