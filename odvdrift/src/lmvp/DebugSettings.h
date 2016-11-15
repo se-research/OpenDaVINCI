@@ -15,6 +15,8 @@ const bool DEBUG_SHOW_ROI             = false;
 const bool DEBUG_SHOW_DETECTED_POINTS = false;
 const bool DEBUG_SHOW_VANISHING_POINT = true;
 
+const bool DEBUG_SHOW_STEERING_HINTS  = true;
+
 // don't change
 const bool DEBUG_IS_SET = true;
 
@@ -30,6 +32,8 @@ const bool DEBUG_SHOW_PREPROCESSING   = false;
 const bool DEBUG_SHOW_ROI             = false;
 const bool DEBUG_SHOW_DETECTED_POINTS = false;
 const bool DEBUG_SHOW_VANISHING_POINT = false;
+
+const bool DEBUG_SHOW_STEERING_HINTS  = false;
 
 #endif
 

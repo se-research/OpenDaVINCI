@@ -21,6 +21,7 @@
 #include "lmvp/LmvpTypes.h"
 #include "lmvp/VanishingPointDetection.h"
 #include "lmvp/ScanRegion.h"
+#include "lmvp/DebugSettings.h"
 #include "lmvp/RegionOfInterestGeometry.h"
 
 #include "game.h"
@@ -69,6 +70,8 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
+
+#include <math.h>
 
 #ifdef _WIN32
 	#define OS_NAME "Windows"
@@ -928,6 +931,8 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 					rightScanRegion.draw(imageHeader_, cv::Scalar(212,195,0));
 				}
             }
+
+            // Save frames to file
             if (vp||textured) {
 
 				std::cout << "=== TIME SINCE LAST SCREENSHOT " << (time(0) - m_lastScreenshot) << " ===" << std::endl;
@@ -944,6 +949,36 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 					std::cout << "=== WROTE IMAGE ===" << std::endl;
 					m_lastScreenshot = time(0);
 				}
+            }
+
+
+            if (vp) {
+            	std::cout << "=== CALCULATING ANGLE ===" << std::endl;
+            	Point car = Point(399, 599); // car
+            	Point pp = Point(vp->x,599); // perpendicular line from VP
+            	Point v = Point((vp->y - car.y),(vp->x - car.x)); // Point v = vp - car;
+            	Point w = Point((vp->y - pp.y),(vp->x - pp.x));; // Point w = vp - perpendicular;
+            	double scalar = v.dot(w);
+            	double normed = scalar / (cv::norm(v) * cv::norm(w));
+            	double vpAngle = acos(normed);
+            	double vpAngleDeg = vpAngle * (180/CV_PI);
+            	double stAngleDeg = 90 - vpAngleDeg;
+
+            	// Draw steering hint lines
+            	if (lmvp::DEBUG_SHOW_STEERING_HINTS) {
+            		std::cout << "=== DEBUG_SHOW_STEERING_HINTS ===" << std::endl;
+            		cv::line(imageHeader_, Point(int(vp->x),int(vp->y)), car, Scalar(255,255,0));
+            		cv::line(imageHeader_, Point(int(vp->x),int(vp->y)), pp, Scalar(255,255,0));
+
+            		// cv::putText(imageHeader_, "scalar  = " + std::to_string(scalar), cv::Point(30,30),FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,0), 1, CV_AA);
+            		// cv::putText(imageHeader_, "normed  = " + std::to_string(normed), cv::Point(30,60),FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,0), 1, CV_AA);
+            		// cv::putText(imageHeader_, "vpAngle = " + std::to_string(vpAngle), cv::Point(30,90),FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,0), 1, CV_AA);
+            		// cv::putText(imageHeader_, "vpAngleDeg = " + std::to_string(vpAngleDeg), cv::Point(30,120),FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,0), 1, CV_AA);
+            		cv::putText(imageHeader_, "stAngleDeg = " + std::to_string(stAngleDeg), cv::Point(30,150),FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,0), 1, CV_AA);
+            		cv::putText(imageHeader_, "VP (" + std::to_string(int(vp->x)) + "," + std::to_string(int(vp->y)) + ")", cv::Point(30,180),FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,0), 1, CV_AA);
+            		// cv::putText(imageHeader_, "v = (" + std::to_string(v.x) + "," + std::to_string(v.y) + ")", cv::Point(30,210),FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,0), 1, CV_AA);
+            		// cv::putText(imageHeader_, "w = (" + std::to_string(w.x) + "," + std::to_string(w.y) + ")", cv::Point(30,240),FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,0), 1, CV_AA);
+            	}
             }
 
             std::cout << "=== RENDERING IMAGE ===" << std::endl;
