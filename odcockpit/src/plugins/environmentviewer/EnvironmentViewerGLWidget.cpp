@@ -75,7 +75,6 @@
 #include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 #include "opendavinci/generated/odcore/data/SharedPointCloud.h"
 #include "opendavinci/odcore/wrapper/half_float.h"
-#include "automotivedata/generated/cartesian/Constants.h"
 
 class QWidget;
 namespace opendlv { namespace scenario { class SCNXArchive; } }
@@ -127,7 +126,8 @@ namespace cockpit {
                     m_velodyneFrame(),
                     m_CPCreceived(false),
                     m_cpc(),
-                    m_cpcMutex() {}
+                    m_cpcMutex(),
+                    m_SPCRendered(false) {}
 
             EnvironmentViewerGLWidget::~EnvironmentViewerGLWidget() {
                 OPENDAVINCI_CORE_DELETE_POINTER(m_root);
@@ -327,6 +327,9 @@ namespace cockpit {
                                     glEnd();//end drawing of points
                                     
                                     m_root->render(m_renderingConfiguration);
+                                    if(!m_SPCRendered) {
+                                        m_SPCRendered = true;
+                                    }
                                     glPopMatrix();
                                 }
                             }
@@ -334,7 +337,7 @@ namespace cockpit {
                     }
                     //Free camera view
                     else {
-                        m_root->render(m_renderingConfiguration); 
+                        m_root->render(m_renderingConfiguration);
                         //Draw scene. Retrieve the point cloud from the shared memory and visualize it frame by frame when shared point cloud is received via the nextContainer method
                         if(m_velodyneSharedMemory.get()!=NULL){
                             if (m_velodyneSharedMemory->isValid()){ 
@@ -363,6 +366,9 @@ namespace cockpit {
                                     }
                                     glEnd();//end drawing of points
                                     glPopMatrix();
+                                    if(!m_SPCRendered) {
+                                        m_SPCRendered = true;
+                                    } 
                                 }
                             }
                         }
@@ -453,7 +459,7 @@ namespace cockpit {
                     //vertical angle (from -15 to 15 with increment 2 for each 16 points).
                     //A compact point cloud contains: (1) the starting azimuth, (2) the ending azimuth, (3) number of points per azimuth, 
                     //and (4) a string with the distance values of all points in the container
-                    if (m_CPCreceived) {
+                    if (m_CPCreceived && !m_SPCRendered) {
                         Lock lockCPC(m_cpcMutex);
                         float startAzimuth = m_cpc.getStartAzimuth();
                         float endAzimuth = m_cpc.getEndAzimuth();
@@ -470,8 +476,8 @@ namespace cockpit {
                         glBegin(GL_POINTS); //starts drawing of points
                         glColor3f(255.0f,255.0f,0.0);//Yellow color
                         
-                        static half distance_h(0.0);
-                        static float xyDistance, xData, yData, zData;
+                        half distance_h(0.0);
+                        float xyDistance, xData, yData, zData;
                         float azimuth = startAzimuth;             
                         for (uint32_t azimuthIndex = 0; azimuthIndex < numberOfAzimuths; azimuthIndex++) {
                             float verticalAngle = START_V_ANGLE;
@@ -479,10 +485,10 @@ namespace cockpit {
                                 sstr.read((char*)(&distance_h), 2);//Read distance value from the string in a CPC container point by point
                                 float distance = static_cast<float>(distance_h);
                                 //Compute x, y, z coordinate based on distance, azimuth, and vertical angle
-                                xyDistance = distance*cos(toRadian(verticalAngle));
-                                xData = xyDistance*sin(toRadian(azimuth));
-                                yData = xyDistance*cos(toRadian(azimuth));
-                                zData = distance*sin(toRadian(verticalAngle));
+                                xyDistance = distance * cos(verticalAngle * toRadian);
+                                xData = xyDistance * sin(azimuth * toRadian);
+                                yData = xyDistance * cos(azimuth * toRadian);
+                                zData = distance * sin(verticalAngle * toRadian);
                                 glVertex3f(xData,yData,zData);//Plot the point
                                 verticalAngle += V_INCREMENT;
                             }
@@ -664,10 +670,6 @@ namespace cockpit {
                         }
                     }
                 }
-            }
-            
-            float EnvironmentViewerGLWidget::toRadian(float angle) {
-                return angle * static_cast<float>(cartesian::Constants::PI) / 180.0f;
             }
         }
     }
