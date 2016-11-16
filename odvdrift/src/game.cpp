@@ -931,7 +931,7 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
             if (vp||textured) {
 
 				std::cout << "=== TIME SINCE LAST SCREENSHOT " << (time(0) - m_lastScreenshot) << " ===" << std::endl;
-				if (time(0) - m_lastScreenshot > 1) {
+				//if (this->frame % 10 == 0) {
 					std::cout << "=== CREATING SCREENSHOT ===" << std::endl;
 					// reset stream
 					m_frameFilename.str("");
@@ -942,8 +942,8 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 					// save image to file
 					cv::imwrite(m_frameFilename.str(), imageHeader_);
 					std::cout << "=== WROTE IMAGE ===" << std::endl;
-					m_lastScreenshot = time(0);
-				}
+					m_lastScreenshot = this->frame;
+				//}
             }
 
             std::cout << "=== RENDERING IMAGE ===" << std::endl;
