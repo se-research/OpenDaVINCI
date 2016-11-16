@@ -92,7 +92,7 @@ odplayerh264.portbaseforchildprocesses = 28000 # Every spawned child processes i
 #
 # CONFIGURATION FOR ODCOCKPIT
 #
-odcockpit.plugins = configurationviewer,healthstatusviewer,livefeed,logmessage,player,sessionviewer,sharedimageviewer,streetmapviewer # List of modules to show in odcockpit; leave blank to show all.
+odcockpit.plugins = configurationviewer,healthstatusviewer,livefeed,logmessage,performancemonitor,player,sessionviewer,sharedimageviewer,streetmapviewer # List of modules to show in odcockpit; leave blank to show all.
 odcockpit.directoriesForSharedLibaries = /opt,/lib # List of directories to search for libodvd*.so files.
 
 

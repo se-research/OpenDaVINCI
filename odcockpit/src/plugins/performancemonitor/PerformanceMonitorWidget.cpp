@@ -47,14 +47,14 @@ namespace cockpit {
             using namespace odcore::base;
             using namespace odcore::data;
 
-            PerformanceMonitorWidget::PerformanceMonitorWidget(const PlugIn &/*plugIn*/, QWidget *prnt) :
+            PerformanceMonitorWidget::PerformanceMonitorWidget(const PlugIn &/*plugIn*/, QWidget *prnt, uint8_t MAX_CPU_HISTORY, uint8_t MAX_MEM_HISTORY) :
                 QWidget(prnt),
                 m_dataView(),
                 m_components(),
                 m_CPUStatisticsPerComponent(),
                 m_MEMStatisticsPerComponent(),
-                m_MAX_CPU_HISTORY(3),
-                m_MAX_MEM_HISTORY(3) {
+                m_MAX_CPU_HISTORY(MAX_CPU_HISTORY),
+                m_MAX_MEM_HISTORY(MAX_MEM_HISTORY) {
                 // Set size.
                 setMinimumSize(640, 480);
 
@@ -65,7 +65,6 @@ namespace cockpit {
                 m_dataView = unique_ptr<QTreeWidget>(new QTreeWidget(this));
                 m_dataView->setColumnCount(2);
                 QStringList headerLabel;
-                //Federico: Here you can change the column names, number of columns, and size of columns
                 headerLabel << tr("Component") << tr("Statistics");
                 m_dataView->setColumnWidth(0, 350);
                 m_dataView->setColumnWidth(1, 200);

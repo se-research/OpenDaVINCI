@@ -74,7 +74,7 @@ namespace cockpit {
                      * @param plugIn Reference to the plugin to which this widget belongs.
                      * @param prnt Pointer to the parental widget.
                      */
-                    PerformanceMonitorWidget(const PlugIn &plugIn, QWidget *prnt);
+                    PerformanceMonitorWidget(const PlugIn &plugIn, QWidget *prnt, uint8_t MAX_CPU_HISTORY=3, uint8_t MAX_MEM_HISTORY=3);
 
                     virtual ~PerformanceMonitorWidget();
 

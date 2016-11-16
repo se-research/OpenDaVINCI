@@ -71,6 +71,8 @@ class PerformanceMonitorWidget;
 
                 private:
                     PerformanceMonitorWidget *m_viewerWidget;
+                    uint8_t m_cpu_history;
+                    uint8_t m_mem_history;
             };
 
         }

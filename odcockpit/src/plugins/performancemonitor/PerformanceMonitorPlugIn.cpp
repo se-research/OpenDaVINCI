@@ -34,14 +34,24 @@ namespace cockpit {
 
             PerformanceMonitorPlugIn::PerformanceMonitorPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt) :
                 PlugIn(name, kvc, prnt),
-                m_viewerWidget(NULL) {
-                setDescription("This plugin displays system usage statistics of components.");
+                m_viewerWidget(NULL),
+                m_cpu_history(3),
+                m_mem_history(3) {
+                setDescription("This plugin displays cpu and memory usage statistics of components.");
+                bool found=false;
+                string s = kvc.getOptionalValue<string>("odcockpit.performancemonitor.history.cpu",found);
+                if(found)
+                    m_cpu_history=std::stoi(s);
+                found=false;
+                s = kvc.getOptionalValue<string>("odcockpit.performancemonitor.history.mem",found);
+                if(found)
+                    m_mem_history=std::stoi(s);
             }
 
             PerformanceMonitorPlugIn::~PerformanceMonitorPlugIn() {}
 
             void PerformanceMonitorPlugIn::setupPlugin() {
-                m_viewerWidget = new PerformanceMonitorWidget(*this, getParentQWidget());
+                m_viewerWidget = new PerformanceMonitorWidget(*this, getParentQWidget(), m_cpu_history, m_mem_history);
 
                 ContainerObserver *co = getContainerObserver();
                 if (co != NULL) {
