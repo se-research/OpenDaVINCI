@@ -21,6 +21,7 @@
 #include "lmvp/LmvpTypes.h"
 #include "lmvp/VanishingPointDetection.h"
 #include "lmvp/ScanRegion.h"
+#include "lmvp/DebugSettings.h"
 #include "lmvp/RegionOfInterestGeometry.h"
 
 #include "game.h"
@@ -69,6 +70,8 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
+
+#include <math.h>
 
 #ifdef _WIN32
 	#define OS_NAME "Windows"
@@ -883,18 +886,7 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
                         << inputFromOpenDaVINCI[CarInput::THROTTLE] << ";"
                         << inputFromOpenDaVINCI[CarInput::BRAKE] << ";"
                         << inputFromOpenDaVINCI[CarInput::STEER_RIGHT] << std::endl;
-                        
-            
         }
-
-
-        TickOpenDaVINCI(dt);
-
-		Draw(dt);
-
-		eventsystem.EndFrame();
-
-		PROFILER.endCycle();
 
         ///////////////////////////////////////////////////////////////////////
         // Shared image from renderer.
@@ -928,6 +920,8 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 					rightScanRegion.draw(imageHeader_, cv::Scalar(212,195,0));
 				}
             }
+
+            // Save frames to file
             if (vp||textured) {
 
 				std::cout << "=== TIME SINCE LAST SCREENSHOT " << (time(0) - m_lastScreenshot) << " ===" << std::endl;
@@ -946,12 +940,57 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 				//}
             }
 
+
+            if (vp) {
+            	std::cout << "=== CALCULATING ANGLE ===" << std::endl;
+            	Point car = Point(399, 599); // car
+            	Point pp = Point(vp->x,599); // perpendicular line from VP
+            	Point v = Point((vp->y - car.y),(vp->x - car.x)); // Point v = vp - car;
+            	Point w = Point((vp->y - pp.y),(vp->x - pp.x));; // Point w = vp - perpendicular;
+            	double normed = acos(normed) / (cv::norm(v) * cv::norm(w));
+            	double gamma = acos(normed) * (180/CV_PI);
+            	double stAngleDeg = 90 - gamma;
+
+            	// Draw steering hint lines
+            	if (lmvp::DEBUG_SHOW_STEERING_HINTS) {
+            		std::cout << "=== DEBUG_SHOW_STEERING_HINTS ===" << std::endl;
+            		cv::line(imageHeader_, Point(int(vp->x),int(vp->y)), car, Scalar(255,255,0));
+            		cv::line(imageHeader_, Point(int(vp->x),int(vp->y)), pp, Scalar(255,255,0));
+
+            		renderText(std::string("stAngleDeg = " + std::to_string(stAngleDeg)), 30);
+            		renderText(std::string("VP (" + std::to_string(int(vp->x)) + "," + std::to_string(int(vp->y)) + ")"), 60);
+            	}
+
+            	if (lmvp::DEBUG_AUTOMATED_DRIVER) {
+            		CarDynamics &cd = car_dynamics[0];
+					if (vp->x < car.x) {
+						gamma = -1 * gamma;
+					}
+					const float STEERING_DELTA = 0.001;
+            		inputFromOpenDaVINCI[CarInput::STEER_RIGHT] = STEERING_DELTA * gamma;
+
+            		const float SPEED_DELTA = 0.01;
+            		const float REF_SPEED = 30;
+            		float speed = (float)cd.GetSpeed();
+            		float speed_error = REF_SPEED - speed;
+            		inputFromOpenDaVINCI[CarInput::THROTTLE] = SPEED_DELTA * speed_error;
+            	}
+            }
+
             std::cout << "=== RENDERING IMAGE ===" << std::endl;
             imshow("vp detection", imageHeader_);
          
             waitKey(1);
            
         }
+
+        TickOpenDaVINCI(dt);
+
+		Draw(dt);
+
+		eventsystem.EndFrame();
+
+		PROFILER.endCycle();
 
         // Get data for "EgoCar".
         CarDynamics &car = car_dynamics[0];

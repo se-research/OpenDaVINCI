@@ -87,6 +87,25 @@ private:
     virtual void tearDown();
 	std::vector <float> inputFromOpenDaVINCI;
 
+	int angle(int x1, int y1, int x2, int y2) {
+		std::cout << "ANGLE(): slope" << std::endl;
+		if (x1 == x2) return -1;
+
+		int val = (y2-y1)/(x2-x1); // calculate slope between the two points
+		std::cout << "ANGLE(): arctan" << std::endl;
+		val = val - pow(val,3)/3 + pow(val,5)/5; // find arc tan of the slope using taylor series approximation
+		std::cout << "ANGLE(): radians" << std::endl;
+		val = ((int)(val*180/3.14)) % 360; // Convert the angle in radians to degrees
+		std::cout << "ANGLE(): normalize" << std::endl;
+		if (x2 < x1) val+=180;
+		if (val < 0) val = 360 + val;
+		return val;
+	}
+
+	void renderText(const std::string& text, int y) {
+		cv::putText(imageHeader_, text, cv::Point(30,y),cv::FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,0), 1, CV_AA);
+	}
+
     void attachToSharedMemory(const odcore::data::image::SharedImage & sharedImage);
 	void End();
 
