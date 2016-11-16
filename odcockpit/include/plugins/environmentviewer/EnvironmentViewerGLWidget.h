@@ -36,7 +36,7 @@
 #include "plugins/environmentviewer/SelectableNodeDescriptorTreeListener.h"
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
 #include "opendavinci/generated/odcore/data/SharedPointCloud.h"
-#include "opendavinci/generated/odcore/data/QuickPointCloud.h"
+#include "opendavinci/generated/odcore/data/CompactPointCloud.h"
 
 class QWidget;
 namespace cockpit { namespace plugins { class PlugIn; } }
@@ -136,9 +136,9 @@ class SelectableNodeDescriptor;
                     odcore::data::SharedPointCloud m_velodyneFrame;
                     const float START_V_ANGLE = -15.0;//For each azimuth there are 16 points with unique vertical angles from -15 to 15 degrees
                     const float V_INCREMENT = 2.0;  //The vertical angle increment for the 16 points with the same azimuth is 2 degrees
-                    bool m_QPCreceived;//Set to true when the first quick point cloud is received
-                    odcore::data::QuickPointCloud m_qpc;
-                    odcore::base::Mutex m_qpcMutex;
+                    bool m_CPCreceived;//Set to true when the first compact point cloud is received
+                    odcore::data::CompactPointCloud m_cpc;
+                    odcore::base::Mutex m_cpcMutex;
 
                     /**
                      * This method actually modifies the rendering configuration.

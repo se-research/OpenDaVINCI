@@ -125,9 +125,9 @@ namespace cockpit {
                     m_velodyneSharedMemory(NULL),
                     m_hasAttachedToSharedImageMemory(false),
                     m_velodyneFrame(),
-                    m_QPCreceived(false),
-                    m_qpc(),
-                    m_qpcMutex() {}
+                    m_CPCreceived(false),
+                    m_cpc(),
+                    m_cpcMutex() {}
 
             EnvironmentViewerGLWidget::~EnvironmentViewerGLWidget() {
                 OPENDAVINCI_CORE_DELETE_POINTER(m_root);
@@ -449,16 +449,16 @@ namespace cockpit {
                         glEnd();
                     }
     */
-                    //Visualize quick point cloud, where points are sorted by increasing azimuth (increment the azimuth after every 16 points) and 
+                    //Visualize compact point cloud, where points are sorted by increasing azimuth (increment the azimuth after every 16 points) and 
                     //vertical angle (from -15 to 15 with increment 2 for each 16 points).
-                    //A quick point cloud contains: (1) the starting azimuth, (2) the ending azimuth, (3) the number of bytes per distance value, 
+                    //A compact point cloud contains: (1) the starting azimuth, (2) the ending azimuth, (3) number of points per azimuth, 
                     //and (4) a string with the distance values of all points in the container
-                    if (m_QPCreceived) {
-                        Lock lockQPC(m_qpcMutex);
-                        float startAzimuth = m_qpc.getStartAzimuth();
-                        float endAzimuth = m_qpc.getEndAzimuth();
-                        uint8_t entriesPerAzimuth = m_qpc.getEntriesPerAzimuth();
-                        string distances = m_qpc.getDistances();
+                    if (m_CPCreceived) {
+                        Lock lockCPC(m_cpcMutex);
+                        float startAzimuth = m_cpc.getStartAzimuth();
+                        float endAzimuth = m_cpc.getEndAzimuth();
+                        uint8_t entriesPerAzimuth = m_cpc.getEntriesPerAzimuth();
+                        string distances = m_cpc.getDistances();
                         uint32_t numberOfPoints = distances.size()/2;
                         uint32_t numberOfAzimuths = numberOfPoints/entriesPerAzimuth;
                         float azimuthIncrement = (endAzimuth-startAzimuth)/numberOfAzimuths;//Calculate the azimuth increment
@@ -476,7 +476,7 @@ namespace cockpit {
                         for (uint32_t azimuthIndex = 0; azimuthIndex < numberOfAzimuths; azimuthIndex++) {
                             float verticalAngle = START_V_ANGLE;
                             for (uint8_t sensorIndex = 0; sensorIndex<entriesPerAzimuth; sensorIndex++) {
-                                sstr.read((char*)(&distance_h), 2);//Read distance value from the string in a QPC container point by point
+                                sstr.read((char*)(&distance_h), 2);//Read distance value from the string in a CPC container point by point
                                 float distance = static_cast<float>(distance_h);
                                 //Compute x, y, z coordinate based on distance, azimuth, and vertical angle
                                 xyDistance = distance*cos(toRadian(verticalAngle));
@@ -528,13 +528,13 @@ namespace cockpit {
                     }  
                 }
                 
-                if(c.getDataType()==odcore::data::QuickPointCloud::ID()){
-                    if(!m_QPCreceived){
-                        m_QPCreceived=true;
+                if(c.getDataType()==odcore::data::CompactPointCloud::ID()){
+                    if(!m_CPCreceived){
+                        m_CPCreceived=true;
                     }
                     {
-                        Lock lockQPC(m_qpcMutex);
-                        m_qpc=c.getData<QuickPointCloud>();  
+                        Lock lockCPC(m_cpcMutex);
+                        m_cpc=c.getData<CompactPointCloud>();  
                     }
                 }
                 
