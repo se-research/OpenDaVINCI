@@ -917,7 +917,7 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 				if(vp)
 				{
 					std::cout << "=== FOUND VANISHING POINT AT (" << (int)vp->x << "," << (int)vp->y << ") ===" << std::endl;
-					std::string tmp = std::to_string(frameCounter) + ","+std::to_string(this->frame)+",,,,,,,,"+std::to_string((int)vp->x)+","+std::to_string((int)vp->y)+",P";
+					std::string tmp = std::to_string(frameCounter) + ","+std::to_string(this->frame)+",0,0,0,0,0,0,0,"+std::to_string((int)vp->x)+","+std::to_string((int)vp->y)+",P";
 					vanishingPoints.push_back(tmp);
 				}
 				if (lmvp::DEBUG_SHOW_SCAN_REGIONS) {
@@ -946,8 +946,9 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 				++frameCounter;
             }
 
+            /* Auskommentiert weil es nicht baut
             PController pc(1.0f,2.0f);
-            //Controler
+            //Controller
             if (vp) {
             	std::cout << "=== CALCULATING ANGLE ===" << std::endl;
             	Point car = Point(399, 599); // car
@@ -983,6 +984,7 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
             		inputFromOpenDaVINCI[CarInput::THROTTLE] = SPEED_DELTA * speed_error;
             	}
             }
+            */
 
             std::cout << "=== RENDERING IMAGE ===" << std::endl;
             imshow("vp detection", imageHeader_);
