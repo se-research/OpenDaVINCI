@@ -327,9 +327,7 @@ namespace cockpit {
                                     glEnd();//end drawing of points
                                     
                                     m_root->render(m_renderingConfiguration);
-                                    if(!m_SPCRendered) {
-                                        m_SPCRendered = true;
-                                    }
+                                    m_SPCRendered = true;
                                     glPopMatrix();
                                 }
                             }
@@ -366,9 +364,7 @@ namespace cockpit {
                                     }
                                     glEnd();//end drawing of points
                                     glPopMatrix();
-                                    if(!m_SPCRendered) {
-                                        m_SPCRendered = true;
-                                    } 
+                                    m_SPCRendered = true;
                                 }
                             }
                         }
@@ -478,7 +474,7 @@ namespace cockpit {
                         
                         half distance_h(0.0);
                         float xyDistance, xData, yData, zData;
-                        float azimuth = startAzimuth;             
+                        float azimuth = startAzimuth;
                         for (uint32_t azimuthIndex = 0; azimuthIndex < numberOfAzimuths; azimuthIndex++) {
                             float verticalAngle = START_V_ANGLE;
                             for (uint8_t sensorIndex = 0; sensorIndex<entriesPerAzimuth; sensorIndex++) {
