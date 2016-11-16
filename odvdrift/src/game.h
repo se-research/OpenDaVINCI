@@ -420,6 +420,7 @@ private:
     const int ROW_COUNT = 3;
     int m_line = 0;
     std::vector<std::string> vanishingPoints; // frameID, x, y
+    int frameCounter;
 
 
 };

@@ -73,6 +73,9 @@
 
 #include <math.h>
 
+#include "controller-lib/Controller.h"
+#include "controller-lib/PController.h"
+
 #ifdef _WIN32
 	#define OS_NAME "Windows"
 #elif defined(__APPLE__)
@@ -180,6 +183,7 @@ Game::Game(int argc, char **argv, std::ostream & info_out, std::ostream & error_
 	replay(timestep),
 	http("/tmp")
 {
+	frameCounter = 0;
 	carcontrols_local.first = NULL;
 	dynamics.setContactAddedCallback(&CarDynamics::WheelContactCallback);
 	RegisterActions();
@@ -904,6 +908,7 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 
             //std::cout <<"Cols " << imageHeader_.cols; //800
 	          //std::cout <<"Rows " << imageHeader_.rows << std::endl; //600
+
             if(!textured)
             {
 				std::cout << "=== CALCULATING VANISHING POINT ===" << std::endl;
@@ -912,7 +917,7 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 				if(vp)
 				{
 					std::cout << "=== FOUND VANISHING POINT AT (" << (int)vp->x << "," << (int)vp->y << ") ===" << std::endl;
-					std::string tmp = std::to_string(this->frame) + ",,,,,,,,,"+std::to_string((int)vp->x)+","+std::to_string((int)vp->y);
+					std::string tmp = std::to_string(frameCounter) + ","+std::to_string(this->frame)+",,,,,,,,"+std::to_string((int)vp->x)+","+std::to_string((int)vp->y)+",P";
 					vanishingPoints.push_back(tmp);
 				}
 				if (lmvp::DEBUG_SHOW_SCAN_REGIONS) {
@@ -923,7 +928,6 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 
             // Save frames to file
             if (vp||textured) {
-
 				std::cout << "=== TIME SINCE LAST SCREENSHOT " << (time(0) - m_lastScreenshot) << " ===" << std::endl;
 				//if (this->frame % 10 == 0) {
 					std::cout << "=== CREATING SCREENSHOT ===" << std::endl;
@@ -931,16 +935,19 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 					m_frameFilename.str("");
 					m_frameFilename.clear();
 					// create new filename
-					m_frameFilename << "FRAME_" << this->frame << "_VP_" << (textured ? 0 : vp->x) << "_" << (textured ? 0 : vp->y) <<".png";
+					m_frameFilename << std::to_string(frameCounter) << ".png";
 					std::cout << "=== FILENAME WILL BE " << m_frameFilename.str() <<  " ===" << std::endl;
 					// save image to file
 					cv::imwrite(m_frameFilename.str(), imageHeader_);
 					std::cout << "=== WROTE IMAGE ===" << std::endl;
 					m_lastScreenshot = this->frame;
 				//}
+
+				++frameCounter;
             }
 
-
+            PController pc(1.0f,2.0f);
+            //Controler
             if (vp) {
             	std::cout << "=== CALCULATING ANGLE ===" << std::endl;
             	Point car = Point(399, 599); // car
@@ -1948,7 +1955,7 @@ void Game::UpdateHUD(const size_t carid, const std::vector<float> & carinputs)
 		gearstr << gear;
 
 	float speed_scale = (settings.GetMPH() ? 2.237 : 3.6);
-	float speed = std::fabs(car.GetSpeedMPS()) * speed_scale;
+	float speed = std::abs(car.GetSpeedMPS()) * speed_scale;
 	float speedometer = car.GetMaxSpeedMPS() * speed_scale;
 	speedometer = std::min(320.0f, std::max(120.0f, std::ceil(speedometer / 40.0f) * 40.0f));
 
@@ -3697,7 +3704,7 @@ void  Game::writeResults(const std::string filename)
   myfile.open(filename);
   std::cout << "Writing results to " << filename;
 
-  myfile << "8,BL_x,BL_y,TL_x,TL_y,TR_x,TR_y,BR_x,BR_y,399.000031,481.166656" << std::endl;
+  myfile << "frame,BL_x,BL_y,TL_x,TL_y,TR_x,TR_y,BR_x,BR_y,VP_x,VP_y, Clss" << std::endl;
   for(auto it = vanishingPoints.begin() ; it != vanishingPoints.end(); ++it) {
 
     myfile << *it <<  std::endl;
