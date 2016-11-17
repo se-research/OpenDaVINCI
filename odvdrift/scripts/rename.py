@@ -20,10 +20,4 @@ for number in sorted(file_map):
   n += 1
   
 exit()
-n=1
-for f in files:
-  fullpath = str(folder) + "/" + str(f)
-  newpath = folder +"/"+ str(n) + ".png"
-  print("Renaming: " + fullpath + " -> " + newpath)
-  os.rename(fullpath, newpath)
-  n += 1
+

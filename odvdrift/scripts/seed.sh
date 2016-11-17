@@ -4,16 +4,17 @@ clear
 
 # May required adjusting
 vdriftTracksDir="/usr/local/share/games/vdrift/data/tracks"
+vdriftPath="/home/se/OpenDaVINCI/odvdrift/build"
 
 # Check number of arguments
-if [ "$#" -ne 3 ]; then
-  echo "Usage: seed <detect|extract> <track> <cid> "
+if [ "$#" -ne 4 ]; then
+  echo "Usage: seed <detect|extract> <track> <cid> <auto|manual>"
   exit 1
 fi
 
 if [ $1 != "detect" ]; then
   if [ $1 != "extract" ]; then
-    echo "seed (detect|extract) <track> <cid> "
+    echo "Usage: seed <detect|extract> <track> <cid> <auto|manual>"
     exit
   fi
 fi
@@ -23,8 +24,16 @@ if [ ! -f ./configuration ]; then
     exit
 fi
 
+if [ $1 == "extract" ]; then
+  if [ $4 == "auto" ]; then
+    echo "The combination of -extract and -auto is not supported, as extract does not calculate VPs"
+    exit
+  fi
+fi
+
 cid=$3
-extract=true
+automatedDriver=false
+extract=false
 workingDirectory=$(pwd)
 trackName=$2
 outputDir="$workingDirectory/$trackName/png"
@@ -53,10 +62,30 @@ else # $1 == "detect"
 fi
 echo ""
 
+if [ $4 == "auto" ]; then
+  automatedDriver=true
+else $4 == "manual"
+  automatedDriver=false
+fi
+
+echo "automated driver = $automatedDriver"
 echo "extract mode     = $extract"
 echo "cid              = $3"
 echo "trackName        = $2"
 echo "workingDirectory = $workingDirectory"
+
+# Create command with Boolean flags
+line="odvdrift --freq=10 --cid=$cid -trackName $trackName -workingDirectory $workingDirectory"
+if [ $automatedDriver = true ]; then
+  line+=" -automatedDriver"
+fi
+
+if [ $extract = true ]; then
+  line+=" -extractMode"
+fi
+
+echo ""
+echo "Starting: $line"
 echo "--------------------------------------------------------------------------------"
 
 # exit 1 # debug
@@ -66,8 +95,15 @@ gnome-terminal -e "odsimvehicle     --cid=$cid --verbose=1 --freq=10 "
 gnome-terminal -e "odsimirus        --cid=$cid --verbose=1 --freq=10 "
 gnome-terminal -e "odcockpit        --cid=$cid --verbose=1"
 
-sleep 2  # Waits 2 seconds.
-echo "Starting: odvdrift --freq=10 --cid=100 -trackName $trackName -workingDirectory $workingDirectory -extractMode $extract"
-gnome-terminal -e "/home/se/OpenDaVINCI/odvdrift/build/odvdrift --freq=10 --cid=100 -trackName $trackName -workingDirectory $workingDirectory -extractMode $extract"
+#exit 1 # debug
 
-# /home/se/OpenDaVINCI/odvdrift/build/odvdrift --freq=10 --cid=100 -trackName a1ring -workingDirectory /home/se/config -extractMode false
+sleep 2  # Waits 2 seconds.
+gnome-terminal -e "$vdriftPath/$line"
+
+# /home/se/OpenDaVINCI/odvdrift/build/odvdrift --freq=10 --cid=200 -trackName a1ring -workingDirectory /home/se/config -manual -extract
+
+# /home/se/OpenDaVINCI/odvdrift/build/odvdrift --freq=10 --cid=200 -trackName a1ring -workingDirectory /home/se/config -manual -detect
+
+# /home/se/OpenDaVINCI/odvdrift/build/odvdrift --freq=10 --cid=200 -trackName a1ring -workingDirectory /home/se/config -auto -extract => Kombination sinnlos
+
+# /home/se/OpenDaVINCI/odvdrift/build/odvdrift --freq=10 --cid=100 -trackName a1ring -workingDirectory /home/se/config -auto -detect

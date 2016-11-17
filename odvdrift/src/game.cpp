@@ -600,9 +600,9 @@ bool Game::ParseArguments(std::list <std::string> & args)
 	arghelp["-test"] = "Run unit tests.";
 
 	// SEED
-	if (!argmap["-extractMode"].empty())
+	if (argmap.find("-extractMode") != argmap.end())
 	{
-		extractMode = (argmap["-extractMode"] == "true");
+		extractMode = true;
 	}
 	arghelp["-extractMode"] = "We either DETECT VPs or EXTRACT frames.";
 
@@ -617,6 +617,14 @@ bool Game::ParseArguments(std::list <std::string> & args)
 		workingDirectory = argmap["-workingDirectory"];
 	}
 	arghelp["-workingDirectory"] = "Project working directory to store extracted frames and VP data to.";
+
+	if (argmap.find("-automatedDriver") != argmap.end())
+	{
+		automatedDriver = true;
+	}
+	arghelp["-automatedDriver"] = "Automated driving";
+
+
 
 	if (!argmap["-cartest"].empty())
 	{
@@ -852,11 +860,11 @@ void Game::setUp() {
 
 void Game::tearDown() {
 	if(!extractMode) {
-		m_frameFilename.str("");
-		m_frameFilename.clear();
+		stringStream.str("");
+		stringStream.clear();
 	}
-	m_frameFilename << workingDirectory << "/" << trackName << "/" << "labels.csv";
-	this->writeResults(m_frameFilename.str());
+	stringStream << workingDirectory << "/" << trackName << "/" << "labels.csv";
+	this->writeResults(stringStream.str());
     info_output << "tearDown()" << std::endl;
 }
 
@@ -915,18 +923,16 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 	        std::cout << "extractMode: " << extractMode <<std::endl;
 	        std::cout << "workingDirectory: " << workingDirectory <<std::endl;
 	        std::cout << "trackName: " << trackName <<std::endl;
+	        std::cout << "automatedDriver: " << automatedDriver <<std::endl;
 	        
-	        //SEED
+	        // Begin SEED
 	        attachToSharedMemory(si);
             odcore::base::Lock lock(sharedImageMemory_);
 
-            //std::cout <<"Cols " << imageHeader_.cols; //800
-	          //std::cout <<"Rows " << imageHeader_.rows << std::endl; //600
-
+            // If not extracting textured frames (i.e., running in VP detect
+            // mode), we find and store VPs
             if(!extractMode)
             {
-				// std::cout << "=== CALCULATING VANISHING POINT ===" << std::endl;
-
 				vp = vpd.detectVanishingPoint(imageHeader_);
 				if(vp)
 				{
@@ -940,24 +946,17 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 				}
             }
 
-            // Save frames to file
-            if (vp||extractMode) {
-				// std::cout << "=== TIME SINCE LAST SCREENSHOT " << (time(0) - m_lastScreenshot) << " ===" << std::endl;
-				//if (this->frame % 10 == 0) {
-					// std::cout << "=== CREATING SCREENSHOT ===" << std::endl;
-					// reset stream
-					m_frameFilename.str("");
-					m_frameFilename.clear();
-					// create new filename
-					m_frameFilename << workingDirectory << "/" << trackName << "/png/" << std::to_string(frameCounter) << ".png";
-					std::cout << "=== SCREENSHOT FILENAME WILL BE " << m_frameFilename.str() <<  " ===" << std::endl;
-					// save image to file
-					cv::imwrite(m_frameFilename.str(), imageHeader_);
-					// std::cout << "=== WROTE IMAGE ===" << std::endl;
-					m_lastScreenshot = this->frame;
-				//}
-
-            }
+            //if (extractMode) {
+				stringStream.str("");
+				stringStream.clear();
+				// create new filename
+				stringStream << workingDirectory << "/" << trackName << "/png/" << std::to_string(frameCounter) << ".png";
+				std::cout << "=== SCREENSHOT FILENAME WILL BE " << stringStream.str() <<  " ===" << std::endl;
+				// save image to file
+				cv::imwrite(stringStream.str(), imageHeader_);
+				// std::cout << "=== WROTE IMAGE ===" << std::endl;
+				m_lastScreenshot = this->frame;
+            // }
             ++frameCounter;
 
             PController pc(1.0f,2.0f);
@@ -982,7 +981,7 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
             		renderText(std::string("VP (" + std::to_string(int(vp->x)) + "," + std::to_string(int(vp->y)) + ")"), 60);
             	}
 
-            	if (lmvp::DEBUG_AUTOMATED_DRIVER) {
+            	if (automatedDriver) {
             		CarDynamics &cd = car_dynamics[0];
 					if (vp->x < car.x) {
 						gamma = -1 * gamma;
