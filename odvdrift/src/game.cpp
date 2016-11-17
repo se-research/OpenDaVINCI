@@ -599,11 +599,24 @@ bool Game::ParseArguments(std::list <std::string> & args)
 	}
 	arghelp["-test"] = "Run unit tests.";
 
+	// SEED
 	if (argmap.find("-textured") != argmap.end())
 	{
 		textured = true;
 	}
 	arghelp["-textured"] = "Simulating real world environment. No synthetic information such as lane markings.";
+
+	if (argmap.find("-trackName") != argmap.end())
+	{
+		std::string trackName = argmap["-trackName"];
+	}
+	arghelp["-textured"] = "Select track to use from the command line (not implemented yet).";
+
+	if (argmap.find("-workingDirectory") != argmap.end())
+	{
+		std::string workingDirectory = argmap["-workingDirectory"];
+	}
+	arghelp["-workingDirectory"] = "Project working directory to store extracted frames and VP data to.";
 
 	if (!argmap["-cartest"].empty())
 	{

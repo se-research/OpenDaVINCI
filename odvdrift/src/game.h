@@ -422,6 +422,8 @@ private:
     std::vector<std::string> vanishingPoints; // frameID, x, y
     int frameCounter;
 
+    std::string workingDirectory = "";
+    std::string trackName = "";
 
 };
 
