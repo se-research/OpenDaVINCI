@@ -599,11 +599,24 @@ bool Game::ParseArguments(std::list <std::string> & args)
 	}
 	arghelp["-test"] = "Run unit tests.";
 
-	if (argmap.find("-textured") != argmap.end())
+	// SEED
+	if (!argmap["-extractMode"].empty())
 	{
-		textured = true;
+		extractMode = (argmap["-extractMode"] == "true");
 	}
-	arghelp["-textured"] = "Simulating real world environment. No synthetic information such as lane markings.";
+	arghelp["-extractMode"] = "We either DETECT VPs or EXTRACT frames.";
+
+	if (!argmap["-workingDirectory"].empty())
+	{
+		trackName = argmap["-trackName"];
+	}
+	arghelp["-trackName"] = "Select track to use from the command line (not implemented yet).";
+
+	if (!argmap["-workingDirectory"].empty())
+	{
+		workingDirectory = argmap["-workingDirectory"];
+	}
+	arghelp["-workingDirectory"] = "Project working directory to store extracted frames and VP data to.";
 
 	if (!argmap["-cartest"].empty())
 	{
@@ -838,11 +851,11 @@ void Game::setUp() {
 }
 
 void Game::tearDown() {
-	if(!textured) {
+	if(!extractMode) {
 		m_frameFilename.str("");
 		m_frameFilename.clear();
 	}
-	m_frameFilename << time(0) << ".csv";
+	m_frameFilename << workingDirectory << "/" << trackName << "/" << "labels.csv";
 	this->writeResults(m_frameFilename.str());
     info_output << "tearDown()" << std::endl;
 }
@@ -899,19 +912,20 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
             odcore::data::Container c(si);
             getConference().send(c);
 	        
-	        std::cout << "TEXTURED: " << textured <<std::endl;
+	        std::cout << "extractMode: " << extractMode <<std::endl;
+	        std::cout << "workingDirectory: " << workingDirectory <<std::endl;
+	        std::cout << "trackName: " << trackName <<std::endl;
 	        
 	        //SEED
 	        attachToSharedMemory(si);
             odcore::base::Lock lock(sharedImageMemory_);
-            
 
             //std::cout <<"Cols " << imageHeader_.cols; //800
 	          //std::cout <<"Rows " << imageHeader_.rows << std::endl; //600
 
-            if(!textured)
+            if(!extractMode)
             {
-				std::cout << "=== CALCULATING VANISHING POINT ===" << std::endl;
+				// std::cout << "=== CALCULATING VANISHING POINT ===" << std::endl;
 
 				vp = vpd.detectVanishingPoint(imageHeader_);
 				if(vp)
@@ -927,26 +941,26 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
             }
 
             // Save frames to file
-            if (vp||textured) {
-				std::cout << "=== TIME SINCE LAST SCREENSHOT " << (time(0) - m_lastScreenshot) << " ===" << std::endl;
+            if (vp||extractMode) {
+				// std::cout << "=== TIME SINCE LAST SCREENSHOT " << (time(0) - m_lastScreenshot) << " ===" << std::endl;
 				//if (this->frame % 10 == 0) {
-					std::cout << "=== CREATING SCREENSHOT ===" << std::endl;
+					// std::cout << "=== CREATING SCREENSHOT ===" << std::endl;
 					// reset stream
 					m_frameFilename.str("");
 					m_frameFilename.clear();
 					// create new filename
-					m_frameFilename << std::to_string(frameCounter) << ".png";
-					std::cout << "=== FILENAME WILL BE " << m_frameFilename.str() <<  " ===" << std::endl;
+					m_frameFilename << workingDirectory << "/" << trackName << "/png/" << std::to_string(frameCounter) << ".png";
+					std::cout << "=== SCREENSHOT FILENAME WILL BE " << m_frameFilename.str() <<  " ===" << std::endl;
 					// save image to file
 					cv::imwrite(m_frameFilename.str(), imageHeader_);
-					std::cout << "=== WROTE IMAGE ===" << std::endl;
+					// std::cout << "=== WROTE IMAGE ===" << std::endl;
 					m_lastScreenshot = this->frame;
 				//}
-
 
             }
             ++frameCounter;
             /* Auskommentiert weil es nicht baut
+
             PController pc(1.0f,2.0f);
             //Controller
             if (vp) {
@@ -984,7 +998,6 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
             		inputFromOpenDaVINCI[CarInput::THROTTLE] = SPEED_DELTA * speed_error;
             	}
             }
-            */
 
             std::cout << "=== RENDERING IMAGE ===" << std::endl;
             imshow("vp detection", imageHeader_);
