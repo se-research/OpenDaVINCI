@@ -8,7 +8,7 @@
 #ifndef SRC_CONTROLLER_LIB_ICONTROLLER_H_
 #define SRC_CONTROLLER_LIB_ICONTROLLER_H_
 
-#include "Controller.h";
+#include "Controller.h"
 
 class IController : Controller {
 private:

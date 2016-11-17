@@ -946,7 +946,7 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 				++frameCounter;
             }
 
-            /* Auskommentiert weil es nicht baut
+
             PController pc(1.0f,2.0f);
             //Controller
             if (vp) {
@@ -984,7 +984,6 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
             		inputFromOpenDaVINCI[CarInput::THROTTLE] = SPEED_DELTA * speed_error;
             	}
             }
-            */
 
             std::cout << "=== RENDERING IMAGE ===" << std::endl;
             imshow("vp detection", imageHeader_);

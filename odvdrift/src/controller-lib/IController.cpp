@@ -19,5 +19,5 @@ IController::~IController() {
 }
 
 float IController::compute(float error) {
-	return (Kp * error);
+	return (Ki * error);
 }
