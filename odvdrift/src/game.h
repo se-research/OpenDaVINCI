@@ -416,12 +416,12 @@ private:
 
     std::ostringstream m_frameFilename;
     time_t m_lastScreenshot;
-    bool textured = false;
     const int ROW_COUNT = 3;
     int m_line = 0;
     std::vector<std::string> vanishingPoints; // frameID, x, y
     int frameCounter;
 
+    bool extractMode = false;
     std::string workingDirectory = "";
     std::string trackName = "";
 
