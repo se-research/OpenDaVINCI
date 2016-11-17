@@ -943,9 +943,9 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 					m_lastScreenshot = this->frame;
 				//}
 
-				++frameCounter;
-            }
 
+            }
+            ++frameCounter;
             /* Auskommentiert weil es nicht baut
             PController pc(1.0f,2.0f);
             //Controller
