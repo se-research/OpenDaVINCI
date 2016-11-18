@@ -232,8 +232,9 @@ private:
 
         if(!leftLaneBoundary || !rightLaneBoundary) {
         	std::cout << "<<< !leftLaneBoundary || !rightLaneBoundary >>>" << std::endl;
-            // return std::shared_ptr<cv::Point2f>(new cv::Point2f(0,400));
-        	return std::shared_ptr<cv::Point2f>();
+        	// Set bogus VPs that will be filtered by the redcarpet NN
+            return std::shared_ptr<cv::Point2f>(new cv::Point2f(-1000,-1000));
+        	//return std::shared_ptr<cv::Point2f>();
         }
 
         std::cout << "<<< roiVanishingPoint >>>" << std::endl;

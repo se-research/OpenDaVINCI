@@ -415,7 +415,7 @@ private:
     std::shared_ptr<odcore::wrapper::SharedMemory> sharedImageMemory_;
     cv::Mat imageHeader_, testImage, testImage2;
 
-    std::ostringstream m_frameFilename;
+    std::ostringstream stringStream;
     time_t m_lastScreenshot;
     const int ROW_COUNT = 3;
     int m_line = 0;
@@ -425,6 +425,7 @@ private:
     bool extractMode = false;
     std::string workingDirectory = "";
     std::string trackName = "";
+    bool automatedDriver = false;
 
     PIDController gammaPID;
     PIDController speedPID;

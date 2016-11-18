@@ -9,3 +9,6 @@ doc
 libautomotivedata
 libcanmessagemapping
 *.pyc
+odvdrift/src/.cproject
+odvdrift/src/.project
+odvdrift/src/.settings/
