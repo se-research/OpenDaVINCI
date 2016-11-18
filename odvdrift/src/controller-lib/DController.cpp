@@ -17,4 +17,6 @@ DController::~DController() {
 
 float DController::compute(float error) {
 	float out = Kd * (error - this->lastError)/timestep;
+	this->lastError = error;
+	return out;
 }

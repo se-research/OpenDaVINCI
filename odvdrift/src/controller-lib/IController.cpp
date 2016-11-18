@@ -22,6 +22,6 @@ IController::~IController() {
 float IController::compute(float error) {
 	this->sum += Ki * timestep*(lastError + error)/2;
 
-		lastError = error;
-		return this->sum;
+	this->lastError = error;
+	return this->sum;
 }
