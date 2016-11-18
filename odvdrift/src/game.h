@@ -429,6 +429,8 @@ private:
 
     PIDController gammaPID;
     PIDController speedPID;
+    double normed;
+    double gamma;
 
 };
 

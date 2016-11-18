@@ -182,8 +182,8 @@ Game::Game(int argc, char **argv, std::ostream & info_out, std::ostream & error_
 	track(),
 	replay(timestep),
 	http("/tmp"),
-	gammaPID(1, 0.00001, 0.00000001, 0.000001),
-	speedPID(1, 0.01, 0.0001, 0.01)
+	gammaPID(1, 0.01, 0.0001, 0.01),
+	speedPID(1, 0.1, 0.0, 0.1)
 {
 	frameCounter = 0;
 	carcontrols_local.first = NULL;
@@ -958,30 +958,35 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 
             //Controller
             if (!extractMode) {
-            	std::cout << "=== CALCULATING ANGLE ===" << std::endl;
-            	Point car = Point(399, 599); // car
-            	Point pp = Point(vp->x,599); // perpendicular line from VP
-            	Point v = Point((vp->y - car.y),(vp->x - car.x)); // Point v = vp - car;
-            	Point w = Point((vp->y - pp.y),(vp->x - pp.x));; // Point w = vp - perpendicular;
-            	double normed = acos(normed) / (cv::norm(v) * cv::norm(w));
-            	double gamma = acos(normed) * (180/CV_PI);
-            	double stAngleDeg = 90 - gamma;
+            	if(vp->x>-1000)
+            	{
+					std::cout << "=== CALCULATING ANGLE ===" << std::endl;
+					Point car = Point(399, 599); // car
+					Point pp = Point(vp->x,599); // perpendicular line from VP
+					Point v = Point((vp->y - car.y),(vp->x - car.x)); // Point v = vp - car;
+					Point w = Point((vp->y - pp.y),(vp->x - pp.x));; // Point w = vp - perpendicular;
+					normed = acos(v.dot(w) / (cv::norm(v) * cv::norm(w)));
+					gamma = normed * (180/CV_PI);
 
-            	// Draw steering hint lines
-            	if (lmvp::DEBUG_SHOW_STEERING_HINTS) {
-            		std::cout << "=== DEBUG_SHOW_STEERING_HINTS ===" << std::endl;
-            		cv::line(imageHeader_, Point(int(vp->x),int(vp->y)), car, Scalar(255,255,0));
-            		cv::line(imageHeader_, Point(int(vp->x),int(vp->y)), pp, Scalar(255,255,0));
-
-            		renderText(std::string("stAngleDeg = " + std::to_string(stAngleDeg)), 30);
-            		renderText(std::string("VP (" + std::to_string(int(vp->x)) + "," + std::to_string(int(vp->y)) + ")"), 60);
-            	}
-
-            	if (automatedDriver) {
-            		CarDynamics &cd = car_dynamics[0];
 					if (vp->x < car.x) {
 						gamma = -1 * gamma;
 					}
+
+					//double stAngleDeg = 90 - gamma;
+
+					// Draw steering hint lines
+					if (lmvp::DEBUG_SHOW_STEERING_HINTS ) {
+						std::cout << "=== DEBUG_SHOW_STEERING_HINTS ===" << std::endl;
+						cv::line(imageHeader_, Point(int(vp->x),int(vp->y)), car, Scalar(255,255,0));
+						cv::line(imageHeader_, Point(int(vp->x),int(vp->y)), pp, Scalar(255,255,0));
+
+						renderText(std::string("gamma = " + std::to_string(gamma)), 30);
+						renderText(std::string("VP (" + std::to_string(int(vp->x)) + "," + std::to_string(int(vp->y)) + ")"), 60);
+					}
+            	}
+            	if (automatedDriver) {
+            		CarDynamics &cd = car_dynamics[0];
+
 					std::cout << "P: " << gammaPID.Kp << " I: " << gammaPID.Ki<< " D: " << gammaPID.Kd << std::endl;
 					float STEERING_DELTA = gammaPID.compute(gamma);
 					std::cout << "Gamma: " << std::to_string(gamma) << " Steering: " << STEERING_DELTA << std::endl;
