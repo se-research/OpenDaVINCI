@@ -29,6 +29,7 @@
 # pragma GCC diagnostic ignored "-Weffc++"
 # pragma GCC diagnostic ignored "-Wshadow"
 # pragma GCC diagnostic ignored "-Wlong-long"
+# pragma GCC diagnostic ignored "-Wfloat-equal"
 #endif
 
     #include "opendavinci/half.hpp"
