@@ -181,7 +181,9 @@ Game::Game(int argc, char **argv, std::ostream & info_out, std::ostream & error_
 	particle_timer(0),
 	track(),
 	replay(timestep),
-	http("/tmp")
+	http("/tmp"),
+	gammaPID(1, 0.00001, 0.00000001, 0.000001),
+	speedPID(1, 0.01, 0.0001, 0.01)
 {
 	frameCounter = 0;
 	carcontrols_local.first = NULL;
@@ -959,9 +961,8 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 
             }
             ++frameCounter;
-            /* Auskommentiert weil es nicht baut
+            /* Auskommentiert weil es nicht baut*/
 
-            PController pc(1.0f,2.0f);
             //Controller
             if (vp) {
             	std::cout << "=== CALCULATING ANGLE ===" << std::endl;
@@ -988,14 +989,18 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 					if (vp->x < car.x) {
 						gamma = -1 * gamma;
 					}
-					const float STEERING_DELTA = 0.001;
-            		inputFromOpenDaVINCI[CarInput::STEER_RIGHT] = STEERING_DELTA * gamma;
+					std::cout << "P: " << gammaPID.Kp << " I: " << gammaPID.Ki<< " D: " << gammaPID.Kd << std::endl;
+					float STEERING_DELTA = gammaPID.compute(gamma);
+					std::cout << "Gamma: " << std::to_string(gamma) << " Steering: " << STEERING_DELTA << std::endl;
+            		inputFromOpenDaVINCI[CarInput::STEER_RIGHT] = STEERING_DELTA;
 
             		const float SPEED_DELTA = 0.01;
             		const float REF_SPEED = 30;
             		float speed = (float)cd.GetSpeed();
             		float speed_error = REF_SPEED - speed;
-            		inputFromOpenDaVINCI[CarInput::THROTTLE] = SPEED_DELTA * speed_error;
+            		float ACCELERATION = speedPID.compute(speed_error);
+            		std::cout << "Acceleration: " << ACCELERATION << std::endl;
+            		inputFromOpenDaVINCI[CarInput::THROTTLE] = std::max(ACCELERATION, 0.0f);
             	}
             }
 

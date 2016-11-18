@@ -13,7 +13,7 @@ public:
 	Controller(float timestep);
 	virtual ~Controller();
 	virtual float compute(float error) = 0;
-private:
+protected:
 	float timestep;
 };
 

@@ -10,7 +10,7 @@
 
 #include "Controller.h"
 
-class PController : Controller {
+class PController : public Controller {
 private:
 	float Kp;
 public:

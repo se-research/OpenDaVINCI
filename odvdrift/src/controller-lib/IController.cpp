@@ -12,12 +12,16 @@
 IController::IController(float timestep, float Ki) : Controller(timestep){
 	this->Ki = Ki;
 	this->lastError=0;
+	this->sum = 0;
 }
 
 IController::~IController() {
-	// TODO Auto-generated destructor stub
+
 }
 
 float IController::compute(float error) {
-	return (Ki * error);
+	this->sum += Ki * timestep*(lastError + error)/2;
+
+		lastError = error;
+		return this->sum;
 }

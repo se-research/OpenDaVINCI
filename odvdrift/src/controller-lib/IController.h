@@ -10,10 +10,11 @@
 
 #include "Controller.h"
 
-class IController : Controller {
+class IController : public Controller {
 private:
 	float Ki;
 	float lastError;
+	float sum;
 public:
 	IController(float timestep, float Ki);
 	virtual ~IController();

@@ -60,6 +60,7 @@
 #include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
 #include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 #include "opendavinci/generated/odcore/data/image/SharedImage.h"
+#include "controller-lib/PIDController.h"
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
@@ -424,6 +425,9 @@ private:
     bool extractMode = false;
     std::string workingDirectory = "";
     std::string trackName = "";
+
+    PIDController gammaPID;
+    PIDController speedPID;
 
 };
 
