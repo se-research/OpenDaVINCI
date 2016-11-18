@@ -215,8 +215,8 @@ private:
      * @return An empty pointer if the vanishing point could not be determined
      */
     std::shared_ptr<cv::Point2f> computeVanishingPoint(cv::Mat & debugImage, const LaneMarkingsScan::LaneMarkings & laneMarkings) {
-        std::shared_ptr<DirInfLinef> leftLaneBoundary = leftLowpass_.lowpass(computeLaneBoundary(debugImage, laneMarkings.at(RelativeDirection::LEFT))),
-                                     rightLaneBoundary = rightLowpass_.lowpass(computeLaneBoundary(debugImage, laneMarkings.at(RelativeDirection::RIGHT)));
+        std::shared_ptr<DirInfLinef> leftLaneBoundary = computeLaneBoundary(debugImage, laneMarkings.at(RelativeDirection::LEFT)), //leftLowpass_.lowpass(computeLaneBoundary(debugImage, laneMarkings.at(RelativeDirection::LEFT))),
+                                     rightLaneBoundary = computeLaneBoundary(debugImage, laneMarkings.at(RelativeDirection::RIGHT));//rightLowpass_.lowpass(computeLaneBoundary(debugImage, laneMarkings.at(RelativeDirection::RIGHT)));
 
         std::cout << "<<< computeVanishingPoint() >>>" << std::endl;
         if(DEBUG_SHOW_LANE_BOUNDARIES) {

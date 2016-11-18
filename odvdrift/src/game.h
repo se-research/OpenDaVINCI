@@ -431,6 +431,9 @@ private:
     PIDController speedPID;
     double normed;
     double gamma;
+    const double min_speed = 5.0;
+    const double max_speed = 12.0;
+
 
 };
 

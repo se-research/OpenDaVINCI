@@ -182,7 +182,7 @@ Game::Game(int argc, char **argv, std::ostream & info_out, std::ostream & error_
 	track(),
 	replay(timestep),
 	http("/tmp"),
-	gammaPID(1, 0.01, 0.0001, 0.01),
+	gammaPID(1, 0.0, 0.000, 0.02),
 	speedPID(1, 0.1, 0.0, 0.1)
 {
 	frameCounter = 0;
@@ -992,13 +992,16 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Game::body() {
 					std::cout << "Gamma: " << std::to_string(gamma) << " Steering: " << STEERING_DELTA << std::endl;
             		inputFromOpenDaVINCI[CarInput::STEER_RIGHT] = STEERING_DELTA;
 
-            		const float SPEED_DELTA = 0.01;
-            		const float REF_SPEED = 30;
             		float speed = (float)cd.GetSpeed();
-            		float speed_error = REF_SPEED - speed;
-            		float ACCELERATION = speedPID.compute(speed_error);
-            		std::cout << "Acceleration: " << ACCELERATION << std::endl;
-            		inputFromOpenDaVINCI[CarInput::THROTTLE] = std::max(ACCELERATION, 0.0f);
+            		float ref_speed = std::max(min_speed,max_speed*std::exp(-std::abs(gamma)/10));
+            		float speed_error = ref_speed - speed;
+            		float acceleration = speedPID.compute(speed_error);
+            		std::cout << "Acceleration: " << acceleration << std::endl;
+            		inputFromOpenDaVINCI[CarInput::THROTTLE] = std::max(acceleration, 0.0f);
+
+            		renderText(std::string("ref_speed = " + std::to_string(ref_speed)), 90);
+					renderText(std::string("speed = " + std::to_string(speed)), 120);
+					renderText(std::string("steeringangle = " + std::to_string(STEERING_DELTA)), 150);
             	}
             }
 
