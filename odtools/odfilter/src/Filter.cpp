@@ -19,7 +19,6 @@
 
 #include <algorithm>
 #include <iostream>
-#include <sstream>
 
 #include "opendavinci/odcore/base/CommandLineParser.h"
 #include "opendavinci/odcore/serialization/QueryableNetstringsDeserializerABCF.h"
@@ -112,14 +111,9 @@ namespace odfilter {
         else {
             // Please note that reading from stdin does not evaluate sending latencies.
             while (cin.good()) {
-                // Buffer from cin.
-                stringstream containerBuffer;
-                // Fill buffer.
-                QueryableNetstringsDeserializerABCF::fillBuffer(cin, containerBuffer);
-
-                // Decode container from buffer.
+                // Read next Container.
                 Container c;
-                containerBuffer >> c;
+                cin >> c;
 
                 uint32_t id = c.getDataType();
 
@@ -128,14 +122,14 @@ namespace odfilter {
                         vector<uint32_t>::iterator jt = find(m_keep.begin(), m_keep.end(), id);
                         if (jt != m_keep.end()) {
                             // Container is to keep, push it to stdout.
-                            std::cout << c;
+                            cout << c;
                         }
                     }
                     if (m_drop.size() > 0) {
                         vector<uint32_t>::iterator jt = find(m_drop.begin(), m_drop.end(), id);
                         if (jt == m_drop.end()) {
                             // Container ID is not in dropping list, push it to stdout.
-                            std::cout << c;
+                            cout << c;
                         }
                     }
                     std::cout.rdbuf()->pubsync();
