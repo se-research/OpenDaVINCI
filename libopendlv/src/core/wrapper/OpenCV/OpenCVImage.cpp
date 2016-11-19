@@ -21,6 +21,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <fstream>
+#include <iostream>
 
 #ifndef WIN32
   #include <unistd.h>
@@ -85,7 +86,9 @@ namespace core {
 #else
                 tempFileName = (char*)calloc(50, sizeof(tempFileName));
                 strncpy(tempFileName,"/tmp/OpenCVImage-XXXXXX", 23);
-                mkstemp(tempFileName);
+                if (mkstemp(tempFileName) < 0) {
+                    cerr << "[OpenCVImage] Error creating temporary file." << endl;
+                }
 #endif
                 fstream fout(tempFileName, ios::binary | ios::out);
                 char c = 0;
