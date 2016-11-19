@@ -180,7 +180,7 @@ namespace odcore {
 
         TimeStamp TimeStamp::operator+(const TimeStamp & t) const {
             int32_t sumSeconds = getSeconds() + t.getSeconds();
-            int32_t sumMicroseconds = getFractionalMicroseconds() + t.getFractionalMicroseconds();
+            int64_t sumMicroseconds = getFractionalMicroseconds() + t.getFractionalMicroseconds();
 
             while (sumMicroseconds > 1000000L) {
                 sumSeconds++;
@@ -192,7 +192,7 @@ namespace odcore {
 
         TimeStamp TimeStamp::operator-(const TimeStamp & t) const {
             int32_t deltaSeconds = getSeconds() - t.getSeconds();
-            int32_t deltaMicroseconds = getFractionalMicroseconds() - t.getFractionalMicroseconds();
+            int64_t deltaMicroseconds = getFractionalMicroseconds() - t.getFractionalMicroseconds();
 
             while (deltaMicroseconds < 0) {
                 deltaSeconds--;

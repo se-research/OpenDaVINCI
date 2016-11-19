@@ -94,7 +94,7 @@ class Serializable;
                  * @param value Value to be encoded.
                  * @return size Encoded value.
                  */
-                uint8_t encodeZigZag8(int8_t value);
+                uint8_t encodeZigZag8(int8_t value) const;
 
                 /**
                  * This method encodes a given value using zigzag16 encoding.
@@ -102,7 +102,7 @@ class Serializable;
                  * @param value Value to be encoded.
                  * @return size Encoded value.
                  */
-                uint16_t encodeZigZag16(int16_t value);
+                uint16_t encodeZigZag16(int16_t value) const;
 
                 /**
                  * This method encodes a given value using zigzag32 encoding.
@@ -110,7 +110,7 @@ class Serializable;
                  * @param value Value to be encoded.
                  * @return size Encoded value.
                  */
-                uint32_t encodeZigZag32(int32_t value);
+                uint32_t encodeZigZag32(int32_t value) const;
 
                 /**
                  * This method encodes a given value using zigzag64 encoding.
@@ -118,7 +118,7 @@ class Serializable;
                  * @param value Value to be encoded.
                  * @return size Encoded value.
                  */
-                uint64_t encodeZigZag64(int64_t value);
+                uint64_t encodeZigZag64(int64_t value) const;
 
             public:
                 virtual uint32_t writeValue(ostream &o, const Serializable &v);

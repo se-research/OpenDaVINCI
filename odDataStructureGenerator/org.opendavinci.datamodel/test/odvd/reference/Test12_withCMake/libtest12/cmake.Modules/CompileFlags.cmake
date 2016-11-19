@@ -21,7 +21,7 @@ IF(UNIX)
     IF("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
         SET(CMAKE_MACOSX_RPATH 1)
     ENDIF()
-    SET (CXX_OPTIONS       " -std=c++11 -Wno-deprecated -Wall -Wshadow -Wextra -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wpacked")
+    SET (CXX_OPTIONS       " -O2 -std=c++11 -Wno-deprecated -Wall -Wshadow -Wextra -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wpacked")
     SET (CXX_EFFECTIVE_CXX "-Wmissing-format-attribute -Wredundant-decls -Weffc++")
     SET (CXX_UNINITIALIZED "-Wno-maybe-uninitialized -Wno-error=unused-result")
     # Additionally, test for Effective C++ warnings except on OpenBSD.

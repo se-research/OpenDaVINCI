@@ -82,7 +82,10 @@ namespace odcore {
                 m_address.sin_port = htons(port);
 
                 // Bind to receive address/port.
-                if (::bind(m_fd, reinterpret_cast<struct sockaddr *>(&m_address), sizeof(m_address)) < 0) {
+                // Fixing -Werror=strict-aliasing
+                struct sockaddr addr;
+                memcpy(&addr, &m_address, sizeof(m_address));
+                if (::bind(m_fd, &addr, sizeof(m_address)) < 0) {
                     stringstream s;
                     s << "[POSIXUDPReceiver] Error while binding socket: " << strerror(errno);
                     throw s.str();
@@ -169,13 +172,34 @@ namespace odcore {
 
                     if (FD_ISSET(m_fd, &rfds)) {
                         // Get data and sender address.
-                        size_t addrLength = sizeof(remote);
+                        socklen_t addrLength= sizeof(remote);
+
+// Fix -Werror=strict-aliasing (ignoring it is okay for the following call).
+#if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#    pragma GCC diagnostic push
+#endif
+#if (__GNUC__ == 4 && 3 <= __GNUC_MINOR__) || 4 < __GNUC__
+#    pragma GCC diagnostic ignored "-Wstrict-aliasing"
+#endif
                         nbytes = recvfrom(m_fd, m_buffer, BUFFER_SIZE, 0, reinterpret_cast<struct sockaddr *>(&remote), reinterpret_cast<socklen_t*>(&addrLength));
+#if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#    pragma GCC diagnostic pop
+#endif
 
                         if (nbytes > 0) {
+// Fix -Werror=strict-aliasing (ignoring it is okay for the following calls).
+#if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#    pragma GCC diagnostic push
+#endif
+#if (__GNUC__ == 4 && 3 <= __GNUC_MINOR__) || 4 < __GNUC__
+#    pragma GCC diagnostic ignored "-Wstrict-aliasing"
+#endif
                             // Get IP address and port from sender.
                             const unsigned long RECVFROM_IP_ADDRESS = (reinterpret_cast<struct sockaddr_in*>(&remote))->sin_addr.s_addr;
                             const uint16_t RECVFROM_PORT = ntohs(reinterpret_cast<struct sockaddr_in*>(&remote)->sin_port);
+#if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#    pragma GCC diagnostic pop
+#endif
 
                             // Forward packet if (a) it is NOT sent from the same machine that is receiving (i.e. over network),
                             // or, if sent from the same machine as the one used for receiving, if the data was not sent from a
@@ -186,8 +210,17 @@ namespace odcore {
                                 // Get sender address.
                                 const uint32_t MAX_ADDR_SIZE = 1024;
                                 char remoteAddr[MAX_ADDR_SIZE];
+// Fix -Werror=strict-aliasing (ignoring it is okay for the following call).
+#if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#    pragma GCC diagnostic push
+#endif
+#if (__GNUC__ == 4 && 3 <= __GNUC_MINOR__) || 4 < __GNUC__
+#    pragma GCC diagnostic ignored "-Wstrict-aliasing"
+#endif
                                 inet_ntop(remote.ss_family, &((reinterpret_cast<struct sockaddr_in*>(&remote))->sin_addr), remoteAddr, sizeof(remoteAddr));
-
+#if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#    pragma GCC diagnostic pop
+#endif
                                 // -----     -----------------v (remote address)--v (data)
                                 nextPacket(odcore::io::Packet(string(remoteAddr), string(m_buffer, nbytes)));
                             }
