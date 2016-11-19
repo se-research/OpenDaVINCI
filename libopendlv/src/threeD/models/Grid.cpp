@@ -68,6 +68,14 @@ namespace opendlv {
                         glColor3f(1, 1, 1);
 
                         glBegin(GL_LINES);
+
+// Fix -Werror=strict-aliasing (ignoring it is okay for the following call.
+#if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#    pragma GCC diagnostic push
+#endif
+#if (__GNUC__ == 4 && 3 <= __GNUC_MINOR__) || 4 < __GNUC__
+#    pragma GCC diagnostic ignored "-Wunsafe-loop-optimizations"
+#endif
                         int32_t size = m_size;
                         for (int32_t y = -size; y <= size; y++) {
                             for (int32_t x = -size; x <= size; x++) {
@@ -80,6 +88,9 @@ namespace opendlv {
                                 glVertex3f(static_cast<float>(x), static_cast<float>(y), 0);
                             }
                         }
+#if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#    pragma GCC diagnostic pop
+#endif
                         glEnd();
 
                         glLineWidth(1);
