@@ -84,9 +84,13 @@ class Serializable;
                 //uint32_t *_v = (uint32_t*)(&m_value[0]);
                 //uint32_t _v2 = le32toh(*_v);
                 //retVal = *(reinterpret_cast<float*>(&_v2));
-                uint32_t _v = 0;
-                memcpy(&_v, &m_value[0], sizeof(uint32_t));
-                retVal = *(reinterpret_cast<float*>(&_v));
+
+                //uint32_t _v = 0;
+                //memcpy(&_v, &m_value[0], sizeof(uint32_t));
+                //retVal = *(reinterpret_cast<float*>(&_v));
+
+                // Fixing -Werror=strict aliasing.
+                memcpy(&retVal, &m_value[0], sizeof(float));
             }
             return retVal;
         }
@@ -97,9 +101,13 @@ class Serializable;
                 //uint64_t *_v = (uint64_t*)(&m_value[0]);
                 //uint64_t _v2 = le64toh(*_v);
                 //retVal = *(reinterpret_cast<double*>(&_v2));
-                uint64_t _v = 0;
-                memcpy(&_v, &m_value[0], sizeof(uint64_t));
-                retVal = *(reinterpret_cast<double*>(&_v));
+
+                //uint64_t _v = 0;
+                //memcpy(&_v, &m_value[0], sizeof(uint64_t));
+                //retVal = *(reinterpret_cast<double*>(&_v));
+
+                // Fixing -Werror=strict aliasing.
+                memcpy(&retVal, &m_value[0], sizeof(double));
             }
             return retVal;
         }
@@ -221,19 +229,19 @@ class Serializable;
             return size;
         }
 
-        int8_t ProtoDeserializer::decodeZigZag8(uint8_t value) {
+        int8_t ProtoDeserializer::decodeZigZag8(uint8_t value) const {
             return static_cast<int64_t>((value >> 1) ^ -(value & 1));
         }
 
-        int16_t ProtoDeserializer::decodeZigZag16(uint16_t value) {
+        int16_t ProtoDeserializer::decodeZigZag16(uint16_t value) const {
             return static_cast<int64_t>((value >> 1) ^ -(value & 1));
         }
 
-        int32_t ProtoDeserializer::decodeZigZag32(uint32_t value) {
+        int32_t ProtoDeserializer::decodeZigZag32(uint32_t value) const {
             return static_cast<int64_t>((value >> 1) ^ -(value & 1));
         }
 
-        int64_t ProtoDeserializer::decodeZigZag64(uint64_t value) {
+        int64_t ProtoDeserializer::decodeZigZag64(uint64_t value) const {
             return static_cast<int64_t>((value >> 1) ^ -(value & 1));
         }
 
@@ -329,7 +337,10 @@ class Serializable;
             uint32_t _v = 0;
             i.read(reinterpret_cast<char*>(&_v), sizeof(uint32_t));
             _v = le32toh(_v);
-            v = *(reinterpret_cast<float*>(&_v));
+            //v = *(reinterpret_cast<float*>(&_v));
+            // Fixing -Werror=strict aliasing.
+            memcpy(&v, &_v, sizeof(float));
+
             return sizeof(const uint32_t);
         }
 
@@ -338,7 +349,10 @@ class Serializable;
             uint64_t _v = 0;
             i.read(reinterpret_cast<char*>(&_v), sizeof(uint64_t));
             _v = le64toh(_v);
-            v = *(reinterpret_cast<double*>(&_v));
+            //v = *(reinterpret_cast<double*>(&_v));
+            // Fixing -Werror=strict aliasing.
+            memcpy(&v, &_v, sizeof(double));
+
             return sizeof(const uint64_t);
         }
 

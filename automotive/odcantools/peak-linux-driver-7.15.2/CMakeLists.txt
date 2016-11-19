@@ -21,7 +21,7 @@ PROJECT (pcan-no-kernel-driver)
 
 ###############################################################################
 # Set compile flags.
-SET (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC -DNO_RT -Wall")
+SET (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2 -fPIC -DNO_RT -Wall")
 
 ###############################################################################
 # Include directories.

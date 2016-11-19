@@ -76,7 +76,17 @@ namespace odcore {
 
                 m_socketMutex->lock();
                 {
+// Fix -Werror=strict-aliasing (ignoring it is okay for the following call.
+#if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#    pragma GCC diagnostic push
+#endif
+#if (__GNUC__ == 4 && 3 <= __GNUC_MINOR__) || 4 < __GNUC__
+#    pragma GCC diagnostic ignored "-Wstrict-aliasing"
+#endif
                     sendto(m_fd, data.c_str(), data.length(), 0, reinterpret_cast<const struct sockaddr *>(&m_address), sizeof(m_address));
+#if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#    pragma GCC diagnostic pop
+#endif
                 }
                 m_socketMutex->unlock();
             }

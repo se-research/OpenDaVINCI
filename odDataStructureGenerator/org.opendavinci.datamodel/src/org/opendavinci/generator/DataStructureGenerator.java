@@ -350,7 +350,7 @@ public class DataStructureGenerator {
                 sb.append("    IF(\"${CMAKE_SYSTEM_NAME}\" STREQUAL \"Darwin\")"); sb.append("\r\n");
                 sb.append("        SET(CMAKE_MACOSX_RPATH 1)"); sb.append("\r\n");
                 sb.append("    ENDIF()"); sb.append("\r\n");
-		sb.append("    SET (CXX_OPTIONS       \" -std=c++11 -Wno-deprecated -Wall -Wshadow -Wextra -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wpacked\")"); sb.append("\r\n");
+		sb.append("    SET (CXX_OPTIONS       \" -O2 -std=c++11 -Wno-deprecated -Wall -Wshadow -Wextra -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wpacked\")"); sb.append("\r\n");
 		sb.append("    SET (CXX_EFFECTIVE_CXX \"-Wmissing-format-attribute -Wredundant-decls -Weffc++\")"); sb.append("\r\n");
 		sb.append("    SET (CXX_UNINITIALIZED \"-Wno-maybe-uninitialized -Wno-error=unused-result\")"); sb.append("\r\n");
 

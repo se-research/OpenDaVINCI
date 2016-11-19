@@ -24,13 +24,13 @@ IF(UNIX)
         SET(CMAKE_MACOSX_RPATH 1)
     ENDIF()
 
-    SET (CXX_OPTIONS        "-std=c++11 -Wno-deprecated -Wall -Werror -Wshadow -Wextra -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wpacked -Wno-error=deprecated-declarations")
+    SET (CXX_OPTIONS        "-O2 -std=c++11 -Wno-deprecated -Wall -Werror -Wshadow -Wextra -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wpacked -Wno-error=deprecated-declarations")
     SET (CXX_EFFECTIVE_CXX  "-Wmissing-format-attribute -Wredundant-decls -Wno-error=effc++ -Weffc++")
     
-    SET (CXX_WARNING_ALL    "-Wcast-align -Wchar-subscripts -Wcomment -Wdisabled-optimization -Wformat -Wformat=2 -Wformat-nonliteral -Wformat-security -Wformat-y2k -Wfloat-equal -Winit-self -Winline -Winvalid-pch -Wlong-long -Wsign-compare -Wuninitialized -Wunreachable-code -Wunsafe-loop-optimizations -Wunused -Wunused-function -Wunused-label -Wunused-parameter -Wunused-but-set-parameter -Wunused-but-set-variable -Wunused-value -Wunused-variable -Wno-maybe-uninitialized -Wunused-result -Wmissing-braces -Wmissing-field-initializers -Wmissing-format-attribute -Wmissing-include-dirs -Wparentheses -Wsign-compare -Wswitch -Wuninitialized -Wunknown-pragmas -Wunreachable-code -Wtrigraphs  -Wvariadic-macros -Wvolatile-register-var -Wwrite-strings -Wpointer-arith -Wredundant-decls -Wreturn-type -Wsequence-point -Wstack-protector -Wstrict-aliasing -Wstrict-aliasing=2 -Wsync-nand -Wsuggest-attribute=const -Warray-bounds -Wtrampolines -Wlogical-op -Wnormalized=nfc -Wvarargs -Wvector-operation-performance -Wvla -Wtype-limits -Wc++11-compat -Woverloaded-virtual")
+    SET (CXX_WARNING_ALL    "-Wcast-align -Wchar-subscripts -Wcomment -Wdisabled-optimization -Wformat -Wformat=2 -Wformat-nonliteral -Wformat-security -Wformat-y2k -Wfloat-equal -Winit-self -Winline -Winvalid-pch -Wlong-long -Wsign-compare -Wuninitialized -Wunreachable-code -Wunsafe-loop-optimizations -Wunused -Wunused-function -Wunused-label -Wunused-parameter -Wunused-but-set-parameter -Wunused-but-set-variable -Wunused-value -Wunused-variable -Wno-maybe-uninitialized -Wunused-result -Wmissing-braces -Wmissing-field-initializers -Wmissing-format-attribute -Wmissing-include-dirs -Wparentheses -Wsign-compare -Wswitch -Wuninitialized -Wunknown-pragmas -Wunreachable-code -Wtrigraphs  -Wvariadic-macros -Wvolatile-register-var -Wwrite-strings -Wpointer-arith -Wredundant-decls -Wreturn-type -Wsequence-point -Wstack-protector -Wstrict-aliasing -Wstrict-aliasing=2 -Wsync-nand -Wno-error=suggest-attribute=const -Warray-bounds -Wtrampolines -Wlogical-op -Wnormalized=nfc -Wvarargs -Wvector-operation-performance -Wvla -Wtype-limits -Wc++11-compat -Woverloaded-virtual")
 
     # These warnings need to be addressed.
-    SET (CXX_WARNINGS_TO_FIX "-pedantic -Waggregate-return -Wcast-qual -Wconversion -Wctor-dtor-privacy -Wpacked -Wswitch-enum -Wswitch-default -Wzero-as-null-pointer-constant -Wdouble-promotion -Wuseless-cast -Wuseless-cast -Wmissing-declarations -Wold-style-cast")
+    SET (CXX_WARNINGS_TO_FIX "-Wno-error=pedantic -Wno-error=aggregate-return -Wno-error=cast-qual -Wno-error=conversion -Wno-error=ctor-dtor-privacy -Wno-error=packed -Wno-error=switch-enum -Wno-error=switch-default -Wno-error=zero-as-null-pointer-constant -Wno-error=double-promotion -Wno-error=useless-cast -Wno-error=missing-declarations -Wno-error=old-style-cast")
 
     # Additionally, test for Effective C++ warnings except on OpenBSD.
     IF(NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "OpenBSD")
@@ -46,7 +46,7 @@ IF(UNIX)
             EXECUTE_PROCESS(COMMAND ${CMAKE_CXX_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION)
 
             IF (GCC_VERSION VERSION_GREATER 4.7 OR GCC_VERSION VERSION_EQUAL 4.7)
-                SET (CXX_OPTIONS "${CXX_OPTIONS} ${CXX_WARNING_ALL}")
+                SET (CXX_OPTIONS "${CXX_OPTIONS} ${CXX_WARNING_ALL} ${CXX_WARNINGS_TO_FIX}")
             ENDIF()
         ENDIF()
     ENDIF()

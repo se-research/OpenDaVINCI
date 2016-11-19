@@ -80,7 +80,7 @@ FIND_PACKAGE (Qwt5Qt4)
 # Set linking libraries to successfully link test suites and binaries.
 # Adjust compile flags on Mac OS
 IF("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
-    SET (CMAKE_CXX_FLAGS " -std=c++11 -Wall -Wextra -Weffc++")
+    SET (CMAKE_CXX_FLAGS " -O2 -std=c++11 -Wall -Wextra -Weffc++")
 ENDIF()
 
 SET (LIBRARIES ${OPENDAVINCI_LIBRARIES}

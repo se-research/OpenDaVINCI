@@ -150,19 +150,19 @@ class Serializable;
 
         ///////////////////////////////////////////////////////////////////////
 
-        uint8_t ProtoSerializer::encodeZigZag8(int8_t value) {
+        uint8_t ProtoSerializer::encodeZigZag8(int8_t value) const {
             return static_cast<uint8_t>((value << 1) ^ (value >> 7));
         }
 
-        uint16_t ProtoSerializer::encodeZigZag16(int16_t value) {
+        uint16_t ProtoSerializer::encodeZigZag16(int16_t value) const {
             return static_cast<uint16_t>((value << 1) ^ (value >> 15));
         }
 
-        uint32_t ProtoSerializer::encodeZigZag32(int32_t value) {
+        uint32_t ProtoSerializer::encodeZigZag32(int32_t value) const {
             return static_cast<uint32_t>((value << 1) ^ (value >> 31));
         }
 
-        uint64_t ProtoSerializer::encodeZigZag64(int64_t value) {
+        uint64_t ProtoSerializer::encodeZigZag64(int64_t value) const {
             return static_cast<uint64_t>((value << 1) ^ (value >> 63));
         }
 
