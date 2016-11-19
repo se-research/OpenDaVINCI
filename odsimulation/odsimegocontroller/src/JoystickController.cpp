@@ -85,7 +85,9 @@ namespace egocontroller {
     {
 #if !defined(WIN32) && !defined(__gnu_hurd__) && !defined(__APPLE__)
         struct js_event js;
-        read(m_joy_fd, &js, sizeof(struct js_event));
+        if (read(m_joy_fd, &js, sizeof(struct js_event)) < 0) {
+            cerr << "Error while reading from joystick." << endl;
+        }
 
         // Check event.
         switch (js.type & ~JS_EVENT_INIT) {
