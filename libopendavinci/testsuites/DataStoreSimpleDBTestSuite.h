@@ -216,6 +216,7 @@ class DataStoreTest : public CxxTest::TestSuite {
             KeyValueDataStore *ds = new KeyValueDataStore(std::shared_ptr<odcore::wrapper::KeyValueDatabase>(new MySimpleDB()));
 
             const uint32_t size = 4096;
+
             // Generate data.
             Container *c = new Container[size];
             for (uint32_t i = 0; i < size; i++) {
@@ -254,6 +255,7 @@ class DataStoreTest : public CxxTest::TestSuite {
 #endif
 
             // Clean up.
+            delete [] c;
             delete ds;
         }
 

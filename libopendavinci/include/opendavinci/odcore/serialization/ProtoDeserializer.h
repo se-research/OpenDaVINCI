@@ -186,7 +186,7 @@ namespace odcore {
                  * @param value Value to be decoded.
                  * @return size Decoded value.
                  */
-                int8_t decodeZigZag8(uint8_t value);
+                int8_t decodeZigZag8(uint8_t value) const;
 
                 /**
                  * This method decodes a given value using zigzag16 decoding.
@@ -194,7 +194,7 @@ namespace odcore {
                  * @param value Value to be decoded.
                  * @return size Decoded value.
                  */
-                int16_t decodeZigZag16(uint16_t value);
+                int16_t decodeZigZag16(uint16_t value) const;
 
                 /**
                  * This method decodes a given value using zigzag32 decoding.
@@ -202,7 +202,7 @@ namespace odcore {
                  * @param value Value to be decoded.
                  * @return size Decoded value.
                  */
-                int32_t decodeZigZag32(uint32_t value);
+                int32_t decodeZigZag32(uint32_t value) const;
 
                 /**
                  * This method decodes a given value using zigzag64 decoding.
@@ -210,7 +210,7 @@ namespace odcore {
                  * @param value Value to be decoded.
                  * @return size Decoded value.
                  */
-                int64_t decodeZigZag64(uint64_t value);
+                int64_t decodeZigZag64(uint64_t value) const;
 
             public:
                 virtual uint32_t readValue(istream &i, Serializable &v);

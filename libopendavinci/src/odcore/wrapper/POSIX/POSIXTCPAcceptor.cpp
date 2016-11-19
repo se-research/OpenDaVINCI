@@ -90,11 +90,21 @@ namespace odcore {
                 address.sin_port = htons(port);
 
                 // Bind handle.
+// Fix -Werror=strict-aliasing (ignoring it is okay for the following call.
+#if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#    pragma GCC diagnostic push
+#endif
+#if (__GNUC__ == 4 && 3 <= __GNUC_MINOR__) || 4 < __GNUC__
+#    pragma GCC diagnostic ignored "-Wstrict-aliasing"
+#endif
                 if (::bind(m_fileDescriptor, reinterpret_cast<struct sockaddr *>(&address), sizeof(address)) == -1) {
                     stringstream s;
                     s << "[core::wrapper::POSIXTCPAcceptor] Error while binding socket: " << strerror(errno);
                     throw s.str();
                 }
+#if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#    pragma GCC diagnostic pop
+#endif
 
                 if (listen(m_fileDescriptor, POSIXTCPAcceptor::BACKLOG) == -1) {
                     stringstream s;
