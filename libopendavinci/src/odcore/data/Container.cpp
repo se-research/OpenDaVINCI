@@ -229,9 +229,6 @@ namespace odcore {
                         unsigned char byte1 = (expectedBytes & 0xFF);
                         expectedBytes = expectedBytes >> 8;
 
-//                        // Clear buffer as the remaining bytes are the payload.
-//                        bufferIn.str("");
-
                         // Allocate contiguous space to store bytes.
                         bufferPosition = 0;
                         temporaryBuffer.resize(expectedBytes);
