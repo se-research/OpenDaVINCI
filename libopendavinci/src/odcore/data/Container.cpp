@@ -183,12 +183,17 @@ namespace odcore {
                 uint32_t expectedBytes = 0;
                 uint32_t bufferPosition = 0;
 
+                temporaryBuffer.resize(OPENDAVINCI_CONTAINER_HEADER_SIZE);
                 while (in.good()) {
                     if (0 == expectedBytes) {
-                        // Copy bytes to internal buffer.
-                        char c = in.get();
-                        bufferIn.put(c);
-                        bytesRead++;
+                        in.read(&temporaryBuffer[bufferPosition], (OPENDAVINCI_CONTAINER_HEADER_SIZE - bufferPosition));
+                        bytesRead = in.gcount();
+                        bufferPosition += bytesRead;
+
+                        if (bufferPosition == OPENDAVINCI_CONTAINER_HEADER_SIZE) {
+                            // Stop processing and redirect bufferIn's underlying pointer to avoid copying data.
+                            bufferIn.rdbuf()->pubsetbuf(&temporaryBuffer[0], bufferPosition);
+                        }
                     }
                     else {
                         in.read(&temporaryBuffer[bufferPosition], (expectedBytes > 1024) ? 1024 : expectedBytes);
@@ -224,10 +229,11 @@ namespace odcore {
                         unsigned char byte1 = (expectedBytes & 0xFF);
                         expectedBytes = expectedBytes >> 8;
 
-                        // Clear buffer as the remaining bytes are the payload.
-                        bufferIn.str("");
+//                        // Clear buffer as the remaining bytes are the payload.
+//                        bufferIn.str("");
 
                         // Allocate contiguous space to store bytes.
+                        bufferPosition = 0;
                         temporaryBuffer.resize(expectedBytes);
 
                         // Check validity of the received bytes.

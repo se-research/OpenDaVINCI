@@ -145,7 +145,7 @@ namespace odrecinspect {
                         float percentage = (float)(currPos*100.0)/(float)length;
 
                         if ( ((int32_t)percentage % 5 == 0) && ((int32_t)percentage != oldPercentage) ) {
-                            cout << "[RecInspect]: " << percentage << "% (" << currPos << "/" << length << " bytes processed)." << endl;
+                            cout << "[RecInspect]: " << (int32_t)percentage << "% (" << currPos << "/" << length << " bytes processed)." << endl;
                             oldPercentage = (int32_t)percentage;
                         }
                     }

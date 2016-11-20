@@ -81,12 +81,7 @@ class Serializable;
         float ProtoKeyValue::getValueAsFloat() const {
             float retVal = 0;
             if ( (m_value.size() > 0) && (m_length == sizeof(float)) && (m_value.size() == sizeof(float)) && (m_type == ProtoSerializer::FOUR_BYTES) ) {
-                //uint32_t *_v = (uint32_t*)(&m_value[0]);
-                //uint32_t _v2 = le32toh(*_v);
-                //retVal = *(reinterpret_cast<float*>(&_v2));
-                uint32_t _v = 0;
-                memcpy(&_v, &m_value[0], sizeof(uint32_t));
-                retVal = *(reinterpret_cast<float*>(&_v));
+                memcpy(&retVal, &m_value[0], sizeof(float));
             }
             return retVal;
         }
@@ -94,12 +89,7 @@ class Serializable;
         double ProtoKeyValue::getValueAsDouble() const {
             double retVal = 0;
             if ( (m_value.size() > 0) && (m_length == sizeof(double)) && (m_value.size() == sizeof(double)) && (m_type == ProtoSerializer::EIGHT_BYTES) ) {
-                //uint64_t *_v = (uint64_t*)(&m_value[0]);
-                //uint64_t _v2 = le64toh(*_v);
-                //retVal = *(reinterpret_cast<double*>(&_v2));
-                uint64_t _v = 0;
-                memcpy(&_v, &m_value[0], sizeof(uint64_t));
-                retVal = *(reinterpret_cast<double*>(&_v));
+                memcpy(&retVal, &m_value[0], sizeof(double));
             }
             return retVal;
         }
@@ -149,38 +139,63 @@ class Serializable;
                         ProtoKeyValue pkv(fieldId, value);
                         m_mapOfKeyValues[fieldId] = pkv;
                     }
+
                     if (protoType == ProtoSerializer::EIGHT_BYTES) {
-                        uint8_t bytesToRead = 8;
-                        vector<char> buffer; // DO NOT USE vector::resize to avoid filling up the buffer with 0.
+                        const uint8_t BYTES_TO_READ_INTO_BUFFER = 8;
+                        uint8_t bytesToRead = BYTES_TO_READ_INTO_BUFFER;
+
+                        uint32_t bufferPosition = 0;
+                        vector<char> buffer;
+                        buffer.resize(bytesToRead);
+
                         while (in.good() && (bytesToRead > 0)) {
-                            char c = in.get();
-                            buffer.push_back(c);
-                            bytesToRead--;
+                            in.read(&buffer[bufferPosition], (bytesToRead > BYTES_TO_READ_INTO_BUFFER) ? BYTES_TO_READ_INTO_BUFFER : bytesToRead);
+                            const streamsize extractedBytes = in.gcount();
+                            bufferPosition += extractedBytes;
+                            bytesToRead -= extractedBytes;
                         }
+
                         ProtoKeyValue pkv(fieldId, ProtoSerializer::EIGHT_BYTES, sizeof(double), buffer);
                         m_mapOfKeyValues[fieldId] = pkv;
                     }
+
                     if (protoType == ProtoSerializer::FOUR_BYTES) {
-                        uint8_t bytesToRead = 4;
-                        vector<char> buffer; // DO NOT USE vector::resize to avoid filling up the buffer with 0.
+                        const uint8_t BYTES_TO_READ_INTO_BUFFER = 4;
+                        uint8_t bytesToRead = BYTES_TO_READ_INTO_BUFFER;
+
+                        uint32_t bufferPosition = 0;
+                        vector<char> buffer;
+                        buffer.resize(bytesToRead);
+
                         while (in.good() && (bytesToRead > 0)) {
-                            char c = in.get();
-                            buffer.push_back(c);
-                            bytesToRead--;
+                            in.read(&buffer[bufferPosition], (bytesToRead > BYTES_TO_READ_INTO_BUFFER) ? BYTES_TO_READ_INTO_BUFFER : bytesToRead);
+                            const streamsize extractedBytes = in.gcount();
+                            bufferPosition += extractedBytes;
+                            bytesToRead -= extractedBytes;
                         }
+
                         ProtoKeyValue pkv(fieldId, ProtoSerializer::FOUR_BYTES, sizeof(float), buffer);
                         m_mapOfKeyValues[fieldId] = pkv;
                     }
+
                     if (protoType == ProtoSerializer::LENGTH_DELIMITED) {
+                        const uint16_t BYTES_TO_READ_INTO_BUFFER = 1024;
+
                         uint64_t length = 0;
                         bytesRead = decodeVarInt(in, length);
                         uint64_t bytesToRead = length;
-                        vector<char> buffer; // DO NOT USE vector::resize to avoid filling up the buffer with 0.
+
+                        uint32_t bufferPosition = 0;
+                        vector<char> buffer;
+                        buffer.resize(bytesToRead);
+
                         while (in.good() && (bytesToRead > 0)) {
-                            char c = in.get();
-                            buffer.push_back(c);
-                            bytesToRead--;
+                            in.read(&buffer[bufferPosition], (bytesToRead > BYTES_TO_READ_INTO_BUFFER) ? BYTES_TO_READ_INTO_BUFFER : bytesToRead);
+                            const streamsize extractedBytes = in.gcount();
+                            bufferPosition += extractedBytes;
+                            bytesToRead -= extractedBytes;
                         }
+
                         ProtoKeyValue pkv(fieldId, ProtoSerializer::LENGTH_DELIMITED, length, buffer);
                         m_mapOfKeyValues[fieldId] = pkv;
                     }
@@ -385,116 +400,101 @@ class Serializable;
         ///////////////////////////////////////////////////////////////////////
 
         void ProtoDeserializer::read(const uint32_t &id, Serializable &v) {
-            auto hasKey = m_mapOfKeyValues.find(id);
-            if (hasKey != m_mapOfKeyValues.end()) {
+            if (m_mapOfKeyValues.count(id) > 0) {
                 const string s = m_mapOfKeyValues[id].getValueAsString();
                 readValueForSerializable(s, v);
             }
         }
 
         void ProtoDeserializer::read(const uint32_t &id, bool &v) {
-            auto hasKey = m_mapOfKeyValues.find(id);
-            if (hasKey != m_mapOfKeyValues.end()) {
+            if (m_mapOfKeyValues.count(id) > 0) {
                 uint64_t _v = m_mapOfKeyValues[id].getValueAsVarInt();
                 v = static_cast<bool>(_v);
             }
         }
 
         void ProtoDeserializer::read(const uint32_t &id, char &v) {
-            auto hasKey = m_mapOfKeyValues.find(id);
-            if (hasKey != m_mapOfKeyValues.end()) {
+            if (m_mapOfKeyValues.count(id) > 0) {
                 uint64_t _v = m_mapOfKeyValues[id].getValueAsVarInt();
                 v = static_cast<char>(_v);
             }
         }
 
         void ProtoDeserializer::read(const uint32_t &id, unsigned char &v) {
-            auto hasKey = m_mapOfKeyValues.find(id);
-            if (hasKey != m_mapOfKeyValues.end()) {
+            if (m_mapOfKeyValues.count(id) > 0) {
                 uint64_t _v = m_mapOfKeyValues[id].getValueAsVarInt();
                 v = static_cast<unsigned char>(_v);
             }
         }
 
         void ProtoDeserializer::read(const uint32_t &id, int8_t &v) {
-            auto hasKey = m_mapOfKeyValues.find(id);
-            if (hasKey != m_mapOfKeyValues.end()) {
+            if (m_mapOfKeyValues.count(id) > 0) {
                 uint64_t _v = m_mapOfKeyValues[id].getValueAsVarInt();
                 v = static_cast<int8_t>(decodeZigZag8(_v));
             }
         }
 
         void ProtoDeserializer::read(const uint32_t &id, int16_t &v) {
-            auto hasKey = m_mapOfKeyValues.find(id);
-            if (hasKey != m_mapOfKeyValues.end()) {
+            if (m_mapOfKeyValues.count(id) > 0) {
                 uint64_t _v = m_mapOfKeyValues[id].getValueAsVarInt();
                 v = static_cast<int16_t>(decodeZigZag16(_v));
             }
         }
 
         void ProtoDeserializer::read(const uint32_t &id, uint16_t &v) {
-            auto hasKey = m_mapOfKeyValues.find(id);
-            if (hasKey != m_mapOfKeyValues.end()) {
+            if (m_mapOfKeyValues.count(id) > 0) {
                 uint64_t _v = m_mapOfKeyValues[id].getValueAsVarInt();
                 v = static_cast<uint16_t>(_v);
             }
         }
 
         void ProtoDeserializer::read(const uint32_t &id, int32_t &v) {
-            auto hasKey = m_mapOfKeyValues.find(id);
-            if (hasKey != m_mapOfKeyValues.end()) {
+            if (m_mapOfKeyValues.count(id) > 0) {
                 uint64_t _v = m_mapOfKeyValues[id].getValueAsVarInt();
                 v = static_cast<int32_t>(decodeZigZag32(_v));
             }
         }
 
         void ProtoDeserializer::read(const uint32_t &id, uint32_t &v) {
-            auto hasKey = m_mapOfKeyValues.find(id);
-            if (hasKey != m_mapOfKeyValues.end()) {
+            if (m_mapOfKeyValues.count(id) > 0) {
                 uint64_t _v = m_mapOfKeyValues[id].getValueAsVarInt();
                 v = static_cast<uint32_t>(_v);
             }
         }
 
         void ProtoDeserializer::read(const uint32_t &id, int64_t &v) {
-            auto hasKey = m_mapOfKeyValues.find(id);
-            if (hasKey != m_mapOfKeyValues.end()) {
+            if (m_mapOfKeyValues.count(id) > 0) {
                 uint64_t _v = m_mapOfKeyValues[id].getValueAsVarInt();
                 v = static_cast<int64_t>(decodeZigZag64(_v));
             }
         }
 
         void ProtoDeserializer::read(const uint32_t &id, uint64_t &v) {
-            auto hasKey = m_mapOfKeyValues.find(id);
-            if (hasKey != m_mapOfKeyValues.end()) {
+            if (m_mapOfKeyValues.count(id) > 0) {
                 v = m_mapOfKeyValues[id].getValueAsVarInt();
             }
         }
 
         void ProtoDeserializer::read(const uint32_t &id, float &v) {
-            auto hasKey = m_mapOfKeyValues.find(id);
-            if (hasKey != m_mapOfKeyValues.end()) {
+            if (m_mapOfKeyValues.count(id) > 0) {
                 v = m_mapOfKeyValues[id].getValueAsFloat();
             }
         }
 
         void ProtoDeserializer::read(const uint32_t &id, double &v) {
-            auto hasKey = m_mapOfKeyValues.find(id);
-            if (hasKey != m_mapOfKeyValues.end()) {
+            if (m_mapOfKeyValues.count(id) > 0) {
                 v = m_mapOfKeyValues[id].getValueAsDouble();
             }
         }
 
         void ProtoDeserializer::read(const uint32_t &id, string &v) {
-            auto hasKey = m_mapOfKeyValues.find(id);
-            if (hasKey != m_mapOfKeyValues.end()) {
+            if (m_mapOfKeyValues.count(id) > 0) {
                 v = m_mapOfKeyValues[id].getValueAsString();
             }
         }
 
         void ProtoDeserializer::read(const uint32_t &id, void *data, const uint32_t &size) {
-            auto hasKey = m_mapOfKeyValues.find(id);
-            if (hasKey != m_mapOfKeyValues.end()) {
+            if (m_mapOfKeyValues.count(id) > 0) {
                 const string s = m_mapOfKeyValues[id].getValueAsString();
                 memset(data, 0, size);
                 memcpy(data, s.c_str(), (size < s.size() ? size : s.size()));
