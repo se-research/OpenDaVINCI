@@ -18,8 +18,10 @@
  */
 
 #include <iostream>
-#include <sstream>
 #include <memory>
+#include <sstream>
+#include <string>
+#include <vector>
 
 #include "opendavinci/odcore/serialization/Deserializer.h"
 #include "opendavinci/odcore/serialization/SerializationFactory.h"
@@ -170,6 +172,72 @@ namespace odcore {
 
         istream& Container::operator>>(istream &in) {
             string rawData = "";
+
+// The following implementation is faster but does not work for reading streams from disk or via cin.
+//            // Read Container header.
+//            const uint32_t MAX_UDP_PACKET_SIZE = 65535;
+//            char buffer[MAX_UDP_PACKET_SIZE];
+//            streamsize extractedBytes = 0;
+//            stringstream bufferIn;
+//            {
+//                const uint32_t OPENDAVINCI_CONTAINER_HEADER_SIZE = 5;
+//                uint32_t bytesRead = 0;
+//                uint32_t expectedBytes = 0;
+
+//                while (in.good()) {
+//                    if (0 == expectedBytes) {
+//                        // Copy next character to internal buffer.
+//                        char c = in.get();
+//                        bufferIn.put(c);
+//                        bytesRead++;
+//                    }
+//                    else {
+//                        // After consuming the OpenDaVINCI header, read expectedBytes amount of bytes into buffer.
+//                        if (MAX_UDP_PACKET_SIZE < expectedBytes) {
+//                            cerr << "[core::base::Container] Needed to read " << expectedBytes << ", but buffer is only " << MAX_UDP_PACKET_SIZE << " bytes." << endl;
+//                        }
+//                        else {
+//                            const streamsize recentlyExtractedBytes = in.readsome(buffer + extractedBytes, expectedBytes);
+//                            extractedBytes += recentlyExtractedBytes;
+//                            if (extractedBytes < expectedBytes) {
+//                                cerr << "[core::base::Container] Failed to read " << expectedBytes << ", extracted only " << extractedBytes << " bytes." << endl;
+//                            }
+//                            expectedBytes -= recentlyExtractedBytes;
+
+//                            if (0 == expectedBytes) {
+//                                // Redirect bufferIn's underlying pointer to avoid copying data.
+//                                bufferIn.rdbuf()->pubsetbuf(buffer, extractedBytes);
+//                                // Stop processing.
+//                                break;
+//                            }
+//                        }
+//                    }
+
+//                    if (bytesRead == OPENDAVINCI_CONTAINER_HEADER_SIZE) {
+//                        char byte0 = 0;
+//                        expectedBytes = 0;
+
+//                        // Read five bytes OpenDaVINCI Container header.
+//                        bufferIn.read(&byte0, sizeof(char));
+//                        bufferIn.read((char*)&expectedBytes, sizeof(uint32_t));
+
+//                        // Transform value from little endian to host.
+//                        expectedBytes = le32toh(expectedBytes);
+
+//                        // Extract first byte as part of OpenDaVINCI Container header.
+//                        unsigned char byte1 = (expectedBytes & 0xFF);
+//                        expectedBytes = expectedBytes >> 8;
+
+//                        // Clear buffer as the remaining bytes are the payload.
+//                        bufferIn.str("");
+
+//                        // Check validity of the received bytes.
+//                        if (!( (0x0D == byte0) && (0xA4 == byte1) )) {
+//                            cerr << "[core::base::Container] Failed to decode OpenDaVINCI container header." << endl;
+//                        }
+//                    }
+//                }
+//            }
 
             // Read Container header.
             stringstream bufferIn;

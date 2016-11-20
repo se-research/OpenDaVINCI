@@ -18,6 +18,8 @@
  */
 
 #include <cmath>
+
+#include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <numeric>
@@ -70,6 +72,8 @@ namespace odrecinspect {
                 uint32_t numberOfSharedImages = 0;
                 uint32_t numberOfSharedData = 0;
                 uint32_t numberOfSharedPointCloud = 0;
+
+                stringstream streamBuffer;
 
                 Container lastContainer;
                 TimeStamp beforeProcessing;
@@ -156,8 +160,15 @@ namespace odrecinspect {
 
                 uint32_t numberOfTotalContainers = 0;
                 for(auto it = m_numberOfContainersPerType.begin(); it != m_numberOfContainersPerType.end(); ++it) {
-                    double average = accumulate(m_avgDurationBetweenSamplesPerType[it->first].begin(), m_avgDurationBetweenSamplesPerType[it->first].end(), 0.0)/m_avgDurationBetweenSamplesPerType[it->first].size()/1000.0;
-                    cout << "[RecInspect]: Container type " << it->first << ", entries = " << it->second << ", min = " << m_minDurationBetweenSamplesPerType[it->first] << " ms, avg = " << average << " ms, max = " << m_maxDurationBetweenSamplesPerType[it->first] << " ms." << endl;
+                    // Compute average and stddev:
+                    const double average = accumulate(m_avgDurationBetweenSamplesPerType[it->first].begin(), m_avgDurationBetweenSamplesPerType[it->first].end(), 0.0)/m_avgDurationBetweenSamplesPerType[it->first].size();
+
+                    vector<double> diff(m_avgDurationBetweenSamplesPerType[it->first].size());
+                    transform(m_avgDurationBetweenSamplesPerType[it->first].begin(), m_avgDurationBetweenSamplesPerType[it->first].end(), diff.begin(), bind2nd(minus<double>(), average));
+                    const double sqSum = inner_product(diff.begin(), diff.end(), diff.begin(), 0.0);
+                    const double stddev = sqrt(sqSum/static_cast<double>(m_avgDurationBetweenSamplesPerType[it->first].size()));
+
+                    cout << "[RecInspect]: Container type " << it->first << ", entries = " << it->second << ", min = " << m_minDurationBetweenSamplesPerType[it->first] << " ms, avg = " << average/1000.0 << " ms, stddev = " << stddev/1000.0 << " ms, max = " << m_maxDurationBetweenSamplesPerType[it->first] << " ms." << endl;
                     numberOfTotalContainers += it->second;
                 }
                 cout << "[RecInspect]: Found " << numberOfTotalContainers << " containers in total; average duration for reading one container = " << m_processingTimePerContainer/static_cast<double>(numberOfTotalContainers) << " ms." << endl;
