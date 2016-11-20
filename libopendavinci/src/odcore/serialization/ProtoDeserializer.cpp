@@ -103,6 +103,10 @@ class Serializable;
             return retVal;
         }
 
+        const vector<char>& ProtoKeyValue::getValue() const {
+            return m_value;
+        }
+
         ///////////////////////////////////////////////////////////////////////
 
         ProtoDeserializer::ProtoDeserializer() :
@@ -254,17 +258,24 @@ class Serializable;
 
         ///////////////////////////////////////////////////////////////////////
 
-        void ProtoDeserializer::readValueForSerializable(const string &s, Serializable &v) {
-            // Deserialize v from string using a stringstream.
-            stringstream sstr(s);
-            sstr >> v;
-        }
-
         uint32_t ProtoDeserializer::readValue(istream &i, Serializable &v) {
-            string s;
-            uint32_t bytesRead = readValue(i, s);
+            uint32_t bytesRead = 0;
 
-            readValueForSerializable(s, v);
+            // Read length.
+            uint64_t length = 0;
+            bytesRead += decodeVarInt(i, length);
+
+            // Create contiguous buffer.
+            vector<char> buffer(length);
+
+            // Read data from stream.
+            i.read(&buffer[0], length);
+            bytesRead += length;
+
+            // Read Serializable from buffer.
+            stringstream sstr;
+            sstr.rdbuf()->pubsetbuf(&buffer[0], length);
+            sstr >> v;
 
             return bytesRead;
         }
@@ -401,8 +412,10 @@ class Serializable;
 
         void ProtoDeserializer::read(const uint32_t &id, Serializable &v) {
             if (m_mapOfKeyValues.count(id) > 0) {
-                const string s = m_mapOfKeyValues[id].getValueAsString();
-                readValueForSerializable(s, v);
+                vector<char> &value = const_cast<vector<char>&>(m_mapOfKeyValues[id].getValue());
+                stringstream sstr;
+                sstr.rdbuf()->pubsetbuf(&value[0], value.size());
+                sstr >> v;
             }
         }
 
@@ -495,9 +508,11 @@ class Serializable;
 
         void ProtoDeserializer::read(const uint32_t &id, void *data, const uint32_t &size) {
             if (m_mapOfKeyValues.count(id) > 0) {
-                const string s = m_mapOfKeyValues[id].getValueAsString();
-                memset(data, 0, size);
-                memcpy(data, s.c_str(), (size < s.size() ? size : s.size()));
+                const vector<char> &value = m_mapOfKeyValues[id].getValue();
+                memcpy(data, &value[0], (size < value.size() ? size : value.size()));
+                if (size > value.size()) {
+                    memset((char*)data + value.size(), 0, (size - value.size()));
+                }
             }
         }
 
