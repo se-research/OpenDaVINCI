@@ -103,6 +103,13 @@ namespace odcore {
                  */
                 string getValueAsString() const;
 
+                /**
+                 * This method returns a reference to the contained value.
+                 *
+                 * @return value as reference.
+                 */
+                const vector<char>& getValue() const;
+
             private:
                 uint32_t m_key;
                 ProtoSerializer::PROTOBUF_TYPE m_type;
@@ -239,8 +246,6 @@ namespace odcore {
                 virtual void read(const uint32_t &id, const string &longName, const string &shortName, void *data, const uint32_t &size);
 
             private:
-                void readValueForSerializable(const string &s, Serializable &v);
-
                 /**
                  * This method reads and validates the key for the next value.
                  *

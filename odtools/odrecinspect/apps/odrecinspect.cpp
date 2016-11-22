@@ -1,6 +1,6 @@
 /**
- * odrecintegrity - Tool for checking the integrity of recorded data
- * Copyright (C) 2014 - 2015 Christian Berger
+ * odrecinspect - Tool for inspecting recorded data
+ * Copyright (C) 2014 - 2016 Christian Berger
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "RecIntegrity.h"
+#include "RecInspect.h"
 
 int32_t main(int32_t argc, char **argv) {
-    odrecintegrity::RecIntegrity ri;
+    odrecinspect::RecInspect ri;
     return ri.run(argc, argv);
 }

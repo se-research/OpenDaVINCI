@@ -40,7 +40,7 @@ ENDIF()
 # Add subdirectories.
 ADD_SUBDIRECTORY (odfilter)
 ADD_SUBDIRECTORY (odplayer)
-ADD_SUBDIRECTORY (odrecintegrity)
+ADD_SUBDIRECTORY (odrecinspect)
 ADD_SUBDIRECTORY (odrecorder)
 ADD_SUBDIRECTORY (odredirector)
 ADD_SUBDIRECTORY (odsplit)
