@@ -1,0 +1,51 @@
+.\" Manpage for odrecinspect
+.\" Author: Christian Berger <christian.berger@gu.se>.
+
+.TH odrecinspect 1 "22 November 2016" "4.4.0" "odrecinspect man page"
+
+.SH NAME
+odrecinspect \- This tool inspects an existing container recording file.
+
+
+
+.SH SYNOPSIS
+.B odrecinspect <FILENAME>
+
+
+
+.SH DESCRIPTION
+odrecinspect belongs to OpenDaVINCI and is a tool to inspect a recording file
+containing dumps from an OpenDaVINCI container conference session.
+
+
+.SH OPTIONS
+.B <FILENAME>
+.RS
+This parameter specifies the file to be inspected.
+.RE
+
+
+
+.SH EXAMPLES
+The following command inspects the content for the file specified as commandline parameter.
+
+.B odrecinspect myRecording.rec
+
+The following command inspects the content for the file containing dumps from shared images or shared point clouds specified as commandline parameter.
+
+.B odrecinspect myRecording.rec.mem
+
+
+.SH SEE ALSO
+odfilter(1), odplayer(1), odplayerh264(1), odrecorder(1), odrecorderh264(1), odrecinspect(1), odredirector(1), odsplit(1), odspy(1)
+
+
+
+.SH BUGS
+No known bugs.
+
+
+
+.SH AUTHOR
+Christian Berger (christian.berger@gu.se)
+
