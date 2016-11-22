@@ -77,7 +77,7 @@ namespace cockpit {
         m_fifo.waitForData();
     }
 
-    void FIFOMultiplexer::distributeContainer(Container c){
+    void FIFOMultiplexer::distributeContainer(Container &c){
     	{
     	  Lock l(m_fifoMutex);
     	  vector<ContainerListener*>::iterator it = m_listOfContainerListeners.begin();

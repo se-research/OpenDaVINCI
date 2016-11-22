@@ -76,7 +76,7 @@ namespace cockpit {
             virtual void removeContainerListener(odcore::io::conference::ContainerListener *containerListener);
 
         protected:
-            virtual void distributeContainer(odcore::data::Container c);
+            virtual void distributeContainer(odcore::data::Container &c);
             virtual odcore::data::Container leaveContainer();
             virtual uint32_t getFIFOSize();
             virtual void waitForData();

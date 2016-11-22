@@ -1,5 +1,5 @@
-# odrecintegrity - Tool for checking the integrity of recorded data
-# Copyright (C) 2014 - 2015 Christian Berger
+# odrecinspect - Tool for inspecting recorded data
+# Copyright (C) 2014 - 2016 Christian Berger
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -17,7 +17,7 @@
 
 CMAKE_MINIMUM_REQUIRED (VERSION 2.8)
 
-PROJECT (odrecintegrity)
+PROJECT (odrecinspect)
 
 ###########################################################################
 # Set the search path for .cmake files.
