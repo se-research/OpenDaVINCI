@@ -69,6 +69,7 @@ namespace odrecinspect {
 
                 int32_t oldPercentage = -1;
                 bool fileNotCorrupt = true;
+                uint32_t numberOfContainersInIncorrectTemporalOrder = 0;
                 uint32_t numberOfSharedImages = 0;
                 uint32_t numberOfSharedData = 0;
                 uint32_t numberOfSharedPointCloud = 0;
@@ -87,6 +88,8 @@ namespace odrecinspect {
 
                         if (lastContainer.getDataType() != 0) {
                             m_processingTimePerContainer += (a - b).toMicroseconds()/1000.0;
+
+                            numberOfContainersInIncorrectTemporalOrder += ((c.getSampleTimeStamp().toMicroseconds() - lastContainer.getSampleTimeStamp().toMicroseconds()) < 0);
                         }
                         lastContainer = c;
                     }
@@ -171,7 +174,7 @@ namespace odrecinspect {
                     cout << "[RecInspect]: Container type " << it->first << ", entries = " << it->second << ", min = " << m_minDurationBetweenSamplesPerType[it->first] << " ms, avg = " << average/1000.0 << " ms, stddev = " << stddev/1000.0 << " ms, max = " << m_maxDurationBetweenSamplesPerType[it->first] << " ms." << endl;
                     numberOfTotalContainers += it->second;
                 }
-                cout << "[RecInspect]: Found " << numberOfTotalContainers << " containers in total; average duration for reading one container = " << m_processingTimePerContainer/static_cast<double>(numberOfTotalContainers) << " ms." << endl;
+                cout << "[RecInspect]: Found " << numberOfTotalContainers << " containers in total (" << numberOfContainersInIncorrectTemporalOrder << " containers in non-monotonic temporal order); average duration for reading one container = " << m_processingTimePerContainer/static_cast<double>(numberOfTotalContainers) << " ms." << endl;
 
                 retVal = ((fileNotCorrupt) ? CORRECT : FILE_CORRUPT);
             }
