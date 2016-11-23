@@ -42,6 +42,7 @@ namespace odrecinspect {
     RecInspect::RecInspect() :
         m_numberOfContainersPerType(),
         m_latestContainersPerType(),
+        m_numberOfContainersInIncorrectTemporalOrderPerType(),
         m_minDurationBetweenSamplesPerType(),
         m_avgDurationBetweenSamplesPerType(),
         m_maxDurationBetweenSamplesPerType(),
@@ -114,6 +115,12 @@ namespace odrecinspect {
                             m_maxDurationBetweenSamplesPerType[c.getDataType()] = 0;
                         }
                         m_numberOfContainersPerType[c.getDataType()] = m_numberOfContainersPerType[c.getDataType()] + 1;
+                        if (m_latestContainersPerType.count(c.getDataType()) > 0) {
+                            m_numberOfContainersInIncorrectTemporalOrderPerType[c.getDataType()] += ((c.getSampleTimeStamp().toMicroseconds() - m_latestContainersPerType[c.getDataType()].getSampleTimeStamp().toMicroseconds()) < 0);
+                        }
+                        else {
+                            m_numberOfContainersInIncorrectTemporalOrderPerType[c.getDataType()] = 0;
+                        }
                         m_latestContainersPerType[c.getDataType()] = c;
 
                         // If the data is from SHARED_IMAGE, skip the raw data from the shared memory segment.
@@ -171,10 +178,14 @@ namespace odrecinspect {
                     const double sqSum = inner_product(diff.begin(), diff.end(), diff.begin(), 0.0);
                     const double stddev = sqrt(sqSum/static_cast<double>(m_avgDurationBetweenSamplesPerType[it->first].size()));
 
-                    cout << "[RecInspect]: Container type " << it->first << ", entries = " << it->second << ", min = " << m_minDurationBetweenSamplesPerType[it->first] << " ms, avg = " << average/1000.0 << " ms, stddev = " << stddev/1000.0 << " ms, max = " << m_maxDurationBetweenSamplesPerType[it->first] << " ms." << endl;
+                    cout << "[RecInspect]: Container type " << it->first << ", entries = " << it->second;
+                    if (m_numberOfContainersInIncorrectTemporalOrderPerType[it->first] > 0) {
+                        cout << " (" << m_numberOfContainersInIncorrectTemporalOrderPerType[it->first] << " containers in non-monotonically increasing temporal order)";
+                    }
+                    cout << ", min = " << m_minDurationBetweenSamplesPerType[it->first] << " ms, avg = " << average/1000.0 << " ms, stddev = " << stddev/1000.0 << " ms, max = " << m_maxDurationBetweenSamplesPerType[it->first] << " ms." << endl;
                     numberOfTotalContainers += it->second;
                 }
-                cout << "[RecInspect]: Found " << numberOfTotalContainers << " containers in total (" << numberOfContainersInIncorrectTemporalOrder << " containers in non-monotonic temporal order); average duration for reading one container = " << m_processingTimePerContainer/static_cast<double>(numberOfTotalContainers) << " ms." << endl;
+                cout << "[RecInspect]: Found " << numberOfTotalContainers << " containers in total (" << numberOfContainersInIncorrectTemporalOrder << " containers with different Container IDs in non-monotonically increasing temporal order); average duration for reading one container = " << m_processingTimePerContainer/static_cast<double>(numberOfTotalContainers) << " ms." << endl;
 
                 retVal = ((fileNotCorrupt) ? CORRECT : FILE_CORRUPT);
             }
