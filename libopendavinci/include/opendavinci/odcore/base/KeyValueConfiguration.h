@@ -154,7 +154,9 @@ namespace odcore {
                         odcore::data::LogMessage lm("odcore::base::KeyValueConfiguration", odcore::data::LogMessage::LogLevel::INFO, s.str());
                         #pragma GCC diagnostic push
                         #pragma GCC diagnostic ignored "-Wuninitialized"
-                        #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+                        #ifndef __APPLE__
+                            #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+                        #endif
                         return value;
                         #pragma GCC diagnostic pop
                     }
