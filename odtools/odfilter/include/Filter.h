@@ -84,11 +84,10 @@ namespace odfilter {
             vector<uint32_t> getListOfNumbers(const string &s);
 
             /**
-             * This method returns a sorted vector with unique numerical values
-             * extracted from a comma-separated list of numbers.
+             * This method returns a map containing pairs Container-ID:SampleRate.
              *
-             * @param s Comma-separated list of numbers.
-             * @return vector containing sorted unique numerical values.
+             * @param s Comma-separated list of pairs.
+             * @return map containing pairs Container,SampleRate.
              */
             map<int32_t, uint32_t> getMapOfDownSampling(const string &s);
 
