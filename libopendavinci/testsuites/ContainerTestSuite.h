@@ -28,9 +28,28 @@
 #include "opendavinci/odcore/serialization/Serializable.h"     // for operator<<, operator>>
 #include "opendavinci/odcore/data/Container.h"        // for Container, etc
 #include "opendavinci/odcore/data/TimeStamp.h"        // for TimeStamp
+#include "opendavinci/odcore/io/conference/ContainerListener.h"
+#include "opendavinci/odcore/io/conference/ContainerListenerFork.h"
 
 using namespace std;
 using namespace odcore::data;
+using namespace odcore::io::conference;
+
+class MyContainerListener : public ContainerListener {
+    public:
+        MyContainerListener() :
+            m_hasReceived(false),
+            m_container() {}
+
+        virtual void nextContainer(Container &c) {
+            m_hasReceived = true;
+            m_container = c;
+        }
+
+    public:
+        bool m_hasReceived;
+        Container m_container;
+};
 
 class ContainerTest : public CxxTest::TestSuite {
     public:
@@ -142,6 +161,79 @@ class ContainerTest : public CxxTest::TestSuite {
             TS_ASSERT(c2.getSentTimeStamp().toString() == c1.getSentTimeStamp().toString());
             TS_ASSERT(c2.getReceivedTimeStamp().toString() == c1.getReceivedTimeStamp().toString());
             TS_ASSERT(c2.getSampleTimeStamp().toString() == c1.getSampleTimeStamp().toString());
+        }
+
+        void testContainerListenerFork() {
+            ContainerListenerFork clf;
+
+            MyContainerListener listener1;
+            MyContainerListener listener2;
+            MyContainerListener listener3;
+
+            TS_ASSERT(!listener1.m_hasReceived);
+            TS_ASSERT(!listener2.m_hasReceived);
+
+            clf.addContainerListener(&listener1);
+            TS_ASSERT(!listener1.m_hasReceived);
+            TS_ASSERT(!listener3.m_hasReceived);
+
+            clf.addContainerListener(&listener2);
+            TS_ASSERT(!listener1.m_hasReceived);
+            TS_ASSERT(!listener2.m_hasReceived);
+            TS_ASSERT(!listener3.m_hasReceived);
+
+            TimeStamp ts(123, 456);
+            Container c(ts);
+            clf.nextContainer(c);
+
+            TS_ASSERT(listener1.m_hasReceived);
+            TS_ASSERT(listener2.m_hasReceived);
+            TS_ASSERT(!listener3.m_hasReceived);
+
+            TS_ASSERT(listener1.m_container.getDataType() == ts.ID());
+            TS_ASSERT(listener1.m_container.getData<TimeStamp>().toMicroseconds() == ts.toMicroseconds());
+
+            TS_ASSERT(listener2.m_container.getDataType() == ts.ID());
+            TS_ASSERT(listener2.m_container.getData<TimeStamp>().toMicroseconds() == ts.toMicroseconds());
+
+            clf.removeContainerListener(&listener3);
+
+            listener1.m_hasReceived = false;
+            listener2.m_hasReceived = false;
+            TS_ASSERT(!listener1.m_hasReceived);
+            TS_ASSERT(!listener2.m_hasReceived);
+
+            TimeStamp ts2(234, 567);
+            Container c2(ts2);
+            clf.nextContainer(c2);
+
+            TS_ASSERT(listener1.m_hasReceived);
+            TS_ASSERT(listener2.m_hasReceived);
+            TS_ASSERT(!listener3.m_hasReceived);
+
+            TS_ASSERT(listener1.m_container.getDataType() == ts2.ID());
+            TS_ASSERT(listener1.m_container.getData<TimeStamp>().toMicroseconds() == ts2.toMicroseconds());
+
+            TS_ASSERT(listener2.m_container.getDataType() == ts2.ID());
+            TS_ASSERT(listener2.m_container.getData<TimeStamp>().toMicroseconds() == ts2.toMicroseconds());
+
+            clf.removeContainerListener(&listener1);
+
+            listener1.m_hasReceived = false;
+            listener2.m_hasReceived = false;
+            TS_ASSERT(!listener1.m_hasReceived);
+            TS_ASSERT(!listener2.m_hasReceived);
+
+            TimeStamp ts3(345, 678);
+            Container c3(ts3);
+            clf.nextContainer(c3);
+
+            TS_ASSERT(!listener1.m_hasReceived);
+            TS_ASSERT(listener2.m_hasReceived);
+            TS_ASSERT(!listener3.m_hasReceived);
+
+            TS_ASSERT(listener2.m_container.getDataType() == ts3.ID());
+            TS_ASSERT(listener2.m_container.getData<TimeStamp>().toMicroseconds() == ts3.toMicroseconds());
         }
 };
 
