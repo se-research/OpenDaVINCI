@@ -161,7 +161,7 @@ namespace odfilter {
                     if (m_downsampling.count(id) > 0) {
                         m_downsamplingCounter[id] = m_downsamplingCounter[id] - 1;
                         if (m_downsamplingCounter[id] == 0) {
-                            // Reset counter and emit counter.
+                            // Reset counter and emit container.
                             m_downsamplingCounter[id] = m_downsampling[id];
                             cout << c;
                         }
