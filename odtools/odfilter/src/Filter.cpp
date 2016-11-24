@@ -38,7 +38,9 @@ namespace odfilter {
 
     Filter::Filter() :
         m_keep(),
-        m_drop() {}
+        m_drop(),
+        m_downsampling(),
+        m_downsamplingCounter() {}
 
     Filter::~Filter() {}
 
@@ -46,11 +48,13 @@ namespace odfilter {
         CommandLineParser cmdParser;
         cmdParser.addCommandLineArgument("keep");
         cmdParser.addCommandLineArgument("drop");
+        cmdParser.addCommandLineArgument("downsample");
 
         cmdParser.parse(argc, argv);
 
         CommandLineArgument cmdArgumentKEEP = cmdParser.getCommandLineArgument("keep");
         CommandLineArgument cmdArgumentDROP = cmdParser.getCommandLineArgument("drop");
+        CommandLineArgument cmdArgumentDOWNSAMPLE = cmdParser.getCommandLineArgument("downsample");
 
         if (cmdArgumentKEEP.isSet()) {
             string toKeep = cmdArgumentKEEP.getValue<string>();
@@ -61,16 +65,18 @@ namespace odfilter {
             string toDrop = cmdArgumentDROP.getValue<string>();
             m_drop = getListOfNumbers(toDrop);
         }
+
+        if (cmdArgumentDOWNSAMPLE.isSet()) {
+            string toDownSample = cmdArgumentDOWNSAMPLE.getValue<string>();
+            m_downsampling = getMapOfDownSampling(toDownSample);
+            m_downsamplingCounter = m_downsampling;
+        }
     }
 
     vector<uint32_t> Filter::getListOfNumbers(const string &s) {
         vector<uint32_t> listOfNumbers;
-        vector<string> listOfStringNumbers = odcore::strings::StringToolbox::split(s, ',');
-        if (listOfStringNumbers.size() == 0) {
-            // If only one ID was specified, simply add s to listOfStringNumbers.
-            listOfStringNumbers.push_back(s);
-        }
 
+        vector<string> listOfStringNumbers = odcore::strings::StringToolbox::split(s, ',');
         vector<string>::iterator it = listOfStringNumbers.begin();
         while (it != listOfStringNumbers.end()) {
             int32_t value = 0;
@@ -94,6 +100,36 @@ namespace odfilter {
         return listOfNumbers;
     }
 
+    map<int32_t, uint32_t> Filter::getMapOfDownSampling(const string &s) {
+        map<int32_t, uint32_t> mapOfDownSampledContainers;
+
+        vector<string> listOfColonPairs = odcore::strings::StringToolbox::split(s, ',');
+        vector<string>::iterator it = listOfColonPairs.begin();
+        while (it != listOfColonPairs.end()) {
+            vector<string> downSamplingPair = odcore::strings::StringToolbox::split(*it, ':');
+            if (downSamplingPair.size() == 2) {
+                int32_t container = 0;
+                uint32_t sampling = 0;
+
+                {
+                    stringstream sstr;
+                    sstr << downSamplingPair[0];
+                    sstr >> container;
+                }
+                {
+                    stringstream sstr;
+                    sstr << downSamplingPair[1];
+                    sstr >> sampling;
+                }
+
+                mapOfDownSampledContainers[container] = sampling;
+            }
+
+            it++;
+        }
+
+        return mapOfDownSampledContainers;
+    }
 
     int32_t Filter::run(const int32_t &argc, char **argv) {
         enum RETURN_CODE { CORRECT = 0,
@@ -108,6 +144,10 @@ namespace odfilter {
             cerr << "[odfilter] Error: You cannot specify --keep and --drop at the same time." << endl;
             retVal = BOTH_KEEP_DROP;
         }
+        else if ( (m_keep.size() == 0) && (m_drop.size() == 0) && (m_downsampling.size() == 0) ) {
+            cerr << "[odfilter] Error: You must specify either --keep, --downsample, or --drop." << endl;
+            retVal = BOTH_KEEP_DROP;
+        }
         else {
             // Please note that reading from stdin does not evaluate sending latencies.
             while (cin.good()) {
@@ -118,20 +158,31 @@ namespace odfilter {
                 uint32_t id = c.getDataType();
 
                 if (c.getDataType() > 0) {
-                    if (m_keep.size() > 0) {
-                        vector<uint32_t>::iterator jt = find(m_keep.begin(), m_keep.end(), id);
-                        if (jt != m_keep.end()) {
-                            // Container is to keep, push it to stdout.
+                    if (m_downsampling.count(id) > 0) {
+                        m_downsamplingCounter[id] = m_downsamplingCounter[id] - 1;
+                        if (m_downsamplingCounter[id] == 0) {
+                            // Reset counter and emit counter.
+                            m_downsamplingCounter[id] = m_downsampling[id];
                             cout << c;
                         }
                     }
-                    if (m_drop.size() > 0) {
-                        vector<uint32_t>::iterator jt = find(m_drop.begin(), m_drop.end(), id);
-                        if (jt == m_drop.end()) {
-                            // Container ID is not in dropping list, push it to stdout.
-                            cout << c;
+                    else {
+                        if (m_keep.size() > 0) {
+                            vector<uint32_t>::iterator jt = find(m_keep.begin(), m_keep.end(), id);
+                            if (jt != m_keep.end()) {
+                                // Container is to keep, push it to stdout.
+                                cout << c;
+                            }
+                        }
+                        if (m_drop.size() > 0) {
+                            vector<uint32_t>::iterator jt = find(m_drop.begin(), m_drop.end(), id);
+                            if (jt == m_drop.end()) {
+                                // Container ID is not in dropping list, push it to stdout.
+                                cout << c;
+                            }
                         }
                     }
+
                     std::cout.rdbuf()->pubsync();
                     std::cout.flush();
                 }

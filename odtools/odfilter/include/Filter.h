@@ -20,6 +20,7 @@
 #ifndef FILTER_H_
 #define FILTER_H_
 
+#include <map>
 #include <string>
 #include <vector>
 
@@ -82,9 +83,20 @@ namespace odfilter {
              */
             vector<uint32_t> getListOfNumbers(const string &s);
 
+            /**
+             * This method returns a sorted vector with unique numerical values
+             * extracted from a comma-separated list of numbers.
+             *
+             * @param s Comma-separated list of numbers.
+             * @return vector containing sorted unique numerical values.
+             */
+            map<int32_t, uint32_t> getMapOfDownSampling(const string &s);
+
         private:
             vector<uint32_t> m_keep;
             vector<uint32_t> m_drop;
+            map<int32_t, uint32_t> m_downsampling;
+            map<int32_t, uint32_t> m_downsamplingCounter;
     };
 
 } // odfilter
