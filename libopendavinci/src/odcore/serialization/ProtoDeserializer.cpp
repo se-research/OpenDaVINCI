@@ -42,6 +42,15 @@ class Serializable;
 
         ProtoKeyValue::ProtoKeyValue(const uint32_t &key,
                                      const ProtoSerializer::PROTOBUF_TYPE &type,
+                                     const uint64_t &length) :
+            m_key(key),
+            m_type(type),
+            m_length(length),
+            m_value(length),
+            m_varIntValue(0) {}
+
+        ProtoKeyValue::ProtoKeyValue(const uint32_t &key,
+                                     const ProtoSerializer::PROTOBUF_TYPE &type,
                                      const uint64_t &length,
                                      const vector<char> &value) :
             m_key(key),
@@ -107,6 +116,10 @@ class Serializable;
             return m_value;
         }
 
+        vector<char>& ProtoKeyValue::getRawBuffer() {
+            return m_value;
+        }
+
         ///////////////////////////////////////////////////////////////////////
 
         ProtoDeserializer::ProtoDeserializer() :
@@ -145,12 +158,14 @@ class Serializable;
                     }
 
                     if (protoType == ProtoSerializer::EIGHT_BYTES) {
-                        const uint8_t BYTES_TO_READ_INTO_BUFFER = 8;
+                        const uint8_t BYTES_TO_READ_INTO_BUFFER = sizeof(double);
                         uint8_t bytesToRead = BYTES_TO_READ_INTO_BUFFER;
-
                         uint32_t bufferPosition = 0;
-                        vector<char> buffer;
-                        buffer.resize(bytesToRead);
+
+                        // Create map entry here...
+                        ProtoKeyValue pkv(fieldId, ProtoSerializer::EIGHT_BYTES, BYTES_TO_READ_INTO_BUFFER);
+                        // ...to avoid copying data later.
+                        vector<char> &buffer = pkv.getRawBuffer();
 
                         while (in.good() && (bytesToRead > 0)) {
                             in.read(&buffer[bufferPosition], (bytesToRead > BYTES_TO_READ_INTO_BUFFER) ? BYTES_TO_READ_INTO_BUFFER : bytesToRead);
@@ -159,17 +174,19 @@ class Serializable;
                             bytesToRead -= extractedBytes;
                         }
 
-                        ProtoKeyValue pkv(fieldId, ProtoSerializer::EIGHT_BYTES, sizeof(double), buffer);
+                        // Store map entry.
                         m_mapOfKeyValues[fieldId] = pkv;
                     }
 
                     if (protoType == ProtoSerializer::FOUR_BYTES) {
-                        const uint8_t BYTES_TO_READ_INTO_BUFFER = 4;
+                        const uint8_t BYTES_TO_READ_INTO_BUFFER = sizeof(float);
                         uint8_t bytesToRead = BYTES_TO_READ_INTO_BUFFER;
-
                         uint32_t bufferPosition = 0;
-                        vector<char> buffer;
-                        buffer.resize(bytesToRead);
+
+                        // Create map entry here...
+                        ProtoKeyValue pkv(fieldId, ProtoSerializer::FOUR_BYTES, BYTES_TO_READ_INTO_BUFFER);
+                        // ...to avoid copying data later.
+                        vector<char> &buffer = pkv.getRawBuffer();
 
                         while (in.good() && (bytesToRead > 0)) {
                             in.read(&buffer[bufferPosition], (bytesToRead > BYTES_TO_READ_INTO_BUFFER) ? BYTES_TO_READ_INTO_BUFFER : bytesToRead);
@@ -178,7 +195,7 @@ class Serializable;
                             bytesToRead -= extractedBytes;
                         }
 
-                        ProtoKeyValue pkv(fieldId, ProtoSerializer::FOUR_BYTES, sizeof(float), buffer);
+                        // Store map entry.
                         m_mapOfKeyValues[fieldId] = pkv;
                     }
 
@@ -190,8 +207,11 @@ class Serializable;
                         uint64_t bytesToRead = length;
 
                         uint32_t bufferPosition = 0;
-                        vector<char> buffer;
-                        buffer.resize(bytesToRead);
+
+                        // Create map entry here...
+                        ProtoKeyValue pkv(fieldId, ProtoSerializer::LENGTH_DELIMITED, length);
+                        // ...to avoid copying data later.
+                        vector<char> &buffer = pkv.getRawBuffer();
 
                         while (in.good() && (bytesToRead > 0)) {
                             in.read(&buffer[bufferPosition], (bytesToRead > BYTES_TO_READ_INTO_BUFFER) ? BYTES_TO_READ_INTO_BUFFER : bytesToRead);
@@ -200,7 +220,7 @@ class Serializable;
                             bytesToRead -= extractedBytes;
                         }
 
-                        ProtoKeyValue pkv(fieldId, ProtoSerializer::LENGTH_DELIMITED, length, buffer);
+                        // Store map entry.
                         m_mapOfKeyValues[fieldId] = pkv;
                     }
                 }
@@ -210,8 +230,9 @@ class Serializable;
         uint8_t ProtoDeserializer::decodeVarInt(istream &in, uint64_t &value) {
             value = 0;
             uint8_t size = 0;
+            char c = 0;
             while (in.good()) {
-                char c = in.get();
+                c = in.get();
                 value |= static_cast<unsigned int>( (c & 0x7f) << (0x7 * size++) );
                 if ( !(c & 0x80) ) break;
             }
