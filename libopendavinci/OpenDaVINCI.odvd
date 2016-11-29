@@ -317,7 +317,7 @@ message odcore.data.CompactPointCloud [id = 49] {
     float startAzimuth      [id = 1];
     float endAzimuth        [id = 2];
     uint8 entriesPerAzimuth [id = 3];
-    string distances        [id = 4];
+    bytes distances        [id = 4];
 }
 
 ///////////////////////////////////////////////////////////////////////////////
