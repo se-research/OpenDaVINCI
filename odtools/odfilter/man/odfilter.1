@@ -1,7 +1,7 @@
 .\" Manpage for odfilter
 .\" Author: Christian Berger <christian.berger@gu.se>.
 
-.TH odfilter 1 "24 November 2016" "4.4.1" "odfilter man page"
+.TH odfilter 1 "29 November 2016" "4.4.2" "odfilter man page"
 
 .SH NAME
 odfilter \- This tool filters a stream of containers as part of a pipe.
@@ -43,6 +43,15 @@ This parameter specifies which containers to be dropped from dumping to STDOUT. 
 identifiers must be separated with commas and the identifiers must be greater than 0.
 .RE
 
+.B --downsample=<ID_1>:<n>,<ID_2>:<m>
+.RS
+This parameter specifies which containers shall be downsampled to every n'th occurrence
+before dumping to STDOUT. The specified identifiers must be separated with commas, the
+identifiers must be greater than 0, and followed by : with the specified number of
+occurrence.
+
+The specified IDs in --downsample automatically imply --keep for the same IDs.
+.RE
 
 
 .SH EXAMPLES
@@ -50,6 +59,11 @@ The following command only preserves containers with the identifiers 1, 2, or 78
 
 .B odfilter --keep=1,2,78 < myRecording.rec > myCleanedRecording.rec
 
+
+The following command downsamples the occurrence of containers with the
+identifier 19 to every 10th time before dumping to STDOUT.
+
+.B odfilter --downsample=19:10 < myRecording.rec > myDownSampledRecording.rec
 
 
 .SH SEE ALSO

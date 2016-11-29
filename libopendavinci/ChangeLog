@@ -1,3 +1,4 @@
+4.4.2 - Added down-sampling feature to odfilter, added inter-container timestamping check to odrecinspect, updated CompactPointCloud message specification
 4.4.1 - ContainerListenerFork and MacOS compile fix
 4.4.0 - Improved performance of Container and Proto decoding; changed odrecintegrity to odrecinspect and extended analysis
 4.3.8 - Fixed odfilter and integrated odcore/base/Arguments
