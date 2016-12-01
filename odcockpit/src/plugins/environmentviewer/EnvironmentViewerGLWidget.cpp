@@ -72,7 +72,6 @@
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
 #include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 #include "opendavinci/generated/odcore/data/SharedPointCloud.h"
-#include "opendavinci/odcore/wrapper/half_float.h"
 
 class QWidget;
 namespace opendlv { namespace scenario { class SCNXArchive; } }
@@ -344,14 +343,14 @@ namespace cockpit {
                             glColor3f(255.0f,255.0f,0.0);//Yellow color
 
                             const float toRadian = static_cast<float>(cartesian::Constants::PI) / 180.0f;
-                            half distance_h(0.0);
+                            uint16_t distance_integer(0);
                             float xyDistance = 0, xData = 0, yData = 0, zData = 0;
                             float azimuth = startAzimuth;
                             for (uint32_t azimuthIndex = 0; azimuthIndex < numberOfAzimuths; azimuthIndex++) {
                                 float verticalAngle = START_V_ANGLE;
                                 for (uint8_t sensorIndex = 0; sensorIndex<entriesPerAzimuth; sensorIndex++) {
-                                    sstr.read((char*)(&distance_h), 2); // Read distance value from the string in a CPC container point by point
-                                    const float distance = static_cast<float>(distance_h);
+                                    sstr.read((char*)(&distance_integer), 2); // Read distance value from the string in a CPC container point by point
+                                    const float distance = static_cast<float>(distance_integer/100.0f); //convert cm to meter
                                     // Compute x, y, z coordinate based on distance, azimuth, and vertical angle
                                     xyDistance = distance * cos(verticalAngle * toRadian);
                                     xData = xyDistance * sin(azimuth * toRadian);
