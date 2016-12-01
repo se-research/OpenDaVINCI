@@ -350,7 +350,7 @@ namespace cockpit {
                                 float verticalAngle = START_V_ANGLE;
                                 for (uint8_t sensorIndex = 0; sensorIndex<entriesPerAzimuth; sensorIndex++) {
                                     sstr.read((char*)(&distance_integer), 2); // Read distance value from the string in a CPC container point by point
-                                    const float distance = static_cast<float>(distance_integer/500.0f); //*2mm-->/1000 for meter
+                                    const float distance = static_cast<float>(distance_integer/100.0f); //convert cm to meter
                                     // Compute x, y, z coordinate based on distance, azimuth, and vertical angle
                                     xyDistance = distance * cos(verticalAngle * toRadian);
                                     xData = xyDistance * sin(azimuth * toRadian);
