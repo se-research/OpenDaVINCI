@@ -46,8 +46,8 @@
 std::map<int32_t, uint32_t> mapOfEntrySizes;
 std::map<int32_t, std::string> mapOfEntries;
 
-static const char *filepath = "/file";
-static const char *filename = "file";
+//static const char *filepath = "/file";
+//static const char *filename = "file";
 static const char *filecontent = "I'm the content of the only file available there\n";
 
 static int getattr_callback(const char *path, struct stat *stbuf) {
@@ -59,10 +59,11 @@ static int getattr_callback(const char *path, struct stat *stbuf) {
     return 0;
   }
 
-  if (strcmp(path, filepath) == 0) {
+  std::string FQDN = "/19.data";
+  if (strcmp(path, FQDN.c_str()) == 0) {
     stbuf->st_mode = S_IFREG | 0777;
     stbuf->st_nlink = 1;
-    stbuf->st_size = strlen(filecontent);
+    stbuf->st_size = strlen(filecontent);//mapOfEntrySizes[19];
     return 0;
   }
 
@@ -77,7 +78,8 @@ static int readdir_callback(const char */*path*/, void *buf, fuse_fill_dir_t fil
   filler(buf, ".", NULL, 0);
   filler(buf, "..", NULL, 0);
 
-  filler(buf, filename, NULL, 0);
+  std::string FQDN = "/19.data";
+  filler(buf, FQDN.c_str()+1, NULL, 0);
 
   return 0;
 }
@@ -88,7 +90,8 @@ static int open_callback(const char */*path*/, struct fuse_file_info */*fi*/) {
 
 static int read_callback(const char *path, char *buf, size_t size, off_t offset, struct fuse_file_info */*fi*/) {
 
-  if (strcmp(path, filepath) == 0) {
+  std::string FQDN = "/19.data";
+  if (strcmp(path, FQDN.c_str()) == 0) {
     size_t len = strlen(filecontent);
     if (offset >= static_cast<int32_t>(len)) {
       return 0;
