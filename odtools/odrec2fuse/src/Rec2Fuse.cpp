@@ -36,7 +36,7 @@
 #include <opendavinci/odcore/data/Container.h>
 #include <opendavinci/GeneratedHeaders_OpenDaVINCI_Helper.h>
 #include <opendavinci/odcore/reflection/Message.h>
-#include <opendavinci/odcore/reflection/MessagePrettyPrinterVisitor.h>
+#include "opendavinci/odcore/reflection/CSVFromVisitableVisitor.h"
 #include <opendavinci/odcore/strings/StringToolbox.h>
 
 #include "Rec2Fuse.h"
@@ -59,9 +59,9 @@ static int getattr_callback(const char *path, struct stat *stbuf) {
     return 0;
   }
 
-  std::string FQDN = "/19.data";
+  std::string FQDN = "/19.csv";
   if (strcmp(path, FQDN.c_str()) == 0) {
-    stbuf->st_mode = S_IFREG | 0777;
+    stbuf->st_mode = S_IFREG | 0444;
     stbuf->st_nlink = 1;
     stbuf->st_size = mapOfEntrySizes[19];
     return 0;
@@ -78,7 +78,7 @@ static int readdir_callback(const char */*path*/, void *buf, fuse_fill_dir_t fil
   filler(buf, ".", NULL, 0);
   filler(buf, "..", NULL, 0);
 
-  std::string FQDN = "/19.data";
+  std::string FQDN = "/19.csv";
   filler(buf, FQDN.c_str()+1, NULL, 0);
 
   return 0;
@@ -90,7 +90,7 @@ static int open_callback(const char */*path*/, struct fuse_file_info */*fi*/) {
 
 static int read_callback(const char *path, char *buf, size_t size, off_t offset, struct fuse_file_info */*fi*/) {
 
-  std::string FQDN = "/19.data";
+  std::string FQDN = "/19.csv";
   if (strcmp(path, FQDN.c_str()) == 0) {
     size_t len = mapOfEntrySizes[19];
     if (offset >= static_cast<int32_t>(len)) {
@@ -112,7 +112,7 @@ static int read_callback(const char *path, char *buf, size_t size, off_t offset,
 }
 
 
-static struct fuse_operations fuse_example_operations;
+static struct fuse_operations rec2fuse_operations;
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -309,9 +309,10 @@ namespace odrec2fuse {
 
                                 stringstream sstr;
 
-                                MessagePrettyPrinterVisitor mppv;
-                                msg.accept(mppv);
-                                mppv.getOutput(sstr);
+                                const bool ADD_HEADER = (mapOfEntries.count(c.getDataType()) == 0);
+                                const char DELIMITER = ';';
+                                CSVFromVisitableVisitor csv(sstr, ADD_HEADER, DELIMITER);
+                                msg.accept(csv);
 
                                 string s = mapOfEntries[c.getDataType()] + sstr.str();
                                 mapOfEntries[c.getDataType()] = s;
@@ -324,30 +325,29 @@ namespace odrec2fuse {
                     }
                 }
             }
-        }
 
-        for(auto entry : mapOfEntries) {
-            cout << "K = " << entry.first << ", V = " << entry.second << endl;
-        }
+            rec2fuse_operations.getattr = getattr_callback;
+            rec2fuse_operations.open = open_callback;
+            rec2fuse_operations.read = read_callback;
+            rec2fuse_operations.readdir = readdir_callback;
 
-        fuse_example_operations.getattr = getattr_callback;
-        fuse_example_operations.open = open_callback;
-        fuse_example_operations.read = read_callback;
-        fuse_example_operations.readdir = readdir_callback;
-
-        vector<string> args;
-        for (int32_t i = 0; i < argc; i++) {
-            if (i != 1) {
-                args.push_back(string(argv[i]));
+            // Remove .rec filename from list of args before calling FUSE.
+            vector<string> args;
+            for (int32_t i = 0; i < argc; i++) {
+                if (i != 1) {
+                    args.push_back(string(argv[i]));
+                }
             }
+
+            char **argv2 = new char*[args.size()];
+            for (uint32_t i = 0; i < args.size(); i++) {
+                argv2[i] = const_cast<char*>(args[i].c_str());
+            }
+
+            return fuse_main(argc-1, argv2, &rec2fuse_operations, NULL);
         }
 
-        char **argv2 = new char*[args.size()];
-        for (uint32_t i = 0; i < args.size(); i++) {
-            argv2[i] = const_cast<char*>(args[i].c_str());
-        }
-
-        return fuse_main(argc-1, argv2, &fuse_example_operations, NULL);
+        return -1;
     }
 
 } // odrec2fuse
