@@ -24,6 +24,8 @@
 
 #define FUSE_USE_VERSION 26
 #include <fuse.h>
+#include <cstring>
+#include <cerrno>
 
 #include <fstream>
 #include <iostream>
@@ -39,8 +41,75 @@
 
 #include "Rec2Fuse.h"
 
+////////////////////////////////////////////////////////////////////////////////
+
 std::map<int32_t, uint32_t> mapOfEntrySizes;
 std::map<int32_t, std::string> mapOfEntries;
+
+static const char *filepath = "/file";
+static const char *filename = "file";
+static const char *filecontent = "I'm the content of the only file available there\n";
+
+static int getattr_callback(const char *path, struct stat *stbuf) {
+  memset(stbuf, 0, sizeof(struct stat));
+
+  if (strcmp(path, "/") == 0) {
+    stbuf->st_mode = S_IFDIR | 0755;
+    stbuf->st_nlink = 2;
+    return 0;
+  }
+
+  if (strcmp(path, filepath) == 0) {
+    stbuf->st_mode = S_IFREG | 0777;
+    stbuf->st_nlink = 1;
+    stbuf->st_size = strlen(filecontent);
+    return 0;
+  }
+
+  return -ENOENT;
+}
+
+static int readdir_callback(const char */*path*/, void *buf, fuse_fill_dir_t filler,
+    off_t offset, struct fuse_file_info *fi) {
+  (void) offset;
+  (void) fi;
+
+  filler(buf, ".", NULL, 0);
+  filler(buf, "..", NULL, 0);
+
+  filler(buf, filename, NULL, 0);
+
+  return 0;
+}
+
+static int open_callback(const char */*path*/, struct fuse_file_info */*fi*/) {
+  return 0;
+}
+
+static int read_callback(const char *path, char *buf, size_t size, off_t offset, struct fuse_file_info */*fi*/) {
+
+  if (strcmp(path, filepath) == 0) {
+    size_t len = strlen(filecontent);
+    if (offset >= static_cast<int32_t>(len)) {
+      return 0;
+    }
+
+    if (offset + size > len) {
+      memcpy(buf, filecontent + offset, len - offset);
+      return len - offset;
+    }
+
+    memcpy(buf, filecontent + offset, size);
+    return size;
+  }
+
+  return -ENOENT;
+}
+
+
+static struct fuse_operations fuse_example_operations;
+
+////////////////////////////////////////////////////////////////////////////////
 
 namespace odrec2fuse {
 
@@ -191,10 +260,6 @@ namespace odrec2fuse {
 
     int32_t Rec2Fuse::run(const int32_t &argc, char **argv) {
         uint32_t mappedContainers = 0;
-        enum RETURN_CODE { CORRECT = 0,
-                           FILE_COULD_NOT_BE_OPENED = 255 };
-
-        RETURN_CODE retVal = CORRECT;
 
         ::mapOfEntrySizes.clear();
         ::mapOfEntries.clear();
@@ -254,16 +319,30 @@ namespace odrec2fuse {
                     }
                 }
             }
-            else {
-                retVal = FILE_COULD_NOT_BE_OPENED;
-            }
         }
 
         for(auto entry : mapOfEntries) {
             cout << "K = " << entry.first << ", V = " << entry.second << endl;
         }
 
-        return retVal;
+        fuse_example_operations.getattr = getattr_callback;
+        fuse_example_operations.open = open_callback;
+        fuse_example_operations.read = read_callback;
+        fuse_example_operations.readdir = readdir_callback;
+
+        vector<string> args;
+        for (int32_t i = 0; i < argc; i++) {
+            if (i != 1) {
+                args.push_back(string(argv[i]));
+            }
+        }
+
+        char **argv2 = new char*[args.size()];
+        for (uint32_t i = 0; i < args.size(); i++) {
+            argv2[i] = const_cast<char*>(args[i].c_str());
+        }
+
+        return fuse_main(argc-1, argv2, &fuse_example_operations, NULL);
     }
 
 } // odrec2fuse
