@@ -20,13 +20,31 @@
 #ifndef REC2FUSE_H_
 #define REC2FUSE_H_
 
-#include <map>
+#include <string>
 #include <vector>
 
 #include <opendavinci/odcore/opendavinci.h>
 #include <opendavinci/odcore/data/Container.h>
+#include <opendavinci/odcore/reflection/Helper.h>
 
 namespace odrec2fuse {
+
+    using namespace std;
+
+    class HelperEntry {
+        public:
+            HelperEntry(const HelperEntry &/*obj*/);
+            HelperEntry& operator=(const HelperEntry &/*obj*/);
+
+        public:
+            HelperEntry();
+            virtual ~HelperEntry();
+
+        public:
+            string m_library;
+            void *m_dynamicObjectHandle;
+            odcore::reflection::Helper *m_helper;
+    };
 
     /**
      * This class can be used to mount a .rec file into a directory.
@@ -67,6 +85,13 @@ namespace odrec2fuse {
             int32_t run(const int32_t &argc, char **argv);
 
         private:
+            void findAndLoadSharedLibraries();
+            void unloadSharedLibraries();
+            vector<string> getListOfLibrariesToLoad(const vector<string> &paths);
+
+        private:
+            vector<string> m_listOfLibrariesToLoad;
+            vector<HelperEntry> m_listOfHelpers;
     };
 
 } // odrec2fuse
