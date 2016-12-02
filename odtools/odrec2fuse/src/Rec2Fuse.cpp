@@ -48,7 +48,7 @@ std::map<int32_t, std::string> mapOfEntries;
 
 //static const char *filepath = "/file";
 //static const char *filename = "file";
-static const char *filecontent = "I'm the content of the only file available there\n";
+//static const char *filecontent = "I'm the content of the only file available there\n";
 
 static int getattr_callback(const char *path, struct stat *stbuf) {
   memset(stbuf, 0, sizeof(struct stat));
@@ -63,7 +63,7 @@ static int getattr_callback(const char *path, struct stat *stbuf) {
   if (strcmp(path, FQDN.c_str()) == 0) {
     stbuf->st_mode = S_IFREG | 0777;
     stbuf->st_nlink = 1;
-    stbuf->st_size = strlen(filecontent);//mapOfEntrySizes[19];
+    stbuf->st_size = mapOfEntrySizes[19];
     return 0;
   }
 
@@ -92,17 +92,19 @@ static int read_callback(const char *path, char *buf, size_t size, off_t offset,
 
   std::string FQDN = "/19.data";
   if (strcmp(path, FQDN.c_str()) == 0) {
-    size_t len = strlen(filecontent);
+    size_t len = mapOfEntrySizes[19];
     if (offset >= static_cast<int32_t>(len)) {
       return 0;
     }
 
+    const std::string filecontent = mapOfEntries[19];
+
     if (offset + size > len) {
-      memcpy(buf, filecontent + offset, len - offset);
+      memcpy(buf, filecontent.c_str() + offset, len - offset);
       return len - offset;
     }
 
-    memcpy(buf, filecontent + offset, size);
+    memcpy(buf, filecontent.c_str() + offset, size);
     return size;
   }
 
