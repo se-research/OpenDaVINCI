@@ -305,13 +305,15 @@ namespace odrec2fuse {
                             oldPercentage = (int32_t)percentage;
                         }
 
-if (percentage > 5) break;
+// For debugging:
+//if (percentage > 5) break;
 
                         bool successfullyMapped = false;
 
                         // First, try to decode a regular OpenDaVINCI message.
                         odcore::reflection::Message msg = GeneratedHeaders_OpenDaVINCI_Helper::__map(c, successfullyMapped);
 
+                        // Try dynamically loaded libraries next.
                         auto it = m_listOfHelpers.begin();
                         while ( (!successfullyMapped) && (it != m_listOfHelpers.end())) {
                             HelperEntry e = *it;
@@ -333,40 +335,38 @@ if (percentage > 5) break;
                                 msg.insertField(f1);
                             }
                             {
-                                shared_ptr<Field<double> > f1 = shared_ptr<Field<double> >(new Field<double>());
-                                f1->setFieldIdentifier(1001);
-                                f1->setLongFieldName("SentTimeStamp");
-                                f1->setShortFieldName("SentTimeStamp");
-                                f1->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
+                                shared_ptr<Field<double> > f2 = shared_ptr<Field<double> >(new Field<double>());
+                                f2->setFieldIdentifier(1001);
+                                f2->setLongFieldName("SentTimeStamp");
+                                f2->setShortFieldName("SentTimeStamp");
+                                f2->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
                                 const double v = c.getSentTimeStamp().getSeconds() + c.getSentTimeStamp().getMicroseconds()/(1000.0*1000.0);
-                                f1->setValue(v);
-                                f1->setSize(sizeof(double));
-                                msg.insertField(f1);
+                                f2->setValue(v);
+                                f2->setSize(sizeof(double));
+                                msg.insertField(f2);
                             }
                             {
-                                shared_ptr<Field<double> > f1 = shared_ptr<Field<double> >(new Field<double>());
-                                f1->setFieldIdentifier(1003);
-                                f1->setLongFieldName("SampleTimeStamp");
-                                f1->setShortFieldName("SampleTimeStamp");
-                                f1->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
+                                shared_ptr<Field<double> > f3 = shared_ptr<Field<double> >(new Field<double>());
+                                f3->setFieldIdentifier(1003);
+                                f3->setLongFieldName("SampleTimeStamp");
+                                f3->setShortFieldName("SampleTimeStamp");
+                                f3->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
                                 const double v = c.getSampleTimeStamp().getSeconds() + c.getSampleTimeStamp().getMicroseconds()/(1000.0*1000.0);
-                                f1->setValue(v);
-                                f1->setSize(sizeof(double));
-                                msg.insertField(f1);
+                                f3->setValue(v);
+                                f3->setSize(sizeof(double));
+                                msg.insertField(f3);
                             }
 
                             mappedContainers++;
 
                             stringstream sstr;
-
                             const bool ADD_HEADER = (mapOfEntries.count(c.getDataType()) == 0);
                             const char DELIMITER = ';';
                             CSVFromVisitableVisitor csv(sstr, ADD_HEADER, DELIMITER);
                             msg.accept(csv);
 
-                            string s = mapOfEntries[c.getDataType()] + sstr.str();
-                            mapOfEntries[c.getDataType()] = s;
-                            mapOfEntrySizes[c.getDataType()] = s.size();
+                            mapOfEntries[c.getDataType()] +=  sstr.str();
+                            mapOfEntrySizes[c.getDataType()] = mapOfEntries[c.getDataType()].size();
                         }
 
                     }

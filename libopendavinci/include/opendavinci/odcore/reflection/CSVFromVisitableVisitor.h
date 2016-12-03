@@ -87,10 +87,27 @@ namespace odcore {
                 virtual void visit(const uint32_t &id, const string &longName, const string &shortName, string &v);
                 virtual void visit(const uint32_t &id, const string &longName, const string &shortName, void *data, const uint32_t &size);
 
+            public:
+                /**
+                 * This method returns the (optional) header line for this
+                 * transformed Visitable.
+                 *
+                 * @return Header line.
+                 */
+                string getHeader() const;
+
+                /**
+                 * This method returns the entry line for this transformed Visitable.
+                 *
+                 * @return Entry line.
+                 */
+                string getEntry() const;
+
             private:
                 ostream &m_buffer;
                 stringstream m_header;
                 stringstream m_entry;
+                string m_entryBackup;
                 bool m_addHeader;
                 char m_delimiter;
         };
