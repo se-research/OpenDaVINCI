@@ -19,6 +19,7 @@
 
 #include <iomanip>
 #include <limits>
+#include <sstream>
 
 #include "opendavinci/odcore/serialization/Serializable.h"
 #include "opendavinci/odcore/base/Visitable.h"
@@ -35,6 +36,7 @@ namespace odcore {
             m_buffer(out),
             m_header(),
             m_entry(),
+            m_entryBackup(),
             m_addHeader(header),
             m_delimiter(delimiter) {}
 
@@ -50,10 +52,34 @@ namespace odcore {
             m_buffer << m_entry.str() << endl;
             m_buffer.flush();
 
+            // To enable repeated use, m_entry will be reset.
+            // To have access to the last entry, it will be backed up.
+            m_entryBackup = m_entry.str();
             m_entry.str("");
         }
 
-        void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, Serializable &/*v*/) {
+        string CSVFromVisitableVisitor::getHeader() const {
+            return string(m_header.str());
+        }
+
+        string CSVFromVisitableVisitor::getEntry() const {
+            return m_entryBackup;
+        }
+
+        void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, Serializable &v) {
+            try {
+                Visitable &visitable = dynamic_cast<Visitable&>(v);
+
+                stringstream buffer;
+                CSVFromVisitableVisitor csv(buffer, m_addHeader, m_delimiter);
+                visitable.accept(csv);
+
+                if (m_addHeader) {
+                    m_header << csv.getHeader(); // No delimiter as the nested CSVFromVisitableVisitor has added a trailing m_delimiter already.
+                }
+                m_entry << csv.getEntry(); // No delimiter as the nested CSVFromVisitableVisitor has added a trailing m_delimiter already.
+            }
+            catch(...) {}
         }
 
         void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, bool &v) {
