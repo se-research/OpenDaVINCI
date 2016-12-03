@@ -60,6 +60,10 @@ namespace odcore {
             return *this;
         }
 
+        void Message::insertField(const std::shared_ptr<odcore::data::reflection::AbstractField> &f) {
+            m_fields.insert(m_fields.begin(), f);
+        }
+
         void Message::addField(const std::shared_ptr<odcore::data::reflection::AbstractField> &f) {
             m_fields.push_back(f);
         }

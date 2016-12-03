@@ -17,6 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <iomanip>
+#include <limits>
+
 #include "opendavinci/odcore/serialization/Serializable.h"
 #include "opendavinci/odcore/base/Visitable.h"
 #include "opendavinci/odcore/reflection/CSVFromVisitableVisitor.h"
@@ -127,14 +130,20 @@ namespace odcore {
             if (m_addHeader) {
                 m_header << shortName << m_delimiter;
             }
+            const streamsize oldPrecision = m_entry.precision();
+            m_entry.precision(numeric_limits<float>::digits10 + 1);
             m_entry << v << m_delimiter;
+            m_entry.precision(oldPrecision);
         }
 
         void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, double &v) {
             if (m_addHeader) {
                 m_header << shortName << m_delimiter;
             }
+            const streamsize oldPrecision = m_entry.precision();
+            m_entry.precision(numeric_limits<double>::digits10 + 1);
             m_entry << v << m_delimiter;
+            m_entry.precision(oldPrecision);
         }
 
         void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, string &v) {
