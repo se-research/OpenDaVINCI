@@ -35,9 +35,11 @@
 
 #include <opendavinci/odcore/data/Container.h>
 #include <opendavinci/GeneratedHeaders_OpenDaVINCI_Helper.h>
+#include <opendavinci/odcore/reflection/Field.h>
 #include <opendavinci/odcore/reflection/Message.h>
-#include "opendavinci/odcore/reflection/CSVFromVisitableVisitor.h"
+#include <opendavinci/odcore/reflection/CSVFromVisitableVisitor.h>
 #include <opendavinci/odcore/strings/StringToolbox.h>
+#include <opendavinci/generated/odcore/data/reflection/AbstractField.h>
 
 #include "Rec2Fuse.h"
 
@@ -305,6 +307,41 @@ namespace odrec2fuse {
 
                             if (successfullyMapped) {
                                 cout << "Mapped " << c.getDataType() << " using " << e.m_library << endl;
+                                // Insert time stamps.
+                                {
+                                    shared_ptr<Field<double> > f1 = shared_ptr<Field<double> >(new Field<double>());
+                                    f1->setFieldIdentifier(1002);
+                                    f1->setLongFieldName("ReceivedTimeStamp");
+                                    f1->setShortFieldName("ReceivedTimeStamp");
+                                    f1->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
+                                    const double v = c.getReceivedTimeStamp().getSeconds() + c.getReceivedTimeStamp().getMicroseconds()/(1000.0*1000.0);
+                                    f1->setValue(v);
+                                    f1->setSize(sizeof(double));
+                                    msg.insertField(f1);
+                                }
+                                {
+                                    shared_ptr<Field<double> > f1 = shared_ptr<Field<double> >(new Field<double>());
+                                    f1->setFieldIdentifier(1001);
+                                    f1->setLongFieldName("SentTimeStamp");
+                                    f1->setShortFieldName("SentTimeStamp");
+                                    f1->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
+                                    const double v = c.getSentTimeStamp().getSeconds() + c.getSentTimeStamp().getMicroseconds()/(1000.0*1000.0);
+                                    f1->setValue(v);
+                                    f1->setSize(sizeof(double));
+                                    msg.insertField(f1);
+                                }
+                                {
+                                    shared_ptr<Field<double> > f1 = shared_ptr<Field<double> >(new Field<double>());
+                                    f1->setFieldIdentifier(1003);
+                                    f1->setLongFieldName("SampleTimeStamp");
+                                    f1->setShortFieldName("SampleTimeStamp");
+                                    f1->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
+                                    const double v = c.getSampleTimeStamp().getSeconds() + c.getSampleTimeStamp().getMicroseconds()/(1000.0*1000.0);
+                                    f1->setValue(v);
+                                    f1->setSize(sizeof(double));
+                                    msg.insertField(f1);
+                                }
+
                                 mappedContainers++;
 
                                 stringstream sstr;
