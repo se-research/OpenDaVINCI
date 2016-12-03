@@ -34,83 +34,91 @@
 #include <map>
 
 #include <opendavinci/odcore/data/Container.h>
-#include <opendavinci/GeneratedHeaders_OpenDaVINCI_Helper.h>
 #include <opendavinci/odcore/reflection/Field.h>
 #include <opendavinci/odcore/reflection/Message.h>
 #include <opendavinci/odcore/reflection/CSVFromVisitableVisitor.h>
 #include <opendavinci/odcore/strings/StringToolbox.h>
+
+#include <opendavinci/GeneratedHeaders_OpenDaVINCI_Helper.h>
 #include <opendavinci/generated/odcore/data/reflection/AbstractField.h>
 
 #include "Rec2Fuse.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 
-std::map<int32_t, uint32_t> mapOfEntrySizes;
 std::map<int32_t, std::string> mapOfEntries;
-
-//static const char *filepath = "/file";
-//static const char *filename = "file";
-//static const char *filecontent = "I'm the content of the only file available there\n";
+std::map<int32_t, uint32_t> mapOfEntrySizes;
 
 static int getattr_callback(const char *path, struct stat *stbuf) {
-  memset(stbuf, 0, sizeof(struct stat));
+    memset(stbuf, 0, sizeof(struct stat));
 
-  if (strcmp(path, "/") == 0) {
-    stbuf->st_mode = S_IFDIR | 0755;
-    stbuf->st_nlink = 2;
-    return 0;
-  }
+    if (strcmp(path, "/") == 0) {
+        stbuf->st_mode = S_IFDIR | 0755;
+        stbuf->st_nlink = 2;
+        return 0;
+    }
 
-  std::string FQDN = "/19.csv";
-  if (strcmp(path, FQDN.c_str()) == 0) {
-    stbuf->st_mode = S_IFREG | 0444;
-    stbuf->st_nlink = 1;
-    stbuf->st_size = mapOfEntrySizes[19];
-    return 0;
-  }
+    for (auto entry : mapOfEntries) {
+        std::stringstream sstr;
+        sstr << "/" << entry.first << ".csv";
+        const std::string FQDN = sstr.str();
+        if (strcmp(path, FQDN.c_str()) == 0) {
+            stbuf->st_mode = S_IFREG | 0444;
+            stbuf->st_nlink = 1;
+            stbuf->st_size = mapOfEntrySizes[entry.first];
+            return 0;
+        }
+    }
 
-  return -ENOENT;
+    return -ENOENT;
 }
 
-static int readdir_callback(const char */*path*/, void *buf, fuse_fill_dir_t filler,
-    off_t offset, struct fuse_file_info *fi) {
-  (void) offset;
-  (void) fi;
+static int readdir_callback(const char */*path*/, void *buf, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info *fi) {
+    (void) offset;
+    (void) fi;
 
-  filler(buf, ".", NULL, 0);
-  filler(buf, "..", NULL, 0);
+    filler(buf, ".", NULL, 0);
+    filler(buf, "..", NULL, 0);
 
-  std::string FQDN = "/19.csv";
-  filler(buf, FQDN.c_str()+1, NULL, 0);
+    for (auto entry : mapOfEntries) {
+        std::stringstream sstr;
+        sstr << "/" << entry.first << ".csv";
+        const std::string FQDN = sstr.str();
+        filler(buf, FQDN.c_str()+1, NULL, 0); // Omit leading '/'
+    }
 
-  return 0;
+    return 0;
 }
 
 static int open_callback(const char */*path*/, struct fuse_file_info */*fi*/) {
-  return 0;
+    return 0;
 }
 
 static int read_callback(const char *path, char *buf, size_t size, off_t offset, struct fuse_file_info */*fi*/) {
+    for (auto entry : mapOfEntries) {
+        std::stringstream sstr;
+        sstr << "/" << entry.first << ".csv";
+        const std::string FQDN = sstr.str();
 
-  std::string FQDN = "/19.csv";
-  if (strcmp(path, FQDN.c_str()) == 0) {
-    size_t len = mapOfEntrySizes[19];
-    if (offset >= static_cast<int32_t>(len)) {
-      return 0;
+        if (strcmp(path, FQDN.c_str()) == 0) {
+            size_t len = mapOfEntrySizes[entry.first];
+            if (offset >= static_cast<int32_t>(len)) {
+                return 0;
+            }
+
+            const std::string filecontent = mapOfEntries[entry.first];
+
+            if (offset + size > len) {
+                memcpy(buf, filecontent.c_str() + offset, len - offset);
+                return len - offset;
+            }
+
+            memcpy(buf, filecontent.c_str() + offset, size);
+            return size;
+        }
     }
 
-    const std::string filecontent = mapOfEntries[19];
-
-    if (offset + size > len) {
-      memcpy(buf, filecontent.c_str() + offset, len - offset);
-      return len - offset;
-    }
-
-    memcpy(buf, filecontent.c_str() + offset, size);
-    return size;
-  }
-
-  return -ENOENT;
+    return -ENOENT;
 }
 
 
@@ -297,71 +305,75 @@ namespace odrec2fuse {
                             oldPercentage = (int32_t)percentage;
                         }
 
+if (percentage > 5) break;
+
                         bool successfullyMapped = false;
-                        odcore::reflection::Message msg;
+
+                        // First, try to decode a regular OpenDaVINCI message.
+                        odcore::reflection::Message msg = GeneratedHeaders_OpenDaVINCI_Helper::__map(c, successfullyMapped);
+
                         auto it = m_listOfHelpers.begin();
                         while ( (!successfullyMapped) && (it != m_listOfHelpers.end())) {
                             HelperEntry e = *it;
                             msg = e.m_helper->map(c, successfullyMapped);
                             it++;
+                        }
 
-                            if (successfullyMapped) {
-                                cout << "Mapped " << c.getDataType() << " using " << e.m_library << endl;
-                                // Insert time stamps.
-                                {
-                                    shared_ptr<Field<double> > f1 = shared_ptr<Field<double> >(new Field<double>());
-                                    f1->setFieldIdentifier(1002);
-                                    f1->setLongFieldName("ReceivedTimeStamp");
-                                    f1->setShortFieldName("ReceivedTimeStamp");
-                                    f1->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
-                                    const double v = c.getReceivedTimeStamp().getSeconds() + c.getReceivedTimeStamp().getMicroseconds()/(1000.0*1000.0);
-                                    f1->setValue(v);
-                                    f1->setSize(sizeof(double));
-                                    msg.insertField(f1);
-                                }
-                                {
-                                    shared_ptr<Field<double> > f1 = shared_ptr<Field<double> >(new Field<double>());
-                                    f1->setFieldIdentifier(1001);
-                                    f1->setLongFieldName("SentTimeStamp");
-                                    f1->setShortFieldName("SentTimeStamp");
-                                    f1->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
-                                    const double v = c.getSentTimeStamp().getSeconds() + c.getSentTimeStamp().getMicroseconds()/(1000.0*1000.0);
-                                    f1->setValue(v);
-                                    f1->setSize(sizeof(double));
-                                    msg.insertField(f1);
-                                }
-                                {
-                                    shared_ptr<Field<double> > f1 = shared_ptr<Field<double> >(new Field<double>());
-                                    f1->setFieldIdentifier(1003);
-                                    f1->setLongFieldName("SampleTimeStamp");
-                                    f1->setShortFieldName("SampleTimeStamp");
-                                    f1->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
-                                    const double v = c.getSampleTimeStamp().getSeconds() + c.getSampleTimeStamp().getMicroseconds()/(1000.0*1000.0);
-                                    f1->setValue(v);
-                                    f1->setSize(sizeof(double));
-                                    msg.insertField(f1);
-                                }
-
-                                mappedContainers++;
-
-                                stringstream sstr;
-
-                                const bool ADD_HEADER = (mapOfEntries.count(c.getDataType()) == 0);
-                                const char DELIMITER = ';';
-                                CSVFromVisitableVisitor csv(sstr, ADD_HEADER, DELIMITER);
-                                msg.accept(csv);
-
-                                string s = mapOfEntries[c.getDataType()] + sstr.str();
-                                mapOfEntries[c.getDataType()] = s;
-                                mapOfEntrySizes[c.getDataType()] = s.size();
+                        if (successfullyMapped) {
+                            // Insert time stamps.
+                            {
+                                shared_ptr<Field<double> > f1 = shared_ptr<Field<double> >(new Field<double>());
+                                f1->setFieldIdentifier(1002);
+                                f1->setLongFieldName("ReceivedTimeStamp");
+                                f1->setShortFieldName("ReceivedTimeStamp");
+                                f1->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
+                                const double v = c.getReceivedTimeStamp().getSeconds() + c.getReceivedTimeStamp().getMicroseconds()/(1000.0*1000.0);
+                                f1->setValue(v);
+                                f1->setSize(sizeof(double));
+                                msg.insertField(f1);
                             }
+                            {
+                                shared_ptr<Field<double> > f1 = shared_ptr<Field<double> >(new Field<double>());
+                                f1->setFieldIdentifier(1001);
+                                f1->setLongFieldName("SentTimeStamp");
+                                f1->setShortFieldName("SentTimeStamp");
+                                f1->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
+                                const double v = c.getSentTimeStamp().getSeconds() + c.getSentTimeStamp().getMicroseconds()/(1000.0*1000.0);
+                                f1->setValue(v);
+                                f1->setSize(sizeof(double));
+                                msg.insertField(f1);
+                            }
+                            {
+                                shared_ptr<Field<double> > f1 = shared_ptr<Field<double> >(new Field<double>());
+                                f1->setFieldIdentifier(1003);
+                                f1->setLongFieldName("SampleTimeStamp");
+                                f1->setShortFieldName("SampleTimeStamp");
+                                f1->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
+                                const double v = c.getSampleTimeStamp().getSeconds() + c.getSampleTimeStamp().getMicroseconds()/(1000.0*1000.0);
+                                f1->setValue(v);
+                                f1->setSize(sizeof(double));
+                                msg.insertField(f1);
+                            }
+
+                            mappedContainers++;
+
+                            stringstream sstr;
+
+                            const bool ADD_HEADER = (mapOfEntries.count(c.getDataType()) == 0);
+                            const char DELIMITER = ';';
+                            CSVFromVisitableVisitor csv(sstr, ADD_HEADER, DELIMITER);
+                            msg.accept(csv);
+
+                            string s = mapOfEntries[c.getDataType()] + sstr.str();
+                            mapOfEntries[c.getDataType()] = s;
+                            mapOfEntrySizes[c.getDataType()] = s.size();
                         }
-                        if (mappedContainers > 20) {
-                            break;
-                        }
+
                     }
                 }
             }
+
+            cout << "[Rec2Fuse] Mapped " << mappedContainers << " containers in total into " << mapOfEntries.size() << " files." << endl;
 
             rec2fuse_operations.getattr = getattr_callback;
             rec2fuse_operations.open = open_callback;
