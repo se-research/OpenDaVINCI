@@ -46,6 +46,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
+std::map<int32_t, std::string> mapOfFilenames;
 std::map<int32_t, std::string> mapOfEntries;
 std::map<int32_t, uint32_t> mapOfEntrySizes;
 
@@ -60,7 +61,7 @@ static int getattr_callback(const char *path, struct stat *stbuf) {
 
     for (auto entry : mapOfEntries) {
         std::stringstream sstr;
-        sstr << "/" << entry.first << ".csv";
+        sstr << "/" << mapOfFilenames[entry.first] << ".csv";
         const std::string FQDN = sstr.str();
         if (strcmp(path, FQDN.c_str()) == 0) {
             stbuf->st_mode = S_IFREG | 0444;
@@ -82,7 +83,7 @@ static int readdir_callback(const char */*path*/, void *buf, fuse_fill_dir_t fil
 
     for (auto entry : mapOfEntries) {
         std::stringstream sstr;
-        sstr << "/" << entry.first << ".csv";
+        sstr << "/" << mapOfFilenames[entry.first] << ".csv";
         const std::string FQDN = sstr.str();
         filler(buf, FQDN.c_str()+1, NULL, 0); // Omit leading '/'
     }
@@ -97,7 +98,7 @@ static int open_callback(const char */*path*/, struct fuse_file_info */*fi*/) {
 static int read_callback(const char *path, char *buf, size_t size, off_t offset, struct fuse_file_info */*fi*/) {
     for (auto entry : mapOfEntries) {
         std::stringstream sstr;
-        sstr << "/" << entry.first << ".csv";
+        sstr << "/" << mapOfFilenames[entry.first] << ".csv";
         const std::string FQDN = sstr.str();
 
         if (strcmp(path, FQDN.c_str()) == 0) {
@@ -276,6 +277,7 @@ namespace odrec2fuse {
     int32_t Rec2Fuse::run(const int32_t &argc, char **argv) {
         uint32_t mappedContainers = 0;
 
+        ::mapOfFilenames.clear();
         ::mapOfEntrySizes.clear();
         ::mapOfEntries.clear();
 
@@ -306,7 +308,7 @@ namespace odrec2fuse {
                         }
 
 // For debugging:
-//if (percentage > 5) break;
+if (percentage > 5) break;
 
                         bool successfullyMapped = false;
 
@@ -365,6 +367,7 @@ namespace odrec2fuse {
                             CSVFromVisitableVisitor csv(sstr, ADD_HEADER, DELIMITER);
                             msg.accept(csv);
 
+                            mapOfFilenames[c.getDataType()] = msg.getLongName();
                             mapOfEntries[c.getDataType()] +=  sstr.str();
                             mapOfEntrySizes[c.getDataType()] = mapOfEntries[c.getDataType()].size();
                         }
