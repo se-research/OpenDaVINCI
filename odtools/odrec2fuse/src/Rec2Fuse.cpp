@@ -24,6 +24,7 @@
 
 #define FUSE_USE_VERSION 26
 #include <fuse.h>
+
 #include <cstring>
 #include <cerrno>
 
@@ -45,6 +46,14 @@
 #include "Rec2Fuse.h"
 
 ////////////////////////////////////////////////////////////////////////////////
+
+/*
+Docker call:
+docker run -ti -v ~/input:/opt/input -v ~/output:/opt/output --cap-add SYS_ADMIN --cap-add MKNOD --device=/dev/fuse --security-opt apparmor:unconfined seresearch/opendavinci-ubuntu-16.04-complete:latest /bin/bash
+
+Binary call in the image:
+/opt/od4/bin/odrec2fuse /opt/input/CID-251-odrecorderh264_2016-11-08_10\:27\:05.rec /opt/output
+*/
 
 std::map<int32_t, std::string> mapOfFilenames;
 std::map<int32_t, std::string> mapOfEntries;
