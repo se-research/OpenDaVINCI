@@ -49,10 +49,24 @@
 
 /*
 Docker call:
-docker run -ti -v ~/input:/opt/input -v ~/output:/opt/output --cap-add SYS_ADMIN --cap-add MKNOD --device=/dev/fuse --security-opt apparmor:unconfined seresearch/opendavinci-ubuntu-16.04-complete:latest /bin/bash
+docker run --rm -ti -v ~/input:/opt/input -v ~/output:/opt/output:shared --cap-add SYS_ADMIN --cap-add MKNOD --device=/dev/fuse --security-opt apparmor:unconfined seresearch/opendavinci-ubuntu-16.04-complete:latest /bin/bash
 
 Binary call in the image:
-/opt/od4/bin/odrec2fuse /opt/input/CID-251-odrecorderh264_2016-11-08_10\:27\:05.rec /opt/output
+/opt/od4/bin/odrec2fuse /opt/input/CID-251-odrecorderh264_2016-11-08_10\:27\:05.rec -f /opt/output
+
+Required configuration changes:
+http://unix.stackexchange.com/questions/292999/mounting-a-nfs-directory-into-host-volume-that-is-shared-with-docker
+
+If Docker was installed through a package manager or install script for systemd, you may need to adjust the MountFlags daemon argument. To do that, locate the docker.service file:
+
+$ sudo find /etc -name "docker.service"
+In my case on Ubuntu 16.04, it was located at /etc/systemd/system/multi-user.target.wants/docker.service. Edit this file with vi or nano, and ensure that the MountFlags option reads:
+
+MountFlags=shared
+Save the file, reload the daemon args, and restart docker:
+
+$ sudo systemctl daemon-reload
+$ sudo systemctl restart docker
 */
 
 std::map<int32_t, std::string> mapOfFilenames;
