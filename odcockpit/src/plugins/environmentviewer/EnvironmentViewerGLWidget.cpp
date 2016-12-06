@@ -125,7 +125,8 @@ namespace cockpit {
                     m_CPCreceived(false),
                     m_cpc(),
                     m_cpcMutex(),
-                    m_SPCRendered(false) {}
+                    m_SPCReceived(false),
+                    m_CPCReceived(false) {}
 
             EnvironmentViewerGLWidget::~EnvironmentViewerGLWidget() {
                 OPENDAVINCI_CORE_DELETE_POINTER(m_root);
@@ -313,7 +314,6 @@ namespace cockpit {
                                     }
                                 }
                                 glEnd();//end drawing of points
-                                m_SPCRendered = true;
                             }
 
                             glPopMatrix();
@@ -325,7 +325,7 @@ namespace cockpit {
                 // vertical angle (from -15 to 15 with increment 2 for each 16 points).
                 // A compact point cloud contains: (1) the starting azimuth, (2) the ending azimuth, (3) number of points per azimuth, 
                 // and (4) a string with the distance values of all points in the container
-                if (m_CPCreceived && !m_SPCRendered) {
+                if (m_CPCreceived && !m_SPCReceived) {
                     Lock lockCPC(m_cpcMutex);
                     const float startAzimuth = m_cpc.getStartAzimuth();
                     const float endAzimuth = m_cpc.getEndAzimuth();
@@ -499,6 +499,9 @@ namespace cockpit {
             void EnvironmentViewerGLWidget::nextContainer(Container &c) {
                 
                 if(c.getDataType()==odcore::data::SharedPointCloud::ID()){
+                    if(!m_SPCReceived){
+                        m_SPCReceived=true;
+                    }
                     m_velodyneFrame=c.getData<SharedPointCloud>();//Get shared point cloud
                     if (!m_hasAttachedToSharedImageMemory) {
                         m_velodyneSharedMemory=SharedMemoryFactory::attachToSharedMemory(m_velodyneFrame.getName()); // Attach the shared point cloud to the shared memory.
@@ -507,8 +510,10 @@ namespace cockpit {
                 }
                 
                 if(c.getDataType()==odcore::data::CompactPointCloud::ID()){
-                    m_CPCreceived = true;
-                    {
+                    if(!m_CPCReceived){
+                        m_CPCreceived = true;
+                    }
+                    if(!m_SPCReceived){
                         Lock lockCPC(m_cpcMutex);
                         m_cpc=c.getData<CompactPointCloud>();  
                     }
