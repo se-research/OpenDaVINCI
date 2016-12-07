@@ -1,3 +1,4 @@
+4.4.4 - Updating rendering SPC and CPC
 4.4.3 - Changed CompactPointCloud base type from half_float to uint16_t with cm resolution
 4.4.2 - Added down-sampling feature to odfilter, added inter-container timestamping check to odrecinspect, updated CompactPointCloud message specification
 4.4.1 - ContainerListenerFork and MacOS compile fix

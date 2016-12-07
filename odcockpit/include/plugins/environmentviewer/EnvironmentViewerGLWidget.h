@@ -143,7 +143,8 @@ class SelectableNodeDescriptor;
                     bool m_CPCreceived;//Set to true when the first compact point cloud is received
                     odcore::data::CompactPointCloud m_cpc;
                     odcore::base::Mutex m_cpcMutex;
-                    bool m_SPCRendered;
+                    bool m_SPCReceived;
+                    bool m_CPCReceived;
 
                     /**
                      * This method actually modifies the rendering configuration.
