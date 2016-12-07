@@ -42,7 +42,7 @@ class Serializable;
         }
 
         void ProtoSerializer::getSerializedData(ostream &o) {
-            o << m_buffer.str();
+            o.write(m_buffer.str().c_str(), m_buffer.str().size());
         }
 
         uint64_t ProtoSerializer::getKey(const uint32_t &fieldNumber, const uint8_t &protoType) {

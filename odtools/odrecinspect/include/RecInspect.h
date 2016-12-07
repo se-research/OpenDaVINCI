@@ -1,6 +1,6 @@
 /**
- * odrecintegrity - Tool for checking the integrity of recorded data
- * Copyright (C) 2014 - 2015 Christian Berger
+ * odrecinspect - Tool for inspecting recorded data
+ * Copyright (C) 2014 - 2016 Christian Berger
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,17 +17,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef RECINTEGRITY_H_
-#define RECINTEGRITY_H_
+#ifndef RECINSPECT_H_
+#define RECINSPECT_H_
 
-#include "opendavinci/odcore/opendavinci.h"
+#include <map>
+#include <vector>
 
-namespace odrecintegrity {
+#include <opendavinci/odcore/opendavinci.h>
+#include <opendavinci/odcore/data/Container.h>
+
+namespace odrecinspect {
 
     /**
-     * This class can be used to inspect the integrity of recorded data.
+     * This class can be used to inspect recorded data.
      */
-    class RecIntegrity {
+    class RecInspect {
         private:
             /**
              * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -36,7 +40,7 @@ namespace odrecintegrity {
              *
              * @param obj Reference to an object of this class.
              */
-            RecIntegrity(const RecIntegrity &/*obj*/);
+            RecInspect(const RecInspect &/*obj*/);
 
             /**
              * "Forbidden" assignment operator. Goal: The compiler should warn
@@ -46,12 +50,12 @@ namespace odrecintegrity {
              * @param obj Reference to an object of this class.
              * @return Reference to this instance.
              */
-            RecIntegrity& operator=(const RecIntegrity &/*obj*/);
+            RecInspect& operator=(const RecInspect &/*obj*/);
 
         public:
-            RecIntegrity();
+            RecInspect();
 
-            virtual ~RecIntegrity();
+            virtual ~RecInspect();
 
             /**
              * This method validates a specified file regarding integrity.
@@ -61,8 +65,19 @@ namespace odrecintegrity {
              * @return 0 if specified file is integer, 1 if the file is not integer, and 255 if the file could not be opened.
              */
             int32_t run(const int32_t &argc, char **argv);
+
+        private:
+            std::map<int32_t, uint64_t> m_numberOfContainersPerType;
+            std::map<int32_t, odcore::data::Container> m_latestContainersPerType;
+            std::map<int32_t, uint32_t> m_numberOfContainersInIncorrectTemporalOrderPerType;
+
+            std::map<int32_t, double> m_minDurationBetweenSamplesPerType;
+            std::map<int32_t, std::vector<uint64_t> > m_avgDurationBetweenSamplesPerType;
+            std::map<int32_t, double> m_maxDurationBetweenSamplesPerType;
+
+            double m_processingTimePerContainer;
     };
 
-} // odrecintegrity
+} // odrecinspect
 
-#endif /*RECINTEGRITY_H_*/
+#endif /*RECINSPECT_H_*/

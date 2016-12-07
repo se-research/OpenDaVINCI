@@ -18,8 +18,10 @@
  */
 
 #include <iostream>
-#include <sstream>
 #include <memory>
+#include <sstream>
+#include <string>
+#include <vector>
 
 #include "opendavinci/odcore/serialization/Deserializer.h"
 #include "opendavinci/odcore/serialization/SerializationFactory.h"
@@ -172,28 +174,45 @@ namespace odcore {
             string rawData = "";
 
             // Read Container header.
+            vector<char> temporaryBuffer;
             stringstream bufferIn;
             {
                 const uint32_t OPENDAVINCI_CONTAINER_HEADER_SIZE = 5;
                 bool consumedOpenDaVINCIContainerHeader = false;
                 uint32_t bytesRead = 0;
                 uint32_t expectedBytes = 0;
+                uint32_t bufferPosition = 0;
 
+                temporaryBuffer.resize(OPENDAVINCI_CONTAINER_HEADER_SIZE);
                 while (in.good()) {
-                    // Copy bytes to internal buffer.
-                    char c = in.get();
-                    bufferIn.put(c);
-                    bytesRead++;
+                    if (0 == expectedBytes) {
+                        in.read(&temporaryBuffer[bufferPosition], (OPENDAVINCI_CONTAINER_HEADER_SIZE - bufferPosition));
+                        bytesRead = in.gcount();
+                        bufferPosition += bytesRead;
 
-                    // After consuming the OpenDaVINCI header, decrease the amount of expected bytes.
-                    if (consumedOpenDaVINCIContainerHeader) {
-                        expectedBytes--;
-                        if (expectedBytes == 0) {
+                        if (bufferPosition == OPENDAVINCI_CONTAINER_HEADER_SIZE) {
+                            // Stop processing and redirect bufferIn's underlying pointer to avoid copying data.
+                            bufferIn.rdbuf()->pubsetbuf(&temporaryBuffer[0], bufferPosition);
+                        }
+                    }
+                    else {
+                        in.read(&temporaryBuffer[bufferPosition], (expectedBytes > 1024) ? 1024 : expectedBytes);
+                        const streamsize extractedBytes = in.gcount();
+                        bufferPosition += extractedBytes;
+                        if (extractedBytes > 0) {
+                            expectedBytes -= extractedBytes;
+                        }
+                        else {
+                            cerr << "[core::base::Container] Failed to read " << expectedBytes << "." << endl;
+                        }
+                        if (0 == expectedBytes) {
+                            // Stop processing and redirect bufferIn's underlying pointer to avoid copying data.
+                            bufferIn.rdbuf()->pubsetbuf(&temporaryBuffer[0], bufferPosition);
                             break;
                         }
                     }
 
-                    if (bytesRead == OPENDAVINCI_CONTAINER_HEADER_SIZE) {
+                    if ( (bytesRead == OPENDAVINCI_CONTAINER_HEADER_SIZE) && !consumedOpenDaVINCIContainerHeader) {
                         consumedOpenDaVINCIContainerHeader = true;
 
                         char byte0 = 0;
@@ -210,8 +229,9 @@ namespace odcore {
                         unsigned char byte1 = (expectedBytes & 0xFF);
                         expectedBytes = expectedBytes >> 8;
 
-                        // Clear buffer as the remaining bytes are the payload.
-                        bufferIn.str("");
+                        // Allocate contiguous space to store bytes.
+                        bufferPosition = 0;
+                        temporaryBuffer.resize(expectedBytes);
 
                         // Check validity of the received bytes.
                         if (!( (0x0D == byte0) && (0xA4 == byte1) )) {

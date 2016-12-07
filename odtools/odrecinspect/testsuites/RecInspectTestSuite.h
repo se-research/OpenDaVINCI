@@ -1,6 +1,6 @@
 /**
- * odrecintegrity - Tool for checking the integrity of recorded data
- * Copyright (C) 2014 - 2015 Christian Berger
+ * odrecinspect - Tool for inspecting recorded data
+ * Copyright (C) 2014 - 2016 Christian Berger
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,23 +17,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef RECINTEGRITYTESTSUITE_H_
-#define RECINTEGRITYTESTSUITE_H_
+#ifndef RECINSPECTTESTSUITE_H_
+#define RECINSPECTTESTSUITE_H_
 
 #include "cxxtest/TestSuite.h"
 
 // Include local header files.
-#include "../include/RecIntegrity.h"
+#include "../include/RecInspect.h"
 
 using namespace std;
-using namespace odrecintegrity;
+using namespace odrecinspect;
 
 /**
  * The actual testsuite starts here.
  */
-class RecIntegrityTest : public CxxTest::TestSuite {
+class RecInspectTest : public CxxTest::TestSuite {
     private:
-        RecIntegrity *dt;
+        RecInspect *dt;
 
     public:
         /**
@@ -41,7 +41,7 @@ class RecIntegrityTest : public CxxTest::TestSuite {
          */
         void setUp() {
             // Create an instance of sensorboard through SensorBoardTestling which will be deleted in tearDown().
-            dt = new RecIntegrity();
+            dt = new RecInspect();
         }
 
         /**
@@ -56,7 +56,7 @@ class RecIntegrityTest : public CxxTest::TestSuite {
         // Below this line the actual testcases are defined.
         ////////////////////////////////////////////////////////////////////////////////////
 
-        void testRecIntegritySuccessfullyCreated() {
+        void testRecInspectSuccessfullyCreated() {
             TS_ASSERT(dt != NULL);
         }
 
@@ -71,7 +71,7 @@ class RecIntegrityTest : public CxxTest::TestSuite {
         /**
          * This constructor is only necessary to initialize the pointer variable.
          */
-        RecIntegrityTest() : dt(NULL) {}
+        RecInspectTest() : dt(NULL) {}
 
     private:
         /**
@@ -81,7 +81,7 @@ class RecIntegrityTest : public CxxTest::TestSuite {
          *
          * @param obj Reference to an object of this class.
          */
-        RecIntegrityTest(const RecIntegrityTest &/*obj*/);
+        RecInspectTest(const RecInspectTest &/*obj*/);
 
         /**
          * "Forbidden" assignment operator. Goal: The compiler should warn
@@ -91,9 +91,9 @@ class RecIntegrityTest : public CxxTest::TestSuite {
          * @param obj Reference to an object of this class.
          * @return Reference to this instance.
          */
-        RecIntegrityTest& operator=(const RecIntegrityTest &/*obj*/);
+        RecInspectTest& operator=(const RecInspectTest &/*obj*/);
 
 };
 
-#endif /*RECINTEGRITYTESTSUITE_H_*/
+#endif /*RECINSPECTTESTSUITE_H_*/
 

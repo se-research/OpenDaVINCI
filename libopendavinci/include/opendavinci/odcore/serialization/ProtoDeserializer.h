@@ -49,7 +49,18 @@ namespace odcore {
                  * @param key Associated Proto key.
                  * @param type Associated Proto type.
                  * @param length Length of the contained value.
-                 * @param value Actual value (represented as vector of char making use of the vector's contiguous storage capability).
+                 */
+                ProtoKeyValue(const uint32_t &key,
+                              const ProtoSerializer::PROTOBUF_TYPE &type,
+                              const uint64_t &length);
+
+                /**
+                 * Constructor.
+                 *
+                 * @param key Associated Proto key.
+                 * @param type Associated Proto type.
+                 * @param length Length of the contained value.
+                 * @param v Value.
                  */
                 ProtoKeyValue(const uint32_t &key,
                               const ProtoSerializer::PROTOBUF_TYPE &type,
@@ -102,6 +113,20 @@ namespace odcore {
                  * @return value as string.
                  */
                 string getValueAsString() const;
+
+                /**
+                 * This method returns a reference to the contained value.
+                 *
+                 * @return value as reference.
+                 */
+                const vector<char>& getValue() const;
+
+                /**
+                 * This method returns a reference to the contained buffer.
+                 *
+                 * @return value as reference.
+                 */
+                vector<char>& getRawBuffer();
 
             private:
                 uint32_t m_key;
@@ -239,8 +264,6 @@ namespace odcore {
                 virtual void read(const uint32_t &id, const string &longName, const string &shortName, void *data, const uint32_t &size);
 
             private:
-                void readValueForSerializable(const string &s, Serializable &v);
-
                 /**
                  * This method reads and validates the key for the next value.
                  *

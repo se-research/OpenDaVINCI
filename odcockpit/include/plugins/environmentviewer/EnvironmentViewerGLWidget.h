@@ -36,6 +36,9 @@
 #include "plugins/environmentviewer/SelectableNodeDescriptorTreeListener.h"
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
 #include "opendavinci/generated/odcore/data/SharedPointCloud.h"
+#include "opendlv/data/environment/EgoState.h"
+#include "opendavinci/generated/odcore/data/CompactPointCloud.h"
+#include "automotivedata/generated/cartesian/Constants.h"
 
 class QWidget;
 namespace cockpit { namespace plugins { class PlugIn; } }
@@ -103,6 +106,9 @@ class SelectableNodeDescriptor;
                     virtual void drawScene();
 
                 private:
+                    void drawSceneInternal();
+
+                private:
                     odcore::base::Mutex m_rootMutex;
                     opendlv::threeD::TransformGroup *m_root;
                     opendlv::threeD::TransformGroup *m_stationaryElements;
@@ -111,6 +117,7 @@ class SelectableNodeDescriptor;
                     opendlv::threeD::TransformGroup *m_plannedRoute;
                     opendlv::threeD::TransformGroup *m_lines;
                     opendlv::threeD::TransformGroup *m_velodyne;
+                    opendlv::data::environment::EgoState m_egoState;
 
                     opendlv::threeD::NodeDescriptor m_egoStateNodeDescriptor;
                     uint32_t m_numberOfReceivedEgoStates;
@@ -128,9 +135,16 @@ class SelectableNodeDescriptor;
 
                     odcore::base::TreeNode<SelectableNodeDescriptor> *m_selectableNodeDescriptorTree;
                     SelectableNodeDescriptorTreeListener &m_selectableNodeDescriptorTreeListener;
-                    std::shared_ptr<odcore::wrapper::SharedMemory> velodyneSharedMemory;
+                    std::shared_ptr<odcore::wrapper::SharedMemory> m_velodyneSharedMemory;
                     bool m_hasAttachedToSharedImageMemory;
-                    odcore::data::SharedPointCloud velodyneFrame;
+                    odcore::data::SharedPointCloud m_velodyneFrame;
+                    const float START_V_ANGLE = -15.0;//For each azimuth there are 16 points with unique vertical angles from -15 to 15 degrees
+                    const float V_INCREMENT = 2.0;  //The vertical angle increment for the 16 points with the same azimuth is 2 degrees
+                    bool m_CPCreceived;//Set to true when the first compact point cloud is received
+                    odcore::data::CompactPointCloud m_cpc;
+                    odcore::base::Mutex m_cpcMutex;
+                    bool m_SPCReceived;
+                    bool m_CPCReceived;
 
                     /**
                      * This method actually modifies the rendering configuration.

@@ -20,6 +20,7 @@
 #ifndef FILTER_H_
 #define FILTER_H_
 
+#include <map>
 #include <string>
 #include <vector>
 
@@ -82,9 +83,19 @@ namespace odfilter {
              */
             vector<uint32_t> getListOfNumbers(const string &s);
 
+            /**
+             * This method returns a map containing pairs Container-ID:SampleRate.
+             *
+             * @param s Comma-separated list of pairs.
+             * @return map containing pairs Container,SampleRate.
+             */
+            map<int32_t, uint32_t> getMapOfDownSampling(const string &s);
+
         private:
             vector<uint32_t> m_keep;
             vector<uint32_t> m_drop;
+            map<int32_t, uint32_t> m_downsampling;
+            map<int32_t, uint32_t> m_downsamplingCounter;
     };
 
 } // odfilter

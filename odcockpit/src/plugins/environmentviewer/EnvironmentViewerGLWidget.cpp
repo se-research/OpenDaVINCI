@@ -26,11 +26,13 @@
     #include <GL/glu.h>
 #endif
 
+#include <cmath>
 #include <fstream>
 #include <iostream>
-#include <string>
-#include <vector>
 #include <memory>
+#include <string>
+#include <sstream>
+#include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
@@ -64,8 +66,6 @@
 #include "plugins/environmentviewer/EnvironmentViewerGLWidget.h"
 #include "plugins/environmentviewer/SelectableNodeDescriptor.h"
 #include "plugins/environmentviewer/TreeNodeVisitor.h"
-
-#include <sstream>
 
 #include "opendavinci/odcore/io/conference/ContainerListener.h"
 #include "opendavinci/odcore/wrapper/Eigen.h"
@@ -104,6 +104,7 @@ namespace cockpit {
                     m_plannedRoute(NULL),
                     m_lines(NULL),
                     m_velodyne(NULL),
+                    m_egoState(),
                     m_egoStateNodeDescriptor(),
                     m_numberOfReceivedEgoStates(0),
                     m_egoStateNode(NULL),
@@ -118,9 +119,14 @@ namespace cockpit {
                     m_mapOfCurrentPositions(),
                     m_selectableNodeDescriptorTree(NULL),
                     m_selectableNodeDescriptorTreeListener(sndtl),
-                    velodyneSharedMemory(NULL),
+                    m_velodyneSharedMemory(NULL),
                     m_hasAttachedToSharedImageMemory(false),
-                    velodyneFrame() {}
+                    m_velodyneFrame(),
+                    m_CPCreceived(false),
+                    m_cpc(),
+                    m_cpcMutex(),
+                    m_SPCReceived(false),
+                    m_CPCReceived(false) {}
 
             EnvironmentViewerGLWidget::~EnvironmentViewerGLWidget() {
                 OPENDAVINCI_CORE_DELETE_POINTER(m_root);
@@ -266,136 +272,166 @@ namespace cockpit {
                 glLightfv(GL_LIGHT0, GL_SPECULAR, light0Specular);
             }
 
+            void EnvironmentViewerGLWidget::drawSceneInternal() {
+                m_root->render(m_renderingConfiguration);
+
+                // Draw scene. Retrieve the point cloud from the shared memory and visualize it frame by frame when shared point cloud is received via the nextContainer method
+                if (m_velodyneSharedMemory.get() != NULL) {
+                    if (m_velodyneSharedMemory->isValid()) {
+                        // Using a scoped lock to lock and automatically unlock a shared memory segment.
+                        odcore::base::Lock lv(m_velodyneSharedMemory);
+                        if (m_velodyneFrame.getComponentDataType() == SharedPointCloud::FLOAT_T
+                            && (m_velodyneFrame.getNumberOfComponentsPerPoint() == 4)
+                            && (m_velodyneFrame.getUserInfo() == SharedPointCloud::XYZ_INTENSITY)) {
+
+                            glPushMatrix();
+                            {
+                                // Translate the model.
+                                glTranslated(m_egoState.getPosition().getX(), m_egoState.getPosition().getY(), 0);
+
+                                // Rotate the model using DEG (m_rotation is in RAD!).
+                                glRotated(/*m_egoState.getRotation().getX()*180.0 / cartesian::Constants::PI*/0, 1, 0, 0);
+                                glRotated(/*m_egoState.getRotation().getY()*180.0 / cartesian::Constants::PI*/0, 0, 1, 0);
+                                // Rotate around z-axis and turn by 10 DEG.
+                                glRotated(/*m_egoState.getRotation().getZ()*/ (m_egoState.getRotation().getAngleXY() + M_PI/2.0)*180.0 / cartesian::Constants::PI + 13.0, 0, 0, 1);
+
+                                float *velodyneRawData = static_cast<float*>(m_velodyneSharedMemory->getSharedMemory());
+                                glPointSize(1.0f); //set point size to 1 pixel
+                                glBegin(GL_POINTS); //starts drawing of points
+                                {
+                                    long startID=0;
+                                    //Point color depends on the intensity value. Let I (velodyneRawData[startID+3]) be the intensity value.
+                                    //When I<=127, then R=0, G=I*2, B=255-I*2; when I>127, then R=(I-127)*2, G=255-(I-127)*2, B=0
+                                    for(unsigned long iii=0;iii<m_velodyneFrame.getWidth();iii++) {
+                                        if(velodyneRawData[startID+3]<=127.0){
+                                            glColor3f(0.0f,velodyneRawData[startID+3]*2.0,255.0-velodyneRawData[startID+3]*2.0);
+                                        }
+                                        else{
+                                            glColor3f((velodyneRawData[startID+3]-127.0)*2.0,255.0-(velodyneRawData[startID+3]-127.0)*2.0,0.0f);
+                                        }
+                                        glVertex3f(velodyneRawData[startID],velodyneRawData[startID+1],velodyneRawData[startID+2]);
+                                        startID=m_velodyneFrame.getNumberOfComponentsPerPoint()*(iii+1);
+                                    }
+                                }
+                                glEnd();//end drawing of points
+                            }
+
+                            glPopMatrix();
+                        }
+                    }
+                }
+
+                // Visualize compact point cloud, where points are sorted by increasing azimuth (increment the azimuth after every 16 points) and 
+                // vertical angle (from -15 to 15 with increment 2 for each 16 points).
+                // A compact point cloud contains: (1) the starting azimuth, (2) the ending azimuth, (3) number of points per azimuth, 
+                // and (4) a string with the distance values of all points in the container
+                if (m_CPCreceived && !m_SPCReceived) {
+                    Lock lockCPC(m_cpcMutex);
+                    const float startAzimuth = m_cpc.getStartAzimuth();
+                    const float endAzimuth = m_cpc.getEndAzimuth();
+                    const uint8_t entriesPerAzimuth = m_cpc.getEntriesPerAzimuth();
+                    const string distances = m_cpc.getDistances();
+                    const uint32_t numberOfPoints = distances.size()/2;
+                    const uint32_t numberOfAzimuths = numberOfPoints/entriesPerAzimuth;
+                    const float azimuthIncrement = (endAzimuth-startAzimuth)/numberOfAzimuths;//Calculate the azimuth increment
+                    stringstream sstr(distances);
+                    
+                    glPushMatrix();
+                        glPointSize(1.0f); //set point size to 1 pixel
+
+                        glBegin(GL_POINTS); //starts drawing of points
+                            glColor3f(255.0f,255.0f,0.0);//Yellow color
+
+                            const float toRadian = static_cast<float>(cartesian::Constants::PI) / 180.0f;
+                            uint16_t distance_integer(0);
+                            float xyDistance = 0, xData = 0, yData = 0, zData = 0;
+                            float azimuth = startAzimuth;
+                            for (uint32_t azimuthIndex = 0; azimuthIndex < numberOfAzimuths; azimuthIndex++) {
+                                float verticalAngle = START_V_ANGLE;
+                                for (uint8_t sensorIndex = 0; sensorIndex<entriesPerAzimuth; sensorIndex++) {
+                                    sstr.read((char*)(&distance_integer), 2); // Read distance value from the string in a CPC container point by point
+                                    const float distance = static_cast<float>(distance_integer/100.0f); //convert cm to meter
+                                    // Compute x, y, z coordinate based on distance, azimuth, and vertical angle
+                                    xyDistance = distance * cos(verticalAngle * toRadian);
+                                    xData = xyDistance * sin(azimuth * toRadian);
+                                    yData = xyDistance * cos(azimuth * toRadian);
+                                    zData = distance * sin(verticalAngle * toRadian);
+                                    glVertex3f(xData,yData,zData);//Plot the point
+                                    verticalAngle += V_INCREMENT;
+                                }
+                                azimuth+=azimuthIncrement;
+                            }
+
+                        glEnd(); //end drawing of points
+                    glPopMatrix(); 
+                }
+            }
+
             void EnvironmentViewerGLWidget::drawScene() {
                 if (m_root != NULL) {
                     Lock l(m_rootMutex);
 
-                    //EgoCar view
                     if (m_cameraAssignedNodeDescriptor.getName().size() > 0) {
                         Position assignedNode = m_mapOfCurrentPositions[m_cameraAssignedNodeDescriptor];
                         Point3 positionCamera;
                         Point3 lookAtPointCamera;
-                        Point3 dirCamera(-10, 0, 0);
-                        dirCamera.rotateZ(assignedNode.getRotation().getAngleXY());
+                        Point3 dirCamera(-15, 0, 0);
+                        dirCamera.rotateZ(assignedNode.getRotation().getAngleXY() + cartesian::Constants::PI);
                         positionCamera.setX(assignedNode.getPosition().getX() + dirCamera.getX());
                         positionCamera.setY(assignedNode.getPosition().getY() + dirCamera.getY());
-                        positionCamera.setZ(10);
+                        positionCamera.setZ(15);
 
                         lookAtPointCamera.setX(assignedNode.getPosition().getX());
                         lookAtPointCamera.setY(assignedNode.getPosition().getY());
                         lookAtPointCamera.setZ(0);
 
                         glPushMatrix();
-                        glLoadIdentity();
+                            glLoadIdentity();
 
-                        // Setup camera.
-                        gluLookAt(positionCamera.getX(), positionCamera.getY(), positionCamera.getZ(),
-                                  lookAtPointCamera.getX(), lookAtPointCamera.getY(), lookAtPointCamera.getZ(),
-                                  0, 0, 1);
+                            // Setup camera.
+                            gluLookAt(positionCamera.getX(), positionCamera.getY(), positionCamera.getZ(),
+                                      lookAtPointCamera.getX(), lookAtPointCamera.getY(), lookAtPointCamera.getZ(),
+                                      0, 0, 1);
 
-                        // Draw scene. The shared point cloud is visualized in the same way as the free camera view.
-                        if(velodyneSharedMemory.get()!=NULL){
-                            if (velodyneSharedMemory->isValid()) {
-                                // Using a scoped lock to lock and automatically unlock a shared memory segment.
-                                odcore::base::Lock lv(velodyneSharedMemory);
-                                if (velodyneFrame.getComponentDataType() == SharedPointCloud::FLOAT_T
-                                    && (velodyneFrame.getNumberOfComponentsPerPoint() == 4)
-                                    && (velodyneFrame.getUserInfo() == SharedPointCloud::XYZ_INTENSITY)) {
-                                    glPushMatrix();
-                                    float *velodyneRawData = static_cast<float*>(velodyneSharedMemory->getSharedMemory());
-
-                                    glPointSize(1.0f); //set point size to 1 pixel
-                                    glBegin(GL_POINTS); //starts drawing of points
-                                    long startID=0;
-                                    for(unsigned long iii=0;iii<velodyneFrame.getWidth();iii++) {
-                                        if(velodyneRawData[startID+3]<=127.0){
-                                            glColor3f(0.0f,velodyneRawData[startID+3]*2.0,255.0-velodyneRawData[startID+3]*2.0);
-                                        }
-                                        else{
-                                            glColor3f((velodyneRawData[startID+3]-127.0)*2.0,255.0-(velodyneRawData[startID+3]-127.0)*2.0,0.0f);
-                                        }
-                                        glVertex3f(velodyneRawData[startID],velodyneRawData[startID+1],velodyneRawData[startID+2]);
-                                        startID=velodyneFrame.getNumberOfComponentsPerPoint()*(iii+1);
-                                    }
-                                    glEnd();//end drawing of points
-                                    
-                                    m_root->render(m_renderingConfiguration);
-                                    glPopMatrix();
-                                }
-                            }
-                        }
+                            // Draw scene.
+                            drawSceneInternal();
+                        glPopMatrix();
                     }
-                    //Free camera view
                     else {
-                        m_root->render(m_renderingConfiguration); 
-                        //Draw scene. Retrieve the point cloud from the shared memory and visualize it frame by frame when shared point cloud is received via the nextContainer method
-                        if(velodyneSharedMemory.get()!=NULL){
-                            if (velodyneSharedMemory->isValid()){ 
-                                // Using a scoped lock to lock and automatically unlock a shared memory segment.
-                                odcore::base::Lock lv(velodyneSharedMemory);
-                                if (velodyneFrame.getComponentDataType() == SharedPointCloud::FLOAT_T
-                                    && (velodyneFrame.getNumberOfComponentsPerPoint() == 4)
-                                    && (velodyneFrame.getUserInfo() == SharedPointCloud::XYZ_INTENSITY)) {
-                                    glPushMatrix();
-                                    float *velodyneRawData = static_cast<float*>(velodyneSharedMemory->getSharedMemory());
-                                
-                                    glPointSize(1.0f); //set point size to 1 pixel
-                                    glBegin(GL_POINTS); //starts drawing of points
-                                    long startID=0;
-                                    //Point color depends on the intensity value. Let I (velodyneRawData[startID+3]) be the intensity value.
-                                    //When I<=127, then R=0, G=I*2, B=255-I*2; when I>127, then R=(I-127)*2, G=255-(I-127)*2, B=0
-                                    for(unsigned long iii=0;iii<velodyneFrame.getWidth();iii++) {
-                                        if(velodyneRawData[startID+3]<=127.0){
-                                            glColor3f(0.0f,velodyneRawData[startID+3]*2.0,255.0-velodyneRawData[startID+3]*2.0);
-                                        }
-                                        else{
-                                            glColor3f((velodyneRawData[startID+3]-127.0)*2.0,255.0-(velodyneRawData[startID+3]-127.0)*2.0,0.0f);
-                                        }
-                                        glVertex3f(velodyneRawData[startID],velodyneRawData[startID+1],velodyneRawData[startID+2]);
-                                        startID=velodyneFrame.getNumberOfComponentsPerPoint()*(iii+1);
-                                    }
-                                    glEnd();//end drawing of points
-                                    glPopMatrix();
-                                }
-                            }
-                        }
+                        drawSceneInternal();
                     }
+                }
+
+
+
+
     /*
                     {
                         // Visualize camera using quaternions.
                         Position assignedNode = m_mapOfCurrentPositions[m_egoStateNodeDescriptor];
                         Point3 positionCamera(-10, 0, 8);
-
                         const double rotX = -cartesian::Constants::PI/2.0; // -90°
                         const double rotZ = assignedNode.getRotation().getAngleXY();
-
                         Quaternion qX;
                         qX.transform(rotX, Point3(1, 0, 0));
-
                         Quaternion qZ;
                         qZ.transform(rotZ, Point3(0, 0, 1));
-
                         Quaternion q;
                         q = qZ * qX;
-
                         positionCamera = positionCamera * qZ.transformToMatrix3x3();
                         positionCamera += assignedNode.getPosition();
-
                         Point3 up(0, 1, 0);
                         up = up * qZ.transformToMatrix3x3();
-
                         Point3 lookAtPointCamera;
                         lookAtPointCamera.setX(assignedNode.getPosition().getX());
                         lookAtPointCamera.setY(assignedNode.getPosition().getY());
                         lookAtPointCamera.setZ(0);
-
                         // Draw view direction.
                         glColor3f(0, 1, 0);
                         glBegin(GL_LINES);
                             glVertex3d(positionCamera.getX(), positionCamera.getY(), positionCamera.getZ());
                             glVertex3d(lookAtPointCamera.getX(), lookAtPointCamera.getY(), lookAtPointCamera.getZ());
                         glEnd();
-
                         // Draw up direction.
                         glColor3f(0, 0, 1);
                         glBegin(GL_LINES);
@@ -410,30 +446,23 @@ namespace cockpit {
                         // Visualize parallel scanner.
                         Position assignedNode = m_mapOfCurrentPositions[m_egoStateNodeDescriptor];
                         Point3 positionParallelScanner(0, 0, 1.65);
-
                         const double rotZ = assignedNode.getRotation().getAngleXY();
-
                         Quaternion qZ;
                         qZ.transform(rotZ, Point3(0, 0, 1));
-
                         positionParallelScanner = positionParallelScanner * qZ.transformToMatrix3x3();
                         positionParallelScanner += assignedNode.getPosition();
-
                         Point3 up(0, 1, 0);
                         up = up * qZ.transformToMatrix3x3();
-
                         Point3 lookAtPointCamera(15, 0, 0);
                         lookAtPointCamera.rotateZ(rotZ);
                         lookAtPointCamera += assignedNode.getPosition();
                         lookAtPointCamera.setZ(0);
-
                         // Draw view direction.
                         glColor3f(0, 1, 0);
                         glBegin(GL_LINES);
                             glVertex3d(positionParallelScanner.getX(), positionParallelScanner.getY(), positionParallelScanner.getZ());
                             glVertex3d(lookAtPointCamera.getX(), lookAtPointCamera.getY(), lookAtPointCamera.getZ());
                         glEnd();
-
                         // Draw up direction.
                         glColor3f(0, 0, 1);
                         glBegin(GL_LINES);
@@ -442,7 +471,6 @@ namespace cockpit {
                         glEnd();
                     }
     */
-                }
             }
 
             void EnvironmentViewerGLWidget::update(TreeNode<SelectableNodeDescriptor> *node) {
@@ -470,12 +498,21 @@ namespace cockpit {
 
             void EnvironmentViewerGLWidget::nextContainer(Container &c) {
                 
-                if(c.getDataType()==odcore::data::SharedPointCloud::ID()){
-                    velodyneFrame=c.getData<SharedPointCloud>();//Get shared point cloud
+                if(c.getDataType() == odcore::data::SharedPointCloud::ID()){
+                    m_SPCReceived = true;
+                    m_velodyneFrame = c.getData<SharedPointCloud>();//Get shared point cloud
                     if (!m_hasAttachedToSharedImageMemory) {
-                        velodyneSharedMemory=SharedMemoryFactory::attachToSharedMemory(velodyneFrame.getName());//Attach the shared point cloud to the shared memory  
+                        m_velodyneSharedMemory=SharedMemoryFactory::attachToSharedMemory(m_velodyneFrame.getName()); // Attach the shared point cloud to the shared memory.
                         m_hasAttachedToSharedImageMemory = true; 
                     }  
+                }
+                
+                if(c.getDataType() == odcore::data::CompactPointCloud::ID()){
+                    m_CPCreceived = true;
+                    if (!m_SPCReceived) {
+                        Lock lockCPC(m_cpcMutex);
+                        m_cpc = c.getData<CompactPointCloud>();  
+                    }
                 }
                 
                 if (c.getDataType() == opendlv::data::environment::EgoState::ID()) {
@@ -484,7 +521,8 @@ namespace cockpit {
                     if (m_egoStateNode != NULL) {
                         Lock l(m_rootMutex);
                         EgoState egostate = c.getData<EgoState>();
-                        Point3 dir(0, 0, egostate.getRotation().getAngleXY());
+                        m_egoState = egostate;
+                        Point3 dir(0, 0, egostate.getRotation().getAngleXY() + cartesian::Constants::PI);
                         m_egoStateNode->setRotation(dir);
                         m_egoStateNode->setTranslation(egostate.getPosition());
 

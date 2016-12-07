@@ -132,13 +132,14 @@ namespace cockpit {
             }
 
             void StreetMapMapWidget::nextContainer(Container &c) {
-                if (c.getDataType() == opendlv::data::environment::EgoState::ID()) {
-                    EgoState es = c.getData<EgoState>();
-                    cout << "[StreetMapMapWidget]: " << es.toString() << endl;
-                }
-                else {
-                    cout << "[StreetMapMapWidget]: Received container " << c.getDataType() << endl;
-                }
+                (void)c;
+//                if (c.getDataType() == opendlv::data::environment::EgoState::ID()) {
+//                    EgoState es = c.getData<EgoState>();
+//                    cout << "[StreetMapMapWidget]: " << es.toString() << endl;
+//                }
+//                else {
+//                    cout << "[StreetMapMapWidget]: Received container " << c.getDataType() << endl;
+//                }
             }
 
         }

@@ -1,3 +1,10 @@
+4.4.4 - Updating rendering SPC and CPC
+4.4.3 - Changed CompactPointCloud base type from half_float to uint16_t with cm resolution
+4.4.2 - Added down-sampling feature to odfilter, added inter-container timestamping check to odrecinspect, updated CompactPointCloud message specification
+4.4.1 - ContainerListenerFork and MacOS compile fix
+4.4.0 - Improved performance of Container and Proto decoding; changed odrecintegrity to odrecinspect and extended analysis
+4.3.8 - Fixed odfilter and integrated odcore/base/Arguments
+4.3.7 - Added CompactPointCloud based on half_floats
 4.3.6 - Adjusted semantics for StringToolbox::split, added float half type
 4.3.5 - Fix WGS84 test suite and increased precision for odcockpit/livefeed.
 4.3.4 - Fix CAN device, tutorial for reading zip files.
