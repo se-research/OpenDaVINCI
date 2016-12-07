@@ -32,7 +32,6 @@
 #include "opendavinci/generated/odcore/data/dmcp/ModuleDescriptor.h"
 #include "opendavinci/generated/odcore/data/dmcp/ModuleStatistics.h"
 #include "opendavinci/generated/odcore/data/dmcp/RuntimeStatistic.h"
-#include "opendavinci/generated/odcore/data/dmcp/CPUConsumption.h"
 #include "plugins/performancemonitor/PerformanceMonitorWidget.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }
