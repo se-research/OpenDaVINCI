@@ -498,24 +498,20 @@ namespace cockpit {
 
             void EnvironmentViewerGLWidget::nextContainer(Container &c) {
                 
-                if(c.getDataType()==odcore::data::SharedPointCloud::ID()){
-                    if(!m_SPCReceived){
-                        m_SPCReceived=true;
-                    }
-                    m_velodyneFrame=c.getData<SharedPointCloud>();//Get shared point cloud
+                if(c.getDataType() == odcore::data::SharedPointCloud::ID()){
+                    m_SPCReceived = true;
+                    m_velodyneFrame = c.getData<SharedPointCloud>();//Get shared point cloud
                     if (!m_hasAttachedToSharedImageMemory) {
                         m_velodyneSharedMemory=SharedMemoryFactory::attachToSharedMemory(m_velodyneFrame.getName()); // Attach the shared point cloud to the shared memory.
                         m_hasAttachedToSharedImageMemory = true; 
                     }  
                 }
                 
-                if(c.getDataType()==odcore::data::CompactPointCloud::ID()){
-                    if(!m_CPCReceived){
-                        m_CPCreceived = true;
-                    }
-                    if(!m_SPCReceived){
+                if(c.getDataType() == odcore::data::CompactPointCloud::ID()){
+                    m_CPCreceived = true;
+                    if (!m_SPCReceived) {
                         Lock lockCPC(m_cpcMutex);
-                        m_cpc=c.getData<CompactPointCloud>();  
+                        m_cpc = c.getData<CompactPointCloud>();  
                     }
                 }
                 
