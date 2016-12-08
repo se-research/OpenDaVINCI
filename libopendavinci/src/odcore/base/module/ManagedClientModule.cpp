@@ -125,6 +125,7 @@ namespace odcore {
 #ifdef __linux__
                 bool success=false;
                 double cpu_stats[4];
+                string NO_SYS_INFO_EXC_MSG="Could not get system info";
                 
                 try
                 {
@@ -132,13 +133,19 @@ namespace odcore {
                     
                     // The number of processors currently online
                     int numCPU = sysconf(_SC_NPROCESSORS_ONLN);
-                    if(numCPU == -1) OPENDAVINCI_CORE_THROW_EXCEPTION(IOException,"Could not get system info");
+                    if(numCPU == -1) {
+                        OPENDAVINCI_CORE_THROW_EXCEPTION(IOException,NO_SYS_INFO_EXC_MSG);
+                    }
                     // Size of a page in bytes
                     int pagesize_in_bytes = sysconf(_SC_PAGESIZE);
-                    if(pagesize_in_bytes < 1) OPENDAVINCI_CORE_THROW_EXCEPTION(IOException,"Could not get system info");
+                    if(pagesize_in_bytes < 1) {
+                        OPENDAVINCI_CORE_THROW_EXCEPTION(IOException,NO_SYS_INFO_EXC_MSG);
+                    }
                     // The number of clock ticks per second
                     long tickspersec = sysconf(_SC_CLK_TCK);
-                    if(tickspersec == -1) OPENDAVINCI_CORE_THROW_EXCEPTION(IOException,"Could not get system info");
+                    if(tickspersec == -1) {
+                        OPENDAVINCI_CORE_THROW_EXCEPTION(IOException,NO_SYS_INFO_EXC_MSG);
+                    }
                     
                     double utime, stime, start_time, total_vm_size, resident_set_size;
                     
@@ -152,8 +159,9 @@ namespace odcore {
                         proc_file>>temp_buffer;
                         proc_file>>str;
                         proc_file>>chr;
-                        for(uint8_t i=0;i<11;++i)
+                        for(uint8_t i=0;i<11;++i) {
                             proc_file>>temp_buffer;
+                        }
                         // Amount of time that this process has been scheduled in user mode (in clock ticks)
                         utime=(double)temp_buffer/tickspersec/numCPU;
                         proc_file>>temp_buffer;
@@ -174,7 +182,9 @@ namespace odcore {
                     proc_file.close();
                     
                     struct sysinfo si;
-                    if(sysinfo (&si) != 0) OPENDAVINCI_CORE_THROW_EXCEPTION(IOException,"Could not get system info");
+                    if(sysinfo (&si) != 0) {
+                        OPENDAVINCI_CORE_THROW_EXCEPTION(IOException,NO_SYS_INFO_EXC_MSG);
+                    }
                     
                     double cpu_time_now=stime+utime;
                     double exec_time_now=si.uptime-start_time;
