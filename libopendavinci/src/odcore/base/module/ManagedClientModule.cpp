@@ -125,86 +125,108 @@ namespace odcore {
 #ifdef __linux__
                 bool success=false;
                 double cpu_stats[4];
-                string NO_SYS_INFO_EXC_MSG="Could not get system info";
                 
                 try
                 {
+                    string NO_SYS_INFO_EXC_MSG="Could not get system info";
                     // get system info
+                    int numCPU, pagesize_in_bytes;
+                    long tickspersec;
+                    bool sysconf_fail=false;
                     
                     // The number of processors currently online
-                    int numCPU = sysconf(_SC_NPROCESSORS_ONLN);
+                    numCPU = sysconf(_SC_NPROCESSORS_ONLN);
                     if(numCPU == -1) {
-                        OPENDAVINCI_CORE_THROW_EXCEPTION(IOException,NO_SYS_INFO_EXC_MSG);
-                    }
-                    // Size of a page in bytes
-                    int pagesize_in_bytes = sysconf(_SC_PAGESIZE);
-                    if(pagesize_in_bytes < 1) {
-                        OPENDAVINCI_CORE_THROW_EXCEPTION(IOException,NO_SYS_INFO_EXC_MSG);
-                    }
-                    // The number of clock ticks per second
-                    long tickspersec = sysconf(_SC_CLK_TCK);
-                    if(tickspersec == -1) {
-                        OPENDAVINCI_CORE_THROW_EXCEPTION(IOException,NO_SYS_INFO_EXC_MSG);
+                        sysconf_fail=true;
+                        CLOG2<<NO_SYS_INFO_EXC_MSG<<endl;
                     }
                     
-                    double utime, stime, start_time, total_vm_size, resident_set_size;
-                    
-                    ifstream proc_file;
-                    proc_file.open("/proc/self/stat");
-                    {
-                        uint64_t temp_buffer=0;
-                        char chr;
-                        string str;
-                        // discard values of no interest
-                        proc_file>>temp_buffer;
-                        proc_file>>str;
-                        proc_file>>chr;
-                        for(uint8_t i=0;i<11;++i) {
-                            proc_file>>temp_buffer;
+                    if(!sysconf_fail) {
+                        // Size of a page in bytes
+                        pagesize_in_bytes = sysconf(_SC_PAGESIZE);
+                        if(pagesize_in_bytes < 1) {
+                            sysconf_fail=true;
+                            CLOG2<<NO_SYS_INFO_EXC_MSG<<endl;
                         }
-                        // Amount of time that this process has been scheduled in user mode (in clock ticks)
-                        utime=(double)temp_buffer/tickspersec/numCPU;
-                        proc_file>>temp_buffer;
-                        // Amount of time that this process has been scheduled in kernel mode (in clock ticks)
-                        stime=(double)temp_buffer/tickspersec/numCPU;
-                        // discard values of no interest
-                        for(uint8_t i=0;i<7;++i)
+                    }
+                    
+                    if(!sysconf_fail) {
+                        // The number of clock ticks per second
+                        tickspersec = sysconf(_SC_CLK_TCK);
+                        if(tickspersec == -1) {
+                            sysconf_fail=true;
+                            CLOG2<<NO_SYS_INFO_EXC_MSG<<endl;
+                        }
+                    }
+                    
+                    if(!sysconf_fail)
+                    {
+                        bool proc_fail=false, sysinfo_fail=false;
+                        double utime, stime, start_time, total_vm_size, resident_set_size;
+
+                        ifstream proc_file;
+                        proc_file.open("/proc/self/stat");
+                        if(! proc_file.fail()) {
+                            uint64_t temp_buffer=0;
+                            char chr;
+                            string str;
+                            // discard values of no interest
                             proc_file>>temp_buffer;
-                        // The time the process started after system boot
-                        start_time=(double)temp_buffer/tickspersec;
-                        // Virtual memory size in bytes
-                        proc_file>>temp_buffer;
-                        total_vm_size=temp_buffer;
-                        // Resident Set Size: temp_buffer of pages the process has in real memory
-                        proc_file>>temp_buffer;
-                        resident_set_size=temp_buffer*pagesize_in_bytes;
-                    }
-                    proc_file.close();
-                    
-                    struct sysinfo si;
-                    if(sysinfo (&si) != 0) {
-                        OPENDAVINCI_CORE_THROW_EXCEPTION(IOException,NO_SYS_INFO_EXC_MSG);
-                    }
-                    
-                    double cpu_time_now=stime+utime;
-                    double exec_time_now=si.uptime-start_time;
-                    double cpu_time_delta=cpu_time_now-m_stats_cpu_time;
-                    double exec_time_delta=exec_time_now-m_stats_exc_time;
-                    double avg_cpu=m_stats_cpu_time/m_stats_exc_time*100.0;
-                    double ondemand_cpu=cpu_time_delta/exec_time_delta*100.0;
-                    
-                    // update stored values for next calculation
-                    m_stats_cpu_time=cpu_time_now;
-                    m_stats_exc_time=exec_time_now;
-                    
-                    //send statistics to conference
-                    if(!std::isnan(avg_cpu) && !std::isnan(ondemand_cpu) && 
-                       !std::isnan(total_vm_size) && !std::isnan(resident_set_size)) {
-                        cpu_stats[0]=avg_cpu;
-                        cpu_stats[1]=ondemand_cpu;
-                        cpu_stats[2]=total_vm_size;
-                        cpu_stats[3]=resident_set_size;
-                        success=true;
+                            proc_file>>str;
+                            proc_file>>chr;
+                            for(uint8_t i=0;i<11;++i) {
+                                proc_file>>temp_buffer;
+                            }
+                            // Amount of time that this process has been scheduled in user mode (in clock ticks)
+                            utime=(double)temp_buffer/tickspersec/numCPU;
+                            proc_file>>temp_buffer;
+                            // Amount of time that this process has been scheduled in kernel mode (in clock ticks)
+                            stime=(double)temp_buffer/tickspersec/numCPU;
+                            // discard values of no interest
+                            for(uint8_t i=0;i<7;++i)
+                                proc_file>>temp_buffer;
+                            // The time the process started after system boot
+                            start_time=(double)temp_buffer/tickspersec;
+                            // Virtual memory size in bytes
+                            proc_file>>temp_buffer;
+                            total_vm_size=temp_buffer;
+                            // Resident Set Size: temp_buffer of pages the process has in real memory
+                            proc_file>>temp_buffer;
+                            resident_set_size=temp_buffer*pagesize_in_bytes;
+                        }
+                        else {
+                            proc_fail=true;
+                        }
+                        proc_file.close();
+
+                        struct sysinfo si;
+                        if(sysinfo (&si) != 0) {
+                            sysinfo_fail=true;
+                            CLOG2<<NO_SYS_INFO_EXC_MSG<<endl;
+                        }
+
+                        if(!proc_fail && !sysinfo_fail) {
+                            double cpu_time_now=stime+utime;
+                            double exec_time_now=si.uptime-start_time;
+                            double cpu_time_delta=cpu_time_now-m_stats_cpu_time;
+                            double exec_time_delta=exec_time_now-m_stats_exc_time;
+                            double avg_cpu=m_stats_cpu_time/m_stats_exc_time*100.0;
+                            double ondemand_cpu=cpu_time_delta/exec_time_delta*100.0;
+
+                            // update stored values for next calculation
+                            m_stats_cpu_time=cpu_time_now;
+                            m_stats_exc_time=exec_time_now;
+
+                            //send statistics to conference
+                            if(!std::isnan(avg_cpu) && !std::isnan(ondemand_cpu) && 
+                               !std::isnan(total_vm_size) && !std::isnan(resident_set_size)) {
+                                cpu_stats[0]=avg_cpu;
+                                cpu_stats[1]=ondemand_cpu;
+                                cpu_stats[2]=total_vm_size;
+                                cpu_stats[3]=resident_set_size;
+                                success=true;
+                            }
+                        }
                     }
                 }
                 catch(...)
