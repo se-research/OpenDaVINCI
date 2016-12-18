@@ -75,6 +75,9 @@ namespace odrecinspect {
             std::map<int32_t, std::vector<uint64_t> > m_avgDurationBetweenSamplesPerType;
             std::map<int32_t, double> m_maxDurationBetweenSamplesPerType;
 
+            odcore::data::Container m_firstContainer;
+            odcore::data::Container m_lastContainer;
+
             double m_processingTimePerContainer;
     };
 
