@@ -21,11 +21,14 @@
 #ifndef COMPAREPOINTCLOUD_H_
 #define COMPAREPOINTCLOUD_H_
 
-#include <map>
 #include <vector>
+#include <memory>
 
 #include <opendavinci/odcore/opendavinci.h>
 #include <opendavinci/odcore/data/Container.h>
+#include "opendavinci/generated/odcore/data/CompactPointCloud.h"
+#include <opendavinci/generated/odcore/data/SharedPointCloud.h>
+#include "opendavinci/odcore/wrapper/SharedMemory.h"
 
 namespace odcomparepointcloud {
 
@@ -67,9 +70,21 @@ namespace odcomparepointcloud {
              */
             int32_t run();
         private:
-            bool CPCfound;
-            bool SPCfound;
-            uint32_t frameNumber;
+            bool m_CPCfound;
+            bool m_SPCfound;
+            uint32_t m_frameNumber;
+            odcore::data::SharedPointCloud m_spc;
+            odcore::data::CompactPointCloud m_cpc;
+            bool m_hasAttachedToSharedImageMemory;
+            std::shared_ptr<odcore::wrapper::SharedMemory> m_spcSharedMemory;
+            std::vector<float> m_xCpc;
+            std::vector<float> m_yCpc;
+            std::vector<float> m_zCpc;
+            std::vector<float> m_xSpc;
+            std::vector<float> m_ySpc;
+            std::vector<float> m_zSpc;
+            const float START_V_ANGLE = -15.0;//For each azimuth there are 16 points with unique vertical angles from -15 to 15 degrees
+            const float V_INCREMENT = 2.0;  //The vertical angle increment for the 16 points with the same azimuth is 2 degrees
     };
 
 } // odcomparepointcloud
