@@ -29,6 +29,8 @@
 //#include <opendavinci/odcore/data/TimeStamp.h>
 //#include <opendavinci/generated/odcore/data/SharedData.h>
 //#include <opendavinci/generated/odcore/data/image/SharedImage.h>
+#include "opendavinci/odtools/player/Player.h"
+#include "opendavinci/generated/odcore/data/CompactPointCloud.h"
 #include <opendavinci/generated/odcore/data/SharedPointCloud.h>
 
 #include "ComparePointCloud.h"
@@ -39,16 +41,47 @@ namespace odcomparepointcloud {
     //using namespace odcore;
     //using namespace odcore::base;
     using namespace odcore::data;
+    using namespace odtools::player;
 
     ComparePointCloud::ComparePointCloud() :
         CPCfound(false),
-        SPCfound(false) {}
+        SPCfound(false),
+        frameNumber(0) {}
 
     ComparePointCloud::~ComparePointCloud() {}
 
     int32_t ComparePointCloud::run() {
-        CPCfound=true;
-        cout<<CPCfound<<","<<SPCfound<<endl;
+        odcore::io::URL url("file://recording.rec");
+        unique_ptr<Player> player;
+        player = unique_ptr<Player>(new Player(url, 0, 2800000, 20, false));
+        Container c;
+            
+        /*if(c.getDataType() == odcore::data::CompactPointCloud::ID()){
+            cout<<"CPC container found!"<<endl;
+        }
+        
+        c = player->getNextContainerToBeSent();
+        
+        if(c.getDataType() == odcore::data::SharedPointCloud::ID()){
+            cout<<"SPC container found!"<<endl;
+        }*/
+
+        while (player->hasMoreData()){
+            c = player->getNextContainerToBeSent();
+            if(c.getDataType() == odcore::data::CompactPointCloud::ID() || c.getDataType() == odcore::data::SharedPointCloud::ID()){
+                frameNumber++;
+                cout<<"Frame number="<<frameNumber<<endl;
+            }
+            else{
+                break;
+            }
+        }
+        
+        
+        frameNumber=frameNumber / 2;
+        cout<<"Number of frames:"<<frameNumber<<endl;
+        
+        
         return 0;
     }
 

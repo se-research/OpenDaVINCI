@@ -69,6 +69,7 @@ namespace odcomparepointcloud {
         private:
             bool CPCfound;
             bool SPCfound;
+            uint32_t frameNumber;
     };
 
 } // odcomparepointcloud
