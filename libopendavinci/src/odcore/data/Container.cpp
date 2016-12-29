@@ -118,11 +118,11 @@ namespace odcore {
             m_sampleTimeStamp = sampleTimeStamp;
         }
 
-        void Container::setSenderStamp(const int32_t &senderStamp) {
+        void Container::setSenderStamp(const uint32_t &senderStamp) {
             m_senderStamp = senderStamp;
         }
 
-        int32_t Container::getSenderStamp() const {
+        uint32_t Container::getSenderStamp() const {
             return m_senderStamp;
         }
 

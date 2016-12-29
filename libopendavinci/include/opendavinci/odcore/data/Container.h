@@ -170,14 +170,14 @@ class SerializableData;
                  *
                  * @param senderStamp User-defined attribute.
                  */
-                void setSenderStamp(const int32_t &senderStamp);
+                void setSenderStamp(const uint32_t &senderStamp);
 
                 /**
                  * This methods returns the user-defined attribute.
                  *
                  * @return user-defined attribute.
                  */
-                int32_t getSenderStamp() const;
+                uint32_t getSenderStamp() const;
 
             private:
                 int32_t m_dataType;
@@ -187,7 +187,7 @@ class SerializableData;
                 TimeStamp m_received;
                 TimeStamp m_sampleTimeStamp;
 
-                int32_t m_senderStamp;
+                uint32_t m_senderStamp;
         };
 
     }

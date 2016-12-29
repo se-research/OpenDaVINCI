@@ -76,7 +76,7 @@ namespace odcore {
                      *
                      * @return This module's identifier.
                      */
-                    int32_t getIdentifier() const;
+                    uint32_t getIdentifier() const;
 
                     /**
                      * This method returns the module's multicast group
@@ -136,7 +136,7 @@ namespace odcore {
                     static int32_t m_verbose;
 
                     float m_frequency;
-                    int32_t m_identifier;
+                    uint32_t m_identifier;
                     string m_multicastGroup;
                     uint32_t m_CID;
                     bool m_profiling;

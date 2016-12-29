@@ -87,7 +87,7 @@ class ContainerListener;
                      *
                      * @param senderStamp User-defined attribute used for stamping containers.
                      */
-                    void setSenderStamp(const int32_t &senderStamp);
+                    void setSenderStamp(const uint32_t &senderStamp);
 
                     /**
                      * This method returns the user-defined attribute used for
@@ -95,7 +95,7 @@ class ContainerListener;
                      *
                      * @return user-defined attribute used for stamping containers.
                      */
-                    int32_t getSenderStamp() const;
+                    uint32_t getSenderStamp() const;
 
                 protected:
                     /**
@@ -116,7 +116,7 @@ class ContainerListener;
                 private:
                     mutable base::Mutex m_containerListenerMutex;
                     ContainerListener *m_containerListener;
-                    int32_t m_senderStamp;
+                    uint32_t m_senderStamp;
             };
 
         }
