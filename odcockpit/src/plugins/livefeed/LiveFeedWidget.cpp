@@ -252,6 +252,18 @@ namespace cockpit {
 
                 if (successfullyMapped) {
                     vector<pair<string, string> > entries;
+                    {
+                        stringstream sstr;
+                        sstr << container.getDataType();
+                        const string str = sstr.str();
+                        entries.push_back(make_pair("type", str));
+                    }
+                    {
+                        stringstream sstr;
+                        sstr << container.getSenderStamp();
+                        const string str = sstr.str();
+                        entries.push_back(make_pair("sender stamp", str));
+                    }
                     entries.push_back(make_pair("sent", container.getSentTimeStamp().getYYYYMMDD_HHMMSSms()));
                     entries.push_back(make_pair("received", container.getReceivedTimeStamp().getYYYYMMDD_HHMMSSms()));
                     entries.push_back(make_pair("sample time", container.getSampleTimeStamp().getYYYYMMDD_HHMMSSms()));
@@ -259,14 +271,17 @@ namespace cockpit {
                     MessageToTupleVisitor mttv(entries);
                     msg.accept(mttv);
 
-                    //create new Header if needed
-                    if (m_dataToType.find(msg.getLongName()) == m_dataToType.end()) {
+                    // Create new Header if needed.
+                    stringstream sstr_entryName;
+                    sstr_entryName << msg.getLongName() << "/" << container.getSenderStamp();
+                    const string entryName = sstr_entryName.str();
+                    if (m_dataToType.find(entryName) == m_dataToType.end()) {
                         QTreeWidgetItem *newHeader = new QTreeWidgetItem(m_dataView.get());
-                        newHeader->setText(0, msg.getLongName().c_str());
-                        m_dataToType[msg.getLongName()] = newHeader;
+                        newHeader->setText(0, entryName.c_str());
+                        m_dataToType[entryName] = newHeader;
                     }
 
-                    QTreeWidgetItem *entry = m_dataToType[msg.getLongName()];
+                    QTreeWidgetItem *entry = m_dataToType[entryName];
                     if (static_cast<uint32_t>(entry->childCount()) != entries.size()) {
                         entry->takeChildren();
 

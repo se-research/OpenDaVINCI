@@ -20,10 +20,10 @@
 #ifndef OPENDAVINCI_CORE_IO_CONFERENCE_UDPMULTICASTCONTAINERCONFERENCE_H_
 #define OPENDAVINCI_CORE_IO_CONFERENCE_UDPMULTICASTCONTAINERCONFERENCE_H_
 
+#include <memory>
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
 #include "opendavinci/odcore/exceptions/Exceptions.h"
 #include "opendavinci/odcore/io/StringListener.h"
 #include "opendavinci/odcore/io/conference/ContainerConference.h"
