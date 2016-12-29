@@ -183,7 +183,7 @@ class TimeTriggeredConferenceClientModuleTest : public CxxTest::TestSuite,
 
 
             string argv0("TimeTriggeredConferenceClientModuleTestModule");
-            string argv1("--id=ABC");
+            string argv1("--id=123");
             string argv2("--cid=101");
             int argc = 3;
             char **argv;
@@ -194,7 +194,7 @@ class TimeTriggeredConferenceClientModuleTest : public CxxTest::TestSuite,
 
             Condition c;
             TimeTriggeredConferenceClientModuleTestService ccmtms(argc, argv, c);
-            TS_ASSERT(ccmtms.myCCMTM.getIdentifier() == "ABC");
+            TS_ASSERT(ccmtms.myCCMTM.getIdentifier() == 123);
             //TS_ASSERT( cmtm.runModule() == odcore::data::dmcp::ModuleExitCodeMessage::OKAY );
 
             //Lock l(c);

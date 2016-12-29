@@ -41,14 +41,16 @@ namespace odcore {
                 m_serializedData(),
                 m_sent(TimeStamp(0, 0)),
                 m_received(TimeStamp(0, 0)),
-                m_sampleTimeStamp(TimeStamp(0, 0)) {}
+                m_sampleTimeStamp(TimeStamp(0, 0)),
+                m_senderStamp(0) {}
 
         Container::Container(const SerializableData &serializableData) :
                 m_dataType(serializableData.getID()),
                 m_serializedData(),
                 m_sent(TimeStamp(0, 0)),
                 m_received(TimeStamp(0, 0)),
-                m_sampleTimeStamp(TimeStamp(0, 0)) {
+                m_sampleTimeStamp(TimeStamp(0, 0)),
+                m_senderStamp(0) {
             // Get data for container.
             m_serializedData << serializableData;
         }
@@ -58,7 +60,8 @@ namespace odcore {
                 m_serializedData(),
                 m_sent(TimeStamp(0, 0)),
                 m_received(TimeStamp(0, 0)),
-                m_sampleTimeStamp(TimeStamp(0, 0)) {
+                m_sampleTimeStamp(TimeStamp(0, 0)),
+                m_senderStamp(0) {
             // Get data for container.
             m_serializedData << serializableData;
         }
@@ -69,7 +72,8 @@ namespace odcore {
                 m_serializedData(),
                 m_sent(obj.m_sent),
                 m_received(obj.m_received),
-                m_sampleTimeStamp(obj.m_sampleTimeStamp) {
+                m_sampleTimeStamp(obj.m_sampleTimeStamp),
+                m_senderStamp(obj.m_senderStamp) {
             m_serializedData.str(obj.m_serializedData.str());
         }
 
@@ -79,6 +83,7 @@ namespace odcore {
             setSentTimeStamp(obj.getSentTimeStamp());
             setReceivedTimeStamp(obj.getReceivedTimeStamp());
             setSampleTimeStamp(obj.getSampleTimeStamp());
+            setSenderStamp(obj.getSenderStamp());
 
             return (*this);
         }
@@ -113,6 +118,15 @@ namespace odcore {
             m_sampleTimeStamp = sampleTimeStamp;
         }
 
+        void Container::setSenderStamp(const int32_t &senderStamp) {
+            m_senderStamp = senderStamp;
+        }
+
+        int32_t Container::getSenderStamp() const {
+            return m_senderStamp;
+        }
+
+
         ostream& Container::operator<<(ostream &out) const {
             stringstream bufferOut;
 
@@ -137,6 +151,9 @@ namespace odcore {
 
                 // Write sample time stamp.
                 s->write(5, m_sampleTimeStamp);
+
+                // Write sender stamp.
+                s->write(6, m_senderStamp);
             }
 
             // Write Container header.
@@ -259,6 +276,9 @@ namespace odcore {
 
             // Read sample time stamp.
             d->read(5, m_sampleTimeStamp);
+
+            // Read sender stamp.
+            d->read(6, m_senderStamp);
 
             return in;
         }

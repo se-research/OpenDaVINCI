@@ -81,7 +81,7 @@ namespace odcore {
                 }
 
                 if (cmdArgumentID.isSet()) {
-                    m_identifier = cmdArgumentID.getValue<string>();
+                    m_identifier = cmdArgumentID.getValue<int32_t>();
                 }
 
                 if (cmdArgumentFREQ.isSet()) {
@@ -152,7 +152,7 @@ namespace odcore {
                 return m_frequency;
             }
 
-            const string AbstractCIDModule::getIdentifier() const {
+            int32_t AbstractCIDModule::getIdentifier() const {
                 return m_identifier;
             }
 

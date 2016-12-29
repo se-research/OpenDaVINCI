@@ -33,7 +33,8 @@ namespace odcore {
 
             ContainerConference::ContainerConference() :
                 m_containerListenerMutex(),
-                m_containerListener(NULL) {}
+                m_containerListener(NULL),
+                m_senderStamp(0) {}
 
             ContainerConference::~ContainerConference() {}
 
@@ -45,6 +46,16 @@ namespace odcore {
             ContainerListener* ContainerConference::getContainerListener() {
                 Lock l(m_containerListenerMutex);
                 return m_containerListener;
+            }
+
+            void ContainerConference::setSenderStamp(const int32_t &senderStamp) {
+                Lock l(m_containerListenerMutex);
+                m_senderStamp = senderStamp;
+            }
+
+            int32_t ContainerConference::getSenderStamp() const {
+                Lock l(m_containerListenerMutex);
+                return m_senderStamp;
             }
 
             bool ContainerConference::hasContainerListener() const {

@@ -4373,12 +4373,13 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
             const string s = out.str();
             uint32_t cnt=0;
-            TS_ASSERT(s.size() == 39);
+            TS_ASSERT(s.size() == 41);
             // Container header:
-            // d a4 1a 0 0
+            // d a4 24 0 0
             TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x0D);
             TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0xA4);
-            TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x22);
+//TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x22);
+TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x24);
             TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0);
             TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0);
 
@@ -4417,6 +4418,8 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x10);
             TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x90);
             TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x7);
+TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x30);
+TS_ASSERT(static_cast<uint8_t>(s.at(cnt++)) == 0x0);
 
             // Read from buffer.
             Container c2;

@@ -68,18 +68,34 @@ class ContainerListener;
                     virtual void setContainerListener(ContainerListener *cl);
 
                     /**
-                     * This methods returns the registered ContainerListener.
+                     * This method returns the registered ContainerListener.
                      *
                      * @return registered container listener or NULL.
                      */
                     ContainerListener* getContainerListener();
 
                     /**
-                     * This methods sends a container to this conference.
+                     * This method sends a container to this conference.
                      *
                      * @param container Container to be sent.
                      */
                     virtual void send(odcore::data::Container &container) const = 0;
+
+                    /**
+                     * This method sets a user-defined attribute to be used for
+                     * stamping any container that is sent.
+                     *
+                     * @param senderStamp User-defined attribute used for stamping containers.
+                     */
+                    void setSenderStamp(const int32_t &senderStamp);
+
+                    /**
+                     * This method returns the user-defined attribute used for
+                     * stamping any container that is sent.
+                     *
+                     * @return user-defined attribute used for stamping containers.
+                     */
+                    int32_t getSenderStamp() const;
 
                 protected:
                     /**
@@ -100,6 +116,7 @@ class ContainerListener;
                 private:
                     mutable base::Mutex m_containerListenerMutex;
                     ContainerListener *m_containerListener;
+                    int32_t m_senderStamp;
             };
 
         }

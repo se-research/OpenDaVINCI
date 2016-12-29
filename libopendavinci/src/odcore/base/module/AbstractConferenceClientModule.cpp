@@ -49,12 +49,17 @@ namespace odcore {
                     ManagedClientModule(argc, argv, name),
                     m_loggerInitializedMutex(),
                     m_loggerInitialized(false) {
+                // Create a container conference.
                 std::shared_ptr<ContainerConference> containerConference = ContainerConferenceFactory::getInstance().getContainerConference(getMultiCastGroup());
                 if (!containerConference.get()) {
                     OPENDAVINCI_CORE_THROW_EXCEPTION(InvalidArgumentException, "ContainerConference invalid!");
                 }
+                // Set senderStamp to module identifier by default.
+                containerConference->setSenderStamp(getIdentifier());
+                // Store container conference.
                 setContainerConference(containerConference);
 
+                // Initialize the serialization factory.
                 SerializationFactory::getInstance();
             }
 
@@ -80,7 +85,7 @@ namespace odcore {
 
                 stringstream componentName;
                 componentName << getName();
-                if (getIdentifier().size() > 0) {
+                if (getIdentifier() > 0) {
                     componentName << "-" << getIdentifier();
                 }
                 logMessage.setComponentName(componentName.str());

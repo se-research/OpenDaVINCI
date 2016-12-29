@@ -100,13 +100,15 @@ namespace odcore {
                 }
 
                 CLOG1 << "(ClientModule) connecting to supercomponent..." << endl;
-                string myVersion = "No version set.";
-                ModuleDescriptor md(getName(), getIdentifier(), myVersion, getFrequency());
+                const string myVersion = "No version set.";
+                stringstream sstr_myIdentifier;
+                sstr_myIdentifier << getIdentifier();
+                const string myIdentifier = sstr_myIdentifier.str();
+                ModuleDescriptor md(getName(), myIdentifier, myVersion, getFrequency());
 
                 try {
                     // Try to get configuration from DMCP server.
-                    m_dmcpClient = std::shared_ptr<connection::Client>(
-                            new connection::Client(md, m_serverInformation));
+                    m_dmcpClient = std::shared_ptr<connection::Client>(new connection::Client(md, m_serverInformation));
                     m_dmcpClient->setSupercomponentStateListener(this);
                     m_dmcpClient->initialize();
 
