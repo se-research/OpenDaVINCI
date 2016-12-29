@@ -74,6 +74,7 @@ namespace odcore {
                 m_hasExternalContainerConference(false),
                 m_containerConference(NULL) {
                 m_localContainerConference = std::shared_ptr<odcore::io::conference::ContainerConference>(new ManagedClientModuleContainerConference());
+                m_localContainerConference->setSenderStamp(getIdentifier());
             }
 
             ManagedClientModule::~ManagedClientModule() {

@@ -91,6 +91,12 @@ namespace odcore {
                     container.setSampleTimeStamp(container.getSentTimeStamp());
                 }
 
+                // If the container's senderStamp field is unset, set it
+                // to this conference's senderStamp.
+                if (container.getSenderStamp() == 0) {
+                    container.setSenderStamp(getSenderStamp());
+                }
+
                 stringstream stringstreamValue;
                 stringstreamValue << container;
 

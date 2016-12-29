@@ -34,6 +34,7 @@ message odcore.data.MessageContainer [id = 0] {
     odcore.data.TimePoint sent [id = 3];
     odcore.data.TimePoint received [id = 4];
     odcore.data.TimePoint sampleTimeStamp [id = 5];
+    uint32 senderStamp [id = 6];
 }
 
 ///////////////////////////////////////////////////////////////////////////////

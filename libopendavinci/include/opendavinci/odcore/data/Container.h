@@ -165,6 +165,20 @@ class SerializableData;
                  */
                 const string toString() const;
 
+                /**
+                 * This method sets a user-defined attribute.
+                 *
+                 * @param senderStamp User-defined attribute.
+                 */
+                void setSenderStamp(const uint32_t &senderStamp);
+
+                /**
+                 * This methods returns the user-defined attribute.
+                 *
+                 * @return user-defined attribute.
+                 */
+                uint32_t getSenderStamp() const;
+
             private:
                 int32_t m_dataType;
                 stringstream m_serializedData;
@@ -172,6 +186,8 @@ class SerializableData;
                 TimeStamp m_sent;
                 TimeStamp m_received;
                 TimeStamp m_sampleTimeStamp;
+
+                uint32_t m_senderStamp;
         };
 
     }
