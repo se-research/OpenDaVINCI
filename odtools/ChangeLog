@@ -1,3 +1,4 @@
+4.5.0 - Propagating value from command line parameter --id to container field senderStamp
 4.4.4 - Updating rendering SPC and CPC
 4.4.3 - Changed CompactPointCloud base type from half_float to uint16_t with cm resolution
 4.4.2 - Added down-sampling feature to odfilter, added inter-container timestamping check to odrecinspect, updated CompactPointCloud message specification
