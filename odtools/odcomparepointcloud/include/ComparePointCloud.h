@@ -23,6 +23,7 @@
 
 #include <vector>
 #include <memory>
+#include <fstream>
 
 #include <opendavinci/odcore/opendavinci.h>
 #include <opendavinci/odcore/data/Container.h>
@@ -83,8 +84,12 @@ namespace odcomparepointcloud {
             std::vector<float> m_xSpc;
             std::vector<float> m_ySpc;
             std::vector<float> m_zSpc;
-            const float START_V_ANGLE = -15.0;//For each azimuth there are 16 points with unique vertical angles from -15 to 15 degrees
-            const float V_INCREMENT = 2.0;  //The vertical angle increment for the 16 points with the same azimuth is 2 degrees
+            std::ofstream outputData;
+            float m_verticalAngles[16];
+            uint16_t m_sensorOrderIndex[16];
+            uint16_t m_16SortedDistances[16];
+            //const float START_V_ANGLE = -15.0;//For each azimuth there are 16 points with unique vertical angles from -15 to 15 degrees
+            //const float V_INCREMENT = 2.0;  //The vertical angle increment for the 16 points with the same azimuth is 2 degrees
     };
 
 } // odcomparepointcloud
