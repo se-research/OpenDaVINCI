@@ -69,7 +69,9 @@ namespace odcomparepointcloud {
              * @param argv Command line arguments.
              * @return 0 if specified file is integer, 1 if the file is not integer, and 255 if the file could not be opened.
              */
-            int32_t run();
+            int32_t run(const int32_t &argc, char **argv);
+        private:
+            void parseAdditionalCommandLineParameters(const int &argc, char **argv);
         private:
             bool m_CPCfound;
             bool m_SPCfound;
@@ -88,6 +90,7 @@ namespace odcomparepointcloud {
             float m_verticalAngles[16];
             uint16_t m_sensorOrderIndex[16];
             uint16_t m_16SortedDistances[16];
+            uint64_t m_chosenFrame;
             //const float START_V_ANGLE = -15.0;//For each azimuth there are 16 points with unique vertical angles from -15 to 15 degrees
             //const float V_INCREMENT = 2.0;  //The vertical angle increment for the 16 points with the same azimuth is 2 degrees
     };

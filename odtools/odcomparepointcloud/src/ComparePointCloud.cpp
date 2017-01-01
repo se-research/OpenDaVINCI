@@ -24,6 +24,7 @@
 #include <string>
 #include <stdlib.h>
 
+#include "opendavinci/odcore/base/CommandLineParser.h"
 #include "opendavinci/odtools/player/Player.h"
 #include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
@@ -50,7 +51,8 @@ namespace odcomparepointcloud {
         m_xSpc(),
         m_ySpc(),
         m_zSpc(),
-        m_outputData("output.csv", std::ios_base::app | std::ios_base::out){
+        m_outputData("output.csv", std::ios_base::app | std::ios_base::out),
+        m_chosenFrame(0){
             //The vertical angles sorted by sensor IDs from 0 to 15 according to the data sheet
             m_verticalAngles[0] = -15.0;
             m_verticalAngles[1] = 1.0;
@@ -93,21 +95,48 @@ namespace odcomparepointcloud {
         }
 
     ComparePointCloud::~ComparePointCloud() {}
+    
+    void ComparePointCloud::parseAdditionalCommandLineParameters(const int &argc, char **argv) {
+        odcore::base::CommandLineParser cmdParser;
+        cmdParser.addCommandLineArgument("frame");
+        cmdParser.parse(argc, argv);
+        odcore::base::CommandLineArgument cmdArgumentFRAME = cmdParser.getCommandLineArgument("frame");
 
-    int32_t ComparePointCloud::run() {
+        if (cmdArgumentFRAME.isSet()) {
+            m_chosenFrame = cmdArgumentFRAME.getValue<uint64_t>();
+            cout<<"Compare Frame "<<m_chosenFrame<<endl;
+        }
+        else{
+            cerr<<"Please indicate a frame number to compare. Specify it with --frame."<<endl;
+        }
+
+    }
+
+    int32_t ComparePointCloud::run(const int32_t &argc, char **argv) {
+        // Parse command line arguments.
+        parseAdditionalCommandLineParameters(argc, argv);
+        
         odcore::io::URL url("file://recording.rec");
         unique_ptr<Player> player;
         //player = unique_ptr<Player>(new Player(url, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING));
         player = unique_ptr<Player>(new Player(url, 0, 2800000, 20, false));
         Container c;
         
-        uint64_t numberOfFramesToCompare=0;
         
         if(player->hasMoreData()){
             //CPC has one more frame than SPC. Discard the first frame of CPC
             c = player->getNextContainerToBeSent();
+        }
+        uint64_t currentFrame=0;
+        while(player->hasMoreData() && currentFrame<m_chosenFrame){
             c = player->getNextContainerToBeSent();
             c = player->getNextContainerToBeSent();
+            currentFrame++;
+        }
+        
+        if(currentFrame<m_chosenFrame){
+            cerr<<"The chosen frame number is too large for the recording. Choose a smaller frame."<<endl;
+            return -1;
         }
 
         //while (player->hasMoreData()){
@@ -134,7 +163,7 @@ namespace odcomparepointcloud {
                 }
             }
             
-        cout<<"Number of points of the 1st frame of SPC:"<<m_xSpc.size()<<endl;
+        cout<<"Number of points of Frame "<<m_chosenFrame<<" of SPC:"<<m_xSpc.size()<<endl;
         
         c = player->getNextContainerToBeSent();
             if(c.getDataType() == odcore::data::CompactPointCloud::ID()){
@@ -171,7 +200,7 @@ namespace odcomparepointcloud {
                 }
             }
             
-            cout<<"Number of points of the 1st frame of CPC:"<<m_xCpc.size()<<endl;
+            cout<<"Number of points of Frame "<<m_chosenFrame<<" of CPC:"<<m_xCpc.size()<<endl;
             
             float error_x,error_y,error_z;
             uint32_t spc_index=0;
@@ -191,7 +220,6 @@ namespace odcomparepointcloud {
                 }
             }
             
-            //numberOfFramesToCompare++;
             /*cout<<"The first 20 points of CPC:"<<endl;
             for(uint32_t index=0;index<20;index++){
                 cout<<m_xCpc[index]<<","<<m_yCpc[index]<<","<<m_zCpc[index]<<endl;   
@@ -209,7 +237,6 @@ namespace odcomparepointcloud {
             m_zSpc.clear();  
         //}
         
-        cout<<"Number of frames with equal number of points:"<<numberOfFramesToCompare<<endl;
         /*uint32_t spcFrameNumber=0;
         while (player->hasMoreData()){
             c = player->getNextContainerToBeSent();
@@ -221,10 +248,10 @@ namespace odcomparepointcloud {
             }
         }
         cout<<m_frameNumber<<endl;
-        cout<<spcFrameNumber<<endl;  */
+        cout<<spcFrameNumber<<endl;
         
-        //m_frameNumber=m_frameNumber / 2;
-        //cout<<"Number of frames:"<<m_frameNumber<<endl;
+        m_frameNumber=m_frameNumber / 2;
+        cout<<"Number of frames:"<<m_frameNumber<<endl;*/
         
         
         return 0;

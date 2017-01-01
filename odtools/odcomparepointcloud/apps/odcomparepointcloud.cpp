@@ -20,7 +20,7 @@
 
 #include "ComparePointCloud.h"
 
-int32_t main() {
+int32_t main(int32_t argc, char **argv) {
     odcomparepointcloud::ComparePointCloud cppc;
-    return cppc.run();
+    return cppc.run(argc, argv);
 }
