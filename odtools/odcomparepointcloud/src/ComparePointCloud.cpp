@@ -50,8 +50,8 @@ namespace odcomparepointcloud {
         m_xSpc(),
         m_ySpc(),
         m_zSpc(),
-        outputData("output.csv", std::ios_base::app | std::ios_base::out){
-        
+        m_outputData("output.csv", std::ios_base::app | std::ios_base::out){
+            //The vertical angles sorted by sensor IDs from 0 to 15 according to the data sheet
             m_verticalAngles[0] = -15.0;
             m_verticalAngles[1] = 1.0;
             m_verticalAngles[2] = -13.0;
@@ -69,6 +69,7 @@ namespace odcomparepointcloud {
             m_verticalAngles[14] = -1.0;
             m_verticalAngles[15] = 15.0;
             
+            //Distance values are reordered with increasing vertical angles while storing CPC
             m_sensorOrderIndex[0] = 0;
             m_sensorOrderIndex[1] = 2;
             m_sensorOrderIndex[2] = 4;
@@ -99,16 +100,21 @@ namespace odcomparepointcloud {
         //player = unique_ptr<Player>(new Player(url, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING));
         player = unique_ptr<Player>(new Player(url, 0, 2800000, 20, false));
         Container c;
+        
+        uint64_t numberOfFramesToCompare=0;
+        
+        if(player->hasMoreData()){
+            //CPC has one more frame than SPC. Discard the first frame of CPC
+            c = player->getNextContainerToBeSent();
+            c = player->getNextContainerToBeSent();
+            c = player->getNextContainerToBeSent();
+        }
 
         //while (player->hasMoreData()){
         //Compare x, y, z of the first frame between CPC and SPC
-            //CPC has one more frame than SPC. Discard the first frame of CPC
-            c = player->getNextContainerToBeSent();
-            
             c = player->getNextContainerToBeSent();
             
             if(c.getDataType() == odcore::data::SharedPointCloud::ID()){
-                //cout<<"SPC container found!"<<endl;
                 m_spc = c.getData<SharedPointCloud>();
                 if (!m_hasAttachedToSharedImageMemory) {
                     m_spcSharedMemory=odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(m_spc.getName()); // Attach the shared point cloud to the shared memory.
@@ -132,7 +138,6 @@ namespace odcomparepointcloud {
         
         c = player->getNextContainerToBeSent();
             if(c.getDataType() == odcore::data::CompactPointCloud::ID()){
-                //cout<<"CPC container found!"<<endl;
                 m_cpc = c.getData<CompactPointCloud>();  
                 float startAzimuth = m_cpc.getStartAzimuth();
                 float endAzimuth = m_cpc.getEndAzimuth();
@@ -142,13 +147,11 @@ namespace odcomparepointcloud {
                 uint32_t numberOfAzimuths = numberOfPoints/entriesPerAzimuth;
                 float azimuthIncrement = (endAzimuth-startAzimuth)/numberOfAzimuths;//Calculate the azimuth increment
                 stringstream sstr(distances);
-                //const float toRadian = static_cast<float>(cartesian::Constants::PI) / 180.0f;
                 const float toRadian = static_cast<float>(M_PI) / 180.0f;
                 uint16_t distance_integer=0;
                 float xyDistance = 0;
                 float azimuth = startAzimuth;
                 for (uint32_t azimuthIndex = 0; azimuthIndex < numberOfAzimuths; azimuthIndex++) {
-                    //float verticalAngle = START_V_ANGLE;
                     for (uint8_t sensorIndex = 0; sensorIndex<entriesPerAzimuth; sensorIndex++) {
                         sstr.read((char*)(&m_16SortedDistances[m_sensorOrderIndex[sensorIndex]]), 2); // Read distance value from the string in a CPC container point by point
                     }
@@ -163,7 +166,6 @@ namespace odcomparepointcloud {
                             m_yCpc.push_back(xyDistance * cos(azimuth * toRadian));
                             m_zCpc.push_back(distance * sin(m_verticalAngles[sensorIndex] * toRadian));
                         }
-                        //verticalAngle += V_INCREMENT;
                     }
                     azimuth+=azimuthIncrement;
                 }
@@ -172,25 +174,42 @@ namespace odcomparepointcloud {
             cout<<"Number of points of the 1st frame of CPC:"<<m_xCpc.size()<<endl;
             
             float error_x,error_y,error_z;
-            if(m_xCpc.size()==m_xSpc.size()){
-               for(uint32_t index=0;index<m_xCpc.size();index++){
-                    error_x=abs(m_xCpc[index]-m_xSpc[index]);
-                    error_y=abs(m_yCpc[index]-m_ySpc[index]);
-                    error_z=abs(m_zCpc[index]-m_zSpc[index]);
-                    outputData<<error_x<<","<<error_y<<","<<error_z<<endl;
+            uint32_t spc_index=0;
+            for(uint32_t cpc_index=0;cpc_index<m_xCpc.size();cpc_index++){
+                error_x=abs(m_xCpc[cpc_index]-m_xSpc[spc_index]);
+                error_y=abs(m_yCpc[cpc_index]-m_ySpc[spc_index]);
+                error_z=abs(m_zCpc[cpc_index]-m_zSpc[spc_index]);
+                //For the same point in CPC and SPC, the difference in z should be smaller
+                //than 0.003
+                //Max distance error: 0.8cm (original integer value divided by 5 to get cm
+                //while storing CPC), i.e., 0.008m. Hence, the maximum difference in z should
+                //be 0.008 * sin(verticalAngle * toRadian), while verticalAngle is from -15 to 
+                //15 with increment 2
+                if(error_z<0.003){
+                    m_outputData<<error_x<<","<<error_y<<","<<error_z<<endl;
+                    spc_index++;
                 }
-                /*cout<<"The first 20 points of CPC:"<<endl;
-                for(uint32_t index=0;index<20;index++){
-                    cout<<m_xCpc[index]<<","<<m_yCpc[index]<<","<<m_zCpc[index]<<endl;   
-                }
-                
-                cout<<"The first 20 points of SPC:"<<endl;
-                for(uint32_t index=0;index<20;index++){
-                    cout<<m_xSpc[index]<<","<<m_ySpc[index]<<","<<m_zSpc[index]<<endl;   
-                }*/
             }
+            
+            //numberOfFramesToCompare++;
+            /*cout<<"The first 20 points of CPC:"<<endl;
+            for(uint32_t index=0;index<20;index++){
+                cout<<m_xCpc[index]<<","<<m_yCpc[index]<<","<<m_zCpc[index]<<endl;   
+            }
+            
+            cout<<"The first 20 points of SPC:"<<endl;
+            for(uint32_t index=0;index<20;index++){
+                cout<<m_xSpc[index]<<","<<m_ySpc[index]<<","<<m_zSpc[index]<<endl;   
+            }*/
+            m_xCpc.clear();
+            m_yCpc.clear();
+            m_zCpc.clear();
+            m_xSpc.clear();
+            m_ySpc.clear();
+            m_zSpc.clear();  
         //}
         
+        cout<<"Number of frames with equal number of points:"<<numberOfFramesToCompare<<endl;
         /*uint32_t spcFrameNumber=0;
         while (player->hasMoreData()){
             c = player->getNextContainerToBeSent();
@@ -212,5 +231,4 @@ namespace odcomparepointcloud {
     }
 
 } // odcomparepointcloud
-//vector.clear();
 

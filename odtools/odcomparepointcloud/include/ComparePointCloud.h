@@ -84,7 +84,7 @@ namespace odcomparepointcloud {
             std::vector<float> m_xSpc;
             std::vector<float> m_ySpc;
             std::vector<float> m_zSpc;
-            std::ofstream outputData;
+            std::ofstream m_outputData;
             float m_verticalAngles[16];
             uint16_t m_sensorOrderIndex[16];
             uint16_t m_16SortedDistances[16];
