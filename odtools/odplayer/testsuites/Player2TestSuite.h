@@ -370,6 +370,24 @@ class PlayerModule2Test : public CxxTest::TestSuite {
 
             UNLINK("PlayerModule2Test2.rec");
         }
+
+        void notestLargeFile() {
+            const URL u("file://test.rec");
+
+            // Create Player2 instance.
+            const bool NO_AUTO_REWIND = false;
+            Player2 p2(u, NO_AUTO_REWIND);
+
+            TimeStamp before;
+            int64_t counter = 0;
+            while (p2.hasMoreData()) {
+                const Container& c = p2.getNextContainerToBeSentNoCopy();
+                (void)c;
+                counter++;
+            }
+            TimeStamp after;
+            cout << "Found " << counter << " containers. Duration = " << (after - before).toMicroseconds() << endl;
+        }
 };
 
 #endif /*PLAYER2TESTSUITE_H_*/
