@@ -52,7 +52,6 @@ namespace odtools {
 
         void Player2::fillCache(const string &resource) {
             Lock l(m_cacheMutex);
-            clog << "[Player2]: Reading from " << resource << "." << endl;
 
             fstream fin;
             fin.open(resource.c_str(), ios_base::in|ios_base::binary);
@@ -73,7 +72,7 @@ namespace odtools {
             }
             m_before = m_current;
 
-            clog << "[Player2]: Stored " << m_cache.size() << " entries." << endl;
+            clog << "[Player2]: " << resource << " contains " << m_cache.size() << " entries." << endl;
         }
 
         Container Player2::getNextContainerToBeSent() throw (odcore::exceptions::ArrayIndexOutOfBoundsException) {
