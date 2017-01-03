@@ -268,9 +268,14 @@ namespace odcomparepointcloud {
                     }
                 }
                 float avg_zError=sum_zError/m_zError.size();
-                m_outputData<<max_xError<<","<<avg_xError<<","<<max_yError<<","<<avg_yError<<","
-                  <<max_zError<<","<<avg_zError<<endl;    
-                  
+                if(m_xError.size()==m_xSpc.size() && m_yError.size()==m_ySpc.size() && 
+                m_zError.size()==m_zSpc.size()){
+                    m_outputData<<max_xError<<","<<avg_xError<<","<<max_yError<<","<<avg_yError<<","
+                    <<max_zError<<","<<avg_zError<<endl;  
+                }
+                else{
+                   cout<<"Abnormal frame:"<<m_frameNumber<<endl;
+                }
                 clearVectors();   
             }
             return 0;
@@ -306,6 +311,16 @@ namespace odcomparepointcloud {
         }  
         cout<<"Number of points of Frame "<<m_chosenFrame<<" of CPC:"<<m_xCpc.size()<<endl;
             
+        cout<<"The first 20 points of CPC:"<<endl;
+        for(uint32_t index=0;index<20;index++){
+            cout<<m_xCpc[index]<<","<<m_yCpc[index]<<","<<m_zCpc[index]<<endl;   
+        }
+        
+        cout<<"The first 20 points of SPC:"<<endl;
+        for(uint32_t index=0;index<20;index++){
+            cout<<m_xSpc[index]<<","<<m_ySpc[index]<<","<<m_zSpc[index]<<endl;   
+        }
+            
         float error_x,error_y,error_z;
         uint32_t spc_index=0;
         for(uint32_t cpc_index=0;cpc_index<m_xCpc.size();cpc_index++){
@@ -324,15 +339,6 @@ namespace odcomparepointcloud {
             }
         }
         
-        /*cout<<"The first 20 points of CPC:"<<endl;
-        for(uint32_t index=0;index<20;index++){
-            cout<<m_xCpc[index]<<","<<m_yCpc[index]<<","<<m_zCpc[index]<<endl;   
-        }
-        
-        cout<<"The first 20 points of SPC:"<<endl;
-        for(uint32_t index=0;index<20;index++){
-            cout<<m_xSpc[index]<<","<<m_ySpc[index]<<","<<m_zSpc[index]<<endl;   
-        }*/
         m_xCpc.clear();
         m_yCpc.clear();
         m_zCpc.clear();
