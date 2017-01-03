@@ -25,8 +25,9 @@
 #include <sstream>
 #include <vector>
 
-#include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/base/module/AbstractCIDModule.h"
+#include <opendavinci/odcore/opendavinci.h>
+#include <opendavinci/odcore/base/module/AbstractCIDModule.h>
+#include <opendavinci/odcore/base/Lock.h>
 #include <opendavinci/odcore/strings/StringToolbox.h>
 
 #include "automotivedata/generated/automotive/GenericCANMessage.h"
@@ -38,11 +39,13 @@ namespace automotive {
     namespace odcantools {
 
         using namespace std;
+        using namespace odcore::base;
         using namespace odcore::base::module;
         using namespace odcore::data;
 
         CANDevice::CANDevice(const string &deviceNode, GenericCANMessageListener &listener) :
             m_deviceNode(deviceNode),
+            m_handleMutex(),
             m_handle(NULL),
             m_listener(listener),
             m_deviceDriverStartTime() {
@@ -89,6 +92,7 @@ namespace automotive {
         }
 
         void CANDevice::write(const GenericCANMessage &gcm) {
+            Lock l(m_handleMutex);
             if (m_handle != NULL) {
                 TPCANMsg msg;
                 const uint8_t LENGTH = gcm.getLength();

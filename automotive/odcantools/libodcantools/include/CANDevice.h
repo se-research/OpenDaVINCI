@@ -25,6 +25,7 @@
 
 #include <libpcan.h>
 
+#include <opendavinci/odcore/base/Mutex.h>
 #include <opendavinci/odcore/base/Service.h>
 #include <opendavinci/odcore/data/TimeStamp.h>
 
@@ -94,6 +95,7 @@ class GenericCANMessageListener;
 
             private:
                 string m_deviceNode;
+                odcore::base::Mutex m_handleMutex;
                 HANDLE m_handle;
                 GenericCANMessageListener &m_listener;
                 odcore::data::TimeStamp m_deviceDriverStartTime;
