@@ -17,8 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <cassert>
+#include <sys/mman.h>
+#include <sys/stat.h>
 
+#include <cstdio>
 #include <fstream>
 #include <iostream>
 #include <utility>
@@ -51,6 +53,52 @@ namespace odtools {
         Player2::~Player2() {}
 
         void Player2::fillCache(const string &resource) {
+//            fillCache_mmap(resource);
+            fillCache_fstream(resource);
+        }
+
+        void Player2::fillCache_mmap(const string &resource) {
+            FILE *fin = fopen(resource.c_str(), "rb");
+
+            struct stat s;
+            int status = fstat(fileno(fin), &s);
+            int size = s.st_size;
+            char *data = NULL;
+            if ( (size > 0) && (status == 0) ) {
+                clog << "[Player2]: Reading " << resource << " of size " << size << "." << endl;
+                data = (char*)mmap(0, size, PROT_READ, MAP_FILE | MAP_PRIVATE, fileno(fin), 0);
+
+                status = madvise(data, size, MADV_SEQUENTIAL|MADV_WILLNEED);
+
+                stringstream sstr;
+                sstr.rdbuf()->pubsetbuf(data, size);
+
+                while (sstr.tellg() < size) {
+                    Container c;
+                    sstr >> c;
+
+                    // Using map::insert(hint, ...) to have amortized constant complexity.
+                    m_current = m_cache.insert(m_current, std::make_pair(c.getSampleTimeStamp().toMicroseconds(), c));
+                }
+
+                // Point to first entry.
+                m_current = m_cache.begin();
+                if (m_current->second.getSampleTimeStamp().toMicroseconds() == (m_current->second.getDataType() == 0)) {
+                    // The first element is "surprisingly" unusable.
+                    m_current = m_cache.erase(m_current);
+                }
+                m_before = m_current;
+
+                clog << "[Player2]: " << resource << " contains " << m_cache.size() << " entries." << endl;
+            }
+            fclose(fin);
+
+            if (data != NULL) {
+                munmap(data, size);
+            }
+        }
+
+        void Player2::fillCache_fstream(const string &resource) {
             Lock l(m_cacheMutex);
 
             fstream fin;

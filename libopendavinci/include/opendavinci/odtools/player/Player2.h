@@ -105,6 +105,9 @@ namespace odtools {
             private:
                 void fillCache(const string &resource);
 
+                void fillCache_fstream(const string &resource);
+                void fillCache_mmap(const string &resource);
+
             private:
                 bool m_autoRewind;
                 mutable odcore::base::Mutex m_cacheMutex;
