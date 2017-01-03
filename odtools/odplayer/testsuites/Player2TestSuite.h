@@ -38,7 +38,35 @@ using namespace odtools::player;
 
 class PlayerModule2Test : public CxxTest::TestSuite {
     public:
-        void testCorrectMonotonicTemporalOrder() {
+        void testEmptyFileAndException() {
+            // Prepare record file.
+            fstream fout("PlayerModule2TestEmpty.rec", ios::out | ios::binary | ios::trunc);
+            fout.flush();
+            fout.close();
+
+            const URL u("file://PlayerModule2TestEmpty.rec");
+
+            // Create Player2 instance.
+            Player2 p2(u);
+
+            while (p2.hasMoreData()) {
+            }
+
+            bool exceptionCaught = false;
+            try {
+                const Container& c55 = p2.getNextContainerToBeSentNoCopy();
+                (void)c55;
+            }
+            catch(...) {
+                exceptionCaught = true;
+            }
+
+            TS_ASSERT(exceptionCaught);
+
+            UNLINK("PlayerModule2TestEmpty.rec");
+        }
+
+        void testCorrectMonotonicTemporalOrderAndException() {
             // Prepare record file.
             fstream fout("PlayerModule2Test.rec", ios::out | ios::binary | ios::trunc);
 
@@ -81,12 +109,29 @@ class PlayerModule2Test : public CxxTest::TestSuite {
             int64_t counter = 0;
             while (p2.hasMoreData()) {
                 const Container& c = p2.getNextContainerToBeSentNoCopy();
+                if (counter == 0) {
+                    TS_ASSERT(p2.getDelay() == 0);
+                }
+                else {
+                    TS_ASSERT(p2.getDelay() == 1000001);
+                }
+
                 TS_ASSERT((counter * 1000 * 1000 + (counter + 1)) == c.getSampleTimeStamp().toMicroseconds());
                 counter++;
             }
             TimeStamp after;
-
             cout << "Duration = " << (after - before).toMicroseconds() << endl;
+
+            bool exceptionCaught = false;
+            try {
+                const Container& c55 = p2.getNextContainerToBeSentNoCopy();
+                (void)c55;
+            }
+            catch(...) {
+                exceptionCaught = true;
+            }
+
+            TS_ASSERT(exceptionCaught);
 
             UNLINK("PlayerModuleTest2.rec");
         }

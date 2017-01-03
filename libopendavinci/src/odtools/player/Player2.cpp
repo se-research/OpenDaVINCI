@@ -17,6 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <cassert>
+
 #include <fstream>
 #include <iostream>
 #include <utility>
@@ -39,7 +41,9 @@ namespace odtools {
         Player2::Player2(const URL &url) :
             m_cacheMutex(),
             m_cache(),
-            m_current(m_cache.end()) {
+            m_before(m_cache.begin()),
+            m_current(m_cache.begin()),
+            m_delay(0) {
             fillCache(url.getResource());
         }
 
@@ -66,23 +70,29 @@ namespace odtools {
                 // The first element is "surprisingly" unusable.
                 m_current = m_cache.erase(m_current);
             }
+            m_before = m_current;
 
             clog << "[Player2]: Stored " << m_cache.size() << " entries." << endl;
         }
 
-        Container Player2::getNextContainerToBeSent() {
+        Container Player2::getNextContainerToBeSent() throw (odcore::exceptions::ArrayIndexOutOfBoundsException) {
             return getNextContainerToBeSentNoCopy();
         }
 
-        const odcore::data::Container& Player2::getNextContainerToBeSentNoCopy() {
+        const odcore::data::Container& Player2::getNextContainerToBeSentNoCopy() throw (odcore::exceptions::ArrayIndexOutOfBoundsException) {
+            if (m_current == m_cache.end()) {
+                OPENDAVINCI_CORE_THROW_EXCEPTION(ArrayIndexOutOfBoundsException, "m_current != m_cache.end() failed.");
+            }
+
             Lock l(m_cacheMutex);
             const Container &retVal = m_current->second;
-            m_current++;
+            m_delay = m_current->second.getSampleTimeStamp().toMicroseconds() - m_before->second.getSampleTimeStamp().toMicroseconds();
+            m_before = m_current++;
             return retVal;
         }
 
         uint32_t Player2::getDelay() const {
-            return 0;
+            return m_delay;
         }
 
         bool Player2::hasMoreData() const {
