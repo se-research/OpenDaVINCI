@@ -67,6 +67,78 @@ class PlayerModule2Test : public CxxTest::TestSuite {
             UNLINK("PlayerModule2TestEmpty.rec");
         }
 
+        void testCorrectMonotonicTemporalOrderAndExceptionFromReverseOrder() {
+            // Prepare record file.
+            fstream fout("PlayerModule2Test.rec", ios::out | ios::binary | ios::trunc);
+
+            // Write data with non-monotonic order.
+            TimeStamp ts1(4, 5);
+            TimeStamp ts2(3, 4);
+            TimeStamp ts3(2, 3);
+            TimeStamp ts4(1, 2);
+            TimeStamp ts5(0, 1);
+
+            Container c1(ts1);
+            c1.setSampleTimeStamp(ts1);
+            fout << c1;
+
+            Container c2(ts2);
+            c2.setSampleTimeStamp(ts2);
+            fout << c2;
+
+            Container c3(ts3);
+            c3.setSampleTimeStamp(ts3);
+            fout << c3;
+
+            Container c4(ts4);
+            c4.setSampleTimeStamp(ts4);
+            fout << c4;
+
+            Container c5(ts5);
+            c5.setSampleTimeStamp(ts5);
+            fout << c5;
+
+            fout.flush();
+            fout.close();
+
+            const URL u("file://PlayerModule2Test.rec");
+
+            // Create Player2 instance.
+            const bool NO_AUTO_REWIND = false;
+            Player2 p2(u, NO_AUTO_REWIND);
+
+            TimeStamp before;
+            int64_t counter = 0;
+            while (p2.hasMoreData()) {
+                const Container& c = p2.getNextContainerToBeSentNoCopy();
+                if (counter == 0) {
+                    TS_ASSERT(p2.getDelay() == 0);
+                }
+                else {
+                    TS_ASSERT(p2.getDelay() == 1000001);
+                }
+
+                TS_ASSERT((counter * 1000 * 1000 + (counter + 1)) == c.getSampleTimeStamp().toMicroseconds());
+                counter++;
+            }
+            TimeStamp after;
+            cout << "Duration = " << (after - before).toMicroseconds() << endl;
+
+            bool exceptionCaught = false;
+            try {
+                const Container& c55 = p2.getNextContainerToBeSentNoCopy();
+                (void)c55;
+            }
+            catch(...) {
+                exceptionCaught = true;
+            }
+
+            TS_ASSERT(exceptionCaught);
+
+            UNLINK("PlayerModuleTest2.rec");
+        }
+
+
         void testCorrectMonotonicTemporalOrderAndException() {
             // Prepare record file.
             fstream fout("PlayerModule2Test.rec", ios::out | ios::binary | ios::trunc);
@@ -298,7 +370,6 @@ class PlayerModule2Test : public CxxTest::TestSuite {
 
             UNLINK("PlayerModule2Test2.rec");
         }
-
 };
 
 #endif /*PLAYER2TESTSUITE_H_*/
