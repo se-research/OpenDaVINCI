@@ -32,6 +32,8 @@
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
 #include "opendavinci/odcore/base/Mutex.h"
 
+#include "FIFOMultiplexer.h"
+
 class QWidget;
 namespace odcore { namespace base { class DataStoreManager; } }
 namespace odcore { namespace io { namespace conference { class ContainerConference; } } }
@@ -71,7 +73,7 @@ class PlugIn;
                  * @param conf Container conference to send data to.
                  * @param prnt Pointer to the container super window.
                  */
-                PlugInProvider(const odcore::base::KeyValueConfiguration &kvc, odcore::base::DataStoreManager &dsm, odcore::io::conference::ContainerConference &conf, QWidget *prnt);
+                PlugInProvider(const odcore::base::KeyValueConfiguration &kvc, odcore::base::DataStoreManager &dsm, odcore::io::conference::ContainerConference &conf, FIFOMultiplexer &multiplexer, QWidget *prnt);
 
             public:
                 virtual ~PlugInProvider();
@@ -85,7 +87,7 @@ class PlugIn;
                  * @param prnt Pointer to the container super window.
                  * @return Instance of this factory.
                  */
-                static PlugInProvider& getInstance(const odcore::base::KeyValueConfiguration &kvc, odcore::base::DataStoreManager &dsm, odcore::io::conference::ContainerConference &conf, QWidget *prnt);
+                static PlugInProvider& getInstance(const odcore::base::KeyValueConfiguration &kvc, odcore::base::DataStoreManager &dsm, odcore::io::conference::ContainerConference &conf, FIFOMultiplexer &multiplexer, QWidget *prnt);
 
                 /**
                  * This method returns the list of available plugins.
@@ -126,6 +128,7 @@ class PlugIn;
                 odcore::base::KeyValueConfiguration m_kvc;
                 odcore::base::DataStoreManager &m_dataStoreManager;
                 odcore::io::conference::ContainerConference &m_conference;
+                FIFOMultiplexer &m_multiplexer;
                 QWidget *m_parent;
 
                 /**

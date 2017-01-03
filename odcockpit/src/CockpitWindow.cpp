@@ -42,14 +42,13 @@ namespace cockpit {
     CockpitWindow::CockpitWindow(const KeyValueConfiguration &kvc, DataStoreManager &dsm, ContainerConference &conf) :
         m_kvc(kvc),
         m_dataStoreManager(dsm),
-        m_multiplexer(NULL),
-        m_plugInProvider(cockpit::plugins::PlugInProvider::getInstance(kvc, dsm, conf, this)),
+        m_multiplexer(new FIFOMultiplexer(dsm)),
+        m_plugInProvider(cockpit::plugins::PlugInProvider::getInstance(kvc, dsm, conf, *m_multiplexer, this)),
         m_listOfPlugIns(),
         m_cockpitArea(NULL),
         m_fileMenu(NULL),
         m_windowMenu(NULL),
         m_availablePlugInsList(NULL) {
-    	m_multiplexer = new FIFOMultiplexer(dsm);
         constructLayout();
     }
 

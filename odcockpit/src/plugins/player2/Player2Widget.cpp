@@ -26,6 +26,7 @@
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/io/URL.h"
@@ -49,18 +50,22 @@ namespace cockpit {
         namespace player2 {
 
             using namespace std;
+            using namespace odcore::base;
             using namespace odcore::data;
             using namespace odtools::player;
 
-            Player2Widget::Player2Widget(const PlugIn &/*plugIn*/, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, QWidget *prnt) :
+            Player2Widget::Player2Widget(const PlugIn &/*plugIn*/, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, FIFOMultiplexer &multiplexer, QWidget *prnt) :
                 QWidget(prnt),
                 m_kvc(kvc),
                 m_conference(conf),
+                m_multiplexer(multiplexer),
                 m_playBtn(NULL),
                 m_pauseBtn(NULL),
                 m_rewindBtn(NULL),
                 m_stepBtn(NULL),
                 m_autoRewind(NULL),
+                m_speedValueMutex(),
+                m_speedValue(100),
                 m_desc(NULL),
                 m_containerCounterDesc(NULL),
                 m_containerCounter(0),
@@ -132,11 +137,16 @@ namespace cockpit {
 //                splitting->addWidget(lblEnd);
 //                splitting->addWidget(m_end);
 
+                QSlider *speedSlider = new QSlider(Qt::Horizontal, this);
+                speedSlider->setValue(99);
+                connect(speedSlider, SIGNAL(valueChanged(int)), this, SLOT(speedValue(int)));
+
                 // Final layout.
                 QVBoxLayout *mainLayout = new QVBoxLayout(this);
                 mainLayout->addLayout(fileOperations);
                 mainLayout->addWidget(m_desc);
                 mainLayout->addWidget(m_containerCounterDesc);
+                mainLayout->addWidget(speedSlider);
                 mainLayout->addLayout(operations);
 //TODO: Validate splitting for h264 files.
 //                mainLayout->addLayout(splitting);
@@ -146,6 +156,11 @@ namespace cockpit {
 
             Player2Widget::~Player2Widget() {
                 m_player2.reset();
+            }
+
+            void Player2Widget::speedValue(int value) {
+                Lock l(m_speedValueMutex);
+                m_speedValue = value + 1;
             }
 
             void Player2Widget::play() {
@@ -195,7 +210,8 @@ namespace cockpit {
 
                     if (m_player2->hasMoreData()) {
                         // Get container to be sent.
-                        Container nextContainerToBeSent = m_player2->getNextContainerToBeSent();
+                        const Container &nextContainerToBeSent2 = m_player2->getNextContainerToBeSent();
+                        Container &nextContainerToBeSent = const_cast<Container&>(nextContainerToBeSent2);
 
                         // Increment the counters.
                         if (m_player2->hasMoreData()) {
@@ -212,10 +228,17 @@ namespace cockpit {
                         // Get delay to wait _after_ sending the container.
                         uint32_t delay = m_player2->getDelay() / 1000;
 
+                        {
+                            // Fasten playback if desired.
+                            Lock l(m_speedValueMutex);
+                            delay *= (m_speedValue/100.0);
+                        }
+
                         // Send container.
                         if ( (nextContainerToBeSent.getDataType() != Container::UNDEFINEDDATA) &&
                              (nextContainerToBeSent.getDataType() != odcore::data::player::PlayerCommand::ID()) ) {
-                            m_conference.send(nextContainerToBeSent);
+//                            m_conference.send(nextContainerToBeSent);
+                            m_multiplexer.distributeContainer(nextContainerToBeSent);
                         }
 
                         // Continously playing if "pause" button is enabled.

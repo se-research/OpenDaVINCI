@@ -33,8 +33,8 @@ namespace cockpit {
 
             using namespace std;
 
-            Player2PlugIn::Player2PlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, QWidget *prnt) :
-                ControlPlugIn(name, kvc, conf, prnt),
+            Player2PlugIn::Player2PlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, FIFOMultiplexer &multiplexer, QWidget *prnt) :
+                ControlPlugIn(name, kvc, conf, multiplexer, prnt),
                 m_kvc(kvc),
                 m_player2Widget(NULL) {
                 setDescription("This plugin replays previously recorded files.");
@@ -43,7 +43,7 @@ namespace cockpit {
             Player2PlugIn::~Player2PlugIn() {}
 
             void Player2PlugIn::setupPlugin() {
-                m_player2Widget = new Player2Widget(*this, m_kvc, getConference(), getParentQWidget());
+                m_player2Widget = new Player2Widget(*this, m_kvc, getConference(), getFIFOMultiplexer(), getParentQWidget());
             }
 
             void Player2PlugIn::stopPlugin() {}
