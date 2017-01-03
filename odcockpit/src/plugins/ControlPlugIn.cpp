@@ -32,14 +32,19 @@ namespace cockpit {
         using namespace odcore::base;
         using namespace odcore::io::conference;
 
-        ControlPlugIn::ControlPlugIn(const string &name, const KeyValueConfiguration &kvc, ContainerConference &conf, QWidget* prnt) :
-                PlugIn(name, kvc, prnt),
-                m_conference(conf) {}
+        ControlPlugIn::ControlPlugIn(const string &name, const KeyValueConfiguration &kvc, ContainerConference &conf, FIFOMultiplexer &multiplexer, QWidget* prnt) :
+            PlugIn(name, kvc, prnt),
+            m_multiplexer(multiplexer),
+            m_conference(conf) {}
 
         ControlPlugIn::~ControlPlugIn() {}
 
         ContainerConference& ControlPlugIn::getConference() const {
             return m_conference;
+        }
+
+        FIFOMultiplexer& ControlPlugIn::getFIFOMultiplexer() const {
+            return m_multiplexer;
         }
 
     } // plugins

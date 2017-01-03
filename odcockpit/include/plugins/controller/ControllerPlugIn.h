@@ -62,7 +62,7 @@ class ControllerWidget;
                  * @param conf Client conference to send data to.
                  * @param prnt Pointer to the containing super window.
                  */
-                ControllerPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, QWidget *prnt);
+                ControllerPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, FIFOMultiplexer &multiplexer, QWidget *prnt);
 
                 virtual ~ControllerPlugIn();
 

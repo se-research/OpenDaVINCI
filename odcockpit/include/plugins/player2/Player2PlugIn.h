@@ -59,9 +59,10 @@ class Player2Widget;
                      * @param name Name of this plugin.
                      * @param kvc KeyValueConfiguration for this GL-based widget.
                      * @param conf ContainerConference.
+                     * @param multiplexer FIFOMultiplexer to bypass conference for replay.
                      * @param prnt Pointer to the container super window.
                      */
-                    Player2PlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, QWidget *prnt);
+                    Player2PlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, FIFOMultiplexer &multiplexer, QWidget *prnt);
 
                     virtual ~Player2PlugIn();
 

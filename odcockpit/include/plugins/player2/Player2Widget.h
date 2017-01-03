@@ -27,6 +27,9 @@
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Mutex.h"
+
+#include "FIFOMultiplexer.h"
 
 class QCheckBox;
 class QLabel;
@@ -76,11 +79,12 @@ namespace cockpit {
                      * @param conf Conference to send data to.
                      * @param prnt Pointer to the parental widget.
                      */
-                    Player2Widget(const PlugIn &plugIn, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, QWidget *prnt);
+                    Player2Widget(const PlugIn &plugIn, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, FIFOMultiplexer &multiplexer, QWidget *prnt);
 
                     virtual ~Player2Widget();
 
                 public slots:
+                    void speedValue(int);
                     void loadFile();
 
                     void play();
@@ -95,12 +99,17 @@ namespace cockpit {
                 private:
                     const odcore::base::KeyValueConfiguration &m_kvc;
                     odcore::io::conference::ContainerConference &m_conference;
+                    FIFOMultiplexer &m_multiplexer;
 
                     QPushButton *m_playBtn;
                     QPushButton *m_pauseBtn;
                     QPushButton *m_rewindBtn;
                     QPushButton *m_stepBtn;
                     QCheckBox *m_autoRewind;
+
+                    odcore::base::Mutex m_speedValueMutex;
+                    int m_speedValue;
+
                     QLabel *m_desc;
                     QLabel *m_containerCounterDesc;
                     int32_t m_containerCounter;
