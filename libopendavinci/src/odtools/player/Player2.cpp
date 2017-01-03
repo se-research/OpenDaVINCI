@@ -67,9 +67,12 @@ namespace odtools {
             clog << "[Player2]: Stored " << m_cache.size() << " entries." << endl;
         }
 
-//        const Container& Player2::getNextContainerToBeSent() {
         Container Player2::getNextContainerToBeSent() {
-            Container retVal = m_current->second;
+            return getNextContainerToBeSentNoCopy();
+        }
+
+        const odcore::data::Container& Player2::getNextContainerToBeSentNoCopy() {
+            const Container &retVal = m_current->second;
             m_current++;
             return retVal;
         }

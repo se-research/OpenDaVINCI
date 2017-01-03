@@ -77,13 +77,16 @@ class PlayerModule2Test : public CxxTest::TestSuite {
             // Create Player2 instance.
             Player2 p2(u);
 
-            // Check whether Player stores the entries in correct time order.
+            TimeStamp before;
             int64_t counter = 0;
             while (p2.hasMoreData()) {
-                Container c = p2.getNextContainerToBeSent();
+                const Container& c = p2.getNextContainerToBeSentNoCopy();
                 TS_ASSERT((counter * 1000 * 1000 + (counter + 1)) == c.getSampleTimeStamp().toMicroseconds());
                 counter++;
             }
+            TimeStamp after;
+
+            cout << "Duration = " << (after - before).toMicroseconds() << endl;
 
             UNLINK("PlayerModuleTest2.rec");
         }
