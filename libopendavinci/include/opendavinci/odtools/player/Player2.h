@@ -23,6 +23,7 @@
 #include <map>
 
 #include <opendavinci/odcore/opendavinci.h>
+#include <opendavinci/odcore/base/Mutex.h>
 #include <opendavinci/odcore/data/Container.h>
 #include <opendavinci/odcore/io/URL.h>
 
@@ -98,6 +99,7 @@ namespace odtools {
                 void fillCache(const string &resource);
 
             private:
+                mutable odcore::base::Mutex m_cacheMutex;
                 multimap<int64_t, odcore::data::Container> m_cache;
                 multimap<int64_t, odcore::data::Container>::const_iterator m_current;
         };
