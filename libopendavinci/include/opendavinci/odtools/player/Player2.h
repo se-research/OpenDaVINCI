@@ -26,6 +26,7 @@
 #include <opendavinci/odcore/base/Mutex.h>
 #include <opendavinci/odcore/data/Container.h>
 #include <opendavinci/odcore/io/URL.h>
+#include "opendavinci/odcore/exceptions/Exceptions.h"
 
 namespace odtools {
     namespace player {
@@ -72,14 +73,14 @@ namespace odtools {
                  *
                  * @return Next container to be replayed.
                  */
-                odcore::data::Container getNextContainerToBeSent();
+                odcore::data::Container getNextContainerToBeSent() throw (odcore::exceptions::ArrayIndexOutOfBoundsException);
 
                 /**
                  * This method returns the next container to be replayed.
                  *
                  * @return Next container to be replayed.
                  */
-                const odcore::data::Container& getNextContainerToBeSentNoCopy();
+                const odcore::data::Container& getNextContainerToBeSentNoCopy() throw (odcore::exceptions::ArrayIndexOutOfBoundsException);
 
                 /**
                  * This method returns the delay to be waited before the next container should be delivered.
@@ -101,7 +102,9 @@ namespace odtools {
             private:
                 mutable odcore::base::Mutex m_cacheMutex;
                 multimap<int64_t, odcore::data::Container> m_cache;
+                multimap<int64_t, odcore::data::Container>::const_iterator m_before;
                 multimap<int64_t, odcore::data::Container>::const_iterator m_current;
+                uint32_t m_delay;
         };
 
     } // player
