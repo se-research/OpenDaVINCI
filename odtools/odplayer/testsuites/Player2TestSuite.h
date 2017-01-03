@@ -38,7 +38,7 @@ using namespace odtools::player;
 
 class PlayerModule2Test : public CxxTest::TestSuite {
     public:
-        void testRealtimeReplayNoRewind() {
+        void testCorrectMonotonicTemporalOrder() {
             // Prepare record file.
             fstream fout("PlayerModule2Test.rec", ios::out | ios::binary | ios::trunc);
 
