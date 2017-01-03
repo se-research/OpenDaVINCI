@@ -71,8 +71,14 @@ namespace odtools {
                  *
                  * @return Next container to be replayed.
                  */
-//                const odcore::data::Container& getNextContainerToBeSent();
                 odcore::data::Container getNextContainerToBeSent();
+
+                /**
+                 * This method returns the next container to be replayed.
+                 *
+                 * @return Next container to be replayed.
+                 */
+                const odcore::data::Container& getNextContainerToBeSentNoCopy();
 
                 /**
                  * This method returns the delay to be waited before the next container should be delivered.
