@@ -22,6 +22,7 @@
 #include <utility>
 
 #include <opendavinci/odcore/base/module/AbstractCIDModule.h>
+#include <opendavinci/odcore/base/Lock.h>
 #include <opendavinci/odtools/player/Player2.h>
 
 #include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
@@ -30,12 +31,13 @@ namespace odtools {
     namespace player {
 
         using namespace std;
-        using namespace odcore::base::module;
         using namespace odcore::base;
+        using namespace odcore::base::module;
         using namespace odcore::data;
         using namespace odcore::io;
 
         Player2::Player2(const URL &url) :
+            m_cacheMutex(),
             m_cache(),
             m_current(m_cache.end()) {
             fillCache(url.getResource());
@@ -44,6 +46,7 @@ namespace odtools {
         Player2::~Player2() {}
 
         void Player2::fillCache(const string &resource) {
+            Lock l(m_cacheMutex);
             clog << "[Player2]: Reading from " << resource << "." << endl;
 
             fstream fin;
@@ -72,6 +75,7 @@ namespace odtools {
         }
 
         const odcore::data::Container& Player2::getNextContainerToBeSentNoCopy() {
+            Lock l(m_cacheMutex);
             const Container &retVal = m_current->second;
             m_current++;
             return retVal;
@@ -82,6 +86,7 @@ namespace odtools {
         }
 
         bool Player2::hasMoreData() const {
+            Lock l(m_cacheMutex);
             return m_current != m_cache.end();
         }
 
