@@ -52,6 +52,7 @@ namespace odcomparepointcloud {
         m_ySpc(),
         m_zSpc(),
         m_outputData("output.csv", std::ios_base::app | std::ios_base::out),
+        m_allFrames(false),
         m_chosenFrame(0){
             //The vertical angles sorted by sensor IDs from 0 to 15 according to the data sheet
             m_verticalAngles[0] = -15.0;
@@ -103,8 +104,15 @@ namespace odcomparepointcloud {
         odcore::base::CommandLineArgument cmdArgumentFRAME = cmdParser.getCommandLineArgument("frame");
 
         if (cmdArgumentFRAME.isSet()) {
-            m_chosenFrame = cmdArgumentFRAME.getValue<uint64_t>();
-            cout<<"Compare Frame "<<m_chosenFrame<<endl;
+            string frameOption = cmdArgumentFRAME.getValue<string>();
+            if(frameOption=="all"){
+                m_allFrames=true;
+                cout<<"Compare all frames."<<endl;
+            }
+            else{
+                m_chosenFrame = cmdArgumentFRAME.getValue<uint64_t>();
+                cout<<"Compare Frame "<<m_chosenFrame<<endl;
+            }
         }
         else{
             cerr<<"Please indicate a frame number to compare. Specify it with --frame."<<endl;
@@ -122,11 +130,27 @@ namespace odcomparepointcloud {
         player = unique_ptr<Player>(new Player(url, 0, 2800000, 20, false));
         Container c;
         
+        if(m_allFrames){
+            uint32_t spcFrameNumber=0;
+            while (player->hasMoreData()){
+                c = player->getNextContainerToBeSent();
+                if(c.getDataType() == odcore::data::CompactPointCloud::ID()){
+                    m_frameNumber++;
+                }
+                if(c.getDataType() == odcore::data::SharedPointCloud::ID()){
+                    spcFrameNumber++;
+                }
+            }
+            cout<<m_frameNumber<<endl;
+            cout<<spcFrameNumber<<endl;
+            return 0;
+        }
         
-        if(player->hasMoreData()){
+        
+        /*if(player->hasMoreData()){
             //CPC has one more frame than SPC. Discard the first frame of CPC
             c = player->getNextContainerToBeSent();
-        }
+        }*/
         uint64_t currentFrame=0;
         while(player->hasMoreData() && currentFrame<m_chosenFrame){
             c = player->getNextContainerToBeSent();
@@ -237,21 +261,8 @@ namespace odcomparepointcloud {
             m_zSpc.clear();  
         //}
         
-        /*uint32_t spcFrameNumber=0;
-        while (player->hasMoreData()){
-            c = player->getNextContainerToBeSent();
-            if(c.getDataType() == odcore::data::CompactPointCloud::ID()){
-                m_frameNumber++;
-            }
-            if(c.getDataType() == odcore::data::SharedPointCloud::ID()){
-                spcFrameNumber++;
-            }
-        }
-        cout<<m_frameNumber<<endl;
-        cout<<spcFrameNumber<<endl;
-        
-        m_frameNumber=m_frameNumber / 2;
-        cout<<"Number of frames:"<<m_frameNumber<<endl;*/
+        //m_frameNumber=m_frameNumber / 2;
+        //ut<<"Number of frames:"<<m_frameNumber<<endl;
         
         
         return 0;
