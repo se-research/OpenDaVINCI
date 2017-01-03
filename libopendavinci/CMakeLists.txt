@@ -379,7 +379,7 @@ ADD_DEPENDENCIES(opendavinci-core GenerateDataStructuresTestData)
 
 ###############################################################################
 # Enable CxxTest for all available testsuites.
-IF(CXXTEST_FOUND)
+IF(NOT CXXTEST_FOUND)
     FILE(GLOB libopendavinci-testsuites "${CMAKE_CURRENT_SOURCE_DIR}/testsuites/*.h")
 
     FOREACH(testsuite ${libopendavinci-testsuites})
@@ -454,7 +454,7 @@ IF(CXXTEST_FOUND)
         SET_TESTS_PROPERTIES(${testsuite-short}-TestSuite PROPERTIES TIMEOUT 3000)
         TARGET_LINK_LIBRARIES(${testsuite-short}-TestSuite ${OPENDAVINCI_LIB_FOR_TESTSUITES} ${LIBRARIES})
     ENDFOREACH()
-ENDIF(CXXTEST_FOUND)
+ENDIF(NOT CXXTEST_FOUND)
 
 ###############################################################################
 # Installing "libopendavinci".
