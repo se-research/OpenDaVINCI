@@ -72,6 +72,9 @@ namespace odcomparepointcloud {
             int32_t run(const int32_t &argc, char **argv);
         private:
             void parseAdditionalCommandLineParameters(const int &argc, char **argv);
+            void readCPC(odcore::data::Container&);
+            void readSPC(odcore::data::Container&);
+            inline void clearVectors();
         private:
             bool m_CPCfound;
             bool m_SPCfound;
@@ -86,6 +89,9 @@ namespace odcomparepointcloud {
             std::vector<float> m_xSpc;
             std::vector<float> m_ySpc;
             std::vector<float> m_zSpc;
+            std::vector<float> m_xError;
+            std::vector<float> m_yError;
+            std::vector<float> m_zError;
             std::ofstream m_outputData;
             float m_verticalAngles[16];
             uint16_t m_sensorOrderIndex[16];
