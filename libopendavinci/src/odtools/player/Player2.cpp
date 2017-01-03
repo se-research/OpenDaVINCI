@@ -38,7 +38,8 @@ namespace odtools {
         using namespace odcore::data;
         using namespace odcore::io;
 
-        Player2::Player2(const URL &url) :
+        Player2::Player2(const URL &url, const bool &autoRewind) :
+            m_autoRewind(autoRewind),
             m_cacheMutex(),
             m_cache(),
             m_before(m_cache.begin()),
@@ -80,8 +81,14 @@ namespace odtools {
         }
 
         const odcore::data::Container& Player2::getNextContainerToBeSentNoCopy() throw (odcore::exceptions::ArrayIndexOutOfBoundsException) {
+            // If at "EOF", either throw exception of autorewind.
             if (m_current == m_cache.end()) {
-                OPENDAVINCI_CORE_THROW_EXCEPTION(ArrayIndexOutOfBoundsException, "m_current != m_cache.end() failed.");
+                if (!m_autoRewind) {
+                    OPENDAVINCI_CORE_THROW_EXCEPTION(ArrayIndexOutOfBoundsException, "m_current != m_cache.end() failed.");
+                }
+                else {
+                    rewind();
+                }
             }
 
             Lock l(m_cacheMutex);
@@ -95,9 +102,14 @@ namespace odtools {
             return m_delay;
         }
 
+        void Player2::rewind() {
+            Lock l(m_cacheMutex);
+            m_before = m_current = m_cache.begin();
+        }
+
         bool Player2::hasMoreData() const {
             Lock l(m_cacheMutex);
-            return m_current != m_cache.end();
+            return (m_autoRewind || (m_current != m_cache.end()));
         }
 
     } // player

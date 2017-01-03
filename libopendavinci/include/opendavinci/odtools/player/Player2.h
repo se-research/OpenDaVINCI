@@ -63,8 +63,9 @@ namespace odtools {
                  * Constructor.
                  *
                  * @param url Resource to play.
+                 * @param autoRewind True if the file should be rewind at EOF.
                  */
-                Player2(const odcore::io::URL &url);
+                Player2(const odcore::io::URL &url, const bool &autoRewind);
 
                 virtual ~Player2();
 
@@ -96,10 +97,16 @@ namespace odtools {
                  */
                 bool hasMoreData() const;
 
+                /**
+                 * This method restarts the player.
+                 */
+                void rewind();
+
             private:
                 void fillCache(const string &resource);
 
             private:
+                bool m_autoRewind;
                 mutable odcore::base::Mutex m_cacheMutex;
                 multimap<int64_t, odcore::data::Container> m_cache;
                 multimap<int64_t, odcore::data::Container>::const_iterator m_before;
