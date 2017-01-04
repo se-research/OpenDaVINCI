@@ -386,7 +386,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
                 counter++;
             }
             TimeStamp after;
-            cout << "Found " << counter << " containers. Duration = " << (after - before).toMicroseconds() << endl;
+            cout << "Found " << counter << " containers. Duration = " << static_cast<uint64_t>((after - before).toMicroseconds()) << endl;
         }
 };
 
