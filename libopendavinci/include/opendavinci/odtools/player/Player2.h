@@ -40,11 +40,12 @@ namespace odtools {
         class Player2CacheEntry {
             public:
                 Player2CacheEntry();
-                Player2CacheEntry(const int64_t &sampleTimeStamp, const uint64_t &filePosition, const multimap<int64_t, odcore::data::Container>::const_iterator &entry);
+                Player2CacheEntry(const int64_t &sampleTimeStamp, const uint64_t &filePosition, const bool &available, const multimap<int64_t, odcore::data::Container>::const_iterator &entry);
 
             public:
                 int64_t m_sampleTimeStamp;
                 uint64_t m_filePosition;
+                bool m_available;
                 multimap<int64_t, odcore::data::Container>::const_iterator m_entry;
         };
 
