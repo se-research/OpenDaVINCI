@@ -20,6 +20,7 @@
 #ifndef OPENDAVINCI_TOOLS_PLAYER_PLAYER2_H_
 #define OPENDAVINCI_TOOLS_PLAYER_PLAYER2_H_
 
+#include <fstream>
 #include <map>
 
 #include <opendavinci/odcore/opendavinci.h>
@@ -40,13 +41,14 @@ namespace odtools {
         class Player2CacheEntry {
             public:
                 Player2CacheEntry();
-                Player2CacheEntry(const int64_t &sampleTimeStamp, const uint64_t &filePosition, const bool &available, const multimap<int64_t, odcore::data::Container>::const_iterator &entry);
+                Player2CacheEntry(const int64_t &sampleTimeStamp, const uint32_t &filePosition);
+                Player2CacheEntry(const int64_t &sampleTimeStamp, const uint32_t &filePosition, const bool &available, const multimap<int64_t, odcore::data::Container>::iterator &entry);
 
             public:
                 int64_t m_sampleTimeStamp;
-                uint64_t m_filePosition;
+                uint32_t m_filePosition;
                 bool m_available;
-                multimap<int64_t, odcore::data::Container>::const_iterator m_entry;
+                multimap<int64_t, odcore::data::Container>::iterator m_entry;
         };
 
         class OPENDAVINCI_API Player2 {
@@ -115,17 +117,18 @@ namespace odtools {
                 void rewind();
 
             private:
-                void fillCache(const string &resource);
+                void fillMetaCache(const string &resource);
 
-                uint64_t fillCacheParallel(const string &resource);
+                odcore::data::Container readEntryAsynchronously(const uint32_t &position);
 
             private:
+                fstream m_fin;
                 bool m_autoRewind;
                 mutable odcore::base::Mutex m_cacheMutex;
 
                 multimap<int64_t, Player2CacheEntry> m_metaCache;
-                multimap<int64_t, Player2CacheEntry>::const_iterator m_before;
-                multimap<int64_t, Player2CacheEntry>::const_iterator m_current;
+                multimap<int64_t, Player2CacheEntry>::iterator m_before;
+                multimap<int64_t, Player2CacheEntry>::iterator m_current;
 
                 multimap<int64_t, odcore::data::Container> m_containerCache;
 

@@ -47,13 +47,22 @@ namespace odtools {
             m_available(false),
             m_entry() {}
 
-        Player2CacheEntry::Player2CacheEntry(const int64_t &sampleTimeStamp, const uint64_t &filePosition, const bool &available, const multimap<int64_t, odcore::data::Container>::const_iterator &entry) :
+        Player2CacheEntry::Player2CacheEntry(const int64_t &sampleTimeStamp, const uint32_t &filePosition) :
+            m_sampleTimeStamp(sampleTimeStamp),
+            m_filePosition(filePosition),
+            m_available(false),
+            m_entry() {}
+
+        Player2CacheEntry::Player2CacheEntry(const int64_t &sampleTimeStamp, const uint32_t &filePosition, const bool &available, const multimap<int64_t, odcore::data::Container>::iterator &entry) :
             m_sampleTimeStamp(sampleTimeStamp),
             m_filePosition(filePosition),
             m_available(available),
             m_entry(entry) {}
 
+        ////////////////////////////////////////////////////////////////////////
+
         Player2::Player2(const URL &url, const bool &autoRewind) :
+            m_fin(),
             m_autoRewind(autoRewind),
             m_cacheMutex(),
             m_metaCache(),
@@ -61,45 +70,55 @@ namespace odtools {
             m_current(m_metaCache.begin()),
             m_containerCache(),
             m_delay(0) {
-            fillCache(url.getResource());
+            fillMetaCache(url.getResource());
         }
 
-        Player2::~Player2() {}
+        Player2::~Player2() {
+            m_fin.close();
+        }
 
-        uint64_t Player2::fillCacheParallel(const string &resource) {
-            fstream fin;
-            fin.open(resource.c_str(), ios_base::in|ios_base::binary);
+        void Player2::fillMetaCache(const string &resource) {
+            m_fin.open(resource.c_str(), ios_base::in|ios_base::binary);
+
+            const uint32_t INITIAL_ENTRIES = 3;
+            uint32_t entries = 0;
 
             uint64_t size = 0;
-            while (fin.good()) {
-                const uint32_t posBefore = fin.tellg();
+            while (m_fin.good()) {
+                const uint32_t posBefore = m_fin.tellg();
                 Container c;
-                fin >> c;
+                m_fin >> c;
+                entries++;
 
-                if (!fin.eof()) {
-                    // Using map::insert(hint, ...) to have amortized constant complexity.
-                    auto it = m_containerCache.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(), c));
-                    m_current = m_metaCache.emplace_hint(m_current, std::make_pair(c.getSampleTimeStamp().toMicroseconds(), Player2CacheEntry(c.getSampleTimeStamp().toMicroseconds(), posBefore, true, it)));
+                if (!m_fin.eof()) {
+                    if (entries <= INITIAL_ENTRIES) {
+                        auto it = m_containerCache.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(), c));
+                        // Using map::insert(hint, ...) to have amortized constant complexity.
+                        m_current = m_metaCache.emplace_hint(m_current, std::make_pair(c.getSampleTimeStamp().toMicroseconds(), Player2CacheEntry(c.getSampleTimeStamp().toMicroseconds(), posBefore, true, it)));
+                    }
+                    else {
+                        // Using map::insert(hint, ...) to have amortized constant complexity.
+                        m_current = m_metaCache.emplace_hint(m_current, std::make_pair(c.getSampleTimeStamp().toMicroseconds(), Player2CacheEntry(c.getSampleTimeStamp().toMicroseconds(), posBefore)));
+                    }
 
-                    const uint32_t posAfter = fin.tellg();
+
+                    const uint32_t posAfter = m_fin.tellg();
                     size += (posAfter - posBefore);
                 }
             }
-            fin.close();
-
-            return size;
-        }
-
-        void Player2::fillCache(const string &resource) {
-            Lock l(m_cacheMutex);
-
-            auto asynchronousReadingFromFile = std::async(std::launch::async, &Player2::fillCacheParallel, this, resource);
-            uint64_t size = asynchronousReadingFromFile.get();
 
             // Point to first entry.
             m_before = m_current = m_metaCache.begin();
 
             clog << "[Player2]: " << resource << " contains " << m_metaCache.size() << " entries; read " << size << " bytes." << endl;
+        }
+
+        Container Player2::readEntryAsynchronously(const uint32_t &position) {
+            m_fin.clear();
+            m_fin.seekg(position);
+            Container retVal;
+            m_fin >> retVal;
+            return retVal;
         }
 
         Container Player2::getNextContainerToBeSent() throw (odcore::exceptions::ArrayIndexOutOfBoundsException) {
@@ -118,6 +137,15 @@ namespace odtools {
             }
 
             Lock l(m_cacheMutex);
+            if (!m_current->second.m_available) {
+                auto handle = std::async(std::launch::async, &Player2::readEntryAsynchronously, this, m_current->second.m_filePosition);
+                Container c = handle.get();
+
+                auto it = m_containerCache.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(), c));
+                m_current->second.m_entry = it;
+                m_current->second.m_available = true;
+            }
+
             const Container &retVal = m_current->second.m_entry->second;
             m_delay = m_current->second.m_entry->second.getSampleTimeStamp().toMicroseconds() - m_before->second.m_entry->second.getSampleTimeStamp().toMicroseconds();
             m_before = m_current++;
