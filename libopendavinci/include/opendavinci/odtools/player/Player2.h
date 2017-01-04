@@ -37,6 +37,17 @@ namespace odtools {
          * This class can be used to read previously recorded
          * data from a given URL.
          */
+        class Player2CacheEntry {
+            public:
+                Player2CacheEntry();
+                Player2CacheEntry(const int64_t &sampleTimeStamp, const uint64_t &filePosition, const multimap<int64_t, odcore::data::Container>::const_iterator &entry);
+
+            public:
+                int64_t m_sampleTimeStamp;
+                uint64_t m_filePosition;
+                multimap<int64_t, odcore::data::Container>::const_iterator m_entry;
+        };
+
         class OPENDAVINCI_API Player2 {
             private:
                 /**
@@ -105,12 +116,21 @@ namespace odtools {
             private:
                 void fillCache(const string &resource);
 
+                uint64_t fillCacheParallel(const string &resource);
+
             private:
                 bool m_autoRewind;
                 mutable odcore::base::Mutex m_cacheMutex;
-                multimap<int64_t, odcore::data::Container> m_cache;
-                multimap<int64_t, odcore::data::Container>::const_iterator m_before;
-                multimap<int64_t, odcore::data::Container>::const_iterator m_current;
+
+                multimap<int64_t, Player2CacheEntry> m_metaCache;
+                multimap<int64_t, Player2CacheEntry>::const_iterator m_before;
+                multimap<int64_t, Player2CacheEntry>::const_iterator m_current;
+
+                multimap<int64_t, odcore::data::Container> m_containerCache;
+
+//                multimap<int64_t, odcore::data::Container> m_cache;
+//                multimap<int64_t, odcore::data::Container>::const_iterator m_before;
+//                multimap<int64_t, odcore::data::Container>::const_iterator m_current;
                 uint32_t m_delay;
         };
 

@@ -21,7 +21,9 @@
 
 #include <algorithm>
 #include <fstream>
+#include <future>
 #include <iostream>
+#include <thread>
 #include <utility>
 
 #include <opendavinci/odcore/base/module/AbstractCIDModule.h>
@@ -39,21 +41,30 @@ namespace odtools {
         using namespace odcore::data;
         using namespace odcore::io;
 
+        Player2CacheEntry::Player2CacheEntry() :
+            m_sampleTimeStamp(0),
+            m_filePosition(0),
+            m_entry() {}
+
+        Player2CacheEntry::Player2CacheEntry(const int64_t &sampleTimeStamp, const uint64_t &filePosition, const multimap<int64_t, odcore::data::Container>::const_iterator &entry) :
+            m_sampleTimeStamp(sampleTimeStamp),
+            m_filePosition(filePosition),
+            m_entry(entry) {}
+
         Player2::Player2(const URL &url, const bool &autoRewind) :
             m_autoRewind(autoRewind),
             m_cacheMutex(),
-            m_cache(),
-            m_before(m_cache.begin()),
-            m_current(m_cache.begin()),
+            m_metaCache(),
+            m_before(m_metaCache.begin()),
+            m_current(m_metaCache.begin()),
+            m_containerCache(),
             m_delay(0) {
             fillCache(url.getResource());
         }
 
         Player2::~Player2() {}
 
-        void Player2::fillCache(const string &resource) {
-            Lock l(m_cacheMutex);
-
+        uint64_t Player2::fillCacheParallel(const string &resource) {
             fstream fin;
             fin.open(resource.c_str(), ios_base::in|ios_base::binary);
 
@@ -64,17 +75,29 @@ namespace odtools {
                 fin >> c;
 
                 if (!fin.eof()) {
+                    // Using map::insert(hint, ...) to have amortized constant complexity.
+                    auto it = m_containerCache.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(), c));
+                    m_current = m_metaCache.emplace_hint(m_current, std::make_pair(c.getSampleTimeStamp().toMicroseconds(), Player2CacheEntry(c.getSampleTimeStamp().toMicroseconds(), posBefore, it)));
+
                     const uint32_t posAfter = fin.tellg();
                     size += (posAfter - posBefore);
-                    // Using map::insert(hint, ...) to have amortized constant complexity.
-                    m_current = m_cache.insert(m_current, std::make_pair(c.getSampleTimeStamp().toMicroseconds(), c));
                 }
             }
+            fin.close();
+
+            return size;
+        }
+
+        void Player2::fillCache(const string &resource) {
+            Lock l(m_cacheMutex);
+
+            auto asynchronousReadingFromFile = std::async(std::launch::async, &Player2::fillCacheParallel, this, resource);
+            uint64_t size = asynchronousReadingFromFile.get();
 
             // Point to first entry.
-            m_before = m_current = m_cache.begin();
+            m_before = m_current = m_metaCache.begin();
 
-            clog << "[Player2]: " << resource << " contains " << m_cache.size() << " entries; read " << size << " bytes." << endl;
+            clog << "[Player2]: " << resource << " contains " << m_metaCache.size() << " entries; read " << size << " bytes." << endl;
         }
 
         Container Player2::getNextContainerToBeSent() throw (odcore::exceptions::ArrayIndexOutOfBoundsException) {
@@ -83,9 +106,9 @@ namespace odtools {
 
         const odcore::data::Container& Player2::getNextContainerToBeSentNoCopy() throw (odcore::exceptions::ArrayIndexOutOfBoundsException) {
             // If at "EOF", either throw exception of autorewind.
-            if (m_current == m_cache.end()) {
+            if (m_current == m_metaCache.end()) {
                 if (!m_autoRewind) {
-                    OPENDAVINCI_CORE_THROW_EXCEPTION(ArrayIndexOutOfBoundsException, "m_current != m_cache.end() failed.");
+                    OPENDAVINCI_CORE_THROW_EXCEPTION(ArrayIndexOutOfBoundsException, "m_current != m_metaCache.end() failed.");
                 }
                 else {
                     rewind();
@@ -93,8 +116,8 @@ namespace odtools {
             }
 
             Lock l(m_cacheMutex);
-            const Container &retVal = m_current->second;
-            m_delay = m_current->second.getSampleTimeStamp().toMicroseconds() - m_before->second.getSampleTimeStamp().toMicroseconds();
+            const Container &retVal = m_current->second.m_entry->second;
+            m_delay = m_current->second.m_entry->second.getSampleTimeStamp().toMicroseconds() - m_before->second.m_entry->second.getSampleTimeStamp().toMicroseconds();
             m_before = m_current++;
             return retVal;
         }
@@ -105,12 +128,12 @@ namespace odtools {
 
         void Player2::rewind() {
             Lock l(m_cacheMutex);
-            m_before = m_current = m_cache.begin();
+            m_before = m_current = m_metaCache.begin();
         }
 
         bool Player2::hasMoreData() const {
             Lock l(m_cacheMutex);
-            return (m_autoRewind || (m_current != m_cache.end()));
+            return (m_autoRewind || (m_current != m_metaCache.end()));
         }
 
     } // player
