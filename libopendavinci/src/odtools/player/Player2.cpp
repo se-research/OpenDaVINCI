@@ -17,19 +17,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <sys/mman.h>
-#include <sys/stat.h>
-
 #include <cstdio>
+
+#include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <utility>
 
 #include <opendavinci/odcore/base/module/AbstractCIDModule.h>
 #include <opendavinci/odcore/base/Lock.h>
-#include <opendavinci/odtools/player/Player2.h>
+#include <opendavinci/odcore/data/TimeStamp.h>
 
-#include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
+#include <opendavinci/odtools/player/Player2.h>
 
 namespace odtools {
     namespace player {
@@ -58,23 +57,24 @@ namespace odtools {
             fstream fin;
             fin.open(resource.c_str(), ios_base::in|ios_base::binary);
 
+            uint64_t size = 0;
             while (fin.good()) {
+                const uint32_t posBefore = fin.tellg();
                 Container c;
                 fin >> c;
 
-                // Using map::insert(hint, ...) to have amortized constant complexity.
-                m_current = m_cache.insert(m_current, std::make_pair(c.getSampleTimeStamp().toMicroseconds(), c));
+                if (!fin.eof()) {
+                    const uint32_t posAfter = fin.tellg();
+                    size += (posAfter - posBefore);
+                    // Using map::insert(hint, ...) to have amortized constant complexity.
+                    m_current = m_cache.insert(m_current, std::make_pair(c.getSampleTimeStamp().toMicroseconds(), c));
+                }
             }
 
             // Point to first entry.
-            m_current = m_cache.begin();
-            // The first element is "surprisingly" unusable.
-            if (m_current->second.getSampleTimeStamp().toMicroseconds() == (m_current->second.getDataType() == 0)) {
-                m_current = m_cache.erase(m_current);
-            }
-            m_before = m_current;
+            m_before = m_current = m_cache.begin();
 
-            clog << "[Player2]: " << resource << " contains " << m_cache.size() << " entries." << endl;
+            clog << "[Player2]: " << resource << " contains " << m_cache.size() << " entries; read " << size << " bytes." << endl;
         }
 
         Container Player2::getNextContainerToBeSent() throw (odcore::exceptions::ArrayIndexOutOfBoundsException) {
