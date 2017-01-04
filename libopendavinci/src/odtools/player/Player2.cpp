@@ -44,11 +44,13 @@ namespace odtools {
         Player2CacheEntry::Player2CacheEntry() :
             m_sampleTimeStamp(0),
             m_filePosition(0),
+            m_available(false),
             m_entry() {}
 
-        Player2CacheEntry::Player2CacheEntry(const int64_t &sampleTimeStamp, const uint64_t &filePosition, const multimap<int64_t, odcore::data::Container>::const_iterator &entry) :
+        Player2CacheEntry::Player2CacheEntry(const int64_t &sampleTimeStamp, const uint64_t &filePosition, const bool &available, const multimap<int64_t, odcore::data::Container>::const_iterator &entry) :
             m_sampleTimeStamp(sampleTimeStamp),
             m_filePosition(filePosition),
+            m_available(available),
             m_entry(entry) {}
 
         Player2::Player2(const URL &url, const bool &autoRewind) :
@@ -77,7 +79,7 @@ namespace odtools {
                 if (!fin.eof()) {
                     // Using map::insert(hint, ...) to have amortized constant complexity.
                     auto it = m_containerCache.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(), c));
-                    m_current = m_metaCache.emplace_hint(m_current, std::make_pair(c.getSampleTimeStamp().toMicroseconds(), Player2CacheEntry(c.getSampleTimeStamp().toMicroseconds(), posBefore, it)));
+                    m_current = m_metaCache.emplace_hint(m_current, std::make_pair(c.getSampleTimeStamp().toMicroseconds(), Player2CacheEntry(c.getSampleTimeStamp().toMicroseconds(), posBefore, true, it)));
 
                     const uint32_t posAfter = fin.tellg();
                     size += (posAfter - posBefore);
@@ -119,6 +121,7 @@ namespace odtools {
             const Container &retVal = m_current->second.m_entry->second;
             m_delay = m_current->second.m_entry->second.getSampleTimeStamp().toMicroseconds() - m_before->second.m_entry->second.getSampleTimeStamp().toMicroseconds();
             m_before = m_current++;
+
             return retVal;
         }
 
