@@ -44,34 +44,28 @@ namespace odtools {
         Player2CacheEntry::Player2CacheEntry() :
             m_sampleTimeStamp(0),
             m_filePosition(0),
-            m_available(false),
-            m_entry() {}
+            m_available(false) {}
 
         Player2CacheEntry::Player2CacheEntry(const int64_t &sampleTimeStamp, const uint32_t &filePosition) :
             m_sampleTimeStamp(sampleTimeStamp),
             m_filePosition(filePosition),
-            m_available(false),
-            m_entry() {}
-
-        Player2CacheEntry::Player2CacheEntry(const int64_t &sampleTimeStamp, const uint32_t &filePosition, const bool &available, const multimap<uint32_t, odcore::data::Container>::iterator &entry) :
-            m_sampleTimeStamp(sampleTimeStamp),
-            m_filePosition(filePosition),
-            m_available(available),
-            m_entry(entry) {}
+            m_available(false) {}
 
         ////////////////////////////////////////////////////////////////////////
 
         Player2::Player2(const URL &url, const bool &autoRewind) :
             m_url(url),
             m_recFile(),
+            m_recFileValid(false),
             m_autoRewind(autoRewind),
-            m_cacheMutex(),
-            m_metaCache(),
-            m_before(m_metaCache.begin()),
-            m_current(m_metaCache.begin()),
+            m_indexMutex(),
+            m_index(),
+            m_before(m_index.begin()),
+            m_current(m_index.begin()),
             m_containerCache(),
             m_delay(0) {
             initializeIndex();
+            fillContainerCache();
         }
 
         Player2::~Player2() {
@@ -80,37 +74,54 @@ namespace odtools {
 
         void Player2::initializeIndex() {
             m_recFile.open(m_url.getResource().c_str(), ios_base::in|ios_base::binary);
-            const uint32_t INITIAL_ENTRIES = 3;
-            uint32_t entries = 0;
+            m_recFileValid = m_recFile.good();
 
-            uint64_t size = 0;
+            // Read complete file and store file positions to containers.
+            // The actual reading of Containers is deferred.
+            uint32_t totalBytesRead = 0;
             while (m_recFile.good()) {
                 const uint32_t posBefore = m_recFile.tellg();
                 Container c;
                 m_recFile >> c;
-                entries++;
 
                 if (!m_recFile.eof()) {
-                    if (entries <= INITIAL_ENTRIES) {
-                        auto it = m_containerCache.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(), c));
-                        // Using map::insert(hint, ...) to have amortized constant complexity.
-                        m_current = m_metaCache.emplace_hint(m_current, std::make_pair(c.getSampleTimeStamp().toMicroseconds(), Player2CacheEntry(c.getSampleTimeStamp().toMicroseconds(), posBefore, true, it)));
-                    }
-                    else {
-                        // Using map::insert(hint, ...) to have amortized constant complexity.
-                        m_current = m_metaCache.emplace_hint(m_current, std::make_pair(c.getSampleTimeStamp().toMicroseconds(), Player2CacheEntry(c.getSampleTimeStamp().toMicroseconds(), posBefore)));
-                    }
-
-
+                    // Store mapping .rec file position --> index entry.
+                    m_index.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(), Player2CacheEntry(c.getSampleTimeStamp().toMicroseconds(), posBefore)));
                     const uint32_t posAfter = m_recFile.tellg();
-                    size += (posAfter - posBefore);
+                    totalBytesRead += (posAfter - posBefore);
                 }
             }
 
-            // Point to first entry.
-            m_before = m_current = m_metaCache.begin();
+            // Reset pointer to beginning of the .rec file.
+            if (m_recFileValid) {
+                m_recFile.clear();
+                m_recFile.seekg(0, ios::beg);
 
-            clog << "[Player2]: " << m_url.getResource() << " contains " << m_metaCache.size() << " entries; read " << size << " bytes." << endl;
+                // Point to first entry.
+                m_before = m_current = m_index.begin();
+                clog << "[Player2]: " << m_url.getResource() << " contains " << m_index.size() << " entries; read " << totalBytesRead << " bytes." << endl;
+            }
+        }
+
+        void Player2::fillContainerCache() {
+            if (m_recFileValid) {
+                m_recFile.clear();
+                auto it = m_index.begin();
+                while (it != m_index.end()) {
+                    // Move to corresponding position in the .rec file.
+                    m_recFile.seekg(it->second.m_filePosition);
+
+                    // Read the corresponding container.
+                    Container c;
+                    m_recFile >> c;
+
+                    // Store the container in the container cache.
+                    const bool SUCCESSFULLY_INSERTED = m_containerCache.emplace(std::make_pair(it->second.m_filePosition, c)).second;
+                    it->second.m_available = SUCCESSFULLY_INSERTED;
+
+                    it++;
+                }
+            }
         }
 
         Container Player2::readEntryAsynchronously(const uint32_t &position) {
@@ -127,45 +138,68 @@ namespace odtools {
 
         const odcore::data::Container& Player2::getNextContainerToBeSentNoCopy() throw (odcore::exceptions::ArrayIndexOutOfBoundsException) {
             // If at "EOF", either throw exception of autorewind.
-            if (m_current == m_metaCache.end()) {
+            if (m_current == m_index.end()) {
                 if (!m_autoRewind) {
-                    OPENDAVINCI_CORE_THROW_EXCEPTION(ArrayIndexOutOfBoundsException, "m_current != m_metaCache.end() failed.");
+                    OPENDAVINCI_CORE_THROW_EXCEPTION(ArrayIndexOutOfBoundsException, "m_current != m_index.end() failed.");
                 }
                 else {
                     rewind();
                 }
             }
 
-            Lock l(m_cacheMutex);
-            if (!m_current->second.m_available) {
-                auto handle = std::async(std::launch::async, &Player2::readEntryAsynchronously, this, m_current->second.m_filePosition);
-                Container c = handle.get();
-
-                auto it = m_containerCache.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(), c));
-                m_current->second.m_entry = it;
-                m_current->second.m_available = true;
-            }
-
-            const Container &retVal = m_current->second.m_entry->second;
-            m_delay = m_current->second.m_entry->second.getSampleTimeStamp().toMicroseconds() - m_before->second.m_entry->second.getSampleTimeStamp().toMicroseconds();
+            Lock l(m_indexMutex);
+            const Container &retVal = m_containerCache[m_current->second.m_filePosition];
+            m_delay = retVal.getSampleTimeStamp().toMicroseconds() - m_containerCache[m_before->second.m_filePosition].getSampleTimeStamp().toMicroseconds();
             m_before = m_current++;
 
             return retVal;
         }
 
         uint32_t Player2::getDelay() const {
+            Lock l(m_indexMutex);
             return m_delay;
         }
 
         void Player2::rewind() {
-            Lock l(m_cacheMutex);
-            m_before = m_current = m_metaCache.begin();
+            Lock l(m_indexMutex);
+            m_before = m_current = m_index.begin();
         }
 
         bool Player2::hasMoreData() const {
-            Lock l(m_cacheMutex);
-            return (m_autoRewind || (m_current != m_metaCache.end()));
+            Lock l(m_indexMutex);
+            // File must be successfully opened AND
+            // the Player must be configured as m_autoRewind OR
+            // some entries are left to replay.
+            return (m_recFileValid && (m_autoRewind || (m_current != m_index.end())));
         }
+
+//////////////////////////
+
+//            if (!m_current->second.m_available) {
+//                auto handle = std::async(std::launch::async, &Player2::readEntryAsynchronously, this, m_current->second.m_filePosition);
+//                Container c = handle.get();
+
+//                auto it = m_containerCache.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(), c));
+//                m_current->second.m_entry = it;
+//                m_current->second.m_available = true;
+//            }
+
+
+/*
+                    if (entries <= INITIAL_ENTRIES) {
+                        auto it = m_containerCache.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(), c));
+                        // Using map::insert(hint, ...) to have amortized constant complexity.
+                        m_current = m_index.emplace_hint(m_current, std::make_pair(c.getSampleTimeStamp().toMicroseconds(), Player2CacheEntry(c.getSampleTimeStamp().toMicroseconds(), posBefore, true, it)));
+                    }
+                    else {
+                        // Using map::insert(hint, ...) to have amortized constant complexity.
+                        m_current = m_index.emplace_hint(m_current, std::make_pair(c.getSampleTimeStamp().toMicroseconds(), Player2CacheEntry(c.getSampleTimeStamp().toMicroseconds(), posBefore)));
+                    }
+
+*/
+
+
+//////////////////////////
 
     } // player
 } // tools

@@ -42,13 +42,11 @@ namespace odtools {
             public:
                 Player2CacheEntry();
                 Player2CacheEntry(const int64_t &sampleTimeStamp, const uint32_t &filePosition);
-                Player2CacheEntry(const int64_t &sampleTimeStamp, const uint32_t &filePosition, const bool &available, const multimap<uint32_t, odcore::data::Container>::iterator &entry);
 
             public:
                 int64_t m_sampleTimeStamp;
                 uint32_t m_filePosition;
                 bool m_available;
-                multimap<uint32_t, odcore::data::Container>::iterator m_entry;
         };
 
         class OPENDAVINCI_API Player2 {
@@ -119,23 +117,27 @@ namespace odtools {
             private:
                 void initializeIndex();
 
+                void fillContainerCache();
+
                 odcore::data::Container readEntryAsynchronously(const uint32_t &position);
 
             private:
                 odcore::io::URL m_url;
                 // Handle to .rec file.
                 fstream m_recFile;
+                bool m_recFileValid;
+
                 bool m_autoRewind;
 
                 // Global index: Mapping SampleTimeStamp --> cache entry (holding the actual content from .rec, .rec.mem, or .h264 file)
-                mutable odcore::base::Mutex m_cacheMutex;
-                multimap<int64_t, Player2CacheEntry> m_metaCache;
+                mutable odcore::base::Mutex m_indexMutex;
+                multimap<int64_t, Player2CacheEntry> m_index;
 
                 multimap<int64_t, Player2CacheEntry>::iterator m_before;
                 multimap<int64_t, Player2CacheEntry>::iterator m_current;
 
                 // Mapping pos_type (within .rec file) --> Container (read from .rec file).
-                multimap<uint32_t, odcore::data::Container> m_containerCache;
+                map<uint32_t, odcore::data::Container> m_containerCache;
 
                 uint32_t m_delay;
         };
