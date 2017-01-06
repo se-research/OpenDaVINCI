@@ -60,8 +60,8 @@ namespace odtools {
             m_autoRewind(autoRewind),
             m_indexMutex(),
             m_index(),
-            m_before(m_index.begin()),
-            m_current(m_index.begin()),
+            m_previousContainerAlreadyReplayed(m_index.begin()),
+            m_currentContainerToReplay(m_index.begin()),
             m_containerCache(),
             m_delay(0) {
             initializeIndex();
@@ -98,7 +98,7 @@ namespace odtools {
                 m_recFile.seekg(0, ios::beg);
 
                 // Point to first entry.
-                m_before = m_current = m_index.begin();
+                m_previousContainerAlreadyReplayed = m_currentContainerToReplay = m_index.begin();
                 clog << "[Player2]: " << m_url.getResource() << " contains " << m_index.size() << " entries; read " << totalBytesRead << " bytes." << endl;
             }
         }
@@ -138,9 +138,9 @@ namespace odtools {
 
         const odcore::data::Container& Player2::getNextContainerToBeSentNoCopy() throw (odcore::exceptions::ArrayIndexOutOfBoundsException) {
             // If at "EOF", either throw exception of autorewind.
-            if (m_current == m_index.end()) {
+            if (m_currentContainerToReplay == m_index.end()) {
                 if (!m_autoRewind) {
-                    OPENDAVINCI_CORE_THROW_EXCEPTION(ArrayIndexOutOfBoundsException, "m_current != m_index.end() failed.");
+                    OPENDAVINCI_CORE_THROW_EXCEPTION(ArrayIndexOutOfBoundsException, "m_currentContainerToReplay != m_index.end() failed.");
                 }
                 else {
                     rewind();
@@ -148,9 +148,9 @@ namespace odtools {
             }
 
             Lock l(m_indexMutex);
-            const Container &retVal = m_containerCache[m_current->second.m_filePosition];
-            m_delay = retVal.getSampleTimeStamp().toMicroseconds() - m_containerCache[m_before->second.m_filePosition].getSampleTimeStamp().toMicroseconds();
-            m_before = m_current++;
+            const Container &retVal = m_containerCache[m_currentContainerToReplay->second.m_filePosition];
+            m_delay = retVal.getSampleTimeStamp().toMicroseconds() - m_containerCache[m_previousContainerAlreadyReplayed->second.m_filePosition].getSampleTimeStamp().toMicroseconds();
+            m_previousContainerAlreadyReplayed = m_currentContainerToReplay++;
 
             return retVal;
         }
@@ -162,7 +162,7 @@ namespace odtools {
 
         void Player2::rewind() {
             Lock l(m_indexMutex);
-            m_before = m_current = m_index.begin();
+            m_previousContainerAlreadyReplayed = m_currentContainerToReplay = m_index.begin();
         }
 
         bool Player2::hasMoreData() const {
@@ -170,18 +170,18 @@ namespace odtools {
             // File must be successfully opened AND
             // the Player must be configured as m_autoRewind OR
             // some entries are left to replay.
-            return (m_recFileValid && (m_autoRewind || (m_current != m_index.end())));
+            return (m_recFileValid && (m_autoRewind || (m_currentContainerToReplay != m_index.end())));
         }
 
 //////////////////////////
 
-//            if (!m_current->second.m_available) {
-//                auto handle = std::async(std::launch::async, &Player2::readEntryAsynchronously, this, m_current->second.m_filePosition);
+//            if (!m_currentContainerToReplay->second.m_available) {
+//                auto handle = std::async(std::launch::async, &Player2::readEntryAsynchronously, this, m_currentContainerToReplay->second.m_filePosition);
 //                Container c = handle.get();
 
 //                auto it = m_containerCache.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(), c));
-//                m_current->second.m_entry = it;
-//                m_current->second.m_available = true;
+//                m_currentContainerToReplay->second.m_entry = it;
+//                m_currentContainerToReplay->second.m_available = true;
 //            }
 
 
@@ -189,11 +189,11 @@ namespace odtools {
                     if (entries <= INITIAL_ENTRIES) {
                         auto it = m_containerCache.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(), c));
                         // Using map::insert(hint, ...) to have amortized constant complexity.
-                        m_current = m_index.emplace_hint(m_current, std::make_pair(c.getSampleTimeStamp().toMicroseconds(), Player2CacheEntry(c.getSampleTimeStamp().toMicroseconds(), posBefore, true, it)));
+                        m_currentContainerToReplay = m_index.emplace_hint(m_currentContainerToReplay, std::make_pair(c.getSampleTimeStamp().toMicroseconds(), Player2CacheEntry(c.getSampleTimeStamp().toMicroseconds(), posBefore, true, it)));
                     }
                     else {
                         // Using map::insert(hint, ...) to have amortized constant complexity.
-                        m_current = m_index.emplace_hint(m_current, std::make_pair(c.getSampleTimeStamp().toMicroseconds(), Player2CacheEntry(c.getSampleTimeStamp().toMicroseconds(), posBefore)));
+                        m_currentContainerToReplay = m_index.emplace_hint(m_currentContainerToReplay, std::make_pair(c.getSampleTimeStamp().toMicroseconds(), Player2CacheEntry(c.getSampleTimeStamp().toMicroseconds(), posBefore)));
                     }
 
 */

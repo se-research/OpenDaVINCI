@@ -141,8 +141,10 @@ namespace odtools {
                 mutable odcore::base::Mutex m_indexMutex;
                 multimap<int64_t, Player2CacheEntry> m_index;
 
-                multimap<int64_t, Player2CacheEntry>::iterator m_before;
-                multimap<int64_t, Player2CacheEntry>::iterator m_current;
+                // Pointers to the current container to be replayed and the
+                // container that has be replayed from the global index.
+                multimap<int64_t, Player2CacheEntry>::iterator m_previousContainerAlreadyReplayed;
+                multimap<int64_t, Player2CacheEntry>::iterator m_currentContainerToReplay;
 
                 // Mapping of pos_type (within .rec file) --> Container (read from .rec file).
                 map<uint32_t, odcore::data::Container> m_containerCache;
