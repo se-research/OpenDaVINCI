@@ -146,6 +146,10 @@ namespace odtools {
                 multimap<int64_t, Player2CacheEntry>::iterator m_previousContainerAlreadyReplayed;
                 multimap<int64_t, Player2CacheEntry>::iterator m_currentContainerToReplay;
 
+//                // Pointers to the first and last valid.
+//                multimap<int64_t, Player2CacheEntry>::iterator m_previousContainerAlreadyReplayed;
+//                multimap<int64_t, Player2CacheEntry>::iterator m_currentContainerToReplay;
+
                 // Mapping of pos_type (within .rec file) --> Container (read from .rec file).
                 map<uint32_t, odcore::data::Container> m_containerCache;
 
