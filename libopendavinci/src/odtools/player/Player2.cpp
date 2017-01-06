@@ -53,7 +53,7 @@ namespace odtools {
             m_available(false),
             m_entry() {}
 
-        Player2CacheEntry::Player2CacheEntry(const int64_t &sampleTimeStamp, const uint32_t &filePosition, const bool &available, const multimap<int64_t, odcore::data::Container>::iterator &entry) :
+        Player2CacheEntry::Player2CacheEntry(const int64_t &sampleTimeStamp, const uint32_t &filePosition, const bool &available, const multimap<uint32_t, odcore::data::Container>::iterator &entry) :
             m_sampleTimeStamp(sampleTimeStamp),
             m_filePosition(filePosition),
             m_available(available),
@@ -62,7 +62,8 @@ namespace odtools {
         ////////////////////////////////////////////////////////////////////////
 
         Player2::Player2(const URL &url, const bool &autoRewind) :
-            m_fin(),
+            m_url(url),
+            m_recFile(),
             m_autoRewind(autoRewind),
             m_cacheMutex(),
             m_metaCache(),
@@ -70,27 +71,26 @@ namespace odtools {
             m_current(m_metaCache.begin()),
             m_containerCache(),
             m_delay(0) {
-            fillMetaCache(url.getResource());
+            initializeIndex();
         }
 
         Player2::~Player2() {
-            m_fin.close();
+            m_recFile.close();
         }
 
-        void Player2::fillMetaCache(const string &resource) {
-            m_fin.open(resource.c_str(), ios_base::in|ios_base::binary);
-
+        void Player2::initializeIndex() {
+            m_recFile.open(m_url.getResource().c_str(), ios_base::in|ios_base::binary);
             const uint32_t INITIAL_ENTRIES = 3;
             uint32_t entries = 0;
 
             uint64_t size = 0;
-            while (m_fin.good()) {
-                const uint32_t posBefore = m_fin.tellg();
+            while (m_recFile.good()) {
+                const uint32_t posBefore = m_recFile.tellg();
                 Container c;
-                m_fin >> c;
+                m_recFile >> c;
                 entries++;
 
-                if (!m_fin.eof()) {
+                if (!m_recFile.eof()) {
                     if (entries <= INITIAL_ENTRIES) {
                         auto it = m_containerCache.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(), c));
                         // Using map::insert(hint, ...) to have amortized constant complexity.
@@ -102,7 +102,7 @@ namespace odtools {
                     }
 
 
-                    const uint32_t posAfter = m_fin.tellg();
+                    const uint32_t posAfter = m_recFile.tellg();
                     size += (posAfter - posBefore);
                 }
             }
@@ -110,14 +110,14 @@ namespace odtools {
             // Point to first entry.
             m_before = m_current = m_metaCache.begin();
 
-            clog << "[Player2]: " << resource << " contains " << m_metaCache.size() << " entries; read " << size << " bytes." << endl;
+            clog << "[Player2]: " << m_url.getResource() << " contains " << m_metaCache.size() << " entries; read " << size << " bytes." << endl;
         }
 
         Container Player2::readEntryAsynchronously(const uint32_t &position) {
-            m_fin.clear();
-            m_fin.seekg(position);
+            m_recFile.clear();
+            m_recFile.seekg(position);
             Container retVal;
-            m_fin >> retVal;
+            m_recFile >> retVal;
             return retVal;
         }
 

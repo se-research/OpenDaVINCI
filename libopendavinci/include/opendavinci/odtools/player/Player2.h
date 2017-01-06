@@ -42,13 +42,13 @@ namespace odtools {
             public:
                 Player2CacheEntry();
                 Player2CacheEntry(const int64_t &sampleTimeStamp, const uint32_t &filePosition);
-                Player2CacheEntry(const int64_t &sampleTimeStamp, const uint32_t &filePosition, const bool &available, const multimap<int64_t, odcore::data::Container>::iterator &entry);
+                Player2CacheEntry(const int64_t &sampleTimeStamp, const uint32_t &filePosition, const bool &available, const multimap<uint32_t, odcore::data::Container>::iterator &entry);
 
             public:
                 int64_t m_sampleTimeStamp;
                 uint32_t m_filePosition;
                 bool m_available;
-                multimap<int64_t, odcore::data::Container>::iterator m_entry;
+                multimap<uint32_t, odcore::data::Container>::iterator m_entry;
         };
 
         class OPENDAVINCI_API Player2 {
@@ -117,24 +117,26 @@ namespace odtools {
                 void rewind();
 
             private:
-                void fillMetaCache(const string &resource);
+                void initializeIndex();
 
                 odcore::data::Container readEntryAsynchronously(const uint32_t &position);
 
             private:
-                fstream m_fin;
+                odcore::io::URL m_url;
+                // Handle to .rec file.
+                fstream m_recFile;
                 bool m_autoRewind;
-                mutable odcore::base::Mutex m_cacheMutex;
 
+                // Global index: Mapping SampleTimeStamp --> cache entry (holding the actual content from .rec, .rec.mem, or .h264 file)
+                mutable odcore::base::Mutex m_cacheMutex;
                 multimap<int64_t, Player2CacheEntry> m_metaCache;
+
                 multimap<int64_t, Player2CacheEntry>::iterator m_before;
                 multimap<int64_t, Player2CacheEntry>::iterator m_current;
 
-                multimap<int64_t, odcore::data::Container> m_containerCache;
+                // Mapping pos_type (within .rec file) --> Container (read from .rec file).
+                multimap<uint32_t, odcore::data::Container> m_containerCache;
 
-//                multimap<int64_t, odcore::data::Container> m_cache;
-//                multimap<int64_t, odcore::data::Container>::const_iterator m_before;
-//                multimap<int64_t, odcore::data::Container>::const_iterator m_current;
                 uint32_t m_delay;
         };
 
