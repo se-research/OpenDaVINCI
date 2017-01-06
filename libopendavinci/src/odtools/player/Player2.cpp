@@ -62,10 +62,11 @@ namespace odtools {
             m_index(),
             m_previousContainerAlreadyReplayed(m_index.begin()),
             m_currentContainerToReplay(m_index.begin()),
+            m_availableEntries(0),
+            m_nextEntryToReadFromFile(m_index.begin()),
             m_containerCache(),
             m_delay(0) {
             initializeIndex();
-            fillContainerCache();
         }
 
         Player2::~Player2() {
@@ -98,29 +99,35 @@ namespace odtools {
                 m_recFile.seekg(0, ios::beg);
 
                 // Point to first entry.
-                m_previousContainerAlreadyReplayed = m_currentContainerToReplay = m_index.begin();
+                m_nextEntryToReadFromFile = 
+                    m_previousContainerAlreadyReplayed = 
+                    m_currentContainerToReplay = m_index.begin();
                 clog << "[Player2]: " << m_url.getResource() << " contains " << m_index.size() << " entries; read " << totalBytesRead << " bytes." << endl;
             }
         }
 
-        void Player2::fillContainerCache() {
+        void Player2::fillContainerCache(const uint32_t &numberOfEntriesToReadFromFile) {
             if (m_recFileValid) {
                 m_recFile.clear();
-                auto it = m_index.begin();
-                while (it != m_index.end()) {
+                uint32_t entriesReadFromFile = 0;
+cout << "To read " << numberOfEntriesToReadFromFile << endl;
+                while ( (m_nextEntryToReadFromFile != m_index.end()) && (entriesReadFromFile < numberOfEntriesToReadFromFile) ) {
                     // Move to corresponding position in the .rec file.
-                    m_recFile.seekg(it->second.m_filePosition);
+                    m_recFile.seekg(m_nextEntryToReadFromFile->second.m_filePosition);
 
                     // Read the corresponding container.
                     Container c;
                     m_recFile >> c;
 
                     // Store the container in the container cache.
-                    const bool SUCCESSFULLY_INSERTED = m_containerCache.emplace(std::make_pair(it->second.m_filePosition, c)).second;
-                    it->second.m_available = SUCCESSFULLY_INSERTED;
+                    const bool SUCCESSFULLY_INSERTED = m_containerCache.emplace(std::make_pair(m_nextEntryToReadFromFile->second.m_filePosition, c)).second;
+                    m_nextEntryToReadFromFile->second.m_available = SUCCESSFULLY_INSERTED;
 
-                    it++;
+                    m_nextEntryToReadFromFile++;
+                    entriesReadFromFile++;
                 }
+cout << "Read " << entriesReadFromFile << endl;
+                m_availableEntries += entriesReadFromFile;
             }
         }
 
@@ -147,10 +154,22 @@ namespace odtools {
                 }
             }
 
+            {
+                // TODO: Cache management.
+                if (m_availableEntries == 0) {
+                    fillContainerCache(2);
+                }
+
+                // TODO: Erase played entries.
+
+            }
+
             Lock l(m_indexMutex);
             const Container &retVal = m_containerCache[m_currentContainerToReplay->second.m_filePosition];
             m_delay = retVal.getSampleTimeStamp().toMicroseconds() - m_containerCache[m_previousContainerAlreadyReplayed->second.m_filePosition].getSampleTimeStamp().toMicroseconds();
             m_previousContainerAlreadyReplayed = m_currentContainerToReplay++;
+
+            m_availableEntries--;
 
             return retVal;
         }

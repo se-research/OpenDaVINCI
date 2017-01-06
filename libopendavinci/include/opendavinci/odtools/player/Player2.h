@@ -123,7 +123,7 @@ namespace odtools {
                  */
                 void initializeIndex();
 
-                void fillContainerCache();
+                void fillContainerCache(const uint32_t &numberOfEntriesToReadFromFile);
 
                 // Backup
                 odcore::data::Container readEntryAsynchronously(const uint32_t &position);
@@ -146,9 +146,9 @@ namespace odtools {
                 multimap<int64_t, Player2CacheEntry>::iterator m_previousContainerAlreadyReplayed;
                 multimap<int64_t, Player2CacheEntry>::iterator m_currentContainerToReplay;
 
-//                // Pointers to the first and last valid.
-//                multimap<int64_t, Player2CacheEntry>::iterator m_previousContainerAlreadyReplayed;
-//                multimap<int64_t, Player2CacheEntry>::iterator m_currentContainerToReplay;
+                // Pointers to the first and last valid.
+                uint32_t m_availableEntries;
+                multimap<int64_t, Player2CacheEntry>::iterator m_nextEntryToReadFromFile;
 
                 // Mapping of pos_type (within .rec file) --> Container (read from .rec file).
                 map<uint32_t, odcore::data::Container> m_containerCache;
