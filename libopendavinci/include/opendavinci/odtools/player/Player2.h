@@ -115,14 +115,22 @@ namespace odtools {
                 void rewind();
 
             private:
+                /**
+                 * This method initializes the global index where the sample
+                 * time stamps are sorted chronocally and mapped to the 
+                 * corresponding entries (like containers) in the corresponding
+                 * recording files.
+                 */
                 void initializeIndex();
 
                 void fillContainerCache();
 
+                // Backup
                 odcore::data::Container readEntryAsynchronously(const uint32_t &position);
 
             private:
                 odcore::io::URL m_url;
+
                 // Handle to .rec file.
                 fstream m_recFile;
                 bool m_recFileValid;
@@ -136,7 +144,7 @@ namespace odtools {
                 multimap<int64_t, Player2CacheEntry>::iterator m_before;
                 multimap<int64_t, Player2CacheEntry>::iterator m_current;
 
-                // Mapping pos_type (within .rec file) --> Container (read from .rec file).
+                // Mapping of pos_type (within .rec file) --> Container (read from .rec file).
                 map<uint32_t, odcore::data::Container> m_containerCache;
 
                 uint32_t m_delay;
