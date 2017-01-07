@@ -44,11 +44,13 @@ namespace odtools {
         IndexEntry::IndexEntry() :
             m_sampleTimeStamp(0),
             m_filePosition(0),
+            m_size(0),
             m_available(false) {}
 
-        IndexEntry::IndexEntry(const int64_t &sampleTimeStamp, const uint32_t &filePosition) :
+        IndexEntry::IndexEntry(const int64_t &sampleTimeStamp, const uint32_t &filePosition, const uint16_t &size) :
             m_sampleTimeStamp(sampleTimeStamp),
             m_filePosition(filePosition),
+            m_size(size),
             m_available(false) {}
 
         ////////////////////////////////////////////////////////////////////////
@@ -81,15 +83,17 @@ namespace odtools {
             // The actual reading of Containers is deferred.
             uint32_t totalBytesRead = 0;
             while (m_recFile.good()) {
-                const uint32_t posBefore = m_recFile.tellg();
+                const uint32_t POS_BEFORE = m_recFile.tellg();
                 Container c;
                 m_recFile >> c;
 
                 if (!m_recFile.eof()) {
+                    const uint32_t POS_AFTER = m_recFile.tellg();
+                    const uint32_t SIZE = (POS_AFTER - POS_BEFORE);
+                    totalBytesRead += SIZE;
+
                     // Store mapping .rec file position --> index entry.
-                    m_index.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(), IndexEntry(c.getSampleTimeStamp().toMicroseconds(), posBefore)));
-                    const uint32_t posAfter = m_recFile.tellg();
-                    totalBytesRead += (posAfter - posBefore);
+                    m_index.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(), IndexEntry(c.getSampleTimeStamp().toMicroseconds(), POS_BEFORE, SIZE)));
                 }
             }
 
@@ -99,19 +103,23 @@ namespace odtools {
                 m_recFile.seekg(0, ios::beg);
 
                 // Point to first entry.
-                m_nextEntryToReadFromFile = 
-                    m_previousContainerAlreadyReplayed = 
-                    m_currentContainerToReplay = m_index.begin();
+                m_nextEntryToReadFromFile
+                    = m_previousContainerAlreadyReplayed 
+                    = m_currentContainerToReplay = m_index.begin();
                 clog << "[Player2]: " << m_url.getResource() << " contains " << m_index.size() << " entries; read " << totalBytesRead << " bytes." << endl;
             }
         }
 
-        void Player2::fillContainerCache(const uint32_t &numberOfEntriesToReadFromFile) {
+        void Player2::fillContainerCache(const uint32_t &maxNumberOfEntriesToReadFromFile) {
             if (m_recFileValid) {
+                Lock l(m_indexMutex);
+
+                // Reset any fstream's error states.
                 m_recFile.clear();
+
                 uint32_t entriesReadFromFile = 0;
-cout << "To read " << numberOfEntriesToReadFromFile << endl;
-                while ( (m_nextEntryToReadFromFile != m_index.end()) && (entriesReadFromFile < numberOfEntriesToReadFromFile) ) {
+                while ( (m_nextEntryToReadFromFile != m_index.end())
+                     && (entriesReadFromFile < maxNumberOfEntriesToReadFromFile) ) {
                     // Move to corresponding position in the .rec file.
                     m_recFile.seekg(m_nextEntryToReadFromFile->second.m_filePosition);
 
@@ -126,7 +134,6 @@ cout << "To read " << numberOfEntriesToReadFromFile << endl;
                     m_nextEntryToReadFromFile++;
                     entriesReadFromFile++;
                 }
-cout << "Read " << entriesReadFromFile << endl;
                 m_availableEntries += entriesReadFromFile;
             }
         }
@@ -144,6 +151,8 @@ cout << "Read " << entriesReadFromFile << endl;
         }
 
         const odcore::data::Container& Player2::getNextContainerToBeSentNoCopy() throw (odcore::exceptions::ArrayIndexOutOfBoundsException) {
+            static TimeStamp lastTimePointCallingThisMethod;
+            TimeStamp thisTimePointCallingThisMethod;
             // If at "EOF", either throw exception of autorewind.
             if (m_currentContainerToReplay == m_index.end()) {
                 if (!m_autoRewind) {
@@ -171,6 +180,10 @@ cout << "Read " << entriesReadFromFile << endl;
 
             m_availableEntries--;
 
+cout << (thisTimePointCallingThisMethod - lastTimePointCallingThisMethod).toMicroseconds() << endl;
+            cout << "Bytes/s = " << m_previousContainerAlreadyReplayed->second.m_size/((thisTimePointCallingThisMethod - lastTimePointCallingThisMethod).toMicroseconds()/(1000.0*1000.0)) << endl;
+            lastTimePointCallingThisMethod = thisTimePointCallingThisMethod;
+
             return retVal;
         }
 
@@ -187,8 +200,8 @@ cout << "Read " << entriesReadFromFile << endl;
         bool Player2::hasMoreData() const {
             Lock l(m_indexMutex);
             // File must be successfully opened AND
-            // the Player must be configured as m_autoRewind OR
-            // some entries are left to replay.
+            //  the Player must be configured as m_autoRewind OR
+            //  some entries are left to replay.
             return (m_recFileValid && (m_autoRewind || (m_currentContainerToReplay != m_index.end())));
         }
 

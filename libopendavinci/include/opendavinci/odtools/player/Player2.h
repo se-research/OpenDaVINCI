@@ -41,11 +41,12 @@ namespace odtools {
         class IndexEntry {
             public:
                 IndexEntry();
-                IndexEntry(const int64_t &sampleTimeStamp, const uint32_t &filePosition);
+                IndexEntry(const int64_t &sampleTimeStamp, const uint32_t &filePosition, const uint16_t &size);
 
             public:
                 int64_t m_sampleTimeStamp;
                 uint32_t m_filePosition;
+                uint16_t m_size;
                 bool m_available;
         };
 
@@ -123,7 +124,7 @@ namespace odtools {
                  */
                 void initializeIndex();
 
-                void fillContainerCache(const uint32_t &numberOfEntriesToReadFromFile);
+                void fillContainerCache(const uint32_t &maxNumberOfEntriesToReadFromFile);
 
                 // Backup
                 odcore::data::Container readEntryAsynchronously(const uint32_t &position);
