@@ -38,10 +38,10 @@ namespace odtools {
          * This class can be used to read previously recorded
          * data from a given URL.
          */
-        class Player2CacheEntry {
+        class IndexEntry {
             public:
-                Player2CacheEntry();
-                Player2CacheEntry(const int64_t &sampleTimeStamp, const uint32_t &filePosition);
+                IndexEntry();
+                IndexEntry(const int64_t &sampleTimeStamp, const uint32_t &filePosition);
 
             public:
                 int64_t m_sampleTimeStamp;
@@ -139,16 +139,16 @@ namespace odtools {
 
                 // Global index: Mapping SampleTimeStamp --> cache entry (holding the actual content from .rec, .rec.mem, or .h264 file)
                 mutable odcore::base::Mutex m_indexMutex;
-                multimap<int64_t, Player2CacheEntry> m_index;
+                multimap<int64_t, IndexEntry> m_index;
 
                 // Pointers to the current container to be replayed and the
                 // container that has be replayed from the global index.
-                multimap<int64_t, Player2CacheEntry>::iterator m_previousContainerAlreadyReplayed;
-                multimap<int64_t, Player2CacheEntry>::iterator m_currentContainerToReplay;
+                multimap<int64_t, IndexEntry>::iterator m_previousContainerAlreadyReplayed;
+                multimap<int64_t, IndexEntry>::iterator m_currentContainerToReplay;
 
                 // Pointers to the first and last valid.
                 uint32_t m_availableEntries;
-                multimap<int64_t, Player2CacheEntry>::iterator m_nextEntryToReadFromFile;
+                multimap<int64_t, IndexEntry>::iterator m_nextEntryToReadFromFile;
 
                 // Mapping of pos_type (within .rec file) --> Container (read from .rec file).
                 map<uint32_t, odcore::data::Container> m_containerCache;

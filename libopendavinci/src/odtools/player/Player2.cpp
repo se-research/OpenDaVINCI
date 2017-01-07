@@ -41,12 +41,12 @@ namespace odtools {
         using namespace odcore::data;
         using namespace odcore::io;
 
-        Player2CacheEntry::Player2CacheEntry() :
+        IndexEntry::IndexEntry() :
             m_sampleTimeStamp(0),
             m_filePosition(0),
             m_available(false) {}
 
-        Player2CacheEntry::Player2CacheEntry(const int64_t &sampleTimeStamp, const uint32_t &filePosition) :
+        IndexEntry::IndexEntry(const int64_t &sampleTimeStamp, const uint32_t &filePosition) :
             m_sampleTimeStamp(sampleTimeStamp),
             m_filePosition(filePosition),
             m_available(false) {}
@@ -87,7 +87,7 @@ namespace odtools {
 
                 if (!m_recFile.eof()) {
                     // Store mapping .rec file position --> index entry.
-                    m_index.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(), Player2CacheEntry(c.getSampleTimeStamp().toMicroseconds(), posBefore)));
+                    m_index.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(), IndexEntry(c.getSampleTimeStamp().toMicroseconds(), posBefore)));
                     const uint32_t posAfter = m_recFile.tellg();
                     totalBytesRead += (posAfter - posBefore);
                 }
@@ -208,11 +208,11 @@ cout << "Read " << entriesReadFromFile << endl;
                     if (entries <= INITIAL_ENTRIES) {
                         auto it = m_containerCache.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(), c));
                         // Using map::insert(hint, ...) to have amortized constant complexity.
-                        m_currentContainerToReplay = m_index.emplace_hint(m_currentContainerToReplay, std::make_pair(c.getSampleTimeStamp().toMicroseconds(), Player2CacheEntry(c.getSampleTimeStamp().toMicroseconds(), posBefore, true, it)));
+                        m_currentContainerToReplay = m_index.emplace_hint(m_currentContainerToReplay, std::make_pair(c.getSampleTimeStamp().toMicroseconds(), IndexEntry(c.getSampleTimeStamp().toMicroseconds(), posBefore, true, it)));
                     }
                     else {
                         // Using map::insert(hint, ...) to have amortized constant complexity.
-                        m_currentContainerToReplay = m_index.emplace_hint(m_currentContainerToReplay, std::make_pair(c.getSampleTimeStamp().toMicroseconds(), Player2CacheEntry(c.getSampleTimeStamp().toMicroseconds(), posBefore)));
+                        m_currentContainerToReplay = m_index.emplace_hint(m_currentContainerToReplay, std::make_pair(c.getSampleTimeStamp().toMicroseconds(), IndexEntry(c.getSampleTimeStamp().toMicroseconds(), posBefore)));
                     }
 
 */
