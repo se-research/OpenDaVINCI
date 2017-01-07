@@ -161,8 +161,6 @@ namespace odtools {
 
         void Player2::fillContainerCache(const uint32_t &maxNumberOfEntriesToReadFromFile) {
             if (m_recFileValid) {
-                clog << "[Player2]: Request to read " << maxNumberOfEntriesToReadFromFile << endl;
-
                 // Reset any fstream's error states.
                 m_recFile.clear();
 
@@ -179,7 +177,7 @@ namespace odtools {
 
                     // Store the container in the container cache.
                     {
-//                        Lock l(m_indexMutex);
+                        Lock l(m_indexMutex);
                         const bool SUCCESSFULLY_INSERTED = m_containerCache.emplace(std::make_pair(m_nextEntryToReadFromFile->second.m_filePosition, c)).second;
                         m_nextEntryToReadFromFile->second.m_available = SUCCESSFULLY_INSERTED;
 
@@ -193,7 +191,9 @@ namespace odtools {
                     m_numberOfAvailableEntries += entriesReadFromFile;
                 }
 
-                clog << "[Player2]: " << entriesReadFromFile << " read." << endl;
+                if (entriesReadFromFile > 0) {
+                    clog << "[Player2]: " << entriesReadFromFile << " entries read." << endl;
+                }
             }
 
             Lock l(m_indexMutex);
@@ -255,7 +255,7 @@ namespace odtools {
 
 /*<REMOVE ME>*/
 if (++callCounter%1000 == 0) {
-    cout << "Throughput = " << m_containerReplayThroughput << endl;
+    cout << "Throughput = " << m_containerReplayThroughput << " containers/s." << endl;
     callCounter = 0;
 }
 /*</REMOVE ME>*/
