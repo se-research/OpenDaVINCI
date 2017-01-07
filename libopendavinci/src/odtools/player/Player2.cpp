@@ -62,13 +62,14 @@ namespace odtools {
             m_index(),
             m_previousContainerAlreadyReplayed(m_index.begin()),
             m_currentContainerToReplay(m_index.begin()),
+            m_numberOfAvailableEntries(0),
+            m_nextEntryToReadFromFile(m_index.begin()),
+            m_containerReadFromFileThroughput(0),
             m_firstTimePointReturningAContainer(),
             m_numberOfReturnedContainersInTotal(0),
             m_containerReplayThroughput(0),
-            m_availableEntries(0),
-            m_nextEntryToReadFromFile(m_index.begin()),
-            m_containerCache(),
-            m_delay(0) {
+            m_delay(0),
+            m_containerCache() {
             initializeIndex();
         }
 
@@ -83,25 +84,25 @@ namespace odtools {
             // Read complete file and store file positions to containers to
             // create index of available data.
             // The actual reading of Containers is deferred.
-            const TimeStamp BEFORE;
             uint32_t totalBytesRead = 0;
-            while (m_recFile.good()) {
-                const uint32_t POS_BEFORE = m_recFile.tellg();
-                Container c;
-                m_recFile >> c;
+            const TimeStamp BEFORE;
+            {
+                while (m_recFile.good()) {
+                    const uint32_t POS_BEFORE = m_recFile.tellg();
+                    Container c;
+                    m_recFile >> c;
 
-                if (!m_recFile.eof()) {
-                    const uint32_t POS_AFTER = m_recFile.tellg();
-                    const uint32_t SIZE = (POS_AFTER - POS_BEFORE);
-                    totalBytesRead += SIZE;
+                    if (!m_recFile.eof()) {
+                        const uint32_t POS_AFTER = m_recFile.tellg();
+                        const uint32_t SIZE = (POS_AFTER - POS_BEFORE);
+                        totalBytesRead += SIZE;
 
-                    // Store mapping .rec file position --> index entry.
-                    m_index.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(), IndexEntry(c.getSampleTimeStamp().toMicroseconds(), POS_BEFORE)));
+                        // Store mapping .rec file position --> index entry.
+                        m_index.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(), IndexEntry(c.getSampleTimeStamp().toMicroseconds(), POS_BEFORE)));
+                    }
                 }
             }
             const TimeStamp AFTER;
-const float THROUGHPUT = std::ceil(m_index.size()*1000.0*1000.0/(AFTER-BEFORE).toMicroseconds());
-cout << "Reading " << m_index.size() << " containers took " << (AFTER-BEFORE).toMicroseconds()/(1000.0*1000.0) << "s, throughput = " << THROUGHPUT << endl;
 
             // Reset pointer to beginning of the .rec file.
             if (m_recFileValid) {
@@ -112,7 +113,9 @@ cout << "Reading " << m_index.size() << " containers took " << (AFTER-BEFORE).to
                 m_nextEntryToReadFromFile
                     = m_previousContainerAlreadyReplayed 
                     = m_currentContainerToReplay = m_index.begin();
-                clog << "[Player2]: " << m_url.getResource() << " contains " << m_index.size() << " entries; read " << totalBytesRead << " bytes." << endl;
+
+                m_containerReadFromFileThroughput = std::ceil(m_index.size()*1000.0*1000.0/(AFTER-BEFORE).toMicroseconds());
+                clog << "[Player2]: " << m_url.getResource() << " contains " << m_index.size() << " entries; read " << totalBytesRead << " bytes (" << m_containerReadFromFileThroughput << " entries/s)." << endl;
             }
         }
 
@@ -140,7 +143,7 @@ cout << "Reading " << m_index.size() << " containers took " << (AFTER-BEFORE).to
                     m_nextEntryToReadFromFile++;
                     entriesReadFromFile++;
                 }
-                m_availableEntries += entriesReadFromFile;
+                m_numberOfAvailableEntries += entriesReadFromFile;
             }
         }
 
@@ -161,13 +164,14 @@ cout << "Reading " << m_index.size() << " containers took " << (AFTER-BEFORE).to
         }
 
         const odcore::data::Container& Player2::getNextContainerToBeSentNoCopy() throw (odcore::exceptions::ArrayIndexOutOfBoundsException) {
+            static uint8_t callCounter = 0;
             TimeStamp thisTimePointCallingThisMethod;
 
             checkForEndOfIndexAndThrowExceptionOrAutoRewind();
 
             {
                 // TODO: Cache management.
-                if (m_availableEntries == 0) {
+                if (m_numberOfAvailableEntries == 0) {
                     fillContainerCache(2);
                 }
 
@@ -182,11 +186,16 @@ cout << "Reading " << m_index.size() << " containers took " << (AFTER-BEFORE).to
             m_previousContainerAlreadyReplayed = m_currentContainerToReplay++;
 
             m_numberOfReturnedContainersInTotal++;
-            m_availableEntries--;
+            m_numberOfAvailableEntries--;
 
             const uint64_t ELAPSED = (thisTimePointCallingThisMethod - m_firstTimePointReturningAContainer).toMicroseconds();
             m_containerReplayThroughput = std::ceil(m_numberOfReturnedContainersInTotal*1000.0*1000.0/ELAPSED);
-cout << "Containers/s = " << m_containerReplayThroughput << endl;
+
+
+if (++callCounter%1000 == 0) {
+    cout << "Throughput = " << m_containerReplayThroughput << endl;
+    callCounter = 0;
+}
 
             return retVal;
         }

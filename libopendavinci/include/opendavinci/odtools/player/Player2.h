@@ -156,18 +156,21 @@ namespace odtools {
                 multimap<int64_t, IndexEntry>::iterator m_previousContainerAlreadyReplayed;
                 multimap<int64_t, IndexEntry>::iterator m_currentContainerToReplay;
 
+                // Information about the index.
+                uint32_t m_numberOfAvailableEntries;
+                multimap<int64_t, IndexEntry>::iterator m_nextEntryToReadFromFile;
+                float m_containerReadFromFileThroughput;
+
+                // Fields to compute replay throughput for cache management.
                 odcore::data::TimeStamp m_firstTimePointReturningAContainer;
                 uint64_t m_numberOfReturnedContainersInTotal;
                 float m_containerReplayThroughput;
 
-                // Pointers to the first and last valid.
-                uint32_t m_availableEntries;
-                multimap<int64_t, IndexEntry>::iterator m_nextEntryToReadFromFile;
+                uint32_t m_delay;
 
+            private:
                 // Mapping of pos_type (within .rec file) --> Container (read from .rec file).
                 map<uint32_t, odcore::data::Container> m_containerCache;
-
-                uint32_t m_delay;
         };
 
     } // player
