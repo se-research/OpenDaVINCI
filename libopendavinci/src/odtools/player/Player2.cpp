@@ -69,6 +69,7 @@ namespace odtools {
             m_firstTimePointReturningAContainer(),
             m_numberOfReturnedContainersInTotal(0),
             m_containerReplayThroughput(0),
+            m_entriesToBeErased(0),
             m_delay(0),
             m_containerCache() {
             initializeIndex();
@@ -150,12 +151,12 @@ namespace odtools {
         void Player2::fillContainerCache(const uint32_t &maxNumberOfEntriesToReadFromFile) {
             if (m_recFileValid) {
 cout << "[Player2]: Request to read " << maxNumberOfEntriesToReadFromFile << endl;
-                Lock l(m_indexMutex);
 
                 // Reset any fstream's error states.
                 m_recFile.clear();
 
                 uint32_t entriesReadFromFile = 0;
+// TODO: Add Auto Rewind
                 while ( (m_nextEntryToReadFromFile != m_index.end())
                      && (entriesReadFromFile < maxNumberOfEntriesToReadFromFile) ) {
                     // Move to corresponding position in the .rec file.
@@ -166,13 +167,19 @@ cout << "[Player2]: Request to read " << maxNumberOfEntriesToReadFromFile << end
                     m_recFile >> c;
 
                     // Store the container in the container cache.
-                    const bool SUCCESSFULLY_INSERTED = m_containerCache.emplace(std::make_pair(m_nextEntryToReadFromFile->second.m_filePosition, c)).second;
-                    m_nextEntryToReadFromFile->second.m_available = SUCCESSFULLY_INSERTED;
+                    {
+                        Lock l(m_indexMutex);
+                        const bool SUCCESSFULLY_INSERTED = m_containerCache.emplace(std::make_pair(m_nextEntryToReadFromFile->second.m_filePosition, c)).second;
+                        m_nextEntryToReadFromFile->second.m_available = SUCCESSFULLY_INSERTED;
 
-                    m_nextEntryToReadFromFile++;
+                        m_nextEntryToReadFromFile++;
+                    }
                     entriesReadFromFile++;
                 }
-                m_numberOfAvailableEntries += entriesReadFromFile;
+                {
+                    Lock l(m_indexMutex);
+                    m_numberOfAvailableEntries += entriesReadFromFile;
+                }
             }
         }
 
@@ -202,7 +209,9 @@ cout << "[Player2]: Request to read " << maxNumberOfEntriesToReadFromFile << end
                 // TODO: Cache management.
                 const uint8_t LOOK_AHEAD_IN_S = 10;
                 if ( (m_containerReplayThroughput * LOOK_AHEAD_IN_S) > m_numberOfAvailableEntries) {
-                    fillContainerCache(m_containerReplayThroughput * LOOK_AHEAD_IN_S);
+//                    auto handle = std::async(std::launch::async, &Player2::fillContainerCache, this, m_containerReplayThroughput * LOOK_AHEAD_IN_S);
+
+                    fillContainerCache(m_containerReplayThroughput * LOOK_AHEAD_IN_S * 3);
                 }
 
                 // TODO: Erase played entries.
@@ -214,12 +223,14 @@ cout << "[Player2]: Request to read " << maxNumberOfEntriesToReadFromFile << end
             m_delay = retVal.getSampleTimeStamp().toMicroseconds() - m_containerCache[m_previousContainerAlreadyReplayed->second.m_filePosition].getSampleTimeStamp().toMicroseconds();
             m_previousContainerAlreadyReplayed = m_currentContainerToReplay++;
 
+            // Store entry to be removed from m_containerCache.
+            m_entriesToBeErased.push_back(m_previousContainerAlreadyReplayed->second.m_filePosition);
+
             m_numberOfReturnedContainersInTotal++;
             m_numberOfAvailableEntries--;
 
             const uint64_t ELAPSED = (thisTimePointCallingThisMethod - m_firstTimePointReturningAContainer).toMicroseconds();
             m_containerReplayThroughput = std::ceil(m_numberOfReturnedContainersInTotal*1000.0*1000.0/ELAPSED);
-
 
 if (++callCounter%1000 == 0) {
     cout << "Throughput = " << m_containerReplayThroughput << endl;
