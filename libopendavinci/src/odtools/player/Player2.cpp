@@ -24,6 +24,7 @@
 #include <fstream>
 #include <future>
 #include <iostream>
+#include <limits>
 #include <thread>
 #include <utility>
 
@@ -112,9 +113,22 @@ namespace odtools {
                 // Point to first entry.
                 m_nextEntryToReadFromFile
                     = m_previousContainerAlreadyReplayed 
-                    = m_currentContainerToReplay = m_index.begin();
+                    = m_currentContainerToReplay
+                    = m_index.begin();
 
+int64_t smallest = numeric_limits<int64_t>::max();
+int64_t largest = numeric_limits<int64_t>::min();
+{
+    for (auto it = m_index.begin(); it != m_index.end(); it++) {
+        smallest = (smallest > it->first) ? it->first : smallest;
+        largest = (largest < it->first) ? it->first : largest;
+    }
+}
+cout << "beg = " << smallest << ", end = " << largest << ", need to read " << std::ceil(m_index.size()*(1000.0*1000.0)/(largest - smallest)) << " entries/s for realtime playback." << endl;
+
+                // Compute throughput for reading from file.
                 m_containerReadFromFileThroughput = std::ceil(m_index.size()*1000.0*1000.0/(AFTER-BEFORE).toMicroseconds());
+
                 clog << "[Player2]: " << m_url.getResource() << " contains " << m_index.size() << " entries; read " << totalBytesRead << " bytes (" << m_containerReadFromFileThroughput << " entries/s)." << endl;
             }
         }
@@ -176,7 +190,6 @@ namespace odtools {
                 }
 
                 // TODO: Erase played entries.
-
             }
 
 
