@@ -43,13 +43,11 @@ namespace odtools {
 
         IndexEntry::IndexEntry() :
             m_sampleTimeStamp(0),
-            m_filePosition(0),
-            m_available(false) {}
+            m_filePosition(0) {}
 
         IndexEntry::IndexEntry(const int64_t &sampleTimeStamp, const uint32_t &filePosition) :
             m_sampleTimeStamp(sampleTimeStamp),
-            m_filePosition(filePosition),
-            m_available(false) {}
+            m_filePosition(filePosition) {}
 
         ////////////////////////////////////////////////////////////////////////
 
@@ -70,7 +68,6 @@ namespace odtools {
             m_containerReplayThroughput(0),
             m_readingRequested(false),
             handle(),
-            m_entriesToBeErased(0),
             m_delay(0),
             m_containerCache() {
             initializeIndex();
@@ -85,6 +82,7 @@ namespace odtools {
             m_recFile.open(m_url.getResource().c_str(), ios_base::in|ios_base::binary);
             m_recFileValid = m_recFile.good();
 
+            // Determine file size to display progress.
             m_recFile.seekg(0, m_recFile.end);
             int32_t fileLength = m_recFile.tellg();
             m_recFile.seekg(0, m_recFile.beg);
@@ -103,17 +101,16 @@ namespace odtools {
 
                     if (!m_recFile.eof()) {
                         const uint32_t POS_AFTER = m_recFile.tellg();
-                        const uint32_t SIZE = (POS_AFTER - POS_BEFORE);
-                        totalBytesRead += SIZE;
+                        totalBytesRead += (POS_AFTER - POS_BEFORE);
 
                         // Store mapping .rec file position --> index entry.
                         m_index.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(), IndexEntry(c.getSampleTimeStamp().toMicroseconds(), POS_BEFORE)));
 
                         {
                             float percentage = (float)(m_recFile.tellg()*100.0)/(float)fileLength;
-                            if ( ((int32_t)percentage % 5 == 0) && ((int32_t)percentage != oldPercentage) ) {
-                                clog << "[Player2]: " << (int32_t)percentage << "%." << endl;
-                                oldPercentage = (int32_t)percentage;
+                            if ( (static_cast<int32_t>(percentage) % 5 == 0) && (static_cast<int32_t>(percentage) != oldPercentage) ) {
+                                clog << "[Player2]: Processed " << static_cast<int32_t>(percentage) << "%." << endl;
+                                oldPercentage = static_cast<int32_t>(percentage);
                             }
                         }
                     }
@@ -128,7 +125,7 @@ namespace odtools {
 
                 // Point to first entry.
                 m_nextEntryToReadFromFile
-                    = m_previousContainerAlreadyReplayed 
+                    = m_previousContainerAlreadyReplayed
                     = m_currentContainerToReplay
                     = m_index.begin();
 
@@ -151,7 +148,7 @@ namespace odtools {
                 }
                 const uint32_t ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY = std::ceil(m_index.size()*(1000.0*1000.0)/(largestSampleTimePoint - smallestSampleTimePoint));
 
-                const uint8_t LOOK_AHEAD_IN_S = 10;
+                const uint8_t LOOK_AHEAD_IN_S = 10 * 3;
                 clog << "[Player2]: Reading " << ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY * LOOK_AHEAD_IN_S << " entries initially." << endl;
 
                 fillContainerCache(ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY * LOOK_AHEAD_IN_S);
@@ -178,11 +175,10 @@ namespace odtools {
                     // Store the container in the container cache.
                     {
                         Lock l(m_indexMutex);
-                        const bool SUCCESSFULLY_INSERTED = m_containerCache.emplace(std::make_pair(m_nextEntryToReadFromFile->second.m_filePosition, c)).second;
-                        m_nextEntryToReadFromFile->second.m_available = SUCCESSFULLY_INSERTED;
-
-                        m_nextEntryToReadFromFile++;
+                        m_containerCache.emplace(std::make_pair(m_nextEntryToReadFromFile->second.m_filePosition, c)).second;
                     }
+
+                    m_nextEntryToReadFromFile++;
                     entriesReadFromFile++;
                 }
 
@@ -196,8 +192,10 @@ namespace odtools {
                 }
             }
 
-            Lock l(m_indexMutex);
-            m_readingRequested = false;
+            {
+                Lock l(m_indexMutex);
+                m_readingRequested = false;
+            }
         }
 
         void Player2::checkForEndOfIndexAndThrowExceptionOrAutoRewind() throw (odcore::exceptions::ArrayIndexOutOfBoundsException) {
@@ -234,18 +232,19 @@ namespace odtools {
 
 //                    fillContainerCache(m_containerReplayThroughput * LOOK_AHEAD_IN_S * 3);
                 }
-
-                // TODO: Erase played entries.
             }
 
 
             Lock l(m_indexMutex);
             const Container &retVal = m_containerCache[m_currentContainerToReplay->second.m_filePosition];
             m_delay = retVal.getSampleTimeStamp().toMicroseconds() - m_containerCache[m_previousContainerAlreadyReplayed->second.m_filePosition].getSampleTimeStamp().toMicroseconds();
-            m_previousContainerAlreadyReplayed = m_currentContainerToReplay++;
 
-            // Store entry to be removed from m_containerCache.
-            m_entriesToBeErased.push_back(m_previousContainerAlreadyReplayed->second.m_filePosition);
+            // Make sure that delay is not exceeding 10s.
+            m_delay = std::min<uint32_t>(m_delay, 10*1000*1000);
+
+// TODO: Delete here.
+
+            m_previousContainerAlreadyReplayed = m_currentContainerToReplay++;
 
             m_numberOfReturnedContainersInTotal++;
             m_numberOfAvailableEntries--;
