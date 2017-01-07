@@ -124,6 +124,8 @@ namespace odtools {
                  */
                 void initializeIndex();
 
+                void computeInitialCacheLevelAndFillCache();
+
                 void fillContainerCache(const uint32_t &maxNumberOfEntriesToReadFromFile);
 
             private:
