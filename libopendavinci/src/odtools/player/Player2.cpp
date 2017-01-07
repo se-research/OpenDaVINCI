@@ -149,6 +149,7 @@ namespace odtools {
 
         void Player2::fillContainerCache(const uint32_t &maxNumberOfEntriesToReadFromFile) {
             if (m_recFileValid) {
+cout << "[Player2]: Request to read " << maxNumberOfEntriesToReadFromFile << endl;
                 Lock l(m_indexMutex);
 
                 // Reset any fstream's error states.
@@ -199,8 +200,9 @@ namespace odtools {
 
             {
                 // TODO: Cache management.
-                if (m_numberOfAvailableEntries == 0) {
-                    fillContainerCache(2);
+                const uint8_t LOOK_AHEAD_IN_S = 10;
+                if ( (m_containerReplayThroughput * LOOK_AHEAD_IN_S) > m_numberOfAvailableEntries) {
+                    fillContainerCache(m_containerReplayThroughput * LOOK_AHEAD_IN_S);
                 }
 
                 // TODO: Erase played entries.

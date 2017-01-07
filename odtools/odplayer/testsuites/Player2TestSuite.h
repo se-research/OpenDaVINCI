@@ -542,6 +542,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
                 const Container& c = p2.getNextContainerToBeSentNoCopy();
                 (void)c;
                 counter++;
+                Thread::usleepFor(p2.getDelay()*0.2);
             }
             TimeStamp after;
             cout << "Found " << counter << " containers. Duration = " << static_cast<uint64_t>((after - before).toMicroseconds()) << endl;
