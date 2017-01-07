@@ -529,7 +529,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
             UNLINK("PlayerModule2Test2.rec");
         }
 
-        void testLargeFile() {
+        void notestLargeFile() {
             const URL u("file://test.rec");
 
             // Create Player2 instance.
@@ -542,6 +542,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
                 const Container& c = p2.getNextContainerToBeSentNoCopy();
                 (void)c;
                 counter++;
+
 Thread::usleepFor(p2.getDelay()*0.01);
             }
             TimeStamp after;
