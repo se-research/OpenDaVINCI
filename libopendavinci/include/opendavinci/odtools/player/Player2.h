@@ -156,6 +156,7 @@ namespace odtools {
 
                 // Pointers to the current container to be replayed and the
                 // container that has be replayed from the global index.
+                multimap<int64_t, IndexEntry>::iterator m_previousPreviousContainerAlreadyReplayed;
                 multimap<int64_t, IndexEntry>::iterator m_previousContainerAlreadyReplayed;
                 multimap<int64_t, IndexEntry>::iterator m_currentContainerToReplay;
 

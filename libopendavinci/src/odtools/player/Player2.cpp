@@ -58,6 +58,7 @@ namespace odtools {
             m_autoRewind(autoRewind),
             m_indexMutex(),
             m_index(),
+            m_previousPreviousContainerAlreadyReplayed(m_index.end()),
             m_previousContainerAlreadyReplayed(m_index.begin()),
             m_currentContainerToReplay(m_index.begin()),
             m_numberOfAvailableEntries(0),
@@ -242,8 +243,11 @@ namespace odtools {
             // Make sure that delay is not exceeding 10s.
             m_delay = std::min<uint32_t>(m_delay, 10*1000*1000);
 
-// TODO: Delete here.
+            if (m_previousPreviousContainerAlreadyReplayed != m_index.end()) {
+                // TODO: Delete here.
+            }
 
+            m_previousPreviousContainerAlreadyReplayed = m_previousContainerAlreadyReplayed;
             m_previousContainerAlreadyReplayed = m_currentContainerToReplay++;
 
             m_numberOfReturnedContainersInTotal++;
