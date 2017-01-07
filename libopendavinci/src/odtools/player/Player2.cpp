@@ -29,7 +29,6 @@
 
 #include <opendavinci/odcore/base/module/AbstractCIDModule.h>
 #include <opendavinci/odcore/base/Lock.h>
-#include <opendavinci/odcore/data/TimeStamp.h>
 
 #include <opendavinci/odtools/player/Player2.h>
 
@@ -63,6 +62,9 @@ namespace odtools {
             m_index(),
             m_previousContainerAlreadyReplayed(m_index.begin()),
             m_currentContainerToReplay(m_index.begin()),
+            m_firstTimePointReturningAContainer(),
+            m_numberOfReturnedContainersInTotal(0),
+            m_containerReplayThroughput(0),
             m_availableEntries(0),
             m_nextEntryToReadFromFile(m_index.begin()),
             m_containerCache(),
@@ -78,8 +80,10 @@ namespace odtools {
             m_recFile.open(m_url.getResource().c_str(), ios_base::in|ios_base::binary);
             m_recFileValid = m_recFile.good();
 
-            // Read complete file and store file positions to containers.
+            // Read complete file and store file positions to containers to
+            // create index of available data.
             // The actual reading of Containers is deferred.
+            const TimeStamp BEFORE;
             uint32_t totalBytesRead = 0;
             while (m_recFile.good()) {
                 const uint32_t POS_BEFORE = m_recFile.tellg();
@@ -95,6 +99,9 @@ namespace odtools {
                     m_index.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(), IndexEntry(c.getSampleTimeStamp().toMicroseconds(), POS_BEFORE)));
                 }
             }
+            const TimeStamp AFTER;
+const float THROUGHPUT = std::ceil(m_index.size()*1000.0*1000.0/(AFTER-BEFORE).toMicroseconds());
+cout << "Reading " << m_index.size() << " containers took " << (AFTER-BEFORE).toMicroseconds()/(1000.0*1000.0) << "s, throughput = " << THROUGHPUT << endl;
 
             // Reset pointer to beginning of the .rec file.
             if (m_recFileValid) {
@@ -137,23 +144,7 @@ namespace odtools {
             }
         }
 
-        Container Player2::readEntryAsynchronously(const uint32_t &position) {
-            m_recFile.clear();
-            m_recFile.seekg(position);
-            Container retVal;
-            m_recFile >> retVal;
-            return retVal;
-        }
-
-        Container Player2::getNextContainerToBeSent() throw (odcore::exceptions::ArrayIndexOutOfBoundsException) {
-            return getNextContainerToBeSentNoCopy();
-        }
-
-        const odcore::data::Container& Player2::getNextContainerToBeSentNoCopy() throw (odcore::exceptions::ArrayIndexOutOfBoundsException) {
-            static TimeStamp firstTimePointCallingThisMethod;
-            static uint64_t numberOfReturnedContainers = 0;
-            TimeStamp thisTimePointCallingThisMethod;
-
+        void Player2::checkForEndOfIndexAndThrowExceptionOrAutoRewind() throw (odcore::exceptions::ArrayIndexOutOfBoundsException) {
             // If at "EOF", either throw exception of autorewind.
             if (m_currentContainerToReplay == m_index.end()) {
                 if (!m_autoRewind) {
@@ -163,6 +154,16 @@ namespace odtools {
                     rewind();
                 }
             }
+        }
+
+        Container Player2::getNextContainerToBeSent() throw (odcore::exceptions::ArrayIndexOutOfBoundsException) {
+            return getNextContainerToBeSentNoCopy();
+        }
+
+        const odcore::data::Container& Player2::getNextContainerToBeSentNoCopy() throw (odcore::exceptions::ArrayIndexOutOfBoundsException) {
+            TimeStamp thisTimePointCallingThisMethod;
+
+            checkForEndOfIndexAndThrowExceptionOrAutoRewind();
 
             {
                 // TODO: Cache management.
@@ -174,16 +175,18 @@ namespace odtools {
 
             }
 
+
             Lock l(m_indexMutex);
             const Container &retVal = m_containerCache[m_currentContainerToReplay->second.m_filePosition];
             m_delay = retVal.getSampleTimeStamp().toMicroseconds() - m_containerCache[m_previousContainerAlreadyReplayed->second.m_filePosition].getSampleTimeStamp().toMicroseconds();
             m_previousContainerAlreadyReplayed = m_currentContainerToReplay++;
 
-            numberOfReturnedContainers++;
+            m_numberOfReturnedContainersInTotal++;
             m_availableEntries--;
 
-const uint64_t ELAPSED = (thisTimePointCallingThisMethod - firstTimePointCallingThisMethod).toMicroseconds();
-cout << "Containers/s = " << std::ceil(numberOfReturnedContainers*1000.0*1000.0/ELAPSED) << endl;
+            const uint64_t ELAPSED = (thisTimePointCallingThisMethod - m_firstTimePointReturningAContainer).toMicroseconds();
+            m_containerReplayThroughput = std::ceil(m_numberOfReturnedContainersInTotal*1000.0*1000.0/ELAPSED);
+cout << "Containers/s = " << m_containerReplayThroughput << endl;
 
             return retVal;
         }

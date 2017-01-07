@@ -26,6 +26,7 @@
 #include <opendavinci/odcore/opendavinci.h>
 #include <opendavinci/odcore/base/Mutex.h>
 #include <opendavinci/odcore/data/Container.h>
+#include <opendavinci/odcore/data/TimeStamp.h>
 #include <opendavinci/odcore/io/URL.h>
 #include "opendavinci/odcore/exceptions/Exceptions.h"
 
@@ -125,18 +126,27 @@ namespace odtools {
 
                 void fillContainerCache(const uint32_t &maxNumberOfEntriesToReadFromFile);
 
-                // Backup
-                odcore::data::Container readEntryAsynchronously(const uint32_t &position);
-
             private:
+                /**
+                 * This method check if the Player has reached the end of the
+                 * index (to throw an exception) or if the the Player starts
+                 * over (using auto rewind).
+                 *
+                 * @throws odcore::exceptions::ArrayIndexOutOfBoundsException
+                 */
+                inline void checkForEndOfIndexAndThrowExceptionOrAutoRewind() throw (odcore::exceptions::ArrayIndexOutOfBoundsException);
+
+            private: // Data for the Player.
                 odcore::io::URL m_url;
 
                 // Handle to .rec file.
                 fstream m_recFile;
                 bool m_recFileValid;
 
+            private: // Player states.
                 bool m_autoRewind;
 
+            private: // Index and cache management.
                 // Global index: Mapping SampleTimeStamp --> cache entry (holding the actual content from .rec, .rec.mem, or .h264 file)
                 mutable odcore::base::Mutex m_indexMutex;
                 multimap<int64_t, IndexEntry> m_index;
@@ -145,6 +155,10 @@ namespace odtools {
                 // container that has be replayed from the global index.
                 multimap<int64_t, IndexEntry>::iterator m_previousContainerAlreadyReplayed;
                 multimap<int64_t, IndexEntry>::iterator m_currentContainerToReplay;
+
+                odcore::data::TimeStamp m_firstTimePointReturningAContainer;
+                uint64_t m_numberOfReturnedContainersInTotal;
+                float m_containerReplayThroughput;
 
                 // Pointers to the first and last valid.
                 uint32_t m_availableEntries;
