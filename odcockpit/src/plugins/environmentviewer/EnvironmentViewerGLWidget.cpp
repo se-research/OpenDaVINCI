@@ -522,7 +522,8 @@ namespace cockpit {
                         Lock l(m_rootMutex);
                         EgoState egostate = c.getData<EgoState>();
                         m_egoState = egostate;
-                        Point3 dir(0, 0, egostate.getRotation().getAngleXY() + cartesian::Constants::PI);
+//                        Point3 dir(0, 0, egostate.getRotation().getAngleXY() + cartesian::Constants::PI);
+                        Point3 dir(0, 0, egostate.getRotation().getAngleXY());
                         m_egoStateNode->setRotation(dir);
                         m_egoStateNode->setTranslation(egostate.getPosition());
 
