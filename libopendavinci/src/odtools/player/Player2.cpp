@@ -72,6 +72,7 @@ namespace odtools {
             m_delay(0),
             m_containerCache() {
             initializeIndex();
+            computeInitialCacheLevelAndFillCache();
         }
 
         Player2::~Player2() {
@@ -116,22 +117,35 @@ namespace odtools {
                     = m_currentContainerToReplay
                     = m_index.begin();
 
-int64_t smallest = numeric_limits<int64_t>::max();
-int64_t largest = numeric_limits<int64_t>::min();
-{
-    for (auto it = m_index.begin(); it != m_index.end(); it++) {
-        smallest = (smallest > it->first) ? it->first : smallest;
-        largest = (largest < it->first) ? it->first : largest;
-    }
-}
-cout << "beg = " << smallest << ", end = " << largest << ", need to read " << std::ceil(m_index.size()*(1000.0*1000.0)/(largest - smallest)) << " entries/s for realtime playback." << endl;
-
                 // Compute throughput for reading from file.
                 m_containerReadFromFileThroughput = std::ceil(m_index.size()*1000.0*1000.0/(AFTER-BEFORE).toMicroseconds());
 
                 clog << "[Player2]: " << m_url.getResource() << " contains " << m_index.size() << " entries; read " << totalBytesRead << " bytes (" << m_containerReadFromFileThroughput << " entries/s)." << endl;
             }
         }
+
+        void Player2::computeInitialCacheLevelAndFillCache() {
+            if (m_recFileValid && (m_index.size() > 0) ) {
+                int64_t smallestSampleTimePoint = numeric_limits<int64_t>::max();
+                int64_t largestSampleTimePoint = numeric_limits<int64_t>::min();
+                {
+                    for (auto it = m_index.begin(); it != m_index.end(); it++) {
+                        smallestSampleTimePoint = (smallestSampleTimePoint > it->first) ? it->first : smallestSampleTimePoint;
+                        largestSampleTimePoint = (largestSampleTimePoint < it->first) ? it->first : largestSampleTimePoint;
+                    }
+                }
+                const uint32_t ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY = std::ceil(m_index.size()*(1000.0*1000.0)/(largestSampleTimePoint - smallestSampleTimePoint));
+
+                const uint8_t LOOK_AHEAD_IN_S = 10;
+
+//cout << "beg = " << smallestSampleTimePoint << ", end = " << largestSampleTimePoint << ", need to read " << ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY << " entries/s for realtime playback." << endl;
+
+                clog << "[Player2]: Reading " << ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY * LOOK_AHEAD_IN_S << " entries initially." << endl;
+
+                fillContainerCache(ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY * LOOK_AHEAD_IN_S);
+            }
+        }
+
 
         void Player2::fillContainerCache(const uint32_t &maxNumberOfEntriesToReadFromFile) {
             if (m_recFileValid) {
