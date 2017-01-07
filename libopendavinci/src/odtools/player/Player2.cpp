@@ -235,16 +235,16 @@ namespace odtools {
                 }
             }
 
-
             Lock l(m_indexMutex);
             const Container &retVal = m_containerCache[m_currentContainerToReplay->second.m_filePosition];
             m_delay = retVal.getSampleTimeStamp().toMicroseconds() - m_containerCache[m_previousContainerAlreadyReplayed->second.m_filePosition].getSampleTimeStamp().toMicroseconds();
 
-            // Make sure that delay is not exceeding 10s.
-            m_delay = std::min<uint32_t>(m_delay, 10*1000*1000);
-
             if (m_previousPreviousContainerAlreadyReplayed != m_index.end()) {
                 // TODO: Delete here.
+                auto it = m_containerCache.find(m_previousContainerAlreadyReplayed->second.m_filePosition);
+                if (it != m_containerCache.end()) {
+                    m_containerCache.erase(it);
+                }
             }
 
             m_previousPreviousContainerAlreadyReplayed = m_previousContainerAlreadyReplayed;
@@ -268,7 +268,8 @@ if (++callCounter%1000 == 0) {
 
         uint32_t Player2::getDelay() const {
             Lock l(m_indexMutex);
-            return m_delay;
+            // Make sure that delay is not exceeding 10s.
+            return std::min<uint32_t>(m_delay, 10*1000*1000);
         }
 
         void Player2::rewind() {
