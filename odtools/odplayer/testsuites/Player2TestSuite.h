@@ -144,11 +144,15 @@ class PlayerModule2Test : public CxxTest::TestSuite {
             fstream fout("PlayerModule2Test.rec", ios::out | ios::binary | ios::trunc);
 
             // Write data with non-monotonic order.
+            TimeStamp ts0(5, 6);
             TimeStamp ts1(4, 5);
             TimeStamp ts2(3, 4);
             TimeStamp ts3(2, 3);
             TimeStamp ts4(1, 2);
-            TimeStamp ts5(0, 1);
+
+            Container c0(ts0);
+            c0.setSampleTimeStamp(ts0);
+            fout << c0;
 
             Container c1(ts1);
             c1.setSampleTimeStamp(ts1);
@@ -166,10 +170,6 @@ class PlayerModule2Test : public CxxTest::TestSuite {
             c4.setSampleTimeStamp(ts4);
             fout << c4;
 
-            Container c5(ts5);
-            c5.setSampleTimeStamp(ts5);
-            fout << c5;
-
             fout.flush();
             fout.close();
 
@@ -180,13 +180,10 @@ class PlayerModule2Test : public CxxTest::TestSuite {
             Player2 p2(u, NO_AUTO_REWIND);
 
             TimeStamp before;
-            int64_t counter = 0;
+            int64_t counter = 1;
             while (p2.hasMoreData()) {
                 const Container& c = p2.getNextContainerToBeSentNoCopy();
-                if (counter == 0) {
-                    TS_ASSERT(p2.getDelay() == 0);
-                }
-                else {
+                if (counter > 1) {
                     TS_ASSERT(p2.getDelay() == 1000001);
                 }
 
