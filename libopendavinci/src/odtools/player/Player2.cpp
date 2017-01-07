@@ -85,10 +85,15 @@ namespace odtools {
             m_recFile.open(m_url.getResource().c_str(), ios_base::in|ios_base::binary);
             m_recFileValid = m_recFile.good();
 
+            m_recFile.seekg(0, m_recFile.end);
+            int32_t fileLength = m_recFile.tellg();
+            m_recFile.seekg(0, m_recFile.beg);
+
             // Read complete file and store file positions to containers to
             // create index of available data.
             // The actual reading of Containers is deferred.
             uint32_t totalBytesRead = 0;
+            int32_t oldPercentage = -1;
             const TimeStamp BEFORE;
             {
                 while (m_recFile.good()) {
@@ -103,6 +108,14 @@ namespace odtools {
 
                         // Store mapping .rec file position --> index entry.
                         m_index.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(), IndexEntry(c.getSampleTimeStamp().toMicroseconds(), POS_BEFORE)));
+
+                        {
+                            float percentage = (float)(m_recFile.tellg()*100.0)/(float)fileLength;
+                            if ( ((int32_t)percentage % 5 == 0) && ((int32_t)percentage != oldPercentage) ) {
+                                clog << "[Player2]: " << (int32_t)percentage << "%." << endl;
+                                oldPercentage = (int32_t)percentage;
+                            }
+                        }
                     }
                 }
             }
@@ -139,9 +152,6 @@ namespace odtools {
                 const uint32_t ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY = std::ceil(m_index.size()*(1000.0*1000.0)/(largestSampleTimePoint - smallestSampleTimePoint));
 
                 const uint8_t LOOK_AHEAD_IN_S = 10;
-
-//cout << "beg = " << smallestSampleTimePoint << ", end = " << largestSampleTimePoint << ", need to read " << ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY << " entries/s for realtime playback." << endl;
-
                 clog << "[Player2]: Reading " << ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY * LOOK_AHEAD_IN_S << " entries initially." << endl;
 
                 fillContainerCache(ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY * LOOK_AHEAD_IN_S);
@@ -151,7 +161,7 @@ namespace odtools {
 
         void Player2::fillContainerCache(const uint32_t &maxNumberOfEntriesToReadFromFile) {
             if (m_recFileValid) {
-cout << "[Player2]: Request to read " << maxNumberOfEntriesToReadFromFile << endl;
+                clog << "[Player2]: Request to read " << maxNumberOfEntriesToReadFromFile << endl;
 
                 // Reset any fstream's error states.
                 m_recFile.clear();
@@ -177,12 +187,15 @@ cout << "[Player2]: Request to read " << maxNumberOfEntriesToReadFromFile << end
                     }
                     entriesReadFromFile++;
                 }
+
                 {
                     Lock l(m_indexMutex);
                     m_numberOfAvailableEntries += entriesReadFromFile;
                 }
-cout << "[Player2]: " << entriesReadFromFile << " read." << endl;
+
+                clog << "[Player2]: " << entriesReadFromFile << " read." << endl;
             }
+
             Lock l(m_indexMutex);
             m_readingRequested = false;
         }
@@ -240,10 +253,12 @@ cout << "[Player2]: " << entriesReadFromFile << " read." << endl;
             const uint64_t ELAPSED = (thisTimePointCallingThisMethod - m_firstTimePointReturningAContainer).toMicroseconds();
             m_containerReplayThroughput = std::ceil(m_numberOfReturnedContainersInTotal*1000.0*1000.0/ELAPSED);
 
+/*<REMOVE ME>*/
 if (++callCounter%1000 == 0) {
     cout << "Throughput = " << m_containerReplayThroughput << endl;
     callCounter = 0;
 }
+/*</REMOVE ME>*/
 
             return retVal;
         }
@@ -265,34 +280,6 @@ if (++callCounter%1000 == 0) {
             //  some entries are left to replay.
             return (m_recFileValid && (m_autoRewind || (m_currentContainerToReplay != m_index.end())));
         }
-
-//////////////////////////
-
-//            if (!m_currentContainerToReplay->second.m_available) {
-//                auto handle = std::async(std::launch::async, &Player2::readEntryAsynchronously, this, m_currentContainerToReplay->second.m_filePosition);
-//                Container c = handle.get();
-
-//                auto it = m_containerCache.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(), c));
-//                m_currentContainerToReplay->second.m_entry = it;
-//                m_currentContainerToReplay->second.m_available = true;
-//            }
-
-
-/*
-                    if (entries <= INITIAL_ENTRIES) {
-                        auto it = m_containerCache.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(), c));
-                        // Using map::insert(hint, ...) to have amortized constant complexity.
-                        m_currentContainerToReplay = m_index.emplace_hint(m_currentContainerToReplay, std::make_pair(c.getSampleTimeStamp().toMicroseconds(), IndexEntry(c.getSampleTimeStamp().toMicroseconds(), posBefore, true, it)));
-                    }
-                    else {
-                        // Using map::insert(hint, ...) to have amortized constant complexity.
-                        m_currentContainerToReplay = m_index.emplace_hint(m_currentContainerToReplay, std::make_pair(c.getSampleTimeStamp().toMicroseconds(), IndexEntry(c.getSampleTimeStamp().toMicroseconds(), posBefore)));
-                    }
-
-*/
-
-
-//////////////////////////
 
     } // player
 } // tools
