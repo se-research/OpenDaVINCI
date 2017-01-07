@@ -49,7 +49,6 @@ namespace odtools {
             public:
                 int64_t m_sampleTimeStamp;
                 uint32_t m_filePosition;
-                bool m_available;
         };
 
         class OPENDAVINCI_API Player2 {
@@ -172,9 +171,6 @@ namespace odtools {
 
 bool m_readingRequested;
 std::future<void> handle;
-
-                // List of entries to be removed.
-                deque<uint32_t> m_entriesToBeErased;
 
                 uint32_t m_delay;
 
