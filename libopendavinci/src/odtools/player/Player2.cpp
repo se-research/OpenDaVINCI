@@ -239,8 +239,8 @@ namespace odtools {
             const Container &retVal = m_containerCache[m_currentContainerToReplay->second.m_filePosition];
             m_delay = retVal.getSampleTimeStamp().toMicroseconds() - m_containerCache[m_previousContainerAlreadyReplayed->second.m_filePosition].getSampleTimeStamp().toMicroseconds();
 
+            // TODO: Delegate deleting into own thread.
             if (m_previousPreviousContainerAlreadyReplayed != m_index.end()) {
-                // TODO: Delete here.
                 auto it = m_containerCache.find(m_previousContainerAlreadyReplayed->second.m_filePosition);
                 if (it != m_containerCache.end()) {
                     m_containerCache.erase(it);
