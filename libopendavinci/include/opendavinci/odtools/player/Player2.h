@@ -41,12 +41,11 @@ namespace odtools {
         class IndexEntry {
             public:
                 IndexEntry();
-                IndexEntry(const int64_t &sampleTimeStamp, const uint32_t &filePosition, const uint16_t &size);
+                IndexEntry(const int64_t &sampleTimeStamp, const uint32_t &filePosition);
 
             public:
                 int64_t m_sampleTimeStamp;
                 uint32_t m_filePosition;
-                uint16_t m_size;
                 bool m_available;
         };
 

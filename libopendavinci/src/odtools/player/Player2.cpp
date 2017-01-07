@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <cmath>
 #include <cstdio>
 
 #include <algorithm>
@@ -44,13 +45,11 @@ namespace odtools {
         IndexEntry::IndexEntry() :
             m_sampleTimeStamp(0),
             m_filePosition(0),
-            m_size(0),
             m_available(false) {}
 
-        IndexEntry::IndexEntry(const int64_t &sampleTimeStamp, const uint32_t &filePosition, const uint16_t &size) :
+        IndexEntry::IndexEntry(const int64_t &sampleTimeStamp, const uint32_t &filePosition) :
             m_sampleTimeStamp(sampleTimeStamp),
             m_filePosition(filePosition),
-            m_size(size),
             m_available(false) {}
 
         ////////////////////////////////////////////////////////////////////////
@@ -93,7 +92,7 @@ namespace odtools {
                     totalBytesRead += SIZE;
 
                     // Store mapping .rec file position --> index entry.
-                    m_index.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(), IndexEntry(c.getSampleTimeStamp().toMicroseconds(), POS_BEFORE, SIZE)));
+                    m_index.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(), IndexEntry(c.getSampleTimeStamp().toMicroseconds(), POS_BEFORE)));
                 }
             }
 
@@ -151,8 +150,10 @@ namespace odtools {
         }
 
         const odcore::data::Container& Player2::getNextContainerToBeSentNoCopy() throw (odcore::exceptions::ArrayIndexOutOfBoundsException) {
-            static TimeStamp lastTimePointCallingThisMethod;
+            static TimeStamp firstTimePointCallingThisMethod;
+            static uint64_t numberOfReturnedContainers = 0;
             TimeStamp thisTimePointCallingThisMethod;
+
             // If at "EOF", either throw exception of autorewind.
             if (m_currentContainerToReplay == m_index.end()) {
                 if (!m_autoRewind) {
@@ -178,11 +179,11 @@ namespace odtools {
             m_delay = retVal.getSampleTimeStamp().toMicroseconds() - m_containerCache[m_previousContainerAlreadyReplayed->second.m_filePosition].getSampleTimeStamp().toMicroseconds();
             m_previousContainerAlreadyReplayed = m_currentContainerToReplay++;
 
+            numberOfReturnedContainers++;
             m_availableEntries--;
 
-cout << (thisTimePointCallingThisMethod - lastTimePointCallingThisMethod).toMicroseconds() << endl;
-            cout << "Bytes/s = " << m_previousContainerAlreadyReplayed->second.m_size/((thisTimePointCallingThisMethod - lastTimePointCallingThisMethod).toMicroseconds()/(1000.0*1000.0)) << endl;
-            lastTimePointCallingThisMethod = thisTimePointCallingThisMethod;
+const uint64_t ELAPSED = (thisTimePointCallingThisMethod - firstTimePointCallingThisMethod).toMicroseconds();
+cout << "Containers/s = " << std::ceil(numberOfReturnedContainers*1000.0*1000.0/ELAPSED) << endl;
 
             return retVal;
         }
