@@ -20,6 +20,7 @@
 #ifndef OPENDAVINCI_TOOLS_PLAYER_PLAYER2_H_
 #define OPENDAVINCI_TOOLS_PLAYER_PLAYER2_H_
 
+#include <deque>
 #include <fstream>
 #include <map>
 
@@ -167,6 +168,9 @@ namespace odtools {
                 odcore::data::TimeStamp m_firstTimePointReturningAContainer;
                 uint64_t m_numberOfReturnedContainersInTotal;
                 float m_containerReplayThroughput;
+
+                // List of entries to be removed.
+                deque<uint32_t> m_entriesToBeErased;
 
                 uint32_t m_delay;
 
