@@ -22,6 +22,7 @@
 
 #include <deque>
 #include <fstream>
+#include <future>
 #include <map>
 
 #include <opendavinci/odcore/opendavinci.h>
@@ -168,6 +169,9 @@ namespace odtools {
                 odcore::data::TimeStamp m_firstTimePointReturningAContainer;
                 uint64_t m_numberOfReturnedContainersInTotal;
                 float m_containerReplayThroughput;
+
+bool m_readingRequested;
+std::future<void> handle;
 
                 // List of entries to be removed.
                 deque<uint32_t> m_entriesToBeErased;

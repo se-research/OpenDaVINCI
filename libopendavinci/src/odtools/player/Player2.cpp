@@ -22,7 +22,6 @@
 
 #include <algorithm>
 #include <fstream>
-#include <future>
 #include <iostream>
 #include <limits>
 #include <thread>
@@ -69,6 +68,8 @@ namespace odtools {
             m_firstTimePointReturningAContainer(),
             m_numberOfReturnedContainersInTotal(0),
             m_containerReplayThroughput(0),
+            m_readingRequested(false),
+            handle(),
             m_entriesToBeErased(0),
             m_delay(0),
             m_containerCache() {
@@ -168,7 +169,7 @@ cout << "[Player2]: Request to read " << maxNumberOfEntriesToReadFromFile << end
 
                     // Store the container in the container cache.
                     {
-                        Lock l(m_indexMutex);
+//                        Lock l(m_indexMutex);
                         const bool SUCCESSFULLY_INSERTED = m_containerCache.emplace(std::make_pair(m_nextEntryToReadFromFile->second.m_filePosition, c)).second;
                         m_nextEntryToReadFromFile->second.m_available = SUCCESSFULLY_INSERTED;
 
@@ -180,7 +181,10 @@ cout << "[Player2]: Request to read " << maxNumberOfEntriesToReadFromFile << end
                     Lock l(m_indexMutex);
                     m_numberOfAvailableEntries += entriesReadFromFile;
                 }
+cout << "[Player2]: " << entriesReadFromFile << " read." << endl;
             }
+            Lock l(m_indexMutex);
+            m_readingRequested = false;
         }
 
         void Player2::checkForEndOfIndexAndThrowExceptionOrAutoRewind() throw (odcore::exceptions::ArrayIndexOutOfBoundsException) {
@@ -209,9 +213,13 @@ cout << "[Player2]: Request to read " << maxNumberOfEntriesToReadFromFile << end
                 // TODO: Cache management.
                 const uint8_t LOOK_AHEAD_IN_S = 10;
                 if ( (m_containerReplayThroughput * LOOK_AHEAD_IN_S) > m_numberOfAvailableEntries) {
-//                    auto handle = std::async(std::launch::async, &Player2::fillContainerCache, this, m_containerReplayThroughput * LOOK_AHEAD_IN_S);
+                    Lock l(m_indexMutex);
+                    if (!m_readingRequested) {
+                        m_readingRequested = true;
+                        handle = std::async(std::launch::async, &Player2::fillContainerCache, this, m_containerReplayThroughput * LOOK_AHEAD_IN_S * 3);
+                    }
 
-                    fillContainerCache(m_containerReplayThroughput * LOOK_AHEAD_IN_S * 3);
+//                    fillContainerCache(m_containerReplayThroughput * LOOK_AHEAD_IN_S * 3);
                 }
 
                 // TODO: Erase played entries.
