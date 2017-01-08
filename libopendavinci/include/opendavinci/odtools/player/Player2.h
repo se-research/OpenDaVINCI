@@ -54,6 +54,11 @@ namespace odtools {
 
         class OPENDAVINCI_API Player2 {
             private:
+                enum {
+                    MAX_DELAY_IN_MICROSECONDS = 5 * 1000 * 1000,
+                };
+
+            private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn
                  * already at compile time for unwanted bugs caused by any misuse
@@ -126,6 +131,10 @@ namespace odtools {
                  */
                 void initializeIndex();
 
+                /**
+                 * This method computes the initially required amount of
+                 * containers in the cache and fill the cache accordingly.
+                 */
                 void computeInitialCacheLevelAndFillCache();
 
                 /**
@@ -138,6 +147,12 @@ namespace odtools {
                  */
                 inline void resetIterators();
 
+                /**
+                 * This method actually fills the cache by trying to read up
+                 * to maxNumberOfEntriesToReadFromFile from the rec file.
+                 *
+                 * @param maxNumberOfEntriesToReadFromFile Maximum number of entries to be read from file.
+                 */
                 void fillContainerCache(const uint32_t &maxNumberOfEntriesToReadFromFile);
 
             private:
@@ -182,8 +197,8 @@ namespace odtools {
                 float m_containerReplayThroughput;
 
 
-bool m_readingRequested;
-std::future<void> m_asynchronousReadingFromRecFile;
+bool m_asynchronousRecFileReaderMutex;
+std::future<void> m_asynchronousRecFileReader;
 
                 uint32_t m_delay;
 

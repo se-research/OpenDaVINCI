@@ -69,8 +69,8 @@ namespace odtools {
             m_firstTimePointReturningAContainer(),
             m_numberOfReturnedContainersInTotal(0),
             m_containerReplayThroughput(0),
-            m_readingRequested(false),
-            m_asynchronousReadingFromRecFile(),
+            m_asynchronousRecFileReaderMutex(false),
+            m_asynchronousRecFileReader(),
             m_delay(0),
             m_containerCache() {
             initializeIndex();
@@ -79,7 +79,7 @@ namespace odtools {
 
         Player2::~Player2() {
             // Wait for asynchronous reading that might be started.
-            try { m_asynchronousReadingFromRecFile.wait(); } catch(...) {}
+            try { m_asynchronousRecFileReader.wait(); } catch(...) {}
 
             m_recFile.close();
         }
@@ -93,9 +93,8 @@ namespace odtools {
             int32_t fileLength = m_recFile.tellg();
             m_recFile.seekg(0, m_recFile.beg);
 
-            // Read complete file and store file positions to containers to
-            // create index of available data.
-            // The actual reading of Containers is deferred.
+            // Read complete file and store file positions to containers to create
+            // index of available data. The actual reading of Containers is deferred.
             uint32_t totalBytesRead = 0;
             const TimeStamp BEFORE;
             {
@@ -151,6 +150,7 @@ namespace odtools {
                 = m_previousContainerAlreadyReplayed
                 = m_currentContainerToReplay
                 = m_index.begin();
+            // Invalidate iterator for erasing entries point.
             m_previousPreviousContainerAlreadyReplayed = m_index.end();
         }
 
@@ -208,7 +208,7 @@ namespace odtools {
 
             {
                 Lock l(m_indexMutex);
-                m_readingRequested = false;
+                m_asynchronousRecFileReaderMutex = false;
             }
         }
 
@@ -242,9 +242,9 @@ namespace odtools {
                     // Parallel filling of container cache.
                     {
                         Lock l(m_indexMutex);
-                        if (!m_readingRequested) {
-                            m_readingRequested = true;
-                            m_asynchronousReadingFromRecFile = std::async(std::launch::async, &Player2::fillContainerCache, this, m_containerReplayThroughput * LOOK_AHEAD_IN_S * 3);
+                        if (!m_asynchronousRecFileReaderMutex) {
+                            m_asynchronousRecFileReaderMutex = true;
+                            m_asynchronousRecFileReader = std::async(std::launch::async, &Player2::fillContainerCache, this, m_containerReplayThroughput * LOOK_AHEAD_IN_S * 3);
                         }
                     }
 
@@ -257,7 +257,7 @@ namespace odtools {
                 cerr << "[Player2]: This should not happen." << endl;
 
                 // Wait for asynchronous reading that might be started.
-                try { m_asynchronousReadingFromRecFile.wait(); } catch(...) {}
+                try { m_asynchronousRecFileReader.wait(); } catch(...) {}
 
                 auto backup = m_nextEntryToReadFromFile;
                 while (!m_currentContainerToReplay->second.m_available) {
@@ -300,12 +300,12 @@ if (++callCounter%1000 == 0) {
         uint32_t Player2::getDelay() const {
             Lock l(m_indexMutex);
             // Make sure that delay is not exceeding 10s.
-            return std::min<uint32_t>(m_delay, 5*1000*1000);
+            return std::min<uint32_t>(m_delay, Player2::MAX_DELAY_IN_MICROSECONDS);
         }
 
         void Player2::rewind() {
             // Wait for asynchronous reading that might be started.
-            try { m_asynchronousReadingFromRecFile.wait(); } catch (...) {}
+            try { m_asynchronousRecFileReader.wait(); } catch (...) {}
 
             computeInitialCacheLevelAndFillCache();
         }
