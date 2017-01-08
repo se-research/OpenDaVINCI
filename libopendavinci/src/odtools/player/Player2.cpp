@@ -68,7 +68,7 @@ namespace odtools {
             m_numberOfReturnedContainersInTotal(0),
             m_containerReplayThroughput(0),
             m_readingRequested(false),
-            handle(),
+            m_asynchronousReadingFromRecFile(),
             m_delay(0),
             m_containerCache() {
             initializeIndex();
@@ -76,6 +76,9 @@ namespace odtools {
         }
 
         Player2::~Player2() {
+            // Wait for asynchronous reading that might be started.
+            try { m_asynchronousReadingFromRecFile.wait(); } catch(...) {}
+
             m_recFile.close();
         }
 
@@ -97,6 +100,7 @@ namespace odtools {
             {
                 while (m_recFile.good()) {
                     const uint32_t POS_BEFORE = m_recFile.tellg();
+
                     Container c;
                     m_recFile >> c;
 
@@ -105,13 +109,14 @@ namespace odtools {
                         totalBytesRead += (POS_AFTER - POS_BEFORE);
 
                         // Store mapping .rec file position --> index entry.
-                        m_index.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(), IndexEntry(c.getSampleTimeStamp().toMicroseconds(), POS_BEFORE)));
+                        m_index.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(),
+                                                       IndexEntry(c.getSampleTimeStamp().toMicroseconds(), POS_BEFORE)));
 
                         {
-                            float percentage = (float)(m_recFile.tellg()*100.0)/(float)fileLength;
-                            if ( (static_cast<int32_t>(percentage) % 5 == 0) && (static_cast<int32_t>(percentage) != oldPercentage) ) {
-                                clog << "[Player2]: Processed " << static_cast<int32_t>(percentage) << "%." << endl;
-                                oldPercentage = static_cast<int32_t>(percentage);
+                            int32_t percentage = static_cast<int32_t>(static_cast<float>(m_recFile.tellg()*100.0)/static_cast<float>(fileLength));
+                            if ( (percentage % 5 == 0) && (percentage != oldPercentage) ) {
+                                clog << "[Player2]: Processed " << percentage << "%." << endl;
+                                oldPercentage = percentage;
                             }
                         }
                     }
@@ -236,7 +241,7 @@ namespace odtools {
                     Lock l(m_indexMutex);
                     if (!m_readingRequested) {
                         m_readingRequested = true;
-                        handle = std::async(std::launch::async, &Player2::fillContainerCache, this, m_containerReplayThroughput * LOOK_AHEAD_IN_S * 3);
+                        m_asynchronousReadingFromRecFile = std::async(std::launch::async, &Player2::fillContainerCache, this, m_containerReplayThroughput * LOOK_AHEAD_IN_S * 3);
                     }
 
 //                    fillContainerCache(m_containerReplayThroughput * LOOK_AHEAD_IN_S * 3);
@@ -281,15 +286,18 @@ if (++callCounter%1000 == 0) {
         }
 
         void Player2::rewind() {
-            try {
-                handle.wait();
-            }
-            catch(...) {}
+            // Wait for asynchronous reading that might be started.
+            try { m_asynchronousReadingFromRecFile.wait(); } catch(...) {}
 
             computeInitialCacheLevelAndFillCache();
 
-            Lock l(m_indexMutex);
-            m_previousContainerAlreadyReplayed = m_currentContainerToReplay = m_index.begin();
+            // Reset iterators.
+            {
+                Lock l(m_indexMutex);
+                m_previousContainerAlreadyReplayed
+                    = m_currentContainerToReplay
+                    = m_index.begin();
+            }
         }
 
         bool Player2::hasMoreData() const {

@@ -175,8 +175,9 @@ namespace odtools {
                 uint64_t m_numberOfReturnedContainersInTotal;
                 float m_containerReplayThroughput;
 
+
 bool m_readingRequested;
-std::future<void> handle;
+std::future<void> m_asynchronousReadingFromRecFile;
 
                 uint32_t m_delay;
 
