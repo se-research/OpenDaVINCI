@@ -231,7 +231,9 @@ namespace cockpit {
                         {
                             // Fasten playback if desired.
                             Lock l(m_speedValueMutex);
-                            delay *= (m_speedValue/100.0);
+                            float f = m_speedValue/100.0;
+                            f = (f > 0.2) ? f : 0.2;
+                            delay *= f;
                         }
 
                         // Send container.
