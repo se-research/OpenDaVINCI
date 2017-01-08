@@ -40,6 +40,7 @@ using namespace odtools::player;
 class PlayerModule2Test : public CxxTest::TestSuite {
     public:
         void testEmptyFileAndException() {
+            cout << __FILE__ << " " << __LINE__ << endl;
             // Prepare record file.
             fstream fout("PlayerModule2TestEmpty.rec", ios::out | ios::binary | ios::trunc);
             fout.flush();
@@ -69,6 +70,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
         }
 
         void testCorrectMonotonicTemporalOrderAndExceptionFromReverseOrder() {
+            cout << __FILE__ << " " << __LINE__ << endl;
             // Prepare record file.
             fstream fout("PlayerModule2Test.rec", ios::out | ios::binary | ios::trunc);
 
@@ -140,6 +142,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
         }
 
         void testCorrectMonotonicTemporalOrderAndExceptionFromReverseOrderRealtimeReplay() {
+            cout << __FILE__ << " " << __LINE__ << endl;
             // Prepare record file.
             fstream fout("PlayerModule2Test.rec", ios::out | ios::binary | ios::trunc);
 
@@ -210,6 +213,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
         }
 
         void testCorrectMonotonicTemporalOrderAndExceptionFromReverseOrderWithDuplicateEntries() {
+            cout << __FILE__ << " " << __LINE__ << endl;
             // Prepare record file.
             fstream fout("PlayerModule2Test.rec", ios::out | ios::binary | ios::trunc);
 
@@ -296,8 +300,8 @@ class PlayerModule2Test : public CxxTest::TestSuite {
             UNLINK("PlayerModuleTest2.rec");
         }
 
-
         void testCorrectMonotonicTemporalOrderAndException() {
+            cout << __FILE__ << " " << __LINE__ << endl;
             // Prepare record file.
             fstream fout("PlayerModule2Test.rec", ios::out | ios::binary | ios::trunc);
 
@@ -369,6 +373,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
         }
 
         void testCorrectMonotonicTemporalOrderAndRewindAndException() {
+            cout << __FILE__ << " " << __LINE__ << endl;
             // Prepare record file.
             fstream fout("PlayerModule2Test2.rec", ios::out | ios::binary | ios::trunc);
 
@@ -446,6 +451,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
         }
 
         void testCorrectMonotonicTemporalOrderAndAutoRewind() {
+            cout << __FILE__ << " " << __LINE__ << endl;
             // Prepare record file.
             fstream fout("PlayerModule2Test2.rec", ios::out | ios::binary | ios::trunc);
 
@@ -530,6 +536,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
         }
 
         void notestLargeFile() {
+            cout << __FILE__ << " " << __LINE__ << endl;
             const URL u("file://test.rec");
 
             // Create Player2 instance.

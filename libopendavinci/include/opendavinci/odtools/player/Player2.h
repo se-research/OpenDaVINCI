@@ -127,6 +127,11 @@ namespace odtools {
 
                 void computeInitialCacheLevelAndFillCache();
 
+                /**
+                 * This method clears the depending caches and resets the iterators.
+                 */
+                void resetDependingCaches();
+
                 void fillContainerCache(const uint32_t &maxNumberOfEntriesToReadFromFile);
 
             private:
