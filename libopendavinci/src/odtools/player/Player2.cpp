@@ -127,7 +127,7 @@ namespace odtools {
             // Reset pointer to beginning of the .rec file.
             if (m_recFileValid) {
                 // Compute throughput for reading from file.
-                m_containerReadFromFileThroughput = std::ceil(m_index.size()*1000.0*1000.0/(AFTER-BEFORE).toMicroseconds());
+                m_containerReadFromFileThroughput = std::ceil(m_index.size()*static_cast<float>(Player2::ONE_SECOND_IN_MICROSECONDS)/(AFTER-BEFORE).toMicroseconds());
 
                 clog << "[Player2]: " << m_url.getResource()
                                       << " contains " << m_index.size() << " entries; "
@@ -163,7 +163,7 @@ namespace odtools {
                     largestSampleTimePoint = std::max(largestSampleTimePoint, it->first);
                 }
 
-                const uint32_t ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY = std::ceil(m_index.size()*(1000.0*1000.0)/(largestSampleTimePoint - smallestSampleTimePoint));
+                const uint32_t ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY = std::ceil(m_index.size()*(static_cast<float>(Player2::ONE_SECOND_IN_MICROSECONDS))/(largestSampleTimePoint - smallestSampleTimePoint));
                 const uint8_t LOOK_AHEAD_IN_S = 10;
                 clog << "[Player2]: Reading " << ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY * LOOK_AHEAD_IN_S << " entries initially." << endl;
 
@@ -285,7 +285,7 @@ namespace odtools {
             m_numberOfAvailableEntries--;
 
             const uint64_t ELAPSED = (thisTimePointCallingThisMethod - m_firstTimePointReturningAContainer).toMicroseconds();
-            m_containerReplayThroughput = std::ceil(m_numberOfReturnedContainersInTotal*1000.0*1000.0/ELAPSED);
+            m_containerReplayThroughput = std::ceil(m_numberOfReturnedContainersInTotal*static_cast<float>(Player2::ONE_SECOND_IN_MICROSECONDS)/ELAPSED);
 
 /*<REMOVE ME>*/
 if (++callCounter%1000 == 0) {
