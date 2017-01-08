@@ -111,7 +111,7 @@ namespace odtools {
 
                         const int32_t percentage = static_cast<int32_t>(static_cast<float>(m_recFile.tellg()*100.0)/static_cast<float>(fileLength));
                         if ( (percentage % 5 == 0) && (percentage != oldPercentage) ) {
-                            clog << "[Player2]: Processed " << percentage << "%." << endl;
+                            clog << "[Player2]: Indexed " << percentage << "%." << endl;
                             oldPercentage = percentage;
                         }
                     }
@@ -287,7 +287,8 @@ namespace odtools {
                     Lock l(m_indexMutex);
                     if (!m_asynchronousRecFileReaderInUse) {
                         m_asynchronousRecFileReaderInUse = true;
-                        m_asynchronousRecFileReader = std::async(std::launch::async, &Player2::fillContainerCache, this, m_containerReplayThroughput * Player2::LOOK_AHEAD_IN_S * 2);
+                        const float MULTIPLY_LOOK_AHEAD_BY = 2.5;
+                        m_asynchronousRecFileReader = std::async(std::launch::async, &Player2::fillContainerCache, this, m_containerReplayThroughput * Player2::LOOK_AHEAD_IN_S * MULTIPLY_LOOK_AHEAD_BY);
                     }
                 }
 
