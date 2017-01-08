@@ -157,6 +157,12 @@ namespace odtools {
                  */
                 void fillContainerCache(const uint32_t &maxNumberOfEntriesToReadFromFile);
 
+                /**
+                 * This method checks the availability of the next container
+                 * to be replayed from the cache.
+                 */
+                inline void checkAvailabilityOfNextContainerToBeReplayed();
+
             private:
                 /**
                  * This method check if the Player has reached the end of the

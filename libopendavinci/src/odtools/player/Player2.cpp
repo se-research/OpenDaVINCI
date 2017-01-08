@@ -245,24 +245,7 @@ namespace odtools {
                 }
             }
 
-            if (!m_currentContainerToReplay->second.m_available) {
-                {
-                    Lock l(m_indexMutex);
-                    if (!m_asynchronousRecFileReaderInUse) {
-                        // Wait for asynchronous reading that might be started.
-                        try { m_asynchronousRecFileReader.wait(); } catch(...) {}
-                    }
-                }
-
-                if (!m_currentContainerToReplay->second.m_available) {
-                    cerr << "[Player2]: This should not happen." << endl;
-                    auto backup = m_nextEntryToReadFromFile;
-                    while (!m_currentContainerToReplay->second.m_available) {
-                        fillContainerCache(1);
-                    }
-                    m_nextEntryToReadFromFile = backup;
-                }
-            }
+            checkAvailabilityOfNextContainerToBeReplayed();
 
             Lock l(m_indexMutex);
             const Container &retVal = m_containerCache[m_currentContainerToReplay->second.m_filePosition];
@@ -286,6 +269,30 @@ namespace odtools {
             m_containerReplayThroughput = std::ceil(m_numberOfReturnedContainersInTotal*static_cast<float>(Player2::ONE_SECOND_IN_MICROSECONDS)/ELAPSED);
 
             return retVal;
+        }
+
+        void Player2::checkAvailabilityOfNextContainerToBeReplayed() {
+            if (!m_currentContainerToReplay->second.m_available) {
+                bool asynchronousRecFileReaderInUse = false;
+                {
+                    Lock l(m_indexMutex);
+                    asynchronousRecFileReaderInUse = m_asynchronousRecFileReaderInUse;
+                }
+                if (!asynchronousRecFileReaderInUse) {
+                    // Wait for asynchronous reading that might be started.
+                    try { m_asynchronousRecFileReader.wait(); } catch(...) {}
+                }
+
+                // Check if the entry is now available.
+                if (!m_currentContainerToReplay->second.m_available) {
+                    cerr << "[Player2]: Next container not available. This should not happen! Trying to sequentially read next container." << endl;
+                    auto backup = m_nextEntryToReadFromFile;
+                    while (!m_currentContainerToReplay->second.m_available) {
+                        fillContainerCache(1);
+                    }
+                    m_nextEntryToReadFromFile = backup;
+                }
+            }
         }
 
         uint32_t Player2::getDelay() const {
