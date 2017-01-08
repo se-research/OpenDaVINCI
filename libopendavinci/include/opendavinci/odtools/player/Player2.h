@@ -49,6 +49,7 @@ namespace odtools {
             public:
                 int64_t m_sampleTimeStamp;
                 uint32_t m_filePosition;
+                bool m_available;
         };
 
         class OPENDAVINCI_API Player2 {
@@ -128,9 +129,14 @@ namespace odtools {
                 void computeInitialCacheLevelAndFillCache();
 
                 /**
-                 * This method clears the depending caches and resets the iterators.
+                 * This method clears all caches.
                  */
                 void resetCaches();
+
+                /**
+                 * This method resets the iterators.
+                 */
+                inline void resetIterators();
 
                 void fillContainerCache(const uint32_t &maxNumberOfEntriesToReadFromFile);
 

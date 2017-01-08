@@ -43,11 +43,13 @@ namespace odtools {
 
         IndexEntry::IndexEntry() :
             m_sampleTimeStamp(0),
-            m_filePosition(0) {}
+            m_filePosition(0),
+            m_available(false) {}
 
         IndexEntry::IndexEntry(const int64_t &sampleTimeStamp, const uint32_t &filePosition) :
             m_sampleTimeStamp(sampleTimeStamp),
-            m_filePosition(filePosition) {}
+            m_filePosition(filePosition),
+            m_available(false) {}
 
         ////////////////////////////////////////////////////////////////////////
 
@@ -114,7 +116,7 @@ namespace odtools {
                         {
                             int32_t percentage = static_cast<int32_t>(static_cast<float>(m_recFile.tellg()*100.0)/static_cast<float>(fileLength));
                             if ( (percentage % 5 == 0) && (percentage != oldPercentage) ) {
-                                clog << "[Player2]: Processed " << percentage << "% from " << m_url.getResource() << "." << endl;
+                                clog << "[Player2]: Processed " << percentage << "%." << endl;
                                 oldPercentage = percentage;
                             }
                         }
@@ -136,17 +138,20 @@ namespace odtools {
         }
 
         void Player2::resetCaches() {
-            if (m_recFileValid) {
-                m_delay = 0;
-                m_numberOfAvailableEntries = 0;
-                m_containerCache.clear();
+            Lock l(m_indexMutex);
+            m_delay = 0;
+            m_numberOfAvailableEntries = 0;
+            m_containerCache.clear();
+        }
 
-                // Point to first entry in index.
-                m_nextEntryToReadFromFile
-                    = m_previousContainerAlreadyReplayed
-                    = m_currentContainerToReplay
-                    = m_index.begin();
-            }
+        void Player2::resetIterators() {
+            Lock l(m_indexMutex);
+            // Point to first entry in index.
+            m_nextEntryToReadFromFile
+                = m_previousContainerAlreadyReplayed
+                = m_currentContainerToReplay
+                = m_index.begin();
+            m_previousPreviousContainerAlreadyReplayed = m_index.end();
         }
 
         void Player2::computeInitialCacheLevelAndFillCache() {
@@ -163,6 +168,7 @@ namespace odtools {
                 clog << "[Player2]: Reading " << ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY * LOOK_AHEAD_IN_S << " entries initially." << endl;
 
                 resetCaches();
+                resetIterators();
                 fillContainerCache(ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY * LOOK_AHEAD_IN_S);
             }
         }
@@ -185,19 +191,17 @@ namespace odtools {
                     // Store the container in the container cache.
                     {
                         Lock l(m_indexMutex);
-                        m_containerCache.emplace(std::make_pair(m_nextEntryToReadFromFile->second.m_filePosition, c)).second;
+                        m_nextEntryToReadFromFile->second.m_available = m_containerCache.emplace(std::make_pair(m_nextEntryToReadFromFile->second.m_filePosition, c)).second;
                     }
 
                     m_nextEntryToReadFromFile++;
                     entriesReadFromFile++;
                 }
 
-                {
+                if (entriesReadFromFile > 0) {
                     Lock l(m_indexMutex);
                     m_numberOfAvailableEntries += entriesReadFromFile;
-                }
 
-                if (entriesReadFromFile > 0) {
                     clog << "[Player2]: " << entriesReadFromFile << " entries stored in cache." << endl;
                 }
             }
@@ -249,6 +253,19 @@ namespace odtools {
                 }
             }
 
+            if (!m_currentContainerToReplay->second.m_available) {
+                cerr << "[Player2]: This should not happen." << endl;
+
+                // Wait for asynchronous reading that might be started.
+                try { m_asynchronousReadingFromRecFile.wait(); } catch(...) {}
+
+                auto backup = m_nextEntryToReadFromFile;
+                while (!m_currentContainerToReplay->second.m_available) {
+                    fillContainerCache(1);
+                }
+                m_nextEntryToReadFromFile = backup;
+            }
+
             Lock l(m_indexMutex);
             const Container &retVal = m_containerCache[m_currentContainerToReplay->second.m_filePosition];
             m_delay = m_currentContainerToReplay->first - m_previousContainerAlreadyReplayed->first;
@@ -288,17 +305,9 @@ if (++callCounter%1000 == 0) {
 
         void Player2::rewind() {
             // Wait for asynchronous reading that might be started.
-            try { m_asynchronousReadingFromRecFile.wait(); } catch(...) {}
+            try { m_asynchronousReadingFromRecFile.wait(); } catch (...) {}
 
             computeInitialCacheLevelAndFillCache();
-
-            // Reset iterators.
-            {
-                Lock l(m_indexMutex);
-                m_previousContainerAlreadyReplayed
-                    = m_currentContainerToReplay
-                    = m_index.begin();
-            }
         }
 
         bool Player2::hasMoreData() const {
