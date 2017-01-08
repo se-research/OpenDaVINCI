@@ -227,23 +227,7 @@ namespace odtools {
 
             checkForEndOfIndexAndThrowExceptionOrAutoRewind();
 
-            {
-                // TODO: Cache management.
-                if ( (m_containerReplayThroughput * Player2::LOOK_AHEAD_IN_S) > m_numberOfAvailableEntries) {
-
-                    // Parallel filling of container cache.
-                    {
-                        Lock l(m_indexMutex);
-                        if (!m_asynchronousRecFileReaderInUse) {
-                            m_asynchronousRecFileReaderInUse = true;
-                            m_asynchronousRecFileReader = std::async(std::launch::async, &Player2::fillContainerCache, this, m_containerReplayThroughput * Player2::LOOK_AHEAD_IN_S * 3);
-                        }
-                    }
-
-                    // Sequential filling of container cache.
-//                    fillContainerCache(m_containerReplayThroughput * Player2::LOOK_AHEAD_IN_S * 3);
-                }
-            }
+            manageCache();
 
             checkAvailabilityOfNextContainerToBeReplayed();
 
@@ -292,6 +276,23 @@ namespace odtools {
                     }
                     m_nextEntryToReadFromFile = backup;
                 }
+            }
+        }
+
+        void Player2::manageCache() {
+            if ( (m_containerReplayThroughput * Player2::LOOK_AHEAD_IN_S) > m_numberOfAvailableEntries) {
+
+                // Parallel filling of container cache.
+                {
+                    Lock l(m_indexMutex);
+                    if (!m_asynchronousRecFileReaderInUse) {
+                        m_asynchronousRecFileReaderInUse = true;
+                        m_asynchronousRecFileReader = std::async(std::launch::async, &Player2::fillContainerCache, this, m_containerReplayThroughput * Player2::LOOK_AHEAD_IN_S * 2);
+                    }
+                }
+
+                // Sequential filling of container cache.
+//                fillContainerCache(m_containerReplayThroughput * Player2::LOOK_AHEAD_IN_S * 3);
             }
         }
 
