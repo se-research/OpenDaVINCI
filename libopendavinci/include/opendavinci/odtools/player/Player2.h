@@ -57,6 +57,7 @@ namespace odtools {
                 enum {
                     ONE_SECOND_IN_MICROSECONDS = 1000 *1000,
                     MAX_DELAY_IN_MICROSECONDS = 5 * ONE_SECOND_IN_MICROSECONDS,
+                    LOOK_AHEAD_IN_S = 10,
                 };
 
             private:
@@ -198,7 +199,7 @@ namespace odtools {
                 float m_containerReplayThroughput;
 
                 // The following "Mutex" prevents Player2 from starting more than one thread.
-                bool m_asynchronousRecFileReaderMutex;
+                bool m_asynchronousRecFileReaderInUse;
                 std::future<void> m_asynchronousRecFileReader;
 
                 uint32_t m_delay;
