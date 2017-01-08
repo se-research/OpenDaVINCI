@@ -95,17 +95,16 @@ namespace odtools {
             // create index of available data.
             // The actual reading of Containers is deferred.
             uint32_t totalBytesRead = 0;
-            int32_t oldPercentage = -1;
             const TimeStamp BEFORE;
             {
+                int32_t oldPercentage = -1;
                 while (m_recFile.good()) {
                     const uint32_t POS_BEFORE = m_recFile.tellg();
-
-                    Container c;
-                    m_recFile >> c;
+                        Container c;
+                        m_recFile >> c;
+                    const uint32_t POS_AFTER = m_recFile.tellg();
 
                     if (!m_recFile.eof()) {
-                        const uint32_t POS_AFTER = m_recFile.tellg();
                         totalBytesRead += (POS_AFTER - POS_BEFORE);
 
                         // Store mapping .rec file position --> index entry.
@@ -115,7 +114,7 @@ namespace odtools {
                         {
                             int32_t percentage = static_cast<int32_t>(static_cast<float>(m_recFile.tellg()*100.0)/static_cast<float>(fileLength));
                             if ( (percentage % 5 == 0) && (percentage != oldPercentage) ) {
-                                clog << "[Player2]: Processed " << percentage << "%." << endl;
+                                clog << "[Player2]: Processed " << percentage << "% from " << m_url.getResource() << "." << endl;
                                 oldPercentage = percentage;
                             }
                         }
@@ -128,21 +127,21 @@ namespace odtools {
             if (m_recFileValid) {
                 // Compute throughput for reading from file.
                 m_containerReadFromFileThroughput = std::ceil(m_index.size()*1000.0*1000.0/(AFTER-BEFORE).toMicroseconds());
-                clog << "[Player2]: " << m_url.getResource() << " contains " << m_index.size() << " entries; read " << totalBytesRead << " bytes (" << m_containerReadFromFileThroughput << " entries/s)." << endl;
 
-                m_recFile.clear();
-                m_recFile.seekg(0, ios::beg);
-                resetDependingCaches();
+                clog << "[Player2]: " << m_url.getResource()
+                                      << " contains " << m_index.size() << " entries; "
+                                      << "read " << totalBytesRead << " bytes ("
+                                      << m_containerReadFromFileThroughput << " entries/s)." << endl;
             }
         }
 
-        void Player2::resetDependingCaches() {
+        void Player2::resetCaches() {
             if (m_recFileValid) {
                 m_delay = 0;
                 m_numberOfAvailableEntries = 0;
                 m_containerCache.clear();
 
-                // Point to first entry.
+                // Point to first entry in index.
                 m_nextEntryToReadFromFile
                     = m_previousContainerAlreadyReplayed
                     = m_currentContainerToReplay
@@ -165,7 +164,7 @@ namespace odtools {
                 const uint8_t LOOK_AHEAD_IN_S = 10 * 3;
                 clog << "[Player2]: Reading " << ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY * LOOK_AHEAD_IN_S << " entries initially." << endl;
 
-                resetDependingCaches();
+                resetCaches();
                 fillContainerCache(ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY * LOOK_AHEAD_IN_S);
             }
         }

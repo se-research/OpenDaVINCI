@@ -130,7 +130,7 @@ namespace odtools {
                 /**
                  * This method clears the depending caches and resets the iterators.
                  */
-                void resetDependingCaches();
+                void resetCaches();
 
                 void fillContainerCache(const uint32_t &maxNumberOfEntriesToReadFromFile);
 
