@@ -69,7 +69,7 @@ namespace odtools {
             m_firstTimePointReturningAContainer(),
             m_numberOfReturnedContainersInTotal(0),
             m_containerReplayThroughput(0),
-            m_asynchronousRecFileReaderMutex(false),
+            m_asynchronousRecFileReaderInUse(false),
             m_asynchronousRecFileReader(),
             m_delay(0),
             m_containerCache() {
@@ -112,12 +112,10 @@ namespace odtools {
                         m_index.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(),
                                                        IndexEntry(c.getSampleTimeStamp().toMicroseconds(), POS_BEFORE)));
 
-                        {
-                            int32_t percentage = static_cast<int32_t>(static_cast<float>(m_recFile.tellg()*100.0)/static_cast<float>(fileLength));
-                            if ( (percentage % 5 == 0) && (percentage != oldPercentage) ) {
-                                clog << "[Player2]: Processed " << percentage << "%." << endl;
-                                oldPercentage = percentage;
-                            }
+                        const int32_t percentage = static_cast<int32_t>(static_cast<float>(m_recFile.tellg()*100.0)/static_cast<float>(fileLength));
+                        if ( (percentage % 5 == 0) && (percentage != oldPercentage) ) {
+                            clog << "[Player2]: Processed " << percentage << "%." << endl;
+                            oldPercentage = percentage;
                         }
                     }
                 }
@@ -164,12 +162,11 @@ namespace odtools {
                 }
 
                 const uint32_t ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY = std::ceil(m_index.size()*(static_cast<float>(Player2::ONE_SECOND_IN_MICROSECONDS))/(largestSampleTimePoint - smallestSampleTimePoint));
-                const uint8_t LOOK_AHEAD_IN_S = 10;
-                clog << "[Player2]: Reading " << ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY * LOOK_AHEAD_IN_S << " entries initially." << endl;
+                clog << "[Player2]: Reading " << ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY * Player2::LOOK_AHEAD_IN_S << " entries initially." << endl;
 
                 resetCaches();
                 resetIterators();
-                fillContainerCache(ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY * LOOK_AHEAD_IN_S);
+                fillContainerCache(ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY * Player2::LOOK_AHEAD_IN_S);
             }
         }
 
@@ -208,7 +205,7 @@ namespace odtools {
 
             {
                 Lock l(m_indexMutex);
-                m_asynchronousRecFileReaderMutex = false;
+                m_asynchronousRecFileReaderInUse = false;
             }
         }
 
@@ -236,20 +233,19 @@ namespace odtools {
 
             {
                 // TODO: Cache management.
-                const uint8_t LOOK_AHEAD_IN_S = 10;
-                if ( (m_containerReplayThroughput * LOOK_AHEAD_IN_S) > m_numberOfAvailableEntries) {
+                if ( (m_containerReplayThroughput * Player2::LOOK_AHEAD_IN_S) > m_numberOfAvailableEntries) {
 
                     // Parallel filling of container cache.
                     {
                         Lock l(m_indexMutex);
-                        if (!m_asynchronousRecFileReaderMutex) {
-                            m_asynchronousRecFileReaderMutex = true;
-                            m_asynchronousRecFileReader = std::async(std::launch::async, &Player2::fillContainerCache, this, m_containerReplayThroughput * LOOK_AHEAD_IN_S * 3);
+                        if (!m_asynchronousRecFileReaderInUse) {
+                            m_asynchronousRecFileReaderInUse = true;
+                            m_asynchronousRecFileReader = std::async(std::launch::async, &Player2::fillContainerCache, this, m_containerReplayThroughput * Player2::LOOK_AHEAD_IN_S * 3);
                         }
                     }
 
                     // Sequential filling of container cache.
-//                    fillContainerCache(m_containerReplayThroughput * LOOK_AHEAD_IN_S * 3);
+//                    fillContainerCache(m_containerReplayThroughput * Player2::LOOK_AHEAD_IN_S * 3);
                 }
             }
 
