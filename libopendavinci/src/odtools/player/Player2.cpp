@@ -153,14 +153,12 @@ namespace odtools {
             if (m_recFileValid && (m_index.size() > 0) ) {
                 int64_t smallestSampleTimePoint = numeric_limits<int64_t>::max();
                 int64_t largestSampleTimePoint = numeric_limits<int64_t>::min();
-                {
-                    for (auto it = m_index.begin(); it != m_index.end(); it++) {
-                        smallestSampleTimePoint = (smallestSampleTimePoint > it->first) ? it->first : smallestSampleTimePoint;
-                        largestSampleTimePoint = (largestSampleTimePoint < it->first) ? it->first : largestSampleTimePoint;
-                    }
+                for (auto it = m_index.begin(); it != m_index.end(); it++) {
+                    smallestSampleTimePoint = std::min(smallestSampleTimePoint, it->first);
+                    largestSampleTimePoint = std::max(largestSampleTimePoint, it->first);
                 }
-                const uint32_t ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY = std::ceil(m_index.size()*(1000.0*1000.0)/(largestSampleTimePoint - smallestSampleTimePoint));
 
+                const uint32_t ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY = std::ceil(m_index.size()*(1000.0*1000.0)/(largestSampleTimePoint - smallestSampleTimePoint));
                 const uint8_t LOOK_AHEAD_IN_S = 10 * 3;
                 clog << "[Player2]: Reading " << ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY * LOOK_AHEAD_IN_S << " entries initially." << endl;
 
