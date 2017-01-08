@@ -1,7 +1,7 @@
 /**
  * odcomparepointcloud - Tool for comparing data between shared point cloud and 
  * compact point cloud
- * Copyright (C) 2016 Hang
+ * Copyright (C) 2017 Hang
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,9 +18,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "ComparePointCloud.h"
+#include "ComparePointCloudModule.h"
 
 int32_t main(int32_t argc, char **argv) {
-    odcomparepointcloud::ComparePointCloud cppc;
-    return cppc.run(argc, argv);
+    odcomparepointcloud::ComparePointCloudModule cppc(argc, argv);
+    return cppc.runModule();
 }

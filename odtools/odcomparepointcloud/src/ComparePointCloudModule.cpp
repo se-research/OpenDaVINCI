@@ -1,7 +1,7 @@
 /**
- * odcomparepointcloud - Tool for comparing data between shared point cloud and 
+ * odComparePointCloudModule - Tool for comparing data between shared point cloud and 
  * compact point cloud
- * Copyright (C) 2016 Hang
+ * Copyright (C) 2017 Hang
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,8 +28,9 @@
 #include "opendavinci/odtools/player/Player.h"
 #include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
 
-#include "ComparePointCloud.h"
+#include "ComparePointCloudModule.h"
 
 namespace odcomparepointcloud {
 
@@ -37,7 +38,8 @@ namespace odcomparepointcloud {
     using namespace odcore::data;
     using namespace odtools::player;
 
-    ComparePointCloud::ComparePointCloud() :
+    ComparePointCloudModule::ComparePointCloudModule(const int32_t &argc, char **argv) :
+        TimeTriggeredConferenceClientModule(argc, argv, "ComparePointCloud"),
         m_CPCfound(false),
         m_SPCfound(false),
         m_frameNumber(0),
@@ -55,6 +57,8 @@ namespace odcomparepointcloud {
         m_yError(),
         m_zError(),
         m_outputData("output.csv", std::ios_base::app | std::ios_base::out),
+        m_cpcFrame("cpcFrame.csv", std::ios_base::app | std::ios_base::out),
+        m_spcFrame("spcFrame.csv", std::ios_base::app | std::ios_base::out),
         m_allFrames(false),
         m_chosenFrame(0){
             //The vertical angles sorted by sensor IDs from 0 to 15 according to the data sheet
@@ -98,9 +102,16 @@ namespace odcomparepointcloud {
             }
         }
 
-    ComparePointCloud::~ComparePointCloud() {}
+    ComparePointCloudModule::~ComparePointCloudModule() {}
     
-    void ComparePointCloud::parseAdditionalCommandLineParameters(const int &argc, char **argv) {
+    void ComparePointCloudModule::setUp() {
+        m_allFrames = getKeyValueConfiguration().getValue< uint16_t >("ComparePointCloud.compareAllFrames") == 1;
+        m_chosenFrame = getKeyValueConfiguration().getValue< uint64_t >("ComparePointCloud.Frame");
+    }
+
+    void ComparePointCloudModule::tearDown() {}
+    
+    /*void ComparePointCloudModule::parseAdditionalCommandLineParameters(const int &argc, char **argv) {
         odcore::base::CommandLineParser cmdParser;
         cmdParser.addCommandLineArgument("frame");
         cmdParser.parse(argc, argv);
@@ -121,9 +132,9 @@ namespace odcomparepointcloud {
             cerr<<"Please indicate a frame number to compare. Specify it with --frame."<<endl;
         }
 
-    }
+    }*/
     
-    void ComparePointCloud::readCPC(Container &c){
+    void ComparePointCloudModule::readCPC(Container &c){
         m_cpc = c.getData<CompactPointCloud>();  
         float startAzimuth = m_cpc.getStartAzimuth();
         float endAzimuth = m_cpc.getEndAzimuth();
@@ -157,7 +168,7 @@ namespace odcomparepointcloud {
         }
     }
     
-    void ComparePointCloud::readSPC(Container &c){
+    void ComparePointCloudModule::readSPC(Container &c){
         m_spc = c.getData<SharedPointCloud>();
         if (!m_hasAttachedToSharedImageMemory) {
             m_spcSharedMemory=odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(m_spc.getName()); // Attach the shared point cloud to the shared memory.
@@ -177,7 +188,7 @@ namespace odcomparepointcloud {
         }
     }
     
-    inline void ComparePointCloud::clearVectors(){
+    inline void ComparePointCloudModule::clearVectors(){
         m_xCpc.clear();
         m_yCpc.clear();
         m_zCpc.clear();
@@ -188,11 +199,8 @@ namespace odcomparepointcloud {
         m_yError.clear();
         m_zError.clear();
     }
-
-    int32_t ComparePointCloud::run(const int32_t &argc, char **argv) {
-        // Parse command line arguments.
-        parseAdditionalCommandLineParameters(argc, argv);
-        
+    
+    odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode ComparePointCloudModule::body() {
         odcore::io::URL url("file://recording.rec");
         unique_ptr<Player> player;
         //player = unique_ptr<Player>(new Player(url, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING));
@@ -213,18 +221,18 @@ namespace odcomparepointcloud {
             cout<<m_frameNumber<<endl;
             cout<<spcFrameNumber<<endl;
             return 0;*/
-             while (player->hasMoreData() && m_frameNumber<3000){
-                c = player->getNextContainerToBeSent();
-                if(c.getDataType() == odcore::data::SharedPointCloud::ID()){
+            while (player->hasMoreData() && m_frameNumber<3000){
+               c = player->getNextContainerToBeSent();
+               if(c.getDataType() == odcore::data::SharedPointCloud::ID()){
                     readSPC(c);
                     m_frameNumber++;
                 }  
-                
+                 
                 c = player->getNextContainerToBeSent();
                 if(c.getDataType() == odcore::data::CompactPointCloud::ID()){
                     readCPC(c);
                 }  
-                    
+                     
                 float error_x,error_y,error_z;
                 uint32_t spc_index=0;
                 for(uint32_t cpc_index=0;cpc_index<m_xCpc.size();cpc_index++){
@@ -238,7 +246,7 @@ namespace odcomparepointcloud {
                         spc_index++;
                     }
                 }
-                
+                 
                 float max_xError=m_xError[0];
                 float sum_xError=0.0;
                 for(float i : m_xError){
@@ -248,7 +256,7 @@ namespace odcomparepointcloud {
                     }
                 }
                 float avg_xError=sum_xError/m_xError.size();
-                
+               
                 float max_yError=m_yError[0];
                 float sum_yError=0.0;
                 for(float i : m_yError){
@@ -278,75 +286,80 @@ namespace odcomparepointcloud {
                 }
                 clearVectors();   
             }
-            return 0;
         }
-        
-        
-        /*if(player->hasMoreData()){
-            //CPC has one more frame than SPC. Discard the first frame of CPC
-            c = player->getNextContainerToBeSent();
-        }*/
-        uint64_t currentFrame=0;
-        while(player->hasMoreData() && currentFrame<m_chosenFrame){
-            c = player->getNextContainerToBeSent();
-            c = player->getNextContainerToBeSent();
-            currentFrame++;
-        }
-        
-        if(currentFrame<m_chosenFrame){
-            cerr<<"The chosen frame number is too large for the recording. Choose a smaller frame."<<endl;
-            return -1;
-        }
-
-        //Compare x, y, z of the chosen frame between CPC and SPC
-        c = player->getNextContainerToBeSent();
-        if(c.getDataType() == odcore::data::SharedPointCloud::ID()){
-            readSPC(c);
-        }  
-        cout<<"Number of points of Frame "<<m_chosenFrame<<" of SPC:"<<m_xSpc.size()<<endl;
-        
-        c = player->getNextContainerToBeSent();
-        if(c.getDataType() == odcore::data::CompactPointCloud::ID()){
-            readCPC(c);
-        }  
-        cout<<"Number of points of Frame "<<m_chosenFrame<<" of CPC:"<<m_xCpc.size()<<endl;
+        else{
+            /*if(player->hasMoreData()){
+                //CPC has one more frame than SPC. Discard the first frame of CPC
+                c = player->getNextContainerToBeSent();
+            }*/
+            uint64_t currentFrame=0;
+            while(player->hasMoreData() && currentFrame<m_chosenFrame){
+                c = player->getNextContainerToBeSent();
+                c = player->getNextContainerToBeSent();
+                currentFrame++;
+            }
             
-        cout<<"The first 20 points of CPC:"<<endl;
-        for(uint32_t index=0;index<20;index++){
-            cout<<m_xCpc[index]<<","<<m_yCpc[index]<<","<<m_zCpc[index]<<endl;   
-        }
-        
-        cout<<"The first 20 points of SPC:"<<endl;
-        for(uint32_t index=0;index<20;index++){
-            cout<<m_xSpc[index]<<","<<m_ySpc[index]<<","<<m_zSpc[index]<<endl;   
-        }
-            
-        float error_x,error_y,error_z;
-        uint32_t spc_index=0;
-        for(uint32_t cpc_index=0;cpc_index<m_xCpc.size();cpc_index++){
-            error_x=abs(m_xCpc[cpc_index]-m_xSpc[spc_index]);
-            error_y=abs(m_yCpc[cpc_index]-m_ySpc[spc_index]);
-            error_z=abs(m_zCpc[cpc_index]-m_zSpc[spc_index]);
-            //For the same point in CPC and SPC, the difference in z should be smaller
-            //than 0.003
-            //Max distance error: 0.8cm (original integer value divided by 5 to get cm
-            //while storing CPC), i.e., 0.008m. Hence, the maximum difference in z should
-            //be 0.008 * sin(verticalAngle * toRadian), while verticalAngle is from -15 to 
-            //15 with increment 2
-            if(error_z<0.003){
-                m_outputData<<error_x<<","<<error_y<<","<<error_z<<endl;
-                spc_index++;
+            if(currentFrame<m_chosenFrame){
+                cerr<<"The chosen frame number is too large for the recording. Choose a smaller frame."<<endl;
+            }
+            else{
+                //Compare x, y, z of the chosen frame between CPC and SPC
+                c = player->getNextContainerToBeSent();
+                if(c.getDataType() == odcore::data::SharedPointCloud::ID()){
+                    readSPC(c);
+                    getConference().send(c);
+                }  
+                cout<<"Number of points of Frame "<<m_chosenFrame<<" of SPC:"<<m_xSpc.size()<<endl;
+                
+                c = player->getNextContainerToBeSent();
+                if(c.getDataType() == odcore::data::CompactPointCloud::ID()){
+                    readCPC(c);
+                    getConference().send(c);
+                }  
+                cout<<"Number of points of Frame "<<m_chosenFrame<<" of CPC:"<<m_xCpc.size()<<endl;
+                
+                cout<<"CPC points:"<<m_xCpc.size()<<endl;
+                cout<<"SPC points:"<<m_xSpc.size()<<endl;
+                //cout<<"The first 20 points of CPC:"<<endl;
+                for(uint64_t index=0;index<m_xCpc.size();index++){
+                    m_cpcFrame<<m_xCpc[index]<<","<<m_yCpc[index]<<","<<m_zCpc[index]<<endl;   
+                }
+                
+                //cout<<"The first 20 points of SPC:"<<endl;
+                for(uint64_t index=0;index<m_xSpc.size();index++){
+                    m_spcFrame<<m_xSpc[index]<<","<<m_ySpc[index]<<","<<m_zSpc[index]<<endl;   
+                }
+                    
+                float error_x,error_y,error_z;
+                uint32_t spc_index=0;
+                for(uint32_t cpc_index=0;cpc_index<m_xCpc.size();cpc_index++){
+                    error_x=abs(m_xCpc[cpc_index]-m_xSpc[spc_index]);
+                    error_y=abs(m_yCpc[cpc_index]-m_ySpc[spc_index]);
+                    error_z=abs(m_zCpc[cpc_index]-m_zSpc[spc_index]);
+                    //For the same point in CPC and SPC, the difference in z should be smaller
+                    //than 0.003
+                    //Max distance error: 0.8cm (original integer value divided by 5 to get cm
+                    //while storing CPC), i.e., 0.008m. Hence, the maximum difference in z should
+                    //be 0.008 * sin(verticalAngle * toRadian), while verticalAngle is from -15 to 
+                    //15 with increment 2
+                    if(error_z<0.003){
+                        m_outputData<<error_x<<","<<error_y<<","<<error_z<<endl;
+                        spc_index++;
+                    }
+                }
+                
+                m_xCpc.clear();
+                m_yCpc.clear();
+                m_zCpc.clear();
+                m_xSpc.clear();
+                m_ySpc.clear();
+                m_zSpc.clear();  
             }
         }
         
-        m_xCpc.clear();
-        m_yCpc.clear();
-        m_zCpc.clear();
-        m_xSpc.clear();
-        m_ySpc.clear();
-        m_zSpc.clear();  
+        while (getModuleStateAndWaitForRemainingTimeInTimeslice() ==  odcore::data::dmcp::ModuleStateMessage::RUNNING){} 
         
-        return 0;
+        return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
     }
 
 } // odcomparepointcloud
