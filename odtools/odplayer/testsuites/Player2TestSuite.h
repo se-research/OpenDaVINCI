@@ -535,7 +535,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
             UNLINK("PlayerModule2Test2.rec");
         }
 
-        void notestLargeFile() {
+        void testLargeFile() {
             cout << __FILE__ << " " << __LINE__ << endl;
             const URL u("file://test.rec");
 
