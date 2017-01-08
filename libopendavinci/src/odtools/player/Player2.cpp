@@ -159,14 +159,13 @@ namespace odtools {
                 }
 
                 const uint32_t ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY = std::ceil(m_index.size()*(1000.0*1000.0)/(largestSampleTimePoint - smallestSampleTimePoint));
-                const uint8_t LOOK_AHEAD_IN_S = 10 * 3;
+                const uint8_t LOOK_AHEAD_IN_S = 10;
                 clog << "[Player2]: Reading " << ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY * LOOK_AHEAD_IN_S << " entries initially." << endl;
 
                 resetCaches();
                 fillContainerCache(ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY * LOOK_AHEAD_IN_S);
             }
         }
-
 
         void Player2::fillContainerCache(const uint32_t &maxNumberOfEntriesToReadFromFile) {
             if (m_recFileValid) {
@@ -199,7 +198,7 @@ namespace odtools {
                 }
 
                 if (entriesReadFromFile > 0) {
-                    clog << "[Player2]: " << entriesReadFromFile << " entries read." << endl;
+                    clog << "[Player2]: " << entriesReadFromFile << " entries stored in cache." << endl;
                 }
             }
 
@@ -235,12 +234,17 @@ namespace odtools {
                 // TODO: Cache management.
                 const uint8_t LOOK_AHEAD_IN_S = 10;
                 if ( (m_containerReplayThroughput * LOOK_AHEAD_IN_S) > m_numberOfAvailableEntries) {
-                    Lock l(m_indexMutex);
-                    if (!m_readingRequested) {
-                        m_readingRequested = true;
-                        m_asynchronousReadingFromRecFile = std::async(std::launch::async, &Player2::fillContainerCache, this, m_containerReplayThroughput * LOOK_AHEAD_IN_S * 3);
+
+                    // Parallel filling of container cache.
+                    {
+                        Lock l(m_indexMutex);
+                        if (!m_readingRequested) {
+                            m_readingRequested = true;
+                            m_asynchronousReadingFromRecFile = std::async(std::launch::async, &Player2::fillContainerCache, this, m_containerReplayThroughput * LOOK_AHEAD_IN_S * 3);
+                        }
                     }
 
+                    // Sequential filling of container cache.
 //                    fillContainerCache(m_containerReplayThroughput * LOOK_AHEAD_IN_S * 3);
                 }
             }
@@ -279,7 +283,7 @@ if (++callCounter%1000 == 0) {
         uint32_t Player2::getDelay() const {
             Lock l(m_indexMutex);
             // Make sure that delay is not exceeding 10s.
-            return std::min<uint32_t>(m_delay, 10*1000*1000);
+            return std::min<uint32_t>(m_delay, 5*1000*1000);
         }
 
         void Player2::rewind() {
