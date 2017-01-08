@@ -223,7 +223,6 @@ namespace odtools {
         }
 
         const odcore::data::Container& Player2::getNextContainerToBeSentNoCopy() throw (odcore::exceptions::ArrayIndexOutOfBoundsException) {
-//            static uint8_t callCounter = 0;
             TimeStamp thisTimePointCallingThisMethod;
 
             checkForEndOfIndexAndThrowExceptionOrAutoRewind();
@@ -247,16 +246,22 @@ namespace odtools {
             }
 
             if (!m_currentContainerToReplay->second.m_available) {
-                cerr << "[Player2]: This should not happen." << endl;
-
-                // Wait for asynchronous reading that might be started.
-                try { m_asynchronousRecFileReader.wait(); } catch(...) {}
-
-                auto backup = m_nextEntryToReadFromFile;
-                while (!m_currentContainerToReplay->second.m_available) {
-                    fillContainerCache(1);
+                {
+                    Lock l(m_indexMutex);
+                    if (!m_asynchronousRecFileReaderInUse) {
+                        // Wait for asynchronous reading that might be started.
+                        try { m_asynchronousRecFileReader.wait(); } catch(...) {}
+                    }
                 }
-                m_nextEntryToReadFromFile = backup;
+
+                if (!m_currentContainerToReplay->second.m_available) {
+                    cerr << "[Player2]: This should not happen." << endl;
+                    auto backup = m_nextEntryToReadFromFile;
+                    while (!m_currentContainerToReplay->second.m_available) {
+                        fillContainerCache(1);
+                    }
+                    m_nextEntryToReadFromFile = backup;
+                }
             }
 
             Lock l(m_indexMutex);
@@ -279,13 +284,6 @@ namespace odtools {
 
             const uint64_t ELAPSED = (thisTimePointCallingThisMethod - m_firstTimePointReturningAContainer).toMicroseconds();
             m_containerReplayThroughput = std::ceil(m_numberOfReturnedContainersInTotal*static_cast<float>(Player2::ONE_SECOND_IN_MICROSECONDS)/ELAPSED);
-
-///*<REMOVE ME>*/
-//if (++callCounter%1000 == 0) {
-//    cout << "Throughput = " << m_containerReplayThroughput << " containers/s." << endl;
-//    callCounter = 0;
-//}
-///*</REMOVE ME>*/
 
             return retVal;
         }
