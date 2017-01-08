@@ -41,10 +41,7 @@ namespace odtools {
         using namespace odcore::data;
         using namespace odcore::io;
 
-        IndexEntry::IndexEntry() :
-            m_sampleTimeStamp(0),
-            m_filePosition(0),
-            m_available(false) {}
+        IndexEntry::IndexEntry() : IndexEntry(0, 0) {}
 
         IndexEntry::IndexEntry(const int64_t &sampleTimeStamp, const uint32_t &filePosition) :
             m_sampleTimeStamp(sampleTimeStamp),
@@ -162,7 +159,7 @@ namespace odtools {
                 }
 
                 const uint32_t ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY = std::ceil(m_index.size()*(static_cast<float>(Player2::ONE_SECOND_IN_MICROSECONDS))/(largestSampleTimePoint - smallestSampleTimePoint));
-                clog << "[Player2]: Reading " << ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY * Player2::LOOK_AHEAD_IN_S << " entries initially." << endl;
+                clog << "[Player2]: Initializing cache with " << ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY * Player2::LOOK_AHEAD_IN_S << " entries." << endl;
 
                 resetCaches();
                 resetIterators();
@@ -199,7 +196,7 @@ namespace odtools {
                     Lock l(m_indexMutex);
                     m_numberOfAvailableEntries += entriesReadFromFile;
 
-                    clog << "[Player2]: " << entriesReadFromFile << " entries stored in cache." << endl;
+                    clog << "[Player2]: " << entriesReadFromFile << " entries added to cache." << endl;
                 }
             }
 
@@ -226,7 +223,7 @@ namespace odtools {
         }
 
         const odcore::data::Container& Player2::getNextContainerToBeSentNoCopy() throw (odcore::exceptions::ArrayIndexOutOfBoundsException) {
-            static uint8_t callCounter = 0;
+//            static uint8_t callCounter = 0;
             TimeStamp thisTimePointCallingThisMethod;
 
             checkForEndOfIndexAndThrowExceptionOrAutoRewind();
@@ -283,12 +280,12 @@ namespace odtools {
             const uint64_t ELAPSED = (thisTimePointCallingThisMethod - m_firstTimePointReturningAContainer).toMicroseconds();
             m_containerReplayThroughput = std::ceil(m_numberOfReturnedContainersInTotal*static_cast<float>(Player2::ONE_SECOND_IN_MICROSECONDS)/ELAPSED);
 
-/*<REMOVE ME>*/
-if (++callCounter%1000 == 0) {
-    cout << "Throughput = " << m_containerReplayThroughput << " containers/s." << endl;
-    callCounter = 0;
-}
-/*</REMOVE ME>*/
+///*<REMOVE ME>*/
+//if (++callCounter%1000 == 0) {
+//    cout << "Throughput = " << m_containerReplayThroughput << " containers/s." << endl;
+//    callCounter = 0;
+//}
+///*</REMOVE ME>*/
 
             return retVal;
         }
