@@ -55,7 +55,8 @@ namespace odtools {
         class OPENDAVINCI_API Player2 {
             private:
                 enum {
-                    MAX_DELAY_IN_MICROSECONDS = 5 * 1000 * 1000,
+                    ONE_SECOND_IN_MICROSECONDS = 1000 *1000,
+                    MAX_DELAY_IN_MICROSECONDS = 5 * ONE_SECOND_IN_MICROSECONDS,
                 };
 
             private:
@@ -196,9 +197,9 @@ namespace odtools {
                 uint64_t m_numberOfReturnedContainersInTotal;
                 float m_containerReplayThroughput;
 
-
-bool m_asynchronousRecFileReaderMutex;
-std::future<void> m_asynchronousRecFileReader;
+                // The following "Mutex" prevents Player2 from starting more than one thread.
+                bool m_asynchronousRecFileReaderMutex;
+                std::future<void> m_asynchronousRecFileReader;
 
                 uint32_t m_delay;
 
