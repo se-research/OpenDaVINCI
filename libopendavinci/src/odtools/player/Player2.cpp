@@ -121,19 +121,27 @@ namespace odtools {
 
             // Reset pointer to beginning of the .rec file.
             if (m_recFileValid) {
+                // Compute throughput for reading from file.
+                m_containerReadFromFileThroughput = std::ceil(m_index.size()*1000.0*1000.0/(AFTER-BEFORE).toMicroseconds());
+                clog << "[Player2]: " << m_url.getResource() << " contains " << m_index.size() << " entries; read " << totalBytesRead << " bytes (" << m_containerReadFromFileThroughput << " entries/s)." << endl;
+
                 m_recFile.clear();
                 m_recFile.seekg(0, ios::beg);
+                resetDependingCaches();
+            }
+        }
+
+        void Player2::resetDependingCaches() {
+            if (m_recFileValid) {
+                m_delay = 0;
+                m_numberOfAvailableEntries = 0;
+                m_containerCache.clear();
 
                 // Point to first entry.
                 m_nextEntryToReadFromFile
                     = m_previousContainerAlreadyReplayed
                     = m_currentContainerToReplay
                     = m_index.begin();
-
-                // Compute throughput for reading from file.
-                m_containerReadFromFileThroughput = std::ceil(m_index.size()*1000.0*1000.0/(AFTER-BEFORE).toMicroseconds());
-
-                clog << "[Player2]: " << m_url.getResource() << " contains " << m_index.size() << " entries; read " << totalBytesRead << " bytes (" << m_containerReadFromFileThroughput << " entries/s)." << endl;
             }
         }
 
@@ -152,6 +160,7 @@ namespace odtools {
                 const uint8_t LOOK_AHEAD_IN_S = 10 * 3;
                 clog << "[Player2]: Reading " << ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY * LOOK_AHEAD_IN_S << " entries initially." << endl;
 
+                resetDependingCaches();
                 fillContainerCache(ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY * LOOK_AHEAD_IN_S);
             }
         }
@@ -163,7 +172,6 @@ namespace odtools {
                 m_recFile.clear();
 
                 uint32_t entriesReadFromFile = 0;
-// TODO: Add Auto Rewind
                 while ( (m_nextEntryToReadFromFile != m_index.end())
                      && (entriesReadFromFile < maxNumberOfEntriesToReadFromFile) ) {
                     // Move to corresponding position in the .rec file.
@@ -225,19 +233,19 @@ namespace odtools {
                 // TODO: Cache management.
                 const uint8_t LOOK_AHEAD_IN_S = 10;
                 if ( (m_containerReplayThroughput * LOOK_AHEAD_IN_S) > m_numberOfAvailableEntries) {
-                    Lock l(m_indexMutex);
-                    if (!m_readingRequested) {
-                        m_readingRequested = true;
-                        handle = std::async(std::launch::async, &Player2::fillContainerCache, this, m_containerReplayThroughput * LOOK_AHEAD_IN_S * 3);
-                    }
+//                    Lock l(m_indexMutex);
+//                    if (!m_readingRequested) {
+//                        m_readingRequested = true;
+//                        handle = std::async(std::launch::async, &Player2::fillContainerCache, this, m_containerReplayThroughput * LOOK_AHEAD_IN_S * 3);
+//                    }
 
-//                    fillContainerCache(m_containerReplayThroughput * LOOK_AHEAD_IN_S * 3);
+                    fillContainerCache(m_containerReplayThroughput * LOOK_AHEAD_IN_S * 3);
                 }
             }
 
             Lock l(m_indexMutex);
             const Container &retVal = m_containerCache[m_currentContainerToReplay->second.m_filePosition];
-            m_delay = retVal.getSampleTimeStamp().toMicroseconds() - m_containerCache[m_previousContainerAlreadyReplayed->second.m_filePosition].getSampleTimeStamp().toMicroseconds();
+            m_delay = m_currentContainerToReplay->first - m_previousContainerAlreadyReplayed->first;
 
             // TODO: Delegate deleting into own thread.
             if (m_previousPreviousContainerAlreadyReplayed != m_index.end()) {
@@ -273,6 +281,8 @@ if (++callCounter%1000 == 0) {
         }
 
         void Player2::rewind() {
+            computeInitialCacheLevelAndFillCache();
+
             Lock l(m_indexMutex);
             m_previousContainerAlreadyReplayed = m_currentContainerToReplay = m_index.begin();
         }
