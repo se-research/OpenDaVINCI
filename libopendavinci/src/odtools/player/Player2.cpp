@@ -233,13 +233,13 @@ namespace odtools {
                 // TODO: Cache management.
                 const uint8_t LOOK_AHEAD_IN_S = 10;
                 if ( (m_containerReplayThroughput * LOOK_AHEAD_IN_S) > m_numberOfAvailableEntries) {
-//                    Lock l(m_indexMutex);
-//                    if (!m_readingRequested) {
-//                        m_readingRequested = true;
-//                        handle = std::async(std::launch::async, &Player2::fillContainerCache, this, m_containerReplayThroughput * LOOK_AHEAD_IN_S * 3);
-//                    }
+                    Lock l(m_indexMutex);
+                    if (!m_readingRequested) {
+                        m_readingRequested = true;
+                        handle = std::async(std::launch::async, &Player2::fillContainerCache, this, m_containerReplayThroughput * LOOK_AHEAD_IN_S * 3);
+                    }
 
-                    fillContainerCache(m_containerReplayThroughput * LOOK_AHEAD_IN_S * 3);
+//                    fillContainerCache(m_containerReplayThroughput * LOOK_AHEAD_IN_S * 3);
                 }
             }
 
@@ -281,6 +281,11 @@ if (++callCounter%1000 == 0) {
         }
 
         void Player2::rewind() {
+            try {
+                handle.wait();
+            }
+            catch(...) {}
+
             computeInitialCacheLevelAndFillCache();
 
             Lock l(m_indexMutex);
