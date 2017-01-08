@@ -163,6 +163,11 @@ namespace odtools {
                  */
                 inline void checkAvailabilityOfNextContainerToBeReplayed();
 
+                /**
+                 * This method manages the cache.
+                 */
+                inline void manageCache();
+
             private:
                 /**
                  * This method check if the Player has reached the end of the
