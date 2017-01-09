@@ -59,6 +59,7 @@ namespace odcomparepointcloud {
         m_outputData("output.csv", std::ios_base::app | std::ios_base::out),
         m_cpcFrame("cpcFrame.csv", std::ios_base::app | std::ios_base::out),
         m_spcFrame("spcFrame.csv", std::ios_base::app | std::ios_base::out),
+        m_recordingFile(""),
         m_allFrames(false),
         m_chosenFrame(0),
         m_currentFrame(0) {
@@ -106,8 +107,9 @@ namespace odcomparepointcloud {
     ComparePointCloudModule::~ComparePointCloudModule() {}
     
     void ComparePointCloudModule::setUp() {
+        m_recordingFile = getKeyValueConfiguration().getValue<string>("ComparePointCloud.recording");
         m_allFrames = getKeyValueConfiguration().getValue< uint16_t >("ComparePointCloud.compareAllFrames") == 1;
-        m_chosenFrame = getKeyValueConfiguration().getValue< uint64_t >("ComparePointCloud.Frame");
+        m_chosenFrame = getKeyValueConfiguration().getValue< uint64_t >("ComparePointCloud.frame");
     }
 
     void ComparePointCloudModule::tearDown() {}
@@ -202,7 +204,7 @@ namespace odcomparepointcloud {
     }
     
     odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode ComparePointCloudModule::body() {
-        odcore::io::URL url("file://recording.rec");
+        odcore::io::URL url("file://"+m_recordingFile);
         unique_ptr<Player> player;
         //player = unique_ptr<Player>(new Player(url, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING));
         player = unique_ptr<Player>(new Player(url, 0, 2800000, 20, false));

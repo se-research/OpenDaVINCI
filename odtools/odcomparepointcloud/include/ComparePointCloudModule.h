@@ -24,6 +24,7 @@
 #include <vector>
 #include <memory>
 #include <fstream>
+#include <string>
 
 #include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
 #include <opendavinci/odcore/opendavinci.h>
@@ -102,6 +103,7 @@ namespace odcomparepointcloud {
             float m_verticalAngles[16];
             uint16_t m_sensorOrderIndex[16];
             uint16_t m_16SortedDistances[16];
+            std::string m_recordingFile;
             bool m_allFrames;
             uint64_t m_chosenFrame;
             uint64_t m_currentFrame;
