@@ -60,7 +60,8 @@ namespace odcomparepointcloud {
         m_cpcFrame("cpcFrame.csv", std::ios_base::app | std::ios_base::out),
         m_spcFrame("spcFrame.csv", std::ios_base::app | std::ios_base::out),
         m_allFrames(false),
-        m_chosenFrame(0){
+        m_chosenFrame(0),
+        m_currentFrame(0) {
             //The vertical angles sorted by sensor IDs from 0 to 15 according to the data sheet
             m_verticalAngles[0] = -15.0;
             m_verticalAngles[1] = 1.0;
@@ -206,6 +207,8 @@ namespace odcomparepointcloud {
         //player = unique_ptr<Player>(new Player(url, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING));
         player = unique_ptr<Player>(new Player(url, 0, 2800000, 20, false));
         Container c;
+        Container cpcFrame;
+        Container spcFrame;
         
         if(m_allFrames){
             /*uint32_t spcFrameNumber=0;
@@ -292,29 +295,26 @@ namespace odcomparepointcloud {
                 //CPC has one more frame than SPC. Discard the first frame of CPC
                 c = player->getNextContainerToBeSent();
             }*/
-            uint64_t currentFrame=0;
-            while(player->hasMoreData() && currentFrame<m_chosenFrame){
+            while(player->hasMoreData() && m_currentFrame<m_chosenFrame){
                 c = player->getNextContainerToBeSent();
                 c = player->getNextContainerToBeSent();
-                currentFrame++;
+                m_currentFrame++;
             }
             
-            if(currentFrame<m_chosenFrame){
+            if(m_currentFrame<m_chosenFrame){
                 cerr<<"The chosen frame number is too large for the recording. Choose a smaller frame."<<endl;
             }
             else{
                 //Compare x, y, z of the chosen frame between CPC and SPC
-                c = player->getNextContainerToBeSent();
-                if(c.getDataType() == odcore::data::SharedPointCloud::ID()){
-                    readSPC(c);
-                    getConference().send(c);
+                spcFrame = player->getNextContainerToBeSent();
+                if(spcFrame.getDataType() == odcore::data::SharedPointCloud::ID()){
+                    readSPC(spcFrame);
                 }  
                 cout<<"Number of points of Frame "<<m_chosenFrame<<" of SPC:"<<m_xSpc.size()<<endl;
                 
-                c = player->getNextContainerToBeSent();
-                if(c.getDataType() == odcore::data::CompactPointCloud::ID()){
-                    readCPC(c);
-                    getConference().send(c);
+                cpcFrame = player->getNextContainerToBeSent();
+                if(cpcFrame.getDataType() == odcore::data::CompactPointCloud::ID()){
+                    readCPC(cpcFrame);
                 }  
                 cout<<"Number of points of Frame "<<m_chosenFrame<<" of CPC:"<<m_xCpc.size()<<endl;
                 
@@ -357,7 +357,12 @@ namespace odcomparepointcloud {
             }
         }
         
-        while (getModuleStateAndWaitForRemainingTimeInTimeslice() ==  odcore::data::dmcp::ModuleStateMessage::RUNNING){} 
+        while (getModuleStateAndWaitForRemainingTimeInTimeslice() ==  odcore::data::dmcp::ModuleStateMessage::RUNNING){
+            if(m_chosenFrame==m_currentFrame){
+                getConference().send(spcFrame);
+                getConference().send(cpcFrame);
+            }
+        } 
         
         return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
     }

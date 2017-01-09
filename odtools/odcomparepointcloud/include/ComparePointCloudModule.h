@@ -104,6 +104,7 @@ namespace odcomparepointcloud {
             uint16_t m_16SortedDistances[16];
             bool m_allFrames;
             uint64_t m_chosenFrame;
+            uint64_t m_currentFrame;
             //const float START_V_ANGLE = -15.0;//For each azimuth there are 16 points with unique vertical angles from -15 to 15 degrees
             //const float V_INCREMENT = 2.0;  //The vertical angle increment for the 16 points with the same azimuth is 2 degrees
     };
