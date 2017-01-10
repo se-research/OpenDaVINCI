@@ -337,32 +337,41 @@ namespace cockpit {
                     stringstream sstr(distances);
                     
                     glPushMatrix();
-                        glPointSize(1.0f); //set point size to 1 pixel
+                    // Translate the model.
+                    glTranslated(m_egoState.getPosition().getX(), m_egoState.getPosition().getY(), 0);
 
-                        glBegin(GL_POINTS); //starts drawing of points
-                            glColor3f(255.0f,255.0f,0.0);//Yellow color
+                    // Rotate the model using DEG (m_rotation is in RAD!).
+                    glRotated(/*m_egoState.getRotation().getX()*180.0 / cartesian::Constants::PI*/0, 1, 0, 0);
+                    glRotated(/*m_egoState.getRotation().getY()*180.0 / cartesian::Constants::PI*/0, 0, 1, 0);
+                    // Rotate around z-axis and turn by 10 DEG.
+                    glRotated(/*m_egoState.getRotation().getZ()*/ (m_egoState.getRotation().getAngleXY() + M_PI/2.0)*180.0 / cartesian::Constants::PI + 13.0, 0, 0, 1);
+                    
+                    glPointSize(1.0f); //set point size to 1 pixel
 
-                            const float toRadian = static_cast<float>(cartesian::Constants::PI) / 180.0f;
-                            uint16_t distance_integer(0);
-                            float xyDistance = 0, xData = 0, yData = 0, zData = 0;
-                            float azimuth = startAzimuth;
-                            for (uint32_t azimuthIndex = 0; azimuthIndex < numberOfAzimuths; azimuthIndex++) {
-                                float verticalAngle = START_V_ANGLE;
-                                for (uint8_t sensorIndex = 0; sensorIndex<entriesPerAzimuth; sensorIndex++) {
-                                    sstr.read((char*)(&distance_integer), 2); // Read distance value from the string in a CPC container point by point
-                                    const float distance = static_cast<float>(distance_integer/100.0f); //convert cm to meter
-                                    // Compute x, y, z coordinate based on distance, azimuth, and vertical angle
-                                    xyDistance = distance * cos(verticalAngle * toRadian);
-                                    xData = xyDistance * sin(azimuth * toRadian);
-                                    yData = xyDistance * cos(azimuth * toRadian);
-                                    zData = distance * sin(verticalAngle * toRadian);
-                                    glVertex3f(xData,yData,zData);//Plot the point
-                                    verticalAngle += V_INCREMENT;
-                                }
-                                azimuth+=azimuthIncrement;
+                    glBegin(GL_POINTS); //starts drawing of points
+                        glColor3f(255.0f,255.0f,0.0);//Yellow color
+
+                        const float toRadian = static_cast<float>(cartesian::Constants::PI) / 180.0f;
+                        uint16_t distance_integer(0);
+                        float xyDistance = 0, xData = 0, yData = 0, zData = 0;
+                        float azimuth = startAzimuth;
+                        for (uint32_t azimuthIndex = 0; azimuthIndex < numberOfAzimuths; azimuthIndex++) {
+                            float verticalAngle = START_V_ANGLE;
+                            for (uint8_t sensorIndex = 0; sensorIndex<entriesPerAzimuth; sensorIndex++) {
+                                sstr.read((char*)(&distance_integer), 2); // Read distance value from the string in a CPC container point by point
+                                const float distance = static_cast<float>(distance_integer/500.0f); //convert to meter from resolution 2mm
+                                // Compute x, y, z coordinate based on distance, azimuth, and vertical angle
+                                xyDistance = distance * cos(verticalAngle * toRadian);
+                                xData = xyDistance * sin(azimuth * toRadian);
+                                yData = xyDistance * cos(azimuth * toRadian);
+                                zData = distance * sin(verticalAngle * toRadian);
+                                glVertex3f(xData,yData,zData);//Plot the point
+                                verticalAngle += V_INCREMENT;
                             }
+                            azimuth+=azimuthIncrement;
+                        }
 
-                        glEnd(); //end drawing of points
+                    glEnd(); //end drawing of points
                     glPopMatrix(); 
                 }
             }
