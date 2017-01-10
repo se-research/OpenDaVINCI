@@ -19,6 +19,8 @@
 
 #include <fcntl.h>
 
+#include <cstring>
+
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -91,7 +93,8 @@ namespace automotive {
             return (m_handle != NULL);
         }
 
-        void CANDevice::write(const GenericCANMessage &gcm) {
+        int CANDevice::write(const GenericCANMessage &gcm) {
+            int errorCode = 0;
             Lock l(m_handleMutex);
             if (m_handle != NULL) {
                 TPCANMsg msg;
@@ -104,10 +107,16 @@ namespace automotive {
                     msg.DATA[LENGTH-1-i] = (data & 0xFF);
                     data = data >> 8;
                 }
-                int32_t errorCode = CAN_Write(m_handle, &msg);
+                errorCode = CAN_Write(m_handle, &msg);
 
-                CLOG1 << "[CANDevice] Writing ID = " << msg.ID << ", LEN = " << +msg.LEN << ", errorCode = " << errorCode << endl;
+                if (0 == errorCode) {
+                    CLOG1 << "[CANDevice] Writing ID = " << msg.ID << ", LEN = " << +msg.LEN << ", errorCode = " << errorCode << endl;
+                }
+                else {
+                    CLOG1 << "[CANDevice] Writing ID = " << msg.ID << ", LEN = " << +msg.LEN << ", errorCode = " << errorCode << ", strerror(" << errno << "): '" << strerror(errno) << "'" << endl;
+                }
             }
+            return errorCode;
         }
 
         void CANDevice::beforeStop() {}
@@ -129,10 +138,6 @@ namespace automotive {
                           m_deviceDriverStartTime.toMicroseconds()
                         + (message.dwTime * 1000 + message.wUsec);
                     const TimeStamp absoluteDriverTimeStamp(TIME_IN_MICROSECONDS / 1000000L, TIME_IN_MICROSECONDS % 1000000L);
-//{
-//    TimeStamp now;
-//    cout << "dwTime = " << message.dwTime << ", message.wUsec = " << message.wUsec << ", TIM = " << TIME_IN_MICROSECONDS << ", ABS = " << absoluteDriverTimeStamp.toString() << endl << " hr = " << absoluteDriverTimeStamp.getYYYYMMDD_HHMMSSms() << endl << " nw = " << now.getYYYYMMDD_HHMMSSms() << endl;
-//}
 
                     // Create generic CAN message representation.
                     GenericCANMessage gcm;
