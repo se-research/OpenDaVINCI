@@ -44,6 +44,11 @@ class Cache {
             m_cacheMutex(),
             m_cache() {}
 
+        int size() {
+            Lock l(m_cacheMutex);
+            return m_cache.size();
+        }
+
         void enter(const int &v) {
             Lock l(m_cacheMutex);
             m_cache.push_front(v);
@@ -110,10 +115,11 @@ class ConsumerService : public Service {
                 }
                 i++;
 
-                cout << "CS: " <<  m_cache.leave() << endl;
+                cout << "CS: size = " << m_cache.size();
+                cout << " v = " <<  m_cache.leave() << endl;
 
                 // Yield other threads.
-                Thread::usleepFor(0.5*1000*1000);
+                Thread::usleepFor(0.9*1000*1000);
             }
             cout << "Consumer: Finished." << endl;
         }
