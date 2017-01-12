@@ -300,14 +300,22 @@ namespace cockpit {
                                 glBegin(GL_POINTS); //starts drawing of points
                                 {
                                     long startID=0;
-                                    //Point color depends on the intensity value. Let I (velodyneRawData[startID+3]) be the intensity value.
-                                    //When I<=127, then R=0, G=I*2, B=255-I*2; when I>127, then R=(I-127)*2, G=255-(I-127)*2, B=0
+                                    //Point color depends on the intensity value.
                                     for(unsigned long iii=0;iii<m_velodyneFrame.getWidth();iii++) {
-                                        if(velodyneRawData[startID+3]<=127.0){
-                                            glColor3f(0.0f,velodyneRawData[startID+3]*2.0,255.0-velodyneRawData[startID+3]*2.0);
+                                        
+                                        float intensityLevel = velodyneRawData[startID+3] / 256;  //Normalize intensity to fit the range from 0 to 1
+                                        //Four color levels: blue, green, yellow, red from low intensity to high intensity
+                                        if(intensityLevel<=0.25f){
+                                            glColor3f(0.0f,0.5f+intensityLevel*2.0f, 1.0f);
+                                        }
+                                        else if(intensityLevel>0.25f && intensityLevel<=0.5f){
+                                            glColor3f(0.0f,0.5f+intensityLevel * 2.0f,0.5f);
+                                        }
+                                        else if(intensityLevel>0.5f && intensityLevel<=0.75f){
+                                            glColor3f(1.0f,0.75f+intensityLevel,0.0f);
                                         }
                                         else{
-                                            glColor3f((velodyneRawData[startID+3]-127.0)*2.0,255.0-(velodyneRawData[startID+3]-127.0)*2.0,0.0f);
+                                            glColor3f(0.55f+intensityLevel,0.0f,0.0f);
                                         }
                                         glVertex3f(velodyneRawData[startID],velodyneRawData[startID+1],velodyneRawData[startID+2]);
                                         startID=m_velodyneFrame.getNumberOfComponentsPerPoint()*(iii+1);
@@ -331,6 +339,9 @@ namespace cockpit {
                     const float endAzimuth = m_cpc.getEndAzimuth();
                     const uint8_t entriesPerAzimuth = m_cpc.getEntriesPerAzimuth();
                     const string distances = m_cpc.getDistances();
+                    const uint8_t numberOfBitsForIntensity = m_cpc.getNumberOfBitsForIntensity();
+                    const uint8_t distanceEncoding = m_cpc.getDistanceEncoding();
+                    
                     const uint32_t numberOfPoints = distances.size()/2;
                     const uint32_t numberOfAzimuths = numberOfPoints/entriesPerAzimuth;
                     const float azimuthIncrement = (endAzimuth-startAzimuth)/numberOfAzimuths;//Calculate the azimuth increment
@@ -349,23 +360,58 @@ namespace cockpit {
                     glPointSize(1.0f); //set point size to 1 pixel
 
                     glBegin(GL_POINTS); //starts drawing of points
-                    glColor3f(255.0f,255.0f,0.0);//Yellow color
+                    glColor3f(1.0f,1.0f,0.0);//Yellow color
 
                     const float toRadian = static_cast<float>(cartesian::Constants::PI) / 180.0f;
                     uint16_t distance_integer(0);
                     float xyDistance = 0, xData = 0, yData = 0, zData = 0;
+                    uint8_t intensity=0;
                     float azimuth = startAzimuth;
                     for (uint32_t azimuthIndex = 0; azimuthIndex < numberOfAzimuths; azimuthIndex++) {
                         float verticalAngle = START_V_ANGLE;
                         for (uint8_t sensorIndex = 0; sensorIndex<entriesPerAzimuth; sensorIndex++) {
                             sstr.read((char*)(&distance_integer), 2); // Read distance value from the string in a CPC container point by point
-                            const float distance = static_cast<float>(distance_integer/500.0f); //convert to meter from resolution 2mm
+                            float distance = 0.0;
+                            if(numberOfBitsForIntensity==0){
+                                if(distanceEncoding == 0){
+                                    distance = static_cast<float>(distance_integer/100.0f); //convert to meter from resolution 1 cm
+                                }
+                                else{
+                                    distance = static_cast<float>(distance_integer/500.0f); //convert to meter from resolution 2mm
+                                }
+                            }
+                            else{
+                                uint16_t cappedDistance=(distance_integer & 0x03FFF)<<numberOfBitsForIntensity;
+                                intensity = distance_integer>>(16-numberOfBitsForIntensity);
+                                if(distanceEncoding == 0){
+                                    distance = static_cast<float>(cappedDistance/100.0f); //convert to meter from resolution 1 cm
+                                }
+                                else{
+                                    distance = static_cast<float>(cappedDistance/500.0f); //convert to meter from resolution 2mm
+                                }
+                            }
                             // Compute x, y, z coordinate based on distance, azimuth, and vertical angle
                             xyDistance = distance * cos(verticalAngle * toRadian);
                             xData = xyDistance * sin(azimuth * toRadian);
                             yData = xyDistance * cos(azimuth * toRadian);
                             zData = distance * sin(verticalAngle * toRadian);
-                            glVertex3f(xData,yData,zData);//Plot the point
+                            if(numberOfBitsForIntensity!=0){
+                                float intensityLevel = intensity / pow(2.0f,static_cast<float>(numberOfBitsForIntensity));
+                                //Four color levels: blue, green, yellow, red from low intensity to high intensity
+                                if(intensityLevel<=0.25f){
+                                    glColor3f(0.0f,0.5f+intensityLevel*2.0f, 1.0f);
+                                }
+                                else if(intensityLevel>0.25f && intensityLevel<=0.5f){
+                                    glColor3f(0.0f,0.5f+intensityLevel * 2.0f,0.5f);
+                                }
+                                else if(intensityLevel>0.5f && intensityLevel<=0.75f){
+                                    glColor3f(1.0f,0.75f+intensityLevel,0.0f);
+                                }
+                                else{
+                                    glColor3f(0.55f+intensityLevel,0.0f,0.0f);
+                                } 
+                            }
+                            glVertex3f(xData,yData,zData);//Plot the point 
                             verticalAngle += V_INCREMENT;
                         }
                         azimuth+=azimuthIncrement;
