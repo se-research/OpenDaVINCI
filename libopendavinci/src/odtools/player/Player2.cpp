@@ -60,7 +60,6 @@ namespace odtools {
             m_previousPreviousContainerAlreadyReplayed(m_index.end()),
             m_previousContainerAlreadyReplayed(m_index.begin()),
             m_currentContainerToReplay(m_index.begin()),
-            m_numberOfAvailableEntries(0),
             m_nextEntryToReadFromFile(m_index.begin()),
             m_containerReadFromFileThroughput(0),
             m_firstTimePointReturningAContainer(),
@@ -134,7 +133,6 @@ namespace odtools {
         void Player2::resetCaches() {
             Lock l(m_indexMutex);
             m_delay = 0;
-            m_numberOfAvailableEntries = 0;
             m_containerCache.clear();
         }
 
@@ -193,9 +191,6 @@ namespace odtools {
                 }
 
                 if (entriesReadFromFile > 0) {
-                    Lock l(m_indexMutex);
-                    m_numberOfAvailableEntries += entriesReadFromFile;
-
                     clog << "[Player2]: " << entriesReadFromFile << " entries added to cache." << endl;
                 }
             }
@@ -247,7 +242,6 @@ namespace odtools {
             m_previousContainerAlreadyReplayed = m_currentContainerToReplay++;
 
             m_numberOfReturnedContainersInTotal++;
-            m_numberOfAvailableEntries--;
 
             const uint64_t ELAPSED = (thisTimePointCallingThisMethod - m_firstTimePointReturningAContainer).toMicroseconds();
             m_containerReplayThroughput = std::ceil(m_numberOfReturnedContainersInTotal*static_cast<float>(Player2::ONE_SECOND_IN_MICROSECONDS)/ELAPSED);
@@ -280,7 +274,12 @@ namespace odtools {
         }
 
         void Player2::manageCache() {
-            if ( (m_containerReplayThroughput * Player2::LOOK_AHEAD_IN_S) > m_numberOfAvailableEntries) {
+            uint32_t numberOfAvailableEntries = 0;
+            {
+                Lock l(m_indexMutex);
+                numberOfAvailableEntries = m_containerCache.size();
+            }
+            if ( (m_containerReplayThroughput * Player2::LOOK_AHEAD_IN_S) > numberOfAvailableEntries) {
 
                 // Parallel filling of container cache.
                 {
