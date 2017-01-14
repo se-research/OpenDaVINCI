@@ -21,7 +21,6 @@
 #include <cstdio>
 
 #include <algorithm>
-#include <chrono>
 #include <fstream>
 #include <iostream>
 #include <limits>
@@ -30,6 +29,7 @@
 
 #include <opendavinci/odcore/base/module/AbstractCIDModule.h>
 #include <opendavinci/odcore/base/Lock.h>
+#include <opendavinci/odcore/base/Thread.h>
 
 #include <opendavinci/odtools/player/Player2.h>
 
@@ -257,7 +257,7 @@ namespace odtools {
                     numberOfEntries = m_containerCache.size();
                 }
                 if (0 == numberOfEntries) {
-                    std::this_thread::sleep_for( std::chrono::milliseconds(10) );
+                    Thread::usleepFor(10 * 1000);
                 }
             }
             while (0 == numberOfEntries);
@@ -336,7 +336,7 @@ namespace odtools {
                     clog << "[Player2]: " << entriesReadFromFile << " entries added to cache." << " P = " << P << ", I = " << I << ", D = " << D << ", S = " << m_containerCache.size() << endl;
                 }
 
-                std::this_thread::sleep_for(std::chrono::milliseconds(250));
+                Thread::usleepFor(250 * 1000);
             }
         }
 

@@ -22,7 +22,6 @@
 
 #include <deque>
 #include <fstream>
-#include <future>
 #include <map>
 #include <thread>
 
@@ -32,8 +31,6 @@
 #include <opendavinci/odcore/data/TimeStamp.h>
 #include <opendavinci/odcore/io/URL.h>
 #include <opendavinci/odcore/exceptions/Exceptions.h>
-
-#include <opendavinci/odtools/player/ContainerCacheFiller.h>
 
 namespace odtools {
     namespace player {
