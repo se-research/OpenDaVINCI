@@ -157,22 +157,15 @@ namespace odtools {
                  * to maxNumberOfEntriesToReadFromFile from the rec file.
                  *
                  * @param maxNumberOfEntriesToReadFromFile Maximum number of entries to be read from file.
+                 * @return Number of entries read from file.
                  */
-                void fillContainerCache(const uint32_t &maxNumberOfEntriesToReadFromFile);
+                uint32_t fillContainerCache(const uint32_t &maxNumberOfEntriesToReadFromFile);
 
                 /**
                  * This method checks the availability of the next container
                  * to be replayed from the cache.
                  */
                 inline void checkAvailabilityOfNextContainerToBeReplayed();
-
-                /**
-                 * This method manages the cache.
-                 */
-                inline void manageCache();
-
-            private:
-                void hello();
 
             private:
                 /**
@@ -209,14 +202,12 @@ namespace odtools {
                 multimap<int64_t, IndexEntry>::iterator m_nextEntryToReadFromRecFile;
                 float m_containerReadFromFileThroughput;
 
+                uint32_t m_desiredInitialLevel;
+
                 // Fields to compute replay throughput for cache management.
                 odcore::data::TimeStamp m_firstTimePointReturningAContainer;
                 uint64_t m_numberOfReturnedContainersInTotal;
                 float m_containerReplayThroughput;
-
-                // The following "Mutex" prevents Player2 from starting more than one thread.
-                bool m_asynchronousRecFileReaderInUse;
-                std::future<void> m_asynchronousRecFileReader;
 
                 uint32_t m_delay;
 
@@ -228,6 +219,11 @@ namespace odtools {
                  */
                 void setContainerCacheFillingRunning(const bool &running);
                 bool isContainerCacheFillingRunning() const;
+
+                /**
+                 * This method manages the cache.
+                 */
+                void manageCache();
 
             private:
                 mutable odcore::base::Mutex m_containerCacheFillingThreadIsRunningMutex;

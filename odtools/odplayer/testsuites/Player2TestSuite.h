@@ -535,7 +535,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
             UNLINK("PlayerModule2Test2.rec");
         }
 
-        void notestLargeFile() {
+        void testLargeFile() {
             cout << __FILE__ << " " << __LINE__ << endl;
             const URL u("file://test.rec");
 
@@ -550,7 +550,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
                 (void)c;
                 counter++;
 
-Thread::usleepFor(p2.getDelay()*0.01);
+Thread::usleepFor(p2.getDelay()*0.05);
             }
             TimeStamp after;
             cout << "Found " << counter << " containers. Duration = " << static_cast<uint64_t>((after - before).toMicroseconds()) << endl;
