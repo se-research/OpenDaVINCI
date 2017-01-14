@@ -232,7 +232,7 @@ namespace cockpit {
                             // Fasten playback if desired.
                             Lock l(m_speedValueMutex);
                             float f = m_speedValue/100.0;
-                            f = (f > 0.2) ? f : 0.2;
+                            f = (f > 0.1) ? f : 0.1;
                             delay *= f;
                         }
 
