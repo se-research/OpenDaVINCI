@@ -179,7 +179,7 @@ namespace odtools {
 
         uint32_t Player2::fillContainerCache(const uint32_t &maxNumberOfEntriesToReadFromFile) {
             uint32_t entriesReadFromFile = 0;
-            if (m_recFileValid) {
+            if (m_recFileValid && (maxNumberOfEntriesToReadFromFile > 0)) {
                 // Reset any fstream's error states.
                 m_recFile.clear();
 
@@ -345,19 +345,23 @@ namespace odtools {
         }
 
         void Player2::manageCache() {
+            const int32_t W = m_desiredInitialLevel;
+            int32_t X = 0;
+
             while (isContainerCacheFillingRunning()) {
-                uint32_t entriesInContainerCache = 0;
                 {
                     Lock l(m_indexMutex);
-                    entriesInContainerCache = m_containerCache.size();
+                    X = m_containerCache.size();
                 }
 
-                if (entriesInContainerCache < m_desiredInitialLevel) {
-                    const uint32_t entriesReadFromFile = fillContainerCache((m_desiredInitialLevel - entriesInContainerCache) * Player2::LOOK_AHEAD_IN_S);
-                    if (entriesReadFromFile > 0) {
-                        clog << "[Player2]: " << entriesReadFromFile << " entries added to cache." << endl;
-                    }
+                const int32_t E = W - X;
+                const int32_t Y = std::max(0, E);
+
+                const uint32_t entriesReadFromFile = fillContainerCache(Y * Player2::LOOK_AHEAD_IN_S);
+                if (entriesReadFromFile > 0) {
+                    clog << "[Player2]: " << entriesReadFromFile << " entries added to cache." << endl;
                 }
+
                 std::this_thread::sleep_for(std::chrono::milliseconds(50));
 
 //                std::this_thread::yield();
