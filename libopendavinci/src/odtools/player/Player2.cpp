@@ -235,6 +235,18 @@ namespace odtools {
 
 //            checkAvailabilityOfNextContainerToBeReplayed();
 
+            uint32_t e = 0;
+            {
+                Lock l(m_indexMutex);
+                e = m_containerCache.size();
+            }
+            while (e == 0) {
+                std::this_thread::sleep_for(std::chrono::milliseconds(10));
+
+                Lock l(m_indexMutex);
+                e = m_containerCache.size();
+            }
+
             Lock l(m_indexMutex);
             const Container &retVal = m_containerCache[m_currentContainerToReplay->second.m_filePosition];
             m_delay = m_currentContainerToReplay->first - m_previousContainerAlreadyReplayed->first;
@@ -346,6 +358,9 @@ namespace odtools {
 
         void Player2::manageCache() {
             const int32_t W = m_desiredInitialLevel;
+
+            const float Kp = 1.0;
+            const float Ki = 1.0;
             int32_t X = 0;
             int32_t I = 0;
             int32_t E_old = 0;
@@ -361,21 +376,19 @@ namespace odtools {
                 const int32_t E = W - X;
 
                 const int32_t P = E;
-
                 I += (E - E_old) * (currentTS - oldTS).toMicroseconds()/(1000.0*1000.0);
+
                 oldTS = currentTS;
                 E_old = E;
 
-                const int32_t Y = P + I;
+                const int32_t Y = Kp*P + Ki*I;
 
-                const uint32_t entriesReadFromFile = fillContainerCache(Y);// * Player2::LOOK_AHEAD_IN_S);
+                const uint32_t entriesReadFromFile = fillContainerCache(std::max(Y, 0));// * Player2::LOOK_AHEAD_IN_S);
                 if (entriesReadFromFile > 0) {
-                    clog << "[Player2]: " << entriesReadFromFile << " entries added to cache." << " P = " << P << ", I = " << I << endl;
+                    clog << "[Player2]: " << entriesReadFromFile << " entries added to cache." << " P = " << P << ", I = " << I << ", S = " << m_containerCache.size() << endl;
                 }
 
-                std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-
-//                std::this_thread::yield();
+                std::this_thread::sleep_for(std::chrono::milliseconds(500));
             }
         }
 
