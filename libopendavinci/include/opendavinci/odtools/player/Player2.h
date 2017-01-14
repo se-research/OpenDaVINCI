@@ -24,6 +24,7 @@
 #include <fstream>
 #include <future>
 #include <map>
+#include <thread>
 
 #include <opendavinci/odcore/opendavinci.h>
 #include <opendavinci/odcore/base/Mutex.h>
@@ -171,6 +172,9 @@ namespace odtools {
                 inline void manageCache();
 
             private:
+                void hello();
+
+            private:
                 /**
                  * This method check if the Player has reached the end of the
                  * index (to throw an exception) or if the the Player starts
@@ -209,6 +213,9 @@ namespace odtools {
                 odcore::data::TimeStamp m_firstTimePointReturningAContainer;
                 uint64_t m_numberOfReturnedContainersInTotal;
                 float m_containerReplayThroughput;
+
+                bool m_containerCacheFillingThreadIsRunning;
+                std::thread m_containerCacheFillingThread;
 
                 // The following "Mutex" prevents Player2 from starting more than one thread.
                 bool m_asynchronousRecFileReaderInUse;
