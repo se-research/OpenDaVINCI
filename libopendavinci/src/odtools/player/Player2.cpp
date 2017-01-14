@@ -60,7 +60,7 @@ namespace odtools {
             m_previousPreviousContainerAlreadyReplayed(m_index.end()),
             m_previousContainerAlreadyReplayed(m_index.begin()),
             m_currentContainerToReplay(m_index.begin()),
-            m_nextEntryToReadFromFile(m_index.begin()),
+            m_nextEntryToReadFromRecFile(m_index.begin()),
             m_containerReadFromFileThroughput(0),
             m_firstTimePointReturningAContainer(),
             m_numberOfReturnedContainersInTotal(0),
@@ -139,7 +139,7 @@ namespace odtools {
         void Player2::resetIterators() {
             Lock l(m_indexMutex);
             // Point to first entry in index.
-            m_nextEntryToReadFromFile
+            m_nextEntryToReadFromRecFile
                 = m_previousContainerAlreadyReplayed
                 = m_currentContainerToReplay
                 = m_index.begin();
@@ -171,10 +171,10 @@ namespace odtools {
                 m_recFile.clear();
 
                 uint32_t entriesReadFromFile = 0;
-                while ( (m_nextEntryToReadFromFile != m_index.end())
+                while ( (m_nextEntryToReadFromRecFile != m_index.end())
                      && (entriesReadFromFile < maxNumberOfEntriesToReadFromFile) ) {
                     // Move to corresponding position in the .rec file.
-                    m_recFile.seekg(m_nextEntryToReadFromFile->second.m_filePosition);
+                    m_recFile.seekg(m_nextEntryToReadFromRecFile->second.m_filePosition);
 
                     // Read the corresponding container.
                     Container c;
@@ -183,10 +183,10 @@ namespace odtools {
                     // Store the container in the container cache.
                     {
                         Lock l(m_indexMutex);
-                        m_nextEntryToReadFromFile->second.m_available = m_containerCache.emplace(std::make_pair(m_nextEntryToReadFromFile->second.m_filePosition, c)).second;
+                        m_nextEntryToReadFromRecFile->second.m_available = m_containerCache.emplace(std::make_pair(m_nextEntryToReadFromRecFile->second.m_filePosition, c)).second;
                     }
 
-                    m_nextEntryToReadFromFile++;
+                    m_nextEntryToReadFromRecFile++;
                     entriesReadFromFile++;
                 }
 
@@ -264,11 +264,11 @@ namespace odtools {
                 // Check if the entry is now available.
                 if (!m_currentContainerToReplay->second.m_available) {
                     cerr << "[Player2]: Next container not available. This should not happen! Trying to sequentially read next container." << endl;
-                    auto backup = m_nextEntryToReadFromFile;
+                    auto backup = m_nextEntryToReadFromRecFile;
                     while (!m_currentContainerToReplay->second.m_available) {
                         fillContainerCache(1);
                     }
-                    m_nextEntryToReadFromFile = backup;
+                    m_nextEntryToReadFromRecFile = backup;
                 }
             }
         }
