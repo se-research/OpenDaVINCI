@@ -281,8 +281,8 @@ namespace cockpit {
                         // Using a scoped lock to lock and automatically unlock a shared memory segment.
                         odcore::base::Lock lv(m_velodyneSharedMemory);
                         if (m_velodyneFrame.getComponentDataType() == SharedPointCloud::FLOAT_T
-                            && (m_velodyneFrame.getNumberOfComponentsPerPoint() == 4)
-                            && (m_velodyneFrame.getUserInfo() == SharedPointCloud::XYZ_INTENSITY)) {
+                            && (m_velodyneFrame.getNumberOfComponentsPerPoint() == 3)
+                            && (m_velodyneFrame.getUserInfo() == SharedPointCloud::POLAR_INTENSITY)) {
 
                             glPushMatrix();
                             {
@@ -299,22 +299,31 @@ namespace cockpit {
                                 glPointSize(1.0f); //set point size to 1 pixel
                                 glBegin(GL_POINTS); //starts drawing of points
                                 {
-                                    long startID=0;
+                                    uint64_t startID=0;
                                     //Point color depends on the intensity value.
-                                    for (uint64_t counter=0; counter<m_velodyneFrame.getWidth(); counter++) {
-                                        float intensityLevel = velodyneRawData[startID+3] / 256;  //Normalize intensity to fit the range from 0 to 1
-                                        //Four color levels: blue, green, yellow, red from low intensity to high intensity
-                                        if (intensityLevel <= 0.25f) {
-                                            glColor3f(0.0f, 0.5f + intensityLevel*2.0f, 1.0f);
-                                        } else if (intensityLevel > 0.25f && intensityLevel <= 0.5f) {
-                                            glColor3f(0.0f, 0.5f + intensityLevel * 2.0f, 0.5f);
-                                        } else if (intensityLevel > 0.5f && intensityLevel <= 0.75f) {
-                                            glColor3f(1.0f, 0.75f + intensityLevel, 0.0f);
-                                        } else{
-                                            glColor3f(0.55f + intensityLevel, 0.0f, 0.0f);
+                                    for (uint64_t counter = 0; counter < m_velodyneFrame.getWidth(); counter++) {
+                                        float xyDistance = 0.0f, xData = 0.0f, yData = 0.0f, zData = 0.0f;
+                                        float verticalAngle = START_V_ANGLE;
+                                        for (uint8_t sensorIndex = 0; sensorIndex < 16; sensorIndex++) {
+                                            xyDistance = velodyneRawData[startID + 1] * cos(verticalAngle * DEGREE_TO_RADIAN);
+                                            xData = xyDistance * sin(velodyneRawData[startID] * DEGREE_TO_RADIAN);
+                                            yData = xyDistance * cos(velodyneRawData[startID] * DEGREE_TO_RADIAN);
+                                            zData = velodyneRawData[startID + 1] * sin(verticalAngle * DEGREE_TO_RADIAN);
+                                            float intensityLevel = velodyneRawData[startID + 2] / 256;  //Normalize intensity to fit the range from 0 to 1
+                                            //Four color levels: blue, green, yellow, red from low intensity to high intensity
+                                            if (intensityLevel <= 0.25f) {
+                                                glColor3f(0.0f, 0.5f + intensityLevel*2.0f, 1.0f);
+                                            } else if (intensityLevel > 0.25f && intensityLevel <= 0.5f) {
+                                                glColor3f(0.0f, 0.5f + intensityLevel * 2.0f, 0.5f);
+                                            } else if (intensityLevel > 0.5f && intensityLevel <= 0.75f) {
+                                                glColor3f(1.0f, 0.75f + intensityLevel, 0.0f);
+                                            } else {
+                                                glColor3f(0.55f + intensityLevel, 0.0f, 0.0f);
+                                            }
+                                            glVertex3f(xData, yData, zData);
+                                            verticalAngle += V_INCREMENT;
+                                            startID += m_velodyneFrame.getNumberOfComponentsPerPoint();
                                         }
-                                        glVertex3f(velodyneRawData[startID], velodyneRawData[startID+1], velodyneRawData[startID+2]);
-                                        startID = m_velodyneFrame.getNumberOfComponentsPerPoint() * (counter+1);
                                     }
                                 }
                                 glEnd();//end drawing of points
@@ -358,14 +367,13 @@ namespace cockpit {
                     glBegin(GL_POINTS); //starts drawing of points
                     glColor3f(1.0f,1.0f,0.0);//Yellow color
 
-                    const float toRadian = static_cast<float>(cartesian::Constants::PI) / 180.0f;
                     uint16_t distance_integer(0);
-                    float xyDistance = 0, xData = 0, yData = 0, zData = 0;
+                    float xyDistance = 0.0f, xData = 0.0f, yData = 0.0f, zData = 0.0f;
                     uint8_t intensity = 0;
                     float azimuth = startAzimuth;
                     for (uint32_t azimuthIndex = 0; azimuthIndex < numberOfAzimuths; azimuthIndex++) {
                         float verticalAngle = START_V_ANGLE;
-                        for (uint8_t sensorIndex = 0; sensorIndex<entriesPerAzimuth; sensorIndex++) {
+                        for (uint8_t sensorIndex = 0; sensorIndex < entriesPerAzimuth; sensorIndex++) {
                             sstr.read((char*)(&distance_integer), 2); // Read distance value from the string in a CPC container point by point
                             float distance = 0.0;
                             if (numberOfBitsForIntensity==0) {
@@ -398,10 +406,10 @@ namespace cockpit {
                            
                             
                             // Compute x, y, z coordinate based on distance, azimuth, and vertical angle
-                            xyDistance = distance * cos(verticalAngle * toRadian);
-                            xData = xyDistance * sin(azimuth * toRadian);
-                            yData = xyDistance * cos(azimuth * toRadian);
-                            zData = distance * sin(verticalAngle * toRadian);
+                            xyDistance = distance * cos(verticalAngle * DEGREE_TO_RADIAN);
+                            xData = xyDistance * sin(azimuth * DEGREE_TO_RADIAN);
+                            yData = xyDistance * cos(azimuth * DEGREE_TO_RADIAN);
+                            zData = distance * sin(verticalAngle * DEGREE_TO_RADIAN);
                             if(numberOfBitsForIntensity != 0) {
                                 //The number of intensity levels depends on number of bits for intensity. There are 2^n intensity levels for n bits
                                 float intensityLevel = intensity / pow(2.0f, static_cast<float>(numberOfBitsForIntensity));

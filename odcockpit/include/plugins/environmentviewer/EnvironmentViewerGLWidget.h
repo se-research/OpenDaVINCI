@@ -140,6 +140,7 @@ class SelectableNodeDescriptor;
                     odcore::data::SharedPointCloud m_velodyneFrame;
                     const float START_V_ANGLE = -15.0;//For each azimuth there are 16 points with unique vertical angles from -15 to 15 degrees
                     const float V_INCREMENT = 2.0;  //The vertical angle increment for the 16 points with the same azimuth is 2 degrees
+                    const float DEGREE_TO_RADIAN = static_cast<float>(cartesian::Constants::PI) / 180.0f;
                     bool m_CPCreceived;//Set to true when the first compact point cloud is received
                     odcore::data::CompactPointCloud m_cpc;
                     odcore::base::Mutex m_cpcMutex;

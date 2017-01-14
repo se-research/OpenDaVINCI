@@ -303,7 +303,8 @@ message odcore.data.SharedPointCloud [id = 28] {
         DOUBLE_T            = 14,
     };
     enum USERINFO {
-        XYZ_INTENSITY       = 0, // This type specifies information about the data layout with (x,y,z) coordinates and intensity.
+        POLAR_INTENSITY      = 0, // This type specifies information about the data layout with azimuth, distance, and intensity
+        XYZ_INTENSITY       = 1, // This type specifies information about the data layout with (x,y,z) coordinates and intensity.
     };
     string name [id = 1];
     uint32 size [id = 2];
