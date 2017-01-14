@@ -21,6 +21,7 @@
 #include <cstdio>
 
 #include <algorithm>
+#include <chrono>
 #include <fstream>
 #include <iostream>
 #include <limits>
@@ -65,19 +66,32 @@ namespace odtools {
             m_firstTimePointReturningAContainer(),
             m_numberOfReturnedContainersInTotal(0),
             m_containerReplayThroughput(0),
+            m_containerCacheFillingThreadIsRunning(false),
+            m_containerCacheFillingThread(),
             m_asynchronousRecFileReaderInUse(false),
             m_asynchronousRecFileReader(),
             m_delay(0),
             m_containerCache() {
             initializeIndex();
             computeInitialCacheLevelAndFillCache();
+
+            m_containerCacheFillingThreadIsRunning = true;
+            m_containerCacheFillingThread = std::thread(&Player2::hello, this);
         }
 
         Player2::~Player2() {
             // Wait for asynchronous reading that might be started.
             try { m_asynchronousRecFileReader.wait(); } catch(...) {}
-
+            m_containerCacheFillingThreadIsRunning = false;
+            m_containerCacheFillingThread.join();
             m_recFile.close();
+        }
+
+        void Player2::hello() {
+            while (m_containerCacheFillingThreadIsRunning) {
+                std::cout << "Thread 2 executing = " << m_containerCache.size() << endl;
+                std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+            }
         }
 
         void Player2::initializeIndex() {
