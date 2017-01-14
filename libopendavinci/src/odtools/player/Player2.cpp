@@ -347,22 +347,33 @@ namespace odtools {
         void Player2::manageCache() {
             const int32_t W = m_desiredInitialLevel;
             int32_t X = 0;
+            int32_t I = 0;
+            int32_t E_old = 0;
 
+            TimeStamp oldTS;
             while (isContainerCacheFillingRunning()) {
+                TimeStamp currentTS;
                 {
                     Lock l(m_indexMutex);
                     X = m_containerCache.size();
                 }
 
                 const int32_t E = W - X;
-                const int32_t Y = std::max(0, E);
 
-                const uint32_t entriesReadFromFile = fillContainerCache(Y * Player2::LOOK_AHEAD_IN_S);
+                const int32_t P = E;
+
+                I += (E - E_old) * (currentTS - oldTS).toMicroseconds()/(1000.0*1000.0);
+                oldTS = currentTS;
+                E_old = E;
+
+                const int32_t Y = P + I;
+
+                const uint32_t entriesReadFromFile = fillContainerCache(Y);// * Player2::LOOK_AHEAD_IN_S);
                 if (entriesReadFromFile > 0) {
-                    clog << "[Player2]: " << entriesReadFromFile << " entries added to cache." << endl;
+                    clog << "[Player2]: " << entriesReadFromFile << " entries added to cache." << " P = " << P << ", I = " << I << endl;
                 }
 
-                std::this_thread::sleep_for(std::chrono::milliseconds(50));
+                std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
 //                std::this_thread::yield();
             }
