@@ -550,7 +550,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
                 (void)c;
                 counter++;
 
-Thread::usleepFor(p2.getDelay()*0.1);
+Thread::usleepFor(p2.getDelay()*0.02);
             }
             TimeStamp after;
             cout << "Found " << counter << " containers. Duration = " << static_cast<uint64_t>((after - before).toMicroseconds()) << endl;

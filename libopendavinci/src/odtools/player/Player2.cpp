@@ -81,9 +81,6 @@ namespace odtools {
         }
 
         Player2::~Player2() {
-//            // Wait for asynchronous reading that might be started.
-//            try { m_asynchronousRecFileReader.wait(); } catch(...) {}
-
             // Stop concurrent thread to manage cache.
             setContainerCacheFillingRunning(false);
             m_containerCacheFillingThread.join();
@@ -203,10 +200,6 @@ namespace odtools {
                 }
             }
 
-//            {
-//                Lock l(m_indexMutex);
-//                m_asynchronousRecFileReaderInUse = false;
-//            }
             return entriesReadFromFile;
         }
 
@@ -231,21 +224,7 @@ namespace odtools {
 
             checkForEndOfIndexAndThrowExceptionOrAutoRewind();
 
-//            manageCache();
-
-//            checkAvailabilityOfNextContainerToBeReplayed();
-
-            uint32_t e = 0;
-            {
-                Lock l(m_indexMutex);
-                e = m_containerCache.size();
-            }
-            while (e == 0) {
-                std::this_thread::sleep_for(std::chrono::milliseconds(10));
-
-                Lock l(m_indexMutex);
-                e = m_containerCache.size();
-            }
+            checkAvailabilityOfNextContainerToBeReplayed();
 
             Lock l(m_indexMutex);
             const Container &retVal = m_containerCache[m_currentContainerToReplay->second.m_filePosition];
@@ -271,51 +250,18 @@ namespace odtools {
         }
 
         void Player2::checkAvailabilityOfNextContainerToBeReplayed() {
-//            if (!m_currentContainerToReplay->second.m_available) {
-//                bool asynchronousRecFileReaderInUse = false;
-//                {
-//                    Lock l(m_indexMutex);
-//                    asynchronousRecFileReaderInUse = m_asynchronousRecFileReaderInUse;
-//                }
-//                if (!asynchronousRecFileReaderInUse) {
-//                    // Wait for asynchronous reading that might be started.
-//                    try { m_asynchronousRecFileReader.wait(); } catch(...) {}
-//                }
-
-//                // Check if the entry is now available.
-//                if (!m_currentContainerToReplay->second.m_available) {
-//                    cerr << "[Player2]: Next container not available. This should not happen! Trying to sequentially read next container." << endl;
-//                    auto backup = m_nextEntryToReadFromRecFile;
-//                    while (!m_currentContainerToReplay->second.m_available) {
-//                        fillContainerCache(1);
-//                    }
-//                    m_nextEntryToReadFromRecFile = backup;
-//                }
-//            }
+            int32_t numberOfEntries = 0;
+            do {
+                {
+                    Lock l(m_indexMutex);
+                    numberOfEntries = m_containerCache.size();
+                }
+                if (0 == numberOfEntries) {
+                    std::this_thread::sleep_for( std::chrono::milliseconds(10) );
+                }
+            }
+            while (0 == numberOfEntries);
         }
-
-//        void Player2::manageCache() {
-//            uint32_t numberOfAvailableEntries = 0;
-//            {
-//                Lock l(m_indexMutex);
-//                numberOfAvailableEntries = m_containerCache.size();
-//            }
-//            if ( (m_containerReplayThroughput * Player2::LOOK_AHEAD_IN_S) > numberOfAvailableEntries) {
-
-//                // Parallel filling of container cache.
-//                {
-//                    Lock l(m_indexMutex);
-//                    if (!m_asynchronousRecFileReaderInUse) {
-//                        m_asynchronousRecFileReaderInUse = true;
-//                        const float MULTIPLY_LOOK_AHEAD_BY = 2.5;
-//                        m_asynchronousRecFileReader = std::async(std::launch::async, &Player2::fillContainerCache, this, m_containerReplayThroughput * Player2::LOOK_AHEAD_IN_S * MULTIPLY_LOOK_AHEAD_BY);
-//                    }
-//                }
-
-//                // Sequential filling of container cache.
-////                fillContainerCache(m_containerReplayThroughput * Player2::LOOK_AHEAD_IN_S * 3);
-//            }
-//        }
 
         uint32_t Player2::getDelay() const {
             Lock l(m_indexMutex);
@@ -324,9 +270,6 @@ namespace odtools {
         }
 
         void Player2::rewind() {
-//            // Wait for asynchronous reading that might be started.
-//            try { m_asynchronousRecFileReader.wait(); } catch (...) {}
-
             setContainerCacheFillingRunning(false);
             m_containerCacheFillingThread.join();
 
@@ -359,8 +302,9 @@ namespace odtools {
         void Player2::manageCache() {
             const int32_t W = m_desiredInitialLevel;
 
-            const float Kp = 1.0;
-            const float Ki = 1.0;
+            const float Kp = 1.1;
+            const float Ki = 1.7;
+            const float Kd = 0.001;
             int32_t X = 0;
             int32_t I = 0;
             int32_t E_old = 0;
@@ -375,20 +319,24 @@ namespace odtools {
 
                 const int32_t E = W - X;
 
+                const float deltaTS = (currentTS - oldTS).toMicroseconds()/(1000.0*1000.0);
+
                 const int32_t P = E;
-                I += (E - E_old) * (currentTS - oldTS).toMicroseconds()/(1000.0*1000.0);
+                I += (E - E_old) * deltaTS;
+                const int32_t D = (E - E_old) / deltaTS;
+
+                const int32_t Y = Kp*P + Ki*I + Kd*D;
 
                 oldTS = currentTS;
                 E_old = E;
 
-                const int32_t Y = Kp*P + Ki*I;
 
                 const uint32_t entriesReadFromFile = fillContainerCache(std::max(Y, 0));// * Player2::LOOK_AHEAD_IN_S);
                 if (entriesReadFromFile > 0) {
-                    clog << "[Player2]: " << entriesReadFromFile << " entries added to cache." << " P = " << P << ", I = " << I << ", S = " << m_containerCache.size() << endl;
+                    clog << "[Player2]: " << entriesReadFromFile << " entries added to cache." << " P = " << P << ", I = " << I << ", D = " << D << ", S = " << m_containerCache.size() << endl;
                 }
 
-                std::this_thread::sleep_for(std::chrono::milliseconds(500));
+                std::this_thread::sleep_for(std::chrono::milliseconds(250));
             }
         }
 
