@@ -280,10 +280,7 @@ namespace cockpit {
                     if (m_velodyneSharedMemory->isValid()) {
                         // Using a scoped lock to lock and automatically unlock a shared memory segment.
                         odcore::base::Lock lv(m_velodyneSharedMemory);
-                        if (m_velodyneFrame.getComponentDataType() == SharedPointCloud::FLOAT_T
-                            && (m_velodyneFrame.getNumberOfComponentsPerPoint() == 3)
-                            && (m_velodyneFrame.getUserInfo() == SharedPointCloud::POLAR_INTENSITY)) {
-
+                        if (m_velodyneFrame.getComponentDataType() == SharedPointCloud::FLOAT_T) {
                             glPushMatrix();
                             {
                                 // Translate the model.
@@ -299,29 +296,49 @@ namespace cockpit {
                                 glPointSize(1.0f); //set point size to 1 pixel
                                 glBegin(GL_POINTS); //starts drawing of points
                                 {
-                                    uint64_t startID=0;
-                                    //Point color depends on the intensity value.
-                                    for (uint64_t counter = 0; counter < m_velodyneFrame.getWidth(); counter++) {
-                                        float xyDistance = 0.0f, xData = 0.0f, yData = 0.0f, zData = 0.0f;
-                                        float verticalAngle = START_V_ANGLE;
-                                        for (uint8_t sensorIndex = 0; sensorIndex < 16; sensorIndex++) {
-                                            xyDistance = velodyneRawData[startID + 1] * cos(verticalAngle * DEGREE_TO_RADIAN);
-                                            xData = xyDistance * sin(velodyneRawData[startID] * DEGREE_TO_RADIAN);
-                                            yData = xyDistance * cos(velodyneRawData[startID] * DEGREE_TO_RADIAN);
-                                            zData = velodyneRawData[startID + 1] * sin(verticalAngle * DEGREE_TO_RADIAN);
-                                            float intensityLevel = velodyneRawData[startID + 2] / 256;  //Normalize intensity to fit the range from 0 to 1
+                                    if (m_velodyneFrame.getUserInfo() == SharedPointCloud::POLAR_INTENSITY) {
+                                        //Point color depends on the intensity value.
+                                        uint32_t startID=0;
+                                        for (uint32_t counter = 0; counter < m_velodyneFrame.getWidth(); counter++) {
+                                            float xyDistance = 0.0f, xData = 0.0f, yData = 0.0f, zData = 0.0f;
+                                            float verticalAngle = START_V_ANGLE;
+                                            for (uint8_t sensorIndex = 0; sensorIndex < 16; sensorIndex++) {
+                                                xyDistance = velodyneRawData[startID + 1] * cos(verticalAngle * DEGREE_TO_RADIAN);
+                                                xData = xyDistance * sin(velodyneRawData[startID] * DEGREE_TO_RADIAN);
+                                                yData = xyDistance * cos(velodyneRawData[startID] * DEGREE_TO_RADIAN);
+                                                zData = velodyneRawData[startID + 1] * sin(verticalAngle * DEGREE_TO_RADIAN);
+                                                float intensityLevel = velodyneRawData[startID + 2] / 256;  //Normalize intensity to fit the range from 0 to 1
+                                                //Four color levels: blue, green, yellow, red from low intensity to high intensity
+                                                if (intensityLevel <= 0.25f) {
+                                                    glColor3f(0.0f, 0.5f + intensityLevel * 2.0f, 1.0f);
+                                                } else if (intensityLevel > 0.25f && intensityLevel <= 0.5f) {
+                                                    glColor3f(0.0f, 0.5f + intensityLevel * 2.0f, 0.5f);
+                                                } else if (intensityLevel > 0.5f && intensityLevel <= 0.75f) {
+                                                    glColor3f(1.0f, 0.75f + intensityLevel, 0.0f);
+                                                } else {
+                                                    glColor3f(0.55f + intensityLevel, 0.0f, 0.0f);
+                                                }
+                                                glVertex3f(xData, yData, zData);
+                                                verticalAngle += V_INCREMENT;
+                                                startID += m_velodyneFrame.getNumberOfComponentsPerPoint();
+                                            }
+                                        }
+                                    } else {//XYZ_INTENSITY instead of POLAR_INTENSITY
+                                        ///Point color depends on the intensity value.
+                                        uint32_t startID = 0;
+                                        for (uint32_t counter = 0; counter < m_velodyneFrame.getWidth(); counter++) {
+                                            float intensityLevel = velodyneRawData[startID + 3] / 256;  //Normalize intensity to fit the range from 0 to 1
                                             //Four color levels: blue, green, yellow, red from low intensity to high intensity
                                             if (intensityLevel <= 0.25f) {
-                                                glColor3f(0.0f, 0.5f + intensityLevel*2.0f, 1.0f);
+                                                glColor3f(0.0f, 0.5f + intensityLevel * 2.0f, 1.0f);
                                             } else if (intensityLevel > 0.25f && intensityLevel <= 0.5f) {
                                                 glColor3f(0.0f, 0.5f + intensityLevel * 2.0f, 0.5f);
                                             } else if (intensityLevel > 0.5f && intensityLevel <= 0.75f) {
                                                 glColor3f(1.0f, 0.75f + intensityLevel, 0.0f);
-                                            } else {
+                                            } else{
                                                 glColor3f(0.55f + intensityLevel, 0.0f, 0.0f);
                                             }
-                                            glVertex3f(xData, yData, zData);
-                                            verticalAngle += V_INCREMENT;
+                                            glVertex3f(velodyneRawData[startID], velodyneRawData[startID + 1], velodyneRawData[startID+2]);
                                             startID += m_velodyneFrame.getNumberOfComponentsPerPoint();
                                         }
                                     }
