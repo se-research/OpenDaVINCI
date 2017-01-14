@@ -214,9 +214,6 @@ namespace odtools {
                 uint64_t m_numberOfReturnedContainersInTotal;
                 float m_containerReplayThroughput;
 
-                bool m_containerCacheFillingThreadIsRunning;
-                std::thread m_containerCacheFillingThread;
-
                 // The following "Mutex" prevents Player2 from starting more than one thread.
                 bool m_asynchronousRecFileReaderInUse;
                 std::future<void> m_asynchronousRecFileReader;
@@ -224,6 +221,19 @@ namespace odtools {
                 uint32_t m_delay;
 
             private:
+                /**
+                 * This method set the state of the containerCacheFilling thread.
+                 *
+                 * @param running False if the thread to fill the container cache shall be joined.
+                 */
+                void setContainerCacheFillingRunning(const bool &running);
+                bool isContainerCacheFillingRunning() const;
+
+            private:
+                mutable odcore::base::Mutex m_containerCacheFillingThreadIsRunningMutex;
+                bool m_containerCacheFillingThreadIsRunning;
+                std::thread m_containerCacheFillingThread;
+
                 // Mapping of pos_type (within .rec file) --> Container (read from .rec file).
                 map<uint32_t, odcore::data::Container> m_containerCache;
         };
