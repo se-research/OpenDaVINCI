@@ -202,7 +202,7 @@ namespace odtools {
                 multimap<int64_t, IndexEntry>::iterator m_currentContainerToReplay;
 
                 // Information about the index.
-                multimap<int64_t, IndexEntry>::iterator m_nextEntryToReadFromFile;
+                multimap<int64_t, IndexEntry>::iterator m_nextEntryToReadFromRecFile;
                 float m_containerReadFromFileThroughput;
 
                 // Fields to compute replay throughput for cache management.
