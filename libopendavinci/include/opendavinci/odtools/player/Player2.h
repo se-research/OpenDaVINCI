@@ -30,17 +30,15 @@
 #include <opendavinci/odcore/data/Container.h>
 #include <opendavinci/odcore/data/TimeStamp.h>
 #include <opendavinci/odcore/io/URL.h>
-#include "opendavinci/odcore/exceptions/Exceptions.h"
+#include <opendavinci/odcore/exceptions/Exceptions.h>
+
+#include <opendavinci/odtools/player/ContainerCacheFiller.h>
 
 namespace odtools {
     namespace player {
 
         using namespace std;
 
-        /**
-         * This class can be used to read previously recorded
-         * data from a given URL.
-         */
         class IndexEntry {
             public:
                 IndexEntry();
@@ -52,6 +50,10 @@ namespace odtools {
                 bool m_available;
         };
 
+        /**
+         * This class can be used to read previously recorded
+         * data from a given URL.
+         */
         class OPENDAVINCI_API Player2 {
             private:
                 enum {
@@ -200,7 +202,6 @@ namespace odtools {
                 multimap<int64_t, IndexEntry>::iterator m_currentContainerToReplay;
 
                 // Information about the index.
-                uint32_t m_numberOfAvailableEntries;
                 multimap<int64_t, IndexEntry>::iterator m_nextEntryToReadFromFile;
                 float m_containerReadFromFileThroughput;
 
