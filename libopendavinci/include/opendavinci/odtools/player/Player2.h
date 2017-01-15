@@ -229,6 +229,13 @@ namespace odtools {
 
                 // Mapping of pos_type (within .rec file) --> Container (read from .rec file).
                 map<uint32_t, odcore::data::Container> m_containerCache;
+
+            public:
+                float m_KP;
+                float m_KI;
+                float m_KD;
+                float m_err;
+                void setPID(const float &kP, const float &kI, const float &kD);
         };
 
     } // player
