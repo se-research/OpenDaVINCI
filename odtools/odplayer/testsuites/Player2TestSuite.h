@@ -24,6 +24,9 @@
 
 #include <fstream>
 #include <iostream>
+#include <map>
+#include <limits>
+#include <vector>
 
 #include <opendavinci/odcore/base/Thread.h>
 #include <opendavinci/odcore/data/Container.h>
@@ -39,7 +42,7 @@ using namespace odtools::player;
 
 class PlayerModule2Test : public CxxTest::TestSuite {
     public:
-        void testEmptyFileAndException() {
+        void notestEmptyFileAndException() {
             cout << __FILE__ << " " << __LINE__ << endl;
             // Prepare record file.
             fstream fout("PlayerModule2TestEmpty.rec", ios::out | ios::binary | ios::trunc);
@@ -69,7 +72,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
             UNLINK("PlayerModule2TestEmpty.rec");
         }
 
-        void testCorrectMonotonicTemporalOrderAndExceptionFromReverseOrder() {
+        void notestCorrectMonotonicTemporalOrderAndExceptionFromReverseOrder() {
             cout << __FILE__ << " " << __LINE__ << endl;
             // Prepare record file.
             fstream fout("PlayerModule2Test.rec", ios::out | ios::binary | ios::trunc);
@@ -141,7 +144,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
             UNLINK("PlayerModuleTest2.rec");
         }
 
-        void testCorrectMonotonicTemporalOrderAndExceptionFromReverseOrderRealtimeReplay() {
+        void notestCorrectMonotonicTemporalOrderAndExceptionFromReverseOrderRealtimeReplay() {
             cout << __FILE__ << " " << __LINE__ << endl;
             // Prepare record file.
             fstream fout("PlayerModule2Test.rec", ios::out | ios::binary | ios::trunc);
@@ -212,7 +215,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
             UNLINK("PlayerModuleTest2.rec");
         }
 
-        void testCorrectMonotonicTemporalOrderAndExceptionFromReverseOrderWithDuplicateEntries() {
+        void notestCorrectMonotonicTemporalOrderAndExceptionFromReverseOrderWithDuplicateEntries() {
             cout << __FILE__ << " " << __LINE__ << endl;
             // Prepare record file.
             fstream fout("PlayerModule2Test.rec", ios::out | ios::binary | ios::trunc);
@@ -300,7 +303,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
             UNLINK("PlayerModuleTest2.rec");
         }
 
-        void testCorrectMonotonicTemporalOrderAndException() {
+        void notestCorrectMonotonicTemporalOrderAndException() {
             cout << __FILE__ << " " << __LINE__ << endl;
             // Prepare record file.
             fstream fout("PlayerModule2Test.rec", ios::out | ios::binary | ios::trunc);
@@ -372,7 +375,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
             UNLINK("PlayerModuleTest2.rec");
         }
 
-        void testCorrectMonotonicTemporalOrderAndRewindAndException() {
+        void notestCorrectMonotonicTemporalOrderAndRewindAndException() {
             cout << __FILE__ << " " << __LINE__ << endl;
             // Prepare record file.
             fstream fout("PlayerModule2Test2.rec", ios::out | ios::binary | ios::trunc);
@@ -450,7 +453,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
             UNLINK("PlayerModule2Test2.rec");
         }
 
-        void testCorrectMonotonicTemporalOrderAndAutoRewind() {
+        void notestCorrectMonotonicTemporalOrderAndAutoRewind() {
             cout << __FILE__ << " " << __LINE__ << endl;
             // Prepare record file.
             fstream fout("PlayerModule2Test2.rec", ios::out | ios::binary | ios::trunc);
@@ -533,6 +536,114 @@ class PlayerModule2Test : public CxxTest::TestSuite {
             TS_ASSERT(noExceptionThrown);
 
             UNLINK("PlayerModule2Test2.rec");
+        }
+
+/*
+# Choose an initialization parameter vector
+p = [0, 0, 0]
+# Define potential changes
+dp = [1, 1, 1]
+# Calculate the error
+best_err = A(p)
+
+threshold = 0.001
+
+while sum(dp) > threshold:
+    for i in range(len(p)):
+        p[i] += dp[i]
+        err = A(p)
+
+        if err < best_err:  # There was some improvement
+            best_err = err
+            dp[i] *= 1.1
+        else:  # There was no improvement
+            p[i] -= 2*dp[i]  # Go into the other direction
+            err = A(p)
+
+            if err < best_err:  # There was an improvement
+                best_err = err
+                dp[i] *= 1.05
+            else  # There was no improvement
+                p[i] += dp[i]
+                # As there was no improvement, the step size in either
+                # direction, the step size might simply be too big.
+                dp[i] *= 0.95
+
+*/
+        void testLargeFileTwiddle() {
+            cout << __FILE__ << " " << __LINE__ << endl;
+            const URL u("file://test.rec");
+
+            // Create Player2 instance.
+            const bool NO_AUTO_REWIND = false;
+            Player2 p2(u, NO_AUTO_REWIND);
+
+            vector<float> p(3);
+            p[0] = 1;
+            p[1] = 1;
+            p[2] = 0;
+
+            vector<float> dp(3);
+            dp[0] = 1;
+            dp[1] = 1;
+            dp[2] = 1;
+
+            float err = 0;
+            float best_err = numeric_limits<float>::max();
+            float threshold = 0.001;
+
+            while (fabs(dp[0] + dp[1]) > threshold) {
+                for(int i = 0; i < 2; i++) {
+                    p[i] += dp[i];
+
+                    // Compute the results.
+                    p2.setPID(p[0], p[1], p[2]);
+                    p2.rewind();
+                    while (p2.hasMoreData()) {
+                        const Container& c = p2.getNextContainerToBeSentNoCopy();
+                        (void)c;
+                        Thread::usleepFor(p2.getDelay()*0.02);
+                    }
+                    // Get error.
+                    err = p2.m_err;
+cout << __LINE__ << ": " << err << endl;
+ 
+                    if (err < best_err) {
+                        // Improvement.
+                        best_err = err;
+                        dp[i] *= 1.1;
+                    }
+                    else {
+                        // No improvement.
+                        p[i] -= 2*dp[i]; // Go to the other direction.
+
+                        // Compute the results.
+                        p2.setPID(p[0], p[1], p[2]);
+                        p2.rewind();
+                        while (p2.hasMoreData()) {
+                            const Container& c = p2.getNextContainerToBeSentNoCopy();
+                            (void)c;
+                            Thread::usleepFor(p2.getDelay()*0.02);
+                        }
+                        // Get error.
+                        err = p2.m_err;
+cout << __LINE__ << ": " << err << endl;
+
+                        if (err < best_err) {
+                            // Improvement.
+                            best_err = err;
+                            dp[i] *= 1.05;
+                        }
+                        else {
+                            // No improvement.
+                            p[i] += dp[i]; // As there was no improvement, the step size in either direction might be too big.
+                            dp[i] *= 0.95;
+                        }
+                    }
+cout << "best_err = " << best_err << ", P = " << p[0] << ", I = " << p[1] << ", D = " << p[2] << endl;
+cout << endl;
+                }
+            }
         }
 
         void notestLargeFile() {
