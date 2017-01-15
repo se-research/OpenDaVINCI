@@ -71,11 +71,7 @@ namespace odtools {
             m_containerCacheFillingThreadIsRunningMutex(),
             m_containerCacheFillingThreadIsRunning(false),
             m_containerCacheFillingThread(),
-            m_containerCache(),
-m_KP(0),
-m_KI(0),
-m_KD(0),
-m_err(0) {
+            m_containerCache() {
             initializeIndex();
             computeInitialCacheLevelAndFillCache();
 
@@ -308,14 +304,13 @@ m_err(0) {
 
         void Player2::manageCache() {
             // Constants for controller.
-//            const float Kp = 1.1;
-//            const float Ki = 1.7;
+            const float Kp = 1.89;
+            const float Ki = 2.10329;
 
             // Target value to control for.
             const int32_t W = m_desiredInitialLevel;
 
             // Controller variables.
-            int32_t counter = 0;
             int32_t X = 0;
             int32_t I = 0;
             int32_t E_old = 0;
@@ -339,35 +334,15 @@ m_err(0) {
                 const int32_t P = E;
                 I += deltaE * deltaT;
 
-//                const int32_t Y = Kp*P + Ki*I;
-                const int32_t Y = m_KP*P + m_KI*I;
+                const int32_t Y = Kp*P + Ki*I;
                 const uint32_t entriesReadFromFile = fillContainerCache(std::max(Y, 0));
                 if (entriesReadFromFile > 0) {
                     clog << "[Player2]: " << entriesReadFromFile << " entries added to cache." << " P = " << P << ", I = " << I << ", S = " << m_containerCache.size() << endl;
-
-if ((counter > 3) && (counter < 6)) {
-float s = m_containerCache.size();
-float a = m_desiredInitialLevel;
-float e = std::max<float>(fabs(a - s), m_err);
-if (e > 1e-4) {
-m_err = e;
-}
-cout << "m_err = " << m_err << endl;
-}
-counter++;
                 }
 
                 // Manage cache at 4 Hz.
                 Thread::usleepFor(250 * 1000);
             }
-        }
-
-        void Player2::setPID(const float &kP, const float &kI, const float &kD) {
-            m_KP = kP;
-            m_KI = kI;
-            m_KD = kD;
-            m_err = 0;
-cout << "[Player2]: P = " << m_KP << ", I = " << m_KI << ", D = " << m_KD << endl;
         }
 
     } // player
