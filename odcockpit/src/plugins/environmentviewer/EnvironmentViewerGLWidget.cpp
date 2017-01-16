@@ -71,7 +71,7 @@
 #include "opendavinci/odcore/wrapper/Eigen.h"
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
 #include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
-//#include "opendavinci/generated/odcore/data/SharedPointCloud.h"
+#include "automotivedata/generated/cartesian/Constants.h"
 
 class QWidget;
 namespace opendlv { namespace scenario { class SCNXArchive; } }
@@ -313,10 +313,10 @@ namespace cockpit {
                                                 glColor3f(0.55f + intensityLevel, 0.0f, 0.0f);
                                             }
                                             float xyDistance = 0.0f, xData = 0.0f, yData = 0.0f, zData = 0.0f;
-                                            xyDistance = velodyneRawData[startID] * cos(velodyneRawData[startID + 2] * DEGREE_TO_RADIAN);
-                                            xData = xyDistance * sin(velodyneRawData[startID + 1] * DEGREE_TO_RADIAN);
-                                            yData = xyDistance * cos(velodyneRawData[startID + 1] * DEGREE_TO_RADIAN);
-                                            zData = velodyneRawData[startID] * sin(velodyneRawData[startID + 2] * DEGREE_TO_RADIAN);
+                                            xyDistance = velodyneRawData[startID] * cos(velodyneRawData[startID + 2] * static_cast<float>(cartesian::Constants::DEG2RAD));
+                                            xData = xyDistance * sin(velodyneRawData[startID + 1] * static_cast<float>(cartesian::Constants::DEG2RAD));
+                                            yData = xyDistance * cos(velodyneRawData[startID + 1] * static_cast<float>(cartesian::Constants::DEG2RAD));
+                                            zData = velodyneRawData[startID] * sin(velodyneRawData[startID + 2] * static_cast<float>(cartesian::Constants::DEG2RAD));
                                             glVertex3f(xData, yData, zData);
                                             startID += m_velodyneFrame.getNumberOfComponentsPerPoint();
                                         }
@@ -390,40 +390,31 @@ namespace cockpit {
                         for (uint8_t sensorIndex = 0; sensorIndex < entriesPerAzimuth; sensorIndex++) {
                             sstr.read((char*)(&distance_integer), 2); // Read distance value from the string in a CPC container point by point
                             float distance = 0.0;
-                            if (numberOfBitsForIntensity==0) {
-                                if(distanceEncoding == 0) {
-                                    distance = static_cast<float>(distance_integer / 100.0f); //convert to meter from resolution 1 cm
-                                } else {
-                                    distance = static_cast<float>(distance_integer / 500.0f); //convert to meter from resolution 2mm
-                                }
-                                
+                            if (numberOfBitsForIntensity == 0) {
                                 switch (distanceEncoding) {
                                     case CompactPointCloud::CM : distance = static_cast<float>(distance_integer / 100.0f); //convert to meter from resolution 1 cm
                                                                  break;
                                     case CompactPointCloud::MM : distance = static_cast<float>(distance_integer / 500.0f); //convert to meter from resolution 2mm
                                                                  break;
-                                    default : cout << "Wrong distance encoding! Must be either 0 or 1." << endl;
-                                              break;
                                 }       
                             } else {
-                                uint16_t cappedDistance = (distance_integer & 0x03FFF) << numberOfBitsForIntensity;
-                                intensity = distance_integer >> (16 - numberOfBitsForIntensity);
+                                intensity = distance_integer & static_cast<uint16_t>(pow(2.0, static_cast<float>(numberOfBitsForIntensity)) - 1);//intensity is extracted from the lowest numberOfBitsForIntensity bits
+                                uint16_t cappedDistance = distance_integer - intensity;
+                                
                                 switch (distanceEncoding) {
                                     case CompactPointCloud::CM : distance = static_cast<float>(cappedDistance / 100.0f); //convert to meter from resolution 1 cm
                                                                  break;
                                     case CompactPointCloud::MM : distance = static_cast<float>(cappedDistance / 500.0f); //convert to meter from resolution 2mm
                                                                  break;
-                                    default : cout << "Wrong distance encoding! Must be either 0 or 1." << endl;
-                                              break;
                                 } 
                             }
                            
                             
                             // Compute x, y, z coordinate based on distance, azimuth, and vertical angle
-                            xyDistance = distance * cos(verticalAngle * DEGREE_TO_RADIAN);
-                            xData = xyDistance * sin(azimuth * DEGREE_TO_RADIAN);
-                            yData = xyDistance * cos(azimuth * DEGREE_TO_RADIAN);
-                            zData = distance * sin(verticalAngle * DEGREE_TO_RADIAN);
+                            xyDistance = distance * cos(verticalAngle * static_cast<float>(cartesian::Constants::DEG2RAD));
+                            xData = xyDistance * sin(azimuth * static_cast<float>(cartesian::Constants::DEG2RAD));
+                            yData = xyDistance * cos(azimuth * static_cast<float>(cartesian::Constants::DEG2RAD));
+                            zData = distance * sin(verticalAngle * static_cast<float>(cartesian::Constants::DEG2RAD));
                             if(numberOfBitsForIntensity != 0) {
                                 //The number of intensity levels depends on number of bits for intensity. There are 2^n intensity levels for n bits
                                 float intensityLevel = intensity / pow(2.0f, static_cast<float>(numberOfBitsForIntensity));
