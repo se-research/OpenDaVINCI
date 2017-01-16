@@ -389,6 +389,7 @@ namespace cockpit {
                         float verticalAngle = START_V_ANGLE;
                         for (uint8_t sensorIndex = 0; sensorIndex < entriesPerAzimuth; sensorIndex++) {
                             sstr.read((char*)(&distance_integer), 2); // Read distance value from the string in a CPC container point by point
+                            distance_integer = ntohs(distance_integer);
                             float distance = 0.0;
                             if (numberOfBitsForIntensity == 0) {
                                 switch (distanceEncoding) {
