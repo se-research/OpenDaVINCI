@@ -359,6 +359,17 @@ namespace cockpit {
                     const uint8_t entriesPerAzimuth = m_cpc.getEntriesPerAzimuth();
                     const string distances = m_cpc.getDistances();
                     const uint8_t numberOfBitsForIntensity = m_cpc.getNumberOfBitsForIntensity();
+                    const uint8_t intensityPlacement = m_cpc.getIntensityPlacement();
+                    uint16_t mask = 0xFFFF;
+                    float intensityMaxValue = 0.0f;
+                    if (numberOfBitsForIntensity > 0) {
+                        if (intensityPlacement == 0) {
+                            mask = mask << numberOfBitsForIntensity;
+                        } else {
+                            mask = mask >> numberOfBitsForIntensity;
+                        }
+                        intensityMaxValue = pow(2.0f, static_cast<float>(numberOfBitsForIntensity)) - 1.0f;
+                    }
                     const uint8_t distanceEncoding = m_cpc.getDistanceEncoding();
                     
                     const uint32_t numberOfPoints = distances.size() / 2;
@@ -399,8 +410,13 @@ namespace cockpit {
                                                                  break;
                                 }       
                             } else {
-                                intensity = distance_integer & static_cast<uint16_t>(pow(2.0, static_cast<float>(numberOfBitsForIntensity)) - 1);//intensity is extracted from the lowest numberOfBitsForIntensity bits
-                                uint16_t cappedDistance = distance_integer - intensity;
+                                uint16_t cappedDistance = distance_integer & mask;
+                                if (intensityPlacement == 0) {//lower bits for intensity
+                                    intensity = distance_integer - cappedDistance;
+                                    //intensity = distance_integer & static_cast<uint16_t>(pow(2.0, static_cast<float>(numberOfBitsForIntensity)) - 1);//intensity is extracted from the lowest numberOfBitsForIntensity bits
+                                } else {//higher bits for intensity
+                                    intensity = distance_integer >> (16 - numberOfBitsForIntensity);
+                                }
                                 
                                 switch (distanceEncoding) {
                                     case CompactPointCloud::CM : distance = static_cast<float>(cappedDistance / 100.0f); //convert to meter from resolution 1 cm
@@ -410,28 +426,29 @@ namespace cockpit {
                                 } 
                             }
                            
-                            
-                            // Compute x, y, z coordinate based on distance, azimuth, and vertical angle
-                            xyDistance = distance * cos(verticalAngle * static_cast<float>(cartesian::Constants::DEG2RAD));
-                            xData = xyDistance * sin(azimuth * static_cast<float>(cartesian::Constants::DEG2RAD));
-                            yData = xyDistance * cos(azimuth * static_cast<float>(cartesian::Constants::DEG2RAD));
-                            zData = distance * sin(verticalAngle * static_cast<float>(cartesian::Constants::DEG2RAD));
-                            if(numberOfBitsForIntensity != 0) {
-                                //The number of intensity levels depends on number of bits for intensity. There are 2^n intensity levels for n bits
-                                float intensityLevel = intensity / pow(2.0f, static_cast<float>(numberOfBitsForIntensity));
-                                //Four color levels: blue, green, yellow, red from low intensity to high intensity
-                                if (intensityLevel <= 0.25f) {
-                                    glColor3f(0.0f, 0.5f + intensityLevel * 2.0f, 1.0f);
-                                } else if (intensityLevel > 0.25f && intensityLevel <= 0.5f) {
-                                    glColor3f(0.0f, 0.5f + intensityLevel * 2.0f, 0.5f);
-                                } else if (intensityLevel > 0.5f && intensityLevel <= 0.75f) {
-                                    glColor3f(1.0f, 0.75f + intensityLevel, 0.0f);
-                                } else {
-                                    glColor3f(0.55f + intensityLevel, 0.0f, 0.0f);
-                                } 
+                            if (distance > 1.0f) {//Only viualize the point when the distance is larger than 1m
+                                // Compute x, y, z coordinate based on distance, azimuth, and vertical angle
+                                xyDistance = distance * cos(verticalAngle * static_cast<float>(cartesian::Constants::DEG2RAD));
+                                xData = xyDistance * sin(azimuth * static_cast<float>(cartesian::Constants::DEG2RAD));
+                                yData = xyDistance * cos(azimuth * static_cast<float>(cartesian::Constants::DEG2RAD));
+                                zData = distance * sin(verticalAngle * static_cast<float>(cartesian::Constants::DEG2RAD));
+                                if(numberOfBitsForIntensity != 0) {
+                                    //The number of intensity levels depends on number of bits for intensity. There are 2^n intensity levels for n bits
+                                    float intensityLevel = intensity / intensityMaxValue;
+                                    //Four color levels: blue, green, yellow, red from low intensity to high intensity
+                                    if (intensityLevel <= 0.25f) {
+                                        glColor3f(0.0f, 0.5f + intensityLevel * 2.0f, 1.0f);
+                                    } else if (intensityLevel > 0.25f && intensityLevel <= 0.5f) {
+                                        glColor3f(0.0f, 0.5f + intensityLevel * 2.0f, 0.5f);
+                                    } else if (intensityLevel > 0.5f && intensityLevel <= 0.75f) {
+                                        glColor3f(1.0f, 0.75f + intensityLevel, 0.0f);
+                                    } else {
+                                        glColor3f(0.55f + intensityLevel, 0.0f, 0.0f);
+                                    } 
+                                }
+                                glVertex3f(xData, yData, zData);//Plot the point 
+                                verticalAngle += V_INCREMENT;
                             }
-                            glVertex3f(xData, yData, zData);//Plot the point 
-                            verticalAngle += V_INCREMENT;
                         }
                         azimuth += azimuthIncrement;
                     }
