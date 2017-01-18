@@ -77,9 +77,9 @@ namespace odcomparepointcloud {
             virtual void setUp();
             virtual void tearDown();
             //void parseAdditionalCommandLineParameters(const int &argc, char **argv);
-            void readCPC(odcore::data::Container&);
+            void readCPC(odcore::data::Container&, const uint8_t &);
             void readSPC(odcore::data::Container&);
-            inline void clearVectors();
+            inline void clearVectors(const uint8_t &, const bool &);
         private:
             bool m_CPCfound;
             bool m_SPCfound;
@@ -88,15 +88,24 @@ namespace odcomparepointcloud {
             odcore::data::CompactPointCloud m_cpc;
             bool m_hasAttachedToSharedImageMemory;
             std::shared_ptr<odcore::wrapper::SharedMemory> m_spcSharedMemory;
+            uint8_t m_compareOption; //0: compare azimuth and distance; 1: compare xyz
+            std::vector<float> m_distanceCpc;
+            std::vector<float> m_azimuthCpc;
+            std::vector<float> m_verticalAngleCpc;
             std::vector<float> m_xCpc;
             std::vector<float> m_yCpc;
             std::vector<float> m_zCpc;
+            std::vector<float> m_distanceSpc;
+            std::vector<float> m_azimuthSpc;
+            std::vector<float> m_verticalAngleSpc;
             std::vector<float> m_xSpc;
             std::vector<float> m_ySpc;
             std::vector<float> m_zSpc;
-            std::vector<float> m_xError;
-            std::vector<float> m_yError;
-            std::vector<float> m_zError;
+            //If the SPC has "xyz+intensity" structure, m_Error1, m_Error2, and m_Error3 represent the differences in xyz, respectively.
+            //Otherwise, they represent the differences in distance, azimuth, and vertical angle, respectively.
+            std::vector<float> m_Error1;
+            std::vector<float> m_Error2;
+            std::vector<float> m_Error3;
             std::ofstream m_outputData;
             std::ofstream m_cpcFrame;
             std::ofstream m_spcFrame;
