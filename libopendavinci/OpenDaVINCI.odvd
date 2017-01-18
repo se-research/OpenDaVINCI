@@ -322,8 +322,8 @@ message odcore.data.CompactPointCloud [id = 49] {
         MM = 1, // distances are encoded as 2mm
     };
     enum INTENSITY_PLACEMENT {
-          LOWER_BITS = 0, // use lower bits for intensity
-          HIGHER_BITS = 1, // use higher bits for intensity
+          HIGHER_BITS = 0, // use higher bits for intensity
+          LOWER_BITS = 1, // use lower bits for intensity
       };
     float startAzimuth      [id = 1];
     float endAzimuth        [id = 2];

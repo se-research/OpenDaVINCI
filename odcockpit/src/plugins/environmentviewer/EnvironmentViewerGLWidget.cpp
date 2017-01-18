@@ -371,7 +371,6 @@ namespace cockpit {
                         intensityMaxValue = pow(2.0f, static_cast<float>(numberOfBitsForIntensity)) - 1.0f;
                     }
                     const uint8_t distanceEncoding = m_cpc.getDistanceEncoding();
-                    
                     const uint32_t numberOfPoints = distances.size() / 2;
                     const uint32_t numberOfAzimuths = numberOfPoints / entriesPerAzimuth;
                     const float azimuthIncrement = (endAzimuth - startAzimuth) / numberOfAzimuths;//Calculate the azimuth increment
@@ -392,7 +391,7 @@ namespace cockpit {
                     glBegin(GL_POINTS); //starts drawing of points
                     glColor3f(1.0f,1.0f,0.0);//Yellow color
 
-                    uint16_t distance_integer(0);
+                    uint16_t distance_integer = 0;
                     float xyDistance = 0.0f, xData = 0.0f, yData = 0.0f, zData = 0.0f;
                     uint8_t intensity = 0;
                     float azimuth = startAzimuth;
@@ -413,7 +412,6 @@ namespace cockpit {
                                 uint16_t cappedDistance = distance_integer & mask;
                                 if (intensityPlacement == 0) {//lower bits for intensity
                                     intensity = distance_integer - cappedDistance;
-                                    //intensity = distance_integer & static_cast<uint16_t>(pow(2.0, static_cast<float>(numberOfBitsForIntensity)) - 1);//intensity is extracted from the lowest numberOfBitsForIntensity bits
                                 } else {//higher bits for intensity
                                     intensity = distance_integer >> (16 - numberOfBitsForIntensity);
                                 }
