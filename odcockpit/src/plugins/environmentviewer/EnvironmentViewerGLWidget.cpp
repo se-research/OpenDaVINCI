@@ -71,7 +71,7 @@
 #include "opendavinci/odcore/wrapper/Eigen.h"
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
 #include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
-#include "opendavinci/generated/odcore/data/SharedPointCloud.h"
+#include "automotivedata/generated/cartesian/Constants.h"
 
 class QWidget;
 namespace opendlv { namespace scenario { class SCNXArchive; } }
@@ -281,9 +281,7 @@ namespace cockpit {
                         // Using a scoped lock to lock and automatically unlock a shared memory segment.
                         odcore::base::Lock lv(m_velodyneSharedMemory);
                         if (m_velodyneFrame.getComponentDataType() == SharedPointCloud::FLOAT_T
-                            && (m_velodyneFrame.getNumberOfComponentsPerPoint() == 4)
-                            && (m_velodyneFrame.getUserInfo() == SharedPointCloud::XYZ_INTENSITY)) {
-
+                            && (m_velodyneFrame.getNumberOfComponentsPerPoint() == 4)) {
                             glPushMatrix();
                             {
                                 // Translate the model.
@@ -299,18 +297,47 @@ namespace cockpit {
                                 glPointSize(1.0f); //set point size to 1 pixel
                                 glBegin(GL_POINTS); //starts drawing of points
                                 {
-                                    long startID=0;
-                                    //Point color depends on the intensity value. Let I (velodyneRawData[startID+3]) be the intensity value.
-                                    //When I<=127, then R=0, G=I*2, B=255-I*2; when I>127, then R=(I-127)*2, G=255-(I-127)*2, B=0
-                                    for(unsigned long iii=0;iii<m_velodyneFrame.getWidth();iii++) {
-                                        if(velodyneRawData[startID+3]<=127.0){
-                                            glColor3f(0.0f,velodyneRawData[startID+3]*2.0,255.0-velodyneRawData[startID+3]*2.0);
+                                    if (m_velodyneFrame.getUserInfo() == SharedPointCloud::POLAR_INTENSITY) {
+                                        //Point color depends on the intensity value.
+                                        uint32_t startID = 0;
+                                        for (uint32_t counter = 0; counter < m_velodyneFrame.getWidth(); counter++) {
+                                            float intensityLevel = velodyneRawData[startID + 3] / 256;  //Normalize intensity to fit the range from 0 to 1
+                                            //Four color levels: blue, green, yellow, red from low intensity to high intensity
+                                            if (intensityLevel < 0.25f + 1e-7) {
+                                                glColor3f(0.0f, 0.5f + intensityLevel * 2.0f, 1.0f);
+                                            } else if (intensityLevel > 0.25f && intensityLevel < 0.5f + 1e-7) {
+                                                glColor3f(0.0f, 0.5f + intensityLevel * 2.0f, 0.5f);
+                                            } else if (intensityLevel > 0.5f && intensityLevel < 0.75f + 1e-7) {
+                                                glColor3f(1.0f, 0.75f + intensityLevel, 0.0f);
+                                            } else{
+                                                glColor3f(0.55f + intensityLevel, 0.0f, 0.0f);
+                                            }
+                                            float xyDistance = 0.0f, xData = 0.0f, yData = 0.0f, zData = 0.0f;
+                                            xyDistance = velodyneRawData[startID] * cos(velodyneRawData[startID + 2] * static_cast<float>(cartesian::Constants::DEG2RAD));
+                                            xData = xyDistance * sin(velodyneRawData[startID + 1] * static_cast<float>(cartesian::Constants::DEG2RAD));
+                                            yData = xyDistance * cos(velodyneRawData[startID + 1] * static_cast<float>(cartesian::Constants::DEG2RAD));
+                                            zData = velodyneRawData[startID] * sin(velodyneRawData[startID + 2] * static_cast<float>(cartesian::Constants::DEG2RAD));
+                                            glVertex3f(xData, yData, zData);
+                                            startID += m_velodyneFrame.getNumberOfComponentsPerPoint();
                                         }
-                                        else{
-                                            glColor3f((velodyneRawData[startID+3]-127.0)*2.0,255.0-(velodyneRawData[startID+3]-127.0)*2.0,0.0f);
+                                    } else {//XYZ_INTENSITY instead of POLAR_INTENSITY
+                                        //Point color depends on the intensity value.
+                                        uint32_t startID = 0;
+                                        for (uint32_t counter = 0; counter < m_velodyneFrame.getWidth(); counter++) {
+                                            float intensityLevel = velodyneRawData[startID + 3] / 256;  //Normalize intensity to fit the range from 0 to 1
+                                            //Four color levels: blue, green, yellow, red from low intensity to high intensity
+                                            if (intensityLevel < 0.25f + 1e-7) {
+                                                glColor3f(0.0f, 0.5f + intensityLevel * 2.0f, 1.0f);
+                                            } else if (intensityLevel > 0.25f && intensityLevel < 0.5f + 1e-7) {
+                                                glColor3f(0.0f, 0.5f + intensityLevel * 2.0f, 0.5f);
+                                            } else if (intensityLevel > 0.5f && intensityLevel < 0.75f + 1e-7) {
+                                                glColor3f(1.0f, 0.75f + intensityLevel, 0.0f);
+                                            } else{
+                                                glColor3f(0.55f + intensityLevel, 0.0f, 0.0f);
+                                            }
+                                            glVertex3f(velodyneRawData[startID], velodyneRawData[startID + 1], velodyneRawData[startID+2]);
+                                            startID += m_velodyneFrame.getNumberOfComponentsPerPoint();
                                         }
-                                        glVertex3f(velodyneRawData[startID],velodyneRawData[startID+1],velodyneRawData[startID+2]);
-                                        startID=m_velodyneFrame.getNumberOfComponentsPerPoint()*(iii+1);
                                     }
                                 }
                                 glEnd();//end drawing of points
@@ -331,38 +358,100 @@ namespace cockpit {
                     const float endAzimuth = m_cpc.getEndAzimuth();
                     const uint8_t entriesPerAzimuth = m_cpc.getEntriesPerAzimuth();
                     const string distances = m_cpc.getDistances();
-                    const uint32_t numberOfPoints = distances.size()/2;
-                    const uint32_t numberOfAzimuths = numberOfPoints/entriesPerAzimuth;
-                    const float azimuthIncrement = (endAzimuth-startAzimuth)/numberOfAzimuths;//Calculate the azimuth increment
+                    const uint8_t numberOfBitsForIntensity = m_cpc.getNumberOfBitsForIntensity();
+                    const uint8_t intensityPlacement = m_cpc.getIntensityPlacement();
+                    uint16_t mask = 0xFFFF;
+                    float intensityMaxValue = 0.0f;
+                    if (numberOfBitsForIntensity > 0) {
+                        if (intensityPlacement == 0) {
+                            mask = mask >> numberOfBitsForIntensity; //higher bits for intensity
+                        } else {
+                            mask = mask << numberOfBitsForIntensity; //lower bits for intensity
+                        }
+                        intensityMaxValue = pow(2.0f, static_cast<float>(numberOfBitsForIntensity)) - 1.0f;
+                    }
+                    const uint8_t distanceEncoding = m_cpc.getDistanceEncoding();
+                    const uint32_t numberOfPoints = distances.size() / 2;
+                    const uint32_t numberOfAzimuths = numberOfPoints / entriesPerAzimuth;
+                    const float azimuthIncrement = (endAzimuth - startAzimuth) / numberOfAzimuths;//Calculate the azimuth increment
                     stringstream sstr(distances);
                     
                     glPushMatrix();
-                        glPointSize(1.0f); //set point size to 1 pixel
+                    // Translate the model.
+                    glTranslated(m_egoState.getPosition().getX(), m_egoState.getPosition().getY(), 0);
 
-                        glBegin(GL_POINTS); //starts drawing of points
-                            glColor3f(255.0f,255.0f,0.0);//Yellow color
+                    // Rotate the model using DEG (m_rotation is in RAD!).
+                    glRotated(/*m_egoState.getRotation().getX()*180.0 / cartesian::Constants::PI*/0, 1, 0, 0);
+                    glRotated(/*m_egoState.getRotation().getY()*180.0 / cartesian::Constants::PI*/0, 0, 1, 0);
+                    // Rotate around z-axis and turn by 10 DEG.
+                    glRotated(/*m_egoState.getRotation().getZ()*/ (m_egoState.getRotation().getAngleXY() + M_PI/2.0)*180.0 / cartesian::Constants::PI + 13.0, 0, 0, 1);
+                    
+                    glPointSize(1.0f); //set point size to 1 pixel
 
-                            const float toRadian = static_cast<float>(cartesian::Constants::PI) / 180.0f;
-                            uint16_t distance_integer(0);
-                            float xyDistance = 0, xData = 0, yData = 0, zData = 0;
-                            float azimuth = startAzimuth;
-                            for (uint32_t azimuthIndex = 0; azimuthIndex < numberOfAzimuths; azimuthIndex++) {
-                                float verticalAngle = START_V_ANGLE;
-                                for (uint8_t sensorIndex = 0; sensorIndex<entriesPerAzimuth; sensorIndex++) {
-                                    sstr.read((char*)(&distance_integer), 2); // Read distance value from the string in a CPC container point by point
-                                    const float distance = static_cast<float>(distance_integer/100.0f); //convert cm to meter
-                                    // Compute x, y, z coordinate based on distance, azimuth, and vertical angle
-                                    xyDistance = distance * cos(verticalAngle * toRadian);
-                                    xData = xyDistance * sin(azimuth * toRadian);
-                                    yData = xyDistance * cos(azimuth * toRadian);
-                                    zData = distance * sin(verticalAngle * toRadian);
-                                    glVertex3f(xData,yData,zData);//Plot the point
-                                    verticalAngle += V_INCREMENT;
+                    glBegin(GL_POINTS); //starts drawing of points
+                    glColor3f(1.0f,1.0f,0.0);//Yellow color
+
+                    uint16_t distance_integer = 0;
+                    float xyDistance = 0.0f, xData = 0.0f, yData = 0.0f, zData = 0.0f;
+                    uint8_t intensity = 0;
+                    float azimuth = startAzimuth;
+                    for (uint32_t azimuthIndex = 0; azimuthIndex < numberOfAzimuths; azimuthIndex++) {
+                        float verticalAngle = START_V_ANGLE;
+                        for (uint8_t sensorIndex = 0; sensorIndex < entriesPerAzimuth; sensorIndex++) {
+                            sstr.read((char*)(&distance_integer), 2); // Read distance value from the string in a CPC container point by point
+                            distance_integer = ntohs(distance_integer);
+                            float distance = 0.0;
+                            if (numberOfBitsForIntensity == 0) {
+                                switch (distanceEncoding) {
+                                    case CompactPointCloud::CM : distance = static_cast<float>(distance_integer / 100.0f); //convert to meter from resolution 1 cm
+                                                                 break;
+                                    case CompactPointCloud::MM : distance = static_cast<float>(distance_integer / 500.0f); //convert to meter from resolution 2mm
+                                                                 break;
+                                }       
+                            } else {
+                                uint16_t cappedDistance = distance_integer & mask;
+                                if (intensityPlacement == 0) {//higher bits for intensity
+                                    intensity = distance_integer >> (16 - numberOfBitsForIntensity);
+                                } else {//lower bits for intensity
+                                    intensity = distance_integer - cappedDistance;
                                 }
-                                azimuth+=azimuthIncrement;
+                                
+                                switch (distanceEncoding) {
+                                    case CompactPointCloud::CM : distance = static_cast<float>(cappedDistance / 100.0f); //convert to meter from resolution 1 cm
+                                                                 break;
+                                    case CompactPointCloud::MM : distance = static_cast<float>(cappedDistance / 500.0f); //convert to meter from resolution 2mm
+                                                                 break;
+                                } 
                             }
+                           
+                            if (distance > 1.0f) {//Only viualize the point when the distance is larger than 1m
+                                // Compute x, y, z coordinate based on distance, azimuth, and vertical angle
+                                xyDistance = distance * cos(verticalAngle * static_cast<float>(cartesian::Constants::DEG2RAD));
+                                xData = xyDistance * sin(azimuth * static_cast<float>(cartesian::Constants::DEG2RAD));
+                                yData = xyDistance * cos(azimuth * static_cast<float>(cartesian::Constants::DEG2RAD));
+                                zData = distance * sin(verticalAngle * static_cast<float>(cartesian::Constants::DEG2RAD));
+                                if(numberOfBitsForIntensity != 0) {
+                                    //The number of intensity levels depends on number of bits for intensity. There are 2^n intensity levels for n bits
+                                    float intensityLevel = intensity / intensityMaxValue;
+                                    //Four color levels: blue, green, yellow, red from low intensity to high intensity
+                                    if (intensityLevel < 0.25f + 1e-7) {
+                                        glColor3f(0.0f, 0.5f + intensityLevel * 2.0f, 1.0f);
+                                    } else if (intensityLevel > 0.25f && intensityLevel < 0.5f + 1e-7) {
+                                        glColor3f(0.0f, 0.5f + intensityLevel * 2.0f, 0.5f);
+                                    } else if (intensityLevel > 0.5f && intensityLevel < 0.75f + 1e-7) {
+                                        glColor3f(1.0f, 0.75f + intensityLevel, 0.0f);
+                                    } else {
+                                        glColor3f(0.55f + intensityLevel, 0.0f, 0.0f);
+                                    } 
+                                }
+                                glVertex3f(xData, yData, zData);//Plot the point 
+                                verticalAngle += V_INCREMENT;
+                            }
+                        }
+                        azimuth += azimuthIncrement;
+                    }
 
-                        glEnd(); //end drawing of points
+                    glEnd(); //end drawing of points
                     glPopMatrix(); 
                 }
             }
