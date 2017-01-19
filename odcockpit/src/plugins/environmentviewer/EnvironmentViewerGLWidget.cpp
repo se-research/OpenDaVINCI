@@ -364,9 +364,9 @@ namespace cockpit {
                     float intensityMaxValue = 0.0f;
                     if (numberOfBitsForIntensity > 0) {
                         if (intensityPlacement == 0) {
-                            mask = mask << numberOfBitsForIntensity;
+                            mask = mask >> numberOfBitsForIntensity; //higher bits for intensity
                         } else {
-                            mask = mask >> numberOfBitsForIntensity;
+                            mask = mask << numberOfBitsForIntensity; //lower bits for intensity
                         }
                         intensityMaxValue = pow(2.0f, static_cast<float>(numberOfBitsForIntensity)) - 1.0f;
                     }
@@ -410,10 +410,10 @@ namespace cockpit {
                                 }       
                             } else {
                                 uint16_t cappedDistance = distance_integer & mask;
-                                if (intensityPlacement == 0) {//lower bits for intensity
-                                    intensity = distance_integer - cappedDistance;
-                                } else {//higher bits for intensity
+                                if (intensityPlacement == 0) {//higher bits for intensity
                                     intensity = distance_integer >> (16 - numberOfBitsForIntensity);
+                                } else {//lower bits for intensity
+                                    intensity = distance_integer - cappedDistance;
                                 }
                                 
                                 switch (distanceEncoding) {
