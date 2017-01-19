@@ -38,7 +38,7 @@
 #include "opendavinci/generated/odcore/data/SharedPointCloud.h"
 #include "opendlv/data/environment/EgoState.h"
 #include "opendavinci/generated/odcore/data/CompactPointCloud.h"
-#include "automotivedata/generated/cartesian/Constants.h"
+//#include "automotivedata/generated/cartesian/Constants.h"
 
 class QWidget;
 namespace cockpit { namespace plugins { class PlugIn; } }
