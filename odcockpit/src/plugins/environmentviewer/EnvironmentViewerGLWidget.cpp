@@ -303,11 +303,11 @@ namespace cockpit {
                                         for (uint32_t counter = 0; counter < m_velodyneFrame.getWidth(); counter++) {
                                             float intensityLevel = velodyneRawData[startID + 3] / 256;  //Normalize intensity to fit the range from 0 to 1
                                             //Four color levels: blue, green, yellow, red from low intensity to high intensity
-                                            if (intensityLevel <= 0.25f) {
+                                            if (intensityLevel < 0.25f + 1e-7) {
                                                 glColor3f(0.0f, 0.5f + intensityLevel * 2.0f, 1.0f);
-                                            } else if (intensityLevel > 0.25f && intensityLevel <= 0.5f) {
+                                            } else if (intensityLevel > 0.25f && intensityLevel < 0.5f + 1e-7) {
                                                 glColor3f(0.0f, 0.5f + intensityLevel * 2.0f, 0.5f);
-                                            } else if (intensityLevel > 0.5f && intensityLevel <= 0.75f) {
+                                            } else if (intensityLevel > 0.5f && intensityLevel < 0.75f + 1e-7) {
                                                 glColor3f(1.0f, 0.75f + intensityLevel, 0.0f);
                                             } else{
                                                 glColor3f(0.55f + intensityLevel, 0.0f, 0.0f);
@@ -326,11 +326,11 @@ namespace cockpit {
                                         for (uint32_t counter = 0; counter < m_velodyneFrame.getWidth(); counter++) {
                                             float intensityLevel = velodyneRawData[startID + 3] / 256;  //Normalize intensity to fit the range from 0 to 1
                                             //Four color levels: blue, green, yellow, red from low intensity to high intensity
-                                            if (intensityLevel <= 0.25f) {
+                                            if (intensityLevel < 0.25f + 1e-7) {
                                                 glColor3f(0.0f, 0.5f + intensityLevel * 2.0f, 1.0f);
-                                            } else if (intensityLevel > 0.25f && intensityLevel <= 0.5f) {
+                                            } else if (intensityLevel > 0.25f && intensityLevel < 0.5f + 1e-7) {
                                                 glColor3f(0.0f, 0.5f + intensityLevel * 2.0f, 0.5f);
-                                            } else if (intensityLevel > 0.5f && intensityLevel <= 0.75f) {
+                                            } else if (intensityLevel > 0.5f && intensityLevel < 0.75f + 1e-7) {
                                                 glColor3f(1.0f, 0.75f + intensityLevel, 0.0f);
                                             } else{
                                                 glColor3f(0.55f + intensityLevel, 0.0f, 0.0f);
@@ -434,11 +434,11 @@ namespace cockpit {
                                     //The number of intensity levels depends on number of bits for intensity. There are 2^n intensity levels for n bits
                                     float intensityLevel = intensity / intensityMaxValue;
                                     //Four color levels: blue, green, yellow, red from low intensity to high intensity
-                                    if (intensityLevel <= 0.25f) {
+                                    if (intensityLevel < 0.25f + 1e-7) {
                                         glColor3f(0.0f, 0.5f + intensityLevel * 2.0f, 1.0f);
-                                    } else if (intensityLevel > 0.25f && intensityLevel <= 0.5f) {
+                                    } else if (intensityLevel > 0.25f && intensityLevel < 0.5f + 1e-7) {
                                         glColor3f(0.0f, 0.5f + intensityLevel * 2.0f, 0.5f);
-                                    } else if (intensityLevel > 0.5f && intensityLevel <= 0.75f) {
+                                    } else if (intensityLevel > 0.5f && intensityLevel < 0.75f + 1e-7) {
                                         glColor3f(1.0f, 0.75f + intensityLevel, 0.0f);
                                     } else {
                                         glColor3f(0.55f + intensityLevel, 0.0f, 0.0f);
