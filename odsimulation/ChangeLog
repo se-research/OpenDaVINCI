@@ -1,3 +1,4 @@
+4.6.1 - Compilation fix on 32bit systems
 4.6.0 - Restructuring PointCloud encoding
 4.5.1 - Added mutex to CANDevice::write
 4.5.0 - Propagating value from command line parameter --id to container field senderStamp
