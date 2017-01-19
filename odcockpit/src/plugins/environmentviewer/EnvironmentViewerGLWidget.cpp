@@ -360,13 +360,13 @@ namespace cockpit {
                     const string distances = m_cpc.getDistances();
                     const uint8_t numberOfBitsForIntensity = m_cpc.getNumberOfBitsForIntensity();
                     const uint8_t intensityPlacement = m_cpc.getIntensityPlacement();
-                    uint16_t mask = 0xFFFF;
+                    uint16_t tmpMask = 0xFFFF;
                     float intensityMaxValue = 0.0f;
                     if (numberOfBitsForIntensity > 0) {
                         if (intensityPlacement == 0) {
-                            mask = mask >> numberOfBitsForIntensity; //higher bits for intensity
+                            tmpMask = tmpMask >> numberOfBitsForIntensity; //higher bits for intensity
                         } else {
-                            mask = mask << numberOfBitsForIntensity; //lower bits for intensity
+                            tmpMask = tmpMask << numberOfBitsForIntensity; //lower bits for intensity
                         }
                         intensityMaxValue = pow(2.0f, static_cast<float>(numberOfBitsForIntensity)) - 1.0f;
                     }
@@ -409,7 +409,7 @@ namespace cockpit {
                                                                  break;
                                 }       
                             } else {
-                                uint16_t cappedDistance = distance_integer & mask;
+                                uint16_t cappedDistance = distance_integer & tmpMask;
                                 if (intensityPlacement == 0) {//higher bits for intensity
                                     intensity = distance_integer >> (16 - numberOfBitsForIntensity);
                                 } else {//lower bits for intensity
