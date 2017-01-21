@@ -21,6 +21,7 @@
 #ifndef COMPAREPOINTCLOUDMODULE_H_
 #define COMPAREPOINTCLOUDMODULE_H_
 
+#include <cmath>
 #include <vector>
 #include <memory>
 #include <fstream>
@@ -76,9 +77,9 @@ namespace odcomparepointcloud {
         private:
             virtual void setUp();
             virtual void tearDown();
-            //void parseAdditionalCommandLineParameters(const int &argc, char **argv);
-            void readCPC(odcore::data::Container&, const uint8_t &);
-            void readSPC(odcore::data::Container&);
+            int16_t distanceStatistics(odcore::data::Container &);
+            void readCPC(odcore::data::Container &, const uint8_t &);
+            void readSPC(odcore::data::Container &);
             inline void clearVectors(const uint8_t &, const bool &);
         private:
             bool m_CPCfound;
@@ -114,10 +115,17 @@ namespace odcomparepointcloud {
             uint16_t m_16SortedDistances[16];
             std::string m_recordingFile;
             bool m_allFrames;
+            bool m_distanceHistogram;
             uint64_t m_chosenFrame;
             uint64_t m_currentFrame;
-            //const float START_V_ANGLE = -15.0;//For each azimuth there are 16 points with unique vertical angles from -15 to 15 degrees
-            //const float V_INCREMENT = 2.0;  //The vertical angle increment for the 16 points with the same azimuth is 2 degrees
+            const float m_toRadian = static_cast< float >(M_PI) / 180.0f;
+            
+            const uint16_t m_MIN_DISTANCE = 500; //resolution 2mm
+            const uint16_t m_STEP = 100; //20cm
+            //There are (50000-500)/100=495 distance intervals from 1m (500 * 2mm) to 100m (50000 * 2mm) with step 100 (20cm)
+            const uint16_t m_MAX_INDEX = 494;
+            uint64_t m_distanceIntervals[495];//count the number of distance values in each interval
+            
     };
 
 } // odcomparepointcloud

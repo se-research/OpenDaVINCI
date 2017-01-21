@@ -18,7 +18,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <cmath>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -29,6 +28,7 @@
 #include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
+//#include "automotivedata/generated/cartesian/Constants.h"
 
 #include "ComparePointCloudModule.h"
 
@@ -68,6 +68,7 @@ namespace odcomparepointcloud {
         m_spcFrame("spcFrame.csv", std::ios_base::app | std::ios_base::out),
         m_recordingFile(""),
         m_allFrames(false),
+        m_distanceHistogram(false),
         m_chosenFrame(0),
         m_currentFrame(0) {
             //The vertical angles sorted by sensor IDs from 0 to 15 according to the data sheet
@@ -109,6 +110,11 @@ namespace odcomparepointcloud {
             for (uint8_t counter = 0; counter < 16; counter++) {
                 m_16SortedDistances[counter] = 0.0;
             }
+            
+            for (uint16_t counter = 0; counter < 495; counter++) {
+                m_distanceIntervals[counter] = 0;
+            }
+            
         }
 
     ComparePointCloudModule::~ComparePointCloudModule() {}
@@ -117,9 +123,40 @@ namespace odcomparepointcloud {
         m_recordingFile = getKeyValueConfiguration().getValue< string >("ComparePointCloud.recording");
         m_allFrames = getKeyValueConfiguration().getValue< uint16_t >("ComparePointCloud.compareAllFrames") == 1;
         m_chosenFrame = getKeyValueConfiguration().getValue< uint64_t >("ComparePointCloud.frame");
+        m_distanceHistogram = getKeyValueConfiguration().getValue< uint16_t >("ComparePointCloud.distanceHistogram") == 1;
     }
 
     void ComparePointCloudModule::tearDown() {}
+    
+    int16_t ComparePointCloudModule::distanceStatistics(Container &c) {
+        m_cpc = c.getData<CompactPointCloud>();  
+        uint8_t entriesPerAzimuth = m_cpc.getEntriesPerAzimuth();
+        string distances = m_cpc.getDistances();
+        uint32_t numberOfPoints = distances.size() / 2;
+        uint32_t numberOfAzimuths = numberOfPoints / entriesPerAzimuth;
+        stringstream sstr(distances);
+        uint16_t distance_integer = 0;
+        uint8_t numberOfBitsForIntensity = m_cpc.getNumberOfBitsForIntensity();
+        uint16_t distanceEncoding = m_cpc.getDistanceEncoding();
+        if (numberOfBitsForIntensity != 0 || distanceEncoding != 1) {
+            return -1; //Stop computing distance distribution
+        } else {
+            uint64_t index = 0;
+            for (uint32_t azimuthIndex = 0; azimuthIndex < numberOfAzimuths; azimuthIndex++) {
+                for (uint8_t sensorIndex = 0; sensorIndex < entriesPerAzimuth; sensorIndex++) {
+                    sstr.read((char*)(&distance_integer), 2);
+                    distance_integer = ntohs(distance_integer);
+	                if (distance_integer >= m_MIN_DISTANCE) {
+		                index = (distance_integer - m_MIN_DISTANCE) / m_STEP;
+		                if (index < m_MAX_INDEX) {
+			                m_distanceIntervals[index]++;
+		                }
+	                }
+                }
+            } 
+            return 0;
+        }
+    }
     
     void ComparePointCloudModule::readCPC(Container &c, const uint8_t &comparisonOption) {
         m_cpc = c.getData<CompactPointCloud>();  
@@ -127,8 +164,8 @@ namespace odcomparepointcloud {
         float endAzimuth = m_cpc.getEndAzimuth();
         uint8_t entriesPerAzimuth = m_cpc.getEntriesPerAzimuth();
         string distances = m_cpc.getDistances();
-        const uint8_t numberOfBitsForIntensity = m_cpc.getNumberOfBitsForIntensity();
-        const uint8_t intensityPlacement = m_cpc.getIntensityPlacement();
+        uint8_t numberOfBitsForIntensity = m_cpc.getNumberOfBitsForIntensity();
+        uint8_t intensityPlacement = m_cpc.getIntensityPlacement();
         uint16_t mask = 0xFFFF;
         if (numberOfBitsForIntensity > 0) {
             if (intensityPlacement == 0) {
@@ -150,7 +187,6 @@ namespace odcomparepointcloud {
         uint32_t numberOfAzimuths = numberOfPoints / entriesPerAzimuth;
         float azimuthIncrement = (endAzimuth - startAzimuth) / numberOfAzimuths;//Calculate the azimuth increment
         stringstream sstr(distances);
-        const float toRadian = static_cast< float >(M_PI) / 180.0f;
         uint16_t distance_integer = 0;
         float xyDistance = 0;
         float azimuth = startAzimuth;
@@ -179,10 +215,10 @@ namespace odcomparepointcloud {
                         m_verticalAngleCpc.push_back(m_verticalAngles[sensorIndex]);
                     } else {
                         // Compute x, y, z coordinate based on distance, azimuth, and vertical angle
-                        xyDistance = distance * cos(m_verticalAngles[sensorIndex] * toRadian);
-                        m_xCpc.push_back(xyDistance * sin(azimuth * toRadian));
-                        m_yCpc.push_back(xyDistance * cos(azimuth * toRadian));
-                        m_zCpc.push_back(distance * sin(m_verticalAngles[sensorIndex] * toRadian));
+                        xyDistance = distance * cos(m_verticalAngles[sensorIndex] * m_toRadian);
+                        m_xCpc.push_back(xyDistance * sin(azimuth * m_toRadian));
+                        m_yCpc.push_back(xyDistance * cos(azimuth * m_toRadian));
+                        m_zCpc.push_back(distance * sin(m_verticalAngles[sensorIndex] * m_toRadian));
                     }
                 }
             }
@@ -253,244 +289,281 @@ namespace odcomparepointcloud {
         Container cpcFrame;
         Container spcFrame;
         
-        if (m_allFrames) {
-            /*uint32_t spcFrameNumber = 0;
-            while (player->hasMoreData()){
-                c = player->getNextContainerToBeSent();
-                if (c.getDataType() == odcore::data::CompactPointCloud::ID()) {
-                    m_frameNumber++;
-                }
-                if (c.getDataType() == odcore::data::SharedPointCloud::ID()) {
-                    spcFrameNumber++;
-                }
-            }
-            cout << m_frameNumber << endl;
-            cout << spcFrameNumber << endl;
-            return 0;*/
-            
+        if (m_distanceHistogram) {
+            int16_t status = 0;
             if (player->hasMoreData()) {
-                c = player->getNextContainerToBeSent();
-               if (c.getDataType() == odcore::data::SharedPointCloud::ID()) {
-                    
-                    readSPC(c);
-                    m_frameNumber++;
-                    if (m_xSpc.empty()) {
-                        m_compareOption = 0; //compare distance, azimuth, vertical angle
-                    } else {
-                        m_compareOption = 1; //compare xyz
+                c = player->getNextContainerToBeSent();//First SPC
+                c = player->getNextContainerToBeSent();//First CPC
+               if (c.getDataType() == odcore::data::CompactPointCloud::ID()) {
+                    status = distanceStatistics(c);
+                    if (status < 0) {
+                        cerr << "The recording is unsuitable for generating distance histogram." << endl
+                         << "Use a recording without intensity and with distance encoding 1 in CPC." <<endl;
                     }
                 }  
-                 
-                c = player->getNextContainerToBeSent();
-                if (c.getDataType() == odcore::data::CompactPointCloud::ID()) {
-                    readCPC(c, m_compareOption);
-                } 
             }
             
-            while (player->hasMoreData() && m_frameNumber < 3000) {
-               c = player->getNextContainerToBeSent();
-               if (c.getDataType() == odcore::data::SharedPointCloud::ID()) {
-                    readSPC(c);
-                    m_frameNumber++;
-                }  
-                 
-                c = player->getNextContainerToBeSent();
-                if (c.getDataType() == odcore::data::CompactPointCloud::ID()) {
-                    readCPC(c, m_compareOption);
-                }  
-                     
-                float error_1, error_2, error_3;
-                uint32_t spc_index = 0;
-                if (m_compareOption == 0) {
-                    for (uint32_t cpc_index = 0; cpc_index < m_distanceCpc.size(); cpc_index++) {
-                        error_1 = abs(m_distanceCpc[cpc_index] - m_distanceSpc[spc_index]);
-                        error_2 = abs(m_azimuthCpc[cpc_index] - m_azimuthSpc[spc_index]);
-                        error_3 = abs(m_verticalAngleCpc[cpc_index] - m_verticalAngleSpc[spc_index]);
-                        if (error_3 < 0.003) {
-                            m_Error1.push_back(error_1);
-                            m_Error2.push_back(error_2);
-                            m_Error3.push_back(error_3);
-                            spc_index++;
-                        }
-                    }
-                } else {
-                    for (uint32_t cpc_index = 0; cpc_index < m_xCpc.size(); cpc_index++) {
-                        error_1 = abs(m_xCpc[cpc_index] - m_xSpc[spc_index]);
-                        error_2 = abs(m_yCpc[cpc_index] - m_ySpc[spc_index]);
-                        error_3 = abs(m_zCpc[cpc_index] - m_zSpc[spc_index]);
-                        if (error_3 < 0.003) {
-                            m_Error1.push_back(error_1);
-                            m_Error2.push_back(error_2);
-                            m_Error3.push_back(error_3);
-                            spc_index++;
-                        }
-                    }
+            if (status == 0) {
+                while (player->hasMoreData() && m_frameNumber < 3000) {
+                    c = player->getNextContainerToBeSent();
+                    c = player->getNextContainerToBeSent();
+
+                    if (c.getDataType() == odcore::data::CompactPointCloud::ID()) {
+                        m_frameNumber++;
+                        status = distanceStatistics(c);
+                    }  
                 }
-                 
-                float max_Error1 = m_Error1[0];
-                float sum_Error1 = 0.0;
-                for (float i : m_Error1) {
-                    sum_Error1 += i;
-                    if (i > max_Error1) {
-                        max_Error1 = i;
-                    }
-                }
-                float avg_Error1 = sum_Error1 / m_Error1.size();
-               
-                float max_Error2 = m_Error2[0];
-                float sum_Error2 = 0.0;
-                for (float i : m_Error2) {
-                    sum_Error2 += i;
-                    if (i > max_Error2) {
-                        max_Error2 = i;
-                    }
-                }
-                float avg_Error2 = sum_Error2 / m_Error2.size();
+                cout << "Distance distribution calculation completed." << endl;
                 
-                float max_Error3 = m_Error3[0];
-                float sum_Error3 = 0.0;
-                for (float i : m_Error3) {
-                    sum_Error3 += i;
-                    if (i > max_Error3) {
-                        max_Error3 = i;
-                    }
-                }
-                float avg_Error3 = sum_Error3 / m_Error3.size();
-                
-                if (avg_Error1 > 5 || avg_Error2 > 5 || avg_Error3 > 5) {
-                    cout << "Abnormal frame:" << m_frameNumber << endl;
+                float distance = 1.0f;
+                for (uint16_t counter = 0; counter < m_MAX_INDEX; counter++) {
+                    m_outputData << distance << "," <<m_distanceIntervals[counter] << endl;
+                    distance += 0.2f;
                 }
                 
-                if (m_compareOption == 0) {
-                    if (m_Error1.size() == m_distanceSpc.size() && m_Error2.size() == m_azimuthSpc.size() && 
-                    m_Error3.size() == m_verticalAngleSpc.size()) {
-                        m_outputData << max_Error1 << "," << avg_Error1 << "," << max_Error2 << "," << avg_Error2 << ","
-                         << max_Error3 << "," << avg_Error3 << endl;  
-                    }
-                    else {
-                       cout << "Abnormal frame:" << m_frameNumber << endl;
-                    }
-                } else {
-                    if (m_Error1.size() == m_xSpc.size() && m_Error2.size() == m_ySpc.size() && 
-                    m_Error3.size() == m_zSpc.size()) {
-                        m_outputData << max_Error1 << "," << avg_Error1 << "," << max_Error2 << "," << avg_Error2 << ","
-                         << max_Error3 << "," << avg_Error3 << endl;  
-                    }
-                    else {
-                       cout << "Abnormal frame:" << m_frameNumber << endl;
-                    }
-                }
-                clearVectors(m_compareOption, true);   
+                cout << "Distance distribution exported." <<endl;
             }
-        }
-        else {//Compare a single frame
-            /*if (player->hasMoreData()) {
-                //CPC has one more frame than SPC. Discard the first frame of CPC
-                c = player->getNextContainerToBeSent();
-            }*/
-            while (player->hasMoreData() && m_currentFrame < m_chosenFrame) {
-                c = player->getNextContainerToBeSent();
-                c = player->getNextContainerToBeSent();
-                m_currentFrame++;
-            }
-            
-            if (m_currentFrame < m_chosenFrame) {
-                cerr << "The chosen frame number is too large for the recording. Choose a smaller frame." << endl;
-            }
-            else {
-                //Compare a set of 3 values of the chosen frame between CPC and SPC:
-                //either (1) distance, azimuth, vertical angle, or (2) xyz
-                spcFrame = player->getNextContainerToBeSent();
-                if (spcFrame.getDataType() == odcore::data::SharedPointCloud::ID()) {
-                    readSPC(spcFrame);
-                    if (m_xSpc.empty()) {
-                        m_compareOption = 0; //compare distance, azimuth, vertical angle
-                    } else {
-                        m_compareOption = 1; //compare xyz
+        } else {
+            if (m_allFrames) {
+                /*uint32_t spcFrameNumber = 0;
+                while (player->hasMoreData()){
+                    c = player->getNextContainerToBeSent();
+                    if (c.getDataType() == odcore::data::CompactPointCloud::ID()) {
+                        m_frameNumber++;
                     }
-                }  
-                
-                cout << "Compare option:" << +m_compareOption <<endl;
-                
-                cpcFrame = player->getNextContainerToBeSent();
-                if (cpcFrame.getDataType() == odcore::data::CompactPointCloud::ID()) {
-                    readCPC(cpcFrame, m_compareOption);
-                }  
-                
-                if (m_compareOption == 0) {
-                    cout << "Number of points of Frame " << m_chosenFrame << " of SPC:" << m_distanceSpc.size() << endl;
-                    cout << "Number of points of Frame " << m_chosenFrame << " of CPC:" << m_distanceCpc.size() << endl;
-                    
-                    //cout << "The first 20 points of CPC:" << endl;
-                    for (uint64_t index = 0; index < m_distanceCpc.size(); index++) {
-                        m_cpcFrame << m_distanceCpc[index] << "," << m_azimuthCpc[index] << "," << m_verticalAngleCpc[index] << endl;   
+                    if (c.getDataType() == odcore::data::SharedPointCloud::ID()) {
+                        spcFrameNumber++;
                     }
-                    
-                    //cout << "The first 20 points of SPC:" << endl;
-                    for (uint64_t index = 0; index < m_distanceSpc.size(); index++) {
-                        m_spcFrame << m_distanceSpc[index] << "," << m_azimuthSpc[index] << "," << m_verticalAngleSpc[index] << endl;   
-                    }
+                }
+                cout << m_frameNumber << endl;
+                cout << spcFrameNumber << endl;
+                return 0;*/
+                
+                if (player->hasMoreData()) {
+                    c = player->getNextContainerToBeSent();
+                   if (c.getDataType() == odcore::data::SharedPointCloud::ID()) {
                         
+                        readSPC(c);
+                        m_frameNumber++;
+                        if (m_xSpc.empty()) {
+                            m_compareOption = 0; //compare distance, azimuth, vertical angle
+                        } else {
+                            m_compareOption = 1; //compare xyz
+                        }
+                    }  
+                     
+                    c = player->getNextContainerToBeSent();
+                    if (c.getDataType() == odcore::data::CompactPointCloud::ID()) {
+                        readCPC(c, m_compareOption);
+                    } 
+                }
+                
+                while (player->hasMoreData() && m_frameNumber < 3000) {
+                   c = player->getNextContainerToBeSent();
+                   if (c.getDataType() == odcore::data::SharedPointCloud::ID()) {
+                        readSPC(c);
+                        m_frameNumber++;
+                    }  
+                     
+                    c = player->getNextContainerToBeSent();
+                    if (c.getDataType() == odcore::data::CompactPointCloud::ID()) {
+                        readCPC(c, m_compareOption);
+                    }  
+                         
                     float error_1, error_2, error_3;
                     uint32_t spc_index = 0;
-                    for (uint32_t cpc_index = 0; cpc_index < m_distanceCpc.size(); cpc_index++) {
-                        error_1 = abs(m_distanceCpc[cpc_index] - m_distanceSpc[spc_index]);
-                        error_2 = abs(m_azimuthCpc[cpc_index] - m_azimuthSpc[spc_index]);
-                        error_3 = abs(m_verticalAngleCpc[cpc_index] - m_verticalAngleSpc[spc_index]);
-
-                        //For the same point in CPC and SPC, the difference in z should be smaller
-                        //than 0.003
-                        //Max distance error: 0.8cm (original integer value divided by 5 to get cm
-                        //while storing CPC), i.e., 0.008m. Hence, the maximum difference in z should
-                        //be 0.008 * sin(verticalAngle * toRadian), while verticalAngle is from -15 to 
-                        //15 with increment 2
-                        if (error_3 < 0.003) {
-                            m_outputData << error_1 << "," << error_2 << "," << error_3 << endl;
-                            spc_index++;
+                    if (m_compareOption == 0) {
+                        for (uint32_t cpc_index = 0; cpc_index < m_distanceCpc.size(); cpc_index++) {
+                            error_1 = abs(m_distanceCpc[cpc_index] - m_distanceSpc[spc_index]);
+                            error_2 = abs(m_azimuthCpc[cpc_index] - m_azimuthSpc[spc_index]);
+                            error_3 = abs(m_verticalAngleCpc[cpc_index] - m_verticalAngleSpc[spc_index]);
+                            if (error_3 < 0.003) {
+                                m_Error1.push_back(error_1);
+                                m_Error2.push_back(error_2);
+                                m_Error3.push_back(error_3);
+                                spc_index++;
+                            }
+                        }
+                    } else {
+                        for (uint32_t cpc_index = 0; cpc_index < m_xCpc.size(); cpc_index++) {
+                            error_1 = abs(m_xCpc[cpc_index] - m_xSpc[spc_index]);
+                            error_2 = abs(m_yCpc[cpc_index] - m_ySpc[spc_index]);
+                            error_3 = abs(m_zCpc[cpc_index] - m_zSpc[spc_index]);
+                            if (error_3 < 0.003) {
+                                m_Error1.push_back(error_1);
+                                m_Error2.push_back(error_2);
+                                m_Error3.push_back(error_3);
+                                spc_index++;
+                            }
                         }
                     }
-                } else {
-                    cout << "Number of points of Frame " << m_chosenFrame << " of SPC:" << m_xSpc.size() << endl;
-                    cout << "Number of points of Frame " << m_chosenFrame << " of CPC:" << m_xCpc.size() << endl;
-                    
-                    //cout << "The first 20 points of CPC:" << endl;
-                    for (uint64_t index = 0; index < m_xCpc.size(); index++) {
-                        m_cpcFrame << m_xCpc[index] << "," << m_yCpc[index] << "," << m_zCpc[index] << endl;   
-                    }
-                    
-                    //cout << "The first 20 points of SPC:" << endl;
-                    for (uint64_t index = 0; index < m_xSpc.size(); index++) {
-                        m_spcFrame << m_xSpc[index] << "," << m_ySpc[index] << "," << m_zSpc[index] << endl;   
-                    }
-                        
-                    float error_x, error_y, error_z;
-                    uint32_t spc_index = 0;
-                    for (uint32_t cpc_index = 0; cpc_index < m_xCpc.size(); cpc_index++) {
-                        error_x = abs(m_xCpc[cpc_index] - m_xSpc[spc_index]);
-                        error_y = abs(m_yCpc[cpc_index] - m_ySpc[spc_index]);
-                        error_z = abs(m_zCpc[cpc_index] - m_zSpc[spc_index]);
-                        //For the same point in CPC and SPC, the difference in z should be smaller
-                        //than 0.003
-                        //Max distance error: 0.8cm (original integer value divided by 5 to get cm
-                        //while storing CPC), i.e., 0.008m. Hence, the maximum difference in z should
-                        //be 0.008 * sin(verticalAngle * toRadian), while verticalAngle is from -15 to 
-                        //15 with increment 2
-                        if (error_z < 0.003) {
-                            m_outputData << error_x << "," << error_y << "," << error_z << endl;
-                            spc_index++;
+                     
+                    float max_Error1 = m_Error1[0];
+                    float sum_Error1 = 0.0;
+                    for (float i : m_Error1) {
+                        sum_Error1 += i;
+                        if (i > max_Error1) {
+                            max_Error1 = i;
                         }
                     }
+                    float avg_Error1 = sum_Error1 / m_Error1.size();
+                   
+                    float max_Error2 = m_Error2[0];
+                    float sum_Error2 = 0.0;
+                    for (float i : m_Error2) {
+                        sum_Error2 += i;
+                        if (i > max_Error2) {
+                            max_Error2 = i;
+                        }
+                    }
+                    float avg_Error2 = sum_Error2 / m_Error2.size();
+                    
+                    float max_Error3 = m_Error3[0];
+                    float sum_Error3 = 0.0;
+                    for (float i : m_Error3) {
+                        sum_Error3 += i;
+                        if (i > max_Error3) {
+                            max_Error3 = i;
+                        }
+                    }
+                    float avg_Error3 = sum_Error3 / m_Error3.size();
+                    
+                    if (avg_Error1 > 5 || avg_Error2 > 5 || avg_Error3 > 5) {
+                        cout << "Abnormal frame:" << m_frameNumber << endl;
+                    }
+                    
+                    if (m_compareOption == 0) {
+                        if (m_Error1.size() == m_distanceSpc.size() && m_Error2.size() == m_azimuthSpc.size() && 
+                        m_Error3.size() == m_verticalAngleSpc.size()) {
+                            m_outputData << max_Error1 << "," << avg_Error1 << "," << max_Error2 << "," << avg_Error2 << ","
+                             << max_Error3 << "," << avg_Error3 << endl;  
+                        }
+                        else {
+                           cout << "Abnormal frame:" << m_frameNumber << endl;
+                        }
+                    } else {
+                        if (m_Error1.size() == m_xSpc.size() && m_Error2.size() == m_ySpc.size() && 
+                        m_Error3.size() == m_zSpc.size()) {
+                            m_outputData << max_Error1 << "," << avg_Error1 << "," << max_Error2 << "," << avg_Error2 << ","
+                             << max_Error3 << "," << avg_Error3 << endl;  
+                        }
+                        else {
+                           cout << "Abnormal frame:" << m_frameNumber << endl;
+                        }
+                    }
+                    clearVectors(m_compareOption, true);   
                 }
-                clearVectors(m_compareOption, false);  
             }
+            else {//Compare a single frame
+                /*if (player->hasMoreData()) {
+                    //CPC has one more frame than SPC. Discard the first frame of CPC
+                    c = player->getNextContainerToBeSent();
+                }*/
+                while (player->hasMoreData() && m_currentFrame < m_chosenFrame) {
+                    c = player->getNextContainerToBeSent();
+                    c = player->getNextContainerToBeSent();
+                    m_currentFrame++;
+                }
+                
+                if (m_currentFrame < m_chosenFrame) {
+                    cerr << "The chosen frame number is too large for the recording. Choose a smaller frame." << endl;
+                }
+                else {
+                    //Compare a set of 3 values of the chosen frame between CPC and SPC:
+                    //either (1) distance, azimuth, vertical angle, or (2) xyz
+                    spcFrame = player->getNextContainerToBeSent();
+                    if (spcFrame.getDataType() == odcore::data::SharedPointCloud::ID()) {
+                        readSPC(spcFrame);
+                        if (m_xSpc.empty()) {
+                            m_compareOption = 0; //compare distance, azimuth, vertical angle
+                        } else {
+                            m_compareOption = 1; //compare xyz
+                        }
+                    }  
+                    
+                    cout << "Compare option:" << +m_compareOption <<endl;
+                    
+                    cpcFrame = player->getNextContainerToBeSent();
+                    if (cpcFrame.getDataType() == odcore::data::CompactPointCloud::ID()) {
+                        readCPC(cpcFrame, m_compareOption);
+                    }  
+                    
+                    if (m_compareOption == 0) {
+                        cout << "Number of points of Frame " << m_chosenFrame << " of SPC:" << m_distanceSpc.size() << endl;
+                        cout << "Number of points of Frame " << m_chosenFrame << " of CPC:" << m_distanceCpc.size() << endl;
+                        
+                        //cout << "The first 20 points of CPC:" << endl;
+                        for (uint64_t index = 0; index < m_distanceCpc.size(); index++) {
+                            m_cpcFrame << m_distanceCpc[index] << "," << m_azimuthCpc[index] << "," << m_verticalAngleCpc[index] << endl;   
+                        }
+                        
+                        //cout << "The first 20 points of SPC:" << endl;
+                        for (uint64_t index = 0; index < m_distanceSpc.size(); index++) {
+                            m_spcFrame << m_distanceSpc[index] << "," << m_azimuthSpc[index] << "," << m_verticalAngleSpc[index] << endl;   
+                        }
+                            
+                        float error_1, error_2, error_3;
+                        uint32_t spc_index = 0;
+                        for (uint32_t cpc_index = 0; cpc_index < m_distanceCpc.size(); cpc_index++) {
+                            error_1 = abs(m_distanceCpc[cpc_index] - m_distanceSpc[spc_index]);
+                            error_2 = abs(m_azimuthCpc[cpc_index] - m_azimuthSpc[spc_index]);
+                            error_3 = abs(m_verticalAngleCpc[cpc_index] - m_verticalAngleSpc[spc_index]);
+
+                            /*For the same point in CPC and SPC, the difference in z should be smaller
+                              than 0.003 (assuming 1cm as distance encoding)
+                              Max distance error: 0.8cm (original integer value divided by 5 to get cm
+                              while storing CPC), i.e., 0.008m. Hence, the maximum difference in z should
+                              be 0.008 * sin(verticalAngle * m_toRadian),
+                              while verticalAngle is from -15 to 15 with increment 2*/
+                            if (error_3 < 0.003) {
+                                m_outputData << error_1 << "," << error_2 << "," << error_3 << endl;
+                                spc_index++;
+                            }
+                        }
+                    } else {
+                        cout << "Number of points of Frame " << m_chosenFrame << " of SPC:" << m_xSpc.size() << endl;
+                        cout << "Number of points of Frame " << m_chosenFrame << " of CPC:" << m_xCpc.size() << endl;
+                        
+                        //cout << "The first 20 points of CPC:" << endl;
+                        for (uint64_t index = 0; index < m_xCpc.size(); index++) {
+                            m_cpcFrame << m_xCpc[index] << "," << m_yCpc[index] << "," << m_zCpc[index] << endl;   
+                        }
+                        
+                        //cout << "The first 20 points of SPC:" << endl;
+                        for (uint64_t index = 0; index < m_xSpc.size(); index++) {
+                            m_spcFrame << m_xSpc[index] << "," << m_ySpc[index] << "," << m_zSpc[index] << endl;   
+                        }
+                            
+                        float error_x, error_y, error_z;
+                        uint32_t spc_index = 0;
+                        for (uint32_t cpc_index = 0; cpc_index < m_xCpc.size(); cpc_index++) {
+                            error_x = abs(m_xCpc[cpc_index] - m_xSpc[spc_index]);
+                            error_y = abs(m_yCpc[cpc_index] - m_ySpc[spc_index]);
+                            error_z = abs(m_zCpc[cpc_index] - m_zSpc[spc_index]);
+                            /*For the same point in CPC and SPC, the difference in z should be smaller
+                              than 0.003 (assuming 1cm as distance encoding)
+                              Max distance error: 0.8cm (original integer value divided by 5 to get cm
+                              while storing CPC), i.e., 0.008m. Hence, the maximum difference in z should
+                              be 0.008 * sin(verticalAngle * m_toRadian),
+                              while verticalAngle is from -15 to 15 with increment 2*/
+                            if (error_z < 0.003) {
+                                m_outputData << error_x << "," << error_y << "," << error_z << endl;
+                                spc_index++;
+                            }
+                        }
+                    }
+                    clearVectors(m_compareOption, false);  
+                }
+            }
+            cout << "Comparison completed!" << endl;
         }
-        
-        cout << "Comparison completed!" << endl;
-        
+
         while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
-            if (m_chosenFrame == m_currentFrame) {
-                getConference().send(spcFrame);
-                getConference().send(cpcFrame);
+            if (!m_distanceHistogram) {
+                if (m_chosenFrame == m_currentFrame) {
+                    getConference().send(spcFrame);
+                    getConference().send(cpcFrame);
+                }
             }
         } 
         
