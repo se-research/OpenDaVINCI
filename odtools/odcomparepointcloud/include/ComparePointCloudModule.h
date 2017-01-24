@@ -117,6 +117,7 @@ namespace odcomparepointcloud {
             bool m_allFrames;
             bool m_distanceHistogram;
             uint64_t m_chosenFrame;
+            uint8_t m_sendPointCloudOption; //0: send SPC only; 1: send CPC only; 2: send both
             uint64_t m_currentFrame;
             const float m_toRadian = static_cast< float >(M_PI) / 180.0f;
             

@@ -70,6 +70,7 @@ namespace odcomparepointcloud {
         m_allFrames(false),
         m_distanceHistogram(false),
         m_chosenFrame(0),
+        m_sendPointCloudOption(0),
         m_currentFrame(0) {
             //The vertical angles sorted by sensor IDs from 0 to 15 according to the data sheet
             m_verticalAngles[0] = -15.0;
@@ -123,6 +124,7 @@ namespace odcomparepointcloud {
         m_recordingFile = getKeyValueConfiguration().getValue< string >("ComparePointCloud.recording");
         m_allFrames = getKeyValueConfiguration().getValue< uint16_t >("ComparePointCloud.compareAllFrames") == 1;
         m_chosenFrame = getKeyValueConfiguration().getValue< uint64_t >("ComparePointCloud.frame");
+        m_sendPointCloudOption = getKeyValueConfiguration().getValue< uint64_t >("ComparePointCloud.sendPointCloudOption");
         m_distanceHistogram = getKeyValueConfiguration().getValue< uint16_t >("ComparePointCloud.distanceHistogram") == 1;
     }
 
@@ -341,7 +343,7 @@ namespace odcomparepointcloud {
                 
                 if (player->hasMoreData()) {
                     c = player->getNextContainerToBeSent();
-                   if (c.getDataType() == odcore::data::SharedPointCloud::ID()) {
+                    if (c.getDataType() == odcore::data::SharedPointCloud::ID()) {
                         
                         readSPC(c);
                         m_frameNumber++;
@@ -362,7 +364,6 @@ namespace odcomparepointcloud {
                    c = player->getNextContainerToBeSent();
                    if (c.getDataType() == odcore::data::SharedPointCloud::ID()) {
                         readSPC(c);
-                        m_frameNumber++;
                     }  
                      
                     c = player->getNextContainerToBeSent();
@@ -428,7 +429,7 @@ namespace odcomparepointcloud {
                     }
                     float avg_Error3 = sum_Error3 / m_Error3.size();
                     
-                    if (avg_Error1 > 5 || avg_Error2 > 5 || avg_Error3 > 5) {
+                    if (avg_Error1 > 1 || avg_Error2 > 1 || avg_Error3 > 1) {
                         cout << "Abnormal frame:" << m_frameNumber << endl;
                     }
                     
@@ -451,7 +452,8 @@ namespace odcomparepointcloud {
                            cout << "Abnormal frame:" << m_frameNumber << endl;
                         }
                     }
-                    clearVectors(m_compareOption, true);   
+                    clearVectors(m_compareOption, true); 
+                    m_frameNumber++;  
                 }
             }
             else {//Compare a single frame
@@ -561,8 +563,14 @@ namespace odcomparepointcloud {
         while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
             if (!m_distanceHistogram) {
                 if (m_chosenFrame == m_currentFrame) {
-                    getConference().send(spcFrame);
-                    getConference().send(cpcFrame);
+                    if (m_sendPointCloudOption == 0) {
+                        getConference().send(spcFrame);
+                    } else if (m_sendPointCloudOption == 1) {
+                        getConference().send(cpcFrame);
+                    } else {
+                        getConference().send(spcFrame);
+                        getConference().send(cpcFrame);
+                    }  
                 }
             }
         } 
