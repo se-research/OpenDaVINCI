@@ -171,9 +171,9 @@ namespace odcomparepointcloud {
         uint16_t mask = 0xFFFF;
         if (numberOfBitsForIntensity > 0) {
             if (intensityPlacement == 0) {
-                mask = mask << numberOfBitsForIntensity;
-            } else {
                 mask = mask >> numberOfBitsForIntensity;
+            } else {
+                mask = mask << numberOfBitsForIntensity;
             }
         }
         uint16_t distanceEncoding = m_cpc.getDistanceEncoding();
@@ -183,7 +183,7 @@ namespace odcomparepointcloud {
                                         break;
             case CompactPointCloud::MM : distanceThreshold = 500;
                                         break;
-        } 
+        }
         
         uint32_t numberOfPoints = distances.size() / 2;
         uint32_t numberOfAzimuths = numberOfPoints / entriesPerAzimuth;
@@ -201,9 +201,12 @@ namespace odcomparepointcloud {
             for (uint8_t sensorIndex = 0; sensorIndex < entriesPerAzimuth; sensorIndex++) {
                 distance_integer = m_16SortedDistances[sensorIndex];
                 if (numberOfBitsForIntensity !=0) {
-                    distance_integer = distance_integer & mask;
+                    distance_integer = distance_integer | ~(mask); //Assume the bits for intensity are all 1
                 }
                 if (distance_integer >= distanceThreshold) {
+                    if (numberOfBitsForIntensity !=0) {
+                        distance_integer = distance_integer & mask;
+                    }
                     float distance = 0.0f;
                     switch (distanceEncoding) {
                         case CompactPointCloud::CM : distance = static_cast< float >(distance_integer / 100.0f); //convert to meter from resolution 1 cm
@@ -326,50 +329,34 @@ namespace odcomparepointcloud {
                 cout << "Distance distribution exported." <<endl;
             }
         } else {
-            if (m_allFrames) {
-                /*uint32_t spcFrameNumber = 0;
-                while (player->hasMoreData()){
-                    c = player->getNextContainerToBeSent();
-                    if (c.getDataType() == odcore::data::CompactPointCloud::ID()) {
-                        m_frameNumber++;
-                    }
-                    if (c.getDataType() == odcore::data::SharedPointCloud::ID()) {
-                        spcFrameNumber++;
-                    }
-                }
-                cout << m_frameNumber << endl;
-                cout << spcFrameNumber << endl;
-                return 0;*/
-                
+            if (m_allFrames) { 
                 if (player->hasMoreData()) {
                     c = player->getNextContainerToBeSent();
+                    if (c.getDataType() == odcore::data::CompactPointCloud::ID()) {
+                        c = player->getNextContainerToBeSent();
+                    }
+                    
                     if (c.getDataType() == odcore::data::SharedPointCloud::ID()) {
-                        
                         readSPC(c);
                         m_frameNumber++;
                         if (m_xSpc.empty()) {
                             m_compareOption = 0; //compare distance, azimuth, vertical angle
                         } else {
                             m_compareOption = 1; //compare xyz
-                        }
-                    }  
-                     
+                        } 
+                    }
+                    
                     c = player->getNextContainerToBeSent();
                     if (c.getDataType() == odcore::data::CompactPointCloud::ID()) {
                         readCPC(c, m_compareOption);
-                    } 
+                    }
                 }
                 
                 while (player->hasMoreData() && m_frameNumber < 3000) {
-                   c = player->getNextContainerToBeSent();
-                   if (c.getDataType() == odcore::data::SharedPointCloud::ID()) {
-                        readSPC(c);
-                    }  
-                     
                     c = player->getNextContainerToBeSent();
-                    if (c.getDataType() == odcore::data::CompactPointCloud::ID()) {
-                        readCPC(c, m_compareOption);
-                    }  
+                    readSPC(c);
+                    c = player->getNextContainerToBeSent();
+                    readCPC(c, m_compareOption);
                          
                     float error_1, error_2, error_3;
                     uint32_t spc_index = 0;
@@ -474,6 +461,10 @@ namespace odcomparepointcloud {
                     //Compare a set of 3 values of the chosen frame between CPC and SPC:
                     //either (1) distance, azimuth, vertical angle, or (2) xyz
                     spcFrame = player->getNextContainerToBeSent();
+                    if (spcFrame.getDataType() == odcore::data::CompactPointCloud::ID()) {
+                        spcFrame = player->getNextContainerToBeSent();
+                    }
+                    
                     if (spcFrame.getDataType() == odcore::data::SharedPointCloud::ID()) {
                         readSPC(spcFrame);
                         if (m_xSpc.empty()) {
@@ -481,14 +472,13 @@ namespace odcomparepointcloud {
                         } else {
                             m_compareOption = 1; //compare xyz
                         }
-                    }  
+                    }
                     
                     cout << "Compare option:" << +m_compareOption <<endl;
-                    
                     cpcFrame = player->getNextContainerToBeSent();
                     if (cpcFrame.getDataType() == odcore::data::CompactPointCloud::ID()) {
                         readCPC(cpcFrame, m_compareOption);
-                    }  
+                    }
                     
                     if (m_compareOption == 0) {
                         cout << "Number of points of Frame " << m_chosenFrame << " of SPC:" << m_distanceSpc.size() << endl;
