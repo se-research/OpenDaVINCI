@@ -309,7 +309,7 @@ namespace odcomparepointcloud {
             }
             
             if (status == 0) {
-                while (player->hasMoreData() && m_frameNumber < 3000) {
+                while (player->hasMoreData()) {
                     c = player->getNextContainerToBeSent();
                     c = player->getNextContainerToBeSent();
 
