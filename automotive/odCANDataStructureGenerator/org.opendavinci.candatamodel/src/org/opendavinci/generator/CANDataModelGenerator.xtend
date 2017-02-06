@@ -1066,10 +1066,15 @@ namespace canmapping {
 							}
 						}
 					}
-					if(closestFound)
+					if(closestFound && CurrentCANSignal.m_endian.compareToIgnoreCase("big")==0)
 					{
 						bitLength = Integer.parseInt(CurrentCANSignal.m_startBit)-nextFieldStart;
 					}
+					else if(closestFound && CurrentCANSignal.m_endian.compareToIgnoreCase("little")==0)
+                    {
+                        bitLength = nextFieldStart-Integer.parseInt(CurrentCANSignal.m_startBit);
+                    }
+                    
 					// use the smaller of the two measurements
 					if(signalLength < bitLength) bitLength=signalLength;
 				""}»
