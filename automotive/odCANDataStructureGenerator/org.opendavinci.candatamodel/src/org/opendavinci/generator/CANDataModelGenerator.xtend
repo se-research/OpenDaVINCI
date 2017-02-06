@@ -27,10 +27,10 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
 import org.opendavinci.canDataModel.CANSignal
-import org.opendavinci.canDataModel.CANSignalMapping
+import org.opendavinci.canDataModel.CANMessageMapping
 import java.util.Random
-import org.opendavinci.canDataModel.Mapping
-import org.opendavinci.canDataModel.CANSignalTesting
+import org.opendavinci.canDataModel.CANSignalMapping
+import org.opendavinci.canDataModel.CANMessageTesting
 import org.opendavinci.canDataModel.ODVDFile
 
 class CANDataModelGenerator implements IGenerator {
@@ -62,17 +62,17 @@ class CANDataModelGenerator implements IGenerator {
 		
 		// needed for the "super" header and source files
 		var ArrayList<String> includedClasses=new ArrayList<String>
-		for (e : resource.allContents.toIterable.filter(typeof(CANSignalMapping))) {
+		for (e : resource.allContents.toIterable.filter(typeof(CANMessageMapping))) {
 			includedClasses.add(e.mappingName.toString().replaceAll("\\.", "/"))
 		}
 		
 		fsa.generateFile("include/GeneratedHeaders_" + generatedHeadersFile + ".h", generateSuperHeaderFileContent(generatedHeadersFile, includedClasses, odvdIncludedFiles))
 		fsa.generateFile("src/GeneratedHeaders_" + generatedHeadersFile + ".cpp", generateSuperImplementationFileContent(generatedHeadersFile, includedClasses))
 		
-		var ArrayList<CANSignalTesting> tests=new ArrayList<CANSignalTesting>(resource.allContents.toIterable.filter(typeof(CANSignalTesting)).toList);
+		var ArrayList<CANMessageTesting> tests=new ArrayList<CANMessageTesting>(resource.allContents.toIterable.filter(typeof(CANMessageTesting)).toList);
 		
 		// Next, generate the code for the actual mapping.
-		for (e : resource.allContents.toIterable.filter(typeof(CANSignalMapping))) {
+		for (e : resource.allContents.toIterable.filter(typeof(CANMessageMapping))) {
 			fsa.generateFile("include/generated/" + e.mappingName.toString().replaceAll("\\.", "/") + ".h", generateHeaderFileContent(generatedHeadersFile, odvdIncludedFiles, e))
 			fsa.generateFile("src/generated/" + e.mappingName.toString().replaceAll("\\.", "/") + ".cpp", 
 				generateImplementationFileContent(e, "generated", mapOfDefinedCANSignals))
@@ -256,7 +256,7 @@ namespace canmapping {
 '''
 
 // this method generates the header file body
-	def generateHeaderFileBody(String className, CANSignalMapping mapping) '''
+	def generateHeaderFileBody(String className, CANMessageMapping mapping) '''
     using namespace std;
 
     class «className» : public odcore::data::SerializableData, public odcore::base::Visitable {
@@ -285,7 +285,7 @@ namespace canmapping {
 
 		«IF mapping.mappings.size>0»
 		«var ArrayList<String> parameters=new ArrayList<String>»
-		«var Iterator<Mapping> iter = mapping.mappings.iterator»
+		«var Iterator<CANSignalMapping> iter = mapping.mappings.iterator»
 		«{ // contructor parameter
 			while (iter.hasNext()){
 				iter.next();
@@ -387,7 +387,7 @@ namespace canmapping {
     
 	'''
 
-	def generateHeaderFileNSs(String[] namespaces, int i, CANSignalMapping mapping) '''
+	def generateHeaderFileNSs(String[] namespaces, int i, CANMessageMapping mapping) '''
 	«IF namespaces.size>i+1»
 	namespace «namespaces.get(i)» {
 		«generateHeaderFileNSs(namespaces, i+1, mapping)»
@@ -398,7 +398,7 @@ namespace canmapping {
 	'''
 
     /* This method generates the header file content. */
-	def generateHeaderFileContent(String generatedHeadersFile, ArrayList<String> odvdIncludedFiles, CANSignalMapping mapping) '''
+	def generateHeaderFileContent(String generatedHeadersFile, ArrayList<String> odvdIncludedFiles, CANMessageMapping mapping) '''
 /*
  * This software is open source. Please see COPYING and AUTHORS for further information.
  *
@@ -432,7 +432,7 @@ namespace canmapping {
 '''
 
 // THIS WILL GENERATE THE IMPLEMENTATION (.CPP) FILE NAMESPACES
-	def generateImplementationFileNSs(String[] namespaces, int i, CANSignalMapping mapping, String includeDirectoryPrefix, HashMap<String, CANSignalDescription> canSignals, ArrayList<String> canIDs) '''
+	def generateImplementationFileNSs(String[] namespaces, int i, CANMessageMapping mapping, String includeDirectoryPrefix, HashMap<String, CANSignalDescription> canSignals, ArrayList<String> canIDs) '''
 	«IF namespaces.size>i+1»
 	namespace «namespaces.get(i)» {
 		«generateImplementationFileNSs(namespaces, i+1, mapping, includeDirectoryPrefix, canSignals, canIDs)»
@@ -443,7 +443,7 @@ namespace canmapping {
 	'''
 
 // THIS WILL GENERATE THE IMPLEMENTATION (.CPP) FILE BODY
-	def generateImplementationFileBody(String className, CANSignalMapping mapping, String includeDirectoryPrefix, HashMap<String, CANSignalDescription> canSignals, ArrayList<String> canIDs) '''
+	def generateImplementationFileBody(String className, CANMessageMapping mapping, String includeDirectoryPrefix, HashMap<String, CANSignalDescription> canSignals, ArrayList<String> canIDs) '''
 	
 	using namespace std;
 
@@ -480,7 +480,7 @@ namespace canmapping {
 	«IF mapping.mappings.size>0»
 	«var ArrayList<String> parameters=new ArrayList<String>»
 	«var ArrayList<String> initializations=new ArrayList<String>»
-	«var Iterator<Mapping> iter = mapping.mappings.iterator»
+	«var Iterator<CANSignalMapping> iter = mapping.mappings.iterator»
 	«{ // constructor parameters
 		var int i=0;
 		while (iter.hasNext()){
@@ -517,7 +517,7 @@ namespace canmapping {
     	«var String result="\"Class : "+className+"\"<<endl"+'\n'»
     	«var int fieldsNum=mapping.mappings.size»
     	«IF fieldsNum>0»
-		«var Iterator<Mapping> iter = mapping.mappings.iterator»
+		«var Iterator<CANSignalMapping> iter = mapping.mappings.iterator»
 		«{var int i=0;
 			while (iter.hasNext()){
 			iter.next();
@@ -1257,7 +1257,7 @@ namespace canmapping {
 	}
 	
 	/* This method generates the implementation (.cpp). */
-	def generateImplementationFileContent(CANSignalMapping mapping, String includeDirectoryPrefix, HashMap<String, CANSignalDescription> canSignals) '''
+	def generateImplementationFileContent(CANMessageMapping mapping, String includeDirectoryPrefix, HashMap<String, CANSignalDescription> canSignals) '''
 /*
  * This software is open source. Please see COPYING and AUTHORS for further information.
  *
@@ -1312,8 +1312,8 @@ namespace canmapping {
 '''
 
 	// Generate the test suite content (.h).	
-	def generateTestSuiteContent(String generatedHeadersFile, ArrayList<String> odvdIncludedFiles, CANSignalMapping mapping, 
-				ArrayList<CANSignalTesting> canSignalTesting, HashMap<String, CANSignalDescription> canSignals) '''
+	def generateTestSuiteContent(String generatedHeadersFile, ArrayList<String> odvdIncludedFiles, CANMessageMapping mapping, 
+				ArrayList<CANMessageTesting> canSignalTesting, HashMap<String, CANSignalDescription> canSignals) '''
 /*
  * This software is open source. Please see COPYING and AUTHORS for further information.
  *
@@ -1372,7 +1372,7 @@ class CANBridgeTest : public CxxTest::TestSuite {
         	«var String init=""»
         	«var int fieldsNum=mapping.mappings.size»
         	«IF fieldsNum>0»
-			«var Iterator<Mapping> iter = mapping.mappings.iterator»
+			«var Iterator<CANSignalMapping> iter = mapping.mappings.iterator»
 			«{
         	//(1,1234.56,3.1415,0.00000001)
     			var Random r = new Random();
@@ -1522,7 +1522,7 @@ class CANBridgeTest : public CxxTest::TestSuite {
 '''
 
 /* This method generates the UPPAAL file content when the order of expected messages does not matter. */
-	def generateUPPAALUnordered(CANSignalMapping mapping,HashMap<String, CANSignalDescription> canSignals) '''
+	def generateUPPAALUnordered(CANMessageMapping mapping, HashMap<String, CANSignalDescription> canSignals) '''
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
 <nta>
@@ -1726,7 +1726,7 @@ system messageGenerator,Receiver,Synchronizer;
 '''	
 
 /* This method generates the UPPAAL file content when the order of expected messages matters. */
-	def generateUPPAALOrdered(CANSignalMapping mapping,HashMap<String, CANSignalDescription> canSignals) '''
+	def generateUPPAALOrdered(CANMessageMapping mapping,HashMap<String, CANSignalDescription> canSignals) '''
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
 <nta>
@@ -2003,7 +2003,7 @@ system messageGenerator,Receiver,Synchronizer;
 '''	
 
     /* This method generates the UPPAAL file content. */
-	def generateUPPAALFileContent(CANSignalMapping mapping,HashMap<String, CANSignalDescription> canSignals) '''
+	def generateUPPAALFileContent(CANMessageMapping mapping,HashMap<String, CANSignalDescription> canSignals) '''
 «IF mapping.unordered!=null && mapping.unordered.compareTo("unordered")==0»
 «generateUPPAALUnordered(mapping,canSignals)»
 «ELSE»

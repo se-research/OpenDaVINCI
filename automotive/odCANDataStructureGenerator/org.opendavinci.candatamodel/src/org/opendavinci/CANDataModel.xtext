@@ -26,8 +26,8 @@ generate canDataModel "http://www.opendavinci.org/CANDataModel"
 Model:
     odvdFiles         += ODVDFile+
     cansignals        += CANSignal+
-    cansignalmappings += CANSignalMapping*
-    cansignaltestings += CANSignalTesting*;
+    canmessagemappings += CANMessageMapping*
+    canmessagetestings += CANMessageTesting*;
 
 ODVDFile:
     'using' odvdFileName = ID (';'|'.odvd' ';');
@@ -42,18 +42,18 @@ CANSignal:
 									('with range' | 'within range') '[' rangeStart = FLOATNUMBER ',' rangeEnd = FLOATNUMBER ']'
 									';';
 
-CANSignalMapping:
+CANMessageMapping:
     (unordered='unordered')? (bit_numbering = ('vector'))?
     'mapping' mappingName = ValidIdentifier
     ('[length' '=' payloadLength = FLOATNUMBER ']')?
     '{'
-    	mappings += Mapping*
+    	mappings += CANSignalMapping*
     '}';
 
-Mapping:
+CANSignalMapping:
 	cansignalname = ValidIdentifier ':' signalIdentifier = FLOATNUMBER ';';
 
-CANSignalTesting:
+CANMessageTesting:
     'test' mappingName = ValidIdentifier '{'
     	CANMessageDescriptions += CANMessageDescription*
     	Results += Result*
