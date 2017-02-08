@@ -24,6 +24,7 @@ namespace automotive {
                 void advanceBitMask(uint8_t&);
                 void resetBitMask(uint8_t&);
                 bool checkBitMaskInLastPosition(const uint8_t);
+                void getStartBitInCorrectByteOrder(const uint8_t);
                 uint64_t extractRawSignal(const uint8_t, const uint8_t, const string);
             
             private: 

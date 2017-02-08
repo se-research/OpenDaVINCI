@@ -83,6 +83,15 @@ namespace automotive {
             else return false;
         }
 
+        void CANMessage::getStartBitInCorrectByteOrder(const uint8_t startBit) {
+            if(m_vectorByteOrder) {
+                return startBit%8;
+            }
+            else {
+                return 7-(startBit%8);
+            }
+        }
+
         uint64_t CANMessage::extractRawSignal(const uint8_t startBit, const uint8_t length, const string endianness) {
             // useful resource: http://wuchenxu.com/2015/12/03/CAN-byte-order/Intel_Motorola_format_in_CANoe.png
             
@@ -91,7 +100,7 @@ namespace automotive {
             
             uint8_t bitMask=0x01, signalMask=0x01;
             int8_t byteNumber=startBit/8;
-            for(uint8_t i=0;i<startBit%8;++i)
+            for(uint8_t i=0;i<getStartBitInCorrectByteOrder(startBit);++i)
                 advanceBitMask(bitMask);
             
             for(uint8_t i=0, currentByte=m_payload.at(byteNumber);i<length;++i) {
