@@ -32,7 +32,7 @@ namespace automotive {
             }
         }
         
-        uint64_t CANMessage::getPayload() {
+        uint64_t CANMessage::getToUINT64() {
             uint64_t data=0;
             
             for(int8_t i=m_payload.size()-1;i>=0;--i) {
@@ -83,7 +83,7 @@ namespace automotive {
             else return false;
         }
 
-        void CANMessage::getStartBitInCorrectByteOrder(const uint8_t startBit) {
+        uint8_t CANMessage::getStartBitInCorrectByteOrder(const uint8_t startBit) {
             if(m_vectorByteOrder) {
                 return startBit%8;
             }

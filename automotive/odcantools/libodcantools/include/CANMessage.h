@@ -15,7 +15,7 @@ namespace automotive {
                 CANMessage(const GenericCANMessage&);
                 CANMessage(const GenericCANMessage&, const bool);
                 
-                uint64_t getPayload();
+                uint64_t getToUINT64();
                 
                 double getSignal(const uint8_t, const uint8_t, const string, const double, const double, const double, const double);
             
@@ -24,7 +24,7 @@ namespace automotive {
                 void advanceBitMask(uint8_t&);
                 void resetBitMask(uint8_t&);
                 bool checkBitMaskInLastPosition(const uint8_t);
-                void getStartBitInCorrectByteOrder(const uint8_t);
+                uint8_t getStartBitInCorrectByteOrder(const uint8_t);
                 uint64_t extractRawSignal(const uint8_t, const uint8_t, const string);
             
             private: 
