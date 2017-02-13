@@ -23,7 +23,6 @@
 
 #include <cerrno>
 #include <cstring>
-#include <iostream>
 #include <sstream>
 
 #include "opendavinci/odcore/io/Packet.h"
@@ -151,9 +150,6 @@ namespace odcore {
                                 // ----------------------v (remote address)--v (data)
                                 nextPacket(odcore::io::Packet(string(remoteAddr), string(m_buffer, nbytes)));
                             }
-else {
-std::cout << "Dropped packet to avoid circular sending/receiving." << std::endl;
-}
                         }
                     }
                 }

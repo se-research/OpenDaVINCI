@@ -304,11 +304,8 @@ class PingTimeTriggeredConferenceClientModuleTestModule : public TimeTriggeredCo
         virtual void setUp() {}
 
         virtual void nextContainer(Container &c) {
-cout << __FILE__ << " " << __LINE__ << endl;
             TestSuiteExample7Data t;
-cout << __FILE__ << " " << __LINE__ << endl;
             if (c.getDataType() == t.getID()+1000) {
-cout << __FILE__ << " " << __LINE__ << endl;
                 t = c.getData<TestSuiteExample7Data>();
                 cout << "PingTimeTriggeredConferenceClientModuleTestModule: " << t.getNumericalValue() << endl;
 
@@ -316,21 +313,17 @@ cout << __FILE__ << " " << __LINE__ << endl;
 
                 // Create container with user data type ID 5.
                 Container c2(t, t.getID()+2000);
-cout << __FILE__ << " " << __LINE__ << endl;
 
                 // Send container.
                 getConference().send(c2);
-cout << __FILE__ << " " << __LINE__ << endl;
             }
         }
 
         virtual odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
-cout << __FILE__ << " " << __LINE__ << endl;
             while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
                 if (counter-- < 0) {
                     break;
                 }
-cout << __FILE__ << " " << __LINE__ << endl;
 
                 // Create user data.
                 TestSuiteExample7Data data;
@@ -338,22 +331,17 @@ cout << __FILE__ << " " << __LINE__ << endl;
 
                 // Create container with user data type ID 5.
                 Container c(data);
-cout << __FILE__ << " " << __LINE__ << endl;
 
                 // Send container.
                 getConference().send(c);
-cout << __FILE__ << " " << __LINE__ << endl;
             }
-cout << __FILE__ << " " << __LINE__ << endl;
 
             return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
         virtual void tearDown() {
-cout << __FILE__ << " " << __LINE__ << endl;
             Lock l(m_condition);
             m_condition.wakeAll();
-cout << __FILE__ << " " << __LINE__ << endl;
         }
 };
 
@@ -370,16 +358,12 @@ class PongDataTriggeredConferenceClientModuleTestModule : public DataTriggeredCo
             if (c.getDataType() == t.getID()) {
                 t = c.getData<TestSuiteExample7Data>();
                 cout << "PongDataTriggeredConferenceClientModuleTestModule: " << t.getNumericalValue() << endl;
-cout << __FILE__ << " " << __LINE__ << endl;
                 t.setNumericalValue(t.getNumericalValue()+1000);
-cout << __FILE__ << " " << __LINE__ << endl;
 
                 // Create container with user data type ID 5.
                 Container c2(t, t.getID()+1000);
-cout << __FILE__ << " " << __LINE__ << endl;
                 // Send container.
                 getConference().send(c2);
-cout << __FILE__ << " " << __LINE__ << endl;
             }
             if (c.getDataType() == t.getID()+2000) {
                 t = c.getData<TestSuiteExample7Data>();
@@ -877,28 +861,20 @@ class DataTriggeredConferenceClientModuleTest : public CxxTest::TestSuite,
 
             ConferenceClientModuleTestService ccmts(ttccmtm);
             ccmts.start();
-cout << __FILE__ << " " << __LINE__ << endl;
 
             Lock l(module1);
             module1.waitOnSignal();
 
-cout << __FILE__ << " " << __LINE__ << endl;
             ccmts_d.stop();
-cout << __FILE__ << " " << __LINE__ << endl;
             ccmts.stop();
-cout << __FILE__ << " " << __LINE__ << endl;
 
             Thread::usleepFor(1000 * 3);
 #endif
 
             // Ugly cleanup.
-cout << __FILE__ << " " << __LINE__ << endl;
             ContainerConferenceFactory &ccf = ContainerConferenceFactory::getInstance();
-cout << __FILE__ << " " << __LINE__ << endl;
             ContainerConferenceFactory *ccf2 = &ccf;
-cout << __FILE__ << " " << __LINE__ << endl;
             OPENDAVINCI_CORE_DELETE_POINTER(ccf2);
-cout << __FILE__ << " " << __LINE__ << endl;
 
             Thread::usleepFor(1000 * 1);
         }

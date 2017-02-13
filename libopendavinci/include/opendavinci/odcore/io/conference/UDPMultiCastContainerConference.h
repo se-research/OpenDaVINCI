@@ -24,7 +24,6 @@
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/exceptions/Exceptions.h"
 #include "opendavinci/odcore/io/StringListener.h"
 #include "opendavinci/odcore/io/conference/ContainerConference.h"
@@ -84,7 +83,6 @@ namespace odcore {
 
                 private:
                     std::shared_ptr<odcore::io::udp::UDPSender> m_sender;
-                    odcore::base::Mutex m_receiveMutex;
                     std::shared_ptr<odcore::io::udp::UDPReceiver> m_receiver;
             };
 

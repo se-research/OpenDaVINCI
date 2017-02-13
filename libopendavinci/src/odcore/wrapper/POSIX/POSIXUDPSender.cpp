@@ -21,8 +21,6 @@
 
 #include <cerrno>
 #include <cstring>
-
-#include <iostream>
 #include <sstream>
 
 #include "opendavinci/odcore/wrapper/Mutex.h"
@@ -100,13 +98,11 @@ namespace odcore {
                     throw s.str();
                 }
 
-std::cout << __FILE__ << " " << __LINE__ << std::endl;
                 m_socketMutex->lock();
                 {
                     sendto(m_fd, data.c_str(), data.length(), 0, reinterpret_cast<const struct sockaddr *>(&m_address), sizeof(m_address));
                 }
                 m_socketMutex->unlock();
-std::cout << __FILE__ << " " << __LINE__ << std::endl;
             }
 
         }
