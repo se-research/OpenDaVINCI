@@ -49,12 +49,10 @@ namespace odcore {
             }
 
             void ContainerConference::setSenderStamp(const uint32_t &senderStamp) {
-//                Lock l(m_containerListenerMutex);
                 m_senderStamp = senderStamp;
             }
 
             uint32_t ContainerConference::getSenderStamp() const {
-//                Lock l(m_containerListenerMutex);
                 return m_senderStamp;
             }
 

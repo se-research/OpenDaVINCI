@@ -827,7 +827,7 @@ class DataTriggeredConferenceClientModuleTest : public CxxTest::TestSuite,
             string argv0("PingTimeTriggeredConferenceClientModuleTestModule");
             string argv1("--id=0");
             string argv2("--cid=105");
-            string argv3("--freq=1");
+            string argv3("--freq=10");
             int argc = 4;
             char **argv;
             argv = new char*[argc];

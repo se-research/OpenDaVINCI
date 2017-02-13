@@ -17,8 +17,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <iostream>
-
 #include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/io/StringPipeline.h"
 
@@ -80,6 +78,7 @@ namespace odcore {
                 {
                     Lock l2(m_queueMutex);
                     entry = m_queue.front();
+                    m_queue.pop();
                 }
 
                 // Read all entries and distribute using the stringListener.
@@ -89,12 +88,6 @@ namespace odcore {
                         // Distribute entry to connected listeners while NOT locking the queue.
                         m_stringListener->nextString(entry);
                     }
-                }
-
-                // Remove processed entry.
-                {
-                    Lock l2(m_queueMutex);
-                    m_queue.pop();
                 }
             }
         }
