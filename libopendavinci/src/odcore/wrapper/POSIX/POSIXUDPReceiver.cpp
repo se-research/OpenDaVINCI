@@ -23,6 +23,7 @@
 
 #include <cerrno>
 #include <cstring>
+#include <iostream>
 #include <sstream>
 
 #include "opendavinci/odcore/io/Packet.h"
@@ -37,6 +38,7 @@ namespace odcore {
             using namespace std;
 
             POSIXUDPReceiver::POSIXUDPReceiver(const string &address, const uint32_t &port, const bool &isMulticast) :
+                m_portToIgnore(0),
                 m_isMulticast(isMulticast),
                 m_address(),
                 m_mreq(),
@@ -113,6 +115,10 @@ namespace odcore {
                 m_buffer = NULL;
             }
 
+            void POSIXUDPReceiver::setSenderPortToIgnore(const uint16_t &portToIgnore) {
+                m_portToIgnore = portToIgnore;
+            }
+
             void POSIXUDPReceiver::run() {
                 fd_set rfds;
                 struct timeval timeout;
@@ -140,8 +146,14 @@ namespace odcore {
                             char remoteAddr[MAX_ADDR_SIZE];
                             inet_ntop(remote.ss_family, &((reinterpret_cast<struct sockaddr_in*>(&remote))->sin_addr), remoteAddr, sizeof(remoteAddr));
 
-                            // ----------------------v (remote address)--v (data)
-                            nextPacket(odcore::io::Packet(string(remoteAddr), string(m_buffer, nbytes)));
+                            const uint16_t recvPort = ntohs(((struct sockaddr_in *)&remote)->sin_port);
+                            if (m_portToIgnore != recvPort) {
+                                // ----------------------v (remote address)--v (data)
+                                nextPacket(odcore::io::Packet(string(remoteAddr), string(m_buffer, nbytes)));
+                            }
+else {
+std::cout << "Dropped packet to avoid circular sending/receiving." << std::endl;
+}
                         }
                     }
                 }

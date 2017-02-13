@@ -17,6 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <iostream>
+
 #include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/io/conference/ContainerConference.h"
 #include "opendavinci/odcore/io/conference/ContainerListener.h"
@@ -68,9 +70,11 @@ namespace odcore {
             }
 
             void ContainerConference::receive(Container &c) {
-                Lock l(m_containerListenerMutex);
+std::cout << __FILE__ << " " << __LINE__ << std::endl;
+//                Lock l(m_containerListenerMutex);
                 if (m_containerListener != NULL) {
                     m_containerListener->nextContainer(c);
+std::cout << __FILE__ << " " << __LINE__ << std::endl;
                 }
             }
 

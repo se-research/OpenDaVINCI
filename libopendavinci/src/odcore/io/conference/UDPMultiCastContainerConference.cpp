@@ -18,9 +18,11 @@
  */
 
 #include <iosfwd>
+#include <iostream>
 #include <sstream>
 
 #include "opendavinci/odcore/serialization/Serializable.h"
+#include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/data/TimeStamp.h"
 #include "opendavinci/odcore/io/conference/UDPMultiCastContainerConference.h"
@@ -38,9 +40,11 @@ namespace odcore {
 
             UDPMultiCastContainerConference::UDPMultiCastContainerConference(const string &address, const uint32_t &port) throw (ConferenceException) :
                 m_sender(NULL),
+                m_receiveMutex(),
                 m_receiver(NULL) {
                 try {
                     m_sender = odcore::io::udp::UDPFactory::createUDPSender(address, port);
+std::cout << "UDPSender: " << m_sender->getPort() << std::endl;
                 }
                 catch (string &s) {
                     OPENDAVINCI_CORE_THROW_EXCEPTION(ConferenceException, s);
@@ -48,6 +52,7 @@ namespace odcore {
 
                 try {
                     m_receiver = odcore::io::udp::UDPFactory::createUDPReceiver(address, port);
+//m_receiver->setSenderPortToIgnore(m_sender->getPort());
                 }
                 catch (string &s) {
                     OPENDAVINCI_CORE_THROW_EXCEPTION(ConferenceException, s);
@@ -69,20 +74,29 @@ namespace odcore {
             }
 
             void UDPMultiCastContainerConference::nextString(const string &s) {
+std::cout << __FILE__ << " " << __LINE__ << std::endl;
+                Lock l(m_receiveMutex);
+std::cout << __FILE__ << " " << __LINE__ << std::endl;
                 if (hasContainerListener()) {
+std::cout << __FILE__ << " " << __LINE__ << std::endl;
                     Container container;
+std::cout << __FILE__ << " " << __LINE__ << std::endl;
 
                     stringstream stringstreamData(s);
                     stringstreamData >> container;
+std::cout << __FILE__ << " " << __LINE__ << std::endl;
 
                     container.setReceivedTimeStamp(TimeStamp());
+std::cout << __FILE__ << " " << __LINE__ << std::endl;
 
                     // Use superclass to distribute any received containers.
                     receive(container);
+std::cout << __FILE__ << " " << __LINE__ << std::endl;
                 }
             }
 
             void UDPMultiCastContainerConference::send(Container &container) const {
+std::cout << __FILE__ << " " << __LINE__ << std::endl;
                 // Set sending time stamp.
                 container.setSentTimeStamp(TimeStamp());
 
@@ -104,6 +118,7 @@ namespace odcore {
 
                 // Send data.
                 m_sender->send(stringValue);
+std::cout << __FILE__ << " " << __LINE__ << std::endl;
             }
 
         }

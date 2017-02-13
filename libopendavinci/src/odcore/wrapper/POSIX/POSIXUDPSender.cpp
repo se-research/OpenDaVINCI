@@ -21,6 +21,8 @@
 
 #include <cerrno>
 #include <cstring>
+
+#include <iostream>
 #include <sstream>
 
 #include "opendavinci/odcore/wrapper/Mutex.h"
@@ -34,6 +36,7 @@ namespace odcore {
             using namespace std;
 
             POSIXUDPSender::POSIXUDPSender(const string &address, const uint32_t &port) :
+                m_sendPort(0),
                 m_address(),
                 m_fd(),
                 m_socketMutex() {
@@ -52,7 +55,26 @@ namespace odcore {
                     throw s.str();
                 }
 
-                // Setup address and port.
+                // Bind to random address/port but store sender port.
+                struct sockaddr_in sendAddress;
+                memset(&sendAddress, 0, sizeof(sendAddress));
+                m_address.sin_family = AF_INET;
+                m_address.sin_port = 0; // Choose random port.
+                if (::bind(m_fd, reinterpret_cast<struct sockaddr *>(&sendAddress), sizeof(sendAddress)) < 0) {
+                    stringstream s;
+                    s << "[core::wrapper::POSIXUDPSender] Error while binding socket: " << strerror(errno);
+                    throw s.str();
+                }
+                struct sockaddr addr;
+                socklen_t len = sizeof(addr);
+                if (::getsockname(m_fd, &addr, &len) < 0) {
+                    stringstream s;
+                    s << "[core::wrapper::POSIXUDPSender] Error while retrieving properties from socket: " << strerror(errno);
+                    throw s.str();
+                }
+                m_sendPort = ntohs(((struct sockaddr_in *)&addr)->sin_port);
+
+                // Setup address and port to be used for sending to.
                 memset(&m_address, 0, sizeof(m_address));
                 m_address.sin_family = AF_INET;
                 m_address.sin_addr.s_addr = inet_addr(address.c_str());
@@ -67,6 +89,10 @@ namespace odcore {
                 close(m_fd);
             }
 
+            uint16_t POSIXUDPSender::getPort() const {
+                return m_sendPort;
+            }
+
             void POSIXUDPSender::send(const string &data) const {
                 if (data.length() > POSIXUDPSender::MAX_UDP_PACKET_SIZE) {
                     stringstream s;
@@ -74,11 +100,13 @@ namespace odcore {
                     throw s.str();
                 }
 
+std::cout << __FILE__ << " " << __LINE__ << std::endl;
                 m_socketMutex->lock();
                 {
                     sendto(m_fd, data.c_str(), data.length(), 0, reinterpret_cast<const struct sockaddr *>(&m_address), sizeof(m_address));
                 }
                 m_socketMutex->unlock();
+std::cout << __FILE__ << " " << __LINE__ << std::endl;
             }
 
         }
