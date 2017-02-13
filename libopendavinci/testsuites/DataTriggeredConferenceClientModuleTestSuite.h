@@ -307,7 +307,7 @@ class PingTimeTriggeredConferenceClientModuleTestModule : public TimeTriggeredCo
             TestSuiteExample7Data t;
             if (c.getDataType() == t.getID()+1000) {
                 t = c.getData<TestSuiteExample7Data>();
-                cout << "PingTimeTriggeredConferenceClientModuleTestModule: " << t.getNumericalValue() << endl;
+                cout << "PingTimeTriggeredConferenceClientModuleTestModule/" << t.getID()+1000 << ": " << t.getNumericalValue() << endl;
 
                 t.setNumericalValue(t.getNumericalValue()+1000);
 
@@ -357,7 +357,7 @@ class PongDataTriggeredConferenceClientModuleTestModule : public DataTriggeredCo
             TestSuiteExample7Data t;
             if (c.getDataType() == t.getID()) {
                 t = c.getData<TestSuiteExample7Data>();
-                cout << "PongDataTriggeredConferenceClientModuleTestModule: " << t.getNumericalValue() << endl;
+                cout << "PongDataTriggeredConferenceClientModuleTestModule/" << t.getID() << ": " << t.getNumericalValue() << endl;
                 t.setNumericalValue(t.getNumericalValue()+1000);
 
                 // Create container with user data type ID 5.
@@ -367,7 +367,7 @@ class PongDataTriggeredConferenceClientModuleTestModule : public DataTriggeredCo
             }
             if (c.getDataType() == t.getID()+2000) {
                 t = c.getData<TestSuiteExample7Data>();
-                cout << "PongDataTriggeredConferenceClientModuleTestModule+2000: " << t.getNumericalValue() << endl;
+                cout << "PongDataTriggeredConferenceClientModuleTestModule/" << t.getID()+2000 << ": " << t.getNumericalValue() << endl;
             }
         }
 
@@ -410,7 +410,7 @@ class DataTriggeredConferenceClientModuleTest : public CxxTest::TestSuite,
             m_connection = mc;
         }
 
-        void notestTimeTriggeredTimeTriggeredConferenceClientModule() {
+        void testTimeTriggeredTimeTriggeredConferenceClientModule() {
             // Setup ContainerConference.
             std::shared_ptr<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.101");
 
@@ -480,7 +480,7 @@ class DataTriggeredConferenceClientModuleTest : public CxxTest::TestSuite,
             Thread::usleepFor(1000 * 1);
         }
 
-        void notestDataTriggeredTimeTriggeredConferenceClientModules() {
+        void testDataTriggeredTimeTriggeredConferenceClientModules() {
             // Setup ContainerConference.
             std::shared_ptr<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.102");
 
@@ -584,7 +584,7 @@ class DataTriggeredConferenceClientModuleTest : public CxxTest::TestSuite,
             Thread::usleepFor(1000 * 1);
         }
 
-        void notestDataTriggeredTimeTriggeredConferenceClientModulesFreq10() {
+        void testDataTriggeredTimeTriggeredConferenceClientModulesFreq10() {
             // Setup ContainerConference.
             std::shared_ptr<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.103");
 
@@ -690,7 +690,7 @@ class DataTriggeredConferenceClientModuleTest : public CxxTest::TestSuite,
             Thread::usleepFor(1000 * 1);
         }
 
-        void notestDataTriggeredTimeTriggeredConferenceClientModulesFreq10WaitForSetupCompleted() {
+        void testDataTriggeredTimeTriggeredConferenceClientModulesFreq10WaitForSetupCompleted() {
             // Setup ContainerConference.
             std::shared_ptr<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.104");
 
