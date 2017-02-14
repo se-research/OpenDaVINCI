@@ -289,6 +289,90 @@ class DelayedDataTriggeredConferenceClientModuleTestModule : public DataTriggere
 };
 
 
+////////////////////////////////////////////////////////////////////////////////
+class PingTimeTriggeredConferenceClientModuleTestModule : public TimeTriggeredConferenceClientModule {
+    public:
+        PingTimeTriggeredConferenceClientModuleTestModule(int argc, char** argv, Condition& condition) :
+                TimeTriggeredConferenceClientModule(argc, argv, "PingTimeTriggeredConferenceClientModuleTestModule"),
+                counter(10),
+                m_condition(condition) {}
+
+        int counter;
+        Condition& m_condition;
+
+        virtual void setUp() {}
+
+        virtual void nextContainer(Container &c) {
+            TestSuiteExample7Data t;
+            if (c.getDataType() == t.getID()+1000) {
+                t = c.getData<TestSuiteExample7Data>();
+                cout << "PingTimeTriggeredConferenceClientModuleTestModule/" << t.getID()+1000 << ": " << t.getNumericalValue() << endl;
+
+                t.setNumericalValue(t.getNumericalValue()+1000);
+
+                // Create container with user data type ID 5.
+                Container c2(t, t.getID()+2000);
+
+                // Send container.
+                getConference().send(c2);
+            }
+        }
+
+        virtual odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body() {
+            while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
+                if (counter-- < 0) {
+                    break;
+                }
+
+                // Create user data.
+                TestSuiteExample7Data data;
+                data.setNumericalValue(counter);
+
+                // Create container with user data type ID 5.
+                Container c(data);
+
+                // Send container.
+                getConference().send(c);
+            }
+
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
+        }
+
+        virtual void tearDown() {
+            Lock l(m_condition);
+            m_condition.wakeAll();
+        }
+};
+
+class PongDataTriggeredConferenceClientModuleTestModule : public DataTriggeredConferenceClientModule {
+    public:
+        PongDataTriggeredConferenceClientModuleTestModule(int argc, char** argv) :
+                DataTriggeredConferenceClientModule(argc, argv, "PongDataTriggeredConferenceClientModuleTestModule")
+                {}
+
+        virtual void setUp() {}
+
+        virtual void nextContainer(Container &c) {
+            TestSuiteExample7Data t;
+            if (c.getDataType() == t.getID()) {
+                t = c.getData<TestSuiteExample7Data>();
+                cout << "PongDataTriggeredConferenceClientModuleTestModule/" << t.getID() << ": " << t.getNumericalValue() << endl;
+                t.setNumericalValue(t.getNumericalValue()+1000);
+
+                // Create container with user data type ID 5.
+                Container c2(t, t.getID()+1000);
+                // Send container.
+                getConference().send(c2);
+            }
+            if (c.getDataType() == t.getID()+2000) {
+                t = c.getData<TestSuiteExample7Data>();
+                cout << "PongDataTriggeredConferenceClientModuleTestModule/" << t.getID()+2000 << ": " << t.getNumericalValue() << endl;
+            }
+        }
+
+        virtual void tearDown() {}
+};
+
 class ConferenceClientModuleTestService : public Service {
     public:
         ConferenceClientModuleTestService(AbstractConferenceClientModule &accm) :
@@ -703,6 +787,87 @@ class DataTriggeredConferenceClientModuleTest : public CxxTest::TestSuite,
 #if !defined(__FreeBSD__)
             TS_ASSERT(ddtccmtm.correctOrder);
 #endif
+#endif
+
+            // Ugly cleanup.
+            ContainerConferenceFactory &ccf = ContainerConferenceFactory::getInstance();
+            ContainerConferenceFactory *ccf2 = &ccf;
+            OPENDAVINCI_CORE_DELETE_POINTER(ccf2);
+
+            Thread::usleepFor(1000 * 1);
+        }
+
+        void testPingPongDataTriggeredTimeTriggeredConferenceClientModulesFreq10() {
+            // Setup ContainerConference.
+            std::shared_ptr<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.105");
+
+#if !defined(__OpenBSD__) && !defined(__APPLE__)
+            // Setup DMCP.
+            stringstream sstr;
+            sstr << "global.config=example" << endl;
+
+            m_configuration = KeyValueConfiguration();
+            m_configuration.readFrom(sstr);
+
+            vector<string> noModulesToIgnore;
+            ServerInformation serverInformation("127.0.0.1", 19000, ServerInformation::ML_NONE);
+            discoverer::Server dmcpDiscovererServer(serverInformation,
+                                                    "225.0.0.105",
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_SERVER,
+                                                    odcore::data::dmcp::Constants::BROADCAST_PORT_CLIENT,
+                                                    noModulesToIgnore);
+            dmcpDiscovererServer.startResponding();
+
+            connection::Server dmcpConnectionServer(serverInformation, *this);
+            dmcpConnectionServer.setConnectionHandler(this);
+
+            Thread::usleepFor(1000 * 1);
+
+            string argv0("PingTimeTriggeredConferenceClientModuleTestModule");
+            string argv1("--id=0");
+            string argv2("--cid=105");
+            string argv3("--freq=10");
+            int argc = 4;
+            char **argv;
+            argv = new char*[argc];
+            argv[0] = const_cast<char*>(argv0.c_str());
+            argv[1] = const_cast<char*>(argv1.c_str());
+            argv[2] = const_cast<char*>(argv2.c_str());
+            argv[3] = const_cast<char*>(argv3.c_str());
+
+            Condition module1;
+            PingTimeTriggeredConferenceClientModuleTestModule ttccmtm(argc, argv, module1);
+
+
+            string argv0_2("PongDataTriggeredConferenceClientModuleTestModule");
+            string argv1_2("--id=0");
+            string argv2_2("--cid=105");
+            string argv3_2("--freq=1");
+            int argc_2 = 4;
+            char **argv_2;
+            argv_2 = new char*[argc_2];
+            argv_2[0] = const_cast<char*>(argv0_2.c_str());
+            argv_2[1] = const_cast<char*>(argv1_2.c_str());
+            argv_2[2] = const_cast<char*>(argv2_2.c_str());
+            argv_2[3] = const_cast<char*>(argv3_2.c_str());
+
+            PongDataTriggeredConferenceClientModuleTestModule dtccmtm(argc_2, argv_2);
+
+            ConferenceClientModuleTestService ccmts_d(dtccmtm);
+            ccmts_d.start();
+
+            Thread::usleepFor(1000 * 3);
+
+            ConferenceClientModuleTestService ccmts(ttccmtm);
+            ccmts.start();
+
+            Lock l(module1);
+            module1.waitOnSignal();
+
+            ccmts_d.stop();
+            ccmts.stop();
+
+            Thread::usleepFor(1000 * 3);
 #endif
 
             // Ugly cleanup.

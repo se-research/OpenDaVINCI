@@ -85,7 +85,10 @@ namespace odcore {
 
                     virtual void stop();
 
+                    virtual void setSenderPortToIgnore(const uint16_t &portToIgnore);
+
                 private:
+                    uint16_t m_portToIgnore;
                     bool m_isMulticast;
                     struct sockaddr_in m_address;
                     struct ip_mreq m_mreq;
