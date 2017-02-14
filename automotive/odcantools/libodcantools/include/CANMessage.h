@@ -55,9 +55,9 @@ namespace automotive {
                 uint8_t getStartBitInByteInCorrectByteOrder(const uint8_t);
                 uint8_t getPayloadByte(const int8_t);
                 int8_t getRealStartBit(const CANSignal);
-                void insertRawSignal(const CANSignal, const uint64_t);
+                void insertRawSignal(const CANSignal, const int64_t);
                 int64_t extractRawSignal(const CANSignal);
-                //double getSignal(const uint8_t, const uint8_t, const string, const double, const double, const double, const double);
+                vector<uint8_t> invertPayloadVector(vector<uint8_t>);
             
             private: 
                 map<const uint16_t, const CANSignal> m_signals;

@@ -51,22 +51,32 @@ namespace automotive {
                 data=data>>8;
             }
             
-            // ROLL PAYLOAD FOR VECTOR NUMBERING. NEEDS TO BE TESTED FOR NON-VECTOR
+            // INVERT PAYLOAD FOR VECTOR NUMBERING. NEEDS TO BE TESTED FOR NON-VECTOR
             if(m_vectorByteOrder) {
-                vector<uint8_t> temp;
-                for(int8_t i=length-1;i>=0;--i) {
-                    temp.push_back(m_payload.at(i));
-                }
-                m_payload=temp;
+                m_payload=invertPayloadVector(m_payload);
             }
         }
         
+        vector<uint8_t> CANMessage::invertPayloadVector(vector<uint8_t> payload) {
+            vector<uint8_t> temp;
+            for(int8_t i=payload.size()-1;i>=0;--i) {
+                temp.push_back(payload.at(i));
+            }
+            return temp;
+        }
+        
         uint64_t CANMessage::getToUINT64() {
+            // INVERT PAYLOAD FOR VECTOR NUMBERING. NEEDS TO BE TESTED FOR NON-VECTOR
+            vector<uint8_t> temp=m_payload;
+            if(m_vectorByteOrder) {
+                temp=invertPayloadVector(temp);
+            }
+            
             uint64_t data=0;
             
-            for(int8_t i=m_payload.size()-1;i>=0;--i) {
+            for(int8_t i=temp.size()-1;i>=0;--i) {
                 data=data<<8;
-                data = data | m_payload.at(i);
+                data = data | temp.at(i);
             }
             
             return data;
@@ -119,10 +129,11 @@ namespace automotive {
         }
 
         uint8_t CANMessage::getStartBitInByteInCorrectByteOrder(const uint8_t startBit) {
+            // if vector numbering is used, assume non-sequential bit numbering
             if(m_vectorByteOrder) {
                 return startBit%8;
             }
-            else {
+            else { // otherwise assume sequential bit numbering TO BE VERIFIED
                 return 7-(startBit%8);
             }
         }
@@ -141,28 +152,32 @@ namespace automotive {
                 value=signal.m_rangeE;
             
             value=round((value-signal.m_offset)/signal.m_factor);
-            uint64_t signalValue=static_cast<uint64_t>(value);
+            int64_t signalValue=static_cast<int64_t>(value);
             insertRawSignal(signal, signalValue);
         }
         
-        void CANMessage::insertRawSignal(const CANSignal signal, const uint64_t value) {
+        void CANMessage::insertRawSignal(const CANSignal signal, const int64_t value) {
             uint64_t signalMask=0x01;
             uint8_t byteMask=0x01;
-            int8_t byteNumber=signal.m_startBit/8;
+            int8_t realStartBit=getRealStartBit(signal);
+            int8_t byteNumber=realStartBit/8;
             
             // initialize the payload byte mask to the signal's starting position
-            for(uint8_t i=0;i<getStartBitInByteInCorrectByteOrder(signal.m_startBit);++i) {
+            for(uint8_t i=0;i<getStartBitInByteInCorrectByteOrder(realStartBit);++i) {
                 advanceByteMask(byteMask);
             }
             
-            for(uint8_t i=0;i<signal.m_length;++i) {
+            for(uint8_t i=0, currentByte=getPayloadByte(byteNumber);i<signal.m_length;++i) {
                 // if the currently checked bit equals 1, set that bit to 1
                 if( (value & signalMask) != 0x00) {
-                    m_payload.at(byteNumber) = m_payload.at(byteNumber) | byteMask;
+                    currentByte = currentByte | byteMask;
                 }
                 
                 // if the mask points at the end of the current payload byte...
                 if(checkByteMaskInLastPosition(byteMask)) {
+                    // ...save the current byte, then...
+                    if(byteNumber>=0 && byteNumber<8) // in case we start out of the message boundaries -it can happen on purpose-
+                        m_payload.at(byteNumber)=currentByte;
                     //  ...go forward to the first bit...
                     resetByteMask(byteMask);
                     // ...of the next byte.
@@ -217,7 +232,6 @@ namespace automotive {
         
         double CANMessage::decodeSignal(const CANSignal signal) {
             double signalValue=static_cast<double>(extractRawSignal(signal));
-            std::cerr<<"[decode] "<<signalValue<<std::endl;
             signalValue=(signalValue*signal.m_factor)+signal.m_offset;
             
             if(signalValue<signal.m_rangeB)
@@ -238,22 +252,17 @@ namespace automotive {
             bool MSBEquals1=false;
             int8_t realStartBit=getRealStartBit(signal);
             int8_t byteNumber=realStartBit/8;
-            std::cerr<<"[extract] real start bit "<<+realStartBit<<" init BN "<<+byteNumber<<" init bm "<<+byteMask<<std::endl;
             
             // initialize the payload byte mask to the signal's starting position
             for(uint8_t i=0;i<getStartBitInByteInCorrectByteOrder(realStartBit);++i) {
                 advanceByteMask(byteMask);
-            std::cerr<<"[extract] advance loop bm ("<<+byteMask<<")"<<std::endl;
             }
-            std::cerr<<"[extract] starting bm "<<+byteMask<<std::endl;
             
             for(uint8_t i=0, currentByte=getPayloadByte(byteNumber);i<signal.m_length;++i) {
-                std::cerr<<"[extract] current BN "<<+byteNumber<<" current byte "<<+currentByte<<endl;
                 // if the currently checked bit equals 1, set that bit to 1
                 if( (currentByte & byteMask) != 0x00) {
                     signalValue = signalValue | signalMask;
                     MSBEquals1 = true;
-                    std::cerr<<"[extract] setting 1: "<<+signalValue<<std::endl;
                 }
                 else MSBEquals1=false;
                 
@@ -261,11 +270,8 @@ namespace automotive {
                 if(checkByteMaskInLastPosition(byteMask)) {
                     //  ...go forward to the first bit...
                     resetByteMask(byteMask);
-                    std::cerr<<"[extract] bm reset to "<<+byteMask<<std::endl;
                     // ...of the next byte.
-                    std::cerr<<"[extract] BN advanced from "<<+byteNumber;
                     advanceByteNumberInCorrectEndianness(byteNumber, signal.m_endianness);
-                    std::cerr<<" to "<<+byteNumber<<std::endl;
                     
                     // check for out-of-boundaries index
                     if(byteNumber>=0 && byteNumber<=8) {
@@ -277,7 +283,6 @@ namespace automotive {
                 }
                 else { // same byte, next bit
                     advanceByteMask(byteMask);
-                    std::cerr<<"[extract] advancing bm "<<+byteMask<<std::endl;
                 }
                 
                 // always move forward the signal mask
