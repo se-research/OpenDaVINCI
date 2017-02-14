@@ -21,6 +21,12 @@
 #include <sys/select.h>
 #include <sys/socket.h>
 
+// Include headers to query IP addresses from local devices.
+#ifdef __linux__
+    #include <netdb.h>
+    #include <ifaddrs.h>
+#endif
+
 #include <cerrno>
 #include <cstring>
 #include <sstream>
@@ -37,6 +43,7 @@ namespace odcore {
             using namespace std;
 
             POSIXUDPReceiver::POSIXUDPReceiver(const string &address, const uint32_t &port, const bool &isMulticast) :
+                m_mapOfIPAddresses(),
                 m_portToIgnore(0),
                 m_isMulticast(isMulticast),
                 m_address(),
@@ -99,6 +106,10 @@ namespace odcore {
                     s << "[POSIXUDPReceiver] Error creating thread: " << strerror(errno);
                     throw s.str();
                 }
+
+                // Fill map of IP addresses from local devices to avoid
+                // circular data sending.
+                getIPAddresses();
             }
 
             POSIXUDPReceiver::~POSIXUDPReceiver() {
@@ -112,6 +123,25 @@ namespace odcore {
                     delete [] m_buffer;
                 }
                 m_buffer = NULL;
+            }
+
+            void POSIXUDPReceiver::getIPAddresses() {
+#ifdef __linux__
+                struct ifaddrs *ifaddr;
+                if (0 == ::getifaddrs(&ifaddr)) {
+                    for (struct ifaddrs *ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next) {
+                        if ( (ifa->ifa_addr != NULL) && (ifa->ifa_addr->sa_family == AF_INET) ) {
+                            if (0 == ::getnameinfo(ifa->ifa_addr, sizeof(struct sockaddr_in), NULL, 0, NULL, 0, NI_NUMERICHOST)) {
+                                // Get numerical representation of IP address...
+                                const unsigned long IP_ADDRESS = reinterpret_cast<struct sockaddr_in *>(ifa->ifa_addr)->sin_addr.s_addr;
+                                // ...and store it as key in map for access in logarithmic time.
+                                m_mapOfIPAddresses[IP_ADDRESS] = true;
+                            }
+                        }
+                    }
+                    ::freeifaddrs(ifaddr);
+                }
+#endif
             }
 
             void POSIXUDPReceiver::setSenderPortToIgnore(const uint16_t &portToIgnore) {
@@ -140,14 +170,22 @@ namespace odcore {
                         nbytes = recvfrom(m_fd, m_buffer, BUFFER_SIZE, 0, reinterpret_cast<struct sockaddr *>(&remote), reinterpret_cast<socklen_t*>(&addrLength));
 
                         if (nbytes > 0) {
-                            // Get sender address.
-                            const uint32_t MAX_ADDR_SIZE = 1024;
-                            char remoteAddr[MAX_ADDR_SIZE];
-                            inet_ntop(remote.ss_family, &((reinterpret_cast<struct sockaddr_in*>(&remote))->sin_addr), remoteAddr, sizeof(remoteAddr));
+                            // Get IP address and port from sender.
+                            const unsigned long RECVFROM_IP_ADDRESS = (reinterpret_cast<struct sockaddr_in*>(&remote))->sin_addr.s_addr;
+                            const uint16_t RECVFROM_PORT = ntohs(reinterpret_cast<struct sockaddr_in*>(&remote)->sin_port);
 
-                            const uint16_t recvPort = ntohs(reinterpret_cast<struct sockaddr_in*>(&remote)->sin_port);
-                            if (m_portToIgnore != recvPort) {
-                                // ----------------------v (remote address)--v (data)
+                            // Forward packet if (a) it is NOT sent from the same machine that is receiving (i.e. over network),
+                            // or, if sent from the same machine as the one used for receiving, if the data was not sent from a
+                            // port that shall be ignored.
+                            const bool ACCEPT_PACKET = (0 == m_mapOfIPAddresses.count(RECVFROM_IP_ADDRESS))
+                                                    || ((m_mapOfIPAddresses.count(RECVFROM_IP_ADDRESS) > 0) && (m_portToIgnore != RECVFROM_PORT));
+                            if (ACCEPT_PACKET) {
+                                // Get sender address.
+                                const uint32_t MAX_ADDR_SIZE = 1024;
+                                char remoteAddr[MAX_ADDR_SIZE];
+                                inet_ntop(remote.ss_family, &((reinterpret_cast<struct sockaddr_in*>(&remote))->sin_addr), remoteAddr, sizeof(remoteAddr));
+
+                                // -----     -----------------v (remote address)--v (data)
                                 nextPacket(odcore::io::Packet(string(remoteAddr), string(m_buffer, nbytes)));
                             }
                         }

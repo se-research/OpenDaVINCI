@@ -23,6 +23,7 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 
+#include <map>
 #include <memory>
 #include <string>
 
@@ -88,6 +89,7 @@ namespace odcore {
                     virtual void setSenderPortToIgnore(const uint16_t &portToIgnore);
 
                 private:
+                    map<unsigned long, bool> m_mapOfIPAddresses;
                     uint16_t m_portToIgnore;
                     bool m_isMulticast;
                     struct sockaddr_in m_address;
@@ -99,6 +101,8 @@ namespace odcore {
                     virtual void run();
 
                     virtual bool isRunning();
+
+                    void getIPAddresses();
             };
 
         }
