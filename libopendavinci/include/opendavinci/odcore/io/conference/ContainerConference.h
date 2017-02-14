@@ -116,6 +116,8 @@ class ContainerListener;
                 private:
                     mutable base::Mutex m_containerListenerMutex;
                     ContainerListener *m_containerListener;
+
+                    mutable base::Mutex m_senderStampMutex;
                     uint32_t m_senderStamp;
             };
 

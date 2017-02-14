@@ -145,7 +145,8 @@ namespace odcore {
                             char remoteAddr[MAX_ADDR_SIZE];
                             inet_ntop(remote.ss_family, &((reinterpret_cast<struct sockaddr_in*>(&remote))->sin_addr), remoteAddr, sizeof(remoteAddr));
 
-                            const uint16_t recvPort = ntohs(((struct sockaddr_in *)&remote)->sin_port);
+//                            const uint16_t recvPort = ntohs(((struct sockaddr_in *)&remote)->sin_port);
+                            const uint16_t recvPort = ntohs(reinterpret_cast<struct sockaddr_in*>(&remote)->sin_port);
                             if (m_portToIgnore != recvPort) {
                                 // ----------------------v (remote address)--v (data)
                                 nextPacket(odcore::io::Packet(string(remoteAddr), string(m_buffer, nbytes)));

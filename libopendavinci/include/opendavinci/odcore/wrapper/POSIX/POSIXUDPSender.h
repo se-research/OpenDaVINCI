@@ -84,7 +84,7 @@ namespace odcore {
                     virtual uint16_t getPort() const;
 
                 private:
-                    uint16_t m_sendPort;
+                    uint16_t m_sendingUDPPort;
                     struct sockaddr_in m_address;
                     int32_t m_fd;
 

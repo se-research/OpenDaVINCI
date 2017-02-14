@@ -34,7 +34,7 @@ namespace odcore {
             using namespace std;
 
             POSIXUDPSender::POSIXUDPSender(const string &address, const uint32_t &port) :
-                m_sendPort(0),
+                m_sendingUDPPort(0),
                 m_address(),
                 m_fd(),
                 m_socketMutex() {
@@ -70,7 +70,8 @@ namespace odcore {
                     s << "[core::wrapper::POSIXUDPSender] Error while retrieving properties from socket: " << strerror(errno);
                     throw s.str();
                 }
-                m_sendPort = ntohs(((struct sockaddr_in *)&addr)->sin_port);
+//                m_sendingUDPPort = ntohs(((struct sockaddr_in *)&addr)->sin_port);
+                m_sendingUDPPort = ntohs(reinterpret_cast<struct sockaddr_in*>(&addr)->sin_port);
 
                 // Setup address and port to be used for sending to.
                 memset(&m_address, 0, sizeof(m_address));
@@ -88,7 +89,7 @@ namespace odcore {
             }
 
             uint16_t POSIXUDPSender::getPort() const {
-                return m_sendPort;
+                return m_sendingUDPPort;
             }
 
             void POSIXUDPSender::send(const string &data) const {
