@@ -53,8 +53,10 @@ namespace automotive {
                 void advanceByteNumberInCorrectEndianness(int8_t&, const string);
                 bool checkByteMaskInLastPosition(const uint8_t);
                 uint8_t getStartBitInByteInCorrectByteOrder(const uint8_t);
+                uint8_t getPayloadByte(const int8_t);
+                int8_t getRealStartBit(const CANSignal);
                 void insertRawSignal(const CANSignal, const uint64_t);
-                uint64_t extractRawSignal(const CANSignal);
+                int64_t extractRawSignal(const CANSignal);
                 //double getSignal(const uint8_t, const uint8_t, const string, const double, const double, const double, const double);
             
             private: 
