@@ -28,7 +28,6 @@
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/base/Thread.h"
 #include "opendavinci/odcore/base/Condition.h"        // for Condition
 #include "opendavinci/odcore/serialization/Deserializer.h"     // for Deserializer
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"  // for KeyValueConfiguration
