@@ -48,6 +48,8 @@ namespace odcore {
 
                 try {
                     m_receiver = odcore::io::udp::UDPFactory::createUDPReceiver(address, port);
+                    // Disable circular receiving of data sent by ourselves.
+                    m_receiver->setSenderPortToIgnore(m_sender->getPort());
                 }
                 catch (string &s) {
                     OPENDAVINCI_CORE_THROW_EXCEPTION(ConferenceException, s);

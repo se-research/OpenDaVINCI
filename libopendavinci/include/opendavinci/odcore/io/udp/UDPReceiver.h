@@ -120,6 +120,15 @@ namespace odcore {
 
                     virtual void setPacketListener(PacketListener *pl);
 
+                    /**
+                     * This method sets the port to be ignored to receive from
+                     * to avoid circular data sending and receiving from the
+                     * same process.
+                     *
+                     * @param p Port to ignore.
+                     */
+                    virtual void setSenderPortToIgnore(const uint16_t &portToIgnore) = 0;
+
                 protected:
                     /**
                      * This method is called from deriving classes to

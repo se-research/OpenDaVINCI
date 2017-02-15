@@ -146,6 +146,10 @@ namespace odcore {
                 WSACleanup();
             }
 
+            uint16_t WIN32UDPReceiver::setSenderPortToIgnore(const uint16_t &/*portToIgnore*/) {
+                std::cout << "[core::wrapper::WIN32UDPReceiver] setSenderPortToIgnore() not implemented." << std::endl;
+            }
+
             const char* WIN32UDPReceiver::inet_ntop(int af, const void* src, char* dst, int cnt) {
                 struct sockaddr_in srcaddr;
 

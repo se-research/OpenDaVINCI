@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <iostream>
 #include <memory>
 #include <sstream>
 #include <string>
@@ -79,6 +80,11 @@ namespace odcore {
 
                 // Decrement Winsock 2.2 DLL access counter.
                 WSACleanup();
+            }
+
+            uint16_t WIN32UDPSender::getPort() const {
+                std::cout << "[core::wrapper::WIN32UDPSender] getPort() not implemented." << std::endl;
+                return 0;
             }
 
             void WIN32UDPSender::send(const string &data) const {
