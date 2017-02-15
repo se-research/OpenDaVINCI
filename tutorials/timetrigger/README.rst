@@ -142,6 +142,12 @@ before ``odsupercomponent`` can be started::
 
    $ sudo route add -net 224.0.0.0 netmask 240.0.0.0 dev lo
 
+If you use the ``ip`` command, you need to do::
+
+   $ sudo ip link set lo multicast on
+
+   $ sudo ip route add 224.0.0.0/4 dev lo
+
 Next, we can run the life-cycle management application ``odsupercomponent``::
 
    $ odsupercomponent --cid=111 --configuration=/path/to/configuration
