@@ -56,8 +56,8 @@ namespace odcore {
                 // Bind to random address/port but store sender port.
                 struct sockaddr_in sendAddress;
                 memset(&sendAddress, 0, sizeof(sendAddress));
-                m_address.sin_family = AF_INET;
-                m_address.sin_port = 0; // Choose random port.
+                sendAddress.sin_family = AF_INET;
+                sendAddress.sin_port = 0; // Choose random port.
                 if (::bind(m_fd, reinterpret_cast<struct sockaddr *>(&sendAddress), sizeof(sendAddress)) < 0) {
                     stringstream s;
                     s << "[core::wrapper::POSIXUDPSender] Error while binding socket: " << strerror(errno);

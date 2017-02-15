@@ -81,6 +81,8 @@ namespace odcore {
 
                     virtual void stop();
 
+                    virtual void setSenderPortToIgnore(const uint16_t &portToIgnore);
+
                 private:
                     const char* inet_ntop(int af, const void* src, char* dst, int cnt);
 
