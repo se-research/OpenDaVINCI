@@ -113,8 +113,10 @@ namespace odtools {
                         totalBytesRead += (POS_AFTER - POS_BEFORE);
 
                         // Store mapping .rec file position --> index entry.
-                        m_index.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(),
-                                                       IndexEntry(c.getSampleTimeStamp().toMicroseconds(), POS_BEFORE)));
+//                        m_index.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(),
+//                                                       IndexEntry(c.getSampleTimeStamp().toMicroseconds(), POS_BEFORE)));
+                        m_index.emplace(std::make_pair(c.getSentTimeStamp().toMicroseconds(),
+                                                       IndexEntry(c.getSentTimeStamp().toMicroseconds(), POS_BEFORE)));
 
                         const int32_t percentage = static_cast<int32_t>(static_cast<float>(m_recFile.tellg()*100.0)/static_cast<float>(fileLength));
                         if ( (percentage % 5 == 0) && (percentage != oldPercentage) ) {
@@ -165,7 +167,7 @@ namespace odtools {
                 }
 
                 const uint32_t ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY = std::ceil(m_index.size()*(static_cast<float>(Player2::ONE_SECOND_IN_MICROSECONDS))/(largestSampleTimePoint - smallestSampleTimePoint));
-                m_desiredInitialLevel = ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY * Player2::LOOK_AHEAD_IN_S;
+                m_desiredInitialLevel = ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY * Player2::LOOK_AHEAD_IN_S * 100;
 
                 clog << "[Player2]: Initializing cache with " << m_desiredInitialLevel << " entries." << endl;
 
