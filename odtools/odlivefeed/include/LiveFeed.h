@@ -20,6 +20,10 @@
 #ifndef LIVEFEED_H_
 #define LIVEFEED_H_
 
+#include <curses.h>
+
+#include <map>
+
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/FIFOQueue.h"
 #include "opendavinci/odcore/base/module/DataTriggeredConferenceClientModule.h"
@@ -70,6 +74,10 @@ namespace odlivefeed {
             virtual void setUp();
 
             virtual void tearDown();
+
+        private:
+            WINDOW *m_mainwindow;
+            map<int32_t, odcore::data::Container> m_mapOfLastContainers;
     };
 
 } // odlivefeed

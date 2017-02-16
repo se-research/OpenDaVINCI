@@ -18,8 +18,7 @@
  */
 
 #include <iostream>
-
-#include <curses.h>
+#include <sstream>
 
 #include "LiveFeed.h"
 
@@ -30,16 +29,43 @@ namespace odlivefeed {
     using namespace odcore::data;
 
     LiveFeed::LiveFeed(const int32_t &argc, char **argv) :
-        DataTriggeredConferenceClientModule(argc, argv, "odlivefeed") {}
+        DataTriggeredConferenceClientModule(argc, argv, "odlivefeed"),
+        m_mainwindow(NULL),
+        m_mapOfLastContainers() {}
 
     LiveFeed::~LiveFeed() {}
 
-    void LiveFeed::setUp() {}
+    void LiveFeed::setUp() {
+        m_mainwindow = initscr();
+        if (NULL == m_mainwindow) {
+            cerr << "[odlivefeed] Error initializing ncurses." << endl;
+        }
+    }
 
-    void LiveFeed::tearDown() {}
+    void LiveFeed::tearDown() {
+        if (NULL != m_mainwindow) {
+            delwin(m_mainwindow);
+            endwin();
+            refresh();
+        }
+    }
 
     void LiveFeed::nextContainer(odcore::data::Container &c) {
-        cout << c.getSentTimeStamp().getYYYYMMDD_HHMMSSms() << "-->" << c.getReceivedTimeStamp().getYYYYMMDD_HHMMSSms() << " dt = " << (c.getReceivedTimeStamp() - c.getSentTimeStamp()).toString() << " ID = " << c.getDataType() << endl; 
+        if (NULL != m_mainwindow) {
+            m_mapOfLastContainers[c.getDataType()] = c;
+
+            uint16_t row = 0;
+            const uint16_t col = 0;
+            for (auto it = m_mapOfLastContainers.begin(); it != m_mapOfLastContainers.end(); it++) {
+                Container entry = it->second;
+                stringstream sstr;
+                sstr << "Container: " << entry.getDataType() << ", sent: " << entry.getSentTimeStamp().getYYYYMMDD_HHMMSSms() << ", received: " << entry.getReceivedTimeStamp().getYYYYMMDD_HHMMSSms() << ", sample time: " << entry.getSampleTimeStamp().getYYYYMMDD_HHMMSSms();
+                const string text = sstr.str();
+                mvaddstr(row++, col, text.c_str());
+            }
+
+            refresh();
+        }
     }
 
 } // odlivefeed
