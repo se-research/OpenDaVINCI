@@ -211,7 +211,6 @@ namespace odcore {
 #if !defined(__OpenBSD__) && !defined(__NetBSD__)
 #    pragma GCC diagnostic pop
 #endif
-
                                 // -----     -----------------v (remote address)--v (data)
                                 nextPacket(odcore::io::Packet(string(remoteAddr), string(m_buffer, nbytes)));
                             }
