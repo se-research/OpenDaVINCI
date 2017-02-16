@@ -23,15 +23,31 @@
 #include <curses.h>
 
 #include <map>
+#include <string>
+#include <vector>
 
-#include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/base/FIFOQueue.h"
-#include "opendavinci/odcore/base/module/DataTriggeredConferenceClientModule.h"
-#include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
+#include <opendavinci/odcore/opendavinci.h>
+#include <opendavinci/odcore/reflection/Helper.h>
+#include <opendavinci/odcore/base/module/DataTriggeredConferenceClientModule.h>
 
 namespace odlivefeed {
 
     using namespace std;
+
+    class HelperEntry {
+        public:
+            HelperEntry(const HelperEntry &/*obj*/);
+            HelperEntry& operator=(const HelperEntry &/*obj*/);
+
+        public:
+            HelperEntry();
+            virtual ~HelperEntry();
+
+        public:
+            string m_library;
+            void *m_dynamicObjectHandle;
+            odcore::reflection::Helper *m_helper;
+    };
 
     /**
      * This class can be used to simply display data distributed using a conference.
@@ -78,6 +94,16 @@ namespace odlivefeed {
         private:
             WINDOW *m_mainwindow;
             map<int32_t, odcore::data::Container> m_mapOfLastContainers;
+
+        private:
+            void findAndLoadSharedLibraries();
+            void unloadSharedLibraries();
+            vector<string> getListOfLibrariesToLoad(const vector<string> &paths);
+
+        private:
+            vector<string> m_listOfLibrariesToLoad;
+            vector<HelperEntry> m_listOfHelpers;
+
     };
 
 } // odlivefeed
