@@ -60,6 +60,7 @@ namespace odtools {
                     ONE_SECOND_IN_MICROSECONDS = 1000 *1000,
                     MAX_DELAY_IN_MICROSECONDS = 5 * ONE_SECOND_IN_MICROSECONDS,
                     LOOK_AHEAD_IN_S = 30,
+                    MIN_ENTRIES_FOR_LOOK_AHEAD = 5000,
                 };
 
             private:

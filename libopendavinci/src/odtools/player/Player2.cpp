@@ -182,7 +182,8 @@ namespace odtools {
                 }
 
                 const uint32_t ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY = std::ceil(m_index.size()*(static_cast<float>(Player2::ONE_SECOND_IN_MICROSECONDS))/(largestSampleTimePoint - smallestSampleTimePoint));
-                m_desiredInitialLevel = ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY * Player2::LOOK_AHEAD_IN_S;
+                m_desiredInitialLevel = std::max<uint32_t>(ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY * Player2::LOOK_AHEAD_IN_S,
+                                                           MIN_ENTRIES_FOR_LOOK_AHEAD);
 
                 clog << "[Player2]: Initializing cache with " << m_desiredInitialLevel << " entries." << endl;
 
@@ -332,43 +333,19 @@ namespace odtools {
         }
 
         void Player2::manageCache() {
-            // Constants for controller.
-            const float Kp = 1.89;
-            const float Ki = 2.10329;
-
-            // Target value to control for.
-            const int32_t W = m_desiredInitialLevel;
-
-            // Controller variables.
-            int32_t X = 0;
-            int32_t I = 0;
-            int32_t E_old = 0;
-            TimeStamp previousCycleTimeStamp;
-
+            uint32_t numberOfEntries = 0;
             while (isContainerCacheFillingRunning()) {
-                TimeStamp currentCycleTimeStamp;
                 {
                     Lock l(m_indexMutex);
-                    X = m_containerCache.size();
+                    numberOfEntries = m_containerCache.size();
                 }
-                const float deltaT = (currentCycleTimeStamp - previousCycleTimeStamp).toMicroseconds()/(1.0*Player2::ONE_SECOND_IN_MICROSECONDS);
-                previousCycleTimeStamp = currentCycleTimeStamp;
-
-                // Compute error.
-                const int32_t E = W - X;
-                const int32_t deltaE = (E - E_old);
-                E_old = E;
-
-                // Compute PID values.
-                const int32_t P = E;
-                I += deltaE * deltaT;
-
-                const int32_t Y = Kp*P + Ki*I;
-                const uint32_t entriesReadFromFile = fillContainerCache(std::max(Y, 0));
-                if (entriesReadFromFile > 0) {
-                    clog << "[Player2]: " << entriesReadFromFile << " entries added to cache." << " P = " << P << ", I = " << I << ", S = " << m_containerCache.size() << endl;
+                // If filling level is around 25%, pour in two times the amount.
+                if (numberOfEntries < 0.25*m_desiredInitialLevel) {
+                    const uint32_t entriesReadFromFile = fillContainerCache(1.25 * m_desiredInitialLevel);
+                    if (entriesReadFromFile > 0) {
+                        clog << "[Player2]: Number of entries in cache: "  << numberOfEntries << ". " << entriesReadFromFile << " added to cache. " << m_containerCache.size() << " entries available." << endl;
+                    }
                 }
-
                 // Manage cache at 4 Hz.
                 Thread::usleepFor(250 * 1000);
             }
