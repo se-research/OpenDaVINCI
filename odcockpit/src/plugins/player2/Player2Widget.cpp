@@ -210,7 +210,7 @@ namespace cockpit {
 
                     if (m_player2->hasMoreData()) {
                         // Get container to be sent.
-                        const Container &nextContainerToBeSent2 = m_player2->getNextContainerToBeSent();
+                        const Container &nextContainerToBeSent2 = m_player2->getNextContainerToBeSentNoCopy();
                         Container &nextContainerToBeSent = const_cast<Container&>(nextContainerToBeSent2);
 
                         // Increment the counters.
