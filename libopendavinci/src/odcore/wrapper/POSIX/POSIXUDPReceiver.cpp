@@ -74,7 +74,6 @@ namespace odcore {
                     throw s.str();
                 }
 
-
                 // Setup address and port.
                 memset(&m_address, 0, sizeof(m_address));
                 m_address.sin_family = AF_INET;
