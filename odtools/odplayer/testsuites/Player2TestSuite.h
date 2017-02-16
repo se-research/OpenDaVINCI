@@ -614,7 +614,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
 //            }
 //        }
 
-        void testLargeFile() {
+        void notestLargeFile() {
             cout << __FILE__ << " " << __LINE__ << endl;
             const URL u("file://test.rec");
 

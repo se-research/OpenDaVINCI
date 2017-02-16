@@ -77,7 +77,7 @@ namespace odplayerh264 {
 
         public:
             /**
-             * Constructor.
+             * Constructor for H264 single decoder mode (one stream only!).
              */
             PlayerH264Decoder();
 

@@ -64,7 +64,7 @@ namespace odplayerh264 {
 
         public:
             /**
-             * Constructor (single h264 decoder only mode).
+             * Constructor for single h264 decoder (one video stream only mode).
              *
              * @param url Resource to play.
              * @param autoRewind True if the file should be rewind at EOF.
