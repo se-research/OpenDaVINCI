@@ -73,6 +73,7 @@ namespace cockpit {
                 m_processBtn(NULL),
                 m_start(NULL),
                 m_end(NULL),
+                m_timeline(NULL),
                 m_player2(NULL),
                 m_fileName(""),
                 m_currentWorkingDirectory("") {
@@ -141,12 +142,17 @@ namespace cockpit {
                 speedSlider->setValue(99);
                 connect(speedSlider, SIGNAL(valueChanged(int)), this, SLOT(speedValue(int)));
 
+                m_timeline = new QProgressBar(this);
+                m_timeline->setValue(0);
+                connect(this, SIGNAL(showProgress(int)), m_timeline, SLOT(setValue(int)));
+
                 // Final layout.
                 QVBoxLayout *mainLayout = new QVBoxLayout(this);
                 mainLayout->addLayout(fileOperations);
                 mainLayout->addWidget(m_desc);
                 mainLayout->addWidget(m_containerCounterDesc);
                 mainLayout->addWidget(speedSlider);
+                mainLayout->addWidget(m_timeline);
                 mainLayout->addLayout(operations);
 //TODO: Validate splitting for h264 files.
 //                mainLayout->addLayout(splitting);
@@ -156,6 +162,10 @@ namespace cockpit {
 
             Player2Widget::~Player2Widget() {
                 m_player2.reset();
+            }
+
+            void Player2Widget::percentagePlayedBack(const float &percentagePlayedBack) {
+                emit showProgress(static_cast<uint32_t>(fabs(percentagePlayedBack) * 100));
             }
 
             void Player2Widget::speedValue(int value) {
@@ -296,6 +306,7 @@ namespace cockpit {
 
                 if (!m_fileName.empty()) {
                     m_player2.reset();
+                    emit showProgress(0);
 
                     // Set current working directory.
                     {
@@ -333,6 +344,7 @@ namespace cockpit {
 #else
                     m_player2 = shared_ptr<Player2>(new Player2(url, AUTO_REWIND));
 #endif
+                    m_player2->setPlayerListener(this);
 
                     m_playBtn->setEnabled(true);
                     m_pauseBtn->setEnabled(false);

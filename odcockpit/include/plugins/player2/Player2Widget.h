@@ -28,6 +28,7 @@
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odtools/player/PlayerListener.h"
 
 #include "FIFOMultiplexer.h"
 
@@ -51,7 +52,8 @@ namespace cockpit {
             /**
              * This class is the container for the cutter widget.
              */
-            class Player2Widget : public QWidget {
+            class Player2Widget : public QWidget,
+                                  public odtools::player::PlayerListener {
 
                     Q_OBJECT
 
@@ -83,6 +85,8 @@ namespace cockpit {
 
                     virtual ~Player2Widget();
 
+                    void percentagePlayedBack(const float &percentagePlayedBack);
+
                 public slots:
                     void speedValue(int);
                     void loadFile();
@@ -95,6 +99,9 @@ namespace cockpit {
                     void sendNextContainer();
 
                     void process();
+
+                signals:
+                    void showProgress(int);
 
                 private:
                     const odcore::base::KeyValueConfiguration &m_kvc;
@@ -118,6 +125,8 @@ namespace cockpit {
                     QPushButton *m_processBtn;
                     QLineEdit *m_start;
                     QLineEdit *m_end;
+
+                    QProgressBar *m_timeline;
 
                     shared_ptr<odtools::player::Player2> m_player2;
 

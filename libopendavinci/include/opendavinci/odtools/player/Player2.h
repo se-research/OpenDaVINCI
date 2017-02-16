@@ -32,6 +32,8 @@
 #include <opendavinci/odcore/io/URL.h>
 #include <opendavinci/odcore/exceptions/Exceptions.h>
 
+#include <opendavinci/odtools/player/PlayerListener.h>
+
 namespace odtools {
     namespace player {
 
@@ -240,6 +242,13 @@ namespace odtools {
                 // Map to handle PlayerDelegates.
                 odcore::base::Mutex m_mapOfPlayerDelegatesMutex;
                 map<int32_t, PlayerDelegate*> m_mapOfPlayerDelegates;
+
+            public:
+                void setPlayerListener(PlayerListener *l);
+
+            private:
+                odcore::base::Mutex m_playerListenerMutex;
+                PlayerListener *m_playerListener;
         };
 
     } // player

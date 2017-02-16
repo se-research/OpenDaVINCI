@@ -74,7 +74,9 @@ namespace odtools {
             m_containerCacheFillingThread(),
             m_containerCache(),
             m_mapOfPlayerDelegatesMutex(),
-            m_mapOfPlayerDelegates() {
+            m_mapOfPlayerDelegates(),
+            m_playerListenerMutex(),
+            m_playerListener() {
             initializeIndex();
             computeInitialCacheLevelAndFillCache();
 
@@ -89,6 +91,11 @@ namespace odtools {
             m_containerCacheFillingThread.join();
 
             m_recFile.close();
+        }
+
+        void Player2::setPlayerListener(PlayerListener *pl) {
+            Lock l(m_playerListenerMutex);
+            m_playerListener = pl;
         }
 
         void Player2::registerPlayerDelegate(const uint32_t &containerID, PlayerDelegate *pd) {
@@ -242,8 +249,8 @@ namespace odtools {
             checkAvailabilityOfNextContainerToBeReplayed();
 
             Lock l(m_indexMutex);
-            Container retVal;
             Container &nextContainer = m_containerCache[m_currentContainerToReplay->second.m_filePosition];
+            Container retVal;
 
             // Check if there is a PlayerDelegate registered for this container.
             {
@@ -273,6 +280,13 @@ namespace odtools {
             m_previousContainerAlreadyReplayed = m_currentContainerToReplay++;
 
             m_numberOfReturnedContainersInTotal++;
+
+            {
+                Lock l3(m_playerListenerMutex);
+                if (NULL != m_playerListener) {
+                    m_playerListener->percentagePlayedBack(m_numberOfReturnedContainersInTotal/static_cast<float>(m_index.size()));
+                }
+            }
 
             const uint64_t ELAPSED = (thisTimePointCallingThisMethod - m_firstTimePointReturningAContainer).toMicroseconds();
             m_containerReplayThroughput = std::ceil(m_numberOfReturnedContainersInTotal*static_cast<float>(Player2::ONE_SECOND_IN_MICROSECONDS)/ELAPSED);
