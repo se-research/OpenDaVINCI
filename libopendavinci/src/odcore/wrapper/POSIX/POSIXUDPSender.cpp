@@ -70,7 +70,11 @@ namespace odcore {
                     s << "[core::wrapper::POSIXUDPSender] Error while retrieving properties from socket: " << strerror(errno);
                     throw s.str();
                 }
-                m_sendingUDPPort = ntohs(reinterpret_cast<struct sockaddr_in*>(&addr)->sin_port);
+
+                // Fix -Wcast-align compile warning.
+                struct sockaddr_in tmpAddr;
+                memcpy(&tmpAddr, &addr, sizeof(tmpAddr));
+                m_sendingUDPPort = ntohs(tmpAddr.sin_port);
 
                 // Setup address and port to be used for sending to.
                 memset(&m_address, 0, sizeof(m_address));

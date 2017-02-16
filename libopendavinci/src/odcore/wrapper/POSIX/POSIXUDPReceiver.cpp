@@ -132,8 +132,11 @@ namespace odcore {
                     for (struct ifaddrs *ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next) {
                         if ( (ifa->ifa_addr != NULL) && (ifa->ifa_addr->sa_family == AF_INET) ) {
                             if (0 == ::getnameinfo(ifa->ifa_addr, sizeof(struct sockaddr_in), NULL, 0, NULL, 0, NI_NUMERICHOST)) {
+                                // Fix compile warning -Wcast-align.
+                                struct sockaddr_in tmpAddr;
+                                memcpy(&tmpAddr, ifa->ifa_addr, sizeof(tmpAddr));
                                 // Get numerical representation of IP address...
-                                const unsigned long IP_ADDRESS = reinterpret_cast<struct sockaddr_in *>(ifa->ifa_addr)->sin_addr.s_addr;
+                                const unsigned long IP_ADDRESS = tmpAddr.sin_addr.s_addr;
                                 // ...and store it as key in map for access in logarithmic time.
                                 m_mapOfIPAddresses[IP_ADDRESS] = true;
                             }
