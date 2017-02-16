@@ -61,6 +61,8 @@
 #include "opendlv/threeD/models/Line.h"
 #include "opendlv/threeD/models/Point.h"
 #include "opendlv/threeD/models/XYZAxes.h"
+
+#include "CockpitWindow.h"
 #include "plugins/PlugIn.h"
 #include "plugins/environmentviewer/CameraAssignableNodesListener.h"
 #include "plugins/environmentviewer/EnvironmentViewerGLWidget.h"
@@ -134,6 +136,11 @@ namespace cockpit {
             }
 
             void EnvironmentViewerGLWidget::createSceneGraph() {
+                // The .scnx and .objx files are provided relative to the location of odcockpit.
+                // Thus, set the correct CWD.
+                QString cwd(CockpitWindow::getStartupDirectory().c_str());
+                QDir::setCurrent(cwd);
+
                 m_root = new TransformGroup();
                 m_stationaryElements = new TransformGroup();
                 m_dynamicElements = new TransformGroup();
