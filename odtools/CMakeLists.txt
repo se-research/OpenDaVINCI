@@ -37,6 +37,13 @@ IF (FFMPEGMODULES_FOUND)
 ENDIF()
 
 ###########################################################################
+# Find curses to enable odlivefeed.
+FIND_PACKAGE (Curses)
+IF (CURSES_FOUND)
+    ADD_SUBDIRECTORY (odlivefeed)
+ENDIF()
+
+###########################################################################
 # Add subdirectories.
 ADD_SUBDIRECTORY (odfilter)
 ADD_SUBDIRECTORY (odplayer)
