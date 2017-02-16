@@ -164,8 +164,7 @@ namespace odplayerh264 {
 
     Container PlayerH264Decoder::process(Container &c) {
         static bool isInitialized = false;
-        static bool hasFrame = false;
-        static Container replacementContainer;
+        Container replacementContainer;
 
         // Translate an H264Frame message into a proper SharedImage one.
         if (c.getDataType() == odcore::data::image::H264Frame::ID()) {
@@ -179,16 +178,14 @@ namespace odplayerh264 {
 
             // If we have a valid shared memory segment, decode next frame.
             if (m_mySharedMemory->isValid()) {
-if (!hasFrame) {
                 if (getNextFrame()) {
                     replacementContainer = Container(m_mySharedImage);
                     replacementContainer.setSentTimeStamp(c.getSentTimeStamp());
                     replacementContainer.setReceivedTimeStamp(c.getReceivedTimeStamp());
                     replacementContainer.setSampleTimeStamp(c.getSampleTimeStamp());
-hasFrame = true;
+
                     //cout << "[odplayerh264] Created replacement for " << h264frame.toString() << endl;
                 }
-}
             }
         }
 
