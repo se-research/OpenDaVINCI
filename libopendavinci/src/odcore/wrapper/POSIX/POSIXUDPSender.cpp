@@ -58,11 +58,22 @@ namespace odcore {
                 memset(&sendAddress, 0, sizeof(sendAddress));
                 sendAddress.sin_family = AF_INET;
                 sendAddress.sin_port = 0; // Choose random port.
+// Fix -Werror=strict-aliasing (ignoring it is okay for the following call).
+#if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#    pragma GCC diagnostic push
+#endif
+#if (__GNUC__ == 4 && 3 <= __GNUC_MINOR__) || 4 < __GNUC__
+#    pragma GCC diagnostic ignored "-Wstrict-aliasing"
+#endif
                 if (::bind(m_fd, reinterpret_cast<struct sockaddr *>(&sendAddress), sizeof(sendAddress)) < 0) {
                     stringstream s;
                     s << "[core::wrapper::POSIXUDPSender] Error while binding socket: " << strerror(errno);
                     throw s.str();
                 }
+#if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#    pragma GCC diagnostic pop
+#endif
+
                 struct sockaddr addr;
                 socklen_t len = sizeof(addr);
                 if (::getsockname(m_fd, &addr, &len) < 0) {

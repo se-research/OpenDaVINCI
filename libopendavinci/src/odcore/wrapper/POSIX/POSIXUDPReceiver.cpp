@@ -187,9 +187,19 @@ namespace odcore {
 #endif
 
                         if (nbytes > 0) {
+// Fix -Werror=strict-aliasing (ignoring it is okay for the following calls).
+#if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#    pragma GCC diagnostic push
+#endif
+#if (__GNUC__ == 4 && 3 <= __GNUC_MINOR__) || 4 < __GNUC__
+#    pragma GCC diagnostic ignored "-Wstrict-aliasing"
+#endif
                             // Get IP address and port from sender.
                             const unsigned long RECVFROM_IP_ADDRESS = (reinterpret_cast<struct sockaddr_in*>(&remote))->sin_addr.s_addr;
                             const uint16_t RECVFROM_PORT = ntohs(reinterpret_cast<struct sockaddr_in*>(&remote)->sin_port);
+#if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#    pragma GCC diagnostic pop
+#endif
 
                             // Forward packet if (a) it is NOT sent from the same machine that is receiving (i.e. over network),
                             // or, if sent from the same machine as the one used for receiving, if the data was not sent from a
