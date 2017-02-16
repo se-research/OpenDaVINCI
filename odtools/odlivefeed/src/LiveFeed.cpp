@@ -59,7 +59,7 @@ namespace odlivefeed {
             for (auto it = m_mapOfLastContainers.begin(); it != m_mapOfLastContainers.end(); it++) {
                 Container entry = it->second;
                 stringstream sstr;
-                sstr << "Container: " << entry.getDataType() << ", sent: " << entry.getSentTimeStamp().getYYYYMMDD_HHMMSSms() << ", received: " << entry.getReceivedTimeStamp().getYYYYMMDD_HHMMSSms() << ", sample time: " << entry.getSampleTimeStamp().getYYYYMMDD_HHMMSSms();
+                sstr << entry.getDataType() << "/" << c.getSenderStamp() << ", sent: " << entry.getSentTimeStamp().getYYYYMMDD_HHMMSSms() << ", received: " << entry.getReceivedTimeStamp().getYYYYMMDD_HHMMSSms() << ", sample time: " << entry.getSampleTimeStamp().getYYYYMMDD_HHMMSSms();
                 const string text = sstr.str();
                 mvaddstr(row++, col, text.c_str());
             }
