@@ -62,8 +62,12 @@ namespace odplayerh264 {
 
     ///////////////////////////////////////////////////////////////////////////
 
+    PlayerH264::PlayerH264(const odcore::io::URL &url, const bool &autoRewind) :
+        PlayerH264(url, autoRewind, 0) {}
+
     PlayerH264::PlayerH264(const odcore::io::URL &url, const bool &autoRewind, const uint32_t &basePort) :
         Player2(url, autoRewind),
+        m_singleDecoder(NULL),
         m_basePort(basePort),
         m_mapOfDecodersMutex(),
         m_mapOfDecoders() {
@@ -94,6 +98,8 @@ namespace odplayerh264 {
         }
 
         m_mapOfDecoders.clear();
+
+        m_singleDecoder.reset();
     }
 
     Container PlayerH264::process(Container &c) {
@@ -105,33 +111,42 @@ namespace odplayerh264 {
         if (c.getDataType() == odcore::data::image::H264Frame::ID()) {
             odcore::data::image::H264Frame h264frame = c.getData<odcore::data::image::H264Frame>();
 
-            // Find existing or create new encoder.
-            auto delegateEntry = m_mapOfDecoders.find(h264frame.getH264Filename());
-            if (delegateEntry == m_mapOfDecoders.end()) {
-                shared_ptr<PlayerH264ChildHandler> handler(new PlayerH264ChildHandler(m_basePort + id));
-
-                // Duplicate the current process.
-                pid_t cpid = fork();
-                if (cpid == 0) {
-                    // Here, we are in the child process.
-                    handleInChild(id);
+            // Use singleDecoder.
+            if (0 == m_basePort) {
+                if (NULL == m_singleDecoder.get()) {
+                    m_singleDecoder = shared_ptr<PlayerH264Decoder>(new PlayerH264Decoder());
                 }
-                else {
-                    // Here, we are in the parent process.
-                    handler->setPID(cpid);
-                    handler->waitForClientToConnect();
-
-                    m_mapOfDecoders[h264frame.getH264Filename()] = handler;
-
-                    cout << "[odplayerh264] Created decoding child process " << handler->getPID() << " to handle '" << h264frame.getH264Filename() << "'." << endl;
-                    id++;
-
-                    replacementContainer = m_mapOfDecoders[h264frame.getH264Filename()]->process(c);
-                }
+                replacementContainer = m_singleDecoder->process(c);
             }
             else {
-                // Reuse existing decoder.
-                replacementContainer = m_mapOfDecoders[h264frame.getH264Filename()]->process(c);
+                // Find existing or create new encoder.
+                auto delegateEntry = m_mapOfDecoders.find(h264frame.getH264Filename());
+                if (delegateEntry == m_mapOfDecoders.end()) {
+                    shared_ptr<PlayerH264ChildHandler> handler(new PlayerH264ChildHandler(m_basePort + id));
+
+                    // Duplicate the current process.
+                    pid_t cpid = fork();
+                    if (cpid == 0) {
+                        // Here, we are in the child process.
+                        handleInChild(id);
+                    }
+                    else {
+                        // Here, we are in the parent process.
+                        handler->setPID(cpid);
+                        handler->waitForClientToConnect();
+
+                        m_mapOfDecoders[h264frame.getH264Filename()] = handler;
+
+                        cout << "[odplayerh264] Created decoding child process " << handler->getPID() << " to handle '" << h264frame.getH264Filename() << "'." << endl;
+                        id++;
+
+                        replacementContainer = m_mapOfDecoders[h264frame.getH264Filename()]->process(c);
+                    }
+                }
+                else {
+                    // Reuse existing decoder.
+                    replacementContainer = m_mapOfDecoders[h264frame.getH264Filename()]->process(c);
+                }
             }
         }
 

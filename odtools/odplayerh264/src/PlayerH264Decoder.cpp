@@ -57,6 +57,9 @@ namespace odplayerh264 {
 
     const uint32_t BUFFER_SIZE = 16384;
 
+    PlayerH264Decoder::PlayerH264Decoder() :
+        PlayerH264Decoder(0) {}
+
     PlayerH264Decoder::PlayerH264Decoder(const uint32_t &port) :
         m_connection(),
         m_hasConnectionMutex(),
@@ -73,19 +76,21 @@ namespace odplayerh264 {
         m_picture(NULL),
         m_pixelTransformationContext(NULL),
         m_frameBGR(NULL) {
-        // Try to connect to odrecorderh264 process to exchange Containers to encode.
-        try {
-            m_connection = shared_ptr<TCPConnection>(TCPFactory::createTCPConnectionTo("127.0.0.1", port));
-            m_connection->setConnectionListener(this);
-            m_connection->setStringListener(this);
-            m_connection->start();
-            {
-                Lock l(m_hasConnectionMutex);
-                m_hasConnection = true;
+        if (0 < port) {
+            // Try to connect to odrecorderh264 process to exchange Containers to encode.
+            try {
+                m_connection = shared_ptr<TCPConnection>(TCPFactory::createTCPConnectionTo("127.0.0.1", port));
+                m_connection->setConnectionListener(this);
+                m_connection->setStringListener(this);
+                m_connection->start();
+                {
+                    Lock l(m_hasConnectionMutex);
+                    m_hasConnection = true;
+                }
             }
-        }
-        catch(string &exception) {
-            cerr << "[odplayerh264] Could not connect to odplayerh264: " << exception << endl;
+            catch(string &exception) {
+                cerr << "[odplayerh264] Could not connect to odplayerh264: " << exception << endl;
+            }
         }
 
         // Create a buffer to read from file.

@@ -326,8 +326,10 @@ namespace cockpit {
                     const bool AUTO_REWIND = false;
 #ifdef HAVE_ODPLAYERH264
 //                    // Base port for letting spawned children connect to parent process.
-                    const uint32_t BASE_PORT = m_kvc.getValue<uint32_t>("odplayerh264.portbaseforchildprocesses");
-                    m_player2 = shared_ptr<Player2>(new odplayerh264::PlayerH264(url, AUTO_REWIND, BASE_PORT));
+//                    const uint32_t BASE_PORT = m_kvc.getValue<uint32_t>("odplayerh264.portbaseforchildprocesses");
+//                    m_player2 = shared_ptr<Player2>(new odplayerh264::PlayerH264(url, AUTO_REWIND, BASE_PORT));
+
+                    m_player2 = shared_ptr<Player2>(new odplayerh264::PlayerH264(url, AUTO_REWIND));
 #else
                     m_player2 = shared_ptr<Player2>(new Player2(url, AUTO_REWIND));
 #endif

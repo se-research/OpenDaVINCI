@@ -78,6 +78,11 @@ namespace odplayerh264 {
         public:
             /**
              * Constructor.
+             */
+            PlayerH264Decoder();
+
+            /**
+             * Constructor.
              *
              * @param Port to connect to the parent process.
              */

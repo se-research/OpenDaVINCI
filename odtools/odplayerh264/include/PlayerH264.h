@@ -29,6 +29,7 @@
 #include <opendavinci/odtools/player/PlayerDelegate.h>
 
 #include "PlayerH264ChildHandler.h"
+#include "PlayerH264Decoder.h"
 
 namespace odplayerh264 {
 
@@ -63,6 +64,14 @@ namespace odplayerh264 {
 
         public:
             /**
+             * Constructor (single h264 decoder only mode).
+             *
+             * @param url Resource to play.
+             * @param autoRewind True if the file should be rewind at EOF.
+             */
+            PlayerH264(const odcore::io::URL &url, const bool &autoRewind);
+
+            /**
              * Constructor.
              *
              * @param url Resource to play.
@@ -76,6 +85,8 @@ namespace odplayerh264 {
             virtual odcore::data::Container process(odcore::data::Container &c);
 
         private:
+            shared_ptr<PlayerH264Decoder> m_singleDecoder;
+
             uint32_t m_basePort;
 
             odcore::base::Mutex m_mapOfDecodersMutex;
