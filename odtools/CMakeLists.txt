@@ -39,7 +39,10 @@ ENDIF()
 ###########################################################################
 # Find curses to enable odlivefeed.
 FIND_PACKAGE (Curses)
-IF (CURSES_FOUND)
+FIND_PACKAGE (DL)
+FIND_PACKAGE (CPPexperimental)
+
+IF(CURSES_FOUND AND DL_FOUND AND CPPEXPERIMENTAL_FOUND)
     ADD_SUBDIRECTORY (odlivefeed)
 ENDIF()
 

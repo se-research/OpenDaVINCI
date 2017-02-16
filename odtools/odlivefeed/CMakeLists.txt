@@ -38,7 +38,21 @@ INCLUDE (CompileFlags)
 
 ###########################################################################
 # Find curses.
-FIND_PACKAGE (Curses)
+FIND_PACKAGE (Curses REQUIRED)
+SET (LIBRARIES ${LIBRARIES} ${CURSES_LIBRARIES})
+
+###########################################################################
+# Find dl and stdc++.
+IF(UNIX)
+    FIND_PACKAGE (DL REQUIRED)
+    FIND_PACKAGE (CPPexperimental REQUIRED)
+    IF(DL_FOUND AND CPPEXPERIMENTAL_FOUND)
+        SET (LIBRARIES ${LIBRARIES}
+                       ${DL_LIBRARIES} ${CPPEXPERIMENTAL_LIBRARIES})
+        INCLUDE_DIRECTORIES (${DL_INCLUDE_DIRS})
+        SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DHAVE_DL=YES")
+    ENDIF()
+ENDIF()
 
 ###########################################################################
 # Find and configure CxxTest.
@@ -49,6 +63,7 @@ INCLUDE (CheckCxxTestEnvironment)
 # Find OpenDaVINCI.
 SET(OPENDAVINCI_DIR "${CMAKE_INSTALL_PREFIX}")
 FIND_PACKAGE (OpenDaVINCI REQUIRED)
+SET (LIBRARIES ${LIBRARIES} ${OPENDAVINCI_LIBRARIES})
 
 ###############################################################################
 # Set header files from OpenDaVINCI.
@@ -63,7 +78,7 @@ INCLUDE_DIRECTORIES(include)
 FILE(GLOB_RECURSE thisproject-sources "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 ADD_LIBRARY (${PROJECT_NAME}lib-static STATIC ${thisproject-sources})
 ADD_EXECUTABLE (${PROJECT_NAME} "${CMAKE_CURRENT_SOURCE_DIR}/apps/${PROJECT_NAME}.cpp")
-TARGET_LINK_LIBRARIES (${PROJECT_NAME} ${PROJECT_NAME}lib-static ${OPENDAVINCI_LIBRARIES} ${CURSES_LIBRARIES}) 
+TARGET_LINK_LIBRARIES (${PROJECT_NAME} ${PROJECT_NAME}lib-static ${LIBRARIES}) 
 
 ###############################################################################
 # Enable CxxTest for all available testsuites.
@@ -93,7 +108,7 @@ IF(CXXTEST_FOUND)
             SET_SOURCE_FILES_PROPERTIES(${testsuite-short}-TestSuite.cpp PROPERTIES COMPILE_FLAGS "")
         ENDIF()
         SET_TESTS_PROPERTIES(${testsuite-short}-TestSuite PROPERTIES TIMEOUT 3000)
-        TARGET_LINK_LIBRARIES(${testsuite-short}-TestSuite ${PROJECT_NAME}lib-static ${OPENDAVINCI_LIBRARIES} ${CURSES_LIBRARIES})
+        TARGET_LINK_LIBRARIES(${testsuite-short}-TestSuite ${PROJECT_NAME}lib-static ${LIBRARIES})
     ENDFOREACH()
 ENDIF(CXXTEST_FOUND)
 
