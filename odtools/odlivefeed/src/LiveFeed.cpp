@@ -202,6 +202,7 @@ namespace odlivefeed {
 
     void LiveFeed::nextContainer(odcore::data::Container &c) {
         if (NULL != m_mainwindow) {
+            clear();
             m_mapOfLastContainers[c.getDataType()] = c;
 
             uint16_t row = 0;
@@ -229,16 +230,15 @@ namespace odlivefeed {
                 }
 
                 if (successfullyMapped) {
-                    sstr << entry.getDataType() << "/" << c.getSenderStamp() << "(" << msg.getLongName() << ")" << ", sent: " << entry.getSentTimeStamp().getYYYYMMDD_HHMMSSms() << ", received: " << entry.getReceivedTimeStamp().getYYYYMMDD_HHMMSSms() << ", sample time: " << entry.getSampleTimeStamp().getYYYYMMDD_HHMMSSms();
+                    sstr << "Container: " << entry.getDataType() << "/" << c.getSenderStamp() << ": " << " Sent: " << entry.getSentTimeStamp().getYYYYMMDD_HHMMSSms() << ", sample time: " << entry.getSampleTimeStamp().getYYYYMMDD_HHMMSSms() << ": " << msg.getLongName();
                 }
                 else {
-                    sstr << entry.getDataType() << "/" << c.getSenderStamp() << ", sent: " << entry.getSentTimeStamp().getYYYYMMDD_HHMMSSms() << ", received: " << entry.getReceivedTimeStamp().getYYYYMMDD_HHMMSSms() << ", sample time: " << entry.getSampleTimeStamp().getYYYYMMDD_HHMMSSms();
+                    sstr << "Container: " << entry.getDataType() << "/" << c.getSenderStamp() << ": " << " Sent: " << entry.getSentTimeStamp().getYYYYMMDD_HHMMSSms() << ", sample time: " << entry.getSampleTimeStamp().getYYYYMMDD_HHMMSSms();
                 }
 
                 const string text = sstr.str();
                 mvaddstr(row++, col, text.c_str());
             }
-
             refresh();
         }
     }
