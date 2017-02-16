@@ -32,6 +32,7 @@
 #include <opendavinci/odcore/base/Thread.h>
 
 #include <opendavinci/odtools/player/Player2.h>
+#include <opendavinci/odtools/player/PlayerDelegate.h>
 
 namespace odtools {
     namespace player {
@@ -71,7 +72,9 @@ namespace odtools {
             m_containerCacheFillingThreadIsRunningMutex(),
             m_containerCacheFillingThreadIsRunning(false),
             m_containerCacheFillingThread(),
-            m_containerCache() {
+            m_containerCache(),
+            m_mapOfPlayerDelegatesMutex(),
+            m_mapOfPlayerDelegates() {
             initializeIndex();
             computeInitialCacheLevelAndFillCache();
 
@@ -86,6 +89,20 @@ namespace odtools {
             m_containerCacheFillingThread.join();
 
             m_recFile.close();
+        }
+
+        void Player2::registerPlayerDelegate(const uint32_t &containerID, PlayerDelegate *pd) {
+            Lock l(m_mapOfPlayerDelegatesMutex);
+
+            // First, check if we have registered an existing PlayerDelegate for the given ID.
+            auto delegate = m_mapOfPlayerDelegates.find(containerID);
+            if (delegate != m_mapOfPlayerDelegates.end()) {
+                m_mapOfPlayerDelegates.erase(delegate);
+            }
+
+            if (NULL != pd) {
+                m_mapOfPlayerDelegates[containerID] = pd;
+            }
         }
 
         void Player2::initializeIndex() {
@@ -217,10 +234,6 @@ namespace odtools {
         }
 
         Container Player2::getNextContainerToBeSent() throw (odcore::exceptions::ArrayIndexOutOfBoundsException) {
-            return getNextContainerToBeSentNoCopy();
-        }
-
-        const odcore::data::Container& Player2::getNextContainerToBeSentNoCopy() throw (odcore::exceptions::ArrayIndexOutOfBoundsException) {
             TimeStamp thisTimePointCallingThisMethod;
 
             checkForEndOfIndexAndThrowExceptionOrAutoRewind();
@@ -228,7 +241,23 @@ namespace odtools {
             checkAvailabilityOfNextContainerToBeReplayed();
 
             Lock l(m_indexMutex);
-            const Container &retVal = m_containerCache[m_currentContainerToReplay->second.m_filePosition];
+            Container retVal;
+            Container &nextContainer = m_containerCache[m_currentContainerToReplay->second.m_filePosition];
+
+            // Check if there is a PlayerDelegate registered for this container.
+            {
+                Lock l2(m_mapOfPlayerDelegatesMutex);
+                auto delegate = m_mapOfPlayerDelegates.find(nextContainer.getDataType());
+                if (delegate != m_mapOfPlayerDelegates.end()) {
+                    // Replace m_actual with the replacement Container.
+                    retVal = delegate->second->process(nextContainer);
+                }
+                else {
+                    // Use original container.
+                    retVal = nextContainer;
+                }
+            }
+
             m_delay = m_currentContainerToReplay->first - m_previousContainerAlreadyReplayed->first;
 
             // TODO: Delegate deleting into own thread.

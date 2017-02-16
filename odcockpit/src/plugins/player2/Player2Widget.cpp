@@ -210,8 +210,7 @@ namespace cockpit {
 
                     if (m_player2->hasMoreData()) {
                         // Get container to be sent.
-                        const Container &nextContainerToBeSent2 = m_player2->getNextContainerToBeSentNoCopy();
-                        Container &nextContainerToBeSent = const_cast<Container&>(nextContainerToBeSent2);
+                        Container nextContainerToBeSent = m_player2->getNextContainerToBeSent();
 
                         // Increment the counters.
                         if (m_player2->hasMoreData()) {
@@ -325,13 +324,13 @@ namespace cockpit {
                     // We use the asychronous player to allow data caching in background.
 //                    const bool THREADING = false;
                     const bool AUTO_REWIND = false;
-//#ifdef HAVE_ODPLAYERH264
+#ifdef HAVE_ODPLAYERH264
 //                    // Base port for letting spawned children connect to parent process.
-//                    const uint32_t BASE_PORT = m_kvc.getValue<uint32_t>("odplayerh264.portbaseforchildprocesses");
-//                    m_player2 = shared_ptr<Player>(new odplayerh264::PlayerH264(url, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING, BASE_PORT));
-//#else
+                    const uint32_t BASE_PORT = m_kvc.getValue<uint32_t>("odplayerh264.portbaseforchildprocesses");
+                    m_player2 = shared_ptr<Player2>(new odplayerh264::PlayerH264(url, AUTO_REWIND, BASE_PORT));
+#else
                     m_player2 = shared_ptr<Player2>(new Player2(url, AUTO_REWIND));
-//#endif
+#endif
 
                     m_playBtn->setEnabled(true);
                     m_pauseBtn->setEnabled(false);

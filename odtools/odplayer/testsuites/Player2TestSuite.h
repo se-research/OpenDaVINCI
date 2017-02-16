@@ -60,7 +60,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
 
             bool exceptionCaught = false;
             try {
-                const Container& c55 = p2.getNextContainerToBeSentNoCopy();
+                const Container& c55 = p2.getNextContainerToBeSent();
                 (void)c55;
             }
             catch(...) {
@@ -116,7 +116,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
             TimeStamp before;
             int64_t counter = 0;
             while (p2.hasMoreData()) {
-                const Container& c = p2.getNextContainerToBeSentNoCopy();
+                const Container& c = p2.getNextContainerToBeSent();
                 if (counter == 0) {
                     TS_ASSERT(p2.getDelay() == 0);
                 }
@@ -132,7 +132,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
 
             bool exceptionCaught = false;
             try {
-                const Container& c55 = p2.getNextContainerToBeSentNoCopy();
+                const Container& c55 = p2.getNextContainerToBeSent();
                 (void)c55;
             }
             catch(...) {
@@ -188,7 +188,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
             TimeStamp before;
             int64_t counter = 1;
             while (p2.hasMoreData()) {
-                const Container& c = p2.getNextContainerToBeSentNoCopy();
+                const Container& c = p2.getNextContainerToBeSent();
                 if (counter > 1) {
                     TS_ASSERT(p2.getDelay() == 1000001);
                 }
@@ -203,7 +203,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
 
             bool exceptionCaught = false;
             try {
-                const Container& c55 = p2.getNextContainerToBeSentNoCopy();
+                const Container& c55 = p2.getNextContainerToBeSent();
                 (void)c55;
             }
             catch(...) {
@@ -264,7 +264,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
             TimeStamp before;
             int64_t counter = 0;
             while (p2.hasMoreData()) {
-                const Container& c = p2.getNextContainerToBeSentNoCopy();
+                const Container& c = p2.getNextContainerToBeSent();
                 if (counter == 0) {
                     TS_ASSERT(p2.getDelay() == 0);
                 }
@@ -291,7 +291,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
 
             bool exceptionCaught = false;
             try {
-                const Container& c55 = p2.getNextContainerToBeSentNoCopy();
+                const Container& c55 = p2.getNextContainerToBeSent();
                 (void)c55;
             }
             catch(...) {
@@ -347,7 +347,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
             TimeStamp before;
             int64_t counter = 0;
             while (p2.hasMoreData()) {
-                const Container& c = p2.getNextContainerToBeSentNoCopy();
+                const Container& c = p2.getNextContainerToBeSent();
                 if (counter == 0) {
                     TS_ASSERT(p2.getDelay() == 0);
                 }
@@ -363,7 +363,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
 
             bool exceptionCaught = false;
             try {
-                const Container& c55 = p2.getNextContainerToBeSentNoCopy();
+                const Container& c55 = p2.getNextContainerToBeSent();
                 (void)c55;
             }
             catch(...) {
@@ -420,7 +420,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
             int64_t counter = 0;
             bool didRewind = false;
             while (p2.hasMoreData()) {
-                const Container& c = p2.getNextContainerToBeSentNoCopy();
+                const Container& c = p2.getNextContainerToBeSent();
                 if (counter == 0) {
                     TS_ASSERT(p2.getDelay() == 0);
                 }
@@ -441,7 +441,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
 
             bool exceptionCaught = false;
             try {
-                const Container& c55 = p2.getNextContainerToBeSentNoCopy();
+                const Container& c55 = p2.getNextContainerToBeSent();
                 (void)c55;
             }
             catch(...) {
@@ -499,7 +499,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
             uint32_t containerCounter = 0;
             bool didAutoRewind = false;
             while (p2.hasMoreData()) {
-                const Container& c = p2.getNextContainerToBeSentNoCopy();
+                const Container& c = p2.getNextContainerToBeSent();
                 if (counter == 0) {
                     TS_ASSERT(p2.getDelay() == 0);
                 }
@@ -526,7 +526,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
 
             bool noExceptionThrown = true;
             try {
-                const Container& c55 = p2.getNextContainerToBeSentNoCopy();
+                const Container& c55 = p2.getNextContainerToBeSent();
                 (void)c55;
             }
             catch(...) {
@@ -568,7 +568,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
 //                    p2.setPID(p[0], p[1], p[2]);
 //                    p2.rewind();
 //                    while (p2.hasMoreData()) {
-//                        const Container& c = p2.getNextContainerToBeSentNoCopy();
+//                        const Container& c = p2.getNextContainerToBeSent();
 //                        (void)c;
 //                        Thread::usleepFor(p2.getDelay()*0.02);
 //                    }
@@ -589,7 +589,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
 //                        p2.setPID(p[0], p[1], p[2]);
 //                        p2.rewind();
 //                        while (p2.hasMoreData()) {
-//                            const Container& c = p2.getNextContainerToBeSentNoCopy();
+//                            const Container& c = p2.getNextContainerToBeSent();
 //                            (void)c;
 //                            Thread::usleepFor(p2.getDelay()*0.02);
 //                        }
@@ -625,7 +625,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
             TimeStamp before;
             int64_t counter = 0;
             while (p2.hasMoreData()) {
-                const Container& c = p2.getNextContainerToBeSentNoCopy();
+                const Container& c = p2.getNextContainerToBeSent();
                 (void)c;
                 counter++;
 

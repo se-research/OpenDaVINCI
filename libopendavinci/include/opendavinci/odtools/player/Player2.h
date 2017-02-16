@@ -35,6 +35,8 @@
 namespace odtools {
     namespace player {
 
+        class PlayerDelegate;
+
         using namespace std;
 
         class IndexEntry {
@@ -97,13 +99,6 @@ namespace odtools {
                  * @return Next container to be replayed.
                  */
                 odcore::data::Container getNextContainerToBeSent() throw (odcore::exceptions::ArrayIndexOutOfBoundsException);
-
-                /**
-                 * This method returns the next container to be replayed.
-                 *
-                 * @return Next container to be replayed.
-                 */
-                const odcore::data::Container& getNextContainerToBeSentNoCopy() throw (odcore::exceptions::ArrayIndexOutOfBoundsException);
 
                 /**
                  * This method returns the delay to be waited before the next container should be delivered.
@@ -229,6 +224,21 @@ namespace odtools {
 
                 // Mapping of pos_type (within .rec file) --> Container (read from .rec file).
                 map<uint32_t, odcore::data::Container> m_containerCache;
+
+            public:
+                /**
+                 * This method (un)registers a PlayerDelegate to process a
+                 * specific Container differently.
+                 *
+                 * @param containerID Container ID to listen for.
+                 * @param p PlayerDelegate or NULL to unregister.
+                 */
+                void registerPlayerDelegate(const uint32_t &containerID, PlayerDelegate* p);
+
+            private:
+                // Map to handle PlayerDelegates.
+                odcore::base::Mutex m_mapOfPlayerDelegatesMutex;
+                map<int32_t, PlayerDelegate*> m_mapOfPlayerDelegates;
         };
 
     } // player
