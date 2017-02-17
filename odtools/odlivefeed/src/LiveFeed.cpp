@@ -26,7 +26,7 @@
 #endif
 
 #include <opendavinci/odcore/data/Container.h>
-#include <opendavinci/odcore/reflection/Field.h>
+#include <opendavinci/odcore/data/TimeStamp.h>
 #include <opendavinci/odcore/reflection/Message.h>
 #include <opendavinci/odcore/strings/StringToolbox.h>
 #include <opendavinci/GeneratedHeaders_OpenDaVINCI_Helper.h>
@@ -190,6 +190,13 @@ namespace odlivefeed {
         if (NULL == m_mainwindow) {
             cerr << "[odlivefeed] Error initializing ncurses." << endl;
         }
+        if (has_colors()) {
+            start_color();
+
+            init_pair(1, COLOR_GREEN, COLOR_BLACK);
+            init_pair(2, COLOR_YELLOW, COLOR_BLACK);
+            init_pair(3, COLOR_RED, COLOR_BLACK);
+        }
     }
 
     void LiveFeed::tearDown() {
@@ -244,6 +251,12 @@ namespace odlivefeed {
                     }
 
                     const string text = sstr.str();
+                    if (has_colors()) {
+                        TimeStamp age = (c.getReceivedTimeStamp() - containerEntry.getReceivedTimeStamp());
+                        if (age.toMicroseconds() <= 2*1000*1000) color_set(1, 0);
+                        if ((age.toMicroseconds() > 2*1000*1000) && (age.toMicroseconds() <= 5*1000*1000)) color_set(2, 0);
+                        if (age.toMicroseconds() > 5*1000*1000) color_set(3, 0);
+                    }
                     mvaddstr(row++, col, text.c_str());
                 }
             }
