@@ -86,8 +86,9 @@ class GenericCANMessageListener;
                  * This methods writes a GenericCANMessage to the device.
                  *
                  * @param gcm GenericCANMessage to be written.
+                 * @return error code from the low level sytem call.
                  */
-                void write(const GenericCANMessage &gcm);
+                int write(const GenericCANMessage &gcm);
 
                 virtual void beforeStop();
 
