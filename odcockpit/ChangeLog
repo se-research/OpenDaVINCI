@@ -1,3 +1,4 @@
+4.8.0 - New tool odlivefeed; CANDevice::write returns errorcode; parallelized testsuites in libopendavinci
 4.7.0 - Circular UDP communication disabled and fix for double lock in UDPContainerConference
 4.6.1 - Compilation fix on 32bit systems
 4.6.0 - Restructuring PointCloud encoding
