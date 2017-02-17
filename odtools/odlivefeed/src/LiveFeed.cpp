@@ -202,42 +202,50 @@ namespace odlivefeed {
 
     void LiveFeed::nextContainer(odcore::data::Container &c) {
         if (NULL != m_mainwindow) {
+            // Clear screen.
             clear();
-            m_mapOfLastContainers[c.getDataType()] = c;
+
+            // Update two-dimensional hashmap for (dataType, senderStamp) --> c.
+            map<int32_t, odcore::data::Container> entry = m_mapOfLastContainers[c.getDataType()];
+            entry[c.getSenderStamp()] = c;
+            m_mapOfLastContainers[c.getDataType()] = entry;
 
             uint16_t row = 0;
             const uint16_t col = 0;
             for (auto it = m_mapOfLastContainers.begin(); it != m_mapOfLastContainers.end(); it++) {
-                Container entry = it->second;
-                stringstream sstr;
+                entry = it->second;
+                for (auto jt = entry.begin(); jt != entry.end(); jt++) {
+                    Container containerEntry = jt->second;
+                    stringstream sstr;
 
-                // Try to extract messages.
-                bool successfullyMapped = false;
-                // First, try to decode a regular OpenDaVINCI message.
-                odcore::reflection::Message msg = GeneratedHeaders_OpenDaVINCI_Helper::__map(entry, successfullyMapped);
+                    // Try to extract messages.
+                    bool successfullyMapped = false;
+                    // First, try to decode a regular OpenDaVINCI message.
+                    odcore::reflection::Message msg = GeneratedHeaders_OpenDaVINCI_Helper::__map(containerEntry, successfullyMapped);
 
-                // Next, try to decode a regular OpenDaVINCI message.
-                if (!successfullyMapped) {
-                    msg = GeneratedHeaders_AutomotiveData_Helper::__map(entry, successfullyMapped);
+                    // Next, try to decode a regular OpenDaVINCI message.
+                    if (!successfullyMapped) {
+                        msg = GeneratedHeaders_AutomotiveData_Helper::__map(containerEntry, successfullyMapped);
+                    }
+
+                    // Try dynamically loaded libraries next.
+                    auto kt = m_listOfHelpers.begin();
+                    while ( (!successfullyMapped) && (kt != m_listOfHelpers.end())) {
+                        HelperEntry e = *kt;
+                        msg = e.m_helper->map(containerEntry, successfullyMapped);
+                        kt++;
+                    }
+
+                    if (successfullyMapped) {
+                        sstr << "Container: " << containerEntry.getDataType() << "/" << containerEntry.getSenderStamp() << ": " << " Sent: " << containerEntry.getSentTimeStamp().getYYYYMMDD_HHMMSSms() << ", sample time: " << containerEntry.getSampleTimeStamp().getYYYYMMDD_HHMMSSms() << ": " << msg.getLongName();
+                    }
+                    else {
+                        sstr << "Container: " << containerEntry.getDataType() << "/" << containerEntry.getSenderStamp() << ": " << " Sent: " << containerEntry.getSentTimeStamp().getYYYYMMDD_HHMMSSms() << ", sample time: " << containerEntry.getSampleTimeStamp().getYYYYMMDD_HHMMSSms();
+                    }
+
+                    const string text = sstr.str();
+                    mvaddstr(row++, col, text.c_str());
                 }
-
-                // Try dynamically loaded libraries next.
-                auto jt = m_listOfHelpers.begin();
-                while ( (!successfullyMapped) && (jt != m_listOfHelpers.end())) {
-                    HelperEntry e = *jt;
-                    msg = e.m_helper->map(entry, successfullyMapped);
-                    jt++;
-                }
-
-                if (successfullyMapped) {
-                    sstr << "Container: " << entry.getDataType() << "/" << c.getSenderStamp() << ": " << " Sent: " << entry.getSentTimeStamp().getYYYYMMDD_HHMMSSms() << ", sample time: " << entry.getSampleTimeStamp().getYYYYMMDD_HHMMSSms() << ": " << msg.getLongName();
-                }
-                else {
-                    sstr << "Container: " << entry.getDataType() << "/" << c.getSenderStamp() << ": " << " Sent: " << entry.getSentTimeStamp().getYYYYMMDD_HHMMSSms() << ", sample time: " << entry.getSampleTimeStamp().getYYYYMMDD_HHMMSSms();
-                }
-
-                const string text = sstr.str();
-                mvaddstr(row++, col, text.c_str());
             }
             refresh();
         }

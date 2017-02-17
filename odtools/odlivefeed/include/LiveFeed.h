@@ -93,7 +93,7 @@ namespace odlivefeed {
 
         private:
             WINDOW *m_mainwindow;
-            map<int32_t, odcore::data::Container> m_mapOfLastContainers;
+            map<int32_t, map<int32_t, odcore::data::Container> > m_mapOfLastContainers;
 
         private:
             void findAndLoadSharedLibraries();
