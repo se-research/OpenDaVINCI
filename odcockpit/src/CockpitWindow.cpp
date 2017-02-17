@@ -21,6 +21,7 @@
 #include <QtCore>
 #include <QtGui>
 
+#include <iostream>
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
@@ -39,6 +40,8 @@ namespace cockpit {
     using namespace odcore::base;
     using namespace odcore::io::conference;
 
+    string CockpitWindow::m_startupDirectory = ".";
+
     CockpitWindow::CockpitWindow(const KeyValueConfiguration &kvc, DataStoreManager &dsm, ContainerConference &conf) :
         m_kvc(kvc),
         m_dataStoreManager(dsm),
@@ -49,6 +52,7 @@ namespace cockpit {
         m_fileMenu(NULL),
         m_windowMenu(NULL),
         m_availablePlugInsList(NULL) {
+getStartupDirectory();
     	m_multiplexer = new FIFOMultiplexer(dsm);
         constructLayout();
     }
@@ -56,6 +60,14 @@ namespace cockpit {
     CockpitWindow::~CockpitWindow() {
         m_multiplexer->stop();
         OPENDAVINCI_CORE_DELETE_POINTER(m_multiplexer);
+    }
+
+    string CockpitWindow::getStartupDirectory() {
+        if (CockpitWindow::m_startupDirectory.at(0) == '.') {
+            CockpitWindow::m_startupDirectory = QDir::current().absolutePath().toStdString() + "/";
+            cout << "[odcockpit] Startup directory: '" << CockpitWindow::m_startupDirectory << "'" << endl;
+        }
+        return CockpitWindow::m_startupDirectory;
     }
 
     void CockpitWindow::constructLayout() {
