@@ -1,0 +1,53 @@
+.\" Manpage for odmongodb
+.\" Author: Christian Berger <christian.berger@gu.se>.
+
+.TH odmongodb 1 "17 February 2017" "4.8.0" "odmongodb man page"
+
+.SH NAME
+odmongodb \- This tool dumps received containers after message resolving into a MongoDB.
+
+
+
+.SH SYNOPSIS
+.B odmongodb --cid=<CID> [OPTIONS]
+
+
+
+.SH DESCRIPTION
+odmongodb belongs to OpenDaVINCI and is a tool to dump received containers after
+message resolving into a MongoDB.
+
+This tool can only be used within an existing OpenDaVINCI container conference session
+created by odsupercomponent(1).
+
+
+
+.SH OPTIONS
+.B --cid=<CID>
+.RS
+This parameter specifies the conference identifier (CID) that is used to join a
+running container conference session. The session itself needs to be created by
+odsupercomponent(1).
+.RE
+
+
+.SH EXAMPLES
+The following command printing the content to stdout from odsupercomponent's session 111.
+
+.B odmongodb --cid=111
+
+
+
+.SH SEE ALSO
+odfilter(1), odlivefeed(1), odmongodb(1), odplayer(1), odplayerh264(1), odrecorder(1), odrecorderh264(1), odrecinspect(1), odredirector(1), odsplit(1), odspy(1)
+
+
+
+.SH BUGS
+No known bugs.
+
+
+
+.SH AUTHOR
+Christian Berger (christian.berger@gu.se)
+
