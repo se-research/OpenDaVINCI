@@ -54,7 +54,6 @@ ADD_SUBDIRECTORY (odrecinspect)
 ADD_SUBDIRECTORY (odrecorder)
 ADD_SUBDIRECTORY (odredirector)
 ADD_SUBDIRECTORY (odsplit)
-ADD_SUBDIRECTORY (odspy)
 
 ###########################################################################
 # Enable CPack to create .deb and .rpm.
