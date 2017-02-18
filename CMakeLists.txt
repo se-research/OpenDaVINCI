@@ -82,6 +82,8 @@ IF(     NOT("${CMAKE_C_COMPILER}" STREQUAL "")
     MESSAGE(STATUS "Found C++ compiler:         Building automotivedata")
     SET(BUILD_AUTOMOTIVEDATA 1)
 
+    MESSAGE(STATUS "Found C++ compiler:         Building ODVDAutomotiveData")
+    SET(BUILD_ODVDAUTOMOTIVEDATA 1)
     MESSAGE(STATUS "Found C++ compiler:         Building ODVDCommaAI")
     SET(BUILD_ODVDCOMMAAI 1)
     MESSAGE(STATUS "Found C++ compiler:         Building ODVDOpenDLV")
@@ -232,6 +234,21 @@ IF(${BUILD_ODSUPERCOMPONENT})
         INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odsupercomponent-prefix/src/odsupercomponent-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odsupercomponent-prefix/src/odsupercomponent-build --target ${MAKE_PACKAGE})
 ENDIF()
 
+# Next, build odtools.
+IF(${BUILD_ODTOOLS})
+    ExternalProject_Add (odtools
+        DEPENDS libopendavinci
+        DOWNLOAD_COMMAND ""
+        UPDATE_COMMAND ""
+        SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odtools"
+        CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
+        CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}"
+        CMAKE_ARGS "-DCXXTEST_INCLUDE_DIR=${CXXTEST_INCLUDE_DIR}"
+        TEST_BEFORE_INSTALL 1
+        TEST_COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}
+        INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odtools-prefix/src/odtools-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odtools-prefix/src/odtools-build --target ${MAKE_PACKAGE})
+ENDIF()
+
 # Next, the project for the automotive data structures is built.
 IF(${BUILD_AUTOMOTIVEDATA})
     # This "external project" simply deletes the existing libautomotivedata.
@@ -260,19 +277,32 @@ IF(${BUILD_AUTOMOTIVEDATA})
         INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libautomotivedata-prefix/src/libautomotivedata-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libautomotivedata-prefix/src/libautomotivedata-build --target ${MAKE_PACKAGE})
 ENDIF()
 
-# Next, build odtools.
-IF(${BUILD_ODTOOLS})
-    ExternalProject_Add (odtools
-        DEPENDS libopendavinci libautomotivedata
+# Next, the project for the AutomotiveData data structures is built.
+IF(${BUILD_ODVDAUTOMOTIVEDATA})
+    # This "external project" simply deletes the existing libodvdautomotivedata.
+    ExternalProject_Add (libodvdautomotivedata-cleanup
+        DEPENDS libopendavinci
         DOWNLOAD_COMMAND ""
-        UPDATE_COMMAND ""
-        SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odtools"
+        UPDATE_COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_BINARY_DIR}/libodvdautomotivedata
+        PATCH_COMMAND ""
+        SOURCE_DIR ""
+        CONFIGURE_COMMAND ""
+        BUILD_COMMAND ""
+        TEST_COMMAND ""
+        INSTALL_COMMAND "")
+
+    ExternalProject_Add (libodvdautomotivedata
+        DEPENDS libodvdautomotivedata-cleanup
+        DOWNLOAD_COMMAND ""
+        UPDATE_COMMAND cd ${CMAKE_CURRENT_BINARY_DIR} && ${Java_JAVA_EXECUTABLE} -jar ${ODDATASTRUCTUREGENERATOR_EXECUTABLE} --withCMake ${CMAKE_CURRENT_SOURCE_DIR}/ODVDAutomotiveData.odvd
+        PATCH_COMMAND ""
+        SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/libodvdautomotivedata"
         CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
         CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}"
         CMAKE_ARGS "-DCXXTEST_INCLUDE_DIR=${CXXTEST_INCLUDE_DIR}"
         TEST_BEFORE_INSTALL 1
         TEST_COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}
-        INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odtools-prefix/src/odtools-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odtools-prefix/src/odtools-build --target ${MAKE_PACKAGE})
+        INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodvdautomotivedata-prefix/src/libodvdautomotivedata-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodvdautomotivedata-prefix/src/libodvdautomotivedata-build --target ${MAKE_PACKAGE})
 ENDIF()
 
 # Next, the project for the CommaAI data structures is built.

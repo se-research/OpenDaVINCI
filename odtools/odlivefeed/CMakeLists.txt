@@ -42,19 +42,6 @@ FIND_PACKAGE (Curses REQUIRED)
 SET (LIBRARIES ${LIBRARIES} ${CURSES_LIBRARIES})
 
 ###########################################################################
-# Find dl and stdc++.
-IF(UNIX)
-    FIND_PACKAGE (DL)
-    FIND_PACKAGE (CPPexperimental)
-    IF(DL_FOUND AND CPPEXPERIMENTAL_FOUND)
-        SET (LIBRARIES ${LIBRARIES}
-                       ${DL_LIBRARIES} ${CPPEXPERIMENTAL_LIBRARIES})
-        INCLUDE_DIRECTORIES (${DL_INCLUDE_DIRS})
-        SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DHAVE_DL=YES")
-    ENDIF()
-ENDIF()
-
-###########################################################################
 # Find and configure CxxTest.
 SET (CXXTEST_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../cxxtest") 
 INCLUDE (CheckCxxTestEnvironment)
@@ -65,15 +52,9 @@ SET(OPENDAVINCI_DIR "${CMAKE_INSTALL_PREFIX}")
 FIND_PACKAGE (OpenDaVINCI REQUIRED)
 SET (LIBRARIES ${LIBRARIES} ${OPENDAVINCI_LIBRARIES})
 
-SET(AUTOMOTIVEDATA_DIR "${CMAKE_INSTALL_PREFIX}")
-FIND_PACKAGE (AutomotiveData REQUIRED)
-SET (LIBRARIES ${LIBRARIES} ${AUTOMOTIVEDATA_LIBRARIES})
-
 ###############################################################################
 # Set header files from OpenDaVINCI.
 INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS})
-# Set header files from AutomotiveData.
-INCLUDE_DIRECTORIES (${AUTOMOTIVEDATA_INCLUDE_DIRS})
 # Set header files from curses.
 INCLUDE_DIRECTORIES (${CURSES_INCLUDE_DIRS})
 # Set include directory.
