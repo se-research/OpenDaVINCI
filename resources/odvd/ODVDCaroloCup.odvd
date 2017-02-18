@@ -19,8 +19,6 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 message automotive.VehicleData [id = 39] {
-    cartesian.Point2 position [id = 1];
-    cartesian.Point2 velocity [id = 2];
     double heading [id = 3];
     double absTraveledPath [id = 4];
     double relTraveledPath [id = 5];
