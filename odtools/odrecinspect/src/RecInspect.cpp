@@ -54,7 +54,6 @@ namespace odrecinspect {
 
     int32_t RecInspect::run(const int32_t &argc, char **argv) {
         enum RETURN_CODE { CORRECT = 0,
-                           FILE_CORRUPT = 1,
                            FILE_COULD_NOT_BE_OPENED = 255 };
 
         RETURN_CODE retVal = CORRECT;
@@ -71,7 +70,6 @@ namespace odrecinspect {
                 fin.seekg(0, fin.beg);
 
                 int32_t oldPercentage = -1;
-                bool fileNotCorrupt = true;
                 uint32_t numberOfContainersInIncorrectTemporalOrder = 0;
                 uint32_t numberOfSharedImages = 0;
                 uint32_t numberOfSharedData = 0;
@@ -99,8 +97,6 @@ namespace odrecinspect {
 
                     if (fin.gcount() > 0) {
                         int32_t currPos = fin.tellg();
-
-                        fileNotCorrupt &= (c.getDataType() != Container::UNDEFINEDDATA) && (currPos > 0);
 
                         // Compute durations between containers of a specific type.
                         if (m_numberOfContainersPerType.count(c.getDataType()) > 0) {
@@ -184,7 +180,6 @@ namespace odrecinspect {
                 TimeStamp afterProcessing;
                 TimeStamp durationProcessing = (afterProcessing - beforeProcessing);
                 cout << "[RecInspect]: 100% (" << length << "/" << length << " bytes processed)." << endl;
-                cout << "[RecInspect]: Input file is " << ((fileNotCorrupt) ? "not " : "") << "corrupt." << endl;
                 const double lengthInMB = (static_cast<double>(length)/(1000.0*1000.0));
                 const double durationInSeconds = (static_cast<double>(durationProcessing.toMicroseconds())/(1000.0*1000.0));
                 cout << "[RecInspect]: Processing took " << durationProcessing.toMicroseconds()/1000 << " ms (" << (lengthInMB/durationInSeconds) << " MB/s)." << endl;
@@ -211,8 +206,6 @@ namespace odrecinspect {
                 // Print covered duration.
                 cout << "[RecInspect]: First container's sample time point: " << m_firstContainer.getSampleTimeStamp().getYYYYMMDD_HHMMSSms() << endl;
                 cout << "[RecInspect]: Last container's sample time point: " << m_lastContainer.getSampleTimeStamp().getYYYYMMDD_HHMMSSms() << endl;
-
-                retVal = ((fileNotCorrupt) ? CORRECT : FILE_CORRUPT);
             }
             else {
                 retVal = FILE_COULD_NOT_BE_OPENED;
