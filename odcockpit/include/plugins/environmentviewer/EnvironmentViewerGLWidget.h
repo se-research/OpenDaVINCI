@@ -147,7 +147,7 @@ class SelectableNodeDescriptor;
                     odcore::base::Mutex m_cpcMutex;
                     bool m_SPCReceived;
                     bool m_CPCReceived;
-                    uint32_t recordingYear;//The year when a recording with CPC was taken
+                    uint32_t m_recordingYear;//The year when a recording with CPC was taken
 
                     /**
                      * This method actually modifies the rendering configuration.
