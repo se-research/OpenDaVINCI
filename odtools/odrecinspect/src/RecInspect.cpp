@@ -46,13 +46,14 @@ namespace odrecinspect {
         m_minDurationBetweenSamplesPerType(),
         m_avgDurationBetweenSamplesPerType(),
         m_maxDurationBetweenSamplesPerType(),
+        m_firstContainer(),
+        m_lastContainer(),
         m_processingTimePerContainer(0) {}
 
     RecInspect::~RecInspect() {}
 
     int32_t RecInspect::run(const int32_t &argc, char **argv) {
         enum RETURN_CODE { CORRECT = 0,
-                           FILE_CORRUPT = 1,
                            FILE_COULD_NOT_BE_OPENED = 255 };
 
         RETURN_CODE retVal = CORRECT;
@@ -69,7 +70,6 @@ namespace odrecinspect {
                 fin.seekg(0, fin.beg);
 
                 int32_t oldPercentage = -1;
-                bool fileNotCorrupt = true;
                 uint32_t numberOfContainersInIncorrectTemporalOrder = 0;
                 uint32_t numberOfSharedImages = 0;
                 uint32_t numberOfSharedData = 0;
@@ -98,8 +98,6 @@ namespace odrecinspect {
                     if (fin.gcount() > 0) {
                         int32_t currPos = fin.tellg();
 
-                        fileNotCorrupt &= (c.getDataType() != Container::UNDEFINEDDATA) && (currPos > 0);
-
                         // Compute durations between containers of a specific type.
                         if (m_numberOfContainersPerType.count(c.getDataType()) > 0) {
                             TimeStamp duration = c.getSampleTimeStamp() - m_latestContainersPerType[c.getDataType()].getSampleTimeStamp();
@@ -122,6 +120,25 @@ namespace odrecinspect {
                             m_numberOfContainersInIncorrectTemporalOrderPerType[c.getDataType()] = 0;
                         }
                         m_latestContainersPerType[c.getDataType()] = c;
+
+                        // Store first/last containers to compute duration in recording.
+                        if (m_firstContainer.getSampleTimeStamp().toMicroseconds() == 0) {
+                            m_firstContainer = c;
+                        }
+                        else {
+                            if (m_firstContainer.getSampleTimeStamp().toMicroseconds() > c.getSampleTimeStamp().toMicroseconds()) {
+                                m_firstContainer = c;
+                            }
+                        }
+                        if (m_lastContainer.getSampleTimeStamp().toMicroseconds() == 0) {
+                            m_lastContainer = c;
+                        }
+                        else {
+                            if (m_lastContainer.getSampleTimeStamp().toMicroseconds() < c.getSampleTimeStamp().toMicroseconds()) {
+                                m_lastContainer = c;
+                            }
+                        }
+
 
                         // If the data is from SHARED_IMAGE, skip the raw data from the shared memory segment.
                         if (c.getDataType() == odcore::data::image::SharedImage::ID()) {
@@ -163,7 +180,6 @@ namespace odrecinspect {
                 TimeStamp afterProcessing;
                 TimeStamp durationProcessing = (afterProcessing - beforeProcessing);
                 cout << "[RecInspect]: 100% (" << length << "/" << length << " bytes processed)." << endl;
-                cout << "[RecInspect]: Input file is " << ((fileNotCorrupt) ? "not " : "") << "corrupt." << endl;
                 const double lengthInMB = (static_cast<double>(length)/(1000.0*1000.0));
                 const double durationInSeconds = (static_cast<double>(durationProcessing.toMicroseconds())/(1000.0*1000.0));
                 cout << "[RecInspect]: Processing took " << durationProcessing.toMicroseconds()/1000 << " ms (" << (lengthInMB/durationInSeconds) << " MB/s)." << endl;
@@ -187,7 +203,9 @@ namespace odrecinspect {
                 }
                 cout << "[RecInspect]: Found " << numberOfTotalContainers << " containers in total (" << numberOfContainersInIncorrectTemporalOrder << " containers with different Container IDs in non-monotonically increasing temporal order); average duration for reading one container = " << m_processingTimePerContainer/static_cast<double>(numberOfTotalContainers) << " ms." << endl;
 
-                retVal = ((fileNotCorrupt) ? CORRECT : FILE_CORRUPT);
+                // Print covered duration.
+                cout << "[RecInspect]: First container's sample time point: " << m_firstContainer.getSampleTimeStamp().getYYYYMMDD_HHMMSSms() << endl;
+                cout << "[RecInspect]: Last container's sample time point: " << m_lastContainer.getSampleTimeStamp().getYYYYMMDD_HHMMSSms() << endl;
             }
             else {
                 retVal = FILE_COULD_NOT_BE_OPENED;
