@@ -287,7 +287,7 @@ class ContainerSenderStampTest : public CxxTest::TestSuite,
             vector<string> noModulesToIgnore;
             ServerInformation serverInformation("127.0.0.1", 19000, ServerInformation::ML_NONE);
             discoverer::Server dmcpDiscovererServer(serverInformation,
-                                                    "225.0.0.109",
+                                                    "225.0.0.129",
                                                     odcore::data::dmcp::Constants::BROADCAST_PORT_SERVER,
                                                     odcore::data::dmcp::Constants::BROADCAST_PORT_CLIENT,
                                                     noModulesToIgnore);
@@ -300,7 +300,7 @@ class ContainerSenderStampTest : public CxxTest::TestSuite,
 
             string argv0("TimeTriggeredConferenceClientModuleTestModule");
             string argv1("--id=ABC");
-            string argv2("--cid=109");
+            string argv2("--cid=129");
             string argv3("--freq=1");
             int argc = 4;
             char **argv;
@@ -317,7 +317,7 @@ class ContainerSenderStampTest : public CxxTest::TestSuite,
 
             string argv0_2("DataTriggeredConferenceClientModuleTestModule");
             string argv1_2("--id=ABC");
-            string argv2_2("--cid=109");
+            string argv2_2("--cid=129");
             string argv3_2("--freq=1");
             int argc_2 = 4;
             char **argv_2;
@@ -393,7 +393,7 @@ class ContainerSenderStampTest : public CxxTest::TestSuite,
             vector<string> noModulesToIgnore;
             ServerInformation serverInformation("127.0.0.1", 19000, ServerInformation::ML_NONE);
             discoverer::Server dmcpDiscovererServer(serverInformation,
-                                                    "225.0.0.109",
+                                                    "225.0.0.119",
                                                     odcore::data::dmcp::Constants::BROADCAST_PORT_SERVER,
                                                     odcore::data::dmcp::Constants::BROADCAST_PORT_CLIENT,
                                                     noModulesToIgnore);
@@ -406,7 +406,7 @@ class ContainerSenderStampTest : public CxxTest::TestSuite,
 
             string argv0("TimeTriggeredConferenceClientModuleTestModule");
             string argv1("--id=345");
-            string argv2("--cid=109");
+            string argv2("--cid=119");
             string argv3("--freq=1");
             int argc = 4;
             char **argv;
@@ -423,7 +423,7 @@ class ContainerSenderStampTest : public CxxTest::TestSuite,
 
             string argv0_2("DataTriggeredConferenceClientModuleTestModule");
             string argv1_2("--id=0");
-            string argv2_2("--cid=109");
+            string argv2_2("--cid=119");
             string argv3_2("--freq=1");
             int argc_2 = 4;
             char **argv_2;

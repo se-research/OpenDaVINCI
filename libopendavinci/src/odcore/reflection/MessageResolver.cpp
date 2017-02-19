@@ -72,6 +72,8 @@ namespace odcore {
 
         MessageResolver::~MessageResolver() {
             unloadSharedLibraries();
+            m_listOfHelpers.clear();
+            m_previouslyMatchedHelper.clear();
         }
 
         vector<string> MessageResolver::getListOfLibrariesToLoad(const vector<string> &paths) {
