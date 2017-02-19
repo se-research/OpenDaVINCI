@@ -129,8 +129,7 @@ namespace cockpit {
                     m_cpc(),
                     m_cpcMutex(),
                     m_SPCReceived(false),
-                    m_CPCReceived(false),
-                    m_recordingYear(0) {}
+                    m_CPCReceived(false) {}
 
             EnvironmentViewerGLWidget::~EnvironmentViewerGLWidget() {
                 OPENDAVINCI_CORE_DELETE_POINTER(m_root);
@@ -408,11 +407,7 @@ namespace cockpit {
                         float verticalAngle = START_V_ANGLE;
                         for (uint8_t sensorIndex = 0; sensorIndex < entriesPerAzimuth; sensorIndex++) {
                             sstr.read((char*)(&distance_integer), 2); // Read distance value from the string in a CPC container point by point
-                            //Recordings before 2017 do not call hton() while storing CPC.
-                            //Hence, we only call ntoh() for recordings from 2017.
-                            if (m_recordingYear > 2016) {
-                                distance_integer = ntohs(distance_integer);
-                            }
+                            distance_integer = ntohs(distance_integer);
                             float distance = 0.0;
                             if (numberOfBitsForIntensity == 0) {
                                 switch (distanceEncoding) {
@@ -611,8 +606,6 @@ namespace cockpit {
                 
                 if(c.getDataType() == odcore::data::CompactPointCloud::ID()){
                     m_CPCreceived = true;
-                    TimeStamp ts = c.getSampleTimeStamp();
-                    m_recordingYear = ts.getYear();
                     if (!m_SPCReceived) {
                         Lock lockCPC(m_cpcMutex);
                         m_cpc = c.getData<CompactPointCloud>();  
