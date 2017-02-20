@@ -354,8 +354,8 @@ namespace odtools {
                     Lock l(m_indexMutex);
                     numberOfEntries = m_containerCache.size();
                 }
-                // If filling level is around 25%, pour in more.
-                if (numberOfEntries < 0.25*m_desiredInitialLevel) {
+                // If filling level is around 35%, pour in more from the recording.
+                if (numberOfEntries < 0.35*m_desiredInitialLevel) {
                     const uint32_t entriesReadFromFile = fillContainerCache(refillMultiplicator * m_desiredInitialLevel);
                     if (entriesReadFromFile > 0) {
                         clog << "[odtools::player::Player2]: Number of entries in cache: "  << numberOfEntries << ". " << entriesReadFromFile << " added to cache. " << m_containerCache.size() << " entries available." << endl;
