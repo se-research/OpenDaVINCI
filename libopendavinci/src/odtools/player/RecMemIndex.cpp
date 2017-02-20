@@ -24,11 +24,13 @@
 #include <fstream>
 #include <iostream>
 #include <limits>
+#include <string>
 #include <thread>
 #include <utility>
 
 #include <opendavinci/odcore/base/Lock.h>
 #include <opendavinci/odcore/base/Thread.h>
+#include <opendavinci/GeneratedHeaders_OpenDaVINCI.h>
 
 #include <opendavinci/odtools/player/RecMemIndex.h>
 
@@ -67,6 +69,7 @@ namespace odtools {
         }
 
         RecMemIndex::~RecMemIndex() {
+cout << "Closing RecMemIndex" << endl;
             // Stop concurrent thread to manage cache.
             setSharedMemoryCacheFillingRunning(false);
             m_sharedMemoryCacheFillingThread.join();
@@ -75,53 +78,70 @@ namespace odtools {
         }
 
         void RecMemIndex::initializeIndex() {
-//            m_recMemFile.open(m_url.getResource().c_str(), ios_base::in|ios_base::binary);
-//            m_recMemFileValid = m_recMemFile.good();
+            if (m_url.getResource().find(".rec.mem") != string::npos) {
+                m_recMemFile.open(m_url.getResource().c_str(), ios_base::in|ios_base::binary);
+                m_recMemFileValid = m_recMemFile.good();
 
-//            // Determine file size to display progress.
-//            m_recMemFile.seekg(0, m_recMemFile.end);
-//            int32_t fileLength = m_recMemFile.tellg();
-//            m_recMemFile.seekg(0, m_recMemFile.beg);
+                // Determine file size to display progress.
+                m_recMemFile.seekg(0, m_recMemFile.end);
+                int64_t fileLength = m_recMemFile.tellg();
+                m_recMemFile.seekg(0, m_recMemFile.beg);
 
-//            // Read complete file and store file positions to containers to create
-//            // index of available data. The actual reading of Containers is deferred.
-//            uint32_t totalBytesRead = 0;
-//            const TimeStamp BEFORE;
-//            {
-//                int32_t oldPercentage = -1;
-//                while (m_recMemFile.good()) {
-//                    const uint32_t POS_BEFORE = m_recMemFile.tellg();
-//                        Container c;
-//                        m_recMemFile >> c;
-//                    const uint32_t POS_AFTER = m_recMemFile.tellg();
+                // Read complete file and store file positions to containers
+                // preceding the shared memory dumps to create an index of
+                // available data. The actual reading of shared memory
+                // dumps is deferred.
+                uint64_t totalBytesRead = 0;
+                const TimeStamp BEFORE;
+                {
+                    int32_t oldPercentage = -1;
+                    while (m_recMemFile.good()) {
+                        const uint64_t POS_BEFORE = m_recMemFile.tellg();
+                            Container c;
+                            m_recMemFile >> c;
+                        const uint64_t POS_AFTER = m_recMemFile.tellg();
 
-//                    if (!m_recMemFile.eof()) {
-//                        totalBytesRead += (POS_AFTER - POS_BEFORE);
+                        if (!m_recMemFile.eof()) {
+                            totalBytesRead += (POS_AFTER - POS_BEFORE);
 
-//                        // Store mapping .rec file position --> index entry.
-//                        m_index.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(),
-//                                                       RecMemIndexEntry(c.getSampleTimeStamp().toMicroseconds(), POS_BEFORE)));
+                            // Skip the binary dump of the shared memory segment
+                            // directly following the Container.
+                            uint64_t bytesToSkip = 0;
+                            if (c.getDataType() == odcore::data::SharedData::ID()) {
+                                bytesToSkip = c.getData<odcore::data::SharedData>().getSize();
+                            }
+                            if (c.getDataType() == odcore::data::image::SharedImage::ID()) {
+                                bytesToSkip = c.getData<odcore::data::image::SharedImage>().getSize();
+                            }
+                            if (c.getDataType() == odcore::data::SharedPointCloud::ID()) {
+                                bytesToSkip = c.getData<odcore::data::SharedPointCloud>().getSize();
+                            }
+                            const uint64_t CURRENT_POSITION_IN_RECMEM_FILE = m_recMemFile.tellg();
+                            m_recMemFile.seekg(CURRENT_POSITION_IN_RECMEM_FILE + bytesToSkip);
+                            totalBytesRead += bytesToSkip;
 
-//                        const int32_t percentage = static_cast<int32_t>(static_cast<float>(m_recMemFile.tellg()*100.0)/static_cast<float>(fileLength));
-//                        if ( (percentage % 5 == 0) && (percentage != oldPercentage) ) {
-//                            clog << "[odtools::player::RecMemIndex]: Indexed " << percentage << "%." << endl;
-//                            oldPercentage = percentage;
-//                        }
-//                    }
-//                }
-//            }
-//            const TimeStamp AFTER;
+//                            // Store mapping .rec file position --> index entry.
+//                            m_index.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(),
+//                                                           RecMemIndexEntry(c.getSampleTimeStamp().toMicroseconds(), POS_BEFORE)));
 
-//            // Reset pointer to beginning of the .rec file.
-//            if (m_recMemFileValid) {
-//                // Compute throughput for reading from file.
-//                m_containerReadFromFileThroughput = std::ceil(m_index.size()*static_cast<float>(RecMemIndex::ONE_SECOND_IN_MICROSECONDS)/(AFTER-BEFORE).toMicroseconds());
+                            const int32_t percentage = static_cast<int32_t>(static_cast<float>(m_recMemFile.tellg()*100.0)/static_cast<float>(fileLength));
+                            if ( (percentage % 5 == 0) && (percentage != oldPercentage) ) {
+                                clog << "[odtools::player::RecMemIndex]: Indexed " << percentage << "%." << endl;
+                                oldPercentage = percentage;
+                            }
+                        }
+                    }
+                }
+                const TimeStamp AFTER;
 
-//                clog << "[odtools::player::RecMemIndex]: " << m_url.getResource()
-//                                      << " contains " << m_index.size() << " entries; "
-//                                      << "read " << totalBytesRead << " bytes ("
-//                                      << m_containerReadFromFileThroughput << " entries/s)." << endl;
-//            }
+                // Reset pointer to beginning of the .rec.mem file.
+                if (m_recMemFileValid) {
+                    clog << "[odtools::player::RecMemIndex]: " << m_url.getResource()
+//                                          << " contains " << m_index.size() << " entries; "
+                                          << "read " << totalBytesRead << " bytes "
+                                          << "took " << (AFTER-BEFORE).toMicroseconds()/(1000.0*1000.0) << "s." << endl;
+                }
+            }
         }
 
         uint32_t RecMemIndex::fillContainerCache(const uint32_t &maxNumberOfEntriesToReadFromFile) {

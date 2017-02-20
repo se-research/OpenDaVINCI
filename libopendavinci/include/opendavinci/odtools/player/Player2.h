@@ -23,6 +23,7 @@
 #include <deque>
 #include <fstream>
 #include <map>
+#include <memory>
 #include <thread>
 
 #include <opendavinci/odcore/opendavinci.h>
@@ -33,6 +34,7 @@
 #include <opendavinci/odcore/exceptions/Exceptions.h>
 
 #include <opendavinci/odtools/player/PlayerListener.h>
+#include <opendavinci/odtools/player/RecMemIndex.h>
 
 namespace odtools {
     namespace player {
@@ -228,6 +230,9 @@ namespace odtools {
 
                 // Mapping of pos_type (within .rec file) --> Container (read from .rec file).
                 map<uint32_t, odcore::data::Container> m_containerCache;
+
+            private:
+                unique_ptr<RecMemIndex> m_recMemIndex;
 
             public:
                 /**

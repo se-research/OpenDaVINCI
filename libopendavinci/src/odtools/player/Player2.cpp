@@ -30,6 +30,7 @@
 #include <opendavinci/odcore/base/module/AbstractCIDModule.h>
 #include <opendavinci/odcore/base/Lock.h>
 #include <opendavinci/odcore/base/Thread.h>
+#include <opendavinci/odcore/io/URL.h>
 
 #include <opendavinci/odtools/player/Player2.h>
 #include <opendavinci/odtools/player/PlayerDelegate.h>
@@ -73,24 +74,33 @@ namespace odtools {
             m_containerCacheFillingThreadIsRunning(false),
             m_containerCacheFillingThread(),
             m_containerCache(),
+            m_recMemIndex(),
             m_mapOfPlayerDelegatesMutex(),
             m_mapOfPlayerDelegates(),
             m_playerListenerMutex(),
             m_playerListener() {
-            initializeIndex();
-            computeInitialCacheLevelAndFillCache();
+//            initializeIndex();
+//            computeInitialCacheLevelAndFillCache();
 
-            // Start concurrent thread to manage cache.
-            setContainerCacheFillingRunning(true);
-            m_containerCacheFillingThread = std::thread(&Player2::manageCache, this);
+//            // Start concurrent thread to manage cache.
+//            setContainerCacheFillingRunning(true);
+//            m_containerCacheFillingThread = std::thread(&Player2::manageCache, this);
+
+            // Try reading accompanying .rec.mem file.
+//            if (m_recFileValid) {
+                URL recMemFile("file://" + m_url.getResource() + ".mem");
+                m_recMemIndex = unique_ptr<RecMemIndex>(new RecMemIndex(recMemFile));
+//            }
         }
 
         Player2::~Player2() {
-            // Stop concurrent thread to manage cache.
-            setContainerCacheFillingRunning(false);
-            m_containerCacheFillingThread.join();
+//            // Stop concurrent thread to manage cache.
+//            setContainerCacheFillingRunning(false);
+//            m_containerCacheFillingThread.join();
 
             m_recFile.close();
+
+            m_recMemIndex.reset();
         }
 
         void Player2::setPlayerListener(PlayerListener *pl) {
