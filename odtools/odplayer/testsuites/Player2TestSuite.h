@@ -42,7 +42,7 @@ using namespace odtools::player;
 
 class PlayerModule2Test : public CxxTest::TestSuite {
     public:
-        void notestEmptyFileAndException() {
+        void testEmptyFileAndException() {
             cout << __FILE__ << " " << __LINE__ << endl;
             // Prepare record file.
             fstream fout("PlayerModule2TestEmpty.rec", ios::out | ios::binary | ios::trunc);
@@ -72,7 +72,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
             UNLINK("PlayerModule2TestEmpty.rec");
         }
 
-        void notestCorrectMonotonicTemporalOrderAndExceptionFromReverseOrder() {
+        void testCorrectMonotonicTemporalOrderAndExceptionFromReverseOrder() {
             cout << __FILE__ << " " << __LINE__ << endl;
             // Prepare record file.
             fstream fout("PlayerModule2Test.rec", ios::out | ios::binary | ios::trunc);
@@ -144,7 +144,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
             UNLINK("PlayerModuleTest2.rec");
         }
 
-        void notestCorrectMonotonicTemporalOrderAndExceptionFromReverseOrderRealtimeReplay() {
+        void testCorrectMonotonicTemporalOrderAndExceptionFromReverseOrderRealtimeReplay() {
             cout << __FILE__ << " " << __LINE__ << endl;
             // Prepare record file.
             fstream fout("PlayerModule2Test.rec", ios::out | ios::binary | ios::trunc);
@@ -215,7 +215,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
             UNLINK("PlayerModuleTest2.rec");
         }
 
-        void notestCorrectMonotonicTemporalOrderAndExceptionFromReverseOrderWithDuplicateEntries() {
+        void testCorrectMonotonicTemporalOrderAndExceptionFromReverseOrderWithDuplicateEntries() {
             cout << __FILE__ << " " << __LINE__ << endl;
             // Prepare record file.
             fstream fout("PlayerModule2Test.rec", ios::out | ios::binary | ios::trunc);
@@ -303,7 +303,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
             UNLINK("PlayerModuleTest2.rec");
         }
 
-        void notestCorrectMonotonicTemporalOrderAndException() {
+        void testCorrectMonotonicTemporalOrderAndException() {
             cout << __FILE__ << " " << __LINE__ << endl;
             // Prepare record file.
             fstream fout("PlayerModule2Test.rec", ios::out | ios::binary | ios::trunc);
@@ -375,7 +375,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
             UNLINK("PlayerModuleTest2.rec");
         }
 
-        void notestCorrectMonotonicTemporalOrderAndRewindAndException() {
+        void testCorrectMonotonicTemporalOrderAndRewindAndException() {
             cout << __FILE__ << " " << __LINE__ << endl;
             // Prepare record file.
             fstream fout("PlayerModule2Test2.rec", ios::out | ios::binary | ios::trunc);
@@ -453,7 +453,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
             UNLINK("PlayerModule2Test2.rec");
         }
 
-        void notestCorrectMonotonicTemporalOrderAndAutoRewind() {
+        void testCorrectMonotonicTemporalOrderAndAutoRewind() {
             cout << __FILE__ << " " << __LINE__ << endl;
             // Prepare record file.
             fstream fout("PlayerModule2Test2.rec", ios::out | ios::binary | ios::trunc);
@@ -538,7 +538,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
             UNLINK("PlayerModule2Test2.rec");
         }
 
-//        void notestLargeFileTwiddle() {
+//        void testLargeFileTwiddle() {
 //            cout << __FILE__ << " " << __LINE__ << endl;
 //            const URL u("file://test.rec");
 
@@ -614,7 +614,7 @@ class PlayerModule2Test : public CxxTest::TestSuite {
 //            }
 //        }
 
-        void testLargeFile() {
+        void notestLargeFile() {
             cout << __FILE__ << " " << __LINE__ << endl;
             const URL u("file://CID-251-odrecorderh264_2017-02-10_10:16:17.rec");
 

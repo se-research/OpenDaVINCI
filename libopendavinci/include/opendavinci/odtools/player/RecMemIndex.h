@@ -51,8 +51,8 @@ namespace odtools {
         };
 
         /**
-         * This class can be used to replay previously recorded data and return
-         * the contained containers to be relayed into a ContainerConference.
+         * This class reads a corresponding .rec.mem file belonging to a .rec
+         * file that holds the shared memory dumps.
          */
         class OPENDAVINCI_API RecMemIndex {
             private:

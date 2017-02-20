@@ -46,7 +46,7 @@ namespace odtools {
 
         IndexEntry::IndexEntry() : IndexEntry(0, 0) {}
 
-        IndexEntry::IndexEntry(const int64_t &sampleTimeStamp, const uint32_t &filePosition) :
+        IndexEntry::IndexEntry(const int64_t &sampleTimeStamp, const uint64_t &filePosition) :
             m_sampleTimeStamp(sampleTimeStamp),
             m_filePosition(filePosition),
             m_available(false) {}
@@ -79,24 +79,24 @@ namespace odtools {
             m_mapOfPlayerDelegates(),
             m_playerListenerMutex(),
             m_playerListener() {
-//            initializeIndex();
-//            computeInitialCacheLevelAndFillCache();
+            initializeIndex();
+            computeInitialCacheLevelAndFillCache();
 
-//            // Start concurrent thread to manage cache.
-//            setContainerCacheFillingRunning(true);
-//            m_containerCacheFillingThread = std::thread(&Player2::manageCache, this);
+            // Start concurrent thread to manage cache.
+            setContainerCacheFillingRunning(true);
+            m_containerCacheFillingThread = std::thread(&Player2::manageCache, this);
 
             // Try reading accompanying .rec.mem file.
-//            if (m_recFileValid) {
-                URL recMemFile("file://" + m_url.getResource() + ".mem");
-                m_recMemIndex = unique_ptr<RecMemIndex>(new RecMemIndex(recMemFile));
-//            }
+            if (m_recFileValid) {
+//                URL recMemFile("file:" + m_url.getResource() + ".mem");
+//                m_recMemIndex = unique_ptr<RecMemIndex>(new RecMemIndex(recMemFile));
+            }
         }
 
         Player2::~Player2() {
-//            // Stop concurrent thread to manage cache.
-//            setContainerCacheFillingRunning(false);
-//            m_containerCacheFillingThread.join();
+            // Stop concurrent thread to manage cache.
+            setContainerCacheFillingRunning(false);
+            m_containerCacheFillingThread.join();
 
             m_recFile.close();
 
@@ -128,20 +128,20 @@ namespace odtools {
 
             // Determine file size to display progress.
             m_recFile.seekg(0, m_recFile.end);
-            int32_t fileLength = m_recFile.tellg();
+            int64_t fileLength = m_recFile.tellg();
             m_recFile.seekg(0, m_recFile.beg);
 
             // Read complete file and store file positions to containers to create
             // index of available data. The actual reading of Containers is deferred.
-            uint32_t totalBytesRead = 0;
+            uint64_t totalBytesRead = 0;
             const TimeStamp BEFORE;
             {
                 int32_t oldPercentage = -1;
                 while (m_recFile.good()) {
-                    const uint32_t POS_BEFORE = m_recFile.tellg();
+                    const uint64_t POS_BEFORE = m_recFile.tellg();
                         Container c;
                         m_recFile >> c;
-                    const uint32_t POS_AFTER = m_recFile.tellg();
+                    const uint64_t POS_AFTER = m_recFile.tellg();
 
                     if (!m_recFile.eof()) {
                         totalBytesRead += (POS_AFTER - POS_BEFORE);

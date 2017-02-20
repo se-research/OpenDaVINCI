@@ -46,11 +46,11 @@ namespace odtools {
         class IndexEntry {
             public:
                 IndexEntry();
-                IndexEntry(const int64_t &sampleTimeStamp, const uint32_t &filePosition);
+                IndexEntry(const int64_t &sampleTimeStamp, const uint64_t &filePosition);
 
             public:
                 int64_t m_sampleTimeStamp;
-                uint32_t m_filePosition;
+                uint64_t m_filePosition;
                 bool m_available;
         };
 
@@ -229,7 +229,7 @@ namespace odtools {
                 std::thread m_containerCacheFillingThread;
 
                 // Mapping of pos_type (within .rec file) --> Container (read from .rec file).
-                map<uint32_t, odcore::data::Container> m_containerCache;
+                map<uint64_t, odcore::data::Container> m_containerCache;
 
             private:
                 unique_ptr<RecMemIndex> m_recMemIndex;
