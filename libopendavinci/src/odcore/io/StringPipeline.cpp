@@ -74,10 +74,11 @@ namespace odcore {
 
             string entry;
             for (uint32_t i = 0; i < numberOfEntries; i++) {
-                // Acquire next entry.
+                // Acquire and remove next entry.
                 {
                     Lock l2(m_queueMutex);
                     entry = m_queue.front();
+                    m_queue.pop();
                 }
 
                 // Read all entries and distribute using the stringListener.
@@ -87,12 +88,6 @@ namespace odcore {
                         // Distribute entry to connected listeners while NOT locking the queue.
                         m_stringListener->nextString(entry);
                     }
-                }
-
-                // Remove processed entry.
-                {
-                    Lock l2(m_queueMutex);
-                    m_queue.pop();
                 }
             }
         }

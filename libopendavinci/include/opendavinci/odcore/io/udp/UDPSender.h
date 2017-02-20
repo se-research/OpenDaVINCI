@@ -67,6 +67,13 @@ namespace odcore {
                      * @param data Data to be sent.
                      */
                     virtual void send(const string &data) const = 0;
+
+                    /**
+                     * This method returns the port in use when sending UDP packets.
+                     *
+                     * @return Port when sending UDP packets.
+                     */
+                    virtual uint16_t getPort() const = 0;
             };
 
         }

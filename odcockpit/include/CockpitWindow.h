@@ -75,6 +75,9 @@ namespace plugins { class PlugInProvider; }
 
             virtual ~CockpitWindow();
 
+            static string getStartupDirectory();
+            static string m_startupDirectory;
+
         public slots:
             void close();
             void maximizeActiveSubWindow();
