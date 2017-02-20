@@ -45,7 +45,7 @@ CANSignal:
 CANMessageMapping:
     (unordered='unordered')? (bit_numbering = ('vector'))?
     'mapping' mappingName = ValidIdentifier
-    ('[length' '=' payloadLength = FLOATNUMBER ']')?
+    ('[length' '=' payloadLength = FLOATNUMBER ']')
     '{'
     	mappings += CANSignalMapping*
     '}';
