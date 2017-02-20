@@ -132,6 +132,7 @@ clog << "Cleaning entry" << endl;
                 // available data. The actual reading of shared memory
                 // dumps is deferred.
                 uint64_t totalBytesRead = 0;
+                const bool IS_FROM_SHAREDMEMORY = true;
                 const TimeStamp BEFORE;
                 {
                     int32_t oldPercentage = -1;
@@ -162,7 +163,7 @@ clog << "Cleaning entry" << endl;
 
                             // Store pointer to Container in m_recMemFile ordered by sample time stamp.
                             m_index.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(),
-                                                           IndexEntry(c.getSampleTimeStamp().toMicroseconds(), POS_BEFORE)));
+                                                           IndexEntry(c.getSampleTimeStamp().toMicroseconds(), POS_BEFORE, IS_FROM_SHAREDMEMORY)));
 
                             const int32_t percentage = static_cast<int32_t>(static_cast<float>(m_recMemFile.tellg()*100.0)/static_cast<float>(fileLength));
                             if ( (percentage % 5 == 0) && (percentage != oldPercentage) ) {

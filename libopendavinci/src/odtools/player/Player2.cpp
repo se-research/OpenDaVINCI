@@ -45,11 +45,16 @@ namespace odtools {
         using namespace odcore::data;
         using namespace odcore::io;
 
-        IndexEntry::IndexEntry() : IndexEntry(0, 0) {}
+        IndexEntry::IndexEntry() :
+            IndexEntry(0, 0, false) {}
 
         IndexEntry::IndexEntry(const int64_t &sampleTimeStamp, const uint64_t &filePosition) :
+            IndexEntry(sampleTimeStamp, filePosition, false) {}
+
+        IndexEntry::IndexEntry(const int64_t &sampleTimeStamp, const uint64_t &filePosition, const bool &isFromSharedMemory) :
             m_sampleTimeStamp(sampleTimeStamp),
             m_filePosition(filePosition),
+            m_isFromSharedMemory(isFromSharedMemory),
             m_available(false) {}
 
         ////////////////////////////////////////////////////////////////////////
