@@ -123,6 +123,11 @@ namespace odtools {
                 mutable odcore::base::Mutex m_indexMutex;
                 multimap<int64_t, IndexEntry> m_index;
 
+                // Mapping of pos_type (within .rec.mem file) --> meta-entry describing tupel (Container, raw memory).
+                map<uint64_t, shared_ptr<RawMemoryBufferEntry> > m_rawMemoryBuffer;
+                deque<shared_ptr<RawMemoryBufferEntry> > m_unusedEntriesFromRawMemoryBuffer;
+                deque<shared_ptr<RawMemoryBufferEntry> > m_usedEntriesFromRawMemoryBuffer;
+
             private:
                 /**
                  * This method set the state of the containerCacheFilling thread.
@@ -141,9 +146,6 @@ namespace odtools {
                 mutable odcore::base::Mutex m_rawMemoryBufferFillingThreadIsRunningMutex;
                 bool m_rawMemoryBufferFillingThreadIsRunning;
                 std::thread m_rawMemoryBufferFillingThread;
-
-                // Mapping of pos_type (within .rec.mem file) --> meta-entry describing tupel (Container, raw memory).
-                map<uint64_t, RawMemoryBufferEntry> m_rawMemoryBuffer;
         };
 
     } // player

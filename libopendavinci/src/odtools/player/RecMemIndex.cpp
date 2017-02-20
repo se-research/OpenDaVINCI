@@ -19,6 +19,7 @@
 
 #include <cmath>
 #include <cstdio>
+#include <cstdlib>
 
 #include <algorithm>
 #include <fstream>
@@ -53,6 +54,7 @@ namespace odtools {
             }
             m_rawMemoryBuffer = NULL;
             m_lengthOfRawMemoryBuffer = 0;
+clog << "Cleaning entry" << endl;
         }
 
         RawMemoryBufferEntry::RawMemoryBufferEntry(const RawMemoryBufferEntry &obj) :
@@ -75,11 +77,21 @@ namespace odtools {
             m_recMemFileValid(false),
             m_indexMutex(),
             m_index(),
+            m_rawMemoryBuffer(),
+            m_unusedEntriesFromRawMemoryBuffer(),
+            m_usedEntriesFromRawMemoryBuffer(),
             m_rawMemoryBufferFillingThreadIsRunningMutex(),
             m_rawMemoryBufferFillingThreadIsRunning(false),
-            m_rawMemoryBufferFillingThread(),
-            m_rawMemoryBuffer() {
-cout << "Acquiring " << numberOfMemorySegments << " of " << memorySegmentSize << " bytes." << endl;
+            m_rawMemoryBufferFillingThread() {
+            clog << "[odtools::player::RecMemIndex]: Acquiring " << numberOfMemorySegments << " memory segments of " << memorySegmentSize << " bytes...";
+            for(uint16_t id = 0; id < numberOfMemorySegments; id++) {
+                shared_ptr<RawMemoryBufferEntry> e = shared_ptr<RawMemoryBufferEntry>(new RawMemoryBufferEntry());
+                e->m_rawMemoryBuffer = static_cast<char*>(::malloc(memorySegmentSize));
+                e->m_lengthOfRawMemoryBuffer = memorySegmentSize;
+                m_unusedEntriesFromRawMemoryBuffer.push_back(e);
+            }
+            clog << "done." << endl;
+
             initializeIndex();
 
             // Start concurrent thread to manage the cache for shared memory dumps.
@@ -88,12 +100,17 @@ cout << "Acquiring " << numberOfMemorySegments << " of " << memorySegmentSize <<
         }
 
         RecMemIndex::~RecMemIndex() {
-cout << "Closing RecMemIndex" << endl;
             // Stop concurrent thread to manage cache.
             setRawMemoryBufferFillingRunning(false);
             m_rawMemoryBufferFillingThread.join();
 
             m_recMemFile.close();
+
+            clog << "[odtools::player::RecMemIndex]: Clearing buffer...";
+                // Entries will be automatically freed due to the shared_ptr<...>.
+                m_unusedEntriesFromRawMemoryBuffer.clear();
+                m_usedEntriesFromRawMemoryBuffer.clear();
+            clog << "done." << endl;
         }
 
         void RecMemIndex::initializeIndex() {
