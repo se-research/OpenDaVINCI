@@ -77,6 +77,7 @@ clog << "Cleaning entry" << endl;
             m_recMemFileValid(false),
             m_indexMutex(),
             m_index(),
+            m_nextEntryToPlayBack(),
             m_nextEntryToReadFromRecMemFile(),
             m_rawMemoryBuffer(),
             m_unusedEntriesFromRawMemoryBuffer(),
@@ -176,7 +177,9 @@ clog << "Cleaning entry" << endl;
 
                 // Reset pointer to beginning of the .rec.mem file.
                 if (m_recMemFileValid) {
-                    m_nextEntryToReadFromRecMemFile = m_index.begin();
+                    m_nextEntryToPlayBack
+                        = m_nextEntryToReadFromRecMemFile
+                        = m_index.begin();
 
                     clog << "[odtools::player::RecMemIndex]: " << m_url.getResource()
                                           << " contains " << m_index.size() << " entries; "
@@ -184,6 +187,11 @@ clog << "Cleaning entry" << endl;
                                           << "took " << (AFTER-BEFORE).toMicroseconds()/(1000.0*1000.0) << "s." << endl;
                 }
             }
+        }
+
+        int64_t RecMemIndex::peekNextSampleTimeToPlayBack() const {
+            Lock l(m_indexMutex);
+            return m_nextEntryToPlayBack->first;
         }
 
         ////////////////////////////////////////////////////////////////////////

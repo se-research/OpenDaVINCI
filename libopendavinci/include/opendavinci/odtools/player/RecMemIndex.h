@@ -93,6 +93,8 @@ namespace odtools {
 
                 virtual ~RecMemIndex();
 
+                int64_t peekNextSampleTimeToPlayBack() const;
+
             private:
                 /**
                  * This method initializes the global index where the sample
@@ -113,6 +115,7 @@ namespace odtools {
                 // Global index: Mapping SampleTimeStamp --> cache entry (holding the actual content from .rec, .rec.mem, or .h264 file)
                 mutable odcore::base::Mutex m_indexMutex;
                 multimap<int64_t, IndexEntry> m_index;
+                multimap<int64_t, IndexEntry>::iterator m_nextEntryToPlayBack;
                 multimap<int64_t, IndexEntry>::iterator m_nextEntryToReadFromRecMemFile;
 
                 // Mapping of pos_type (within .rec.mem file) --> meta-entry describing tupel (Container, raw memory).

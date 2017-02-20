@@ -267,8 +267,16 @@ namespace odtools {
             Lock l(m_indexMutex);
             Container &nextContainer = m_containerCache[m_currentContainerToReplay->second.m_filePosition];
 
-// TODO: Peek m_index from .rec.mem file to see whether to replay this container of the one from the .rec.mem file.
+            const int64_t recContainerSampleTime = nextContainer.getSampleTimeStamp().toMicroseconds();
+            if (NULL != m_recMemIndex.get()) {
+                int64_t recMemContainerSampleTime = m_recMemIndex->peekNextSampleTimeToPlayBack();
+cout << recContainerSampleTime << " vs. " << recMemContainerSampleTime << endl;
 
+// If recContainerSampleTime > recMemContainerSampleTime --> return the recMemContainer and don't modify iterators.
+// Compute m_delay based on recMemContainerSampleTime - m_previousContainerAlreadyReplayed->first.
+// TODO: Add method to RecMemIndex to copy malloc'ed entry to SharedMemory segment
+// Otherwise, continue with existing code.
+            }
             Container retVal;
 
             // Check if there is a PlayerDelegate registered for this container.
