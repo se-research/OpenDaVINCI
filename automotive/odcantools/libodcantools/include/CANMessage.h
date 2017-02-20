@@ -16,6 +16,8 @@ namespace automotive {
             public:
                 CANSignal(const uint8_t, const uint8_t, const string, const string, const double, const double, const double, const double);
                 
+                string toString() const;
+                
             private:
                 CANSignal();
                 
@@ -32,10 +34,11 @@ namespace automotive {
         class CANMessage : public automotive::GenericCANMessage {
             public: 
                 CANMessage(const GenericCANMessage&);
-                CANMessage(const GenericCANMessage&, const string);
-                CANMessage(const GenericCANMessage&, const bool);
+                CANMessage(const CANMessage&);
+                CANMessage(const uint64_t, const uint8_t, const uint64_t);
                 
-                uint64_t getToUINT64();
+                uint64_t getPayloadToUINT64();
+                automotive::GenericCANMessage getGenericCANMessage();
                 
                 bool addSignal(const uint16_t, const CANSignal);
                 double decodeSignal(const uint16_t);
@@ -45,24 +48,23 @@ namespace automotive {
             
             private:
                 CANMessage();
-                CANMessage(const CANMessage&);
                 
                 void setFromUINT64(const uint64_t, const uint8_t);
+                void updateGCMData();
                 void advanceByteMask(uint8_t&);
                 void resetByteMask(uint8_t&);
                 void advanceByteNumberInCorrectEndianness(int8_t&, const string);
                 bool checkByteMaskInLastPosition(const uint8_t);
                 uint8_t getStartBitInByteInCorrectByteOrder(const uint8_t);
                 uint8_t getPayloadByte(const int8_t);
-                int8_t getRealStartBit(const CANSignal);
+                int8_t getLSBPosition(const CANSignal);
                 void insertRawSignal(const CANSignal, const int64_t);
                 int64_t extractRawSignal(const CANSignal);
                 vector<uint8_t> invertPayloadVector(vector<uint8_t>);
             
             private: 
-                map<const uint16_t, const CANSignal> m_signals;
                 vector<uint8_t> m_payload;
-                bool m_vectorByteOrder;
+                map<const uint16_t, const CANSignal> m_signals;
         };
         
     }

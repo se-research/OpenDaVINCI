@@ -1,48 +1,43 @@
 #include <limits>
 #include <cmath>
 #include <iostream>
-#include <bitset>
 #include <algorithm> // for std::rotate and std::transform
 
 #include "CANMessage.h"
 
+// the implemented logic is based on the resource: www.race-technology.com/wiki/index.php/CANInterface/ByteOrdering 
+// implemented cases of interest are "Intel Standard" and "Motorola Forward MSB"
+
 namespace automotive {
     namespace odcantools {
-    
-        CANMessage::CANMessage():
-            GenericCANMessage(),
-            m_signals(),
-            m_payload(),
-            m_vectorByteOrder(false) { }
-    
-        CANMessage::CANMessage(const GenericCANMessage& gcm):
+        CANMessage::CANMessage(const GenericCANMessage& gcm) :
             GenericCANMessage(gcm),
-            m_signals(),
             m_payload(),
-            m_vectorByteOrder(false) {
+            m_signals() {
             setFromUINT64(gcm.getData(), gcm.getLength());
         }
-    
-        CANMessage::CANMessage(const GenericCANMessage& gcm, const bool vectorByteOrder):
-            GenericCANMessage(gcm),
-            m_signals(),
+
+        CANMessage::CANMessage(const uint64_t identifier, const uint8_t length, const uint64_t payload) :
             m_payload(),
-            m_vectorByteOrder(vectorByteOrder) {
-            setFromUINT64(gcm.getData(), gcm.getLength());
+            m_signals() {
+            setIdentifier(identifier);
+            setLength(length);
+            setData(payload);
+            setFromUINT64(payload, length);
         }
-        
-        CANMessage::CANMessage(const GenericCANMessage& gcm, const string vectorByteOrder):
-            GenericCANMessage(gcm),
-            m_signals(),
-            m_payload(),
-            m_vectorByteOrder() {
-            if(vectorByteOrder.compare("vector")==0 || vectorByteOrder.compare("inverted")==0)
-                m_vectorByteOrder=true;
-            
-            setFromUINT64(gcm.getData(), gcm.getLength());
+
+        CANMessage::CANMessage(const CANMessage& canmessage) :
+            GenericCANMessage(canmessage),
+            m_payload(canmessage.m_payload),
+            m_signals(canmessage.m_signals)
+            {
         }
         
         void CANMessage::setFromUINT64(const uint64_t payload, const uint8_t length) {
+            // superclass methods
+            setData(payload);
+            setLength(length);
+            
             uint64_t data=payload;
             uint8_t mask=0xFF;
             
@@ -51,10 +46,8 @@ namespace automotive {
                 data=data>>8;
             }
             
-            // INVERT PAYLOAD FOR VECTOR NUMBERING. NEEDS TO BE TESTED FOR NON-VECTOR
-            if(m_vectorByteOrder) {
-                m_payload=invertPayloadVector(m_payload);
-            }
+            // invert payload due to the way it is represented in log files or traces
+            m_payload=invertPayloadVector(m_payload);
         }
         
         vector<uint8_t> CANMessage::invertPayloadVector(vector<uint8_t> payload) {
@@ -65,12 +58,10 @@ namespace automotive {
             return temp;
         }
         
-        uint64_t CANMessage::getToUINT64() {
-            // INVERT PAYLOAD FOR VECTOR NUMBERING. NEEDS TO BE TESTED FOR NON-VECTOR
+        uint64_t CANMessage::getPayloadToUINT64() {
+            // invert payload due to the way it is represented in log files or traces
             vector<uint8_t> temp=m_payload;
-            if(m_vectorByteOrder) {
-                temp=invertPayloadVector(temp);
-            }
+            temp=invertPayloadVector(temp);
             
             uint64_t data=0;
             
@@ -82,6 +73,17 @@ namespace automotive {
             return data;
         }
         
+        automotive::GenericCANMessage CANMessage::getGenericCANMessage() {
+            automotive::GenericCANMessage gcm;
+            
+            // use superclass getters
+            gcm.setIdentifier(getIdentifier());
+            gcm.setLength(getLength());
+            gcm.setData(getData());
+            
+            return gcm;
+        }
+        
         bool CANMessage::addSignal(const uint16_t key, const CANSignal signal) {
             std::pair<std::map<const uint16_t, const CANSignal>::iterator,bool> result;
             result = m_signals.insert ( std::pair<const uint16_t, const CANSignal>(key, signal) );
@@ -89,23 +91,13 @@ namespace automotive {
         }
         
         void CANMessage::advanceByteMask(uint8_t& byteMask) {
-            // if the message is coded using the inverted vector byte order, move the mask to the left
-            if(m_vectorByteOrder) {
-                byteMask=byteMask<<1;
-            }
-            else { // otherwise move the mask to the right
-                byteMask=byteMask>>1;
-            }
+            // both Intel Standard and Motorola Forward MSB number bits in a byte from the msb to the lsb (7 6 5 4 3 2 1 0)
+            byteMask=byteMask<<1;
         }
 
         void CANMessage::resetByteMask(uint8_t& byteMask) {
-            // if the message is coded using the inverted vector byte order, move the mask to the extreme right
-            if(m_vectorByteOrder) {
-                byteMask=0x01;
-            }
-            else { // otherwise move the mask to the extreme left
-                byteMask=0x80;
-            }
+            // move the mask back to the extreme right (bit 0 in a byte)
+            byteMask=0x01;
         }
 
         void CANMessage::advanceByteNumberInCorrectEndianness(int8_t& byteNumber, const string endianness) {
@@ -119,23 +111,16 @@ namespace automotive {
         }
         
         bool CANMessage::checkByteMaskInLastPosition(const uint8_t byteMask) {
-            if(m_vectorByteOrder && byteMask==0x80) {
+            // valid for non-sequential numbering, i.e. both Intel Standard and Motorola Forward MSB
+            if(byteMask==0x80) {
                 return true;
             }
-            else if(!m_vectorByteOrder && byteMask==0x01) {
-                return true;
-            }
-            else return false;
+            return false;
         }
 
         uint8_t CANMessage::getStartBitInByteInCorrectByteOrder(const uint8_t startBit) {
-            // if vector numbering is used, assume non-sequential bit numbering
-            if(m_vectorByteOrder) {
-                return startBit%8;
-            }
-            else { // otherwise assume sequential bit numbering TO BE VERIFIED
-                return 7-(startBit%8);
-            }
+            // valid for non-sequential numbering, i.e. both Intel Standard and Motorola Forward MSB
+            return startBit%8;
         }
 
         void CANMessage::encodeSignal(const uint16_t key, double value) {
@@ -159,15 +144,16 @@ namespace automotive {
         void CANMessage::insertRawSignal(const CANSignal signal, const int64_t value) {
             uint64_t signalMask=0x01;
             uint8_t byteMask=0x01;
-            int8_t realStartBit=getRealStartBit(signal);
-            int8_t byteNumber=realStartBit/8;
+            int8_t lsbPosition=getLSBPosition(signal);
+            int8_t byteNumber=lsbPosition/8;
             
             // initialize the payload byte mask to the signal's starting position
-            for(uint8_t i=0;i<getStartBitInByteInCorrectByteOrder(realStartBit);++i) {
+            for(uint8_t i=0;i<getStartBitInByteInCorrectByteOrder(lsbPosition);++i) {
                 advanceByteMask(byteMask);
             }
+            uint8_t currentByte=getPayloadByte(byteNumber);
             
-            for(uint8_t i=0, currentByte=getPayloadByte(byteNumber);i<signal.m_length;++i) {
+            for(uint8_t i=0;i<signal.m_length;++i) {
                 // if the currently checked bit equals 1, set that bit to 1
                 if( (value & signalMask) != 0x00) {
                     currentByte = currentByte | byteMask;
@@ -176,17 +162,21 @@ namespace automotive {
                 // if the mask points at the end of the current payload byte...
                 if(checkByteMaskInLastPosition(byteMask)) {
                     // ...save the current byte, then...
-                    if(byteNumber>=0 && byteNumber<8) // in case we start out of the message boundaries -it can happen on purpose-
+                    if(byteNumber>=0 && byteNumber<getLength()) { // in case we start out of the message boundaries -it can happen on purpose-
                         m_payload.at(byteNumber)=currentByte;
+                    }
                     //  ...go forward to the first bit...
                     resetByteMask(byteMask);
                     // ...of the next byte.
                     advanceByteNumberInCorrectEndianness(byteNumber, signal.m_endianness);
                     
-                    // if the index is out-of-boundaries, stop
-                    if(byteNumber<0 || byteNumber>8) {
+                    // if the index is out-of-boundaries, stop and exit
+                    if(byteNumber<0 || byteNumber>getLength()-1) {
+                        updateGCMData();
                         return;
                     }
+                    else 
+                        currentByte=getPayloadByte(byteNumber);
                 }
                 else { // same byte, next bit
                     advanceByteMask(byteMask);
@@ -195,6 +185,40 @@ namespace automotive {
                 // always move forward the signal mask
                 signalMask=signalMask<<1;
             }
+            
+            // if all went correctly, save the current byte, then exit
+            if(byteNumber>=0 && byteNumber<8) { // in case we start out of the message boundaries -it should not happen here-
+                m_payload.at(byteNumber)=currentByte;
+            }
+            updateGCMData();
+        }
+        
+        void CANMessage::updateGCMData() {
+            const uint64_t payload=getPayloadToUINT64();
+            uint8_t length;
+            
+            // set the new payload
+            setData(payload);
+            // find the new payload length
+            if(payload <= 0xFF)
+                length=1;
+            else if(payload <= 0xFFFF)
+                length=2;
+            else if(payload <= 0xFFFFFF)
+                length=3;
+            else if(payload <= 0xFFFFFFFF)
+                length=4;
+            else if(payload <= 0xFFFFFFFFFF)
+                length=5;
+            else if(payload <= 0xFFFFFFFFFFFF)
+                length=6;
+            else if(payload <= 0xFFFFFFFFFFFFFF)
+                length=7;
+            else // (implicit) if(payload <= 0xFFFFFFFFFFFFFFFF)
+                length=8;
+            // if the new payload is longer than the nominal length, update it - normally it should not happen
+            if(length>getLength())
+                setLength(length);
         }
         
         uint8_t CANMessage::getPayloadByte(const int8_t index) {
@@ -204,15 +228,15 @@ namespace automotive {
                 return m_payload.at(index);
         }
         
-        int8_t CANMessage::getRealStartBit(const CANSignal signal) {
+        int8_t CANMessage::getLSBPosition(const CANSignal signal) {
             // if the case is "Motorola Forward MSB" the real lsb position needs to be computed
-            if(m_vectorByteOrder && signal.m_endianness.compare("big")==0) {
+            if(signal.m_endianness.compare("big")==0) {
                 int8_t position=signal.m_startBit%8;
                 uint8_t byte=signal.m_startBit/8;
-                for(uint8_t i=0;i<signal.m_length;++i) {
+                for(uint8_t i=1;i<signal.m_length;++i) {
                     --position;
                     if(position<0) {
-                        position=8;
+                        position=7;
                         ++byte;
                     }
                 }
@@ -243,18 +267,15 @@ namespace automotive {
         }
 
         int64_t CANMessage::extractRawSignal(const CANSignal signal) {
-            // useful resource: www.race-technology.com/wiki/index.php/CANInterface/ByteOrdering 
-            // so far cases of interest are "Intel Standard" and "Motorola Forward MSB"
-            
             int64_t signalValue=0x00;
             uint64_t signalMask=0x01;
             uint8_t byteMask=0x01;
             bool MSBEquals1=false;
-            int8_t realStartBit=getRealStartBit(signal);
-            int8_t byteNumber=realStartBit/8;
+            int8_t lsbPosition=getLSBPosition(signal);
+            int8_t byteNumber=lsbPosition/8;
             
             // initialize the payload byte mask to the signal's starting position
-            for(uint8_t i=0;i<getStartBitInByteInCorrectByteOrder(realStartBit);++i) {
+            for(uint8_t i=0;i<getStartBitInByteInCorrectByteOrder(lsbPosition);++i) {
                 advanceByteMask(byteMask);
             }
             
@@ -274,7 +295,7 @@ namespace automotive {
                     advanceByteNumberInCorrectEndianness(byteNumber, signal.m_endianness);
                     
                     // check for out-of-boundaries index
-                    if(byteNumber>=0 && byteNumber<=8) {
+                    if(byteNumber>=0 && byteNumber<=getLength()-1) {
                         currentByte=m_payload.at(byteNumber);
                     }
                     else { // if out-of-boundaries (it can happen on purpose), consider a zero-filled byte
@@ -289,8 +310,8 @@ namespace automotive {
                 signalMask=signalMask<<1;
             }
             
-            // if the signal's MSB equals 1, then the number is negative 
-            if(MSBEquals1) {
+            // if the signal is signed and its MSB equals 1, then the number is negative 
+            if(signal.m_signedness.compare("signed")==0 && MSBEquals1) {
             // set all the other "more" significant bits to 1 to preserve the two's complement representation
                 for(;signalMask>0;signalMask=signalMask<<1) {
                     signalValue=signalValue|signalMask;
@@ -322,6 +343,19 @@ namespace automotive {
             std::transform(e.begin(), e.end(), e.begin(), ::tolower);
             if(e.compare("big")==0 || e.compare("motorola")==0)
                 m_endianness="big";
+        }
+        
+        string CANSignal::toString() const {//at bit 16 for 16 bit is unsigned little endian multiply by 1 add 0 with range [0, 0]
+            stringstream signal;
+            signal  << "signal at bit "<<+m_startBit
+                    <<" for "<<+m_length
+                    <<" bit is "<<m_signedness
+                    <<" "<<m_endianness
+                    <<" endian multiply by "<<m_factor
+                    <<" add "<<m_offset
+                    <<" with range ["<<m_rangeB
+                    <<","<<m_rangeE<<"]";
+            return signal.str();
         }
     } // odcantools
 } // automotive
