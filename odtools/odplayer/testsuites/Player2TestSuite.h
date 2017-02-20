@@ -614,9 +614,9 @@ class PlayerModule2Test : public CxxTest::TestSuite {
 //            }
 //        }
 
-        void notestLargeFile() {
+        void testLargeFile() {
             cout << __FILE__ << " " << __LINE__ << endl;
-            const URL u("file://test.rec");
+            const URL u("file://CID-251-odrecorderh264_2017-02-10_10:16:17.rec");
 
             // Create Player2 instance.
             const bool NO_AUTO_REWIND = false;

@@ -347,21 +347,23 @@ namespace odtools {
         }
 
         void Player2::manageCache() {
+            float refillMultiplicator = 1.1;
             uint32_t numberOfEntries = 0;
             while (isContainerCacheFillingRunning()) {
                 {
                     Lock l(m_indexMutex);
                     numberOfEntries = m_containerCache.size();
                 }
-                // If filling level is around 25%, pour in 1.25 times the amount.
+                // If filling level is around 25%, pour in more.
                 if (numberOfEntries < 0.25*m_desiredInitialLevel) {
-                    const uint32_t entriesReadFromFile = fillContainerCache(1.25 * m_desiredInitialLevel);
+                    const uint32_t entriesReadFromFile = fillContainerCache(refillMultiplicator * m_desiredInitialLevel);
                     if (entriesReadFromFile > 0) {
                         clog << "[odtools::player::Player2]: Number of entries in cache: "  << numberOfEntries << ". " << entriesReadFromFile << " added to cache. " << m_containerCache.size() << " entries available." << endl;
+                        refillMultiplicator *= refillMultiplicator;
                     }
                 }
-                // Manage cache at 4 Hz.
-                Thread::usleepFor(250 * Player2::ONE_MILLISECOND_IN_MICROSECONDS);
+                // Manage cache at 10 Hz.
+                Thread::usleepFor(100 * Player2::ONE_MILLISECOND_IN_MICROSECONDS);
             }
         }
 
