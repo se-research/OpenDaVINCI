@@ -28,10 +28,9 @@
 #include <opendavinci/odcore/opendavinci.h>
 #include <opendavinci/odcore/base/Mutex.h>
 #include <opendavinci/odcore/data/Container.h>
-#include <opendavinci/odcore/data/TimeStamp.h>
 #include <opendavinci/odcore/io/URL.h>
-#include <opendavinci/odcore/exceptions/Exceptions.h>
 
+#include <opendavinci/odtools/player/Player2.h>
 #include <opendavinci/odtools/player/PlayerListener.h>
 
 namespace odtools {
@@ -39,15 +38,17 @@ namespace odtools {
 
         using namespace std;
 
-        class RecMemIndexEntry {
+        class RawMemoryBufferEntry {
             public:
-                RecMemIndexEntry();
-                RecMemIndexEntry(const int64_t &sampleTimeStamp, const uint32_t &filePosition);
+                RawMemoryBufferEntry();
+                virtual ~RawMemoryBufferEntry();
+                RawMemoryBufferEntry(const RawMemoryBufferEntry &obj);
+                RawMemoryBufferEntry& operator=(const RawMemoryBufferEntry &obj);
 
             public:
-                int64_t m_sampleTimeStamp;
-                uint32_t m_filePosition;
-                bool m_available;
+                odcore::data::Container m_container;
+                char *m_rawMemoryBuffer;
+                uint32_t m_lengthOfRawMemoryBuffer;
         };
 
         /**
@@ -108,7 +109,7 @@ namespace odtools {
                  */
                 uint32_t fillContainerCache(const uint32_t &maxNumberOfEntriesToReadFromFile);
 
-            private: // Data for the Player.
+            private: // File handle for the RecMemIndex.
                 odcore::io::URL m_url;
 
                 // Handle to .rec.mem file.
@@ -118,7 +119,7 @@ namespace odtools {
             private: // Index and cache management.
                 // Global index: Mapping SampleTimeStamp --> cache entry (holding the actual content from .rec, .rec.mem, or .h264 file)
                 mutable odcore::base::Mutex m_indexMutex;
-                multimap<int64_t, RecMemIndexEntry> m_index;
+                multimap<int64_t, IndexEntry> m_index;
 
             private:
                 /**
@@ -126,21 +127,21 @@ namespace odtools {
                  *
                  * @param running False if the thread to fill the container cache shall be joined.
                  */
-                void setSharedMemoryCacheFillingRunning(const bool &running);
-                bool isSharedMemoryCacheFillingRunning() const;
+                void setRawMemoryBufferFillingRunning(const bool &running);
+                bool isRawMemoryBufferFillingRunning() const;
 
                 /**
-                 * This method manages the cache for shared memory dumps.
+                 * This method manages the raw buffer for shared memory dumps.
                  */
-                void manageSharedMemoryCache();
+                void manageRawMemoryBuffer();
 
             private:
-                mutable odcore::base::Mutex m_sharedMemoryCacheFillingThreadIsRunningMutex;
-                bool m_sharedMemoryCacheFillingThreadIsRunning;
-                std::thread m_sharedMemoryCacheFillingThread;
+                mutable odcore::base::Mutex m_rawMemoryBufferFillingThreadIsRunningMutex;
+                bool m_rawMemoryBufferFillingThreadIsRunning;
+                std::thread m_rawMemoryBufferFillingThread;
 
-                // Mapping of pos_type (within .rec.mem file) --> raw memory (read from .rec.mem file).
-                map<uint32_t, odcore::data::Container> m_sharedMemoryCache;
+                // Mapping of pos_type (within .rec.mem file) --> meta-entry describing tupel (Container, raw memory).
+                map<uint64_t, RawMemoryBufferEntry> m_rawMemoryBuffer;
         };
 
     } // player

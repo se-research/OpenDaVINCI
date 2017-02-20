@@ -34,12 +34,12 @@
 #include <opendavinci/odcore/exceptions/Exceptions.h>
 
 #include <opendavinci/odtools/player/PlayerListener.h>
-#include <opendavinci/odtools/player/RecMemIndex.h>
 
 namespace odtools {
     namespace player {
 
         class PlayerDelegate;
+        class RecMemIndex;
 
         using namespace std;
 

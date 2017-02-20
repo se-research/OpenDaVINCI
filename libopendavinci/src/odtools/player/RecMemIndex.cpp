@@ -23,10 +23,8 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
-#include <limits>
 #include <string>
 #include <thread>
-#include <utility>
 
 #include <opendavinci/odcore/base/Lock.h>
 #include <opendavinci/odcore/base/Thread.h>
@@ -42,12 +40,32 @@ namespace odtools {
         using namespace odcore::data;
         using namespace odcore::io;
 
-        RecMemIndexEntry::RecMemIndexEntry() : RecMemIndexEntry(0, 0) {}
+        ////////////////////////////////////////////////////////////////////////
 
-        RecMemIndexEntry::RecMemIndexEntry(const int64_t &sampleTimeStamp, const uint32_t &filePosition) :
-            m_sampleTimeStamp(sampleTimeStamp),
-            m_filePosition(filePosition),
-            m_available(false) {}
+        RawMemoryBufferEntry::RawMemoryBufferEntry() :
+            m_container(),
+            m_rawMemoryBuffer(NULL),
+            m_lengthOfRawMemoryBuffer(0) {}
+
+        RawMemoryBufferEntry::~RawMemoryBufferEntry() {
+            if ((NULL != m_rawMemoryBuffer) && (m_lengthOfRawMemoryBuffer > 0)) {
+                OPENDAVINCI_CORE_FREE_POINTER(m_rawMemoryBuffer);
+            }
+            m_rawMemoryBuffer = NULL;
+            m_lengthOfRawMemoryBuffer = 0;
+        }
+
+        RawMemoryBufferEntry::RawMemoryBufferEntry(const RawMemoryBufferEntry &obj) :
+            m_container(obj.m_container),
+            m_rawMemoryBuffer(obj.m_rawMemoryBuffer),
+            m_lengthOfRawMemoryBuffer(obj.m_lengthOfRawMemoryBuffer) {}
+
+        RawMemoryBufferEntry& RawMemoryBufferEntry::operator=(const RawMemoryBufferEntry &obj) {
+            m_container = obj.m_container;
+            m_rawMemoryBuffer = obj.m_rawMemoryBuffer;
+            m_lengthOfRawMemoryBuffer = obj.m_lengthOfRawMemoryBuffer;
+            return *this;
+        }
 
         ////////////////////////////////////////////////////////////////////////
 
@@ -57,22 +75,22 @@ namespace odtools {
             m_recMemFileValid(false),
             m_indexMutex(),
             m_index(),
-            m_sharedMemoryCacheFillingThreadIsRunningMutex(),
-            m_sharedMemoryCacheFillingThreadIsRunning(false),
-            m_sharedMemoryCacheFillingThread(),
-            m_sharedMemoryCache() {
+            m_rawMemoryBufferFillingThreadIsRunningMutex(),
+            m_rawMemoryBufferFillingThreadIsRunning(false),
+            m_rawMemoryBufferFillingThread(),
+            m_rawMemoryBuffer() {
             initializeIndex();
 
             // Start concurrent thread to manage the cache for shared memory dumps.
-            setSharedMemoryCacheFillingRunning(true);
-            m_sharedMemoryCacheFillingThread = std::thread(&RecMemIndex::manageSharedMemoryCache, this);
+            setRawMemoryBufferFillingRunning(true);
+            m_rawMemoryBufferFillingThread = std::thread(&RecMemIndex::manageRawMemoryBuffer, this);
         }
 
         RecMemIndex::~RecMemIndex() {
 cout << "Closing RecMemIndex" << endl;
             // Stop concurrent thread to manage cache.
-            setSharedMemoryCacheFillingRunning(false);
-            m_sharedMemoryCacheFillingThread.join();
+            setRawMemoryBufferFillingRunning(false);
+            m_rawMemoryBufferFillingThread.join();
 
             m_recMemFile.close();
         }
@@ -162,7 +180,7 @@ cout << "Closing RecMemIndex" << endl;
 //                    // Store the container in the container cache.
 //                    {
 //                        Lock l(m_indexMutex);
-//                        m_nextEntryToReadFromRecFile->second.m_available = m_sharedMemoryCache.emplace(std::make_pair(m_nextEntryToReadFromRecFile->second.m_filePosition, c)).second;
+//                        m_nextEntryToReadFromRecFile->second.m_available = m_rawMemoryBuffer.emplace(std::make_pair(m_nextEntryToReadFromRecFile->second.m_filePosition, c)).second;
 //                    }
 
 //                    m_nextEntryToReadFromRecFile++;
@@ -175,28 +193,28 @@ cout << "Closing RecMemIndex" << endl;
 
         ////////////////////////////////////////////////////////////////////////
 
-        void RecMemIndex::setSharedMemoryCacheFillingRunning(const bool &running) {
-            Lock l(m_sharedMemoryCacheFillingThreadIsRunningMutex);
-            m_sharedMemoryCacheFillingThreadIsRunning = running;
+        void RecMemIndex::setRawMemoryBufferFillingRunning(const bool &running) {
+            Lock l(m_rawMemoryBufferFillingThreadIsRunningMutex);
+            m_rawMemoryBufferFillingThreadIsRunning = running;
         }
 
-        bool RecMemIndex::isSharedMemoryCacheFillingRunning() const {
-            Lock l(m_sharedMemoryCacheFillingThreadIsRunningMutex);
-            return m_sharedMemoryCacheFillingThreadIsRunning;
+        bool RecMemIndex::isRawMemoryBufferFillingRunning() const {
+            Lock l(m_rawMemoryBufferFillingThreadIsRunningMutex);
+            return m_rawMemoryBufferFillingThreadIsRunning;
         }
 
-        void RecMemIndex::manageSharedMemoryCache() {
+        void RecMemIndex::manageRawMemoryBuffer() {
 //            uint32_t numberOfEntries = 0;
-            while (isSharedMemoryCacheFillingRunning()) {
+            while (isRawMemoryBufferFillingRunning()) {
 //                {
 //                    Lock l(m_indexMutex);
-//                    numberOfEntries = m_sharedMemoryCache.size();
+//                    numberOfEntries = m_rawMemoryBuffer.size();
 //                }
 //                // If filling level is around 25%, pour in 1.25 times the amount.
 //                if (numberOfEntries < 0.25*m_desiredInitialLevel) {
 //                    const uint32_t entriesReadFromFile = fillContainerCache(1.25 * m_desiredInitialLevel);
 //                    if (entriesReadFromFile > 0) {
-//                        clog << "[odtools::player::RecMemIndex]: Number of entries in cache: "  << numberOfEntries << ". " << entriesReadFromFile << " added to cache. " << m_sharedMemoryCache.size() << " entries available." << endl;
+//                        clog << "[odtools::player::RecMemIndex]: Number of entries in cache: "  << numberOfEntries << ". " << entriesReadFromFile << " added to cache. " << m_rawMemoryBuffer.size() << " entries available." << endl;
 //                    }
 //                }
                 // Manage cache at 10 Hz.

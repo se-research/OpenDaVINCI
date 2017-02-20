@@ -34,6 +34,7 @@
 
 #include <opendavinci/odtools/player/Player2.h>
 #include <opendavinci/odtools/player/PlayerDelegate.h>
+#include <opendavinci/odtools/player/RecMemIndex.h>
 
 namespace odtools {
     namespace player {
