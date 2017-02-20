@@ -94,8 +94,10 @@ namespace odtools {
                  *
                  * @param url Resource to play.
                  * @param autoRewind True if the file should be rewind at EOF.
+                 * @param memorySegmentSize Size of the memory segment to be used for buffering.
+                 * @param numberOfMemorySegments Number of memory segments to be used for buffering.
                  */
-                Player2(const odcore::io::URL &url, const bool &autoRewind);
+                Player2(const odcore::io::URL &url, const bool &autoRewind, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments);
 
                 virtual ~Player2();
 

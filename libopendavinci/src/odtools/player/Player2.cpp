@@ -54,7 +54,7 @@ namespace odtools {
 
         ////////////////////////////////////////////////////////////////////////
 
-        Player2::Player2(const URL &url, const bool &autoRewind) :
+        Player2::Player2(const URL &url, const bool &autoRewind, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments) :
             m_url(url),
             m_recFile(),
             m_recFileValid(false),
@@ -88,9 +88,9 @@ namespace odtools {
             m_containerCacheFillingThread = std::thread(&Player2::manageCache, this);
 
             // Try reading accompanying .rec.mem file.
-            if (m_recFileValid) {
+            if (m_recFileValid && ((memorySegmentSize * numberOfMemorySegments) > 0)) {
                 URL recMemFile("file://" + m_url.getResource() + ".mem");
-                m_recMemIndex = unique_ptr<RecMemIndex>(new RecMemIndex(recMemFile));
+                m_recMemIndex = unique_ptr<RecMemIndex>(new RecMemIndex(recMemFile, memorySegmentSize, numberOfMemorySegments));
             }
         }
 

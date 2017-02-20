@@ -69,7 +69,7 @@ namespace odtools {
 
         ////////////////////////////////////////////////////////////////////////
 
-        RecMemIndex::RecMemIndex(const URL &url) :
+        RecMemIndex::RecMemIndex(const URL &url, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments) :
             m_url(url),
             m_recMemFile(),
             m_recMemFileValid(false),
@@ -79,6 +79,7 @@ namespace odtools {
             m_rawMemoryBufferFillingThreadIsRunning(false),
             m_rawMemoryBufferFillingThread(),
             m_rawMemoryBuffer() {
+cout << "Acquiring " << numberOfMemorySegments << " of " << memorySegmentSize << " bytes." << endl;
             initializeIndex();
 
             // Start concurrent thread to manage the cache for shared memory dumps.

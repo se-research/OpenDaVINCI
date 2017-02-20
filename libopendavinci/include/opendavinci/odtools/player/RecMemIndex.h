@@ -86,8 +86,10 @@ namespace odtools {
                  * Constructor.
                  *
                  * @param url Resource to play.
+                 * @param memorySegmentSize Size of the memory segment to be used for buffering.
+                 * @param numberOfMemorySegments Number of memory segments to be used for buffering.
                  */
-                RecMemIndex(const odcore::io::URL &url);
+                RecMemIndex(const odcore::io::URL &url, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments);
 
                 virtual ~RecMemIndex();
 
