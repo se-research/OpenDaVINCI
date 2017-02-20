@@ -111,7 +111,7 @@ namespace odtools {
             private: // Data for the Player.
                 odcore::io::URL m_url;
 
-                // Handle to .rec file.
+                // Handle to .rec.mem file.
                 fstream m_recMemFile;
                 bool m_recMemFileValid;
 

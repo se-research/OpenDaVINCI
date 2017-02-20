@@ -88,8 +88,8 @@ namespace odtools {
 
             // Try reading accompanying .rec.mem file.
             if (m_recFileValid) {
-//                URL recMemFile("file:" + m_url.getResource() + ".mem");
-//                m_recMemIndex = unique_ptr<RecMemIndex>(new RecMemIndex(recMemFile));
+                URL recMemFile("file://" + m_url.getResource() + ".mem");
+                m_recMemIndex = unique_ptr<RecMemIndex>(new RecMemIndex(recMemFile));
             }
         }
 
@@ -152,7 +152,7 @@ namespace odtools {
 
                         const int32_t percentage = static_cast<int32_t>(static_cast<float>(m_recFile.tellg()*100.0)/static_cast<float>(fileLength));
                         if ( (percentage % 5 == 0) && (percentage != oldPercentage) ) {
-                            clog << "[odtools::player::Player2]: Indexed " << percentage << "%." << endl;
+                            clog << "[odtools::player::Player2]: Indexed " << percentage << "% from " << m_url.toString() << "." << endl;
                             oldPercentage = percentage;
                         }
                     }

@@ -126,7 +126,7 @@ cout << "Closing RecMemIndex" << endl;
 
                             const int32_t percentage = static_cast<int32_t>(static_cast<float>(m_recMemFile.tellg()*100.0)/static_cast<float>(fileLength));
                             if ( (percentage % 5 == 0) && (percentage != oldPercentage) ) {
-                                clog << "[odtools::player::RecMemIndex]: Indexed " << percentage << "%." << endl;
+                                clog << "[odtools::player::RecMemIndex]: Indexed " << percentage << "% from " << m_url.toString() << "." << endl;
                                 oldPercentage = percentage;
                             }
                         }
