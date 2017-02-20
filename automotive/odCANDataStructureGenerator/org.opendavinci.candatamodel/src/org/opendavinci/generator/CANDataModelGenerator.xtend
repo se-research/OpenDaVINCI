@@ -380,6 +380,7 @@ namespace canmapping {
         	«ENDFOR»
         	
         	std::map<uint64_t,uint64_t> m_payloads;
+            std::map<uint64_t,uint8_t> m_lengths;
         	std::vector<uint64_t> m_neededCanMessages;
         	uint64_t m_index;
         	
@@ -472,6 +473,7 @@ namespace canmapping {
 		m_«capitalizedName.toFirstLower»(0.0),
 		«ENDFOR»
 		m_payloads(),
+        m_lengths(),
 		m_neededCanMessages(),
 		m_index(0),
 		«"m_"+mapping.mappingName.toFirstLower.replaceAll("\\.", "_")»()
@@ -506,6 +508,7 @@ namespace canmapping {
 		odcore::base::Visitable(),
 		«FOR initialization:initializations»«initialization+","+'\n'»«ENDFOR»
 		m_payloads(),
+	    m_lengths(),
 		m_neededCanMessages(),
 		m_index(0),
 		«"m_"+mapping.mappingName.toFirstLower.replaceAll("\\.", "_")»()
@@ -651,32 +654,28 @@ namespace canmapping {
 	::automotive::GenericCANMessage «className»::encode(odcore::data::Container &c) 
 	{
 	«IF canIDs.size==0»
-        (void)c;
-        // Return an empty GenericCANMessage
-        cerr<<"Fatal Error: Mapping '«className»' is empty."<<endl;
-        ::automotive::odcantools::CANMessage error(0x00,0,0x00);
-        return error.getGenericCANMessage();
-    «ELSEIF canIDs.size>1»
-        (void)c;
-		cerr<<"Fatal Error: Mapping '«className»' is defined over more than one concrete CAN messages. "<<endl
-		<<"This functionality is not supported yet."<<endl;
-		::automotive::odcantools::CANMessage error(0x00,0,0x00);
-        return error.getGenericCANMessage();
-    «ELSEIF canIDs.size!=1»
-        (void)c;
-        cerr<<"Fatal Error: Mapping '«className»' experienced an error. "<<endl;
-        ::automotive::odcantools::CANMessage error(0x00,0,0x00);
-        return error.getGenericCANMessage();
+	(void)c;
+	// Return an empty GenericCANMessage
+	cerr<<"Fatal Error: Mapping '«className»' is empty."<<endl;
+	::automotive::odcantools::CANMessage error(0x00,0,0x00);
+	return error.getGenericCANMessage();
+    «ELSEIF canIDs.size<0»
+	(void)c;
+	cerr<<"Fatal Error: Mapping '«className»' experienced an error. "<<endl;
+	::automotive::odcantools::CANMessage error(0x00,0,0x00);
+	return error.getGenericCANMessage();
     «ELSE»
 
-		«var String cmName="CM_"+canIDs.get(0) /* there should be only 1 canID */»
-		::automotive::odcantools::CANMessage «cmName»(«canIDs.get(0)»,«mapping.payloadLength»,0x00);
+		«var String cmNamePrefix="CM_" /* multiple canIDs partially supported */»
+		«FOR id : canIDs»
+		::automotive::odcantools::CANMessage «cmNamePrefix+id»(«canIDs.get(0)»,«mapping.payloadLength»,0x00);
+		«ENDFOR»
 
 		if(c.getDataType() != ::«mapping.mappingName.replaceAll("\\.","::")»::ID())
 		{
 			// something went wrong
 			::automotive::odcantools::CANMessage error(0x00,0,0x00);
-	        return error.getGenericCANMessage();
+		    return error.getGenericCANMessage();
 		}
 
 		bool found, extracted, abort=false;
@@ -696,9 +695,9 @@ namespace canmapping {
 			double «varName» = msg.getValueFromScalarField<double>(«currentSignalInMapping.signalIdentifier», found, extracted);
 			
 			if(found && extracted) {
-                ::automotive::odcantools::CANSignal «currentSignalInMapping.cansignalname.replaceAll("\\.","_")»(«CurrentCANSignal.m_startBit»,«CurrentCANSignal.m_length»,"«CurrentCANSignal.m_signed»","«CurrentCANSignal.m_endian»",«CurrentCANSignal.m_multiplyBy»,«CurrentCANSignal.m_add»,«CurrentCANSignal.m_rangeStart»,«CurrentCANSignal.m_rangeEnd»);
-                «cmName».addSignal(«currentSignalInMapping.signalIdentifier»,«currentSignalInMapping.cansignalname.replaceAll("\\.","_")»);
-                «cmName».encodeSignal(«currentSignalInMapping.signalIdentifier»,«varName»);
+			    ::automotive::odcantools::CANSignal «currentSignalInMapping.cansignalname.replaceAll("\\.","_")»(«CurrentCANSignal.m_startBit»,«CurrentCANSignal.m_length»,"«CurrentCANSignal.m_signed»","«CurrentCANSignal.m_endian»",«CurrentCANSignal.m_multiplyBy»,«CurrentCANSignal.m_add»,«CurrentCANSignal.m_rangeStart»,«CurrentCANSignal.m_rangeEnd»);
+                «cmNamePrefix+CurrentCANSignal.m_CANID».addSignal(«currentSignalInMapping.signalIdentifier»,«currentSignalInMapping.cansignalname.replaceAll("\\.","_")»);
+                «cmNamePrefix+CurrentCANSignal.m_CANID».encodeSignal(«currentSignalInMapping.signalIdentifier»,«varName»);
 			}
 			else {
 				abort=true; // set to true and never reset to false to keep track of failures
@@ -712,13 +711,13 @@ namespace canmapping {
 		«ENDFOR»
 		
 		if(abort) { // if there was at least one failure
-    		// discard and return
-    		::automotive::odcantools::CANMessage error(0x00,0,0x00);
-	        return error.getGenericCANMessage();
+		    // discard and return
+		    ::automotive::odcantools::CANMessage error(0x00,0,0x00);
+		    return error.getGenericCANMessage();
 		}
 		
-		// return the CAN message
-		return «cmName».getGenericCANMessage();
+		// return the CAN message, or the first CAN message if the mapping is defined over multiple CAN messages
+		return «cmNamePrefix+canIDs.get(0)».getGenericCANMessage();
 	«ENDIF»
 	}
 
@@ -736,11 +735,7 @@ namespace canmapping {
         // Return an empty GenericCANMessage
         cerr<<"Fatal Error: Mapping '«className»' is empty."<<endl;
         return c;
-    «ELSEIF canIDs.size>1»
-        cerr<<"Fatal Error: Mapping '«className»' is defined over more than one concrete CAN messages. "<<endl
-        <<"This functionality is not supported yet."<<endl;
-        return c;
-    «ELSEIF canIDs.size!=1»
+    «ELSEIF canIDs.size<0»
         cerr<<"Fatal Error: Mapping '«className»' experienced an error. "<<endl;
         return c;
     «ELSE»
@@ -750,20 +745,22 @@ namespace canmapping {
 		«ENDIF»
 		switch(gcm.getIdentifier())
 		{
-    	«FOR id : canIDs /* there should only be 1 canID */»
+    	«FOR id : canIDs /* multiple canIDs supported */»
 
     		case «id» : 
     		«IF mapping.unordered!=null && mapping.unordered.compareTo("unordered")==0»
 
 	    	// since the order doesn't matter, store the payload in a map for future use replacing the current content held there
-	    	m_payloads[gcm.getIdentifier()] = gcm.getData();
+	    	m_payloads[«id»] = gcm.getData();
+	    	m_lengths[«id»] = gcm.getLength();
     		«ELSE»
 
 	    	// since the order matters:
 	    	if(m_neededCanMessages.at(m_index) == «id») // if we got the expected message
 	    	{
 	    		// Store the payload in a map for future use replacing the current content
-	    		m_payloads[«id»] = gcm.getData();
+	    	m_payloads[«id»] = gcm.getData();
+	    	m_lengths[«id»] = gcm.getLength();
 	    		// modularly increase the internal index
 	    		(m_index==m_neededCanMessages.size()-1) ? m_index=0 : ++m_index;
 	    	}
@@ -780,9 +777,11 @@ namespace canmapping {
 
 		if(reset)
 		{		
-			// reset the payloads map
+			// reset the payloads and lengths map
 			while(! m_payloads.empty())
 				m_payloads.erase(m_payloads.begin());
+		while(! m_lengths.empty())
+		    m_lengths.erase(m_lengths.begin());
 			// reset the internal index
 			m_index=0;
 		}
@@ -793,9 +792,11 @@ namespace canmapping {
 
 		// Create a generic message.
 		odcore::reflection::Message message;
-		
-        «var String cmName = "CM_"+canIDs.get(0)»
-        ::automotive::odcantools::CANMessage «cmName»(gcm.getIdentifier(),gcm.getLength(),m_payloads[gcm.getIdentifier()]);
+
+        «var String cmNamePrefix="CM_"»
+        «FOR id : canIDs /* multiple canIDs supported */»
+        ::automotive::odcantools::CANMessage «cmNamePrefix+id»(«id»,m_lengths[«id»],m_payloads[«id»]);
+        «ENDFOR»
 
 		«FOR currentSignalInMapping : mapping.mappings»
 			«var CANSignalDescription CurrentCANSignal=canSignals.get(currentSignalInMapping.cansignalname)»
@@ -811,11 +812,10 @@ namespace canmapping {
 
 			// addressing signal «currentSignalInMapping.cansignalname» : «currentSignalInMapping.signalIdentifier»
 			{
-				// Get the raw payload.
-				//uint64_t data = m_payloads[«CurrentCANSignal.m_CANID»];
+				// Add the CAN signal to the CAN message
 				::automotive::odcantools::CANSignal «currentSignalInMapping.cansignalname.replaceAll("\\.","_")»(«CurrentCANSignal.m_startBit»,«CurrentCANSignal.m_length»,"«CurrentCANSignal.m_signed»","«CurrentCANSignal.m_endian»",«CurrentCANSignal.m_multiplyBy»,«CurrentCANSignal.m_add»,«CurrentCANSignal.m_rangeStart»,«CurrentCANSignal.m_rangeEnd»);
-                «cmName».addSignal(«currentSignalInMapping.signalIdentifier»,«currentSignalInMapping.cansignalname.replaceAll("\\.","_")»);
-                «memberVarName»=«cmName».decodeSignal(«currentSignalInMapping.signalIdentifier»);
+                «cmNamePrefix+CurrentCANSignal.m_CANID».addSignal(«currentSignalInMapping.signalIdentifier»,«currentSignalInMapping.cansignalname.replaceAll("\\.","_")»);
+                «memberVarName»=«cmNamePrefix+CurrentCANSignal.m_CANID».decodeSignal(«currentSignalInMapping.signalIdentifier»);
 
 				// Create a field for a generic message.
 				odcore::reflection::Field<double> *f = new odcore::reflection::Field<double>(«memberVarName»);
