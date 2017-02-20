@@ -77,7 +77,7 @@ clog << "Cleaning entry" << endl;
             m_recMemFileValid(false),
             m_indexMutex(),
             m_index(),
-            m_entryToReadFromRecMemFile(),
+            m_nextEntryToReadFromRecMemFile(),
             m_rawMemoryBuffer(),
             m_unusedEntriesFromRawMemoryBuffer(),
             m_usedEntriesFromRawMemoryBuffer(),
@@ -132,7 +132,6 @@ clog << "Cleaning entry" << endl;
                 // available data. The actual reading of shared memory
                 // dumps is deferred.
                 uint64_t totalBytesRead = 0;
-                const bool IS_FROM_SHAREDMEMORY = true;
                 const TimeStamp BEFORE;
                 {
                     int32_t oldPercentage = -1;
@@ -163,7 +162,7 @@ clog << "Cleaning entry" << endl;
 
                             // Store pointer to Container in m_recMemFile ordered by sample time stamp.
                             m_index.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(),
-                                                           IndexEntry(c.getSampleTimeStamp().toMicroseconds(), POS_BEFORE, IS_FROM_SHAREDMEMORY)));
+                                                           IndexEntry(c.getSampleTimeStamp().toMicroseconds(), POS_BEFORE, bytesToSkip)));
 
                             const int32_t percentage = static_cast<int32_t>(static_cast<float>(m_recMemFile.tellg()*100.0)/static_cast<float>(fileLength));
                             if ( (percentage % 5 == 0) && (percentage != oldPercentage) ) {
@@ -177,7 +176,7 @@ clog << "Cleaning entry" << endl;
 
                 // Reset pointer to beginning of the .rec.mem file.
                 if (m_recMemFileValid) {
-                    m_entryToReadFromRecMemFile = m_index.begin();
+                    m_nextEntryToReadFromRecMemFile = m_index.begin();
 
                     clog << "[odtools::player::RecMemIndex]: " << m_url.getResource()
                                           << " contains " << m_index.size() << " entries; "
@@ -200,13 +199,37 @@ clog << "Cleaning entry" << endl;
         }
 
         void RecMemIndex::manageRawMemoryBuffer() {
+            uint32_t entriesReadFromFile = 0;
             do {
-                {
+                if (m_recMemFileValid) {
                     Lock l(m_indexMutex);
-//                    numberOfEntries = m_rawMemoryBuffer.size();
-                    // Store mapping .rec file position --> index entry.
-//                    m_index.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(),
-//                                                   RecMemIndexEntry(c.getSampleTimeStamp().toMicroseconds(), POS_BEFORE)));
+                    while (!m_unusedEntriesFromRawMemoryBuffer.empty()) {
+                        // Always auto-rewind.
+                        if (m_nextEntryToReadFromRecMemFile == m_index.end()) {
+                            m_nextEntryToReadFromRecMemFile = m_index.begin();
+                        }
+
+                        // Find entry in .rec.mem file.
+                        m_recMemFile.seekg(m_nextEntryToReadFromRecMemFile->second.m_filePosition);
+
+                        // Get and remove next available entry from unsedRawBuffer.
+                        shared_ptr<RawMemoryBufferEntry> entry = m_unusedEntriesFromRawMemoryBuffer.back();
+                        m_unusedEntriesFromRawMemoryBuffer.pop_back();
+
+                        // Read data from .rec.mem file.
+                        m_recMemFile >> entry->m_container;
+                        m_recMemFile.read(entry->m_rawMemoryBuffer,
+                                          std::min(m_nextEntryToReadFromRecMemFile->second.m_entrySize, entry->m_lengthOfRawMemoryBuffer));
+                        entriesReadFromFile++;
+
+                        // Enque read entry into list of available entries.
+                        m_usedEntriesFromRawMemoryBuffer.push_front(entry);
+
+                        m_nextEntryToReadFromRecMemFile->second.m_available = true;
+                    }
+                }
+                if (entriesReadFromFile > 0) {
+                    clog << "[odtools::player::RecMemIndex]: " << entriesReadFromFile << " entries read from file." << endl;
                 }
                 // Manage cache at 10 Hz.
                 Thread::usleepFor(100 * RecMemIndex::ONE_MILLISECOND_IN_MICROSECONDS);

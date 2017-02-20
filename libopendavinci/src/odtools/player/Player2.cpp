@@ -46,15 +46,15 @@ namespace odtools {
         using namespace odcore::io;
 
         IndexEntry::IndexEntry() :
-            IndexEntry(0, 0, false) {}
+            IndexEntry(0, 0, 0) {}
 
         IndexEntry::IndexEntry(const int64_t &sampleTimeStamp, const uint64_t &filePosition) :
-            IndexEntry(sampleTimeStamp, filePosition, false) {}
+            IndexEntry(sampleTimeStamp, filePosition, 0) {}
 
-        IndexEntry::IndexEntry(const int64_t &sampleTimeStamp, const uint64_t &filePosition, const bool &isFromSharedMemory) :
+        IndexEntry::IndexEntry(const int64_t &sampleTimeStamp, const uint64_t &filePosition, const uint64_t &entrySize) :
             m_sampleTimeStamp(sampleTimeStamp),
             m_filePosition(filePosition),
-            m_isFromSharedMemory(isFromSharedMemory),
+            m_entrySize(entrySize),
             m_available(false) {}
 
         ////////////////////////////////////////////////////////////////////////
@@ -266,6 +266,9 @@ namespace odtools {
 
             Lock l(m_indexMutex);
             Container &nextContainer = m_containerCache[m_currentContainerToReplay->second.m_filePosition];
+
+// TODO: Peek m_index from .rec.mem file to see whether to replay this container of the one from the .rec.mem file.
+
             Container retVal;
 
             // Check if there is a PlayerDelegate registered for this container.
