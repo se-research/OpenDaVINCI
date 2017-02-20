@@ -102,15 +102,6 @@ namespace odtools {
                  */
                 void initializeIndex();
 
-                /**
-                 * This method actually fills the cache by trying to read up
-                 * to maxNumberOfEntriesToReadFromFile from the rec file.
-                 *
-                 * @param maxNumberOfEntriesToReadFromFile Maximum number of entries to be read from file.
-                 * @return Number of entries read from file.
-                 */
-                uint32_t fillContainerCache(const uint32_t &maxNumberOfEntriesToReadFromFile);
-
             private: // File handle for the RecMemIndex.
                 odcore::io::URL m_url;
 
@@ -122,6 +113,7 @@ namespace odtools {
                 // Global index: Mapping SampleTimeStamp --> cache entry (holding the actual content from .rec, .rec.mem, or .h264 file)
                 mutable odcore::base::Mutex m_indexMutex;
                 multimap<int64_t, IndexEntry> m_index;
+                multimap<int64_t, IndexEntry>::iterator m_entryToReadFromRecMemFile;
 
                 // Mapping of pos_type (within .rec.mem file) --> meta-entry describing tupel (Container, raw memory).
                 map<uint64_t, shared_ptr<RawMemoryBufferEntry> > m_rawMemoryBuffer;

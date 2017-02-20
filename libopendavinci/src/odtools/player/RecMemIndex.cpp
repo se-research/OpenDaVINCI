@@ -77,6 +77,7 @@ clog << "Cleaning entry" << endl;
             m_recMemFileValid(false),
             m_indexMutex(),
             m_index(),
+            m_entryToReadFromRecMemFile(),
             m_rawMemoryBuffer(),
             m_unusedEntriesFromRawMemoryBuffer(),
             m_usedEntriesFromRawMemoryBuffer(),
@@ -93,6 +94,9 @@ clog << "Cleaning entry" << endl;
             clog << "done." << endl;
 
             initializeIndex();
+
+            // Fill raw buffer.
+            manageRawMemoryBuffer();
 
             // Start concurrent thread to manage the cache for shared memory dumps.
             setRawMemoryBufferFillingRunning(true);
@@ -156,9 +160,9 @@ clog << "Cleaning entry" << endl;
                             m_recMemFile.seekg(CURRENT_POSITION_IN_RECMEM_FILE + bytesToSkip);
                             totalBytesRead += bytesToSkip;
 
-//                            // Store mapping .rec file position --> index entry.
-//                            m_index.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(),
-//                                                           RecMemIndexEntry(c.getSampleTimeStamp().toMicroseconds(), POS_BEFORE)));
+                            // Store pointer to Container in m_recMemFile ordered by sample time stamp.
+                            m_index.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(),
+                                                           IndexEntry(c.getSampleTimeStamp().toMicroseconds(), POS_BEFORE)));
 
                             const int32_t percentage = static_cast<int32_t>(static_cast<float>(m_recMemFile.tellg()*100.0)/static_cast<float>(fileLength));
                             if ( (percentage % 5 == 0) && (percentage != oldPercentage) ) {
@@ -172,41 +176,14 @@ clog << "Cleaning entry" << endl;
 
                 // Reset pointer to beginning of the .rec.mem file.
                 if (m_recMemFileValid) {
+                    m_entryToReadFromRecMemFile = m_index.begin();
+
                     clog << "[odtools::player::RecMemIndex]: " << m_url.getResource()
-//                                          << " contains " << m_index.size() << " entries; "
+                                          << " contains " << m_index.size() << " entries; "
                                           << "read " << totalBytesRead << " bytes "
                                           << "took " << (AFTER-BEFORE).toMicroseconds()/(1000.0*1000.0) << "s." << endl;
                 }
             }
-        }
-
-        uint32_t RecMemIndex::fillContainerCache(const uint32_t &maxNumberOfEntriesToReadFromFile) {
-            uint32_t entriesReadFromFile = 0;
-            if (m_recMemFileValid && (maxNumberOfEntriesToReadFromFile > 0)) {
-//                // Reset any fstream's error states.
-//                m_recMemFile.clear();
-
-//                while ( (m_nextEntryToReadFromRecFile != m_index.end())
-//                     && (entriesReadFromFile < maxNumberOfEntriesToReadFromFile) ) {
-//                    // Move to corresponding position in the .rec file.
-//                    m_recMemFile.seekg(m_nextEntryToReadFromRecFile->second.m_filePosition);
-
-//                    // Read the corresponding container.
-//                    Container c;
-//                    m_recMemFile >> c;
-
-//                    // Store the container in the container cache.
-//                    {
-//                        Lock l(m_indexMutex);
-//                        m_nextEntryToReadFromRecFile->second.m_available = m_rawMemoryBuffer.emplace(std::make_pair(m_nextEntryToReadFromRecFile->second.m_filePosition, c)).second;
-//                    }
-
-//                    m_nextEntryToReadFromRecFile++;
-//                    entriesReadFromFile++;
-//                }
-            }
-
-            return entriesReadFromFile;
         }
 
         ////////////////////////////////////////////////////////////////////////
@@ -222,22 +199,17 @@ clog << "Cleaning entry" << endl;
         }
 
         void RecMemIndex::manageRawMemoryBuffer() {
-//            uint32_t numberOfEntries = 0;
-            while (isRawMemoryBufferFillingRunning()) {
-//                {
-//                    Lock l(m_indexMutex);
+            do {
+                {
+                    Lock l(m_indexMutex);
 //                    numberOfEntries = m_rawMemoryBuffer.size();
-//                }
-//                // If filling level is around 25%, pour in 1.25 times the amount.
-//                if (numberOfEntries < 0.25*m_desiredInitialLevel) {
-//                    const uint32_t entriesReadFromFile = fillContainerCache(1.25 * m_desiredInitialLevel);
-//                    if (entriesReadFromFile > 0) {
-//                        clog << "[odtools::player::RecMemIndex]: Number of entries in cache: "  << numberOfEntries << ". " << entriesReadFromFile << " added to cache. " << m_rawMemoryBuffer.size() << " entries available." << endl;
-//                    }
-//                }
+                    // Store mapping .rec file position --> index entry.
+//                    m_index.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(),
+//                                                   RecMemIndexEntry(c.getSampleTimeStamp().toMicroseconds(), POS_BEFORE)));
+                }
                 // Manage cache at 10 Hz.
                 Thread::usleepFor(100 * RecMemIndex::ONE_MILLISECOND_IN_MICROSECONDS);
-            }
+            } while (isRawMemoryBufferFillingRunning());
         }
 
     } // player
