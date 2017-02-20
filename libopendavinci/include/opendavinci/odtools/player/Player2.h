@@ -53,13 +53,14 @@ namespace odtools {
         };
 
         /**
-         * This class can be used to read previously recorded
-         * data from a given URL.
+         * This class can be used to replay previously recorded data and return
+         * the contained containers to be relayed into a ContainerConference.
          */
         class OPENDAVINCI_API Player2 {
             private:
                 enum {
-                    ONE_SECOND_IN_MICROSECONDS = 1000 *1000,
+                    ONE_MILLISECOND_IN_MICROSECONDS = 1000,
+                    ONE_SECOND_IN_MICROSECONDS = 1000 *ONE_MILLISECOND_IN_MICROSECONDS,
                     MAX_DELAY_IN_MICROSECONDS = 5 * ONE_SECOND_IN_MICROSECONDS,
                     LOOK_AHEAD_IN_S = 30,
                     MIN_ENTRIES_FOR_LOOK_AHEAD = 5000,

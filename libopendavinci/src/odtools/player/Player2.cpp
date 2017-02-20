@@ -142,7 +142,7 @@ namespace odtools {
 
                         const int32_t percentage = static_cast<int32_t>(static_cast<float>(m_recFile.tellg()*100.0)/static_cast<float>(fileLength));
                         if ( (percentage % 5 == 0) && (percentage != oldPercentage) ) {
-                            clog << "[Player2]: Indexed " << percentage << "%." << endl;
+                            clog << "[odtools::player::Player2]: Indexed " << percentage << "%." << endl;
                             oldPercentage = percentage;
                         }
                     }
@@ -155,7 +155,7 @@ namespace odtools {
                 // Compute throughput for reading from file.
                 m_containerReadFromFileThroughput = std::ceil(m_index.size()*static_cast<float>(Player2::ONE_SECOND_IN_MICROSECONDS)/(AFTER-BEFORE).toMicroseconds());
 
-                clog << "[Player2]: " << m_url.getResource()
+                clog << "[odtools::player::Player2]: " << m_url.getResource()
                                       << " contains " << m_index.size() << " entries; "
                                       << "read " << totalBytesRead << " bytes ("
                                       << m_containerReadFromFileThroughput << " entries/s)." << endl;
@@ -192,7 +192,7 @@ namespace odtools {
                 m_desiredInitialLevel = std::max<uint32_t>(ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY * Player2::LOOK_AHEAD_IN_S,
                                                            MIN_ENTRIES_FOR_LOOK_AHEAD);
 
-                clog << "[Player2]: Initializing cache with " << m_desiredInitialLevel << " entries." << endl;
+                clog << "[odtools::player::Player2]: Initializing cache with " << m_desiredInitialLevel << " entries." << endl;
 
                 resetCaches();
                 resetIterators();
@@ -230,7 +230,7 @@ namespace odtools {
         }
 
         void Player2::checkForEndOfIndexAndThrowExceptionOrAutoRewind() throw (odcore::exceptions::ArrayIndexOutOfBoundsException) {
-            // If at "EOF", either throw exception of autorewind.
+            // If at "EOF", either throw exception or autorewind.
             if (m_currentContainerToReplay == m_index.end()) {
                 if (!m_autoRewind) {
                     OPENDAVINCI_CORE_THROW_EXCEPTION(ArrayIndexOutOfBoundsException, "m_currentContainerToReplay != m_index.end() failed.");
@@ -302,7 +302,7 @@ namespace odtools {
                     numberOfEntries = m_containerCache.size();
                 }
                 if (0 == numberOfEntries) {
-                    Thread::usleepFor(10 * 1000);
+                    Thread::usleepFor(10 * Player2::ONE_MILLISECOND_IN_MICROSECONDS);
                 }
             }
             while (0 == numberOfEntries);
@@ -310,7 +310,7 @@ namespace odtools {
 
         uint32_t Player2::getDelay() const {
             Lock l(m_indexMutex);
-            // Make sure that delay is not exceeding 10s.
+            // Make sure that delay is not exceeding the specified maximum delay.
             return std::min<uint32_t>(m_delay, Player2::MAX_DELAY_IN_MICROSECONDS);
         }
 
@@ -353,15 +353,15 @@ namespace odtools {
                     Lock l(m_indexMutex);
                     numberOfEntries = m_containerCache.size();
                 }
-                // If filling level is around 25%, pour in two times the amount.
+                // If filling level is around 25%, pour in 1.25 times the amount.
                 if (numberOfEntries < 0.25*m_desiredInitialLevel) {
                     const uint32_t entriesReadFromFile = fillContainerCache(1.25 * m_desiredInitialLevel);
                     if (entriesReadFromFile > 0) {
-                        clog << "[Player2]: Number of entries in cache: "  << numberOfEntries << ". " << entriesReadFromFile << " added to cache. " << m_containerCache.size() << " entries available." << endl;
+                        clog << "[odtools::player::Player2]: Number of entries in cache: "  << numberOfEntries << ". " << entriesReadFromFile << " added to cache. " << m_containerCache.size() << " entries available." << endl;
                     }
                 }
                 // Manage cache at 4 Hz.
-                Thread::usleepFor(250 * 1000);
+                Thread::usleepFor(250 * Player2::ONE_MILLISECOND_IN_MICROSECONDS);
             }
         }
 
