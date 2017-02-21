@@ -135,18 +135,46 @@ namespace odrecinspect {
                             // Was this container seen before?
                             if (m_overview.count(c.getDataType()) == 0) {
                                 e[c.getSenderStamp()].m_numberOfContainersPerType = 0;
+                                e[c.getSenderStamp()].m_minDurationBetweenSamplesPerType = 1000 * 1000 * 60;
+                                e[c.getSenderStamp()].m_maxDurationBetweenSamplesPerType = 0;
                                 m_overview[c.getDataType()] = e;
                             }
                             // Was this container's sender stamp seen before?
                             e = m_overview[c.getDataType()];
                             if (e.count(c.getSenderStamp()) == 0) {
                                 e[c.getSenderStamp()].m_numberOfContainersPerType = 0;
+                                e[c.getSenderStamp()].m_minDurationBetweenSamplesPerType = 1000 * 1000 * 60;
+                                e[c.getSenderStamp()].m_maxDurationBetweenSamplesPerType = 0;
                                 m_overview[c.getDataType()] = e;
                             }
                             // Adjust data for ContainerEntry for (DataType, SenderStamp).
                             e = m_overview[c.getDataType()];
                             e[c.getSenderStamp()].m_numberOfContainersPerType++;
+
+                            if (e[c.getSenderStamp()].m_latestContainersPerType.getDataType() > 0) {
+                                TimeStamp duration = c.getSampleTimeStamp() - e[c.getSenderStamp()].m_latestContainersPerType.getSampleTimeStamp();
+                                const uint64_t durationInMicroseconds = abs(duration.toMicroseconds());
+                                const double d = durationInMicroseconds / 1000.0;
+
+                                e[c.getSenderStamp()].m_minDurationBetweenSamplesPerType = (e[c.getSenderStamp()].m_minDurationBetweenSamplesPerType > d) ? d : e[c.getSenderStamp()].m_minDurationBetweenSamplesPerType;
+
+                                vector<uint64_t> l = e[c.getSenderStamp()].m_avgDurationBetweenSamplesPerType;
+                                l.push_back(durationInMicroseconds);
+                                e[c.getSenderStamp()].m_avgDurationBetweenSamplesPerType = l;
+
+cout << "1 = " << e[c.getSenderStamp()].m_maxDurationBetweenSamplesPerType << " ";
+                                e[c.getSenderStamp()].m_maxDurationBetweenSamplesPerType = (e[c.getSenderStamp()].m_maxDurationBetweenSamplesPerType < d) ? d : e[c.getSenderStamp()].m_maxDurationBetweenSamplesPerType;
+cout << "2 = " << e[c.getSenderStamp()].m_maxDurationBetweenSamplesPerType << endl;
+
+                                e[c.getSenderStamp()].m_numberOfContainersInIncorrectTemporalOrderPerType += ((c.getSampleTimeStamp().toMicroseconds() - e[c.getSenderStamp()].m_latestContainersPerType.getSampleTimeStamp().toMicroseconds()) < 0);
+                            }
+                            else {
+                                e[c.getSenderStamp()].m_numberOfContainersInIncorrectTemporalOrderPerType = 0;
+                                vector<uint64_t> l;
+                                e[c.getSenderStamp()].m_avgDurationBetweenSamplesPerType = l;
+                            }
                             e[c.getSenderStamp()].m_latestContainersPerType = c;
+
 
                             // Save overview.
                             m_overview[c.getDataType()] = e;
@@ -229,26 +257,24 @@ namespace odrecinspect {
                     for(auto it = m_overview.begin(); it != m_overview.end(); it++) {
                         map<uint32_t, ContainerEntry> e = it->second;
                         for(auto jt = e.begin(); jt != e.end(); jt++) {
-                            cout << "[RecInspect]: Container type " << it->first << "/" << jt->first << ", entries = " << jt->second.m_numberOfContainersPerType << endl;
+                            // Compute average and stddev:
+                            const double average = accumulate(jt->second.m_avgDurationBetweenSamplesPerType.begin(), jt->second.m_avgDurationBetweenSamplesPerType.end(), 0.0)/jt->second.m_avgDurationBetweenSamplesPerType.size();
+
+                            vector<double> diff(jt->second.m_avgDurationBetweenSamplesPerType.size());
+                            transform(jt->second.m_avgDurationBetweenSamplesPerType.begin(), jt->second.m_avgDurationBetweenSamplesPerType.end(), diff.begin(), bind2nd(minus<double>(), average));
+                            const double sqSum = inner_product(diff.begin(), diff.end(), diff.begin(), 0.0);
+                            const double stddev = sqrt(sqSum/static_cast<double>(jt->second.m_avgDurationBetweenSamplesPerType.size()));
+
+                            cout << "[RecInspect]: Container type " << it->first << "/" << jt->first << ", entries = " << jt->second.m_numberOfContainersPerType;
+                            if (jt->second.m_numberOfContainersInIncorrectTemporalOrderPerType > 0) {
+                                cout << " (" << jt->second.m_numberOfContainersInIncorrectTemporalOrderPerType << " containers in non-monotonically increasing temporal order)";
+                            }
+                            cout << ", min = " << jt->second.m_minDurationBetweenSamplesPerType << " ms, avg = " << average/1000.0 << " ms, stddev = " << stddev/1000.0 << " ms, max = " << jt->second.m_maxDurationBetweenSamplesPerType << " ms." << endl;
+
+                            numberOfTotalContainers += jt->second.m_numberOfContainersPerType;
                         }
                     }
                     cout << "[RecInspect]: Found " << numberOfTotalContainers << " containers in total." << endl;
-//                    for(auto it = m_numberOfContainersPerType.begin(); it != m_numberOfContainersPerType.end(); ++it) {
-//                        // Compute average and stddev:
-//                        const double average = accumulate(m_avgDurationBetweenSamplesPerType[it->first].begin(), m_avgDurationBetweenSamplesPerType[it->first].end(), 0.0)/m_avgDurationBetweenSamplesPerType[it->first].size();
-
-//                        vector<double> diff(m_avgDurationBetweenSamplesPerType[it->first].size());
-//                        transform(m_avgDurationBetweenSamplesPerType[it->first].begin(), m_avgDurationBetweenSamplesPerType[it->first].end(), diff.begin(), bind2nd(minus<double>(), average));
-//                        const double sqSum = inner_product(diff.begin(), diff.end(), diff.begin(), 0.0);
-//                        const double stddev = sqrt(sqSum/static_cast<double>(m_avgDurationBetweenSamplesPerType[it->first].size()));
-
-//                        cout << "[RecInspect]: Container type " << it->first << ", entries = " << it->second;
-//                        if (m_numberOfContainersInIncorrectTemporalOrderPerType[it->first] > 0) {
-//                            cout << " (" << m_numberOfContainersInIncorrectTemporalOrderPerType[it->first] << " containers in non-monotonically increasing temporal order)";
-//                        }
-//                        cout << ", min = " << m_minDurationBetweenSamplesPerType[it->first] << " ms, avg = " << average/1000.0 << " ms, stddev = " << stddev/1000.0 << " ms, max = " << m_maxDurationBetweenSamplesPerType[it->first] << " ms." << endl;
-//                        numberOfTotalContainers += it->second;
-//                    }
 //                    cout << "[RecInspect]: Found " << numberOfTotalContainers << " containers in total (" << numberOfContainersInIncorrectTemporalOrder << " containers with different Container IDs in non-monotonically increasing temporal order); average duration for reading one container = " << m_processingTimePerContainer/static_cast<double>(numberOfTotalContainers) << " ms." << endl;
                 }
                 {
