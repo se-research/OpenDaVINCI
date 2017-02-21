@@ -84,15 +84,6 @@ namespace odrecinspect {
 
         private:
             std::map<int32_t, std::map<uint32_t, ContainerEntry> > m_overview;
-
-            std::map<int32_t, uint64_t> m_numberOfContainersPerType;
-            std::map<int32_t, odcore::data::Container> m_latestContainersPerType;
-            std::map<int32_t, uint32_t> m_numberOfContainersInIncorrectTemporalOrderPerType;
-
-            std::map<int32_t, double> m_minDurationBetweenSamplesPerType;
-            std::map<int32_t, std::vector<uint64_t> > m_avgDurationBetweenSamplesPerType;
-            std::map<int32_t, double> m_maxDurationBetweenSamplesPerType;
-
             double m_processingTimePerContainer;
     };
 
