@@ -73,6 +73,8 @@ namespace odrecinspect {
 
     RecInspect::RecInspect() :
         m_overview(),
+        m_firstContainer(),
+        m_lastContainer(),
         m_processingTimePerContainer(0) {}
 
     RecInspect::~RecInspect() {}
@@ -177,6 +179,25 @@ namespace odrecinspect {
                             m_overview[c.getDataType()] = e;
                         }
 
+                        // Store first/last containers to compute duration in recording.
+                        if (m_firstContainer.getSampleTimeStamp().toMicroseconds() == 0) {
+                            m_firstContainer = c;
+                        }
+                        else {
+                            if (m_firstContainer.getSampleTimeStamp().toMicroseconds() > c.getSampleTimeStamp().toMicroseconds()) {
+                                m_firstContainer = c;
+                            }
+                        }
+                        if (m_lastContainer.getSampleTimeStamp().toMicroseconds() == 0) {
+                            m_lastContainer = c;
+                        }
+                        else {
+                            if (m_lastContainer.getSampleTimeStamp().toMicroseconds() < c.getSampleTimeStamp().toMicroseconds()) {
+                                m_lastContainer = c;
+                            }
+                        }
+
+
                         // If the data is from SHARED_IMAGE, skip the raw data from the shared memory segment.
                         if (c.getDataType() == odcore::data::image::SharedImage::ID()) {
                             odcore::data::image::SharedImage si = c.getData<odcore::data::image::SharedImage>();
@@ -245,6 +266,10 @@ namespace odrecinspect {
                     }
                     cout << "[odrecinspect]: Found " << numberOfTotalContainers << " containers in total (" << numberOfContainersInIncorrectTemporalOrder << " containers with different Container IDs in non-monotonically increasing temporal order); average duration for reading one container = " << m_processingTimePerContainer/static_cast<double>(numberOfTotalContainers) << " ms." << endl;
                 }
+
+                // Print covered duration.
+                cout << "[RecInspect]: First container's sample time point: " << m_firstContainer.getSampleTimeStamp().getYYYYMMDD_HHMMSSms() << endl;
+                cout << "[RecInspect]: Last container's sample time point: " << m_lastContainer.getSampleTimeStamp().getYYYYMMDD_HHMMSSms() << endl;
             }
             else {
                 retVal = FILE_COULD_NOT_BE_OPENED;

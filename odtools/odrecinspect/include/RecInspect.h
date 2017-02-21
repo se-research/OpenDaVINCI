@@ -84,6 +84,10 @@ namespace odrecinspect {
 
         private:
             std::map<int32_t, std::map<uint32_t, ContainerEntry> > m_overview;
+
+            odcore::data::Container m_firstContainer;
+            odcore::data::Container m_lastContainer;
+
             double m_processingTimePerContainer;
     };
 
