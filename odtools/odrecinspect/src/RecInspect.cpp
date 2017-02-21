@@ -1,6 +1,6 @@
 /**
  * odrecinspect - Tool for inspecting recorded data
- * Copyright (C) 2014 - 2016 Christian Berger
+ * Copyright (C) 2014 - 2017 Christian Berger
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -147,16 +147,19 @@ namespace odrecinspect {
 
                             if (e[c.getSenderStamp()].m_latestContainersPerType.getDataType() > 0) {
                                 TimeStamp duration = c.getSampleTimeStamp() - e[c.getSenderStamp()].m_latestContainersPerType.getSampleTimeStamp();
-                                const uint64_t durationInMicroseconds = abs(duration.toMicroseconds());
-                                const double d = durationInMicroseconds / 1000.0;
+                                const int64_t ONE_HUNDRED_SECONDS = 100 * 1000 * 1000;
+                                if (duration.toMicroseconds() < ONE_HUNDRED_SECONDS) {
+                                    const uint64_t durationInMicroseconds = abs(duration.toMicroseconds());
+                                    const double d = durationInMicroseconds / 1000.0;
 
-                                e[c.getSenderStamp()].m_minDurationBetweenSamplesPerType = (e[c.getSenderStamp()].m_minDurationBetweenSamplesPerType > d) ? d : e[c.getSenderStamp()].m_minDurationBetweenSamplesPerType;
+                                    e[c.getSenderStamp()].m_minDurationBetweenSamplesPerType = (e[c.getSenderStamp()].m_minDurationBetweenSamplesPerType > d) ? d : e[c.getSenderStamp()].m_minDurationBetweenSamplesPerType;
 
-                                vector<uint64_t> l = e[c.getSenderStamp()].m_avgDurationBetweenSamplesPerType;
-                                l.push_back(durationInMicroseconds);
-                                e[c.getSenderStamp()].m_avgDurationBetweenSamplesPerType = l;
+                                    vector<uint64_t> l = e[c.getSenderStamp()].m_avgDurationBetweenSamplesPerType;
+                                    l.push_back(durationInMicroseconds);
+                                    e[c.getSenderStamp()].m_avgDurationBetweenSamplesPerType = l;
 
-                                e[c.getSenderStamp()].m_maxDurationBetweenSamplesPerType = (e[c.getSenderStamp()].m_maxDurationBetweenSamplesPerType < d) ? d : e[c.getSenderStamp()].m_maxDurationBetweenSamplesPerType;
+                                    e[c.getSenderStamp()].m_maxDurationBetweenSamplesPerType = (e[c.getSenderStamp()].m_maxDurationBetweenSamplesPerType < d) ? d : e[c.getSenderStamp()].m_maxDurationBetweenSamplesPerType;
+                                }
 
                                 e[c.getSenderStamp()].m_numberOfContainersInIncorrectTemporalOrderPerType += ((c.getSampleTimeStamp().toMicroseconds() - e[c.getSenderStamp()].m_latestContainersPerType.getSampleTimeStamp().toMicroseconds()) < 0);
 
@@ -173,7 +176,6 @@ namespace odrecinspect {
                             // Save overview.
                             m_overview[c.getDataType()] = e;
                         }
-
 
                         // If the data is from SHARED_IMAGE, skip the raw data from the shared memory segment.
                         if (c.getDataType() == odcore::data::image::SharedImage::ID()) {
@@ -207,17 +209,17 @@ namespace odrecinspect {
                         float percentage = (float)(currPos*100.0)/(float)length;
 
                         if ( ((int32_t)percentage % 5 == 0) && ((int32_t)percentage != oldPercentage) ) {
-                            cout << "[RecInspect]: " << (int32_t)percentage << "% (" << currPos << "/" << length << " bytes processed)." << endl;
+                            cout << "[odrecinspect]: " << (int32_t)percentage << "% (" << currPos << "/" << length << " bytes processed)." << endl;
                             oldPercentage = (int32_t)percentage;
                         }
                     }
                 }
                 TimeStamp afterProcessing;
                 TimeStamp durationProcessing = (afterProcessing - beforeProcessing);
-                cout << "[RecInspect]: 100% (" << length << "/" << length << " bytes processed)." << endl;
+                cout << "[odrecinspect]: 100% (" << length << "/" << length << " bytes processed)." << endl;
                 const double lengthInMB = (static_cast<double>(length)/(1000.0*1000.0));
                 const double durationInSeconds = (static_cast<double>(durationProcessing.toMicroseconds())/(1000.0*1000.0));
-                cout << "[RecInspect]: Processing took " << durationProcessing.toMicroseconds()/1000 << " ms (" << (lengthInMB/durationInSeconds) << " MB/s)." << endl;
+                cout << "[odrecinspect]: Processing took " << durationProcessing.toMicroseconds()/1000 << " ms (" << (lengthInMB/durationInSeconds) << " MB/s)." << endl;
 
                 {
                     uint32_t numberOfTotalContainers = 0;
@@ -231,19 +233,17 @@ namespace odrecinspect {
                             transform(jt->second.m_avgDurationBetweenSamplesPerType.begin(), jt->second.m_avgDurationBetweenSamplesPerType.end(), diff.begin(), bind2nd(minus<double>(), average));
                             const double sqSum = inner_product(diff.begin(), diff.end(), diff.begin(), 0.0);
                             const double stddev = sqrt(sqSum/static_cast<double>(jt->second.m_avgDurationBetweenSamplesPerType.size()));
-                            (void)stddev;
 
-                            cout << "[RecInspect]: Container type " << it->first << "/" << jt->first << ", entries = " << jt->second.m_numberOfContainersPerType;
+                            cout << "[odrecinspect]: Container type " << it->first << "/" << jt->first << ", entries = " << jt->second.m_numberOfContainersPerType;
                             if (jt->second.m_numberOfContainersInIncorrectTemporalOrderPerType > 0) {
                                 cout << " (" << jt->second.m_numberOfContainersInIncorrectTemporalOrderPerType << " containers in non-monotonically increasing temporal order)";
                             }
-//                            cout << ", min = " << jt->second.m_minDurationBetweenSamplesPerType << " ms, avg = " << average/1000.0 << " ms, stddev = " << stddev/1000.0 << " ms, max = " << jt->second.m_maxDurationBetweenSamplesPerType << " ms." << endl;
-                            cout << endl;
+                            cout << ", min = " << jt->second.m_minDurationBetweenSamplesPerType << " ms, avg = " << average/1000.0 << " ms, stddev = " << stddev/1000.0 << " ms, max = " << jt->second.m_maxDurationBetweenSamplesPerType << " ms." << endl;
 
                             numberOfTotalContainers += jt->second.m_numberOfContainersPerType;
                         }
                     }
-                    cout << "[RecInspect]: Found " << numberOfTotalContainers << " containers in total (" << numberOfContainersInIncorrectTemporalOrder << " containers with different Container IDs in non-monotonically increasing temporal order); average duration for reading one container = " << m_processingTimePerContainer/static_cast<double>(numberOfTotalContainers) << " ms." << endl;
+                    cout << "[odrecinspect]: Found " << numberOfTotalContainers << " containers in total (" << numberOfContainersInIncorrectTemporalOrder << " containers with different Container IDs in non-monotonically increasing temporal order); average duration for reading one container = " << m_processingTimePerContainer/static_cast<double>(numberOfTotalContainers) << " ms." << endl;
                 }
             }
             else {
