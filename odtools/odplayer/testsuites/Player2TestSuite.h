@@ -788,6 +788,9 @@ class PlayerModule2Test : public CxxTest::TestSuite {
                 Thread::usleepFor(p2.getDelay());
                 counter++;
             }
+            // Ensure that all containers have been replayed.
+            TS_ASSERT(11 == counter);
+
             TimeStamp after;
             cout << "Duration = " << (after - before).toMicroseconds() << endl;
 
@@ -805,7 +808,6 @@ class PlayerModule2Test : public CxxTest::TestSuite {
             UNLINK("PlayerModule2Test.rec");
             UNLINK("PlayerModule2Test.rec.mem");
         }
-
 
         void testCorrectMonotonicTemporalOrderAndExceptionFromReverseOrderWithExceptionSharedDataTenSegments() {
             cout << __FILE__ << " " << __LINE__ << endl;
@@ -1024,6 +1026,188 @@ class PlayerModule2Test : public CxxTest::TestSuite {
                 Thread::usleepFor(p2.getDelay());
                 counter++;
             }
+            // Ensure that all containers have been replayed.
+            TS_ASSERT(11 == counter);
+
+            TimeStamp after;
+            cout << "Duration = " << (after - before).toMicroseconds() << endl;
+
+            bool exceptionCaught = false;
+            try {
+                const Container& c55 = p2.getNextContainerToBeSent();
+                (void)c55;
+            }
+            catch(...) {
+                exceptionCaught = true;
+            }
+
+            TS_ASSERT(exceptionCaught);
+
+            UNLINK("PlayerModule2Test.rec");
+            UNLINK("PlayerModule2Test.rec.mem");
+        }
+
+        void testCorrectMonotonicTemporalOrderAndExceptionFromReverseOrderWithExceptionSharedDataTwoSegmentsEmptyRecFile() {
+            cout << __FILE__ << " " << __LINE__ << endl;
+            UNLINK("PlayerModule2Test.rec");
+            UNLINK("PlayerModule2Test.rec.mem");
+
+            // Prepare .rec file.
+            {
+                fstream fout("PlayerModule2Test.rec", ios::out | ios::binary | ios::trunc);
+                fout.flush();
+                fout.close();
+            }
+
+            // Prepare .rec.mem file.
+            string data0("5BCDEFGHIJ");
+            string data1("4BCDEFGHIJ");
+            string data2("3BCDEFGHIJ");
+            string data3("2BCDEFGHIJ");
+            string data4("1BCDEFGHIJ");
+            {
+                fstream fout("PlayerModule2Test.rec.mem", ios::out | ios::binary | ios::trunc);
+
+                // Write data with non-monotonic order.
+                TimeStamp ts0(5, 61);
+                TimeStamp ts1(4, 51);
+                TimeStamp ts2(3, 41);
+                TimeStamp ts3(2, 31);
+                TimeStamp ts4(1, 21);
+
+                odcore::data::SharedData sd;
+                sd.setSize(10);
+                sd.setName("ABC");
+
+                Container c0(sd);
+                c0.setSampleTimeStamp(ts0);
+                fout << c0;
+                fout.write(data0.c_str(), data0.size());
+
+                Container c1(sd);
+                c1.setSampleTimeStamp(ts1);
+                fout << c1;
+                fout.write(data1.c_str(), data1.size());
+
+                Container c2(sd);
+                c2.setSampleTimeStamp(ts2);
+                fout << c2;
+                fout.write(data2.c_str(), data2.size());
+
+                Container c3(sd);
+                c3.setSampleTimeStamp(ts3);
+                fout << c3;
+                fout.write(data3.c_str(), data3.size());
+
+                Container c4(sd);
+                c4.setSampleTimeStamp(ts4);
+                fout << c4;
+                fout.write(data4.c_str(), data4.size());
+
+                fout.flush();
+                fout.close();
+            }
+
+            const URL u("file://PlayerModule2Test.rec");
+
+            // Create Player2 instance.
+            const bool NO_AUTO_REWIND = false;
+            const uint32_t MEMORY_SEGMENT_SIZE = 10;
+            const uint32_t NUMBER_OF_MEMORY_SEGMENTS = 2;
+            Player2 p2(u, NO_AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_MEMORY_SEGMENTS);
+
+            TimeStamp before;
+            int64_t counter = 1;
+            std::shared_ptr<odcore::wrapper::SharedMemory> sp;
+
+            while (p2.hasMoreData()) {
+                Container c = p2.getNextContainerToBeSent();
+                if ( (c.getDataType() == odcore::data::SharedData::ID()) &&
+                     (NULL == sp.get()) ) {
+                    odcore::data::SharedData sd = c.getData<odcore::data::SharedData>();
+                    sp = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(sd.getName());
+                }
+                if (counter == 1) {
+                    const uint32_t A = 1;
+                    const uint32_t B = 1;
+                    const uint32_t C = (A+1)*pow(10,B) + B;
+                    TS_ASSERT((A * 1000 * 1000 + C == c.getSampleTimeStamp().toMicroseconds()));
+
+                    if ( (c.getDataType() == odcore::data::SharedData::ID()) &&
+                         (NULL != sp.get()) &&
+                         sp->isValid() ) {
+                        Lock l(sp);
+                        string sharedMemoryString(static_cast<char*>(sp->getSharedMemory()), sp->getSize());
+                        TS_ASSERT(sharedMemoryString.compare(data4) == 0);
+                    }
+                }
+
+                if (counter == 2) {
+                    const uint32_t A = 2;
+                    const uint32_t B = 1;
+                    const uint32_t C = (A+1)*pow(10,B) + B;
+                    TS_ASSERT((A * 1000 * 1000 + C == c.getSampleTimeStamp().toMicroseconds()));
+
+                    if ( (c.getDataType() == odcore::data::SharedData::ID()) &&
+                         (NULL != sp.get()) &&
+                         sp->isValid() ) {
+                        Lock l(sp);
+                        string sharedMemoryString(static_cast<char*>(sp->getSharedMemory()), sp->getSize());
+                        TS_ASSERT(sharedMemoryString.compare(data3) == 0);
+                    }
+                }
+
+                if (counter == 3) {
+                    const uint32_t A = 3;
+                    const uint32_t B = 1;
+                    const uint32_t C = (A+1)*pow(10,B) + B;
+                    TS_ASSERT((A * 1000 * 1000 + C == c.getSampleTimeStamp().toMicroseconds()));
+
+                    if ( (c.getDataType() == odcore::data::SharedData::ID()) &&
+                         (NULL != sp.get()) &&
+                         sp->isValid() ) {
+                        Lock l(sp);
+                        string sharedMemoryString(static_cast<char*>(sp->getSharedMemory()), sp->getSize());
+                        TS_ASSERT(sharedMemoryString.compare(data2) == 0);
+                    }
+                }
+
+                if (counter == 4) {
+                    const uint32_t A = 4;
+                    const uint32_t B = 1;
+                    const uint32_t C = (A+1)*pow(10,B) + B;
+                    TS_ASSERT((A * 1000 * 1000 + C == c.getSampleTimeStamp().toMicroseconds()));
+
+                    if ( (c.getDataType() == odcore::data::SharedData::ID()) &&
+                         (NULL != sp.get()) &&
+                         sp->isValid() ) {
+                        Lock l(sp);
+                        string sharedMemoryString(static_cast<char*>(sp->getSharedMemory()), sp->getSize());
+                        TS_ASSERT(sharedMemoryString.compare(data1) == 0);
+                    }
+                }
+
+                if (counter == 5) {
+                    const uint32_t A = 5;
+                    const uint32_t B = 1;
+                    const uint32_t C = (A+1)*pow(10,B) + B;
+                    TS_ASSERT((A * 1000 * 1000 + C == c.getSampleTimeStamp().toMicroseconds()));
+
+                    if ( (c.getDataType() == odcore::data::SharedData::ID()) &&
+                         (NULL != sp.get()) &&
+                         sp->isValid() ) {
+                        Lock l(sp);
+                        string sharedMemoryString(static_cast<char*>(sp->getSharedMemory()), sp->getSize());
+                        TS_ASSERT(sharedMemoryString.compare(data0) == 0);
+                    }
+                }
+
+                Thread::usleepFor(p2.getDelay());
+                counter++;
+            }
+            // Ensure that all containers have been replayed.
+            TS_ASSERT(6 == counter);
+
             TimeStamp after;
             cout << "Duration = " << (after - before).toMicroseconds() << endl;
 
