@@ -28,11 +28,13 @@
 #include <limits>
 #include <vector>
 
+#include <opendavinci/odcore/base/Lock.h>
 #include <opendavinci/odcore/base/Thread.h>
 #include <opendavinci/odcore/data/Container.h>
 #include <opendavinci/odcore/data/TimeStamp.h>
 #include <opendavinci/odcore/io/URL.h>
 #include <opendavinci/odtools/player/Player2.h>
+#include <opendavinci/odcore/wrapper/SharedMemoryFactory.h>
 #include <opendavinci/GeneratedHeaders_OpenDaVINCI.h>
 
 using namespace std;
@@ -666,8 +668,15 @@ class PlayerModule2Test : public CxxTest::TestSuite {
 
             TimeStamp before;
             int64_t counter = 1;
+            std::shared_ptr<odcore::wrapper::SharedMemory> sp;
+
             while (p2.hasMoreData()) {
-                const Container& c = p2.getNextContainerToBeSent();
+                Container c = p2.getNextContainerToBeSent();
+                if ( (c.getDataType() == odcore::data::SharedData::ID()) &&
+                     (NULL == sp.get()) ) {
+                    odcore::data::SharedData sd = c.getData<odcore::data::SharedData>();
+                    sp = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(sd.getName());
+                }
                 if (counter == 1) {
                     TS_ASSERT(p2.getDelay() == 0);
                     const uint32_t A = 1;
@@ -681,6 +690,15 @@ class PlayerModule2Test : public CxxTest::TestSuite {
                     const uint32_t C = (A+1)*pow(10,B) + B;
                     TS_ASSERT((A * 1000 * 1000 + C == c.getSampleTimeStamp().toMicroseconds()));
                 }
+
+                if ( (c.getDataType() == odcore::data::SharedData::ID()) &&
+                     (NULL != sp.get()) &&
+                     sp->isValid() ) {
+                    Lock l(sp);
+                    string sharedMemoryString(static_cast<char*>(sp->getSharedMemory()), sp->getSize());
+cout << "S = " << sharedMemoryString << endl;
+                }
+
                 if (counter == 3) {
                     const uint32_t A = 2;
                     const uint32_t B = 0;
