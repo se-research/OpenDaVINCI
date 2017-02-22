@@ -198,16 +198,17 @@ cout << __FILE__ << " " << __LINE__ << endl;
         odcore::data::Container RecMemIndex::makeNextRawMemoryEntryAvailable() {
             Lock l(m_indexMutex);
             odcore::data::Container retVal;
-            if ( (m_nextEntryToReadFromRecMemFile->second.m_available) &&
+            if ( (m_nextEntryToPlayBack->second.m_available) &&
                  (1 == m_rawMemoryBuffer.count(m_nextEntryToPlayBack->second.m_filePosition)) ) {
 cout << __FILE__ << " " << __LINE__ << ", FP = " << m_nextEntryToPlayBack->second.m_filePosition << endl;
                 retVal = m_rawMemoryBuffer[m_nextEntryToPlayBack->second.m_filePosition]->m_container;
 cout << __FILE__ << " " << __LINE__ << endl;
-                // Remove entry from map of user rawMemoryBuffers.
+                // Remove entry from map of used rawMemoryBuffers.
                 {
-                    auto removeFromListOfUsedPages = m_rawMemoryBuffer.find(m_nextEntryToPlayBack->second.m_filePosition);
                     m_unusedEntriesFromRawMemoryBuffer.push_front(m_rawMemoryBuffer[m_nextEntryToPlayBack->second.m_filePosition]);
-                    m_rawMemoryBuffer.erase(removeFromListOfUsedPages);
+
+//                    auto removeFromListOfUsedPages = m_rawMemoryBuffer.find(m_nextEntryToPlayBack->second.m_filePosition);
+//                    m_rawMemoryBuffer.erase(removeFromListOfUsedPages);
                 }
                 m_nextEntryToReadFromRecMemFile->second.m_available = false;
             }
@@ -267,9 +268,10 @@ cout << "RT: dt = " << entry->m_container.getDataType() << ", st = " << entry->m
                         // Make entry available in map filePosition -> shared_ptr<RawMemoryBufferEntry>.
                         m_rawMemoryBuffer[m_nextEntryToReadFromRecMemFile->second.m_filePosition] = entry;
 
+                        // Mark this entry as available.
                         m_nextEntryToReadFromRecMemFile->second.m_available = true;
 
-                        // Move forward.
+                        // Move forward to read next entry from file.
                         m_nextEntryToReadFromRecMemFile++;
                     }
 

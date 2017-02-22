@@ -268,23 +268,16 @@ namespace odtools {
             Container retVal;
             Container &nextContainer = m_containerCache[m_currentContainerToReplay->second.m_filePosition];
 
-cout << __FILE__ << " " << __LINE__ << endl;
             const int64_t recContainerSampleTime = nextContainer.getSampleTimeStamp().toMicroseconds();
             bool replayContainerFromRecMem = false;
             if (NULL != m_recMemIndex.get()) {
-cout << __FILE__ << " " << __LINE__ << endl;
                 int64_t recMemContainerSampleTime = m_recMemIndex->peekNextSampleTimeToPlayBack();
-cout << recContainerSampleTime << " vs. " << recMemContainerSampleTime << endl;
 
                 if ((replayContainerFromRecMem = (recContainerSampleTime > recMemContainerSampleTime))) {
                     retVal = m_recMemIndex->makeNextRawMemoryEntryAvailable();
-cout << "dt = " << retVal.getDataType() << ", st = " << retVal.getSampleTimeStamp().toMicroseconds() << endl;
-
+// TODO: Add method to RecMemIndex to copy malloc'ed entry to SharedMemory segment
                     m_delay = retVal.getSampleTimeStamp().toMicroseconds() - m_previousContainerAlreadyReplayed->first;
                 }
-// If recContainerSampleTime > recMemContainerSampleTime --> return the recMemContainer and don't modify iterators.
-// TODO: Add method to RecMemIndex to copy malloc'ed entry to SharedMemory segment
-// Otherwise, continue with existing code.
             }
 
             if (!replayContainerFromRecMem) {
