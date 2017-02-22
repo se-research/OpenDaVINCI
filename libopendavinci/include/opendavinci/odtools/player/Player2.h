@@ -203,7 +203,6 @@ namespace odtools {
 
                 // Information about the index.
                 multimap<int64_t, IndexEntry>::iterator m_nextEntryToReadFromRecFile;
-                float m_containerReadFromFileThroughput;
 
                 uint32_t m_desiredInitialLevel;
 

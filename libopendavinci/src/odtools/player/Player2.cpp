@@ -71,7 +71,6 @@ namespace odtools {
             m_previousContainerAlreadyReplayed(m_index.begin()),
             m_currentContainerToReplay(m_index.begin()),
             m_nextEntryToReadFromRecFile(m_index.begin()),
-            m_containerReadFromFileThroughput(0),
             m_desiredInitialLevel(0),
             m_firstTimePointReturningAContainer(),
             m_numberOfReturnedContainersInTotal(0),
@@ -105,10 +104,13 @@ namespace odtools {
             setContainerCacheFillingRunning(false);
             m_containerCacheFillingThread.join();
 
-            m_recFile.close();
-
+            // Free the map of cached container entries.
             m_recMemIndex.reset();
+
+            m_recFile.close();
         }
+
+        ////////////////////////////////////////////////////////////////////////
 
         void Player2::setPlayerListener(PlayerListener *pl) {
             Lock l(m_playerListenerMutex);
@@ -129,13 +131,15 @@ namespace odtools {
             }
         }
 
+        ////////////////////////////////////////////////////////////////////////
+
         void Player2::initializeIndex() {
             m_recFile.open(m_url.getResource().c_str(), ios_base::in|ios_base::binary);
             m_recFileValid = m_recFile.good();
 
             // Determine file size to display progress.
             m_recFile.seekg(0, m_recFile.end);
-            int64_t fileLength = m_recFile.tellg();
+                int64_t fileLength = m_recFile.tellg();
             m_recFile.seekg(0, m_recFile.beg);
 
             // Read complete file and store file positions to containers to create
@@ -169,13 +173,10 @@ namespace odtools {
 
             // Reset pointer to beginning of the .rec file.
             if (m_recFileValid) {
-                // Compute throughput for reading from file.
-                m_containerReadFromFileThroughput = std::ceil(m_index.size()*static_cast<float>(Player2::ONE_SECOND_IN_MICROSECONDS)/(AFTER-BEFORE).toMicroseconds());
-
                 clog << "[odtools::player::Player2]: " << m_url.getResource()
                                       << " contains " << m_index.size() << " entries; "
-                                      << "read " << totalBytesRead << " bytes ("
-                                      << m_containerReadFromFileThroughput << " entries/s)." << endl;
+                                      << "read " << totalBytesRead << " bytes "
+                                      << "in " << (AFTER-BEFORE).toMicroseconds()/(1000.0*1000.0) << "s." << endl;
             }
         }
 
@@ -269,6 +270,7 @@ namespace odtools {
             Container retVal;
             Container &nextContainer = m_containerCache[m_currentContainerToReplay->second.m_filePosition];
 
+            // Check if the next Container + shared memory comes from the .rec.mem file.
             const int64_t recContainerSampleTime = nextContainer.getSampleTimeStamp().toMicroseconds();
             bool replayContainerFromRecMem = false;
             if (NULL != m_recMemIndex.get()) {
@@ -276,13 +278,14 @@ namespace odtools {
 
                 if ((replayContainerFromRecMem = (recContainerSampleTime > recMemContainerSampleTime))) {
                     retVal = m_recMemIndex->makeNextRawMemoryEntryAvailable();
-// TODO: Add method to RecMemIndex to copy malloc'ed entry to SharedMemory segment
                     m_delay = retVal.getSampleTimeStamp().toMicroseconds() - m_previousContainerAlreadyReplayed->first;
                 }
             }
 
+            // Playback from .rec file.
             if (!replayContainerFromRecMem) {
-                // Check if there is a PlayerDelegate registered for this container.
+                // Check if there is a PlayerDelegate registered for this container
+                // to handle, for instance, .h264 decoding.
                 {
                     Lock l2(m_mapOfPlayerDelegatesMutex);
                     auto delegate = m_mapOfPlayerDelegates.find(nextContainer.getDataType());
@@ -311,6 +314,7 @@ namespace odtools {
 
                 m_numberOfReturnedContainersInTotal++;
 
+                // Publish some statistics.
                 {
                     Lock l3(m_playerListenerMutex);
                     if (NULL != m_playerListener) {
@@ -318,6 +322,7 @@ namespace odtools {
                     }
                 }
 
+                // TODO: ELAPSED can be used to compensate for internal data processing.
                 const uint64_t ELAPSED = (thisTimePointCallingThisMethod - m_firstTimePointReturningAContainer).toMicroseconds();
                 m_containerReplayThroughput = std::ceil(m_numberOfReturnedContainersInTotal*static_cast<float>(Player2::ONE_SECOND_IN_MICROSECONDS)/ELAPSED);
             }

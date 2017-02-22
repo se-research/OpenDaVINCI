@@ -20,6 +20,7 @@
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
 
 #include <algorithm>
 #include <fstream>
@@ -29,6 +30,8 @@
 
 #include <opendavinci/odcore/base/Lock.h>
 #include <opendavinci/odcore/base/Thread.h>
+#include <opendavinci/odcore/wrapper/SharedMemoryFactory.h>
+
 #include <opendavinci/GeneratedHeaders_OpenDaVINCI.h>
 
 #include <opendavinci/odtools/player/RecMemIndex.h>
@@ -211,17 +214,30 @@ cout << "R1: P = " << POS_BEFORE << ", dt = " << c.getDataType() << ", st = " <<
 cout << __FILE__ << " " << __LINE__ << ", FP = " << m_nextEntryToPlayBack->second.m_filePosition << endl;
                 retVal = m_rawMemoryBuffer[m_nextEntryToPlayBack->second.m_filePosition]->m_container;
 cout << __FILE__ << " " << __LINE__ << endl;
-                // Make raw memory available in shared memory.
-//                if (0 == m_mapOfPointersToSharedMemorySegments.count()) {
-//                    // A shared memory segment has not been acquired for this container.
-//                }
-
+                // Transfer raw memory available to shared memory.
+                const string NAME_OF_SHARED_MEMORY_SEGMENT = m_nextEntryToPlayBack->second.m_nameOfSharedMemorySegment;
+                if (0 == m_mapOfPointersToSharedMemorySegments.count(NAME_OF_SHARED_MEMORY_SEGMENT)) {
+                    // A shared memory segment has not been acquired for this container.
+                    std::shared_ptr<odcore::wrapper::SharedMemory> sp = odcore::wrapper::SharedMemoryFactory::createSharedMemory(NAME_OF_SHARED_MEMORY_SEGMENT, m_nextEntryToPlayBack->second.m_sizeOfSharedMemorySegment);
+                    m_mapOfPointersToSharedMemorySegments[NAME_OF_SHARED_MEMORY_SEGMENT] = sp;
+                }
+                else {
+                    if (m_mapOfPointersToSharedMemorySegments[NAME_OF_SHARED_MEMORY_SEGMENT]->isValid()) {
+                        Lock l2(m_mapOfPointersToSharedMemorySegments[NAME_OF_SHARED_MEMORY_SEGMENT]);
+                        // Copy data from raw memory buffer into shared memory.
+                        ::memcpy(m_mapOfPointersToSharedMemorySegments[NAME_OF_SHARED_MEMORY_SEGMENT]->getSharedMemory(),
+                                 m_rawMemoryBuffer[m_nextEntryToPlayBack->second.m_filePosition]->m_rawMemoryBuffer,
+                                 /* Limit the amount of data to be copied to the maximum length of the shared memory. */
+                                 std::min(m_rawMemoryBuffer[m_nextEntryToPlayBack->second.m_filePosition]->m_lengthOfRawMemoryBuffer, 
+                                          m_nextEntryToPlayBack->second.m_sizeOfSharedMemorySegment));
+                    }
 cout << "N = " << m_nextEntryToPlayBack->second.m_nameOfSharedMemorySegment << ", S = " << m_nextEntryToPlayBack->second.m_sizeOfSharedMemorySegment << endl;
 
-                // Mark entry as available.
-                m_nextEntryToReadFromRecMemFile->second.m_available = false;
-                // Remove entry from map of used rawMemoryBuffers.
-                m_unusedEntriesFromRawMemoryBuffer.push_front(m_rawMemoryBuffer[m_nextEntryToPlayBack->second.m_filePosition]);
+                    // Mark entry as available.
+                    m_nextEntryToReadFromRecMemFile->second.m_available = false;
+                    // Remove entry from map of used rawMemoryBuffers.
+                    m_unusedEntriesFromRawMemoryBuffer.push_front(m_rawMemoryBuffer[m_nextEntryToPlayBack->second.m_filePosition]);
+                }
             }
 
             // Move to next entry for playback and enable auto-rewind by default.
