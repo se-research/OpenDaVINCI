@@ -86,6 +86,7 @@ namespace odtools {
             m_hasMoreData(false),
             m_rawMemoryBuffer(),
             m_unusedEntriesFromRawMemoryBuffer(),
+            m_allEntriesFromRawMemoryBuffer(),
             m_mapOfPointersToSharedMemorySegments(),
             m_rawMemoryBufferFillingThreadIsRunningMutex(),
             m_rawMemoryBufferFillingThreadIsRunning(false),
@@ -96,6 +97,9 @@ namespace odtools {
                 e->m_rawMemoryBuffer = static_cast<char*>(::malloc(memorySegmentSize));
                 e->m_lengthOfRawMemoryBuffer = memorySegmentSize;
                 m_unusedEntriesFromRawMemoryBuffer.push_back(e);
+
+                // This vector holds all entries for reuse.
+                m_allEntriesFromRawMemoryBuffer.push_back(e);
             }
             clog << "done." << endl;
 
@@ -120,6 +124,7 @@ namespace odtools {
                 // Entries will be automatically freed due to the shared_ptr<...>.
                 m_unusedEntriesFromRawMemoryBuffer.clear();
                 m_index.clear();
+                m_allEntriesFromRawMemoryBuffer.clear();
             clog << "done." << endl;
 
             // Release shared memory segments.
@@ -218,6 +223,17 @@ namespace odtools {
             m_nextEntryToPlayBack
                 = m_nextEntryToReadFromRecMemFile
                 = m_index.begin();
+
+            // Clear caches to rebuild it.
+            m_rawMemoryBuffer.clear();
+            m_unusedEntriesFromRawMemoryBuffer.clear();
+
+            // Make raw buffer entries available again.
+            for(auto entry = m_allEntriesFromRawMemoryBuffer.begin();
+                entry != m_allEntriesFromRawMemoryBuffer.end();
+                entry++) {
+                m_unusedEntriesFromRawMemoryBuffer.push_back(*entry);
+            }
 
             // Fill raw buffer.
             manageRawMemoryBuffer();

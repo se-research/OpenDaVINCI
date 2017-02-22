@@ -149,6 +149,7 @@ namespace odtools {
                 // Mapping of pos_type (within .rec.mem file) --> meta-entry describing tupel (Container, raw memory).
                 map<uint64_t, shared_ptr<RawMemoryBufferEntry> > m_rawMemoryBuffer;
                 deque<shared_ptr<RawMemoryBufferEntry> > m_unusedEntriesFromRawMemoryBuffer;
+                vector<shared_ptr<RawMemoryBufferEntry> > m_allEntriesFromRawMemoryBuffer;
 
                 map<string, std::shared_ptr<odcore::wrapper::SharedMemory> > m_mapOfPointersToSharedMemorySegments;
 

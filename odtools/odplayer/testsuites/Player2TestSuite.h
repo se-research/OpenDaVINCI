@@ -1334,7 +1334,6 @@ class PlayerModule2Test : public CxxTest::TestSuite {
                     odcore::data::SharedData sd = c.getData<odcore::data::SharedData>();
                     sp = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(sd.getName());
                 }
-cout << "V = " << c.getSampleTimeStamp().toMicroseconds() << ", counter = " << counter << endl;
 
                 if (counter == 1) {
                     TS_ASSERT(p2.getDelay() == 0);
