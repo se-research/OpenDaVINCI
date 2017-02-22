@@ -378,41 +378,8 @@ ENDIF()
 
 # Next, build automotive/odcantools.
 IF(${BUILD_AUTOMOTIVE_ODCANTOOLS})
-    ExternalProject_Add (automotive-odCANDataStructureGenerator
-        DOWNLOAD_COMMAND ""
-        UPDATE_COMMAND ""
-        SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/automotive/odCANDataStructureGenerator"
-        CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-        CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}"
-        INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/automotive-odCANDataStructureGenerator-prefix/src/automotive-odCANDataStructureGenerator-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/automotive-odCANDataStructureGenerator-prefix/src/automotive-odCANDataStructureGenerator-build --target ${MAKE_PACKAGE})
-
-    # This "external project" simply deletes the existing libcanmessagemapping.
-    ExternalProject_Add (automotive-libcanmessagemapping-cleanup
-        DEPENDS automotive-odCANDataStructureGenerator
-        DOWNLOAD_COMMAND ""
-        UPDATE_COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_BINARY_DIR}/libcanmessagemapping
-        PATCH_COMMAND ""
-        SOURCE_DIR ""
-        CONFIGURE_COMMAND ""
-        BUILD_COMMAND ""
-        TEST_COMMAND ""
-        INSTALL_COMMAND "")
-
-    ExternalProject_Add (automotive-libcanmessagemapping
-        DEPENDS libopendavinci libautomotivedata automotive-libcanmessagemapping-cleanup
-        DOWNLOAD_COMMAND ""
-        UPDATE_COMMAND cd ${CMAKE_CURRENT_BINARY_DIR} && ${Java_JAVA_EXECUTABLE} -jar ${ODCANDATASTRUCTUREGENERATOR_EXECUTABLE} --withCMake ${CMAKE_CURRENT_SOURCE_DIR}/automotive/CANMessageMapping.can
-        PATCH_COMMAND ""
-        SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/libcanmessagemapping"
-        CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-        CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}"
-        CMAKE_ARGS "-DCXXTEST_INCLUDE_DIR=${CXXTEST_INCLUDE_DIR}"
-        TEST_BEFORE_INSTALL 1
-        TEST_COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}
-        INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/automotive-libcanmessagemapping-prefix/src/automotive-libcanmessagemapping-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/automotive-libcanmessagemapping-prefix/src/automotive-libcanmessagemapping-build --target ${MAKE_PACKAGE})
-
     ExternalProject_Add (automotive-odcantools
-        DEPENDS automotive-libcanmessagemapping
+        DEPENDS libopendavinci libautomotivedata #automotive-libcanmessagemapping
         DOWNLOAD_COMMAND ""
         UPDATE_COMMAND ""
         SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/automotive/odcantools"
@@ -422,6 +389,14 @@ IF(${BUILD_AUTOMOTIVE_ODCANTOOLS})
         TEST_BEFORE_INSTALL 1
         TEST_COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}
         INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/automotive-odcantools-prefix/src/automotive-odcantools-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/automotive-odcantools-prefix/src/automotive-odcantools-build --target ${MAKE_PACKAGE})
+
+    ExternalProject_Add (automotive-odCANDataStructureGenerator
+        DOWNLOAD_COMMAND ""
+        UPDATE_COMMAND ""
+        SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/automotive/odCANDataStructureGenerator"
+        CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
+        CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}"
+        INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/automotive-odCANDataStructureGenerator-prefix/src/automotive-odCANDataStructureGenerator-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/automotive-odCANDataStructureGenerator-prefix/src/automotive-odCANDataStructureGenerator-build --target ${MAKE_PACKAGE})
 ENDIF()
 
 # Next, build automotive/miniature.
