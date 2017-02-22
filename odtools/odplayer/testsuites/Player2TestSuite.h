@@ -610,6 +610,11 @@ class PlayerModule2Test : public CxxTest::TestSuite {
             }
 
             // Prepare .rec.mem file.
+            string data0("5BCDEFGHIJ");
+            string data1("4BCDEFGHIJ");
+            string data2("3BCDEFGHIJ");
+            string data3("2BCDEFGHIJ");
+            string data4("1BCDEFGHIJ");
             {
                 fstream fout("PlayerModule2Test.rec.mem", ios::out | ios::binary | ios::trunc);
 
@@ -623,11 +628,6 @@ class PlayerModule2Test : public CxxTest::TestSuite {
                 odcore::data::SharedData sd;
                 sd.setSize(10);
                 sd.setName("ABC");
-                string data0("5BCDEFGHIJ");
-                string data1("4BCDEFGHIJ");
-                string data2("3BCDEFGHIJ");
-                string data3("2BCDEFGHIJ");
-                string data4("1BCDEFGHIJ");
 
                 Container c0(sd);
                 c0.setSampleTimeStamp(ts0);
@@ -689,14 +689,14 @@ class PlayerModule2Test : public CxxTest::TestSuite {
                     const uint32_t B = 1;
                     const uint32_t C = (A+1)*pow(10,B) + B;
                     TS_ASSERT((A * 1000 * 1000 + C == c.getSampleTimeStamp().toMicroseconds()));
-                }
 
-                if ( (c.getDataType() == odcore::data::SharedData::ID()) &&
-                     (NULL != sp.get()) &&
-                     sp->isValid() ) {
-                    Lock l(sp);
-                    string sharedMemoryString(static_cast<char*>(sp->getSharedMemory()), sp->getSize());
-cout << "S = " << sharedMemoryString << endl;
+                    if ( (c.getDataType() == odcore::data::SharedData::ID()) &&
+                         (NULL != sp.get()) &&
+                         sp->isValid() ) {
+                        Lock l(sp);
+                        string sharedMemoryString(static_cast<char*>(sp->getSharedMemory()), sp->getSize());
+                        TS_ASSERT(sharedMemoryString.compare(data4) == 0);
+                    }
                 }
 
                 if (counter == 3) {
@@ -710,7 +710,16 @@ cout << "S = " << sharedMemoryString << endl;
                     const uint32_t B = 1;
                     const uint32_t C = (A+1)*pow(10,B) + B;
                     TS_ASSERT((A * 1000 * 1000 + C == c.getSampleTimeStamp().toMicroseconds()));
+
+                    if ( (c.getDataType() == odcore::data::SharedData::ID()) &&
+                         (NULL != sp.get()) &&
+                         sp->isValid() ) {
+                        Lock l(sp);
+                        string sharedMemoryString(static_cast<char*>(sp->getSharedMemory()), sp->getSize());
+                        TS_ASSERT(sharedMemoryString.compare(data3) == 0);
+                    }
                 }
+
                 if (counter == 5) {
                     const uint32_t A = 3;
                     const uint32_t B = 0;
@@ -722,7 +731,16 @@ cout << "S = " << sharedMemoryString << endl;
                     const uint32_t B = 1;
                     const uint32_t C = (A+1)*pow(10,B) + B;
                     TS_ASSERT((A * 1000 * 1000 + C == c.getSampleTimeStamp().toMicroseconds()));
+
+                    if ( (c.getDataType() == odcore::data::SharedData::ID()) &&
+                         (NULL != sp.get()) &&
+                         sp->isValid() ) {
+                        Lock l(sp);
+                        string sharedMemoryString(static_cast<char*>(sp->getSharedMemory()), sp->getSize());
+                        TS_ASSERT(sharedMemoryString.compare(data2) == 0);
+                    }
                 }
+
                 if (counter == 7) {
                     const uint32_t A = 4;
                     const uint32_t B = 0;
@@ -734,7 +752,16 @@ cout << "S = " << sharedMemoryString << endl;
                     const uint32_t B = 1;
                     const uint32_t C = (A+1)*pow(10,B) + B;
                     TS_ASSERT((A * 1000 * 1000 + C == c.getSampleTimeStamp().toMicroseconds()));
+
+                    if ( (c.getDataType() == odcore::data::SharedData::ID()) &&
+                         (NULL != sp.get()) &&
+                         sp->isValid() ) {
+                        Lock l(sp);
+                        string sharedMemoryString(static_cast<char*>(sp->getSharedMemory()), sp->getSize());
+                        TS_ASSERT(sharedMemoryString.compare(data1) == 0);
+                    }
                 }
+
                 if (counter == 9) {
                     const uint32_t A = 5;
                     const uint32_t B = 0;
@@ -746,6 +773,14 @@ cout << "S = " << sharedMemoryString << endl;
                     const uint32_t B = 1;
                     const uint32_t C = (A+1)*pow(10,B) + B;
                     TS_ASSERT((A * 1000 * 1000 + C == c.getSampleTimeStamp().toMicroseconds()));
+
+                    if ( (c.getDataType() == odcore::data::SharedData::ID()) &&
+                         (NULL != sp.get()) &&
+                         sp->isValid() ) {
+                        Lock l(sp);
+                        string sharedMemoryString(static_cast<char*>(sp->getSharedMemory()), sp->getSize());
+                        TS_ASSERT(sharedMemoryString.compare(data0) == 0);
+                    }
                 }
 
                 Thread::usleepFor(p2.getDelay());
