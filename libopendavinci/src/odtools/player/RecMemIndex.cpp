@@ -152,7 +152,6 @@ namespace odtools {
 
                         if (!m_recMemFile.eof()) {
                             totalBytesRead += (POS_AFTER - POS_BEFORE);
-cout << "R1: P = " << POS_BEFORE << ", dt = " << c.getDataType() << ", st = " << c.getSampleTimeStamp().toString() << endl;
 
                             // Skip the binary dump of the shared memory segment
                             // directly following the Container.
@@ -210,7 +209,23 @@ cout << "R1: P = " << POS_BEFORE << ", dt = " << c.getDataType() << ", st = " <<
             return m_hasMoreData;
         }
 
-        void RecMemIndex::rewind() {}
+        void RecMemIndex::rewind() {
+            // Stop concurrent thread to manage cache.
+            setRawMemoryBufferFillingRunning(false);
+            m_rawMemoryBufferFillingThread.join();
+
+            // Reset pointer to beginning of the .rec.mem file.
+            m_nextEntryToPlayBack
+                = m_nextEntryToReadFromRecMemFile
+                = m_index.begin();
+
+            // Fill raw buffer.
+            manageRawMemoryBuffer();
+
+            // Start concurrent thread to manage the cache for shared memory dumps.
+            setRawMemoryBufferFillingRunning(true);
+            m_rawMemoryBufferFillingThread = std::thread(&RecMemIndex::manageRawMemoryBuffer, this);
+        }
 
         int64_t RecMemIndex::peekNextSampleTimeToPlayBack() const {
             Lock l(m_indexMutex);

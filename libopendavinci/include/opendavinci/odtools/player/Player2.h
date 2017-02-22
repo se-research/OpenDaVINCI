@@ -131,6 +131,7 @@ namespace odtools {
                 void rewind();
 
             private:
+                // Internal methods without Lock.
                 bool hasMoreDataFromRecFile() const;
                 bool hasMoreDataFromRecMemFile() const;
 

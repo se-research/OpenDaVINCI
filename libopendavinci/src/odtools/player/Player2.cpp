@@ -378,18 +378,22 @@ namespace odtools {
             setContainerCacheFillingRunning(true);
             m_containerCacheFillingThread = std::thread(&Player2::manageCache, this);
 
-            // TODO: Propagate rewind to .rec.mem file.
+            // Propagate rewind to .rec.mem file.
+            if (NULL != m_recMemIndex.get()) {
+                m_recMemIndex->rewind();
+            }
         }
 
         bool Player2::hasMoreData() const {
             Lock l(m_indexMutex);
-            // File must be successfully opened AND
-            //  the Player must be configured as m_autoRewind OR
-            //  some entries are left to replay.
+            // Check both, the status of the .rec file and the .rec.mem file.
             return ( hasMoreDataFromRecFile() || hasMoreDataFromRecMemFile() );
         }
 
         bool Player2::hasMoreDataFromRecFile() const {
+            // File must be successfully opened AND
+            //  the Player must be configured as m_autoRewind OR
+            //  some entries are left to replay.
             return (m_recFileValid && (m_autoRewind || (m_currentContainerToReplay != m_index.end())));
         }
 

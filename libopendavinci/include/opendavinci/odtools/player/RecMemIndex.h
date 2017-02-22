@@ -140,7 +140,6 @@ namespace odtools {
                 bool m_recMemFileValid;
 
             private: // Index and cache management.
-                // Global index: Mapping SampleTimeStamp --> cache entry (holding the actual content from .rec, .rec.mem, or .h264 file)
                 mutable odcore::base::Mutex m_indexMutex;
                 multimap<int64_t, IndexEntry> m_index;
                 multimap<int64_t, IndexEntry>::iterator m_nextEntryToPlayBack;
