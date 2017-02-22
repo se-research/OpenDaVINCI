@@ -29,6 +29,7 @@
 #include <opendavinci/odcore/base/Mutex.h>
 #include <opendavinci/odcore/data/Container.h>
 #include <opendavinci/odcore/io/URL.h>
+#include <opendavinci/odcore/wrapper/SharedMemory.h>
 
 #include <opendavinci/odtools/player/Player2.h>
 #include <opendavinci/odtools/player/PlayerListener.h>
@@ -123,6 +124,8 @@ namespace odtools {
                 // Mapping of pos_type (within .rec.mem file) --> meta-entry describing tupel (Container, raw memory).
                 map<uint64_t, shared_ptr<RawMemoryBufferEntry> > m_rawMemoryBuffer;
                 deque<shared_ptr<RawMemoryBufferEntry> > m_unusedEntriesFromRawMemoryBuffer;
+
+                map<string, std::shared_ptr<odcore::wrapper::SharedMemory> > m_mapOfPointersToSharedMemorySegments;
 
             private:
                 /**

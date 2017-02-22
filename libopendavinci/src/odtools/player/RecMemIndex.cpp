@@ -81,6 +81,7 @@ clog << "Cleaning entry" << endl;
             m_nextEntryToReadFromRecMemFile(),
             m_rawMemoryBuffer(),
             m_unusedEntriesFromRawMemoryBuffer(),
+            m_mapOfPointersToSharedMemorySegments(),
             m_rawMemoryBufferFillingThreadIsRunningMutex(),
             m_rawMemoryBufferFillingThreadIsRunning(false),
             m_rawMemoryBufferFillingThread() {
@@ -148,14 +149,21 @@ cout << "R1: P = " << POS_BEFORE << ", dt = " << c.getDataType() << ", st = " <<
                             // Skip the binary dump of the shared memory segment
                             // directly following the Container.
                             uint64_t bytesToSkip = 0;
+                            string nameOfSharedMemorySegment = "";
                             if (c.getDataType() == odcore::data::SharedData::ID()) {
-                                bytesToSkip = c.getData<odcore::data::SharedData>().getSize();
+                                odcore::data::SharedData sd = c.getData<odcore::data::SharedData>();
+                                bytesToSkip = sd.getSize();
+                                nameOfSharedMemorySegment = sd.getName();
                             }
                             if (c.getDataType() == odcore::data::image::SharedImage::ID()) {
-                                bytesToSkip = c.getData<odcore::data::image::SharedImage>().getSize();
+                                odcore::data::image::SharedImage si = c.getData<odcore::data::image::SharedImage>();
+                                bytesToSkip = (si.getSize() > 0) ? si.getSize() : (si.getWidth() * si.getHeight() * si.getBytesPerPixel());
+                                nameOfSharedMemorySegment = si.getName();
                             }
                             if (c.getDataType() == odcore::data::SharedPointCloud::ID()) {
-                                bytesToSkip = c.getData<odcore::data::SharedPointCloud>().getSize();
+                                odcore::data::SharedPointCloud spc = c.getData<odcore::data::SharedPointCloud>();
+                                bytesToSkip = spc.getSize();
+                                nameOfSharedMemorySegment = spc.getName();
                             }
                             const uint64_t CURRENT_POSITION_IN_RECMEM_FILE = m_recMemFile.tellg();
                             m_recMemFile.seekg(CURRENT_POSITION_IN_RECMEM_FILE + bytesToSkip);
@@ -163,7 +171,7 @@ cout << "R1: P = " << POS_BEFORE << ", dt = " << c.getDataType() << ", st = " <<
 
                             // Store pointer to Container in m_recMemFile ordered by sample time stamp.
                             m_index.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(),
-                                                           IndexEntry(c.getSampleTimeStamp().toMicroseconds(), POS_BEFORE, bytesToSkip)));
+                                                           IndexEntry(c.getSampleTimeStamp().toMicroseconds(), POS_BEFORE, nameOfSharedMemorySegment, bytesToSkip)));
 
                             const int32_t percentage = static_cast<int32_t>(static_cast<float>(m_recMemFile.tellg()*100.0)/static_cast<float>(fileLength));
                             if ( (percentage % 5 == 0) && (percentage != oldPercentage) ) {
@@ -191,7 +199,6 @@ cout << "R1: P = " << POS_BEFORE << ", dt = " << c.getDataType() << ", st = " <<
 
         int64_t RecMemIndex::peekNextSampleTimeToPlayBack() const {
             Lock l(m_indexMutex);
-cout << __FILE__ << " " << __LINE__ << endl;
             return m_nextEntryToPlayBack->first;
         }
 
@@ -200,9 +207,17 @@ cout << __FILE__ << " " << __LINE__ << endl;
             odcore::data::Container retVal;
             if ( (m_nextEntryToPlayBack->second.m_available) &&
                  (1 == m_rawMemoryBuffer.count(m_nextEntryToPlayBack->second.m_filePosition)) ) {
+                // Load Container from cache to be distributed into container conference.
 cout << __FILE__ << " " << __LINE__ << ", FP = " << m_nextEntryToPlayBack->second.m_filePosition << endl;
                 retVal = m_rawMemoryBuffer[m_nextEntryToPlayBack->second.m_filePosition]->m_container;
 cout << __FILE__ << " " << __LINE__ << endl;
+                // Make raw memory available in shared memory.
+//                if (0 == m_mapOfPointersToSharedMemorySegments.count()) {
+//                    // A shared memory segment has not been acquired for this container.
+//                }
+
+cout << "N = " << m_nextEntryToPlayBack->second.m_nameOfSharedMemorySegment << ", S = " << m_nextEntryToPlayBack->second.m_sizeOfSharedMemorySegment << endl;
+
                 // Mark entry as available.
                 m_nextEntryToReadFromRecMemFile->second.m_available = false;
                 // Remove entry from map of used rawMemoryBuffers.
@@ -260,7 +275,7 @@ cout << __FILE__ << " " << __LINE__ << endl;
 
                         // Read raw memory dump.
                         m_recMemFile.read(entry->m_rawMemoryBuffer,
-                                          std::min(m_nextEntryToReadFromRecMemFile->second.m_entrySize, entry->m_lengthOfRawMemoryBuffer));
+                                          std::min(m_nextEntryToReadFromRecMemFile->second.m_sizeOfSharedMemorySegment, entry->m_lengthOfRawMemoryBuffer));
                         entriesReadFromFile++;
 
                         // Make entry available in map filePosition -> shared_ptr<RawMemoryBufferEntry>.

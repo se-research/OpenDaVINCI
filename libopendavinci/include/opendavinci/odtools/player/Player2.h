@@ -47,12 +47,13 @@ namespace odtools {
             public:
                 IndexEntry();
                 IndexEntry(const int64_t &sampleTimeStamp, const uint64_t &filePosition);
-                IndexEntry(const int64_t &sampleTimeStamp, const uint64_t &filePosition, const uint64_t &entrySize);
+                IndexEntry(const int64_t &sampleTimeStamp, const uint64_t &filePosition, const string &nameOfSharedMemorySegment, const uint32_t &sizeOfSharedMemorySegment);
 
             public:
                 int64_t m_sampleTimeStamp;
                 uint64_t m_filePosition;
-                uint32_t m_entrySize;
+                string m_nameOfSharedMemorySegment;
+                uint32_t m_sizeOfSharedMemorySegment;
                 bool m_available;
         };
 
