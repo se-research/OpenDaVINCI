@@ -268,60 +268,65 @@ namespace odtools {
             Container retVal;
             Container &nextContainer = m_containerCache[m_currentContainerToReplay->second.m_filePosition];
 
+cout << __FILE__ << " " << __LINE__ << endl;
             const int64_t recContainerSampleTime = nextContainer.getSampleTimeStamp().toMicroseconds();
+            bool replayContainerFromRecMem = false;
             if (NULL != m_recMemIndex.get()) {
+cout << __FILE__ << " " << __LINE__ << endl;
                 int64_t recMemContainerSampleTime = m_recMemIndex->peekNextSampleTimeToPlayBack();
 cout << recContainerSampleTime << " vs. " << recMemContainerSampleTime << endl;
 
-                if (recContainerSampleTime > recMemContainerSampleTime) {
+                if ((replayContainerFromRecMem = (recContainerSampleTime > recMemContainerSampleTime))) {
                     retVal = m_recMemIndex->makeNextRawMemoryEntryAvailable();
 cout << "dt = " << retVal.getDataType() << ", st = " << retVal.getSampleTimeStamp().toMicroseconds() << endl;
-                }
 
+                    m_delay = retVal.getSampleTimeStamp().toMicroseconds() - m_previousContainerAlreadyReplayed->first;
+                }
 // If recContainerSampleTime > recMemContainerSampleTime --> return the recMemContainer and don't modify iterators.
-// Compute m_delay based on recMemContainerSampleTime - m_previousContainerAlreadyReplayed->first.
 // TODO: Add method to RecMemIndex to copy malloc'ed entry to SharedMemory segment
 // Otherwise, continue with existing code.
             }
 
-            // Check if there is a PlayerDelegate registered for this container.
-            {
-                Lock l2(m_mapOfPlayerDelegatesMutex);
-                auto delegate = m_mapOfPlayerDelegates.find(nextContainer.getDataType());
-                if (delegate != m_mapOfPlayerDelegates.end()) {
-                    // Replace m_actual with the replacement Container.
-                    retVal = delegate->second->process(nextContainer);
+            if (!replayContainerFromRecMem) {
+                // Check if there is a PlayerDelegate registered for this container.
+                {
+                    Lock l2(m_mapOfPlayerDelegatesMutex);
+                    auto delegate = m_mapOfPlayerDelegates.find(nextContainer.getDataType());
+                    if (delegate != m_mapOfPlayerDelegates.end()) {
+                        // Replace m_actual with the replacement Container.
+                        retVal = delegate->second->process(nextContainer);
+                    }
+                    else {
+                        // Use original container.
+                        retVal = nextContainer;
+                    }
                 }
-                else {
-                    // Use original container.
-                    retVal = nextContainer;
+
+                m_delay = m_currentContainerToReplay->first - m_previousContainerAlreadyReplayed->first;
+
+                // TODO: Delegate deleting into own thread.
+                if (m_previousPreviousContainerAlreadyReplayed != m_index.end()) {
+                    auto it = m_containerCache.find(m_previousContainerAlreadyReplayed->second.m_filePosition);
+                    if (it != m_containerCache.end()) {
+                        m_containerCache.erase(it);
+                    }
                 }
+
+                m_previousPreviousContainerAlreadyReplayed = m_previousContainerAlreadyReplayed;
+                m_previousContainerAlreadyReplayed = m_currentContainerToReplay++;
+
+                m_numberOfReturnedContainersInTotal++;
+
+                {
+                    Lock l3(m_playerListenerMutex);
+                    if (NULL != m_playerListener) {
+                        m_playerListener->percentagePlayedBack(m_numberOfReturnedContainersInTotal/static_cast<float>(m_index.size()));
+                    }
+                }
+
+                const uint64_t ELAPSED = (thisTimePointCallingThisMethod - m_firstTimePointReturningAContainer).toMicroseconds();
+                m_containerReplayThroughput = std::ceil(m_numberOfReturnedContainersInTotal*static_cast<float>(Player2::ONE_SECOND_IN_MICROSECONDS)/ELAPSED);
             }
-
-            m_delay = m_currentContainerToReplay->first - m_previousContainerAlreadyReplayed->first;
-
-            // TODO: Delegate deleting into own thread.
-            if (m_previousPreviousContainerAlreadyReplayed != m_index.end()) {
-                auto it = m_containerCache.find(m_previousContainerAlreadyReplayed->second.m_filePosition);
-                if (it != m_containerCache.end()) {
-                    m_containerCache.erase(it);
-                }
-            }
-
-            m_previousPreviousContainerAlreadyReplayed = m_previousContainerAlreadyReplayed;
-            m_previousContainerAlreadyReplayed = m_currentContainerToReplay++;
-
-            m_numberOfReturnedContainersInTotal++;
-
-            {
-                Lock l3(m_playerListenerMutex);
-                if (NULL != m_playerListener) {
-                    m_playerListener->percentagePlayedBack(m_numberOfReturnedContainersInTotal/static_cast<float>(m_index.size()));
-                }
-            }
-
-            const uint64_t ELAPSED = (thisTimePointCallingThisMethod - m_firstTimePointReturningAContainer).toMicroseconds();
-            m_containerReplayThroughput = std::ceil(m_numberOfReturnedContainersInTotal*static_cast<float>(Player2::ONE_SECOND_IN_MICROSECONDS)/ELAPSED);
 
             return retVal;
         }

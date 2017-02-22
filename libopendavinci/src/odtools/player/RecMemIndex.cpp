@@ -191,12 +191,26 @@ cout << "R1: P = " << POS_BEFORE << ", dt = " << c.getDataType() << ", st = " <<
 
         int64_t RecMemIndex::peekNextSampleTimeToPlayBack() const {
             Lock l(m_indexMutex);
+cout << __FILE__ << " " << __LINE__ << endl;
             return m_nextEntryToPlayBack->first;
         }
 
         odcore::data::Container RecMemIndex::makeNextRawMemoryEntryAvailable() {
             Lock l(m_indexMutex);
+cout << __FILE__ << " " << __LINE__ << ", FP = " << m_nextEntryToPlayBack->second.m_filePosition << endl;
             odcore::data::Container retVal = m_rawMemoryBuffer[m_nextEntryToPlayBack->second.m_filePosition]->m_container;
+cout << __FILE__ << " " << __LINE__ << endl;
+            auto toDelete = m_rawMemoryBuffer.find(m_nextEntryToPlayBack->second.m_filePosition);
+            m_unusedEntriesFromRawMemoryBuffer.push_front(m_rawMemoryBuffer[m_nextEntryToPlayBack->second.m_filePosition]);
+            m_rawMemoryBuffer.erase(toDelete);
+            m_nextEntryToReadFromRecMemFile->second.m_available = false;
+
+            m_nextEntryToPlayBack++;
+            if (m_nextEntryToPlayBack == m_index.end()) {
+                m_nextEntryToPlayBack = m_index.begin();
+            }
+
+cout << __FILE__ << " " << __LINE__ << endl;
             return retVal;
         }
 
@@ -247,11 +261,17 @@ cout << "RT: dt = " << entry->m_container.getDataType() << ", st = " << entry->m
                         m_rawMemoryBuffer[m_nextEntryToReadFromRecMemFile->second.m_filePosition] = entry;
 
                         m_nextEntryToReadFromRecMemFile->second.m_available = true;
+
+                        // Move forward.
+                        m_nextEntryToReadFromRecMemFile++;
+                    }
+
+                    if (entriesReadFromFile > 0) {
+                        clog << "[odtools::player::RecMemIndex]: " << entriesReadFromFile << " entries read from file." << endl;
+                        entriesReadFromFile = 0;
                     }
                 }
-                if (entriesReadFromFile > 0) {
-                    clog << "[odtools::player::RecMemIndex]: " << entriesReadFromFile << " entries read from file." << endl;
-                }
+
                 // Manage cache at 10 Hz.
                 Thread::usleepFor(100 * RecMemIndex::ONE_MILLISECOND_IN_MICROSECONDS);
             } while (isRawMemoryBufferFillingRunning());
