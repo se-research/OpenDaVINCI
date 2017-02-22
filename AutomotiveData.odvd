@@ -164,19 +164,6 @@ message automotive.GenericCANMessage [id = 71] {
     uint64 data [id = 4];                             // Payload of the CAN message.
 }
 
-// TODO: Remove me.
-message automotive.vehicle.WheelSpeed [id = 75] {
-    float frontLeft [id = 1];
-    float frontRight [id = 2];
-    float rearLeft [id = 3];
-    float rearRight [id = 4];
-}
-
-// TODO: Remove me.
-message automotive.vehicle.LightSystem [id = 76] {
-    int8 headlights [id = 1];
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 // Feature extraction messages.
 message fxe.KeyPoint [id = 301] {

@@ -362,7 +362,7 @@ public class CANDataStructureGenerator {
         sb.append("ENDIF()"); sb.append("\r\n");
         sb.append("FIND_PACKAGE (odcantools REQUIRED)"); sb.append("\r\n");
         sb.append("# Set header files from odcantools."); sb.append("\r\n");
-        sb.append("INCLUDE_DIRECTORIES (${ODCANTOOLS_INCLUDE_DIRS})"); sb.append("\r\n");
+        sb.append("INCLUDE_DIRECTORIES (${ODCANTOOLS_INCLUDE_DIRS})"); sb.append("\r\n"); sb.append("\r\n");
 
         // Generate dependencies to data structures.
         for(String s : listOfUsingODVDFiles) {

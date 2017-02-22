@@ -27,6 +27,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
 import org.opendavinci.canDataModel.CANSignal
+import org.opendavinci.canDataModel.CANMessage
 import org.opendavinci.canDataModel.CANMessageMapping
 import java.util.Random
 import org.opendavinci.canDataModel.CANSignalMapping
@@ -38,6 +39,7 @@ class CANDataModelGenerator implements IGenerator {
 	/* This class describes all data to a defined CAN signal in a .can file. */
 	static class CANSignalDescription {
 		String m_FQDN
+        String m_name
 		String m_CANID
 		String m_startBit
 		String m_length
@@ -50,12 +52,23 @@ class CANDataModelGenerator implements IGenerator {
 		String m_rangeEnd
 	}
 	
+    /* This class describes all data to a defined CAN message in a .can file. */
+    static class CANMessageDescription {
+        String m_MessageName
+        String m_CANID
+        String m_length
+        HashMap<String,CANSignalDescription> m_signals
+    }
+    
     /* This method is our interface to an outside caller. */
 	override void doGenerate(Resource resource, IFileSystemAccess fsa) {
 		val generatedHeadersFile = resource.URI.toString().substring(resource.URI.toString().lastIndexOf("/") + 1).replaceAll(".can", "")
 
+        // First, extract all CAN messages from .can file.
+        val mapOfDefinedCANMessages = collectDefinedCANMessages(resource.allContents.toIterable.filter(typeof(CANMessage)))
+        
 		// First, extract all CAN signals from .can file.
-		val mapOfDefinedCANSignals = collectDefinedCANSignals(resource.allContents.toIterable.filter(typeof(CANSignal)))
+		//val mapOfDefinedCANSignals = collectDefinedCANSignals(resource.allContents.toIterable.filter(typeof(CANSignal)))
 		
 		// Next, extract all .odvd header names from the 'using' statement.
 		val odvdIncludedFiles = extractOdvdHeaders(resource.allContents.toIterable.filter(typeof(ODVDFile)))
@@ -73,23 +86,43 @@ class CANDataModelGenerator implements IGenerator {
 		
 		// Next, generate the code for the actual mapping.
 		for (e : resource.allContents.toIterable.filter(typeof(CANMessageMapping))) {
-			fsa.generateFile("include/generated/" + e.mappingName.toString().replaceAll("\\.", "/") + ".h", generateHeaderFileContent(generatedHeadersFile, odvdIncludedFiles, e))
+			fsa.generateFile("include/generated/" + e.mappingName.toString().replaceAll("\\.", "/") + ".h", 
+			    generateHeaderFileContent(generatedHeadersFile, odvdIncludedFiles, e))
 			fsa.generateFile("src/generated/" + e.mappingName.toString().replaceAll("\\.", "/") + ".cpp", 
-				generateImplementationFileContent(e, "generated", mapOfDefinedCANSignals))
-			fsa.generateFile("testsuites/" + e.mappingName.toString().replaceAll("\\.", "_") + "TestSuite.h", generateTestSuiteContent(generatedHeadersFile, odvdIncludedFiles, e, tests, mapOfDefinedCANSignals))
-			fsa.generateFile("uppaal/generated/" + e.mappingName.toString().replaceAll("\\.", "/"), generateUPPAALFileContent(e, mapOfDefinedCANSignals))
+				generateImplementationFileContent(e, "generated", mapOfDefinedCANMessages))
+			fsa.generateFile("testsuites/" + e.mappingName.toString().replaceAll("\\.", "_") + "TestSuite.h", 
+			    generateTestSuiteContent(generatedHeadersFile, odvdIncludedFiles, e, tests, mapOfDefinedCANMessages))
+			fsa.generateFile("uppaal/generated/" + e.mappingName.toString().replaceAll("\\.", "/"), 
+			    generateUPPAALFileContent(e, mapOfDefinedCANMessages))
 		}
 	}
 
-	/* This method collects all CAN signal definitions. */
-	def collectDefinedCANSignals(Iterable<CANSignal> iter) {
+    /* This method collects all CAN message definitions. */
+    def collectDefinedCANMessages(Iterable<CANMessage> iter) {
+        val canMessagesByName =  new HashMap<String, CANMessageDescription>
+        val localIterator = iter.iterator
+        while (localIterator.hasNext) {
+            val cs = localIterator.next
+            val cmd = new CANMessageDescription
+            cmd.m_MessageName = cs.canMessageName
+            cmd.m_CANID = cs.canIdentifier
+            cmd.m_length = cs.canMessageLength
+            cmd.m_signals = collectDefinedCANSignals(cs.cansignals, cmd)
+            canMessagesByName.put(cmd.m_CANID, cmd)
+        }
+        return canMessagesByName
+    }
+
+	/* This method collects CAN signal definitions. */
+	def collectDefinedCANSignals(Iterable<CANSignal> iter, CANMessageDescription canMessage) {
 		val cansignalsByFQDN =  new HashMap<String, CANSignalDescription>
 		val localIterator = iter.iterator
 		while (localIterator.hasNext) {
 			val cs = localIterator.next
 			val csd = new CANSignalDescription
-			csd.m_FQDN = cs.cansignalname
-			csd.m_CANID = cs.canIdentifier
+			csd.m_FQDN = canMessage.m_MessageName+'.'+cs.cansignalname
+			csd.m_CANID = canMessage.m_CANID
+			csd.m_name = cs.cansignalname
 			csd.m_startBit = cs.startBit
 			csd.m_length = cs.length
 			if((cs.length==null || cs.length=="") && (cs.lengthBytes!=null || cs.lengthBytes!=""))
@@ -106,6 +139,16 @@ class CANDataModelGenerator implements IGenerator {
 			cansignalsByFQDN.put(csd.m_FQDN, csd)
 		}
         return cansignalsByFQDN
+	}
+	
+	def findSignal(HashMap<String, CANMessageDescription> canMessages, String signalFQDN) {
+	    for(canMessage : canMessages.values) {
+            val csd = canMessage.m_signals.get(signalFQDN)
+            if(csd != null) {
+                return csd
+            }
+	    }
+	    return null
 	}
 
 	/* This method collects the name of the needed odvd headers. */
@@ -437,18 +480,18 @@ namespace canmapping {
 '''
 
 // THIS WILL GENERATE THE IMPLEMENTATION (.CPP) FILE NAMESPACES
-	def generateImplementationFileNSs(String[] namespaces, int i, CANMessageMapping mapping, String includeDirectoryPrefix, HashMap<String, CANSignalDescription> canSignals, ArrayList<String> canIDs) '''
+	def generateImplementationFileNSs(String[] namespaces, int i, CANMessageMapping mapping, String includeDirectoryPrefix, HashMap<String, CANMessageDescription> canMessages, ArrayList<String> canIDs) '''
 	«IF namespaces.size>i+1»
 	namespace «namespaces.get(i)» {
-		«generateImplementationFileNSs(namespaces, i+1, mapping, includeDirectoryPrefix, canSignals, canIDs)»
+		«generateImplementationFileNSs(namespaces, i+1, mapping, includeDirectoryPrefix, canMessages, canIDs)»
 	} // end of namespace "«namespaces.get(i)»"
 	«ELSE»
-	«generateImplementationFileBody(namespaces.get(i), mapping, includeDirectoryPrefix, canSignals, canIDs)»
+	«generateImplementationFileBody(namespaces.get(i), mapping, includeDirectoryPrefix, canMessages, canIDs)»
 	«ENDIF»
 	'''
 
 // THIS WILL GENERATE THE IMPLEMENTATION (.CPP) FILE BODY
-	def generateImplementationFileBody(String className, CANMessageMapping mapping, String includeDirectoryPrefix, HashMap<String, CANSignalDescription> canSignals, ArrayList<String> canIDs) '''
+	def generateImplementationFileBody(String className, CANMessageMapping mapping, String includeDirectoryPrefix, HashMap<String, CANMessageDescription> canMessages, ArrayList<String> canIDs) '''
 	
 	using namespace std;
 
@@ -665,10 +708,13 @@ namespace canmapping {
 	::automotive::odcantools::CANMessage error(0x00,0,0x00);
 	return error.getGenericCANMessage();
     «ELSE»
+    «{//make sure all the CAN messages exist*/
+        
+    }»
 
 		«var String cmNamePrefix="CM_" /* multiple canIDs partially supported */»
 		«FOR id : canIDs»
-		::automotive::odcantools::CANMessage «cmNamePrefix+id»(«canIDs.get(0)»,«mapping.payloadLength»,0x00);
+		::automotive::odcantools::CANMessage «cmNamePrefix+id»(«id»,«canMessages.get(id).m_length»,0x00);
 		«ENDFOR»
 
 		if(c.getDataType() != ::«mapping.mappingName.replaceAll("\\.","::")»::ID())
@@ -686,7 +732,7 @@ namespace canmapping {
 
     	«var String varName»
 		«FOR currentSignalInMapping : mapping.mappings»
-			«var CANSignalDescription CurrentCANSignal=canSignals.get(currentSignalInMapping.cansignalname)»
+			«var CANSignalDescription CurrentCANSignal=findSignal(canMessages,currentSignalInMapping.cansignalname)»
 			«{varName=currentSignalInMapping.cansignalname.replace('.','_').toFirstUpper;""}»
 			
 			///////// manipulating signal «currentSignalInMapping.cansignalname» : «currentSignalInMapping.signalIdentifier»
@@ -695,8 +741,8 @@ namespace canmapping {
 			double «varName» = msg.getValueFromScalarField<double>(«currentSignalInMapping.signalIdentifier», found, extracted);
 			
 			if(found && extracted) {
-			    ::automotive::odcantools::CANSignal «currentSignalInMapping.cansignalname.replaceAll("\\.","_")»(«CurrentCANSignal.m_startBit»,«CurrentCANSignal.m_length»,"«CurrentCANSignal.m_signed»","«CurrentCANSignal.m_endian»",«CurrentCANSignal.m_multiplyBy»,«CurrentCANSignal.m_add»,«CurrentCANSignal.m_rangeStart»,«CurrentCANSignal.m_rangeEnd»);
-                «cmNamePrefix+CurrentCANSignal.m_CANID».addSignal(«currentSignalInMapping.signalIdentifier»,«currentSignalInMapping.cansignalname.replaceAll("\\.","_")»);
+			    ::automotive::odcantools::CANSignal signal_«currentSignalInMapping.cansignalname.replaceAll("\\.","_")»(«CurrentCANSignal.m_startBit»,«CurrentCANSignal.m_length»,"«CurrentCANSignal.m_signed»","«CurrentCANSignal.m_endian»",«CurrentCANSignal.m_multiplyBy»,«CurrentCANSignal.m_add»,«CurrentCANSignal.m_rangeStart»,«CurrentCANSignal.m_rangeEnd»);
+                «cmNamePrefix+CurrentCANSignal.m_CANID».addSignal(«currentSignalInMapping.signalIdentifier»,signal_«currentSignalInMapping.cansignalname.replaceAll("\\.","_")»);
                 «cmNamePrefix+CurrentCANSignal.m_CANID».encodeSignal(«currentSignalInMapping.signalIdentifier»,«varName»);
 			}
 			else {
@@ -799,7 +845,7 @@ namespace canmapping {
         «ENDFOR»
 
 		«FOR currentSignalInMapping : mapping.mappings»
-			«var CANSignalDescription CurrentCANSignal=canSignals.get(currentSignalInMapping.cansignalname)»
+			«var CANSignalDescription CurrentCANSignal=findSignal(canMessages,currentSignalInMapping.cansignalname)»
 			«IF CurrentCANSignal!=null /*if the signal exists*/»
 
             «var String capitalizedName»
@@ -865,7 +911,7 @@ namespace canmapping {
 	}
 	
 	/* This method generates the implementation (.cpp). */
-	def generateImplementationFileContent(CANMessageMapping mapping, String includeDirectoryPrefix, HashMap<String, CANSignalDescription> canSignals) '''
+	def generateImplementationFileContent(CANMessageMapping mapping, String includeDirectoryPrefix, HashMap<String, CANMessageDescription> canMessages) '''
 /*
  * This software is open source. Please see COPYING and AUTHORS for further information.
  *
@@ -876,7 +922,7 @@ namespace canmapping {
 «var ArrayList<String> canIDs=new ArrayList<String>»
 «FOR currentMapping : mapping.mappings»
 «var String signalName=currentMapping.cansignalname»
-«var CANSignalDescription canSignal=canSignals.get(signalName)»
+«var CANSignalDescription canSignal=findSignal(canMessages,signalName) /*canSignals.get(signalName)maybe preserve the global signal collection with reference to parent can message?*/»
 «{ // make sure we don't add 2 times the same CAN id
 	if(canSignal!=null)
 	{
@@ -911,9 +957,9 @@ namespace canmapping {
 
 	«var String[] classNames = mapping.mappingName.toString.split('\\.')»
 	«IF classNames.size>1»
-		«generateImplementationFileNSs(classNames, 0, mapping, includeDirectoryPrefix, canSignals, canIDs)»
+		«generateImplementationFileNSs(classNames, 0, mapping, includeDirectoryPrefix, canMessages, canIDs)»
 	«ELSE»
-		«generateImplementationFileBody(classNames.get(0), mapping, includeDirectoryPrefix, canSignals, canIDs)»
+		«generateImplementationFileBody(classNames.get(0), mapping, includeDirectoryPrefix, canMessages, canIDs)»
 	«ENDIF»
 
 } // canmapping
@@ -921,7 +967,7 @@ namespace canmapping {
 
 	// Generate the test suite content (.h).	
 	def generateTestSuiteContent(String generatedHeadersFile, ArrayList<String> odvdIncludedFiles, CANMessageMapping mapping, 
-				ArrayList<CANMessageTesting> canSignalTesting, HashMap<String, CANSignalDescription> canSignals) '''
+				ArrayList<CANMessageTesting> canSignalTesting, HashMap<String, CANMessageDescription> canMessages) '''
 /*
  * This software is open source. Please see COPYING and AUTHORS for further information.
  *
@@ -931,7 +977,7 @@ namespace canmapping {
 «var ArrayList<String> canIDs=new ArrayList<String>»
 «FOR currentMapping : mapping.mappings»
 «var String signalName=currentMapping.cansignalname»
-«var CANSignalDescription canSignal=canSignals.get(signalName)»
+«var CANSignalDescription canSignal=findSignal(canMessages,signalName)»
 «{ // make sure we don't add 2 times the same CAN id
 	if(canSignal!=null)
 	{
@@ -1133,7 +1179,7 @@ class CANBridgeTest : public CxxTest::TestSuite {
 
 
 /* This method generates the UPPAAL file content when the order of expected messages does not matter. */
-	def generateUPPAALUnordered(CANMessageMapping mapping, HashMap<String, CANSignalDescription> canSignals) '''
+	def generateUPPAALUnordered(CANMessageMapping mapping, HashMap<String, CANMessageDescription> canMessages) '''
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
 <nta>
@@ -1145,7 +1191,7 @@ Unordered messages*/
 «var ArrayList<String> canIDs=new ArrayList<String>»/*
 «FOR currentMapping : mapping.mappings»
 «var String signalName=currentMapping.cansignalname»
-«var CANSignalDescription canSignal=canSignals.get(signalName)»
+«var CANSignalDescription canSignal=findSignal(canMessages,signalName)»
 «{ // make sure we don't add 2 times the same CAN id
 	if(canSignal!=null)
 	{
@@ -1337,7 +1383,7 @@ system messageGenerator,Receiver,Synchronizer;
 '''	
 
 /* This method generates the UPPAAL file content when the order of expected messages matters. */
-	def generateUPPAALOrdered(CANMessageMapping mapping,HashMap<String, CANSignalDescription> canSignals) '''
+	def generateUPPAALOrdered(CANMessageMapping mapping,HashMap<String, CANMessageDescription> canMessages) '''
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
 <nta>
@@ -1349,10 +1395,7 @@ Ordered messages*/
 «var ArrayList<String> canIDs=new ArrayList<String>»/*
 «FOR currentMapping : mapping.mappings»
 «var String signalName=currentMapping.cansignalname»
-«var CANSignalDescription canSignal=canSignals.get(signalName)»
-«/* DON'T NEED TO RUN THIS CHECK
-var String[] splittedMN=mapping.mappingName.toString.toLowerCase.split("\\.")»
-IF(splittedMN.get(splittedMN.size-1).compareToIgnoreCase(signalName.split("\\.").get(0).toLowerCase)==0)*/»
+«var CANSignalDescription canSignal=findSignal(canMessages,signalName)»
 «{ // make sure we don't add 2 times the same CAN id
 	if(canSignal!=null)
 	{
@@ -1614,17 +1657,14 @@ system messageGenerator,Receiver,Synchronizer;
 '''	
 
     /* This method generates the UPPAAL file content. */
-	def generateUPPAALFileContent(CANMessageMapping mapping,HashMap<String, CANSignalDescription> canSignals) '''
+	def generateUPPAALFileContent(CANMessageMapping mapping,HashMap<String, CANMessageDescription> canMessages) '''
 «IF mapping.unordered!=null && mapping.unordered.compareTo("unordered")==0»
-«generateUPPAALUnordered(mapping,canSignals)»
+«generateUPPAALUnordered(mapping,canMessages)»
 «ELSE»
 	«var ArrayList<String> canIDs=new ArrayList<String>»
 	«FOR currentMapping : mapping.mappings»
 	«var String signalName=currentMapping.cansignalname»
-	«var CANSignalDescription canSignal=canSignals.get(signalName)»
-	«/* DON'T NEED TO RUN THIS CHECK
-	var String[] splittedMN=mapping.mappingName.toString.toLowerCase.split("\\.")»
-	IF(splittedMN.get(splittedMN.size-1).compareTo(signalName.split("\\.").get(0).toLowerCase)==0)*/»
+	«var CANSignalDescription canSignal=findSignal(canMessages,signalName)»
 	«{ // make sure we don't add 2 times the same CAN id
 		if(canSignal!=null)
 		{
@@ -1645,7 +1685,7 @@ system messageGenerator,Receiver,Synchronizer;
 	«ENDIF»
 	«ENDFOR»
 	«IF canIDs.size>1»
-		«generateUPPAALOrdered(mapping,canSignals)»
+		«generateUPPAALOrdered(mapping,canMessages)»
 	«ELSE»
 	«ENDIF»
 «ENDIF»

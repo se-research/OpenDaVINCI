@@ -131,10 +131,14 @@ namespace automotive {
         }
         
         void CANMessage::encodeSignal(const CANSignal signal, double value) {
-            if(value<signal.m_rangeB)
-                value=signal.m_rangeB;
-            else if(value>signal.m_rangeE)
-                value=signal.m_rangeE;
+            // if the range is [0,0], skip the range check
+            double tolerance=1e-5;
+            if(!(signal.m_rangeB-signal.m_rangeE<tolerance && signal.m_rangeB<tolerance)) {
+                if(value<signal.m_rangeB)
+                    value=signal.m_rangeB;
+                else if(value>signal.m_rangeE)
+                    value=signal.m_rangeE;
+            }
             
             value=round((value-signal.m_offset)/signal.m_factor);
             int64_t signalValue=static_cast<int64_t>(value);
@@ -222,10 +226,10 @@ namespace automotive {
         }
         
         uint8_t CANMessage::getPayloadByte(const int8_t index) {
-            if(index<0 || index>8)
-                return 0x00;
-            else
+            if(index>=0 && index<getLength())
                 return m_payload.at(index);
+            else
+                return 0x00;
         }
         
         int8_t CANMessage::getLSBPosition(const CANSignal signal) {
@@ -258,10 +262,14 @@ namespace automotive {
             double signalValue=static_cast<double>(extractRawSignal(signal));
             signalValue=(signalValue*signal.m_factor)+signal.m_offset;
             
-            if(signalValue<signal.m_rangeB)
-                signalValue=signal.m_rangeB;
-            else if(signalValue>signal.m_rangeE)
-                signalValue=signal.m_rangeE;
+            // if the range is [0,0], skip the range check
+            double tolerance=1e-5;
+            if(!(signal.m_rangeB-signal.m_rangeE<tolerance && signal.m_rangeB<tolerance)) {
+                if(signalValue<signal.m_rangeB)
+                    signalValue=signal.m_rangeB;
+                else if(signalValue>signal.m_rangeE)
+                    signalValue=signal.m_rangeE;
+            }
             
             return signalValue;
         }
@@ -294,13 +302,8 @@ namespace automotive {
                     // ...of the next byte.
                     advanceByteNumberInCorrectEndianness(byteNumber, signal.m_endianness);
                     
-                    // check for out-of-boundaries index
-                    if(byteNumber>=0 && byteNumber<=getLength()-1) {
-                        currentByte=m_payload.at(byteNumber);
-                    }
-                    else { // if out-of-boundaries (it can happen on purpose), consider a zero-filled byte
-                        currentByte=0x00;
-                    }
+                    // update the current byte
+                    currentByte=getPayloadByte(byteNumber);
                 }
                 else { // same byte, next bit
                     advanceByteMask(byteMask);
