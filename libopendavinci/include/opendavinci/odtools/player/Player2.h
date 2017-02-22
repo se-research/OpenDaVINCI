@@ -126,11 +126,14 @@ namespace odtools {
                 bool hasMoreData() const;
 
                 /**
-                 * This method restarts the player.
+                 * This method rewinds the iterators.
                  */
                 void rewind();
 
             private:
+                bool hasMoreDataFromRecFile() const;
+                bool hasMoreDataFromRecMemFile() const;
+
                 /**
                  * This method initializes the global index where the sample
                  * time stamps are sorted chronocally and mapped to the 

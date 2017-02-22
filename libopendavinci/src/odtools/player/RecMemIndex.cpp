@@ -83,6 +83,7 @@ namespace odtools {
             m_index(),
             m_nextEntryToPlayBack(),
             m_nextEntryToReadFromRecMemFile(),
+            m_hasMoreData(false),
             m_rawMemoryBuffer(),
             m_unusedEntriesFromRawMemoryBuffer(),
             m_mapOfPointersToSharedMemorySegments(),
@@ -204,6 +205,13 @@ cout << "R1: P = " << POS_BEFORE << ", dt = " << c.getDataType() << ", st = " <<
             }
         }
 
+        bool RecMemIndex::hasMoreData() const {
+            Lock l(m_indexMutex);
+            return m_hasMoreData;
+        }
+
+        void RecMemIndex::rewind() {}
+
         int64_t RecMemIndex::peekNextSampleTimeToPlayBack() const {
             Lock l(m_indexMutex);
             return m_nextEntryToPlayBack->first;
@@ -248,6 +256,9 @@ cout << "N = " << m_nextEntryToPlayBack->second.m_nameOfSharedMemorySegment << "
             m_nextEntryToPlayBack++;
             if (m_nextEntryToPlayBack == m_index.end()) {
                 m_nextEntryToPlayBack = m_index.begin();
+
+                // We have come to the end of our available containers.
+                m_hasMoreData = false;
             }
 
 cout << __FILE__ << " " << __LINE__ << endl;
@@ -267,6 +278,7 @@ cout << __FILE__ << " " << __LINE__ << endl;
         }
 
         void RecMemIndex::manageRawMemoryBuffer() {
+            m_hasMoreData = true;
             uint32_t entriesReadFromFile = 0;
             do {
                 if (m_recMemFileValid) {

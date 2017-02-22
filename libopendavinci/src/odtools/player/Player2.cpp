@@ -260,7 +260,24 @@ namespace odtools {
         }
 
         Container Player2::getNextContainerToBeSent() throw (odcore::exceptions::ArrayIndexOutOfBoundsException) {
+            static Container lastContainer;
             TimeStamp thisTimePointCallingThisMethod;
+
+            // Check if the .rec file is at end but the .rec.mem file has still content to replay.
+            bool hasNoMoreDataFromRecFileButFromRecMemFile = false;
+            {
+                Lock l(m_indexMutex);
+                hasNoMoreDataFromRecFileButFromRecMemFile = (!hasMoreDataFromRecFile() && hasMoreDataFromRecMemFile());
+            }
+            if (hasNoMoreDataFromRecFileButFromRecMemFile) {
+                if (NULL != m_recMemIndex.get()) {
+                    Container retVal = m_recMemIndex->makeNextRawMemoryEntryAvailable();
+                    if (lastContainer.getDataType() != Container::UNDEFINEDDATA) {
+                        m_delay = retVal.getSampleTimeStamp().toMicroseconds() - lastContainer.getSampleTimeStamp().toMicroseconds();
+                    }
+                    return lastContainer = retVal;
+                }
+            }
 
             checkForEndOfIndexAndThrowExceptionOrAutoRewind();
 
@@ -327,7 +344,7 @@ namespace odtools {
                 m_containerReplayThroughput = std::ceil(m_numberOfReturnedContainersInTotal*static_cast<float>(Player2::ONE_SECOND_IN_MICROSECONDS)/ELAPSED);
             }
 
-            return retVal;
+            return lastContainer = retVal;
         }
 
         void Player2::checkAvailabilityOfNextContainerToBeReplayed() {
@@ -369,9 +386,15 @@ namespace odtools {
             // File must be successfully opened AND
             //  the Player must be configured as m_autoRewind OR
             //  some entries are left to replay.
-            return (m_recFileValid && (m_autoRewind || (m_currentContainerToReplay != m_index.end())));
+            return ( hasMoreDataFromRecFile() || hasMoreDataFromRecMemFile() );
+        }
 
-            // TODO: Check if .rec.mem file has more data.
+        bool Player2::hasMoreDataFromRecFile() const {
+            return (m_recFileValid && (m_autoRewind || (m_currentContainerToReplay != m_index.end())));
+        }
+
+        bool Player2::hasMoreDataFromRecMemFile() const {
+            return ((NULL != m_recMemIndex.get()) && (m_recMemIndex->hasMoreData()));
         }
 
         ////////////////////////////////////////////////////////////////////////

@@ -95,6 +95,18 @@ namespace odtools {
                 virtual ~RecMemIndex();
 
                 /**
+                 * This method returns true if there is more data to replay.
+                 *
+                 * @return true if there is more data to replay.
+                 */
+                bool hasMoreData() const;
+
+                /**
+                 * This method rewinds the iterators.
+                 */
+                void rewind();
+
+                /**
                  * This method returns the sample time stamp of the
                  * next Shared*-container to be replayed without
                  * actually returning it.
@@ -110,18 +122,6 @@ namespace odtools {
                  * @return The next container to be replayed.
                  */
                 odcore::data::Container makeNextRawMemoryEntryAvailable();
-
-                /**
-                 * This method returns true if there is more data to replay.
-                 *
-                 * @return true if there is more data to replay.
-                 */
-                bool hasMoreData() const;
-
-                /**
-                 * This method restarts the player.
-                 */
-                void rewind();
 
             private:
                 /**
@@ -145,6 +145,7 @@ namespace odtools {
                 multimap<int64_t, IndexEntry> m_index;
                 multimap<int64_t, IndexEntry>::iterator m_nextEntryToPlayBack;
                 multimap<int64_t, IndexEntry>::iterator m_nextEntryToReadFromRecMemFile;
+                bool m_hasMoreData;
 
                 // Mapping of pos_type (within .rec.mem file) --> meta-entry describing tupel (Container, raw memory).
                 map<uint64_t, shared_ptr<RawMemoryBufferEntry> > m_rawMemoryBuffer;
