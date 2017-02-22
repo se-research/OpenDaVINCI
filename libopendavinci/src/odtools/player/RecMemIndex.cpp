@@ -52,12 +52,13 @@ namespace odtools {
             m_lengthOfRawMemoryBuffer(0) {}
 
         RawMemoryBufferEntry::~RawMemoryBufferEntry() {
+            clog << "[odtools::player::RecMemIndex]: Releasing RawMemoryBufferEntry...";
             if ((NULL != m_rawMemoryBuffer) && (m_lengthOfRawMemoryBuffer > 0)) {
                 OPENDAVINCI_CORE_FREE_POINTER(m_rawMemoryBuffer);
             }
             m_rawMemoryBuffer = NULL;
             m_lengthOfRawMemoryBuffer = 0;
-clog << "Cleaning entry" << endl;
+            clog << "done." << endl;
         }
 
         RawMemoryBufferEntry::RawMemoryBufferEntry(const RawMemoryBufferEntry &obj) :
@@ -69,7 +70,7 @@ clog << "Cleaning entry" << endl;
             m_container = obj.m_container;
             m_rawMemoryBuffer = obj.m_rawMemoryBuffer;
             m_lengthOfRawMemoryBuffer = obj.m_lengthOfRawMemoryBuffer;
-            return *this;
+            return (*this);
         }
 
         ////////////////////////////////////////////////////////////////////////
@@ -119,6 +120,9 @@ clog << "Cleaning entry" << endl;
                 m_unusedEntriesFromRawMemoryBuffer.clear();
                 m_index.clear();
             clog << "done." << endl;
+
+            // Release shared memory segments.
+            m_mapOfPointersToSharedMemorySegments.clear();
         }
 
         void RecMemIndex::initializeIndex() {
@@ -273,6 +277,7 @@ cout << __FILE__ << " " << __LINE__ << endl;
                         m_recMemFile.clear();
                     }
 
+                    // TODO: Avoid re-reading the same contaiers.
                     while (!m_unusedEntriesFromRawMemoryBuffer.empty()) {
                         // Always auto-rewind.
                         if (m_nextEntryToReadFromRecMemFile == m_index.end()) {

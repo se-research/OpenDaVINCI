@@ -94,9 +94,34 @@ namespace odtools {
 
                 virtual ~RecMemIndex();
 
+                /**
+                 * This method returns the sample time stamp of the
+                 * next Shared*-container to be replayed without
+                 * actually returning it.
+                 *
+                 * @return sampleTimeStamp in microseconds of the next container in line.
+                 */
                 int64_t peekNextSampleTimeToPlayBack() const;
 
+                /**
+                 * This method returns the next Shared*-container to be replayed
+                 * and copies the raw memory into the corresponding shared memory.
+                 *
+                 * @return The next container to be replayed.
+                 */
                 odcore::data::Container makeNextRawMemoryEntryAvailable();
+
+                /**
+                 * This method returns true if there is more data to replay.
+                 *
+                 * @return true if there is more data to replay.
+                 */
+                bool hasMoreData() const;
+
+                /**
+                 * This method restarts the player.
+                 */
+                void rewind();
 
             private:
                 /**

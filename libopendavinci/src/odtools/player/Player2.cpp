@@ -360,6 +360,8 @@ namespace odtools {
             // Re-start concurrent thread.
             setContainerCacheFillingRunning(true);
             m_containerCacheFillingThread = std::thread(&Player2::manageCache, this);
+
+            // TODO: Propagate rewind to .rec.mem file.
         }
 
         bool Player2::hasMoreData() const {
@@ -368,6 +370,8 @@ namespace odtools {
             //  the Player must be configured as m_autoRewind OR
             //  some entries are left to replay.
             return (m_recFileValid && (m_autoRewind || (m_currentContainerToReplay != m_index.end())));
+
+            // TODO: Check if .rec.mem file has more data.
         }
 
         ////////////////////////////////////////////////////////////////////////
