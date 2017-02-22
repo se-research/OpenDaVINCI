@@ -254,9 +254,8 @@ namespace odtools {
             if ( (m_nextEntryToPlayBack->second.m_available) &&
                  (1 == m_rawMemoryBuffer.count(m_nextEntryToPlayBack->second.m_filePosition)) ) {
                 // Load Container from cache to be distributed into container conference.
-cout << __FILE__ << " " << __LINE__ << ", FP = " << m_nextEntryToPlayBack->second.m_filePosition << endl;
                 retVal = m_rawMemoryBuffer[m_nextEntryToPlayBack->second.m_filePosition]->m_container;
-cout << __FILE__ << " " << __LINE__ << endl;
+
                 // Transfer raw memory available to shared memory.
                 const string NAME_OF_SHARED_MEMORY_SEGMENT = m_nextEntryToPlayBack->second.m_nameOfSharedMemorySegment;
                 if (0 == m_mapOfPointersToSharedMemorySegments.count(NAME_OF_SHARED_MEMORY_SEGMENT)) {
@@ -275,7 +274,6 @@ cout << __FILE__ << " " << __LINE__ << endl;
                              std::min(m_rawMemoryBuffer[m_nextEntryToPlayBack->second.m_filePosition]->m_lengthOfRawMemoryBuffer, 
                                       m_nextEntryToPlayBack->second.m_sizeOfSharedMemorySegment));
                 }
-cout << "N = " << m_nextEntryToPlayBack->second.m_nameOfSharedMemorySegment << ", S = " << m_nextEntryToPlayBack->second.m_sizeOfSharedMemorySegment << endl;
 
                 // Mark entry as available.
                 m_nextEntryToReadFromRecMemFile->second.m_available = false;
@@ -292,7 +290,6 @@ cout << "N = " << m_nextEntryToPlayBack->second.m_nameOfSharedMemorySegment << "
                 m_hasMoreData = false;
             }
 
-cout << __FILE__ << " " << __LINE__ << endl;
             return retVal;
         }
 

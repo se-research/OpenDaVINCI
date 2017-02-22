@@ -63,6 +63,12 @@ namespace odplayerh264 {
         double timeScale = getKeyValueConfiguration().getValue<double>("odplayerh264.timeScale");
         timeScale = (fabs(timeScale) > 1e-5 ? fabs(timeScale) : 1.0);
 
+        // Size of the memory buffer.
+        const uint32_t MEMORY_SEGMENT_SIZE = getKeyValueConfiguration().getValue<uint32_t>("global.buffer.memorySegmentSize");
+
+        // Number of memory segments.
+        const uint32_t NUMBER_OF_SEGMENTS = getKeyValueConfiguration().getValue<uint32_t>("global.buffer.numberOfMemorySegments");
+
         // Do we have to rewind the stream on EOF?
         bool autoRewind = (getKeyValueConfiguration().getValue<int>("odplayerh264.autoRewind") != 0);
 
@@ -73,7 +79,7 @@ namespace odplayerh264 {
         addDataStoreFor(odcore::data::player::PlayerCommand::ID(), m_playerControl);
 
         // Construct player.
-        PlayerH264 player(url, autoRewind, BASE_PORT);
+        PlayerH264 player(url, autoRewind, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, BASE_PORT);
 
         // The next container to be sent.
         Container nextContainerToBeSent;

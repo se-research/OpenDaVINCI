@@ -327,10 +327,10 @@ namespace cockpit {
                     m_desc->setText(url.toString().c_str());
 
                     // Size of the memory buffer.
-//                    const uint32_t MEMORY_SEGMENT_SIZE = m_kvc.getValue<uint32_t>("global.buffer.memorySegmentSize");
+                    const uint32_t MEMORY_SEGMENT_SIZE = m_kvc.getValue<uint32_t>("global.buffer.memorySegmentSize");
 
                     // Number of memory segments.
-//                    const uint32_t NUMBER_OF_SEGMENTS = m_kvc.getValue<uint32_t>("global.buffer.numberOfMemorySegments");
+                    const uint32_t NUMBER_OF_SEGMENTS = m_kvc.getValue<uint32_t>("global.buffer.numberOfMemorySegments");
 
                     // We use the asychronous player to allow data caching in background.
 //                    const bool THREADING = false;
@@ -340,9 +340,9 @@ namespace cockpit {
 //                    const uint32_t BASE_PORT = m_kvc.getValue<uint32_t>("odplayerh264.portbaseforchildprocesses");
 //                    m_player2 = shared_ptr<Player2>(new odplayerh264::PlayerH264(url, AUTO_REWIND, BASE_PORT));
 
-                    m_player2 = shared_ptr<Player2>(new odplayerh264::PlayerH264(url, AUTO_REWIND));
+                    m_player2 = shared_ptr<Player2>(new odplayerh264::PlayerH264(url, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS));
 #else
-                    m_player2 = shared_ptr<Player2>(new Player2(url, AUTO_REWIND));
+                    m_player2 = shared_ptr<Player2>(new Player2(url, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS));
 #endif
                     m_player2->setPlayerListener(this);
 

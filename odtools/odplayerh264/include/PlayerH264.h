@@ -68,17 +68,21 @@ namespace odplayerh264 {
              *
              * @param url Resource to play.
              * @param autoRewind True if the file should be rewind at EOF.
+             * @param memorySegmentSize Size of the memory segment to be used for buffering.
+             * @param numberOfMemorySegments Number of memory segments to be used for buffering.
              */
-            PlayerH264(const odcore::io::URL &url, const bool &autoRewind);
+            PlayerH264(const odcore::io::URL &url, const bool &autoRewind, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments);
 
             /**
              * Constructor.
              *
              * @param url Resource to play.
              * @param autoRewind True if the file should be rewind at EOF.
+             * @param memorySegmentSize Size of the memory segment to be used for buffering.
+             * @param numberOfMemorySegments Number of memory segments to be used for buffering.
              * @param basePort Base port for letting spawned children connect to the parent process.
              */
-            PlayerH264(const odcore::io::URL &url, const bool &autoRewind, const uint32_t &basePort);
+            PlayerH264(const odcore::io::URL &url, const bool &autoRewind, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const uint32_t &basePort);
 
             virtual ~PlayerH264();
 

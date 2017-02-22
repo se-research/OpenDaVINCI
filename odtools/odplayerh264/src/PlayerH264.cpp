@@ -62,11 +62,11 @@ namespace odplayerh264 {
 
     ///////////////////////////////////////////////////////////////////////////
 
-    PlayerH264::PlayerH264(const odcore::io::URL &url, const bool &autoRewind) :
-        PlayerH264(url, autoRewind, 0) {}
+    PlayerH264::PlayerH264(const odcore::io::URL &url, const bool &autoRewind, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments) :
+        PlayerH264(url, autoRewind, memorySegmentSize, numberOfMemorySegments, 0) {}
 
-    PlayerH264::PlayerH264(const odcore::io::URL &url, const bool &autoRewind, const uint32_t &basePort) :
-        Player2(url, autoRewind),
+    PlayerH264::PlayerH264(const odcore::io::URL &url, const bool &autoRewind, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const uint32_t &basePort) :
+        Player2(url, autoRewind, memorySegmentSize, numberOfMemorySegments),
         m_singleDecoder(NULL),
         m_basePort(basePort),
         m_mapOfDecodersMutex(),
