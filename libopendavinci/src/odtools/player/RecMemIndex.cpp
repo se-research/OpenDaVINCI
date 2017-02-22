@@ -307,7 +307,7 @@ namespace odtools {
 
         void RecMemIndex::manageRawMemoryBuffer() {
             m_hasMoreData = true;
-            uint32_t entriesReadFromFile = 0;
+//            uint32_t entriesReadFromFile = 0;
             do {
                 if (m_recMemFileValid) {
                     Lock l(m_indexMutex);
@@ -337,7 +337,7 @@ namespace odtools {
                         // Read raw memory dump.
                         m_recMemFile.read(entry->m_rawMemoryBuffer,
                                           std::min(m_nextEntryToReadFromRecMemFile->second.m_sizeOfSharedMemorySegment, entry->m_lengthOfRawMemoryBuffer));
-                        entriesReadFromFile++;
+//                        entriesReadFromFile++;
 
                         // Make entry available in map filePosition -> shared_ptr<RawMemoryBufferEntry>.
                         m_rawMemoryBuffer[m_nextEntryToReadFromRecMemFile->second.m_filePosition] = entry;
@@ -349,10 +349,10 @@ namespace odtools {
                         m_nextEntryToReadFromRecMemFile++;
                     }
 
-                    if (entriesReadFromFile > 0) {
-                        clog << "[odtools::player::RecMemIndex]: " << entriesReadFromFile << " entries read from file." << endl;
-                        entriesReadFromFile = 0;
-                    }
+//                    if (entriesReadFromFile > 0) {
+//                        clog << "[odtools::player::RecMemIndex]: " << entriesReadFromFile << " entries read from file." << endl;
+//                        entriesReadFromFile = 0;
+//                    }
                 }
 
                 // Manage cache at 10 Hz.
