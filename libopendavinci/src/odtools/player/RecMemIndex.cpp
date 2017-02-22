@@ -203,16 +203,13 @@ cout << __FILE__ << " " << __LINE__ << endl;
 cout << __FILE__ << " " << __LINE__ << ", FP = " << m_nextEntryToPlayBack->second.m_filePosition << endl;
                 retVal = m_rawMemoryBuffer[m_nextEntryToPlayBack->second.m_filePosition]->m_container;
 cout << __FILE__ << " " << __LINE__ << endl;
-                // Remove entry from map of used rawMemoryBuffers.
-                {
-                    m_unusedEntriesFromRawMemoryBuffer.push_front(m_rawMemoryBuffer[m_nextEntryToPlayBack->second.m_filePosition]);
-
-//                    auto removeFromListOfUsedPages = m_rawMemoryBuffer.find(m_nextEntryToPlayBack->second.m_filePosition);
-//                    m_rawMemoryBuffer.erase(removeFromListOfUsedPages);
-                }
+                // Mark entry as available.
                 m_nextEntryToReadFromRecMemFile->second.m_available = false;
+                // Remove entry from map of used rawMemoryBuffers.
+                m_unusedEntriesFromRawMemoryBuffer.push_front(m_rawMemoryBuffer[m_nextEntryToPlayBack->second.m_filePosition]);
             }
 
+            // Move to next entry for playback and enable auto-rewind by default.
             m_nextEntryToPlayBack++;
             if (m_nextEntryToPlayBack == m_index.end()) {
                 m_nextEntryToPlayBack = m_index.begin();
@@ -253,14 +250,15 @@ cout << __FILE__ << " " << __LINE__ << endl;
 
                         // Find entry in .rec.mem file.
                         m_recMemFile.seekg(m_nextEntryToReadFromRecMemFile->second.m_filePosition);
-cout << "RT: P = " << m_nextEntryToReadFromRecMemFile->second.m_filePosition << endl;
+
                         // Get and remove next available entry from unsedRawBuffer.
                         shared_ptr<RawMemoryBufferEntry> entry = m_unusedEntriesFromRawMemoryBuffer.back();
                         m_unusedEntriesFromRawMemoryBuffer.pop_back();
 
                         // Read data from .rec.mem file.
                         m_recMemFile >> entry->m_container;
-cout << "RT: dt = " << entry->m_container.getDataType() << ", st = " << entry->m_container.getSampleTimeStamp().toString() << endl;
+
+                        // Read raw memory dump.
                         m_recMemFile.read(entry->m_rawMemoryBuffer,
                                           std::min(m_nextEntryToReadFromRecMemFile->second.m_entrySize, entry->m_lengthOfRawMemoryBuffer));
                         entriesReadFromFile++;
