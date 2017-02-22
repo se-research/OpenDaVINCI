@@ -197,13 +197,20 @@ cout << __FILE__ << " " << __LINE__ << endl;
 
         odcore::data::Container RecMemIndex::makeNextRawMemoryEntryAvailable() {
             Lock l(m_indexMutex);
+            odcore::data::Container retVal;
+            if ( (m_nextEntryToReadFromRecMemFile->second.m_available) &&
+                 (1 == m_rawMemoryBuffer.count(m_nextEntryToPlayBack->second.m_filePosition)) ) {
 cout << __FILE__ << " " << __LINE__ << ", FP = " << m_nextEntryToPlayBack->second.m_filePosition << endl;
-            odcore::data::Container retVal = m_rawMemoryBuffer[m_nextEntryToPlayBack->second.m_filePosition]->m_container;
+                retVal = m_rawMemoryBuffer[m_nextEntryToPlayBack->second.m_filePosition]->m_container;
 cout << __FILE__ << " " << __LINE__ << endl;
-            auto toDelete = m_rawMemoryBuffer.find(m_nextEntryToPlayBack->second.m_filePosition);
-            m_unusedEntriesFromRawMemoryBuffer.push_front(m_rawMemoryBuffer[m_nextEntryToPlayBack->second.m_filePosition]);
-            m_rawMemoryBuffer.erase(toDelete);
-            m_nextEntryToReadFromRecMemFile->second.m_available = false;
+                // Remove entry from map of user rawMemoryBuffers.
+                {
+                    auto removeFromListOfUsedPages = m_rawMemoryBuffer.find(m_nextEntryToPlayBack->second.m_filePosition);
+                    m_unusedEntriesFromRawMemoryBuffer.push_front(m_rawMemoryBuffer[m_nextEntryToPlayBack->second.m_filePosition]);
+                    m_rawMemoryBuffer.erase(removeFromListOfUsedPages);
+                }
+                m_nextEntryToReadFromRecMemFile->second.m_available = false;
+            }
 
             m_nextEntryToPlayBack++;
             if (m_nextEntryToPlayBack == m_index.end()) {
