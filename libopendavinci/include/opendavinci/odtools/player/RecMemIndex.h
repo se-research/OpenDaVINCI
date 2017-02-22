@@ -95,6 +95,8 @@ namespace odtools {
 
                 int64_t peekNextSampleTimeToPlayBack() const;
 
+                odcore::data::Container makeNextRawMemoryEntryAvailable();
+
             private:
                 /**
                  * This method initializes the global index where the sample

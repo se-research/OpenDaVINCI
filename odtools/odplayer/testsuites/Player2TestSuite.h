@@ -668,13 +668,69 @@ class PlayerModule2Test : public CxxTest::TestSuite {
             int64_t counter = 1;
             while (p2.hasMoreData()) {
                 const Container& c = p2.getNextContainerToBeSent();
-                if (counter > 1) {
-                    TS_ASSERT(p2.getDelay() == 1000001);
+                if (counter == 1) {
+                    TS_ASSERT(p2.getDelay() == 0);
+                    const uint32_t A = 1;
+                    const uint32_t B = 0;
+                    const uint32_t C = (A+1)*pow(10,B) + B;
+                    TS_ASSERT((A * 1000 * 1000 + C == c.getSampleTimeStamp().toMicroseconds()));
+                }
+                if (counter == 2) {
+                    const uint32_t A = 2;
+                    const uint32_t B = 0;
+                    const uint32_t C = (A+1)*pow(10,B) + B;
+                    TS_ASSERT((A * 1000 * 1000 + C == c.getSampleTimeStamp().toMicroseconds()));
+                }
+                if (counter == 3) {
+                    const uint32_t A = 3;
+                    const uint32_t B = 0;
+                    const uint32_t C = (A+1)*pow(10,B) + B;
+                    TS_ASSERT((A * 1000 * 1000 + C == c.getSampleTimeStamp().toMicroseconds()));
+                }
+                if (counter == 4) {
+                    const uint32_t A = 4;
+                    const uint32_t B = 0;
+                    const uint32_t C = (A+1)*pow(10,B) + B;
+                    TS_ASSERT((A * 1000 * 1000 + C == c.getSampleTimeStamp().toMicroseconds()));
+                }
+                if (counter == 5) {
+                    const uint32_t A = 5;
+                    const uint32_t B = 0;
+                    const uint32_t C = (A+1)*pow(10,B) + B;
+                    TS_ASSERT((A * 1000 * 1000 + C == c.getSampleTimeStamp().toMicroseconds()));
+                }
+                if (counter == 6) {
+                    const uint32_t A = 1;
+                    const uint32_t B = 0;
+                    const uint32_t C = (A+1)*pow(10,B) + B;
+                    TS_ASSERT((A * 1000 * 1000 + C == c.getSampleTimeStamp().toMicroseconds()));
+                }
+                if (counter == 7) {
+                    const uint32_t A = 1;
+                    const uint32_t B = 0;
+                    const uint32_t C = (A+1)*pow(10,B) + B;
+                    TS_ASSERT((A * 1000 * 1000 + C == c.getSampleTimeStamp().toMicroseconds()));
+                }
+                if (counter == 8) {
+                    const uint32_t A = 1;
+                    const uint32_t B = 0;
+                    const uint32_t C = (A+1)*pow(10,B) + B;
+                    TS_ASSERT((A * 1000 * 1000 + C == c.getSampleTimeStamp().toMicroseconds()));
+                }
+                if (counter == 9) {
+                    const uint32_t A = 1;
+                    const uint32_t B = 0;
+                    const uint32_t C = (A+1)*pow(10,B) + B;
+                    TS_ASSERT((A * 1000 * 1000 + C == c.getSampleTimeStamp().toMicroseconds()));
+                }
+                if (counter == 10) {
+                    const uint32_t A = 1;
+                    const uint32_t B = 0;
+                    const uint32_t C = (A+1)*pow(10,B) + B;
+                    TS_ASSERT((A * 1000 * 1000 + C == c.getSampleTimeStamp().toMicroseconds()));
                 }
 
                 Thread::usleepFor(p2.getDelay());
-
-                TS_ASSERT((counter * 1000 * 1000 + (counter + 1)) == c.getSampleTimeStamp().toMicroseconds());
                 counter++;
             }
             TimeStamp after;

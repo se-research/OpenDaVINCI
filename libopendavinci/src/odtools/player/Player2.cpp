@@ -265,6 +265,7 @@ namespace odtools {
             checkAvailabilityOfNextContainerToBeReplayed();
 
             Lock l(m_indexMutex);
+            Container retVal;
             Container &nextContainer = m_containerCache[m_currentContainerToReplay->second.m_filePosition];
 
             const int64_t recContainerSampleTime = nextContainer.getSampleTimeStamp().toMicroseconds();
@@ -272,12 +273,16 @@ namespace odtools {
                 int64_t recMemContainerSampleTime = m_recMemIndex->peekNextSampleTimeToPlayBack();
 cout << recContainerSampleTime << " vs. " << recMemContainerSampleTime << endl;
 
+                if (recContainerSampleTime > recMemContainerSampleTime) {
+                    retVal = m_recMemIndex->makeNextRawMemoryEntryAvailable();
+cout << "dt = " << retVal.getDataType() << ", st = " << retVal.getSampleTimeStamp().toMicroseconds() << endl;
+                }
+
 // If recContainerSampleTime > recMemContainerSampleTime --> return the recMemContainer and don't modify iterators.
 // Compute m_delay based on recMemContainerSampleTime - m_previousContainerAlreadyReplayed->first.
 // TODO: Add method to RecMemIndex to copy malloc'ed entry to SharedMemory segment
 // Otherwise, continue with existing code.
             }
-            Container retVal;
 
             // Check if there is a PlayerDelegate registered for this container.
             {

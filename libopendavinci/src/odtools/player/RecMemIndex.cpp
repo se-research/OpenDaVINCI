@@ -143,6 +143,7 @@ clog << "Cleaning entry" << endl;
 
                         if (!m_recMemFile.eof()) {
                             totalBytesRead += (POS_AFTER - POS_BEFORE);
+cout << "R1: P = " << POS_BEFORE << ", dt = " << c.getDataType() << ", st = " << c.getSampleTimeStamp().toString() << endl;
 
                             // Skip the binary dump of the shared memory segment
                             // directly following the Container.
@@ -193,6 +194,12 @@ clog << "Cleaning entry" << endl;
             return m_nextEntryToPlayBack->first;
         }
 
+        odcore::data::Container RecMemIndex::makeNextRawMemoryEntryAvailable() {
+            Lock l(m_indexMutex);
+            odcore::data::Container retVal = m_rawMemoryBuffer[m_nextEntryToPlayBack->second.m_filePosition]->m_container;
+            return retVal;
+        }
+
         ////////////////////////////////////////////////////////////////////////
 
         void RecMemIndex::setRawMemoryBufferFillingRunning(const bool &running) {
@@ -210,6 +217,12 @@ clog << "Cleaning entry" << endl;
             do {
                 if (m_recMemFileValid) {
                     Lock l(m_indexMutex);
+
+                    if (!m_unusedEntriesFromRawMemoryBuffer.empty()) {
+                        // Clear any error flags.
+                        m_recMemFile.clear();
+                    }
+
                     while (!m_unusedEntriesFromRawMemoryBuffer.empty()) {
                         // Always auto-rewind.
                         if (m_nextEntryToReadFromRecMemFile == m_index.end()) {
@@ -218,13 +231,14 @@ clog << "Cleaning entry" << endl;
 
                         // Find entry in .rec.mem file.
                         m_recMemFile.seekg(m_nextEntryToReadFromRecMemFile->second.m_filePosition);
-
+cout << "RT: P = " << m_nextEntryToReadFromRecMemFile->second.m_filePosition << endl;
                         // Get and remove next available entry from unsedRawBuffer.
                         shared_ptr<RawMemoryBufferEntry> entry = m_unusedEntriesFromRawMemoryBuffer.back();
                         m_unusedEntriesFromRawMemoryBuffer.pop_back();
 
                         // Read data from .rec.mem file.
                         m_recMemFile >> entry->m_container;
+cout << "RT: dt = " << entry->m_container.getDataType() << ", st = " << entry->m_container.getSampleTimeStamp().toString() << endl;
                         m_recMemFile.read(entry->m_rawMemoryBuffer,
                                           std::min(m_nextEntryToReadFromRecMemFile->second.m_entrySize, entry->m_lengthOfRawMemoryBuffer));
                         entriesReadFromFile++;
