@@ -81,7 +81,6 @@ clog << "Cleaning entry" << endl;
             m_nextEntryToReadFromRecMemFile(),
             m_rawMemoryBuffer(),
             m_unusedEntriesFromRawMemoryBuffer(),
-            m_usedEntriesFromRawMemoryBuffer(),
             m_rawMemoryBufferFillingThreadIsRunningMutex(),
             m_rawMemoryBufferFillingThreadIsRunning(false),
             m_rawMemoryBufferFillingThread() {
@@ -114,7 +113,7 @@ clog << "Cleaning entry" << endl;
             clog << "[odtools::player::RecMemIndex]: Clearing buffer...";
                 // Entries will be automatically freed due to the shared_ptr<...>.
                 m_unusedEntriesFromRawMemoryBuffer.clear();
-                m_usedEntriesFromRawMemoryBuffer.clear();
+                m_index.clear();
             clog << "done." << endl;
         }
 
@@ -230,8 +229,8 @@ clog << "Cleaning entry" << endl;
                                           std::min(m_nextEntryToReadFromRecMemFile->second.m_entrySize, entry->m_lengthOfRawMemoryBuffer));
                         entriesReadFromFile++;
 
-                        // Enque read entry into list of available entries.
-                        m_usedEntriesFromRawMemoryBuffer.push_front(entry);
+                        // Make entry available in map filePosition -> shared_ptr<RawMemoryBufferEntry>.
+                        m_rawMemoryBuffer[m_nextEntryToReadFromRecMemFile->second.m_filePosition] = entry;
 
                         m_nextEntryToReadFromRecMemFile->second.m_available = true;
                     }
