@@ -29,11 +29,16 @@
 #include "automotivedata/generated/automotive/GenericCANMessage.h"
 
 #include <opendavinci/odcore/serialization/Deserializer.h>
+#include <opendavinci/odcore/reflection/Message.h>
+#include <opendavinci/odcore/reflection/MessageToVisitableVisitor.h>
+#include <opendavinci/odcore/reflection/MessageFromVisitableVisitor.h>
 #include <opendavinci/odcore/serialization/SerializationFactory.h>
 #include <opendavinci/odcore/serialization/Serializer.h>
+#include <opendavinci/odcore/data/Container.h>
 
 // Include local header files.
 #include "../include/CANDevice.h"
+#include "../include/CANMessage.h"
 #include "../include/GenericCANMessageListener.h"
 
 using namespace std;
@@ -68,14 +73,23 @@ using namespace automotive::odcantools;
 				    m_rearRight = obj.m_rearRight;
 				    return (*this);
 			    }
-			    int32_t ID() {
+			    int32_t getID() const {
+			        return WheelSpeedHL::ID();
+		        }
+		        const string getShortName() const {
+		            return WheelSpeedHL::ShortName();
+		        }
+		        const string getLongName() const {
+		            return WheelSpeedHL::LongName();
+		        }
+			    static int32_t ID() {
 				    return 75;
 			    }
-			    const string ShortName() {
-				    return "WheelSpeed";
+			    static const string ShortName() {
+				    return "WheelSpeedHL";
 			    }
-			    const string LongName() {
-				    return "automotive.vehicle.WheelSpeed";
+			    static const string LongName() {
+				    return "automotive.vehicle.WheelSpeedHL";
 			    }
 				virtual void accept(odcore::base::Visitor &v) {
 				    v.beginVisit(ID(), ShortName(), LongName());
@@ -134,7 +148,7 @@ class WheelSpeed : public odcore::data::SerializableData, public odcore::base::V
 		{
 			m_neededCanMessages.push_back(0x123);
 		}
-		WheelSpeed(double, double, double, double) :
+		WheelSpeed(double parameter0, double parameter1, double parameter2, double parameter3) :
 			odcore::data::SerializableData(),
 			odcore::base::Visitable(),
 			m_wheelspeedFrontleft(parameter0),
@@ -195,15 +209,24 @@ class WheelSpeed : public odcore::data::SerializableData, public odcore::base::V
 			s->read(static_cast<uint32_t>(id), m_wheelspeedRearright);
 			return in;
 		}
-		const string ShortName() {
+		static const string ShortName() {
 			return "WheelSpeed";
 		}
-		const string LongName() {
+		static const string LongName() {
 			return "WheelSpeed";
 		}
         static int32_t ID() {
 			return 0;
 		}
+        int32_t getID() const {
+            return WheelSpeed::ID();
+        }
+        const string getShortName() const {
+            return WheelSpeed::ShortName();
+        }
+        const string getLongName() const {
+            return WheelSpeed::LongName();
+        }
 		virtual void accept(odcore::base::Visitor &v) {
 		    v.beginVisit(ID(), ShortName(), LongName());
 			v.visit(static_cast<uint32_t>(1), "wheelspeed.frontleft", "frontleft", m_wheelspeedFrontleft);
@@ -226,7 +249,6 @@ class WheelSpeed : public odcore::data::SerializableData, public odcore::base::V
 			{
 				// Store the payload in a map for future use replacing the current content
 			m_payloads[0x123] = gcm.getData();
-			m_lengths[0x123] = gcm.getLength();
 				// modularly increase the internal index
 				(m_index==m_neededCanMessages.size()-1) ? m_index=0 : ++m_index;
 			}
@@ -243,8 +265,6 @@ class WheelSpeed : public odcore::data::SerializableData, public odcore::base::V
 				// reset the payloads and lengths map
 				while(! m_payloads.empty())
 					m_payloads.erase(m_payloads.begin());
-			while(! m_lengths.empty())
-			    m_lengths.erase(m_lengths.begin());
 				// reset the internal index
 				m_index=0;
 			}
@@ -255,7 +275,7 @@ class WheelSpeed : public odcore::data::SerializableData, public odcore::base::V
 				// Create a generic message.
 				odcore::reflection::Message message;
 			
-			        ::automotive::odcantools::CANMessage CM_0x123(0x123,m_lengths[0x123],m_payloads[0x123]);
+			        ::automotive::odcantools::CANMessage CM_0x123(0x123,8,m_payloads[0x123]);
 			
 			
 			
@@ -360,7 +380,7 @@ class WheelSpeed : public odcore::data::SerializableData, public odcore::base::V
 			
 				::automotive::odcantools::CANMessage CM_0x123(0x123,8,0x00);
 			
-				if(c.getDataType() != ::automotive::vehicle::ID())
+				if(c.getDataType() != WheelSpeedHL::ID())
 				{
 					// something went wrong
 					::automotive::odcantools::CANMessage error(0x00,0,0x00);
@@ -368,7 +388,7 @@ class WheelSpeed : public odcore::data::SerializableData, public odcore::base::V
 				}
 			
 				bool found, extracted, abort=false;
-				::automotive::vehicle::WheelSpeed tempWheelSpeed=c.getData<::automotive::vehicle::WheelSpeed>();
+				WheelSpeedHL tempWheelSpeed=c.getData<WheelSpeedHL>();
 				odcore::reflection::MessageFromVisitableVisitor mfvv;
 				tempWheelSpeed.accept(mfvv);
 				odcore::reflection::Message msg=mfvv.getMessage();
@@ -546,11 +566,11 @@ class CANToolsTest : public CxxTest::TestSuite, public GenericCANMessageListener
     			message.addField(std::shared_ptr<odcore::data::reflection::AbstractField>(f_4));
 
 			odcore::reflection::MessageToVisitableVisitor mtvv(message);
-			::automotive::vehicle::WheelSpeed HLClass;
+			WheelSpeedHL HLClass;
 			HLClass.accept(mtvv);
 			odcore::data::Container c(HLClass);
 			
-			canmapping::automotive::vehicle::WheelSpeed test_0;
+			WheelSpeed test_0;
 			::automotive::GenericCANMessage GCM;
 			GCM=test_0.encode(c);
 
