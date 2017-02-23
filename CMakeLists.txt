@@ -379,7 +379,7 @@ ENDIF()
 # Next, build automotive/odcantools.
 IF(${BUILD_AUTOMOTIVE_ODCANTOOLS})
     ExternalProject_Add (automotive-odcantools
-        DEPENDS libopendavinci libautomotivedata #automotive-libcanmessagemapping
+        DEPENDS libopendavinci libautomotivedata
         DOWNLOAD_COMMAND ""
         UPDATE_COMMAND ""
         SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/automotive/odcantools"
