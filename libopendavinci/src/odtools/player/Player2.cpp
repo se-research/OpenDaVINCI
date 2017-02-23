@@ -95,7 +95,14 @@ namespace odtools {
             // Try reading accompanying .rec.mem file.
             if (m_recFileValid && ((memorySegmentSize * numberOfMemorySegments) > 0)) {
                 URL recMemFile("file://" + m_url.getResource() + ".mem");
-                m_recMemIndex = unique_ptr<RecMemIndex>(new RecMemIndex(recMemFile, memorySegmentSize, numberOfMemorySegments));
+                bool recMemFileAvailable = false;
+                {
+                    ifstream checkForRecMemFile(recMemFile.getResource());
+                    recMemFileAvailable = checkForRecMemFile.good();
+                }
+                if (recMemFileAvailable) {
+                    m_recMemIndex = unique_ptr<RecMemIndex>(new RecMemIndex(recMemFile, memorySegmentSize, numberOfMemorySegments));
+                }
             }
         }
 
