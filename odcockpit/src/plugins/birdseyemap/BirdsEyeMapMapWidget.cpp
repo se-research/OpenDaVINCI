@@ -20,6 +20,8 @@
 #include <QtCore>
 #include <QtGui>
 
+#include <fstream>
+#include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -154,14 +156,24 @@ namespace cockpit {
                 // Setup surroundings.
                 const URL urlOfSCNXFile(m_plugIn.getKeyValueConfiguration().getValue<string>("global.scenario"));
                 if (urlOfSCNXFile.isValid()) {
-                    opendlv::scenario::SCNXArchive &scnxArchive = opendlv::scenario::SCNXArchiveFactory::getInstance().getSCNXArchive(urlOfSCNXFile);
+                    bool fileExists = false;
+                    {
+                        ifstream checkIfFileExists(urlOfSCNXFile.getResource());
+                        fileExists = checkIfFileExists.good();
+                    }
+                    if (!fileExists) {
+                        cout << "Error: " << urlOfSCNXFile.toString() << " does not exist." << endl;
+                    }
+                    else {
+                        opendlv::scenario::SCNXArchive &scnxArchive = opendlv::scenario::SCNXArchiveFactory::getInstance().getSCNXArchive(urlOfSCNXFile);
 
-                    // Read scnxArchive and transform it into renderable scene graph.
-                    SceneNode *surroundings = opendlv::scenegraph::transformation::SceneGraphFactory::getInstance().transform(scnxArchive);
+                        // Read scnxArchive and transform it into renderable scene graph.
+                        SceneNode *surroundings = opendlv::scenegraph::transformation::SceneGraphFactory::getInstance().transform(scnxArchive);
 
-                    if (surroundings != NULL) {
-                        surroundings->setSceneNodeDescriptor(SceneNodeDescriptor("Surroundings"));
-                        m_stationaryElements->addChild(surroundings);
+                        if (surroundings != NULL) {
+                            surroundings->setSceneNodeDescriptor(SceneNodeDescriptor("Surroundings"));
+                            m_stationaryElements->addChild(surroundings);
+                        }
                     }
                 }
 
