@@ -34,6 +34,7 @@
 #include "opendavinci/odcore/strings/StringToolbox.h"
 #include "opendavinci/odtools/player/Player2.h"
 #include "opendavinci/generated/odcore/data/player/PlayerCommand.h"
+#include "opendavinci/generated/odcore/data/player/PlayerStatus.h"
 
 #include "plugins/player2/Player2Widget.h"
 
@@ -345,6 +346,13 @@ namespace cockpit {
                     m_player2 = shared_ptr<Player2>(new Player2(url, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS));
 #endif
                     m_player2->setPlayerListener(this);
+                    // Inform Qt widgets that a new file has been loaded.
+                    {
+                        odcore::data::player::PlayerStatus ps;
+                        ps.setStatus(odcore::data::player::PlayerStatus::NEW_FILE_LOADED);
+                        Container c(ps);
+                        m_multiplexer.distributeContainer(c);
+                    }
 
                     m_playBtn->setEnabled(true);
                     m_pauseBtn->setEnabled(false);

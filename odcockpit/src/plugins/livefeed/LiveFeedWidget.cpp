@@ -222,7 +222,21 @@ namespace cockpit {
 
             void LiveFeedWidget::nextContainer(Container &container) {
                 Lock l(m_dataViewMutex);
-                transformContainerToTree(container);
+                if (container.getDataType() == odcore::data::player::PlayerStatus::ID()) {
+                    odcore::data::player::PlayerStatus ps = container.getData<odcore::data::player::PlayerStatus>();
+                    if (ps.getStatus() == odcore::data::player::PlayerStatus::NEW_FILE_LOADED) {
+                        // Clear current entries.
+                        for (auto it = m_dataToType.begin(); it != m_dataToType.end(); it++) {
+                            QTreeWidgetItem *entry = it->second;
+                            entry->takeChildren();
+                        }
+                        m_dataToType.clear();
+                        m_dataView->clear();
+                    }
+                }
+                else {
+                    transformContainerToTree(container);
+                }
             }
 
             void LiveFeedWidget::transformContainerToTree(Container &container) {

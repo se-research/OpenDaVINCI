@@ -43,6 +43,7 @@ ID;TYPE;legacy OR message;library;comment
 39;automotive.VehicleData;CaroloCup/simulation;AutomotiveData.odvd;;
 40;DRAW_LINE;legacy;libodsimulation;don't use;
 41;automotive.VehicleControl;CaroloCup/simulation;AutomotiveData.odvd;;
+48;odcore.data.player.PlayerStatus;legacy;OpenDaVINCI.odvd;internal use;
 49;odcore.data.image.CompactPointCloud;legacy;OpenDaVINCI.odvd;internal use;
 50;cartesian.Constants;simulation;AutomotiveData.odvd;;
 51;cartesian.Point2;simulation;AutomotiveData.odvd;;

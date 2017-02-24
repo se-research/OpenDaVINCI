@@ -228,6 +228,13 @@ message odcore.data.player.PlayerCommand [id = 10] {
     Command command [id = 1];
 }
 
+message odcore.data.player.PlayerStatus [id = 48] {
+    enum Status {
+        NEW_FILE_LOADED=0,
+    };
+    Status status [id = 1];
+}
+
 // This message is used to remotely control the odrecorder component.
 message odcore.data.recorder.RecorderCommand [id = 11] {
     enum Command {
