@@ -7,7 +7,8 @@ namespace odcore {
     namespace base {
 
         Arguments::Arguments(const std::initializer_list<std::string> & argList)
-            : argvPtr_(new char* [argList.size()])
+            : argvValues_()
+            , argvPtr_(new char* [argList.size()])
             , argc(argList.size())
             , argv(argvPtr_.get())
         {
