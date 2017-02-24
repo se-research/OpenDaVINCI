@@ -53,7 +53,6 @@ namespace cockpit {
         m_windowMenu(NULL),
         m_availablePlugInsList(NULL) {
         getStartupDirectory();
-        m_multiplexer = new FIFOMultiplexer(dsm);
         constructLayout();
     }
 
