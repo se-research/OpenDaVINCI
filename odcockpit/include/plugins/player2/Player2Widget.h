@@ -113,6 +113,7 @@ namespace cockpit {
                     QPushButton *m_rewindBtn;
                     QPushButton *m_stepBtn;
                     QCheckBox *m_autoRewind;
+                    QCheckBox *m_relayToConference;
 
                     odcore::base::Mutex m_speedValueMutex;
                     int m_speedValue;

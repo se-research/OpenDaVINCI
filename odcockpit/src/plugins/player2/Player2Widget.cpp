@@ -65,6 +65,7 @@ namespace cockpit {
                 m_rewindBtn(NULL),
                 m_stepBtn(NULL),
                 m_autoRewind(NULL),
+                m_relayToConference(NULL),
                 m_speedValueMutex(),
                 m_speedValue(100),
                 m_desc(NULL),
@@ -84,13 +85,13 @@ namespace cockpit {
                 setMinimumSize(400, 150);
 
                 // Button control.
-                QPushButton *loadFileBtn = new QPushButton("Load recording", this);
+                QPushButton *loadFileBtn = new QPushButton("Load .rec file", this);
                 QObject::connect(loadFileBtn, SIGNAL(clicked()), this, SLOT(loadFile()));
 
                 QHBoxLayout *fileOperations = new QHBoxLayout();
                 fileOperations->addWidget(loadFileBtn);
 
-                m_desc = new QLabel("No file loaded.");
+                m_desc = new QLabel("No .rec file loaded.");
                 m_containerCounterDesc = new QLabel("0/0 container(s) replayed.");
 
                 // Play/pause control.
@@ -147,6 +148,8 @@ namespace cockpit {
                 m_timeline->setValue(0);
                 connect(this, SIGNAL(showProgress(int)), m_timeline, SLOT(setValue(int)));
 
+                m_relayToConference = new QCheckBox("Relay Containers to Conference.", this);
+
                 // Final layout.
                 QVBoxLayout *mainLayout = new QVBoxLayout(this);
                 mainLayout->addLayout(fileOperations);
@@ -155,6 +158,7 @@ namespace cockpit {
                 mainLayout->addWidget(speedSlider);
                 mainLayout->addWidget(m_timeline);
                 mainLayout->addLayout(operations);
+                mainLayout->addWidget(m_relayToConference);
 //TODO: Validate splitting for h264 files.
 //                mainLayout->addLayout(splitting);
 
@@ -249,7 +253,9 @@ namespace cockpit {
                         // Send container.
                         if ( (nextContainerToBeSent.getDataType() != Container::UNDEFINEDDATA) &&
                              (nextContainerToBeSent.getDataType() != odcore::data::player::PlayerCommand::ID()) ) {
-//                            m_conference.send(nextContainerToBeSent);
+                            if ((m_relayToConference != NULL) && m_relayToConference->isChecked()) {
+                                m_conference.send(nextContainerToBeSent);
+                            }
                             m_multiplexer.distributeContainer(nextContainerToBeSent);
                         }
 
