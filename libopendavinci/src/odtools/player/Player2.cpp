@@ -338,14 +338,6 @@ namespace odtools {
 
                 m_numberOfReturnedContainersInTotal++;
 
-                // Publish some statistics.
-                {
-                    Lock l3(m_playerListenerMutex);
-                    if (NULL != m_playerListener) {
-                        m_playerListener->percentagePlayedBack(m_numberOfReturnedContainersInTotal/static_cast<float>(m_index.size()));
-                    }
-                }
-
                 // TODO: ELAPSED can be used to compensate for internal data processing.
                 const uint64_t ELAPSED = (thisTimePointCallingThisMethod - m_firstTimePointReturningAContainer).toMicroseconds();
                 m_containerReplayThroughput = std::ceil(m_numberOfReturnedContainersInTotal*static_cast<float>(Player2::ONE_SECOND_IN_MICROSECONDS)/ELAPSED);
@@ -430,8 +422,15 @@ namespace odtools {
         }
 
         void Player2::manageCache() {
+            uint8_t statisticsCounter = 0;
             float refillMultiplicator = 1.1;
             uint32_t numberOfEntries = 0;
+            uint32_t numberOfEntriesInIndex = 0;
+            {
+                Lock l(m_indexMutex);
+                numberOfEntriesInIndex = m_index.size();
+            }
+
             while (isContainerCacheFillingRunning()) {
                 {
                     Lock l(m_indexMutex);
@@ -445,8 +444,26 @@ namespace odtools {
                         refillMultiplicator *= refillMultiplicator;
                     }
                 }
+
                 // Manage cache at 10 Hz.
                 Thread::usleepFor(100 * Player2::ONE_MILLISECOND_IN_MICROSECONDS);
+
+                // Publish some statistics at 1 Hz.
+                if ( 0 == ((++statisticsCounter) % 10) ) {
+                    uint32_t numberOfReturnedContainersInTotal = 0;
+                    {
+                        // m_numberOfReturnedContainersInTotal is modified in a different thread.
+                        Lock l(m_indexMutex);
+                        numberOfReturnedContainersInTotal = m_numberOfReturnedContainersInTotal;
+                    }
+                    {
+                        Lock l3(m_playerListenerMutex);
+                        if (NULL != m_playerListener) {
+                            m_playerListener->percentagePlayedBack(numberOfReturnedContainersInTotal/static_cast<float>(numberOfEntriesInIndex));
+                        }
+                    }
+                    statisticsCounter = 0;
+                }
             }
         }
 
