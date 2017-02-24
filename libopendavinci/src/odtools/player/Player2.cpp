@@ -74,8 +74,8 @@ namespace odtools {
             m_desiredInitialLevel(0),
             m_firstTimePointReturningAContainer(),
             m_numberOfReturnedContainersInTotal(0),
-            m_containerReplayThroughput(0),
             m_delay(0),
+            m_correctedDelay(0),
             m_containerCacheFillingThreadIsRunningMutex(),
             m_containerCacheFillingThreadIsRunning(false),
             m_containerCacheFillingThread(),
@@ -189,7 +189,7 @@ namespace odtools {
 
         void Player2::resetCaches() {
             Lock l(m_indexMutex);
-            m_delay = 0;
+            m_delay = m_correctedDelay = 0;
             m_containerCache.clear();
         }
 
@@ -280,7 +280,7 @@ namespace odtools {
                 if (NULL != m_recMemIndex.get()) {
                     Container retVal = m_recMemIndex->makeNextRawMemoryEntryAvailable();
                     int64_t currentContainersSampleTimeStamp = retVal.getSampleTimeStamp().toMicroseconds();
-                    m_delay = ((lastContainersSampleTimeStamp > 0) ? (currentContainersSampleTimeStamp - lastContainersSampleTimeStamp) : static_cast<int64_t>(Player2::MAX_DELAY_IN_MICROSECONDS));
+                    m_correctedDelay = m_delay = ((lastContainersSampleTimeStamp > 0) ? (currentContainersSampleTimeStamp - lastContainersSampleTimeStamp) : static_cast<int64_t>(Player2::MAX_DELAY_IN_MICROSECONDS));
                     lastContainersSampleTimeStamp = currentContainersSampleTimeStamp;
                     return retVal;
                 }
@@ -302,7 +302,7 @@ namespace odtools {
 
                 if ((replayContainerFromRecMem = (recContainerSampleTime > recMemContainerSampleTime))) {
                     retVal = m_recMemIndex->makeNextRawMemoryEntryAvailable();
-                    m_delay = retVal.getSampleTimeStamp().toMicroseconds() - m_previousContainerAlreadyReplayed->first;
+                    m_correctedDelay = m_delay = retVal.getSampleTimeStamp().toMicroseconds() - m_previousContainerAlreadyReplayed->first;
                 }
             }
 
@@ -323,7 +323,7 @@ namespace odtools {
                     }
                 }
 
-                m_delay = m_currentContainerToReplay->first - m_previousContainerAlreadyReplayed->first;
+                m_correctedDelay = m_delay = m_currentContainerToReplay->first - m_previousContainerAlreadyReplayed->first;
 
                 // TODO: Delegate deleting into own thread.
                 if (m_previousPreviousContainerAlreadyReplayed != m_index.end()) {
@@ -338,9 +338,9 @@ namespace odtools {
 
                 m_numberOfReturnedContainersInTotal++;
 
-                // TODO: ELAPSED can be used to compensate for internal data processing.
+                // Use ELAPSED to compensate for internal data processing.
                 const uint64_t ELAPSED = (thisTimePointCallingThisMethod - m_firstTimePointReturningAContainer).toMicroseconds();
-                m_containerReplayThroughput = std::ceil(m_numberOfReturnedContainersInTotal*static_cast<float>(Player2::ONE_SECOND_IN_MICROSECONDS)/ELAPSED);
+                m_correctedDelay -= (m_correctedDelay > ELAPSED) ? ELAPSED : 0;
             }
 
             // Store sample time stamp as int64 to avoid unnecessary copying of Containers.
@@ -373,6 +373,12 @@ namespace odtools {
             Lock l(m_indexMutex);
             // Make sure that delay is not exceeding the specified maximum delay.
             return std::min<uint32_t>(m_delay, Player2::MAX_DELAY_IN_MICROSECONDS);
+        }
+
+        uint32_t Player2::getCorrectedDelay() const {
+            Lock l(m_indexMutex);
+            // Make sure that delay is not exceeding the specified maximum delay.
+            return std::min<uint32_t>(m_correctedDelay, Player2::MAX_DELAY_IN_MICROSECONDS);
         }
 
         void Player2::rewind() {
@@ -457,7 +463,7 @@ namespace odtools {
                         numberOfReturnedContainersInTotal = m_numberOfReturnedContainersInTotal;
                     }
                     {
-                        Lock l3(m_playerListenerMutex);
+                        Lock l(m_playerListenerMutex);
                         if (NULL != m_playerListener) {
                             m_playerListener->percentagePlayedBack(numberOfReturnedContainersInTotal/static_cast<float>(numberOfEntriesInIndex));
                         }

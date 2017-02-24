@@ -236,7 +236,7 @@ namespace cockpit {
                         m_containerCounterDesc->setText(sstr.str().c_str());
 
                         // Get delay to wait _after_ sending the container.
-                        uint32_t delay = m_player2->getDelay() / 1000;
+                        uint32_t delay = m_player2->getCorrectedDelay() / 1000;
 
                         {
                             // Fasten playback if desired.

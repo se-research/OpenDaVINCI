@@ -112,11 +112,20 @@ namespace odtools {
                 odcore::data::Container getNextContainerToBeSent() throw (odcore::exceptions::ArrayIndexOutOfBoundsException);
 
                 /**
-                 * This method returns the delay to be waited before the next container should be delivered.
+                 * This method returns the real delay to be waited before the next container should be delivered.
                  *
                  * @return delay to the next container in real time microseconds (us).
                  */
                 uint32_t getDelay() const;
+
+                /**
+                 * This method returns the delay to be waited before the next
+                 * container should be delivered correct by the internal
+                 * processing time.
+                 *
+                 * @return delay to the next container in real time microseconds (us).
+                 */
+                uint32_t getCorrectedDelay() const;
 
                 /**
                  * This method returns true if there is more data to replay.
@@ -220,9 +229,9 @@ namespace odtools {
                 // Fields to compute replay throughput for cache management.
                 odcore::data::TimeStamp m_firstTimePointReturningAContainer;
                 uint64_t m_numberOfReturnedContainersInTotal;
-                float m_containerReplayThroughput;
 
                 uint32_t m_delay;
+                uint32_t m_correctedDelay;
 
             private:
                 /**
