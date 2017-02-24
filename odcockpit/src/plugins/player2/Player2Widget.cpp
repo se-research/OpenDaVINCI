@@ -360,7 +360,7 @@ namespace cockpit {
 //                    m_rewindBtn->setEnabled(false);
 
                     m_containerCounter = 0;
-                    m_containerCounterTotal = 0;
+                    m_containerCounterTotal = m_player2->getTotalNumberOfContainersInRecFile()-1;
 
                     stringstream sstr;
                     sstr << m_containerCounter << "/" << m_containerCounterTotal << " container(s) replayed.";

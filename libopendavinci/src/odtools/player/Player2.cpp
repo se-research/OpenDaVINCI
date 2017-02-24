@@ -370,6 +370,13 @@ namespace odtools {
             while (0 == numberOfEntries);
         }
 
+        ////////////////////////////////////////////////////////////////////////
+
+        uint32_t Player2::getTotalNumberOfContainersInRecFile() const {
+            Lock l(m_indexMutex);
+            return m_index.size();
+        }
+
         uint32_t Player2::getDelay() const {
             Lock l(m_indexMutex);
             // Make sure that delay is not exceeding the specified maximum delay.

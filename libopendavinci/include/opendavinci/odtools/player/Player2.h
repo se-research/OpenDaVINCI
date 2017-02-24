@@ -130,6 +130,13 @@ namespace odtools {
                  */
                 void rewind();
 
+                /**
+                 * This method returns the total amount of containers in the .rec file.
+                 *
+                 * @return Total amount of containers in .rec file.
+                 */
+                uint32_t getTotalNumberOfContainersInRecFile() const;
+
             private:
                 // Internal methods without Lock.
                 bool hasMoreDataFromRecFile() const;

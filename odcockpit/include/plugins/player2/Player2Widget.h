@@ -85,7 +85,7 @@ namespace cockpit {
 
                     virtual ~Player2Widget();
 
-                    void percentagePlayedBack(const float &percentagePlayedBack);
+                    virtual void percentagePlayedBack(const float &percentagePlayedBack);
 
                 public slots:
                     void speedValue(int);
