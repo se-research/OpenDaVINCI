@@ -140,13 +140,21 @@ namespace cockpit {
 //                splitting->addWidget(lblEnd);
 //                splitting->addWidget(m_end);
 
-                QSlider *speedSlider = new QSlider(Qt::Horizontal, this);
-                speedSlider->setValue(99);
-                connect(speedSlider, SIGNAL(valueChanged(int)), this, SLOT(speedValue(int)));
-
                 m_timeline = new QProgressBar(this);
                 m_timeline->setValue(0);
                 connect(this, SIGNAL(showProgress(int)), m_timeline, SLOT(setValue(int)));
+
+                QHBoxLayout *speedSliderLayout = new QHBoxLayout();
+                {
+                    QLabel *lblSpeedSlider = new QLabel(tr("Replay speed up:"));
+
+                    QSlider *speedSlider = new QSlider(Qt::Horizontal, this);
+                    speedSlider->setValue(99);
+                    connect(speedSlider, SIGNAL(valueChanged(int)), this, SLOT(speedValue(int)));
+
+                    speedSliderLayout->addWidget(lblSpeedSlider);
+                    speedSliderLayout->addWidget(speedSlider);
+                }
 
                 m_relayToConference = new QCheckBox("Relay Containers to Conference.", this);
 
@@ -155,9 +163,9 @@ namespace cockpit {
                 mainLayout->addLayout(fileOperations);
                 mainLayout->addWidget(m_desc);
                 mainLayout->addWidget(m_containerCounterDesc);
-                mainLayout->addWidget(speedSlider);
                 mainLayout->addWidget(m_timeline);
                 mainLayout->addLayout(operations);
+                mainLayout->addLayout(speedSliderLayout);
                 mainLayout->addWidget(m_relayToConference);
 //TODO: Validate splitting for h264 files.
 //                mainLayout->addLayout(splitting);
@@ -236,7 +244,7 @@ namespace cockpit {
                         }
 
                         stringstream sstr;
-                        sstr << m_containerCounter << "/" << m_containerCounterTotal << " container(s) replayed.";
+                        sstr << m_containerCounter << "/" << m_containerCounterTotal << " container(s) replayed; " << nextContainerToBeSent.getSampleTimeStamp().getYYYYMMDD_HHMMSSms();
                         m_containerCounterDesc->setText(sstr.str().c_str());
 
                         // Get delay to wait _after_ sending the container.
