@@ -267,7 +267,7 @@ namespace odtools {
         }
 
         Container Player2::getNextContainerToBeSent() throw (odcore::exceptions::ArrayIndexOutOfBoundsException) {
-            static Container lastContainer;
+            static int64_t lastContainersSampleTimeStamp = 0;
             TimeStamp thisTimePointCallingThisMethod;
 
             // Check if the .rec file is at end but the .rec.mem file has still content to replay.
@@ -279,10 +279,10 @@ namespace odtools {
             if (hasNoMoreDataFromRecFileButFromRecMemFile) {
                 if (NULL != m_recMemIndex.get()) {
                     Container retVal = m_recMemIndex->makeNextRawMemoryEntryAvailable();
-                    if (lastContainer.getDataType() != Container::UNDEFINEDDATA) {
-                        m_delay = retVal.getSampleTimeStamp().toMicroseconds() - lastContainer.getSampleTimeStamp().toMicroseconds();
-                    }
-                    return lastContainer = retVal;
+                    int64_t currentContainersSampleTimeStamp = retVal.getSampleTimeStamp().toMicroseconds();
+                    m_delay = ((lastContainersSampleTimeStamp > 0) ? (currentContainersSampleTimeStamp - lastContainersSampleTimeStamp) : static_cast<int64_t>(Player2::MAX_DELAY_IN_MICROSECONDS));
+                    lastContainersSampleTimeStamp = currentContainersSampleTimeStamp;
+                    return retVal;
                 }
             }
 
@@ -351,7 +351,9 @@ namespace odtools {
                 m_containerReplayThroughput = std::ceil(m_numberOfReturnedContainersInTotal*static_cast<float>(Player2::ONE_SECOND_IN_MICROSECONDS)/ELAPSED);
             }
 
-            return lastContainer = retVal;
+            // Store sample time stamp as int64 to avoid unnecessary copying of Containers.
+            lastContainersSampleTimeStamp = retVal.getSampleTimeStamp().toMicroseconds();
+            return retVal;
         }
 
         void Player2::checkAvailabilityOfNextContainerToBeReplayed() {
