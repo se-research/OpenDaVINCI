@@ -31,6 +31,7 @@
 #include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/io/conference/ContainerListener.h"
 #include "opendavinci/odcore/reflection/Helper.h"
+#include "opendavinci/odcore/reflection/Message.h"
 
 class QTreeWidget;
 class QTreeWidgetItem;
@@ -99,6 +100,9 @@ namespace cockpit {
 
                     virtual void nextContainer(Container &c);
 
+                public slots:
+                    void treeItemChanged(QTreeWidgetItem*, int);
+
                 private:
                     void findAndLoadSharedLibraries();
                     void unloadSharedLibraries();
@@ -106,9 +110,14 @@ namespace cockpit {
 
                     void transformContainerToTree(Container &container);
 
+                    odcore::reflection::Message resolve(odcore::data::Container &c, bool &successfullyMapped);
+
                 private:
                     odcore::base::Mutex m_dataViewMutex;
-                    unique_ptr<QTreeWidget> m_dataView;
+                    QTreeWidget *m_dataView;
+                    map<int32_t, string> m_containerTypeToName;
+                    odcore::base::Mutex m_containerTypeResolvingMutex;
+                    map<string, bool > m_containerTypeResolving;
                     map<string, QTreeWidgetItem* > m_dataToType;
 
                     vector<string> m_listOfLibrariesToLoad;

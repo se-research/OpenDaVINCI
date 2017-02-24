@@ -33,7 +33,6 @@
 #include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/data/TimeStamp.h"
-#include "opendavinci/odcore/reflection/Message.h"
 #include "opendavinci/odcore/strings/StringToolbox.h"
 
 #include "plugins/livefeed/LiveFeedWidget.h"
@@ -82,6 +81,9 @@ namespace cockpit {
                 QWidget(prnt),
                 m_dataViewMutex(),
                 m_dataView(),
+                m_containerTypeToName(),
+                m_containerTypeResolvingMutex(),
+                m_containerTypeResolving(),
                 m_dataToType(),
                 m_listOfLibrariesToLoad(),
                 m_listOfHelpers() {
@@ -92,7 +94,7 @@ namespace cockpit {
                 QGridLayout* mainBox = new QGridLayout(this);
 
                 //ListView and header construction
-                m_dataView = unique_ptr<QTreeWidget>(new QTreeWidget(this));
+                m_dataView = new QTreeWidget(this);
                 m_dataView->setColumnCount(2);
                 QStringList headerLabel;
                 headerLabel << tr("Message") << tr("Value");
@@ -100,8 +102,10 @@ namespace cockpit {
                 m_dataView->setColumnWidth(1, 200);
                 m_dataView->setHeaderLabels(headerLabel);
 
+                connect(m_dataView, SIGNAL(itemChanged(QTreeWidgetItem*, int)), this, SLOT(treeItemChanged(QTreeWidgetItem*, int)));
+
                 //add to Layout
-                mainBox->addWidget(m_dataView.get(), 0, 0);
+                mainBox->addWidget(m_dataView, 0, 0);
 
                 // Set layout manager.
                 setLayout(mainBox);
@@ -239,19 +243,24 @@ namespace cockpit {
                 }
             }
 
-            void LiveFeedWidget::transformContainerToTree(Container &container) {
-                // Map attributes from message to the entries.
-                bool successfullyMapped = false;
+            void LiveFeedWidget::treeItemChanged(QTreeWidgetItem *twi, int col) {
+                if ( (NULL != twi) && (0 == col) ) {
+                    Lock l(m_containerTypeResolvingMutex);
+                    m_containerTypeResolving[twi->text(col).toStdString()] = (twi->checkState(col) == Qt::Checked);
+                }
+            }
+
+            odcore::reflection::Message LiveFeedWidget::resolve(odcore::data::Container &c, bool &successfullyMapped) {
                 Message msg;
 
                 // Try AutomotiveData first.
                 if (!successfullyMapped) {
-                    msg = GeneratedHeaders_AutomotiveData_Helper::__map(container, successfullyMapped);
+                    msg = GeneratedHeaders_AutomotiveData_Helper::__map(c, successfullyMapped);
                 }
 
                 // If failed, try regular OpenDaVINCI messages.
                 if (!successfullyMapped) {
-                    msg = GeneratedHeaders_OpenDaVINCI_Helper::__map(container, successfullyMapped);
+                    msg = GeneratedHeaders_OpenDaVINCI_Helper::__map(c, successfullyMapped);
                 }
 
                 // Try dynamic shared object as last.
@@ -259,12 +268,32 @@ namespace cockpit {
                     auto it = m_listOfHelpers.begin();
                     while ( (!successfullyMapped) && (it != m_listOfHelpers.end())) {
                         HelperEntry e = *it;
-                        msg = e.m_helper->map(container, successfullyMapped);
+                        msg = e.m_helper->map(c, successfullyMapped);
                         it++;
                     }
                 }
 
-                if (successfullyMapped) {
+                return msg;
+            }
+
+
+            void LiveFeedWidget::transformContainerToTree(Container &container) {
+                // Map attributes from message to the entries.
+                bool successfullyMapped = false;
+                Message msg;
+
+                if (0 == (m_containerTypeToName.count(container.getDataType()))) {
+                    msg = resolve(container, successfullyMapped);
+                    if (successfullyMapped) {
+                        m_containerTypeToName[container.getDataType()] = msg.getLongName();
+
+                        Lock l(m_containerTypeResolvingMutex);
+                        stringstream sstr;
+                        sstr << m_containerTypeToName[container.getDataType()] << "/" << container.getSenderStamp();
+                        m_containerTypeResolving[sstr.str()] = false;
+                    }
+                }
+                else {
                     vector<pair<string, string> > entries;
                     {
                         stringstream sstr;
@@ -282,17 +311,29 @@ namespace cockpit {
                     entries.push_back(make_pair("received", container.getReceivedTimeStamp().getYYYYMMDD_HHMMSSms()));
                     entries.push_back(make_pair("sample time", container.getSampleTimeStamp().getYYYYMMDD_HHMMSSms()));
 
-                    MessageToTupleVisitor mttv(entries);
-                    msg.accept(mttv);
-
                     // Create new Header if needed.
                     stringstream sstr_entryName;
-                    sstr_entryName << msg.getLongName() << "/" << container.getSenderStamp();
+                    sstr_entryName << m_containerTypeToName[container.getDataType()] << "/" << container.getSenderStamp();
                     const string entryName = sstr_entryName.str();
+
+                    {
+                        Lock l(m_containerTypeResolvingMutex);
+                        if (m_containerTypeResolving[entryName]) {
+                            msg = resolve(container, successfullyMapped);
+                            if (successfullyMapped) {
+                                MessageToTupleVisitor mttv(entries);
+                                msg.accept(mttv);
+                            }
+                        }
+                    }
+
                     if (m_dataToType.find(entryName) == m_dataToType.end()) {
-                        QTreeWidgetItem *newHeader = new QTreeWidgetItem(m_dataView.get());
+                        QTreeWidgetItem *newHeader = new QTreeWidgetItem(m_dataView);
                         newHeader->setText(0, entryName.c_str());
                         m_dataToType[entryName] = newHeader;
+
+                        newHeader->setFlags(newHeader->flags() | Qt::ItemIsUserCheckable | Qt::ItemIsSelectable);
+                        newHeader->setCheckState(0, Qt::Unchecked);
                     }
 
                     QTreeWidgetItem *entry = m_dataToType[entryName];
