@@ -46,6 +46,8 @@
 #include "opendlv/scenegraph/primitives/Polygon.h"
 #include "opendlv/scenegraph/renderer/SceneNodeRenderingConfiguration.h"
 #include "opendlv/scenegraph/transformation/SceneGraphFactory.h"
+
+#include "CockpitWindow.h"
 #include "plugins/PlugIn.h"
 #include "plugins/birdseyemap/BirdsEyeMapMapWidget.h"
 #include "plugins/birdseyemap/BirdsEyeMapRenderer.h"
@@ -153,6 +155,11 @@ namespace cockpit {
             }
 
             void BirdsEyeMapMapWidget::createSceneGraph() {
+                // The .scnx and .objx files are provided relative to the location of odcockpit.
+                // Thus, set the correct CWD.
+                QString cwd(CockpitWindow::getStartupDirectory().c_str());
+                QDir::setCurrent(cwd);
+
                 // Setup surroundings.
                 const URL urlOfSCNXFile(m_plugIn.getKeyValueConfiguration().getValue<string>("global.scenario"));
                 if (urlOfSCNXFile.isValid()) {

@@ -1,6 +1,6 @@
 /**
  * odrecinspect - Tool for inspecting recorded data
- * Copyright (C) 2014 - 2016 Christian Berger
+ * Copyright (C) 2014 - 2017 Christian Berger
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -27,6 +27,22 @@
 #include <opendavinci/odcore/data/Container.h>
 
 namespace odrecinspect {
+
+    class ContainerEntry {
+        public:
+            ContainerEntry();
+            ContainerEntry(const ContainerEntry &ce);
+            ContainerEntry& operator=(const ContainerEntry &ce);
+            virtual ~ContainerEntry();
+
+        public:
+            uint64_t m_numberOfContainersPerType;
+            odcore::data::Container m_latestContainersPerType;
+            uint32_t m_numberOfContainersInIncorrectTemporalOrderPerType;
+            double m_minDurationBetweenSamplesPerType;
+            std::vector<uint64_t> m_avgDurationBetweenSamplesPerType;
+            double m_maxDurationBetweenSamplesPerType;
+    };
 
     /**
      * This class can be used to inspect recorded data.
@@ -67,13 +83,10 @@ namespace odrecinspect {
             int32_t run(const int32_t &argc, char **argv);
 
         private:
-            std::map<int32_t, uint64_t> m_numberOfContainersPerType;
-            std::map<int32_t, odcore::data::Container> m_latestContainersPerType;
-            std::map<int32_t, uint32_t> m_numberOfContainersInIncorrectTemporalOrderPerType;
+            std::map<int32_t, std::map<uint32_t, ContainerEntry> > m_overview;
 
-            std::map<int32_t, double> m_minDurationBetweenSamplesPerType;
-            std::map<int32_t, std::vector<uint64_t> > m_avgDurationBetweenSamplesPerType;
-            std::map<int32_t, double> m_maxDurationBetweenSamplesPerType;
+            odcore::data::Container m_firstContainer;
+            odcore::data::Container m_lastContainer;
 
             double m_processingTimePerContainer;
     };

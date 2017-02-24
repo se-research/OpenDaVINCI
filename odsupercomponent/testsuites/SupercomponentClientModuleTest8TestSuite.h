@@ -157,9 +157,9 @@ class SupercomponentClientModuleTest : public CxxTest::TestSuite,
             m_globaleConfigurationProvider = odsupercomponent::GlobalConfigurationProvider(_configuration);
 
             vector<string> noModulesToIgnore;
-            ServerInformation serverInformation("127.0.0.1", 19000, ServerInformation::ML_NONE);
+            ServerInformation serverInformation("127.0.0.1", 19143, ServerInformation::ML_NONE);
             discoverer::Server dmcpDiscovererServer(serverInformation,
-                                                    "225.0.0.100",
+                                                    "225.0.0.143",
                                                     odcore::data::dmcp::Constants::BROADCAST_PORT_SERVER,
                                                     odcore::data::dmcp::Constants::BROADCAST_PORT_CLIENT,
                                                     noModulesToIgnore);
@@ -170,7 +170,7 @@ class SupercomponentClientModuleTest : public CxxTest::TestSuite,
 
             // Setup player.
             string argv0("ClientModuleTestService");
-            string argv1("--cid=100");
+            string argv1("--cid=143");
             string argv2("--id=2");
             int32_t argc = 3;
             char **argv;
