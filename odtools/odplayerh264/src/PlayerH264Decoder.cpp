@@ -64,6 +64,7 @@ namespace odplayerh264 {
         m_connection(),
         m_hasConnectionMutex(),
         m_hasConnection(false),
+        m_initialized(false),
         m_ready(true),
         m_mySharedMemory(NULL),
         m_mySharedImage(),
@@ -138,7 +139,7 @@ namespace odplayerh264 {
                 m_readFromFileBuffer = NULL;
             }
 
-            cout << "[odplayerh264] Cleaned H264 decoding child." << endl;
+            cout << "[odplayerh264] Cleaned h264 decoding child." << endl;
         }
     }
 
@@ -163,7 +164,6 @@ namespace odplayerh264 {
     }
 
     Container PlayerH264Decoder::process(Container &c) {
-        static bool isInitialized = false;
         Container replacementContainer;
 
         // Translate an H264Frame message into a proper SharedImage one.
@@ -172,8 +172,8 @@ namespace odplayerh264 {
             m_mySharedImage = h264frame.getAssociatedSharedImage();
 
             // If not initialized, initialze the h.264 decoder structure.
-            if (!isInitialized) {
-                isInitialized = initialize(h264frame.getH264Filename());
+            if (!m_initialized) {
+                m_initialized = initialize(h264frame.getH264Filename());
             }
 
             // If we have a valid shared memory segment, decode next frame.
@@ -183,8 +183,6 @@ namespace odplayerh264 {
                     replacementContainer.setSentTimeStamp(c.getSentTimeStamp());
                     replacementContainer.setReceivedTimeStamp(c.getReceivedTimeStamp());
                     replacementContainer.setSampleTimeStamp(c.getSampleTimeStamp());
-
-                    //cout << "[odplayerh264] Created replacement for " << h264frame.toString() << endl;
                 }
             }
         }
@@ -254,13 +252,14 @@ namespace odplayerh264 {
             // Initialize decoding parser.
             m_parser = av_parser_init(AV_CODEC_ID_H264);
             if (!m_parser) {
-                cerr << "[odplayerh264] Could not create H264 parser." << endl;
+                cerr << "[odplayerh264] Could not create h264 parser." << endl;
                 return false;
             }
 
             // Fill buffer from file.
             fillBuffer();
 
+            clog << "[odplayerh264] h264 decoder initialized." << endl;
             retVal = true;
         }
         return retVal;

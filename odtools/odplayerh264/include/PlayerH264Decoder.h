@@ -155,6 +155,7 @@ namespace odplayerh264 {
             bool m_hasConnection;
 
         private:
+            bool m_initialized;
             bool m_ready;
 
             // This shared memory will contain the resulting decoded image frame.
