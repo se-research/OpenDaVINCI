@@ -117,8 +117,8 @@ namespace cockpit {
                     QTreeWidget *m_dataView;
                     map<int32_t, string> m_containerTypeToName;
                     odcore::base::Mutex m_containerTypeResolvingMutex;
-                    map<string, bool > m_containerTypeResolving;
-                    map<string, QTreeWidgetItem* > m_dataToType;
+                    map<string, bool> m_containerTypeResolving;
+                    map<string, QTreeWidgetItem*> m_dataToType;
 
                     vector<string> m_listOfLibrariesToLoad;
                     vector<HelperEntry> m_listOfHelpers;

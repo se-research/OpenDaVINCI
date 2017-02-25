@@ -65,7 +65,7 @@ namespace odtools {
             private:
                 enum {
                     ONE_MILLISECOND_IN_MICROSECONDS = 1000,
-                    ONE_SECOND_IN_MICROSECONDS = 1000 *ONE_MILLISECOND_IN_MICROSECONDS,
+                    ONE_SECOND_IN_MICROSECONDS = 1000 * ONE_MILLISECOND_IN_MICROSECONDS,
                     MAX_DELAY_IN_MICROSECONDS = 5 * ONE_SECOND_IN_MICROSECONDS,
                     LOOK_AHEAD_IN_S = 30,
                     MIN_ENTRIES_FOR_LOOK_AHEAD = 5000,
@@ -192,7 +192,7 @@ namespace odtools {
 
             private:
                 /**
-                 * This method check if the Player has reached the end of the
+                 * This method checks if the Player has reached the end of the
                  * index (to throw an exception) or if the the Player starts
                  * over (using auto rewind).
                  *
@@ -235,7 +235,7 @@ namespace odtools {
 
             private:
                 /**
-                 * This method set the state of the containerCacheFilling thread.
+                 * This method sets the state of the containerCacheFilling thread.
                  *
                  * @param running False if the thread to fill the container cache shall be joined.
                  */
