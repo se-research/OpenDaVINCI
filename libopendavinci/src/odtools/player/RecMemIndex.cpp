@@ -106,6 +106,10 @@ namespace odtools {
 
             // Fill raw buffer.
             manageRawMemoryBuffer();
+            // Some data has been initially added to the cache.
+            if (!m_threading) {
+                m_hasMoreData = true;
+            }
 
             if (m_threading) {
                 // Start concurrent thread to manage the cache for shared memory dumps.
@@ -214,6 +218,7 @@ namespace odtools {
 
         bool RecMemIndex::hasMoreData() const {
             Lock l(m_indexMutex);
+cout << __FILE__ << " " << __LINE__ << ", HMD = " << m_hasMoreData << endl;
             return m_hasMoreData;
         }
 
@@ -242,6 +247,10 @@ namespace odtools {
 
             // Fill raw buffer.
             manageRawMemoryBuffer();
+            // Some data has been initially added to the cache.
+            if (!m_threading) {
+                m_hasMoreData = true;
+            }
 
             if (m_threading) {
                 // Start concurrent thread to manage the cache for shared memory dumps.
@@ -282,21 +291,26 @@ namespace odtools {
                                  std::min(m_rawMemoryBuffer[m_nextEntryToPlayBack->second.m_filePosition]->m_lengthOfRawMemoryBuffer, 
                                           m_nextEntryToPlayBack->second.m_sizeOfSharedMemorySegment));
                     }
-
                     // Mark entry as available.
                     m_nextEntryToReadFromRecMemFile->second.m_available = false;
                     // Remove entry from map of used rawMemoryBuffers.
                     m_unusedEntriesFromRawMemoryBuffer.push_front(m_rawMemoryBuffer[m_nextEntryToPlayBack->second.m_filePosition]);
                 }
+cout << "R " << retVal.getSampleTimeStamp().toString()  << ", E = " << (m_nextEntryToPlayBack == m_index.end()) << endl;
 
                 // Move to next entry for playback and enable auto-rewind by default.
+cout << __FILE__ << " " << __LINE__ << endl;
                 m_nextEntryToPlayBack++;
+cout << __FILE__ << " " << __LINE__ << endl;
                 if (m_nextEntryToPlayBack == m_index.end()) {
+cout << __FILE__ << " " << __LINE__ << endl;
                     m_nextEntryToPlayBack = m_index.begin();
 
                     // We have come to the end of our available containers.
                     m_hasMoreData = false;
+cout << __FILE__ << " " << __LINE__ << endl;
                 }
+cout << "R " << retVal.getSampleTimeStamp().toString()  << ", E = " << (m_nextEntryToPlayBack == m_index.end()) << endl;
             }
 
             // If not threading, handle cache regularly.
@@ -321,7 +335,6 @@ namespace odtools {
         }
 
         void RecMemIndex::manageRawMemoryBuffer() {
-            m_hasMoreData = true;
             do {
                 if (m_recMemFileValid) {
                     Lock l(m_indexMutex);
