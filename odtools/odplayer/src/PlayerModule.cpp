@@ -53,6 +53,9 @@ namespace odplayer {
         // Read the URL of the file to replay.
         URL url(getKeyValueConfiguration().getValue<string>("odplayer.input"));
 
+        // Allow this player to run in parallel.
+        bool THREADING = true;
+
         // Do we have to rewind the stream on EOF?
         bool autoRewind = (getKeyValueConfiguration().getValue<int>("odplayer.autoRewind") != 0);
 
@@ -63,7 +66,7 @@ namespace odplayer {
         const uint32_t NUMBER_OF_SEGMENTS = getKeyValueConfiguration().getValue<uint32_t>("global.buffer.numberOfMemorySegments");
 
         // Construct player.
-        Player2 player(url, autoRewind, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS);
+        Player2 player(url, autoRewind, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING);
 
         // The next container to be sent.
         Container nextContainerToBeSent;

@@ -73,7 +73,8 @@ namespace odtools {
 
         ////////////////////////////////////////////////////////////////////////
 
-        RecMemIndex::RecMemIndex(const URL &url, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments) :
+        RecMemIndex::RecMemIndex(const URL &url, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const bool &threading) :
+            m_threading(threading),
             m_url(url),
             m_recMemFile(),
             m_recMemFileValid(false),
@@ -106,15 +107,19 @@ namespace odtools {
             // Fill raw buffer.
             manageRawMemoryBuffer();
 
-            // Start concurrent thread to manage the cache for shared memory dumps.
-            setRawMemoryBufferFillingRunning(true);
-            m_rawMemoryBufferFillingThread = std::thread(&RecMemIndex::manageRawMemoryBuffer, this);
+            if (m_threading) {
+                // Start concurrent thread to manage the cache for shared memory dumps.
+                setRawMemoryBufferFillingRunning(true);
+                m_rawMemoryBufferFillingThread = std::thread(&RecMemIndex::manageRawMemoryBuffer, this);
+            }
         }
 
         RecMemIndex::~RecMemIndex() {
-            // Stop concurrent thread to manage cache.
-            setRawMemoryBufferFillingRunning(false);
-            m_rawMemoryBufferFillingThread.join();
+            if (m_threading) {
+                // Stop concurrent thread to manage cache.
+                setRawMemoryBufferFillingRunning(false);
+                m_rawMemoryBufferFillingThread.join();
+            }
 
             m_recMemFile.close();
 
@@ -213,9 +218,11 @@ namespace odtools {
         }
 
         void RecMemIndex::rewind() {
-            // Stop concurrent thread to manage cache.
-            setRawMemoryBufferFillingRunning(false);
-            m_rawMemoryBufferFillingThread.join();
+            if (m_threading) {
+                // Stop concurrent thread to manage cache.
+                setRawMemoryBufferFillingRunning(false);
+                m_rawMemoryBufferFillingThread.join();
+            }
 
             // Reset pointer to beginning of the .rec.mem file.
             m_nextEntryToPlayBack
@@ -236,9 +243,11 @@ namespace odtools {
             // Fill raw buffer.
             manageRawMemoryBuffer();
 
-            // Start concurrent thread to manage the cache for shared memory dumps.
-            setRawMemoryBufferFillingRunning(true);
-            m_rawMemoryBufferFillingThread = std::thread(&RecMemIndex::manageRawMemoryBuffer, this);
+            if (m_threading) {
+                // Start concurrent thread to manage the cache for shared memory dumps.
+                setRawMemoryBufferFillingRunning(true);
+                m_rawMemoryBufferFillingThread = std::thread(&RecMemIndex::manageRawMemoryBuffer, this);
+            }
         }
 
         int64_t RecMemIndex::peekNextSampleTimeToPlayBack() const {
@@ -247,45 +256,53 @@ namespace odtools {
         }
 
         odcore::data::Container RecMemIndex::makeNextRawMemoryEntryAvailable() {
-            Lock l(m_indexMutex);
             odcore::data::Container retVal;
-            if ( (m_nextEntryToPlayBack->second.m_available) &&
-                 (1 == m_rawMemoryBuffer.count(m_nextEntryToPlayBack->second.m_filePosition)) ) {
-                // Load Container from cache to be distributed into container conference.
-                retVal = m_rawMemoryBuffer[m_nextEntryToPlayBack->second.m_filePosition]->m_container;
+            {
+                Lock l(m_indexMutex);
+                if ( (m_nextEntryToPlayBack->second.m_available) &&
+                     (1 == m_rawMemoryBuffer.count(m_nextEntryToPlayBack->second.m_filePosition)) ) {
+                    // Load Container from cache to be distributed into container conference.
+                    retVal = m_rawMemoryBuffer[m_nextEntryToPlayBack->second.m_filePosition]->m_container;
 
-                // Transfer raw memory available to shared memory.
-                const string NAME_OF_SHARED_MEMORY_SEGMENT = m_nextEntryToPlayBack->second.m_nameOfSharedMemorySegment;
-                if (0 == m_mapOfPointersToSharedMemorySegments.count(NAME_OF_SHARED_MEMORY_SEGMENT)) {
-                    // A shared memory segment has not been acquired for this container.
-                    std::shared_ptr<odcore::wrapper::SharedMemory> sp = odcore::wrapper::SharedMemoryFactory::createSharedMemory(NAME_OF_SHARED_MEMORY_SEGMENT, m_nextEntryToPlayBack->second.m_sizeOfSharedMemorySegment);
-                    m_mapOfPointersToSharedMemorySegments[NAME_OF_SHARED_MEMORY_SEGMENT] = sp;
+                    // Transfer raw memory available to shared memory.
+                    const string NAME_OF_SHARED_MEMORY_SEGMENT = m_nextEntryToPlayBack->second.m_nameOfSharedMemorySegment;
+                    if (0 == m_mapOfPointersToSharedMemorySegments.count(NAME_OF_SHARED_MEMORY_SEGMENT)) {
+                        // A shared memory segment has not been acquired for this container.
+                        std::shared_ptr<odcore::wrapper::SharedMemory> sp = odcore::wrapper::SharedMemoryFactory::createSharedMemory(NAME_OF_SHARED_MEMORY_SEGMENT, m_nextEntryToPlayBack->second.m_sizeOfSharedMemorySegment);
+                        m_mapOfPointersToSharedMemorySegments[NAME_OF_SHARED_MEMORY_SEGMENT] = sp;
+                    }
+
+                    if ( (0 < m_mapOfPointersToSharedMemorySegments.count(NAME_OF_SHARED_MEMORY_SEGMENT)) &&
+                         (m_mapOfPointersToSharedMemorySegments[NAME_OF_SHARED_MEMORY_SEGMENT]->isValid()) ) {
+                        Lock l2(m_mapOfPointersToSharedMemorySegments[NAME_OF_SHARED_MEMORY_SEGMENT]);
+                        // Copy data from raw memory buffer into shared memory.
+                        ::memcpy(m_mapOfPointersToSharedMemorySegments[NAME_OF_SHARED_MEMORY_SEGMENT]->getSharedMemory(),
+                                 m_rawMemoryBuffer[m_nextEntryToPlayBack->second.m_filePosition]->m_rawMemoryBuffer,
+                                 /* Limit the amount of data to be copied to the maximum length of the shared memory. */
+                                 std::min(m_rawMemoryBuffer[m_nextEntryToPlayBack->second.m_filePosition]->m_lengthOfRawMemoryBuffer, 
+                                          m_nextEntryToPlayBack->second.m_sizeOfSharedMemorySegment));
+                    }
+
+                    // Mark entry as available.
+                    m_nextEntryToReadFromRecMemFile->second.m_available = false;
+                    // Remove entry from map of used rawMemoryBuffers.
+                    m_unusedEntriesFromRawMemoryBuffer.push_front(m_rawMemoryBuffer[m_nextEntryToPlayBack->second.m_filePosition]);
                 }
 
-                if ( (0 < m_mapOfPointersToSharedMemorySegments.count(NAME_OF_SHARED_MEMORY_SEGMENT)) &&
-                     (m_mapOfPointersToSharedMemorySegments[NAME_OF_SHARED_MEMORY_SEGMENT]->isValid()) ) {
-                    Lock l2(m_mapOfPointersToSharedMemorySegments[NAME_OF_SHARED_MEMORY_SEGMENT]);
-                    // Copy data from raw memory buffer into shared memory.
-                    ::memcpy(m_mapOfPointersToSharedMemorySegments[NAME_OF_SHARED_MEMORY_SEGMENT]->getSharedMemory(),
-                             m_rawMemoryBuffer[m_nextEntryToPlayBack->second.m_filePosition]->m_rawMemoryBuffer,
-                             /* Limit the amount of data to be copied to the maximum length of the shared memory. */
-                             std::min(m_rawMemoryBuffer[m_nextEntryToPlayBack->second.m_filePosition]->m_lengthOfRawMemoryBuffer, 
-                                      m_nextEntryToPlayBack->second.m_sizeOfSharedMemorySegment));
-                }
+                // Move to next entry for playback and enable auto-rewind by default.
+                m_nextEntryToPlayBack++;
+                if (m_nextEntryToPlayBack == m_index.end()) {
+                    m_nextEntryToPlayBack = m_index.begin();
 
-                // Mark entry as available.
-                m_nextEntryToReadFromRecMemFile->second.m_available = false;
-                // Remove entry from map of used rawMemoryBuffers.
-                m_unusedEntriesFromRawMemoryBuffer.push_front(m_rawMemoryBuffer[m_nextEntryToPlayBack->second.m_filePosition]);
+                    // We have come to the end of our available containers.
+                    m_hasMoreData = false;
+                }
             }
 
-            // Move to next entry for playback and enable auto-rewind by default.
-            m_nextEntryToPlayBack++;
-            if (m_nextEntryToPlayBack == m_index.end()) {
-                m_nextEntryToPlayBack = m_index.begin();
-
-                // We have come to the end of our available containers.
-                m_hasMoreData = false;
+            // If not threading, handle cache regularly.
+            if (!m_threading) {
+                // Fill raw buffer.
+                manageRawMemoryBuffer();
             }
 
             return retVal;

@@ -99,8 +99,9 @@ namespace odtools {
                  * @param autoRewind True if the file should be rewind at EOF.
                  * @param memorySegmentSize Size of the memory segment to be used for buffering.
                  * @param numberOfMemorySegments Number of memory segments to be used for buffering.
+                 * @param threading If set to true, player will load new containers from the files in background.
                  */
-                Player2(const odcore::io::URL &url, const bool &autoRewind, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments);
+                Player2(const odcore::io::URL &url, const bool &autoRewind, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const bool &threading);
 
                 virtual ~Player2();
 
@@ -201,6 +202,8 @@ namespace odtools {
                 inline void checkForEndOfIndexAndThrowExceptionOrAutoRewind() throw (odcore::exceptions::ArrayIndexOutOfBoundsException);
 
             private: // Data for the Player.
+                bool m_threading;
+
                 odcore::io::URL m_url;
 
                 // Handle to .rec file.
@@ -246,6 +249,15 @@ namespace odtools {
                  * This method manages the cache.
                  */
                 void manageCache();
+
+                /**
+                 * This method checks whether the cache needs to be refilled.
+                 *
+                 * @param numberOfEntries Number of entries in cache.
+                 * @param refillMultiplicator Multiplicator to modify the amount of containers to be refilled.
+                 * @return Modified refillMultiplicator recommedned to be used next time 
+                 */
+                float checkRefillingCache(const uint32_t &numberOfEntries, float refillMultiplicator);
 
             private:
                 mutable odcore::base::Mutex m_containerCacheFillingThreadIsRunningMutex;

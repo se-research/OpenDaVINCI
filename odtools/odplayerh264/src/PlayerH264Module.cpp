@@ -54,6 +54,9 @@ namespace odplayerh264 {
         // Read the URL of the file to replay.
         URL url(getKeyValueConfiguration().getValue<string>("odplayerh264.input"));
 
+        // Allow this player to run in parallel.
+        bool THREADING = true;
+
         // Size of the memory buffer.
         const uint32_t MEMORY_SEGMENT_SIZE = getKeyValueConfiguration().getValue<uint32_t>("global.buffer.memorySegmentSize");
 
@@ -67,7 +70,7 @@ namespace odplayerh264 {
         const uint32_t BASE_PORT = getKeyValueConfiguration().getValue<uint32_t>("odplayerh264.portbaseforchildprocesses");
 
         // Construct player.
-        PlayerH264 player(url, autoRewind, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, BASE_PORT);
+        PlayerH264 player(url, autoRewind, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING, BASE_PORT);
 
         // The next container to be sent.
         Container nextContainerToBeSent;

@@ -89,8 +89,9 @@ namespace odtools {
                  * @param url Resource to play.
                  * @param memorySegmentSize Size of the memory segment to be used for buffering.
                  * @param numberOfMemorySegments Number of memory segments to be used for buffering.
+                 * @param threading If set to true, RecMemIndex will load new containers from the .rec.mem file in background.
                  */
-                RecMemIndex(const odcore::io::URL &url, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments);
+                RecMemIndex(const odcore::io::URL &url, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const bool &threading);
 
                 virtual ~RecMemIndex();
 
@@ -133,6 +134,8 @@ namespace odtools {
                 void initializeIndex();
 
             private: // File handle for the RecMemIndex.
+                bool m_threading;
+
                 odcore::io::URL m_url;
 
                 // Handle to .rec.mem file.
