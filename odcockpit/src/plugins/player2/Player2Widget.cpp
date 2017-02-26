@@ -33,7 +33,6 @@
 #include "opendavinci/odcore/io/conference/ContainerConference.h"
 #include "opendavinci/odcore/strings/StringToolbox.h"
 #include "opendavinci/odtools/player/Player2.h"
-#include "opendavinci/generated/odcore/data/player/PlayerCommand.h"
 #include "opendavinci/generated/odcore/data/player/PlayerStatus.h"
 
 #include "plugins/player2/Player2Widget.h"
@@ -259,8 +258,7 @@ namespace cockpit {
                         }
 
                         // Send container.
-                        if ( (nextContainerToBeSent.getDataType() != Container::UNDEFINEDDATA) &&
-                             (nextContainerToBeSent.getDataType() != odcore::data::player::PlayerCommand::ID()) ) {
+                        if (nextContainerToBeSent.getDataType() != Container::UNDEFINEDDATA) {
                             if ((m_relayToConference != NULL) && m_relayToConference->isChecked()) {
                                 m_conference.send(nextContainerToBeSent);
                             }

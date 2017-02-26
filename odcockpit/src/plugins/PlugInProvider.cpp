@@ -42,7 +42,6 @@
     #include "plugins/modulestatisticsviewer/ModuleStatisticsViewerPlugIn.h"
 #endif
 #include "plugins/objxviewer/OBJXViewerPlugIn.h"
-#include "plugins/player/PlayerPlugIn.h"
 #include "plugins/player2/Player2PlugIn.h"
 #include "plugins/scnxviewer/SCNXViewerPlugIn.h"
 #include "plugins/sessionviewer/SessionViewerPlugIn.h"
@@ -114,10 +113,8 @@ class PlugIn;
 #endif
             if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("objxviewer") != string::npos) )
                 m_listOfAvailablePlugIns.push_back("OBJXViewer");
-            if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("player") != string::npos) )
-                m_listOfAvailablePlugIns.push_back("Player");
             if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("player2") != string::npos) )
-                m_listOfAvailablePlugIns.push_back("Player2");
+                m_listOfAvailablePlugIns.push_back("Player");
             if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("scnxviewer") != string::npos) )
                 m_listOfAvailablePlugIns.push_back("SCNXViewer");
             if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("sessionviewer") != string::npos) )
@@ -147,7 +144,6 @@ class PlugIn;
             m_listOfDescriptions["LiveFeed"] = tr("This plugin displays all distributed visitable messages.").toStdString();
             m_listOfDescriptions["LogMessage"] = tr("This plugin displays log messages from components.").toStdString();
             m_listOfDescriptions["Player"] = tr("This plugin replays previously recorded files.").toStdString();
-            m_listOfDescriptions["Player2"] = tr("This plugin replays previously recorded files.").toStdString();
             m_listOfDescriptions["SessionViewer"] = tr("This plugin displays currently running modules.").toStdString();
             m_listOfDescriptions["SharedImageViewer"] = tr("This plugin displays shared images.").toStdString();
             m_listOfDescriptions["StartStop"] = tr("This plugin allows to activate/deactivate autonomous control of the vehicle.").toStdString();
@@ -235,10 +231,7 @@ class PlugIn;
                 plugIn = std::shared_ptr<PlugIn>(new logmessage::LogMessagePlugIn("LogMessage", m_kvc, m_parent));
             } else if (name == "Player") {
                 cerr << "[odcockpit] Creating plugin: Player" << endl;
-                plugIn = std::shared_ptr<PlugIn>((PlugIn*)(new player::PlayerPlugIn("Player", m_kvc, m_conference, m_multiplexer, m_parent)));
-            } else if (name == "Player2") {
-                cerr << "[odcockpit] Creating plugin: Player2" << endl;
-                plugIn = std::shared_ptr<PlugIn>((PlugIn*)(new player2::Player2PlugIn("Player2", m_kvc, m_conference, m_multiplexer, m_parent)));
+                plugIn = std::shared_ptr<PlugIn>((PlugIn*)(new player2::Player2PlugIn("Player", m_kvc, m_conference, m_multiplexer, m_parent)));
             } else if (name == "SessionViewer") {
                 cerr << "[odcockpit] Creating plugin: SessionViewer" << endl;
                 plugIn = std::shared_ptr<PlugIn>(new sessionviewer::SessionViewerPlugIn("SessionViewer", m_kvc, m_parent));

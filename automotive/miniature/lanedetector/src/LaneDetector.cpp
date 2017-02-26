@@ -28,7 +28,7 @@
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 
-#include "opendavinci/odtools/player/Player.h"
+#include "opendavinci/odtools/player/Player2.h"
 
 #include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 #include "automotivedata/GeneratedHeaders_AutomotiveData.h"
@@ -149,7 +149,7 @@ namespace automotive {
 	        KeyValueConfiguration kv = getKeyValueConfiguration();
 	        m_debug = kv.getValue<int32_t> ("lanedetector.debug") == 1;
 
-            unique_ptr<Player> player;
+            unique_ptr<Player2> player;
 /*
             // Lane-detector can also directly read the data from file. This might be interesting to inspect the algorithm step-wisely.
             odcore::io::URL url("file://recording.rec");
@@ -163,11 +163,8 @@ namespace automotive {
             // If AUTO_REWIND is true, the file will be played endlessly.
             const bool AUTO_REWIND = true;
 
-            // We do not want player to run in parallel but we want to process frame by frame sequentially.
-            const bool THREADING = false;
-
             // Construct the player.
-            player = unique_ptr<Player>(new Player(url, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING));
+            player = unique_ptr<Player2>(new Player(url, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS));
 */
 
             // Main data processing loop.
