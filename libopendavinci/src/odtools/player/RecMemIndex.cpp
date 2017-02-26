@@ -107,9 +107,7 @@ namespace odtools {
             // Fill raw buffer.
             manageRawMemoryBuffer();
             // Some data has been initially added to the cache.
-            if (!m_threading) {
-                m_hasMoreData = true;
-            }
+            m_hasMoreData = true;
 
             if (m_threading) {
                 // Start concurrent thread to manage the cache for shared memory dumps.
@@ -247,9 +245,7 @@ namespace odtools {
             // Fill raw buffer.
             manageRawMemoryBuffer();
             // Some data has been initially added to the cache.
-            if (!m_threading) {
-                m_hasMoreData = true;
-            }
+            m_hasMoreData = true;
 
             if (m_threading) {
                 // Start concurrent thread to manage the cache for shared memory dumps.
