@@ -1,6 +1,7 @@
 /**
  * OpenDaVINCI - Portable middleware for distributed components.
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
+ * Copyright (C) 2017 Christian Berger
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -35,7 +36,7 @@
 
 #include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
-#include "opendavinci/odtools/player/Player.h"
+#include "opendavinci/odtools/player/NonReorderingPlayer.h"
 #include "opendavinci/odtools/player/PlayerCache.h"
 #include "opendavinci/odtools/player/PlayerDelegate.h"
 
@@ -47,7 +48,7 @@ namespace odtools {
         using namespace odcore::data;
         using namespace odcore::io;
 
-        Player::Player(const URL &url, const bool &autoRewind, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const bool &threading) :
+        NonReorderingPlayer::NonReorderingPlayer(const URL &url, const bool &autoRewind, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const bool &threading) :
             m_threading(threading),
             m_autoRewind(autoRewind),
             m_inFile(NULL),
@@ -71,10 +72,10 @@ namespace odtools {
                 URL urlSharedMemoryFile("file://" + url.getResource() + ".mem");
                 try {
                     m_inSharedMemoryFile = StreamFactory::getInstance().getInputStream(urlSharedMemoryFile);
-                    CLOG1 << "Player: Found shared memory dump file '" << urlSharedMemoryFile.toString() << "'" << endl;
+                    CLOG1 << "NonReorderingPlayer: Found shared memory dump file '" << urlSharedMemoryFile.toString() << "'" << endl;
                 }
                 catch (const odcore::exceptions::InvalidArgumentException &iae) {
-                    clog << "Player: Warning: " << iae.toString() << endl;
+                    clog << "NonReorderingPlayer: Warning: " << iae.toString() << endl;
                 } 
             }
 
@@ -91,7 +92,7 @@ namespace odtools {
             }
         }
 
-        Player::~Player() {
+        NonReorderingPlayer::~NonReorderingPlayer() {
             if ( (m_playerCache.get() != NULL) && (m_threading) ) {
                 m_playerCache->stop();
             }
@@ -107,7 +108,7 @@ namespace odtools {
             m_mapOfSharedMemoriesForCompressedImages.clear();
         }
 
-        void Player::registerPlayerDelegate(const uint32_t &containerID, PlayerDelegate *p) {
+        void NonReorderingPlayer::registerPlayerDelegate(const uint32_t &containerID, PlayerDelegate *p) {
             Lock l(m_mapOfPlayerDelegatesMutex);
 
             // First, check if we have registered an existing PlayerDelegate for the given ID.
@@ -121,7 +122,7 @@ namespace odtools {
             }
         }
 
-        Container Player::getNextContainerToBeSent() {
+        Container NonReorderingPlayer::getNextContainerToBeSent() {
             Container retVal;
 
             // Update cache in the sychronous case.
@@ -270,11 +271,11 @@ namespace odtools {
             return retVal;
         }
 
-        uint32_t Player::getDelay() const {
+        uint32_t NonReorderingPlayer::getDelay() const {
             return m_delay;
         }
 
-        void Player::rewind() {
+        void NonReorderingPlayer::rewind() {
             // Clear cache and wait for new data.
             m_playerCache->clearQueueRewindInputStreams();
 
@@ -283,7 +284,7 @@ namespace odtools {
             m_noMoreData = false;
         }
 
-        bool Player::hasMoreData() const {
+        bool NonReorderingPlayer::hasMoreData() const {
             return !m_noMoreData;
         }
 

@@ -1,6 +1,7 @@
 /**
  * OpenDaVINCI - Portable middleware for distributed components.
  * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
+ * Copyright (C) 2017 Christian Berger
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,8 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef OPENDAVINCI_TOOLS_PLAYER_PLAYER_H_
-#define OPENDAVINCI_TOOLS_PLAYER_PLAYER_H_
+#ifndef OPENDAVINCI_TOOLS_PLAYER_NONREORDERINGPLAYER_H_
+#define OPENDAVINCI_TOOLS_PLAYER_NONREORDERINGPLAYER_H_
 
 #include <iosfwd>
 #include <map>
@@ -41,9 +42,10 @@ namespace odtools {
 
         /**
          * This class can be used to replay previously recorded
-         * data using a conference for distribution.
+         * data using a conference for distribution without
+         * reordering the Containers temporally.
          */
-        class Player {
+        class NonReorderingPlayer {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -52,7 +54,7 @@ namespace odtools {
                  *
                  * @param obj Reference to an object of this class.
                  */
-                Player(const Player &/*obj*/);
+                NonReorderingPlayer(const NonReorderingPlayer &/*obj*/);
 
                 /**
                  * "Forbidden" assignment operator. Goal: The compiler should warn
@@ -62,7 +64,7 @@ namespace odtools {
                  * @param obj Reference to an object of this class.
                  * @return Reference to this instance.
                  */
-                Player& operator=(const Player &/*obj*/);
+                NonReorderingPlayer& operator=(const NonReorderingPlayer &/*obj*/);
 
             public:
                 /**
@@ -74,9 +76,9 @@ namespace odtools {
                  * @param numberOfMemorySegments Number of memory segments to be used for buffering.
                  * @param threading If set to true, player will load new containers from the file in background.
                  */
-                Player(const odcore::io::URL &url, const bool &autoRewind, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const bool &threading);
+                NonReorderingPlayer(const odcore::io::URL &url, const bool &autoRewind, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const bool &threading);
 
-                virtual ~Player();
+                virtual ~NonReorderingPlayer();
 
                 /**
                  * This method returns the next container to be replayed.
@@ -149,4 +151,4 @@ namespace odtools {
     } // player
 } // tools
 
-#endif /*OPENDAVINCI_TOOLS_PLAYER_PLAYER_H_*/
+#endif /*OPENDAVINCI_TOOLS_PLAYER_NONREORDERINGPLAYER_H_*/
