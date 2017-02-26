@@ -40,7 +40,6 @@ extern "C" {
 
 #include "opendavinci/generated/odcore/data/image/SharedImage.h"
 
-#include <opendavinci/odtools/player/Player.h>
 #include <opendavinci/odtools/player/PlayerDelegate.h>
 
 namespace odplayerh264 {

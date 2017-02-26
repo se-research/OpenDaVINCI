@@ -21,7 +21,6 @@
 #define PLAYERMODULE_H_
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/base/FIFOQueue.h"
 #include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
 #include "opendavinci/generated/odcore/data/dmcp/ModuleExitCodeMessage.h"
 
@@ -73,9 +72,6 @@ namespace odplayer {
             virtual void setUp();
 
             virtual void tearDown();
-
-        private:
-            odcore::base::FIFOQueue m_playerControl;
     };
 
 } // odplayer

@@ -39,7 +39,7 @@
 
 #include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
-#include "opendavinci/odtools/player/Player.h"
+#include "opendavinci/odtools/player/NonReorderingPlayer.h"
 #include "opendavinci/odtools/recorder/Recorder.h"
 
 // Include local header files.
@@ -140,7 +140,7 @@ class SplitTest : public CxxTest::TestSuite {
             const bool THREADING = false;
             // Construct player.
             string file("file://A.rec_50-60.rec");
-            Player player(file, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING);
+            NonReorderingPlayer player(file, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING);
 
             int32_t rangeBasis = 25;
             int32_t sharedMemorySegments = 0;
