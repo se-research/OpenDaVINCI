@@ -218,7 +218,6 @@ namespace odtools {
 
         bool RecMemIndex::hasMoreData() const {
             Lock l(m_indexMutex);
-cout << __FILE__ << " " << __LINE__ << ", HMD = " << m_hasMoreData << endl;
             return m_hasMoreData;
         }
 
@@ -296,21 +295,15 @@ cout << __FILE__ << " " << __LINE__ << ", HMD = " << m_hasMoreData << endl;
                     // Remove entry from map of used rawMemoryBuffers.
                     m_unusedEntriesFromRawMemoryBuffer.push_front(m_rawMemoryBuffer[m_nextEntryToPlayBack->second.m_filePosition]);
                 }
-cout << "R " << retVal.getSampleTimeStamp().toString()  << ", E = " << (m_nextEntryToPlayBack == m_index.end()) << endl;
 
                 // Move to next entry for playback and enable auto-rewind by default.
-cout << __FILE__ << " " << __LINE__ << endl;
                 m_nextEntryToPlayBack++;
-cout << __FILE__ << " " << __LINE__ << endl;
                 if (m_nextEntryToPlayBack == m_index.end()) {
-cout << __FILE__ << " " << __LINE__ << endl;
                     m_nextEntryToPlayBack = m_index.begin();
 
                     // We have come to the end of our available containers.
                     m_hasMoreData = false;
-cout << __FILE__ << " " << __LINE__ << endl;
                 }
-cout << "R " << retVal.getSampleTimeStamp().toString()  << ", E = " << (m_nextEntryToPlayBack == m_index.end()) << endl;
             }
 
             // If not threading, handle cache regularly.
