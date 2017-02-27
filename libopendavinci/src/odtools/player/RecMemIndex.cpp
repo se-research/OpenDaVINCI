@@ -365,8 +365,10 @@ namespace odtools {
                     }
                 }
 
-                // Manage cache at 10 Hz.
-                Thread::usleepFor(100 * RecMemIndex::ONE_MILLISECOND_IN_MICROSECONDS);
+                // Manage cache at 10 Hz if in threading mode..
+                if (m_threading) {
+                    Thread::usleepFor(100 * RecMemIndex::ONE_MILLISECOND_IN_MICROSECONDS);
+                }
             } while (isRawMemoryBufferFillingRunning());
         }
 

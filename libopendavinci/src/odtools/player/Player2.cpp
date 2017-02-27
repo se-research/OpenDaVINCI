@@ -302,7 +302,7 @@ namespace odtools {
             // Check if the next Container + shared memory comes from the .rec.mem file.
             const int64_t recContainerSampleTime = nextContainer.getSampleTimeStamp().toMicroseconds();
             bool replayContainerFromRecMem = false;
-            if (NULL != m_recMemIndex.get()) {
+            if (NULL != m_recMemIndex.get() && hasMoreDataFromRecMemFile()) {
                 int64_t recMemContainerSampleTime = m_recMemIndex->peekNextSampleTimeToPlayBack();
 
                 if ((replayContainerFromRecMem = (recContainerSampleTime > recMemContainerSampleTime))) {

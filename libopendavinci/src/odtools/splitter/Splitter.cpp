@@ -25,7 +25,7 @@
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/io/URL.h"
 #include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odtools/player/NonReorderingPlayer.h"
+#include "opendavinci/odtools/player/Player2.h"
 #include "opendavinci/odtools/recorder/Recorder.h"
 #include "opendavinci/odtools/splitter/Splitter.h"
 
@@ -70,7 +70,7 @@ namespace odtools {
             const bool AUTO_REWIND = false;
 
             // Construct player.
-            NonReorderingPlayer player(playbackURL.str(), AUTO_REWIND, memorySegmentSize, NUMBER_OF_SEGMENTS, THREADING);
+            Player2 player(playbackURL.str(), AUTO_REWIND, memorySegmentSize, NUMBER_OF_SEGMENTS, THREADING);
 
             // Compose URL for storing containers.
             stringstream recordingURL;
