@@ -21,7 +21,7 @@
 #include "opendavinci/odcontext/base/SendContainerToSystemsUnderTest.h"
 #include "opendavinci/odcore/base/FIFOQueue.h"
 #include "opendavinci/odcore/data/Container.h"
-#include "opendavinci/odtools/player/NonReorderingPlayer.h"
+#include "opendavinci/odtools/player/Player2.h"
 
 namespace odcore { namespace wrapper { class Time; } }
 
@@ -47,7 +47,7 @@ namespace odcontext {
                 // We can use the sychronous player as we are running in a deterministic simulation anyways.
                 const bool THREADING = false;
                 const bool AUTO_REWIND = false;
-                m_player = unique_ptr<NonReorderingPlayer>(new NonReorderingPlayer(m_urlFileName, AUTO_REWIND, m_memorySegmentSize, m_numberOfSegments, THREADING));
+                m_player = unique_ptr<Player2>(new Player2(m_urlFileName, AUTO_REWIND, m_memorySegmentSize, m_numberOfSegments, THREADING));
             }
         }
 
