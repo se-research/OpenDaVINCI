@@ -18,8 +18,8 @@
  */
 
 #include "opendavinci/odcore/opendavinci.h"
-#include "plugins/player2/Player2PlugIn.h"
-#include "plugins/player2/Player2Widget.h"
+#include "plugins/player/PlayerPlugIn.h"
+#include "plugins/player/PlayerWidget.h"
 
 class QWidget;
 namespace odcore { namespace base { class KeyValueConfiguration; } }
@@ -29,27 +29,27 @@ namespace cockpit {
 
     namespace plugins {
 
-        namespace player2 {
+        namespace player {
 
             using namespace std;
 
-            Player2PlugIn::Player2PlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, FIFOMultiplexer &multiplexer, QWidget *prnt) :
+            PlayerPlugIn::PlayerPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, FIFOMultiplexer &multiplexer, QWidget *prnt) :
                 ControlPlugIn(name, kvc, conf, multiplexer, prnt),
                 m_kvc(kvc),
-                m_player2Widget(NULL) {
+                m_playerWidget(NULL) {
                 setDescription("This plugin replays previously recorded files.");
             }
 
-            Player2PlugIn::~Player2PlugIn() {}
+            PlayerPlugIn::~PlayerPlugIn() {}
 
-            void Player2PlugIn::setupPlugin() {
-                m_player2Widget = new Player2Widget(*this, m_kvc, getConference(), getFIFOMultiplexer(), getParentQWidget());
+            void PlayerPlugIn::setupPlugin() {
+                m_playerWidget = new PlayerWidget(*this, m_kvc, getConference(), getFIFOMultiplexer(), getParentQWidget());
             }
 
-            void Player2PlugIn::stopPlugin() {}
+            void PlayerPlugIn::stopPlugin() {}
 
-            QWidget* Player2PlugIn::getQWidget() const {
-                return m_player2Widget;
+            QWidget* PlayerPlugIn::getQWidget() const {
+                return m_playerWidget;
             }
         }
     }

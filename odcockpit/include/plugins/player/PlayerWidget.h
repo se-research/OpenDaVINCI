@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef COCKPIT_PLUGINS_PLAYER2WIDGET_H_
-#define COCKPIT_PLUGINS_PLAYER2WIDGET_H_
+#ifndef COCKPIT_PLUGINS_PLAYERWIDGET_H_
+#define COCKPIT_PLUGINS_PLAYERWIDGET_H_
 
 #include <QtCore>
 #include <QtGui>
@@ -39,20 +39,20 @@ class QPushButton;
 namespace cockpit { namespace plugins { class PlugIn; } }
 namespace odcore { namespace base { class KeyValueConfiguration; } }
 namespace odcore { namespace io { namespace conference { class ContainerConference; } } }
-namespace odtools { namespace player { class Player2; } }
+namespace odtools { namespace player { class Player; } }
 
 namespace cockpit {
 
     namespace plugins {
 
-        namespace player2 {
+        namespace player {
 
             using namespace std;
 
             /**
              * This class is the container for the cutter widget.
              */
-            class Player2Widget : public QWidget,
+            class PlayerWidget : public QWidget,
                                   public odtools::player::PlayerListener {
 
                     Q_OBJECT
@@ -63,14 +63,14 @@ namespace cockpit {
                      * already at compile time for unwanted bugs caused by any misuse
                      * of the copy constructor.
                      */
-                    Player2Widget(const Player2Widget &/*obj*/);
+                    PlayerWidget(const PlayerWidget &/*obj*/);
 
                     /**
                      * "Forbidden" assignment operator. Goal: The compiler should warn
                      * already at compile time for unwanted bugs caused by any misuse
                      * of the assignment operator.
                      */
-                    Player2Widget& operator=(const Player2Widget &/*obj*/);
+                    PlayerWidget& operator=(const PlayerWidget &/*obj*/);
 
                 public:
                     /**
@@ -81,9 +81,9 @@ namespace cockpit {
                      * @param conf Conference to send data to.
                      * @param prnt Pointer to the parental widget.
                      */
-                    Player2Widget(const PlugIn &plugIn, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, FIFOMultiplexer &multiplexer, QWidget *prnt);
+                    PlayerWidget(const PlugIn &plugIn, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, FIFOMultiplexer &multiplexer, QWidget *prnt);
 
-                    virtual ~Player2Widget();
+                    virtual ~PlayerWidget();
 
                     virtual void percentagePlayedBack(const float &percentagePlayedBack);
 
@@ -129,7 +129,7 @@ namespace cockpit {
 
                     QProgressBar *m_timeline;
 
-                    shared_ptr<odtools::player::Player2> m_player2;
+                    shared_ptr<odtools::player::Player> m_player;
 
                     string m_fileName;
                     string m_currentWorkingDirectory;
@@ -139,4 +139,4 @@ namespace cockpit {
     }
 }
 
-#endif /* COCKPIT_PLUGINS_PLAYER2WIDGET_H_ */
+#endif /* COCKPIT_PLUGINS_PLAYERWIDGET_H_ */

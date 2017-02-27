@@ -11,7 +11,7 @@ ID;TYPE;legacy OR message;library;comment
 7;odcore.data.dmcp.ModuleExitCodeMessage;legacy;OpenDaVINCI.odvd;internal use;
 8;odcore.data.dmcp.ModuleStatistics;legacy;OpenDaVINCI.odvd;internal use;
 9;odcore.data.dmcp.RuntimeStatistic;legacy;OpenDaVINCI.odvd;internal use;
-10;odcore.data.player.PlayerCommand;legacy;OpenDaVINCI.odvd;internal use;
+10;odcore.data.player.PlayerStatus;legacy;OpenDaVINCI.odvd;internal use;
 11;odcore.data.recorder.RecorderCommand;legacy;OpenDaVINCI.odvd;internal use;
 12;TIMESTAMP;legacy;libopendavinci;don't use;
 13;odcore.data.SharedData;legacy;OpenDaVINCI.odvd;internal use;
@@ -43,7 +43,6 @@ ID;TYPE;legacy OR message;library;comment
 39;automotive.VehicleData;CaroloCup/simulation;AutomotiveData.odvd;;
 40;DRAW_LINE;legacy;libodsimulation;don't use;
 41;automotive.VehicleControl;CaroloCup/simulation;AutomotiveData.odvd;;
-48;odcore.data.player.PlayerStatus;legacy;OpenDaVINCI.odvd;internal use;
 49;odcore.data.image.CompactPointCloud;legacy;OpenDaVINCI.odvd;internal use;
 50;cartesian.Constants;simulation;AutomotiveData.odvd;;
 51;cartesian.Point2;simulation;AutomotiveData.odvd;;

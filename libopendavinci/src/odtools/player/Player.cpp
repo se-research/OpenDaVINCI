@@ -32,7 +32,7 @@
 #include <opendavinci/odcore/base/Thread.h>
 #include <opendavinci/odcore/io/URL.h>
 
-#include <opendavinci/odtools/player/Player2.h>
+#include <opendavinci/odtools/player/Player.h>
 #include <opendavinci/odtools/player/PlayerDelegate.h>
 #include <opendavinci/odtools/player/RecMemIndex.h>
 
@@ -60,7 +60,7 @@ namespace odtools {
 
         ////////////////////////////////////////////////////////////////////////
 
-        Player2::Player2(const URL &url, const bool &autoRewind, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const bool &threading) :
+        Player::Player(const URL &url, const bool &autoRewind, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const bool &threading) :
             m_threading(threading),
             m_url(url),
             m_recFile(),
@@ -92,7 +92,7 @@ namespace odtools {
             if (m_threading) {
                 // Start concurrent thread to manage cache.
                 setContainerCacheFillingRunning(true);
-                m_containerCacheFillingThread = std::thread(&Player2::manageCache, this);
+                m_containerCacheFillingThread = std::thread(&Player::manageCache, this);
             }
 
             // Try reading accompanying .rec.mem file.
@@ -109,7 +109,7 @@ namespace odtools {
             }
         }
 
-        Player2::~Player2() {
+        Player::~Player() {
             if (m_threading) {
                 // Stop concurrent thread to manage cache.
                 setContainerCacheFillingRunning(false);
@@ -124,12 +124,12 @@ namespace odtools {
 
         ////////////////////////////////////////////////////////////////////////
 
-        void Player2::setPlayerListener(PlayerListener *pl) {
+        void Player::setPlayerListener(PlayerListener *pl) {
             Lock l(m_playerListenerMutex);
             m_playerListener = pl;
         }
 
-        void Player2::registerPlayerDelegate(const uint32_t &containerID, PlayerDelegate *pd) {
+        void Player::registerPlayerDelegate(const uint32_t &containerID, PlayerDelegate *pd) {
             Lock l(m_mapOfPlayerDelegatesMutex);
 
             // First, check if we have registered an existing PlayerDelegate for the given ID.
@@ -145,7 +145,7 @@ namespace odtools {
 
         ////////////////////////////////////////////////////////////////////////
 
-        void Player2::initializeIndex() {
+        void Player::initializeIndex() {
             m_recFile.open(m_url.getResource().c_str(), ios_base::in|ios_base::binary);
             m_recFileValid = m_recFile.good();
 
@@ -175,7 +175,7 @@ namespace odtools {
 
                         const int32_t percentage = static_cast<int32_t>(static_cast<float>(m_recFile.tellg()*100.0)/static_cast<float>(fileLength));
                         if ( (percentage % 5 == 0) && (percentage != oldPercentage) ) {
-                            clog << "[odtools::player::Player2]: Indexed " << percentage << "% from " << m_url.toString() << "." << endl;
+                            clog << "[odtools::player::Player]: Indexed " << percentage << "% from " << m_url.toString() << "." << endl;
                             oldPercentage = percentage;
                         }
                     }
@@ -185,20 +185,20 @@ namespace odtools {
 
             // Reset pointer to beginning of the .rec file.
             if (m_recFileValid) {
-                clog << "[odtools::player::Player2]: " << m_url.getResource()
+                clog << "[odtools::player::Player]: " << m_url.getResource()
                                       << " contains " << m_index.size() << " entries; "
                                       << "read " << totalBytesRead << " bytes "
                                       << "in " << (AFTER-BEFORE).toMicroseconds()/(1000.0*1000.0) << "s." << endl;
             }
         }
 
-        void Player2::resetCaches() {
+        void Player::resetCaches() {
             Lock l(m_indexMutex);
             m_delay = m_correctedDelay = 0;
             m_containerCache.clear();
         }
 
-        void Player2::resetIterators() {
+        void Player::resetIterators() {
             Lock l(m_indexMutex);
             // Point to first entry in index.
             m_nextEntryToReadFromRecFile
@@ -209,7 +209,7 @@ namespace odtools {
             m_previousPreviousContainerAlreadyReplayed = m_index.end();
         }
 
-        void Player2::computeInitialCacheLevelAndFillCache() {
+        void Player::computeInitialCacheLevelAndFillCache() {
             if (m_recFileValid && (m_index.size() > 0) ) {
                 int64_t smallestSampleTimePoint = numeric_limits<int64_t>::max();
                 int64_t largestSampleTimePoint = numeric_limits<int64_t>::min();
@@ -218,11 +218,11 @@ namespace odtools {
                     largestSampleTimePoint = std::max(largestSampleTimePoint, it->first);
                 }
 
-                const uint32_t ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY = std::ceil(m_index.size()*(static_cast<float>(Player2::ONE_SECOND_IN_MICROSECONDS))/(largestSampleTimePoint - smallestSampleTimePoint));
-                m_desiredInitialLevel = std::max<uint32_t>(ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY * Player2::LOOK_AHEAD_IN_S,
+                const uint32_t ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY = std::ceil(m_index.size()*(static_cast<float>(Player::ONE_SECOND_IN_MICROSECONDS))/(largestSampleTimePoint - smallestSampleTimePoint));
+                m_desiredInitialLevel = std::max<uint32_t>(ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY * Player::LOOK_AHEAD_IN_S,
                                                            MIN_ENTRIES_FOR_LOOK_AHEAD);
 
-                clog << "[odtools::player::Player2]: Initializing cache with " << m_desiredInitialLevel << " entries." << endl;
+                clog << "[odtools::player::Player]: Initializing cache with " << m_desiredInitialLevel << " entries." << endl;
 
                 resetCaches();
                 resetIterators();
@@ -230,7 +230,7 @@ namespace odtools {
             }
         }
 
-        uint32_t Player2::fillContainerCache(const uint32_t &maxNumberOfEntriesToReadFromFile) {
+        uint32_t Player::fillContainerCache(const uint32_t &maxNumberOfEntriesToReadFromFile) {
             uint32_t entriesReadFromFile = 0;
             if (m_recFileValid && (maxNumberOfEntriesToReadFromFile > 0)) {
                 // Reset any fstream's error states.
@@ -259,7 +259,7 @@ namespace odtools {
             return entriesReadFromFile;
         }
 
-        void Player2::checkForEndOfIndexAndThrowExceptionOrAutoRewind() throw (odcore::exceptions::ArrayIndexOutOfBoundsException) {
+        void Player::checkForEndOfIndexAndThrowExceptionOrAutoRewind() throw (odcore::exceptions::ArrayIndexOutOfBoundsException) {
             // If at "EOF", either throw exception or autorewind.
             if (m_currentContainerToReplay == m_index.end()) {
                 if (!m_autoRewind) {
@@ -271,7 +271,7 @@ namespace odtools {
             }
         }
 
-        Container Player2::getNextContainerToBeSent() throw (odcore::exceptions::ArrayIndexOutOfBoundsException) {
+        Container Player::getNextContainerToBeSent() throw (odcore::exceptions::ArrayIndexOutOfBoundsException) {
             static int64_t lastContainersSampleTimeStamp = 0;
             TimeStamp thisTimePointCallingThisMethod;
 
@@ -285,7 +285,7 @@ namespace odtools {
                 if (NULL != m_recMemIndex.get()) {
                     Container retVal = m_recMemIndex->makeNextRawMemoryEntryAvailable();
                     int64_t currentContainersSampleTimeStamp = retVal.getSampleTimeStamp().toMicroseconds();
-                    m_correctedDelay = m_delay = ((lastContainersSampleTimeStamp > 0) ? (currentContainersSampleTimeStamp - lastContainersSampleTimeStamp) : static_cast<int64_t>(Player2::MAX_DELAY_IN_MICROSECONDS));
+                    m_correctedDelay = m_delay = ((lastContainersSampleTimeStamp > 0) ? (currentContainersSampleTimeStamp - lastContainersSampleTimeStamp) : static_cast<int64_t>(Player::MAX_DELAY_IN_MICROSECONDS));
                     lastContainersSampleTimeStamp = currentContainersSampleTimeStamp;
                     return retVal;
                 }
@@ -348,7 +348,7 @@ namespace odtools {
                 m_correctedDelay -= (m_correctedDelay > ELAPSED) ? ELAPSED : 0;
             }
 
-            // If Player2 is non-threaded, manage cache regularly.
+            // If Player is non-threaded, manage cache regularly.
             if (!m_threading) {
                 float refillMultiplicator = 1.1;
                 checkRefillingCache(m_index.size(), refillMultiplicator);
@@ -359,7 +359,7 @@ namespace odtools {
             return retVal;
         }
 
-        void Player2::checkAvailabilityOfNextContainerToBeReplayed() {
+        void Player::checkAvailabilityOfNextContainerToBeReplayed() {
             int32_t numberOfEntries = 0;
             do {
                 {
@@ -367,7 +367,7 @@ namespace odtools {
                     numberOfEntries = m_containerCache.size();
                 }
                 if (0 == numberOfEntries) {
-                    Thread::usleepFor(10 * Player2::ONE_MILLISECOND_IN_MICROSECONDS);
+                    Thread::usleepFor(10 * Player::ONE_MILLISECOND_IN_MICROSECONDS);
                 }
             }
             while (0 == numberOfEntries);
@@ -375,24 +375,24 @@ namespace odtools {
 
         ////////////////////////////////////////////////////////////////////////
 
-        uint32_t Player2::getTotalNumberOfContainersInRecFile() const {
+        uint32_t Player::getTotalNumberOfContainersInRecFile() const {
             Lock l(m_indexMutex);
             return m_index.size();
         }
 
-        uint32_t Player2::getDelay() const {
+        uint32_t Player::getDelay() const {
             Lock l(m_indexMutex);
             // Make sure that delay is not exceeding the specified maximum delay.
-            return std::min<uint32_t>(m_delay, Player2::MAX_DELAY_IN_MICROSECONDS);
+            return std::min<uint32_t>(m_delay, Player::MAX_DELAY_IN_MICROSECONDS);
         }
 
-        uint32_t Player2::getCorrectedDelay() const {
+        uint32_t Player::getCorrectedDelay() const {
             Lock l(m_indexMutex);
             // Make sure that delay is not exceeding the specified maximum delay.
-            return std::min<uint32_t>(m_correctedDelay, Player2::MAX_DELAY_IN_MICROSECONDS);
+            return std::min<uint32_t>(m_correctedDelay, Player::MAX_DELAY_IN_MICROSECONDS);
         }
 
-        void Player2::rewind() {
+        void Player::rewind() {
             if (m_threading) {
                 // Stop concurrent thread.
                 setContainerCacheFillingRunning(false);
@@ -404,7 +404,7 @@ namespace odtools {
             if (m_threading) {
                 // Re-start concurrent thread.
                 setContainerCacheFillingRunning(true);
-                m_containerCacheFillingThread = std::thread(&Player2::manageCache, this);
+                m_containerCacheFillingThread = std::thread(&Player::manageCache, this);
             }
 
             // Propagate rewind to .rec.mem file.
@@ -413,36 +413,36 @@ namespace odtools {
             }
         }
 
-        bool Player2::hasMoreData() const {
+        bool Player::hasMoreData() const {
             Lock l(m_indexMutex);
             // Check both, the status of the .rec file and the .rec.mem file.
             return ( hasMoreDataFromRecFile() || hasMoreDataFromRecMemFile() );
         }
 
-        bool Player2::hasMoreDataFromRecFile() const {
+        bool Player::hasMoreDataFromRecFile() const {
             // File must be successfully opened AND
             //  the Player must be configured as m_autoRewind OR
             //  some entries are left to replay.
             return (m_recFileValid && (m_autoRewind || (m_currentContainerToReplay != m_index.end())));
         }
 
-        bool Player2::hasMoreDataFromRecMemFile() const {
+        bool Player::hasMoreDataFromRecMemFile() const {
             return ((NULL != m_recMemIndex.get()) && (m_recMemIndex->hasMoreData()));
         }
 
         ////////////////////////////////////////////////////////////////////////
 
-        void Player2::setContainerCacheFillingRunning(const bool &running) {
+        void Player::setContainerCacheFillingRunning(const bool &running) {
             Lock l(m_containerCacheFillingThreadIsRunningMutex);
             m_containerCacheFillingThreadIsRunning = running;
         }
 
-        bool Player2::isContainerCacheFillingRunning() const {
+        bool Player::isContainerCacheFillingRunning() const {
             Lock l(m_containerCacheFillingThreadIsRunningMutex);
             return m_containerCacheFillingThreadIsRunning;
         }
 
-        void Player2::manageCache() {
+        void Player::manageCache() {
             uint8_t statisticsCounter = 0;
             float refillMultiplicator = 1.1;
             uint32_t numberOfEntries = 0;
@@ -462,7 +462,7 @@ namespace odtools {
                 refillMultiplicator = checkRefillingCache(numberOfEntries, refillMultiplicator);
 
                 // Manage cache at 10 Hz.
-                Thread::usleepFor(100 * Player2::ONE_MILLISECOND_IN_MICROSECONDS);
+                Thread::usleepFor(100 * Player::ONE_MILLISECOND_IN_MICROSECONDS);
 
                 // Publish some statistics at 1 Hz.
                 if ( 0 == ((++statisticsCounter) % 10) ) {
@@ -483,12 +483,12 @@ namespace odtools {
             }
         }
 
-        float Player2::checkRefillingCache(const uint32_t &numberOfEntries, float refillMultiplicator) {
+        float Player::checkRefillingCache(const uint32_t &numberOfEntries, float refillMultiplicator) {
             // If filling level is around 35%, pour in more from the recording.
             if (numberOfEntries < 0.35*m_desiredInitialLevel) {
                 const uint32_t entriesReadFromFile = fillContainerCache(refillMultiplicator * m_desiredInitialLevel);
                 if (entriesReadFromFile > 0) {
-                    clog << "[odtools::player::Player2]: Number of entries in cache: "  << numberOfEntries << ". " << entriesReadFromFile << " added to cache. " << m_containerCache.size() << " entries available." << endl;
+                    clog << "[odtools::player::Player]: Number of entries in cache: "  << numberOfEntries << ". " << entriesReadFromFile << " added to cache. " << m_containerCache.size() << " entries available." << endl;
                     refillMultiplicator *= 1.25;
                 }
             }

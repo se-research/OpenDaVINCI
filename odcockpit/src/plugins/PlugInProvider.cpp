@@ -42,7 +42,7 @@
     #include "plugins/modulestatisticsviewer/ModuleStatisticsViewerPlugIn.h"
 #endif
 #include "plugins/objxviewer/OBJXViewerPlugIn.h"
-#include "plugins/player2/Player2PlugIn.h"
+#include "plugins/player/PlayerPlugIn.h"
 #include "plugins/scnxviewer/SCNXViewerPlugIn.h"
 #include "plugins/sessionviewer/SessionViewerPlugIn.h"
 #include "plugins/sharedimageviewer/SharedImageViewerPlugIn.h"
@@ -113,7 +113,7 @@ class PlugIn;
 #endif
             if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("objxviewer") != string::npos) )
                 m_listOfAvailablePlugIns.push_back("OBJXViewer");
-            if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("player2") != string::npos) )
+            if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("player") != string::npos) )
                 m_listOfAvailablePlugIns.push_back("Player");
             if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("scnxviewer") != string::npos) )
                 m_listOfAvailablePlugIns.push_back("SCNXViewer");
@@ -231,7 +231,7 @@ class PlugIn;
                 plugIn = std::shared_ptr<PlugIn>(new logmessage::LogMessagePlugIn("LogMessage", m_kvc, m_parent));
             } else if (name == "Player") {
                 cerr << "[odcockpit] Creating plugin: Player" << endl;
-                plugIn = std::shared_ptr<PlugIn>((PlugIn*)(new player2::Player2PlugIn("Player", m_kvc, m_conference, m_multiplexer, m_parent)));
+                plugIn = std::shared_ptr<PlugIn>((PlugIn*)(new player::PlayerPlugIn("Player", m_kvc, m_conference, m_multiplexer, m_parent)));
             } else if (name == "SessionViewer") {
                 cerr << "[odcockpit] Creating plugin: SessionViewer" << endl;
                 plugIn = std::shared_ptr<PlugIn>(new sessionviewer::SessionViewerPlugIn("SessionViewer", m_kvc, m_parent));

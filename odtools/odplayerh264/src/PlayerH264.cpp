@@ -66,7 +66,7 @@ namespace odplayerh264 {
         PlayerH264(url, autoRewind, memorySegmentSize, numberOfMemorySegments, threading, 0) {}
 
     PlayerH264::PlayerH264(const odcore::io::URL &url, const bool &autoRewind, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const bool &threading, const uint32_t &basePort) :
-        Player2(url, autoRewind, memorySegmentSize, numberOfMemorySegments, threading),
+        Player(url, autoRewind, memorySegmentSize, numberOfMemorySegments, threading),
         m_singleDecoder(NULL),
         m_basePort(basePort),
         m_mapOfDecodersMutex(),

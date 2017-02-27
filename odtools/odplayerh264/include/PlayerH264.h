@@ -25,7 +25,7 @@
 #include <string>
 
 #include <opendavinci/odcore/base/Mutex.h>
-#include <opendavinci/odtools/player/Player2.h>
+#include <opendavinci/odtools/player/Player.h>
 #include <opendavinci/odtools/player/PlayerDelegate.h>
 
 #include "PlayerH264ChildHandler.h"
@@ -40,7 +40,7 @@ namespace odplayerh264 {
      * conference for distribution. In addition, this class is also
      * restoring h264 video streams.
      */
-    class PlayerH264 : public odtools::player::Player2,
+    class PlayerH264 : public odtools::player::Player,
                        public odtools::player::PlayerDelegate {
         private:
             /**

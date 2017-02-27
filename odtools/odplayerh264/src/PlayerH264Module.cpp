@@ -24,7 +24,6 @@
 #include "opendavinci/odcore/base/Thread.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/io/URL.h"
-#include "opendavinci/odtools/player/Player2.h"
 
 #include "PlayerH264.h"
 #include "PlayerH264Module.h"

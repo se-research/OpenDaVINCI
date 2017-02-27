@@ -25,7 +25,7 @@
 #include <stdlib.h>
 
 #include "opendavinci/odcore/base/CommandLineParser.h"
-#include "opendavinci/odtools/player/Player2.h"
+#include "opendavinci/odtools/player/Player.h"
 #include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
@@ -246,9 +246,9 @@ namespace odcomparepointcloud {
     
     odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode ComparePointCloudModule::body() {
         odcore::io::URL url("file://" + m_recordingFile);
-        unique_ptr< Player2 > player;
-        //player = unique_ptr< Player2 >(new Player(url, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING));
-        player = unique_ptr< Player2 >(new Player2(url, false, 2800000, 20, false));
+        unique_ptr< Player > player;
+        //player = unique_ptr< Player >(new Player(url, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING));
+        player = unique_ptr< Player >(new Player(url, false, 2800000, 20, false));
         Container c;
         Container cpcFrame;
         Container spcFrame;

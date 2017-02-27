@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef PLAYER2TESTSUITE_H_
-#define PLAYER2TESTSUITE_H_
+#ifndef PLAYERTESTSUITE_H_
+#define PLAYERTESTSUITE_H_
 
 #include "cxxtest/TestSuite.h"
 
@@ -33,7 +33,7 @@
 #include <opendavinci/odcore/data/Container.h>
 #include <opendavinci/odcore/data/TimeStamp.h>
 #include <opendavinci/odcore/io/URL.h>
-#include <opendavinci/odtools/player/Player2.h>
+#include <opendavinci/odtools/player/Player.h>
 #include <opendavinci/odcore/wrapper/SharedMemoryFactory.h>
 #include <opendavinci/GeneratedHeaders_OpenDaVINCI.h>
 
@@ -56,12 +56,12 @@ class PlayerModule2Test : public CxxTest::TestSuite {
 
             const URL u("file://PlayerModule2TestEmpty.rec");
 
-            // Create Player2 instance.
+            // Create Player instance.
             const bool THREADING = true;
             const bool NO_AUTO_REWIND = false;
             const uint32_t MEMORY_SEGMENT_SIZE = 0;
             const uint32_t NUMBER_OF_MEMORY_SEGMENTS = 0;
-            Player2 p2(u, NO_AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_MEMORY_SEGMENTS, THREADING);
+            Player p2(u, NO_AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_MEMORY_SEGMENTS, THREADING);
 
             while (p2.hasMoreData()) {
             }
@@ -120,12 +120,12 @@ class PlayerModule2Test : public CxxTest::TestSuite {
 
             const URL u("file://PlayerModule2Test.rec");
 
-            // Create Player2 instance.
+            // Create Player instance.
             const bool THREADING = true;
             const bool NO_AUTO_REWIND = false;
             const uint32_t MEMORY_SEGMENT_SIZE = 0;
             const uint32_t NUMBER_OF_MEMORY_SEGMENTS = 0;
-            Player2 p2(u, NO_AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_MEMORY_SEGMENTS, THREADING);
+            Player p2(u, NO_AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_MEMORY_SEGMENTS, THREADING);
 
             TimeStamp before;
             int64_t counter = 0;
@@ -198,12 +198,12 @@ class PlayerModule2Test : public CxxTest::TestSuite {
 
             const URL u("file://PlayerModule2Test.rec");
 
-            // Create Player2 instance.
+            // Create Player instance.
             const bool THREADING = true;
             const bool NO_AUTO_REWIND = false;
             const uint32_t MEMORY_SEGMENT_SIZE = 0;
             const uint32_t NUMBER_OF_MEMORY_SEGMENTS = 0;
-            Player2 p2(u, NO_AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_MEMORY_SEGMENTS, THREADING);
+            Player p2(u, NO_AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_MEMORY_SEGMENTS, THREADING);
 
             TimeStamp before;
             int64_t counter = 1;
@@ -280,12 +280,12 @@ class PlayerModule2Test : public CxxTest::TestSuite {
 
             const URL u("file://PlayerModule2Test.rec");
 
-            // Create Player2 instance.
+            // Create Player instance.
             const bool THREADING = true;
             const bool NO_AUTO_REWIND = false;
             const uint32_t MEMORY_SEGMENT_SIZE = 0;
             const uint32_t NUMBER_OF_MEMORY_SEGMENTS = 0;
-            Player2 p2(u, NO_AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_MEMORY_SEGMENTS, THREADING);
+            Player p2(u, NO_AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_MEMORY_SEGMENTS, THREADING);
 
             TimeStamp before;
             int64_t counter = 0;
@@ -369,12 +369,12 @@ class PlayerModule2Test : public CxxTest::TestSuite {
 
             const URL u("file://PlayerModule2Test.rec");
 
-            // Create Player2 instance.
+            // Create Player instance.
             const bool THREADING = true;
             const bool NO_AUTO_REWIND = false;
             const uint32_t MEMORY_SEGMENT_SIZE = 0;
             const uint32_t NUMBER_OF_MEMORY_SEGMENTS = 0;
-            Player2 p2(u, NO_AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_MEMORY_SEGMENTS, THREADING);
+            Player p2(u, NO_AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_MEMORY_SEGMENTS, THREADING);
 
             TimeStamp before;
             int64_t counter = 0;
@@ -444,12 +444,12 @@ class PlayerModule2Test : public CxxTest::TestSuite {
 
             const URL u("file://PlayerModule2Test.rec");
 
-            // Create Player2 instance.
+            // Create Player instance.
             const bool THREADING = true;
             const bool NO_AUTO_REWIND = false;
             const uint32_t MEMORY_SEGMENT_SIZE = 0;
             const uint32_t NUMBER_OF_MEMORY_SEGMENTS = 0;
-            Player2 p2(u, NO_AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_MEMORY_SEGMENTS, THREADING);
+            Player p2(u, NO_AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_MEMORY_SEGMENTS, THREADING);
 
             TimeStamp before;
             int64_t counter = 0;
@@ -525,12 +525,12 @@ class PlayerModule2Test : public CxxTest::TestSuite {
 
             const URL u("file://PlayerModule2Test2.rec");
 
-            // Create Player2 instance.
+            // Create Player instance.
             const bool THREADING = true;
             const bool AUTO_REWIND = true;
             const uint32_t MEMORY_SEGMENT_SIZE = 0;
             const uint32_t NUMBER_OF_MEMORY_SEGMENTS = 0;
-            Player2 p2(u, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_MEMORY_SEGMENTS, THREADING);
+            Player p2(u, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_MEMORY_SEGMENTS, THREADING);
 
             TimeStamp before;
             int64_t counter = 0;
@@ -669,12 +669,12 @@ class PlayerModule2Test : public CxxTest::TestSuite {
 
             const URL u("file://PlayerModule2Test.rec");
 
-            // Create Player2 instance.
+            // Create Player instance.
             const bool THREADING = true;
             const bool NO_AUTO_REWIND = false;
             const uint32_t MEMORY_SEGMENT_SIZE = 10;
             const uint32_t NUMBER_OF_MEMORY_SEGMENTS = 2;
-            Player2 p2(u, NO_AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_MEMORY_SEGMENTS, THREADING);
+            Player p2(u, NO_AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_MEMORY_SEGMENTS, THREADING);
 
             TimeStamp before;
             int64_t counter = 1;
@@ -908,12 +908,12 @@ class PlayerModule2Test : public CxxTest::TestSuite {
 
             const URL u("file://PlayerModule2Test.rec");
 
-            // Create Player2 instance.
+            // Create Player instance.
             const bool THREADING = true;
             const bool NO_AUTO_REWIND = false;
             const uint32_t MEMORY_SEGMENT_SIZE = 10;
             const uint32_t NUMBER_OF_MEMORY_SEGMENTS = 10;
-            Player2 p2(u, NO_AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_MEMORY_SEGMENTS, THREADING);
+            Player p2(u, NO_AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_MEMORY_SEGMENTS, THREADING);
 
             TimeStamp before;
             int64_t counter = 1;
@@ -1119,12 +1119,12 @@ class PlayerModule2Test : public CxxTest::TestSuite {
 
             const URL u("file://PlayerModule2Test.rec");
 
-            // Create Player2 instance.
+            // Create Player instance.
             const bool THREADING = true;
             const bool NO_AUTO_REWIND = false;
             const uint32_t MEMORY_SEGMENT_SIZE = 10;
             const uint32_t NUMBER_OF_MEMORY_SEGMENTS = 2;
-            Player2 p2(u, NO_AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_MEMORY_SEGMENTS, THREADING);
+            Player p2(u, NO_AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_MEMORY_SEGMENTS, THREADING);
 
             TimeStamp before;
             int64_t counter = 1;
@@ -1327,12 +1327,12 @@ class PlayerModule2Test : public CxxTest::TestSuite {
 
             const URL u("file://PlayerModule2Test.rec");
 
-            // Create Player2 instance.
+            // Create Player instance.
             const bool THREADING = true;
             const bool NO_AUTO_REWIND = false;
             const uint32_t MEMORY_SEGMENT_SIZE = 10;
             const uint32_t NUMBER_OF_MEMORY_SEGMENTS = 2;
-            Player2 p2(u, NO_AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_MEMORY_SEGMENTS, THREADING);
+            Player p2(u, NO_AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_MEMORY_SEGMENTS, THREADING);
 
             TimeStamp before;
             int64_t counter = 1;
@@ -1579,12 +1579,12 @@ class PlayerModule2Test : public CxxTest::TestSuite {
 
             const URL u("file://PlayerModule2Test.rec");
 
-            // Create Player2 instance.
+            // Create Player instance.
             const bool THREADING = true;
             const bool NO_AUTO_REWIND = false;
             const uint32_t MEMORY_SEGMENT_SIZE = 10;
             const uint32_t NUMBER_OF_MEMORY_SEGMENTS = 2;
-            Player2 p2(u, NO_AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_MEMORY_SEGMENTS, THREADING);
+            Player p2(u, NO_AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_MEMORY_SEGMENTS, THREADING);
 
             TimeStamp before;
             int64_t counter = 1;
@@ -1821,12 +1821,12 @@ class PlayerModule2Test : public CxxTest::TestSuite {
 
             const URL u("file://PlayerModule2Test.rec");
 
-            // Create Player2 instance.
+            // Create Player instance.
             const bool THREADING = true;
             const bool NO_AUTO_REWIND = false;
             const uint32_t MEMORY_SEGMENT_SIZE = 10;
             const uint32_t NUMBER_OF_MEMORY_SEGMENTS = 10;
-            Player2 p2(u, NO_AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_MEMORY_SEGMENTS, THREADING);
+            Player p2(u, NO_AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_MEMORY_SEGMENTS, THREADING);
 
             TimeStamp before;
             int64_t counter = 1;
@@ -2062,12 +2062,12 @@ class PlayerModule2Test : public CxxTest::TestSuite {
 
             const URL u("file://PlayerModule2Test.rec");
 
-            // Create Player2 instance.
+            // Create Player instance.
             const bool THREADING = true;
             const bool NO_AUTO_REWIND = false;
             const uint32_t MEMORY_SEGMENT_SIZE = 10;
             const uint32_t NUMBER_OF_MEMORY_SEGMENTS = 10;
-            Player2 p2(u, NO_AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_MEMORY_SEGMENTS, THREADING);
+            Player p2(u, NO_AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_MEMORY_SEGMENTS, THREADING);
 
             TimeStamp before;
             int64_t counter = 1;
@@ -2301,12 +2301,12 @@ class PlayerModule2Test : public CxxTest::TestSuite {
 
             const URL u("file://PlayerModule2Test.rec");
 
-            // Create Player2 instance.
+            // Create Player instance.
             const bool THREADING = true;
             const bool NO_AUTO_REWIND = false;
             const uint32_t MEMORY_SEGMENT_SIZE = 10;
             const uint32_t NUMBER_OF_MEMORY_SEGMENTS = 2;
-            Player2 p2(u, NO_AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_MEMORY_SEGMENTS, THREADING);
+            Player p2(u, NO_AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_MEMORY_SEGMENTS, THREADING);
 
             TimeStamp before;
             int64_t counter = 1;
@@ -2455,12 +2455,12 @@ class PlayerModule2Test : public CxxTest::TestSuite {
             cout << __FILE__ << " " << __LINE__ << endl;
             const URL u("file://CID-251-odrecorderh264_2017-02-10_10:16:17.rec");
 
-            // Create Player2 instance.
+            // Create Player instance.
             const bool THREADING = true;
             const bool NO_AUTO_REWIND = false;
             const uint32_t MEMORY_SEGMENT_SIZE = 480000;
             const uint32_t NUMBER_OF_MEMORY_SEGMENTS = 60;
-            Player2 p2(u, NO_AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_MEMORY_SEGMENTS, THREADING);
+            Player p2(u, NO_AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_MEMORY_SEGMENTS, THREADING);
 
             TimeStamp before;
             int64_t counter = 0;
@@ -2476,4 +2476,4 @@ Thread::usleepFor(p2.getDelay()*0.02);
         }
 };
 
-#endif /*PLAYER2TESTSUITE_H_*/
+#endif /*PLAYERTESTSUITE_H_*/

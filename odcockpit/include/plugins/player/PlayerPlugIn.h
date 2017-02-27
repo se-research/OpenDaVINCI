@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef COCKPIT_PLUGINS_PLAYER2PLUGIN_H_
-#define COCKPIT_PLUGINS_PLAYER2PLUGIN_H_
+#ifndef COCKPIT_PLUGINS_PLAYERPLUGIN_H_
+#define COCKPIT_PLUGINS_PLAYERPLUGIN_H_
 
 #include <string>
 
@@ -32,25 +32,25 @@ namespace cockpit {
 
     namespace plugins {
 
-        namespace player2 {
+        namespace player {
 
-class Player2Widget;
+class PlayerWidget;
 
-            class Player2PlugIn : public ControlPlugIn {
+            class PlayerPlugIn : public ControlPlugIn {
                 private:
                     /**
                      * "Forbidden" copy constructor. Goal: The compiler should warn
                      * already at compile time for unwanted bugs caused by any misuse
                      * of the copy constructor.
                      */
-                    Player2PlugIn(const Player2PlugIn &/*obj*/);
+                    PlayerPlugIn(const PlayerPlugIn &/*obj*/);
 
                     /**
                      * "Forbidden" assignment operator. Goal: The compiler should warn
                      * already at compile time for unwanted bugs caused by any misuse
                      * of the assignment operator.
                      */
-                    Player2PlugIn& operator=(const Player2PlugIn &/*obj*/);
+                    PlayerPlugIn& operator=(const PlayerPlugIn &/*obj*/);
 
                 public:
                     /**
@@ -62,9 +62,9 @@ class Player2Widget;
                      * @param multiplexer FIFOMultiplexer to bypass conference for replay.
                      * @param prnt Pointer to the container super window.
                      */
-                    Player2PlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, FIFOMultiplexer &multiplexer, QWidget *prnt);
+                    PlayerPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, FIFOMultiplexer &multiplexer, QWidget *prnt);
 
-                    virtual ~Player2PlugIn();
+                    virtual ~PlayerPlugIn();
 
                     virtual QWidget* getQWidget() const;
 
@@ -74,11 +74,11 @@ class Player2Widget;
 
                 private:
                     const odcore::base::KeyValueConfiguration &m_kvc;
-                    Player2Widget *m_player2Widget;
+                    PlayerWidget *m_playerWidget;
             };
 
         }
     }
 }
 
-#endif /* COCKPIT_PLUGINS_PLAYER2PLUGIN_H_ */
+#endif /* COCKPIT_PLUGINS_PLAYERPLUGIN_H_ */

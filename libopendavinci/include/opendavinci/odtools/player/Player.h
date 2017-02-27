@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef OPENDAVINCI_TOOLS_PLAYER_PLAYER2_H_
-#define OPENDAVINCI_TOOLS_PLAYER_PLAYER2_H_
+#ifndef OPENDAVINCI_TOOLS_PLAYER_PLAYER_H_
+#define OPENDAVINCI_TOOLS_PLAYER_PLAYER_H_
 
 #include <deque>
 #include <fstream>
@@ -61,7 +61,7 @@ namespace odtools {
          * This class can be used to replay previously recorded data and return
          * the contained containers to be relayed into a ContainerConference.
          */
-        class OPENDAVINCI_API Player2 {
+        class OPENDAVINCI_API Player {
             private:
                 enum {
                     ONE_MILLISECOND_IN_MICROSECONDS = 1000,
@@ -79,7 +79,7 @@ namespace odtools {
                  *
                  * @param obj Reference to an object of this class.
                  */
-                Player2(const Player2 &/*obj*/) = delete;
+                Player(const Player &/*obj*/) = delete;
 
                 /**
                  * "Forbidden" assignment operator. Goal: The compiler should warn
@@ -89,7 +89,7 @@ namespace odtools {
                  * @param obj Reference to an object of this class.
                  * @return Reference to this instance.
                  */
-                Player2& operator=(const Player2 &/*obj*/) = delete;
+                Player& operator=(const Player &/*obj*/) = delete;
 
             public:
                 /**
@@ -101,9 +101,9 @@ namespace odtools {
                  * @param numberOfMemorySegments Number of memory segments to be used for buffering.
                  * @param threading If set to true, player will load new containers from the files in background.
                  */
-                Player2(const odcore::io::URL &url, const bool &autoRewind, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const bool &threading);
+                Player(const odcore::io::URL &url, const bool &autoRewind, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const bool &threading);
 
-                virtual ~Player2();
+                virtual ~Player();
 
                 /**
                  * This method returns the next container to be replayed.
@@ -296,4 +296,4 @@ namespace odtools {
     } // player
 } // tools
 
-#endif /*OPENDAVINCI_TOOLS_PLAYER_PLAYER2_H_*/
+#endif /*OPENDAVINCI_TOOLS_PLAYER_PLAYER_H_*/

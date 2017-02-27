@@ -32,10 +32,10 @@
 #include "opendavinci/odcore/io/URL.h"
 #include "opendavinci/odcore/io/conference/ContainerConference.h"
 #include "opendavinci/odcore/strings/StringToolbox.h"
-#include "opendavinci/odtools/player/Player2.h"
+#include "opendavinci/odtools/player/Player.h"
 #include "opendavinci/generated/odcore/data/player/PlayerStatus.h"
 
-#include "plugins/player2/Player2Widget.h"
+#include "plugins/player/PlayerWidget.h"
 
 #ifdef HAVE_ODPLAYERH264
     #include "PlayerH264.h"
@@ -47,14 +47,14 @@ namespace cockpit {
 
     namespace plugins {
 
-        namespace player2 {
+        namespace player {
 
             using namespace std;
             using namespace odcore::base;
             using namespace odcore::data;
             using namespace odtools::player;
 
-            Player2Widget::Player2Widget(const PlugIn &/*plugIn*/, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, FIFOMultiplexer &multiplexer, QWidget *prnt) :
+            PlayerWidget::PlayerWidget(const PlugIn &/*plugIn*/, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, FIFOMultiplexer &multiplexer, QWidget *prnt) :
                 QWidget(prnt),
                 m_kvc(kvc),
                 m_conference(conf),
@@ -75,7 +75,7 @@ namespace cockpit {
                 m_start(NULL),
                 m_end(NULL),
                 m_timeline(NULL),
-                m_player2(NULL),
+                m_player(NULL),
                 m_fileName(""),
                 m_currentWorkingDirectory("") {
                 m_currentWorkingDirectory = QDir::currentPath().toStdString();
@@ -172,20 +172,20 @@ namespace cockpit {
                 setLayout(mainLayout);
             }
 
-            Player2Widget::~Player2Widget() {
-                m_player2.reset();
+            PlayerWidget::~PlayerWidget() {
+                m_player.reset();
             }
 
-            void Player2Widget::percentagePlayedBack(const float &percentagePlayedBack) {
+            void PlayerWidget::percentagePlayedBack(const float &percentagePlayedBack) {
                 emit showProgress(static_cast<uint32_t>(fabs(percentagePlayedBack) * 100));
             }
 
-            void Player2Widget::speedValue(int value) {
+            void PlayerWidget::speedValue(int value) {
                 Lock l(m_speedValueMutex);
                 m_speedValue = value + 1;
             }
 
-            void Player2Widget::play() {
+            void PlayerWidget::play() {
                 m_playBtn->setEnabled(false);
                 m_pauseBtn->setEnabled(true);
                 m_stepBtn->setEnabled(false);
@@ -195,7 +195,7 @@ namespace cockpit {
                 sendNextContainer();
             }
 
-            void Player2Widget::pause() {
+            void PlayerWidget::pause() {
                 m_playBtn->setEnabled(true);
                 m_pauseBtn->setEnabled(false);
                 m_stepBtn->setEnabled(true);
@@ -203,9 +203,9 @@ namespace cockpit {
 //                m_processBtn->setEnabled(true);
             }
 
-            void Player2Widget::rewind() {
-                if (m_player2 != NULL) {
-                    m_player2->rewind();
+            void PlayerWidget::rewind() {
+                if (m_player != NULL) {
+                    m_player->rewind();
                     m_containerCounter = 0;
                 }
                 m_playBtn->setEnabled(true);
@@ -219,23 +219,23 @@ namespace cockpit {
                 m_containerCounterDesc->setText(sstr.str().c_str());
             }
 
-            void Player2Widget::step() {
+            void PlayerWidget::step() {
                 sendNextContainer();
             }
 
-            void Player2Widget::sendNextContainer() {
-                if (m_player2.get() != NULL) {
-                    if (!m_player2->hasMoreData() && (m_autoRewind != NULL) && m_autoRewind->isChecked()) {
-                        m_player2->rewind();
+            void PlayerWidget::sendNextContainer() {
+                if (m_player.get() != NULL) {
+                    if (!m_player->hasMoreData() && (m_autoRewind != NULL) && m_autoRewind->isChecked()) {
+                        m_player->rewind();
                         m_containerCounter = 0;
                     }
 
-                    if (m_player2->hasMoreData()) {
+                    if (m_player->hasMoreData()) {
                         // Get container to be sent.
-                        Container nextContainerToBeSent = m_player2->getNextContainerToBeSent();
+                        Container nextContainerToBeSent = m_player->getNextContainerToBeSent();
 
                         // Increment the counters.
-                        if (m_player2->hasMoreData()) {
+                        if (m_player->hasMoreData()) {
                             m_containerCounter++;
                             if (!(m_containerCounter < m_containerCounterTotal)) {
                                 m_containerCounterTotal = m_containerCounter;
@@ -247,7 +247,7 @@ namespace cockpit {
                         m_containerCounterDesc->setText(sstr.str().c_str());
 
                         // Get delay to wait _after_ sending the container.
-                        uint32_t delay = m_player2->getCorrectedDelay() / 1000;
+                        uint32_t delay = m_player->getCorrectedDelay() / 1000;
 
                         {
                             // Fasten playback if desired.
@@ -271,14 +271,14 @@ namespace cockpit {
                         }
 
                         // If end of file has been reached, stop playback.
-                        if (!m_player2->hasMoreData() && (m_autoRewind != NULL) && !m_autoRewind->isChecked()) {
+                        if (!m_player->hasMoreData() && (m_autoRewind != NULL) && !m_autoRewind->isChecked()) {
                             pause();
                         }
                     }
                 }
             }
 
-            void Player2Widget::process() {
+            void PlayerWidget::process() {
                 if (!m_fileName.empty()) {
                     uint32_t start = 0, end = 0;
                     stringstream s_start;
@@ -313,12 +313,12 @@ namespace cockpit {
                 }
             }
 
-            void Player2Widget::loadFile() {
+            void PlayerWidget::loadFile() {
                 QDir::setCurrent(m_currentWorkingDirectory.c_str());
                 m_fileName = QFileDialog::getOpenFileName(this, tr("Open previous recording file"), "", tr("Recording files (*.rec)")).toStdString();
 
                 if (!m_fileName.empty()) {
-                    m_player2.reset();
+                    m_player.reset();
                     emit showProgress(0);
 
                     // Set current working directory.
@@ -346,18 +346,18 @@ namespace cockpit {
                     const uint32_t NUMBER_OF_SEGMENTS = m_kvc.getValue<uint32_t>("global.buffer.numberOfMemorySegments");
 
                     // We use the asychronous player to allow data caching in background.
-//                    const bool THREADING = false;
+                    const bool THREADING = true;
                     const bool AUTO_REWIND = false;
 #ifdef HAVE_ODPLAYERH264
 //                    // Base port for letting spawned children connect to parent process.
 //                    const uint32_t BASE_PORT = m_kvc.getValue<uint32_t>("odplayerh264.portbaseforchildprocesses");
-//                    m_player2 = shared_ptr<Player2>(new odplayerh264::PlayerH264(url, AUTO_REWIND, BASE_PORT));
+//                    m_player = shared_ptr<Player>(new odplayerh264::PlayerH264(url, AUTO_REWIND, BASE_PORT));
 
-                    m_player2 = shared_ptr<Player2>(new odplayerh264::PlayerH264(url, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS));
+                    m_player = shared_ptr<Player>(new odplayerh264::PlayerH264(url, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING));
 #else
-                    m_player2 = shared_ptr<Player2>(new Player2(url, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS));
+                    m_player = shared_ptr<Player>(new Player(url, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING));
 #endif
-                    m_player2->setPlayerListener(this);
+                    m_player->setPlayerListener(this);
                     // Inform Qt widgets that a new file has been loaded.
                     {
                         odcore::data::player::PlayerStatus ps;
@@ -372,7 +372,7 @@ namespace cockpit {
 //                    m_rewindBtn->setEnabled(false);
 
                     m_containerCounter = 0;
-                    m_containerCounterTotal = m_player2->getTotalNumberOfContainersInRecFile()-1;
+                    m_containerCounterTotal = m_player->getTotalNumberOfContainersInRecFile()-1;
 
                     stringstream sstr;
                     sstr << m_containerCounter << "/" << m_containerCounterTotal << " container(s) replayed.";

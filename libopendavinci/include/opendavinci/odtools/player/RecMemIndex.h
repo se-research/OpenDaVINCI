@@ -31,7 +31,7 @@
 #include <opendavinci/odcore/io/URL.h>
 #include <opendavinci/odcore/wrapper/SharedMemory.h>
 
-#include <opendavinci/odtools/player/Player2.h>
+#include <opendavinci/odtools/player/Player.h>
 #include <opendavinci/odtools/player/PlayerListener.h>
 
 namespace odtools {
@@ -127,7 +127,7 @@ namespace odtools {
             private:
                 /**
                  * This method initializes the global index where the sample
-                 * time stamps are sorted chronocally and mapped to the 
+                 * time stamps are sorted chronologically and mapped to the 
                  * corresponding entries (like containers) in the corresponding
                  * recording files.
                  */

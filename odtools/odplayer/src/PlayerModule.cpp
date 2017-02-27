@@ -24,7 +24,7 @@
 #include "opendavinci/odcore/base/Thread.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/io/URL.h"
-#include "opendavinci/odtools/player/Player2.h"
+#include "opendavinci/odtools/player/Player.h"
 
 #include "PlayerModule.h"
 
@@ -66,7 +66,7 @@ namespace odplayer {
         const uint32_t NUMBER_OF_SEGMENTS = getKeyValueConfiguration().getValue<uint32_t>("global.buffer.numberOfMemorySegments");
 
         // Construct player.
-        Player2 player(url, autoRewind, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING);
+        Player player(url, autoRewind, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING);
 
         // The next container to be sent.
         Container nextContainerToBeSent;
