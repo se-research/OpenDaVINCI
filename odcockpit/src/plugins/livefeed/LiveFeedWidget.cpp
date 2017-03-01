@@ -80,6 +80,7 @@ namespace cockpit {
             LiveFeedWidget::LiveFeedWidget(const odcore::base::KeyValueConfiguration &kvc, const PlugIn &/*plugIn*/, QWidget *prnt) :
                 QWidget(prnt),
                 m_dataViewMutex(),
+                m_lastContainerSampleTime(),
                 m_dataView(),
                 m_containerTypeToName(),
                 m_containerTypeResolvingMutex(),
@@ -88,10 +89,13 @@ namespace cockpit {
                 m_listOfLibrariesToLoad(),
                 m_listOfHelpers() {
                 // Set size.
-                setMinimumSize(640, 480);
+                setMinimumSize(400, 200);
 
                 // Layout manager.
                 QGridLayout* mainBox = new QGridLayout(this);
+
+                m_lastContainerSampleTime = new QLabel("Sample time: ", this);
+                mainBox->addWidget(m_lastContainerSampleTime, 0, 0);
 
                 //ListView and header construction
                 m_dataView = new QTreeWidget(this);
@@ -105,7 +109,7 @@ namespace cockpit {
                 connect(m_dataView, SIGNAL(itemChanged(QTreeWidgetItem*, int)), this, SLOT(treeItemChanged(QTreeWidgetItem*, int)));
 
                 //add to Layout
-                mainBox->addWidget(m_dataView, 0, 0);
+                mainBox->addWidget(m_dataView, 1, 0);
 
                 // Set layout manager.
                 setLayout(mainBox);
@@ -236,6 +240,8 @@ namespace cockpit {
                         }
                         m_dataToType.clear();
                         m_dataView->clear();
+
+                        m_lastContainerSampleTime->setText("Sample time: ");
                     }
                 }
                 else {
@@ -310,6 +316,11 @@ namespace cockpit {
                     entries.push_back(make_pair("sent", container.getSentTimeStamp().getYYYYMMDD_HHMMSSms()));
                     entries.push_back(make_pair("received", container.getReceivedTimeStamp().getYYYYMMDD_HHMMSSms()));
                     entries.push_back(make_pair("sample time", container.getSampleTimeStamp().getYYYYMMDD_HHMMSSms()));
+
+                    stringstream sstr_sampleTime;
+                    sstr_sampleTime << "Sample time: " << container.getSampleTimeStamp().getYYYYMMDD_HHMMSSms();
+                    const string str_sampleTime = sstr_sampleTime.str();
+                    m_lastContainerSampleTime->setText(str_sampleTime.c_str());
 
                     // Create new Header if needed.
                     stringstream sstr_entryName;

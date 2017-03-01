@@ -114,6 +114,7 @@ namespace cockpit {
 
                 private:
                     odcore::base::Mutex m_dataViewMutex;
+                    QLabel *m_lastContainerSampleTime;
                     QTreeWidget *m_dataView;
                     map<int32_t, string> m_containerTypeToName;
                     odcore::base::Mutex m_containerTypeResolvingMutex;

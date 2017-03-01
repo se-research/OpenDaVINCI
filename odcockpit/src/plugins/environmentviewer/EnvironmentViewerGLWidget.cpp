@@ -155,8 +155,6 @@ namespace cockpit {
                 /*******************************************************************/
                 /* Stationary elements.                                            */
                 /*******************************************************************/
-                m_stationaryElements->addChild(new opendlv::threeD::models::XYZAxes(NodeDescriptor("XYZAxes"), 1, 10));
-                m_stationaryElements->addChild(new opendlv::threeD::models::Grid(NodeDescriptor("Grid"), 10, 1));
 
                 // Setup surroundings.
                 const URL urlOfSCNXFile(getPlugIn().getKeyValueConfiguration().getValue<string>("global.scenario"));
@@ -168,6 +166,8 @@ namespace cockpit {
                     }
                     if (!fileExists) {
                         cout << "Error: " << urlOfSCNXFile.toString() << " does not exist." << endl;
+                        // Use white background in case of no SCNX is present.
+                        setBackgroundColor(opendlv::data::environment::Point3(1, 1, 1));
                     }
                     else {
                         SCNXArchive &scnxArchive = SCNXArchiveFactory::getInstance().getSCNXArchive(urlOfSCNXFile);
@@ -178,6 +178,9 @@ namespace cockpit {
                             surroundings->setNodeDescriptor(NodeDescriptor("Surroundings"));
                             m_stationaryElements->addChild(surroundings);
                         }
+
+                        m_stationaryElements->addChild(new opendlv::threeD::models::XYZAxes(NodeDescriptor("XYZAxes"), 1, 10));
+                        m_stationaryElements->addChild(new opendlv::threeD::models::Grid(NodeDescriptor("Grid"), 10, 1));
                     }
                 }
 
