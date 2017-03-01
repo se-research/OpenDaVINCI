@@ -81,7 +81,7 @@ namespace cockpit {
                 m_currentWorkingDirectory = QDir::currentPath().toStdString();
 
                 // Set size.
-                setMinimumSize(400, 150);
+                setMinimumSize(400, 200);
 
                 // Button control.
                 QPushButton *loadFileBtn = new QPushButton("Load .rec file", this);
