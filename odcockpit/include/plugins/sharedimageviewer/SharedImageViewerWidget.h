@@ -25,10 +25,10 @@
 #include <QtGui>
 
 #include <map>
+#include <memory>
 #include <string>
 #include <vector>
 
-#include <memory>
 #include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/io/conference/ContainerListener.h"
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
@@ -85,7 +85,7 @@ namespace cockpit {
                     virtual void nextContainer(odcore::data::Container &c);
 
                 public slots:
-				    void selectedSharedImage(QListWidgetItem *item);
+                    void selectedSharedImage(QListWidgetItem *item);
 
                 private:
                     mutable odcore::base::Mutex m_sharedImageMemoryMutex;
@@ -94,6 +94,7 @@ namespace cockpit {
                     QImage *m_drawableImage;
                     QVector<QRgb> m_grayscale;
 
+                    QCheckBox *m_selectFirstAvailable;
                     QListWidget *m_list;
                     vector<string> m_listOfAvailableSharedImages;
                     map<string, odcore::data::image::SharedImage> m_mapOfAvailableSharedImages;

@@ -52,6 +52,7 @@ namespace cockpit {
                 m_sharedImageMemory(),
                 m_drawableImage(NULL),
                 m_grayscale(),
+                m_selectFirstAvailable(NULL),
                 m_list(NULL),
                 m_listOfAvailableSharedImages(),
                 m_mapOfAvailableSharedImages() {
@@ -61,9 +62,13 @@ namespace cockpit {
 
                 QGridLayout *gridLayout = new QGridLayout(this);
 
+                m_selectFirstAvailable = new QCheckBox("Show first available SharedImage.", this);
+                m_selectFirstAvailable->setChecked(true);
+
                 m_list = new QListWidget(this);
                 connect(m_list, SIGNAL(itemDoubleClicked(QListWidgetItem*)), SLOT(selectedSharedImage(QListWidgetItem*)));
 
+                gridLayout->addWidget(m_selectFirstAvailable);
                 gridLayout->addWidget(m_list);
 
                 setLayout(gridLayout);
@@ -98,7 +103,8 @@ namespace cockpit {
                         m_sharedImageMemory = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(si.getName());
                         m_sharedImage = si;
 
-                        // Remove the selection box.
+                        // Remove the checkbox and selection list.
+                        m_selectFirstAvailable->hide();
                         m_list->hide();
                     }
                 }
@@ -108,17 +114,34 @@ namespace cockpit {
                 if (c.getDataType() == odcore::data::image::SharedImage::ID()) {
                     SharedImage si = c.getData<SharedImage>();
 
-                    if ( ( (si.getWidth() * si.getHeight()) > 0) && (si.getName().size() > 0) ) {
-                        // Check if this shared image is already in the list.
-                        vector<string>::iterator result = std::find(m_listOfAvailableSharedImages.begin(), m_listOfAvailableSharedImages.end(), si.getName());
-                        if (result == m_listOfAvailableSharedImages.end()) {
-                            m_listOfAvailableSharedImages.push_back(si.getName());
+                    if ( 0 == (m_sharedImage.getWidth() * m_sharedImage.getHeight()) ) {
+                        if ( ( (si.getWidth() * si.getHeight()) > 0) && (si.getName().size() > 0) ) {
 
-                            QString item = QString::fromStdString(si.getName());
-                            m_list->addItem(item);
+                            if ( (m_selectFirstAvailable != NULL) && m_selectFirstAvailable->isChecked() ) {
+                                cout << "Automatically using shared image: " << si.toString() << endl;
+                                setWindowTitle(QString::fromStdString(si.toString()));
+                                setMinimumSize(m_sharedImage.getWidth(), m_sharedImage.getHeight());
 
-                            // Store for further usage.
-                            m_mapOfAvailableSharedImages[si.getName()] = si;
+                                m_sharedImageMemory = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(si.getName());
+                                m_sharedImage = si;
+
+                                // Remove the checkbox and selection list.
+                                m_selectFirstAvailable->hide();
+                                m_list->hide();
+                            }
+                            else {
+                                // Check if this shared image is already in the list.
+                                vector<string>::iterator result = std::find(m_listOfAvailableSharedImages.begin(), m_listOfAvailableSharedImages.end(), si.getName());
+                                if (result == m_listOfAvailableSharedImages.end()) {
+                                    m_listOfAvailableSharedImages.push_back(si.getName());
+
+                                    QString item = QString::fromStdString(si.getName());
+                                    m_list->addItem(item);
+
+                                    // Store for further usage.
+                                    m_mapOfAvailableSharedImages[si.getName()] = si;
+                                }
+                            }
                         }
                     }
                 }
