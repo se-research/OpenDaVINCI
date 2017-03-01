@@ -103,7 +103,6 @@ namespace cockpit {
                 QPoint position(10, 10);
                 for(auto it = m_cockpitArea->subWindowList().begin(); it != m_cockpitArea->subWindowList().end(); it++) {
                     QMdiSubWindow *window = *it;
-cout << "X = " << (position.x() + window->width()) << ", Y = " << height << endl;
                     if ((position.x() + window->width()) > maxWidth) {
                         position.setX(10);
                         position.setY(height);
@@ -112,7 +111,6 @@ cout << "X = " << (position.x() + window->width()) << ", Y = " << height << endl
                     window->move(position);
                     height = std::max<int32_t>(height, window->height());
                     position.setX(position.x() + window->width());
-cout << "X = " << (position.x() + window->width()) << ", Y = " << height << endl << endl;
                 }
             }
 
