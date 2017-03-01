@@ -89,7 +89,7 @@ namespace cockpit {
 
                 public slots:
                     void speedValue(int);
-                    void loadFile();
+                    void openFile();
 
                     void play();
                     void pause();
@@ -133,6 +133,10 @@ namespace cockpit {
 
                     string m_fileName;
                     string m_currentWorkingDirectory;
+                    bool m_exitAtEndOfFile;
+
+                private:
+                    void loadFile(const string &f);
             };
 
         }

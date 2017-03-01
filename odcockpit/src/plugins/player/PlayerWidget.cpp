@@ -77,7 +77,8 @@ namespace cockpit {
                 m_timeline(NULL),
                 m_player(NULL),
                 m_fileName(""),
-                m_currentWorkingDirectory("") {
+                m_currentWorkingDirectory(""),
+                m_exitAtEndOfFile(false) {
                 m_currentWorkingDirectory = QDir::currentPath().toStdString();
 
                 // Set size.
@@ -85,7 +86,7 @@ namespace cockpit {
 
                 // Button control.
                 QPushButton *loadFileBtn = new QPushButton("Load .rec file", this);
-                QObject::connect(loadFileBtn, SIGNAL(clicked()), this, SLOT(loadFile()));
+                QObject::connect(loadFileBtn, SIGNAL(clicked()), this, SLOT(openFile()));
 
                 QHBoxLayout *fileOperations = new QHBoxLayout();
                 fileOperations->addWidget(loadFileBtn);
@@ -144,10 +145,11 @@ namespace cockpit {
                 connect(this, SIGNAL(showProgress(int)), m_timeline, SLOT(setValue(int)));
 
                 QHBoxLayout *speedSliderLayout = new QHBoxLayout();
+                QSlider *speedSlider = NULL;
                 {
                     QLabel *lblSpeedSlider = new QLabel(tr("Replay speed up:"));
 
-                    QSlider *speedSlider = new QSlider(Qt::Horizontal, this);
+                    speedSlider = new QSlider(Qt::Horizontal, this);
                     speedSlider->setValue(99);
                     connect(speedSlider, SIGNAL(valueChanged(int)), this, SLOT(speedValue(int)));
 
@@ -170,6 +172,23 @@ namespace cockpit {
 //                mainLayout->addLayout(splitting);
 
                 setLayout(mainLayout);
+
+                // Try to configure player plugin.
+                try {
+                    if (speedSlider != NULL) {
+                        const float TIMESCALE = m_kvc.getValue<float>("odcockpit.player.timescale");
+                        uint32_t value = 100 * TIMESCALE;
+                        speedSlider->setValue(value);
+                    }
+
+                    const string INPUT = m_kvc.getValue<string>("odcockpit.player.input");
+                    odcore::io::URL url(INPUT);
+                    loadFile(url.getResource());
+                    play();
+
+                    m_exitAtEndOfFile = m_kvc.getValue<int32_t>("odcockpit.player.exitAtEndOfFile") == 1;
+                }
+                catch(...) {}
             }
 
             PlayerWidget::~PlayerWidget() {
@@ -275,6 +294,11 @@ namespace cockpit {
                             pause();
                         }
                     }
+                    else {
+                        if (m_exitAtEndOfFile) {
+                            QApplication::quit();
+                        }
+                    }
                 }
             }
 
@@ -313,18 +337,22 @@ namespace cockpit {
                 }
             }
 
-            void PlayerWidget::loadFile() {
+            void PlayerWidget::openFile() {
                 QDir::setCurrent(m_currentWorkingDirectory.c_str());
                 m_fileName = QFileDialog::getOpenFileName(this, tr("Open previous recording file"), "", tr("Recording files (*.rec)")).toStdString();
 
-                if (!m_fileName.empty()) {
+                loadFile(m_fileName);
+            }
+
+            void PlayerWidget::loadFile(const string &fileName) {
+                if (!fileName.empty()) {
                     m_player.reset();
                     emit showProgress(0);
 
                     // Set current working directory.
                     {
                         m_currentWorkingDirectory = "";
-                        vector<string> tokens = odcore::strings::StringToolbox::split(m_fileName, '/');
+                        vector<string> tokens = odcore::strings::StringToolbox::split(fileName, '/');
                         auto it = tokens.begin();
                         while ((it+1) != tokens.end()) {
                             m_currentWorkingDirectory += "/" + (*it);
@@ -334,7 +362,7 @@ namespace cockpit {
                     }
 
                     stringstream s;
-                    s << "file://" << m_fileName;
+                    s << "file://" << fileName;
                     odcore::io::URL url(s.str());
 
                     m_desc->setText(url.toString().c_str());
