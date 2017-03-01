@@ -288,6 +288,13 @@ namespace cockpit {
                 bool successfullyMapped = false;
                 Message msg;
 
+                if (container.getDataType() != odcore::data::dmcp::ModuleStatistics::ID()) {
+                    stringstream sstr_sampleTime;
+                    sstr_sampleTime << "Sample time: " << container.getSampleTimeStamp().getYYYYMMDD_HHMMSSms();
+                    const string str_sampleTime = sstr_sampleTime.str();
+                    m_lastContainerSampleTime->setText(str_sampleTime.c_str());
+                }
+
                 if (0 == (m_containerTypeToName.count(container.getDataType()))) {
                     msg = resolve(container, successfullyMapped);
                     if (successfullyMapped) {
@@ -316,11 +323,6 @@ namespace cockpit {
                     entries.push_back(make_pair("sent", container.getSentTimeStamp().getYYYYMMDD_HHMMSSms()));
                     entries.push_back(make_pair("received", container.getReceivedTimeStamp().getYYYYMMDD_HHMMSSms()));
                     entries.push_back(make_pair("sample time", container.getSampleTimeStamp().getYYYYMMDD_HHMMSSms()));
-
-                    stringstream sstr_sampleTime;
-                    sstr_sampleTime << "Sample time: " << container.getSampleTimeStamp().getYYYYMMDD_HHMMSSms();
-                    const string str_sampleTime = sstr_sampleTime.str();
-                    m_lastContainerSampleTime->setText(str_sampleTime.c_str());
 
                     // Create new Header if needed.
                     stringstream sstr_entryName;
