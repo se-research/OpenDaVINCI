@@ -56,9 +56,6 @@ namespace cockpit {
                 m_listOfAvailableSharedImages(),
                 m_mapOfAvailableSharedImages() {
 
-                // Set size.
-                setMinimumSize(640, 480);
-
                 // Create grayscale table.
                 for(int i = 0; i < 256; i++) m_grayscale.push_back(qRgb(i,i,i));
 
@@ -70,6 +67,9 @@ namespace cockpit {
                 gridLayout->addWidget(m_list);
 
                 setLayout(gridLayout);
+
+                // Set size.
+                setMinimumSize(640, 480);
 
                 QTimer *timer = new QTimer(this);
                 connect(timer, SIGNAL(timeout()), this, SLOT(update()));
@@ -91,8 +91,9 @@ namespace cockpit {
                     if ( (si.getWidth() * si.getHeight()) > 0 ) {
                         Lock l(m_sharedImageMemoryMutex);
 
-                        cerr << "Using shared image: " << si.toString() << endl;
+                        cout << "Using shared image: " << si.toString() << endl;
                         setWindowTitle(QString::fromStdString(si.toString()));
+                        setMinimumSize(m_sharedImage.getWidth(), m_sharedImage.getHeight());
 
                         m_sharedImageMemory = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(si.getName());
                         m_sharedImage = si;
@@ -143,6 +144,8 @@ namespace cockpit {
                         QPainter widgetPainter(this);
                         widgetPainter.drawImage(0, 0, *m_drawableImage);
                     }
+
+                    // Autoscale window.
                     m_sharedImageMemory->unlock();
                 }
             }

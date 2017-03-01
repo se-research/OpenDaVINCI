@@ -196,8 +196,8 @@ namespace cockpit {
 
             // Show plugin within an MDI window.
             if (plugIn->getQWidget() != NULL) {
-                plugIn->getQWidget()->setMinimumWidth(400);
-                plugIn->getQWidget()->setMinimumHeight(100);
+//                plugIn->getQWidget()->setMinimumWidth(400);
+//                plugIn->getQWidget()->setMinimumHeight(100);
 
                 MdiPlugIn* subWindow = new MdiPlugIn(*plugIn, m_cockpitArea);
                 subWindow->setAttribute(Qt::WA_DeleteOnClose);
