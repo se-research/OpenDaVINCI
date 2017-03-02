@@ -168,7 +168,6 @@ namespace cockpit {
                         widgetPainter.drawImage(0, 0, *m_drawableImage);
                     }
 
-                    // Autoscale window.
                     m_sharedImageMemory->unlock();
                 }
             }
