@@ -99,18 +99,18 @@ namespace cockpit {
 
             // Try to improve layout.
             if (!m_cockpitArea->subWindowList().isEmpty()) {
-                uint32_t height = 10;
+                uint32_t _height = 10;
                 QPoint position(10, 10);
                 for(auto it = m_cockpitArea->subWindowList().begin(); it != m_cockpitArea->subWindowList().end(); it++) {
-                    QMdiSubWindow *window = *it;
-                    if ((position.x() + window->width()) > maxWidth) {
+                    QMdiSubWindow *_window = *it;
+                    if ((position.x() + _window->width()) > maxWidth) {
                         position.setX(10);
-                        position.setY(height);
-                        height = 0;
+                        position.setY(_height);
+                        _height = 0;
                     }
-                    window->move(position);
-                    height = std::max<int32_t>(height, window->height());
-                    position.setX(position.x() + window->width());
+                    _window->move(position);
+                    _height = std::max<int32_t>(_height, _window->height());
+                    position.setX(position.x() + _window->width());
                 }
             }
 
