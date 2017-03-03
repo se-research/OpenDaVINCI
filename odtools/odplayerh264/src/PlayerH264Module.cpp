@@ -24,8 +24,6 @@
 #include "opendavinci/odcore/base/Thread.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/io/URL.h"
-#include "opendavinci/odtools/player/Player.h"
-#include "opendavinci/generated/odcore/data/player/PlayerCommand.h"
 
 #include "PlayerH264.h"
 #include "PlayerH264Module.h"
@@ -39,8 +37,7 @@ namespace odplayerh264 {
     using namespace odtools::player;
 
     PlayerH264Module::PlayerH264Module(const int32_t &argc, char **argv) :
-        TimeTriggeredConferenceClientModule(argc, argv, "odplayerh264"),
-        m_playerControl() {}
+        TimeTriggeredConferenceClientModule(argc, argv, "odplayerh264") {}
 
     PlayerH264Module::~PlayerH264Module() {}
 
@@ -53,18 +50,11 @@ namespace odplayerh264 {
     }
 
     odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode PlayerH264Module::body() {
-        // Check if the player is remotely controlled.
-        bool remoteControl = (getKeyValueConfiguration().getValue<bool>("odplayerh264.remoteControl") != 0);
-
         // Read the URL of the file to replay.
         URL url(getKeyValueConfiguration().getValue<string>("odplayerh264.input"));
 
-        // Read the scaling factor.
-        double timeScale = getKeyValueConfiguration().getValue<double>("odplayerh264.timeScale");
-        timeScale = (fabs(timeScale) > 1e-5 ? fabs(timeScale) : 1.0);
-
-        // Do we have to rewind the stream on EOF?
-        bool autoRewind = (getKeyValueConfiguration().getValue<int>("odplayerh264.autoRewind") != 0);
+        // Allow this player to run in parallel.
+        bool THREADING = true;
 
         // Size of the memory buffer.
         const uint32_t MEMORY_SEGMENT_SIZE = getKeyValueConfiguration().getValue<uint32_t>("global.buffer.memorySegmentSize");
@@ -72,14 +62,11 @@ namespace odplayerh264 {
         // Number of memory segments.
         const uint32_t NUMBER_OF_SEGMENTS = getKeyValueConfiguration().getValue<uint32_t>("global.buffer.numberOfMemorySegments");
 
-        // Run player in asynchronous mode with data caching in background.
-        const bool THREADING = true;
+        // Do we have to rewind the stream on EOF?
+        bool autoRewind = (getKeyValueConfiguration().getValue<int>("odplayerh264.autoRewind") != 0);
 
         // Base port for letting spawned children connect to parent process.
         const uint32_t BASE_PORT = getKeyValueConfiguration().getValue<uint32_t>("odplayerh264.portbaseforchildprocesses");
-
-        // Add FIFOQueue for controlling the player.
-        addDataStoreFor(odcore::data::player::PlayerCommand::ID(), m_playerControl);
 
         // Construct player.
         PlayerH264 player(url, autoRewind, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING, BASE_PORT);
@@ -90,74 +77,23 @@ namespace odplayerh264 {
         // Delay between two containers.
         uint32_t delay = 0;
 
-        // If no remote control, simply play the stuff.
-        bool playing = (!remoteControl);
-        bool doStep = false;
-
         // The main loop.
         while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
-            if (playing) {
-                // Get container to be sent.
-                nextContainerToBeSent = player.getNextContainerToBeSent();
+            // Get container to be sent.
+            nextContainerToBeSent = player.getNextContainerToBeSent();
 
-                // Get delay to wait _after_ sending the container.
-                delay = player.getDelay() * timeScale;
+            // Get delay to wait _after_ sending the container.
+            delay = player.getDelay();
 
-                // Here, the container is sent while discarding player commands.
-                if ( (nextContainerToBeSent.getDataType() != Container::UNDEFINEDDATA) &&
-                        (nextContainerToBeSent.getDataType() != odcore::data::player::PlayerCommand::ID()) ) {
+            // Here, the container is sent while discarding player commands.
+            if (nextContainerToBeSent.getDataType() != Container::UNDEFINEDDATA) {
+                CLOG1 << "[" << getName() << "(" << getIdentifier() << ")]: Sending " << nextContainerToBeSent.toString() << " (delay was " << delay << " us): " << nextContainerToBeSent.getReceivedTimeStamp().toString() << endl;
 
-                    // Process next token only if there's no new command.
-                    if (!remoteControl || (m_playerControl.isEmpty())) {
-                        CLOG1 << "[" << getName() << "(" << getIdentifier() << ")]: Sending " << nextContainerToBeSent.toString() << " (delay was " << delay << " us): " << nextContainerToBeSent.getReceivedTimeStamp().toString() << endl;
-
-                        getConference().send(nextContainerToBeSent);
-                    }
-
-                    // Don't wait while stepping.
-                    if (!doStep) {
-                        Thread::usleepFor(delay);
-                    }
-                }
-            }
-
-            // If the last cycle was during a step, disable the stepwise playing and check for remote control.
-            if (doStep) {
-                playing = false;
-                doStep = false;
-            }
-
-            // Check remote control.
-            if (remoteControl) {
-                if (!(m_playerControl.isEmpty())) {
-                    Container container = m_playerControl.leave();
-
-                    odcore::data::player::PlayerCommand pc;
-                    pc = container.getData<odcore::data::player::PlayerCommand>();
-
-                    CLOG1 << "[" << getName() << "(" << getIdentifier() << ")]: " << pc.toString() << endl;
-
-                    switch (pc.getCommand()) {
-                        case odcore::data::player::PlayerCommand::PLAY:
-                            playing = true;
-                            break;
-                        case odcore::data::player::PlayerCommand::PAUSE:
-                            playing = false;
-                            break;
-                        case odcore::data::player::PlayerCommand::STEP_FORWARD:
-                            playing = true;
-                            doStep = true;
-                            break;
-                        case odcore::data::player::PlayerCommand::REWIND:
-                            player.rewind();
-                            playing = false;
-                            break;
-                    }
-                }
+                getConference().send(nextContainerToBeSent);
             }
 
             // If replaying is finished, exit.
-            if (!remoteControl && !player.hasMoreData()) {
+            if (!player.hasMoreData()) {
                 break;
             }
         }

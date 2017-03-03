@@ -87,6 +87,7 @@ namespace plugins { class PlugInProvider; }
 
         private:
             void constructLayout();
+            void loadPlugIn(const string &s);
 
         private:
             odcore::base::KeyValueConfiguration m_kvc;

@@ -17,11 +17,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifdef HAVE_DL
-    #include <dlfcn.h>
-    #include <experimental/filesystem>
-#endif
-
 #include <QtCore>
 #include <QtGui>
 
@@ -39,9 +34,6 @@
 #include "plugins/livefeed/LiveFeedWidget.h"
 #include "plugins/livefeed/MessageToTupleVisitor.h"
 
-#include "opendavinci/GeneratedHeaders_OpenDaVINCI_Helper.h"
-#include "automotivedata/GeneratedHeaders_AutomotiveData_Helper.h"
-
 namespace cockpit { namespace plugins { class PlugIn; } }
 
 namespace cockpit {
@@ -55,44 +47,27 @@ namespace cockpit {
             using namespace odcore::data;
             using namespace odcore::reflection;
 
-            HelperEntry::HelperEntry() : 
-                 m_library(""),
-                 m_dynamicObjectHandle(NULL),
-                 m_helper(NULL)
-            {}
-
-            HelperEntry::HelperEntry(const HelperEntry &obj) :
-                m_library(obj.m_library),
-                m_dynamicObjectHandle(obj.m_dynamicObjectHandle),
-                m_helper(obj.m_helper)
-            {}
-
-            HelperEntry& HelperEntry::operator=(const HelperEntry &obj) {
-                m_library = obj.m_library;
-                m_dynamicObjectHandle = obj.m_dynamicObjectHandle;
-                m_helper = obj.m_helper;
-                return *this;
-            }
-
-            HelperEntry::~HelperEntry() {}
-
-            ///////////////////////////////////////////////////////////////////
-
             LiveFeedWidget::LiveFeedWidget(const odcore::base::KeyValueConfiguration &kvc, const PlugIn &/*plugIn*/, QWidget *prnt) :
                 QWidget(prnt),
+                m_messageResolver(),
                 m_dataViewMutex(),
+                m_lastContainerSampleTime(),
                 m_dataView(),
                 m_dataToType(),
-                m_listOfLibrariesToLoad(),
-                m_listOfHelpers() {
+                m_containerTypeToName(),
+                m_containerTypeResolvingMutex(),
+                m_containerTypeResolving() {
                 // Set size.
-                setMinimumSize(640, 480);
+                setMinimumSize(400, 200);
 
                 // Layout manager.
                 QGridLayout* mainBox = new QGridLayout(this);
 
+                m_lastContainerSampleTime = new QLabel("Sample time: ", this);
+                mainBox->addWidget(m_lastContainerSampleTime, 0, 0);
+
                 //ListView and header construction
-                m_dataView = unique_ptr<QTreeWidget>(new QTreeWidget(this));
+                m_dataView = new QTreeWidget(this);
                 m_dataView->setColumnCount(2);
                 QStringList headerLabel;
                 headerLabel << tr("Message") << tr("Value");
@@ -100,8 +75,10 @@ namespace cockpit {
                 m_dataView->setColumnWidth(1, 200);
                 m_dataView->setHeaderLabels(headerLabel);
 
+                connect(m_dataView, SIGNAL(itemChanged(QTreeWidgetItem*, int)), this, SLOT(treeItemChanged(QTreeWidgetItem*, int)));
+
                 //add to Layout
-                mainBox->addWidget(m_dataView.get(), 0, 0);
+                mainBox->addWidget(m_dataView, 1, 0);
 
                 // Set layout manager.
                 setLayout(mainBox);
@@ -111,118 +88,37 @@ namespace cockpit {
                 cout << "[odcockpit/livefeed] Trying to find libodvd*.so files in: " << SEARCH_PATH << endl;
 
                 const vector<string> paths = odcore::strings::StringToolbox::split(SEARCH_PATH, ',');
-                m_listOfLibrariesToLoad = getListOfLibrariesToLoad(paths);
-
-                findAndLoadSharedLibraries();
+                m_messageResolver = unique_ptr<MessageResolver>(new MessageResolver(paths, "libodvd", ".so"));
             }
 
-            LiveFeedWidget::~LiveFeedWidget() {
-                unloadSharedLibraries();
-            }
-
-            vector<string> LiveFeedWidget::getListOfLibrariesToLoad(const vector<string> &paths) {
-                vector<string> librariesToLoad;
-#ifndef HAVE_DL
-                (void)paths;
-#endif
-
-#ifdef HAVE_DL
-                for(auto pathToSearch : paths) {
-                    try {
-                        for(auto &pathElement : std::experimental::filesystem::recursive_directory_iterator(pathToSearch)) {
-                            stringstream sstr;
-                            sstr << pathElement;
-                            string entry = sstr.str();
-                            if (entry.find("libodvd") != string::npos) {
-                                if (entry.find(".so") != string::npos) {
-                                    vector<string> path = odcore::strings::StringToolbox::split(entry, '/');
-                                    if (path.size() > 0) {
-                                        string lib = path[path.size()-1];
-                                        if (lib.size() > 0) {
-                                            lib = lib.substr(0, lib.size()-1);
-                                            librariesToLoad.push_back(lib);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    catch(...) {}
-                }
-#endif
-                return librariesToLoad;
-            }
-
-            void LiveFeedWidget::findAndLoadSharedLibraries() {
-#ifdef HAVE_DL
-                auto it = m_listOfLibrariesToLoad.begin();
-                while (it != m_listOfLibrariesToLoad.end()) {
-                    const string libraryToLoad = *it;
-
-                    {
-                        HelperEntry e;
-
-                        cout << "[odcockpit/livefeed] Opening '" + libraryToLoad + "'..." << endl;
-                        e.m_dynamicObjectHandle = dlopen(libraryToLoad.c_str(), RTLD_LAZY);
-
-                        if (!e.m_dynamicObjectHandle) {
-                            cerr << "[odcockpit/livefeed] Cannot open library '" + libraryToLoad + "': " << dlerror() << endl;
-                        }
-                        else {
-                            typedef odcore::reflection::Helper *createHelper_t();
-
-                            // reset errors
-                            dlerror();
-                            createHelper_t* getHelper = (createHelper_t*) dlsym(e.m_dynamicObjectHandle, "newHelper");
-                            const char *dlsym_error = dlerror();
-                            if (dlsym_error) {
-                                cerr << "[odcockpit/livefeed] Cannot load symbol 'newHelper' from '" + libraryToLoad + "': " << dlsym_error << endl;
-                                dlclose(e.m_dynamicObjectHandle);
-                            }
-                            else {
-                                // Get pointer to external message handling.
-                                e.m_helper = getHelper();
-                                e.m_library = libraryToLoad;
-                                m_listOfHelpers.push_back(e);
-                            }
-                        }
-                    }
-
-                    it++;
-                }
-#endif
-            }
-
-            void LiveFeedWidget::unloadSharedLibraries() {
-#ifdef HAVE_DL
-                auto it = m_listOfHelpers.begin();
-                while (it != m_listOfHelpers.end()) {
-                    HelperEntry e = *it;
-
-                    // Type to refer to the destroy method inside the shared library.
-                    typedef void deleteHelper_t(odcore::reflection::Helper *);
-
-                    // Reset error messages from dynamically loading shared object.
-                    dlerror();
-                    deleteHelper_t* delHelper = (deleteHelper_t*) dlsym(e.m_dynamicObjectHandle, "deleteHelper");
-                    const char *dlsym_error = dlerror();
-                    if (dlsym_error) {
-                        cerr << "[odcockpit/livefeed] Cannot load symbol 'deleteHelper': " << dlsym_error << endl;
-                    }
-                    else {
-                        cout << "[odcockpit/livefeed] Closing link to '" + e.m_library + "'" << endl;
-                        delHelper(e.m_helper);
-                    }
-                    dlclose(e.m_dynamicObjectHandle);
-
-                    it++;
-                }
-#endif
-            }
+            LiveFeedWidget::~LiveFeedWidget() {}
 
             void LiveFeedWidget::nextContainer(Container &container) {
                 Lock l(m_dataViewMutex);
-                transformContainerToTree(container);
+                if (container.getDataType() == odcore::data::player::PlayerStatus::ID()) {
+                    odcore::data::player::PlayerStatus ps = container.getData<odcore::data::player::PlayerStatus>();
+                    if (ps.getStatus() == odcore::data::player::PlayerStatus::NEW_FILE_LOADED) {
+                        // Clear current entries.
+                        for (auto it = m_dataToType.begin(); it != m_dataToType.end(); it++) {
+                            QTreeWidgetItem *entry = it->second;
+                            entry->takeChildren();
+                        }
+                        m_dataToType.clear();
+                        m_dataView->clear();
+
+                        m_lastContainerSampleTime->setText("Sample time: ");
+                    }
+                }
+                else {
+                    transformContainerToTree(container);
+                }
+            }
+
+            void LiveFeedWidget::treeItemChanged(QTreeWidgetItem *twi, int col) {
+                if ( (NULL != twi) && (0 == col) ) {
+                    Lock l(m_containerTypeResolvingMutex);
+                    m_containerTypeResolving[twi->text(col).toStdString()] = (twi->checkState(col) == Qt::Checked);
+                }
             }
 
             void LiveFeedWidget::transformContainerToTree(Container &container) {
@@ -230,27 +126,25 @@ namespace cockpit {
                 bool successfullyMapped = false;
                 Message msg;
 
-                // Try AutomotiveData first.
-                if (!successfullyMapped) {
-                    msg = GeneratedHeaders_AutomotiveData_Helper::__map(container, successfullyMapped);
+                if (container.getDataType() != odcore::data::dmcp::ModuleStatistics::ID()) {
+                    stringstream sstr_sampleTime;
+                    sstr_sampleTime << "Sample time: " << container.getSampleTimeStamp().getYYYYMMDD_HHMMSSms();
+                    const string str_sampleTime = sstr_sampleTime.str();
+                    m_lastContainerSampleTime->setText(str_sampleTime.c_str());
                 }
 
-                // If failed, try regular OpenDaVINCI messages.
-                if (!successfullyMapped) {
-                    msg = GeneratedHeaders_OpenDaVINCI_Helper::__map(container, successfullyMapped);
-                }
+                if (0 == (m_containerTypeToName.count(container.getDataType()))) {
+                    msg = m_messageResolver->resolve(container, successfullyMapped);
+                    if (successfullyMapped) {
+                        m_containerTypeToName[container.getDataType()] = msg.getLongName();
 
-                // Try dynamic shared object as last.
-                if (!successfullyMapped && (m_listOfHelpers.size() > 0)) {
-                    auto it = m_listOfHelpers.begin();
-                    while ( (!successfullyMapped) && (it != m_listOfHelpers.end())) {
-                        HelperEntry e = *it;
-                        msg = e.m_helper->map(container, successfullyMapped);
-                        it++;
+                        Lock l(m_containerTypeResolvingMutex);
+                        stringstream sstr;
+                        sstr << m_containerTypeToName[container.getDataType()] << "/" << container.getSenderStamp();
+                        m_containerTypeResolving[sstr.str()] = false;
                     }
                 }
-
-                if (successfullyMapped) {
+                else {
                     vector<pair<string, string> > entries;
                     {
                         stringstream sstr;
@@ -268,17 +162,29 @@ namespace cockpit {
                     entries.push_back(make_pair("received", container.getReceivedTimeStamp().getYYYYMMDD_HHMMSSms()));
                     entries.push_back(make_pair("sample time", container.getSampleTimeStamp().getYYYYMMDD_HHMMSSms()));
 
-                    MessageToTupleVisitor mttv(entries);
-                    msg.accept(mttv);
-
                     // Create new Header if needed.
                     stringstream sstr_entryName;
-                    sstr_entryName << msg.getLongName() << "/" << container.getSenderStamp();
+                    sstr_entryName << m_containerTypeToName[container.getDataType()] << "/" << container.getSenderStamp();
                     const string entryName = sstr_entryName.str();
+
+                    {
+                        Lock l(m_containerTypeResolvingMutex);
+                        if (m_containerTypeResolving[entryName]) {
+                            msg = m_messageResolver->resolve(container, successfullyMapped);
+                            if (successfullyMapped) {
+                                MessageToTupleVisitor mttv(entries);
+                                msg.accept(mttv);
+                            }
+                        }
+                    }
+
                     if (m_dataToType.find(entryName) == m_dataToType.end()) {
-                        QTreeWidgetItem *newHeader = new QTreeWidgetItem(m_dataView.get());
+                        QTreeWidgetItem *newHeader = new QTreeWidgetItem(m_dataView);
                         newHeader->setText(0, entryName.c_str());
                         m_dataToType[entryName] = newHeader;
+
+                        newHeader->setFlags(newHeader->flags() | Qt::ItemIsUserCheckable | Qt::ItemIsSelectable);
+                        newHeader->setCheckState(0, Qt::Unchecked);
                     }
 
                     QTreeWidgetItem *entry = m_dataToType[entryName];
@@ -302,3 +208,4 @@ namespace cockpit {
         }
     }
 }
+

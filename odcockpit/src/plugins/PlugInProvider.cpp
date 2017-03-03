@@ -67,13 +67,14 @@ class PlugIn;
         Mutex PlugInProvider::m_singletonMutex;
         PlugInProvider* PlugInProvider::m_singleton = NULL;
 
-        PlugInProvider::PlugInProvider(const KeyValueConfiguration &kvc, DataStoreManager &dsm, ContainerConference &conf, QWidget *prnt) :
+        PlugInProvider::PlugInProvider(const KeyValueConfiguration &kvc, DataStoreManager &dsm, ContainerConference &conf, FIFOMultiplexer &multiplexer, QWidget *prnt) :
             QObject(prnt),
             m_listOfAvailablePlugIns(),
             m_listOfDescriptions(),
             m_kvc(kvc),
             m_dataStoreManager(dsm),
             m_conference(conf),
+            m_multiplexer(multiplexer),
             m_parent(prnt) {
 
             // Read list of allowed plugins to show.
@@ -154,11 +155,11 @@ class PlugIn;
             PlugInProvider::m_singleton = NULL;
         }
 
-        PlugInProvider& PlugInProvider::getInstance(const KeyValueConfiguration &kvc, DataStoreManager &dsm, ContainerConference &conf, QWidget *prnt) {
+        PlugInProvider& PlugInProvider::getInstance(const KeyValueConfiguration &kvc, DataStoreManager &dsm, ContainerConference &conf, FIFOMultiplexer &multiplexer, QWidget *prnt) {
             {
                 Lock l(PlugInProvider::m_singletonMutex);
                 if (PlugInProvider::m_singleton == NULL) {
-                    PlugInProvider::m_singleton = new PlugInProvider(kvc, dsm, conf, prnt);
+                    PlugInProvider::m_singleton = new PlugInProvider(kvc, dsm, conf, multiplexer, prnt);
                 }
             }
 
@@ -181,10 +182,10 @@ class PlugIn;
                 plugIn = std::shared_ptr<PlugIn>(new configurationviewer::ConfigurationViewerPlugIn("ConfigurationViewer", m_kvc, m_parent));
             } else if (name == "Controller") {
                 cerr << "[odcockpit] Creating plugin: Controller" << endl;
-                plugIn = std::shared_ptr<PlugIn>((PlugIn*)(new controller::ControllerPlugIn("Controller", m_kvc, m_conference, m_parent)));
+                plugIn = std::shared_ptr<PlugIn>((PlugIn*)(new controller::ControllerPlugIn("Controller", m_kvc, m_conference, m_multiplexer, m_parent)));
             } else if (name == "StartStop") {
                 cerr << "[odcockpit] Creating plugin: StartStop" << endl;
-                plugIn = std::shared_ptr<PlugIn>((PlugIn*)(new startstop::StartStopPlugIn("StartStop", m_kvc, m_conference, m_parent)));
+                plugIn = std::shared_ptr<PlugIn>((PlugIn*)(new startstop::StartStopPlugIn("StartStop", m_kvc, m_conference, m_multiplexer, m_parent)));
             }
             else if (name == "BirdsEyeMap") {
                 cerr << "[odcockpit] Creating plugin: BirdsEyeMap" << endl;
@@ -230,7 +231,7 @@ class PlugIn;
                 plugIn = std::shared_ptr<PlugIn>(new logmessage::LogMessagePlugIn("LogMessage", m_kvc, m_parent));
             } else if (name == "Player") {
                 cerr << "[odcockpit] Creating plugin: Player" << endl;
-                plugIn = std::shared_ptr<PlugIn>((PlugIn*)(new player::PlayerPlugIn("Player", m_kvc, m_conference, m_parent)));
+                plugIn = std::shared_ptr<PlugIn>((PlugIn*)(new player::PlayerPlugIn("Player", m_kvc, m_conference, m_multiplexer, m_parent)));
             } else if (name == "SessionViewer") {
                 cerr << "[odcockpit] Creating plugin: SessionViewer" << endl;
                 plugIn = std::shared_ptr<PlugIn>(new sessionviewer::SessionViewerPlugIn("SessionViewer", m_kvc, m_parent));
