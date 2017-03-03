@@ -23,6 +23,7 @@
 #include <QtGui>
 
 #include <iostream>
+#include <sstream>
 #include <string>
 
 #include "Cockpit.h"
@@ -72,7 +73,10 @@ namespace cockpit {
         int ch = (h/2) - (mh/2);
         mainWindow.move(cw,ch);
 
-        mainWindow.setWindowTitle("OpenDaVINCI Cockpit");
+        stringstream sstr;
+        sstr << "OpenDaVINCI Cockpit (CID = " << getCID() << ")";
+        const string s = sstr.str();
+        mainWindow.setWindowTitle(s.c_str());
 
         mainWindow.show();
         m_cockpitApp.exec();

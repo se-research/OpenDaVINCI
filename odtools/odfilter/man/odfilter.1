@@ -9,7 +9,7 @@ odfilter \- This tool filters a stream of containers as part of a pipe.
 
 
 .SH SYNOPSIS
-.B odfilter [--keep=<ID_1>] [--drop=<ID_1>,<ID_2>]
+.B odfilter [--keep=<ID_1>] [--drop=<ID_1>,<ID_2>] [--downsample=<ID_1>:n,<ID_2>:m] [--replaceSampleTimeWithSentTimeIfGreaterThan=n]
 
 
 
@@ -51,6 +51,14 @@ identifiers must be greater than 0, and followed by : with the specified number 
 occurrence.
 
 The specified IDs in --downsample automatically imply --keep for the same IDs.
+.RE
+
+
+.B --replaceSampleTimeWithSentTimeIfGreaterThan=n
+.RS
+This parameter replaces the sample time stamp of a container with the sent time stamp
+if the absolute difference between a container's sample time stamp and sent time
+stamp is exceeding the specified n microseconds.
 .RE
 
 

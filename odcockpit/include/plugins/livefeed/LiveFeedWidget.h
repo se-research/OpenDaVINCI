@@ -83,14 +83,22 @@ namespace cockpit {
 
                     virtual void nextContainer(Container &c);
 
+                public slots:
+                    void treeItemChanged(QTreeWidgetItem*, int);
+
                 private:
                     void transformContainerToTree(Container &container);
 
                 private:
                     unique_ptr<odcore::reflection::MessageResolver> m_messageResolver;
                     odcore::base::Mutex m_dataViewMutex;
-                    unique_ptr<QTreeWidget> m_dataView;
+                    QLabel *m_lastContainerSampleTime;
+                    QTreeWidget* m_dataView;
                     map<string, QTreeWidgetItem* > m_dataToType;
+                    map<int32_t, string> m_containerTypeToName;
+
+                    odcore::base::Mutex m_containerTypeResolvingMutex;
+                    map<string, bool> m_containerTypeResolving;
             };
 
         }

@@ -37,6 +37,9 @@ namespace odcore {
          */
         class OPENDAVINCI_API TimeStamp : public odcore::data::TimePoint {
             private:
+                friend class Container;
+
+            private:
                 enum CUMULATIVE_DAYS {
                     January = 31,   // 31
                     February = 59,  // 28

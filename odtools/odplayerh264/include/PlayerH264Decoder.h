@@ -40,7 +40,6 @@ extern "C" {
 
 #include "opendavinci/generated/odcore/data/image/SharedImage.h"
 
-#include <opendavinci/odtools/player/Player.h>
 #include <opendavinci/odtools/player/PlayerDelegate.h>
 
 namespace odplayerh264 {
@@ -76,6 +75,11 @@ namespace odplayerh264 {
             PlayerH264Decoder& operator=(const PlayerH264Decoder &/*obj*/);
 
         public:
+            /**
+             * Constructor for H264 single decoder mode (one stream only!).
+             */
+            PlayerH264Decoder();
+
             /**
              * Constructor.
              *
@@ -150,6 +154,7 @@ namespace odplayerh264 {
             bool m_hasConnection;
 
         private:
+            bool m_initialized;
             bool m_ready;
 
             // This shared memory will contain the resulting decoded image frame.
