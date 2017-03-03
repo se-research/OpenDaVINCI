@@ -195,8 +195,8 @@ namespace cockpit {
                 m_player.reset();
             }
 
-            void PlayerWidget::percentagePlayedBack(const float &percentagePlayedBack) {
-                emit showProgress(static_cast<uint32_t>(fabs(percentagePlayedBack) * 100));
+            void PlayerWidget::percentagePlayedBack(const float &pPB) {
+                emit showProgress(static_cast<uint32_t>(fabs(pPB) * 100));
             }
 
             void PlayerWidget::speedValue(int value) {
