@@ -97,9 +97,9 @@ odcockpit.plugins = configurationviewer,healthstatusviewer,livefeed,logmessage,p
 odcockpit.directoriesForSharedLibaries = /opt,/lib # List of directories to search for libodvd*.so files.
 #odcockpit.autostartPlugins = EnvironmentViewer,SharedImageViewer,LiveFeed,Player # List of plugins to show in odcockpit at startup.
 #odcockpit.directoriesForSharedLibaries = /opt,/lib # List of directories to search for libodvd*.so files.
-#odcockpit.player.input = file://recorder.rec 
+#odcockpit.player.input = file://recorder.rec
 #odcockpit.player.timeScale = 0.01
-#odcockpit.player.exitAtEndOfFile = 1 
+#odcockpit.player.exitAtEndOfFile = 1
 
 
 ###############################################################################
