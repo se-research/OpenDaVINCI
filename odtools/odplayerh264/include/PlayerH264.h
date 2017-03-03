@@ -29,6 +29,7 @@
 #include <opendavinci/odtools/player/PlayerDelegate.h>
 
 #include "PlayerH264ChildHandler.h"
+#include "PlayerH264Decoder.h"
 
 namespace odplayerh264 {
 
@@ -63,13 +64,24 @@ namespace odplayerh264 {
 
         public:
             /**
+             * Constructor for single h264 decoder (one video stream only mode).
+             *
+             * @param url Resource to play.
+             * @param autoRewind True if the file should be rewind at EOF.
+             * @param memorySegmentSize Size of the memory segment to be used for buffering.
+             * @param numberOfMemorySegments Number of memory segments to be used for buffering.
+             * @param threading If set to true, player will load new containers from the files in background.
+             */
+            PlayerH264(const odcore::io::URL &url, const bool &autoRewind, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const bool &threading);
+
+            /**
              * Constructor.
              *
              * @param url Resource to play.
              * @param autoRewind True if the file should be rewind at EOF.
              * @param memorySegmentSize Size of the memory segment to be used for buffering.
              * @param numberOfMemorySegments Number of memory segments to be used for buffering.
-             * @param threading If set to true, player will load new containers from the file in background.
+             * @param threading If set to true, player will load new containers from the files in background.
              * @param basePort Base port for letting spawned children connect to the parent process.
              */
             PlayerH264(const odcore::io::URL &url, const bool &autoRewind, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const bool &threading, const uint32_t &basePort);
@@ -79,6 +91,8 @@ namespace odplayerh264 {
             virtual odcore::data::Container process(odcore::data::Container &c);
 
         private:
+            shared_ptr<PlayerH264Decoder> m_singleDecoder;
+
             uint32_t m_basePort;
 
             odcore::base::Mutex m_mapOfDecodersMutex;

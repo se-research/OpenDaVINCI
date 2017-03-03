@@ -218,14 +218,11 @@ message odcore.data.buffer.MemorySegment [id = 29] {
 }
 
 // This message is used to remotely control the odplayer component.
-message odcore.data.player.PlayerCommand [id = 10] {
-    enum Command {
-        PLAY=0,
-        PAUSE=1,
-        REWIND=2,
-        STEP_FORWARD=3,
+message odcore.data.player.PlayerStatus [id = 10] {
+    enum Status {
+        NEW_FILE_LOADED=0,
     };
-    Command command [id = 1];
+    Status status [id = 1];
 }
 
 // This message is used to remotely control the odrecorder component.

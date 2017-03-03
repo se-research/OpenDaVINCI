@@ -376,7 +376,7 @@ class ContainerSenderStampTest : public CxxTest::TestSuite,
 
         void testDataTriggeredTimeTriggeredConferenceClientModulesIdentifier() {
             // Setup ContainerConference.
-            std::shared_ptr<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.109");
+            std::shared_ptr<ContainerConference> conference = ContainerConferenceFactory::getInstance().getContainerConference("225.0.0.110");
 
 #if !defined(__OpenBSD__) && !defined(__APPLE__)
             // Setup DMCP.

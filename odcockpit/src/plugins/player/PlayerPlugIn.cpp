@@ -1,7 +1,6 @@
 /**
  * cockpit - Visualization environment
- * Copyright (C) 2012 - 2015 Christian Berger
- * Copyright (C) 2008 - 2011 (as monitor component) Christian Berger, Bernhard Rumpe
+ * Copyright (C) 2017 Christian Berger
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -34,8 +33,8 @@ namespace cockpit {
 
             using namespace std;
 
-            PlayerPlugIn::PlayerPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, QWidget *prnt) :
-                ControlPlugIn(name, kvc, conf, prnt),
+            PlayerPlugIn::PlayerPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, FIFOMultiplexer &multiplexer, QWidget *prnt) :
+                ControlPlugIn(name, kvc, conf, multiplexer, prnt),
                 m_kvc(kvc),
                 m_playerWidget(NULL) {
                 setDescription("This plugin replays previously recorded files.");
@@ -44,7 +43,7 @@ namespace cockpit {
             PlayerPlugIn::~PlayerPlugIn() {}
 
             void PlayerPlugIn::setupPlugin() {
-                m_playerWidget = new PlayerWidget(*this, m_kvc, getConference(), getParentQWidget());
+                m_playerWidget = new PlayerWidget(*this, m_kvc, getConference(), getFIFOMultiplexer(), getParentQWidget());
             }
 
             void PlayerPlugIn::stopPlugin() {}

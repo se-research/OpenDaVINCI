@@ -36,8 +36,8 @@ namespace cockpit {
 
             using namespace odcore::io::conference;
 
-            ControllerPlugIn::ControllerPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, ContainerConference &conf, QWidget *prnt) :
-                ControlPlugIn(name, kvc, conf, prnt),
+            ControllerPlugIn::ControllerPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, ContainerConference &conf, FIFOMultiplexer &multiplexer, QWidget *prnt) :
+                ControlPlugIn(name, kvc, conf, multiplexer, prnt),
                 m_controllerWidget(NULL) {
                 setDescription("This plugin allows the control of the vehicle by the arrow keys.");
             }

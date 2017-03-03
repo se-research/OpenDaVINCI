@@ -1,6 +1,6 @@
 /**
  * OpenDaVINCI - Portable middleware for distributed components.
- * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
+ * Copyright (C) 2017 Christian Berger
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,97 +17,119 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <cstdlib>
-#include <cstring>
+#include <cmath>
+#include <cstdio>
+
+#include <algorithm>
+#include <fstream>
 #include <iostream>
-#include <string>
+#include <limits>
+#include <thread>
+#include <utility>
 
-#include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/base/Lock.h"
-#include "opendavinci/odcore/base/Thread.h"
-#include "opendavinci/odcore/base/module/AbstractCIDModule.h"
-#include "opendavinci/odcore/data/Container.h"
-#include "opendavinci/odcore/data/image/CompressedImage.h"
-#include "opendavinci/odcore/io/StreamFactory.h"
-#include "opendavinci/odcore/io/URL.h"
-#include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
-#include "opendavinci/odcore/wrapper/jpg/JPG.h"
+#include <opendavinci/odcore/base/module/AbstractCIDModule.h>
+#include <opendavinci/odcore/base/Lock.h>
+#include <opendavinci/odcore/base/Thread.h>
+#include <opendavinci/odcore/io/URL.h>
 
-#include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
-
-#include "opendavinci/odtools/player/Player.h"
-#include "opendavinci/odtools/player/PlayerCache.h"
-#include "opendavinci/odtools/player/PlayerDelegate.h"
+#include <opendavinci/odtools/player/Player.h>
+#include <opendavinci/odtools/player/PlayerDelegate.h>
+#include <opendavinci/odtools/player/RecMemIndex.h>
 
 namespace odtools {
     namespace player {
 
         using namespace std;
         using namespace odcore::base;
+        using namespace odcore::base::module;
         using namespace odcore::data;
         using namespace odcore::io;
 
+        IndexEntry::IndexEntry() :
+            IndexEntry(0, 0) {}
+
+        IndexEntry::IndexEntry(const int64_t &sampleTimeStamp, const uint64_t &filePosition) :
+            IndexEntry(sampleTimeStamp, filePosition, "", 0) {}
+
+        IndexEntry::IndexEntry(const int64_t &sampleTimeStamp, const uint64_t &filePosition, const string &nameOfSharedMemorySegment, const uint32_t &sizeOfSharedMemorySegment) :
+            m_sampleTimeStamp(sampleTimeStamp),
+            m_filePosition(filePosition),
+            m_nameOfSharedMemorySegment(nameOfSharedMemorySegment),
+            m_sizeOfSharedMemorySegment(sizeOfSharedMemorySegment),
+            m_available(false) {}
+
+        ////////////////////////////////////////////////////////////////////////
+
         Player::Player(const URL &url, const bool &autoRewind, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const bool &threading) :
             m_threading(threading),
+            m_url(url),
+            m_recFile(),
+            m_recFileValid(false),
             m_autoRewind(autoRewind),
-            m_inFile(NULL),
-            m_inSharedMemoryFile(NULL),
-            m_playerCache(),
-            m_actual(),
-            m_successor(),
-            m_successorProcessed(true),
-            m_seekToTheBeginning(true),
-            m_noMoreData(false),
+            m_indexMutex(),
+            m_index(),
+            m_previousPreviousContainerAlreadyReplayed(m_index.end()),
+            m_previousContainerAlreadyReplayed(m_index.begin()),
+            m_currentContainerToReplay(m_index.begin()),
+            m_nextEntryToReadFromRecFile(m_index.begin()),
+            m_desiredInitialLevel(0),
+            m_firstTimePointReturningAContainer(),
+            m_numberOfReturnedContainersInTotal(0),
             m_delay(0),
-            m_mapOfSharedMemoriesForCompressedImages(),
+            m_correctedDelay(0),
+            m_containerCacheFillingThreadIsRunningMutex(),
+            m_containerCacheFillingThreadIsRunning(false),
+            m_containerCacheFillingThread(),
+            m_containerCache(),
+            m_recMemIndex(),
             m_mapOfPlayerDelegatesMutex(),
-            m_mapOfPlayerDelegates() {
+            m_mapOfPlayerDelegates(),
+            m_playerListenerMutex(),
+            m_playerListener() {
+            initializeIndex();
+            computeInitialCacheLevelAndFillCache();
 
-            // Get the stream using the StreamFactory with the given URL.
-            m_inFile = StreamFactory::getInstance().getInputStream(url);
-
-            // Try to load the data storage for data from the shared memory.
-            if (url.getResource().compare("/dev/stdin") != 0) {
-                URL urlSharedMemoryFile("file://" + url.getResource() + ".mem");
-                try {
-                    m_inSharedMemoryFile = StreamFactory::getInstance().getInputStream(urlSharedMemoryFile);
-                    CLOG1 << "Player: Found shared memory dump file '" << urlSharedMemoryFile.toString() << "'" << endl;
-                }
-                catch (const odcore::exceptions::InvalidArgumentException &iae) {
-                    clog << "Player: Warning: " << iae.toString() << endl;
-                } 
+            if (m_threading) {
+                // Start concurrent thread to manage cache.
+                setContainerCacheFillingRunning(true);
+                m_containerCacheFillingThread = std::thread(&Player::manageCache, this);
             }
 
-            // Setup cache.
-            m_playerCache = unique_ptr<PlayerCache>(new PlayerCache(numberOfMemorySegments, memorySegmentSize, m_autoRewind, m_inFile, m_inSharedMemoryFile));
-            if (m_playerCache.get() != NULL) {
-                // First, fill the cache...
-                m_playerCache->updateCache();
-
-                if (m_threading) {
-                    // ...and if running concurrently, start the thread.
-                    m_playerCache->start();
+            // Try reading accompanying .rec.mem file.
+            if (m_recFileValid && ((memorySegmentSize * numberOfMemorySegments) > 0)) {
+                URL recMemFile("file://" + m_url.getResource() + ".mem");
+                bool recMemFileAvailable = false;
+                {
+                    ifstream checkForRecMemFile(recMemFile.getResource());
+                    recMemFileAvailable = checkForRecMemFile.good();
+                }
+                if (recMemFileAvailable) {
+                    m_recMemIndex = unique_ptr<RecMemIndex>(new RecMemIndex(recMemFile, memorySegmentSize, numberOfMemorySegments, m_threading));
                 }
             }
         }
 
         Player::~Player() {
-            if ( (m_playerCache.get() != NULL) && (m_threading) ) {
-                m_playerCache->stop();
+            if (m_threading) {
+                // Stop concurrent thread to manage cache.
+                setContainerCacheFillingRunning(false);
+                m_containerCacheFillingThread.join();
             }
 
-            // Next, clean up any PlayerDelegates that might have deferred playback.
-            {
-                Lock l(m_mapOfPlayerDelegatesMutex);
-                m_mapOfPlayerDelegates.clear();
-            }
+            // Free the map of cached container entries.
+            m_recMemIndex.reset();
 
-
-            // Clear shared memories created for compressed images.
-            m_mapOfSharedMemoriesForCompressedImages.clear();
+            m_recFile.close();
         }
 
-        void Player::registerPlayerDelegate(const uint32_t &containerID, PlayerDelegate *p) {
+        ////////////////////////////////////////////////////////////////////////
+
+        void Player::setPlayerListener(PlayerListener *pl) {
+            Lock l(m_playerListenerMutex);
+            m_playerListener = pl;
+        }
+
+        void Player::registerPlayerDelegate(const uint32_t &containerID, PlayerDelegate *pd) {
             Lock l(m_mapOfPlayerDelegatesMutex);
 
             // First, check if we have registered an existing PlayerDelegate for the given ID.
@@ -116,175 +138,361 @@ namespace odtools {
                 m_mapOfPlayerDelegates.erase(delegate);
             }
 
-            if (p != NULL) {
-                m_mapOfPlayerDelegates[containerID] = p;
+            if (NULL != pd) {
+                m_mapOfPlayerDelegates[containerID] = pd;
             }
         }
 
-        Container Player::getNextContainerToBeSent() {
-            Container retVal;
+        ////////////////////////////////////////////////////////////////////////
 
-            // Update cache in the sychronous case.
-            if ( (m_playerCache.get() != NULL) && (!m_threading) ) {
-                m_playerCache->updateCache();
-            }
+        void Player::initializeIndex() {
+            m_recFile.open(m_url.getResource().c_str(), ios_base::in|ios_base::binary);
+            m_recFileValid = m_recFile.good();
 
-            // Check, if we are "at the beginning".
-            if (m_seekToTheBeginning) {
-                // Read the "actual" (first) container.
-                if (m_playerCache->getNumberOfEntries() > 0) {
-                    m_actual = m_playerCache->getNextContainer();
-                }
+            // Determine file size to display progress.
+            m_recFile.seekg(0, m_recFile.end);
+                int64_t fileLength = m_recFile.tellg();
+            m_recFile.seekg(0, m_recFile.beg);
 
-                // Disable this state.
-                m_seekToTheBeginning = false;
+            // Read complete file and store file positions to containers to create
+            // index of available data. The actual reading of Containers is deferred.
+            uint64_t totalBytesRead = 0;
+            const TimeStamp BEFORE;
+            {
+                int32_t oldPercentage = -1;
+                while (m_recFile.good()) {
+                    const uint64_t POS_BEFORE = m_recFile.tellg();
+                        Container c;
+                        m_recFile >> c;
+                    const uint64_t POS_AFTER = m_recFile.tellg();
 
-                // Don't skip reading successor.
-                m_successorProcessed = true;
-            }
+                    if (!m_recFile.eof()) {
+                        totalBytesRead += (POS_AFTER - POS_BEFORE);
 
-            // While there are more containers, read the "successor" of the "actual" container.
-            if (m_successorProcessed) {
-                if (m_playerCache->getNumberOfEntries() > 0) {
-                    m_successor = m_playerCache->getNextContainer();
+                        // Store mapping .rec file position --> index entry.
+                        m_index.emplace(std::make_pair(c.getSampleTimeStamp().toMicroseconds(),
+                                                       IndexEntry(c.getSampleTimeStamp().toMicroseconds(), POS_BEFORE)));
 
-                    if (m_successor.getDataType() != Container::UNDEFINEDDATA) {
-                        // Indicate that the successor needs to be processed.
-                        m_successorProcessed = false;
-                    }
-                    else {
-                        // If the container contains undefined data and autorewind is chosen, seek to the beginning.
-                        if (m_autoRewind) {
-                            // Change internal state to "at the beginning".
-                            m_seekToTheBeginning = true;
+                        const int32_t percentage = static_cast<int32_t>(static_cast<float>(m_recFile.tellg()*100.0)/static_cast<float>(fileLength));
+                        if ( (percentage % 5 == 0) && (percentage != oldPercentage) ) {
+                            clog << "[odtools::player::Player]: Indexed " << percentage << "% from " << m_url.toString() << "." << endl;
+                            oldPercentage = percentage;
                         }
                     }
                 }
-                else {
-                    m_noMoreData = true;
-                }
             }
+            const TimeStamp AFTER;
 
-            // Here, the time gap between two containers is calculated.
-            if ( (m_actual.getDataType() != Container::UNDEFINEDDATA) &&
-                 (m_successor.getDataType() != Container::UNDEFINEDDATA) ) {
-                TimeStamp delta = m_successor.getSampleTimeStamp() - m_actual.getSampleTimeStamp();
-                if (!(delta.toMicroseconds() < 0)) {
-                    m_delay = static_cast<long>(delta.toMicroseconds());
-                }
+            // Reset pointer to beginning of the .rec file.
+            if (m_recFileValid) {
+                clog << "[odtools::player::Player]: " << m_url.getResource()
+                                      << " contains " << m_index.size() << " entries; "
+                                      << "read " << totalBytesRead << " bytes "
+                                      << "in " << (AFTER-BEFORE).toMicroseconds()/(1000.0*1000.0) << "s." << endl;
             }
+        }
 
-            // First, check if we need to delegate storing this container.
-            bool wasContainerDelegated = false;
-            {
-                Lock l(m_mapOfPlayerDelegatesMutex);
-                auto delegate = m_mapOfPlayerDelegates.find(m_actual.getDataType());
-                if (delegate != m_mapOfPlayerDelegates.end()) {
-                    Container replacementContainer = delegate->second->process(m_actual);
+        void Player::resetCaches() {
+            Lock l(m_indexMutex);
+            m_delay = m_correctedDelay = 0;
+            m_containerCache.clear();
+        }
 
-                    wasContainerDelegated = true;
+        void Player::resetIterators() {
+            Lock l(m_indexMutex);
+            // Point to first entry in index.
+            m_nextEntryToReadFromRecFile
+                = m_previousContainerAlreadyReplayed
+                = m_currentContainerToReplay
+                = m_index.begin();
+            // Invalidate iterator for erasing entries point.
+            m_previousPreviousContainerAlreadyReplayed = m_index.end();
+        }
 
-                    // Replace m_actual with the replacement Container.
-                    m_actual = replacementContainer;
+        void Player::computeInitialCacheLevelAndFillCache() {
+            if (m_recFileValid && (m_index.size() > 0) ) {
+                int64_t smallestSampleTimePoint = numeric_limits<int64_t>::max();
+                int64_t largestSampleTimePoint = numeric_limits<int64_t>::min();
+                for (auto it = m_index.begin(); it != m_index.end(); it++) {
+                    smallestSampleTimePoint = std::min(smallestSampleTimePoint, it->first);
+                    largestSampleTimePoint = std::max(largestSampleTimePoint, it->first);
                 }
+
+                const uint32_t ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY = std::ceil(m_index.size()*(static_cast<float>(Player::ONE_SECOND_IN_MICROSECONDS))/(largestSampleTimePoint - smallestSampleTimePoint));
+                m_desiredInitialLevel = std::max<uint32_t>(ENTRIES_TO_READ_PER_SECOND_FOR_REALTIME_REPLAY * Player::LOOK_AHEAD_IN_S,
+                                                           MIN_ENTRIES_FOR_LOOK_AHEAD);
+
+                clog << "[odtools::player::Player]: Initializing cache with " << m_desiredInitialLevel << " entries." << endl;
+
+                resetCaches();
+                resetIterators();
+                fillContainerCache(m_desiredInitialLevel);
             }
+        }
 
+        uint32_t Player::fillContainerCache(const uint32_t &maxNumberOfEntriesToReadFromFile) {
+            uint32_t entriesReadFromFile = 0;
+            if (m_recFileValid && (maxNumberOfEntriesToReadFromFile > 0)) {
+                // Reset any fstream's error states.
+                m_recFile.clear();
 
-            if (!wasContainerDelegated) {
-                // If the actual container is a SharedImage then copy next entry into the shared memory before sending the actual container.
-                if (m_actual.getDataType() == odcore::data::image::SharedImage::ID()) {
-                    m_playerCache->copyMemoryToSharedMemory(m_actual);
-                }
+                while ( (m_nextEntryToReadFromRecFile != m_index.end())
+                     && (entriesReadFromFile < maxNumberOfEntriesToReadFromFile) ) {
+                    // Move to corresponding position in the .rec file.
+                    m_recFile.seekg(m_nextEntryToReadFromRecFile->second.m_filePosition);
 
-                // If the actual container is a SharedData then copy next entry into the shared memory before sending the actual container.
-                if (m_actual.getDataType() == odcore::data::SharedData::ID()) {
-                    m_playerCache->copyMemoryToSharedMemory(m_actual);
-                }
+                    // Read the corresponding container.
+                    Container c;
+                    m_recFile >> c;
 
-                // If the actual container is a SharedPointCloud then copy next entry into the shared memory before sending the actual container.
-                if (m_actual.getDataType() == odcore::data::SharedPointCloud::ID()) {
-                    m_playerCache->copyMemoryToSharedMemory(m_actual);
-                }
-            }
-
-            // Return the m_actual container as retVal in the case of a
-            // non-compressed image container as compressed images will
-            // be replaced by shared images below.
-            retVal = m_actual;
-
-            // If the actual container is a COMPRESSED_IMAGE then decode it and replace the container with a shared image before sending the actual container.
-            if (m_actual.getDataType() == odcore::data::image::CompressedImage::ID()) {
-                odcore::data::image::CompressedImage ci = m_actual.getData<odcore::data::image::CompressedImage>();
-
-                // Check, whether a shared memory was already created for this compressed image; otherwise, create it and save it for later.
-                map<string, std::shared_ptr<odcore::wrapper::SharedMemory> >::iterator it = m_mapOfSharedMemoriesForCompressedImages.find(ci.getName());
-                if (it == m_mapOfSharedMemoriesForCompressedImages.end()) {
-                    std::shared_ptr<odcore::wrapper::SharedMemory> sp = odcore::wrapper::SharedMemoryFactory::createSharedMemory(ci.getName(), ci.getSize());
-                    m_mapOfSharedMemoriesForCompressedImages[ci.getName()] = sp;
-                }
-
-                // Get the shared memory to put the uncompressed image into.
-                std::shared_ptr<odcore::wrapper::SharedMemory> sp = m_mapOfSharedMemoriesForCompressedImages[ci.getName()];
-
-                int width = 0;
-                int height = 0;
-                int bpp = 0;
-
-                // Decompress image data.
-                unsigned char *imageData = odcore::wrapper::jpg::JPG::decompress(ci.getRawData(), ci.getCompressedSize(), &width, &height, &bpp, ci.getBytesPerPixel());
-
-                if ( (imageData != NULL) &&
-                     (width > 0) &&
-                     (height > 0) &&
-                     (bpp > 0) ) {
-                    // Lock shared memory to store the uncompressed data.
-                    if (sp->isValid()) {
-                        Lock l(sp);
-                        ::memcpy(sp->getSharedMemory(), imageData, width * height * bpp);
+                    // Store the container in the container cache.
+                    {
+                        Lock l(m_indexMutex);
+                        m_nextEntryToReadFromRecFile->second.m_available = m_containerCache.emplace(std::make_pair(m_nextEntryToReadFromRecFile->second.m_filePosition, c)).second;
                     }
 
-                    // As we have now the decompressed image data in memory, create a SharedMemory data structure to describe it.
-                    odcore::data::image::SharedImage si;
-                    si.setName(ci.getName());
-                    si.setWidth(ci.getWidth());
-                    si.setHeight(ci.getHeight());
-                    si.setBytesPerPixel(ci.getBytesPerPixel());
-                    si.setSize(ci.getWidth() * ci.getHeight() * ci.getBytesPerPixel());
-
-                    // Distribute the SharedImage information in the UDP multicast session.
-                    retVal = Container(si);
-                    retVal.setSentTimeStamp(m_actual.getSentTimeStamp());
-                    retVal.setReceivedTimeStamp(m_actual.getReceivedTimeStamp());
-                    retVal.setSampleTimeStamp(m_actual.getSampleTimeStamp());
+                    m_nextEntryToReadFromRecFile++;
+                    entriesReadFromFile++;
                 }
-
-                OPENDAVINCI_CORE_FREE_POINTER(imageData);
             }
 
-            // Process the "successor" container as the next "actual" one.
-            m_actual = m_successor;
+            return entriesReadFromFile;
+        }
 
-            // The actual container has been sent, therefore, the successor becomes the next actual container.
-            m_successorProcessed = true;
+        void Player::checkForEndOfIndexAndThrowExceptionOrAutoRewind() throw (odcore::exceptions::ArrayIndexOutOfBoundsException) {
+            // If at "EOF", either throw exception or autorewind.
+            if (m_currentContainerToReplay == m_index.end()) {
+                if (!m_autoRewind) {
+                    OPENDAVINCI_CORE_THROW_EXCEPTION(ArrayIndexOutOfBoundsException, "m_currentContainerToReplay != m_index.end() failed.");
+                }
+                else {
+                    rewind();
+                }
+            }
+        }
 
+        Container Player::getNextContainerToBeSent() throw (odcore::exceptions::ArrayIndexOutOfBoundsException) {
+            static int64_t lastContainersSampleTimeStamp = 0;
+            TimeStamp thisTimePointCallingThisMethod;
+
+            // Check if the .rec file is at end but the .rec.mem file has still content to replay.
+            bool hasNoMoreDataFromRecFileButFromRecMemFile = false;
+            {
+                Lock l(m_indexMutex);
+                hasNoMoreDataFromRecFileButFromRecMemFile = (!hasMoreDataFromRecFile() && hasMoreDataFromRecMemFile());
+            }
+            if (hasNoMoreDataFromRecFileButFromRecMemFile) {
+                if (NULL != m_recMemIndex.get()) {
+                    Container retVal = m_recMemIndex->makeNextRawMemoryEntryAvailable();
+                    int64_t currentContainersSampleTimeStamp = retVal.getSampleTimeStamp().toMicroseconds();
+                    m_correctedDelay = m_delay = ((lastContainersSampleTimeStamp > 0) ? (currentContainersSampleTimeStamp - lastContainersSampleTimeStamp) : static_cast<int64_t>(Player::MAX_DELAY_IN_MICROSECONDS));
+                    lastContainersSampleTimeStamp = currentContainersSampleTimeStamp;
+                    return retVal;
+                }
+            }
+
+            checkForEndOfIndexAndThrowExceptionOrAutoRewind();
+
+            checkAvailabilityOfNextContainerToBeReplayed();
+
+            Lock l(m_indexMutex);
+            Container retVal;
+            Container &nextContainer = m_containerCache[m_currentContainerToReplay->second.m_filePosition];
+
+            // Check if the next Container + shared memory comes from the .rec.mem file.
+            const int64_t recContainerSampleTime = nextContainer.getSampleTimeStamp().toMicroseconds();
+            bool replayContainerFromRecMem = false;
+            if (NULL != m_recMemIndex.get() && hasMoreDataFromRecMemFile()) {
+                int64_t recMemContainerSampleTime = m_recMemIndex->peekNextSampleTimeToPlayBack();
+
+                if ((replayContainerFromRecMem = (recContainerSampleTime > recMemContainerSampleTime))) {
+                    retVal = m_recMemIndex->makeNextRawMemoryEntryAvailable();
+                    m_correctedDelay = m_delay = retVal.getSampleTimeStamp().toMicroseconds() - m_previousContainerAlreadyReplayed->first;
+                }
+            }
+
+            // Playback from .rec file.
+            if (!replayContainerFromRecMem) {
+                // Check if there is a PlayerDelegate registered for this container
+                // to handle, for instance, .h264 decoding.
+                {
+                    Lock l2(m_mapOfPlayerDelegatesMutex);
+                    auto delegate = m_mapOfPlayerDelegates.find(nextContainer.getDataType());
+                    if (delegate != m_mapOfPlayerDelegates.end()) {
+                        // Replace m_actual with the replacement Container.
+                        retVal = delegate->second->process(nextContainer);
+                    }
+                    else {
+                        // Use original container.
+                        retVal = nextContainer;
+                    }
+                }
+
+                m_correctedDelay = m_delay = m_currentContainerToReplay->first - m_previousContainerAlreadyReplayed->first;
+
+                // TODO: Delegate deleting into own thread.
+                if (m_previousPreviousContainerAlreadyReplayed != m_index.end()) {
+                    auto it = m_containerCache.find(m_previousContainerAlreadyReplayed->second.m_filePosition);
+                    if (it != m_containerCache.end()) {
+                        m_containerCache.erase(it);
+                    }
+                }
+
+                m_previousPreviousContainerAlreadyReplayed = m_previousContainerAlreadyReplayed;
+                m_previousContainerAlreadyReplayed = m_currentContainerToReplay++;
+
+                m_numberOfReturnedContainersInTotal++;
+
+                // Use ELAPSED to compensate for internal data processing.
+                const uint64_t ELAPSED = (thisTimePointCallingThisMethod - m_firstTimePointReturningAContainer).toMicroseconds();
+                m_correctedDelay -= (m_correctedDelay > ELAPSED) ? ELAPSED : 0;
+            }
+
+            // If Player is non-threaded, manage cache regularly.
+            if (!m_threading) {
+                float refillMultiplicator = 1.1;
+                checkRefillingCache(m_index.size(), refillMultiplicator);
+            }
+
+            // Store sample time stamp as int64 to avoid unnecessary copying of Containers.
+            lastContainersSampleTimeStamp = retVal.getSampleTimeStamp().toMicroseconds();
             return retVal;
         }
 
+        void Player::checkAvailabilityOfNextContainerToBeReplayed() {
+            int32_t numberOfEntries = 0;
+            do {
+                {
+                    Lock l(m_indexMutex);
+                    numberOfEntries = m_containerCache.size();
+                }
+                if (0 == numberOfEntries) {
+                    Thread::usleepFor(10 * Player::ONE_MILLISECOND_IN_MICROSECONDS);
+                }
+            }
+            while (0 == numberOfEntries);
+        }
+
+        ////////////////////////////////////////////////////////////////////////
+
+        uint32_t Player::getTotalNumberOfContainersInRecFile() const {
+            Lock l(m_indexMutex);
+            return m_index.size();
+        }
+
         uint32_t Player::getDelay() const {
-            return m_delay;
+            Lock l(m_indexMutex);
+            // Make sure that delay is not exceeding the specified maximum delay.
+            return std::min<uint32_t>(m_delay, Player::MAX_DELAY_IN_MICROSECONDS);
+        }
+
+        uint32_t Player::getCorrectedDelay() const {
+            Lock l(m_indexMutex);
+            // Make sure that delay is not exceeding the specified maximum delay.
+            return std::min<uint32_t>(m_correctedDelay, Player::MAX_DELAY_IN_MICROSECONDS);
         }
 
         void Player::rewind() {
-            // Clear cache and wait for new data.
-            m_playerCache->clearQueueRewindInputStreams();
+            if (m_threading) {
+                // Stop concurrent thread.
+                setContainerCacheFillingRunning(false);
+                m_containerCacheFillingThread.join();
+            }
 
-            // Reset our own states.
-            m_seekToTheBeginning = true;
-            m_noMoreData = false;
+            computeInitialCacheLevelAndFillCache();
+
+            if (m_threading) {
+                // Re-start concurrent thread.
+                setContainerCacheFillingRunning(true);
+                m_containerCacheFillingThread = std::thread(&Player::manageCache, this);
+            }
+
+            // Propagate rewind to .rec.mem file.
+            if (NULL != m_recMemIndex.get()) {
+                m_recMemIndex->rewind();
+            }
         }
 
         bool Player::hasMoreData() const {
-            return !m_noMoreData;
+            Lock l(m_indexMutex);
+            // Check both, the status of the .rec file and the .rec.mem file.
+            return ( hasMoreDataFromRecFile() || hasMoreDataFromRecMemFile() );
+        }
+
+        bool Player::hasMoreDataFromRecFile() const {
+            // File must be successfully opened AND
+            //  the Player must be configured as m_autoRewind OR
+            //  some entries are left to replay.
+            return (m_recFileValid && (m_autoRewind || (m_currentContainerToReplay != m_index.end())));
+        }
+
+        bool Player::hasMoreDataFromRecMemFile() const {
+            return ((NULL != m_recMemIndex.get()) && (m_recMemIndex->hasMoreData()));
+        }
+
+        ////////////////////////////////////////////////////////////////////////
+
+        void Player::setContainerCacheFillingRunning(const bool &running) {
+            Lock l(m_containerCacheFillingThreadIsRunningMutex);
+            m_containerCacheFillingThreadIsRunning = running;
+        }
+
+        bool Player::isContainerCacheFillingRunning() const {
+            Lock l(m_containerCacheFillingThreadIsRunningMutex);
+            return m_containerCacheFillingThreadIsRunning;
+        }
+
+        void Player::manageCache() {
+            uint8_t statisticsCounter = 0;
+            float refillMultiplicator = 1.1;
+            uint32_t numberOfEntries = 0;
+            uint32_t numberOfEntriesInIndex = 0;
+            {
+                Lock l(m_indexMutex);
+                numberOfEntriesInIndex = m_index.size();
+            }
+
+            while (isContainerCacheFillingRunning()) {
+                {
+                    Lock l(m_indexMutex);
+                    numberOfEntries = m_containerCache.size();
+                }
+
+                // Check if refilling of the cache is needed.
+                refillMultiplicator = checkRefillingCache(numberOfEntries, refillMultiplicator);
+
+                // Manage cache at 10 Hz.
+                Thread::usleepFor(100 * Player::ONE_MILLISECOND_IN_MICROSECONDS);
+
+                // Publish some statistics at 1 Hz.
+                if ( 0 == ((++statisticsCounter) % 10) ) {
+                    uint32_t numberOfReturnedContainersInTotal = 0;
+                    {
+                        // m_numberOfReturnedContainersInTotal is modified in a different thread.
+                        Lock l(m_indexMutex);
+                        numberOfReturnedContainersInTotal = m_numberOfReturnedContainersInTotal;
+                    }
+                    {
+                        Lock l(m_playerListenerMutex);
+                        if (NULL != m_playerListener) {
+                            m_playerListener->percentagePlayedBack(numberOfReturnedContainersInTotal/static_cast<float>(numberOfEntriesInIndex));
+                        }
+                    }
+                    statisticsCounter = 0;
+                }
+            }
+        }
+
+        float Player::checkRefillingCache(const uint32_t &numberOfEntries, float refillMultiplicator) {
+            // If filling level is around 35%, pour in more from the recording.
+            if (numberOfEntries < 0.35*m_desiredInitialLevel) {
+                const uint32_t entriesReadFromFile = fillContainerCache(refillMultiplicator * m_desiredInitialLevel);
+                if (entriesReadFromFile > 0) {
+                    clog << "[odtools::player::Player]: Number of entries in cache: "  << numberOfEntries << ". " << entriesReadFromFile << " added to cache. " << m_containerCache.size() << " entries available." << endl;
+                    refillMultiplicator *= 1.25;
+                }
+            }
+            return refillMultiplicator;
         }
 
     } // player
