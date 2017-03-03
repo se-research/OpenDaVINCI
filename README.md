@@ -16,7 +16,7 @@ You will find different projects that are using OpenDaVINCI here: http://opendav
 
 *Lastest source code deployment:* https://github.com/se-research/OpenDaVINCI/releases/latest
 
-*Latest Docker deployment:* https://hub.docker.com/r/seresearch/opendavinci-ubuntu-amd64/tags/
+*Latest Docker deployment:* https://hub.docker.com/r/seresearch/opendavinci-ubuntu-16.04-complete/tags/
 
 *Latest Docker simulation deployment:* https://hub.docker.com/r/seresearch/odsimulation/tags/
 
