@@ -30,8 +30,7 @@
 
 #include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/io/conference/ContainerListener.h"
-#include "opendavinci/odcore/reflection/Helper.h"
-#include "opendavinci/odcore/reflection/Message.h"
+#include "opendavinci/odcore/reflection/MessageResolver.h"
 
 class QTreeWidget;
 class QTreeWidgetItem;
@@ -47,21 +46,6 @@ namespace cockpit {
 
             using namespace std;
             using namespace odcore::data;
-
-            class HelperEntry {
-                public:
-                    HelperEntry(const HelperEntry &/*obj*/);
-                    HelperEntry& operator=(const HelperEntry &/*obj*/);
-
-                public:
-                    HelperEntry();
-                    virtual ~HelperEntry();
-
-                public:
-                    string m_library;
-                    void *m_dynamicObjectHandle;
-                    odcore::reflection::Helper *m_helper;
-            };
 
             /**
              * This class is the container for the livefeed widget.
@@ -83,8 +67,7 @@ namespace cockpit {
                      * already at compile time for unwanted bugs caused by any misuse
                      * of the assignment operator.
                      */
-                    LiveFeedWidget&
-                    operator=(const LiveFeedWidget &/*obj*/);
+                    LiveFeedWidget& operator=(const LiveFeedWidget &/*obj*/);
 
                 public:
                     /**
@@ -104,25 +87,18 @@ namespace cockpit {
                     void treeItemChanged(QTreeWidgetItem*, int);
 
                 private:
-                    void findAndLoadSharedLibraries();
-                    void unloadSharedLibraries();
-                    vector<string> getListOfLibrariesToLoad(const vector<string> &paths);
-
                     void transformContainerToTree(Container &container);
 
-                    odcore::reflection::Message resolve(odcore::data::Container &c, bool &successfullyMapped);
-
                 private:
+                    unique_ptr<odcore::reflection::MessageResolver> m_messageResolver;
                     odcore::base::Mutex m_dataViewMutex;
                     QLabel *m_lastContainerSampleTime;
-                    QTreeWidget *m_dataView;
+                    QTreeWidget* m_dataView;
+                    map<string, QTreeWidgetItem* > m_dataToType;
                     map<int32_t, string> m_containerTypeToName;
+
                     odcore::base::Mutex m_containerTypeResolvingMutex;
                     map<string, bool> m_containerTypeResolving;
-                    map<string, QTreeWidgetItem*> m_dataToType;
-
-                    vector<string> m_listOfLibrariesToLoad;
-                    vector<HelperEntry> m_listOfHelpers;
             };
 
         }
