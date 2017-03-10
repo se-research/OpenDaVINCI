@@ -17,7 +17,7 @@ namespace automotive {
             setFromUINT64(gcm.getData(), gcm.getLength());
         }
 
-        CANMessage::CANMessage(const uint64_t identifier, const uint8_t length, const uint64_t payload) :
+        CANMessage::CANMessage(const uint64_t& identifier, const uint8_t& length, const uint64_t& payload) :
             m_payload(),
             m_signals() {
             setIdentifier(identifier);
@@ -52,7 +52,7 @@ namespace automotive {
         
         vector<uint8_t> CANMessage::invertPayloadVector(vector<uint8_t> payload) {
             vector<uint8_t> temp;
-            for(int8_t i=payload.size()-1;i>=0;--i) {
+            for(int8_t i=getLength()-1;i>=0;--i) {
                 temp.push_back(payload.at(i));
             }
             return temp;
@@ -84,7 +84,7 @@ namespace automotive {
             return gcm;
         }
         
-        bool CANMessage::addSignal(const uint16_t key, const CANSignal signal) {
+        bool CANMessage::addSignal(const uint16_t& key, const CANSignal& signal) {
             std::pair<std::map<const uint16_t, const CANSignal>::iterator,bool> result;
             result = m_signals.insert ( std::pair<const uint16_t, const CANSignal>(key, signal) );
             return result.second;
@@ -123,14 +123,14 @@ namespace automotive {
             return startBit%8;
         }
 
-        void CANMessage::encodeSignal(const uint16_t key, double value) {
+        void CANMessage::encodeSignal(const uint16_t& key, double& value) {
             std::map<const uint16_t, const CANSignal>::iterator it;
             it=m_signals.find(key);
             if(it != m_signals.end())
                 encodeSignal(it->second, value);
         }
         
-        void CANMessage::encodeSignal(const CANSignal signal, double value) {
+        void CANMessage::encodeSignal(const CANSignal& signal, double& value) {
             // if the range is [0,0], skip the range check
             double tolerance=1e-5;
             if(!(signal.m_rangeB-signal.m_rangeE<tolerance && signal.m_rangeB<tolerance)) {
@@ -324,7 +324,7 @@ namespace automotive {
             return signalValue;
         }
         
-        CANSignal::CANSignal(const uint8_t startBit, const uint8_t length, const string signedness, const string endianness, const double factor, const double offset, const double rangeB, const double rangeE) : 
+        CANSignal::CANSignal(const uint8_t& startBit, const uint8_t& length, const string& signedness, const string& endianness, const double& factor, const double& offset, const double& rangeB, const double& rangeE) : 
             m_startBit(startBit),
             m_length(length),
             m_signedness(),

@@ -12,10 +12,13 @@ namespace automotive {
         class CANMessage;
         
         class CANSignal {
+            
+            using namespace std;
+            
             friend class CANMessage;
             
             public:
-                CANSignal(const uint8_t, const uint8_t, const string, const string, const double, const double, const double, const double);
+                CANSignal(const uint8_t&, const uint8_t&, const string&, const string&, const double&, const double&, const double&, const double&);
                 
                 string toString() const;
                 
@@ -36,16 +39,16 @@ namespace automotive {
             public: 
                 CANMessage(const GenericCANMessage&);
                 CANMessage(const CANMessage&);
-                CANMessage(const uint64_t, const uint8_t, const uint64_t);
+                CANMessage(const uint64_t&, const uint8_t&, const uint64_t&);
                 
                 uint64_t getPayloadToUINT64();
                 automotive::GenericCANMessage getGenericCANMessage();
                 
-                bool addSignal(const uint16_t, const CANSignal);
+                bool addSignal(const uint16_t&, const CANSignal&);
                 double decodeSignal(const uint16_t);
                 double decodeSignal(const CANSignal);
-                void encodeSignal(const uint16_t, double);
-                void encodeSignal(const CANSignal, double);
+                void encodeSignal(const uint16_t&, double&);
+                void encodeSignal(const CANSignal&, double&);
             
             private:
                 CANMessage();
