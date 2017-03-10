@@ -33,7 +33,7 @@ ODVDFile:
     'using' odvdFileName = ID (';'|'.odvd' ';');
 
 CANMessage: 
-    ('CAN Message'|'CAN message') canIdentifier = HEXNUMBER canMessageName = ValidIdentifier ':' canMessageLength = FLOATNUMBER '{'
+    ('CAN Message'|'CAN message') canIdentifier = HEXNUMBER canMessageName = ValidIdentifier 'is' canMessageLength = FLOATNUMBER ('byte'|'bytes') '{'
         cansignals += CANSignal+
     '}';
 
