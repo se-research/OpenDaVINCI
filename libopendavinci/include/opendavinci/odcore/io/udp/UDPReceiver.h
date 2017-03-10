@@ -1,6 +1,6 @@
 /**
  * OpenDaVINCI - Portable middleware for distributed components.
- * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
+ * Copyright (C) 2017 Christian Berger
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,8 +22,8 @@
 
 #include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/io/PacketObserver.h"
+#include "opendavinci/odcore/io/PacketPipeline.h"
 #include "opendavinci/odcore/io/StringObserver.h"
-#include "opendavinci/odcore/io/StringPipeline.h"
 #include "opendavinci/generated/odcore/data/Packet.h"
 
 namespace odcore { namespace io { class PacketListener; } }
@@ -137,10 +137,10 @@ namespace odcore {
                     void nextPacket(const odcore::data::Packet &p);
 
                 private:
-                    StringPipeline m_stringPipeline;
+                    odcore::base::Mutex m_stringListenerMutex;
+                    StringListener *m_stringListener;
 
-                    odcore::base::Mutex m_packetListenerMutex;
-                    PacketListener *m_packetListener;
+                    PacketPipeline m_packetPipeline;
             };
 
         }

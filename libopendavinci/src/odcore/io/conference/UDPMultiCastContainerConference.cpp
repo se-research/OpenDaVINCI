@@ -56,7 +56,7 @@ namespace odcore {
                 }
 
                 // Register ourselves as string listeners.
-                m_receiver->setStringListener(this);
+                m_receiver->setPacketListener(this);
 
                 // Start receiving.
                 m_receiver->start();
@@ -70,14 +70,15 @@ namespace odcore {
                 m_receiver->setStringListener(NULL);
             }
 
-            void UDPMultiCastContainerConference::nextString(const string &s) {
+            void UDPMultiCastContainerConference::nextPacket(const Packet &p) {
                 if (hasContainerListener()) {
                     Container container;
 
-                    stringstream stringstreamData(s);
+                    stringstream stringstreamData(p.getData());
                     stringstreamData >> container;
 
-                    container.setReceivedTimeStamp(TimeStamp());
+                    // Set received time stamp based on information from packet.
+                    container.setReceivedTimeStamp(TimeStamp(p.getReceived()));
 
                     // Use superclass to distribute any received containers.
                     receive(container);

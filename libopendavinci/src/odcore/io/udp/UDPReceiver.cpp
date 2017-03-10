@@ -1,6 +1,6 @@
 /**
  * OpenDaVINCI - Portable middleware for distributed components.
- * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
+ * Copyright (C) 2017 Christian Berger
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,7 +18,7 @@
  */
 
 #include "opendavinci/odcore/base/Lock.h"
-#include "opendavinci/odcore/io/PacketListener.h"
+#include "opendavinci/odcore/io/StringListener.h"
 #include "opendavinci/odcore/io/udp/UDPReceiver.h"
 #include "opendavinci/generated/odcore/data/Packet.h"
 
@@ -32,35 +32,35 @@ namespace odcore {
             using namespace odcore::base;
 
             UDPReceiver::UDPReceiver() :
-                m_stringPipeline(),
-                m_packetListenerMutex(),
-                m_packetListener(NULL) {
-                m_stringPipeline.start();
+                m_stringListenerMutex(),
+                m_stringListener(NULL),
+                m_packetPipeline() {
+                m_packetPipeline.start();
             }
 
             UDPReceiver::~UDPReceiver() {
-                m_stringPipeline.stop();
-            }
-
-            void UDPReceiver::setPacketListener(PacketListener *pl) {
-                Lock l(m_packetListenerMutex);
-                m_packetListener = pl;
-            }
-
-            void UDPReceiver::nextPacket(const odcore::data::Packet &p) {
-                Lock l(m_packetListenerMutex);
-
-                // Pass packet either to packet listner or to string listener.
-                if (m_packetListener != NULL) {
-                    m_packetListener->nextPacket(p);
-                }
-                else {
-                    m_stringPipeline.nextString(p.getData());
-                }
+                m_packetPipeline.stop();
             }
 
             void UDPReceiver::setStringListener(StringListener *sl) {
-                m_stringPipeline.setStringListener(sl);
+                Lock l(m_stringListenerMutex);
+                m_stringListener = sl;
+            }
+
+            void UDPReceiver::setPacketListener(PacketListener *pl) {
+                m_packetPipeline.setPacketListener(pl);
+            }
+
+            void UDPReceiver::nextPacket(const odcore::data::Packet &p) {
+                Lock l(m_stringListenerMutex);
+
+                // Pass packet either to packet listner or to string listener.
+                if (m_stringListener != NULL) {
+                    m_stringListener->nextString(p.getData());
+                }
+                else {
+                    m_packetPipeline.nextPacket(p);
+                }
             }
 
         }
