@@ -18,9 +18,9 @@
  */
 
 #include "opendavinci/odcore/base/Lock.h"
-#include "opendavinci/odcore/io/Packet.h"
 #include "opendavinci/odcore/io/PacketListener.h"
 #include "opendavinci/odcore/io/udp/UDPReceiver.h"
+#include "opendavinci/generated/odcore/data/Packet.h"
 
 namespace odcore { namespace io { class StringListener; } }
 
@@ -47,7 +47,7 @@ namespace odcore {
                 m_packetListener = pl;
             }
 
-            void UDPReceiver::nextPacket(const Packet &p) {
+            void UDPReceiver::nextPacket(const odcore::data::Packet &p) {
                 Lock l(m_packetListenerMutex);
 
                 // Pass packet either to packet listner or to string listener.

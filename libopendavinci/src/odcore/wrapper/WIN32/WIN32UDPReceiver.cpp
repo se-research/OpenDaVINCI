@@ -23,9 +23,10 @@
 #include <string>
 
 #include "opendavinci/odcore/base/module/AbstractCIDModule.h"
-#include "opendavinci/odcore/io/Packet.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
 #include "opendavinci/odcore/wrapper/ConcurrencyFactory.h"
 #include "opendavinci/odcore/wrapper/WIN32/WIN32UDPReceiver.h"
+#include "opendavinci/generated/odcore/data/Packet.h"
 
 namespace odcore {
     namespace wrapper {
@@ -192,8 +193,9 @@ namespace odcore {
                             char remoteAddr[MAX_ADDR_SIZE];
                             inet_ntop(remote.ss_family, &(((struct sockaddr_in*)&remote)->sin_addr), remoteAddr, sizeof(remoteAddr));
 
-                            // ------------------------v (remote address)-----v (data)
-                            nextPacket(odcore::io::Packet(string(remoteAddr), string(m_buffer, nbytes)));
+                            // -----     -----------------  v (remote address)--v (data)------------------v (time stamp)
+                            const odcore::data::TimeStamp now;
+                            nextPacket(odcore::data::Packet(string(remoteAddr), string(m_buffer, nbytes), now));
                         }
                     }
                 }

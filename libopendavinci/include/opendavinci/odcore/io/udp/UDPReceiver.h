@@ -24,8 +24,8 @@
 #include "opendavinci/odcore/io/PacketObserver.h"
 #include "opendavinci/odcore/io/StringObserver.h"
 #include "opendavinci/odcore/io/StringPipeline.h"
+#include "opendavinci/generated/odcore/data/Packet.h"
 
-namespace odcore { namespace io { class Packet; } }
 namespace odcore { namespace io { class PacketListener; } }
 namespace odcore { namespace io { class StringListener; } }
 
@@ -134,7 +134,7 @@ namespace odcore {
                      * This method is called from deriving classes to
                      * pass newly arrived packets.
                      */
-                    void nextPacket(const Packet &p);
+                    void nextPacket(const odcore::data::Packet &p);
 
                 private:
                     StringPipeline m_stringPipeline;
