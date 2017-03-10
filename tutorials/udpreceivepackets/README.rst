@@ -43,8 +43,9 @@ UDPReceivePackets.cpp:
 
     using namespace std;
 
-    void UDPReceivePackets::nextPacket(const odcore::io::Packet &p) {
-        cout << "Received a packet from " << p.getSender() << ", "
+    void UDPReceivePackets::nextPacket(const odcore::data::Packet &p) {
+        cout << "Received a packet from " << p.getSender() << " at "
+             << p.getReceived().toString() << " "
              << "with " << p.getData().length() << " bytes containing '"
              << p.getData() << "'" << endl;
     }

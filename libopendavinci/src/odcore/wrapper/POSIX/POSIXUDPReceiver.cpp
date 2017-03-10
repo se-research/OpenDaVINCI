@@ -17,9 +17,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <iostream>
 #include <netinet/in.h>
 #include <sys/select.h>
 #include <sys/socket.h>
+
+// Include headers for more exact time stamping.
+#ifdef __linux__
+    #include <sys/ioctl.h>
+#endif
 
 // Include headers to query IP addresses from local devices.
 #ifdef __linux__
@@ -155,6 +161,9 @@ namespace odcore {
             void POSIXUDPReceiver::run() {
                 fd_set rfds;
                 struct timeval timeout;
+#ifdef __linux__
+                struct timeval socketTimeStamp;
+#endif
                 int32_t nbytes = 0;
 
                 struct sockaddr_storage remote;
@@ -190,7 +199,12 @@ namespace odcore {
                                 inet_ntop(remote.ss_family, &((reinterpret_cast<struct sockaddr_in*>(&remote))->sin_addr), remoteAddr, sizeof(remoteAddr));
 
                                 // -----     -----------------  v (remote address)--v (data)------------------v (time stamp)
+#ifdef __linux__
+                                ioctl(m_fd, SIOCGSTAMP, &socketTimeStamp);
+                                odcore::data::TimeStamp now(socketTimeStamp.tv_sec, socketTimeStamp.tv_usec);
+#else
                                 const odcore::data::TimeStamp now;
+#endif
                                 nextPacket(odcore::data::Packet(string(remoteAddr), string(m_buffer, nbytes), now));
                             }
                         }
