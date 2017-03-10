@@ -200,7 +200,12 @@ namespace odcore {
 
                                 // -----     -----------------  v (remote address)--v (data)------------------v (time stamp)
 #ifdef __linux__
-                                ioctl(m_fd, SIOCGSTAMP, &socketTimeStamp);
+                                if (0 != ioctl(m_fd, SIOCGSTAMP, &socketTimeStamp)) {
+                                    // In case the ioctl failed, use traditional vsariant.
+                                    const odcore::data::TimeStamp now;
+                                    socketTimeStamp.tv_sec = now.getSeconds();
+                                    socketTimeStamp.tv_usec = now.getMicroseconds();
+                                }
                                 odcore::data::TimeStamp now(socketTimeStamp.tv_sec, socketTimeStamp.tv_usec);
 #else
                                 const odcore::data::TimeStamp now;
