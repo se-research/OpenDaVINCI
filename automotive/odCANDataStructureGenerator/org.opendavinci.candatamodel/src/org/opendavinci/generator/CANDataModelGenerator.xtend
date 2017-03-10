@@ -67,9 +67,6 @@ class CANDataModelGenerator implements IGenerator {
         // First, extract all CAN messages from .can file.
         val mapOfDefinedCANMessages = collectDefinedCANMessages(resource.allContents.toIterable.filter(typeof(CANMessage)))
         
-		// First, extract all CAN signals from .can file.
-		//val mapOfDefinedCANSignals = collectDefinedCANSignals(resource.allContents.toIterable.filter(typeof(CANSignal)))
-		
 		// Next, extract all .odvd header names from the 'using' statement.
 		val odvdIncludedFiles = extractOdvdHeaders(resource.allContents.toIterable.filter(typeof(ODVDFile)))
 		
