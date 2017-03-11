@@ -121,6 +121,14 @@ namespace odcore {
                     virtual void setPacketListener(PacketListener *pl);
 
                     /**
+                     * This method sets a synchronous PacketListener to be used
+                     * instead of decoupled PacketPipeline.
+                     *
+                     * @param pl Synchronous PacketListener to use..
+                     */
+                    void setSynchronousPacketListener(PacketListener *pl);
+
+                    /**
                      * This method sets the port to be ignored to receive from
                      * to avoid circular data sending and receiving from the
                      * same process.
@@ -137,8 +145,9 @@ namespace odcore {
                     void nextPacket(const odcore::data::Packet &p);
 
                 private:
-                    odcore::base::Mutex m_stringListenerMutex;
+                    odcore::base::Mutex m_listenerMutex;
                     StringListener *m_stringListener;
+                    PacketListener *m_synchronousPacketListener;
 
                     PacketPipeline m_packetPipeline;
             };

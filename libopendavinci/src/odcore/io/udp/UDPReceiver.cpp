@@ -32,8 +32,9 @@ namespace odcore {
             using namespace odcore::base;
 
             UDPReceiver::UDPReceiver() :
-                m_stringListenerMutex(),
+                m_listenerMutex(),
                 m_stringListener(NULL),
+                m_synchronousPacketListener(NULL),
                 m_packetPipeline() {
                 m_packetPipeline.start();
             }
@@ -43,7 +44,7 @@ namespace odcore {
             }
 
             void UDPReceiver::setStringListener(StringListener *sl) {
-                Lock l(m_stringListenerMutex);
+                Lock l(m_listenerMutex);
                 m_stringListener = sl;
             }
 
@@ -51,12 +52,21 @@ namespace odcore {
                 m_packetPipeline.setPacketListener(pl);
             }
 
-            void UDPReceiver::nextPacket(const odcore::data::Packet &p) {
-                Lock l(m_stringListenerMutex);
+            void UDPReceiver::setSynchronousPacketListener(PacketListener *pl) {
+                Lock l(m_listenerMutex);
+                m_synchronousPacketListener = pl;
+            }
 
-                // Pass packet either to packet listner or to string listener.
+            void UDPReceiver::nextPacket(const odcore::data::Packet &p) {
+                Lock l(m_listenerMutex);
+
+                // Pass packet either to string listner, the synchronous packet
+                // listener, or to packet pipeline.
                 if (m_stringListener != NULL) {
                     m_stringListener->nextString(p.getData());
+                }
+                else if (m_synchronousPacketListener != NULL) {
+                    m_synchronousPacketListener->nextPacket(p);
                 }
                 else {
                     m_packetPipeline.nextPacket(p);
