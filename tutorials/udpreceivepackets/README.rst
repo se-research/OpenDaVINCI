@@ -98,7 +98,9 @@ On failure, the method ``createUDPReceiver`` will throw an exception of type
 If the UDP socket could be successfully created, we register our ``PacketListener``
 at the newly created ``UDPReceiver`` to be invoked when a new packet is available.
 In contrast to the ``StringListener``, the data processing for handling ``Packets``
-is not decoupled between the low level UDP socket and the user-supplied handler.
+is decoupled between the low level UDP socket and the user-supplied handler. Thus,
+whenever a new ``Packet`` has been received, it is enqueued and the user application
+is invoked from a separate thread to avoid unnecessary waiting times.
 
 Once we have registered our ``PacketListener``, the ``UDPReceiver`` is simply
 started and the main thread is falling asleep for a while in our example. After some
@@ -129,5 +131,4 @@ Our program ``udpreceivepackets`` will print::
 
     Received a packet from 127.0.0.1, with 13 bytes containing 'Hello World!
     '
-
 
