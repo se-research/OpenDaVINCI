@@ -50,6 +50,7 @@ namespace automotive {
         using namespace odcore::data;
 
         SocketCANDevice::SocketCANDevice(const string &deviceNode, GenericCANMessageListener &listener) :
+            CANDevice(),
             m_deviceNode(deviceNode),
             m_address(),
             m_socketCANMutex(),

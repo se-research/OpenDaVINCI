@@ -28,7 +28,8 @@
 #include <string>
 
 #include <opendavinci/odcore/base/Mutex.h>
-#include <opendavinci/odcore/base/Service.h>
+
+#include "CANDevice.h"
 
 namespace automotive { class GenericCANMessage; }
 
@@ -44,7 +45,7 @@ class GenericCANMessageListener;
          * wrapped into a GenericCANMessage and for writing a GenericCANDevice to the
          * socket represented by this class.
          */
-        class SocketCANDevice : public odcore::base::Service {
+        class SocketCANDevice : public CANDevice {
            private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -76,20 +77,9 @@ class GenericCANMessageListener;
 
                 virtual ~SocketCANDevice();
 
-                /**
-                 * This method returns true if the device was successfully initialized.
-                 *
-                 * @return true if the device could be successfully openend.
-                 */
-                bool isOpen() const;
+                virtual bool isOpen() const;
 
-                /**
-                 * This methods writes a GenericCANMessage to the device.
-                 *
-                 * @param gcm GenericCANMessage to be written.
-                 * @return error code from the low level sytem call.
-                 */
-                int write(const GenericCANMessage &gcm);
+                virtual int write(const GenericCANMessage &gcm);
 
                 virtual void beforeStop();
 

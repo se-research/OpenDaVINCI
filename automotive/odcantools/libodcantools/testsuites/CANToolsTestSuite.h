@@ -29,7 +29,7 @@
 #include "automotivedata/generated/automotive/GenericCANMessage.h"
 
 // Include local header files.
-#include "../include/CANDevice.h"
+#include "../include/PCANDevice.h"
 #include "../include/SocketCANDevice.h"
 #include "../include/GenericCANMessageListener.h"
 
@@ -91,7 +91,7 @@ class CANToolsTest : public CxxTest::TestSuite, public GenericCANMessageListener
             cout << ts.toString() << endl;
             cout << ts.getYYYYMMDD_HHMMSSms() << endl;
             const string DEV_NODE = "/dev/pcan32";
-            CANDevice dev(DEV_NODE, *this);
+            PCANDevice dev(DEV_NODE, *this);
             cout << endl;
             cout << "Starting CAN receive..." << endl;
             dev.start();
