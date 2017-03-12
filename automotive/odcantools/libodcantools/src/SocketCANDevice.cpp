@@ -155,9 +155,12 @@ namespace automotive {
             struct timeval timeout;
             struct timeval socketTimeStamp;
             int32_t nbytes = 0;
+#endif
 
+            // serviceReady must be called in sby case to avoid blocking of csller.
             serviceReady();
-
+            
+#ifdef __linux__
             while ( (m_socketCAN > -1) && 
                     isRunning() ) {
                     timeout.tv_sec = 1;
