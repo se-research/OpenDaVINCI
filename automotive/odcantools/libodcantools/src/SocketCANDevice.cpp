@@ -109,7 +109,7 @@ namespace automotive {
         }
 
         bool SocketCANDevice::isOpen() const {
-            return (m_socketCAN != NULL);
+            return (m_socketCAN > -1);
         }
 
         int SocketCANDevice::write(const GenericCANMessage &gcm) {
