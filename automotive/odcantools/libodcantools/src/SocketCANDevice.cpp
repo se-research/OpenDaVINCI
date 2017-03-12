@@ -157,9 +157,9 @@ namespace automotive {
             int32_t nbytes = 0;
 #endif
 
-            // serviceReady must be called in sby case to avoid blocking of csller.
+            // serviceReady must be called in any case to avoid blocking of caller.
             serviceReady();
-            
+
 #ifdef __linux__
             while ( (m_socketCAN > -1) && 
                     isRunning() ) {
