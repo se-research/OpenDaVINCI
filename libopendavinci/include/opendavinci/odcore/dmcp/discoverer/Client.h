@@ -20,17 +20,16 @@
 #ifndef OPENDAVINCI_DMCP_DISCOVER_CLIENT_H_
 #define OPENDAVINCI_DMCP_DISCOVER_CLIENT_H_
 
+#include <memory>
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
-#include <memory>
 #include "opendavinci/odcore/base/Condition.h"
 #include "opendavinci/odcore/io/PacketListener.h"
 #include "opendavinci/odcore/io/udp/UDPReceiver.h"
 #include "opendavinci/odcore/io/udp/UDPSender.h"
 #include "opendavinci/generated/odcore/data/dmcp/ServerInformation.h"
-
-namespace odcore { namespace io { class Packet; } }
+#include "opendavinci/generated/odcore/data/Packet.h"
 
 namespace odcore {
     namespace dmcp {
@@ -70,7 +69,7 @@ namespace odcore {
                 protected:
                     void sendDiscoverMessage();
                     void waitForResponse();
-                    virtual void nextPacket(const odcore::io::Packet &p);
+                    virtual void nextPacket(const odcore::data::Packet &p);
 
                     std::shared_ptr<odcore::io::udp::UDPSender> m_sender;
                     std::shared_ptr<odcore::io::udp::UDPReceiver> m_receiver;

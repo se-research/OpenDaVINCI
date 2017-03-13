@@ -358,3 +358,11 @@ message odcore.data.pcap.Packet [id = 122] {
     string payload [id = 2]; // Raw byte dump.
 }
 
+///////////////////////////////////////////////////////////////////////////////
+// This message is used to share data received from a socket.
+message odcore.data.Packet [id = 123] {
+    string sender [id = 1];
+    string data [id = 2]; // Raw byte dump.
+    odcore.data.TimePoint received [id = 3];
+}
+

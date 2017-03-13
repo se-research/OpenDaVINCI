@@ -83,6 +83,13 @@ namespace odcore {
                 TimeStamp(const TimeStamp &obj);
 
                 /**
+                 * Copy constructor.
+                 *
+                 * @param obj Reference to an object of this class.
+                 */
+                TimeStamp(const TimePoint &obj);
+
+                /**
                  * Assignment operator.
                  *
                  * @param obj Reference to an object of this class.

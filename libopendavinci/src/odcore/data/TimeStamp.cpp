@@ -164,6 +164,17 @@ namespace odcore {
             m_readableMinutes(obj.m_readableMinutes),
             m_readableSeconds(obj.m_readableSeconds) {}
 
+        TimeStamp::TimeStamp(const TimePoint &obj) :
+            TimePoint(obj),
+            m_readableYear(0),
+            m_readableMonth(0),
+            m_readableDayOfMonth(0),
+            m_readableHours(0),
+            m_readableMinutes(0),
+            m_readableSeconds(0) {
+            computeHumanReadableRepresentation();
+        }
+
         TimeStamp::~TimeStamp() {}
 
         TimeStamp& TimeStamp::operator=(const TimeStamp &obj) {
