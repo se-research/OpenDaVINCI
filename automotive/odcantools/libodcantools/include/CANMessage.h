@@ -9,11 +9,12 @@
 
 namespace automotive {
     namespace odcantools {
+        using namespace std;
+        
         class CANMessage;
         
         class CANSignal {
             
-            using namespace std;
             
             friend class CANMessage;
             
