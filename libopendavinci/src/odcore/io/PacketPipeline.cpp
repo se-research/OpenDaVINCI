@@ -1,6 +1,6 @@
 /**
  * OpenDaVINCI - Portable middleware for distributed components.
- * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
+ * Copyright (C) 2017 Christian Berger
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,39 +18,40 @@
  */
 
 #include "opendavinci/odcore/base/Lock.h"
-#include "opendavinci/odcore/io/StringPipeline.h"
+#include "opendavinci/odcore/io/PacketPipeline.h"
 
 namespace odcore {
     namespace io {
 
         using namespace std;
         using namespace odcore::base;
+        using namespace odcore::data;
 
-        StringPipeline::StringPipeline() :
+        PacketPipeline::PacketPipeline() :
             Service(),
-            StringObserver(),
-            StringListener(),
+            PacketObserver(),
+            PacketListener(),
             m_queueCondition(),
             m_queueMutex(),
             m_queue(),
-            m_stringListenerMutex(),
-            m_stringListener(NULL) {}
+            m_packetListenerMutex(),
+            m_packetListener(NULL) {}
 
-        StringPipeline::~StringPipeline() {
+        PacketPipeline::~PacketPipeline() {
             // Stop the queue.
             stop();
         }
 
-        void StringPipeline::setStringListener(StringListener *sl) {
-            Lock l(m_stringListenerMutex);
+        void PacketPipeline::setPacketListener(PacketListener *pl) {
+            Lock l(m_packetListenerMutex);
 
             // Prevent listening by ourselves!
-            if (sl != this) {
-                m_stringListener = sl;
+            if (pl != this) {
+                m_packetListener = pl;
             }
         }
 
-        void StringPipeline::nextString(const string &s) {
+        void PacketPipeline::nextPacket(const Packet &s) {
             Lock l(m_queueCondition);
 
             // Enter new data.
@@ -63,7 +64,7 @@ namespace odcore {
             m_queueCondition.wakeAll();
         }
 
-        void StringPipeline::processQueue() {
+        void PacketPipeline::processQueue() {
             uint32_t numberOfEntries = 0;
 
             // Determine the amount of current entries.
@@ -72,7 +73,7 @@ namespace odcore {
                 numberOfEntries = static_cast<uint32_t>(m_queue.size());
             }
 
-            string entry;
+            Packet entry;
             for (uint32_t i = 0; i < numberOfEntries; i++) {
                 // Acquire and remove next entry.
                 {
@@ -81,24 +82,24 @@ namespace odcore {
                     m_queue.pop();
                 }
 
-                // Read all entries and distribute using the stringListener.
+                // Read all entries and distribute using the packetListener.
                 {
-                    Lock l(m_stringListenerMutex);
-                    if (m_stringListener != NULL) {
+                    Lock l(m_packetListenerMutex);
+                    if (m_packetListener != NULL) {
                         // Distribute entry to connected listeners while NOT locking the queue.
-                        m_stringListener->nextString(entry);
+                        m_packetListener->nextPacket(entry);
                     }
                 }
             }
         }
 
-        void StringPipeline::beforeStop() {
+        void PacketPipeline::beforeStop() {
             // Wake awaiting threads.
             Lock l(m_queueCondition);
             m_queueCondition.wakeAll();
         }
 
-        void StringPipeline::run() {
+        void PacketPipeline::run() {
             serviceReady();
 
             while (isRunning()) {

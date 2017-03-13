@@ -23,6 +23,6 @@
 class UDPReceivePackets : public odcore::io::PacketListener {
 
     // Your class needs to implement the method void void nextPacket(const odcore::io::Packet &p).
-    virtual void nextPacket(const odcore::io::Packet &p);
+    virtual void nextPacket(const odcore::data::Packet &p);
 };
 

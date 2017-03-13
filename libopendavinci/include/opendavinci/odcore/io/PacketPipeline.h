@@ -1,6 +1,6 @@
 /**
  * OpenDaVINCI - Portable middleware for distributed components.
- * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
+ * Copyright (C) 2017 Christian Berger
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,17 +17,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef OPENDAVINCI_CORE_IO_STRINGPIPELINE_H_
-#define OPENDAVINCI_CORE_IO_STRINGPIPELINE_H_
+#ifndef OPENDAVINCI_CORE_IO_PACKETPIPELINE_H_
+#define OPENDAVINCI_CORE_IO_PACKETPIPELINE_H_
 
 #include <queue>
-#include <string>
 
 #include "opendavinci/odcore/base/Condition.h"
 #include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/base/Service.h"
-#include "opendavinci/odcore/io/StringListener.h"
-#include "opendavinci/odcore/io/StringObserver.h"
+#include "opendavinci/odcore/io/PacketListener.h"
+#include "opendavinci/odcore/io/PacketObserver.h"
+#include "opendavinci/generated/odcore/data/Packet.h"
 
 namespace odcore {
     namespace io {
@@ -35,33 +35,33 @@ namespace odcore {
         using namespace std;
 
         /**
-         * This class distributes strings using an asynchronous pipeline to decouple
-         * the processing of the data when invoking a StringListener at higher levels.
+         * This class distributes odcore::data::Packets using an asynchronous pipeline
+         * to decouple the processing of the data when invoking a PacketListener at higher levels.
          */
-        class StringPipeline : public odcore::base::Service, public StringObserver, public StringListener {
+        class PacketPipeline : public odcore::base::Service, public PacketObserver, public PacketListener {
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn
                  * already at compile time for unwanted bugs caused by any misuse
                  * of the copy constructor.
                  */
-                StringPipeline(const StringPipeline &);
+                PacketPipeline(const PacketPipeline &);
 
                 /**
                  * "Forbidden" assignment operator. Goal: The compiler should warn
                  * already at compile time for unwanted bugs caused by any misuse
                  * of the assignment operator.
                  */
-                StringPipeline& operator=(const StringPipeline &);
+                PacketPipeline& operator=(const PacketPipeline &);
 
             public:
-                StringPipeline();
+                PacketPipeline();
 
-                virtual ~StringPipeline();
+                virtual ~PacketPipeline();
 
-                virtual void setStringListener(StringListener *sl);
+                virtual void setPacketListener(PacketListener *pl);
 
-                virtual void nextString(const string &s);
+                virtual void nextPacket(const odcore::data::Packet &p);
 
             private:
                 virtual void beforeStop();
@@ -76,13 +76,13 @@ namespace odcore {
             private:
                 odcore::base::Condition m_queueCondition;
                 odcore::base::Mutex m_queueMutex;
-                queue<string> m_queue;
+                queue<odcore::data::Packet> m_queue;
 
-                odcore::base::Mutex m_stringListenerMutex;
-                StringListener *m_stringListener;
+                odcore::base::Mutex m_packetListenerMutex;
+                PacketListener *m_packetListener;
         };
 
     }
 } // odcore::io
 
-#endif /*OPENDAVINCI_CORE_IO_STRINGPIPELINE_H_*/
+#endif /*OPENDAVINCI_CORE_IO_PACKETPIPELINE_H_*/
