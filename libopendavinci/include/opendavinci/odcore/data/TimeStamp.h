@@ -202,6 +202,14 @@ namespace odcore {
 
                 /**
                  * This method returns this time in the following format:
+                 * YYYY-MM-DD_HHMMSS
+                 *
+                 * @return Time in the given specified format.
+                 */
+                const string getYYYYMMDD_HHMMSS_noBlankNoColons() const;
+
+                /**
+                 * This method returns this time in the following format:
                  * YYYY-MM-DD HH:MM:SS.ms
                  *
                  * @return Time in the given specified format.

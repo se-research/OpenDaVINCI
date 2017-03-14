@@ -59,7 +59,7 @@ namespace automotive {
 
                 // URL for storing containers.
                 stringstream recordingURL;
-                recordingURL << "file://" << "odcanproxy_" << TimeStamp().getYYYYMMDD_HHMMSS() << ".rec";
+                recordingURL << "file://" << "odcanproxy_" << TimeStamp().getYYYYMMDD_HHMMSS_noBlankNoColons() << ".rec";
                 // Size of memory segments.
                 const uint32_t MEMORY_SEGMENT_SIZE = 0;
                 // Number of memory segments.
