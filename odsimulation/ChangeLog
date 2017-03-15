@@ -1,3 +1,4 @@
+4.9.3 - Changed the automatic naming of recording files to cope with filesystem restrictions.
 4.9.2 - Improved timestamping for UDP packets
 4.9.1 - Compile fix
 4.9.0 - New player with better caching, fixes to odcockpit, odfilter can repair large deltas in sampleTimeStamp
