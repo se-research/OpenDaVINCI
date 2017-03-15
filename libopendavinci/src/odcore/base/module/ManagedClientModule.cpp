@@ -246,7 +246,7 @@ namespace odcore {
             void ManagedClientModule::logProfilingData(const TimeStamp &current, const TimeStamp &lastCycle, const float &freq, const long &lastWaitTime, const long &timeConsumptionCurrent, const long &nominalDuration, const long &waitingTimeCurrent, const int32_t &cycleCounter) {
                 if (m_profilingFile == NULL) {
                     stringstream sstr;
-                    sstr << getName() << "_" << TimeStamp().getYYYYMMDD_HHMMSS() << ".profiling.csv";
+                    sstr << getName() << "_" << TimeStamp().getYYYYMMDD_HHMMSS_noBlankNoColons() << ".profiling.csv";
                     m_profilingFile = new ofstream();
                     m_profilingFile->open(sstr.str().c_str(), ios::out | ios::app);
 

@@ -334,6 +334,21 @@ namespace odcore {
             return s.str();
         }
 
+        const string TimeStamp::getYYYYMMDD_HHMMSS_noBlankNoColons() const {
+            const uint32_t MONTH = getMonth();
+            const uint32_t DAY = getDay();
+            const uint32_t HOUR = getHour();
+            const uint32_t MINUTE = getMinute();
+            const uint32_t SECOND = getSecond();
+
+            stringstream s;
+            s << getYear() << "-" << ( (MONTH < 10) ? "0" : "" ) << MONTH << "-" << ( (DAY < 10) ? "0" : "" ) << DAY
+                           << "_" << ( (HOUR < 10) ? "0" : "" ) << HOUR
+                           << "" << ( (MINUTE < 10) ? "0" : "" ) << MINUTE
+                           << "" << ( (SECOND < 10) ? "0" : "" ) << SECOND;
+            return s.str();
+        }
+
         const string TimeStamp::getYYYYMMDD_HHMMSSms() const {
             stringstream s;
             s << getYYYYMMDD_HHMMSS() << "." << getMicroseconds();

@@ -63,7 +63,7 @@ namespace odrecorderh264 {
             // If omitted, generate a CID/Name/TimeStamp-based one.
             stringstream recordingURL;
             TimeStamp startOfRecording;
-            recordingURL << "file://" << "CID-" << getCID() << "-" << getName() << "_" << startOfRecording.getYYYYMMDD_HHMMSS_noBlank() << ".rec";
+            recordingURL << "file://" << "CID-" << getCID() << "-" << getName() << "_" << startOfRecording.getYYYYMMDD_HHMMSS_noBlankNoColons() << ".rec";
             recorderOutputURL = recordingURL.str();
         }
 
