@@ -85,7 +85,7 @@ namespace automotive {
 
                 // URL for storing containers.
                 stringstream recordingURL;
-                recordingURL << "file://" << "odcanbridge_" << TimeStamp().getYYYYMMDD_HHMMSS() << ".rec";
+                recordingURL << "file://" << "odcanbridge_" << TimeStamp().getYYYYMMDD_HHMMSS_noBlankNoColons() << ".rec";
                 // Size of memory segments.
                 const uint32_t MEMORY_SEGMENT_SIZE = 0;
                 // Number of memory segments.
