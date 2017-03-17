@@ -253,6 +253,7 @@ namespace odcore {
                         // Check validity of the received bytes.
                         if (!( (0x0D == byte0) && (0xA4 == byte1) )) {
                             std::cerr << "[core::base::Container] Failed to decode OpenDaVINCI container header." << std::endl;
+                            return in;
                         }
                     }
                 }
