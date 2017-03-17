@@ -29,7 +29,12 @@ IF(NOT ("${OPENDAVINCI_DIR}" STREQUAL ""))
                  NO_DEFAULT_PATH)
 
     FIND_LIBRARY(OPENDAVINCI_LIBRARY
-                 NAMES opendavinci opendavinci-static
+                 NAMES opendavinci
+                 PATHS ${OPENDAVINCI_DIR}/lib
+                 NO_DEFAULT_PATH)
+
+    FIND_LIBRARY(OPENDAVINCI_LIBRARY_STATIC
+                 NAMES opendavinci-static
                  PATHS ${OPENDAVINCI_DIR}/lib
                  NO_DEFAULT_PATH)
 ENDIF()
@@ -43,7 +48,14 @@ IF(   ("${OPENDAVINCI_INCLUDE_DIR}" STREQUAL "OPENDAVINCI_INCLUDE_DIR-NOTFOUND")
                        /usr/local/include)
 
     FIND_LIBRARY(OPENDAVINCI_LIBRARY
-                 NAMES opendavinci opendavinci-static
+                 NAMES opendavinci
+                 PATHS /usr/lib
+                       /usr/lib64
+                       /usr/local/lib
+                       /usr/local/lib64)
+
+    FIND_LIBRARY(OPENDAVINCI_LIBRARY_STATIC
+                 NAMES opendavinci-static
                  PATHS /usr/lib
                        /usr/lib64
                        /usr/local/lib
@@ -69,8 +81,10 @@ ENDIF()
 ###########################################################################
 # Set linking libraries.
 SET(OPENDAVINCI_LIBRARIES ${OPENDAVINCI_LIBRARY} ${CMAKE_THREAD_LIBS_INIT})
+SET(OPENDAVINCI_LIBRARIES_STATIC ${OPENDAVINCI_LIBRARY_STATIC} ${CMAKE_THREAD_LIBS_INIT})
 IF(LIBRT_FOUND)
     SET(OPENDAVINCI_LIBRARIES ${OPENDAVINCI_LIBRARIES} ${LIBRT_LIBRARIES})
+#    SET(OPENDAVINCI_LIBRARIES_STATIC ${OPENDAVINCI_LIBRARIES_STATIC} ${LIBRT_LIBRARIES_STATIC}) # LibRT not available for static linking?
 ENDIF()
 
 # On Mac OS X, we need to add CoreFoundation and IOKit.
