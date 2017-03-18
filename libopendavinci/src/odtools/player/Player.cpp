@@ -101,7 +101,13 @@ namespace odtools {
                 bool recMemFileAvailable = false;
                 {
                     ifstream checkForRecMemFile(recMemFile.getResource());
-                    recMemFileAvailable = checkForRecMemFile.good();
+
+                    // Only use .rec.mem files if they are larger than 0.
+                    if (checkForRecMemFile.good()) {
+                        checkForRecMemFile.seekg(0, checkForRecMemFile.end);
+                        recMemFileAvailable = (checkForRecMemFile.tellg() > 0);
+                    }
+                    checkForRecMemFile.close();
                 }
                 if (recMemFileAvailable) {
                     m_recMemIndex = unique_ptr<RecMemIndex>(new RecMemIndex(recMemFile, memorySegmentSize, numberOfMemorySegments, m_threading));
