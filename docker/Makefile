@@ -26,7 +26,7 @@ BASE_IMAGE_MINIMAL=seresearch/opendavinci
 # Tools.
 DOCKER=$(shell which docker)
 CMAKE=$(shell which cmake)
-HAS_UPX:=$(shell upx -V 2&>1 /dev/null)
+HAS_UPX:=$(shell upx -V 2>&1 /dev/null)
 UPX=$(shell which upx)
 
 ###############################################################################
