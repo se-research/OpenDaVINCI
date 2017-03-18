@@ -29,7 +29,8 @@
 #include "automotivedata/generated/automotive/GenericCANMessage.h"
 
 // Include local header files.
-#include "../include/CANDevice.h"
+#include "../include/PCANDevice.h"
+#include "../include/SocketCANDevice.h"
 #include "../include/GenericCANMessageListener.h"
 
 using namespace std;
@@ -50,6 +51,39 @@ class CANToolsTest : public CxxTest::TestSuite, public GenericCANMessageListener
         void testCase1() {
             TS_ASSERT(1 != 0);
         }
+
+        void NO_testSocketCAN() {
+            // To use this test case on Linux, run:
+            //
+            // sudo apt-get install --no-install-recommends can-utils
+            // sudo modprobe can
+            // sudo modprobe vcan
+            // sudo ip link add type vcan
+            // sudo ip link add dev vcan42 type vcan
+            // sudo ip -details -statistics link show vcan42
+            //
+            // Send test data: cansend vcan42 5A1#11.2233.44556677.88
+            // Receive test using cansniffer: cansniffer vcan42
+
+            const string DEV_NODE = "vcan42";
+            SocketCANDevice scan(DEV_NODE, *this);
+            cout << endl;
+            cout << "Starting CAN receive..." << endl;
+            scan.start();
+            Thread::usleepFor(10 * 1000 * 1000);
+
+            cout << "Sending CAN data..." << endl;
+            Thread::usleepFor(1 * 1000 * 1000);
+            GenericCANMessage gcm;
+            gcm.setIdentifier(123);
+            gcm.setLength(2);
+            gcm.setData(0xABCD);
+            scan.write(gcm);
+
+            cout << "Stopping CAN receive..." << endl;
+            scan.stop();
+        }
+
         // This is just for testing purposes.
         void NO_testCase1() {
             TimeStamp ts(1476343200, 705547);
@@ -57,13 +91,13 @@ class CANToolsTest : public CxxTest::TestSuite, public GenericCANMessageListener
             cout << ts.toString() << endl;
             cout << ts.getYYYYMMDD_HHMMSSms() << endl;
             const string DEV_NODE = "/dev/pcan32";
-            CANDevice dev(DEV_NODE, *this);
+            PCANDevice dev(DEV_NODE, *this);
             cout << endl;
             cout << "Starting CAN receive..." << endl;
             dev.start();
             Thread::usleepFor(5 * 1000);
-            dev.stop();
             cout << "Stopping CAN receive..." << endl;
+            dev.stop();
         }
 };
 
