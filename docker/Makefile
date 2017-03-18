@@ -26,6 +26,8 @@ BASE_IMAGE_MINIMAL=seresearch/opendavinci
 # Tools.
 DOCKER=$(shell which docker)
 CMAKE=$(shell which cmake)
+HAS_UPX:=$(shell upx -V 2&>1 /dev/null)
+UPX=$(shell which upx)
 
 ###############################################################################
 # Determine Git-related setting.
@@ -128,24 +130,41 @@ createDockerImageBasedOnBaseImage:
 	echo "${PROJECT_NAME}.build" > $(BUILD_PATH)/.dockerignore
 	echo "${PROJECT_NAME}.deb" >> $(BUILD_PATH)/.dockerignore
 	echo "opt-static" >> $(BUILD_PATH)/.dockerignore
+	echo "$(DOCKER_IMAGE_NAME)" >> $(BUILD_PATH)/.dockerignore
 	cd $(BUILD_PATH) && $(DOCKER) build -t seresearch/$(DOCKER_IMAGE_NAME_WITH_GIT_COMMITS_IN_CURRENT_BRANCH) . | tee $(BUILD_PATH)/${PROJECT_NAME}.build/build.log || exit 1
 	$(DOCKER) images | grep $$(tail -1 $(BUILD_PATH)/${PROJECT_NAME}.build/build.log | cut -f3 -d" ") | grep "latest" && exit 0 || $(DOCKER) tag $$(tail -1 $(BUILD_PATH)/${PROJECT_NAME}.build/build.log | cut -f3 -d" ") $(DOCKER_IMAGE_NAME_SHORT_NAME):latest
 	$(DOCKER) tag $(DOCKER_IMAGE_NAME_SHORT_NAME):latest $(DOCKER_IMAGE_NAME_SHORT_NAME):$(VERSION)
 
 createMinimalDockerImage:
-	cat $(SOURCE_TREE_PATH)/docker/Dockerfile.minimal | sed -e $(DOCKERFILE_BASEIMAGE_MINIMAL) > $(BUILD_PATH)/Dockerfile.minimal && $(CMAKE) -E remove_directory $(BUILD_PATH)/opt-static && $(CMAKE) -E copy_directory $(BUILD_PATH)/opt $(BUILD_PATH)/opt-static && $(CMAKE) -E remove_directory $(BUILD_PATH)/opt-static/${DEST_DIR}/bin && $(CMAKE) -E remove_directory $(BUILD_PATH)/opt-static/${DEST_DIR}/lib && $(CMAKE) -E remove_directory $(BUILD_PATH)/opt-static/${DEST_DIR}/man && $(CMAKE) -E remove_directory $(BUILD_PATH)/opt-static/${DEST_DIR}/include && $(CMAKE) -E remove_directory $(BUILD_PATH)/opt-static/${DEST_DIR}/share && $(CMAKE) -E rename $(BUILD_PATH)/opt-static/${DEST_DIR}/bin-static $(BUILD_PATH)/opt-static/${DEST_DIR}/bin
+	cat $(SOURCE_TREE_PATH)/docker/Dockerfile.minimal | sed -e $(DOCKERFILE_BASEIMAGE_MINIMAL) > $(BUILD_PATH)/Dockerfile.minimal
+	$(CMAKE) -E remove_directory $(BUILD_PATH)/opt-static && $(CMAKE) -E make_directory $(BUILD_PATH)/opt-static/${DEST_DIR}/bin
+	$(CMAKE) -E copy_directory $(BUILD_PATH)/opt/${DEST_DIR}/bin-static $(BUILD_PATH)/opt-static/${DEST_DIR}/bin
 	echo "${PROJECT_NAME}.build" > $(BUILD_PATH)/.dockerignore
 	echo "${PROJECT_NAME}.deb" >> $(BUILD_PATH)/.dockerignore
 	echo "opt" >> $(BUILD_PATH)/.dockerignore
+	echo "$(DOCKER_IMAGE_NAME)" >> $(BUILD_PATH)/.dockerignore
+ifdef HAS_UPX
+#	for i in $$(find $(BUILD_PATH)/opt-static/${DEST_DIR}/bin -type f -executable); do $(UPX) --ultra-brute $$i; done
+	for i in $$(find $(BUILD_PATH)/opt-static/${DEST_DIR}/bin -type f -executable); do $(UPX) -4 $$i; done
+endif
 	cd $(BUILD_PATH) && $(DOCKER) build -t seresearch/$(DOCKER_MINIMAL_IMAGE_NAME_WITH_GIT_COMMITS_IN_CURRENT_BRANCH) -f Dockerfile.minimal . | tee $(BUILD_PATH)/${PROJECT_NAME}.build/build.minimal.log || exit 1
 	$(DOCKER) images | grep $$(tail -1 $(BUILD_PATH)/${PROJECT_NAME}.build/build.minimal.log | cut -f3 -d" ") | grep "latest" && exit 0 || $(DOCKER) tag $$(tail -1 $(BUILD_PATH)/${PROJECT_NAME}.build/build.minimal.log | cut -f3 -d" ") $(DOCKER_MINIMAL_IMAGE_NAME_SHORT_NAME):latest
 	$(DOCKER) tag $(DOCKER_MINIMAL_IMAGE_NAME_SHORT_NAME):latest $(DOCKER_MINIMAL_IMAGE_NAME_SHORT_NAME):$(VERSION)
 
 ###############################################################################
 
-pushDockerImage: createDockerImage
+exportMinimalDockerImage: createMinimalDockerImage
+	$(DOCKER) save $(DOCKER_MINIMAL_IMAGE_NAME_SHORT_NAME):latest | bzip2 -9 -c > $(shell echo $(DOCKER_MINIMAL_IMAGE_NAME_SHORT_NAME) | cut -f2 -d"/")-latest.tar.bz2
+
+###############################################################################
+
+pushDockerImage:  pushDockerImageBasedOnBaseImage pushMinimalDockerImage
+
+pushDockerImageBasedOnBaseImage: createDockerImageBasedOnBaseImage
 	$(DOCKER) push $(DOCKER_IMAGE_NAME_SHORT_NAME):latest
 	$(DOCKER) push $(DOCKER_IMAGE_NAME_SHORT_NAME):$(VERSION)
+
+pushMinimalDockerImage: createMinimalDockerImage
 	$(DOCKER) push $(DOCKER_MINIMAL_IMAGE_NAME_SHORT_NAME):latest
 	$(DOCKER) push $(DOCKER_MINIMAL_IMAGE_NAME_SHORT_NAME):$(VERSION)
 
