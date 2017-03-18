@@ -102,9 +102,9 @@ INSTALL(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin COMPONENT ${PROJECT_NAME
 INSTALL(TARGETS ${PROJECT_NAME}-static RUNTIME DESTINATION bin-static COMPONENT ${PROJECT_NAME})
 
 INSTALL(CODE "MESSAGE(\"Renaming ${CMAKE_INSTALL_PREFIX}/bin-static/${PROJECT_NAME}-static to ${CMAKE_INSTALL_PREFIX}/bin-static/${PROJECT_NAME}\")")
-INSTALL(CODE " execute_process(COMMAND \"${CMAKE_COMMAND}\" -E rename \"${CMAKE_INSTALL_PREFIX}/bin-static/${PROJECT_NAME}-static\" \"${CMAKE_INSTALL_PREFIX}/bin-static/${PROJECT_NAME}\") " COMPONENT ${PROJECT_NAME})
+INSTALL(CODE " execute_process(COMMAND \"${CMAKE_COMMAND}\" -E rename \"${CMAKE_INSTALL_PREFIX}/bin-static/${PROJECT_NAME}-static\" \"${CMAKE_INSTALL_PREFIX}/bin-static/${PROJECT_NAME}\") ")
 IF(UNIX AND CMAKE_STRIP)
-    INSTALL(CODE " execute_process(COMMAND \"${CMAKE_STRIP}\" --strip-all --strip-unneeded -R .comment \"${CMAKE_INSTALL_PREFIX}/bin-static/${PROJECT_NAME}\") " COMPONENT ${PROJECT_NAME})
+    INSTALL(CODE " execute_process(COMMAND \"${CMAKE_STRIP}\" --strip-all --strip-unneeded -R .comment \"${CMAKE_INSTALL_PREFIX}/bin-static/${PROJECT_NAME}\") ")
 ENDIF()
 
 INSTALL_FILES(/bin FILES configuration)
