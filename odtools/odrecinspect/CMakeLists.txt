@@ -59,6 +59,10 @@ ADD_LIBRARY (${PROJECT_NAME}lib-static STATIC ${thisproject-sources})
 ADD_EXECUTABLE (${PROJECT_NAME} "${CMAKE_CURRENT_SOURCE_DIR}/apps/${PROJECT_NAME}.cpp")
 TARGET_LINK_LIBRARIES (${PROJECT_NAME} ${PROJECT_NAME}lib-static ${OPENDAVINCI_LIBRARIES}) 
 
+ADD_EXECUTABLE (${PROJECT_NAME}-static "${CMAKE_CURRENT_SOURCE_DIR}/apps/${PROJECT_NAME}.cpp")
+TARGET_LINK_LIBRARIES (${PROJECT_NAME}-static ${PROJECT_NAME}lib-static ${OPENDAVINCI_LIBRARIES_STATIC}) 
+SET_TARGET_PROPERTIES(${PROJECT_NAME}-static PROPERTIES LINK_FLAGS "-static -static-libgcc -static-libstdc++")
+
 ###############################################################################
 # Enable CxxTest for all available testsuites.
 IF(CXXTEST_FOUND)
@@ -94,5 +98,13 @@ ENDIF(CXXTEST_FOUND)
 ###############################################################################
 # Install this project.
 INSTALL(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin COMPONENT odtools)
+INSTALL(TARGETS ${PROJECT_NAME}-static RUNTIME DESTINATION bin-static COMPONENT odtools)
+
+INSTALL(CODE "MESSAGE(\"Renaming ${CMAKE_INSTALL_PREFIX}/bin-static/${PROJECT_NAME}-static to ${CMAKE_INSTALL_PREFIX}/bin-static/${PROJECT_NAME}\")")
+INSTALL(CODE " execute_process(COMMAND \"${CMAKE_COMMAND}\" -E rename \"${CMAKE_INSTALL_PREFIX}/bin-static/${PROJECT_NAME}-static\" \"${CMAKE_INSTALL_PREFIX}/bin-static/${PROJECT_NAME}\") ")
+IF(UNIX AND CMAKE_STRIP)
+    INSTALL(CODE " execute_process(COMMAND \"${CMAKE_STRIP}\" --strip-all --strip-unneeded -R .comment \"${CMAKE_INSTALL_PREFIX}/bin-static/${PROJECT_NAME}\") ")
+ENDIF()
+
 INSTALL(FILES man/${PROJECT_NAME}.1 DESTINATION man/man1 COMPONENT odtools)
 
