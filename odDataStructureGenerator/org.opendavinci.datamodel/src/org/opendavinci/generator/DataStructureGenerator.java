@@ -658,9 +658,15 @@ public class DataStructureGenerator {
 		sb.append("                 NO_DEFAULT_PATH)"); sb.append("\r\n");
 
 		sb.append("    FIND_LIBRARY(" + odvdFilename.toUpperCase() + "_LIBRARY"); sb.append("\r\n");
-		sb.append("                 NAMES " + odvdFilename.toLowerCase() + " " + odvdFilename.toLowerCase() + "-static"); sb.append("\r\n");
+		sb.append("                 NAMES " + odvdFilename.toLowerCase()); sb.append("\r\n");
 		sb.append("                 PATHS ${" + odvdFilename.toUpperCase() + "_DIR}/lib"); sb.append("\r\n");
 		sb.append("                 NO_DEFAULT_PATH)"); sb.append("\r\n");
+
+		sb.append("    FIND_LIBRARY(" + odvdFilename.toUpperCase() + "_LIBRARY_STATIC"); sb.append("\r\n");
+		sb.append("                 NAMES " + odvdFilename.toLowerCase() + "-static"); sb.append("\r\n");
+		sb.append("                 PATHS ${" + odvdFilename.toUpperCase() + "_DIR}/lib"); sb.append("\r\n");
+		sb.append("                 NO_DEFAULT_PATH)"); sb.append("\r\n");
+
 		sb.append("ENDIF()"); sb.append("\r\n");
 		sb.append("IF(   (\"${" + odvdFilename.toUpperCase() + "_INCLUDE_DIR}\" STREQUAL \"" + odvdFilename.toUpperCase() + "_INCLUDE_DIR-NOTFOUND\")"); sb.append("\r\n");
 		sb.append("   OR (\"${" + odvdFilename.toUpperCase() + "_DIR}\" STREQUAL \"\") )"); sb.append("\r\n");
@@ -672,11 +678,19 @@ public class DataStructureGenerator {
 		sb.append("                       /usr/local/include)"); sb.append("\r\n");
 
 		sb.append("    FIND_LIBRARY(" + odvdFilename.toUpperCase() + "_LIBRARY"); sb.append("\r\n");
-		sb.append("                 NAMES " + odvdFilename.toLowerCase() + " " + odvdFilename.toLowerCase() + "-static"); sb.append("\r\n");
+		sb.append("                 NAMES " + odvdFilename.toLowerCase()); sb.append("\r\n");
 		sb.append("                 PATHS /usr/lib"); sb.append("\r\n");
 		sb.append("                       /usr/lib64"); sb.append("\r\n");
 		sb.append("                       /usr/local/lib"); sb.append("\r\n");
 		sb.append("                       /usr/local/lib64)"); sb.append("\r\n");
+
+		sb.append("    FIND_LIBRARY(" + odvdFilename.toUpperCase() + "_LIBRARY_STATIC"); sb.append("\r\n");
+		sb.append("                 NAMES " + odvdFilename.toLowerCase() + "-static"); sb.append("\r\n");
+		sb.append("                 PATHS /usr/lib"); sb.append("\r\n");
+		sb.append("                       /usr/lib64"); sb.append("\r\n");
+		sb.append("                       /usr/local/lib"); sb.append("\r\n");
+		sb.append("                       /usr/local/lib64)"); sb.append("\r\n");
+
 		sb.append("ENDIF()"); sb.append("\r\n");
 
 		sb.append("IF(\"${" + odvdFilename.toUpperCase() + "_INCLUDE_DIR}\" STREQUAL \"\")"); sb.append("\r\n");
@@ -686,6 +700,7 @@ public class DataStructureGenerator {
 		sb.append("###########################################################################"); sb.append("\r\n");
 		sb.append("# Set linking libraries."); sb.append("\r\n");
 		sb.append("SET(" + odvdFilename.toUpperCase() + "_LIBRARIES ${" + odvdFilename.toUpperCase() + "_LIBRARY})"); sb.append("\r\n");
+		sb.append("SET(" + odvdFilename.toUpperCase() + "_LIBRARIES_STATIC ${" + odvdFilename.toUpperCase() + "_LIBRARY_STATIC})"); sb.append("\r\n");
 		sb.append("SET(" + odvdFilename.toUpperCase() + "_INCLUDE_DIRS ${" + odvdFilename.toUpperCase() + "_INCLUDE_DIR})"); sb.append("\r\n");
 
 		sb.append("###########################################################################"); sb.append("\r\n");

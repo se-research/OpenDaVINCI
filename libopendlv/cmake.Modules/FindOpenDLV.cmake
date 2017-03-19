@@ -31,7 +31,12 @@ IF(NOT ("${OPENDLV_DIR}" STREQUAL ""))
                  NO_DEFAULT_PATH)
 
     FIND_LIBRARY(OPENDLV_LIBRARY
-                 NAMES opendlv opendlv-static
+                 NAMES opendlv
+                 PATHS ${OPENDLV_DIR}/lib
+                 NO_DEFAULT_PATH)
+
+    FIND_LIBRARY(OPENDLV_LIBRARY_STATIC
+                 NAMES opendlv-static
                  PATHS ${OPENDLV_DIR}/lib
                  NO_DEFAULT_PATH)
 ENDIF()
@@ -45,7 +50,14 @@ IF(   ("${OPENDLV_INCLUDE_DIR}" STREQUAL "OPENDLV_INCLUDE_DIR-NOTFOUND")
                        /usr/local/include)
 
     FIND_LIBRARY(OPENDLV_LIBRARY
-                 NAMES opendlv opendlv-static
+                 NAMES opendlv
+                 PATHS /usr/lib
+                       /usr/lib64
+                       /usr/local/lib
+                       /usr/local/lib64)
+
+    FIND_LIBRARY(OPENDLV_LIBRARY_STATIC
+                 NAMES opendlv-static
                  PATHS /usr/lib
                        /usr/lib64
                        /usr/local/lib
@@ -91,6 +103,12 @@ IF("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
 ELSE()
     SET(OPENDLV_LIBRARIES ${OPENDAVINCI_LIBRARIES}
                                ${OPENDLV_LIBRARY}
+                               ${OPENGL_gl_LIBRARY}
+                               ${OPENGL_glu_LIBRARY}
+                               ${OPENCV_LIBRARIES}
+                               ${GLUT_glut_LIBRARY})
+    SET(OPENDLV_LIBRARIES_STATIC ${OPENDAVINCI_LIBRARIES_STATIC}
+                               ${OPENDLV_LIBRARY_STATIC}
                                ${OPENGL_gl_LIBRARY}
                                ${OPENGL_glu_LIBRARY}
                                ${OPENCV_LIBRARIES}
