@@ -142,8 +142,8 @@ IF(     NOT("${DPKG_EXECUTABLE}" STREQUAL "DPKG_EXECUTABLE-NOTFOUND")
     SET(MAKE_PACKAGE package)
 ELSE()
     # If the platform does not provide dpkg and rpmbuild, make package is
-    # replaced with make install.
-    SET(MAKE_PACKAGE install)
+    # replaced with make help to simply have a no-op.
+    SET(MAKE_PACKAGE help)
 ENDIF()
 
 ###########################################################################
