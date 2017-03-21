@@ -20,7 +20,7 @@
 BASE_IMAGE=seresearch/opendavinci-ubuntu-16.04
 BASE_IMAGE_VERSION=latest
 TESTRUNNER_DISABLED=NO
-BASE_IMAGE_MINIMAL=seresearch/opendavinci
+BASE_IMAGE_MINIMAL=seresearch/opendavinci-alpine-3.5
 
 ###############################################################################
 # Tools.

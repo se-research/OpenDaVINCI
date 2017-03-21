@@ -22,6 +22,11 @@ MAINTAINER Christian Berger "christian.berger@gu.se"
 # Add binaries.
 ADD opt-static /opt
 
+# Change owner for binaries.
+RUN addgroup odv && \
+    adduser odv -D -G odv && \
+    chown -R odv:odv /opt/od4
+
 # Environment parameters to allow GUIs.
 ENV QT_X11_NO_MITSHM=1
 # ENV LD_LIBRARY_PATH=/opt/od4/lib

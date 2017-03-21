@@ -66,6 +66,10 @@ ADD_LIBRARY (${PROJECT_NAME}-static STATIC ${thisproject-sources})
 ADD_EXECUTABLE (${PROJECT_NAME} "${CMAKE_CURRENT_SOURCE_DIR}/apps/${PROJECT_NAME}.cpp")
 TARGET_LINK_LIBRARIES (${PROJECT_NAME} ${PROJECT_NAME}-static ${LIBRARIES}) 
 
+ADD_EXECUTABLE (${PROJECT_NAME}-s "${CMAKE_CURRENT_SOURCE_DIR}/apps/${PROJECT_NAME}.cpp")
+TARGET_LINK_LIBRARIES (${PROJECT_NAME}-s ${PROJECT_NAME}-static ${OPENDAVINCI_LIBRARIES_STATIC}) 
+SET_TARGET_PROPERTIES(${PROJECT_NAME}-s PROPERTIES LINK_FLAGS "-static -static-libgcc -static-libstdc++")
+
 ###############################################################################
 # Enable CxxTest for all available testsuites.
 IF(CXXTEST_FOUND)

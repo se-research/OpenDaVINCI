@@ -43,6 +43,10 @@ INCLUDE (CheckCxxTestEnvironment)
 
 ###########################################################################
 # Find FFMPEG modules.
+MESSAGE("L: ${CMAKE_CURRENT_SOURCE_DIR}/../video/usr/")
+SET(LIBAVCODECDIR "${CMAKE_CURRENT_SOURCE_DIR}/../video/usr/")
+SET(LIBAVUTILDIR "${CMAKE_CURRENT_SOURCE_DIR}/../video/usr/")
+SET(LIBSWSCALEDIR "${CMAKE_CURRENT_SOURCE_DIR}/../video/usr/")
 FIND_PACKAGE (FFMPEGMODULES REQUIRED)
 SET(LIBRARIES ${LIBRARIES} ${FFMPEGMODULES_LIBRARIES})
 INCLUDE_DIRECTORIES (${FFMPEGMODULES_INCLUDE_DIRS})
@@ -65,6 +69,10 @@ FILE(GLOB_RECURSE thisproject-sources "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 ADD_LIBRARY (${PROJECT_NAME}-static STATIC ${thisproject-sources})
 ADD_EXECUTABLE (${PROJECT_NAME} "${CMAKE_CURRENT_SOURCE_DIR}/apps/${PROJECT_NAME}.cpp")
 TARGET_LINK_LIBRARIES (${PROJECT_NAME} ${PROJECT_NAME}-static ${LIBRARIES}) 
+
+ADD_EXECUTABLE (${PROJECT_NAME}-s "${CMAKE_CURRENT_SOURCE_DIR}/apps/${PROJECT_NAME}.cpp")
+TARGET_LINK_LIBRARIES (${PROJECT_NAME}-s ${PROJECT_NAME}-static ${OPENDAVINCI_LIBRARIES_STATIC}) 
+SET_TARGET_PROPERTIES(${PROJECT_NAME}-s PROPERTIES LINK_FLAGS "-static -static-libgcc -static-libstdc++")
 
 ###############################################################################
 # Enable CxxTest for all available testsuites.
