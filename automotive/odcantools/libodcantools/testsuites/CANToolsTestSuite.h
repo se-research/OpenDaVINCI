@@ -29,7 +29,6 @@
 #include "automotivedata/generated/automotive/GenericCANMessage.h"
 
 // Include local header files.
-#include "../include/PCANDevice.h"
 #include "../include/SocketCANDevice.h"
 #include "../include/GenericCANMessageListener.h"
 
@@ -84,21 +83,6 @@ class CANToolsTest : public CxxTest::TestSuite, public GenericCANMessageListener
             scan.stop();
         }
 
-        // This is just for testing purposes.
-        void NO_testCase1() {
-            TimeStamp ts(1476343200, 705547);
-            cout << endl;
-            cout << ts.toString() << endl;
-            cout << ts.getYYYYMMDD_HHMMSSms() << endl;
-            const string DEV_NODE = "/dev/pcan32";
-            PCANDevice dev(DEV_NODE, *this);
-            cout << endl;
-            cout << "Starting CAN receive..." << endl;
-            dev.start();
-            Thread::usleepFor(5 * 1000);
-            cout << "Stopping CAN receive..." << endl;
-            dev.stop();
-        }
 };
 
 #endif /*CANTOOLSTESTSUITE_H_*/
