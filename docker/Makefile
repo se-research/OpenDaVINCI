@@ -17,15 +17,18 @@
 
 ###############################################################################
 # What Docker images shall be used?
-IMAGE=seresearch/opendavinci-on-ubuntu-16.04
-BASE_IMAGE=$(IMAGE)
+REPOSITORY=seresearch
+IMAGE=ubuntu-16.04
+BASE_IMAGE=$(REPOSITORY)/$(IMAGE)
 BASE_IMAGE_VERSION=latest
-BASE_IMAGE_DEV=$(BASE_IMAGE)-dev
+BASE_IMAGE_DEV_SUFFIX=-dev
+BASE_IMAGE_DEV=$(REPOSITORY)/$(IMAGE)$(BASE_IMAGE_DEV_SUFFIX)
 BASE_IMAGE_DEV_VERSION=latest
 
 ###############################################################################
 # Product names.
 PROJECT_NAME=OpenDaVINCI
+PRODUCT=opendavinci-on-
 DESTDIR=od4
 
 ###############################################################################
@@ -65,13 +68,13 @@ DOCKER_IMAGE_NAME=$(shell echo $(BASE_IMAGE) | cut -f2 -d"/")
 DOCKER_IMAGE_NAME_WITH_GIT_HASH=$(DOCKER_IMAGE_NAME)-$(GIT_HASH)
 DOCKER_NETWORK_NAME=nw_$(DOCKER_IMAGE_NAME_WITH_GIT_HASH)
 DOCKER_IMAGE_NAME_WITH_GIT_COMMITS_IN_CURRENT_BRANCH=$(shell echo $(BASE_IMAGE) | cut -f2 -d"/")-$(GIT_HASH):$(GIT_COMMITS_IN_CURRENT_BRANCH)
-DOCKER_IMAGE_NAME_SHORT_NAME=$(BASE_IMAGE)-complete
+DOCKER_IMAGE_NAME_SHORT_NAME=$(REPOSITORY)/$(PRODUCT)$(IMAGE)
 
 DOCKERFILE_BASEIMAGEDEV=s%BASEIMAGE%$(BASE_IMAGE_DEV)%
 DOCKER_IMAGE_NAME_DEV=$(shell echo $(BASE_IMAGE_DEV) | cut -f2 -d"/")
 DOCKER_IMAGE_NAME_DEV_WITH_GIT_HASH=$(DOCKER_IMAGE_DEV_NAME)-$(GIT_HASH)
 DOCKER_IMAGE_NAME_DEV_WITH_GIT_COMMITS_IN_CURRENT_BRANCH=$(shell echo $(BASE_IMAGE_DEV) | cut -f2 -d"/")-$(GIT_HASH):$(GIT_COMMITS_IN_CURRENT_BRANCH)
-DOCKER_IMAGE_NAME_DEV_SHORT_NAME=$(BASE_IMAGE_DEV)-complete
+DOCKER_IMAGE_NAME_DEV_SHORT_NAME=$(REPOSITORY)/$(PRODUCT)$(IMAGE)$(BASE_IMAGE_DEV_SUFFIX)
 
 ###############################################################################
 
@@ -148,6 +151,7 @@ createDockerImageNonDev:
 	cat $(SOURCE_TREE_PATH)/docker/Dockerfile.template | sed -e $(DOCKERFILE_BASEIMAGE) > $(BUILD_PATH)/Dockerfile
 	echo "${PROJECT_NAME}.build" > $(BUILD_PATH)/.dockerignore
 	echo "${PROJECT_NAME}.deb" >> $(BUILD_PATH)/.dockerignore
+	echo "$(DOCKER_IMAGE_NAME)" >> $(BUILD_PATH)/.dockerignore
 	cd $(BUILD_PATH) && $(DOCKER) build -t seresearch/$(DOCKER_IMAGE_NAME_WITH_GIT_COMMITS_IN_CURRENT_BRANCH) . | tee $(BUILD_PATH)/$(PROJECT_NAME).build/build.log || exit 1
 	$(DOCKER) images | grep $$(tail -1 $(BUILD_PATH)/$(PROJECT_NAME).build/build.log | cut -f3 -d" ") | grep "latest" && exit 0 || $(DOCKER) tag $$(tail -1 $(BUILD_PATH)/$(PROJECT_NAME).build/build.log | cut -f3 -d" ") $(DOCKER_IMAGE_NAME_SHORT_NAME):latest
 	$(DOCKER) tag $(DOCKER_IMAGE_NAME_SHORT_NAME):latest $(DOCKER_IMAGE_NAME_SHORT_NAME):$(VERSION)
@@ -156,6 +160,7 @@ createDockerImageDev:
 	cat $(SOURCE_TREE_PATH)/docker/Dockerfile.template | sed -e $(DOCKERFILE_BASEIMAGEDEV) > $(BUILD_PATH)/Dockerfile
 	echo "${PROJECT_NAME}.build" > $(BUILD_PATH)/.dockerignore
 	echo "${PROJECT_NAME}.deb" >> $(BUILD_PATH)/.dockerignore
+	echo "$(DOCKER_IMAGE_NAME)" >> $(BUILD_PATH)/.dockerignore
 	cd $(BUILD_PATH) && $(DOCKER) build -t seresearch/$(DOCKER_IMAGE_NAME_DEV_WITH_GIT_COMMITS_IN_CURRENT_BRANCH) . | tee $(BUILD_PATH)/$(PROJECT_NAME).build/build.log || exit 1
 	$(DOCKER) images | grep $$(tail -1 $(BUILD_PATH)/$(PROJECT_NAME).build/build.log | cut -f3 -d" ") | grep "latest" && exit 0 || $(DOCKER) tag $$(tail -1 $(BUILD_PATH)/$(PROJECT_NAME).build/build.log | cut -f3 -d" ") $(DOCKER_IMAGE_NAME_DEV_SHORT_NAME):latest
 	$(DOCKER) tag $(DOCKER_IMAGE_NAME_DEV_SHORT_NAME):latest $(DOCKER_IMAGE_NAME_DEV_SHORT_NAME):$(VERSION)
