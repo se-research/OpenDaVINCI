@@ -29,7 +29,7 @@ BASE_IMAGE_DEV_VERSION=latest
 # Product names.
 PROJECT_NAME=OpenDaVINCI
 PRODUCT=opendavinci-on-
-DESTDIR=od4
+DEST_DIR=od4
 
 ###############################################################################
 # Shall the tests be executed?
@@ -116,12 +116,12 @@ updateDockerBaseImageDev:
 ###############################################################################
 define compile
 	$(CMAKE) -E make_directory $(BUILD_PATH)
-	$(CMAKE) -E make_directory $(BUILD_PATH)/opt/$(DESTDIR)
+	$(CMAKE) -E make_directory $(BUILD_PATH)/opt/$(DEST_DIR)
 	$(CMAKE) -E make_directory $(BUILD_PATH)/$(PROJECT_NAME).build
 	$(CMAKE) -E make_directory $(BUILD_PATH)/$(PROJECT_NAME).deb
 	$(DOCKER) network inspect $(DOCKER_NETWORK_NAME) || $(DOCKER) network create $(DOCKER_NETWORK_NAME)
 	$(DOCKER) network ls
-	$(DOCKER) run -ti --rm -v $(SOURCE_TREE_PATH):/opt/$(PROJECT_NAME).sources -v $(BUILD_PATH)/$(PROJECT_NAME).build:/opt/$(PROJECT_NAME).build -v $(CCACHE_PATH):/opt/ccache -v $(BUILD_PATH)/opt/$(DESTDIR):/opt/$(DESTDIR) -v $(SOURCE_TREE_PATH)/docker/completeBuild.sh:/opt/completeBuild.sh -w /opt $(BASE_IMAGE_DEV):$(BASE_IMAGE_DEV_VERSION) /opt/completeBuild.sh $(RUN_BUILD_AS) $(TESTRUNNER_DISABLED) $(RUN_BUILD_UID_AS)
+	$(DOCKER) run -ti --rm -v $(SOURCE_TREE_PATH):/opt/$(PROJECT_NAME).sources -v $(BUILD_PATH)/$(PROJECT_NAME).build:/opt/$(PROJECT_NAME).build -v $(CCACHE_PATH):/opt/ccache -v $(BUILD_PATH)/opt/$(DEST_DIR):/opt/$(DEST_DIR) -v $(SOURCE_TREE_PATH)/docker/completeBuild.sh:/opt/completeBuild.sh -w /opt $(BASE_IMAGE_DEV):$(BASE_IMAGE_DEV_VERSION) /opt/completeBuild.sh $(RUN_BUILD_AS) $(TESTRUNNER_DISABLED) $(RUN_BUILD_UID_AS)
 	$(DOCKER) network rm $(DOCKER_NETWORK_NAME)
 	mkdir -p $(PACKAGES_DIR)/$(DOCKER_IMAGE_NAME) && for i in $$(find $(BUILD_PATH)/$(PROJECT_NAME).build -type f -name "*deb" | grep -v CPack); do cp $$i $(PACKAGES_DIR)/$(DOCKER_IMAGE_NAME); done
 	touch $(BUILD_PATH)/$(PROJECT_NAME).build/build.incremental
@@ -140,7 +140,7 @@ updateBuildComplete: updateDockerBaseImage
 
 # Dependency to allow incremental builds.
 buildIncremental: $(BUILD_PATH)/$(PROJECT_NAME).build/build.incremental
-	$(DOCKER) run -ti --rm -v $(SOURCE_TREE_PATH):/opt/$(PROJECT_NAME).sources -v $(BUILD_PATH)/$(PROJECT_NAME).build:/opt/$(PROJECT_NAME).build -v $(CCACHE_PATH):/opt/ccache -v $(BUILD_PATH)/opt/$(DESTDIR):/opt/$(DESTDIR) -v $(SOURCE_TREE_PATH)/docker/incrementalBuild.sh:/opt/incrementalBuild.sh -w /opt $(BASE_IMAGE_DEV):$(BASE_IMAGE_DEV_VERSION) /opt/incrementalBuild.sh $(RUN_BUILD_AS) YES $(RUN_BUILD_UID_AS)
+	$(DOCKER) run -ti --rm -v $(SOURCE_TREE_PATH):/opt/$(PROJECT_NAME).sources -v $(BUILD_PATH)/$(PROJECT_NAME).build:/opt/$(PROJECT_NAME).build -v $(CCACHE_PATH):/opt/ccache -v $(BUILD_PATH)/opt/$(DEST_DIR):/opt/$(DEST_DIR) -v $(SOURCE_TREE_PATH)/docker/incrementalBuild.sh:/opt/incrementalBuild.sh -w /opt $(BASE_IMAGE_DEV):$(BASE_IMAGE_DEV_VERSION) /opt/incrementalBuild.sh $(RUN_BUILD_AS) YES $(RUN_BUILD_UID_AS)
 	mkdir -p $(PACKAGES_DIR)/$(DOCKER_IMAGE_NAME) && for i in $$(find $(BUILD_PATH)/$(PROJECT_NAME).build -type f -name "*deb" | grep -v CPack); do cp $$i $(PACKAGES_DIR)/$(DOCKER_IMAGE_NAME); done
 
 ###############################################################################
@@ -149,9 +149,11 @@ createDockerImage: createDockerImageNonDev createDockerImageDev
 
 createDockerImageNonDev:
 	cat $(SOURCE_TREE_PATH)/docker/Dockerfile.template | sed -e $(DOCKERFILE_BASEIMAGE) > $(BUILD_PATH)/Dockerfile
+	cat $(SOURCE_TREE_PATH)/docker/Dockerfile.template.nonDev | sed -e $(DOCKERFILE_BASEIMAGE) > $(BUILD_PATH)/Dockerfile && $(CMAKE) -E remove_directory $(BUILD_PATH)/opt.nonDev && $(CMAKE) -E copy_directory $(BUILD_PATH)/opt $(BUILD_PATH)/opt.nonDev && $(CMAKE) -E remove_directory $(BUILD_PATH)/opt.nonDev/${DEST_DIR}/man && $(CMAKE) -E remove_directory $(BUILD_PATH)/opt.nonDev/${DEST_DIR}/include && $(CMAKE) -E remove -f $(BUILD_PATH)/opt.nonDev/${DEST_DIR}/bin/*.jar
 	echo "${PROJECT_NAME}.build" > $(BUILD_PATH)/.dockerignore
 	echo "${PROJECT_NAME}.deb" >> $(BUILD_PATH)/.dockerignore
 	echo "$(DOCKER_IMAGE_NAME)" >> $(BUILD_PATH)/.dockerignore
+	echo "opt" >> $(BUILD_PATH)/.dockerignore
 	cd $(BUILD_PATH) && $(DOCKER) build -t seresearch/$(DOCKER_IMAGE_NAME_WITH_GIT_COMMITS_IN_CURRENT_BRANCH) . | tee $(BUILD_PATH)/$(PROJECT_NAME).build/build.log || exit 1
 	$(DOCKER) images | grep $$(tail -1 $(BUILD_PATH)/$(PROJECT_NAME).build/build.log | cut -f3 -d" ") | grep "latest" && exit 0 || $(DOCKER) tag $$(tail -1 $(BUILD_PATH)/$(PROJECT_NAME).build/build.log | cut -f3 -d" ") $(DOCKER_IMAGE_NAME_SHORT_NAME):latest
 	$(DOCKER) tag $(DOCKER_IMAGE_NAME_SHORT_NAME):latest $(DOCKER_IMAGE_NAME_SHORT_NAME):$(VERSION)
@@ -161,6 +163,7 @@ createDockerImageDev:
 	echo "${PROJECT_NAME}.build" > $(BUILD_PATH)/.dockerignore
 	echo "${PROJECT_NAME}.deb" >> $(BUILD_PATH)/.dockerignore
 	echo "$(DOCKER_IMAGE_NAME)" >> $(BUILD_PATH)/.dockerignore
+	echo "opt.nonDev" >> $(BUILD_PATH)/.dockerignore
 	cd $(BUILD_PATH) && $(DOCKER) build -t seresearch/$(DOCKER_IMAGE_NAME_DEV_WITH_GIT_COMMITS_IN_CURRENT_BRANCH) . | tee $(BUILD_PATH)/$(PROJECT_NAME).build/build.log || exit 1
 	$(DOCKER) images | grep $$(tail -1 $(BUILD_PATH)/$(PROJECT_NAME).build/build.log | cut -f3 -d" ") | grep "latest" && exit 0 || $(DOCKER) tag $$(tail -1 $(BUILD_PATH)/$(PROJECT_NAME).build/build.log | cut -f3 -d" ") $(DOCKER_IMAGE_NAME_DEV_SHORT_NAME):latest
 	$(DOCKER) tag $(DOCKER_IMAGE_NAME_DEV_SHORT_NAME):latest $(DOCKER_IMAGE_NAME_DEV_SHORT_NAME):$(VERSION)
