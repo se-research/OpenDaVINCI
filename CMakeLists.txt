@@ -134,10 +134,11 @@ IF(     (UNIX)
 ENDIF()
 MESSAGE("Test command: \"${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}\"")
 
-# If dpkg and rpmbuild are available, .deb and .rpm packages will be
-# created. Otherwise, the software is simply installed.
+# If dpkg and rpmbuild are available and packaging requested on command line,
+#.deb and .rpm packages will be created.
 IF(     NOT("${DPKG_EXECUTABLE}" STREQUAL "DPKG_EXECUTABLE-NOTFOUND")
-    AND NOT("${RPMBUILD_EXECUTABLE}" STREQUAL "RPMBUILD_EXECUTABLE-NOTFOUND") )
+    AND NOT("${RPMBUILD_EXECUTABLE}" STREQUAL "RPMBUILD_EXECUTABLE-NOTFOUND")
+    AND ("${PACKAGING_ENABLED}" STREQUAL "YES") )
     MESSAGE(STATUS "Enabling building .deb and .rpm packages.")
     SET(MAKE_PACKAGE package)
 ELSE()

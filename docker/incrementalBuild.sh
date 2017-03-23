@@ -20,6 +20,7 @@
 BUILD_AS=$1
 TESTRUNNER_DISABLED=$2
 UID_AS=$3
+PACKAGING_ENABLED=$4
 
 # Adding user for building.
 groupadd $BUILD_AS
