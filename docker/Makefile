@@ -94,7 +94,7 @@ clean:
 
 cleanAll: clean cleanDocker
 
-cleanDocker: removeExitedContainers removeNoneImagesFromDocker removeExistingImagesForBaseImageFromDocker removeExistingImagesForBaseImageDevFromDocker
+cleanDocker: removeExitedContainers removeNoneImagesFromDocker removeExistingImagesForBaseImageDevFromDocker removeExistingImagesForBaseImageFromDocker
 
 removeExitedContainers:
 	$(DOCKER) rm $$($(DOCKER) ps -a -q) || exit 0
@@ -103,14 +103,14 @@ removeNoneImagesFromDocker:
 	for i in $$($(DOCKER) images | grep none | tr -s " " ";" | cut -f3 -d";"); do $(DOCKER) rmi $$i; done
 
 removeExistingImagesForBaseImageFromDocker:
-	$(DOCKER) rmi -f `$(DOCKER) images | grep $(BASE_IMAGE)- | tr -s " " ";" | cut -f3 -d";"` || exit 0
+	$(DOCKER) rmi -f `$(DOCKER) images | grep $(PRODUCT)$(IMAGE) | tr -s " " ";" | cut -f3 -d";"` || exit 0
 
 removeExistingImagesForBaseImageDevFromDocker:
-	$(DOCKER) rmi -f `$(DOCKER) images | grep $(BASE_IMAGE_DEV)- | tr -s " " ";" | cut -f3 -d";"` || exit 0
+	$(DOCKER) rmi -f `$(DOCKER) images | grep $(PRODUCT)$(IMAGE)$(BASE_IMAGE_DEV_SUFFIX) | tr -s " " ";" | cut -f3 -d";"` || exit 0
 
-updateDockerImages: updateDockerBaseImage updateDockerBaseImageDev
+updateDockerBaseImage: updateDockerBaseImageNonDev updateDockerBaseImageDev
 
-updateDockerBaseImage:
+updateDockerBaseImageNonDev:
 	$(DOCKER) pull $(BASE_IMAGE):$(BASE_IMAGE_VERSION)
 
 updateDockerBaseImageDev:
