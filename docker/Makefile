@@ -17,8 +17,10 @@
 
 ###############################################################################
 # What Docker images shall be used?
+# For example, seresearch/base is a generic name to the base image to be used
+# that, for example, could point to seresearch/ubuntu
 REPOSITORY=seresearch
-IMAGE=base# seresearch/base is a generic name to the base image to be used, for example seresearch/ubuntu
+IMAGE=base
 BASE_IMAGE=$(REPOSITORY)/$(IMAGE)
 BASE_IMAGE_VERSION=latest
 BASE_IMAGE_DEV_SUFFIX=-dev
