@@ -1,3 +1,4 @@
+4.10.0 - SocketCAN, fix to avoid decoding Containers from incomplete istreams, fix for odplayer to avoid replaying empty .rec.mem files
 4.9.3 - Changed the automatic naming of recording files to cope with filesystem restrictions.
 4.9.2 - Improved timestamping for UDP packets
 4.9.1 - Compile fix
