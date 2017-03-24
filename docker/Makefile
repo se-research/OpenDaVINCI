@@ -25,7 +25,7 @@ BASE_IMAGE=$(REPOSITORY)/$(IMAGE)
 BASE_IMAGE_VERSION=latest
 BASE_IMAGE_DEV_SUFFIX=-dev
 BASE_IMAGE_DEV=$(REPOSITORY)/$(IMAGE)$(BASE_IMAGE_DEV_SUFFIX)
-BASE_IMAGE_DEV_VERSION=latest
+BASE_IMAGE_DEV_VERSION=$(BASE_IMAGE_VERSION)
 
 ###############################################################################
 # Product names.
@@ -47,7 +47,7 @@ CMAKE=$(shell which cmake)
 # Directories.
 SOURCE_TREE_PATH=$(shell dirname $(shell pwd))
 BUILD_PATH_BASE=$(SOURCE_TREE_PATH)/docker/builds
-BUILD_PATH=$(BUILD_PATH_BASE)/$(shell echo $(BASE_IMAGE) | cut -f2 -d"/")-$(GIT_CURRENT_BRANCH)
+BUILD_PATH=$(BUILD_PATH_BASE)/$(PRODUCT)$(shell echo $(BASE_IMAGE) | cut -f2 -d"/")-$(GIT_CURRENT_BRANCH)
 CCACHE_PATH=$(HOME)/.ccache
 PACKAGES_DIR=$(BUILD_PATH)
 
