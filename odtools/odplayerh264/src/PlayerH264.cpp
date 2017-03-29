@@ -102,6 +102,20 @@ namespace odplayerh264 {
         m_singleDecoder.reset();
     }
 
+    bool PlayerH264::checkIfH264FileExists(const string &fileName) const {
+        bool fileExists = false;
+
+        ifstream checkIfFileExists(fileName);
+        fileExists = checkIfFileExists.good();
+        checkIfFileExists.close();
+
+        if (!fileExists) {
+            cout << "[odplayerh264] Error: " << fileName << " does not exist." << endl;
+        }
+
+        return fileExists;
+    }
+
     Container PlayerH264::process(Container &c) {
         static uint32_t id = 0;
         Lock l(m_mapOfDecodersMutex);
@@ -114,38 +128,45 @@ namespace odplayerh264 {
             // Use singleDecoder.
             if (0 == m_basePort) {
                 if (NULL == m_singleDecoder.get()) {
-                    m_singleDecoder = shared_ptr<PlayerH264Decoder>(new PlayerH264Decoder());
-                }
-                replacementContainer = m_singleDecoder->process(c);
-            }
-            else {
-                // Find existing or create new encoder.
-                auto delegateEntry = m_mapOfDecoders.find(h264frame.getH264Filename());
-                if (delegateEntry == m_mapOfDecoders.end()) {
-                    shared_ptr<PlayerH264ChildHandler> handler(new PlayerH264ChildHandler(m_basePort + id));
-
-                    // Duplicate the current process.
-                    pid_t cpid = fork();
-                    if (cpid == 0) {
-                        // Here, we are in the child process.
-                        handleInChild(id);
-                    }
-                    else {
-                        // Here, we are in the parent process.
-                        handler->setPID(cpid);
-                        handler->waitForClientToConnect();
-
-                        m_mapOfDecoders[h264frame.getH264Filename()] = handler;
-
-                        cout << "[odplayerh264] Created decoding child process " << handler->getPID() << " to handle '" << h264frame.getH264Filename() << "'." << endl;
-                        id++;
-
-                        replacementContainer = m_mapOfDecoders[h264frame.getH264Filename()]->process(c);
+                    // Test if the mentioned .h264 file is existing.
+                    if (checkIfH264FileExists(h264frame.getH264Filename())) {
+                        m_singleDecoder = shared_ptr<PlayerH264Decoder>(new PlayerH264Decoder());
                     }
                 }
                 else {
-                    // Reuse existing decoder.
-                    replacementContainer = m_mapOfDecoders[h264frame.getH264Filename()]->process(c);
+                    replacementContainer = m_singleDecoder->process(c);
+                }
+            }
+            else {
+                // Find existing or create new encoder.
+                if (checkIfH264FileExists(h264frame.getH264Filename())) {
+                    auto delegateEntry = m_mapOfDecoders.find(h264frame.getH264Filename());
+                    if (delegateEntry == m_mapOfDecoders.end()) {
+                        shared_ptr<PlayerH264ChildHandler> handler(new PlayerH264ChildHandler(m_basePort + id));
+
+                        // Duplicate the current process.
+                        pid_t cpid = fork();
+                        if (cpid == 0) {
+                            // Here, we are in the child process.
+                            handleInChild(id);
+                        }
+                        else {
+                            // Here, we are in the parent process.
+                            handler->setPID(cpid);
+                            handler->waitForClientToConnect();
+
+                            m_mapOfDecoders[h264frame.getH264Filename()] = handler;
+
+                            cout << "[odplayerh264] Created decoding child process " << handler->getPID() << " to handle '" << h264frame.getH264Filename() << "'." << endl;
+                            id++;
+
+                            replacementContainer = m_mapOfDecoders[h264frame.getH264Filename()]->process(c);
+                        }
+                    }
+                    else {
+                        // Reuse existing decoder.
+                        replacementContainer = m_mapOfDecoders[h264frame.getH264Filename()]->process(c);
+                    }
                 }
             }
         }
