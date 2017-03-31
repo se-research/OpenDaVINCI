@@ -91,6 +91,9 @@ namespace odplayerh264 {
             virtual odcore::data::Container process(odcore::data::Container &c);
 
         private:
+            bool checkIfH264FileExists(const string &fileName) const;
+
+        private:
             shared_ptr<PlayerH264Decoder> m_singleDecoder;
 
             uint32_t m_basePort;
