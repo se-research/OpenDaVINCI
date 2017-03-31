@@ -1,3 +1,4 @@
+4.11.1 - Fix in odplayerh264 to handle non-existing .h264 files
 4.11.0 - Using different Docker images for building and releasing
 4.10.0 - SocketCAN, fix to avoid decoding Containers from incomplete istreams, fix for odplayer to avoid replaying empty .rec.mem files
 4.9.3 - Changed the automatic naming of recording files to cope with filesystem restrictions.
