@@ -152,13 +152,17 @@ namespace odcore {
                         T value;
                         s << "Value for optional key '" << key << "' not found.";
                         odcore::data::LogMessage lm("odcore::base::KeyValueConfiguration", odcore::data::LogMessage::LogLevel::INFO, s.str());
-                        #pragma GCC diagnostic push
-                        #pragma GCC diagnostic ignored "-Wuninitialized"
-                        #ifndef __APPLE__
-                            #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+                        #ifndef _WIN32
+                            #pragma GCC diagnostic push
+                            #pragma GCC diagnostic ignored "-Wuninitialized"
+                            #ifndef __APPLE__
+                                #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+                            #endif
                         #endif
                         return value;
-                        #pragma GCC diagnostic pop
+                        #ifndef _WIN32
+                            #pragma GCC diagnostic pop
+                        #endif
                     }
                     isFound=true;
                     stringstream s(stringValue);
