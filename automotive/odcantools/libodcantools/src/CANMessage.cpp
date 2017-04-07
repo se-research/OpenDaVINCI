@@ -14,6 +14,7 @@ namespace automotive {
             GenericCANMessage(gcm),
             m_payload(),
             m_signals() {
+            m_payload.reserve(8);
             setFromUINT64(gcm.getData(), gcm.getLength());
         }
 
