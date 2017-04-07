@@ -251,7 +251,13 @@ namespace odcore {
 
         void TimeStamp::computeHumanReadableRepresentation() {
             const long int seconds = getSeconds();
-            struct tm *tm = localtime(&seconds);
+            struct tm *tm = NULL;
+
+#ifdef _WIN32
+            tm = localtime(reinterpret_cast<const time_t*>(&seconds));
+#else
+            tm = localtime(&seconds);
+#endif
 
             m_readableYear = (1900 + tm->tm_year);
             m_readableMonth = (1 + tm->tm_mon);

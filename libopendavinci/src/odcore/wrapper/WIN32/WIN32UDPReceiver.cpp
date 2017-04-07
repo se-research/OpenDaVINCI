@@ -147,7 +147,7 @@ namespace odcore {
                 WSACleanup();
             }
 
-            uint16_t WIN32UDPReceiver::setSenderPortToIgnore(const uint16_t &/*portToIgnore*/) {
+            void WIN32UDPReceiver::setSenderPortToIgnore(const uint16_t &/*portToIgnore*/) {
                 std::cout << "[core::wrapper::WIN32UDPReceiver] setSenderPortToIgnore() not implemented." << std::endl;
             }
 
