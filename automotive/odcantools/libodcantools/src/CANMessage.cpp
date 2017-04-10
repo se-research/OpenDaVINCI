@@ -101,9 +101,9 @@ namespace automotive {
             byteMask=0x01;
         }
 
-        void CANMessage::advanceByteNumberInCorrectEndianness(int8_t& byteNumber, const string endianness) {
+        void CANMessage::advanceByteNumberInCorrectEndianness(int8_t& byteNumber, const Endianness endianness) {
             // if the signal is little endian, increase the byte number
-            if(endianness.compare("little")==0) {
+            if(endianness==Endianness::LITTLE) {
                 ++byteNumber;
             }
             else { // otherwise decrease it
@@ -235,7 +235,7 @@ namespace automotive {
         
         int8_t CANMessage::getLSBPosition(const CANSignal signal) {
             // if the case is "Motorola Forward MSB" the real lsb position needs to be computed
-            if(signal.m_endianness.compare("big")==0) {
+            if(signal.m_endianness==Endianness::BIG) {
                 int8_t position=signal.m_startBit%8;
                 uint8_t byte=signal.m_startBit/8;
                 for(uint8_t i=1;i<signal.m_length;++i) {
@@ -315,7 +315,7 @@ namespace automotive {
             }
             
             // if the signal is signed and its MSB equals 1, then the number is negative 
-            if(signal.m_signedness.compare("signed")==0 && MSBEquals1) {
+            if(signal.m_signedness==Signedness::SIGNED && MSBEquals1) {
             // set all the other "more" significant bits to 1 to preserve the two's complement representation
                 for(;signalMask>0;signalMask=signalMask<<1) {
                     signalValue=signalValue|signalMask;
@@ -325,36 +325,23 @@ namespace automotive {
             return signalValue;
         }
         
-        CANSignal::CANSignal(const uint8_t& startBit, const uint8_t& length, const string& signedness, const string& endianness, const double& factor, const double& offset, const double& rangeB, const double& rangeE) : 
+        CANSignal::CANSignal(const uint8_t& startBit, const uint8_t& length, const Signedness& signedness, const Endianness& endianness, const double& factor, const double& offset, const double& rangeB, const double& rangeE) : 
             m_startBit(startBit),
             m_length(length),
-            m_signedness(),
-            m_endianness(),
+            m_signedness(signedness),
+            m_endianness(endianness),
             m_factor(factor),
             m_offset(offset),
             m_rangeB(rangeB),
             m_rangeE(rangeE) { 
-            // health check on signedness value, assume unsigned if unrecognized
-            m_signedness="unsigned";
-            string s=signedness; // signedness is const
-            std::transform(s.begin(), s.end(), s.begin(), ::tolower);
-            if(s.compare("signed")==0)
-                m_signedness="signed";
-            
-            // health check on endianness value, assume little endian if unrecognized
-            m_endianness="little"; // same as "intel"
-            string e=endianness; // endianness is const
-            std::transform(e.begin(), e.end(), e.begin(), ::tolower);
-            if(e.compare("big")==0 || e.compare("motorola")==0)
-                m_endianness="big";
         }
         
         string CANSignal::toString() const {//at bit 16 for 16 bit is unsigned little endian multiply by 1 add 0 with range [0, 0]
             stringstream signal;
             signal  << "signal at bit "<<+m_startBit
                     <<" for "<<+m_length
-                    <<" bit is "<<m_signedness
-                    <<" "<<m_endianness
+                    <<" bit is "<<((m_signedness==Signedness::UNSIGNED)?"unsigned":"signed")
+                    <<" "<<((m_endianness==Endianness::LITTLE)?"little":"big")
                     <<" endian multiply by "<<m_factor
                     <<" add "<<m_offset
                     <<" with range ["<<m_rangeB

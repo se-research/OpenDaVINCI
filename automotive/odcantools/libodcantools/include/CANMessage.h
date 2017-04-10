@@ -13,13 +13,15 @@ namespace automotive {
         
         class CANMessage;
         
+        enum Signedness {SIGNED,UNSIGNED};
+        enum Endianness {LITTLE,BIG};
+        
         class CANSignal {
-            
             
             friend class CANMessage;
             
             public:
-                CANSignal(const uint8_t&, const uint8_t&, const string&, const string&, const double&, const double&, const double&, const double&);
+                CANSignal(const uint8_t&, const uint8_t&, const Signedness&, const Endianness&, const double&, const double&, const double&, const double&);
                 
                 string toString() const;
                 
@@ -28,8 +30,8 @@ namespace automotive {
                 
                 uint8_t m_startBit; // lsb of the signal
                 uint8_t m_length; // length in bits
-                string m_signedness; // signed or unsigned
-                string m_endianness; // little endian (intel) or big endian (motorola)
+                Signedness m_signedness; // signed or unsigned
+                Endianness m_endianness; // little endian (intel) or big endian (motorola)
                 double m_factor; // factor to be multiplied
                 double m_offset; // offset to be added
                 double m_rangeB; // lower range limit for the value
@@ -58,7 +60,7 @@ namespace automotive {
                 void updateGCMData();
                 void advanceByteMask(uint8_t&);
                 void resetByteMask(uint8_t&);
-                void advanceByteNumberInCorrectEndianness(int8_t&, const string);
+                void advanceByteNumberInCorrectEndianness(int8_t&, const Endianness);
                 bool checkByteMaskInLastPosition(const uint8_t);
                 uint8_t getStartBitInByteInCorrectByteOrder(const uint8_t);
                 uint8_t getPayloadByte(const int8_t);

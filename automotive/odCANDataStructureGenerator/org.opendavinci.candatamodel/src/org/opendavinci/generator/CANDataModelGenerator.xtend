@@ -736,7 +736,11 @@ namespace canmapping {
 			double «varName» = msg.getValueFromScalarField<double>(«currentSignalInMapping.signalIdentifier», found, extracted);
 			
 			if(found && extracted) {
-			    ::automotive::odcantools::CANSignal signal_«currentSignalInMapping.cansignalname.replaceAll("\\.","_")»(«CurrentCANSignal.m_startBit»,«CurrentCANSignal.m_length»,"«CurrentCANSignal.m_signed»","«CurrentCANSignal.m_endian»",«CurrentCANSignal.m_multiplyBy»,«CurrentCANSignal.m_add»,«CurrentCANSignal.m_rangeStart»,«CurrentCANSignal.m_rangeEnd»);
+			    ::automotive::odcantools::Signedness sign=::automotive::odcantools::Signedness::UNSIGNED;
+			    if(CurrentCANSignal.m_signed.toLowerCase().compare("signed")==0 sign=::automotive::odcantools::Signedness::SIGNED;
+			::automotive::odcantools::Endianness endian=::automotive::odcantools::Endianness::LITTLE;
+			if(CurrentCANSignal.m_endian.toLowerCase().compare("big")==0 endian=::automotive::odcantools::Endianness::BIG;
+			    ::automotive::odcantools::CANSignal signal_«currentSignalInMapping.cansignalname.replaceAll("\\.","_")»(«CurrentCANSignal.m_startBit»,«CurrentCANSignal.m_length»,sign,endian,«CurrentCANSignal.m_multiplyBy»,«CurrentCANSignal.m_add»,«CurrentCANSignal.m_rangeStart»,«CurrentCANSignal.m_rangeEnd»);
                 «cmNamePrefix+CurrentCANSignal.m_CANID».addSignal(«currentSignalInMapping.signalIdentifier»,signal_«currentSignalInMapping.cansignalname.replaceAll("\\.","_")»);
                 «cmNamePrefix+CurrentCANSignal.m_CANID».encodeSignal(«currentSignalInMapping.signalIdentifier»,«varName»);
 			}
@@ -854,7 +858,11 @@ namespace canmapping {
 			// addressing signal «currentSignalInMapping.cansignalname» : «currentSignalInMapping.signalIdentifier»
 			{
 				// Add the CAN signal to the CAN message
-				::automotive::odcantools::CANSignal «currentSignalInMapping.cansignalname.replaceAll("\\.","_")»(«CurrentCANSignal.m_startBit»,«CurrentCANSignal.m_length»,"«CurrentCANSignal.m_signed»","«CurrentCANSignal.m_endian»",«CurrentCANSignal.m_multiplyBy»,«CurrentCANSignal.m_add»,«CurrentCANSignal.m_rangeStart»,«CurrentCANSignal.m_rangeEnd»);
+			::automotive::odcantools::Signedness sign=::automotive::odcantools::Signedness::UNSIGNED;
+			if(CurrentCANSignal.m_signed.toLowerCase().compare("signed")==0) sign=::automotive::odcantools::Signedness::SIGNED;
+			::automotive::odcantools::Endianness endian=::automotive::odcantools::Endianness::LITTLE;
+			if(CurrentCANSignal.m_endian.toLowerCase().compare("big")==0) endian=::automotive::odcantools::Endianness::BIG;
+				::automotive::odcantools::CANSignal «currentSignalInMapping.cansignalname.replaceAll("\\.","_")»(«CurrentCANSignal.m_startBit»,«CurrentCANSignal.m_length»,sign,endian,«CurrentCANSignal.m_multiplyBy»,«CurrentCANSignal.m_add»,«CurrentCANSignal.m_rangeStart»,«CurrentCANSignal.m_rangeEnd»);
                 «cmNamePrefix+CurrentCANSignal.m_CANID».addSignal(«currentSignalInMapping.signalIdentifier»,«currentSignalInMapping.cansignalname.replaceAll("\\.","_")»);
                 «memberVarName»=«cmNamePrefix+CurrentCANSignal.m_CANID».decodeSignal(«currentSignalInMapping.signalIdentifier»);
 

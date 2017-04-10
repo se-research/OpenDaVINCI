@@ -282,7 +282,7 @@ class WheelSpeed : public odcore::data::SerializableData, public odcore::base::V
 				// addressing signal wheelspeed.frontleft : 1
 				{
 					// Add the CAN signal to the CAN message
-					::automotive::odcantools::CANSignal wheelspeed_frontleft(0,16,"unsigned","little",0.01,0,0,200);
+					::automotive::odcantools::CANSignal wheelspeed_frontleft(0,16,::automotive::odcantools::Signedness::UNSIGNED,::automotive::odcantools::Endianness::LITTLE,0.01,0,0,200);
 			                CM_0x123.addSignal(1,wheelspeed_frontleft);
 			                m_wheelspeedFrontleft=CM_0x123.decodeSignal(1);
 			
@@ -302,7 +302,7 @@ class WheelSpeed : public odcore::data::SerializableData, public odcore::base::V
 				// addressing signal wheelspeed.frontright : 2
 				{
 					// Add the CAN signal to the CAN message
-					::automotive::odcantools::CANSignal wheelspeed_frontright(16,16,"unsigned","little",0.01,0,0,200);
+					::automotive::odcantools::CANSignal wheelspeed_frontright(16,16,::automotive::odcantools::Signedness::UNSIGNED,::automotive::odcantools::Endianness::LITTLE,0.01,0,0,200);
 			                CM_0x123.addSignal(2,wheelspeed_frontright);
 			                m_wheelspeedFrontright=CM_0x123.decodeSignal(2);
 			
@@ -322,7 +322,7 @@ class WheelSpeed : public odcore::data::SerializableData, public odcore::base::V
 				// addressing signal wheelspeed.rearleft : 3
 				{
 					// Add the CAN signal to the CAN message
-					::automotive::odcantools::CANSignal wheelspeed_rearleft(32,16,"unsigned","little",0.01,0,0,200);
+					::automotive::odcantools::CANSignal wheelspeed_rearleft(32,16,::automotive::odcantools::Signedness::UNSIGNED,::automotive::odcantools::Endianness::LITTLE,0.01,0,0,200);
 			                CM_0x123.addSignal(3,wheelspeed_rearleft);
 			                m_wheelspeedRearleft=CM_0x123.decodeSignal(3);
 			
@@ -342,7 +342,7 @@ class WheelSpeed : public odcore::data::SerializableData, public odcore::base::V
 				// addressing signal wheelspeed.rearright : 4
 				{
 					// Add the CAN signal to the CAN message
-					::automotive::odcantools::CANSignal wheelspeed_rearright(48,16,"unsigned","little",0.01,0,0,200);
+					::automotive::odcantools::CANSignal wheelspeed_rearright(48,16,::automotive::odcantools::Signedness::UNSIGNED,::automotive::odcantools::Endianness::LITTLE,0.01,0,0,200);
 			                CM_0x123.addSignal(4,wheelspeed_rearright);
 			                m_wheelspeedRearright=CM_0x123.decodeSignal(4);
 			
@@ -399,7 +399,7 @@ class WheelSpeed : public odcore::data::SerializableData, public odcore::base::V
 				double Wheelspeed_frontleft = msg.getValueFromScalarField<double>(1, found, extracted);
 				
 				if(found && extracted) {
-				    ::automotive::odcantools::CANSignal signal_wheelspeed_frontleft(0,16,"unsigned","little",0.01,0,0,200);
+				    ::automotive::odcantools::CANSignal signal_wheelspeed_frontleft(0,16,::automotive::odcantools::Signedness::UNSIGNED,::automotive::odcantools::Endianness::LITTLE,0.01,0,0,200);
 			                CM_0x123.addSignal(1,signal_wheelspeed_frontleft);
 			                CM_0x123.encodeSignal(1,Wheelspeed_frontleft);
 				}
@@ -412,7 +412,7 @@ class WheelSpeed : public odcore::data::SerializableData, public odcore::base::V
 				double Wheelspeed_frontright = msg.getValueFromScalarField<double>(2, found, extracted);
 				
 				if(found && extracted) {
-				    ::automotive::odcantools::CANSignal signal_wheelspeed_frontright(16,16,"unsigned","little",0.01,0,0,200);
+				    ::automotive::odcantools::CANSignal signal_wheelspeed_frontright(16,16,::automotive::odcantools::Signedness::UNSIGNED,::automotive::odcantools::Endianness::LITTLE,0.01,0,0,200);
 			                CM_0x123.addSignal(2,signal_wheelspeed_frontright);
 			                CM_0x123.encodeSignal(2,Wheelspeed_frontright);
 				}
@@ -425,7 +425,7 @@ class WheelSpeed : public odcore::data::SerializableData, public odcore::base::V
 				double Wheelspeed_rearleft = msg.getValueFromScalarField<double>(3, found, extracted);
 				
 				if(found && extracted) {
-				    ::automotive::odcantools::CANSignal signal_wheelspeed_rearleft(32,16,"unsigned","little",0.01,0,0,200);
+				    ::automotive::odcantools::CANSignal signal_wheelspeed_rearleft(32,16,::automotive::odcantools::Signedness::UNSIGNED,::automotive::odcantools::Endianness::LITTLE,0.01,0,0,200);
 			                CM_0x123.addSignal(3,signal_wheelspeed_rearleft);
 			                CM_0x123.encodeSignal(3,Wheelspeed_rearleft);
 				}
@@ -438,7 +438,7 @@ class WheelSpeed : public odcore::data::SerializableData, public odcore::base::V
 				double Wheelspeed_rearright = msg.getValueFromScalarField<double>(4, found, extracted);
 				
 				if(found && extracted) {
-				    ::automotive::odcantools::CANSignal signal_wheelspeed_rearright(48,16,"unsigned","little",0.01,0,0,200);
+				    ::automotive::odcantools::CANSignal signal_wheelspeed_rearright(48,16,::automotive::odcantools::Signedness::UNSIGNED,::automotive::odcantools::Endianness::LITTLE,0.01,0,0,200);
 			                CM_0x123.addSignal(4,signal_wheelspeed_rearright);
 			                CM_0x123.encodeSignal(4,Wheelspeed_rearright);
 				}
